@@ -68,7 +68,7 @@ export const PRICING_PRO_INCLUSIONS = {
       ],
       learn: { label: "Learn about ZenML", href: "/product/zenml" },
       cta: {
-        label: "Book a Demo",
+        label: "Book a demo",
         href: "/book-your-demo",
         analytics: "Pricing-Pro-Inclusions-ZenML-Demo",
       } as CtaLink,
@@ -97,7 +97,7 @@ export const PRICING_PRO_INCLUSIONS = {
       ],
       learn: { label: "Learn about Kitaru", href: "/product/kitaru" },
       cta: {
-        label: "Book a Demo",
+        label: "Book a demo",
         href: "/book-your-demo",
         analytics: "Pricing-Pro-Inclusions-Kitaru-Demo",
       } as CtaLink,
@@ -280,18 +280,12 @@ const SAAS_STARTER: PricingPlan = {
     { label: "executions", value: "500" },
     { label: "project", value: "1" },
     { label: "snapshot", value: "1" },
-  ],
-  features: [
-    "Model Control Plane",
-    "Artifact Control Plane",
-    "1 workspace",
-    "Unlimited team members",
-    "Basic support",
+    { label: "workspace", value: "1" },
   ],
   cta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
-    analytics: "Starter-Free-Trial",
+    label: "Book a demo",
+    href: "/book-your-demo",
+    analytics: "Starter-Book-Demo",
   },
   ctaVariant: "secondary",
 };
@@ -306,17 +300,12 @@ const SAAS_GROWTH: PricingPlan = {
     { label: "executions", value: "2,000" },
     { label: "projects", value: "3" },
     { label: "snapshots", value: "5" },
-  ],
-  featuresPrefix: "Everything in Starter, plus:",
-  features: [
-    "Advanced Native Scheduling",
-    "Webhooks & Triggers",
-    "Priority support",
+    { label: "workspace", value: "1" },
   ],
   cta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
-    analytics: "Growth-Free-Trial",
+    label: "Book a demo",
+    href: "/book-your-demo",
+    analytics: "Growth-Book-Demo",
   },
   ctaVariant: "primary",
 };
@@ -330,13 +319,12 @@ const SAAS_SCALE: PricingPlan = {
     { label: "executions", value: "5,000" },
     { label: "projects", value: "10" },
     { label: "snapshots", value: "20" },
+    { label: "workspace", value: "1" },
   ],
-  featuresPrefix: "Everything in Growth, plus:",
-  features: ["Codespaces (Remote IDE)", "Priority support"],
   cta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
-    analytics: "Scale-Free-Trial",
+    label: "Book a demo",
+    href: "/book-your-demo",
+    analytics: "Scale-Book-Demo",
   },
   ctaVariant: "secondary",
 };
@@ -349,6 +337,7 @@ const SAAS_ENTERPRISE: PricingPlan = {
     { label: "executions", value: "Unlimited" },
     { label: "projects", value: "Unlimited" },
     { label: "snapshots", value: "Unlimited" },
+    { label: "workspaces", value: "Custom" },
   ],
   featuresPrefix: "Everything in Scale, plus:",
   features: [
@@ -362,7 +351,7 @@ const SAAS_ENTERPRISE: PricingPlan = {
     "Dedicated support + SLA",
   ],
   cta: {
-    label: "Book a Demo",
+    label: "Book a demo",
     href: "/book-your-demo",
     analytics: "Enterprise-Book-Demo",
   },
@@ -414,19 +403,19 @@ const SAAS_COMPARE: PricingCompareTableData = {
       rows: [
         {
           feature: "Advanced Native Scheduling",
-          values: [false, false, false, "COMING SOON"],
+          values: [false, false, false, true],
         },
         {
           feature: "Webhooks & Triggers",
-          values: [false, false, false, "COMING SOON"],
+          values: [false, false, false, true],
         },
         {
           feature: "Resource Management & Queueing",
-          values: [false, false, false, "COMING SOON"],
+          values: [false, false, false, true],
         },
         {
           feature: "Codespaces (Remote IDE)",
-          values: [false, false, false, "COMING SOON"],
+          values: [false, false, false, true],
         },
       ],
     },
@@ -677,9 +666,9 @@ export const PRICING_FINAL_CTA = {
   headline: "Start deploying reproducible AI workflows today",
   body: "Enterprise-grade MLOps platform trusted by thousands of companies in production.",
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
-    analytics: "Pricing-CTA-Free-Trial",
+    label: "Book a demo",
+    href: "/book-your-demo",
+    analytics: "Pricing-CTA-Book-Demo",
   } as CtaLink,
   secondaryCta: {
     label: "Use Open Source",

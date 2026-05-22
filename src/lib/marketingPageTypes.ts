@@ -82,7 +82,8 @@ export interface PricingPlan {
   priceSuffix?: string;
   badge?: string;
   limits: { label: string; value: string }[];
-  features: string[];
+  /** Feature bullet list. Omitted on plans that defer detail to the comparison table. */
+  features?: string[];
   featuresPrefix?: string;
   /** Features that should show a "COMING SOON" badge next to them. */
   comingSoon?: string[];

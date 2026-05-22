@@ -57,9 +57,9 @@ Two attributes on `<html>` carry the unified-product state to every page:
 | `data-surface` | `ml` (default) \| `agent` \| `unified` | Plausible `surface` custom prop on every pageview + custom event (D3); included as a property on Segment page events for downstream segmentation | BaseLayout/MinimalLayout accept a `surface?` prop; passed by page templates |
 
 **Surface taxonomy** (`src/lib/analytics.ts`):
-- **`ml`** — ZenML-side pages (homepage, `/features/*`, integrations, MLOps content, `/get-started/zenml`)
+- **`ml`** — ZenML-side pages (homepage, `/features/*`, integrations, MLOps content, `/get-started`)
 - **`agent`** — Kitaru-side pages (`/product/kitaru`, `/compare/kitaru-vs-*`, Kitaru-origin blog posts inherit from layout)
-- **`unified`** — cross-product pages (`/compare`, `/pricing`, `/get-started` chooser, `/pro`)
+- **`unified`** — cross-product pages (`/compare`, `/pricing`, `/pro`)
 
 The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was superseded after audit — the standalone kitaru.ai routes that needed the Kitaru key turned out to be dead code and were removed). The page-init call passes `{surface}` as a property so the same dimension is queryable in Segment, Plausible, and downstream CRM tools. `PlausibleBridge.astro` merges `surface` into every custom event so click-tracking matches pageview tagging.
 
@@ -247,9 +247,8 @@ The three Kitaru routes return 500 (`"KV not configured"`) until the matching Cl
 - `src/components/compare/kitaru/*` — Kitaru compare components (ComparisonHero, ComparisonTable, CodePane, CodeCompare, FeatureWithGraphic, WhenToUseEach, ComparisonCta)
 - `src/content/compare-kitaru/*.mdx` — 8 Kitaru-vs-X comparison pages
 
-### Get Started routing (Phase 4)
-- `src/pages/get-started.astro` — ML/Agent workspace chooser (the URL preserves 8.6k visitors/mo)
-- `src/pages/get-started/zenml.astro` — ZenML deep onboarding (the previous /get-started content, intact)
+### Get Started routing
+- `src/pages/get-started.astro` — ZenML open-source onboarding (hero, 3-step walkthrough, architecture, projects, resources). The Phase-4 ML/Agent chooser was removed; `/get-started/zenml` 301-redirects here (`public/_redirects`). Kitaru's entry point is its own `/product/kitaru` landing.
 
 ### Layouts
 - `src/layouts/BaseLayout.astro` — Main layout (nav, footer, head slots, analytics)

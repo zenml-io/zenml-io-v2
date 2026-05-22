@@ -1,137 +1,254 @@
 ---
 /**
- * Get Started — ML/Agent workspace chooser (Phase 4).
+ * Get Started — ZenML (ML pipelines) onboarding.
  *
- * Route: /get-started  (URL preserved per MERGE_PLAN §9 — 8.6k visitors/mo)
+ * Route: /get-started
  *
- * Two-card chooser between the two workspaces:
- *   - ZenML (ML pipelines)  →  /get-started/zenml  (the previous deep
- *     onboarding flow, intact, moved one level down)
- *   - Kitaru (AI agents)    →  /product/kitaru  (Kitaru landing has its
- *     own pip-install + quickstart code path)
- *
- * Plan note: D6 says /get-started "becomes a chooser fork". Conversion
- * path branches here. URL stays the same. Visual polish is intentionally
- * understated — Zuri will iterate before launch.
+ * Open-source onboarding page: hero, 3-step code walkthrough,
+ * architecture diagram, projects showcase, resources grid, and CTA.
+ * The Phase-4 ML/Agent chooser was removed — `/get-started` is the
+ * ZenML onboarding again; Kitaru's entry point is its own
+ * `/product/kitaru` landing. `/get-started/zenml` 301-redirects here.
  */
+import { getCollection } from "astro:content";
+import { createHighlighter } from "shiki";
+import Button from "../components/Button.astro";
+import FeaturesHubCTA from "../components/sections/FeaturesHubCTA.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import {
+  GET_STARTED_ARCHITECTURE,
+  GET_STARTED_FINAL_CTA,
+  GET_STARTED_HERO,
+  GET_STARTED_PROJECTS,
+  GET_STARTED_RESOURCES,
+  GET_STARTED_SEO,
+  GET_STARTED_STEPS,
+} from "../lib/getStarted";
+import zenmlDark from "../styles/zenml-dark.json";
 
-const PAGE = {
-  title: "Get started with ZenML or Kitaru",
-  description:
-    "Pick the workspace that fits your workload. ZenML for ML pipelines and training workflows. Kitaru for long-running AI agents with durable execution.",
-};
+type HighlighterTheme = NonNullable<
+  Parameters<typeof createHighlighter>[0]["themes"]
+>[number];
+
+// Highlight code steps at build time with dark theme
+const highlighter = await createHighlighter({
+  themes: [zenmlDark as HighlighterTheme],
+  langs: ["python", "bash"],
+});
+
+const highlightedSteps = GET_STARTED_STEPS.items.map((step) => {
+  const lang = step.code.includes("\n") ? "python" : "bash";
+  const html = highlighter.codeToHtml(step.code, {
+    lang,
+    theme: "zenml-dark",
+  });
+  return { ...step, highlightedHtml: html };
+});
+
+// Pull projects from the CMS collection if it exists
+let projects: {
+  data: { title: string; description?: string };
+  id: string;
+}[] = [];
+try {
+  const allProjects = await getCollection("projects");
+  projects = allProjects.slice(0, 6).map((p) => ({
+    data: {
+      title: p.data.title ?? p.id,
+      description: p.data.description,
+    },
+    id: p.id,
+  }));
+} catch {
+  // Collection may not exist yet — show empty state
+}
+
+const resourceColors = {
+  teal: "bg-teal-50 text-teal-600",
+  blue: "bg-blue-50 text-blue-600",
+  purple: "bg-zenml-50 text-zenml-500",
+  gray: "bg-gray-100 text-gray-600",
+} as const;
 ---
 
 <BaseLayout
-  title={PAGE.title}
-  description={PAGE.description}
-  surface="unified"
+  title={GET_STARTED_SEO.title}
+  description={GET_STARTED_SEO.description}
+  ogTitle={GET_STARTED_SEO.ogTitle}
+  ogDescription={GET_STARTED_SEO.ogDescription}
+  ogImage={GET_STARTED_SEO.ogImage}
+  surface="ml"
 >
-  <main class="bg-linear-to-b from-zenml-50 to-white">
-    <section class="mx-auto max-w-6xl px-4 pt-16 pb-20 sm:px-6 sm:pt-24 sm:pb-28 lg:px-8">
-      <header class="mx-auto max-w-3xl text-center">
+  <main>
+    {/* Hero */}
+    <section class="bg-linear-to-t from-zenml-50 to-white border-b border-gray-200 pt-16 pb-12 sm:pt-24 sm:pb-16">
+      <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
         <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
-          Get started
+          {GET_STARTED_HERO.eyebrow}
         </p>
-        <h1 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
-          Pick the workspace you're building in
+        <h1 class="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
+          {GET_STARTED_HERO.headline}
         </h1>
-        <p class="mt-4 text-lg leading-relaxed text-gray-600">
-          ZenML and Kitaru are two workspaces under the same product. Different
-          workloads, different SDKs, same infrastructure underneath.
+        <p class="mt-4 text-lg text-gray-600 leading-relaxed">
+          {GET_STARTED_HERO.deck}
         </p>
-      </header>
-
-      <div class="mt-12 grid gap-6 sm:mt-16 lg:grid-cols-2 lg:gap-8">
-        {/* ZenML — ML pipelines */}
-        <a
-          href="/get-started/zenml"
-          class="group relative flex flex-col rounded-2xl border border-gray-200 bg-white p-8 transition hover:border-zenml-300 hover:shadow-lg sm:p-10"
-          data-analytics="GetStartedChoose:ML"
-        >
-          <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
-            ZenML · ML workspace
-          </p>
-          <h2 class="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-            Build ML pipelines
-          </h2>
-          <p class="mt-4 text-base leading-relaxed text-gray-600">
-            Reproducible training, batch inference, evaluation, and deployment.
-            Orchestrate across your existing tools, clouds, and environments
-            with explicit DAGs and versioned artifacts.
-          </p>
-          <ul class="mt-6 space-y-2 text-sm text-gray-700">
-            <li class="flex gap-2">
-              <span aria-hidden="true" class="text-zenml-500">→</span>
-              Pipeline DAGs with typed step interfaces
-            </li>
-            <li class="flex gap-2">
-              <span aria-hidden="true" class="text-zenml-500">→</span>
-              Artifact store, model registry, and stack abstraction
-            </li>
-            <li class="flex gap-2">
-              <span aria-hidden="true" class="text-zenml-500">→</span>
-              Runs on Kubernetes, Vertex, SageMaker, Airflow, and more
-            </li>
-          </ul>
-          <span class="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-zenml-600 group-hover:gap-3 transition-all">
-            Start with ZenML
-            <span aria-hidden="true">→</span>
-          </span>
-        </a>
-
-        {/* Kitaru — AI agents */}
-        <a
-          href="/product/kitaru"
-          class="group relative flex flex-col rounded-2xl border border-gray-200 bg-white p-8 transition hover:border-zenml-300 hover:shadow-lg sm:p-10"
-          data-analytics="GetStartedChoose:Agent"
-        >
-          <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
-            Kitaru · Agent workspace
-          </p>
-          <h2 class="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-            Build AI agents
-          </h2>
-          <p class="mt-4 text-base leading-relaxed text-gray-600">
-            Long-running Python agents with durable execution. Add checkpoints,
-            replay, wait/resume, and human-in-the-loop without rewriting your
-            code. Plain Python control flow, two decorators.
-          </p>
-          <ul class="mt-6 space-y-2 text-sm text-gray-700">
-            <li class="flex gap-2">
-              <span aria-hidden="true" class="text-zenml-500">→</span>
-              <code class="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-[13px]">@flow</code>
-              and
-              <code class="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-[13px]">@checkpoint</code>
-              — that's the API surface
-            </li>
-            <li class="flex gap-2">
-              <span aria-hidden="true" class="text-zenml-500">→</span>
-              Resume from any checkpoint after a crash, rate limit, or human review
-            </li>
-            <li class="flex gap-2">
-              <span aria-hidden="true" class="text-zenml-500">→</span>
-              MCP, CLI, and typed-client surfaces for ops control
-            </li>
-          </ul>
-          <span class="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-zenml-600 group-hover:gap-3 transition-all">
-            Start with Kitaru
-            <span aria-hidden="true">→</span>
-          </span>
-        </a>
-      </div>
-
-      <div class="mt-12 text-center text-sm text-gray-600">
-        Not sure?
-        <a href="/compare" class="font-semibold text-zenml-600 hover:text-zenml-700">
-          Compare ZenML and Kitaru against alternatives
-        </a>
-        or
-        <a href="/pro" class="font-semibold text-zenml-600 hover:text-zenml-700">
-          see the unified Pro plan
-        </a>.
+        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <Button
+            href={GET_STARTED_HERO.primaryCta.href}
+            variant="secondary"
+            size="lg"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {GET_STARTED_HERO.primaryCta.label}
+          </Button>
+          <Button
+            href={GET_STARTED_HERO.secondaryCta.href}
+            size="lg"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {GET_STARTED_HERO.secondaryCta.label}
+          </Button>
+        </div>
       </div>
     </section>
+
+    {/* Code steps */}
+    <section class="bg-gray-900 py-16 sm:py-20">
+      <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold text-white sm:text-3xl">
+          {GET_STARTED_STEPS.headline}
+        </h2>
+        <div class="mt-10 space-y-10">
+          {highlightedSteps.map((step) => (
+            <div>
+              <h3 class="text-lg font-semibold text-white">{step.title}</h3>
+              <p class="mt-1 text-sm text-gray-300" set:html={step.body} />
+              <div class="mt-3 dark-code-block" set:html={step.highlightedHtml} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Architecture */}
+    <section class="bg-gray-900 py-16 sm:py-20">
+      <div class="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
+        <p class="text-sm font-semibold uppercase tracking-wider text-zenml-400">
+          {GET_STARTED_ARCHITECTURE.eyebrow}
+        </p>
+        <h2 class="mt-2 text-2xl font-bold text-white sm:text-3xl">
+          {GET_STARTED_ARCHITECTURE.headline}
+        </h2>
+        <p class="mt-3 text-lg text-gray-300">
+          {GET_STARTED_ARCHITECTURE.body}
+        </p>
+        <div class="mt-8">
+          <img
+            src={GET_STARTED_ARCHITECTURE.image.url}
+            alt={GET_STARTED_ARCHITECTURE.image.alt}
+            class="w-full max-w-[900px] mx-auto"
+            loading="lazy"
+          />
+        </div>
+        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <Button href={GET_STARTED_ARCHITECTURE.primaryCta.href} variant="secondary" size="lg">
+            {GET_STARTED_ARCHITECTURE.primaryCta.label}
+          </Button>
+          <Button
+            href={GET_STARTED_ARCHITECTURE.secondaryCta.href}
+            size="lg"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {GET_STARTED_ARCHITECTURE.secondaryCta.label}
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    {/* Projects */}
+    <section class="bg-white py-16 sm:py-20">
+      <div class="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
+        <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
+          {GET_STARTED_PROJECTS.eyebrow}
+        </p>
+        <h2 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
+          {GET_STARTED_PROJECTS.headline}
+        </h2>
+        <p class="mt-3 text-lg text-gray-600">{GET_STARTED_PROJECTS.deck}</p>
+        {projects.length > 0 ? (
+          <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {projects.map((project) => (
+              <a
+                href={`/projects/${project.id}`}
+                class="block rounded-lg border border-gray-200 p-4 text-left hover:shadow-md transition"
+              >
+                <h3 class="font-semibold text-gray-900">{project.data.title}</h3>
+                {project.data.description && (
+                  <p class="mt-1 text-sm text-gray-600 line-clamp-2">{project.data.description}</p>
+                )}
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p class="mt-6 text-sm text-gray-500">Projects coming soon.</p>
+        )}
+        <div class="mt-8">
+          <Button href={GET_STARTED_PROJECTS.cta.href} variant="secondary" size="lg">
+            {GET_STARTED_PROJECTS.cta.label}
+          </Button>
+        </div>
+      </div>
+    </section>
+
+    {/* Resources */}
+    <section class="bg-gray-50 py-16 sm:py-20">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
+            {GET_STARTED_RESOURCES.eyebrow}
+          </p>
+          <h2 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
+            {GET_STARTED_RESOURCES.headline}
+          </h2>
+          <p class="mt-3 text-lg text-gray-600 leading-relaxed">
+            {GET_STARTED_RESOURCES.body}
+          </p>
+        </div>
+        <div class="mt-10 grid gap-6 sm:grid-cols-2">
+          {GET_STARTED_RESOURCES.items.map((resource) => (
+            <a
+              href={resource.href}
+              target={resource.external ? "_blank" : undefined}
+              rel={resource.external ? "noopener noreferrer" : undefined}
+              class="group rounded-md border border-gray-200 bg-white p-6 transition hover:shadow-md"
+            >
+              <div class:list={[
+                "inline-flex h-10 w-10 items-center justify-center rounded-lg",
+                resourceColors[resource.color],
+              ]}>
+                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 class="mt-4 text-lg font-semibold text-gray-900 group-hover:text-zenml-500">
+                {resource.title}
+              </h3>
+              <p class="mt-2 text-sm text-gray-600 leading-relaxed">{resource.body}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* Final CTA */}
+    <FeaturesHubCTA
+      headline={GET_STARTED_FINAL_CTA.headline}
+      body={GET_STARTED_FINAL_CTA.body}
+      primaryCta={GET_STARTED_FINAL_CTA.primaryCta}
+      secondaryCta={GET_STARTED_FINAL_CTA.secondaryCta}
+    />
   </main>
 </BaseLayout>

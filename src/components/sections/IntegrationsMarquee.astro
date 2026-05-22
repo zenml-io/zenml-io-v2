@@ -2,15 +2,10 @@
 /**
  * IntegrationsMarquee — infinite horizontal scroll of integration logos.
  *
- * Pattern A (two-product, unified section):
- * - Headline and subheadline are product-neutral ("any framework", both ecosystems).
- * - ZenML integrations marquee (60+ from the integrations collection).
- * - Kitaru agent frameworks listed as a compact labeled pill row below.
- * - Single CTA pair pointing to /get-started and /integrations.
- *
  * Fetches logos from the integrations content collection and renders
  * them in a CSS-animated marquee strip. The strip is duplicated for
- * seamless looping. Pauses on hover.
+ * seamless looping. Pauses on hover. CTA pair points to /get-started
+ * and /integrations.
  */
 import { getCollection } from "astro:content";
 import { INTEGRATIONS_MARQUEE } from "../../lib/homepage";
@@ -59,12 +54,8 @@ const marqueeItems = [
     </div>
   </div>
 
-  <!-- ZenML integrations marquee -->
+  <!-- Integrations marquee -->
   <div class="group relative mt-10 scroll-fade-in stagger-1">
-    <!-- Product label -->
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <p class="mb-4 text-xs font-semibold uppercase tracking-wider text-zenml-500">ZenML — 60+ ML integrations</p>
-    </div>
     <!-- Fade edges -->
     <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-white/80 to-transparent"></div>
     <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-white/80 to-transparent"></div>
@@ -89,18 +80,6 @@ const marqueeItems = [
             loading="lazy"
           />
         </a>
-      ))}
-    </div>
-  </div>
-
-  <!-- Kitaru agent frameworks — text pill row -->
-  <div class="mx-auto mt-8 max-w-7xl px-4 sm:px-6 lg:px-8 scroll-fade-in stagger-2">
-    <p class="mb-3 text-xs font-semibold uppercase tracking-wider text-orange-700">Kitaru — agent framework compatible</p>
-    <div class="flex flex-wrap gap-2">
-      {INTEGRATIONS_MARQUEE.agentFrameworks.map((name) => (
-        <span class="inline-flex items-center rounded-md border border-gray-200 bg-white px-3 py-1 text-sm font-medium text-gray-700">
-          {name}
-        </span>
       ))}
     </div>
   </div>

@@ -247,19 +247,6 @@ export const INTEGRATIONS_MARQUEE = {
     "60+ integrations across the AI ecosystem — from scikit-learn to LangGraph, PyTorch to OpenAI Agents SDK.",
   primaryCta: { label: "Get started", href: "/get-started" },
   secondaryCta: { label: "See all integrations", href: "/integrations" },
-  /** Agent frameworks surfaced as text pills alongside the integration marquee */
-  agentFrameworks: [
-    "LangChain",
-    "LangGraph",
-    "CrewAI",
-    "AutoGen",
-    "OpenAI Agents SDK",
-    "PydanticAI",
-    "Mastra",
-    "LlamaIndex",
-    "Haystack",
-    "Semantic Kernel",
-  ],
 };
 
 /* ------------------------------------------------------------------ */
