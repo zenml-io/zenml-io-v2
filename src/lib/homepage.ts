@@ -20,10 +20,10 @@ export const HERO = {
   subheadline:
     "Orchestrate ML and Agent workloads on your infrastructure. Modular, flexible, and open-source — always.",
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   },
-  secondaryCta: { label: "Use Open Source", href: "/get-started" },
+  secondaryCta: { label: "Read Docs", href: "/docs" },
   githubUrl: "https://github.com/zenml-io/zenml",
   /** Lottie JSON for hero animation (autoplay, no loop, 6.4s, SVG renderer).
    *  Served from public/ for same-origin access (avoids R2 CORS issues). */
@@ -232,10 +232,10 @@ export const VALUE_PROPS_CTA = {
   subtext:
     "Open source for as long as you want. ML pipelines, agent flows, or both — same plans, same control plane.",
   primaryCta: {
-    label: "Get started",
-    href: "/get-started",
+    label: "Book a demo",
+    href: "/book-your-demo",
   },
-  secondaryCta: { label: "Book a demo", href: "/book-your-demo" },
+  secondaryCta: { label: "Read Docs", href: "/docs" },
 };
 
 /* ------------------------------------------------------------------ */
@@ -245,7 +245,7 @@ export const INTEGRATIONS_MARQUEE = {
   headline: "Works with the tools you already use",
   subheadline:
     "60+ integrations across the AI ecosystem — from scikit-learn to LangGraph, PyTorch to OpenAI Agents SDK.",
-  primaryCta: { label: "Get started", href: "/get-started" },
+  primaryCta: { label: "Book a demo", href: "/book-your-demo" },
   secondaryCta: { label: "See all integrations", href: "/integrations" },
 };
 
@@ -471,10 +471,10 @@ export const FINAL_CTA = {
     "Upgrade to managed Pro features",
   ],
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   },
-  secondaryCta: { label: "Use Open Source", href: "/get-started" },
+  secondaryCta: { label: "Read Docs", href: "/docs" },
   image: `${R2}/4ab5ef16/66e9556fd34d2791885b0c5f_model_control_plane_01.png`,
   imageAlt:
     "Dashboard displaying machine learning models with version tracking",

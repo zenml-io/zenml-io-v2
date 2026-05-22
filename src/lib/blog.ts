@@ -247,9 +247,9 @@ export const BLOG_SIDEBAR_CTA = {
     "Secure, metadata-only tracking",
   ],
   cta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
-    analytics: "Blog-Sidebar-Free-Trial",
+    label: "Book a demo",
+    href: "/book-your-demo",
+    analytics: "Blog-Sidebar-Book-Demo",
   } as CtaLink,
 } as const;
 
@@ -257,13 +257,13 @@ export const BLOG_FINAL_CTA = {
   headline: "Start deploying AI workflows in production today",
   body: "Enterprise-grade AI platform trusted by thousands of companies in production",
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
-    analytics: "Blog-CTA-Free-Trial",
-  } as CtaLink,
-  secondaryCta: {
-    label: "Book a Demo",
+    label: "Book a demo",
     href: "/book-your-demo",
     analytics: "Blog-CTA-Book-Demo",
+  } as CtaLink,
+  secondaryCta: {
+    label: "Read Docs",
+    href: "/docs",
+    analytics: "Blog-CTA-Read-Docs",
   } as CtaLink,
 } as const;

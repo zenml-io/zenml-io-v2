@@ -91,10 +91,10 @@ const SHARED_FINAL_CTA = {
     "Find out why data security with ZenML outshines the rest",
   ],
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   },
-  secondaryCta: { label: "Use Open Source", href: "/get-started" },
+  secondaryCta: { label: "Read Docs", href: "/docs" },
   image: DASHBOARD_IMAGES.modelControlPlane,
 };
 

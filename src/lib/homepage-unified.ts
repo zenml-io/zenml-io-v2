@@ -50,13 +50,13 @@ export const HOMEPAGE_UNIFIED_HERO = {
    * the buyer who's worried about vendor lock-in.
    *
    * Notion feedback (item 1): subtitle shortened to the single crisp sentence.
-   * Notion feedback (item 2): CTAs → "Book a demo" primary, "Read docs" secondary.
+   * Notion feedback (item 2): CTAs → "Book a demo" primary, "Read Docs" secondary.
    */
   subtitleLead: "Built for engineers, ready for enterprise.",
   subtitle:
     "Orchestrate training pipelines and durable AI agents on the tools, clouds, and environments you already use — without rewriting your stack.",
   primaryCta: { label: "Book a demo", href: "/book-your-demo" },
-  secondaryCta: { label: "Read docs", href: "/docs" },
+  secondaryCta: { label: "Read Docs", href: "/docs" },
 } as const;
 
 /* ---------------------------------------------------------------------- */
@@ -292,8 +292,8 @@ export const HOMEPAGE_UNIFIED_PRICING_TEASER = {
 export const HOMEPAGE_UNIFIED_FINAL_CTA = {
   headline: "Pick your workspace and start shipping.",
   body: "Open source for as long as you want. Managed when you're ready.",
-  primaryCta: { label: "Get started", href: "/get-started" },
-  secondaryCta: { label: "Book a demo", href: "/book-your-demo" },
+  primaryCta: { label: "Book a demo", href: "/book-your-demo" },
+  secondaryCta: { label: "Read Docs", href: "/docs" },
 } as const;
 
 /* ---------------------------------------------------------------------- */

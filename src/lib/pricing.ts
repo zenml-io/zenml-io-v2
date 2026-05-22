@@ -671,8 +671,8 @@ export const PRICING_FINAL_CTA = {
     analytics: "Pricing-CTA-Book-Demo",
   } as CtaLink,
   secondaryCta: {
-    label: "Use Open Source",
-    href: "/get-started",
-    analytics: "Pricing-CTA-Open-Source",
+    label: "Read Docs",
+    href: "/docs",
+    analytics: "Pricing-CTA-Read-Docs",
   } as CtaLink,
 } as const;

@@ -20,11 +20,10 @@ export const PRODUCT_ZENML_HERO = {
   subtitle:
     "Orchestrate ML pipelines from your laptop to Kubernetes, Vertex, SageMaker, and AzureML. Reproducible artifacts, model registry, and a composable stack — without vendor lock-in.",
   installCmd: "pip install zenml",
-  primaryCta: { label: "Start free trial", href: "https://cloud.zenml.io/signup" },
+  primaryCta: { label: "Book a demo", href: "/book-your-demo" },
   secondaryCta: {
-    label: "View on GitHub",
-    href: "https://github.com/zenml-io/zenml",
-    external: true,
+    label: "Read Docs",
+    href: "/docs",
   },
 } as const;
 
@@ -50,6 +49,6 @@ export const PRODUCT_ZENML_FINAL_CTA = {
   headline: "Ship ML pipelines, not infrastructure plumbing.",
   body: "Start with the open-source SDK, scale to managed when you need governance and a hosted control plane.",
   primaryCta: { label: "Book a demo", href: "/book-your-demo" },
-  secondaryCta: { label: "Start free trial", href: "https://cloud.zenml.io/signup" },
+  secondaryCta: { label: "Read Docs", href: "/docs" },
   installCmd: "pip install zenml",
 } as const;

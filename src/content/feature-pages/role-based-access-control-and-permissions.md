@@ -15,12 +15,11 @@ hero:
     url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6cd9240/652d14664e7b1ba97d692b8a_cloud_main-1.webp"
     alt: Dashboard displaying iris_logistic_regression model versioning with deployment status, highlighting machine learning and model monitoring.
   primaryCta:
-    label: Start Free Trial
-    href: https://cloud.zenml.io/signup
+    label: Book a demo
+    href: /book-your-demo
   secondaryCta:
-    label: Read the documentation
-    href: https://docs.zenml.io
-    external: true
+    label: Read Docs
+    href: /docs
 
 blocks:
   - kind: value

@@ -30,8 +30,8 @@ export const PRO_HERO: HeroData = {
   headline: "A managed control plane for ML pipelines and AI agents",
   deck: "ZenML Pro runs both workspaces under one paid product: ZenML for ML pipelines, Kitaru for durable agents. Single pane of glass, enterprise governance, no infrastructure setup.",
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   },
   secondaryCta: { label: "Compare OSS vs Pro", href: "/open-source-vs-pro" },
   image: {
@@ -133,8 +133,8 @@ export const PRO_ONBOARDING = {
     },
   ] satisfies FeatureGridItem[],
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   } as CtaLink,
   secondaryCta: { label: "See Plans", href: "/pricing" } as CtaLink,
 } as const;
@@ -244,8 +244,8 @@ export const PRO_OSS_GRID = {
     },
   ] satisfies FeatureGridItem[],
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   } as CtaLink,
   secondaryCta: {
     label: "Compare OSS vs Pro",
@@ -357,8 +357,8 @@ export const PRO_FAQ: FaqData = {
     },
   ],
   slackCta: {
-    label: "Still not clear? Start a free trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Still not clear? Book a demo",
+    href: "/book-your-demo",
   },
 };
 
@@ -373,10 +373,10 @@ export const PRO_FINAL_CTA = {
     "Upgrade to managed Pro features",
   ],
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   } as CtaLink,
-  secondaryCta: { label: "Use Open Source", href: "/get-started" } as CtaLink,
+  secondaryCta: { label: "Read Docs", href: "/docs" } as CtaLink,
   image: {
     url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png`,
     alt: "Dashboard displaying machine learning models, including versions, authors, and tags.",

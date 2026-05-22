@@ -15,12 +15,11 @@ hero:
     url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/44e59760/6526ade3b9c339d75d1cce2c_08_Dashboard.webp"
     alt: ZenML dashboard displaying machine learning pipeline runs and experiment tracking with statuses and components.
   primaryCta:
-    label: Start Free Trial
-    href: https://cloud.zenml.io/signup
+    label: Book a demo
+    href: /book-your-demo
   secondaryCta:
-    label: Read the documentation
-    href: https://docs.zenml.io
-    external: true
+    label: Read Docs
+    href: /docs
 
 blocks:
   - kind: value
