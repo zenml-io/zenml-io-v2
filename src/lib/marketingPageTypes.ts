@@ -12,6 +12,8 @@ export interface CtaLink {
   external?: boolean;
   /** Plausible event name — rendered as data-analytics attribute for click tracking. */
   analytics?: string;
+  /** Button style when rendered as a button (defaults to "primary"). */
+  variant?: "primary" | "secondary";
 }
 
 /** A standard hero section. */
@@ -74,22 +76,54 @@ export interface SubwayMapCard {
 // Pricing page types
 // ---------------------------------------------------------------------------
 
+/** One snap stop on a plan card's executions slider. */
+export interface PricingSliderTier {
+  /** Monthly executions at this stop, e.g. "500", "2,000", "5,000". */
+  executions: string;
+  /** Monthly price at this stop, e.g. "$399". */
+  price: string;
+  /** Projects bundled into this stop, e.g. "3". */
+  projects: string;
+  /** Snapshots bundled into this stop, e.g. "5". */
+  snapshots: string;
+}
+
+/** An interactive executions slider rendered inside a plan card. */
+export interface PricingSlider {
+  /** Caption above the track, e.g. "Monthly executions". */
+  caption: string;
+  /** Ordered tiers — the slider snaps to one stop per tier. */
+  tiers: PricingSliderTier[];
+  /** Index of the tier shown on first paint. */
+  defaultIndex: number;
+}
+
 /** A single plan card on the pricing page. */
 export interface PricingPlan {
-  name: string;
+  /** Stable identifier (also used for analytics + DOM ids). */
+  id: string;
+  /** Uppercase plan name shown as the card eyebrow. */
+  eyebrow: string;
+  /** Neutral deployment badge beside the eyebrow ("Self-hosted" / "SaaS" / …). */
+  pill?: string;
+  /** Emphasized badge above the card ("Recommended"). */
+  topBadge?: string;
   subtitle: string;
   price: string;
   priceSuffix?: string;
-  badge?: string;
-  limits: { label: string; value: string }[];
-  /** Feature bullet list. Omitted on plans that defer detail to the comparison table. */
-  features?: string[];
-  featuresPrefix?: string;
-  /** Features that should show a "COMING SOON" badge next to them. */
-  comingSoon?: string[];
+  /** Static limits sentence. Mutually exclusive with `slider`. */
+  limitsLine?: string;
+  /** Interactive executions slider. Mutually exclusive with `limitsLine`. */
+  slider?: PricingSlider;
+  /** Label above the feature list ("Includes" / "Everything in Open Source, plus"). */
+  includesLabel: string;
+  /** Feature bullet list. */
+  features: string[];
   cta: CtaLink;
   ctaVariant?: "primary" | "secondary";
-  secondaryLink?: CtaLink;
+  secondaryLink: CtaLink;
+  /** Visually emphasized card (brand border + tint + shadow). */
+  highlighted?: boolean;
 }
 
 /** A section grouping in a pricing comparison table. */
@@ -107,15 +141,11 @@ export interface PricingCompareRow {
 
 /** Full pricing comparison table. */
 export interface PricingCompareTableData {
+  /** Section heading above the table. */
+  heading: string;
+  /** Optional sub-line under the heading. */
+  subheading?: string;
   columnHeaders: string[];
   sections: PricingCompareSection[];
   ctaButtons: CtaLink[];
-}
-
-/** A tab on the pricing page (Self-Hosted or SaaS). */
-export interface PricingTab {
-  label: string;
-  plans: PricingPlan[];
-  infoBlock?: string;
-  compareTable: PricingCompareTableData;
 }

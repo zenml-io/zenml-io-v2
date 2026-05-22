@@ -1,0 +1,316 @@
+---
+/**
+ * PricingPlanCards — the three unified plan cards (Open Source / Scale /
+ * Enterprise) for /pricing.
+ *
+ * The Scale card carries an interactive executions slider that snaps
+ * between three pricing tiers, updating the price + readout live. The
+ * slider is a native range input driven by a small co-located script —
+ * no Preact island needed (mirrors the old tab-switch script pattern).
+ * Display strings come from `buildSliderView` so SSR and the client
+ * script share one source of truth.
+ */
+import Button from "../Button.astro";
+import { PRICING_PLANS } from "../../lib/pricing";
+import { buildSliderView } from "./pricingSlider";
+
+const checkIcon =
+  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>';
+---
+
+<section class="scroll-reveal-section bg-white pt-6 pb-16 sm:pb-20">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid gap-6 lg:grid-cols-3 lg:items-center">
+      {
+        PRICING_PLANS.map((plan, planIdx) => {
+          const slider = plan.slider;
+          const sliderView = slider ? buildSliderView(slider) : null;
+          const defaultView =
+            slider && sliderView ? sliderView[slider.defaultIndex] : null;
+          return (
+            <article
+              class:list={[
+                "scroll-slide-top relative flex flex-col rounded-md bg-white p-8",
+                planIdx === 1 && "stagger-1",
+                planIdx === 2 && "stagger-2",
+                plan.highlighted
+                  ? "border border-zenml-500 shadow-medium"
+                  : "border border-gray-200",
+              ]}
+            >
+              {plan.topBadge && (
+                <span class="absolute -top-3 left-8 rounded-full bg-zenml-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
+                  {plan.topBadge}
+                </span>
+              )}
+
+              {/* Header */}
+              <div class="flex items-center gap-2">
+                <h3 class="text-sm font-bold uppercase tracking-wider text-zenml-500">
+                  {plan.eyebrow}
+                </h3>
+                {plan.pill && (
+                  <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
+                    {plan.pill}
+                  </span>
+                )}
+              </div>
+              <p class="mt-1.5 text-sm text-gray-500">{plan.subtitle}</p>
+
+              {/* Price */}
+              <div class="mt-5 flex flex-wrap items-baseline gap-x-1.5">
+                <span
+                  class="text-4xl font-bold leading-none tracking-tight text-gray-900"
+                  data-slider-price={slider ? "" : undefined}
+                >
+                  {plan.price}
+                </span>
+                {plan.priceSuffix && (
+                  <span class="text-sm text-gray-500">{plan.priceSuffix}</span>
+                )}
+              </div>
+
+              {/* Slider (Scale) or static limits line */}
+              {slider && sliderView && defaultView ? (
+                <div
+                  class="mt-6"
+                  data-pricing-slider
+                  data-tiers={JSON.stringify(sliderView)}
+                >
+                  <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    {slider.caption}
+                  </span>
+                  <div class="mt-2.5 flex justify-between text-sm tabular-nums">
+                    {slider.tiers.map((tier, tierIdx) => (
+                      <span
+                        data-slider-stop={tierIdx}
+                        class={
+                          tierIdx === slider.defaultIndex
+                            ? "font-bold text-zenml-500"
+                            : "text-gray-400"
+                        }
+                      >
+                        {tier.executions}
+                      </span>
+                    ))}
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max={slider.tiers.length - 1}
+                    step="1"
+                    value={slider.defaultIndex}
+                    class="exec-slider mt-3 w-full"
+                    style={`--range-fill:${defaultView.fill}`}
+                    data-slider-input
+                    aria-label={slider.caption}
+                    aria-valuetext={defaultView.valueText}
+                  />
+                  <p
+                    class="mt-4 text-center text-sm font-semibold text-zenml-500"
+                    data-slider-readout
+                  >
+                    {defaultView.readout}
+                  </p>
+                </div>
+              ) : (
+                <p class="mt-4 text-sm text-gray-600">{plan.limitsLine}</p>
+              )}
+
+              {/* CTA */}
+              <div class="mt-6">
+                <Button
+                  href={plan.cta.href}
+                  variant={plan.ctaVariant ?? "primary"}
+                  class="w-full"
+                  dataAnalytics={plan.cta.analytics}
+                >
+                  {plan.cta.label}
+                </Button>
+              </div>
+              <a
+                href={plan.secondaryLink.href}
+                class:list={[
+                  "mt-3 block text-center text-sm font-medium transition-colors",
+                  plan.highlighted
+                    ? "text-zenml-500 hover:text-zenml-600"
+                    : "text-gray-500 hover:text-gray-700",
+                ]}
+                data-analytics={plan.secondaryLink.analytics}
+              >
+                {plan.secondaryLink.label} <span aria-hidden="true">&rarr;</span>
+              </a>
+
+              {/* Includes */}
+              <hr class="my-6 border-gray-200" />
+              <p class="text-sm font-semibold text-gray-900">
+                {plan.includesLabel}
+              </p>
+              <ul class="mt-4 space-y-3">
+                {plan.features.map((feature) => (
+                  <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                    <span
+                      class="mt-0.5 shrink-0 text-zenml-500"
+                      set:html={checkIcon}
+                    />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Scroll-reveal — cards slide in from top with a stagger */
+  .scroll-slide-top {
+    opacity: 0;
+    transform: translateY(-30px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+  .stagger-1 {
+    transition-delay: 0.12s;
+  }
+  .stagger-2 {
+    transition-delay: 0.24s;
+  }
+  .scroll-reveal-section.in-view .scroll-slide-top {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-slide-top {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* Executions slider — native range input styled to the brand */
+  .exec-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 22px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .exec-slider::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(
+      to right,
+      var(--color-zenml-500) 0%,
+      var(--color-zenml-500) var(--range-fill, 50%),
+      #e9e6f3 var(--range-fill, 50%),
+      #e9e6f3 100%
+    );
+  }
+  .exec-slider::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(
+      to right,
+      var(--color-zenml-500) 0%,
+      var(--color-zenml-500) var(--range-fill, 50%),
+      #e9e6f3 var(--range-fill, 50%),
+      #e9e6f3 100%
+    );
+  }
+  .exec-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -8px;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: #fff;
+    border: 3px solid var(--color-zenml-500);
+    box-shadow: 0 1px 4px rgba(16, 24, 40, 0.24);
+    cursor: pointer;
+    transition: transform 0.12s ease;
+  }
+  .exec-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.08);
+  }
+  .exec-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: #fff;
+    border: 3px solid var(--color-zenml-500);
+    box-shadow: 0 1px 4px rgba(16, 24, 40, 0.24);
+    cursor: pointer;
+  }
+  .exec-slider:focus-visible {
+    outline: none;
+  }
+  .exec-slider:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px rgba(122, 62, 244, 0.28);
+  }
+  .exec-slider:focus-visible::-moz-range-thumb {
+    box-shadow: 0 0 0 4px rgba(122, 62, 244, 0.28);
+  }
+</style>
+
+<script>
+  import type { SliderTierView } from "./pricingSlider";
+
+  // Executions slider. Display strings are precomputed at build time
+  // (pricingSlider.ts) and shipped via data-tiers, so this handler is a
+  // pure index-and-assign — no formatting or math.
+  document
+    .querySelectorAll<HTMLElement>("[data-pricing-slider]")
+    .forEach((slider) => {
+      const input = slider.querySelector<HTMLInputElement>(
+        "[data-slider-input]",
+      );
+      const readout = slider.querySelector<HTMLElement>("[data-slider-readout]");
+      const stops = slider.querySelectorAll<HTMLElement>("[data-slider-stop]");
+      const price = slider
+        .closest("article")
+        ?.querySelector<HTMLElement>("[data-slider-price]");
+      const tiers: SliderTierView[] = JSON.parse(slider.dataset.tiers ?? "[]");
+      if (!input || tiers.length === 0) return;
+
+      const apply = () => {
+        const idx = Number(input.value);
+        const tier = tiers[idx];
+        if (!tier) return;
+        input.style.setProperty("--range-fill", tier.fill);
+        input.setAttribute("aria-valuetext", tier.valueText);
+        if (price) price.textContent = tier.price;
+        if (readout) readout.textContent = tier.readout;
+        stops.forEach((stop, stopIdx) => {
+          const active = stopIdx === idx;
+          stop.classList.toggle("font-bold", active);
+          stop.classList.toggle("text-zenml-500", active);
+          stop.classList.toggle("text-gray-400", !active);
+        });
+      };
+
+      input.addEventListener("input", apply);
+      apply();
+    });
+
+  // Scroll-reveal — one-shot IntersectionObserver per section.
+  document
+    .querySelectorAll<HTMLElement>(".scroll-reveal-section")
+    .forEach((section) => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            section.classList.add("in-view");
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.1 },
+      );
+      observer.observe(section);
+    });
+</script>
