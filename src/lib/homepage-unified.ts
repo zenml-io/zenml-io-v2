@@ -291,7 +291,7 @@ export const HOMEPAGE_UNIFIED_PRICING_TEASER = {
 
 export const HOMEPAGE_UNIFIED_FINAL_CTA = {
   headline: "Pick your workspace and start shipping.",
-  body: "Open source for as long as you want. Managed when you're ready.",
+  body: "Open source at the core, with a managed control plane when you need it.",
   primaryCta: { label: "Book a demo", href: "/book-your-demo" },
   secondaryCta: { label: "Read Docs", href: "/docs" },
 } as const;

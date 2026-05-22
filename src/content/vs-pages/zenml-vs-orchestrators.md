@@ -64,7 +64,7 @@ blocks:
   - kind: cta02
     headline: "Unify Your ML and LLM Workflows"
     bullets:
-      - "Free, powerful MLOps open source foundation"
+      - "Open-source foundation, no vendor lock-in"
       - "Works with any infrastructure"
       - "Upgrade to managed Pro features"
     primaryCta:

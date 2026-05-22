@@ -45,7 +45,7 @@ export const OSS_VS_PRO_HERO: HeroData = {
 export const OSS_VS_PRO_FEATURE_GRID = {
   eyebrow: "ZenML Open Source vs Pro",
   headline: "ZenML Pro is Open Source and More",
-  body: "ZenML Pro extends the beloved open-source foundation with enterprise features designed for collaboration, governance, and scale. Start with OSS, upgrade when ready: your pipelines keep running exactly as they are.",
+  body: "ZenML Pro extends the open-source foundation with enterprise features for collaboration, governance, and scale. The same pipelines keep running exactly as they are — moving to Pro takes no code rewrites.",
   items: [
     {
       title: "Managed control plane",

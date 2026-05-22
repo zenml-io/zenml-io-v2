@@ -240,9 +240,9 @@ export async function buildBlogSearchIndex(
 // ---------------------------------------------------------------------------
 
 export const BLOG_SIDEBAR_CTA = {
-  headline: "Get started with ZenML today",
+  headline: "See ZenML in action",
   bullets: [
-    "Begin with open source tools",
+    "Open-source foundation, no vendor lock-in",
     "Works with any infrastructure",
     "Secure, metadata-only tracking",
   ],

@@ -368,7 +368,7 @@ export const PRO_FAQ: FaqData = {
 export const PRO_FINAL_CTA = {
   headline: "Unify Your ML and LLM Workflows",
   bullets: [
-    "Free, powerful MLOps open source foundation",
+    "Open-source foundation, no vendor lock-in",
     "Works with any infrastructure",
     "Upgrade to managed Pro features",
   ],

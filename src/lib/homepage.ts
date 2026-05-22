@@ -230,7 +230,7 @@ export const VALUE_PROPS: ValueProp[] = [
 export const VALUE_PROPS_CTA = {
   headline: "Pick your workspace and start shipping.",
   subtext:
-    "Open source for as long as you want. ML pipelines, agent flows, or both — same plans, same control plane.",
+    "Open source at the core. ML pipelines, agent flows, or both — same plans, same control plane.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",
@@ -466,7 +466,7 @@ export const FAQ = {
 export const FINAL_CTA = {
   headline: "Unify Your ML and LLM Workflows",
   bullets: [
-    "Free, powerful MLOps open source foundation",
+    "Open-source foundation, no vendor lock-in",
     "Works with any infrastructure",
     "Upgrade to managed Pro features",
   ],

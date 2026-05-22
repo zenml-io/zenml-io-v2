@@ -244,7 +244,7 @@ export const DEPLOYMENTS_TABS = {
 export const DEPLOYMENTS_FINAL_CTA = {
   headline: "Unify Your ML and LLM Workflows",
   bullets: [
-    "Free, powerful MLOps open source foundation",
+    "Open-source foundation, no vendor lock-in",
     "Works with any infrastructure",
     "Upgrade to managed Pro features",
   ],

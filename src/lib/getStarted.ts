@@ -25,7 +25,7 @@ export const GET_STARTED_SEO = {
 export const GET_STARTED_HERO = {
   eyebrow: "Open Source",
   headline: "Get Started with ZenML",
-  deck: "Build production-ready ML pipelines with the open-source framework trusted by thousands of ML engineers worldwide.",
+  deck: "Build production-ready ML pipelines on the open-source framework. Set it up yourself with the docs, or book a demo for a guided walkthrough.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",
