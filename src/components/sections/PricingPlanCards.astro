@@ -30,7 +30,7 @@ const checkIcon =
           return (
             <article
               class:list={[
-                "scroll-slide-top relative flex flex-col rounded-md bg-white p-8",
+                "scroll-slide-top relative flex flex-col rounded-md bg-white p-6",
                 planIdx === 1 && "stagger-1",
                 planIdx === 2 && "stagger-2",
                 plan.highlighted
@@ -39,28 +39,28 @@ const checkIcon =
               ]}
             >
               {plan.topBadge && (
-                <span class="absolute -top-3 left-8 rounded-full bg-zenml-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
+                <span class="absolute -top-3 left-6 rounded-full bg-zenml-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
                   {plan.topBadge}
                 </span>
               )}
 
               {/* Header */}
               <div class="flex items-center gap-2">
-                <h3 class="text-sm font-bold uppercase tracking-wider text-zenml-500">
+                <h2 class="text-sm font-bold uppercase tracking-wider text-zenml-500">
                   {plan.eyebrow}
-                </h3>
+                </h2>
                 {plan.pill && (
                   <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
                     {plan.pill}
                   </span>
                 )}
               </div>
-              <p class="mt-1.5 text-sm text-gray-500">{plan.subtitle}</p>
+              <p class="mt-1 text-sm text-gray-500">{plan.subtitle}</p>
 
               {/* Price */}
-              <div class="mt-5 flex flex-wrap items-baseline gap-x-1.5">
+              <div class="mt-4 flex flex-wrap items-baseline gap-x-1.5">
                 <span
-                  class="text-4xl font-bold leading-none tracking-tight text-gray-900"
+                  class="text-3xl font-bold leading-none tracking-tight text-gray-900"
                   data-slider-price={slider ? "" : undefined}
                 >
                   {plan.price}
@@ -73,7 +73,7 @@ const checkIcon =
               {/* Slider (Scale) or static limits line */}
               {slider && sliderView && defaultView ? (
                 <div
-                  class="mt-6"
+                  class="mt-5"
                   data-pricing-slider
                   data-tiers={JSON.stringify(sliderView)}
                 >
@@ -87,7 +87,7 @@ const checkIcon =
                         class={
                           tierIdx === slider.defaultIndex
                             ? "font-bold text-zenml-500"
-                            : "text-gray-400"
+                            : "text-gray-500"
                         }
                       >
                         {tier.executions}
@@ -107,7 +107,7 @@ const checkIcon =
                     aria-valuetext={defaultView.valueText}
                   />
                   <p
-                    class="mt-4 text-center text-sm font-semibold text-zenml-500"
+                    class="mt-3 text-center text-sm font-semibold text-zenml-500"
                     data-slider-readout
                   >
                     {defaultView.readout}
@@ -118,7 +118,7 @@ const checkIcon =
               )}
 
               {/* CTA */}
-              <div class="mt-6">
+              <div class="mt-5">
                 <Button
                   href={plan.cta.href}
                   variant={plan.ctaVariant ?? "primary"}
@@ -142,11 +142,11 @@ const checkIcon =
               </a>
 
               {/* Includes */}
-              <hr class="my-6 border-gray-200" />
+              <hr class="my-5 border-gray-200" />
               <p class="text-sm font-semibold text-gray-900">
                 {plan.includesLabel}
               </p>
-              <ul class="mt-4 space-y-3">
+              <ul class="mt-3.5 space-y-2.5">
                 {plan.features.map((feature) => (
                   <li class="flex items-start gap-2.5 text-sm text-gray-600">
                     <span
@@ -290,7 +290,7 @@ const checkIcon =
           const active = stopIdx === idx;
           stop.classList.toggle("font-bold", active);
           stop.classList.toggle("text-zenml-500", active);
-          stop.classList.toggle("text-gray-400", !active);
+          stop.classList.toggle("text-gray-500", !active);
         });
       };
 

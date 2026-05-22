@@ -42,7 +42,7 @@ export const PRICING_HERO = {
  */
 export const PRICING_PRO_INCLUSIONS = {
   eyebrow: "What's included in Pro",
-  headline: "Two workspaces, one bill.",
+  headline: "Two products, one plan.",
   deck: "Switch SDKs without switching tools, billing, or governance. ZenML for reproducible ML. Kitaru for durable AI agents. Same control plane underneath.",
   cards: [
     {
