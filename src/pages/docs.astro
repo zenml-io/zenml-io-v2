@@ -2,12 +2,16 @@
 /**
  * /docs — Documentation hub landing page.
  *
- * Cross-product chooser routing visitors to the correct product docs:
+ * Direction A — "Editorial Diptych": a two-product chooser that routes
+ * visitors to the right documentation:
  *   - ZenML Docs  → https://docs.zenml.io
  *   - Kitaru Docs → https://kitaru.ai/docs
  *
- * Surface: "unified" (cross-product page — see CLAUDE.md analytics taxonomy)
- * Modeled on docs.astral.sh: minimal, editorial, zero clutter.
+ * Surface: "unified" (cross-product page — see CLAUDE.md analytics taxonomy).
+ * Design ported from Paper ("Editorial Diptych"), refined + /i-audit passed.
+ *
+ * Every external URL below is one the site already links to elsewhere
+ * (footer.ts / nav / content) — no invented deep links.
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
 
@@ -17,149 +21,402 @@ const SEO = {
     "Documentation for ZenML and Kitaru. Build production ML workflows or durable agent runtimes — both under ZenML Pro.",
 };
 
-const CARDS = [
+/** The two product cards.
+ *  ZenML uses brand tokens (zenml-*). Kitaru orange has no design token on a
+ *  data-app="zenml" surface (Kitaru tokens are scoped to [data-app="kitaru"]),
+ *  so its contained accent uses literal hex by necessity — kept as literal
+ *  strings so Tailwind's scanner picks them up. Each product's accent stays
+ *  contained to its own card (no cross-brand gradient). */
+const PRODUCTS = [
   {
-    title: "ZenML Docs",
+    key: "zenml",
+    label: "ML workspace",
+    title: "ZenML docs",
     description:
-      "Orchestrate ML workflows across any stack — from local experiments to production pipelines.",
+      "Build and run ML workflows across any stack — from a local experiment to a production pipeline.",
     href: "https://docs.zenml.io",
-    label: "ZenML · ML workspace",
     cta: "Open ZenML docs",
     analytics: "DocsHub:ZenML",
+    chipClass: "bg-zenml-100",
+    markClass: "text-zenml-600",
+    rowHoverClass: "hover:bg-zenml-50",
+    rowLabelHoverClass: "group-hover/row:text-zenml-700",
+    rowArrowHoverClass: "group-hover/row:text-zenml-500",
+    ctaClass: "bg-zenml-500 hover:bg-zenml-600",
+    links: [
+      {
+        label: "Getting started",
+        href: "https://docs.zenml.io/getting-started/introduction",
+      },
+      {
+        label: "Core concepts",
+        href: "https://docs.zenml.io/getting-started/core-concepts",
+      },
+      {
+        label: "Steps & pipelines",
+        href: "https://docs.zenml.io/concepts/steps_and_pipelines",
+      },
+      {
+        label: "Stack components",
+        href: "https://docs.zenml.io/concepts/stack_components",
+      },
+    ],
   },
   {
-    title: "Kitaru Docs",
+    key: "kitaru",
+    label: "Agent workspace",
+    title: "Kitaru docs",
     description:
       "Build agents that resume where they left off — durable execution for long-running, autonomous workflows.",
     href: "https://kitaru.ai/docs",
-    label: "Kitaru · Agent workspace",
     cta: "Open Kitaru docs",
     analytics: "DocsHub:Kitaru",
+    chipClass: "bg-[#fbeee3]",
+    markClass: "text-[#f17829]",
+    rowHoverClass: "hover:bg-[#fbeee3]",
+    rowLabelHoverClass: "group-hover/row:text-[#9a460a]",
+    rowArrowHoverClass: "group-hover/row:text-[#c2570e]",
+    // Darker than the brand orange so white text clears WCAG AA (5.0:1).
+    ctaClass: "bg-[#b5530b] hover:bg-[#9a460a]",
+    links: [
+      {
+        label: "Quickstart",
+        href: "https://kitaru.ai/docs/getting-started/quickstart",
+      },
+      { label: "Flows", href: "https://kitaru.ai/docs/concepts/flows" },
+      {
+        label: "Checkpoints",
+        href: "https://kitaru.ai/docs/concepts/checkpoints",
+      },
+      {
+        label: "Replay & overrides",
+        href: "https://kitaru.ai/docs/guides/replay-and-overrides",
+      },
+    ],
+  },
+] as const;
+
+/** Universal resources strip. `/slack` is a 301 redirect (public/_redirects);
+ *  `/blog` is an internal route; GitHub and the changelog are external. */
+const RESOURCES = [
+  {
+    label: "GitHub",
+    description: "Source, issues, and releases",
+    href: "https://github.com/zenml-io",
+    external: true,
+    iconPath:
+      "M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22",
+  },
+  {
+    label: "Community",
+    description: "Get help on Slack",
+    href: "/slack",
+    external: false,
+    iconPath:
+      "M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.5 8.5 0 0 1-.9-3.8 8.38 8.38 0 0 1 8.5-8.5 8.5 8.5 0 0 1 8.5 8.5z",
+  },
+  {
+    label: "Changelog",
+    description: "What shipped recently",
+    href: "https://docs.zenml.io/changelog",
+    external: true,
+    iconPath: "M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01",
+  },
+  {
+    label: "Blog",
+    description: "Engineering deep dives",
+    href: "/blog",
+    external: false,
+    iconPath:
+      "M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z",
   },
 ] as const;
 ---
 
-<BaseLayout
-  title={SEO.title}
-  description={SEO.description}
-  surface="unified"
->
+<BaseLayout title={SEO.title} description={SEO.description} surface="unified">
   <main class="bg-linear-to-b from-zenml-50 to-white">
-    <section class="docs-hub scroll-reveal-section mx-auto max-w-6xl px-4 pt-16 pb-20 sm:px-6 sm:pt-24 sm:pb-28 lg:px-8">
+    <div class="docs-hub scroll-reveal-section">
 
       {/* ── Hero ── */}
-      <header class="scroll-slide-top mx-auto max-w-2xl text-center">
-        <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
-          Documentation
-        </p>
-        <h1 class="mt-3 text-balance text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
-          Everything you need to build with ZenML Pro
-        </h1>
-        <p class="mt-4 text-pretty text-lg leading-relaxed text-gray-600">
-          Guides, references, and examples for both products. Pick your starting
-          point below.
-        </p>
+      <header class="relative overflow-hidden">
+        <div
+          class="docs-hero-dots pointer-events-none absolute inset-0"
+          aria-hidden="true"
+        >
+        </div>
+        <div
+          class="relative mx-auto max-w-2xl px-4 pt-16 pb-12 text-center sm:px-6 sm:pt-24 sm:pb-16 lg:px-8"
+        >
+          <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
+            Documentation
+          </p>
+          <h1
+            class="mt-3 text-balance text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl"
+          >
+            Documentation for ZenML and Kitaru
+          </h1>
+          <p
+            class="mx-auto mt-4 max-w-xl text-pretty text-lg leading-relaxed text-gray-600"
+          >
+            Two products under one subscription. Pick the workspace you're
+            building in — guides, references, and examples for each.
+          </p>
+        </div>
       </header>
 
-      {/* ── Product cards ── */}
-      <div class="scroll-fade-in stagger-1 mt-12 grid gap-6 sm:mt-16 lg:grid-cols-2 lg:gap-8">
-        {CARDS.map((card) => (
-          <a
-            href={card.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group flex flex-col rounded-md border border-gray-200 bg-white p-8 transition-shadow hover:shadow-md sm:p-10"
-            data-analytics={card.analytics}
+      {/* ── Product diptych ── */}
+      <section
+        class="scroll-fade-in mx-auto max-w-6xl px-4 sm:px-6 lg:px-8"
+        aria-label="Choose your documentation"
+      >
+        <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
+          {
+            PRODUCTS.map((product) => (
+              <article class="flex flex-col rounded-md border border-gray-200 bg-white p-6 transition-shadow duration-200 hover:shadow-md sm:p-8">
+                {/* Header — logo chip + title */}
+                <div class="flex items-center gap-3.5">
+                  <div
+                    class:list={[
+                      "flex h-12 w-12 shrink-0 items-center justify-center rounded-md",
+                      product.chipClass,
+                    ]}
+                  >
+                    {product.key === "zenml" ? (
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class:list={["h-6 w-6", product.markClass]}
+                      >
+                        <path d="M21.5 15.13C21.935 13.806 22.088 12.405 21.951 11.017C21.814 9.629 21.389 8.285 20.703 7.071L13.824 6.897V6.811L20.446 6.643C19.646 5.384 18.576 4.319 17.314 3.524L12 3.391V3.305L16.723 3.186C14.787 2.149 12.565 1.777 10.397 2.129C8.23 2.481 6.239 3.537 4.732 5.134L10.675 5.284V5.37L4.376 5.528C2.839 7.334 1.997 9.629 2 12C2 12.108 2 12.211 2.005 12.317C2.005 12.324 2.005 12.331 2.005 12.338L4.379 12.398V12.484L2.013 12.544C2.014 12.551 2.014 12.558 2.013 12.565C2.1 14.126 2.553 15.644 3.336 16.997L7.292 17.097V17.183L3.505 17.279C4.434 18.77 5.738 19.992 7.287 20.821C7.41 20.888 7.535 20.952 7.661 21.013V12.706H8.621C8.657 12.706 8.694 12.713 8.728 12.727C8.762 12.741 8.793 12.762 8.819 12.788C8.845 12.814 8.866 12.845 8.88 12.879C8.894 12.913 8.902 12.95 8.902 12.987V21.511C10.916 22.163 13.084 22.163 15.098 21.511V12.987C15.098 12.95 15.106 12.913 15.12 12.879C15.134 12.845 15.155 12.814 15.181 12.788C15.207 12.762 15.238 12.741 15.272 12.727C15.306 12.713 15.342 12.706 15.379 12.706H16.338V21.014C16.463 20.953 16.587 20.89 16.709 20.825C17.687 20.302 18.571 19.621 19.325 18.808L16.842 18.745V18.659L19.521 18.591C20.344 17.655 20.983 16.573 21.407 15.401L17.831 15.31V15.224L21.5 15.13ZM17.725 12.442H6.275L6.068 11.615H7.661V10.729H7.987C8.103 10.729 8.218 10.752 8.325 10.797C8.433 10.841 8.53 10.906 8.612 10.989C8.694 11.071 8.759 11.168 8.804 11.276C8.848 11.383 8.871 11.498 8.871 11.614H11.38V10.434H5.301C5.183 9.49 4.622 8.752 4.622 8.752C6.275 9.135 12 9.165 12 9.165C12 9.165 17.725 9.135 19.377 8.752C19.377 8.752 18.817 9.49 18.698 10.434H12.62V11.615H15.129C15.129 11.498 15.152 11.383 15.197 11.276C15.241 11.168 15.306 11.071 15.389 10.989C15.471 10.906 15.568 10.841 15.676 10.797C15.783 10.752 15.898 10.73 16.015 10.73H16.339V11.615H17.933L17.725 12.442Z" />
+                      </svg>
+                    ) : (
+                      <svg
+                        viewBox="0 0 48 48"
+                        fill="currentColor"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class:list={["h-6 w-6", product.markClass]}
+                      >
+                        <path d="M23.759 0C10.638 0 0.001 10.637 0.001 23.758C0.001 36.879 10.638 47.515 23.759 47.515C36.88 47.514 47.516 36.879 47.516 23.758C47.516 10.637 36.88 0 23.759 0ZM23.762 6.788C33.134 6.788 40.731 14.386 40.731 23.758C40.731 33.13 33.133 40.726 23.762 40.727C14.39 40.727 6.792 33.13 6.792 23.758C6.792 14.386 14.39 6.788 23.762 6.788Z" />
+                      </svg>
+                    )}
+                  </div>
+                  <div class="flex flex-col gap-0.5">
+                    <span class="font-mono text-xs font-semibold uppercase tracking-wider text-gray-500">
+                      {product.label}
+                    </span>
+                    <h2 class="text-xl font-bold tracking-tight text-gray-900">
+                      {product.title}
+                    </h2>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <p class="mt-5 text-pretty text-base leading-relaxed text-gray-600">
+                  {product.description}
+                </p>
+
+                <div class="mt-6 h-px w-full bg-gray-200" />
+
+                {/* Quick links */}
+                <ul role="list" class="mt-2 flex flex-col">
+                  {product.links.map((link) => (
+                    <li>
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class:list={[
+                          "group/row -mx-2.5 flex items-center justify-between gap-3 rounded-md px-2.5 py-3 outline-none transition-colors focus-visible:ring-2 focus-visible:ring-zenml-500 focus-visible:ring-offset-2",
+                          product.rowHoverClass,
+                        ]}
+                      >
+                        <span
+                          class:list={[
+                            "text-sm font-semibold text-gray-900 transition-colors",
+                            product.rowLabelHoverClass,
+                          ]}
+                        >
+                          {link.label}
+                        </span>
+                        <span class="sr-only"> (opens in new tab)</span>
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          aria-hidden="true"
+                          class:list={[
+                            "h-4 w-4 shrink-0 text-gray-400 transition-colors",
+                            product.rowArrowHoverClass,
+                          ]}
+                        >
+                          <path d="M7 17 17 7M7 7h10v10" />
+                        </svg>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Primary CTA */}
+                <a
+                  href={product.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-analytics={product.analytics}
+                  class:list={[
+                    "mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md px-5 py-3.5 text-sm font-semibold text-white outline-none transition-colors focus-visible:ring-2 focus-visible:ring-zenml-500 focus-visible:ring-offset-2",
+                    product.ctaClass,
+                  ]}
+                >
+                  {product.cta}
+                  <span class="sr-only"> (opens in new tab)</span>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                    class="h-4 w-4"
+                  >
+                    <path d="M7 17 17 7M7 7h10v10" />
+                  </svg>
+                </a>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      {/* ── Resources strip ── */}
+      <section
+        class="scroll-fade-in stagger-1 mx-auto mt-16 max-w-6xl px-4 sm:mt-20 sm:px-6 lg:px-8"
+      >
+        <div class="border-t border-gray-200 pt-10">
+          <h2 class="sr-only">More resources</h2>
+          <ul
+            role="list"
+            class="grid grid-cols-2 gap-x-6 gap-y-8 sm:gap-x-8 lg:grid-cols-4"
           >
-            <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
-              {card.label}
-            </p>
-            <h2 class="mt-2 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-              {card.title}
-            </h2>
-            <p class="mt-4 text-pretty text-base leading-relaxed text-gray-600">
-              {card.description}
-            </p>
-            <span class="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-zenml-600">
-              {card.cta}
-              <svg
-                aria-hidden="true"
-                class="transition-transform duration-200 ease-out group-hover:translate-x-1"
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M7 7h10v10" />
-                <path d="M7 17 17 7" />
-              </svg>
-            </span>
-          </a>
-        ))}
-      </div>
+            {
+              RESOURCES.map((resource) => (
+                <li>
+                  <a
+                    href={resource.href}
+                    target={resource.external ? "_blank" : undefined}
+                    rel={resource.external ? "noopener noreferrer" : undefined}
+                    class="group/res -m-2.5 flex flex-col gap-2 rounded-md p-2.5 outline-none transition-colors duration-200 hover:bg-zenml-50 focus-visible:ring-2 focus-visible:ring-zenml-500 focus-visible:ring-offset-2"
+                  >
+                    <div class="flex items-center gap-2.5">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                        class="h-5 w-5 shrink-0 text-zenml-500 transition-colors group-hover/res:text-zenml-600"
+                      >
+                        <path d={resource.iconPath} />
+                      </svg>
+                      <span class="text-[15px] font-bold text-gray-900 transition-colors group-hover/res:text-zenml-700">
+                        {resource.label}
+                      </span>
+                    </div>
+                    <p class="text-[13px] leading-snug text-gray-600">
+                      {resource.description}
+                    </p>
+                    {resource.external && (
+                      <span class="sr-only"> (opens in new tab)</span>
+                    )}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </section>
 
       {/* ── Footer note ── */}
-      <p class="scroll-fade-in stagger-2 mt-12 text-center text-sm text-gray-500">
-        Both products ship under{" "}
-        <a href="/pro" class="font-semibold text-zenml-600 hover:text-zenml-700">
-          ZenML Pro
-        </a>
-        . One subscription, two workspaces.
-      </p>
+      <div
+        class="scroll-fade-in stagger-2 mx-auto max-w-6xl px-4 pt-14 pb-20 text-center sm:px-6 sm:pt-16 sm:pb-28 lg:px-8"
+      >
+        <p class="text-sm text-gray-500">
+          Both products ship under{" "}
+          <a
+            href="/pro"
+            class="font-semibold text-zenml-600 transition-colors hover:text-zenml-700"
+          >
+            ZenML Pro
+          </a>
+          {" "}— one subscription, two workspaces.
+        </p>
+      </div>
 
-    </section>
+    </div>
   </main>
 </BaseLayout>
 
 <style>
-  /* ── Scroll-reveal animations (canonical site pattern — see FeatureTabs.astro) ── */
-  .scroll-slide-top {
-    opacity: 0;
-    transform: translateY(-30px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  /* ── Hero dot-grid accent — faint purple texture, fades before the cards ── */
+  .docs-hero-dots {
+    background-image: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--color-zenml-500) 13%, transparent) 1px,
+      transparent 1.6px
+    );
+    background-size: 22px 22px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 25%, transparent 92%);
+    mask-image: linear-gradient(to bottom, #000 25%, transparent 92%);
   }
 
+  /* ── Scroll-reveal (canonical site pattern — see FeatureTabs.astro).
+       The hero is above the fold, so it renders instantly (no reveal). ── */
   .scroll-fade-in {
     opacity: 0;
     transition: opacity 0.8s ease-out;
   }
 
-  .stagger-1 { transition-delay: 0.15s; }
-  .stagger-2 { transition-delay: 0.3s; }
+  .stagger-1 {
+    transition-delay: 0.15s;
+  }
+  .stagger-2 {
+    transition-delay: 0.3s;
+  }
 
-  .scroll-reveal-section.in-view .scroll-slide-top,
   .scroll-reveal-section.in-view .scroll-fade-in {
     opacity: 1;
-    transform: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .scroll-slide-top,
     .scroll-fade-in {
       opacity: 1;
-      transform: none;
       transition: none;
     }
   }
 </style>
 
 <script>
-  // One-shot IntersectionObserver — same pattern as FeatureTabs.astro
-  document.querySelectorAll<HTMLElement>(".scroll-reveal-section").forEach((section) => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          section.classList.add("in-view");
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 },
-    );
-    observer.observe(section);
-  });
+  // One-shot IntersectionObserver — same pattern as FeatureTabs.astro.
+  document
+    .querySelectorAll<HTMLElement>(".scroll-reveal-section")
+    .forEach((section) => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            section.classList.add("in-view");
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.1 },
+      );
+      observer.observe(section);
+    });
 </script>
