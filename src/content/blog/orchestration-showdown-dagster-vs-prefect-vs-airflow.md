@@ -8,7 +8,7 @@ webflow:
   exportedAt: "2026-02-11T13:30:32.135Z"
   source: "live"
   lastPublished: "2025-11-10T16:11:49.146Z"
-  lastUpdated: "2025-11-07T10:16:24.461Z"
+  lastUpdated: "2026-05-14T10:16:24.461Z"
   createdOn: "2024-08-30T14:08:34.351Z"
 author: "rishabh-sharma"
 category: "mlops"
@@ -33,11 +33,11 @@ Imagine you’re in the driver’s seat of a complex data pipeline, with multipl
 
 In this blog, we’ll explore three of the most prominent tools: Airflow, Dagster, and Prefect. Each tool offers its own set of powerful features designed to address different aspects of data orchestration, including continuous delivery and integration, open-source platform capabilities, and support for DevOps engineers and machine learning engineers alike. We’ll break down what makes each tool unique, compare its strengths, and help you determine which one might be the best fit for your needs, whether you're focusing on feature stores, model monitoring, or the entire deployment process.
 
-**Recently Updated (November 2025)**: This comprehensive orchestration comparison has been refreshed with the latest developments from 2025, including Airflow 3.0's release (April 2025), Dagster's GA Components framework (October 2025), and Prefect's enhanced serverless offerings. All comparisons, feature assessments, and use case recommendations now reflect current capabilities as of November 2025.
+Updated May 2026. The orchestration space did not stand still after Airflow 3.0 and Dagster Components went GA last year. Airflow 3.1 added Human-in-the-Loop operators, Airflow 3.2 added asset partitioning and multi-team deployments, Dagster moved FreshnessPolicy to GA and shifted Dagster+ Solo and Starter to pay-as-you-go pricing, and Prefect's April 2026 Cloud release closed long-standing enterprise gaps around audit and bulk operations. This refresh folds in those new releases, the State of Airflow 2026 survey data, and the agent-orchestration conversation that has become hard to ignore.
 
 ## Overview of Data Orchestration Tools
 
-Selecting the right data orchestration tool is critical to the success of any project that involves building a robust data infrastructure. The challenge lies in finding the tool that best aligns with your specific needs, whether it's for managing complex pipelines or handling model training jobs. The challenge lies in finding the tool that best aligns with your specific needs.
+Selecting the right data orchestration tool is critical to the success of any project that involves building a robust data infrastructure. The challenge lies in finding the tool that best aligns with your specific needs, whether it's for managing complex pipelines or handling model training jobs. 
 
 **Objective:**
 
@@ -81,7 +81,8 @@ With orchestration tools, you streamline your operations, reduce errors, and acc
 
 ### Features of Airflow
 
-<ol><li><strong>Dynamic Workflows</strong>: Airflow supports the creation of dynamic workflows through Directed Acyclic Graphs (DAGs), enabling users to define complex dependencies and task relationships, making it a better option for managing complex ML workflows and model training pipelines.</li><li><strong>Extensive Community Support</strong>: The Apache Software Foundation backs Airflow, fostering a vibrant community dedicated to enhancing the tool's capabilities through continuous development and innovation.</li><li><strong>Rich Operator Library:</strong> Airflow provides <a href="https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/operators.html">an extensive library</a> of pre-built operators, allowing you to easily interact with various systems and services, such as databases, cloud platforms, and APIs, making it versatile for different types of workflows.</li><li><strong>Scalability:</strong> Whether you're running workflows on a single server or across multiple nodes, Airflow’s design supports scaling up or down to meet your needs, with various executors like LocalExecutor, <a href="https://airflow.apache.org/docs/apache-airflow-providers-celery/stable/celery_executor.html">CeleryExecutor</a>, and <a href="https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/kubernetes_executor.html">KubernetesExecutor</a>.</li><li><strong>Comprehensive Logging and Alerting:</strong> Airflow includes built-in logging and alerting capabilities, allowing you to track task execution and receive notifications on task failures or successes, keeping you informed about your workflows' performance.</li></ol>
+<ol><li><strong>Dynamic Workflows</strong>: Airflow supports the creation of dynamic workflows through Directed Acyclic Graphs (DAGs), enabling users to define complex dependencies and task relationships, making it a better option for managing complex ML workflows and model training pipelines.</li><li><strong>Extensive Community Support</strong>: The Apache Software Foundation backs Airflow, fostering a vibrant community dedicated to enhancing the tool's capabilities through continuous development and innovation.</li><li><strong>Rich Operator Library:</strong> Airflow provides <a href="https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/operators.html">an extensive library</a> of pre-built operators, allowing you to easily interact with various systems and services, such as databases, cloud platforms, and APIs, making it versatile for different types of workflows.</li><li><strong>Scalability:</strong> Whether you're running workflows on a single server or across multiple nodes, Airflow’s design supports scaling up or down to meet your needs, with various executors like LocalExecutor, <a href="https://airflow.apache.org/docs/apache-airflow-providers-celery/stable/celery_executor.html">CeleryExecutor</a>, and <a href="https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/kubernetes_executor.html">KubernetesExecutor</a>.</li><li><strong>Comprehensive Logging and Alerting:</strong> Airflow includes built-in logging and alerting capabilities, allowing you to track task execution and receive notifications on task failures or successes, keeping you informed about your workflows' performance.</li><ol start="6"><li><strong>Human-in-the-Loop Operators (3.1)</strong>: Released September 2025. Four deferrable operators that pause a workflow for human approval, a branching choice, or a parameter input directly through the Airflow UI. This is the first time Airflow treats human-gated steps as a first-class primitive, and it is what makes it a credible orchestrator for approval-gated and agentic pipelines.</li><li><strong>Asset Partitioning (3.2)</strong>: Released April 2026. Downstream DAGs can now trigger on a specific slice of an asset instead of the whole asset, which is something Dagster users have had for a while. The asset-aware gap with Dagster narrows considerably here.</li><li><strong>Multi-Team Deployments (3.2)</strong>: One Airflow deployment can now isolate DAGs, connections, pools, and executors per team. A long-asked-for enterprise primitive that finally lands.</li><li><strong>Multi-Language Task SDK</strong>: The Go Task SDK is rolling out post-Airflow Summit 2025, with Java and R on the roadmap. Worth noting because the "Airflow is Python-only" framing in older comparisons (including earlier versions of this post) is on its way out.</li></ol>
+
 
 ### The Benefits of Airflow
 
@@ -95,7 +96,7 @@ And let’s not forget the convenience of [Airflow Providers](https://airflow.ap
 
 **Install Prerequisites**
 
-<ul><li>Ensure you have Python (3.8, 3.9, 3.10, 3.11, 3.12) installed.</li><li>Ensure Docker is installed with docker-compose.</li><li>Set up a virtual environment to isolate your Airflow installation:</li></ul>
+<ul><li>Ensure you have Python 3.10, 3.11, 3.12, 3.13, or 3.14 installed for Airflow 3.2.x. installed.</li><li>Ensure Docker is installed with docker-compose.</li><li>Set up a virtual environment to isolate your Airflow installation:</li></ul>
 
 ```
 python3 -m venv airflow_venv && source airflow_venv/bin/activate
@@ -189,7 +190,7 @@ We will explore each of these problems by analyzing how Dagster and Prefect, two
 
 ### Features of Dagster
 
-<ol><li><strong>Scalability</strong>: Dagster empowers users to scale their data workflows efficiently as their requirements evolve, making it a versatile choice for growing organizations needing to manage complex ML workflows.</li><li><strong>Developer Productivity</strong>: By focusing on enhancing developer productivity and debugging capabilities, Dagster streamlines the process of orchestrating complex data pipelines.</li><li><strong>Observability and Monitoring:</strong> Dagster provides built-in tools for observability, giving you detailed insights into the execution of your workflows. You can monitor pipeline runs, view logs, and track the status of individual components, ensuring greater transparency and control, especially for model training jobs.</li><li><strong>Asset-Centric Approach:</strong> Adopts an asset-centric model, where assets are first-class citizens. This allows you to define and track data assets directly, making it easier to manage and monitor the flow of data throughout your pipelines.</li><li><strong>Modular Architecture</strong>: The highly modular design promotes reusability and flexibility. You can easily create reusable pipeline components, making it simpler to adapt and scale your workflows. While Prefect and Airflow support modular workflows, Dagster's focus on modularity makes it particularly powerful for complex data engineering tasks.</li></ol>
+<ol><li><strong>Scalability</strong>: Dagster empowers users to scale their data workflows efficiently as their requirements evolve, making it a versatile choice for growing organizations needing to manage complex ML workflows.</li><li><strong>Developer Productivity</strong>: By focusing on enhancing developer productivity and debugging capabilities, Dagster streamlines the process of orchestrating complex data pipelines.</li><li><strong>Observability and Monitoring:</strong> Dagster provides built-in tools for observability, giving you detailed insights into the execution of your workflows. You can monitor pipeline runs, view logs, and track the status of individual components, ensuring greater transparency and control, especially for model training jobs.</li><li><strong>Asset-Centric Approach:</strong> Adopts an asset-centric model, where assets are first-class citizens. This allows you to define and track data assets directly, making it easier to manage and monitor the flow of data throughout your pipelines.</li><li><strong>Modular Architecture</strong>: The highly modular design promotes reusability and flexibility. You can easily create reusable pipeline components, making it simpler to adapt and scale your workflows. While Prefect and Airflow support modular workflows, Dagster's focus on modularity makes it particularly powerful for complex data engineering tasks.</li></ol><ol start="6"><li><strong>dg CLI and the Components Library</strong>: Components went GA in October 2025, and Dagster has shipped 20+ components since then. The current set covers dbt Cloud, Spark, Azure Blob and ADLS2, BigQuery, GCS, Dataproc, Databricks, Tableau, Looker, Census, and Polytomic. The `dg api` surface now supports programmatic inspection of assets, runs, jobs, and schedules, which means declarative YAML is a real authoring path, not an experiment.</li><li><strong>FreshnessPolicy GA</strong>: The FreshnessPolicy API moved from Preview to GA, and the FreshnessDaemon runs by default. This is Dagster's answer to SLA tracking, and it converges with Airflow 3.1's deadline alerts on the same primitive.</li><li><strong>Workload Identity Federation</strong>: New `azure_wif`, `gcp_wif`, and `aws_wif` auth options for the Postgres backend remove the need to ship long-lived service-account keys. A small thing, but it matters if your security team has opinions.</li></ol>
 
 ### The Benefits of Dagster
 
@@ -199,7 +200,7 @@ With Dagster, you have the flexibility and control to navigate the complex world
 
 Install Prerequisites:
 
-<ul><li>Ensure you have Python (3.8 through 3.12) installed.</li></ul>
+<ul><li>Ensure you have Python 3.10 or higher installed. Dagster currently recommends Python 3.13. installed.</li></ul>
 
 ```
 python --version && pip --version
@@ -208,7 +209,7 @@ python --version && pip --version
 Installing Dagster into an existing Python environment
 
 ```
-pip install dagster dagit
+pip install dagster dagster-webserver dagster-dg-cli
 ```
 
 ### Getting Started with Dagster on Your Local Machine
@@ -277,7 +278,8 @@ Dagster integrates with many popular tools, but there’s always the possibility
 
 ### Features of Prefect
 
-<ul><li><strong>Cloud-Native Workflows</strong>: Prefect is designed to seamlessly integrate with cloud platforms like <a href="https://aws.amazon.com/free/?gclid=CjwKCAjwuMC2BhA7EiwAmJKRrAFycrWSAllVp2ynT5DKimiXROlGnr_MHz1Z8CmX2KG2-OIgBJM2VRoC1twQAvD_BwE&amp;trk=14a4002d-4936-4343-8211-b5a150ca592b&amp;sc_channel=ps&amp;ef_id=CjwKCAjwuMC2BhA7EiwAmJKRrAFycrWSAllVp2ynT5DKimiXROlGnr_MHz1Z8CmX2KG2-OIgBJM2VRoC1twQAvD_BwE:G:s&amp;s_kwcid=AL!4422!3!453325184782!e!!g!!aws!10712784856!111477279771&amp;all-free-tier.sort-by=item.additionalFields.SortRank&amp;all-free-tier.sort-order=asc&amp;awsf.Free%20Tier%20Types=*all&amp;awsf.Free%20Tier%20Categories=*all">AWS</a> and <a href="https://cloud.google.com/">Google Cloud</a>, offering scalability and performance optimization tailored for modern cloud environments, especially for deploying models in production.</li><li><strong>Dynamic Workflow Management</strong>: Prefect excels in handling dynamic workflows with changing requirements, providing users with a lightweight yet powerful solution for orchestrating their data processes.</li><li><strong>Powerful API and Programmatic Control:</strong> Prefect offers a robust API that lets you programmatically control executions, interact with the scheduler, and manage workflows, providing greater automation and control over your data pipelines.</li><li><strong>Flexible Scheduling:</strong> Prefect allows you to schedule workflows with ease, supporting both time-based schedules and event-driven triggers. This flexibility ensures that your workflows can run exactly when needed, whether on a fixed schedule or in response to specific events.</li></ul>
+<ul><li><strong>Cloud-Native Workflows</strong>: Prefect is designed to seamlessly integrate with cloud platforms like <a href="https://aws.amazon.com/free/?gclid=CjwKCAjwuMC2BhA7EiwAmJKRrAFycrWSAllVp2ynT5DKimiXROlGnr_MHz1Z8CmX2KG2-OIgBJM2VRoC1twQAvD_BwE&amp;trk=14a4002d-4936-4343-8211-b5a150ca592b&amp;sc_channel=ps&amp;ef_id=CjwKCAjwuMC2BhA7EiwAmJKRrAFycrWSAllVp2ynT5DKimiXROlGnr_MHz1Z8CmX2KG2-OIgBJM2VRoC1twQAvD_BwE:G:s&amp;s_kwcid=AL!4422!3!453325184782!e!!g!!aws!10712784856!111477279771&amp;all-free-tier.sort-by=item.additionalFields.SortRank&amp;all-free-tier.sort-order=asc&amp;awsf.Free%20Tier%20Types=*all&amp;awsf.Free%20Tier%20Categories=*all">AWS</a> and <a href="https://cloud.google.com/">Google Cloud</a>, offering scalability and performance optimization tailored for modern cloud environments, especially for deploying models in production.</li><li><strong>Dynamic Workflow Management</strong>: Prefect excels in handling dynamic workflows with changing requirements, providing users with a lightweight yet powerful solution for orchestrating their data processes.</li><li><strong>Powerful API and Programmatic Control:</strong> Prefect offers a robust API that lets you programmatically control executions, interact with the scheduler, and manage workflows, providing greater automation and control over your data pipelines.</li><li><strong>Flexible Scheduling:</strong> Prefect allows you to schedule workflows with ease, supporting both time-based schedules and event-driven triggers. This flexibility ensures that your workflows can run exactly when needed, whether on a fixed schedule or in response to specific events.</li></ul><ul><li><strong>Cloud Audit Trail and Bulk Operations</strong>: The April 2026 quarterly release added full audit-trail tracking for who created, updated, or cancelled flows, deployments, work pools, queues, and block documents. It also added bulk-delete across flow runs, deployments, and flows. Unglamorous, but exactly the kind of thing enterprise teams kept asking for.</li><li><strong>Real-Time Websockets</strong>: The same release replaced UI polling with a websocket data layer. Flow-run state changes in the UI feel immediate now instead of a few seconds late.</li><li><strong>Marvin 3.0 as a First-Party Agent Framework</strong>: In late 2025, Prefect consolidated its ControlFlow project into Marvin 3.0 and swapped LangChain for Pydantic AI as the LLM backbone. Marvin is now Prefect's agentic framework, sitting on top of Prefect 3.0's events and automations. It makes Prefect the only one of the three orchestrators with a first-party AI agent layer.</li></ul>
+
 
 ### The Benefits of Prefect
 
@@ -302,27 +304,28 @@ If you prefer to run your flow locally, follow these steps:
 <ul><li>Create Your Prefect Flow</li><li>Here’s an example flow that maps a task over a list of inputs to run them concurrently:</li></ul>
 
 ```
-from prefect import flow, task
+from prefect import task, Flow
 
 @task
-def add_42(x) -> int:
-    print(result := x + 42)
-    return result
+def fetch_data():
+    return requests.get('https://api.example.com/data').json()
 
-@flow(log_prints=True)
-def my_flow() -> tuple[list[int], list[int]]:
-    some_futures = add_42.map([1, 2, 3])
-    some_states = add_42.map([4, None, 6], return_state=True)
+@task
+def process_data(data):
+    return [item['value'] for item in data]
 
-    some_results = [future.result() for future in some_futures]
-    some_more_results = [
-        state.result() for state in some_states if state.is_completed()
-    ]
+@task
+def store_data(processed_data):
+    with open('data.csv', 'w') as f:
+        for item in processed_data:
+            f.write(f"{item}\n")
 
-    return some_results, some_more_results
+with Flow("Simple Data Pipeline") as flow:
+    data = fetch_data()
+    processed = process_data(data)
+    store_data(processed)
 
-if __name__ == "__main__":
-    assert my_flow() == ([43, 44, 45], [46, 48])
+flow.run()
   
 ```
 
@@ -336,12 +339,12 @@ python your_script_name.py
 
 <ul><li>The flow will execute, and you’ll see the output directly in your terminal.</li></ul>
 
-**Explore Prefect Orion UI**
+**Explore the Prefect UI**
 
 <ul><li>For a more interactive experience, you can use the Prefect Orion UI to monitor and manage your flows. Start the Prefect Orion server:</li></ul>
 
 ```
-prefect orion start
+prefect server start
 ```
 
 ### Access the Prefect Web UI
@@ -362,7 +365,7 @@ While Prefect offers many modern conveniences, you may encounter some [challenge
   <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/686e048b/66d1dc92294029c6835a8703_66d1d880002a27c4d6a464f3_orchestration_comparison_table.png" alt="Comparison table of features for Dagster, Prefect, and Airflow data orchestration tools. Covers aspects like scheduling, UI support, workflow definition, integrations, scalability, and use cases." />
 </figure>
 
-### Quick Selection Guide by Use Case (2025 Edition):
+### Quick Selection Guide by Use Case (2026 Edition):
 
 <ul><li><strong>Large enterprise with existing Airflow investment</strong>: Airflow 3.0 — leverage DAG versioning, event-driven scheduling, and multi-language support while maintaining your established ecosystem</li><li><strong>Data mesh or asset-centric architecture</strong>: Dagster — purpose-built for treating data as products with unmatched lineage and metadata management</li><li><strong>Fast-moving startup or small team</strong>: Prefect — minimal operational overhead, rapid iteration, and new self-serve pricing make it ideal for lean teams</li><li><strong>ML model lifecycle management</strong>: Dagster — asset-based approach naturally maps to ML artifacts, experiments, and model versions</li><li><strong>GenAI application orchestration</strong>: Airflow 3.0 — proven at scale with 10% of users running GenAI workflows, plus extensive integration ecosystem</li><li><strong>Event-driven real-time pipelines</strong>: Prefect or Dagster — both offer superior event-native design compared to Airflow's historically batch-focused architecture (though Airflow 3.0 improves this)</li><li><strong>Multi-cloud or edge deployment</strong>: Airflow 3.0 — new Edge Executor and Task Execution API enable deployment across cloud and edge environments</li><li><strong>dbt-centric data transformation</strong>: Dagster — tightest dbt integration with asset-aligned models and built-in lineage visualization</li></ul>
 
@@ -412,19 +415,57 @@ def sort_by_calories(cereals):
 In Prefect, inputs and outputs are also clear and easy to wire together.
 
 ```
-with Flow("Aircraft-ETL") as flow:
+from prefect import flow, task
+
+
+@task
+def extract_reference_data():
+    # Add your reference data extraction logic here
+    return reference_data
+
+
+@task
+def extract_live_data():
+    # Add your live data extraction logic here
+    return live_data
+
+
+@task
+def transform(live_data, reference_data):
+    # Add your transformation logic here
+    return transformed_live_data
+
+
+@task
+def load_reference_data(reference_data):
+    # Add your loading logic here
+    pass
+
+
+@task
+def load_live_data(transformed_live_data):
+    # Add your loading logic here
+    pass
+
+
+@flow(name="Aircraft ETL", log_prints=True)
+def aircraft_etl():
     reference_data = extract_reference_data()
     live_data = extract_live_data()
     transformed_live_data = transform(live_data, reference_data)
     load_reference_data(reference_data)
     load_live_data(transformed_live_data)
+
+
+if __name__ == "__main__":
+    aircraft_etl()
 ```
 
 The transform function accepts the outputs from both reference_data and live_data. For large files and expensive operations, Prefect even offers the ability to cache and persist inputs and outputs, improving development time when debugging.
 
 ## Scheduling Tasks
 
-Making sure tasks are scheduled properly in workflow orchestration is essential, and the level of flexibility available can significantly impact your experience. If you've used **Airflow**, you're well aware of the problems that can arise from off-schedule tasks. Every directed acyclic graph (DAG) requires a schedule, and attempting to run multiple instances of a DAG at the same execution time can lead to issues. But what if there was a more seamless way to manage scheduling? This is where **Prefect** and **Dagster** come into play, providing the flexibility and speed that Airflow may struggle to deliver.
+Making sure tasks are scheduled properly in workflow orchestration is essential, and the level of flexibility available can significantly impact your experience. If you've used **Airflow**, you're well aware of the problems that can arise from off-schedule tasks. Airflow DAGs can be scheduled, event-triggered, or run manually with schedule=None. Historically, Airflow was more schedule-centric, but Airflow 3.x has moved toward more flexible scheduling defaults and asset/event-aware execution. But what if there was a more seamless way to manage scheduling? This is where **Prefect** and **Dagster** come into play, providing the flexibility and speed that Airflow may struggle to deliver.
 
 ### Prefect: Freedom to Run Anytime
 
@@ -479,7 +520,7 @@ Imagine you’re setting up a data pipeline, and you want it to be as straightfo
 Let’s say you need to pull data from an API, process it, and then store it in a database. Here’s how easy that is with Prefect:
 
 ```
-from prefect import task, Flow
+from prefect import flow, task
 
 @task
 def fetch_data():
@@ -557,8 +598,8 @@ Airflow has been a go-to for many engineers, but its power comes with complexity
 Here’s a simple Airflow DAG to contrast:
 
 ```
-from airflow import DAG
-from airflow.operators.python_operator import PythonOperator
+from airflow.sdk import DAG
+from airflow.providers.standard.operators.python import PythonOperator
 from datetime import datetime
 
 def fetch_data():
@@ -567,7 +608,7 @@ def fetch_data():
 def process_data():
     # Add your processing logic here
 
-with DAG('simple_pipeline', start_date=datetime(2023, 1, 1), schedule_interval='@daily') as dag:
+with DAG('simple_pipeline', start_date=datetime(2023, 1, 1), schedule="@daily") as dag:
     fetch = PythonOperator(task_id='fetch_data', python_callable=fetch_data)
     process = PythonOperator(task_id='process_data', python_callable=process_data)
     
@@ -584,7 +625,7 @@ So far, we’ve explored the basic concepts and features of these tools. Now, le
 
 Airflow is a powerhouse when it comes to managing and automating workflows. Here’s why it might be perfect for your project:
 
-<ul><li><strong>Versatile Technology Integration</strong>: Airflow connects seamlessly with various technologies, making it adaptable to diverse environments.</li><li><strong>Powerful Scheduling</strong>: It offers robust scheduling and easy-to-define pipelines, allowing you to automate complex workflows with ease.</li><li><strong>Python-Friendly</strong>: Deeply integrated with Python, Airflow lets you write custom components and extend its functionality effortlessly.</li><li><strong>Version Control</strong>: With built-in versioning, you can easily roll back to previous workflow versions, giving you stability and control.</li><li><strong>User-Friendly UI</strong>: Airflow’s intuitive UI makes managing and troubleshooting workflows straightforward.</li><li><strong>Collaborative</strong>: Multiple users can collaborate on workflows, making it ideal for team-based projects.</li><li><strong>Proven Scalability</strong>: Airflow is a mature, scalable tool backed by a large community, making it a reliable choice for projects of any size.</li></ul>
+<ul><li><strong>Versatile Technology Integration</strong>: Airflow connects seamlessly with various technologies, making it adaptable to diverse environments.</li><li><strong>Powerful Scheduling</strong>: It offers robust scheduling and easy-to-define pipelines, allowing you to automate complex workflows with ease.</li><li><strong>Python-Friendly</strong>: Deeply integrated with Python, Airflow lets you write custom components and extend its functionality effortlessly.</li><li><strong>DAG Versioning</strong>: Airflow 3 tracks structural changes to DAGs over time, making it easier to inspect historical DAG definitions through the UI and API. Rollback should still be handled through source control and deployment practices.</li><li><strong>User-Friendly UI</strong>: Airflow’s intuitive UI makes managing and troubleshooting workflows straightforward.</li><li><strong>Collaborative</strong>: Multiple users can collaborate on workflows, making it ideal for team-based projects.</li><li><strong>Proven Scalability</strong>: Airflow is a mature, scalable tool backed by a large community, making it a reliable choice for projects of any size.</li></ul>
 
 If you’re looking for a tried-and-true solution to handle your workflows with efficiency and flexibility, Airflow is a strong contender.
 
@@ -592,7 +633,7 @@ If you’re looking for a tried-and-true solution to handle your workflows with 
 
 Perfect is a powerful tool that brings flexibility and resilience to your workflow management. Here’s why it could be the right fit for your project:
 
-<ul><li><strong>Top-Notch Security</strong>: Prefect prioritizes your data and code privacy, offering robust security for sensitive projects.</li><li><strong>Smart UI and Notifications</strong>: Stay informed with its advanced UI and real-time notifications via email or Slack, so you’re always in the loop.</li><li><strong>Seamless Cloud-Native Support</strong>: Prefect integrates effortlessly with Kubernetes and Docker, making it ideal for cloud-native environments.</li><li><strong>Efficient Parallel Processing</strong>: It excels at parallel processing, allowing you to manage large datasets and complex workflows efficiently.</li><li><strong>Dynamic Workflows</strong>: Prefect’s support for dynamic workflows makes adapting to changing requirements a breeze.</li><li><strong>Third-Party Integrations</strong>: With strong support for third-party integrations, Prefect easily fits into your existing tech stack.</li><li><strong>GraphQL API</strong>: Prefect’s GraphQL API gives you the power to trigger workflows on demand, offering precise control over your processes.</li></ul>
+<ul><li><strong>Top-Notch Security</strong>: Prefect prioritizes your data and code privacy, offering robust security for sensitive projects.</li><li><strong>Smart UI and Notifications</strong>: Stay informed with its advanced UI and real-time notifications via email or Slack, so you’re always in the loop.</li><li><strong>Seamless Cloud-Native Support</strong>: Prefect integrates effortlessly with Kubernetes and Docker, making it ideal for cloud-native environments.</li><li><strong>Efficient Parallel Processing</strong>: It excels at parallel processing, allowing you to manage large datasets and complex workflows efficiently.</li><li><strong>Dynamic Workflows</strong>: Prefect’s support for dynamic workflows makes adapting to changing requirements a breeze.</li><li><strong>Third-Party Integrations</strong>: With strong support for third-party integrations, Prefect easily fits into your existing tech stack.</li><li><strong>GraphQL API</strong>: Prefect’s REST API and Python SDK let you interact programmatically with Prefect Cloud or a self-hosted Prefect server, including triggering and managing workflow runs.</li></ul>
 
 Prefect is a standout choice if you’re looking for a flexible, secure, and highly adaptable orchestration tool.
 
@@ -668,17 +709,15 @@ What makes Airflow special is its flexibility and community support. With Airflo
 
 If you want a platform that simplifies development and speeds up the process, consider **Prefect** and **Dagster**. They are designed for modern developers, reducing complexity and enhancing productivity for easier workflow orchestration.
 
-## The Orchestration Landscape in Late 2025
+## The Orchestration Landscape in Late 2026
 
-The data orchestration space has evolved significantly throughout 2025, with all three major platforms making substantial advances:
+The orchestration space kept moving through late 2025 and the first half of 2026. The gap between "data orchestrator" and "agent orchestrator" is now visibly closing, and all three of the major platforms have made that closing explicit.
 
-**Airflow's Major Milestone**: Apache Airflow 3.0 (released April 2025) represents the biggest update in the platform's history. With over 30 million monthly downloads and 80,000+ organizations now using Airflow, the platform has expanded beyond traditional ETL—30% of users now leverage it for MLOps workflows, and 10% for GenAI applications. The introduction of DAG versioning (the most requested feature), multi-language support via Task SDKs, and event-driven scheduling with Data Assets has addressed long-standing pain points while maintaining backward compatibility through the Python TaskSDK.
+<strong>Airflow has not slowed down:</strong> Airflow 3.1 (September 2025) landed Human-in-the-Loop operators, Airflow 3.2 (April 2026) added asset partitioning and multi-team deployments, and the multi-language Task SDK is rolling out behind the scenes. The State of Airflow 2026 survey is the best single data point on adoption right now: 5,800+ respondents, 32% running GenAI or MLOps in production (62% among Astronomer customers), and 89% expecting to use Airflow for revenue-generating or external-facing workloads in the next year. IBM also entered the picture with an OEM partnership with [Astronomer](https://www.astronomer.io/airflow/state-of-airflow/), distributed as "[Astronomer with IBM](https://www.ibm.com/new/announcements/ibm-partners-with-astronomer-to-revolutionize-managed-apache-airflows-robustness-within-enterprises)." Whatever you think of Airflow's ergonomics, the platform's enterprise gravity in 2026 is real.
 
-**Dagster's Maturation**: Dagster solidified its position as the asset-centric orchestrator in 2025, with Components framework reaching GA status in October 2025. Real-world implementations showcase impressive results—Clippd eliminated over 8 hours of weekly manual work, while Belgium's Fédération Wallonie-Bruxelles doubled pipeline delivery speed. The enhanced catalog features in Dagster 1.7 provide unprecedented visibility into data assets, making it particularly compelling for teams prioritizing data quality and lineage.
+<strong>Dagster doubled down on asset-native primitives:</strong> Components went GA in October 2025, and the team spent the following two quarters expanding the component library and moving FreshnessPolicy to GA. On the commercial side, Dagster+ Solo and Starter plans shift to pay-as-you-go pricing on May 1, 2026: Solo is $10/month plus $0.040 per credit, Starter is $100/month plus $0.035 per credit, where one credit equals an asset materialization or an op execution. Hybrid deployments carry no Dagster compute charge, which is the right choice if you already run your own infrastructure.
 
-**Prefect's Evolution**: Prefect continued its trajectory as the developer-friendly option, dropping Python 3.9 support to embrace modern Python features (3.10+) and introducing new self-serve pricing tiers. The addition of Incidents for managing workflow disruptions, enhanced automations with metrics-based triggers, and native Modal integration demonstrate Prefect's focus on operational excellence and developer experience.
-
-**Industry Shift**: The trend toward asset-centric thinking is accelerating across the industry. Even Airflow 3.0's new asset-centric syntax acknowledges this paradigm shift, though Dagster remains the pioneer and leader in this approach. Event-driven orchestration has become table stakes, with all three platforms now offering robust event-based triggering capabilities.
+<strong>Prefect is on a steady release cadence and a quieter but more interesting AI bet:</strong> The 3.x line keeps shipping ([3.7.0 in May 2026](https://github.com/PrefectHQ/prefect/releases/tag/3.7.0)). The April 2026 Cloud release closed long-standing enterprise gaps with full audit trails and bulk operations. The bigger story is Marvin 3.0, which absorbed ControlFlow in late 2025 and is now Prefect's first-party agent framework running on top of its events and automations engine. None of the other two orchestrators ship anything comparable.
 
 ## Conclusion
 
@@ -688,20 +727,19 @@ As data engineering continues to evolve, adopting the right tools is key to stay
 
 But now, I’d love to hear from you. Which scheduler are you using? Are you thinking about moving away from Airflow? Let’s discuss it on [Twitter](https://x.com/home) or [LinkedIn](https://www.linkedin.com/in/rishabh-sharma-8b3a73205/).
 
-## Common Questions About Airflow, Dagster, and Prefect in 2025
+## Common Questions About Airflow, Dagster, and Prefect in 2026
 
 **How does Airflow 3.0 change the comparison with Dagster and Prefect?** Airflow 3.0 narrows the gap significantly by introducing DAG versioning, event-driven scheduling with Data Assets, and multi-language support. However, Dagster still leads in asset-centric design and data lineage, while Prefect maintains its advantage in developer experience and simplicity. Airflow 3.0's strength lies in its maturity, massive ecosystem, and proven scalability for organizations already invested in the platform.
 
-**Which tool is best for ML and AI workflows in 2025?** All three tools now excel at ML/AI orchestration, but with different strengths. Dagster's asset-centric approach naturally fits ML pipelines with its focus on data products and lineage tracking. Airflow 3.0's expanded MLOps support (30% of users) and GenAI capabilities (10% of users) prove its production readiness at scale. Prefect's lightweight approach and rapid iteration capabilities make it ideal for ML experimentation and fast-moving data science teams.
+**Which tool is best for ML and AI workflows in 2026?** All three tools now excel at ML/AI orchestration, but with different strengths. Dagster's asset-centric approach naturally fits ML pipelines with its focus on data products and lineage tracking. Airflow 3.0's expanded MLOps support (30% of users) and GenAI capabilities (10% of users) prove its production readiness at scale. Prefect's lightweight approach and rapid iteration capabilities make it ideal for ML experimentation and fast-moving data science teams.
 
 **Should I migrate from Airflow 2.x to Airflow 3.0 or switch to Dagster/Prefect?** If Airflow 2.x meets your needs and you're not experiencing pain points around versioning or event-driven workflows, adopt a measured approach to 3.0 migration—early patches typically address bugs discovered in major releases. However, if you're struggling with data lineage visibility, local development complexity, or asset management, Dagster offers compelling advantages. Teams prioritizing rapid development and minimal operational overhead should evaluate Prefect's serverless offerings.
 
-**What's the learning curve difference between these tools in 2025?** Prefect remains the easiest to learn with its Pythonic, function-first approach. Dagster's asset-centric paradigm requires a mental shift from task-based thinking but pays dividends in complex data environments. Airflow 3.0 improves on Airflow 2.x's complexity, though its extensive feature set still presents a steeper learning curve—the trade-off is access to the largest community and most comprehensive documentation.
+**What's the learning curve difference between these tools in 2026?** Prefect remains the easiest to learn with its Pythonic, function-first approach. Dagster's asset-centric paradigm requires a mental shift from task-based thinking but pays dividends in complex data environments. Airflow 3.0 improves on Airflow 2.x's complexity, though its extensive feature set still presents a steeper learning curve—the trade-off is access to the largest community and most comprehensive documentation.
 
-**How do pricing models compare for teams in 2025?** Airflow remains fully open source with no licensing costs, though operational overhead can increase DevOps expenses (managed options like Amazon MWAA and Google Cloud Composer available). Prefect offers free usage for small teams (under 3 users) with paid plans starting around $100/month, plus new self-serve tiers for Prefect Serverless. Dagster provides an open-source core with Dagster Cloud (formerly Dagster+) offering hybrid and serverless options priced on compute hours and asset runs.
-
+**How do pricing models compare for teams in 2026?** Airflow is still fully open source with no licensing cost, and there are several managed options if you do not want to run it yourself: Amazon MWAA, Google Cloud Composer, Astronomer, and the new "Astronomer with IBM" OEM offering. Prefect Cloud's Hobby tier is free forever: 1 dev seat, 1 workspace, 5 deployments, and 500 minutes of serverless compute per month. Paid self-serve tiers add seats, deployments, and infrastructure options. Dagster offers an open-source core plus Dagster+ in Serverless and Hybrid flavours. As of May 1, 2026, Dagster+ Solo and Starter shift to pay-as-you-go: Solo is $10/month plus $0.040 per credit, Starter is $100/month plus $0.035 per credit, where one credit equals an asset materialization or an op execution. Hybrid deployments carry no Dagster compute charge.
 ## ❓FAQ
 
-<ol><li>What is the difference between perfect vs Airflow vs Dagster?<br /><br />Airflow: Uses static DAGs, which can be limiting for dynamic workflows. Dagster: Supports dynamic workflows to some extent through software-defined assets but focuses heavily on data quality and type safety. Prefect: Excels in dynamic workflows, allowing for runtime adjustments of tasks and dependencies.<br /></li><li>Is prefect better than Airflow?<br /><strong><br />Prefect's monitoring is more sophisticated than Airflow</strong>, offering more built-in and native logging. Prefect has better event management and the ability to handle dynamic orchestration through the subscription of existing event systems. Airflow's logging needs to be built entirely by the developer.<br /></li><li>Why Dagster instead of Airflow?<strong><br /><br />Dagster's Software Defined Assets provide an intuitive framework for collaboration across the enterprise</strong>. You can focus on delivering critical data assets, not on the tasks of pipelines. Airflow is task-centric and does not provide asset-aware features or a coherent Python API.</li></ol>
+<ol><li>What is the difference between perfect vs Airflow vs Dagster?<br /><br />Airflow: Uses static DAGs, which can be limiting for dynamic workflows. Dagster: Supports dynamic workflows to some extent through software-defined assets but focuses heavily on data quality and type safety. Prefect: Excels in dynamic workflows, allowing for runtime adjustments of tasks and dependencies.<br /></li><li>Is prefect better than Airflow?<br /><strong><br />Prefect's monitoring is more sophisticated than Airflow</strong>, offering more built-in and native logging. Prefect has better event management and the ability to handle dynamic orchestration through the subscription of existing event systems. Airflow provides built-in task logging in the UI and supports remote logging through providers. Prefect may still feel more integrated for Cloud-native notifications and automations, but Airflow logging is not something developers build from scratch.<br /></li><li>Why Dagster instead of Airflow?<strong><br /><br />Dagster's Software Defined Assets provide an intuitive framework for collaboration across the enterprise</strong>. You can focus on delivering critical data assets, not on the tasks of pipelines. Airflow remains primarily DAG/task-oriented, but Airflow 3.x now includes Assets and asset-based scheduling. Dagster still has the stronger asset-native model because assets are central to how dependencies, lineage, metadata, checks, and materializations are modeled.</li></ol>
 
 <ol start="4"><li>What does orchestration mean in containers?<br /><br />Container orchestration <strong>automatically provisions, deploys, scales, and manages containerized applications without worrying about the underlying infrastructure</strong>. Developers can implement container orchestration anywhere containers are, allowing them to automate the life cycle management of containers.</li></ol>
