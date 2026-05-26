@@ -66,15 +66,12 @@ Before activating Phase 10, complete each of the following. **Do not check off i
 
 ### 3.6 Content gaps — kitaru.ai pages with no target on this branch
 
-These 3 pages exist on kitaru.ai but were never ported to zenml.io. They'd 404 post-cutover unless we either port them or accept the loss:
-
-| kitaru.ai URL | Type | Action |
-|---|---|---|
-| `/blog/where-durable-execution-is-headed/` | Blog post | **Port** (matches Phase 5 pattern; could miss backlinks otherwise). Source: `kitaru/site/src/content/blog/where-durable-execution-is-headed.mdx` |
-| `/compare/kitaru-vs-crewai/` | Competitor compare | **Port** (matches Phase 3 pattern). Source: `kitaru/site/src/content/compare/kitaru-vs-crewai.mdx` |
-| `/compare/kitaru-vs-hatchet/` | Competitor compare | **Port** (matches Phase 3 pattern). Source: `kitaru/site/src/content/compare/kitaru-vs-hatchet.mdx` |
-
-**Decision needed before activating Phase 10:** port all 3 (recommended), or fall back to catch-all redirects for these slugs (less SEO-friendly, loses any inbound link equity).
+- [x] **DONE** (2026-05-26). All three previously-missing pages ported:
+  - `/blog/where-durable-execution-is-headed` — Phase 5 pattern (MDX → MD; frontmatter remapped to `blogSchema`, `category: "kitaru"`, 4 inline images mirrored to `zenml-assets`).
+  - `/compare/kitaru-vs-crewai` — Phase 3 designer pattern (`.mdx` preserved; per-competitor graphics in `src/components/compare/kitaru/graphics/crewai/{RuntimeLayer,CheckpointReplay,SelfHostedRuntime,HarnessFreedom}.astro`; logo at `public/compare/crewai.svg`; OG card mirrored).
+  - `/compare/kitaru-vs-hatchet` — same designer pattern (`graphics/hatchet/{RuntimeVsPlatform,LlmLineage,ReplayOverrides}.astro`; `public/compare/hatchet.svg`; OG card mirrored).
+- All three return HTTP 200 on the dev server; `/compare` index lists the new compares.
+- Branch now covers 26/26 kitaru.ai marketing URLs (plus the 168 `/docs/*` URLs which stay on kitaru.ai per D2).
 
 ### 3.5 R2 / asset migration
 
