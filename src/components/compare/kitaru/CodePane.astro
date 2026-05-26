@@ -5,33 +5,23 @@
  * Use inside a FeatureWithGraphic `graphic` slot when a feature row should
  * pair prose with a code block instead of a custom graphic.
  *
- * Kitaru compare pages use the Kitaru code styling — the `kitaru-light` /
- * `kitaru-dark` Shiki themes on a warm cream panel, matching the kitaru.ai
- * site. ZenML-side pages keep the `zenml-light` theme via the site-wide
- * markdown Shiki config in `astro.config.ts` — the two are intentionally
- * kept separate so each product's code blocks stay on-brand.
+ * Renders via the shared Kitaru highlighter (shiki.codeToHtml + set:html)
+ * rather than Astro's `<Code>` — see src/lib/kitaru-highlighter.ts for
+ * why. ZenML-side pages keep the `zenml-light` theme via the site-wide
+ * markdown Shiki config in `astro.config.ts`.
  */
-import { Code } from 'astro:components';
-import { kitaruLight, kitaruDark } from '../../../styles/kitaru-themes';
-
-type CodeLang = Parameters<typeof Code>[0]["lang"];
+import { renderKitaruCode, type KitaruLang } from '../../../lib/kitaru-highlighter';
 
 interface Props {
   code: string;
-  lang?: CodeLang;
+  lang?: KitaruLang;
 }
 
 const { code, lang = 'python' } = Astro.props;
+const html = await renderKitaruCode(code, lang);
 ---
 
-<article class="codepane">
-  <Code
-    code={code}
-    lang={lang}
-    themes={{ light: kitaruLight, dark: kitaruDark }}
-    defaultColor="light"
-  />
-</article>
+<article class="codepane" set:html={html}></article>
 
 <style>
   /* Warm cream panel matching the Kitaru site's code surface — the

@@ -1,16 +1,12 @@
 ---
-import { Code } from 'astro:components';
-import { kitaruLight, kitaruDark } from '../../../styles/kitaru-themes';
-
-type CodeLang = Parameters<typeof Code>[0]["lang"];
+import { renderKitaruCode, type KitaruLang } from '../../../lib/kitaru-highlighter';
 
 // CodeCompare lives in a dark band. Shiki bakes both themes into each token
 // (the light value inline, the dark value in the `--shiki-dark` CSS var); the
 // `pre span` rule below forces every token to its dark (kitaru-dark) value.
-const codeThemes = {
-  light: kitaruLight,
-  dark: kitaruDark,
-};
+//
+// Rendered via shiki.codeToHtml + set:html (not Astro's `<Code>`) — see
+// src/lib/kitaru-highlighter.ts for the rationale.
 
 interface Props {
   title?: string;
@@ -19,7 +15,7 @@ interface Props {
   competitorLabel?: string;
   kitaruCode: string;
   competitorCode: string;
-  lang?: CodeLang;
+  lang?: KitaruLang;
 }
 const {
   title = 'Code comparison',
@@ -30,6 +26,11 @@ const {
   competitorCode,
   lang = 'python',
 } = Astro.props;
+
+const [kitaruHtml, competitorHtml] = await Promise.all([
+  renderKitaruCode(kitaruCode, lang),
+  renderKitaruCode(competitorCode, lang),
+]);
 ---
 
 <section class="codecompare" data-reveal>
@@ -44,18 +45,14 @@ const {
         <span class="codecompare-label">{kitaruLabel}</span>
         <span class="codecompare-pill">Recommended</span>
       </header>
-      <div class="codecompare-code">
-        <Code code={kitaruCode} lang={lang} themes={codeThemes} defaultColor="light" />
-      </div>
+      <div class="codecompare-code" set:html={kitaruHtml}></div>
     </article>
     <article class="codecompare-pane">
       <header>
         <span class="codecompare-dot codecompare-dot--competitor" aria-hidden="true"></span>
         <span class="codecompare-label">{competitorLabel}</span>
       </header>
-      <div class="codecompare-code">
-        <Code code={competitorCode} lang={lang} themes={codeThemes} defaultColor="light" />
-      </div>
+      <div class="codecompare-code" set:html={competitorHtml}></div>
     </article>
   </div>
 </section>
