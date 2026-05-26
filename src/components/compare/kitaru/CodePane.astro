@@ -12,9 +12,7 @@
  * kept separate so each product's code blocks stay on-brand.
  */
 import { Code } from 'astro:components';
-import type { ThemeRegistration } from 'shiki';
-import kitaruLight from '../../../styles/kitaru-light.json';
-import kitaruDark from '../../../styles/kitaru-dark.json';
+import { kitaruLight, kitaruDark } from '../../../styles/kitaru-themes';
 
 type CodeLang = Parameters<typeof Code>[0]["lang"];
 
@@ -30,7 +28,7 @@ const { code, lang = 'python' } = Astro.props;
   <Code
     code={code}
     lang={lang}
-    themes={{ light: kitaruLight as ThemeRegistration, dark: kitaruDark as ThemeRegistration }}
+    themes={{ light: kitaruLight, dark: kitaruDark }}
     defaultColor="light"
   />
 </article>

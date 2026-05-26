@@ -1,8 +1,6 @@
 ---
 import { Code } from 'astro:components';
-import type { ThemeRegistration } from 'shiki';
-import kitaruLight from '../../../styles/kitaru-light.json';
-import kitaruDark from '../../../styles/kitaru-dark.json';
+import { kitaruLight, kitaruDark } from '../../../styles/kitaru-themes';
 
 type CodeLang = Parameters<typeof Code>[0]["lang"];
 
@@ -10,8 +8,8 @@ type CodeLang = Parameters<typeof Code>[0]["lang"];
 // (the light value inline, the dark value in the `--shiki-dark` CSS var); the
 // `pre span` rule below forces every token to its dark (kitaru-dark) value.
 const codeThemes = {
-  light: kitaruLight as ThemeRegistration,
-  dark: kitaruDark as ThemeRegistration,
+  light: kitaruLight,
+  dark: kitaruDark,
 };
 
 interface Props {
@@ -66,9 +64,9 @@ const {
   /* ─── Code highlighting palette ───
      Section chrome: --code-var/-bg/-pane/-line drive the title, labels, dark
      band, pane surfaces and borders. Syntax token colors come straight from
-     src/styles/kitaru-dark.json via Shiki's --shiki-dark vars; the
-     --code-kw/-fn/-str/-op/-cmt values mirror that file for reference only —
-     keep them aligned with kitaru-dark.json. */
+     the kitaru-dark palette in src/styles/kitaru-themes.ts via Shiki's
+     --shiki-dark vars; the --code-kw/-fn/-str/-op/-cmt values mirror that
+     palette for reference only — keep them aligned with kitaru-themes.ts. */
   .codecompare {
     --code-kw:   #C89F70;
     --code-fn:   #D38151;
