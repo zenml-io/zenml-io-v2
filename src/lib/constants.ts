@@ -27,4 +27,4 @@ export const R2_WEBFLOW_BASE = `${ASSET_BASE_URL}/webflow/${WEBFLOW_SITE_ID}`;
  * Default Open Graph image URL — used when a page doesn't specify its own.
  * Blog posts override this with their mainImage.
  */
-export const DEFAULT_OG_IMAGE = "/images/og-default.jpg";
+export const DEFAULT_OG_IMAGE = "/images/og-default-v2.jpg";
