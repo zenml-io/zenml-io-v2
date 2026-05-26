@@ -1,0 +1,27 @@
+source_url,target_url,status_code,preserve_query_string,notes
+https://kitaru.ai/,https://www.zenml.io/product/kitaru,301,true,
+https://kitaru.ai/pricing/,https://www.zenml.io/pricing,301,true,
+https://kitaru.ai/book-a-demo/,https://www.zenml.io/book-your-demo,301,true,
+https://kitaru.ai/newsletter/,https://www.zenml.io/newsletter-signup,301,true,
+https://kitaru.ai/blog/,https://www.zenml.io/blog,301,true,
+https://kitaru.ai/blog/agents-are-not-microservices/,https://www.zenml.io/blog/agents-are-not-microservices,301,true,
+https://kitaru.ai/blog/agents-need-more-than-traces/,https://www.zenml.io/blog/agents-need-more-than-traces,301,true,
+https://kitaru.ai/blog/anatomy-of-a-production-agent/,https://www.zenml.io/blog/anatomy-of-a-production-agent,301,true,
+https://kitaru.ai/blog/from-pipelines-to-agents/,https://www.zenml.io/blog/from-pipelines-to-agents,301,true,
+https://kitaru.ai/blog/from-zenml-to-kitaru/,https://www.zenml.io/blog/from-zenml-to-kitaru,301,true,
+https://kitaru.ai/blog/kitaru-open-source/,https://www.zenml.io/blog/kitaru-open-source,301,true,
+https://kitaru.ai/blog/no-journal-replay/,https://www.zenml.io/blog/no-journal-replay,301,true,
+https://kitaru.ai/blog/the-runtime-layer-underneath-your-agent-stack/,https://www.zenml.io/blog/the-runtime-layer-underneath-your-agent-stack,301,true,
+https://kitaru.ai/blog/where-durable-execution-is-headed/,https://www.zenml.io/blog/where-durable-execution-is-headed,301,true,not yet ported (§3.6)
+https://kitaru.ai/blog/why-agents-need-durable-execution/,https://www.zenml.io/blog/why-agents-need-durable-execution,301,true,
+https://kitaru.ai/compare/,https://www.zenml.io/compare,301,true,
+https://kitaru.ai/compare/kitaru-vs-claude-agent-sdk/,https://www.zenml.io/compare/kitaru-vs-claude-agent-sdk,301,true,
+https://kitaru.ai/compare/kitaru-vs-crewai/,https://www.zenml.io/compare/kitaru-vs-crewai,301,true,not yet ported (§3.6)
+https://kitaru.ai/compare/kitaru-vs-dbos/,https://www.zenml.io/compare/kitaru-vs-dbos,301,true,
+https://kitaru.ai/compare/kitaru-vs-hatchet/,https://www.zenml.io/compare/kitaru-vs-hatchet,301,true,not yet ported (§3.6)
+https://kitaru.ai/compare/kitaru-vs-inngest/,https://www.zenml.io/compare/kitaru-vs-inngest,301,true,
+https://kitaru.ai/compare/kitaru-vs-langgraph-deep-agents/,https://www.zenml.io/compare/kitaru-vs-langgraph-deep-agents,301,true,
+https://kitaru.ai/compare/kitaru-vs-openai-agents-sdk/,https://www.zenml.io/compare/kitaru-vs-openai-agents-sdk,301,true,
+https://kitaru.ai/compare/kitaru-vs-pydantic-ai/,https://www.zenml.io/compare/kitaru-vs-pydantic-ai,301,true,
+https://kitaru.ai/compare/kitaru-vs-restate/,https://www.zenml.io/compare/kitaru-vs-restate,301,true,
+https://kitaru.ai/compare/kitaru-vs-temporal/,https://www.zenml.io/compare/kitaru-vs-temporal,301,true,

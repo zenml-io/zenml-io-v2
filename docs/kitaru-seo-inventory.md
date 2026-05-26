@@ -36,9 +36,17 @@ Before activating Phase 10, complete each of the following. **Do not check off i
 
 ### 3.1 Full URL crawl
 
-- [ ] Crawl `https://kitaru.ai/` (e.g. Screaming Frog free tier, 500 URL limit ought to cover it). Export to `docs/kitaru-seo-inventory.csv` with columns: `url`, `status`, `title`, `meta_description`, `canonical`, `inbound_link_count`.
-- [ ] Cross-check against Cloudflare Pages deployment for kitaru.ai — anything in `/dist` not in the crawl? (orphans)
-- [ ] Verify each crawled URL has a mapped target in §4 below.
+- [x] **DONE** (2026-05-26). Sourced from `https://kitaru.ai/sitemap-0.xml` (26 marketing URLs) + `https://kitaru.ai/docs/sitemap.xml` (168 docs URLs). All 26 marketing URLs HEAD-checked live (all 200). Cross-checked each against this branch — 23/26 already have a working target on this branch. **3 URLs on kitaru.ai have no target on zenml.io yet** (see §3.6). The 168 `/docs/*` URLs stay on kitaru.ai per D2 (Kitaru docs are a separate Next.js app, not migrated in this merge).
+
+  **Marketing URL breakdown:**
+
+  | Bucket | Count | Notes |
+  |---|---|---|
+  | Root + marketing | 4 | `/`, `/book-a-demo/`, `/newsletter/`, `/pricing/` |
+  | Blog | 11 | 10 have targets on this branch; `where-durable-execution-is-headed` missing |
+  | Compare | 11 | 8 have targets; `kitaru-vs-crewai`, `kitaru-vs-hatchet` missing (plus the `/compare/` index, which 200s) |
+
+  **Trailing-slash note:** all kitaru.ai URLs have trailing slashes; zenml.io is `trailingSlash: never`. The Cloudflare rules must strip slashes during the rewrite (see Caveats in §4).
 
 ### 3.2 Backlink snapshot
 
@@ -56,6 +64,18 @@ Before activating Phase 10, complete each of the following. **Do not check off i
 - [ ] For every kitaru.ai page that gets shared (blog posts, /product/kitaru equivalent, compare pages): screenshot the current OG card. Compare to the zenml.io target. Note any cards that would degrade.
 - [ ] Twitter Card Validator + LinkedIn Post Inspector on the 5–10 highest-traffic kitaru.ai pages.
 
+### 3.6 Content gaps — kitaru.ai pages with no target on this branch
+
+These 3 pages exist on kitaru.ai but were never ported to zenml.io. They'd 404 post-cutover unless we either port them or accept the loss:
+
+| kitaru.ai URL | Type | Action |
+|---|---|---|
+| `/blog/where-durable-execution-is-headed/` | Blog post | **Port** (matches Phase 5 pattern; could miss backlinks otherwise). Source: `kitaru/site/src/content/blog/where-durable-execution-is-headed.mdx` |
+| `/compare/kitaru-vs-crewai/` | Competitor compare | **Port** (matches Phase 3 pattern). Source: `kitaru/site/src/content/compare/kitaru-vs-crewai.mdx` |
+| `/compare/kitaru-vs-hatchet/` | Competitor compare | **Port** (matches Phase 3 pattern). Source: `kitaru/site/src/content/compare/kitaru-vs-hatchet.mdx` |
+
+**Decision needed before activating Phase 10:** port all 3 (recommended), or fall back to catch-all redirects for these slugs (less SEO-friendly, loses any inbound link equity).
+
 ### 3.5 R2 / asset migration
 
 - [x] **DONE.** All 30 unique kitaru-assets R2 keys mirrored to zenml-assets (server-side copy via wrangler) preserving the same key paths. Source rewritten `assets.kitaru.ai` → `assets.zenml.io` across 18 files. `kitaru-assets` bucket left intact so the live kitaru.ai site keeps working until the DNS cutover.
@@ -65,57 +85,69 @@ Before activating Phase 10, complete each of the following. **Do not check off i
 
 ## 4. Redirect mapping
 
-Final structure for Cloudflare DNS-level rules. **Fill once §3.1 crawl is in.**
+Verified against the 2026-05-26 sitemap crawl. Every source URL below was confirmed live (HTTP 200) on kitaru.ai; every target was confirmed live on this branch *except* the 3 in §3.6 (marked ⚠ — port before cutover).
+
+Format: each line uses `path` rather than full URLs so it slots into Cloudflare Bulk Redirects directly (List → Redirect rules → CSV with `source_url`, `target_url`, `status_code: 301`, `preserve_query_string: true`).
 
 ```
 # kitaru.ai → zenml.io  (301, permanent)
+# Note: kitaru.ai sitemap uses trailing slashes; targets below DROP the
+# trailing slash because zenml.io is trailingSlash: 'never'.
 
-## Root + marketing
-kitaru.ai/                             → zenml.io/product/kitaru
-kitaru.ai/pricing                      → zenml.io/pricing
-kitaru.ai/book-a-demo                  → zenml.io/book-your-demo
-kitaru.ai/newsletter                   → zenml.io/  (or wherever newsletter signup lives)
-kitaru.ai/404                          → zenml.io/404
+## Root + marketing (4)
+kitaru.ai/                                                      → zenml.io/product/kitaru
+kitaru.ai/pricing/                                              → zenml.io/pricing
+kitaru.ai/book-a-demo/                                          → zenml.io/book-your-demo
+kitaru.ai/newsletter/                                           → zenml.io/newsletter-signup
 
-## Blog (1:1 by slug; verify each)
-kitaru.ai/blog/agents-are-not-microservices              → zenml.io/blog/agents-are-not-microservices
-kitaru.ai/blog/agents-need-more-than-traces              → zenml.io/blog/agents-need-more-than-traces
-kitaru.ai/blog/anatomy-of-a-production-agent             → zenml.io/blog/anatomy-of-a-production-agent
-kitaru.ai/blog/building-a-news-scout-on-kitaru           → zenml.io/blog/building-a-news-scout-on-kitaru
-kitaru.ai/blog/from-pipelines-to-agents                  → zenml.io/blog/from-pipelines-to-agents
-kitaru.ai/blog/from-zenml-to-kitaru                      → zenml.io/blog/from-zenml-to-kitaru
-kitaru.ai/blog/kitaru-agents-now-have-memory             → zenml.io/blog/kitaru-agents-now-have-memory
-kitaru.ai/blog/kitaru-open-source                        → zenml.io/blog/kitaru-open-source
-kitaru.ai/blog/no-journal-replay                         → zenml.io/blog/no-journal-replay
-kitaru.ai/blog/the-runtime-layer-underneath-your-agent-stack → zenml.io/blog/the-runtime-layer-underneath-your-agent-stack
-kitaru.ai/blog/why-agents-need-durable-execution         → zenml.io/blog/why-agents-need-durable-execution
+## Blog (11 — 1:1 by slug; ⚠ where-durable-execution-is-headed not yet ported)
+kitaru.ai/blog/                                                 → zenml.io/blog
+kitaru.ai/blog/agents-are-not-microservices/                    → zenml.io/blog/agents-are-not-microservices
+kitaru.ai/blog/agents-need-more-than-traces/                    → zenml.io/blog/agents-need-more-than-traces
+kitaru.ai/blog/anatomy-of-a-production-agent/                   → zenml.io/blog/anatomy-of-a-production-agent
+kitaru.ai/blog/from-pipelines-to-agents/                        → zenml.io/blog/from-pipelines-to-agents
+kitaru.ai/blog/from-zenml-to-kitaru/                            → zenml.io/blog/from-zenml-to-kitaru
+kitaru.ai/blog/kitaru-open-source/                              → zenml.io/blog/kitaru-open-source
+kitaru.ai/blog/no-journal-replay/                               → zenml.io/blog/no-journal-replay
+kitaru.ai/blog/the-runtime-layer-underneath-your-agent-stack/   → zenml.io/blog/the-runtime-layer-underneath-your-agent-stack
+kitaru.ai/blog/where-durable-execution-is-headed/               → zenml.io/blog/where-durable-execution-is-headed  ⚠
+kitaru.ai/blog/why-agents-need-durable-execution/               → zenml.io/blog/why-agents-need-durable-execution
 
-## Compare (1:1 by slug)
-kitaru.ai/compare/kitaru-vs-temporal              → zenml.io/compare/kitaru-vs-temporal
-kitaru.ai/compare/kitaru-vs-restate               → zenml.io/compare/kitaru-vs-restate
-kitaru.ai/compare/kitaru-vs-inngest               → zenml.io/compare/kitaru-vs-inngest
-kitaru.ai/compare/kitaru-vs-dbos                  → zenml.io/compare/kitaru-vs-dbos
-kitaru.ai/compare/kitaru-vs-langgraph-deep-agents → zenml.io/compare/kitaru-vs-langgraph-deep-agents
-kitaru.ai/compare/kitaru-vs-openai-agents-sdk     → zenml.io/compare/kitaru-vs-openai-agents-sdk
-kitaru.ai/compare/kitaru-vs-claude-agent-sdk      → zenml.io/compare/kitaru-vs-claude-agent-sdk
-kitaru.ai/compare/kitaru-vs-pydantic-ai           → zenml.io/compare/kitaru-vs-pydantic-ai
+## Compare (11 — 1:1 by slug; ⚠ kitaru-vs-crewai + kitaru-vs-hatchet not yet ported)
+kitaru.ai/compare/                                              → zenml.io/compare
+kitaru.ai/compare/kitaru-vs-claude-agent-sdk/                   → zenml.io/compare/kitaru-vs-claude-agent-sdk
+kitaru.ai/compare/kitaru-vs-crewai/                             → zenml.io/compare/kitaru-vs-crewai  ⚠
+kitaru.ai/compare/kitaru-vs-dbos/                               → zenml.io/compare/kitaru-vs-dbos
+kitaru.ai/compare/kitaru-vs-hatchet/                            → zenml.io/compare/kitaru-vs-hatchet  ⚠
+kitaru.ai/compare/kitaru-vs-inngest/                            → zenml.io/compare/kitaru-vs-inngest
+kitaru.ai/compare/kitaru-vs-langgraph-deep-agents/              → zenml.io/compare/kitaru-vs-langgraph-deep-agents
+kitaru.ai/compare/kitaru-vs-openai-agents-sdk/                  → zenml.io/compare/kitaru-vs-openai-agents-sdk
+kitaru.ai/compare/kitaru-vs-pydantic-ai/                        → zenml.io/compare/kitaru-vs-pydantic-ai
+kitaru.ai/compare/kitaru-vs-restate/                            → zenml.io/compare/kitaru-vs-restate
+kitaru.ai/compare/kitaru-vs-temporal/                           → zenml.io/compare/kitaru-vs-temporal
 
-## Docs — keep as-is for now (D2)
-kitaru.ai/docs/*                       → kitaru.ai/docs/*   (no redirect; docs still live there)
+## Docs (168 URLs) — stay on kitaru.ai (D2)
+# Kitaru docs are a separate Next.js app and are NOT being migrated as part
+# of this merge. Robots.txt on kitaru.ai will keep pointing at
+# https://kitaru.ai/docs/sitemap.xml and the docs paths keep resolving.
+# The catch-all rule below MUST exempt /docs/* — see Caveats.
+kitaru.ai/docs/*                                                → (no redirect; serves from kitaru.ai)
 
 ## API — no longer ported (D5 superseded)
 # kitaru.ai/api/{get-started,waitlist,newsletter} → 404 post-cutover.
 # Pre-cutover: scan Cloudflare access logs for residual POST traffic; if any,
 # add a 410 (Gone) rule or front a stub responder. Expected to be ~zero.
 
-## Catch-all
-kitaru.ai/*                            → zenml.io/product/kitaru   (last-resort, only after all above lines)
+## Catch-all (must come AFTER /docs/* exemption)
+kitaru.ai/*                                                     → zenml.io/product/kitaru
 ```
 
 **Caveats:**
 
-1. **Wildcard order matters.** Specific rules must precede the catch-all.
-2. **Trailing slash policy.** zenml.io is `trailingSlash: never` (see `astro.config.ts`). Make sure redirect rules strip trailing slashes from `kitaru.ai/foo/` → `zenml.io/foo`.
+1. **Wildcard order matters.** Specific rules must precede the catch-all. `/docs/*` must be excluded from the catch-all (Cloudflare Bulk Redirects supports a "Do not redirect" rule for this — apply it before the wildcard).
+2. **Trailing slash policy.** zenml.io is `trailingSlash: never` (see `astro.config.ts`). Cloudflare Bulk Redirects defaults to literal-match — the source URLs above include the trailing slash deliberately, and the targets drop it. If using regex-based rules instead, ensure the rewrite strips `/$`.
+3. **Preserve query strings.** Set `preserve_query_string: true` on every rule so `?utm_*` tracking parameters survive the redirect.
+4. **Subdomain hygiene.** kitaru.ai has no `www.` variant active today (sitemap confirms). After cutover the existing zone-level redirect (if any) should still send `www.kitaru.ai` to the canonical bare domain, which now redirects to zenml.io.
 
 ---
 
