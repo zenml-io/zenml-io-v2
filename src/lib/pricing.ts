@@ -218,21 +218,6 @@ export const PRICING_COMPARE: PricingCompareTableData = {
   columnHeaders: ["Open Source", "Scale", "Enterprise"],
   sections: [
     {
-      heading: "Plans & pricing",
-      rows: [
-        { feature: "Price", values: ["Free", "From $399 / mo", "Custom"] },
-        {
-          feature: "Deployment scenario",
-          values: ["Self-hosted", "SaaS", "SaaS + Self-hosted"],
-        },
-        {
-          feature: "Monthly executions",
-          values: ["Unlimited", "500 – 5,000", "Unlimited"],
-        },
-        { feature: "Projects", values: ["Unlimited", "Up to 10", "Unlimited"] },
-      ],
-    },
-    {
       heading: "Core platform",
       rows: [
         {
