@@ -8,11 +8,11 @@ hero:
   headline: "More Than a E2E Platform"
   deck: "ZenML vs AWS Sagemaker, GCP Vertex AI, ClearML and moreUnderstand how ZenML stands apart from traditional e2e platforms"
   primaryCta:
-    label: "Start Free Trial"
-    href: "https://cloud.zenml.io/signup"
+    label: "Book a demo"
+    href: "/book-your-demo"
   secondaryCta:
-    label: "Use Open Source"
-    href: "/get-started"
+    label: "Read Docs"
+    href: "/docs"
   compareCategory: "e2e-platforms"
 
 blocks:
@@ -52,15 +52,15 @@ blocks:
   - kind: cta02
     headline: "Unify Your ML and LLM Workflows"
     bullets:
-      - "Free, powerful MLOps open source foundation"
+      - "Open-source foundation, no vendor lock-in"
       - "Works with any infrastructure"
       - "Upgrade to managed Pro features"
     primaryCta:
-      label: "Start Free Trial"
-      href: "https://cloud.zenml.io/signup"
+      label: "Book a demo"
+      href: "/book-your-demo"
     secondaryCta:
-      label: "Use Open Source"
-      href: "/get-started"
+      label: "Read Docs"
+      href: "/docs"
     image:
       url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png"
       alt: "Dashboard displaying machine learning models, including versions, authors, and tags. Relevant to model monitoring and ML pipelines."

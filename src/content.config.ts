@@ -932,6 +932,31 @@ export const collections = {
     loader: glob({ pattern: "**/*.md", base: "./src/content/compare" }),
     schema: compareSchema,
   }),
+  /**
+   * Kitaru comparisons — ported from kitaru.ai (MDX with embedded components).
+   * Distinct schema + URL slug pattern (kitaru-vs-*) so we can theme the
+   * detail page (data-app="kitaru") and section the index (agents vs mlops).
+   * See MERGE_PLAN.md §4 Phase 3.
+   */
+  "compare-kitaru": defineCollection({
+    loader: glob({
+      pattern: "**/*.{md,mdx}",
+      base: "./src/content/compare-kitaru",
+    }),
+    schema: z.object({
+      competitor: z.string(),
+      competitorLogo: z.string().optional(),
+      competitorTagline: z.string().optional(),
+      title: z.string(),
+      shortTitle: z.string().optional(),
+      description: z.string(),
+      cardSubtitle: z.string(),
+      ctaHeading: z.string().default("Ready to try Kitaru?"),
+      order: z.number().default(100),
+      draft: z.boolean().default(false),
+      ogImage: z.string().url().optional(),
+    }),
+  }),
   team: defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/content/team" }),
     schema: teamSchema,

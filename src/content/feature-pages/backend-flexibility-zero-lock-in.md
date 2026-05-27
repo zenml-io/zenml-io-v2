@@ -15,12 +15,11 @@ hero:
     url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/153da77b/66b23fd465e26fc3d9cb731f_backend-flexibility-01-min.png"
     alt: Cloud diagram with data scientists and ML tools like AWS, GCP, Kubernetes, highlighting MLOps and model deployment.
   primaryCta:
-    label: Start Free Trial
-    href: https://cloud.zenml.io/signup
+    label: Book a demo
+    href: /book-your-demo
   secondaryCta:
-    label: Read the documentation
-    href: https://docs.zenml.io
-    external: true
+    label: Read Docs
+    href: /docs
 
 blocks:
   - kind: value

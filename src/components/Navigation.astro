@@ -4,11 +4,6 @@ import {
   formatStars,
   GITHUB_REPO_URL,
 } from "../lib/githubStars";
-/**
- * Navigation — responsive navbar matching the zenml.io Webflow site.
- * Desktop: hover-driven dropdown panels with two-column layout.
- * Mobile: hamburger toggle with accordion sections.
- */
 import {
   isActivePath,
   NAV_CTAS,
@@ -16,6 +11,12 @@ import {
   NAV_LINKS,
 } from "../lib/navigation";
 import Button from "./Button.astro";
+/**
+ * Navigation — responsive navbar matching the zenml.io Webflow site.
+ * Desktop: hover-driven dropdown panels with two-column layout.
+ * Mobile: hamburger toggle with accordion sections.
+ */
+import ZenmlLogo from "./brand/ZenmlLogo.astro";
 
 interface Props {
   currentPath?: string;
@@ -29,20 +30,56 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
   <div class="mx-auto max-w-[var(--container-lg)] px-4 sm:px-6 lg:px-8">
     <div class="flex h-[72px] items-center">
       {/* Logo */}
-      <a href="/" class="flex shrink-0 items-center gap-2">
-        <img
-          src="/images/zenml-logo.svg"
-          alt="ZenML"
-          width="115"
-          height="28"
-          class="h-7 w-auto"
-        />
+      <a href="/" class="flex shrink-0 items-center gap-2 text-foreground" aria-label="ZenML">
+        <ZenmlLogo class="h-7 w-auto" />
       </a>
 
       {/* Desktop Nav */}
       <nav class="hidden lg:flex lg:items-center lg:gap-1 lg:ml-12 h-full" role="navigation" aria-label="Main navigation">
         {/* Dropdown menus */}
-        {NAV_DROPDOWNS.map((dropdown) => (
+        {NAV_DROPDOWNS.map((dropdown) => dropdown.compact ? (
+          <div class="group relative flex h-full items-center" data-compact-dropdown>
+            <button
+              class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              {dropdown.label}
+              <svg class="h-4 w-4 text-gray-400 transition-transform group-hover:rotate-180" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 7.5L10 12.5L15 7.5" />
+              </svg>
+            </button>
+            {/* Compact dropdown — narrow box anchored under the button */}
+            <div data-dropdown-panel class="pointer-events-none invisible absolute left-0 top-full z-50 w-[320px] pt-2 opacity-0 transition-[opacity,visibility] duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100">
+              <div class="rounded-lg bg-white shadow-large border border-gray-100 p-2">
+                {dropdown.sections[0].links.map((link) => (
+                  <a
+                    href={link.href}
+                    class="group/link flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-gray-50"
+                    target={link.external ? "_blank" : undefined}
+                    rel={link.external ? "noopener noreferrer" : undefined}
+                  >
+                    <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-zenml-25 text-zenml-500">
+                      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <Fragment set:html={link.icon || '<path d="M13 2L4.09 12.69a.5.5 0 00.41.81H12l-1 10 8.91-10.69a.5.5 0 00-.41-.81H12l1-10z"/>'} />
+                      </svg>
+                    </div>
+                    <div class="min-w-0">
+                      <div class="text-sm font-medium text-gray-900 group-hover/link:text-zenml-500">
+                        {link.label}
+                      </div>
+                      {link.description && (
+                        <div class="mt-0.5 text-xs text-gray-500 leading-snug">
+                          {link.description}
+                        </div>
+                      )}
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
           <div class="group flex h-full items-center">
             <button
               class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
@@ -336,6 +373,16 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
   </div>
 </header>
 
+<style>
+  /* Force-hide a compact dropdown panel when its sibling is the active hover
+   * target. Overrides Tailwind's group-hover/group-focus-within visibility. */
+  [data-dropdown-panel].force-hidden {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+</style>
+
 <script>
   // Mobile menu toggle — minimal JS (no framework needed)
   const toggle = document.querySelector("[data-mobile-toggle]");
@@ -351,4 +398,33 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
     closeIcon?.classList.toggle("hidden", isOpen);
     closeIcon?.classList.toggle("block", !isOpen);
   });
+
+  // Compact dropdowns: enforce single-open-at-a-time. Adjacent panels are
+  // 320px wide and overlap horizontally, so CSS group-hover alone leaves
+  // the previously-opened panel stuck visible when the cursor crosses it.
+  const compactDropdowns = document.querySelectorAll(
+    "[data-compact-dropdown]"
+  ) as NodeListOf<HTMLElement>;
+  const navHeader = document.querySelector("header");
+
+  function closeOthers(active: Element) {
+    compactDropdowns.forEach((d) => {
+      if (d === active) return;
+      d.querySelector("[data-dropdown-panel]")?.classList.add("force-hidden");
+    });
+  }
+  function resetAll() {
+    document
+      .querySelectorAll("[data-dropdown-panel].force-hidden")
+      .forEach((p) => p.classList.remove("force-hidden"));
+  }
+
+  compactDropdowns.forEach((d) => {
+    d.addEventListener("mouseenter", () => {
+      d.querySelector("[data-dropdown-panel]")?.classList.remove("force-hidden");
+      closeOthers(d);
+    });
+  });
+
+  navHeader?.addEventListener("mouseleave", resetAll);
 </script>

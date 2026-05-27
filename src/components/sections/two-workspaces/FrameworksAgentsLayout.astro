@@ -1,0 +1,689 @@
+---
+/**
+ * FrameworksAgents subtab — TwoWorkspaces v2 · Kitaru · artboard A3S-0.
+ * "typed agent logic · Kitaru wraps around it."
+ *
+ * Three-column layout:
+ *   Col 1 — HARNESS: clickable list of 5 frameworks (PydanticAI, OpenAI SDK,
+ *            LangGraph, Claude SDK, Your loop). Selected row: orange-50 bg +
+ *            orange-400 badge + orange border. Unselected: white bg, ink badge.
+ *   Col 2 — KITARU ADDS: durable run layer card — KitaruAgent(agent) chip,
+ *            dashed orange Kitaru runtime box with 4 capability tiles (flow /
+ *            checkpoint / wait / replay), and a "Model + tools" row.
+ *   Col 3 — AFTER A CRASH: mini-Gantt (6 spans with summary stripe, axis,
+ *            span rows) + with-kitaru / without comparison block.
+ *
+ * Interactive: clicking a harness row sets `data-active-example` on the
+ * layout root. CSS attribute selectors reveal the matching col-2/col-3
+ * panels. No Preact island — identical pattern to FlowsLayout.astro.
+ *
+ * The mini-Gantt is built BESPOKE inline here; it is NOT extracted as a
+ * shared component and does NOT import from FlowsLayout.
+ *
+ * Design tokens (from artboard computed styles A3S-0):
+ *   Cream ground:  #FAF8F4  (bg-cream-warm)
+ *   Runtime box:   #FFF4EC  bg / #FB923C 1.5px dashed border
+ *   Tile cards:    #FFFFFF  bg / #FED7AA border
+ *   Row selected:  #FFF4EC  bg / #FFD7B5 border
+ *   Row default:   #FFFFFF  bg / #E5E7EB border
+ *   Badge selected: #FB923C (orange-400)
+ *   Badge default:  #101828 (ink) — except "Your loop" which is slate-400
+ *   Eyebrow:        #988573  (warm-taupe)
+ *   "Kitaru runtime" label: #C2410C (orange-700)
+ *   "outer layer" label:    #C2410C, opacity 0.7
+ *   Gantt track bg: #F2E9E2 (warm-taupe-track)
+ *   classify bar:   #FB923C (orange-400)
+ *   checkpoint bar: #9A3412 (orange-800)
+ *   crashed bar:    #EF4444 (red-500)
+ *   resumed bar:    #FB923C (orange-400)
+ *   tool bar:       #F97316 (orange-500)
+ *   artifact bar:   #9A3412 (orange-800)
+ */
+
+import {
+  DEFAULT_FRAMEWORK_AGENT_EXAMPLE_ID,
+  FRAMEWORK_AGENT_EXAMPLES,
+  type GanttSpanKind,
+} from "../../../lib/two-workspaces/frameworks-agents-examples";
+
+const defaultId = DEFAULT_FRAMEWORK_AGENT_EXAMPLE_ID;
+
+/** Bar fill hex per gantt span kind. */
+const ganttBarColor = (kind: GanttSpanKind): string =>
+  ({
+    classify: "#FB923C", // orange-400
+    checkpoint: "#9A3412", // orange-800
+    crashed: "#EF4444", // red-500
+    resumed: "#FB923C", // orange-400
+    tool: "#F97316", // orange-500
+    artifact: "#9A3412", // orange-800
+  })[kind];
+
+/** Dot color for the LHS span name row. */
+const ganttDotColor = (kind: GanttSpanKind): string =>
+  kind === "crashed"
+    ? "#EF4444"
+    : kind === "resumed"
+      ? "#FB923C"
+      : kind === "checkpoint" || kind === "artifact"
+        ? "#9A3412"
+        : "#F97316";
+
+/** Duration text color per kind. */
+const ganttDurColor = (kind: GanttSpanKind): string =>
+  kind === "crashed" ? "#EF4444" : kind === "resumed" ? "#C2410C" : "#988573";
+---
+
+<div
+  class="frameworks-root grid grid-cols-1 gap-3 lg:grid-cols-[280px_1fr_1fr]"
+  data-active-example={defaultId}
+>
+  {/* ── Col 1 — HARNESS list ─────────────────────────────────────── */}
+  <div class="fw-col-1 flex flex-col gap-3 rounded-md border border-[#E5E7EB] bg-[#FAF8F4] p-5">
+    {/* Column header */}
+    <div class="flex flex-col gap-1.5">
+      <span
+        class="font-sans text-[10px] font-semibold uppercase leading-3 tracking-[0.08em]"
+        style="color:#988573; font-family:'Plus Jakarta Sans', system-ui, sans-serif;"
+      >
+        HARNESS
+      </span>
+      <span
+        class="text-base font-semibold leading-5"
+        style="color:#101828; font-family:'Plus Jakarta Sans', system-ui, sans-serif;"
+      >
+        typed agent logic
+      </span>
+    </div>
+
+    {/* Framework rows */}
+    <div class="flex flex-col gap-1.5">
+      {FRAMEWORK_AGENT_EXAMPLES.map((ex) => (
+        <button
+          type="button"
+          data-fw-row={ex.id}
+          class="fw-row flex w-full cursor-pointer items-center gap-3 text-left transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+          aria-pressed={ex.id === defaultId ? "true" : "false"}
+        >
+          {/* 32×32 letter badge */}
+          <span
+            class="fw-row-badge inline-flex size-8 shrink-0 items-center justify-center rounded-md font-sans text-[13px] font-semibold leading-none"
+            data-fw-badge
+            aria-hidden="true"
+            style={`background-color:${ex.badgeBg}; color:${ex.badgeColor};`}
+          >
+            {ex.rowLetter}
+          </span>
+          {/* Row text */}
+          <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+            <span
+              class="fw-row-name truncate text-[13px] leading-[18px]"
+              data-fw-name
+              style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; color:#101828;"
+            >
+              {ex.rowLabel}
+            </span>
+            <span
+              class="truncate font-mono text-[11px] leading-[14px]"
+              style="font-family:'JetBrains Mono', monospace; font-weight:400; color:#6B7280;"
+            >
+              {ex.rowSubtitle}
+            </span>
+          </div>
+          {/* KEPT pill — active state only */}
+          <span
+            class="fw-kept-pill inline-flex shrink-0 items-center gap-[5px] rounded-full border px-2 py-[3px]"
+            data-fw-pill="active"
+            style="background-color:#FFF4EC; border-color:#FED7AA;"
+          >
+            <span
+              class="block size-[5px] shrink-0 rounded-full"
+              aria-hidden="true"
+              style="background-color:#F97316;"
+            ></span>
+            <span
+              class="font-mono text-[9px] font-medium uppercase leading-3"
+              style="font-family:'JetBrains Mono', monospace; color:#C2410C;"
+            >
+              KEPT
+            </span>
+          </span>
+        </button>
+      ))}
+    </div>
+
+    {/* Caption */}
+    <div class="mt-auto flex flex-col gap-0.5 pt-1">
+      <span
+        class="text-xs leading-4"
+        style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; font-weight:400; color:#6B7280;"
+      >
+        Harness stays.
+      </span>
+      <span
+        class="text-xs leading-4"
+        style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; font-weight:400; color:#6B7280;"
+      >
+        Kitaru wraps around it.
+      </span>
+    </div>
+  </div>
+
+  {/* ── Col 2 — KITARU ADDS (stacked per example) ──────────────────── */}
+  <div class="fw-col-2-stack relative">
+    {FRAMEWORK_AGENT_EXAMPLES.map((ex) => (
+      <div
+        data-fw-pane={ex.id}
+        class="fw-col-2-pane flex flex-col gap-3 rounded-md border border-[#E5E7EB] bg-[#FAF8F4] p-5"
+      >
+        {/* Col 2 header */}
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex flex-col gap-1.5">
+            <span
+              class="font-sans text-[10px] font-semibold uppercase leading-3 tracking-[0.08em]"
+              style="color:#988573; font-family:'Plus Jakarta Sans', system-ui, sans-serif;"
+            >
+              KITARU ADDS
+            </span>
+            <span
+              class="text-base font-semibold leading-5"
+              style="color:#101828; font-family:'Plus Jakarta Sans', system-ui, sans-serif;"
+            >
+              durable run layer
+            </span>
+          </div>
+          {/* KitaruAgent chip */}
+          <span
+            class="inline-flex shrink-0 items-center rounded-full border px-2.5 py-[5px]"
+            style="background-color:#FFF4EC; border-color:#FED7AA;"
+          >
+            <span
+              class="font-mono text-[11px] font-medium leading-[13px]"
+              style="font-family:'JetBrains Mono', monospace; color:#C2410C;"
+            >
+              {ex.kitaruChip}
+            </span>
+          </span>
+        </div>
+
+        {/* Kitaru runtime dashed box */}
+        <div
+          class="flex flex-col gap-3 rounded-md p-5"
+          style="background-color:#FFF4EC; border:1.5px dashed #FB923C;"
+        >
+          {/* Runtime header */}
+          <div class="flex items-baseline justify-between">
+            <span
+              class="text-sm font-semibold leading-[18px]"
+              style="color:#C2410C; font-family:'Plus Jakarta Sans', system-ui, sans-serif;"
+            >
+              Kitaru runtime
+            </span>
+            <span
+              class="text-xs font-medium leading-4"
+              style="color:#C2410C; opacity:0.7; font-family:'Plus Jakarta Sans', system-ui, sans-serif;"
+            >
+              outer layer
+            </span>
+          </div>
+
+          {/* 2×2 capability grid */}
+          <div class="flex flex-col gap-2">
+            {/* Row 1: flow + checkpoint */}
+            <div class="flex gap-2">
+              {[ex.capabilityTiles[0], ex.capabilityTiles[1]].map((tile) => (
+                <div
+                  class="flex flex-1 items-start gap-2 rounded-md p-2.5"
+                  style="background-color:#FFFFFF; border:1px solid #FED7AA;"
+                >
+                  <span
+                    class="mt-0.5 inline-flex size-[18px] shrink-0 items-center justify-center"
+                    aria-hidden="true"
+                    set:html={tile.iconSvg ?? ""}
+                  />
+                  <div class="flex flex-col gap-0.5">
+                    <span
+                      class="font-mono text-[12px] font-semibold leading-4"
+                      style="font-family:'JetBrains Mono', monospace; color:#101828;"
+                    >
+                      {tile.title}
+                    </span>
+                    <span
+                      class="text-[11px] font-medium leading-[14px]"
+                      style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; color:#6B7280;"
+                    >
+                      {tile.desc}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Row 2: wait + replay */}
+            <div class="flex gap-2">
+              {[ex.capabilityTiles[2], ex.capabilityTiles[3]].map((tile) => (
+                <div
+                  class="flex flex-1 items-start gap-2 rounded-md p-2.5"
+                  style="background-color:#FFFFFF; border:1px solid #FED7AA;"
+                >
+                  <span
+                    class="mt-0.5 inline-flex size-[18px] shrink-0 items-center justify-center"
+                    aria-hidden="true"
+                    set:html={tile.iconSvg ?? ""}
+                  />
+                  <div class="flex flex-col gap-0.5">
+                    <span
+                      class="font-mono text-[12px] font-semibold leading-4"
+                      style="font-family:'JetBrains Mono', monospace; color:#101828;"
+                    >
+                      {tile.title}
+                    </span>
+                    <span
+                      class="text-[11px] font-medium leading-[14px]"
+                      style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; color:#6B7280;"
+                    >
+                      {tile.desc}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Underlying harness + Model+tools rows */}
+        <div class="flex flex-col gap-2">
+          {/* Harness row */}
+          <div
+            class="flex items-center justify-between rounded-md px-3 py-3"
+            style="background-color:#FFFFFF; border:1px solid #E5E7EB;"
+          >
+            <span
+              class="text-[12px] font-semibold leading-4"
+              style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; color:#101828;"
+            >
+              {ex.underlyingHarness.label}
+            </span>
+            <div class="flex gap-1.5">
+              {ex.underlyingHarness.chips.map((chip) => (
+                <span
+                  class="rounded-[6px] px-2 py-[3px] text-[11px] font-medium leading-[14px]"
+                  style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; background-color:#F9FAFB; border:1px solid #E5E7EB; color:#374151;"
+                >
+                  {chip}
+                </span>
+              ))}
+            </div>
+          </div>
+          {/* Model + tools row */}
+          <div
+            class="flex items-center justify-between rounded-md px-3 py-3"
+            style="background-color:#FFFFFF; border:1px solid #E5E7EB;"
+          >
+            <span
+              class="text-[12px] font-semibold leading-4"
+              style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; color:#101828;"
+            >
+              Model + tools
+            </span>
+            <div class="flex gap-1.5">
+              {["OpenAI", "MCP", "db"].map((chip) => (
+                <span
+                  class="rounded-[6px] px-2 py-[3px] text-[11px] font-medium leading-[14px]"
+                  style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; background-color:#F9FAFB; border:1px solid #E5E7EB; color:#374151;"
+                >
+                  {chip}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Good fit / trade-off — honest pros & cons */}
+        <div
+          class="flex flex-col gap-2 rounded-md px-3 py-3"
+          style="background-color:#FFFFFF; border:1px solid #E5E7EB;"
+        >
+          {/* Good fit */}
+          <div class="flex items-start gap-2">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#F97316"
+              stroke-width="2.6"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="mt-px shrink-0"
+              aria-hidden="true"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+            <span
+              class="w-[64px] shrink-0 font-mono text-[10px] font-semibold uppercase leading-4 tracking-[0.08em]"
+              style="font-family:'JetBrains Mono', monospace; color:#C2410C;"
+            >
+              Good fit
+            </span>
+            <span
+              class="flex-1 text-[12px] font-medium leading-4"
+              style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; color:#374151;"
+            >
+              {ex.goodFit}
+            </span>
+          </div>
+          {/* Trade-off */}
+          <div class="flex items-start gap-2">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#98897A"
+              stroke-width="2.2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="mt-px shrink-0"
+              aria-hidden="true"
+            >
+              <path d="M12 4 L22 20 L2 20 Z" />
+            </svg>
+            <span
+              class="w-[64px] shrink-0 font-mono text-[10px] font-semibold uppercase leading-4 tracking-[0.08em]"
+              style="font-family:'JetBrains Mono', monospace; color:#6B7280;"
+            >
+              Trade-off
+            </span>
+            <span
+              class="flex-1 text-[12px] font-medium leading-4"
+              style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; color:#374151;"
+            >
+              {ex.tradeOff}
+            </span>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {/* ── Col 3 — AFTER A CRASH (stacked per example) ─────────────────── */}
+  <div class="fw-col-3-stack relative">
+    {FRAMEWORK_AGENT_EXAMPLES.map((ex) => (
+      <div
+        data-fw-pane={ex.id}
+        class="fw-col-3-pane flex flex-col gap-3 rounded-md border border-[#E5E7EB] bg-[#FAF8F4] p-5"
+      >
+        {/* Col 3 header */}
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex flex-col gap-1.5">
+            <span
+              class="font-sans text-[10px] font-semibold uppercase leading-3 tracking-[0.08em]"
+              style="color:#988573; font-family:'Plus Jakarta Sans', system-ui, sans-serif;"
+            >
+              AFTER A CRASH
+            </span>
+            <span
+              class="text-base font-semibold leading-5"
+              style="color:#101828; font-family:'Plus Jakarta Sans', system-ui, sans-serif;"
+            >
+              {ex.runLabel}
+            </span>
+          </div>
+          {/* Resumed chip */}
+          <span
+            class="inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-[5px]"
+            style="background-color:#FFF4EC; border-color:#FED7AA;"
+          >
+            <span
+              class="block size-1.5 shrink-0 rounded-full"
+              aria-hidden="true"
+              style="background-color:#F97316;"
+            ></span>
+            <span
+              class="font-mono text-[11px] font-medium leading-[13px]"
+              style="font-family:'JetBrains Mono', monospace; color:#C2410C;"
+            >
+              resumed
+            </span>
+          </span>
+        </div>
+
+        {/* Mini-Gantt card */}
+        <div
+          class="flex flex-col overflow-hidden rounded-md"
+          style="background-color:#FFFFFF; border:1px solid #E4E7EC;"
+        >
+          {/* Summary stripe header — compressed copy of the gantt below,
+              derived from the same per-framework span data. */}
+          <div class="flex flex-col gap-1.5 px-3.5 pt-3.5">
+            <div
+              class="flex h-2 overflow-hidden rounded-[3px]"
+              style="background-color:#F2E9E2;"
+              aria-hidden="true"
+            >
+              {ex.ganttSpans.map((span) => (
+                <div
+                  style={`width:${span.widthPct}%; min-width:3px; background-color:${ganttBarColor(span.kind)};`}
+                ></div>
+              ))}
+            </div>
+          </div>
+
+          {/* Axis row */}
+          <div class="flex items-center px-3.5 pt-3">
+            <div class="flex w-[150px] shrink-0 items-center">
+              <span
+                class="text-[10px] font-semibold uppercase leading-3 tracking-[0.08em]"
+                style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; color:#988573;"
+              >
+                SPAN
+              </span>
+            </div>
+            <div class="relative h-3 flex-1">
+              {ex.axisTicks.map((tick, i) => {
+                const positions = ["left-[0%]", "left-[25%]", "left-[50%]", "left-[75%]", "right-0"];
+                const translate = i > 0 && i < 4 ? "-translate-x-1/2" : "";
+                return (
+                  <span
+                    class:list={[
+                      "absolute top-0 w-max font-mono text-[8px] font-medium leading-3",
+                      positions[i],
+                      translate,
+                    ]}
+                    style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; color:#A89B8C;"
+                  >
+                    {tick}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Span rows */}
+          <div class="flex flex-col px-3.5 pb-3.5 pt-1">
+            {ex.ganttSpans.map((span) => (
+              <div class="flex h-[26px] shrink-0 items-center">
+                {/* LHS: dot + name + duration */}
+                <div class="flex w-[150px] shrink-0 items-center gap-1.5">
+                  <span
+                    class="block size-1.5 shrink-0 rounded-full"
+                    aria-hidden="true"
+                    style={`background-color:${ganttDotColor(span.kind)};`}
+                  ></span>
+                  <span
+                    class="min-w-0 flex-1 truncate font-mono text-[11px] font-medium leading-[14px]"
+                    style={`font-family:'JetBrains Mono', monospace; color:#705C4D;`}
+                  >
+                    {span.name}
+                  </span>
+                  <span
+                    class="shrink-0 font-mono text-[10px] font-medium tabular-nums leading-3"
+                    style={`font-family:'JetBrains Mono', monospace; color:${ganttDurColor(span.kind)};`}
+                  >
+                    {span.durationLabel}
+                  </span>
+                </div>
+                {/* RHS: bar track */}
+                <div class="relative h-4 flex-1">
+                  <div
+                    class="absolute top-1 h-2 rounded-[3px]"
+                    style={`left:calc(${span.leftPct}% + 4px); width:max(3px, ${span.widthPct}%); background-color:${ganttBarColor(span.kind)};`}
+                    aria-hidden="true"
+                  ></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* With/without comparison */}
+        <div
+          class="flex flex-col gap-2.5 border-t pt-3"
+          style="border-top-color:#E5E7EB;"
+        >
+          {/* With kitaru */}
+          <div class="flex items-start gap-2.5">
+            <span
+              class="inline-flex shrink-0 items-center rounded-full px-2.5 py-[3px]"
+              style="background-color:#FFF4EC; border:1px solid #FED7AA;"
+            >
+              <span
+                class="font-mono text-[11px] font-medium leading-[13px]"
+                style="font-family:'JetBrains Mono', monospace; color:#C2410C;"
+              >
+                with kitaru
+              </span>
+            </span>
+            <span
+              class="flex-1 text-xs font-medium leading-4"
+              style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; color:#101828;"
+            >
+              {ex.withKitaruText}
+            </span>
+          </div>
+          {/* Without */}
+          <div class="flex items-start gap-2.5">
+            <span
+              class="inline-flex shrink-0 items-center rounded-full border border-[#E5E7EB] bg-white px-2.5 py-[3px]"
+            >
+              <span
+                class="font-mono text-[11px] font-medium leading-[13px]"
+                style="font-family:'JetBrains Mono', monospace; color:#374151;"
+              >
+                without
+              </span>
+            </span>
+            <span
+              class="flex-1 text-xs font-medium leading-4 line-through"
+              style="font-family:'Plus Jakarta Sans', system-ui, sans-serif; color:#6B7280;"
+            >
+              {ex.withoutText}
+            </span>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  /* ── Column 2 & 3: grid-stack so all panes share one cell ─────────── */
+  .fw-col-2-stack,
+  .fw-col-3-stack {
+    display: grid;
+    grid-template-areas: "stack";
+    align-items: start;
+  }
+  .fw-col-2-stack > .fw-col-2-pane,
+  .fw-col-3-stack > .fw-col-3-pane {
+    grid-area: stack;
+    min-width: 0;
+    display: none;
+  }
+
+  /* Reveal the active pane for col 2 */
+  [data-active-example="pydantic_ai"]  .fw-col-2-stack > [data-fw-pane="pydantic_ai"],
+  [data-active-example="openai_sdk"]   .fw-col-2-stack > [data-fw-pane="openai_sdk"],
+  [data-active-example="langgraph"]    .fw-col-2-stack > [data-fw-pane="langgraph"],
+  [data-active-example="claude_sdk"]   .fw-col-2-stack > [data-fw-pane="claude_sdk"],
+  [data-active-example="your_loop"]    .fw-col-2-stack > [data-fw-pane="your_loop"] {
+    display: flex;
+  }
+
+  /* Reveal the active pane for col 3 */
+  [data-active-example="pydantic_ai"]  .fw-col-3-stack > [data-fw-pane="pydantic_ai"],
+  [data-active-example="openai_sdk"]   .fw-col-3-stack > [data-fw-pane="openai_sdk"],
+  [data-active-example="langgraph"]    .fw-col-3-stack > [data-fw-pane="langgraph"],
+  [data-active-example="claude_sdk"]   .fw-col-3-stack > [data-fw-pane="claude_sdk"],
+  [data-active-example="your_loop"]    .fw-col-3-stack > [data-fw-pane="your_loop"] {
+    display: flex;
+  }
+
+  /* ── Harness row styles (Kitaru selected-row spec) ──────────────── */
+  .fw-row {
+    border-radius: 8px;
+    padding: 12px;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    cursor: pointer;
+  }
+  .fw-row[aria-pressed="true"] {
+    background-color: #fff4ec;
+    border-color: #ffd7b5;
+    /* Compensate 1px border growth to avoid layout shift */
+    padding: 11px;
+  }
+
+  /* Badge: orange-400 when selected, use per-row brand bg when unselected */
+  .fw-row[aria-pressed="true"] [data-fw-badge] {
+    background-color: #fb923c !important;
+    color: #ffffff !important;
+  }
+
+  /* Row name: semibold when selected */
+  .fw-row[aria-pressed="true"] [data-fw-name] {
+    font-weight: 600;
+  }
+  .fw-row [data-fw-name] {
+    font-weight: 500;
+  }
+
+  /* KEPT pill: only visible on selected row */
+  .fw-row [data-fw-pill="active"] {
+    display: none;
+  }
+  .fw-row[aria-pressed="true"] [data-fw-pill="active"] {
+    display: inline-flex;
+  }
+</style>
+
+<script>
+  /**
+   * Harness row clicks → swap the active example on the FrameworksAgents root.
+   *
+   * Scoped to the root `[data-active-example]` ancestor so multiple page
+   * instances don't cross-talk (defensive — only one instance today).
+   */
+  const fwRowButtons = document.querySelectorAll<HTMLButtonElement>(
+    "[data-fw-row]",
+  );
+
+  const applyFwExample = (root: HTMLElement, exampleId: string) => {
+    root.dataset.activeExample = exampleId;
+    const rowsInRoot = root.querySelectorAll<HTMLButtonElement>("[data-fw-row]");
+    rowsInRoot.forEach((row) => {
+      row.setAttribute(
+        "aria-pressed",
+        row.dataset.fwRow === exampleId ? "true" : "false",
+      );
+    });
+  };
+
+  fwRowButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const root = btn.closest<HTMLElement>("[data-active-example]");
+      const id = btn.dataset.fwRow;
+      if (root && id) applyFwExample(root, id);
+    });
+  });
+</script>

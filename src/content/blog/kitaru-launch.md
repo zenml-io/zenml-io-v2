@@ -3,8 +3,9 @@ title: "Introducing Kitaru: Open Source Infrastructure For Asynchronous Agents (
 slug: "kitaru-launch"
 draft: false
 author: "zenml-team"
-category: "zenml"
+category: "kitaru"
 tags:
+  - "kitaru"
   - "agents"
   - "open-source"
   - "zenml"

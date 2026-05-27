@@ -1,0 +1,21 @@
+---
+/**
+ * ZenML wordmark — original purple ZenML logo.
+ *
+ * The unified rebrand is deferred until Zuri delivers final brand assets,
+ * so we render the original purple SVG asset directly. Once a new
+ * unified wordmark is approved, either:
+ *   (a) replace `/images/zenml-logo.svg`, or
+ *   (b) inline the new SVG paths here.
+ *
+ * `alt=""` because every caller is inside an anchor that already
+ * announces the destination as "ZenML" (home / brand). Avoids
+ * double-announcement for screen readers.
+ */
+interface Props {
+  class?: string;
+}
+const { class: className = "" } = Astro.props;
+---
+
+<img src="/images/zenml-logo.svg" alt="" class={className} aria-hidden="true" />

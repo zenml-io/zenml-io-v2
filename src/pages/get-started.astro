@@ -1,16 +1,19 @@
 ---
-import { getCollection } from "astro:content";
-import { createHighlighter } from "shiki";
-import Button from "../components/Button.astro";
-import FeaturesHubCTA from "../components/sections/FeaturesHubCTA.astro";
 /**
- * Get Started page.
+ * Get Started — ZenML (ML pipelines) onboarding.
  *
  * Route: /get-started
  *
  * Open-source onboarding page: hero, 3-step code walkthrough,
  * architecture diagram, projects showcase, resources grid, and CTA.
+ * The Phase-4 ML/Agent chooser was removed — `/get-started` is the
+ * ZenML onboarding again; Kitaru's entry point is its own
+ * `/product/kitaru` landing. `/get-started/zenml` 301-redirects here.
  */
+import { getCollection } from "astro:content";
+import { createHighlighter } from "shiki";
+import Button from "../components/Button.astro";
+import FeaturesHubCTA from "../components/sections/FeaturesHubCTA.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
   GET_STARTED_ARCHITECTURE,
@@ -74,6 +77,7 @@ const resourceColors = {
   ogTitle={GET_STARTED_SEO.ogTitle}
   ogDescription={GET_STARTED_SEO.ogDescription}
   ogImage={GET_STARTED_SEO.ogImage}
+  surface="ml"
 >
   <main>
     {/* Hero */}

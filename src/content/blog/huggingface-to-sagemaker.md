@@ -106,7 +106,7 @@ In this case, the training pipeline pushes the model into Huggingface each time 
   <figcaption>The same commit is tracked in ZenML</figcaption>
 </figure>
 
-Interested in the Model Control Plane? [Book a demo](https://zenml.io/book-a-demo) to see it in action.
+Interested in the Model Control Plane? [Book a demo](https://www.zenml.io/book-your-demo) to see it in action.
 
 ## 🫅Promote the model to production
 
@@ -204,4 +204,4 @@ ZenML builds upon the straightforward deployment capability of Huggingface model
 
 To delve deeper into each stage, refer to the comprehensive guide on GitHub: [zenml-io/zenml-huggingface-sagemaker](https://github.com/zenml-io/zenml-huggingface-sagemaker). Additionally, this YouTube playlist provides a detailed visual walkthrough of the entire pipeline: [Huggingface to Sagemaker ZenML tutorial](https://www.youtube.com/watch?v=Q1EH2H8Akgo&list=PLhNrLW_IWplw6dBbmGcL828-atJMu3CwF).
 
-Interested in standardizing your MLOps workflows? ZenML Cloud is now available to all - get a managed ZenML server with important features such as RBAC and pipeline triggers. [Book a demo](https://zenml.io/book-a-demo) with us now to learn how you can create your own MLOps pipelines today.
+Interested in standardizing your MLOps workflows? ZenML Cloud is now available to all - get a managed ZenML server with important features such as RBAC and pipeline triggers. [Book a demo](https://www.zenml.io/book-your-demo) with us now to learn how you can create your own MLOps pipelines today.

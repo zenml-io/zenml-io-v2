@@ -1,0 +1,66 @@
+---
+import Architecture from "../../components/kitaru/Architecture.astro";
+import CodeShowcase from "../../components/kitaru/CodeShowcase.astro";
+import Cta from "../../components/kitaru/Cta.astro";
+import Deploy from "../../components/kitaru/Deploy.astro";
+import Features from "../../components/kitaru/Features.astro";
+import Hero from "../../components/kitaru/Hero.astro";
+import OneImport from "../../components/kitaru/OneImport.astro";
+import PlatformBuilder from "../../components/kitaru/PlatformBuilder.astro";
+import SocialProof from "../../components/kitaru/SocialProof.astro";
+/**
+ * /product/kitaru — landing page introducing Kitaru as a sub-product
+ * under the unified ZenML umbrella.
+ *
+ * Deep port from `kitaru/site/src/pages/index.astro`. All 9 sections
+ * ported verbatim with original scoped CSS preserved. Kitaru-era CSS
+ * tokens (--color-bg, --color-accent, --font-ui) are bridged onto our
+ * unified tokens by `src/styles/kitaru-compat.css`, scoped to the
+ * `[data-app="kitaru"]` wrapper that flips the theme.
+ *
+ * Sections (in source order, matching kitaru.ai/):
+ *   Hero            → WebGL ASCII dot-grid + mesh gradient + replay panel
+ *   PlatformBuilder → 3 image-card problem statement grid
+ *   OneImport       → single-import code window
+ *   Features        → scroll-stacking feature cards (6 primitives)
+ *   CodeShowcase    → dark code panel + 8 hoverable primitives
+ *   Deploy          → deployment targets (K8s/Vertex/SageMaker/AzureML)
+ *   Architecture    → system architecture diagram
+ *   SocialProof     → testimonials + logos
+ *   Cta             → closing CTA band
+ *
+ * See MERGE_PLAN.md §4 (Phase 2b).
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/kitaru-compat.css";
+
+const seo = {
+  title: "Kitaru — Durable runtime for AI agents | ZenML",
+  description:
+    "Open-source runtime for long-running Python agents. Add checkpoints, replay, wait/resume, isolated execution, artifacts, and versioned deployments on your own cloud. Built by the ZenML team.",
+};
+---
+
+<BaseLayout {...seo} surface="agent">
+  <div data-app="kitaru" class="bg-background text-foreground">
+    <main id="kitaru-main">
+      <Hero />
+      <PlatformBuilder />
+      <OneImport />
+      <Features />
+      <CodeShowcase />
+      <Deploy />
+      <Architecture />
+      <div class="gradient-divider"></div>
+      <SocialProof />
+      <div class="gradient-divider"></div>
+      <Cta />
+    </main>
+  </div>
+</BaseLayout>
+
+{/* Scroll-reveal observer — drives the [data-reveal] fade-in animations on
+    every Kitaru section. Loaded once for the whole page. */}
+<script>
+  import "../../scripts/kitaru/scroll-reveal";
+</script>

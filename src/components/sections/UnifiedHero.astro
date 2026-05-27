@@ -1,0 +1,46 @@
+---
+import { HOMEPAGE_UNIFIED_HERO } from "../../lib/homepage-unified";
+import Button from "../Button.astro";
+
+/**
+ * UnifiedHero — hero for the unified `/` (Variant C copy).
+ *
+ * Matches the existing homepage Hero.astro structure exactly — same
+ * gradient surface, container widths, type scale, and Button component
+ * — but renders the unified copy (no Lottie below; the
+ * TwoWorkspaces widget plays that role on the unified page).
+ *
+ * Reads from `HOMEPAGE_UNIFIED_HERO` in src/lib/homepage-unified.ts.
+ */
+
+const {
+  headlinePrefix,
+  headlineAccent,
+  headlineSuffix,
+  subtitle,
+  primaryCta,
+  secondaryCta,
+} = HOMEPAGE_UNIFIED_HERO;
+const headline = `${headlinePrefix}${headlineAccent}${headlineSuffix}`;
+---
+
+<header class="relative overflow-hidden pb-8 pt-12 sm:pb-12 sm:pt-16">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-3xl text-center">
+      <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-[3.5rem] lg:leading-[1.1]">
+        {headline}
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-gray-600 sm:text-xl">
+        {subtitle}
+      </p>
+      <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <Button href={primaryCta.href} size="lg">
+          {primaryCta.label}
+        </Button>
+        <Button href={secondaryCta.href} variant="secondary" size="lg">
+          {secondaryCta.label}
+        </Button>
+      </div>
+    </div>
+  </div>
+</header>

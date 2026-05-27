@@ -8,7 +8,7 @@
  * - CTA button row at the bottom
  * - Optional links on feature names
  *
- * Used on /pricing (both Self-Hosted and SaaS tabs).
+ * Used on /pricing — one unified table across all three plans.
  */
 import type { PricingCompareTableData } from "../../lib/marketingPageTypes";
 import Button from "../Button.astro";
@@ -21,8 +21,13 @@ const { data } = Astro.props;
 const colCount = data.columnHeaders.length;
 ---
 
-<div class="mt-12">
-  <h3 class="mb-6 text-center text-2xl font-bold text-gray-900">Compare Plans</h3>
+<div>
+  <div class="mb-8 text-center">
+    <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
+      {data.heading}
+    </h2>
+    {data.subheading && <p class="mt-2 text-gray-600">{data.subheading}</p>}
+  </div>
   <div class="overflow-x-auto">
     <table class="w-full min-w-[600px] border-collapse text-sm">
       {/* Column headers */}
@@ -92,12 +97,12 @@ const colCount = data.columnHeaders.length;
         {/* CTA button row */}
         <tr class="border-t-2 border-gray-200">
           <td></td>
-          {data.ctaButtons.map((cta, i) => (
+          {data.ctaButtons.map((cta) => (
             <td class="px-4 py-4 text-center">
               <Button
                 href={cta.href}
                 size="sm"
-                variant={i === 0 && colCount === 2 ? "secondary" : "primary"}
+                variant={cta.variant ?? "primary"}
                 dataAnalytics={cta.analytics}
               >
                 {cta.label}

@@ -26,13 +26,12 @@ export const DEPLOYMENTS_HERO = {
   headline: "Flexible Deployment for Your MLOps Needs",
   deck: "Streamline your machine learning workflows with ZenML's adaptable deployment options. Whether you're experimenting locally or scaling to production, ZenML empowers you to orchestrate, manage, and deploy your models with ease.",
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   } as CtaLink,
   secondaryCta: {
-    label: "Read the Documentation",
-    href: "https://docs.zenml.io/getting-started/deploying-zenml",
-    external: true,
+    label: "Read Docs",
+    href: "/docs",
   } as CtaLink,
 } as const;
 
@@ -234,7 +233,7 @@ export const DEPLOYMENTS_TABS = {
     },
     {
       title: "Risk-free evaluation",
-      body: "14-day free trial for thorough testing and POC development.",
+      body: "Hands-on evaluation period for thorough testing and POC development.",
     },
   ],
 } as const;
@@ -245,15 +244,15 @@ export const DEPLOYMENTS_TABS = {
 export const DEPLOYMENTS_FINAL_CTA = {
   headline: "Unify Your ML and LLM Workflows",
   bullets: [
-    "Free, powerful MLOps open source foundation",
+    "Open-source foundation, no vendor lock-in",
     "Works with any infrastructure",
     "Upgrade to managed Pro features",
   ],
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   } as CtaLink,
-  secondaryCta: { label: "Use Open Source", href: "/get-started" } as CtaLink,
+  secondaryCta: { label: "Read Docs", href: "/docs" } as CtaLink,
   image: {
     url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png`,
     alt: "Dashboard displaying machine learning models, including versions, authors, and tags.",

@@ -1,0 +1,78 @@
+---
+/**
+ * Reusable ZenML pipeline step node — lifted from the live ZenML control plane
+ * (Paper reference frame 9M2-0). Inter font intentionally used here only
+ * (matches the real product UI); everywhere else on this site is Plus Jakarta.
+ */
+
+type State = "completed" | "running" | "pending";
+
+interface Props {
+  name: string;
+  duration: string;
+  state?: State;
+  width?: string;
+}
+
+const { name, duration, state = "completed", width = "240px" } = Astro.props;
+
+const dotBg =
+  state === "completed"
+    ? "#D4F2DC"
+    : state === "running"
+      ? "#FEF3C7"
+      : "#F3F4F6";
+const dotFill =
+  state === "completed"
+    ? "#1DBF4A"
+    : state === "running"
+      ? "#D97706"
+      : "#9CA3AF";
+---
+
+<div
+  style={`width:${width}`}
+  class="flex flex-col overflow-hidden rounded-lg border border-[#E5E7EB] bg-white"
+>
+  <div class="flex items-center gap-2 px-3 py-2">
+    <div
+      class="flex items-center justify-center rounded p-1"
+      style={`background:${dotBg}`}
+    >
+      {state === "completed" && (
+        <svg viewBox="0 0 33 33" class="size-4" aria-hidden="true">
+          <path
+            fill-rule="evenodd"
+            d="M16.5 4.483c-6.627 0-12 5.373-12 12 0 6.628 5.373 12 12 12s12-5.372 12-12c0-6.627-5.373-12-12-12m-14.667 12c0-8.1 6.567-14.666 14.667-14.666s14.667 6.566 14.667 14.666S24.6 31.15 16.5 31.15 1.833 24.584 1.833 16.483m21.61-4.942c.52.52.52 1.364 0 1.885l-8 8c-.52.52-1.365.52-1.886 0l-4-4a1.333 1.333 0 1 1 1.886-1.885l3.057 3.057 7.057-7.057c.52-.521 1.365-.521 1.886 0"
+            clip-rule="evenodd"
+            fill={dotFill}
+          ></path>
+        </svg>
+      )}
+      {state === "running" && (
+        <svg viewBox="0 0 24 24" class="size-4 animate-spin" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" fill="none" stroke={dotFill} stroke-width="2.5" stroke-dasharray="14 14" stroke-linecap="round"></circle>
+        </svg>
+      )}
+      {state === "pending" && (
+        <svg viewBox="0 0 24 24" class="size-4" aria-hidden="true">
+          <circle cx="12" cy="12" r="6" fill="none" stroke={dotFill} stroke-width="2"></circle>
+        </svg>
+      )}
+    </div>
+    <span
+      class="text-sm font-semibold leading-5 text-[#0D061E]"
+      style="font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif"
+    >
+      {name}
+    </span>
+  </div>
+  <div class="flex justify-end border-t border-[#E5E7EB] bg-[#F3F4F6] px-3 py-1">
+    <span
+      class="text-[11px] font-medium leading-4 text-[#6b7280]"
+      style="font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif"
+    >
+      {duration}
+    </span>
+  </div>
+</div>

@@ -1,0 +1,452 @@
+---
+/**
+ * ReplayLayout — TwoWorkspaces v2 · Kitaru · artboard A3Q-0
+ * "v2-Replay (Kitaru — FLAGSHIP)"
+ *
+ * Left pane: clickable REPLAY VARIANTS list (4 variants).
+ *   Each row: letter badge, version name, mono descriptor, status pill
+ *   (WINNER / CANDIDATE / BASELINE).
+ *   Selected row: cream-orange fill + orange border + badge fill orange-400.
+ *   Non-selected: transparent border, white-bordered badge, ink letter.
+ *
+ * Right pane: BASELINE VS CANDIDATE panel — kept lean. The v2 simplification
+ * dropped the per-step comparison table and the footer meta strip; the
+ * aggregate metric diff carries the story. Three blocks remain:
+ *   - Header strip: eyebrow (orange-600) + headline + context chip.
+ *   - 2-col metric panel (BASELINE left / CANDIDATE right with delta badges).
+ *   - "Ship …" decision strip with "Promote to PROD" button.
+ *
+ * Interactive: clicking a variant row sets `data-active-example` on the
+ * layout root; CSS attribute selectors reveal the matching right panel and
+ * selected-row chrome. All 4 examples are server-rendered + stacked.
+ * A small scoped vanilla script wires clicks and keyboard navigation.
+ * No Preact island.
+ *
+ * Tokens:
+ *   bg-cream-warm #FAF8F4, border #EAE5DC
+ *   orange-50 #FFF4EC, orange-200 #FFD7B5, orange-400 #FB923C
+ *   orange-600 #EA580C, orange-700 #C2410C
+ *   ink #1F1A14, warm-taupe #8B7E6E, warm-taupe-mid #52473A
+ */
+
+import {
+  DEFAULT_REPLAY_EXAMPLE_ID,
+  REPLAY_EXAMPLES,
+} from "../../../lib/two-workspaces/replay-examples";
+
+const defaultId = DEFAULT_REPLAY_EXAMPLE_ID;
+
+/**
+ * Delta badge appearance — positive (cost/time reduction) uses orange-50
+ * background with orange-700 text. Neutral/same uses warm-taupe-light.
+ * Regression (+ increase) uses a light red tint.
+ */
+const isDeltaNeutral = (delta: string | null) =>
+  delta === null || delta === "0%";
+const isDeltaRegression = (delta: string | null) =>
+  !!delta && delta.startsWith("+") && delta !== "+0%";
+---
+
+<div
+  class="replay-layout flex flex-col gap-3"
+  data-active-example={defaultId}
+>
+  <div class="grid grid-cols-1 gap-3 lg:grid-cols-[304px_1fr]">
+
+    {/* --------------------------------------------------------- */}
+    {/* LEFT PANE — REPLAY VARIANTS list                          */}
+    {/* --------------------------------------------------------- */}
+    <aside
+      class="flex flex-col rounded-md border bg-cream-warm p-4"
+      style="border-color: #EAE5DC;"
+    >
+      {/* Header */}
+      <div class="flex items-start justify-between gap-2 pb-3" style="border-bottom: 1px solid #EAE5DC; margin-bottom: 12px;">
+        <div class="flex flex-col gap-1">
+          <span
+            class="font-sans text-[11px] font-semibold uppercase leading-[14px] tracking-[0.08em]"
+            style="color: #8B7E6E; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+          >
+            REPLAY VARIANTS
+          </span>
+          <span
+            class="text-xs font-medium leading-4"
+            style="color: #52473A; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+          >
+            3 candidates · v17 baseline
+          </span>
+        </div>
+        <span
+          class="text-xs font-medium leading-4"
+          style="color: #8B7E6E; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+        >
+          4 total
+        </span>
+      </div>
+
+      {/* Variant rows */}
+      <div class="flex flex-col gap-1">
+        {REPLAY_EXAMPLES.map((ex) => (
+          <button
+            type="button"
+            data-replay-row={ex.variant.id}
+            aria-pressed={ex.variant.id === defaultId ? "true" : "false"}
+            class="replay-row flex w-full cursor-pointer items-center gap-3 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+          >
+            {/* Letter badge */}
+            <span
+              class="replay-badge inline-flex size-9 shrink-0 items-center justify-center rounded-md"
+              aria-hidden="true"
+            >
+              <span
+                class="replay-badge-letter font-sans text-[15px] font-bold leading-[18px]"
+                style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+              >
+                {ex.variant.rowLetter}
+              </span>
+            </span>
+
+            {/* Name + descriptor */}
+            <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+              <span
+                class="replay-row-name truncate font-sans text-[14px] leading-[18px]"
+                style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #1F1A14;"
+              >
+                {ex.variant.versionLabel}
+              </span>
+              <span
+                class="truncate font-mono text-[10px] font-medium leading-3"
+                style="color: #8B7E6E; font-family: 'JetBrains Mono', monospace;"
+              >
+                {ex.variant.descriptor}
+              </span>
+            </div>
+
+            {/* WINNER pill — orange-50 bg, orange-200 border */}
+            {ex.variant.statusPill.label === "WINNER" && (
+              <span
+                class="replay-pill-winner inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1"
+                style="background-color: #FFF4EC; border: 1px solid #FFD7B5;"
+              >
+                <span
+                  class="size-1.5 shrink-0 rounded-full"
+                  style="background-color: #EA580C;"
+                  aria-hidden="true"
+                ></span>
+                <span
+                  class="font-mono text-[10px] font-semibold leading-3 tracking-[0.04em]"
+                  style="color: #C2410C; font-family: 'JetBrains Mono', monospace;"
+                >
+                  WINNER
+                </span>
+              </span>
+            )}
+
+            {/* CANDIDATE pill — neutral border, no bg */}
+            {ex.variant.statusPill.label === "CANDIDATE" && (
+              <span
+                class="inline-flex shrink-0 rounded-full px-2.5 py-1"
+                style="border: 1px solid #EAE5DC;"
+              >
+                <span
+                  class="font-mono text-[10px] font-semibold leading-3 tracking-[0.04em]"
+                  style="color: #8B7E6E; font-family: 'JetBrains Mono', monospace;"
+                >
+                  CANDIDATE
+                </span>
+              </span>
+            )}
+
+            {/* BASELINE pill — warm fill */}
+            {ex.variant.statusPill.label === "BASELINE" && (
+              <span
+                class="inline-flex shrink-0 rounded-full px-2.5 py-1"
+                style="background-color: #F1ECE2; border: 1px solid #EAE5DC;"
+              >
+                <span
+                  class="font-mono text-[10px] font-semibold leading-3 tracking-[0.04em]"
+                  style="color: #52473A; font-family: 'JetBrains Mono', monospace;"
+                >
+                  BASELINE
+                </span>
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+    </aside>
+
+    {/* --------------------------------------------------------- */}
+    {/* RIGHT PANE — all 4 comparison panels stacked;            */}
+    {/* CSS reveals only the active one.                         */}
+    {/* --------------------------------------------------------- */}
+    <section
+      class="flex flex-col rounded-md border bg-cream-warm p-[22px] gap-[18px]"
+      style="border-color: #EAE5DC;"
+    >
+      {REPLAY_EXAMPLES.map((ex) => (
+        <div
+          data-replay-pane={ex.variant.id}
+          class="replay-pane flex flex-col gap-[18px]"
+        >
+          {/* ---- Header strip ---- */}
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex flex-col gap-1.5 min-w-0">
+              <span
+                class="font-sans text-[11px] font-semibold uppercase leading-[14px] tracking-[0.1em]"
+                style="color: #EA580C; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+              >
+                {ex.comparison.eyebrow}
+              </span>
+              <span
+                class="font-sans text-base font-semibold leading-[22px]"
+                style="color: #1F1A14; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+              >
+                {ex.comparison.headline}
+              </span>
+            </div>
+            <span
+              class="inline-flex shrink-0 items-center gap-2 rounded-full bg-white px-3 py-1.5"
+              style="border: 1px solid #EAE5DC;"
+            >
+              <span
+                class="size-1.5 shrink-0 rounded-full"
+                style="background-color: #EA580C;"
+                aria-hidden="true"
+              ></span>
+              <span
+                class="font-mono text-[11px] font-medium leading-[14px]"
+                style="color: #52473A; font-family: 'JetBrains Mono', monospace;"
+              >
+                {ex.comparison.contextChip}
+              </span>
+            </span>
+          </div>
+
+          {/* ---- 2-col metric panel ---- */}
+          <div
+            class="flex overflow-hidden rounded-md"
+            style="border: 1px solid #EAE5DC; background-color: #FFFFFF;"
+          >
+            {/* Baseline half */}
+            <div
+              class="flex flex-1 flex-col gap-2.5 px-4 py-3.5 min-w-0"
+              style="border-right: 1px solid #EAE5DC;"
+            >
+              <div class="flex flex-col gap-1">
+                <span
+                  class="font-mono text-[10px] font-semibold leading-3 tracking-[0.08em] uppercase"
+                  style="color: #8B7E6E; font-family: 'JetBrains Mono', monospace;"
+                >
+                  {ex.comparison.baselineLabel}
+                </span>
+                <span
+                  class="font-mono text-[12px] font-medium leading-4"
+                  style="color: #1F1A14; font-family: 'JetBrains Mono', monospace;"
+                >
+                  {ex.comparison.baselineName}
+                </span>
+              </div>
+              <div class="flex gap-3.5 min-w-0 flex-wrap">
+                {ex.comparison.metrics.map((m) => (
+                  <div class="flex flex-1 flex-col gap-0.5" style="min-width: 0;">
+                    <span
+                      class="font-sans text-[10px] font-medium leading-3 uppercase tracking-[0.06em]"
+                      style="color: #8B7E6E; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+                    >
+                      {m.label}
+                    </span>
+                    <span
+                      class="font-mono text-[14px] font-medium leading-[18px] tabular-nums"
+                      style="color: #1F1A14; font-family: 'JetBrains Mono', monospace;"
+                    >
+                      {m.baseline}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Candidate half — warm tint bg */}
+            <div
+              class="flex flex-1 flex-col gap-2.5 px-4 py-3.5 min-w-0"
+              style="background-color: #FFF9F2;"
+            >
+              <div class="flex flex-col gap-1">
+                <span
+                  class="font-mono text-[10px] font-semibold leading-3 tracking-[0.08em] uppercase"
+                  style="color: #C2410C; font-family: 'JetBrains Mono', monospace;"
+                >
+                  {ex.comparison.candidateLabel}
+                </span>
+                <span
+                  class="font-mono text-[12px] font-medium leading-4"
+                  style="color: #1F1A14; font-family: 'JetBrains Mono', monospace;"
+                >
+                  {ex.comparison.candidateName}
+                </span>
+              </div>
+              <div class="flex gap-3.5 min-w-0 flex-wrap">
+                {ex.comparison.metrics.map((m) => (
+                  <div class="flex flex-1 flex-col gap-0.5" style="min-width: 0;">
+                    <span
+                      class="font-sans text-[10px] font-medium leading-3 uppercase tracking-[0.06em]"
+                      style="color: #8B7E6E; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+                    >
+                      {m.label}
+                    </span>
+                    <div class="flex flex-col gap-0.5">
+                      <span
+                        class="font-mono text-[14px] font-medium leading-[18px] tabular-nums"
+                        style="color: #1F1A14; font-family: 'JetBrains Mono', monospace;"
+                      >
+                        {m.candidate}
+                      </span>
+                      {isDeltaNeutral(m.delta) ? (
+                        <span
+                          class="font-mono text-[9px] font-medium leading-3"
+                          style="color: #8B7E6E; font-family: 'JetBrains Mono', monospace;"
+                        >
+                          {m.deltaQualifier ?? "same"}
+                        </span>
+                      ) : (
+                        <span
+                          class="inline-block self-start rounded px-1.5 py-px font-mono text-[10px] font-semibold leading-3"
+                          style={isDeltaRegression(m.delta)
+                            ? "background-color: #FFF1F0; color: #B91C1C;"
+                            : "background-color: #FFF4EC; color: #C2410C;"}
+                        >
+                          {m.delta}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* ---- Ship / decision strip ---- */}
+          <div
+            class="flex items-center justify-between gap-4 rounded-md px-[18px] py-3.5"
+            style="background-color: #FFF4EC; border: 1px solid #FFD7B5;"
+          >
+            <div class="flex flex-1 flex-col gap-1 min-w-0">
+              <span
+                class="font-sans text-base font-semibold leading-5"
+                style="color: #1F1A14; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+              >
+                {ex.comparison.shipHeadline}
+              </span>
+              <span
+                class="font-sans text-[12px] font-medium leading-4"
+                style="color: #52473A; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+              >
+                {ex.comparison.shipSubline}
+              </span>
+            </div>
+            <button
+              type="button"
+              class="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md px-3.5 py-2.5 font-sans text-[12px] font-semibold leading-4 transition-colors hover:bg-orange-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+              style="background-color: #FFF4EC; border: 1px solid #FB923C; color: #C2410C; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+            >
+              Promote to PROD
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </div>
+      ))}
+    </section>
+  </div>
+</div>
+
+<style>
+  /* ------------------------------------------------------------------ */
+  /* SELECTED-ROW SPEC                                                    */
+  /*                                                                      */
+  /* Every row carries a transparent 1px border at rest — no layout      */
+  /* shift when a border is added on selection.                           */
+  /* ------------------------------------------------------------------ */
+  .replay-row {
+    border-radius: 8px;
+    padding: 12px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .replay-row:hover {
+    background-color: rgba(255, 244, 236, 0.5);
+  }
+  .replay-row[aria-pressed="true"] {
+    background-color: #fff4ec; /* orange-50 */
+    border-color: #ffd7b5;      /* orange-200 */
+    /* Compensate for the 1px border added — avoid layout shift */
+    padding: 11px 11px 11px 11px;
+  }
+  /* Row label: semibold when selected */
+  .replay-row[aria-pressed="true"] .replay-row-name {
+    font-weight: 600;
+  }
+  .replay-row .replay-row-name {
+    font-weight: 500;
+  }
+
+  /* Badge — orange-400 fill on selected, white+border on idle */
+  .replay-badge {
+    background-color: #ffffff;
+    border: 1px solid #eae5dc;
+  }
+  .replay-badge .replay-badge-letter {
+    color: #52473a;
+  }
+  .replay-row[aria-pressed="true"] .replay-badge {
+    background-color: #fb923c; /* orange-400 */
+    border-color: #fb923c;
+  }
+  .replay-row[aria-pressed="true"] .replay-badge .replay-badge-letter {
+    color: #ffffff;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* RIGHT-PANE GRID STACK                                               */
+  /* All 4 panels are rendered; only the active one is displayed.        */
+  /* ------------------------------------------------------------------ */
+  .replay-pane {
+    display: none;
+  }
+  .replay-layout[data-active-example="v18_rc2"] [data-replay-pane="v18_rc2"],
+  .replay-layout[data-active-example="v18_rc1"] [data-replay-pane="v18_rc1"],
+  .replay-layout[data-active-example="v17"]     [data-replay-pane="v17"],
+  .replay-layout[data-active-example="v18_rc3"] [data-replay-pane="v18_rc3"] {
+    display: flex;
+  }
+</style>
+
+<script>
+  /**
+   * Wire row clicks → swap the active example on the ReplayLayout root.
+   * Scoped to the closest [data-active-example] ancestor so multiple
+   * instances don't cross-talk (defensive — only one in TwoWorkspaces today).
+   */
+  const applyReplayExample = (root: HTMLElement, id: string) => {
+    root.dataset.activeExample = id;
+    root
+      .querySelectorAll<HTMLButtonElement>("[data-replay-row]")
+      .forEach((row) => {
+        row.setAttribute(
+          "aria-pressed",
+          row.dataset.replayRow === id ? "true" : "false",
+        );
+      });
+  };
+
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-replay-row]")
+    .forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const root = btn.closest<HTMLElement>("[data-active-example]");
+        const id = btn.dataset.replayRow;
+        if (root && id) applyReplayExample(root, id);
+      });
+    });
+</script>

@@ -1,0 +1,53 @@
+---
+/**
+ * CodePane — single syntax-highlighted code pane.
+ *
+ * Use inside a FeatureWithGraphic `graphic` slot when a feature row should
+ * pair prose with a code block instead of a custom graphic.
+ *
+ * Renders via the shared Kitaru highlighter (shiki.codeToHtml + set:html)
+ * rather than Astro's `<Code>` — see src/lib/kitaru-highlighter.ts for
+ * why. ZenML-side pages keep the `zenml-light` theme via the site-wide
+ * markdown Shiki config in `astro.config.ts`.
+ */
+import {
+  type KitaruLang,
+  renderKitaruCode,
+} from "../../../lib/kitaru-highlighter";
+
+interface Props {
+  code: string;
+  lang?: KitaruLang;
+}
+
+const { code, lang = "python" } = Astro.props;
+const html = await renderKitaruCode(code, lang);
+---
+
+<article class="codepane" set:html={html}></article>
+
+<style>
+  /* Warm cream panel matching the Kitaru site's code surface — the
+   * kitaru-light theme's editor.background (#FAF6EF) is the same value. */
+  .codepane {
+    width: 100%;
+    border: 1px solid oklch(0.85 0.08 60);
+    border-radius: 12px;
+    background: #FAF6EF;
+    overflow: hidden;
+  }
+  .codepane :global(pre) {
+    margin: 0;
+    padding: 20px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.6;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    overflow-x: auto;
+  }
+  .codepane :global(code) {
+    font-family: inherit;
+  }
+</style>

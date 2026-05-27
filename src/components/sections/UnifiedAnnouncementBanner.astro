@@ -1,0 +1,26 @@
+---
+/**
+ * UnifiedAnnouncementBanner — homepage announcement above the nav.
+ *
+ * Visual: matches the site-wide AnnouncementBanner.astro (purple
+ * bg-primary, white copy, underlined link). Only difference is the
+ * data source — pulls from HOMEPAGE_UNIFIED_ANNOUNCEMENT instead of
+ * the global ANNOUNCEMENT_BANNER.
+ *
+ * Rendered only on the unified homepage `/`. The site-wide banner stays
+ * untouched for every other route.
+ */
+import { HOMEPAGE_UNIFIED_ANNOUNCEMENT } from "../../lib/homepage-unified";
+
+const { body, linkText, linkHref } = HOMEPAGE_UNIFIED_ANNOUNCEMENT;
+---
+
+<div class="bg-primary px-4 py-2.5 text-center text-sm text-primary-foreground">
+  <span>{body}</span>
+  <a
+    href={linkHref}
+    class="ml-2 inline-flex items-center font-semibold underline decoration-white/40 underline-offset-2 hover:decoration-white"
+  >
+    {linkText} →
+  </a>
+</div>

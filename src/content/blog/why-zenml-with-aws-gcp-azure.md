@@ -99,5 +99,5 @@ Don't just take our word for it. Here's what Dragos Ciupureanu, VP of Engineerin
 
 “With ZenML, we're no longer tied to a single cloud provider. The flexibility to switch backends between AWS and GCP has been a game-changer for our team."
 
-Ready to take your ML/AI efforts to the next level? Start your ZenML journey today [by booking a demo!](https://www.zenml.io/book-a-demo)
+Ready to take your ML/AI efforts to the next level? Start your ZenML journey today [by booking a demo!](https://www.zenml.io/book-your-demo)
 

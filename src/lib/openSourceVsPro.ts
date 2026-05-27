@@ -33,10 +33,10 @@ export const OSS_VS_PRO_HERO: HeroData = {
   headline: "ZenML Open Source vs Pro",
   deck: "Transform your ML workflows from single-player experiments to multiplayer production systems. ZenML Pro builds on the same open-source foundation you trust: no code rewrites, no metadata migrations required.",
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   },
-  secondaryCta: { label: "Use Open Source", href: "/get-started" },
+  secondaryCta: { label: "Read Docs", href: "/docs" },
 };
 
 // ---------------------------------------------------------------------------
@@ -45,7 +45,7 @@ export const OSS_VS_PRO_HERO: HeroData = {
 export const OSS_VS_PRO_FEATURE_GRID = {
   eyebrow: "ZenML Open Source vs Pro",
   headline: "ZenML Pro is Open Source and More",
-  body: "ZenML Pro extends the beloved open-source foundation with enterprise features designed for collaboration, governance, and scale. Start with OSS, upgrade when ready: your pipelines keep running exactly as they are.",
+  body: "ZenML Pro extends the open-source foundation with enterprise features for collaboration, governance, and scale. The same pipelines keep running exactly as they are — moving to Pro takes no code rewrites.",
   items: [
     {
       title: "Managed control plane",
@@ -64,7 +64,7 @@ export const OSS_VS_PRO_FEATURE_GRID = {
       body: "ZenML Pro tenants have an enhanced dashboard with more features including a model control plane to view all your ML models, and the ability to trigger pipelines, do CI/CD and lots more.",
     },
   ] satisfies FeatureGridItem[],
-  primaryCta: { label: "Use Open Source", href: "/get-started" } as CtaLink,
+  primaryCta: { label: "Book a demo", href: "/book-your-demo" } as CtaLink,
   secondaryCta: { label: "Compare Plans", href: "/pricing" } as CtaLink,
   image: {
     url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e88e687c/65324d0f452d2d170268090d_opensource-cloud.svg`,
@@ -236,8 +236,8 @@ export const OSS_VS_PRO_FINAL_CTA = {
   headline: "Start deploying reproducible AI workflows today",
   body: "Enterprise-grade MLOps platform trusted by thousands of companies in production.",
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   },
-  secondaryCta: { label: "Use Open Source", href: "https://cloud.zenml.io" },
+  secondaryCta: { label: "Read Docs", href: "/docs" },
 } as const;

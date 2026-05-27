@@ -1,0 +1,380 @@
+/**
+ * kitaru-compat.css — full Kitaru landing stylesheet, scoped to
+ * [data-app="kitaru"] so it doesn't leak into the rest of the site.
+ *
+ * Source: kitaru/site/src/styles/global.css — verbatim port with every
+ * selector prefixed by the wrapper attribute. Lets us copy Kitaru
+ * components byte-for-byte into src/components/kitaru/ and have them
+ * render with their original visual fidelity.
+ *
+ * To rebrand globally: edit src/styles/global.css BRAND CONFIG instead.
+ * This file should only need touching if Kitaru source changes upstream.
+ */
+
+/* ─── 1. Kitaru token re-assert (overrides BaseLayout's data-app="zenml") ── */
+[data-app="kitaru"] {
+  /* Backgrounds */
+  --color-bg: oklch(0.975 0.008 75);
+  --color-surface: oklch(1 0 0);
+  --color-surface-warm: oklch(0.99 0.003 90);
+  --color-surface-subtle: oklch(0.985 0.005 75);
+
+  /* Text */
+  --color-primary: oklch(0.13 0.015 60);
+  --color-secondary: oklch(0.49 0.015 55);
+  --color-muted: oklch(0.55 0.015 60);
+
+  /* Accents */
+  --color-accent: oklch(0.65 0.16 45);
+  --color-accent-warm: oklch(0.68 0.08 55);
+  --color-accent-deep: oklch(0.57 0.09 65);
+  --color-accent-light: oklch(0.95 0.015 70);
+  --color-accent-darker: oklch(0.55 0.17 45);
+
+  /* Status */
+  --color-success: oklch(0.55 0.1 155);
+  --color-success-bg: oklch(0.96 0.025 145);
+  --color-warm-status: oklch(0.73 0.12 80);
+  --color-warm-status-bg: oklch(0.98 0.02 85);
+  --color-cost-up: oklch(0.55 0.18 25);
+  --color-cost-up-bg: oklch(0.93 0.03 350);
+  --color-error: oklch(0.55 0.2 25);
+  --color-negative: oklch(0.55 0.015 60);
+
+  /* Dark sections */
+  --color-dark-bg: oklch(0.13 0.015 60);
+  --color-dark-surface: oklch(0.16 0.015 60);
+  --color-dark-text: oklch(0.92 0.01 70);
+
+  /* Borders */
+  --color-border: oklch(0.91 0.01 70);
+  --color-border-light: oklch(0.95 0.008 70);
+  --color-border-accent: oklch(0.85 0.08 60);
+
+  /* Mesh gradients */
+  --mesh-accent-strong: radial-gradient(circle, oklch(0.65 0.16 45 / 0.25) 0%, oklch(0.65 0.16 45 / 0.08) 40%, transparent 65%);
+  --mesh-accent-soft: radial-gradient(circle, oklch(0.65 0.16 45 / 0.18) 0%, oklch(0.65 0.16 45 / 0.05) 40%, transparent 65%);
+  --mesh-warm: radial-gradient(circle, oklch(0.68 0.08 55 / 0.20) 0%, oklch(0.68 0.08 55 / 0.06) 40%, transparent 65%);
+  --focus-ring-accent: 0 0 0 3px oklch(0.65 0.16 45 / 0.08);
+
+  /* Fonts (use Inter as our --font-sans replacement for DM Sans) */
+  --font-ui: var(--font-sans);
+
+  /* TwoWorkspaces v2 Kitaru-subtab card surface (per Zuri's v2 brief).
+   * Used as the fill on the flows-list, code, timeline, and footer cards
+   * inside FlowsLayout — NOT on the outer section. Tinting only the
+   * cards (and not the section around them) keeps the brand-switch on
+   * the cards themselves so the page background stays neutral. */
+  --kitaru-cream: #FAF8F4;
+
+  /* Canonical Kitaru selected-row tokens (Paper artboard AP9-0).
+   * Reuse across FlowsLayout, CheckpointsLayout, ReplayLayout,
+   * DeploymentsLayout, FrameworksAgentsLayout — same spec everywhere.
+   * Most resolve to the standard orange ramp; only
+   * --kitaru-selected-row-border (#FFD7B5) is a one-off value that
+   * sits between orange-200 (#FED7AA) and orange-300 (#FDBA74). */
+  --kitaru-selected-row-bg:     var(--color-orange-50);   /* #FFF4EC */
+  --kitaru-selected-row-border: #FFD7B5;                  /* between 200 and 300 — canonical Kitaru selected-row border */
+  --kitaru-pill-bg:             var(--color-orange-50);   /* #FFF4EC */
+  --kitaru-pill-border:         var(--color-orange-200);  /* #FED7AA */
+  --kitaru-pill-dot:            var(--color-orange-500);  /* #F97316 */
+  --kitaru-pill-text:           var(--color-orange-700);  /* #C2410C */
+}
+
+/* ─── 2. Wrapper base — replaces Kitaru's body { ... } rules ─────────────── */
+[data-app="kitaru"] {
+  font-family: var(--font-ui);
+  background: var(--color-bg);
+  color: var(--color-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Grain overlay scoped to the wrapper */
+[data-app="kitaru"]::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 200;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  transform: translateZ(0);
+}
+@media (max-width: 768px) {
+  [data-app="kitaru"]::before { display: none; }
+}
+
+[data-app="kitaru"] ::selection { background: oklch(0.65 0.16 45 / 0.15); }
+[data-app="kitaru"] :focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+[data-app="kitaru"] :focus:not(:focus-visible) { outline: none; }
+
+[data-app="kitaru"] .skip-link {
+  position: absolute;
+  top: -100%; left: 16px; z-index: 10000;
+  padding: 8px 16px;
+  background: var(--color-primary);
+  color: oklch(1 0 0);
+  font-family: var(--font-ui);
+  font-size: 14px; font-weight: 600;
+  border-radius: 0 0 6px 6px;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+[data-app="kitaru"] .skip-link:focus { top: 0; }
+
+[data-app="kitaru"] .sr-only {
+  position: absolute;
+  width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap; border: 0;
+}
+
+/* ─── 3. Scroll reveal ───────────────────────────────────────────────────── */
+[data-app="kitaru"] [data-reveal] {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-app="kitaru"] [data-reveal="fade-left"] { transform: translateX(-32px); }
+[data-app="kitaru"] [data-reveal="fade-right"] { transform: translateX(32px); }
+[data-app="kitaru"] [data-reveal="scale-up"] { transform: scale(0.92); }
+[data-app="kitaru"] [data-reveal].revealed {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1);
+}
+[data-app="kitaru"] [data-reveal-delay="1"] { transition-delay: 0.1s; }
+[data-app="kitaru"] [data-reveal-delay="2"] { transition-delay: 0.2s; }
+[data-app="kitaru"] [data-reveal-delay="3"] { transition-delay: 0.3s; }
+[data-app="kitaru"] [data-reveal-delay="4"] { transition-delay: 0.4s; }
+[data-app="kitaru"] [data-reveal-delay="5"] { transition-delay: 0.5s; }
+[data-app="kitaru"] [data-reveal-delay="6"] { transition-delay: 0.6s; }
+[data-app="kitaru"] [data-reveal-delay="7"] { transition-delay: 0.7s; }
+[data-app="kitaru"] [data-reveal-delay="8"] { transition-delay: 0.8s; }
+
+/* ─── 4. Keyframes (don't need scoping) ──────────────────────────────────── */
+@keyframes kitaru-ring-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes kitaru-pausePulse {
+  0%, 100% { outline: 2px solid oklch(0.73 0.12 80 / 0.25); outline-offset: 0; }
+  50% { outline: 2px solid oklch(0.73 0.12 80 / 0); outline-offset: 8px; }
+}
+@keyframes kitaru-shimmer {
+  0%, 100% { outline: 3px solid oklch(0.65 0.16 45 / 0.3); outline-offset: 0; }
+  50% { outline: 3px solid oklch(0.65 0.16 45 / 0.08); outline-offset: 6px; }
+}
+@keyframes kitaru-pulse-ring {
+  0%, 100% { transform: scale(0.6); opacity: 1; }
+  50% { transform: scale(1.8); opacity: 0; }
+}
+@keyframes kitaru-accent-shimmer {
+  0%, 100% { background-position: 100% 50%; }
+  50% { background-position: 0% 50%; }
+}
+
+/* ─── 5. Shared utility classes ──────────────────────────────────────────── */
+[data-app="kitaru"] .pulse-dot {
+  position: relative;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  flex-shrink: 0;
+}
+[data-app="kitaru"] .pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: oklch(0.65 0.16 45 / 0.4);
+  animation: kitaru-pulse-ring 2s ease-in-out infinite;
+  z-index: -1;
+}
+
+[data-app="kitaru"] .accent-shimmer {
+  color: var(--color-accent);
+  background: linear-gradient(90deg, var(--color-accent) 0%, oklch(0.78 0.14 55) 40%, var(--color-accent) 80%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: kitaru-accent-shimmer 4s ease-in-out infinite;
+}
+
+[data-app="kitaru"] .code-dot { width: 10px; height: 10px; border-radius: 50%; }
+[data-app="kitaru"] .code-dot:nth-child(1) { background: oklch(0.57 0.19 25); }
+[data-app="kitaru"] .code-dot:nth-child(2) { background: oklch(0.73 0.12 80); }
+[data-app="kitaru"] .code-dot:nth-child(3) { background: oklch(0.72 0.18 145); }
+
+[data-app="kitaru"] .section-pad { padding: 64px clamp(24px, 5vw, 80px) 72px; }
+[data-app="kitaru"] .section-pad-compact { padding: 36px clamp(24px, 5vw, 80px) 44px; }
+[data-app="kitaru"] .section-inner { max-width: 1200px; width: 100%; margin: 0 auto; overflow: clip; }
+[data-app="kitaru"] .section-eyebrow {
+  display: block;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--color-accent);
+  margin-bottom: 16px;
+}
+[data-app="kitaru"] .divider-line { height: 1px; background: var(--color-border-light); }
+[data-app="kitaru"] .gradient-divider {
+  height: 1px; max-width: 600px; margin: 0 auto;
+  background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+}
+[data-app="kitaru"] .section-title {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 700; letter-spacing: -0.03em; line-height: 1.1;
+  max-width: 600px;
+}
+[data-app="kitaru"] .section-desc {
+  font-size: 17px; line-height: 1.6; color: var(--color-secondary);
+  max-width: 480px; margin-top: 16px;
+}
+
+/* Buttons */
+[data-app="kitaru"] .btn-primary {
+  font-family: var(--font-ui); font-size: 15px; font-weight: 600;
+  color: oklch(1 0 0); background: var(--color-primary);
+  padding: 14px 32px; border-radius: 8px; border: none;
+  cursor: pointer; transition: opacity 0.2s, transform 0.15s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+[data-app="kitaru"] .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+[data-app="kitaru"] .btn-primary:active { transform: translateY(1px); opacity: 0.95; }
+[data-app="kitaru"] .btn-primary svg { width: 16px; height: 16px; }
+
+[data-app="kitaru"] .btn-secondary {
+  font-family: var(--font-ui); font-size: 15px; font-weight: 500;
+  color: var(--color-secondary); background: var(--color-surface);
+  padding: 14px 28px; border-radius: 8px;
+  border: 1px solid var(--color-border);
+  cursor: pointer; transition: all 0.2s;
+  text-decoration: none;
+}
+[data-app="kitaru"] .btn-secondary:hover {
+  border-color: var(--color-muted);
+  color: var(--color-primary);
+  transform: translateY(-1px);
+}
+[data-app="kitaru"] .btn-secondary:active { transform: translateY(1px); }
+
+[data-app="kitaru"] .btn-accent {
+  font-family: var(--font-ui); font-size: 15px; font-weight: 600;
+  color: oklch(1 0 0); background: var(--color-accent-darker);
+  padding: 14px 32px; border-radius: 8px;
+  border: 1px solid oklch(0.52 0.18 45);
+  cursor: pointer; transition: opacity 0.2s, transform 0.15s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+[data-app="kitaru"] .btn-accent:hover { opacity: 0.9; transform: translateY(-2px); }
+[data-app="kitaru"] .btn-accent:active { transform: translateY(1px); opacity: 0.95; }
+
+[data-app="kitaru"] .btn-secondary-dark {
+  font-family: var(--font-ui); font-size: 15px; font-weight: 500;
+  color: oklch(1 0 0 / 0.7); background: transparent;
+  padding: 14px 28px; border-radius: 8px;
+  border: 1px solid oklch(1 0 0 / 0.15);
+  cursor: pointer; transition: all 0.2s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+[data-app="kitaru"] .btn-secondary-dark:hover {
+  border-color: oklch(1 0 0 / 0.3);
+  color: oklch(1 0 0 / 0.9);
+}
+
+[data-app="kitaru"] .pill-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-secondary);
+}
+
+[data-app="kitaru"] .dark-section {
+  background: var(--color-dark-bg);
+  color: var(--color-dark-text);
+}
+
+/* Card patterns */
+[data-app="kitaru"] .card-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), oklch(0.65 0.16 45 / 0.04), transparent 60%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 1;
+}
+[data-app="kitaru"] .why-card:hover .card-glow,
+[data-app="kitaru"] .feature-card:hover .card-glow,
+[data-app="kitaru"] .gs-step-card:hover .card-glow,
+[data-app="kitaru"] .gs-form-card:hover .card-glow { opacity: 1; }
+
+[data-app="kitaru"] .why-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  position: relative; overflow: hidden;
+  transition: border-color 0.3s;
+}
+[data-app="kitaru"] .why-card:hover { border-color: var(--color-muted); }
+[data-app="kitaru"] .why-card-image {
+  width: 100%;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface-warm, oklch(0.97 0.005 70));
+  min-height: 120px;
+}
+[data-app="kitaru"] .why-card-image img {
+  width: 100%; aspect-ratio: 16 / 9;
+  object-fit: cover; display: block;
+}
+[data-app="kitaru"] .why-card-content {
+  position: relative; z-index: 2;
+  padding: 24px 28px 28px;
+}
+[data-app="kitaru"] .why-card h3 {
+  font-size: 1.05rem; font-weight: 600;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em; line-height: 1.3;
+}
+[data-app="kitaru"] .why-card p {
+  color: var(--color-secondary);
+  font-size: 0.85rem; line-height: 1.6;
+  font-weight: 300;
+}
+
+/* Syntax highlighting */
+[data-app="kitaru"] .code-syntax .kw  { color: oklch(0.73 0.08 70); }
+[data-app="kitaru"] .code-syntax .fn  { color: oklch(0.68 0.12 50); }
+[data-app="kitaru"] .code-syntax .str { color: oklch(0.72 0.1 155); }
+[data-app="kitaru"] .code-syntax .var { color: var(--color-dark-text); }
+[data-app="kitaru"] .code-syntax .op  { color: oklch(0.72 0.02 65); }
+[data-app="kitaru"] .code-syntax .dec { color: oklch(0.68 0.12 50); font-style: italic; }
+[data-app="kitaru"] .code-syntax .cmt { color: oklch(0.67 0.015 60); font-style: italic; }
+
+@media (max-width: 600px) {
+  [data-app="kitaru"] .section-pad,
+  [data-app="kitaru"] .section-pad-compact { padding: 48px 16px; }
+}
+@media (max-width: 480px) {
+  [data-app="kitaru"] .section-title { font-size: clamp(24px, 6vw, 32px); }
+  [data-app="kitaru"] .section-desc { font-size: 15px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-app="kitaru"] [data-reveal] { opacity: 1; transform: none; transition: none; }
+  [data-app="kitaru"] .pulse-dot::after { animation: none; }
+  [data-app="kitaru"] .accent-shimmer {
+    -webkit-text-fill-color: var(--color-accent);
+    background: none; animation: none;
+  }
+  [data-app="kitaru"] .ascii-canvas { display: none; }
+  [data-app="kitaru"]::before { display: none; }
+  [data-app="kitaru"] .features-sticky-container { padding-bottom: 0; }
+  [data-app="kitaru"] .feature-card {
+    position: relative; top: auto;
+    min-height: auto; margin-bottom: 48px;
+  }
+  [data-app="kitaru"] .feature-card.feature-card--last { margin-bottom: 0; }
+}

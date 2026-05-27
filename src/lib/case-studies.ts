@@ -10,10 +10,10 @@ export const CASE_STUDIES_HUB_HERO = {
   headline: "Real Teams. Real AI Workflows",
   body: "See how teams are using ZenML to unify their AI platforms—from batch evaluations to real-time serving, traditional ML to GenAI workflows.",
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   },
-  secondaryCta: { label: "Use Open Source", href: "/get-started" },
+  secondaryCta: { label: "Read Docs", href: "/docs" },
 } as const;
 
 export const CASE_STUDIES_HUB_BANNER = {
@@ -26,8 +26,8 @@ export const CASE_STUDIES_HUB_CTA = {
   headline: "Start deploying reproducible AI workflows today",
   body: "Enterprise-grade MLOps platform trusted by thousands of companies in production.",
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   },
-  secondaryCta: { label: "Use Open Source", href: "https://cloud.zenml.io" },
+  secondaryCta: { label: "Read Docs", href: "/docs" },
 } as const;

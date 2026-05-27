@@ -35,6 +35,7 @@ Before any work, ask the user for (if not already provided):
 2. **Author**: Who should be listed? (check `src/content/authors/` for existing slugs)
 3. **Publish date**: Today, or a specific date?
 4. **Is this an SEO/comparison post?** (e.g., from Tanish's GTM content — these need the `discovery` tag)
+5. **Which workspace does this post belong to?** ZenML/ML content uses `category: "mlops"` or `"zenml"`; Kitaru/agent content uses `category: "kitaru"` and includes `"kitaru"` as the first tag. See `MERGE_PLAN.md` for the unified ZenML × Kitaru taxonomy.
 
 ## Step 1: Create a Feature Branch
 
@@ -221,26 +222,27 @@ Then **add the `discovery` tag** to the tags list. This excludes the post from t
 
 ### C5. Validate the category
 
-Categories are a fixed set (14 total):
+Categories are a fixed set (15 total):
 
-| Slug | Name |
-|------|------|
-| `mlops` | MLOps |
-| `zenml` | ZenML |
-| `llmops` | LLMOps |
-| `llms` | LLMs |
-| `tutorials` | Tutorials |
-| `community` | Community |
-| `case-studies` | Case Studies |
-| `newsletters` | Newsletters |
-| `podcast` | Podcast |
-| `sales-blog` | Sales Blog |
-| `tech-startup` | Tech Startup |
-| `webinars` | Webinars |
-| `zenml-updates` | ZenML Updates |
-| `mlstacks` | MLStacks |
+| Slug | Name | When to use |
+|------|------|-------------|
+| `mlops` | MLOps | ML platform, pipelines, training infra |
+| `zenml` | ZenML | ZenML feature releases, launches, OSS |
+| `kitaru` | Kitaru | Kitaru launches, agent durable execution, agent infra |
+| `llmops` | LLMOps | LLM production patterns, prompt ops |
+| `llms` | LLMs | LLM models, capabilities, theory |
+| `tutorials` | Tutorials | Step-by-step how-tos |
+| `community` | Community | Team highlights, user stories |
+| `case-studies` | Case Studies | Customer wins (often pairs with `/case-studies` content) |
+| `newsletters` | Newsletters | Monthly digests |
+| `podcast` | Podcast | Podcast episodes |
+| `sales-blog` | Sales Blog | Sales/GTM content |
+| `tech-startup` | Tech Startup | Startup-audience posts |
+| `webinars` | Webinars | Webinar recaps |
+| `zenml-updates` | ZenML Updates | Product changelog-style |
+| `mlstacks` | MLStacks | MLStacks-specific |
 
-Category is optional. Don't create new categories — use the closest match.
+Category is optional. Don't create new categories — use the closest match. **For Kitaru-themed posts**, use `category: "kitaru"` and prepend `"kitaru"` to the tags array; this surfaces them on `/category/kitaru` and routes them on the unified blog sidebar.
 
 ### C6. Build the frontmatter
 
@@ -376,8 +378,8 @@ Print a summary:
 | `draft` | No | boolean | `false` |
 | `featured` | No | boolean | `false` |
 | `author` | Yes | slug ref | `"hamza-tahir"` |
-| `category` | No | slug ref | `"mlops"` |
-| `tags` | No | slug ref[] | `["zenml", "mlops"]` |
+| `category` | No | slug ref | `"mlops"` (ZenML/ML), `"kitaru"` (Kitaru/agent) |
+| `tags` | No | slug ref[] | `["zenml", "mlops"]` or `["kitaru", "agents"]` for Kitaru posts |
 | `date` | Yes | ISO date | `"2026-04-06T00:00:00.000Z"` |
 | `readingTime` | No | string | `"5 mins"` |
 | `mainImage.url` | No* | absolute URL | `"https://assets.zenml.io/..."` |

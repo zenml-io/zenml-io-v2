@@ -1,0 +1,467 @@
+---
+/**
+ * ArtifactsModels subtab layout — TwoWorkspaces v2 · ZenML · artboard A3L-0.
+ *
+ * MERGED tab (replaces old Artifacts + Models separate tabs). Static
+ * single-state port — no interactivity, no JS, no data-active-example.
+ *
+ * Structure:
+ *   Left pane: combined list of artifacts + models. churn_predictor is the
+ *     selected row (zenml-50 bg + 1px zenml-300 border + fw-600 label).
+ *     Non-selected rows carry border-transparent so no layout shift.
+ *   Right pane:
+ *     - Detail header: 32×32 purple icon tile + name + "v18 of 18" + sha/fw/size meta
+ *     - Version-evolution card: version line chart + metadata rail
+ *     - Lineage crumb strip
+ *     - WHERE IT RUNS env strip: PROD (dark card) / STAGE / CANARY
+ *     - Footer strip: registry counts + last promoted timestamp
+ *   Both panes are bordered white cards on the gray widget body —
+ *   consistent with the Stacks / Frameworks / Pipelines subtabs.
+ */
+
+import { ARTIFACTS_MODELS_DATA } from "../../../lib/two-workspaces/artifacts-models-data";
+
+const { listTitle, listSubtitle, listCountLabel, rows, detail, footer } =
+  ARTIFACTS_MODELS_DATA;
+const { header, chart, metadata, lineage, envStrip } = detail;
+
+// ─── SVG helpers ──────────────────────────────────────────────────────────
+
+/** Lucide "sparkles" / asterisk — used for MODEL rows */
+const MODEL_ICON_PATHS = `<circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6m11-11h-6M7 12H1m17.07-7.07l-4.24 4.24M9.17 14.83l-4.24 4.24m0-14.14l4.24 4.24m5.66 5.66l4.24 4.24"/>`;
+
+/** Lucide "database" cylinder — used for ARTIFACT rows */
+const ARTIFACT_ICON_PATHS = `<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v6c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 11v6c0 1.66 4.03 3 9 3s9-1.34 9-3v-6"/>`;
+
+/** Lucide "chevron-right" — used in Lineage crumb */
+const CHEVRON_RIGHT = `<polyline points="9 18 15 12 9 6"/>`;
+
+const dotColorClass = (c: "green" | "amber" | "blue") =>
+  c === "green"
+    ? "bg-[#34D399]"
+    : c === "amber"
+      ? "bg-[#F59E0B]"
+      : "bg-[#60A5FA]";
+---
+
+<div class="artifacts-models-layout flex flex-col gap-3" style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
+  {/* ── Main body: left pane + right pane (stacks below lg) ───────────── */}
+  <div class="grid grid-cols-1 gap-3 lg:grid-cols-[368px_1fr]">
+
+    {/* ── LEFT PANE: combined list ──────────────────────────────────────── */}
+    <aside class="flex flex-col rounded-md border border-gray-200 bg-white p-[18px]">
+
+      {/* List header */}
+      <div class="flex items-start justify-between pb-4">
+        <div class="flex flex-col gap-1">
+          <span
+            class="font-mono uppercase leading-[14px]"
+            style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #667085;"
+          >
+            {listTitle}
+          </span>
+          <span
+            class="leading-4"
+            style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 12px; font-weight: 500; color: #667085;"
+          >
+            {listSubtitle}
+          </span>
+        </div>
+        <div style="padding-top: 1px;">
+          <span
+            class="font-mono leading-[14px]"
+            style="font-size: 11px; font-weight: 500; color: #667085;"
+          >
+            {listCountLabel}
+          </span>
+        </div>
+      </div>
+
+      {/* List rows */}
+      <div class="flex flex-col gap-0.5">
+        {rows.map((row) => (
+          <div
+            class:list={[
+              "am-row flex w-full items-center gap-3 rounded-md",
+              row.selected
+                ? "am-row--selected"
+                : "",
+            ]}
+            style={`
+              padding: 10px 14px;
+              border: 1px solid ${row.selected ? "#D6BBFB" : "transparent"};
+              background: ${row.selected ? "#F6F2FF" : "transparent"};
+              border-radius: 6px;
+            `}
+          >
+            {/* Icon slot — 24×24, fixed width */}
+            <div
+              class="flex shrink-0 items-center justify-center"
+              style={`
+                width: 24px; height: 24px; border-radius: 6px;
+                background: ${row.selected ? "#7F56D9" : "#F6F2FF"};
+              `}
+            >
+              <svg
+                width="12" height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke={row.selected ? "#FFFFFF" : "#7F56D9"}
+                stroke-width={row.kind === "model" ? "2.2" : "2"}
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+                set:html={row.kind === "model" ? MODEL_ICON_PATHS : ARTIFACT_ICON_PATHS}
+              />
+            </div>
+
+            {/* Name + meta — grows */}
+            <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+              <div class="flex items-center gap-1.5">
+                <span
+                  class="font-mono leading-4"
+                  style={`font-size: 13px; font-weight: ${row.selected ? 600 : 500}; color: #101828; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;`}
+                >
+                  {row.name}
+                </span>
+                {row.kind === "model" && (
+                  <span
+                    class="font-mono shrink-0"
+                    style="font-size: 9px; font-weight: 500; letter-spacing: 0.04em; line-height: 12px; color: #5B2BBF; background: #EDE4FF; border-radius: 3px; padding: 1px 5px;"
+                  >
+                    MODEL
+                  </span>
+                )}
+              </div>
+              <span
+                class="font-mono leading-[14px]"
+                style="font-size: 11px; color: #667085; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+              >
+                {row.meta}
+              </span>
+            </div>
+
+            {/* Timestamp — fixed width, no shrink */}
+            <span
+              class="font-mono shrink-0 leading-[14px]"
+              style="font-size: 11px; color: #667085;"
+            >
+              {row.age}
+            </span>
+          </div>
+        ))}
+      </div>
+    </aside>
+
+    {/* ── RIGHT PANE: detail view ──────────────────────────────────────── */}
+    <section
+      class="flex min-w-0 flex-col rounded-md border border-gray-200 bg-white p-[18px]"
+      style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+    >
+
+      {/* Detail header */}
+      <div
+        class="flex items-center gap-3"
+        style="padding-bottom: 16px;"
+      >
+        {/* 32×32 purple icon tile */}
+        <div
+          class="flex shrink-0 items-center justify-center"
+          style="width: 32px; height: 32px; border-radius: 8px; background: #7F56D9;"
+        >
+          <svg
+            width="16" height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#FFFFFF"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            set:html={header.kind === "model" ? MODEL_ICON_PATHS : ARTIFACT_ICON_PATHS}
+          />
+        </div>
+        {/* Name + version + meta */}
+        <div class="flex flex-col gap-0.75">
+          <div class="flex items-center gap-2">
+            <span
+              style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 16px; font-weight: 600; letter-spacing: -0.005em; line-height: 20px; color: #101828;"
+            >
+              {header.name}
+            </span>
+            <span
+              class="font-mono"
+              style="font-size: 12px; font-weight: 500; line-height: 15px; color: #5B2BBF;"
+            >
+              {header.version}
+            </span>
+          </div>
+          <span
+            class="font-mono"
+            style="font-size: 11px; line-height: 14px; color: #667085;"
+          >
+            {header.meta}
+          </span>
+        </div>
+      </div>
+
+      {/* Version-evolution card (chart + metadata rail, stacks below lg) */}
+      <div
+        class="flex flex-col gap-4 lg:flex-row"
+        style="border: 1px solid #E4E7EC; border-radius: 8px; background: #FFFFFF; padding: 16px 18px 14px 18px;"
+      >
+        {/* Chart block — grows */}
+        <div class="flex min-w-0 flex-1 flex-col gap-2">
+          {/* Chart header */}
+          <div class="flex items-baseline justify-between">
+            <div class="flex shrink-0 items-baseline gap-2">
+              <span
+                style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; line-height: 14px; color: #101828; text-transform: uppercase; white-space: nowrap;"
+              >
+                {chart.title}
+              </span>
+              <span
+                class="font-mono"
+                style="font-size: 11px; line-height: 14px; color: #667085; white-space: nowrap;"
+              >
+                {chart.subtitle}
+              </span>
+            </div>
+          </div>
+
+          {/* Version-evolution line chart */}
+          <div style="height: 148px; overflow: clip; background: #FFFFFF; flex-shrink: 0; width: 100%;">
+            <svg width="100%" height="148" viewBox="0 0 530 148" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="am-grad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#7f56d9" stop-opacity="0.20"/>
+                  <stop offset="100%" stop-color="#7f56d9" stop-opacity="0.02"/>
+                </linearGradient>
+              </defs>
+              {/* baseline + dashed guidelines at v8 / v12 / v18 */}
+              <line x1="0" y1="138" x2="530" y2="138" stroke="#E4E7EC"/>
+              <line x1="210" y1="6" x2="210" y2="138" stroke="#D6C0FF" stroke-dasharray="3 3"/>
+              <line x1="335" y1="6" x2="335" y2="138" stroke="#D6C0FF" stroke-dasharray="3 3"/>
+              <line x1="520" y1="6" x2="520" y2="138" stroke="#7F56D9" stroke-dasharray="3 3" opacity="0.6"/>
+              {/* accuracy curve — passes through all 8 version dots */}
+              <path d="M10,120 C22,116 59,104 80,98 C101,93 114,92 136,87 C158,82 188,73 210,67 C232,61 248,58 269,53 C290,49 311,44 335,40 C360,36 385,34 416,31 C447,28 503,25 520,24 L520,138 L10,138 Z" fill="url(#am-grad)"/>
+              <path d="M10,120 C22,116 59,104 80,98 C101,93 114,92 136,87 C158,82 188,73 210,67 C232,61 248,58 269,53 C290,49 311,44 335,40 C360,36 385,34 416,31 C447,28 503,25 520,24" stroke="#7F56D9" stroke-width="1.75" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              {/* 8 version markers — solid / hollow alternating, v18 large accent */}
+              <circle cx="10" cy="120" r="3.5" fill="#7F56D9"/>
+              <circle cx="80" cy="98" r="3" fill="#FFFFFF" stroke="#7F56D9" stroke-width="1.5"/>
+              <circle cx="136" cy="87" r="3.5" fill="#7F56D9"/>
+              <circle cx="210" cy="67" r="3" fill="#FFFFFF" stroke="#7F56D9" stroke-width="1.5"/>
+              <circle cx="269" cy="53" r="3.5" fill="#7F56D9"/>
+              <circle cx="335" cy="40" r="3" fill="#FFFFFF" stroke="#7F56D9" stroke-width="1.5"/>
+              <circle cx="416" cy="31" r="3.5" fill="#7F56D9"/>
+              <circle cx="520" cy="24" r="5" fill="#5B2BBF" stroke="#FFFFFF" stroke-width="2"/>
+            </svg>
+          </div>
+
+          {/* Version axis */}
+          <div class="flex items-end justify-between" style="width: 100%;">
+            {chart.axis.map((stop) => (
+              <span
+                class="font-mono"
+                style={`font-size: 10px; line-height: 12px; color: ${stop.accent ? "#5B2BBF" : "#667085"}; font-weight: ${stop.accent ? 600 : 400}; font-variant-numeric: tabular-nums;`}
+              >
+                {stop.label}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Metadata rail — 200px aside on lg, full-width row below */}
+        <div
+          class="flex w-full shrink-0 flex-col gap-2.5 border-t border-[#E4E7EC] pt-3.5 lg:w-[200px] lg:border-t-0 lg:border-l lg:border-[#E4E7EC] lg:pt-1 lg:pb-1 lg:pl-4"
+        >
+          {/* Rail header */}
+          <div class="flex items-baseline justify-between pb-1">
+            <span
+              style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; line-height: 14px; color: #101828; text-transform: uppercase;"
+            >
+              Metadata
+            </span>
+            <span
+              class="font-mono"
+              style="font-size: 10px; line-height: 12px; color: #667085;"
+            >
+              {metadata.fieldCount}
+            </span>
+          </div>
+          {/* Fields */}
+          {metadata.fields.map((field) => (
+            <div class="flex flex-col gap-0.5">
+              <span
+                style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 10px; font-weight: 500; line-height: 12px; color: #667085;"
+              >
+                {field.label}
+              </span>
+              <span
+                class="font-mono"
+                style={`font-size: 12px; line-height: 16px; color: ${field.accent ? "#5B2BBF" : "#101828"}; font-variant-numeric: tabular-nums;`}
+              >
+                {field.value}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Lineage crumb */}
+      <div style="height: 14px; flex-shrink: 0;"></div>
+      <div class="flex items-center gap-2">
+        <svg
+          width="11" height="11"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#7F56D9"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          class="shrink-0"
+          set:html={CHEVRON_RIGHT}
+        />
+        <span
+          class="shrink-0 uppercase"
+          style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; line-height: 14px; color: #101828;"
+        >
+          Lineage
+        </span>
+        <span
+          class="font-mono"
+          style="font-size: 12px; line-height: 16px; color: #101828;"
+        >
+          {lineage.text}
+        </span>
+      </div>
+
+      {/* WHERE IT RUNS env strip */}
+      <div style="height: 14px; flex-shrink: 0;"></div>
+      <div class="flex flex-col gap-2">
+        {/* Strip header */}
+        <div class="flex items-baseline justify-between">
+          <span
+            class="uppercase"
+            style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; line-height: 14px; color: #101828;"
+          >
+            Where it runs
+          </span>
+          <span
+            class="font-mono"
+            style="font-size: 11px; line-height: 14px; color: #667085;"
+          >
+            {envStrip.summary}
+          </span>
+        </div>
+
+        {/* Env cards — stack below lg, row on lg */}
+        <div class="flex flex-col gap-2 lg:flex-row" style="width: 100%;">
+          {envStrip.cards.map((card) => (
+            <div
+              class:list={[
+                "flex w-full flex-col gap-2.5",
+                card.dark ? "am-card-prod" : "am-card-light",
+                card.env === "PROD" ? "lg:w-[316px] lg:shrink-0" : "lg:flex-1",
+              ]}
+              style={`
+                border-radius: 8px;
+                padding: 14px 16px;
+                ${card.dark
+                  ? "background: #0F0F12;"
+                  : "background: #FFFFFF; border: 1px solid #E4E7EC;"}
+              `}
+            >
+              {/* Env label row */}
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span
+                    class:list={["shrink-0 rounded-sm", dotColorClass(card.dotColor)]}
+                    style="width: 6px; height: 6px; border-radius: 3px;"
+                    aria-hidden="true"
+                  ></span>
+                  <span
+                    class="uppercase"
+                    style={`font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; line-height: 12px; color: ${card.dark ? "#A8A8B3" : "#667085"};`}
+                  >
+                    {card.env}
+                  </span>
+                </div>
+                {card.badge && (
+                  <span
+                    class:list={[card.badge.bg, card.badge.textColor]}
+                    style="border-radius: 4px; padding: 2px 6px; font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 500; letter-spacing: 0.04em; line-height: 12px;"
+                  >
+                    {card.badge.label}
+                  </span>
+                )}
+              </div>
+
+              {/* Version + meta */}
+              <div class="flex items-baseline gap-2">
+                <span
+                  class="font-mono shrink-0"
+                  style={`font-size: 22px; font-weight: 500; letter-spacing: -0.01em; line-height: 28px; color: ${card.dark ? "#FFFFFF" : "#101828"}; white-space: nowrap;`}
+                >
+                  {card.version}
+                </span>
+                <span
+                  class="font-mono shrink-0"
+                  style={`font-size: 11px; line-height: 14px; color: ${card.dark ? "#A8A8B3" : "#667085"}; white-space: nowrap;`}
+                >
+                  {card.meta}
+                </span>
+              </div>
+
+              {/* Footer row: status detail */}
+              <div class="flex items-center gap-2" style="padding-top: 2px;">
+                <span
+                  class="font-mono"
+                  style={`font-size: 10px; line-height: 12px; color: ${card.dark ? "#A8A8B3" : "#667085"};`}
+                >
+                  {card.detail}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Footer strip — registry counts + last activity */}
+      <div
+        class="flex items-center justify-between"
+        style="border-top: 1px solid #E4E7EC; margin-top: 18px; padding-top: 14px;"
+      >
+        {/* Registry counts */}
+        <div class="flex items-center gap-4">
+          <span
+            class="uppercase"
+            style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; line-height: 14px; color: #101828;"
+          >
+            {footer.label}
+          </span>
+          <span
+            class="font-mono"
+            style="font-size: 11px; line-height: 14px; color: #667085;"
+          >
+            {footer.counts}
+          </span>
+        </div>
+        {/* Last activity */}
+        <div class="flex items-center gap-2">
+          <span
+            class="shrink-0 rounded-sm"
+            style="width: 6px; height: 6px; border-radius: 3px; background: #7F56D9;"
+            aria-hidden="true"
+          ></span>
+          <span
+            class="font-mono"
+            style="font-size: 11px; font-weight: 500; line-height: 14px; color: #101828;"
+          >
+            {footer.lastActivity}
+          </span>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

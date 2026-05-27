@@ -7,23 +7,23 @@
 /*  Announcement Banner                                               */
 /* ------------------------------------------------------------------ */
 export const ANNOUNCEMENT_BANNER = {
-  text: "Introducing Kitaru — durable execution for AI agents, from the makers of ZenML.",
-  linkText: "Star it on GitHub →",
-  href: "https://github.com/zenml-io/kitaru",
+  text: "Build an agent factory with Kitaru — our durable runtime for production AI agents.",
+  linkText: "Read the docs →",
+  href: "https://kitaru.ai/docs",
 };
 
 /* ------------------------------------------------------------------ */
 /*  Hero                                                              */
 /* ------------------------------------------------------------------ */
 export const HERO = {
-  headline: "The AI Control Plane",
+  headline: "The single layer for ML and AI.",
   subheadline:
-    "One layer for orchestration, versioning, and governance — from training pipelines to agent evals, local to Kubernetes.",
+    "Orchestrate ML and Agent workloads on your infrastructure. Modular, flexible, and open-source — always.",
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   },
-  secondaryCta: { label: "Use Open Source", href: "/get-started" },
+  secondaryCta: { label: "Read Docs", href: "/docs" },
   githubUrl: "https://github.com/zenml-io/zenml",
   /** Lottie JSON for hero animation (autoplay, no loop, 6.4s, SVG renderer).
    *  Served from public/ for same-origin access (avoids R2 CORS issues). */
@@ -46,7 +46,7 @@ import { R2_WEBFLOW_BASE } from "./constants";
 const R2 = R2_WEBFLOW_BASE;
 
 export const LOGO_CLOUD = {
-  label: "Trusted by 1,000s of top companies to standardize their AI workflows",
+  label: "Trusted by teams shipping ML pipelines and AI agents",
   logos: [
     {
       name: "Airbus",
@@ -121,46 +121,47 @@ export interface FeatureTab {
 }
 
 export const FEATURE_TABS_HEADER = {
-  eyebrow: "The ZenML Advantage",
-  headline: "Unified AI platform",
-  subheadline: "Bridging ML and GenAI",
+  eyebrow: "The platform advantage",
+  headline: "One foundation.",
+  subheadline: "ML pipelines and AI agents.",
 };
 
 export const FEATURE_TABS: FeatureTab[] = [
   {
     title: "Unified Workflow Orchestration",
     description:
-      "Stop glue-coding your stack. Orchestrate Scikit-learn training jobs and complex LangGraph loops in one unified DAG. ZenML handles the state management, data passing, and termination control needed to keep your predictive models and agents reliable.",
+      "Stop glue-coding your stack. Orchestrate scikit-learn training jobs and long-running LangGraph agent loops in the same unified execution model. State management, data passing, and termination control — across both ML pipelines and AI agent flows.",
     image: `${R2}/70e94eb1/68d1536e3bb1899a400a8dec_tab01.avif`,
-    imageAlt: "ZenML unified workflow orchestration dashboard",
+    imageAlt:
+      "Unified workflow orchestration dashboard showing ML and agent runs",
   },
   {
-    title: "Artifact & Environment Versioning",
+    title: "Artifact & Checkpoint Versioning",
     description:
-      '"It worked on my machine" is not a strategy. ZenML snapshots the exact code, Pydantic versions, and container state for every step. When a library update breaks your Agent or Model, inspect the diff and roll back to a working artifact instantly.',
+      '"It worked on my machine" is not a strategy. Every step result is versioned — trained models, evaluation datasets, and agent checkpoints alike. When a library update or prompt change breaks a run, inspect the diff and roll back to a working state instantly.',
     image: `${R2}/6a1e96df/68d273e1d31e42957153098b_tab02.avif`,
-    imageAlt: "ZenML artifact and environment versioning",
+    imageAlt: "Artifact and checkpoint versioning view",
   },
   {
     title: "Infrastructure Abstraction",
     description:
-      "Standardize on Kubernetes and Slurm without the YAML headaches. Define your hardware needs in Python, and let ZenML handle the dockerization, GPU provisioning, and pod scaling for your massive batch training or agent swarm jobs.",
+      "Define your compute needs in Python. The platform handles dockerization, GPU provisioning, and pod scaling — whether you're running a distributed training job or deploying an agent swarm on Kubernetes. Same code, any cloud.",
     image: `${R2}/ba122f13/68d122c72dcdb1f17db0ea87_tab03.avif`,
-    imageAlt: "ZenML infrastructure abstraction",
+    imageAlt: "Infrastructure abstraction across clouds",
   },
   {
     title: "Smart Caching & Deduplication",
     description:
-      "Don't pay for the same compute twice. ZenML's native caching skips redundant training epochs and expensive LLM tool calls. Drastically lower the latency and API costs of your evaluation pipelines and batch jobs.",
+      "Don't pay for the same compute twice. Native caching skips redundant training epochs and expensive LLM tool calls. Drastically lower the latency and API costs of your evaluation pipelines and agent replay runs.",
     image: `${R2}/7d0c3d45/694a97d1ae458c9398b52aef_tab04.avif`,
-    imageAlt: "ZenML smart caching and deduplication",
+    imageAlt: "Smart caching and deduplication across runs",
   },
   {
     title: "Governance & Security",
     description:
-      "Turn black-box agents into visible pipelines. Centralize the management of API keys and tool credentials so they never leak. Enforce RBAC, visualize execution traces, and audit the full lineage of every run — from raw data to final agent response.",
+      "Turn black-box runs into visible, auditable systems. Centralize API keys and tool credentials so they never leak. Enforce RBAC, visualize execution traces, and audit the full lineage of every run — from raw data input to final agent response.",
     image: `${R2}/2e5d2f96/68d15caa8322157742ada8fd_tab05.avif`,
-    imageAlt: "ZenML governance and security dashboard",
+    imageAlt: "Governance and security dashboard",
   },
 ];
 
@@ -182,9 +183,9 @@ export interface ValueProp {
 
 export const VALUE_PROPS: ValueProp[] = [
   {
-    title: "The Glue for Your Fragmented Stack",
+    title: "Your stack, not ours",
     description:
-      "Stop writing fragile scripts to connect your tools. ZenML provides a standardized protocol to bind your data retrieval (LlamaIndex), reasoning (LangChain), and training (PyTorch) steps into a single, cohesive system.",
+      "Run in your VPC, point at your object store, train on your clusters. The platform is a metadata layer — your artifacts, prompts, and code stay inside your infrastructure end to end. No lock-in on either side.",
     iconBg: "#fff6ea",
     iconColor: "#FA9E33",
     iconMode: "stroke",
@@ -193,9 +194,9 @@ export const VALUE_PROPS: ValueProp[] = [
     ],
   },
   {
-    title: "Break the Prototype Wall",
+    title: "From local prototype to production",
     description:
-      "Teams lose velocity rewriting notebook code for the cloud. ZenML allows the exact same @step to run locally for debugging, in batch for massive evaluations, and then deploy seamlessly to your production serving infrastructure.",
+      "Stop rewriting code to move between environments. The same pipeline step or agent flow runs locally for debugging and on Kubernetes for production — without changing your logic. The platform handles the wiring.",
     iconBg: "#cfe7fc",
     iconColor: "#0E85F2",
     iconMode: "stroke",
@@ -204,9 +205,9 @@ export const VALUE_PROPS: ValueProp[] = [
     ],
   },
   {
-    title: 'The "Missing Layer" for AI Engineering',
+    title: "Lineage and replay across both workspaces",
     description:
-      "Your current orchestrator runs the job, but it doesn't track the data. ZenML adds a metadata layer to tools like Airflow or Kubeflow, giving you the artifact lineage and reproducibility that raw orchestrators lack.",
+      "Every artifact version and every agent checkpoint is tracked in the same metadata store. When something breaks, you have the full execution lineage — from raw input to model output or agent response — to debug and reproduce it.",
     iconBg: "#d6ebf0",
     iconColor: "#309DB2",
     iconMode: "stroke",
@@ -215,9 +216,9 @@ export const VALUE_PROPS: ValueProp[] = [
     ],
   },
   {
-    title: "Open Source, Enterprise Control",
+    title: "Open source, enterprise ready",
     description:
-      "Built on Apache 2.0 for flexibility, hardened for the enterprise. Deploy ZenML inside your own VPC. Keep full sovereignty over your data, models, and API secrets while meeting SOC2 and ISO 27001 standards.",
+      "Apache 2.0 from day one, with thousands of teams running it in production. Self-host forever, or adopt the managed control plane when you need governance, SSO, and an SLA. SOC2 and ISO 27001 certified.",
     iconBg: "#ffedf4",
     iconColor: "#F53D81",
     iconMode: "stroke",
@@ -228,25 +229,25 @@ export const VALUE_PROPS: ValueProp[] = [
 ];
 
 export const VALUE_PROPS_CTA = {
-  headline: "Ready to Unify Your AI Platform?",
+  headline: "Pick your workspace and start shipping.",
   subtext:
-    "Join thousands of teams using ZenML to eliminate chaos and accelerate AI delivery",
+    "Open source at the core. ML pipelines, agent flows, or both — same plans, same control plane.",
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   },
-  secondaryCta: { label: "Use Open Source", href: "/get-started" },
+  secondaryCta: { label: "Read Docs", href: "/docs" },
 };
 
 /* ------------------------------------------------------------------ */
 /*  Integrations Marquee                                              */
 /* ------------------------------------------------------------------ */
 export const INTEGRATIONS_MARQUEE = {
-  headline: "Use ZenML with any framework",
+  headline: "Works with the tools you already use",
   subheadline:
-    "60+ integrations across the AI ecosystem. From sklearn to LangGraph.",
-  primaryCta: { label: "Use Open Source", href: "/get-started" },
-  secondaryCta: { label: "See All Integrations", href: "/integrations" },
+    "60+ integrations across the AI ecosystem — from scikit-learn to LangGraph, PyTorch to OpenAI Agents SDK.",
+  primaryCta: { label: "Book a demo", href: "/book-your-demo" },
+  secondaryCta: { label: "See all integrations", href: "/integrations" },
 };
 
 /* ------------------------------------------------------------------ */
@@ -277,7 +278,7 @@ export interface CaseStudyCard {
 export const CUSTOMER_STORIES_HEADER = {
   headline: "Customer Stories",
   subheadline:
-    "Learn how teams are using ZenML to save time and simplify their MLOps.",
+    "How engineering teams cut time-to-production and simplify their AI infrastructure.",
 };
 
 export const CASE_STUDY_CARDS: CaseStudyCard[] = [
@@ -381,8 +382,8 @@ export const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
 
 /** Purple LLMOps banner between case study cards and testimonials */
 export const LLMOPS_BANNER = {
-  headline: "ZenML tracks production AI deployments across the industry",
-  subtext: "See the LLMOps database here",
+  headline: "Track production ML and AI deployments across the industry",
+  subtext: "See the LLMOps database →",
   href: "/llmops-database",
 };
 
@@ -466,15 +467,15 @@ export const FAQ = {
 export const FINAL_CTA = {
   headline: "Unify Your ML and LLM Workflows",
   bullets: [
-    "Free, powerful MLOps open source foundation",
+    "Open-source foundation, no vendor lock-in",
     "Works with any infrastructure",
     "Upgrade to managed Pro features",
   ],
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Book a demo",
+    href: "/book-your-demo",
   },
-  secondaryCta: { label: "Use Open Source", href: "/get-started" },
+  secondaryCta: { label: "Read Docs", href: "/docs" },
   image: `${R2}/4ab5ef16/66e9556fd34d2791885b0c5f_model_control_plane_01.png`,
   imageAlt:
     "Dashboard displaying machine learning models with version tracking",

@@ -1,0 +1,85 @@
+---
+/**
+ * MeshGradientBg — token-aware mesh gradient backdrop.
+ * Ported from kitaru-test-prototypes/src/components/auth/mesh-gradient-bg.tsx
+ * (Zuri's unified brand spec).
+ *
+ * Four drifting blurred blobs colored from CSS tokens, so the gradient
+ * picks up Kitaru vs ZenML and light vs dark automatically. Use as an
+ * absolutely-positioned backdrop inside a positioned section.
+ *
+ * Props:
+ *   variant: "default" (primary-led) | "success" (success-led)
+ *   tone:    "light" — sits over light surfaces, low opacity
+ *            "dark"  — sits over dark surfaces, higher opacity for visibility
+ *
+ * Usage:
+ *   <section class="relative overflow-hidden bg-zenml-700">
+ *     <MeshGradientBg tone="dark" />
+ *     ...content...
+ *   </section>
+ */
+type Variant = "default" | "success";
+type Tone = "light" | "dark";
+
+interface Props {
+  variant?: Variant;
+  tone?: Tone;
+  class?: string;
+}
+
+const {
+  variant = "default",
+  tone = "light",
+  class: className = "",
+} = Astro.props;
+
+// Top-blob (4th blob) carries the brand accent. Variant swaps which token feeds it.
+const accentVar = variant === "success" ? "var(--success)" : "var(--primary)";
+
+// Dark tone needs higher blob opacities to read on a dark canvas.
+const opa =
+  tone === "dark"
+    ? { b1: 0.35, b2: 0.32, b3: 0.28, b4: 0.4 }
+    : { b1: 0.15, b2: 0.18, b3: 0.12, b4: 0.18 };
+---
+
+<div
+  class:list={["mesh-gradient-bg absolute inset-0 overflow-hidden", className]}
+  aria-hidden="true"
+>
+  <div
+    class="mesh-blob mesh-drift-1 absolute rounded-full blur-[100px]"
+    style={`background: var(--accent); top: 10%; left: 20%; width: 600px; height: 600px; opacity: ${opa.b1};`}
+  ></div>
+  <div
+    class="mesh-blob mesh-drift-2 absolute rounded-full blur-[120px]"
+    style={`background: var(--secondary); top: 40%; right: 10%; width: 500px; height: 500px; opacity: ${opa.b2};`}
+  ></div>
+  <div
+    class="mesh-blob mesh-drift-3 absolute rounded-full blur-[140px]"
+    style={`background: var(--muted); bottom: 10%; left: 30%; width: 700px; height: 700px; opacity: ${opa.b3};`}
+  ></div>
+  <div
+    class="mesh-blob mesh-drift-4 absolute rounded-full blur-[80px]"
+    style={`background: ${accentVar}; top: 60%; left: 60%; width: 400px; height: 400px; opacity: ${opa.b4};`}
+  ></div>
+</div>
+
+<style>
+  .mesh-blob {
+    will-change: transform;
+    transition: background-color 1500ms ease-out;
+  }
+  @keyframes mesh-drift-1 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(40px, -30px); } }
+  @keyframes mesh-drift-2 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-50px, 40px); } }
+  @keyframes mesh-drift-3 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, 50px); } }
+  @keyframes mesh-drift-4 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-40px, -20px); } }
+  .mesh-drift-1 { animation: mesh-drift-1 20s ease-in-out infinite; }
+  .mesh-drift-2 { animation: mesh-drift-2 25s ease-in-out infinite; }
+  .mesh-drift-3 { animation: mesh-drift-3 30s ease-in-out infinite; }
+  .mesh-drift-4 { animation: mesh-drift-4 22s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) {
+    .mesh-blob { animation: none !important; }
+  }
+</style>

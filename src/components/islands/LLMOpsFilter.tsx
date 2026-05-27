@@ -681,7 +681,7 @@ export default function LLMOpsFilter({
                     aria-pressed={isSelected}
                     class={`flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm transition-colors ${FOCUS_RING} ${
                       isSelected
-                        ? "bg-purple-50 font-medium text-purple-700"
+                        ? "bg-zenml-50 font-medium text-zenml-700"
                         : count > 0
                           ? "text-gray-700 hover:bg-gray-50"
                           : "text-gray-400"
@@ -690,7 +690,7 @@ export default function LLMOpsFilter({
                   >
                     <span class="truncate">{ind.name}</span>
                     <span
-                      class={`ml-2 text-xs tabular-nums ${isSelected ? "text-purple-500" : "text-gray-400"}`}
+                      class={`ml-2 text-xs tabular-nums ${isSelected ? "text-zenml-500" : "text-gray-400"}`}
                     >
                       {count}
                     </span>
@@ -1112,7 +1112,7 @@ export default function LLMOpsFilter({
             {selectedIndustry && (
               <button
                 type="button"
-                class={`inline-flex items-center gap-1 rounded-full bg-purple-50 px-2.5 py-1 text-xs font-medium text-purple-700 transition-colors hover:bg-purple-100 ${FOCUS_RING}`}
+                class={`inline-flex items-center gap-1 rounded-full bg-zenml-50 px-2.5 py-1 text-xs font-medium text-zenml-700 transition-colors hover:bg-zenml-100 ${FOCUS_RING}`}
                 onClick={() => selectIndustry(selectedIndustry)}
                 aria-label={`Remove industry ${industryMap.get(selectedIndustry) || selectedIndustry}`}
               >
@@ -1195,7 +1195,7 @@ export default function LLMOpsFilter({
                       <span aria-hidden="true">&middot;</span>
                       <button
                         type="button"
-                        class={`rounded-full bg-purple-50 px-2 py-0.5 text-purple-700 transition-colors hover:bg-purple-100 ${FOCUS_RING}`}
+                        class={`rounded-full bg-zenml-50 px-2 py-0.5 text-zenml-700 transition-colors hover:bg-zenml-100 ${FOCUS_RING}`}
                         onClick={() => {
                           const industryTag = item.industryTags;
                           if (industryTag) selectIndustry(industryTag);

@@ -15,12 +15,11 @@ hero:
     url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bcf11e41/6526accfd82b706979b8cf7e_02_Connect_your_infrastructure.webp"
     alt: Diagram of various machine learning tools and frameworks including ZenML, Kubeflow, Vertex AI, and AWS SageMaker for ML pipelines integration.
   primaryCta:
-    label: Start Free Trial
-    href: https://cloud.zenml.io/signup
+    label: Book a demo
+    href: /book-your-demo
   secondaryCta:
-    label: Read the documentation
-    href: https://docs.zenml.io
-    external: true
+    label: Read Docs
+    href: /docs
 
 blocks:
   - kind: value

@@ -41,6 +41,7 @@ const SPEECH_BUBBLES_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill
   ogTitle={COMPANY_SEO.ogTitle}
   ogDescription={COMPANY_SEO.ogDescription}
   ogImage={COMPANY_SEO.ogImage}
+  surface="unified"
 >
   <main>
     {/* Hero */}
@@ -215,7 +216,7 @@ const SPEECH_BUBBLES_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill
 
   .value-card:hover,
   .team-card:hover {
-    border-color: #7a3ef4;
+    border-color: var(--color-zenml-500);
     background-image: linear-gradient(135deg, #f9f4ff, #fff);
     transform: translateY(-10px);
     box-shadow: var(--shadow-medium);
@@ -237,9 +238,9 @@ const SPEECH_BUBBLES_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 100%;
-    border: 0.5rem solid #f9f5ff;  /* purple-50 */
-    background-color: #f4ebff;      /* purple-100 */
-    color: #7f56d9;                  /* purple-600 */
+    border: 0.5rem solid var(--color-zenml-50);
+    background-color: var(--color-zenml-100);
+    color: var(--color-zenml-600);
   }
 
   /* ---------- Team card layout ---------- */

@@ -15,12 +15,11 @@ hero:
     url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f125b431/6526aff7d8b2eec3c9d58a4c_07_Standardization_Showcase.webp"
     alt: Comparison of team structures with and without ZenML, highlighting streamlined ML pipelines and collaboration.
   primaryCta:
-    label: Start Free Trial
-    href: https://cloud.zenml.io/signup
+    label: Book a demo
+    href: /book-your-demo
   secondaryCta:
-    label: Read the documentation
-    href: https://docs.zenml.io
-    external: true
+    label: Read Docs
+    href: /docs
 
 blocks:
   - kind: value

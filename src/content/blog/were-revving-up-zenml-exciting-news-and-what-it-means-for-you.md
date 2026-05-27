@@ -62,6 +62,6 @@ We're also buoyed by all the open-source contributions we receive, from the smal
 
 ## Ready to See ZenML in Action?
 
-We love meeting fellow MLOps enthusiasts. So why not [book a demo](https://www.zenml.io/book-a-demo) or, even better, meet us in person at [the MLOpsWorld conference](https://mlopsworld.com) in Austin, TX, this week? We can’t wait to show you what ZenML is all about.
+We love meeting fellow MLOps enthusiasts. So why not [book a demo](https://www.zenml.io/book-your-demo) or, even better, meet us in person at [the MLOpsWorld conference](https://mlopsworld.com) in Austin, TX, this week? We can’t wait to show you what ZenML is all about.
 
 We’re pumped to keep pushing the boundaries of what MLOps can be. With your support and this new round of funding, the sky's the limit for ZenML. Here's to a future filled with smarter, more flexible MLOps solutions!

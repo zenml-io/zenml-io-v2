@@ -25,16 +25,14 @@ export const GET_STARTED_SEO = {
 export const GET_STARTED_HERO = {
   eyebrow: "Open Source",
   headline: "Get Started with ZenML",
-  deck: "Build production-ready ML pipelines with the open-source framework trusted by thousands of ML engineers worldwide.",
+  deck: "Build production-ready ML pipelines on the open-source framework. Set it up yourself with the docs, or book a demo for a guided walkthrough.",
   primaryCta: {
-    label: "View on GitHub",
-    href: "https://github.com/zenml-io/zenml",
-    external: true,
+    label: "Book a demo",
+    href: "/book-your-demo",
   } as CtaLink,
   secondaryCta: {
-    label: "Read the Docs",
-    href: "https://docs.zenml.io",
-    external: true,
+    label: "Read Docs",
+    href: "/docs",
   } as CtaLink,
 } as const;
 
@@ -91,9 +89,8 @@ export const GET_STARTED_ARCHITECTURE = {
   },
   primaryCta: { label: "Learn More", href: "/deployments" } as CtaLink,
   secondaryCta: {
-    label: "Read the Docs",
-    href: "https://docs.zenml.io/deploying-zenml/deploying-zenml",
-    external: true,
+    label: "Read Docs",
+    href: "/docs",
   } as CtaLink,
 } as const;
 
@@ -157,7 +154,7 @@ export const GET_STARTED_FINAL_CTA = {
     href: "/open-source-vs-pro",
   } as CtaLink,
   secondaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
+    label: "Read Docs",
+    href: "/docs",
   } as CtaLink,
 } as const;

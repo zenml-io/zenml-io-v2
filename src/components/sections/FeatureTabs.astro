@@ -1,6 +1,10 @@
 ---
 /**
- * FeatureTabs — "The ZenML Advantage" tabbed feature showcase.
+ * FeatureTabs — shared platform capabilities tabbed showcase.
+ *
+ * Pattern B (two-product): eyebrow reframed as "the platform advantage"
+ * (not "the ZenML advantage"), and tab descriptions updated to apply
+ * to both ML pipelines (ZenML) and agent flows (Kitaru) where relevant.
  *
  * Shows an eyebrow + headline, a 4-stat grid, and an auto-cycling
  * tab slider (Preact island) matching the original Webflow layout:
@@ -14,11 +18,11 @@ import FeatureTabsSlider from "../islands/FeatureTabsSlider";
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <!-- Header — slides in from top on scroll -->
     <div class="scroll-slide-top text-center">
-      <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
+      <p class="text-sm font-semibold uppercase tracking-wider text-gray-500">
         {FEATURE_TABS_HEADER.eyebrow}
       </p>
       <h2 class="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
-        {FEATURE_TABS_HEADER.headline} {FEATURE_TABS_HEADER.subheadline}
+        {FEATURE_TABS_HEADER.headline} <span class="text-gray-500">{FEATURE_TABS_HEADER.subheadline}</span>
       </h2>
     </div>
 
@@ -166,7 +170,7 @@ import FeatureTabsSlider from "../islands/FeatureTabsSlider";
     bottom: 0;
     height: 0.25rem;
     width: 0%;
-    background-color: var(--color-zenml-500, #7a3ef4);
+    background-color: var(--color-zenml-500);
   }
 
   /* ── Stacked panes (opacity/visibility, not display:none) ────────── */

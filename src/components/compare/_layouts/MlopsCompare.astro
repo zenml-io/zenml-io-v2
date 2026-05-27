@@ -1,0 +1,262 @@
+---
+/**
+ * MlopsCompare — the ZenML-vs-X comparison detail template.
+ *
+ * Moved here from src/pages/compare/[slug].astro as part of Phase 3, so
+ * that page can dispatch between MLOps (ZenML) and Agents (Kitaru)
+ * comparison layouts. The contents below are byte-for-byte the same
+ * 9-section template that previously rendered every /compare/<slug>:
+ *
+ *   1. CompareHero (dual CTAs + logo lockup)
+ *   2. FeatureValueSection x3 (from category defaults or frontmatter)
+ *   3. VsTestimonial (dark, from resolved quote)
+ *   4. CompareFeatureHeader + table
+ *   5. CompareCodeComparison (side-by-side)
+ *   6. CompareStrategyCta (advantages + CTA)
+ *   7. CompareRelatedShowdown (related /compare/ pages)
+ *   8. CompareRelatedBlog (3 blog cards)
+ *   9. VsCta02 (gradient final CTA)
+ */
+import type { CollectionEntry } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getMainFeedPosts } from "../../../lib/blog";
+import {
+  getCategoryDefaults,
+  ZENML_ICON_URL,
+} from "../../../lib/compareDefaults";
+import CompareCodeComparison from "../../sections/compare/CompareCodeComparison.astro";
+import CompareFeatureHeader from "../../sections/compare/CompareFeatureHeader.astro";
+import CompareHero from "../../sections/compare/CompareHero.astro";
+import CompareRelatedBlog from "../../sections/compare/CompareRelatedBlog.astro";
+import CompareRelatedShowdown from "../../sections/compare/CompareRelatedShowdown.astro";
+import CompareStrategyCta from "../../sections/compare/CompareStrategyCta.astro";
+import FeatureValueSection from "../../sections/FeatureValueSection.astro";
+import VsCta02 from "../../sections/VsCta02.astro";
+import VsTestimonial from "../../sections/VsTestimonial.astro";
+
+interface Props {
+  item: CollectionEntry<"compare">;
+}
+const { item } = Astro.props;
+
+const categoryDefaults = getCategoryDefaults(item.data.category);
+
+const advantageEntries = await Promise.all(
+  item.data.advantages.map((slug: string) => getEntry("advantages", slug)),
+);
+const advantages = advantageEntries.flatMap((adv) =>
+  adv
+    ? [
+        {
+          title: adv.data.title,
+          content: adv.data.content,
+          image: adv.data.image,
+        },
+      ]
+    : [],
+);
+
+const quoteEntry = item.data.quote
+  ? await getEntry("quotes", item.data.quote)
+  : undefined;
+
+const allCompareItems = await getCollection(
+  "compare",
+  ({ data }) => !data.draft,
+);
+const relatedCompareItems = allCompareItems
+  .filter(
+    (c) =>
+      c.data.category === item.data.category && c.data.slug !== item.data.slug,
+  )
+  .map((c) => ({
+    slug: c.data.slug,
+    toolName: c.data.toolName || c.data.title.replace("ZenML vs ", ""),
+    toolIcon: c.data.toolIcon,
+  }));
+
+let blogPosts: Array<{
+  slug: string;
+  title: string;
+  mainImage?: { url: string; alt?: string; width?: number; height?: number };
+  seoDescription?: string;
+}> = [];
+
+if (item.data.relatedBlogSlugs && item.data.relatedBlogSlugs.length > 0) {
+  const entries = await Promise.all(
+    item.data.relatedBlogSlugs.map((slug: string) => getEntry("blog", slug)),
+  );
+  blogPosts = entries.flatMap((e) =>
+    e
+      ? [
+          {
+            slug: e.data.slug,
+            title: e.data.title,
+            mainImage: e.data.mainImage,
+            seoDescription: e.data.seo?.description,
+          },
+        ]
+      : [],
+  );
+} else {
+  const recentPosts = await getMainFeedPosts();
+  blogPosts = recentPosts.slice(0, 3).map((p) => ({
+    slug: p.data.slug,
+    title: p.data.title,
+    mainImage: p.data.mainImage,
+    seoDescription: p.data.seo?.description,
+  }));
+}
+
+const valueSections = item.data.valueSections ?? categoryDefaults.valueSections;
+
+const rawBody = item.body || "";
+
+let tableHtml = item.data.featureTableHtml || "";
+if (!tableHtml && rawBody) {
+  const tableMatch = rawBody.match(
+    /(?:<div[^>]*>\s*)?<table[\s\S]*?<\/table>\s*(?:<\/div>)?/i,
+  );
+  if (tableMatch) tableHtml = tableMatch[0];
+}
+
+let zenmlCode = "";
+let toolCode = "";
+let zenmlLanguage = "python";
+let toolLanguage = "python";
+
+if (item.data.codeComparison) {
+  zenmlCode = item.data.codeComparison.zenmlCode;
+  toolCode = item.data.codeComparison.toolCode;
+  zenmlLanguage = item.data.codeComparison.zenmlLanguage || "python";
+  toolLanguage = item.data.codeComparison.toolLanguage || "python";
+} else if (rawBody) {
+  const codeBlockRegex = /```(\w*)\n([\s\S]*?)```/g;
+  const matches = [...rawBody.matchAll(codeBlockRegex)];
+  if (matches.length >= 2) {
+    zenmlLanguage = matches[0][1] || "python";
+    zenmlCode = matches[0][2];
+    toolLanguage = matches[1][1] || "python";
+    toolCode = matches[1][2];
+  }
+}
+
+let ctaBullets: string[] = [];
+if (item.data.finalCta?.bullets?.length) {
+  ctaBullets = item.data.finalCta.bullets;
+} else if (rawBody) {
+  const ulMatch = rawBody.match(/<ul>\s*(<li>[\s\S]*?)<\/ul>\s*$/);
+  if (ulMatch) {
+    const liMatches = [...ulMatch[1].matchAll(/<li>([\s\S]*?)<\/li>/g)];
+    ctaBullets = liMatches.map((m) => m[1].trim());
+  }
+}
+
+const heroPrimaryCta = item.data.heroPrimaryCta || {
+  label: "Book a demo",
+  href: "/book-your-demo",
+};
+const heroSecondaryCta = item.data.heroSecondaryCta || {
+  label: "Learn More",
+  href: "#feature-comparison",
+};
+
+const strategyCtaHeadline =
+  item.data.strategyCtaHeadline || categoryDefaults.strategyCtaHeadline;
+
+const finalCta = item.data.finalCta || {
+  headline: categoryDefaults.finalCta.headline,
+  bullets:
+    ctaBullets.length > 0 ? ctaBullets : categoryDefaults.finalCta.bullets,
+  primaryCta: categoryDefaults.finalCta.primaryCta,
+  secondaryCta: categoryDefaults.finalCta.secondaryCta,
+  image: categoryDefaults.finalCta.image,
+};
+
+const seoTitle = item.data.seo?.title || `${item.data.title} - ZenML`;
+const seoDescription =
+  item.data.seo?.description || item.data.seoDescription || item.data.heroText;
+const ogImage = item.data.seo?.ogImage || item.data.openGraphImage?.url;
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  ogImage={ogImage}
+  ogTitle={item.data.seo?.ogTitle}
+  ogDescription={item.data.seo?.ogDescription}
+  canonical={item.data.seo?.canonical}
+  surface="ml"
+>
+  <CompareHero
+    toolName={item.data.toolName || item.data.title.replace("ZenML vs ", "")}
+    toolIcon={item.data.toolIcon}
+    headline={item.data.headline || item.data.title}
+    deck={item.data.heroText}
+    primaryCta={heroPrimaryCta}
+    secondaryCta={heroSecondaryCta}
+    zenmlIconUrl={ZENML_ICON_URL}
+  />
+
+  {valueSections.map((section, i) => (
+    <FeatureValueSection
+      title={section.title}
+      bullets={section.bullets}
+      image={section.image}
+      imageSide={i % 2 === 0 ? "right" : "left"}
+    />
+  ))}
+
+  {quoteEntry && (
+    <VsTestimonial
+      quote={quoteEntry.data.text}
+      name={quoteEntry.data.author}
+      title={quoteEntry.data.position}
+      avatar={quoteEntry.data.avatar}
+      companyLogo={quoteEntry.data.companyLogo}
+    />
+  )}
+
+  {tableHtml && (
+    <CompareFeatureHeader
+      toolName={item.data.toolName || item.data.title.replace("ZenML vs ", "")}
+      toolIcon={item.data.toolIcon}
+      zenmlIconUrl={ZENML_ICON_URL}
+      tableHtml={tableHtml}
+    />
+  )}
+
+  {zenmlCode && toolCode && (
+    <CompareCodeComparison
+      toolName={item.data.toolName || item.data.title.replace("ZenML vs ", "")}
+      toolIcon={item.data.toolIcon}
+      zenmlIconUrl={ZENML_ICON_URL}
+      zenmlCode={zenmlCode}
+      toolCode={toolCode}
+      zenmlLanguage={zenmlLanguage}
+      toolLanguage={toolLanguage}
+    />
+  )}
+
+  <CompareStrategyCta headline={strategyCtaHeadline} advantages={advantages} />
+
+  <CompareRelatedShowdown
+    eyebrow={categoryDefaults.showdownEyebrow}
+    headline={categoryDefaults.showdownHeadline}
+    items={relatedCompareItems}
+    zenmlIconUrl={ZENML_ICON_URL}
+  />
+
+  <CompareRelatedBlog posts={blogPosts} />
+
+  <VsCta02
+    headline={item.data.ctaHeadline || finalCta.headline}
+    bullets={finalCta.bullets}
+    primaryCta={finalCta.primaryCta}
+    secondaryCta={finalCta.secondaryCta}
+    image={finalCta.image}
+    variant="gradient"
+    padded
+  />
+</BaseLayout>

@@ -148,3 +148,7 @@
 # ── Additional redirect-like pages ────────────────────────────────
 /cla https://gist.github.com/htahir1/5fb2645b62662f2c723c529f7d9fca09 301
 /cla/ https://gist.github.com/htahir1/5fb2645b62662f2c723c529f7d9fca09 301
+
+# ── /get-started reverted from ML/Agent chooser to ZenML onboarding ──
+/get-started/zenml /get-started 301
+/get-started/zenml/ /get-started 301

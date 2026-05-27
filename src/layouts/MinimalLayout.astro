@@ -10,19 +10,26 @@ import CookieConsent from "../components/islands/CookieConsent.tsx";
  *
  * Shares the same <head> SEO contract as BaseLayout via SEOProps.
  */
+import type { Surface } from "../lib/analytics";
 import { resolveSeo, type SEOProps } from "../lib/seo";
 import "../styles/global.css";
 
 interface Props extends SEOProps {
   bodyClass?: string;
+  /**
+   * Analytics surface — drives Plausible `surface` prop + Segment page event.
+   * Required: every page template must pass an explicit value.
+   * Taxonomy: "ml" | "agent" | "unified" (see src/lib/analytics.ts).
+   */
+  surface: Surface;
 }
 
-const { bodyClass, ...seoProps } = Astro.props;
+const { bodyClass, surface, ...seoProps } = Astro.props;
 const seo = resolveSeo(seoProps, Astro.url.pathname);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-app="zenml" data-surface={surface}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,13 +58,16 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
 
     {/* Plausible — cookieless, GDPR-compliant analytics. Loaded directly
         (not gated behind cookie consent) since it doesn't use cookies or
-        track personal data. Hostname-gated to prevent preview deploy noise. */}
-    <script is:inline>
+        track personal data. Hostname-gated to prevent preview deploy noise.
+        Uses `script.pageview-props.js` + `event-surface` so every pageview
+        carries the `surface` custom prop (D3). */}
+    <script is:inline define:vars={{ surface }}>
       if (["www.zenml.io","zenml.io"].includes(window.location.hostname)) {
         var s = document.createElement("script");
         s.defer = true;
         s.setAttribute("data-domain", "zenml.io");
-        s.src = "https://plausible.io/js/script.js";
+        s.setAttribute("event-surface", surface);
+        s.src = "https://plausible.io/js/script.pageview-props.js";
         document.head.appendChild(s);
       }
     </script>

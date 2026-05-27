@@ -1,15 +1,17 @@
 ---
-import AnnouncementBanner from "../components/sections/AnnouncementBanner.astro";
 import ComplianceSection from "../components/sections/ComplianceSection.astro";
 import CustomerStories from "../components/sections/CustomerStories.astro";
 import FAQAccordion from "../components/sections/FAQAccordion.astro";
 import FeatureTabs from "../components/sections/FeatureTabs.astro";
 import FinalCTA from "../components/sections/FinalCTA.astro";
-import Hero from "../components/sections/Hero.astro";
 import IntegrationsMarquee from "../components/sections/IntegrationsMarquee.astro";
 import LogoCloud from "../components/sections/LogoCloud.astro";
 import NewsletterSignup from "../components/sections/NewsletterSignup.astro";
 import NewsSection from "../components/sections/NewsSection.astro";
+import TwoProducts from "../components/sections/TwoProducts.astro";
+import TwoWorkspaces from "../components/sections/TwoWorkspaces.astro";
+import UnifiedAnnouncementBanner from "../components/sections/UnifiedAnnouncementBanner.astro";
+import UnifiedHero from "../components/sections/UnifiedHero.astro";
 import ValueProps from "../components/sections/ValueProps.astro";
 import WhitepaperCTA from "../components/sections/WhitepaperCTA.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
@@ -25,6 +27,7 @@ import JsonLd from "../components/seo/JsonLd.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { SITE_URL } from "../lib/constants";
 import { FAQ } from "../lib/homepage";
+import { HOMEPAGE_UNIFIED_SEO } from "../lib/homepage-unified";
 
 /** Strip HTML tags from a string (for JSON-LD plain text) */
 function stripHtml(html: string): string {
@@ -59,18 +62,20 @@ const faqJsonLd = {
 ---
 
 <BaseLayout
-  title="ZenML — The AI Control Plane"
-  description="One layer for orchestration, versioning, and governance — from training pipelines to agent evals, local to Kubernetes."
-  ogTitle="ZenML — The AI Control Plane"
+  title={HOMEPAGE_UNIFIED_SEO.title}
+  description={HOMEPAGE_UNIFIED_SEO.description}
+  ogTitle={HOMEPAGE_UNIFIED_SEO.title}
+  surface={HOMEPAGE_UNIFIED_SEO.surface}
 >
   <JsonLd data={orgJsonLd} slot="head" />
   <JsonLd data={faqJsonLd} slot="head" />
-  <link rel="preload" href="/lottie/hero-0925.json" as="fetch" crossorigin slot="head" />
-  <AnnouncementBanner slot="before-nav" />
+  <UnifiedAnnouncementBanner slot="before-nav" />
 
   <main>
-    <Hero />
+    <UnifiedHero />
+    <TwoWorkspaces />
     <LogoCloud />
+    <TwoProducts />
     <FeatureTabs />
     <ValueProps />
     <IntegrationsMarquee />

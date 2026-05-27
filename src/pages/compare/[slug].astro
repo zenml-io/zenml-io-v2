@@ -1,310 +1,61 @@
 ---
 /**
- * Compare/VS detail page — /compare/<slug>
+ * Compare detail dispatcher — /compare/<slug>
  *
- * Renders tool-specific comparison pages (e.g., ZenML vs MLflow) with 9 sections
- * matching the Webflow detail_compare template:
+ * Routes BOTH the MLOps (ZenML) comparisons and the Agents (Kitaru)
+ * comparisons under the same URL prefix. Slug patterns don't overlap
+ * (`zenml-vs-*` vs `kitaru-vs-*`), so a single getStaticPaths can emit
+ * both and we branch on `kind` to the right template.
  *
- * 1. CompareHero (dual CTAs + logo lockup)
- * 2. FeatureValueSection x3 (from category defaults or frontmatter)
- * 3. VsTestimonial (dark, from resolved quote)
- * 4. CompareFeatureHeader + table
- * 5. CompareCodeComparison (side-by-side)
- * 6. CompareStrategyCta (advantages + CTA)
- * 7. CompareRelatedShowdown (related /compare/ pages)
- * 8. CompareRelatedBlog (3 blog cards)
- * 9. VsCta02 (gradient final CTA)
+ * MLOps detail = src/components/compare/_layouts/MlopsCompare.astro
+ *                (the 9-section ZenML template — sage green chrome)
+ * Agents detail = src/components/compare/_layouts/KitaruCompare.astro
+ *                (Kitaru's MDX-driven template — warm orange chrome via
+ *                data-app="kitaru")
  */
-import { getCollection, getEntry } from "astro:content";
-import CompareCodeComparison from "../../components/sections/compare/CompareCodeComparison.astro";
-import CompareFeatureHeader from "../../components/sections/compare/CompareFeatureHeader.astro";
-import CompareHero from "../../components/sections/compare/CompareHero.astro";
-import CompareRelatedBlog from "../../components/sections/compare/CompareRelatedBlog.astro";
-import CompareRelatedShowdown from "../../components/sections/compare/CompareRelatedShowdown.astro";
-import CompareStrategyCta from "../../components/sections/compare/CompareStrategyCta.astro";
-import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
-import VsCta02 from "../../components/sections/VsCta02.astro";
-import VsTestimonial from "../../components/sections/VsTestimonial.astro";
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getMainFeedPosts } from "../../lib/blog";
-import { getCategoryDefaults, ZENML_ICON_URL } from "../../lib/compareDefaults";
+import { getCollection } from "astro:content";
+import KitaruCompare from "../../components/compare/_layouts/KitaruCompare.astro";
+import MlopsCompare from "../../components/compare/_layouts/MlopsCompare.astro";
 
 export async function getStaticPaths() {
-  const compareItems = await getCollection(
-    "compare",
+  const mlopsItems = await getCollection("compare", ({ data }) => !data.draft);
+  const agentItems = await getCollection(
+    "compare-kitaru",
     ({ data }) => !data.draft,
   );
-  return compareItems.map((item) => ({
-    params: { slug: item.data.slug },
-    props: { item },
-  }));
+
+  // Agent detail pages need the full list of siblings for the hero dropdown.
+  const competitorOptions = agentItems
+    .slice()
+    .sort((a, b) => a.data.order - b.data.order)
+    .map((e) => ({
+      slug: e.id,
+      competitor: e.data.competitor,
+      competitorLogo: e.data.competitorLogo,
+    }));
+
+  return [
+    ...mlopsItems.map((item) => ({
+      params: { slug: item.data.slug },
+      props: { kind: "mlops" as const, item },
+    })),
+    ...agentItems.map((entry) => ({
+      params: { slug: entry.id },
+      props: { kind: "agents" as const, entry, competitorOptions },
+    })),
+  ];
 }
 
-const { item } = Astro.props;
-
-// ---------------------------------------------------------------------------
-// Category defaults
-// ---------------------------------------------------------------------------
-const categoryDefaults = getCategoryDefaults(item.data.category);
-// ---------------------------------------------------------------------------
-// Resolve advantages
-// ---------------------------------------------------------------------------
-const advantageEntries = await Promise.all(
-  item.data.advantages.map((slug: string) => getEntry("advantages", slug)),
-);
-const advantages = advantageEntries.flatMap((adv) =>
-  adv
-    ? [
-        {
-          title: adv.data.title,
-          content: adv.data.content,
-          image: adv.data.image,
-        },
-      ]
-    : [],
-);
-
-// ---------------------------------------------------------------------------
-// Resolve quote / testimonial
-// ---------------------------------------------------------------------------
-const quoteEntry = item.data.quote
-  ? await getEntry("quotes", item.data.quote)
-  : undefined;
-
-// ---------------------------------------------------------------------------
-// Resolve related compare items (same category, excluding self)
-// ---------------------------------------------------------------------------
-const allCompareItems = await getCollection(
-  "compare",
-  ({ data }) => !data.draft,
-);
-const relatedCompareItems = allCompareItems
-  .filter(
-    (c) =>
-      c.data.category === item.data.category && c.data.slug !== item.data.slug,
-  )
-  .map((c) => ({
-    slug: c.data.slug,
-    toolName: c.data.toolName || c.data.title.replace("ZenML vs ", ""),
-    toolIcon: c.data.toolIcon,
-  }));
-
-// ---------------------------------------------------------------------------
-// Resolve blog posts (manual slugs or 3 recent)
-// ---------------------------------------------------------------------------
-let blogPosts: Array<{
-  slug: string;
-  title: string;
-  mainImage?: { url: string; alt?: string; width?: number; height?: number };
-  seoDescription?: string;
-}> = [];
-
-if (item.data.relatedBlogSlugs && item.data.relatedBlogSlugs.length > 0) {
-  const entries = await Promise.all(
-    item.data.relatedBlogSlugs.map((slug: string) => getEntry("blog", slug)),
-  );
-  blogPosts = entries.flatMap((e) =>
-    e
-      ? [
-          {
-            slug: e.data.slug,
-            title: e.data.title,
-            mainImage: e.data.mainImage,
-            seoDescription: e.data.seo?.description,
-          },
-        ]
-      : [],
-  );
-} else {
-  const recentPosts = await getMainFeedPosts();
-  blogPosts = recentPosts.slice(0, 3).map((p) => ({
-    slug: p.data.slug,
-    title: p.data.title,
-    mainImage: p.data.mainImage,
-    seoDescription: p.data.seo?.description,
-  }));
-}
-
-// ---------------------------------------------------------------------------
-// Value sections (from frontmatter or category defaults)
-// ---------------------------------------------------------------------------
-const valueSections = item.data.valueSections ?? categoryDefaults.valueSections;
-
-// ---------------------------------------------------------------------------
-// Parse body content to extract table, code blocks, and trailing list
-// ---------------------------------------------------------------------------
-const rawBody = item.body || "";
-
-// Extract table HTML (first <table>...</table>, optionally wrapped in div)
-let tableHtml = item.data.featureTableHtml || "";
-if (!tableHtml && rawBody) {
-  const tableMatch = rawBody.match(
-    /(?:<div[^>]*>\s*)?<table[\s\S]*?<\/table>\s*(?:<\/div>)?/i,
-  );
-  if (tableMatch) tableHtml = tableMatch[0];
-}
-
-// Extract fenced code blocks
-let zenmlCode = "";
-let toolCode = "";
-let zenmlLanguage = "python";
-let toolLanguage = "python";
-
-if (item.data.codeComparison) {
-  zenmlCode = item.data.codeComparison.zenmlCode;
-  toolCode = item.data.codeComparison.toolCode;
-  zenmlLanguage = item.data.codeComparison.zenmlLanguage || "python";
-  toolLanguage = item.data.codeComparison.toolLanguage || "python";
-} else if (rawBody) {
-  const codeBlockRegex = /```(\w*)\n([\s\S]*?)```/g;
-  const matches = [...rawBody.matchAll(codeBlockRegex)];
-  if (matches.length >= 2) {
-    zenmlLanguage = matches[0][1] || "python";
-    zenmlCode = matches[0][2];
-    toolLanguage = matches[1][1] || "python";
-    toolCode = matches[1][2];
-  }
-}
-
-// Extract trailing <ul><li> for CTA bullets
-let ctaBullets: string[] = [];
-if (item.data.finalCta?.bullets?.length) {
-  ctaBullets = item.data.finalCta.bullets;
-} else if (rawBody) {
-  const ulMatch = rawBody.match(/<ul>\s*(<li>[\s\S]*?)<\/ul>\s*$/);
-  if (ulMatch) {
-    const liMatches = [...ulMatch[1].matchAll(/<li>([\s\S]*?)<\/li>/g)];
-    ctaBullets = liMatches.map((m) => m[1].trim());
-  }
-}
-
-// ---------------------------------------------------------------------------
-// Hero CTAs
-// ---------------------------------------------------------------------------
-const heroPrimaryCta = item.data.heroPrimaryCta || {
-  label: "Start Free Trial",
-  href: "https://cloud.zenml.io/signup",
-};
-const heroSecondaryCta = item.data.heroSecondaryCta || {
-  label: "Learn More",
-  href: "#feature-comparison",
-};
-
-// ---------------------------------------------------------------------------
-// Strategy CTA headline
-// ---------------------------------------------------------------------------
-const strategyCtaHeadline =
-  item.data.strategyCtaHeadline || categoryDefaults.strategyCtaHeadline;
-
-// ---------------------------------------------------------------------------
-// Final CTA
-// ---------------------------------------------------------------------------
-const finalCta = item.data.finalCta || {
-  headline: categoryDefaults.finalCta.headline,
-  bullets:
-    ctaBullets.length > 0 ? ctaBullets : categoryDefaults.finalCta.bullets,
-  primaryCta: categoryDefaults.finalCta.primaryCta,
-  secondaryCta: categoryDefaults.finalCta.secondaryCta,
-  image: categoryDefaults.finalCta.image,
-};
-
-// ---------------------------------------------------------------------------
-// SEO
-// ---------------------------------------------------------------------------
-const seoTitle = item.data.seo?.title || `${item.data.title} - ZenML`;
-const seoDescription =
-  item.data.seo?.description || item.data.seoDescription || item.data.heroText;
-const ogImage = item.data.seo?.ogImage || item.data.openGraphImage?.url;
+const props = Astro.props;
 ---
 
-<BaseLayout
-  title={seoTitle}
-  description={seoDescription}
-  ogImage={ogImage}
-  ogTitle={item.data.seo?.ogTitle}
-  ogDescription={item.data.seo?.ogDescription}
-  canonical={item.data.seo?.canonical}
->
-  {/* 1. Hero */}
-  <CompareHero
-    toolName={item.data.toolName || item.data.title.replace("ZenML vs ", "")}
-    toolIcon={item.data.toolIcon}
-    headline={item.data.headline || item.data.title}
-    deck={item.data.heroText}
-    primaryCta={heroPrimaryCta}
-    secondaryCta={heroSecondaryCta}
-    zenmlIconUrl={ZENML_ICON_URL}
-  />
-
-  {/* 2. Value proposition sections (3x layout08) */}
-  {valueSections.map((section, i) => (
-    <FeatureValueSection
-      title={section.title}
-      bullets={section.bullets}
-      image={section.image}
-      imageSide={i % 2 === 0 ? "right" : "left"}
+{
+  props.kind === "agents" ? (
+    <KitaruCompare
+      entry={props.entry}
+      competitorOptions={props.competitorOptions}
     />
-  ))}
-
-  {/* 3. Testimonial */}
-  {quoteEntry && (
-    <VsTestimonial
-      quote={quoteEntry.data.text}
-      name={quoteEntry.data.author}
-      title={quoteEntry.data.position}
-      avatar={quoteEntry.data.avatar}
-      companyLogo={quoteEntry.data.companyLogo}
-    />
-  )}
-
-  {/* 4. Feature comparison table */}
-  {tableHtml && (
-    <CompareFeatureHeader
-      toolName={item.data.toolName || item.data.title.replace("ZenML vs ", "")}
-      toolIcon={item.data.toolIcon}
-      zenmlIconUrl={ZENML_ICON_URL}
-      tableHtml={tableHtml}
-    />
-  )}
-
-  {/* 5. Code comparison */}
-  {zenmlCode && toolCode && (
-    <CompareCodeComparison
-      toolName={item.data.toolName || item.data.title.replace("ZenML vs ", "")}
-      toolIcon={item.data.toolIcon}
-      zenmlIconUrl={ZENML_ICON_URL}
-      zenmlCode={zenmlCode}
-      toolCode={toolCode}
-      zenmlLanguage={zenmlLanguage}
-      toolLanguage={toolLanguage}
-    />
-  )}
-
-  {/* 6. Strategy CTA (advantages + mid-page CTA) */}
-  <CompareStrategyCta
-    headline={strategyCtaHeadline}
-    advantages={advantages}
-  />
-
-  {/* 7. Related comparison showdown */}
-  <CompareRelatedShowdown
-    eyebrow={categoryDefaults.showdownEyebrow}
-    headline={categoryDefaults.showdownHeadline}
-    items={relatedCompareItems}
-    zenmlIconUrl={ZENML_ICON_URL}
-  />
-
-  {/* 8. Related blog posts */}
-  <CompareRelatedBlog posts={blogPosts} />
-
-  {/* 9. Final CTA */}
-  <VsCta02
-    headline={item.data.ctaHeadline || finalCta.headline}
-    bullets={finalCta.bullets}
-    primaryCta={finalCta.primaryCta}
-    secondaryCta={finalCta.secondaryCta}
-    image={finalCta.image}
-    variant="gradient"
-    padded
-  />
-</BaseLayout>
+  ) : (
+    <MlopsCompare item={props.item} />
+  )
+}

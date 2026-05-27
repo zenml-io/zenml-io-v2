@@ -1,0 +1,387 @@
+---
+import { HOMEPAGE_UNIFIED_WIDGET } from "../../lib/homepage-unified";
+import ArtifactsModelsLayout from "./two-workspaces/ArtifactsModelsLayout.astro";
+import CheckpointsLayout from "./two-workspaces/CheckpointsLayout.astro";
+import DeploymentsLayout from "./two-workspaces/DeploymentsLayout.astro";
+import FlowsLayout from "./two-workspaces/FlowsLayout.astro";
+import FrameworksAgentsLayout from "./two-workspaces/FrameworksAgentsLayout.astro";
+import FrameworksMLLayout from "./two-workspaces/FrameworksMLLayout.astro";
+import PipelinesLayout from "./two-workspaces/PipelinesLayout.astro";
+import ReplayLayout from "./two-workspaces/ReplayLayout.astro";
+import ResourcesLayout from "./two-workspaces/ResourcesLayout.astro";
+import StacksTableLayout from "./two-workspaces/StacksTableLayout.astro";
+
+/**
+ * TwoWorkspaces — workspace widget.
+ *
+ * One top bar inside the card carries both switching axes:
+ *   - Left  : workspace switcher — ZenML ↔ Kitaru
+ *   - Right : subtab nav — Pipelines/Stacks/Artifacts & Models/Frameworks/
+ *             Resources (ZenML) and Flows/Checkpoints/Replay/Deployments/
+ *             Frameworks (Kitaru)
+ *
+ * Each of the 10 subtab views has its own bespoke layout component.
+ * Pipelines + Flows are the v2 reference ports (take header copy as
+ * props); every other layout is self-contained and imports its own
+ * data file from src/lib/two-workspaces/.
+ *
+ * All panels + subtab strips are server-rendered and grid-stacked. A
+ * single `data-active-view` attribute on the root drives visibility via
+ * CSS attribute selectors. Switching a tab fades the new pane in and
+ * tweens the widget height (both honour prefers-reduced-motion).
+ *
+ * Per-brand restraint: zenml-500 / orange-500 stay inside their own tab.
+ */
+
+const { tabs } = HOMEPAGE_UNIFIED_WIDGET;
+
+type Tab = (typeof tabs)[number];
+
+const dotClass = (tab: Tab) =>
+  tab.id === "zenml" ? "bg-zenml-500" : "bg-orange-500";
+
+const allViews = tabs.flatMap((tab) =>
+  tab.subtabs.map((sub) => ({
+    tab,
+    sub,
+    view: `${tab.id}.${sub.id}` as const,
+  })),
+);
+
+/** Default view = first subtab of the first tab (ZenML.Pipelines). */
+const defaultView = allViews[0];
+---
+
+<section class="bg-white">
+  <div class="mx-auto max-w-[1440px] px-6 pt-10 pb-20 sm:px-10 lg:pb-28">
+    <div
+      id="two-workspaces"
+      data-active-tab={defaultView.tab.id}
+      data-active-view={defaultView.view}
+      class="mx-auto flex max-w-[1280px] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-subtle"
+    >
+      {/* Top bar — switcher (left) + subtab nav (right).
+          Stacks vertically on narrow viewports. */}
+      <div
+        class="flex flex-col items-start justify-between gap-3 border-b border-gray-200 px-5 py-3 sm:flex-row sm:items-center"
+      >
+        {/* Workspace switcher (outer tab) */}
+        <div
+          role="tablist"
+          aria-label="Workspace"
+          class="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-white p-1 shadow-[0_1px_2px_rgba(15,15,18,0.04)]"
+        >
+          {tabs.map((tab) => (
+            <button
+              type="button"
+              role="tab"
+              id={`workspace-tab-${tab.id}`}
+              data-tab-trigger={tab.id}
+              aria-controls={`workspace-panel-${tab.id}-${tab.subtabs[0].id}`}
+              aria-selected={tab.id === defaultView.tab.id ? "true" : "false"}
+              tabindex={tab.id === defaultView.tab.id ? 0 : -1}
+              class="group inline-flex cursor-pointer items-center gap-2 rounded px-3.5 py-1.5 text-sm font-medium text-gray-700 transition-colors aria-selected:bg-gray-900 aria-selected:font-semibold aria-selected:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500"
+            >
+              <span
+                class={`inline-block size-2 shrink-0 rounded-full ${dotClass(tab)}`}
+                aria-hidden="true"
+              ></span>
+              <span>{tab.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Subtab nav — one strip per tab, grid-stacked so they overlay
+            in the same slot. Each strip is its own tablist. */}
+        <div class="workspace-stack sm:justify-items-end">
+          {tabs.map((tab) => (
+            <div
+              role="tablist"
+              aria-label={`${tab.label} views`}
+              data-subtabs={tab.id}
+              class="flex flex-wrap items-center gap-1 rounded-md border border-gray-200 bg-white p-1 shadow-[0_1px_2px_rgba(15,15,18,0.04)]"
+            >
+              {tab.subtabs.map((sub) => (
+                <button
+                  type="button"
+                  role="tab"
+                  id={`workspace-subtab-${tab.id}-${sub.id}`}
+                  data-subtab-trigger={`${tab.id}.${sub.id}`}
+                  aria-controls={`workspace-panel-${tab.id}-${sub.id}`}
+                  aria-selected={
+                    `${tab.id}.${sub.id}` === defaultView.view ? "true" : "false"
+                  }
+                  tabindex={
+                    tab.id === defaultView.tab.id && sub.id === defaultView.sub.id
+                      ? 0
+                      : -1
+                  }
+                  class="inline-flex cursor-pointer items-center rounded px-3 py-1 text-[13px] font-medium text-gray-500 transition-colors hover:text-gray-900 aria-selected:bg-gray-900 aria-selected:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500"
+                >
+                  {sub.label}
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Body — all 10 subtab panels grid-stacked */}
+      <div class="workspace-stack workspace-body bg-gray-50 px-5 py-5">
+        {allViews.map(({ tab, sub, view }) => (
+          <div
+            id={`workspace-panel-${tab.id}-${sub.id}`}
+            role="tabpanel"
+            data-view={view}
+            aria-labelledby={`workspace-subtab-${tab.id}-${sub.id}`}
+          >
+            {/* Pipelines + Flows are the v2 reference ports — still take
+                header copy as props. Every other layout is self-contained
+                (imports its own data file from src/lib/two-workspaces/). */}
+            {sub.layout === "pipelines" && <PipelinesLayout {...(sub as any)} />}
+            {sub.layout === "stacks" && <StacksTableLayout />}
+            {sub.layout === "artifacts-models" && <ArtifactsModelsLayout />}
+            {sub.layout === "frameworks-ml" && <FrameworksMLLayout />}
+            {sub.layout === "resources" && <ResourcesLayout />}
+            {sub.layout === "flows" && <FlowsLayout {...(sub as any)} />}
+            {sub.layout === "checkpoints" && <CheckpointsLayout />}
+            {sub.layout === "replay" && <ReplayLayout />}
+            {sub.layout === "deployments" && <DeploymentsLayout />}
+            {sub.layout === "frameworks-agents" && <FrameworksAgentsLayout />}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* The widget renders real product surfaces (ZenML control plane + Kitaru
+     runtime UI), so its sans font is Inter — the font those products
+     actually ship. Plus Jakarta Sans stays the site/marketing font; this
+     override only applies inside #two-workspaces. JetBrains Mono is
+     already used everywhere via the `font-mono` utility. */
+  #two-workspaces {
+    --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
+    font-family: var(--font-sans);
+  }
+
+  /* Grid-stack: children share one grid cell. Inactive children use
+     display:none so the widget height matches the ACTIVE view only. */
+  .workspace-stack {
+    display: grid;
+    grid-template-areas: "stack";
+  }
+  .workspace-stack > * {
+    grid-area: stack;
+    min-width: 0;
+  }
+  .workspace-stack > [data-view],
+  .workspace-stack > [data-subtabs] {
+    display: none;
+  }
+
+  /* Show whichever view matches the root's data-active-view. */
+  #two-workspaces[data-active-view="zenml.pipelines"] .workspace-stack > [data-view="zenml.pipelines"],
+  #two-workspaces[data-active-view="zenml.stacks"] .workspace-stack > [data-view="zenml.stacks"],
+  #two-workspaces[data-active-view="zenml.artifacts"] .workspace-stack > [data-view="zenml.artifacts"],
+  #two-workspaces[data-active-view="zenml.frameworks"] .workspace-stack > [data-view="zenml.frameworks"],
+  #two-workspaces[data-active-view="zenml.resources"] .workspace-stack > [data-view="zenml.resources"],
+  #two-workspaces[data-active-view="kitaru.flows"] .workspace-stack > [data-view="kitaru.flows"],
+  #two-workspaces[data-active-view="kitaru.checkpoints"] .workspace-stack > [data-view="kitaru.checkpoints"],
+  #two-workspaces[data-active-view="kitaru.replay"] .workspace-stack > [data-view="kitaru.replay"],
+  #two-workspaces[data-active-view="kitaru.deployments"] .workspace-stack > [data-view="kitaru.deployments"],
+  #two-workspaces[data-active-view="kitaru.frameworks"] .workspace-stack > [data-view="kitaru.frameworks"] {
+    display: block;
+  }
+
+  /* The subtab strip swaps on the tab dimension. */
+  #two-workspaces[data-active-tab="zenml"] .workspace-stack > [data-subtabs="zenml"],
+  #two-workspaces[data-active-tab="kitaru"] .workspace-stack > [data-subtabs="kitaru"] {
+    display: flex;
+  }
+
+  /* ---- Transitions ----------------------------------------------------
+     Tab/subtab switch: the newly-shown pane (and, on a tab switch, the
+     subtab strip) fades and lifts in. The animation re-runs every time
+     the element flips from display:none to a visible display, i.e.
+     exactly on each switch. Widget height is tweened in the script. All
+     motion is gated behind prefers-reduced-motion. */
+  @keyframes tw-pane-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes tw-strip-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .workspace-stack > [data-view] {
+      animation: tw-pane-in 280ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .workspace-stack > [data-subtabs] {
+      animation: tw-strip-in 200ms ease;
+    }
+    /* Height tween target — the script sets an explicit height and
+       transitions it; this keeps that transition smooth. */
+    .workspace-body {
+      transition: height 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+  }
+
+  /* ---- Mobile: keep it light ------------------------------------------
+     Below lg, every subtab shows only its left list pane — the dense
+     detail pane (any grid child after the first) is hidden so the widget
+     stays light on phones instead of cramming a desktop dashboard in.
+     All ten subtab layouts use a `grid-cols-1 lg:grid-cols-[...]` pane
+     grid, so this single rule covers the whole widget. */
+  @media (max-width: 1023px) {
+    :global(.workspace-body .grid-cols-1 > :not(:first-child)) {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  const root = document.getElementById("two-workspaces");
+  if (root) {
+    // Switcher + subtab nav both live in the card's top bar, inside root.
+    const tabTriggers = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("[data-tab-trigger]"),
+    );
+    const subTriggers = Array.from(
+      root.querySelectorAll<HTMLButtonElement>("[data-subtab-trigger]"),
+    );
+    const body = root.querySelector<HTMLElement>(".workspace-body");
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    // Per-tab memory of the last-active subtab — lets the user resume where
+    // they were when they swing back to a tab.
+    const lastSubtab: Record<string, string> = {};
+    subTriggers.forEach((btn) => {
+      const view = btn.dataset.subtabTrigger;
+      if (!view) return;
+      const [tabId, subId] = view.split(".");
+      if (!(tabId in lastSubtab)) lastSubtab[tabId] = subId;
+    });
+
+    // Tween the widget body height across a view change so switching to a
+    // taller/shorter tab glides instead of snapping. `mutate` performs the
+    // data-attribute change that swaps the visible pane.
+    let heightTimer: number | undefined;
+    const withHeightTween = (mutate: () => void) => {
+      if (!body || reduceMotion) {
+        mutate();
+        return;
+      }
+      const from = body.offsetHeight;
+      mutate();
+      const to = body.offsetHeight;
+      if (from === to) return;
+      body.style.height = `${from}px`;
+      void body.offsetHeight; // force reflow so the next change transitions
+      requestAnimationFrame(() => {
+        body.style.height = `${to}px`;
+      });
+      clearTimeout(heightTimer);
+      heightTimer = window.setTimeout(() => {
+        body.style.height = "";
+      }, 360);
+    };
+
+    const applyView = (view: string, focus = false) => {
+      const [tabId] = view.split(".");
+      withHeightTween(() => {
+        root.dataset.activeTab = tabId;
+        root.dataset.activeView = view;
+      });
+      lastSubtab[tabId] = view.split(".")[1];
+
+      tabTriggers.forEach((btn) => {
+        const isActive = btn.dataset.tabTrigger === tabId;
+        btn.setAttribute("aria-selected", isActive ? "true" : "false");
+        btn.tabIndex = isActive ? 0 : -1;
+      });
+
+      subTriggers.forEach((btn) => {
+        const isActiveView = btn.dataset.subtabTrigger === view;
+        btn.setAttribute("aria-selected", isActiveView ? "true" : "false");
+        // Roving tabindex inside the active strip only.
+        const isInActiveStrip = btn.dataset.subtabTrigger?.startsWith(`${tabId}.`);
+        btn.tabIndex = isInActiveStrip && isActiveView ? 0 : -1;
+        if (isActiveView && focus) btn.focus();
+      });
+    };
+
+    // Tab click: swap to the tab's last-active subtab (or its default).
+    tabTriggers.forEach((btn, idx) => {
+      btn.addEventListener("click", () => {
+        const tabId = btn.dataset.tabTrigger;
+        if (!tabId) return;
+        applyView(`${tabId}.${lastSubtab[tabId]}`);
+      });
+      btn.addEventListener("keydown", (e: KeyboardEvent) => {
+        let nextIdx: number | null = null;
+        if (e.key === "ArrowRight") nextIdx = (idx + 1) % tabTriggers.length;
+        else if (e.key === "ArrowLeft")
+          nextIdx = (idx - 1 + tabTriggers.length) % tabTriggers.length;
+        else if (e.key === "Home") nextIdx = 0;
+        else if (e.key === "End") nextIdx = tabTriggers.length - 1;
+        if (nextIdx === null) return;
+        e.preventDefault();
+        const targetTab = tabTriggers[nextIdx]?.dataset.tabTrigger;
+        if (targetTab) {
+          applyView(`${targetTab}.${lastSubtab[targetTab]}`);
+          tabTriggers[nextIdx].focus();
+        }
+      });
+    });
+
+    // Subtab click + keyboard nav (rotates inside the same strip).
+    subTriggers.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const view = btn.dataset.subtabTrigger;
+        if (view) applyView(view);
+      });
+      btn.addEventListener("keydown", (e: KeyboardEvent) => {
+        const view = btn.dataset.subtabTrigger;
+        if (!view) return;
+        const [tabId] = view.split(".");
+        const strip = subTriggers.filter((b) =>
+          b.dataset.subtabTrigger?.startsWith(`${tabId}.`),
+        );
+        const idx = strip.indexOf(btn);
+        let nextIdx: number | null = null;
+        if (e.key === "ArrowRight") nextIdx = (idx + 1) % strip.length;
+        else if (e.key === "ArrowLeft")
+          nextIdx = (idx - 1 + strip.length) % strip.length;
+        else if (e.key === "Home") nextIdx = 0;
+        else if (e.key === "End") nextIdx = strip.length - 1;
+        if (nextIdx === null) return;
+        e.preventDefault();
+        const target = strip[nextIdx]?.dataset.subtabTrigger;
+        if (target) applyView(target, true);
+      });
+    });
+
+    // Normalize after hydration in case SSR + JS drift.
+    applyView(
+      root.dataset.activeView ||
+        `${tabTriggers[0].dataset.tabTrigger}.${lastSubtab[tabTriggers[0].dataset.tabTrigger || ""]}`,
+    );
+  }
+</script>

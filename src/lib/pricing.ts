@@ -2,14 +2,14 @@
  * Pricing page data — centralized marketing copy.
  *
  * Used by src/pages/pricing.astro.
- * Content extracted from Webflow HTML snapshot + SEO baseline.
+ * Structure mirrors the unified pricing design: three plan cards
+ * (Open Source / Scale / Enterprise) and a single comparison table.
  */
 import type {
   CtaLink,
   FaqData,
   PricingCompareTableData,
   PricingPlan,
-  PricingTab,
 } from "./marketingPageTypes";
 
 // ---------------------------------------------------------------------------
@@ -29,154 +29,285 @@ export const PRICING_SEO = {
 // Hero
 // ---------------------------------------------------------------------------
 export const PRICING_HERO = {
-  headline: "Ship ML pipelines with confidence",
-  deck: "Predictable, transparent pricing that scales with value.",
+  eyebrow: "Pricing",
+  headline: "Ship ML pipelines and AI agents with confidence",
+  deck: "Start open source and self-hosted. Upgrade to Pro for the managed control plane — on our SaaS or your own infrastructure.",
+} as const;
+
+/**
+ * "What's included in Pro" block rendered below the comparison table. Two
+ * cards — ML pipelines (ZenML side, purple) and Agent runtime (Kitaru side,
+ * orange) — each with three bullet pairings. Icons are inline SVG strings so
+ * the card component stays declarative.
+ */
+export const PRICING_PRO_INCLUSIONS = {
+  eyebrow: "What's included in Pro",
+  headline: "Two products, one plan.",
+  deck: "Switch SDKs without switching tools, billing, or governance. ZenML for reproducible ML. Kitaru for durable AI agents. Same control plane underneath.",
+  cards: [
+    {
+      side: "zenml" as const,
+      eyebrow: "ML pipelines",
+      title: "Pipelines & artifacts",
+      body: "Reproducible training, batch inference, evaluation. One DAG, versioned artifacts, every orchestrator.",
+      bullets: [
+        {
+          icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="3" x2="6" y2="15" /><circle cx="18" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><path d="M18 9a9 9 0 0 1-9 9" /></svg>',
+          title: "Pipeline DAGs, artifact store, model registry",
+          detail: "Version every step, every dataset, every model.",
+        },
+        {
+          icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" /></svg>',
+          title: "Run on Kubernetes, Vertex, SageMaker, AzureML",
+          detail: "One pipeline, any orchestrator — no rewrites.",
+        },
+        {
+          icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>',
+          title: "Reproducible by default, replayable on demand",
+          detail: "Re-run any historical pipeline with one command.",
+        },
+      ],
+      learn: { label: "Learn about ZenML", href: "/product/zenml" },
+      cta: {
+        label: "Book a demo",
+        href: "/book-your-demo",
+        analytics: "Pricing-Pro-Inclusions-ZenML-Demo",
+      } as CtaLink,
+    },
+    {
+      side: "kitaru" as const,
+      eyebrow: "Agent runtime",
+      title: "Replay & checkpoints",
+      body: "Long-running Python agents with checkpoints, replay, wait/resume. Two decorators, no rewrites.",
+      bullets: [
+        {
+          icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z" /></svg>',
+          title: "Durable execution for long-running Python agents",
+          detail: "Hours-long workflows survive restarts and failures.",
+        },
+        {
+          icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><line x1="10" y1="15" x2="10" y2="9" /><line x1="14" y1="15" x2="14" y2="9" /></svg>',
+          title: "Checkpoints, replay, wait/resume — two decorators",
+          detail: "Pause for human review, replay from any step.",
+        },
+        {
+          icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="11.49" /></svg>',
+          title: "Distributed scheduling, API and webhook triggers",
+          detail: "Fan out across workers, trigger from any source.",
+        },
+      ],
+      learn: { label: "Learn about Kitaru", href: "/product/kitaru" },
+      cta: {
+        label: "Book a demo",
+        href: "/book-your-demo",
+        analytics: "Pricing-Pro-Inclusions-Kitaru-Demo",
+      } as CtaLink,
+    },
+  ],
+  caption: "Same control plane. Same governance. Same bill.",
 } as const;
 
 // ---------------------------------------------------------------------------
-// Self-Hosted plans
+// Plan cards — Open Source / Scale / Enterprise
 // ---------------------------------------------------------------------------
-const SELF_HOSTED_OSS: PricingPlan = {
-  name: "Open Source",
-  subtitle: "For small teams",
-  price: "Free",
-  priceSuffix: "Self-hosted, forever",
-  limits: [
-    { label: "pipeline runs", value: "Unlimited" },
-    { label: "projects & snapshots", value: "Unlimited" },
-    { label: "support", value: "Community" },
-  ],
-  features: [
-    "Core pipeline orchestration",
-    "Basic dashboard",
-    "CLI-based service connectors",
-    "Basic model registry",
-    "Self-managed infrastructure",
-  ],
-  cta: {
-    label: "Get Started",
-    href: "/get-started",
-    analytics: "OSS-Get-Started",
+export const PRICING_PLANS: PricingPlan[] = [
+  {
+    id: "open-source",
+    eyebrow: "Open Source",
+    pill: "Self-hosted",
+    subtitle: "For individuals and small teams",
+    price: "Free",
+    priceSuffix: "self-hosted, forever",
+    limitsLine: "Unlimited executions · Unlimited projects",
+    includesLabel: "Includes",
+    features: [
+      "Pipeline & flow orchestration",
+      "Artifact management",
+      "Basic model registry",
+      "Community support",
+    ],
+    cta: {
+      label: "Get Started",
+      href: "/get-started",
+      analytics: "OSS-Get-Started",
+    },
+    ctaVariant: "secondary",
+    secondaryLink: {
+      label: "Explore the docs",
+      href: "/docs",
+      analytics: "Pricing-OSS-Docs",
+    },
   },
-  ctaVariant: "secondary",
-};
+  {
+    id: "scale",
+    eyebrow: "Scale",
+    pill: "SaaS",
+    topBadge: "Recommended",
+    highlighted: true,
+    subtitle: "For teams running ML in production",
+    price: "$999",
+    priceSuffix: "/month",
+    slider: {
+      caption: "Monthly executions",
+      defaultIndex: 1,
+      tiers: [
+        { executions: "500", price: "$399", projects: "1", snapshots: "1" },
+        { executions: "2,000", price: "$999", projects: "3", snapshots: "5" },
+        {
+          executions: "5,000",
+          price: "$2,499",
+          projects: "10",
+          snapshots: "20",
+        },
+      ],
+    },
+    includesLabel: "Everything in Open Source, plus",
+    features: [
+      "Model Control Plane",
+      "Artifact Control Plane",
+      "Snapshots",
+      "Codespaces (remote IDE)",
+    ],
+    cta: {
+      label: "Book a demo",
+      href: "/book-your-demo",
+      analytics: "Pricing-Scale-Book-Demo",
+    },
+    ctaVariant: "primary",
+    secondaryLink: {
+      label: "Talk to an engineer",
+      href: "/book-your-demo",
+      analytics: "Pricing-Scale-Talk-Engineer",
+    },
+  },
+  {
+    id: "enterprise",
+    eyebrow: "Enterprise",
+    pill: "SaaS + Self-hosted",
+    subtitle: "For organizations at scale",
+    price: "Custom",
+    priceSuffix: "annual contract",
+    limitsLine: "Unlimited executions · Unlimited projects",
+    includesLabel: "Everything in Scale, plus",
+    features: [
+      "SSO (SAML / OIDC)",
+      "RBAC (custom roles)",
+      "Audit logs",
+      "Air-gapped deployment",
+    ],
+    cta: {
+      label: "Talk to sales",
+      href: "/book-your-demo",
+      analytics: "Enterprise-Book-Demo",
+    },
+    ctaVariant: "secondary",
+    secondaryLink: {
+      label: "See the full comparison",
+      href: "#compare-table",
+      analytics: "Pricing-Enterprise-Compare",
+    },
+  },
+];
 
-const SELF_HOSTED_PRO: PricingPlan = {
-  name: "Pro Self-Hosted",
-  subtitle: "For Enterprise",
-  price: "Custom",
-  priceSuffix: "Annual contract",
-  badge: "Enterprise",
-  limits: [
-    { label: "pipeline runs", value: "Unlimited" },
-    { label: "projects & snapshots", value: "Unlimited" },
-    { label: "dedicated support", value: "24/7" },
-  ],
-  featuresPrefix: "Everything in OSS, plus:",
-  features: [
-    "Model Control Plane (UI access)",
-    "Artifact Control Plane (UI access)",
-    "Snapshots for environment versioning",
-    "Advanced Native Scheduling",
-    "Resource Management & Queueing",
-    "Codespaces (remote IDE sessions)",
-    "Advanced RBAC with fine-grained permissions",
-    "Modern Server Side Dashboard",
-    "SSO (SAML/OIDC)",
-    "Air-gapped deployment support",
-    "Priority support + custom SLA",
-  ],
-  comingSoon: ["Advanced Native Scheduling", "Resource Management & Queueing"],
-  cta: {
-    label: "Talk to Sales",
-    href: "/book-your-demo",
-    analytics: "Enterpise-Self-Hosted-Book-Demo",
-  },
-  ctaVariant: "primary",
-  secondaryLink: {
-    label: "Or talk to an engineer about deployment",
-    href: "/open-source-vs-pro",
-    analytics: "Enterprise-Self-Hosted-Talk-Engineer",
-  },
-};
-
-const SELF_HOSTED_COMPARE: PricingCompareTableData = {
-  columnHeaders: ["Open Source", "Pro Self-Hosted"],
+// ---------------------------------------------------------------------------
+// Comparison table — one unified table across all three plans
+// ---------------------------------------------------------------------------
+export const PRICING_COMPARE: PricingCompareTableData = {
+  heading: "Compare every plan",
+  subheading: "Open Source and Pro — with Scale and Enterprise feature tiers.",
+  columnHeaders: ["Open Source", "Scale", "Enterprise"],
   sections: [
     {
-      heading: "Feature",
+      heading: "Plans & pricing",
       rows: [
-        { feature: "Price", values: ["Free", "Custom"] },
-        { feature: "Pipeline Runs", values: ["Unlimited", "Unlimited"] },
+        { feature: "Price", values: ["Free", "From $399 / mo", "Custom"] },
+        {
+          feature: "Deployment scenario",
+          values: ["Self-hosted", "SaaS", "SaaS + Self-hosted"],
+        },
+        {
+          feature: "Monthly executions",
+          values: ["Unlimited", "500 – 5,000", "Unlimited"],
+        },
+        { feature: "Projects", values: ["Unlimited", "Up to 10", "Unlimited"] },
       ],
     },
     {
-      heading: "Core Features",
+      heading: "Core platform",
       rows: [
-        { feature: "Pipeline Orchestration", values: [true, true] },
-        { feature: "Artifact Management", values: [true, true] },
-        { feature: "Basic Dashboard", values: [true, true] },
-        { feature: "Model Registry (Basic)", values: [true, true] },
+        {
+          feature: "Pipeline & flow orchestration",
+          values: [true, true, true],
+        },
+        { feature: "Artifact management", values: [true, true, true] },
+        { feature: "Model registry (basic)", values: [true, true, true] },
       ],
     },
     {
-      heading: "Deployment & Security",
+      heading: "Pro control plane",
       rows: [
         {
           feature: "Model Control Plane",
           link: "https://docs.zenml.io/concepts/models",
-          values: [false, true],
+          values: [false, true, true],
         },
         {
           feature: "Artifact Control Plane",
           link: "https://docs.zenml.io/concepts/dashboard-features",
-          values: [false, true],
+          values: [false, true, true],
         },
         {
           feature: "Snapshots",
           link: "https://docs.zenml.io/concepts/snapshots",
-          values: [false, true],
+          values: [false, true, true],
+        },
+        { feature: "Codespaces (remote IDE)", values: [false, true, true] },
+      ],
+    },
+    {
+      heading: "Agent runtime",
+      rows: [
+        {
+          feature: "Durable execution for Python agents",
+          values: [true, true, true],
         },
         {
-          feature: "Advanced Native Scheduling",
-          values: [false, "COMING SOON"],
+          feature: "Checkpoints, replay, wait/resume",
+          values: [true, true, true],
         },
-        { feature: "Webhooks & Triggers", values: [false, true] },
         {
-          feature: "Resource Management & Queueing",
-          values: [false, "COMING SOON"],
+          feature: "Dashboard, API, schedules, webhooks",
+          values: [false, true, true],
         },
-        { feature: "Codespaces (Remote IDE)", values: [false, true] },
         {
-          feature: "Modern Server Side Dashboard",
-          link: "https://docs.zenml.io/concepts/dashboard-features",
-          values: [false, true],
+          feature: "Distributed execution",
+          values: [false, true, true],
         },
       ],
     },
     {
-      heading: "Security & Access",
+      heading: "Enterprise & governance",
       rows: [
-        { feature: "SSO (SAML/OIDC)", values: [false, true] },
+        { feature: "SSO (SAML / OIDC)", values: [false, false, true] },
         {
-          feature: "RBAC (Standard Roles)",
+          feature: "RBAC (custom roles)",
           link: "https://docs.zenml.io/pro/access-management/roles",
-          values: ["Basic", true],
+          values: [false, false, true],
         },
         {
-          feature: "RBAC (Custom Roles)",
-          link: "https://docs.zenml.io/pro/access-management/roles",
-          values: [false, true],
+          feature: "Advanced native scheduling",
+          values: [false, false, true],
         },
-        { feature: "Air-gapped Deployment", values: ["Limited", true] },
+        { feature: "Audit logs", values: [false, false, true] },
+        { feature: "Air-gapped deployment", values: [false, false, true] },
       ],
     },
     {
       heading: "Support",
       rows: [
         {
-          feature: "Support Level",
-          values: ["Community", "24/7 Priority + SLA"],
+          feature: "Support level",
+          values: ["Community", "Priority", "Dedicated + SLA"],
         },
       ],
     },
@@ -185,251 +316,23 @@ const SELF_HOSTED_COMPARE: PricingCompareTableData = {
     {
       label: "Get Started",
       href: "/get-started",
+      variant: "secondary",
       analytics: "OSS-Get-Started",
     },
     {
-      label: "Talk to Sales",
+      label: "Book a demo",
       href: "/book-your-demo",
-      analytics: "Enterpise-Self-Hosted-Book-Demo",
-    },
-  ],
-};
-
-// ---------------------------------------------------------------------------
-// SaaS plans
-// ---------------------------------------------------------------------------
-const SAAS_STARTER: PricingPlan = {
-  name: "Starter",
-  subtitle: "For small teams",
-  price: "$399",
-  priceSuffix: "/month",
-  limits: [
-    { label: "pipeline runs", value: "500" },
-    { label: "project", value: "1" },
-    { label: "snapshot", value: "1" },
-  ],
-  features: [
-    "Model Control Plane",
-    "Artifact Control Plane",
-    "1 workspace",
-    "Unlimited team members",
-    "Basic support",
-  ],
-  cta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
-    analytics: "Starter-Free-Trial",
-  },
-  ctaVariant: "secondary",
-};
-
-const SAAS_GROWTH: PricingPlan = {
-  name: "Growth",
-  subtitle: "For growing teams",
-  price: "$999",
-  priceSuffix: "/month",
-  badge: "Most Popular",
-  limits: [
-    { label: "pipeline runs", value: "2,000" },
-    { label: "projects", value: "3" },
-    { label: "snapshots", value: "5" },
-  ],
-  featuresPrefix: "Everything in Starter, plus:",
-  features: [
-    "Advanced Native Scheduling",
-    "Webhooks & Triggers",
-    "Priority support",
-  ],
-  cta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
-    analytics: "Growth-Free-Trial",
-  },
-  ctaVariant: "primary",
-};
-
-const SAAS_SCALE: PricingPlan = {
-  name: "Scale",
-  subtitle: "For scaling teams",
-  price: "$2,499",
-  priceSuffix: "/month",
-  limits: [
-    { label: "pipeline runs", value: "5,000" },
-    { label: "projects", value: "10" },
-    { label: "snapshots", value: "20" },
-  ],
-  featuresPrefix: "Everything in Growth, plus:",
-  features: ["Codespaces (Remote IDE)", "Priority support"],
-  cta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
-    analytics: "Scale-Free-Trial",
-  },
-  ctaVariant: "secondary",
-};
-
-const SAAS_ENTERPRISE: PricingPlan = {
-  name: "Enterprise",
-  subtitle: "For organizations",
-  price: "Custom",
-  limits: [
-    { label: "pipeline runs", value: "Unlimited" },
-    { label: "projects", value: "Unlimited" },
-    { label: "snapshots", value: "Unlimited" },
-  ],
-  featuresPrefix: "Everything in Scale, plus:",
-  features: [
-    "SSO (SAML/OIDC)",
-    "RBAC (Custom Roles)",
-    "Audit Logs",
-    "Regional Deployment",
-    "On-prem / Hybrid",
-    "SOC2 & GDPR",
-    "Professional Services",
-    "Dedicated support + SLA",
-  ],
-  cta: {
-    label: "Book a Demo",
-    href: "/book-your-demo",
-    analytics: "Enterprise-Book-Demo",
-  },
-  ctaVariant: "secondary",
-  secondaryLink: {
-    label: "Or talk to an engineer about deployment",
-    href: "/book-your-demo",
-    analytics: "Enterprise-Talk-Engineer",
-  },
-};
-
-const SAAS_COMPARE: PricingCompareTableData = {
-  columnHeaders: ["Starter", "Growth", "Scale", "Enterprise"],
-  sections: [
-    {
-      heading: "Feature",
-      rows: [
-        {
-          feature: "Price",
-          values: ["$399/mo", "$999/mo", "$2,499/mo", "Custom"],
-        },
-        {
-          feature: "Pipeline Runs/mo",
-          values: ["500", "2,000", "5,000", "Unlimited"],
-        },
-        { feature: "Projects", values: ["1", "3", "10", "Unlimited"] },
-        {
-          feature: "Snapshots",
-          link: "https://docs.zenml.io/concepts/snapshots",
-          values: ["1", "5", "20", "Unlimited"],
-        },
-        { feature: "Workspaces", values: ["1", "1", "1", "Custom"] },
-        {
-          feature: "Team members",
-          values: ["Unlimited", "Unlimited", "Unlimited", "Unlimited"],
-        },
-      ],
+      variant: "primary",
+      analytics: "Pricing-Scale-Book-Demo",
     },
     {
-      heading: "Pro Platform Features",
-      rows: [
-        { feature: "Model Control Plane", values: [true, true, true, true] },
-        { feature: "Artifact Control Plane", values: [true, true, true, true] },
-        { feature: "RBAC (Standard Roles)", values: [true, true, true, true] },
-      ],
-    },
-    {
-      heading: "Advanced Features",
-      rows: [
-        {
-          feature: "Advanced Native Scheduling",
-          values: [false, false, false, "COMING SOON"],
-        },
-        {
-          feature: "Webhooks & Triggers",
-          values: [false, false, false, "COMING SOON"],
-        },
-        {
-          feature: "Resource Management & Queueing",
-          values: [false, false, false, "COMING SOON"],
-        },
-        {
-          feature: "Codespaces (Remote IDE)",
-          values: [false, false, false, "COMING SOON"],
-        },
-      ],
-    },
-    {
-      heading: "Enterprise Features",
-      rows: [
-        { feature: "SSO (SAML/OIDC)", values: [false, false, false, true] },
-        { feature: "RBAC (Custom Roles)", values: [false, false, false, true] },
-        { feature: "Audit Logs", values: [false, false, false, true] },
-        { feature: "Regional Deployment", values: [false, false, false, true] },
-        { feature: "On-prem / Hybrid", values: [false, false, false, true] },
-        {
-          feature: "SOC2 & GDPR",
-          link: "https://security.zenml.io/",
-          values: [false, false, false, true],
-        },
-        {
-          feature: "Professional Services",
-          values: [false, false, false, "Workshops & Architecture Reviews"],
-        },
-      ],
-    },
-    {
-      heading: "Support",
-      rows: [
-        {
-          feature: "Support Level",
-          values: ["Basic", "Priority", "Priority", "Dedicated + SLA"],
-        },
-      ],
-    },
-  ],
-  ctaButtons: [
-    {
-      label: "Talk to Sales",
+      label: "Talk to sales",
       href: "/book-your-demo",
-      analytics: "Starter-Book-Demo",
-    },
-    {
-      label: "Talk to Sales",
-      href: "/book-your-demo",
-      analytics: "Growth-Book-Demo",
-    },
-    {
-      label: "Talk to Sales",
-      href: "/book-your-demo",
-      analytics: "Scale-Book-Demo",
-    },
-    {
-      label: "Talk to Sales",
-      href: "/book-your-demo",
+      variant: "secondary",
       analytics: "Enterprise-Book-Demo",
     },
   ],
 };
-
-// ---------------------------------------------------------------------------
-// Tabs (exported)
-// ---------------------------------------------------------------------------
-const INFO_BLOCK =
-  'Your pipeline artifacts and data never touch ZenML infrastructure \u2014 even with SaaS, everything stays in your cloud. Self-hosted is only needed for air-gapped environments or full control over the control plane. <a href="https://docs.zenml.io/pro/system-architecture#where-data-lives" target="_blank" rel="noopener noreferrer">Learn where data lives</a>.';
-
-export const PRICING_TABS: readonly PricingTab[] = [
-  {
-    label: "SaaS",
-    plans: [SAAS_STARTER, SAAS_GROWTH, SAAS_SCALE, SAAS_ENTERPRISE],
-    infoBlock: INFO_BLOCK,
-    compareTable: SAAS_COMPARE,
-  },
-  {
-    label: "Self-Hosted",
-    plans: [SELF_HOSTED_OSS, SELF_HOSTED_PRO],
-    infoBlock: INFO_BLOCK,
-    compareTable: SELF_HOSTED_COMPARE,
-  },
-];
 
 // ---------------------------------------------------------------------------
 // Startup / Academic banner
@@ -486,30 +389,40 @@ export const PRICING_FAQ: FaqData = {
   subheadline: "Everything you need to know about the product.",
   items: [
     {
-      question: "What happens if I exceed my plan\u2019s limits?",
+      question: "ZenML and Kitaru — same plan?",
       answer:
-        "We don\u2019t abruptly cut you off. If you occasionally exceed your plan\u2019s limits, we\u2019ll notify you and suggest an upgrade if the pattern continues. For consistent overages, upgrading to the next tier ensures you get the best value.",
+        "Yes. Pricing is unified across both workspaces. The ZenML workspace runs ML pipelines (typed step DAGs, training, batch inference). The Kitaru workspace runs durable AI agents (checkpoints, replay, wait/resume). You pick the workspace per project; Pro plans include both. Same $, same support tier, different SDKs and UI.",
+    },
+    {
+      question: "Can I self-host Kitaru like ZenML?",
+      answer:
+        "Yes. Kitaru is open source under Apache 2.0 — same model as ZenML. Self-host the server in your own VPC, point it at S3/GCS/Azure Blob, and run flows on Kubernetes, Vertex, SageMaker, or AzureML. Pro adds distributed execution, dashboard/API/scheduled/webhook triggers, SSO, audit, and a hosted control plane.",
+    },
+    {
+      question: "What happens if I exceed my plan’s limits?",
+      answer:
+        "We don’t abruptly cut you off. If you occasionally exceed your plan’s limits, we’ll notify you and suggest an upgrade if the pattern continues. For consistent overages, upgrading to the next tier ensures you get the best value.",
     },
     {
       question: "Can I self-host ZenML?",
       answer:
-        "Yes! ZenML is open source and can be self-hosted on your own infrastructure completely free. This is separate from our managed Community and Basic plans. If you need enterprise features or support for your self-hosted deployment, our Scale plan can accommodate that as well. ZenML uses industry-standard encryption for all data in-transit and at rest. The data is stored on AWS regions in Europe, and a strict backup policy is maintained for all client data. ZenML only stores metadata \u2014 and no actual data is kept anywhere on our servers. Data and compute stays on the VPC of the customer.",
+        "Yes! ZenML is open source and can be self-hosted on your own infrastructure completely free — that's the Open Source plan. If you need the Pro control plane or support for a self-hosted deployment, the Enterprise plan covers that too. ZenML uses industry-standard encryption for all data in-transit and at rest. The data is stored on AWS regions in Europe, and a strict backup policy is maintained for all client data. ZenML only stores metadata — and no actual data is kept anywhere on our servers. Data and compute stays on the VPC of the customer.",
     },
     {
       question: "How do Run Template Triggers work?",
       answer:
-        "Run Template Triggers allow you to automate pipeline runs based on events or schedules. The Community plan includes 5 triggers, while the Team plan includes 50, enabling more complex automation workflows for production environments.",
+        "Run Template Triggers automate executions — ZenML pipeline runs and Kitaru flow executions — from events, schedules, webhooks, or the API. Triggers are a Pro feature: they're available on the Scale and Enterprise plans for more complex automation workflows in production.",
     },
     {
       question:
-        "What\u2019s the difference between the managed plans and the open source version?",
+        "What’s the difference between the managed plans and the open source version?",
       answer:
-        "The open source version gives you complete control but requires you to manage your own infrastructure. Our managed plans (Community and Team) provide a fully hosted environment, automatic updates, guaranteed uptime, and dedicated support. It also includes pro-only features like run templates, model control plane, and RBAC. The Scale plan offers enterprise features on top of either option.",
+        "The Open Source plan gives you complete control but requires you to manage your own infrastructure. The Pro plans — Scale and Enterprise — provide a fully managed control plane with automatic updates, guaranteed uptime, and Pro-only features like run templates, the Model Control Plane, and RBAC. Enterprise adds governance and deployment options like SSO, audit logs, and air-gapped deployment on top.",
     },
     {
       question: "What kind of support is included in each plan?",
       answer:
-        "The Community plan includes access to our public Slack channel and community forums. The Team plan adds dedicated Slack support with faster response times. Scale plans include a dedicated account manager, priority support with SLAs, and implementation assistance.",
+        "The Open Source plan includes access to our public Slack channel and community forums. The Scale plan adds priority support with faster response times. Enterprise includes a dedicated account manager, support with SLAs, and implementation assistance.",
     },
   ],
   slackCta: {
@@ -534,7 +447,7 @@ export const PRICING_STATS = {
   testimonial: {
     quote:
       '"ZenML offers the capability to build end-to-end ML workflows that seamlessly integrate with various components of the ML stack, such as different providers, data stores, and orchestrators."',
-    name: "Harold Gim\u00e9nez",
+    name: "Harold Giménez",
     title: "SVP R&D at HashiCorp",
     avatar: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/31a5f8ee/653297b0b924af52998661bf_harold.webp`,
     companyLogo: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/33303c0d/6532977ff6458771fb59387e_hashicorp.webp`,
@@ -594,13 +507,13 @@ export const PRICING_FINAL_CTA = {
   headline: "Start deploying reproducible AI workflows today",
   body: "Enterprise-grade MLOps platform trusted by thousands of companies in production.",
   primaryCta: {
-    label: "Start Free Trial",
-    href: "https://cloud.zenml.io/signup",
-    analytics: "Pricing-CTA-Free-Trial",
+    label: "Book a demo",
+    href: "/book-your-demo",
+    analytics: "Pricing-CTA-Book-Demo",
   } as CtaLink,
   secondaryCta: {
-    label: "Use Open Source",
-    href: "/get-started",
-    analytics: "Pricing-CTA-Open-Source",
+    label: "Read Docs",
+    href: "/docs",
+    analytics: "Pricing-CTA-Read-Docs",
   } as CtaLink,
 } as const;

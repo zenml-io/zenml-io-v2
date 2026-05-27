@@ -1,30 +1,199 @@
 @import "tailwindcss";
 
-html {
-  scroll-behavior: smooth;
+/* Plus Jakarta Sans — original ZenML body UI font.
+   Inter — Kitaru body UI font (kept for [data-app="kitaru"]).
+   DM Serif Display — editorial display font, opt-in via `font-display`. */
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=DM+Serif+Display&display=swap");
+
+html { scroll-behavior: smooth; }
+
+/* ╔════════════════════════════════════════════════════════════════════════╗
+ * ║                          BRAND CONFIG                                  ║
+ * ║          Single source of truth for visual identity                    ║
+ * ║                                                                        ║
+ * ║  EDIT ONLY THIS SECTION to change brand colors, fonts, or surfaces.    ║
+ * ║  Every page picks up the change automatically. No source edits needed. ║
+ * ╚════════════════════════════════════════════════════════════════════════╝
+ *
+ * Theme switching via [data-app] on <html>:
+ *   - :root                 → Kitaru theme (warm orange primary, cream ground)
+ *   - [data-app="kitaru"]   → same as :root (explicit override)
+ *   - [data-app="zenml"]    → ZenML theme (purple primary, white ground — original brand)
+ *
+ * BaseLayout.astro sets data-app="zenml" by default for the whole site.
+ * Per-page overrides (e.g. /product/kitaru) set data-app="kitaru".
+ *
+ * VOCABULARY for component code (Tailwind utilities):
+ *   Semantic (preferred — auto-themes by data-app):
+ *     bg-primary / text-primary            brand color
+ *     bg-background / text-foreground      page surface + text
+ *     bg-card / text-card-foreground       elevated surface
+ *     bg-muted / text-muted-foreground     de-emphasized
+ *     bg-accent / text-accent-foreground   tinted accent surface
+ *     bg-secondary                         de-emphasized surface
+ *     border-border, ring-ring             interactive chrome
+ *     bg-success / bg-warning / bg-info / bg-destructive  status
+ *
+ *   Scale (always sage green for ZenML, regardless of data-app):
+ *     bg-zenml-{25,50,100,300,400,500,600,700,800}
+ *     text-zenml-{...}  border-zenml-{...}
+ *
+ *   Other:
+ *     bg-purple-{...}   Untitled UI legacy purple (NOT brand) — for purple UI accents only
+ *     bg-gray-{...}     neutrals
+ *
+ * RULE: never hardcode hex values in component code. Always reference a token.
+ */
+
+/* ─── 1. Kitaru theme (default for :root) ──────────────────────────────────── */
+:root {
+  /* Surfaces */
+  --background: oklch(0.9796 0.0057 84.5661); /* warm cream */
+  --foreground: oklch(0.2576 0.0281 56.6469); /* brown carbon */
+  --card: oklch(0.992 0.0034 67.7841);
+  --card-foreground: oklch(0.2576 0.0281 56.6469);
+  --popover: oklch(0.992 0.0034 67.7841);
+  --popover-foreground: oklch(0.2576 0.0281 56.6469);
+
+  /* Brand */
+  --primary: oklch(0.7171 0.1347 57.2915); /* Kitaru orange */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.9629 0.0079 73.7438);
+  --secondary-foreground: oklch(0.4903 0.035 58.6942);
+  --muted: oklch(0.9392 0.0136 60.5651);
+  --muted-foreground: oklch(0.629 0.035 65.5858);
+  --accent: oklch(0.9353 0.0128 63.9151);
+  --accent-foreground: oklch(0.4903 0.035 58.6942);
+
+  /* Chrome */
+  --border: oklch(0.9097 0.0183 78.2362);
+  --input: oklch(0.9097 0.0183 78.2362);
+  --ring: oklch(0.6992 0.105 59.9944);
+
+  /* Status */
+  --success: oklch(0.55 0.14 145);
+  --success-foreground: oklch(1 0 0);
+  --warning: oklch(0.68 0.15 70);
+  --warning-foreground: oklch(1 0 0);
+  --info: oklch(0.55 0.15 260);
+  --info-foreground: oklch(1 0 0);
+  --destructive: oklch(0.5796 0.1405 19.7837);
+  --destructive-foreground: oklch(1 0 0);
+
+  /* Typography */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-display: "DM Serif Display", Georgia, "Times New Roman", serif;
+
+  /* Shape */
+  --radius: 0.5rem;
 }
 
-/*
- * ZenML design tokens — extracted from the Webflow production site.
- * See docs/design-tokens.md for full reference.
- */
-@theme {
-  /* === Brand Colors === */
-  --color-zenml-25: #f1ebfe;
-  --color-zenml-50: #f6f2ff;
-  --color-zenml-500: #7a3ef4;
+/* ─── 2. ZenML theme (original purple) ─────────────────────────────────────── */
+[data-app="zenml"] {
+  /* Surfaces — original white ground */
+  --background: #ffffff;
+  --foreground: #111827;
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+
+  /* Brand — original ZenML purple */
+  --primary: #7a3ef4;
+  --primary-foreground: #ffffff;
+  --ring: #7a3ef4;
+
+  --secondary: #f9fafb;
+  --secondary-foreground: #4b5563;
+  --muted: #f2f4f7;
+  --muted-foreground: #6b7280;
+  --accent: #f6f2ff;
+  --accent-foreground: #361776;
+
+  /* Chrome */
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+
+  /* Typography — original ZenML font */
+  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+}
+
+/* ─── 3. ZenML brand scale (original purple, theme-independent) ─────────────
+ * Used by components that need an explicit shade from the ZenML brand ladder
+ * (e.g. badges, hover backgrounds, dark-section grounds). */
+:root {
+  --color-zenml-25:  #f1ebfe;  /* lightest */
+  --color-zenml-50:  #f6f2ff;
+  --color-zenml-100: #f4ebff;
+  --color-zenml-300: #d6bbfb;
+  --color-zenml-400: #b692f6;
+  --color-zenml-500: #7a3ef4;  /* brand primary */
   --color-zenml-600: #361776;
   --color-zenml-700: #281158;
-  --color-zenml-800: #1b0c3b;
+  --color-zenml-800: #1b0c3b;  /* darkest */
+}
 
-  /* === Primary Palette (aliases to zenml brand for utility classes) === */
-  --color-primary-50: #f6f2ff;
-  --color-primary-100: #f1ebfe;
-  --color-primary-300: #d6bbfb;
-  --color-primary-600: #7a3ef4;
-  --color-primary-700: #361776;
-  --color-primary-800: #281158;
+/* ╔════════════════════════════════════════════════════════════════════════╗
+ * ║                  TAILWIND UTILITY BINDING                              ║
+ * ║   Exposes semantic vars from BRAND CONFIG above as Tailwind utilities  ║
+ * ║   (bg-primary, text-foreground, bg-card, border-border, etc.)          ║
+ * ╚════════════════════════════════════════════════════════════════════════╝ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-info: var(--info);
 
+  /* Fonts — tracks --font-* in :root above */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-display: var(--font-display);
+}
+
+@theme inline {
+  /* zenml-* utilities pull from the brand scale in :root above */
+  --color-zenml-25:  var(--color-zenml-25);
+  --color-zenml-50:  var(--color-zenml-50);
+  --color-zenml-100: var(--color-zenml-100);
+  --color-zenml-300: var(--color-zenml-300);
+  --color-zenml-400: var(--color-zenml-400);
+  --color-zenml-500: var(--color-zenml-500);
+  --color-zenml-600: var(--color-zenml-600);
+  --color-zenml-700: var(--color-zenml-700);
+  --color-zenml-800: var(--color-zenml-800);
+
+  /* primary-* (Webflow-era aliases) — mirror zenml-* */
+  --color-primary-50:  var(--color-zenml-50);
+  --color-primary-100: var(--color-zenml-100);
+  --color-primary-300: var(--color-zenml-300);
+  --color-primary-600: var(--color-zenml-600);
+  --color-primary-700: var(--color-zenml-700);
+  --color-primary-800: var(--color-zenml-800);
+}
+
+/* Static utility tokens (no theming, no semantic role — just literal scales) */
+@theme {
   /* === Gray Scale (from Untitled UI design system) === */
   --color-gray-25: #fcfcfd;
   --color-gray-50: #f9fafb;
@@ -38,7 +207,9 @@ html {
   --color-gray-800: #1f2937;
   --color-gray-900: #111827;
 
-  /* === Legacy Purple Scale (Untitled UI) === */
+  /* === Legacy Purple Scale (Untitled UI) ===
+   * Real purple. Used by misc UI accents (status pills, focus rings, etc.)
+   * NOT brand color. To express the brand, use --color-zenml-* tokens above. */
   --color-purple-25: #fcfaff;
   --color-purple-50: #f9f5ff;
   --color-purple-100: #f4ebff;
@@ -57,9 +228,16 @@ html {
   --color-blue-50: #eff8ff;
   --color-blue-500: #2e90fa;
   --color-blue-700: #175cd3;
-  --color-orange-50: #fef6ee;
+  --color-orange-50: #fff4ec;   /* Kitaru-aligned (was #fef6ee — see two-workspaces handoff) */
+  --color-orange-100: #ffe6d4;
+  --color-orange-200: #fed7aa;
+  --color-orange-300: #fdba74;
   --color-orange-400: #fb923c;
+  --color-orange-500: #f97316;
+  --color-orange-600: #ea580c;  /* Kitaru brand primary */
   --color-orange-700: #b93815;
+  --color-orange-800: #9a3412;  /* Kitaru deep brand text */
+  --color-orange-900: #7c2d12;
   --color-indigo-50: #eef4ff;
   --color-indigo-500: #6172f3;
   --color-indigo-700: #3538cd;
@@ -68,9 +246,38 @@ html {
   --color-pink-700: #c11574;
   --color-light-green: #dbf2ec;
 
-  /* === Typography === */
-  --font-sans: "Plus Jakarta Sans", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  /* === Ink scale (TwoWorkspaces handoff §design-tokens) === */
+  --color-ink:        #0F0F12;
+  --color-ink-mid:    #2a2a30;
+  --color-ink-muted:  #5a5a64;
+  --color-ink-light:  #8a8a94;
+
+  /* === Cream / bookish surface palette (TwoWorkspaces handoff) === */
+  --color-cream-canvas: #fafaf7;  /* widget inner ground */
+  --color-cream-page:   #faf5e6;  /* baseline column in Replay */
+  --color-cream-paper:  #f5f4ef;
+  --color-cream-warm:   #FAF8F4;  /* v2-Flows artboard ground (warmer than cream-canvas) */
+  --color-cream-lift:   #FEFCF8;  /* lighter cream — Flows timeline cards lift off the cream-warm ground */
+
+  /* === Warm-taupe scale — Kitaru timeline labels (v2-Flows artboard A3O-0) === */
+  --color-warm-taupe:        #988573;  /* timeline label color */
+  --color-warm-taupe-dark:   #705C4D;  /* span name color */
+  --color-warm-taupe-light:  #A89B8C;  /* tick / muted */
+  --color-warm-taupe-ink:    #2E2016;  /* parent span text (e.g. report_agent / draft) */
+  --color-warm-taupe-track:  #F2E9E2;  /* segmented summary stripe ground */
+
+  /* === Destructive ramp (TwoWorkspaces audit §kitaru.checkpoints) === */
+  --color-error-50:  #fef2f2;
+  --color-error-100: #fee2e2;
+  --color-error-200: #fecaca;
+  --color-error-500: #ef4444;
+  --color-error-700: #b91c1c;
+
+  /* === STAGE / DEV semantic pill tokens === */
+  --color-stage-bg:  #fef3c7;
+  --color-stage-fg:  #92400e;
+  --color-dev-bg:    #dbeafe;
+  --color-dev-fg:    #1d4ed8;
 
   /* === Custom Spacing === */
   --spacing-space-xxs: 0.5rem;
