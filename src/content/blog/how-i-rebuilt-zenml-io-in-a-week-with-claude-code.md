@@ -18,7 +18,7 @@ seo:
   title: "How I Rebuilt zenml.io in a Week with Claude Code - ZenML Blog"
   description: "I rebuilt zenml.io — 2,224 pages, 20 CMS collections — from Webflow to Astro in a week using Claude Code and a multi-model AI workflow. Here's how."
   canonical: "https://www.zenml.io/blog/how-i-rebuilt-zenml-io-in-a-week-with-claude-code"
-  ogImage: "https://assets.zenml.io/content/blog/c26a9572/zenml-io-claude-code-og.avif"
+  ogImage: "https://assets.zenml.io/content/blog/c26a9572/zenml-io-claude-code-og.jpg"
 ---
 
 I rebuilt the entire zenml.io website — migrating it from Webflow to Astro — in about a week. The blog, the LLMOps database, integrations, comparison pages, case studies — all of it. No phased rollout, no "let's start with a landing page." The site you're reading right now is the result.

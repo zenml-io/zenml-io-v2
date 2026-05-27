@@ -31,7 +31,7 @@ seo:
   title: "ZenML vs Seldon Core - Lifecycle orchestration vs Kubernetes model serving"
   description: "Looking for an open-source alternative to Seldon Core? ZenML orchestrates training, testing, and promotion pipelines that feed your serving layer."
   canonical: "https://www.zenml.io/compare/zenml-vs-seldon-core"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7f93c328/6996da78aed2c6e3a275dbae_compare-seldon-core.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7f93c328/6996da78aed2c6e3a275dbae_compare-seldon-core.jpg"
   ogTitle: "ZenML vs Seldon Core - Lifecycle orchestration vs Kubernetes model serving"
   ogDescription: "Looking for an open-source alternative to Seldon Core? ZenML orchestrates training, testing, and promotion pipelines that feed your serving layer."
 ---

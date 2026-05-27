@@ -17,7 +17,7 @@ seo:
   title: "The Anatomy of a Production Coding Agent - ZenML Blog"
   description: "A production coding agent isn't a prompt and a while loop. It's eight stages, each with different failure modes, costs, and human touchpoints. Here's the full pattern."
   canonical: "https://www.zenml.io/blog/anatomy-of-a-production-agent"
-  ogImage: "https://assets.zenml.io/content/blog/52f6129f/anatomy-of-a-production-agent.avif"
+  ogImage: "https://assets.zenml.io/content/blog/52f6129f/anatomy-of-a-production-agent.jpg"
 ---
 
 The gap between a demo coding agent and a production one isn't features. It's failure handling, cost awareness, and the ability to stop, inspect, and resume at any point.

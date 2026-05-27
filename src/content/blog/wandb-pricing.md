@@ -26,7 +26,7 @@ seo:
   title: "WandB Pricing Guide: How Much Does the Platform Cost? - ZenML Blog"
   description: "In this WandB pricing guide, we break down the costs, features, and value to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/wandb-pricing"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e970d8a6/6981cf5010e873663bd75923_6981ce8c25b9bedbff8a6b78_wandb-pricing.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e970d8a6/6981cf5010e873663bd75923_6981ce8c25b9bedbff8a6b78_wandb-pricing.jpg"
   ogTitle: "WandB Pricing Guide: How Much Does the Platform Cost? - ZenML Blog"
   ogDescription: "In this WandB pricing guide, we break down the costs, features, and value to help you decide if it’s the right investment for your business."
 ---

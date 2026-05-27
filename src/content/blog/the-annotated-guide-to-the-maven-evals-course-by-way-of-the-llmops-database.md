@@ -25,7 +25,7 @@ seo:
   title: "The Annotated Guide to the Maven Evals Course (by way of the LLMOps Database) - ZenML Blog"
   description: "Lessons from the Maven Evals course are combined with 50+ real-world case studies from ZenML's LLMOps Database to show how companies like Discord, GitHub, and Coursera implement the Three Gulfs model and Analyze-Measure-Improve lifecycle to transform failing LLM systems into production-ready applications."
   canonical: "https://www.zenml.io/blog/the-annotated-guide-to-the-maven-evals-course-by-way-of-the-llmops-database"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/eb3dab14/6981cf64f4f7a9ede995c45b_6981ce864626f810358db782_zenml-evals-course-1.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/eb3dab14/6981cf64f4f7a9ede995c45b_6981ce864626f810358db782_zenml-evals-course-1.jpg"
   ogTitle: "The Annotated Guide to the Maven Evals Course (by way of the LLMOps Database) - ZenML Blog"
   ogDescription: "Lessons from the Maven Evals course are combined with 50+ real-world case studies from ZenML's LLMOps Database to show how companies like Discord, GitHub, and Coursera implement the Three Gulfs model and Analyze-Measure-Improve lifecycle to transform failing LLM systems into production-ready applications."
 ---

@@ -24,7 +24,7 @@ seo:
   title: "Banking on AI: Implementing Compliant MLOps for Financial Institutions - ZenML Blog"
   description: "Traditional banks face growing pressure to deploy machine learning rapidly while meeting strict regulatory requirements. This blog post explores how modern MLOps practices, like automated data lineage, validation testing, and model observability can help financial institutions bridge the gap. Featuring real-world insights from NatWest and an open-source ZenML pipeline, it offers a practical roadmap for compliant, scalable AI deployment."
   canonical: "https://www.zenml.io/blog/banking-on-ai-implementing-compliant-mlops-for-financial-institutions"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8cf04c23/6981d37a71c3040935dbc365_6981d2ab9b5bd50b8dcb1d56_banking-on-ai-blog-post-cover.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8cf04c23/6981d37a71c3040935dbc365_6981d2ab9b5bd50b8dcb1d56_banking-on-ai-blog-post-cover.jpg"
   ogTitle: "Banking on AI: Implementing Compliant MLOps for Financial Institutions - ZenML Blog"
   ogDescription: "Traditional banks face growing pressure to deploy machine learning rapidly while meeting strict regulatory requirements. This blog post explores how modern MLOps practices, like automated data lineage, validation testing, and model observability can help financial institutions bridge the gap. Featuring real-world insights from NatWest and an open-source ZenML pipeline, it offers a practical roadmap for compliant, scalable AI deployment."
 ---

@@ -26,7 +26,7 @@ seo:
   title: "Temporal vs Airflow: Which Orchestrator Fits Your Workflows? - ZenML Blog"
   description: "In this Temporal vs Airflow comparison, we break down the key differences in architecture, features, and use cases to help you decide which tool belongs in your stack."
   canonical: "https://www.zenml.io/blog/temporal-vs-airflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2bfb1c50/6981d389ab6d2820d701bc03_6981d2abdb7ef4bf7bde6cfa_temporal_vs_airflow.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2bfb1c50/6981d389ab6d2820d701bc03_6981d2abdb7ef4bf7bde6cfa_temporal_vs_airflow.jpg"
   ogTitle: "Temporal vs Airflow: Which Orchestrator Fits Your Workflows? - ZenML Blog"
   ogDescription: "In this Temporal vs Airflow comparison, we break down the key differences in architecture, features, and use cases to help you decide which tool belongs in your stack."
 ---

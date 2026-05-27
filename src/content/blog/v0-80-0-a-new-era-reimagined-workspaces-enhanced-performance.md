@@ -28,7 +28,7 @@ seo:
   title: "ZenML 0.80.0: Workspace Hierarchy for Pro, Performance Gains for All - ZenML Blog"
   description: "ZenML 0.80.0 transforms tenant structures into workspace/project hierarchies with advanced RBAC for Pro users, while enhancing tagging, resource filtering, and dashboard design. Open-source improvements include Kubernetes security upgrades, SkyPilot integration, and significantly faster CLI operations. Both Pro and OSS users benefit from dramatic performance optimizations, GitLab improvements, and enhanced build tracking."
   canonical: "https://www.zenml.io/blog/v0-80-0-a-new-era-reimagined-workspaces-enhanced-performance"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/735e319a/6981d36ce92aa039b696b894_6981d2af5c146b4b5a8cdcc3_zenml-release.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/735e319a/6981d36ce92aa039b696b894_6981d2af5c146b4b5a8cdcc3_zenml-release.jpg"
   ogTitle: "ZenML 0.80.0: Workspace Hierarchy for Pro, Performance Gains for All - ZenML Blog"
   ogDescription: "ZenML 0.80.0 transforms tenant structures into workspace/project hierarchies with advanced RBAC for Pro users, while enhancing tagging, resource filtering, and dashboard design. Open-source improvements include Kubernetes security upgrades, SkyPilot integration, and significantly faster CLI operations. Both Pro and OSS users benefit from dramatic performance optimizations, GitLab improvements, and enhanced build tracking."
 ---

@@ -20,7 +20,7 @@ seo:
   title: "Introducing Kitaru: Open Source Infrastructure For Asynchronous Agents - ZenML Blog"
   description: "Meet Kitaru — open source durable execution for Python agents, built by the ZenML team. Crash recovery, human-in-the-loop, and replay from any checkpoint."
   canonical: "https://www.zenml.io/blog/kitaru-launch"
-  ogImage: "https://assets.zenml.io/content/blog/ef9b36de/image-1.avif"
+  ogImage: "https://assets.zenml.io/content/blog/ef9b36de/image-1.jpg"
 ---
 
 Over the past year, something unexpected started happening in our ZenML community — teams were hacking ZenML's pipeline DAG to run agents. They'd wire up dynamic steps with conditional branching, pass state through artifact store workarounds, and stretch the step abstraction well past its comfort zone.

@@ -28,7 +28,7 @@ seo:
   title: "Demystifying LLMOps: A Practical Database of Real-World Generative AI Implementations - ZenML Blog"
   description: "The LLMOps Database offers a curated collection of 300+ real-world generative AI implementations, providing technical teams with practical insights into successful LLM deployments. This searchable resource includes detailed case studies, architectural decisions, and AI-generated summaries of technical presentations to help bridge the gap between demos and production systems."
   canonical: "https://www.zenml.io/blog/demystifying-llmops-a-practical-database-of-real-world-generative-ai-implementations"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/19e734e6/6981d37a71c3040935dbc35f_6981d2aaba748f2dc5f0843a_midjourney1.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/19e734e6/6981d37a71c3040935dbc35f_6981d2aaba748f2dc5f0843a_midjourney1.jpg"
   ogTitle: "Demystifying LLMOps: A Practical Database of Real-World Generative AI Implementations - ZenML Blog"
   ogDescription: "The LLMOps Database offers a curated collection of 300+ real-world generative AI implementations, providing technical teams with practical insights into successful LLM deployments. This searchable resource includes detailed case studies, architectural decisions, and AI-generated summaries of technical presentations to help bridge the gap between demos and production systems."
 ---

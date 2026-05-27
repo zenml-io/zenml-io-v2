@@ -26,7 +26,7 @@ seo:
   title: "Langflow vs n8n: Features, Pricing, and Integrations Compared - ZenML Blog"
   description: "In this Langflow vs n8n, we compare both platforms’ features, pricing, and integrations."
   canonical: "https://www.zenml.io/blog/langflow-vs-n8n"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/217af2e1/6981d389ab6d2820d701bc18_6981d2a925b9bedbff8b5317_langflow-vs-n8n.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/217af2e1/6981d389ab6d2820d701bc18_6981d2a925b9bedbff8b5317_langflow-vs-n8n.jpg"
   ogTitle: "Langflow vs n8n: Features, Pricing, and Integrations Compared - ZenML Blog"
   ogDescription: "In this Langflow vs n8n, we compare both platforms’ features, pricing, and integrations."
 ---

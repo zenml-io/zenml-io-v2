@@ -24,7 +24,7 @@ seo:
   title: "ZenML's MCP Server Supports DXT: Making MLOps Conversations Frictionless - ZenML Blog"
   description: "ZenML's new DXT-packaged MCP server transforms MLOps workflows by enabling natural language conversations with ML pipelines, experiments, and infrastructure, reducing setup time from 15 minutes to 30 seconds and eliminating the need to hunt across multiple dashboards for answers."
   canonical: "https://www.zenml.io/blog/zenmls-mcp-server-supports-dxt-making-mlops-conversations-frictionless"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9eec284e/6981cf5010e873663bd7592b_6981ce8bcd6daca28158210c_zenml-mcp-dxt_1.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9eec284e/6981cf5010e873663bd7592b_6981ce8bcd6daca28158210c_zenml-mcp-dxt_1.jpg"
   ogTitle: "ZenML's MCP Server Supports DXT: Making MLOps Conversations Frictionless - ZenML Blog"
   ogDescription: "ZenML's new DXT-packaged MCP server transforms MLOps workflows by enabling natural language conversations with ML pipelines, experiments, and infrastructure, reducing setup time from 15 minutes to 30 seconds and eliminating the need to hunt across multiple dashboards for answers."
 ---

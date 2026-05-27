@@ -26,7 +26,7 @@ seo:
   title: "The Agent Deployment Gap: Why Your LLM Loop Isn't Production-Ready (And What to Do About It) - ZenML Blog"
   description: "Comprehensive analysis of why simple AI agent prototypes fail in production deployment, revealing the hidden complexities teams face when scaling from demos to enterprise-ready systems."
   canonical: "https://www.zenml.io/blog/the-agent-deployment-gap-why-your-llm-loop-isnt-production-ready-and-what-to-do-about-it"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5bf697c3/6981cf5010e873663bd75928_6981ce88bd9214d719ce5b4b_agent-deployment.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5bf697c3/6981cf5010e873663bd75928_6981ce88bd9214d719ce5b4b_agent-deployment.jpg"
   ogTitle: "The Agent Deployment Gap: Why Your LLM Loop Isn't Production-Ready (And What to Do About It) - ZenML Blog"
   ogDescription: "Comprehensive analysis of why simple AI agent prototypes fail in production deployment, revealing the hidden complexities teams face when scaling from demos to enterprise-ready systems."
 ---

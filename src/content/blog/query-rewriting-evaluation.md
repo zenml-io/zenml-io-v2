@@ -24,7 +24,7 @@ seo:
   title: "Query Rewriting in RAG Isn’t Enough: How ZenML’s Evaluation Pipelines Unlock Reliable AI - ZenML Blog"
   description: "Are your query rewriting strategies silently hurting your Retrieval-Augmented Generation (RAG) system? Small but unnoticed query errors can quickly degrade user experience, accuracy, and trust. Learn how ZenML's automated evaluation pipelines can systematically detect, measure, and resolve these hidden issues—ensuring that your RAG implementations consistently provide relevant, trustworthy responses."
   canonical: "https://www.zenml.io/blog/query-rewriting-evaluation"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ee60ca5/6981d352ce4b26d085d70408_6981d2b79b5bd50b8dcb1f11_rag_query_rewriting_1.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ee60ca5/6981d352ce4b26d085d70408_6981d2b79b5bd50b8dcb1f11_rag_query_rewriting_1.jpg"
   ogTitle: "Query Rewriting in RAG Isn’t Enough: How ZenML’s Evaluation Pipelines Unlock Reliable AI - ZenML Blog"
   ogDescription: "Are your query rewriting strategies silently hurting your Retrieval-Augmented Generation (RAG) system? Small but unnoticed query errors can quickly degrade user experience, accuracy, and trust. Learn how ZenML's automated evaluation pipelines can systematically detect, measure, and resolve these hidden issues—ensuring that your RAG implementations consistently provide relevant, trustworthy responses."
 ---

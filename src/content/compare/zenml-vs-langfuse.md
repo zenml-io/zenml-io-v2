@@ -31,7 +31,7 @@ seo:
   title: "ZenML vs Langfuse - Langfuse for LLM observability. ZenML for shipping AI pipelines."
   description: "ZenML is an open-source alternative layer to Langfuse: the former (ZenML) helps you orchestrate portable ML/LLM pipelines, while the latter (Langfuse) handles LLM observability."
   canonical: "https://www.zenml.io/compare/zenml-vs-langfuse"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d0ccece9/6996dadef0d9c4207ceb9bbb_compare-Langfuse.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d0ccece9/6996dadef0d9c4207ceb9bbb_compare-Langfuse.jpg"
   ogTitle: "ZenML vs Langfuse - Langfuse for LLM observability. ZenML for shipping AI pipelines."
   ogDescription: "ZenML is an open-source alternative layer to Langfuse: the former (ZenML) helps you orchestrate portable ML/LLM pipelines, while the latter (Langfuse) handles LLM observability."
 ---

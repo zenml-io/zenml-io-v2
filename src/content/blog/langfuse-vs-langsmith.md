@@ -25,7 +25,7 @@ seo:
   title: "Langfuse vs LangSmith: Which Observability Platform Fits Your LLM Stack? - ZenML Blog"
   description: "In this Langfuse vs LangSmith, we conclude which observability platforms fit your LLMs stack by comparing features, integration, and pricing."
   canonical: "https://www.zenml.io/blog/langfuse-vs-langsmith"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/29f6b4dc/6981d36ce92aa039b696b8ae_6981d2afec7c5dd6d1e97696_langfuse-vs-langsmith.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/29f6b4dc/6981d36ce92aa039b696b8ae_6981d2afec7c5dd6d1e97696_langfuse-vs-langsmith.jpg"
   ogTitle: "Langfuse vs LangSmith: Which Observability Platform Fits Your LLM Stack? - ZenML Blog"
   ogDescription: "In this Langfuse vs LangSmith, we conclude which observability platforms fit your LLMs stack by comparing features, integration, and pricing."
 ---

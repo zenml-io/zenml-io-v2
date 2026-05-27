@@ -24,7 +24,7 @@ seo:
   title: "OCR Batch Workflows: Scalable Text Extraction with ZenML - ZenML Blog"
   description: "How do you reliably process thousands of diverse documents with GenAI OCR at scale? Explore why robust workflow orchestration is critical for achieving reliability in production. See how ZenML was used to build a scalable, multi-model batch processing system that maintains comprehensive visibility into accuracy metrics. Learn how this approach enables systematic benchmarking to select optimal OCR models for your specific document processing needs."
   canonical: "https://www.zenml.io/blog/ocr-batch-workflows-scalable-text-extraction-with-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2737e611/6981d37a71c3040935dbc353_6981d2adacfcb44f002ee1a3_blog_cover.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2737e611/6981d37a71c3040935dbc353_6981d2adacfcb44f002ee1a3_blog_cover.jpg"
   ogTitle: "OCR Batch Workflows: Scalable Text Extraction with ZenML - ZenML Blog"
   ogDescription: "How do you reliably process thousands of diverse documents with GenAI OCR at scale? Explore why robust workflow orchestration is critical for achieving reliability in production. See how ZenML was used to build a scalable, multi-model batch processing system that maintains comprehensive visibility into accuracy metrics. Learn how this approach enables systematic benchmarking to select optimal OCR models for your specific document processing needs."
 ---

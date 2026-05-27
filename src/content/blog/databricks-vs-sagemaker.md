@@ -19,7 +19,7 @@ seo:
   title: "Databricks vs SageMaker vs ZenML: Pick Your Platform, Keep Pipelines Portable - ZenML Blog"
   description: "This article compares Databricks vs Sagemaker vs ZenML on orchestration, features, GenAI, integrations, and pricing for ML platform teams."
   canonical: "https://www.zenml.io/blog/databricks-vs-sagemaker"
-  ogImage: "https://assets.zenml.io/content/blog/databricks-vs-sagemaker/6cf1b777/databricks-vs-sagemaker-cover.avif"
+  ogImage: "https://assets.zenml.io/content/blog/databricks-vs-sagemaker/6cf1b777/databricks-vs-sagemaker-cover.jpg"
 ---
 
 Most ML platform teams I talk to are not really choosing between Databricks or SageMaker or ZenML as a binary. They are trying to decide where the **center of gravity** of their ML platform should sit, how much of the workflow should be locked to one vendor, and where a portable pipeline layer fits on top.

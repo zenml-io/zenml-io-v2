@@ -17,7 +17,7 @@ seo:
   title: "Why Kitaru Doesn't Use Journal Replay? - ZenML Blog"
   description: "Every durable execution engine today forces your code to be deterministic. Kitaru takes a different approach — and it matters more than you think."
   canonical: "https://www.zenml.io/blog/no-journal-replay"
-  ogImage: "https://assets.zenml.io/content/blog/8a6acec1/no-journal-replay.avif"
+  ogImage: "https://assets.zenml.io/content/blog/8a6acec1/no-journal-replay.jpg"
 ---
 
 Every durable execution platform - Temporal, Restate, Inngest, DBOS, achieves durability through some form of journal replay. The system records every side effect in a log. On crash or resume, it re-executes your code from the top and replays the journal to reconstruct state.

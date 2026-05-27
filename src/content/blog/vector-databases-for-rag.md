@@ -26,7 +26,7 @@ seo:
   title: "We Tried and Tested 10 Best Vector Databases for RAG Pipelines - ZenML Blog"
   description: "Discover the 10 best data vector databases for RAG pipelines."
   canonical: "https://www.zenml.io/blog/vector-databases-for-rag"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/685f5aef/6981cf3948be69340f5c147b_6981ce8cacfcb44f002ded62_best-vector-databases-for-rag.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/685f5aef/6981cf3948be69340f5c147b_6981ce8cacfcb44f002ded62_best-vector-databases-for-rag.jpg"
   ogTitle: "We Tried and Tested 10 Best Vector Databases for RAG Pipelines - ZenML Blog"
   ogDescription: "Discover the 10 best data vector databases for RAG pipelines."
 ---

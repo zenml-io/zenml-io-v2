@@ -26,7 +26,7 @@ seo:
   title: "ClearML Pricing Breakdown: Is the Platform Worth the Investment? - ZenML Blog"
   description: "In this ClearML pricing breakdown, we discuss the costs, features, and value ClearML provides to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/clearml-pricing"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fface84e/6981d362e92aa039b696ad00_6981d2b28dd83b43e529f19a_clearml-pricing.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fface84e/6981d362e92aa039b696ad00_6981d2b28dd83b43e529f19a_clearml-pricing.jpg"
   ogTitle: "ClearML Pricing Breakdown: Is the Platform Worth the Investment? - ZenML Blog"
   ogDescription: "In this ClearML pricing breakdown, we discuss the costs, features, and value ClearML provides to help you decide if it’s the right investment for your business."
 ---

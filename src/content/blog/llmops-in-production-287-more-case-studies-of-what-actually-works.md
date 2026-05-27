@@ -26,7 +26,7 @@ seo:
   title: "LLMOps in Production: 287 More Case Studies of What Actually Works - ZenML Blog"
   description: "287 latest curated summaries of LLMOps use cases in industry, from tech to healthcare to finance and more. This blog also highlights some of the trends observed across the case studies."
   canonical: "https://www.zenml.io/blog/llmops-in-production-287-more-case-studies-of-what-actually-works"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c0be8d6a/6981cf0ef4f7a9ede9959a0d_6981ce8f771088be81eaa3e4_more-case-studies-resized.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c0be8d6a/6981cf0ef4f7a9ede9959a0d_6981ce8f771088be81eaa3e4_more-case-studies-resized.jpg"
   ogTitle: "LLMOps in Production: 287 More Case Studies of What Actually Works - ZenML Blog"
   ogDescription: "287 latest curated summaries of LLMOps use cases in industry, from tech to healthcare to finance and more. This blog also highlights some of the trends observed across the case studies."
 ---

@@ -20,7 +20,7 @@ seo:
   title: "Dataiku vs Databricks vs ZenML: Which Tool Should ML Platform Teams Choose?"
   description: "Compare Dataiku vs Databricks vs ZenML across workflow orchestration, visualization, experiment tracking, governance, integrations, and pricing to choose the right ML platform."
   canonical: "https://www.zenml.io/blog/dataiku-vs-databricks"
-  ogImage: "https://assets.zenml.io/content/blog/dataiku-vs-databricks/383f9b6d/cover.avif"
+  ogImage: "https://assets.zenml.io/content/blog/dataiku-vs-databricks/383f9b6d/cover.jpg"
 ---
 
 Modern ML platform teams are no longer choosing between “just notebooks” and “just pipelines.” They are choosing how much of the data, ML, governance, and production workflow should live inside one platform versus how much should remain portable across tools.

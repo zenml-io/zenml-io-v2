@@ -31,7 +31,7 @@ seo:
   title: "ZenML vs DVC - DVC versions your data. ZenML runs your pipelines anywhere."
   description: "Open-source DVC alternative: ZenML orchestrates portable ML pipelines and lifecycle tooling beyond Git-based data/model versioning."
   canonical: "https://www.zenml.io/compare/zenml-vs-dvc"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d4899454/6996da8bac608388f91bbf6f_compare-DVC.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d4899454/6996da8bac608388f91bbf6f_compare-DVC.jpg"
   ogTitle: "ZenML vs DVC - DVC versions your data. ZenML runs your pipelines anywhere."
   ogDescription: "Open-source DVC alternative: ZenML orchestrates portable ML pipelines and lifecycle tooling beyond Git-based data/model versioning."
 ---

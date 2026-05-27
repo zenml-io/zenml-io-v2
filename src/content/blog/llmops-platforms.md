@@ -25,7 +25,7 @@ seo:
   title: "11 Best LLMOps Platforms for Building Efficient AI Agents and Workflows - ZenML Blog"
   description: "Discover the 11 best LLMOps platforms to build AI agents and workflows."
   canonical: "https://www.zenml.io/blog/llmops-platforms"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fd0ab5a3/6981cf3948be69340f5c147e_6981ce8b757e7659154a56a1_llmops-platforms.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fd0ab5a3/6981cf3948be69340f5c147e_6981ce8b757e7659154a56a1_llmops-platforms.jpg"
   ogTitle: "11 Best LLMOps Platforms for Building Efficient AI Agents and Workflows - ZenML Blog"
   ogDescription: "Discover the 11 best LLMOps platforms to build AI agents and workflows."
 ---

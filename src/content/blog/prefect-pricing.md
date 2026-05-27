@@ -26,7 +26,7 @@ seo:
   title: "Prefect Pricing Guide: Is the Platform Worth the Investment? - ZenML Blog"
   description: "In this Prefect pricing guide, we break down the costs, features, and value to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/prefect-pricing"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3d85664b/6981d362e92aa039b696ad03_6981d2b2ae2379d4be06fd83_prefect-pricing.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3d85664b/6981d362e92aa039b696ad03_6981d2b2ae2379d4be06fd83_prefect-pricing.jpg"
   ogTitle: "Prefect Pricing Guide: Is the Platform Worth the Investment? - ZenML Blog"
   ogDescription: "In this Prefect pricing guide, we break down the costs, features, and value to help you decide if it’s the right investment for your business."
 ---

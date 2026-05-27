@@ -25,7 +25,7 @@ seo:
   title: "AI-Generated Storytelling: A GenAI Comic About ZenML - ZenML Blog"
   description: "Playing around with some genAI services and tools to create a story and comic that showcases the journey of MLOps adoption for a small team."
   canonical: "https://www.zenml.io/blog/ai-generated-storytelling-genai-comic-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5a7b5a8c/6981d389ab6d2820d701bc00_6981d2aba626881724d7d4df_CleanShot_2024-08-19_at_11.49.00_402x.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5a7b5a8c/6981d389ab6d2820d701bc00_6981d2aba626881724d7d4df_CleanShot_2024-08-19_at_11.49.00_402x.jpg"
   ogTitle: "AI-Generated Storytelling: A GenAI Comic About ZenML - ZenML Blog"
   ogDescription: "Playing around with some genAI services and tools to create a story and comic that showcases the journey of MLOps adoption for a small team."
 ---

@@ -17,7 +17,7 @@ seo:
   title: "From ZenML to Kitaru: Why We Built a New Product - ZenML Blog"
   description: "We spent five years building ML pipeline infrastructure. Then agents showed up and we realized the next problem needed a new tool — not an extension of the old one."
   canonical: "https://www.zenml.io/blog/from-zenml-to-kitaru"
-  ogImage: "https://assets.zenml.io/content/blog/e3c1647c/from-zenml-to-kitaru.avif"
+  ogImage: "https://assets.zenml.io/content/blog/e3c1647c/from-zenml-to-kitaru.jpg"
 ---
 
 ZenML started in 2020. The problem was clear: ML teams couldn't reproduce their training pipelines, couldn't track their artifacts, and couldn't deploy models without a heroic manual effort. We built an open-source MLOps framework to fix that.

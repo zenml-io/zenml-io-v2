@@ -26,7 +26,7 @@ seo:
   title: "9 Best Embedding Models for RAG to Try This Year - ZenML Blog"
   description: "Discover the 9 best data embedding models for RAG pipelines you build this year."
   canonical: "https://www.zenml.io/blog/best-embedding-models-for-rag"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/37fc36b3/6981cf0ef4f7a9ede9959a0a_6981ce8f313683e025df656f_best-llm-embedding-models.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/37fc36b3/6981cf0ef4f7a9ede9959a0a_6981ce8f313683e025df656f_best-llm-embedding-models.jpg"
   ogTitle: "9 Best Embedding Models for RAG to Try This Year - ZenML Blog"
   ogDescription: "Discover the 9 best data embedding models for RAG pipelines you build this year."
 ---

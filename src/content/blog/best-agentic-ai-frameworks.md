@@ -26,7 +26,7 @@ seo:
   title: "7 Best Agentic AI Frameworks to Build Smarter AI Workflows - ZenML Blog"
   description: "Discover the 7 best Agentic AI frameworks to help you build smarter AI workflows this year."
   canonical: "https://www.zenml.io/blog/best-agentic-ai-frameworks"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6a01b380/6981d36ce92aa039b696b8ab_6981d2adca7691aacd2f45d6_best-agentic-ai-frameworks.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6a01b380/6981d36ce92aa039b696b8ab_6981d2adca7691aacd2f45d6_best-agentic-ai-frameworks.jpg"
   ogTitle: "7 Best Agentic AI Frameworks to Build Smarter AI Workflows - ZenML Blog"
   ogDescription: "Discover the 7 best Agentic AI frameworks to help you build smarter AI workflows this year."
 ---

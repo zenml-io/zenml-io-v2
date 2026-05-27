@@ -26,7 +26,7 @@ seo:
   title: "The Evaluation Playbook: Making LLMs Production-Ready - ZenML Blog"
   description: "A comprehensive exploration of real-world lessons in LLM evaluation and quality assurance, examining how industry leaders tackle the challenges of assessing language models in production. Through diverse case studies, the post covers the transition from traditional ML evaluation, establishing clear metrics, combining automated and human evaluation strategies, and implementing continuous improvement cycles to ensure reliable LLM applications at scale."
   canonical: "https://www.zenml.io/blog/the-evaluation-playbook-making-llms-production-ready"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4c7ddfa1/6981d389ab6d2820d701bc1b_6981d2ab3189b48f146b6e43_Abstract_Geometric_Pattern.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4c7ddfa1/6981d389ab6d2820d701bc1b_6981d2ab3189b48f146b6e43_Abstract_Geometric_Pattern.jpg"
   ogTitle: "The Evaluation Playbook: Making LLMs Production-Ready - ZenML Blog"
   ogDescription: "A comprehensive exploration of real-world lessons in LLM evaluation and quality assurance, examining how industry leaders tackle the challenges of assessing language models in production. Through diverse case studies, the post covers the transition from traditional ML evaluation, establishing clear metrics, combining automated and human evaluation strategies, and implementing continuous improvement cycles to ensure reliable LLM applications at scale."
 ---

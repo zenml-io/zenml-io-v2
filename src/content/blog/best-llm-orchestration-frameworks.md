@@ -26,7 +26,7 @@ seo:
   title: "9 Best LLM Orchestration Frameworks for Agents and RAG - ZenML Blog"
   description: "Discover the 9 best LLM orchestration frameworks for agents and RAG."
   canonical: "https://www.zenml.io/blog/best-llm-orchestration-frameworks"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/31d89e2e/6981d352ce4b26d085d7040e_6981d2b4aed180881e426c5a_best-llm-orchestration-frameworks.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/31d89e2e/6981d352ce4b26d085d7040e_6981d2b4aed180881e426c5a_best-llm-orchestration-frameworks.jpg"
   ogTitle: "9 Best LLM Orchestration Frameworks for Agents and RAG - ZenML Blog"
   ogDescription: "Discover the 9 best LLM orchestration frameworks for agents and RAG."
 ---

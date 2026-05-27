@@ -148,15 +148,31 @@ For the **cover/hero image**, use larger dimensions:
 ~/.claude/skills/avif-image-compressor/scripts/convert_to_avif.sh cover.png --quality 25 --resize 1200
 ```
 
-#### Upload all AVIF images to R2
+**Also generate a JPEG sibling of the cover for the OG card.** Social
+platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) do NOT support
+AVIF in Open Graph cards — using AVIF for `seo.ogImage` makes the
+preview card render with no image. Keep AVIF for `mainImage.url` (browser-
+rendered, AVIF is fine), JPEG for `seo.ogImage` (social-rendered).
 
 ```bash
-for f in *.avif; do
+# JPEG variant of the cover, same dimensions, sized for OG (1200×627 ideal):
+sips -s format jpeg cover.png --out cover.jpg --resampleHeightWidthMax 1200
+# Or if starting from the converted AVIF:
+sips -s format jpeg cover.avif --out cover.jpg
+```
+
+#### Upload to R2
+
+Upload both the AVIF (for in-page rendering) and the JPEG (for OG):
+
+```bash
+for f in *.avif *.jpg; do
   uv run scripts/r2-upload.py "$f" --prefix content/blog/<slug>
 done
 ```
 
-Record each R2 URL for substitution into the markdown body.
+Record each R2 URL. The cover image will have two URLs at the same prefix
+— `.avif` for `mainImage.url`, `.jpg` for `seo.ogImage`.
 
 #### Verify R2 uploads
 
@@ -268,9 +284,11 @@ seo:
   title: "Your Blog Post Title"
   description: "A concise 150-160 char description for search engines."
   canonical: "https://www.zenml.io/blog/your-blog-post-slug"
-  ogImage: "https://assets.zenml.io/content/blog/<slug>/<hash>/cover.avif"
+  ogImage: "https://assets.zenml.io/content/blog/<slug>/<hash>/cover.jpg"
 ---
 ```
+
+> **Critical:** `mainImage.url` uses **AVIF** (browsers render it fine, ~20× smaller); `seo.ogImage` uses **JPEG** (social platforms — LinkedIn, Twitter/X, Slack, Facebook, Discord — reject AVIF in Open Graph cards). Mismatching these silently breaks social previews. See PR #73 for the site-wide fix where 103 posts all had AVIF og images and were rendering without preview cards on LinkedIn.
 
 **Key rules:**
 - `slug` MUST match the filename (e.g., `your-blog-post-slug.md`)
