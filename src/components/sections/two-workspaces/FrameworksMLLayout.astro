@@ -26,17 +26,17 @@
  */
 
 import {
-  FRAMEWORK_ML_EXAMPLES,
   DEFAULT_FRAMEWORK_ML_EXAMPLE_ID,
+  FRAMEWORK_ML_EXAMPLES,
 } from "../../../lib/two-workspaces/frameworks-ml-examples";
 
 /** Token categories → Tailwind class names (match PipelinesLayout). */
 type Token = { text: string; cls: string };
 const TOKEN_CLASS = {
-  keyword:  "text-[#F53D81]",                   // @step, def, return, from, import
-  fn:       "text-zenml-600 font-semibold",      // function names after def
-  ident:    "text-gray-900",                     // everything else
-  muted:    "text-gray-500",                     // comments, import paths, return values
+  keyword: "text-[#F53D81]", // @step, def, return, from, import
+  fn: "text-zenml-600 font-semibold", // function names after def
+  ident: "text-gray-900", // everything else
+  muted: "text-gray-500", // comments, import paths, return values
 };
 
 const highlightLine = (line: string): Token[] => {

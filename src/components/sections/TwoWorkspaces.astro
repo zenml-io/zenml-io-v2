@@ -1,15 +1,15 @@
 ---
 import { HOMEPAGE_UNIFIED_WIDGET } from "../../lib/homepage-unified";
-import PipelinesLayout from "./two-workspaces/PipelinesLayout.astro";
-import StacksTableLayout from "./two-workspaces/StacksTableLayout.astro";
 import ArtifactsModelsLayout from "./two-workspaces/ArtifactsModelsLayout.astro";
-import FrameworksMLLayout from "./two-workspaces/FrameworksMLLayout.astro";
-import ResourcesLayout from "./two-workspaces/ResourcesLayout.astro";
-import FlowsLayout from "./two-workspaces/FlowsLayout.astro";
 import CheckpointsLayout from "./two-workspaces/CheckpointsLayout.astro";
-import ReplayLayout from "./two-workspaces/ReplayLayout.astro";
 import DeploymentsLayout from "./two-workspaces/DeploymentsLayout.astro";
+import FlowsLayout from "./two-workspaces/FlowsLayout.astro";
 import FrameworksAgentsLayout from "./two-workspaces/FrameworksAgentsLayout.astro";
+import FrameworksMLLayout from "./two-workspaces/FrameworksMLLayout.astro";
+import PipelinesLayout from "./two-workspaces/PipelinesLayout.astro";
+import ReplayLayout from "./two-workspaces/ReplayLayout.astro";
+import ResourcesLayout from "./two-workspaces/ResourcesLayout.astro";
+import StacksTableLayout from "./two-workspaces/StacksTableLayout.astro";
 
 /**
  * TwoWorkspaces — workspace widget.
@@ -41,7 +41,11 @@ const dotClass = (tab: Tab) =>
   tab.id === "zenml" ? "bg-zenml-500" : "bg-orange-500";
 
 const allViews = tabs.flatMap((tab) =>
-  tab.subtabs.map((sub) => ({ tab, sub, view: `${tab.id}.${sub.id}` as const })),
+  tab.subtabs.map((sub) => ({
+    tab,
+    sub,
+    view: `${tab.id}.${sub.id}` as const,
+  })),
 );
 
 /** Default view = first subtab of the first tab (ZenML.Pipelines). */

@@ -17,7 +17,7 @@
  * pages actually use today. Add more here if a new compare page needs them.
  */
 import { createHighlighter, type Highlighter } from "shiki";
-import { kitaruLight, kitaruDark } from "../styles/kitaru-themes";
+import { kitaruDark, kitaruLight } from "../styles/kitaru-themes";
 
 export const KITARU_LANGS = ["python", "typescript", "bash"] as const;
 export type KitaruLang = (typeof KITARU_LANGS)[number];

@@ -41,8 +41,8 @@
  */
 
 import {
-  FRAMEWORK_AGENT_EXAMPLES,
   DEFAULT_FRAMEWORK_AGENT_EXAMPLE_ID,
+  FRAMEWORK_AGENT_EXAMPLES,
   type GanttSpanKind,
 } from "../../../lib/two-workspaces/frameworks-agents-examples";
 
@@ -51,26 +51,27 @@ const defaultId = DEFAULT_FRAMEWORK_AGENT_EXAMPLE_ID;
 /** Bar fill hex per gantt span kind. */
 const ganttBarColor = (kind: GanttSpanKind): string =>
   ({
-    classify:   "#FB923C", // orange-400
+    classify: "#FB923C", // orange-400
     checkpoint: "#9A3412", // orange-800
-    crashed:    "#EF4444", // red-500
-    resumed:    "#FB923C", // orange-400
-    tool:       "#F97316", // orange-500
-    artifact:   "#9A3412", // orange-800
+    crashed: "#EF4444", // red-500
+    resumed: "#FB923C", // orange-400
+    tool: "#F97316", // orange-500
+    artifact: "#9A3412", // orange-800
   })[kind];
 
 /** Dot color for the LHS span name row. */
 const ganttDotColor = (kind: GanttSpanKind): string =>
-  kind === "crashed"    ? "#EF4444" :
-  kind === "resumed"    ? "#FB923C" :
-  kind === "checkpoint" || kind === "artifact" ? "#9A3412" :
-  "#F97316";
+  kind === "crashed"
+    ? "#EF4444"
+    : kind === "resumed"
+      ? "#FB923C"
+      : kind === "checkpoint" || kind === "artifact"
+        ? "#9A3412"
+        : "#F97316";
 
 /** Duration text color per kind. */
 const ganttDurColor = (kind: GanttSpanKind): string =>
-  kind === "crashed"  ? "#EF4444" :
-  kind === "resumed"  ? "#C2410C" :
-  "#988573";
+  kind === "crashed" ? "#EF4444" : kind === "resumed" ? "#C2410C" : "#988573";
 ---
 
 <div

@@ -116,27 +116,38 @@ const QUICKSTART: PipelineExample = {
     "from zenml import pipeline, step",
     "",
     "@step",
-    "def simple_step(name: str = \"World\") -> Annotated[str, \"greeting\"]:",
-    "    return f\"Hello, {name}! Welcome to ZenML!\"",
+    'def simple_step(name: str = "World") -> Annotated[str, "greeting"]:',
+    '    return f"Hello, {name}! Welcome to ZenML!"',
     "",
     "@pipeline",
-    "def simple_pipeline(name: str = \"World\"):",
+    'def simple_pipeline(name: str = "World"):',
     "    return simple_step(name=name)",
   ].join("\n"),
   dag: {
     steps: [
       { id: "input", name: "name", duration: "—", status: "done" },
-      { id: "simple_step", name: "simple_step", duration: "2s", status: "done" },
+      {
+        id: "simple_step",
+        name: "simple_step",
+        duration: "2s",
+        status: "done",
+      },
     ],
     artifacts: [
       { fromStep: "input", toStep: "simple_step", name: "name", type: "str" },
-      { fromStep: "input", toStep: "simple_step", name: "default", type: "World" },
+      {
+        fromStep: "input",
+        toStep: "simple_step",
+        name: "default",
+        type: "World",
+      },
     ],
     output: { name: "greeting", framework: "str · v7" },
   },
   footerMeta: "local · default stack",
   footerStatus: { label: "healthy", color: "healthy" },
-  sourceCitation: "zenml-io/zenml: examples/quickstart/quickstart.ipynb (cell 4)",
+  sourceCitation:
+    "zenml-io/zenml: examples/quickstart/quickstart.ipynb (cell 4)",
 };
 
 const MLOPS_STARTER: PipelineExample = {
@@ -157,26 +168,47 @@ const MLOPS_STARTER: PipelineExample = {
     "",
     "@step",
     "def model_trainer(dataset_trn: pd.DataFrame) -> ClassifierMixin:",
-    "    return SGDClassifier().fit(dataset_trn.drop(\"target\", axis=1), dataset_trn.target)",
+    '    return SGDClassifier().fit(dataset_trn.drop("target", axis=1), dataset_trn.target)',
     "",
     "@pipeline",
-    "def training(model_type: str = \"sgd\"):",
+    'def training(model_type: str = "sgd"):',
     "    model_trainer(dataset_trn=data_loader(random_state=17))",
   ].join("\n"),
   dag: {
     steps: [
-      { id: "data_loader", name: "data_loader", duration: "7s", status: "done" },
-      { id: "model_trainer", name: "model_trainer", duration: "4m 5s", status: "done" },
+      {
+        id: "data_loader",
+        name: "data_loader",
+        duration: "7s",
+        status: "done",
+      },
+      {
+        id: "model_trainer",
+        name: "model_trainer",
+        duration: "4m 5s",
+        status: "done",
+      },
     ],
     artifacts: [
-      { fromStep: "data_loader", toStep: "model_trainer", name: "dataset_trn", type: "DataFrame" },
-      { fromStep: "data_loader", toStep: "model_trainer", name: "dataset_tst", type: "DataFrame" },
+      {
+        fromStep: "data_loader",
+        toStep: "model_trainer",
+        name: "dataset_trn",
+        type: "DataFrame",
+      },
+      {
+        fromStep: "data_loader",
+        toStep: "model_trainer",
+        name: "dataset_tst",
+        type: "DataFrame",
+      },
     ],
     output: { name: "sklearn_classifier", framework: "sklearn · v32" },
   },
   footerMeta: "kubernetes-prod · 12 pods",
   footerStatus: { label: "healthy", color: "healthy" },
-  sourceCitation: "zenml-io/zenml: examples/mlops_starter/quickstart.ipynb (data_loader + model_trainer + training pipeline)",
+  sourceCitation:
+    "zenml-io/zenml: examples/mlops_starter/quickstart.ipynb (data_loader + model_trainer + training pipeline)",
 };
 
 const LLM_FINETUNING: PipelineExample = {
@@ -194,8 +226,8 @@ const LLM_FINETUNING: PipelineExample = {
     "",
     "@pipeline",
     "def llm_peft_full_finetune(",
-    "    base_model_name: str = \"microsoft/phi-2\",",
-    "    dataset_name: str = \"gem/viggo\",",
+    '    base_model_name: str = "microsoft/phi-2",',
+    '    dataset_name: str = "gem/viggo",',
     "):",
     "    datasets_dir = prepare_data(base_model_name, dataset_name)",
     "    ft_model_dir = finetune(base_model_name, datasets_dir)",
@@ -204,18 +236,34 @@ const LLM_FINETUNING: PipelineExample = {
   ].join("\n"),
   dag: {
     steps: [
-      { id: "prepare_data", name: "prepare_data", duration: "3m 41s", status: "done" },
+      {
+        id: "prepare_data",
+        name: "prepare_data",
+        duration: "3m 41s",
+        status: "done",
+      },
       { id: "finetune", name: "finetune", duration: "58m 22s", status: "done" },
     ],
     artifacts: [
-      { fromStep: "prepare_data", toStep: "finetune", name: "datasets_dir", type: "Path" },
-      { fromStep: "prepare_data", toStep: "finetune", name: "tokenizer", type: "PreTrainedTokenizer" },
+      {
+        fromStep: "prepare_data",
+        toStep: "finetune",
+        name: "datasets_dir",
+        type: "Path",
+      },
+      {
+        fromStep: "prepare_data",
+        toStep: "finetune",
+        name: "tokenizer",
+        type: "PreTrainedTokenizer",
+      },
     ],
     output: { name: "ft_model_dir", framework: "phi-2 · v18" },
   },
   footerMeta: "vertex-gcp · 1× A100 80GB",
   footerStatus: { label: "healthy", color: "healthy" },
-  sourceCitation: "zenml-io/zenml: examples/llm_finetuning/run.py + pipelines/train.py (referenced in run.py:86)",
+  sourceCitation:
+    "zenml-io/zenml: examples/llm_finetuning/run.py + pipelines/train.py (referenced in run.py:86)",
 };
 
 const CHURN_INFERENCE: PipelineExample = {
@@ -234,9 +282,9 @@ const CHURN_INFERENCE: PipelineExample = {
     "",
     "@pipeline(",
     "    on_init=init_model,",
-    "    settings={\"deployment\": DeploymentSettings(",
-    "        app_title=\"Churn Prediction API\",",
-    "        dashboard_files_path=\"ui\",",
+    '    settings={"deployment": DeploymentSettings(',
+    '        app_title="Churn Prediction API",',
+    '        dashboard_files_path="ui",',
     "    )},",
     ")",
     "def churn_inference_pipeline(customer_features: Dict) -> Dict:",
@@ -244,18 +292,39 @@ const CHURN_INFERENCE: PipelineExample = {
   ].join("\n"),
   dag: {
     steps: [
-      { id: "init_model", name: "init_model", duration: "warm", status: "done" },
-      { id: "predict_churn", name: "predict_churn", duration: "87ms", status: "running" },
+      {
+        id: "init_model",
+        name: "init_model",
+        duration: "warm",
+        status: "done",
+      },
+      {
+        id: "predict_churn",
+        name: "predict_churn",
+        duration: "87ms",
+        status: "running",
+      },
     ],
     artifacts: [
-      { fromStep: "init_model", toStep: "predict_churn", name: "model", type: "RandomForest" },
-      { fromStep: "init_model", toStep: "predict_churn", name: "customer", type: "Dict" },
+      {
+        fromStep: "init_model",
+        toStep: "predict_churn",
+        name: "model",
+        type: "RandomForest",
+      },
+      {
+        fromStep: "init_model",
+        toStep: "predict_churn",
+        name: "customer",
+        type: "Dict",
+      },
     ],
     output: { name: "prediction", framework: "Dict · v44" },
   },
   footerMeta: "sagemaker-aws · 2 replicas",
   footerStatus: { label: "live", color: "healthy" },
-  sourceCitation: "zenml-io/zenml: examples/deploying_ml_model/README.md (lines 99-115) + run.py (churn_inference_pipeline import)",
+  sourceCitation:
+    "zenml-io/zenml: examples/deploying_ml_model/README.md (lines 99-115) + run.py (churn_inference_pipeline import)",
 };
 
 const COMPUTER_VISION: PipelineExample = {
@@ -275,7 +344,7 @@ const COMPUTER_VISION: PipelineExample = {
     "def object_detection_training_pipeline(",
     "    max_samples: int = 50,",
     "    epochs: int = 1,",
-    "    model_name: str = \"yolov8n.pt\",",
+    '    model_name: str = "yolov8n.pt",',
     "):",
     "    dataset = load_coco_dataset(max_samples=max_samples)",
     "    model = train_yolo(dataset=dataset, epochs=epochs, model_name=model_name)",
@@ -283,18 +352,39 @@ const COMPUTER_VISION: PipelineExample = {
   ].join("\n"),
   dag: {
     steps: [
-      { id: "load_coco_dataset", name: "load_coco_dataset", duration: "1m 02s", status: "done" },
-      { id: "train_yolo", name: "train_yolo", duration: "17m 14s", status: "done" },
+      {
+        id: "load_coco_dataset",
+        name: "load_coco_dataset",
+        duration: "1m 02s",
+        status: "done",
+      },
+      {
+        id: "train_yolo",
+        name: "train_yolo",
+        duration: "17m 14s",
+        status: "done",
+      },
     ],
     artifacts: [
-      { fromStep: "load_coco_dataset", toStep: "train_yolo", name: "dataset", type: "FiftyOneDataset" },
-      { fromStep: "load_coco_dataset", toStep: "train_yolo", name: "labels", type: "COCO80" },
+      {
+        fromStep: "load_coco_dataset",
+        toStep: "train_yolo",
+        name: "dataset",
+        type: "FiftyOneDataset",
+      },
+      {
+        fromStep: "load_coco_dataset",
+        toStep: "train_yolo",
+        name: "labels",
+        type: "COCO80",
+      },
     ],
     output: { name: "yolo-model", framework: "ultralytics · v12" },
   },
   footerMeta: "airflow · 4× T4 GPU",
   footerStatus: { label: "healthy", color: "healthy" },
-  sourceCitation: "zenml-io/zenml: examples/computer_vision/run.py (lines 122-129) + README.md (lines 24-32, 109)",
+  sourceCitation:
+    "zenml-io/zenml: examples/computer_vision/run.py (lines 122-129) + README.md (lines 24-32, 109)",
 };
 
 export const PIPELINE_EXAMPLES: ReadonlyArray<PipelineExample> = [

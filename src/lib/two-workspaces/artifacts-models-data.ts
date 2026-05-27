@@ -256,7 +256,11 @@ export const ARTIFACTS_MODELS_DATA: ArtifactsModelsData = {
           version: "v18",
           meta: "k8s · shadow traffic",
           detail: "promoted 3h ago",
-          badge: { label: "SHADOW", bg: "bg-amber-100", textColor: "text-amber-800" },
+          badge: {
+            label: "SHADOW",
+            bg: "bg-amber-100",
+            textColor: "text-amber-800",
+          },
         },
         {
           env: "CANARY",

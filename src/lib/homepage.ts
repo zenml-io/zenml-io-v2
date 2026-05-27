@@ -132,7 +132,8 @@ export const FEATURE_TABS: FeatureTab[] = [
     description:
       "Stop glue-coding your stack. Orchestrate scikit-learn training jobs and long-running LangGraph agent loops in the same unified execution model. State management, data passing, and termination control — across both ML pipelines and AI agent flows.",
     image: `${R2}/70e94eb1/68d1536e3bb1899a400a8dec_tab01.avif`,
-    imageAlt: "Unified workflow orchestration dashboard showing ML and agent runs",
+    imageAlt:
+      "Unified workflow orchestration dashboard showing ML and agent runs",
   },
   {
     title: "Artifact & Checkpoint Versioning",

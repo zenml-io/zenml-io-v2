@@ -146,13 +146,17 @@ export interface HeroGLController {
   destroy(): void;
 }
 
-function compileShader(gl: WebGL2RenderingContext, type: number, src: string): WebGLShader | null {
+function compileShader(
+  gl: WebGL2RenderingContext,
+  type: number,
+  src: string,
+): WebGLShader | null {
   const s = gl.createShader(type);
   if (!s) return null;
   gl.shaderSource(s, src);
   gl.compileShader(s);
   if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-    console.error('Shader compile error:', gl.getShaderInfoLog(s));
+    console.error("Shader compile error:", gl.getShaderInfoLog(s));
     gl.deleteShader(s);
     return null;
   }
@@ -169,7 +173,7 @@ function createProgram(gl: WebGL2RenderingContext): WebGLProgram | null {
   gl.attachShader(prog, fs);
   gl.linkProgram(prog);
   if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-    console.error('Program link error:', gl.getProgramInfoLog(prog));
+    console.error("Program link error:", gl.getProgramInfoLog(prog));
     gl.deleteProgram(prog);
     return null;
   }
@@ -182,20 +186,24 @@ function createProgram(gl: WebGL2RenderingContext): WebGLProgram | null {
 }
 
 export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
-  const gl = canvas.getContext('webgl2', { alpha: true, premultipliedAlpha: false, antialias: false });
+  const gl = canvas.getContext("webgl2", {
+    alpha: true,
+    premultipliedAlpha: false,
+    antialias: false,
+  });
   if (!gl) {
-    console.warn('[hero-gl] WebGL2 context not available');
+    console.warn("[hero-gl] WebGL2 context not available");
     return null;
   }
 
   let program = createProgram(gl);
   if (!program) {
-    console.warn('[hero-gl] Failed to create shader program');
+    console.warn("[hero-gl] Failed to create shader program");
     return null;
   }
 
   const DPR = Math.min(window.devicePixelRatio || 1, 2);
-  const motionMql = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const motionMql = window.matchMedia("(prefers-reduced-motion: reduce)");
   let reducedMotion = motionMql.matches;
 
   // Uniform locations
@@ -208,13 +216,13 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
   let uAttractor2: WebGLUniformLocation | null;
 
   function cacheLocations() {
-    uTime = gl!.getUniformLocation(program!, 'uTime');
-    uResolution = gl!.getUniformLocation(program!, 'uResolution');
-    uDPR_loc = gl!.getUniformLocation(program!, 'uDPR');
-    uMouse = gl!.getUniformLocation(program!, 'uMouse');
-    uMouseActive = gl!.getUniformLocation(program!, 'uMouseActive');
-    uAttractor1 = gl!.getUniformLocation(program!, 'uAttractor1');
-    uAttractor2 = gl!.getUniformLocation(program!, 'uAttractor2');
+    uTime = gl!.getUniformLocation(program!, "uTime");
+    uResolution = gl!.getUniformLocation(program!, "uResolution");
+    uDPR_loc = gl!.getUniformLocation(program!, "uDPR");
+    uMouse = gl!.getUniformLocation(program!, "uMouse");
+    uMouseActive = gl!.getUniformLocation(program!, "uMouseActive");
+    uAttractor1 = gl!.getUniformLocation(program!, "uAttractor1");
+    uAttractor2 = gl!.getUniformLocation(program!, "uAttractor2");
   }
   cacheLocations();
 
@@ -241,8 +249,8 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
     const ph = rect.height * DPR;
     canvas.width = pw;
     canvas.height = ph;
-    canvas.style.width = rect.width + 'px';
-    canvas.style.height = rect.height + 'px';
+    canvas.style.width = rect.width + "px";
+    canvas.style.height = rect.height + "px";
     gl!.viewport(0, 0, pw, ph);
   }
 
@@ -260,13 +268,15 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
     gl!.uniform1f(uMouseActive, mouseActiveVal);
 
     // Compute attractor Lissajous positions on CPU (avoids per-fragment trig)
-    gl!.uniform2f(uAttractor1,
+    gl!.uniform2f(
+      uAttractor1,
       w * 0.5 + Math.sin(t * 0.25) * w * 0.42,
-      h * 0.5 + Math.cos(t * 0.18) * h * 0.38
+      h * 0.5 + Math.cos(t * 0.18) * h * 0.38,
     );
-    gl!.uniform2f(uAttractor2,
+    gl!.uniform2f(
+      uAttractor2,
       w * 0.5 + Math.cos(t * 0.15) * w * 0.35,
-      h * 0.5 + Math.sin(t * 0.22) * h * 0.32
+      h * 0.5 + Math.sin(t * 0.22) * h * 0.32,
     );
 
     gl!.clearColor(0, 0, 0, 0);
@@ -290,8 +300,10 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
   function handleContextRestored() {
     program = createProgram(gl!);
     if (!program) {
-      console.warn('[hero-gl] Shader program recreation failed after context restore');
-      canvas.style.display = 'none';
+      console.warn(
+        "[hero-gl] Shader program recreation failed after context restore",
+      );
+      canvas.style.display = "none";
       return;
     }
     cacheLocations();
@@ -318,12 +330,12 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
     }
   }
 
-  canvas.addEventListener('webglcontextlost', handleContextLost);
-  canvas.addEventListener('webglcontextrestored', handleContextRestored);
+  canvas.addEventListener("webglcontextlost", handleContextLost);
+  canvas.addEventListener("webglcontextrestored", handleContextRestored);
 
   // Feature-detect addEventListener vs deprecated addListener (older Safari/webviews)
-  if ('addEventListener' in motionMql) {
-    motionMql.addEventListener('change', handleMotionChange);
+  if ("addEventListener" in motionMql) {
+    motionMql.addEventListener("change", handleMotionChange);
   } else {
     // @ts-expect-error — addListener is deprecated but needed for older Safari
     motionMql.addListener(handleMotionChange);
@@ -360,10 +372,10 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
       destroyed = true;
       cancelAnimationFrame(animId);
       animId = 0;
-      canvas.removeEventListener('webglcontextlost', handleContextLost);
-      canvas.removeEventListener('webglcontextrestored', handleContextRestored);
-      if ('removeEventListener' in motionMql) {
-        motionMql.removeEventListener('change', handleMotionChange);
+      canvas.removeEventListener("webglcontextlost", handleContextLost);
+      canvas.removeEventListener("webglcontextrestored", handleContextRestored);
+      if ("removeEventListener" in motionMql) {
+        motionMql.removeEventListener("change", handleMotionChange);
       } else {
         // @ts-expect-error — removeListener is deprecated but matches addListener
         motionMql.removeListener(handleMotionChange);

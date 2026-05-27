@@ -1,12 +1,12 @@
 ---
 import {
-  DEPLOYMENTS_LIST,
-  ENV_CARDS,
-  RIGHT_HEADER,
   CAPABILITY_PILLS,
-  FOOTER_META,
+  DEPLOYMENTS_LIST,
   type DeploymentStatus,
+  ENV_CARDS,
   type EnvCard,
+  FOOTER_META,
+  RIGHT_HEADER,
 } from "../../../lib/two-workspaces/deployments-data";
 
 /**
@@ -29,9 +29,9 @@ import {
 /** Env dot color. */
 const envDotColor = (env: EnvCard["env"]) =>
   ({
-    PROD: "#F97316",    // orange-500 — primary/live
-    CANARY: "#FB923C",  // orange-400 — in-flight
-    DEV: "#B9A98C",     // warm-taupe — inactive
+    PROD: "#F97316", // orange-500 — primary/live
+    CANARY: "#FB923C", // orange-400 — in-flight
+    DEV: "#B9A98C", // warm-taupe — inactive
   })[env];
 
 /** Pill dot color for the left-list status pill. */

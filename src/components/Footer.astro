@@ -1,4 +1,11 @@
 ---
+import {
+  FOOTER_COLUMNS,
+  FOOTER_LEGAL,
+  FOOTER_SOCIAL,
+  FOOTER_TAGLINE,
+  type SocialPlatform,
+} from "../lib/footer";
 /**
  * Footer — lean four-column footer. Renders FOOTER_COLUMNS as a single
  * grid; the brand block (logo, tagline, social, member badges) sits to
@@ -10,13 +17,6 @@
  * OSS-vs-Pro / Deployment scenarios pair, and careers.
  */
 import ZenmlLogo from "./brand/ZenmlLogo.astro";
-import {
-  FOOTER_COLUMNS,
-  FOOTER_LEGAL,
-  FOOTER_SOCIAL,
-  FOOTER_TAGLINE,
-  type SocialPlatform,
-} from "../lib/footer";
 
 const currentYear = new Date().getFullYear();
 

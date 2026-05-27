@@ -19,6 +19,12 @@
  */
 import type { CollectionEntry } from "astro:content";
 import { getCollection, getEntry } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getMainFeedPosts } from "../../../lib/blog";
+import {
+  getCategoryDefaults,
+  ZENML_ICON_URL,
+} from "../../../lib/compareDefaults";
 import CompareCodeComparison from "../../sections/compare/CompareCodeComparison.astro";
 import CompareFeatureHeader from "../../sections/compare/CompareFeatureHeader.astro";
 import CompareHero from "../../sections/compare/CompareHero.astro";
@@ -28,12 +34,6 @@ import CompareStrategyCta from "../../sections/compare/CompareStrategyCta.astro"
 import FeatureValueSection from "../../sections/FeatureValueSection.astro";
 import VsCta02 from "../../sections/VsCta02.astro";
 import VsTestimonial from "../../sections/VsTestimonial.astro";
-import BaseLayout from "../../../layouts/BaseLayout.astro";
-import { getMainFeedPosts } from "../../../lib/blog";
-import {
-  getCategoryDefaults,
-  ZENML_ICON_URL,
-} from "../../../lib/compareDefaults";
 
 interface Props {
   item: CollectionEntry<"compare">;
@@ -47,7 +47,13 @@ const advantageEntries = await Promise.all(
 );
 const advantages = advantageEntries.flatMap((adv) =>
   adv
-    ? [{ title: adv.data.title, content: adv.data.content, image: adv.data.image }]
+    ? [
+        {
+          title: adv.data.title,
+          content: adv.data.content,
+          image: adv.data.image,
+        },
+      ]
     : [],
 );
 
@@ -83,12 +89,14 @@ if (item.data.relatedBlogSlugs && item.data.relatedBlogSlugs.length > 0) {
   );
   blogPosts = entries.flatMap((e) =>
     e
-      ? [{
-          slug: e.data.slug,
-          title: e.data.title,
-          mainImage: e.data.mainImage,
-          seoDescription: e.data.seo?.description,
-        }]
+      ? [
+          {
+            slug: e.data.slug,
+            title: e.data.title,
+            mainImage: e.data.mainImage,
+            seoDescription: e.data.seo?.description,
+          },
+        ]
       : [],
   );
 } else {

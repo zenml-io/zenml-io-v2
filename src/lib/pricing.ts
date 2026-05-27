@@ -214,8 +214,7 @@ export const PRICING_PLANS: PricingPlan[] = [
 // ---------------------------------------------------------------------------
 export const PRICING_COMPARE: PricingCompareTableData = {
   heading: "Compare every plan",
-  subheading:
-    "Open Source and Pro — with Scale and Enterprise feature tiers.",
+  subheading: "Open Source and Pro — with Scale and Enterprise feature tiers.",
   columnHeaders: ["Open Source", "Scale", "Enterprise"],
   sections: [
     {

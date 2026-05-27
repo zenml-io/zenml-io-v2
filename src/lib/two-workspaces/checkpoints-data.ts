@@ -87,7 +87,10 @@ export type CheckpointsData = {
   /** Timeline section heading */
   timelineLabel: string;
   /** Legend items */
-  legend: ReadonlyArray<{ label: string; kind: "dot-orange" | "dot-red-sq" | "arrow-orange" }>;
+  legend: ReadonlyArray<{
+    label: string;
+    kind: "dot-orange" | "dot-red-sq" | "arrow-orange";
+  }>;
   /** Circular-node track */
   nodes: ReadonlyArray<TimelineNode>;
   /** arc label */
@@ -147,15 +150,16 @@ export const CHECKPOINTS_DATA: CheckpointsData = {
   ],
 
   rightEyebrow: "EXECUTION CHECKPOINTS",
-  rightTitle: "Resume from any checkpoint after a crash, rate-limit, or eviction.",
+  rightTitle:
+    "Resume from any checkpoint after a crash, rate-limit, or eviction.",
   contextChip: "report_agent · ex_8a2f",
 
   timelineLabel: "EXECUTION TIMELINE",
 
   legend: [
     { label: "checkpoint", kind: "dot-orange" },
-    { label: "failure",    kind: "dot-red-sq" },
-    { label: "resume",     kind: "arrow-orange" },
+    { label: "failure", kind: "dot-red-sq" },
+    { label: "resume", kind: "arrow-orange" },
   ],
 
   /**
@@ -167,14 +171,14 @@ export const CHECKPOINTS_DATA: CheckpointsData = {
    *   resumed +11s | draft 42s | chkpt.draft 0.3s | persist queued
    */
   nodes: [
-    { label: "gather",      duration: "12s",    kind: "hollow" },
-    { label: "llm.outline", duration: "33s",    kind: "hollow" },
-    { label: "chkpt.notes", duration: "0.4s",   kind: "done",    arcStart: false },
-    { label: "llm.write",   duration: "1m 14s", kind: "failure", arcStart: true },
-    { label: "resumed",     duration: "+11s",   kind: "resume",  arcEnd: true },
-    { label: "draft",       duration: "42s",    kind: "hollow" },
-    { label: "chkpt.draft", duration: "0.3s",   kind: "hollow" },
-    { label: "persist",     duration: "queued", kind: "pending" },
+    { label: "gather", duration: "12s", kind: "hollow" },
+    { label: "llm.outline", duration: "33s", kind: "hollow" },
+    { label: "chkpt.notes", duration: "0.4s", kind: "done", arcStart: false },
+    { label: "llm.write", duration: "1m 14s", kind: "failure", arcStart: true },
+    { label: "resumed", duration: "+11s", kind: "resume", arcEnd: true },
+    { label: "draft", duration: "42s", kind: "hollow" },
+    { label: "chkpt.draft", duration: "0.3s", kind: "hollow" },
+    { label: "persist", duration: "queued", kind: "pending" },
   ],
 
   arcLabel: "rate-limit",
@@ -190,16 +194,16 @@ export const CHECKPOINTS_DATA: CheckpointsData = {
     timestamp: "14:02:59",
     cliCommand: "kitaru flow resume ex_8a2f --from chkpt.notes",
     savings: {
-      savedTime:    "47s",
+      savedTime: "47s",
       callsSkipped: "2 LLM calls",
     },
   },
 
   footer: {
-    runId:             "ex_8a2f",
-    checkpointsLabel:  "6 checkpoints",
-    duration:          "38m 12s",
-    statusDot:         "resumed",
-    statusLabel:       "resumed",
+    runId: "ex_8a2f",
+    checkpointsLabel: "6 checkpoints",
+    duration: "38m 12s",
+    statusDot: "resumed",
+    statusLabel: "resumed",
   },
 } as const;

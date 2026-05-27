@@ -87,7 +87,8 @@ const PYTORCH: FrameworkMLExample = {
   ],
   goodFit: "Custom training loops and research code that changes often.",
   tradeOff: "Large CUDA images mean slower cold starts on remote stacks.",
-  sourceCitation: "zenml-io/zenml: examples/mlops_starter — pattern mirrors quickstart.ipynb model_trainer step with torch substituted for sklearn",
+  sourceCitation:
+    "zenml-io/zenml: examples/mlops_starter — pattern mirrors quickstart.ipynb model_trainer step with torch substituted for sklearn",
 };
 
 const TENSORFLOW: FrameworkMLExample = {
@@ -123,7 +124,8 @@ const TENSORFLOW: FrameworkMLExample = {
   ],
   goodFit: "Production Keras models with a stable SavedModel format.",
   tradeOff: "Heavier dependency — version pinning matters across environments.",
-  sourceCitation: "zenml-io/zenml: docs.zenml.io/stacks-and-components/component-guide/artifact-stores — TensorFlow materializer pattern",
+  sourceCitation:
+    "zenml-io/zenml: docs.zenml.io/stacks-and-components/component-guide/artifact-stores — TensorFlow materializer pattern",
 };
 
 const SKLEARN: FrameworkMLExample = {
@@ -160,7 +162,8 @@ const SKLEARN: FrameworkMLExample = {
   ],
   goodFit: "Tabular models where fast iteration beats raw scale.",
   tradeOff: "Pickled estimators are Python-version sensitive across envs.",
-  sourceCitation: "zenml-io/zenml: examples/mlops_starter/quickstart.ipynb — model_trainer step (cell fccf1bd9)",
+  sourceCitation:
+    "zenml-io/zenml: examples/mlops_starter/quickstart.ipynb — model_trainer step (cell fccf1bd9)",
 };
 
 const PANDAS: FrameworkMLExample = {
@@ -196,7 +199,8 @@ const PANDAS: FrameworkMLExample = {
   ],
   goodFit: "Feature prep and ETL when the dataset fits in memory.",
   tradeOff: "In-memory DataFrames strain on very large datasets.",
-  sourceCitation: "zenml-io/zenml: examples/mlops_starter/quickstart.ipynb — data_loader_simplified step (cell 3cd974d1)",
+  sourceCitation:
+    "zenml-io/zenml: examples/mlops_starter/quickstart.ipynb — data_loader_simplified step (cell 3cd974d1)",
 };
 
 const HUGGINGFACE: FrameworkMLExample = {
@@ -232,7 +236,8 @@ const HUGGINGFACE: FrameworkMLExample = {
   ],
   goodFit: "Fine-tuning transformers and LLMs with PEFT or LoRA.",
   tradeOff: "Checkpoints are large — budget artifact-store space and transfer.",
-  sourceCitation: "zenml-io/zenml: examples/llm_finetuning/run.py — pipelines/train.py finetune step pattern",
+  sourceCitation:
+    "zenml-io/zenml: examples/llm_finetuning/run.py — pipelines/train.py finetune step pattern",
 };
 
 const XGBOOST: FrameworkMLExample = {
@@ -268,7 +273,8 @@ const XGBOOST: FrameworkMLExample = {
   ],
   goodFit: "Strong tabular baselines with minimal tuning.",
   tradeOff: "Booster objects need the matching XGBoost version to reload.",
-  sourceCitation: "zenml-io/zenml: docs.zenml.io/stacks-and-components/component-guide — XGBoost materializer",
+  sourceCitation:
+    "zenml-io/zenml: docs.zenml.io/stacks-and-components/component-guide — XGBoost materializer",
 };
 
 const LIGHTGBM: FrameworkMLExample = {
@@ -303,7 +309,8 @@ const LIGHTGBM: FrameworkMLExample = {
   ],
   goodFit: "Fast gradient boosting on wide tabular data.",
   tradeOff: "GPU builds need extra setup in the orchestrator image.",
-  sourceCitation: "zenml-io/zenml: docs.zenml.io — LightGBM integration materializer pattern",
+  sourceCitation:
+    "zenml-io/zenml: docs.zenml.io — LightGBM integration materializer pattern",
 };
 
 const NUMPY: FrameworkMLExample = {
@@ -340,7 +347,8 @@ const NUMPY: FrameworkMLExample = {
   ],
   goodFit: "Passing numerical arrays cleanly between steps.",
   tradeOff: "Raw ndarrays carry no schema — annotate outputs for clarity.",
-  sourceCitation: "zenml-io/zenml: docs.zenml.io — NumPy materializer; Annotated tuple return pattern",
+  sourceCitation:
+    "zenml-io/zenml: docs.zenml.io — NumPy materializer; Annotated tuple return pattern",
 };
 
 const POLARS: FrameworkMLExample = {
@@ -377,7 +385,8 @@ const POLARS: FrameworkMLExample = {
   ],
   goodFit: "Large ETL that's too big for pandas, too small for Spark.",
   tradeOff: "Newer ecosystem — fewer integrations than pandas.",
-  sourceCitation: "zenml-io/zenml: docs.zenml.io — Polars materializer integration",
+  sourceCitation:
+    "zenml-io/zenml: docs.zenml.io — Polars materializer integration",
 };
 
 const WANDB: FrameworkMLExample = {
@@ -413,7 +422,8 @@ const WANDB: FrameworkMLExample = {
   ],
   goodFit: "Rich experiment tracking and sweep visualization.",
   tradeOff: "Adds an external service and API key to manage.",
-  sourceCitation: "zenml-io/zenml: docs.zenml.io/stacks-and-components/component-guide/experiment-trackers/wandb",
+  sourceCitation:
+    "zenml-io/zenml: docs.zenml.io/stacks-and-components/component-guide/experiment-trackers/wandb",
 };
 
 export const FRAMEWORK_ML_EXAMPLES: ReadonlyArray<FrameworkMLExample> = [

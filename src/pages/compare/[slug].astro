@@ -18,10 +18,7 @@ import KitaruCompare from "../../components/compare/_layouts/KitaruCompare.astro
 import MlopsCompare from "../../components/compare/_layouts/MlopsCompare.astro";
 
 export async function getStaticPaths() {
-  const mlopsItems = await getCollection(
-    "compare",
-    ({ data }) => !data.draft,
-  );
+  const mlopsItems = await getCollection("compare", ({ data }) => !data.draft);
   const agentItems = await getCollection(
     "compare-kitaru",
     ({ data }) => !data.draft,

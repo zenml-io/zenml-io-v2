@@ -22,9 +22,18 @@ interface Props {
   layout?: "default" | "list";
 }
 
-const { title, image, imageAlt, reverse = false, headingLevel = 2, number, bgStrip = false, layout = "default" } = Astro.props;
-const hasGraphicSlot = Astro.slots.has('graphic');
-const hasBulletsSlot = Astro.slots.has('bullets');
+const {
+  title,
+  image,
+  imageAlt,
+  reverse = false,
+  headingLevel = 2,
+  number,
+  bgStrip = false,
+  layout = "default",
+} = Astro.props;
+const hasGraphicSlot = Astro.slots.has("graphic");
+const hasBulletsSlot = Astro.slots.has("bullets");
 const isList = layout === "list" || hasBulletsSlot;
 ---
 

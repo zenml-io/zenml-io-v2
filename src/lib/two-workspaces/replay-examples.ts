@@ -34,7 +34,10 @@ export type ReplayVariant = {
   /** One-line descriptor shown below the version label (mono). */
   descriptor: string;
   /** Status pill shown on the right edge of the row. */
-  statusPill: { label: "WINNER" | "CANDIDATE" | "BASELINE"; tone: ReplayPillTone };
+  statusPill: {
+    label: "WINNER" | "CANDIDATE" | "BASELINE";
+    tone: ReplayPillTone;
+  };
 };
 
 /** A single aggregate metric (RUNS / DURATION / COST / LATENCY P95). */
@@ -58,14 +61,14 @@ export type ReplayComparison = {
   contextChip: string;
   /** Left (baseline) half of the metric panel. */
   baselineLabel: string; // "BASELINE"
-  baselineName: string;  // e.g. "v17 — prompt:v2 + gpt-4o"
+  baselineName: string; // e.g. "v17 — prompt:v2 + gpt-4o"
   /** Right (candidate) half of the metric panel. */
   candidateLabel: string; // "CANDIDATE"
   candidateName: string; // e.g. "v18·rc2 — prompt:tone-direct"
   metrics: ReadonlyArray<ReplayMetric>;
   /** "Ship ..." strip copy. */
-  shipHeadline: string;   // e.g. "Ship v18·rc2."
-  shipSubline: string;    // e.g. "400 / 400 runs better on cost and latency · no quality regression."
+  shipHeadline: string; // e.g. "Ship v18·rc2."
+  shipSubline: string; // e.g. "400 / 400 runs better on cost and latency · no quality regression."
 };
 
 export type ReplayExample = {
@@ -101,15 +104,41 @@ export const REPLAY_EXAMPLES: ReadonlyArray<ReplayExample> = [
       candidateLabel: "CANDIDATE",
       candidateName: "v18·rc2 — prompt:tone-direct",
       metrics: [
-        { label: "RUNS",        baseline: "400",    candidate: "400",    delta: null,     deltaQualifier: "same" },
-        { label: "DURATION",    baseline: "7m 21s", candidate: "4m 38s", delta: "−37%",   deltaQualifier: "faster" },
-        { label: "COST",        baseline: "$0.39",  candidate: "$0.26",  delta: "−$0.13", deltaQualifier: "cheaper" },
-        { label: "LATENCY P95", baseline: "1.9s",   candidate: "1.2s",   delta: "−37%",   deltaQualifier: "faster" },
+        {
+          label: "RUNS",
+          baseline: "400",
+          candidate: "400",
+          delta: null,
+          deltaQualifier: "same",
+        },
+        {
+          label: "DURATION",
+          baseline: "7m 21s",
+          candidate: "4m 38s",
+          delta: "−37%",
+          deltaQualifier: "faster",
+        },
+        {
+          label: "COST",
+          baseline: "$0.39",
+          candidate: "$0.26",
+          delta: "−$0.13",
+          deltaQualifier: "cheaper",
+        },
+        {
+          label: "LATENCY P95",
+          baseline: "1.9s",
+          candidate: "1.2s",
+          delta: "−37%",
+          deltaQualifier: "faster",
+        },
       ],
       shipHeadline: "Ship v18·rc2.",
-      shipSubline: "400 / 400 runs better on cost and latency · no quality regression.",
+      shipSubline:
+        "400 / 400 runs better on cost and latency · no quality regression.",
     },
-    sourceCitation: "kitaru/examples/llm/flow_with_llm.py — replay experiment ex_replay_72c",
+    sourceCitation:
+      "kitaru/examples/llm/flow_with_llm.py — replay experiment ex_replay_72c",
   },
   {
     /* (2) CANDIDATE — v18·rc1 model:claude-3-opus
@@ -131,15 +160,41 @@ export const REPLAY_EXAMPLES: ReadonlyArray<ReplayExample> = [
       candidateLabel: "CANDIDATE",
       candidateName: "v18·rc1 — model:claude-3-opus",
       metrics: [
-        { label: "RUNS",        baseline: "400",    candidate: "400",    delta: null,    deltaQualifier: "same" },
-        { label: "DURATION",    baseline: "7m 21s", candidate: "8m 02s", delta: "+9%",   deltaQualifier: "slower" },
-        { label: "COST",        baseline: "$0.39",  candidate: "$0.81",  delta: "+$0.42", deltaQualifier: "costlier" },
-        { label: "LATENCY P95", baseline: "1.9s",   candidate: "2.3s",   delta: "+21%",  deltaQualifier: "slower" },
+        {
+          label: "RUNS",
+          baseline: "400",
+          candidate: "400",
+          delta: null,
+          deltaQualifier: "same",
+        },
+        {
+          label: "DURATION",
+          baseline: "7m 21s",
+          candidate: "8m 02s",
+          delta: "+9%",
+          deltaQualifier: "slower",
+        },
+        {
+          label: "COST",
+          baseline: "$0.39",
+          candidate: "$0.81",
+          delta: "+$0.42",
+          deltaQualifier: "costlier",
+        },
+        {
+          label: "LATENCY P95",
+          baseline: "1.9s",
+          candidate: "2.3s",
+          delta: "+21%",
+          deltaQualifier: "slower",
+        },
       ],
       shipHeadline: "Hold v18·rc1.",
-      shipSubline: "Higher quality ceiling but 2× cost increase · not worth promoting.",
+      shipSubline:
+        "Higher quality ceiling but 2× cost increase · not worth promoting.",
     },
-    sourceCitation: "kitaru/examples/llm/flow_with_llm.py — replay experiment ex_replay_72c",
+    sourceCitation:
+      "kitaru/examples/llm/flow_with_llm.py — replay experiment ex_replay_72c",
   },
   {
     /* (3) BASELINE — v17 prompt:v2 + gpt-4o
@@ -160,15 +215,41 @@ export const REPLAY_EXAMPLES: ReadonlyArray<ReplayExample> = [
       candidateLabel: "CANDIDATE",
       candidateName: "v17 — same as baseline",
       metrics: [
-        { label: "RUNS",        baseline: "400",    candidate: "400",    delta: null, deltaQualifier: "same" },
-        { label: "DURATION",    baseline: "7m 21s", candidate: "7m 21s", delta: null, deltaQualifier: "same" },
-        { label: "COST",        baseline: "$0.39",  candidate: "$0.39",  delta: null, deltaQualifier: "same" },
-        { label: "LATENCY P95", baseline: "1.9s",   candidate: "1.9s",   delta: null, deltaQualifier: "same" },
+        {
+          label: "RUNS",
+          baseline: "400",
+          candidate: "400",
+          delta: null,
+          deltaQualifier: "same",
+        },
+        {
+          label: "DURATION",
+          baseline: "7m 21s",
+          candidate: "7m 21s",
+          delta: null,
+          deltaQualifier: "same",
+        },
+        {
+          label: "COST",
+          baseline: "$0.39",
+          candidate: "$0.39",
+          delta: null,
+          deltaQualifier: "same",
+        },
+        {
+          label: "LATENCY P95",
+          baseline: "1.9s",
+          candidate: "1.9s",
+          delta: null,
+          deltaQualifier: "same",
+        },
       ],
       shipHeadline: "Currently in production.",
-      shipSubline: "v17 is the active baseline · select a candidate to compare.",
+      shipSubline:
+        "v17 is the active baseline · select a candidate to compare.",
     },
-    sourceCitation: "kitaru/examples/llm/flow_with_llm.py — current production baseline v17",
+    sourceCitation:
+      "kitaru/examples/llm/flow_with_llm.py — current production baseline v17",
   },
   {
     /* (4) CANDIDATE — v18·rc3 prompt:v3 + gpt-4o-mini
@@ -190,15 +271,41 @@ export const REPLAY_EXAMPLES: ReadonlyArray<ReplayExample> = [
       candidateLabel: "CANDIDATE",
       candidateName: "v18·rc3 — prompt:v3 + gpt-4o-mini",
       metrics: [
-        { label: "RUNS",        baseline: "400",    candidate: "400",    delta: null,    deltaQualifier: "same" },
-        { label: "DURATION",    baseline: "7m 21s", candidate: "3m 14s", delta: "−56%",  deltaQualifier: "faster" },
-        { label: "COST",        baseline: "$0.39",  candidate: "$0.11",  delta: "−$0.28", deltaQualifier: "cheaper" },
-        { label: "LATENCY P95", baseline: "1.9s",   candidate: "0.8s",   delta: "−58%",  deltaQualifier: "faster" },
+        {
+          label: "RUNS",
+          baseline: "400",
+          candidate: "400",
+          delta: null,
+          deltaQualifier: "same",
+        },
+        {
+          label: "DURATION",
+          baseline: "7m 21s",
+          candidate: "3m 14s",
+          delta: "−56%",
+          deltaQualifier: "faster",
+        },
+        {
+          label: "COST",
+          baseline: "$0.39",
+          candidate: "$0.11",
+          delta: "−$0.28",
+          deltaQualifier: "cheaper",
+        },
+        {
+          label: "LATENCY P95",
+          baseline: "1.9s",
+          candidate: "0.8s",
+          delta: "−58%",
+          deltaQualifier: "faster",
+        },
       ],
       shipHeadline: "Block v18·rc3.",
-      shipSubline: "12 / 400 runs show quality regression · cost savings do not offset.",
+      shipSubline:
+        "12 / 400 runs show quality regression · cost savings do not offset.",
     },
-    sourceCitation: "kitaru/examples/llm/flow_with_llm.py — replay experiment ex_replay_72c",
+    sourceCitation:
+      "kitaru/examples/llm/flow_with_llm.py — replay experiment ex_replay_72c",
   },
 ] as const;
 

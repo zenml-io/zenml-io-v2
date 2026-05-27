@@ -10,7 +10,7 @@ import Navigation from "../components/Navigation.astro";
  * All page templates (ContentLayout, BlogLayout, etc.) wrap this layout
  * and pass SEOProps through to control their meta tags.
  */
-import { type Surface } from "../lib/analytics";
+import type { Surface } from "../lib/analytics";
 import { resolveSeo, type SEOProps } from "../lib/seo";
 import "../styles/global.css";
 

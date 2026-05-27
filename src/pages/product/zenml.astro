@@ -1,4 +1,10 @@
 ---
+import Button from "../../components/Button.astro";
+import CustomerStories from "../../components/sections/CustomerStories.astro";
+import FeatureTabs from "../../components/sections/FeatureTabs.astro";
+import IntegrationsMarquee from "../../components/sections/IntegrationsMarquee.astro";
+import LogoCloud from "../../components/sections/LogoCloud.astro";
+import ValueProps from "../../components/sections/ValueProps.astro";
 /**
  * /product/zenml — ZenML sub-product landing.
  *
@@ -11,12 +17,6 @@
  * canvas, mesh gradient, etc.) deferred to Zuri's design pass.
  */
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Button from "../../components/Button.astro";
-import CustomerStories from "../../components/sections/CustomerStories.astro";
-import FeatureTabs from "../../components/sections/FeatureTabs.astro";
-import IntegrationsMarquee from "../../components/sections/IntegrationsMarquee.astro";
-import LogoCloud from "../../components/sections/LogoCloud.astro";
-import ValueProps from "../../components/sections/ValueProps.astro";
 import {
   PRODUCT_ZENML_BENEFITS,
   PRODUCT_ZENML_FINAL_CTA,
@@ -85,8 +85,6 @@ import {
             href={PRODUCT_ZENML_HERO.secondaryCta.href}
             variant="secondary"
             size="lg"
-            target={PRODUCT_ZENML_HERO.secondaryCta.external ? "_blank" : undefined}
-            rel={PRODUCT_ZENML_HERO.secondaryCta.external ? "noopener noreferrer" : undefined}
           >
             {PRODUCT_ZENML_HERO.secondaryCta.label}
           </Button>

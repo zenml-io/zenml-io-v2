@@ -28,16 +28,20 @@ interface Props {
   class?: string;
 }
 
-const { variant = "default", tone = "light", class: className = "" } =
-  Astro.props;
+const {
+  variant = "default",
+  tone = "light",
+  class: className = "",
+} = Astro.props;
 
 // Top-blob (4th blob) carries the brand accent. Variant swaps which token feeds it.
 const accentVar = variant === "success" ? "var(--success)" : "var(--primary)";
 
 // Dark tone needs higher blob opacities to read on a dark canvas.
-const opa = tone === "dark"
-  ? { b1: 0.35, b2: 0.32, b3: 0.28, b4: 0.4 }
-  : { b1: 0.15, b2: 0.18, b3: 0.12, b4: 0.18 };
+const opa =
+  tone === "dark"
+    ? { b1: 0.35, b2: 0.32, b3: 0.28, b4: 0.4 }
+    : { b1: 0.15, b2: 0.18, b3: 0.12, b4: 0.18 };
 ---
 
 <div

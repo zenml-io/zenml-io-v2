@@ -30,8 +30,8 @@
  */
 
 import {
-  REPLAY_EXAMPLES,
   DEFAULT_REPLAY_EXAMPLE_ID,
+  REPLAY_EXAMPLES,
 } from "../../../lib/two-workspaces/replay-examples";
 
 const defaultId = DEFAULT_REPLAY_EXAMPLE_ID;
@@ -44,7 +44,7 @@ const defaultId = DEFAULT_REPLAY_EXAMPLE_ID;
 const isDeltaNeutral = (delta: string | null) =>
   delta === null || delta === "0%";
 const isDeltaRegression = (delta: string | null) =>
-  !!delta && (delta.startsWith("+") && delta !== "+0%");
+  !!delta && delta.startsWith("+") && delta !== "+0%";
 ---
 
 <div

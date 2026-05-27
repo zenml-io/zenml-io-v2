@@ -1,11 +1,11 @@
 ---
-import StepNode from "./_StepNode.astro";
-import ArtifactPill from "./_ArtifactPill.astro";
 import {
-  PIPELINE_EXAMPLES,
   DEFAULT_PIPELINE_EXAMPLE_ID,
+  PIPELINE_EXAMPLES,
   type PipelineExample,
 } from "../../../lib/two-workspaces/pipelines-examples";
+import ArtifactPill from "./_ArtifactPill.astro";
+import StepNode from "./_StepNode.astro";
 
 /**
  * Pipelines subtab — "Integrate your MLOps stack · for compute-intense,
@@ -38,13 +38,8 @@ interface Props {
   rightSubhead: string;
 }
 
-const {
-  title,
-  countLabel,
-  subheader,
-  rightEyebrow,
-  rightSubhead,
-} = Astro.props;
+const { title, countLabel, subheader, rightEyebrow, rightSubhead } =
+  Astro.props;
 
 const examples = PIPELINE_EXAMPLES;
 const defaultId = DEFAULT_PIPELINE_EXAMPLE_ID;
@@ -57,7 +52,7 @@ const defaultId = DEFAULT_PIPELINE_EXAMPLE_ID;
  */
 type Token = { text: string; cls: string };
 const TOKEN_CLASS = {
-  keyword: "text-[#F53D81]",       // @step, def, return
+  keyword: "text-[#F53D81]", // @step, def, return
   fn: "text-zenml-600 font-semibold", // load_data, train_model
   ident: "text-gray-900",
   muted: "text-gray-500",
@@ -116,21 +111,53 @@ const ZENML_GLYPH_SVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="n
 const statusPillForActive = (ex: PipelineExample) => {
   const base =
     ex.rowStatusPill === "DONE"
-      ? { bg: "bg-success-50", border: "border-success-500/30", dot: "bg-success-500", text: "text-success-700" }
+      ? {
+          bg: "bg-success-50",
+          border: "border-success-500/30",
+          dot: "bg-success-500",
+          text: "text-success-700",
+        }
       : ex.rowStatusPill === "RUNNING"
-        ? { bg: "bg-amber-50", border: "border-amber-500/30", dot: "bg-amber-500", text: "text-amber-700" }
+        ? {
+            bg: "bg-amber-50",
+            border: "border-amber-500/30",
+            dot: "bg-amber-500",
+            text: "text-amber-700",
+          }
         : ex.rowStatusPill === "FAILED"
-          ? { bg: "bg-error-50", border: "border-error-500/30", dot: "bg-error-500", text: "text-error-700" }
-          : { bg: "bg-gray-50", border: "border-gray-300", dot: "bg-gray-400", text: "text-gray-700" };
+          ? {
+              bg: "bg-error-50",
+              border: "border-error-500/30",
+              dot: "bg-error-500",
+              text: "text-error-700",
+            }
+          : {
+              bg: "bg-gray-50",
+              border: "border-gray-300",
+              dot: "bg-gray-400",
+              text: "text-gray-700",
+            };
   return base;
 };
 
 const footerDotClass = (color: "healthy" | "warning" | "error") =>
   color === "healthy"
-    ? { dot: "bg-success-500", ring: "ring-success-500/15", text: "text-success-700" }
+    ? {
+        dot: "bg-success-500",
+        ring: "ring-success-500/15",
+        text: "text-success-700",
+      }
     : color === "warning"
-      ? { dot: "bg-amber-500", ring: "ring-amber-500/15", text: "text-amber-700" }
-      : { dot: "bg-error-500", ring: "ring-error-500/15", text: "text-error-700" };
+      ? {
+          dot: "bg-amber-500",
+          ring: "ring-amber-500/15",
+          text: "text-amber-700",
+        }
+      : {
+          dot: "bg-error-500",
+          ring: "ring-error-500/15",
+          text: "text-error-700",
+        };
 ---
 
 <div class="pipelines-layout flex flex-col gap-3" data-active-example={defaultId}>

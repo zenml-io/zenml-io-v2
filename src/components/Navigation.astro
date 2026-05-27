@@ -4,12 +4,6 @@ import {
   formatStars,
   GITHUB_REPO_URL,
 } from "../lib/githubStars";
-/**
- * Navigation — responsive navbar matching the zenml.io Webflow site.
- * Desktop: hover-driven dropdown panels with two-column layout.
- * Mobile: hamburger toggle with accordion sections.
- */
-import ZenmlLogo from "./brand/ZenmlLogo.astro";
 import {
   isActivePath,
   NAV_CTAS,
@@ -17,6 +11,12 @@ import {
   NAV_LINKS,
 } from "../lib/navigation";
 import Button from "./Button.astro";
+/**
+ * Navigation — responsive navbar matching the zenml.io Webflow site.
+ * Desktop: hover-driven dropdown panels with two-column layout.
+ * Mobile: hamburger toggle with accordion sections.
+ */
+import ZenmlLogo from "./brand/ZenmlLogo.astro";
 
 interface Props {
   currentPath?: string;

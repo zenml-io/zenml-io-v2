@@ -9,10 +9,10 @@
 // ── Load-status pills ──────────────────────────────────────────────────────
 
 export type ResourcePoolStatus =
-  | "HIGH LOAD"   // orange bg #FFF4EC / border #FED7AA / text #C2410C
-  | "queued"      // amber  bg #FEF3C7 / border #FDE68A / text #92400E
-  | "active"      // green  bg #ECFDF3 / border #ABEFC6 / text #15803D  (with dot)
-  | "idle";       // gray   bg #F2F4F7 / border #E4E7EC / text #667085
+  | "HIGH LOAD" // orange bg #FFF4EC / border #FED7AA / text #C2410C
+  | "queued" // amber  bg #FEF3C7 / border #FDE68A / text #92400E
+  | "active" // green  bg #ECFDF3 / border #ABEFC6 / text #15803D  (with dot)
+  | "idle"; // gray   bg #F2F4F7 / border #E4E7EC / text #667085
 
 // ── Resource Pools (left pane) ─────────────────────────────────────────────
 

@@ -21,7 +21,8 @@
 
 import { ARTIFACTS_MODELS_DATA } from "../../../lib/two-workspaces/artifacts-models-data";
 
-const { listTitle, listSubtitle, listCountLabel, rows, detail, footer } = ARTIFACTS_MODELS_DATA;
+const { listTitle, listSubtitle, listCountLabel, rows, detail, footer } =
+  ARTIFACTS_MODELS_DATA;
 const { header, chart, metadata, lineage, envStrip } = detail;
 
 // ─── SVG helpers ──────────────────────────────────────────────────────────
@@ -36,7 +37,11 @@ const ARTIFACT_ICON_PATHS = `<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 
 const CHEVRON_RIGHT = `<polyline points="9 18 15 12 9 6"/>`;
 
 const dotColorClass = (c: "green" | "amber" | "blue") =>
-  c === "green" ? "bg-[#34D399]" : c === "amber" ? "bg-[#F59E0B]" : "bg-[#60A5FA]";
+  c === "green"
+    ? "bg-[#34D399]"
+    : c === "amber"
+      ? "bg-[#F59E0B]"
+      : "bg-[#60A5FA]";
 ---
 
 <div class="artifacts-models-layout flex flex-col gap-3" style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">

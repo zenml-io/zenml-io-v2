@@ -1,6 +1,6 @@
 ---
-import Button from "../Button.astro";
 import { HOMEPAGE_UNIFIED_HERO } from "../../lib/homepage-unified";
+import Button from "../Button.astro";
 
 /**
  * UnifiedHero — hero for the unified `/` (Variant C copy).
@@ -13,8 +13,14 @@ import { HOMEPAGE_UNIFIED_HERO } from "../../lib/homepage-unified";
  * Reads from `HOMEPAGE_UNIFIED_HERO` in src/lib/homepage-unified.ts.
  */
 
-const { headlinePrefix, headlineAccent, headlineSuffix, subtitle, primaryCta, secondaryCta } =
-  HOMEPAGE_UNIFIED_HERO;
+const {
+  headlinePrefix,
+  headlineAccent,
+  headlineSuffix,
+  subtitle,
+  primaryCta,
+  secondaryCta,
+} = HOMEPAGE_UNIFIED_HERO;
 const headline = `${headlinePrefix}${headlineAccent}${headlineSuffix}`;
 ---
 

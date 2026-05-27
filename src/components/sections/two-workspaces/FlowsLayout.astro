@@ -1,13 +1,13 @@
 ---
 import { Code } from "astro:components";
-import zenmlLight from "../../../styles/zenml-light.json";
 import {
-  FLOW_EXAMPLES,
   DEFAULT_FLOW_EXAMPLE_ID,
-  type SpanType,
+  FLOW_EXAMPLES,
   type SpanState,
+  type SpanType,
   type TimelineSpan,
 } from "../../../lib/two-workspaces/flows-examples";
+import zenmlLight from "../../../styles/zenml-light.json";
 
 /**
  * Flows subtab — "Wrap your harness with one line · for deploying agents
@@ -41,13 +41,8 @@ interface Props {
   rightSubhead: string;
 }
 
-const {
-  title,
-  subheader,
-  countLabel,
-  rightEyebrow,
-  rightSubhead,
-} = Astro.props;
+const { title, subheader, countLabel, rightEyebrow, rightSubhead } =
+  Astro.props;
 
 const defaultExampleId = DEFAULT_FLOW_EXAMPLE_ID;
 
@@ -55,7 +50,7 @@ const defaultExampleId = DEFAULT_FLOW_EXAMPLE_ID;
  *  distinct tokens — extracting feels like over-abstraction. */
 const barColor = (t: SpanType) =>
   ({
-    flow: "bg-[#FDD9A8]",      // orange-200, faint parent track
+    flow: "bg-[#FDD9A8]", // orange-200, faint parent track
     llm: "bg-orange-400",
     tool: "bg-orange-500",
     checkpoint: "bg-[#9A3412]", // orange-800

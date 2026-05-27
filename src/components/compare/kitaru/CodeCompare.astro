@@ -1,5 +1,8 @@
 ---
-import { renderKitaruCode, type KitaruLang } from '../../../lib/kitaru-highlighter';
+import {
+  type KitaruLang,
+  renderKitaruCode,
+} from "../../../lib/kitaru-highlighter";
 
 // CodeCompare lives in a dark band. Shiki bakes both themes into each token
 // (the light value inline, the dark value in the `--shiki-dark` CSS var); the
@@ -18,13 +21,13 @@ interface Props {
   lang?: KitaruLang;
 }
 const {
-  title = 'Code comparison',
+  title = "Code comparison",
   eyebrow,
-  kitaruLabel = 'Kitaru',
-  competitorLabel = 'Alternative',
+  kitaruLabel = "Kitaru",
+  competitorLabel = "Alternative",
   kitaruCode,
   competitorCode,
-  lang = 'python',
+  lang = "python",
 } = Astro.props;
 
 const [kitaruHtml, competitorHtml] = await Promise.all([

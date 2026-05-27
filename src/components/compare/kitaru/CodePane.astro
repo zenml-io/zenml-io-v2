@@ -10,14 +10,17 @@
  * why. ZenML-side pages keep the `zenml-light` theme via the site-wide
  * markdown Shiki config in `astro.config.ts`.
  */
-import { renderKitaruCode, type KitaruLang } from '../../../lib/kitaru-highlighter';
+import {
+  type KitaruLang,
+  renderKitaruCode,
+} from "../../../lib/kitaru-highlighter";
 
 interface Props {
   code: string;
   lang?: KitaruLang;
 }
 
-const { code, lang = 'python' } = Astro.props;
+const { code, lang = "python" } = Astro.props;
 const html = await renderKitaruCode(code, lang);
 ---
 

@@ -128,7 +128,8 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           label: "Stacks",
           layout: "stacks" as const,
           surfaceTitle: "Stacks",
-          surfaceSubtitle: "Swap orchestrator, store, tracker — same pipeline code.",
+          surfaceSubtitle:
+            "Swap orchestrator, store, tracker — same pipeline code.",
         },
         {
           id: "artifacts" as const,
@@ -196,7 +197,8 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           label: "Deployments",
           layout: "deployments" as const,
           surfaceTitle: "Deployments",
-          surfaceSubtitle: "Versioned deployments — promote, shadow, or roll back.",
+          surfaceSubtitle:
+            "Versioned deployments — promote, shadow, or roll back.",
         },
         {
           id: "frameworks" as const,
@@ -255,7 +257,8 @@ export const HOMEPAGE_UNIFIED_WORKSPACES = {
 
 export const HOMEPAGE_UNIFIED_VALUES = {
   eyebrow: "What stays true across both workspaces",
-  headline: "Own your infrastructure. Build it the way you want. Keep pace as you evolve.",
+  headline:
+    "Own your infrastructure. Build it the way you want. Keep pace as you evolve.",
   items: [
     {
       name: "Your stack, your data",

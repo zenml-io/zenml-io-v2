@@ -13,11 +13,7 @@
  * All copy is verbatim from artboard A3R-0. No values are invented.
  */
 
-export type DeploymentStatus =
-  | "PROD"
-  | "CANARY"
-  | "DEV"
-  | "ROLLED BACK";
+export type DeploymentStatus = "PROD" | "CANARY" | "DEV" | "ROLLED BACK";
 
 export type DeploymentRow = {
   /** Single uppercase letter for the letter badge. */

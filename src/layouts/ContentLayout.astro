@@ -1,6 +1,6 @@
 ---
-import type { SEOProps } from "../lib/seo";
 import type { Surface } from "../lib/analytics";
+import type { SEOProps } from "../lib/seo";
 /**
  * ContentLayout — generic prose wrapper for content pages.
  *
@@ -24,7 +24,12 @@ interface Props extends SEOProps {
   surface?: Surface;
 }
 
-const { wide = false, class: className, surface = "ml", ...seoProps } = Astro.props;
+const {
+  wide = false,
+  class: className,
+  surface = "ml",
+  ...seoProps
+} = Astro.props;
 const maxWidth = wide ? "max-w-[var(--container-lg)]" : "max-w-3xl";
 ---
 

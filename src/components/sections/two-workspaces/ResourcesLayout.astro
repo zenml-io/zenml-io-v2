@@ -15,19 +15,19 @@
  */
 
 import {
-  RESOURCE_POOLS,
-  METRIC_TILES,
   ACTIVE_JOBS,
+  type ActiveJob,
   CONNECTIONS,
   CONNECTIONS_ACTIVE_COUNT,
-  SELECTED_POOL,
-  LEFT_HEADER,
-  type ResourcePool,
-  type MetricTile,
-  type ActiveJob,
   type JobPriority,
-  type ResourcePoolStatus,
+  LEFT_HEADER,
+  METRIC_TILES,
   type MetricBarColor,
+  type MetricTile,
+  RESOURCE_POOLS,
+  type ResourcePool,
+  type ResourcePoolStatus,
+  SELECTED_POOL,
 } from "../../../lib/two-workspaces/resources-data";
 
 // ── Status-pill style map ──────────────────────────────────────────────────
@@ -82,11 +82,16 @@ const poolStatusStyle = (status: ResourcePoolStatus): PillStyle => {
 
 const barColorClass = (color: MetricBarColor): string => {
   switch (color) {
-    case "amber":  return "bg-[#FB923C]";
-    case "red":    return "bg-[#EF4444]";
-    case "purple": return "bg-zenml-500";
-    case "green":  return "bg-[#16A34A]";
-    default:       return "bg-gray-300";
+    case "amber":
+      return "bg-[#FB923C]";
+    case "red":
+      return "bg-[#EF4444]";
+    case "purple":
+      return "bg-zenml-500";
+    case "green":
+      return "bg-[#16A34A]";
+    default:
+      return "bg-gray-300";
   }
 };
 
@@ -97,11 +102,23 @@ type BadgeStyle = { bg: string; border: string; text: string };
 const priorityBadgeStyle = (priority: JobPriority): BadgeStyle => {
   switch (priority) {
     case "CRITICAL":
-      return { bg: "bg-[#FEF2F2]", border: "border-[#FECACA]", text: "text-[#B91C1C]" };
+      return {
+        bg: "bg-[#FEF2F2]",
+        border: "border-[#FECACA]",
+        text: "text-[#B91C1C]",
+      };
     case "HIGH":
-      return { bg: "bg-[#FFF4EC]", border: "border-[#FED7AA]", text: "text-[#C2410C]" };
+      return {
+        bg: "bg-[#FFF4EC]",
+        border: "border-[#FED7AA]",
+        text: "text-[#C2410C]",
+      };
     case "MEDIUM":
-      return { bg: "bg-[#FEF3C7]", border: "border-[#FDE68A]", text: "text-[#92400E]" };
+      return {
+        bg: "bg-[#FEF3C7]",
+        border: "border-[#FDE68A]",
+        text: "text-[#92400E]",
+      };
   }
 };
 ---

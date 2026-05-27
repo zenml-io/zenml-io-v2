@@ -1,5 +1,5 @@
 ---
-export type CellStatus = boolean | 'yes' | 'partial' | 'no';
+export type CellStatus = boolean | "yes" | "partial" | "no";
 
 interface Row {
   feature: string;
@@ -13,12 +13,12 @@ interface Props {
   competitorLabel?: string;
 }
 
-const { rows, competitorLabel = 'Alternative' } = Astro.props;
+const { rows, competitorLabel = "Alternative" } = Astro.props;
 
 // Normalize booleans to string literals for uniform rendering
-function normalize(status: CellStatus): 'yes' | 'partial' | 'no' {
-  if (status === true) return 'yes';
-  if (status === false) return 'no';
+function normalize(status: CellStatus): "yes" | "partial" | "no" {
+  if (status === true) return "yes";
+  if (status === false) return "no";
   return status;
 }
 

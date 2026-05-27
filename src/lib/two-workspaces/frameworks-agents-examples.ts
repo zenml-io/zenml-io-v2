@@ -89,7 +89,12 @@ export interface FrameworkAgentExample {
    * Per-framework capability tiles inside the Kitaru runtime dashed box.
    * Always 4: flow, checkpoint, wait, replay.
    */
-  capabilityTiles: [CapabilityTile, CapabilityTile, CapabilityTile, CapabilityTile];
+  capabilityTiles: [
+    CapabilityTile,
+    CapabilityTile,
+    CapabilityTile,
+    CapabilityTile,
+  ];
 
   // ── Right column: AFTER A CRASH ─────────────────────────────────────
   /** Run identifier shown in the column header — e.g. "run #4127 · resumed". */
@@ -129,11 +134,20 @@ const ICON_REPLAY_SVG = `<svg width="14" height="14" viewBox="0 0 14 14" fill="n
 
 /** The four shared capability tiles — same for all harnesses (Kitaru
  *  always adds these four regardless of which framework is wrapped). */
-const SHARED_CAPABILITIES: [CapabilityTile, CapabilityTile, CapabilityTile, CapabilityTile] = [
-  { title: "flow",       desc: "one durable run",       iconSvg: ICON_FLOW_SVG },
-  { title: "checkpoint", desc: "saved between steps",   iconSvg: ICON_CHECKPOINT_SVG },
-  { title: "wait",       desc: "pause & resume",        iconSvg: ICON_WAIT_SVG },
-  { title: "replay",     desc: "from a boundary",       iconSvg: ICON_REPLAY_SVG },
+const SHARED_CAPABILITIES: [
+  CapabilityTile,
+  CapabilityTile,
+  CapabilityTile,
+  CapabilityTile,
+] = [
+  { title: "flow", desc: "one durable run", iconSvg: ICON_FLOW_SVG },
+  {
+    title: "checkpoint",
+    desc: "saved between steps",
+    iconSvg: ICON_CHECKPOINT_SVG,
+  },
+  { title: "wait", desc: "pause & resume", iconSvg: ICON_WAIT_SVG },
+  { title: "replay", desc: "from a boundary", iconSvg: ICON_REPLAY_SVG },
 ];
 
 // ─── Gantt builder ────────────────────────────────────────────────────────────
@@ -144,7 +158,12 @@ const SHARED_CAPABILITIES: [CapabilityTile, CapabilityTile, CapabilityTile, Capa
 
 /** The 6 fixed span kinds, in render order. */
 const GANTT_KINDS: readonly GanttSpanKind[] = [
-  "classify", "checkpoint", "crashed", "resumed", "tool", "artifact",
+  "classify",
+  "checkpoint",
+  "crashed",
+  "resumed",
+  "tool",
+  "artifact",
 ];
 
 /** One framework-specific span input — `leftPct` is derived, not supplied. */
@@ -182,7 +201,7 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     rowLetter: "P",
     rowLabel: "PydanticAI",
     rowSubtitle: "Agent(...)",
-    badgeBg: "#FFDBBD",  // warm peach — matches artboard CGX-0
+    badgeBg: "#FFDBBD", // warm peach — matches artboard CGX-0
     badgeColor: "#9A3412",
     kitaruChip: "KitaruAgent(agent)",
     underlyingHarness: {
@@ -192,19 +211,20 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     capabilityTiles: SHARED_CAPABILITIES,
     runLabel: "run #4127 · resumed",
     ganttSpans: makeGantt([
-      { name: "classify",    durationLabel: "13s",     widthPct: 22.0 },
-      { name: "checkpoint",  durationLabel: "saved",   widthPct: 1.5  },
-      { name: "tool.lookup", durationLabel: "crashed", widthPct: 4.0  },
-      { name: "resumed",     durationLabel: "+8s",     widthPct: 13.5 },
-      { name: "tool.lookup", durationLabel: "35s",     widthPct: 57.5 },
-      { name: "artifact",    durationLabel: "saved",   widthPct: 1.5  },
+      { name: "classify", durationLabel: "13s", widthPct: 22.0 },
+      { name: "checkpoint", durationLabel: "saved", widthPct: 1.5 },
+      { name: "tool.lookup", durationLabel: "crashed", widthPct: 4.0 },
+      { name: "resumed", durationLabel: "+8s", widthPct: 13.5 },
+      { name: "tool.lookup", durationLabel: "35s", widthPct: 57.5 },
+      { name: "artifact", durationLabel: "saved", widthPct: 1.5 },
     ]),
     axisTicks: ["0s", "15s", "30s", "45s", "60s"],
     withKitaruText: "resumed in 8s · classify & model call preserved",
     withoutText: "restart from zero · repeat the model call · ~2m lost",
     goodFit: "Typed agents where you want schema validation on every step.",
     tradeOff: "Adds a Pydantic dependency and some per-call overhead.",
-    sourceCitation: "https://github.com/pydantic/pydantic-ai — src/pydantic_ai/agent.py",
+    sourceCitation:
+      "https://github.com/pydantic/pydantic-ai — src/pydantic_ai/agent.py",
   },
   {
     /* (2) OpenAI SDK — agents-sdk Runner.run pattern (openai-python >= 1.x).
@@ -213,7 +233,7 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     rowLetter: "O",
     rowLabel: "OpenAI SDK",
     rowSubtitle: "Runner.run",
-    badgeBg: "#F7F7F7",  // near-white — matches artboard CH7-0
+    badgeBg: "#F7F7F7", // near-white — matches artboard CH7-0
     badgeColor: "#101828",
     kitaruChip: "KitaruAgent(runner)",
     underlyingHarness: {
@@ -223,19 +243,20 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     capabilityTiles: SHARED_CAPABILITIES,
     runLabel: "run #7834 · resumed",
     ganttSpans: makeGantt([
-      { name: "triage",     durationLabel: "9s",      widthPct: 18.0 },
-      { name: "checkpoint", durationLabel: "saved",   widthPct: 1.5  },
-      { name: "web_search", durationLabel: "crashed", widthPct: 6.5  },
-      { name: "resumed",    durationLabel: "+6s",     widthPct: 13.0 },
-      { name: "web_search", durationLabel: "29s",     widthPct: 59.5 },
-      { name: "response",   durationLabel: "saved",   widthPct: 1.5  },
+      { name: "triage", durationLabel: "9s", widthPct: 18.0 },
+      { name: "checkpoint", durationLabel: "saved", widthPct: 1.5 },
+      { name: "web_search", durationLabel: "crashed", widthPct: 6.5 },
+      { name: "resumed", durationLabel: "+6s", widthPct: 13.0 },
+      { name: "web_search", durationLabel: "29s", widthPct: 59.5 },
+      { name: "response", durationLabel: "saved", widthPct: 1.5 },
     ]),
     axisTicks: ["0s", "12s", "24s", "36s", "48s"],
     withKitaruText: "resumed in 6s · triage & first tool call preserved",
     withoutText: "restart from zero · repeat the model call · ~2m lost",
     goodFit: "Multi-agent runs with handoffs via the Agents SDK Runner.",
     tradeOff: "Tied to OpenAI-hosted models and their rate limits.",
-    sourceCitation: "https://github.com/openai/openai-python — src/openai/agents/runner.py",
+    sourceCitation:
+      "https://github.com/openai/openai-python — src/openai/agents/runner.py",
   },
   {
     /* (3) LangGraph — graph.invoke / StateGraph pattern.
@@ -244,7 +265,7 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     rowLetter: "L",
     rowLabel: "LangGraph",
     rowSubtitle: "graph.invoke",
-    badgeBg: "#F7F7F7",  // matches artboard CHA-0
+    badgeBg: "#F7F7F7", // matches artboard CHA-0
     badgeColor: "#101828",
     kitaruChip: "KitaruAgent(graph)",
     underlyingHarness: {
@@ -254,19 +275,20 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     capabilityTiles: SHARED_CAPABILITIES,
     runLabel: "run #2291 · resumed",
     ganttSpans: makeGantt([
-      { name: "route_intent", durationLabel: "17s",     widthPct: 23.5 },
-      { name: "checkpoint",   durationLabel: "saved",   widthPct: 1.2  },
-      { name: "tool_node",    durationLabel: "crashed", widthPct: 3.3  },
-      { name: "resumed",      durationLabel: "+11s",    widthPct: 15.0 },
-      { name: "tool_node",    durationLabel: "40s",     widthPct: 55.6 },
-      { name: "state",        durationLabel: "saved",   widthPct: 1.4  },
+      { name: "route_intent", durationLabel: "17s", widthPct: 23.5 },
+      { name: "checkpoint", durationLabel: "saved", widthPct: 1.2 },
+      { name: "tool_node", durationLabel: "crashed", widthPct: 3.3 },
+      { name: "resumed", durationLabel: "+11s", widthPct: 15.0 },
+      { name: "tool_node", durationLabel: "40s", widthPct: 55.6 },
+      { name: "state", durationLabel: "saved", widthPct: 1.4 },
     ]),
     axisTicks: ["0s", "18s", "36s", "54s", "72s"],
     withKitaruText: "resumed in 11s · graph state & routing preserved",
     withoutText: "restart from zero · re-invoke full graph · ~2m lost",
     goodFit: "Branching multi-step graphs that need explicit state.",
     tradeOff: "Graph state must stay JSON-serializable to checkpoint cleanly.",
-    sourceCitation: "https://github.com/langchain-ai/langgraph — examples/agent_executor/agent.py",
+    sourceCitation:
+      "https://github.com/langchain-ai/langgraph — examples/agent_executor/agent.py",
   },
   {
     /* (4) Claude SDK — anthropic-sdk-python sessions / tool use.
@@ -275,7 +297,7 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     rowLetter: "C",
     rowLabel: "Claude SDK",
     rowSubtitle: "session",
-    badgeBg: "#F7F7F7",  // matches artboard CHD-0
+    badgeBg: "#F7F7F7", // matches artboard CHD-0
     badgeColor: "#101828",
     kitaruChip: "KitaruAgent(session)",
     underlyingHarness: {
@@ -285,19 +307,21 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     capabilityTiles: SHARED_CAPABILITIES,
     runLabel: "run #3019 · resumed",
     ganttSpans: makeGantt([
-      { name: "classify_intent", durationLabel: "10s",     widthPct: 20.0 },
-      { name: "checkpoint",      durationLabel: "saved",   widthPct: 1.5  },
-      { name: "tool_use_block",  durationLabel: "crashed", widthPct: 5.0  },
-      { name: "resumed",         durationLabel: "+6s",     widthPct: 12.0 },
-      { name: "tool_use_block",  durationLabel: "31s",     widthPct: 60.0 },
-      { name: "message",         durationLabel: "saved",   widthPct: 1.5  },
+      { name: "classify_intent", durationLabel: "10s", widthPct: 20.0 },
+      { name: "checkpoint", durationLabel: "saved", widthPct: 1.5 },
+      { name: "tool_use_block", durationLabel: "crashed", widthPct: 5.0 },
+      { name: "resumed", durationLabel: "+6s", widthPct: 12.0 },
+      { name: "tool_use_block", durationLabel: "31s", widthPct: 60.0 },
+      { name: "message", durationLabel: "saved", widthPct: 1.5 },
     ]),
     axisTicks: ["0s", "13s", "26s", "39s", "52s"],
     withKitaruText: "resumed in 6s · context window & tool call preserved",
     withoutText: "restart from zero · rebuild context · ~2m lost",
     goodFit: "Long Claude tool-use sessions with expensive context to rebuild.",
-    tradeOff: "Checkpoints land between turns — mid-stream tokens aren't saved.",
-    sourceCitation: "https://github.com/anthropics/anthropic-sdk-python — examples/tool_use/tool_use_helper.py",
+    tradeOff:
+      "Checkpoints land between turns — mid-stream tokens aren't saved.",
+    sourceCitation:
+      "https://github.com/anthropics/anthropic-sdk-python — examples/tool_use/tool_use_helper.py",
   },
   {
     /* (5) Your loop — bare Python function / custom loop.
@@ -307,7 +331,7 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     rowLetter: "+",
     rowLabel: "Your loop",
     rowSubtitle: "function",
-    badgeBg: "#94A3B8",  // slate-400 — matches artboard C2J-0
+    badgeBg: "#94A3B8", // slate-400 — matches artboard C2J-0
     badgeColor: "#FFFFFF",
     kitaruChip: "KitaruAgent(fn)",
     underlyingHarness: {
@@ -317,12 +341,12 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     capabilityTiles: SHARED_CAPABILITIES,
     runLabel: "run #1102 · resumed",
     ganttSpans: makeGantt([
-      { name: "step_one",   durationLabel: "16s",     widthPct: 25.0 },
-      { name: "checkpoint", durationLabel: "saved",   widthPct: 1.4  },
-      { name: "tool_call",  durationLabel: "crashed", widthPct: 4.5  },
-      { name: "resumed",    durationLabel: "+9s",     widthPct: 14.0 },
-      { name: "tool_call",  durationLabel: "34s",     widthPct: 52.8 },
-      { name: "output",     durationLabel: "saved",   widthPct: 2.3  },
+      { name: "step_one", durationLabel: "16s", widthPct: 25.0 },
+      { name: "checkpoint", durationLabel: "saved", widthPct: 1.4 },
+      { name: "tool_call", durationLabel: "crashed", widthPct: 4.5 },
+      { name: "resumed", durationLabel: "+9s", widthPct: 14.0 },
+      { name: "tool_call", durationLabel: "34s", widthPct: 52.8 },
+      { name: "output", durationLabel: "saved", widthPct: 2.3 },
     ]),
     axisTicks: ["0s", "16s", "32s", "48s", "64s"],
     withKitaruText: "resumed in 9s · step progress & tool call preserved",
