@@ -39,6 +39,8 @@ export interface LogoItem {
   width?: number;
   height?: number;
   maxWidth?: string;
+  /** Render a name-only stub when the real asset is pending. */
+  placeholder?: boolean;
 }
 
 import { R2_WEBFLOW_BASE } from "./constants";
@@ -48,55 +50,37 @@ const R2 = R2_WEBFLOW_BASE;
 export const LOGO_CLOUD = {
   label: "Trusted by teams shipping ML pipelines and AI agents",
   logos: [
-    {
-      name: "Airbus",
-      src: `${R2}/6a2ae7e3/670e2f23d254a9be9e02e50f_airbus.svg`,
-    },
     { name: "AXA", src: `${R2}/5f1b0e8a/670e2f23b0b89bea22ecee3c_axa-min.svg` },
-    {
-      name: "Bundeswehr",
-      src: `${R2}/e8e86576/670e2f2398fcad5e2e8f2775_bundeswehr.svg`,
-    },
-    {
-      name: "Enel",
-      src: `${R2}/4f6e5fe1/670e2f2349aab64d5e4eeeb3_enel-min.svg`,
-    },
     {
       name: "JetBrains",
       src: `${R2}/60b5e34d/670e2f23ee3f2feee5e7e7e2_jetbrains-min.svg`,
     },
-    { name: "Koble", src: `${R2}/db4b0c5a/670e2f2331d7f8f62e12458e_koble.svg` },
+    { name: "ADEO", src: "/images/logos/adeo.png" },
     {
       name: "Leroy Merlin",
       src: `${R2}/d28fbdf4/670e2f23e2b3ba3756fae38e_leroy_merlin_logo-min.svg`,
     },
-    { name: "ADEO", src: "/images/logos/adeo.png" },
-    { name: "Devoteam", src: "/images/logos/devoteam.svg" },
-    { name: "Frontiers", src: "/images/logos/frontiers.webp" },
-    { name: "Mann+Hummel", src: "/images/logos/mann-hummel.svg" },
-    { name: "Nielsen IQ", src: "/images/logos/nielsen-iq.svg" },
-    { name: "Playtika", src: "/images/logos/playtika.svg" },
-    { name: "Wisetech Global", src: "/images/logos/wisetech.svg" },
-    { name: "AISBACH", src: "/images/logos/aisbach.svg" },
-    { name: "Aisera", src: "/images/logos/aisera.svg" },
-    { name: "ALKi", src: "/images/logos/alki.webp" },
-    { name: "Altenar", src: "/images/logos/altenar.svg" },
     { name: "Brevo", src: "/images/logos/brevo.webp", maxWidth: "80px" },
+    { name: "Safran", src: "/images/logos/safran.png" },
     {
-      name: "Digital Diagnostics",
-      src: "/images/logos/digital-diagnostics.svg",
+      name: "Airbus Defence & Space",
+      src: `${R2}/6a2ae7e3/670e2f23d254a9be9e02e50f_airbus.svg`,
     },
-    { name: "EarthDaily Agro", src: "/images/logos/earthdaily-agro.png" },
-    { name: "Eikon Therapeutics", src: "/images/logos/eikon-therapeutics.svg" },
-    { name: "Hemato", src: "/images/logos/hemato.png" },
-    { name: "Infoplaza", src: "/images/logos/infoplaza.svg" },
-    { name: "Instabase", src: "/images/logos/instabase.webp" },
-    { name: "IT4IPM", src: "/images/logos/it4ipm.webp" },
-    { name: "Multitel", src: "/images/logos/multitel.webp" },
-    { name: "RiverBank", src: "/images/logos/riverbank.webp" },
-    { name: "Standard Bots", src: "/images/logos/standard-bots.svg" },
-    { name: "Two", src: "/images/logos/two.svg" },
-    { name: "Wayflyer", src: "/images/logos/wayflyer.webp" },
+    { name: "Rohlik", src: "/images/logos/rohlik.svg" },
+    { name: "Knuspr", src: "/images/logos/knuspr.svg" },
+    { name: "Maven Robotics", src: "/images/logos/maven.svg" },
+    { name: "CrossScreen Media", src: "/images/logos/cross-screen-media.png" },
+    { name: "GEMA", src: "/images/logos/gema.svg" },
+    { name: "Homa Games", src: "/images/logos/homa.svg" },
+    { name: "Koble", src: `${R2}/db4b0c5a/670e2f2331d7f8f62e12458e_koble.svg` },
+    { name: "IKEA", src: "/images/logos/ikea.svg" },
+    { name: "Sciemo", src: "/images/logos/sciemo.png" },
+    { name: "Vodafone", src: "/images/logos/vodafone.svg" },
+    { name: "Stepstone", src: "/images/logos/stepstone.svg" },
+    { name: "Neara", src: "/images/logos/neara.svg" },
+    { name: "Rivian", src: "/images/logos/rivian.svg" },
+    { name: "Happening XYZ", src: "/images/logos/happeningxyz.png" },
+    { name: "Veridas", src: "/images/logos/veridas.svg" },
   ] satisfies LogoItem[],
 };
 
