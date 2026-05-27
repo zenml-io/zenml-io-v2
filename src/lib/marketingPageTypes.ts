@@ -121,7 +121,6 @@ export interface PricingPlan {
   features: string[];
   cta: CtaLink;
   ctaVariant?: "primary" | "secondary";
-  secondaryLink: CtaLink;
   /** Visually emphasized card (brand border + tint + shadow). */
   highlighted?: boolean;
 }

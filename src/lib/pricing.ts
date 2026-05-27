@@ -132,11 +132,6 @@ export const PRICING_PLANS: PricingPlan[] = [
       analytics: "OSS-Get-Started",
     },
     ctaVariant: "secondary",
-    secondaryLink: {
-      label: "Explore the docs",
-      href: "/docs",
-      analytics: "Pricing-OSS-Docs",
-    },
   },
   {
     id: "scale",
@@ -174,11 +169,6 @@ export const PRICING_PLANS: PricingPlan[] = [
       analytics: "Pricing-Scale-Book-Demo",
     },
     ctaVariant: "primary",
-    secondaryLink: {
-      label: "Talk to an engineer",
-      href: "/book-your-demo",
-      analytics: "Pricing-Scale-Talk-Engineer",
-    },
   },
   {
     id: "enterprise",
@@ -196,16 +186,11 @@ export const PRICING_PLANS: PricingPlan[] = [
       "Air-gapped deployment",
     ],
     cta: {
-      label: "Talk to sales",
+      label: "Talk to an engineer",
       href: "/book-your-demo",
       analytics: "Enterprise-Book-Demo",
     },
     ctaVariant: "secondary",
-    secondaryLink: {
-      label: "See the full comparison",
-      href: "#compare-table",
-      analytics: "Pricing-Enterprise-Compare",
-    },
   },
 ];
 
@@ -312,26 +297,12 @@ export const PRICING_COMPARE: PricingCompareTableData = {
       ],
     },
   ],
-  ctaButtons: [
-    {
-      label: "Get Started",
-      href: "/get-started",
-      variant: "secondary",
-      analytics: "OSS-Get-Started",
-    },
-    {
-      label: "Book a demo",
-      href: "/book-your-demo",
-      variant: "primary",
-      analytics: "Pricing-Scale-Book-Demo",
-    },
-    {
-      label: "Talk to sales",
-      href: "/book-your-demo",
-      variant: "secondary",
-      analytics: "Enterprise-Book-Demo",
-    },
-  ],
+  // Derived from PRICING_PLANS so the per-plan CTA is the single source of truth
+  // for label / href / analytics / variant across both the card and the table row.
+  ctaButtons: PRICING_PLANS.map((plan) => ({
+    ...plan.cta,
+    variant: plan.ctaVariant ?? "primary",
+  })),
 };
 
 // ---------------------------------------------------------------------------
