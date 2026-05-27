@@ -12,6 +12,8 @@
     "validate:content": "tsx scripts/phase2/validate-content.ts",
     "validate:llmops": "tsx scripts/phase2/validate-content.ts --collection=llmops-database",
     "validate:mlops": "tsx scripts/phase2/validate-content.ts --collection=mlops-database",
+    "og:compare": "tsx scripts/og/generate-compare-og.ts",
+    "og:compare:write": "tsx scripts/og/generate-compare-og.ts --write",
     "lint": "biome check src/",
     "lint:fix": "biome check --fix src/",
     "format": "biome format --write src/",
@@ -27,6 +29,7 @@
     "astro": "^5.17.1",
     "lottie-web": "^5.13.0",
     "preact": "^10.28.3",
+    "sharp": "^0.34.5",
     "shiki": "^3.23.0",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
@@ -41,6 +44,9 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.14",
+    "@fontsource/jetbrains-mono": "^5.2.8",
+    "@fontsource/plus-jakarta-sans": "^5.2.8",
+    "@resvg/resvg-js": "^2.6.2",
     "@types/mdast": "^4.0.4",
     "@types/node": "^22.19.11",
     "cheerio": "^1.2.0",
@@ -48,6 +54,7 @@
     "gray-matter": "^4.0.3",
     "pagefind": "^1.4.0",
     "playwright": "^1.58.2",
+    "satori": "^0.26.0",
     "tsx": "^4.21.0",
     "wrangler": "^4.64.0"
   }
