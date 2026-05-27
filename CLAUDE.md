@@ -129,6 +129,35 @@ const url = `${ASSET_BASE_URL}/content/uploads/1a2b3c4d/hero.webp`;
 - `r2-image-upload` (`.claude/skills/r2-image-upload/SKILL.md`) — upload images to R2. Triggers: "upload image", "add image to R2", "new blog image".
 - `blog-post-contributor` (`.claude/skills/blog-post-contributor/SKILL.md`) — full blog post workflow from markdown or Notion. Triggers: "new blog post", "add blog", "blog from Notion".
 
+### Compare-page OG card generator
+
+The Kitaru-vs-X comparison pages use programmatic OG cards rendered from
+each `.mdx`'s frontmatter (`competitor`, `cardSubtitle`). Pipeline:
+satori (JSX → SVG) → `@resvg/resvg-js` (SVG → PNG at 2× native) → sharp
+(PNG → JPEG, q85 mozjpeg 4:2:0) → R2 upload at a deterministic key.
+
+The OG URL is **derived at render time** from the entry slug via
+`compareOgUrl(slug)` in `src/lib/seo.ts` — pointing at
+`${ASSET_BASE_URL}/${KITARU_COMPARE_OG_PREFIX}/<slug>.jpg`. The script
+uploads there with `r2-upload.py --literal-key` so re-renders overwrite
+in place. No frontmatter mutation. A page can still override by setting
+its own `ogImage:` frontmatter line.
+
+- `scripts/og/template.tsx` — design template; matches the Paper artboard
+  "D - Custom" on the **Kitaru Landing Page** file (page: **Open Graph**).
+  Paper is the source of truth — if the brand evolves, edit the artboard
+  and re-pull computed styles via `mcp__paper__get_jsx`.
+- `scripts/og/generate-compare-og.ts` — orchestrator.
+- `pnpm og:compare` — dry-run, writes JPEGs to `.cache/og/` (gitignored).
+- `pnpm og:compare:write` — uploads to R2. Truly idempotent: same slug →
+  same R2 key → overwrite in place. No `.mdx` files are ever modified.
+- `pnpm og:compare --slug=kitaru-vs-foo` — limit to specific pages.
+
+**When adding a new kitaru-vs-X page:** create the `.mdx` with the
+`competitor` and `cardSubtitle` frontmatter fields, then run
+`pnpm og:compare:write --slug=<new-slug>`. No frontmatter change needed
+— the layout derives the OG URL automatically.
+
 ### Lessons Learned
 
 ### Always verify uploads via the public URL
