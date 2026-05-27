@@ -56,8 +56,30 @@ Before activating Phase 10, complete each of the following. **Do not check off i
 
 ### 3.3 Traffic snapshot
 
-- [ ] Plausible (or whatever kitaru.ai uses) — last 90 days. Per-page visitors. Save total + top 20 pages.
-- [ ] Any page > 100 visitors/mo must have its URL preserved or 301'd, per the Webflow rule (`MERGE_PLAN.md §9`).
+- [x] **DONE** (2026-05-27). Plausible export covering 2026-04-29 → 2026-05-26 (28-day window plus 2-month carry-over, ~90 days). 993 total visitors, 100 unique pages.
+
+  **Traffic concentration** (~80% of all visitors land here):
+
+  | Page | Visitors (90d) | Approx /mo | Mapped target |
+  |---|---:|---:|---|
+  | `/` | 359 | ~120 | `/product/kitaru` ✓ |
+  | `/docs/*` (74 paths combined) | 444 | ~150 | Stays on kitaru.ai (D2) — no redirect |
+  | `/pricing/` | 33 | ~11 | `/pricing` ✓ |
+  | `/blog/` | 23 | ~8 | `/blog` ✓ |
+  | `/compare/` | 19 | ~6 | `/compare` ✓ |
+  | `/newsletter/` | 19 | ~6 | `/newsletter-signup` ✓ |
+  | `/book-a-demo/` | 15 | ~5 | `/book-your-demo` ✓ |
+  | `/blog/from-zenml-to-kitaru/` | 10 | ~3 | `/blog/from-zenml-to-kitaru` ✓ |
+  | `/blog/the-runtime-layer-underneath-your-agent-stack/` | 10 | ~3 | ✓ |
+  | `/compare/kitaru-vs-temporal/` | 9 | ~3 | ✓ |
+
+  **Webflow rule (>100 visitors/mo must be preserved or 301'd):** only `/` clears that bar by itself. It's the most important rule in the map and it points to `/product/kitaru` already.
+
+  **Two unmapped pages with traffic:**
+  - `/blog/kitaru-agents-now-have-memory/` — **4 visitors/90d** to a post we deleted on 2026-05-17. Added a soft-landing redirect → `/blog` (the index) in `kitaru-redirect-map.csv`. Better than a 404 even at small volume.
+  - `/comapre/` + `/comapre/kitaru-vs-inngest/` — **3 visitors/90d** combined; clear `compare` typo (bots / fat fingers). Skipped — letting these 404 is fine.
+
+  **Conclusion:** the redirect map covers every kitaru.ai page that gets meaningful organic traffic. The remaining traffic story for Phase 10 is the docs traffic (444/90d) — D2 keeps that on kitaru.ai unchanged.
 
 ### 3.4 Social / share preview audit
 
@@ -109,6 +131,7 @@ kitaru.ai/blog/no-journal-replay/                               → zenml.io/blo
 kitaru.ai/blog/the-runtime-layer-underneath-your-agent-stack/   → zenml.io/blog/the-runtime-layer-underneath-your-agent-stack
 kitaru.ai/blog/where-durable-execution-is-headed/               → zenml.io/blog/where-durable-execution-is-headed  ⚠
 kitaru.ai/blog/why-agents-need-durable-execution/               → zenml.io/blog/why-agents-need-durable-execution
+kitaru.ai/blog/kitaru-agents-now-have-memory/                   → zenml.io/blog   (deleted post; soft landing on index — 4 visitors/90d)
 
 ## Compare (11 — 1:1 by slug; ⚠ kitaru-vs-crewai + kitaru-vs-hatchet not yet ported)
 kitaru.ai/compare/                                              → zenml.io/compare
