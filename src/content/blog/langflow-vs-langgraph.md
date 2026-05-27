@@ -26,7 +26,7 @@ seo:
   title: "Langflow vs LangGraph: A Detailed Comparison for Building Agentic AI Systems - ZenML Blog"
   description: "This Langflow vs LangGraph article explains all the differences between these AI agentic systems."
   canonical: "https://www.zenml.io/blog/langflow-vs-langgraph"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/87ee2800/6981d37a71c3040935dbc35c_6981d2ac2de2dfee3e8167d0_langflow-vs-langgraph.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/87ee2800/6981d37a71c3040935dbc35c_6981d2ac2de2dfee3e8167d0_langflow-vs-langgraph.jpg"
   ogTitle: "Langflow vs LangGraph: A Detailed Comparison for Building Agentic AI Systems - ZenML Blog"
   ogDescription: "This Langflow vs LangGraph article explains all the differences between these AI agentic systems."
 ---

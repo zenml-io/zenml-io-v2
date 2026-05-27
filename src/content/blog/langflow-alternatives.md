@@ -26,7 +26,7 @@ seo:
   title: "We Tried and Tested 8 Langflow Alternatives for Production-Ready AI Workflows - ZenML Blog"
   description: "Discover the top 8 Langflow alternatives you can leverage to build and deploy AI agents."
   canonical: "https://www.zenml.io/blog/langflow-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/95341d10/6981d362e92aa039b696ad06_6981d2b29b5bd50b8dcb1e3f_langflow-alternatives.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/95341d10/6981d362e92aa039b696ad06_6981d2b29b5bd50b8dcb1e3f_langflow-alternatives.jpg"
   ogTitle: "We Tried and Tested 8 Langflow Alternatives for Production-Ready AI Workflows - ZenML Blog"
   ogDescription: "Discover the top 8 Langflow alternatives you can leverage to build and deploy AI agents."
 ---

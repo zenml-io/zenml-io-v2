@@ -24,7 +24,7 @@ seo:
   title: "ZenML vs. Apache Airflow: A Comparative Analysis for MLOps - ZenML Blog"
   description: "We compare ZenML with Apache Airflow, the popular data engineering pipeline tool. For machine learning workflows, using Airflow with ZenML will give you a more comprehensive solution."
   canonical: "https://www.zenml.io/blog/zenml-vs-apache-airflow-a-comparative-analysis-for-mlops"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/25030b24/6981d389ab6d2820d701bc0b_6981d2abd805070f280af055_ZenML_vs_Apache_Airflow_1.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/25030b24/6981d389ab6d2820d701bc0b_6981d2abd805070f280af055_ZenML_vs_Apache_Airflow_1.jpg"
   ogTitle: "ZenML vs. Apache Airflow: A Comparative Analysis for MLOps - ZenML Blog"
   ogDescription: "We compare ZenML with Apache Airflow, the popular data engineering pipeline tool. For machine learning workflows, using Airflow with ZenML will give you a more comprehensive solution."
 ---

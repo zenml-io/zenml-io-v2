@@ -24,7 +24,7 @@ seo:
   title: "10 Databricks Alternatives You Must Try - ZenML Blog"
   description: "Discover the top 10 Databricks alternatives designed to eliminate the pain points you might face when using Databricks. This article will walk you through these alternatives and educate you about what the platform is all about - features, pricing, pros, and cons."
   canonical: "https://www.zenml.io/blog/databricks-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e093d4ab/6981d37a71c3040935dbc356_6981d2adb0c9150d131976df_databricks_alternatives.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e093d4ab/6981d37a71c3040935dbc356_6981d2adb0c9150d131976df_databricks_alternatives.jpg"
   ogTitle: "10 Databricks Alternatives You Must Try - ZenML Blog"
   ogDescription: "Discover the top 10 Databricks alternatives designed to eliminate the pain points you might face when using Databricks. This article will walk you through these alternatives and educate you about what the platform is all about - features, pricing, pros, and cons."
 ---

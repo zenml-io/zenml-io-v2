@@ -17,7 +17,7 @@ seo:
   title: "Your Agents Are Not Microservices - ZenML Blog"
   description: "Durable execution engines were built for payment flows and order processing. AI agents need something different. Here's why."
   canonical: "https://www.zenml.io/blog/agents-are-not-microservices"
-  ogImage: "https://assets.zenml.io/content/blog/deb278bd/agents-are-not-microservices.avif"
+  ogImage: "https://assets.zenml.io/content/blog/deb278bd/agents-are-not-microservices.jpg"
 ---
 
 Temporal grew out of Uber’s Cadence project, which was built for durable workflow orchestration across Uber’s services. Public materials describe it as supporting long-running applications, millions of concurrent executions, and high-throughput task processing.

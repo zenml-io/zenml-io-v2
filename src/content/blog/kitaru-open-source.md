@@ -18,7 +18,7 @@ seo:
   title: "Kitaru is open source and ready to use - ZenML Blog"
   description: "Kitaru is live: open-source infrastructure platform for running Python agents in production."
   canonical: "https://www.zenml.io/blog/kitaru-open-source"
-  ogImage: "https://assets.zenml.io/content/blog/9f8bd61e/kit-launch.avif"
+  ogImage: "https://assets.zenml.io/content/blog/9f8bd61e/kit-launch.jpg"
 ---
 
 tldr; Kitaru *(来る, Japanese for "to arrive.")* is now open source and free for everyone. It offers robust, durable execution for async Python agents on any infrastructure backend. Kitaru is built on top of ZenML, leveraging five years of experience developing one of the world’s top [open source MLOps workflow orchestration tools](https://zenml.io).

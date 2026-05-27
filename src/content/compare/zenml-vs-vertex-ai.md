@@ -31,7 +31,7 @@ seo:
   title: "ZenML vs Vertex AI - Portable ML Pipelines Without GCP Lock-In"
   description: "ZenML: an open-source alternative to Vertex AI Pipelines that keeps your MLOps stack portable across GCP, AWS, Azure, and on-prem"
   canonical: "https://www.zenml.io/compare/zenml-vs-vertex-ai"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5cb64e6d/6996d9fb06f9fe50e6150890_compare-vertex-AI.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5cb64e6d/6996d9fb06f9fe50e6150890_compare-vertex-AI.jpg"
   ogTitle: "ZenML vs Vertex AI - Portable ML Pipelines Without GCP Lock-In"
   ogDescription: "ZenML: an open-source alternative to Vertex AI Pipelines that keeps your MLOps stack portable across GCP, AWS, Azure, and on-prem"
 ---

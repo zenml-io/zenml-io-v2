@@ -26,7 +26,7 @@ seo:
   title: "CrewAI Pricing Guide: Plans and Features the Framework Offers - ZenML Blog"
   description: "In this CrewAI pricing guide, we discuss the costs, features, and value CrewAI provides to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/crewai-pricing"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e8e527f/6981cf5010e873663bd75933_6981ce891833f8168a664192_crewai-pricing.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e8e527f/6981cf5010e873663bd75933_6981ce891833f8168a664192_crewai-pricing.jpg"
   ogTitle: "CrewAI Pricing Guide: Plans and Features the Framework Offers - ZenML Blog"
   ogDescription: "In this CrewAI pricing guide, we discuss the costs, features, and value CrewAI provides to help you decide if it’s the right investment for your business."
 ---

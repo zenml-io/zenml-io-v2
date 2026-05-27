@@ -31,7 +31,7 @@ seo:
   title: "ZenML vs LangGraph - From agent graphs to governed AI pipelines"
   description: "ZenML is an open-source alternative layer to productionize LangGraph agents with reproducible pipelines, artifacts, and governance."
   canonical: "https://www.zenml.io/compare/zenml-vs-langgraph"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f44a2f53/6996dac457a1b300d8e4a120_compare-LangGraph.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f44a2f53/6996dac457a1b300d8e4a120_compare-LangGraph.jpg"
   ogTitle: "ZenML vs LangGraph - From agent graphs to governed AI pipelines"
   ogDescription: "ZenML is an open-source alternative layer to productionize LangGraph agents with reproducible pipelines, artifacts, and governance."
 ---

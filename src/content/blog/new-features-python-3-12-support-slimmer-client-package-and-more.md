@@ -25,7 +25,7 @@ seo:
   title: "New Features: Python 3.12 Support, slimmer Client Package and More! - ZenML Blog"
   description: "ZenML's latest release 0.66.0 adds support for Python 3.12, removes some dependencies for a slimmer Client package and adds the ability to view all your pipeline runs in the dashboard."
   canonical: "https://www.zenml.io/blog/new-features-python-3-12-support-slimmer-client-package-and-more"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c1dbd3c2/6981d36ce92aa039b696b8a1_6981d2af5c146b4b5a8cdcc3_zenml-release.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c1dbd3c2/6981d36ce92aa039b696b8a1_6981d2af5c146b4b5a8cdcc3_zenml-release.jpg"
   ogTitle: "New Features: Python 3.12 Support, slimmer Client Package and More! - ZenML Blog"
   ogDescription: "ZenML's latest release 0.66.0 adds support for Python 3.12, removes some dependencies for a slimmer Client package and adds the ability to view all your pipeline runs in the dashboard."
 ---

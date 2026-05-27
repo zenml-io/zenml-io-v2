@@ -26,7 +26,7 @@ seo:
   title: "Vellum AI Pricing Guide: Is It Worth Investing In? - ZenML Blog"
   description: "In this Vellum AI pricing guide, we discuss the costs, features, and value Vellum AI provides to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/vellum-ai-pricing"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/178479c6/6981d37a71c3040935dbc34d_6981d2ad55469097c2eb816b_vellum-ai-pricing.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/178479c6/6981d37a71c3040935dbc34d_6981d2ad55469097c2eb816b_vellum-ai-pricing.jpg"
   ogTitle: "Vellum AI Pricing Guide: Is It Worth Investing In? - ZenML Blog"
   ogDescription: "In this Vellum AI pricing guide, we discuss the costs, features, and value Vellum AI provides to help you decide if it’s the right investment for your business."
 ---

@@ -27,7 +27,7 @@ seo:
   title: "LLMOps Lessons Learned: Navigating the Wild West of Production LLMs 🚀 - ZenML Blog"
   description: "Explore key insights and patterns from 300+ real-world LLM deployments, revealing how companies are successfully implementing AI in production. This comprehensive analysis covers agent architectures, deployment strategies, data infrastructure, and technical challenges, drawing from ZenML's LLMOps Database to highlight practical solutions in areas like RAG, fine-tuning, cost optimization, and evaluation frameworks."
   canonical: "https://www.zenml.io/blog/llmops-lessons-learned-navigating-the-wild-west-of-production-llms"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/17b4afe0/6981d37a71c3040935dbc345_6981d2aeb5eec12a2c8c7995_mj2.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/17b4afe0/6981d37a71c3040935dbc345_6981d2aeb5eec12a2c8c7995_mj2.jpg"
   ogTitle: "LLMOps Lessons Learned: Navigating the Wild West of Production LLMs 🚀 - ZenML Blog"
   ogDescription: "Explore key insights and patterns from 300+ real-world LLM deployments, revealing how companies are successfully implementing AI in production. This comprehensive analysis covers agent architectures, deployment strategies, data infrastructure, and technical challenges, drawing from ZenML's LLMOps Database to highlight practical solutions in areas like RAG, fine-tuning, cost optimization, and evaluation frameworks."
 ---

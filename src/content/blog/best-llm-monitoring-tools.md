@@ -26,7 +26,7 @@ seo:
   title: "10 Best LLM Monitoring Tools to Use in 2025 (Ranked & Reviewed) - ZenML Blog"
   description: "Discover the 10 best LLM monitoring tools you can use this year."
   canonical: "https://www.zenml.io/blog/best-llm-monitoring-tools"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e0c790c/6981d36ce92aa039b696b8a7_6981d2b078ca0eb6ae358d39_best-llm-monitoring-tools.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e0c790c/6981d36ce92aa039b696b8a7_6981d2b078ca0eb6ae358d39_best-llm-monitoring-tools.jpg"
   ogTitle: "10 Best LLM Monitoring Tools to Use in 2025 (Ranked & Reviewed) - ZenML Blog"
   ogDescription: "Discover the 10 best LLM monitoring tools you can use this year."
 ---

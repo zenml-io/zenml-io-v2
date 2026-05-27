@@ -26,7 +26,7 @@ seo:
   title: "Pydantic AI vs LangGraph: Features, Integrations, and Pricing Compared - ZenML Blog"
   description: "In this Pydantic AI vs LangGraph, we explain the difference between the two and conclude which one is the best to build AI agents."
   canonical: "https://www.zenml.io/blog/pydantic-ai-vs-langgraph"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/be0bec65/6981d36ce92aa039b696b898_6981d2affe2c3f562a2c8f2a_pydantic-ai-vs-langgraph.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/be0bec65/6981d36ce92aa039b696b898_6981d2affe2c3f562a2c8f2a_pydantic-ai-vs-langgraph.jpg"
   ogTitle: "Pydantic AI vs LangGraph: Features, Integrations, and Pricing Compared - ZenML Blog"
   ogDescription: "In this Pydantic AI vs LangGraph, we explain the difference between the two and conclude which one is the best to build AI agents."
 ---

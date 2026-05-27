@@ -25,7 +25,7 @@ seo:
   title: "We Tested 9 MLflow Alternatives for MLOps - ZenML Blog"
   description: "Discover the best MLflow alternatives designed to improve all your ML operations."
   canonical: "https://www.zenml.io/blog/mlflow-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/de802ff9/6981d352ce4b26d085d70405_6981d2b6e4c500cc8e41cf46_mlflow_alternatives.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/de802ff9/6981d352ce4b26d085d70405_6981d2b6e4c500cc8e41cf46_mlflow_alternatives.jpg"
   ogTitle: "We Tested 9 MLflow Alternatives for MLOps  - ZenML Blog"
   ogDescription: "Discover the best MLflow alternatives designed to improve all your ML operations."
 ---

@@ -27,7 +27,7 @@ seo:
   title: "LLMOps in Production: 457 Case Studies of What Actually Works - ZenML Blog"
   description: "A comprehensive overview of lessons learned from the world's largest database of LLMOps case studies (457 entries as of January 2025), examining how companies implement and deploy LLMs in production. Through nine thematic blog posts covering everything from RAG implementations to security concerns, this article synthesizes key patterns and anti-patterns in production GenAI deployments, offering practical insights for technical teams building LLM-powered applications."
   canonical: "https://www.zenml.io/blog/llmops-in-production-457-case-studies-of-what-actually-works"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/742cd02e/6981d352ce4b26d085d7041b_6981d2b7cbabf896f02b0c37_Midjourney_Technical_Blueprint.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/742cd02e/6981d352ce4b26d085d7041b_6981d2b7cbabf896f02b0c37_Midjourney_Technical_Blueprint.jpg"
   ogTitle: "LLMOps in Production: 457 Case Studies of What Actually Works - ZenML Blog"
   ogDescription: "A comprehensive overview of lessons learned from the world's largest database of LLMOps case studies (457 entries as of January 2025), examining how companies implement and deploy LLMs in production. Through nine thematic blog posts covering everything from RAG implementations to security concerns, this article synthesizes key patterns and anti-patterns in production GenAI deployments, offering practical insights for technical teams building LLM-powered applications."
 ---

@@ -25,7 +25,7 @@ seo:
   title: "Leaving Neptune? Try ZenML for Experiment Tracking and More - ZenML Blog"
   description: "Neptune AI is terminating its standalone SaaS solution. Switch to ZenML to track ML experiments and do much more."
   canonical: "https://www.zenml.io/blog/neptune-to-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9f20a9d7/6981cf64f4f7a9ede995c465_6981ce864626f810358db79d_zenml-neptune.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9f20a9d7/6981cf64f4f7a9ede995c465_6981ce864626f810358db79d_zenml-neptune.jpg"
   ogTitle: "Leaving Neptune? Try ZenML for Experiment Tracking and More - ZenML Blog"
   ogDescription: "Neptune AI is terminating its standalone SaaS solution. Switch to ZenML to track ML experiments and do much more."
 ---

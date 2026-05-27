@@ -26,7 +26,7 @@ seo:
   title: "We Tested 8 LangGraph Alternatives for Scalable Agent Orchestration - ZenML Blog"
   description: "Discover the top 8 LangGraph alternatives for scalable agent orchestration."
   canonical: "https://www.zenml.io/blog/langgraph-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5914cdf6/6981d362e92aa039b696acf4_6981d2b42956b6fef73d8042_langgraph-alternatives.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5914cdf6/6981d362e92aa039b696acf4_6981d2b42956b6fef73d8042_langgraph-alternatives.jpg"
   ogTitle: "We Tested 8 LangGraph Alternatives for Scalable Agent Orchestration - ZenML Blog"
   ogDescription: "Discover the top 8 LangGraph alternatives for scalable agent orchestration."
 ---

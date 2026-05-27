@@ -31,7 +31,7 @@ seo:
   title: "ZenML vs KServe - KServe Serves Models. ZenML Ships ML Systems."
   description: "ZenML is the open-source alternative for end-to-end MLOps: train, evaluate, version, and ship models to KServe for scalable serving"
   canonical: "https://www.zenml.io/compare/zenml-vs-kserve"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/339035e8/6996da517c6f077586ba921d_compare-KServe.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/339035e8/6996da517c6f077586ba921d_compare-KServe.jpg"
   ogTitle: "ZenML vs KServe - KServe Serves Models. ZenML Ships ML Systems."
   ogDescription: "ZenML is the open-source alternative for end-to-end MLOps: train, evaluate, version, and ship models to KServe for scalable serving"
 ---

@@ -25,7 +25,7 @@ seo:
   title: "Introducing ZenML Agent Skills: Let AI Upgrade Your MLOps Setup in Minutes - ZenML Blog"
   description: "ZenML's new Quick Wins skill for Claude Code automatically audits your ML pipelines and implements 15 best-practice improvements (from metadata logging to Model Control Plane setup) based on what's actually missing in your codebase."
   canonical: "https://www.zenml.io/blog/introducing-zenml-agent-skills-let-ai-upgrade-your-mlops-setup-in-minutes"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4b8c7eac/6981d36ce92aa039b696b890_6981d2b0f0dd4ffc24e379d6_agent-skills-quick-wins_1_1.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4b8c7eac/6981d36ce92aa039b696b890_6981d2b0f0dd4ffc24e379d6_agent-skills-quick-wins_1_1.jpg"
   ogTitle: "Introducing ZenML Agent Skills: Let AI Upgrade Your MLOps Setup in Minutes - ZenML Blog"
   ogDescription: "ZenML's new Quick Wins skill for Claude Code automatically audits your ML pipelines and implements 15 best-practice improvements (from metadata logging to Model Control Plane setup) based on what's actually missing in your codebase."
 ---

@@ -26,7 +26,7 @@ seo:
   title: "LangGraph vs CrewAI: Let’s Learn About the Differences - ZenML Blog"
   description: "In this LangGraph vs CrewAI article, we explain the difference between the three platforms and educate you about using them efficiently inside ZenML."
   canonical: "https://www.zenml.io/blog/langgraph-vs-crewai"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/028f4da6/6981d362e92aa039b696ad0c_6981d2b2b6cff7744ed9765d_langgraph-vs-crewai.avif"
+  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/028f4da6/6981d362e92aa039b696ad0c_6981d2b2b6cff7744ed9765d_langgraph-vs-crewai.jpg"
   ogTitle: "LangGraph vs CrewAI: Let’s Learn About the Differences - ZenML Blog"
   ogDescription: "In this LangGraph vs CrewAI article, we explain the difference between the three platforms and educate you about using them efficiently inside ZenML."
 ---

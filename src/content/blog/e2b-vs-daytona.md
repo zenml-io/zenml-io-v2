@@ -19,7 +19,7 @@ seo:
   title: "E2B vs Daytona: Sandbox Comparison for Platform Engineers - ZenML Blog"
   description: "In this E2B vs Daytona guide, you will learn about how these two compare across sandbox lifecycle management, output handling, pricing, and more."
   canonical: "https://www.zenml.io/blog/e2b-vs-daytona"
-  ogImage: "https://assets.zenml.io/content/blog/e2b-vs-daytona/abeefde4/e2b-vs-daytona.avif"
+  ogImage: "https://assets.zenml.io/content/blog/e2b-vs-daytona/abeefde4/e2b-vs-daytona.jpg"
 ---
 
 AI agents are only as capable as the environments they can operate in. An agent that writes code but can't execute it is like a chef who can read recipes but has no kitchen. This is why cloud sandboxes have become critical infrastructure for teams building agentic AI systems.

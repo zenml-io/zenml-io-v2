@@ -17,7 +17,7 @@ seo:
   title: "Checkpoint Replay, Worker Shape, and Where Durable Execution Is Going - ZenML Blog"
   description: "Armin Ronacher's Absurd and Kitaru arrived at the same answers on replay semantics, ephemeral compute, and an agent-legible runtime. Here's why that matters."
   canonical: "https://www.zenml.io/blog/where-durable-execution-is-headed"
-  ogImage: "https://assets.zenml.io/content/blog/where-durable-execution-is-headed/7d7b380e/where-durable-execution-is-headed-cover.avif"
+  ogImage: "https://assets.zenml.io/content/blog/where-durable-execution-is-headed/7d7b380e/where-durable-execution-is-headed-cover.jpg"
 ---
 
 
