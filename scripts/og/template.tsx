@@ -9,8 +9,6 @@
 import type { ReactElement } from "react";
 
 export interface CompareOgProps {
-  /** Headline left of "vs" — always "Kitaru". Hardcoded but typed for clarity. */
-  kitaru: "Kitaru";
   /** Competitor display name, e.g. "Temporal". */
   competitor: string;
   /** Body copy (cardSubtitle from frontmatter). */
@@ -38,8 +36,10 @@ export function CompareOg({ competitor, subtitle }: CompareOgProps): ReactElemen
         boxSizing: "border-box",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "space-between",
-        padding: "72px 96px",
+        // Generous bottom padding (vs. 72px top) keeps the subtitle off the
+        // orange rule. Replaces an earlier empty <div> spacer + space-between
+        // layout that was load-bearing in an inscrutable way.
+        padding: "72px 96px 144px",
         fontFamily: "Plus Jakarta Sans",
         gap: 48,
       }}
@@ -68,11 +68,14 @@ export function CompareOg({ competitor, subtitle }: CompareOgProps): ReactElemen
         </div>
       </div>
 
-      {/* Headline: "Kitaru vs" / "<Competitor>" stacked */}
+      {/* Headline: "Kitaru vs" / "<Competitor>" stacked. marginTop: auto pins
+          the headline + subtitle block to the bottom, against the orange rule.
+          Replaces an earlier empty <div> spacer + space-between layout. */}
       <div
         style={{
           display: "flex",
           flexDirection: "column",
+          marginTop: "auto",
           paddingTop: 32,
         }}
       >
@@ -121,9 +124,6 @@ export function CompareOg({ competitor, subtitle }: CompareOgProps): ReactElemen
       >
         {subtitle}
       </div>
-
-      {/* Bottom spacer — visual breathing room before the 10px rule */}
-      <div style={{ height: 0, display: "flex" }} />
     </div>
   );
 }

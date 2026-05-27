@@ -32,8 +32,16 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, "..", "..");
 const COMPARE_DIR = join(REPO_ROOT, "src/content/compare-kitaru");
 const CACHE_DIR = join(REPO_ROOT, ".cache/og");
-const R2_PUBLIC_BASE = "https://assets.zenml.io";
+// Mirrors r2-upload.py's R2_PUBLIC_BASE_URL default so an env override stays
+// in sync across the two scripts.
+const R2_PUBLIC_BASE = process.env.R2_PUBLIC_BASE_URL ?? "https://assets.zenml.io";
 const R2_PREFIX_ROOT = "compare/kitaru-og";
+
+const FONT_SPECS = [
+  { family: "Plus Jakarta Sans", dir: "plus-jakarta-sans", weight: 500 },
+  { family: "Plus Jakarta Sans", dir: "plus-jakarta-sans", weight: 800 },
+  { family: "JetBrains Mono", dir: "jetbrains-mono", weight: 500 },
+] as const;
 
 interface Frontmatter {
   competitor?: string;
@@ -50,17 +58,22 @@ interface CompareEntry {
   body: string;
 }
 
-async function loadFont(weight: 500 | 800, family: "plus-jakarta-sans" | "jetbrains-mono"): Promise<Buffer> {
-  const path = join(
-    REPO_ROOT,
-    "node_modules/@fontsource",
-    family,
-    `files/${family}-latin-${weight}-normal.woff`
+async function loadFonts() {
+  return Promise.all(
+    FONT_SPECS.map(async (spec) => {
+      const path = join(
+        REPO_ROOT,
+        `node_modules/@fontsource/${spec.dir}/files/${spec.dir}-latin-${spec.weight}-normal.woff`,
+      );
+      if (!existsSync(path)) throw new Error(`Missing font file: ${path}. Did pnpm install run?`);
+      return {
+        name: spec.family,
+        data: await readFile(path),
+        weight: spec.weight,
+        style: "normal" as const,
+      };
+    }),
   );
-  if (!existsSync(path)) {
-    throw new Error(`Missing font file: ${path}. Did pnpm install run?`);
-  }
-  return readFile(path);
 }
 
 async function loadEntries(filterSlugs: string[] | null): Promise<CompareEntry[]> {
@@ -84,20 +97,19 @@ async function loadEntries(filterSlugs: string[] | null): Promise<CompareEntry[]
   return entries;
 }
 
-async function renderJpeg(entry: CompareEntry, fonts: { name: string; data: Buffer; weight: number; style: "normal" }[]): Promise<Buffer> {
+type Font = Awaited<ReturnType<typeof loadFonts>>[number];
+
+async function renderJpeg(entry: CompareEntry, fonts: Font[]): Promise<Buffer> {
   const competitor = entry.frontmatter.competitor;
   const subtitle = entry.frontmatter.cardSubtitle;
   if (!competitor) throw new Error(`${entry.slug}: missing frontmatter.competitor`);
   if (!subtitle) throw new Error(`${entry.slug}: missing frontmatter.cardSubtitle`);
 
-  const svg = await satori(
-    CompareOg({ kitaru: "Kitaru", competitor, subtitle }),
-    {
-      width: 1200,
-      height: 627,
-      fonts,
-    }
-  );
+  const svg = await satori(CompareOg({ competitor, subtitle }), {
+    width: 1200,
+    height: 627,
+    fonts,
+  });
 
   // Render at native 2x (2400×1254). For text-only content, downscaling via
   // lanczos softens edges; outputting at 2x keeps text pin-sharp on retina
@@ -143,26 +155,21 @@ async function uploadToR2(filePath: string, slug: string): Promise<string> {
 }
 
 async function patchFrontmatter(entry: CompareEntry, newOgImage: string): Promise<void> {
-  const raw = await readFile(entry.mdxPath, "utf8");
-  if (raw.includes(`ogImage: "${newOgImage}"`)) return; // idempotent
-  const ogLineMatch = raw.match(/^ogImage:.*$/m);
-  let next: string;
-  if (ogLineMatch) {
-    next = raw.replace(/^ogImage:.*$/m, `ogImage: "${newOgImage}"`);
-  } else {
-    // No existing ogImage — insert after the `order:` line, or before `---` closing.
-    const orderMatch = raw.match(/^order:.*$/m);
-    if (orderMatch) {
-      next = raw.replace(/^order:.*$/m, `${orderMatch[0]}\nogImage: "${newOgImage}"`);
-    } else {
-      // Insert before second `---`
-      const parts = raw.split(/^---$/m);
-      if (parts.length < 3) throw new Error(`${entry.slug}: malformed frontmatter`);
-      parts[1] = `${parts[1].trimEnd()}\nogImage: "${newOgImage}"\n`;
-      next = parts.join("---");
-    }
+  if (entry.frontmatter.ogImage === newOgImage) return; // idempotent
+  if (!entry.frontmatter.ogImage) {
+    // First-time seed: gray-matter.stringify would reformat the entire YAML
+    // block (strip quotes, fold long strings) — noisy diff. Seed the line
+    // manually once, then this script handles subsequent updates cleanly.
+    throw new Error(
+      `${entry.slug}: no existing ogImage to patch. Add a placeholder line ` +
+        `'ogImage: "tbd"' to the frontmatter, then re-run.`,
+    );
   }
+  // Targeted line replace — preserves all other YAML formatting exactly.
+  const raw = await readFile(entry.mdxPath, "utf8");
+  const next = raw.replace(/^ogImage:.*$/m, `ogImage: "${newOgImage}"`);
   await writeFile(entry.mdxPath, next, "utf8");
+  entry.frontmatter.ogImage = newOgImage;
 }
 
 async function main(): Promise<void> {
@@ -181,17 +188,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const [pjMedium, pjExtraBold, jbmMedium] = await Promise.all([
-    loadFont(500, "plus-jakarta-sans"),
-    loadFont(800, "plus-jakarta-sans"),
-    loadFont(500, "jetbrains-mono"),
-  ]);
-
-  const fonts = [
-    { name: "Plus Jakarta Sans", data: pjMedium, weight: 500, style: "normal" as const },
-    { name: "Plus Jakarta Sans", data: pjExtraBold, weight: 800, style: "normal" as const },
-    { name: "JetBrains Mono", data: jbmMedium, weight: 500, style: "normal" as const },
-  ];
+  const fonts = await loadFonts();
 
   console.log(`Rendering ${entries.length} card(s) — mode: ${write ? "WRITE" : "DRY-RUN"}`);
 
