@@ -6,7 +6,13 @@
  * meta resolution with sensible fallbacks.
  */
 
-import { DEFAULT_DESCRIPTION, DEFAULT_OG_IMAGE, SITE_URL } from "./constants";
+import {
+  ASSET_BASE_URL,
+  DEFAULT_DESCRIPTION,
+  DEFAULT_OG_IMAGE,
+  KITARU_COMPARE_OG_PREFIX,
+  SITE_URL,
+} from "./constants";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -58,6 +64,18 @@ export function buildCanonical(pathname: string, override?: string): string {
   if (clean.endsWith("/")) clean = clean.slice(0, -1);
 
   return `${SITE_URL}${clean}`;
+}
+
+/**
+ * URL of the auto-generated OG card for a Kitaru-vs-X compare page.
+ *
+ * The card lives at a deterministic R2 key keyed only on slug (no content
+ * hash) — uploaded by `scripts/og/generate-compare-og.ts`, overwritten in
+ * place on regen. The compare layout uses this as a fallback when the
+ * `.mdx` doesn't specify an explicit `ogImage:` override.
+ */
+export function compareOgUrl(slug: string): string {
+  return `${ASSET_BASE_URL}/${KITARU_COMPARE_OG_PREFIX}/${slug}.jpg`;
 }
 
 /**
