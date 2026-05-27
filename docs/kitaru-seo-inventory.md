@@ -158,9 +158,27 @@ kitaru.ai/docs/*                                                → (no redirect
 # Pre-cutover: scan Cloudflare access logs for residual POST traffic; if any,
 # add a 410 (Gone) rule or front a stub responder. Expected to be ~zero.
 
-## Catch-all (must come AFTER /docs/* exemption)
-kitaru.ai/*                                                     → zenml.io/product/kitaru
+## No catch-all (intentional)
+# Phase 10 cutover deployment decision (2026-05-27):
+# Cloudflare's http_request_dynamic_redirect (zone-level Single Redirects) fires
+# BEFORE http_request_redirect (account-level Bulk Redirects) in practice, despite
+# documented phase order claiming the opposite. A zone-level catch-all would
+# override every literal Bulk Redirect rule. Combined with the Free-plan limit of
+# 10 rules in http_request_dynamic_redirect, putting all 27 + catch-all as
+# Single Redirects was also impossible.
+#
+# Resolution: deploy only the 27 literal redirects via Bulk Redirects, no catch-all.
+# Per Plausible audit (Phase 10a §3.3), virtually zero traffic to non-listed URLs
+# (3 visitors over 90 days, all typo URLs). 404 is a better SEO signal than
+# redirecting unknowns to a wrong destination.
 ```
+
+## Deployment recipe (what actually shipped)
+
+1. **Bulk Redirects list** (`kitaru_ai_redirects`) at account level — 27 items from `docs/kitaru-redirect-map.csv`.
+2. **Entrypoint ruleset** at account level on `http_request_redirect` phase — one rule with `expression: "http.request.full_uri in $kitaru_ai_redirects"` and `from_list` action referencing the list.
+3. **Zone-level dynamic_redirect ruleset** on kitaru.ai — left as-is with only the original `www.kitaru.ai → kitaru.ai` template rule. No catch-all added.
+4. `/docs/*` is preserved automatically because the Bulk Redirects list doesn't include docs paths and no catch-all overrides them.
 
 **Caveats:**
 
