@@ -87,7 +87,19 @@ def sanitize_filename(name: str) -> str:
     return name.strip("-")
 
 
-def build_key(prefix: str, sha8: str, filename: str) -> str:
+def build_key(prefix: str, sha8: str, filename: str, *, literal: bool = False) -> str:
+    """Build the R2 key for a file.
+
+    Default: `{prefix}/{sha8}/{filename}` — content-addressed so repeat uploads
+    of the same file dedupe and unrelated re-uploads don't collide.
+
+    With `literal=True`: `{prefix}/{filename}` — caller controls the full key.
+    Use for deterministically-generated artifacts (e.g. OG cards keyed by
+    slug) where the prefix is unique per file and re-renders should
+    overwrite in place.
+    """
+    if literal:
+        return f"{prefix}/{filename}"
     return f"{prefix}/{sha8}/{filename}"
 
 
@@ -136,6 +148,7 @@ def upload_one(
     prefix: str,
     public_base: str,
     overwrite: bool,
+    literal_key: bool = False,
 ) -> str | None:
     """Upload a single file. Returns the public URL, or None on skip/error."""
     if not local_path.exists():
@@ -144,7 +157,7 @@ def upload_one(
 
     sha8 = sha256_file(local_path)[:8]
     filename = sanitize_filename(local_path.name)
-    key = build_key(prefix, sha8, filename)
+    key = build_key(prefix, sha8, filename, literal=literal_key)
     content_type = guess_content_type(local_path)
     public_url = f"{public_base}/{key}"
 
@@ -191,6 +204,15 @@ def main():
         help="Re-upload even if key already exists in R2",
     )
     parser.add_argument(
+        "--literal-key",
+        action="store_true",
+        help=(
+            "Use {prefix}/{filename} as the R2 key (skip the sha8 segment). "
+            "For deterministically-generated artifacts that should overwrite "
+            "in place on re-upload. Default behavior is content-addressed."
+        ),
+    )
+    parser.add_argument(
         "--frontmatter",
         action="store_true",
         help="Print paste-ready YAML frontmatter snippet",
@@ -208,6 +230,7 @@ def main():
             prefix=args.prefix,
             public_base=args.public_base,
             overwrite=args.overwrite,
+            literal_key=args.literal_key,
         )
         if url:
             urls.append(url)

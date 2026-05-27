@@ -17,6 +17,11 @@ export const DEFAULT_DESCRIPTION =
 /** Asset base URL (R2 bucket via custom domain for HTTP/2 multiplexing) */
 export const ASSET_BASE_URL = "https://assets.zenml.io";
 
+/** R2 prefix for Kitaru-vs-X compare OG cards. Used by both
+ *  `scripts/og/generate-compare-og.ts` (upload key) and `src/lib/seo.ts`
+ *  (URL derivation) — keep them in sync via this constant. */
+export const KITARU_COMPARE_OG_PREFIX = "compare/kitaru-og";
+
 /** Webflow site ID used in R2 asset paths */
 const WEBFLOW_SITE_ID = "64a817a2e7e2208272d1ce30";
 
