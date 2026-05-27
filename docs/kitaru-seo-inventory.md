@@ -50,9 +50,30 @@ Before activating Phase 10, complete each of the following. **Do not check off i
 
 ### 3.2 Backlink snapshot
 
-- [ ] Pull from Ahrefs / Semrush (one-time export). Save as `docs/kitaru-backlinks.csv` (gitignored — sensitive). Note in this doc:
-  - Top 10 referring domains
-  - Any backlink → URL that doesn't have a redirect mapped (these would 404 post-cutover)
+- [x] **DONE** (2026-05-27). Ahrefs export, 45 backlinks total, all targeting `kitaru.ai`. Result: **zero new 404s introduced by the cutover.** The combination of the homepage redirect (catches the bulk of `/` backlinks) plus `/docs/*` preserved on kitaru.ai (D2) catches every meaningful inbound link.
+
+  **Top 10 referring domains:** notion.site, pydantic.dev, kagi.com, skillsmp.com, zenml.io, project-awesome.org, eu-recruit.com, free2aitools.com, flanigan.us, conduid.com.
+
+  **Crown-jewel referrers — all resolve cleanly post-cutover:**
+
+  | DR | Referrer | Target on kitaru.ai | Post-cutover |
+  |---:|---|---|---|
+  | 92 | zenml.notion.site | `/` | 301 → /product/kitaru |
+  | 81 | **pydantic.dev** | `/docs/guides/pydantic-ai-adapter/`, `/docs/guides/news-scout/`, `/` | docs preserved + homepage redirect |
+  | 78 | **kagi.com** | `/` | 301 → /product/kitaru |
+  | 61 | www.zenml.io | `/`, `/docs/deploy/docker/` | both fine |
+  | 53 | project-awesome.org | `/`, `/docs` | both fine |
+
+  **4 backlinks landed on URLs that never existed on kitaru.ai** (so they were 404s before the cutover too — not a regression):
+
+  | Referrer (DR) | Target | Status |
+  |---|---|---|
+  | conduid.com (7) | `/roadmap` | 404 pre- and post-cutover |
+  | conduid.com (7) | `/community` | 404 pre- and post-cutover |
+  | skillavatars.com (0) | `/roadmap` | 404 pre- and post-cutover |
+  | skillavatars.com (0) | `/community` | 404 pre- and post-cutover |
+
+  **Conclusion:** Phase 10a §3.2 closes clean. The cutover preserves every real inbound link-equity vector. No high-DR referrers affected. Source CSV at `~/Downloads/kitaru-backlinks.csv` (not committed — Ahrefs license sensitive).
 
 ### 3.3 Traffic snapshot
 
