@@ -132,11 +132,6 @@ export const PRICING_PLANS: PricingPlan[] = [
       analytics: "OSS-Get-Started",
     },
     ctaVariant: "secondary",
-    secondaryLink: {
-      label: "Explore the docs",
-      href: "/docs",
-      analytics: "Pricing-OSS-Docs",
-    },
   },
   {
     id: "scale",
@@ -174,11 +169,6 @@ export const PRICING_PLANS: PricingPlan[] = [
       analytics: "Pricing-Scale-Book-Demo",
     },
     ctaVariant: "primary",
-    secondaryLink: {
-      label: "Talk to an engineer",
-      href: "/book-your-demo",
-      analytics: "Pricing-Scale-Talk-Engineer",
-    },
   },
   {
     id: "enterprise",
@@ -196,16 +186,11 @@ export const PRICING_PLANS: PricingPlan[] = [
       "Air-gapped deployment",
     ],
     cta: {
-      label: "Talk to sales",
+      label: "Talk to an engineer",
       href: "/book-your-demo",
       analytics: "Enterprise-Book-Demo",
     },
     ctaVariant: "secondary",
-    secondaryLink: {
-      label: "See the full comparison",
-      href: "#compare-table",
-      analytics: "Pricing-Enterprise-Compare",
-    },
   },
 ];
 
@@ -326,7 +311,7 @@ export const PRICING_COMPARE: PricingCompareTableData = {
       analytics: "Pricing-Scale-Book-Demo",
     },
     {
-      label: "Talk to sales",
+      label: "Talk to an engineer",
       href: "/book-your-demo",
       variant: "secondary",
       analytics: "Enterprise-Book-Demo",
