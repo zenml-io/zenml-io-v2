@@ -109,7 +109,9 @@ uv run scripts/r2-upload.py output.avif --prefix content/blog       # custom pre
 uv run scripts/r2-upload.py output.avif --frontmatter                # print YAML snippet
 ```
 
-**Never upload raw PNG/JPEG to R2** — AVIF typically achieves 50-250x compression. Use the `avif-image-compressor` Claude Code skill for conversion.
+**Default to AVIF for R2 uploads** — typically 50-250× smaller than the source. Use the `avif-image-compressor` skill for conversion.
+
+**Exception — Open Graph card images need JPEG.** Social platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) don't support AVIF in OG cards. For any image referenced by `seo.ogImage` in content frontmatter, upload a JPEG sibling at the same R2 prefix and reference the `.jpg` from `ogImage` while keeping the `.avif` for `mainImage.url`. See PR #73 for the site-wide fix where 103 posts all had AVIF og images and were rendering with no preview card on LinkedIn.
 
 Requires R2 credentials in `.env` — see `.env.example`.
 

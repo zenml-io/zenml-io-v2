@@ -23,6 +23,21 @@ Upload images to the ZenML R2 bucket (`zenml-assets`) and get back absolute URLs
 
 **Rule of thumb:** If it appears in `src/content/*.md` frontmatter, it goes to R2 (schemas require `z.string().url()`). If it's site furniture used across many pages, it goes in `public/images/`.
 
+## Format note: AVIF vs JPEG for Open Graph
+
+Default to **AVIF** for everything — best compression, browsers render it fine.
+
+**Exception:** images referenced from `seo.ogImage` need a **JPEG** sibling alongside the AVIF. Social platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) do NOT support AVIF in Open Graph cards. Using AVIF for `seo.ogImage` silently renders previews without an image.
+
+Pattern: upload **both** under the same R2 prefix, reference AVIF from `mainImage.url` and JPEG from `seo.ogImage`. See PR #73 for the site-wide fix where 103 posts all had AVIF og images and were broken on LinkedIn.
+
+```bash
+# Convert + upload both formats
+sips -s format jpeg cover.png --out cover.jpg --resampleHeightWidthMax 1200
+~/.claude/skills/avif-image-compressor/scripts/convert_to_avif.sh cover.png --quality 25 --resize 1200
+uv run scripts/r2-upload.py cover.jpg cover.avif --prefix content/blog/<slug>
+```
+
 ## Upload Workflow
 
 ### Prerequisites
