@@ -1,0 +1,66 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const items = (
+  await getCollection("compare", ({ data }) => !data.draft)
+).sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+
+<BaseLayout
+  title="Compare ZenML vs. ML platforms"
+  description="See how ZenML stacks up against MLflow, Kubeflow, Vertex AI, Databricks, and other ML orchestration and platform tools."
+  surface="ml"
+>
+  <section class="border-b border-zenml-100 bg-linear-to-b from-zenml-50 to-white">
+    <div class="mx-auto max-w-[1440px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+      <header class="max-w-3xl">
+        <p class="text-sm font-semibold uppercase tracking-wider text-zenml-600">
+          Compare ZenML
+        </p>
+        <h1 class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+          ZenML vs. other ML orchestrators &amp; platforms
+        </h1>
+        <p class="mt-4 text-lg text-gray-600">
+          Side-by-side breakdowns of how ZenML compares to the tools you're
+          already considering for ML pipelines, experiment tracking, and
+          model deployment.
+        </p>
+      </header>
+    </div>
+  </section>
+
+  <div class="mx-auto max-w-[1440px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {items.map((item) => (
+        <a
+          href={`/compare/${item.data.slug}`}
+          class="group flex items-center gap-4 rounded-md border border-gray-200 bg-white p-6 transition-all hover:border-zenml-300 hover:shadow-medium"
+          data-analytics="compare-zenml-card"
+        >
+          {item.data.toolIcon ? (
+            <img
+              src={item.data.toolIcon.url}
+              alt={item.data.toolName || item.data.title}
+              class="h-10 w-10 shrink-0 rounded-md object-contain"
+            />
+          ) : (
+            <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-gray-100 text-base font-bold text-gray-400">
+              {(item.data.toolName || item.data.title)[0]}
+            </div>
+          )}
+          <div class="min-w-0">
+            <h2 class="truncate font-semibold text-gray-900 group-hover:text-zenml-700">
+              {item.data.title}
+            </h2>
+            {item.data.category && (
+              <p class="mt-0.5 text-xs uppercase tracking-wider text-gray-500">
+                {item.data.category.replace(/-/g, " ")}
+              </p>
+            )}
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

@@ -1,151 +1,87 @@
 ---
-/**
- * Compare hub page — Phase 3.
- *
- * Two visually-distinct sections:
- *   - MLOps comparisons (ZenML vs X) — sage-green tinted
- *   - Agent comparisons (Kitaru vs X) — warm-orange tinted
- *
- * Clicking an MLOps card → /compare/zenml-vs-X (existing ZenML template).
- * Clicking an Agent card → /compare/kitaru-vs-X (Kitaru template,
- * theme flipped to data-app="kitaru").
- */
 import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-const mlopsItems = (
+const mlopsCount = (
   await getCollection("compare", ({ data }) => !data.draft)
-).sort((a, b) => a.data.title.localeCompare(b.data.title));
+).length;
 
-const agentItems = (
+const agentsCount = (
   await getCollection("compare-kitaru", ({ data }) => !data.draft)
-).sort((a, b) => a.data.order - b.data.order);
+).length;
 ---
 
 <BaseLayout
   title="Compare — ZenML and Kitaru vs. alternatives"
-  description="Side-by-side comparisons of ZenML (MLOps) and Kitaru (agent runtime) against other tools and platforms."
+  description="Side-by-side comparisons of ZenML (ML platforms) and Kitaru (agent runtimes) against the tools you might be considering."
   surface="unified"
 >
-  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-    <header class="mb-12 max-w-3xl">
-      <p class="text-sm font-semibold uppercase tracking-wider text-zenml-600">
+  <div class="mx-auto max-w-[1440px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+    <header class="mx-auto max-w-3xl text-center">
+      <p class="text-sm font-semibold uppercase tracking-wider text-gray-500">
         Compare
       </p>
       <h1 class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
         Pick the right tool for the job.
       </h1>
       <p class="mt-4 text-lg text-gray-600">
-        ZenML for ML pipelines, Kitaru for AI agents. See how each holds
-        up against the other tools you might be considering.
+        ZenML for ML pipelines, Kitaru for AI agents. Choose a product to see
+        how it stacks up against the alternatives.
       </p>
     </header>
-  </div>
 
-  {/* ════════════════════════════════════════════════════════════════════
-       MLOps — ZenML comparisons (sage green tint)
-       ════════════════════════════════════════════════════════════════════ */}
-  <section class="border-y border-zenml-100 bg-zenml-25/50">
-    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-      <div class="mb-10 flex items-center gap-4">
-        <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-zenml-500/15 text-zenml-700">
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <div class="mx-auto mt-16 grid max-w-5xl gap-6 sm:grid-cols-2">
+      <a
+        href="/compare/zenml"
+        class="group flex flex-col rounded-md border border-zenml-100 bg-linear-to-b from-zenml-50 to-white p-8 transition-all hover:border-zenml-300 hover:shadow-medium"
+        data-analytics="compare-gateway-zenml"
+      >
+        <span class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-zenml-500/15 text-zenml-700">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M9 3.5V2M5.06066 5.06066L4 4M5.06066 13L4 14.0607M13 5.06066L14.0607 4M3.5 9H2M15.8645 16.1896L13.3727 20.817C13.0881 21.3457 12.9457 21.61 12.7745 21.6769C12.6259 21.7349 12.4585 21.7185 12.324 21.6328C12.1689 21.534 12.0806 21.2471 11.9038 20.6733L8.44519 9.44525C8.3008 8.97651 8.2286 8.74213 8.28669 8.58383C8.33729 8.44595 8.44595 8.33729 8.58383 8.2867C8.74213 8.22861 8.9765 8.3008 9.44525 8.44519L20.6732 11.9038C21.247 12.0806 21.5339 12.169 21.6327 12.324C21.7185 12.4586 21.7348 12.6259 21.6768 12.7745C21.61 12.9458 21.3456 13.0881 20.817 13.3728L16.1896 15.8645C16.111 15.9068 16.0717 15.9279 16.0374 15.9551C16.0068 15.9792 15.9792 16.0068 15.9551 16.0374C15.9279 16.0717 15.9068 16.111 15.8645 16.1896Z"/>
           </svg>
         </span>
-        <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-zenml-700">
-            MLOps · ZenML
-          </p>
-          <h2 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-            ZenML vs. other ML orchestrators &amp; platforms
-          </h2>
-        </div>
-      </div>
+        <p class="mt-6 text-xs font-semibold uppercase tracking-[0.15em] text-zenml-700">
+          ML platforms · ZenML
+        </p>
+        <h2 class="mt-2 text-2xl font-bold tracking-tight text-gray-900 group-hover:text-zenml-700">
+          Compare ZenML
+        </h2>
+        <p class="mt-3 text-base text-gray-600">
+          ZenML vs. MLflow, Kubeflow, Vertex AI, Databricks, and {mlopsCount - 4} more ML orchestration and platform tools.
+        </p>
+        <span class="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-zenml-600 group-hover:gap-2 transition-all">
+          See {mlopsCount} comparisons
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </a>
 
-      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {mlopsItems.map((item) => (
-          <a
-            href={`/compare/${item.data.slug}`}
-            class="group flex items-center gap-4 rounded-lg border border-zenml-100 bg-white p-5 transition-all hover:border-zenml-300 hover:shadow-md"
-          >
-            {item.data.toolIcon ? (
-              <img
-                src={item.data.toolIcon.url}
-                alt={item.data.toolName || item.data.title}
-                class="h-10 w-10 shrink-0 rounded-md object-contain"
-              />
-            ) : (
-              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-gray-100 text-base font-bold text-gray-400">
-                {(item.data.toolName || item.data.title)[0]}
-              </div>
-            )}
-            <div class="min-w-0">
-              <h3 class="truncate font-semibold text-gray-900 group-hover:text-zenml-700">
-                {item.data.title}
-              </h3>
-              {item.data.category && (
-                <p class="mt-0.5 text-xs uppercase tracking-wider text-gray-500">
-                  {item.data.category.replace(/-/g, " ")}
-                </p>
-              )}
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  {/* ════════════════════════════════════════════════════════════════════
-       Agents — Kitaru comparisons (warm orange tint)
-       ════════════════════════════════════════════════════════════════════ */}
-  <section class="border-y border-orange-200/60 bg-orange-50/50">
-    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-      <div class="mb-10 flex items-center gap-4">
-        <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-orange-400/15 text-orange-700">
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <a
+        href="/compare/kitaru"
+        data-app="kitaru"
+        class="group flex flex-col rounded-md border border-orange-200/60 bg-linear-to-b from-orange-50 to-white p-8 transition-all hover:border-orange-400/60 hover:shadow-medium"
+        data-analytics="compare-gateway-kitaru"
+      >
+        <span class="inline-flex h-12 w-12 items-center justify-center rounded-md bg-orange-400/15 text-orange-700">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/>
             <path d="M12 6v6l4 2"/>
           </svg>
         </span>
-        <div>
-          <p class="text-xs font-semibold uppercase tracking-[0.15em] text-orange-700">
-            Agents · Kitaru
-          </p>
-          <h2 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
-            Kitaru vs. other agent runtimes &amp; workflow engines
-          </h2>
-        </div>
-      </div>
-
-      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {agentItems.map((item) => (
-          <a
-            href={`/compare/${item.id}`}
-            class="group flex items-center gap-4 rounded-lg border border-orange-200/60 bg-white p-5 transition-all hover:border-orange-400/60 hover:shadow-md"
-          >
-            {item.data.competitorLogo ? (
-              <img
-                src={item.data.competitorLogo}
-                alt={item.data.competitor}
-                class="h-10 w-10 shrink-0 rounded-md object-contain"
-              />
-            ) : (
-              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-orange-100 text-base font-bold text-orange-600">
-                {item.data.competitor[0]}
-              </div>
-            )}
-            <div class="min-w-0">
-              <h3 class="truncate font-semibold text-gray-900 group-hover:text-orange-700">
-                Kitaru vs. {item.data.competitor}
-              </h3>
-              <p class="mt-0.5 text-xs leading-snug text-gray-500 line-clamp-2">
-                {item.data.cardSubtitle}
-              </p>
-            </div>
-          </a>
-        ))}
-      </div>
+        <p class="mt-6 text-xs font-semibold uppercase tracking-[0.15em] text-orange-700">
+          Agent runtimes · Kitaru
+        </p>
+        <h2 class="mt-2 text-2xl font-bold tracking-tight text-gray-900 group-hover:text-orange-700">
+          Compare Kitaru
+        </h2>
+        <p class="mt-3 text-base text-gray-600">
+          Kitaru vs. Temporal, LangGraph, Restate, Inngest, and {agentsCount - 4} more agent runtimes and workflow engines.
+        </p>
+        <span class="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-orange-600 group-hover:gap-2 transition-all">
+          See {agentsCount} comparisons
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </span>
+      </a>
     </div>
-  </section>
+  </div>
 </BaseLayout>

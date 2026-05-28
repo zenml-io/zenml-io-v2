@@ -1,0 +1,66 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const items = (
+  await getCollection("compare-kitaru", ({ data }) => !data.draft)
+).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  title="Compare Kitaru vs. agent runtimes"
+  description="See how Kitaru stacks up against Temporal, LangGraph, Restate, Inngest, and other workflow engines and agent frameworks."
+  surface="agent"
+>
+  <div data-app="kitaru">
+    <section class="border-b border-orange-200/60 bg-linear-to-b from-orange-50 to-white">
+      <div class="mx-auto max-w-[1440px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+        <header class="max-w-3xl">
+          <p class="text-sm font-semibold uppercase tracking-wider text-orange-700">
+            Compare Kitaru
+          </p>
+          <h1 class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+            Kitaru vs. other agent runtimes &amp; workflow engines
+          </h1>
+          <p class="mt-4 text-lg text-gray-600">
+            Side-by-side breakdowns of how Kitaru compares to the
+            durable-execution platforms and agent frameworks you're already
+            evaluating.
+          </p>
+        </header>
+      </div>
+    </section>
+
+    <div class="mx-auto max-w-[1440px] px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {items.map((item) => (
+          <a
+            href={`/compare/${item.id}`}
+            class="group flex items-center gap-4 rounded-md border border-orange-200/60 bg-white p-6 transition-all hover:border-orange-400/60 hover:shadow-medium"
+            data-analytics="compare-kitaru-card"
+          >
+            {item.data.competitorLogo ? (
+              <img
+                src={item.data.competitorLogo}
+                alt={item.data.competitor}
+                class="h-10 w-10 shrink-0 rounded-md object-contain"
+              />
+            ) : (
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-orange-100 text-base font-bold text-orange-600">
+                {item.data.competitor[0]}
+              </div>
+            )}
+            <div class="min-w-0">
+              <h2 class="truncate font-semibold text-gray-900 group-hover:text-orange-700">
+                Kitaru vs. {item.data.competitor}
+              </h2>
+              <p class="mt-0.5 text-xs leading-snug text-gray-500 line-clamp-2">
+                {item.data.cardSubtitle}
+              </p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>
