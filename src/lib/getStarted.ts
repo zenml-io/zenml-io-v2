@@ -20,10 +20,10 @@ import type { CtaLink } from "./marketingPageTypes";
 export const GET_STARTED_SEO = {
   title: "Get Started with ZenML or Kitaru | ZenML",
   description:
-    "Set up ZenML for ML pipelines or Kitaru for durable agent workflows. Pick the runtime that matches your work, install, and run locally.",
+    "Set up ZenML for ML and data pipelines, Kitaru for durable agents — install, run locally, and bring both into the same workflow.",
   ogTitle: "Get Started with ZenML or Kitaru",
   ogDescription:
-    "Set up ZenML for ML pipelines or Kitaru for durable agent workflows. Pick the runtime that matches your work.",
+    "Set up ZenML for ML and data pipelines, Kitaru for durable agents — install, run locally, and bring both into the same workflow.",
   ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
@@ -33,7 +33,7 @@ export const GET_STARTED_SEO = {
 export const GET_STARTED_HERO = {
   eyebrow: "Open Source",
   headline: "Get started.",
-  deck: "Pick the runtime that matches your work. Set it up yourself with the docs, or book a demo for a guided walkthrough.",
+  deck: "ZenML runs your ML and data pipelines. Kitaru keeps agents alive across crashes, waits, and retries. Plenty of teams run both.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -115,7 +115,7 @@ export interface GetStartedResources {
 // ---------------------------------------------------------------------------
 export const GET_STARTED_ZENML = {
   steps: {
-    headline: "Start in 3 simple steps",
+    headline: "Build your first pipeline",
     items: [
       {
         title: "Install ZenML",
@@ -123,29 +123,38 @@ export const GET_STARTED_ZENML = {
         code: "pip install 'zenml[local]'",
       },
       {
-        title: "Write your first pipeline",
-        body: "Create a simple <code>run.py</code> file with a basic workflow:",
-        code: `from zenml import step, pipeline
+        title: "Track inputs and outputs",
+        body: "Wire two steps into a training pipeline — ZenML tracks every input and output as a versioned artifact:",
+        code: `from sklearn.base import ClassifierMixin
+from sklearn.datasets import load_iris
+from sklearn.svm import SVC
+from zenml import step, pipeline
 
 
 @step
-def basic_step() -> str:
-    """A simple step that returns a greeting message."""
-    return "Hello World!"
+def load_data() -> tuple[list, list]:
+    X, y = load_iris(return_X_y=True)
+    return X, y
+
+
+@step
+def train_model(X: list, y: list) -> ClassifierMixin:
+    # The returned model is versioned + tracked as an artifact automatically.
+    return SVC().fit(X, y)
 
 
 @pipeline
-def basic_pipeline():
-    """A simple pipeline with just one step."""
-    basic_step()
+def training_pipeline():
+    X, y = load_data()
+    train_model(X, y)
 
 
 if __name__ == "__main__":
-    basic_pipeline()`,
+    training_pipeline()`,
       },
       {
         title: "Run your pipeline locally",
-        body: "ZenML automatically tracks the execution and stores artifacts.",
+        body: "Run it locally. The pipeline executes, artifacts are versioned, and the run shows up in your dashboard.",
         code: "python run.py",
       },
     ],
@@ -214,7 +223,7 @@ if __name__ == "__main__":
 // ---------------------------------------------------------------------------
 export const GET_STARTED_KITARU = {
   steps: {
-    headline: "Start in 3 simple steps",
+    headline: "Make your agent survive a crash",
     items: [
       {
         title: "Install Kitaru",
@@ -223,28 +232,41 @@ export const GET_STARTED_KITARU = {
       },
       {
         title: "Write your first flow",
-        body: "Run <code>kitaru init</code>, then create a <code>flow.py</code> file with two decorators:",
-        code: `from kitaru import checkpoint, flow
+        body: "Wrap an agent you already have — PydanticAI, the OpenAI or Anthropic SDKs, raw Python — and mark the expensive calls as <code>@checkpoint</code>:",
+        code: `from kitaru import flow, checkpoint
+from kitaru.adapters.pydantic_ai import KitaruAgent
+from pydantic_ai import Agent
+
+# Wrap your existing PydanticAI agent — no rewrite.
+# Use any agent framework or raw Python
+agent = KitaruAgent(
+    Agent("openai:gpt-5.4", system_prompt="You research and summarize topics."),
+)
 
 
 @checkpoint
-def greet() -> str:
-    """A checkpointed step that returns a greeting."""
-    return "Hello World!"
+def research(topic: str) -> str:
+    return agent.run_sync(f"Research: {topic}").output
+
+
+@checkpoint
+def summarize(notes: str) -> str:
+    # Crash here and \`research\` stays cached on replay —
+    # no re-burning tokens on work that already succeeded.
+    return agent.run_sync(f"Summarize: {notes}").output
 
 
 @flow
-def basic_flow():
-    """A simple flow with one checkpoint."""
-    greet()
+def research_flow(topic: str) -> str:
+    return summarize(research(topic))
 
 
 if __name__ == "__main__":
-    basic_flow.run()`,
+    research_flow.run("durable agents")`,
       },
       {
-        title: "Run your flow locally",
-        body: "Kitaru records each checkpoint and lets you replay any run.",
+        title: "Run it, kill it, replay it",
+        body: "Run it. Kill it mid-flight. Run it again — completed checkpoints are restored from cache, only the broken step re-executes.",
         code: "python flow.py",
       },
     ],
