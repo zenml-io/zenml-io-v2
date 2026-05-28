@@ -223,7 +223,7 @@ if __name__ == "__main__":
 // ---------------------------------------------------------------------------
 export const GET_STARTED_KITARU = {
   steps: {
-    headline: "Make your agent survive a crash",
+    headline: "Pause for a human, survive a crash",
     items: [
       {
         title: "Install Kitaru",
@@ -231,42 +231,36 @@ export const GET_STARTED_KITARU = {
         code: "pip install kitaru",
       },
       {
-        title: "Write your first flow",
-        body: "Wrap an agent you already have — PydanticAI, the OpenAI or Anthropic SDKs, raw Python — and mark the expensive calls as <code>@checkpoint</code>:",
-        code: `from kitaru import flow, checkpoint
+        title: "Add a human-in-the-loop gate",
+        body: "Wrap an agent you already have, checkpoint the expensive calls, and <code>wait</code> for a human before anything ships:",
+        code: `from kitaru import flow, checkpoint, wait
 from kitaru.adapters.pydantic_ai import KitaruAgent
 from pydantic_ai import Agent
 
-# Wrap your existing PydanticAI agent — no rewrite.
-# Use any agent framework or raw Python
-agent = KitaruAgent(
-    Agent("openai:gpt-5.4", system_prompt="You research and summarize topics."),
-)
+# Wrap an agent you already have — no rewrite.
+agent = KitaruAgent(Agent("openai:gpt-5.4", system_prompt="You draft customer replies."))
 
 
 @checkpoint
-def research(topic: str) -> str:
-    return agent.run_sync(f"Research: {topic}").output
-
-
-@checkpoint
-def summarize(notes: str) -> str:
-    # Crash here and \`research\` stays cached on replay —
-    # no re-burning tokens on work that already succeeded.
-    return agent.run_sync(f"Summarize: {notes}").output
+def draft_reply(ticket: str) -> str:
+    # Persisted. Crash after this and it never re-runs.
+    return agent.run_sync(f"Draft a reply to: {ticket}").output
 
 
 @flow
-def research_flow(topic: str) -> str:
-    return summarize(research(topic))
+def support_flow(ticket: str) -> str:
+    reply = draft_reply(ticket)
+    # Suspends the run, frees the compute, resumes when a human answers — minutes or days later.
+    approved = wait(schema=bool, question=f"Send this?\\n\\n{reply}")
+    return reply if approved else "escalated to a human"
 
 
 if __name__ == "__main__":
-    research_flow.run("durable agents")`,
+    print(support_flow.run("my invoice is wrong").wait())`,
       },
       {
-        title: "Run it, kill it, replay it",
-        body: "Run it. Kill it mid-flight. Run it again — completed checkpoints are restored from cache, only the broken step re-executes.",
+        title: "Run it, walk away, resume it",
+        body: "Run it. It pauses at the approval gate and releases compute. Answer hours later and it resumes from where it stopped — no idle container, no lost work.",
         code: "python flow.py",
       },
     ],
