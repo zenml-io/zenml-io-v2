@@ -233,27 +233,18 @@ export const GET_STARTED_KITARU = {
       {
         title: "Add a human-in-the-loop gate",
         body: "Wrap an agent you already have, checkpoint the expensive calls, and <code>wait</code> for a human before anything ships:",
-        code: `from kitaru import flow, checkpoint, wait
+        code: `from kitaru import flow, wait
 from kitaru.adapters.pydantic_ai import KitaruAgent
 from pydantic_ai import Agent
 
-# Wrap an agent you already have — no rewrite.
+# KitaruAgent checkpoints every model + tool call for you.
 agent = KitaruAgent(Agent("openai:gpt-5.4", system_prompt="You draft customer replies."))
-
-
-@checkpoint
-def draft_reply(ticket: str) -> str:
-    # Persisted. Crash after this and it never re-runs.
-    return agent.run_sync(f"Draft a reply to: {ticket}").output
-
 
 @flow
 def support_flow(ticket: str) -> str:
-    reply = draft_reply(ticket)
-    # Suspends the run, frees the compute, resumes when a human answers — minutes or days later.
-    approved = wait(schema=bool, question=f"Send this?\\n\\n{reply}")
+    reply = agent.run_sync(f"Draft a reply to: {ticket}").output
+    approved = wait(schema=bool, question=f"Send this?\n\n{reply}")
     return reply if approved else "escalated to a human"
-
 
 if __name__ == "__main__":
     print(support_flow.run("my invoice is wrong").wait())`,
