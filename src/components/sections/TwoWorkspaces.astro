@@ -279,6 +279,14 @@ const defaultView = allViews[0];
       if (!(tabId in lastSubtab)) lastSubtab[tabId] = subId;
     });
 
+    // Analytics is hooked inside applyView (the single mutation point)
+    // so click, keyboard, and idempotent re-application all route through
+    // the same emit logic. `surface` is auto-merged by PlausibleBridge.
+    let hasStarted = false;
+    const track = (name: string, props?: Record<string, string>) => {
+      (window as any).__zenmlPlausibleTrack?.(name, props);
+    };
+
     // Tween the widget body height across a view change so switching to a
     // taller/shorter tab glides instead of snapping. `mutate` performs the
     // data-attribute change that swaps the visible pane.
@@ -303,13 +311,18 @@ const defaultView = allViews[0];
       }, 360);
     };
 
-    const applyView = (view: string, focus = false) => {
-      const [tabId] = view.split(".");
+    const applyView = (view: string, focus = false, silent = false) => {
+      const [tabId, subId] = view.split(".");
+      // Capture prev state before mutation so we can emit a clean from→to.
+      const prevTab = root.dataset.activeTab;
+      const prevView = root.dataset.activeView;
+      const prevSubId = prevView ? prevView.split(".")[1] : undefined;
+
       withHeightTween(() => {
         root.dataset.activeTab = tabId;
         root.dataset.activeView = view;
       });
-      lastSubtab[tabId] = view.split(".")[1];
+      lastSubtab[tabId] = subId;
 
       tabTriggers.forEach((btn) => {
         const isActive = btn.dataset.tabTrigger === tabId;
@@ -325,6 +338,21 @@ const defaultView = allViews[0];
         btn.tabIndex = isInActiveStrip && isActiveView ? 0 : -1;
         if (isActiveView && focus) btn.focus();
       });
+
+      if (silent) return;
+      if (!hasStarted) {
+        hasStarted = true;
+        track("Demo: Start", { first_view: view });
+      }
+      if (prevTab && prevTab !== tabId) {
+        track("Demo: Workspace Switch", { from: prevTab, to: tabId });
+      } else if (prevView && prevView !== view && prevSubId) {
+        track("Demo: Subtab Switch", {
+          tab: tabId,
+          from: prevSubId,
+          to: subId,
+        });
+      }
     };
 
     // Tab click: swap to the tab's last-active subtab (or its default).
@@ -378,10 +406,13 @@ const defaultView = allViews[0];
       });
     });
 
-    // Normalize after hydration in case SSR + JS drift.
+    // Normalize after hydration in case SSR + JS drift. Silent so the
+    // hydration pass never emits a Start / Switch event on page load.
     applyView(
       root.dataset.activeView ||
         `${tabTriggers[0].dataset.tabTrigger}.${lastSubtab[tabTriggers[0].dataset.tabTrigger || ""]}`,
+      false,
+      true,
     );
   }
 </script>
