@@ -114,10 +114,8 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "open-source",
     eyebrow: "Open Source",
-    pill: "Self-hosted",
     subtitle: "For individuals and small teams",
     price: "Free",
-    priceSuffix: "self-hosted, forever",
     limitsLine: "Unlimited executions · Unlimited projects",
     includesLabel: "Includes",
     features: [
@@ -173,10 +171,9 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "enterprise",
     eyebrow: "Enterprise",
-    pill: "SaaS + Self-hosted",
+    pill: "SaaS",
     subtitle: "For organizations at scale",
     price: "Custom",
-    priceSuffix: "annual contract",
     limitsLine: "Unlimited executions · Unlimited projects",
     includesLabel: "Everything in Scale, plus",
     features: [
