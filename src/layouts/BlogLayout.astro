@@ -100,7 +100,7 @@ const {
   prev,
   next,
   relatedPosts = [],
-  surface = "ml",
+  surface = "unified",
   ...seoProps
 } = Astro.props;
 
@@ -152,7 +152,7 @@ const articleJsonLd = {
   <CategoryBar breadcrumbTitle={displayTitle} />
 
   {/* Reading progress bar */}
-  <div class="sticky top-[116px] z-30 h-0.5" id="progress-container">
+  <div class="sticky top-[calc(var(--nav-height)+44px)] z-30 h-0.5" id="progress-container">
     <div class="h-full w-0 bg-primary-600 transition-[width] duration-150" id="progress-bar"></div>
   </div>
 
@@ -342,7 +342,7 @@ const articleJsonLd = {
     {/* Desktop Table of contents sidebar */}
     {showTOC && (
       <aside class="hidden xl:block">
-        <div class="sticky top-32 max-h-[calc(100vh-9rem)] overflow-y-auto">
+        <div class="sticky top-[calc(var(--nav-height)+44px+1rem)] max-h-[calc(100vh-var(--nav-height)-44px-2rem)] overflow-y-auto">
           <BlogTOC headings={tocHeadings} />
 
           {/* Sidebar CTA */}

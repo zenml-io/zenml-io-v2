@@ -124,6 +124,18 @@ html { scroll-behavior: smooth; }
 /* ─── 3. ZenML brand scale (original purple, theme-independent) ─────────────
  * Used by components that need an explicit shade from the ZenML brand ladder
  * (e.g. badges, hover backgrounds, dark-section grounds). */
+/* Total height of the sticky top chrome. Bumped on product surfaces where
+ * the secondary subnav strip (44px) sits below the 72px primary nav. Page
+ * sticky elements (sidebars, progress bars, TOCs) should anchor against this
+ * variable so they stay flush with the bottom of the chrome.            */
+:root {
+  --nav-height: 72px;
+}
+html[data-surface="ml"],
+html[data-surface="agent"] {
+  --nav-height: 116px;
+}
+
 :root {
   --color-zenml-25:  #f1ebfe;  /* lightest */
   --color-zenml-50:  #f6f2ff;

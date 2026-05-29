@@ -47,7 +47,8 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
   {
     title: "Compare & deploy",
     links: [
-      { label: "All comparisons", href: "/compare" },
+      { label: "Compare ZenML", href: "/compare/zenml" },
+      { label: "Compare Kitaru", href: "/compare/kitaru" },
       { label: "Open Source vs Pro", href: "/open-source-vs-pro" },
       { label: "Deployment scenarios", href: "/deployments" },
       { label: "Integrations", href: "/integrations" },
