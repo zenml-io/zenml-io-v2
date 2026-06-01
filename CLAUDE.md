@@ -4,7 +4,7 @@
 
 This repository powers the live [zenml.io](https://www.zenml.io) marketing
 website — an Astro v5 static site hosted on Cloudflare Pages. ~2,200 pages
-across 21 content collections, built in ~33 seconds.
+across the Astro content collections defined in `src/content.config.ts`, built in ~33 seconds.
 
 The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 - **ZenML** — ML workflow orchestration (the original product)
@@ -12,7 +12,7 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 
 - **Production URL**: https://www.zenml.io
 - **Hosting**: Cloudflare Pages (edge CDN, branch previews, auto CI/CD)
-- **Scale**: 21 content collections, ~2,350 content items, ~2,560 assets on R2
+- **Scale**: content collections defined in `src/content.config.ts`, ~2,350 content items, ~2,560 assets on R2
 - **History**: Migrated from Webflow in Feb 2026 (`docs/MIGRATION.md`). Unified with `kitaru.ai` in May 2026 (`MERGE_PLAN.md`).
 - **Private details**: See `CLAUDE.private.md` (gitignored) for infrastructure IDs, traffic numbers, and internal docs index
 
@@ -20,7 +20,7 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 
 - **No broken links** — all published URLs must be preserved or 301-redirected
 - **SEO stability** — keep slugs, meta tags, Open Graph data intact when editing content
-- **Content schema integrity** — 20 collections validated by Zod schemas in `src/content.config.ts`
+- **Content schema integrity** — content collections validated by Zod schemas in `src/content.config.ts`
 - **Static-first output** — the site is statically generated; only API routes in `src/pages/api/` run server-side
 - **Use Astro API routes, not `functions/`** — the Cloudflare adapter's `_worker.js` silently ignores hand-written `functions/` (see below)
 
@@ -33,8 +33,8 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 | Hosting | **Cloudflare Pages** — edge CDN, branch previews, auto CI/CD |
 | Assets | **Cloudflare R2** — object storage for images/files |
 | Styling | **Tailwind CSS** — utility-first |
-| Interactive | **Preact islands** — 9 islands: LLMOpsFilter, ContactForm, DemoRequestFormAB, BlogSearch, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, RoiCalculator |
-| Search | **Pagefind** — build-time full-text search index (1,453 LLMOps pages indexed, hybrid with JSON faceted filtering) |
+| Interactive | **Preact islands** — client-side components including LLMOpsFilter, MLOpsFilter, ContactForm, DemoRequestForm, BlogSearch, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, and RoiCalculator |
+| Search | **Pagefind** — build-time full-text search index for ops-database pages, paired with JSON faceted filtering |
 | Forms | `ContactForm` / `DemoRequestForm` Preact islands → `src/pages/api/forms/[formType].ts` (`prerender: false`) → Segment HTTP API. Cal.com for demo booking (`/book-your-demo` is the canonical URL). Brevo for newsletter. The Kitaru landing surfaces all share these flows; the standalone kitaru.ai endpoints were never wired into the merged site. |
 | Analytics | **Plausible** (`script.pageview-props.js` with `event-surface`) + GA4 + **single Segment workspace** (D4 was superseded — audit showed the Kitaru-side write key had no callers in the merged site). The Segment `analytics.page()` call still receives `{surface}` as a property so downstream segmentation/CRM routing can filter by it. Hostname-gated to production. See "Unified Brand & Surface" below. |
 | Code highlighting | **Shiki** (custom `zenml-light`/`zenml-dark` themes) at build time + **JetBrains Mono** monospace font (self-hosted variable woff2) |
@@ -54,12 +54,12 @@ Two attributes on `<html>` carry the unified-product state to every page:
 | Attribute | Values | Drives | Set by |
 |-----------|--------|--------|--------|
 | `data-app` | `zenml` (default) \| `kitaru` | CSS brand-token switching in `src/styles/global.css` (sage green vs warm orange) | `<html data-app="zenml">` in BaseLayout/MinimalLayout; Kitaru pages wrap content in `<div data-app="kitaru">` for scoped override |
-| `data-surface` | `ml` (default) \| `agent` \| `unified` | Plausible `surface` custom prop on every pageview + custom event (D3); included as a property on Segment page events for downstream segmentation | BaseLayout/MinimalLayout accept a `surface?` prop; passed by page templates |
+| `data-surface` | `ml` \| `agent` \| `unified` | Plausible `surface` custom prop on every pageview + custom event (D3); included as a property on Segment page events for downstream segmentation | BaseLayout/MinimalLayout require a `surface` prop; passed by page templates |
 
 **Surface taxonomy** (`src/lib/analytics.ts`):
-- **`ml`** — ZenML-side pages (homepage, `/features/*`, integrations, MLOps content, `/get-started`)
-- **`agent`** — Kitaru-side pages (`/product/kitaru`, `/compare/kitaru-vs-*`, Kitaru-origin blog posts inherit from layout)
-- **`unified`** — cross-product pages (`/compare`, `/pricing`, `/pro`)
+- **`ml`** — ZenML-side pages (homepage, `/features/*`, integrations, MLOps content)
+- **`agent`** — Kitaru-side pages (`/product/kitaru`, `/compare/kitaru-vs-*`, and future Kitaru-only blog templates if they explicitly pass `surface="agent"`)
+- **`unified`** — cross-product pages (`/compare`, `/get-started`, `/pricing`, `/pro`)
 
 The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was superseded after audit — the standalone kitaru.ai routes that needed the Kitaru key turned out to be dead code and were removed). The page-init call passes `{surface}` as a property so the same dimension is queryable in Segment, Plausible, and downstream CRM tools. `PlausibleBridge.astro` merges `surface` into every custom event so click-tracking matches pageview tagging.
 
@@ -209,8 +209,8 @@ This site was migrated from Webflow in Feb 2026 and unified with kitaru.ai in Ma
 - **`docs/MIGRATION.md`** — historical narrative of the Webflow migration; not current architecture authority
 
 ### Kitaru merge (May 2026)
-- **`assets.kitaru.ai`** hotlinks — ported Kitaru blog covers and `PlatformBuilder` why-card images still reference the Kitaru R2 domain. R2 migration is tracked in `docs/kitaru-seo-inventory.md` §3.5; must complete before Phase 10 DNS cutover.
-- **`kitaru-form-types.ts` / `kitaru-segment.ts`** in `src/lib/` — Kitaru-side form support libs, kept distinct from ZenML's `formValidation.ts` so the two API surfaces don't tangle (D5).
+- **Kitaru R2/source-domain references** — audit current source before assuming any `assets.kitaru.ai` hotlinks remain. The merge removed known live-source references; historical design/migration artifacts may still mention old domains.
+- **Standalone Kitaru form/API code was removed** — the merged site uses unified form helpers and analytics (`formTypes.ts`, `formValidation.ts`, `consentConfig.ts`). Do not recreate `kitaru-form-types.ts`, `kitaru-segment.ts`, or standalone `/api/get-started`, `/api/waitlist`, `/api/newsletter` routes unless the product decision changes.
 - **`compare-kitaru` collection** uses `.mdx` (vs project default `.md`) — the ported Kitaru-vs-X pages use inline component imports.
 - **`MERGE_PLAN.md`** — the merge's running plan + progress log; not current architecture authority (CLAUDE.md is).
 
@@ -234,12 +234,12 @@ Important rules:
 
 ### Core Architecture
 - `astro.config.ts` — Astro config (static output, Cloudflare, Preact, sitemap, Shiki)
-- `src/content.config.ts` — All 21 content collection schemas (Zod). Reads `categories/`, `tags/`, etc. at config eval time to build slug-reference validation sets — adding a new category/tag file requires a dev-server restart.
+- `src/content.config.ts` — Content collection schemas (Zod). Reads `categories/`, `tags/`, etc. at config eval time to build slug-reference validation sets — adding a new category/tag file requires a dev-server restart.
 - `src/styles/global.css` — Tailwind v4 `@theme` block + design tokens; `:root` defaults are Kitaru, `[data-app="zenml"]` overrides flip to ZenML
 - `src/styles/kitaru-compat.css` — Kitaru OKLch tokens scoped to `[data-app="kitaru"]`
 - `src/lib/constants.ts` — `SITE_URL` and shared constants
 - `src/lib/seo.ts` — SEO contract (`SEOProps`, `resolveSeo()`, `buildCanonical()`)
-- `src/lib/analytics.ts` — Surface taxonomy + Segment write keys (`SEGMENT_WRITE_KEYS`)
+- `src/lib/analytics.ts` — Surface taxonomy type (`Surface`); the Segment loader lives in `src/lib/consentConfig.ts`
 - `src/lib/llmops.ts` — LLMOps domain layer (`getAllPublishedEntries()`, `getRelatedEntries()`, tag/industry counts)
 - `src/lib/navigation.ts` — Nav data (typed, not hardcoded)
 - `src/lib/footer.ts` — Footer data (typed, not hardcoded)
@@ -251,9 +251,10 @@ Important rules:
 
 ### Preact Islands (interactive client-side components)
 - `src/components/islands/LLMOpsFilter.tsx` — LLMOps database "Research Hub" (faceted sidebar with industry/tag facets, Pagefind full-text search, AND/OR tag mode, sort, clickable chips, mobile drawer, WCAG-compliant accessibility)
+- `src/components/islands/MLOpsFilter.tsx` — MLOps database filter/search island
 - `src/components/islands/BlogSearch.tsx` — Blog search with Cmd+K shortcut, lazy-fetches `/blog/search-index.json` on focus (`client:media` — desktop only)
 - `src/components/islands/ContactForm.tsx` — Form submission → Astro API routes
-- `src/components/islands/DemoRequestFormAB.tsx` — A/B variant demo request form (sessionStorage-based split, Plausible events)
+- `src/components/islands/DemoRequestForm.tsx` — Demo request form used by `/book-your-demo`
 - `src/components/islands/CookieConsent.tsx` — Cookie consent banner (4 categories)
 - `src/components/islands/FeatureTabsSlider.tsx` — Homepage auto-cycling feature tabs
 - `src/components/islands/LottieHero.tsx` — Hero Lottie animation player
@@ -261,14 +262,11 @@ Important rules:
 - `src/components/islands/RoiCalculator.tsx` — ROI calculator interactive form
 
 ### Server-side API Routes (`prerender: false`)
-- `src/pages/api/forms/[formType].ts` — ZenML-side form submission handler → Segment HTTP API (identify + track), uses the ZenML write key
-- `src/pages/api/get-started.ts` — Kitaru "Book a demo": Cloudflare KV (`GET_STARTED_KV`) + Turnstile + Segment (Kitaru key)
-- `src/pages/api/waitlist.ts` — Kitaru waitlist: Cloudflare KV (`WAITLIST_KV`) + Segment (read from `SEGMENT_WRITE_KEY` env)
-- `src/pages/api/newsletter.ts` — Kitaru newsletter: Cloudflare KV (`NEWSLETTER_KV`) + Segment (Kitaru key); dedupes by email
+- `src/pages/api/forms/[formType].ts` — Unified form submission handler → Segment HTTP API (identify + track), using the site's Segment workspace
 - `src/pages/api/csp-report.ts` — CSP violation report sink (logs redacted summary, returns 204)
 - `src/pages/api/github-stars.ts` — GitHub star count fetcher with edge cache (`ctx.waitUntil`)
 
-The three Kitaru routes return 500 (`"KV not configured"`) until the matching Cloudflare KV namespaces are bound in the Pages project — that's a deployment-side setup, not a code dependency.
+The old standalone `kitaru.ai` API routes (`get-started`, `waitlist`, `newsletter`) were removed during the merge. The Kitaru landing now shares the merged site's form and analytics infrastructure.
 
 ### Kitaru content & components
 - `src/pages/product/kitaru.astro` — Kitaru landing (Phase 2b deep port)
@@ -276,7 +274,7 @@ The three Kitaru routes return 500 (`"KV not configured"`) until the matching Cl
 - `src/scripts/kitaru/*` — Kitaru-page client scripts (canvas-utils, card-glow, clipboard, hero-gl, scroll-reveal)
 - `src/components/compare/_layouts/KitaruCompare.astro` — Kitaru-vs-X comparison page template
 - `src/components/compare/kitaru/*` — Kitaru compare components (ComparisonHero, ComparisonTable, CodePane, CodeCompare, FeatureWithGraphic, WhenToUseEach, ComparisonCta)
-- `src/content/compare-kitaru/*.mdx` — 8 Kitaru-vs-X comparison pages
+- `src/content/compare-kitaru/*.mdx` — Kitaru-vs-X comparison pages
 
 ### Get Started routing
 - `src/pages/get-started.astro` — ZenML open-source onboarding (hero, 3-step walkthrough, architecture, projects, resources). The Phase-4 ML/Agent chooser was removed; `/get-started/zenml` 301-redirects here (`public/_redirects`). Kitaru's entry point is its own `/product/kitaru` landing.

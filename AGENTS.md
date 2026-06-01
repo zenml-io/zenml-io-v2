@@ -8,10 +8,10 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 
 - `src/` contains the Astro app:
   - `pages/` route files (`.astro`) and dynamic templates.
-  - `pages/api/` server-side API routes (`prerender: false`). ZenML-side: `forms/[formType].ts`. Kitaru-side: `get-started.ts`, `waitlist.ts`, `newsletter.ts`. **Do NOT use `functions/`** — the Cloudflare adapter silently ignores it.
+  - `pages/api/` server-side API routes (`prerender: false`). The merged site uses the unified form/API surface here (for example `forms/[formType].ts`, `csp-report.ts`, and `github-stars.ts`). The old standalone `kitaru.ai` API routes (`get-started`, `waitlist`, `newsletter`) were not carried forward. **Do NOT use `functions/`** — the Cloudflare adapter silently ignores it.
   - `components/` shared UI and `components/islands/` for hydrated Preact interactivity. Kitaru landing sections live in `components/kitaru/`; Kitaru-vs-X compare components in `components/compare/kitaru/`.
-  - `content/` markdown CMS content (21 collections, validated by `src/content.config.ts`). Two compare collections: `compare/` (ZenML-vs-X, MLOps) and `compare-kitaru/` (Kitaru-vs-X, agents).
-  - `lib/` typed utilities/data contracts. `analytics.ts` defines the surface taxonomy; `kitaru-segment.ts` / `kitaru-form-types.ts` support the Kitaru-side API routes.
+  - `content/` markdown CMS content, validated by the collection definitions in `src/content.config.ts`. Two compare collections: `compare/` (ZenML-vs-X, MLOps) and `compare-kitaru/` (Kitaru-vs-X, agents).
+  - `lib/` typed utilities/data contracts. `analytics.ts` defines the surface taxonomy; `consentConfig.ts` contains the unified analytics script registry; shared form helpers live in `formTypes.ts`, `formValidation.ts`, and related form data modules.
   - `scripts/kitaru/` client-side scripts the Kitaru landing relies on.
   - `styles/global.css` Tailwind v4 theme tokens. `kitaru-compat.css` scopes Kitaru's OKLch tokens to `[data-app="kitaru"]`.
 - `public/` stores static assets and edge config (`_redirects`, `_headers`).
