@@ -114,10 +114,8 @@ export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "open-source",
     eyebrow: "Open Source",
-    pill: "Self-hosted",
     subtitle: "For individuals and small teams",
     price: "Free",
-    priceSuffix: "self-hosted, forever",
     limitsLine: "Unlimited executions · Unlimited projects",
     includesLabel: "Includes",
     features: [
@@ -132,11 +130,6 @@ export const PRICING_PLANS: PricingPlan[] = [
       analytics: "OSS-Get-Started",
     },
     ctaVariant: "secondary",
-    secondaryLink: {
-      label: "Explore the docs",
-      href: "/docs",
-      analytics: "Pricing-OSS-Docs",
-    },
   },
   {
     id: "scale",
@@ -174,19 +167,13 @@ export const PRICING_PLANS: PricingPlan[] = [
       analytics: "Pricing-Scale-Book-Demo",
     },
     ctaVariant: "primary",
-    secondaryLink: {
-      label: "Talk to an engineer",
-      href: "/book-your-demo",
-      analytics: "Pricing-Scale-Talk-Engineer",
-    },
   },
   {
     id: "enterprise",
     eyebrow: "Enterprise",
-    pill: "SaaS + Self-hosted",
+    pill: "SaaS",
     subtitle: "For organizations at scale",
     price: "Custom",
-    priceSuffix: "annual contract",
     limitsLine: "Unlimited executions · Unlimited projects",
     includesLabel: "Everything in Scale, plus",
     features: [
@@ -196,16 +183,11 @@ export const PRICING_PLANS: PricingPlan[] = [
       "Air-gapped deployment",
     ],
     cta: {
-      label: "Talk to sales",
+      label: "Talk to an engineer",
       href: "/book-your-demo",
       analytics: "Enterprise-Book-Demo",
     },
     ctaVariant: "secondary",
-    secondaryLink: {
-      label: "See the full comparison",
-      href: "#compare-table",
-      analytics: "Pricing-Enterprise-Compare",
-    },
   },
 ];
 
@@ -217,21 +199,6 @@ export const PRICING_COMPARE: PricingCompareTableData = {
   subheading: "Open Source and Pro — with Scale and Enterprise feature tiers.",
   columnHeaders: ["Open Source", "Scale", "Enterprise"],
   sections: [
-    {
-      heading: "Plans & pricing",
-      rows: [
-        { feature: "Price", values: ["Free", "From $399 / mo", "Custom"] },
-        {
-          feature: "Deployment scenario",
-          values: ["Self-hosted", "SaaS", "SaaS + Self-hosted"],
-        },
-        {
-          feature: "Monthly executions",
-          values: ["Unlimited", "500 – 5,000", "Unlimited"],
-        },
-        { feature: "Projects", values: ["Unlimited", "Up to 10", "Unlimited"] },
-      ],
-    },
     {
       heading: "Core platform",
       rows: [
@@ -312,26 +279,12 @@ export const PRICING_COMPARE: PricingCompareTableData = {
       ],
     },
   ],
-  ctaButtons: [
-    {
-      label: "Get Started",
-      href: "/get-started",
-      variant: "secondary",
-      analytics: "OSS-Get-Started",
-    },
-    {
-      label: "Book a demo",
-      href: "/book-your-demo",
-      variant: "primary",
-      analytics: "Pricing-Scale-Book-Demo",
-    },
-    {
-      label: "Talk to sales",
-      href: "/book-your-demo",
-      variant: "secondary",
-      analytics: "Enterprise-Book-Demo",
-    },
-  ],
+  // Derived from PRICING_PLANS so the per-plan CTA is the single source of truth
+  // for label / href / analytics / variant across both the card and the table row.
+  ctaButtons: PRICING_PLANS.map((plan) => ({
+    ...plan.cta,
+    variant: plan.ctaVariant ?? "primary",
+  })),
 };
 
 // ---------------------------------------------------------------------------

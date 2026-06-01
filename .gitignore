@@ -1,6 +1,9 @@
 # Dependencies
 node_modules/
 
+# OG image generator cache (scripts/og/)
+.cache/
+
 # Astro build output
 dist/
 .astro/

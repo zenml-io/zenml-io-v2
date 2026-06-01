@@ -28,12 +28,12 @@ const colCount = data.columnHeaders.length;
     </h2>
     {data.subheading && <p class="mt-2 text-gray-600">{data.subheading}</p>}
   </div>
-  <div class="overflow-x-auto">
+  <div class="overflow-x-auto rounded-md border border-gray-200">
     <table class="w-full min-w-[600px] border-collapse text-sm">
       {/* Column headers */}
       <thead>
-        <tr class="border-b-2 border-gray-200">
-          <th class="py-3 pr-4 text-left font-medium text-gray-500">Plans</th>
+        <tr class="border-b border-gray-200">
+          <th class="px-4 py-3 text-left font-medium text-gray-500">Plans</th>
           {data.columnHeaders.map((header) => (
             <th class="px-4 py-3 text-center font-bold text-gray-900">{header}</th>
           ))}
@@ -46,7 +46,7 @@ const colCount = data.columnHeaders.length;
             <tr>
               <td
                 colspan={colCount + 1}
-                class="bg-gray-50 px-0 py-2 text-xs font-bold uppercase tracking-wider text-gray-500"
+                class="bg-gray-50 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gray-500"
               >
                 {section.heading}
               </td>
@@ -54,10 +54,10 @@ const colCount = data.columnHeaders.length;
             {/* Data rows */}
             {section.rows.map((row, rowIdx) => (
               <tr class:list={[
-                "border-b border-gray-100",
+                "border-b border-gray-200",
                 rowIdx % 2 === 1 ? "bg-gray-50/50" : "",
               ]}>
-                <td class="py-3 pr-4 font-medium text-gray-900">
+                <td class="px-4 py-3 font-medium text-gray-900">
                   {row.link ? (
                     <a
                       href={row.link}
@@ -95,10 +95,10 @@ const colCount = data.columnHeaders.length;
           </>
         ))}
         {/* CTA button row */}
-        <tr class="border-t-2 border-gray-200">
+        <tr class="border-t border-gray-200">
           <td></td>
           {data.ctaButtons.map((cta) => (
-            <td class="px-4 py-4 text-center">
+            <td class="px-4 pt-5 pb-4 text-center">
               <Button
                 href={cta.href}
                 size="sm"

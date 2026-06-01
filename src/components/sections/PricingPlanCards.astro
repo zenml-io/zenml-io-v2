@@ -128,18 +128,6 @@ const checkIcon =
                   {plan.cta.label}
                 </Button>
               </div>
-              <a
-                href={plan.secondaryLink.href}
-                class:list={[
-                  "mt-3 block text-center text-sm font-medium transition-colors",
-                  plan.highlighted
-                    ? "text-zenml-500 hover:text-zenml-600"
-                    : "text-gray-500 hover:text-gray-700",
-                ]}
-                data-analytics={plan.secondaryLink.analytics}
-              >
-                {plan.secondaryLink.label} <span aria-hidden="true">&rarr;</span>
-              </a>
 
               {/* Includes */}
               <hr class="my-5 border-gray-200" />

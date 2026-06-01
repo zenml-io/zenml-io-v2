@@ -45,15 +45,21 @@ const {
       {/* Render logos twice for seamless loop */}
       {[...logos, ...logos].map((logo) => (
         <div class="flex h-18 w-[140px] flex-shrink-0 items-center justify-center rounded-md bg-white px-4 py-5">
-          <img
-            src={logo.src}
-            alt={logo.name}
-            class="max-h-9 max-w-[120px] object-contain"
-            style={logo.maxWidth ? `max-width:${logo.maxWidth}` : undefined}
-            width="120"
-            height="36"
-            loading="lazy"
-          />
+          {logo.placeholder ? (
+            <span class="block w-full truncate rounded border border-dashed border-gray-300 px-2 py-1 text-center font-mono text-[11px] tracking-tight text-gray-400">
+              {logo.name}
+            </span>
+          ) : (
+            <img
+              src={logo.src}
+              alt={logo.name}
+              class="max-h-9 max-w-[120px] object-contain"
+              style={logo.maxWidth ? `max-width:${logo.maxWidth}` : undefined}
+              width="120"
+              height="36"
+              loading="lazy"
+            />
+          )}
         </div>
       ))}
     </div>
