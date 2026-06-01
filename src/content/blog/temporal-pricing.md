@@ -29,7 +29,7 @@ Temporal pricing is not cheap in the way a $20 per month developer tool is cheap
 
 In this Temporal pricing guide, we'll break down the platform's pricing plans, the cost factors that matter most for long-running agents, and whether the investment makes sense for your team.
 
-At the end, we'll also look at [Kitaru](https://www.zenml.io/product/kitaru), our open-source alternative for Python-first teams building long-running background agents that need durable execution without adopting Temporal as a general-purpose workflow platform.
+At the end, we'll also look at [Kitaru by ZenML](https://www.zenml.io/product/kitaru), our open-source alternative for Python-first teams building long-running background agents that need durable execution without adopting Temporal as a general-purpose workflow platform.
 
 ## Temporal Pricing Plans
 
@@ -236,11 +236,11 @@ But if your application needs long-running state, retries, human approvals, sign
 
 But remember, Temporal is also a broad durable execution platform. That means your team has to adopt the Temporal model: Workflows, Activities, Workers, Task Queues, Signals, Updates, Timers, and the surrounding operational model. That is worth it if Temporal becomes your reliability backbone across many systems. It may be too much if your immediate problem is narrower. "My Python agent died at step 6 and I don't want to restart from step 1."
 
-## Kitaru: A Temporal Alternative for Your Long-Running Python Agents
+## Kitaru by ZenML: A Temporal Alternative for Your Long-Running Python Agents
 
 ![Kitaru homepage hero](https://assets.zenml.io/content/blog/temporal-pricing/0c0a8bf6/kitaru-homepage.avif)
 
-Kitaru is for Python-first teams building long-running background agents who want durable execution without adopting Temporal as a general-purpose workflow platform.
+[Kitaru](https://www.zenml.io/product/kitaru), a product of ZenML is for Python-first teams building long-running background agents who want durable execution without adopting Temporal as a general-purpose workflow platform.
 
 Temporal is broader. It is a mature durable execution platform for workflows, activities, task queues, timers, across many application types. Kitaru is narrower by design. It focuses on the runtime layer around Python agents: checkpoints, replay, resume, `wait()`, artifact lineage, versioned deployments, and self-hosted execution around the harness you already use.
 
