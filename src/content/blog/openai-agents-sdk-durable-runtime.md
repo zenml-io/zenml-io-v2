@@ -13,13 +13,13 @@ tags:
 date: "2026-06-01T00:00:00.000Z"
 readingTime: "10 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/openai-agents-sdk-durable-runtime/c9c6770c/four-layer-stack.avif"
-  alt: "The four-layer agent stack with the OpenAI Agents SDK as the harness and Kitaru as the runtime underneath it"
+  url: "https://assets.zenml.io/content/blog/openai-agents-sdk-durable-runtime/a823a4d0/kit-openai.avif"
+  alt: "Kitaru durable runtime for the OpenAI Agents SDK"
 seo:
   title: "OpenAI Agents are great. Production still needs a runtime. - ZenML Blog"
   description: "The OpenAI Agents SDK stays the harness; Kitaru adds the runtime around it — durable workflow waits, replay boundaries, and inspectable execution history."
   canonical: "https://www.zenml.io/blog/openai-agents-sdk-durable-runtime"
-  ogImage: "https://assets.zenml.io/content/blog/openai-agents-sdk-durable-runtime/bc519494/four-layer-stack.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/openai-agents-sdk-durable-runtime/2bbec366/kit-openai.jpg"
 ---
 
 You have an OpenAI Agents SDK agent.
