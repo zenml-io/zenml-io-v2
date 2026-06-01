@@ -47,7 +47,7 @@ import { R2_WEBFLOW_BASE } from "./constants";
 
 const R2 = R2_WEBFLOW_BASE;
 
-export const LOGO_CLOUD = {
+export const LOGO_CLOUD: { label: string; logos: LogoItem[] } = {
   label: "Trusted by teams shipping ML pipelines and AI agents",
   logos: [
     { name: "AXA", src: `${R2}/5f1b0e8a/670e2f23b0b89bea22ecee3c_axa-min.svg` },
@@ -81,7 +81,7 @@ export const LOGO_CLOUD = {
     { name: "Rivian", src: "/images/logos/rivian.svg" },
     { name: "Happening XYZ", src: "/images/logos/happeningxyz.png" },
     { name: "Veridas", src: "/images/logos/veridas.svg" },
-  ] satisfies LogoItem[],
+  ],
 };
 
 /* ------------------------------------------------------------------ */
