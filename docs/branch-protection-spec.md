@@ -43,7 +43,7 @@ Two tiers based on what changed:
 | Dismiss stale reviews on new pushes | **Yes** |
 | Require review from CODEOWNERS | **Yes** |
 | Require status checks to pass | **Yes** |
-| Required status check | `deploy` (the existing "Deploy to Cloudflare Pages" workflow job) |
+| Required status check | `Repo checks` (the deterministic repository check job in the "Deploy to Cloudflare Pages" workflow) |
 | Require branches to be up to date | **Yes** |
 | Block force pushes | **Yes** (everyone, including admins) |
 | Block branch deletion | **Yes** |
@@ -88,13 +88,14 @@ Two tiers based on what changed:
 
 ### CI workflow
 
-The existing `.github/workflows/deploy.yml` handles both PR checks and production deploys:
+The existing `.github/workflows/deploy.yml` handles deterministic repo checks first, then Cloudflare deployment:
 
-- **On PR**: runs `pnpm check`, `pnpm lint`, and `pnpm build`, then deploys a Cloudflare Pages **preview** only if those gates pass (branch URL like `<branch>.zenml-io-v2.pages.dev`). The `--branch ${{ github.head_ref }}` flag ensures PRs never touch the production deployment.
-- **On push to main**: runs `pnpm check`, `pnpm lint`, and `pnpm build`, then deploys to **production** (the `main` production branch in Cloudflare Pages).
-- The `deploy` job name becomes a required status check in branch protection; it now covers the quality gates and deployment together.
+- **Required PR gate**: `Repo checks` runs `pnpm install --frozen-lockfile`, `pnpm check`, `pnpm lint`, and `pnpm build`. This is the branch-protection status check because it is deterministic and does not depend on Cloudflare credentials or availability.
+- **On same-repo PRs**: after `Repo checks` passes, `Cloudflare Pages deploy` publishes a Cloudflare Pages **preview** when Cloudflare secrets are available (branch URL like `<branch>.zenml-io-v2.pages.dev`). The `--branch ${{ github.head_ref }}` flag ensures PRs never touch the production deployment.
+- **On fork PRs**: `Repo checks` still runs and can satisfy branch protection. Cloudflare preview deployment is skipped because repository secrets are not available to forked PRs.
+- **On push to main**: after `Repo checks` passes, `Cloudflare Pages deploy` deploys to **production** (the `main` production branch in Cloudflare Pages).
 
-Keep as a single workflow for now. Splitting into separate build-only (PR) and deploy (main) workflows can be revisited later if CI speed becomes an issue.
+Keep Cloudflare deployment dependent on `Repo checks`; do not make deployment the required merge gate.
 
 ### Branching model
 
@@ -105,7 +106,7 @@ Keep as a single workflow for now. Splitting into separate build-only (PR) and d
 
 ### Additional quality gates
 
-The required PR gate is the existing `deploy` job, which runs `pnpm check`, `pnpm lint`, and `pnpm build` before preview/deploy. Link checking, Lighthouse, etc. can be added later.
+The required PR gate is `Repo checks`, which runs `pnpm install --frozen-lockfile`, `pnpm check`, `pnpm lint`, and `pnpm build`. Cloudflare preview deployment is dependent and best-effort, not the required merge gate. Link checking, Lighthouse, etc. can be added later.
 
 ### Releases & tags
 

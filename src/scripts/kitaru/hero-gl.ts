@@ -242,9 +242,10 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
   let animId = 0;
   let visible = true;
   let destroyed = false;
+  let contextLost = false;
 
   function sizeCanvas() {
-    if (!canvas.parentElement) return;
+    if (contextLost || !canvas.parentElement) return;
     const rect = canvas.parentElement.getBoundingClientRect();
     const pw = rect.width * DPR;
     const ph = rect.height * DPR;
@@ -256,7 +257,7 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
   }
 
   function render(time: number) {
-    if (destroyed) return;
+    if (destroyed || contextLost) return;
     const activeProgram = program;
     if (!activeProgram) return;
     const t = time * 0.001;
@@ -286,7 +287,7 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
     activeGl.clear(activeGl.COLOR_BUFFER_BIT);
     activeGl.drawArrays(activeGl.TRIANGLES, 0, 3);
 
-    if (visible && !reducedMotion) {
+    if (visible && !reducedMotion && !contextLost) {
       animId = requestAnimationFrame(render);
     } else {
       animId = 0;
@@ -296,17 +297,23 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
   // Context loss/restore — named handlers for cleanup in destroy()
   function handleContextLost(e: Event) {
     e.preventDefault();
+    contextLost = true;
     cancelAnimationFrame(animId);
     animId = 0;
   }
 
   function handleContextRestored() {
+    if (destroyed) return;
+    contextLost = false;
+    cancelAnimationFrame(animId);
+    animId = 0;
     const restoredProgram = createProgram(activeGl);
     if (!restoredProgram) {
       console.warn(
         "[hero-gl] Shader program recreation failed after context restore",
       );
       canvas.style.display = "none";
+      contextLost = true;
       return;
     }
     program = restoredProgram;
@@ -316,7 +323,7 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
     activeGl.enable(activeGl.BLEND);
     activeGl.blendFunc(activeGl.SRC_ALPHA, activeGl.ONE_MINUS_SRC_ALPHA);
     sizeCanvas();
-    if (visible && !reducedMotion) {
+    if (visible && !reducedMotion && !contextLost) {
       animId = requestAnimationFrame(render);
     } else {
       render(0);
@@ -328,8 +335,8 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
     if (e.matches) {
       cancelAnimationFrame(animId);
       animId = 0;
-      render(0);
-    } else if (visible && animId === 0) {
+      if (!contextLost) render(0);
+    } else if (visible && !contextLost && animId === 0) {
       animId = requestAnimationFrame(render);
     }
   }
@@ -361,7 +368,7 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
     },
     setVisible(v: boolean) {
       visible = v;
-      if (v && !reducedMotion && animId === 0) {
+      if (v && !reducedMotion && !contextLost && animId === 0) {
         animId = requestAnimationFrame(render);
       } else if (!v) {
         cancelAnimationFrame(animId);
@@ -370,7 +377,7 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
     },
     resize() {
       sizeCanvas();
-      if (reducedMotion) render(0);
+      if (reducedMotion && !contextLost) render(0);
     },
     destroy() {
       destroyed = true;

@@ -77,7 +77,7 @@ The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was s
 - `design/` folder is for heavy artifacts (exports, screenshots, JSON dumps, internal docs) — **never commit to git**
 - Make targeted git commits (only relevant files)
 - After running tests, re-run them if you make subsequent changes
-- PR CI enforces the package quality gates before Cloudflare deployment: `pnpm check`, `pnpm lint`, then `pnpm build`. PR previews only deploy after these pass
+- PR CI enforces the package quality gates in the required `Repo checks` job: `pnpm check`, `pnpm lint`, then `pnpm build`. PR previews deploy afterward when Cloudflare credentials are available, but preview deployment is not the required merge gate
 - **Build output**: `pnpm build` generates ~2000+ lines of output listing every generated page. Always run it in background mode and use `tail` to check only the final lines for success/failure
 - **Credential management**: When you receive API credentials, tokens, or keys, **always add them to `.env`** for persistence across sessions. The `.env` file is gitignored and safe for secrets
 - VERY IMPORTANT: **Before opening a PR or making a large commit**, always run `/simplify` to review changed code for reuse opportunities, quality issues, and efficiency improvements. Fix any issues it finds before committing.
