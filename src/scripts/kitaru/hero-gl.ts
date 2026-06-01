@@ -195,8 +195,9 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
     console.warn("[hero-gl] WebGL2 context not available");
     return null;
   }
+  const activeGl = gl;
 
-  let program = createProgram(gl);
+  let program = createProgram(activeGl);
   if (!program) {
     console.warn("[hero-gl] Failed to create shader program");
     return null;
@@ -215,24 +216,24 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
   let uAttractor1: WebGLUniformLocation | null;
   let uAttractor2: WebGLUniformLocation | null;
 
-  function cacheLocations() {
-    uTime = gl!.getUniformLocation(program!, "uTime");
-    uResolution = gl!.getUniformLocation(program!, "uResolution");
-    uDPR_loc = gl!.getUniformLocation(program!, "uDPR");
-    uMouse = gl!.getUniformLocation(program!, "uMouse");
-    uMouseActive = gl!.getUniformLocation(program!, "uMouseActive");
-    uAttractor1 = gl!.getUniformLocation(program!, "uAttractor1");
-    uAttractor2 = gl!.getUniformLocation(program!, "uAttractor2");
+  function cacheLocations(activeProgram: WebGLProgram) {
+    uTime = activeGl.getUniformLocation(activeProgram, "uTime");
+    uResolution = activeGl.getUniformLocation(activeProgram, "uResolution");
+    uDPR_loc = activeGl.getUniformLocation(activeProgram, "uDPR");
+    uMouse = activeGl.getUniformLocation(activeProgram, "uMouse");
+    uMouseActive = activeGl.getUniformLocation(activeProgram, "uMouseActive");
+    uAttractor1 = activeGl.getUniformLocation(activeProgram, "uAttractor1");
+    uAttractor2 = activeGl.getUniformLocation(activeProgram, "uAttractor2");
   }
-  cacheLocations();
+  cacheLocations(program);
 
   // Empty VAO required by WebGL2
-  let vao = gl.createVertexArray();
-  gl.bindVertexArray(vao);
+  let vao = activeGl.createVertexArray();
+  activeGl.bindVertexArray(vao);
 
   // Blending for alpha
-  gl.enable(gl.BLEND);
-  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+  activeGl.enable(activeGl.BLEND);
+  activeGl.blendFunc(activeGl.SRC_ALPHA, activeGl.ONE_MINUS_SRC_ALPHA);
 
   // State
   let mouseX = -9999;
@@ -249,39 +250,41 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
     const ph = rect.height * DPR;
     canvas.width = pw;
     canvas.height = ph;
-    canvas.style.width = rect.width + "px";
-    canvas.style.height = rect.height + "px";
-    gl!.viewport(0, 0, pw, ph);
+    canvas.style.width = `${rect.width}px`;
+    canvas.style.height = `${rect.height}px`;
+    activeGl.viewport(0, 0, pw, ph);
   }
 
   function render(time: number) {
     if (destroyed) return;
+    const activeProgram = program;
+    if (!activeProgram) return;
     const t = time * 0.001;
     const w = canvas.width / DPR;
     const h = canvas.height / DPR;
 
-    gl!.useProgram(program);
-    gl!.uniform1f(uTime, t);
-    gl!.uniform2f(uResolution, w, h);
-    gl!.uniform1f(uDPR_loc, DPR);
-    gl!.uniform2f(uMouse, mouseX, mouseY);
-    gl!.uniform1f(uMouseActive, mouseActiveVal);
+    activeGl.useProgram(activeProgram);
+    activeGl.uniform1f(uTime, t);
+    activeGl.uniform2f(uResolution, w, h);
+    activeGl.uniform1f(uDPR_loc, DPR);
+    activeGl.uniform2f(uMouse, mouseX, mouseY);
+    activeGl.uniform1f(uMouseActive, mouseActiveVal);
 
     // Compute attractor Lissajous positions on CPU (avoids per-fragment trig)
-    gl!.uniform2f(
+    activeGl.uniform2f(
       uAttractor1,
       w * 0.5 + Math.sin(t * 0.25) * w * 0.42,
       h * 0.5 + Math.cos(t * 0.18) * h * 0.38,
     );
-    gl!.uniform2f(
+    activeGl.uniform2f(
       uAttractor2,
       w * 0.5 + Math.cos(t * 0.15) * w * 0.35,
       h * 0.5 + Math.sin(t * 0.22) * h * 0.32,
     );
 
-    gl!.clearColor(0, 0, 0, 0);
-    gl!.clear(gl!.COLOR_BUFFER_BIT);
-    gl!.drawArrays(gl!.TRIANGLES, 0, 3);
+    activeGl.clearColor(0, 0, 0, 0);
+    activeGl.clear(activeGl.COLOR_BUFFER_BIT);
+    activeGl.drawArrays(activeGl.TRIANGLES, 0, 3);
 
     if (visible && !reducedMotion) {
       animId = requestAnimationFrame(render);
@@ -298,19 +301,20 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
   }
 
   function handleContextRestored() {
-    program = createProgram(gl!);
-    if (!program) {
+    const restoredProgram = createProgram(activeGl);
+    if (!restoredProgram) {
       console.warn(
         "[hero-gl] Shader program recreation failed after context restore",
       );
       canvas.style.display = "none";
       return;
     }
-    cacheLocations();
-    vao = gl!.createVertexArray();
-    gl!.bindVertexArray(vao);
-    gl!.enable(gl!.BLEND);
-    gl!.blendFunc(gl!.SRC_ALPHA, gl!.ONE_MINUS_SRC_ALPHA);
+    program = restoredProgram;
+    cacheLocations(restoredProgram);
+    vao = activeGl.createVertexArray();
+    activeGl.bindVertexArray(vao);
+    activeGl.enable(activeGl.BLEND);
+    activeGl.blendFunc(activeGl.SRC_ALPHA, activeGl.ONE_MINUS_SRC_ALPHA);
     sizeCanvas();
     if (visible && !reducedMotion) {
       animId = requestAnimationFrame(render);
@@ -380,8 +384,8 @@ export function initHeroGL(canvas: HTMLCanvasElement): HeroGLController | null {
         // @ts-expect-error — removeListener is deprecated but matches addListener
         motionMql.removeListener(handleMotionChange);
       }
-      gl!.deleteVertexArray(vao);
-      if (program) gl!.deleteProgram(program);
+      activeGl.deleteVertexArray(vao);
+      if (program) activeGl.deleteProgram(program);
     },
   };
 }

@@ -3,20 +3,8 @@ name: Deploy to Cloudflare Pages
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - "docs/**"
-      - "scripts/**"
-      - "design/**"
-      - "*.md"
-      - ".claude/**"
   pull_request:
     branches: [main]
-    paths-ignore:
-      - "docs/**"
-      - "scripts/**"
-      - "design/**"
-      - "*.md"
-      - ".claude/**"
 
 jobs:
   deploy:
@@ -38,6 +26,10 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
+
+      - run: pnpm check
+
+      - run: pnpm lint
 
       - run: pnpm build
 

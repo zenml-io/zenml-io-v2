@@ -5,11 +5,11 @@ export function setupCardGlow(selector: string) {
       const rect = card.getBoundingClientRect();
       card.style.setProperty(
         "--mouse-x",
-        ((e.clientX - rect.left) / rect.width) * 100 + "%",
+        `${((e.clientX - rect.left) / rect.width) * 100}%`,
       );
       card.style.setProperty(
         "--mouse-y",
-        ((e.clientY - rect.top) / rect.height) * 100 + "%",
+        `${((e.clientY - rect.top) / rect.height) * 100}%`,
       );
     });
     card.addEventListener("mouseleave", () => {

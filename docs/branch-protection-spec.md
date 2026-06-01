@@ -90,9 +90,9 @@ Two tiers based on what changed:
 
 The existing `.github/workflows/deploy.yml` handles both PR checks and production deploys:
 
-- **On PR**: builds the site + deploys a Cloudflare Pages **preview** (branch URL like `<branch>.zenml-io-v2.pages.dev`). The `--branch ${{ github.head_ref }}` flag ensures PRs never touch the production deployment.
-- **On push to main**: builds + deploys to **production** (the `main` production branch in Cloudflare Pages).
-- **No changes needed** to the workflow itself. The `deploy` job name becomes a required status check in branch protection.
+- **On PR**: runs `pnpm check`, `pnpm lint`, and `pnpm build`, then deploys a Cloudflare Pages **preview** only if those gates pass (branch URL like `<branch>.zenml-io-v2.pages.dev`). The `--branch ${{ github.head_ref }}` flag ensures PRs never touch the production deployment.
+- **On push to main**: runs `pnpm check`, `pnpm lint`, and `pnpm build`, then deploys to **production** (the `main` production branch in Cloudflare Pages).
+- The `deploy` job name becomes a required status check in branch protection; it now covers the quality gates and deployment together.
 
 Keep as a single workflow for now. Splitting into separate build-only (PR) and deploy (main) workflows can be revisited later if CI speed becomes an issue.
 
@@ -105,7 +105,7 @@ Keep as a single workflow for now. Splitting into separate build-only (PR) and d
 
 ### Additional quality gates
 
-None for now. Only `pnpm build` success required. Link checking, Lighthouse, etc. can be added later.
+The required PR gate is the existing `deploy` job, which runs `pnpm check`, `pnpm lint`, and `pnpm build` before preview/deploy. Link checking, Lighthouse, etc. can be added later.
 
 ### Releases & tags
 
