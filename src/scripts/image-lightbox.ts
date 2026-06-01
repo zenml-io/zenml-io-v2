@@ -1,65 +1,72 @@
 /**
  * image-lightbox — click-to-expand lightbox for blog content images.
  *
- * Built on the native <dialog> element so we get focus-trapping, Escape-to-close,
- * and a ::backdrop click zone for free — no lightbox library.
- *
- * One dialog is created and appended to <body>. A single delegated click listener
- * on `document` opens it for any matching image, so dynamically-rendered/markdown
- * images are picked up without per-image wiring.
- *
- * Zoomable set:
- *   - `.prose-zoomable img`    → blog body images. The `prose-zoomable` marker
- *                                (added by BlogLayout) keeps the zoom-in cursor
- *                                and this behaviour scoped to pages where the
- *                                lightbox actually runs — other `.prose` content
- *                                site-wide (legal pages, DB entries) is untouched.
- *                                Author avatars, logos and related-post thumbs
- *                                live outside `.prose` and are excluded anyway.
- *   - `img.blog-hero-zoomable` → the hero/cover image (rendered outside `.prose`)
- *
- * Open/close motion lives entirely in CSS, gated behind
- * `prefers-reduced-motion: no-preference`, so this script stays motion-agnostic.
+ * Native <dialog> supplies focus trapping and Escape-to-close. The script marks
+ * only eligible blog images as button-like triggers, then uses one shared dialog
+ * and one delegated listener set for pointer and keyboard opening.
  */
 
 const ZOOMABLE_SELECTOR = ".prose-zoomable img, img.blog-hero-zoomable";
+const LIGHTBOX_ID = "blog-image-lightbox";
+const TRIGGER_ATTRIBUTE = "data-image-lightbox-trigger";
+const TRIGGER_ATTRIBUTE_VALUE = "true";
+const TRIGGER_ATTRIBUTES = [
+  "tabindex",
+  "role",
+  "aria-haspopup",
+  "aria-controls",
+  "aria-label",
+] as const;
 
-export function initImageLightbox(): void {
-  // Guard for non-browser contexts and browsers without <dialog> support.
-  if (typeof document === "undefined") return;
-  if (typeof HTMLDialogElement === "undefined") return;
+type TriggerAttribute = (typeof TRIGGER_ATTRIBUTES)[number];
+type OriginalAttributes = Partial<Record<TriggerAttribute, string | null>>;
 
-  const { dialog, image } = buildLightbox();
-  document.body.appendChild(dialog);
-
-  // Single delegated listener: matches current and future images alike.
-  document.addEventListener("click", (event) => {
-    const target = event.target;
-    if (!(target instanceof HTMLImageElement)) return;
-    if (!target.matches(ZOOMABLE_SELECTOR)) return;
-
-    // If the image is wrapped in a link, the author's link intent wins —
-    // let the anchor navigate instead of hijacking the click.
-    if (target.closest("a")) return;
-
-    openLightbox(dialog, image, target);
-  });
-
-  // Click on the dialog itself (its box or the ::backdrop) closes it. Clicks on
-  // the image or close button report those elements as the target, so they pass
-  // through untouched.
-  dialog.addEventListener("click", (event) => {
-    if (event.target === dialog) dialog.close();
-  });
-}
-
-interface Lightbox {
+interface LightboxState {
   dialog: HTMLDialogElement;
   image: HTMLImageElement;
+  closeButton: HTMLButtonElement;
+  lastTrigger: HTMLImageElement | null;
 }
 
-function buildLightbox(): Lightbox {
+let lightboxState: LightboxState | null = null;
+const originalAttributes = new WeakMap<HTMLImageElement, OriginalAttributes>();
+
+export function initImageLightbox(): void {
+  if (typeof document === "undefined") return;
+  if (typeof HTMLDialogElement === "undefined") return;
+  if (!document.body) return;
+
+  const state = getLightboxState();
+  ensureDialogAttached(state);
+  prepareZoomableImages();
+}
+
+function getLightboxState(): LightboxState {
+  if (lightboxState) return lightboxState;
+
+  const state = buildLightbox();
+  lightboxState = state;
+
+  document.addEventListener("click", handleDocumentClick);
+  document.addEventListener("keydown", handleDocumentKeydown);
+
+  state.dialog.addEventListener("click", (event) => {
+    if (event.target === state.dialog) state.dialog.close();
+  });
+
+  state.dialog.addEventListener("close", () => {
+    const trigger = state.lastTrigger;
+    state.lastTrigger = null;
+
+    if (trigger?.isConnected) trigger.focus({ preventScroll: true });
+  });
+
+  return state;
+}
+
+function buildLightbox(): LightboxState {
   const dialog = document.createElement("dialog");
+  dialog.id = LIGHTBOX_ID;
   dialog.className = "image-lightbox";
 
   const closeButton = document.createElement("button");
@@ -76,18 +83,159 @@ function buildLightbox(): Lightbox {
   image.className = "image-lightbox__img";
 
   dialog.append(closeButton, image);
-  return { dialog, image };
+  return { dialog, image, closeButton, lastTrigger: null };
 }
 
-function openLightbox(
-  dialog: HTMLDialogElement,
+function ensureDialogAttached(state: LightboxState): void {
+  if (!state.dialog.isConnected) document.body.appendChild(state.dialog);
+}
+
+function handleDocumentClick(event: MouseEvent): void {
+  const target = event.target;
+  if (!(target instanceof HTMLImageElement)) return;
+
+  const label = getEligibleImageLabel(target);
+  if (!label) return;
+
+  openLightbox(target, label);
+}
+
+function handleDocumentKeydown(event: KeyboardEvent): void {
+  if (event.key !== "Enter" && event.key !== " ") return;
+
+  const target = event.target;
+  if (!(target instanceof HTMLImageElement)) return;
+
+  const label = getEligibleImageLabel(target);
+  if (!label) return;
+
+  event.preventDefault();
+  openLightbox(target, label);
+}
+
+function prepareZoomableImages(): void {
+  document
+    .querySelectorAll<HTMLImageElement>(ZOOMABLE_SELECTOR)
+    .forEach(prepareImageTrigger);
+}
+
+function prepareImageTrigger(image: HTMLImageElement): void {
+  const label = getEligibleImageLabel(image);
+
+  if (!label) {
+    clearTriggerAttributes(image);
+    return;
+  }
+
+  setTriggerAttributes(image, getTriggerAttributeValues(label));
+}
+
+function getEligibleImageLabel(image: HTMLImageElement): string | null {
+  if (!image.matches(ZOOMABLE_SELECTOR)) return null;
+  if (image.closest("a")) return null;
+  if (isExplicitlyDecorativeImage(image)) return null;
+  if (!image.currentSrc && !image.src && !image.getAttribute("src"))
+    return null;
+
+  return getAuthoredImageLabel(image);
+}
+
+function isExplicitlyDecorativeImage(image: HTMLImageElement): boolean {
+  const ariaHidden = image.getAttribute("aria-hidden")?.toLowerCase();
+  const role = image.getAttribute("role")?.toLowerCase();
+
+  return ariaHidden === "true" || role === "presentation" || role === "none";
+}
+
+function getAuthoredImageLabel(image: HTMLImageElement): string | null {
+  const alt = image.getAttribute("alt")?.trim();
+  if (alt) return alt;
+
+  const originals = originalAttributes.get(image);
+  if (originals) {
+    return originals["aria-label"]?.trim() || null;
+  }
+
+  return image.getAttribute("aria-label")?.trim() || null;
+}
+
+function getTriggerAttributeValues(
+  label: string,
+): Record<TriggerAttribute, string> {
+  return {
+    tabindex: "0",
+    role: "button",
+    "aria-haspopup": "dialog",
+    "aria-controls": LIGHTBOX_ID,
+    "aria-label": `Enlarge image: ${label}`,
+  };
+}
+
+function setTriggerAttributes(
   image: HTMLImageElement,
-  source: HTMLImageElement,
+  values: Record<TriggerAttribute, string>,
 ): void {
-  // currentSrc resolves srcset/responsive choices; falls back to src.
-  image.src = source.currentSrc || source.src;
-  image.alt = source.alt;
-  // Give the modal an accessible name derived from the image's alt text.
-  dialog.setAttribute("aria-label", source.alt || "Enlarged image");
-  dialog.showModal();
+  const originals = originalAttributes.get(image) ?? {};
+
+  setAttributeIfChanged(image, TRIGGER_ATTRIBUTE, TRIGGER_ATTRIBUTE_VALUE);
+
+  for (const attribute of TRIGGER_ATTRIBUTES) {
+    if (!(attribute in originals)) {
+      originals[attribute] = image.getAttribute(attribute);
+    }
+
+    setAttributeIfChanged(image, attribute, values[attribute]);
+  }
+
+  originalAttributes.set(image, originals);
+}
+
+function clearTriggerAttributes(image: HTMLImageElement): void {
+  removeAttributeIfPresent(image, TRIGGER_ATTRIBUTE);
+
+  const originals = originalAttributes.get(image);
+  if (!originals) return;
+
+  for (const attribute of TRIGGER_ATTRIBUTES) {
+    const originalValue = originals[attribute];
+
+    if (originalValue === null) {
+      removeAttributeIfPresent(image, attribute);
+    } else if (originalValue !== undefined) {
+      setAttributeIfChanged(image, attribute, originalValue);
+    }
+  }
+
+  originalAttributes.delete(image);
+}
+
+function setAttributeIfChanged(
+  element: HTMLElement,
+  attribute: string,
+  value: string,
+): void {
+  if (element.getAttribute(attribute) !== value) {
+    element.setAttribute(attribute, value);
+  }
+}
+
+function removeAttributeIfPresent(
+  element: HTMLElement,
+  attribute: string,
+): void {
+  if (element.hasAttribute(attribute)) element.removeAttribute(attribute);
+}
+
+function openLightbox(source: HTMLImageElement, label: string): void {
+  const state = getLightboxState();
+  ensureDialogAttached(state);
+
+  state.image.src = source.currentSrc || source.src;
+  state.image.alt = label;
+  state.dialog.setAttribute("aria-label", `Enlarged image: ${label}`);
+  state.lastTrigger = source;
+
+  if (!state.dialog.open) state.dialog.showModal();
+
+  state.closeButton.focus({ preventScroll: true });
 }

@@ -1,0 +1,126 @@
+/* Blog image lightbox
+   Imported by BlogLayout.astro only. The data attribute is added by
+   src/scripts/image-lightbox.ts after an image passes the same eligibility
+   checks used for pointer and keyboard opening. */
+
+.prose-zoomable img[data-image-lightbox-trigger="true"],
+img.blog-hero-zoomable[data-image-lightbox-trigger="true"] {
+  cursor: zoom-in;
+}
+
+.prose-zoomable img[data-image-lightbox-trigger="true"]:focus-visible,
+img.blog-hero-zoomable[data-image-lightbox-trigger="true"]:focus-visible {
+  outline: 3px solid var(--color-zenml-500);
+  outline-offset: 4px;
+}
+
+/* Native <dialog> appended to <body> by image-lightbox.ts. The fixed inset
+   avoids brittle 100vw/100vh dialog sizing on mobile browser chrome. */
+.image-lightbox {
+  position: fixed;
+  inset: 0;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right))
+    max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+  border: none;
+  background: transparent;
+  overflow: hidden;
+  cursor: zoom-out;
+}
+
+.image-lightbox[open] {
+  display: grid;
+  place-items: center;
+}
+
+.image-lightbox::backdrop {
+  background: rgba(9, 9, 11, 0.88);
+}
+
+.image-lightbox__img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(92vw, calc(100vw - 2rem));
+  max-height: calc(100vh - 6rem);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  cursor: default;
+}
+
+@supports (height: 100dvh) {
+  .image-lightbox__img {
+    max-width: min(92dvw, calc(100dvw - 2rem));
+    max-height: calc(100dvh - 6rem);
+  }
+}
+
+.image-lightbox__close {
+  position: fixed;
+  top: max(1rem, env(safe-area-inset-top));
+  right: max(1rem, env(safe-area-inset-right));
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.image-lightbox__close:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.image-lightbox__close:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.image-lightbox__close svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Open/close fade — entry animation via @starting-style, gated so
+   reduced-motion users get an instant (non-animated) open/close. */
+@media (prefers-reduced-motion: no-preference) {
+  .image-lightbox,
+  .image-lightbox::backdrop {
+    opacity: 0;
+    transition:
+      opacity 0.2s ease,
+      overlay 0.2s ease allow-discrete,
+      display 0.2s ease allow-discrete;
+  }
+
+  .image-lightbox[open],
+  .image-lightbox[open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .image-lightbox[open],
+    .image-lightbox[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  .image-lightbox__close {
+    transform: scale(0.9);
+  }
+
+  .image-lightbox[open] .image-lightbox__close {
+    transform: scale(1);
+  }
+}
