@@ -237,7 +237,7 @@ const articleJsonLd = {
             <Image
               image={mainImage}
               alt={mainImage.alt || displayTitle}
-              class="aspect-[3/2] w-full rounded-md object-cover"
+              class="blog-hero-zoomable aspect-[3/2] w-full rounded-md object-cover"
               loading="eager"
             />
           </div>
@@ -277,8 +277,10 @@ const articleJsonLd = {
         </details>
       )}
 
-      {/* Post body */}
-      <div class="prose">
+      {/* Post body — `prose-zoomable` opts blog images into the lightbox
+          (see src/scripts/image-lightbox.ts); other `.prose` content site-wide
+          stays non-zoomable */}
+      <div class="prose prose-zoomable">
         <slot />
       </div>
 
@@ -406,6 +408,8 @@ const articleJsonLd = {
 </BaseLayout>
 
 <script>
+  import { initImageLightbox } from "../scripts/image-lightbox";
+
   // Reading progress bar
   function initProgress() {
     const bar = document.getElementById('progress-bar');
@@ -436,9 +440,10 @@ const articleJsonLd = {
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => { initProgress(); initMobileTOC(); });
+    document.addEventListener('DOMContentLoaded', () => { initProgress(); initMobileTOC(); initImageLightbox(); });
   } else {
     initProgress();
     initMobileTOC();
+    initImageLightbox();
   }
 </script>

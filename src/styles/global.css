@@ -520,6 +520,115 @@ body {
   margin-bottom: 1.5rem;
 }
 
+/* Click-to-expand affordance — scoped to the blog body (`.prose-zoomable`,
+   set by BlogLayout) and the hero, i.e. only where image-lightbox.ts runs.
+   Other `.prose` content site-wide intentionally has no zoom cursor. */
+.prose-zoomable img,
+.blog-hero-zoomable {
+  cursor: zoom-in;
+}
+
+/* --- Image lightbox (blog click-to-expand) ---
+   Native <dialog> appended to <body> by src/scripts/image-lightbox.ts.
+   Fills the viewport; the image is centred and the surrounding area + the
+   ::backdrop form the click-to-dismiss zone. */
+.image-lightbox {
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  max-height: 100vh;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  overflow: hidden;
+  cursor: zoom-out;
+}
+
+.image-lightbox::backdrop {
+  background: rgba(9, 9, 11, 0.88);
+}
+
+.image-lightbox__img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 92vw;
+  max-height: 92vh;
+  width: auto;
+  height: auto;
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  cursor: default;
+}
+
+.image-lightbox__close {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.image-lightbox__close:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.image-lightbox__close:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.image-lightbox__close svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* Open/close fade — entry animation via @starting-style, gated so
+   reduced-motion users get an instant (non-animated) open/close. */
+@media (prefers-reduced-motion: no-preference) {
+  .image-lightbox,
+  .image-lightbox::backdrop {
+    opacity: 0;
+    transition:
+      opacity 0.2s ease,
+      overlay 0.2s ease allow-discrete,
+      display 0.2s ease allow-discrete;
+  }
+
+  .image-lightbox[open],
+  .image-lightbox[open]::backdrop {
+    opacity: 1;
+  }
+
+  @starting-style {
+    .image-lightbox[open],
+    .image-lightbox[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  .image-lightbox__close {
+    transform: scale(0.9);
+  }
+
+  .image-lightbox[open] .image-lightbox__close {
+    transform: scale(1);
+  }
+}
+
 /* --- Rich-text headings spacing --- */
 .prose h1,
 .prose h2,
