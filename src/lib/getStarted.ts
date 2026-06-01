@@ -93,7 +93,12 @@ export interface GetStartedProjects {
   cta: CtaLink;
 }
 
-export type GetStartedResourceColor = "teal" | "blue" | "purple" | "gray" | "orange";
+export type GetStartedResourceColor =
+  | "teal"
+  | "blue"
+  | "purple"
+  | "gray"
+  | "orange";
 
 export interface GetStartedResource {
   title: string;

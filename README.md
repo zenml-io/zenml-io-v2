@@ -283,7 +283,7 @@ ContactForm Preact island → Astro API route at `src/pages/api/forms/[formType]
 | `strickvl`, `htahir1` | Yes (bypass branch protection) |
 | Everyone else | Must use PRs (1 approval required) |
 
-PRs require the `deploy` status check to pass (full build + Cloudflare Pages deploy).
+PRs require the `Repo checks` status check to pass (`pnpm check`, `pnpm lint`, and `pnpm build`). Cloudflare preview deploys run separately after that gate passes when credentials are available, for eligible same-repo PRs.
 
 See `docs/branch-protection-spec.md` for the full governance spec.
 
