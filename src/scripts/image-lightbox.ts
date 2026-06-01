@@ -10,6 +10,8 @@ const ZOOMABLE_SELECTOR = ".prose-zoomable img, img.blog-hero-zoomable";
 const LIGHTBOX_ID = "blog-image-lightbox";
 const TRIGGER_ATTRIBUTE = "data-image-lightbox-trigger";
 const TRIGGER_ATTRIBUTE_VALUE = "true";
+const FALLBACK_IMAGE_LABEL = "blog image";
+const MIGRATED_PLACEHOLDER_LABELS = new Set(["__wf_reserved_inherit"]);
 const TRIGGER_ATTRIBUTES = [
   "tabindex",
   "role",
@@ -93,11 +95,9 @@ function ensureDialogAttached(state: LightboxState): void {
 function handleDocumentClick(event: MouseEvent): void {
   const target = event.target;
   if (!(target instanceof HTMLImageElement)) return;
+  if (!isEligibleImage(target)) return;
 
-  const label = getEligibleImageLabel(target);
-  if (!label) return;
-
-  openLightbox(target, label);
+  openLightbox(target, getImageLabel(target));
 }
 
 function handleDocumentKeydown(event: KeyboardEvent): void {
@@ -105,12 +105,10 @@ function handleDocumentKeydown(event: KeyboardEvent): void {
 
   const target = event.target;
   if (!(target instanceof HTMLImageElement)) return;
-
-  const label = getEligibleImageLabel(target);
-  if (!label) return;
+  if (!isEligibleImage(target)) return;
 
   event.preventDefault();
-  openLightbox(target, label);
+  openLightbox(target, getImageLabel(target));
 }
 
 function prepareZoomableImages(): void {
@@ -120,24 +118,20 @@ function prepareZoomableImages(): void {
 }
 
 function prepareImageTrigger(image: HTMLImageElement): void {
-  const label = getEligibleImageLabel(image);
-
-  if (!label) {
+  if (!isEligibleImage(image)) {
     clearTriggerAttributes(image);
     return;
   }
 
-  setTriggerAttributes(image, getTriggerAttributeValues(label));
+  setTriggerAttributes(image, getTriggerAttributeValues(getImageLabel(image)));
 }
 
-function getEligibleImageLabel(image: HTMLImageElement): string | null {
-  if (!image.matches(ZOOMABLE_SELECTOR)) return null;
-  if (image.closest("a")) return null;
-  if (isExplicitlyDecorativeImage(image)) return null;
-  if (!image.currentSrc && !image.src && !image.getAttribute("src"))
-    return null;
+function isEligibleImage(image: HTMLImageElement): boolean {
+  if (!image.matches(ZOOMABLE_SELECTOR)) return false;
+  if (image.closest("a")) return false;
+  if (isExplicitlyDecorativeImage(image)) return false;
 
-  return getAuthoredImageLabel(image);
+  return Boolean(image.currentSrc || image.src || image.getAttribute("src"));
 }
 
 function isExplicitlyDecorativeImage(image: HTMLImageElement): boolean {
@@ -147,16 +141,30 @@ function isExplicitlyDecorativeImage(image: HTMLImageElement): boolean {
   return ariaHidden === "true" || role === "presentation" || role === "none";
 }
 
+function getImageLabel(image: HTMLImageElement): string {
+  return getAuthoredImageLabel(image) ?? FALLBACK_IMAGE_LABEL;
+}
+
 function getAuthoredImageLabel(image: HTMLImageElement): string | null {
-  const alt = image.getAttribute("alt")?.trim();
+  const alt = normalizeImageLabel(image.getAttribute("alt"));
   if (alt) return alt;
 
   const originals = originalAttributes.get(image);
-  if (originals) {
-    return originals["aria-label"]?.trim() || null;
-  }
+  const ariaLabel = normalizeImageLabel(
+    originals ? originals["aria-label"] : image.getAttribute("aria-label"),
+  );
+  if (ariaLabel) return ariaLabel;
 
-  return image.getAttribute("aria-label")?.trim() || null;
+  const figcaption = image.closest("figure")?.querySelector("figcaption");
+  return normalizeImageLabel(figcaption?.textContent ?? null);
+}
+
+function normalizeImageLabel(label: string | null | undefined): string | null {
+  const normalized = label?.trim();
+  if (!normalized) return null;
+  if (MIGRATED_PLACEHOLDER_LABELS.has(normalized)) return null;
+
+  return normalized;
 }
 
 function getTriggerAttributeValues(
@@ -167,8 +175,20 @@ function getTriggerAttributeValues(
     role: "button",
     "aria-haspopup": "dialog",
     "aria-controls": LIGHTBOX_ID,
-    "aria-label": `Enlarge image: ${label}`,
+    "aria-label": getTriggerAriaLabel(label),
   };
+}
+
+function getTriggerAriaLabel(label: string): string {
+  return label === FALLBACK_IMAGE_LABEL
+    ? "Enlarge blog image"
+    : `Enlarge image: ${label}`;
+}
+
+function getDialogAriaLabel(label: string): string {
+  return label === FALLBACK_IMAGE_LABEL
+    ? "Enlarged blog image"
+    : `Enlarged image: ${label}`;
 }
 
 function setTriggerAttributes(
@@ -232,7 +252,7 @@ function openLightbox(source: HTMLImageElement, label: string): void {
 
   state.image.src = source.currentSrc || source.src;
   state.image.alt = label;
-  state.dialog.setAttribute("aria-label", `Enlarged image: ${label}`);
+  state.dialog.setAttribute("aria-label", getDialogAriaLabel(label));
   state.lastTrigger = source;
 
   if (!state.dialog.open) state.dialog.showModal();
