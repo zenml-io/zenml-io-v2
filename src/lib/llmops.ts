@@ -10,6 +10,17 @@ import { getCollection, getEntry } from "astro:content";
 
 export type LLMOpsEntry = CollectionEntry<"llmops-database">;
 
+let nonDraftCountPromise: Promise<number> | undefined;
+
+export function getNonDraftLlmopsDatabaseCount(): Promise<number> {
+  nonDraftCountPromise ??= getCollection(
+    "llmops-database",
+    ({ data }) => !data.draft,
+  ).then((entries) => entries.length);
+
+  return nonDraftCountPromise;
+}
+
 // ---------------------------------------------------------------------------
 // Filtering & sorting
 // ---------------------------------------------------------------------------

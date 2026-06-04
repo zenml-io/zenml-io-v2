@@ -4,10 +4,11 @@ import {
   formatStars,
   GITHUB_REPO_URL,
 } from "../lib/githubStars";
+import { getNonDraftLlmopsDatabaseCount } from "../lib/llmops";
 import {
+  createNavDropdowns,
   isActivePath,
   NAV_CTAS,
-  NAV_DROPDOWNS,
   NAV_LINKS,
 } from "../lib/navigation";
 import Button from "./Button.astro";
@@ -24,6 +25,8 @@ interface Props {
 
 const { currentPath = Astro.url.pathname } = Astro.props;
 const headerStarsFallback = formatStars(FALLBACK_STARS);
+const llmopsCaseStudyCount = await getNonDraftLlmopsDatabaseCount();
+const navDropdowns = createNavDropdowns({ llmopsCaseStudyCount });
 ---
 
 <header class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200/60">
@@ -37,7 +40,7 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
       {/* Desktop Nav */}
       <nav class="hidden lg:flex lg:items-center lg:gap-1 lg:ml-12 h-full" role="navigation" aria-label="Main navigation">
         {/* Dropdown menus */}
-        {NAV_DROPDOWNS.map((dropdown) => dropdown.compact ? (
+        {navDropdowns.map((dropdown) => dropdown.compact ? (
           <div class="group relative flex h-full items-center" data-compact-dropdown>
             <button
               class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
@@ -304,7 +307,7 @@ const headerStarsFallback = formatStars(FALLBACK_STARS);
     <div class="border-t border-gray-200 bg-white px-4 pb-6 pt-4">
       <nav class="space-y-1" role="navigation" aria-label="Mobile navigation">
         {/* Mobile dropdown sections (as accordions) */}
-        {NAV_DROPDOWNS.map((dropdown) => (
+        {navDropdowns.map((dropdown) => (
           <details class="group/accordion">
             <summary class="flex cursor-pointer items-center justify-between rounded-md px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 list-none [&::-webkit-details-marker]:hidden">
               {dropdown.label}

@@ -74,85 +74,105 @@ const ICON_DATABASE =
 // Dropdown Menus
 // ---------------------------------------------------------------------------
 
-export const NAV_DROPDOWNS: NavDropdown[] = [
-  {
-    label: "Product",
-    compact: true,
-    sections: [
-      {
-        heading: "Products",
-        links: [
-          {
-            label: "ZenML",
-            href: "/product/zenml",
-            description: "Pipelines for ML workflows",
-            icon: ICON_LIGHTNING,
-          },
-          {
-            label: "Kitaru",
-            href: "/product/kitaru",
-            description: "Durable runtime for AI agents",
-            icon: ICON_AGENT,
-          },
-          {
-            label: "ZenML Pro",
-            href: "/pro",
-            description: "Managed control plane for ML + Agent workspaces",
-            icon: ICON_PRO_GEAR,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: "Docs",
-    compact: true,
-    sections: [
-      {
-        heading: "Documentation",
-        links: [
-          {
-            label: "ZenML docs",
-            href: "https://docs.zenml.io",
-            description: "Pipelines, components, integrations",
-            external: true,
-            icon: ICON_BOOK,
-          },
-          {
-            label: "Kitaru docs",
-            href: "https://kitaru.ai/docs",
-            description: "Agent runtime primitives and APIs",
-            external: true,
-            icon: ICON_BOOK,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    label: "Case Studies",
-    compact: true,
-    sections: [
-      {
-        heading: "Case studies",
-        links: [
-          {
-            label: "Customer stories",
-            href: "/case-studies",
-            description: "How teams ship ML and agents with ZenML",
-            icon: ICON_BUILDING,
-          },
-          {
-            label: "LLMOps Database",
-            href: "/llmops-database",
-            description: "1,453 LLMOps case studies, searchable",
-            icon: ICON_DATABASE,
-          },
-        ],
-      },
-    ],
-  },
-];
+const LLMOPS_DATABASE_NAV_COUNT_FORMATTER = new Intl.NumberFormat("en-US");
+const navDropdownsByLlmopsCount = new Map<number, NavDropdown[]>();
+
+export function formatLlmopsDatabaseNavDescription(count: number): string {
+  return `${LLMOPS_DATABASE_NAV_COUNT_FORMATTER.format(count)} LLMOps case studies, searchable`;
+}
+
+export function createNavDropdowns({
+  llmopsCaseStudyCount,
+}: {
+  llmopsCaseStudyCount: number;
+}): NavDropdown[] {
+  const cachedDropdowns = navDropdownsByLlmopsCount.get(llmopsCaseStudyCount);
+  if (cachedDropdowns) return cachedDropdowns;
+
+  const navDropdowns: NavDropdown[] = [
+    {
+      label: "Product",
+      compact: true,
+      sections: [
+        {
+          heading: "Products",
+          links: [
+            {
+              label: "ZenML",
+              href: "/product/zenml",
+              description: "Pipelines for ML workflows",
+              icon: ICON_LIGHTNING,
+            },
+            {
+              label: "Kitaru",
+              href: "/product/kitaru",
+              description: "Durable runtime for AI agents",
+              icon: ICON_AGENT,
+            },
+            {
+              label: "ZenML Pro",
+              href: "/pro",
+              description: "Managed control plane for ML + Agent workspaces",
+              icon: ICON_PRO_GEAR,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      label: "Docs",
+      compact: true,
+      sections: [
+        {
+          heading: "Documentation",
+          links: [
+            {
+              label: "ZenML docs",
+              href: "https://docs.zenml.io",
+              description: "Pipelines, components, integrations",
+              external: true,
+              icon: ICON_BOOK,
+            },
+            {
+              label: "Kitaru docs",
+              href: "https://kitaru.ai/docs",
+              description: "Agent runtime primitives and APIs",
+              external: true,
+              icon: ICON_BOOK,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      label: "Case Studies",
+      compact: true,
+      sections: [
+        {
+          heading: "Case studies",
+          links: [
+            {
+              label: "Customer stories",
+              href: "/case-studies",
+              description: "How teams ship ML and agents with ZenML",
+              icon: ICON_BUILDING,
+            },
+            {
+              label: "LLMOps Database",
+              href: "/llmops-database",
+              description:
+                formatLlmopsDatabaseNavDescription(llmopsCaseStudyCount),
+              icon: ICON_DATABASE,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  navDropdownsByLlmopsCount.set(llmopsCaseStudyCount, navDropdowns);
+  return navDropdowns;
+}
 
 // ---------------------------------------------------------------------------
 // Direct Links (no dropdown)
