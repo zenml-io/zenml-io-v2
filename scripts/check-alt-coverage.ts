@@ -88,7 +88,10 @@ function hasGoodAlt(tag: string): boolean {
     return alt !== "" && alt !== WEBFLOW_SENTINEL_ALT;
   }
   const expr = /\balt=\{([\s\S]*?)\}/i.exec(tag);
-  if (expr) return expr[1].trim().replace(/[`"' ]/g, "") !== "";
+  if (expr) {
+    const alt = expr[1].trim().replace(/[`"' ]/g, "");
+    return alt !== "" && alt !== WEBFLOW_SENTINEL_ALT;
+  }
   return false;
 }
 
