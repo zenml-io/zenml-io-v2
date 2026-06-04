@@ -14,9 +14,14 @@
  * is caught by `astro check`. This script closes that gap by statically scanning
  * source the same way `check:surface` does for layout props.
  *
+ * Scans: .md/.mdx under src/content, plus .astro and .tsx under src/components,
+ * src/pages, and src/layouts (covers raw markdown <img>, Astro templates, and
+ * Preact island JSX).
+ *
  * What counts as OK:
  *   - alt="text" / alt='text' / alt={expr} with a non-empty value, OR
- *   - the image is explicitly decorative (aria-hidden="true" / role="presentation").
+ *   - the image is explicitly decorative: aria-hidden="true" | aria-hidden={true}
+ *     | role="presentation" | role="none".
  *
  * What is intentionally NOT flagged:
  *   - <img> with no src (or empty src) — a srcless placeholder is dead markup,
@@ -24,6 +29,13 @@
  *   - <img> inside fenced code blocks (```...```) — those are code examples.
  *   - content marked `draft: true`, and the `old-projects/` collection, which
  *     has no public route — neither ships to a crawlable page.
+ *
+ * Known limitations (tracked for a follow-up, deliberately not enforced here so
+ * this guard can ship green against the existing codebase):
+ *   - Expression alts with an empty fallback, e.g. `alt={name || ""}`, pass
+ *     because the expression text is non-empty even though it can render empty.
+ *   - Webflow sentinel alts like `alt="__wf_reserved_inherit"` are non-empty so
+ *     they pass, but are not descriptive. ~150 migrated posts still carry these.
  */
 
 import { readdirSync, readFileSync } from "node:fs";
@@ -81,7 +93,11 @@ function hasGoodAlt(tag: string): boolean {
 /** Explicitly marked decorative → empty/absent alt is acceptable. */
 function isDecorative(tag: string): boolean {
   const t = tag.replace(/'/g, '"');
-  return /aria-hidden="true"/i.test(t) || /role="presentation"/i.test(t);
+  return (
+    /aria-hidden="true"/i.test(t) ||
+    /aria-hidden=\{true\}/i.test(t) ||
+    /role="(presentation|none)"/i.test(t)
+  );
 }
 
 const IMG_TAG_RE = /<img\b[\s\S]*?>/gi;
@@ -89,8 +105,9 @@ const IMG_TAG_RE = /<img\b[\s\S]*?>/gi;
 function check(): void {
   const files = [
     ...collectFiles(join(ROOT, "src", "content"), [".md", ".mdx"]),
-    ...collectFiles(join(ROOT, "src", "components"), [".astro"]),
-    ...collectFiles(join(ROOT, "src", "pages"), [".astro"]),
+    ...collectFiles(join(ROOT, "src", "components"), [".astro", ".tsx"]),
+    ...collectFiles(join(ROOT, "src", "pages"), [".astro", ".tsx"]),
+    ...collectFiles(join(ROOT, "src", "layouts"), [".astro", ".tsx"]),
   ];
 
   const violations: string[] = [];
