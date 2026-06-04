@@ -65,7 +65,7 @@ const hasOptions = competitorOptions.length > 0;
             data-chero-trigger
           >
             {competitorLogo ? (
-              <img src={competitorLogo} alt="" class="chero-chip-mark chero-chip-img" />
+              <img src={competitorLogo} alt={`${competitor} logo`} class="chero-chip-mark chero-chip-img" />
             ) : (
               <span class="chero-chip-circle" aria-hidden="true">{competitor.charAt(0)}</span>
             )}
@@ -103,7 +103,7 @@ const hasOptions = competitorOptions.length > 0;
                   aria-current={opt.slug === currentSlug ? 'page' : undefined}
                 >
                   {opt.competitorLogo ? (
-                    <img src={opt.competitorLogo} alt="" class="chero-chip-menu-logo" />
+                    <img src={opt.competitorLogo} alt={`${opt.competitor} logo`} class="chero-chip-menu-logo" />
                   ) : (
                     <span class="chero-chip-menu-avatar" aria-hidden="true">{opt.competitor.charAt(0)}</span>
                   )}

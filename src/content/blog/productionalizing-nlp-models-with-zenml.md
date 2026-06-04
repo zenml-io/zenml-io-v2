@@ -56,7 +56,7 @@ zenml init --template template-nlp --template-with-defaults
 This command sets up a project structure that includes pipelines for training, promoting, and deploying your NLP model. Each pipeline is parameterized, offering flexibility and reusability, and can be customized to suite the specific requirements of a scenario involving the fine-tuning of an NLP model.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ed7a660/6567014b2e7cc3f24fdd8739_hfs01.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ed7a660/6567014b2e7cc3f24fdd8739_hfs01.png" alt="Overview of the ZenML NLP template's training, promotion, and deployment pipelines" />
   <figcaption>ZenML NLP template pipelines</figcaption>
 </figure>
 
@@ -71,7 +71,7 @@ The training pipeline is the heart of the NLP project. It handles data loading, 
 The promotion pipeline is responsible for advancing a model version to a specified stage based on metrics or simply promoting the latest version. This ensures that the best-performing models are the ones being deployed, aligning with the goal of delivering high-quality NLP solutions.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/357c32b0/65670178a9a75cb3e3b430eb_Untitled.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/357c32b0/65670178a9a75cb3e3b430eb_Untitled.png" alt="ZenML NLP template promotion pipeline that advances the best-performing model version to a deployment stage" />
   <figcaption>ZenML NLP template promotion pipeline</figcaption>
 </figure>
 
@@ -84,7 +84,7 @@ Deployment is the final, crucial step that brings machine learning models into t
 Local deployment is often the first step in bringing your model to life. It allows you to test the model in a controlled environment, ensuring that it behaves as expected before scaling up to a more public or resource-intensive setting. With ZenML, local deployment is straightforward. The template includes a Gradio-based interface, which provides a user-friendly way to interact with your model right from your local machine. This is invaluable for quick iterations and demonstrations, as it gives immediate feedback on how the model performs with real input data.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7949de10/656701a90c46011405103787_Untitled_1.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7949de10/656701a90c46011405103787_Untitled_1.png" alt="Local Gradio web interface for testing predictions from the deployed NLP template model" />
   <figcaption>Local Gradio deployment for ZenML NLP template model</figcaption>
 </figure>
 
@@ -95,7 +95,7 @@ Deploying locally also means you have full control over the environment, making 
 [HuggingFace Hub](https://huggingface.co/spaces) has emerged as a popular platform for sharing and collaborating on machine learning models, especially in the NLP domain. Deploying to HuggingFace Hub means your model becomes accessible to a wide community of researchers and practitioners, who can use and build upon your work.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/44ffc770/656701b4aa9ff39bb8a04778_Untitled_2.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/44ffc770/656701b4aa9ff39bb8a04778_Untitled_2.png" alt="NLP template model deployed to HuggingFace Hub with an interactive Gradio space" />
   <figcaption>HuggingFace deployment for ZenML NLP template model</figcaption>
 </figure>
 
@@ -135,7 +135,7 @@ python run.py
 Our created stack will look like the following
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1aec3a65/656701bf2be2319dc0aba687_Untitled_3.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1aec3a65/656701bf2be2319dc0aba687_Untitled_3.png" alt="ZenML dashboard showing the generated NLP project's local stack" />
   <figcaption>ZenML Dashboard</figcaption>
 </figure>
 

@@ -137,7 +137,7 @@ Note how the model deployment Service is returned as an output Artifact by the m
 ## Store Services as Artifacts
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2ab887e6/6530058b9abb7055cb0c59f9_675obz.jpeg" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2ab887e6/6530058b9abb7055cb0c59f9_675obz.jpeg" alt="Humorous meme illustrating the idea of freezing a running ZenML Service to store its configuration as an artifact" />
 </figure>
 
 [from Imgflip Meme Generator](https://imgflip.com/memegenerator)

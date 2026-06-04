@@ -45,13 +45,13 @@ Being named [one of Germany’s 20 most promising AI startups](https://www.wiwo.
 Securing this latest funding round, led by Point Nine, is like strapping a rocket to ZenML. It's fuel for the exciting journey ahead. What's on the horizon, you ask? Well, we're rolling out [ZenML Cloud](https://zenml.io/cloud/). It's our managed service designed to meet the nuanced, and sometimes gnarly, needs of ML teams like yours. We’ve got some industry greats joining us on this adventure, and that means more expertise in our corner.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0e5114e2/653231d9b3f9380326f6bd5b_T-ozvvoUAx0rPloSGGmQC3cjfkenMpsWTPBl5co1Hs6Q5Fjo4eC0_ajxxtX-dr8joNOcHJEsZivz05Hi-DhcXJvcGwQpiGLWlO_RY_iCX0ZdI8nOfe_339bS01fbN8gt40kR25h-a0H31OgES380mw.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0e5114e2/653231d9b3f9380326f6bd5b_T-ozvvoUAx0rPloSGGmQC3cjfkenMpsWTPBl5co1Hs6Q5Fjo4eC0_ajxxtX-dr8joNOcHJEsZivz05Hi-DhcXJvcGwQpiGLWlO_RY_iCX0ZdI8nOfe_339bS01fbN8gt40kR25h-a0H31OgES380mw.png" alt="ZenML Cloud tenants dashboard listing tenants with version badges and running or paused status" />
 </figure>
 
 ZenML Cloud isn’t your run-of-the-mill service; it’s an upgrade with bells and whistles. We’re talking features like Single Sign-on (SSO), Role-Based Access Control (RBAC), and CI/CD integrations. But don't worry, we're staying true to our open-source roots, ensuring that ZenML Cloud complements, rather than overshadows, our core offering. Development continues on our core open-source framework – itself used within ZenML Cloud – and we’re currently working on some big updates to how models and data are handled throughout the full ML lifecycle that you’ll get to use soon!
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a56cc588/653231da83dee642d41e7d88_kA-D056ChqiFxfNMpyIGXND0IQwpVRrZMA1_MS0Fr6hWXRzZReZ7cQkfcZEtCiWfwi4-kJhAtp4HxdZ7mpzrMuTu7nRJGDnn8t6am2ZFrrDv8Z3u0m8FsizSQ3Zz4TIJi3QdQq7kBcML2ZxIeCiIkg.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a56cc588/653231da83dee642d41e7d88_kA-D056ChqiFxfNMpyIGXND0IQwpVRrZMA1_MS0Fr6hWXRzZReZ7cQkfcZEtCiWfwi4-kJhAtp4HxdZ7mpzrMuTu7nRJGDnn8t6am2ZFrrDv8Z3u0m8FsizSQ3Zz4TIJi3QdQq7kBcML2ZxIeCiIkg.png" alt="ZenML Cloud Models page showing a table of registered models with versions, owners and tags" />
 </figure>
 
 ## Shoutout to Our Current ZenML Superstars

@@ -48,7 +48,7 @@ Last week, we conducted our first webinar, talking about building the data flywh
 ## ZenML Product Corner
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9e952583/66436dd985e8f00d1c1a8715_dashboard.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9e952583/66436dd985e8f00d1c1a8715_dashboard.png" alt="The newly open-sourced ZenML dashboard with its redesigned modern interface" />
 </figure>
 
 ### Open sourcing our new dashboard
@@ -58,7 +58,7 @@ Last week brought the HUGE news that we finally unfiied the cloud and open sourc
 [Learn More](https://www.zenml.io/blog/oss-dashboard-release)
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5f25f9c7/66436dd9045a6babe2fcc84e_lora.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5f25f9c7/66436dd9045a6babe2fcc84e_lora.png" alt="ZenML pipeline for multi-GPU distributed fine-tuning of Mistral using PEFT/LoRA" />
 </figure>
 
 ### Multi-GPU LLM finetuning with PEFT
@@ -68,7 +68,7 @@ We have a brand new ZenML project by [Andrei](https://www.linkedin.com/in/andrei
 [See code](https://docs.zenml.io/user-guide/cloud-guide)
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/802deec2/66436dd903cc4a8095deaadc_reranking.webp" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/802deec2/66436dd903cc4a8095deaadc_reranking.webp" alt="Reranking step improving document retrieval results in an LLM-based RAG system" />
 </figure>
 
 ### Reranking for better retrieval with LLMs
@@ -96,7 +96,7 @@ We had an absolute blast talking many new users about onboarding on ZenML, and w
 ### Featuring a brand-new MLOps tutorial in 11 minutes!
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e7a14f05/66436dd96e9e5eae8ed3501b_maxresdefault.jpeg" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e7a14f05/66436dd96e9e5eae8ed3501b_maxresdefault.jpeg" alt="Thumbnail for ZenML's Zero to Hero MLOps tutorial video on YouTube" />
 </figure>
 
 <ul start="1"><li>Working with <a target="_blank" href="https://www.linkedin.com/in/gabitov/">Renat Gabitov</a> and the team at <a target="_blank" href="https://www.linkedin.com/company/represent-studio/">Represent</a>, we recorded a "<strong>Zero to Hero</strong>" video tutorial using ZenML.</li><li>The video is professionally edited and shot, and features yours truly. It took me two hours to shoot, and made me appreciate how tough being a full-time YouTuber can be!</li><li>Like and subscribe on YouTube to show the love!</li></ul>

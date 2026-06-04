@@ -8,9 +8,9 @@
  *   (a) replace `/images/zenml-logo.svg`, or
  *   (b) inline the new SVG paths here.
  *
- * `alt=""` because every caller is inside an anchor that already
- * announces the destination as "ZenML" (home / brand). Avoids
- * double-announcement for screen readers.
+ * `alt="ZenML"` gives crawlers a non-empty alt. Every caller's anchor has
+ * `aria-label="ZenML"`, which wins as the link's accessible name, so screen
+ * readers still announce it exactly once (no double-announcement).
  */
 interface Props {
   class?: string;
@@ -18,4 +18,4 @@ interface Props {
 const { class: className = "" } = Astro.props;
 ---
 
-<img src="/images/zenml-logo.svg" alt="" class={className} aria-hidden="true" />
+<img src="/images/zenml-logo.svg" alt="ZenML" class={className} />

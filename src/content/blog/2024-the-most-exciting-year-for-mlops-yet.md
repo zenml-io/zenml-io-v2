@@ -50,7 +50,7 @@ Your opinion is crucial to us! Join a user testing session and help us improve Z
 ## ZenML Product Corner
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d61aa696/6630a8729c7ba8098fa35b63_rag50lines.jpeg" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d61aa696/6630a8729c7ba8098fa35b63_rag50lines.jpeg" alt="Python code implementing a minimal RAG pipeline from scratch with the OpenAI client, no LangChain" />
 </figure>
 
 ### LLMOps Guide
@@ -60,7 +60,7 @@ Want to see how RAG works in ~50 lines of code, with no Langchain or other wrapp
 [Learn More](https://docs.zenml.io/user-guide/llmops-guide)
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e93b7963/6630a8725a710dd574767145_metadata.webp" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e93b7963/6630a8725a710dd574767145_metadata.webp" alt="ZenML architecture diagram: metadata-only store linking local clients to stack components in a customer VPC" />
 </figure>
 
 ### Easy cloud stacks
@@ -70,7 +70,7 @@ A stack is the configuration of tools and infrastructure that your pipelines can
 [Learn more](https://docs.zenml.io/user-guide/cloud-guide)
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dbdea346/6630a872dd3b5432f25f21b2_paperspace.jpeg" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dbdea346/6630a872dd3b5432f25f21b2_paperspace.jpeg" alt="ZenML DAG visualizer for an LLM LoRA finetuning pipeline running on a Lambda Labs orchestrator stack" />
 </figure>
 
 ### Lambda Labs support in ZenML

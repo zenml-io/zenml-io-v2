@@ -41,7 +41,7 @@ You can use mlstacks [directly as a Python package](https://pypi.org/project/mls
 We reworked the previous way of doing things to be more stable and reliable. We even added new features like the ability to get a cost estimate for your MLOps stacks.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/100abd95/65294917457744f21f063c4b_mlstacks_breakdown.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/100abd95/65294917457744f21f063c4b_mlstacks_breakdown.png" alt="Terminal output showing the mlstacks cost estimate: monthly price breakdown per GCP stack resource with a total" />
 </figure>
 
 We were inspired by [the work done by the FuzzyLabs team on Matcha](https://github.com/fuzzylabs/matcha) as well as by conversations with users of the old mlops-stacks repository / functionality. In that spirit, MLStacks is also designed to be able to work as a standalone deployment option independent of ZenML. All of this is available in the new mlstacks Python package and with [ZenML's latest release (0.44.1)](https://github.com/zenml-io/zenml/releases/tag/0.44.1).
@@ -73,7 +73,7 @@ Most of the examples shown here are fairly simple as they allow you to try thing
 MLStacks works by taking stack and component specification files and parsing them into Terraform files which are in turn deployed to your cloud (or local, in the case of k3d) infrastructure. Our Python package will validate your specification files to ensure that you're not using invalid or unsupported combinations of components.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5dc0b37e/652949178546cb4cca7a88c3_mlstacks.jpeg" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5dc0b37e/652949178546cb4cca7a88c3_mlstacks.jpeg" alt="Diagram: stack and component specs feed the MLStacks client, which deploys ZenML, Kubeflow, MLflow and S3 to AWS" />
 </figure>
 
 If you find something that we don't yet support but that you need for your work, we encourage you to contribute to the project!
@@ -81,7 +81,7 @@ If you find something that we don't yet support but that you need for your work,
 When using mlstacks through ZenML, you don't have to do the work of writing the stack specification .yaml files. You simply need to compose the CLI command that specifies which components you need in your stack.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4a8f6f43/65294917e659b133a3db73e0_zenml-with-mlstacks.jpeg" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4a8f6f43/65294917e659b133a3db73e0_zenml-with-mlstacks.jpeg" alt="Diagram: the ZenML CLI generates stack and component specs that MLStacks deploys to an AWS stack with ZenML, Kubeflow, MLflow and S3" />
 </figure>
 
 We're working to provide other (easier) ways to deploy your infrastructure using ZenML but for now CLI deployments offer all the flexibility of the mlstacks package without the need to write your own stack and component specifications!
