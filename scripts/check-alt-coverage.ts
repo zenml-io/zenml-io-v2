@@ -19,7 +19,8 @@
  * Preact island JSX).
  *
  * What counts as OK:
- *   - alt="text" / alt='text' / alt={expr} with a non-empty value, OR
+ *   - alt="text" / alt='text' / alt={expr} with a non-empty value that is
+ *     not the Webflow migration sentinel, OR
  *   - the image is explicitly decorative: aria-hidden="true" | aria-hidden={true}
  *     | role="presentation" | role="none".
  *
@@ -30,18 +31,16 @@
  *   - content marked `draft: true`, and the `old-projects/` collection, which
  *     has no public route — neither ships to a crawlable page.
  *
- * Known limitations (tracked for a follow-up, deliberately not enforced here so
- * this guard can ship green against the existing codebase):
+ * Known limitations:
  *   - Expression alts with an empty fallback, e.g. `alt={name || ""}`, pass
  *     because the expression text is non-empty even though it can render empty.
- *   - Webflow sentinel alts like `alt="__wf_reserved_inherit"` are non-empty so
- *     they pass, but are not descriptive. ~150 migrated posts still carry these.
  */
 
 import { readdirSync, readFileSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 
 const ROOT = resolve(process.cwd());
+const WEBFLOW_SENTINEL_ALT = "__wf_reserved_inherit";
 
 /** Recursively collect files with any of the given extensions under a dir. */
 function collectFiles(dir: string, exts: string[]): string[] {
@@ -81,10 +80,13 @@ function hasRealSrc(tag: string): boolean {
   return false;
 }
 
-/** Does the tag have a non-empty alt? Accepts alt="...", alt='...', alt={expr}. */
+/** Does the tag have a non-empty, descriptive alt? Accepts alt="...", alt='...', alt={expr}. */
 function hasGoodAlt(tag: string): boolean {
   const q = /\balt=(["'])(.*?)\1/is.exec(tag);
-  if (q) return q[2].trim() !== "";
+  if (q) {
+    const alt = q[2].trim();
+    return alt !== "" && alt !== WEBFLOW_SENTINEL_ALT;
+  }
   const expr = /\balt=\{([\s\S]*?)\}/i.exec(tag);
   if (expr) return expr[1].trim().replace(/[`"' ]/g, "") !== "";
   return false;
