@@ -164,10 +164,6 @@ Redis is open-source, so the core vector search capability is free to use on you
 
 <ul><li><strong>Flex:</strong> $0.007 per hour</li><li><strong>Essentials:</strong> $0.007 per hour</li><li><strong>Pro:</strong> $0.274 per hour</li></ul>
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/511d49d7/68dca966a794ffc77304c341_qdrant-pricing.webp" alt="Screenshot of a vector database cloud pricing page listing per-hour managed plan tiers" />
-</figure>
-
 **👀 Note:** Pricing is primarily based on memory (RAM) and can scale up significantly for larger datasets.
 
 ### Pros and Cons
@@ -195,7 +191,7 @@ Weaviate itself is open-source (BSD-3), so you can self-host it for free. The We
 <ul><li><strong>Serverless Cloud:</strong> $25 per month</li><li><strong>Enterprise Cloud:</strong> $2.64 per AIU (AI Unit)</li><li><strong>BYO Cloud:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a706b969/68dca98d51e9006ab1e940dd_vespa-pricing.webp" alt="Screenshot of a vector database cloud pricing page showing usage-based managed plan tiers" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b2ee7f91/6860bf6878e897e0042f23a1_weaviate-pricing-plans.png" alt="Screenshot of Weaviate pricing plans for Serverless Cloud, Enterprise Cloud, BYOC, and embeddings" />
 </figure>
 
 ### Pros and Cons

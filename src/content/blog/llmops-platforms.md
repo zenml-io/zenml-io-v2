@@ -307,7 +307,7 @@ LangSmith has a free tier for hobbyists and paid plans for teams:
 <ul><li><strong>Developer:</strong> Free</li><li><strong>Plus:</strong> $39/month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/40b42b65/695a430bcaf2954b8bd81a0e_langgraph-pricing.webp" alt="LangChain pricing tiers: free Developer plan, Plus at $39 per seat, and custom Enterprise" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a6d23c74/690edd3b464ab03718dff95f_langsmith-pricing.png" alt="LangSmith seat-based pricing page showing Developer, Plus, and Enterprise plans" />
 </figure>
 
 ### Pros and Cons

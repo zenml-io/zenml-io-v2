@@ -230,24 +230,13 @@ Neptune has a free trial that’s coming soon, which you can take and get to kno
 
 <ul><li><strong>Startup:</strong> $150 per user per month</li><li><strong>Lab:</strong> $250 per user per month</li><li><strong>Self-hosted:</strong> Custom pricing</li></ul>
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8457aa72/68749c6f3e4df322cd38399e_zenml-pricing.png" alt="Screenshot of a pricing page outlining experiment tracking plans and tiers" />
-</figure>
-
 ### Pros and Cons
 
 Neptune AI features an excellent, fast, and responsive UI, even with large datasets. It boasts an easy-to-use Python SDK and is actively maintained with frequent new features and strong backward compatibility.
 
 The platform is more expensive for small teams as it has no cheap per-use option aside from the free tier (the free tier is limited to academics working on foundation models).
 
-    
-    
-    
-    
-
-    
-        
-            <a href="https://www.zenml.io/integrations/neptune" target="_blank">Seamlessly integrate Neptune's advanced experiment tracking</a> features into your ZenML workflows to optimize your machine learning experimentation process. Leverage Neptune's intuitive UI to log, visualize, and compare pipeline runs, making it easier to identify the best performing models and iterate faster.
+<a href="https://www.zenml.io/integrations/neptune" target="_blank">Seamlessly integrate Neptune's advanced experiment tracking</a> features into your ZenML workflows to optimize your machine learning experimentation process. Leverage Neptune's intuitive UI to log, visualize, and compare pipeline runs, making it easier to identify the best performing models and iterate faster.
 
 ## 3. Comet
 

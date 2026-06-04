@@ -243,7 +243,7 @@ LlamaIndex is free to use (open-source) for its core Python library. LlamaCloud,
 <ul><li><strong>LlamaIndex Starter:</strong> $50 per month - 50K API credits, 5 seats</li><li><strong>LlamaIndex Pro:</strong> $500 per month - 500K credits, 10 seats</li><li><strong>LlamaIndex Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a52382b7/68ef90475bf63ef93954fdaa_langgraph-pricing.png" alt="Pricing tiers chart for the LlamaIndex pricing section comparing free and paid plan options" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79f2f701/695a4327002ef62cdce5fcfa_llamaindex-pricing.webp" alt="Screenshot of LlamaCloud pricing: Free, Starter at $50, Pro at $500, and custom Enterprise plans" />
 </figure>
 
 **📚 Also read:** [LlamaIndex pricing](https://www.zenml.io/blog/llamaindex-pricing)
