@@ -55,31 +55,31 @@ On the path from first explorations to production systems projects accumulate te
 <ol><li>You start out explorative in jupyter notebooks, and eventually end up with a first well-performing model. </li></ol>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ca417d49/673c8305f98e598c5f1b00bf_65316dd1ee3ecd7e95972fc7_download_20_16_.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ca417d49/673c8305f98e598c5f1b00bf_65316dd1ee3ecd7e95972fc7_download_20_16_.png" alt="Stage 1 of ML project growth: a first well-performing model built in a Jupyter notebook" />
 </figure>
 
 <ol><li>That model needs to be deployed, right? To preserve speed and keep complexity low you wrap it in a Flask-based API container, pass on the API endpoint, done. </li></ol>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/80ad3145/673c8305f98e598c5f1b00b8_65316dd811b1c834ddc928aa_download_20_17_.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/80ad3145/673c8305f98e598c5f1b00b8_65316dd811b1c834ddc928aa_download_20_17_.png" alt="Stage 2: the model wrapped in a Flask-based API container exposing a deployment endpoint" />
 </figure>
 
 <ol><li>But wait, actually your data will change over time. You’re not just doing a one-of batch inference, so your deployment needs to be connected to the newly incoming data. New data might change in its structure, so you’re also adding monitoring for input and output distributions. </li></ol>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1d18b326/673c8305f98e598c5f1b00bb_65316de57293f44f2b0eca20_download_20_18_.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1d18b326/673c8305f98e598c5f1b00bb_65316de57293f44f2b0eca20_download_20_18_.png" alt="Stage 3: deployment connected to incoming data with monitoring on input and output distributions" />
 </figure>
 
 <ol><li>The team, on top of that, will also start to refactor its codebase, because your needs have by far outgrown what you can do in Jupyter Notebooks. </li></ol>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1837bc3c/673c8305f98e598c5f1b00ae_65316ded441013e9d6663585_download_20_19_.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1837bc3c/673c8305f98e598c5f1b00ae_65316ded441013e9d6663585_download_20_19_.png" alt="Stage 4: the codebase refactored out of Jupyter notebooks as the project outgrows them" />
 </figure>
 
 <ol><li>By now you’re also facing the challenge to orchestrate all that preprocessing and training across resources. That beefy VM you were running your code on simply doesn’t cut it anymore. </li></ol>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6559157e/673c8305f98e598c5f1b00b2_65316dfd20324e8180276bf9_download_20_20_.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6559157e/673c8305f98e598c5f1b00b2_65316dfd20324e8180276bf9_download_20_20_.png" alt="Stage 5: preprocessing and training orchestrated across distributed resources beyond a single VM" />
 </figure>
 
 As you progress you’re further dividing your codebase in more granular functions - splitting and preprocessing is separated, eval becomes semi-automated, your ETLs become standardized, and metadata plays a decisive role for your architecture.
@@ -95,7 +95,7 @@ The picture is not as bleak as it was a few years ago. There are solutions poppi
 The industry is quickly converging on agreed upon components that are integral to a production ML system. A state-of-the-art high level architectural diagram for a production ML system can be pictured now clearly below:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/164971e4/673c8305f98e598c5f1b00b5_65316e08ee3ecd7e95975f17_download_20_21_.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/164971e4/673c8305f98e598c5f1b00b5_65316e08ee3ecd7e95975f17_download_20_21_.png" alt="High-level architecture of a production ML system: feature store, orchestration, training, serving and monitoring layers" />
 </figure>
 
 To avoid train-serve drift, ML companies increasingly centralize their data in feature stores. Next to classical database systems (MySQL, Postgres, DynamoDB) and key-value stores ([HiveDB](https://github.com/hivedb)) there are also a number of proprietary systems are entering the market with powerful feature level automations. The people behind [Uber’s Michaelangelo](https://eng.uber.com/michelangelo-machine-learning-platform/) now raised $20 million for [Tecton](https://techcrunch.com/2020/04/28/tecton-ai-emerges-from-stealth-with-20m-series-a-to-build-operational-machine-learning-platform/), and [Logical Clocks](https://www.hopsworks.ai/) is doubling down on their feature store.

@@ -20,6 +20,7 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 
 - **No broken links** — all published URLs must be preserved or 301-redirected
 - **SEO stability** — keep slugs, meta tags, Open Graph data intact when editing content
+- **Alt text on images** — SEO matters: every image (`<img>`, `mainImage`, `logo`) should have descriptive, non-empty alt text unless there's a clear reason not to (e.g. a decorative image already labelled by an adjacent `aria-label`)
 - **Content schema integrity** — content collections validated by Zod schemas in `src/content.config.ts`
 - **Static-first output** — the site is statically generated; only API routes in `src/pages/api/` run server-side
 - **Use Astro API routes, not `functions/`** — the Cloudflare adapter's `_worker.js` silently ignores hand-written `functions/` (see below)

@@ -72,7 +72,7 @@ Observability in LLM applications begins with detailed tracing, which captures t
 ### Langfuse
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7ad05fad/691c00cb3cc073c188efb491_langfuse-tracing-and-spans.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7ad05fad/691c00cb3cc073c188efb491_langfuse-tracing-and-spans.webp" alt="Langfuse UI showing a hierarchical trace timeline with nested spans for an LLM request" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -89,7 +89,7 @@ Because [Langfuse](https://www.zenml.io/blog/langfuse-vs-langsmith) natively spe
 ### Phoenix
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9c2e0c10/691c00ed3f410dcd927c89a8_phoenix-tacing-and-spans.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9c2e0c10/691c00ed3f410dcd927c89a8_phoenix-tacing-and-spans.webp" alt="Phoenix UI showing automatically captured hierarchical spans and trace timeline for an LLM call" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -112,7 +112,7 @@ OpenTelemetry (OTel) defines a standardized, vendor-neutral framework for instru
 ### Langfuse
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/38aa4001/691c0108fbf6185f61b04ea4_langfuse-opentelemetry.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/38aa4001/691c0108fbf6185f61b04ea4_langfuse-opentelemetry.webp" alt="Langfuse OpenTelemetry integration showing OTLP-based span ingestion from instrumented SDKs" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -150,7 +150,7 @@ Agentic systems introduce complex, non-linear execution paths that require speci
 ### Langfuse
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/490398b8/691c0120e5be5a70061dd59e_langfuse-multi-agent.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/490398b8/691c0120e5be5a70061dd59e_langfuse-multi-agent.webp" alt="Langfuse Agent Graph view visualizing multi-agent interactions as a DAG of agents and tools" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -183,7 +183,7 @@ Prompt management moves prompt engineering out of brittle string literals within
 ### Langfuse
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ab6bf7e/691c01ecde33455167aa348f_langfuse-prompt-management.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ab6bf7e/691c01ecde33455167aa348f_langfuse-prompt-management.webp" alt="Langfuse Prompt Management dashboard for storing, versioning, and tagging prompt templates" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -200,7 +200,7 @@ Besides, prompt templates can also sync with GitHub, ensuring that production an
 ### Phoenix
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d6c34f4c/691c02059088951dca5156f3_phoenix-prompt-management.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d6c34f4c/691c02059088951dca5156f3_phoenix-prompt-management.webp" alt="Phoenix Prompt Playground for designing, comparing, and replaying prompt templates" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -223,7 +223,7 @@ Key integrations include:
 <ul><li><strong>LLM frameworks:</strong> LangChain, LlamaIndex, Haystack, LangGraph, AutoGen, DSPy, CrewAI, BeeAI</li><li><strong>Model APIs:</strong> OpenAI, Anthropic, Hugging Face, Vertex AI</li><li><strong>Analytics &amp; feedback:</strong> Mixpanel, PostHog, or custom Metrics API</li><li><strong>Deployment options:</strong> Python, TypeScript, and community SDKs (Java, Go)</li><li><strong>Observability tools:</strong> OpenTelemetry, Jaeger, Datadog</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d1b817dd/691c02244f270fbaca27af2c_langfuse-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d1b817dd/691c02244f270fbaca27af2c_langfuse-integration.webp" alt="Langfuse integration ecosystem spanning LLM frameworks, model APIs, and observability tools" />
 </figure>
 
 ### Phoenix
@@ -235,7 +235,7 @@ Key integrations include:
 <ul><li><strong>LLM frameworks:</strong> LangChain, LlamaIndex, DSPy, SmolAgents, Haystack</li><li><strong>Libraries:</strong> Hugging Face, OpenAI SDK, Transformers</li><li><strong>Hosting options:</strong> Local notebook, Docker, or Arize AX Cloud</li><li><strong>Evaluation stack:</strong> Phoenix Evals SDK for LLM-as-a-judge and dataset testing</li><li><strong>Telemetry layer:</strong> Native OpenTelemetry/OTLP collector for external data export</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9f66f677/691c024599b5f119a915d2ef_phoenix-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9f66f677/691c024599b5f119a915d2ef_phoenix-integration.webp" alt="Phoenix Python-first integrations covering LLM frameworks, OpenAI SDK, and OTLP telemetry export" />
 </figure>
 
 ## Langfuse vs Phoenix: Pricing
@@ -249,7 +249,7 @@ Langfuse is fully open-source, licensed under the Apache 2.0 license, and is fre
 <ul><li><strong>Core:</strong> $29 per month</li><li><strong>Pro:</strong> $199 per month</li><li><strong>Enterprise:</strong> $2499 per month</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/349fb819/691c025005ea756353972bdd_langfuse-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/349fb819/691c025005ea756353972bdd_langfuse-pricing.webp" alt="Langfuse Cloud pricing page showing Core, Pro, and Enterprise monthly tiers" />
 </figure>
 
 ### Phoenix
@@ -259,7 +259,7 @@ Phoenix is completely **open-source and free to use** with all features included
 <ul><li><strong>AX Free:</strong> Free up to 1 user</li><li><strong>AX Pro:</strong> $50 per month</li><li><strong>AX Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c81fdd76/691c025b7370ef29121abb8d_phoenix-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c81fdd76/691c025b7370ef29121abb8d_phoenix-pricing.webp" alt="Arize AX pricing page showing Free, Pro, and Enterprise plans for hosted Phoenix" />
 </figure>
 
 ## How ZenML Manages the Outer Loop when Deploying Agentic AI Workflows
@@ -267,7 +267,7 @@ Phoenix is completely **open-source and free to use** with all features included
 An agent debugged in Langfuse or Phoenix still lacks critical production attributes. Think of version control, automated evals, and lineage tracking of RAG data. For these, you eventually need a tool that connects your observability insights back into your model lifecycle. This is where ZenML comes in.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bfd9928a/68b12dc2668f4856e7055946_zenml-unified-mlops-plus-llmops-platform.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bfd9928a/68b12dc2668f4856e7055946_zenml-unified-mlops-plus-llmops-platform.png" alt="Diagram of ZenML as a unified MLOps and LLMOps platform wrapping the agent lifecycle" />
 </figure>
 
 ZenML is an [MLOps](https://www.zenml.io/blog/mlops-vs-llmops) + [LLMOps framework](https://docs.zenml.io/user-guides/llmops-guide) that comes into play as the 'outer loop' around these tools. Langfuse and Phoenix focus on tracing and evaluating the behavior of your LLM agents – the inner loop of prompt → response iterations and debugging.
@@ -279,7 +279,7 @@ Here’s how ZenML complements Langfuse/Phoenix and elevates your agent deployme
 ### 1. Unified Orchestration
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f27d8c77/691c02774870e4cac4340e2e_zenml-unified-orchestration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f27d8c77/691c02774870e4cac4340e2e_zenml-unified-orchestration.webp" alt="ZenML architecture diagram showing unified orchestration of the agent lifecycle as versioned pipeline steps" />
   <figcaption>ZenML architecture</figcaption>
 </figure>
 
@@ -292,7 +292,7 @@ Every run of this pipeline is tracked by ZenML, which means you get a full linea
 ### 2. End-to-End Visibility and Lineage
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="ZenML dashboard visualizing a pipeline run as a DAG for end-to-end lineage tracking" />
   <figcaption>ZenML pipeline DAG visualization</figcaption>
 </figure>
 
@@ -305,7 +305,7 @@ Use the ZenML dashboard to visualize your pipeline changes. The dashboard shows 
 ### 3. Continuous Evaluations and Feedback Loop
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a7fff087/68ba65256e6939b8dbf7fef4_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a7fff087/68ba65256e6939b8dbf7fef4_zenml-evaluation.png" alt="ZenML evaluation step running automated quality checks within a production pipeline" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 

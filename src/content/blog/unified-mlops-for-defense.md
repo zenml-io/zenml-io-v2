@@ -66,7 +66,7 @@ ZenML addresses these challenges through a comprehensive approach that spans env
 The core of our solution is providing a consistent interface that works across AWS, Azure, on-premises, and air-gapped systems. This means data scientists write ML pipelines once and deploy them anywhere without changing code.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d8fe5537/6821ee68f939647c2fadbc06_zenml_defense01.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d8fe5537/6821ee68f939647c2fadbc06_zenml_defense01.png" alt="ZenML: A central framework that standardizes how workflows are deployed on your infrastructure" />
   <figcaption>ZenML: A central framework that standardizes how workflows are deployed on your infrastructure</figcaption>
 </figure>
 
@@ -77,7 +77,7 @@ For the Bundeswehr, this translated to a significant reduction in environment-sp
 [ZenML's service connectors](https://www.zenml.io/blog/how-to-simplify-authentication-in-machine-learning-pipelines-for-mlops) provide a unified way to access computation resources, artifact storage, and orchestration services across different environments. Unlike traditional approaches that require environment-specific configurations, service connectors abstract away the complexities of authentication and access control.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1d50e3f0/6821c91673655a1284ba8a0d_blog01.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1d50e3f0/6821c91673655a1284ba8a0d_blog01.webp" alt="Service connectors allow secure access to underlying infrastructure" />
   <figcaption>Service connectors allow secure access to underlying infrastructure</figcaption>
 </figure>
 
@@ -99,7 +99,7 @@ def threat_detection_pipeline(data_path, model_config):
 ### Environment-Specific Stacks
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b479f124/6821c9fee52f9959c142793c_blog02.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b479f124/6821c9fee52f9959c142793c_blog02.gif" alt="Connect disparate infrastructure stack components and share them securely with a few clicks" />
   <figcaption>Connect disparate infrastructure stack components and share them securely with a few clicks</figcaption>
 </figure>
 
@@ -112,7 +112,7 @@ Our French aerospace defense partner used this capability to maintain developmen
 ### End-to-End Traceability
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f52eadb1/6821ef2a8ffa07e8c7c6e71d_zenml_defense02.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f52eadb1/6821ef2a8ffa07e8c7c6e71d_zenml_defense02.png" alt="Complete lineage and tracing with ZenML" />
   <figcaption>Complete lineage and tracing with ZenML</figcaption>
 </figure>
 
@@ -123,7 +123,7 @@ This capability was critical for the Bundeswehr, as it allowed them to demonstra
 ## Unifying Defense ML Operations
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/29815375/6821ef689a9cf2e7323a6da1_Potential_solution_architecture_-_defense.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/29815375/6821ef689a9cf2e7323a6da1_Potential_solution_architecture_-_defense.png" alt="Potential Solution Architecture Defense diagram" />
 </figure>
 
 Let's explore how these capabilities apply in a practical scenario similar to what defense contractors face today. Let’s take an example of a defense organization operating three distinct ML initiatives, each with different infrastructure requirements:
@@ -137,7 +137,7 @@ ZenML allows this organization to establish a consistent workflow that spans the
 <ul><li><strong>Development teams</strong> can use familiar tools in their preferred environment</li><li><strong>Security requirements</strong> are enforced through pre-configured stacks</li><li><strong>Model artifacts</strong> are tracked consistently across environments</li><li><strong>Infrastructure utilization</strong> is optimized through proper resource sharing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2dd5fd46/6821ef813d5db09513adc17a_ai_dev_cycle_1.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2dd5fd46/6821ef813d5db09513adc17a_ai_dev_cycle_1.png" alt="The AI Development Lifecycle with ZenML" />
   <figcaption>The AI Development Lifecycle with ZenML</figcaption>
 </figure>
 

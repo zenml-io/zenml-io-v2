@@ -40,7 +40,7 @@ We are thrilled to announce the release of **ZenML 0.75.0**, bringing significan
 The highlight of this release is the enhanced dashboard functionality that now allows you to **create and update stack components directly from the dashboard**. This powerful addition streamlines your workflow by reducing the need to switch between the CLI and the dashboard when managing your ML infrastructure components.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1cdba83a/67c0652ebc6a88f864605a66_ScreenRecording2025-02-27at14.07.03-ezgif.com-crop.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1cdba83a/67c0652ebc6a88f864605a66_ScreenRecording2025-02-27at14.07.03-ezgif.com-crop.gif" alt="Screenrecording2025 02 27at14.07.03 Ezgif.com Crop animated walkthrough" />
 </figure>
 
 ##### Service Connector Improvements

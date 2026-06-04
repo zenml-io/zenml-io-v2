@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "check": "astro check --tsconfig ./tsconfig.check.json",
     "check:surface": "tsx scripts/check-surface-coverage.ts",
+    "check:alt": "tsx scripts/check-alt-coverage.ts",
     "validate:content": "tsx scripts/phase2/validate-content.ts",
     "validate:llmops": "tsx scripts/phase2/validate-content.ts --collection=llmops-database",
     "validate:mlops": "tsx scripts/phase2/validate-content.ts --collection=mlops-database",

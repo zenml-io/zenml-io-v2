@@ -45,7 +45,7 @@ This model has worked well. Companies from JetBrains to [Adeo Leroy Merlin](http
 **The last two years have seen LLM-powered applications dominate the space. This year—the so-called "year of agents"—is gripping everyone's attention. And we're seeing the The last two years have seen LLM-powered applications dominate the space. This year—the so-called "year of agents"—is gripping everyone's attention. And we're seeing the exact same patterns unfold that we witnessed in early MLOps:exact same patterns unfold that we witnessed in early MLOps: unfold that we witnessed in early MLOps:☯The last two years have seen LLM-powered applications dominate the space. This year—the so-called "year of agents"—is gripping everyone's attention. And we're seeing the The last two years have seen LLM-powered applications dominate the space. This year—the so-called "year of agents"—is gripping everyone's attention. And we're seeing the exact same patterns unfold that we witnessed in early MLOps:exact same patterns unfold that we witnessed in early MLOps: unfold that we witnessed in early MLOps:☯**
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5b6d20c2/6867d7e95e34f697d7be792b_MLOps_AgentOps_Comparison-newsletter.jpg" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5b6d20c2/6867d7e95e34f697d7be792b_MLOps_AgentOps_Comparison-newsletter.jpg" alt="MLOps Agentops Comparison Newsletter" />
 </figure>
 
 Look familiar?
@@ -67,11 +67,11 @@ The beauty? These work alongside your existing MLOps stack. Same patterns, expan
 *The following code snippets are just indicators of what the interface(s) might look like. Nothing's written in stone yet and this is certainly work in progress...*
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/26d6f5de/6867d800d1c1db3d977f518e_CleanShot_202025-07-02_20at_2016.51.40.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/26d6f5de/6867d800d1c1db3d977f518e_CleanShot_202025-07-02_20at_2016.51.40.png" alt="Python code: a ZenML step running a research agent with LLM tracing and cost tracking, plus a step evaluating agent performance" />
 </figure>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0a0dc7c3/6867d801d1c1db3d977f5197_CleanShot_202025-07-02_20at_2016.52.06.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0a0dc7c3/6867d801d1c1db3d977f5197_CleanShot_202025-07-02_20at_2016.52.06.png" alt="Python code: a prompt-improvement step and a ZenML agent_development_pipeline chaining agent run, evaluation, and prompt updates" />
 </figure>
 
 Note that here we are invoking an “agent” from within ZenML — a pattern we expect to see a lot more often (batch evals, invoking in production, iterating while developing etc).
@@ -85,17 +85,17 @@ Having an MLOps flywheel while developing an agent is something that [excites us
 This is our vision of the complete agent development lifecycle—not the current "build it and pray" approach.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8ceca900/6867d801d1c1db3d977f519a_CleanShot_202025-07-02_20at_2016.54.21.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8ceca900/6867d801d1c1db3d977f519a_CleanShot_202025-07-02_20at_2016.54.21.png" alt="Python code: ZenML steps combining LLM-powered feature engineering, traditional sklearn training, and LLM interpretation of the model" />
 </figure>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf9059dc/6867d801d1c1db3d977f5194_CleanShot_202025-07-02_20at_2016.54.30.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf9059dc/6867d801d1c1db3d977f5194_CleanShot_202025-07-02_20at_2016.54.30.png" alt="Python code: a ZenML unified_ai_pipeline wiring ML and LLM steps together with clear separation between traditional ML and LLM logic" />
 </figure>
 
 **3. Faster, More Reliable Orchestration**
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/799d5e00/6867d801d1c1db3d977f51a6_CleanShot_202025-07-02_20at_2016.55.22.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/799d5e00/6867d801d1c1db3d977f51a6_CleanShot_202025-07-02_20at_2016.55.22.png" alt="Python code: a ZenML production_agent_workflow fanning out research agents in parallel and fanning in to combine results with ML analysis" />
 </figure>
 
 As stated above, there will be cases where you might want to invoke agents within a ZenML pipeline. However, there are also other cases where it might make sense to bake the LLM calls directly into the workflows directly. As [we discussed last month](https://www.zenml.io/blog/newsletter-edition-15---why-you-dont-need-an-agent-but-you-might-need-a-workflow), we've learned that **workflows are often better than fully autonomous agents** for production use cases. More autonomy means more entropy, which enterprise applications can't tolerate.

@@ -86,7 +86,7 @@ These are orchestration problems. DSPy is a framework for building LLM programs.
 The RLM pattern and ZenML's dynamic pipelines have the same shape:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6293f041/699898420b4f9161462e8d3f_final.avif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6293f041/699898420b4f9161462e8d3f_final.avif" alt="The Structural Parallel screenshot" />
 </figure>
 
 The number of `process_chunk` steps is decided at runtime based on the query and corpus. ZenML auto-names repeated invocations (`process_chunk`, `process_chunk_2`, etc.).
@@ -204,7 +204,7 @@ Our production example is RLM-inspired rather than a line-by-line reproduction o
 Each `process_chunk` step runs a bounded iterative loop. Here's the simplified flow:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7a713677/699898979588c3305133edad_final.avif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7a713677/699898979588c3305133edad_final.avif" alt="The Iterative Reasoning Pattern screenshot" />
 </figure>
 
 Each plan+reflect iteration costs 2 LLM calls. The final summarize costs 1. So `max_iterations=6` allows up to 2 full search-reflect rounds plus the final synthesis.

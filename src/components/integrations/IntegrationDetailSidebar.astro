@@ -114,7 +114,7 @@ const {
           {relatedPosts.map((post) => (
             <a href={post.href} class="flex items-center gap-3 group">
               {post.imageUrl && (
-                <img src={post.imageUrl} alt="" width="56" height="56" class="h-14 w-14 shrink-0 rounded-lg object-cover" loading="lazy" />
+                <img src={post.imageUrl} alt="" aria-hidden="true" width="56" height="56" class="h-14 w-14 shrink-0 rounded-lg object-cover" loading="lazy" />
               )}
               <span class="line-clamp-2 text-sm font-medium text-gray-700 group-hover:text-primary-600">
                 {post.title}

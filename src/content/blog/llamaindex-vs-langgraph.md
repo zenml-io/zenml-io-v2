@@ -88,7 +88,7 @@ As you see, LlamaIndex and LangGraph both cover the fundamentals of LLM applicat
 #### LlamaIndex
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3e5e3a94/687b1945ab9d8bec9134acda_multi-agent-ai-system-framework.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3e5e3a94/687b1945ab9d8bec9134acda_multi-agent-ai-system-framework.png" alt="Diagram of a multi-agent AI system with a central orchestrator routing tasks to sub-agents" />
   <figcaption>Multi-agent AI systems framework</figcaption>
 </figure>
 
@@ -136,7 +136,7 @@ All in all, LlamaIndex’s orchestration is powerful for building multi-agent AI
 #### LangGraph
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/aa262e9f/687b199e0760b0d1fb35819e_how-ai-agents-are-connected-in-langgraph.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/aa262e9f/687b199e0760b0d1fb35819e_how-ai-agents-are-connected-in-langgraph.png" alt="LangGraph graph showing agents connected as nodes and edges defining the execution flow" />
   <figcaption>How AI agents are connected in LangGraph</figcaption>
 </figure>
 
@@ -161,7 +161,7 @@ Overall, LangGraph trades some of the ‘fully autonomous’ ease of a purely ag
 #### LlamaIndex
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/be002870/687b19c694f1758668143446_llamaindex-rag-pipeline.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/be002870/687b19c694f1758668143446_llamaindex-rag-pipeline.png" alt="LlamaIndex RAG pipeline flow from data loading through indexing to retrieval and querying" />
   <figcaption>LlamaIndex RAG pipeline</figcaption>
 </figure>
 
@@ -174,7 +174,7 @@ One of LlamaIndex’s core strengths is making [Retrieval-Augmented Generation](
 #### LangGraph
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b697b28/687b19e81c01f1d04c885a6d_langgraph-basic-rag-flow.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b697b28/687b19e81c01f1d04c885a6d_langgraph-basic-rag-flow.png" alt="Basic LangGraph RAG flow with nodes that retrieve documents and pass them to the LLM for synthesis" />
   <figcaption>LangGraph basic RAG flow</figcaption>
 </figure>
 
@@ -201,7 +201,7 @@ LangGraph is ideal when you want fine-grained control over the RAG process or ne
 #### LlamaIndex
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/989ad604/687b1a095a8d9709de65b8be_llamaimdex-obervability.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/989ad604/687b1a095a8d9709de65b8be_llamaimdex-obervability.webp" alt="LlamaIndex observability view tracing LLM and retrieval calls with latency and token stats" />
   <figcaption>LlamaIndex observability</figcaption>
 </figure>
 
@@ -216,7 +216,7 @@ LlamaIndex also offers a ‘one-click observability’ feature designed for prod
 #### LangGraph
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5af8bb79/687b1a2ae93127d29c981463_langgraph-observability.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5af8bb79/687b1a2ae93127d29c981463_langgraph-observability.png" alt="LangGraph observability through LangSmith showing step-by-step trace of an agent workflow" />
   <figcaption>LangGraph observability</figcaption>
 </figure>
 
@@ -275,7 +275,7 @@ You can attach any or all of these blocks to an agent’s Memory. LlamaIndex wil
 #### LangGraph
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/718e6512/687b1b7ec161c85267291996_langgraph-state-and-memory-management.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/718e6512/687b1b7ec161c85267291996_langgraph-state-and-memory-management.png" alt="LangGraph state and memory management showing checkpointed state plus semantic, episodic, and procedural memory stores" />
   <figcaption>LangGraph state and memory management</figcaption>
 </figure>
 
@@ -317,7 +317,7 @@ LlamaIndex’s memory module is easy to plug in – you instantiate a `Memory` w
 ### LlamaIndex
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/98ab5a4f/687b1bb64748c07b140188e6_llamahub.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/98ab5a4f/687b1bb64748c07b140188e6_llamahub.png" alt="LlamaHub library of community data connectors and integrations for LlamaIndex" />
   <figcaption>LlamaHub</figcaption>
 </figure>
 
@@ -332,7 +332,7 @@ On the data side, LlamaIndex’s LlamaHub (community-driven) provides over 300 i
 ### LangGraph
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3af40442/685f7917b5671780e5561115_langgraph-ecosystem.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3af40442/685f7917b5671780e5561115_langgraph-ecosystem.png" alt="LangGraph ecosystem built on LangChain integrations for LLMs, tools, and vector stores" />
   <figcaption>LangGraph’s ecosystem</figcaption>
 </figure>
 
@@ -357,7 +357,7 @@ LlamaIndex also provides a hosted platform, which offers more and better feature
 <ul><li><strong>Free tier:</strong> $0, includes 10k credits (sufficient to try out with smaller workloads).</li><li><strong>Starter plan:</strong> $50 per month, includes 50k credits.</li><li><strong>Pro plan:</strong> $500 per month, includes 500k credits.</li><li><strong>Enterprise plan:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/030cb9f4/687b1bfe926a1e765d45191a_llamaindex-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/030cb9f4/687b1bfe926a1e765d45191a_llamaindex-pricing.png" alt="LlamaIndex credit-based pricing tiers: free, Starter, Pro, and Enterprise plans" />
 </figure>
 
 ### LangGraph
@@ -369,7 +369,7 @@ Apart from the free plan, LangGraph offers three paid plans to choose from:
 <ul><li><strong>Developer</strong>: Includes up to 100K nodes executed per month</li><li><strong>Plus</strong>: $0.001 per node executed + standby charges</li><li><strong>Enterprise</strong>: Custom-built plan tailored to your business needs</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="LangGraph pricing tiers showing free, Developer, Plus per-node, and Enterprise plans" />
 </figure>
 
 **📚 Relevant article:** [LangGraph pricing guide](https://www.zenml.io/blog/langgraph-pricing).
@@ -377,7 +377,7 @@ Apart from the free plan, LangGraph offers three paid plans to choose from:
 ## How ZenML Helps In Closing the Outer Loop Around Your Agents
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="Diagram of ZenML closing the outer production loop around LangGraph and LlamaIndex agents" />
 </figure>
 
 LlamaIndex and LangGraph excel at the inner loop, which is writing and running an agent. [ZenML](https://www.zenml.io/) wraps that agent in the outer loop of production, so you can ship, monitor, and improve it without duct‑tape scripts.

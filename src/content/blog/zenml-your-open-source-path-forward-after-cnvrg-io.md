@@ -44,7 +44,7 @@ At its core, ZenML represents a fundamentally different approach to MLOps. As an
 ## Bridging Familiar Territory
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/86512d25/67b497e72694b479bd663b5f_Cnvrg_Positioning_Blog_Image__1___1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/86512d25/67b497e72694b479bd663b5f_Cnvrg_Positioning_Blog_Image__1___1_.png" alt="Cnvrg Positioning Blog" />
 </figure>
 
 If you're coming from [cnvrg.io](https://cnvrg.io/), you'll find that ZenML supports many of the workflows you've built, but with an important twist. Take pipeline orchestration, for instance. Where [cnvrg.io](https://cnvrg.io/) provided a unified but closed system, ZenML offers code-first pipeline definitions that are version-controlled and portable. Your pipelines become part of your codebase, versioned in Git alongside your model code, making them easier to review, share, and maintain.
@@ -56,7 +56,7 @@ For experiment tracking and model management, ZenML takes an integration-first a
 ## A Practical Path Forward
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a836b243/67b49754f93ed8a37f2e8b88_Cnvrg_Positioning_Blog_Image__2_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a836b243/67b49754f93ed8a37f2e8b88_Cnvrg_Positioning_Blog_Image__2_.png" alt="Cnvrg Positioning Blog" />
 </figure>
 
 We understand that migrating from [cnvrg.io](https://cnvrg.io/) is no small undertaking. That's why we've designed ZenML to support a gradual transition. You can start with a single project or use case, running ZenML alongside your existing [cnvrg.io](https://cnvrg.io/) implementation as you migrate pipelines one at a time. This measured approach helps maintain production stability while you build confidence in your new stack.

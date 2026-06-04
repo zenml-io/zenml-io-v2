@@ -61,7 +61,7 @@ We start this journey in a very standard, cookie-cutter, monolithic workflow. Iâ
 One of the largest problems we ran into was the different dependencies each step needed and the consequential nightmare of unexpected upgrades or downgrades of some low-level packages. This would then lead to some confusing error messages and some very long debugging sessions, at the end of which our reaction was something like this:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1a3e727a/65301357f520e1e4ee16d612_turboFacepalm.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1a3e727a/65301357f520e1e4ee16d612_turboFacepalm.png" alt="Facepalm reaction capturing the team's frustration after long CI debugging sessions" />
 </figure>
 
 As you might imagine, the team was growing frustrated with the long testing times and the sporadic errors and a solution needed to be found. Here are five changes we implemented to upgrade our CI pipeline.

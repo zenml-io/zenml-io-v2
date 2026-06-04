@@ -46,7 +46,7 @@ If you're already utilizing one of the major clouds for ML/AI, you might be wond
 ZenML was born from this evolution. We recognized that while cloud providers excel at offering foundational services like scalable storage, compute, and robust security, ML teams need more. They need a dedicated layer that empowers ML engineers and data scientists to develop systems quickly and independently.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79e4acd3/67123d843619168acb38cfbf_67123c7d6514c7c316e65e02_mlops-timeline.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79e4acd3/67123d843619168acb38cfbf_67123c7d6514c7c316e65e02_mlops-timeline.png" alt="Timeline showing the evolution of cloud ML/AI" />
   <figcaption>Timeline showing the evolution of cloud ML/AI</figcaption>
 </figure>
 
@@ -59,7 +59,7 @@ Eventually, organizations realize they need a more robust, productive environmen
 ## ZenML on Cloud MLOps Platforms: Practical Benefits
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b1cb8669/67123d843619168acb38cfb9_67123c9fab2d7cb2ee85d905_zenml-cloud-integration.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b1cb8669/67123d843619168acb38cfb9_67123c9fab2d7cb2ee85d905_zenml-cloud-integration.png" alt="Diagram illustrating ZenML's integration with cloud services" />
   <figcaption>Diagram illustrating ZenML&#039;s integration with cloud services</figcaption>
 </figure>
 
@@ -88,7 +88,7 @@ Remember, the goal of ZenML is to enhance your existing cloud MLOps setup, not r
 ## Your Next Step in ML/AI Evolution
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf69fa10/67123d843619168acb38cfb2_67123ce9c687e5e592630875_zenml-multi-cloud.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf69fa10/67123d843619168acb38cfb2_67123ce9c687e5e592630875_zenml-multi-cloud.png" alt="ZenML Multi Cloud" />
 </figure>
 
 ZenML doesn't replace cloud MLOps platforms. It complements them. If the idea of building cloud-agnostic ML/AI systems using a developer-friendly platform, securely running in your cloud account, and leveraging optimal resources across clouds resonates with you, it's time to give ZenML a try.

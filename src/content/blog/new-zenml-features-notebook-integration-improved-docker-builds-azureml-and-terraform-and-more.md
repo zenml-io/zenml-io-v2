@@ -57,7 +57,7 @@ We're thrilled to announce the release of new Terraform modules on the Hashicorp
 <ul><li>Automated infrastructure setup for ZenML stack deployment</li><li>Streamlined registration of configurations to the ZenML server</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/312b9016/66b610d9b8f45969a09f7c1a_66b610bd95e16fb50b966633_zenml_terraform.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/312b9016/66b610d9b8f45969a09f7c1a_66b610bd95e16fb50b966633_zenml_terraform.png" alt="ZenML Terraform" />
 </figure>
 
 For an in-depth look at how these Terraform modules can revolutionize your MLOps infrastructure, check out our recent blog post: ["Infrastructure as Code (IaC) for MLOps with Terraform & ZenML"](https://www.zenml.io/blog/mlops-terraform-zenml).

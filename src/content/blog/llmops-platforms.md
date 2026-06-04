@@ -47,7 +47,7 @@ Here’s a quick look at what the LLMOps platforms in this guide are best for:
 Choosing an LLMOps platform means looking beyond basic model serving. Here are four key factors to evaluate as you compare tools:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b3686148/695a428dadb9cd4562ccff9a_llmops-platforms-choosing-factors.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b3686148/695a428dadb9cd4562ccff9a_llmops-platforms-choosing-factors.webp" alt="Diagram of four factors to weigh when choosing an LLMOps platform" />
 </figure>
 
 ### 1. Agent Workflow Fit
@@ -81,7 +81,7 @@ Here’s a quick table summarizing all the best LLMOps tools on the market:
 ## 1. ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bc984c4e/695a3f82f2e0ba58960c8da3_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bc984c4e/695a3f82f2e0ba58960c8da3_zenml-homepage.webp" alt="Screenshot of the ZenML homepage presenting its unified MLOps and LLMOps workflow platform" />
 </figure>
 
 [ZenML](https://www.zenml.io/) is one of the strongest LLMOps platforms if you want **a single workflow layer to run and manage both classic ML** and LLM pipelines in the same place. It brings MLOps-grade structure to agent and RAG workloads, so runs stay reproducible and debuggable as you scale.
@@ -89,7 +89,7 @@ Here’s a quick table summarizing all the best LLMOps tools on the market:
 ### Key Feature 1. RAG with ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2025d562/689ac2bb7902211fc712d115_zenml-rag-pipeline-example.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2025d562/689ac2bb7902211fc712d115_zenml-rag-pipeline-example.webp" alt="ZenML RAG pipeline with ingestion, embedding, vector storage, and retrieval inference steps" />
 </figure>
 
 [ZenML’s RAG flow](https://docs.zenml.io/user-guides/llmops-guide/rag-with-zenml) is designed like a real pipeline, not a notebook demo. You build steps for data ingestion + preprocessing, generate embeddings, store them in a vector database, then run a RAG inference pipeline that retrieves relevant chunks and feeds them into the LLM.
@@ -101,7 +101,7 @@ That pipeline-first structure makes it easier to iterate on retrieval components
 ### Key Feature 2. Evaluation and metrics
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a7fff087/68ba65256e6939b8dbf7fef4_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a7fff087/68ba65256e6939b8dbf7fef4_zenml-evaluation.png" alt="ZenML evaluation pipeline splitting retrieval evaluation from generation evaluation" />
 </figure>
 
 ZenML treats [evaluation as a first-class pipeline](https://docs.zenml.io/user-guides/llmops-guide/evaluation) concern. It breaks evals into two realities:
@@ -117,7 +117,7 @@ It also calls out a useful tradeoff: use a local judge for faster iteration, the
 ### Key Feature 3. Fine-Tuning LLMs with ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/464f9870/695a42d5517bcce3c027765f_zenml-llms-finetuning.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/464f9870/695a42d5517bcce3c027765f_zenml-llms-finetuning.webp" alt="ZenML fine-tuning workflow from data prep through training, evaluation, and promotion to production" />
 </figure>
 
 ZenML supports [fine-tuning as a controlled training-to-release workflow](https://docs.zenml.io/user-guides/llmops-guide/finetuning-llms). Instead of “train and hope,” you treat fine-tuning like an engineering process:
@@ -131,7 +131,7 @@ This matters because fine-tuning creates long-term maintenance obligations. ZenM
 [ZenML is free and open-source](https://www.zenml.io/pricing) (Apache 2.0). You can self-host the core framework at no cost. For teams that want a managed control plane or advanced enterprise features, ZenML offers paid plans with custom pricing.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/566ecac3/6916b2f1e727fa75e3efeca3_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/566ecac3/6916b2f1e727fa75e3efeca3_zenml-pricing.webp" alt="Screenshot of ZenML pricing showing the free open-source tier and custom-priced cloud plans" />
 </figure>
 
 ### Pros and Cons
@@ -143,7 +143,7 @@ The tradeoff is that ZenML is a workflow framework, so you need to invest in pip
 ## 2. LangGraph
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d0990e02/68ba62da7bf8b6fafc781edb_langgraph-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d0990e02/68ba62da7bf8b6fafc781edb_langgraph-homepage.png" alt="Screenshot of the LangGraph homepage describing its framework for stateful, multi-agent applications" />
 </figure>
 
 [LangGraph](https://www.langchain.com/langgraph) is a specialized library from LangChain designed to build stateful, multi-agent applications by representing their logic as a graph. Its graph-based approach gives developers explicit control over data flow and reasoning loops. This makes complex behaviors easier to visualize and audit.
@@ -159,7 +159,7 @@ The tradeoff is that ZenML is a workflow framework, so you need to invest in pip
 <ul><li><strong>Developer:</strong> Free for hobbyists (limited features)</li><li><strong>Plus:</strong> $39 per seat per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/40b42b65/695a430bcaf2954b8bd81a0e_langgraph-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/40b42b65/695a430bcaf2954b8bd81a0e_langgraph-pricing.webp" alt="Screenshot of LangGraph pricing tiers: free Developer, Plus at $39 per seat, and Enterprise" />
 </figure>
 
 **📚 Read more about LangGraph:**
@@ -175,7 +175,7 @@ The main drawback is the complexity involved in setting it up. Defining graphs r
 ## 3. LlamaIndex
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bea2bbd0/695a4319693289b4dfd00d15_llamaindex-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bea2bbd0/695a4319693289b4dfd00d15_llamaindex-homepage.webp" alt="Screenshot of the LlamaIndex homepage positioning it as a data framework for building RAG applications" />
 </figure>
 
 [LlamaIndex](https://www.llamaindex.ai/) is a data-centric framework that specializes in connecting LLMs to your private or public data sources. It’s designed to build retrieval-augmented generation (RAG) systems and serves as a data ingestion, indexing, and retrieval toolkit for RAG-heavy LLM applications.
@@ -191,7 +191,7 @@ LlamaIndex framework is open-source and free. [For managed services](https://www
 <ul><li><strong>Free</strong></li><li><strong>Starter:</strong> $50 per month</li><li><strong>Pro:</strong> $500 per month for higher limits and team seats</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79f2f701/695a4327002ef62cdce5fcfa_llamaindex-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79f2f701/695a4327002ef62cdce5fcfa_llamaindex-pricing.webp" alt="Screenshot of LlamaCloud pricing: Free, Starter at $50, Pro at $500, and custom Enterprise plans" />
 </figure>
 
 ### Pros and Cons
@@ -207,7 +207,7 @@ However, the framework’s vast feature set can lead to a steep learning curve. 
 ## 4. Langfuse
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/222e3c47/695a4335a2559ba4e86b24f3_langfuse-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/222e3c47/695a4335a2559ba4e86b24f3_langfuse-homepage.webp" alt="Screenshot of the Langfuse homepage presenting its open-source LLM tracing and observability platform" />
 </figure>
 
 [Langfuse](https://langfuse.com/) is an open-source LLM engineering platform that focuses on tracing, observability, and product analytics. It helps teams debug complex agent behaviors and keep a close eye on costs through a collaborative, framework-agnostic interface.
@@ -223,7 +223,7 @@ Langfuse offers an open-source version, a generous cloud-hosted free tier, and t
 <ul><li><strong>Hobby:</strong> Free</li><li><strong>Core:</strong> $29 per month</li><li><strong>Pro:</strong> $199 per month</li><li><strong>Enterprise:</strong> $2499 per month</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9a2433e8/695a4340d9909bf471d99032_langfuse-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9a2433e8/695a4340d9909bf471d99032_langfuse-pricing.webp" alt="Screenshot of Langfuse pricing: free Hobby, Core at $29, Pro at $199, and Enterprise at $2499 per month" />
 </figure>
 
 **📚 More about Langfuse:**
@@ -239,7 +239,7 @@ On the downside, it’s primarily an observability tool and lacks the broader or
 ## 5. DeepEval
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/12cc4760/695a4353edaa97ce310756bc_deepeval-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/12cc4760/695a4353edaa97ce310756bc_deepeval-homepage.webp" alt="Screenshot of the DeepEval homepage describing its open-source framework for unit-testing LLM apps" />
 </figure>
 
 [DeepEval](https://deepeval.com/) is an open-source evaluation framework specifically designed to unit-test LLM applications and agents. It provides a suite of metrics to assess not only the final answer but also the retrieval quality and faithfulness of your agent's reasoning.
@@ -263,7 +263,7 @@ However, setting up evaluations requires effort and a good understanding of the 
 ## 6. Portkey
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/02c5d3f8/695a43b71c895bd85ae9e63e_portkey-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/02c5d3f8/695a43b71c895bd85ae9e63e_portkey-homepage.webp" alt="Screenshot of the Portkey homepage presenting its AI gateway and LLM observability platform" />
 </figure>
 
 [Portkey](https://portkey.ai/) combines an API gateway with an LLM observability platform. It sits between your application and the model providers, giving you a central hub to manage traces, logging, and analytics.
@@ -279,7 +279,7 @@ Portkey offers a free forever developer plan, which is great for trying it out o
 <ul><li><strong>Production</strong>: $49 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e3ac3c15/695a43c8002ef62cdce60aa9_portkey-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e3ac3c15/695a43c8002ef62cdce60aa9_portkey-pricing.webp" alt="Screenshot of Portkey pricing: free developer plan, Production at $49 per month, and Enterprise" />
 </figure>
 
 ### Pros and Cons
@@ -291,7 +291,7 @@ The tradeoff is the introduction of a proxy layer, which can be a single point o
 ## 7. LangSmith
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c14590bb/695a43d7bcf5a2b230261482_langsmith-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c14590bb/695a43d7bcf5a2b230261482_langsmith-homepage.webp" alt="Screenshot of the LangSmith homepage presenting its tracing and evaluation platform for LangChain apps" />
 </figure>
 
 [LangSmith](https://www.langchain.com/langsmith/observability) is an observability and evaluation platform from LangChain. It provides deep visibility into the execution of LangChain applications, making it the default choice for developers already using that framework.
@@ -307,7 +307,7 @@ LangSmith has a free tier for hobbyists and paid plans for teams:
 <ul><li><strong>Developer:</strong> Free</li><li><strong>Plus:</strong> $39/month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/40b42b65/695a430bcaf2954b8bd81a0e_langgraph-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a6d23c74/690edd3b464ab03718dff95f_langsmith-pricing.png" alt="LangSmith seat-based pricing page showing Developer, Plus, and Enterprise plans" />
 </figure>
 
 ### Pros and Cons
@@ -319,7 +319,7 @@ However, its focus is largely on the application layer. It does not provide infr
 ## 8. Arize Phoenix
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/548eb8e2/695a43f3af60660a2f122ad0_arize-phoenix-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/548eb8e2/695a43f3af60660a2f122ad0_arize-phoenix-homepage.webp" alt="Screenshot of the Arize Phoenix homepage presenting its open-source LLM observability and tracing tool" />
 </figure>
 
 [Arize Phoenix](https://phoenix.arize.com/) is an open-source observability platform designed for difficult-to-debug LLM applications. It provides a notebook-based UI for interactively exploring model outputs, traces, and embeddings to diagnose issues.
@@ -333,7 +333,7 @@ However, its focus is largely on the application layer. It does not provide infr
 Phoenix is free to self-host. For a managed Arize offering, see **Arize AX** plans (AX Free, AX Pro at $50/month, AX Enterprise custom).
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4d058178/695a4405edaa97ce310763b5_arize-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4d058178/695a4405edaa97ce310763b5_arize-pricing.webp" alt="Screenshot of Arize AX pricing: free tier, AX Pro at $50 per month, and custom Enterprise plan" />
 </figure>
 
 ### Pros and Cons
@@ -345,7 +345,7 @@ On the downside, Phoenix can feel heavyweight. It’s essentially a full applica
 ## 9. BentoML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6d109c7b/695a4412f190564675939500_bentoml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6d109c7b/695a4412f190564675939500_bentoml-homepage.webp" alt="Screenshot of the BentoML homepage describing its platform for serving and deploying AI models as APIs" />
 </figure>
 
 [BentoML](https://www.bentoml.com/) is an open-source platform that simplifies the serving and deployment of AI models. For agents that rely on custom open-source models, like Llama 3 or Mistral, BentoML provides the infrastructure to run them efficiently and reliably.
@@ -359,7 +359,7 @@ On the downside, Phoenix can feel heavyweight. It’s essentially a full applica
 BentoML is open-source. Their managed Bento Cloud service offers three paid tiers with custom pricing.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ec5c769c/695a44215b680f35a870ff35_bentoml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ec5c769c/695a44215b680f35a870ff35_bentoml-pricing.webp" alt="Screenshot of BentoCloud pricing showing its three custom-priced managed deployment tiers" />
 </figure>
 
 ### Pros and Cons
@@ -371,7 +371,7 @@ However, it focuses primarily on the serving layer. It does not provide high-lev
 ## 10. Pinecone
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/674dc547/695a4436bcf5a2b230261d6a_pinecone-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/674dc547/695a4436bcf5a2b230261d6a_pinecone-homepage.webp" alt="Screenshot of the Pinecone homepage presenting its serverless vector database for AI retrieval" />
 </figure>
 
 [Pinecone](https://www.pinecone.io/) is a serverless vector database designed to handle the high-dimensional data required for accurate AI retrieval and indexing. It stands out for its scalability and developer-friendliness. You can spin up a production-ready vector index in seconds and scale to billions of vectors with low latency.
@@ -387,7 +387,7 @@ Pinecone offers a free Starter plan. Paid plans include:
 <ul><li><strong>Standard:</strong> Pay-as-you-go with a minimum spend of $50 per month</li><li><strong>Enterprise:</strong> Custom SLAs with a minimum spend of $500 per month</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a1ea01bd/695a4444f6e96130582f816d_pinecone-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a1ea01bd/695a4444f6e96130582f816d_pinecone-pricing.webp" alt="Screenshot of Pinecone pricing: free Starter, Standard from $50, and Enterprise from $500 per month" />
 </figure>
 
 ### Pros and Cons
@@ -399,7 +399,7 @@ However, because it is a closed-source, proprietary SaaS, you face potential ven
 ## 11. Weights & Biases (Weave)
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1a3f1f3c/695a44501c895bd85ae9f324_wandb-weave-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1a3f1f3c/695a44501c895bd85ae9f324_wandb-weave-homepage.webp" alt="Screenshot of the Weights & Biases Weave homepage presenting its LLM tracing and evaluation toolkit" />
 </figure>
 
 [Weave](https://wandb.ai/site/) is W&B’s solution for LLMOps, extending its experiment-tracking platform into an observability and evaluation toolkit for LLM applications. It’s a bit like a mix of an experiment tracker, a debugging tool, and a monitoring dashboard specifically tailored to language model apps.
@@ -415,7 +415,7 @@ Weave is available within the Weights & Biases platform:
 <ul><li><strong>Free:</strong> For personal projects with limited storage</li><li><strong>Team:</strong> Starts at $60/user per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/22792f23/695a4461369b591eb3648283_wnandb-weave-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/22792f23/695a4461369b591eb3648283_wnandb-weave-pricing.webp" alt="Screenshot of Weights & Biases Weave pricing: free tier, Team from $60 per user, and Enterprise" />
 </figure>
 
 ### Pros and Cons

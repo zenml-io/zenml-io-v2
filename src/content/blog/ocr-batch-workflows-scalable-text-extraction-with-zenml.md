@@ -44,7 +44,7 @@ The framework revolves around two core pipelines:
 - [Batch Processing Pipeline](https://github.com/zenml-io/zenml-projects/blob/main/omni-reader/pipelines/batch_pipeline.py): Designed to efficiently process large document volumes, gathering outputs in a structured format while tracking key performance metrics.- [Evaluation Pipeline](https://github.com/zenml-io/zenml-projects/blob/main/omni-reader/pipelines/evaluation_pipeline.py): Compares outputs from different models against ground truth data using metrics like `CER`, `WER`, and Levenshtein similarity to identify the most effective approach for specific needs.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e70e6629/67f673756bef06dbe8c14ad0_pipeline_dags.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e70e6629/67f673756bef06dbe8c14ad0_pipeline_dags.png" alt="Batch and Evaluation Pipeline DAGs diagram" />
   <figcaption>Batch and Evaluation Pipeline DAGs</figcaption>
 </figure>
 
@@ -101,7 +101,7 @@ ZenML's inherent capabilities were instrumental here. Its built-in tracking of a
 For instance, the pipeline generates an HTML report that visually compares the overall performance across the evaluated models, serving as one such embedded artifact:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a5b26ff5/67f67952d8f019dd5e65794b_visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a5b26ff5/67f67952d8f019dd5e65794b_visualization.png" alt="HTML report (1 of 2) comparing overall performance across models" />
   <figcaption>HTML report (1 of 2) comparing overall performance across models</figcaption>
 </figure>
 
@@ -110,7 +110,7 @@ Beyond the overall comparison, the evaluation pipeline calculates detailed perfo
 - **Character Error Rate (CER)**: Quantifies accuracy at the character level.- **Word Error Rate (WER)**: Measures accuracy based on word-level differences.- **Ground Truth Similarity**: Leverages the Levenshtein ratio to assess the overall alignment between the model's output and the ground truth text.- **Cross-Model Similarity**: Compares the outputs of different models against each other to identify potential outliers or systemic inconsistencies.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ad0e1ab4/67f679bc4ca410fa31f95678_metrics.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ad0e1ab4/67f679bc4ca410fa31f95678_metrics.png" alt="HTML Report (2 of 2) showing model outputs and key metrics" />
   <figcaption>HTML Report (2 of 2) showing model outputs and key metrics</figcaption>
 </figure>
 
@@ -135,7 +135,7 @@ You can explore the OmniReader project and experiment with it by following these
 The included Streamlit app provides an interactive UI for uploading documents, comparing the extraction results from different models side-by-side, and testing the impact of custom prompts on performance.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e59b93b/67f67a78dab85b07345d5360_streamlit.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e59b93b/67f67a78dab85b07345d5360_streamlit.png" alt="Streamlit UI screenshot" />
   <figcaption>Streamlit UI</figcaption>
 </figure>
 

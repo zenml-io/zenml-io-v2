@@ -52,7 +52,7 @@ If you want a system you (or any clinician) can actually trust, you have to sepa
 ## Project Overview: Clinical-RAG Demo 🔬
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f7696d40/68c7bac6df4a72bb8ad562f5_CleanShot_2025-09-15_at_09.05.05.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f7696d40/68c7bac6df4a72bb8ad562f5_CleanShot_2025-09-15_at_09.05.05.png" alt="Project Overview: Clinical-RAG Demo 🔬 screenshot" />
 </figure>
 
 My demo focused on orthopedic physical therapy. The idea was simple: a clinician asks a question (for example, “How do you assess carpal tunnel syndrome?") and the system does three things:
@@ -62,7 +62,7 @@ My demo focused on orthopedic physical therapy. The idea was simple: a clinician
 I built this stack around Postgres with `pgvector` for retrieval, sentence-transformers for embeddings, and ZenML to orchestrate the whole pipeline—from ingestion, to retrieval, to generation, and, most importantly, to evaluation.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1377beb7/68c7bb0c80253efe73866669_CleanShot_2025-09-15_at_09.06.28.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1377beb7/68c7bb0c80253efe73866669_CleanShot_2025-09-15_at_09.06.28.png" alt="Watch the full video on YouTube" />
   <figcaption>Watch the full video on YouTube</figcaption>
 </figure>
 

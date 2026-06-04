@@ -88,7 +88,7 @@ This will launch a CLI flow that will guide you through registering a stack.
 If you’d rather go via the dashboard, you can do by clicking on the `Stacks` section and creating a new stack, and then clicking on “Create Stack”:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8f249670/668e3ba72bd96c7de79e6c77_one-click-deployment.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8f249670/668e3ba72bd96c7de79e6c77_one-click-deployment.gif" alt="One Click Deployment animated walkthrough" />
 </figure>
 
 > ⚠️ We’ve deprecated the old zenml stack deploy command that used mlstacks as a backend and replaced it with this more native cloud implementation. To use mlstacks, you can do so directly.

@@ -92,7 +92,7 @@ The Community plan is essentially the open-source Metaflow project that you can 
 This means you pay a predictable platform fee for unlimited usage, which is a unique selling point compared to some MLOps platforms that charge per user or per computation.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d83a4af8/683a86b2de0a388c0cc3a70b_outerbounds-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d83a4af8/683a86b2de0a388c0cc3a70b_outerbounds-pricing-plans.png" alt="Outerbounds paid plans overview comparing Starter and Enterprise managed tiers" />
   <figcaption>Outerbounds paid plans</figcaption>
 </figure>
 
@@ -157,7 +157,7 @@ You won’t have the Outerbounds cloud workstations or one-click deployments. So
 **🤷 Who is it for:** This plan is ideal for individual developers, researchers, or very early-stage startups that have more time than money and are comfortable managing infrastructure.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b80976b3/683a870653773d9881965f03_outerbounds-community-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b80976b3/683a870653773d9881965f03_outerbounds-community-plan.png" alt="Outerbounds Community plan based on the free open-source Metaflow framework" />
   <figcaption>Outerbounds community plan</figcaption>
 </figure>
 
@@ -176,7 +176,7 @@ Here’s what the plan offers:
 <ul><li>Outerbounds takes care of provisioning and managing the core infrastructure in your cloud subscription. You get the benefits of a cloud service while keeping data and compute within your cloud tenancy for security.</li><li>Comes with 3 managed compute nodes. These can be autoscaled to fully managed - no need to manually handle EC2 instances or Kubernetes node groups; Outerbounds does that for you.</li><li>There are no limits on the number of workflows, experiments, or users (with a maximum of 3 workstations and 3 nodes). You can have 5 or 50 users on the platform – all are covered under the same fee. This ‘all-you-can-eat’ model is perfect for avoiding variable costs.</li><li>At the Starter level, you get security features like single tenant deployment, authentication with SSO (Google, GitHub, GitLab), machine-to-machine authentication, SOC 2 compliance, and cost attribution and reporting.</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dc01f3bb/683a873939d69308b37b0c4b_outerbounds-starter-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dc01f3bb/683a873939d69308b37b0c4b_outerbounds-starter-plan.png" alt="Outerbounds Starter plan details with 3 managed compute nodes and flat monthly fee" />
   <figcaption>Outerbounds starter plan</figcaption>
 </figure>
 
@@ -191,7 +191,7 @@ Apart from everything the Starter plan offers, here’s what the Enterprise plan
 <ul><li>Supports unlimited compute nodes and workstations. This means if you have 10, 50, or 100 nodes worth of workload, Outerbounds can manage that.</li><li>Integration with an enterprise identity system like Okta and Azure AD for SSO. You also get fine-grained RBAC to define roles and permissions on projects.</li><li>Enterprise customers usually receive a higher level of support.</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b42ed121/683a87632714dc8d38243d10_outerbounds-enterprise-plan.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b42ed121/683a87632714dc8d38243d10_outerbounds-enterprise-plan.png" alt="Outerbounds Enterprise plan with unlimited nodes, Okta/Azure AD SSO, and RBAC" />
   <figcaption>Outerbounds enterprise plan</figcaption>
 </figure>
 
@@ -208,14 +208,14 @@ The Outerbounds Platform is available on the AWS Marketplace. The pricing struct
 For instance, a 12-month contract for ‘Platform access, onboarding and standard support’ is listed at $60,000. Beyond this, additional usage costs are incurred at $0.10 per Outerbounds Consumption Unit (OBU). You pay recurring monthly usage fees directly through your AWS bill.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b8255cdc/683a879e7feb6e95644dd955_deploy-outerbounds-on-aws-marketplace.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b8255cdc/683a879e7feb6e95644dd955_deploy-outerbounds-on-aws-marketplace.png" alt="Outerbounds AWS Marketplace listing showing the $60,000 12-month platform contract" />
   <figcaption>Deploy Outerbounds on AWS marketplace</figcaption>
 </figure>
 
 To estimate how much additional usage cost you might incur, use the [AWS pricing calculator](https://calculator.aws/#/).
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a9a11c98/683a87dc870f2478d1498fc2_aws-pricing-calculator.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a9a11c98/683a87dc870f2478d1498fc2_aws-pricing-calculator.png" alt="AWS pricing calculator used to estimate additional Outerbounds usage costs" />
   <figcaption>AWS pricing calculator</figcaption>
 </figure>
 
@@ -236,7 +236,7 @@ Outerbounds even announced a partnership with Google Cloud to offer ‘full-stac
 **👀 Note:** Google acts only as the billing channel. The features you get depend on whichever Outerbounds tier (Starter or Enterprise) you negotiate and subscribe to.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ebb63f4/683a8835de0a388c0cc4929b_deploy-outerbounds-on-google-cloud-marketplace.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ebb63f4/683a8835de0a388c0cc4929b_deploy-outerbounds-on-google-cloud-marketplace.png" alt="Outerbounds Google Cloud Marketplace listing for deploying on GKE via GCP billing" />
   <figcaption>Deploy Outerbounds on Google Cloud</figcaption>
 </figure>
 
@@ -247,7 +247,7 @@ If you’re a Microsoft Azure user, Outerbounds is listed on the [Azure Marketpl
 Again, it’s the standard fully-managed Outerbounds install deployed inside your Azure subscription; the listing just streamlines procurement against Azure commit. The features and pricing for the platform are exactly the same as AWS marketplace offers – a 12-month contract for ‘Platform access, onboarding and standard support’ is listed at $60,000. Beyond this, additional usage costs are incurred at $0.10 per Outerbounds Consumption Unit (OBU).
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1ae846d9/683a88d053773d988197383e_deploy-outerbounds-on-azure-marketplace.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1ae846d9/683a88d053773d988197383e_deploy-outerbounds-on-azure-marketplace.png" alt="Outerbounds Azure Marketplace listing for deploying on AKS via Azure billing" />
   <figcaption>Deploy Outerbounds on Azure marketplace</figcaption>
 </figure>
 
@@ -268,7 +268,7 @@ For larger enterprises, the question is not the absolute cost, but the value. Ou
 ## ZenML – An Affordable Alternative to Outerbounds
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3d24034c/683a88fe89e2394cc1106b0e_zenml-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3d24034c/683a88fe89e2394cc1106b0e_zenml-homepage.png" alt="ZenML homepage presenting the open-source AI Control Plane as an Outerbounds alternative" />
   <figcaption>ZenML’s homepage</figcaption>
 </figure>
 
@@ -285,7 +285,7 @@ Outerbounds also runs in any cloud, but ZenML gives you more granular freedom: y
 ZenML’s approach is flexible: it doesn’t impose new infrastructure; instead, it interfaces with what you already have or prefer, which can save costs if you already use those services.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3973118f/683156b9b48bd1d0cd5437b7_zenml-workflow-orchestration.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3973118f/683156b9b48bd1d0cd5437b7_zenml-workflow-orchestration.png" alt="Diagram of ZenML cloud-agnostic orchestration across Airflow, Kubeflow, and other backends" />
   <figcaption>ZenML orchestration</figcaption>
 </figure>
 
@@ -300,7 +300,7 @@ This means you can use [MLflow Tracking](https://www.zenml.io/blog/mlflow-vs-wei
 This pluggability is powerful: you’re not paying for a proprietary experiment tracker; you use the best-of-breed (often open source or freemium) tools.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="Flowchart showing ZenML integrating with experiment trackers like MLflow, W&B, and CometML" />
   <figcaption>ZenML experiment tracking</figcaption>
 </figure>
 
@@ -313,7 +313,7 @@ This means if you have a custom in-house tool or a niche service you want to use
 ZenML’s customizability is a big plus if you need something beyond what typical platforms offer. For example, if you want to use a specific data versioning system or a specific model deployment target, ZenML likely can integrate with it, or you can add it.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6562db74/683a899045d714537f024ea6_stacks-as-a-way-to-organize-your-execution-environment.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6562db74/683a899045d714537f024ea6_stacks-as-a-way-to-organize-your-execution-environment.png" alt="Diagram of ZenML stacks organizing orchestrator, artifact store, and other execution components" />
   <figcaption>Stacks as a way to organize your execution environment</figcaption>
 </figure>
 
@@ -348,7 +348,7 @@ It’s a solution that grows with you – use it for free, plug in the platforms
 If you’re evaluating Outerbounds and wondering about the trade-offs, especially now that the platform is part of Anaconda and the integrated roadmap is still being shaped, we encourage you to talk to us. [Book a demo](https://www.zenml.io/book-your-demo) with the ZenML founding team. With our platform, you can define your ML and GenAI pipelines once and let the framework handle experiment tracking, versioning, snapshots, and deployments for you. You stay cloud-agnostic, compliance-ready, and cost-effective.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/55428de0/684576e834000d9981f3b957_zenml-book-a-demo.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/55428de0/684576e834000d9981f3b957_zenml-book-a-demo.png" alt="ZenML call-to-action inviting readers to book a personalized demo with the founding team" />
   <figcaption>Book your personalized demo</figcaption>
 </figure>
 

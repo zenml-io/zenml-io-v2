@@ -56,7 +56,7 @@ webflow:
                     <div class="uui-testimonial04_component margin-bottom">
                       <h3 class="uui-heading-small text-weight-medium">"Before ZenML, our process was entirely manual. We ran models locally or on custom cloud instances. We didn't have a platform to do things in a repeatable way."</h3>
                       <div class="uui-testimonial04_client">
-                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/34171ae8/tab_bg.avif" loading="lazy" width="248" alt="" class="uui-testimonial04_client-image"></div>
+                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/34171ae8/tab_bg.avif" loading="lazy" width="248" alt="" aria-hidden="true" class="uui-testimonial04_client-image"></div>
                         <div class="uui-testimonial04_client-info">
                           <div class="uui-heading-tiny">Shey and Junyi Lin</div>
                           <div class="uui-text-size-medium">Data Scientists at Cross Screen Media</div>
@@ -88,7 +88,7 @@ webflow:
               <div class="uui-testimonial04_component margin-bottom">
                 <h3 class="uui-heading-small text-weight-medium">"The biggest benefit is easily utilizing Kubernetes. Once ZenML is set up, we can use it for all our parallel runs, which lifts our efficiency a lot."</h3>
                 <div class="uui-testimonial04_client">
-                  <div class="uui-testimonial04_client-image-wrapper"><img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/34171ae8/tab_bg.avif" loading="lazy" width="248" alt="" class="uui-testimonial04_client-image"></div>
+                  <div class="uui-testimonial04_client-image-wrapper"><img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/34171ae8/tab_bg.avif" loading="lazy" width="248" alt="" aria-hidden="true" class="uui-testimonial04_client-image"></div>
                   <div class="uui-testimonial04_client-info">
                     <div class="uui-heading-tiny">Shey and Junyi Lin</div>
                     <div class="uui-text-size-medium">Data Scientists at Cross Screen Media</div>
@@ -104,7 +104,7 @@ webflow:
                     <div class="uui-testimonial04_component">
                       <h3 class="uui-heading-small text-weight-medium">"Everything has changed now that we have a single codebase. We test locally and know it will run in production. It’s a huge time saver."</h3>
                       <div class="uui-testimonial04_client">
-                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/34171ae8/tab_bg.avif" loading="lazy" width="248" alt="" class="uui-testimonial04_client-image"></div>
+                        <div class="uui-testimonial04_client-image-wrapper"><img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/34171ae8/tab_bg.avif" loading="lazy" width="248" alt="" aria-hidden="true" class="uui-testimonial04_client-image"></div>
                         <div class="uui-testimonial04_client-info">
                           <div class="uui-heading-tiny">Shey and Junyi Lin</div>
                           <div class="uui-text-size-medium">Data Scientists at Cross Screen Media</div>
@@ -137,7 +137,7 @@ webflow:
               <div class="uui-testimonial04_component margin-bottom">
                 <h3 class="uui-heading-small text-weight-medium">"The UI really helps. If something fails, we can see exactly where it happened and check the logs directly in ZenML. That wasn't possible for us before."</h3>
                 <div class="uui-testimonial04_client">
-                  <div class="uui-testimonial04_client-image-wrapper"><img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/34171ae8/tab_bg.avif" loading="lazy" width="248" alt="" class="uui-testimonial04_client-image"></div>
+                  <div class="uui-testimonial04_client-image-wrapper"><img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/34171ae8/tab_bg.avif" loading="lazy" width="248" alt="" aria-hidden="true" class="uui-testimonial04_client-image"></div>
                   <div class="uui-testimonial04_client-info">
                     <div class="uui-heading-tiny">Shey and Junyi Lin</div>
                     <div class="uui-text-size-medium">Data Scientists at Cross Screen Media</div>

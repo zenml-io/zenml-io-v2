@@ -74,7 +74,7 @@ Orchestration is how you define the control flow of an agent: the sequence of st
 #### LlamaIndex Relied on Event-Driven Orchestration
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3e5e3a94/687b1945ab9d8bec9134acda_multi-agent-ai-system-framework.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3e5e3a94/687b1945ab9d8bec9134acda_multi-agent-ai-system-framework.png" alt="Diagram of a multi-agent AI system framework showing how agents coordinate in LlamaIndex Workflows" />
   <figcaption>Multi-agent AI systems framework</figcaption>
 </figure>
 
@@ -93,7 +93,7 @@ The standout feature of this model is its **asynchronous-first nature**. This de
 #### LangChain Uses LangGraph and Chains
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/aa262e9f/687b199e0760b0d1fb35819e_how-ai-agents-are-connected-in-langgraph.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/aa262e9f/687b199e0760b0d1fb35819e_how-ai-agents-are-connected-in-langgraph.png" alt="Diagram showing how AI agents connect as nodes and edges in a LangGraph stateful graph" />
   <figcaption>How AI agents are connected in LangGraph</figcaption>
 </figure>
 
@@ -208,7 +208,7 @@ LlamaIndex and LangChain have different approaches here, reflecting their ecosys
 #### LlamaIndex: Integrations and Tracing
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/48a8da28/68bfa3d1b377e81db0282c2e_llamaindex-observability.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/48a8da28/68bfa3d1b377e81db0282c2e_llamaindex-observability.png" alt="LlamaIndex observability dashboard tracing agent steps via the CallbackManager" />
   <figcaption>LlamaIndex observability</figcaption>
 </figure>
 
@@ -225,7 +225,7 @@ One area LlamaIndex does help with is token counting and cost estimation. Since 
 #### LangChain: LangSmith and Native Tracing
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/57947dee/68bfa3f33356a4ca1d3fa28b_langsmith-observability.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/57947dee/68bfa3f33356a4ca1d3fa28b_langsmith-observability.png" alt="LangSmith observability interface tracing a LangChain agent run with prompts, responses, and timings" />
   <figcaption>LangSmith observability</figcaption>
 </figure>
 
@@ -326,7 +326,7 @@ Both LlamaIndex and LangChain are highly extensible and offer a wide array of in
 ### LlamaIndex
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ba272ee/68bfa43e9f7e19af9bcccaa3_llamahub.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ba272ee/68bfa43e9f7e19af9bcccaa3_llamahub.png" alt="LlamaHub page showing the catalog of LlamaIndex data connectors and integration packages" />
   <figcaption>LlamaHub</figcaption>
 </figure>
 
@@ -369,7 +369,7 @@ LlamaIndex also provides a hosted platform, which offers more and better feature
 <ul><li><strong>Free tier:</strong> $0, includes 10k credits (sufficient to try out with smaller workloads).</li><li><strong>Starter plan:</strong> $50 per month, includes 50k credits.</li><li><strong>Pro plan:</strong> $500 per month, includes 500k credits.</li><li><strong>Enterprise plan:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/784b34c8/68ba635fc1f82b66de6669c5_llamaindex-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/784b34c8/68ba635fc1f82b66de6669c5_llamaindex-pricing.png" alt="LlamaIndex managed platform pricing page showing Free, Starter, Pro, and Enterprise credit-based tiers" />
 </figure>
 
 ### LangChain
@@ -381,13 +381,13 @@ Apart from the free plan, LangGraph offers three paid plans to choose from:
 <ul><li><strong>Developer</strong>: Includes up to 100K nodes executed per month</li><li><strong>Plus</strong>: $0.001 per node executed + standby charges</li><li><strong>Enterprise</strong>: Custom-built plan tailored to your business needs</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/97b85242/687b1c130365fe673ee85bab_langgraph-pricing.png" alt="LangGraph pricing page showing the free, Developer, Plus, and Enterprise plans with per-node charges" />
 </figure>
 
 ## How ZenML Manages the Outer Loop for Production Agents
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c1eda41/68ba64d552371735c4daebc4_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c1eda41/68ba64d552371735c4daebc4_zenml-unified-mlops-and-llmops-platform.webp" alt="ZenML unified MLOps and LLMOps platform acting as the outer loop around LlamaIndex and LangChain agents" />
 </figure>
 
 After comparing LlamaIndex and LangChain, you might be thinking: **why not use both?** In fact, many advanced AI systems do combine them – for example, using LlamaIndex for data retrieval and LangChain for tool orchestration.
@@ -401,7 +401,7 @@ Here’s how ZenML helps streamline the development and deployment of agentic AI
 ### Feature 1. Pipeline Orchestration
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/270ce903/68ba64ec4faed82c8c0be502_zenml-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/270ce903/68ba64ec4faed82c8c0be502_zenml-architecture.png" alt="ZenML architecture diagram showing pipelines orchestrating data prep, model calls, and agent steps" />
   <figcaption>ZenML architecture</figcaption>
 </figure>
 
@@ -416,7 +416,7 @@ ZenML ensures these multi-step workflows run reliably and reproducibly, whether 
 ### Feature 2. Experiment Tracking
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/69a321e8/68b589fd6364019707adcb88_zenml-experiment-tracking.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/69a321e8/68b589fd6364019707adcb88_zenml-experiment-tracking.png" alt="ZenML experiment tracking dashboard logging pipeline run metadata, versions, and outcomes" />
   <figcaption>ZenML experiment tracking</figcaption>
 </figure>
 
@@ -429,7 +429,7 @@ This unified visibility is incredibly useful when you have many moving parts. In
 ### Feature 3. Continuous Evaluation and Feedback
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="ZenML evaluation step in a pipeline scoring agent outputs and triggering feedback actions" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
@@ -444,7 +444,7 @@ In short, LlamaIndex and LangChain excel at the ‘inner loop’ of agent develo
 **👀 Note:** At ZenML, we have built several such integrations with tools like LangChain, LlamaIndex, CrewAI, and more. We are actively shipping new integrations that you can find on this GitHub page: [ZenML Agent Workflow Integrations](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations).
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="ZenML agent workflow integrations on GitHub showing examples for LangChain, LlamaIndex, and CrewAI" />
 </figure>
 
 **📚 Other comparison articles to read:**

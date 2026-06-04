@@ -33,6 +33,9 @@ jobs:
       - name: Run Astro and TypeScript checks
         run: pnpm check
 
+      - name: Check image alt-text coverage
+        run: pnpm check:alt
+
       - name: Run Biome lint
         run: pnpm lint
 

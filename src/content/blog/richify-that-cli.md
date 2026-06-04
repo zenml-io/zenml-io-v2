@@ -101,7 +101,7 @@ Like print, we don’t currently use this anywhere in the outputs of our CLI too
 ## 6. Status Spinners
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/942f1e7a/66c5dd05f13f1bf6b7471c6a_6531ea4ed882a1570936e53a_ezgif.com-optimize_20_3__20_1_.png" alt="" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/942f1e7a/66c5dd05f13f1bf6b7471c6a_6531ea4ed882a1570936e53a_ezgif.com-optimize_20_3__20_1_.png" alt="Animated rich status spinner shown while running zenml init" />
 </figure>
 
 When someone tells you that they upgraded their CLI tool, spinners are what you expect. Who doesn’t love a good spinner!? We added only one (when you call zenml init) but probably will use more as our tool grows.

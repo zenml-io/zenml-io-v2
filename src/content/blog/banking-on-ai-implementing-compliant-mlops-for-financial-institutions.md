@@ -74,7 +74,7 @@ This transformation enabled them to rapidly deploy AI models that adapt to chang
 ## Putting It into Action: A Real-World MLOps Template For Banks
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6e194169/682c87882381b27329b8d77a_image__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6e194169/682c87882381b27329b8d77a_image__1_.png" alt="Putting It into Action: A Real-World MLOps Template For Banks screenshot" />
 </figure>
 
 To help you start quickly, we've built an open-source ZenML pipeline—the [Bank Subscription Prediction](https://github.com/zenml-io/zenml-projects/tree/main/bank_subscription_prediction) project—that showcases these practices in action. This example pipeline:
@@ -82,7 +82,7 @@ To help you start quickly, we've built an open-source ZenML pipeline—the [Bank
 <ul><li>Automatically manages data lineage and versioning.</li><li>Includes built-in bias and performance tests that run automatically with every deployment.</li><li>Deploys seamlessly across various infrastructures (cloud, on-premise, hybrid) with minimal changes.</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7dc812a1/682c8799331d21a2348dfb42_image__2_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7dc812a1/682c8799331d21a2348dfb42_image__2_.png" alt="Putting It into Action: A Real-World MLOps Template For Banks screenshot" />
 </figure>
 
 With [ZenML](https://zenml.io/), the pipeline itself generates all necessary compliance documentation, freeing your engineers to focus on building models rather than writing audit reports.

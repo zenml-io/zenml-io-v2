@@ -43,7 +43,7 @@ This month: performance improvements, [production agentic workflow examples from
 ## ⚡ 200x Performance Boost: Engineering Discipline Meets Real-World Scale
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/21d6f488/684a96e5b58f23b6b6db51f1_Newsletter_June_2025_Image.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/21d6f488/684a96e5b58f23b6b6db51f1_Newsletter_June_2025_Image.png" alt="Newsletter June" />
 </figure>
 
 As ZenML adoption has grown, enterprise adoption brought scale challenges we didn't anticipate: multi-thousand-run experiments, massive artifact stores, high-concurrency dashboard usage. Every performance bottleneck became visible under real production loads.
@@ -61,7 +61,7 @@ Check out the full technical deep-dive on [scaling ZenML 200x with FastAPI and d
 ## 🧑💻 Codespaces: Because Reading Docs Shouldn't Be Your First ZenML Experience
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/736bdf6d/684a96ffd5b35d44f5770001_Newsletter_June_2025_Image__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/736bdf6d/684a96ffd5b35d44f5770001_Newsletter_June_2025_Image__1_.png" alt="Newsletter June" />
 </figure>
 
 Nobody learns MLOps from docs—you learn by running pipelines and debugging when they break. But the "I want to try ZenML" to "first pipeline running" journey has always involved too much setup friction.
@@ -79,7 +79,7 @@ We're interested in use cases beyond onboarding. Hit us up in [Slack](https://ze
 ## 🇫🇷 Paris Insights: Why Agentic Workflows Are Just MLOps in Disguise
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/15d5251c/684a9731539890f7aae0402e_Newsletter_June_2025.jpg" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/15d5251c/684a9731539890f7aae0402e_Newsletter_June_2025.jpg" alt="Newsletter June" />
 </figure>
 
 My keynote "Evolving MLOps: Foundations for Agentic Workflows" from our Paris event is now [live on YouTube](https://www.youtube.com/watch?v=2OQxpmqIgNY).
@@ -97,7 +97,7 @@ Closing advice: "Start simple before you go full autonomous. Never go full auton
 ## 🔍 Deep Research Project: The Paris Demo, Now Open Source
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d9e09536/684a9f0891fd5ba30f7b3b38_Newsletter_June_2025_Report.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d9e09536/684a9f0891fd5ba30f7b3b38_Newsletter_June_2025_Report.gif" alt="Newsletter June Report animated walkthrough" />
 </figure>
 
 The research workflow we showcased in Paris—the one with complete cost, observability, and reproducibility control versus black-box autonomous agents—is [now fully open source](https://github.com/zenml-io/zenml-projects/tree/main/deep_research) as the ZenML Deep Research Agent.
@@ -113,7 +113,7 @@ This validates the Paris thesis: agentic systems work best when built on solid M
 ## 🏛️ AI Act Compliance: When Regulation Actually Makes You Better
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7ffb120c/684a9f1dbf45cd8bf094f635_Compliance_Dashboard_Newsletter_June_2025.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7ffb120c/684a9f1dbf45cd8bf094f635_Compliance_Dashboard_Newsletter_June_2025.png" alt="Compliance Dashboard Newsletter June screenshot" />
 </figure>
 
 **Hot take:** EU AI Act compliance isn't bureaucratic overhead—it's MLOps best practices with legal enforcement.
@@ -133,7 +133,7 @@ Check out the [full technical deep-dive](https://www.zenml.io/blog/building-a-co
 ## Rant's Corner: Stop Fighting the Tools, Start Experimenting
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4c3ed8f8/684a9f2acd692161b3a4b7e6_Agentic_Newsletter_June_2025.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4c3ed8f8/684a9f2acd692161b3a4b7e6_Agentic_Newsletter_June_2025.png" alt="Agentic Newsletter June" />
 </figure>
 
 The coding agent discourse has become exhausting. Half the timeline thinks these tools will replace developers next week. The other half dunks on them for generating buggy boilerplate. Even our team opinions range from "game-changer" to "glorified autocomplete."
@@ -153,7 +153,7 @@ The future isn't about choosing sides—it's about choosing the right tool for t
 ## 🎯 Why You Don't Need an Agent (But You Might Need a Workflow)
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/67eeac00/684a9f39877210d51ed60d54_ZenML_Langfuse_Newsletter_June_2025.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/67eeac00/684a9f39877210d51ed60d54_ZenML_Langfuse_Newsletter_June_2025.png" alt="ZenML Langfuse Newsletter June" />
 </figure>
 
 I'm giving a talk tonight at our Munich event called "Why You Don't Need an Agent," and the title captures something that's been bugging me for months. 75% of AI projects fail to reach production, and I think the obsession with "agents" is part of the problem.

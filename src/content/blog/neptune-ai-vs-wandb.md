@@ -70,7 +70,7 @@ Tracking experiments is the foundation of any ML workflow because it gives teams
 ### Neptune AI
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e7da7320/693eb51b2ebfb473bb52ee60_neptune-ai-core-abstraction.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e7da7320/693eb51b2ebfb473bb52ee60_neptune-ai-core-abstraction.webp" alt="Neptune AI core abstractions: runs and experiments grouped into projects within a workspace" />
 </figure>
 
 Neptune AI is organized around runs (experiments) and projects. Every training run is tracked as a `Run` in Neptune’s API, and runs are grouped into projects. The platform doesn’t define pipelines or steps natively; you instrument your training scripts with Neptune’s logging calls, and each script execution becomes a tracked run.
@@ -84,7 +84,7 @@ All in all, experiments are first-class, grouped by Project. Artifacts and model
 ### WandB
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/906018a2/693eb52b85fe6122f0475f5d_wandb-core-abstraction.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/906018a2/693eb52b85fe6122f0475f5d_wandb-core-abstraction.webp" alt="WandB core abstractions: runs, configs, and artifacts organized under an entity and project hierarchy" />
 </figure>
 
 WandB is also centered on runs and projects. You initialize a WandB run typically with `wandb.init(project="my-project")` and then log metrics, parameters, and artifacts to that run.
@@ -102,7 +102,7 @@ W&B provides a system of record for *experiments* and their outputs. Everything 
 ### ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f119b398/693eb53b2a5d5f7bc26d48a1_zenml-core-abstraction.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f119b398/693eb53b2a5d5f7bc26d48a1_zenml-core-abstraction.webp" alt="ZenML core abstractions: pipelines composed of steps, with artifacts and stack components" />
 </figure>
 
 ZenML is built around pipelines and steps as first-class abstractions. [You define your ML workflow](https://docs.zenml.io/concepts/steps_and_pipelines) as a `@pipeline` function composed of `@step` functions (each step is a unit of work, like data loading, training, evaluation, etc.).
@@ -122,7 +122,7 @@ Versioning datasets, models, and intermediate artifacts ensures that every step 
 ### Neptune AI
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e77605f1/693eb54b333785d118422b8a_neptune-ai-experiment-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e77605f1/693eb54b333785d118422b8a_neptune-ai-experiment-tracking.webp" alt="Neptune AI web dashboard comparing experiment runs with metric curves and metadata" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -141,7 +141,7 @@ In terms of experiment comparison, Neptune’s UI lets you filter and sort runs 
 ### WandB
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f7336d10/693eb55bb88636dc8d7b14d2_wandb-experiment-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f7336d10/693eb55bb88636dc8d7b14d2_wandb-experiment-tracking.webp" alt="WandB dashboard streaming live training metrics and interactive charts for a run" />
   <figcaption>WandB experiment tracking</figcaption>
 </figure>
 
@@ -184,7 +184,7 @@ For visualizations, beyond basic charts, WandB has specialized features like:
 ### ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4a4ed178/6938ee7483c9611ce77185c7_zenml-experiment-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4a4ed178/6938ee7483c9611ce77185c7_zenml-experiment-tracking.webp" alt="ZenML Pro dashboard showing a pipeline run DAG and step execution timeline" />
   <figcaption>ZenML experiment tracking</figcaption>
 </figure>
 
@@ -211,7 +211,7 @@ ML systems break when pipelines are stitched together manually. Orchestration de
 ### Neptune AI
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/df00a794/6938ee86eee81a1af8ff5738_netune-ai-artifact-tracking.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/df00a794/6938ee86eee81a1af8ff5738_netune-ai-artifact-tracking.webp" alt="Neptune AI Artifacts tab listing versioned files logged across experiment runs" />
   <figcaption>Neptune AI artifacts</figcaption>
 </figure>
 
@@ -230,7 +230,7 @@ Regardless, Neptune makes it easy to version control any piece of data associate
 ### WandB
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e223c7ad/693eb5a5ec6d54dc61f64079_wandb-artifacts.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e223c7ad/693eb5a5ec6d54dc61f64079_wandb-artifacts.webp" alt="WandB Artifacts UI browsing versioned datasets and models with their aliases" />
   <figcaption>WandB artifacts</figcaption>
 </figure>
 
@@ -245,7 +245,7 @@ In the WandB web UI, there’s an Artifacts section where you can browse all dat
 ### ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/db5d81fb/693eb5c66aed9f5d2a72bbff_zenml-artifact-store.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/db5d81fb/693eb5c66aed9f5d2a72bbff_zenml-artifact-store.webp" alt="ZenML artifact store view showing automatically versioned step outputs from pipeline runs" />
   <figcaption>ZenML artifact store</figcaption>
 </figure>
 
@@ -304,7 +304,7 @@ Neptune focuses on framework-level and experiment-level integrations. You plug i
 <ul><li>PyTorch, PyTorch Lightning, TensorFlow/Keras, scikit-learn, XGBoost, LightGBM</li><li>Optuna, Ray Tune, Hyperopt for HPO</li><li>Airflow, Kubeflow Pipelines, Prefect, Kedro for orchestration</li><li>Jupyter notebook extension and GitHub Actions/CI scripts</li><li>REST API and Python client for custom tools and services</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9263ff8a/693eb5e181f6a3f97fb0fc66_neptune-ai-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9263ff8a/693eb5e181f6a3f97fb0fc66_neptune-ai-integration.webp" alt="Neptune AI integrations across ML frameworks, HPO libraries, and orchestration tools" />
 </figure>
 
 ### WandB
@@ -316,7 +316,7 @@ WandB is designed to sit on top of almost any ML stack as the tracking and visua
 <ul><li>TensorFlow/Keras, PyTorch and Lightning, scikit-learn, XGBoost, Hugging Face</li><li>Optuna, Ray Tune, and W&amp;B Sweeps for HPO</li><li>Airflow, Kubeflow, Prefect, Dagster for orchestration</li><li>Google Colab, Jupyter, SageMaker, Azure ML notebooks, and jobs</li><li>CI/CD: GitHub Actions, GitLab CI, Jenkins via API and webhooks</li><li>WandB Artifacts and Model Registry for dataset/model versioning and deployment workflows</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3f145a9f/693eb5efa0fc2777405fc5e4_wandb-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3f145a9f/693eb5efa0fc2777405fc5e4_wandb-integration.webp" alt="WandB integrations spanning ML frameworks, HPO, orchestration, notebooks, and CI/CD" />
 </figure>
 
 ### ZenML
@@ -328,7 +328,7 @@ WandB is designed to sit on top of almost any ML stack as the tracking and visua
 <ul><li><strong>Orchestrators:</strong> Airflow, Kubeflow, Kubernetes, AWS Step Functions, local runners</li><li><strong>Experiment trackers:</strong> WandB, MLflow, Neptune, TensorBoard</li><li><strong>Artifact stores:</strong> S3, GCS, Azure Blob Storage, local file systems</li><li><strong>Model deployers:</strong> Seldon, BentoML, KServe, SageMaker, Ray Serve</li><li><strong>Data and quality:</strong> Feast, Great Expectations, whylogs, Evidently, vector stores</li><li><strong>LLM tooling:</strong> LangChain, LlamaIndex, and other LLM/RAG components</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2fa224da/693eb602408799aed85b85c8_zenml-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2fa224da/693eb602408799aed85b85c8_zenml-integration.webp" alt="ZenML stack integrations: orchestrators, experiment trackers, artifact stores, and model deployers" />
 </figure>
 
 ZenML is the most flexible of the three. It acts as the central hub that wires all these tools into one pipeline workflow without forcing a specific cloud, tracker, or model-serving stack.
@@ -350,7 +350,7 @@ WandB has a free plan, which you can cloud-host or host privately. But if you wa
 WandB also offers an Advanced Enterprise plan (custom pricing) for hosting the framework privately.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2b599f2d/693eb612b1817ee4a4ea83fd_wandb-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2b599f2d/693eb612b1817ee4a4ea83fd_wandb-pricing.webp" alt="WandB pricing page showing the free, Pro, and Enterprise plan tiers" />
 </figure>
 
 ### ZenML
@@ -360,7 +360,7 @@ WandB also offers an Advanced Enterprise plan (custom pricing) for hosting the f
 These paid plans include features like SSO, role-based access control, premium support, and hosting, but **all the core functionality remains free** in the open-source version. Essentially, you can start with ZenML’s free tier and only consider paid options if you need advanced collaboration or want ZenML to manage the infrastructure for you.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6c572d03/6938ef54014d659b02d9340a_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6c572d03/6938ef54014d659b02d9340a_zenml-pricing.webp" alt="ZenML pricing page showing the free open-source tier alongside Cloud and Enterprise plans" />
 </figure>
 
 ## Which MLOps Framework Works Best for You?

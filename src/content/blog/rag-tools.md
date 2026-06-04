@@ -42,7 +42,7 @@ Thankfully, a new generation of RAG tools is here to save the day. In this artic
 Before diving into the tools, it is essential to establish a clear framework for evaluation. The choice of a RAG tool is no longer just an NLP or data science decision; it has become an MLOps infrastructure decision. Let’s look at some factors to look for when selecting a RAG tool for agentic AI.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3172b576/689ac0baf117e310435b8d7b_factors-to-look-for-in-a-rag-tool.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3172b576/689ac0baf117e310435b8d7b_factors-to-look-for-in-a-rag-tool.png" alt="Diagram of the four key factors for choosing a RAG tool: retrieval, reasoning, evaluation, and deployment" />
   <figcaption>Factors to look for in a RAG tool</figcaption>
 </figure>
 
@@ -116,7 +116,7 @@ The platform lets you build RAG-enabled AI pipelines with minimal fuss, so your 
 We are upgrading our platform to bring every ML and LLM workflow into one place for you to run, track, and improve. Think of processes like data preparation, training, RAG indexing, agent orchestration, and more, all in one place.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bfb5e7e7/689ac1161e098c7fa15feea2_zenml-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bfb5e7e7/689ac1161e098c7fa15feea2_zenml-pricing-plans.png" alt="ZenML pricing plans page showing the open-source free tier and upcoming commercial platform" />
 </figure>
 
 ### Pros and Cons
@@ -130,7 +130,7 @@ But remember, ZenML is not a specialized RAG UI or a one-click QA solution – i
 ## 2. Dify
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b322e9b/689ac138b8e66bd9aba3af52_dify-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b322e9b/689ac138b8e66bd9aba3af52_dify-homepage.png" alt="Screenshot of the Dify homepage promoting its no-code visual builder for LLM and agent applications" />
 </figure>
 
 [Dify](https://dify.ai/) is an open-source platform that combines a visual no-code builder for LLM applications with powerful RAG and agentic capabilities. The platform lets you build AI agents through a web interface, making it accessible to teams that don’t want to write a lot of code for prompt flows or knowledge base setup.
@@ -146,7 +146,7 @@ Dify’s open source plan - Sandbox gives you access to 200 OpenAI calls for fre
 <ul><li><strong>Professional</strong>: $59 per workspace per month (5,000 message credits)</li><li><strong>Team</strong>: $159 per workspace per month (10,000 message credits)</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2b6195ea/689ac14ebc82cf5de8c3100f_dify-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2b6195ea/689ac14ebc82cf5de8c3100f_dify-pricing-plans.png" alt="Dify pricing plans showing the free Sandbox tier alongside paid Professional and Team plans" />
 </figure>
 
 ### Pros and Cons
@@ -158,7 +158,7 @@ However, Dify doesn’t cover the whole production story. Doing all the work of 
 ## 3. Embedchain
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7f56cfff/689ac1748d153d231d1ef34b_embedchain-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7f56cfff/689ac1748d153d231d1ef34b_embedchain-homepage.png" alt="Screenshot of the Embedchain homepage describing its developer-centric framework for building RAG chatbots" />
 </figure>
 
 [Embedchain](https://embedchain.ai/) is an open-source framework that takes a developer-centric approach to RAG. It’s often described as ‘the Swiss Army knife of RAG’ for how it streamlines creating a chatbot or Q&A agent with your data.
@@ -180,7 +180,7 @@ However, for complex, production-grade systems that demand fine-grained control 
 ## 4. LlamaIndex
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e3be3fff/689ac1acb941bfeec54db8c2_llamaindex-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e3be3fff/689ac1acb941bfeec54db8c2_llamaindex-homepage.png" alt="Screenshot of the LlamaIndex homepage presenting its data framework for context-augmented LLM applications" />
 </figure>
 
 [LlamaIndex](https://www.llamaindex.ai/) is a powerful open-source data framework specifically designed for building context-augmented LLM applications and agents. It offers a comprehensive and flexible toolkit that covers all stages of the RAG pipeline, from data ingestion to advanced retrieval and agentic orchestration.
@@ -196,7 +196,7 @@ The LlamaIndex framework is open-source and free, but it will only give you 10K 
 <ul><li><strong>Starter:</strong> $50 per month</li><li><strong>Pro:</strong> $500 per month</li><li><strong>Enterprise:</strong> Custom</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bc3f9e0c/689ac20e9e38bbefd22dd275_llamaindex-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bc3f9e0c/689ac20e9e38bbefd22dd275_llamaindex-pricing-plans.png" alt="LlamaIndex pricing plans showing the free open-source tier and paid Starter, Pro, and Enterprise plans" />
 </figure>
 
 ### Pros and Cons
@@ -208,7 +208,7 @@ However, the framework's vast number of features results in a steep learning cur
 ## 5. GraphRAG Toolkit
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cbd9f147/689ac22429298d5c92b0c5b3_graphrag-toolkit.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cbd9f147/689ac22429298d5c92b0c5b3_graphrag-toolkit.png" alt="Screenshot of the GraphRAG Toolkit page explaining how it builds a knowledge graph from unstructured text" />
 </figure>
 
 [GraphRAG](https://aws.amazon.com/blogs/database/introducing-the-graphrag-toolkit/), an open-source toolkit from Microsoft Research, enhances RAG by constructing a knowledge graph from unstructured data. This allows agents to reason about holistic concepts and hidden relationships, overcoming a key limitation of traditional vector search.
@@ -230,7 +230,7 @@ But a drawback we found was the significant upfront cost and complexity of build
 ## 6. R2R
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7550d3cf/689ac23affbf1fc9a70f1353_r2r-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7550d3cf/689ac23affbf1fc9a70f1353_r2r-homepage.png" alt="Screenshot of the R2R homepage describing its open-source framework for production-grade RAG applications" />
 </figure>
 
 [R2R](https://r2r-docs.sciphi.ai/introduction) is an open-source framework designed for building and deploying production-grade RAG applications. It simplifies the development process by providing a comprehensive set of tools for ingestion, embedding, and retrieval.
@@ -252,7 +252,7 @@ However, its extensive feature set may have a steeper learning curve, and it req
 ## 7. Haystack (by deepset)
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3966d275/689ac257aa4acb4324056de2_haystack-by-deepset-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3966d275/689ac257aa4acb4324056de2_haystack-by-deepset-homepage.png" alt="Screenshot of the Haystack by deepset homepage presenting its modular pipeline framework for LLM applications" />
 </figure>
 
 [Haystack by deepset](https://haystack.deepset.ai/) is a production-ready, open-source AI framework for building complex LLM applications. It features a modular, pipeline-based architecture that allows developers to compose and customize sophisticated RAG and agentic systems.
@@ -266,7 +266,7 @@ However, its extensive feature set may have a steeper learning curve, and it req
 The Haystack framework is open-source and free. Deepset also offers a commercial ‘deepset AI Platform,’ which includes a free ‘Studio’ tier for prototyping and custom-priced Enterprise plans.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e09079fb/689ac2765e58f6f18e7eaeed_deepset-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e09079fb/689ac2765e58f6f18e7eaeed_deepset-pricing-plans.png" alt="deepset AI Platform pricing showing the free Studio tier and custom-priced Enterprise plans" />
 </figure>
 
 ### Pros and Cons
@@ -278,7 +278,7 @@ However, it has a steeper learning curve due to code-first setup and a lack of a
 ## 8. Squirro
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a50f1def/689ac28b548756d063a79a30_squirro-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a50f1def/689ac28b548756d063a79a30_squirro-homepage.png" alt="Screenshot of the Squirro homepage presenting its enterprise Augmented Intelligence and Insight Engine platform" />
 </figure>
 
 [Squirro](https://squirro.com/) is an enterprise software company known for its Augmented Intelligence platform, which includes cognitive search, insights, and now generative AI capabilities. For RAG, Squirro positions itself as an enterprise-ready solution to build ‘Insight Engines’ that combine your disparate data sources with LLMs.
@@ -300,7 +300,7 @@ However, Squirro is a heavy-duty, proprietary platform, which may be overkill fo
 ## How ZenML Helps In Closing the Outer Loop Around Your Agents
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/db3ea881/689ac2a3febb312100f576da_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/db3ea881/689ac2a3febb312100f576da_zenml-unified-mlops-and-llmops-platform.webp" alt="ZenML as a unified MLOps and LLMOps platform wrapping the outer loop around RAG-powered agents" />
 </figure>
 
 RAG tools help your agent find the right context and draft answers. The outer loop is everything that keeps this reliable in production: orchestration, lineage, evaluation, and day-2 ops. ZenML provides that layer around your RAG stack.
@@ -308,7 +308,7 @@ RAG tools help your agent find the right context and draft answers. The outer lo
 ### Orchestrate the Full RAG Flow
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2025d562/689ac2bb7902211fc712d115_zenml-rag-pipeline-example.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2025d562/689ac2bb7902211fc712d115_zenml-rag-pipeline-example.webp" alt="Example ZenML RAG pipeline chaining ingest, chunking, embedding, indexing, retrieval, and answer generation steps" />
   <figcaption>ZenML RAG pipeline example</figcaption>
 </figure>
 
@@ -321,7 +321,7 @@ Parameters and YAML config let you switch models or retrievers without touching 
 ### Unified Visibility and Lineage
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54b56223/689ac2daa78dcb11fd325dd1_zenml-pipeline-dag-visualization.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54b56223/689ac2daa78dcb11fd325dd1_zenml-pipeline-dag-visualization.webp" alt="ZenML dashboard visualizing a pipeline run as a DAG with versioned artifacts and lineage between steps" />
   <figcaption>ZenML pipeline DAG visualization</figcaption>
 </figure>
 
@@ -334,7 +334,7 @@ Our platform also records code repo commit hashes for runs, which helps when you
 ### Continuous Evaluation and Feedback
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cb388031/689ac2feddf8538c00e3b4b3_zenml-evaluation.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cb388031/689ac2feddf8538c00e3b4b3_zenml-evaluation.webp" alt="ZenML evaluation workflow measuring retrieval and generation quality for a RAG pipeline" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
@@ -347,7 +347,7 @@ You can also set up alerters that integrate with Slack or Discord so failures or
 ### Production Rollout and Scale
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fbaa45e4/689ac32070997746c0d57818_zenML-pipeline-being-run-on-production-stack-through-ci-cd.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fbaa45e4/689ac32070997746c0d57818_zenML-pipeline-being-run-on-production-stack-through-ci-cd.webp" alt="ZenML pipeline promoted to a production stack and run through a CI/CD workflow" />
   <figcaption>ZenML pipeline being run on production stack through CI/CD</figcaption>
 </figure>
 

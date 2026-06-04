@@ -210,11 +210,11 @@ $ grep -oE 'INFO.*completed in [0-9]{2,9}.*seconds' server-logs.txt | head -n 5
 We discovered that the expensive `get_run` operations were being called unnecessarily for authentication purposes, even when not explicitly requested by the client. Pipeline run fetching had become prohibitively expensive because it involved multiple SQLAlchemy queries to build complete objects with steps, artifacts, metadata, and relationships.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b595102b/683dbe4c4a1ebde1afd0e4ce_server-side-operation-durations-min-3s.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b595102b/683dbe4c4a1ebde1afd0e4ce_server-side-operation-durations-min-3s.png" alt="Server Side Operation Durations Min 3s" />
 </figure>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/81b09073/683dbe55ef60d8116c5b066e_server-side-operation-durations-min-5s.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/81b09073/683dbe55ef60d8116c5b066e_server-side-operation-durations-min-5s.png" alt="Server Side Operation Durations Min 5s" />
 </figure>
 
 ## Stage 3: Database Query Optimization
@@ -566,13 +566,13 @@ $ grep -oE 'DEBUG.*completed in [0-9]{4,9}.*ms' final-test-logs.txt | head -n 5
 ```
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/befd3798/683dbe82c4c54d1afcd99e04_server-side-operation-durations-2s.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/befd3798/683dbe82c4c54d1afcd99e04_server-side-operation-durations-2s.png" alt="Server Side Operation Durations 2s" />
 </figure>
 
 **Throughput Improvements:**Our performance testing framework now successfully runs **100+ parallel pipeline steps** with complex metadata, compared to previous configurations that experienced difficulties with high-parallelism workloads under similar conditions. Our worse API call duration under load dropped **below 20 seconds** compared to the previous values exceeding 80 seconds.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/958b47d5/683dbe8b3de33cdd85fc1c21_server-side-operation-durations-10s.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/958b47d5/683dbe8b3de33cdd85fc1c21_server-side-operation-durations-10s.png" alt="Server Side Operation Durations 10s" />
 </figure>
 
 **Resource Efficiency:**The optimizations also improved resource utilization, allowing the same workloads to run effectively with fewer server replicas. Our autoscaling configurations can now handle peak loads with reduced infrastructure requirements.
