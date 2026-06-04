@@ -490,7 +490,7 @@ W&B offers a free tier for personal projects and two paid tiers:
 <ul><li><strong>Pro:</strong> $60 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/20f483ba/699532c7cfc05eaa506319ec_mlflow-pricing.png" alt="Weights & Biases pricing showing a free tier plus paid Pro and Enterprise plans" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b29a789f/694a319a8b4befb66f81d242_wandb-pricing.png" alt="Weights & Biases pricing showing a free tier plus paid Pro and Enterprise plans" />
 </figure>
 
 Apart from the above cloud-hosted plans, W&B also offers privately-hosted paid plans that have custom pricing.

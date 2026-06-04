@@ -71,6 +71,23 @@ function codeFenceLines(lines: string[]): Set<number> {
   return inFence;
 }
 
+/** Return the YAML frontmatter block for content files, if one exists. */
+function frontmatterBlock(src: string): string | null {
+  const lines = src.split(/\r?\n/);
+  if (lines[0]?.trim() !== "---") return null;
+
+  const end = lines.findIndex((line, index) => index > 0 && line.trim() === "---");
+  if (end === -1) return null;
+
+  return lines.slice(1, end).join("\n");
+}
+
+/** Is a content file explicitly marked draft in frontmatter? */
+function isDraftContent(src: string): boolean {
+  const frontmatter = frontmatterBlock(src);
+  return frontmatter !== null && /^draft:\s*true\b/m.test(frontmatter);
+}
+
 /** Does the tag have a real (non-empty) src? Accepts src="..." and src={...}. */
 function hasRealSrc(tag: string): boolean {
   const q = /\bsrc=(["'])(.*?)\1/is.exec(tag);
@@ -127,7 +144,7 @@ function check(): void {
     if (isContent) {
       // Skip drafts and the route-less old-projects collection — they never
       // render to a public, crawlable page.
-      if (/^draft:\s*true\b/m.test(src)) continue;
+      if (isDraftContent(src)) continue;
       if (file.includes(`${join("content", "old-projects")}`)) continue;
     }
 

@@ -125,7 +125,7 @@ You can use LangSmith by signing up for LangChain. It offers a generous free pla
 <ul><li><strong>Plus:</strong> $39 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d9c2e1bf/68c2abb128642f6e2a6d8f4a_langfuse-pricing.png" alt="Screenshot of LangSmith pricing plans including the free, Plus, and Enterprise tiers" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2d3bb213/6916b365454bf3764e243444_langsmith-pricing.png" alt="Screenshot of LangSmith pricing plans including the free, Plus, and Enterprise tiers" />
 </figure>
 
 ### Pros and Cons
