@@ -42,7 +42,7 @@ Organizations with mature ML practices typically implement a multi-account strat
 <ol><li><strong>Development/Experimentation</strong>: Where data scientists build and test models</li><li><strong>Staging/QA</strong>: Where models undergo validation and compliance checks</li><li><strong>Production</strong>: Where approved models serve business-critical applications</li></ol>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/156809ba/680fb1e04674bb2971756766_ML-13463-architecture-diagram.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/156809ba/680fb1e04674bb2971756766_ML-13463-architecture-diagram.png" alt="“How Aviva built a scalable, secure, and reliable MLOps platform using Amazon SageMaker.”" />
   <figcaption>Source: “How Aviva built a scalable, secure, and reliable MLOps platform using Amazon SageMaker.”</figcaption>
 </figure>
 
@@ -70,7 +70,7 @@ These challenges are especially acute for organizations managing dozens of model
 AWS MLOps implementations can require multiple different contexts across different libraries and SDKs, from YAML to Python, which can get overwhelming for managing efficiency at scale. For example, to create a single training workflow, one might have to write local scripts, push to CodeCommit, then write a CI workflow that compiles into a Sagemaker pipeline SDK.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d685e180/680fb28c090846c25c2868eb_image.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d685e180/680fb28c090846c25c2868eb_image.png" alt="Many different touchpoints to deploy a ML pipeline on AWS" />
   <figcaption>Many different touchpoints to deploy a ML pipeline on AWS</figcaption>
 </figure>
 
@@ -118,7 +118,7 @@ ZenML provides a central dashboard that shows all pipelines, models, and metrics
 <ul><li>Track model lineage from development to production</li><li>Compare model performance across environments</li><li>Monitor deployment status across all accounts</li><li>Manage approvals from a central location</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1de036e5/6810d27936a8b920060eba5b_central-dashboard-artifact-metadata-visualization-2.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1de036e5/6810d27936a8b920060eba5b_central-dashboard-artifact-metadata-visualization-2.gif" alt="Central Dashboard Artifact Metadata Visualization 2 screenshot" />
 </figure>
 
 <h3 class="challenge-title-3">
@@ -192,7 +192,7 @@ def deploy_model(model):
 ```
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/76d6177c/680fb3b9fd2d51e98c50bc4e_image__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/76d6177c/680fb3b9fd2d51e98c50bc4e_image__1_.png" alt="Step 3: Deploy to production screenshot" />
 </figure>
 
 <h3 class="challenge-title">
@@ -296,7 +296,7 @@ Data scientists develop locally but deploy to AWS cloud environments, creating a
 ZenML allows the exact same code to run locally or in any AWS account:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a614dbb1/680fb4514884f1816b1ea558_pipeline_architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a614dbb1/680fb4514884f1816b1ea558_pipeline_architecture.png" alt="Pipeline Architecture diagram" />
 </figure>
 
 <h3 class="challenge-title">
@@ -322,7 +322,7 @@ Many organizations operate across multiple cloud providers or maintain hybrid en
 ZenML's stack abstraction layer allows the same pipelines to run seamlessly across different cloud providers using detailed stack configurations. See this animation to see how easily we can configure stack components for different providers across different regions with a few  clicks (you can also do this via Terraform or API):
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/07dbbc8e/680fb468ad9313f61c767518_ezgif-897208260645f8.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/07dbbc8e/680fb468ad9313f61c767518_ezgif-897208260645f8.gif" alt="Ezgif 897208260645f8 animated walkthrough" />
 </figure>
 
 <h3 class="challenge-title">
@@ -366,7 +366,7 @@ def regulatory_visualization_step(compliance_report, drift_report):
 ```
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2f3071cf/680fb49415f0b629049c25a9_ezgif-8f3679c2b7517a.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2f3071cf/680fb49415f0b629049c25a9_ezgif-8f3679c2b7517a.gif" alt="Ezgif 8f3679c2b7517a animated walkthrough" />
 </figure>
 
 This approach allows organizations to implement "data-quality gates & alerting easily," as mentioned in their case study, while Brevo has leveraged similar techniques to become "a safer platform, fighting against fraudsters and scammers." The visualizations and reports generated serve as crucial documentation for audit purposes while ensuring consistent governance across all AWS environments.
@@ -439,7 +439,7 @@ def train_model(params: Dict[str, Any]):
 You can then compare metadata easily in one interface across stacks and models:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bfe6807f/680fb4f067c6206e44f9d6e6_image__2_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bfe6807f/680fb4f067c6206e44f9d6e6_image__2_.png" alt="Configure the Evidently visualization step with regulatory requirements screenshot" />
 </figure>
 
 ## Transforming MLOps Across AWS Accounts

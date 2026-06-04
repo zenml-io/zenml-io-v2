@@ -61,7 +61,7 @@ In a long-running ML pipeline, you don't want to lose progress when something fa
 #### n8n
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/465e8dad/6979885d5820c347202820a0_n8n-state-and-durability.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/465e8dad/6979885d5820c347202820a0_n8n-state-and-durability.webp" alt="n8n Executions list showing past workflow runs with status and per-node output stored in the database" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -76,7 +76,7 @@ For lightweight cross-execution persistence, `$getWorkflowStaticData('global')` 
 #### Temporal
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1e22bb14/69798873b6f95359efdc762e_temporal-workflow-failure-detection.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1e22bb14/69798873b6f95359efdc762e_temporal-workflow-failure-detection.webp" alt="Temporal UI detecting a workflow failure and reconstructing state by replaying its event history" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -95,7 +95,7 @@ This model requires discipline; workflow code must remain deterministic so repla
 #### ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/55929ab4/696db0ae081ed0c4bea49ded_zenml-pipeline-dag-visualization.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/55929ab4/696db0ae081ed0c4bea49ded_zenml-pipeline-dag-visualization.webp" alt="ZenML dashboard visualizing a pipeline run as a DAG with each step and its tracked artifacts" />
   <figcaption>Pipeline DAG visualization</figcaption>
 </figure>
 
@@ -118,7 +118,7 @@ No workflow is perfect. Things will go wrong, from transient network glitches to
 #### n8n
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b72165a4/697988b1924766d05fe43688_n8n-error-trigger-node.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b72165a4/697988b1924766d05fe43688_n8n-error-trigger-node.webp" alt="n8n Error Trigger node on the canvas, used to launch a separate error workflow for alerts and cleanup" />
   <figcaption>Error trigger node</figcaption>
 </figure>
 
@@ -191,7 +191,7 @@ All three platforms support Kubernetes deployment, but their architectures refle
 #### n8n
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e8b68de7/697988cabd7375f6b7130581_n8n-kubernetes-execution.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e8b68de7/697988cabd7375f6b7130581_n8n-kubernetes-execution.webp" alt="n8n queue-mode Kubernetes topology with main and worker pods backed by Redis and PostgreSQL" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -222,7 +222,7 @@ Workers register themselves via task queues, and the Temporal server distributes
 #### ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bcd0575c/697988dc8f24cc9f22700c40_zenml-kubernetes-execution.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bcd0575c/697988dc8f24cc9f22700c40_zenml-kubernetes-execution.webp" alt="ZenML Kubernetes execution model where each pipeline step runs in its own pod via an orchestrator Job" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -267,7 +267,7 @@ LLM providers include OpenAI, Anthropic, Google Gemini, Mistral, Groq, DeepSeek,
 Additionally, HTTP Request and Webhook nodes enable connection to any REST API.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/62f99ffd/6972f3167a5091212b0f7b62_n8n-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/62f99ffd/6972f3167a5091212b0f7b62_n8n-integrations.webp" alt="Grid of n8n's built-in integration nodes, including AI, LLM provider, and vector store connectors" />
 </figure>
 
 ### Temporal
@@ -283,7 +283,7 @@ ZenML uses a stack-based integration model with 50+ integrations organized by co
 <ul><li><strong>Data Sources / Feature Stores</strong>: Snowflake, BigQuery, Feast</li><li><strong>Experiment Trackers</strong>: MLflow, Weights &amp; Biases, Comet (ZenML pipelines can automatically log metrics)</li><li><strong>Model Deployment</strong>: BentoML, Seldon, SageMaker</li><li><strong>Orchestrators</strong>: Airflow, Kubeflow, AWS Step Functions (in case you want ZenML to run on those backends)</li><li><strong>Cloud Resources</strong>: AWS, GCP for provisioning resources or using managed services</li><li><strong>LLMOps/GenAI tools</strong>: Integrations for LangChain, HuggingFace, and LLM providers</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e6e914e2/69687450a636513a7712d11a_zenml-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e6e914e2/69687450a636513a7712d11a_zenml-integration.webp" alt="ZenML's stack-based integrations grouped by component type, from data sources to model deployment" />
 </figure>
 
 ## n8n vs Temporal vs ZenML: Pricing
@@ -297,7 +297,7 @@ Other than the self-hosted plan I talked about above, n8n offers the following p
 <ul><li><strong>Starter:</strong> $24 per month</li><li><strong>Pro:</strong> $60 per month</li><li><strong>Business:</strong> $960 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/116ac318/6972f34f0b0a48f7d7bff5fe_n8n-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/116ac318/6972f34f0b0a48f7d7bff5fe_n8n-pricing.webp" alt="n8n pricing page showing Starter, Pro, Business, and Enterprise plan tiers" />
 </figure>
 
 ### Temporal
@@ -307,7 +307,7 @@ The core Temporal platform is completely open source (MIT license) and can be se
 <ul><li><strong>Essentials:</strong> $100 per month</li><li><strong>Business:</strong> $500 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/35335f66/6934efcdc7048c189e4b8b23_temporal-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/35335f66/6934efcdc7048c189e4b8b23_temporal-pricing.webp" alt="Temporal Cloud pricing page showing Essentials, Business, and Enterprise plan tiers" />
 </figure>
 
 ### ZenML
@@ -317,7 +317,7 @@ ZenML is also open-source and free to start.
 <ul><li><strong>Community (Free):</strong> Full open-source framework. You can run it on your own infrastructure for free.</li><li><strong>ZenML Pro (Custom pricing):</strong> A managed control plane that handles the dashboard, user management, and stack configurations. This removes the burden of hosting the ZenML server yourself.</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="ZenML pricing page contrasting the free open-source Community edition with the paid ZenML Pro plan" />
 </figure>
 
 **📚 Relevant blogs you must read:**
@@ -353,7 +353,7 @@ Code-based pipelines fit naturally into version control. ZenML tracks artifacts 
 ### Testing and CI/CD Integration
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b1f6502b/69798938189a949747ed5267_zenml-ci-cd.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b1f6502b/69798938189a949747ed5267_zenml-ci-cd.webp" alt="ZenML pipelines integrated into a CI/CD workflow for automated testing and deployment" />
   <figcaption>Source</figcaption>
 </figure>
 

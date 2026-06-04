@@ -66,7 +66,7 @@ The core of any agentic framework is shaped by its orchestration model. That is,
 #### Haystack
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/263f08e2/68d36e910fc0af075cc2d3d1_haystack-agent-primitive.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/263f08e2/68d36e910fc0af075cc2d3d1_haystack-agent-primitive.png" alt="Diagram of Haystack's pipeline-based agent reasoning loop querying an LLM and invoking tools" />
   <figcaption>Haystack agent primitive</figcaption>
 </figure>
 
@@ -85,7 +85,7 @@ Overall, Haystack’s component-based method makes the control flow visible, str
 #### LlamaIndex
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d0340442/68b58552f38b7710f73bf221_llamaindex-workflow-model.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d0340442/68b58552f38b7710f73bf221_llamaindex-workflow-model.png" alt="Diagram of LlamaIndex's event-driven AgentWorkflow model with steps passing events to branch and loop" />
 </figure>
 
 LlamaIndex approaches agents in a more **code-centric** way. Instead of drawing static pipelines, you typically write Python code that defines the agent’s behavior.
@@ -171,7 +171,7 @@ Both Haystack and LlamaIndex are very strong in Retrieval-Augmented Generation, 
 #### Haystack
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3fd97a5c/68d36ee314d36b6eac31f3a5_haystack-rag.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3fd97a5c/68d36ee314d36b6eac31f3a5_haystack-rag.png" alt="Diagram of a Haystack RAG pipeline wrapped as a ComponentTool for an agent to retrieve documents" />
   <figcaption>Haystack RAG</figcaption>
 </figure>
 
@@ -222,7 +222,7 @@ Put simply; the human is one of many resources the agent can choose to consult i
 #### LlamaIndex
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3bc22cde/68d36f02e7ea4186bb7b0a62_llamaindex-human-in-the-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3bc22cde/68d36f02e7ea4186bb7b0a62_llamaindex-human-in-the-loop.png" alt="Diagram of LlamaIndex human-in-the-loop pausing on an InputRequiredEvent until a HumanResponseEvent arrives" />
   <figcaption>LlamaIndex human-in-the-loop functionality</figcaption>
 </figure>
 
@@ -251,7 +251,7 @@ In short, Haystack’s integration strength lies in enterprise environments – 
 Moreover, the `haystack-core-integrations` repository serves as a central hub for community contributions, ensuring a consistent standard of quality.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/35bc399d/68d36f1addd0d43cb94a4791_haystack-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/35bc399d/68d36f1addd0d43cb94a4791_haystack-integrations.png" alt="Haystack integrations overview spanning model providers, document stores, and monitoring tools" />
   <figcaption>Haystack integrations</figcaption>
 </figure>
 
@@ -262,7 +262,7 @@ LlamaIndex's integrations focus on data connectivity and flexibility. It has a v
 <ul><li><strong>Data Loaders:</strong> Hundreds of connectors for sources like Notion, Slack, Google Drive, Discord, and APIs.</li><li><strong>Vector Stores:</strong> Integrations with all major providers.</li><li><strong>LLMs:</strong> Support for a wide range of models and providers.</li><li><strong>Agent Tools:</strong> A growing library of pre-built tools for agents.</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ba272ee/68bfa43e9f7e19af9bcccaa3_llamahub.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ba272ee/68bfa43e9f7e19af9bcccaa3_llamahub.png" alt="Screenshot of LlamaHub showing the catalog of community data loaders, tools, and integrations" />
   <figcaption>LlamaHub</figcaption>
 </figure>
 
@@ -277,7 +277,7 @@ Both frameworks are open-source and free for self-hosted use. However, both also
 The Haystack framework is open-source and free. Deepset also offers a commercial ‘deepset AI Platform,’ which includes a free ‘Studio’ tier for prototyping and custom-priced Enterprise plans.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c09fbc46/68d36f51f84b33a0b3f164ea_haystack-pricing-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c09fbc46/68d36f51f84b33a0b3f164ea_haystack-pricing-plans.png" alt="Screenshot of deepset AI Platform pricing plans, including the free Studio tier and Enterprise" />
 </figure>
 
 ### LlamaIndex
@@ -289,7 +289,7 @@ LlamaIndex also provides a hosted platform, which offers more and better feature
 <ul><li><strong>Free tier:</strong> $0, includes 10k credits (sufficient to try out with smaller workloads).</li><li><strong>Starter plan:</strong> $50 per month, includes 50k credits.</li><li><strong>Pro plan:</strong> $500 per month, includes 500k credits.</li><li><strong>Enterprise plan:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/784b34c8/68ba635fc1f82b66de6669c5_llamaindex-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/784b34c8/68ba635fc1f82b66de6669c5_llamaindex-pricing.png" alt="Screenshot of LlamaIndex hosted platform credit-based pricing tiers from Free to Enterprise" />
 </figure>
 
 ## How ZenML Manages the Outer Loop when Deploying Agentic AI Workflows
@@ -297,7 +297,7 @@ LlamaIndex also provides a hosted platform, which offers more and better feature
 Haystack and LlamaIndex are powerful frameworks for the 'inner loop' of development: defining, writing, and iterating on agentic behavior.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/80238d96/68d36f905df86638012edf81_zenml-unified-mlops-and-llmops-platform.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/80238d96/68d36f905df86638012edf81_zenml-unified-mlops-and-llmops-platform.webp" alt="Diagram of ZenML as a unified MLOps and LLMOps platform wrapping the agent outer loop" />
 </figure>
 
 However, they do not address the challenges of the 'outer loop,' which covers the entire lifecycle of productionizing, deploying, monitoring, and continually improving these agents over time. This is where a dedicated MLOps and [LLMOps framework](https://docs.zenml.io/user-guides/llmops-guide) like [ZenML](https://www.zenml.io/) becomes essential.
@@ -307,7 +307,7 @@ ZenML acts as the unifying outer loop that governs the production lifecycle of y
 ### 1. Pipeline Orchestration
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/10ed37e0/68ccd78a709ca124cef348cc_zenml-orchestration-use-case.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/10ed37e0/68ccd78a709ca124cef348cc_zenml-orchestration-use-case.png" alt="Diagram of a ZenML pipeline orchestrating agent steps across orchestrators like Airflow and Kubernetes" />
   <figcaption>ZenML orchestration</figcaption>
 </figure>
 
@@ -318,7 +318,7 @@ ZenML will orchestrate these with any orchestrator (Airflow, Kubernetes, etc.) b
 ### 2. Reproducibility and Versioning
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="Screenshot of a ZenML pipeline DAG visualization showing end-to-end artifact and step lineage" />
   <figcaption>ZenML end-to-end pipeline visibility</figcaption>
 </figure>
 
@@ -339,7 +339,7 @@ ZenML also interfaces with model serving tools, so if your agent or any sub-comp
 ### 4. Quality Checks and Evaluation
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5add9e53/68d36fc9ee0f2c3ac7d26e71_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5add9e53/68d36fc9ee0f2c3ac7d26e71_zenml-evaluation.png" alt="Diagram of a ZenML pipeline running automated evaluation steps to flag bad agent runs" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
@@ -350,7 +350,7 @@ ZenML integrates with experiment trackers to let you test different prompts, too
 **👀 Note:** At ZenML, we have built several such integrations with tools like LangChain, LlamaIndex, CrewAI, and more. We are actively shipping new integrations that you can find on this GitHub page: [ZenML Agent Workflow Integrations](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations).
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/df9321c0/68d36fdae6a00052f415f45c_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/df9321c0/68d36fdae6a00052f415f45c_zenml-agent-workflow-integrations.png" alt="Screenshot of ZenML's agent workflow integrations with frameworks like LangChain, LlamaIndex, and CrewAI" />
 </figure>
 
 **📚 Other comparison articles to read:**

@@ -42,7 +42,7 @@ The core benefit is around cost: batch request cost half the normal rate. Any it
 Aside from the cost benefits, you get significantly higher token limits if you’re sending in batch requests which again may make certain use cases feasible which weren’t with the standard limits. See the OpenAI docs for the specific details but [this chart](https://platform.openai.com/settings/organization/limits) sums it up, with TPD and TPM being tokens per day and minute respectively:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e72a7b09/668696a4701f47c3d170f9f5_img01.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e72a7b09/668696a4701f47c3d170f9f5_img01.png" alt="50% cost reduction for batch requests screenshot" />
 </figure>
 
 You should consider using the batch API for your use case includes some combination of the following:
@@ -152,13 +152,13 @@ You can accomplish everything above by using the OpenAI platform’s web UI. Let
 We already have a file, so we can just submit it directly. OpenAI will then validate that the file is in the right format and then directly schedule the batch predictions.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2bd74c16/66869a02a6c4e0396ed8bd12_img_02.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2bd74c16/66869a02a6c4e0396ed8bd12_img_02.png" alt="Img 02" />
 </figure>
 
 **2. Download the predictions when ready**
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/21a2b47e/66869a0d41bb888afd9a4336_img_03.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/21a2b47e/66869a0d41bb888afd9a4336_img_03.png" alt="Img 03" />
 </figure>
 
 Depending on the size of the predictions, you will have to wait some time until they are ready. The five queries I submitted (see above for the actual prompts) were returned to me in 11 seconds actually, so this goes to show that you might receive your responses significantly faster than 24 hours.
@@ -336,13 +336,13 @@ So our pipeline keeps running in your cloud orchestrator of choice, every 45 min
 Of course, all your runs and metadata are visible and inspectable via the ZenML dashboard:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2f61f5db/66869c18ffa82381de54f87c_img_04.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2f61f5db/66869c18ffa82381de54f87c_img_04.png" alt="Img 04" />
 </figure>
 
 And to access the data you can just use the [Python SDK](https://sdkdocs.zenml.io/) to access the data, or alternatively just [pass the output of this pipeline into another pipeline](https://docs.zenml.io/how-to/build-pipelines/trigger-a-pipeline-from-another) for processing for [LLM finetuning](https://github.com/zenml-io/zenml-projects/tree/main/llm-lora-finetuning) or whatever your specific use case is!
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3b56eb21/66869c3dc485388aae0c9525_img_05.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3b56eb21/66869c3dc485388aae0c9525_img_05.png" alt="Img 05" />
 </figure>
 
 ## 👀 Gotcha Corner: Things to watch out for

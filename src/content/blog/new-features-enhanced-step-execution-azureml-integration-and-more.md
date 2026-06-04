@@ -41,7 +41,7 @@ We're thrilled to announce the release of ZenML 0.65.0, bringing significant enh
 Our revamped quickstart demonstrates how ZenML streamlines the transition from local machine learning workflows to cloud-scale operations. This new experience helps users understand and leverage ZenML's capabilities more effectively, bridging the gap between development and production environments.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/20869132/66d06449378f17d2ad529a1e_66d063dd9f99201e24254763_Overview_20_1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/20869132/66d06449378f17d2ad529a1e_66d063dd9f99201e24254763_Overview_20_1_.png" alt="Overview 1 diagram" />
 </figure>
 
 Try it out using [Google Colab without installation](https://colab.research.google.com/github/zenml-io/zenml/blob/main/examples/quickstart/quickstart.ipynb) now!

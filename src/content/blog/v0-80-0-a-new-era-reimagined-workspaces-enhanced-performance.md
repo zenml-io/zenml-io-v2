@@ -34,7 +34,7 @@ seo:
 ---
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fc4ef930/67dd31af6dc3ab266ec34552_Organization_-_Home.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fc4ef930/67dd31af6dc3ab266ec34552_Organization_-_Home.png" alt="Tenants are now Workspaces!" />
   <figcaption>Tenants are now Workspaces!</figcaption>
 </figure>
 
@@ -43,7 +43,7 @@ We're thrilled to announce the release of ZenML 0.80.0, one of our most signific
 ## ⭐ Pro Features: Redefining Resource Management with Projects
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdc3f7f7/67dd333134b4bd77e6d99b4d_org_hierarchy_pro.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdc3f7f7/67dd333134b4bd77e6d99b4d_org_hierarchy_pro.png" alt="The new hierarchy introduced in ZenML 0.80.0. See a zoomed in version of the diagram here" />
   <figcaption>The new hierarchy introduced in ZenML 0.80.0. See a zoomed in version of the diagram here.</figcaption>
 </figure>
 
@@ -52,7 +52,7 @@ The standout feature for **ZenML Pro users** is our complete refactoring of work
 This architectural shift allows Pro users to subdivide a workspace into multiple logical namespaces, providing granular control over resources. Certain resources like Stacks and Secrets remain workspace-scoped, while others like pipelines, artifacts, and models become project-scoped. The result? Much more intuitive resource organization that scales with your team's growth.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/871499c6/67dd31d094daf71acca0333e_Workspace_-_Home.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/871499c6/67dd31d094daf71acca0333e_Workspace_-_Home.png" alt="Users can create projects easily from the dashboard" />
   <figcaption>Users can create projects easily from the dashboard</figcaption>
 </figure>
 
@@ -89,7 +89,7 @@ These improvements represent our continued commitment to the open-source communi
 ## 📜Meet our new and shiny docs
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b37da05b/67dd33aab24227d87a98960a_docs_screenshot.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b37da05b/67dd33aab24227d87a98960a_docs_screenshot.png" alt="Easier navigation for docs.zenml.io" />
   <figcaption>Easier navigation for docs.zenml.io</figcaption>
 </figure>
 

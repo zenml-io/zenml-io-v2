@@ -75,7 +75,7 @@ With six comprehensive modules and minimal cloud costs (you can complete it for 
 ## Bay Area Hackathon Winners
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b3fcf3b/67caa04e963f2a8f9892eee4_Hackathon_Winners_Newsletter__1_.jpeg" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b3fcf3b/67caa04e963f2a8f9892eee4_Hackathon_Winners_Newsletter__1_.jpeg" alt="Hackathon Winners Newsletter 1" />
 </figure>
 
 We recently co-sponsored a Bay Area hackathon where [Team Emoguardian took first place](https://www.linkedin.com/posts/harshrajjeripothula_ai-agents-llm-activity-7297418292149768193-Izze/?utm_source=share&utm_medium=member_desktop&rcm=ACoAABAwdVYB4B-i23zv5Gqmvs7qL8f07PBgg_o), winning a year of ZenML Pro Teams plan valued at $7,000 and $500 in cash. Harsh Jeripothula, Sai Naveen Chanumolu, and Sai Anuraghav Savadam built a multi-AI agent application using ZenML, Together AI, Agno, and HappyRobot. Their standout achievement was developing a custom Speech Emotion Recognition model trained on the RAVDESS dataset using ZenML pipelines, achieving state-of-the-art performance. The team plans to extend their architecture to train on multimodal data and leverage their ZenML Pro subscription to advance their work.
@@ -85,7 +85,7 @@ SchematiX, comprising Arka Serezh, Aaliya Jakir, Suraj Singireddy, and Bart van 
 ## New Blogs: AI Act, Multimodal Finetuning and adopting llms.txt
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6c2e339/67caa05fab61d233ebded891_February_March_2025_Newsletter__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6c2e339/67caa05fab61d233ebded891_February_March_2025_Newsletter__1_.png" alt="February March Newsletter 1" />
 </figure>
 
 Alex [explored the EU's landmark AI Act](https://www.zenml.io/blog/understanding-the-ai-act-february-2025-updates-and-implications) which is now partially in effect, breaking down the key provisions based on risk categories. The article outlined prohibited AI practices, requirements for high-risk systems, and practical compliance steps including model versioning and data governance. With penalties reaching up to €35 million or 7% of global turnover, the guide helped teams prepare for upcoming deadlines through 2027, highlighting how ZenML's tracking capabilities support regulatory requirements.
@@ -97,7 +97,7 @@ Jayesh detailed [ZenML's adoption of the llms.txt standard](https://www.zenml.io
 ## 580+ entries in the LLMOps Database and growing
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2d812536/67caa06c0a41149a189731cc_CleanShot_Mar_5_Newsletter_from_TinyPNG.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2d812536/67caa06c0a41149a189731cc_CleanShot_Mar_5_Newsletter_from_TinyPNG.png" alt="Mar Newsletter Tinypng" />
 </figure>
 
 Our [LLMOps Database](https://www.zenml.io/llmops-database) continues to expand with practical implementations across different sectors. In the government sector, Propel built an [evaluation](https://www.zenml.io/llmops-database/building-a-systematic-snap-benefits-llm-evaluation-framework) [framework](https://www.zenml.io/llmops-database/building-and-automating-comprehensive-llm-evaluation-framework-for-snap-benefits) for LLMs handling SNAP benefit inquiries, using Promptfoo for automated testing and implementing a system where models evaluate other models' responses for quality and accessibility. In e-commerce, [Pattern](https://www.zenml.io/llmops-database/ai-powered-ecommerce-content-optimization-platform) developed a content optimization tool that processes marketplace data points to improve product listings, with one client reporting a 21% month-over-month revenue increase after implementation.
@@ -111,7 +111,7 @@ These cases demonstrate how organizations are implementing LLMs with practical e
 ## Rant's Corner: The Agent Hype Cycle
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2b3cf96d/67caa07e9e7c183c26ee18be_Latest_Newsletter_Image_from_TinyPNG.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2b3cf96d/67caa07e9e7c183c26ee18be_Latest_Newsletter_Image_from_TinyPNG.png" alt="Latest Newsletter Tinypng" />
 </figure>
 
 Most "agents" in enterprise today are just DAGs (Directed Acyclic Graphs) wearing fancy clothing - predetermined paths with minimal actual agency and worse predictability. They follow predefined steps but with more marketing hype and less reliability than traditional workflow systems. This rebranding doesn't change the underlying reality of what these systems actually do.
@@ -123,7 +123,7 @@ Your CIO isn't losing sleep over lack of agent "creativity" - they're concerned 
 ## AI World Roundup: February-March 2025
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2dcc3489/67caa0907687fb38f6db3476_AI_World_Roundup_Feb-Mar_2025__1___1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2dcc3489/67caa0907687fb38f6db3476_AI_World_Roundup_Feb-Mar_2025__1___1_.png" alt="AI World Roundup Feb Mar 1 1" />
 </figure>
 
 ### Foundation Models Advancing Rapidly

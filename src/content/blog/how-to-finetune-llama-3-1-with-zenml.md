@@ -145,7 +145,7 @@ Our finetuned model lives in the artifact store now and we can now inspect some 
 You can inspect the pipeline run and its artifacts first in the pipeline overview:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7f877baf/66c48ff58be405c4188142e6_66a207f9aa92e7f94a7a1970_Llama_203.1_20Finetune_20_2_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7f877baf/66c48ff58be405c4188142e6_66a207f9aa92e7f94a7a1970_Llama_203.1_20Finetune_20_2_.png" alt="Llama 203.1 20finetune 2" />
 </figure>
 
 Useful metadata about the run is displayed on the right panel and by clicking the ‘Configuration’ tab you’ll see all the parameters used when you ran the pipeline. (These are values set by the YAML config file as well as in the pipeline code itself.

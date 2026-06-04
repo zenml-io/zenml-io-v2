@@ -43,7 +43,7 @@ Machine learning pipelines rarely exist in isolation. They interact with a diver
 For each of these interactions, engineering teams face the same question: "How do we securely provide the right credentials to the right components of our ML system?"
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/07dd205a/67f8e2df931310874811a743_Service_Connectors_Blog_Image.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/07dd205a/67f8e2df931310874811a743_Service_Connectors_Blog_Image.png" alt="Service Connectors Blog" />
 </figure>
 
 ### The Hidden Complexity of ML Authentication
@@ -93,7 +93,7 @@ zenml service-connector list-types
 ```
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/539800a3/67f8e3034a02fc11dcbed59c_CleanShot_Apr_11_from_Service_Connectors_Blog.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/539800a3/67f8e3034a02fc11dcbed59c_CleanShot_Apr_11_from_Service_Connectors_Blog.png" alt="Apr Service Connectors Blog" />
 </figure>
 
 This design creates a unified language across cloud providers. Instead of dealing with the specifics of each provider's authentication mechanisms, you work with consistent abstractions. For instance, `kubernetes-cluster` represents any Kubernetes implementation, whether it's Amazon EKS, Google GKE, Azure AKS, or a self-hosted cluster.
@@ -249,7 +249,7 @@ def train_model():
 ```
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d9fa2b4c/67f8e3391e86f0a1011cbc17_Mind_Blown_Meme.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d9fa2b4c/67f8e3391e86f0a1011cbc17_Mind_Blown_Meme.gif" alt="Mind Blown Meme animated walkthrough" />
 </figure>
 
 The service connector handles all authentication behind the scenes. Developers no longer need to worry about credential sources, environment variables, or cloud-specific authentication methods. The pipeline code becomes cleaner, more focused, and cloud-agnostic.
@@ -718,7 +718,7 @@ ZenML Service Connectors address these challenges without sacrificing flexibilit
 The result is a solution that combines the security of enterprise secret management with the simplicity needed for productive ML development.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5d77a2b7/67f8e35525c87d6890ea9a3b_CleanShot_Apr_11_2025_from_Service_Connectors_Blog.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5d77a2b7/67f8e35525c87d6890ea9a3b_CleanShot_Apr_11_2025_from_Service_Connectors_Blog.png" alt="Apr Service Connectors Blog" />
 </figure>
 
 While every approach has its place, ZenML Service Connectors stand out by providing a balance of security, usability, and flexibility that's specifically tailored to ML workflows. They abstract authentication complexity without limiting capabilities, creating a foundation for scalable, secure ML pipelines across any environment.
@@ -804,7 +804,7 @@ Within minutes, you can experience ML workflows without the credential headaches
 Authentication and credential management may not be the most exciting topics in ML. They lack the glamour of cutting-edge architectures or state-of-the-art performance metrics. But they're essential underpinnings of any robust ML system.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/73797ac1/67f8e3e0dc8eb17a7c02733a_Hero_GIF_Optimizer__1_.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/73797ac1/67f8e3e0dc8eb17a7c02733a_Hero_GIF_Optimizer__1_.gif" alt="Hero Gif Optimizer 1 animated walkthrough" />
 </figure>
 
 Service Connectors may be the unsung hero of the MLOps landscape, quietly solving a pervasive, frustrating problem that consumes engineer time and creates security risks. By abstracting authentication complexity, they let ML teams focus on what matters: delivering value through machine learning.

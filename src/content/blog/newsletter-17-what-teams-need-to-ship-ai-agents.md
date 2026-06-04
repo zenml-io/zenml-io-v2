@@ -41,7 +41,7 @@ Now, on to the updates.
 ## ⚡ Product Updates: Kubernetes that withstands failure, faster pipelines, and Pro service accounts (v0.84.0–0.84.3)
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8502b5d6/68be94df5fe3aeca666d6cb0_CleanShot_2025-09-05_at_14.49.56__1_.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8502b5d6/68be94df5fe3aeca666d6cb0_CleanShot_2025-09-05_at_14.49.56__1_.gif" alt="⚡ Product Updates: Kubernetes that withstands failure, faster pipelines, and Pro service accounts (v0.84.0–0.84.3) screenshot" />
 </figure>
 
 Over July–August we shipped four releases focused on dependable orchestration. Kubernetes runs now restart cleanly and survive failures, pipelines compile faster, debugging is easier in the dashboard, and Pro introduces service accounts for automation.
@@ -63,7 +63,7 @@ For the full changelog and examples, see the [0.84.0–0.84.3 release notes](htt
 ## 🔍 Survey insights: What teams need in production
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4aaeac5d/68be94efeb7151186f61ae0b_CleanShot_2025-09-05_at_14.09.11.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4aaeac5d/68be94efeb7151186f61ae0b_CleanShot_2025-09-05_at_14.09.11.png" alt="🔍 Survey insights: What teams need in production screenshot" />
 </figure>
 
 Across 37 responses — mostly hands‑on builders with a meaningful slice already in production — the message was clear: teams don’t want more autonomy, they want control. The biggest friction points are evaluation quality, debugging real production sessions, moving safely from dev → staging → prod, keeping prompts and artifacts versioned alongside code, and seeing (and capping) costs across providers.
@@ -81,7 +81,7 @@ You all signalled that you were essentially looking for these features *yesterda
 ## ✍️ Recent work: practical reads and runnable templates
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e30830dd/68be94fdb4737276a0e8d9e4_image__4_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e30830dd/68be94fdb4737276a0e8d9e4_image__4_.png" alt="✍️ Recent work: practical reads and runnable templates screenshot" />
 </figure>
 
 We published a set of pieces focused on closing the gap between "works locally" and "runs reliably in production."
@@ -113,7 +113,7 @@ The takeaway: the frontier is reasoning, but production success still looks like
 ## ✈️ On the road: September–October
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/66d600c9/68be95121e561d10d979e430_Map_of_Key_US_Cities__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/66d600c9/68be95121e561d10d979e430_Map_of_Key_US_Cities__1_.png" alt="Map Of Key US Cities 1" />
 </figure>
 
 We’re taking ZenML on the road. Adam, Hamza, and the team will be in the Bay Area, New York, Munich, and Austin over the next few weeks. If you’d like a walkthrough of the latest Kubernetes reliability work, evaluation/observability workflows, or if you're building out agents — or just want to compare notes on your stack — let’s meet.

@@ -52,7 +52,7 @@ The timing matters because agentic AI has moved past the experiment-only phase. 
 Why might you need a [CrewAI](https://www.crewai.com/) alternative in the first place? While CrewAI is a solid foundation for multi-agent systems, there are a few reasons teams may hit its limits and seek other solutions.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/24754729/68a55e007ee2924f569da689_reasons-you-need-crewai-alternatives.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/24754729/68a55e007ee2924f569da689_reasons-you-need-crewai-alternatives.png" alt="Reasons you need a CrewAI alternatives" />
   <figcaption>Reasons you need a CrewAI alternatives</figcaption>
 </figure>
 
@@ -126,7 +126,7 @@ We reviewed eight promising alternatives to CrewAI, each offering a different ap
 ## 1. AutoGen
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/eba57350/68a55e49e4ad983dcf16fdd6_autogen-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/eba57350/68a55e49e4ad983dcf16fdd6_autogen-homepage.png" alt="AutoGen Homepage screenshot" />
 </figure>
 
 [AutoGen](https://microsoft.github.io/autogen/stable//index.html) is an open-source framework from Microsoft Research for creating AI agents that collaborate through conversations. Instead of following a fixed sequence of tasks (like CrewAI’s crew workflow), AutoGen lets multiple agents interact in a free-form chat loop, even allowing a human to join the conversation when needed.
@@ -144,7 +144,7 @@ However, the freedom AutoGen provides comes at the cost of guidance. With no pre
 ## 2. LangGraph
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e603a240/68a55e79f6ab623343536b1c_langgraph-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e603a240/68a55e79f6ab623343536b1c_langgraph-homepage.png" alt="LangGraph Homepage screenshot" />
 </figure>
 
 [LangGraph](https://www.langchain.com/langgraph) is a stateful orchestration framework. When compiled with a checkpointer, LangGraph saves graph state as checkpoints, which enables human-in-the-loop workflows, conversational memory, time-travel debugging, and fault-tolerant execution. Studio gives you a debugging view and integrates tightly with LangSmith for traces and evals.
@@ -162,7 +162,7 @@ The downside is that LangGraph’s richness comes with complexity. There is some
 ## 3. Agent Development Kit (Google)
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cec58e5b/68a55ea943a86d0ea04636b2_agent-development-kit-google-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cec58e5b/68a55ea943a86d0ea04636b2_agent-development-kit-google-homepage.png" alt="Agent Development Kit Google Homepage screenshot" />
 </figure>
 
 [Google’s Agent Development Kit](https://google.github.io/adk-docs/) (ADK) is a flexible, modular framework for developing and deploying AI agents. It is Google’s open-source, code-first framework for building, debugging, and deploying reliable agents, and it now sits within Google’s broader Gemini Enterprise Agent Platform story.
@@ -180,7 +180,7 @@ In terms of downsides, ADK is still evolving quickly, and teams should check the
 ## 4. OpenAI Agents SDK
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b7366376/68a55ec54ad4dc5ef3bcd582_openai-agent-sdk-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b7366376/68a55ec54ad4dc5ef3bcd582_openai-agent-sdk-homepage.png" alt="OpenAI Agent SDK Homepage screenshot" />
 </figure>
 
 The [OpenAI Agents SDK](https://openai.github.io/openai-agents-python/) is a lightweight toolkit to build agents powered by OpenAI’s models (like GPT-4) that can use tools and perform multi-step reasoning. It’s essentially OpenAI’s in-house answer to frameworks like LangChain or CrewAI, streamlined for their API.
@@ -216,7 +216,7 @@ The trade-off is that Pydantic AI is not trying to be the same kind of role-base
 ## 6. Langflow
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c733b5d9/68a55ee9be0265cd732479e6_langflow-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c733b5d9/68a55ee9be0265cd732479e6_langflow-homepage.png" alt="Langflow Homepage screenshot" />
 </figure>
 
 [Langflow](https://www.langflow.org/) is an open-source, Python-based visual builder for AI applications. It supports agents, MCP, multiple LLMs, vector stores, and tool integrations, making it a strong option for teams that want a visual workflow layer without committing to a single model provider.
@@ -234,7 +234,7 @@ On the downside, visual tools can sometimes be limiting for very complex logic. 
 ## 7. FlowiseAI
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d6e35dfa/68a55f030a0e760b1f1638a9_flowiseai-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d6e35dfa/68a55f030a0e760b1f1638a9_flowiseai-homepage.png" alt="FlowiseAI Homepage screenshot" />
 </figure>
 
 [Flowise](https://flowiseai.com/) is another open-source visual workflow builder for LLMs, similar to Langflow. It lets you create, test, and deploy AI agent chains through a browser UI. Flowise’s focus is on building, testing, and operationalizing agent and LLM workflows through visual builders, APIs, SDKs, tracing, evaluations, HITL, and workspace features.
@@ -252,7 +252,7 @@ While FlowiseAI supports multi-agent setups and API deployment, its memory manag
 ## 8. LlamaIndex
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f5a31ff0/68a55f3475521225deb39cd8_llamaindex-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f5a31ff0/68a55f3475521225deb39cd8_llamaindex-homepage.png" alt="LlamaIndex Homepage screenshot" />
 </figure>
 
 [LlamaIndex](https://www.llamaindex.ai/) (formerly GPT Index) is an open-source framework focused on connecting LLMs with external data sources for retrieval-augmented generation (RAG). It started as a data/RAG framework, but LlamaIndex now also provides agents and workflow abstractions for building multi-step, data-heavy agent systems. It is still strongest when the agent’s main job depends on retrieval, document understanding, indexing, and context augmentation.
@@ -270,7 +270,7 @@ However, LlamaIndex is narrower in scope than the other alternatives here. It wa
 ## How ZenML Helps in Closing the Outer Loop Around CrewAI and Its Alternatives
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1aad74e0/687b1c29468fe4993262cdc5_zenML-helps-in-closing-the-outer-loop.png" alt="ZenML outer loop lifecycle for production AI agents" />
 </figure>
 
 All the alternatives above (and CrewAI itself) focus on the ‘inner loop’ of agent development – designing how agents think, interact, and solve tasks. However, building a clever agent is only half the battle.
@@ -286,7 +286,7 @@ Here are a few ways our platform helps close the outer loop:
 ### 1. End-to-End Orchestration
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f851cbbc/6892de675f3cdef5338b7153_zenml-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f851cbbc/6892de675f3cdef5338b7153_zenml-architecture.png" alt="ZenML architecture diagram for orchestrating AI workflows" />
   <figcaption>ZenML architecture</figcaption>
 </figure>
 
@@ -299,7 +299,7 @@ Steps and Pipelines ensure that moving from a prototype to a deployed workflow i
 ### 2. Unified Visibility and Lineage
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8dff2b8f/68a564703779dabb2e1234ec_zenml-pipeline-rag-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8dff2b8f/68a564703779dabb2e1234ec_zenml-pipeline-rag-visualization.png" alt="ZenML RAG pipeline DAG visualization" />
   <figcaption>ZenML pipeline DAG visualization</figcaption>
 </figure>
 
@@ -314,7 +314,7 @@ This kind of lineage is crucial for debugging and for compliance (e.g., auditing
 ### 3. Continuous Evaluation and Feedback
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a2d6f59d/6892de9d7a7c008a7dde8ba5_zenml-evaluation.png" alt="ZenML evaluation dashboard for AI workflow performance" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 

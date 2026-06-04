@@ -220,7 +220,7 @@ The key compliance features include:
 The human oversight implementation is particularly important. The `approve_deployment` step requires explicit review and sign-off before models can be deployed, creating an auditable record of human oversight. When the system detects issues requiring review, it sends structured Slack notifications using [ZenML's Slack alerter integration](https://docs.zenml.io/stack-components/alerters/slack) with this assessment:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/153ad03c/68307dc451faf16a76bceb15_slack-deployment-alert.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/153ad03c/68307dc451faf16a76bceb15_slack-deployment-alert.png" alt="Slack Deployment Alert" />
 </figure>
 
 This wasn't a false positive. Our model exhibited severe disparate impact (0.161 ratio) across age groups, meaning it was systematically discriminating against certain age demographics. The Slack alert enabled immediate visibility into this critical bias issue, ensuring it didn't get lost in terminal logs or overlooked during deployment cycles.
@@ -232,7 +232,7 @@ The EU AI Act's requirements allowed me to discover a critical fairness issue th
 Automating comprehensive technical documentation turned out to be one of the most technically challenging aspects of compliance. The EU AI Act's Annex IV requirements are extensive and specific, demanding everything from general system descriptions to detailed post-market monitoring plans.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e29f8309/683081ae8c84b030ce3cccc2_annex-iv-compressed.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e29f8309/683081ae8c84b030ce3cccc2_annex-iv-compressed.gif" alt="Annex IV Compressed animated walkthrough" />
 </figure>
 
 These requirements become manageable when you understand how existing MLOps infrastructure can address them. Rather than building compliance systems from scratch, ZenML's native capabilities handle most requirements through features you're likely already using for good ML engineering practices.
@@ -274,5 +274,5 @@ streamlit run_dashboard.py
 The included Streamlit app provides an interactive UI that provides real-time visibility into EU AI Act compliance status, a summary of current risk levels and compliance metrics, and a generated Annex IV documentation with export options.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/42eed789/6830813230201b5756b1ea7d_streamlit-dashboard-comp.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/42eed789/6830813230201b5756b1ea7d_streamlit-dashboard-comp.gif" alt="Streamlit Dashboard Comp screenshot" />
 </figure>

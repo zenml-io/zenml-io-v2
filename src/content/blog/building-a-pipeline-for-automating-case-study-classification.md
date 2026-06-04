@@ -43,7 +43,7 @@ My first attempts at classification revealed that identifying production impleme
 To establish clear evaluation criteria, I manually reviewed 100 articles, categorizing them as either accepts or rejects for the database. This process helped shape an initial taxonomy for LLMOps case studies:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/816b6ae2/67d3516ec1379757d1423abb_classification_taxonomy.svg" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/816b6ae2/67d3516ec1379757d1423abb_classification_taxonomy.svg" alt="Classification Taxonomy" />
 </figure>
 
 Essentially, high-quality case studies needed to demonstrate:
@@ -148,7 +148,7 @@ After wrestling with the inconsistencies of prompt-based classification, I decid
 I designed a modular training pipeline to automate the entire workflow, from data ingestion to model evaluation:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b40ddbc/67d2c3617ea1f6fa0528fada_training_pipeline.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b40ddbc/67d2c3617ea1f6fa0528fada_training_pipeline.png" alt="Training pipeline DAG diagram" />
   <figcaption>Training pipeline DAG</figcaption>
 </figure>
 
@@ -189,7 +189,7 @@ One of the most surprising findings was in memory optimization. By increasing th
 The parallel coordinates plot below from [ZenML's Model Control Plane ](https://docs.zenml.io/how-to/model-management-metrics/model-control-plane)provides a visual representation of this performance/resource tradeoff:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a5e3b89f/67d2c32f71129fc94e3204ac_ft_model_comparison.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a5e3b89f/67d2c32f71129fc94e3204ac_ft_model_comparison.png" alt="Parallel coordinates plot comparing ModernBERT performance between 3 different fine-tuned models" />
   <figcaption>Parallel coordinates plot comparing ModernBERT performance between 3 different fine-tuned models</figcaption>
 </figure>
 
@@ -204,7 +204,7 @@ For this comparison, I tested two ModernBERT variants:
 1. **Initial Model:** Trained only on the original human-labeled dataset (~846 articles)2. **Optimized Model**: Trained on the augmented dataset (original + 560 additional examples)
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3c534340/67d2c44c3b69cac0dfc29f38_modernbert_claude_haiku_comparison.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3c534340/67d2c44c3b69cac0dfc29f38_modernbert_claude_haiku_comparison.png" alt="Model Performance Comparison (ModernBERT vs. Claude Haiku)" />
   <figcaption>Model Performance Comparison (ModernBERT vs. Claude Haiku)</figcaption>
 </figure>
 

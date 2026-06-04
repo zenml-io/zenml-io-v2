@@ -67,7 +67,7 @@ Observability starts with tracing. Both platforms capture the full, hierarchical
 ### Langfuse
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/51981a9e/690edb2a988f8da745a92929_langfuse-tracing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/51981a9e/690edb2a988f8da745a92929_langfuse-tracing.png" alt="Langfuse trace view showing a hierarchical tree of observations with spans and LLM generations" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -84,7 +84,7 @@ You get a detailed, nested view of your application, allowing you to see exactly
 ### LangSmith
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8281f27c/690edb644729d4a9fb9535cc_langsmith-tracing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8281f27c/690edb644729d4a9fb9535cc_langsmith-tracing.png" alt="LangSmith trace view showing a nested Run Tree of parent and child runs for an agent execution" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -107,7 +107,7 @@ Once you're tracing, you need to see the big picture. Does the tool allow you to
 ### Langfuse
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0fa20051/690edb7d9a8f8ab000bc2ec4_langfuse-dashboard.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0fa20051/690edb7d9a8f8ab000bc2ec4_langfuse-dashboard.png" alt="Langfuse real-time analytics dashboard tracking cost, latency, and quality score metrics" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -122,7 +122,7 @@ For now, you can subscribe to trace events via webhooks or use the Metrics API t
 ### LangSmith
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0ccefa8f/690edc80feba216305e4c3e4_langsmith-dashboard.avif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0ccefa8f/690edc80feba216305e4c3e4_langsmith-dashboard.avif" alt="LangSmith monitoring dashboard showing trace counts, error rates, token usage, and tool performance" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -143,7 +143,7 @@ Arguably, this is the most critical feature for production. Otherwise, how do yo
 ### Langfuse
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3032d35a/690edca17ee9d54895dc8ae8_langfuse-eval-workflows.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3032d35a/690edca17ee9d54895dc8ae8_langfuse-eval-workflows.png" alt="Langfuse evaluation workflow UI with LLM-as-judge scoring, datasets, and human annotation" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -160,7 +160,7 @@ In its recent update Langfuse added three new and important features to its eval
 ### LangSmith
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f51a8eef/690edcb43566269eca18c2e6_langsmith-eval-workflows.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f51a8eef/690edcb43566269eca18c2e6_langsmith-eval-workflows.png" alt="LangSmith evaluation workflow comparing experiment runs against datasets with annotation queues" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -179,7 +179,7 @@ Managing prompts as strings in your code is a production bottleneck. Both platfo
 ### Langfuse
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/743d065a/690edcce178f856fe5eb2ddc_langfuse-prompting.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/743d065a/690edcce178f856fe5eb2ddc_langfuse-prompting.png" alt="Langfuse prompt management UI with versioned prompt templates and an interactive playground" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -192,7 +192,7 @@ To deploy a new prompt, you edit it in the UI, test it, and move the `production
 ### LangSmith
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/91bef82c/690edce67c829dd1137b4634_langsmith-playground.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/91bef82c/690edce67c829dd1137b4634_langsmith-playground.png" alt="LangSmith Prompt Playground for editing and running prompts against different models in the Studio" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -217,7 +217,7 @@ Langfuse is **framework-agnostic by design**. Its integrations page highlights i
 This makes Langfuse a 'neutral' choice. You can plug it into any stack without being locked into a specific agent framework.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/301d8810/690edcfee7ba4aada89dbb79_langfuse-integration.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/301d8810/690edcfee7ba4aada89dbb79_langfuse-integration.png" alt="Langfuse integrations page showing support for LangChain, LlamaIndex, AutoGen, and OpenTelemetry" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -238,7 +238,7 @@ Langfuse is MIT-licensed and free to self-host with unlimited usage. If not, you
 <ul><li><strong>Hobby:</strong> A free tier that includes 50,000 'units' (5,000 traces).</li><li><strong>Core:</strong> $29 per month</li><li><strong>Pro:</strong> $199 per month</li><li><strong>Enterprise:</strong> $2499 per month</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2f06f640/690edd2f0ea39cf8f4706943_langfuse-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2f06f640/690edd2f0ea39cf8f4706943_langfuse-pricing.png" alt="Langfuse Cloud pricing page showing Hobby, Core, Pro, and Enterprise usage-based tiers" />
 </figure>
 
 ### LangSmith
@@ -248,7 +248,7 @@ LangSmith’s pricing is seat-based. It offers three plans:
 <ul><li><strong>Developer:</strong> Free; 1 user with 5,000 traces/month</li><li><strong>Plus:</strong> $39 per user per month, including 10k traces per user per month</li><li><strong>Enterprise:</strong> Custom pricing and traces</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a6d23c74/690edd3b464ab03718dff95f_langsmith-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a6d23c74/690edd3b464ab03718dff95f_langsmith-pricing.png" alt="LangSmith seat-based pricing page showing Developer, Plus, and Enterprise plans" />
 </figure>
 
 ## How ZenML Manages the Outer Loop when Deploying Agentic AI Workflows
@@ -258,7 +258,7 @@ Both Langfuse and LangSmith provide robust observability and evaluation tools fo
 But to build production-ready agentic systems, you require a robust outer loop to manage the entire end-to-end lifecycle. This is where a dedicated [MLOps](https://www.zenml.io/blog/mlops-vs-llmops) + [LLMOps framework](https://docs.zenml.io/user-guides/llmops-guide) like ZenML sets the stage.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bfd9928a/68b12dc2668f4856e7055946_zenml-unified-mlops-plus-llmops-platform.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bfd9928a/68b12dc2668f4856e7055946_zenml-unified-mlops-plus-llmops-platform.png" alt="Diagram of ZenML as a unified MLOps and LLMOps platform managing the agent outer loop" />
 </figure>
 
 [ZenML](https://www.zenml.io/) fills this 'outer loop' around your Langfuse or LangSmith or both observability sets by treating your entire agentic application as a pipeline of steps.
@@ -270,7 +270,7 @@ Here’s how ZenML helps:
 ### 1. Unified Orchestration
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/25ea7130/68b589e769070d2bf65a0b80_zenml-architecture.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/25ea7130/68b589e769070d2bf65a0b80_zenml-architecture.png" alt="Diagram of ZenML architecture orchestrating pipeline steps across agent frameworks and stacks" />
   <figcaption>ZenML architecture</figcaption>
 </figure>
 
@@ -283,7 +283,7 @@ For example, you can wrap a LangGraph RAG agent call inside a ZenML step. When t
 ### 2. End-to-End Visibility and Lineage Tracking
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/83aa06c4/68ba650b4c60518ca7fe3027_zenml-pipeline-dag-visualization.png" alt="ZenML dashboard visualizing a pipeline DAG with end-to-end lineage across steps" />
   <figcaption>ZenML pipeline DAG visualization</figcaption>
 </figure>
 
@@ -300,7 +300,7 @@ After an agent invocation step, the next pipeline step can run evaluations, like
 ZenML will flag any failing scores and can optionally branch or terminate the pipeline. This built-in feedback loop ensures continuous quality checks. You’ll know if your agent’s performance degrades over time or after changes.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a7fff087/68ba65256e6939b8dbf7fef4_zenml-evaluation.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a7fff087/68ba65256e6939b8dbf7fef4_zenml-evaluation.png" alt="ZenML evaluation step embedded in a pipeline to run continuous quality checks on agent outputs" />
   <figcaption>ZenML evaluation</figcaption>
 </figure>
 
@@ -309,7 +309,7 @@ In short, Langfuse and LangSmith tell you what your agent did. ZenML governs how
 **👀 Note:** At ZenML, we have built several such integrations with tools like CrewAI, LangGraph, LlamaIndex, and more. We are actively shipping new integrations that you can find on this GitHub page: [ZenML Agent Workflow Integrations](https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations).
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c51a5e76/68b58a4795f60f9023d117eb_zenml-agent-workflow-integrations.png" alt="ZenML agent workflow integrations with frameworks like CrewAI, LangGraph, and LlamaIndex" />
 </figure>
 
 **📚 Related comparison articles to read:**
