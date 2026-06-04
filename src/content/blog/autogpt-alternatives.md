@@ -44,7 +44,7 @@ For engineers building production-grade AI assistants, these issues are non-nego
 ## The Need for an AutoGPT Alternative?
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1e61d4f9/68f85bbec8c7f329f21dad34_why-do-you-need-an-autogpt-alternative.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1e61d4f9/68f85bbec8c7f329f21dad34_why-do-you-need-an-autogpt-alternative.webp" alt="Diagram outlining the reasons teams need an AutoGPT alternative: runaway loops, cost blow-ups, and hallucinations" />
   <figcaption>Why do you need an AutoGPT alternative</figcaption>
 </figure>
 
@@ -101,7 +101,7 @@ Here is a quick summary of the 8 best AutoGPT alternatives we tested:
 **Best for:** Teams that want a production-grade orchestration backbone for multi-agent and LLM workflows, with deterministic control, full lineage, and repeatability.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/28feda72/68f85beef5122317b19fa759_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/28feda72/68f85beef5122317b19fa759_zenml-homepage.webp" alt="Screenshot of the ZenML homepage presenting its MLOps and LLMOps orchestration platform" />
 </figure>
 
 ZenML treats every agent/tool/LLM call as a pipeline step. That shift gives you hard guarantees on traceability, reproducibility, and loop control across runs, while plugging into familiar observability and experiment-tracking stacks. It unifies LLMOps + MLOps under one architecture, so you can move from notebook experiments to governed, auditable production workflows without rewrites.
@@ -109,7 +109,7 @@ ZenML treats every agent/tool/LLM call as a pipeline step. That shift gives you 
 ### Key Feature 1. Pipeline-Based Orchestration
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/76dc6981/68f85bff364a2fdf36c3c460_zenml-pipeline-based-orchestration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/76dc6981/68f85bff364a2fdf36c3c460_zenml-pipeline-based-orchestration.webp" alt="Diagram of ZenML pipeline-based orchestration breaking an agent workflow into versioned, deterministic steps" />
 </figure>
 
 ZenML’s pipeline API makes agent workflows deterministic: define steps (ingest → retrieve → reason → act → evaluate), version the artifacts, and run the same graph locally or on cloud/Kubernetes **with zero code change**.
@@ -119,7 +119,7 @@ This directly addresses AutoGPT-style runaway loops by enforcing explicit iterat
 ### Key Feature 2. Built-In Secrets Management
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/09cf6a25/68f85c0e207aff19952a2417_zenml-secrets-management.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/09cf6a25/68f85c0e207aff19952a2417_zenml-secrets-management.webp" alt="ZenML centralized secrets management storing API keys and credentials for pipelines to pull at runtime" />
   <figcaption>Secrets management</figcaption>
 </figure>
 
@@ -130,7 +130,7 @@ This standardizes key handling across dev/stage/prod and supports DevSecOps cont
 ### Key Feature 3. RAG with ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/85c83e3c/68f85c24cf75a82a9eded0bf_rag-with-zenml.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/85c83e3c/68f85c24cf75a82a9eded0bf_rag-with-zenml.webp" alt="ZenML RAG pipeline wiring loaders, embeddings, vector stores, and evaluation into one tracked workflow" />
 </figure>
 
 ZenML provides a [production-ready RAG](https://docs.zenml.io/user-guides/llmops-guide/rag-with-zenml) template that wires loaders, embedding jobs, vector stores (FAISS/Pinecone/Weaviate), generators, and **evaluation** into one tracked pipeline.
@@ -142,7 +142,7 @@ You get lineage for docs, chunks, and embeddings, plus retrieval and generation 
 We are upgrading our platform to bring every ML and LLM workflow into one place for you to run, track, and improve. Think of processes like data preparation, training, RAG indexing, agent orchestration, and more, all in one place.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/78dbf441/68f85c31e706bb0aab8e58b6_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/78dbf441/68f85c31e706bb0aab8e58b6_zenml-pricing.webp" alt="Screenshot of the ZenML pricing page showing the free open-source tier and custom paid plans" />
 </figure>
 
 ### Pros and Cons
@@ -154,7 +154,7 @@ But remember, ZenML isn’t a one-click QA or a specialized LLM observability Sa
 ## 2. Autogen
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dc747f74/68ba637dccb1468ce5ba39b6_autogen-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dc747f74/68ba637dccb1468ce5ba39b6_autogen-homepage.png" alt="Screenshot of the Microsoft AutoGen homepage for its open-source multi-agent AI framework" />
 </figure>
 
 [Autogen](https://microsoft.github.io/autogen/stable//index.html) is an open-source framework from Microsoft for building agentic AI applications. It uses an asynchronous, event-driven architecture, which brings several benefits: agents can operate concurrently, you can mix and match different kinds of agents, and everything is logged.
@@ -178,7 +178,7 @@ On the flip side, AutoGen presents a steep learning curve. The jump from v0.2 to
 ## 3. CrewAI
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/03c1837c/68f85c5d9e77efcfe20f6aa1_crewai-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/03c1837c/68f85c5d9e77efcfe20f6aa1_crewai-homepage.webp" alt="Screenshot of the CrewAI homepage for its framework orchestrating role-based autonomous AI agents" />
 </figure>
 
 [CrewAI](https://www.crewai.com/) is a framework designed for orchestrating role-playing autonomous AI agents. It’s an excellent AutoGPT alternative when you need a team of specialized agents to collaborate on a task in a structured and deterministic manner.
@@ -194,7 +194,7 @@ CrewAI’s core framework is licensed under the MIT license and is open-source. 
 <ul><li><strong>Basic:</strong> Free</li><li><strong>Professional:</strong> $25 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/06a4b9dc/68f85c671512ad140fd10995_crewai-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/06a4b9dc/68f85c671512ad140fd10995_crewai-pricing.webp" alt="Screenshot of CrewAI pricing with free Basic, $25/month Professional, and custom Enterprise plans" />
 </figure>
 
 ### Pros and Cons
@@ -208,7 +208,7 @@ The downside of a deterministic approach is less flexibility for open-ended expl
 ## 4. LlamaIndex
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8132749f/68f85c72f85effc6ea8b79c9_llamaindex-homepage.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8132749f/68f85c72f85effc6ea8b79c9_llamaindex-homepage.png" alt="Screenshot of the LlamaIndex homepage for its framework connecting custom data to LLMs for RAG" />
 </figure>
 
 [LlamaIndex](https://www.llamaindex.ai/) (formerly GPT Index) is a powerful framework for augmenting LLMs with custom data. It excels at connecting your private or domain-specific data to LLMs, making it a superior AutoGPT alternative for tasks requiring deep reasoning over custom knowledge bases.
@@ -224,7 +224,7 @@ LlamaIndex is free to use (open-source) for its core Python library. LlamaCloud,
 <ul><li><strong>LlamaIndex Starter:</strong> $50 per month - 50K API credits, 5 seats</li><li><strong>LlamaIndex Pro:</strong> $500 per month - 500K credits, 10 seats</li><li><strong>LlamaIndex Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b1d9f875/68f85c7cf5122317b19fb5d0_llamaindex-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b1d9f875/68f85c7cf5122317b19fb5d0_llamaindex-pricing.png" alt="Screenshot of LlamaCloud pricing with Starter, Pro, and Enterprise tiers alongside the free open-source library" />
 </figure>
 
 **📚 Read more about **[LlamaIndex pricing](https://www.zenml.io/blog/llamaindex-pricing)**.**
@@ -240,7 +240,7 @@ The major con is that LlamaIndex’s multi-agent orchestration is less developed
 ## 5. Open Interpreter
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6be55592/68f85c87186fad2be59973b0_open-interpreter-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6be55592/68f85c87186fad2be59973b0_open-interpreter-homepage.webp" alt="Screenshot of the Open Interpreter homepage for its open-source tool that runs LLM-generated code locally" />
 </figure>
 
 [Open Interpreter](https://github.com/openinterpreter/open-interpreter) is an open-source tool that allows language models to run code on your local machine. Think of it as your own ChatGPT Code Interpreter clone, but one you control.
@@ -264,7 +264,7 @@ However, there’s some inflexibility. You need to have a suitable environment, 
 ## 6. AgentGPT
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/374be1c8/68f85c955761bbcda0a2cda2_agentgpt-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/374be1c8/68f85c955761bbcda0a2cda2_agentgpt-homepage.webp" alt="Screenshot of the AgentGPT homepage for deploying autonomous AI agents in the browser with no code" />
 </figure>
 
 [AgentGPT](https://agentgpt.reworkd.ai/) is essentially AutoGPT with a user-friendly face. It gained popularity as a web app that lets you configure and deploy an autonomous agent right in your browser, with no coding required.
@@ -280,7 +280,7 @@ AgentGPT offers a free plan with limited features and two paid plans:
 <ul><li><strong>AgentGPT Pro:</strong> $40 per month</li><li><strong>AgentGPT Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/849a14a4/68f85caa9e77efcfe20f72d4_agentgpt-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/849a14a4/68f85caa9e77efcfe20f72d4_agentgpt-pricing.webp" alt="Screenshot of AgentGPT pricing with a free plan, $40/month Pro, and custom Enterprise plan" />
 </figure>
 
 ### Pros and Cons
@@ -292,7 +292,7 @@ The platform's simplicity, however, means it lacks the deep customization and co
 ## 7. SuperAGI
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4fa2f7bd/68f85cb45040500c5d0b267d_superagi-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4fa2f7bd/68f85cb45040500c5d0b267d_superagi-homepage.webp" alt="Screenshot of the SuperAGI homepage for its dev-first open-source framework for autonomous agents" />
 </figure>
 
 [SuperAGI](https://superagi.com/) is a dev-first, open-source framework for building and managing useful autonomous agents. It’s an attractive alternative to AutoGPT for those who want an extensible system to build upon, and perhaps run it in a cloud environment with collaboration.
@@ -308,7 +308,7 @@ SuperAGI offers a managed cloud version with a free tier and two premium plans:
 <ul><li><strong>Starter:</strong> $9 per user per month</li><li><strong>Growth:</strong> $49 per user per month</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d7238e65/68f85cc1c4a790da9977409b_superagi-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d7238e65/68f85cc1c4a790da9977409b_superagi-pricing.webp" alt="Screenshot of SuperAGI pricing with a free tier, $9/user Starter, and $49/user Growth plans" />
 </figure>
 
 ### Pros and Cons
@@ -320,7 +320,7 @@ On the other hand, SuperAGI is a newer platform with features still evolving, li
 ## 8. Otto
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3a5337b7/68f85ccc5d417dc7bc4fb192_otto-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3a5337b7/68f85ccc5d417dc7bc4fb192_otto-homepage.webp" alt="Screenshot of the Otto (Ottogrid) homepage for its spreadsheet-style AI agents automating web research" />
 </figure>
 
 [Otto](https://ottogrid.ai/) lets you create and deploy AI agents to automate business workflows. Imagine giving an AI a list of companies or URLs in a table and telling it to fill in the blanks with information; that’s Otto’s sweet spot. It’s tailored for data research and enrichment tasks, presented in a spreadsheet-like interface.
@@ -336,7 +336,7 @@ Otto offers a generous free plan for individual use. Other than that, it has thr
 <ul><li><strong>Starter:</strong> $99 per month</li><li><strong>Pro:</strong> $299 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/09a3a6e6/68f85cdd9c071af3b797bdb5_otto-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/09a3a6e6/68f85cdd9c071af3b797bdb5_otto-pricing.webp" alt="Screenshot of Otto pricing with a free plan, $99/month Starter, $299/month Pro, and custom Enterprise" />
 </figure>
 
 ### Pros and Cons

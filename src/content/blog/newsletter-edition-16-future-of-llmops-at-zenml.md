@@ -45,7 +45,7 @@ This model has worked well. Companies from JetBrains to [Adeo Leroy Merlin](http
 **The last two years have seen LLM-powered applications dominate the space. This year—the so-called "year of agents"—is gripping everyone's attention. And we're seeing the The last two years have seen LLM-powered applications dominate the space. This year—the so-called "year of agents"—is gripping everyone's attention. And we're seeing the exact same patterns unfold that we witnessed in early MLOps:exact same patterns unfold that we witnessed in early MLOps: unfold that we witnessed in early MLOps:☯The last two years have seen LLM-powered applications dominate the space. This year—the so-called "year of agents"—is gripping everyone's attention. And we're seeing the The last two years have seen LLM-powered applications dominate the space. This year—the so-called "year of agents"—is gripping everyone's attention. And we're seeing the exact same patterns unfold that we witnessed in early MLOps:exact same patterns unfold that we witnessed in early MLOps: unfold that we witnessed in early MLOps:☯**
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5b6d20c2/6867d7e95e34f697d7be792b_MLOps_AgentOps_Comparison-newsletter.jpg" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5b6d20c2/6867d7e95e34f697d7be792b_MLOps_AgentOps_Comparison-newsletter.jpg" alt="MLOps Agentops Comparison Newsletter" />
 </figure>
 
 Look familiar?

@@ -227,7 +227,7 @@ In addition to versioned workflows, Flyte has a concept of data and task outputs
 Flyte’s UI (Flyte Console/Deck) also shows metadata for each task execution (input/output hashes, parameters). While Flyte doesn’t have a dedicated ‘model registry’ like ZenML, its versioned workflows and caching ensure that data and code stay consistent.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9c51d7b1/6843c1b585b8853dde548f02_flyte-data-versioning.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9c51d7b1/6843c1b585b8853dde548f02_flyte-data-versioning.png" alt="Flyte UI showing versioned workflow data and cached task outputs in the Data Catalog" />
   <figcaption>Flyte data versioning</figcaption>
 </figure>
 
@@ -244,7 +244,7 @@ In short, Airflow leaves artifact management to you: it orchestrates jobs but do
 #### ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2a5bd3d5/683a978569d0908984042c4d_zenml-artifact-store.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2a5bd3d5/683a978569d0908984042c4d_zenml-artifact-store.png" alt="ZenML dashboard showing tracked step artifacts and their data lineage in the artifact store" />
   <figcaption>ZenML artifact store</figcaption>
 </figure>
 
@@ -271,7 +271,7 @@ Flyte doesn’t include a built-in experiment tracker. However, the platform off
 For example, Flyte has an [MLflow](https://www.zenml.io/blog/metaflow-vs-mlflow) plugin that automatically logs metrics to the Flyte UI or to a real MLflow server.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ef2f0ae1/6843c1fd09057029cc9d0517_tracking-experiments-in-airflow-via-mlflow-integration.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ef2f0ae1/6843c1fd09057029cc9d0517_tracking-experiments-in-airflow-via-mlflow-integration.png" alt="MLflow experiment tracking UI logging metrics and runs from an Airflow workflow" />
   <figcaption>Tracking experiments in Airflow via MLflow integration</figcaption>
 </figure>
 
@@ -298,7 +298,7 @@ What’s more, ZenML also provides a lightweight experiment concept by itself: e
 To sum it up, ZenML tightly integrates with experiment tracking tools, making it easy to have a visual history of all runs.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ee012717/682971f2010ce568877c2a03_how_zenml_experiment_trackers_fit_into_the_overall_story_of_a_remote_stack.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ee012717/682971f2010ce568877c2a03_how_zenml_experiment_trackers_fit_into_the_overall_story_of_a_remote_stack.png" alt="Diagram of how a ZenML experiment tracker plugs into a remote stack alongside orchestrator and artifact store" />
   <figcaption>Architecture diagram showing how ZenML experiment trackers fit into the overall story of a remote stack</figcaption>
 </figure>
 
@@ -319,7 +319,7 @@ Here are all the different integrations you get with Flyte:
 <ul><li><strong>DataFrames:</strong> HuggingFace, Vaex, Polars</li><li><strong>Data Validation:</strong> Great Expectations and Pandera</li><li><strong>Model Training:</strong> AWS Sagemaker</li><li><strong>Model Deployment:</strong> ONNX TensorFlow, PyTorch, and Scikit Learn</li><li><strong>Monitoring:</strong> MLflow and Whylogs</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/13e6e872/6843c2e4d9f2186a55ecaac0_flyte-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/13e6e872/6843c2e4d9f2186a55ecaac0_flyte-integrations.png" alt="Grid of Flyte integration logos across DataFrames, data validation, training, deployment, and monitoring" />
   <figcaption>Flyte integrations</figcaption>
 </figure>
 
@@ -336,14 +336,14 @@ Airflow also provides connectors for numerous databases and data systems (Postgr
 The platform’s extensibility supports custom operators, sensors, and hooks, which allow you to extend functionality for specific needs. Airflow also exposes a REST API for external applications to integrate, further enhancing its connectivity.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8a17229b/6843c3029fc9ee3870646088_apache-airflow-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8a17229b/6843c3029fc9ee3870646088_apache-airflow-integrations.png" alt="Grid of Apache Airflow provider logos for cloud platforms, ML tools, and databases" />
   <figcaption>Apache Airflow integrations</figcaption>
 </figure>
 
 #### ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ce3ffe8a/681c8ff1cff78cabbca5d18f_a-flowchart-explaning-how-zenml-integrates-with-multiple-tools-and-platform.png" alt="Flowchart showing how ZenML connects with multiple MLOps tools and platforms via its stack" />
   <figcaption>ZenML integrations</figcaption>
 </figure>
 
@@ -354,7 +354,7 @@ ZenML comes with 50+ built-in connectors across various MLOps categories - orche
 <ul><li><strong>Artifact Store:</strong> S3, Azure Blob Storage, GSC</li><li><strong>Cloud Infrastructure:</strong> AWS, Google Cloud, Azure</li><li><strong>Container Registry:</strong> Azure, Elastic, GitHub, Google Artifact Registry</li><li><strong>Data Visualization:</strong> Facets</li><li><strong>Experiment Tracker:</strong> Comet, MLflow, Neptune, Weights &amp; Biases</li><li><strong>Orchestrator:</strong> Docker, HyperAI, Kubeflow, Modal, Tekton</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdbf7908/681c900f26ebfa5fb5c525d6_zenml-list-of-integrations.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdbf7908/681c900f26ebfa5fb5c525d6_zenml-list-of-integrations.png" alt="List of ZenML integrations grouped by stack component such as artifact store, orchestrator, and experiment tracker" />
   <figcaption>ZenML integrates with multiple third party MLOps platforms</figcaption>
 </figure>
 
@@ -373,14 +373,14 @@ The ‘Our Cloud’ plan is pay-as-you-go and offers:
 <ul><li>$30 in free credit</li><li>1 seat</li><li><strong>CPU Core:</strong> $0.12/Core-hr</li><li><strong>GPU:</strong> TA - $0.71/GPU-hr and A100 (40GB) - $4.48/GPU-hr</li><li><strong>Memory:</strong> $0,029/GB-hr</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cd985d02/6843c39ca2983055e47bf5e7_union-ai-serverless-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cd985d02/6843c39ca2983055e47bf5e7_union-ai-serverless-pricing.png" alt="Union.ai serverless pricing page showing pay-as-you-go CPU, GPU, and memory rates for managed Flyte" />
   <figcaption>Union ai serverless pricing</figcaption>
 </figure>
 
 And here are the plans you get with ‘Your Cloud and on-prem’ plan:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2abcb46e/6843c3b6390fb5e26ff27199_union-ai-byoc-plans.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2abcb46e/6843c3b6390fb5e26ff27199_union-ai-byoc-plans.png" alt="Union.ai bring-your-own-cloud and on-prem plan tiers for managed Flyte deployments" />
   <figcaption>Union ai BYOC plans</figcaption>
 </figure>
 
@@ -391,7 +391,7 @@ Apache Airflow is open-source and free for self-hosted deployments. You can run 
 Managed Apache Airflow services are available from the AWS marketplace.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0f2fd409/6843c3e30350bed52f31bd30_airflow-pricing-on-the-aws-marketplace.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0f2fd409/6843c3e30350bed52f31bd30_airflow-pricing-on-the-aws-marketplace.png" alt="Managed Apache Airflow pricing listings on the AWS Marketplace" />
   <figcaption>Airflow pricing on the AWS marketplace</figcaption>
 </figure>
 
@@ -408,7 +408,7 @@ There are two Pro plans you can choose from:
 <ul><li><strong>Basic</strong>: $25 per month, where you get 1 workspace, 1 project, 1 pipeline, and 30 pipeline runs per month.</li><li><strong>Scale</strong>: Enterprise plan with custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ef161d0c/6843c45bcdc9176b4529a3a0_zenml-pricing.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ef161d0c/6843c45bcdc9176b4529a3a0_zenml-pricing.png" alt="ZenML Pro pricing page showing the Basic and Scale plan tiers" />
   <figcaption>ZenML pricing</figcaption>
 </figure>
 
@@ -425,7 +425,7 @@ Choosing between Flyte vs Airflow vs ZenML depends on your priorities and contex
 Stop wrestling with vendor lock-in and fragmented MLOps tools. ZenML Pro gives you the flexibility to use your favorite orchestrator (Airflow, Kubeflow, or local) while automatically handling artifact versioning, experiment tracking, and pipeline reproducibility. Want to give it a try? [Sign up for the 14-day free trial](https://cloud.zenml.io/signup?utm_source=website&utm_medium=website_nav&utm_campaign=cloud_promotion&utm_content=signup_link), no credit card required.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9f484645/683a994ac3b49d5f05cb5ace_try-zenml-pro-for-free.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9f484645/683a994ac3b49d5f05cb5ace_try-zenml-pro-for-free.png" alt="Promotional banner inviting readers to try ZenML Pro free for 14 days" />
   <figcaption>Try ZenML Pro for free</figcaption>
 </figure>
 

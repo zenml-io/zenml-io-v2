@@ -40,7 +40,7 @@ This post helps ML leads decide exactly when ZenML Pro’s Projects, RBAC, Templ
 Picture a single colored subway line with four consecutive stations:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/19a7d063/680916cae54dc3aac2738252_Image_from_Notion__5___1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/19a7d063/680916cae54dc3aac2738252_Image_from_Notion__5___1_.png" alt="What is the ML-Team Subway Map? screenshot" />
 </figure>
 
 <ul><li><strong>The Track (OSS ZenML).</strong> Your existing pipelines, stacks, and artifacts keep running exactly as they are.</li><li><strong>The Stations (ZenML Pro).</strong> Optional stops you can pull into the moment the pain becomes real—no ticket upgrades, no track changes.</li></ul>

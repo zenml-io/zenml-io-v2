@@ -37,7 +37,7 @@ TL;DR  If you already have a GPU‑enabled GKE cluster, jump straight to the "R
 ## Why should you care about KAI Scheduler?
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b688a425/6825b98507e5d13e2e3f821d_Clipboard_Image_from_TinyPNG__1_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b688a425/6825b98507e5d13e2e3f821d_Clipboard_Image_from_TinyPNG__1_.png" alt="Clipboard Tinypng" />
 </figure>
 
 Kubernetes has a blind spot: once a container asks for **one GPU**, the scheduler hands over the entire card—even if your workload needs only a sliver of its memory or compute. NVIDIA's [KAI Scheduler](https://github.com/nvidia/kai-scheduler/) (open‑sourced by *Run\:ai* in March 2025) closes that gap by adding AI‑centric primitives on top of the default scheduler:

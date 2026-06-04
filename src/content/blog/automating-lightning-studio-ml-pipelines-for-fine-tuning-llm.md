@@ -364,13 +364,13 @@ python run.py --config configs/config_large_gpu.yaml
 This will set off a run in the ZenML Dashboard using Lightning AI Studio as the orchestrator.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4dc380b5/670503073fbd35e24d31c8fb_6705020c4946a0aac7f4b749_image_20_35_.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4dc380b5/670503073fbd35e24d31c8fb_6705020c4946a0aac7f4b749_image_20_35_.png" alt="Leveraging Lightning AI Studios + ZenML screenshot" />
 </figure>
 
 You will now see a new studio spin up on your lightning studio account, which will execute the pipeline and then exit when the task finishes.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2773c59d/670503073fbd35e24d31c8e7_6705023a8576da228d2391b0_Screenshot_2024-10-07_at_09.05.27.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2773c59d/670503073fbd35e24d31c8e7_6705023a8576da228d2391b0_Screenshot_2024-10-07_at_09.05.27.webp" alt="Leveraging Lightning AI Studios + ZenML screenshot" />
 </figure>
 
 ## Why This Matters: The Future of AI is Task-Specific

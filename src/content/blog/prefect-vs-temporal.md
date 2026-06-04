@@ -148,7 +148,7 @@ Scheduling answers when workflows run and what triggers them is an important fun
 #### Prefect
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6bc8d7bf/696873bf49a8eaa680e9fc1b_prefect-scheduling.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6bc8d7bf/696873bf49a8eaa680e9fc1b_prefect-scheduling.webp" alt="Prefect UI showing scheduling options for a deployment with cron, interval, and event-driven triggers" />
   <figcaption>Prefect Scheduling</figcaption>
 </figure>
 
@@ -161,7 +161,7 @@ This means you could schedule a pipeline to run daily at 9 AM and also configure
 #### Temporal
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/18e01eac/696873d50aab4fe24543658d_temporal-scheduling.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/18e01eac/696873d50aab4fe24543658d_temporal-scheduling.webp" alt="Temporal Scheduling" />
   <figcaption>Temporal Scheduling</figcaption>
 </figure>
 
@@ -180,7 +180,7 @@ ZenML is an abstraction layer. It does not include a native scheduling engine; i
 There are several other orchestrators via which you can schedule jobs inside of ZenML:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ec3dcfc4/696873ea52bdf260eff3d946_zenml-scheduling.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ec3dcfc4/696873ea52bdf260eff3d946_zenml-scheduling.webp" alt="ZenML Scheduling" />
   <figcaption>ZenML Scheduling</figcaption>
 </figure>
 
@@ -191,7 +191,7 @@ If you think of the process above, it’s a win-win for both you and ZenML; you 
 #### Prefect
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/caddbbbe/696873fcd6732d4ddbaff90b_prefect-human-in-the-loop.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/caddbbbe/696873fcd6732d4ddbaff90b_prefect-human-in-the-loop.webp" alt="Prefect human in the loop" />
   <figcaption>Prefect human in the loop</figcaption>
 </figure>
 
@@ -200,7 +200,7 @@ Prefect supports Interactive Workflows. You can pause a Flow run using **explici
 #### Temporal
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/814b014a/69687410733c57ec3f6d4bec_temporal-human-in-the-loop.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/814b014a/69687410733c57ec3f6d4bec_temporal-human-in-the-loop.webp" alt="Temporal human in the loop" />
   <figcaption>Temporal human in the loop</figcaption>
 </figure>
 
@@ -213,7 +213,7 @@ It’s less UI-centric than Prefect but extremely robust programmatically.
 #### ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c8b94aca/6968742146a210a66ae1b964_zenml-human-in-the-loop.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c8b94aca/6968742146a210a66ae1b964_zenml-human-in-the-loop.webp" alt="ZenML human in the loop" />
   <figcaption>ZenML human in the loop</figcaption>
 </figure>
 
@@ -228,7 +228,7 @@ An orchestrator is only as good as the tools it connects with. Especially in dat
 ### Prefect
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/98ccb6df/69687439d1feff52c5d82af8_prefect-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/98ccb6df/69687439d1feff52c5d82af8_prefect-integration.webp" alt="Prefect Integration" />
 </figure>
 
 Prefect offers a rich library of integrations with cloud platforms and services like AWS, GCP, Azure, Kubernetes, Snowflake, dbt, Slack, GitHub, and more.
@@ -246,7 +246,7 @@ This means Temporal can integrate with anything you can code against, but you ha
 ### ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e6e914e2/69687450a636513a7712d11a_zenml-integration.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e6e914e2/69687450a636513a7712d11a_zenml-integration.webp" alt="ZenML Integration" />
 </figure>
 
 [ZenML uses a Stack concept](https://www.zenml.io/integrations). It integrates with almost every tool in the MLOps lifecycle and many others in the LLMOps space. To name a few:
@@ -266,7 +266,7 @@ Prefect offers a free forever plan for hobbyists and solo developers. Other than
 <ul><li><strong>Starter:</strong> $100 per month (up to 3 users)</li><li><strong>Team:</strong> $100/user per month</li><li><strong>Pro:</strong> Custom pricing</li><li><strong>Enterprise:</strong> Custom pricing</li><li><strong>Managed:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/29ef2a86/6968745f66210fb3dd991613_prefect-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/29ef2a86/6968745f66210fb3dd991613_prefect-pricing.webp" alt="Prefect Pricing" />
 </figure>
 
 ### Temporal
@@ -276,7 +276,7 @@ Temporal has a free open-source version and three paid plans:
 <ul><li><strong>Essentials:</strong> Starting at $100 per month</li><li><strong>Business:</strong> Starting at $500 per month</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a14ab90f/6968747e8d87be795ab9ca2f_temporal-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a14ab90f/6968747e8d87be795ab9ca2f_temporal-pricing.webp" alt="Temporal Pricing" />
 </figure>
 
 ### ZenML
@@ -286,7 +286,7 @@ Temporal has a free open-source version and three paid plans:
 <ul><li><strong>Community (Free):</strong> Full open-source framework. You can run it on your own infrastructure for free.</li><li><strong>ZenML Pro (Custom pricing):</strong> A managed control plane that provides the dashboard, user management, RBAC, stack configuration, and enterprise features.</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="ZenML Pricing" />
 </figure>
 
 ## How ZenML Controls and Helps You With MLOps Outer Loop
@@ -296,7 +296,7 @@ Moving code from the Inner to the Outer loop is the biggest bottleneck in MLOps.
 It typically requires rewriting Python scripts into glue code. You end up writing Airflow DAGs, Dockerfiles, or Kubernetes manifests. This adds friction and slows down the deployment cycle.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/321a7141/696874999070faf137e8aef1_zenml-homepage.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/321a7141/696874999070faf137e8aef1_zenml-homepage.webp" alt="ZenML Homepage screenshot" />
 </figure>
 
 ZenML automates this transition. It gives you control over the Outer Loop. Here’s how:

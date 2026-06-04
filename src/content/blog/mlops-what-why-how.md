@@ -371,7 +371,7 @@ python app.py
 **Output on localhost:**
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/db20de5b/66b0e5ebe712c30152be942e_66b0e2be4c45970293da4b6e_mlops004.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/db20de5b/66b0e5ebe712c30152be942e_66b0e2be4c45970293da4b6e_mlops004.png" alt="app.py screenshot" />
 </figure>
 
 We can input the reviews into the textbox for analysis. The output will be categorized as positive, negative, or neutral, with values closer to 1 indicating higher effectiveness.
@@ -453,7 +453,7 @@ python roberta_pipeline.py
 Once it runs, your dashboard will show all the details of the associated run, models, and artifacts.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a4f00740/66b0e5ebe712c30152be9437_66b0e3875f8b016bd90499b9_mlops005.png" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a4f00740/66b0e5ebe712c30152be9437_66b0e3875f8b016bd90499b9_mlops005.png" alt="Define the ZenML pipeline screenshot" />
 </figure>
 
 ## Tools and Platforms for MLOps

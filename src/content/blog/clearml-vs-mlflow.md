@@ -57,7 +57,7 @@ All three tools support experiment tracking, but they differ in how strongly the
 #### ClearML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/11414973/69686846844795be94891d41_clearml-overview.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/11414973/69686846844795be94891d41_clearml-overview.webp" alt="ClearML Overview diagram" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -74,7 +74,7 @@ At a workflow level, ClearML emphasizes experiment replay and comparison through
 #### MLflow
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/eaea0eab/69686856a647f06b1bbab48d_mlflow-overview.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/eaea0eab/69686856a647f06b1bbab48d_mlflow-overview.webp" alt="MLflow Overview diagram" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -87,7 +87,7 @@ Where MLflow stands out is later in the lifecycle. The Model Registry provides a
 #### ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/17f9449e/6968686526a9f015ce01aac2_zenml-overview.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/17f9449e/6968686526a9f015ce01aac2_zenml-overview.webp" alt="ZenML Overview diagram" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -108,7 +108,7 @@ Orchestration is where the tools diverge most clearly. MLflow relies on external
 #### ClearML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f8bfa2cd/69686877b28e0fa85f5a26a6_clearml-orchestration-dashboard.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f8bfa2cd/69686877b28e0fa85f5a26a6_clearml-orchestration-dashboard.webp" alt="Orchestration dashboard screenshot" />
   <figcaption>Orchestration dashboard</figcaption>
 </figure>
 
@@ -167,7 +167,7 @@ Machine learning doesn’t end with metrics – the **artifacts** are just as im
 #### ClearML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c7e9a5ad/696868ac8b462034d9b52752_clearml-artifact-management.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c7e9a5ad/696868ac8b462034d9b52752_clearml-artifact-management.webp" alt="ClearML Artifact Management" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -194,7 +194,7 @@ MLflow’s Model Registry provides a structured way to manage model versions and
 #### ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54d3bc5c/67b448e42a9d9bb96bd945af_EU_AI_Act_Models.gif" alt="ZenML model registry and control plane dashboard" />
   <figcaption>Source</figcaption>
 </figure>
 
@@ -217,7 +217,7 @@ While it integrates with many frameworks like PyTorch, TensorFlow, and more, it�
 Here’s a list of ClearML integrations as of publishing this article.
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0dc54a94/69686911d52807e5bb7ae142_clearml-integrations.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0dc54a94/69686911d52807e5bb7ae142_clearml-integrations.webp" alt="ClearML Integrations" />
 </figure>
 
 ### MLflow
@@ -231,7 +231,7 @@ However, these integrations often require you to write the glue code yourself.
 ### ZenML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1d82b748/6946273b56bd53317bb529f0_zenml-integration-capabilities.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1d82b748/6946273b56bd53317bb529f0_zenml-integration-capabilities.webp" alt="ZenML Integration Capabilities" />
 </figure>
 
 ZenML is built specifically to be the glue. Its architecture is based on **Stack Components**. You can define a stack that uses:
@@ -241,7 +241,7 @@ ZenML is built specifically to be the glue. Its architecture is based on **Stack
 These are just a few; you can learn about the complete list of integrations here: [ZenML integrations](https://www.zenml.io/integrations).
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f3408cb1/6968693c184165b5867a66f2_zenml-integration-list.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f3408cb1/6968693c184165b5867a66f2_zenml-integration-list.webp" alt="ZenML Integration List" />
 </figure>
 
 This allows you to mix and match the best tools for the job. You can swap out the orchestrator from a local runner to Kubernetes by changing a single CLI command, without touching your pipeline code.
@@ -257,7 +257,7 @@ Budget is always a factor for production teams. So here’s how pricing for the 
 <ul><li><strong>Community (Free):</strong> Free for self-hosted users (unlimited) or hosted on their SaaS (limited usage). It includes core experiment-tracking and orchestration features.</li><li><strong>Pro ($15/user/month):</strong> Adds managed hosting, unlimited scale, and better user management features.</li><li><strong>Scale (Custom):</strong> For larger deployments requiring VPC peering, advanced security, and priority support.</li><li><strong>Enterprise (Custom):</strong> For organizations with multiple large projects</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/af77dd69/69686949c8aca0573a1a2147_clearml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/af77dd69/69686949c8aca0573a1a2147_clearml-pricing.webp" alt="ClearML Pricing" />
 </figure>
 
 ### MLflow
@@ -271,7 +271,7 @@ ZenML is also open-source and free to start.
 <ul><li><strong>Community (Free):</strong> Full open-source framework. You can run it on your own infrastructure for free.</li><li><strong>ZenML Pro (Custom pricing):</strong> A managed control plane that handles the dashboard, user management, and stack configurations. This removes the burden of hosting the ZenML server yourself.</li></ul>
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c508fdf9/69686958bdf1b77d334d2876_zenml-pricing.webp" alt="ZenML Pricing" />
 </figure>
 
 ## How ZenML Manages the Outer Loop in MLOps for Production Teams

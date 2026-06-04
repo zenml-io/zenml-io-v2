@@ -76,7 +76,7 @@ This will launch a CLI flow that will guide you through registering a stack.
 If you’d rather use the dashboard, you can do so by clicking on the `Stacks` section, and then clicking on “Create Stack”:
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/da713a12/66a89907569a3536348350ad_66a898b846b4a6ca86777db5_wizard-steps.gif" alt="__wf_reserved_inherit" />
+  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/da713a12/66a89907569a3536348350ad_66a898b846b4a6ca86777db5_wizard-steps.gif" alt="Wizard Steps animated walkthrough" />
 </figure>
 
 ## 🤸What’s next?
