@@ -101,6 +101,9 @@ function isDecorative(tag: string): boolean {
 }
 
 const IMG_TAG_RE = /<img\b[\s\S]*?>/gi;
+// Markdown image syntax: ![alt](url). Astro renders these to <img>, so an empty
+// ![](url) is the same missing-alt regression as a raw <img alt="">.
+const MD_IMG_RE = /!\[(.*?)\]\(([^)]+)\)/g;
 
 function check(): void {
   const files = [
@@ -136,6 +139,18 @@ function check(): void {
       if (isDecorative(tag)) continue;
       if (hasGoodAlt(tag)) continue;
       violations.push(`  ${relative(ROOT, file)}:${line} — <img> missing alt text`);
+    }
+
+    // Markdown image syntax (content files only).
+    if (isContent) {
+      MD_IMG_RE.lastIndex = 0;
+      let md: RegExpExecArray | null;
+      while ((md = MD_IMG_RE.exec(src)) !== null) {
+        const line = src.slice(0, md.index).split("\n").length;
+        if (fenceLines.has(line)) continue; // code example, not a real image
+        if (md[1].trim() !== "") continue; // has alt text
+        violations.push(`  ${relative(ROOT, file)}:${line} — ![](…) missing alt text`);
+      }
     }
   }
 

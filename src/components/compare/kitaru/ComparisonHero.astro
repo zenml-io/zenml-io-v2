@@ -103,7 +103,10 @@ const hasOptions = competitorOptions.length > 0;
                   aria-current={opt.slug === currentSlug ? 'page' : undefined}
                 >
                   {opt.competitorLogo ? (
-                    <img src={opt.competitorLogo} alt={`${opt.competitor} logo`} class="chero-chip-menu-logo" />
+                    <!-- Decorative: the visible .chero-chip-menu-name beside this
+                         logo already names the option, so an alt here would make
+                         the menu item announce "<name> logo <name>". -->
+                    <img src={opt.competitorLogo} alt="" aria-hidden="true" class="chero-chip-menu-logo" />
                   ) : (
                     <span class="chero-chip-menu-avatar" aria-hidden="true">{opt.competitor.charAt(0)}</span>
                   )}
