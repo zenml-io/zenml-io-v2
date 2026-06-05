@@ -9,7 +9,6 @@ import {
   markdownTable,
   yesNo,
 } from "../lib/agentMarkdown";
-import { htmlToPlainText } from "../lib/text";
 import {
   PRICING_COMPARE,
   PRICING_COMPLIANCE,
@@ -22,6 +21,7 @@ import {
   PRICING_STARTUP_BANNER,
   PRICING_STATS,
 } from "../lib/pricing";
+import { htmlToPlainText } from "../lib/text";
 
 export const prerender = true;
 
@@ -95,10 +95,7 @@ function renderFaq(): string {
     `## ${PRICING_FAQ.headline}`,
     PRICING_FAQ.subheadline ?? "",
     PRICING_FAQ.items
-      .map(
-        (item) =>
-          `### ${item.question}\n\n${htmlToPlainText(item.answer)}`,
-      )
+      .map((item) => `### ${item.question}\n\n${htmlToPlainText(item.answer)}`)
       .join("\n\n"),
     PRICING_FAQ.slackCta
       ? `Still not clear? ${markdownLink(
@@ -141,9 +138,9 @@ export function GET(): Response {
       PRICING_COMPLIANCE.body,
       `### ${PRICING_COMPLIANCE.bannerHeadline}`,
       PRICING_COMPLIANCE.bannerBody,
-      `Security badges: ${PRICING_COMPLIANCE.badges.map((badge) => badge.alt).join(
-        ", ",
-      )}.`,
+      `Security badges: ${PRICING_COMPLIANCE.badges
+        .map((badge) => badge.alt)
+        .join(", ")}.`,
     ),
     joinMarkdownSections(
       `## ${PRICING_STATS.headline}`,

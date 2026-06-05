@@ -38,7 +38,9 @@ export async function GET(): Promise<Response> {
         mlopsItems.map((item) => [
           item.data.title,
           item.data.category?.replace(/-/g, " ") ?? "MLOps",
-          item.data.seoDescription ?? item.data.heroText ?? "ZenML comparison page.",
+          item.data.seoDescription ??
+            item.data.heroText ??
+            "ZenML comparison page.",
           absoluteUrl(`/compare/${item.data.slug}`),
         ]),
       ),

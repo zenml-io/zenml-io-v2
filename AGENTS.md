@@ -40,6 +40,7 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 ## Testing Guidelines
 - There is no dedicated unit-test suite in root scripts yet.
 - Minimum quality gate before PR: `pnpm check && pnpm lint && pnpm build`. PR CI enforces these in the required `Repo checks` job. Cloudflare previews deploy afterward when credentials are available, but preview deployment is not the required merge gate.
+- Before pushing code changes, run the same local gates that CI runs: `pnpm check`, `pnpm lint`, then `pnpm build` (or `pnpm check && pnpm lint && pnpm build`). If you edit code after running any check, rerun the affected check before pushing. Documentation-only edits can skip the build unless they change generated content or site behavior.
 - For content-heavy changes, also run `pnpm validate:content`.
 - If you edit code after running checks, rerun the affected checks.
 

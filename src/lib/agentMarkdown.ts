@@ -65,9 +65,7 @@ export function joinMarkdownSections(...sections: readonly string[]): string {
 }
 
 export function escapeMarkdownTableCell(value: string): string {
-  return normalizeText(value)
-    .replace(/\|/g, "\\|")
-    .replace(/\n/g, "<br>");
+  return normalizeText(value).replace(/\|/g, "\\|").replace(/\n/g, "<br>");
 }
 
 export function escapeMarkdownText(value: string): string {

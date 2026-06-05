@@ -1,5 +1,3 @@
-import { absoluteUrl } from "./seo";
-import { htmlToPlainText } from "./text";
 import {
   PRICING_FAQ,
   PRICING_FINAL_CTA,
@@ -7,6 +5,8 @@ import {
   PRICING_PLANS,
   PRICING_SEO,
 } from "./pricing";
+import { absoluteUrl } from "./seo";
+import { htmlToPlainText } from "./text";
 
 function reliablePriceFields(
   plan: (typeof PRICING_PLANS)[number],
