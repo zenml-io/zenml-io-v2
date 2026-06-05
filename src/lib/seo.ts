@@ -51,6 +51,12 @@ export interface ResolvedSEO {
  * Strips .html extension (Astro's build.format: "file" adds it to pathnames)
  * and trailing slashes to produce clean canonical URLs.
  */
+export function absoluteUrl(pathOrUrl: string): string {
+  if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
+  const path = pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`;
+  return `${SITE_URL}${path}`;
+}
+
 export function buildCanonical(pathname: string, override?: string): string {
   if (override) return override;
 

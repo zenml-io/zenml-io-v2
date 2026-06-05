@@ -16,6 +16,7 @@ import PricingProInclusions from "../components/sections/PricingProInclusions.as
  * sections: startup/academic banner, compliance, FAQ, stats/trust,
  * and final CTA.
  */
+import JsonLd from "../components/seo/JsonLd.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
   PRICING_COMPARE,
@@ -27,6 +28,9 @@ import {
   PRICING_STARTUP_BANNER,
   PRICING_STATS,
 } from "../lib/pricing";
+import { buildPricingJsonLd } from "../lib/pricingJsonLd";
+
+const pricingJsonLd = buildPricingJsonLd();
 ---
 
 <BaseLayout
@@ -37,6 +41,8 @@ import {
   ogImage={PRICING_SEO.ogImage}
   surface="unified"
 >
+  <JsonLd data={pricingJsonLd} slot="head" />
+
   <main>
     {/* Hero */}
     <section class="bg-linear-to-b from-zenml-50 to-white pt-8 pb-8 sm:pt-12 sm:pb-12">

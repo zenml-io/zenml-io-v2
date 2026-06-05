@@ -1,5 +1,6 @@
 ---
 // Deploy.astro — Terminal-led "run it" section, with a forward-looking roadmap nudge
+import { KITARU_LINKS } from "../../lib/productKitaru";
 ---
 
 <section id="deploy" class="section-pad-compact deploy-section">
@@ -34,8 +35,8 @@
     </figure>
 
     <div class="deploy-links-row" data-reveal data-reveal-delay="5">
-      <a href="https://github.com/zenml-io/kitaru" target="_blank" rel="noopener" class="deploy-link">
-        Star on GitHub
+      <a href={KITARU_LINKS.github.href} target="_blank" rel="noopener" class="deploy-link">
+        {KITARU_LINKS.github.label}
         <span aria-hidden="true">→</span>
       </a>
     </div>
