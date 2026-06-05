@@ -1,5 +1,10 @@
 ---
 // Cta.astro — Bold CTA with primary dark background, ASCII canvas + mesh gradient
+import {
+  KITARU_INSTALL_CMD,
+  KITARU_LICENSE,
+  KITARU_LINKS,
+} from "../../lib/productKitaru";
 ---
 
 <section class="cta-section" id="cta">
@@ -19,20 +24,20 @@
 
     <div class="cta-actions">
       <div class="cta-install">
-        <code>pip install kitaru</code>
-        <button class="copy-btn" aria-label="Copy install command" data-copy="pip install kitaru">
+        <code>{KITARU_INSTALL_CMD}</code>
+        <button class="copy-btn" aria-label="Copy install command" data-copy={KITARU_INSTALL_CMD}>
           <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
           <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
         </button>
       </div>
       <div class="cta-links">
-        <a href="/book-your-demo" class="btn-accent">Book a demo</a>
-        <a href="https://github.com/zenml-io/kitaru" target="_blank" rel="noopener" class="btn-secondary-dark">
-          Star on GitHub
+        <a href={KITARU_LINKS.demo.href} class="btn-accent">{KITARU_LINKS.demo.label}</a>
+        <a href={KITARU_LINKS.github.href} target="_blank" rel="noopener" class="btn-secondary-dark">
+          {KITARU_LINKS.github.label}
         </a>
       </div>
     </div>
-    <p class="cta-note">Open source (Apache 2.0). Add the runtime around the agent you already have.</p>
+    <p class="cta-note">Open source ({KITARU_LICENSE}). Add the runtime around the agent you already have.</p>
   </div>
 </section>
 

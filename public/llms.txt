@@ -18,11 +18,22 @@ To request a managed ZenML Pro instance, send an email to `agents@zenml.io` with
 
 ---
 
-ZenML's site is organized into product pages (features, pricing, Pro offering and deployments), solution guides for MLOps and LLMOps, comparison articles against other tools, a portfolio of integration categories and projects, case studies, company culture pages, community resources like the blog and newsletter, and legal/administrative pages. Each page below uses the HTML URL (ZenML does not currently provide `.md` versions), and only high-level pages are listed — individual blog articles and the 1,400+ entries under `/llmops-database/` are intentionally omitted.
+ZenML's site is organized into product pages (features, pricing, Pro offering and deployments), solution guides for MLOps and LLMOps, comparison articles against other tools, a portfolio of integration categories and projects, case studies, company culture pages, community resources like the blog and newsletter, and legal/administrative pages. Only high-level pages are listed below — individual blog articles and the 1,400+ entries under `/llmops-database/` are intentionally omitted.
+
+## Markdown Mirrors
+
+These repo-owned Markdown mirrors are alternate, cleaner representations of high-value marketing pages for agents and readers. They omit decorative UI, navigation, analytics snippets, and other browser chrome.
+
+- [Pricing Markdown](https://www.zenml.io/pricing.md): plain Markdown mirror of pricing plans, Pro inclusions, comparison tables, compliance notes, FAQs, and CTAs.
+- [ZenML Product Markdown](https://www.zenml.io/product/zenml.md): plain Markdown mirror of the ZenML product page for ML pipelines and MLOps orchestration.
+- [Kitaru Product Markdown](https://www.zenml.io/product/kitaru.md): plain Markdown mirror of the Kitaru product page for durable Python agents.
+- [Compare Hub Markdown](https://www.zenml.io/compare.md): plain Markdown mirror of the ZenML/Kitaru comparison hub.
 
 ## Product & Features
 
 - [Features](https://www.zenml.io/features): overview page describing ZenML's capabilities.
+- [ZenML Product](https://www.zenml.io/product/zenml): product page for ZenML's ML pipeline and MLOps workspace.
+- [Kitaru Product](https://www.zenml.io/product/kitaru): product page for Kitaru's durable runtime for long-running Python agents.
 - [Iterate at warp speed](https://www.zenml.io/features/iterate-at-warp-speed): accelerate experiments with seamless local-to-cloud transitions, caching and containerization.
 - [Auto-track everything](https://www.zenml.io/features/auto-track-everything): automatic logging and versioning for full pipeline observability and reproducibility.
 - [Shared ML building blocks](https://www.zenml.io/features/shared-ml-building-blocks): reusable components to boost team productivity.
@@ -54,6 +65,7 @@ ZenML's site is organized into product pages (features, pricing, Pro offering an
 
 ## Comparisons
 
+- [Compare Hub](https://www.zenml.io/compare): hub for ZenML/MLOps and Kitaru/agent-runtime comparison pages.
 - [ZenML vs Orchestrators](https://www.zenml.io/vs/zenml-vs-orchestrators): overview comparing ZenML to traditional orchestrators like Airflow, Kubeflow and Kedro.
 - [ZenML vs Experiment Trackers](https://www.zenml.io/vs/zenml-vs-experiment-trackers): overview of comparisons with MLflow, Weights & Biases, Neptune AI and CometML.
 - [ZenML vs End-to-End Platforms](https://www.zenml.io/vs/zenml-vs-e2e-platforms): overview comparing ZenML with complete platforms like AWS Sagemaker, ClearML, Metaflow, Valohai, Vertex AI and Azure ML.
@@ -77,6 +89,8 @@ ZenML's site is organized into product pages (features, pricing, Pro offering an
 - [Book a Demo](https://www.zenml.io/book-your-demo): request a ZenML demo or contact sales.
 
 ## Community & Resources
+
+The `www.zenml.io` domain is the marketing/readability surface. Product documentation lives on `docs.zenml.io`; source code lives on GitHub.
 
 - [Blog](https://www.zenml.io/blog): news, tutorials and opinion pieces from the ZenML team.
 - [Blog RSS Feed](https://www.zenml.io/blog/rss.xml): RSS 2.0 feed for blog posts.

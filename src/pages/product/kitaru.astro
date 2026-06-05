@@ -32,16 +32,11 @@ import SocialProof from "../../components/kitaru/SocialProof.astro";
  * See MERGE_PLAN.md §4 (Phase 2b).
  */
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { PRODUCT_KITARU_SEO } from "../../lib/productKitaru";
 import "../../styles/kitaru-compat.css";
-
-const seo = {
-  title: "Kitaru — Open-source runtime for long-running Python agents | ZenML",
-  description:
-    "Open-source runtime for long-running Python agents. Add checkpoints, replay, wait/resume, isolated execution, artifacts, and versioned deployments on your own cloud. Built by the ZenML team.",
-};
 ---
 
-<BaseLayout {...seo} surface="agent">
+<BaseLayout {...PRODUCT_KITARU_SEO} surface="agent">
   <div data-app="kitaru" class="bg-background text-foreground">
     <main id="kitaru-main">
       <Hero />

@@ -40,13 +40,16 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 ## Testing Guidelines
 - There is no dedicated unit-test suite in root scripts yet.
 - Minimum quality gate before PR: `pnpm check && pnpm lint && pnpm build`. PR CI enforces these in the required `Repo checks` job. Cloudflare previews deploy afterward when credentials are available, but preview deployment is not the required merge gate.
+- Before pushing code changes, run the same local gates that CI runs: `pnpm check`, `pnpm lint`, then `pnpm build` (or `pnpm check && pnpm lint && pnpm build`). If you edit code after running any check, rerun the affected check before pushing. Documentation-only edits can skip the build unless they change generated content or site behavior.
 - For content-heavy changes, also run `pnpm validate:content`.
 - If you edit code after running checks, rerun the affected checks.
 
 ## Commit & Pull Request Guidelines
 - Follow existing commit style: imperative, concise subject lines (`Fix ...`, `Add ...`, `Update ...`).
 - Keep commits focused; stage only relevant files.
-- PRs should include: purpose, changed routes/components, validation commands run, and screenshots for UI changes.
+- Do **not** commit intermediate planning/review artifacts by default. Files under `docs/plans/`, `docs/reviews/`, `prompt-exports/`, or similar orchestration scratch locations are working notes unless the user explicitly asks to keep them. Before committing, check `git status --short` and leave unrelated or intermediate plans/reviews unstaged.
+- PR descriptions should be friendly and reviewer-oriented. Include: a short summary; grouped feature/change bullets; a “what reviewers should focus on” section for gnarly or judgement-heavy areas; validation commands/review loops run; and concrete preview URLs or paths to check when relevant.
+- PRs should include screenshots for UI changes.
 - Verify redirects/canonicals when URL or SEO-related files change.
 
 ## Images & Assets (Two-Tier System)

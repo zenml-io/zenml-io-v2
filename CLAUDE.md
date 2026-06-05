@@ -77,11 +77,25 @@ The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was s
 - **This is a public repository.** All commits, documentation, and code are visible to the public. Never commit secrets, API keys, infrastructure IDs, internal URLs, traffic numbers, or other sensitive information. Use `CLAUDE.private.md` (gitignored) for private details. The `design/` folder and `scripts/internal/` are also gitignored for internal-only artifacts
 - `design/` folder is for heavy artifacts (exports, screenshots, JSON dumps, internal docs) — **never commit to git**
 - Make targeted git commits (only relevant files)
+- **Do not commit intermediate planning/review artifacts by default.** Files under `docs/plans/`, `docs/reviews/`, `prompt-exports/`, or similar orchestration scratch locations are working notes for agents unless the user explicitly asks to keep them. Before staging, check `git status --short` and leave unrelated or intermediate plans/reviews unstaged. If a plan becomes a durable product/architecture document, confirm that intent before committing it
 - After running tests, re-run them if you make subsequent changes
+- **Before pushing code changes**, run the same local quality gates that PR CI runs: `pnpm check`, `pnpm lint`, then `pnpm build` (or a stricter combined command such as `pnpm check && pnpm lint && pnpm build`). If you change code after any of those commands, rerun the affected check before pushing. Documentation-only edits can skip the build unless they change generated content or site behavior
 - PR CI enforces the package quality gates in the required `Repo checks` job: `pnpm check`, `pnpm lint`, then `pnpm build`. PR previews deploy afterward when Cloudflare credentials are available, but preview deployment is not the required merge gate
 - **Build output**: `pnpm build` generates ~2000+ lines of output listing every generated page. Always run it in background mode and use `tail` to check only the final lines for success/failure
 - **Credential management**: When you receive API credentials, tokens, or keys, **always add them to `.env`** for persistence across sessions. The `.env` file is gitignored and safe for secrets
 - VERY IMPORTANT: **Before opening a PR or making a large commit**, always run `/simplify` to review changed code for reuse opportunities, quality issues, and efficiency improvements. Fix any issues it finds before committing.
+
+### PR Description Style
+
+PR descriptions should be reviewer-friendly, not just a raw change log. Use this shape unless the user asks for something different:
+
+1. **Summary** — a short, friendly explanation of what changed and why.
+2. **What changed** — bullets grouped by feature/area, naming important routes, components, or files.
+3. **What reviewers should focus on** — call out the gnarly or higher-risk parts. For example: copied-vs-derived content, SEO/canonical changes, redirects, schema/JSON-LD, analytics, Cloudflare headers, or anything where you made a judgement call.
+4. **Validation** — list commands run (`pnpm check`, `pnpm lint`, `pnpm build`, content validators), review loops used, and any known warnings that are pre-existing.
+5. **Preview URLs / paths to check** — include concrete paths when useful, e.g. `Preview URL + /pricing`, `/product/kitaru`, `/compare`, or any route whose behavior changed.
+
+Keep the tone plain and helpful: the goal is that a reviewer can quickly see the story, know where to spend attention, and know what was already checked.
 
 ## Images & Assets
 
