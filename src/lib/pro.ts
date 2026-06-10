@@ -154,6 +154,16 @@ export const PRO_FEATURES = [
     },
   },
   {
+    eyebrow: "Agents",
+    title: "Kitaru workspaces for AI agents",
+    body: "Create Kitaru workspaces next to your ML ones: every agent run recorded and replayable, with executions, checkpoints, costs, and human-in-the-loop approvals in the same control plane.",
+    learnMoreHref: "/product/kitaru",
+    image: {
+      url: `https://assets.kitaru.ai/content/site/8d08be97/kitaru-dashboard.avif`,
+      alt: "Kitaru dashboard showing a recorded agent execution with its checkpoints",
+    },
+  },
+  {
     eyebrow: "Optimization",
     title: "Streamlined Pipeline Management",
     body: "Enhanced pipeline controls including the ability to create run templates and trigger from the dashboard.",
@@ -228,7 +238,7 @@ export const PRO_OSS_GRID = {
   items: [
     {
       title: "Managed control plane",
-      body: "ZenML Pro offers multi-tenant, fully-managed ZenML deployments. Separate your team into workspaces, and deploy dev, staging, and production servers separately.",
+      body: "ZenML Pro offers multi-tenant, fully-managed deployments. Workspaces come in two types — ZenML for ML pipelines, Kitaru for AI agents — under the same organization, roles, and billing, with dev, staging, and production servers separated.",
     },
     {
       title: "Roles and Permissions",
