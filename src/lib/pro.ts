@@ -144,6 +144,16 @@ export const PRO_ONBOARDING = {
 // ---------------------------------------------------------------------------
 export const PRO_FEATURES = [
   {
+    eyebrow: "Workspaces",
+    title: "Workspaces for pipelines and agents",
+    body: "Create ZenML workspaces for ML pipelines and Kitaru workspaces for AI agents under one organization — each an isolated, single-tenant deployment with shared SSO, roles, and billing, while your data stays in your cloud.",
+    learnMoreHref: "/pricing",
+    image: {
+      url: `https://assets.kitaru.ai/content/site/8d08be97/kitaru-dashboard.avif`,
+      alt: "Kitaru workspace dashboard showing a recorded agent execution",
+    },
+  },
+  {
     eyebrow: "Flexibility",
     title: "Organize assets into Projects",
     body: "Safe, isolated environments to structure your projects and separate concerns between teams.",
@@ -151,16 +161,6 @@ export const PRO_FEATURES = [
     image: {
       url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/25614cc0/features_projects.png`,
       alt: "Dashboard mockup showing projects organization",
-    },
-  },
-  {
-    eyebrow: "Agents",
-    title: "Kitaru workspaces for AI agents",
-    body: "Create Kitaru workspaces next to your ML ones: every agent run recorded and replayable, with executions, checkpoints, costs, and human-in-the-loop approvals in the same control plane.",
-    learnMoreHref: "/product/kitaru",
-    image: {
-      url: `https://assets.kitaru.ai/content/site/8d08be97/kitaru-dashboard.avif`,
-      alt: "Kitaru dashboard showing a recorded agent execution with its checkpoints",
     },
   },
   {
