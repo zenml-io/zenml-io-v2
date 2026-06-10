@@ -11,9 +11,9 @@ export const KITARU_LINKS = {
 } as const;
 
 export const PRODUCT_KITARU_SEO = {
-  title: "Kitaru — Open-source runtime for long-running Python agents | ZenML",
+  title: "Kitaru — Record, replay, and improve Python agents | ZenML",
   description:
-    "Open-source runtime for long-running Python agents. Add checkpoints, replay, wait/resume, isolated execution, artifacts, and versioned deployments on your own cloud. Built by the ZenML team.",
+    "Open-source runtime that records every step of your agents' runs as replayable checkpoints. Replay with overrides, compare cost and quality, and ship updates with confidence — with wait/resume, isolated execution, and versioned deployments on your own cloud. Built by the ZenML team.",
 } as const;
 
 /**
@@ -31,7 +31,7 @@ export const PRODUCT_KITARU_MARKDOWN = {
   summary: [
     "Kitaru is the open agent runtime from ZenML. The live page's core pitch is: replay, don't guess — rerun production runs against new models, prompts, or skills; compare evidence; ship the variant that wins.",
     `It is open source under ${KITARU_LICENSE} and built for Python agents that need checkpoints, replay, wait/resume, isolated execution, artifacts, and versioned deployments on your own cloud.`,
-    "You keep the agent harness you already chose — CrewAI, PydanticAI, OpenAI Agents SDK, Claude Agent SDK, or plain Python. Kitaru adds durable execution underneath it with a small set of Python primitives.",
+    "You keep the agent harness you already chose — CrewAI, PydanticAI, OpenAI Agents SDK, Claude Agent SDK, or plain Python. Kitaru records and replays the run underneath it with a small set of Python primitives.",
     "The concrete failure story is simple: if your agent dies at hour 11, Kitaru should not make you restart from hour 1. It resumes from persisted checkpoints instead.",
   ],
   primitives: [

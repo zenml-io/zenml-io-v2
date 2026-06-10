@@ -9,7 +9,7 @@
  * hold the per-tab content.
  *
  * ZenML copy was extracted from the original Webflow snapshot + SEO baseline.
- * Kitaru code snippets follow the public docs at https://kitaru.ai/docs
+ * Kitaru code snippets follow the public docs at https://docs.zenml.io/kitaru
  * (decorators: @flow + @checkpoint; flows are invoked via `.run()`).
  */
 import type { CtaLink } from "./marketingPageTypes";
@@ -20,10 +20,10 @@ import type { CtaLink } from "./marketingPageTypes";
 export const GET_STARTED_SEO = {
   title: "Get Started with ZenML or Kitaru | ZenML",
   description:
-    "Set up ZenML for ML and data pipelines, Kitaru for durable agents — install, run locally, and bring both into the same workflow.",
+    "Set up ZenML for ML and data pipelines, Kitaru for production agents — install, run locally, and bring both into the same workflow.",
   ogTitle: "Get Started with ZenML or Kitaru",
   ogDescription:
-    "Set up ZenML for ML and data pipelines, Kitaru for durable agents — install, run locally, and bring both into the same workflow.",
+    "Set up ZenML for ML and data pipelines, Kitaru for production agents — install, run locally, and bring both into the same workflow.",
   ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
@@ -264,12 +264,12 @@ if __name__ == "__main__":
   resources: {
     eyebrow: "Resources",
     headline: "Your Complete Kitaru Learning Toolkit",
-    body: "Docs, examples, and a community building durable agents — start where you are.",
+    body: "Docs, examples, and a community building production agents — start where you are.",
     items: [
       {
         title: "Kitaru Docs",
-        body: "Primitives, APIs, and recipes for building durable agents.",
-        href: "https://kitaru.ai/docs",
+        body: "Primitives, APIs, and recipes for building production agents.",
+        href: "https://docs.zenml.io/kitaru",
         external: true,
         color: "orange",
       },
@@ -289,7 +289,7 @@ if __name__ == "__main__":
       },
       {
         title: "Slack Community",
-        body: "Join engineers shipping durable agents — get help, share patterns.",
+        body: "Join engineers shipping production agents — get help, share patterns.",
         href: "/slack",
         external: false,
         color: "blue",

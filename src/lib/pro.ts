@@ -28,7 +28,7 @@ export const PRO_SEO = {
 // ---------------------------------------------------------------------------
 export const PRO_HERO: HeroData = {
   headline: "A managed control plane for ML pipelines and AI agents",
-  deck: "ZenML Pro runs both workspaces under one paid product: ZenML for ML pipelines, Kitaru for durable agents. Single pane of glass, enterprise governance, no infrastructure setup.",
+  deck: "ZenML Pro runs both workspaces under one paid product: ZenML for ML pipelines, Kitaru for production agents. Single pane of glass, enterprise governance, no infrastructure setup.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",
@@ -63,7 +63,7 @@ export const PRO_UNIFIED_PITCH = {
         },
         {
           name: "Kitaru workspace",
-          body: "Durable execution for Python agents. Distributed replay, scheduled / API / webhook triggers, dashboard control over wait/resume.",
+          body: "Every agent run recorded and replayable. Distributed replay, scheduled / API / webhook triggers, dashboard control over wait/resume.",
         },
         {
           name: "Single pane of glass",
@@ -144,6 +144,16 @@ export const PRO_ONBOARDING = {
 // ---------------------------------------------------------------------------
 export const PRO_FEATURES = [
   {
+    eyebrow: "Workspaces",
+    title: "Workspaces for pipelines and agents",
+    body: "Create ZenML workspaces for ML pipelines and Kitaru workspaces for AI agents under one organization — each an isolated, single-tenant deployment with shared SSO, roles, and billing, while your data stays in your cloud.",
+    learnMoreHref: "/pricing",
+    image: {
+      url: `https://assets.kitaru.ai/content/site/8d08be97/kitaru-dashboard.avif`,
+      alt: "Kitaru workspace dashboard showing a recorded agent execution",
+    },
+  },
+  {
     eyebrow: "Flexibility",
     title: "Organize assets into Projects",
     body: "Safe, isolated environments to structure your projects and separate concerns between teams.",
@@ -155,8 +165,8 @@ export const PRO_FEATURES = [
   },
   {
     eyebrow: "Optimization",
-    title: "Streamlined Pipeline Management",
-    body: "Enhanced pipeline controls including the ability to create run templates and trigger from the dashboard.",
+    title: "Triggers and run management",
+    body: "Run templates, schedules, and API or webhook triggers — launch and control ML pipelines and agent flows straight from the dashboard.",
     learnMoreHref: "/features/streamlined-pipeline-management",
     image: {
       url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/70ab3904/653249d5a55b6cc59610a9f2_20_CI_CD_CT_Showcase_95f04728ec.webp`,
@@ -228,7 +238,7 @@ export const PRO_OSS_GRID = {
   items: [
     {
       title: "Managed control plane",
-      body: "ZenML Pro offers multi-tenant, fully-managed ZenML deployments. Separate your team into workspaces, and deploy dev, staging, and production servers separately.",
+      body: "ZenML Pro offers multi-tenant, fully-managed deployments. Workspaces come in two types — ZenML for ML pipelines, Kitaru for AI agents — under the same organization, roles, and billing, with dev, staging, and production servers separated.",
     },
     {
       title: "Roles and Permissions",
@@ -326,7 +336,7 @@ export const PRO_FAQ: FaqData = {
     {
       question: "Does ZenML Pro cover the Kitaru agent workspace too?",
       answer:
-        "Yes. ZenML Pro is the paid plane over both sub-products — ZenML for ML pipelines and Kitaru for durable AI agents. Same control plane, same SSO/RBAC/audit, same compliance posture (SOC 2, ISO 27001, BYOK, multi-region). Per-project: pick the ML workspace, the Agent workspace, or both.",
+        "Yes. ZenML Pro is the paid plane over both sub-products — ZenML for ML pipelines and Kitaru for production AI agents. Same control plane, same SSO/RBAC/audit, same compliance posture (SOC 2, ISO 27001, BYOK, multi-region). Per-project: pick the ML workspace, the Agent workspace, or both.",
     },
     {
       question: "What about data security and compliance?",
