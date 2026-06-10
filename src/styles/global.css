@@ -259,6 +259,10 @@ html { scroll-behavior: smooth; }
   --color-cream-warm:   #FAF8F4;  /* v2-Flows artboard ground (warmer than cream-canvas) */
   --color-cream-lift:   #FEFCF8;  /* lighter cream — Flows timeline cards lift off the cream-warm ground */
 
+  /* === Sand — ZenML Pro surfaces (Product nav dropdown) === */
+  --color-sand-100: #efeadd;  /* Pro row hover */
+  --color-sand-200: #e8e0cf;  /* Pro icon tile */
+
   /* === Warm-taupe scale — Kitaru timeline labels (v2-Flows artboard A3O-0) === */
   --color-warm-taupe:        #988573;  /* timeline label color */
   --color-warm-taupe-dark:   #705C4D;  /* span name color */

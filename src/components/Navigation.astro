@@ -8,6 +8,7 @@ import { getNonDraftLlmopsDatabaseCount } from "../lib/llmops";
 import {
   createNavDropdowns,
   isActivePath,
+  NAV_BRAND_STYLES,
   NAV_CTAS,
   NAV_LINKS,
 } from "../lib/navigation";
@@ -27,6 +28,16 @@ const { currentPath = Astro.url.pathname } = Astro.props;
 const headerStarsFallback = formatStars(FALLBACK_STARS);
 const llmopsCaseStudyCount = await getNonDraftLlmopsDatabaseCount();
 const navDropdowns = createNavDropdowns({ llmopsCaseStudyCount });
+
+/** Split the Product dropdown's links: side-by-side products vs the
+ *  spanning ZenML Pro row (Pro includes both products). */
+const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
+  const links = dropdown.sections[0].links;
+  return {
+    products: links.filter((l) => l.brand !== "pro"),
+    pro: links.find((l) => l.brand === "pro"),
+  };
+};
 ---
 
 <header class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200/60">
@@ -40,7 +51,90 @@ const navDropdowns = createNavDropdowns({ llmopsCaseStudyCount });
       {/* Desktop Nav */}
       <nav class="hidden lg:flex lg:items-center lg:gap-1 lg:ml-12 h-full" role="navigation" aria-label="Main navigation">
         {/* Dropdown menus */}
-        {navDropdowns.map((dropdown) => dropdown.compact ? (
+        {navDropdowns.map((dropdown) => dropdown.product ? (
+          <div class="group relative flex h-full items-center" data-compact-dropdown>
+            <button
+              class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
+              aria-expanded="false"
+              aria-haspopup="true"
+            >
+              {dropdown.label}
+              <svg class="h-4 w-4 text-gray-400 transition-transform group-hover:rotate-180" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 7.5L10 12.5L15 7.5" />
+              </svg>
+            </button>
+            {/* Product panel — double-width box. ZenML + Kitaru side by side;
+              * ZenML Pro spans both columns below (Pro includes both products). */}
+            <div data-dropdown-panel class="pointer-events-none invisible absolute left-0 top-full z-50 w-[640px] pt-2 opacity-0 transition-[opacity,visibility] duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100">
+              <div class="rounded-lg bg-white shadow-large border border-gray-100 p-2">
+                {(() => {
+                  const { products, pro } = productDropdownLinks(dropdown);
+                  const proStyles = NAV_BRAND_STYLES.pro;
+                  return (
+                    <>
+                      <div class="relative grid grid-cols-2 gap-2">
+                        <div class="absolute inset-y-3 left-1/2 w-px -translate-x-1/2 bg-gray-200" aria-hidden="true"></div>
+                        {products.map((link) => {
+                          const brand = NAV_BRAND_STYLES[link.brand ?? "zenml"];
+                          return (
+                            <a
+                              href={link.href}
+                              class:list={["group/link flex items-center gap-3 rounded-md p-3 transition-colors", brand.cell]}
+                            >
+                              <div class:list={["flex size-10 shrink-0 items-center justify-center rounded-md", brand.tile]}>
+                                <svg
+                                  class="h-5 w-5"
+                                  viewBox={link.iconViewBox ?? "0 0 24 24"}
+                                  fill={link.iconFilled ? "currentColor" : "none"}
+                                  stroke={link.iconFilled ? undefined : "currentColor"}
+                                  stroke-width={link.iconFilled ? undefined : "2"}
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                >
+                                  <Fragment set:html={link.icon} />
+                                </svg>
+                              </div>
+                              <div class="min-w-0">
+                                <div class:list={["text-sm font-semibold text-gray-900 transition-colors", brand.label]}>
+                                  {link.label}
+                                </div>
+                                {link.description && (
+                                  <div class="mt-0.5 text-xs text-gray-500 leading-snug">
+                                    {link.description}
+                                  </div>
+                                )}
+                              </div>
+                            </a>
+                          );
+                        })}
+                      </div>
+                      {pro && (
+                        <a
+                          href={pro.href}
+                          class:list={["group/link mt-2 flex items-center gap-3 rounded-md p-3 transition-colors", proStyles.cell]}
+                        >
+                          <div class:list={["flex size-10 shrink-0 items-center justify-center rounded-md", proStyles.tile]}>
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <Fragment set:html={pro.icon} />
+                            </svg>
+                          </div>
+                          <div class="min-w-0">
+                            <div class:list={["text-sm font-semibold text-gray-900 transition-colors", proStyles.label]}>
+                              {pro.label}
+                            </div>
+                            <div class="mt-0.5 text-xs text-gray-500 leading-snug">
+                              {pro.description}
+                            </div>
+                          </div>
+                        </a>
+                      )}
+                    </>
+                  );
+                })()}
+              </div>
+            </div>
+          </div>
+        ) : dropdown.compact ? (
           <div class="group relative flex h-full items-center" data-compact-dropdown>
             <button
               class="flex items-center gap-1 rounded-md px-3 py-2 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
@@ -55,30 +149,41 @@ const navDropdowns = createNavDropdowns({ llmopsCaseStudyCount });
             {/* Compact dropdown — narrow box anchored under the button */}
             <div data-dropdown-panel class="pointer-events-none invisible absolute left-0 top-full z-50 w-[320px] pt-2 opacity-0 transition-[opacity,visibility] duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100">
               <div class="rounded-lg bg-white shadow-large border border-gray-100 p-2">
-                {dropdown.sections[0].links.map((link) => (
-                  <a
-                    href={link.href}
-                    class="group/link flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-gray-50"
-                    target={link.external ? "_blank" : undefined}
-                    rel={link.external ? "noopener noreferrer" : undefined}
-                  >
-                    <div class="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-zenml-25 text-zenml-500">
-                      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <Fragment set:html={link.icon || '<path d="M13 2L4.09 12.69a.5.5 0 00.41.81H12l-1 10 8.91-10.69a.5.5 0 00-.41-.81H12l1-10z"/>'} />
-                      </svg>
-                    </div>
-                    <div class="min-w-0">
-                      <div class="text-sm font-medium text-gray-900 group-hover/link:text-zenml-500">
-                        {link.label}
+                {dropdown.sections[0].links.map((link) => {
+                  const brand = NAV_BRAND_STYLES[link.brand ?? "zenml"];
+                  return (
+                    <a
+                      href={link.href}
+                      class="group/link flex items-center gap-3 rounded-md p-2 transition-colors hover:bg-gray-50"
+                      target={link.external ? "_blank" : undefined}
+                      rel={link.external ? "noopener noreferrer" : undefined}
+                    >
+                      <div class:list={["flex h-8 w-8 shrink-0 items-center justify-center rounded-md", brand.tile]}>
+                        <svg
+                          class="h-4 w-4"
+                          viewBox={link.iconViewBox ?? "0 0 24 24"}
+                          fill={link.iconFilled ? "currentColor" : "none"}
+                          stroke={link.iconFilled ? undefined : "currentColor"}
+                          stroke-width={link.iconFilled ? undefined : "2"}
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <Fragment set:html={link.icon || '<path d="M13 2L4.09 12.69a.5.5 0 00.41.81H12l-1 10 8.91-10.69a.5.5 0 00-.41-.81H12l1-10z"/>'} />
+                        </svg>
                       </div>
-                      {link.description && (
-                        <div class="mt-0.5 text-xs text-gray-500 leading-snug">
-                          {link.description}
+                      <div class="min-w-0">
+                        <div class:list={["text-sm font-medium text-gray-900 transition-colors", brand.label]}>
+                          {link.label}
                         </div>
-                      )}
-                    </div>
-                  </a>
-                ))}
+                        {link.description && (
+                          <div class="mt-0.5 text-xs text-gray-500 leading-snug">
+                            {link.description}
+                          </div>
+                        )}
+                      </div>
+                    </a>
+                  );
+                })}
               </div>
             </div>
           </div>
