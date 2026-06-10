@@ -43,7 +43,7 @@ export const PRICING_HERO = {
 export const PRICING_PRO_INCLUSIONS = {
   eyebrow: "What's included in Pro",
   headline: "Two products, one plan.",
-  deck: "Switch SDKs without switching tools, billing, or governance. ZenML for reproducible ML. Kitaru for durable AI agents. Same control plane underneath.",
+  deck: "Switch SDKs without switching tools, billing, or governance. ZenML for reproducible ML. Kitaru for agents you can record, replay, and improve. Same control plane underneath.",
   cards: [
     {
       side: "zenml" as const,
@@ -82,7 +82,7 @@ export const PRICING_PRO_INCLUSIONS = {
       bullets: [
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z" /></svg>',
-          title: "Durable execution for long-running Python agents",
+          title: "Record, replay, and improve long-running Python agents",
           detail: "Hours-long workflows survive restarts and failures.",
         },
         {
@@ -344,7 +344,7 @@ export const PRICING_FAQ: FaqData = {
     {
       question: "ZenML and Kitaru — same plan?",
       answer:
-        "Yes. Pricing is unified across both workspaces. The ZenML workspace runs ML pipelines (typed step DAGs, training, batch inference). The Kitaru workspace runs durable AI agents (checkpoints, replay, wait/resume). You pick the workspace per project; Pro plans include both. Same $, same support tier, different SDKs and UI.",
+        "Yes. Pricing is unified across both workspaces. The ZenML workspace runs ML pipelines (typed step DAGs, training, batch inference). The Kitaru workspace runs production AI agents (recorded checkpoints, replay, wait/resume). You pick the workspace per project; Pro plans include both. Same $, same support tier, different SDKs and UI.",
     },
     {
       question: "Can I self-host Kitaru like ZenML?",

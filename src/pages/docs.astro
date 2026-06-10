@@ -5,7 +5,7 @@
  * Direction A — "Editorial Diptych": a two-product chooser that routes
  * visitors to the right documentation:
  *   - ZenML Docs  → https://docs.zenml.io
- *   - Kitaru Docs → https://kitaru.ai/docs
+ *   - Kitaru Docs → https://docs.zenml.io/kitaru
  *
  * Surface: "unified" (cross-product page — see CLAUDE.md analytics taxonomy).
  * Design ported from Paper ("Editorial Diptych"), refined + /i-audit passed.
@@ -18,7 +18,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 const SEO = {
   title: "ZenML Documentation Hub — ML Workflows & Agent Runtime",
   description:
-    "Documentation for ZenML and Kitaru. Build production ML workflows or durable agent runtimes — both under ZenML Pro.",
+    "Documentation for ZenML and Kitaru. Build production ML workflows or production agent runtimes — both under ZenML Pro.",
 };
 
 /** The two product cards.
@@ -67,8 +67,8 @@ const PRODUCTS = [
     label: "Agent workspace",
     title: "Kitaru docs",
     description:
-      "Build agents that resume where they left off — durable execution for long-running, autonomous workflows.",
-    href: "https://kitaru.ai/docs",
+      "Build agents you can record, replay, and improve — with durable execution underneath for long-running workflows.",
+    href: "https://docs.zenml.io/kitaru",
     cta: "Open Kitaru docs",
     analytics: "DocsHub:Kitaru",
     chipClass: "bg-[#fbeee3]",
@@ -81,16 +81,16 @@ const PRODUCTS = [
     links: [
       {
         label: "Quickstart",
-        href: "https://kitaru.ai/docs/getting-started/quickstart",
+        href: "https://docs.zenml.io/kitaru/getting-started/quickstart",
       },
-      { label: "Flows", href: "https://kitaru.ai/docs/concepts/flows" },
+      { label: "Flows", href: "https://docs.zenml.io/kitaru/concepts/flows" },
       {
         label: "Checkpoints",
-        href: "https://kitaru.ai/docs/concepts/checkpoints",
+        href: "https://docs.zenml.io/kitaru/concepts/checkpoints",
       },
       {
         label: "Replay & overrides",
-        href: "https://kitaru.ai/docs/guides/replay-and-overrides",
+        href: "https://docs.zenml.io/kitaru/guides/replay-and-overrides",
       },
     ],
   },

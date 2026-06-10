@@ -135,7 +135,7 @@ export function createNavDropdowns({
             },
             {
               label: "Kitaru docs",
-              href: "https://kitaru.ai/docs",
+              href: "https://docs.zenml.io/kitaru",
               description: "Agent runtime primitives and APIs",
               external: true,
               icon: ICON_BOOK,

@@ -7,9 +7,9 @@
 /*  Announcement Banner                                               */
 /* ------------------------------------------------------------------ */
 export const ANNOUNCEMENT_BANNER = {
-  text: "Build an agent factory with Kitaru — our durable runtime for production AI agents.",
+  text: "Build an agent factory with Kitaru — record, replay, and improve production AI agents.",
   linkText: "Read the docs →",
-  href: "https://kitaru.ai/docs",
+  href: "https://docs.zenml.io/kitaru",
 };
 
 /* ------------------------------------------------------------------ */

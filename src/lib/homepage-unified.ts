@@ -32,7 +32,7 @@ import type { Surface } from "./analytics";
 export const HOMEPAGE_UNIFIED_SEO = {
   title: "ZenML — The unified layer for ML and AI",
   description:
-    "Orchestrate training pipelines and durable AI agents on the tools, clouds, and environments you already use — without rewriting your stack.",
+    "Orchestrate training pipelines and production AI agents on the tools, clouds, and environments you already use — without rewriting your stack.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -54,7 +54,7 @@ export const HOMEPAGE_UNIFIED_HERO = {
    */
   subtitleLead: "Built for engineers, ready for enterprise.",
   subtitle:
-    "Orchestrate training pipelines and durable AI agents on the tools, clouds, and environments you already use — without rewriting your stack.",
+    "Orchestrate training pipelines and production AI agents on the tools, clouds, and environments you already use — without rewriting your stack.",
   primaryCta: { label: "Book a demo", href: "/book-your-demo" },
   secondaryCta: { label: "Read Docs", href: "/docs" },
 } as const;
@@ -68,9 +68,9 @@ export const HOMEPAGE_UNIFIED_HERO = {
 
 export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
   eyebrow: "NEW",
-  body: "Build an agent factory with Kitaru — our durable runtime for production AI agents.",
+  body: "Build an agent factory with Kitaru — record, replay, and improve production AI agents.",
   linkText: "Read the docs",
-  linkHref: "https://kitaru.ai/docs",
+  linkHref: "https://docs.zenml.io/kitaru",
 } as const;
 
 /* ---------------------------------------------------------------------- */
@@ -206,7 +206,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "frameworks-agents" as const,
           surfaceTitle: "Frameworks",
           surfaceSubtitle:
-            "Wrap any agent harness. Kitaru owns durable execution around it.",
+            "Wrap any agent harness. Kitaru records and replays the run around it.",
         },
       ],
     },
@@ -238,7 +238,7 @@ export const HOMEPAGE_UNIFIED_WORKSPACES = {
     {
       name: "Kitaru workspace",
       tagline: "AI agents",
-      body: "Durable execution for long-running Python agents. Checkpoints, replay, and wait/resume — without rewriting your control flow.",
+      body: "Record, replay, and improve long-running Python agents. Checkpoints, replay with overrides, and wait/resume — without rewriting your control flow.",
       bullets: [
         "Two decorators: @flow and @checkpoint",
         "Resume from any checkpoint after a crash or rate-limit",
