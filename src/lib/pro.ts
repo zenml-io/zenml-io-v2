@@ -165,8 +165,8 @@ export const PRO_FEATURES = [
   },
   {
     eyebrow: "Optimization",
-    title: "Streamlined Pipeline Management",
-    body: "Enhanced pipeline controls including the ability to create run templates and trigger from the dashboard.",
+    title: "Triggers and run management",
+    body: "Run templates, schedules, and API or webhook triggers — launch and control ML pipelines and agent flows straight from the dashboard.",
     learnMoreHref: "/features/streamlined-pipeline-management",
     image: {
       url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/70ab3904/653249d5a55b6cc59610a9f2_20_CI_CD_CT_Showcase_95f04728ec.webp`,
