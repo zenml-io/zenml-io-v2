@@ -46,6 +46,8 @@ llmopsTags:
   - "openai"
   - "anthropic"
   - "google-gcp"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "tech"
 company: "OpenAI"
 summary: "This case study explores OpenAI's approach to post-training and deploying large language models in production environments, featuring insights from a post-training researcher working on reasoning models. The discussion covers the operational complexities of reinforcement learning from human feedback at scale, the evolution from non-thinking to thinking models, and production challenges including model routing, context window optimization, token efficiency improvements, and interruptability features. Key developments include the shopping model release, improvements from GPT-4.1 to GPT-5.1, and the operational realities of managing complex RL training runs with multiple grading setups and infrastructure components that require constant monitoring and debugging."

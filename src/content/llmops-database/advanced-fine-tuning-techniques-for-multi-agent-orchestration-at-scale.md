@@ -57,6 +57,8 @@ llmopsTags:
   - "meta"
   - "nvidia"
   - "hugging-face"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "tech"
 company: "Amazon"
 summary: "Amazon teams faced challenges in deploying high-stakes LLM applications across healthcare, engineering, and e-commerce domains where basic prompt engineering and RAG approaches proved insufficient. Through systematic application of advanced fine-tuning techniques including Supervised Fine-Tuning (SFT), Proximal Policy Optimization (PPO), Direct Preference Optimization (DPO), and cutting-edge reasoning optimizations like Group-based Reinforcement Learning from Policy Optimization (GRPO) and Direct Advantage Policy Optimization (DAPO), three Amazon business units achieved production-grade results: Amazon Pharmacy reduced dangerous medication errors by 33%, Amazon Global Engineering Services achieved 80% human effort reduction in inspection reviews, and Amazon A+ Content improved quality assessment accuracy from 77% to 96%. These outcomes demonstrate that approximately one in four high-stakes enterprise applications require advanced fine-tuning beyond standard techniques to achieve necessary performance levels in production environments."

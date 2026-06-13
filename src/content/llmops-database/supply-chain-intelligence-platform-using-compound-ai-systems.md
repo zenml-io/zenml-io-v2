@@ -28,6 +28,8 @@ llmopsTags:
   - "microsoft-azure"
   - "amazon-aws"
   - "prompt-engineering"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "tech"
 company: "Altana"
 summary: "Altana, a global supply chain intelligence company, faced challenges in efficiently deploying and managing multiple GenAI models for diverse customer use cases. By implementing Databricks Mosaic AI platform, they transformed their ML lifecycle management, combining custom deep learning models with fine-tuned LLMs and RAG workflows. This led to 20x faster model deployment times and 20-50% performance improvements, while maintaining data privacy and governance requirements across their global operations."

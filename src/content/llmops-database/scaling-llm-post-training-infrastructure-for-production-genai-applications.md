@@ -24,6 +24,7 @@ llmopsTags:
   - "amazon-aws"
   - "meta"
   - "nvidia"
+  - "reinforcement-learning"
 industryTags: "media-entertainment"
 company: "Netflix"
 summary: "Netflix built an internal Post-Training Framework to enable researchers and model developers to adapt foundation LLMs to production requirements for recommendation, personalization, and search at scale. The framework addresses the engineering complexity of distributed training, data processing, and workflow orchestration by providing reusable abstractions for Data, Model, Compute, and Workflow dimensions. By standardizing post-training pipelines—from supervised fine-tuning (SFT) to on-policy reinforcement learning (RL)—the platform enables teams to iterate quickly on model innovation while the framework handles distributed systems complexity, fault tolerance, and performance optimization. The result is a unified system that supports diverse training paradigms across Netflix's production GenAI use cases."

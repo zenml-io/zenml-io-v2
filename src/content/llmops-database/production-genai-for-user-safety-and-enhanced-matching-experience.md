@@ -43,6 +43,8 @@ llmopsTags:
   - "cache"
   - "meta"
   - "nvidia"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "tech"
 company: "Tinder"
 summary: "Tinder implemented two production GenAI applications to enhance user safety and experience: a username detection system using fine-tuned Mistral 7B to identify social media handles in user bios with near-perfect recall, and a personalized match explanation feature using fine-tuned Llama 3.1 8B to help users understand why recommended profiles are relevant. Both systems required sophisticated LLMOps infrastructure including multi-model serving with LoRA adapters, GPU optimization, extensive monitoring, and iterative fine-tuning processes to achieve production-ready performance at scale."

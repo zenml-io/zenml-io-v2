@@ -37,6 +37,7 @@ llmopsTags:
   - "amazon-aws"
   - "meta"
   - "nvidia"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Articul8"
 summary: "Articul8, a generative AI company focused on domain-specific models (DSMs), faced challenges in training and deploying specialized LLMs across semiconductor, energy, and supply chain industries due to infrastructure complexity and computational requirements. They implemented Amazon SageMaker HyperPod to manage distributed training clusters with automated fault tolerance, achieving over 95% cluster utilization and 35% productivity improvements. The solution enabled them to reduce AI deployment time by 4x and total cost of ownership by 5x while successfully developing high-performing DSMs that outperform general-purpose LLMs by 2-3x in domain-specific tasks, with their A8-Semicon model achieving twice the accuracy of GPT-4o and Claude in Verilog code generation at 50-100x smaller model sizes."

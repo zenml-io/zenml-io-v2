@@ -51,6 +51,7 @@ llmopsTags:
   - "nvidia"
   - "hugging-face"
   - "harness-engineering"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Kimi / Cursor / Chroma"
 summary: "This case study examines three production LLM systems—Kimi K2.5, Cursor Composer 2, and Chroma Context-1—that use reinforcement learning to train agentic models for real-world tasks. All three teams face similar challenges: managing context windows during long agentic sessions, bridging the gap between training environments and production deployments, and designing reward functions that avoid degenerate behaviors. Kimi K2.5 introduces Agent Swarm for parallel task decomposition, achieving 78.4% accuracy on BrowseComp with 4.5× latency reduction. Cursor Composer 2 implements real-time RL from production traffic with a five-hour deployment cycle, training on tasks with median 181-line changes. Chroma Context-1 develops self-editing search capabilities in a 20B parameter model that matches frontier-scale performance at 10× speed. Common solutions include training inside production harnesses, using outcome-based rewards augmented with generative reward models, running asynchronous large-scale rollouts, and building domain-specific evaluation benchmarks."

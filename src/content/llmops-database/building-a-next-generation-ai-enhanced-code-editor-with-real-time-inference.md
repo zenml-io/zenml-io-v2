@@ -22,6 +22,8 @@ llmopsTags:
   - "cache"
   - "microsoft-azure"
   - "openai"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "tech"
 company: "Cursor"
 summary: "Cursor built a modern AI-enhanced code editor by forking VS Code and incorporating advanced LLM capabilities. Their approach focused on creating a more responsive and predictive coding environment that goes beyond simple autocompletion, using techniques like mixture of experts (MoE) models, speculative decoding, and sophisticated caching strategies. The editor aims to eliminate low-entropy coding actions and predict developers' next actions, while maintaining high performance and low latency."

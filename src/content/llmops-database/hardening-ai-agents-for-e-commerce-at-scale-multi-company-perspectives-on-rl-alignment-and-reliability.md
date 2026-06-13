@@ -47,6 +47,8 @@ llmopsTags:
   - "anthropic"
   - "hugging-face"
   - "meta"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "e-commerce"
 company: "Prosus / Microsoft / Inworld AI / IUD"
 summary: "This panel discussion features experts from Microsoft, Google Cloud, InWorld AI, and Brazilian e-commerce company IUD (Prosus partner) discussing the challenges of deploying reliable AI agents for e-commerce at scale. The panelists share production experiences ranging from Google Cloud's support ticket routing agent that improved policy adherence from 45% to 90% using DPO adapters, to Microsoft's shift away from prompt engineering toward post-training methods for all Copilot models, to InWorld AI's voice agent architecture optimization through cascading models, and IUD's struggles with personalization balance in their multi-channel shopping agent. Key challenges identified include model localization for UI elements, cost efficiency, real-time voice adaptation, and finding the right balance between automation and user control in commerce experiences."

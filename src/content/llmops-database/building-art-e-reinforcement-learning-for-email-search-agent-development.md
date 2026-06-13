@@ -28,6 +28,7 @@ llmopsTags:
   - "open-source"
   - "wandb"
   - "openai"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "OpenPipe"
 summary: "OpenPipe developed ART·E, an email research agent that outperforms OpenAI's o3 model on email search tasks. The project involved creating a synthetic dataset from the Enron email corpus, implementing a reinforcement learning training pipeline using Group Relative Policy Optimization (GRPO), and developing a multi-objective reward function. The resulting model achieved higher accuracy while being faster and cheaper than o3, taking fewer turns to answer questions correctly and hallucinating less frequently, all while being trained on a single H100 GPU for under $80."

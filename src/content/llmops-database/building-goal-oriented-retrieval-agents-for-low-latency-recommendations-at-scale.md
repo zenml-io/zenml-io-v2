@@ -28,6 +28,7 @@ llmopsTags:
   - "scalability"
   - "scaling"
   - "security"
+  - "reinforcement-learning"
 industryTags: "e-commerce"
 company: "Faber Labs"
 summary: "Faber Labs developed Gora (Goal-Oriented Retrieval Agents), a system that transforms subjective relevance ranking using cutting-edge technologies. The system optimizes for specific KPIs like conversion rates and average order value in e-commerce, or minimizing surgical engagements in healthcare. They achieved this through a combination of real-time user feedback processing, unified goal optimization, and high-performance infrastructure built with Rust, resulting in consistent 200%+ improvements in key metrics while maintaining sub-second latency."

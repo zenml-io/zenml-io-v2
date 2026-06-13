@@ -28,6 +28,8 @@ llmopsTags:
   - "monitoring"
   - "scaling"
   - "meta"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "media-entertainment"
 company: "Spotify"
 summary: "Spotify implemented LLMs to enhance their recommendation system by providing contextualized explanations for music recommendations and powering their AI DJ feature. They adapted Meta's Llama models through careful domain adaptation, human-in-the-loop training, and multi-task fine-tuning. The implementation resulted in up to 4x higher user engagement for recommendations with explanations, and a 14% improvement in Spotify-specific tasks compared to baseline Llama performance. The system was deployed at scale using vLLM for efficient serving and inference."

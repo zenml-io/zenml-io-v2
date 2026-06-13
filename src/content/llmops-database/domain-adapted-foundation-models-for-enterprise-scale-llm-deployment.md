@@ -30,6 +30,8 @@ llmopsTags:
   - "microsoft-azure"
   - "meta"
   - "openai"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "tech"
 company: "LinkedIn"
 summary: "LinkedIn developed a family of domain-adapted foundation models (EON models) to enhance their GenAI capabilities across their platform serving 1B+ members. By adapting open-source models like Llama through multi-task instruction tuning and safety alignment, they created cost-effective models that maintain high performance while being 75x more cost-efficient than GPT-4. The EON-8B model demonstrated significant improvements in production applications, including a 4% increase in candidate-job-requirements matching accuracy compared to GPT-4o mini in their Hiring Assistant product."

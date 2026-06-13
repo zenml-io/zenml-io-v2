@@ -31,6 +31,7 @@ llmopsTags:
   - "scaling"
   - "devops"
   - "nvidia"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Cursor"
 summary: "Cursor's AI research team built Composer, an agent-based LLM designed for coding that combines frontier-level intelligence with four times faster token generation than comparable models. The problem they addressed was creating an agentic coding assistant that feels fast enough for interactive use while maintaining high intelligence for realistic software engineering tasks. Their solution involved training a large mixture-of-experts model using reinforcement learning (RL) at scale, developing custom low-precision training kernels, and building infrastructure that integrates their production environment directly into the training loop. The result is a model that performs nearly as well as the best frontier models on their internal benchmarks while delivering edits and tool calls in seconds rather than minutes, fundamentally changing how developers interact with AI coding assistants."

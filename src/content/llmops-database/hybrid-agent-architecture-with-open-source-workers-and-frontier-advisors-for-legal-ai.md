@@ -16,6 +16,7 @@ llmopsTags:
   - "anthropic"
   - "openai"
   - "hugging-face"
+  - "reinforcement-learning"
 industryTags: "legal"
 company: "Harvey"
 summary: "Fireworks and Harvey partnered to explore cost-effective approaches to achieving frontier-level performance on legal AI tasks using the Legal Agent Benchmark (LAB). The team investigated two primary strategies: a hybrid agent harness combining an open-source GLM 5.1 worker model with Claude Opus 4.7 as a callable advisor tool, and post-training techniques (supervised and reinforcement fine-tuning) on Kimi K2.6. The hybrid harness approach achieved 18/100 tasks with full rubric pass at $368 total cost, outperforming standalone Claude Opus 4.7 which scored 14/100 at $954 cost. Post-training lifted Kimi K2.6's mean score from 0.863 to 0.876 with SFT and 0.886 with RFT, while maintaining inference costs around $84. These results demonstrate that strategic orchestration of open-source models with selective frontier model consultation, combined with domain-specific fine-tuning, can match or exceed frontier performance while reducing costs by 60% or more."

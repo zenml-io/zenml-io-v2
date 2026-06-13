@@ -39,6 +39,7 @@ llmopsTags:
   - "google-gcp"
   - "amazon-aws"
   - "openai"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Meta"
 summary: "Meta shares their journey in scaling AI infrastructure to support massive LLM training and inference operations. The company faced challenges in scaling from 256 GPUs to over 100,000 GPUs in just two years, with plans to reach over a million GPUs by year-end. They developed solutions for distributed training, efficient inference, and infrastructure optimization, including new approaches to data center design, power management, and GPU resource utilization. Key innovations include the development of a virtual machine service for secure code execution, improvements in distributed inference, and novel approaches to reducing model hallucinations through RAG."

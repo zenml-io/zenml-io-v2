@@ -75,6 +75,8 @@ llmopsTags:
   - "meta"
   - "nvidia"
   - "anthropic"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "tech"
 company: "Cursor"
 summary: "This case study examines Cursor's implementation of reinforcement learning (RL) for training coding models and agents in production environments. The team discusses the unique challenges of applying RL to code generation compared to other domains like mathematics, including handling larger action spaces, multi-step tool calling processes, and developing reward signals that capture real-world usage patterns. They explore various technical approaches including test-based rewards, process reward models, and infrastructure optimizations for handling long context windows and high-throughput inference during RL training, while working toward more human-centric evaluation metrics beyond traditional test coverage."

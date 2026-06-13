@@ -34,6 +34,8 @@ llmopsTags:
   - "meta"
   - "openai"
   - "hugging-face"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "finance"
 company: "Capital One"
 summary: "Capital One developed enhanced input guardrails to protect LLM-powered conversational assistants from adversarial attacks and malicious inputs. The company used chain-of-thought prompting combined with supervised fine-tuning (SFT) and alignment techniques like Direct Preference Optimization (DPO) and Kahneman-Tversky Optimization (KTO) to improve the accuracy of LLM-as-a-Judge moderation systems. Testing on four open-source models (Mistral 7B, Mixtral 8x7B, Llama2 13B, and Llama3 8B) showed significant improvements in F1 scores and attack detection rates of over 50%, while maintaining low false positive rates, demonstrating that effective guardrails can be achieved with small training datasets and minimal computational resources."

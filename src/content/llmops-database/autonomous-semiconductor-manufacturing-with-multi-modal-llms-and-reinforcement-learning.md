@@ -27,6 +27,7 @@ llmopsTags:
   - "databases"
   - "microsoft-azure"
   - "nvidia"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Samsung"
 summary: "Samsung is implementing a comprehensive LLMOps system for autonomous semiconductor fabrication, using multi-modal LLMs and reinforcement learning to transform manufacturing processes. The system combines sensor data analysis, knowledge graphs, and LLMs to automate equipment control, defect detection, and process optimization. Early results show significant improvements in areas like RF matching efficiency and anomaly detection, though challenges remain in real-time processing and time series prediction accuracy."

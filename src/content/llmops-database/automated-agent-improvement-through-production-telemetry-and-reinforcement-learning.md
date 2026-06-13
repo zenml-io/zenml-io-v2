@@ -20,6 +20,7 @@ llmopsTags:
   - "continuous-deployment"
   - "open-source"
   - "openai"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Quotient AI"
 summary: "Quotient AI addresses the challenge of manually improving AI agents in production by building an infrastructure platform that automatically transforms real-world telemetry data into reinforcement learning signals. The platform ingests agent traces with minimal code integration, analyzes production behavior using specialized models, and generates custom fine-tuned models that perform better at specific tasks than the original base models. The solution reduces the improvement cycle from weeks or months to approximately one hour (with plans to optimize to 20 minutes), enabling developers to deploy continuously improving agents without the manual testing and analysis overhead typically required in traditional LLMOps workflows."

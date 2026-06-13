@@ -28,6 +28,7 @@ llmopsTags:
   - "continuous-deployment"
   - "fastapi"
   - "documentation"
+  - "reinforcement-learning"
 industryTags: "e-commerce"
 company: "Doordash"
 summary: "DoorDash faced challenges with menu accuracy during merchant onboarding, where their existing AI system struggled with diverse and messy real-world menu formats. Working with Applied Compute, they developed an automated grading system calibrated to internal expert standards, then used reinforcement learning to train a menu error correction model against this grader as a reward function. The solution achieved a 30% relative reduction in low-quality menus and was rolled out to all USA menu traffic, demonstrating how institutional knowledge can be encoded into automated training signals for production LLM systems."

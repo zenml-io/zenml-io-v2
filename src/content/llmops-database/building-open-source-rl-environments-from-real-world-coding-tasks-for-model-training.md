@@ -25,6 +25,7 @@ llmopsTags:
   - "anthropic"
   - "openai"
   - "google-gcp"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Cline"
 summary: "Cline's head of AI presents their experience operating a model-agnostic AI coding agent platform, arguing that the industry has over-invested in \"clever scaffolding\" like RAG and tool-calling frameworks when frontier models can succeed with simpler approaches. The real bottleneck to progress, they contend, isn't prompt engineering or agent architecture but rather the quality of benchmarks and RL environments used to train models. Cline developed an automated \"RL environments factory\" system that transforms real-world coding tasks captured from actual user interactions into standardized, containerized training environments. They announce Cline Bench, an open-source benchmark derived from genuine software development work, inviting the community to contribute by simply working on open-source projects with Cline and opting into the initiative, thereby creating a shared substrate for improving frontier models."

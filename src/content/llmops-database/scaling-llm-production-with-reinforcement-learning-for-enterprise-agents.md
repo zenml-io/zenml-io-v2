@@ -21,6 +21,8 @@ llmopsTags:
   - "openai"
   - "google-gcp"
   - "meta"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "tech"
 company: "Adaptive ML"
 summary: "Adaptive ML addresses the challenge that 95% of GenAI pilots fail to reach production by advocating for reinforcement learning as the core post-training technique. The company argues that MVP solutions built on proprietary models or instruction fine-tuning lack systematic improvement mechanisms, whereas RL enables continuous integration of feedback from production environments. Their RLOps platform serves enterprises like AT&T, Manulife, and CCS Medical Supply, enabling them to train smaller, faster, and more cost-effective specialized LLMs. The approach particularly excels for agentic use cases, where RL's ability to train models in simulated environments with business-specific rewards unlocks production-grade performance while reducing inference costs by millions of dollars through model compression."

@@ -24,6 +24,7 @@ llmopsTags:
   - "reliability"
   - "security"
   - "amazon-aws"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Amazon"
 summary: "Amazon developed Autonomous Threat Analysis (ATA), a production security system that uses agentic AI and adversarial multiagent reinforcement learning to enhance cybersecurity defenses at scale. The system deploys red-team and blue-team AI agents in isolated test environments to simulate adversary techniques and automatically generate improved detection rules. ATA reduces the security testing cycle from weeks to approximately four hours (96% time reduction), successfully generates threat variations (such as 37 Python reverse shell variants), and achieves perfect precision and recall (1.00/1.00) for improved detection rules while maintaining human oversight for production deployment."

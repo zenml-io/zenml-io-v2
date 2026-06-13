@@ -33,6 +33,7 @@ llmopsTags:
   - "microsoft-azure"
   - "amazon-aws"
   - "google-gcp"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "OpenAI"
 summary: "OpenAI's journey in developing agentic products showcases the evolution from manually designed workflows with LLMs to end-to-end trained agents. The company has developed three main agentic products - Deep Research, Operator, and Codeex CLI - each addressing different use cases from web research to code generation. These agents demonstrate how end-to-end training with reinforcement learning enables better error recovery and more natural interaction compared to traditional manually designed workflows."

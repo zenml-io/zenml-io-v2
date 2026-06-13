@@ -16,6 +16,7 @@ llmopsTags:
   - "open-source"
   - "hugging-face"
   - "meta"
+  - "reinforcement-learning"
 industryTags: "finance"
 company: "Snorkel"
 summary: "Snorkel, in partnership with UC Berkeley's RLLM team, demonstrated that a 4 billion parameter model fine-tuned with reinforcement learning could outperform a 235 billion parameter reasoning model on financial analysis tool use tasks. The problem being addressed was that enterprises often default to using larger, more expensive models to improve performance in production settings, particularly for financial analysis tasks requiring tool use. By generating a high-quality expert-curated dataset and applying GRPO reinforcement learning for under $500 in a 21-hour training run, they achieved a doubling of pass-at-one performance. The key insight was that the failure mode wasn't reasoning capability but rather tool discipline—teaching the smaller model to properly inspect available tools, query schemas, and self-correct errors led to improvements that generalized across both single-table and multi-table query tasks."

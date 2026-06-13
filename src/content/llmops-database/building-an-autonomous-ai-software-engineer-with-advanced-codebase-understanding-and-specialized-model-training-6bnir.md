@@ -29,6 +29,7 @@ llmopsTags:
   - "continuous-integration"
   - "continuous-deployment"
   - "nvidia"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Devin"
 summary: "Cognition, the company behind Devon (an AI software engineer), addresses the challenge of enabling AI agents to work effectively within large, existing codebases where traditional LLMs struggle with limited context windows and complex dependencies. Their solution involves creating DeepWiki, a continuously-updated interactive knowledge graph and wiki system that indexes codebases using both code and metadata (pull requests, git history, team discussions), combined with Devon Search for deep codebase research, and custom post-training using multi-turn reinforcement learning to optimize models for specific narrow domains. Results include Devon being used by teams worldwide to autonomously go from ticket to pull request, the release of Kevin 32B (an open-source model achieving 91% correctness on CUDA kernel generation, outperforming frontier models like GPT-4), and thousands of open-source projects incorporating DeepWiki into their official documentation."

@@ -40,6 +40,8 @@ llmopsTags:
   - "openai"
   - "google-gcp"
   - "amazon-aws"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "tech"
 company: "Anthropic"
 summary: "This case study examines Anthropic's journey in scaling and operating large language models, focusing on their transition from GPT-3 era training to current state-of-the-art systems like Claude. The company successfully tackled challenges in distributed computing, model safety, and operational reliability while growing 10x in revenue. Key innovations include their approach to constitutional AI, advanced evaluation frameworks, and sophisticated MLOps practices that enable running massive training operations with hundreds of team members."

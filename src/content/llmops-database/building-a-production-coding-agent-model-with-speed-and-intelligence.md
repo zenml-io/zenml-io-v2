@@ -37,6 +37,7 @@ llmopsTags:
   - "openai"
   - "anthropic"
   - "nvidia"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Cursor"
 summary: "Cursor developed Composer, a specialized coding agent model designed to balance speed and intelligence for real-world software engineering tasks. The challenge was creating a model that could perform at near-frontier levels while being four times more efficient at token generation than comparable models, moving away from the \"airplane Wi-Fi\" problem where agents were either too slow for synchronous work or required long async waits. The solution involved extensive reinforcement learning (RL) training in an environment that closely mimicked production, using custom kernels for low-precision training, parallel tool calling capabilities, semantic search with custom embeddings, and a fleet of cloud VMs to simulate the real Cursor IDE environment. The result was a model that performs close to frontier models like GPT-4.5 and Claude Sonnet 3.5 on coding benchmarks while maintaining significantly faster token generation, enabling developers to stay in flow state rather than context-switching during long agent runs."

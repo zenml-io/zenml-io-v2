@@ -20,6 +20,7 @@ llmopsTags:
   - "pytorch"
   - "tensorflow"
   - "monitoring"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Grammarly"
 summary: "Grammarly, a leading AI-powered writing assistant, tackled the challenge of improving grammatical error correction (GEC) by moving beyond traditional neural machine translation approaches that optimize n-gram metrics but sometimes produce semantically inconsistent corrections. The team developed a novel generative adversarial network (GAN) framework where a sequence-to-sequence generator produces grammatical corrections, and a sentence-pair discriminator evaluates whether the generated correction is the most appropriate rewrite for the given input sentence. Through adversarial training with policy gradients, the discriminator provides task-specific rewards to the generator, enabling better distributional alignment between generated and human corrections. Experiments showed that adversarially trained models (both RNN-based and transformer-based) consistently outperformed their standard counterparts on GEC benchmarks, striking a better balance between grammatical correctness, semantic preservation, and natural phrasing while serving millions of users in production."

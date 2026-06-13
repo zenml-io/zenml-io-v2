@@ -21,6 +21,7 @@ llmopsTags:
   - "evals"
   - "pytorch"
   - "monitoring"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Windsurf"
 summary: "Windsurf developed Tab v2, an AI-powered code autocomplete system that addresses the challenge of balancing prediction frequency, accuracy, and code length in developer tooling. The team reimagined their LLM-based autocomplete by focusing on total keystrokes saved rather than just acceptance rate, implementing extensive context engineering to reduce prompt length by 76%, and using reinforcement learning to train models with different \"aggression\" levels. The result was a 54% average increase in characters per prediction and 25-75% more accepted code, with user-selectable aggression parameters allowing developers to customize behavior based on personal preferences."

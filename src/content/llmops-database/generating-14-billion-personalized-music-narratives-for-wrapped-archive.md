@@ -26,6 +26,8 @@ llmopsTags:
   - "reliability"
   - "scalability"
   - "anthropic"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "media-entertainment"
 company: "Spotify"
 summary: "Spotify's 2025 Wrapped Archive feature needed to generate personalized, creative narratives about remarkable listening moments for hundreds of millions of users. The engineering team built a comprehensive LLMOps pipeline that used heuristics to identify up to five \"remarkable days\" per user from their listening history, then generated approximately 1.4 billion LLM-powered reports. The solution combined prompt engineering, model distillation (fine-tuning a smaller model from a frontier model using curated outputs), Direct Preference Optimization based on A/B testing, distributed data pipelines, careful database schema design for concurrent writes, pre-scaling infrastructure for launch, and automated evaluation frameworks using LLM-as-a-judge on 165,000 sample reports. The system successfully delivered personalized narratives to 350 million users at a single global launch moment."

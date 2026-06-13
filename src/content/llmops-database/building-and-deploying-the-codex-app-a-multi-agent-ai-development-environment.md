@@ -43,6 +43,7 @@ llmopsTags:
   - "langchain"
   - "openai"
   - "anthropic"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "OpenAI"
 summary: "OpenAI's Codex team developed a dedicated GUI application for AI-powered coding that serves as a command center for multi-agent systems, moving beyond traditional IDE and terminal interfaces. The team addressed the challenge of making AI coding agents accessible to broader audiences while maintaining professional-grade capabilities for software developers. By combining the GPT-5.3 Codex model with agent skills, automations, and a purpose-built interface, they created a production system that enables delegation-based development workflows where users supervise AI agents performing complex coding tasks. The result was over one million downloads in the first week, widespread internal adoption at OpenAI including by research teams, and a strategic shift positioning AI coding tools for mainstream use, culminating in a Super Bowl advertisement."

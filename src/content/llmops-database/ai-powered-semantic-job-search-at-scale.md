@@ -55,6 +55,7 @@ llmopsTags:
   - "chromadb"
   - "pinecone"
   - "qdrant"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Linkedin"
 summary: "LinkedIn transformed their traditional keyword-based job search into an AI-powered semantic search system to serve 1.2 billion members. The company addressed limitations of exact keyword matching by implementing a multi-stage LLM architecture combining retrieval and ranking models, supported by synthetic data generation, GPU-optimized embedding-based retrieval, and cross-encoder ranking models. The solution enables natural language job queries like \"Find software engineer jobs that are mostly remote with above median pay\" while maintaining low latency and high relevance at massive scale through techniques like model distillation, KV caching, and exhaustive GPU-based nearest neighbor search."

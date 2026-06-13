@@ -26,6 +26,8 @@ llmopsTags:
   - "microsoft-azure"
   - "meta"
   - "openai"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "e-commerce"
 company: "eBay"
 summary: "eBay implemented a three-track approach to enhance developer productivity using AI: deploying GitHub Copilot enterprise-wide, creating a custom-trained LLM called eBayCoder based on Code Llama, and developing an internal RAG-based knowledge base system. The Copilot implementation showed a 17% decrease in PR creation to merge time and 12% decrease in Lead Time for Change, while maintaining code quality. Their custom LLM helped with codebase-specific tasks and their internal knowledge base system leveraged RAG to make institutional knowledge more accessible."

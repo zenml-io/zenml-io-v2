@@ -21,6 +21,7 @@ llmopsTags:
   - "continuous-deployment"
   - "monitoring"
   - "scalability"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Cursor"
 summary: "Cursor developed a production LLM system called Cursor Tab that predicts developer actions and suggests code completions across codebases, handling over 400 million requests per day. To address the challenge of noisy suggestions that disrupt developer flow, they implemented an online reinforcement learning approach using policy gradient methods that directly optimizes the model to show suggestions only when acceptance probability exceeds a target threshold. This approach required building infrastructure for rapid model deployment and on-policy data collection with a 1.5-2 hour turnaround cycle. The resulting model achieved a 21% reduction in suggestions shown while simultaneously increasing the accept rate by 28%, demonstrating effective LLMOps practices for continuously improving production models using real-time user feedback."

@@ -32,6 +32,8 @@ llmopsTags:
   - "hugging-face"
   - "google-gcp"
   - "meta"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "tech"
 company: "Liquid AI"
 summary: "Liquid AI addresses the challenge of deploying language models on edge devices with limited memory and computational resources, such as smartphones and in-car systems. The company developed the LFM (Liquid Foundation Model) series, ranging from 350M to 24B parameters, optimized specifically for on-device deployment through novel architecture choices, extensive pre-training on 28 trillion tokens, and specialized post-training techniques. Key innovations include using gated short convolution blocks for reduced latency, focusing on task-specific capabilities like tool use and data extraction rather than general-purpose chat, and developing solutions to the \"doom looping\" problem through preference alignment and reinforcement learning. The resulting models demonstrate significantly better performance than scaled-down versions of larger models, with faster throughput, lower memory usage, and improved reliability for edge deployment scenarios."

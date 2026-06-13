@@ -47,6 +47,8 @@ llmopsTags:
   - "meta"
   - "openai"
   - "anthropic"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "tech"
 company: "Cosine"
 summary: "Cosine, a company building enterprise coding agents, faced the challenge of deploying high-performance AI systems in highly constrained environments including on-premise and air-gapped deployments where large frontier models were not viable. They developed a multi-agent architecture using specialized orchestrator and worker models, leveraging model distillation, supervised fine-tuning, preference optimization, and reinforcement fine-tuning to create smaller models that could match or exceed the performance of much larger models. The result was a 31% performance increase on the SWE-bench Freelancer benchmark, 3X latency improvement, 60% reduction in GPU footprint, and 20% fewer errors in generated code, all while operating on as few as 4 H100 GPUs and maintaining full deployment flexibility across cloud, VPC, and on-premise environments."

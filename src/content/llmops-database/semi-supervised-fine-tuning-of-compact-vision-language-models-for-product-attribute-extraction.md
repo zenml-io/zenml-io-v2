@@ -23,6 +23,7 @@ llmopsTags:
   - "open-source"
   - "google-gcp"
   - "openai"
+  - "reinforcement-learning"
 industryTags: "e-commerce"
 company: "Flipkart"
 summary: "Flipkart faced the challenge of accurately extracting product attributes (like color, pattern, and material) from millions of product listings at scale. Manual labeling was expensive and error-prone, while using large Vision Language Model APIs was cost-prohibitive. The company developed a semi-supervised approach using compact VLMs (2-3 billion parameters) that combines Parameter-Efficient Fine-Tuning (PEFT) with Direct Preference Optimization (DPO) to leverage unlabeled data. The method starts with a small labeled dataset, generates multiple reasoning chains for unlabeled products using self-consistency, and then fine-tunes the model using DPO to favor preferred outputs. Results showed accuracy improvements from 75.1% to 85.7% on the Qwen2.5-VL-3B-Instruct model across twelve e-commerce verticals, demonstrating that compact models can effectively learn from unlabeled data to achieve production-grade performance."

@@ -36,6 +36,8 @@ llmopsTags:
   - "guardrails"
   - "reliability"
   - "openai"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "tech"
 company: "OpenAI"
 summary: "OpenAI's Bill and Brian discuss their work on GPT-5 Codex and Codex Max, AI coding agents designed for production use. The team focused on training models with specific \"personalities\" optimized for pair programming, including traits like communication, planning, and self-checking behaviors. They trained separate model lines: Codex models optimized specifically for their agent harness with strong opinions about tool use (particularly terminal tools), and mainline GPT-5 models that are more general and steerable across different tooling environments. The result is a coding agent that OpenAI employees trust for production work, with approximately 50% of OpenAI staff using it daily, and some engineers like Brian claiming they haven't written code by hand in months. The team emphasizes the shift toward shipping complete agents rather than just models, with abstractions moving upward to enable developers to build on top of pre-configured agentic systems."

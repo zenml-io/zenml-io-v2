@@ -32,6 +32,8 @@ llmopsTags:
   - "security"
   - "semantic-search"
   - "vector-search"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "e-commerce"
 company: "ebay"
 summary: "eBay implemented a three-track approach to enhance developer productivity using LLMs: utilizing GitHub Copilot as a commercial offering, developing eBayCoder (a fine-tuned version of Code Llama 13B), and creating an internal GPT-powered knowledge base using RAG. The implementation showed significant improvements, including a 27% code acceptance rate with Copilot, enhanced software upkeep capabilities with eBayCoder, and increased efficiency in accessing internal documentation through their RAG system."

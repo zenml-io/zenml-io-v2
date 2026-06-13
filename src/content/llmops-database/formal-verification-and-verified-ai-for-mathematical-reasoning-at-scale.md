@@ -21,6 +21,7 @@ llmopsTags:
   - "meta"
   - "google-gcp"
   - "microsoft-azure"
+  - "reinforcement-learning"
 industryTags: "research-academia"
 company: "Axiom Math"
 summary: "Axiom Math is building AI systems for superhuman mathematical reasoning by combining formal verification with large language models. Their approach uses Lean, a formal proof verification language, to ground AI-generated mathematical proofs and code, achieving verified generation that offers better sample efficiency than informal approaches. The company achieved a perfect score on the Putnam exam in December 2025, scoring 120/120 points compared to the best human's 110 and the best informal LLM's 103. Their system, Axiom Prover, uses post-trained foundation models with reinforcement learning on Lean data, enabling recursive decomposition of proof goals and learning to backtrack. Beyond mathematics, they view formal verification as foundational infrastructure for verified reasoning across software and hardware domains, positioning it as critical for AI collaboration and super intelligence rather than merely a compliance mechanism."

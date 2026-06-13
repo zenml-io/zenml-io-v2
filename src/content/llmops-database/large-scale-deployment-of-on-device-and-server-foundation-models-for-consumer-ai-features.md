@@ -50,6 +50,8 @@ llmopsTags:
   - "meta"
   - "google-gcp"
   - "hugging-face"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "tech"
 company: "Apple"
 summary: "Apple developed and deployed a comprehensive foundation model infrastructure consisting of a 3-billion parameter on-device model and a mixture-of-experts server model to power Apple Intelligence features across iOS, iPadOS, and macOS. The implementation addresses the challenge of delivering generative AI capabilities at consumer scale while maintaining privacy, efficiency, and quality across 15 languages. The solution involved novel architectural innovations including shared KV caches, parallel track mixture-of-experts design, and extensive optimization techniques including quantization and compression, resulting in production deployment across millions of devices with measurable performance improvements in text and vision tasks."

@@ -41,6 +41,8 @@ llmopsTags:
   - "scalability"
   - "anthropic"
   - "openai"
+  - "reinforcement-learning"
+  - "rlhf"
 industryTags: "e-commerce"
 company: "Shopify"
 summary: "Shopify developed Sidekick, an AI-powered assistant that helps merchants manage their stores through natural language interactions, evolving from a simple tool-calling system into a sophisticated agentic platform. The team faced scaling challenges with tool complexity and system maintainability, which they addressed through Just-in-Time instructions, robust LLM evaluation systems using Ground Truth Sets, and Group Relative Policy Optimization (GRPO) training. Their approach resulted in improved system performance and maintainability, though they encountered and had to address reward hacking issues during reinforcement learning training."

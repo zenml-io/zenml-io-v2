@@ -45,6 +45,7 @@ llmopsTags:
   - "anthropic"
   - "cohere"
   - "nvidia"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Weights & Biases"
 summary: "This case study describes Weights & Biases' development of programming agents that achieved top performance on the SWEBench benchmark, demonstrating how MLOps infrastructure can systematically improve AI agent performance through experimental workflows. The presenter built \"Tiny Agent,\" a command-line programming agent, then optimized it through hundreds of experiments using OpenAI's O1 reasoning model to achieve the #1 position on SWEBench leaderboard. The approach emphasizes systematic experimentation with proper tracking, evaluation frameworks, and infrastructure scaling, while introducing tools like Weave for experiment management and WB Launch for distributed computing. The work also explores reinforcement learning for agent improvement and introduces the concept of \"researcher agents\" that can autonomously improve AI systems."

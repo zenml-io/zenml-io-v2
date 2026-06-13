@@ -31,6 +31,7 @@ llmopsTags:
   - "microsoft-azure"
   - "openai"
   - "amazon-aws"
+  - "reinforcement-learning"
 industryTags: "tech"
 company: "Outropy"
 summary: "Outropy initially built an AI-powered Chief of Staff for engineering leaders that attracted 10,000 users within a year. The system evolved from a simple Slack bot to a sophisticated multi-agent architecture handling complex workflows across team tools. They tackled challenges in agent memory management, event processing, and scaling, ultimately transitioning from a monolithic architecture to a distributed system using Temporal for workflow management while maintaining production reliability."
