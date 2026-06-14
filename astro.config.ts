@@ -14,6 +14,7 @@ const sitemapExcludePaths = new Set([
   "/blog/rss.xml",
   "/llmops-database/rss.xml",
   "/mlops-database/rss.xml",
+  "/index.md",
   "/pricing.md",
   "/product/zenml.md",
   "/product/kitaru.md",
