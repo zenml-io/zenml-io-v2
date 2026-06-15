@@ -25,40 +25,10 @@ import JsonLd from "../components/seo/JsonLd.astro";
  * Route: / (homepage)
  */
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { SITE_URL } from "../lib/constants";
-import { FAQ } from "../lib/homepage";
 import { HOMEPAGE_UNIFIED_SEO } from "../lib/homepage-unified";
+import { buildHomepageJsonLd } from "../lib/homepageJsonLd";
 
-/** Strip HTML tags from a string (for JSON-LD plain text) */
-function stripHtml(html: string): string {
-  return html.replace(/<[^>]+>/g, "");
-}
-
-const orgJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "ZenML",
-  url: SITE_URL,
-  logo: `${SITE_URL}/images/zenml-logo.svg`,
-  sameAs: [
-    "https://github.com/zenml-io/zenml",
-    "https://twitter.com/zenml_io",
-    "https://www.linkedin.com/company/zenml",
-  ],
-};
-
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: FAQ.items.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: stripHtml(item.answer),
-    },
-  })),
-};
+const homepageJsonLd = buildHomepageJsonLd();
 ---
 
 <BaseLayout
@@ -67,8 +37,7 @@ const faqJsonLd = {
   ogTitle={HOMEPAGE_UNIFIED_SEO.title}
   surface={HOMEPAGE_UNIFIED_SEO.surface}
 >
-  <JsonLd data={orgJsonLd} slot="head" />
-  <JsonLd data={faqJsonLd} slot="head" />
+  <JsonLd data={homepageJsonLd} slot="head" />
   <UnifiedAnnouncementBanner slot="before-nav" />
 
   <main>
