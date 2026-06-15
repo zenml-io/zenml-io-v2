@@ -10,7 +10,6 @@ import { FAQ } from "../lib/homepage";
 import {
   HOMEPAGE_UNIFIED_FINAL_CTA,
   HOMEPAGE_UNIFIED_HERO,
-  HOMEPAGE_UNIFIED_PRICING_TEASER,
   HOMEPAGE_UNIFIED_SEO,
   HOMEPAGE_UNIFIED_VALUES,
   HOMEPAGE_UNIFIED_WORKSPACES,
@@ -83,14 +82,6 @@ export function GET(): Response {
       HOMEPAGE_UNIFIED_WORKSPACES.items.map(renderWorkspace).join("\n\n"),
     ),
     renderValues(),
-    joinMarkdownSections(
-      `## ${HOMEPAGE_UNIFIED_PRICING_TEASER.headline}`,
-      HOMEPAGE_UNIFIED_PRICING_TEASER.body,
-      markdownCtaList([
-        HOMEPAGE_UNIFIED_PRICING_TEASER.primaryCta,
-        HOMEPAGE_UNIFIED_PRICING_TEASER.secondaryCta,
-      ]),
-    ),
     joinMarkdownSections(
       "## Key product links",
       markdownBulletList([
