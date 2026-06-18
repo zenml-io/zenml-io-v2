@@ -133,3 +133,29 @@ export const BOOK_YOUR_DEMO_TESTIMONIAL = {
   position: "SPV R&D at HashiCorp",
   avatar: `${R2}/31a5f8ee/653297b0b924af52998661bf_harold.webp`,
 };
+
+// ---------------------------------------------------------------------------
+// Kitaru co-brand variant — /book-your-demo/kitaru
+// ---------------------------------------------------------------------------
+// Reached from the Kitaru landing CTAs (/product/kitaru). Reuses the same
+// form, fields, Cal.com link, customer logos, and testimonial as the ZenML
+// page; only the hero copy, SEO, and co-brand credibility line differ. The
+// orange brand colour is handled in BookingExperience.astro, not here.
+
+export const BOOK_KITARU_DEMO_SEO: SEOProps = {
+  title: "Book a Kitaru demo",
+  description:
+    "See Kitaru in action — the open-source durable runtime for Python agents. Record every step, replay with overrides, and ship updates with confidence. 30 minutes with the ZenML team.",
+  // ogTitle / ogDescription intentionally omitted — resolveSeo() falls back to title / description.
+};
+
+export const BOOK_KITARU_DEMO_HERO = {
+  headlinePrefix: "See ",
+  headlineHighlight: "Kitaru",
+  headlineSuffix: " in action",
+  deck: "Get a personalized walkthrough of Kitaru: record, replay, and improve your Python agents with durable checkpoints, wait/resume, and versioned deployments on your own cloud. 30 minutes with our team.",
+};
+
+/** Co-brand credibility line shown above the customer logos on the Kitaru page. */
+export const BOOK_KITARU_DEMO_PROOF =
+  "Built by the ZenML team — trusted by 1,000+ teams running ML and AI agents in production.";

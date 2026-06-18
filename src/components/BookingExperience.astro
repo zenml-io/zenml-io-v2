@@ -1,0 +1,281 @@
+---
+import {
+  CAL_EMBED_SCRIPT,
+  CAL_ORIGIN,
+  TURNSTILE_SITE_KEY,
+} from "../lib/formConstants";
+import type { CalEmbedConfig, PlaceholderField } from "../lib/formTypes";
+import KitaruLogo from "./brand/KitaruLogo.astro";
+/**
+ * BookingExperience — shared two-column demo-booking body.
+ *
+ * Rendered by both /book-your-demo (ZenML) and /book-your-demo/kitaru
+ * (Kitaru co-brand). Everything that differs between the two is a prop;
+ * the markup, form wiring, and calendar-transition script are shared so
+ * the two routes can never drift apart.
+ *
+ * Brand colour: the page uses `text-zenml-500` / `bg-zenml-500` utilities
+ * throughout (including inside the DemoRequestForm island). Those compile
+ * to `var(--color-zenml-500)`, so the Kitaru variant re-skins the whole
+ * subtree to orange by overriding that variable on the wrapper
+ * (`.booking-brand-kitaru` below) — no per-element or per-island edits.
+ *
+ * NOTE: this deliberately does NOT use the usual `data-app="kitaru"` brand
+ * switch. The `--color-zenml-*` ladder is intentionally data-app-invariant
+ * (global.css), so `data-app="kitaru"` would leave these utilities purple;
+ * and the form island hardcodes `bg-zenml-500`, which `text-primary` can't
+ * reach. Overriding `--color-zenml-*` locally is the one lever that recolours
+ * both the markup and the island. If you audit Kitaru surfaces by grepping
+ * `data-app="kitaru"`, remember this page brands itself a different way.
+ */
+import DemoRequestForm from "./islands/DemoRequestForm.tsx";
+
+interface Props {
+  /** Drives the header logo and the orange brand-token override. */
+  brand: "zenml" | "kitaru";
+  /** Where the header logo links ("/" for ZenML, "/product/kitaru" for Kitaru). */
+  homeHref: string;
+  hero: {
+    headlinePrefix: string;
+    headlineHighlight: string;
+    headlineSuffix: string;
+    deck: string;
+  };
+  /** Optional credibility line shown above the customer logos. */
+  proofLabel?: string;
+  /** Optional 2×2 stat grid. Omit to hide it (Kitaru co-brand does). */
+  stats?: { value: string; label: string }[];
+  logos: { name: string; src: string }[];
+  form: {
+    headline: string;
+    deck: string;
+    calHeadline: string;
+    calDeck: string;
+  };
+  fields: PlaceholderField[];
+  cal: CalEmbedConfig;
+  testimonial: {
+    quote: string;
+    name: string;
+    position: string;
+    avatar: string;
+  };
+}
+
+const {
+  brand,
+  homeHref,
+  hero,
+  proofLabel,
+  stats,
+  logos,
+  form,
+  fields,
+  cal,
+  testimonial,
+} = Astro.props;
+const isKitaru = brand === "kitaru";
+---
+
+<div class:list={["booking-root", isKitaru && "booking-brand-kitaru"]}>
+  {/* Logo header */}
+  <header class="border-b border-gray-100 bg-white">
+    <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+      {isKitaru ? (
+        <a href={homeHref} aria-label="Kitaru home" class="inline-flex text-gray-900">
+          <KitaruLogo class="h-7 w-auto" />
+        </a>
+      ) : (
+        <a href={homeHref} aria-label="ZenML home">
+          <img
+            src="/images/zenml-logo.svg"
+            alt="ZenML"
+            width="115"
+            height="28"
+            class="h-7 w-auto"
+          />
+        </a>
+      )}
+    </div>
+  </header>
+
+  <main class="bg-white">
+    {/* Two-column section */}
+    <section class="py-12 sm:py-16 lg:py-20">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div id="demo-form-grid" class="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+          {/* ── Left column: marketing copy ── */}
+          <div id="demo-form-marketing">
+            <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
+              {hero.headlinePrefix}<span class="text-zenml-500">{hero.headlineHighlight}</span>{hero.headlineSuffix}
+            </h1>
+            <p class="mt-4 text-base leading-relaxed text-gray-600 sm:text-lg">
+              {hero.deck}
+            </p>
+
+            {/* Stats 2×2 grid */}
+            {stats && stats.length > 0 && (
+              <div class="mt-10 grid grid-cols-2 gap-4">
+                {stats.map((stat) => (
+                  <div class="rounded-lg border border-gray-200 px-4 py-5">
+                    <p class="text-2xl font-bold text-gray-900 sm:text-3xl">
+                      {stat.value}
+                    </p>
+                    <p class="mt-1 text-xs leading-snug text-gray-500 sm:text-sm">
+                      {stat.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Co-brand credibility line */}
+            {proofLabel && (
+              <p class="mt-10 text-sm font-medium leading-relaxed text-gray-600">
+                {proofLabel}
+              </p>
+            )}
+
+            {/* Customer logos */}
+            <div class:list={["flex flex-wrap items-center gap-6 sm:gap-8", proofLabel ? "mt-6" : "mt-10"]}>
+              {logos.map((logo) => (
+                <img
+                  src={logo.src}
+                  alt={logo.name}
+                  class="h-6 max-w-[100px] object-contain sm:h-7 sm:max-w-[120px]"
+                  loading="lazy"
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* ── Right column: form → calendar ── */}
+          <div id="demo-form-col" data-cal-headline={form.calHeadline} data-cal-deck={form.calDeck}>
+            <h2 id="demo-form-heading" class="text-2xl font-bold text-gray-900 sm:text-3xl">
+              {form.headline}
+            </h2>
+            <p id="demo-form-deck" class="mt-2 text-sm text-gray-500">
+              {form.deck}
+            </p>
+
+            <div class="mt-6">
+              <DemoRequestForm
+                client:load
+                endpoint="/api/forms/demo-request"
+                fields={fields}
+                submitLabel="Send Request"
+                loadingLabel="Sending…"
+                calConfig={cal}
+                calOrigin={CAL_ORIGIN}
+                calEmbedScript={CAL_EMBED_SCRIPT}
+                turnstileSiteKey={TURNSTILE_SITE_KEY}
+              />
+            </div>
+
+            {/* Privacy note */}
+            <p id="demo-form-privacy" class="mt-3 text-center text-xs text-gray-400">
+              By continuing, you agree to our{" "}
+              <a href="/privacy-policy" class="text-zenml-500 underline hover:text-zenml-600">
+                privacy policy
+              </a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Testimonial */}
+    <section class="border-t border-gray-100 bg-gray-50 py-10 sm:py-14">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-8">
+          <img
+            src={testimonial.avatar}
+            alt={testimonial.name}
+            class="h-16 w-16 flex-shrink-0 rounded-full object-cover"
+            loading="lazy"
+          />
+          <div>
+            <blockquote class="text-base leading-relaxed text-gray-700 sm:text-lg">
+              {testimonial.quote}
+            </blockquote>
+            <p class="mt-3 text-sm font-semibold text-gray-900">
+              {testimonial.name}<span class="font-normal text-gray-500">, {testimonial.position}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  {/* Minimal footer */}
+  <footer class="border-t border-gray-100 bg-white py-6">
+    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-sm text-gray-400 sm:flex-row sm:px-6 lg:px-8">
+      <p>&copy; {new Date().getFullYear()} ZenML. All rights reserved.</p>
+      <nav class="flex gap-6">
+        <a href="/imprint" class="hover:text-gray-600">Imprint</a>
+        <a href="/privacy-policy" class="hover:text-gray-600">Privacy Policy</a>
+        <a href="/terms-of-service" class="hover:text-gray-600">Terms of Service</a>
+      </nav>
+    </div>
+  </footer>
+</div>
+
+<style>
+  /* Kitaru co-brand: re-skin the ZenML brand utilities (headline accent,
+     privacy link, form submit button + focus rings) to Kitaru orange by
+     overriding the CSS variables those utilities resolve. `--primary`
+     drives the Kitaru logo ring glyph. */
+  .booking-brand-kitaru {
+    --color-zenml-500: var(--color-orange-600);
+    --color-zenml-600: var(--color-orange-700);
+    --primary: var(--color-orange-600);
+  }
+
+  @keyframes demoFormSlideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  /* Applied by JS when calendar replaces the form */
+  #demo-form-grid.demo-cal-active {
+    grid-template-columns: 1fr;
+    max-width: 56rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #demo-form-marketing.demo-cal-hidden {
+    display: none;
+  }
+</style>
+
+{/* Transition: update heading & hide privacy note when calendar appears */}
+<script is:inline>
+  (function () {
+    var target = document.getElementById("demo-form-col");
+    if (!target) return;
+    var calHeadline = target.getAttribute("data-cal-headline") || "";
+    var calDeck = target.getAttribute("data-cal-deck") || "";
+    var observer = new MutationObserver(function () {
+      if (target.querySelector(".demo-form-calendar-transition")) {
+        var heading = document.getElementById("demo-form-heading");
+        var deck = document.getElementById("demo-form-deck");
+        var privacy = document.getElementById("demo-form-privacy");
+        var grid = document.getElementById("demo-form-grid");
+        var marketing = document.getElementById("demo-form-marketing");
+        if (heading) { heading.style.transition = "opacity 0.3s"; heading.style.opacity = "0"; }
+        if (deck) { deck.style.transition = "opacity 0.3s"; deck.style.opacity = "0"; }
+        if (privacy) { privacy.style.transition = "opacity 0.3s"; privacy.style.opacity = "0"; }
+        if (marketing) { marketing.style.transition = "opacity 0.3s"; marketing.style.opacity = "0"; }
+        // Timeout matches the 0.3s CSS transition so layout changes after fade-out completes
+        setTimeout(function () {
+          if (heading) { heading.textContent = calHeadline; heading.style.opacity = "1"; }
+          if (deck) { deck.textContent = calDeck; deck.style.opacity = "1"; }
+          if (privacy) privacy.style.display = "none";
+          if (marketing) { marketing.style.opacity = ""; marketing.style.transition = ""; marketing.classList.add("demo-cal-hidden"); }
+          if (grid) grid.classList.add("demo-cal-active");
+        }, 300);
+        observer.disconnect();
+      }
+    });
+    observer.observe(target, { childList: true, subtree: true });
+  })();
+</script>
