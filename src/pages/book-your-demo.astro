@@ -1,13 +1,12 @@
 ---
-import DemoRequestForm from "../components/islands/DemoRequestForm.tsx";
+import BookingExperience from "../components/BookingExperience.astro";
 /**
  * Book Your Demo — conversion-optimized two-column layout.
  *
  * Route: /book-your-demo
  * Minimal chrome (no full nav/footer) to reduce distraction.
- * Left: marketing copy + stats + customer logos.
- * Right: ContactForm (demo-request).
- * Below: testimonial + simple footer.
+ * Body markup lives in BookingExperience.astro, shared with the Kitaru
+ * co-brand variant at /book-your-demo/kitaru.
  */
 import MinimalLayout from "../layouts/MinimalLayout.astro";
 import {
@@ -20,11 +19,6 @@ import {
   BOOK_YOUR_DEMO_STATS,
   BOOK_YOUR_DEMO_TESTIMONIAL,
 } from "../lib/bookYourDemo";
-import {
-  CAL_EMBED_SCRIPT,
-  CAL_ORIGIN,
-  TURNSTILE_SITE_KEY,
-} from "../lib/formConstants";
 ---
 
 <MinimalLayout
@@ -34,180 +28,15 @@ import {
   ogDescription={BOOK_YOUR_DEMO_SEO.ogDescription}
   surface="unified"
 >
-  {/* Logo header */}
-  <header class="border-b border-gray-100 bg-white">
-    <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-      <a href="/" aria-label="ZenML home">
-        <img
-          src="/images/zenml-logo.svg"
-          alt="ZenML"
-          width="115"
-          height="28"
-          class="h-7 w-auto"
-        />
-      </a>
-    </div>
-  </header>
-
-  <main class="bg-white">
-    {/* Two-column section */}
-    <section class="py-12 sm:py-16 lg:py-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div id="demo-form-grid" class="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
-          {/* ── Left column: marketing copy ── */}
-          <div id="demo-form-marketing">
-            <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
-              {BOOK_YOUR_DEMO_HERO.headlinePrefix}<span class="text-zenml-500">{BOOK_YOUR_DEMO_HERO.headlineHighlight}</span>{BOOK_YOUR_DEMO_HERO.headlineSuffix}
-            </h1>
-            <p class="mt-4 text-base leading-relaxed text-gray-600 sm:text-lg">
-              {BOOK_YOUR_DEMO_HERO.deck}
-            </p>
-
-            {/* Stats 2×2 grid */}
-            <div class="mt-10 grid grid-cols-2 gap-4">
-              {BOOK_YOUR_DEMO_STATS.map((stat) => (
-                <div class="rounded-lg border border-gray-200 px-4 py-5">
-                  <p class="text-2xl font-bold text-gray-900 sm:text-3xl">
-                    {stat.value}
-                  </p>
-                  <p class="mt-1 text-xs leading-snug text-gray-500 sm:text-sm">
-                    {stat.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Customer logos */}
-            <div class="mt-10 flex flex-wrap items-center gap-6 sm:gap-8">
-              {BOOK_YOUR_DEMO_LOGOS.map((logo) => (
-                <img
-                  src={logo.src}
-                  alt={logo.name}
-                  class="h-6 max-w-[100px] object-contain sm:h-7 sm:max-w-[120px]"
-                  loading="lazy"
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* ── Right column: form → calendar ── */}
-          <div id="demo-form-col" data-cal-headline={BOOK_YOUR_DEMO_FORM.calHeadline} data-cal-deck={BOOK_YOUR_DEMO_FORM.calDeck}>
-            <h2 id="demo-form-heading" class="text-2xl font-bold text-gray-900 sm:text-3xl">
-              {BOOK_YOUR_DEMO_FORM.headline}
-            </h2>
-            <p id="demo-form-deck" class="mt-2 text-sm text-gray-500">
-              {BOOK_YOUR_DEMO_FORM.deck}
-            </p>
-
-            <div class="mt-6">
-              <DemoRequestForm
-                client:load
-                endpoint="/api/forms/demo-request"
-                fields={BOOK_YOUR_DEMO_FIELDS}
-                submitLabel="Send Request"
-                loadingLabel="Sending…"
-                calConfig={BOOK_YOUR_DEMO_CAL}
-                calOrigin={CAL_ORIGIN}
-                calEmbedScript={CAL_EMBED_SCRIPT}
-                turnstileSiteKey={TURNSTILE_SITE_KEY}
-              />
-            </div>
-
-            {/* Privacy note */}
-            <p id="demo-form-privacy" class="mt-3 text-center text-xs text-gray-400">
-              By continuing, you agree to our{" "}
-              <a href="/privacy-policy" class="text-zenml-500 underline hover:text-zenml-600">
-                privacy policy
-              </a>.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    {/* Testimonial */}
-    <section class="border-t border-gray-100 bg-gray-50 py-10 sm:py-14">
-      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-8">
-          <img
-            src={BOOK_YOUR_DEMO_TESTIMONIAL.avatar}
-            alt={BOOK_YOUR_DEMO_TESTIMONIAL.name}
-            class="h-16 w-16 flex-shrink-0 rounded-full object-cover"
-            loading="lazy"
-          />
-          <div>
-            <blockquote class="text-base leading-relaxed text-gray-700 sm:text-lg">
-              {BOOK_YOUR_DEMO_TESTIMONIAL.quote}
-            </blockquote>
-            <p class="mt-3 text-sm font-semibold text-gray-900">
-              {BOOK_YOUR_DEMO_TESTIMONIAL.name}<span class="font-normal text-gray-500">, {BOOK_YOUR_DEMO_TESTIMONIAL.position}</span>
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  {/* Keyframes for calendar slide-in animation */}
-  <style>
-    @keyframes demoFormSlideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    /* Applied by JS when calendar replaces the form */
-    #demo-form-grid.demo-cal-active {
-      grid-template-columns: 1fr;
-      max-width: 56rem;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    #demo-form-marketing.demo-cal-hidden {
-      display: none;
-    }
-  </style>
-
-  {/* Transition: update heading & hide privacy note when calendar appears */}
-  <script is:inline>
-    (function () {
-      var target = document.getElementById("demo-form-col");
-      if (!target) return;
-      var calHeadline = target.getAttribute("data-cal-headline") || "";
-      var calDeck = target.getAttribute("data-cal-deck") || "";
-      var observer = new MutationObserver(function () {
-        if (target.querySelector(".demo-form-calendar-transition")) {
-          var heading = document.getElementById("demo-form-heading");
-          var deck = document.getElementById("demo-form-deck");
-          var privacy = document.getElementById("demo-form-privacy");
-          var grid = document.getElementById("demo-form-grid");
-          var marketing = document.getElementById("demo-form-marketing");
-          if (heading) { heading.style.transition = "opacity 0.3s"; heading.style.opacity = "0"; }
-          if (deck) { deck.style.transition = "opacity 0.3s"; deck.style.opacity = "0"; }
-          if (privacy) { privacy.style.transition = "opacity 0.3s"; privacy.style.opacity = "0"; }
-          if (marketing) { marketing.style.transition = "opacity 0.3s"; marketing.style.opacity = "0"; }
-          // Timeout matches the 0.3s CSS transition so layout changes after fade-out completes
-          setTimeout(function () {
-            if (heading) { heading.textContent = calHeadline; heading.style.opacity = "1"; }
-            if (deck) { deck.textContent = calDeck; deck.style.opacity = "1"; }
-            if (privacy) privacy.style.display = "none";
-            if (marketing) { marketing.style.opacity = ""; marketing.style.transition = ""; marketing.classList.add("demo-cal-hidden"); }
-            if (grid) grid.classList.add("demo-cal-active");
-          }, 300);
-          observer.disconnect();
-        }
-      });
-      observer.observe(target, { childList: true, subtree: true });
-    })();
-  </script>
-
-  {/* Minimal footer */}
-  <footer class="border-t border-gray-100 bg-white py-6">
-    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-sm text-gray-400 sm:flex-row sm:px-6 lg:px-8">
-      <p>&copy; {new Date().getFullYear()} ZenML. All rights reserved.</p>
-      <nav class="flex gap-6">
-        <a href="/imprint" class="hover:text-gray-600">Imprint</a>
-        <a href="/privacy-policy" class="hover:text-gray-600">Privacy Policy</a>
-        <a href="/terms-of-service" class="hover:text-gray-600">Terms of Service</a>
-      </nav>
-    </div>
-  </footer>
+  <BookingExperience
+    brand="zenml"
+    homeHref="/"
+    hero={BOOK_YOUR_DEMO_HERO}
+    stats={BOOK_YOUR_DEMO_STATS}
+    logos={BOOK_YOUR_DEMO_LOGOS}
+    form={BOOK_YOUR_DEMO_FORM}
+    fields={BOOK_YOUR_DEMO_FIELDS}
+    cal={BOOK_YOUR_DEMO_CAL}
+    testimonial={BOOK_YOUR_DEMO_TESTIMONIAL}
+  />
 </MinimalLayout>

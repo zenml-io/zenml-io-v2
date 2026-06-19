@@ -1,0 +1,43 @@
+---
+import BookingExperience from "../../components/BookingExperience.astro";
+/**
+ * Book a Kitaru demo — co-brand variant of /book-your-demo.
+ *
+ * Route: /book-your-demo/kitaru
+ * Reached from the Kitaru landing CTAs (/product/kitaru). Same form and
+ * calendar flow as the ZenML page, but Kitaru-branded (wordmark, orange
+ * accent, agent-focused copy) so visitors don't bounce from a sudden
+ * ZenML/MLOps pitch. surface="agent" tags the pageview as Kitaru-side.
+ */
+import MinimalLayout from "../../layouts/MinimalLayout.astro";
+import {
+  BOOK_KITARU_DEMO_HERO,
+  BOOK_KITARU_DEMO_PROOF,
+  BOOK_KITARU_DEMO_SEO,
+  BOOK_YOUR_DEMO_CAL,
+  BOOK_YOUR_DEMO_FIELDS,
+  BOOK_YOUR_DEMO_FORM,
+  BOOK_YOUR_DEMO_LOGOS,
+  BOOK_YOUR_DEMO_TESTIMONIAL,
+} from "../../lib/bookYourDemo";
+---
+
+<MinimalLayout
+  title={BOOK_KITARU_DEMO_SEO.title}
+  description={BOOK_KITARU_DEMO_SEO.description}
+  ogTitle={BOOK_KITARU_DEMO_SEO.ogTitle}
+  ogDescription={BOOK_KITARU_DEMO_SEO.ogDescription}
+  surface="agent"
+>
+  <BookingExperience
+    brand="kitaru"
+    homeHref="/product/kitaru"
+    hero={BOOK_KITARU_DEMO_HERO}
+    proofLabel={BOOK_KITARU_DEMO_PROOF}
+    logos={BOOK_YOUR_DEMO_LOGOS}
+    form={BOOK_YOUR_DEMO_FORM}
+    fields={BOOK_YOUR_DEMO_FIELDS}
+    cal={BOOK_YOUR_DEMO_CAL}
+    testimonial={BOOK_YOUR_DEMO_TESTIMONIAL}
+  />
+</MinimalLayout>

@@ -2,7 +2,7 @@ export const KITARU_INSTALL_CMD = "pip install kitaru";
 export const KITARU_LICENSE = "Apache 2.0";
 
 export const KITARU_LINKS = {
-  demo: { label: "Book a demo", href: "/book-your-demo" },
+  demo: { label: "Book a demo", href: "/book-your-demo/kitaru" },
   github: {
     label: "Star on GitHub",
     href: "https://github.com/zenml-io/kitaru",
