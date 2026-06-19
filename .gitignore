@@ -49,3 +49,7 @@ CLAUDE.private.md
 
 # Playwright MCP scratch (screenshots, transient artifacts)
 .playwright-mcp/
+
+# Repoprompt things
+docs/investigations/
+docs/plans/
