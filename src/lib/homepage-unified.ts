@@ -68,7 +68,7 @@ export const HOMEPAGE_UNIFIED_HERO = {
 
 export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
   eyebrow: "NEW",
-  body: "Build an agent factory with Kitaru — record, replay, and improve production AI agents.",
+  body: "Kitaru: replay your agent's real runs with one thing changed, and see what would have happened.",
   linkText: "Read the docs",
   linkHref: "https://docs.zenml.io/kitaru",
 } as const;
@@ -238,7 +238,7 @@ export const HOMEPAGE_UNIFIED_WORKSPACES = {
     {
       name: "Kitaru workspace",
       tagline: "AI agents",
-      body: "Record, replay, and improve long-running Python agents. Checkpoints, replay with overrides, and wait/resume — without rewriting your control flow.",
+      body: "Replay your agent's real runs with one thing changed, and see what would have happened. Checkpoints, replay with overrides, and wait/resume, without rewriting your control flow.",
       bullets: [
         "Two decorators: @flow and @checkpoint",
         "Resume from any checkpoint after a crash or rate-limit",
