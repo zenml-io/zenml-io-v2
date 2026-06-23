@@ -39,6 +39,8 @@ import {
         Kitaru records every model and tool call. Replay a run with one thing changed and see what would have happened. No production reruns.
       </p>
 
+      <p class="hero-install-tag" data-reveal data-reveal-delay="3">Lightweight, wraps your existing agent</p>
+
       <div class="hero-install" data-reveal data-reveal-delay="3">
         <code class="install-cmd">{KITARU_INSTALL_CMD}</code>
         <button class="copy-btn" aria-label="Copy install command" data-copy={KITARU_INSTALL_CMD}>
@@ -307,6 +309,15 @@ import {
     color: var(--color-primary);
     user-select: all;
     letter-spacing: -0.01em;
+  }
+
+  .hero-install-tag {
+    margin: 0 0 8px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.01em;
+    color: var(--color-muted);
+    white-space: nowrap;
   }
 
   .copy-btn {

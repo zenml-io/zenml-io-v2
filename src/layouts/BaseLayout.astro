@@ -122,21 +122,37 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
         const starElements = document.querySelectorAll("[data-github-stars-count]");
         if (!starElements.length) return;
 
-        try {
-          const response = await fetch("/api/github-stars", {
-            headers: { Accept: "application/json" },
-          });
-          if (!response.ok) return;
+        // Group elements by repo (default zenml) so each repo is fetched once.
+        const byRepo = new Map();
+        starElements.forEach((element) => {
+          const repo = element.getAttribute("data-github-stars-repo") || "zenml";
+          if (!byRepo.has(repo)) byRepo.set(repo, []);
+          byRepo.get(repo).push(element);
+        });
 
-          const data = await response.json();
-          if (!data || typeof data.formatted !== "string") return;
+        await Promise.all(
+          Array.from(byRepo.entries()).map(async ([repo, elements]) => {
+            try {
+              const url =
+                repo === "zenml"
+                  ? "/api/github-stars"
+                  : "/api/github-stars?repo=" + encodeURIComponent(repo);
+              const response = await fetch(url, {
+                headers: { Accept: "application/json" },
+              });
+              if (!response.ok) return;
 
-          starElements.forEach((element) => {
-            element.textContent = data.formatted;
-          });
-        } catch {
-          // Keep server-rendered fallback visible on any failure.
-        }
+              const data = await response.json();
+              if (!data || typeof data.formatted !== "string") return;
+
+              elements.forEach((element) => {
+                element.textContent = data.formatted;
+              });
+            } catch {
+              // Keep server-rendered fallback visible on any failure.
+            }
+          }),
+        );
       })();
     </script>
 
