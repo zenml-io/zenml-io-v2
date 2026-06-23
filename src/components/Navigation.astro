@@ -3,6 +3,7 @@ import {
   FALLBACK_STARS,
   formatStars,
   GITHUB_REPO_URL,
+  KITARU_FALLBACK_STARS,
 } from "../lib/githubStars";
 import { getNonDraftLlmopsDatabaseCount } from "../lib/llmops";
 import {
@@ -26,6 +27,23 @@ interface Props {
 
 const { currentPath = Astro.url.pathname } = Astro.props;
 const headerStarsFallback = formatStars(FALLBACK_STARS);
+
+// On Kitaru surfaces, point the header star button at the Kitaru repo instead
+// of zenml/zenml. The live count is zenml-only, so we drop the number there
+// rather than show a misleading figure next to the Kitaru link.
+const isKitaruSurface =
+  currentPath.startsWith("/product/kitaru") ||
+  currentPath.startsWith("/compare/kitaru");
+const starsHref = isKitaruSurface
+  ? "https://github.com/zenml-io/kitaru"
+  : GITHUB_REPO_URL;
+const starsAriaLabel = isKitaruSurface
+  ? "Star zenml-io/kitaru on GitHub"
+  : "Star zenml-io/zenml on GitHub";
+const starsRepoKey = isKitaruSurface ? "kitaru" : "zenml";
+const starsCountText = isKitaruSurface
+  ? formatStars(KITARU_FALLBACK_STARS)
+  : headerStarsFallback;
 const llmopsCaseStudyCount = await getNonDraftLlmopsDatabaseCount();
 const navDropdowns = createNavDropdowns({ llmopsCaseStudyCount });
 
@@ -361,8 +379,8 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
       <div class="hidden lg:ml-auto lg:flex lg:items-center lg:gap-3">
         <div class="h-[28px]">
           <a
-            href={GITHUB_REPO_URL}
-            aria-label="Star zenml-io/zenml on GitHub"
+            href={starsHref}
+            aria-label={starsAriaLabel}
             class="inline-flex h-full items-center gap-1.5 rounded border border-gray-300 bg-white px-2.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50"
           >
             <svg
@@ -376,7 +394,11 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
             </svg>
             <span>Star</span>
             <span aria-hidden="true">·</span>
-            <span class="tabular-nums" data-github-stars-count>{headerStarsFallback}</span>
+            <span
+              class="tabular-nums"
+              data-github-stars-count
+              data-github-stars-repo={starsRepoKey}
+            >{starsCountText}</span>
           </a>
         </div>
         <Button href={NAV_CTAS[0].href} variant="secondary" size="sm">

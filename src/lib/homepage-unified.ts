@@ -68,7 +68,7 @@ export const HOMEPAGE_UNIFIED_HERO = {
 
 export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
   eyebrow: "NEW",
-  body: "Build an agent factory with Kitaru — record, replay, and improve production AI agents.",
+  body: "Kitaru: replay your agent's real runs with one thing changed, and see what would have happened.",
   linkText: "Read the docs",
   linkHref: "https://docs.zenml.io/kitaru",
 } as const;
@@ -237,12 +237,12 @@ export const HOMEPAGE_UNIFIED_WORKSPACES = {
     },
     {
       name: "Kitaru workspace",
-      tagline: "AI agents",
-      body: "Record, replay, and improve long-running Python agents. Checkpoints, replay with overrides, and wait/resume — without rewriting your control flow.",
+      tagline: "Agent runtime",
+      body: "The runtime layer underneath your agent stack. Every run recorded and replayable: diagnose failures, test model swaps, and ship updates with confidence. Self-hosted, no lock-in.",
       bullets: [
-        "Two decorators: @flow and @checkpoint",
-        "Resume from any checkpoint after a crash or rate-limit",
-        "MCP, CLI, and typed-client ops surfaces",
+        "Crash recovery: flows survive pod evictions and timeouts",
+        "Pause and resume with kitaru.wait(), for minutes, hours, or days",
+        "Your cloud, your model, your SDK: framework-agnostic",
       ],
       cta: { label: "Explore Kitaru", href: "/product/kitaru" },
     },

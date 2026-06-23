@@ -148,7 +148,7 @@ export function createNavDropdowns({
             {
               label: "Kitaru",
               href: "/product/kitaru",
-              description: "Durable runtime for AI agents",
+              description: "Replay and improve AI agents",
               icon: ICON_KITARU_RING,
               iconViewBox: "0 0 81 82",
               iconFilled: true,

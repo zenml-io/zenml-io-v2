@@ -28,13 +28,18 @@ import {
       </div>
 
       <h1 class="hero-headline" data-reveal data-reveal-delay="1">
-        The open agent <span class="hero-accent">runtime</span>.
+        Ask <span class="hero-accent">&ldquo;what if?&rdquo;</span> about your agent&rsquo;s real runs
       </h1>
 
-      <p class="hero-subtitle" data-reveal data-reveal-delay="2">
-        <span class="hero-slogan">Replay, don&rsquo;t guess.</span>
-        Rerun production runs against new models, prompts, or skills. Compare evidence. Ship the variant that wins.
+      <p class="hero-kicker" data-reveal data-reveal-delay="2">
+        Change one thing. Replay. See what would have happened.
       </p>
+
+      <p class="hero-subtitle" data-reveal data-reveal-delay="2">
+        Kitaru records every model and tool call. Replay a run with one thing changed and see what would have happened. No production reruns.
+      </p>
+
+      <p class="hero-install-tag" data-reveal data-reveal-delay="3">Lightweight, wraps your existing agent</p>
 
       <div class="hero-install" data-reveal data-reveal-delay="3">
         <code class="install-cmd">{KITARU_INSTALL_CMD}</code>
@@ -54,76 +59,50 @@ import {
     </div>
 
     <div class="hero-visual" data-reveal data-reveal-delay="3">
-      <div class="hv-panel" role="img" aria-label="Example: replay a frozen pack of 50 expensive production runs against a candidate variant and compare evidence">
+      <div class="hv-panel" role="img" aria-label="Example: replay 200 recorded support-agent runs on an open model, GLM via OpenRouter, then diff the cost and answers against the real runs">
         <div class="hv-panel-head">
           <span class="hv-panel-dots">
             <span class="hv-dot"></span>
             <span class="hv-dot"></span>
             <span class="hv-dot"></span>
           </span>
-          <span class="hv-panel-title">replay · legal-research-prod</span>
-          <span class="hv-panel-badge">compare</span>
-        </div>
-
-        <div class="hv-incident">
-          <div class="hv-incident-row">
-            <span class="hv-incident-label">Pack</span>
-            <span class="hv-incident-value"><span class="hv-step">high-cost-contracts</span> &middot; 50 production runs &middot; last 7d</span>
-          </div>
-          <div class="hv-incident-row">
-            <span class="hv-incident-label">Baseline</span>
-            <span class="hv-incident-value">legal-research-prod <span class="hv-mono">v2.3</span></span>
-          </div>
-          <div class="hv-incident-row">
-            <span class="hv-incident-label">Candidate</span>
-            <span class="hv-incident-value">branch-cache <span class="hv-mono">+caching wrapper on clause extraction</span></span>
-          </div>
+          <span class="hv-panel-title">replay · support-agent</span>
+          <span class="hv-panel-badge">what-if</span>
         </div>
 
         <div class="hv-code">
-          <div class="hv-code-line hv-code-comment"># replay both against the same frozen pack</div>
-          <div class="hv-code-line"><span class="hv-code-fn">kitaru.compare</span>(</div>
-          <div class="hv-code-line">&nbsp;&nbsp;baseline=<span class="hv-code-str">"legal-research-prod"</span>,</div>
-          <div class="hv-code-line">&nbsp;&nbsp;candidate=<span class="hv-code-str">"branch-cache"</span>,</div>
-          <div class="hv-code-line">&nbsp;&nbsp;pack=<span class="hv-code-str">"high-cost-contracts"</span>,</div>
-          <div class="hv-code-line">)</div>
+          <div class="hv-code-line hv-code-comment"># a production run, every step checkpointed</div>
+          <div class="hv-code-line">exec <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">run</span>(ticket).<span class="hv-code-fn">wait</span>()</div>
+          <div class="hv-code-line"> </div>
+          <div class="hv-code-line hv-code-comment"># reproduce, then replay with one thing changed</div>
+          <div class="hv-code-line">rerun <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">replay</span>(exec, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>)</div>
+          <div class="hv-code-line hv-code-hl">cheap <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">replay</span>(exec, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>, model<span class="hv-code-op">=</span><span class="hv-code-str">"glm-4.6"</span>)</div>
+          <div class="hv-code-line hv-code-hl">mock <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">replay</span>(exec, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>, lookup_order<span class="hv-code-op">=</span>stub)</div>
+          <div class="hv-code-line"> </div>
+          <div class="hv-code-line">cheap.<span class="hv-code-fn">diff</span>(rerun)<span class="hv-code-comment">  # cheaper, same decision?</span></div>
         </div>
 
-        <div class="hv-compare">
-          <div class="hv-compare-row hv-compare-head">
+        <div class="hv-diff">
+          <div class="hv-diff-row hv-diff-head">
             <span>Metric</span>
-            <span>Baseline</span>
-            <span>Candidate</span>
-            <span>Delta</span>
+            <span>baseline → glm</span>
           </div>
-          <div class="hv-compare-row">
-            <span class="hv-compare-label">Median cost</span>
-            <span class="hv-mono-cell">&euro;0.34</span>
-            <span class="hv-mono-cell">&euro;0.19</span>
-            <span class="hv-compare-delta hv-compare-delta-win">&minus;44%</span>
+          <div class="hv-diff-row">
+            <span class="hv-diff-label">Cost / 1k runs</span>
+            <span class="hv-mono-cell"><s class="hv-diff-was">$210</s> $34</span>
           </div>
-          <div class="hv-compare-row">
-            <span class="hv-compare-label">Avg LLM calls</span>
-            <span class="hv-mono-cell">14.2</span>
-            <span class="hv-mono-cell">6.8</span>
-            <span class="hv-compare-delta hv-compare-delta-win">&minus;52%</span>
+          <div class="hv-diff-row">
+            <span class="hv-diff-label">Saved</span>
+            <span class="hv-mono-cell hv-diff-win">&minus;84%</span>
           </div>
-          <div class="hv-compare-row">
-            <span class="hv-compare-label">Evaluator pass rate <span class="hv-compare-tag">user-supplied</span></span>
-            <span class="hv-mono-cell">84%</span>
-            <span class="hv-mono-cell">82%</span>
-            <span class="hv-compare-delta hv-compare-delta-soft">&minus;2pp</span>
-          </div>
-          <div class="hv-compare-row hv-compare-row-trust">
-            <span class="hv-compare-label">Changed outputs</span>
-            <span class="hv-mono-cell">&mdash;</span>
-            <span class="hv-mono-cell">2 / 50</span>
-            <span class="hv-compare-delta hv-compare-delta-neutral">review</span>
+          <div class="hv-diff-row">
+            <span class="hv-diff-label">Outputs identical</span>
+            <span class="hv-mono-cell">192 / 200</span>
           </div>
         </div>
 
         <div class="hv-caption">
-          Same cohort, different variant. Outputs hold.
+          Same 200 runs, on an open model. Same answers, a fraction of the cost.
         </div>
       </div>
     </div>
@@ -133,11 +112,11 @@ import {
 <style>
   .hero-section {
     position: relative;
-    min-height: 100dvh;
+    min-height: auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 80px clamp(24px, 5vw, 80px) 60px;
+    padding: clamp(72px, 12vh, 120px) clamp(24px, 5vw, 80px) clamp(56px, 9vh, 88px);
     overflow: hidden;
   }
 
@@ -242,11 +221,11 @@ import {
   }
 
   .hero-headline {
-    font-size: clamp(3rem, 6vw, 5rem);
+    font-size: clamp(2.4rem, 4.4vw, 3.6rem);
     font-weight: 700;
-    line-height: 1.06;
-    letter-spacing: -0.04em;
-    margin: 0 0 24px;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    margin: 0 0 18px;
     color: var(--color-primary);
   }
 
@@ -280,6 +259,15 @@ import {
     font-weight: 500;
     margin-bottom: 10px;
     letter-spacing: -0.01em;
+  }
+
+  .hero-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    letter-spacing: 0.01em;
+    color: var(--color-accent);
+    font-weight: 500;
+    margin: 0 0 18px;
   }
 
   .hero-buttons {
@@ -321,6 +309,15 @@ import {
     color: var(--color-primary);
     user-select: all;
     letter-spacing: -0.01em;
+  }
+
+  .hero-install-tag {
+    margin: 0 0 8px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.01em;
+    color: var(--color-muted);
+    white-space: nowrap;
   }
 
   .copy-btn {
@@ -442,154 +439,72 @@ import {
     color: var(--color-primary);
     background: var(--color-bg);
     border-bottom: 1px solid var(--color-border);
+    overflow-x: auto;
   }
 
   .hv-code-line { white-space: pre; }
   .hv-code-comment { color: var(--color-muted); font-style: italic; }
   .hv-code-fn { color: var(--color-accent); font-weight: 500; }
   .hv-code-str { color: oklch(0.5 0.13 155); }
-
-  .hv-incident {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    padding: 11px 18px;
-    background: var(--color-surface-warm);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .hv-incident-row {
-    display: grid;
-    grid-template-columns: 64px 1fr;
-    gap: 10px;
-    align-items: baseline;
-    font-size: 0.74rem;
-    line-height: 1.45;
-  }
-
-  .hv-incident-label {
-    color: var(--color-muted);
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-weight: 600;
-  }
-
-  .hv-incident-value {
-    color: var(--color-secondary);
-  }
-
-  .hv-step {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--color-primary);
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
+  .hv-code-op { color: var(--color-muted); }
+  .hv-code-hl {
+    display: block;
+    background: oklch(0.65 0.16 45 / 0.1);
     border-radius: 4px;
-    padding: 1px 6px;
+    margin: 0 -8px;
+    padding: 0 8px;
   }
 
-  .hv-mono {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: var(--color-muted);
-  }
-
-  .hv-compare {
+  /* ─── Hero visual: what-if diff table ─── */
+  .hv-diff {
     display: flex;
     flex-direction: column;
   }
 
-  .hv-compare-row {
+  .hv-diff-row {
     display: grid;
-    grid-template-columns: 1.4fr 1fr 1fr 0.85fr;
+    grid-template-columns: 1fr auto;
     align-items: baseline;
     gap: 10px;
-    padding: 7px 18px;
-    font-size: 0.78rem;
+    padding: 8px 18px;
+    font-size: 0.8rem;
     border-bottom: 1px solid var(--color-border);
   }
 
-  .hv-compare-row:last-child {
+  .hv-diff-row:last-child {
     border-bottom: none;
   }
 
-  .hv-compare-head {
+  .hv-diff-head {
     font-size: 0.6rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--color-muted);
     font-weight: 600;
+    background: var(--color-surface-warm);
     padding-top: 6px;
     padding-bottom: 6px;
-    background: var(--color-surface-warm);
   }
 
-  .hv-compare-label {
+  .hv-diff-label {
     color: var(--color-secondary);
+  }
+
+  .hv-diff-win {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .hv-diff-was {
+    color: var(--color-muted);
+    text-decoration: line-through;
+    margin-right: 6px;
   }
 
   .hv-mono-cell {
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
     color: var(--color-primary);
-  }
-
-  .hv-compare-delta {
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
-    font-weight: 600;
-    text-align: right;
-    font-size: 0.78rem;
-  }
-
-  .hv-compare-delta-win {
-    color: var(--color-accent);
-    animation: hv-pulse 2.8s ease-in-out infinite;
-  }
-
-  .hv-compare-delta-neutral {
-    color: var(--color-muted);
-    font-weight: 500;
-    text-transform: uppercase;
-    font-size: 0.62rem;
-    letter-spacing: 0.08em;
-    animation: none;
-  }
-
-  .hv-compare-delta-soft {
-    color: var(--color-secondary);
-    font-weight: 500;
-    animation: none;
-  }
-
-  .hv-compare-tag {
-    font-family: var(--font-mono);
-    font-size: 0.56rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-    background: var(--color-surface-warm);
-    border: 1px solid var(--color-border);
-    border-radius: 100px;
-    padding: 1px 7px;
-    margin-left: 8px;
-    vertical-align: middle;
-    font-weight: 500;
-  }
-
-  .hv-compare-row-trust {
-    background: oklch(0.65 0.16 45 / 0.04);
-  }
-
-  .hv-caption-em {
-    color: var(--color-accent);
-    font-weight: 500;
-  }
-
-  @keyframes hv-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.72; }
   }
 
   .hv-caption {
@@ -642,18 +557,6 @@ import {
   }
 
   @media (max-width: 540px) {
-    .hv-compare-row {
-      grid-template-columns: 1.2fr 0.9fr 0.9fr 0.7fr;
-      gap: 8px;
-      padding: 8px 14px;
-      font-size: 0.72rem;
-    }
-    .hv-compare-head {
-      font-size: 0.56rem;
-    }
-    .hv-incident-row {
-      grid-template-columns: 64px 1fr;
-    }
     .hv-code {
       font-size: 0.72rem;
     }
@@ -665,12 +568,12 @@ import {
     }
 
     .hero-section {
-      min-height: 100dvh;
+      min-height: auto;
       padding: 60px 24px 48px;
     }
 
     .hero-headline {
-      font-size: clamp(2.2rem, 8vw, 3rem);
+      font-size: clamp(2rem, 7vw, 2.6rem);
     }
 
     .hero-buttons {

@@ -1,0 +1,159 @@
+---
+// ScenarioStrip.astro — the prominent second section. One recorded run, a
+// different question each time. Each card is a human-facing name for an
+// override kind, all expressed through the one `replay` verb. The cheap-model
+// card is featured — it's the buyer's cost pain.
+const scenarios = [
+  { move: "fail", q: "Search tool times out?", code: "raise_=Timeout" },
+  { move: "mock", q: "Tool returns something else?", code: "output=…" },
+  { move: "degrade", q: "Retriever gets worse?", code: "output=degraded(…)" },
+  { move: "drop", q: "Cut the reranker?", code: "re-run · no tool" },
+  { move: "swap", q: "Run on a cheaper model?", code: 'model="fast"' },
+] as const;
+---
+
+<section id="scenario-strip" class="scenario-section section-pad">
+  <div class="section-inner">
+    <div class="scenario-head" data-reveal>
+      <span class="section-eyebrow">THE SAME MOVE, EVERY TIME</span>
+      <h2 class="scenario-title">
+        One recorded run.<br /><span class="scenario-title-accent">A different question each time.</span>
+      </h2>
+      <p class="scenario-sub">
+        Replay the run. Change one thing. Read the answer off a diff. Nothing reruns in production.
+      </p>
+    </div>
+
+    <div class="scenario-grid">
+      {
+        scenarios.map((s, i) => (
+          <div class="scenario-card" data-reveal="fade-up" data-reveal-delay={i + 1}>
+            <span class="scenario-move">{s.move}</span>
+            <p class="scenario-q">{s.q}</p>
+            <code class="scenario-code">{s.code}</code>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .scenario-section {
+    background: var(--color-surface-warm);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .scenario-head {
+    max-width: 820px;
+    margin-bottom: 48px;
+  }
+
+  .scenario-title {
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    color: var(--color-primary);
+    margin: 14px 0 20px;
+  }
+
+  .scenario-title-accent {
+    color: var(--color-accent);
+  }
+
+  .scenario-sub {
+    font-size: clamp(1rem, 1.6vw, 1.15rem);
+    line-height: 1.65;
+    font-weight: 300;
+    color: var(--color-secondary);
+    max-width: 640px;
+    margin: 0;
+  }
+
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
+
+  .scenario-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 22px 20px;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    background: var(--color-surface);
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  }
+
+  .scenario-card:hover {
+    border-color: oklch(0.65 0.16 45 / 0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px -28px oklch(0.65 0.16 45 / 0.5);
+  }
+
+  .scenario-move {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    padding: 4px 11px;
+    border: 1px solid var(--color-border);
+    border-radius: 100px;
+    background: var(--color-surface-warm);
+  }
+
+
+  .scenario-q {
+    font-size: 1rem;
+    line-height: 1.35;
+    min-height: 2.7em;
+    color: var(--color-primary);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .scenario-code {
+    display: block;
+    width: 100%;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--color-accent);
+    background: oklch(0.65 0.16 45 / 0.08);
+    border: 1px solid oklch(0.65 0.16 45 / 0.2);
+    border-radius: 8px;
+    padding: 10px 12px;
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+
+  @media (max-width: 1100px) {
+    .scenario-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .scenario-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .scenario-card {
+      min-height: 0;
+    }
+  }
+
+  @media (max-width: 460px) {
+    .scenario-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

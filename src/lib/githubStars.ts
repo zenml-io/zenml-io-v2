@@ -19,10 +19,55 @@ export const GITHUB_REPO_API_URL =
  */
 export const FALLBACK_STARS = 6200;
 
+// Kitaru repo — shown on Kitaru surfaces (public repo, live count).
+export const KITARU_GITHUB_REPO = {
+  owner: "zenml-io",
+  name: "kitaru",
+} as const;
+export const KITARU_GITHUB_REPO_SLUG =
+  `${KITARU_GITHUB_REPO.owner}/${KITARU_GITHUB_REPO.name}` as const;
+export const KITARU_GITHUB_REPO_URL =
+  `https://github.com/${KITARU_GITHUB_REPO_SLUG}` as const;
+export const KITARU_GITHUB_REPO_API_URL =
+  `https://api.github.com/repos/${KITARU_GITHUB_REPO_SLUG}` as const;
+export const KITARU_FALLBACK_STARS = 189;
+
+export type StarsRepoKey = "zenml" | "kitaru";
+
+export interface StarsRepoConfig {
+  key: StarsRepoKey;
+  slug: string;
+  url: string;
+  apiUrl: string;
+  fallbackStars: number;
+}
+
+const STARS_REPOS: Record<StarsRepoKey, StarsRepoConfig> = {
+  zenml: {
+    key: "zenml",
+    slug: GITHUB_REPO_SLUG,
+    url: GITHUB_REPO_URL,
+    apiUrl: GITHUB_REPO_API_URL,
+    fallbackStars: FALLBACK_STARS,
+  },
+  kitaru: {
+    key: "kitaru",
+    slug: KITARU_GITHUB_REPO_SLUG,
+    url: KITARU_GITHUB_REPO_URL,
+    apiUrl: KITARU_GITHUB_REPO_API_URL,
+    fallbackStars: KITARU_FALLBACK_STARS,
+  },
+};
+
+/** Resolve a repo key (e.g. from a query param) to its config; defaults to zenml. */
+export function resolveStarsRepo(key: unknown): StarsRepoConfig {
+  return key === "kitaru" ? STARS_REPOS.kitaru : STARS_REPOS.zenml;
+}
+
 export type StarsSource = "github" | "cache" | "fallback";
 
 export interface GithubStarsSnapshot {
-  repo: typeof GITHUB_REPO_SLUG;
+  repo: string;
   stars: number;
   formatted: string;
   source: StarsSource;
@@ -52,10 +97,11 @@ export function createStarsSnapshot(
   stars: number,
   source: StarsSource,
   asOf = new Date(),
+  repo: string = GITHUB_REPO_SLUG,
 ): GithubStarsSnapshot {
   const normalizedStars = normalizeStars(stars);
   return {
-    repo: GITHUB_REPO_SLUG,
+    repo,
     stars: normalizedStars,
     formatted: formatStars(normalizedStars),
     source,
@@ -63,8 +109,12 @@ export function createStarsSnapshot(
   };
 }
 
-export function fallbackStarsSnapshot(asOf = new Date()): GithubStarsSnapshot {
-  return createStarsSnapshot(FALLBACK_STARS, "fallback", asOf);
+export function fallbackStarsSnapshot(
+  asOf = new Date(),
+  stars: number = FALLBACK_STARS,
+  repo: string = GITHUB_REPO_SLUG,
+): GithubStarsSnapshot {
+  return createStarsSnapshot(stars, "fallback", asOf, repo);
 }
 
 export async function fetchGithubStarsFromGitHub({
@@ -72,11 +122,13 @@ export async function fetchGithubStarsFromGitHub({
   token,
   timeoutMs = 2000,
   userAgent = "zenml-website",
+  apiUrl = GITHUB_REPO_API_URL,
 }: {
   fetchImpl?: typeof fetch;
   token?: string;
   timeoutMs?: number;
   userAgent?: string;
+  apiUrl?: string;
 } = {}): Promise<GithubStarsFetchResult> {
   const controller = new AbortController();
   const timeoutId: ReturnType<typeof setTimeout> = setTimeout(() => {
@@ -93,7 +145,7 @@ export async function fetchGithubStarsFromGitHub({
       headers.Authorization = `Bearer ${token}`;
     }
 
-    const response = await fetchImpl(GITHUB_REPO_API_URL, {
+    const response = await fetchImpl(apiUrl, {
       headers,
       signal: controller.signal,
     });

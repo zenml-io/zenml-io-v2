@@ -1,12 +1,12 @@
 ---
-import Architecture from "../../components/kitaru/Architecture.astro";
+import AgentDriven from "../../components/kitaru/AgentDriven.astro";
 import CodeShowcase from "../../components/kitaru/CodeShowcase.astro";
 import Cta from "../../components/kitaru/Cta.astro";
 import Deploy from "../../components/kitaru/Deploy.astro";
 import Features from "../../components/kitaru/Features.astro";
 import Hero from "../../components/kitaru/Hero.astro";
 import OneImport from "../../components/kitaru/OneImport.astro";
-import PlatformBuilder from "../../components/kitaru/PlatformBuilder.astro";
+import ScenarioStrip from "../../components/kitaru/ScenarioStrip.astro";
 import SocialProof from "../../components/kitaru/SocialProof.astro";
 /**
  * /product/kitaru — landing page introducing Kitaru as a sub-product
@@ -18,16 +18,16 @@ import SocialProof from "../../components/kitaru/SocialProof.astro";
  * unified tokens by `src/styles/kitaru-compat.css`, scoped to the
  * `[data-app="kitaru"]` wrapper that flips the theme.
  *
- * Sections (in source order, matching kitaru.ai/):
- *   Hero            → WebGL ASCII dot-grid + mesh gradient + replay panel
- *   PlatformBuilder → 3 image-card problem statement grid
- *   OneImport       → single-import code window
- *   Features        → scroll-stacking feature cards (6 primitives)
- *   CodeShowcase    → dark code panel + 8 hoverable primitives
- *   Deploy          → deployment targets (K8s/Vertex/SageMaker/AzureML)
- *   Architecture    → system architecture diagram
- *   SocialProof     → testimonials + logos
- *   Cta             → closing CTA band
+ * Sections (what-if-led order):
+ *   Hero          → what-if hero: replay a real run, one thing changed, diff
+ *   ScenarioStrip → bigger "one recorded run, a different question each time"
+ *   OneImport     → works with your agent SDK (before/after)
+ *   Features      → the what-if workflow (replay → cheap model + faked tool → diff)
+ *   CodeShowcase  → "see the code" for that same workflow + hoverable verbs
+ *   AgentDriven   → MCP/CLI: let a coding agent run the replay loop + hill-climb
+ *   Deploy        → deployment targets (K8s/Vertex/SageMaker/AzureML)
+ *   SocialProof   → ZenML lineage, testimonials + logos
+ *   Cta           → closing CTA band
  *
  * See MERGE_PLAN.md §4 (Phase 2b).
  */
@@ -40,12 +40,12 @@ import "../../styles/kitaru-compat.css";
   <div data-app="kitaru" class="bg-background text-foreground">
     <main id="kitaru-main">
       <Hero />
-      <PlatformBuilder />
+      <ScenarioStrip />
       <OneImport />
       <Features />
       <CodeShowcase />
+      <AgentDriven />
       <Deploy />
-      <Architecture />
       <div class="gradient-divider"></div>
       <SocialProof />
       <div class="gradient-divider"></div>
