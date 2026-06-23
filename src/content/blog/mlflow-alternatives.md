@@ -8,7 +8,7 @@ webflow:
   exportedAt: "2026-02-11T13:30:32.135Z"
   source: "live"
   lastPublished: "2026-02-03T15:19:04.226Z"
-  lastUpdated: "2026-06-23T00:00:00.000Z"
+  lastUpdated: "2026-06-23"
   createdOn: "2025-05-17T05:13:39.920Z"
 author: "hamza-tahir"
 category: "mlops"
