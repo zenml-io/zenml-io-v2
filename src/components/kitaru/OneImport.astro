@@ -4,12 +4,12 @@
 
 <section id="one-import" class="section-pad-compact one-import-section">
   <div class="section-inner">
-    <span class="section-eyebrow" data-reveal>WORKS WITH YOUR AGENT SDK</span>
+    <span class="section-eyebrow" data-reveal>POWERED BY DURABLE EXECUTION</span>
     <h2 class="section-title" data-reveal data-reveal-delay="1">
-      Keep the inner harness. Add the outer runtime.
+      Keep your agent SDK. Kitaru records every call.
     </h2>
     <p class="one-import-desc" data-reveal data-reveal-delay="2">
-      Keep the model loop your team already picked. Wrap the boundaries that matter &mdash; model calls, tool calls, approvals, and long-running phases &mdash; with durable state and replay.
+      One wrap, and every model and tool call is checkpointed. That durable record is what replay reads back, so a what-if is faithful, not a guess.
     </p>
 
     <!-- Tabs -->
@@ -355,9 +355,26 @@ client <span class="op">=</span> <span class="fn">Anthropic</span>()
       flex-shrink: 0;
     }
 
+    .one-import-code {
+      position: relative;
+    }
+
+    /* Scroll-affordance fade so long lines read as scrollable, not clipped */
+    .one-import-code::after {
+      content: '';
+      position: absolute;
+      top: 45px;
+      right: 0;
+      bottom: 0;
+      width: 28px;
+      background: linear-gradient(90deg, transparent, oklch(0.16 0.015 60));
+      pointer-events: none;
+      border-radius: 0 12px 12px 0;
+    }
+
     .one-import-code-pre {
-      font-size: 0.72rem;
-      padding: 16px;
+      font-size: 0.68rem;
+      padding: 14px;
     }
   }
 </style>

@@ -4,8 +4,9 @@ import {
   createStarsSnapshot,
   fallbackStarsSnapshot,
   fetchGithubStarsFromGitHub,
-  GITHUB_REPO_SLUG,
   type GithubStarsSnapshot,
+  resolveStarsRepo,
+  type StarsRepoConfig,
 } from "../../lib/githubStars";
 
 export const prerender = false;
@@ -70,7 +71,10 @@ function isStarsSource(value: unknown): value is GithubStarsSnapshot["source"] {
   return value === "github" || value === "cache" || value === "fallback";
 }
 
-function isGithubStarsSnapshot(value: unknown): value is GithubStarsSnapshot {
+function isGithubStarsSnapshot(
+  value: unknown,
+  slug: string,
+): value is GithubStarsSnapshot {
   if (!value || typeof value !== "object") return false;
 
   const candidate = value as Record<string, unknown>;
@@ -78,7 +82,7 @@ function isGithubStarsSnapshot(value: unknown): value is GithubStarsSnapshot {
   const asOf = candidate.asOf;
 
   return (
-    candidate.repo === GITHUB_REPO_SLUG &&
+    candidate.repo === slug &&
     typeof stars === "number" &&
     Number.isFinite(stars) &&
     stars >= 0 &&
@@ -102,18 +106,22 @@ function getSnapshotAgeSeconds(
   return Math.max(0, ageSeconds);
 }
 
-async function fetchLiveSnapshot(token?: string): Promise<GithubStarsSnapshot> {
+async function fetchLiveSnapshot(
+  repo: StarsRepoConfig,
+  token?: string,
+): Promise<GithubStarsSnapshot> {
   const result = await fetchGithubStarsFromGitHub({
     token,
     timeoutMs: 2000,
     userAgent: "zenml-website-github-stars-api",
+    apiUrl: repo.apiUrl,
   });
 
   if (result.ok) {
-    return createStarsSnapshot(result.stars, "github");
+    return createStarsSnapshot(result.stars, "github", new Date(), repo.slug);
   }
 
-  return fallbackStarsSnapshot();
+  return fallbackStarsSnapshot(new Date(), repo.fallbackStars, repo.slug);
 }
 
 async function cacheSnapshot(
@@ -137,6 +145,7 @@ async function cacheSnapshot(
 async function refreshCache(
   cache: Cache,
   cacheKey: Request,
+  repo: StarsRepoConfig,
   token?: string,
 ): Promise<void> {
   try {
@@ -144,6 +153,7 @@ async function refreshCache(
       token,
       timeoutMs: 2000,
       userAgent: "zenml-website-github-stars-api",
+      apiUrl: repo.apiUrl,
     });
 
     if (!result.ok) {
@@ -154,7 +164,7 @@ async function refreshCache(
     await cacheSnapshot(
       cache,
       cacheKey,
-      createStarsSnapshot(result.stars, "github"),
+      createStarsSnapshot(result.stars, "github", new Date(), repo.slug),
     );
   } catch {
     // Silent refresh failure — caller will keep serving cached value.
@@ -162,8 +172,9 @@ async function refreshCache(
 }
 
 export async function GET(context: APIContext): Promise<Response> {
+  const repo = resolveStarsRepo(context.url.searchParams.get("repo"));
   const cache = getDefaultCache();
-  const cacheKey = new Request(CACHE_KEY_URL);
+  const cacheKey = new Request(`${CACHE_KEY_URL}?repo=${repo.key}`);
   const githubToken = getGithubToken(context);
 
   if (cache) {
@@ -171,12 +182,14 @@ export async function GET(context: APIContext): Promise<Response> {
     if (cached) {
       try {
         const cachedPayload = (await cached.json()) as unknown;
-        if (isGithubStarsSnapshot(cachedPayload)) {
+        if (isGithubStarsSnapshot(cachedPayload, repo.slug)) {
           const isStale =
             getSnapshotAgeSeconds(cachedPayload, new Date()) > SOFT_TTL_SECONDS;
           if (isStale) {
             const runtime = getRuntime(context);
-            runtime?.ctx.waitUntil(refreshCache(cache, cacheKey, githubToken));
+            runtime?.ctx.waitUntil(
+              refreshCache(cache, cacheKey, repo, githubToken),
+            );
           }
 
           const cachedResponse: GithubStarsSnapshot = {
@@ -192,7 +205,7 @@ export async function GET(context: APIContext): Promise<Response> {
     }
   }
 
-  const liveSnapshot = await fetchLiveSnapshot(githubToken);
+  const liveSnapshot = await fetchLiveSnapshot(repo, githubToken);
   if (cache) {
     await cacheSnapshot(cache, cacheKey, liveSnapshot);
   }
