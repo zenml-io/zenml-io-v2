@@ -72,9 +72,10 @@ import {
           <div class="hv-code-line hv-code-comment"># a production run, every step checkpointed</div>
           <div class="hv-code-line">exec <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">run</span>(ticket).<span class="hv-code-fn">wait</span>()</div>
           <div class="hv-code-line"> </div>
-          <div class="hv-code-line hv-code-comment"># reproduce, then replay on a cheaper model</div>
+          <div class="hv-code-line hv-code-comment"># reproduce, then replay with one thing changed</div>
           <div class="hv-code-line">rerun <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">replay</span>(exec, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>)</div>
           <div class="hv-code-line hv-code-hl">cheap <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">replay</span>(exec, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>, model<span class="hv-code-op">=</span><span class="hv-code-str">"glm-4.6"</span>)</div>
+          <div class="hv-code-line hv-code-hl">mock <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">replay</span>(exec, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>, lookup_order<span class="hv-code-op">=</span>stub)</div>
           <div class="hv-code-line"> </div>
           <div class="hv-code-line">cheap.<span class="hv-code-fn">diff</span>(rerun)<span class="hv-code-comment">  # cheaper, same decision?</span></div>
         </div>
