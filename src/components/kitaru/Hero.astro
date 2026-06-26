@@ -73,15 +73,16 @@ import {
         <div class="hv-code">
           <div class="hv-code-line hv-code-comment"># abbreviated: imports and client setup omitted</div>
           <div class="hv-code-line hv-code-comment"># a production run, Kitaru-visible calls checkpointed</div>
-          <div class="hv-code-line">exec <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">run</span>(ticket).<span class="hv-code-fn">wait</span>()</div>
+          <div class="hv-code-line">source <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">run</span>(ticket)</div>
+          <div class="hv-code-line">result <span class="hv-code-op">=</span> source.<span class="hv-code-fn">wait</span>()</div>
           <div class="hv-code-line"> </div>
           <div class="hv-code-line hv-code-comment"># reproduce, then replay with one change</div>
-          <div class="hv-code-line">rerun <span class="hv-code-op">=</span> exec.<span class="hv-code-fn">replay</span>(from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>)</div>
-          <div class="hv-code-line hv-code-hl">cheap <span class="hv-code-op">=</span> exec.<span class="hv-code-fn">replay</span>(</div>
-          <div class="hv-code-line hv-code-hl hv-code-indent">from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>, model<span class="hv-code-op">=</span><span class="hv-code-str">"glm-5.4"</span>,</div>
+          <div class="hv-code-line">rerun <span class="hv-code-op">=</span> client.executions.<span class="hv-code-fn">replay</span>(source.exec_id, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>)</div>
+          <div class="hv-code-line hv-code-hl">cheap <span class="hv-code-op">=</span> client.executions.<span class="hv-code-fn">replay</span>(</div>
+          <div class="hv-code-line hv-code-hl hv-code-indent">source.exec_id, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>, model<span class="hv-code-op">=</span><span class="hv-code-str">"glm-5.4"</span>,</div>
           <div class="hv-code-line hv-code-hl">)</div>
-          <div class="hv-code-line hv-code-hl">mock <span class="hv-code-op">=</span> exec.<span class="hv-code-fn">replay</span>(</div>
-          <div class="hv-code-line hv-code-hl hv-code-indent">from_<span class="hv-code-op">=</span><span class="hv-code-str">"lookup_order"</span>,</div>
+          <div class="hv-code-line hv-code-hl">mock <span class="hv-code-op">=</span> client.executions.<span class="hv-code-fn">replay</span>(</div>
+          <div class="hv-code-line hv-code-hl hv-code-indent">source.exec_id, from_<span class="hv-code-op">=</span><span class="hv-code-str">"lookup_order"</span>,</div>
           <div class="hv-code-line hv-code-hl hv-code-indent">overrides<span class="hv-code-op">=</span>&#123;<span class="hv-code-str">"checkpoint.lookup_order"</span>: stale_order&#125;,</div>
           <div class="hv-code-line hv-code-hl">)</div>
           <div class="hv-code-line"> </div>
@@ -459,6 +460,10 @@ import {
     border-radius: 4px;
     margin: 0 -8px;
     padding: 0 8px;
+  }
+
+  .hv-code-hl.hv-code-indent {
+    padding-left: 26px;
   }
 
   /* ─── Hero visual: what-if diff table ─── */
