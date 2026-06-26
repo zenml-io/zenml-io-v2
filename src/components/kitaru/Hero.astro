@@ -36,7 +36,7 @@ import {
       </p>
 
       <p class="hero-subtitle" data-reveal data-reveal-delay="2">
-        Kitaru turns the model/tool calls and steps your primitives or adapters expose into replayable checkpoints. Replay an execution ID with one scoped override and see what would have happened. No production reruns.
+        Kitaru turns the model/tool calls and steps your primitives or adapters expose into replayable checkpoints. Replay an execution ID with one input or checkpoint override and see what would have happened. No production reruns.
       </p>
 
       <p class="hero-install-tag" data-reveal data-reveal-delay="3">Lightweight, wraps your existing agent</p>
@@ -75,12 +75,17 @@ import {
           <div class="hv-code-line hv-code-comment"># a production run, Kitaru-visible calls checkpointed</div>
           <div class="hv-code-line">exec <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">run</span>(ticket).<span class="hv-code-fn">wait</span>()</div>
           <div class="hv-code-line"> </div>
-          <div class="hv-code-line hv-code-comment"># reproduce, then replay with scoped overrides</div>
-          <div class="hv-code-line">rerun <span class="hv-code-op">=</span> client.executions.<span class="hv-code-fn">replay</span>(exec.exec_id, at<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>)</div>
-          <div class="hv-code-line hv-code-hl">cheap <span class="hv-code-op">=</span> client.executions.<span class="hv-code-fn">replay</span>(exec.exec_id, at<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>, invocation_overrides<span class="hv-code-op">=</span>&#123;"decide:model_call_1":&#123;"model":"glm-5.4"&#125;&#125;)</div>
-          <div class="hv-code-line hv-code-hl">mock <span class="hv-code-op">=</span> client.executions.<span class="hv-code-fn">replay</span>(exec.exec_id, at<span class="hv-code-op">=</span><span class="hv-code-str">"lookup_order"</span>, checkpoint_overrides<span class="hv-code-op">=</span>&#123;"lookup_order":&#123;"code":"mocks.lookup_order_timeout"&#125;&#125;)</div>
+          <div class="hv-code-line hv-code-comment"># reproduce, then replay with one change</div>
+          <div class="hv-code-line">rerun <span class="hv-code-op">=</span> exec.<span class="hv-code-fn">replay</span>(from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>)</div>
+          <div class="hv-code-line hv-code-hl">cheap <span class="hv-code-op">=</span> exec.<span class="hv-code-fn">replay</span>(</div>
+          <div class="hv-code-line hv-code-hl hv-code-indent">from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>, model<span class="hv-code-op">=</span><span class="hv-code-str">"glm-5.4"</span>,</div>
+          <div class="hv-code-line hv-code-hl">)</div>
+          <div class="hv-code-line hv-code-hl">mock <span class="hv-code-op">=</span> exec.<span class="hv-code-fn">replay</span>(</div>
+          <div class="hv-code-line hv-code-hl hv-code-indent">from_<span class="hv-code-op">=</span><span class="hv-code-str">"lookup_order"</span>,</div>
+          <div class="hv-code-line hv-code-hl hv-code-indent">overrides<span class="hv-code-op">=</span>&#123;<span class="hv-code-str">"checkpoint.lookup_order"</span>: stale_order&#125;,</div>
+          <div class="hv-code-line hv-code-hl">)</div>
           <div class="hv-code-line"> </div>
-          <div class="hv-code-line">kitaru.<span class="hv-code-fn">diff</span>(exec.exec_id, cheap.results[0].replay_exec_id)<span class="hv-code-comment">  # cheaper, same decision?</span></div>
+          <div class="hv-code-line">kitaru.<span class="hv-code-fn">diff</span>(exec.exec_id, cheap.exec_id)<span class="hv-code-comment">  # cheaper, same decision?</span></div>
         </div>
 
         <div class="hv-diff">
@@ -440,10 +445,10 @@ import {
     color: var(--color-primary);
     background: var(--color-bg);
     border-bottom: 1px solid var(--color-border);
-    overflow-x: auto;
   }
 
   .hv-code-line { white-space: pre; }
+  .hv-code-indent { padding-left: 18px; }
   .hv-code-comment { color: var(--color-muted); font-style: italic; }
   .hv-code-fn { color: var(--color-accent); font-weight: 500; }
   .hv-code-str { color: oklch(0.5 0.13 155); }

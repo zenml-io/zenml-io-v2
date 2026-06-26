@@ -1,28 +1,32 @@
 ---
 // ScenarioStrip.astro — the prominent second section. One recorded execution,
 // a different replay question each time. Each card shows a compact version of
-// the current `at` + scoped override API shape.
+// the shipped `from_` + `overrides` replay API shape.
 const scenarios = [
   {
     move: "fail",
     q: "Search tool times out?",
-    code: 'at="lookup_order" · checkpoint_overrides={"lookup_order": {"code": "mocks.timeout"}}',
+    code: 'lookup_mode="timeout"',
   },
   {
     move: "mock",
     q: "Tool returns something else?",
-    code: 'checkpoint_overrides={"lookup_order": {"output": …}}',
+    code: 'overrides={"checkpoint.lookup_order": stale_order}',
   },
   {
     move: "degrade",
     q: "Retriever gets worse?",
-    code: 'checkpoint_overrides={"retrieve": {"output": degraded}}',
+    code: 'overrides={"checkpoint.retrieve": degraded_docs}',
   },
-  { move: "drop", q: "Keep a later result?", code: 'skip=["rerank_call_1"]' },
+  {
+    move: "drop",
+    q: "Ignore the reranker?",
+    code: 'overrides={"checkpoint.rerank": []}',
+  },
   {
     move: "swap",
     q: "Run on a cheaper model?",
-    code: 'invocation_overrides={"decide:model_call_1": {"model": "fast"}}',
+    code: 'model="fast"',
   },
 ] as const;
 ---
@@ -98,6 +102,7 @@ const scenarios = [
     display: flex;
     flex-direction: column;
     gap: 14px;
+    min-width: 0;
     padding: 22px 20px;
     border: 1px solid var(--color-border);
     border-radius: 16px;
@@ -140,15 +145,15 @@ const scenarios = [
     display: block;
     width: 100%;
     font-family: var(--font-mono);
-    font-size: 0.8rem;
-    line-height: 1.5;
+    font-size: 0.68rem;
+    line-height: 1.45;
     color: var(--color-accent);
     background: oklch(0.65 0.16 45 / 0.08);
     border: 1px solid oklch(0.65 0.16 45 / 0.2);
     border-radius: 8px;
     padding: 10px 12px;
-    white-space: nowrap;
-    overflow-x: auto;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   @media (max-width: 1100px) {

@@ -1,6 +1,7 @@
 ---
 // Features.astro — the what-if workflow, told as the cheap-model use case:
-// replay 200 real runs with a cheaper model and a faked flaky tool, then diff.
+// replay 200 real runs with a cheaper model and a faked checkpoint result,
+// then diff.
 // Replaces the old durable-execution scroll-stack. No fragile scroll JS —
 // data-reveal only.
 const steps = [
@@ -15,8 +16,8 @@ const steps = [
     n: "02",
     tag: "Change one thing",
     title: "Cheaper model, flaky tool",
-    body: "Swap the pricey invocation to a cheap model. Replace the flaky lookup with a timeout mock. Only those replay targets change.",
-    code: 'client.executions.replay(exec_ids, at="decide", invocation_overrides=…, checkpoint_overrides=…)',
+    body: "Replay from the decision point with a cheaper model, or replace a recorded lookup result. Production stays exactly as it was.",
+    code: 'replay(id, from_="decide", model="fast")',
   },
   {
     n: "03",
@@ -43,7 +44,7 @@ const recordedSources = [
       <span class="section-eyebrow">THE WHAT-IF WORKFLOW</span>
       <h2 class="section-title">Find a cheaper model without touching production.</h2>
       <p class="section-desc">
-        Same question every time: can it run cheaper, and does it survive a flaky tool? Replay the runs you already have, change one thing, read the diff.
+        Same question every time: can it run cheaper, and does it survive a flaky tool result? Replay the runs you already have, change one thing, read the diff.
       </p>
 
     </div>
@@ -88,7 +89,7 @@ const recordedSources = [
     <div class="whatif-payoff" data-reveal="fade-up" data-reveal-delay="3">
       <div class="whatif-payoff-label">
         <span class="whatif-payoff-eyebrow">The diff</span>
-        <p>Same 200 executions. Cheap model. Order-lookup timeout mocked.</p>
+        <p>Same 200 executions. Cheap model. Order lookup result replaced.</p>
       </div>
       <div class="whatif-payoff-metrics">
         <div class="whatif-metric">
@@ -222,7 +223,7 @@ const recordedSources = [
   /* ─── Steps ─── */
   .whatif-steps {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
   }
 
@@ -230,6 +231,7 @@ const recordedSources = [
     display: flex;
     flex-direction: column;
     gap: 14px;
+    min-width: 0;
     padding: 28px 26px;
     border: 1px solid var(--color-border);
     border-radius: 16px;
@@ -294,8 +296,8 @@ const recordedSources = [
     border: 1px solid oklch(0.65 0.16 45 / 0.18);
     border-radius: 8px;
     padding: 10px 12px;
-    white-space: nowrap;
-    overflow-x: auto;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   /* ─── Payoff: the diff ─── */
