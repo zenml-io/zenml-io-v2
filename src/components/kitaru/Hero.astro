@@ -77,9 +77,12 @@ import {
           <div class="hv-code-line">result <span class="hv-code-op">=</span> source.<span class="hv-code-fn">wait</span>()</div>
           <div class="hv-code-line"> </div>
           <div class="hv-code-line hv-code-comment"># reproduce, then replay with one change</div>
-          <div class="hv-code-line">rerun <span class="hv-code-op">=</span> client.executions.<span class="hv-code-fn">replay</span>(source.exec_id, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>)</div>
+          <div class="hv-code-line">rerun <span class="hv-code-op">=</span> client.executions.<span class="hv-code-fn">replay</span>(</div>
+          <div class="hv-code-line hv-code-indent">source.exec_id, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>,</div>
+          <div class="hv-code-line">)</div>
           <div class="hv-code-line hv-code-hl">cheap <span class="hv-code-op">=</span> client.executions.<span class="hv-code-fn">replay</span>(</div>
-          <div class="hv-code-line hv-code-hl hv-code-indent">source.exec_id, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>, model<span class="hv-code-op">=</span><span class="hv-code-str">"glm-5.4"</span>,</div>
+          <div class="hv-code-line hv-code-hl hv-code-indent">source.exec_id, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>,</div>
+          <div class="hv-code-line hv-code-hl hv-code-indent">model<span class="hv-code-op">=</span><span class="hv-code-str">"glm-5.4"</span>,</div>
           <div class="hv-code-line hv-code-hl">)</div>
           <div class="hv-code-line hv-code-hl">mock <span class="hv-code-op">=</span> client.executions.<span class="hv-code-fn">replay</span>(</div>
           <div class="hv-code-line hv-code-hl hv-code-indent">source.exec_id, from_<span class="hv-code-op">=</span><span class="hv-code-str">"lookup_order"</span>,</div>
@@ -446,6 +449,8 @@ import {
     color: var(--color-primary);
     background: var(--color-bg);
     border-bottom: 1px solid var(--color-border);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .hv-code-line { white-space: pre; }
