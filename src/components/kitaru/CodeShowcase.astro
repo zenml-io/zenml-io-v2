@@ -46,7 +46,7 @@
 <span class="code-line code-line-indent" data-primitive="code">exec.exec_id, from_<span class="op">=</span><span class="str">"lookup_order"</span>, lookup_mode<span class="op">=</span><span class="str">"timeout"</span>,</span>
 <span class="code-line" data-primitive="code">)</span>
 <span class="code-line"> </span>
-<span class="code-line" data-primitive="diff">kitaru.<span class="fn">diff</span>(exec.exec_id, cheaper.exec_id)</span></code></pre>
+<span class="code-line" data-primitive="inspect">usage <span class="op">=</span> cheaper.llm_usage_summary</span></code></pre>
         </div>
       </div>
 
@@ -72,9 +72,9 @@
           <code class="annotation-label">lookup_mode="timeout"</code>
           <p>Use a flow input your agent already understands to run the replay against a timeout path.</p>
         </div>
-        <div class="annotation" data-highlight="diff">
-          <code class="annotation-label">kitaru.diff(...)</code>
-          <p>Did the decision move? Compare the source execution and replay, with cost and quality deltas.</p>
+        <div class="annotation" data-highlight="inspect">
+          <code class="annotation-label">llm_usage_summary</code>
+          <p>Inspect shipped execution metadata, checkpoints, and artifacts to compare the source execution and replay.</p>
         </div>
       </div>
 
@@ -133,14 +133,13 @@
     overflow-x: auto;
     font-family: var(--font-mono);
     font-size: 0.78rem;
-    line-height: 1.58;
+    line-height: 1.65;
     color: var(--color-dark-text);
     -webkit-overflow-scrolling: touch;
   }
 
   /* Highlight lines */
   .code-line {
-    display: block;
     transition: background 0.2s, opacity 0.2s;
     border-radius: 3px;
     padding: 0 4px;

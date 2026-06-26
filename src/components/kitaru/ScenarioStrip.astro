@@ -93,7 +93,7 @@ const scenarios = [
 
   .scenario-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
     gap: 16px;
   }
 
@@ -156,16 +156,7 @@ const scenarios = [
     overflow-wrap: anywhere;
   }
 
-  @media (max-width: 1100px) {
-    .scenario-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
   @media (max-width: 720px) {
-    .scenario-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
     .scenario-card {
       min-height: 0;
     }
