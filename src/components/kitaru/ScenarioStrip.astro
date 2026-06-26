@@ -1,14 +1,29 @@
 ---
-// ScenarioStrip.astro — the prominent second section. One recorded run, a
-// different question each time. Each card is a human-facing name for an
-// override kind, all expressed through the one `replay` verb. The cheap-model
-// card is featured — it's the buyer's cost pain.
+// ScenarioStrip.astro — the prominent second section. One recorded execution,
+// a different replay question each time. Each card shows a compact version of
+// the current `at` + scoped override API shape.
 const scenarios = [
-  { move: "fail", q: "Search tool times out?", code: "raise_=Timeout" },
-  { move: "mock", q: "Tool returns something else?", code: "output=…" },
-  { move: "degrade", q: "Retriever gets worse?", code: "output=degraded(…)" },
-  { move: "drop", q: "Cut the reranker?", code: "re-run · no tool" },
-  { move: "swap", q: "Run on a cheaper model?", code: 'model="fast"' },
+  {
+    move: "fail",
+    q: "Search tool times out?",
+    code: 'at="lookup_order" · checkpoint_overrides={"lookup_order": {"code": "mocks.timeout"}}',
+  },
+  {
+    move: "mock",
+    q: "Tool returns something else?",
+    code: 'checkpoint_overrides={"lookup_order": {"output": …}}',
+  },
+  {
+    move: "degrade",
+    q: "Retriever gets worse?",
+    code: 'checkpoint_overrides={"retrieve": {"output": degraded}}',
+  },
+  { move: "drop", q: "Keep a later result?", code: 'skip=["rerank_call_1"]' },
+  {
+    move: "swap",
+    q: "Run on a cheaper model?",
+    code: 'invocation_overrides={"decide:model_call_1": {"model": "fast"}}',
+  },
 ] as const;
 ---
 
@@ -17,7 +32,7 @@ const scenarios = [
     <div class="scenario-head" data-reveal>
       <span class="section-eyebrow">THE SAME MOVE, EVERY TIME</span>
       <h2 class="scenario-title">
-        One recorded run.<br /><span class="scenario-title-accent">A different question each time.</span>
+        One recorded execution.<br /><span class="scenario-title-accent">A different question each time.</span>
       </h2>
       <p class="scenario-sub">
         Replay the run. Change one thing. Read the answer off a diff. Nothing reruns in production.
