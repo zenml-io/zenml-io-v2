@@ -1,6 +1,6 @@
 ---
 // Deploy.astro — Terminal-led "run it" section, with a forward-looking roadmap nudge
-import { KITARU_LINKS } from "../../lib/productKitaru";
+import { KITARU_INSTALL_CMD, KITARU_LINKS } from "../../lib/productKitaru";
 ---
 
 <section id="deploy" class="section-pad-compact deploy-section">
@@ -15,8 +15,8 @@ import { KITARU_LINKS } from "../../lib/productKitaru";
 
     <div class="deploy-install" data-reveal data-reveal-delay="3">
       <span class="deploy-install-prompt" aria-hidden="true">$</span>
-      <code class="deploy-install-cmd">uv add kitaru &amp;&amp; kitaru init</code>
-      <button class="deploy-install-copy" type="button" aria-label="Copy install command" data-copy="uv add kitaru && kitaru init">
+      <code class="deploy-install-cmd">{KITARU_INSTALL_CMD}</code>
+      <button class="deploy-install-copy" type="button" aria-label="Copy install command" data-copy={KITARU_INSTALL_CMD}>
         <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
         <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
       </button>

@@ -1,5 +1,5 @@
 ---
-import { KITARU_LINKS } from "../../../lib/productKitaru";
+import { KITARU_INSTALL_CMD, KITARU_LINKS } from "../../../lib/productKitaru";
 
 interface CompetitorOption {
   slug: string;
@@ -160,11 +160,11 @@ const hasOptions = competitorOptions.length > 0;
       <!-- Visually-hidden live region announces copy success to screen readers -->
       <span class="sr-only" id="chero-copy-status" aria-live="polite" aria-atomic="true"></span>
       <div class="chero-install">
-        <code class="chero-install-cmd">pip install kitaru</code>
+        <code class="chero-install-cmd">{KITARU_INSTALL_CMD}</code>
         <button
           class="chero-copy-btn"
           aria-label="Copy install command"
-          data-copy="pip install kitaru"
+          data-copy={KITARU_INSTALL_CMD}
         >
           <svg class="chero-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="9" y="9" width="13" height="13" rx="2"/>

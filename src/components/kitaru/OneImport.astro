@@ -6,17 +6,17 @@
   <div class="section-inner">
     <span class="section-eyebrow" data-reveal>POWERED BY DURABLE EXECUTION</span>
     <h2 class="section-title" data-reveal data-reveal-delay="1">
-      Keep your agent SDK. Kitaru records every call.
+      Keep your agent SDK. Make its runs replayable.
     </h2>
     <p class="one-import-desc" data-reveal data-reveal-delay="2">
-      One wrap, and every model and tool call is checkpointed. That durable record is what replay reads back, so a what-if is faithful, not a guess.
+      Wrap the calls and steps your SDK exposes, and Kitaru stores them as replayable checkpoints. That durable record is what replay reads back, so a what-if is faithful, not a guess.
     </p>
 
     <!-- Tabs -->
     <div class="one-import-tabs" role="tablist" data-reveal data-reveal-delay="3">
       <button class="one-import-tab is-active" role="tab" aria-selected="true" data-tab="pydanticai">PydanticAI</button>
       <button class="one-import-tab" role="tab" aria-selected="false" data-tab="openai">OpenAI Agents SDK</button>
-      <button class="one-import-tab" role="tab" aria-selected="false" data-tab="anthropic">Anthropic Agent SDK</button>
+      <button class="one-import-tab" role="tab" aria-selected="false" data-tab="anthropic">Claude Agent SDK</button>
       <button class="one-import-tab" role="tab" aria-selected="false" data-tab="custom">Raw Python</button>
     </div>
 
@@ -33,7 +33,7 @@
 
 agent <span class="op">=</span> <span class="fn">SandboxAgent</span>(
     name<span class="op">=</span><span class="str">"Compliance Reviewer"</span>,
-    model<span class="op">=</span><span class="str">"gpt-5.4"</span>,
+    model<span class="op">=</span><span class="str">"gpt-5-mini"</span>,
     default_manifest<span class="op">=</span>manifest,
 )
 
@@ -55,7 +55,7 @@ result <span class="op">=</span> <span class="kw">await</span> Runner.<span clas
 
 agent <span class="op">=</span> <span class="fn">SandboxAgent</span>(
     name<span class="op">=</span><span class="str">"Compliance Reviewer"</span>,
-    model<span class="op">=</span><span class="str">"gpt-5.4"</span>,
+    model<span class="op">=</span><span class="str">"gpt-5-mini"</span>,
     default_manifest<span class="op">=</span>manifest,
 )
 
@@ -77,7 +77,7 @@ result <span class="op">=</span> <span class="kw">await</span> runner.<span clas
 
 options <span class="op">=</span> <span class="fn">ClaudeAgentOptions</span>(
     system_prompt<span class="op">=</span><span class="str">"You are a compliance reviewer."</span>,
-    allowed_tools<span class="op">=</span>[<span class="str">"search_docs"</span>, <span class="str">"fetch_policy"</span>],
+    allowed_tools<span class="op">=</span>[],
 )
 
 <span class="kw">async for</span> msg <span class="kw">in</span> <span class="fn">query</span>(prompt<span class="op">=</span>task, options<span class="op">=</span>options):
@@ -94,22 +94,22 @@ options <span class="op">=</span> <span class="fn">ClaudeAgentOptions</span>(
               <span class="one-import-code-label is-after">With Kitaru</span>
               <span class="one-import-code-filename">agent.py</span>
             </div>
-            <pre class="one-import-code-pre code-syntax"><code><span class="kw">from</span> kitaru <span class="kw">import</span> flow, checkpoint
-<span class="kw">from</span> claude_agent_sdk <span class="kw">import</span> query, ClaudeAgentOptions
+            <pre class="one-import-code-pre code-syntax"><code><span class="kw">from</span> kitaru <span class="kw">import</span> flow
+<span class="kw">from</span> claude_agent_sdk <span class="kw">import</span> ClaudeAgentOptions
+<span class="kw">from</span> kitaru.adapters.claude_agent_sdk <span class="kw">import</span> ClaudeRunRequest, ClaudeRunResult, KitaruClaudeRunner
 
-options <span class="op">=</span> <span class="fn">ClaudeAgentOptions</span>(
-    system_prompt<span class="op">=</span><span class="str">"You are a compliance reviewer."</span>,
-    allowed_tools<span class="op">=</span>[<span class="str">"search_docs"</span>, <span class="str">"fetch_policy"</span>],
+runner <span class="op">=</span> <span class="fn">KitaruClaudeRunner</span>(
+    name<span class="op">=</span><span class="str">"compliance_review"</span>,
+    options_factory<span class="op">=</span><span class="kw">lambda</span> request: <span class="fn">ClaudeAgentOptions</span>(
+        system_prompt<span class="op">=</span><span class="str">"You are a compliance reviewer."</span>,
+        allowed_tools<span class="op">=</span>[],
+        max_turns<span class="op">=</span>request.max_turns,
+    ),
 )
 
-<span class="dec">@checkpoint</span>
-<span class="kw">async def</span> <span class="fn">run_claude</span>(task: <span class="var">str</span>) <span class="op">-></span> <span class="var">list</span>:
-    <span class="kw">return</span> [msg <span class="kw">async for</span> msg <span class="kw">in</span> <span class="fn">query</span>(prompt<span class="op">=</span>task, options<span class="op">=</span>options)]
-
 <span class="dec">@flow</span>
-<span class="kw">async def</span> <span class="fn">review</span>(task: <span class="var">str</span>):
-    <span class="kw">for</span> msg <span class="kw">in</span> <span class="kw">await</span> <span class="fn">run_claude</span>(task):
-        process(msg)</code></pre>
+<span class="kw">def</span> <span class="fn">review</span>(task: <span class="var">str</span>) <span class="op">-></span> <span class="var">ClaudeRunResult</span>:
+    <span class="kw">return</span> runner.<span class="fn">run_sync</span>(ClaudeRunRequest.<span class="fn">start</span>(task, max_turns<span class="op">=</span>3))</code></pre>
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@ options <span class="op">=</span> <span class="fn">ClaudeAgentOptions</span>(
             <pre class="one-import-code-pre code-syntax"><code><span class="kw">from</span> pydantic_ai <span class="kw">import</span> Agent
 
 agent <span class="op">=</span> <span class="fn">Agent</span>(
-    <span class="str">"openai:gpt-5.4"</span>,
+    <span class="str">"openai:gpt-5-mini"</span>,
     system_prompt<span class="op">=</span><span class="str">"You are a compliance reviewer."</span>,
     tools<span class="op">=</span>[search_docs, fetch_policy],
 )
@@ -147,7 +147,7 @@ result <span class="op">=</span> <span class="kw">await</span> agent.<span class
 <span class="kw">from</span> pydantic_ai <span class="kw">import</span> Agent
 
 agent <span class="op">=</span> <span class="fn">KitaruAgent</span>(<span class="fn">Agent</span>(
-    <span class="str">"openai:gpt-5.4"</span>,
+    <span class="str">"openai:gpt-5-mini"</span>,
     system_prompt<span class="op">=</span><span class="str">"You are a compliance reviewer."</span>,
     tools<span class="op">=</span>[search_docs, fetch_policy],
 ))
