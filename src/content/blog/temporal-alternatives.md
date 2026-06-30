@@ -1,5 +1,5 @@
 ---
-title: "Temporal Alternatives: 9 Tools ML and Data Teams Prefer"
+title: "I Tried and Tested the 9 Best Temporal Alternatives for Durable Execution and AI Agent Workflows"
 slug: "temporal-alternatives"
 draft: false
 webflow:
@@ -7,8 +7,8 @@ webflow:
   itemId: "6942383c7b3d0b09414ac2d1"
   exportedAt: "2026-02-11T13:30:32.135Z"
   source: "live"
-  lastPublished: "2025-12-18T04:22:23.526Z"
-  lastUpdated: "2025-12-18T04:22:23.526Z"
+  lastPublished: "2026-06-29T14:23:41.508Z"
+  lastUpdated: "2026-06-29T14:23:41.508Z"
   createdOn: "2025-12-17T04:57:32.942Z"
 author: "hamza-tahir"
 category: "mlops"
@@ -19,317 +19,433 @@ tags:
   - "teams"
   - "framework"
 date: "2025-12-17T00:00:00.000Z"
-readingTime: 15 mins
+readingTime: 21 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/590eefae/694239cb8d94e1c83218c6ad_temporal-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/31fffb10/temporal-alternatives-hero.avif"
+  alt: "ZenML blog cover comparing Temporal with the 9 best alternatives for durable execution and AI agent workflows, including Kitaru, Restate, DBOS, Inngest, Hatchet, Argo Workflows, Azure Durable Functions, and Camunda"
 seo:
-  title: "Temporal Alternatives: 9 Tools ML and Data Teams Prefer - ZenML Blog"
-  description: "In this article, you learn about the best Temporal alternatives for ML and data teams."
+  title: "Temporal Alternatives: 9 Best for Durable Execution - ZenML Blog"
+  description: "Compare the 9 best Temporal alternatives for durable execution and AI agent workflows, from Kitaru and Restate to DBOS, Inngest, Hatchet, and more."
   canonical: "https://www.zenml.io/blog/temporal-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/590eefae/694239cb8d94e1c83218c6ad_temporal-alternatives.png"
-  ogTitle: "Temporal Alternatives: 9 Tools ML and Data Teams Prefer - ZenML Blog"
-  ogDescription: "In this article, you learn about the best Temporal alternatives for ML and data teams."
+  ogImage: "https://assets.zenml.io/content/blog/1ad91e41/temporal-alternatives-hero.jpg"
+  ogTitle: "I Tried and Tested the 9 Best Temporal Alternatives for Durable Execution and AI Agent Workflows"
+  ogDescription: "Compare the 9 best Temporal alternatives for durable execution and AI agent workflows, from Kitaru and Restate to DBOS, Inngest, Hatchet, and more."
 ---
 
-Temporal has long been the gold standard for durable execution in microservices. However, for machine learning and data teams, Temporal’s developer-centric and infrastructure-heavy approach often feels like a mismatch.
+Temporal is a durable execution platform built for long-running, mission-critical workflows. Its promise is that your workflow runs to completion even if a process crashes, a server restarts, or a new deployment ships in the middle of it.
 
-If you are hitting walls with Temporal’s strict determinism or operational complexity, this guide is for you.
+That model was designed for backend and platform teams orchestrating things like payment flows, order processing, provisioning, and data pipelines. More recently, teams building AI systems have reached for it too, to keep agents and long-running tool calls alive across failures.
 
-We analyze the 9 best Temporal alternatives, ranging from data-first orchestrators to MLOps-native platforms, to help you ship efficient AI agents at scale.
+That guarantee comes with a cost. Temporal's deterministic replay rules, worker operations, and versioning requirements can feel like too much platform for simple background jobs, and can add modeling overhead for agent loops because Temporal Workflow code must be deterministic; nondeterministic LLM calls, API calls, database queries, and other side effects should run in Activities. So, depending on what you're building, another tool might fit your stack with far less overhead.
 
-## Overview
+That's what this article is about. We tested and compared the 9 best Temporal alternatives for durable execution and AI agent workflows, whether you want Python agents without replay restrictions, durable background jobs, Postgres-backed state, or serverless orchestration inside your existing stack. You'll find each one broken down by its core features, pricing, pros, and cons.
 
-<ul><li><strong>Why Look for Alternatives:</strong> Temporal optimizes for deterministic workflows, which can feel restrictive for probabilistic ML systems. Its strict determinism requirement and heavy infrastructure may slow iteration when building fast-moving AI workflows.</li><li><strong>Who Should Care:</strong> ML engineers, Data Scientists, and AI teams who need to orchestrate LLM agents but want a Python-first experience with built-in experiment tracking and data lineage.</li><li><strong>What to Expect:</strong> A detailed breakdown of 9 Temporal alternatives, from MLOps platforms like ZenML to data orchestrators like Airflow and Prefect, evaluated on their ability to handle AI agent workloads.</li></ul>
+## A Quick Overview of the Best Temporal Alternatives
+
+- **Why Look for Alternatives:** Temporal is powerful, but its deterministic workflow model, worker operations, and versioning rules can feel heavy for simple jobs or modern agentic loops.
+
+- **Who Should Care:** AI platform teams, ML engineers, Python developers, and backend teams running agents or workflows who can’t afford to restart from Step 0 after a crash.
+
+- **What to Expect:** A breakdown of 9 Temporal alternatives, from agent runtimes like Kitaru to durable workflow tools like Restate, DBOS, Inngest, and more.
 
 ## The Need for a Temporal Alternative?
 
-While Temporal excels at ensuring code runs to completion, it often creates friction for AI development lifecycles.
+![Diagram of four reasons teams look for a Temporal alternative: too much platform for simple jobs, restrictive deterministic replay, versioning and deploy safety overhead, and cloud lock-in with infrastructure control](https://assets.zenml.io/content/blog/150ba64e/why-look-for-temporal-alternative.avif)
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0930feac/69423855bf65c973c0fa9d43_why-look-for-a-temporal-alternative.webp" alt="Diagram of three reasons ML teams look for a Temporal alternative" />
-  <figcaption>Why look for a Temporal alternative</figcaption>
-</figure>
+### 1. Temporal Can Feel Like ‘Too Much Platform’ for Simple Jobs
 
-Here are three reasons why teams look elsewhere:
+If your job is a few background steps, a cron task, or a simple webhook chain, the platform feels bigger than the problem. Everything has to be serializable before it can be passed between workflows and activities.
 
-### 1. Heavy Operational and Infrastructure Overhead
+Temporal is a durable execution platform built around Workflows, Activities, Workers, Task Queues, Event History, Timers, Signals, and Updates, which can feel like more platform than a small background job needs.
 
-If you self-host Temporal, you operate the Temporal Server plus Persistence and Visibility stores (Visibility can be backed by SQL databases or Elasticsearch, depending on your setup). If you use Temporal Cloud, Temporal manages that backend infrastructure for you.
+### 2. The Deterministic Workflow Model Is Powerful but Restrictive
 
-For an ML team that simply wants to chain an LLM call with a database lookup, maintaining this infrastructure is overkill. It shifts focus from building intelligent agents to managing distributed systems.
+Temporal recovers workflows by replaying event history. For the replay to work, your workflow code must reach the same decisions each time.
 
-### 2. Steep Learning Curve and Strict Determinism
+Some backend systems still find it a fair practice, but with AI agents, it gets tricky. Model responses can vary, tool calls may return different results, and the end path may depend on user feedback.
 
-Temporal enforces strict determinism in workflow code. Workflow code must be deterministic. You should not call non-deterministic functions (like non-seeded random/UUID or system-time APIs) directly. Instead, use Temporal-provided mechanisms such as Activities or Side Effects (depending on SDK and use case) so results are recorded and replays stay deterministic.
+The split feels awkward if you want a plain Python agent loop with checkpointed steps. So, non-deterministic code in an Agentic AI setup can diverge from the event history.
 
-This might work for microservices, but not for scripting AI agents, where iteration speed is key. The rigid distinction between Workflows and Activities forces you to a specific coding style that might feel alienating if you’ve been around Python scripts.
+Teams often look for alternatives that avoid designing their application around deterministic event-history replay and instead expose step/checkpoint-oriented recovery primitives.
 
-### 3. Not Built as a Data/ML-First Orchestrator
+### 3. Versioning and Deploy Safety Become a Serious Engineering Concern
 
-Temporal is designed for service orchestration, not data flow. Therefore, it lacks native concepts for datasets, models, experiment tracking, and some other MLOps processes.
+Temporal’s replay model makes deployment safety a real design concern. You need to plan worker versions, build IDs, and long-running executions carefully, especially when workflows may remain open across several code releases.
 
-Temporal doesn’t provide first-class concepts or UI for prompt/dataset/model lineage or experiment tracking. You can record identifiers yourself, but you typically need an additional MLOps or lineage system to make that traceability easy and standardized.
+Plus, confusion around worker versioning, workflow versioning, and keeping older workers alive for long-running workflows.
 
-It misses the lineage and versioning crucial for debugging probabilistic AI systems.
+![Temporal documentation noting that Workflow code must be deterministic and that Versioning methods are needed to safely update running Workflows](https://assets.zenml.io/content/blog/a2eacb38/temporal-workflow-determinism-versioning-docs.avif)
 
-A top Reddit comment describes Temporal as feeling more like a Celery/queue framework than a traditional data orchestrator.
+[Source](https://docs.temporal.io/develop/php/workflows/versioning)
+
+### 4. Cloud-First Adoption Raises Lock-In and Infrastructure-Control Concerns
+
+Temporal can be self-hosted, but production self-hosting requires running the Temporal Service with a persistence DB and possibly a Kubernetes/Helm setup. Temporal Cloud stores encrypted workflow state while workers run in your environment.
+
+If your company has strict data controls, the question becomes bigger than workflow features. They need to know who runs the coordination layer and where the workflow state sits. They also need to understand how workers connect and what it would take to move later.
 
 ## Evaluation Criteria
 
-We evaluated these alternatives based on the specific needs of AI agent orchestration:
+We evaluated each Temporal alternative against the criteria that matter for durable execution and AI agent workflows.
 
-<ul><li><strong>Operational Overhead and Deployment Model:</strong> We looked for tools that are easy to deploy and maintain. We prioritized platforms that offer a simple <code>pip install</code> experience or managed cloud options, allowing teams to start small and scale without a dedicated DevOps team.</li><li><strong>Performance, Scalability, and Workload Fit:</strong> We assessed how well each tool handles these patterns, including support for async execution, parallelism, and event-driven triggers.</li><li><strong>Observability, UI, and Debugging</strong>: We evaluated each tool's UI and logging capabilities. Does it provide visual DAGs? Can you trace the inputs and outputs of every LLM call? Can you compare different runs to identify regression?</li><li><strong>Governance, Access Control, and Audit</strong>: We checked for features like Role-Based Access Control (RBAC), audit logs, and the ability to secure credentials and sensitive customer data.</li></ul>
+- **Developer experience and learning curve:** We tested how fast you can get productive and whether you can write normal code without much back and forth. We also checked how closely local dev matches production, reviewing docs, SDKs, and tooling to see how easy it is to build and debug workflows.
+
+- **Workflow model:** We focused on how each system actually runs work, whether through replay, checkpoints, database state, Kubernetes jobs, or BPMN. This shapes how failures are handled and how flexible the code can be.
+
+- **Operational model:** We examined how each tool is deployed and run, from managed cloud to self-hosted setups. We reviewed infrastructure needs and ongoing overhead to understand what it takes to run in production.
+
+- **AI agent fit:** We looked at how well each tool supports real agent patterns like LLM calls, tools, human approvals, and long waits, and whether it can resume from failures without redoing work.
+
+- **State and storage:** We reviewed storage options and flexibility to understand how each tool handles data ownership and control. We checked where workflow state lives and how much control teams have over it. This includes whether it stays in your cloud, database, or object store.
+
+- **Observability and recovery:** Lastly, we reviewed tools for the visibility they provide within your workflow. This includes logs, traces, failed steps, and retries, whether they provide dashboards and tooling to see how quickly teams can debug issues and resume runs.
 
 ## What are the Top Alternatives to Temporal
 
-Here are the top 9 alternatives to Temporal for shipping AI agents:
+Before we deep dive into tool reviews, here’s a quick comparison table to help you make a decision.
 
-<table> <thead> <tr> <th>Temporal Alternative</th> <th>Best For</th> <th>Key Features</th> <th>Pricing</th> </tr> </thead> <tbody> <tr> <td> <a href="https://www.zenml.io/" target="_blank" rel="noopener noreferrer"> ZenML </a> </td> <td> ML and AI teams that need to orchestrate agent workflows, tracking models, data experiments end-to-end. </td> <td> • ML-native pipelines and steps built for training, evaluation, and inference workflows<br /> • Artifact and lineage tracking across datasets, models, prompts, and outputs<br /> • Experiment and run metadata to compare executions and debug regressions </td> <td> Free (open source) + enterprise plan (custom pricing) </td> </tr> <tr> <td> <a href="https://airflow.apache.org/" target="_blank" rel="noopener noreferrer"> Airflow </a> </td> <td> Teams wanting a mature Python orchestrator with a huge connector ecosystem. </td> <td> • Python-based DAG definitions<br /> • Strong scheduler + parallel workers<br /> • Hundreds of connectors for data/ML stacks </td> <td> Free (open source) </td> </tr> <tr> <td> <a href="https://www.prefect.io/" target="_blank" rel="noopener noreferrer"> Prefect </a> </td> <td> Python teams wanting simpler workflow code with retries, caching, and hybrid execution. </td> <td> • Flow and task abstractions in plain Python<br /> • Automatic task retries and caching<br /> • Event-driven execution with UI monitoring </td> <td> Free<br /> Pro: $100 per month<br /> Team: $100 per user per month<br /> Enterprise: Custom pricing </td> </tr> <tr> <td> <a href="https://dagster.io/" target="_blank" rel="noopener noreferrer"> Dagster </a> </td> <td> Data and ML teams needing asset-first lineage and rich observability. </td> <td> • Asset-based pipeline model<br /> • Built-in lineage and metadata capture<br /> • Dag UI for logs, runs, and asset graphs </td> <td> Free (open source)<br /> Solo: $0 per month<br /> Starter: $100 per month </td> </tr> <tr> <td> <a href="https://kestra.io/" target="_blank" rel="noopener noreferrer"> Kestra </a> </td> <td> Teams preferring declarative YAML and event-driven cross-system workflows. </td> <td> • YAML-first workflows<br /> • Event, cron, and webhook triggers<br /> • Broad plugin ecosystem for APIs, DBs, queues </td> <td> Free (open source)<br /> Enterprise: Custom pricing </td> </tr> <tr> <td> <a href="https://flyte.org/" target="_blank" rel="noopener noreferrer"> Flyte </a> </td> <td> ML teams running large-scale, dynamic pipelines on Kubernetes. </td> <td> • Dynamic workflows and native runtime<br /> • Strong typing + parallel execution<br /> • Automatic state persistence for recovery </td> <td> Free (open source)<br /> Enterprise: Custom pricing </td> </tr> <tr> <td> <a href="https://metaflow.org/" target="_blank" rel="noopener noreferrer"> Metaflow </a> </td> <td> Data scientists wanting simple Python workflows with automatic versioning and cloud scaling. </td> <td> • Automatic versioning of data + models<br /> • One-command scaling to batch/compute backends<br /> • Python-native pipelines with minimal setup </td> <td> Free (open source)<br /> Enterprise: Custom pricing </td> </tr> <tr> <td> <a href="https://www.kubeflow.org/" target="_blank" rel="noopener noreferrer"> Kubeflow </a> </td> <td> Kubernetes-heavy teams building containerized ML workflows. </td> <td> • Component-based pipelines<br /> • Parallel execution and caching<br /> • Experiment comparison UI for runs </td> <td> Free (open source) </td> </tr> <tr> <td> <a href="https://argoproj.github.io/workflows/" target="_blank" rel="noopener noreferrer"> Argo Workflows </a> </td> <td> Teams wanting a lightweight, container-native workflow execution engine on Kubernetes. </td> <td> • Step-per-container execution<br /> • High parallelism via Kubernetes<br /> • UI and CLI for workflow graphs and logs </td> <td> Free (open source) </td> </tr> </tbody></table>
+<table> <thead> <tr> <th>Temporal Alternative</th> <th>Best For</th> <th>Key Features</th> <th>Pricing</th> </tr> </thead> <tbody>
+<tr> <td> <a href="https://www.zenml.io/product/kitaru" target="_blank" rel="noopener noreferrer">Kitaru</a> </td> <td>Python AI agents</td> <td>• Step-level checkpoint persistence<br /> • Selective replay execution control<br /> • Human-in-loop wait handling<br /> • Versioned deployment support<br /> • Own-cloud infrastructure control</td> <td>Free (open source, Apache 2.0)<br /> Paid plans start at $399/month</td> </tr>
+<tr> <td> <a href="https://www.restate.dev/" target="_blank" rel="noopener noreferrer">Restate</a> </td> <td>Lightweight runtime for durable backends</td> <td>• Stateful virtual object abstraction<br /> • Built-in timer scheduling support<br /> • Fault-tolerant agent recovery logic<br /> • Service-oriented workflow coordination</td> <td>Free tier available<br /> Paid plans start at $75/month</td> </tr>
+<tr> <td> <a href="https://dbos.dev/" target="_blank" rel="noopener noreferrer">DBOS</a> </td> <td>Postgres-backed workflows</td> <td>• Database-backed workflow state storage<br /> • Transactional step execution guarantees<br /> • Integrated workflow recovery mechanisms<br /> • Postgres-native idempotency handling</td> <td>Free and open-source<br /> Paid plans start at $99/month</td> </tr>
+<tr> <td> <a href="https://www.inngest.com/" target="_blank" rel="noopener noreferrer">Inngest</a> </td> <td>Event-driven durable functions</td> <td>• Event-triggered function execution<br /> • Step-based retry handling system<br /> • Built-in sleep and delay support<br /> • Serverless execution environment</td> <td>Free tier available<br /> Paid plans start at $75/month</td> </tr>
+<tr> <td> <a href="https://hatchet.run/" target="_blank" rel="noopener noreferrer">Hatchet</a> </td> <td>Durable tasks and queues</td> <td>• Distributed worker queue management<br /> • Task-level retry configuration<br /> • Fine-grained concurrency limit settings<br /> • Centralized logging and monitoring</td> <td>Free tier available<br /> Paid plans start at $500/month</td> </tr>
+<tr> <td> <a href="https://trigger.dev/" target="_blank" rel="noopener noreferrer">Trigger.dev</a> </td> <td>TypeScript-first background jobs</td> <td>• Checkpoint-based task resume system<br /> • Long-running task execution support<br /> • Managed worker infrastructure provisioning</td> <td>Free tier available<br /> Paid plans start at $10/month</td> </tr>
+<tr> <td> <a href="https://argoproj.github.io/workflows/" target="_blank" rel="noopener noreferrer">Argo Workflows</a> </td> <td>Kubernetes-native workflows</td> <td>• DAG-based execution dependency modeling<br /> • Containerized step execution environment<br /> • Artifact storage and retrieval support<br /> • Custom resource definition integration</td> <td>Free and open source</td> </tr>
+<tr> <td> <a href="https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-overview" target="_blank" rel="noopener noreferrer">Azure Durable Functions</a> </td> <td>Serverless orchestrations for Azure teams</td> <td>• Orchestrator function execution pattern<br /> • Activity-based task decomposition model<br /> • Durable timer and delay handling<br /> • Event-sourced workflow state management</td> <td>Azure Functions usage pricing applies</td> </tr>
+<tr> <td> <a href="https://camunda.com/" target="_blank" rel="noopener noreferrer">Camunda</a> </td> <td>BPMN-first process orchestration</td> <td>• External job worker execution model<br /> • Human task lifecycle management<br /> • End-to-end process visibility tools</td> <td>Free tier available<br /> Custom pricing</td> </tr>
+</tbody></table>
 
-## 1. ZenML
+## 1. Kitaru by ZenML
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/09f03b74/68ef8fecaaa4ab4a11f6d502_zenml-homepage.webp" alt="Screenshot of the ZenML homepage introducing its open-source MLOps framework" />
-</figure>
+![Screenshot of the Kitaru by ZenML homepage](https://assets.zenml.io/content/blog/4dde448e/kitaru-homepage.avif)
 
-[ZenML](https://www.zenml.io/) is an open-source MLOps framework built to run and manage machine learning workflows with full context. It is a strong alternative to Temporal when workflows are tied to models, data, and experiments rather than generic service orchestration.
+[Kitaru](https://www.zenml.io/product/kitaru), from ZenML, is a newer, open-source runtime for durable Python agents. It’s an agent-focused Temporal alternative for teams whose work revolves around an agent loop rather than a fixed backend workflow.
 
-### Features
+Kitaru doesn’t force you or your engineering team into a new workflow model. Instead, it sits under your existing agent frameworks, wraps normal Python, and prioritizes agent survival rather than generic microservice workflows. Your team keeps its current logic while gaining durable execution features.
 
-<ul><li>ML-native <a href="https://docs.zenml.io/concepts/steps_and_pipelines">pipelines and steps</a> are designed around training, evaluation, and inference workflows.</li><li><a href="https://docs.zenml.io/concepts/artifacts">Artifact tracking</a> for datasets, models, prompts, and outputs with end-to-end lineage.</li><li>Run and <a href="https://docs.zenml.io/concepts/metadata">experiment metadata</a> to compare executions and trace regressions.</li><li>Pluggable infrastructure stacks that let the same pipeline run locally, on Kubernetes, or in the cloud.</li><li>Versioned promotion of ML assets from experimentation to production.</li></ul>
+Where Kitaru helps is letting you build these agents without Temporal’s determinism burden, especially for long-running workflows that involve checkpoints, tool calls, and sandboxed steps.
 
-### Pricing
+Here are some key features Kitaru offers:
 
-ZenML is free and open-source under the Apache 2.0 License. The core framework, including tracking, orchestration, and ZenML dashboard, can be fully self-hosted at no cost.
+### Feature 1. Checkpointing and Replay
 
-For teams that want a managed setup or enterprise features, ZenML offers paid plans through ZenML Pro with pricing based on deployment and scale. The plan adds SSO, role-based access control, premium support, and hosted infrastructure, while all core MLOps functionality remains available in the open-source version.
+![Screenshot of the Kitaru dashboard showing an agent run with checkpointed steps and a checkpoint detail panel](https://assets.zenml.io/content/blog/75665a37/kitaru-checkpointing-replay.avif)
 
-You can start without paying and move to a paid plan only when collaboration or operational ownership becomes a bottleneck.
+Kitaru lets you add checkpoints around expensive or critical agent steps using the `@checkpoint` decorator. Each checkpoint saves the output of that step so that if a run fails later, the system can resume from the last successful checkpoint instead of starting over.
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dc43761d/6942387a3bfbfab8acccd4e2_zenml-pricing.png" alt="Screenshot of the ZenML pricing page showing free open-source and ZenML Pro plans" />
-</figure>
+If your AI agents rely on costly model calls or external tools, this approach is a huge savings on bills. Instead of repeating every step after a failure, Kitaru reuses previously completed results, reducing both latency and compute cost.
 
-### Pros and Cons
+### Feature 2. Flexible Execution Without Determinism Constraints
 
-ZenML’s main strength is that orchestration and MLOps live in the same system. Every pipeline run carries information about the data, models, and artifacts involved, which makes debugging and reviewing changes possible without stitching together multiple tools.
+Unlike systems that rely on deterministic replay, Kitaru does not require workflows to produce identical outputs across runs. It avoids the complexity of event-history replay by storing completed step results directly.
 
-Another advantage is standardization across ML teams. Pipelines follow a consistent structure while still allowing teams to choose where and how they run them.
+You can write normal Python code without worrying about restrictions on randomness, time, or external calls. As a result, agent logic can remain flexible and expressive. A critical add-on for workflows that depend on model outputs and dynamic decision-making.
 
-The downside is focus. ZenML is built for ML workflows, so teams looking for a general-purpose workflow engine for non-ML services may find Temporal better aligned with that use case.
+### Feature 3. Built-in Waiting for External Input
 
-## 2. Apache Airflow
+![Kitaru replay code example titled 'Every what-if is one replay call', showing checkpoint-based replay variations of a support agent run](https://assets.zenml.io/content/blog/8c0f504c/kitaru-wait-function.avif)
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c7f83c73/6942388ce61d06c97481baaf_apache-airflow-homepage.png" alt="Screenshot of the Apache Airflow homepage" />
-</figure>
+Kitaru has a `wait()` function that allows agent workflows to pause execution when they need input from a human, a webhook, or another system. During this pause, the workflow does not consume compute resources.
 
-[Airflow](https://airflow.apache.org/) is the industry standard for programmatic workflow authoring. While traditionally batch-oriented, its massive ecosystem makes it a viable choice for teams who want to integrate AI agents into larger data processing pipelines without adopting a new tool.
+Once the required input arrives, the workflow resumes from the exact point where it stopped. This makes it easier to build agents that involve approvals, asynchronous events, or multi-step interactions without implementing custom polling or state management.
 
-### Features
+### Feature 4. Compatibility with Existing Agent Frameworks
 
-<ul><li>Define Python-based DAGs that let you model tasks, branches, and retries cleanly for versioned, testable workflows.</li><li>Scale workloads across Celery or Kubernetes executors to run many tasks in parallel with minimal overhead.</li><li>Monitor pipelines through a visual UI that surfaces DAG graphs, logs, statuses, and retry controls in one place.</li><li>Connect to cloud services and data systems using a broad library of operators spanning AWS, GCP, Azure, Spark, and more.</li><li>Schedule workflows with cron rules, sensors, or backfills to automate recurring runs or recover missed executions.</li></ul>
+![Diagram showing Kitaru at the center connected to agent frameworks: OpenAI Agents SDK, Anthropic Agent SDK, PydanticAI, and LangGraph](https://assets.zenml.io/content/blog/83fd77b0/kitaru-agent-framework-compatibility.webp)
 
-### Pricing
+Kitaru is designed to work alongside existing agent frameworks rather than replace them. It integrates with tools such as OpenAI Agents SDK, Anthropic Agent SDK, PydanticAI, LangGraph, and raw Python workflows.
 
-Apache Airflow is fully open-source (Apache 2.0 license) and free to use.
-
-### Pros and Cons
-
-Airflow’s pros are its maturity and community. It has proven stability, a huge ecosystem of connectors, and a familiar Python-centric workflow model for data teams. The built-in UI and monitoring are well-developed, and many engineers have experience with it.
-
-However, Airflow was designed for scheduled batch jobs, not the low-latency, event-driven patterns typical of conversational agents. It requires setting up and maintaining its scheduler, database, and worker components – a nontrivial DevOps effort. Airflow’s static DAG paradigm also makes it less well-suited to highly dynamic or streaming agent flows.
-
-**📚 Read about how **[Airflow compares to Temporal](https://www.zenml.io/blog/temporal-vs-airflow)**.**
-
-## 3. Prefect
-
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/765c2722/6942389fbc9ddca8013c397c_prefect-homepage.webp" alt="Screenshot of the Prefect homepage" />
-</figure>
-
-[Prefect](https://www.prefect.io/solutions/agents) is a Python-native workflow platform highly effective for AI agents that require dynamic loops, conditional logic, and responsiveness. It keeps things simple, you define workflows as regular Python functions with `@flow` and `@task`, and Prefect handles orchestration, retries, and scheduling in the background.
-
-### Features
-
-<ul><li>Execute asynchronous Python code natively to handle IO-bound LLM calls efficiently without blocking resources.</li><li>Trigger agent responses instantly via webhooks or event streams to support real-time user interactions.</li><li>Inspect task outputs and logged artifacts, including markdown, tables, or JSON, directly in the UI.</li><li>Route agent tasks to specific infrastructure, such as GPU instances, using simple work pool configurations</li><li>Coordinate LLM or multi-agent steps using Prefect’s Agent model, including optional human-approval gates.</li></ul>
+This lets you keep their current agent logic and simply add durability features on top. You don’t need to rewrite your agents to fit a new execution model, which lowers adoption friction and speeds up production readiness.
 
 ### Pricing
 
-Prefect is open-source (Apache 2.0) for self-hosting. [Prefect Cloud](https://www.zenml.io/blog/prefect-pricing) offers a free tier for individuals, with paid plans:
+Kitaru’s full SDK is open-source under Apache 2.0 and free forever. Apart from the open-source version, we offer three plans. These plans give you access to both ZenML (for ML pipelines) and Kitaru (to run durable AI agents):
 
-<ul><li><strong>Starter:</strong> $100 per month (Up to 3 users)</li><li><strong>Team:</strong> $100 per user per month</li><li><strong>Pro:</strong> Custom pricing</li><li><strong>Enterprise:</strong> Custom pricing</li></ul>
+- **500 monthly executions:** $399 per month. 1 project and 1 snapshot.
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b2c71dfd/694238ab482994c2d8153e5c_prefect-pricing.webp" alt="Screenshot of Prefect Cloud pricing tiers including free, Starter, Team, and Enterprise plans" />
-</figure>
+- **2,000 monthly executions:** $999 per month. 3 projects and 5 snapshots.
+
+- **5,000 monthly executions:** $2,499 per month. 10 projects and 20 snapshots.
+
+ZenML also offers an Enterprise plan with unlimited executions and projects for which you can [talk to an engineer from our team](https://www.zenml.io/book-your-demo).
+
+![Screenshot of the ZenML and Kitaru pricing plans](https://assets.zenml.io/content/blog/124fbb96/kitaru-pricing.avif)
 
 ### Pros and Cons
 
-Prefect shines when developer speed and workflow control matter. Workflows are written as regular Python code, which makes branching logic, retries, and event-driven execution easy to express and reason about. It also provides a clear UI for inspecting task-level execution, which helps during development and operations.
+Kitaru is at its best when the work is a long-running background agent written in Python. It’s feature-rich for that job, lets you add durable execution while avoiding Temporal’s deterministic model, and gives you visual dashboards to inspect and debug runs, steps, artifacts, and costs without moving logic into BPMN.
 
-The limitation is MLOps depth. Prefect runs workflows reliably, but it does not track models, datasets, or lineage as first-class concepts, so ML teams usually need an additional system to understand how outputs were produced.
+The honest tradeoffs are maturity and scope. Kitaru is a young, open-source project, so it doesn’t yet have the years of at-scale production hardening that tools like Temporal, Argo Workflows, Azure Durable Functions, and Camunda have from running inside real companies every day. It’s also deliberately narrow, built for Python agents rather than every kind of backend workflow. If you need a proven, multi-language engine, formal process diagrams, or non-agent workloads, several of the other tools here are the safer pick today. Kitaru’s bet is that an agent-native runtime matters more than a long track record for this specific job.
 
-**📚 Relevant read:** [Prefect vs Airflow vs ZenML](https://www.zenml.io/blog/prefect-vs-airflow)
+**Read Comparison:** [Kitaru vs Temporal](https://www.zenml.io/compare/kitaru-vs-temporal)
 
-## 4. Dagster
+## 2. Restate
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d4a17463/694238bc73f517e9f4b0b430_dagster-homepage.webp" alt="Dagster Homepage screenshot" />
-</figure>
+![Screenshot of the Restate homepage](https://assets.zenml.io/content/blog/cafca93e/restate-homepage.avif)
 
-[Dagster](https://dagster.io/pricing) is best for data teams that treat their AI agents as producers and consumers of data assets. It introduces the idea of ‘assets’, like data outputs, tables, or models, as first-class citizens in workflows. It is a popular alternative to Temporal because it bundles observability and data lineage into the core experience.
+[Restate](https://www.restate.dev/) is a lightweight runtime for durable services, workflows, and AI agents. It’s a good pick if you want fault-tolerant service calls, timers, state, and agent recovery without running a large workflow platform.
 
 ### Features
 
-<ul><li>Run pipelines locally or on isolated branch deployments to test changes before promoting them to production.</li><li>Model agent knowledge bases and outputs as software-defined assets to track data freshness and quality.</li><li>Trigger agent runs based on upstream data updates rather than rigid schedules to ensure context relevance.</li><li>Configure and test agent runs manually with varying parameters using the built-in Launchpad UI.</li><li>Abstract storage logic for complex inputs and outputs automatically with pluggable IO managers.</li><li>Connect to cloud services and data systems through integrations spanning AWS, GCP, Snowflake, Spark, and more.</li></ul>
+- Persist each durable action, including LLM calls, tool steps, sleeps, service calls, and function completion. If a process fails, Restate can continue from the recorded progress, so you don't have to repeat every action.
+
+- You can build agents that are resilient to crashes and interruptions. Even if something goes wrong, Restate can restore previous progress from model calls and tool executions, so your agent doesn’t lose its place.
+
+- Use virtual objects and services for stateful coordination. This works well when an agent owns a session, task, or customer-level process that needs a clear state owner.
+
+- You’re not locked in and have flexibility to run Restate locally as a single binary, use Restate Cloud, or deploy the runtime beside your services. This gives you more deployment choices than a cloud-only workflow product.
 
 ### Pricing
 
-Dagster itself is free and open-source. For managed offerings, **Dagster Cloud** offers paid plans:
+Restate offers a free cloud tier and four paid plans:
 
-<ul><li><strong>Solo:</strong> $10 per month</li><li><strong>Starter:</strong> $100 per month</li><li><strong>Pro:</strong> Custom pricing</li></ul>
+- **Starter:** $75 per month
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4e3c3d7b/694238d82e1a2794015f578e_dagster-pricing.webp" alt="Dagster Pricing diagram" />
-</figure>
+- **Business:** $300 per month
+
+- **Premium:** $1000 per month
+
+- **Enterprise:** Custom pricing
+
+![Screenshot of Restate pricing plans](https://assets.zenml.io/content/blog/584344c3/restate-pricing.avif)
 
 ### Pros and Cons
 
-Dagster’s pros include its strong developer ergonomics and data-centric features. Its type system and local testing support lead to fewer runtime surprises. And a polished visual UI makes monitoring and debugging straightforward. For ML teams, the built-in data quality and lineage tools are a major plus.
+Restate is strong when your workflow lives close to backend services. It gives you durable steps, timers, and messaging without forcing every process into Temporal-style workflow code.
 
-However, its asset-centric mental model can be a learning curve for engineers who just want to run a simple script. Also, it’s less suited for purely conversational, stateless agents that don't produce persistent data artifacts. Some advanced features, like certain connectors or team collaboration features, are only in Dagster Cloud, not the OSS version.
+The downside is that your team still needs to adopt Restate’s service model. If you already have a large Temporal setup, Restate may feel like a new runtime to run and learn. If your agents are pure Python loops, Kitaru may feel more natural.
 
-## 5. Kestra
+**You may want to read next:** [Kitaru vs Restate](https://www.zenml.io/compare/kitaru-vs-restate)
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5879c333/694238f289029c47e4c9de37_kestra-homepage.webp" alt="Kestra Homepage screenshot" />
-</figure>
+## 3. DBOS
 
-[Kestra](https://kestra.io/) is an event-driven orchestrator that uses YAML to define workflows. It is particularly powerful for stitching together heterogeneous systems, like a Python agent, a SQL query, and a Node.js API, without managing complex worker environments.
+![Screenshot of the DBOS homepage](https://assets.zenml.io/content/blog/23fbfb5a/dbos-homepage.avif)
+
+[DBOS](https://dbos.dev/) is a durable execution framework that uses Postgres as the source of workflow truth. It’s a solid Temporal alternative when you already trust Postgres and want workflows, queues, transactions, and agents inside normal app code.
 
 ### Features
 
-<ul><li>Define complex agent logic, including retries and conditionals, using declarative YAML files accessible to non-engineers.</li><li>Run Python or Node.js scripts directly within the worker to avoid complex packaging and deployment steps.</li><li>Initiate agent workflows instantly upon external events using built-in webhook and Kafka triggers.</li><li>Compose modular multi-agent systems by calling and nesting distinct flows as reusable sub-processes.</li></ul>
+- Store workflow and step progress in Postgres. If the application stops or crashes, it can resume from the last successful step instead of rerunning the entire workflow, which saves time and avoids duplicate side effects.
+
+- Use workflow IDs as idempotency keys. Each workflow run is uniquely identified, which means repeated requests, whether from retries, duplicate API calls, or webhook replays, can be safely handled without executing the same logic twice.
+
+- Pair DBOS with Pydantic AI for durable agent workflows. DBOS checkpoints workflow state in the database, while Pydantic AI handles typed agent logic. Together, they let you build agents that are both resilient to failure and easier to reason about in code.
+
+- Manage and visualize runs through DBOS Conductor. You can view workflows, inspect runs, retry failed runs, and even fork workflows for debugging or experimentation without building a custom ops UI.
 
 ### Pricing
 
-Kestra is entirely open-source (Apache 2.0) and free to use. There is an enterprise edition that adds features like advanced governance, security, and support; this is sold on an on-demand, per-instance basis./
+DBOS Transact is free and open source. Additionally, DBOS provides three premium plans:
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fd6e4cf6/69423918849efa05689825e5_kestra-pricing.webp" alt="Kestra Pricing" />
-</figure>
+- **Pro:** $99 per month
+
+- **Teams:** $499 per month
+
+- **Enterprise:** Custom pricing
+
+![Screenshot of DBOS pricing plans](https://assets.zenml.io/content/blog/8803496a/dbos-pricing.avif)
 
 ### Pros and Cons
 
-Kestra’s strengths are its lightweight deployment model and flexibility. Teams find it easy to adapt with a zero vendor lock-in promise. The event-driven design is particularly good for streaming or API-triggered pipelines. Compared to building custom Airflow DAGs, defining a Kestra workflow in YAML can be much simpler.
+On the plus side, this Postgres-first approach can feel very natural for your backend team. You get strong durability, built-in idempotency, and a simpler mental model since everything lives in one place. It can also reduce operational overhead because you are not running and maintaining a separate orchestration cluster.
 
-On the downside, Kestra is less well-known than Airflow or Prefect, so the community and ecosystem are smaller. Its UI is more basic, and features like complex cron dependencies may require more manual setup. Additionally, if you prefer code for complex logic, the YAML approach may feel limiting.
+The tradeoff is the database-centered model. If your workflow depends heavily on external artifacts like files, model outputs, and sandboxed execution, forcing everything through Postgres may not feel like the best fit. You may also run into scaling or performance issues if workflows become heavy or involve non-database operations.
 
-## 6. Flyte
+**Also read:** [Kitaru vs DBOS](https://www.zenml.io/compare/kitaru-vs-dbos)
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0b957983/6942392789029c47e4c9e322_flyte-homepage.webp" alt="Flyte Homepage screenshot" />
-</figure>
+## 4. Inngest
 
-[Flyte](https://flyte.org/) is a Kubernetes-native orchestrator originally built at Lyft. It is designed for massive scale and reproducibility. Therefore, a popular Temporal alternative for teams treating AI agents as mission-critical production software.
+![Screenshot of the Inngest homepage](https://assets.zenml.io/content/blog/81859879/inngest-homepage.avif)
+
+[Inngest](https://www.inngest.com/) is an event-driven platform for durable functions that simplifies how modern applications handle background work and long-running processes. It lets you build workflows in TypeScript or Python with durable steps, sleeps, retries, and cron, all without the overhead of managing a full orchestration system.
 
 ### Features
 
-<ul><li>Build pipelines in pure Python and use loops, maps, and branches to create dynamic, data-driven workflows.</li><li>Trigger runtime decisions with native conditional logic that adapts the workflow to intermediate results.</li><li>Recover from failures automatically through state persistence that restarts workflows from the last successful step.</li><li>Run tasks locally or on Kubernetes with identical code so development and production behave the same way.</li><li>Reduce execution latency with warmed container reuse and live debugging in the Union AI edition.</li></ul>
+- Wrap work in `step.run()` so each step can save output and retry on failure. This lets you break workflow into clearly defined units where results are automatically persisted. It’s useful when a model call, API request, or database write should not run twice after a later failure.
+
+- Use `step.sleep()` and `waitForEvent()` for long waits. Your workflows can pause until a user replies, a webhook arrives, or a delay passes, without consuming compute or building a custom polling loop.
+
+- Build your workflow around event-driven execution, trigger functions from product events, schedules, queues, and webhooks. This makes it easy to kick off agent jobs in response to real-time activity, like a new signup, a payment event, or a scheduled task.
 
 ### Pricing
 
-Flyte is free and open-source at its core. [Union.ai](http://Union.ai) offers Flyte Enterprise, a fully-managed service for large deployments, but pricing for that is custom.
+Inngest is open-source and free to self-host. It has three pricing plans:
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/908a8af8/69423936d02105de208e41e1_flyte-pricing.webp" alt="Flyte Pricing" />
-</figure>
+- **Hobby:** Free
+
+- **Pro:** $75 per month
+
+- **Enterprise:** Custom pricing
+
+![Screenshot of Inngest pricing plans](https://assets.zenml.io/content/blog/5f25d9d9/inngest-pricing.avif)
 
 ### Pros and Cons
 
-Flyte offers arguably the best reproducibility and scalability guarantees of any Temporal alternatives on this list. Its type system prevents many common data bugs in agent pipelines. Also, it’s good at both batch and streaming ML workflows, and many teams praise its data lineage and strong typing.
+Inngest’s built-in durable execution primitives like step retries, sleeps, and event waits, simplify error handling during long-running processes without managing infrastructure yourself. It integrates naturally with modern web stacks, which makes it easy to adopt. On Inngest Cloud, the managed execution model reduces operational overhead because you do not run the execution engine yourself. If you self-host Inngest, you are responsible for operating the Inngest services.
 
-However, it requires Kubernetes and its own control plane, so there’s a higher operational cost compared to simple Python schedulers. If your team is not comfortable managing K8s clusters, Flyte isn’t the right fit. Check out lighter tools like Prefect or ZenML.
+However, Inngest is more opinionated around event-based triggers and less flexible for workflows that require more dynamic control flow. It lacks features like native model call replay, artifact tracking, or tight integration with agent frameworks. While it supports Python, its ecosystem and tooling are more mature in TypeScript, which may be a drawback if you primarily build in Python.
 
-**📚 Relevant read:** [Flyte vs Airflow vs ZenML](https://www.zenml.io/blog/flyte-vs-airflow)
+**Related Reads:** [Kitaru vs Inngest](https://www.zenml.io/compare/kitaru-vs-inngest)
 
-## 7. Metaflow
+## 5. Hatchet
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9d47ef10/6942394334bc6024a8313975_metaflow-homepage.webp" alt="Metaflow Homepage screenshot" />
-</figure>
+![Screenshot of the Hatchet homepage](https://assets.zenml.io/content/blog/5ddb4054/hatchet-homepage.avif)
 
-[Metaflow](https://metaflow.org/) is an open-source framework (originally from Netflix) for managing real-world data science projects and ML workflows. It lets you write workflows as pure Python code, then handles scaling, versioning, and execution for you.
+[Hatchet](https://hatchet.run/) focuses on orchestrating background jobs and task queues with durability built in. It’d suit you if you need fine-grained control over workers, retries, and concurrency without relying on Temporal-style deterministic replay.
 
 ### Features
 
-<ul><li>Version every input, parameter, and output so each run is reproducible and easy to debug.</li><li>Scale workflow steps to AWS Batch or Kubernetes with minimal code changes.</li><li>Load data from large stores and keep datasets versioned alongside models for consistent lineage.</li><li>Track runs, lineage, and comparisons through the Outerbounds UI when you need visual experiment management.</li><li>Isolate agent runs in separate namespaces to manage production and development environments safely.</li></ul>
+- Write tasks in Python, TypeScript, Go, Ruby, or the language your team already uses. For Hatchet Durable Tasks, resumability comes from durable execution primitives: the task can wait for time/events or spawn child tasks, and Hatchet writes checkpoints to a durable event log at those boundaries.
+
+- Use durable tasks that wait for time to pass or events to arrive, while Hatchet records checkpoints in a durable event log. This means long-running operations don’t need to stay active in memory, reducing compute waste. You can design workflows that pause for external signals or delays and reliably continue from the last known state.
+
+- Control concurrency, queues, rate limits, and retries close to the task definition. You get fine-grained control over how tasks are executed. You can prevent overload, smooth traffic spikes, and ensure critical tasks get priority without building custom scheduling logic.
+
+- View each task's lifecycle, including runs, logs, failures, and retries in the Hatchet UI. You can quickly identify where a workflow failed, inspect logs, and retry specific steps without rerunning the entire job.
 
 ### Pricing
 
-[Metaflow is open-source](https://www.zenml.io/blog/metaflow-alternatives) (Apache 2.0). [Outerbounds](https://www.zenml.io/blog/outerbounds-pricing) offers a managed platform that provides a fully hosted control plane and enhanced security features.
+Hatchet is free to use as an open-source platform. It also has a free cloud-based Developer plan with usage-based task runs, and two paid plans:
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1e42e42a/6942395cae148cd47044b075_outerbounds-metaflow-managed-service-pricing.webp" alt="Outerbounds Metaflow Managed Service Pricing" />
-</figure>
+- **Team:** $500 per month
+
+- **Scale:** $1000 per month
+
+![Screenshot of Hatchet pricing plans](https://assets.zenml.io/content/blog/d24b918a/hatchet-pricing.avif)
 
 ### Pros and Cons
 
-Metaflow’s pros lie in its simplicity for data scientists. You can take a local notebook or script and scale it up with one command, without container specs or extra code. Automatic versioning of results is excellent for provenance. Since it was designed at Netflix, it works smoothly with AWS (Step Functions/EKS) and now Azure/GCP too.
+Hatchet gives you complete control over workers, retries, concurrency, and failures. These controls are built into the task system rather than requiring external infrastructure. It also provides strong observability through its UI. Additionally, its queue-based model aligns well with existing background job patterns, making migration from tools like Celery or Bull easier.
 
-Its cons include the fact that core Metaflow historically leaned toward AWS-specific, so multi-cloud or on-prem setups are newer. The out-of-the-box OSS offering has minimal UI. Also, advanced workflow patterns (dynamic DAGs, streaming triggers) are limited compared to tools like Prefect or Flyte. Finally, the managed service is relatively expensive, which may deter smaller teams.
+The tradeoff is that Hatchet is less suited to formal workflow modeling than Camunda and less agent-specific than Kitaru. It’s simpler when the problem looks like task queues and workers, but its Durable Tasks still require a deterministic structure around checkpoints. It is not a free-form Python agent loop.
 
-## 8. Kubeflow
+## 6. Trigger.dev
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2dbb5d12/6942396c38f3f29e55b7f81a_kubeflow-homepage.webp" alt="Kubeflow Homepage screenshot" />
-</figure>
+![Screenshot of the Trigger.dev homepage](https://assets.zenml.io/content/blog/b8df3e7a/trigger-dev-homepage.avif)
 
-[Kubeflow](https://www.kubeflow.org/) is an open-source ML platform built for Kubernetes, with modular tools for model training, hyperparameter tuning, and model serving at scale. Its Pipelines component lets you define container-based workflows in Python or YAML and run them on any K8s cluster.
+[Trigger.dev](https://trigger.dev/) is a TypeScript-first platform for long-running tasks, background jobs, and AI workflows. It’s designed for product teams that want tasks in code with checkpoint-resume behavior and no serverless timeout pain.
 
 ### Features
 
-<ul><li>Assemble container-based ML pipelines with the Kubeflow Pipelines SDK and reuse components across training, prep, or evaluation steps.</li><li>Pass parameters and artifacts automatically as Kubeflow handles serialization and storage across workflow steps.</li><li>Run tasks in parallel for large workloads and skip unchanged steps through built-in caching.</li><li>Compare runs in the Pipelines UI to view logs, metrics, and resource usage for each execution.</li><li>Deploy pipelines on any Kubernetes cluster and move them across environments with a portable YAML-based IR.</li></ul>
+- Use a checkpoint-resume system for long-running tasks. Task state is persisted at defined checkpoints so you can build workflows that exceed typical serverless time limits while ensuring that failures or restarts do not require rerunning completed steps.
+
+- Add waitpoints for callbacks or external events. A task can wait for a webhook, third-party job, or human input, then continue with the result. This makes it easier to coordinate asynchronous workflows without building custom polling or state management logic.
+
+- Use normal TypeScript task code with queues, schedules, retries, and dashboard logs. You can define workflows using familiar patterns and integrate them into existing apps without adopting a new orchestration model. Built-in observability tools provide visibility into task execution, which makes debugging and monitoring easier for web teams.
+
+- Run tasks on managed workers and only pay while tasks execute. Trigger.dev handles worker infrastructure and automatically scales execution, while pausing billing during idle wait periods by checkpointing tasks after short delays.
 
 ### Pricing
 
-Kubeflow is free and open-source (Apache 2.0). Google offers a fully managed option via Vertex AI Pipelines. On AWS, Kubeflow is commonly deployed via the open-source ‘Kubeflow on AWS’ distribution (typically on EKS), and you can integrate with managed services like SageMaker to run heavy jobs.
+Trigger.dev offers a free plan with unlimited tasks, 20 concurrent runs, and five team members. Other than that, it has three paid plans:
+
+- **Hobby:** $10 per month
+
+- **Pro:** $50 per month
+
+- **Enterprise:** Custom pricing
+
+![Screenshot of Trigger.dev pricing plans](https://assets.zenml.io/content/blog/f8319ff4/trigger-dev-pricing.avif)
 
 ### Pros and Cons
 
-Kubeflow’s biggest advantage is its end-to-end Kubernetes-native ML stack. It covers your entire workflow within one ecosystem. Teams already on Kubernetes benefit from massive scalability and can leverage cloud credits or cluster autoscaling.
+Trigger.dev is a great choice if your team already lives in TypeScript and wants a simple way to run durable background jobs. It feels natural to plug into an existing web app, especially if you're already using queues, cron jobs, or event-driven workflows. The checkpoint-resume model is a big win here, since you don’t have to worry about timeouts killing long-running tasks. The developer experience is smooth, and the dashboard makes it easy to see what’s going on when something fails.
 
-However, it is notoriously difficult to install and maintain. The operational burden is high, making it suitable mostly for large enterprises with dedicated platform engineering teams.
+That said, it’s not a perfect fit for every team. If your workflows are Python-heavy, especially for AI agents, the TypeScript-first approach can feel like a mismatch. While you can run Python scripts, it’s not as good as other Temporal alternatives built specifically for Python workflows.
 
-**📚 Relevant read:** [Kubeflow vs MLflow vs ZenML](https://www.zenml.io/blog/kubeflow-vs-mlflow)
+## 7. Argo Workflows
 
-## 9. Argo Workflows
+![Screenshot of the Argo Workflows homepage](https://assets.zenml.io/content/blog/1ed1daf5/argo-workflows-homepage.avif)
 
-<figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/31995bf6/694239b5ed4cebb9ceffba60_argo-homepage.webp" alt="Argo Homepage screenshot" />
-</figure>
-
-Kubeflow Pipelines traditionally used [Argo Workflows](https://argoproj.github.io/workflows/) as its default workflow engine, though other backends have existed (for example, Tekton), and newer KFP versions emphasize a more backend-agnostic intermediate representation.
+[Argo Workflows](https://argoproj.github.io/workflows/) is an open-source workflow engine for Kubernetes. It’s a good Temporal alternative if you run jobs as containers and want DAG or step-based orchestration inside Kubernetes.
 
 ### Features
 
-<ul><li>Define each workflow step as a container to run tasks in isolated pods with precise scaling across your cluster.</li><li>Run workflows on any Kubernetes setup and rely on native autoscaling to push thousands of parallel tasks when needed.</li><li>View workflow graphs, logs, and statuses in a clean web UI or interact through the CLI or Python client.</li><li>Move artifacts through S3, GCS, HTTP, or Git so steps can pull inputs or push outputs with minimal setup.</li><li>Reuse workflow templates and CronWorkflows to standardize patterns and automate recurring ML or CI tasks.</li></ul>
+- Define workflows as Kubernetes custom resources. Each step runs as a container, so you can package ML jobs, data pipelines, or batch agent tasks with dependencies and run them reliably across environments.
+
+- Model workflows as DAGs or ordered steps. Argo lets you define dependencies between tasks and is especially useful when workflows resemble container-based pipelines. You can optimize execution time and resource usage without rewriting logic into function-based orchestration.
+
+- Use Kubernetes primitives for scheduling, secrets, service accounts, resource requests, and job isolation. Argo integrates directly with native Kubernetes features, so you can control permissions, manage sensitive data, and allocate compute resources using familiar tools.
+
+- Track artifacts, parameters, retries, and workflow status through Argo’s controller and UI. You can monitor progress in real time and quickly rerun failed steps, improving reliability without needing an external orchestration service.
 
 ### Pricing
 
-Argo Workflows is fully open-source (Apache 2.0) and free to use. As a CNCF project, there are no licensing costs. You only pay for the Kubernetes infrastructure it runs on.
+Argo Workflows is free and open source. You still pay for the Kubernetes cluster, compute, storage, and any managed service that runs it.
 
 ### Pros and Cons
 
-Argo is incredibly robust and fits perfectly into a Kubernetes-centric DevOps culture. It is lightweight compared to Kubeflow and highly reliable.
+If your team is already comfortable with Kubernetes, Argo feels like a natural extension rather than a new system to learn. It works well for ML pipelines, batch jobs, CI/CD pipelines, and infrastructure-heavy workloads where each step is already packaged as a container. Tight integration with Kubernetes primitives like secrets, RBAC, and resource scheduling simplifies operations for platform teams.
 
-The downside is the developer experience. Writing lengthy YAML files to define simple Python agent loops can be tedious, and debugging YAML errors can be annoying. It lacks the data awareness of tools like Dagster or the experiment tracking of ZenML, placing it firmly in the 'infrastructure' category rather than 'ML platform.'
+The tradeoff is that Argo is not an agent runtime. You can run agent jobs in containers, but it does not give you agent-level checkpointing, model call replay, or `wait()` semantics the way Kitaru does.
 
-## The Best Temporal Alternatives for ML and Data Teams
+## 8. Azure Durable Functions
 
-Choosing the right alternative depends on where your friction with Temporal lies:
+![Screenshot of the Azure Durable Functions documentation](https://assets.zenml.io/content/blog/48149ac1/azure-durable-functions-homepage.avif)
 
-<ul><li><strong>For Data and ML Teams:</strong> <strong>ZenML</strong> allows you to orchestrate agents while maintaining full visibility into the models and data that power them, closing the loop between development and production.</li><li><strong>For Python Developers:</strong> <strong>Prefect</strong> offers the closest experience to 'pure Python' coding while handling the resilience and scheduling logic you need for agents.</li><li><strong>For RAG and Data Assets:</strong> <strong>Dagster</strong> is the best choice if your agents are heavily dependent on data pipelines and asset freshness.</li><li><strong>For Kubernetes Shops:</strong> <strong>Flyte</strong> provides the type safety and scalability needed for large-scale enterprise agent deployment.</li></ul>
+[Azure Durable Functions](https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-overview) is Microsoft’s serverless workflow system for Azure Functions. It offers orchestrator functions, activity functions, timers, and event-based waits. It allows you to write stateful workflows in code while the platform handles everything else behind the scenes, making it easier to build long-running, reliable processes without managing infrastructure.
 
-If you are ready to move beyond just running code and want to build agents that are reproducible, tracked, and integrated into your data stack, check out ZenML’s open-source plan.
+### Features
+
+- Write orchestrator functions that call activity functions, wait for timers, and manage long-running workflows through event sourcing. These orchestrators act as a control layer and allow you to build complex workflows without individually tracking progress or writing custom retry logic.
+
+- Use activity functions for side effects such as API calls, database writes, file work, and model calls. This is similar to Temporal’s split between workflow code and activities. You can confidently integrate third-party services or internal systems without worrying about duplicate execution during retries.
+
+- Handle human approvals or external events through durable timers and event waits. You can design workflows that pause until a user responds, a webhook fires, or a specific condition is met, without consuming compute resources in the meantime.
+
+### Pricing
+
+Azure Durable Functions is billed through Azure Functions. Consumption plans include monthly free grants and pay-as-you-go pricing for executions and resource use. Orchestrator replays can be billed as separate invocations on the Consumption plan.
+
+### Pros and Cons
+
+Azure Durable Functions is a practical choice for Azure-native teams. Its tight integration with Azure lets you reuse existing infrastructure, security models, and CI/CD pipelines without introducing a separate orchestration platform. It also reduces operational overhead while keeping workflows close to the rest of the application stack.
+
+The downside is the same replay constraint class you see with Temporal. [Microsoft docs](https://learn.microsoft.com/en-us/azure/durable-task/common/durable-task-code-constraints) say orchestrator code must be deterministic, so direct side effects and nondeterministic calls need care.
+
+## 9. Camunda
+
+![Screenshot of the Camunda homepage](https://assets.zenml.io/content/blog/45f5402a/camunda-homepage.avif)
+
+[Camunda](https://camunda.com/) is a process orchestration platform built around BPMN, job workers, human tasks, and business process visibility. It is a Temporal alternative when the workflow includes people, systems, AI agents, and formal process models.
+
+### Features
+
+- Model processes in BPMN so you have an easy-to-digest visual where both technical and non-technical stakeholders can inspect how a workflow behaves. Use these diagrams to align on logic, spot gaps early, and make changes collaboratively before anything is deployed.
+
+- Use Zeebe job workers to execute external work. A worker requests a job, completes it, fails it, or retries it while the process waits at that task. [This setup keeps execution logic in your own services while allowing you to scale workers independently and control retries without tightly coupling everything into the workflow engine](https://docs.camunda.io/docs/components/concepts/job-workers/).
+
+- You can route tasks between systems, people, and agents in one process model. This makes it easier to design workflows that reflect real-world processes where automation and human input coexist.
+
+- Use Camunda Operate and related tools to inspect process instances, failures, incidents, and process progress. These tools give you visibility across all running workflows and help them get unstuck quickly.
+
+### Pricing
+
+Camunda offers a 30-day SaaS trial. After the trial, users can keep a free account for collaborative modeling, but production process orchestration is tied to Enterprise pricing. For Self-Managed, Camunda also supports local development and evaluation, while production use needs an Enterprise plan.
+
+![Screenshot of Camunda pricing plans](https://assets.zenml.io/content/blog/bb1fc6d8/camunda-pricing.avif)
+
+### Pros and Cons
+
+Camunda is strongest when process modeling matters as much as execution. If your workflows span people, systems, approvals, audit needs, and business process owners, BPMN can help. Built-in support for human tasks, approvals, and observability tools like Camunda Operate make it a natural fit for enterprise workflows.
+
+The downside is that BPMN can feel over-structured for your code-first process. If the real work is a Python loop with tool calls, model retries, checkpoints, and stateful waits, Kitaru or Restate will usually feel closer to how the work is written.
+
+## The Best Temporal Alternatives for Durable Execution
+
+During our review, we found no single best Temporal alternative. The right tool depends on the shape of the work, the language your team uses, and the environment you want to live in.
+
+- **Kitaru by ZenML** is the best fit when the work is a Python AI agent. It keeps your agent framework in place and adds checkpoints, replay, wait(), versioned deployments, and own-cloud control around it.
+
+- **Restate** is best when you want durable services, timers, messaging, and state around backend code.
+
+- **DBOS** is best when Postgres is already the system you trust for state.
+
+- **Inngest**, **Hatchet**, and **Trigger.dev** are strong choices for durable background jobs and event-driven app workflows.
+
+If you are moving agents from prototype to production, the question is not just whether the workflow can run. It’s whether the agent can survive a failed model call, a three-day human approval, or a bad tool result without redoing every completed step.
+
+That is the gap Kitaru was built for. It keeps your inner loop in Python and wraps it with the runtime layer agents need: save, recover, wait, inspect, and replay.
+
+[Book a demo](https://www.zenml.io/book-your-demo/kitaru) with us and explore how we can help you set up Kitaru and make your AI workflows more efficient.
