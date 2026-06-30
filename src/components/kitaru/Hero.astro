@@ -36,7 +36,7 @@ import {
       </p>
 
       <p class="hero-subtitle" data-reveal data-reveal-delay="2">
-        Kitaru records every model and tool call. Replay a run with one thing changed and see what would have happened. No production reruns.
+        Kitaru turns the model/tool calls and steps your primitives or adapters expose into replayable checkpoints. Replay an execution ID with one input or checkpoint override and see what would have happened. No production reruns.
       </p>
 
       <p class="hero-install-tag" data-reveal data-reveal-delay="3">Lightweight, wraps your existing agent</p>
@@ -59,7 +59,7 @@ import {
     </div>
 
     <div class="hero-visual" data-reveal data-reveal-delay="3">
-      <div class="hv-panel" role="img" aria-label="Example: replay 200 recorded support-agent runs on an open model, GLM via OpenRouter, then diff the cost and answers against the real runs">
+      <div class="hv-panel" role="img" aria-label="Example: replay 200 recorded support-agent executions on glm-5.4, then diff the cost and answers against the real runs">
         <div class="hv-panel-head">
           <span class="hv-panel-dots">
             <span class="hv-dot"></span>
@@ -71,15 +71,25 @@ import {
         </div>
 
         <div class="hv-code">
-          <div class="hv-code-line hv-code-comment"># a production run, every step checkpointed</div>
-          <div class="hv-code-line">exec <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">run</span>(ticket).<span class="hv-code-fn">wait</span>()</div>
+          <div class="hv-code-line hv-code-comment"># abbreviated: imports and client setup omitted</div>
+          <div class="hv-code-line hv-code-comment"># a production run, Kitaru-visible calls checkpointed</div>
+          <div class="hv-code-line">source <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">run</span>(ticket)</div>
+          <div class="hv-code-line">result <span class="hv-code-op">=</span> source.<span class="hv-code-fn">wait</span>()</div>
           <div class="hv-code-line"> </div>
-          <div class="hv-code-line hv-code-comment"># reproduce, then replay with one thing changed</div>
-          <div class="hv-code-line">rerun <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">replay</span>(exec, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>)</div>
-          <div class="hv-code-line hv-code-hl">cheap <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">replay</span>(exec, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>, model<span class="hv-code-op">=</span><span class="hv-code-str">"glm-4.6"</span>)</div>
-          <div class="hv-code-line hv-code-hl">mock <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">replay</span>(exec, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>, lookup_order<span class="hv-code-op">=</span>stub)</div>
+          <div class="hv-code-line hv-code-comment"># reproduce, then replay with one change</div>
+          <div class="hv-code-line">rerun <span class="hv-code-op">=</span> client.executions.<span class="hv-code-fn">replay</span>(</div>
+          <div class="hv-code-line hv-code-indent">source.exec_id, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>,</div>
+          <div class="hv-code-line">)</div>
+          <div class="hv-code-line hv-code-hl">cheap <span class="hv-code-op">=</span> client.executions.<span class="hv-code-fn">replay</span>(</div>
+          <div class="hv-code-line hv-code-hl hv-code-indent">source.exec_id, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>,</div>
+          <div class="hv-code-line hv-code-hl hv-code-indent">model<span class="hv-code-op">=</span><span class="hv-code-str">"glm-5.4"</span>,</div>
+          <div class="hv-code-line hv-code-hl">)</div>
+          <div class="hv-code-line hv-code-hl">mock <span class="hv-code-op">=</span> client.executions.<span class="hv-code-fn">replay</span>(</div>
+          <div class="hv-code-line hv-code-hl hv-code-indent">source.exec_id, from_<span class="hv-code-op">=</span><span class="hv-code-str">"lookup_order"</span>,</div>
+          <div class="hv-code-line hv-code-hl hv-code-indent">overrides<span class="hv-code-op">=</span>&#123;<span class="hv-code-str">"checkpoint.lookup_order"</span>: stale_order&#125;,</div>
+          <div class="hv-code-line hv-code-hl">)</div>
           <div class="hv-code-line"> </div>
-          <div class="hv-code-line">cheap.<span class="hv-code-fn">diff</span>(rerun)<span class="hv-code-comment">  # cheaper, same decision?</span></div>
+          <div class="hv-code-line">cheap.llm_usage_summary<span class="hv-code-comment">  # inspect replay cost</span></div>
         </div>
 
         <div class="hv-diff">
@@ -102,7 +112,7 @@ import {
         </div>
 
         <div class="hv-caption">
-          Same 200 runs, on an open model. Same answers, a fraction of the cost.
+          Same 200 executions, replayed on glm-5.4. Same answers, a fraction of the cost.
         </div>
       </div>
     </div>
@@ -440,9 +450,11 @@ import {
     background: var(--color-bg);
     border-bottom: 1px solid var(--color-border);
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .hv-code-line { white-space: pre; }
+  .hv-code-indent { padding-left: 18px; }
   .hv-code-comment { color: var(--color-muted); font-style: italic; }
   .hv-code-fn { color: var(--color-accent); font-weight: 500; }
   .hv-code-str { color: oklch(0.5 0.13 155); }
@@ -453,6 +465,10 @@ import {
     border-radius: 4px;
     margin: 0 -8px;
     padding: 0 8px;
+  }
+
+  .hv-code-hl.hv-code-indent {
+    padding-left: 26px;
   }
 
   /* ─── Hero visual: what-if diff table ─── */

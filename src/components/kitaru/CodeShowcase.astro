@@ -1,5 +1,5 @@
 ---
-// CodeShowcase.astro — "Show me the code" section with all 8 primitives + hover highlight
+// CodeShowcase.astro — "Show me the code" section for replay overrides + hover highlights
 ---
 
 <section class="dark-section section-pad" id="code-showcase">
@@ -9,7 +9,7 @@
       Every what-if is one replay call.
     </h2>
     <p class="showcase-note" data-reveal data-reveal-delay="1">
-      Swap the model, fake a tool, fail a call: the same line, one different keyword. Hover any line to see what it does.
+      Swap a model input, replace a checkpoint result, or replay with a test-mode flow input: one replay API, one change at a time. Hover any line to see what it does.
     </p>
 
     <div class="showcase-grid">
@@ -25,18 +25,29 @@
             </div>
             <span class="showcase-code-filename">whatif.py</span>
           </div>
-          <pre class="showcase-code-pre code-syntax" aria-label="Example Kitaru what-if: replay real runs on a cheaper model with a faked tool, then diff"><code><span class="code-line"><span class="kw">from</span> kitaru <span class="kw">import</span> flow, checkpoint</span>
+          <pre class="showcase-code-pre code-syntax" aria-label="Example Kitaru what-if: replay real executions on a cheaper model with a faked checkpoint result, then diff"><code><span class="code-line"><span class="kw">import</span> kitaru</span>
 <span class="code-line"> </span>
-<span class="code-line"><span class="cmt"># your agent's steps are durable checkpoints</span></span>
-<span class="code-line" data-primitive="run">exec <span class="op">=</span> support_agent.<span class="fn">run</span>(ticket).<span class="fn">wait</span>()</span>
+<span class="code-line">client <span class="op">=</span> kitaru.<span class="fn">KitaruClient</span>()</span>
+<span class="code-line"><span class="cmt"># your agent exposes replayable checkpoints through Kitaru</span></span>
+<span class="code-line" data-primitive="run">source <span class="op">=</span> support_agent.<span class="fn">run</span>(ticket)</span>
+<span class="code-line" data-primitive="run">result <span class="op">=</span> source.<span class="fn">wait</span>()</span>
 <span class="code-line"> </span>
 <span class="code-line"><span class="cmt"># reproduce faithfully, then change ONE thing</span></span>
-<span class="code-line" data-primitive="rerun">rerun   <span class="op">=</span> support_agent.<span class="fn">replay</span>(exec, from_<span class="op">=</span><span class="str">"decide"</span>)</span>
-<span class="code-line" data-primitive="model">cheaper <span class="op">=</span> support_agent.<span class="fn">replay</span>(exec, from_<span class="op">=</span><span class="str">"decide"</span>, model<span class="op">=</span><span class="str">"glm-4.6"</span>)</span>
-<span class="code-line" data-primitive="output">faked   <span class="op">=</span> support_agent.<span class="fn">replay</span>(exec, from_<span class="op">=</span><span class="str">"decide"</span>, output<span class="op">=</span>stale_order)</span>
-<span class="code-line" data-primitive="raise">failed  <span class="op">=</span> support_agent.<span class="fn">replay</span>(exec, from_<span class="op">=</span><span class="str">"decide"</span>, raise_<span class="op">=</span>Timeout)</span>
+<span class="code-line" data-primitive="rerun">baseline <span class="op">=</span> client.executions.<span class="fn">replay</span>(</span>
+<span class="code-line code-line-indent" data-primitive="rerun">source.exec_id, from_<span class="op">=</span><span class="str">"decide"</span>,</span>
+<span class="code-line" data-primitive="rerun">)</span>
+<span class="code-line" data-primitive="model">cheaper <span class="op">=</span> client.executions.<span class="fn">replay</span>(</span>
+<span class="code-line code-line-indent" data-primitive="model">source.exec_id, from_<span class="op">=</span><span class="str">"decide"</span>, model<span class="op">=</span><span class="str">"glm-5.4"</span>,</span>
+<span class="code-line" data-primitive="model">)</span>
+<span class="code-line" data-primitive="output">faked <span class="op">=</span> client.executions.<span class="fn">replay</span>(</span>
+<span class="code-line code-line-indent" data-primitive="output">source.exec_id, from_<span class="op">=</span><span class="str">"lookup_order"</span>,</span>
+<span class="code-line code-line-indent" data-primitive="output">overrides<span class="op">=</span>&#123;<span class="str">"checkpoint.lookup_order"</span>: stale_order&#125;,</span>
+<span class="code-line" data-primitive="output">)</span>
+<span class="code-line" data-primitive="code">timeout <span class="op">=</span> client.executions.<span class="fn">replay</span>(</span>
+<span class="code-line code-line-indent" data-primitive="code">source.exec_id, from_<span class="op">=</span><span class="str">"lookup_order"</span>, lookup_mode<span class="op">=</span><span class="str">"timeout"</span>,</span>
+<span class="code-line" data-primitive="code">)</span>
 <span class="code-line"> </span>
-<span class="code-line" data-primitive="diff">cheaper.<span class="fn">diff</span>(rerun)<span class="cmt">   # did the decision move?</span></span></code></pre>
+<span class="code-line" data-primitive="inspect">usage <span class="op">=</span> cheaper.llm_usage_summary</span></code></pre>
         </div>
       </div>
 
@@ -44,27 +55,27 @@
       <div class="showcase-annotations" data-reveal="fade-right" data-reveal-delay="3">
         <div class="annotation" data-highlight="run">
           <code class="annotation-label">support_agent.run()</code>
-          <p>Run in production. Every step is a durable checkpoint, addressable later.</p>
+          <p>Run in production. Keep the returned handle: it carries the execution ID that replay needs.</p>
         </div>
         <div class="annotation" data-highlight="rerun">
           <code class="annotation-label">replay(from_="decide")</code>
-          <p>Reproduce from a checkpoint with no change. Earlier steps come from cache. The faithful baseline.</p>
+          <p>Reproduce from a checkpoint with no change. Earlier checkpoints reuse recorded outputs. The faithful baseline.</p>
         </div>
         <div class="annotation" data-highlight="model">
-          <code class="annotation-label">model="glm-4.6"</code>
-          <p>Replay that step on a cheaper model. Same inputs, different model.</p>
+          <code class="annotation-label">model="glm-5.4"</code>
+          <p>Pass a different flow input for this replay. Same execution history, cheaper model choice.</p>
         </div>
         <div class="annotation" data-highlight="output">
-          <code class="annotation-label">output=</code>
-          <p>Return a different tool result instead of calling it.</p>
+          <code class="annotation-label">overrides={"checkpoint..."}</code>
+          <p>Replace one recorded checkpoint result. Kitaru replays the consumers of that changed value.</p>
         </div>
-        <div class="annotation" data-highlight="raise">
-          <code class="annotation-label">raise_=</code>
-          <p>Make a tool call fail, to test how the agent recovers.</p>
+        <div class="annotation" data-highlight="code">
+          <code class="annotation-label">lookup_mode="timeout"</code>
+          <p>Use a flow input your agent already understands to run the replay against a timeout path.</p>
         </div>
-        <div class="annotation" data-highlight="diff">
-          <code class="annotation-label">.diff(rerun)</code>
-          <p>Did the decision move? Compared against the faithful baseline, with cost and quality deltas.</p>
+        <div class="annotation" data-highlight="inspect">
+          <code class="annotation-label">llm_usage_summary</code>
+          <p>Inspect shipped execution metadata, checkpoints, and artifacts to compare the source execution and replay.</p>
         </div>
       </div>
 
@@ -80,10 +91,14 @@
 
   .showcase-grid {
     display: grid;
-    grid-template-columns: 1.4fr 1fr;
+    grid-template-columns: minmax(0, 1.35fr) minmax(280px, 1fr);
     gap: 40px;
     align-items: start;
     margin-top: 40px;
+  }
+
+  .showcase-code {
+    min-width: 0;
   }
 
   /* Code window — reuses Architecture patterns */
@@ -119,7 +134,7 @@
     overflow-x: auto;
     font-family: var(--font-mono);
     font-size: 0.78rem;
-    line-height: 1.7;
+    line-height: 1.65;
     color: var(--color-dark-text);
     -webkit-overflow-scrolling: touch;
   }
@@ -130,6 +145,10 @@
     border-radius: 3px;
     padding: 0 4px;
     margin: 0 -4px;
+  }
+
+  .code-line-indent {
+    padding-left: 22px;
   }
 
   .code-line[data-primitive] {
@@ -163,7 +182,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    padding-top: 16px;
+    min-width: 0;
   }
 
   .annotation {

@@ -1,5 +1,5 @@
 ---
-import { KITARU_LINKS } from "../../../lib/productKitaru";
+import { KITARU_INSTALL_CMD, KITARU_LINKS } from "../../../lib/productKitaru";
 
 interface Props {
   headline: string;
@@ -32,11 +32,11 @@ const {
     <div class="ccta-shelf">
       <div class="ccta-install">
         <span class="ccta-install-prompt" aria-hidden="true">$</span>
-        <code class="ccta-install-cmd">pip install kitaru</code>
+        <code class="ccta-install-cmd">{KITARU_INSTALL_CMD}</code>
         <button
           class="ccta-copy-btn"
           aria-label="Copy install command"
-          data-copy="pip install kitaru"
+          data-copy={KITARU_INSTALL_CMD}
         >
           <svg class="ccta-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <rect x="9" y="9" width="13" height="13" rx="2"/>

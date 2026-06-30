@@ -1,14 +1,33 @@
 ---
-// ScenarioStrip.astro — the prominent second section. One recorded run, a
-// different question each time. Each card is a human-facing name for an
-// override kind, all expressed through the one `replay` verb. The cheap-model
-// card is featured — it's the buyer's cost pain.
+// ScenarioStrip.astro — the prominent second section. One recorded execution,
+// a different replay question each time. Each card shows a compact version of
+// the shipped `from_` + `overrides` replay API shape.
 const scenarios = [
-  { move: "fail", q: "Search tool times out?", code: "raise_=Timeout" },
-  { move: "mock", q: "Tool returns something else?", code: "output=…" },
-  { move: "degrade", q: "Retriever gets worse?", code: "output=degraded(…)" },
-  { move: "drop", q: "Cut the reranker?", code: "re-run · no tool" },
-  { move: "swap", q: "Run on a cheaper model?", code: 'model="fast"' },
+  {
+    move: "fail",
+    q: "Search tool times out?",
+    code: 'lookup_mode="timeout"',
+  },
+  {
+    move: "mock",
+    q: "Tool returns something else?",
+    code: 'overrides={"checkpoint.lookup_order": stale_order}',
+  },
+  {
+    move: "degrade",
+    q: "Retriever gets worse?",
+    code: 'overrides={"checkpoint.retrieve": degraded_docs}',
+  },
+  {
+    move: "drop",
+    q: "Ignore the reranker?",
+    code: 'overrides={"checkpoint.rerank": []}',
+  },
+  {
+    move: "swap",
+    q: "Run on a cheaper model?",
+    code: 'model="fast"',
+  },
 ] as const;
 ---
 
@@ -17,7 +36,7 @@ const scenarios = [
     <div class="scenario-head" data-reveal>
       <span class="section-eyebrow">THE SAME MOVE, EVERY TIME</span>
       <h2 class="scenario-title">
-        One recorded run.<br /><span class="scenario-title-accent">A different question each time.</span>
+        One recorded execution.<br /><span class="scenario-title-accent">A different question each time.</span>
       </h2>
       <p class="scenario-sub">
         Replay the run. Change one thing. Read the answer off a diff. Nothing reruns in production.
@@ -74,7 +93,7 @@ const scenarios = [
 
   .scenario-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
     gap: 16px;
   }
 
@@ -83,6 +102,7 @@ const scenarios = [
     display: flex;
     flex-direction: column;
     gap: 14px;
+    min-width: 0;
     padding: 22px 20px;
     border: 1px solid var(--color-border);
     border-radius: 16px;
@@ -125,27 +145,18 @@ const scenarios = [
     display: block;
     width: 100%;
     font-family: var(--font-mono);
-    font-size: 0.8rem;
-    line-height: 1.5;
+    font-size: 0.68rem;
+    line-height: 1.45;
     color: var(--color-accent);
     background: oklch(0.65 0.16 45 / 0.08);
     border: 1px solid oklch(0.65 0.16 45 / 0.2);
     border-radius: 8px;
     padding: 10px 12px;
-    white-space: nowrap;
-    overflow-x: auto;
-  }
-
-  @media (max-width: 1100px) {
-    .scenario-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   @media (max-width: 720px) {
-    .scenario-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
     .scenario-card {
       min-height: 0;
     }
