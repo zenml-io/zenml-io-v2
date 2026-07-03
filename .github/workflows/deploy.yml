@@ -1,4 +1,4 @@
-name: Deploy to Cloudflare Pages
+name: Website CI and Cloudflare Deploy
 
 on:
   push:
@@ -33,14 +33,26 @@ jobs:
       - name: Run Astro and TypeScript checks
         run: pnpm check
 
+      - name: Type-check tests and smoke scripts
+        run: pnpm check:tests
+
+      - name: Check surface coverage
+        run: pnpm check:surface
+
       - name: Check image alt-text coverage
         run: pnpm check:alt
 
       - name: Run Biome lint
         run: pnpm lint
 
+      - name: Run unit tests
+        run: pnpm test
+
       - name: Build site
         run: pnpm build
+
+      - name: Smoke test built site output
+        run: pnpm smoke:dist
 
   deploy:
     name: Cloudflare Pages deploy
@@ -74,6 +86,9 @@ jobs:
 
       - name: Build site
         run: pnpm build
+
+      - name: Smoke test built site output
+        run: pnpm smoke:dist
 
       - name: Check Cloudflare credentials
         id: cloudflare-credentials

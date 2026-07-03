@@ -1,0 +1,136 @@
+import { describe, expect, it } from "vitest";
+import {
+  FORM_RULES,
+  type FormType,
+  validateForm,
+} from "../../src/lib/formValidation";
+
+type FormValidationCase = {
+  validData: Record<string, string>;
+  invalidData: Record<string, string>;
+  expectedErrors: Record<string, string>;
+};
+
+const formValidationCases = {
+  "demo-request": {
+    validData: {
+      fullName: "Dorothy Vaughan",
+      email: "dorothy@example.com",
+    },
+    invalidData: {
+      email: "not-an-email",
+    },
+    expectedErrors: {
+      fullName: "Full name is required",
+      email: "Valid work email is required",
+    },
+  },
+  whitepaper: {
+    validData: {
+      fullName: "Grace Hopper",
+      email: "grace@example.com",
+    },
+    invalidData: {
+      email: "not-an-email",
+    },
+    expectedErrors: {
+      fullName: "Full name is required",
+      email: "Valid work email is required",
+    },
+  },
+  "brick-manual": {
+    validData: {
+      fullName: "Ada Lovelace",
+      email: "ada@example.com",
+    },
+    invalidData: {
+      email: "not-an-email",
+    },
+    expectedErrors: {
+      fullName: "Full name is required",
+      email: "Valid email is required",
+    },
+  },
+  "startup-academic": {
+    validData: {
+      fullName: "Mary Jackson",
+      email: "mary@example.com",
+      linkedin: "https://linkedin.com/in/mary",
+      company: "NASA",
+      role: "startup",
+    },
+    invalidData: {
+      email: "not-an-email",
+      linkedin: "linkedin.com/in/katherine",
+    },
+    expectedErrors: {
+      fullName: "Full name is required",
+      email: "Valid email is required",
+      linkedin: "LinkedIn URL is required",
+      company: "Organization name is required",
+      role: "Please select a role",
+    },
+  },
+} satisfies Record<FormType, FormValidationCase>;
+
+const configuredFormTypes = Object.keys(FORM_RULES) as FormType[];
+
+describe("validateForm", () => {
+  it("returns a form-level error for unknown form types", () => {
+    expect(
+      validateForm("not-real" as Parameters<typeof validateForm>[0], {}),
+    ).toEqual({ valid: false, errors: { _form: "Unknown form type" } });
+  });
+
+  it.each(
+    configuredFormTypes,
+  )("accepts representative valid %s data", (formType) => {
+    expect(
+      validateForm(formType, formValidationCases[formType].validData),
+    ).toEqual({
+      valid: true,
+      errors: {},
+    });
+  });
+
+  it.each(
+    configuredFormTypes,
+  )("returns configured validation errors for invalid %s data", (formType) => {
+    expect(
+      validateForm(formType, formValidationCases[formType].invalidData),
+    ).toEqual({
+      valid: false,
+      errors: formValidationCases[formType].expectedErrors,
+    });
+  });
+
+  it("trims values before checking required fields and patterns", () => {
+    expect(
+      validateForm("demo-request", {
+        fullName: "  Ada Lovelace  ",
+        email: "  ada@example.com  ",
+      }),
+    ).toEqual({ valid: true, errors: {} });
+  });
+
+  it("rejects startup academic LinkedIn URLs without an http scheme", () => {
+    expect(
+      validateForm("startup-academic", {
+        fullName: "Katherine Johnson",
+        email: "katherine@example.com",
+        linkedin: "linkedin.com/in/katherine",
+        company: "NASA",
+        role: "academic",
+      }).errors,
+    ).toEqual({ linkedin: "LinkedIn URL is required" });
+  });
+
+  it("uses the brick manual email validation message", () => {
+    expect(
+      validateForm("brick-manual", {
+        fullName: "Ada Lovelace",
+        email: "not-an-email",
+      }).errors,
+    ).toEqual({ email: "Valid email is required" });
+  });
+});

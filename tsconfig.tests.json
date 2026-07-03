@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["node", "vitest"]
+  },
+  "include": [
+    ".astro/types.d.ts",
+    "tests/**/*.test.ts",
+    "vitest.config.ts",
+    "scripts/check-dist-smoke.ts"
+  ],
+  "exclude": ["dist", "design", ".wrangler", "node_modules"]
+}

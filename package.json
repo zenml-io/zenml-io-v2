@@ -8,15 +8,19 @@
     "build": "astro build && pagefind --site dist --glob '*ops-database/*.html'",
     "preview": "astro preview",
     "check": "astro check --tsconfig ./tsconfig.check.json",
+    "check:tests": "astro sync && tsc --noEmit -p tsconfig.tests.json",
     "check:surface": "tsx scripts/check-surface-coverage.ts",
     "check:alt": "tsx scripts/check-alt-coverage.ts",
+    "smoke:dist": "tsx scripts/check-dist-smoke.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "validate:content": "tsx scripts/phase2/validate-content.ts",
     "validate:llmops": "tsx scripts/phase2/validate-content.ts --collection=llmops-database",
     "validate:mlops": "tsx scripts/phase2/validate-content.ts --collection=mlops-database",
     "og:compare": "tsx scripts/og/generate-compare-og.ts",
     "og:compare:write": "tsx scripts/og/generate-compare-og.ts --write",
-    "lint": "biome check src/",
-    "lint:fix": "biome check --fix src/",
+    "lint": "biome check src/ tests/ vitest.config.ts scripts/check-dist-smoke.ts",
+    "lint:fix": "biome check --fix src/ tests/ vitest.config.ts scripts/check-dist-smoke.ts",
     "format": "biome format --write src/",
     "astro": "astro"
   },
@@ -57,6 +61,7 @@
     "playwright": "^1.58.2",
     "satori": "^0.26.0",
     "tsx": "^4.21.0",
+    "vitest": "^3.2.6",
     "wrangler": "^4.64.0"
   }
 }
