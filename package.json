@@ -53,7 +53,7 @@
     "@fontsource/plus-jakarta-sans": "^5.2.8",
     "@resvg/resvg-js": "^2.6.2",
     "@types/mdast": "^4.0.4",
-    "@types/node": "^22.19.11",
+    "@types/node": "^26.0.0",
     "cheerio": "^1.2.0",
     "domhandler": "^6.0.1",
     "gray-matter": "^4.0.3",
