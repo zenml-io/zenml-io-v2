@@ -33,6 +33,9 @@ jobs:
       - name: Run Astro and TypeScript checks
         run: pnpm check
 
+      - name: Type-check tests and smoke scripts
+        run: pnpm check:tests
+
       - name: Check surface coverage
         run: pnpm check:surface
 

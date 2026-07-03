@@ -8,6 +8,7 @@
     "build": "astro build && pagefind --site dist --glob '*ops-database/*.html'",
     "preview": "astro preview",
     "check": "astro check --tsconfig ./tsconfig.check.json",
+    "check:tests": "astro sync && tsc --noEmit -p tsconfig.tests.json",
     "check:surface": "tsx scripts/check-surface-coverage.ts",
     "check:alt": "tsx scripts/check-alt-coverage.ts",
     "smoke:dist": "tsx scripts/check-dist-smoke.ts",

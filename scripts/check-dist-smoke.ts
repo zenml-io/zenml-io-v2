@@ -86,33 +86,61 @@ function checkRequiredDirectories() {
   return failures;
 }
 
-function checkContentMarkers() {
-  const checks = [
-    {
-      file: "index.html",
-      marker: "<html",
-      message: "dist/index.html contains an HTML document marker",
-    },
-    {
-      file: "sitemap-index.xml",
-      marker: "sitemap-0.xml",
-      message: "dist/sitemap-index.xml references sitemap-0.xml",
-    },
-    {
-      file: "robots.txt",
-      marker: "https://www.zenml.io/sitemap-index.xml",
-      message: "dist/robots.txt references the sitemap index",
-    },
-    {
-      file: "_redirects",
-      marker: "/sitemap.xml /sitemap-index.xml 301",
-      message: "dist/_redirects preserves the sitemap redirect",
-    },
-  ];
+type ContentMarkerCheck = {
+  file: string;
+  markers: string[];
+  message: string;
+};
 
+const CONTENT_MARKER_CHECKS: ContentMarkerCheck[] = [
+  {
+    file: "index.html",
+    markers: ["<html"],
+    message: "dist/index.html contains an HTML document marker",
+  },
+  {
+    file: "product/kitaru.html",
+    markers: ['data-app="kitaru"', 'id="kitaru-main"'],
+    message: "dist/product/kitaru.html contains Kitaru page identity markers",
+  },
+  {
+    file: "product/zenml.html",
+    markers: ["https://www.zenml.io/product/zenml", "Copy install command"],
+    message: "dist/product/zenml.html contains ZenML product page markers",
+  },
+  {
+    file: "sitemap-index.xml",
+    markers: ["sitemap-0.xml"],
+    message: "dist/sitemap-index.xml references sitemap-0.xml",
+  },
+  {
+    file: "robots.txt",
+    markers: ["https://www.zenml.io/sitemap-index.xml"],
+    message: "dist/robots.txt references the sitemap index",
+  },
+  {
+    file: "_redirects",
+    markers: ["/sitemap.xml /sitemap-index.xml 301"],
+    message: "dist/_redirects preserves the sitemap redirect",
+  },
+  {
+    file: "_headers",
+    markers: [
+      "X-Content-Type-Options: nosniff",
+      "Content-Security-Policy-Report-Only: default-src 'self'",
+      "/product/zenml",
+      '</product/zenml.md>; rel="alternate"; type="text/markdown"',
+      "/product/kitaru",
+      '</product/kitaru.md>; rel="alternate"; type="text/markdown"',
+    ],
+    message: "dist/_headers contains security and product markdown headers",
+  },
+];
+
+function checkContentMarkers() {
   let failures = 0;
 
-  for (const check of checks) {
+  for (const check of CONTENT_MARKER_CHECKS) {
     if (!fileExists(check.file)) {
       logResult(false, `Missing marker file: ${distPath(check.file)}`);
       failures += 1;
@@ -120,15 +148,18 @@ function checkContentMarkers() {
     }
 
     const content = readDistFile(check.file);
-    const ok = content.includes(check.marker);
+    const missingMarkers = check.markers.filter(
+      (marker) => !content.includes(marker),
+    );
+    const ok = missingMarkers.length === 0;
     logResult(
       ok,
       ok
         ? check.message
-        : `${distPath(check.file)} is missing marker: ${check.marker}`,
+        : `${distPath(check.file)} is missing marker(s): ${missingMarkers.join(", ")}`,
     );
     if (!ok) {
-      failures += 1;
+      failures += missingMarkers.length;
     }
   }
 

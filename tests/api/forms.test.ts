@@ -3,6 +3,13 @@ import { GET, POST } from "../../src/pages/api/forms/[formType]";
 
 type FormContext = Parameters<typeof POST>[0];
 type RuntimeEnv = Record<string, string | undefined>;
+type FetchCall = Parameters<typeof fetch>;
+
+function fetchRequestInit(
+  call: FetchCall | undefined,
+): RequestInit | undefined {
+  return call?.[1];
+}
 
 function formRequest(fields: Record<string, string>): Request {
   const formData = new FormData();
@@ -129,7 +136,7 @@ describe("form API route", () => {
   it("rejects failed Turnstile verification", async () => {
     vi.stubGlobal(
       "fetch",
-      vi.fn(async () => Response.json({ success: false })),
+      vi.fn<typeof fetch>(async () => Response.json({ success: false })),
     );
 
     const response = await POST(
@@ -150,6 +157,49 @@ describe("form API route", () => {
       success: false,
       error: "Bot verification failed. Please try again.",
     });
+  });
+
+  it("returns success after Turnstile verification passes", async () => {
+    const waitUntil = vi.fn();
+    const fetchMock = vi.fn<typeof fetch>(async () =>
+      Response.json({ success: true }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    const response = await POST(
+      makeContext({
+        formType: "demo-request",
+        request: formRequest({
+          fullName: "Ada Lovelace",
+          email: "ada@example.com",
+          privacy: "on",
+          "cf-turnstile-response": "token",
+        }),
+        env: { TURNSTILE_SECRET_KEY: "secret" },
+        waitUntil,
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    await expect(responseJson(response)).resolves.toEqual({
+      success: true,
+      formType: "demo-request",
+    });
+    expect(fetchMock).toHaveBeenCalledOnce();
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      expect.objectContaining({
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: expect.any(URLSearchParams),
+      }),
+    );
+
+    const verifyBody = fetchRequestInit(fetchMock.mock.calls[0])?.body;
+    expect(verifyBody).toBeInstanceOf(URLSearchParams);
+    expect((verifyBody as URLSearchParams).get("secret")).toBe("secret");
+    expect((verifyBody as URLSearchParams).get("response")).toBe("token");
+    expect(waitUntil).not.toHaveBeenCalled();
   });
 
   it("returns 422 when privacy consent is missing", async () => {
@@ -197,7 +247,9 @@ describe("form API route", () => {
     const waitUntil = vi.fn((promise: Promise<unknown>) => {
       waitUntilPromises.push(promise);
     });
-    const fetchMock = vi.fn(async () => new Response("{}", { status: 200 }));
+    const fetchMock = vi.fn<typeof fetch>(
+      async () => new Response("{}", { status: 200 }),
+    );
     vi.stubGlobal("fetch", fetchMock);
 
     const response = await POST(
@@ -235,11 +287,10 @@ describe("form API route", () => {
     expect(identifyCall).toBeDefined();
     expect(trackCall).toBeDefined();
 
-    const identifyBody = JSON.parse(String(identifyCall?.[1]?.body)) as Record<
-      string,
-      unknown
-    >;
-    const trackBody = JSON.parse(String(trackCall?.[1]?.body)) as {
+    const identifyBody = JSON.parse(
+      String(fetchRequestInit(identifyCall)?.body),
+    ) as Record<string, unknown>;
+    const trackBody = JSON.parse(String(fetchRequestInit(trackCall)?.body)) as {
       properties: Record<string, unknown>;
     };
 

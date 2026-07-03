@@ -24,10 +24,15 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 - `pnpm dev` starts local dev server at `http://localhost:4321`.
 - `pnpm build` runs Astro build and Pagefind indexing (`dist/` output).
 - `pnpm preview` serves the production build locally.
-- `pnpm check` runs Astro/TypeScript checks.
-- `pnpm lint` runs Biome checks on `src/`.
+- `pnpm check` runs Astro/TypeScript checks for site source.
+- `pnpm check:tests` type-checks tests, Vitest config, and the dist smoke script.
+- `pnpm check:surface` verifies pages/components declare their analytics surface.
+- `pnpm check:alt` verifies image alt-text coverage.
+- `pnpm lint` runs Biome checks on configured source, test, config, and smoke-script files.
+- `pnpm test` runs the Vitest suite once.
+- `pnpm smoke:dist` smoke-tests `dist/` after `pnpm build`.
 - `pnpm lint:fix` auto-fixes lint issues.
-- `pnpm format` formats `src/` with Biome.
+- `pnpm format` formats configured files with Biome.
 - `pnpm validate:content` runs content schema and consistency checks.
 
 ## Coding Style & Naming Conventions
@@ -38,9 +43,9 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 - Use `.md` for content files (not `.mdx`). The `compare-kitaru/` collection is the documented exception (inline component imports inherited from the Kitaru port).
 
 ## Testing Guidelines
-- There is no dedicated unit-test suite in root scripts yet.
-- Minimum quality gate before PR: `pnpm check && pnpm lint && pnpm build`. PR CI enforces these in the required `Repo checks` job. Cloudflare previews deploy afterward when credentials are available, but preview deployment is not the required merge gate.
-- Before pushing code changes, run the same local gates that CI runs: `pnpm check`, `pnpm lint`, then `pnpm build` (or `pnpm check && pnpm lint && pnpm build`). If you edit code after running any check, rerun the affected check before pushing. Documentation-only edits can skip the build unless they change generated content or site behavior.
+- The root test suite runs with `pnpm test`.
+- Minimum quality gate before PR: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist`. PR CI enforces these in the required `Repo checks` job. Cloudflare previews deploy afterward when credentials are available, but preview deployment is not the required merge gate.
+- Before pushing code changes, run the same local gates that CI runs: `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`, `pnpm lint`, `pnpm test`, `pnpm build`, then `pnpm smoke:dist` (or the combined command above). If you edit code after running any check, rerun the affected check before pushing. Documentation-only edits can skip the build unless they change generated content or site behavior.
 - For content-heavy changes, also run `pnpm validate:content`.
 - If you edit code after running checks, rerun the affected checks.
 

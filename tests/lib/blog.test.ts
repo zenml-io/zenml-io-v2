@@ -1,21 +1,27 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { getCollectionMock } = vi.hoisted(() => ({
+const { getCollectionMock, getEntryMock } = vi.hoisted(() => ({
   getCollectionMock: vi.fn(),
+  getEntryMock: vi.fn(),
 }));
 
 vi.mock("astro:content", () => ({
   getCollection: getCollectionMock,
-  getEntry: vi.fn(),
+  getEntry: getEntryMock,
 }));
 
 import {
   type BlogPost,
   blogPageHref,
   buildBlogSearchIndex,
+  getAllPublishedPosts,
+  getCategoryCounts,
+  getMainFeedPosts,
   getPaginationItems,
   getPrevNext,
   getRelatedPosts,
+  getTagCounts,
+  resolveAuthor,
   sortByDateDesc,
 } from "../../src/lib/blog";
 
@@ -26,6 +32,7 @@ function fakePost(input: {
   tags?: string[];
   category?: string;
   description?: string;
+  draft?: boolean;
 }): BlogPost {
   return {
     data: {
@@ -35,6 +42,7 @@ function fakePost(input: {
       tags: input.tags ?? [],
       category: input.category,
       seo: { description: input.description },
+      draft: input.draft,
     },
   } as BlogPost;
 }
@@ -42,6 +50,7 @@ function fakePost(input: {
 describe("blog helpers", () => {
   beforeEach(() => {
     getCollectionMock.mockReset();
+    getEntryMock.mockReset();
     getCollectionMock.mockResolvedValue([
       { data: { slug: "mlops", name: "MLOps" } },
       { data: { slug: "kitaru", name: "Kitaru" } },
@@ -58,6 +67,134 @@ describe("blog helpers", () => {
       "older",
     ]);
     expect(posts).toEqual([older, newer]);
+  });
+
+  it("returns main feed posts without drafts or discovery-tagged posts", async () => {
+    const posts = [
+      fakePost({ slug: "older", date: "2025-01-01", tags: ["mlops"] }),
+      fakePost({ slug: "draft", date: "2026-01-01", draft: true }),
+      fakePost({ slug: "discovery", date: "2026-02-01", tags: ["discovery"] }),
+      fakePost({ slug: "newer", date: "2025-02-01", tags: ["kitaru"] }),
+    ];
+    getCollectionMock.mockImplementation(async (_collection, predicate) =>
+      posts.filter((post) => !predicate || predicate(post)),
+    );
+
+    await expect(getMainFeedPosts()).resolves.toEqual([posts[3], posts[0]]);
+    expect(getCollectionMock).toHaveBeenCalledWith(
+      "blog",
+      expect.any(Function),
+    );
+  });
+
+  it("returns all published posts including discovery-tagged posts", async () => {
+    const posts = [
+      fakePost({ slug: "older", date: "2025-01-01", tags: ["mlops"] }),
+      fakePost({ slug: "draft", date: "2026-01-01", draft: true }),
+      fakePost({ slug: "discovery", date: "2026-02-01", tags: ["discovery"] }),
+      fakePost({ slug: "newer", date: "2025-02-01", tags: ["kitaru"] }),
+    ];
+    getCollectionMock.mockImplementation(async (_collection, predicate) =>
+      posts.filter((post) => !predicate || predicate(post)),
+    );
+
+    await expect(getAllPublishedPosts()).resolves.toEqual([
+      posts[2],
+      posts[3],
+      posts[0],
+    ]);
+    expect(getCollectionMock).toHaveBeenCalledWith(
+      "blog",
+      expect.any(Function),
+    );
+  });
+
+  it("returns category counts for known categories sorted by count", async () => {
+    getCollectionMock.mockResolvedValue([
+      { data: { slug: "kitaru", name: "Kitaru" } },
+      { data: { slug: "mlops", name: "MLOps" } },
+    ]);
+    const posts = [
+      fakePost({ slug: "one", date: "2025-01-01", category: "kitaru" }),
+      fakePost({ slug: "two", date: "2025-01-02", category: "kitaru" }),
+      fakePost({ slug: "three", date: "2025-01-03", category: "mlops" }),
+      fakePost({ slug: "unknown", date: "2025-01-04", category: "unknown" }),
+      fakePost({ slug: "missing", date: "2025-01-05" }),
+    ];
+
+    await expect(getCategoryCounts(posts)).resolves.toEqual([
+      { slug: "kitaru", name: "Kitaru", count: 2 },
+      { slug: "mlops", name: "MLOps", count: 1 },
+    ]);
+    expect(getCollectionMock).toHaveBeenCalledWith("categories");
+  });
+
+  it("returns tag counts for known tags sorted by count", async () => {
+    getCollectionMock.mockResolvedValue([
+      { data: { slug: "agents", name: "Agents" } },
+      { data: { slug: "kitaru", name: "Kitaru" } },
+      { data: { slug: "mlops", name: "MLOps" } },
+    ]);
+    const posts = [
+      fakePost({
+        slug: "one",
+        date: "2025-01-01",
+        tags: ["agents", "kitaru"],
+      }),
+      fakePost({
+        slug: "two",
+        date: "2025-01-02",
+        tags: ["agents", "kitaru"],
+      }),
+      fakePost({
+        slug: "three",
+        date: "2025-01-03",
+        tags: ["agents", "mlops", "unknown"],
+      }),
+    ];
+
+    await expect(getTagCounts(posts)).resolves.toEqual([
+      { slug: "agents", name: "Agents", count: 3 },
+      { slug: "kitaru", name: "Kitaru", count: 2 },
+      { slug: "mlops", name: "MLOps", count: 1 },
+    ]);
+    expect(getCollectionMock).toHaveBeenCalledWith("tags");
+  });
+
+  it("resolves authors from the authors collection", async () => {
+    await expect(resolveAuthor()).resolves.toBeUndefined();
+    expect(getEntryMock).not.toHaveBeenCalled();
+
+    getEntryMock.mockResolvedValueOnce(undefined);
+    await expect(resolveAuthor("missing")).resolves.toBeUndefined();
+    expect(getEntryMock).toHaveBeenCalledWith("authors", "missing");
+
+    getEntryMock.mockResolvedValueOnce({
+      data: {
+        name: "Ada Lovelace",
+        slug: "ada-lovelace",
+        avatar: {
+          url: "https://example.com/ada.jpg",
+          alt: "Ada Lovelace",
+          width: 400,
+          height: 400,
+        },
+        bio: "Computing pioneer.",
+      },
+    });
+
+    await expect(resolveAuthor("ada-lovelace")).resolves.toEqual({
+      name: "Ada Lovelace",
+      slug: "ada-lovelace",
+      avatar: {
+        url: "https://example.com/ada.jpg",
+        alt: "Ada Lovelace",
+        width: 400,
+        height: 400,
+      },
+      bio: "Computing pioneer.",
+    });
+    expect(getEntryMock).toHaveBeenCalledWith("authors", "ada-lovelace");
   });
 
   it("returns newer prev and older next posts", () => {
