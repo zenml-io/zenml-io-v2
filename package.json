@@ -35,7 +35,7 @@
     "lottie-web": "^5.13.0",
     "preact": "^10.29.3",
     "sharp": "^0.35.2",
-    "shiki": "^3.23.0",
+    "shiki": "^4.2.0",
     "tailwindcss": "^4.3.2",
     "typescript": "^5.9.3",
     "unist-util-visit": "^5.1.0"
