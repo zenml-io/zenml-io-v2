@@ -26,6 +26,10 @@ pnpm preview   # Serve production build locally
 
 ```bash
 pnpm check              # Astro + TypeScript type checking
+pnpm check:surface      # Verify pages/components declare their analytics surface
+pnpm check:alt          # Verify image alt-text coverage
+pnpm test               # Run Vitest once
+pnpm smoke:dist         # Smoke-test dist/ after pnpm build
 pnpm validate:content   # Content schema validation (Zod)
 pnpm validate:llmops    # LLMOps collection-focused validation
 pnpm lint               # Biome linter
@@ -147,9 +151,8 @@ Edit the data file, not the `.astro` template. Components import from these file
 ### Making Code Changes
 
 1. Run `pnpm dev` for hot-reload development
-2. Before committing: `pnpm lint:fix && pnpm check`
-3. Run `pnpm build` to verify the full site builds
-4. Open a PR — Cloudflare Pages auto-deploys a preview at `<branch>.zenml-io-v2.pages.dev`
+2. Before opening a PR, run: `pnpm check && pnpm check:surface && pnpm check:alt && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist`
+3. Open a PR — Cloudflare Pages auto-deploys a preview at `<branch>.zenml-io-v2.pages.dev`
 
 ## Project Structure
 
@@ -283,7 +286,7 @@ ContactForm Preact island → Astro API route at `src/pages/api/forms/[formType]
 | `strickvl`, `htahir1` | Yes (bypass branch protection) |
 | Everyone else | Must use PRs (1 approval required) |
 
-PRs require the `Repo checks` status check to pass (`pnpm check`, `pnpm lint`, and `pnpm build`). Cloudflare preview deploys run separately after that gate passes when credentials are available, for eligible same-repo PRs.
+PRs require the `Repo checks` status check to pass (`pnpm check`, `pnpm check:surface`, `pnpm check:alt`, `pnpm lint`, `pnpm test`, `pnpm build`, and `pnpm smoke:dist`). Cloudflare preview deploys run separately after that gate passes when credentials are available, for eligible same-repo PRs.
 
 See `docs/branch-protection-spec.md` for the full governance spec.
 
