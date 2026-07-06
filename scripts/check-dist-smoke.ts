@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const DIST_DIR = "dist";
+const AGENT_SKILLS_INDEX_PATH = ".well-known/agent-skills/index.json";
 
 const REQUIRED_FILES = [
   "index.html",
@@ -17,6 +18,7 @@ const REQUIRED_FILES = [
   "_redirects",
   "robots.txt",
   "llms.txt",
+  AGENT_SKILLS_INDEX_PATH,
   "blog/search-index.json",
   "pagefind/pagefind.js",
   "pagefind/pagefind-entry.json",
@@ -25,6 +27,53 @@ const REQUIRED_FILES = [
 const REQUIRED_DIRECTORIES = ["_worker.js", "pagefind", "pagefind/index"];
 
 type SearchIndexEntry = Record<string, unknown>;
+
+type AgentSkillEntry = {
+  name: string;
+  type: "skill-md";
+  description: string;
+  url: string;
+  digest: string;
+};
+
+type AgentSkillsIndex = {
+  $schema: string;
+  skills: unknown[];
+};
+
+const AGENT_SKILLS_SCHEMA =
+  "https://schemas.agentskills.io/discovery/0.2.0/schema.json";
+const AGENT_SKILL_DIGEST_PATTERN = /^sha256:[a-f0-9]{64}$/;
+const AGENT_SKILL_URL_PATTERN =
+  /^https:\/\/raw\.githubusercontent\.com\/zenml-io\/(skills|kitaru-skills)\/[a-f0-9]{40}\/.+\/SKILL\.md$/;
+const REQUIRED_ZENML_SKILLS = [
+  "airflow-to-zenml-migration",
+  "argo-to-zenml-migration",
+  "azureml-to-zenml-migration",
+  "dagster-to-zenml-migration",
+  "databricks-to-zenml-migration",
+  "flyte-to-zenml-migration",
+  "kedro-to-zenml-migration",
+  "metaflow-to-zenml-migration",
+  "prefect-to-zenml-migration",
+  "sagemaker-to-zenml-migration",
+  "vertexai-to-zenml-migration",
+  "zenml-pipeline-authoring",
+  "zenml-quick-wins",
+  "zenml-scoping",
+];
+
+const REQUIRED_KITARU_SKILLS = [
+  "kitaru-authoring",
+  "kitaru-claude-agent-sdk-migration",
+  "kitaru-gemini-interactions-migration",
+  "kitaru-langgraph-migration",
+  "kitaru-openai-agents-migration",
+  "kitaru-pydantic-ai-migration",
+  "kitaru-quickstart",
+  "kitaru-replay-lab",
+  "kitaru-scoping",
+];
 
 function distPath(relativePath: string) {
   return join(DIST_DIR, relativePath);
@@ -172,6 +221,120 @@ function hasRequiredSearchIndexFields(entry: SearchIndexEntry) {
   );
 }
 
+function isNonEmptyString(value: unknown) {
+  return typeof value === "string" && value.length > 0;
+}
+
+function hasRequiredAgentSkillFields(entry: unknown): entry is AgentSkillEntry {
+  if (typeof entry !== "object" || entry === null) {
+    return false;
+  }
+
+  const skill = entry as Record<string, unknown>;
+  return (
+    isNonEmptyString(skill.name) &&
+    skill.type === "skill-md" &&
+    isNonEmptyString(skill.description) &&
+    typeof skill.url === "string" &&
+    AGENT_SKILL_URL_PATTERN.test(skill.url) &&
+    typeof skill.digest === "string" &&
+    AGENT_SKILL_DIGEST_PATTERN.test(skill.digest)
+  );
+}
+
+function isAgentSkillsIndex(value: unknown): value is AgentSkillsIndex {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+
+  const candidate = value as Record<string, unknown>;
+  return (
+    candidate.$schema === AGENT_SKILLS_SCHEMA && Array.isArray(candidate.skills)
+  );
+}
+
+function checkAgentSkillsIndex() {
+  try {
+    const parsed = JSON.parse(readDistFile(AGENT_SKILLS_INDEX_PATH)) as unknown;
+
+    if (!isAgentSkillsIndex(parsed)) {
+      logResult(
+        false,
+        `dist/${AGENT_SKILLS_INDEX_PATH} must contain the Agent Skills Discovery v0.2.0 schema URL and a skills array`,
+      );
+      return 1;
+    }
+
+    const skills = parsed.skills;
+    const validSkills = skills.filter(hasRequiredAgentSkillFields);
+    const invalidSkills = skills.filter(
+      (skill) => !hasRequiredAgentSkillFields(skill),
+    );
+    const skillNames = validSkills.map((skill) => skill.name);
+    const uniqueSkillNames = new Set(skillNames);
+    const missingZenmlSkills = REQUIRED_ZENML_SKILLS.filter(
+      (name) => !uniqueSkillNames.has(name),
+    );
+    const missingKitaruSkills = REQUIRED_KITARU_SKILLS.filter(
+      (name) => !uniqueSkillNames.has(name),
+    );
+    const ok =
+      skills.length > 0 &&
+      uniqueSkillNames.size === skillNames.length &&
+      invalidSkills.length === 0 &&
+      missingZenmlSkills.length === 0 &&
+      missingKitaruSkills.length === 0;
+
+    logResult(
+      ok,
+      ok
+        ? `dist/${AGENT_SKILLS_INDEX_PATH} is a valid Agent Skills Discovery index`
+        : `dist/${AGENT_SKILLS_INDEX_PATH} must have non-empty unique skill-md entries with raw GitHub URLs, sha256 digests, and all required ZenML and Kitaru skills`,
+    );
+
+    if (!ok) {
+      if (skills.length === 0) {
+        logResult(false, "Agent skills index has no skills");
+      }
+      if (uniqueSkillNames.size !== skillNames.length) {
+        logResult(false, "Agent skills index has duplicate skill names");
+      }
+      if (invalidSkills.length > 0) {
+        logResult(
+          false,
+          `Agent skills index has invalid entries: ${invalidSkills
+            .map((skill) =>
+              typeof skill === "object" && skill !== null && "name" in skill
+                ? String(skill.name)
+                : "<unnamed>",
+            )
+            .join(", ")}`,
+        );
+      }
+      if (missingZenmlSkills.length > 0) {
+        logResult(
+          false,
+          `Agent skills index is missing ZenML skills: ${missingZenmlSkills.join(", ")}`,
+        );
+      }
+      if (missingKitaruSkills.length > 0) {
+        logResult(
+          false,
+          `Agent skills index is missing Kitaru skills: ${missingKitaruSkills.join(", ")}`,
+        );
+      }
+    }
+
+    return ok ? 0 : 1;
+  } catch (error) {
+    logResult(
+      false,
+      `Could not parse ${distPath(AGENT_SKILLS_INDEX_PATH)} as JSON: ${(error as Error).message}`,
+    );
+    return 1;
+  }
+}
+
 function checkBlogSearchIndex() {
   const searchIndexPath = "blog/search-index.json";
 
@@ -223,6 +386,9 @@ function main() {
 
   console.log("\n4. Blog search index shape:");
   totalFailures += checkBlogSearchIndex();
+
+  console.log("\n5. Agent skills index shape:");
+  totalFailures += checkAgentSkillsIndex();
 
   console.log("\n========== DIST SMOKE REPORT ==========");
   console.log(`Failures: ${totalFailures}`);
