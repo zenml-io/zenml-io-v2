@@ -1,0 +1,166 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "airflow-to-zenml-migration",
+      "type": "skill-md",
+      "description": "Migrate Apache Airflow DAGs, operators, and workflows to idiomatic ZenML pipelines. Handles concept mapping (DAG\u2192pipeline, operator\u2192step, XCom\u2192artifact), code translation, scheduling, retry config, Docker settings, and flags unsupported patterns (trigger rules, sensors, dynamic task mapping) for human review. Use this skill whenever the user mentions Airflow migration, converting Airflow DAGs, porting workflows from Airflow, replacing Airflow with ZenML, or asks how an Airflow concept maps to ZenML \u2014 even if they don't explicitly say \"migrate\". Also use when they paste Airflow code and ask to make it work with ZenML, or when they describe a workflow using Airflow terminology (DAG, operator, XCom, sensor, task group) in a ZenML context. If the user just asks a quick conceptual question (\"what's the ZenML equivalent of XCom?\"), answer it directly from the concept map \u2014 no need to run the full migration workflow.",
+      "url": "https://raw.githubusercontent.com/zenml-io/skills/e8534cade92e1c0ce730e421de830509b04be6d2/skills/zenml-airflow-migration/skills/airflow-migration/SKILL.md",
+      "digest": "sha256:d362c47f0abd2d09e3542c16de9dabd52e47bb0bd77ac730e77e586531774b6a"
+    },
+    {
+      "name": "argo-to-zenml-migration",
+      "type": "skill-md",
+      "description": "Migrate Argo Workflows, WorkflowTemplates, ClusterWorkflowTemplates, and CronWorkflows to idiomatic ZenML pipelines. Handles concept mapping, YAML-to-Python translation, scheduling, retries, Kubernetes-native pattern analysis, and flags unsupported patterns such as status-based depends logic, shared volumes, containerSet, sidecars, synchronization locks, and Argo Events for human review. Use this skill whenever the user mentions Argo migration, converting Argo YAML, replacing Argo with ZenML, mapping an Argo concept to ZenML, or provides workflow YAML using terms like WorkflowTemplate, CronWorkflow, when, withItems, withParam, containerSet, onExit, Sensor, or EventSource. For quick conceptual questions, answer from the concept map without running the full migration workflow.",
+      "url": "https://raw.githubusercontent.com/zenml-io/skills/e8534cade92e1c0ce730e421de830509b04be6d2/skills/zenml-argo-migration/skills/argo-migration/SKILL.md",
+      "digest": "sha256:bb3668c0b9af77aed62b951291c103d6cd00fadae66a6ca86fd80e4a3cfb241c"
+    },
+    {
+      "name": "azureml-to-zenml-migration",
+      "type": "skill-md",
+      "description": "Migrate Azure Machine Learning SDK v2 pipelines, components, environments, and schedules to idiomatic ZenML pipelines. Handles concept mapping (`@pipeline` -> `@pipeline`, `@command_component` -> `@step`, `Environment(...)` -> `DockerSettings(...)`, AzureML compute -> `AzureMLOrchestratorSettings`), code translation, Azure-aware \"keep AzureML\" migration paths, and flags unsupported or unsafe patterns (sweep jobs, parallel jobs, managed endpoints, AzureML Registry, Responsible AI dashboard, and unverified control-flow helpers like `if_else` and `do_while`) for human review. Use this skill whenever the user mentions AzureML migration, Azure Machine Learning SDK v2 migration, converting AzureML pipelines or components, porting workflows from AzureML, replacing AzureML authoring with ZenML, or asks how AzureML concepts map to ZenML -- even if they don't explicitly say \"migrate\". Also use when they paste AzureML SDK v2 code, `mldesigner` components, YAML components, `load_component()` usage, MLTable/data asset definitions, or AzureML scheduling/deployment code and ask to make it work with ZenML. If the user just asks a quick conceptual question (\"what's the ZenML equivalent of an AzureML Environment?\"), answer it directly from the concept map -- no need to run the full migration workflow.",
+      "url": "https://raw.githubusercontent.com/zenml-io/skills/e8534cade92e1c0ce730e421de830509b04be6d2/skills/zenml-azureml-migration/skills/azureml-migration/SKILL.md",
+      "digest": "sha256:061bf950395b2c0f1a79d9141365f6a28949e920c8d3a6e1b7b38a72a10970cf"
+    },
+    {
+      "name": "dagster-to-zenml-migration",
+      "type": "skill-md",
+      "description": "Migrate Dagster assets, ops, graphs, jobs, and software-defined asset workflows to idiomatic ZenML pipelines. Handles concept mapping (asset->step output, job->pipeline, IOManager->artifact store/materializer + explicit IO steps), asset-boundary planning, code translation, scheduling, retry config, resources/config migration, and flags unsupported patterns (asset selection, partitions/backfills, sensors, declarative automation, freshness policies, observable source assets) for human review. Use this skill whenever the user mentions Dagster migration, converting Dagster assets or jobs, porting workflows from Dagster, replacing Dagster with ZenML, or asks how a Dagster concept maps to ZenML -- even if they do not explicitly say \"migrate\". Also use when they paste Dagster code and ask to make it work with ZenML, or when they describe a workflow using Dagster terminology (`@asset`, `@multi_asset`, `Definitions`, `IOManager`, `ConfigurableResource`, partitions, sensors, asset checks) in a ZenML context. If the user just asks a quick conceptual question (\"what is the ZenML equivalent of an IOManager?\" or \"how should I think about Dagster assets in ZenML?\"), answer it directly from the concept map -- no need to run the full migration workflow.",
+      "url": "https://raw.githubusercontent.com/zenml-io/skills/e8534cade92e1c0ce730e421de830509b04be6d2/skills/zenml-dagster-migration/skills/dagster-migration/SKILL.md",
+      "digest": "sha256:b3c2b2da2f689a478558dd62413b5959c06cea585c0abe5f7504c2b9de4198dc"
+    },
+    {
+      "name": "databricks-to-zenml-migration",
+      "type": "skill-md",
+      "description": "Migrate Databricks Workflows (Lakeflow Jobs) to idiomatic ZenML pipelines. Handles concept mapping (Job->pipeline, Task->step, task values->artifact), notebook refactoring, code translation for all Databricks task types (notebook_task, python_wheel_task, sql_task, dbt_task, condition_task, for_each_task, run_job_task, spark_jar_task), scheduling, retry config, compute mapping, and flags unsupported patterns (file arrival triggers, run_if semantics, shared cluster state, DBFS paths) for human review. Use this skill whenever the user mentions Databricks migration, converting Databricks Jobs or Workflows, porting workflows from Databricks, replacing Databricks orchestration with ZenML, or asks how a Databricks concept maps to ZenML -- even if they don't explicitly say \"migrate\". Also use when they paste Databricks job JSON or notebook code and ask to make it work with ZenML, or when they describe a workflow using Databricks terminology (task, job, notebook_task, dbutils, task values, job clusters, condition_task, for_each_task) in a ZenML context. If the user just asks a quick conceptual question (\"what's the ZenML equivalent of dbutils.jobs.taskValues?\"), answer it directly from the concept map -- no need to run the full migration workflow.",
+      "url": "https://raw.githubusercontent.com/zenml-io/skills/e8534cade92e1c0ce730e421de830509b04be6d2/skills/zenml-databricks-migration/skills/databricks-migration/SKILL.md",
+      "digest": "sha256:b3f6f43e2c724f9d8816fa511ae2223c43deb1db52eecccab97b2d63793465fe"
+    },
+    {
+      "name": "flyte-to-zenml-migration",
+      "type": "skill-md",
+      "description": "Migrate Flyte workflows, tasks, LaunchPlans, and Flytekit code to idiomatic ZenML pipelines. Handles concept mapping (`@task`->`@step`, `@workflow`->`@pipeline`, `map_task()`->dynamic `.map()`, `conditional()`->dynamic branching, `LaunchPlan`->schedule/config split), code translation, special-type migration (`FlyteFile`, `FlyteDirectory`, `StructuredDataset`, `FlyteSchema`), Docker/image mapping, and flags unsupported patterns (`@eager`, `ContainerTask`, reference entities, checkpointing, interruptible semantics) for human review. Use this skill whenever the user mentions Flyte migration, converting Flyte to ZenML, porting Flyte workflows, replacing Flyte with ZenML, or asks how a Flyte concept maps to ZenML -- even if they do not explicitly say \"migrate\". Also use when they paste Flytekit code and ask to make it work with ZenML, or when they describe a workflow using Flyte terminology (`@dynamic`, `LaunchPlan`, `map_task`, `conditional`, `ImageSpec`, `FlyteFile`, `StructuredDataset`, `reference_task`, `reference_workflow`) in a ZenML context. If the user just asks a quick conceptual question (\"what is the ZenML equivalent of LaunchPlan?\" or \"how should FlyteFile map?\"), answer it directly from the concept map -- no need to run the full migration workflow.",
+      "url": "https://raw.githubusercontent.com/zenml-io/skills/e8534cade92e1c0ce730e421de830509b04be6d2/skills/zenml-flyte-migration/skills/flyte-migration/SKILL.md",
+      "digest": "sha256:ba50acdfe1537c67d88d74d7f19132765577f55386623dc0ab040c69e42b9ad9"
+    },
+    {
+      "name": "kedro-to-zenml-migration",
+      "type": "skill-md",
+      "description": "Migrate Kedro pipelines and projects to idiomatic ZenML pipelines. Handles concept mapping (node->step, Pipeline->pipeline, Data Catalog->explicit boundary steps plus artifacts, params:->typed parameters), catalog analysis, code translation, hooks/runners/deployment mapping, and flags unsupported patterns (transcoding, dataset lifecycle hooks, namespace remapping, SharedMemoryDataset, slicing semantics) for human review. Use this skill whenever the user mentions Kedro migration, converting a Kedro project to ZenML, porting Kedro pipelines, replacing Kedro orchestration or deployment plugins with ZenML, or asks how a Kedro concept maps to ZenML -- even if they do not explicitly say \"migrate\". Also use when the user pastes `catalog.yml`, `parameters.yml`, `pipeline_registry.py`, node code, hook code, or describes a workflow using Kedro terminology such as node, pipeline, Data Catalog, `params:`, namespace, modular pipeline, runner, `MemoryDataset`, or transcoding in a ZenML context. If the user just asks a quick conceptual question (\"what is the ZenML equivalent of `MemoryDataset`?\"), answer it directly from the concept map -- no need to run the full migration workflow.",
+      "url": "https://raw.githubusercontent.com/zenml-io/skills/e8534cade92e1c0ce730e421de830509b04be6d2/skills/zenml-kedro-migration/skills/kedro-migration/SKILL.md",
+      "digest": "sha256:55c3f5c153632adc4416b9e5fe995e8e428e68560ac1d465d2e6cc4c45b1cce3"
+    },
+    {
+      "name": "kitaru-authoring",
+      "type": "skill-md",
+      "description": "Guide for writing Kitaru durable workflows and operational control paths. Use when creating or refactoring Kitaru flows, checkpoints, waits, logging, artifacts, tracked LLM calls, replay/resume/retry flows, KitaruClient usage, CLI commands, MCP operations, deployments, secrets, or adapter integrations for PydanticAI, OpenAI Agents, LangGraph, Claude Agent SDK, and Gemini Interactions. Triggers on mentions of kitaru, @flow, @checkpoint, kitaru.wait, kitaru.log, kitaru.save, kitaru.load, KitaruClient, replay, resume, retry, `kitaru executions ...`, MCP tools, `KitaruAgent`, `KitaruRunner`, `KitaruGraphRunner`, `KitaruClaudeRunner`, `KitaruGeminiInteractionsRunner`, `GeminiInteractionRequest`, `wait_for_input`, `wait_for_approval`, `wait_for_interrupt`, `requires_action`, Antigravity, or migration from deprecated `wrap(...)`.",
+      "url": "https://raw.githubusercontent.com/zenml-io/kitaru-skills/8d47864710572c69efee2c23b2afa7c518ef0860/skills/kitaru-authoring/SKILL.md",
+      "digest": "sha256:d3d3fb2403093a44b8ee04f6ce25a827ceb1b3af70964d46ee8677239fe53500"
+    },
+    {
+      "name": "kitaru-claude-agent-sdk-migration",
+      "type": "skill-md",
+      "description": "Migrate existing Claude Agent SDK code to Kitaru's Claude Agent SDK adapter. Use when code mentions claude_agent_sdk, claude_agent_sdk.query, query, ClaudeAgentOptions, ClaudeSDKClient, ResultMessage, SystemMessage, session_id, resume, cwd, allowed_tools, Bash, Read, Write, Edit, MCP, hooks, permissions, file checkpointing, transcript, workspace, KitaruClaudeRunner, ClaudeRunRequest, ClaudeRunResult, ClaudeCapturePolicy, checkpoint_strategy, or invocation. Helps classify direct, approximate, and absent mappings, keep Claude-owned internals inside one invocation boundary, and produce a migration report with replay, workspace, session, tool, Bash, MCP, hook, and privacy risks called out.",
+      "url": "https://raw.githubusercontent.com/zenml-io/kitaru-skills/8d47864710572c69efee2c23b2afa7c518ef0860/skills/kitaru-claude-agent-sdk-migration/SKILL.md",
+      "digest": "sha256:b356df2d8a8b7065093b487d131f640bf4c04da61640ac80b231e40206ffe4fe"
+    },
+    {
+      "name": "kitaru-gemini-interactions-migration",
+      "type": "skill-md",
+      "description": "Migrate existing Gemini Interactions, Google GenAI, and Antigravity managed agent code to Kitaru's Gemini Interactions adapter. Use when code mentions google.genai, genai.Client, client.interactions.create, client.interactions.get, Interaction, interaction_id, previous_interaction_id, requires_action, function_call, function_result, background, store, poll, steps, output_text, Antigravity, managed agents, environment, Vertex, API key, KitaruGeminiInteractionsRunner, GeminiInteractionRequest, GeminiInteractionResult, GeminiInteractionCapturePolicy, or cache_identity. Helps classify direct, approximate, and absent mappings, preserve Google-owned hosted interaction internals, handle requires_action and polling safely, and produce a migration report.",
+      "url": "https://raw.githubusercontent.com/zenml-io/kitaru-skills/8d47864710572c69efee2c23b2afa7c518ef0860/skills/kitaru-gemini-interactions-migration/SKILL.md",
+      "digest": "sha256:54422fa38eb109328ec4465372f845a593227071f8e482423b604fb7f8350a38"
+    },
+    {
+      "name": "kitaru-langgraph-migration",
+      "type": "skill-md",
+      "description": "Migrate existing LangGraph and LangChain agent code to Kitaru's LangGraph adapter. Use when code mentions LangGraph, StateGraph, CompiledStateGraph, graph.invoke, graph.ainvoke, stream, astream, interrupt, Command, thread_id, checkpointer, InMemorySaver, MemorySaver, create_agent, KitaruGraphRunner, LangGraphRunRequest, LangGraphRunResult, KitaruLangGraphMiddleware, build_resume_request, wait_for_interrupt, checkpoint_strategy, graph_call, calls, callbacks, event streams, Deep Agents, or checkpointers. Helps classify direct, approximate, and absent mappings, choose graph_call vs middleware-backed calls boundaries, preserve LangGraph ownership of graph state, and produce a migration report.",
+      "url": "https://raw.githubusercontent.com/zenml-io/kitaru-skills/8d47864710572c69efee2c23b2afa7c518ef0860/skills/kitaru-langgraph-migration/SKILL.md",
+      "digest": "sha256:40d6a79405e564ff7f830842cc7b1b1116c7add9d218366187b728abe58247a6"
+    },
+    {
+      "name": "kitaru-openai-agents-migration",
+      "type": "skill-md",
+      "description": "Migrate existing OpenAI Agents SDK code to Kitaru's OpenAI Agents adapter. Use when code mentions agents.Agent, Runner.run, Runner.run_sync, KitaruRunner, OpenAIRunRequest, OpenAIRunResult, wait_for_approval, build_resume_request, function_tool, RunConfig, handoffs, context, approval/resume flows, or checkpoint_strategy. Helps classify direct, approximate, and absent mappings, choose runner_call vs calls boundaries, preserve OpenAI Agents SDK ownership of the agent turn, and produce a MIGRATION_REPORT.md with replay, context, approval, tool, and side-effect risks called out.",
+      "url": "https://raw.githubusercontent.com/zenml-io/kitaru-skills/8d47864710572c69efee2c23b2afa7c518ef0860/skills/kitaru-openai-agents-migration/SKILL.md",
+      "digest": "sha256:4e08397c0aab5c0d317c9a18d957937607854e87ccbb025f82bb146e00827651"
+    },
+    {
+      "name": "kitaru-pydantic-ai-migration",
+      "type": "skill-md",
+      "description": "Migrate existing PydanticAI agent code to Kitaru's PydanticAI adapter. Use when code mentions pydantic_ai.Agent, KitaruAgent, CapturePolicy, hitl_tool, wait_for_input, kp.wrap, tools, toolsets, MCP servers, streaming, run_stream, iter, event_stream_handler, message_history, TestModel, granular_checkpoints, or checkpoint_strategy. Helps classify direct, approximate, and absent mappings, choose safe Kitaru boundaries, update deprecated wrap(...) usage, and produce a migration report.",
+      "url": "https://raw.githubusercontent.com/zenml-io/kitaru-skills/8d47864710572c69efee2c23b2afa7c518ef0860/skills/kitaru-pydantic-ai-migration/SKILL.md",
+      "digest": "sha256:075b368e610dc03dd7eff90a5d175d01257429ea608e566b0a6b97105f00cfb9"
+    },
+    {
+      "name": "kitaru-quickstart",
+      "type": "skill-md",
+      "description": "Interactive onboarding for new Kitaru users. Scaffolds a personalized demo flow, demonstrates crash recovery with replay, human-in-the-loop with wait(), artifact capture, and optional MCP integration. Use when a user mentions kitaru quickstart, getting started with kitaru, kitaru demo, kitaru onboarding, try kitaru, learn kitaru, what is kitaru, show me kitaru, kitaru tutorial, or wants to see what Kitaru does.",
+      "url": "https://raw.githubusercontent.com/zenml-io/kitaru-skills/8d47864710572c69efee2c23b2afa7c518ef0860/skills/kitaru-quickstart/SKILL.md",
+      "digest": "sha256:0e9f8a166a17ba66689603e5e95aabac43a73a140e934393e492ffb188d287d1"
+    },
+    {
+      "name": "kitaru-replay-lab",
+      "type": "skill-md",
+      "description": "Replay lab for operating on existing Kitaru executions. Use when a user wants to recover a failed execution, reproduce a run, fork one replay experiment, compare replay output, debug replay divergence, replay a cohort, inspect a ReplaySubmission, or use SDK/CLI/MCP replay tools on real execution IDs. Triggers on kitaru replay lab, replay experiment, reproduce then fork, replay failed execution, replay cohort, execution recovery, replay diff, ReplaySubmission, `kitaru executions replay`, `kitaru_executions_replay`, `kitaru_executions_cohort`, `kitaru_executions_diff`, or `kitaru_executions_diff_matrix`.",
+      "url": "https://raw.githubusercontent.com/zenml-io/kitaru-skills/8d47864710572c69efee2c23b2afa7c518ef0860/skills/kitaru-replay-lab/SKILL.md",
+      "digest": "sha256:140771b2e7e8deb1b2716dc6f653fd58d5b83322649565c411d908f805374581"
+    },
+    {
+      "name": "kitaru-scoping",
+      "type": "skill-md",
+      "description": "Scope and validate whether an agent workflow is well-suited for Kitaru's durable execution model, then design the flow architecture \u2014 checkpoint boundaries, wait points, replay anchors, artifact strategy, operator surface, and MVP scope. Runs a structured interview to help users identify what benefits from durability, what doesn't, what should become explicit artifacts or external state, and where replay/resume boundaries should go. Produces a flow_architecture.md specification document. Use this skill whenever a user describes an agent workflow they want to make durable, asks whether Kitaru is right for their use case, seems unsure about where to place checkpoints or waits, needs to choose between SDK / KitaruClient / CLI / MCP control surfaces, asks how to handle state across executions, or arrives with a workflow that might be too simple or too complex for Kitaru, or needs to choose among PydanticAI, OpenAI Agents, LangGraph, Claude Agent SDK, and Gemini Interactions adapter boundaries. Also use when the user says \"I want to build an agent\" with a long list of requirements \u2014 this skill helps scope it before the kitaru-authoring skill takes over.",
+      "url": "https://raw.githubusercontent.com/zenml-io/kitaru-skills/8d47864710572c69efee2c23b2afa7c518ef0860/skills/kitaru-scoping/SKILL.md",
+      "digest": "sha256:2f8c8e03398d4bdae9874cb6104024a1ce4980ec9795576ff9b263aa89f65435"
+    },
+    {
+      "name": "metaflow-to-zenml-migration",
+      "type": "skill-md",
+      "description": "Migrate Metaflow flows and Outerbounds-flavored Metaflow projects to idiomatic ZenML pipelines. Handles concept mapping (FlowSpec->pipeline, @step->@step, self.* artifacts->explicit returns and inputs), code translation for Parameters, IncludeFile, Config, self.next transitions, branch/join, foreach, scheduling, retry/resource/dependency decorators, and flags unsupported or high-risk patterns (@catch, merge_artifacts, resume and checkpoint semantics, recursion, event triggers, @batch) for human review. Use this skill whenever the user mentions Metaflow migration, converting FlowSpec code, porting flows from Metaflow or Outerbounds, replacing Metaflow orchestration with ZenML, or asks how a Metaflow concept maps to ZenML -- even if they don't explicitly say \"migrate\". Also use when they paste FlowSpec code or describe workflows using Metaflow terminology (self.next, foreach, current, Parameter, IncludeFile, Config, @catch, @kubernetes, @batch, Runner, Deployer) in a ZenML context. If the user just asks a quick conceptual question (\"what's the ZenML equivalent of merge_artifacts?\"), answer it directly from the concept map -- no need to run the full migration workflow.",
+      "url": "https://raw.githubusercontent.com/zenml-io/skills/e8534cade92e1c0ce730e421de830509b04be6d2/skills/zenml-metaflow-migration/skills/metaflow-migration/SKILL.md",
+      "digest": "sha256:a1c407055a5b76cb2b2755700861b82f3dbc11ed589a66a4defa3d9bd44eaf59"
+    },
+    {
+      "name": "prefect-to-zenml-migration",
+      "type": "skill-md",
+      "description": "Migrate Prefect flows, tasks, and deployment patterns to idiomatic ZenML pipelines. Handles concept mapping (`@flow`\u2192`@pipeline`, `@task`\u2192`@step`, result persistence\u2192artifacts), dynamic-execution analysis, code translation, scheduling, retries, Blocks/secrets decomposition, and flags unsupported patterns (`allow_failure()`, `return_state=True`, pause/suspend, global concurrency, task-runner semantics) for human review. Use this skill whenever the user mentions Prefect migration, converting Prefect flows, porting workflows from Prefect, replacing Prefect with ZenML, or asks how a Prefect concept maps to ZenML \u2014 even if they do not explicitly say \"migrate\". Also use when they paste Prefect code and ask to make it work with ZenML, or when they describe a workflow using Prefect terminology (`@flow`, `@task`, `.submit()`, `.map()`, `State`, Blocks, Deployments, work pools, Automations) in a ZenML context. If the user asks a quick conceptual question (\"what is the ZenML equivalent of a Prefect Block?\"), answer it directly from the concept map \u2014 no need to run the full migration workflow.",
+      "url": "https://raw.githubusercontent.com/zenml-io/skills/e8534cade92e1c0ce730e421de830509b04be6d2/skills/zenml-prefect-migration/skills/prefect-migration/SKILL.md",
+      "digest": "sha256:f69a3aaed0f0fc6c3d2259df71e4fb64469d0896b5e3a030c253e1e3236e2ab5"
+    },
+    {
+      "name": "sagemaker-to-zenml-migration",
+      "type": "skill-md",
+      "description": "Migrate Amazon SageMaker Pipelines and workflow code to idiomatic ZenML pipelines. Handles concept mapping (Pipeline->@pipeline, ProcessingStep/TrainingStep->@step, PropertyFile/JsonGet->artifacts), code translation, SagemakerOrchestratorSettings mapping, scheduling, model-registration strategy, and flags unsupported or high-risk patterns (CallbackStep, LambdaStep handshake semantics, step.properties placeholders, dynamic-pipeline scheduling on SageMaker) for human review. Use this skill whenever the user mentions SageMaker migration, converting SageMaker Pipelines, porting workflow code from SageMaker, replacing SageMaker DSL authoring with ZenML, or asks how a SageMaker Pipelines concept maps to ZenML -- even if they do not explicitly say \"migrate\". Also use when they paste `sagemaker.workflow.*` code and ask to make it work with ZenML, or when they describe a workflow using SageMaker terms (`ProcessingStep`, `TrainingStep`, `ConditionStep`, `PropertyFile`, `JsonGet`, `ModelStep`, `PipelineSession`) in a ZenML context. If the user just asks a quick conceptual question (\"what's the ZenML equivalent of PropertyFile?\"), answer it directly from the concept map -- no need to run the full migration workflow.",
+      "url": "https://raw.githubusercontent.com/zenml-io/skills/e8534cade92e1c0ce730e421de830509b04be6d2/skills/zenml-sagemaker-migration/skills/sagemaker-migration/SKILL.md",
+      "digest": "sha256:46fdc1da6fe11d3830ca4830ae473236c0e3170fbab83bd7b88fd7ec78256c9c"
+    },
+    {
+      "name": "vertexai-to-zenml-migration",
+      "type": "skill-md",
+      "description": "Migrate Vertex AI Pipelines (Kubeflow Pipelines v2 / PipelineJob workflows) to idiomatic ZenML pipelines. Handles concept mapping (`@dsl.pipeline` -> `@pipeline`, `@dsl.component` -> `@step`, `PipelineJob.create_schedule(...)` -> `Schedule(...)`), artifact-contract translation (`Input[Dataset]`, `InputPath`, `.uri`, `.path`), Google Cloud Pipeline Components (GCPC) rewrites, dynamic control flow (`dsl.If`, `dsl.ParallelFor`, `dsl.Collected`), resource/config migration, and flags unsupported patterns (compiled template workflows, `dsl.ExitHandler`, path-coupled artifacts, schedule lifecycle parity) for human review. Use this skill whenever the user mentions Vertex AI Pipelines migration, KFP v2 to ZenML, PipelineJob migration, GCPC migration, or asks how a Vertex/KFP concept maps to ZenML \u2014 even if they do not explicitly say \"migrate\". Also use when they paste KFP DSL code, compiled pipeline YAML/JSON, Vertex submission code, or describe a workflow using Vertex/KFP terminology (`dsl.component`, `dsl.pipeline`, `dsl.If`, `dsl.ParallelFor`, `PipelineJob`, GCPC) in a ZenML context. If the user just asks a quick conceptual question (\"what is the ZenML equivalent of `dsl.importer`?\"), answer it directly from the concept map \u2014 no need to run the full migration workflow.",
+      "url": "https://raw.githubusercontent.com/zenml-io/skills/e8534cade92e1c0ce730e421de830509b04be6d2/skills/zenml-vertexai-migration/skills/vertexai-migration/SKILL.md",
+      "digest": "sha256:d853c54383ad9fd81a746c3aff6aa907b60a03eb424296c02dd1cc10cea77f6f"
+    },
+    {
+      "name": "zenml-pipeline-authoring",
+      "type": "skill-md",
+      "description": "Author ZenML pipelines: @step/@pipeline decorators, type hints, multi-output steps, dynamic vs static pipelines, artifact data flow, ExternalArtifact, YAML configuration, DockerSettings and ResourceSettings for remote execution, custom materializers, metadata logging, secrets management, pipeline deployments, live streaming events, lifecycle hooks, and custom visualizations. Use this skill whenever asked to write a ZenML pipeline, create ZenML steps, make a pipeline work on Kubernetes/Vertex/SageMaker, add Docker settings, write a materializer, create a custom visualization, handle \"works locally but fails on cloud\" issues, or configure pipeline YAML files. Even if the user doesn't explicitly mention \"pipeline authoring\", use this skill when they ask to build an ML workflow, data pipeline, or training pipeline with ZenML.",
+      "url": "https://raw.githubusercontent.com/zenml-io/skills/e8534cade92e1c0ce730e421de830509b04be6d2/skills/zenml-pipeline-authoring/skills/pipeline-authoring/SKILL.md",
+      "digest": "sha256:b38db1a22c7d5798601b718cbad82f4c0178f644e82a83bfe0313cdee8e42086"
+    },
+    {
+      "name": "zenml-quick-wins",
+      "type": "skill-md",
+      "description": "Implements ZenML quick wins to enhance MLOps workflows. Investigates codebase and stack configuration, recommends high-priority improvements, and implements metadata logging, experiment tracking, alerts, scheduling, secrets management, tags, git hooks, HTML reports, Model Control Plane setup, live streaming events, lifecycle hooks, and resource-pool-aware step requests. Use when: user wants to improve their ZenML setup, asks about MLOps best practices, mentions \"quick wins\", wants to enhance pipelines, or needs help with ZenML features like experiment tracking, alerting, scheduling, or model governance.",
+      "url": "https://raw.githubusercontent.com/zenml-io/skills/e8534cade92e1c0ce730e421de830509b04be6d2/skills/zenml-quick-wins/skills/quick-wins/SKILL.md",
+      "digest": "sha256:7625ab73dd40cb5ed6e414e9e3c04ff26a7f8f200ac491655b2c62f82cdf5ab9"
+    },
+    {
+      "name": "zenml-scoping",
+      "type": "skill-md",
+      "description": "Scope and decompose ML workflow ideas into realistic ZenML pipeline architectures. Runs an in-depth interview to help users break down ambitious or over-engineered plans into well-composed multi-pipeline setups, identify what belongs in a pipeline vs. what doesn't, define cross-pipeline data flow via the Model Control Plane, and select an MVP to build first. Produces a pipeline_architecture.md specification document. Use this skill whenever a user describes a complex ML workflow, mentions multiple pipelines, talks about end-to-end ML platforms, asks how to structure their ML system in ZenML, or seems to be over-engineering their pipeline design. Also use when the user's pipeline idea sounds like it's trying to do too many things at once, or when they ask about composing pipelines together. Even if the user just says \"I want to build an ML pipeline\" with a long list of requirements, this skill helps scope it down before the pipeline-authoring skill takes over.",
+      "url": "https://raw.githubusercontent.com/zenml-io/skills/e8534cade92e1c0ce730e421de830509b04be6d2/skills/zenml-scoping/skills/scoping/SKILL.md",
+      "digest": "sha256:8abb953114541efc06cf5c5ec8862fe3cc24570014a7e2a7d3c285a084b793a6"
+    }
+  ]
+}
