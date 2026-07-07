@@ -114,7 +114,7 @@ jobs:
 
       - name: Comment preview URL on PR
         if: github.event_name == 'pull_request' && steps.cloudflare-credentials.outputs.available == 'true'
-        uses: marocchino/sticky-pull-request-comment@v3
+        uses: marocchino/sticky-pull-request-comment@v3.0.4
         with:
           header: cloudflare-preview
           message: |
