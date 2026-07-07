@@ -1,0 +1,142 @@
+---
+competitor: "Braintrust"
+title: "Kitaru vs Braintrust: Test changes against real production runs, not just a dataset"
+description: "Braintrust scores your agent against a curated dataset. Kitaru rebuilds your production traces into a faithful environment you can re-run — so a prompt, model, or tool change is tested against what actually happened, before your users feel it."
+cardSubtitle: "A faithful environment rebuilt from your production traces, not just a dataset you wrote by hand."
+ctaHeading: "Change your agent without breaking it"
+order: 15
+---
+
+import WhenToUseEach from '../../components/compare/kitaru/WhenToUseEach.astro';
+import ComparisonTable from '../../components/compare/kitaru/ComparisonTable.astro';
+import CodeCompare from '../../components/compare/kitaru/CodeCompare.astro';
+import FeatureWithGraphic from '../../components/compare/kitaru/FeatureWithGraphic.astro';
+import ComparisonCta from '../../components/compare/kitaru/ComparisonCta.astro';
+import PullQuote from '../../components/compare/kitaru/PullQuote.astro';
+
+Braintrust tests your agent against a dataset you wrote. Kitaru tests a change against a faithful reproduction of the production runs that actually happened — tool calls and side effects included.
+
+That difference is structural, not a feature gap. An eval platform that observed a run has the logs, but no way to stand them up again as a working environment. Scoring outputs against a dataset you picked is one job; testing a change against the real, multi-step, tool-using production history is only possible from the runtime that executed it. Kitaru executed your agent, so Kitaru can rebuild the conditions it ran in — and show you exactly what a prompt, model, or tool change would have broken.
+
+Braintrust is very good at the job it was built for: curated datasets, custom scorers, LLM-as-judge, a prompt playground, experiments in CI. If that's the whole job for your agent, use it. The pages below are about the job it structurally can't do.
+
+<WhenToUseEach
+  kitaru={{
+    title: "Use Kitaru if you are",
+    items: [
+      "Shipping frequent prompt, model, or tool changes to a multi-step, tool-using agent — claims triage, refund issuance, ticket resolution, trade execution — and can't afford a change silently breaking production",
+      "Testing a change against the production runs that actually happened, tool calls and side effects included, rather than only against a dataset you assembled by hand",
+      "Doing a forced model migration and need to see exactly what regresses before you ship, so you can change confidently",
+      "Working in a regulated vertical where every replay, override, and deployment needs a queryable audit trail, not a Slack thread",
+    ],
+  }}
+  competitor={{
+    title: "Use Braintrust if you are",
+    items: [
+      "Running a single-shot / RAG agent — scoring a curated dataset is the whole job",
+      "Building eval datasets, LLM-as-judge scorers, and a prompt playground as the core of your workflow",
+      "Scoring outputs across models in CI against golden examples your team maintains",
+    ],
+  }}
+/>
+
+<PullQuote
+  quote="Observability tools watch your agent. Kitaru turns your production traces into a faithful environment you can re-run — so when you change your agent, you catch what breaks before your users do."
+/>
+
+<FeatureWithGraphic title="A faithful environment rebuilt from production traces">
+  Watching your agent isn't the same as being able to re-run it. Kitaru rebuilds the real conditions your agent ran in, so a change can be tested against what actually happened — not a synthetic dataset.
+
+  <Fragment slot="bullets">
+    - **Recorded as it ran:** every model call, tool call, and step boundary of a production run is captured as durable checkpoints while the agent executes. Nothing is reconstructed from logs after the fact.
+    - **Re-run with one change:** replay the execution with a new model, an edited prompt, or an overridden tool result. Everything upstream of the change comes from the environment, so the change is the only difference — and the diff is attributable to it.
+    - **Why only Kitaru can do this:** only the runtime that executed the agent can rebuild a faithful environment from its traces. An observability or eval tool has the logs but never executed them — it can't stand them up.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Catch what regresses — so you can change confidently">
+  The point of catching regressions isn't standing still; it's shipping the next model, prompt, or tool version without holding your breath. A refund-issuance agent that changed models should still refuse the same refunds it refused last week.
+
+  <Fragment slot="bullets">
+    - **Diff against reality:** compare the changed run to the run that actually happened — decisions, tool calls, outputs — and see exactly what regressed, and at which step.
+    - **Cohorts, not cherry-picks:** re-run the change against your recent production executions, not three fixtures. The claims your triage agent actually saw are the test set.
+    - **Prove it, not just fix it:** Every replay, override, and deployment is recorded as a typed, queryable audit trail. You have an answer, not a Slack thread.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="The honest boundary">
+  If your agent is a single-shot RAG answer, a dataset eval is genuinely enough. One input, one model call, one output to score — a curated dataset covers the whole behavior, and Braintrust does that job well.
+
+  <Fragment slot="bullets">
+    - **Where the environment earns its keep:** multi-step, tool-using agents — a ticket-resolution agent that reads history, calls three tools, and takes an action. The behavior lives in the trajectory, and a dataset of input/output pairs can't represent it.
+    - **Many teams run both:** Braintrust scoring the single-shot components, Kitaru regression-testing changes to the agent that actually does things.
+  </Fragment>
+</FeatureWithGraphic>
+
+## What makes Kitaru unique
+
+<ComparisonTable
+  competitorLabel="Braintrust"
+  rows={[
+    { feature: "Faithful environment rebuilt from production traces", kitaru: true, competitor: false },
+    { feature: "Test a change against real production runs — tool calls and side effects included", kitaru: true, competitor: false },
+    { feature: "Diff exactly what regressed between the real run and the changed run", kitaru: true, competitor: false },
+    { feature: "Typed, queryable audit trail of replays, overrides, and deployments", kitaru: true, competitor: false },
+    { feature: "Durable execution underneath (checkpoints, wait/resume) that keeps the environment faithful", kitaru: true, competitor: false },
+    { feature: "Curated dataset evals with custom scorers", kitaru: false, competitor: true },
+    { feature: "LLM-as-judge scoring and prompt playground", kitaru: false, competitor: true },
+    { feature: "Experiment tracking for prompt iterations in CI", kitaru: false, competitor: true },
+    { feature: "Works across LangGraph, PydanticAI, OpenAI Agents SDK, Claude Agent SDK, and plain Python", kitaru: true, competitor: true },
+  ]}
+/>
+
+## How the two surfaces map
+
+| Concept | Braintrust | Kitaru |
+|---|---|---|
+| Test substrate | A dataset you assembled by hand | A faithful environment rebuilt from production traces |
+| Unit of a test | Score vs. an expected output | Diff vs. the run that actually happened |
+| Tool calls | Mocked or re-invoked inside the eval task | Reproduced from the recorded run, side effects included |
+| Coverage | The cases you thought to write | The production runs that actually happened |
+| Verdict | Aggregate scores per experiment | Exactly what regressed, and at which step |
+| Record of a change | Experiment history | Typed audit trail linking replay → source run → change → diff |
+<CodeCompare
+  kitaruLabel="Kitaru"
+  competitorLabel="Braintrust"
+  kitaruCode={`# a real claims-triage run, checkpointed in production
+source = claims_triage.run(claim)
+result = source.wait()
+
+# rebuild that run as a faithful environment,
+# re-run it with one change: the new model
+candidate = client.executions.replay(
+    source.exec_id,
+    from_="assess_severity",
+    model="claude-sonnet-4-6",
+)
+
+# see exactly what regressed before you ship
+diff = client.executions.diff(
+    source.exec_id,
+    candidate.exec_id,
+)`}
+  competitorCode={`from braintrust import Eval
+
+# a dataset you wrote and maintain by hand
+DATASET = [
+    {"input": claim_fixture_1, "expected": "escalate"},
+    {"input": claim_fixture_2, "expected": "approve"},
+    # ...the cases you thought to write
+]
+
+Eval(
+    "claims-triage",
+    data=lambda: DATASET,
+    task=triage,  # tool calls mocked or re-invoked
+    scores=[accuracy_scorer],
+)`}
+/>
+
+<ComparisonCta headline={frontmatter.ctaHeading}>
+If you're scoring a single-shot / RAG agent against a curated dataset, use Braintrust — that's the whole job, and it does it well. If you're changing a multi-step, tool-using agent that triages claims, issues refunds, or executes trades, Kitaru rebuilds the runs it already executed into a faithful environment — so you change confidently and see exactly what regressed before your users do.
+</ComparisonCta>

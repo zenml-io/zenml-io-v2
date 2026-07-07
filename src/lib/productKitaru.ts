@@ -12,9 +12,9 @@ export const KITARU_LINKS = {
 } as const;
 
 export const PRODUCT_KITARU_SEO = {
-  title: "Kitaru: ask what-if about your agent's real runs | ZenML",
+  title: "Kitaru — Change your agent without breaking it | ZenML",
   description:
-    "Open-source runtime that records model/tool calls and steps exposed through Kitaru primitives and adapters as replayable checkpoints. Replay a real execution with one scoped override: a flow input, a model, or a checkpoint result override. See what would have happened, with no production reruns. Durable checkpoints, wait/resume, and isolated execution on your own cloud. Built by the ZenML team.",
+    "Observability watches your agent. Kitaru turns production traces into a faithful environment you re-run — change confidently, catch what breaks before users do.",
 } as const;
 
 /**
