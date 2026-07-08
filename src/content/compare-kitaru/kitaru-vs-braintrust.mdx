@@ -16,7 +16,7 @@ import PullQuote from '../../components/compare/kitaru/PullQuote.astro';
 
 Braintrust tests your agent against a dataset you wrote. Kitaru tests a change against a faithful reproduction of the production runs that actually happened — tool calls and side effects included.
 
-That difference is structural, not a feature gap. An eval platform that observed a run has the logs, but no way to stand them up again as a working environment. Scoring outputs against a dataset you picked is one job; testing a change against the real, multi-step, tool-using production history is only possible from the runtime that executed it. Kitaru executed your agent, so Kitaru can rebuild the conditions it ran in — and show you exactly what a prompt, model, or tool change would have broken.
+That difference is structural, not a feature gap. An eval platform that observed a run has the logs, but no way to stand them up again as a working environment. Scoring outputs against a dataset you picked is one job; testing a change against the real, multi-step, tool-using production history is only possible from the runtime the agent ran on. Kitaru is that runtime — underneath your harness — so it can rebuild the conditions the run happened in, and show you exactly what a prompt, model, or tool change would have broken.
 
 Braintrust is very good at the job it was built for: curated datasets, custom scorers, LLM-as-judge, a prompt playground, experiments in CI. If that's the whole job for your agent, use it. The pages below are about the job it structurally can't do.
 
@@ -65,7 +65,7 @@ Braintrust is very good at the job it was built for: curated datasets, custom sc
 </FeatureWithGraphic>
 
 <FeatureWithGraphic title="The honest boundary">
-  If your agent is a single-shot RAG answer, a dataset eval is genuinely enough. One input, one model call, one output to score — a curated dataset covers the whole behavior, and Braintrust does that job well.
+  If your agent is a single-shot RAG answer, a dataset eval is enough. One input, one model call, one output to score — a curated dataset covers the whole behavior, and Braintrust does that job well.
 
   <Fragment slot="bullets">
     - **Where the environment earns its keep:** multi-step, tool-using agents — a ticket-resolution agent that reads history, calls three tools, and takes an action. The behavior lives in the trajectory, and a dataset of input/output pairs can't represent it.
