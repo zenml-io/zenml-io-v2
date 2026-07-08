@@ -7,8 +7,8 @@
  * 2. Delegated click handler: any element with `data-analytics="EventName"`
  *    automatically fires `plausible("EventName")` on click.
  *
- * Consent-safe: only fires if `window.plausible` exists (injected by
- * CookieConsent after user grants analytics consent).
+ * Consent-safe / existence-safe: only fires if `window.plausible` exists.
+ * Plausible itself is loaded directly by SiteHeaderScripts on production hostnames.
  *
  * Included by both BaseLayout and MinimalLayout.
  */
