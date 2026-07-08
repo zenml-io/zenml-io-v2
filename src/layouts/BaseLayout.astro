@@ -89,6 +89,19 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
       }
     </script>
 
+    {/* Bullseye Pixel — hostname-gated to prevent preview deploy noise. */}
+    <script is:inline>
+      if (["www.zenml.io","zenml.io"].includes(window.location.hostname)) {
+        var bullseye = document.createElement("script");
+        bullseye.async = true;
+        bullseye.defer = true;
+        bullseye.src = "https://script.bullseye.so/script/dbbc38f8-20c2-42a6-9587-b4365cd23b62";
+        bullseye.referrerPolicy = "strict-origin-when-cross-origin";
+        bullseye.setAttribute("data-bullseye-pixel", "dbbc38f8-20c2-42a6-9587-b4365cd23b62");
+        document.head.appendChild(bullseye);
+      }
+    </script>
+
     {/* Scarf — cookieless company-level analytics pixel. Tracks page views
         via a transparent 1x1 image with IP-based company attribution.
         No cookies or JS execution. Hostname-gated to prevent preview noise. */}
