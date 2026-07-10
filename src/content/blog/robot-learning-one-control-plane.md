@@ -17,75 +17,81 @@ mainImage:
   alt: "Diagram showing scattered GPU sources — neocloud H100s, on-prem SLURM, hyperscaler, lab workstation — converging into one pipeline on any stack"
 seo:
   title: "One Control Plane for Robot Learning Across Clouds - ZenML Blog"
-  description: "The GPU crunch scattered robotics compute across neoclouds, on-prem, and hyperscalers. Here's why the robot-learning loop needs one control plane."
+  description: "Robotics compute is spreading across clouds and clusters. Learn how one portable pipeline layer can keep the robot-learning loop reproducible."
   canonical: "https://www.zenml.io/blog/robot-learning-one-control-plane"
   ogImage: "https://assets.zenml.io/content/blog/robot-learning-one-control-plane/ef375457/robot-cover.jpg"
 ---
 
-Over the last year, a pattern started showing up in our conversations with robotics teams. It goes something like this: the ML team needs workstation-class GPUs for sim-to-real work and B200-class capacity for large-scale training. Neither is available where they'd like it to be. So they take what they can get — a reserved block on a neocloud, an on-prem cluster the hardware team stood up, hyperscaler credits from their last funding round, and a university SLURM allocation someone's co-founder still has access to.
+Robotics teams do not have a training job. They have a loop.
 
-One infrastructure lead at a Bay Area humanoid robotics company put it to us plainly: their GPUs "can be in Europe, or Asia Pacific, or literally anywhere." Their challenge wasn't finding a model architecture. It was building the orchestration layer to consume compute wherever it happens to exist.
+A robot records camera frames, joint states, actions, and failures. That data is cleaned and turned into episodes. A policy is trained, evaluated in simulation, tested on hardware, and eventually deployed. The next day, the fleet produces new evidence and the loop begins again.
 
-Robotics companies became AI companies fast. The GPU crunch met them at the door.
+Each part wants different infrastructure. Data processing belongs near the data. Simulation may need a large CPU and GPU fleet. Training wants the fastest accelerators the team can obtain. Hardware evaluation happens in the lab. Deployment ends at the edge.
 
-## The scale is real, and so is the scatter
+That is why the defining infrastructure problem in robotics is not simply getting a large training run to finish. It is keeping the whole learning loop coherent while the compute underneath it keeps changing.
 
-If you think robot learning is a small-compute problem, the public numbers say otherwise. NVIDIA's GR00T N1 foundation model was trained on up to 1,024 H100s for a single model, with roughly 50,000 H100-hours of pretraining — on a dedicated InfiniBand cluster, managed by an internal orchestration platform NVIDIA built specifically for robotics workloads ([GR00T N1 technical report](https://arxiv.org/pdf/2503.14734)).
+## Robot learning has outgrown a single cluster
 
-Most robotics companies are not NVIDIA. They don't get a dedicated fat-tree cluster and an in-house orchestration team. What they get is the scatter: CoreWeave now runs a dedicated [Physical AI vertical](https://www.coreweave.com/industries/physical-ai) with robot foundation model companies as customers. Nebius and NVIDIA are [packaging a robotics cloud](https://nebius.com/newsroom/nebius-teams-with-nvidia-to-build-cloud-for-robotics-and-physical-ai) together. And the job boards tell you what's happening inside these companies: robot foundation model startups are hiring infrastructure engineers whose explicit charter is to "turn our multi-cloud GPU fleet into a training engine" — every GPU busy, every run reproducible.
+The upper end of the market makes the scale visible. NVIDIA reports that GR00T N1 used up to 1,024 H100 GPUs for a single model and roughly 50,000 H100 GPU-hours for pretraining. The cluster was managed by OSMO, NVIDIA's orchestration platform for robotics workloads ([GR00T N1 technical report](https://arxiv.org/pdf/2503.14734)).
 
-Read that charter again. It's not a hiring ad for a research role. It's a company announcing, publicly, that its compute is scattered and its training loop is not.
+Most robotics companies will not train at NVIDIA's scale. But smaller teams face a messier version of the same systems problem. Capacity may come from a hyperscaler agreement, an AI cloud, an on-premises Kubernetes cluster, or a workstation in the lab. The mix changes as credits expire, new hardware arrives, and model requirements grow.
 
-## The problem isn't the GPUs. It's the loop.
+The strongest evidence comes from the teams themselves. Dyna Robotics is hiring an ML infrastructure engineer to turn its "multi-cloud GPU fleet into a training engine" where every run is reproducible and a researcher's next experiment is one command away ([Dyna Robotics job posting](https://jobs.ashbyhq.com/dyna-robotics/ec8f09de-ee26-4117-9b41-d317b074c2dc)). That is the problem in one sentence: the GPUs exist, but the team still needs a reliable way to use them as one system.
 
-Here's what the day-to-day actually looks like for a robot learning team. You collect episodes on real robots — trajectories of camera frames and joint states, thousands of short demonstrations. You preprocess them into a training-ready format. You train, producing a checkpoint. You evaluate that checkpoint, often on a physical robot the next morning. Then you do it all again, every day, forever — because the model is never done, and the fleet keeps generating data.
+Cloud vendors see the same demand. CoreWeave now has a [physical AI offering](https://www.coreweave.com/industries/physical-ai) for simulation, policy training, VLA fine-tuning, and sim-to-real validation. Nebius and NVIDIA have launched a [managed physical AI stack](https://nebius.com/newsroom/nebius-teams-with-nvidia-to-build-cloud-for-robotics-and-physical-ai) built around OSMO, Cosmos, and Nebius infrastructure. This is more than a new cloud category. It is a signal that robotics infrastructure has become a market of its own.
 
-Now stretch that loop across four compute environments and watch what happens. The preprocessing runs where the data landed. The training runs wherever GPUs were available this week. The evaluation results live on someone's laptop. Every handoff is a Slack message, a manually copied path, an SSH session.
+## The expensive failure is a broken handoff
 
-The teams living this describe it in remarkably consistent terms. RoboForce, a robot foundation model company, [said it publicly](https://nebius.com/newsroom/nebius-teams-with-nvidia-to-build-cloud-for-robotics-and-physical-ai): "Manual handoffs between data generation, simulation, and training means our GPUs can sit idle — costing us both time and money." A large AI-infra team building embodied-AI training systems wrote in their [technical report](https://arxiv.org/html/2603.11101v1) that the field "lacks industrial-grade systems that seamlessly connect simulation, training, and evaluation." Idle GPUs are the visible symptom. The disease is a loop held together by hand.
+GPU utilization matters, but utilization is downstream of the workflow.
 
-## The three ways teams cope today
+If data preparation, simulation, training, evaluation, and deployment are separate scripts owned by separate people, every transition becomes a place to lose context. Which episode set produced this checkpoint? Which preprocessing code ran? Was the failed evaluation caused by a model change, a simulator change, or a different dataset? Can the team reproduce the result on another backend next week?
 
-**Build it in-house.** This is the default, and for a certain size of company it works. Wayve standardized on a single cloud and built its own fleet-learning platform on top — Kubernetes for the simulation fleet, Apache Beam for preprocessing, custom ingest infrastructure for [petabytes per year of driving data](https://wayve.ai/thinking/scaling-machine-learning-from-garage-to-fleet-with-microsoft-azure/). It's genuinely impressive. It also took a platform team that most Series A-C robotics companies cannot afford to staff — and the in-house route is exactly what those job postings above are trying to hire for, one engineer at a time.
+RoboForce described the operational cost plainly: "Manual handoffs between data generation, simulation, and training means our GPUs can sit idle." After moving the workflow behind a single configuration, the company says its iteration cycle fell from weeks to days ([Nebius and NVIDIA customer announcement](https://nebius.com/newsroom/nebius-teams-with-nvidia-to-build-cloud-for-robotics-and-physical-ai)). It is a vendor case study, so the numbers deserve the usual caution. The workflow problem it describes is nevertheless familiar: idle compute is often a symptom of disconnected stages, not a lack of schedulers.
 
-**Marry one vendor.** NVIDIA's OSMO — the platform GR00T was trained on — is now being offered as a managed service through Nebius. CoreWeave ships SUNK, its Slurm-on-Kubernetes layer, and markets it for long-running RL and simulation jobs. These are good products solving real problems. But notice the shape of the deal: the orchestration layer belongs to the compute vendor. It organizes your workloads beautifully — inside their environment. The moment your compute spans a neocloud contract, an on-prem cluster, and hyperscaler credits (which, in a GPU crunch, it will), a vendor-anchored control plane becomes another silo with better branding.
+The data side is just as demanding. Wayve describes a fleet-learning loop that continuously collects, curates, trains, re-simulates, and validates models. Its public architecture evolved from an office server to custom ingest stations, Kubernetes-based simulation, Apache Beam preprocessing, and Azure storage capable of feeding production training from petabyte-scale datasets ([Wayve's engineering account](https://wayve.ai/thinking/scaling-machine-learning-from-garage-to-fleet-with-microsoft-azure/)). The hard part is not any one tool. It is maintaining the contract between all of them.
 
-**Duct tape.** SSH scripts, cron jobs, a shared drive of checkpoints, tribal knowledge about which cluster has the good drivers. Nobody chooses this. Everybody has some of it.
+## Three reasonable strategies — and their trade-offs
 
-## What the missing layer actually needs to do
+There is no universal answer to this problem. Robotics teams generally choose some combination of three strategies.
 
-Strip away the vendor pitches and the requirements are fairly crisp:
+**Standardize on one infrastructure vendor.** This reduces integration work and can be the right choice when capacity, pricing, and geography line up. Managed offerings from NVIDIA, Nebius, CoreWeave, and the hyperscalers are increasingly capable. The trade-off is that workflow decisions can become coupled to one provider's execution model.
 
-1. **One pipeline definition, many backends.** The same training pipeline — written once, in Python — should run on your Kubernetes cluster today, a SLURM allocation tomorrow, and SageMaker next quarter, without rewriting the code. Compute is a deployment decision, not an architecture decision.
-2. **Split a single pipeline across environments.** Preprocessing belongs near the data. Training belongs on whichever cluster has free accelerators. A real control plane lets individual steps of one pipeline land on different infrastructure.
-3. **Caching, because the loop repeats daily.** When you rerun a continuous-training pipeline, the steps whose inputs haven't changed shouldn't burn GPU-hours again. In daily robot-learning loops, redundant recomputation is where compute budgets quietly die.
-4. **Lineage from episode to checkpoint.** When a robot in the field misbehaves, you need to trace the deployed checkpoint back through the training run to the exact data that produced it. In regulated and safety-adjacent domains, this stops being nice-to-have.
-5. **Triggers and schedules that close the loop.** New batch of teleop episodes lands, preprocessing kicks off, training follows, evaluation gates the checkpoint. The loop should run itself and page a human at the gate.
+**Build a platform in-house.** At sufficient scale, this is rational. Wayve built a sophisticated fleet-learning platform because its data volume and autonomy workflow justified the investment. The cost is not only the initial build: a platform team must keep adapting it as researchers, models, clusters, and deployment targets change.
 
-## Where ZenML fits — and where it doesn't
+**Add a portable pipeline layer above the infrastructure.** This does not replace Kubernetes, SageMaker, Vertex AI, or a cluster scheduler. It defines the workflow independently and delegates execution to those systems. The team gets one representation of the learning loop while retaining the ability to change where it runs.
 
-This is the layer ZenML occupies. To be clear about what we are not: we don't sell GPUs, and we don't own the compute layer. ZenML is the pipeline authoring and orchestration layer that sits on top of whatever compute you have — the neocloud block, the basement cluster, the hyperscaler account.
+The third strategy is most useful for the awkward middle: teams with more than one useful compute environment, but without the appetite to build and maintain an internal orchestration product.
 
-You write steps and pipelines in Python. A stack maps them onto infrastructure — Kubernetes, SageMaker, Vertex, SkyPilot, and the rest of the [integration list](https://docs.zenml.io). Switching backends is a one-line change, not a migration:
+## What a control plane must preserve
 
-```bash
-zenml stack set neocloud-k8s
-python train_policy.py
+A credible control plane for robot learning needs to preserve five things as infrastructure changes:
 
-zenml stack set onprem-cluster
-python train_policy.py   # same pipeline, different GPUs
-```
+1. **The pipeline.** Episode ingestion, preprocessing, training, evaluation, and release should have one explicit dependency graph instead of a chain of scripts and messages.
+2. **Execution choice.** The pipeline definition should stay stable while configured infrastructure determines where it runs. Individual high-compute steps should be able to use a specialized environment when necessary.
+3. **Artifacts and lineage.** A checkpoint should point back to its producing run, parameters, code, and upstream artifacts. External datasets still need deliberate versioning, but the workflow should not discard their identity at each handoff.
+4. **Repeatability without waste.** When code, parameters, and inputs are unchanged, safe steps should reuse previous outputs. Steps that read mutable external systems must opt out or use an explicit cache policy.
+5. **Automation with gates.** Schedules and external events should be able to start the loop, while evaluation thresholds and human review control what reaches a robot.
 
-Step operators go further: one pipeline where the data-heavy preprocessing runs next to your storage and the training step runs on whichever environment currently has accelerators. Caching means the preprocessing you ran yesterday doesn't run again today just because the training config changed. Every run is tracked — code version, data version, config, checkpoint — so the episode-to-deployed-model lineage exists by default rather than by heroics. And because pipelines can be triggered by schedules or events, "data operator finishes a collection session, pipeline takes it from there" is configuration, not a night of scripting.
+These requirements are deliberately above the scheduler. A scheduler decides which node runs a job. A pipeline control plane records why that job exists, what it consumes, what it produces, and what should happen next.
 
-For the robot-learning loop specifically, the mapping is direct: episode ingestion, trajectory preprocessing, policy training, checkpoint evaluation, and fleet rollout each become pipeline steps with tracked artifacts between them — instead of five workflows connected by Slack messages.
+## Where ZenML fits
 
-We're also leaning further into where robotics compute actually lives: alongside the Kubernetes-shaped world, SLURM-based clusters — the default on on-prem pods and HPC allocations — are a first-class target we're actively building toward.
+ZenML is that pipeline layer. It does not sell GPU capacity or replace the systems that schedule it. It lets a team express the learning loop as Python steps and map those steps onto a configured stack.
 
-## The honest counter-argument
+ZenML supports orchestrators including Kubernetes, Kubeflow, SageMaker, Vertex AI, AzureML, and SkyPilot. Changing the active stack changes the execution backend without requiring a second copy of the pipeline. Backend-specific credentials, images, storage, and settings still have to be configured; portability is an architectural boundary, not magic.
 
-If you're an NVIDIA-scale company, you'll build your own OSMO. If you're Wayve-scale with a strategic hyperscaler relationship, single-cloud plus in-house platform is a rational bet. And if your entire compute footprint fits inside one neocloud contract and you expect it to stay there, the vendor's own tooling may carry you for a while.
+[Step operators](https://docs.zenml.io/stacks/stack-components/step-operators) provide a second level of control. A pipeline can run under its normal orchestrator while a training step is submitted to a specialized environment such as SageMaker, Vertex AI, AzureML, Kubernetes, Modal, or Run:AI. A shared artifact store carries the inputs and outputs across that boundary.
 
-The thesis breaks down at exactly the place most robotics companies live: too big for one cluster, too small to staff a platform team, holding a compute portfolio that changes with every funding round and every GPU shortage. If that's you, the control plane you need is the one that doesn't care whose logo is on the datacenter.
+Around execution, ZenML records pipeline runs and artifacts, supports configurable [step caching](https://docs.zenml.io/user-guides/starter-guide/cache-previous-executions), and can be invoked by schedules or external systems. For a robotics workflow, that means the episode batch, processed dataset, policy checkpoint, evaluation report, and release decision can remain parts of one traceable run rather than five disconnected jobs.
 
-That's the bet we've made. If your GPUs are everywhere and your loop is held together by hand, we'd like to show you what it looks like when it isn't — [book a demo](https://www.zenml.io/book-your-demo), or start with the [open-source framework](https://github.com/zenml-io/zenml) and see how far it takes you.
+The result is not "one giant cluster." It is one learning loop that can survive several clusters.
+
+## When this approach is not the right one
+
+If all of your workloads fit comfortably in one managed platform, adding another abstraction may not pay for itself. If your company has the scale and platform-engineering depth to build a robotics-specific system like OSMO, owning every layer may be a strategic advantage. And no workflow tool will make a tightly coupled distributed training job span arbitrary clouds with poor network links; that job still needs an appropriate cluster.
+
+But if your data, simulation, training, and evaluation workloads already cross infrastructure boundaries, those boundaries should not leak into every pipeline. Researchers should be able to improve the policy without relearning the deployment topology. Platform engineers should be able to change the topology without rewriting the science.
+
+That is the opportunity for a neutral control plane: not to hide the real differences between clouds and clusters, but to keep those differences from breaking the robot-learning loop.
+
+If that describes your team, [book a demo](https://www.zenml.io/book-your-demo) or try the [open-source framework](https://github.com/zenml-io/zenml).
