@@ -13,13 +13,13 @@ tags:
 date: "2026-07-10T00:00:00.000Z"
 readingTime: "8 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/robot-learning-one-control-plane/d158c178/robot-cover2.avif"
-  alt: "Diagram showing scattered GPU sources — neocloud H100 cluster, on-prem SLURM, hyperscaler credits, lab workstation — converging into one ZenML control plane"
+  url: "https://assets.zenml.io/content/blog/robot-learning-one-control-plane/2e689b2c/robot-learning-cover-v2.avif"
+  alt: "ZenML blog cover with the title 'Your GPUs Are Everywhere. Your Robot-Learning Loop Shouldn't Be.' next to a geometric isometric illustration in blue, red, and cream"
 seo:
   title: "One Control Plane for Robot Learning Across Clouds - ZenML Blog"
   description: "Robotics compute is spreading across clouds and clusters. Learn how one portable pipeline layer can keep the robot-learning loop reproducible."
   canonical: "https://www.zenml.io/blog/robot-learning-one-control-plane"
-  ogImage: "https://assets.zenml.io/content/blog/robot-learning-one-control-plane/ef375457/robot-cover.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/robot-learning-one-control-plane/6890233e/robot-learning-cover-v2.jpg"
 ---
 
 Robotics teams do not have a training job. They have a loop.
