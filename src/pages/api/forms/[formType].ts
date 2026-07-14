@@ -22,7 +22,7 @@ const VALID_FORM_TYPES = new Set<FormType>(
   Object.keys(FORM_RULES) as FormType[],
 );
 
-/** Fields excluded from the Segment track payload (sensitive or irrelevant for CRM). */
+/** Non-content fields omitted from submission metadata logs. */
 const EXCLUDED_FIELDS = new Set(["cf-turnstile-response", "privacy"]);
 
 /** Per-form trait fields sent in the identify call. */
@@ -31,6 +31,14 @@ const IDENTIFY_TRAITS: Record<FormType, string[]> = {
   whitepaper: ["fullName", "email"],
   "brick-manual": ["fullName", "email"],
   "startup-academic": ["fullName", "email", "company"],
+};
+
+/** Per-form fields allowed in the Segment track payload. */
+const TRACK_PROPERTIES: Record<FormType, string[]> = {
+  "demo-request": ["fullName", "email", "company", "jobTitle"],
+  whitepaper: ["fullName", "email", "company", "jobTitle"],
+  "brick-manual": ["fullName", "email"],
+  "startup-academic": ["fullName", "email", "linkedin", "company", "role"],
 };
 
 function jsonResponse(data: unknown, status = 200): Response {
@@ -157,10 +165,11 @@ export async function POST(context: APIContext): Promise<Response> {
       if (val) traits[field === "fullName" ? "name" : field] = val;
     }
 
-    // Build properties for track (all validated fields minus excluded ones)
+    // Build properties for track from the fields explicitly supported by this form.
     const properties: Record<string, string> = { formType };
-    for (const [key, val] of Object.entries(data)) {
-      if (!EXCLUDED_FIELDS.has(key)) properties[key] = val;
+    for (const field of TRACK_PROPERTIES[typedFormType]) {
+      const val = (data[field] ?? "").trim();
+      if (val) properties[field] = val;
     }
 
     const identifyCall = segmentCall("identify", segmentKey, {

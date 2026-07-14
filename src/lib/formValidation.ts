@@ -14,32 +14,56 @@ export type FormType =
 interface FieldRule {
   required?: boolean;
   pattern?: RegExp;
+  maxLength?: number;
+  disallowedPattern?: RegExp;
   message: string;
+  invalidMessage?: string;
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const URL_RE = /^https?:\/\/.+/;
+// biome-ignore lint/suspicious/noControlCharactersInRegex: Plain-text CRM fields must reject ASCII control characters.
+const UNSAFE_PLAIN_TEXT_RE = /[<>\u0000-\u001f\u007f]/;
+
+const FULL_NAME_RULE: FieldRule = {
+  required: true,
+  maxLength: 100,
+  disallowedPattern: UNSAFE_PLAIN_TEXT_RE,
+  message: "Full name is required",
+  invalidMessage:
+    "Full name must be 100 characters or fewer and cannot contain HTML or line breaks",
+};
+
+const OPTIONAL_COMPANY_RULE: FieldRule = {
+  maxLength: 200,
+  disallowedPattern: UNSAFE_PLAIN_TEXT_RE,
+  message: "Company or organization name is invalid",
+  invalidMessage:
+    "Company or organization name must be 200 characters or fewer and cannot contain HTML or line breaks",
+};
 
 /** Per-form field validation rules. */
 export const FORM_RULES: Record<FormType, Record<string, FieldRule>> = {
   "demo-request": {
-    fullName: { required: true, message: "Full name is required" },
+    fullName: FULL_NAME_RULE,
     email: {
       required: true,
       pattern: EMAIL_RE,
       message: "Valid work email is required",
     },
+    company: OPTIONAL_COMPANY_RULE,
   },
   whitepaper: {
-    fullName: { required: true, message: "Full name is required" },
+    fullName: FULL_NAME_RULE,
     email: {
       required: true,
       pattern: EMAIL_RE,
       message: "Valid work email is required",
     },
+    company: OPTIONAL_COMPANY_RULE,
   },
   "brick-manual": {
-    fullName: { required: true, message: "Full name is required" },
+    fullName: FULL_NAME_RULE,
     email: {
       required: true,
       pattern: EMAIL_RE,
@@ -47,7 +71,7 @@ export const FORM_RULES: Record<FormType, Record<string, FieldRule>> = {
     },
   },
   "startup-academic": {
-    fullName: { required: true, message: "Full name is required" },
+    fullName: FULL_NAME_RULE,
     email: {
       required: true,
       pattern: EMAIL_RE,
@@ -58,7 +82,11 @@ export const FORM_RULES: Record<FormType, Record<string, FieldRule>> = {
       pattern: URL_RE,
       message: "LinkedIn URL is required",
     },
-    company: { required: true, message: "Organization name is required" },
+    company: {
+      ...OPTIONAL_COMPANY_RULE,
+      required: true,
+      message: "Organization name is required",
+    },
     role: { required: true, message: "Please select a role" },
   },
 };
@@ -79,9 +107,16 @@ export function validateForm(
   const errors: Record<string, string> = {};
 
   for (const [field, rule] of Object.entries(rules)) {
-    const value = (data[field] ?? "").trim();
+    const rawValue = data[field] ?? "";
+    const value = rawValue.trim();
     if (rule.required && !value) {
       errors[field] = rule.message;
+    } else if (
+      value &&
+      ((rule.maxLength !== undefined && rawValue.length > rule.maxLength) ||
+        rule.disallowedPattern?.test(rawValue))
+    ) {
+      errors[field] = rule.invalidMessage ?? rule.message;
     } else if (value && rule.pattern && !rule.pattern.test(value)) {
       errors[field] = rule.message;
     }
