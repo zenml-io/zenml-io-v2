@@ -33,9 +33,9 @@
     "@tailwindcss/vite": "^4.3.2",
     "astro": "^5.17.1",
     "lottie-web": "^5.13.0",
-    "preact": "^10.29.3",
-    "sharp": "^0.35.2",
-    "shiki": "^4.2.0",
+    "preact": "^10.29.7",
+    "sharp": "^0.35.3",
+    "shiki": "^4.3.1",
     "tailwindcss": "^4.3.2",
     "typescript": "^5.9.3",
     "unist-util-visit": "^5.1.0"
@@ -48,20 +48,20 @@
     ]
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.1",
+    "@biomejs/biome": "^2.5.3",
     "@fontsource/jetbrains-mono": "^5.2.8",
     "@fontsource/plus-jakarta-sans": "^5.2.8",
     "@resvg/resvg-js": "^2.6.2",
     "@types/mdast": "^4.0.4",
-    "@types/node": "^26.0.1",
+    "@types/node": "^26.1.0",
     "cheerio": "^1.2.0",
     "domhandler": "^6.0.1",
     "gray-matter": "^4.0.3",
     "pagefind": "^1.5.2",
     "playwright": "^1.61.1",
     "satori": "^0.26.0",
-    "tsx": "^4.22.4",
-    "vitest": "^4.1.9",
-    "wrangler": "^4.105.0"
+    "tsx": "^4.23.0",
+    "vitest": "^4.1.10",
+    "wrangler": "^4.107.0"
   }
 }
