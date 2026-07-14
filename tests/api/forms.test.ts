@@ -142,6 +142,30 @@ describe("form API route", () => {
     expect(waitUntil).not.toHaveBeenCalled();
   });
 
+  it("rejects a forged allowlisted job title before scheduling outbound calls", async () => {
+    const waitUntil = vi.fn();
+    const response = await POST(
+      makeContext({
+        formType: "demo-request",
+        request: formRequest({
+          fullName: "Ada Lovelace",
+          email: "ada@example.com",
+          jobTitle: '<a href="https://evil.example">Click here</a>',
+          privacy: "on",
+        }),
+        env: { SEGMENT_FORMS_WRITE_KEY: "segment-key" },
+        waitUntil,
+      }),
+    );
+
+    expect(response.status).toBe(422);
+    await expect(responseJson(response)).resolves.toEqual({
+      success: false,
+      errors: { jobTitle: "Please select a valid job title" },
+    });
+    expect(waitUntil).not.toHaveBeenCalled();
+  });
+
   it("requires a Turnstile token when a secret key is configured", async () => {
     const response = await POST(
       makeContext({
@@ -288,6 +312,7 @@ describe("form API route", () => {
           fullName: "Ada Lovelace",
           email: "ada@example.com",
           company: "Analytical Engines Ltd",
+          jobTitle: "Data Scientist",
           unexpected: "must not reach Segment",
           privacy: "on",
           "cf-turnstile-response": "token",
@@ -337,6 +362,7 @@ describe("form API route", () => {
       fullName: "Ada Lovelace",
       email: "ada@example.com",
       company: "Analytical Engines Ltd",
+      jobTitle: "Data Scientist",
     });
     expect(trackBody.properties).not.toHaveProperty("privacy");
     expect(trackBody.properties).not.toHaveProperty("cf-turnstile-response");

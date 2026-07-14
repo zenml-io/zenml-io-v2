@@ -5,6 +5,8 @@
  * the Cloudflare Pages Function (server-side).
  */
 
+import { JOB_TITLE_OPTIONS, STARTUP_ROLE_OPTIONS } from "./formConstants";
+
 export type FormType =
   | "demo-request"
   | "whitepaper"
@@ -16,14 +18,41 @@ interface FieldRule {
   pattern?: RegExp;
   maxLength?: number;
   disallowedPattern?: RegExp;
+  allowedValues?: readonly string[];
+  validate?: (value: string) => boolean;
   message: string;
   invalidMessage?: string;
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const URL_RE = /^https?:\/\/.+/;
 // biome-ignore lint/suspicious/noControlCharactersInRegex: Plain-text CRM fields must reject ASCII control characters.
 const UNSAFE_PLAIN_TEXT_RE = /[<>\u0000-\u001f\u007f]/;
+const JOB_TITLE_VALUES = JOB_TITLE_OPTIONS.map(({ value }) => value);
+const STARTUP_ROLE_VALUES = STARTUP_ROLE_OPTIONS.map(({ value }) => value);
+
+function isLinkedInProfileUrl(value: string): boolean {
+  try {
+    const url = new URL(value);
+    const hostname = url.hostname.toLowerCase();
+    const isLinkedInHost =
+      hostname === "linkedin.com" ||
+      hostname === "www.linkedin.com" ||
+      /^[a-z]{2,3}\.linkedin\.com$/.test(hostname);
+    const pathParts = url.pathname.split("/").filter(Boolean);
+
+    return (
+      url.protocol === "https:" &&
+      !url.username &&
+      !url.password &&
+      !url.port &&
+      isLinkedInHost &&
+      pathParts[0] === "in" &&
+      Boolean(pathParts[1])
+    );
+  } catch {
+    return false;
+  }
+}
 
 const FULL_NAME_RULE: FieldRule = {
   required: true,
@@ -52,6 +81,10 @@ export const FORM_RULES: Record<FormType, Record<string, FieldRule>> = {
       message: "Valid work email is required",
     },
     company: OPTIONAL_COMPANY_RULE,
+    jobTitle: {
+      allowedValues: JOB_TITLE_VALUES,
+      message: "Please select a valid job title",
+    },
   },
   whitepaper: {
     fullName: FULL_NAME_RULE,
@@ -61,6 +94,10 @@ export const FORM_RULES: Record<FormType, Record<string, FieldRule>> = {
       message: "Valid work email is required",
     },
     company: OPTIONAL_COMPANY_RULE,
+    jobTitle: {
+      allowedValues: JOB_TITLE_VALUES,
+      message: "Please select a valid job title",
+    },
   },
   "brick-manual": {
     fullName: FULL_NAME_RULE,
@@ -79,15 +116,23 @@ export const FORM_RULES: Record<FormType, Record<string, FieldRule>> = {
     },
     linkedin: {
       required: true,
-      pattern: URL_RE,
+      maxLength: 500,
+      disallowedPattern: UNSAFE_PLAIN_TEXT_RE,
+      validate: isLinkedInProfileUrl,
       message: "LinkedIn URL is required",
+      invalidMessage: "Valid LinkedIn profile URL is required",
     },
     company: {
       ...OPTIONAL_COMPANY_RULE,
       required: true,
       message: "Organization name is required",
     },
-    role: { required: true, message: "Please select a role" },
+    role: {
+      required: true,
+      allowedValues: STARTUP_ROLE_VALUES,
+      message: "Please select a role",
+      invalidMessage: "Please select a valid role",
+    },
   },
 };
 
@@ -115,6 +160,12 @@ export function validateForm(
       value &&
       ((rule.maxLength !== undefined && rawValue.length > rule.maxLength) ||
         rule.disallowedPattern?.test(rawValue))
+    ) {
+      errors[field] = rule.invalidMessage ?? rule.message;
+    } else if (
+      value &&
+      ((rule.allowedValues && !rule.allowedValues.includes(value)) ||
+        (rule.validate && !rule.validate(value)))
     ) {
       errors[field] = rule.invalidMessage ?? rule.message;
     } else if (value && rule.pattern && !rule.pattern.test(value)) {

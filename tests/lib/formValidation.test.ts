@@ -16,6 +16,7 @@ const formValidationCases = {
     validData: {
       fullName: "Dorothy Vaughan",
       email: "dorothy@example.com",
+      jobTitle: "Data Scientist",
     },
     invalidData: {
       email: "not-an-email",
@@ -29,6 +30,7 @@ const formValidationCases = {
     validData: {
       fullName: "Grace Hopper",
       email: "grace@example.com",
+      jobTitle: "Other",
     },
     invalidData: {
       email: "not-an-email",
@@ -57,7 +59,7 @@ const formValidationCases = {
       email: "mary@example.com",
       linkedin: "https://linkedin.com/in/mary",
       company: "NASA",
-      role: "startup",
+      role: "founder-co-founder",
     },
     invalidData: {
       email: "not-an-email",
@@ -66,7 +68,7 @@ const formValidationCases = {
     expectedErrors: {
       fullName: "Full name is required",
       email: "Valid email is required",
-      linkedin: "LinkedIn URL is required",
+      linkedin: "Valid LinkedIn profile URL is required",
       company: "Organization name is required",
       role: "Please select a role",
     },
@@ -177,16 +179,61 @@ describe("validateForm", () => {
     ).toEqual({ valid: true, errors: {} });
   });
 
-  it("rejects startup academic LinkedIn URLs without an http scheme", () => {
+  it("rejects startup academic LinkedIn URLs without an https scheme", () => {
     expect(
       validateForm("startup-academic", {
         fullName: "Katherine Johnson",
         email: "katherine@example.com",
         linkedin: "linkedin.com/in/katherine",
         company: "NASA",
-        role: "academic",
+        role: "researcher-scientist",
       }).errors,
-    ).toEqual({ linkedin: "LinkedIn URL is required" });
+    ).toEqual({ linkedin: "Valid LinkedIn profile URL is required" });
+  });
+
+  it.each([
+    "demo-request",
+    "whitepaper",
+  ] as const)("rejects job titles outside the configured options for %s", (formType) => {
+    expect(
+      validateForm(formType, {
+        ...formValidationCases[formType].validData,
+        jobTitle: '<a href="https://evil.example">Click here</a>',
+      }).errors,
+    ).toEqual({ jobTitle: "Please select a valid job title" });
+  });
+
+  it("rejects startup roles outside the configured options", () => {
+    expect(
+      validateForm("startup-academic", {
+        ...formValidationCases["startup-academic"].validData,
+        role: '<a href="https://evil.example">Click here</a>',
+      }).errors,
+    ).toEqual({ role: "Please select a valid role" });
+  });
+
+  it.each([
+    "https://evil.example/in/mary",
+    "https://linkedin.com.evil.example/in/mary",
+    "https://linkedin.com/company/zenml",
+    "https://linkedin.com/in/<script>",
+    "https://linkedin.com/in/mary\nmalicious",
+  ])("rejects unsafe or non-profile LinkedIn URL %s", (linkedin) => {
+    expect(
+      validateForm("startup-academic", {
+        ...formValidationCases["startup-academic"].validData,
+        linkedin,
+      }).errors,
+    ).toEqual({ linkedin: "Valid LinkedIn profile URL is required" });
+  });
+
+  it("accepts a canonical www LinkedIn profile URL", () => {
+    expect(
+      validateForm("startup-academic", {
+        ...formValidationCases["startup-academic"].validData,
+        linkedin: "https://www.linkedin.com/in/mary-jackson/",
+      }),
+    ).toEqual({ valid: true, errors: {} });
   });
 
   it("uses the brick manual email validation message", () => {
