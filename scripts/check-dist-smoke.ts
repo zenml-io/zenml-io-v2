@@ -379,19 +379,9 @@ function checkBlogSearchIndex() {
  * has zero coverage. That is the exact drift this feature exists to prevent, so
  * checkIslandMounts() also asserts the manifest is COMPLETE against the real source
  * of truth (src/components/islands/*.tsx). Adding an island without listing it in
- * one of the two tables below fails the build.
+ * the manifest below fails the build.
  */
 const ISLANDS_DIR = "src/components/islands";
-
-/**
- * Islands that exist but deliberately reach no public route, so they cannot be
- * asserted against dist/. Keep this list empty if you can.
- *
- * LottieHero: its only mount point (src/components/sections/Hero.astro) has no
- * importers — the homepage uses UnifiedHero.astro. It is dead code and should
- * probably just be deleted.
- */
-const UNMOUNTED_ISLANDS = ["LottieHero"];
 
 const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   {
@@ -425,15 +415,12 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
 
 /**
  * Fail if an island exists in src/ but is listed in neither ISLAND_MOUNTS nor
- * UNMOUNTED_ISLANDS. Without this, adding an island and forgetting the manifest
- * would leave it with zero coverage in BOTH hydration checks, silently — which is
+ * ISLAND_MOUNTS. Without this, adding an island and forgetting the manifest would
+ * leave it with zero coverage in BOTH hydration checks, silently — which is
  * precisely the drift they exist to catch.
  */
 function checkIslandManifestIsComplete() {
-  const declared = new Set([
-    ...ISLAND_MOUNTS.map(({ island }) => island),
-    ...UNMOUNTED_ISLANDS,
-  ]);
+  const declared = new Set([...ISLAND_MOUNTS.map(({ island }) => island)]);
 
   const onDisk = readdirSync(ISLANDS_DIR)
     .filter((file) => file.endsWith(".tsx"))
@@ -445,7 +432,7 @@ function checkIslandManifestIsComplete() {
     for (const island of undeclared) {
       logResult(
         false,
-        `${ISLANDS_DIR}/${island}.tsx is not in the island manifest — add it to ISLAND_MOUNTS (with the page(s) it mounts on) or to UNMOUNTED_ISLANDS`,
+        `${ISLANDS_DIR}/${island}.tsx is not in ISLAND_MOUNTS — add it with the page(s) it mounts on`,
       );
     }
 
