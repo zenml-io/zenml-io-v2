@@ -54,6 +54,19 @@ jobs:
       - name: Smoke test built site output
         run: pnpm smoke:dist
 
+      # The headless shell is roughly half the download of full Chromium. Note that
+      # `playwright` is deliberately NOT in pnpm.onlyBuiltDependencies — keeping it
+      # out means the browser is fetched only here, not on every pnpm install.
+      - name: Install Chromium for island hydration check
+        run: pnpm exec playwright install --with-deps chromium-headless-shell
+
+      # Proves the Preact islands actually hydrate. `pnpm build` and `pnpm smoke:dist`
+      # only prove the HTML exists — an island can ship perfect markup and still be
+      # inert, which passes a fully green CI. Runs last so a failure in any cheaper
+      # step short-circuits before we pay for the browser download.
+      - name: Check island hydration
+        run: pnpm check:islands
+
   deploy:
     name: Cloudflare Pages deploy
     runs-on: ubuntu-latest

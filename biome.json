@@ -1,7 +1,7 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
   "files": {
-    "includes": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro", "tests/**/*.ts", "vitest.config.ts", "scripts/check-dist-smoke.ts"]
+    "includes": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.astro", "tests/**/*.ts", "vitest.config.ts", "scripts/check-dist-smoke.ts", "scripts/check-island-hydration.ts"]
   },
   "formatter": {
     "indentStyle": "space",
