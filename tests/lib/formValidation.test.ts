@@ -16,6 +16,7 @@ const formValidationCases = {
     validData: {
       fullName: "Dorothy Vaughan",
       email: "dorothy@example.com",
+      jobTitle: "Data Scientist",
     },
     invalidData: {
       email: "not-an-email",
@@ -29,6 +30,7 @@ const formValidationCases = {
     validData: {
       fullName: "Grace Hopper",
       email: "grace@example.com",
+      jobTitle: "Other",
     },
     invalidData: {
       email: "not-an-email",
@@ -57,7 +59,7 @@ const formValidationCases = {
       email: "mary@example.com",
       linkedin: "https://linkedin.com/in/mary",
       company: "NASA",
-      role: "startup",
+      role: "founder-co-founder",
     },
     invalidData: {
       email: "not-an-email",
@@ -66,7 +68,7 @@ const formValidationCases = {
     expectedErrors: {
       fullName: "Full name is required",
       email: "Valid email is required",
-      linkedin: "LinkedIn URL is required",
+      linkedin: "Valid LinkedIn profile URL is required",
       company: "Organization name is required",
       role: "Please select a role",
     },
@@ -113,16 +115,125 @@ describe("validateForm", () => {
     ).toEqual({ valid: true, errors: {} });
   });
 
-  it("rejects startup academic LinkedIn URLs without an http scheme", () => {
+  it.each(
+    configuredFormTypes,
+  )("rejects HTML, line breaks, control characters, and oversized full names for %s", (formType) => {
+    const validData = formValidationCases[formType].validData;
+    const unsafeNames = [
+      '<a href="https://evil.example">Click here</a>',
+      "Ada\nLovelace",
+      "Ada Lovelace\r\n",
+      "Ada\u0000Lovelace",
+      "A".repeat(101),
+    ];
+
+    for (const fullName of unsafeNames) {
+      expect(validateForm(formType, { ...validData, fullName }).errors).toEqual(
+        {
+          fullName:
+            "Full name must be 100 characters or fewer and cannot contain HTML or line breaks",
+        },
+      );
+    }
+  });
+
+  it.each([
+    "demo-request",
+    "whitepaper",
+    "startup-academic",
+  ] as const)("rejects HTML, line breaks, control characters, and oversized company names for %s", (formType) => {
+    const validData = formValidationCases[formType].validData;
+    const unsafeCompanies = [
+      '<a href="https://evil.example">Click here</a>',
+      "Analytical\nEngines",
+      "Analytical Engines\r\n",
+      "Analytical\u0000Engines",
+      "A".repeat(201),
+    ];
+
+    for (const company of unsafeCompanies) {
+      expect(validateForm(formType, { ...validData, company }).errors).toEqual({
+        company:
+          "Company or organization name must be 200 characters or fewer and cannot contain HTML or line breaks",
+      });
+    }
+  });
+
+  it("accepts ordinary Unicode and punctuation in names and companies", () => {
+    expect(
+      validateForm("demo-request", {
+        fullName: "María O'Connor-Sørensen",
+        email: "maria@example.com",
+        company: "München AI GmbH & Co. KG",
+      }),
+    ).toEqual({ valid: true, errors: {} });
+  });
+
+  it("accepts names and companies at their maximum lengths", () => {
+    expect(
+      validateForm("demo-request", {
+        fullName: "A".repeat(100),
+        email: "ada@example.com",
+        company: "B".repeat(200),
+      }),
+    ).toEqual({ valid: true, errors: {} });
+  });
+
+  it("rejects startup academic LinkedIn URLs without an https scheme", () => {
     expect(
       validateForm("startup-academic", {
         fullName: "Katherine Johnson",
         email: "katherine@example.com",
         linkedin: "linkedin.com/in/katherine",
         company: "NASA",
-        role: "academic",
+        role: "researcher-scientist",
       }).errors,
-    ).toEqual({ linkedin: "LinkedIn URL is required" });
+    ).toEqual({ linkedin: "Valid LinkedIn profile URL is required" });
+  });
+
+  it.each([
+    "demo-request",
+    "whitepaper",
+  ] as const)("rejects job titles outside the configured options for %s", (formType) => {
+    expect(
+      validateForm(formType, {
+        ...formValidationCases[formType].validData,
+        jobTitle: '<a href="https://evil.example">Click here</a>',
+      }).errors,
+    ).toEqual({ jobTitle: "Please select a valid job title" });
+  });
+
+  it("rejects startup roles outside the configured options", () => {
+    expect(
+      validateForm("startup-academic", {
+        ...formValidationCases["startup-academic"].validData,
+        role: '<a href="https://evil.example">Click here</a>',
+      }).errors,
+    ).toEqual({ role: "Please select a valid role" });
+  });
+
+  it.each([
+    "https://evil.example/in/mary",
+    "https://linkedin.com.evil.example/in/mary",
+    "https://linkedin.com/company/zenml",
+    "https://linkedin.com/in/<script>",
+    "https://linkedin.com/in/mary\nmalicious",
+  ])("rejects unsafe or non-profile LinkedIn URL %s", (linkedin) => {
+    expect(
+      validateForm("startup-academic", {
+        ...formValidationCases["startup-academic"].validData,
+        linkedin,
+      }).errors,
+    ).toEqual({ linkedin: "Valid LinkedIn profile URL is required" });
+  });
+
+  it("accepts a canonical www LinkedIn profile URL", () => {
+    expect(
+      validateForm("startup-academic", {
+        ...formValidationCases["startup-academic"].validData,
+        linkedin: "https://www.linkedin.com/in/mary-jackson/",
+      }),
+    ).toEqual({ valid: true, errors: {} });
   });
 
   it("uses the brick manual email validation message", () => {
