@@ -8,7 +8,8 @@
     ".astro/types.d.ts",
     "tests/**/*.test.ts",
     "vitest.config.ts",
-    "scripts/check-dist-smoke.ts"
+    "scripts/check-dist-smoke.ts",
+    "scripts/check-island-hydration.ts"
   ],
   "exclude": ["dist", "design", ".wrangler", "node_modules"]
 }
