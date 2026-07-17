@@ -11,7 +11,7 @@ export const KITARU_LINKS = {
 } as const;
 
 export const PRODUCT_KITARU_SEO = {
-  title: "Kitaru: production is the eval | ZenML",
+  title: "Kitaru: traces you can run, not just read | ZenML",
   description:
     "Open-source platform for agent experiments on real traces. Score a recorded execution without rerunning the agent, or replay your real code against the recorded world with one thing changed: a model, a tool's output, a failed call. Name a run to keep it, re-run it in CI as a regression test. Self-hosted on your own cloud. Built by the ZenML team.",
 } as const;
@@ -25,11 +25,11 @@ export const PRODUCT_KITARU_SEO = {
  * page's load-bearing pitch changes.
  */
 export const PRODUCT_KITARU_MARKDOWN = {
-  title: "Kitaru: production is the eval",
+  title: "Kitaru: traces you can run, not just read",
   installCmd: KITARU_INSTALL_CMD,
   license: KITARU_LICENSE,
   summary: [
-    "Kitaru is the open agent experimentation platform from ZenML. Production is the eval: the artifact is the execution, a recording of your agent doing something real, and everything else is what you do with it.",
+    "Kitaru is the open agent experimentation platform from ZenML. Traces you can run, not just read: the artifact is the execution, a recording of your agent doing something real, and everything else is what you do with it.",
     "There are two verbs. Score reads an execution and grades it — the agent never runs, so it is nearly free. Replay runs your agent's real code against the recorded world, with tool and model calls answered from the recording, so a what-if is faithful rather than a guess.",
     "One rule ties it together: doing the thing is the declaration. Run a verb and an experiment exists; name it and it is durable; re-run it in CI and it is a regression test. Kitaru is a debugger with a memory, never in the hot path of production.",
     "You keep the agent harness you already chose: PydanticAI, OpenAI Agents SDK, Claude Agent SDK, LangGraph, Gemini, Google ADK, or plain Python. Adapters record and replay the execution underneath it with a small set of Python primitives.",
