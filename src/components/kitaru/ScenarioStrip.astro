@@ -6,7 +6,8 @@ const scenarios = [
   {
     tag: "debug",
     q: "Why did it do that?",
-    outcome: "Reproduce the failure on your desk — same code, same world, every time.",
+    outcome:
+      "Reproduce the failure on your desk — same code, same world, every time.",
     stat: "10 / 10",
     statLabel: "runs reproduce it",
   },
@@ -50,7 +51,7 @@ const forks = scenarios.map((s, i) => ({
   ...s,
   dotX: checkpoints[i + 1].x,
   cardX: 40 + i * 290,
-  laneY: 100 + i * 18,
+  laneY: 100 + i * 16,
 }));
 ---
 
@@ -79,11 +80,17 @@ const forks = scenarios.map((s, i) => ({
         {forks.map((f, i) => (
           <>
             <path
-              d={`M ${f.dotX} 70 L ${f.dotX} ${f.laneY - 12} Q ${f.dotX} ${f.laneY} ${f.dotX - 12} ${f.laneY} L ${f.cardX + CARD_W / 2 + 12} ${f.laneY} Q ${f.cardX + CARD_W / 2} ${f.laneY} ${f.cardX + CARD_W / 2} ${f.laneY + 12} L ${f.cardX + CARD_W / 2} ${CARD_Y - 12}`}
+              d={`M ${f.dotX} 70 L ${f.dotX} ${f.laneY - 16} Q ${f.dotX} ${f.laneY} ${f.dotX - 16} ${f.laneY} L ${f.cardX + CARD_W / 2 + 16} ${f.laneY} Q ${f.cardX + CARD_W / 2} ${f.laneY} ${f.cardX + CARD_W / 2} ${f.laneY + 16} L ${f.cardX + CARD_W / 2} ${CARD_Y - 12}`}
               class="sd-branch"
+              pathLength="1"
+              style={`--delay: ${(0.1 + i * 0.18).toFixed(2)}s`}
             />
-            <circle cx={f.dotX} cy="62" r="6" class="sd-dot sd-dot-fork" />
-            <path d={`M ${f.cardX + CARD_W / 2 - 6} ${CARD_Y - 12} L ${f.cardX + CARD_W / 2 + 6} ${CARD_Y - 12} L ${f.cardX + CARD_W / 2} ${CARD_Y - 1} Z`} class="sd-branch-end" />
+            <circle cx={f.dotX} cy="62" r="6.5" class="sd-dot sd-dot-fork" style={`--delay: ${(0.1 + i * 0.18).toFixed(2)}s`} />
+            <path
+              d={`M ${f.cardX + CARD_W / 2 - 5} ${CARD_Y - 11} L ${f.cardX + CARD_W / 2 + 5} ${CARD_Y - 11} L ${f.cardX + CARD_W / 2} ${CARD_Y - 2} Z`}
+              class="sd-branch-end"
+              style={`--delay: ${(0.1 + i * 0.18).toFixed(2)}s`}
+            />
             <foreignObject x={f.cardX} y={CARD_Y} width={CARD_W} height="340">
               <div class="scenario-card sd-card" xmlns="http://www.w3.org/1999/xhtml">
                 <span class="scenario-move">{f.tag}</span>
@@ -286,9 +293,9 @@ const forks = scenarios.map((s, i) => ({
 
   .sd-exec-label {
     font-family: var(--font-mono);
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 600;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     fill: var(--color-muted);
   }
@@ -306,8 +313,8 @@ const forks = scenarios.map((s, i) => ({
 
   .sd-dot {
     fill: var(--color-surface);
-    stroke: var(--color-muted);
-    stroke-width: 2;
+    stroke: oklch(0.62 0.02 60 / 0.55);
+    stroke-width: 1.75;
   }
 
   .sd-dot-fork {
@@ -320,8 +327,43 @@ const forks = scenarios.map((s, i) => ({
   .sd-branch {
     fill: none;
     stroke: var(--color-accent);
-    stroke-width: 3;
+    stroke-width: 2.25;
     stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .scenario-diagram.revealed .sd-branch {
+    stroke-dashoffset: 0;
+  }
+
+  .scenario-diagram.revealed .sd-branch-end,
+  .scenario-diagram.revealed .sd-dot-fork {
+    opacity: 1;
+  }
+
+  .sd-branch-end,
+  .sd-dot-fork {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .sd-branch {
+      transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s);
+    }
+    .sd-branch-end,
+    .sd-dot-fork {
+      transition: opacity 0.4s ease calc(var(--delay, 0s) + 0.55s);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sd-branch {
+      stroke-dashoffset: 0;
+    }
+    .sd-branch-end,
+    .sd-dot-fork {
+      opacity: 1;
+    }
   }
 
   .sd-branch-end {
