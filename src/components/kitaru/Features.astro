@@ -33,6 +33,8 @@ const recordedSources = [
   { slug: "langgraph", name: "LangGraph" },
   { slug: "openai", name: "OpenAI Agents SDK" },
   { slug: "claude", name: "Claude Agent SDK" },
+  { slug: "gemini", name: "Gemini" },
+  { slug: "google-adk", name: "Google ADK" },
   { slug: "python", name: "Raw Python" },
 ] as const;
 
@@ -49,9 +51,9 @@ const traceSources = [
   <div class="section-inner">
     <div class="whatif-header" data-reveal>
       <span class="section-eyebrow">THE WHAT-IF WORKFLOW</span>
-      <h2 class="section-title">Find a cheaper model without touching production.</h2>
+      <h2 class="section-title">Ask anything of the runs you already have.</h2>
       <p class="section-desc">
-        Same question every time: can it run cheaper, and does it survive a flaky tool? Replay the runs you already have, change one thing, read the diff.
+        Cheaper model? Flaky tool? New prompt? Replay real executions with one thing changed, read the diff &mdash; and never touch production.
       </p>
 
     </div>
@@ -130,7 +132,7 @@ const traceSources = [
     </div>
 
     <p class="whatif-foot" data-reveal>
-      Illustrative numbers. Tool-level what-ifs are fullest on Pydantic AI and the OpenAI Agents SDK.
+      Illustrative numbers. Tool-level what-ifs are fullest on Pydantic AI, the OpenAI Agents SDK, and LangGraph.
     </p>
   </div>
 </section>

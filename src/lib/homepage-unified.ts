@@ -32,7 +32,7 @@ import type { Surface } from "./analytics";
 export const HOMEPAGE_UNIFIED_SEO = {
   title: "ZenML — The unified layer for ML and AI",
   description:
-    "Orchestrate training pipelines and production AI agents on the tools, clouds, and environments you already use — without rewriting your stack.",
+    "Reproducible ML pipelines with ZenML. Replayable agent evals with Kitaru. One platform, on the infrastructure you already use.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -54,7 +54,7 @@ export const HOMEPAGE_UNIFIED_HERO = {
    */
   subtitleLead: "Built for engineers, ready for enterprise.",
   subtitle:
-    "Orchestrate training pipelines and production AI agents on the tools, clouds, and environments you already use — without rewriting your stack.",
+    "Reproducible ML pipelines with ZenML. Replayable agent evals with Kitaru. One platform, on the infrastructure you already use.",
   primaryCta: { label: "Book a demo", href: "/book-your-demo" },
   secondaryCta: { label: "Read Docs", href: "/docs" },
 } as const;
@@ -68,7 +68,7 @@ export const HOMEPAGE_UNIFIED_HERO = {
 
 export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
   eyebrow: "NEW",
-  body: "Kitaru: replay your agent's real runs with one thing changed, and see what would have happened.",
+  body: "Kitaru: turn agent failures into regression tests — replay real traces against your real code.",
   linkText: "Read the docs",
   linkHref: "https://docs.zenml.io/kitaru",
 } as const;
@@ -162,19 +162,28 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
       sublabel: "",
       subtabs: [
         {
+          id: "replay" as const,
+          label: "Replay",
+          layout: "replay" as const,
+          surfaceTitle: "Replay",
+          surfaceSubtitle:
+            "Fork a real execution, change one thing, and diff it against what actually happened.",
+        },
+        {
           id: "flows" as const,
           label: "Flows",
           layout: "flows" as const,
           surfaceTitle: "Flows",
           surfaceSubtitle:
-            "Wrap your harness with one line — for deploying agents at scale.",
+            "Wrap your harness with one line — every model and tool call recorded.",
           /** Left-pane (AGENT FLOWS list) header copy. Rows + code + timelines
            *  come from src/lib/two-workspaces/flows-examples.ts. */
           title: "Agent flows",
           subheader: "5 examples · all from the Kitaru SDK",
           countLabel: "examples/",
           rightEyebrow: "Wrap your harness with one line",
-          rightSubhead: "For deploying agents at scale.",
+          rightSubhead:
+            "Every model and tool call becomes a replayable recording.",
         },
         {
           id: "checkpoints" as const,
@@ -182,23 +191,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "checkpoints" as const,
           surfaceTitle: "Checkpoints",
           surfaceSubtitle:
-            "Resume from any checkpoint after a crash, rate-limit, or eviction.",
-        },
-        {
-          id: "replay" as const,
-          label: "Replay",
-          layout: "replay" as const,
-          surfaceTitle: "Replay",
-          surfaceSubtitle:
-            "Compare a candidate against the baseline on real frozen traffic.",
-        },
-        {
-          id: "deployments" as const,
-          label: "Deployments",
-          layout: "deployments" as const,
-          surfaceTitle: "Deployments",
-          surfaceSubtitle:
-            "Versioned deployments — promote, shadow, or roll back.",
+            "Every step is a checkpoint — replay forks from it, crashes resume from it.",
         },
         {
           id: "frameworks" as const,
@@ -207,6 +200,14 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           surfaceTitle: "Frameworks",
           surfaceSubtitle:
             "Wrap any agent harness. Kitaru records and replays the run around it.",
+        },
+        {
+          id: "deployments" as const,
+          label: "Deployments",
+          layout: "deployments" as const,
+          surfaceTitle: "Deployments",
+          surfaceSubtitle:
+            "Versioned deployments — promote, shadow, or roll back.",
         },
       ],
     },
@@ -237,12 +238,12 @@ export const HOMEPAGE_UNIFIED_WORKSPACES = {
     },
     {
       name: "Kitaru workspace",
-      tagline: "Agent runtime",
-      body: "The runtime layer underneath your agent stack. Every run recorded and replayable: diagnose failures, test model swaps, and ship updates with confidence. Self-hosted, no lock-in.",
+      tagline: "Agent evals",
+      body: "Your agent's real traces become frozen, replayable worlds. Score what happened, replay your real code with one thing changed, and keep every fix as a regression test.",
       bullets: [
-        "Crash recovery: flows survive pod evictions and timeouts",
-        "Pause and resume with kitaru.wait(), for minutes, hours, or days",
-        "Your cloud, your model, your SDK: framework-agnostic",
+        "Import traces from anywhere, or record natively",
+        "Score thousands of executions: the agent never runs",
+        "Replay against your real code: model, tool, or prompt swapped",
       ],
       cta: { label: "Explore Kitaru", href: "/product/kitaru" },
     },

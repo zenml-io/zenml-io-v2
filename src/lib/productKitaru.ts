@@ -1,4 +1,4 @@
-export const KITARU_INSTALL_CMD = "pip install kitaru";
+export const KITARU_INSTALL_CMD = "uv add kitaru";
 export const KITARU_LICENSE = "Apache 2.0";
 
 export const KITARU_LINKS = {
@@ -11,9 +11,9 @@ export const KITARU_LINKS = {
 } as const;
 
 export const PRODUCT_KITARU_SEO = {
-  title: "Kitaru: ask what-if about your agent's real runs | ZenML",
+  title: "Kitaru: production is the eval | ZenML",
   description:
-    "Open-source runtime that records every model and tool call in your agents' runs. Replay a real run with one thing changed: a model, a tool's output, a failed call. See what would have happened, with no production reruns. Durable checkpoints, wait/resume, and isolated execution on your own cloud. Built by the ZenML team.",
+    "Open-source platform for agent experiments on real traces. Score a recorded execution without rerunning the agent, or replay your real code against the recorded world with one thing changed: a model, a tool's output, a failed call. Name a run to keep it, re-run it in CI as a regression test. Self-hosted on your own cloud. Built by the ZenML team.",
 } as const;
 
 /**
@@ -25,40 +25,40 @@ export const PRODUCT_KITARU_SEO = {
  * page's load-bearing pitch changes.
  */
 export const PRODUCT_KITARU_MARKDOWN = {
-  title: "Kitaru: ask what-if about your agent's real runs",
+  title: "Kitaru: production is the eval",
   installCmd: KITARU_INSTALL_CMD,
   license: KITARU_LICENSE,
   summary: [
-    "Kitaru is the open agent runtime from ZenML. The core pitch: ask what-if about your agent's real runs. Change one thing, replay the run, and see what would have happened. No production reruns.",
-    "It records every model and tool call as a durable checkpoint, then replays from any boundary with one thing changed: a model, a tool's output, or a failed call. The override is the only difference.",
-    `It is open source under ${KITARU_LICENSE} and built for Python agents that need checkpoints, replay, wait/resume, isolated execution, artifacts, and versioned deployments on your own cloud.`,
-    "You keep the agent harness you already chose: PydanticAI, OpenAI Agents SDK, Claude Agent SDK, LangGraph, or plain Python. Kitaru records and replays the run underneath it with a small set of Python primitives.",
-    "Durable execution is the foundation, not the pitch. The same checkpoints that make replay faithful also resume a run from the boundary that broke, so a crash at hour 11 does not mean restarting from hour 1.",
+    "Kitaru is the open agent experimentation platform from ZenML. Production is the eval: the artifact is the execution, a recording of your agent doing something real, and everything else is what you do with it.",
+    "There are two verbs. Score reads an execution and grades it — the agent never runs, so it is nearly free. Replay runs your agent's real code against the recorded world, with tool and model calls answered from the recording, so a what-if is faithful rather than a guess.",
+    "One rule ties it together: doing the thing is the declaration. Run a verb and an experiment exists; name it and it is durable; re-run it in CI and it is a regression test. Kitaru is a debugger with a memory, never in the hot path of production.",
+    "You keep the agent harness you already chose: PydanticAI, OpenAI Agents SDK, Claude Agent SDK, LangGraph, Gemini, Google ADK, or plain Python. Adapters record and replay the execution underneath it with a small set of Python primitives.",
+    `It is open source under ${KITARU_LICENSE} and self-hosted on your own cloud. Scoring and experiments are the direction the platform is heading; the recording, replay, and durable substrate below ship today.`,
   ],
   primitives: [
     {
-      name: "@flow",
-      body: "Marks the top-level durable boundary for an agent run.",
+      name: "record",
+      body: "Imports a trace or wraps a live run through an adapter so one execution — every model and tool call — is captured as a replayable artifact.",
     },
     {
-      name: "@checkpoint",
-      body: "Persists the output of an expensive or important step so completed work does not re-run after a crash.",
+      name: "replay with overrides",
+      body: "Re-runs the agent's real code against the recorded world with one thing changed: a model, a tool's output, or a prompt. The override is the only difference.",
+    },
+    {
+      name: "repeats and diff",
+      body: "Runs a replay many times and reads the answer off a diff against the original execution, so you see what your change actually moved.",
+    },
+    {
+      name: "@flow and @checkpoint",
+      body: "The recording substrate: mark the durable boundary of a run and persist each call, which is what a later replay reads back.",
     },
     {
       name: "wait/resume",
-      body: "Lets an agent pause for human review, webhook input, or a scheduled event without keeping compute idle for hours or days.",
+      body: "Lets a run pause for human review, webhook input, or a scheduled event without keeping compute idle, and mints a recording as it goes.",
     },
     {
-      name: "isolated execution",
-      body: "Runs selected steps in isolated environments when they need stronger boundaries or different runtime settings.",
-    },
-    {
-      name: "artifacts and lineage",
-      body: "Stores outputs and metadata so teams can inspect what the agent produced and replay from known states.",
-    },
-    {
-      name: "API, schedules, and webhooks",
-      body: "Triggers and operates durable agent flows from production systems instead of a local-only script loop.",
+      name: "isolated execution and deployments",
+      body: "Runs selected steps in isolated environments and operates flows from production systems through an API, schedules, and webhooks.",
     },
   ],
   deploymentTargets: [

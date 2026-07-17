@@ -4,12 +4,12 @@
 
 <section id="one-import" class="section-pad-compact one-import-section">
   <div class="section-inner">
-    <span class="section-eyebrow" data-reveal>POWERED BY DURABLE EXECUTION</span>
+    <span class="section-eyebrow" data-reveal>ONE WRAP, EVERY CALL RECORDED</span>
     <h2 class="section-title" data-reveal data-reveal-delay="1">
       Keep your agent SDK. Kitaru records every call.
     </h2>
     <p class="one-import-desc" data-reveal data-reveal-delay="2">
-      One wrap, and every model and tool call is checkpointed. That durable record is what replay reads back, so a what-if is faithful, not a guess.
+      One wrap, and every model and tool call is recorded. That recording is what replay reads back, so a what-if is faithful, not a guess.
     </p>
 
     <!-- Tabs -->
@@ -17,6 +17,8 @@
       <button class="one-import-tab is-active" role="tab" aria-selected="true" data-tab="pydanticai">PydanticAI</button>
       <button class="one-import-tab" role="tab" aria-selected="false" data-tab="openai">OpenAI Agents SDK</button>
       <button class="one-import-tab" role="tab" aria-selected="false" data-tab="anthropic">Anthropic Agent SDK</button>
+      <button class="one-import-tab" role="tab" aria-selected="false" data-tab="gemini">Gemini</button>
+      <button class="one-import-tab" role="tab" aria-selected="false" data-tab="adk">Google ADK</button>
       <button class="one-import-tab" role="tab" aria-selected="false" data-tab="custom">Raw Python</button>
     </div>
 
@@ -114,6 +116,102 @@ options <span class="op">=</span> <span class="fn">ClaudeAgentOptions</span>(
         </div>
       </div>
 
+      <!-- Gemini panel -->
+      <div class="one-import-panel" id="panel-gemini" role="tabpanel" hidden>
+        <div class="one-import-codes">
+          <div class="one-import-code">
+            <div class="one-import-code-header">
+              <span class="one-import-code-label">Before</span>
+              <span class="one-import-code-filename">agent.py</span>
+            </div>
+            <pre class="one-import-code-pre code-syntax"><code><span class="kw">from</span> google <span class="kw">import</span> genai
+
+client <span class="op">=</span> genai.<span class="fn">Client</span>()
+
+interaction <span class="op">=</span> client.interactions.<span class="fn">create</span>(
+    model<span class="op">=</span><span class="str">"gemini-3.5-flash"</span>,
+    input<span class="op">=</span>task,
+)
+<span class="fn">print</span>(interaction.output_text)</code></pre>
+          </div>
+          <div class="one-import-arrow" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+          <div class="one-import-code is-after">
+            <div class="one-import-code-header">
+              <span class="one-import-code-label is-after">With Kitaru</span>
+              <span class="one-import-code-filename">agent.py</span>
+            </div>
+            <pre class="one-import-code-pre code-syntax"><code><span class="kw">from</span> kitaru <span class="kw">import</span> flow
+<span class="kw">from</span> kitaru.adapters.gemini <span class="kw">import</span> (
+    GeminiInteractionRequest, KitaruGeminiInteractionsRunner,
+)
+
+runner <span class="op">=</span> <span class="fn">KitaruGeminiInteractionsRunner</span>(name<span class="op">=</span><span class="str">"review"</span>)
+
+<span class="dec">@flow</span>
+<span class="kw">def</span> <span class="fn">review</span>(task: <span class="var">str</span>):
+    request <span class="op">=</span> GeminiInteractionRequest.<span class="fn">start</span>(
+        task, model<span class="op">=</span><span class="str">"gemini-3.5-flash"</span>,
+    )
+    <span class="kw">return</span> runner.<span class="fn">run_sync</span>(request)</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Google ADK panel -->
+      <div class="one-import-panel" id="panel-adk" role="tabpanel" hidden>
+        <div class="one-import-codes">
+          <div class="one-import-code">
+            <div class="one-import-code-header">
+              <span class="one-import-code-label">Before</span>
+              <span class="one-import-code-filename">agent.py</span>
+            </div>
+            <pre class="one-import-code-pre code-syntax"><code><span class="kw">from</span> google.adk.runners <span class="kw">import</span> Runner
+
+runner <span class="op">=</span> <span class="fn">Runner</span>(
+    agent<span class="op">=</span>agent,
+    app_name<span class="op">=</span><span class="str">"support"</span>,
+    session_service<span class="op">=</span>sessions,
+)
+
+result <span class="op">=</span> <span class="kw">await</span> runner.<span class="fn">run_async</span>(
+    user_id<span class="op">=</span><span class="str">"user-123"</span>,
+    session_id<span class="op">=</span><span class="str">"s-456"</span>,
+    new_message<span class="op">=</span>msg,
+)</code></pre>
+          </div>
+          <div class="one-import-arrow" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+          <div class="one-import-code is-after">
+            <div class="one-import-code-header">
+              <span class="one-import-code-label is-after">With Kitaru</span>
+              <span class="one-import-code-filename">agent.py</span>
+            </div>
+            <pre class="one-import-code-pre code-syntax"><code><span class="kw">from</span> kitaru.adapters.google_adk <span class="kw">import</span> ADKRunRequest, KitaruADKRunner
+
+kitaru_runner <span class="op">=</span> <span class="fn">KitaruADKRunner</span>(
+    adk_runner,
+    name<span class="op">=</span><span class="str">"support_agent"</span>,
+    checkpoint_strategy<span class="op">=</span><span class="str">"runner_call"</span>,
+)
+
+result <span class="op">=</span> <span class="kw">await</span> kitaru_runner.<span class="fn">run</span>(<span class="fn">ADKRunRequest</span>(
+    user_id<span class="op">=</span><span class="str">"user-123"</span>,
+    session_id<span class="op">=</span><span class="str">"s-456"</span>,
+    message<span class="op">=</span>msg,
+))</code></pre>
+          </div>
+        </div>
+      </div>
+
       <!-- PydanticAI panel -->
       <div class="one-import-panel is-active" id="panel-pydanticai" role="tabpanel">
         <div class="one-import-codes">
@@ -171,7 +269,7 @@ client <span class="op">=</span> <span class="fn">Anthropic</span>()
 
 <span class="kw">def</span> <span class="fn">my_agent</span>(task: <span class="var">str</span>) <span class="op">-></span> <span class="var">str</span>:
     plan <span class="op">=</span> <span class="fn">analyze</span>(client, task)
-    <span class="cmt"># crash here? everything above is lost.</span>
+    <span class="cmt"># nothing recorded — nothing to replay or test against.</span>
     result <span class="op">=</span> <span class="fn">execute</span>(client, plan)
     <span class="kw">return</span> result</code></pre>
           </div>

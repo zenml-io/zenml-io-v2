@@ -28,15 +28,15 @@ import {
       </div>
 
       <h1 class="hero-headline" data-reveal data-reveal-delay="1">
-        Ask <span class="hero-accent">&ldquo;what if?&rdquo;</span> about your agent&rsquo;s real runs
+        Production is <span class="hero-accent">the eval</span>
       </h1>
 
       <p class="hero-kicker" data-reveal data-reveal-delay="2">
-        Change one thing. Replay. See what would have happened.
+        Score what happened. Replay what could have.
       </p>
 
       <p class="hero-subtitle" data-reveal data-reveal-delay="2">
-        Kitaru records every model and tool call. Replay a run with one thing changed and see what would have happened. No production reruns.
+        Your agent&rsquo;s real traces become frozen, replayable worlds for your real code &mdash; the test suite production already wrote.
       </p>
 
       <p class="hero-install-tag" data-reveal data-reveal-delay="3">Lightweight, wraps your existing agent</p>
@@ -59,7 +59,7 @@ import {
     </div>
 
     <div class="hero-visual" data-reveal data-reveal-delay="3">
-      <div class="hv-panel" role="img" aria-label="Example: replay 200 recorded support-agent runs on an open model, GLM via OpenRouter, then diff the cost and answers against the real runs">
+      <div class="hv-panel" role="img" aria-label="Example: import a failing production trace, replay it against the agent's real code until it reproduces, then verify the fix on it and the 23 executions like it">
         <div class="hv-panel-head">
           <span class="hv-panel-dots">
             <span class="hv-dot"></span>
@@ -67,42 +67,52 @@ import {
             <span class="hv-dot"></span>
           </span>
           <span class="hv-panel-title">replay · support-agent</span>
-          <span class="hv-panel-badge">what-if</span>
+          <span class="hv-panel-badge">case</span>
         </div>
 
         <div class="hv-code">
-          <div class="hv-code-line hv-code-comment"># a production run, every step checkpointed</div>
-          <div class="hv-code-line">exec <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">run</span>(ticket).<span class="hv-code-fn">wait</span>()</div>
-          <div class="hv-code-line"> </div>
-          <div class="hv-code-line hv-code-comment"># reproduce, then replay with one thing changed</div>
-          <div class="hv-code-line">rerun <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">replay</span>(exec, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>)</div>
-          <div class="hv-code-line hv-code-hl">cheap <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">replay</span>(exec, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>, model<span class="hv-code-op">=</span><span class="hv-code-str">"glm-4.6"</span>)</div>
-          <div class="hv-code-line hv-code-hl">mock <span class="hv-code-op">=</span> support_agent.<span class="hv-code-fn">replay</span>(exec, from_<span class="hv-code-op">=</span><span class="hv-code-str">"decide"</span>, lookup_order<span class="hv-code-op">=</span>stub)</div>
-          <div class="hv-code-line"> </div>
-          <div class="hv-code-line">cheap.<span class="hv-code-fn">diff</span>(rerun)<span class="hv-code-comment">  # cheaper, same decision?</span></div>
+          <div class="hv-code-line hv-code-comment"># import existing traces from anywhere</div>
+          <div class="hv-code-line">kitaru executions <span class="hv-code-fn">import</span> <span class="hv-code-str">trace://8f3a91c2</span></div>
+          <div class="hv-code-line">&nbsp;</div>
+          <div class="hv-code-line hv-code-comment"># score what happened &mdash; the agent never runs</div>
+          <div class="hv-code-line hv-code-hl">executions.<span class="hv-code-fn">evaluate</span>(scorers<span class="hv-code-op">=</span>[resolved])</div>
+          <div class="hv-code-line">&nbsp;</div>
+          <div class="hv-code-line hv-code-comment"># replay against your real code</div>
+          <div class="hv-code-line hv-code-hl">kagent.<span class="hv-code-fn">replay</span>(exec, repeats<span class="hv-code-op">=</span><span class="hv-code-str">10</span>)</div>
+          <div class="hv-code-line">&nbsp;</div>
+          <div class="hv-code-line hv-code-comment"># fork the failing step, swap the tool</div>
+          <div class="hv-code-line hv-code-hl">kagent.<span class="hv-code-fn">replay</span>(exec, tools<span class="hv-code-op">=</span>&#123;<span class="hv-code-str">"refund"</span>: stub_ok&#125;)</div>
+          <div class="hv-code-line">&nbsp;</div>
+          <div class="hv-code-line hv-code-comment"># fix &mdash; then verify on every failure like it</div>
+          <div class="hv-code-line">matches <span class="hv-code-op">=</span> executions.<span class="hv-code-fn">where</span>(resolved <span class="hv-code-op">&lt;</span> <span class="hv-code-str">0.5</span>)</div>
+          <div class="hv-code-line hv-code-hl">kagent.<span class="hv-code-fn">replay</span>(matches, name<span class="hv-code-op">=</span><span class="hv-code-str">"refund-errors"</span>)</div>
         </div>
 
         <div class="hv-diff">
           <div class="hv-diff-row hv-diff-head">
-            <span>Metric</span>
-            <span>baseline → glm</span>
+            <span>Step</span>
+            <span>Outcome</span>
           </div>
           <div class="hv-diff-row">
-            <span class="hv-diff-label">Cost / 1k runs</span>
-            <span class="hv-mono-cell"><s class="hv-diff-was">$210</s> $34</span>
+            <span class="hv-diff-label">Score every trace</span>
+            <span class="hv-mono-cell">23 fail the same way</span>
           </div>
           <div class="hv-diff-row">
-            <span class="hv-diff-label">Saved</span>
-            <span class="hv-mono-cell hv-diff-win">&minus;84%</span>
+            <span class="hv-diff-label">Replay &times;10</span>
+            <span class="hv-mono-cell">failure reproduces 10 / 10</span>
           </div>
           <div class="hv-diff-row">
-            <span class="hv-diff-label">Outputs identical</span>
-            <span class="hv-mono-cell">192 / 200</span>
+            <span class="hv-diff-label">Fork &middot; healthy tool</span>
+            <span class="hv-mono-cell">agent recovers &mdash; fault isolated</span>
+          </div>
+          <div class="hv-diff-row">
+            <span class="hv-diff-label">Fix &middot; all 23</span>
+            <span class="hv-mono-cell hv-diff-win">PASS &mdash; guards every PR</span>
           </div>
         </div>
 
         <div class="hv-caption">
-          Same 200 runs, on an open model. Same answers, a fraction of the cost.
+          The complaint is now a regression test that runs on every PR.
         </div>
       </div>
     </div>
