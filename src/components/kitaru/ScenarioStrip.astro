@@ -4,29 +4,32 @@
 // the shipped `from_` + `overrides` replay API shape.
 const scenarios = [
   {
-    move: "fail",
-    q: "Search tool times out?",
-    code: 'lookup_mode="timeout"',
+    tag: "debug",
+    q: "Why did it do that?",
+    outcome: "Reproduce the failure on your desk — same code, same world, every time.",
+    stat: "10 / 10",
+    statLabel: "runs reproduce it",
   },
   {
-    move: "mock",
-    q: "Tool returns something else?",
-    code: 'overrides={"checkpoint.lookup_order": stale_order}',
+    tag: "verify",
+    q: "Is the fix safe to merge?",
+    outcome: "Replay it against every recorded run that failed the same way.",
+    stat: "23 / 23",
+    statLabel: "pass after the fix",
   },
   {
-    move: "degrade",
-    q: "Retriever gets worse?",
-    code: 'overrides={"checkpoint.retrieve": degraded_docs}',
+    tag: "decide",
+    q: "Can we ship the cheaper model?",
+    outcome: "Same conversations, cheaper model — read the answer off a diff.",
+    stat: "\u221284%",
+    statLabel: "cost \u00b7 192/200 answers identical",
   },
   {
-    move: "drop",
-    q: "Ignore the reranker?",
-    code: 'overrides={"checkpoint.rerank": []}',
-  },
-  {
-    move: "swap",
-    q: "Run on a cheaper model?",
-    code: 'model="fast"',
+    tag: "gate",
+    q: "Did the new prompt regress?",
+    outcome: "Replay last week's traffic against the branch before it merges.",
+    stat: "0",
+    statLabel: "regressions reach production",
   },
 ] as const;
 ---
@@ -47,9 +50,13 @@ const scenarios = [
       {
         scenarios.map((s, i) => (
           <div class="scenario-card" data-reveal="fade-up" data-reveal-delay={i + 1}>
-            <span class="scenario-move">{s.move}</span>
+            <span class="scenario-move">{s.tag}</span>
             <p class="scenario-q">{s.q}</p>
-            <code class="scenario-code">{s.code}</code>
+            <p class="scenario-outcome">{s.outcome}</p>
+            <div class="scenario-stat-block">
+              <span class="scenario-stat">{s.stat}</span>
+              <span class="scenario-stat-label">{s.statLabel}</span>
+            </div>
           </div>
         ))
       }
@@ -93,7 +100,7 @@ const scenarios = [
 
   .scenario-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
     gap: 16px;
   }
 
@@ -132,9 +139,9 @@ const scenarios = [
 
 
   .scenario-q {
-    font-size: 1rem;
-    line-height: 1.35;
-    min-height: 2.7em;
+    font-size: 1.2rem;
+    line-height: 1.3;
+    min-height: 2.6em;
     color: var(--color-primary);
     font-weight: 600;
     letter-spacing: -0.01em;
@@ -166,5 +173,41 @@ const scenarios = [
     .scenario-grid {
       grid-template-columns: 1fr;
     }
+  }
+
+  .scenario-outcome {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--color-secondary);
+    font-weight: 300;
+    margin: 0;
+    flex: 1;
+  }
+
+  .scenario-stat-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-top: 14px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .scenario-stat {
+    font-family: var(--font-mono);
+    font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-accent);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .scenario-stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
   }
 </style>
