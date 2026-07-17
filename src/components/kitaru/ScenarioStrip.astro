@@ -46,7 +46,6 @@ const checkpoints = [
 /** card layout: 4 cards across a 1200-wide viewBox, forked from checkpoints 1-4 */
 const CARD_W = 262;
 const CARD_Y = 178;
-const SPINE_Y = 62;
 const forks = scenarios.map((s, i) => ({
   ...s,
   dotX: checkpoints[i + 1].x,
@@ -92,7 +91,7 @@ const forks = scenarios.map((s, i) => ({
               style={`--delay: ${(0.1 + i * 0.18).toFixed(2)}s`}
             />
             <foreignObject x={f.cardX} y={CARD_Y} width={CARD_W} height="340">
-              <div class="scenario-card sd-card" xmlns="http://www.w3.org/1999/xhtml">
+              <div class="scenario-card sd-card">
                 <span class="scenario-move">{f.tag}</span>
                 <p class="scenario-q">{f.q}</p>
                 <p class="scenario-outcome">{f.outcome}</p>
