@@ -25,9 +25,6 @@ export const HERO = {
   },
   secondaryCta: { label: "Read Docs", href: "/docs" },
   githubUrl: "https://github.com/zenml-io/zenml",
-  /** Lottie JSON for hero animation (autoplay, no loop, 6.4s, SVG renderer).
-   *  Served from public/ for same-origin access (avoids R2 CORS issues). */
-  lottieUrl: "/lottie/hero-0925.json",
 };
 
 /* ------------------------------------------------------------------ */

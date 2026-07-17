@@ -22,5 +22,7 @@ export const SIGNUP_FOR_DEMO_HERO = {
   deck: "Fill in the form and we will contact you to schedule a personalized demo of ZenML.",
 };
 
-export { BOOK_A_DEMO_FIELDS as SIGNUP_FOR_DEMO_FIELDS };
-export { BOOK_A_DEMO_FALLBACK_CTA as SIGNUP_FOR_DEMO_FALLBACK_CTA };
+export {
+  BOOK_A_DEMO_FALLBACK_CTA as SIGNUP_FOR_DEMO_FALLBACK_CTA,
+  BOOK_A_DEMO_FIELDS as SIGNUP_FOR_DEMO_FIELDS,
+};

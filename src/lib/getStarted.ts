@@ -13,6 +13,7 @@
  * (decorators: @flow + @checkpoint; flows are invoked via `.run()`).
  */
 import type { CtaLink } from "./marketingPageTypes";
+import { KITARU_INSTALL_CMD } from "./productKitaru";
 
 // ---------------------------------------------------------------------------
 // SEO (one page, one URL)
@@ -233,7 +234,7 @@ export const GET_STARTED_KITARU = {
       {
         title: "Install Kitaru",
         body: "Get Kitaru up and running in minutes. You just need to install it.",
-        code: "pip install kitaru",
+        code: KITARU_INSTALL_CMD,
       },
       {
         title: "Add a human-in-the-loop gate",
@@ -242,8 +243,8 @@ export const GET_STARTED_KITARU = {
 from kitaru.adapters.pydantic_ai import KitaruAgent
 from pydantic_ai import Agent
 
-# KitaruAgent checkpoints every model + tool call for you.
-agent = KitaruAgent(Agent("openai:gpt-5.4", system_prompt="You draft customer replies."))
+# KitaruAgent turns PydanticAI model + tool calls into replayable checkpoints.
+agent = KitaruAgent(Agent("openai:gpt-5-mini", system_prompt="You draft customer replies."))
 
 @flow
 def support_flow(ticket: str) -> str:

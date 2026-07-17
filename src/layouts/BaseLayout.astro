@@ -1,5 +1,6 @@
 ---
 import PlausibleBridge from "../components/analytics/PlausibleBridge.astro";
+import SiteHeaderScripts from "../components/analytics/SiteHeaderScripts.astro";
 import Footer from "../components/Footer.astro";
 import CookieConsent from "../components/islands/CookieConsent.tsx";
 import Navigation from "../components/Navigation.astro";
@@ -64,52 +65,7 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
     {/* Structured data (JSON-LD) — injected by child layouts */}
     <slot name="head" />
 
-    {/* Plausible — cookieless, GDPR-compliant analytics. Loaded directly
-        (not gated behind cookie consent) since it doesn't use cookies or
-        track personal data. Hostname-gated to prevent preview deploy noise.
-        Uses `script.pageview-props.js` + `event-surface` so every pageview
-        carries the `surface` custom prop (D3). */}
-    <script is:inline define:vars={{ surface }}>
-      if (["www.zenml.io","zenml.io"].includes(window.location.hostname)) {
-        var s = document.createElement("script");
-        s.defer = true;
-        s.setAttribute("data-domain", "zenml.io");
-        s.setAttribute("event-surface", surface);
-        s.src = "https://plausible.io/js/script.pageview-props.js";
-        document.head.appendChild(s);
-      }
-    </script>
-
-    {/* RB2B — visitor identification for B2B lead gen. Loaded directly
-        (not gated behind cookie consent) to match original Webflow behavior.
-        Hostname-gated to prevent preview deploy noise. */}
-    <script is:inline>
-      if (["www.zenml.io","zenml.io"].includes(window.location.hostname)) {
-        !function(){var reb2b=window.reb2b=window.reb2b||[];if(reb2b.invoked)return;reb2b.invoked=true;reb2b.methods=["identify","collect"];reb2b.factory=function(method){return function(){var args=Array.prototype.slice.call(arguments);args.unshift(method);reb2b.push(args);return reb2b}};for(var i=0;i<reb2b.methods.length;i++){var key=reb2b.methods[i];reb2b[key]=reb2b.factory(key)}reb2b.load=function(key){var script=document.createElement("script");script.type="text/javascript";script.async=true;script.src="https://s3-us-west-2.amazonaws.com/b2bjsstore/b/"+key+"/Z6PVLHP07Q6R.js.gz";var first=document.getElementsByTagName("script")[0];first.parentNode.insertBefore(script,first)};reb2b.SNIPPET_VERSION="1.0.1";reb2b.load("Z6PVLHP07Q6R")}();
-      }
-    </script>
-
-    {/* Scarf — cookieless company-level analytics pixel. Tracks page views
-        via a transparent 1x1 image with IP-based company attribution.
-        No cookies or JS execution. Hostname-gated to prevent preview noise. */}
-    <script is:inline>
-      if (["www.zenml.io","zenml.io"].includes(window.location.hostname)) {
-        var img = document.createElement("img");
-        img.src = "https://static.scarf.sh/a.png?x-pxid=af73c4bc-4298-4759-a03c-378b9a1ef1ba";
-        img.referrerPolicy = "no-referrer-when-downgrade";
-        img.width = 1;
-        img.height = 1;
-        img.alt = "";
-        img.setAttribute("aria-hidden", "true");
-        img.style.position = "absolute";
-        img.style.left = "-9999px";
-        document.body.appendChild(img);
-      }
-    </script>
-
-    {/* Other analytics (GA4, Segment, etc.) and third-party scripts are
-        injected dynamically by the CookieConsent island after user consent.
-        See src/lib/consentConfig.ts for the full script registry. */}
+    <SiteHeaderScripts surface={surface} />
   </head>
   <body class:list={["min-h-screen bg-white text-gray-900 antialiased", bodyClass]}>
     <slot name="before-nav" />

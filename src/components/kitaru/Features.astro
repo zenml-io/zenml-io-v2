@@ -1,33 +1,34 @@
 ---
 // Features.astro — the what-if workflow, told as the cheap-model use case:
-// replay 200 real runs with a cheaper model and a faked flaky tool, then diff.
+// replay 200 real runs with a cheaper model and a faked checkpoint result,
+// then diff.
 // Replaces the old durable-execution scroll-stack. No fragile scroll JS —
 // data-reveal only.
 const steps = [
   {
     n: "01",
     tag: "Replay",
-    title: "Start from real runs",
-    body: "200 recorded runs. Every model and tool call already captured. Nothing reruns.",
-    code: 'execs = support_agent.history(last="7d")',
+    title: "Start from execution IDs",
+    body: "200 real executions whose Kitaru-visible steps and model/tool calls are already checkpointed. Production stays untouched.",
+    code: "exec_ids = cohort.exec_ids",
   },
   {
     n: "02",
     tag: "Change one thing",
     title: "Cheaper model, flaky tool",
-    body: "Swap the pricey step to a cheap model. Fake the flaky tool: a timeout, a stale result. Only that boundary changes.",
-    code: 'replay(execs, model="fast", output=stale_order)',
+    body: "Replay from the decision point with a cheaper model, or replace a recorded lookup result. Production stays exactly as it was.",
+    code: 'replay(id, from_="decide", model="fast")',
   },
   {
     n: "03",
     tag: "Diff",
     title: "See what would have happened",
-    body: "Compare each candidate to its real run: cost, changed outputs, first divergence. The decision now has evidence.",
-    code: "diff(execs, candidates)",
+    body: "Compare each candidate to its source execution: cost, changed outputs, first divergence. The decision now has evidence.",
+    code: "cheap.llm_usage_summary",
   },
 ] as const;
 
-// Source logos for the "Start from" toggle. slug → /images/kitaru-sources/{slug}.png
+// Source logos for the "Start from" panel. slug → /images/kitaru-sources/{slug}.png
 const recordedSources = [
   { slug: "pydantic", name: "Pydantic AI" },
   { slug: "langgraph", name: "LangGraph" },
@@ -37,14 +38,6 @@ const recordedSources = [
   { slug: "google-adk", name: "Google ADK" },
   { slug: "python", name: "Raw Python" },
 ] as const;
-
-const traceSources = [
-  { slug: "opentelemetry", name: "OpenTelemetry" },
-  { slug: "datadog", name: "Datadog" },
-  { slug: "langfuse", name: "Langfuse" },
-  { slug: "phoenix", name: "Phoenix" },
-  { slug: "braintrust", name: "Braintrust" },
-] as const;
 ---
 
 <section id="how-it-works" class="whatif-section section-pad">
@@ -53,37 +46,22 @@ const traceSources = [
       <span class="section-eyebrow">THE WHAT-IF WORKFLOW</span>
       <h2 class="section-title">Ask anything of the runs you already have.</h2>
       <p class="section-desc">
-        Cheaper model? Flaky tool? New prompt? Replay real executions with one thing changed, read the diff &mdash; and never touch production.
+        Cheaper model? Flaky tool result? New prompt? Replay real executions with one thing changed, read the diff &mdash; and never touch production.
       </p>
 
     </div>
 
     <div class="whatif-sources" data-reveal>
       <span class="whatif-sources-label">Start from</span>
-      <button type="button" class="src-tab is-active" data-src="recorded" aria-selected="true">runs Kitaru recorded</button>
-      <span class="whatif-source-or">or</span>
-      <button type="button" class="src-tab" data-src="traces" aria-selected="false">traces you already collect</button>
+      <span class="src-pill">Kitaru-recorded executions</span>
     </div>
 
     <div class="src-panels" data-reveal>
-      <div class="src-panel is-active" id="src-recorded" role="region" aria-label="Start from runs Kitaru recorded">
-        <p class="src-line">One line to wrap and deploy your agent. Every model and tool call is recorded.</p>
+      <div class="src-panel is-active" id="src-recorded" role="region" aria-label="Start from Kitaru-recorded executions">
+        <p class="src-line">Wrap your agent so model/tool calls and steps exposed through Kitaru primitives or adapters become replayable checkpoints.</p>
         <div class="src-logos">
           {
             recordedSources.map((s) => (
-              <span class="src-logo">
-                <img src={`/images/kitaru-sources/${s.slug}.png`} alt="" aria-hidden="true" width="22" height="22" loading="lazy" />
-                {s.name}
-              </span>
-            ))
-          }
-        </div>
-      </div>
-      <div class="src-panel" id="src-traces" role="region" aria-label="Start from traces you already collect" hidden>
-        <p class="src-line">Already collecting traces? Connect your tool and start replaying from there.</p>
-        <div class="src-logos">
-          {
-            traceSources.map((s) => (
               <span class="src-logo">
                 <img src={`/images/kitaru-sources/${s.slug}.png`} alt="" aria-hidden="true" width="22" height="22" loading="lazy" />
                 {s.name}
@@ -113,7 +91,7 @@ const traceSources = [
     <div class="whatif-payoff" data-reveal="fade-up" data-reveal-delay="3">
       <div class="whatif-payoff-label">
         <span class="whatif-payoff-eyebrow">The diff</span>
-        <p>Same 200 runs. Cheap model. Order-lookup tool faked.</p>
+        <p>Same 200 executions. Cheap model. Order lookup result replaced.</p>
       </div>
       <div class="whatif-payoff-metrics">
         <div class="whatif-metric">
@@ -132,7 +110,7 @@ const traceSources = [
     </div>
 
     <p class="whatif-foot" data-reveal>
-      Illustrative numbers. Tool-level what-ifs are fullest on Pydantic AI, the OpenAI Agents SDK, and LangGraph.
+      Illustrative numbers. Tool-level detail depends on the primitives or adapter boundaries your agent exposes to Kitaru.
     </p>
   </div>
 </section>
@@ -156,7 +134,7 @@ const traceSources = [
     font-weight: 300;
   }
 
-  /* ─── "Start from" sources toggle ─── */
+  /* ─── "Start from" source panel ─── */
   .whatif-sources {
     display: flex;
     flex-wrap: wrap;
@@ -174,34 +152,15 @@ const traceSources = [
     color: var(--color-muted);
   }
 
-  .src-tab {
+  .src-pill {
     font-family: inherit;
     font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--color-secondary);
-    padding: 6px 14px;
-    border: 1px solid var(--color-border);
-    border-radius: 100px;
-    background: var(--color-surface);
-    cursor: pointer;
-    transition: color 0.2s, border-color 0.2s, background 0.2s;
-  }
-
-  .src-tab:hover {
-    color: var(--color-primary);
-    border-color: oklch(0.65 0.16 45 / 0.3);
-  }
-
-  .src-tab.is-active {
-    color: var(--color-accent);
-    border-color: oklch(0.65 0.16 45 / 0.4);
-    background: oklch(0.65 0.16 45 / 0.08);
     font-weight: 600;
-  }
-
-  .whatif-source-or {
-    font-size: 0.82rem;
-    color: var(--color-muted);
+    color: var(--color-accent);
+    padding: 6px 14px;
+    border: 1px solid oklch(0.65 0.16 45 / 0.4);
+    border-radius: 100px;
+    background: oklch(0.65 0.16 45 / 0.08);
   }
 
   /* Reveal panels */
@@ -221,9 +180,6 @@ const traceSources = [
     animation: src-fade 0.3s ease;
   }
 
-  .src-panel[hidden] {
-    display: none;
-  }
 
   @keyframes src-fade {
     from { opacity: 0; transform: translateY(6px); }
@@ -269,7 +225,7 @@ const traceSources = [
   /* ─── Steps ─── */
   .whatif-steps {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
   }
 
@@ -277,6 +233,7 @@ const traceSources = [
     display: flex;
     flex-direction: column;
     gap: 14px;
+    min-width: 0;
     padding: 28px 26px;
     border: 1px solid var(--color-border);
     border-radius: 16px;
@@ -341,8 +298,8 @@ const traceSources = [
     border: 1px solid oklch(0.65 0.16 45 / 0.18);
     border-radius: 8px;
     padding: 10px 12px;
-    white-space: nowrap;
-    overflow-x: auto;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   /* ─── Payoff: the diff ─── */
@@ -444,29 +401,3 @@ const traceSources = [
     }
   }
 </style>
-
-<script>
-  // "Start from" toggle — swap between recorded-runs and traces source panels.
-  const section = document.getElementById('how-it-works');
-  if (section) {
-    const tabs = section.querySelectorAll<HTMLButtonElement>('.src-tab');
-    const panels = section.querySelectorAll<HTMLElement>('.src-panel');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const target = tab.dataset.src;
-        if (!target) return;
-        tabs.forEach(t => {
-          const active = t === tab;
-          t.classList.toggle('is-active', active);
-          t.setAttribute('aria-selected', String(active));
-        });
-        panels.forEach(panel => {
-          const active = panel.id === `src-${target}`;
-          panel.classList.toggle('is-active', active);
-          if (active) panel.removeAttribute('hidden');
-          else panel.setAttribute('hidden', '');
-        });
-      });
-    });
-  }
-</script>

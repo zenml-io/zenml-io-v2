@@ -8,7 +8,7 @@ webflow:
   exportedAt: "2026-02-11T13:30:32.135Z"
   source: "live"
   lastPublished: "2026-02-03T15:19:04.226Z"
-  lastUpdated: "2026-02-03T10:53:47.407Z"
+  lastUpdated: "2026-06-23T09:09:27.870Z"
   createdOn: "2025-05-17T05:13:39.920Z"
 author: "hamza-tahir"
 category: "mlops"
@@ -38,7 +38,7 @@ In this article, we discuss the top 9 MLflow alternatives that take care of the 
 
 <ul><li><strong>Why look for MLflow alternatives:</strong> As projects grow, MLflow’s limited support for enterprise security/governance, complex manual setup, and lack of support in pipeline orchestration and reproducibility become bottlenecks.</li><li><strong>Who might want to use these alternatives:</strong> These tools serve data science and MLOps teams hitting MLflow’s limits – e.g., needing multi-user collaboration, reproducible workflows across environments, or integrated deployment/monitoring.</li><li><strong>What we cover:</strong> A breakdown of nine MLflow alternatives across five categories. We’ll outline each tool’s key features, pros/cons, and pricing, helping you evaluate which alternative fits your needs.</li></ul>
 
-**Recently Updated (November 2025)**: This comprehensive MLflow alternatives guide has been refreshed with the latest market trends, including the explosive growth of AI agents and LLMOps platforms. The MLOps market has experienced dramatic expansion, growing from $1.58 billion in 2024 to a projected $19.55 billion by 2032. All tool comparisons and feature descriptions reflect current capabilities as of November 2025, with particular attention to how these platforms now support AI agent deployment and LLM operations alongside traditional ML workflows.
+**Recently Updated (June 2026)**: This MLflow alternatives guide has been refreshed to reflect the post-MLflow 3 landscape, the shift from classical MLOps toward LLMOps and agentic AI systems, and recent product changes across the ecosystem. MLflow has added stronger GenAI tracing, evaluation, logged model lineage, and prompt-related workflows, so the real question in 2026 is less “Can MLflow track experiments?” and more “Do you need a broader platform for orchestration, governance, deployment, evaluation, or long-running AI agents?”
 
 ## Why Would You Switch to an MLflow Alternative
 
@@ -98,6 +98,12 @@ We evaluated the learning curve by:
 
 <ul><li>Measuring how quickly new team members can become productive across different platforms.</li><li>Whether the platform required specialized knowledge (like Kubernetes expertise).</li><li>The quality of available tutorials and examples.</li></ul>
 
+## What Changed with MLflow 3?
+
+Before comparing alternatives, it is worth acknowledging that MLflow itself has changed. MLflow 3 introduced a stronger foundation for GenAI and agentic application development, including LoggedModel as a first-class entity, deeper lineage across runs, traces, prompts, evaluation results, and datasets, plus expanded GenAI evaluation and tracing capabilities.
+
+That makes the alternatives question more nuanced. MLflow remains a strong choice when you want an open-source experiment ledger, model registry, traces, and evaluation workflows. Teams still look beyond MLflow when they need native pipeline orchestration, infrastructure abstraction, managed enterprise governance, production serving, multi-cloud workflows, or durable execution for long-running AI agents.
+
 ## What are the Best Alternatives to MLflow?
 
 Some of the best MLflow competitors and alternatives are:
@@ -107,7 +113,7 @@ Some of the best MLflow competitors and alternatives are:
     
     
 
-<table> <thead> <tr> <th>Category</th> <th>Alternatives</th> <th>Key Features</th> </tr> </thead> <tbody> <tr> <td class="category">1. Best Overall</td> <td>ZenML, ClearML</td> <td>End-to-end MLOps platforms (tracking, orchestration, and deployment).</td> </tr> <tr> <td class="category">2. Experiment Tracking</td> <td>Weights &amp; Biases, Neptune.ai</td> <td>Experiment tracking with rich metadata and visualization.</td> </tr> <tr> <td class="category">3. Model Serving &amp; Deployments</td> <td>BentoML, AWS SageMaker</td> <td>Specialized model deployment and serving capabilities.</td> </tr> <tr> <td class="category">4. Pipeline Orchestration</td> <td>Kubeflow, Valohai</td> <td>Workflow orchestration for ML pipelines at scale.</td> </tr> <tr> <td class="category">5. Model Registry &amp; Sharing</td> <td>Azure ML</td> <td>Central model registry for collaboration across teams.</td> </tr> </tbody></table>
+<table> <thead> <tr> <th>Category</th> <th>Alternatives</th> <th>Key Features</th> </tr> </thead> <tbody> <tr> <td class="category">1. Best Overall</td> <td>ZenML, ClearML</td> <td>End-to-end MLOps platforms (tracking, orchestration, and deployment).</td> </tr> <tr> <td class="category">2. Experiment Tracking and LLMOps Observability</td> <td>Weights &amp; Biases, Comet/Opik</td> <td>Experiment tracking, LLM tracing, evaluation, and production observability.</td> </tr> <tr> <td class="category">3. Model Serving &amp; Deployments</td> <td>BentoML, AWS SageMaker</td> <td>Specialized model deployment and serving capabilities.</td> </tr> <tr> <td class="category">4. Pipeline Orchestration</td> <td>Kubeflow, Valohai</td> <td>Workflow orchestration for ML pipelines at scale.</td> </tr> <tr> <td class="category">5. Model Registry &amp; Sharing</td> <td>Azure ML</td> <td>Central model registry for collaboration across teams.</td> </tr> </tbody></table>
 
 ## Category 1. Best Overall
 
@@ -119,7 +125,9 @@ Some of the best MLflow competitors and alternatives are:
   <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4774409b/68281c439f8dc3255401b97a_zenml_homepage.png" alt="ZenML homepage presenting its open-source MLOps framework for production ML pipelines" />
 </figure>
 
-[ZenML](https://www.zenml.io/) takes a fundamentally different approach to ML orchestration compared to MLflow and traditional platforms. While MLflow excels at experiment tracking and model management, ZenML prioritizes developer experience and flexibility without sacrificing production readiness.
+[ZenML](https://www.zenml.io/) takes a fundamentally different approach to ML orchestration compared to MLflow and traditional platforms. While MLflow excels at experiment tracking, model management, and now GenAI tracing, ZenML prioritizes developer experience, production-ready pipelines, infrastructure abstraction, and reproducibility across the full ML lifecycle.
+
+ZenML is especially useful when teams want to keep writing Python-first ML workflows but need those workflows to run reliably across local machines, cloud infrastructure, and production orchestrators. In 2026, ZenML’s ecosystem has also expanded beyond classical ML pipelines: ZenML now has [Kitaru](https://www.zenml.io/blog/from-zenml-to-kitaru), an open-source product for durable execution of long-running Python agents.
 
 #### Feature 1. Easy to Deploy Pipelines with Production-Ready Outcomes
 
@@ -138,9 +146,9 @@ ZenML's metadata system offers more automated capabilities than MLflow's traditi
 
 ZenML’s metadata layer sits at the heart of every run, delivering more automation and structure than MLflow’s default tracking server.
 
-<ul><li><a href="https://docs.zenml.io/user-guides/starter-guide/manage-artifacts"><strong>Automatic artifact versioning</strong></a> – every dataset, model, or metric emitted by a step is versioned and traceable out of the box.</li><li><a href="https://docs.zenml.io/how-to/model-management-metrics/track-metrics-metadatahttps:/docs.zenml.io/how-to/model-management-metrics/track-metrics-metadata"><strong>Rich metadata capture</strong></a> – data frames, models, and metrics are logged with shapes, schemas, and scores automatically.</li><li><a href="https://docs.zenml.io/user-guides/starter-guide/manage-artifacts#giving-names-to-your-artifacts"><strong>Human-readable naming</strong></a> – give runs and artifacts friendly names (e.g., ‘baseline_dataset_v1’) instead of opaque IDs, making lineage easy to follow.</li></ul>
+<ul><li><a href="https://docs.zenml.io/user-guides/starter-guide/manage-artifacts"><strong>Automatic artifact versioning</strong></a> – every dataset, model, or metric emitted by a step is versioned and traceable out of the box.</li><li><a href="https://docs.zenml.io/how-to/model-management-metrics/track-metrics-metadata"><strong>Rich metadata capture</strong></a> – data frames, models, and metrics are logged with shapes, schemas, and scores automatically.</li><li><a href="https://docs.zenml.io/user-guides/starter-guide/manage-artifacts#giving-names-to-your-artifacts"><strong>Human-readable naming</strong></a> – give runs and artifacts friendly names (e.g., ‘baseline_dataset_v1’) instead of opaque IDs, making lineage easy to follow.</li></ul>
 
-**👀 Note:** The beauty of ZenML is its integration with ZenML. If you prefer using MLflow, [ZenML integrates with your existing MLflow](https://www.zenml.io/integrations/mlflow) tracking server, so you don’t need to choose one over the other. Keep MLflow for experiment logs while ZenML adds pipeline orchestration and structured metadata on top to raise reproducibility.
+**👀 Note:** The beauty of ZenML is its integration with MLflow. If you prefer using MLflow, [ZenML integrates with your existing MLflow](https://www.zenml.io/integrations/mlflow) tracking server, so you don’t need to choose one over the other. Keep MLflow for experiment logs while ZenML adds pipeline orchestration and structured metadata on top to raise reproducibility.
 
 Here’s how you can integrate MLflow with ZenML for experiment and metadata tracking, artifact versioning, and more.
 
@@ -189,9 +197,23 @@ Our platform groups relevant pipelines, artifacts, metadata, and business metric
 
 Each training run in ZenML produces a new Model Version, tracked automatically with lineage to the data and code that created it.
 
-**Feature 4. AI Agent and LLMOps Support**
+#### Feature 4. Durable Agent Workloads with Kitaru by ZenML
 
-ZenML has evolved beyond traditional ML pipelines to become a comprehensive platform for operationalizing AI agents and LLM workflows. The framework provides native integration with popular agent frameworks like LangGraph and LlamaIndex, enabling teams to build reproducible agent pipelines with the same Pythonic approach used for traditional ML. ZenML's artifact versioning automatically tracks prompt templates, retrieval chunks, and agent conversation histories, while the Model Control Plane extends to managing LLM fine-tuning runs and prompt optimization experiments. This positions ZenML as one of the few platforms bridging classical MLOps and the emerging LLMOps paradigm within a single, consistent framework.
+ZenML is still primarily designed around production ML pipelines, but we have also introduced [Kitaru](https://www.zenml.io/blog/from-zenml-to-kitaru), an open-source product for durable execution of long-running Python agents.
+
+This matters because many AI teams now operate two related but different workload types:
+
+<ul><li><strong>ML pipelines</strong> – structured workflows for data processing, training, evaluation, and deployment.</li><li><strong>Long-running agents</strong> – asynchronous workflows that call tools, wait for human input, retry failed steps, and need to resume without starting from scratch.</li></ul>
+
+Kitaru is designed for the second category. It provides primitives like checkpoints, replay, resume, human-in-the-loop pauses, and cost visibility for long-running agent execution. This does not make ZenML a drop-in replacement for every agent framework, but it does show that ZenML’s ecosystem is moving with the market: from classical MLOps toward infrastructure for production AI systems.
+
+For teams comparing MLflow alternatives in 2026, this is a subtle but important point. MLflow 3 has improved observability and tracing for GenAI applications, while ZenML focuses on production ML workflows and now offers Kitaru for durable agent execution.
+
+##### A Note for Agent Teams: ZenML Now Also Includes Kitaru
+
+For teams moving from classical ML pipelines into long-running AI agents, ZenML now also includes [Kitaru](https://www.zenml.io/product/kitaru) as a product. Kitaru is ZenML’s open-source durable execution layer for Python agents: it helps agent workflows recover from crashes, pause for humans or webhooks, resume from checkpoints, and avoid rerunning completed work. This is adjacent to, rather than a replacement for, ZenML’s MLOps layer: ZenML helps standardize and orchestrate ML/AI workflows, while Kitaru addresses the runtime durability problem that appears when agents run for minutes, hours, or days.
+
+You can read the launch article here: [Introducing Kitaru: Durable Execution for AI Agents](https://www.zenml.io/blog/kitaru-launch).
 
 #### How Does ZenML Compare with MLflow
 
@@ -223,11 +245,31 @@ However, our platform does not have a native Spark/Ray runner; you must wire the
   <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ba981404/68281d3d5f52f72d364f9447_clearml_homepage.png" alt="ClearML homepage showcasing its end-to-end MLOps platform for tracking, orchestration, and deployment" />
 </figure>
 
-[ClearML](https://clear.ml/) is an end-to-end MLOps platform that, like MLflow, started with experiment tracking but has evolved into a full-suite solution covering everything from data management to model deployment.
+[ClearML](https://clear.ml/) is an end-to-end AI infrastructure and MLOps platform that, like MLflow, started with experiment tracking but has evolved into a broader platform for experiment management, orchestration, data management, deployment, and GenAI application infrastructure.
 
-#### Features
+In 2026, ClearML is worth evaluating not only as an MLflow alternative for classical MLOps, but also as a platform for teams that want to run LLM applications, RAG workflows, and AI agents on controlled infrastructure.
 
-<ul><li>Experiment ClearML provides an experiment manager similar to MLflow’s tracking UI, but with extra bells and whistles. Every training run is logged with parameters, metrics, source code snapshot, environment packages, and even the git diff of your code.</li><li>Track large datasets through ClearML Data, which automatically logs data file hashes, versions, and metadata. This means your training data and preprocessing steps are version-controlled just like code.</li><li>ClearML Deploy is the module that serves models in production. It supports deploying models as REST API endpoints (real-time serving) or batch jobs, with one-click deployment from the ClearML UI.</li><li>Built-in hyperparameter optimization reduces training time and improves model accuracy without requiring code changes.</li></ul>
+#### Feature 1. Experiment Tracking with Code, Environment, and Git Metadata
+
+ClearML provides an experiment manager similar to MLflow’s tracking UI, but with more automatic capture around source code, packages, environment details, and git state. Every training run can be logged with parameters, metrics, artifacts, source code snapshots, environment packages, and git diffs.
+
+This gives teams a more complete audit trail than manual metric logging alone, especially when multiple researchers or engineers are iterating on the same model family.
+
+#### Feature 2. Data and Embedding Versioning for RAG Workflows
+
+ClearML Data helps teams version datasets, track file hashes, and connect datasets to experiments. A newer addition worth mentioning is ClearML’s vector database support inside Hyper-Datasets, which allows teams to store and search embeddings directly inside ClearML.
+
+This is particularly relevant for teams building RAG pipelines or AI agents that depend on changing knowledge bases. Instead of treating embeddings as unmanaged side artifacts, ClearML can help track which embeddings, datasets, and retrieval configurations were used for a run.
+
+#### Feature 3. GenAI App Engine for LLM and RAG Deployment
+
+ClearML’s GenAI App Engine is designed to help teams deploy LLM applications on GPU clusters and manage workloads such as RAG services. It handles infrastructure control-plane concerns such as compute access, networking, authentication, role-based access control, monitoring, and orchestration around deployed services.
+
+This is one of the more important updates to the ClearML section because it moves ClearML beyond “experiment tracking plus orchestration” and into AI application infrastructure.
+
+#### Feature 4. Built-in Orchestration and Remote Execution
+
+ClearML Agents let teams execute tasks remotely on available compute, including GPU machines and Kubernetes-backed infrastructure. This makes ClearML useful for teams that want experiment tracking, job queues, and infrastructure utilization in one system rather than stitching together MLflow, a scheduler, and custom GPU management.
 
 #### Pros and Cons
 
@@ -235,9 +277,9 @@ ClearML’s design is modular – you can adopt only the pieces you need (ex, ju
 
 But, it has a steeper learning curve and setup time than a single-purpose tool. New users might find the [documentation](https://clear.ml/docs/latest/docs/) overwhelming, as it spans many components and use cases.
 
-## Category 2. For Experiment Tracking and Metadata
+## Category 2. For Experiment Tracking and LLMOps Observability
 
-**Weights & Biases and Nepture*** excel at experiment tracking, model metadata management, and collaboration. We suggest you leverage these to replace or enhance MLflow’s tracking component with more advanced UIs and features.*
+**Weights & Biases and Comet/Opik*** excel at experiment tracking, LLM observability, and collaboration. We suggest you leverage these to replace or enhance MLflow’s tracking component with more advanced UIs and evaluation features.*
 
 ### 3. Weights & Biases
 
@@ -245,7 +287,8 @@ But, it has a steeper learning curve and setup time than a single-purpose tool. 
   <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dc65e81d/68281d5e5def0ff70dd1235c_wandb_homepage.png" alt="Weights & Biases homepage presenting its cloud experiment tracking and visualization platform" />
 </figure>
 
-[Weights & Biases](https://wandb.ai/site/) (W&B) is a cloud-based experiment tracking platform that provides a slick UI to log and visualize everything about your ML experiments.
+[Weights & Biases](https://wandb.ai/site/) (W&B) is a cloud-based experiment tracking platform that provides a slick UI to log and visualize everything about your ML experiments. Now, W&B is also relevant for LLMOps because of [W&B Weave](https://docs.wandb.ai/weave), which adds tracing, evaluation, monitoring, and guardrails for LLM applications and agentic systems.
+
 
 📚 Read more about how [ZenML integrates with Weights and Biases](https://docs.zenml.io/stacks/experiment-trackers/wandb) for experiment tracking and visualization.
 
@@ -298,37 +341,37 @@ Compared to MLflow, W&B can be expensive for larger teams once you exceed free l
 
 📚 Learn more about W&B: [Documentation](https://docs.wandb.ai/).
 
-### 4. Neptune
+### 4. Comet/Opik
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/85c28366/68281de8d57529476daa4dec_neptune_homepage.png" alt="Neptune.ai homepage highlighting its structured ML metadata logging and experiment querying" />
+  <img src="https://assets.zenml.io/content/blog/ca0f1da2/comet-opik-homepage.avif" alt="Comet Opik dashboard for tracing, evaluating, and monitoring LLM applications" />
 </figure>
 
-[Neptune](https://neptune.ai/) is designed to log any and all metadata from your ML experiments in a structured way, and it provides a powerful UI and API to query and analyze this metadata.
+[Comet](https://www.comet.com/) is an experiment tracking and model development platform, while [Opik](https://www.comet.com/docs/opik) is Comet’s open-source LLM evaluation and observability platform. Together, they are a stronger 2026 replacement for Neptune in this list.
 
-📚 Read more about how [ZenML integrates with Neptune](https://docs.zenml.io/stacks/experiment-trackers/neptune) for powerful experiment tracking capabilities.
+This update matters because Neptune, previously one of the strongest experiment tracking alternatives to MLflow, has announced a service shutdown following its acquisition by OpenAI. For teams looking for an actively available alternative, Comet/Opik is a better fit.
 
-#### Neptune Experiment Tracking and Metadata
+#### Comet Experiment Tracking and Opik LLM Observability
 
-At its core, Neptune allows you to log, store, display, organize, compare, and query all your model-building metadata in one place. You integrate it by initializing a Neptune run (e.g., `neptune.init()` in Python) and logging various data: metrics, hyperparameters, model binary files, images, interactive charts, etc.
+Comet’s traditional platform helps teams track experiments, compare model runs, log parameters and metrics, manage model development workflows, and collaborate across projects. Opik extends this into the LLMOps world. It is designed to debug, evaluate, and monitor LLM applications, RAG systems, and agentic workflows. Teams can trace prompts, LLM calls, retrieval steps, tool calls, and agent execution paths, then evaluate outputs using built-in and custom metrics.
 
-Neptune’s UI provides a table view of all runs with sortable columns (each parameter or metric can be a column) and a search query language to find experiments matching certain criteria (useful when you have thousands of runs). This is more advanced than MLflow’s filtering and even a bit beyond W&B’s filtering capabilities, giving you a database-like power over your experiment metadata.
+This makes Comet/Opik especially relevant for teams that are moving beyond classical model training into production AI applications.
 
 #### Other Prominent Features
 
-<ul><li>Lets you structure your metadata as you like (it isn’t limited to predefined metrics/params).</li><li>Teams can collaborate on Neptune by sharing projects. It has user management (especially in the enterprise self-hosted version) to control who can view/edit projects.</li><li>Integrates with popular libraries and has a robust API/CLI.</li></ul>
+<ul><li>Trace and debug LLM applications, RAG pipelines, and agentic workflows.</li><li>Evaluate outputs with LLM-as-a-judge metrics and custom evaluation rules.</li><li>Monitor production traces for quality, feedback scores, latency, cost, and errors.</li><li>Compare agent or prompt versions before shipping changes.</li><li>Run prompt optimization workflows against datasets and metrics.</li><li>Use an open-source observability layer for teams that want more control than a purely hosted SaaS tool.</li></ul>
 
 #### Pros and Cons
 
-[Neptune.ai](http://Neptune.ai)’s biggest pro is its flexibility in metadata handling. It can become the single source of truth for all experiment data, with a level of organization that scales to enterprise needs (searchable and queryable).
+Comet/Opik covers both traditional experiment tracking and modern LLM application observability. Opik is especially useful for teams building RAG systems or agents because it focuses on traces, evaluations, monitoring, and prompt optimization rather than only training-run metadata.
 
-Neptune, being focused on tracking, means you’ll need complementary tools for other parts of the lifecycle (deployment, etc.). If you’re looking for a one-stop platform, Neptune isn’t it.
+Comet/Opik is excellent for tracking, evaluation, and observability, but teams still need separate orchestration and deployment layers for full production MLOps.
 
-📚 Learn about Neptune - [Documentation](https://docs.neptune.ai/index.html).
+📚 Learn about Opik: [Documentation](https://www.comet.com/docs/opik).
 
 ## Category 3. For Model Serving and Deployments
 
-**BentoML and AWS Sagemaker*** specialize in deploying machine learning models to production and serving predictions at scale – areas where MLflow’s own model serving (MLflow Models) may be insufficient or too hands-on.*
+**BentoML and AWS SageMaker*** specialize in deploying machine learning models to production and serving predictions at scale. These are areas where MLflow’s own model serving (MLflow Models) may be insufficient or too hands-on.*
 
 ### 5. BentoML
 
@@ -336,7 +379,7 @@ Neptune, being focused on tracking, means you’ll need complementary tools for 
   <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/08f44ea3/68281e64f9165ea007b5b2fd_bentoml_homepage.png" alt="BentoML homepage presenting its open-source framework for packaging and serving ML models as APIs" />
 </figure>
 
-[BentoML](https://www.bentoml.com/) is an open-source framework specifically focused on model serving. It helps you package trained models along with code and dependencies into a standardized **‘Bento’** format that can be deployed as API endpoints or batch jobs.
+[BentoML](https://www.bentoml.com/) is an open-source framework specifically focused on model serving. It helps you package trained models along with code and dependencies into a standardized **‘Bento’** format that can be deployed as API endpoints or batch jobs. BentoML is no longer just about wrapping scikit-learn or PyTorch models in APIs. It is increasingly positioned around serving modern AI systems, including LLM endpoints, embedding models, RAG APIs, diffusion models, and multi-model inference services.
 
 📚 [ZenML integrates with BentoML](https://docs.zenml.io/stacks/stack-components/model-deployers/bentoml) for model deployment.
 
@@ -372,7 +415,7 @@ BentoML specializes in serving, so you’ll still need something like MLflow or 
 
 #### SageMaker Model Serving and Deployments Feature
 
-Sagemaker provides enterprise-grade model serving with automatic scaling and management capabilities. The platform offers real-time inference endpoints with low latency for immediate predictions, essential for applications requiring instant responses.
+SageMaker provides enterprise-grade model serving with automatic scaling and management capabilities. The platform offers real-time inference endpoints with low latency for immediate predictions, essential for applications requiring instant responses.
 
 Batch transform capabilities enable efficient processing of large datasets, making it ideal for scenarios where you must process thousands or millions of records simultaneously.
 
@@ -406,7 +449,7 @@ SageMaker offers extreme convenience for deployment if you are okay with AWS ser
 
 The biggest con is lock-in to AWS. Your workflow becomes tied to SageMaker and the AWS console/SDKs.
 
-📚 Learn about Sagemaker - [Documentation](https://aws.amazon.com/documentation-overview/sagemaker/).
+📚 Learn about SageMaker - [Documentation](https://aws.amazon.com/documentation-overview/sagemaker/).
 
 ## Category 4. For Pipeline Orchestration
 
@@ -458,7 +501,7 @@ A hallmark feature is what they call **Smart Orchestration** – Valohai automat
 
 #### Other Prominent Features
 
-<ul><li>Logs all metadata from runs and provides a dashboard to compare results, similar to Neptune or MLflow’s tracking UI.</li><li>Integrate Valohai with anything since it’s just running Docker images. It plugs into Git (pulls the latest commit or a specific commit for each run, ensuring code versioning) and can connect to data sources (S3, Azure Blob, etc.).</li></ul>
+<ul><li>Logs all metadata from runs and provides a dashboard to compare results, similar to MLflow’s tracking UI.</li><li>Integrate Valohai with anything since it’s just running Docker images. It plugs into Git (pulls the latest commit or a specific commit for each run, ensuring code versioning) and can connect to data sources (S3, Azure Blob, etc.).</li></ul>
 
 #### Pros and Cons
 
@@ -475,7 +518,7 @@ The primary con is that Valohai is a proprietary paid platform, which means vend
 ### 9. Azure ML
 
 <figure>
-  <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bf07eae7/68281eed073c76722f0c0a12_amazon_sagemaker_homepage.png" alt="Amazon SageMaker homepage showing AWS's fully managed machine learning platform" />
+  <img src="https://assets.zenml.io/content/blog/00270224/azure-ml-homepage.avif" alt="Azure Machine Learning homepage showing Microsoft's cloud platform for the end-to-end ML lifecycle" />
 </figure>
 
 Azure ML is Microsoft’s cloud ML platform. Similar to SageMaker on AWS, it covers the end-to-end ML lifecycle on Azure. We highlight it here specifically for its Model Registry and model sharing features, which are particularly well-suited if you’re already in the Azure ecosystem.
@@ -502,31 +545,30 @@ While the registry itself doesn’t have a direct cost, using Azure ML services 
 
 📚 Learn about Azure ML: [Documentation](https://learn.microsoft.com/en-us/azure/machine-learning/?view=azureml-api-2).
 
-## MLOps and AI Agents: The Landscape in Late 2025
+## MLOps, LLMOps, and AI Agents: What Changed in 2026
 
-The MLOps ecosystem has undergone a fundamental transformation throughout 2025, driven by what industry experts are calling "the year of the AI agent." Traditional experiment tracking platforms like MLflow are being rapidly augmented or replaced by tools that support the full lifecycle of agentic AI systems.
+The MLOps ecosystem has changed quickly. ML teams are no longer only managing training runs, model artifacts, and batch deployment pipelines. Many teams now also manage RAG systems, LLM-powered applications, evaluation datasets, prompt versions, agent traces, human feedback, and production quality monitoring.
 
-**The Rise of LLMOps**: Organizations are increasingly moving beyond traditional MLOps to embrace LLMOps (Large Language Model Operations), which addresses unique challenges like prompt engineering, hallucination prevention, and context management. According to recent enterprise surveys, 99% of developers building AI applications are now exploring or actively developing AI agents, creating unprecedented demand for platforms that can orchestrate these complex workflows.
+That shift changes how MLflow alternatives should be evaluated. A platform that was “good enough” for experiment tracking in 2023 may not be enough if your team now needs to debug multi-step agent workflows, evaluate LLM outputs, monitor retrieval quality, or understand cost per request.
 
-**Market Explosion**: The global MLOps market has experienced explosive growth, expanding from $1.58 billion in 2024 to a projected value between $19.55 billion and $89.18 billion by 2032, depending on market definitions. This represents a compound annual growth rate (CAGR) of 35-45%, reflecting the rapid enterprise adoption of AI-native applications. North America continues to dominate with approximately 41% market share, though Asia-Pacific is emerging as the fastest-growing region.
+At the same time, traditional MLOps has not gone away. Production AI systems still need data pipelines, model versioning, infrastructure abstraction, CI/CD, deployment workflows, governance, and auditability. The best MLflow alternative depends on which layer is most painful for your team:
 
-**Production Agent Deployment**: Real-world agent systems in production look quite different from research demos. Successful implementations tend to be narrow, single-domain specialists operating under human supervision rather than fully autonomous systems. Retrieval-Augmented Generation (RAG) has become the default pattern for production LLM applications, spawning specialized orchestration tools as core MLOps components. Companies are finding that evaluation infrastructure and human-in-the-loop golden datasets are more critical than ever for maintaining quality in agent deployments.
+<ul><li><strong>Pipeline orchestration:</strong> ZenML, Kubeflow, Valohai.</li><li><strong>Experiment tracking and AI app observability:</strong> W&B, Comet/Opik, ClearML.</li><li><strong>Model serving:</strong> BentoML, SageMaker AI, Azure ML.</li><li><strong>Cloud-native enterprise ML:</strong> SageMaker AI and Azure ML.</li><li><strong>Durable long-running agents:</strong> Kitaru by ZenML, alongside your chosen agent framework.</li></ul>
 
-These shifts mean that when evaluating MLflow alternatives in 2025, teams must consider not just experiment tracking and model deployment, but also capabilities for managing LLM fine-tuning, prompt versioning, agent orchestration, and the unique monitoring requirements of generative AI systems.
 
-## Common Questions About MLflow Alternatives in 2025
+## Common Questions About MLflow Alternatives in 2026
 
-**What's the difference between MLOps and LLMOps, and do I need different tools?** LLMOps extends traditional MLOps to handle the unique complexities of large language models and AI agents, including prompt engineering, context window management, and hallucination detection. While platforms like MLflow can track LLM experiments, specialized LLMOps-ready alternatives like ZenML, W&B, and Azure ML now offer native support for prompt versioning, LLM-specific metrics, and agent workflow orchestration. Most organizations in 2025 benefit from platforms that handle both traditional ML and LLM workloads within a unified framework.
+**What's the difference between MLOps and LLMOps, and do I need different tools?** LLMOps extends traditional MLOps to handle the unique complexities of large language models and AI agents, including prompt engineering, context window management, and hallucination detection. While platforms like MLflow can track LLM experiments, specialized LLMOps-ready alternatives like ZenML, W&B, and Azure ML now offer native support for prompt versioning, LLM-specific metrics, and agent workflow orchestration. Most organizations in 2026 benefit from platforms that handle both traditional ML and LLM workloads within a unified framework.
 
-**How much does it cost to move from MLflow to a commercial alternative?** Costs vary significantly by platform. Open-source alternatives like ZenML and ClearML offer free self-hosted options with optional paid enterprise features. Cloud-native solutions like AWS SageMaker and Azure ML charge based on compute usage (typically $0.10-$13.83 per hour for training instances) with no platform fees. SaaS platforms like Weights & Biases and Neptune offer tiered pricing starting around $50-200 per user per month for teams, while enterprise deployments can run several thousand dollars monthly. Many teams find that the operational efficiency gains and reduced infrastructure management costs offset the platform fees within 3-6 months.
+**How much does it cost to move from MLflow to a commercial alternative?** Costs vary significantly by platform. Open-source alternatives like ZenML and ClearML offer free self-hosted options with optional paid enterprise features. Cloud-native solutions like AWS SageMaker and Azure ML charge based on compute usage (typically $0.10-$13.83 per hour for training instances) with no platform fees. SaaS platforms like Weights & Biases offer tiered pricing starting around $50-200 per user per month for teams, while enterprise deployments can run several thousand dollars monthly. Many teams find that the operational efficiency gains and reduced infrastructure management costs offset the platform fees within 3-6 months.
 
 **Can I use multiple MLflow alternatives together, or do I need to choose one?**Modern MLOps architecture is increasingly modular. Many successful teams combine tools - for example, using ZenML for pipeline orchestration while integrating MLflow for experiment tracking, or coupling Kubeflow with W&B for visualization. The key is selecting platforms with strong integration capabilities. ZenML explicitly supports this approach through its stack architecture, allowing you to compose best-of-breed tools. However, for smaller teams, all-in-one platforms like ClearML or Azure ML can reduce integration complexity.
 
-**Which MLflow alternative is best for deploying AI agents in production?** For AI agent deployment in 2025, consider platforms with strong LLMOps capabilities and agent orchestration support. ZenML offers flexible integration with agent frameworks like LangGraph and LlamaIndex while providing pipeline orchestration. AWS SageMaker and Google Vertex AI have introduced native agent builders (Bedrock Agents and Vertex AI Agent Builder) with managed infrastructure. For teams building custom agents, platforms that support prompt versioning, human-in-the-loop evaluation, and RAG pipeline orchestration—like ZenML with W&B integration or ClearML—provide the most comprehensive solution.
+**Which MLflow alternative is best for deploying AI agents in production?** For AI agent deployment in 2026, consider platforms with strong LLMOps capabilities and agent orchestration support. ZenML offers flexible integration with agent frameworks like LangGraph and LlamaIndex while providing pipeline orchestration. AWS SageMaker and Google Vertex AI have introduced native agent builders (Bedrock Agents and Vertex AI Agent Builder) with managed infrastructure. For teams building custom agents, platforms that support prompt versioning, human-in-the-loop evaluation, and RAG pipeline orchestration—like ZenML with W&B integration or ClearML—provide the most comprehensive solution.
 
 ## Quick Selection Guide: Which MLflow Alternative for Your Use Case?
 
-<ul><li><strong>Building AI Agents or LLM Applications</strong>: ZenML (for flexible orchestration with agent frameworks), AWS Bedrock (for managed agent infrastructure), or Google Vertex AI Agent Builder (for rapid prototyping)</li><li><strong>Need Strong Experiment Tracking &amp; Visualization</strong>: Weights &amp; Biases (best-in-class UI and collaboration), Neptune (advanced querying), or ClearML (all-in-one with good tracking)</li><li><strong>Production Model Serving at Scale</strong>: BentoML (specialized for packaging and serving), AWS SageMaker (auto-scaling endpoints), or Seldon Core (Kubernetes-native serving)</li><li><strong>Pipeline Orchestration for Complex Workflows</strong>: ZenML (Python-native with flexible integrations), Kubeflow (Kubernetes power users), or Valohai (managed automation)</li><li><strong>Enterprise with Azure Investment</strong>: Azure ML (tight Microsoft integration, comprehensive RBAC)</li><li><strong>Startup or Small Team</strong>: Open-source MLflow (free, well-documented baseline), ZenML (free tier with easy scaling), or ClearML (all-in-one open source)</li><li><strong>Regulated Industry (Healthcare, Finance)</strong>: Azure ML or AWS SageMaker (enterprise compliance built-in), ZenML with on-premise deployment (for data sovereignty)</li><li><strong>Multi-Cloud or Avoiding Vendor Lock-in</strong>: ZenML (cloud-agnostic stack architecture) or open-source ClearML (deploy anywhere)</li></ul>
+<ul><li><strong>Building production ML pipelines:</strong> ZenML, Kubeflow, or Valohai.</li><li><strong>Need strong experiment tracking and visualization:</strong> Weights &amp; Biases, MLflow 3, ClearML, or Comet.</li><li><strong>Building LLM apps, RAG systems, or agents:</strong> W&amp;B Weave, Comet/Opik, ClearML, MLflow 3, SageMaker AI, or Azure ML/Microsoft Foundry.</li><li><strong>Need durable long-running Python agents:</strong> Kitaru by ZenML, used alongside your preferred agent framework.</li><li><strong>Production model serving at scale:</strong> BentoML, SageMaker AI, or Azure ML.</li><li><strong>Kubernetes-native ML platform:</strong> Kubeflow.</li><li><strong>Managed commercial MLOps platform:</strong> Valohai, SageMaker AI, Azure ML, or ClearML Enterprise.</li><li><strong>Multi-cloud or avoiding vendor lock-in:</strong> ZenML, BentoML, Kubeflow, or open-source ClearML.</li><li><strong>Enterprise already on AWS:</strong> SageMaker AI, especially with managed MLflow support.</li><li><strong>Enterprise already on Azure:</strong> Azure ML and Microsoft Foundry.</li></ul>
 
 ## Which is the Best MLflow Alternative for You?
 

@@ -1,0 +1,72 @@
+---
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: tuesday
+      time: "07:00"
+      timezone: Europe/Amsterdam
+    reviewers: [strickvl]
+    labels: [dependencies]
+    groups:
+      minor-and-patch:
+        patterns: ['*']
+        update-types:
+          - minor
+          - patch
+    cooldown:
+      default-days: 7
+
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: tuesday
+      time: "07:00"
+      timezone: Europe/Amsterdam
+    reviewers: [strickvl]
+    labels: [dependencies]
+    groups:
+      # Keep Astro core and its integrations together so an integration
+      # major (e.g. @astrojs/preact 5) can never land ahead of the matching
+      # astro core major. The Astro upgrade must bump astro + all @astrojs/*
+      # in a single PR.
+      #
+      # wrangler is in this group on purpose: @astrojs/cloudflare 14 pulls in
+      # @cloudflare/vite-plugin, which asserts `wrangler ^4.110.0` at startup
+      # and hard-fails the build if it is not satisfied. wrangler must be able
+      # to move in the same PR as the adapter, so it cannot live in
+      # minor-and-patch. (This is what broke #136.)
+      astro:
+        patterns:
+          - astro
+          - '@astrojs/*'
+          - wrangler
+      minor-and-patch:
+        patterns: ['*']
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # Astro 5 -> 7 is a migration, not a bump: two majors, plus Vite 6 -> 8,
+      # plus a Node floor raise. Majors for astro and its integrations are held
+      # as a SET until that work happens (#128). Astro 5.x minor/patch and
+      # security updates still flow normally.
+      #
+      # These must be ignored together, not individually. An ignore is applied
+      # BEFORE grouping, so ignoring one member of the astro group does not hold
+      # the group back -- it silently drops that member out of the group PR. The
+      # previous @astrojs/preact-only ignore did exactly that, and produced #136:
+      # a PR bumping core to Astro 7 while pinning @astrojs/preact to an
+      # Astro-5-generation 4.x. Lift this whole block as step 1 of #128.
+      - dependency-name: 'astro'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@astrojs/*'
+        update-types: ['version-update:semver-major']
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+      semver-minor-days: 7
+      semver-patch-days: 3
