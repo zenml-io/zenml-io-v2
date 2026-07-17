@@ -6,7 +6,8 @@ const scenarios = [
   {
     tag: "debug",
     q: "Why did it do that?",
-    outcome: "Reproduce the failure on your desk — same code, same world, every time.",
+    outcome:
+      "Reproduce the failure on your desk — same code, same world, every time.",
     stat: "10 / 10",
     statLabel: "runs reproduce it",
   },
@@ -32,6 +33,26 @@ const scenarios = [
     statLabel: "regressions reach production",
   },
 ] as const;
+
+/** The recorded execution's checkpoints; forks attach by index. */
+const checkpoints = [
+  { x: 90, label: "run" },
+  { x: 330, label: "lookup_order" },
+  { x: 585, label: "retrieve" },
+  { x: 840, label: "model_request" },
+  { x: 1105, label: "reply" },
+] as const;
+
+/** card layout: 4 cards across a 1200-wide viewBox, forked from checkpoints 1-4 */
+const CARD_W = 262;
+const CARD_Y = 178;
+const SPINE_Y = 62;
+const forks = scenarios.map((s, i) => ({
+  ...s,
+  dotX: checkpoints[i + 1].x,
+  cardX: 40 + i * 290,
+  laneY: 100 + i * 16,
+}));
 ---
 
 <section id="scenario-strip" class="scenario-section section-pad">
@@ -46,7 +67,47 @@ const scenarios = [
       </p>
     </div>
 
-    <div class="scenario-grid">
+    <div class="scenario-diagram" data-reveal>
+      <svg viewBox="0 0 1200 528" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One recorded execution with four questions forked from its checkpoints: debug, verify, decide, and gate">
+        <text x="40" y="20" class="sd-exec-label">execution tr-8f3a91c2 · recorded</text>
+        <line x1="40" y1="62" x2="1160" y2="62" class="sd-spine" />
+        {checkpoints.map((c) => (
+          <>
+            <text x={c.x} y="42" text-anchor="middle" class="sd-cp-label">{c.label}</text>
+            <circle cx={c.x} cy="62" r="6" class="sd-dot" />
+          </>
+        ))}
+        {forks.map((f, i) => (
+          <>
+            <path
+              d={`M ${f.dotX} 70 L ${f.dotX} ${f.laneY - 16} Q ${f.dotX} ${f.laneY} ${f.dotX - 16} ${f.laneY} L ${f.cardX + CARD_W / 2 + 16} ${f.laneY} Q ${f.cardX + CARD_W / 2} ${f.laneY} ${f.cardX + CARD_W / 2} ${f.laneY + 16} L ${f.cardX + CARD_W / 2} ${CARD_Y - 12}`}
+              class="sd-branch"
+              pathLength="1"
+              style={`--delay: ${(0.1 + i * 0.18).toFixed(2)}s`}
+            />
+            <circle cx={f.dotX} cy="62" r="6.5" class="sd-dot sd-dot-fork" style={`--delay: ${(0.1 + i * 0.18).toFixed(2)}s`} />
+            <path
+              d={`M ${f.cardX + CARD_W / 2 - 5} ${CARD_Y - 11} L ${f.cardX + CARD_W / 2 + 5} ${CARD_Y - 11} L ${f.cardX + CARD_W / 2} ${CARD_Y - 2} Z`}
+              class="sd-branch-end"
+              style={`--delay: ${(0.1 + i * 0.18).toFixed(2)}s`}
+            />
+            <foreignObject x={f.cardX} y={CARD_Y} width={CARD_W} height="340">
+              <div class="scenario-card sd-card" xmlns="http://www.w3.org/1999/xhtml">
+                <span class="scenario-move">{f.tag}</span>
+                <p class="scenario-q">{f.q}</p>
+                <p class="scenario-outcome">{f.outcome}</p>
+                <div class="scenario-stat-block">
+                  <span class="scenario-stat">{f.stat}</span>
+                  <span class="scenario-stat-label">{f.statLabel}</span>
+                </div>
+              </div>
+            </foreignObject>
+          </>
+        ))}
+      </svg>
+    </div>
+
+    <div class="scenario-grid scenario-fallback">
       {
         scenarios.map((s, i) => (
           <div class="scenario-card" data-reveal="fade-up" data-reveal-delay={i + 1}>
@@ -73,7 +134,7 @@ const scenarios = [
 
   .scenario-head {
     max-width: 820px;
-    margin-bottom: 48px;
+    margin-bottom: 30px;
   }
 
   .scenario-title {
@@ -209,5 +270,108 @@ const scenarios = [
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--color-muted);
+  }
+
+  .scenario-diagram {
+    display: none;
+  }
+
+  @media (min-width: 900px) {
+    .scenario-diagram {
+      display: block;
+    }
+    .scenario-fallback {
+      display: none;
+    }
+  }
+
+  .scenario-diagram svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .sd-exec-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    fill: var(--color-muted);
+  }
+
+  .sd-spine {
+    stroke: var(--color-border);
+    stroke-width: 2.5;
+  }
+
+  .sd-cp-label {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    fill: var(--color-secondary);
+  }
+
+  .sd-dot {
+    fill: var(--color-surface);
+    stroke: oklch(0.62 0.02 60 / 0.55);
+    stroke-width: 1.75;
+  }
+
+  .sd-dot-fork {
+    fill: var(--color-accent);
+    stroke: var(--color-surface);
+    stroke-width: 3;
+    r: 8;
+  }
+
+  .sd-branch {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 2.25;
+    stroke-linecap: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .scenario-diagram.revealed .sd-branch {
+    stroke-dashoffset: 0;
+  }
+
+  .scenario-diagram.revealed .sd-branch-end,
+  .scenario-diagram.revealed .sd-dot-fork {
+    opacity: 1;
+  }
+
+  .sd-branch-end,
+  .sd-dot-fork {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .sd-branch {
+      transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1) var(--delay, 0s);
+    }
+    .sd-branch-end,
+    .sd-dot-fork {
+      transition: opacity 0.4s ease calc(var(--delay, 0s) + 0.55s);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sd-branch {
+      stroke-dashoffset: 0;
+    }
+    .sd-branch-end,
+    .sd-dot-fork {
+      opacity: 1;
+    }
+  }
+
+  .sd-branch-end {
+    fill: var(--color-accent);
+  }
+
+  .sd-card {
+    height: 100%;
+    box-sizing: border-box;
   }
 </style>
