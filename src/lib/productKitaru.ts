@@ -11,9 +11,9 @@ export const KITARU_LINKS = {
 } as const;
 
 export const PRODUCT_KITARU_SEO = {
-  title: "Kitaru: ask what-if about your agent's real runs | ZenML",
+  title: "Kitaru: traces you can run, not just read | ZenML",
   description:
-    "Open-source runtime that records every model and tool call in your agents' runs. Replay a real run with one thing changed: a model, a tool's output, a failed call. See what would have happened, with no production reruns. Durable checkpoints, wait/resume, and isolated execution on your own cloud. Built by the ZenML team.",
+    "Open-source agent platform that records every model and tool call in your agents' runs as replayable traces. Replay a real run against your real code with one thing changed: a model, a tool's output, a failed call. See what would have happened, with no production reruns. Durable checkpoints, wait/resume, and isolated execution on your own cloud. Built by the ZenML team.",
 } as const;
 
 /**
@@ -25,14 +25,14 @@ export const PRODUCT_KITARU_SEO = {
  * page's load-bearing pitch changes.
  */
 export const PRODUCT_KITARU_MARKDOWN = {
-  title: "Kitaru: ask what-if about your agent's real runs",
+  title: "Kitaru: traces you can run, not just read",
   installCmd: KITARU_INSTALL_CMD,
   license: KITARU_LICENSE,
   summary: [
-    "Kitaru is the open agent runtime from ZenML. The core pitch: ask what-if about your agent's real runs. Change one thing, replay the run, and see what would have happened. No production reruns.",
+    "Kitaru is the open agent platform from ZenML. The core pitch: traces you can run, not just read. Every agent run is recorded as a replayable trace — change one thing, replay it against your real code, and see what would have happened. No production reruns.",
     "It records every model and tool call as a durable checkpoint, then replays from any boundary with one thing changed: a model, a tool's output, or a failed call. The override is the only difference.",
     `It is open source under ${KITARU_LICENSE} and built for Python agents that need checkpoints, replay, wait/resume, isolated execution, artifacts, and versioned deployments on your own cloud.`,
-    "You keep the agent harness you already chose: PydanticAI, OpenAI Agents SDK, Claude Agent SDK, LangGraph, or plain Python. Kitaru records and replays the run underneath it with a small set of Python primitives.",
+    "You keep the agent harness you already chose: PydanticAI, OpenAI Agents SDK, Claude Agent SDK, LangGraph, Gemini, Google ADK, or plain Python. Kitaru records and replays the run underneath it with a small set of Python primitives.",
     "Durable execution is the foundation, not the pitch. The same checkpoints that make replay faithful also resume a run from the boundary that broke, so a crash at hour 11 does not mean restarting from hour 1.",
   ],
   primitives: [
