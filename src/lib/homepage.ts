@@ -119,7 +119,7 @@ export const FEATURE_TABS: FeatureTab[] = [
   {
     title: "Artifact & Checkpoint Versioning",
     description:
-      '"It worked on my machine" is not a strategy. Every step result is versioned — trained models, evaluation datasets, and agent checkpoints alike. When a library update or prompt change breaks a run, inspect the diff and roll back to a working state instantly.',
+      '"It worked on my machine" is not a strategy. Every step result is versioned — trained models, evaluation datasets, and recorded agent executions alike. When a library update or prompt change breaks a run, inspect the diff, replay the recorded execution, and roll back to a working state instantly.',
     image: `${R2}/6a1e96df/68d273e1d31e42957153098b_tab02.avif`,
     imageAlt: "Artifact and checkpoint versioning view",
   },
@@ -133,7 +133,7 @@ export const FEATURE_TABS: FeatureTab[] = [
   {
     title: "Smart Caching & Deduplication",
     description:
-      "Don't pay for the same compute twice. Native caching skips redundant training epochs and expensive LLM tool calls. Drastically lower the latency and API costs of your evaluation pipelines and agent replay runs.",
+      "Don't pay for the same compute twice. Native caching skips redundant training epochs, and replay reuses recorded tool calls instead of paying for them again. Drastically lower the latency and API cost of your evaluation pipelines and replayed executions.",
     image: `${R2}/7d0c3d45/694a97d1ae458c9398b52aef_tab04.avif`,
     imageAlt: "Smart caching and deduplication across runs",
   },
@@ -188,7 +188,7 @@ export const VALUE_PROPS: ValueProp[] = [
   {
     title: "Lineage and replay across both workspaces",
     description:
-      "Every artifact version and every agent checkpoint is tracked in the same metadata store. When something breaks, you have the full execution lineage — from raw input to model output or agent response — to debug and reproduce it.",
+      "Every execution is recorded and every artifact version is tracked in the same metadata store. When something breaks, replay the exact recorded run to reproduce it — and the fix becomes a regression test that guards against it coming back.",
     iconBg: "#d6ebf0",
     iconColor: "#309DB2",
     iconMode: "stroke",
@@ -389,7 +389,7 @@ export const COMPLIANCE = {
 /*  Newsletter Signup                                                 */
 /* ------------------------------------------------------------------ */
 export const NEWSLETTER = {
-  headline: "Looking to Get Ahead in MLOps & LLMOps?",
+  headline: "Getting Ahead in Pipelines, Agents & Evals?",
   body: "Subscribe to the ZenML newsletter and receive regular product updates, tutorials, examples, and more.",
   privacyNote: "We care about your data in our",
   privacyLink: { label: "privacy policy", href: "/privacy-policy" },
@@ -426,7 +426,12 @@ export const FAQ = {
     {
       question: "Does ZenML help in GenAI / LLMOps use-cases?",
       answer:
-        'Yes, ZenML is fully compatible and intended for productionalizing LLM applications. We have examples with <a href="https://www.llamaindex.ai/" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">LlamaIndex</a>, <a href="https://openai.com/" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">OpenAI</a>, <a href="https://www.langchain.com/" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">LangChain</a>, and more. Check out our <a href="/projects" class="text-zenml-500 underline">projects</a> for real-world examples.',
+        'Yes, ZenML is fully compatible and intended for productionalizing LLM applications, and Kitaru extends this to evaluating and regression-testing live agents. We have examples with <a href="https://www.llamaindex.ai/" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">LlamaIndex</a>, <a href="https://openai.com/" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">OpenAI</a>, <a href="https://www.langchain.com/" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">LangChain</a>, and more. Check out our <a href="/projects" class="text-zenml-500 underline">projects</a> for real-world examples.',
+    },
+    {
+      question: "What is Kitaru?",
+      answer:
+        'Kitaru is ZenML\'s agent experimentation platform. It records your agents\' real production runs as replayable executions. You can score a recording without ever running the agent again, or replay your real code against the recorded world — with one thing changed, like a model, tool, or prompt — to see what would have happened. Re-run a replay in CI and it becomes a regression test. Read more in the <a href="https://docs.zenml.io/kitaru" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">Kitaru docs</a>.',
     },
     {
       question: "How can I build my MLOps/LLMOps platform using ZenML?",
@@ -446,7 +451,7 @@ export const FAQ = {
 /*  Final CTA                                                         */
 /* ------------------------------------------------------------------ */
 export const FINAL_CTA = {
-  headline: "Unify Your ML and LLM Workflows",
+  headline: "Ship agents you can prove, and pipelines you can trust.",
   bullets: [
     "Open-source foundation, no vendor lock-in",
     "Works with any infrastructure",
