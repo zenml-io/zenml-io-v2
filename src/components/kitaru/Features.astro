@@ -34,6 +34,8 @@ const recordedSources = [
   { slug: "langgraph", name: "LangGraph" },
   { slug: "openai", name: "OpenAI Agents SDK" },
   { slug: "claude", name: "Claude Agent SDK" },
+  { slug: "gemini", name: "Gemini" },
+  { slug: "google-adk", name: "Google ADK" },
   { slug: "python", name: "Raw Python" },
 ] as const;
 ---
@@ -42,9 +44,9 @@ const recordedSources = [
   <div class="section-inner">
     <div class="whatif-header" data-reveal>
       <span class="section-eyebrow">THE WHAT-IF WORKFLOW</span>
-      <h2 class="section-title">Find a cheaper model without touching production.</h2>
+      <h2 class="section-title">Ask anything of the runs you already have.</h2>
       <p class="section-desc">
-        Same question every time: can it run cheaper, and does it survive a flaky tool result? Replay the runs you already have, change one thing, read the diff.
+        Cheaper model? Flaky tool result? New prompt? Replay real executions with one thing changed, read the diff &mdash; and never touch production.
       </p>
 
     </div>
