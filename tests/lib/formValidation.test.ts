@@ -84,27 +84,29 @@ describe("validateForm", () => {
     ).toEqual({ valid: false, errors: { _form: "Unknown form type" } });
   });
 
-  it.each(
-    configuredFormTypes,
-  )("accepts representative valid %s data", (formType) => {
-    expect(
-      validateForm(formType, formValidationCases[formType].validData),
-    ).toEqual({
-      valid: true,
-      errors: {},
-    });
-  });
+  it.each(configuredFormTypes)(
+    "accepts representative valid %s data",
+    (formType) => {
+      expect(
+        validateForm(formType, formValidationCases[formType].validData),
+      ).toEqual({
+        valid: true,
+        errors: {},
+      });
+    },
+  );
 
-  it.each(
-    configuredFormTypes,
-  )("returns configured validation errors for invalid %s data", (formType) => {
-    expect(
-      validateForm(formType, formValidationCases[formType].invalidData),
-    ).toEqual({
-      valid: false,
-      errors: formValidationCases[formType].expectedErrors,
-    });
-  });
+  it.each(configuredFormTypes)(
+    "returns configured validation errors for invalid %s data",
+    (formType) => {
+      expect(
+        validateForm(formType, formValidationCases[formType].invalidData),
+      ).toEqual({
+        valid: false,
+        errors: formValidationCases[formType].expectedErrors,
+      });
+    },
+  );
 
   it("trims values before checking required fields and patterns", () => {
     expect(
@@ -115,49 +117,51 @@ describe("validateForm", () => {
     ).toEqual({ valid: true, errors: {} });
   });
 
-  it.each(
-    configuredFormTypes,
-  )("rejects HTML, line breaks, control characters, and oversized full names for %s", (formType) => {
-    const validData = formValidationCases[formType].validData;
-    const unsafeNames = [
-      '<a href="https://evil.example">Click here</a>',
-      "Ada\nLovelace",
-      "Ada Lovelace\r\n",
-      "Ada\u0000Lovelace",
-      "A".repeat(101),
-    ];
+  it.each(configuredFormTypes)(
+    "rejects HTML, line breaks, control characters, and oversized full names for %s",
+    (formType) => {
+      const validData = formValidationCases[formType].validData;
+      const unsafeNames = [
+        '<a href="https://evil.example">Click here</a>',
+        "Ada\nLovelace",
+        "Ada Lovelace\r\n",
+        "Ada\u0000Lovelace",
+        "A".repeat(101),
+      ];
 
-    for (const fullName of unsafeNames) {
-      expect(validateForm(formType, { ...validData, fullName }).errors).toEqual(
-        {
+      for (const fullName of unsafeNames) {
+        expect(
+          validateForm(formType, { ...validData, fullName }).errors,
+        ).toEqual({
           fullName:
             "Full name must be 100 characters or fewer and cannot contain HTML or line breaks",
-        },
-      );
-    }
-  });
+        });
+      }
+    },
+  );
 
-  it.each([
-    "demo-request",
-    "whitepaper",
-    "startup-academic",
-  ] as const)("rejects HTML, line breaks, control characters, and oversized company names for %s", (formType) => {
-    const validData = formValidationCases[formType].validData;
-    const unsafeCompanies = [
-      '<a href="https://evil.example">Click here</a>',
-      "Analytical\nEngines",
-      "Analytical Engines\r\n",
-      "Analytical\u0000Engines",
-      "A".repeat(201),
-    ];
+  it.each(["demo-request", "whitepaper", "startup-academic"] as const)(
+    "rejects HTML, line breaks, control characters, and oversized company names for %s",
+    (formType) => {
+      const validData = formValidationCases[formType].validData;
+      const unsafeCompanies = [
+        '<a href="https://evil.example">Click here</a>',
+        "Analytical\nEngines",
+        "Analytical Engines\r\n",
+        "Analytical\u0000Engines",
+        "A".repeat(201),
+      ];
 
-    for (const company of unsafeCompanies) {
-      expect(validateForm(formType, { ...validData, company }).errors).toEqual({
-        company:
-          "Company or organization name must be 200 characters or fewer and cannot contain HTML or line breaks",
-      });
-    }
-  });
+      for (const company of unsafeCompanies) {
+        expect(
+          validateForm(formType, { ...validData, company }).errors,
+        ).toEqual({
+          company:
+            "Company or organization name must be 200 characters or fewer and cannot contain HTML or line breaks",
+        });
+      }
+    },
+  );
 
   it("accepts ordinary Unicode and punctuation in names and companies", () => {
     expect(
@@ -191,17 +195,17 @@ describe("validateForm", () => {
     ).toEqual({ linkedin: "Valid LinkedIn profile URL is required" });
   });
 
-  it.each([
-    "demo-request",
-    "whitepaper",
-  ] as const)("rejects job titles outside the configured options for %s", (formType) => {
-    expect(
-      validateForm(formType, {
-        ...formValidationCases[formType].validData,
-        jobTitle: '<a href="https://evil.example">Click here</a>',
-      }).errors,
-    ).toEqual({ jobTitle: "Please select a valid job title" });
-  });
+  it.each(["demo-request", "whitepaper"] as const)(
+    "rejects job titles outside the configured options for %s",
+    (formType) => {
+      expect(
+        validateForm(formType, {
+          ...formValidationCases[formType].validData,
+          jobTitle: '<a href="https://evil.example">Click here</a>',
+        }).errors,
+      ).toEqual({ jobTitle: "Please select a valid job title" });
+    },
+  );
 
   it("rejects startup roles outside the configured options", () => {
     expect(
