@@ -44,6 +44,19 @@ updates:
           - astro
           - '@astrojs/*'
           - wrangler
+      # Biome gets its own group so a formatter change can never hide inside a
+      # multi-package PR. Biome ships formatting changes in PATCH releases:
+      # 2.5.3 -> 2.5.4 changed how it breaks curried calls like
+      # `it.each(...)(...)`, failing `pnpm lint` on already-committed source
+      # from inside "Bump the minor-and-patch group with 4 updates" (#165) --
+      # a title naming neither the culprit nor that the diff was cosmetic.
+      #
+      # Alone, the title names the cause. The fix is always:
+      #   pnpm lint:fix && git commit -am "Reformat for Biome <version>"
+      # Check it is formatting-only with `git diff --ignore-all-space` first.
+      biome:
+        patterns:
+          - '@biomejs/biome'
       minor-and-patch:
         patterns: ['*']
         update-types:
