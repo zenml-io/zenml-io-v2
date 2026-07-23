@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build && pagefind --site dist --glob '*ops-database/*.html'",
-    "preview": "astro preview",
+    "preview": "wrangler pages dev dist --compatibility-date=2026-07-15 --compatibility-flag=nodejs_compat",
     "check": "astro check --tsconfig ./tsconfig.check.json",
     "check:tests": "astro sync && tsc --noEmit -p tsconfig.tests.json",
     "check:surface": "tsx scripts/check-surface-coverage.ts",
