@@ -53,3 +53,6 @@ CLAUDE.private.md
 # Repoprompt things
 docs/investigations/
 docs/plans/
+
+# Codex files
+.codex/config.toml
