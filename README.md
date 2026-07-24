@@ -19,7 +19,7 @@ Markets two sub-products under one paid umbrella (ZenML Pro):
 pnpm install
 pnpm dev       # Dev server at http://localhost:4321
 pnpm build     # Production build (~2,200 pages)
-pnpm preview   # Serve production build locally
+pnpm preview   # Serve dist/ through the local Cloudflare Workers runtime
 ```
 
 ### Other commands
@@ -33,6 +33,9 @@ pnpm lint               # Biome linter
 pnpm test               # Run Vitest once
 pnpm build              # Production build (~2,200 pages)
 pnpm smoke:dist         # Smoke-test dist/ after pnpm build
+pnpm check:worker       # Exercise dist/ through the production-format Worker
+pnpm check:worker-bindings -- metadata.json
+                        # Verify a candidate version has both form secrets
 pnpm validate:content   # Content schema validation (Zod)
 pnpm validate:llmops    # LLMOps collection-focused validation
 pnpm lint:fix           # Auto-fix lint issues
@@ -51,6 +54,8 @@ Copy `.env.example` to `.env` and fill in what you need:
 |----------|-------------|---------|
 | `CLOUDFLARE_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | Uploading images to R2 | `scripts/r2-upload.py` |
 | `SEGMENT_FORMS_WRITE_KEY` | Form submissions (production) | Server-side Segment tracking |
+| `TURNSTILE_SECRET_KEY` | Form submissions (production) | Server-side bot verification |
+| `GITHUB_TOKEN`, `GITHUB_API_TOKEN` | Optional | Higher GitHub API limits for the stars endpoint |
 | `CLOUDFLARE_DNS_TOKEN` | DNS audit scripts (rare) | Internal tooling only |
 
 The `.env` file is gitignored and safe for secrets.
@@ -153,8 +158,9 @@ Edit the data file, not the `.astro` template. Components import from these file
 ### Making Code Changes
 
 1. Run `pnpm dev` for hot-reload development
-2. Before opening a PR, run: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist`
-3. Open a PR — Cloudflare Pages auto-deploys a preview at `<branch>.zenml-io-v2.pages.dev`
+2. Before opening a PR, run: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:islands`
+3. For Worker runtime or deployment changes, also run `pnpm check:worker`
+4. Open a PR — Cloudflare Pages auto-deploys a preview at `<branch>.zenml-io-v2.pages.dev`
 
 ## Project Structure
 
@@ -273,6 +279,10 @@ Interactive components use Astro's [islands architecture](https://docs.astro.bui
 ContactForm Preact island → Astro API route at `src/pages/api/forms/[formType].ts` → Segment HTTP API (identify + track). Server-side, fire-and-forget via `ctx.waitUntil()`.
 
 ## Deployment & Branch Workflow
+
+Production and PR previews still deploy to Cloudflare Pages. The checked-in
+`wrangler.jsonc` and `pnpm check:worker` command are the local Astro 5 Workers
+candidate baseline; they do not activate or route a Worker.
 
 - **Push to `main`** → auto-deploys to production via Cloudflare Pages
 - **Pull requests** → preview at `<branch>.zenml-io-v2.pages.dev`

@@ -16,6 +16,7 @@ const REQUIRED_FILES = [
   "sitemap-0.xml",
   "_headers",
   "_redirects",
+  ".assetsignore",
   "robots.txt",
   "llms.txt",
   AGENT_SKILLS_INDEX_PATH,
