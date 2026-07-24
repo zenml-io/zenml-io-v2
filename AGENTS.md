@@ -47,8 +47,9 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 
 ## Testing Guidelines
 - The root test suite runs with `pnpm test`.
-- Minimum quality gate before PR: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:islands`. PR CI enforces these in the required `Repo checks` job. Cloudflare previews deploy afterward when credentials are available, but preview deployment is not the required merge gate.
-- Before pushing code changes, run the same local gates that CI runs: `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`, `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm smoke:dist`, then `pnpm check:islands` (or the combined command above). If you edit code after running any check, rerun the affected check before pushing. Documentation-only edits can skip the build unless they change generated content or site behavior.
+- Minimum quality gate before PR: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:worker && pnpm check:islands`. PR CI enforces these in the required `Repo checks` job and packages that exact validated artifact. A trusted workflow may upload an isolated, inactive preview afterward for eligible same-repository PRs, but preview upload is not the required merge gate.
+- Before pushing code changes, run the same local gates that CI runs: `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`, `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm smoke:dist`, `pnpm check:worker`, then `pnpm check:islands` (or the combined command above). If you edit code after running any check, rerun the affected check before pushing. Documentation-only edits can skip the build unless they change generated content or site behavior.
+- Worker release changes follow `docs/worker-release-runbook.md`. CI, preview upload, production-candidate upload, exact-version activation, and production route attachment are separate actions. Never add Cloudflare credentials to the branch-controlled build job or combine upload with activation.
 - For content-heavy changes, also run `pnpm validate:content`.
 - If you edit code after running checks, rerun the affected checks.
 

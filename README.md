@@ -158,9 +158,9 @@ Edit the data file, not the `.astro` template. Components import from these file
 ### Making Code Changes
 
 1. Run `pnpm dev` for hot-reload development
-2. Before opening a PR, run: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:islands`
-3. For Worker runtime or deployment changes, also run `pnpm check:worker`
-4. Open a PR — Cloudflare Pages auto-deploys a preview at `<branch>.zenml-io-v2.pages.dev`
+2. Before opening a PR, run: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:worker && pnpm check:islands`
+3. Open a PR. Eligible same-repository PRs get an isolated, inactive Worker
+   preview after the required checks pass; forks run checks without credentials.
 
 ## Project Structure
 
@@ -280,13 +280,23 @@ ContactForm Preact island → Astro API route at `src/pages/api/forms/[formType]
 
 ## Deployment & Branch Workflow
 
-Production and PR previews still deploy to Cloudflare Pages. The checked-in
-`wrangler.jsonc` and `pnpm check:worker` command are the local Astro 5 Workers
-candidate baseline; they do not activate or route a Worker.
+Production remains on Cloudflare Pages until the separately approved Worker
+cutover. CI now builds and validates one Worker artifact, then publishes that
+exact artifact for trusted upload workflows. It does not automatically update
+the live Pages project during this migration checkpoint.
 
-- **Push to `main`** → auto-deploys to production via Cloudflare Pages
-- **Pull requests** → preview at `<branch>.zenml-io-v2.pages.dev`
-- Preview deploys get `X-Robots-Tag: noindex`
+- **All PRs** → the credential-free `Repo checks` job builds and validates one
+  artifact, including the Astro 5 Wrangler runtime and island hydration checks
+- **Same-repository PRs** → a trusted default-branch workflow uploads that
+  artifact as an inactive version of the isolated preview Worker
+- **Fork and Dependabot PRs** → checks only; no Cloudflare credentials or upload
+- **Approved branch candidate** → a manual workflow defined on `main` can upload
+  an exact successful CI artifact to the production Worker with public preview
+  URLs disabled; it does not activate the version
+- **Activation** → a separate manual workflow defined on `main` accepts an exact
+  version ID and provenance. Running it requires a separate decision; attaching
+  the production route remains a later cutover step
+- Preview responses retain `X-Robots-Tag: noindex`
 - Analytics are hostname-gated to `www.zenml.io` (preview traffic excluded)
 - **Squash merge only** — each PR becomes a single commit on main
 - Branches are auto-deleted after merge
@@ -298,7 +308,12 @@ candidate baseline; they do not activate or route a Worker.
 | `strickvl`, `htahir1` | Yes (bypass branch protection) |
 | Everyone else | Must use PRs (1 approval required) |
 
-PRs require the `Repo checks` status check to pass (`pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`, `pnpm lint`, `pnpm test`, `pnpm build`, and `pnpm smoke:dist`). Cloudflare preview deploys run separately after that gate passes when credentials are available, for eligible same-repo PRs.
+PRs require the `Repo checks` status check to pass (`pnpm check`,
+`pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`, `pnpm lint`,
+`pnpm test`, `pnpm build`, `pnpm smoke:dist`, `pnpm check:worker`, and
+`pnpm check:islands`). The trusted Worker upload runs separately and is not a
+merge gate. See `docs/worker-release-runbook.md` for the artifact, preview,
+candidate, activation, and rollback metadata flow.
 
 See `docs/branch-protection-spec.md` for the full governance spec.
 
@@ -310,7 +325,7 @@ See `docs/branch-protection-spec.md` for the full governance spec.
 | Content | Markdown (`.md`) files in git with Zod-validated schemas |
 | Styling | Tailwind CSS v4 (utility-first, `@theme` design tokens) |
 | Interactive | Preact islands (only hydrate what needs JS) |
-| Hosting | Cloudflare Pages (edge CDN, branch previews) |
+| Hosting | Cloudflare Pages in production; Cloudflare Workers migration candidate |
 | Assets | Cloudflare R2 (object storage for images/files) |
 | Forms | Preact ContactForm island → Astro API routes → Segment |
 | Analytics | Plausible + GA4 + Segment (hostname-gated) |
