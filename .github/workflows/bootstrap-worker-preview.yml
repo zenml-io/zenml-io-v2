@@ -1,0 +1,235 @@
+name: Bootstrap Preview Worker
+
+on:
+  workflow_dispatch:
+    inputs:
+      self_reviewed:
+        description: I reviewed this workflow and approve creating only the inert preview Worker
+        required: true
+        type: boolean
+
+concurrency:
+  group: zenml-io-worker-preview
+  cancel-in-progress: false
+
+permissions: {}
+
+env:
+  WORKER_NAME: zenml-io-v2-worker-preview
+
+jobs:
+  bootstrap:
+    name: Create and privatize inert preview Worker
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: worker-preview
+    steps:
+      - name: Require explicit self-review
+        if: inputs.self_reviewed != true
+        run: |
+          echo "The preview Worker bootstrap must be explicitly self-reviewed." >&2
+          exit 1
+
+      - name: Refuse to overwrite an existing Worker
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
+        run: |
+          set -euo pipefail
+          worker_url="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts/$WORKER_NAME"
+          status="$(
+            curl \
+              --connect-timeout 10 \
+              --max-time 30 \
+              --silent \
+              --show-error \
+              --output /dev/null \
+              --write-out "%{http_code}" \
+              --header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+              "$worker_url"
+          )"
+          case "$status" in
+            404) ;;
+            200)
+              echo "Preview Worker already exists; refusing to overwrite it." >&2
+              exit 1
+              ;;
+            *)
+              echo "Could not prove the preview Worker is absent (HTTP $status)." >&2
+              exit 1
+              ;;
+          esac
+
+      - name: Install pinned Wrangler
+        run: npm install --global wrangler@4.110.0
+
+      - name: Prepare inert private placeholder
+        shell: bash
+        run: |
+          set -euo pipefail
+          bootstrap_dir="$RUNNER_TEMP/worker-preview-bootstrap"
+          mkdir -p "$bootstrap_dir"
+          cat > "$bootstrap_dir/worker.mjs" <<'WORKER'
+          export default {
+            fetch() {
+              return new Response("Preview Worker is not activated.", {
+                status: 503,
+              });
+            },
+          };
+          WORKER
+          jq -n --arg name "$WORKER_NAME" '{
+            "$schema": "node_modules/wrangler/config-schema.json",
+            name: $name,
+            main: "worker.mjs",
+            compatibility_date: "2026-07-27",
+            workers_dev: false,
+            preview_urls: false
+          }' > "$bootstrap_dir/wrangler.jsonc"
+
+      - name: Upload the inert first version without activating it
+        id: upload
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
+        run: |
+          set -euo pipefail
+          wrangler versions upload \
+            --config "$RUNNER_TEMP/worker-preview-bootstrap/wrangler.jsonc" \
+            --message "Inert route-less preview Worker bootstrap" \
+            --strict \
+            --tag preview-bootstrap
+          wrangler versions list \
+            --name "$WORKER_NAME" \
+            --json > "$RUNNER_TEMP/worker-versions.json"
+          jq -e 'length == 1' "$RUNNER_TEMP/worker-versions.json" > /dev/null
+          version_id="$(jq -er '.[0].id' "$RUNNER_TEMP/worker-versions.json")"
+          echo "version_id=$version_id" >> "$GITHUB_OUTPUT"
+
+      - name: Disable public Worker endpoints before activation
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
+        run: |
+          set -euo pipefail
+          worker_url="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID/workers/scripts/$WORKER_NAME"
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --request POST \
+            --header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            --header "Cloudflare-Workers-Script-Api-Date: 2025-08-01" \
+            --header "Content-Type: application/json" \
+            --data '{"enabled":false,"previews_enabled":false}' \
+            "$worker_url/subdomain" > "$RUNNER_TEMP/subdomain-disabled.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' "$RUNNER_TEMP/subdomain-disabled.json" > /dev/null
+
+      - name: Activate only the verified inert version
+        id: activate
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
+        run: |
+          set -euo pipefail
+          wrangler versions deploy \
+            "${{ steps.upload.outputs.version_id }}@100%" \
+            --message "Activate inert private preview Worker bootstrap" \
+            --name "$WORKER_NAME" \
+            --yes
+
+      - name: Verify the Worker is private, route-less, domain-less, and recorded
+        if: ${{ always() && steps.upload.outcome != 'skipped' }}
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
+        run: |
+          set -euo pipefail
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" > "$RUNNER_TEMP/workers-after.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            ([.result[] | select(.id == $worker)] | length == 1) and
+            ([.result[] | select(.id == $worker)][0].routes | type == "array") and
+            ([.result[] | select(.id == $worker)][0].routes | length == 0)
+          ' "$RUNNER_TEMP/workers-after.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/domains" > "$RUNNER_TEMP/worker-domains.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            ([.result[] | select(.service == $worker)] | length == 0)
+          ' "$RUNNER_TEMP/worker-domains.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts/$WORKER_NAME/subdomain" \
+            > "$RUNNER_TEMP/worker-subdomain.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' "$RUNNER_TEMP/worker-subdomain.json" > /dev/null
+
+          wrangler versions list \
+            --name "$WORKER_NAME" \
+            --json > "$RUNNER_TEMP/worker-versions-after.json"
+          wrangler deployments list \
+            --name "$WORKER_NAME" \
+            --json > "$RUNNER_TEMP/worker-deployments.json"
+
+          jq -e 'length == 1' "$RUNNER_TEMP/worker-versions-after.json" > /dev/null
+          jq -e 'length == 1' "$RUNNER_TEMP/worker-deployments.json" > /dev/null
+          version_id="$(
+            jq -er '.[0].id' "$RUNNER_TEMP/worker-versions-after.json"
+          )"
+          deployment_id="$(
+            jq -er '.[0].id' "$RUNNER_TEMP/worker-deployments.json"
+          )"
+          jq -e --arg version "$version_id" '
+            .[0].versions | length == 1 and
+            .[0].version_id == $version and
+            .[0].percentage == 100
+          ' "$RUNNER_TEMP/worker-deployments.json" > /dev/null
+          {
+            echo "## Preview Worker bootstrap"
+            echo
+            echo "- Worker: \`$WORKER_NAME\`"
+            echo "- Initial version: \`$version_id\`"
+            echo "- Initial deployment: \`$deployment_id\`"
+            echo "- workers.dev: disabled"
+            echo "- Version preview URLs: disabled"
+            echo "- Routes: none"
+            echo
+            echo "No DNS, Pages, Access, custom-domain, or production state was changed."
+          } >> "$GITHUB_STEP_SUMMARY"
