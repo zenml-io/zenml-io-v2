@@ -38,7 +38,7 @@ describe("Astro 5 Worker configuration", () => {
       compatibility_date: "2026-02-10",
       compatibility_flags: ["nodejs_compat"],
       workers_dev: false,
-      preview_urls: true,
+      preview_urls: false,
     });
     expect(config.route).toBeUndefined();
     expect(config.routes).toBeUndefined();

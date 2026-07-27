@@ -85,10 +85,10 @@ The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was s
   `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`,
   `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm smoke:dist`,
   `pnpm check:worker`, then `pnpm check:islands`. It packages that exact
-  validated `dist/` output. A trusted default-branch `workflow_run` may upload
-  the artifact from an eligible same-repository PR to the isolated preview
-  Worker; fork and Dependabot runs receive no Cloudflare credentials. Preview
-  upload is not the required merge gate
+  validated `dist/` output. A trusted manual workflow on `main` may upload the
+  exact artifact from an eligible same-repository PR to the isolated preview
+  Worker after explicit review; fork and Dependabot runs receive no Cloudflare
+  credentials. Preview upload is not the required merge gate
 - **`pnpm check:islands` needs a browser.** First run: `pnpm exec playwright install chromium`. It serves `dist/` and drives a real Chromium to prove the Preact islands actually hydrate — `pnpm build` and `pnpm smoke:dist` only prove the HTML exists, and an island can ship perfect markup and still be inert. This matters most for framework upgrades (see the Astro 5→7 tracking issue): a broken upgrade otherwise passes a fully green CI. Dependabot and fork PRs get **no preview upload**, so this check is their only automated hydration signal
 - **Worker release boundary:** `.github/workflows/deploy.yml` never receives
   Cloudflare credentials. Preview and candidate workflows consume its exact

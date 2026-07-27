@@ -287,8 +287,9 @@ the live Pages project during this migration checkpoint.
 
 - **All PRs** → the credential-free `Repo checks` job builds and validates one
   artifact, including the Astro 5 Wrangler runtime and island hydration checks
-- **Same-repository PRs** → a trusted default-branch workflow uploads that
-  artifact as an inactive version of the isolated preview Worker
+- **Same-repository PRs** → after explicit review, a manual workflow defined
+  on `main` can upload that exact artifact as an inactive, unreachable version
+  of the isolated preview Worker
 - **Fork and Dependabot PRs** → checks only; no Cloudflare credentials or upload
 - **Approved branch candidate** → a manual workflow defined on `main` can upload
   an exact successful CI artifact to the production Worker with public preview

@@ -26,6 +26,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: worker-candidate
+    timeout-minutes: 15
     permissions:
       actions: read
       contents: read
@@ -53,14 +54,20 @@ jobs:
             echo "Source commit must be a full lowercase Git SHA." >&2
             exit 1
           }
+          [[ "$SOURCE_BRANCH" =~ ^[A-Za-z0-9._/-]+$ ]] || {
+            echo "Source branch contains unsupported characters." >&2
+            exit 1
+          }
           gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" \
             > source-run.json
           jq -e \
             --arg branch "$SOURCE_BRANCH" \
             --arg commit "$SOURCE_COMMIT" \
+            --arg repository "$GITHUB_REPOSITORY" \
             '.name == "Website CI and Worker Artifact" and
              .path == ".github/workflows/deploy.yml" and
              .conclusion == "success" and
+             .head_repository.full_name == $repository and
              .head_branch == $branch and
              .head_sha == $commit and
              (.event == "push" or .event == "pull_request")' \
@@ -114,10 +121,12 @@ jobs:
         run: |
           set -euo pipefail
           cd candidate
-          if tar -tzf worker-dist.tar.gz | grep -Eq '(^/|(^|/)\.\.(/|$))'; then
+          tar -tzf worker-dist.tar.gz > "$RUNNER_TEMP/archive-paths.txt"
+          if grep -Eq '(^/|(^|/)\.\.(/|$))' "$RUNNER_TEMP/archive-paths.txt"; then
             echo "Worker archive contains an unsafe path." >&2
             exit 1
           fi
+          tar -tvzf worker-dist.tar.gz > "$RUNNER_TEMP/archive-members.txt"
           while read -r mode _; do
             case "${mode:0:1}" in
               -|d) ;;
@@ -126,7 +135,7 @@ jobs:
                 exit 1
                 ;;
             esac
-          done < <(tar -tvzf worker-dist.tar.gz)
+          done < "$RUNNER_TEMP/archive-members.txt"
           jq -e '
             ((keys - [
               "$schema", "assets", "compatibility_date",
@@ -155,6 +164,33 @@ jobs:
 
       - name: Install pinned Wrangler
         run: npm install --global wrangler@4.110.0
+
+      - name: Capture production deployment and private endpoint state
+        id: capture_baseline
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
+        run: |
+          set -euo pipefail
+          wrangler deployments list \
+            --name zenml-io-v2-worker \
+            --json > "$RUNNER_TEMP/deployments-before-upload.json"
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts/zenml-io-v2-worker/subdomain" \
+            > "$RUNNER_TEMP/worker-subdomain-before-upload.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' "$RUNNER_TEMP/worker-subdomain-before-upload.json" > /dev/null
 
       - name: Upload inactive production candidate
         id: upload
@@ -190,6 +226,15 @@ jobs:
           jq -s 'map(select(.type == "version-upload")) | last' \
             "$output_file" > upload-result.json
           version_id="$(jq -er .version_id upload-result.json)"
+          {
+            echo "artifact_sha256=$artifact_sha256"
+            echo "version_id=$version_id"
+          } >> "$GITHUB_OUTPUT"
+          jq -n \
+            --arg artifact_sha256 "$artifact_sha256" \
+            --arg version_id "$version_id" \
+            '{artifact_sha256: $artifact_sha256, version_id: $version_id}' \
+            > candidate-identity.json
           wrangler versions view "$version_id" \
             --name zenml-io-v2-worker \
             --json > version-metadata.json
@@ -199,10 +244,59 @@ jobs:
             ($names | index("TURNSTILE_SECRET_KEY") != null) and
             ($names | index("SEGMENT_FORMS_WRITE_KEY") != null)
           ' version-metadata.json > /dev/null
-          {
-            echo "artifact_sha256=$artifact_sha256"
-            echo "version_id=$version_id"
-          } >> "$GITHUB_OUTPUT"
+
+      - name: Verify upload preserved deployment and private endpoints
+        if: always() && steps.capture_baseline.outcome == 'success'
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
+        run: |
+          set -euo pipefail
+          wrangler deployments list \
+            --name zenml-io-v2-worker \
+            --json > "$RUNNER_TEMP/deployments-after-upload.json"
+          jq -S . "$RUNNER_TEMP/deployments-before-upload.json" \
+            > "$RUNNER_TEMP/deployments-before-upload.canonical.json"
+          jq -S . "$RUNNER_TEMP/deployments-after-upload.json" \
+            > "$RUNNER_TEMP/deployments-after-upload.canonical.json"
+          cmp \
+            "$RUNNER_TEMP/deployments-before-upload.canonical.json" \
+            "$RUNNER_TEMP/deployments-after-upload.canonical.json" || {
+              echo "The active production deployment changed during candidate upload." >&2
+              exit 1
+            }
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts/zenml-io-v2-worker/subdomain" \
+            > "$RUNNER_TEMP/worker-subdomain-after-upload.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' "$RUNNER_TEMP/worker-subdomain-after-upload.json" > /dev/null
+
+      - name: Preserve candidate upload metadata
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: production-candidate-${{ inputs.source_run_id }}
+          path: |
+            candidate/candidate-identity.json
+            candidate/upload-result.json
+            candidate/version-metadata.json
+            ${{ runner.temp }}/deployments-before-upload.json
+            ${{ runner.temp }}/deployments-after-upload.json
+            ${{ runner.temp }}/worker-subdomain-before-upload.json
+            ${{ runner.temp }}/worker-subdomain-after-upload.json
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: Record candidate metadata
         shell: bash

@@ -38,6 +38,7 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: production
+    timeout-minutes: 15
     permissions:
       contents: read
     steps:
@@ -153,6 +154,7 @@ jobs:
           retention-days: 30
 
       - name: Activate exact Worker version
+        id: activate
         shell: bash
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -163,3 +165,34 @@ jobs:
           wrangler versions deploy "$VERSION_ID@100%" \
             --name zenml-io-v2-worker \
             --yes
+
+      - name: Verify exact production activation
+        if: always() && steps.activate.outcome != 'skipped'
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
+          VERSION_ID: ${{ inputs.version_id }}
+        run: |
+          set -euo pipefail
+          wrangler deployments list \
+            --name zenml-io-v2-worker \
+            --json > deployments-after.json
+          jq -e --arg version "$VERSION_ID" '
+            length >= 1 and
+            (
+              max_by(.created_on) as $latest |
+              ($latest.versions | length) == 1 and
+              $latest.versions[0].version_id == $version and
+              $latest.versions[0].percentage == 100
+            )
+          ' deployments-after.json > /dev/null
+
+      - name: Preserve post-activation deployment metadata
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: post-activation-deployment-${{ inputs.version_id }}
+          path: deployments-after.json
+          if-no-files-found: warn
+          retention-days: 30

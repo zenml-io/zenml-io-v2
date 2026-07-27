@@ -11,8 +11,9 @@ U3 has four separate actions:
 
 1. `Website CI and Worker Artifact` builds once without credentials, validates
    that output, and publishes the exact archive plus checksum and provenance.
-2. `Upload Worker PR Preview` consumes a successful same-repository PR artifact
-   from a trusted default-branch workflow and uploads an inactive version to
+2. `Upload Exact Preview Worker Version` is manually dispatched from `main`
+   after explicit review. It consumes one successful same-repository PR
+   artifact and uploads an inactive, unreachable version to
    `zenml-io-v2-worker-preview`.
 3. `Upload Worker Production Candidate` is manually dispatched from `main` with
    an exact successful CI run, branch, and commit. It uploads an inactive
@@ -104,19 +105,23 @@ checkpoint, where the plan expects the supported Astro preview path.
 
 ## Preview inspection
 
-After `Upload Worker PR Preview` succeeds, record:
+Before dispatching `Upload Exact Preview Worker Version`, compare and enter:
 
-- source PR, branch, and commit;
-- source CI run ID;
-- artifact SHA-256;
+- source PR number;
+- exact source branch and current PR-head commit;
+- successful source CI run ID;
+- artifact SHA-256 from that exact run;
+- explicit self-review confirmation.
+
+After it succeeds, record:
+
 - Worker version ID;
-- preview alias URL;
 - the binding guard result.
 
-The sticky PR comment and job summary contain the public identifiers. The
-preview uses a different Worker and different external secrets from production.
-Preview uploads are serialized per PR and a stale CI run is skipped when its
-source commit is no longer the PR head.
+The job summary contains the public identifiers. The preview uses a different
+Worker and different external secrets from production. Public Worker endpoints
+remain disabled, and the workflow rejects a stale CI artifact when its source
+commit is no longer the PR head.
 Do not treat a preview pass as permission to upload or activate a production
 candidate.
 

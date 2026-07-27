@@ -94,10 +94,11 @@ artifact workflow:
 - **Required PR gate**: `Repo checks` installs the lockfile, runs the repository
   checks, builds once, validates the generated Worker and hydrated islands, and
   publishes that exact artifact. It does not receive Cloudflare credentials.
-- **On same-repo PRs**: after a successful run, a trusted `workflow_run`
-  definition from the default branch can download the exact artifact and upload
-  an inactive version to an isolated preview Worker with non-production
-  secrets. The upload job does not build or run branch package scripts.
+- **On same-repo PRs**: after a successful run and explicit review, a trusted
+  manual workflow selected from `main` can download the exact artifact and
+  upload an inactive, unreachable version to an isolated preview Worker with
+  non-production secrets. The upload job does not build or run branch package
+  scripts.
 - **On fork and Dependabot PRs**: `Repo checks` still satisfies branch
   protection. No credentialed upload runs.
 - **Production candidates**: a manual workflow definition selected from `main`
