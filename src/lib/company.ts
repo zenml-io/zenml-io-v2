@@ -94,11 +94,6 @@ export const COMPANY_VALUES = [
 // ---------------------------------------------------------------------------
 export const OPEN_POSITIONS = [
   {
-    title: "GTM Engineer - ZenML/Kitaru (f/m/d)",
-    type: "Full-time",
-    href: "https://zenml.notion.site/GTM-Engineer-ZenML-Kitaru-f-m-d-372f8dff253880e586daeebc8f360a29",
-  },
-  {
     title: "GTM Engineer - San Francisco",
     type: "Full-time",
     href: "https://zenml.notion.site/GTM-Engineer-San-Francisco-3a3f8dff25388093a9cdd9efc71f30d2",
