@@ -1,112 +1,64 @@
 ---
-// TheLoop.astro — the onboarding narrative: zero to a scored cohort in seven
-// steps. Carries the parts of the story the page never told before: login,
-// skills, the worker, triage, and the UI as a place you act.
+// TheLoop.astro — the arc, in four beats: traces in, group them, fix one,
+// run it against everything like it.
 //
-// `where` marks which surface each step happens on — the "mixture of UI and
-// local" point is the whole architecture, so it has to be visible at a glance.
+// Deliberately NOT a quickstart. Login, installing skills, and starting the
+// worker are setup mechanics — they live in the docs and in the /product/
+// kitaru.md mirror, not on the marketing page. What survives here is the shape
+// of the work, plus the two claims that are load-bearing for a buyer: setup is
+// a conversation, and execution never leaves your machine.
 const steps = [
   {
     n: "01",
-    where: "terminal",
-    tag: "Connect",
-    title: "Install and log in",
-    body: "One command connects your machine to your workspace. OAuth completes in the browser, and from then on your client knows which server it is talking to.",
-    code: "uv add kitaru && kitaru login",
-    note: "Self-hosting? kitaru login --local.",
+    tag: "Import",
+    title: "Bring in the runs you already have",
+    body: "Langfuse, LangSmith, an OTel JSONL file — the import skill asks where yours live and wires it up. No traces yet? Wrap your agent and make some. Either way you end up with the same thing.",
   },
   {
     n: "02",
-    where: "skill",
-    tag: "Equip",
-    title: "Install the skills",
-    body: "Drop the Kitaru skills into your coding agent and setup becomes a conversation instead of documentation. They ask the questions; you answer in your own words.",
-    code: "kitaru skills install",
-    note: "Optional. Every skill is a thin procedure over a CLI verb.",
+    tag: "Triage",
+    title: "Group them by what went wrong",
+    body: "Answer a few questions about what bad looks like to you, and your sessions become cohorts: the twenty-three that failed the same way, sitting together and waiting.",
   },
   {
     n: "03",
-    where: "skill",
-    tag: "Ingest",
-    title: "Get your traces in",
-    body: "The import skill asks where they live — Langfuse, LangSmith, an OTel JSONL file — writes the importer, and registers the agent from the repo you are standing in. No traces yet? Wrap your agent and make some. Neither? Clone the template repo.",
-    code: "kitaru agents register . && kitaru import langfuse",
-    note: "Imported and recorded sessions are the same object downstream.",
+    tag: "Fix one",
+    title: "Close the loop on a single session",
+    body: "Replay it against your real code. While you are looking at what went wrong, describe what good would have looked like — that answer becomes a scorer. Replay, score, fix, replay again, watch it pass.",
   },
   {
     n: "04",
-    where: "terminal",
-    tag: "Execute",
-    title: "Start the worker",
-    body: "Importing is a job, and jobs need a worker. One general-purpose process on your machine polls the server and runs whatever it is handed — imports now, replays and scorers later.",
-    code: "kitaru worker start",
-    note: "Your code, your keys, your virtualenv. Nothing runs in the cloud.",
-  },
-  {
-    n: "05",
-    where: "skill",
-    tag: "Triage",
-    title: "Group what went wrong",
-    body: "The triage skill reads your sessions, asks a few questions about what bad looks like to you, and groups them into cohorts. No triage service to deploy — conversation and grouping, landing in the UI.",
-    code: "kitaru cohorts create --from triage",
-    note: "Or filter and select by hand in the dashboard.",
-  },
-  {
-    n: "06",
-    where: "skill",
-    tag: "Fix one",
-    title: "Close the loop on a single session",
-    body: "Pick one broken session and replay it. While you are looking at what went wrong, the skill interviews you: what does good look like here? Your answers compile into a bespoke scorer, registered to the server and loaded by your worker.",
-    code: "kitaru replay ses_8f3a91c2 --scorer refund-resolved",
-    note: "Replay, score, fix, replay again, watch it pass.",
-  },
-  {
-    n: "07",
-    where: "ui",
     tag: "Scale",
     title: "Run it against everything like it",
-    body: "What worked on one session runs on the whole cohort. Create the experiment, press run in the dashboard, and your worker replays each session, scores it, and sends the results back.",
-    code: "kitaru experiments run refund-errors",
-    note: "The button is in the UI. The work happens on your machine.",
+    body: "What worked on one session runs on the whole cohort. Press run, and every one of them replays and scores against the fix.",
   },
 ] as const;
-
-const whereLabels = {
-  terminal: "your terminal",
-  skill: "your coding agent",
-  ui: "the dashboard",
-} as const;
 ---
 
 <section id="the-loop" class="loop-section section-pad">
   <div class="section-inner">
     <div class="loop-header" data-reveal>
-      <span class="section-eyebrow">FROM ZERO TO A SCORED COHORT</span>
+      <span class="section-eyebrow">HOW THE WORK ACTUALLY GOES</span>
       <h2 class="section-title">
-        Seven steps, and none of them are<br />
-        <span class="loop-title-accent">&ldquo;now go read the docs.&rdquo;</span>
+        One bad session in.<br />
+        <span class="loop-title-accent">A regression test out.</span>
       </h2>
       <p class="section-desc">
-        Every step tells you the next one. Skills ask the questions, the CLI takes the same answers typed by hand, and the dashboard shows you what exists.
+        Every step tells you the next one, and each one is a conversation with your coding agent &mdash; or the same thing typed by hand, if you would rather.
       </p>
     </div>
 
     <ol class="loop-list">
       {
         steps.map((s, i) => (
-          <li class="loop-step" data-reveal="fade-up" data-reveal-delay={Math.min(i + 1, 8)}>
+          <li class="loop-step" data-reveal="fade-up" data-reveal-delay={i + 1}>
             <div class="loop-rail" aria-hidden="true">
               <span class="loop-n">{s.n}</span>
             </div>
             <div class="loop-body">
-              <div class="loop-head">
-                <span class="loop-tag">{s.tag}</span>
-                <span class={`loop-where loop-where-${s.where}`}>{whereLabels[s.where]}</span>
-              </div>
+              <span class="loop-tag">{s.tag}</span>
               <h3 class="loop-step-title">{s.title}</h3>
               <p class="loop-text">{s.body}</p>
-              <code class="loop-code">{s.code}</code>
-              <p class="loop-note">{s.note}</p>
             </div>
           </li>
         ))
@@ -114,7 +66,7 @@ const whereLabels = {
     </ol>
 
     <p class="loop-foot" data-reveal>
-      You register things before you run things. That is the whole trick &mdash; once an agent, a scorer, or a cohort exists, anything can trigger it.
+      The dashboard is where you look and decide. Every replay runs on your own machine, against your own code, with your own keys &mdash; nothing about your agent leaves your infrastructure.
     </p>
   </div>
 </section>
@@ -202,22 +154,15 @@ const whereLabels = {
 
   .loop-body {
     min-width: 0;
-    padding-bottom: 40px;
+    padding-bottom: 36px;
   }
 
   .loop-step:last-child .loop-body {
     padding-bottom: 0;
   }
 
-  .loop-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-
   .loop-tag {
+    display: inline-block;
     font-family: var(--font-mono);
     font-size: 0.62rem;
     font-weight: 600;
@@ -227,37 +172,7 @@ const whereLabels = {
     padding: 3px 9px;
     border: 1px solid var(--color-border);
     border-radius: 100px;
-  }
-
-  .loop-where {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.01em;
-    color: var(--color-secondary);
-  }
-
-  .loop-where::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--color-muted);
-  }
-
-  .loop-where-terminal::before {
-    background: var(--color-primary);
-  }
-
-  .loop-where-skill::before {
-    background: var(--color-accent);
-  }
-
-  .loop-where-ui::before {
-    background: var(--color-accent-light, var(--color-accent));
-    box-shadow: 0 0 0 3px oklch(0.65 0.16 45 / 0.16);
+    margin-bottom: 10px;
   }
 
   .loop-step-title {
@@ -276,30 +191,6 @@ const whereLabels = {
     line-height: 1.65;
     font-weight: 300;
     color: var(--color-secondary);
-  }
-
-  .loop-code {
-    display: block;
-    width: fit-content;
-    max-width: 100%;
-    margin-top: 16px;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    line-height: 1.5;
-    color: var(--color-accent);
-    background: oklch(0.65 0.16 45 / 0.07);
-    border: 1px solid oklch(0.65 0.16 45 / 0.18);
-    border-radius: 8px;
-    padding: 10px 14px;
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
-
-  .loop-note {
-    margin: 10px 0 0;
-    font-size: 0.8rem;
-    line-height: 1.5;
-    color: var(--color-muted);
   }
 
   .loop-foot {
