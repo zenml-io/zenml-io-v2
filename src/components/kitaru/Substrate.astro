@@ -1,0 +1,366 @@
+---
+// Substrate.astro — the architecture in one screen: what lives on your machine,
+// what lives in your workspace, and the worker as the only seam between them.
+// This is the section that makes "the UI presses the button, your worker does
+// the work" legible instead of a slogan.
+const local = [
+  {
+    name: "Skills",
+    body: "Create and register agents, importers, scorers, and cohorts by answering questions in your coding agent.",
+  },
+  {
+    name: "The worker",
+    body: "One general-purpose process. Polls the server, picks up whatever job is waiting, runs it.",
+  },
+  {
+    name: "Your code",
+    body: "Your repo, your virtualenv, your API keys, your data. Replays run against the real thing.",
+  },
+] as const;
+
+const central = [
+  {
+    name: "The registry",
+    body: "Agents, sessions, cohorts, scorers, experiments. The server remembers what you registered.",
+  },
+  {
+    name: "The dashboard",
+    body: "The worklist, the trace view, the diff between a replay and its source, the experiment report.",
+  },
+  {
+    name: "Triggers",
+    body: "Press run on anything registered. The server queues a job; it does not execute one.",
+  },
+] as const;
+
+const principles = [
+  { verb: "Creation", place: "local" },
+  { verb: "Memory", place: "central" },
+  { verb: "Execution", place: "local" },
+  { verb: "Viewing", place: "central" },
+] as const;
+---
+
+<section id="substrate" class="sub-section section-pad">
+  <div class="section-inner">
+    <div class="sub-header" data-reveal>
+      <span class="section-eyebrow">WHERE EVERYTHING ACTUALLY RUNS</span>
+      <h2 class="section-title">
+        The dashboard presses the button.<br />
+        <span class="sub-title-accent">Your machine does the work.</span>
+      </h2>
+      <p class="section-desc">
+        Kitaru is a server you talk to and a worker you run. The server holds the data model and the screens. The worker sits next to your code and executes the jobs the server hands it. Nothing about your agent leaves your infrastructure.
+      </p>
+    </div>
+
+    <div class="sub-diagram" data-reveal="fade-up" data-reveal-delay="1">
+      <div class="sub-panel sub-panel-local">
+        <div class="sub-panel-head">
+          <span class="sub-panel-eyebrow">Your machine</span>
+          <h3 class="sub-panel-title">Creation and execution</h3>
+        </div>
+        <ul class="sub-list">
+          {
+            local.map((item) => (
+              <li class="sub-item">
+                <span class="sub-item-name">{item.name}</span>
+                <span class="sub-item-body">{item.body}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="sub-seam" aria-hidden="true">
+        <span class="sub-seam-line"></span>
+        <span class="sub-seam-pill sub-seam-pull">
+          <span class="sub-seam-arrow">&larr;</span> pulls jobs
+        </span>
+        <span class="sub-seam-pill sub-seam-push">
+          returns results <span class="sub-seam-arrow">&rarr;</span>
+        </span>
+        <span class="sub-seam-line"></span>
+      </div>
+
+      <div class="sub-panel sub-panel-central">
+        <div class="sub-panel-head">
+          <span class="sub-panel-eyebrow">Your workspace</span>
+          <h3 class="sub-panel-title">Memory and viewing</h3>
+        </div>
+        <ul class="sub-list">
+          {
+            central.map((item) => (
+              <li class="sub-item">
+                <span class="sub-item-name">{item.name}</span>
+                <span class="sub-item-body">{item.body}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <p class="sub-seam-caption" data-reveal>
+      The worker is the only thing that crosses the line, and it only ever reaches outward.
+      Your server never opens a connection into your network.
+    </p>
+
+    <div class="sub-principles" data-reveal="fade-up" data-reveal-delay="2">
+      {
+        principles.map((p) => (
+          <div class={`sub-principle sub-principle-${p.place}`}>
+            <span class="sub-principle-verb">{p.verb}</span>
+            <span class="sub-principle-is">is</span>
+            <span class="sub-principle-place">{p.place}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .sub-section {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .sub-header {
+    max-width: 780px;
+    margin-bottom: 44px;
+  }
+
+  .sub-title-accent {
+    color: var(--color-accent);
+  }
+
+  .section-desc {
+    margin-top: 16px;
+    color: var(--color-secondary);
+    font-size: clamp(1rem, 1.6vw, 1.1rem);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* ─── The two-panel diagram ─── */
+  .sub-diagram {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 20px;
+    align-items: stretch;
+  }
+
+  .sub-panel {
+    min-width: 0;
+    padding: 28px 30px;
+    border-radius: 18px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface-warm);
+  }
+
+  .sub-panel-central {
+    border-color: oklch(0.65 0.16 45 / 0.3);
+    background: linear-gradient(
+      180deg,
+      oklch(0.65 0.16 45 / 0.06) 0%,
+      oklch(0.65 0.16 45 / 0.015) 100%
+    );
+  }
+
+  .sub-panel-head {
+    padding-bottom: 18px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .sub-panel-eyebrow {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 8px;
+  }
+
+  .sub-panel-central .sub-panel-eyebrow {
+    color: var(--color-accent);
+  }
+
+  .sub-panel-title {
+    margin: 0;
+    font-size: clamp(1.1rem, 1.7vw, 1.35rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    color: var(--color-primary);
+  }
+
+  .sub-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .sub-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .sub-item-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-primary);
+  }
+
+  .sub-item-body {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    font-weight: 300;
+    color: var(--color-secondary);
+  }
+
+  /* ─── The seam ─── */
+  .sub-seam {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 4px;
+    min-width: 132px;
+  }
+
+  .sub-seam-line {
+    flex: 1;
+    width: 1px;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--color-border) 0 4px,
+      transparent 4px 9px
+    );
+  }
+
+  .sub-seam-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 100px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-secondary);
+  }
+
+  .sub-seam-pull {
+    border-color: oklch(0.65 0.16 45 / 0.3);
+    color: var(--color-accent);
+  }
+
+  .sub-seam-arrow {
+    font-size: 0.85rem;
+    line-height: 1;
+  }
+
+  .sub-seam-caption {
+    max-width: 68ch;
+    margin: 20px 0 0;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  /* ─── Principle strip ─── */
+  .sub-principles {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 40px;
+  }
+
+  .sub-principle {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 20px 22px;
+    border-radius: 14px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface-warm);
+  }
+
+  .sub-principle-central {
+    border-color: oklch(0.65 0.16 45 / 0.26);
+  }
+
+  .sub-principle-verb {
+    font-size: 1.02rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-primary);
+  }
+
+  .sub-principle-is {
+    font-size: 0.78rem;
+    color: var(--color-muted);
+  }
+
+  .sub-principle-place {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-secondary);
+  }
+
+  .sub-principle-central .sub-principle-place {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 900px) {
+    .sub-diagram {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sub-seam {
+      flex-direction: row;
+      min-width: 0;
+      width: 100%;
+    }
+
+    .sub-seam-line {
+      width: auto;
+      height: 1px;
+      background: repeating-linear-gradient(
+        to right,
+        var(--color-border) 0 4px,
+        transparent 4px 9px
+      );
+    }
+
+    .sub-principles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    .sub-seam-pill {
+      font-size: 0.58rem;
+      padding: 5px 9px;
+    }
+
+    .sub-principles {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

@@ -7,6 +7,9 @@ import Hero from "../../components/kitaru/Hero.astro";
 import OneImport from "../../components/kitaru/OneImport.astro";
 import ScenarioStrip from "../../components/kitaru/ScenarioStrip.astro";
 import SocialProof from "../../components/kitaru/SocialProof.astro";
+import Substrate from "../../components/kitaru/Substrate.astro";
+import TheLoop from "../../components/kitaru/TheLoop.astro";
+import TwoDoors from "../../components/kitaru/TwoDoors.astro";
 /**
  * /product/kitaru — landing page introducing Kitaru as a sub-product
  * under the unified ZenML umbrella.
@@ -17,12 +20,17 @@ import SocialProof from "../../components/kitaru/SocialProof.astro";
  * unified tokens by `src/styles/kitaru-compat.css`, scoped to the
  * `[data-app="kitaru"]` wrapper that flips the theme.
  *
- * Sections (what-if-led order):
+ * Sections (what-if-led order, then the platform story):
  *   Hero          → what-if hero: replay a real run, one thing changed, diff
  *   ScenarioStrip → bigger "one recorded run, a different question each time"
+ *   TheLoop       → zero to a scored cohort: login, skills, import, worker,
+ *                   triage, fix one, scale — the onboarding narrative
+ *   TwoDoors      → the duopoly: every skill is a thin procedure over a CLI verb
  *   OneImport     → works with your agent SDK (before/after)
  *   Features      → the what-if workflow (replay → cheap model + faked tool → diff)
  *   CodeShowcase  → "see the code" for that same workflow + hoverable verbs
+ *   Substrate     → local worker vs central server; creation/execution local,
+ *                   memory/viewing central
  *   AgentDriven   → MCP/CLI: let a coding agent run the replay loop + hill-climb
  *   SocialProof   → ZenML lineage, testimonials + logos
  *   Cta           → closing CTA band
@@ -39,9 +47,12 @@ import "../../styles/kitaru-compat.css";
     <main id="kitaru-main">
       <Hero />
       <ScenarioStrip />
+      <TheLoop />
+      <TwoDoors />
       <OneImport />
       <Features />
       <CodeShowcase />
+      <Substrate />
       <AgentDriven />
       <div class="gradient-divider"></div>
       <SocialProof />

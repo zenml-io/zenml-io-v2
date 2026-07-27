@@ -1,0 +1,244 @@
+---
+// TwoDoors.astro — the duopoly principle, made visible: skills are the paved
+// road, never the only road. Placed right after TheLoop so the reader who just
+// saw seven skill-shaped steps immediately learns they are all optional.
+const pairs = [
+  {
+    job: "Import my traces",
+    ask: "Import my Langfuse traces for the support agent",
+    type: "kitaru import langfuse --agent support-agent",
+  },
+  {
+    job: "Group the failures",
+    ask: "Group these sessions by what actually went wrong",
+    type: "kitaru cohorts create refund-errors --filter 'score < 0.5'",
+  },
+  {
+    job: "Write a scorer",
+    ask: "Interview me about this session and build a scorer",
+    type: "kitaru scorers register ./scorers/refund_resolved.py",
+  },
+] as const;
+---
+
+<section id="two-doors" class="doors-section section-pad-compact">
+  <div class="section-inner">
+    <div class="doors-header" data-reveal>
+      <span class="section-eyebrow">TWO DOORS, SAME ROOMS</span>
+      <h2 class="section-title">Every skill is a thin procedure over a CLI verb.</h2>
+      <p class="section-desc">
+        Ask your coding agent, or type it yourself. Both produce the same registered object, and the dashboard shows you both paths &mdash; so the manual users are never second-class, and the skill users can always see what the skill actually did.
+      </p>
+    </div>
+
+    <div class="doors-grid">
+      <div class="doors-col" data-reveal="fade-right" data-reveal-delay="1">
+        <div class="doors-col-head">
+          <span class="doors-col-label">Ask the skill</span>
+          <span class="doors-col-sub">a conversation</span>
+        </div>
+        {
+          pairs.map((p) => (
+            <div class="doors-card doors-card-ask">
+              <span class="doors-job">{p.job}</span>
+              <p class="doors-ask">
+                <span class="doors-caret">&rsaquo;</span>
+                {p.ask}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="doors-or" aria-hidden="true">
+        <span class="doors-or-line"></span>
+        <span class="doors-or-word">or</span>
+        <span class="doors-or-line"></span>
+      </div>
+
+      <div class="doors-col" data-reveal="fade-left" data-reveal-delay="1">
+        <div class="doors-col-head">
+          <span class="doors-col-label">Type it yourself</span>
+          <span class="doors-col-sub">the same verb</span>
+        </div>
+        {
+          pairs.map((p) => (
+            <div class="doors-card doors-card-type">
+              <span class="doors-job doors-job-muted">{p.job}</span>
+              <code class="doors-cmd">{p.type}</code>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <p class="doors-foot" data-reveal>
+      No skill can do anything the CLI cannot. That is not just a promise to manual users &mdash; it is how the skills get tested.
+    </p>
+  </div>
+</section>
+
+<style>
+  .doors-section {
+    background: var(--color-surface-warm);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .doors-header {
+    max-width: 760px;
+    margin-bottom: 40px;
+  }
+
+  .section-desc {
+    margin-top: 16px;
+    color: var(--color-secondary);
+    font-size: clamp(1rem, 1.6vw, 1.1rem);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  .doors-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .doors-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+  }
+
+  .doors-col-head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding-bottom: 4px;
+  }
+
+  .doors-col-label {
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-primary);
+  }
+
+  .doors-col-sub {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .doors-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    padding: 18px 20px;
+    border-radius: 14px;
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+  }
+
+  .doors-card-ask {
+    border-color: oklch(0.65 0.16 45 / 0.28);
+    background: linear-gradient(
+      180deg,
+      oklch(0.65 0.16 45 / 0.06) 0%,
+      oklch(0.65 0.16 45 / 0.015) 100%
+    );
+  }
+
+  .doors-job {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .doors-job-muted {
+    color: var(--color-muted);
+  }
+
+  .doors-ask {
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.5;
+    color: var(--color-primary);
+    font-weight: 400;
+  }
+
+  .doors-caret {
+    color: var(--color-accent);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .doors-cmd {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    line-height: 1.55;
+    color: var(--color-secondary);
+    overflow-wrap: anywhere;
+  }
+
+  /* ─── The "or" spine ─── */
+  .doors-or {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding-top: 34px;
+  }
+
+  .doors-or-line {
+    flex: 1;
+    width: 1px;
+    background: var(--color-border);
+  }
+
+  .doors-or-word {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    padding: 6px 0;
+  }
+
+  .doors-foot {
+    max-width: 68ch;
+    margin: 28px 0 0;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  @media (max-width: 860px) {
+    .doors-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .doors-or {
+      flex-direction: row;
+      padding-top: 0;
+      width: 100%;
+    }
+
+    .doors-or-line {
+      width: auto;
+      height: 1px;
+      flex: 1;
+    }
+  }
+</style>

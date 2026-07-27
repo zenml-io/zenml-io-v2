@@ -29,6 +29,12 @@ export function GET(): Response {
       markdownCtaList(PRODUCT_KITARU_MARKDOWN.ctas),
     ),
     joinMarkdownSections(
+      "## From zero to a scored cohort",
+      ...PRODUCT_KITARU_MARKDOWN.journey.map((step, i) =>
+        joinMarkdownSections(`### ${i + 1}. ${step.name}`, step.body),
+      ),
+    ),
+    joinMarkdownSections(
       "## Runtime primitives",
       ...PRODUCT_KITARU_MARKDOWN.primitives.map((primitive) =>
         joinMarkdownSections(`### ${primitive.name}`, primitive.body),
