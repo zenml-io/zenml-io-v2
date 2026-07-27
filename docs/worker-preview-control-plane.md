@@ -61,6 +61,7 @@ After the upload and activation workflows exist on `main`:
    - source run ID;
    - source branch;
    - source commit;
+   - tested merge commit from the artifact manifest and current pull request;
    - `worker-dist.tar.gz` SHA-256 from both the checksum file and an
      independent computation;
    - manifest source branch, commit, run ID, and required binding names.
@@ -102,7 +103,8 @@ Enter the six recorded values:
 - explicit self-review confirmation.
 
 The workflow re-reads the run and pull request from GitHub, downloads only that
-run's artifact, verifies that the source used the trusted `main` CI workflow,
+run's artifact, verifies that its tested merge commit used the immutable
+reviewed artifact workflow,
 checks its checksum and manifest, rejects unsafe archive or Wrangler
 configuration, confirms the preview Worker is private and route-less, and
 uploads one inactive version with the two non-production form secrets.

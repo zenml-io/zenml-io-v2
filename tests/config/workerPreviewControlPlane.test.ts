@@ -361,12 +361,7 @@ describe("preview Worker upload workflow", () => {
     );
     expect(sourceStep.run).toContain(".head.repo.full_name == $repository");
     expect(sourceStep.run).toContain(".head.sha == $commit");
-    expect(sourceStep.run).toContain(
-      "contents/.github/workflows/deploy.yml?ref=$SOURCE_COMMIT",
-    );
-    expect(sourceStep.run).toContain(
-      'source_workflow_blob" != "$trusted_workflow_blob',
-    );
+    expect(sourceStep.run).not.toContain("contents/.github/workflows/");
 
     for (const workflowStep of uploadJob.steps) {
       expect(workflowStep.run ?? "").not.toContain("${{ inputs.");
