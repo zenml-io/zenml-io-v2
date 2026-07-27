@@ -266,6 +266,10 @@ const uploadWorkflowText = readFileSync(
   ".github/workflows/upload-worker-preview.yml",
   "utf8",
 );
+const artifactWorkflowText = readFileSync(
+  ".github/workflows/deploy.yml",
+  "utf8",
+);
 const trustedArtifactWorkflowText = readFileSync(
   ".github/trusted/worker-artifact-workflow.yml",
   "utf8",
@@ -341,6 +345,9 @@ describe("preview Worker upload workflow", () => {
       '[[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]',
     );
     expect(validationStep.run).toContain(
+      'git check-ref-format --branch "$SOURCE_BRANCH"',
+    );
+    expect(validationStep.run).toContain(
       '[[ "$ARTIFACT_SHA256" =~ ^[0-9a-f]{64}$ ]]',
     );
     expect(sourceStep.run).toContain(
@@ -358,6 +365,7 @@ describe("preview Worker upload workflow", () => {
     );
     expect(sourceStep.run).toContain(".head.repo.full_name == $repository");
     expect(sourceStep.run).toContain(".head.sha == $commit");
+    expect(sourceStep.run).not.toContain("contents/.github/workflows/");
 
     for (const workflowStep of uploadJob.steps) {
       expect(workflowStep.run ?? "").not.toContain("${{ inputs.");
@@ -373,6 +381,7 @@ describe("preview Worker upload workflow", () => {
       .digest("hex");
 
     expect(gitBlobSha).toBe("e312055b4e72f7142b7ac4e854f0577df08411d4");
+    expect(trustedArtifactWorkflowText).toBe(artifactWorkflowText);
     expect(trustedArtifactWorkflowText).toContain(
       "name: Website CI and Worker Artifact",
     );
@@ -474,6 +483,12 @@ describe("preview Worker upload workflow", () => {
     expect(uploadVersionStep.run).toContain(
       ".merge_commit_sha == $build_commit",
     );
+    expect(uploadVersionStep.run).toContain(
+      'jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json"',
+    );
+    expect(uploadVersionStep.run).not.toContain(
+      'jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr-before-upload.json"',
+    );
     expectReviewedArtifactWorkflowGuard(uploadVersionStep.run);
     const trustedWorkflowIndex =
       uploadVersionStep.run?.indexOf(
@@ -513,6 +528,17 @@ describe("preview Worker upload workflow", () => {
     expect(uploadWorkflowText).not.toContain("wrangler dns");
     expect(uploadWorkflowText).not.toContain("wrangler pages");
     expect(uploadWorkflowText).not.toContain("wrangler delete");
+    const preserveStep = uploadStep("Preserve preview upload metadata");
+    expect(preserveStep.if).toBe("always()");
+    expect(preserveStep.uses).toBe(
+      "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+    );
+    expect(preserveStep.with).toMatchObject({
+      "if-no-files-found": "warn",
+    });
+    expect(String(preserveStep.with?.path)).toContain(
+      "candidate/upload-result.json",
+    );
   });
 
   it("executes the workflow privacy predicates against safe and public states", () => {
@@ -592,6 +618,53 @@ describe("preview Worker upload workflow", () => {
       workerArgs,
     );
   });
+
+  it("executes the final PR merge-commit guard against current and stale states", () => {
+    const uploadVersionStep = uploadStep("Upload one inactive preview version");
+    const program = jqProgramWritingTo(
+      uploadVersionStep.run ?? "",
+      "source-pr-before-upload.json",
+    );
+    const commit = "a".repeat(40);
+    const buildCommit = "b".repeat(40);
+    const args = [
+      "--arg",
+      "branch",
+      "feat/astro5-workers-runtime",
+      "--arg",
+      "build_commit",
+      buildCommit,
+      "--arg",
+      "commit",
+      commit,
+      "--arg",
+      "repository",
+      "zenml-io/zenml-io-v2",
+    ];
+    const currentPullRequest = {
+      state: "open",
+      head: {
+        ref: "feat/astro5-workers-runtime",
+        repo: { full_name: "zenml-io/zenml-io-v2" },
+        sha: commit,
+      },
+      merge_commit_sha: buildCommit,
+    };
+
+    expectJqResult(program, currentPullRequest, true, args);
+    expectJqResult(
+      program,
+      { ...currentPullRequest, merge_commit_sha: "c".repeat(40) },
+      false,
+      args,
+    );
+    expectJqResult(
+      program,
+      { ...currentPullRequest, state: "closed" },
+      false,
+      args,
+    );
+  });
 });
 
 const activationWorkflowText = readFileSync(
@@ -652,6 +725,9 @@ describe("preview Worker activation workflow", () => {
     expect(validationStep.run).toContain('[[ "$VERSION_ID" =~ ^[0-9a-f]{8}-');
     expect(validationStep.run).toContain(
       '[[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]',
+    );
+    expect(validationStep.run).toContain(
+      'git check-ref-format --branch "$SOURCE_BRANCH"',
     );
     expect(workerStep.run).toContain(
       ".result.enabled == false and .result.previews_enabled == false",

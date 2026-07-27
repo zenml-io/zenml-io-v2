@@ -65,7 +65,7 @@ jobs:
           set -euo pipefail
           [[ "$VERSION_ID" =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$ ]]
           [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]
-          [[ "$SOURCE_BRANCH" =~ ^[A-Za-z0-9._/-]+$ ]]
+          git check-ref-format --branch "$SOURCE_BRANCH" > /dev/null
           [[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]
           [[ "$ARTIFACT_SHA256" =~ ^[0-9a-f]{64}$ ]]
 

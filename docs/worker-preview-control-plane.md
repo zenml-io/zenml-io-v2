@@ -50,8 +50,11 @@ mutation and requires its own approval.
 After the upload and activation workflows exist on `main`:
 
 1. Reconcile the Astro 5 migration PR with current `main`.
-2. Keep the trusted manual
-   `.github/workflows/upload-worker-preview.yml` during conflict resolution.
+2. Keep both the trusted manual
+   `.github/workflows/upload-worker-preview.yml` and the reviewed producer
+   snapshot `.github/trusted/worker-artifact-workflow.yml` during conflict
+   resolution. The snapshot must remain byte-identical to
+   `.github/workflows/deploy.yml`.
    Do not restore the feature branch's older automatic `workflow_run`
    uploader.
 3. Run the complete PR CI workflow.
@@ -61,10 +64,14 @@ After the upload and activation workflows exist on `main`:
    - source run ID;
    - source branch;
    - source commit;
+   - tested merge commit from the artifact manifest and current pull request;
    - `worker-dist.tar.gz` SHA-256 from both the checksum file and an
      independent computation;
    - manifest source branch, commit, run ID, and required binding names.
-6. Confirm the PR head, CI run, checksum, and manifest all agree.
+6. Confirm the PR head, CI run, checksum, and manifest all agree. The current
+   pull request `merge_commit_sha` must still equal the manifest
+   `build_commit`. Any later merge to `main` recomputes that test merge and
+   invalidates the artifact, so rerun CI and record the new values.
 
 Any earlier artifact becomes historical evidence only. Do not upload it.
 
@@ -81,7 +88,7 @@ Pause and capture a timestamped read-only snapshot:
    Cloudflare Access.
 6. `zenml.io` redirects normally and `www.zenml.io` serves the production
    site.
-7. `cloud.zenml.io`, `staging.zenml.io`, and the recorded platform-service
+7. `cloud.zenml.io`, `staging.cloud.zenml.io`, and the recorded platform-service
    hostnames match their baseline.
 
 Stop on any unexplained difference. Do not repair drift during the same
@@ -102,12 +109,16 @@ Enter the six recorded values:
 - explicit self-review confirmation.
 
 The workflow re-reads the run and pull request from GitHub, downloads only that
-run's artifact, checks its checksum and manifest, rejects unsafe archive or
-Wrangler configuration, confirms the preview Worker is private and route-less,
-and uploads one inactive version with the two non-production form secrets.
+run's artifact, verifies that its tested merge commit used the immutable
+reviewed artifact workflow,
+checks its checksum and manifest, rejects unsafe archive or Wrangler
+configuration, confirms the preview Worker is private and route-less, and
+uploads one inactive version with the two non-production form secrets.
 
 The upload does not deploy the version. Its summary records the version ID and
-provenance.
+provenance. The workflow also preserves partial upload metadata even when a
+later verification step fails, because Cloudflare may already have accepted the
+inactive version.
 
 ### Pause and verify after upload
 

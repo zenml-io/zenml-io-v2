@@ -1,0 +1,427 @@
+name: Upload Worker Production Candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: Successful Website CI and Worker Artifact run ID
+        required: true
+        type: string
+      source_commit:
+        description: Exact source commit tested by that run
+        required: true
+        type: string
+      source_branch:
+        description: Exact source branch tested by that run
+        required: true
+        type: string
+      self_reviewed:
+        description: I reviewed this exact run, branch, and commit
+        required: true
+        type: boolean
+
+concurrency:
+  group: zenml-io-worker-production
+  cancel-in-progress: false
+
+jobs:
+  upload-candidate:
+    name: Upload inactive production candidate
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: worker-candidate
+    timeout-minutes: 15
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Require explicit self-review
+        if: inputs.self_reviewed != true
+        run: |
+          echo "The exact source run, branch, and commit must be self-reviewed." >&2
+          exit 1
+
+      - name: Verify source workflow run
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_COMMIT: ${{ inputs.source_commit }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]] || {
+            echo "Source run ID must contain only digits." >&2
+            exit 1
+          }
+          [[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]] || {
+            echo "Source commit must be a full lowercase Git SHA." >&2
+            exit 1
+          }
+          git check-ref-format --branch "$SOURCE_BRANCH" > /dev/null || {
+            echo "Source branch is not a valid Git branch name." >&2
+            exit 1
+          }
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" \
+            > source-run.json
+          jq -e \
+            --arg branch "$SOURCE_BRANCH" \
+            --arg commit "$SOURCE_COMMIT" \
+            --arg repository "$GITHUB_REPOSITORY" \
+            '.name == "Website CI and Worker Artifact" and
+             .path == ".github/workflows/deploy.yml" and
+             .conclusion == "success" and
+             .head_repository.full_name == $repository and
+             .head_branch == $branch and
+             .head_sha == $commit and
+             (.event == "push" or .event == "pull_request")' \
+            source-run.json > /dev/null
+          source_workflow_blob="$(
+            gh api \
+              "repos/$GITHUB_REPOSITORY/contents/.github/workflows/deploy.yml?ref=$SOURCE_COMMIT" \
+              --jq .sha
+          )"
+          trusted_workflow_blob="$(
+            gh api \
+              "repos/$GITHUB_REPOSITORY/contents/.github/workflows/deploy.yml?ref=main" \
+              --jq .sha
+          )"
+          if [ "$source_workflow_blob" != "$trusted_workflow_blob" ]; then
+            echo "Source run did not use the trusted CI workflow definition." >&2
+            exit 1
+          fi
+
+      - name: Download the exact CI artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: worker-dist
+          path: candidate
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Verify artifact provenance and checksum
+        shell: bash
+        env:
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_COMMIT: ${{ inputs.source_commit }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          cd candidate
+          sha256sum --check worker-dist.sha256
+          jq -e \
+            --arg artifact_sha256 "$(cut -d ' ' -f 1 worker-dist.sha256)" \
+            --arg branch "$SOURCE_BRANCH" \
+            --arg commit "$SOURCE_COMMIT" \
+            --arg run_id "$SOURCE_RUN_ID" \
+            '.artifact_sha256 == $artifact_sha256 and
+             .source_branch == $branch and
+             .source_commit == $commit and
+             .run_id == $run_id' \
+            worker-manifest.json > /dev/null
+
+      - name: Reject unsafe Worker artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd candidate
+          tar -tzf worker-dist.tar.gz > "$RUNNER_TEMP/archive-paths.txt"
+          if grep -Eq '(^/|(^|/)\.\.(/|$))' "$RUNNER_TEMP/archive-paths.txt"; then
+            echo "Worker archive contains an unsafe path." >&2
+            exit 1
+          fi
+          tar -tvzf worker-dist.tar.gz > "$RUNNER_TEMP/archive-members.txt"
+          while read -r mode _; do
+            case "${mode:0:1}" in
+              -|d) ;;
+              *)
+                echo "Worker archive contains a link or special file." >&2
+                exit 1
+                ;;
+            esac
+          done < "$RUNNER_TEMP/archive-members.txt"
+          jq -e '
+            ((keys - [
+              "$schema", "assets", "compatibility_date",
+              "compatibility_flags", "main", "name", "preview_urls",
+              "secrets", "workers_dev"
+            ]) | length == 0) and
+            .name == "zenml-io-v2-worker" and
+            .main == "dist/_worker.js/index.js" and
+            .workers_dev == false and
+            .assets.directory == "./dist" and
+            .assets.binding == "ASSETS" and
+            (.route == null) and
+            (.routes == null) and
+            (.build == null)
+          ' wrangler.jsonc > /dev/null
+
+      - name: Prepare trusted production configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd candidate
+          mkdir dist
+          tar -C dist -xzf worker-dist.tar.gz
+          jq '.preview_urls = false | del(.secrets)' \
+            wrangler.jsonc > upload-wrangler.json
+
+      - name: Verify required production secrets
+        shell: bash
+        env:
+          SEGMENT_FORMS_WRITE_KEY: ${{ secrets.SEGMENT_FORMS_WRITE_KEY }}
+          TURNSTILE_SECRET_KEY: ${{ secrets.TURNSTILE_SECRET_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "$SEGMENT_FORMS_WRITE_KEY" ] || [ -z "$TURNSTILE_SECRET_KEY" ]; then
+            echo "Required Worker production secrets are not configured." >&2
+            exit 1
+          fi
+
+      - name: Install pinned Wrangler
+        run: npm install --global wrangler@4.110.0
+
+      - name: Capture production deployment and private endpoint state
+        id: capture_baseline
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
+        run: |
+          set -euo pipefail
+          wrangler deployments list \
+            --name zenml-io-v2-worker \
+            --json > "$RUNNER_TEMP/deployments-before-upload.json"
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          worker_name="zenml-io-v2-worker"
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts/zenml-io-v2-worker/subdomain" \
+            > "$RUNNER_TEMP/worker-subdomain-before-upload.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' "$RUNNER_TEMP/worker-subdomain-before-upload.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" \
+            > "$RUNNER_TEMP/workers-before-upload.json"
+          jq -e --arg worker "$worker_name" '
+            .success == true and
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            ($workers[0] | has("routes")) and
+            (
+              $workers[0].routes == null or
+              (
+                ($workers[0].routes | type) == "array" and
+                ($workers[0].routes | length) == 0
+              )
+            )
+          ' "$RUNNER_TEMP/workers-before-upload.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/domains?service=$worker_name&per_page=100" \
+            > "$RUNNER_TEMP/worker-domains-before-upload.json"
+          jq -e --arg worker "$worker_name" '
+            .success == true and
+            (.result | type) == "array" and
+            ([.result[] | select(.service == $worker)] | length == 0) and
+            .result_info.total_count == 0
+          ' "$RUNNER_TEMP/worker-domains-before-upload.json" > /dev/null
+
+      - name: Upload inactive production candidate
+        id: upload
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
+          SEGMENT_FORMS_WRITE_KEY: ${{ secrets.SEGMENT_FORMS_WRITE_KEY }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_COMMIT: ${{ inputs.source_commit }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+          TURNSTILE_SECRET_KEY: ${{ secrets.TURNSTILE_SECRET_KEY }}
+        run: |
+          set -euo pipefail
+          cd candidate
+          if [ -z "$SEGMENT_FORMS_WRITE_KEY" ] || [ -z "$TURNSTILE_SECRET_KEY" ]; then
+            echo "Required Worker production secrets are not configured." >&2
+            exit 1
+          fi
+          secrets_file="$RUNNER_TEMP/worker-production-secrets.env"
+          output_file="$RUNNER_TEMP/wrangler-candidate-output.jsonl"
+          trap 'rm -f "$secrets_file"' EXIT
+          {
+            printf 'SEGMENT_FORMS_WRITE_KEY=%s\n' "$SEGMENT_FORMS_WRITE_KEY"
+            printf 'TURNSTILE_SECRET_KEY=%s\n' "$TURNSTILE_SECRET_KEY"
+          } > "$secrets_file"
+          chmod 600 "$secrets_file"
+          export WRANGLER_OUTPUT_FILE_PATH="$output_file"
+          artifact_sha256="$(jq -r .artifact_sha256 worker-manifest.json)"
+          version_message="source_commit=$SOURCE_COMMIT source_branch=$SOURCE_BRANCH source_run_id=$SOURCE_RUN_ID artifact_sha256=$artifact_sha256"
+          wrangler versions upload \
+            --config upload-wrangler.json \
+            --secrets-file "$secrets_file" \
+            --strict \
+            --tag production-candidate \
+            --message "$version_message"
+          jq -s 'map(select(.type == "version-upload")) | last' \
+            "$output_file" > upload-result.json
+          version_id="$(jq -er .version_id upload-result.json)"
+          {
+            echo "artifact_sha256=$artifact_sha256"
+            echo "version_id=$version_id"
+          } >> "$GITHUB_OUTPUT"
+          jq -n \
+            --arg artifact_sha256 "$artifact_sha256" \
+            --arg version_id "$version_id" \
+            '{artifact_sha256: $artifact_sha256, version_id: $version_id}' \
+            > candidate-identity.json
+          wrangler versions view "$version_id" \
+            --name zenml-io-v2-worker \
+            --json > version-metadata.json
+          jq -e '
+            [.resources.bindings[]? |
+              select(.type == "secret_text") | .name] as $names |
+            ($names | index("TURNSTILE_SECRET_KEY") != null) and
+            ($names | index("SEGMENT_FORMS_WRITE_KEY") != null)
+          ' version-metadata.json > /dev/null
+
+      - name: Verify upload preserved deployment and private endpoints
+        if: always() && steps.capture_baseline.outcome == 'success'
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
+        run: |
+          set -euo pipefail
+          wrangler deployments list \
+            --name zenml-io-v2-worker \
+            --json > "$RUNNER_TEMP/deployments-after-upload.json"
+          jq -S . "$RUNNER_TEMP/deployments-before-upload.json" \
+            > "$RUNNER_TEMP/deployments-before-upload.canonical.json"
+          jq -S . "$RUNNER_TEMP/deployments-after-upload.json" \
+            > "$RUNNER_TEMP/deployments-after-upload.canonical.json"
+          cmp \
+            "$RUNNER_TEMP/deployments-before-upload.canonical.json" \
+            "$RUNNER_TEMP/deployments-after-upload.canonical.json" || {
+              echo "The active production deployment changed during candidate upload." >&2
+              exit 1
+            }
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          worker_name="zenml-io-v2-worker"
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts/zenml-io-v2-worker/subdomain" \
+            > "$RUNNER_TEMP/worker-subdomain-after-upload.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' "$RUNNER_TEMP/worker-subdomain-after-upload.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" \
+            > "$RUNNER_TEMP/workers-after-upload.json"
+          jq -e --arg worker "$worker_name" '
+            .success == true and
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            ($workers[0] | has("routes")) and
+            (
+              $workers[0].routes == null or
+              (
+                ($workers[0].routes | type) == "array" and
+                ($workers[0].routes | length) == 0
+              )
+            )
+          ' "$RUNNER_TEMP/workers-after-upload.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/domains?service=$worker_name&per_page=100" \
+            > "$RUNNER_TEMP/worker-domains-after-upload.json"
+          jq -e --arg worker "$worker_name" '
+            .success == true and
+            (.result | type) == "array" and
+            ([.result[] | select(.service == $worker)] | length == 0) and
+            .result_info.total_count == 0
+          ' "$RUNNER_TEMP/worker-domains-after-upload.json" > /dev/null
+
+      - name: Preserve candidate upload metadata
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: production-candidate-${{ inputs.source_run_id }}
+          path: |
+            candidate/candidate-identity.json
+            candidate/upload-result.json
+            candidate/version-metadata.json
+            ${{ runner.temp }}/deployments-before-upload.json
+            ${{ runner.temp }}/deployments-after-upload.json
+            ${{ runner.temp }}/worker-subdomain-before-upload.json
+            ${{ runner.temp }}/worker-subdomain-after-upload.json
+            ${{ runner.temp }}/workers-before-upload.json
+            ${{ runner.temp }}/workers-after-upload.json
+            ${{ runner.temp }}/worker-domains-before-upload.json
+            ${{ runner.temp }}/worker-domains-after-upload.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Record candidate metadata
+        shell: bash
+        env:
+          ARTIFACT_SHA256: ${{ steps.upload.outputs.artifact_sha256 }}
+          INITIATOR: ${{ github.actor }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_COMMIT: ${{ inputs.source_commit }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+          VERSION_ID: ${{ steps.upload.outputs.version_id }}
+        run: |
+          {
+            echo "## Inactive production Worker candidate"
+            echo
+            printf -- "- Version: \`%s\`\n" "$VERSION_ID"
+            printf -- "- Source commit: \`%s\`\n" "$SOURCE_COMMIT"
+            printf -- "- Source branch: \`%s\`\n" "$SOURCE_BRANCH"
+            printf -- "- CI run: \`%s\`\n" "$SOURCE_RUN_ID"
+            printf -- "- Artifact SHA-256: \`%s\`\n" "$ARTIFACT_SHA256"
+            printf -- "- Initiator/self-reviewer: \`%s\`\n" "$INITIATOR"
+            echo "- Public preview URL: disabled"
+            echo
+            echo "No deployment, route, domain, or DNS state was changed."
+          } >> "$GITHUB_STEP_SUMMARY"

@@ -67,7 +67,7 @@ jobs:
           set -euo pipefail
           [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]
           [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]
-          [[ "$SOURCE_BRANCH" =~ ^[A-Za-z0-9._/-]+$ ]]
+          git check-ref-format --branch "$SOURCE_BRANCH" > /dev/null
           [[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]
           [[ "$ARTIFACT_SHA256" =~ ^[0-9a-f]{64}$ ]]
 
@@ -468,6 +468,25 @@ jobs:
               echo "The active preview deployment changed during upload." >&2
               exit 1
             }
+
+      - name: Preserve preview upload metadata
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: preview-upload-${{ inputs.source_run_id }}
+          path: |
+            candidate/upload-result.json
+            ${{ runner.temp }}/uploaded-version.json
+            ${{ runner.temp }}/deployments-before-upload.json
+            ${{ runner.temp }}/deployments-after-upload.json
+            ${{ runner.temp }}/worker-subdomain.json
+            ${{ runner.temp }}/worker-subdomain-after-upload.json
+            ${{ runner.temp }}/source-run.json
+            ${{ runner.temp }}/source-pr.json
+            ${{ runner.temp }}/source-run-before-upload.json
+            ${{ runner.temp }}/source-pr-before-upload.json
+          if-no-files-found: warn
+          retention-days: 30
 
       - name: Record inactive preview metadata
         shell: bash
