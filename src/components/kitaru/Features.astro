@@ -27,17 +27,6 @@ const steps = [
     code: "cheap.llm_usage_summary",
   },
 ] as const;
-
-// Source logos for the "Start from" panel. slug → /images/kitaru-sources/{slug}.png
-const recordedSources = [
-  { slug: "pydantic", name: "Pydantic AI" },
-  { slug: "langgraph", name: "LangGraph" },
-  { slug: "openai", name: "OpenAI Agents SDK" },
-  { slug: "claude", name: "Claude Agent SDK" },
-  { slug: "gemini", name: "Gemini" },
-  { slug: "google-adk", name: "Google ADK" },
-  { slug: "python", name: "Raw Python" },
-] as const;
 ---
 
 <section id="how-it-works" class="whatif-section section-pad">
@@ -49,27 +38,6 @@ const recordedSources = [
         Cheaper model? Flaky tool result? New prompt? Replay real executions with one thing changed, read the diff &mdash; and never touch production.
       </p>
 
-    </div>
-
-    <div class="whatif-sources" data-reveal>
-      <span class="whatif-sources-label">Start from</span>
-      <span class="src-pill">Kitaru-recorded executions</span>
-    </div>
-
-    <div class="src-panels" data-reveal>
-      <div class="src-panel is-active" id="src-recorded" role="region" aria-label="Start from Kitaru-recorded executions">
-        <p class="src-line">Wrap your agent so model/tool calls and steps exposed through Kitaru primitives or adapters become replayable checkpoints.</p>
-        <div class="src-logos">
-          {
-            recordedSources.map((s) => (
-              <span class="src-logo">
-                <img src={`/images/kitaru-sources/${s.slug}.png`} alt="" aria-hidden="true" width="22" height="22" loading="lazy" />
-                {s.name}
-              </span>
-            ))
-          }
-        </div>
-      </div>
     </div>
 
     <div class="whatif-steps">
@@ -123,7 +91,7 @@ const recordedSources = [
 
   .whatif-header {
     max-width: 760px;
-    margin-bottom: 28px;
+    margin-bottom: 48px;
   }
 
   .section-desc {
@@ -132,94 +100,6 @@ const recordedSources = [
     font-size: clamp(1rem, 1.6vw, 1.1rem);
     line-height: 1.65;
     font-weight: 300;
-  }
-
-  /* ─── "Start from" source panel ─── */
-  .whatif-sources {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
-    margin-top: 24px;
-  }
-
-  .whatif-sources-label {
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-  }
-
-  .src-pill {
-    font-family: inherit;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-accent);
-    padding: 6px 14px;
-    border: 1px solid oklch(0.65 0.16 45 / 0.4);
-    border-radius: 100px;
-    background: oklch(0.65 0.16 45 / 0.08);
-  }
-
-  /* Reveal panels */
-  .src-panels {
-    margin-top: 16px;
-    margin-bottom: 48px;
-  }
-
-  .src-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    padding: 28px 30px;
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    background: var(--color-surface);
-    animation: src-fade 0.3s ease;
-  }
-
-
-  @keyframes src-fade {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .src-line {
-    margin: 0;
-    font-size: 1.05rem;
-    line-height: 1.5;
-    color: var(--color-primary);
-    font-weight: 500;
-  }
-
-  .src-logos {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .src-logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.92rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--color-primary);
-    padding: 11px 18px;
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    background: var(--color-surface-warm);
-  }
-
-  .src-logo img {
-    width: 22px;
-    height: 22px;
-    border-radius: 5px;
-    object-fit: contain;
-    flex-shrink: 0;
   }
 
   /* ─── Steps ─── */
