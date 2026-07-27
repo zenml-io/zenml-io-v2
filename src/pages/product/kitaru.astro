@@ -7,7 +7,6 @@ import Hero from "../../components/kitaru/Hero.astro";
 import OneImport from "../../components/kitaru/OneImport.astro";
 import ScenarioStrip from "../../components/kitaru/ScenarioStrip.astro";
 import SocialProof from "../../components/kitaru/SocialProof.astro";
-import TheLoop from "../../components/kitaru/TheLoop.astro";
 /**
  * /product/kitaru — landing page introducing Kitaru as a sub-product
  * under the unified ZenML umbrella.
@@ -21,13 +20,15 @@ import TheLoop from "../../components/kitaru/TheLoop.astro";
  * Sections (what-if-led order, then the platform story):
  *   Hero          → what-if hero: replay a real run, one thing changed, diff
  *   ScenarioStrip → bigger "one recorded run, a different question each time"
- *   TheLoop       → the arc in four beats: import, triage, fix one, scale.
- *                   Setup mechanics (login, skills, worker) are deliberately
- *                   docs-only — see PRODUCT_KITARU_MARKDOWN.journey.
  *   OneImport     → works with your agent SDK (before/after)
  *   Features      → the what-if workflow (replay → cheap model + faked tool → diff)
  *   CodeShowcase  → "see the code" for that same workflow + hoverable verbs
- *   AgentDriven   → MCP/CLI: let a coding agent run the replay loop + hill-climb
+ *   AgentDriven   → MCP/CLI: let a coding agent run the replay loop + hill-climb,
+ *                   then the self-extending half — importers, scorers, and
+ *                   skills are all plugins the agent can write
+ *
+ * The onboarding journey (login, skills, worker, triage) is deliberately
+ * docs-only — it lives in PRODUCT_KITARU_MARKDOWN.journey → /product/kitaru.md.
  *   SocialProof   → ZenML lineage, testimonials + logos
  *   Cta           → closing CTA band
  *
@@ -43,7 +44,6 @@ import "../../styles/kitaru-compat.css";
     <main id="kitaru-main">
       <Hero />
       <ScenarioStrip />
-      <TheLoop />
       <OneImport />
       <Features />
       <CodeShowcase />

@@ -2,11 +2,33 @@
 // AgentDriven.astro — agent-driven experimentation via Kitaru's MCP server.
 // Your coding agent (Claude Code, Codex, Cursor, Gemini CLI) drives the
 // replay/diff loop and hill-climbs toward a cheaper, safer variant.
+//
+// Second half: the self-extending pitch. Every part of Kitaru is a plugin —
+// importers, scorers, and the skills themselves — so the same agent that runs
+// the loop can write the parts the next loop needs.
 const agents = [
   { slug: "claude", name: "Claude Code" },
   { slug: "openai", name: "Codex" },
   { slug: "cursor", name: "Cursor" },
   { slug: "gemini", name: "Gemini CLI" },
+] as const;
+
+const plugins = [
+  {
+    kind: "Importers",
+    title: "Your trace format, not just ours",
+    body: "Langfuse and LangSmith are only the ones we happened to write first. Point a skill at whatever you have and it writes the importer, registers it, and your worker loads it.",
+  },
+  {
+    kind: "Scorers",
+    title: "What good looks like can't ship in a box",
+    body: "It is different for every team, so it has to be written, not configured. Describe it once while staring at a broken session and the skill compiles your answer into a scorer.",
+  },
+  {
+    kind: "Skills",
+    title: "The procedures are plugins too",
+    body: "Mine the sessions that went unusually well, distill what they did right, and hand it back to your agent as a skill it uses next time. The system teaches itself from its own best runs.",
+  },
 ] as const;
 ---
 
@@ -51,6 +73,35 @@ const agents = [
         </div>
         <p class="ad-loop-caption">A few replays, no human in the loop. The diff is the agent&rsquo;s reward signal.</p>
       </div>
+    </div>
+
+    <div class="ad-plugins">
+      <div class="ad-plugins-head" data-reveal>
+        <span class="section-eyebrow">AND IT WRITES ITS OWN PARTS</span>
+        <h3 class="ad-plugins-title">
+          Every piece of Kitaru is a plugin &mdash;<br />
+          <span class="ad-plugins-accent">including the pieces that write plugins.</span>
+        </h3>
+        <p class="ad-plugins-desc">
+          Nothing here is a fixed menu. The importer that reads your traces, the scorer that decides what good means, and the skill that runs the interview are all just code, registered to the server and loaded by your worker. Your agent can write any of them.
+        </p>
+      </div>
+
+      <div class="ad-plugin-grid">
+        {
+          plugins.map((p, i) => (
+            <div class="ad-plugin-card" data-reveal="fade-up" data-reveal-delay={i + 1}>
+              <span class="ad-plugin-kind">{p.kind}</span>
+              <h4 class="ad-plugin-title">{p.title}</h4>
+              <p class="ad-plugin-body">{p.body}</p>
+            </div>
+          ))
+        }
+      </div>
+
+      <p class="ad-plugins-foot" data-reveal>
+        The agent writes the scorer, runs the experiment, reads the diff, and opens the PR. Every pass leaves behind a part the next pass can use.
+      </p>
     </div>
   </div>
 </section>
@@ -219,10 +270,115 @@ const agents = [
     text-align: center;
   }
 
+  /* ─── Self-extending: everything is a plugin ─── */
+  .ad-plugins {
+    margin-top: 72px;
+    padding-top: 56px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .ad-plugins-head {
+    max-width: 760px;
+    margin-bottom: 36px;
+  }
+
+  .ad-plugins-title {
+    font-size: clamp(1.4rem, 2.6vw, 1.95rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-primary);
+    margin: 14px 0 16px;
+  }
+
+  .ad-plugins-accent {
+    color: var(--color-accent);
+  }
+
+  .ad-plugins-desc {
+    margin: 0;
+    font-size: clamp(1rem, 1.5vw, 1.08rem);
+    line-height: 1.65;
+    font-weight: 300;
+    color: var(--color-secondary);
+  }
+
+  .ad-plugin-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .ad-plugin-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+    padding: 28px 26px;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    background: var(--color-surface);
+    transition: border-color 0.25s, transform 0.25s;
+  }
+
+  .ad-plugin-card:hover {
+    border-color: oklch(0.65 0.16 45 / 0.3);
+    transform: translateY(-3px);
+  }
+
+  .ad-plugin-kind {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    padding: 4px 10px;
+    border: 1px solid oklch(0.65 0.16 45 / 0.28);
+    border-radius: 100px;
+    background: oklch(0.65 0.16 45 / 0.07);
+  }
+
+  .ad-plugin-title {
+    margin: 0;
+    font-size: clamp(1.02rem, 1.5vw, 1.15rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    color: var(--color-primary);
+  }
+
+  .ad-plugin-body {
+    margin: 0;
+    font-size: 0.93rem;
+    line-height: 1.6;
+    font-weight: 300;
+    color: var(--color-secondary);
+  }
+
+  .ad-plugins-foot {
+    max-width: 68ch;
+    margin: 28px 0 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    font-weight: 300;
+    color: var(--color-secondary);
+  }
+
   @media (max-width: 900px) {
     .ad-grid {
       grid-template-columns: 1fr;
       gap: 28px;
+    }
+
+    .ad-plugin-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .ad-plugins {
+      margin-top: 48px;
+      padding-top: 40px;
     }
   }
 </style>
