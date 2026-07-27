@@ -60,7 +60,7 @@ jobs:
           set -euo pipefail
           [[ "$VERSION_ID" =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$ ]]
           [[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]
-          [[ "$SOURCE_BRANCH" =~ ^[A-Za-z0-9._/-]+$ ]]
+          git check-ref-format --branch "$SOURCE_BRANCH" > /dev/null
           [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]
           [[ "$ARTIFACT_SHA256" =~ ^[0-9a-f]{64}$ ]]
 
@@ -162,8 +162,65 @@ jobs:
           VERSION_ID: ${{ inputs.version_id }}
         run: |
           set -euo pipefail
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          worker_name="zenml-io-v2-worker"
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts/$worker_name/subdomain" \
+            > worker-subdomain-before-activation.json
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' worker-subdomain-before-activation.json > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" \
+            > workers-before-activation.json
+          jq -e --arg worker "$worker_name" '
+            .success == true and
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            ($workers[0] | has("routes")) and
+            (
+              $workers[0].routes == null or
+              (
+                ($workers[0].routes | type) == "array" and
+                ($workers[0].routes | length) == 0
+              )
+            )
+          ' workers-before-activation.json > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/domains?service=$worker_name&per_page=100" \
+            > worker-domains-before-activation.json
+          jq -e --arg worker "$worker_name" '
+            .success == true and
+            (.result | type) == "array" and
+            ([.result[] | select(.service == $worker)] | length == 0) and
+            .result_info.total_count == 0
+          ' worker-domains-before-activation.json > /dev/null
+
           wrangler versions deploy "$VERSION_ID@100%" \
-            --name zenml-io-v2-worker \
+            --name "$worker_name" \
             --yes
 
       - name: Verify exact production activation
@@ -175,8 +232,11 @@ jobs:
           VERSION_ID: ${{ inputs.version_id }}
         run: |
           set -euo pipefail
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          worker_name="zenml-io-v2-worker"
           wrangler deployments list \
-            --name zenml-io-v2-worker \
+            --name "$worker_name" \
             --json > deployments-after.json
           jq -e --arg version "$VERSION_ID" '
             length >= 1 and
@@ -188,11 +248,71 @@ jobs:
             )
           ' deployments-after.json > /dev/null
 
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts/$worker_name/subdomain" \
+            > worker-subdomain-after-activation.json
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' worker-subdomain-after-activation.json > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" \
+            > workers-after-activation.json
+          jq -e --arg worker "$worker_name" '
+            .success == true and
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            ($workers[0] | has("routes")) and
+            (
+              $workers[0].routes == null or
+              (
+                ($workers[0].routes | type) == "array" and
+                ($workers[0].routes | length) == 0
+              )
+            )
+          ' workers-after-activation.json > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/domains?service=$worker_name&per_page=100" \
+            > worker-domains-after-activation.json
+          jq -e --arg worker "$worker_name" '
+            .success == true and
+            (.result | type) == "array" and
+            ([.result[] | select(.service == $worker)] | length == 0) and
+            .result_info.total_count == 0
+          ' worker-domains-after-activation.json > /dev/null
+
       - name: Preserve post-activation deployment metadata
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: post-activation-deployment-${{ inputs.version_id }}
-          path: deployments-after.json
+          path: |
+            deployments-after.json
+            worker-subdomain-before-activation.json
+            workers-before-activation.json
+            worker-domains-before-activation.json
+            worker-subdomain-after-activation.json
+            workers-after-activation.json
+            worker-domains-after-activation.json
           if-no-files-found: warn
           retention-days: 30

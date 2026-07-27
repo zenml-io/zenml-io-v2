@@ -321,6 +321,9 @@ describe("preview Worker upload workflow", () => {
       '[[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]',
     );
     expect(validationStep.run).toContain(
+      'git check-ref-format --branch "$SOURCE_BRANCH"',
+    );
+    expect(validationStep.run).toContain(
       '[[ "$ARTIFACT_SHA256" =~ ^[0-9a-f]{64}$ ]]',
     );
     expect(sourceStep.run).toContain(
@@ -338,6 +341,12 @@ describe("preview Worker upload workflow", () => {
     );
     expect(sourceStep.run).toContain(".head.repo.full_name == $repository");
     expect(sourceStep.run).toContain(".head.sha == $commit");
+    expect(sourceStep.run).toContain(
+      "contents/.github/workflows/deploy.yml?ref=$SOURCE_COMMIT",
+    );
+    expect(sourceStep.run).toContain(
+      'source_workflow_blob" != "$trusted_workflow_blob',
+    );
 
     for (const workflowStep of uploadJob.steps) {
       expect(workflowStep.run ?? "").not.toContain("${{ inputs.");
@@ -422,6 +431,9 @@ describe("preview Worker upload workflow", () => {
     expect(uploadVersionStep.run).toContain("source-run-before-upload.json");
     expect(uploadVersionStep.run).toContain("source-pr-before-upload.json");
     expect(uploadVersionStep.run).toContain(".head.sha == $commit");
+    expect(uploadVersionStep.run).toContain(
+      "contents/.github/workflows/deploy.yml?ref=$SOURCE_COMMIT",
+    );
     expect(uploadVersionStep.run).toContain("--secrets-file");
     expect(uploadVersionStep.run).not.toContain("--preview-alias");
     expect(uploadWorkflowText).not.toContain("--preview-alias");
@@ -447,6 +459,17 @@ describe("preview Worker upload workflow", () => {
     expect(uploadWorkflowText).not.toContain("wrangler dns");
     expect(uploadWorkflowText).not.toContain("wrangler pages");
     expect(uploadWorkflowText).not.toContain("wrangler delete");
+    const preserveStep = uploadStep("Preserve preview upload metadata");
+    expect(preserveStep.if).toBe("always()");
+    expect(preserveStep.uses).toBe(
+      "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+    );
+    expect(preserveStep.with).toMatchObject({
+      "if-no-files-found": "warn",
+    });
+    expect(String(preserveStep.with?.path)).toContain(
+      "candidate/upload-result.json",
+    );
   });
 
   it("executes the workflow privacy predicates against safe and public states", () => {
@@ -586,6 +609,9 @@ describe("preview Worker activation workflow", () => {
     expect(validationStep.run).toContain('[[ "$VERSION_ID" =~ ^[0-9a-f]{8}-');
     expect(validationStep.run).toContain(
       '[[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]',
+    );
+    expect(validationStep.run).toContain(
+      'git check-ref-format --branch "$SOURCE_BRANCH"',
     );
     expect(workerStep.run).toContain(
       ".result.enabled == false and .result.previews_enabled == false",

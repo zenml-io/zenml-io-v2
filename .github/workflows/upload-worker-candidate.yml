@@ -20,6 +20,10 @@ on:
         required: true
         type: boolean
 
+concurrency:
+  group: zenml-io-worker-production
+  cancel-in-progress: false
+
 jobs:
   upload-candidate:
     name: Upload inactive production candidate
@@ -54,8 +58,8 @@ jobs:
             echo "Source commit must be a full lowercase Git SHA." >&2
             exit 1
           }
-          [[ "$SOURCE_BRANCH" =~ ^[A-Za-z0-9._/-]+$ ]] || {
-            echo "Source branch contains unsupported characters." >&2
+          git check-ref-format --branch "$SOURCE_BRANCH" > /dev/null || {
+            echo "Source branch is not a valid Git branch name." >&2
             exit 1
           }
           gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" \

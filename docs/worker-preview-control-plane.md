@@ -102,12 +102,15 @@ Enter the six recorded values:
 - explicit self-review confirmation.
 
 The workflow re-reads the run and pull request from GitHub, downloads only that
-run's artifact, checks its checksum and manifest, rejects unsafe archive or
-Wrangler configuration, confirms the preview Worker is private and route-less,
-and uploads one inactive version with the two non-production form secrets.
+run's artifact, verifies that the source used the trusted `main` CI workflow,
+checks its checksum and manifest, rejects unsafe archive or Wrangler
+configuration, confirms the preview Worker is private and route-less, and
+uploads one inactive version with the two non-production form secrets.
 
 The upload does not deploy the version. Its summary records the version ID and
-provenance.
+provenance. The workflow also preserves partial upload metadata even when a
+later verification step fails, because Cloudflare may already have accepted the
+inactive version.
 
 ### Pause and verify after upload
 

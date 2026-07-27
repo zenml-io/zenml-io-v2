@@ -158,7 +158,12 @@ Before dispatching `Activate Exact Worker Version`, independently compare:
 - the initiating operator and explicit self-review.
 
 The workflow re-reads the exact version metadata, verifies provenance and
-bindings, saves the pre-activation deployment state, then runs:
+bindings, saves the pre-activation deployment state, and confirms the Worker
+still has no `workers.dev` endpoint, version preview URL, route, or custom
+domain. It repeats those exposure checks after activation. If any exposure is
+present, the workflow fails closed before changing the active version.
+
+After those checks, it runs:
 
 ```text
 wrangler versions deploy "<version-id>@100%" --name zenml-io-v2-worker --yes
@@ -168,6 +173,11 @@ This activates a version inside the Worker service. It still does not attach the
 production zone route. U4 must separately verify Pages fallback, rehearse route
 rollback on equivalent staging, approve the maintenance window, and attach the
 route.
+
+This U3 activation workflow is deliberately pre-cutover-only. Once U4 attaches
+a production route or custom domain, it will refuse to activate another version.
+U4 must define the separately reviewed post-cutover version rollback procedure
+before the route is attached.
 
 ## Rollback classes
 

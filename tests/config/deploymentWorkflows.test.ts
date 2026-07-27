@@ -143,6 +143,8 @@ describe("trusted production candidate uploader", () => {
     expect(candidateWorkflow).not.toContain("push:");
     expect(candidateWorkflow).toContain("github.ref == 'refs/heads/main'");
     expect(candidateWorkflow).toContain("timeout-minutes: 15");
+    expect(candidateWorkflow).toContain("group: zenml-io-worker-production");
+    expect(candidateWorkflow).toContain("cancel-in-progress: false");
     expect(candidateWorkflow).toContain("inputs.source_run_id");
     expect(candidateWorkflow).toContain("inputs.source_commit");
     expect(candidateWorkflow).toContain("inputs.source_branch");
@@ -150,7 +152,7 @@ describe("trusted production candidate uploader", () => {
       ".head_repository.full_name == $repository",
     );
     expect(candidateWorkflow).toContain(
-      '[[ "$SOURCE_BRANCH" =~ ^[A-Za-z0-9._/-]+$ ]]',
+      'git check-ref-format --branch "$SOURCE_BRANCH"',
     );
     expect(candidateWorkflow).toContain("actions/download-artifact@");
     expect(candidateWorkflow).toContain("sha256sum --check worker-dist.sha256");
@@ -276,9 +278,23 @@ describe("trusted production activation workflow", () => {
     expect(activationWorkflow).toContain('"$VERSION_ID@100%"');
     expect(activationWorkflow).toContain("--yes");
     expect(activationWorkflow).toContain(
-      '[[ "$SOURCE_BRANCH" =~ ^[A-Za-z0-9._/-]+$ ]]',
+      'git check-ref-format --branch "$SOURCE_BRANCH"',
     );
     expect(activationWorkflow).toContain("grep -Fq --");
+    expect(activationWorkflow).toContain(
+      "worker-subdomain-before-activation.json",
+    );
+    expect(activationWorkflow).toContain("workers-before-activation.json");
+    expect(activationWorkflow).toContain(
+      "worker-domains-before-activation.json",
+    );
+    expect(activationWorkflow).toContain(
+      "worker-subdomain-after-activation.json",
+    );
+    expect(activationWorkflow).toContain("workers-after-activation.json");
+    expect(activationWorkflow).toContain(
+      "worker-domains-after-activation.json",
+    );
     expectNoRouteOrDnsMutation(activationWorkflow);
   });
 
