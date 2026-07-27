@@ -73,7 +73,7 @@ import {
         <div class="hv-code">
           <div class="hv-code-line hv-code-comment"># wrap your agent, then pull in a real failure</div>
           <div class="hv-code-line">agent <span class="hv-code-op">=</span> <span class="hv-code-fn">KitaruAgent</span>(support_agent)</div>
-          <div class="hv-code-line">bad <span class="hv-code-op">=</span> agent.sessions.<span class="hv-code-fn">import_</span>(<span class="hv-code-str">"trace://8f3a91c2"</span>)</div>
+          <div class="hv-code-line">bad <span class="hv-code-op">=</span> agent.<span class="hv-code-fn">import_traces</span>(<span class="hv-code-str">"trace://8f3a91c2"</span>)</div>
           <div class="hv-code-line">&nbsp;</div>
           <div class="hv-code-line hv-code-comment"># score what happened &mdash; the agent never runs</div>
           <div class="hv-code-line hv-code-hl">agent.<span class="hv-code-fn">score</span>(bad, scorers<span class="hv-code-op">=</span>[<span class="hv-code-str">"refund_resolved"</span>])</div>
