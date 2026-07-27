@@ -1,7 +1,24 @@
+import { execFileSync } from "node:child_process";
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { parse } from "yaml";
 import { REQUIRED_WORKER_SECRETS } from "../../scripts/check-worker-bindings";
+
+interface WorkflowStep {
+  env?: Record<string, string>;
+  name: string;
+  run?: string;
+}
+
+interface ProductionWorkflow {
+  jobs: Record<
+    string,
+    {
+      steps: WorkflowStep[];
+    }
+  >;
+}
 
 const deployWorkflow = readFileSync(".github/workflows/deploy.yml", "utf8");
 const previewWorkflow = readFileSync(
@@ -16,6 +33,12 @@ const activationWorkflow = readFileSync(
   ".github/workflows/activate-worker.yml",
   "utf8",
 );
+const candidateWorkflowConfig = parse(candidateWorkflow) as ProductionWorkflow;
+const activationWorkflowConfig = parse(
+  activationWorkflow,
+) as ProductionWorkflow;
+const candidateSteps = candidateWorkflowConfig.jobs["upload-candidate"].steps;
+const activationSteps = activationWorkflowConfig.jobs.activate.steps;
 const allWorkflows = readdirSync(".github/workflows")
   .filter((filename) => filename.endsWith(".yml"))
   .map(
@@ -60,6 +83,162 @@ function expectNoRouteOrDnsMutation(workflow: string): void {
   expect(workflow).not.toContain("wrangler routes");
   expect(workflow).not.toContain("wrangler dns");
   expect(workflow).not.toContain("cloudflare/wrangler-action@");
+}
+
+function workflowStep(steps: WorkflowStep[], name: string): WorkflowStep {
+  const step = steps.find((candidate) => candidate.name === name);
+  expect(step, `missing workflow step: ${name}`).toBeDefined();
+  return step as WorkflowStep;
+}
+
+function jqProgramReadingFrom(run: string, source: string): string {
+  const destination = `' ${source} > /dev/null`;
+  const destinationIndex = run.indexOf(destination);
+  expect(destinationIndex, `missing jq source for ${source}`).toBeGreaterThan(
+    -1,
+  );
+  const commandPrefix = run.slice(0, destinationIndex);
+  const commandIndex = commandPrefix.lastIndexOf("jq -e");
+  expect(commandIndex, `missing jq command for ${source}`).toBeGreaterThan(-1);
+  const programStart = commandPrefix.indexOf("'", commandIndex);
+  expect(programStart, `missing jq program for ${source}`).toBeGreaterThan(-1);
+  return commandPrefix.slice(programStart + 1);
+}
+
+function expectJqResult(
+  program: string,
+  input: unknown,
+  succeeds: boolean,
+  args: string[] = [],
+): void {
+  const execute = () =>
+    execFileSync("jq", ["-e", ...args, program], {
+      input: JSON.stringify(input),
+      stdio: ["pipe", "pipe", "pipe"],
+    });
+
+  if (succeeds) {
+    expect(execute).not.toThrow();
+  } else {
+    expect(execute).toThrow();
+  }
+}
+
+function expectPrivateWorkerPredicates(
+  run: string,
+  sources: {
+    domains: string;
+    routes: string;
+    subdomain: string;
+  },
+): void {
+  const subdomainProgram = jqProgramReadingFrom(run, sources.subdomain);
+  const routesProgram = jqProgramReadingFrom(run, sources.routes);
+  const domainsProgram = jqProgramReadingFrom(run, sources.domains);
+  const workerArgs = ["--arg", "worker", "zenml-io-v2-worker"];
+
+  expectJqResult(
+    subdomainProgram,
+    {
+      result: { enabled: false, previews_enabled: false },
+      success: true,
+    },
+    true,
+  );
+  expectJqResult(
+    subdomainProgram,
+    {
+      result: { enabled: true, previews_enabled: false },
+      success: true,
+    },
+    false,
+  );
+
+  expectJqResult(
+    routesProgram,
+    {
+      result: [{ id: "zenml-io-v2-worker", routes: [] }],
+      success: true,
+    },
+    true,
+    workerArgs,
+  );
+  expectJqResult(
+    routesProgram,
+    {
+      result: [
+        {
+          id: "zenml-io-v2-worker",
+          routes: ["www.zenml.io/*"],
+        },
+      ],
+      success: true,
+    },
+    false,
+    workerArgs,
+  );
+
+  expectJqResult(
+    domainsProgram,
+    {
+      result: [],
+      result_info: { total_count: 0 },
+      success: true,
+    },
+    true,
+    workerArgs,
+  );
+  expectJqResult(
+    domainsProgram,
+    {
+      result: [
+        {
+          hostname: "www.zenml.io",
+          service: "zenml-io-v2-worker",
+        },
+      ],
+      result_info: { total_count: 1 },
+      success: true,
+    },
+    false,
+    workerArgs,
+  );
+}
+
+function expectSecretBindingPredicate(program: string): void {
+  expectJqResult(
+    program,
+    {
+      resources: {
+        bindings: [
+          { name: "TURNSTILE_SECRET_KEY", type: "secret_text" },
+          { name: "SEGMENT_FORMS_WRITE_KEY", type: "secret_text" },
+        ],
+      },
+    },
+    true,
+  );
+  expectJqResult(
+    program,
+    {
+      resources: {
+        bindings: [{ name: "TURNSTILE_SECRET_KEY", type: "secret_text" }],
+      },
+    },
+    false,
+  );
+  expectJqResult(
+    program,
+    {
+      resources: {
+        bindings: [
+          { name: "TURNSTILE_SECRET_KEY", type: "secret_text" },
+          { name: "SEGMENT_FORMS_WRITE_KEY", type: "plain_text" },
+        ],
+      },
+    },
+    false,
+  );
 }
 
 describe("credential-free Worker artifact workflow", () => {
@@ -180,6 +359,41 @@ describe("trusted production candidate uploader", () => {
     expectNoRouteOrDnsMutation(candidateWorkflow);
   });
 
+  it("rejects empty production secrets before creating or uploading a secrets file", () => {
+    const guardStep = workflowStep(
+      candidateSteps,
+      "Verify required production secrets",
+    );
+    const uploadStep = workflowStep(
+      candidateSteps,
+      "Upload inactive production candidate",
+    );
+    const guardIndex = candidateSteps.indexOf(guardStep);
+    const uploadStepIndex = candidateSteps.indexOf(uploadStep);
+    const inStepGuardIndex =
+      uploadStep.run?.indexOf(
+        'if [ -z "$SEGMENT_FORMS_WRITE_KEY" ] || [ -z "$TURNSTILE_SECRET_KEY" ]',
+      ) ?? -1;
+    const secretsFileIndex =
+      uploadStep.run?.indexOf(
+        'secrets_file="$RUNNER_TEMP/worker-production-secrets.env"',
+      ) ?? -1;
+    const uploadIndex =
+      uploadStep.run?.indexOf("wrangler versions upload") ?? -1;
+
+    expect(guardStep.env).toMatchObject({
+      SEGMENT_FORMS_WRITE_KEY: "$" + "{{ secrets.SEGMENT_FORMS_WRITE_KEY }}",
+      TURNSTILE_SECRET_KEY: "$" + "{{ secrets.TURNSTILE_SECRET_KEY }}",
+    });
+    expect(guardStep.run).toContain(
+      'if [ -z "$SEGMENT_FORMS_WRITE_KEY" ] || [ -z "$TURNSTILE_SECRET_KEY" ]',
+    );
+    expect(guardIndex).toBeLessThan(uploadStepIndex);
+    expect(inStepGuardIndex).toBeGreaterThan(-1);
+    expect(secretsFileIndex).toBeGreaterThan(inStepGuardIndex);
+    expect(uploadIndex).toBeGreaterThan(secretsFileIndex);
+  });
+
   it("records candidate identity before post-upload verification", () => {
     const outputIndex = candidateWorkflow.indexOf(
       'echo "version_id=$version_id"',
@@ -222,6 +436,35 @@ describe("trusted production candidate uploader", () => {
     expect(candidateWorkflow).toContain(
       ".result.enabled == false and .result.previews_enabled == false",
     );
+  });
+
+  it("executes candidate privacy and secret-binding predicates against rejecting states", () => {
+    const captureStep = workflowStep(
+      candidateSteps,
+      "Capture production deployment and private endpoint state",
+    );
+    const uploadStep = workflowStep(
+      candidateSteps,
+      "Upload inactive production candidate",
+    );
+    const verifyStep = workflowStep(
+      candidateSteps,
+      "Verify upload preserved deployment and private endpoints",
+    );
+
+    expectPrivateWorkerPredicates(captureStep.run ?? "", {
+      subdomain: '"$RUNNER_TEMP/worker-subdomain-before-upload.json"',
+      routes: '"$RUNNER_TEMP/workers-before-upload.json"',
+      domains: '"$RUNNER_TEMP/worker-domains-before-upload.json"',
+    });
+    expectSecretBindingPredicate(
+      jqProgramReadingFrom(uploadStep.run ?? "", "version-metadata.json"),
+    );
+    expectPrivateWorkerPredicates(verifyStep.run ?? "", {
+      subdomain: '"$RUNNER_TEMP/worker-subdomain-after-upload.json"',
+      routes: '"$RUNNER_TEMP/workers-after-upload.json"',
+      domains: '"$RUNNER_TEMP/worker-domains-after-upload.json"',
+    });
   });
 
   it("keeps required binding names aligned with the shared contract", () => {
@@ -298,6 +541,35 @@ describe("trusted production activation workflow", () => {
     expectNoRouteOrDnsMutation(activationWorkflow);
   });
 
+  it("executes activation privacy and secret-binding predicates against rejecting states", () => {
+    const bindingStep = workflowStep(
+      activationSteps,
+      "Verify required secret bindings",
+    );
+    const activateStep = workflowStep(
+      activationSteps,
+      "Activate exact Worker version",
+    );
+    const verifyStep = workflowStep(
+      activationSteps,
+      "Verify exact production activation",
+    );
+
+    expectSecretBindingPredicate(
+      jqProgramReadingFrom(bindingStep.run ?? "", "version-metadata.json"),
+    );
+    expectPrivateWorkerPredicates(activateStep.run ?? "", {
+      subdomain: "worker-subdomain-before-activation.json",
+      routes: "workers-before-activation.json",
+      domains: "worker-domains-before-activation.json",
+    });
+    expectPrivateWorkerPredicates(verifyStep.run ?? "", {
+      subdomain: "worker-subdomain-after-activation.json",
+      routes: "workers-after-activation.json",
+      domains: "worker-domains-after-activation.json",
+    });
+  });
+
   it("reconciles and preserves the exact post-activation deployment", () => {
     const deployIndex = activationWorkflow.indexOf("wrangler versions deploy");
     const verifyIndex = activationWorkflow.indexOf(
@@ -322,6 +594,54 @@ describe("trusted production activation workflow", () => {
     );
     expect(activationWorkflow).toContain("if: always()");
     expect(activationWorkflow).toContain("deployments-after.json");
+  });
+
+  it("executes the exact deployment predicate against split or wrong versions", () => {
+    const verifyStep = workflowStep(
+      activationSteps,
+      "Verify exact production activation",
+    );
+    const program = jqProgramReadingFrom(
+      verifyStep.run ?? "",
+      "deployments-after.json",
+    );
+    const version = "11111111-1111-1111-1111-111111111111";
+    const args = ["--arg", "version", version];
+    const exactDeployment = [
+      {
+        created_on: "2026-07-27T10:00:00Z",
+        versions: [{ percentage: 100, version_id: version }],
+      },
+    ];
+
+    expectJqResult(program, exactDeployment, true, args);
+    expectJqResult(
+      program,
+      [
+        {
+          ...exactDeployment[0],
+          versions: [{ percentage: 50, version_id: version }],
+        },
+      ],
+      false,
+      args,
+    );
+    expectJqResult(
+      program,
+      [
+        {
+          ...exactDeployment[0],
+          versions: [
+            {
+              percentage: 100,
+              version_id: "22222222-2222-2222-2222-222222222222",
+            },
+          ],
+        },
+      ],
+      false,
+      args,
+    );
   });
 });
 
