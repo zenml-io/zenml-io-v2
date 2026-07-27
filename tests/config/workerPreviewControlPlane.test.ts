@@ -1,4 +1,5 @@
 import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
@@ -265,6 +266,10 @@ const uploadWorkflowText = readFileSync(
   ".github/workflows/upload-worker-preview.yml",
   "utf8",
 );
+const trustedArtifactWorkflowText = readFileSync(
+  ".github/trusted/worker-artifact-workflow.yml",
+  "utf8",
+);
 const uploadWorkflow = parse(uploadWorkflowText) as ManualPreviewWorkflow;
 const uploadJob = uploadWorkflow.jobs.upload;
 const uploadSteps = Object.fromEntries(
@@ -275,6 +280,21 @@ function uploadStep(name: string): WorkflowStep {
   const workflowStep = uploadSteps[name];
   expect(workflowStep, `missing upload workflow step: ${name}`).toBeDefined();
   return workflowStep;
+}
+
+function expectReviewedArtifactWorkflowGuard(run: string | undefined): void {
+  expect(run).toContain(
+    "contents/.github/workflows/deploy.yml?ref=$build_commit",
+  );
+  expect(run).toContain(
+    "contents/.github/trusted/worker-artifact-workflow.yml?ref=$GITHUB_SHA",
+  );
+  expect(run).not.toContain(
+    "contents/.github/trusted/worker-artifact-workflow.yml?ref=main",
+  );
+  expect(run).toContain(
+    'if [ "$source_workflow_blob" != "$trusted_workflow_blob" ]; then',
+  );
 }
 
 describe("preview Worker upload workflow", () => {
@@ -344,6 +364,30 @@ describe("preview Worker upload workflow", () => {
     }
   });
 
+  it("pins the reviewed artifact producer without enabling it on main", () => {
+    // PR #171 at ef4597c209795f2145d7722aff617d64b1a6d213.
+    const gitBlobSha = createHash("sha1")
+      .update(
+        `blob ${Buffer.byteLength(trustedArtifactWorkflowText)}\0${trustedArtifactWorkflowText}`,
+      )
+      .digest("hex");
+
+    expect(gitBlobSha).toBe("e312055b4e72f7142b7ac4e854f0577df08411d4");
+    expect(trustedArtifactWorkflowText).toContain(
+      "name: Website CI and Worker Artifact",
+    );
+    expect(trustedArtifactWorkflowText).toContain(
+      "Package the validated Worker artifact",
+    );
+    expect(trustedArtifactWorkflowText).toContain(
+      "Publish the validated Worker artifact",
+    );
+    expect(trustedArtifactWorkflowText).not.toContain(
+      "cloudflare/wrangler-action@",
+    );
+    expect(trustedArtifactWorkflowText).not.toContain("CLOUDFLARE_API_TOKEN");
+  });
+
   it("downloads and verifies only the named run artifact", () => {
     const downloadStep = uploadStep("Download the exact CI artifact");
     const provenanceStep = uploadStep(
@@ -369,6 +413,11 @@ describe("preview Worker upload workflow", () => {
     expect(provenanceStep.run).toContain(".source_branch == $branch");
     expect(provenanceStep.run).toContain(".source_commit == $commit");
     expect(provenanceStep.run).toContain(".run_id == $run_id");
+    expect(provenanceStep.run).toContain(
+      'jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json"',
+    );
+    expect(provenanceStep.run).toContain(".build_commit == $build_commit");
+    expectReviewedArtifactWorkflowGuard(provenanceStep.run);
     expect(safetyStep.run).toContain("tar -tzf worker-dist.tar.gz");
     expect(safetyStep.run).toContain("tar -tvzf worker-dist.tar.gz");
     expect(safetyStep.run).toContain(
@@ -422,6 +471,23 @@ describe("preview Worker upload workflow", () => {
     expect(uploadVersionStep.run).toContain("source-run-before-upload.json");
     expect(uploadVersionStep.run).toContain("source-pr-before-upload.json");
     expect(uploadVersionStep.run).toContain(".head.sha == $commit");
+    expect(uploadVersionStep.run).toContain(
+      ".merge_commit_sha == $build_commit",
+    );
+    expectReviewedArtifactWorkflowGuard(uploadVersionStep.run);
+    const trustedWorkflowIndex =
+      uploadVersionStep.run?.indexOf(
+        "contents/.github/trusted/worker-artifact-workflow.yml?ref=$GITHUB_SHA",
+      ) ?? -1;
+    const prHeadRecheckIndex =
+      uploadVersionStep.run?.indexOf(
+        "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER",
+      ) ?? -1;
+    const uploadIndex =
+      uploadVersionStep.run?.indexOf("wrangler versions upload") ?? -1;
+    expect(trustedWorkflowIndex).toBeGreaterThan(-1);
+    expect(prHeadRecheckIndex).toBeGreaterThan(trustedWorkflowIndex);
+    expect(uploadIndex).toBeGreaterThan(prHeadRecheckIndex);
     expect(uploadVersionStep.run).toContain("--secrets-file");
     expect(uploadVersionStep.run).not.toContain("--preview-alias");
     expect(uploadWorkflowText).not.toContain("--preview-alias");
