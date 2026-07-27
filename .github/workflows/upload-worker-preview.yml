@@ -139,6 +139,7 @@ jobs:
         shell: bash
         env:
           ARTIFACT_SHA256: ${{ inputs.artifact_sha256 }}
+          GH_TOKEN: ${{ github.token }}
           SOURCE_BRANCH: ${{ inputs.source_branch }}
           SOURCE_COMMIT: ${{ inputs.source_commit }}
           SOURCE_RUN_ID: ${{ inputs.source_run_id }}
@@ -162,6 +163,28 @@ jobs:
               (.required_secrets | sort) ==
                 (["SEGMENT_FORMS_WRITE_KEY", "TURNSTILE_SECRET_KEY"] | sort)
             ' worker-manifest.json > /dev/null
+          build_commit="$(
+            jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json"
+          )"
+          [[ "$build_commit" =~ ^[0-9a-f]{40}$ ]]
+          jq -e \
+            --arg build_commit "$build_commit" '
+              .build_commit == $build_commit
+            ' worker-manifest.json > /dev/null
+          source_workflow_blob="$(
+            gh api \
+              "repos/$GITHUB_REPOSITORY/contents/.github/workflows/deploy.yml?ref=$build_commit" \
+              --jq .sha
+          )"
+          trusted_workflow_blob="$(
+            gh api \
+              "repos/$GITHUB_REPOSITORY/contents/.github/trusted/worker-artifact-workflow.yml?ref=$GITHUB_SHA" \
+              --jq .sha
+          )"
+          if [ "$source_workflow_blob" != "$trusted_workflow_blob" ]; then
+            echo "Source run did not use the reviewed artifact workflow definition." >&2
+            exit 1
+          fi
 
       - name: Reject an unsafe Worker artifact
         shell: bash
@@ -322,6 +345,10 @@ jobs:
         run: |
           set -euo pipefail
           cd candidate
+          build_commit="$(
+            jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json"
+          )"
+          [[ "$build_commit" =~ ^[0-9a-f]{40}$ ]]
 
           # Close the time-of-check gap before the privileged upload. A push to
           # the PR after the first check must invalidate this dispatch.
@@ -342,30 +369,18 @@ jobs:
               .head_sha == $commit and
               any(.pull_requests[]?; .number == $pr)
             ' "$RUNNER_TEMP/source-run-before-upload.json" > /dev/null
-          gh api \
-            "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" \
-            > "$RUNNER_TEMP/source-pr-before-upload.json"
-          jq -e \
-            --arg branch "$SOURCE_BRANCH" \
-            --arg commit "$SOURCE_COMMIT" \
-            --arg repository "$GITHUB_REPOSITORY" '
-              .state == "open" and
-              .head.repo.full_name == $repository and
-              .head.ref == $branch and
-              .head.sha == $commit
-            ' "$RUNNER_TEMP/source-pr-before-upload.json" > /dev/null
           source_workflow_blob="$(
             gh api \
-              "repos/$GITHUB_REPOSITORY/contents/.github/workflows/deploy.yml?ref=$SOURCE_COMMIT" \
+              "repos/$GITHUB_REPOSITORY/contents/.github/workflows/deploy.yml?ref=$build_commit" \
               --jq .sha
           )"
           trusted_workflow_blob="$(
             gh api \
-              "repos/$GITHUB_REPOSITORY/contents/.github/workflows/deploy.yml?ref=main" \
+              "repos/$GITHUB_REPOSITORY/contents/.github/trusted/worker-artifact-workflow.yml?ref=$GITHUB_SHA" \
               --jq .sha
           )"
           if [ "$source_workflow_blob" != "$trusted_workflow_blob" ]; then
-            echo "Source run no longer matches the trusted CI workflow definition." >&2
+            echo "Source run no longer matches the reviewed artifact workflow definition." >&2
             exit 1
           fi
 
@@ -380,6 +395,22 @@ jobs:
           export WRANGLER_OUTPUT_FILE_PATH="$output_file"
           artifact_sha256="$(jq -r .artifact_sha256 worker-manifest.json)"
           version_message="source_commit=$SOURCE_COMMIT source_branch=$SOURCE_BRANCH source_run_id=$SOURCE_RUN_ID artifact_sha256=$artifact_sha256"
+
+          gh api \
+            "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" \
+            > "$RUNNER_TEMP/source-pr-before-upload.json"
+          jq -e \
+            --arg branch "$SOURCE_BRANCH" \
+            --arg build_commit "$build_commit" \
+            --arg commit "$SOURCE_COMMIT" \
+            --arg repository "$GITHUB_REPOSITORY" '
+              .state == "open" and
+              .head.repo.full_name == $repository and
+              .head.ref == $branch and
+              .head.sha == $commit and
+              .merge_commit_sha == $build_commit
+            ' "$RUNNER_TEMP/source-pr-before-upload.json" > /dev/null
+
           wrangler versions upload \
             --config upload-wrangler.json \
             --secrets-file "$secrets_file" \
