@@ -102,13 +102,12 @@ describe("preview Worker bootstrap workflow", () => {
 
   it("uses a pinned Wrangler to deploy only an inert private placeholder", () => {
     const preparationStep = step("Prepare inert private placeholder");
-    const uploadStep = step(
-      "Upload the inert first version without activating it",
+    const deployStep = step(
+      "Create the route-less Worker with its inert first deployment",
     );
     const disableStep = step(
-      "Disable public Worker endpoints before activation",
+      "Reassert that public Worker endpoints are disabled",
     );
-    const activateStep = step("Activate only the verified inert version");
 
     expect(step("Install pinned Wrangler").run).toBe(
       "npm install --global wrangler@4.110.0",
@@ -118,23 +117,17 @@ describe("preview Worker bootstrap workflow", () => {
     expect(preparationStep.run).toContain("workers_dev: false");
     expect(preparationStep.run).toContain("preview_urls: false");
     expect(preparationStep.run).toContain("status: 503");
-    expect(uploadStep.run).toContain("wrangler versions upload");
-    expect(uploadStep.run).toContain("--strict");
-    expect(uploadStep.run).not.toContain("wrangler deploy");
+    expect(deployStep.run).toContain("wrangler deploy");
+    expect(deployStep.run).toContain("--strict");
+    expect(deployStep.run).not.toContain("wrangler versions upload");
     expect(disableStep.run).toContain(
       '\'{"enabled":false,"previews_enabled":false}\'',
     );
-    expect(activateStep.run).toContain("wrangler versions deploy");
-    expect(activateStep.run).toContain(
-      '"$' + '{{ steps.upload.outputs.version_id }}@100%"',
-    );
+    expect(bootstrapWorkflowText).not.toContain("wrangler versions deploy");
 
     const stepNames = bootstrapJob.steps.map(({ name }) => name);
-    expect(stepNames.indexOf(uploadStep.name)).toBeLessThan(
+    expect(stepNames.indexOf(deployStep.name)).toBeLessThan(
       stepNames.indexOf(disableStep.name),
-    );
-    expect(stepNames.indexOf(disableStep.name)).toBeLessThan(
-      stepNames.indexOf(activateStep.name),
     );
   });
 
@@ -144,7 +137,7 @@ describe("preview Worker bootstrap workflow", () => {
     );
 
     expect(verificationStep.if).toBe(
-      "$" + "{{ always() && steps.upload.outcome != 'skipped' }}",
+      "$" + "{{ always() && steps.deploy.outcome != 'skipped' }}",
     );
     expect(verificationStep.run).toContain(
       "/workers/scripts/$WORKER_NAME/subdomain",

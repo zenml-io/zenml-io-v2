@@ -89,27 +89,21 @@ jobs:
             preview_urls: false
           }' > "$bootstrap_dir/wrangler.jsonc"
 
-      - name: Upload the inert first version without activating it
-        id: upload
+      - name: Create the route-less Worker with its inert first deployment
+        id: deploy
         shell: bash
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
         run: |
           set -euo pipefail
-          wrangler versions upload \
+          wrangler deploy \
             --config "$RUNNER_TEMP/worker-preview-bootstrap/wrangler.jsonc" \
-            --message "Inert route-less preview Worker bootstrap" \
+            --message "Create inert route-less preview Worker" \
             --strict \
             --tag preview-bootstrap
-          wrangler versions list \
-            --name "$WORKER_NAME" \
-            --json > "$RUNNER_TEMP/worker-versions.json"
-          jq -e 'length == 1' "$RUNNER_TEMP/worker-versions.json" > /dev/null
-          version_id="$(jq -er '.[0].id' "$RUNNER_TEMP/worker-versions.json")"
-          echo "version_id=$version_id" >> "$GITHUB_OUTPUT"
 
-      - name: Disable public Worker endpoints before activation
+      - name: Reassert that public Worker endpoints are disabled
         shell: bash
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -134,22 +128,8 @@ jobs:
             .result.enabled == false and .result.previews_enabled == false
           ' "$RUNNER_TEMP/subdomain-disabled.json" > /dev/null
 
-      - name: Activate only the verified inert version
-        id: activate
-        shell: bash
-        env:
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
-        run: |
-          set -euo pipefail
-          wrangler versions deploy \
-            "${{ steps.upload.outputs.version_id }}@100%" \
-            --message "Activate inert private preview Worker bootstrap" \
-            --name "$WORKER_NAME" \
-            --yes
-
       - name: Verify the Worker is private, route-less, domain-less, and recorded
-        if: ${{ always() && steps.upload.outcome != 'skipped' }}
+        if: ${{ always() && steps.deploy.outcome != 'skipped' }}
         shell: bash
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
