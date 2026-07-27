@@ -50,8 +50,11 @@ mutation and requires its own approval.
 After the upload and activation workflows exist on `main`:
 
 1. Reconcile the Astro 5 migration PR with current `main`.
-2. Keep the trusted manual
-   `.github/workflows/upload-worker-preview.yml` during conflict resolution.
+2. Keep both the trusted manual
+   `.github/workflows/upload-worker-preview.yml` and the reviewed producer
+   snapshot `.github/trusted/worker-artifact-workflow.yml` during conflict
+   resolution. The snapshot must remain byte-identical to
+   `.github/workflows/deploy.yml`.
    Do not restore the feature branch's older automatic `workflow_run`
    uploader.
 3. Run the complete PR CI workflow.
@@ -65,7 +68,10 @@ After the upload and activation workflows exist on `main`:
    - `worker-dist.tar.gz` SHA-256 from both the checksum file and an
      independent computation;
    - manifest source branch, commit, run ID, and required binding names.
-6. Confirm the PR head, CI run, checksum, and manifest all agree.
+6. Confirm the PR head, CI run, checksum, and manifest all agree. The current
+   pull request `merge_commit_sha` must still equal the manifest
+   `build_commit`. Any later merge to `main` recomputes that test merge and
+   invalidates the artifact, so rerun CI and record the new values.
 
 Any earlier artifact becomes historical evidence only. Do not upload it.
 

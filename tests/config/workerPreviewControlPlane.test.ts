@@ -266,6 +266,10 @@ const uploadWorkflowText = readFileSync(
   ".github/workflows/upload-worker-preview.yml",
   "utf8",
 );
+const artifactWorkflowText = readFileSync(
+  ".github/workflows/deploy.yml",
+  "utf8",
+);
 const trustedArtifactWorkflowText = readFileSync(
   ".github/trusted/worker-artifact-workflow.yml",
   "utf8",
@@ -377,6 +381,7 @@ describe("preview Worker upload workflow", () => {
       .digest("hex");
 
     expect(gitBlobSha).toBe("e312055b4e72f7142b7ac4e854f0577df08411d4");
+    expect(trustedArtifactWorkflowText).toBe(artifactWorkflowText);
     expect(trustedArtifactWorkflowText).toContain(
       "name: Website CI and Worker Artifact",
     );
@@ -477,6 +482,12 @@ describe("preview Worker upload workflow", () => {
     expect(uploadVersionStep.run).toContain(".head.sha == $commit");
     expect(uploadVersionStep.run).toContain(
       ".merge_commit_sha == $build_commit",
+    );
+    expect(uploadVersionStep.run).toContain(
+      'jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json"',
+    );
+    expect(uploadVersionStep.run).not.toContain(
+      'jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr-before-upload.json"',
     );
     expectReviewedArtifactWorkflowGuard(uploadVersionStep.run);
     const trustedWorkflowIndex =
@@ -605,6 +616,53 @@ describe("preview Worker upload workflow", () => {
       },
       false,
       workerArgs,
+    );
+  });
+
+  it("executes the final PR merge-commit guard against current and stale states", () => {
+    const uploadVersionStep = uploadStep("Upload one inactive preview version");
+    const program = jqProgramWritingTo(
+      uploadVersionStep.run ?? "",
+      "source-pr-before-upload.json",
+    );
+    const commit = "a".repeat(40);
+    const buildCommit = "b".repeat(40);
+    const args = [
+      "--arg",
+      "branch",
+      "feat/astro5-workers-runtime",
+      "--arg",
+      "build_commit",
+      buildCommit,
+      "--arg",
+      "commit",
+      commit,
+      "--arg",
+      "repository",
+      "zenml-io/zenml-io-v2",
+    ];
+    const currentPullRequest = {
+      state: "open",
+      head: {
+        ref: "feat/astro5-workers-runtime",
+        repo: { full_name: "zenml-io/zenml-io-v2" },
+        sha: commit,
+      },
+      merge_commit_sha: buildCommit,
+    };
+
+    expectJqResult(program, currentPullRequest, true, args);
+    expectJqResult(
+      program,
+      { ...currentPullRequest, merge_commit_sha: "c".repeat(40) },
+      false,
+      args,
+    );
+    expectJqResult(
+      program,
+      { ...currentPullRequest, state: "closed" },
+      false,
+      args,
     );
   });
 });
