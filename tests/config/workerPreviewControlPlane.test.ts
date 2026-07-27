@@ -145,8 +145,10 @@ describe("preview Worker bootstrap workflow", () => {
     expect(verificationStep.run).toContain(
       ".result.enabled == false and .result.previews_enabled == false",
     );
-    expect(verificationStep.run).toContain('.routes | type == "array"');
-    expect(verificationStep.run).toContain(".routes | length == 0");
+    expect(verificationStep.run).toContain('has("routes")');
+    expect(verificationStep.run).toContain(".routes == null");
+    expect(verificationStep.run).toContain(".routes | type");
+    expect(verificationStep.run).toContain(".routes | length");
     expect(verificationStep.run).not.toContain(".routes // []");
     expect(verificationStep.run).toContain("/workers/domains");
     expect(verificationStep.run).toContain(
