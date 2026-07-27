@@ -287,6 +287,9 @@ function expectReviewedArtifactWorkflowGuard(run: string | undefined): void {
     "contents/.github/workflows/deploy.yml?ref=$build_commit",
   );
   expect(run).toContain(
+    "contents/.github/trusted/worker-artifact-workflow.yml?ref=$GITHUB_SHA",
+  );
+  expect(run).not.toContain(
     "contents/.github/trusted/worker-artifact-workflow.yml?ref=main",
   );
   expect(run).toContain(
@@ -474,7 +477,7 @@ describe("preview Worker upload workflow", () => {
     expectReviewedArtifactWorkflowGuard(uploadVersionStep.run);
     const trustedWorkflowIndex =
       uploadVersionStep.run?.indexOf(
-        "contents/.github/trusted/worker-artifact-workflow.yml?ref=main",
+        "contents/.github/trusted/worker-artifact-workflow.yml?ref=$GITHUB_SHA",
       ) ?? -1;
     const prHeadRecheckIndex =
       uploadVersionStep.run?.indexOf(

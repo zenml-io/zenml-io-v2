@@ -163,7 +163,7 @@ jobs:
           )"
           trusted_workflow_blob="$(
             gh api \
-              "repos/$GITHUB_REPOSITORY/contents/.github/trusted/worker-artifact-workflow.yml?ref=main" \
+              "repos/$GITHUB_REPOSITORY/contents/.github/trusted/worker-artifact-workflow.yml?ref=$GITHUB_SHA" \
               --jq .sha
           )"
           if [ "$source_workflow_blob" != "$trusted_workflow_blob" ]; then
@@ -361,7 +361,7 @@ jobs:
           )"
           trusted_workflow_blob="$(
             gh api \
-              "repos/$GITHUB_REPOSITORY/contents/.github/trusted/worker-artifact-workflow.yml?ref=main" \
+              "repos/$GITHUB_REPOSITORY/contents/.github/trusted/worker-artifact-workflow.yml?ref=$GITHUB_SHA" \
               --jq .sha
           )"
           if [ "$source_workflow_blob" != "$trusted_workflow_blob" ]; then
