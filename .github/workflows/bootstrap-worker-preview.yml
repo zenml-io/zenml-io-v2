@@ -149,9 +149,16 @@ jobs:
             "$api_base/workers/scripts" > "$RUNNER_TEMP/workers-after.json"
           jq -e --arg worker "$WORKER_NAME" '
             .success == true and
-            ([.result[] | select(.id == $worker)] | length == 1) and
-            ([.result[] | select(.id == $worker)][0].routes | type == "array") and
-            ([.result[] | select(.id == $worker)][0].routes | length == 0)
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            ($workers[0] | has("routes")) and
+            (
+              $workers[0].routes == null or
+              (
+                ($workers[0].routes | type) == "array" and
+                ($workers[0].routes | length) == 0
+              )
+            )
           ' "$RUNNER_TEMP/workers-after.json" > /dev/null
 
           curl \
