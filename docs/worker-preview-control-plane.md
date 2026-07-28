@@ -49,29 +49,38 @@ mutation and requires its own approval.
 
 After the upload and activation workflows exist on `main`:
 
-1. Reconcile the Astro 5 migration PR with current `main`.
-2. Keep both the trusted manual
+1. Choose one eligible source:
+   - an open same-repository pull request at its exact current head; or
+   - the successful `push` CI run for the exact current `main` commit.
+2. For a pull request, reconcile the Astro 5 migration PR with current `main`.
+3. Keep both the trusted manual
    `.github/workflows/upload-worker-preview.yml` and the reviewed producer
    snapshot `.github/trusted/worker-artifact-workflow.yml` during conflict
    resolution. The snapshot must remain byte-identical to
    `.github/workflows/deploy.yml`.
    Do not restore the feature branch's older automatic `workflow_run`
    uploader.
-3. Run the complete PR CI workflow.
-4. Download its `worker-dist` artifact.
-5. Record:
-   - pull request number;
+4. Run the complete CI workflow for the chosen source.
+5. Download its `worker-dist` artifact.
+6. Record:
+   - pull request number for a pull-request artifact, or leave it empty for an
+     exact current-`main` artifact;
    - source run ID;
    - source branch;
    - source commit;
-   - tested merge commit from the artifact manifest and current pull request;
+   - tested merge commit from the artifact manifest and current pull request,
+     or the exact current `main` commit for a `main` artifact;
    - `worker-dist.tar.gz` SHA-256 from both the checksum file and an
      independent computation;
    - manifest source branch, commit, run ID, and required binding names.
-6. Confirm the PR head, CI run, checksum, and manifest all agree. The current
-   pull request `merge_commit_sha` must still equal the manifest
-   `build_commit`. Any later merge to `main` recomputes that test merge and
-   invalidates the artifact, so rerun CI and record the new values.
+7. Confirm the source state, CI run, checksum, and manifest all agree:
+   - For a pull request, its current `merge_commit_sha` must equal the manifest
+     `build_commit`. A later merge to `main` recomputes that test merge and
+     invalidates the artifact.
+   - For `main`, the source branch must be exactly `main`, and the source commit,
+     manifest build commit, and trusted uploader dispatch commit must all be
+     identical to the live `main` tip. A later `main` commit invalidates the
+     earlier artifact.
 
 Any earlier artifact becomes historical evidence only. Do not upload it.
 
@@ -79,8 +88,10 @@ Any earlier artifact becomes historical evidence only. Do not upload it.
 
 Pause and capture a timestamped read-only snapshot:
 
-1. The candidate PR head and successful CI run still match the recorded
-   identifiers.
+1. The chosen source and successful CI run still match the recorded
+   identifiers. For a pull request, recheck its open head and tested merge
+   commit. For `main`, recheck that the artifact commit is still the exact
+   trusted uploader dispatch commit and live `main` tip.
 2. The preview Worker exists.
 3. Its `workers.dev` endpoint and version preview URLs are disabled.
 4. It has no custom domain and no Worker route.
@@ -99,18 +110,21 @@ action.
 Open **Actions → Upload Exact Preview Worker Version → Run workflow** and
 select `main`.
 
-Enter the six recorded values:
+Enter the recorded values:
 
-- PR number;
+- PR number for a pull-request artifact, or leave it empty for an exact
+  current-`main` artifact;
 - source run ID;
 - source branch;
 - source commit;
 - artifact SHA-256;
 - explicit self-review confirmation.
 
-The workflow re-reads the run and pull request from GitHub, downloads only that
-run's artifact, verifies that its tested merge commit used the immutable
-reviewed artifact workflow,
+The workflow re-reads the run and, when applicable, the pull request from
+GitHub. It downloads only that run's artifact and verifies that its tested
+build commit used the immutable reviewed artifact workflow. A `main` artifact
+is accepted only when its branch and commit exactly match the trusted uploader
+dispatch commit and the live `main` tip. It then
 checks its checksum and manifest, rejects unsafe archive or Wrangler
 configuration, confirms the preview Worker is private and route-less, and
 uploads one inactive version with the two non-production form secrets.

@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
     inputs:
       pr_number:
-        description: Pull request that produced the reviewed artifact
-        required: true
+        description: Pull request number; leave empty only for an exact current-main push artifact
+        required: false
         type: string
       source_run_id:
         description: Successful Website CI and Worker Artifact run ID
@@ -36,6 +36,26 @@ permissions: {}
 
 env:
   WORKER_NAME: zenml-io-v2-worker-preview
+  SOURCE_RUN_PREDICATE: |
+    .conclusion == "success" and
+    .path == $path and
+    .head_repository.full_name == $repository and
+    .head_branch == $branch and
+    .head_sha == $commit and
+    (
+      (
+        .event == "pull_request" and
+        ($pr | test("^[0-9]+$")) and
+        any(.pull_requests[]?; (.number | tostring) == $pr)
+      ) or
+      (
+        .event == "push" and
+        $pr == "" and
+        $branch == "main" and
+        $commit == $trusted_commit and
+        $commit == $live_main_commit
+      )
+    )
 
 jobs:
   upload:
@@ -65,13 +85,13 @@ jobs:
           SOURCE_RUN_ID: ${{ inputs.source_run_id }}
         run: |
           set -euo pipefail
-          [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]
+          [[ -z "$PR_NUMBER" || "$PR_NUMBER" =~ ^[0-9]+$ ]]
           [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]
           git check-ref-format --branch "$SOURCE_BRANCH" > /dev/null
           [[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]
           [[ "$ARTIFACT_SHA256" =~ ^[0-9a-f]{64}$ ]]
 
-      - name: Verify the exact source run and PR head
+      - name: Verify the exact source run and source state
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -84,33 +104,48 @@ jobs:
           gh api \
             "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" \
             > "$RUNNER_TEMP/source-run.json"
+          live_main_commit=""
+          if [ -z "$PR_NUMBER" ]; then
+            live_main_commit="$(
+              gh api \
+                "repos/$GITHUB_REPOSITORY/git/ref/heads/main" \
+                --jq .object.sha
+            )"
+          fi
           jq -e \
             --arg branch "$SOURCE_BRANCH" \
             --arg commit "$SOURCE_COMMIT" \
+            --arg live_main_commit "$live_main_commit" \
             --arg path ".github/workflows/deploy.yml" \
+            --arg pr "$PR_NUMBER" \
             --arg repository "$GITHUB_REPOSITORY" \
-            --argjson pr "$PR_NUMBER" '
-              .conclusion == "success" and
-              .event == "pull_request" and
-              .path == $path and
-              .head_repository.full_name == $repository and
-              .head_branch == $branch and
-              .head_sha == $commit and
-              any(.pull_requests[]?; .number == $pr)
-            ' "$RUNNER_TEMP/source-run.json" > /dev/null
+            --arg trusted_commit "$GITHUB_SHA" \
+            "$SOURCE_RUN_PREDICATE" \
+            "$RUNNER_TEMP/source-run.json" > /dev/null
 
-          gh api \
-            "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" \
-            > "$RUNNER_TEMP/source-pr.json"
-          jq -e \
-            --arg branch "$SOURCE_BRANCH" \
-            --arg commit "$SOURCE_COMMIT" \
-            --arg repository "$GITHUB_REPOSITORY" '
-              .state == "open" and
-              .head.repo.full_name == $repository and
-              .head.ref == $branch and
-              .head.sha == $commit
-            ' "$RUNNER_TEMP/source-pr.json" > /dev/null
+          source_event="$(jq -er .event "$RUNNER_TEMP/source-run.json")"
+          if [ "$source_event" = "pull_request" ]; then
+            gh api \
+              "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" \
+              > "$RUNNER_TEMP/source-pr.json"
+            jq -e \
+              --arg branch "$SOURCE_BRANCH" \
+              --arg commit "$SOURCE_COMMIT" \
+              --arg repository "$GITHUB_REPOSITORY" '
+                .state == "open" and
+                .head.repo.full_name == $repository and
+                .head.ref == $branch and
+                .head.sha == $commit
+              ' "$RUNNER_TEMP/source-pr.json" > /dev/null
+            build_commit="$(
+              jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json"
+            )"
+          else
+            build_commit="$SOURCE_COMMIT"
+          fi
+          [[ "$build_commit" =~ ^[0-9a-f]{40}$ ]]
+          printf '%s\n' "$source_event" > "$RUNNER_TEMP/source-event"
+          printf '%s\n' "$build_commit" > "$RUNNER_TEMP/build-commit"
 
       - name: Download the exact CI artifact
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
@@ -135,12 +170,15 @@ jobs:
             > "$RUNNER_TEMP/expected-worker-dist.sha256"
           sha256sum --check "$RUNNER_TEMP/expected-worker-dist.sha256"
           sha256sum --check worker-dist.sha256
+          source_event="$(< "$RUNNER_TEMP/source-event")"
+          build_commit="$(< "$RUNNER_TEMP/build-commit")"
           jq -e \
             --arg artifact_sha256 "$ARTIFACT_SHA256" \
             --arg branch "$SOURCE_BRANCH" \
             --arg commit "$SOURCE_COMMIT" \
-            --arg run_id "$SOURCE_RUN_ID" '
-              .event_name == "pull_request" and
+            --arg run_id "$SOURCE_RUN_ID" \
+            --arg source_event "$source_event" '
+              .event_name == $source_event and
               .artifact_sha256 == $artifact_sha256 and
               .source_branch == $branch and
               .source_commit == $commit and
@@ -148,9 +186,6 @@ jobs:
               (.required_secrets | sort) ==
                 (["SEGMENT_FORMS_WRITE_KEY", "TURNSTILE_SECRET_KEY"] | sort)
             ' worker-manifest.json > /dev/null
-          build_commit="$(
-            jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json"
-          )"
           [[ "$build_commit" =~ ^[0-9a-f]{40}$ ]]
           jq -e \
             --arg build_commit "$build_commit" '
@@ -330,30 +365,33 @@ jobs:
         run: |
           set -euo pipefail
           cd candidate
-          build_commit="$(
-            jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json"
-          )"
+          source_event="$(< "$RUNNER_TEMP/source-event")"
+          build_commit="$(< "$RUNNER_TEMP/build-commit")"
           [[ "$build_commit" =~ ^[0-9a-f]{40}$ ]]
 
-          # Close the time-of-check gap before the privileged upload. A push to
-          # the PR after the first check must invalidate this dispatch.
+          # Close the time-of-check gap before the privileged upload. A changed
+          # PR head or a main artifact from any other commit must fail here.
           gh api \
             "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" \
             > "$RUNNER_TEMP/source-run-before-upload.json"
+          live_main_commit=""
+          if [ "$source_event" = "push" ]; then
+            live_main_commit="$(
+              gh api \
+                "repos/$GITHUB_REPOSITORY/git/ref/heads/main" \
+                --jq .object.sha
+            )"
+          fi
           jq -e \
             --arg branch "$SOURCE_BRANCH" \
             --arg commit "$SOURCE_COMMIT" \
+            --arg live_main_commit "$live_main_commit" \
             --arg path ".github/workflows/deploy.yml" \
+            --arg pr "$PR_NUMBER" \
             --arg repository "$GITHUB_REPOSITORY" \
-            --argjson pr "$PR_NUMBER" '
-              .conclusion == "success" and
-              .event == "pull_request" and
-              .path == $path and
-              .head_repository.full_name == $repository and
-              .head_branch == $branch and
-              .head_sha == $commit and
-              any(.pull_requests[]?; .number == $pr)
-            ' "$RUNNER_TEMP/source-run-before-upload.json" > /dev/null
+            --arg trusted_commit "$GITHUB_SHA" \
+            "$SOURCE_RUN_PREDICATE" \
+            "$RUNNER_TEMP/source-run-before-upload.json" > /dev/null
           source_workflow_blob="$(
             gh api \
               "repos/$GITHUB_REPOSITORY/contents/.github/workflows/deploy.yml?ref=$build_commit" \
@@ -381,20 +419,32 @@ jobs:
           artifact_sha256="$(jq -r .artifact_sha256 worker-manifest.json)"
           version_message="source_commit=$SOURCE_COMMIT source_branch=$SOURCE_BRANCH source_run_id=$SOURCE_RUN_ID artifact_sha256=$artifact_sha256"
 
-          gh api \
-            "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" \
-            > "$RUNNER_TEMP/source-pr-before-upload.json"
-          jq -e \
-            --arg branch "$SOURCE_BRANCH" \
-            --arg build_commit "$build_commit" \
-            --arg commit "$SOURCE_COMMIT" \
-            --arg repository "$GITHUB_REPOSITORY" '
-              .state == "open" and
-              .head.repo.full_name == $repository and
-              .head.ref == $branch and
-              .head.sha == $commit and
-              .merge_commit_sha == $build_commit
-            ' "$RUNNER_TEMP/source-pr-before-upload.json" > /dev/null
+          if [ "$source_event" = "pull_request" ]; then
+            gh api \
+              "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" \
+              > "$RUNNER_TEMP/source-pr-before-upload.json"
+            jq -e \
+              --arg branch "$SOURCE_BRANCH" \
+              --arg build_commit "$build_commit" \
+              --arg commit "$SOURCE_COMMIT" \
+              --arg repository "$GITHUB_REPOSITORY" '
+                .state == "open" and
+                .head.repo.full_name == $repository and
+                .head.ref == $branch and
+                .head.sha == $commit and
+                .merge_commit_sha == $build_commit
+              ' "$RUNNER_TEMP/source-pr-before-upload.json" > /dev/null
+          fi
+
+          if [ "$source_event" = "push" ]; then
+            live_main_commit="$(
+              gh api \
+                "repos/$GITHUB_REPOSITORY/git/ref/heads/main" \
+                --jq .object.sha
+            )"
+            [[ "$live_main_commit" == "$SOURCE_COMMIT" ]]
+            [[ "$live_main_commit" == "$GITHUB_SHA" ]]
+          fi
 
           wrangler versions upload \
             --config upload-wrangler.json \
@@ -481,6 +531,8 @@ jobs:
             ${{ runner.temp }}/deployments-after-upload.json
             ${{ runner.temp }}/worker-subdomain.json
             ${{ runner.temp }}/worker-subdomain-after-upload.json
+            ${{ runner.temp }}/source-event
+            ${{ runner.temp }}/build-commit
             ${{ runner.temp }}/source-run.json
             ${{ runner.temp }}/source-pr.json
             ${{ runner.temp }}/source-run-before-upload.json
@@ -498,12 +550,16 @@ jobs:
           SOURCE_RUN_ID: ${{ inputs.source_run_id }}
           VERSION_ID: ${{ steps.upload.outputs.version_id }}
         run: |
+          source_event="$(< "$RUNNER_TEMP/source-event")"
+          build_commit="$(< "$RUNNER_TEMP/build-commit")"
           {
             echo "## Inactive preview Worker version"
             echo
             printf -- "- Worker: \`%s\`\n" "$WORKER_NAME"
             printf -- "- Version: \`%s\`\n" "$VERSION_ID"
+            printf -- "- Source event: \`%s\`\n" "$source_event"
             printf -- "- Source commit: \`%s\`\n" "$SOURCE_COMMIT"
+            printf -- "- Build commit: \`%s\`\n" "$build_commit"
             printf -- "- Source branch: \`%s\`\n" "$SOURCE_BRANCH"
             printf -- "- CI run: \`%s\`\n" "$SOURCE_RUN_ID"
             printf -- "- Artifact SHA-256: \`%s\`\n" "$ARTIFACT_SHA256"

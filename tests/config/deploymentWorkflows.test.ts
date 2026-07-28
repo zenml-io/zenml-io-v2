@@ -266,7 +266,7 @@ describe("credential-free Worker artifact workflow", () => {
 });
 
 describe("trusted Worker preview uploader", () => {
-  it("requires an explicit trusted-main dispatch for an exact PR artifact", () => {
+  it("requires an explicit trusted-main dispatch for an exact eligible artifact", () => {
     expect(previewWorkflow).toContain("workflow_dispatch:");
     expect(previewWorkflow).not.toContain("workflow_run:");
     expect(previewWorkflow).not.toContain("pull_request:");
@@ -280,6 +280,7 @@ describe("trusted Worker preview uploader", () => {
     expect(previewWorkflow).toContain("inputs.self_reviewed");
     expect(previewWorkflow).toContain("actions/download-artifact@");
     expect(previewWorkflow).toContain(".head.sha == $commit");
+    expect(previewWorkflow).toContain("$commit == $trusted_commit");
     expect(previewWorkflow).toContain("cancel-in-progress: false");
   });
 
