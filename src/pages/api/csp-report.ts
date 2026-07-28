@@ -19,6 +19,8 @@ const SAFE_CSP_KEYWORDS = new Set([
   "self",
 ]);
 
+const SAFE_CSP_SCHEMES = new Set(["data:", "blob:"]);
+
 function sanitizeCspResource(value: unknown): string {
   if (typeof value !== "string" || value.length === 0) {
     return "";
@@ -28,6 +30,10 @@ function sanitizeCspResource(value: unknown): string {
     return value;
   }
 
+  if (value === "data" || value === "blob") {
+    return `${value}:`;
+  }
+
   try {
     const url = new URL(value);
 
@@ -35,7 +41,11 @@ function sanitizeCspResource(value: unknown): string {
       return `${url.origin}${url.pathname}`;
     }
 
-    return url.protocol;
+    if (SAFE_CSP_SCHEMES.has(url.protocol)) {
+      return url.protocol;
+    }
+
+    return "(other-scheme)";
   } catch {
     return "(unparseable)";
   }

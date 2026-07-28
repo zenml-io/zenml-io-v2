@@ -46,6 +46,8 @@ describe("/api/csp-report", () => {
   it.each([
     ["data:text/javascript,alert('secret')", "data:"],
     ["blob:https://www.zenml.io/private-identifier", "blob:"],
+    ["data", "data:"],
+    ["blob", "blob:"],
   ])("logs only the scheme for %s resources", async (blockedUri, expected) => {
     const log = vi.spyOn(console, "log").mockImplementation(() => undefined);
 
@@ -65,6 +67,26 @@ describe("/api/csp-report", () => {
     );
     expect(JSON.stringify(log.mock.calls)).not.toContain("private-identifier");
     expect(JSON.stringify(log.mock.calls)).not.toContain("alert");
+  });
+
+  it("does not log an attacker-controlled custom URL scheme", async () => {
+    const log = vi.spyOn(console, "log").mockImplementation(() => undefined);
+
+    await POST(
+      makeContext(
+        JSON.stringify({
+          "csp-report": {
+            "blocked-uri": "private-sentinel-scheme:payload",
+          },
+        }),
+      ),
+    );
+
+    expect(log).toHaveBeenCalledWith(
+      "[csp-report]",
+      expect.objectContaining({ blockedResource: "(other-scheme)" }),
+    );
+    expect(JSON.stringify(log.mock.calls)).not.toContain("private-sentinel");
   });
 
   it.each([
