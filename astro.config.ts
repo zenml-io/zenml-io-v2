@@ -31,7 +31,13 @@ const sitemapExcludePaths = new Set([
 export default defineConfig({
   site: "https://www.zenml.io",
   output: "static",
-  adapter: cloudflare(),
+  adapter: cloudflare({
+    // Vitest loads this config to build its Vite environment. Starting the
+    // Cloudflare dev proxy there would create a second workerd process and try
+    // to register the Worker globally. Runtime parity is exercised separately
+    // through the checked-in Wrangler configuration.
+    platformProxy: { enabled: process.env.NODE_ENV !== "test" },
+  }),
   trailingSlash: "never",
   build: {
     format: "file",

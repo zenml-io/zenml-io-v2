@@ -1,0 +1,382 @@
+name: Activate Exact Preview Worker Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_id:
+        description: Exact inactive preview Worker version ID
+        required: true
+        type: string
+      source_run_id:
+        description: CI run ID recorded on that version
+        required: true
+        type: string
+      source_branch:
+        description: Source branch recorded on that version
+        required: true
+        type: string
+      source_commit:
+        description: Source commit recorded on that version
+        required: true
+        type: string
+      artifact_sha256:
+        description: Artifact SHA-256 recorded on that version
+        required: true
+        type: string
+      self_reviewed:
+        description: I reviewed the exact version and approve only preview activation
+        required: true
+        type: boolean
+
+concurrency:
+  group: zenml-io-worker-preview
+  cancel-in-progress: false
+
+permissions: {}
+
+env:
+  WORKER_NAME: zenml-io-v2-worker-preview
+
+jobs:
+  activate:
+    name: Activate exact private preview version
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: worker-preview
+    permissions:
+      contents: read
+    steps:
+      - name: Require explicit self-review
+        if: inputs.self_reviewed != true
+        run: |
+          echo "The exact preview version and provenance must be self-reviewed." >&2
+          exit 1
+
+      - name: Validate activation identifiers
+        shell: bash
+        env:
+          ARTIFACT_SHA256: ${{ inputs.artifact_sha256 }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_COMMIT: ${{ inputs.source_commit }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+          VERSION_ID: ${{ inputs.version_id }}
+        run: |
+          set -euo pipefail
+          [[ "$VERSION_ID" =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$ ]]
+          [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]
+          git check-ref-format --branch "$SOURCE_BRANCH" > /dev/null
+          [[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$ARTIFACT_SHA256" =~ ^[0-9a-f]{64}$ ]]
+
+      - name: Install pinned Wrangler
+        run: npm install --global wrangler@4.110.0
+
+      - name: Verify the preview Worker is private and route-less
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
+        run: |
+          set -euo pipefail
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          worker_url="$api_base/workers/scripts/$WORKER_NAME"
+
+          status="$(
+            curl \
+              --connect-timeout 10 \
+              --max-time 30 \
+              --silent \
+              --show-error \
+              --output /dev/null \
+              --write-out "%{http_code}" \
+              --header "$auth_header" \
+              "$worker_url"
+          )"
+          if [ "$status" != "200" ]; then
+            echo "Preview Worker is unavailable (HTTP $status)." >&2
+            exit 1
+          fi
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$worker_url/subdomain" > "$RUNNER_TEMP/worker-subdomain.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' "$RUNNER_TEMP/worker-subdomain.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" > "$RUNNER_TEMP/workers-before-activation.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            ($workers[0] | has("routes")) and
+            (
+              $workers[0].routes == null or
+              (
+                ($workers[0].routes | type) == "array" and
+                ($workers[0].routes | length) == 0
+              )
+            )
+          ' "$RUNNER_TEMP/workers-before-activation.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/domains?service=$WORKER_NAME&per_page=100" \
+            > "$RUNNER_TEMP/worker-domains.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            (.result | type) == "array" and
+            ([.result[] | select(.service == $worker)] | length == 0) and
+            .result_info.total_count == 0
+          ' "$RUNNER_TEMP/worker-domains.json" > /dev/null
+
+      - name: Inspect the exact preview version
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
+          VERSION_ID: ${{ inputs.version_id }}
+        run: |
+          set -euo pipefail
+          wrangler versions view "$VERSION_ID" \
+            --name "$WORKER_NAME" \
+            --json > "$RUNNER_TEMP/version-metadata.json"
+
+      - name: Verify exact version provenance and bindings
+        shell: bash
+        env:
+          ARTIFACT_SHA256: ${{ inputs.artifact_sha256 }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_COMMIT: ${{ inputs.source_commit }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          jq -e '
+            [.resources.bindings[]? |
+              select(.type == "secret_text") | .name] as $names |
+            ($names | index("TURNSTILE_SECRET_KEY") != null) and
+            ($names | index("SEGMENT_FORMS_WRITE_KEY") != null)
+          ' "$RUNNER_TEMP/version-metadata.json" > /dev/null
+          message="$(
+            jq -er '.annotations["workers/message"]' \
+              "$RUNNER_TEMP/version-metadata.json"
+          )"
+          grep -Fq -- " source_commit=$SOURCE_COMMIT " <<< " $message " ||
+            { echo "Version source commit does not match." >&2; exit 1; }
+          grep -Fq -- " source_branch=$SOURCE_BRANCH " <<< " $message " ||
+            { echo "Version source branch does not match." >&2; exit 1; }
+          grep -Fq -- " source_run_id=$SOURCE_RUN_ID " <<< " $message " ||
+            { echo "Version CI run does not match." >&2; exit 1; }
+          grep -Fq -- " artifact_sha256=$ARTIFACT_SHA256 " <<< " $message " ||
+            { echo "Version artifact digest does not match." >&2; exit 1; }
+
+      - name: Capture pre-activation deployment
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
+        run: |
+          set -euo pipefail
+          wrangler deployments list \
+            --name "$WORKER_NAME" \
+            --json > "$RUNNER_TEMP/previous-deployments.json"
+
+      - name: Preserve pre-activation deployment metadata
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: preview-pre-activation-${{ inputs.version_id }}
+          path: |
+            ${{ runner.temp }}/previous-deployments.json
+            ${{ runner.temp }}/version-metadata.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Record activation inputs
+        shell: bash
+        env:
+          ARTIFACT_SHA256: ${{ inputs.artifact_sha256 }}
+          INITIATOR: ${{ github.actor }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_COMMIT: ${{ inputs.source_commit }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+          VERSION_ID: ${{ inputs.version_id }}
+        run: |
+          {
+            echo "## Preview Worker activation"
+            echo
+            printf -- "- Worker: \`%s\`\n" "$WORKER_NAME"
+            printf -- "- Candidate version: \`%s\`\n" "$VERSION_ID"
+            printf -- "- Source commit: \`%s\`\n" "$SOURCE_COMMIT"
+            printf -- "- Source branch: \`%s\`\n" "$SOURCE_BRANCH"
+            printf -- "- CI run: \`%s\`\n" "$SOURCE_RUN_ID"
+            printf -- "- Artifact SHA-256: \`%s\`\n" "$ARTIFACT_SHA256"
+            printf -- "- Initiator/self-reviewer: \`%s\`\n" "$INITIATOR"
+            echo
+            echo "The pre-activation deployment state is retained on this run."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Activate exact preview version
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
+          VERSION_ID: ${{ inputs.version_id }}
+        run: |
+          set -euo pipefail
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+
+          # Repeat the public-exposure guard at the mutation boundary. The
+          # earlier check gives the operator a fast failure; this one narrows
+          # the window for an out-of-band dashboard or API change.
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts/$WORKER_NAME/subdomain" \
+            > "$RUNNER_TEMP/worker-subdomain-before-deploy.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' "$RUNNER_TEMP/worker-subdomain-before-deploy.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" \
+            > "$RUNNER_TEMP/workers-before-deploy.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            ($workers[0] | has("routes")) and
+            (
+              $workers[0].routes == null or
+              (
+                ($workers[0].routes | type) == "array" and
+                ($workers[0].routes | length) == 0
+              )
+            )
+          ' "$RUNNER_TEMP/workers-before-deploy.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/domains?service=$WORKER_NAME&per_page=100" \
+            > "$RUNNER_TEMP/worker-domains-before-deploy.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            (.result | type) == "array" and
+            ([.result[] | select(.service == $worker)] | length == 0) and
+            .result_info.total_count == 0
+          ' "$RUNNER_TEMP/worker-domains-before-deploy.json" > /dev/null
+
+          wrangler versions deploy "$VERSION_ID@100%" \
+            --name "$WORKER_NAME" \
+            --yes
+
+      - name: Verify exact activation and private endpoints
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
+          VERSION_ID: ${{ inputs.version_id }}
+        run: |
+          set -euo pipefail
+          wrangler deployments list \
+            --name "$WORKER_NAME" \
+            --json > "$RUNNER_TEMP/deployments-after.json"
+          jq -e --arg version "$VERSION_ID" '
+            length >= 1 and
+            (
+              max_by(.created_on) as $latest |
+              ($latest.versions | length) == 1 and
+              $latest.versions[0].version_id == $version and
+              $latest.versions[0].percentage == 100
+            )
+          ' "$RUNNER_TEMP/deployments-after.json" > /dev/null
+
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts/$WORKER_NAME/subdomain" \
+            > "$RUNNER_TEMP/worker-subdomain-after.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' "$RUNNER_TEMP/worker-subdomain-after.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" > "$RUNNER_TEMP/workers-after-activation.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            ($workers[0] | has("routes")) and
+            (
+              $workers[0].routes == null or
+              (
+                ($workers[0].routes | type) == "array" and
+                ($workers[0].routes | length) == 0
+              )
+            )
+          ' "$RUNNER_TEMP/workers-after-activation.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/domains?service=$WORKER_NAME&per_page=100" \
+            > "$RUNNER_TEMP/worker-domains-after-activation.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            (.result | type) == "array" and
+            ([.result[] | select(.service == $worker)] | length == 0) and
+            .result_info.total_count == 0
+          ' "$RUNNER_TEMP/worker-domains-after-activation.json" > /dev/null

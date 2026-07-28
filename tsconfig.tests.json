@@ -9,7 +9,9 @@
     "tests/**/*.test.ts",
     "vitest.config.ts",
     "scripts/check-dist-smoke.ts",
-    "scripts/check-island-hydration.ts"
+    "scripts/check-island-hydration.ts",
+    "scripts/check-worker-bindings.ts",
+    "scripts/check-worker-runtime.ts"
   ],
   "exclude": ["dist", "design", ".wrangler", "node_modules"]
 }

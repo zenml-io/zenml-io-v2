@@ -11,7 +11,8 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 - **Kitaru** — durable runtime for AI agents (folded in from `kitaru.ai`)
 
 - **Production URL**: https://www.zenml.io
-- **Hosting**: Cloudflare Pages (edge CDN, branch previews, auto CI/CD)
+- **Hosting**: Cloudflare Pages remains live while immutable Cloudflare Worker
+  versions are validated for the planned cutover
 - **Scale**: content collections defined in `src/content.config.ts`, ~2,350 content items, ~2,560 assets on R2
 - **History**: Migrated from Webflow in Feb 2026 (`docs/MIGRATION.md`). Unified with `kitaru.ai` in May 2026 (`MERGE_PLAN.md`).
 - **Private details**: See `CLAUDE.private.md` (gitignored) for infrastructure IDs, traffic numbers, and internal docs index
@@ -31,7 +32,7 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 |-------|--------|
 | Framework | **Astro** (TypeScript) — static-first, content collections, islands |
 | Content | **Markdown (.md) in git** — Astro Content Collections with Zod schemas. **Use `.md` NOT `.mdx`** (MDX v2 treats HTML as strict JSX, breaking raw HTML in content). **Exception:** the `compare-kitaru` collection uses `.mdx` because the ported Kitaru-vs-X pages rely on inline component imports — documented in MERGE_PLAN.md Phase 3 known gaps. |
-| Hosting | **Cloudflare Pages** — edge CDN, branch previews, auto CI/CD |
+| Hosting | **Cloudflare Pages** in production; **Cloudflare Workers** migration candidate |
 | Assets | **Cloudflare R2** — object storage for images/files |
 | Styling | **Tailwind CSS** — utility-first |
 | Interactive | **Preact islands** — client-side components including LLMOpsFilter, MLOpsFilter, ContactForm, DemoRequestForm, BlogSearch, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, and RoiCalculator |
@@ -79,9 +80,21 @@ The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was s
 - Make targeted git commits (only relevant files)
 - **Do not commit intermediate planning/review artifacts by default.** Files under `docs/plans/`, `docs/reviews/`, `prompt-exports/`, or similar orchestration scratch locations are working notes for agents unless the user explicitly asks to keep them. Before staging, check `git status --short` and leave unrelated or intermediate plans/reviews unstaged. If a plan becomes a durable product/architecture document, confirm that intent before committing it
 - After running tests, re-run them if you make subsequent changes
-- **Before pushing code changes**, run the same local quality gates that PR CI runs: `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`, `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm smoke:dist`, then `pnpm check:islands` (or the combined command `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:islands`). If you change code after any of those commands, rerun the affected check before pushing. Documentation-only edits can skip the build unless they change generated content or site behavior
-- PR CI enforces the package quality gates in the required `Repo checks` job: `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`, `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm smoke:dist`, then `pnpm check:islands`. PR previews deploy afterward when Cloudflare credentials are available, but preview deployment is not the required merge gate
-- **`pnpm check:islands` needs a browser.** First run: `pnpm exec playwright install chromium`. It serves `dist/` and drives a real Chromium to prove the Preact islands actually hydrate — `pnpm build` and `pnpm smoke:dist` only prove the HTML exists, and an island can ship perfect markup and still be inert. This matters most for framework upgrades (see the Astro 5→7 tracking issue): a broken upgrade otherwise passes a fully green CI. Note that Dependabot PRs get **no preview deploy** (GitHub withholds secrets from bot-triggered runs, so the Cloudflare deploy step skips itself and still reports green), so this check is the only automated hydration signal on those PRs
+- **Before pushing code changes**, run the same local quality gates that PR CI runs: `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`, `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm smoke:dist`, `pnpm check:worker`, then `pnpm check:islands` (or the combined command `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:worker && pnpm check:islands`). If you change code after any of those commands, rerun the affected check before pushing. Documentation-only edits can skip the build unless they change generated content or site behavior
+- PR CI enforces the package quality gates in the required `Repo checks` job:
+  `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`,
+  `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm smoke:dist`,
+  `pnpm check:worker`, then `pnpm check:islands`. It packages that exact
+  validated `dist/` output. A trusted manual workflow on `main` may upload the
+  exact artifact from an eligible same-repository PR to the isolated preview
+  Worker after explicit review; fork and Dependabot runs receive no Cloudflare
+  credentials. Preview upload is not the required merge gate
+- **`pnpm check:islands` needs a browser.** First run: `pnpm exec playwright install chromium`. It serves `dist/` and drives a real Chromium to prove the Preact islands actually hydrate — `pnpm build` and `pnpm smoke:dist` only prove the HTML exists, and an island can ship perfect markup and still be inert. This matters most for framework upgrades (see the Astro 5→7 tracking issue): a broken upgrade otherwise passes a fully green CI. Dependabot and fork PRs get **no preview upload**, so this check is their only automated hydration signal
+- **Worker release boundary:** `.github/workflows/deploy.yml` never receives
+  Cloudflare credentials. Preview and candidate workflows consume its exact
+  artifact without running branch package scripts. Candidate upload,
+  exact-version activation, and production route attachment are separate
+  decisions. See `docs/worker-release-runbook.md`
 - **Build output**: `pnpm build` generates ~2000+ lines of output listing every generated page. Always run it in background mode and use `tail` to check only the final lines for success/failure
 - **Credential management**: When you receive API credentials, tokens, or keys, **always add them to `.env`** for persistence across sessions. The `.env` file is gitignored and safe for secrets
 - VERY IMPORTANT: **Before opening a PR or making a large commit**, always run `/simplify` to review changed code for reuse opportunities, quality issues, and efficiency improvements. Fix any issues it finds before committing.

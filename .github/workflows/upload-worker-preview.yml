@@ -1,0 +1,513 @@
+name: Upload Exact Preview Worker Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: Pull request that produced the reviewed artifact
+        required: true
+        type: string
+      source_run_id:
+        description: Successful Website CI and Worker Artifact run ID
+        required: true
+        type: string
+      source_branch:
+        description: Exact source branch recorded by that run
+        required: true
+        type: string
+      source_commit:
+        description: Exact source commit recorded by that run
+        required: true
+        type: string
+      artifact_sha256:
+        description: Exact worker-dist.tar.gz SHA-256
+        required: true
+        type: string
+      self_reviewed:
+        description: I reviewed the exact artifact and approve only an inactive preview upload
+        required: true
+        type: boolean
+
+concurrency:
+  group: zenml-io-worker-preview
+  cancel-in-progress: false
+
+permissions: {}
+
+env:
+  WORKER_NAME: zenml-io-v2-worker-preview
+
+jobs:
+  upload:
+    name: Upload exact inactive preview version
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: worker-preview
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: read
+    steps:
+      - name: Require explicit self-review
+        if: inputs.self_reviewed != true
+        run: |
+          echo "The exact preview artifact must be explicitly self-reviewed." >&2
+          exit 1
+
+      - name: Validate dispatch identifiers
+        shell: bash
+        env:
+          ARTIFACT_SHA256: ${{ inputs.artifact_sha256 }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_COMMIT: ${{ inputs.source_commit }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]
+          [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]
+          git check-ref-format --branch "$SOURCE_BRANCH" > /dev/null
+          [[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]
+          [[ "$ARTIFACT_SHA256" =~ ^[0-9a-f]{64}$ ]]
+
+      - name: Verify the exact source run and PR head
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_COMMIT: ${{ inputs.source_commit }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          gh api \
+            "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" \
+            > "$RUNNER_TEMP/source-run.json"
+          jq -e \
+            --arg branch "$SOURCE_BRANCH" \
+            --arg commit "$SOURCE_COMMIT" \
+            --arg path ".github/workflows/deploy.yml" \
+            --arg repository "$GITHUB_REPOSITORY" \
+            --argjson pr "$PR_NUMBER" '
+              .conclusion == "success" and
+              .event == "pull_request" and
+              .path == $path and
+              .head_repository.full_name == $repository and
+              .head_branch == $branch and
+              .head_sha == $commit and
+              any(.pull_requests[]?; .number == $pr)
+            ' "$RUNNER_TEMP/source-run.json" > /dev/null
+
+          gh api \
+            "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" \
+            > "$RUNNER_TEMP/source-pr.json"
+          jq -e \
+            --arg branch "$SOURCE_BRANCH" \
+            --arg commit "$SOURCE_COMMIT" \
+            --arg repository "$GITHUB_REPOSITORY" '
+              .state == "open" and
+              .head.repo.full_name == $repository and
+              .head.ref == $branch and
+              .head.sha == $commit
+            ' "$RUNNER_TEMP/source-pr.json" > /dev/null
+
+      - name: Download the exact CI artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: worker-dist
+          path: candidate
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Verify artifact provenance and checksum
+        shell: bash
+        env:
+          ARTIFACT_SHA256: ${{ inputs.artifact_sha256 }}
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_COMMIT: ${{ inputs.source_commit }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          cd candidate
+          printf "%s  worker-dist.tar.gz\n" "$ARTIFACT_SHA256" \
+            > "$RUNNER_TEMP/expected-worker-dist.sha256"
+          sha256sum --check "$RUNNER_TEMP/expected-worker-dist.sha256"
+          sha256sum --check worker-dist.sha256
+          jq -e \
+            --arg artifact_sha256 "$ARTIFACT_SHA256" \
+            --arg branch "$SOURCE_BRANCH" \
+            --arg commit "$SOURCE_COMMIT" \
+            --arg run_id "$SOURCE_RUN_ID" '
+              .event_name == "pull_request" and
+              .artifact_sha256 == $artifact_sha256 and
+              .source_branch == $branch and
+              .source_commit == $commit and
+              .run_id == $run_id and
+              (.required_secrets | sort) ==
+                (["SEGMENT_FORMS_WRITE_KEY", "TURNSTILE_SECRET_KEY"] | sort)
+            ' worker-manifest.json > /dev/null
+          build_commit="$(
+            jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json"
+          )"
+          [[ "$build_commit" =~ ^[0-9a-f]{40}$ ]]
+          jq -e \
+            --arg build_commit "$build_commit" '
+              .build_commit == $build_commit
+            ' worker-manifest.json > /dev/null
+          source_workflow_blob="$(
+            gh api \
+              "repos/$GITHUB_REPOSITORY/contents/.github/workflows/deploy.yml?ref=$build_commit" \
+              --jq .sha
+          )"
+          trusted_workflow_blob="$(
+            gh api \
+              "repos/$GITHUB_REPOSITORY/contents/.github/trusted/worker-artifact-workflow.yml?ref=$GITHUB_SHA" \
+              --jq .sha
+          )"
+          if [ "$source_workflow_blob" != "$trusted_workflow_blob" ]; then
+            echo "Source run did not use the reviewed artifact workflow definition." >&2
+            exit 1
+          fi
+
+      - name: Reject an unsafe Worker artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd candidate
+          tar -tzf worker-dist.tar.gz > "$RUNNER_TEMP/archive-paths.txt"
+          if grep -Eq '(^/|(^|/)\.\.(/|$))' "$RUNNER_TEMP/archive-paths.txt"; then
+            echo "Worker archive contains an unsafe path." >&2
+            exit 1
+          fi
+          tar -tvzf worker-dist.tar.gz > "$RUNNER_TEMP/archive-members.txt"
+          while read -r mode _; do
+            case "${mode:0:1}" in
+              -|d) ;;
+              *)
+                echo "Worker archive contains a link or special file." >&2
+                exit 1
+                ;;
+            esac
+          done < "$RUNNER_TEMP/archive-members.txt"
+          jq -e '
+            ((keys - [
+              "$schema", "assets", "compatibility_date",
+              "compatibility_flags", "main", "name", "preview_urls",
+              "secrets", "workers_dev"
+            ]) | length == 0) and
+            .name == "zenml-io-v2-worker" and
+            .main == "dist/_worker.js/index.js" and
+            .workers_dev == false and
+            .preview_urls == false and
+            .assets.directory == "./dist" and
+            .assets.binding == "ASSETS" and
+            (has("route") | not) and
+            (has("routes") | not) and
+            (has("build") | not)
+          ' wrangler.jsonc > /dev/null
+
+      - name: Verify the preview Worker is private and route-less
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
+        run: |
+          set -euo pipefail
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          worker_url="$api_base/workers/scripts/$WORKER_NAME"
+
+          status="$(
+            curl \
+              --connect-timeout 10 \
+              --max-time 30 \
+              --silent \
+              --show-error \
+              --output /dev/null \
+              --write-out "%{http_code}" \
+              --header "$auth_header" \
+              "$worker_url"
+          )"
+          if [ "$status" != "200" ]; then
+            echo "Preview Worker is unavailable (HTTP $status)." >&2
+            exit 1
+          fi
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$worker_url/subdomain" > "$RUNNER_TEMP/worker-subdomain.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' "$RUNNER_TEMP/worker-subdomain.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" > "$RUNNER_TEMP/workers-before-upload.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            ($workers[0] | has("routes")) and
+            (
+              $workers[0].routes == null or
+              (
+                ($workers[0].routes | type) == "array" and
+                ($workers[0].routes | length) == 0
+              )
+            )
+          ' "$RUNNER_TEMP/workers-before-upload.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/domains?service=$WORKER_NAME&per_page=100" \
+            > "$RUNNER_TEMP/worker-domains.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            (.result | type) == "array" and
+            ([.result[] | select(.service == $worker)] | length == 0) and
+            .result_info.total_count == 0
+          ' "$RUNNER_TEMP/worker-domains.json" > /dev/null
+
+      - name: Prepare trusted preview configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd candidate
+          mkdir dist
+          tar -C dist -xzf worker-dist.tar.gz
+          jq '
+            .name = env.WORKER_NAME |
+            .workers_dev = false |
+            .preview_urls = false |
+            del(.secrets)
+          ' wrangler.jsonc > upload-wrangler.json
+
+      - name: Install pinned Wrangler
+        run: npm install --global wrangler@4.110.0
+
+      - name: Capture active deployment before upload
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
+        run: |
+          set -euo pipefail
+          wrangler deployments list \
+            --name "$WORKER_NAME" \
+            --json > "$RUNNER_TEMP/deployments-before-upload.json"
+
+      - name: Upload one inactive preview version
+        id: upload
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+          SEGMENT_FORMS_WRITE_KEY: ${{ secrets.WORKERS_PREVIEW_SEGMENT_FORMS_WRITE_KEY }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_COMMIT: ${{ inputs.source_commit }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+          TURNSTILE_SECRET_KEY: ${{ secrets.WORKERS_PREVIEW_TURNSTILE_SECRET_KEY }}
+        run: |
+          set -euo pipefail
+          cd candidate
+          build_commit="$(
+            jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json"
+          )"
+          [[ "$build_commit" =~ ^[0-9a-f]{40}$ ]]
+
+          # Close the time-of-check gap before the privileged upload. A push to
+          # the PR after the first check must invalidate this dispatch.
+          gh api \
+            "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" \
+            > "$RUNNER_TEMP/source-run-before-upload.json"
+          jq -e \
+            --arg branch "$SOURCE_BRANCH" \
+            --arg commit "$SOURCE_COMMIT" \
+            --arg path ".github/workflows/deploy.yml" \
+            --arg repository "$GITHUB_REPOSITORY" \
+            --argjson pr "$PR_NUMBER" '
+              .conclusion == "success" and
+              .event == "pull_request" and
+              .path == $path and
+              .head_repository.full_name == $repository and
+              .head_branch == $branch and
+              .head_sha == $commit and
+              any(.pull_requests[]?; .number == $pr)
+            ' "$RUNNER_TEMP/source-run-before-upload.json" > /dev/null
+          source_workflow_blob="$(
+            gh api \
+              "repos/$GITHUB_REPOSITORY/contents/.github/workflows/deploy.yml?ref=$build_commit" \
+              --jq .sha
+          )"
+          trusted_workflow_blob="$(
+            gh api \
+              "repos/$GITHUB_REPOSITORY/contents/.github/trusted/worker-artifact-workflow.yml?ref=$GITHUB_SHA" \
+              --jq .sha
+          )"
+          if [ "$source_workflow_blob" != "$trusted_workflow_blob" ]; then
+            echo "Source run no longer matches the reviewed artifact workflow definition." >&2
+            exit 1
+          fi
+
+          secrets_file="$RUNNER_TEMP/worker-preview-secrets.env"
+          output_file="$RUNNER_TEMP/wrangler-preview-output.jsonl"
+          trap 'rm -f "$secrets_file"' EXIT
+          {
+            printf 'SEGMENT_FORMS_WRITE_KEY=%s\n' "$SEGMENT_FORMS_WRITE_KEY"
+            printf 'TURNSTILE_SECRET_KEY=%s\n' "$TURNSTILE_SECRET_KEY"
+          } > "$secrets_file"
+          chmod 600 "$secrets_file"
+          export WRANGLER_OUTPUT_FILE_PATH="$output_file"
+          artifact_sha256="$(jq -r .artifact_sha256 worker-manifest.json)"
+          version_message="source_commit=$SOURCE_COMMIT source_branch=$SOURCE_BRANCH source_run_id=$SOURCE_RUN_ID artifact_sha256=$artifact_sha256"
+
+          gh api \
+            "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" \
+            > "$RUNNER_TEMP/source-pr-before-upload.json"
+          jq -e \
+            --arg branch "$SOURCE_BRANCH" \
+            --arg build_commit "$build_commit" \
+            --arg commit "$SOURCE_COMMIT" \
+            --arg repository "$GITHUB_REPOSITORY" '
+              .state == "open" and
+              .head.repo.full_name == $repository and
+              .head.ref == $branch and
+              .head.sha == $commit and
+              .merge_commit_sha == $build_commit
+            ' "$RUNNER_TEMP/source-pr-before-upload.json" > /dev/null
+
+          wrangler versions upload \
+            --config upload-wrangler.json \
+            --secrets-file "$secrets_file" \
+            --tag preview-candidate \
+            --message "$version_message"
+          jq -s 'map(select(.type == "version-upload")) | last' \
+            "$output_file" > upload-result.json
+          version_id="$(jq -er .version_id upload-result.json)"
+          {
+            echo "version_id=$version_id"
+            echo "artifact_sha256=$artifact_sha256"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Verify uploaded version provenance and bindings
+        shell: bash
+        env:
+          ARTIFACT_SHA256: ${{ inputs.artifact_sha256 }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PREVIEW_TOKEN }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_COMMIT: ${{ inputs.source_commit }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+          VERSION_ID: ${{ steps.upload.outputs.version_id }}
+        run: |
+          set -euo pipefail
+          wrangler versions view "$VERSION_ID" \
+            --name "$WORKER_NAME" \
+            --json > "$RUNNER_TEMP/uploaded-version.json"
+          jq -e '
+            [.resources.bindings[]? |
+              select(.type == "secret_text") | .name] as $names |
+            ($names | index("TURNSTILE_SECRET_KEY") != null) and
+            ($names | index("SEGMENT_FORMS_WRITE_KEY") != null)
+          ' "$RUNNER_TEMP/uploaded-version.json" > /dev/null
+          message="$(
+            jq -er '.annotations["workers/message"]' \
+              "$RUNNER_TEMP/uploaded-version.json"
+          )"
+          grep -Fq -- " source_commit=$SOURCE_COMMIT " <<< " $message "
+          grep -Fq -- " source_branch=$SOURCE_BRANCH " <<< " $message "
+          grep -Fq -- " source_run_id=$SOURCE_RUN_ID " <<< " $message "
+          grep -Fq -- " artifact_sha256=$ARTIFACT_SHA256 " <<< " $message "
+
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+            "$api_base/workers/scripts/$WORKER_NAME/subdomain" \
+            > "$RUNNER_TEMP/worker-subdomain-after-upload.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' "$RUNNER_TEMP/worker-subdomain-after-upload.json" > /dev/null
+
+          wrangler deployments list \
+            --name "$WORKER_NAME" \
+            --json > "$RUNNER_TEMP/deployments-after-upload.json"
+          jq -S . "$RUNNER_TEMP/deployments-before-upload.json" \
+            > "$RUNNER_TEMP/deployments-before-upload.canonical.json"
+          jq -S . "$RUNNER_TEMP/deployments-after-upload.json" \
+            > "$RUNNER_TEMP/deployments-after-upload.canonical.json"
+          cmp \
+            "$RUNNER_TEMP/deployments-before-upload.canonical.json" \
+            "$RUNNER_TEMP/deployments-after-upload.canonical.json" ||
+            {
+              echo "The active preview deployment changed during upload." >&2
+              exit 1
+            }
+
+      - name: Preserve preview upload metadata
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: preview-upload-${{ inputs.source_run_id }}
+          path: |
+            candidate/upload-result.json
+            ${{ runner.temp }}/uploaded-version.json
+            ${{ runner.temp }}/deployments-before-upload.json
+            ${{ runner.temp }}/deployments-after-upload.json
+            ${{ runner.temp }}/worker-subdomain.json
+            ${{ runner.temp }}/worker-subdomain-after-upload.json
+            ${{ runner.temp }}/source-run.json
+            ${{ runner.temp }}/source-pr.json
+            ${{ runner.temp }}/source-run-before-upload.json
+            ${{ runner.temp }}/source-pr-before-upload.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Record inactive preview metadata
+        shell: bash
+        env:
+          ARTIFACT_SHA256: ${{ steps.upload.outputs.artifact_sha256 }}
+          INITIATOR: ${{ github.actor }}
+          SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_COMMIT: ${{ inputs.source_commit }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+          VERSION_ID: ${{ steps.upload.outputs.version_id }}
+        run: |
+          {
+            echo "## Inactive preview Worker version"
+            echo
+            printf -- "- Worker: \`%s\`\n" "$WORKER_NAME"
+            printf -- "- Version: \`%s\`\n" "$VERSION_ID"
+            printf -- "- Source commit: \`%s\`\n" "$SOURCE_COMMIT"
+            printf -- "- Source branch: \`%s\`\n" "$SOURCE_BRANCH"
+            printf -- "- CI run: \`%s\`\n" "$SOURCE_RUN_ID"
+            printf -- "- Artifact SHA-256: \`%s\`\n" "$ARTIFACT_SHA256"
+            printf -- "- Initiator/self-reviewer: \`%s\`\n" "$INITIATOR"
+            echo
+            echo "The version is inactive, unrouted, and has no public preview URL."
+          } >> "$GITHUB_STEP_SUMMARY"

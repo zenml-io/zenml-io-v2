@@ -43,7 +43,7 @@ Two tiers based on what changed:
 | Dismiss stale reviews on new pushes | **Yes** |
 | Require review from CODEOWNERS | **Yes** |
 | Require status checks to pass | **Yes** |
-| Required status check | `Repo checks` (the deterministic repository check job in the "Deploy to Cloudflare Pages" workflow) |
+| Required status check | `Repo checks` (the deterministic repository check job in the "Website CI and Worker Artifact" workflow) |
 | Require branches to be up to date | **Yes** |
 | Block force pushes | **Yes** (everyone, including admins) |
 | Block branch deletion | **Yes** |
@@ -88,25 +88,47 @@ Two tiers based on what changed:
 
 ### CI workflow
 
-The existing `.github/workflows/deploy.yml` handles deterministic repo checks first, then Cloudflare deployment:
+`.github/workflows/deploy.yml` is the deterministic, credential-free build and
+artifact workflow:
 
-- **Required PR gate**: `Repo checks` runs `pnpm install --frozen-lockfile`, `pnpm check`, `pnpm lint`, and `pnpm build`. This is the branch-protection status check because it is deterministic and does not depend on Cloudflare credentials or availability.
-- **On same-repo PRs**: after `Repo checks` passes, `Cloudflare Pages deploy` publishes a Cloudflare Pages **preview** when Cloudflare secrets are available (branch URL like `<branch>.zenml-io-v2.pages.dev`). The `--branch ${{ github.head_ref }}` flag ensures PRs never touch the production deployment.
-- **On fork PRs**: `Repo checks` still runs and can satisfy branch protection. Cloudflare preview deployment is skipped because repository secrets are not available to forked PRs.
-- **On push to main**: after `Repo checks` passes, `Cloudflare Pages deploy` deploys to **production** (the `main` production branch in Cloudflare Pages).
+- **Required PR gate**: `Repo checks` installs the lockfile, runs the repository
+  checks, builds once, validates the generated Worker and hydrated islands, and
+  publishes that exact artifact. It does not receive Cloudflare credentials.
+- **On same-repo PRs**: after a successful run and explicit review, a trusted
+  manual workflow selected from `main` can download the exact artifact and
+  upload an inactive, unreachable version to an isolated preview Worker with
+  non-production secrets. The upload job does not build or run branch package
+  scripts.
+- **On fork and Dependabot PRs**: `Repo checks` still satisfies branch
+  protection. No credentialed upload runs.
+- **Production candidates**: a manual workflow definition selected from `main`
+  can consume an exact successful CI run from an explicitly reviewed branch and
+  upload an inactive version with public preview URLs disabled.
+- **Production activation**: a separate manual workflow definition selected
+  from `main` accepts the exact version ID and source provenance, serializes
+  activation, and permits explicit self-review. Activation is never triggered
+  by a PR or push event.
 
-Keep Cloudflare deployment dependent on `Repo checks`; do not make deployment the required merge gate.
+Keep preview/candidate upload and activation outside the required `Repo checks`
+gate. The public repo uses GitHub Free and does not assume a second approver or
+GitHub Enterprise features. Cloudflare Pages remains the live production origin
+until the separately approved Worker cutover; the U3 workflow no longer updates
+the Pages project automatically.
 
 ### Branching model
 
 - Contributors create branches directly in the repo (not forks)
 - Feature branches are ephemeral — auto-deleted after merge
-- No staging or release branches — just `main`
+- No permanent staging or release branches. An explicitly reviewed feature
+  branch artifact may be uploaded as an inactive Worker candidate
 - No PR template — freeform descriptions
 
 ### Additional quality gates
 
-The required PR gate is `Repo checks`, which runs `pnpm install --frozen-lockfile`, `pnpm check`, `pnpm lint`, and `pnpm build`. Cloudflare preview deployment is dependent and best-effort, not the required merge gate. Link checking, Lighthouse, etc. can be added later.
+The required PR gate is `Repo checks`, which includes the repository checks,
+one build, dist smoke tests, the Worker-runtime check, and island hydration.
+Cloudflare preview upload is dependent and best-effort, not the required merge
+gate. Link checking, Lighthouse, etc. can be added later.
 
 ### Releases & tags
 
