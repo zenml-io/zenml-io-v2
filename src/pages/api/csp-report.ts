@@ -10,6 +10,37 @@ import type { APIContext } from "astro";
 
 export const prerender = false;
 
+const SAFE_CSP_KEYWORDS = new Set([
+  "eval",
+  "inline",
+  "wasm-eval",
+  "trusted-types-policy",
+  "trusted-types-sink",
+  "self",
+]);
+
+function sanitizeCspResource(value: unknown): string {
+  if (typeof value !== "string" || value.length === 0) {
+    return "";
+  }
+
+  if (SAFE_CSP_KEYWORDS.has(value)) {
+    return value;
+  }
+
+  try {
+    const url = new URL(value);
+
+    if (url.protocol === "http:" || url.protocol === "https:") {
+      return `${url.origin}${url.pathname}`;
+    }
+
+    return url.protocol;
+  } catch {
+    return "(unparseable)";
+  }
+}
+
 export async function POST(context: APIContext): Promise<Response> {
   try {
     const body = (await context.request.json()) as Record<string, unknown>;
@@ -17,14 +48,16 @@ export async function POST(context: APIContext): Promise<Response> {
       (body?.["csp-report"] as Record<string, unknown>) ?? body ?? {};
 
     // Log only non-PII fields for debugging
-    const documentUri = String(report["document-uri"] ?? "").split("?")[0];
+    const documentUri = sanitizeCspResource(report["document-uri"]);
     const violatedDirective = String(report["violated-directive"] ?? "");
     const effectiveDirective = String(report["effective-directive"] ?? "");
+    const blockedResource = sanitizeCspResource(report["blocked-uri"]);
 
     console.log("[csp-report]", {
       documentUri,
       violatedDirective,
       effectiveDirective,
+      blockedResource,
     });
   } catch {
     // Malformed payload — silently accept to avoid 4xx noise
