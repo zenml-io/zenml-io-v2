@@ -131,9 +131,7 @@ export async function fetchGithubStarsFromGitHub({
   apiUrl?: string;
 } = {}): Promise<GithubStarsFetchResult> {
   const controller = new AbortController();
-  const timeoutId: ReturnType<typeof setTimeout> = setTimeout(() => {
-    controller.abort();
-  }, timeoutMs);
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
 
   try {
     const headers: Record<string, string> = {
@@ -145,10 +143,22 @@ export async function fetchGithubStarsFromGitHub({
       headers.Authorization = `Bearer ${token}`;
     }
 
-    const response = await fetchImpl(apiUrl, {
-      headers,
-      signal: controller.signal,
-    });
+    const response = await Promise.race([
+      fetchImpl(apiUrl, {
+        headers,
+        signal: controller.signal,
+      }),
+      new Promise<null>((resolveTimeout) => {
+        timeoutId = setTimeout(() => {
+          controller.abort();
+          resolveTimeout(null);
+        }, timeoutMs);
+      }),
+    ]);
+
+    if (response === null) {
+      return { ok: false };
+    }
 
     if (!response.ok) {
       return { ok: false, status: response.status };
@@ -164,6 +174,8 @@ export async function fetchGithubStarsFromGitHub({
   } catch {
     return { ok: false };
   } finally {
-    clearTimeout(timeoutId);
+    if (timeoutId !== undefined) {
+      clearTimeout(timeoutId);
+    }
   }
 }
