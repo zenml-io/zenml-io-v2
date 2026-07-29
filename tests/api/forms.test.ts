@@ -1,8 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { GET, POST } from "../../src/pages/api/forms/[formType]";
+import { env } from "../mocks/cloudflare-workers";
 
 type FormContext = Parameters<typeof POST>[0];
-type RuntimeEnv = Record<string, string | undefined>;
 type FetchCall = Parameters<typeof fetch>;
 
 function fetchRequestInit(
@@ -27,18 +27,16 @@ function formRequest(fields: Record<string, string>): Request {
 function makeContext(options: {
   formType: string;
   request?: Request | { formData: () => Promise<FormData> };
-  env?: RuntimeEnv;
+  env?: Record<string, string | undefined>;
   waitUntil?: (promise: Promise<unknown>) => void;
 }): FormContext {
+  Object.assign(env, options.env);
   return {
     params: { formType: options.formType },
     request: options.request ?? formRequest({}),
     locals: {
-      runtime: {
-        env: options.env ?? {},
-        ctx: {
-          waitUntil: options.waitUntil ?? vi.fn(),
-        },
+      cfContext: {
+        waitUntil: options.waitUntil ?? vi.fn(),
       },
     },
   } as unknown as FormContext;
@@ -52,6 +50,7 @@ async function responseJson(
 
 describe("form API route", () => {
   beforeEach(() => {
+    for (const key of Object.keys(env)) delete env[key];
     vi.spyOn(console, "log").mockImplementation(() => undefined);
     vi.spyOn(console, "error").mockImplementation(() => undefined);
   });

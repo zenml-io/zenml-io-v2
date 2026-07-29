@@ -1,6 +1,7 @@
 import type { APIContext } from "astro";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { GET } from "../../src/pages/api/github-stars";
+import { env } from "../mocks/cloudflare-workers";
 
 function makeContext(
   url = "https://www.zenml.io/api/github-stars",
@@ -8,13 +9,14 @@ function makeContext(
   return {
     url: new URL(url),
     locals: {
-      runtime: {
-        env: {},
-        ctx: { waitUntil: vi.fn() },
-      },
+      cfContext: { waitUntil: vi.fn() },
     },
   } as unknown as APIContext;
 }
+
+beforeEach(() => {
+  for (const key of Object.keys(env)) delete env[key];
+});
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -53,14 +55,9 @@ describe("GET /api/github-stars", () => {
     vi.stubGlobal("caches", {});
     vi.stubGlobal("fetch", fetchMock);
 
-    const context = makeContext();
-    (
-      context.locals as unknown as {
-        runtime: { env: Record<string, string> };
-      }
-    ).runtime.env.GITHUB_TOKEN = "github-test-token";
+    env.GITHUB_TOKEN = "github-test-token";
 
-    const response = await GET(context);
+    const response = await GET(makeContext());
     const responseText = await response.text();
     const requestHeaders = new Headers(fetchMock.mock.calls[0]?.[1]?.headers);
 

@@ -37,6 +37,14 @@ jobs:
     outputs:
       eligible: ${{ steps.verify.outputs.eligible }}
     steps:
+      - name: Download validated Worker artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: worker-dist
+          path: eligibility-artifact
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
       - name: Verify exact successful current-main run
         id: verify
         shell: bash
@@ -64,6 +72,20 @@ jobs:
              .head_repository.full_name == $repository and
              .head_sha == $commit' \
             source-run.json > /dev/null
+
+          if ! jq -e '.production_release_eligible == true' \
+            eligibility-artifact/worker-manifest.json > /dev/null; then
+            {
+              echo "## Production Worker release paused"
+              echo
+              echo "This artifact is explicitly marked ineligible for automatic"
+              echo "production activation. Complete the reviewed preview and"
+              echo "staging acceptance before changing that manifest gate."
+              printf -- "- Commit: \`%s\`\n" "$SOURCE_COMMIT"
+              printf -- "- CI run: \`%s\`\n" "$SOURCE_RUN_ID"
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
 
           live_main_commit="$(
             gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha
@@ -118,7 +140,9 @@ jobs:
             --arg branch "$SOURCE_BRANCH" \
             --arg commit "$SOURCE_COMMIT" \
             --arg run_id "$SOURCE_RUN_ID" \
-            '.artifact_sha256 == $artifact_sha256 and
+            '.production_release_eligible == true and
+             .artifact_contract == "astro-cloudflare-v6" and
+             .artifact_sha256 == $artifact_sha256 and
              .build_commit == $commit and
              .event_name == "push" and
              .source_branch == $branch and
@@ -146,31 +170,57 @@ jobs:
                 ;;
             esac
           done < "$RUNNER_TEMP/archive-members.txt"
-          jq -e '
-            ((keys - [
-              "$schema", "assets", "compatibility_date",
-              "compatibility_flags", "main", "name", "preview_urls",
-              "secrets", "workers_dev"
-            ]) | length == 0) and
-            .name == "zenml-io-v2-worker" and
-            .main == "dist/_worker.js/index.js" and
-            .workers_dev == false and
-            .assets.directory == "./dist" and
-            .assets.binding == "ASSETS" and
-            (.route == null) and
-            (.routes == null) and
-            (.build == null)
-          ' wrangler.jsonc > /dev/null
+          grep -Fx "dist/server/wrangler.json" "$RUNNER_TEMP/archive-paths.txt"
+          grep -Fx "dist/server/entry.mjs" "$RUNNER_TEMP/archive-paths.txt"
+          grep -Fx ".wrangler/deploy/config.json" "$RUNNER_TEMP/archive-paths.txt"
 
       - name: Prepare trusted production configuration
         shell: bash
         run: |
           set -euo pipefail
           cd candidate
-          mkdir dist
-          tar -C dist -xzf worker-dist.tar.gz
-          jq '.preview_urls = false | del(.secrets)' \
-            wrangler.jsonc > upload-wrangler.json
+          tar -xzf worker-dist.tar.gz
+          test "$(
+            sha256sum dist/server/wrangler.json | cut -d ' ' -f 1
+          )" = "$(jq -r .generated_config_sha256 worker-manifest.json)"
+          test "$(
+            sha256sum .wrangler/deploy/config.json | cut -d ' ' -f 1
+          )" = "$(jq -r .deploy_config_sha256 worker-manifest.json)"
+          jq -e '
+            .name == "zenml-io-v2-worker" and
+            .main == "entry.mjs" and
+            .compatibility_date == "2026-02-10" and
+            .compatibility_flags == ["nodejs_compat"] and
+            .rules == [{"type":"ESModule","globs":["**/*.js","**/*.mjs"]}] and
+            .workers_dev == false and
+            .preview_urls == false and
+            .no_bundle == true and
+            .assets.directory == "../client" and
+            .assets.binding == "ASSETS" and
+            .assets.html_handling == "drop-trailing-slash" and
+            .assets.not_found_handling == "404-page" and
+            .assets.run_worker_first == ["/api/*"] and
+            (.route == null) and
+            (.routes == null) and
+            (.build == null) and
+            (.durable_objects.bindings // [] | length) == 0 and
+            (.kv_namespaces // [] | length) == 0 and
+            (.d1_databases // [] | length) == 0 and
+            (.r2_buckets // [] | length) == 0 and
+            (.services // [] | length) == 0
+          ' dist/server/wrangler.json > /dev/null
+          jq '{
+            name,
+            main,
+            compatibility_date,
+            compatibility_flags,
+            rules,
+            assets,
+            workers_dev: false,
+            preview_urls: false,
+            no_bundle
+          }
+          ' dist/server/wrangler.json > dist/server/upload-wrangler.json
 
       - name: Verify required production secrets
         shell: bash
@@ -283,6 +333,7 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
           PREVIOUS_VERSION_ID: ${{ steps.baseline.outputs.previous_version_id }}
           SEGMENT_FORMS_WRITE_KEY: ${{ secrets.SEGMENT_FORMS_WRITE_KEY }}
           TURNSTILE_SECRET_KEY: ${{ secrets.TURNSTILE_SECRET_KEY }}
@@ -303,7 +354,22 @@ jobs:
           artifact_sha256="$(jq -r .artifact_sha256 worker-manifest.json)"
           version_message="source_commit=$SOURCE_COMMIT source_branch=$SOURCE_BRANCH source_run_id=$SOURCE_RUN_ID artifact_sha256=$artifact_sha256"
           wrangler versions upload \
-            --config upload-wrangler.json \
+            --config dist/server/upload-wrangler.json \
+            --secrets-file "$secrets_file" \
+            --strict \
+            --dry-run \
+            --outdir "$RUNNER_TEMP/release-upload-dry-run"
+
+          live_main_commit="$(
+            gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha
+          )"
+          if [ "$live_main_commit" != "$SOURCE_COMMIT" ]; then
+            echo "Main advanced before the Worker version upload." >&2
+            exit 1
+          fi
+
+          wrangler versions upload \
+            --config dist/server/upload-wrangler.json \
             --secrets-file "$secrets_file" \
             --strict \
             --tag automatic-main-release \

@@ -398,14 +398,14 @@ describe("preview Worker upload workflow", () => {
   });
 
   it("pins the reviewed artifact producer without enabling it on main", () => {
-    // PR #171 at ef4597c209795f2145d7722aff617d64b1a6d213.
+    // Keep the inactive trusted copy byte-identical to the reviewed producer.
     const gitBlobSha = createHash("sha1")
       .update(
         `blob ${Buffer.byteLength(trustedArtifactWorkflowText)}\0${trustedArtifactWorkflowText}`,
       )
       .digest("hex");
 
-    expect(gitBlobSha).toBe("e312055b4e72f7142b7ac4e854f0577df08411d4");
+    expect(gitBlobSha).toBe("88361354fdff64b8a1174b80ce112a462cd22378");
     expect(trustedArtifactWorkflowText).toBe(artifactWorkflowText);
     expect(trustedArtifactWorkflowText).toContain(
       "name: Website CI and Worker Artifact",
@@ -462,9 +462,12 @@ describe("preview Worker upload workflow", () => {
       "grep -Eq '(^/|(^|/)\\.\\.(/|$))' \"$RUNNER_TEMP/archive-paths.txt\"",
     );
     expect(safetyStep.run).not.toContain("tar -tzf worker-dist.tar.gz |");
-    expect(safetyStep.run).toContain('has("route") | not');
-    expect(safetyStep.run).toContain('has("routes") | not');
-    expect(safetyStep.run).toContain('has("build") | not');
+    expect(safetyStep.run).toContain("dist/server/wrangler.json");
+    expect(safetyStep.run).toContain("dist/server/entry.mjs");
+    expect(safetyStep.run).toContain(".wrangler/deploy/config.json");
+    expect(provenanceStep.run).toContain(
+      '.artifact_contract == "astro-cloudflare-v6"',
+    );
   });
 
   it("uploads one private inactive version to only the fixed preview Worker", () => {
@@ -496,16 +499,19 @@ describe("preview Worker upload workflow", () => {
       "/workers/domains?service=$WORKER_NAME&per_page=100",
     );
     expect(workerStep.run).toContain(".result_info.total_count == 0");
-    expect(configStep.run).toContain(".name = env.WORKER_NAME");
-    expect(configStep.run).toContain(".workers_dev = false");
-    expect(configStep.run).toContain(".preview_urls = false");
-    expect(uploadWorkflowText).not.toContain(".preview_urls = true");
-    expect(configStep.run).toContain("del(.secrets)");
+    expect(configStep.run).toContain("name: env.WORKER_NAME");
+    expect(configStep.run).toContain("workers_dev: false");
+    expect(configStep.run).toContain("preview_urls: false");
+    expect(configStep.run).toContain(".generated_config_sha256");
+    expect(configStep.run).toContain("compatibility_flags");
+    expect(configStep.run).toContain("rules");
+    expect(uploadWorkflowText).not.toContain("preview_urls: true");
     expect(captureDeploymentStep.run).toContain("wrangler deployments list");
     expect(captureDeploymentStep.run).toContain(
       "deployments-before-upload.json",
     );
     expect(uploadVersionStep.run).toContain("wrangler versions upload");
+    expect(uploadVersionStep.run).toContain("--dry-run");
     expect(uploadVersionStep.run).toContain("source-run-before-upload.json");
     expect(uploadVersionStep.run).toContain("source-pr-before-upload.json");
     expect(uploadVersionStep.run).toContain(".head.sha == $commit");
@@ -532,7 +538,7 @@ describe("preview Worker upload workflow", () => {
         "repos/$GITHUB_REPOSITORY/git/ref/heads/main",
       ) ?? -1;
     const uploadIndex =
-      uploadVersionStep.run?.indexOf("wrangler versions upload") ?? -1;
+      uploadVersionStep.run?.lastIndexOf("wrangler versions upload") ?? -1;
     expect(trustedWorkflowIndex).toBeGreaterThan(-1);
     expect(prHeadRecheckIndex).toBeGreaterThan(trustedWorkflowIndex);
     expect(liveMainRecheckIndex).toBeGreaterThan(prHeadRecheckIndex);

@@ -37,6 +37,12 @@ separate reviewed change adapts their route predicates. Branch previews remain
 available; explicitly approved branch-built production promotion remains a
 separate follow-up.
 
+During the Astro 6 implementation and staging checkpoint, the artifact manifest
+sets `production_release_eligible` to `false`. The automatic release eligibility
+job reads that flag without entering a credentialed GitHub environment and
+stops successfully before upload. Change the flag only in a separate reviewed
+PR after the Astro 6 preview and staging evidence has been accepted.
+
 ## Automatic current-main release
 
 `Release Worker to Production` is triggered by the completed
@@ -50,6 +56,9 @@ continues only when the source run:
 
 If `main` advances before release preflight, the older run is skipped. The
 newer main build contains it and becomes the release candidate.
+
+The run also requires `production_release_eligible: true` in the exact artifact
+manifest. A false flag is an intentional pause, not a failed release.
 
 The full workflow holds the `zenml-io-worker-production` concurrency lock. Its
 upload job uses the `worker-candidate` environment. Its activation job uses the
@@ -147,23 +156,43 @@ Worker version directly.
 
 The `worker-dist` Actions artifact contains:
 
-- `worker-dist.tar.gz`, including hidden output such as `.assetsignore`;
+- `worker-dist.tar.gz`, preserving Astro 6's repo-relative `dist/` tree and
+  `.wrangler/deploy/config.json`;
 - `worker-dist.sha256`;
 - `worker-manifest.json`, recording the source and build commits, branch, event,
-  run ID and attempt, artifact digest, and lockfile digest;
-- `wrangler.jsonc`, with names and required binding metadata but no secret
-  values.
+  run ID and attempt, artifact digest, lockfile digest, the
+  `astro-cloudflare-v6` contract marker, and separate digests for the generated
+  and redirect Wrangler configurations.
 
 Credentialed workflows verify the checksum and provenance, reject absolute or
-parent-traversing archive paths, reject links and special files, and accept only
-the reviewed Wrangler configuration shape. The production-candidate workflow
-also requires the source commit's CI workflow file to match the trusted `main`
-definition. They install Wrangler 4.110.0 themselves and do not execute
-branch-controlled package scripts.
+parent-traversing archive paths, reject links and special files, verify both
+configuration digests, and accept only the reviewed generated Wrangler
+configuration shape. The generated config points to `dist/server/entry.mjs`
+and serves assets from `dist/client`. Before publishing the artifact, the
+credential-free CI job copies only the artifact tree to a clean directory and
+runs Wrangler's upload dry-run. This proves that later jobs can upload it
+without the repository, `node_modules`, a rebuild, or branch-controlled package
+scripts.
 
-Astro 5 is previewed and tested through Wrangler because adapter 12 does not
-provide the required `astro preview` behavior. Revisit this in the Astro 6
-checkpoint, where the plan expects the supported Astro preview path.
+The production-candidate workflow also requires the source commit's CI workflow
+file to match the trusted `main` definition. Credentialed consumers install
+Wrangler 4.110.0 themselves, derive a minimal upload config beside the generated
+server entrypoint, and do not execute branch-controlled package scripts.
+
+Astro 6 local preview uses `astro preview`. The dedicated Worker runtime check
+still starts the generated `dist/server/wrangler.json` directly because it must
+exercise bindings, APIs, redirects, headers, assets, and 404 behavior in the
+same Worker layout that release jobs upload.
+
+## Runtime toolchain
+
+Local development and CI use Node 22.23.1. The package engine allows Node
+22.12.0 or newer within Node 22, which is Astro 6's supported Node line, while
+`.nvmrc` and both artifact workflow definitions pin 22.23.1 for repeatability.
+Wrangler remains pinned to 4.110.0. The site declares only the four Worker
+environment variables it reads in `src/cloudflare-workers.d.ts`. This avoids
+loading Worker DOM globals into browser-side source while keeping
+`cloudflare:workers` imports typed.
 
 ## Preview inspection
 

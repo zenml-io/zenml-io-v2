@@ -15,11 +15,12 @@
  * - References use slug-based lookups (not IDs)
  */
 
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
 import { existsSync, readdirSync } from "node:fs";
 import { basename, extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { glob } from "astro/loaders";
+import { z } from "astro/zod";
 
 // ============================================================================
 // Reusable Schema Helpers
@@ -30,7 +31,7 @@ import { glob } from "astro/loaders";
  * Used for: blog mainImage, team photos, integration logos, etc.
  */
 export const imageSchema = z.object({
-  url: z.string().url(),
+  url: z.url(),
   alt: z.string().optional(),
   width: z.number().optional(),
   height: z.number().optional(),
@@ -45,8 +46,8 @@ export const seoSchema = z
   .object({
     title: z.string().optional(),
     description: z.string().optional(),
-    canonical: z.string().url().optional(),
-    ogImage: z.string().url().optional(),
+    canonical: z.url().optional(),
+    ogImage: z.url().optional(),
     ogTitle: z.string().optional(),
     ogDescription: z.string().optional(),
   })
@@ -81,7 +82,7 @@ const notionMetaSchema = z.object({
 const mlopsMetaSchema = z.object({
   source: z.literal("sqlite"),
   entryId: z.number(),
-  sourceUrl: z.string().url(),
+  sourceUrl: z.url(),
   exportedAt: z.string(),
   createdAt: z.string().optional(),
   lastUpdated: z.string().optional(),
@@ -179,12 +180,14 @@ export function slugReference(
 
   if (!validSlugs) return base;
 
-  return base.refine(
-    (slug) => validSlugs.has(slug),
-    (slug) => ({
-      message: `Invalid reference: "${slug}" not found in ${collectionName}`,
-    }),
-  );
+  return base.superRefine((slug, context) => {
+    if (!validSlugs.has(slug)) {
+      context.addIssue({
+        code: "custom",
+        message: `Invalid reference: "${slug}" not found in ${collectionName}`,
+      });
+    }
+  });
 }
 
 /**
@@ -217,8 +220,8 @@ const authorSchema = z.object({
   slug: z.string(),
   avatar: imageSchema.optional(),
   bio: z.string().optional(),
-  email: z.string().email().optional(),
-  linkedin: z.string().url().optional(),
+  email: z.email().optional(),
+  linkedin: z.url().optional(),
   webflow: webflowMetaSchema.optional(),
 });
 
@@ -394,8 +397,8 @@ const integrationSchema = z.object({
   ),
   logo: imageSchema.optional(),
   shortDescription: z.string().optional(),
-  docsUrl: z.string().url().optional(),
-  githubUrl: z.string().url().optional(),
+  docsUrl: z.url().optional(),
+  githubUrl: z.url().optional(),
   mainImage: imageSchema.optional(),
   relatedBlogPosts: slugReferenceArray("blog"),
 
@@ -443,7 +446,7 @@ const llmopsSchema = z.object({
   ).optional(),
   company: z.string().optional(),
   summary: z.string().optional(),
-  link: z.string().url().optional(),
+  link: z.url().optional(),
   year: z.number().optional(),
 
   // SEO & provenance
@@ -481,7 +484,7 @@ const mlopsDatabaseSchema = z.object({
     "transcript",
   ]),
   summary: z.string(),
-  link: z.string().url(),
+  link: z.url(),
   year: z.number().optional(),
 
   // SEO & provenance
@@ -551,7 +554,7 @@ const compareSchema = z.object({
   headline: z.string().optional(),
   heroText: z.string().optional(),
   ctaHeadline: z.string().optional(),
-  learnMoreUrl: z.string().url().optional(),
+  learnMoreUrl: z.url().optional(),
   seoDescription: z.string().optional(),
   openGraphImage: imageSchema.optional(),
 
@@ -599,8 +602,8 @@ const teamSchema = z.object({
   position: z.string().optional(),
   photo: imageSchema.optional(),
   bio: z.string().optional(),
-  email: z.string().email().optional(),
-  linkedin: z.string().url().optional(),
+  email: z.email().optional(),
+  linkedin: z.url().optional(),
   order: z.number().optional(), // Display order
 
   // Webflow metadata (optional — new native members won't have Webflow metadata)
@@ -625,10 +628,10 @@ const projectSchema = z.object({
   // Project-specific fields
   description: z.string().optional(),
   tags: slugReferenceArray("project-tags", referenceSlugSets["project-tags"]),
-  mainImageLink: z.string().url().optional(), // Note: NOT "coverImage"
+  mainImageLink: z.url().optional(), // Note: NOT "coverImage"
   previewImage: imageSchema.optional(), // Larger preview image for detail page header
-  githubUrl: z.string().url().optional(),
-  demoUrl: z.string().url().optional(),
+  githubUrl: z.url().optional(),
+  demoUrl: z.url().optional(),
   tools: z.array(z.string()).default([]), // Tool names
   createdAt: z.string().optional(),
   updatedAt: z.string().optional(),
@@ -754,7 +757,7 @@ const caseStudySidebarSchema = z.object({
   website: z
     .object({
       label: z.string(),
-      href: z.string().url(),
+      href: z.url(),
     })
     .optional(),
   mlTeamSize: z.string().optional(),
@@ -954,7 +957,7 @@ export const collections = {
       ctaHeading: z.string().default("Ready to try Kitaru?"),
       order: z.number().default(100),
       draft: z.boolean().default(false),
-      ogImage: z.string().url().optional(),
+      ogImage: z.url().optional(),
     }),
   }),
   team: defineCollection({

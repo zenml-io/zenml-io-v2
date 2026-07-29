@@ -8,7 +8,7 @@
  * Segment routes form data to CRM destinations (Attio, Apollo).
  */
 
-import type { Runtime } from "@astrojs/cloudflare";
+import { env } from "cloudflare:workers";
 import type { APIContext } from "astro";
 import {
   FORM_RULES,
@@ -97,10 +97,6 @@ export async function POST(context: APIContext): Promise<Response> {
     return jsonResponse({ success: false, errors: validation.errors }, 422);
   }
 
-  // Access Cloudflare runtime for env vars and waitUntil
-  const runtime = (context.locals as Runtime).runtime;
-  const env = runtime.env as Record<string, string | undefined>;
-
   // Verify Turnstile token (required when secret key is configured)
   const turnstileToken = data["cf-turnstile-response"];
   const turnstileSecret = env.TURNSTILE_SECRET_KEY;
@@ -184,7 +180,7 @@ export async function POST(context: APIContext): Promise<Response> {
       context: segmentContext,
     });
 
-    runtime.ctx.waitUntil(Promise.all([identifyCall, trackCall]));
+    context.locals.cfContext.waitUntil(Promise.all([identifyCall, trackCall]));
   }
 
   return jsonResponse({ success: true, formType });

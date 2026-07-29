@@ -3,7 +3,8 @@ import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { createServer } from "node:net";
 import { resolve } from "node:path";
 
-const DIST_DIR = resolve("dist");
+const CLIENT_DIR = resolve("dist/client");
+const SERVER_CONFIG_PATH = resolve("dist/server/wrangler.json");
 const WRANGLER_STATE_DIR = resolve(".wrangler");
 const TEST_ENV_PATH = resolve(WRANGLER_STATE_DIR, "runtime-check.env");
 const START_TIMEOUT_MS = 30_000;
@@ -60,7 +61,7 @@ function startWrangler(port: number): {
       "wrangler",
       "dev",
       "--config",
-      "wrangler.jsonc",
+      SERVER_CONFIG_PATH,
       "--env-file",
       TEST_ENV_PATH,
       "--ip",
@@ -346,8 +347,9 @@ async function runChecks(baseUrl: string): Promise<CheckResult[]> {
 
 async function main(): Promise<void> {
   if (
-    !existsSync(resolve(DIST_DIR, "_worker.js/index.js")) ||
-    !existsSync(resolve(DIST_DIR, "index.html"))
+    !existsSync(resolve("dist/server/entry.mjs")) ||
+    !existsSync(SERVER_CONFIG_PATH) ||
+    !existsSync(resolve(CLIENT_DIR, "index.html"))
   ) {
     console.error(
       "Worker build output is missing. Run pnpm build before pnpm check:worker.",
