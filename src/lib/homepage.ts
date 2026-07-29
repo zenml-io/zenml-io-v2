@@ -59,6 +59,7 @@ export const LOGO_CLOUD: { label: string; logos: LogoItem[] } = {
     },
     { name: "Brevo", src: "/images/logos/brevo.webp", maxWidth: "80px" },
     { name: "Safran", src: "/images/logos/safran.png" },
+    { name: "AECOM", src: "/images/logos/aecom.svg" },
     {
       name: "Airbus Defence & Space",
       src: `${R2}/6a2ae7e3/670e2f23d254a9be9e02e50f_airbus.svg`,
