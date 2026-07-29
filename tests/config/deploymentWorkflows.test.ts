@@ -311,6 +311,7 @@ exit 2
           env: {
             ...process.env,
             ACTIVE_VERSION_FILE: activeVersionFile,
+            CANDIDATE_VERSION_ID: "22222222-2222-2222-2222-222222222222",
             DEPLOY_CALLS_FILE: deployCallsFile,
             DEPLOY_FAILURES: String(deployFailures),
             PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
@@ -1130,6 +1131,12 @@ describe("automatic post-cutover production release", () => {
     );
     expect(recoveryStep.run).toContain("for attempt in 1 2 3");
     expect(recoveryStep.run).toContain("timeout 90s");
+    expect(recoveryStep.run).toContain(
+      'current_version" = "$CANDIDATE_VERSION_ID',
+    );
+    expect(recoveryStep.run).toContain(
+      "An unknown production version is active; recovery will not replace it.",
+    );
     expect(
       workflowStep(
         releaseActivationSteps,
@@ -1162,6 +1169,7 @@ describe("automatic post-cutover production release", () => {
   it("executes recovery reconciliation and fails closed when recovery cannot complete", () => {
     const previousVersion = "11111111-1111-1111-1111-111111111111";
     const candidateVersion = "22222222-2222-2222-2222-222222222222";
+    const unknownVersion = "33333333-3333-3333-3333-333333333333";
 
     const alreadyRecovered = executeRecovery(previousVersion, 0, 200);
     expect(alreadyRecovered.error).toBeUndefined();
@@ -1174,6 +1182,10 @@ describe("automatic post-cutover production release", () => {
     const exhaustedRecovery = executeRecovery(candidateVersion, 3, 200);
     expect(exhaustedRecovery.error).toBeDefined();
     expect(exhaustedRecovery.deployCalls).toBe(3);
+
+    const unknownActiveVersion = executeRecovery(unknownVersion, 0, 200);
+    expect(unknownActiveVersion.error).toBeDefined();
+    expect(unknownActiveVersion.deployCalls).toBe(0);
 
     const unhealthyPreviousVersion = executeRecovery(previousVersion, 0, 503);
     expect(unhealthyPreviousVersion.error).toBeDefined();

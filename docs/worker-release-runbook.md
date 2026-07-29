@@ -80,12 +80,14 @@ zone-level behavior, not behavior of the released Worker version.
 
 A failed post-activation check first attempts an inline rollback with bounded
 retries. A separate recovery job also reconciles the active deployment after a
-failed or timed-out activation job and restores the previous version when
-needed. The release stays failed for investigation. A manual cancellation of
-the whole workflow or loss of the GitHub runner can also cancel the recovery
-job, so an operator must verify the active version after either event. Workflow
-artifacts retain candidate, deployment, smoke, and recovery evidence for 30
-days.
+failed or timed-out activation job. It restores the previous version only when
+the exact candidate is active. If the previous version is already active, it
+verifies health without redeploying. If any other version is active, it fails
+without replacing that version. The release stays failed for investigation. A
+manual cancellation of the whole workflow or loss of the GitHub runner can
+also cancel the recovery job, so an operator must verify the active version
+after either event. Workflow artifacts retain candidate, deployment, smoke,
+and recovery evidence for 30 days.
 
 ## GitHub environments and secret names
 
@@ -249,9 +251,10 @@ post-cutover version-promotion path.
 - **Before activation:** no rollback is needed. Leave the candidate inactive.
 - **Version-specific failure:** the automatic release first restores the
   recorded previous version inline, then a separate recovery job reconciles the
-  active deployment if activation failed or timed out. After whole-workflow
-  cancellation or runner loss, manually verify the active version and deploy
-  the recorded previous version at 100 percent if necessary.
+  active deployment if activation failed or timed out. Recovery restores only
+  when the exact candidate is active; it never replaces an unknown version.
+  After whole-workflow cancellation or runner loss, manually verify the active
+  version and deploy the recorded previous version at 100 percent if necessary.
 - **Worker service or routing failure:** remove the exact
   `www.zenml.io/*` Worker route to restore the already-verified Pages fallback.
   Follow the U4 release record and verify the before-state first. Do not

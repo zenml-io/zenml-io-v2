@@ -771,6 +771,7 @@ jobs:
     environment: production
     timeout-minutes: 10
     env:
+      CANDIDATE_VERSION_ID: ${{ needs.upload.outputs.version_id }}
       PREVIOUS_VERSION_ID: ${{ needs.upload.outputs.previous_version_id }}
     steps:
       - name: Install pinned Wrangler
@@ -783,6 +784,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
         run: |
           set -euo pipefail
+          [[ "$CANDIDATE_VERSION_ID" =~ ^[0-9a-f-]{36}$ ]]
           [[ "$PREVIOUS_VERSION_ID" =~ ^[0-9a-f-]{36}$ ]]
 
           active_version() {
@@ -798,10 +800,11 @@ jobs:
           }
 
           recovered=false
-          if [ "$(active_version)" = "$PREVIOUS_VERSION_ID" ]; then
+          current_version="$(active_version)"
+          if [ "$current_version" = "$PREVIOUS_VERSION_ID" ]; then
             echo "Previous production version is already active."
             recovered=true
-          else
+          elif [ "$current_version" = "$CANDIDATE_VERSION_ID" ]; then
             for attempt in 1 2 3; do
               if timeout 90s \
                 wrangler versions deploy "$PREVIOUS_VERSION_ID@100%" \
@@ -815,6 +818,9 @@ jobs:
                 sleep $((attempt * 2))
               fi
             done
+          else
+            echo "An unknown production version is active; recovery will not replace it." >&2
+            exit 1
           fi
           if [ "$recovered" != true ]; then
             echo "Recovery could not restore the previous Worker version." >&2
