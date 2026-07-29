@@ -75,8 +75,10 @@ credentials.
 Before upload, the workflow requires:
 
 - one active Worker version at 100 percent;
-- exactly the accepted `astro-workers-staging.zenml.io/*` and
-  `www.zenml.io/*` route patterns;
+- exactly the accepted `www.zenml.io/*` production route pattern;
+- no production ownership of the protected
+  `astro-workers-staging.zenml.io/*` route, which belongs to the preview
+  Worker;
 - disabled `workers.dev` and version preview endpoints;
 - no Worker custom domains; and
 - both required production form secrets.
