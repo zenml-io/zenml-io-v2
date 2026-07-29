@@ -17,17 +17,26 @@ import { REQUIRED_WORKER_SECRETS } from "../../scripts/check-worker-bindings";
 interface WorkflowStep {
   "continue-on-error"?: boolean;
   env?: Record<string, string>;
+  if?: string;
   name: string;
   run?: string;
 }
 
 interface ProductionWorkflow {
+  concurrency?: {
+    "cancel-in-progress": boolean;
+    group: string;
+  };
   jobs: Record<
     string,
     {
+      environment?: string;
+      if?: string;
+      permissions?: Record<string, string>;
       steps: WorkflowStep[];
     }
   >;
+  on?: Record<string, unknown>;
 }
 
 const deployWorkflow = readFileSync(".github/workflows/deploy.yml", "utf8");
@@ -47,6 +56,11 @@ const releaseWorkflow = readFileSync(
   ".github/workflows/release-worker.yml",
   "utf8",
 );
+const prPreviewWorkflow = readFileSync(
+  ".github/workflows/publish-pr-preview.yml",
+  "utf8",
+);
+const prPreviewWorkflowConfig = parse(prPreviewWorkflow) as ProductionWorkflow;
 const candidateWorkflowConfig = parse(candidateWorkflow) as ProductionWorkflow;
 const activationWorkflowConfig = parse(
   activationWorkflow,
@@ -57,6 +71,8 @@ const activationSteps = activationWorkflowConfig.jobs.activate.steps;
 const releaseUploadSteps = releaseWorkflowConfig.jobs.upload.steps;
 const releaseActivationSteps = releaseWorkflowConfig.jobs.activate.steps;
 const releaseRecoverySteps = releaseWorkflowConfig.jobs.recover.steps;
+const prPreviewPublishSteps = prPreviewWorkflowConfig.jobs.publish.steps;
+const prPreviewRetireSteps = prPreviewWorkflowConfig.jobs.retire.steps;
 const allWorkflows = readdirSync(".github/workflows")
   .filter((filename) => filename.endsWith(".yml"))
   .map(
@@ -1569,6 +1585,253 @@ describe("automatic post-cutover production release", () => {
     expect(finalReadFailure.deploymentReadCalls).toBe(4);
     expect(finalReadFailure.stderr).toContain(
       "Could not read the active production version after homepage verification; recovery did not complete.",
+    );
+  });
+});
+
+describe("automatic pull-request Worker previews", () => {
+  it("parses as one publish job and one guarded retirement job", () => {
+    expect(Object.keys(prPreviewWorkflowConfig.jobs).sort()).toEqual([
+      "publish",
+      "retire",
+    ]);
+    expect(Object.keys(prPreviewWorkflowConfig.on ?? {}).sort()).toEqual([
+      "pull_request_target",
+      "workflow_dispatch",
+      "workflow_run",
+    ]);
+    expect(prPreviewWorkflowConfig.concurrency?.["cancel-in-progress"]).toBe(
+      false,
+    );
+    expect(prPreviewWorkflowConfig.concurrency?.group).toContain(
+      "zenml-io-worker-pr-preview-",
+    );
+    expect(prPreviewWorkflowConfig.concurrency?.group).toContain(
+      "github.event_name == 'pull_request_target' && 'retire' || 'publish'",
+    );
+    expect(prPreviewWorkflowConfig.concurrency?.group).toContain(
+      "github.event.pull_request.head.ref",
+    );
+    expect(prPreviewWorkflowConfig.concurrency?.group).toContain(
+      "github.event.workflow_run.head_branch",
+    );
+    expect(prPreviewWorkflowConfig.concurrency?.group).toContain(
+      "inputs.source_branch",
+    );
+    expect(prPreviewWorkflowConfig.jobs.publish.environment).toBe(
+      "worker-pr-preview",
+    );
+    expect(prPreviewWorkflowConfig.jobs.retire.environment).toBe(
+      "worker-pr-preview",
+    );
+    expect(prPreviewWorkflowConfig.jobs.publish.permissions).toEqual({
+      actions: "read",
+      contents: "read",
+      issues: "write",
+      "pull-requests": "read",
+    });
+    expect(prPreviewWorkflowConfig.jobs.retire.permissions).toEqual({
+      contents: "read",
+      issues: "write",
+      "pull-requests": "read",
+    });
+    expect(prPreviewWorkflowConfig.jobs.publish.if).toContain(
+      "github.ref == 'refs/heads/main'",
+    );
+    expect(prPreviewWorkflowConfig.jobs.retire.if).toContain(
+      "github.event.pull_request.head.repo.full_name == github.repository",
+    );
+  });
+
+  it("publishes only exact successful same-repository PR artifacts from trusted main", () => {
+    expect(prPreviewWorkflow).toContain("workflow_run:");
+    expect(prPreviewWorkflow).toContain(
+      'workflows: ["Website CI and Worker Artifact"]',
+    );
+    expect(prPreviewWorkflow).toContain("types: [completed]");
+    expect(prPreviewWorkflow).toContain("workflow_dispatch:");
+    expect(prPreviewWorkflow).toContain("pull_request_target:");
+    expect(prPreviewWorkflow).toContain("types: [closed]");
+    expect(prPreviewWorkflow).toContain(
+      ".head_repository.full_name == $repository",
+    );
+    expect(prPreviewWorkflow).toContain('.event == "pull_request"');
+    expect(prPreviewWorkflow).toContain('.conclusion == "success"');
+    expect(prPreviewWorkflow).toContain('.state == "open"');
+    expect(prPreviewWorkflow).toContain(".draft == false");
+    expect(prPreviewWorkflow).toContain('.user.login != "dependabot[bot]"');
+    expect(prPreviewWorkflow).toContain(".merge_commit_sha == $build_commit");
+    expect(prPreviewWorkflow).toContain(
+      ".github/trusted/worker-artifact-workflow.yml",
+    );
+  });
+
+  it("uploads the exact validated artifact to one route-less dedicated Worker with a stable per-PR alias", () => {
+    expect(prPreviewWorkflow).toContain("WORKER_NAME: zenml-io-v2-pr-preview");
+    expect(prPreviewWorkflow).toContain("actions/download-artifact@");
+    expect(prPreviewWorkflow).toContain("sha256sum --check");
+    expectArtifactGuards(prPreviewWorkflow);
+    expect(prPreviewWorkflow).toContain("preview_urls: true");
+    expect(prPreviewWorkflow).toContain("workers_dev: false");
+    expect(prPreviewWorkflow).toContain('--preview-alias "pr-$PR_NUMBER"');
+    expect(prPreviewWorkflow).toMatch(
+      /wrangler versions upload[\s\S]*?--config dist\/server\/upload-wrangler\.json[\s\S]*?--strict[\s\S]*?--preview-alias "pr-\$PR_NUMBER"/,
+    );
+    expect(prPreviewWorkflow).toContain(
+      'preview_url="https://pr-$PR_NUMBER-$WORKER_NAME.$workers_subdomain.workers.dev"',
+    );
+    expect(prPreviewWorkflow).not.toContain("pnpm build");
+    expect(prPreviewWorkflow).not.toContain("actions/checkout@");
+    expect(prPreviewWorkflow).not.toContain("wrangler deploy ");
+    expect(prPreviewWorkflow).not.toContain("wrangler pages deploy");
+    expectNoRouteOrDnsMutation(prPreviewWorkflow);
+  });
+
+  it("keeps credentials and secret bindings out of PR-controlled preview code", () => {
+    expect(prPreviewWorkflow).toContain("environment: worker-pr-preview");
+    expect(prPreviewWorkflow).toContain("CLOUDFLARE_WORKERS_PR_PREVIEW_TOKEN");
+    expect(prPreviewWorkflow).not.toContain(
+      "PR_PREVIEW_SEGMENT_FORMS_WRITE_KEY",
+    );
+    expect(prPreviewWorkflow).not.toContain("PR_PREVIEW_TURNSTILE_SECRET_KEY");
+    expect(prPreviewWorkflow).not.toContain("--secrets-file");
+    expect(prPreviewWorkflow).toContain(
+      '[.resources.bindings[]? | select(.type == "secret_text")] == []',
+    );
+    const baselineRun =
+      workflowStep(prPreviewPublishSteps, "Verify dedicated Worker baseline")
+        .run ?? "";
+    expect(baselineRun).toContain("wrangler versions list");
+    expect(baselineRun).toContain("wrangler versions view");
+    expect(baselineRun).toContain(
+      '[.resources.bindings[]? | select(.type == "secret_text")] == []',
+    );
+    expect(prPreviewWorkflow).not.toContain(
+      "CLOUDFLARE_WORKERS_PRODUCTION_TOKEN",
+    );
+    expect(prPreviewWorkflow).not.toContain("CLOUDFLARE_WORKERS_ROUTES_TOKEN");
+    expect(prPreviewWorkflow).not.toContain(
+      "SEGMENT_FORMS_WRITE_KEY: $" + "{{ secrets.SEGMENT_FORMS_WRITE_KEY }}",
+    );
+    expect(prPreviewWorkflow).not.toContain(
+      "TURNSTILE_SECRET_KEY: $" + "{{ secrets.TURNSTILE_SECRET_KEY }}",
+    );
+  });
+
+  it("serializes mutations, preserves deployments, posts a sticky URL, and retires closed PR aliases", () => {
+    expect(prPreviewWorkflow).toContain("github.event.pull_request.head.ref");
+    expect(prPreviewWorkflow).toContain(
+      "github.event.workflow_run.head_branch",
+    );
+    expect(prPreviewWorkflow).toContain(
+      "github.event_name == 'pull_request_target' && 'retire' || 'publish'",
+    );
+    expect(prPreviewWorkflow).toContain("inputs.source_branch");
+    expect(prPreviewWorkflow).toContain("cancel-in-progress: false");
+    expect(prPreviewWorkflow).toContain(
+      "The active PR-preview deployment changed",
+    );
+    expect(prPreviewWorkflow).toContain("<!-- zenml-worker-pr-preview -->");
+    expect(prPreviewWorkflow).toContain('.user.login == "github-actions[bot]"');
+    expect(prPreviewWorkflow).toContain("--paginate");
+    expect(prPreviewWorkflow).toContain("Record preview retirement marker");
+    expect(prPreviewWorkflow).toContain(
+      "Multiple PR-preview marker comments exist",
+    );
+    expect(prPreviewWorkflow).toContain("PR preview retired");
+    expect(prPreviewWorkflow).toContain('--preview-alias "pr-$PR_NUMBER"');
+    expect(prPreviewWorkflow).toContain("return new Response");
+    expect(prPreviewWorkflow).toContain("status: 410");
+  });
+
+  it("cannot let an in-flight publish resurrect a closed PR alias", () => {
+    const uploadIndex = prPreviewPublishSteps.findIndex(
+      (step) => step.name === "Upload exact version with stable PR alias",
+    );
+    const closeCheckIndex = prPreviewPublishSteps.findIndex(
+      (step) => step.name === "Retire alias if the PR closed during upload",
+    );
+    const verifyIndex = prPreviewPublishSteps.findIndex(
+      (step) => step.name === "Verify isolated public preview",
+    );
+    expect(uploadIndex).toBeGreaterThan(-1);
+    expect(closeCheckIndex).toBeGreaterThan(uploadIndex);
+    expect(verifyIndex).toBeGreaterThan(closeCheckIndex);
+
+    const uploadRun = prPreviewPublishSteps[uploadIndex].run ?? "";
+    const closeCheckRun = prPreviewPublishSteps[closeCheckIndex].run ?? "";
+    const closeCheck = prPreviewPublishSteps[closeCheckIndex];
+    const verify = prPreviewPublishSteps[verifyIndex];
+    expect(uploadRun).toMatch(
+      /set \+e\n\s*wrangler versions upload[\s\S]*?upload_status=\$\?\n\s*set -e\n\s*echo "upload_attempted=true" >> "\$GITHUB_OUTPUT"\n\s*if \[ "\$upload_status" -ne 0 \]; then\n\s*exit "\$upload_status"/,
+    );
+    expect(closeCheck.if).toBe(
+      "always() && steps.upload.outputs.upload_attempted == 'true'",
+    );
+    expect(verify.if).toBe("steps.upload.outcome == 'success'");
+    expect(closeCheckRun).toContain(
+      'gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq .state',
+    );
+    expect(closeCheckRun).toContain('--preview-alias "pr-$PR_NUMBER"');
+    expect(closeCheckRun).toContain("--strict");
+    expect(closeCheckRun).toContain("status: 410");
+    expect(closeCheckRun).toContain("exit 1");
+  });
+
+  it("keys manual and automatic publishes by the same verified source branch", () => {
+    expect(prPreviewWorkflow).toContain("source_branch:");
+    expect(prPreviewWorkflow).toContain(
+      "INPUT_SOURCE_BRANCH: $" + "{{ inputs.source_branch }}",
+    );
+    expect(prPreviewWorkflow).toContain(
+      '[ -n "$INPUT_SOURCE_BRANCH" ] && [ "$INPUT_SOURCE_BRANCH" != "$source_branch" ]',
+    );
+    expect(prPreviewWorkflow).toContain(
+      "The supplied source branch does not own this exact CI run.",
+    );
+  });
+
+  it("records retirement before upload and fails closed on comment lookup errors", () => {
+    const markerIndex = prPreviewPublishSteps.findIndex(
+      (step) => step.name === "Record preview retirement marker",
+    );
+    const uploadIndex = prPreviewPublishSteps.findIndex(
+      (step) => step.name === "Upload exact version with stable PR alias",
+    );
+    expect(markerIndex).toBeGreaterThan(-1);
+    expect(uploadIndex).toBeGreaterThan(markerIndex);
+
+    const markerRun = prPreviewPublishSteps[markerIndex].run ?? "";
+    const retirementCheckRun =
+      workflowStep(prPreviewRetireSteps, "Check whether this PR had a preview")
+        .run ?? "";
+    for (const run of [markerRun, retirementCheckRun]) {
+      expect(run).toContain("gh api");
+      expect(run).toContain("--paginate");
+      expect(run).toContain('> "$RUNNER_TEMP/pr-preview-comment-ids.txt"');
+      expect(run).toContain(
+        'mapfile -t comment_ids < "$RUNNER_TEMP/pr-preview-comment-ids.txt"',
+      );
+      expect(run).not.toContain("< <(");
+    }
+  });
+
+  it("uses strict mode on every state-changing preview-alias upload", () => {
+    const publishRun =
+      workflowStep(
+        prPreviewPublishSteps,
+        "Upload exact version with stable PR alias",
+      ).run ?? "";
+    const retireRun =
+      workflowStep(
+        prPreviewRetireSteps,
+        "Replace the closed PR alias with a tombstone",
+      ).run ?? "";
+    expect(publishRun).toMatch(
+      /wrangler versions upload \\\n\s+--config dist\/server\/upload-wrangler\.json \\\n\s+--strict \\\n\s+--preview-alias "pr-\$PR_NUMBER"/,
+    );
+    expect(retireRun).toMatch(
+      /wrangler versions upload \\\n\s+--config "\$retire_dir\/wrangler\.json" \\\n\s+--strict \\\n\s+--preview-alias "pr-\$PR_NUMBER"/,
     );
   });
 });
