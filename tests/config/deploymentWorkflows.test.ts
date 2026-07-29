@@ -309,6 +309,10 @@ function executeRecovery(
   homeStatus: number,
   deploymentReadFailures = 0,
   operatorVersionAfterDeployAttempt = "",
+  finalVerification: {
+    activeVersion?: string;
+    readFails?: boolean;
+  } = {},
 ): {
   deployCalls: number;
   deploymentReadCalls: number;
@@ -329,6 +333,10 @@ function executeRecovery(
         harnessDirectory,
         "deployment-read-calls.txt",
       );
+      const failDeploymentReadsFile = join(
+        harnessDirectory,
+        "fail-deployment-reads",
+      );
       writeFileSync(activeVersionFile, `${initialVersion}\n`);
       writeFileSync(deployCallsFile, "0\n");
       writeFileSync(deploymentReadCallsFile, "0\n");
@@ -340,6 +348,9 @@ if [ "$1 $2" = "deployments list" ]; then
   calls="$(cat "$DEPLOYMENT_READ_CALLS_FILE")"
   calls=$((calls + 1))
   printf '%s\\n' "$calls" > "$DEPLOYMENT_READ_CALLS_FILE"
+  if [ -f "$FAIL_DEPLOYMENT_READS_FILE" ]; then
+    exit 1
+  fi
   if [ "$calls" -le "$DEPLOYMENT_READ_FAILURES" ]; then
     exit 1
   fi
@@ -370,7 +381,16 @@ exit 2
       chmodSync(join(binDirectory, "wrangler"), 0o755);
       writeFileSync(
         join(binDirectory, "curl"),
-        '#!/usr/bin/env bash\nprintf "%s\\n" "$RECOVERY_HOME_STATUS"\n',
+        `#!/usr/bin/env bash
+set -euo pipefail
+if [ -n "$FINAL_ACTIVE_VERSION" ]; then
+  printf '%s\\n' "$FINAL_ACTIVE_VERSION" > "$ACTIVE_VERSION_FILE"
+fi
+if [ "$FINAL_DEPLOYMENT_READ_FAILS" = "true" ]; then
+  touch "$FAIL_DEPLOYMENT_READS_FILE"
+fi
+printf '%s\\n' "$RECOVERY_HOME_STATUS"
+`,
       );
       chmodSync(join(binDirectory, "curl"), 0o755);
       writeFileSync(
@@ -391,6 +411,11 @@ exit 2
             DEPLOY_FAILURES: String(deployFailures),
             DEPLOYMENT_READ_CALLS_FILE: deploymentReadCallsFile,
             DEPLOYMENT_READ_FAILURES: String(deploymentReadFailures),
+            FAIL_DEPLOYMENT_READS_FILE: failDeploymentReadsFile,
+            FINAL_ACTIVE_VERSION: finalVerification.activeVersion ?? "",
+            FINAL_DEPLOYMENT_READ_FAILS: String(
+              finalVerification.readFails ?? false,
+            ),
             OPERATOR_VERSION_AFTER_DEPLOY_ATTEMPT:
               operatorVersionAfterDeployAttempt,
             PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
@@ -1290,6 +1315,29 @@ describe("automatic post-cutover production release", () => {
     expect(recoveryStep.run).toContain(
       "An unknown production version is active; recovery will not replace it.",
     );
+    const recoveryRun = recoveryStep.run ?? "";
+    const homepageVerification = recoveryRun.indexOf(
+      'if [ "$home_status" != "200" ]',
+    );
+    const finalControlPlaneRead = recoveryRun.indexOf(
+      'final_version="$(active_version)"',
+      homepageVerification,
+    );
+    const finalVersionComparison = recoveryRun.indexOf(
+      'if [ "$final_version" != "$PREVIOUS_VERSION_ID" ]',
+      finalControlPlaneRead,
+    );
+    const recoverySuccess = recoveryRun.indexOf(
+      "Recovered and verified the previous production Worker version.",
+      finalVersionComparison,
+    );
+    expect(homepageVerification).toBeGreaterThan(-1);
+    expect(finalControlPlaneRead).toBeGreaterThan(homepageVerification);
+    expect(finalVersionComparison).toBeGreaterThan(finalControlPlaneRead);
+    expect(recoverySuccess).toBeGreaterThan(finalVersionComparison);
+    expect(
+      recoveryRun.slice(finalControlPlaneRead, recoverySuccess),
+    ).not.toContain("wrangler versions deploy");
     expect(
       workflowStep(
         releaseActivationSteps,
@@ -1470,6 +1518,30 @@ describe("automatic post-cutover production release", () => {
     expect(operatorReleaseDuringRetry.deployCalls).toBe(1);
     expect(operatorReleaseDuringRetry.stderr).toContain(
       "An unknown production version is active; recovery will not replace it.",
+    );
+
+    const candidateDuringHomepageCheck = executeRecovery(
+      previousVersion,
+      0,
+      200,
+      0,
+      "",
+      { activeVersion: candidateVersion },
+    );
+    expect(candidateDuringHomepageCheck.error).toBeDefined();
+    expect(candidateDuringHomepageCheck.deployCalls).toBe(0);
+    expect(candidateDuringHomepageCheck.stderr).toContain(
+      "Active production version changed during recovery verification; recovery did not complete.",
+    );
+
+    const finalReadFailure = executeRecovery(previousVersion, 0, 200, 0, "", {
+      readFails: true,
+    });
+    expect(finalReadFailure.error).toBeDefined();
+    expect(finalReadFailure.deployCalls).toBe(0);
+    expect(finalReadFailure.deploymentReadCalls).toBe(4);
+    expect(finalReadFailure.stderr).toContain(
+      "Could not read the active production version after homepage verification; recovery did not complete.",
     );
   });
 });

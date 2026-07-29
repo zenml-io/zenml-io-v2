@@ -988,6 +988,15 @@ jobs:
             exit 1
           fi
 
+          if ! final_version="$(active_version)"; then
+            echo "Could not read the active production version after homepage verification; recovery did not complete." >&2
+            exit 1
+          fi
+          if [ "$final_version" != "$PREVIOUS_VERSION_ID" ]; then
+            echo "Active production version changed during recovery verification; recovery did not complete." >&2
+            exit 1
+          fi
+
           echo "Recovered and verified the previous production Worker version."
 
       - name: Preserve recovery evidence
