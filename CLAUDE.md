@@ -228,8 +228,9 @@ in `dist/` that takes over the single Worker slot — any hand-written
 
 Instead, create server-side endpoints as **Astro API routes** in `src/pages/api/`
 with `export const prerender = false`. These are compiled into the adapter's
-Worker and share access to Cloudflare runtime bindings via
-`(context.locals as Runtime).runtime` (env vars, `ctx.waitUntil()`, caches).
+Worker. Import environment bindings from `cloudflare:workers`, schedule
+background work with `context.locals.cfContext.waitUntil()`, and use
+`globalThis.caches` for the Cache API.
 
 ## Legacy Terminology
 
@@ -298,7 +299,7 @@ Important rules:
 ### Server-side API Routes (`prerender: false`)
 - `src/pages/api/forms/[formType].ts` — Unified form submission handler → Segment HTTP API (identify + track), using the site's Segment workspace
 - `src/pages/api/csp-report.ts` — CSP violation report sink (logs redacted summary, returns 204)
-- `src/pages/api/github-stars.ts` — GitHub star count fetcher with edge cache (`ctx.waitUntil`)
+- `src/pages/api/github-stars.ts` — GitHub star count fetcher with edge cache (`context.locals.cfContext.waitUntil`)
 
 The old standalone `kitaru.ai` API routes (`get-started`, `waitlist`, `newsletter`) were removed during the merge. The Kitaru landing now shares the merged site's form and analytics infrastructure.
 

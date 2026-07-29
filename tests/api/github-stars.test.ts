@@ -71,4 +71,74 @@ describe("GET /api/github-stars", () => {
     );
     expect(responseText).not.toContain("github-test-token");
   });
+
+  it("serves stale cache data while scheduling a background refresh", async () => {
+    const staleSnapshot = {
+      repo: "zenml-io/zenml",
+      stars: 12000,
+      formatted: "12,000",
+      source: "github" as const,
+      asOf: new Date(Date.now() - 31 * 60 * 1000).toISOString(),
+    };
+    const cacheMatch = vi.fn(
+      async () =>
+        new Response(JSON.stringify(staleSnapshot), {
+          headers: { "Content-Type": "application/json" },
+        }),
+    );
+    const cachePut = vi.fn(
+      async (_request: Request, _response: Response): Promise<void> =>
+        undefined,
+    );
+    vi.stubGlobal("caches", {
+      default: {
+        match: cacheMatch,
+        put: cachePut,
+      },
+    });
+
+    const fetchMock = vi.fn<typeof fetch>(
+      async () =>
+        new Response(JSON.stringify({ stargazers_count: 12345 }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    const waitUntilPromises: Promise<unknown>[] = [];
+    const waitUntil = vi.fn((promise: Promise<unknown>) => {
+      waitUntilPromises.push(promise);
+    });
+    const context = makeContext();
+    context.locals.cfContext.waitUntil = waitUntil;
+
+    const response = await GET(context);
+    const payload = (await response.json()) as Record<string, unknown>;
+
+    expect(response.status).toBe(200);
+    expect(payload).toMatchObject({
+      repo: "zenml-io/zenml",
+      stars: 12000,
+      formatted: "12,000",
+      source: "cache",
+      asOf: staleSnapshot.asOf,
+    });
+    expect(waitUntil).toHaveBeenCalledTimes(1);
+    expect(waitUntilPromises).toHaveLength(1);
+    expect(cachePut).not.toHaveBeenCalled();
+
+    await Promise.all(waitUntilPromises);
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(cachePut).toHaveBeenCalledTimes(1);
+    const refreshedResponse = cachePut.mock.calls[0]?.[1];
+    expect(refreshedResponse).toBeInstanceOf(Response);
+    await expect(refreshedResponse?.clone().json()).resolves.toMatchObject({
+      repo: "zenml-io/zenml",
+      stars: 12345,
+      formatted: "12,345",
+      source: "github",
+    });
+  });
 });
