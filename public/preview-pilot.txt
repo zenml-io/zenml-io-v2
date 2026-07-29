@@ -1,0 +1,3 @@
+ZenML Cloudflare Worker PR preview pilot
+
+This temporary marker proves that the preview serves the pilot PR artifact.
