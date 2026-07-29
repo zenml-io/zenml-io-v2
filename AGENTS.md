@@ -49,7 +49,7 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 - The root test suite runs with `pnpm test`.
 - Minimum quality gate before PR: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:worker && pnpm check:islands`. PR CI enforces these in the required `Repo checks` job and packages that exact validated artifact. A trusted workflow may upload an isolated, inactive preview afterward for eligible same-repository PRs, but preview upload is not the required merge gate.
 - Before pushing code changes, run the same local gates that CI runs: `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`, `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm smoke:dist`, `pnpm check:worker`, then `pnpm check:islands` (or the combined command above). If you edit code after running any check, rerun the affected check before pushing. Documentation-only edits can skip the build unless they change generated content or site behavior.
-- Worker release changes follow `docs/worker-release-runbook.md`. CI, preview upload, production-candidate upload, exact-version activation, and production route attachment are separate actions. Never add Cloudflare credentials to the branch-controlled build job or combine upload with activation.
+- Worker release changes follow `docs/worker-release-runbook.md`. CI, preview upload, production-candidate upload, exact-version activation, and production route attachment remain separate actions. Never add Cloudflare credentials to the branch-controlled build job. After the accepted Worker cutover, the trusted default-branch release workflow may upload the exact validated `main` artifact and activate it in separate GitHub-environment jobs after provenance, binding, topology, and baseline checks; route attachment remains a separate action.
 - For content-heavy changes, also run `pnpm validate:content`.
 - If you edit code after running checks, rerun the affected checks.
 
@@ -58,6 +58,7 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 - Keep commits focused; stage only relevant files.
 - Do **not** commit intermediate planning/review artifacts by default. Files under `docs/plans/`, `docs/reviews/`, `prompt-exports/`, or similar orchestration scratch locations are working notes unless the user explicitly asks to keep them. Before committing, check `git status --short` and leave unrelated or intermediate plans/reviews unstaged.
 - PR descriptions should be friendly and reviewer-oriented. Include: a short summary; grouped feature/change bullets; a “what reviewers should focus on” section for gnarly or judgement-heavy areas; validation commands/review loops run; and concrete preview URLs or paths to check when relevant.
+- Do not hard-wrap PR descriptions at a fixed column width. Keep each paragraph and each bullet on one source line, use blank lines between logical blocks, and let GitHub wrap the rendered text for the viewer.
 - PRs should include screenshots for UI changes.
 - Verify redirects/canonicals when URL or SEO-related files change.
 

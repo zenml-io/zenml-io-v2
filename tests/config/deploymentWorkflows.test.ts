@@ -1,11 +1,21 @@
 import { execFileSync } from "node:child_process";
-import { readdirSync, readFileSync } from "node:fs";
+import {
+  chmodSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
 import { REQUIRED_WORKER_SECRETS } from "../../scripts/check-worker-bindings";
 
 interface WorkflowStep {
+  "continue-on-error"?: boolean;
   env?: Record<string, string>;
   name: string;
   run?: string;
@@ -33,12 +43,20 @@ const activationWorkflow = readFileSync(
   ".github/workflows/activate-worker.yml",
   "utf8",
 );
+const releaseWorkflow = readFileSync(
+  ".github/workflows/release-worker.yml",
+  "utf8",
+);
 const candidateWorkflowConfig = parse(candidateWorkflow) as ProductionWorkflow;
 const activationWorkflowConfig = parse(
   activationWorkflow,
 ) as ProductionWorkflow;
+const releaseWorkflowConfig = parse(releaseWorkflow) as ProductionWorkflow;
 const candidateSteps = candidateWorkflowConfig.jobs["upload-candidate"].steps;
 const activationSteps = activationWorkflowConfig.jobs.activate.steps;
+const releaseUploadSteps = releaseWorkflowConfig.jobs.upload.steps;
+const releaseActivationSteps = releaseWorkflowConfig.jobs.activate.steps;
+const releaseRecoverySteps = releaseWorkflowConfig.jobs.recover.steps;
 const allWorkflows = readdirSync(".github/workflows")
   .filter((filename) => filename.endsWith(".yml"))
   .map(
@@ -89,6 +107,341 @@ function workflowStep(steps: WorkflowStep[], name: string): WorkflowStep {
   const step = steps.find((candidate) => candidate.name === name);
   expect(step, `missing workflow step: ${name}`).toBeDefined();
   return step as WorkflowStep;
+}
+
+function withTemporaryHarness<T>(
+  prefix: string,
+  run: (directory: string, binDirectory: string) => T,
+): T {
+  const directory = mkdtempSync(join(tmpdir(), prefix));
+  const binDirectory = join(directory, "bin");
+  mkdirSync(binDirectory);
+  try {
+    return run(directory, binDirectory);
+  } finally {
+    rmSync(directory, { force: true, recursive: true });
+  }
+}
+
+function executeReleaseTrap(
+  shouldFail: boolean,
+  activeVersion = "22222222-2222-2222-2222-222222222222",
+  deploymentReadFailures = 0,
+  rollbackDeployFailures = 0,
+  operatorVersionAfterDeployAttempt = "",
+): {
+  deploymentReadCalls: number;
+  error: unknown;
+  stderr: string;
+  wranglerCalls: string[];
+} {
+  const releaseStep = workflowStep(
+    releaseActivationSteps,
+    "Activate, smoke-test, and roll back on failure",
+  );
+  const run = releaseStep.run ?? "";
+  const functionsStart = run.indexOf("active_version() {");
+  const functionsEnd = run.indexOf("trap rollback_previous_version ERR");
+  expect(functionsStart).toBeGreaterThan(-1);
+  expect(functionsEnd).toBeGreaterThan(functionsStart);
+  const functions = run.slice(functionsStart, functionsEnd);
+
+  return withTemporaryHarness(
+    "worker-release-rollback-",
+    (harnessDirectory, binDirectory) => {
+      const activeVersionFile = join(harnessDirectory, "active-version.txt");
+      const callsFile = join(harnessDirectory, "wrangler-calls.txt");
+      writeFileSync(activeVersionFile, `${activeVersion}\n`);
+      writeFileSync(callsFile, "");
+      writeFileSync(
+        join(binDirectory, "wrangler"),
+        `#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\\n' "$*" >> "$WRANGLER_CALLS_FILE"
+if [ "$1 $2" = "deployments list" ]; then
+  read_calls="$(grep -c '^deployments list ' "$WRANGLER_CALLS_FILE" || true)"
+  if [ "$read_calls" -le "$DEPLOYMENT_READ_FAILURES" ]; then
+    exit 1
+  fi
+  version_id="$(cat "$ACTIVE_VERSION_FILE")"
+  printf '[{"created_on":"2026-07-29T00:00:00Z","versions":[{"version_id":"%s","percentage":100}]}]\\n' "$version_id"
+  exit 0
+fi
+if [ "$1 $2" = "versions deploy" ]; then
+  deploy_calls="$(grep -c '^versions deploy ' "$WRANGLER_CALLS_FILE" || true)"
+  if
+    [ -n "$OPERATOR_VERSION_AFTER_DEPLOY_ATTEMPT" ] &&
+    [ "$deploy_calls" -eq 1 ]
+  then
+    printf '%s\\n' "$OPERATOR_VERSION_AFTER_DEPLOY_ATTEMPT" \
+      > "$ACTIVE_VERSION_FILE"
+  fi
+  if [ "$deploy_calls" -le "$ROLLBACK_DEPLOY_FAILURES" ]; then
+    exit 1
+  fi
+  printf '%s\\n' "$PREVIOUS_VERSION_ID" > "$ACTIVE_VERSION_FILE"
+  exit 0
+fi
+exit 2
+`,
+      );
+      chmodSync(join(binDirectory, "wrangler"), 0o755);
+      writeFileSync(
+        join(binDirectory, "curl"),
+        "#!/usr/bin/env bash\nprintf '200\\n'\n",
+      );
+      chmodSync(join(binDirectory, "curl"), 0o755);
+      writeFileSync(
+        join(binDirectory, "sleep"),
+        "#!/usr/bin/env bash\nexit 0\n",
+      );
+      chmodSync(join(binDirectory, "sleep"), 0o755);
+
+      const script = `
+set -Eeuo pipefail
+worker_name="zenml-io-v2-worker"
+activation_attempted=true
+${functions}
+trap rollback_previous_version ERR
+${shouldFail ? "false" : ":"}
+`;
+      let error: unknown;
+      let stderr = "";
+      try {
+        execFileSync("bash", ["-c", script], {
+          env: {
+            ...process.env,
+            ACTIVE_VERSION_FILE: activeVersionFile,
+            CANDIDATE_VERSION_ID: "22222222-2222-2222-2222-222222222222",
+            DEPLOYMENT_READ_FAILURES: String(deploymentReadFailures),
+            OPERATOR_VERSION_AFTER_DEPLOY_ATTEMPT:
+              operatorVersionAfterDeployAttempt,
+            PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
+            PREVIOUS_VERSION_ID: "11111111-1111-1111-1111-111111111111",
+            ROLLBACK_DEPLOY_FAILURES: String(rollbackDeployFailures),
+            RUNNER_TEMP: harnessDirectory,
+            WRANGLER_CALLS_FILE: callsFile,
+          },
+          stdio: ["ignore", "pipe", "pipe"],
+        });
+      } catch (caught) {
+        error = caught;
+        const commandError = caught as { stderr?: Buffer | string };
+        stderr = commandError.stderr?.toString() ?? "";
+      }
+      const wranglerCalls = readFileSync(callsFile, "utf8")
+        .trim()
+        .split("\n")
+        .filter(Boolean);
+      const deploymentReadCalls = wranglerCalls.filter((call) =>
+        call.startsWith("deployments list "),
+      ).length;
+      return { deploymentReadCalls, error, stderr, wranglerCalls };
+    },
+  );
+}
+
+function executeStatusRetry(): { curlCalls: number; error: unknown } {
+  const releaseStep = workflowStep(
+    releaseActivationSteps,
+    "Activate, smoke-test, and roll back on failure",
+  );
+  const run = releaseStep.run ?? "";
+  const functionStart = run.indexOf("expect_status() {");
+  const functionEnd = run.indexOf('expect_status 200 "https://www.zenml.io/"');
+  expect(functionStart).toBeGreaterThan(-1);
+  expect(functionEnd).toBeGreaterThan(functionStart);
+  const expectStatusFunction = run.slice(functionStart, functionEnd);
+
+  return withTemporaryHarness(
+    "worker-release-smoke-",
+    (harnessDirectory, binDirectory) => {
+      const callsFile = join(harnessDirectory, "curl-calls.txt");
+      writeFileSync(callsFile, "0\n");
+      writeFileSync(
+        join(binDirectory, "curl"),
+        `#!/usr/bin/env bash
+set -euo pipefail
+calls="$(cat "$CURL_CALLS_FILE")"
+calls=$((calls + 1))
+printf '%s\\n' "$calls" > "$CURL_CALLS_FILE"
+if [ "$calls" -eq 1 ]; then
+  exit 7
+fi
+printf '200\\n'
+`,
+      );
+      chmodSync(join(binDirectory, "curl"), 0o755);
+
+      let error: unknown;
+      try {
+        execFileSync(
+          "bash",
+          [
+            "-c",
+            `set -Eeuo pipefail
+${expectStatusFunction}
+expect_status 200 "https://www.zenml.io/" retry-test
+`,
+          ],
+          {
+            env: {
+              ...process.env,
+              CURL_CALLS_FILE: callsFile,
+              PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
+              RUNNER_TEMP: harnessDirectory,
+            },
+            stdio: ["ignore", "pipe", "pipe"],
+          },
+        );
+      } catch (caught) {
+        error = caught;
+      }
+      const curlCalls = Number.parseInt(readFileSync(callsFile, "utf8"), 10);
+      return { curlCalls, error };
+    },
+  );
+}
+
+function executeRecovery(
+  initialVersion: string,
+  deployFailures: number,
+  homeStatus: number,
+  deploymentReadFailures = 0,
+  operatorVersionAfterDeployAttempt = "",
+  finalVerification: {
+    activeVersion?: string;
+    readFails?: boolean;
+  } = {},
+): {
+  deployCalls: number;
+  deploymentReadCalls: number;
+  error: unknown;
+  stderr: string;
+} {
+  const recoveryStep = workflowStep(
+    releaseRecoverySteps,
+    "Reconcile and recover previous version",
+  );
+  const run = recoveryStep.run ?? "";
+  return withTemporaryHarness(
+    "worker-recovery-",
+    (harnessDirectory, binDirectory) => {
+      const activeVersionFile = join(harnessDirectory, "active-version.txt");
+      const deployCallsFile = join(harnessDirectory, "deploy-calls.txt");
+      const deploymentReadCallsFile = join(
+        harnessDirectory,
+        "deployment-read-calls.txt",
+      );
+      const failDeploymentReadsFile = join(
+        harnessDirectory,
+        "fail-deployment-reads",
+      );
+      writeFileSync(activeVersionFile, `${initialVersion}\n`);
+      writeFileSync(deployCallsFile, "0\n");
+      writeFileSync(deploymentReadCallsFile, "0\n");
+      writeFileSync(
+        join(binDirectory, "wrangler"),
+        `#!/usr/bin/env bash
+set -euo pipefail
+if [ "$1 $2" = "deployments list" ]; then
+  calls="$(cat "$DEPLOYMENT_READ_CALLS_FILE")"
+  calls=$((calls + 1))
+  printf '%s\\n' "$calls" > "$DEPLOYMENT_READ_CALLS_FILE"
+  if [ -f "$FAIL_DEPLOYMENT_READS_FILE" ]; then
+    exit 1
+  fi
+  if [ "$calls" -le "$DEPLOYMENT_READ_FAILURES" ]; then
+    exit 1
+  fi
+  active_version="$(cat "$ACTIVE_VERSION_FILE")"
+  printf '[{"created_on":"2026-07-29T00:00:00Z","versions":[{"version_id":"%s","percentage":100}]}]\\n' "$active_version"
+  exit 0
+fi
+if [ "$1 $2" = "versions deploy" ]; then
+  calls="$(cat "$DEPLOY_CALLS_FILE")"
+  calls=$((calls + 1))
+  printf '%s\\n' "$calls" > "$DEPLOY_CALLS_FILE"
+  if
+    [ -n "$OPERATOR_VERSION_AFTER_DEPLOY_ATTEMPT" ] &&
+    [ "$calls" -eq 1 ]
+  then
+    printf '%s\\n' "$OPERATOR_VERSION_AFTER_DEPLOY_ATTEMPT" \
+      > "$ACTIVE_VERSION_FILE"
+  fi
+  if [ "$calls" -le "$DEPLOY_FAILURES" ]; then
+    exit 1
+  fi
+  printf '%s\\n' "$PREVIOUS_VERSION_ID" > "$ACTIVE_VERSION_FILE"
+  exit 0
+fi
+exit 2
+`,
+      );
+      chmodSync(join(binDirectory, "wrangler"), 0o755);
+      writeFileSync(
+        join(binDirectory, "curl"),
+        `#!/usr/bin/env bash
+set -euo pipefail
+if [ -n "$FINAL_ACTIVE_VERSION" ]; then
+  printf '%s\\n' "$FINAL_ACTIVE_VERSION" > "$ACTIVE_VERSION_FILE"
+fi
+if [ "$FINAL_DEPLOYMENT_READ_FAILS" = "true" ]; then
+  touch "$FAIL_DEPLOYMENT_READS_FILE"
+fi
+printf '%s\\n' "$RECOVERY_HOME_STATUS"
+`,
+      );
+      chmodSync(join(binDirectory, "curl"), 0o755);
+      writeFileSync(
+        join(binDirectory, "sleep"),
+        "#!/usr/bin/env bash\nexit 0\n",
+      );
+      chmodSync(join(binDirectory, "sleep"), 0o755);
+
+      let error: unknown;
+      let stderr = "";
+      try {
+        execFileSync("bash", ["-c", run], {
+          env: {
+            ...process.env,
+            ACTIVE_VERSION_FILE: activeVersionFile,
+            CANDIDATE_VERSION_ID: "22222222-2222-2222-2222-222222222222",
+            DEPLOY_CALLS_FILE: deployCallsFile,
+            DEPLOY_FAILURES: String(deployFailures),
+            DEPLOYMENT_READ_CALLS_FILE: deploymentReadCallsFile,
+            DEPLOYMENT_READ_FAILURES: String(deploymentReadFailures),
+            FAIL_DEPLOYMENT_READS_FILE: failDeploymentReadsFile,
+            FINAL_ACTIVE_VERSION: finalVerification.activeVersion ?? "",
+            FINAL_DEPLOYMENT_READ_FAILS: String(
+              finalVerification.readFails ?? false,
+            ),
+            OPERATOR_VERSION_AFTER_DEPLOY_ATTEMPT:
+              operatorVersionAfterDeployAttempt,
+            PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
+            PREVIOUS_VERSION_ID: "11111111-1111-1111-1111-111111111111",
+            RECOVERY_HOME_STATUS: String(homeStatus),
+            RUNNER_TEMP: harnessDirectory,
+            WORKER_NAME: "zenml-io-v2-worker",
+          },
+          stdio: ["ignore", "pipe", "pipe"],
+        });
+      } catch (caught) {
+        error = caught;
+        const commandError = caught as { stderr?: Buffer | string };
+        stderr = commandError.stderr?.toString() ?? "";
+      }
+      const deployCalls = Number.parseInt(
+        readFileSync(deployCallsFile, "utf8"),
+        10,
+      );
+      const deploymentReadCalls = Number.parseInt(
+        readFileSync(deploymentReadCallsFile, "utf8"),
+        10,
+      );
+      return { deployCalls, deploymentReadCalls, error, stderr };
+    },
+  );
 }
 
 function jqProgramReadingFrom(run: string, source: string): string {
@@ -198,6 +551,96 @@ function expectPrivateWorkerPredicates(
         },
       ],
       result_info: { total_count: 1 },
+      success: true,
+    },
+    false,
+    workerArgs,
+  );
+}
+
+function expectAcceptedWorkerRoutePredicate(run: string, source: string): void {
+  const program = jqProgramReadingFrom(run, source);
+  const acceptedRoutes = ["www.zenml.io/*", "astro-workers-staging.zenml.io/*"];
+  const workerArgs = [
+    "--arg",
+    "worker",
+    "zenml-io-v2-worker",
+    "--argjson",
+    "accepted_routes",
+    JSON.stringify(acceptedRoutes),
+  ];
+
+  expectJqResult(
+    program,
+    {
+      result: [
+        {
+          id: "zenml-io-v2-worker",
+          routes: acceptedRoutes,
+        },
+      ],
+      success: true,
+    },
+    true,
+    workerArgs,
+  );
+  expectJqResult(
+    program,
+    {
+      result: [
+        {
+          id: "zenml-io-v2-worker",
+          routes: acceptedRoutes.map((pattern) => ({
+            pattern,
+            script: "zenml-io-v2-worker",
+          })),
+        },
+      ],
+      success: true,
+    },
+    true,
+    workerArgs,
+  );
+  expectJqResult(
+    program,
+    {
+      result: [
+        {
+          id: "zenml-io-v2-worker",
+          routes: acceptedRoutes.map((pattern) => ({
+            pattern,
+            script: "another-worker",
+          })),
+        },
+      ],
+      success: true,
+    },
+    false,
+    workerArgs,
+  );
+  expectJqResult(
+    program,
+    {
+      result: [
+        {
+          id: "zenml-io-v2-worker",
+          routes: ["www.zenml.io/*"],
+        },
+      ],
+      success: true,
+    },
+    false,
+    workerArgs,
+  );
+  expectJqResult(
+    program,
+    {
+      result: [
+        {
+          id: "zenml-io-v2-worker",
+          routes: [...acceptedRoutes, "unexpected.zenml.io/*"],
+        },
+      ],
       success: true,
     },
     false,
@@ -642,6 +1085,463 @@ describe("trusted production activation workflow", () => {
       ],
       false,
       args,
+    );
+  });
+});
+
+describe("automatic post-cutover production release", () => {
+  it("runs only after successful current-main artifact CI", () => {
+    expect(releaseWorkflow).toContain("workflow_run:");
+    expect(releaseWorkflow).toContain(
+      'workflows: ["Website CI and Worker Artifact"]',
+    );
+    expect(releaseWorkflow).toContain("types: [completed]");
+    expect(releaseWorkflow).toContain("branches: [main]");
+    expect(releaseWorkflow).toContain(
+      "github.event.workflow_run.conclusion == 'success'",
+    );
+    expect(releaseWorkflow).toContain(
+      "github.event.workflow_run.event == 'push'",
+    );
+    expect(releaseWorkflow).toContain(
+      "github.event.workflow_run.head_branch == 'main'",
+    );
+    expect(releaseWorkflow).toContain(
+      "github.event.workflow_run.head_repository.full_name == github.repository",
+    );
+    expect(releaseWorkflow).toContain("git/ref/heads/main");
+    expect(releaseWorkflow).toContain("eligible=false");
+  });
+
+  it("serializes the complete release and promotes the exact CI artifact without rebuilding", () => {
+    expect(releaseWorkflow).toContain("'zenml-io-worker-production'");
+    expect(releaseWorkflow).toContain("cancel-in-progress: false");
+    expect(releaseWorkflow).toContain(
+      "format('zenml-io-worker-ineligible-{0}', github.run_id)",
+    );
+    expect(releaseWorkflow).toContain("actions/download-artifact@");
+    expect(releaseWorkflow).toContain(
+      "run-id: $" + "{{ github.event.workflow_run.id }}",
+    );
+    expect(releaseWorkflow).toContain("sha256sum --check worker-dist.sha256");
+    expect(releaseWorkflow).toContain("wrangler versions upload");
+    expect(releaseWorkflow).toContain("wrangler versions deploy");
+    expect(releaseWorkflow).not.toContain("pnpm install");
+    expect(releaseWorkflow).not.toContain("pnpm build");
+    expect(releaseWorkflow).not.toContain("wrangler pages deploy");
+    expectNoRouteOrDnsMutation(releaseWorkflow);
+  });
+
+  it("requires the accepted route topology and private Worker endpoints", () => {
+    expect(releaseWorkflow).toContain("astro-workers-staging.zenml.io/*");
+    expect(releaseWorkflow).toContain("www.zenml.io/*");
+    expect(releaseWorkflow).toContain(
+      ".result.enabled == false and .result.previews_enabled == false",
+    );
+    expect(releaseWorkflow).toContain("result_info.total_count == 0");
+    expect(releaseWorkflow).toContain("Unexpected Worker route topology");
+
+    const baselineStep = workflowStep(
+      releaseUploadSteps,
+      "Capture accepted production baseline",
+    );
+    const preservedUploadStep = workflowStep(
+      releaseUploadSteps,
+      "Verify inactive upload preserved production",
+    );
+    const activationBaselineStep = workflowStep(
+      releaseActivationSteps,
+      "Reverify exact candidate and production baseline",
+    );
+    const releaseStep = workflowStep(
+      releaseActivationSteps,
+      "Activate, smoke-test, and roll back on failure",
+    );
+
+    expectAcceptedWorkerRoutePredicate(
+      baselineStep.run ?? "",
+      '"$RUNNER_TEMP/workers-before-upload.json"',
+    );
+    expectAcceptedWorkerRoutePredicate(
+      preservedUploadStep.run ?? "",
+      '"$RUNNER_TEMP/workers-after-upload.json"',
+    );
+    expectAcceptedWorkerRoutePredicate(
+      activationBaselineStep.run ?? "",
+      '"$RUNNER_TEMP/workers-before-activation.json"',
+    );
+    expectAcceptedWorkerRoutePredicate(
+      releaseStep.run ?? "",
+      '"$RUNNER_TEMP/workers-after-activation.json"',
+    );
+
+    const subdomainProgram = jqProgramReadingFrom(
+      preservedUploadStep.run ?? "",
+      '"$RUNNER_TEMP/worker-subdomain-after-upload.json"',
+    );
+    expectJqResult(
+      subdomainProgram,
+      {
+        result: { enabled: false, previews_enabled: false },
+        success: true,
+      },
+      true,
+    );
+    expectJqResult(
+      subdomainProgram,
+      {
+        result: { enabled: false, previews_enabled: true },
+        success: true,
+      },
+      false,
+    );
+  });
+
+  it("verifies bindings and exact version provenance before activation", () => {
+    for (const secret of REQUIRED_WORKER_SECRETS) {
+      expect(releaseWorkflow).toContain(`index("${secret}")`);
+    }
+    expect(releaseWorkflow).toContain("wrangler versions view");
+    expect(releaseWorkflow).toContain("source_commit=$SOURCE_COMMIT");
+    expect(releaseWorkflow).toContain("source_run_id=$SOURCE_RUN_ID");
+    expect(releaseWorkflow).toContain("artifact_sha256=$artifact_sha256");
+    expect(releaseWorkflow).toContain('"$CANDIDATE_VERSION_ID@100%"');
+
+    const uploadStep = workflowStep(
+      releaseUploadSteps,
+      "Upload inactive production version",
+    );
+    const activationBaselineStep = workflowStep(
+      releaseActivationSteps,
+      "Reverify exact candidate and production baseline",
+    );
+    expectSecretBindingPredicate(
+      jqProgramReadingFrom(uploadStep.run ?? "", "version-metadata.json"),
+    );
+    expectSecretBindingPredicate(
+      jqProgramReadingFrom(
+        activationBaselineStep.run ?? "",
+        '"$RUNNER_TEMP/candidate-version.json"',
+      ),
+    );
+  });
+
+  it("rechecks live main and the exact production baseline immediately before activation", () => {
+    const releaseStep = workflowStep(
+      releaseActivationSteps,
+      "Activate, smoke-test, and roll back on failure",
+    );
+    const run = releaseStep.run ?? "";
+    const liveMainCheck = run.indexOf("git/ref/heads/main");
+    const activation = run.indexOf(
+      'wrangler versions deploy "$CANDIDATE_VERSION_ID@100%"',
+    );
+    const liveBaselineCheck = run.indexOf(
+      '"$RUNNER_TEMP/deployments-immediately-before-activation.json"',
+    );
+    const activationAttempted = run.indexOf("activation_attempted=true");
+    expect(releaseStep.env?.GH_TOKEN).toBe("$" + "{{ github.token }}");
+    expect(liveMainCheck).toBeGreaterThan(-1);
+    expect(liveBaselineCheck).toBeGreaterThan(liveMainCheck);
+    expect(activationAttempted).toBeGreaterThan(liveBaselineCheck);
+    expect(activation).toBeGreaterThan(liveMainCheck);
+    expect(activation).toBeGreaterThan(activationAttempted);
+    expect(run).toMatch(
+      /timeout 90s \\\n\s+wrangler versions deploy "\$CANDIDATE_VERSION_ID@100%"/,
+    );
+    expect(run).toContain(
+      "Production baseline changed before activation; refusing to overwrite it.",
+    );
+  });
+
+  it("bounds activation deployment reads and retries post-activation verification", () => {
+    const baselineStep = workflowStep(
+      releaseActivationSteps,
+      "Reverify exact candidate and production baseline",
+    );
+    const releaseStep = workflowStep(
+      releaseActivationSteps,
+      "Activate, smoke-test, and roll back on failure",
+    );
+    const run = releaseStep.run ?? "";
+    const activeVersionFunction = run.slice(
+      run.indexOf("active_version() {"),
+      run.indexOf("verify_deployment() {"),
+    );
+    const verifyDeploymentFunction = run.slice(
+      run.indexOf("verify_deployment() {"),
+      run.indexOf("rollback_previous_version() {"),
+    );
+
+    expect(baselineStep.run).toContain("timeout 60s wrangler deployments list");
+    expect(activeVersionFunction).toContain(
+      "timeout 60s wrangler deployments list",
+    );
+    expect(activeVersionFunction).toContain("for attempt in 1 2 3");
+    expect(activeVersionFunction).toContain("($latest.versions | length) == 1");
+    expect(activeVersionFunction).toContain(
+      "$latest.versions[0].percentage == 100",
+    );
+    expect(verifyDeploymentFunction).toContain("for attempt in 1 2 3");
+    expect(verifyDeploymentFunction).toContain(
+      "Active version did not converge",
+    );
+  });
+
+  it("smoke-tests production and restores the previous version on failure", () => {
+    expect(releaseWorkflow).toContain("/blog/dagster-alternatives");
+    expect(releaseWorkflow).toContain("/api/github-stars");
+    expect(releaseWorkflow).toContain("/api/forms/demo-request");
+    expect(releaseWorkflow).toContain("rollback_previous_version");
+    expect(releaseWorkflow).toContain('"$PREVIOUS_VERSION_ID@100%"');
+    expect(releaseWorkflow).toContain("Rollback verification failed");
+    expect(releaseWorkflow).toContain("Automatic rollback completed");
+    expect(releaseWorkflow).toContain(
+      "Recover previous production version after failed activation",
+    );
+    expect(releaseWorkflow).toContain("needs.activate.result != 'success'");
+    const recoveryStep = workflowStep(
+      releaseRecoverySteps,
+      "Reconcile and recover previous version",
+    );
+    expect(recoveryStep.run).toContain(
+      'wrangler versions deploy "$PREVIOUS_VERSION_ID@100%"',
+    );
+    expect(recoveryStep.run).toContain("for attempt in 1 2 3");
+    expect(recoveryStep.run).toContain("timeout 90s");
+    expect(recoveryStep.run).toContain(
+      'current_version" != "$CANDIDATE_VERSION_ID',
+    );
+    expect(recoveryStep.run).toContain(
+      "An unknown production version is active; recovery will not replace it.",
+    );
+    const recoveryRun = recoveryStep.run ?? "";
+    const homepageVerification = recoveryRun.indexOf(
+      'if [ "$home_status" != "200" ]',
+    );
+    const finalControlPlaneRead = recoveryRun.indexOf(
+      'final_version="$(active_version)"',
+      homepageVerification,
+    );
+    const finalVersionComparison = recoveryRun.indexOf(
+      'if [ "$final_version" != "$PREVIOUS_VERSION_ID" ]',
+      finalControlPlaneRead,
+    );
+    const recoverySuccess = recoveryRun.indexOf(
+      "Recovered and verified the previous production Worker version.",
+      finalVersionComparison,
+    );
+    expect(homepageVerification).toBeGreaterThan(-1);
+    expect(finalControlPlaneRead).toBeGreaterThan(homepageVerification);
+    expect(finalVersionComparison).toBeGreaterThan(finalControlPlaneRead);
+    expect(recoverySuccess).toBeGreaterThan(finalVersionComparison);
+    expect(
+      recoveryRun.slice(finalControlPlaneRead, recoverySuccess),
+    ).not.toContain("wrangler versions deploy");
+    expect(
+      workflowStep(
+        releaseActivationSteps,
+        "Preserve activation and smoke evidence",
+      )["continue-on-error"],
+    ).toBe(true);
+  });
+
+  it("reverifies the exact candidate after every production smoke check and before disarming rollback", () => {
+    const releaseStep = workflowStep(
+      releaseActivationSteps,
+      "Activate, smoke-test, and roll back on failure",
+    );
+    const run = releaseStep.run ?? "";
+    const lastAssetSmoke = run.indexOf(
+      `expect_status 200 "https://www.zenml.io\${asset_path}" asset`,
+    );
+    const apexSmoke = run.indexOf('expect_status 301 "https://zenml.io/" apex');
+    const finalCandidateOutput = run.indexOf(
+      '"$RUNNER_TEMP/deployments-after-smoke.json"',
+    );
+    const finalCandidateVerification = run.lastIndexOf(
+      "verify_deployment",
+      finalCandidateOutput,
+    );
+    const trapRemoval = run.indexOf("trap - ERR", finalCandidateOutput);
+    const successSummary = run.indexOf(
+      "## Automatic production Worker release",
+    );
+
+    expect(lastAssetSmoke).toBeGreaterThan(-1);
+    expect(apexSmoke).toBeGreaterThan(lastAssetSmoke);
+    expect(finalCandidateVerification).toBeGreaterThan(apexSmoke);
+    expect(finalCandidateOutput).toBeGreaterThan(finalCandidateVerification);
+    expect(trapRemoval).toBeGreaterThan(finalCandidateVerification);
+    expect(successSummary).toBeGreaterThan(trapRemoval);
+    expect(
+      run.slice(finalCandidateVerification, trapRemoval).trimEnd(),
+    ).toMatch(
+      /verify_deployment \\\n\s+"\$CANDIDATE_VERSION_ID" \\\n\s+"\$RUNNER_TEMP\/deployments-after-smoke\.json"$/,
+    );
+  });
+
+  it("executes rollback after a post-activation failure and not after success", () => {
+    const failedRelease = executeReleaseTrap(true);
+    expect(failedRelease.error).toBeDefined();
+    expect(failedRelease.wranglerCalls).toContain(
+      "versions deploy 11111111-1111-1111-1111-111111111111@100% --name zenml-io-v2-worker --yes",
+    );
+    expect(failedRelease.wranglerCalls).toContain(
+      "deployments list --name zenml-io-v2-worker --json",
+    );
+
+    const successfulRelease = executeReleaseTrap(false);
+    expect(successfulRelease.error).toBeUndefined();
+    expect(successfulRelease.wranglerCalls).toEqual([]);
+
+    const unknownVersionRelease = executeReleaseTrap(
+      true,
+      "33333333-3333-3333-3333-333333333333",
+    );
+    expect(unknownVersionRelease.error).toBeDefined();
+    expect(unknownVersionRelease.wranglerCalls).toContain(
+      "deployments list --name zenml-io-v2-worker --json",
+    );
+    expect(
+      unknownVersionRelease.wranglerCalls.some((call) =>
+        call.startsWith("versions deploy "),
+      ),
+    ).toBe(false);
+    expect(unknownVersionRelease.stderr).toContain(
+      "An unknown production version is active; inline rollback will not replace it.",
+    );
+
+    const transientReadFailure = executeReleaseTrap(
+      true,
+      "22222222-2222-2222-2222-222222222222",
+      1,
+    );
+    expect(transientReadFailure.error).toBeDefined();
+    expect(transientReadFailure.deploymentReadCalls).toBeGreaterThanOrEqual(3);
+    expect(
+      transientReadFailure.wranglerCalls.some((call) =>
+        call.startsWith("versions deploy "),
+      ),
+    ).toBe(true);
+
+    const exhaustedReadFailure = executeReleaseTrap(
+      true,
+      "22222222-2222-2222-2222-222222222222",
+      3,
+    );
+    expect(exhaustedReadFailure.error).toBeDefined();
+    expect(exhaustedReadFailure.deploymentReadCalls).toBe(3);
+    expect(
+      exhaustedReadFailure.wranglerCalls.some((call) =>
+        call.startsWith("versions deploy "),
+      ),
+    ).toBe(false);
+    expect(exhaustedReadFailure.stderr).toContain(
+      "Could not read the active production version from the Cloudflare control plane; inline rollback will not act.",
+    );
+
+    const operatorVersion = "33333333-3333-3333-3333-333333333333";
+    const operatorReleaseDuringRetry = executeReleaseTrap(
+      true,
+      "22222222-2222-2222-2222-222222222222",
+      0,
+      1,
+      operatorVersion,
+    );
+    expect(operatorReleaseDuringRetry.error).toBeDefined();
+    expect(
+      operatorReleaseDuringRetry.wranglerCalls.filter((call) =>
+        call.startsWith("versions deploy "),
+      ),
+    ).toHaveLength(1);
+    expect(operatorReleaseDuringRetry.stderr).toContain(
+      "An unknown production version is active; inline rollback will not replace it.",
+    );
+  });
+
+  it("retries a transient curl failure instead of triggering rollback", () => {
+    const result = executeStatusRetry();
+    expect(result.error).toBeUndefined();
+    expect(result.curlCalls).toBe(2);
+  });
+
+  it("executes recovery reconciliation and fails closed when recovery cannot complete", () => {
+    const previousVersion = "11111111-1111-1111-1111-111111111111";
+    const candidateVersion = "22222222-2222-2222-2222-222222222222";
+    const unknownVersion = "33333333-3333-3333-3333-333333333333";
+
+    const alreadyRecovered = executeRecovery(previousVersion, 0, 200);
+    expect(alreadyRecovered.error).toBeUndefined();
+    expect(alreadyRecovered.deployCalls).toBe(0);
+
+    const transientFailure = executeRecovery(candidateVersion, 1, 200);
+    expect(transientFailure.error).toBeUndefined();
+    expect(transientFailure.deployCalls).toBe(2);
+
+    const exhaustedRecovery = executeRecovery(candidateVersion, 3, 200);
+    expect(exhaustedRecovery.error).toBeDefined();
+    expect(exhaustedRecovery.deployCalls).toBe(3);
+
+    const unknownActiveVersion = executeRecovery(unknownVersion, 0, 200);
+    expect(unknownActiveVersion.error).toBeDefined();
+    expect(unknownActiveVersion.deployCalls).toBe(0);
+    expect(unknownActiveVersion.stderr).toContain(
+      "An unknown production version is active; recovery will not replace it.",
+    );
+
+    const unhealthyPreviousVersion = executeRecovery(previousVersion, 0, 503);
+    expect(unhealthyPreviousVersion.error).toBeDefined();
+    expect(unhealthyPreviousVersion.deployCalls).toBe(0);
+
+    const transientReadFailure = executeRecovery(candidateVersion, 0, 200, 1);
+    expect(transientReadFailure.error).toBeUndefined();
+    expect(transientReadFailure.deploymentReadCalls).toBeGreaterThanOrEqual(3);
+    expect(transientReadFailure.deployCalls).toBe(1);
+
+    const exhaustedReadFailure = executeRecovery(candidateVersion, 0, 200, 3);
+    expect(exhaustedReadFailure.error).toBeDefined();
+    expect(exhaustedReadFailure.deploymentReadCalls).toBe(3);
+    expect(exhaustedReadFailure.deployCalls).toBe(0);
+    expect(exhaustedReadFailure.stderr).toContain(
+      "Could not read the active production version from the Cloudflare control plane; recovery will not act.",
+    );
+
+    const operatorReleaseDuringRetry = executeRecovery(
+      candidateVersion,
+      1,
+      200,
+      0,
+      unknownVersion,
+    );
+    expect(operatorReleaseDuringRetry.error).toBeDefined();
+    expect(operatorReleaseDuringRetry.deployCalls).toBe(1);
+    expect(operatorReleaseDuringRetry.stderr).toContain(
+      "An unknown production version is active; recovery will not replace it.",
+    );
+
+    const candidateDuringHomepageCheck = executeRecovery(
+      previousVersion,
+      0,
+      200,
+      0,
+      "",
+      { activeVersion: candidateVersion },
+    );
+    expect(candidateDuringHomepageCheck.error).toBeDefined();
+    expect(candidateDuringHomepageCheck.deployCalls).toBe(0);
+    expect(candidateDuringHomepageCheck.stderr).toContain(
+      "Active production version changed during recovery verification; recovery did not complete.",
+    );
+
+    const finalReadFailure = executeRecovery(previousVersion, 0, 200, 0, "", {
+      readFails: true,
+    });
+    expect(finalReadFailure.error).toBeDefined();
+    expect(finalReadFailure.deployCalls).toBe(0);
+    expect(finalReadFailure.deploymentReadCalls).toBe(4);
+    expect(finalReadFailure.stderr).toContain(
+      "Could not read the active production version after homepage verification; recovery did not complete.",
     );
   });
 });
