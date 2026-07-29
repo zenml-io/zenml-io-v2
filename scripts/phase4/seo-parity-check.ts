@@ -1,9 +1,9 @@
 #!/usr/bin/env -S pnpm exec tsx
 /**
- * SEO Parity Check — compares built dist/ HTML against Phase 1 baseline.
+ * SEO Parity Check — compares built dist/client HTML against Phase 1 baseline.
  *
  * For each URL in the baseline (2,151 pages), extracts SEO-critical fields
- * from the corresponding dist/ HTML file and reports matches/mismatches.
+ * from the corresponding dist/client HTML file and reports matches/mismatches.
  *
  * Usage:
  *   pnpm exec tsx scripts/phase4/seo-parity-check.ts [--verbose]
@@ -18,7 +18,7 @@ import { load } from "cheerio";
 
 const BASELINE_PATH =
   "design/migration/phase1/runs/2026-02-11T0626Z/seo/baseline.json";
-const DIST_DIR = "dist";
+const DIST_DIR = "dist/client";
 const SITE_URL = "https://www.zenml.io";
 const VERBOSE = process.argv.includes("--verbose");
 
@@ -313,7 +313,7 @@ function main() {
   // --- Summary ---
   console.log("\n========== SEO PARITY REPORT ==========");
   console.log(`Total baseline URLs:    ${stats.total}`);
-  console.log(`Files found in dist/:   ${stats.filesFound}`);
+  console.log(`Files found in ${DIST_DIR}/:   ${stats.filesFound}`);
   console.log(`Files missing:          ${stats.filesMissing}`);
   console.log();
   console.log("Field-level comparison:");
