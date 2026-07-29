@@ -58,6 +58,7 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 - Keep commits focused; stage only relevant files.
 - Do **not** commit intermediate planning/review artifacts by default. Files under `docs/plans/`, `docs/reviews/`, `prompt-exports/`, or similar orchestration scratch locations are working notes unless the user explicitly asks to keep them. Before committing, check `git status --short` and leave unrelated or intermediate plans/reviews unstaged.
 - PR descriptions should be friendly and reviewer-oriented. Include: a short summary; grouped feature/change bullets; a “what reviewers should focus on” section for gnarly or judgement-heavy areas; validation commands/review loops run; and concrete preview URLs or paths to check when relevant.
+- Do not hard-wrap PR descriptions at a fixed column width. Keep each paragraph and each bullet on one source line, use blank lines between logical blocks, and let GitHub wrap the rendered text for the viewer.
 - PRs should include screenshots for UI changes.
 - Verify redirects/canonicals when URL or SEO-related files change.
 

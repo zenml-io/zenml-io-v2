@@ -113,6 +113,8 @@ PR descriptions should be reviewer-friendly, not just a raw change log. Use this
 
 Keep the tone plain and helpful: the goal is that a reviewer can quickly see the story, know where to spend attention, and know what was already checked.
 
+Do not hard-wrap PR descriptions at a fixed column width. Keep each paragraph and each bullet on one source line, use blank lines between logical blocks, and let GitHub wrap the rendered text for the viewer.
+
 ## Images & Assets
 
 ### Two-tier system
