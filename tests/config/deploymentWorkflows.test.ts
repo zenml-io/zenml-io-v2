@@ -1627,13 +1627,11 @@ describe("automatic pull-request Worker previews", () => {
     expect(prPreviewWorkflowConfig.jobs.publish.permissions).toEqual({
       actions: "read",
       contents: "read",
-      issues: "write",
-      "pull-requests": "read",
+      "pull-requests": "write",
     });
     expect(prPreviewWorkflowConfig.jobs.retire.permissions).toEqual({
       contents: "read",
-      issues: "write",
-      "pull-requests": "read",
+      "pull-requests": "write",
     });
     expect(prPreviewWorkflowConfig.jobs.publish.if).toContain(
       "github.ref == 'refs/heads/main'",

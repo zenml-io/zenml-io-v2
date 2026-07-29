@@ -67,8 +67,7 @@ jobs:
     permissions:
       actions: read
       contents: read
-      issues: write
-      pull-requests: read
+      pull-requests: write
     steps:
       - name: Resolve one current eligible pull request
         id: source
@@ -755,8 +754,7 @@ jobs:
     environment: worker-pr-preview
     permissions:
       contents: read
-      issues: write
-      pull-requests: read
+      pull-requests: write
     steps:
       - name: Check whether this PR had a preview
         id: preview
