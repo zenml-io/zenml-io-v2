@@ -124,7 +124,7 @@ After merging the reviewed workflow:
    current `main`.
 3. Wait for its complete `Website CI and Worker Artifact` run to pass.
 4. Open **Actions → Publish Worker PR Preview → Run workflow** on `main`.
-5. Enter that open PR number and exact CI run ID.
+5. Enter that open PR number, exact source branch, and exact CI run ID.
 6. Check `allow_bootstrap` only after confirming
    `zenml-io-v2-pr-preview` does not already exist.
 7. Check `self_reviewed`.

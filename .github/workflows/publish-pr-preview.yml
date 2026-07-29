@@ -14,6 +14,10 @@ on:
         description: Open same-repository pull request number for that run
         required: true
         type: string
+      source_branch:
+        description: Exact source branch tested by that run
+        required: true
+        type: string
       allow_bootstrap:
         description: Allow this reviewed manual run to create the dedicated preview Worker
         required: true
@@ -33,7 +37,7 @@ concurrency:
     }}-${{
       github.event.pull_request.head.ref ||
       github.event.workflow_run.head_branch ||
-      format('pr-{0}', inputs.pr_number)
+      inputs.source_branch
     }}
   cancel-in-progress: false
 
@@ -72,6 +76,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           INPUT_PR_NUMBER: ${{ inputs.pr_number }}
+          INPUT_SOURCE_BRANCH: ${{ inputs.source_branch }}
           SOURCE_RUN_ID: ${{ github.event.workflow_run.id || inputs.source_run_id }}
         run: |
           set -euo pipefail
@@ -95,6 +100,10 @@ jobs:
 
           source_branch="$(jq -er .head_branch "$RUNNER_TEMP/source-run.json")"
           source_commit="$(jq -er .head_sha "$RUNNER_TEMP/source-run.json")"
+          if [ -n "$INPUT_SOURCE_BRANCH" ] && [ "$INPUT_SOURCE_BRANCH" != "$source_branch" ]; then
+            echo "The supplied source branch does not own this exact CI run." >&2
+            exit 1
+          fi
           repo_owner="${GITHUB_REPOSITORY%%/*}"
           gh api \
             --method GET \
@@ -463,11 +472,18 @@ jobs:
             --strict \
             --dry-run \
             --outdir "$RUNNER_TEMP/pr-preview-upload-dry-run"
+          set +e
           wrangler versions upload \
             --config dist/server/upload-wrangler.json \
             --strict \
             --preview-alias "pr-$PR_NUMBER" \
             --message "$version_message"
+          upload_status=$?
+          set -e
+          echo "upload_attempted=true" >> "$GITHUB_OUTPUT"
+          if [ "$upload_status" -ne 0 ]; then
+            exit "$upload_status"
+          fi
           jq -s 'map(select(.type == "version-upload")) | last' \
             "$output_file" > upload-result.json
           version_id="$(jq -er .version_id upload-result.json)"
@@ -477,6 +493,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Retire alias if the PR closed during upload
+        if: always() && steps.upload.outputs.upload_attempted == 'true'
         shell: bash
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -524,6 +541,7 @@ jobs:
           exit 1
 
       - name: Verify isolated public preview
+        if: steps.upload.outcome == 'success'
         id: verify
         shell: bash
         env:

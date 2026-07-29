@@ -17,6 +17,7 @@ import { REQUIRED_WORKER_SECRETS } from "../../scripts/check-worker-bindings";
 interface WorkflowStep {
   "continue-on-error"?: boolean;
   env?: Record<string, string>;
+  if?: string;
   name: string;
   run?: string;
 }
@@ -1615,7 +1616,7 @@ describe("automatic pull-request Worker previews", () => {
       "github.event.workflow_run.head_branch",
     );
     expect(prPreviewWorkflowConfig.concurrency?.group).toContain(
-      "format('pr-{0}', inputs.pr_number)",
+      "inputs.source_branch",
     );
     expect(prPreviewWorkflowConfig.jobs.publish.environment).toBe(
       "worker-pr-preview",
@@ -1725,7 +1726,7 @@ describe("automatic pull-request Worker previews", () => {
     expect(prPreviewWorkflow).toContain(
       "github.event_name == 'pull_request_target' && 'retire' || 'publish'",
     );
-    expect(prPreviewWorkflow).toContain("format('pr-{0}', inputs.pr_number)");
+    expect(prPreviewWorkflow).toContain("inputs.source_branch");
     expect(prPreviewWorkflow).toContain("cancel-in-progress: false");
     expect(prPreviewWorkflow).toContain(
       "The active PR-preview deployment changed",
@@ -1757,7 +1758,17 @@ describe("automatic pull-request Worker previews", () => {
     expect(closeCheckIndex).toBeGreaterThan(uploadIndex);
     expect(verifyIndex).toBeGreaterThan(closeCheckIndex);
 
+    const uploadRun = prPreviewPublishSteps[uploadIndex].run ?? "";
     const closeCheckRun = prPreviewPublishSteps[closeCheckIndex].run ?? "";
+    const closeCheck = prPreviewPublishSteps[closeCheckIndex];
+    const verify = prPreviewPublishSteps[verifyIndex];
+    expect(uploadRun).toMatch(
+      /set \+e\n\s*wrangler versions upload[\s\S]*?upload_status=\$\?\n\s*set -e\n\s*echo "upload_attempted=true" >> "\$GITHUB_OUTPUT"\n\s*if \[ "\$upload_status" -ne 0 \]; then\n\s*exit "\$upload_status"/,
+    );
+    expect(closeCheck.if).toBe(
+      "always() && steps.upload.outputs.upload_attempted == 'true'",
+    );
+    expect(verify.if).toBe("steps.upload.outcome == 'success'");
     expect(closeCheckRun).toContain(
       'gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq .state',
     );
@@ -1765,6 +1776,19 @@ describe("automatic pull-request Worker previews", () => {
     expect(closeCheckRun).toContain("--strict");
     expect(closeCheckRun).toContain("status: 410");
     expect(closeCheckRun).toContain("exit 1");
+  });
+
+  it("keys manual and automatic publishes by the same verified source branch", () => {
+    expect(prPreviewWorkflow).toContain("source_branch:");
+    expect(prPreviewWorkflow).toContain(
+      "INPUT_SOURCE_BRANCH: $" + "{{ inputs.source_branch }}",
+    );
+    expect(prPreviewWorkflow).toContain(
+      '[ -n "$INPUT_SOURCE_BRANCH" ] && [ "$INPUT_SOURCE_BRANCH" != "$source_branch" ]',
+    );
+    expect(prPreviewWorkflow).toContain(
+      "The supplied source branch does not own this exact CI run.",
+    );
   });
 
   it("records retirement before upload and fails closed on comment lookup errors", () => {
