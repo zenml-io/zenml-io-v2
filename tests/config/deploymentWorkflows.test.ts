@@ -1133,7 +1133,7 @@ describe("automatic post-cutover production release", () => {
     expect(releaseWorkflow).toContain("eligible=false");
     expect(releaseWorkflow).toContain(".production_release_eligible == true");
     expect(deployWorkflow).toContain(
-      "--argjson production_release_eligible false",
+      "--argjson production_release_eligible true",
     );
   });
 

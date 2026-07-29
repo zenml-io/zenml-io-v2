@@ -43,11 +43,11 @@ review-only public versions on a dedicated Worker; they cannot promote a branch
 artifact to production. Explicitly approved branch-built production promotion
 remains a separate follow-up.
 
-During the Astro 6 implementation and staging checkpoint, the artifact manifest
-sets `production_release_eligible` to `false`. The automatic release eligibility
-job reads that flag without entering a credentialed GitHub environment and
-stops successfully before upload. Change the flag only in a separate reviewed
-PR after the Astro 6 preview and staging evidence has been accepted.
+The Astro 6 private-preview and protected-staging checkpoints were accepted on
+2026-07-29. The artifact manifest now sets `production_release_eligible` to
+`true`, so each exact successful current-`main` artifact may continue into the
+trusted automatic production release. Changing this gate again requires a
+separate reviewed PR.
 
 ## Automatic current-main release
 
