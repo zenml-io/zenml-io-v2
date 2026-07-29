@@ -7,7 +7,7 @@ available beneath that route as the deeper fallback. No release workflow
 attaches or removes a route, changes a custom domain, edits DNS, changes Access,
 or removes Pages.
 
-The release controls now have five paths:
+The release controls now have six paths:
 
 1. `Website CI and Worker Artifact` builds once without credentials, validates
    that output, and publishes the exact archive plus checksum and provenance.
@@ -30,12 +30,18 @@ The release controls now have five paths:
 5. `Activate Exact Worker Version` is manually dispatched from `main` with an
    exact version ID and matching provenance. It is also a retained pre-cutover
    control and intentionally refuses to activate a routed Worker.
+6. `Publish Worker PR Preview` consumes successful same-repository,
+   non-draft PR artifacts from trusted `main` and publishes stable public
+   aliases on the separate, route-less `zenml-io-v2-pr-preview` Worker. It
+   never rebuilds the artifact or receives production, route, DNS, or Pages
+   authority. See `docs/worker-pr-preview-runbook.md`.
 
 The automatic release is the normal post-cutover production path. The manual
 candidate and activation workflows are not post-cutover escape hatches until a
-separate reviewed change adapts their route predicates. Branch previews remain
-available; explicitly approved branch-built production promotion remains a
-separate follow-up.
+separate reviewed change adapts their route predicates. PR previews are
+review-only public versions on a dedicated Worker; they cannot promote a branch
+artifact to production. Explicitly approved branch-built production promotion
+remains a separate follow-up.
 
 During the Astro 6 implementation and staging checkpoint, the artifact manifest
 sets `production_release_eligible` to `false`. The automatic release eligibility

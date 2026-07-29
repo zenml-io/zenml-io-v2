@@ -1,0 +1,915 @@
+name: Publish Worker PR Preview
+
+on:
+  workflow_run:
+    workflows: ["Website CI and Worker Artifact"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: Successful Website CI and Worker Artifact PR run ID
+        required: true
+        type: string
+      pr_number:
+        description: Open same-repository pull request number for that run
+        required: true
+        type: string
+      allow_bootstrap:
+        description: Allow this reviewed manual run to create the dedicated preview Worker
+        required: true
+        default: false
+        type: boolean
+      self_reviewed:
+        description: I reviewed the exact PR, CI run, and limited preview mutation
+        required: true
+        type: boolean
+  pull_request_target:
+    types: [closed]
+
+concurrency:
+  group: zenml-io-worker-pr-preview
+  cancel-in-progress: false
+
+permissions: {}
+
+env:
+  WORKER_NAME: zenml-io-v2-pr-preview
+
+jobs:
+  publish:
+    name: Publish exact PR artifact
+    if: >-
+      (
+        github.event_name == 'workflow_run' &&
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.event == 'pull_request' &&
+        github.event.workflow_run.head_repository.full_name == github.repository
+      ) ||
+      (
+        github.event_name == 'workflow_dispatch' &&
+        github.ref == 'refs/heads/main' &&
+        inputs.self_reviewed == true
+      )
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: worker-pr-preview
+    permissions:
+      actions: read
+      contents: read
+      issues: write
+      pull-requests: read
+    steps:
+      - name: Resolve one current eligible pull request
+        id: source
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_PR_NUMBER: ${{ inputs.pr_number }}
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id || inputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]
+          [[ -z "$INPUT_PR_NUMBER" || "$INPUT_PR_NUMBER" =~ ^[0-9]+$ ]]
+
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" \
+            > "$RUNNER_TEMP/source-run.json"
+          jq -e \
+            --arg repository "$GITHUB_REPOSITORY" '
+              .name == "Website CI and Worker Artifact" and
+              .path == ".github/workflows/deploy.yml" and
+              .status == "completed" and
+              .conclusion == "success" and
+              .event == "pull_request" and
+              .head_repository.full_name == $repository and
+              (.head_branch | type) == "string" and
+              (.head_branch | length) > 0 and
+              (.head_sha | test("^[0-9a-f]{40}$"))
+            ' "$RUNNER_TEMP/source-run.json" > /dev/null
+
+          source_branch="$(jq -er .head_branch "$RUNNER_TEMP/source-run.json")"
+          source_commit="$(jq -er .head_sha "$RUNNER_TEMP/source-run.json")"
+          repo_owner="${GITHUB_REPOSITORY%%/*}"
+          gh api \
+            --method GET \
+            "repos/$GITHUB_REPOSITORY/pulls" \
+            -f state=open \
+            -f head="$repo_owner:$source_branch" \
+            -f per_page=100 > "$RUNNER_TEMP/source-pr-candidates.json"
+          jq \
+            --arg branch "$source_branch" \
+            --arg commit "$source_commit" \
+            --arg repository "$GITHUB_REPOSITORY" '
+              [.[] |
+                select(
+                  .state == "open" and
+                  .draft == false and
+                  .head.repo.full_name == $repository and
+                  .user.login != "dependabot[bot]" and
+                  .head.ref == $branch and
+                  .head.sha == $commit
+                )
+              ]
+            ' "$RUNNER_TEMP/source-pr-candidates.json" \
+            > "$RUNNER_TEMP/eligible-prs.json"
+          test "$(jq 'length' "$RUNNER_TEMP/eligible-prs.json")" = "1"
+          jq '.[0]' "$RUNNER_TEMP/eligible-prs.json" \
+            > "$RUNNER_TEMP/source-pr.json"
+
+          pr_number="$(jq -er '.number | tostring' "$RUNNER_TEMP/source-pr.json")"
+          if [ -n "$INPUT_PR_NUMBER" ] && [ "$INPUT_PR_NUMBER" != "$pr_number" ]; then
+            echo "The supplied PR number does not own this exact CI run." >&2
+            exit 1
+          fi
+          build_commit="$(jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json")"
+          [[ "$build_commit" =~ ^[0-9a-f]{40}$ ]]
+
+          {
+            echo "source_run_id=$SOURCE_RUN_ID"
+            echo "source_branch=$source_branch"
+            echo "source_commit=$source_commit"
+            echo "build_commit=$build_commit"
+            echo "pr_number=$pr_number"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Download the exact validated Worker artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: worker-dist
+          path: candidate
+          run-id: ${{ steps.source.outputs.source_run_id }}
+          github-token: ${{ github.token }}
+
+      - name: Verify artifact provenance and checksum
+        shell: bash
+        env:
+          BUILD_COMMIT: ${{ steps.source.outputs.build_commit }}
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_BRANCH: ${{ steps.source.outputs.source_branch }}
+          SOURCE_COMMIT: ${{ steps.source.outputs.source_commit }}
+          SOURCE_RUN_ID: ${{ steps.source.outputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          cd candidate
+          sha256sum --check worker-dist.sha256
+          artifact_sha256="$(cut -d ' ' -f 1 worker-dist.sha256)"
+          jq -e \
+            --arg artifact_sha256 "$artifact_sha256" \
+            --arg branch "$SOURCE_BRANCH" \
+            --arg build_commit "$BUILD_COMMIT" \
+            --arg commit "$SOURCE_COMMIT" \
+            --arg run_id "$SOURCE_RUN_ID" '
+              .artifact_contract == "astro-cloudflare-v6" and
+              .artifact_sha256 == $artifact_sha256 and
+              .build_commit == $build_commit and
+              .event_name == "pull_request" and
+              .source_branch == $branch and
+              .source_commit == $commit and
+              .run_id == $run_id and
+              (.required_secrets | sort) ==
+                (["SEGMENT_FORMS_WRITE_KEY", "TURNSTILE_SECRET_KEY"] | sort)
+            ' worker-manifest.json > /dev/null
+
+          source_workflow_blob="$(
+            gh api \
+              "repos/$GITHUB_REPOSITORY/contents/.github/workflows/deploy.yml?ref=$BUILD_COMMIT" \
+              --jq .sha
+          )"
+          trusted_workflow_blob="$(
+            gh api \
+              "repos/$GITHUB_REPOSITORY/contents/.github/trusted/worker-artifact-workflow.yml?ref=$GITHUB_SHA" \
+              --jq .sha
+          )"
+          if [ "$source_workflow_blob" != "$trusted_workflow_blob" ]; then
+            echo "The source run used an untrusted artifact workflow definition." >&2
+            exit 1
+          fi
+
+      - name: Reject unsafe Worker artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd candidate
+          tar -tzf worker-dist.tar.gz > "$RUNNER_TEMP/archive-paths.txt"
+          if grep -Eq '(^/|(^|/)\.\.(/|$))' "$RUNNER_TEMP/archive-paths.txt"; then
+            echo "Worker archive contains an unsafe path." >&2
+            exit 1
+          fi
+          tar -tvzf worker-dist.tar.gz > "$RUNNER_TEMP/archive-members.txt"
+          while read -r mode _; do
+            case "${mode:0:1}" in
+              -|d) ;;
+              *)
+                echo "Worker archive contains a link or special file." >&2
+                exit 1
+                ;;
+            esac
+          done < "$RUNNER_TEMP/archive-members.txt"
+          grep -Fx "dist/server/wrangler.json" "$RUNNER_TEMP/archive-paths.txt"
+          grep -Fx "dist/server/entry.mjs" "$RUNNER_TEMP/archive-paths.txt"
+          grep -Fx ".wrangler/deploy/config.json" "$RUNNER_TEMP/archive-paths.txt"
+
+      - name: Prepare trusted PR-preview configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd candidate
+          tar -xzf worker-dist.tar.gz
+          test "$(
+            sha256sum dist/server/wrangler.json | cut -d ' ' -f 1
+          )" = "$(jq -r .generated_config_sha256 worker-manifest.json)"
+          test "$(
+            sha256sum .wrangler/deploy/config.json | cut -d ' ' -f 1
+          )" = "$(jq -r .deploy_config_sha256 worker-manifest.json)"
+          jq -e '
+            .name == "zenml-io-v2-worker" and
+            .main == "entry.mjs" and
+            .compatibility_date == "2026-02-10" and
+            .compatibility_flags == ["nodejs_compat"] and
+            .rules == [{"type":"ESModule","globs":["**/*.js","**/*.mjs"]}] and
+            .workers_dev == false and
+            .preview_urls == false and
+            .no_bundle == true and
+            .assets.directory == "../client" and
+            .assets.binding == "ASSETS" and
+            .assets.html_handling == "drop-trailing-slash" and
+            .assets.not_found_handling == "404-page" and
+            .assets.run_worker_first == ["/api/*"] and
+            (.route == null) and
+            (.routes == null) and
+            (.build == null) and
+            (.durable_objects.bindings // [] | length) == 0 and
+            (.kv_namespaces // [] | length) == 0 and
+            (.d1_databases // [] | length) == 0 and
+            (.r2_buckets // [] | length) == 0 and
+            (.services // [] | length) == 0
+          ' dist/server/wrangler.json > /dev/null
+          jq '{
+            name: env.WORKER_NAME,
+            main,
+            compatibility_date,
+            compatibility_flags,
+            rules,
+            assets,
+            workers_dev: false,
+            preview_urls: true,
+            no_bundle
+          }' dist/server/wrangler.json > dist/server/upload-wrangler.json
+
+      - name: Install pinned Wrangler
+        run: npm install --global wrangler@4.110.0
+
+      - name: Verify dedicated Worker baseline
+        shell: bash
+        env:
+          ALLOW_BOOTSTRAP: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_bootstrap || false }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PR_PREVIEW_TOKEN }}
+        run: |
+          set -euo pipefail
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          worker_url="$api_base/workers/scripts/$WORKER_NAME"
+          status="$(
+            curl \
+              --connect-timeout 10 \
+              --max-time 30 \
+              --silent \
+              --show-error \
+              --output /dev/null \
+              --write-out "%{http_code}" \
+              --header "$auth_header" \
+              "$worker_url"
+          )"
+          if [ "$status" = "404" ]; then
+            if [ "$ALLOW_BOOTSTRAP" != "true" ]; then
+              echo "The dedicated PR-preview Worker is absent; bootstrap requires a reviewed manual run." >&2
+              exit 1
+            fi
+            printf '[]\n' > "$RUNNER_TEMP/deployments-before-upload.json"
+          elif [ "$status" = "200" ]; then
+            curl \
+              --connect-timeout 10 \
+              --max-time 30 \
+              --fail-with-body \
+              --silent \
+              --show-error \
+              --header "$auth_header" \
+              "$worker_url/subdomain" > "$RUNNER_TEMP/worker-subdomain-before-upload.json"
+            jq -e '
+              .success == true and
+              .result.enabled == false and
+              .result.previews_enabled == true
+            ' "$RUNNER_TEMP/worker-subdomain-before-upload.json" > /dev/null
+            wrangler deployments list \
+              --name "$WORKER_NAME" \
+              --json > "$RUNNER_TEMP/deployments-before-upload.json"
+            wrangler versions list \
+              --name "$WORKER_NAME" \
+              --json > "$RUNNER_TEMP/versions-before-upload.json"
+            latest_version_id="$(
+              jq -er '.[0].id' "$RUNNER_TEMP/versions-before-upload.json"
+            )"
+            wrangler versions view "$latest_version_id" \
+              --name "$WORKER_NAME" \
+              --json > "$RUNNER_TEMP/latest-version-before-upload.json"
+            jq -e '
+              [.resources.bindings[]? | select(.type == "secret_text")] == []
+            ' "$RUNNER_TEMP/latest-version-before-upload.json" > /dev/null
+          else
+            echo "Could not inspect the dedicated PR-preview Worker (HTTP $status)." >&2
+            exit 1
+          fi
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" > "$RUNNER_TEMP/workers-before-upload.json"
+          jq -e \
+            --argjson allow_absent "$([ "$status" = "404" ] && echo true || echo false)" \
+            --arg worker "$WORKER_NAME" '
+              .success == true and
+              ([.result[] | select(.id == $worker)]) as $workers and
+              (
+                ($allow_absent and ($workers | length) == 0) or
+                (
+                  ($allow_absent | not) and
+                  ($workers | length) == 1 and
+                  (
+                    $workers[0].routes == null or
+                    (
+                      ($workers[0].routes | type) == "array" and
+                      ($workers[0].routes | length) == 0
+                    )
+                  )
+                )
+              )
+            ' "$RUNNER_TEMP/workers-before-upload.json" > /dev/null
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/domains?service=$WORKER_NAME&per_page=100" \
+            > "$RUNNER_TEMP/worker-domains-before-upload.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            (.result | type) == "array" and
+            ([.result[] | select(.service == $worker)] | length == 0) and
+            .result_info.total_count == 0
+          ' "$RUNNER_TEMP/worker-domains-before-upload.json" > /dev/null
+
+      - name: Record preview retirement marker
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.source.outputs.pr_number }}
+        run: |
+          set -euo pipefail
+          marker="<!-- zenml-worker-pr-preview -->"
+          body="$marker
+          ## Cloudflare Worker PR preview
+
+          Publishing the validated preview. This marker ensures the alias is retired if a later step fails."
+          gh api \
+            --paginate \
+            --method GET \
+            "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+            -f per_page=100 \
+            --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- zenml-worker-pr-preview -->"))) | .id' \
+            > "$RUNNER_TEMP/pr-preview-comment-ids.txt"
+          mapfile -t comment_ids < "$RUNNER_TEMP/pr-preview-comment-ids.txt"
+          if [ "${#comment_ids[@]}" -gt 1 ]; then
+            echo "Multiple PR-preview marker comments exist; refusing to choose one." >&2
+            exit 1
+          elif [ "${#comment_ids[@]}" -eq 1 ]; then
+            gh api \
+              --method PATCH \
+              "repos/$GITHUB_REPOSITORY/issues/comments/${comment_ids[0]}" \
+              -f body="$body" > /dev/null
+          else
+            gh api \
+              --method POST \
+              "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+              -f body="$body" > /dev/null
+          fi
+
+      - name: Upload exact version with stable PR alias
+        id: upload
+        shell: bash
+        env:
+          BUILD_COMMIT: ${{ steps.source.outputs.build_commit }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PR_PREVIEW_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.source.outputs.pr_number }}
+          SOURCE_BRANCH: ${{ steps.source.outputs.source_branch }}
+          SOURCE_COMMIT: ${{ steps.source.outputs.source_commit }}
+          SOURCE_RUN_ID: ${{ steps.source.outputs.source_run_id }}
+        run: |
+          set -euo pipefail
+
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" \
+            > "$RUNNER_TEMP/source-run-before-upload.json"
+          jq -e \
+            --arg branch "$SOURCE_BRANCH" \
+            --arg commit "$SOURCE_COMMIT" \
+            --arg repository "$GITHUB_REPOSITORY" '
+              .name == "Website CI and Worker Artifact" and
+              .path == ".github/workflows/deploy.yml" and
+              .status == "completed" and
+              .conclusion == "success" and
+              .event == "pull_request" and
+              .head_repository.full_name == $repository and
+              .head_branch == $branch and
+              .head_sha == $commit
+            ' "$RUNNER_TEMP/source-run-before-upload.json" > /dev/null
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" \
+            > "$RUNNER_TEMP/source-pr-before-upload.json"
+          jq -e \
+            --arg branch "$SOURCE_BRANCH" \
+            --arg build_commit "$BUILD_COMMIT" \
+            --arg commit "$SOURCE_COMMIT" \
+            --arg repository "$GITHUB_REPOSITORY" '
+              .state == "open" and
+              .draft == false and
+              .head.repo.full_name == $repository and
+              .user.login != "dependabot[bot]" and
+              .head.ref == $branch and
+              .head.sha == $commit and
+              .merge_commit_sha == $build_commit
+            ' "$RUNNER_TEMP/source-pr-before-upload.json" > /dev/null
+
+          cd candidate
+          output_file="$RUNNER_TEMP/wrangler-pr-preview-output.jsonl"
+          export WRANGLER_OUTPUT_FILE_PATH="$output_file"
+          artifact_sha256="$(jq -r .artifact_sha256 worker-manifest.json)"
+          version_message="pr_number=$PR_NUMBER source_commit=$SOURCE_COMMIT source_branch=$SOURCE_BRANCH source_run_id=$SOURCE_RUN_ID artifact_sha256=$artifact_sha256"
+
+          wrangler versions upload \
+            --config dist/server/upload-wrangler.json \
+            --strict \
+            --dry-run \
+            --outdir "$RUNNER_TEMP/pr-preview-upload-dry-run"
+          wrangler versions upload \
+            --config dist/server/upload-wrangler.json \
+            --strict \
+            --preview-alias "pr-$PR_NUMBER" \
+            --message "$version_message"
+          jq -s 'map(select(.type == "version-upload")) | last' \
+            "$output_file" > upload-result.json
+          version_id="$(jq -er .version_id upload-result.json)"
+          {
+            echo "version_id=$version_id"
+            echo "artifact_sha256=$artifact_sha256"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Verify isolated public preview
+        id: verify
+        shell: bash
+        env:
+          ARTIFACT_SHA256: ${{ steps.upload.outputs.artifact_sha256 }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PR_PREVIEW_TOKEN }}
+          PR_NUMBER: ${{ steps.source.outputs.pr_number }}
+          SOURCE_BRANCH: ${{ steps.source.outputs.source_branch }}
+          SOURCE_COMMIT: ${{ steps.source.outputs.source_commit }}
+          SOURCE_RUN_ID: ${{ steps.source.outputs.source_run_id }}
+          VERSION_ID: ${{ steps.upload.outputs.version_id }}
+        run: |
+          set -euo pipefail
+          wrangler versions view "$VERSION_ID" \
+            --name "$WORKER_NAME" \
+            --json > "$RUNNER_TEMP/uploaded-version.json"
+          jq -e '
+            [.resources.bindings[]? | select(.type == "secret_text")] == []
+          ' "$RUNNER_TEMP/uploaded-version.json" > /dev/null
+          message="$(
+            jq -er '.annotations["workers/message"]' \
+              "$RUNNER_TEMP/uploaded-version.json"
+          )"
+          grep -Fq -- " pr_number=$PR_NUMBER " <<< " $message "
+          grep -Fq -- " source_commit=$SOURCE_COMMIT " <<< " $message "
+          grep -Fq -- " source_branch=$SOURCE_BRANCH " <<< " $message "
+          grep -Fq -- " source_run_id=$SOURCE_RUN_ID " <<< " $message "
+          grep -Fq -- " artifact_sha256=$ARTIFACT_SHA256 " <<< " $message "
+
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts/$WORKER_NAME/subdomain" \
+            > "$RUNNER_TEMP/worker-subdomain-after-upload.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and
+            .result.previews_enabled == true
+          ' "$RUNNER_TEMP/worker-subdomain-after-upload.json" > /dev/null
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" > "$RUNNER_TEMP/workers-after-upload.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            (
+              $workers[0].routes == null or
+              (
+                ($workers[0].routes | type) == "array" and
+                ($workers[0].routes | length) == 0
+              )
+            )
+          ' "$RUNNER_TEMP/workers-after-upload.json" > /dev/null
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/domains?service=$WORKER_NAME&per_page=100" \
+            > "$RUNNER_TEMP/worker-domains-after-upload.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            (.result | type) == "array" and
+            ([.result[] | select(.service == $worker)] | length == 0) and
+            .result_info.total_count == 0
+          ' "$RUNNER_TEMP/worker-domains-after-upload.json" > /dev/null
+
+          wrangler deployments list \
+            --name "$WORKER_NAME" \
+            --json > "$RUNNER_TEMP/deployments-after-upload.json"
+          jq -S . "$RUNNER_TEMP/deployments-before-upload.json" \
+            > "$RUNNER_TEMP/deployments-before-upload.canonical.json"
+          jq -S . "$RUNNER_TEMP/deployments-after-upload.json" \
+            > "$RUNNER_TEMP/deployments-after-upload.canonical.json"
+          cmp \
+            "$RUNNER_TEMP/deployments-before-upload.canonical.json" \
+            "$RUNNER_TEMP/deployments-after-upload.canonical.json" ||
+            {
+              echo "The active PR-preview deployment changed during upload." >&2
+              exit 1
+            }
+
+          workers_subdomain="$(
+            curl \
+              --connect-timeout 10 \
+              --max-time 30 \
+              --fail-with-body \
+              --silent \
+              --show-error \
+              --header "$auth_header" \
+              "$api_base/workers/subdomain" |
+              jq -er '.result.subdomain'
+          )"
+          preview_url="https://pr-$PR_NUMBER-$WORKER_NAME.$workers_subdomain.workers.dev"
+          test "$(curl --connect-timeout 10 --max-time 30 --silent --show-error --output /dev/null --write-out "%{http_code}" "$preview_url/")" = "200"
+          test "$(curl --connect-timeout 10 --max-time 30 --silent --show-error --output /dev/null --write-out "%{http_code}" "$preview_url/this-preview-path-does-not-exist")" = "404"
+          echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
+
+      - name: Post sticky preview URL
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_URL: ${{ steps.verify.outputs.preview_url }}
+          PR_NUMBER: ${{ steps.source.outputs.pr_number }}
+          SOURCE_BRANCH: ${{ steps.source.outputs.source_branch }}
+          SOURCE_COMMIT: ${{ steps.source.outputs.source_commit }}
+          SOURCE_RUN_ID: ${{ steps.source.outputs.source_run_id }}
+        run: |
+          set -euo pipefail
+          marker="<!-- zenml-worker-pr-preview -->"
+          body="$(
+            jq -nr \
+              --arg marker "$marker" \
+              --arg preview_url "$PREVIEW_URL" \
+              --arg branch "$SOURCE_BRANCH" \
+              --arg commit "$SOURCE_COMMIT" \
+              --arg run_id "$SOURCE_RUN_ID" '
+                [$marker, "## Cloudflare Worker PR preview", "", "| | |", "|---|---|", "| **Preview URL** | " + $preview_url + " |", "| **Branch** | `" + $branch + "` |", "| **Commit** | `" + $commit + "` |", "| **CI run** | `" + $run_id + "` |", "", "This public preview is isolated from production and will be retired when the PR closes."] |
+                join("\n")
+              '
+          )"
+          gh api \
+            --paginate \
+            --method GET \
+            "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+            -f per_page=100 \
+            --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- zenml-worker-pr-preview -->"))) | .id' \
+            > "$RUNNER_TEMP/pr-preview-comment-ids.txt"
+          mapfile -t comment_ids < "$RUNNER_TEMP/pr-preview-comment-ids.txt"
+          if [ "${#comment_ids[@]}" -ne 1 ]; then
+            echo "Expected exactly one PR-preview marker comment." >&2
+            exit 1
+          else
+            gh api \
+              --method PATCH \
+              "repos/$GITHUB_REPOSITORY/issues/comments/${comment_ids[0]}" \
+              -f body="$body" > /dev/null
+          fi
+
+      - name: Preserve preview evidence
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: pr-preview-${{ steps.source.outputs.pr_number }}-${{ steps.source.outputs.source_run_id }}
+          path: |
+            candidate/upload-result.json
+            ${{ runner.temp }}/source-run.json
+            ${{ runner.temp }}/source-pr.json
+            ${{ runner.temp }}/source-run-before-upload.json
+            ${{ runner.temp }}/source-pr-before-upload.json
+            ${{ runner.temp }}/uploaded-version.json
+            ${{ runner.temp }}/versions-before-upload.json
+            ${{ runner.temp }}/latest-version-before-upload.json
+            ${{ runner.temp }}/worker-subdomain-before-upload.json
+            ${{ runner.temp }}/worker-subdomain-after-upload.json
+            ${{ runner.temp }}/workers-before-upload.json
+            ${{ runner.temp }}/workers-after-upload.json
+            ${{ runner.temp }}/worker-domains-before-upload.json
+            ${{ runner.temp }}/worker-domains-after-upload.json
+            ${{ runner.temp }}/deployments-before-upload.json
+            ${{ runner.temp }}/deployments-after-upload.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Record preview metadata
+        shell: bash
+        env:
+          ARTIFACT_SHA256: ${{ steps.upload.outputs.artifact_sha256 }}
+          PREVIEW_URL: ${{ steps.verify.outputs.preview_url }}
+          PR_NUMBER: ${{ steps.source.outputs.pr_number }}
+          SOURCE_COMMIT: ${{ steps.source.outputs.source_commit }}
+          SOURCE_RUN_ID: ${{ steps.source.outputs.source_run_id }}
+          VERSION_ID: ${{ steps.upload.outputs.version_id }}
+        run: |
+          {
+            echo "## Public Worker PR preview"
+            echo
+            printf -- "- PR: \`%s\`\n" "$PR_NUMBER"
+            printf -- "- Version: \`%s\`\n" "$VERSION_ID"
+            printf -- "- Source commit: \`%s\`\n" "$SOURCE_COMMIT"
+            printf -- "- CI run: \`%s\`\n" "$SOURCE_RUN_ID"
+            printf -- "- Artifact SHA-256: \`%s\`\n" "$ARTIFACT_SHA256"
+            printf -- "- Preview URL: %s\n" "$PREVIEW_URL"
+            echo
+            echo "No production deployment, route, custom domain, DNS record, or Pages project changed."
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  retire:
+    name: Retire closed PR alias
+    if: >-
+      github.event_name == 'pull_request_target' &&
+      github.event.action == 'closed' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: worker-pr-preview
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
+    steps:
+      - name: Check whether this PR had a preview
+        id: preview
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]
+          gh api \
+            --paginate \
+            --method GET \
+            "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+            -f per_page=100 \
+            --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- zenml-worker-pr-preview -->"))) | .id' \
+            > "$RUNNER_TEMP/pr-preview-comment-ids.txt"
+          mapfile -t comment_ids < "$RUNNER_TEMP/pr-preview-comment-ids.txt"
+          if [ "${#comment_ids[@]}" -ge 1 ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "## No PR preview to retire"
+              echo
+              echo "This pull request never received a Worker preview comment."
+              echo "No Cloudflare state was inspected or changed."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Install pinned Wrangler
+        if: steps.preview.outputs.exists == 'true'
+        run: npm install --global wrangler@4.110.0
+
+      - name: Verify the dedicated Worker remains isolated
+        if: steps.preview.outputs.exists == 'true'
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PR_PREVIEW_TOKEN }}
+        run: |
+          set -euo pipefail
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          worker_url="$api_base/workers/scripts/$WORKER_NAME"
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$worker_url/subdomain" > "$RUNNER_TEMP/worker-subdomain-before-retire.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and
+            .result.previews_enabled == true
+          ' "$RUNNER_TEMP/worker-subdomain-before-retire.json" > /dev/null
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" > "$RUNNER_TEMP/workers-before-retire.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            (
+              $workers[0].routes == null or
+              (
+                ($workers[0].routes | type) == "array" and
+                ($workers[0].routes | length) == 0
+              )
+            )
+          ' "$RUNNER_TEMP/workers-before-retire.json" > /dev/null
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/domains?service=$WORKER_NAME&per_page=100" \
+            > "$RUNNER_TEMP/worker-domains-before-retire.json"
+          jq -e --arg worker "$WORKER_NAME" '
+            .success == true and
+            (.result | type) == "array" and
+            ([.result[] | select(.service == $worker)] | length == 0) and
+            .result_info.total_count == 0
+          ' "$RUNNER_TEMP/worker-domains-before-retire.json" > /dev/null
+          wrangler deployments list \
+            --name "$WORKER_NAME" \
+            --json > "$RUNNER_TEMP/deployments-before-retire.json"
+
+      - name: Replace the closed PR alias with a tombstone
+        if: steps.preview.outputs.exists == 'true'
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PR_PREVIEW_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          [[ "$PR_NUMBER" =~ ^[0-9]+$ ]]
+          retire_dir="$RUNNER_TEMP/pr-preview-retired"
+          mkdir -p "$retire_dir"
+          printf '%s\n' \
+            'export default {' \
+            '  fetch() {' \
+            '    return new Response("PR preview retired", {' \
+            '      status: 410,' \
+            '      headers: { "content-type": "text/plain; charset=utf-8" },' \
+            '    });' \
+            '  },' \
+            '};' > "$retire_dir/retired.mjs"
+          jq -n \
+            --arg name "$WORKER_NAME" '
+              {
+                name: $name,
+                main: "retired.mjs",
+                compatibility_date: "2026-02-10",
+                compatibility_flags: ["nodejs_compat"],
+                workers_dev: false,
+                preview_urls: true,
+                no_bundle: true
+              }
+            ' > "$retire_dir/wrangler.json"
+          export WRANGLER_OUTPUT_FILE_PATH="$RUNNER_TEMP/wrangler-pr-retire-output.jsonl"
+          wrangler versions upload \
+            --config "$retire_dir/wrangler.json" \
+            --strict \
+            --preview-alias "pr-$PR_NUMBER" \
+            --message "PR preview retired pr_number=$PR_NUMBER"
+          jq -s 'map(select(.type == "version-upload")) | last' \
+            "$WRANGLER_OUTPUT_FILE_PATH" > "$RUNNER_TEMP/retire-result.json"
+          jq -er .version_id "$RUNNER_TEMP/retire-result.json" > /dev/null
+
+      - name: Verify the alias is retired without deployment changes
+        if: steps.preview.outputs.exists == 'true'
+        id: verify-retired
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PR_PREVIEW_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          wrangler deployments list \
+            --name "$WORKER_NAME" \
+            --json > "$RUNNER_TEMP/deployments-after-retire.json"
+          jq -S . "$RUNNER_TEMP/deployments-before-retire.json" \
+            > "$RUNNER_TEMP/deployments-before-retire.canonical.json"
+          jq -S . "$RUNNER_TEMP/deployments-after-retire.json" \
+            > "$RUNNER_TEMP/deployments-after-retire.canonical.json"
+          cmp \
+            "$RUNNER_TEMP/deployments-before-retire.canonical.json" \
+            "$RUNNER_TEMP/deployments-after-retire.canonical.json" ||
+            {
+              echo "The active PR-preview deployment changed during retirement." >&2
+              exit 1
+            }
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          workers_subdomain="$(
+            curl \
+              --connect-timeout 10 \
+              --max-time 30 \
+              --fail-with-body \
+              --silent \
+              --show-error \
+              --header "$auth_header" \
+              "$api_base/workers/subdomain" |
+              jq -er '.result.subdomain'
+          )"
+          preview_url="https://pr-$PR_NUMBER-$WORKER_NAME.$workers_subdomain.workers.dev"
+          test "$(curl --connect-timeout 10 --max-time 30 --silent --show-error --output /dev/null --write-out "%{http_code}" "$preview_url/")" = "410"
+          echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
+
+      - name: Mark sticky preview comment retired
+        if: steps.preview.outputs.exists == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIEW_URL: ${{ steps.verify-retired.outputs.preview_url }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          marker="<!-- zenml-worker-pr-preview -->"
+          body="$(
+            jq -nr \
+              --arg marker "$marker" \
+              --arg preview_url "$PREVIEW_URL" '
+                [$marker, "## Cloudflare Worker PR preview", "", "This preview was retired when the pull request closed.", "", "- Former URL: " + $preview_url, "- Current response: `410 Gone`"] |
+                join("\n")
+              '
+          )"
+          gh api \
+            --paginate \
+            --method GET \
+            "repos/$GITHUB_REPOSITORY/issues/$PR_NUMBER/comments" \
+            -f per_page=100 \
+            --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- zenml-worker-pr-preview -->"))) | .id' \
+            > "$RUNNER_TEMP/pr-preview-comment-ids.txt"
+          mapfile -t comment_ids < "$RUNNER_TEMP/pr-preview-comment-ids.txt"
+          for comment_id in "${comment_ids[@]}"; do
+            gh api \
+              --method PATCH \
+              "repos/$GITHUB_REPOSITORY/issues/comments/$comment_id" \
+              -f body="$body" > /dev/null
+          done
+
+      - name: Preserve retirement evidence
+        if: always() && steps.preview.outputs.exists == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: pr-preview-retired-${{ github.event.pull_request.number }}-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/retire-result.json
+            ${{ runner.temp }}/worker-subdomain-before-retire.json
+            ${{ runner.temp }}/workers-before-retire.json
+            ${{ runner.temp }}/worker-domains-before-retire.json
+            ${{ runner.temp }}/deployments-before-retire.json
+            ${{ runner.temp }}/deployments-after-retire.json
+          if-no-files-found: warn
+          retention-days: 30
