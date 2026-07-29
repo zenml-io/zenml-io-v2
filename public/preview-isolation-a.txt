@@ -1,1 +1,1 @@
-worker-preview-isolation-a-v1
+worker-preview-isolation-a-v2
