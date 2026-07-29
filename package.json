@@ -33,7 +33,7 @@
   "dependencies": {
     "@astrojs/check": "0.9.10",
     "@astrojs/cloudflare": "13.7.0",
-    "@astrojs/markdown-remark": "7.2.0",
+    "@astrojs/markdown-remark": "7.2.1",
     "@astrojs/mdx": "6.0.3",
     "@astrojs/preact": "5.1.5",
     "@astrojs/sitemap": "3.7.3",
@@ -71,7 +71,7 @@
     "satori": "^0.26.0",
     "tsx": "^4.23.1",
     "vitest": "^4.1.10",
-    "wrangler": "4.110.0",
+    "wrangler": "4.113.0",
     "yaml": "2.9.0"
   }
 }
