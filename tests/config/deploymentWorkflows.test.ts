@@ -1742,6 +1742,26 @@ describe("automatic pull-request Worker previews", () => {
     expect(prPreviewWorkflow).toContain("status: 410");
   });
 
+  it("allows bounded propagation time before failing retirement verification", () => {
+    const verifyRetiredRun =
+      workflowStep(
+        prPreviewRetireSteps,
+        "Verify the alias is retired without deployment changes",
+      ).run ?? "";
+    expect(verifyRetiredRun).toContain("for attempt in {1..10}");
+    expect(verifyRetiredRun).toContain(
+      'if [ "$retired_status" = "410" ]; then',
+    );
+    expect(verifyRetiredRun).toContain('if [ "$attempt" -lt 10 ]; then');
+    expect(verifyRetiredRun).toContain("sleep 3");
+    expect(verifyRetiredRun).toContain(
+      "PR preview alias did not retire after 10 attempts",
+    );
+    expect(verifyRetiredRun).toContain(
+      'if [ "$retired_status" != "410" ]; then',
+    );
+  });
+
   it("cannot let an in-flight publish resurrect a closed PR alias", () => {
     const uploadIndex = prPreviewPublishSteps.findIndex(
       (step) => step.name === "Upload exact version with stable PR alias",

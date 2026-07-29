@@ -933,7 +933,31 @@ jobs:
               jq -er '.result.subdomain'
           )"
           preview_url="https://pr-$PR_NUMBER-$WORKER_NAME.$workers_subdomain.workers.dev"
-          test "$(curl --connect-timeout 10 --max-time 30 --silent --show-error --output /dev/null --write-out "%{http_code}" "$preview_url/")" = "410"
+          retired_status=""
+          for attempt in {1..10}; do
+            retired_status="$(
+              curl \
+                --connect-timeout 10 \
+                --max-time 30 \
+                --silent \
+                --show-error \
+                --output /dev/null \
+                --write-out "%{http_code}" \
+                "$preview_url/" ||
+                true
+            )"
+            if [ "$retired_status" = "410" ]; then
+              break
+            fi
+            if [ "$attempt" -lt 10 ]; then
+              echo "Retirement is still propagating (attempt $attempt/10, HTTP ${retired_status:-unavailable}); retrying in 3 seconds."
+              sleep 3
+            fi
+          done
+          if [ "$retired_status" != "410" ]; then
+            echo "PR preview alias did not retire after 10 attempts (last HTTP ${retired_status:-unavailable})." >&2
+            exit 1
+          fi
           echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
 
       - name: Mark sticky preview comment retired
