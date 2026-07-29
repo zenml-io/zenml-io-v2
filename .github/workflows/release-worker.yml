@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  ACCEPTED_WORKER_ROUTES_JSON: '["astro-workers-staging.zenml.io/*","www.zenml.io/*"]'
+  ACCEPTED_WORKER_ROUTES_JSON: '["www.zenml.io/*"]'
   WORKER_NAME: zenml-io-v2-worker
 
 jobs:

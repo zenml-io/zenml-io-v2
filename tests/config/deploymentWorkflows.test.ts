@@ -578,7 +578,7 @@ function expectPrivateWorkerPredicates(
 
 function expectAcceptedWorkerRoutePredicate(run: string, source: string): void {
   const program = jqProgramReadingFrom(run, source);
-  const acceptedRoutes = ["www.zenml.io/*", "astro-workers-staging.zenml.io/*"];
+  const acceptedRoutes = ["www.zenml.io/*"];
   const workerArgs = [
     "--arg",
     "worker",
@@ -642,7 +642,7 @@ function expectAcceptedWorkerRoutePredicate(run: string, source: string): void {
       result: [
         {
           id: "zenml-io-v2-worker",
-          routes: ["www.zenml.io/*"],
+          routes: ["www.zenml.io/*", "astro-workers-staging.zenml.io/*"],
         },
       ],
       success: true,
@@ -1176,8 +1176,8 @@ describe("automatic post-cutover production release", () => {
   });
 
   it("requires the accepted route topology and private Worker endpoints", () => {
-    expect(releaseWorkflow).toContain("astro-workers-staging.zenml.io/*");
     expect(releaseWorkflow).toContain("www.zenml.io/*");
+    expect(releaseWorkflow).not.toContain("astro-workers-staging.zenml.io/*");
     expect(releaseWorkflow).toContain(
       ".result.enabled == false and .result.previews_enabled == false",
     );
