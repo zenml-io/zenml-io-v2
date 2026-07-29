@@ -1,40 +1,48 @@
 ---
-// ScenarioStrip.astro — the prominent second section. One recorded execution,
-// a different replay question each time. Each card shows a compact version of
-// the shipped `from_` + `overrides` replay API shape.
+// ScenarioStrip.astro — the prominent second section. One cohort of recorded
+// sessions, a different question each time.
+//
+// Rewritten against the Jul 29 v2 story. The old "debug / reproduce the failure
+// 10-out-of-10" card is gone: reproduction was cut, because the interview
+// already told you it fails. Card 3 no longer says "conversations" — replay
+// diverges after the first reply on multi-turn agents, so the honest claim is
+// one cohort, one swapped variable, two runs compared.
 const scenarios = [
   {
-    tag: "debug",
-    q: "Why did it do that?",
+    tag: "understand",
+    q: "What does good even mean here?",
     outcome:
-      "Reproduce the failure on your desk — same code, same world, every time.",
-    stat: "10 / 10",
-    statLabel: "runs reproduce it",
+      "Read twenty of them and write what you notice. Your notes become the cohorts.",
+    stat: "20",
+    statLabel: "read · not 1,824",
   },
   {
-    tag: "verify",
-    q: "Is the fix safe to merge?",
-    outcome: "Replay it against every recorded run that failed the same way.",
-    stat: "23 / 23",
-    statLabel: "pass after the fix",
+    tag: "trust",
+    q: "Can I believe my own check?",
+    outcome:
+      "Apply it blind to sessions you never read, then reveal the labels.",
+    stat: "held-out",
+    statLabel: "predictions locked first",
   },
   {
     tag: "decide",
     q: "Can we ship the cheaper model?",
-    outcome: "Same conversations, cheaper model — read the answer off a diff.",
+    outcome:
+      "Same cohort, one model swapped — the answer is two runs, compared.",
     stat: "\u221284%",
-    statLabel: "cost \u00b7 192/200 answers identical",
+    statLabel: "cost \u00b7 192/200 outputs identical",
   },
   {
-    tag: "gate",
-    q: "Did the new prompt regress?",
-    outcome: "Replay last week's traffic against the branch before it merges.",
+    tag: "guard",
+    q: "Will it stay fixed?",
+    outcome:
+      "The same experiment runs on every commit, on the cases that caught it.",
     stat: "0",
     statLabel: "regressions reach production",
   },
 ] as const;
 
-/** The recorded execution's checkpoints; forks attach by index. */
+/** The recorded session's nodes; forks attach by index. */
 const checkpoints = [
   { x: 90, label: "run" },
   { x: 330, label: "lookup_order" },
@@ -43,7 +51,7 @@ const checkpoints = [
   { x: 1105, label: "reply" },
 ] as const;
 
-/** card layout: 4 cards across a 1200-wide viewBox, forked from checkpoints 1-4 */
+/** card layout: 4 cards across a 1200-wide viewBox, forked from nodes 1-4 */
 const CARD_W = 262;
 const CARD_Y = 178;
 const forks = scenarios.map((s, i) => ({
@@ -59,16 +67,16 @@ const forks = scenarios.map((s, i) => ({
     <div class="scenario-head" data-reveal>
       <span class="section-eyebrow">THE SAME MOVE, EVERY TIME</span>
       <h2 class="scenario-title">
-        One recorded execution.<br /><span class="scenario-title-accent">A different question each time.</span>
+        One cohort of real sessions.<br /><span class="scenario-title-accent">A different question each time.</span>
       </h2>
       <p class="scenario-sub">
-        Replay the execution. Change one thing. Read the answer off a diff. Nothing reruns in production.
+        You read a few. The agent groups the rest. One change per experiment, and the answer is two runs side by side.
       </p>
     </div>
 
     <div class="scenario-diagram" data-reveal>
-      <svg viewBox="0 0 1200 528" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One recorded execution with four questions forked from its checkpoints: debug, verify, decide, and gate">
-        <text x="40" y="20" class="sd-exec-label">execution tr-8f3a91c2 · recorded</text>
+      <svg viewBox="0 0 1200 528" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="One recorded session with four questions forked from its nodes: understand, trust, decide, and guard">
+        <text x="40" y="20" class="sd-exec-label">session ses_8f3a91c2 · recorded</text>
         <line x1="40" y1="62" x2="1160" y2="62" class="sd-spine" />
         {checkpoints.map((c) => (
           <>

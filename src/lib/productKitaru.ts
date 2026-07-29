@@ -1,4 +1,4 @@
-export const KITARU_INSTALL_CMD = "uv add kitaru";
+export const KITARU_INSTALL_CMD = "pip install kitaru";
 export const KITARU_LICENSE = "Apache 2.0";
 
 export const KITARU_LINKS = {
@@ -13,7 +13,7 @@ export const KITARU_LINKS = {
 export const PRODUCT_KITARU_SEO = {
   title: "Kitaru: traces you can run, not just read | ZenML",
   description:
-    "Open-source platform for agent experiments on real traces. Score a recorded execution without rerunning the agent, or replay your real code against the recorded world with one thing changed: a model, a tool's output, a failed call. Name a run to keep it, re-run it in CI as a regression test. Self-hosted on your own cloud. Built by the ZenML team.",
+    "Kitaru turns your agent's production history into its test suite. Import traces from wherever they live, get interviewed about what good means until your notes become cohorts and an evaluator, prove that evaluator on sessions you never read, then compare two experiment runs to show a change worked. The same experiment becomes your CI gate. Open source, self-hosted, built by the ZenML team.",
 } as const;
 
 /**
@@ -29,77 +29,85 @@ export const PRODUCT_KITARU_MARKDOWN = {
   installCmd: KITARU_INSTALL_CMD,
   license: KITARU_LICENSE,
   summary: [
-    "Kitaru is the open agent experimentation platform from ZenML. Traces you can run, not just read: the artifact is the execution, a recording of your agent doing something real, and everything else is what you do with it.",
-    "There are two verbs. Score reads an execution and grades it — the agent never runs, so it is nearly free. Replay runs your agent's real code against the recorded world, with tool and model calls answered from the recording, so a what-if is faithful rather than a guess.",
-    "One rule ties it together: doing the thing is the declaration. Run a verb and an experiment exists; name it and it is durable; re-run it in CI and it is a regression test. Kitaru is a debugger with a memory, never in the hot path of production.",
-    "You keep the agent harness you already chose: PydanticAI, OpenAI Agents SDK, Claude Agent SDK, LangGraph, Gemini, Google ADK, or plain Python. Adapters record and replay the execution underneath it with a small set of Python primitives.",
-    "The shape is a server you talk to and a worker you run. The server holds the data model — agents, sessions, scorers, cohorts, experiments — and the dashboard. The worker runs on your machine, next to your code, and executes the jobs the server hands it: import traces, replay agents, score sessions. Creation is local, memory is central, execution is local, viewing is central. The dashboard presses the button; your worker does the work.",
-    "Skills running inside your own coding agent are the paved road for creating and registering things, but never the only road: every skill is a thin procedure over a CLI verb, so anything a skill does you can also do by hand with the CLI or the UI.",
-    `It is open source under ${KITARU_LICENSE} and self-hosted on your own cloud. Scoring and experiments are the direction the platform is heading; the recording, replay, and durable substrate below ship today.`,
+    "Kitaru turns your agent's production history into its test suite. Import the traces you already have, and each execution becomes a session: the top-level replayable object, with its tool calls, model calls and subagent calls as nodes underneath.",
+    "The centre of the product is an interview, not a form. You read roughly twenty sessions out of thousands and write plain observations — no labels, no dropdowns, no schema. The agent organizes what you noticed into cohorts and drafts a criterion; you confirm the exact wording, and that confirmation is what makes it real. An agent cannot agree with itself on your behalf.",
+    "Then you check your own check. Apply the accepted rubric blind to a held-out set of sessions you never read, lock the predictions, and only then reveal the labels. Disagreements put the rubric on trial before they put the human on trial.",
+    "An experiment is pure configuration — model, system prompt, tool policy. An experiment run is that configuration plus a cohort plus an agent version, and runs are the unit of comparison. Change the code and you get a new run; change the prompt and you have stated a different hypothesis, so you get a new experiment.",
+    "Replay executes your real code with tool calls intercepted by one of four policies: answered from recorded history, passed through to the real tool, returned from a static value, or invented by a model. Every intercepted node is stamped with the policy that answered it. A replay creates a new session rather than overwriting the original, so the baseline's evaluations stay intact, and a replay carries no verdict of its own — you compare two runs and decide.",
+    "Nothing stays fixed by accident: point the same experiment at your agent on every commit and the cohort that caught the failure becomes the gate that keeps it caught.",
+    `It is open source under ${KITARU_LICENSE}. Self-hosting is one command — \`kitaru login --local\` brings up Postgres, the API and the dashboard in Docker, so you can look at your traces before uploading anything anywhere.`,
   ],
   primitives: [
     {
-      name: "record",
-      body: "Imports a trace or wraps a live run through an adapter so one execution — every model and tool call — is captured as a replayable artifact.",
+      name: "session",
+      body: "One execution of your agent, imported or recorded, and the top-level replayable object. Nodes underneath are tool calls, model calls or subagent calls; several source traces sharing a session id merge into one session.",
     },
     {
-      name: "replay with overrides",
-      body: "Re-runs the agent's real code against the recorded world with one thing changed: a model, a tool's output, or a prompt. The override is the only difference.",
+      name: "cohort",
+      body: "An immutable, named set of sessions — a failure mode is a cohort, not a separate concept. Immutable because an experiment run depends on its cohort, so a mutable one would make past results meaningless.",
     },
     {
-      name: "repeats and diff",
-      body: "Runs a replay many times and reads the answer off a diff against the original execution, so you see what your change actually moved.",
+      name: "evaluator",
+      body: "One observable criterion with explicit pass and fail definitions. Starts as a rubric a model applies directly and may never become Python at all. Evaluators live at workspace level and are versioned; the accepted rubric hash is the identity of the run.",
     },
     {
-      name: "@flow and @checkpoint",
-      body: "The recording substrate: mark the durable boundary of a run and persist each call, which is what a later replay reads back.",
+      name: "evaluation",
+      body: "One flat row per session per evaluator: a score, a value label, or both, plus an explanation. The data type is derived rather than declared. Numbers average, labels count as most-common, comments get read.",
     },
     {
-      name: "wait/resume",
-      body: "Lets a run pause for human review, webhook input, or a scheduled event without keeping compute idle, and mints a recording as it goes.",
+      name: "experiment and experiment run",
+      body: "The experiment is pure configuration — tool policy, model, system prompt — tied to neither a cohort nor a version. The run is that configuration plus a cohort plus an agent version, and runs are what you compare.",
     },
     {
-      name: "isolated execution and deployments",
-      body: "Runs selected steps in isolated environments and operates flows from production systems through an API, schedules, and webhooks.",
+      name: "tool policy",
+      body: "How an intercepted call gets answered during replay: from recorded history (scoped to the baseline, the cohort, or the agent's whole history), passed through to the real tool, returned from a static value, or invented by a model.",
     },
   ],
   journey: [
     {
-      name: "Install and log in",
-      body: "`uv add kitaru` then `kitaru login` completes an OAuth flow against your Kitaru workspace and connects your client to your server. `kitaru login --local` covers the self-hosted case.",
+      name: "Act 1 — Get in",
+      body: "`pip install kitaru` then `kitaru login`. Two questions decide your path: do you have a repo with an agent, and do you have traces? No repo, or an unrecognised framework, and you start from the template repo — a small PydanticAI agent already wrapped, with a trace file beside it. Registering the agent stores an entrypoint module path server-side; nothing is written into your repo. Then `kitaru worker start` runs a plain Python process in your virtualenv, which polls — the server never connects inbound.",
     },
     {
-      name: "Install the skills",
-      body: "Kitaru skills run inside your own coding agent and turn setup into a conversation. They are optional: the CLI and the UI accept the same answers typed by hand.",
+      name: "Act 2 — Traces in",
+      body: "Import from Langfuse, LangSmith or an OTel export, or record fresh runs through the adapter; downstream they are the same object. Every session is graded at import for replay readiness — ready, partial or unavailable — from whether root inputs survived, whether the node graph is complete, and whether tool calls kept both a name and a payload. Importers are expected to be custom, because everyone's traces are shaped differently.",
     },
     {
-      name: "Get traces in",
-      body: "Import them from Langfuse, LangSmith, or an OTel JSONL file; or record fresh ones by wrapping your agent with a Kitaru adapter; or clone the template repository, a small PydanticAI agent with a trace file next to it. Imported and recorded sessions are the same object downstream.",
+      name: "Act 3 — Get interviewed (the centre)",
+      body: "You have thousands of sessions and no idea what good means, and everything downstream is cheap once you know. A cheap deterministic pass over 25–30 sessions proposes draft cohorts — these looped, these took sixteen hours — but those are candidates, not conclusions. Then the interview: read each session backward from its final response to the first upstream decision that made the outcome wrong, and write free-text observations. Sampling favours diversity over frequency. The server enforces a minimum of four observations across three scenarios before it will let anything be synthesised. Your notes become named cohorts and one criterion, which you confirm word for word.",
     },
     {
-      name: "Start the worker",
-      body: "One general-purpose process on your machine polls the server and runs whatever job is waiting: imports, replays, scorers. Your code, keys, and data stay on your infrastructure.",
+      name: "Act 3b — Prove the evaluator",
+      body: "A fresh evaluator is a hypothesis about your own judgment, built while looking at part of your data. Apply it blind to the held-out sessions, record the whole run at once against the rubric hash, and only then reveal the human labels. Read disagreements in order — is the rubric ambiguous, are the examples unrepresentative, did the check ignore the evidence, is the label itself wrong — so the rubric goes on trial before the human does. Be honest about what ten traces buy you: enough to expose a broken rubric, nothing about production accuracy.",
     },
     {
-      name: "Triage into cohorts",
-      body: "The triage skill reads your sessions, asks what bad looks like to you, and groups them into cohorts that show up in the dashboard. There is no separate triage service to deploy.",
+      name: "Act 4 — Fix it, and prove the fix",
+      body: "You are not reproducing anything — the interview already told you it fails. Combine discovery and held-out into one new cohort, make the change, and run the experiment twice, one agent version apart. Same cases, same evaluator version, one variable moved. The comparison is two runs side by side, and every number can be traced back through evaluator version to the interview that produced it.",
     },
     {
-      name: "Fix one session end to end",
-      body: "Replay a single broken session, and while you look at what went wrong the skill interviews you about what good looks like. Your answers compile into a bespoke scorer registered to the server and loaded by your worker. Replay, score, fix, replay again.",
-    },
-    {
-      name: "Scale it to the cohort",
-      body: "Create an experiment over the cohort and trigger it from the dashboard. The server queues the job, your worker replays and scores every session, and the results land back in the UI.",
+      name: "Act 5 — Keep it fixed",
+      body: "There is nothing new to build. The experiment holds the configuration, the cohort holds the cases, the evaluator holds the judgment: point it at your agent on every commit with `--fail-on`. Ten interviews later you have ten cohorts guarding ten real failure modes, and nobody scheduled a sprint for any of it.",
     },
   ],
   deploymentTargets: [
-    "Local development",
-    "Kubernetes",
-    "SageMaker",
-    "Vertex AI",
-    "AzureML",
-    "Object storage such as S3, GCS, or Azure Blob for artifacts",
+    "A Kitaru workspace on ZenML Pro — the default, and the path that gets optimised",
+    "Fully local via `kitaru login --local`, which brings up Postgres, the API and the dashboard in Docker; there is no SQLite path, and local data does not migrate to cloud",
+    "A local worker: a plain Python process in your own virtualenv, where your agent's dependencies and credentials already are",
+    "Remote workers: deploy the same image with credentials in the environment and it registers itself — no autoscaling, and your agent's code has to already be in the image",
+  ],
+  limits: [
+    {
+      name: "Not every imported trace can be replayed",
+      body: "Replay needs root inputs, a complete node graph, and tool calls that kept both a name and a payload. Many observability exports keep only messages and responses, not tool calls and their results. Kitaru grades each session ready, partial or unavailable at import and tells you why, rather than failing later. Teams whose traces are message-only can still read, annotate and build evaluators — replay arrives once they instrument.",
+    },
+    {
+      name: "Replay is sound for single-execution agents",
+      body: "Replay re-runs your real code against recorded tool results. For a multi-turn conversation, once the agent's first reply differs from the recorded one the rest of the transcript is no longer a comparison. Faithful multi-turn evaluation needs synthetic user turns, which is not in this version.",
+    },
+    {
+      name: "A replay has no verdict",
+      body: "There is no pass/fail on a replay and no blended cross-evaluator score. Its output is a new session and that session's evaluation rows, compared by whoever is reading. Nothing is stored that could later go stale.",
+    },
   ],
   ctas: [KITARU_LINKS.demo, KITARU_LINKS.github],
 } as const;

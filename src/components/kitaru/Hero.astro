@@ -32,7 +32,7 @@ import {
       </h1>
 
       <p class="hero-kicker" data-reveal data-reveal-delay="2">
-        Score what happened. Replay what could have.
+        You notice. The agent organizes. The check gets proven.
       </p>
 
       <p class="hero-subtitle" data-reveal data-reveal-delay="2">
@@ -59,7 +59,7 @@ import {
     </div>
 
     <div class="hero-visual" data-reveal data-reveal-delay="3">
-      <div class="hv-panel" role="img" aria-label="Example: wrap your agent with the Kitaru adapter, import a failing production trace onto it, score it, replay it against the agent's real code until it reproduces, then verify the fix on the cohort of 23 sessions like it">
+      <div class="hv-panel" role="img" aria-label="Example: import production traces as sessions, get interviewed by your coding agent until your notes become a cohort and an evaluator, prove that evaluator blind on sessions you never read, then compare two experiment runs to show the fix worked">
         <div class="hv-panel-head">
           <span class="hv-panel-dots">
             <span class="hv-dot"></span>
@@ -71,44 +71,44 @@ import {
         </div>
 
         <div class="hv-code">
-          <div class="hv-code-line hv-code-comment"># wrap your agent, then pull in a real failure</div>
-          <div class="hv-code-line">agent <span class="hv-code-op">=</span> <span class="hv-code-fn">KitaruAgent</span>(support_agent)</div>
-          <div class="hv-code-line">bad <span class="hv-code-op">=</span> agent.<span class="hv-code-fn">import_traces</span>(<span class="hv-code-str">"trace://8f3a91c2"</span>)</div>
+          <div class="hv-code-line hv-code-comment"># 1 &middot; your traces become sessions</div>
+          <div class="hv-code-line">kitaru session <span class="hv-code-fn">import</span> langfuse ./export.jsonl <span class="hv-code-op">\</span></div>
+          <div class="hv-code-line hv-code-cont">--agent docs-agent</div>
           <div class="hv-code-line">&nbsp;</div>
-          <div class="hv-code-line hv-code-comment"># score what happened &mdash; the agent never runs</div>
-          <div class="hv-code-line hv-code-hl">agent.<span class="hv-code-fn">score</span>(bad, scorers<span class="hv-code-op">=</span>[<span class="hv-code-str">"refund_resolved"</span>])</div>
+          <div class="hv-code-line hv-code-comment"># 2 &middot; get interviewed, in your coding agent</div>
+          <div class="hv-code-line hv-code-prompt hv-code-hl">read 20 of these with me and find the pattern</div>
+          <div class="hv-code-line hv-code-out">&rarr; cohort <span class="hv-code-str">"cites superseded policy"</span> &middot; 9</div>
+          <div class="hv-code-line hv-code-out">&rarr; evaluator cited-superseded-doc</div>
           <div class="hv-code-line">&nbsp;</div>
-          <div class="hv-code-line hv-code-comment"># replay it against your real code</div>
-          <div class="hv-code-line hv-code-hl">agent.<span class="hv-code-fn">replay</span>(bad, repeats<span class="hv-code-op">=</span><span class="hv-code-str">10</span>)</div>
+          <div class="hv-code-line hv-code-comment"># 3 &middot; prove the check on sessions you never read</div>
+          <div class="hv-code-line hv-code-hl">kitaru experiment run eval-check <span class="hv-code-op">\</span></div>
+          <div class="hv-code-line hv-code-cont">--cohort held-out --version v1</div>
           <div class="hv-code-line">&nbsp;</div>
-          <div class="hv-code-line hv-code-comment"># fork the failing step, swap the tool</div>
-          <div class="hv-code-line hv-code-hl">agent.<span class="hv-code-fn">replay</span>(bad, tools<span class="hv-code-op">=</span>&#123;<span class="hv-code-str">"refund"</span>: stub_ok&#125;)</div>
-          <div class="hv-code-line">&nbsp;</div>
-          <div class="hv-code-line hv-code-comment"># fix &mdash; then verify on every failure like it</div>
-          <div class="hv-code-line">cohort <span class="hv-code-op">=</span> agent.<span class="hv-code-fn">cohort</span>(refund_resolved <span class="hv-code-op">&lt;</span> <span class="hv-code-str">0.5</span>)</div>
-          <div class="hv-code-line hv-code-hl">agent.<span class="hv-code-fn">replay</span>(cohort, name<span class="hv-code-op">=</span><span class="hv-code-str">"refund-errors"</span>)</div>
+          <div class="hv-code-line hv-code-comment"># 4 &middot; change the agent, compare the runs</div>
+          <div class="hv-code-line hv-code-hl">kitaru experiment run fix-validation <span class="hv-code-op">\</span></div>
+          <div class="hv-code-line hv-code-cont">--cohort superseded-all --version pr-311</div>
         </div>
 
         <div class="hv-diff">
           <div class="hv-diff-row hv-diff-head">
-            <span>Step</span>
-            <span>Outcome</span>
+            <span>Experiment run</span>
+            <span>cited-superseded-doc</span>
           </div>
           <div class="hv-diff-row">
-            <span class="hv-diff-label">Score every session</span>
-            <span class="hv-mono-cell">23 fail the same way</span>
+            <span class="hv-diff-label">Your notes, 20 read</span>
+            <span class="hv-mono-cell">1 evaluator, 3 cohorts</span>
           </div>
           <div class="hv-diff-row">
-            <span class="hv-diff-label">Replay &times;10</span>
-            <span class="hv-mono-cell">failure reproduces 10 / 10</span>
+            <span class="hv-diff-label">Held-out, blind</span>
+            <span class="hv-mono-cell">the check holds up</span>
           </div>
           <div class="hv-diff-row">
-            <span class="hv-diff-label">Fork &middot; healthy tool</span>
-            <span class="hv-mono-cell">agent recovers &mdash; fault isolated</span>
+            <span class="hv-diff-label">run 2 &middot; version v1</span>
+            <span class="hv-mono-cell">90 / 90 fail</span>
           </div>
           <div class="hv-diff-row">
-            <span class="hv-diff-label">Fix &middot; all 23</span>
-            <span class="hv-mono-cell hv-diff-win">PASS &mdash; guards every PR</span>
+            <span class="hv-diff-label">run 3 &middot; version pr-311</span>
+            <span class="hv-mono-cell hv-diff-win">4 / 90 fail</span>
           </div>
         </div>
 
@@ -464,6 +464,22 @@ import {
     border-radius: 4px;
     margin: 0 -8px;
     padding: 0 8px;
+  }
+
+  /* Continuation of a wrapped shell command. */
+  .hv-code-cont { padding-left: 2.4ch; color: var(--color-primary); }
+
+  /* The interview happens in your coding agent, not the shell — so it gets
+     a chat caret rather than a prompt, and its replies are dimmed. */
+  .hv-code-prompt::before {
+    content: "\203a  ";
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+
+  .hv-code-out {
+    padding-left: 2.4ch;
+    color: var(--color-secondary);
   }
 
   /* ─── Hero visual: what-if diff table ─── */

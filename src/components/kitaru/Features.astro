@@ -1,30 +1,33 @@
 ---
-// Features.astro — the what-if workflow, told as the cheap-model use case:
-// replay 200 real runs with a cheaper model and a faked checkpoint result,
-// then diff.
-// Replaces the old durable-execution scroll-stack. No fragile scroll JS —
-// data-reveal only.
+// Features.astro — the model-migration wedge, which the Jul 24 research called
+// the killer use case and noted was unnamed: everything it needs already exists
+// in Act 4, so this is a naming and packaging job.
+//
+// Rewritten against the Jul 29 v2 vocabulary. A cohort is an immutable set of
+// sessions. An experiment is pure configuration — model, prompt, tool policy —
+// and is NOT tied to a cohort or an agent version. An experiment RUN is that
+// config plus a cohort plus a version, and runs are what you compare.
 const steps = [
   {
     n: "01",
-    tag: "Replay",
-    title: "Start from execution IDs",
-    body: "200 real executions whose Kitaru-visible steps and model/tool calls are already checkpointed. Production stays untouched.",
-    code: "exec_ids = cohort.exec_ids",
+    tag: "Cohort",
+    title: "Freeze the sessions that matter",
+    body: "The 200 real sessions you care about, fixed as a named set. Cohorts are immutable on purpose: a run's result has to keep meaning what it meant.",
+    code: 'kitaru cohort create "checkout-flow"',
   },
   {
     n: "02",
-    tag: "Change one thing",
-    title: "Cheaper model, flaky tool",
-    body: "Replay from the decision point with a cheaper model, or replace a recorded lookup result. Production stays exactly as it was.",
-    code: 'replay(id, from_="decide", model="fast")',
+    tag: "Experiment",
+    title: "State one hypothesis",
+    body: "An experiment is just configuration — the model, the system prompt, the tool policy. Swap the model and you are stating a different hypothesis, so that is a different experiment.",
+    code: "kitaru experiment create cheap-model",
   },
   {
     n: "03",
-    tag: "Diff",
-    title: "See what would have happened",
-    body: "Compare each candidate to its source execution: cost, changed outputs, first divergence. The decision now has evidence.",
-    code: "cheap.llm_usage_summary",
+    tag: "Two runs",
+    title: "Compare like with like",
+    body: "Run it twice over the same cohort, one agent version apart. Same cases, same evaluator version, one variable moved — so the numbers mean what they appear to mean.",
+    code: "kitaru experiment run cheap-model",
   },
 ] as const;
 ---
@@ -32,10 +35,10 @@ const steps = [
 <section id="how-it-works" class="whatif-section section-pad">
   <div class="section-inner">
     <div class="whatif-header" data-reveal>
-      <span class="section-eyebrow">THE WHAT-IF WORKFLOW</span>
-      <h2 class="section-title">Ask anything of the runs you already have.</h2>
+      <span class="section-eyebrow">THE MIGRATION YOU KEEP POSTPONING</span>
+      <h2 class="section-title">Ship the cheaper model without shipping a regression.</h2>
       <p class="section-desc">
-        Cheaper model? Flaky tool result? New prompt? Replay real executions with one thing changed, read the diff &mdash; and never touch production.
+        A new model appeared, or the old one got deprecated. The reason nobody moves is that nobody can say what it would break. Two runs over the same real sessions can.
       </p>
 
     </div>
@@ -59,7 +62,7 @@ const steps = [
     <div class="whatif-payoff" data-reveal="fade-up" data-reveal-delay="3">
       <div class="whatif-payoff-label">
         <span class="whatif-payoff-eyebrow">The diff</span>
-        <p>Same 200 executions. Cheap model. Order lookup result replaced.</p>
+        <p>Same 200 sessions. Same evaluator. One model swapped.</p>
       </div>
       <div class="whatif-payoff-metrics">
         <div class="whatif-metric">
@@ -78,7 +81,7 @@ const steps = [
     </div>
 
     <p class="whatif-foot" data-reveal>
-      Illustrative numbers. Tool-level detail depends on the primitives or adapter boundaries your agent exposes to Kitaru.
+      Illustrative numbers. Replay fidelity depends on how much your recorded traces kept &mdash; tool calls need both a name and a payload, and Kitaru grades every session ready, partial or unavailable at import.
     </p>
   </div>
 </section>
