@@ -9,6 +9,7 @@ const WRANGLER_STATE_DIR = resolve(".wrangler");
 const TEST_ENV_PATH = resolve(WRANGLER_STATE_DIR, "runtime-check.env");
 const START_TIMEOUT_MS = 30_000;
 const REQUEST_TIMEOUT_MS = 10_000;
+const COLD_START_REQUEST_TIMEOUT_MS = 30_000;
 
 type CheckResult = {
   name: string;
@@ -151,12 +152,25 @@ async function request(
   baseUrl: string,
   pathname: string,
   init?: RequestInit,
+  timeoutMs = REQUEST_TIMEOUT_MS,
 ): Promise<Response> {
-  return await fetch(`${baseUrl}${pathname}`, {
-    ...init,
-    redirect: init?.redirect ?? "manual",
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-  });
+  const signal = AbortSignal.timeout(timeoutMs);
+
+  try {
+    return await fetch(`${baseUrl}${pathname}`, {
+      ...init,
+      redirect: init?.redirect ?? "manual",
+      signal,
+    });
+  } catch (error) {
+    if (signal.aborted) {
+      throw new Error(
+        `Timed out requesting ${pathname} from the Worker after ${timeoutMs}ms`,
+        { cause: error },
+      );
+    }
+    throw error;
+  }
 }
 
 function check(
@@ -171,7 +185,12 @@ function check(
 async function runChecks(baseUrl: string): Promise<CheckResult[]> {
   const results: CheckResult[] = [];
 
-  const kitaru = await request(baseUrl, "/product/kitaru");
+  const kitaru = await request(
+    baseUrl,
+    "/product/kitaru",
+    undefined,
+    COLD_START_REQUEST_TIMEOUT_MS,
+  );
   const kitaruHtml = await kitaru.text();
   check(results, "Kitaru page returns 200", kitaru.status === 200);
   check(
