@@ -1,7 +1,15 @@
 /// <reference types="vitest/config" />
-import { getViteConfig } from "astro/config";
+import { fileURLToPath } from "node:url";
+import { defineConfig } from "vitest/config";
 
-export default getViteConfig({
+export default defineConfig({
+  resolve: {
+    alias: {
+      "cloudflare:workers": fileURLToPath(
+        new URL("./tests/mocks/cloudflare-workers.ts", import.meta.url),
+      ),
+    },
+  },
   test: {
     environment: "node",
     globals: false,

@@ -30,11 +30,11 @@ const config = JSON.parse(
   readFileSync("wrangler.jsonc", "utf8"),
 ) as WranglerConfig;
 
-describe("Astro 5 Worker configuration", () => {
-  it("runs the generated adapter entrypoint with the live compatibility settings", () => {
+describe("Astro 6 Worker source configuration", () => {
+  it("uses the adapter entrypoint with the live compatibility settings", () => {
     expect(config).toMatchObject({
       name: "zenml-io-v2-worker",
-      main: "dist/_worker.js/index.js",
+      main: "@astrojs/cloudflare/entrypoints/server",
       compatibility_date: "2026-02-10",
       compatibility_flags: ["nodejs_compat"],
       workers_dev: false,
@@ -44,9 +44,9 @@ describe("Astro 5 Worker configuration", () => {
     expect(config.routes).toBeUndefined();
   });
 
-  it("serves static output before the Worker except for API routes", () => {
+  it("defines the assets policy that the adapter copies into its output", () => {
     expect(config.assets).toEqual({
-      directory: "./dist",
+      directory: "./dist/client",
       binding: "ASSETS",
       html_handling: "drop-trailing-slash",
       not_found_handling: "404-page",

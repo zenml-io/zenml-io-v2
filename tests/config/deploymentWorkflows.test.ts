@@ -91,7 +91,9 @@ function expectArtifactGuards(workflow: string): void {
   expect(workflow).toContain("(.route == null)");
   expect(workflow).toContain("(.routes == null)");
   expect(workflow).toContain("(.build == null)");
-  expect(workflow).toContain("keys - [");
+  expect(workflow).toContain("dist/server/wrangler.json");
+  expect(workflow).toContain(".wrangler/deploy/config.json");
+  expect(workflow).toContain(".generated_config_sha256");
   expect(workflow).toContain(".artifact_sha256 == $artifact_sha256");
 }
 
@@ -700,9 +702,10 @@ describe("credential-free Worker artifact workflow", () => {
     expect(deployWorkflow).toContain("actions/upload-artifact@");
   });
 
-  it("has no Cloudflare credentials or deployment command", () => {
+  it("has no Cloudflare credentials or state-changing deployment command", () => {
     expect(deployWorkflow).not.toContain("${{ secrets.");
-    expect(deployWorkflow).not.toContain("wrangler versions upload");
+    expect(deployWorkflow).toContain("wrangler versions upload");
+    expect(deployWorkflow).toContain("--dry-run");
     expect(deployWorkflow).not.toContain("wrangler versions deploy");
     expect(deployWorkflow).not.toContain("wrangler pages deploy");
   });
@@ -796,7 +799,8 @@ describe("trusted production candidate uploader", () => {
     );
     expect(candidateWorkflow).toContain("wrangler versions upload");
     expect(candidateWorkflow).toContain("WRANGLER_OUTPUT_FILE_PATH");
-    expect(candidateWorkflow).toContain(".preview_urls = false");
+    expect(candidateWorkflow).toContain("preview_urls: false");
+    expect(candidateWorkflow).toContain("--dry-run");
     expect(candidateWorkflow).toContain("--strict");
     expect(candidateWorkflow).not.toContain("wrangler versions deploy");
     expect(candidateWorkflow).not.toContain("wrangler pages deploy");
@@ -1111,6 +1115,10 @@ describe("automatic post-cutover production release", () => {
     );
     expect(releaseWorkflow).toContain("git/ref/heads/main");
     expect(releaseWorkflow).toContain("eligible=false");
+    expect(releaseWorkflow).toContain(".production_release_eligible == true");
+    expect(deployWorkflow).toContain(
+      "--argjson production_release_eligible false",
+    );
   });
 
   it("serializes the complete release and promotes the exact CI artifact without rebuilding", () => {
@@ -1130,6 +1138,25 @@ describe("automatic post-cutover production release", () => {
     expect(releaseWorkflow).not.toContain("pnpm build");
     expect(releaseWorkflow).not.toContain("wrangler pages deploy");
     expectNoRouteOrDnsMutation(releaseWorkflow);
+  });
+
+  it("rejects a stale main artifact immediately before the privileged upload", () => {
+    const uploadStep = workflowStep(
+      releaseUploadSteps,
+      "Upload inactive production version",
+    );
+    const uploadProgram = uploadStep.run ?? "";
+
+    expect(uploadStep.env?.GH_TOKEN).toBe("$" + "{{ github.token }}");
+    expect(uploadProgram).toContain(
+      'gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha',
+    );
+    expect(uploadProgram).toContain(
+      'if [ "$live_main_commit" != "$SOURCE_COMMIT" ]',
+    );
+    expect(uploadProgram.indexOf("live_main_commit=")).toBeLessThan(
+      uploadProgram.lastIndexOf("wrangler versions upload"),
+    );
   });
 
   it("requires the accepted route topology and private Worker endpoints", () => {

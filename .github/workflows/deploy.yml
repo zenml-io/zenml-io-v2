@@ -25,7 +25,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 22
+          node-version: 22.23.1
           cache: pnpm
 
       - name: Install dependencies
@@ -79,13 +79,63 @@ jobs:
           SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euo pipefail
-          tar -C dist -czf worker-dist.tar.gz .
+          jq -e '
+            (keys | sort) == ["auxiliaryWorkers", "configPath", "prerenderWorkerConfigPath"] and
+            .configPath == "../../dist/server/wrangler.json" and
+            .auxiliaryWorkers == []
+          ' .wrangler/deploy/config.json > /dev/null
+          jq -e '
+            .name == "zenml-io-v2-worker" and
+            .main == "entry.mjs" and
+            .compatibility_date == "2026-02-10" and
+            .compatibility_flags == ["nodejs_compat"] and
+            .workers_dev == false and
+            .preview_urls == false and
+            .no_bundle == true and
+            .assets.directory == "../client" and
+            .assets.binding == "ASSETS" and
+            .assets.html_handling == "drop-trailing-slash" and
+            .assets.not_found_handling == "404-page" and
+            .assets.run_worker_first == ["/api/*"] and
+            (.route == null) and
+            (.routes == null) and
+            (.build == null) and
+            (.durable_objects.bindings // [] | length) == 0 and
+            (.kv_namespaces // [] | length) == 0 and
+            (.d1_databases // [] | length) == 0 and
+            (.r2_buckets // [] | length) == 0 and
+            (.services // [] | length) == 0
+          ' dist/server/wrangler.json > /dev/null
+          test -f dist/server/entry.mjs
+          test -f dist/client/index.html
+
+          replay_dir="$(mktemp -d)"
+          trap 'rm -rf "$replay_dir"' EXIT
+          mkdir -p "$replay_dir/.wrangler/deploy"
+          cp -R dist "$replay_dir/dist"
+          cp .wrangler/deploy/config.json "$replay_dir/.wrangler/deploy/config.json"
+          pnpm exec wrangler versions upload \
+            --dry-run \
+            --cwd "$replay_dir" \
+            --outdir "$replay_dir/dry-run"
+
+          tar -czf worker-dist.tar.gz dist .wrangler/deploy/config.json
           sha256sum worker-dist.tar.gz > worker-dist.sha256
+          generated_config_sha256="$(
+            sha256sum dist/server/wrangler.json | cut -d ' ' -f 1
+          )"
+          deploy_config_sha256="$(
+            sha256sum .wrangler/deploy/config.json | cut -d ' ' -f 1
+          )"
           jq -n \
             --arg artifact_sha256 "$(cut -d ' ' -f 1 worker-dist.sha256)" \
+            --arg artifact_contract "astro-cloudflare-v6" \
             --arg build_commit "$BUILD_COMMIT" \
+            --arg deploy_config_sha256 "$deploy_config_sha256" \
             --arg event_name "$EVENT_NAME" \
+            --arg generated_config_sha256 "$generated_config_sha256" \
             --arg lockfile_sha256 "$(sha256sum pnpm-lock.yaml | cut -d ' ' -f 1)" \
+            --argjson production_release_eligible false \
             --arg run_attempt "$RUN_ATTEMPT" \
             --arg run_id "$RUN_ID" \
             --arg source_branch "$SOURCE_BRANCH" \
@@ -93,11 +143,15 @@ jobs:
             --slurpfile config wrangler.jsonc \
             '{
               artifact_sha256: $artifact_sha256,
+              artifact_contract: $artifact_contract,
               build_commit: $build_commit,
               compatibility_date: $config[0].compatibility_date,
               compatibility_flags: $config[0].compatibility_flags,
+              deploy_config_sha256: $deploy_config_sha256,
               event_name: $event_name,
+              generated_config_sha256: $generated_config_sha256,
               lockfile_sha256: $lockfile_sha256,
+              production_release_eligible: $production_release_eligible,
               required_secrets: $config[0].secrets.required,
               run_attempt: $run_attempt,
               run_id: $run_id,
@@ -113,7 +167,6 @@ jobs:
             worker-dist.tar.gz
             worker-dist.sha256
             worker-manifest.json
-            wrangler.jsonc
           compression-level: 0
           if-no-files-found: error
           retention-days: 14

@@ -1,4 +1,4 @@
-import type { Runtime } from "@astrojs/cloudflare";
+import { env } from "cloudflare:workers";
 import type { APIContext } from "astro";
 import {
   createStarsSnapshot,
@@ -19,8 +19,6 @@ const STALE_WHILE_REVALIDATE_SECONDS = 86400;
 
 const STANDARD_CACHE_CONTROL = `public, max-age=300, s-maxage=${SOFT_TTL_SECONDS}, stale-while-revalidate=${STALE_WHILE_REVALIDATE_SECONDS}`;
 const FALLBACK_CACHE_CONTROL = `public, max-age=60, s-maxage=${FALLBACK_TTL_SECONDS}, stale-while-revalidate=3600`;
-
-type CloudflareRuntime = Runtime["runtime"];
 
 interface CacheStorageWithDefault extends CacheStorage {
   default?: Cache;
@@ -45,26 +43,8 @@ function getDefaultCache(): Cache | null {
   return cacheStorage?.default ?? null;
 }
 
-function getRuntime(context: APIContext): CloudflareRuntime | null {
-  const locals = context.locals as Partial<Runtime>;
-  return locals.runtime ?? null;
-}
-
-function getGithubToken(context: APIContext): string | undefined {
-  const runtime = getRuntime(context);
-  const env = runtime?.env as Record<string, unknown> | undefined;
-
-  const primaryToken = env?.GITHUB_TOKEN;
-  if (typeof primaryToken === "string" && primaryToken.trim()) {
-    return primaryToken.trim();
-  }
-
-  const secondaryToken = env?.GITHUB_API_TOKEN;
-  if (typeof secondaryToken === "string" && secondaryToken.trim()) {
-    return secondaryToken.trim();
-  }
-
-  return undefined;
+function getGithubToken(): string | undefined {
+  return env.GITHUB_TOKEN?.trim() || env.GITHUB_API_TOKEN?.trim() || undefined;
 }
 
 function isStarsSource(value: unknown): value is GithubStarsSnapshot["source"] {
@@ -175,7 +155,7 @@ export async function GET(context: APIContext): Promise<Response> {
   const repo = resolveStarsRepo(context.url.searchParams.get("repo"));
   const cache = getDefaultCache();
   const cacheKey = new Request(`${CACHE_KEY_URL}?repo=${repo.key}`);
-  const githubToken = getGithubToken(context);
+  const githubToken = getGithubToken();
 
   if (cache) {
     const cached = await cache.match(cacheKey);
@@ -186,8 +166,7 @@ export async function GET(context: APIContext): Promise<Response> {
           const isStale =
             getSnapshotAgeSeconds(cachedPayload, new Date()) > SOFT_TTL_SECONDS;
           if (isStale) {
-            const runtime = getRuntime(context);
-            runtime?.ctx.waitUntil(
+            context.locals.cfContext.waitUntil(
               refreshCache(cache, cacheKey, repo, githubToken),
             );
           }

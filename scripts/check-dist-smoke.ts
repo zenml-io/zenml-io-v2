@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
-const DIST_DIR = "dist";
+const DIST_DIR = "dist/client";
 const AGENT_SKILLS_INDEX_PATH = ".well-known/agent-skills/index.json";
 
 const REQUIRED_FILES = [
@@ -25,7 +25,7 @@ const REQUIRED_FILES = [
   "pagefind/pagefind-entry.json",
 ];
 
-const REQUIRED_DIRECTORIES = ["_worker.js", "pagefind", "pagefind/index"];
+const REQUIRED_DIRECTORIES = ["pagefind", "pagefind/index"];
 
 type SearchIndexEntry = Record<string, unknown>;
 

@@ -5,7 +5,7 @@
  * Checks:
  * 1. Syntax: each rule has exactly 3 parts (from, to, status)
  * 2. No duplicate source paths
- * 3. Internal destinations exist in dist/
+ * 3. Internal destinations exist in dist/client
  * 4. No redirect loops
  * 5. Status codes are valid (301 or 302)
  *
@@ -20,7 +20,7 @@ import { readFileSync, existsSync } from "fs";
 // ---------------------------------------------------------------------------
 
 const REDIRECTS_PATH = "public/_redirects";
-const DIST_DIR = "dist";
+const DIST_DIR = "dist/client";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -120,7 +120,7 @@ function internalToDistCandidates(to: string): string[] {
   }
 
   // If destination already looks like a file path (e.g. /sitemap-index.xml),
-  // check for that exact file in dist/.
+  // check for that exact file in dist/client.
   const hasExtension = /\/[^/]+\.[a-z0-9]+$/i.test(pathOnly);
   if (hasExtension) {
     return [`${DIST_DIR}${pathOnly}`];

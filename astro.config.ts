@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import cloudflare from "@astrojs/cloudflare";
+import { unified } from "@astrojs/markdown-remark";
 import preact from "@astrojs/preact";
 import sitemap from "@astrojs/sitemap";
 import mdx from "@astrojs/mdx";
@@ -31,19 +32,22 @@ const sitemapExcludePaths = new Set([
 export default defineConfig({
   site: "https://www.zenml.io",
   output: "static",
+  session: {
+    // The site does not use Astro sessions. Defining the null driver prevents
+    // the Cloudflare adapter from auto-provisioning an unused SESSION KV.
+    driver: { entrypoint: "unstorage/drivers/null" },
+  },
   adapter: cloudflare({
-    // Vitest loads this config to build its Vite environment. Starting the
-    // Cloudflare dev proxy there would create a second workerd process and try
-    // to register the Worker globally. Runtime parity is exercised separately
-    // through the checked-in Wrangler configuration.
-    platformProxy: { enabled: process.env.NODE_ENV !== "test" },
+    imageService: "compile",
   }),
   trailingSlash: "never",
   build: {
     format: "file",
   },
   markdown: {
-    remarkPlugins: [remarkDefaultLang() as any],
+    processor: unified({
+      remarkPlugins: [remarkDefaultLang()],
+    }),
     shikiConfig: {
       theme: zenmlLight as any,
     },

@@ -1,7 +1,7 @@
 /**
- * check-island-hydration.ts — proves the Preact islands in dist/ actually hydrate.
+ * check-island-hydration.ts — proves the Preact islands in dist/client actually hydrate.
  *
- * Run via: pnpm check:islands (after pnpm build — it reads dist/)
+ * Run via: pnpm check:islands (after pnpm build — it reads dist/client)
  * Exits with code 1 (failing CI) if any island fails to become interactive.
  *
  * Why this exists
@@ -21,19 +21,17 @@
  *
  * How it works
  * ------------
- * 1. Serves dist/ over a throwaway node:http server on an ephemeral port. Astro is
- *    configured with `build.format: "file"`, so /foo maps to dist/foo.html.
+ * 1. Serves dist/client over a throwaway node:http server on an ephemeral port.
+ *    Astro is configured with `build.format: "file"`, so /foo maps to
+ *    dist/client/foo.html.
  * 2. Drives it with the `playwright` dep we already have (deliberately NOT
  *    @playwright/test — no second test runner, no config file, no new dependency).
  * 3. Runs each check in a fresh browser context, then asserts on the DOM.
  *
  * Why a hand-rolled server rather than an existing one:
- * - `astro preview` does not work here at all. The Cloudflare adapter exposes no
- *   preview entrypoint, so it exits with "does not support the preview command".
- * - `wrangler pages dev dist` WOULD work (wrangler is already a devDep) and is
- *   closer to production, but it drags the whole Worker runtime, a child-process
- *   lifecycle and port-scraping into a check whose entire job is to isolate island
- *   hydration — strictly more moving parts, and more to go wrong in CI.
+ * - The generated Worker runtime is covered separately by `pnpm check:worker`.
+ *   This check deliberately serves only static output so it isolates client-side
+ *   hydration from Worker startup, bindings, redirects, and API behavior.
  * - An off-the-shelf static server gets two things wrong that matter here; both are
  *   documented at their point of use below (the .js MIME type, and the fact that
  *   /llmops-database exists as both a file and a directory).
@@ -70,11 +68,11 @@ import { extname, resolve, sep } from "node:path";
 import type { Browser, Page } from "playwright";
 import { chromium } from "playwright";
 
-const DIST = resolve("dist");
+const DIST = resolve("dist/client");
 const NAV_TIMEOUT = 20_000;
 const ACTION_TIMEOUT = 10_000;
 
-// ── Static server over dist/ ───────────────────────────────────────
+// ── Static server over dist/client ─────────────────────────────────
 
 const MIME: Record<string, string> = {
   ".html": "text/html; charset=utf-8",
@@ -96,7 +94,7 @@ const MIME: Record<string, string> = {
   ".xml": "application/xml",
 };
 
-/** Map a URL pathname to a file in dist/, honouring Astro's `build.format: "file"`. */
+/** Map a URL pathname to a file in dist/client, honouring Astro's file format. */
 function resolveDistFile(pathname: string): string | null {
   let relativePath: string;
 
@@ -394,7 +392,7 @@ async function attempt(
 
 async function check(): Promise<number> {
   if (!existsSync(DIST)) {
-    console.error("✗ dist/ not found");
+    console.error("✗ dist/client not found");
     console.error("  Fix: run `pnpm build` before `pnpm check:islands`.");
     return 1;
   }
@@ -413,7 +411,9 @@ async function check(): Promise<number> {
     return 1;
   }
 
-  console.log(`Checking island hydration against ${server.baseUrl} (dist/)`);
+  console.log(
+    `Checking island hydration against ${server.baseUrl} (dist/client)`,
+  );
 
   const violations: string[] = [];
 
