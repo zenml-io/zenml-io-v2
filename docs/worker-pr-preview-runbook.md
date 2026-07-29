@@ -44,9 +44,10 @@ https://pr-<number>-zenml-io-v2-pr-preview.<account-subdomain>.workers.dev
 ```
 
 A new successful commit updates only that PR's alias. Other PR aliases still
-point to their own versions. The global GitHub concurrency lock serializes
-Cloudflare mutations, but it does not prevent several aliases from remaining
-available at the same time.
+point to their own versions. Per-PR publish and retirement queues prevent a new
+publish event from discarding a pending close event. A publish that was already
+running when the PR closed rechecks the PR after upload and replaces its own
+alias with a tombstone. Several aliases can remain available at the same time.
 
 The workflow creates the sticky PR marker before uploading, then records the
 URL, source branch, source commit, and CI run after verification. This means a

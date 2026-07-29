@@ -1599,10 +1599,24 @@ describe("automatic pull-request Worker previews", () => {
       "workflow_dispatch",
       "workflow_run",
     ]);
-    expect(prPreviewWorkflowConfig.concurrency).toEqual({
-      group: "zenml-io-worker-pr-preview",
-      "cancel-in-progress": false,
-    });
+    expect(prPreviewWorkflowConfig.concurrency?.["cancel-in-progress"]).toBe(
+      false,
+    );
+    expect(prPreviewWorkflowConfig.concurrency?.group).toContain(
+      "zenml-io-worker-pr-preview-",
+    );
+    expect(prPreviewWorkflowConfig.concurrency?.group).toContain(
+      "github.event_name == 'pull_request_target' && 'retire' || 'publish'",
+    );
+    expect(prPreviewWorkflowConfig.concurrency?.group).toContain(
+      "github.event.pull_request.head.ref",
+    );
+    expect(prPreviewWorkflowConfig.concurrency?.group).toContain(
+      "github.event.workflow_run.head_branch",
+    );
+    expect(prPreviewWorkflowConfig.concurrency?.group).toContain(
+      "format('pr-{0}', inputs.pr_number)",
+    );
     expect(prPreviewWorkflowConfig.jobs.publish.environment).toBe(
       "worker-pr-preview",
     );
@@ -1704,7 +1718,14 @@ describe("automatic pull-request Worker previews", () => {
   });
 
   it("serializes mutations, preserves deployments, posts a sticky URL, and retires closed PR aliases", () => {
-    expect(prPreviewWorkflow).toContain("group: zenml-io-worker-pr-preview");
+    expect(prPreviewWorkflow).toContain("github.event.pull_request.head.ref");
+    expect(prPreviewWorkflow).toContain(
+      "github.event.workflow_run.head_branch",
+    );
+    expect(prPreviewWorkflow).toContain(
+      "github.event_name == 'pull_request_target' && 'retire' || 'publish'",
+    );
+    expect(prPreviewWorkflow).toContain("format('pr-{0}', inputs.pr_number)");
     expect(prPreviewWorkflow).toContain("cancel-in-progress: false");
     expect(prPreviewWorkflow).toContain(
       "The active PR-preview deployment changed",
@@ -1720,6 +1741,30 @@ describe("automatic pull-request Worker previews", () => {
     expect(prPreviewWorkflow).toContain('--preview-alias "pr-$PR_NUMBER"');
     expect(prPreviewWorkflow).toContain("return new Response");
     expect(prPreviewWorkflow).toContain("status: 410");
+  });
+
+  it("cannot let an in-flight publish resurrect a closed PR alias", () => {
+    const uploadIndex = prPreviewPublishSteps.findIndex(
+      (step) => step.name === "Upload exact version with stable PR alias",
+    );
+    const closeCheckIndex = prPreviewPublishSteps.findIndex(
+      (step) => step.name === "Retire alias if the PR closed during upload",
+    );
+    const verifyIndex = prPreviewPublishSteps.findIndex(
+      (step) => step.name === "Verify isolated public preview",
+    );
+    expect(uploadIndex).toBeGreaterThan(-1);
+    expect(closeCheckIndex).toBeGreaterThan(uploadIndex);
+    expect(verifyIndex).toBeGreaterThan(closeCheckIndex);
+
+    const closeCheckRun = prPreviewPublishSteps[closeCheckIndex].run ?? "";
+    expect(closeCheckRun).toContain(
+      'gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq .state',
+    );
+    expect(closeCheckRun).toContain('--preview-alias "pr-$PR_NUMBER"');
+    expect(closeCheckRun).toContain("--strict");
+    expect(closeCheckRun).toContain("status: 410");
+    expect(closeCheckRun).toContain("exit 1");
   });
 
   it("records retirement before upload and fails closed on comment lookup errors", () => {

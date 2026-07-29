@@ -27,7 +27,14 @@ on:
     types: [closed]
 
 concurrency:
-  group: zenml-io-worker-pr-preview
+  group: >-
+    zenml-io-worker-pr-preview-${{
+      github.event_name == 'pull_request_target' && 'retire' || 'publish'
+    }}-${{
+      github.event.pull_request.head.ref ||
+      github.event.workflow_run.head_branch ||
+      format('pr-{0}', inputs.pr_number)
+    }}
   cancel-in-progress: false
 
 permissions: {}
@@ -468,6 +475,53 @@ jobs:
             echo "version_id=$version_id"
             echo "artifact_sha256=$artifact_sha256"
           } >> "$GITHUB_OUTPUT"
+
+      - name: Retire alias if the PR closed during upload
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PR_PREVIEW_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.source.outputs.pr_number }}
+        run: |
+          set -euo pipefail
+          pr_state="$(
+            gh api "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER" --jq .state
+          )"
+          if [ "$pr_state" = "open" ]; then
+            exit 0
+          fi
+
+          retire_dir="$RUNNER_TEMP/pr-preview-closed-during-upload"
+          mkdir -p "$retire_dir"
+          printf '%s\n' \
+            'export default {' \
+            '  fetch() {' \
+            '    return new Response("PR preview retired", {' \
+            '      status: 410,' \
+            '      headers: { "content-type": "text/plain; charset=utf-8" },' \
+            '    });' \
+            '  },' \
+            '};' > "$retire_dir/retired.mjs"
+          jq -n \
+            --arg name "$WORKER_NAME" '
+              {
+                name: $name,
+                main: "retired.mjs",
+                compatibility_date: "2026-02-10",
+                compatibility_flags: ["nodejs_compat"],
+                workers_dev: false,
+                preview_urls: true,
+                no_bundle: true
+              }
+            ' > "$retire_dir/wrangler.json"
+          wrangler versions upload \
+            --config "$retire_dir/wrangler.json" \
+            --strict \
+            --preview-alias "pr-$PR_NUMBER" \
+            --message "PR preview retired after close during upload pr_number=$PR_NUMBER"
+          echo "The PR closed during upload; its alias was retired instead of published." >&2
+          exit 1
 
       - name: Verify isolated public preview
         id: verify
