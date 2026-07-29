@@ -49,6 +49,7 @@ interface ManualPreviewWorkflow {
     group: string;
   };
   env: {
+    SOURCE_RUN_PREDICATE: string;
     WORKER_NAME: string;
   };
   jobs: Record<
@@ -320,6 +321,10 @@ describe("preview Worker upload workflow", () => {
       required: true,
       type: "boolean",
     });
+    expect(uploadWorkflow.on.workflow_dispatch.inputs.pr_number).toMatchObject({
+      required: false,
+      type: "string",
+    });
     expect(uploadWorkflow.permissions).toEqual({});
     expect(uploadJob.if).toBe("github.ref == 'refs/heads/main'");
     expect(uploadJob.environment).toBe("worker-preview");
@@ -335,11 +340,15 @@ describe("preview Worker upload workflow", () => {
     });
   });
 
-  it("validates the exact same-repository PR run and current head", () => {
+  it("validates an exact same-repository PR or current-main run", () => {
     const validationStep = uploadStep("Validate dispatch identifiers");
-    const sourceStep = uploadStep("Verify the exact source run and PR head");
+    const sourceStep = uploadStep(
+      "Verify the exact source run and source state",
+    );
 
-    expect(validationStep.run).toContain('[[ "$PR_NUMBER" =~ ^[0-9]+$ ]]');
+    expect(validationStep.run).toContain(
+      '[[ -z "$PR_NUMBER" || "$PR_NUMBER" =~ ^[0-9]+$ ]]',
+    );
     expect(validationStep.run).toContain('[[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]');
     expect(validationStep.run).toContain(
       '[[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]',
@@ -353,12 +362,28 @@ describe("preview Worker upload workflow", () => {
     expect(sourceStep.run).toContain(
       "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID",
     );
+    expect(sourceStep.run).toContain('"$SOURCE_RUN_PREDICATE"');
     expect(sourceStep.run).toContain(
       '--arg path ".github/workflows/deploy.yml"',
     );
-    expect(sourceStep.run).toContain(".path == $path");
-    expect(sourceStep.run).toContain(
+    expect(uploadWorkflow.env.SOURCE_RUN_PREDICATE).toContain(".path == $path");
+    expect(uploadWorkflow.env.SOURCE_RUN_PREDICATE).toContain(
       ".head_repository.full_name == $repository",
+    );
+    expect(uploadWorkflow.env.SOURCE_RUN_PREDICATE).toContain(
+      '$branch == "main"',
+    );
+    expect(uploadWorkflow.env.SOURCE_RUN_PREDICATE).toContain(
+      "$commit == $trusted_commit",
+    );
+    expect(uploadWorkflow.env.SOURCE_RUN_PREDICATE).toContain(
+      "$commit == $live_main_commit",
+    );
+    expect(uploadWorkflow.env.SOURCE_RUN_PREDICATE).toContain(
+      '.event == "push"',
+    );
+    expect(uploadWorkflow.env.SOURCE_RUN_PREDICATE).toContain(
+      '.event == "pull_request"',
     );
     expect(sourceStep.run).toContain(
       "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER",
@@ -423,7 +448,11 @@ describe("preview Worker upload workflow", () => {
     expect(provenanceStep.run).toContain(".source_commit == $commit");
     expect(provenanceStep.run).toContain(".run_id == $run_id");
     expect(provenanceStep.run).toContain(
-      'jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json"',
+      'source_event="$(< "$RUNNER_TEMP/source-event")"',
+    );
+    expect(provenanceStep.run).toContain(".event_name == $source_event");
+    expect(provenanceStep.run).toContain(
+      'build_commit="$(< "$RUNNER_TEMP/build-commit")"',
     );
     expect(provenanceStep.run).toContain(".build_commit == $build_commit");
     expectReviewedArtifactWorkflowGuard(provenanceStep.run);
@@ -484,7 +513,7 @@ describe("preview Worker upload workflow", () => {
       ".merge_commit_sha == $build_commit",
     );
     expect(uploadVersionStep.run).toContain(
-      'jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json"',
+      'build_commit="$(< "$RUNNER_TEMP/build-commit")"',
     );
     expect(uploadVersionStep.run).not.toContain(
       'jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr-before-upload.json"',
@@ -498,10 +527,16 @@ describe("preview Worker upload workflow", () => {
       uploadVersionStep.run?.indexOf(
         "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER",
       ) ?? -1;
+    const liveMainRecheckIndex =
+      uploadVersionStep.run?.lastIndexOf(
+        "repos/$GITHUB_REPOSITORY/git/ref/heads/main",
+      ) ?? -1;
     const uploadIndex =
       uploadVersionStep.run?.indexOf("wrangler versions upload") ?? -1;
     expect(trustedWorkflowIndex).toBeGreaterThan(-1);
     expect(prHeadRecheckIndex).toBeGreaterThan(trustedWorkflowIndex);
+    expect(liveMainRecheckIndex).toBeGreaterThan(prHeadRecheckIndex);
+    expect(uploadIndex).toBeGreaterThan(liveMainRecheckIndex);
     expect(uploadIndex).toBeGreaterThan(prHeadRecheckIndex);
     expect(uploadVersionStep.run).toContain("--secrets-file");
     expect(uploadVersionStep.run).not.toContain("--preview-alias");
@@ -538,6 +573,145 @@ describe("preview Worker upload workflow", () => {
     });
     expect(String(preserveStep.with?.path)).toContain(
       "candidate/upload-result.json",
+    );
+  });
+
+  it("accepts only exact open-PR or current-main source runs", () => {
+    const sourceStep = uploadStep(
+      "Verify the exact source run and source state",
+    );
+    const uploadVersionStep = uploadStep("Upload one inactive preview version");
+    const program = uploadWorkflow.env.SOURCE_RUN_PREDICATE;
+    expect(sourceStep.run).toContain('"$SOURCE_RUN_PREDICATE"');
+    expect(uploadVersionStep.run).toContain('"$SOURCE_RUN_PREDICATE"');
+    const repository = "zenml-io/zenml-io-v2";
+    const prCommit = "a".repeat(40);
+    const mainCommit = "b".repeat(40);
+    const commonArgs = [
+      "--arg",
+      "path",
+      ".github/workflows/deploy.yml",
+      "--arg",
+      "repository",
+      repository,
+    ];
+    const sourceRunArgs = (
+      branch: string,
+      commit: string,
+      pr: string,
+      trustedCommit = mainCommit,
+      liveMainCommit = mainCommit,
+    ) => [
+      ...commonArgs,
+      "--arg",
+      "branch",
+      branch,
+      "--arg",
+      "commit",
+      commit,
+      "--arg",
+      "live_main_commit",
+      liveMainCommit,
+      "--arg",
+      "pr",
+      pr,
+      "--arg",
+      "trusted_commit",
+      trustedCommit,
+    ];
+    const pullRequestRun = {
+      conclusion: "success",
+      event: "pull_request",
+      head_branch: "feat/astro5-workers-runtime",
+      head_repository: { full_name: repository },
+      head_sha: prCommit,
+      path: ".github/workflows/deploy.yml",
+      pull_requests: [{ number: 171 }],
+    };
+    const pushRun = {
+      conclusion: "success",
+      event: "push",
+      head_branch: "main",
+      head_repository: { full_name: repository },
+      head_sha: mainCommit,
+      path: ".github/workflows/deploy.yml",
+      pull_requests: [],
+    };
+
+    expectJqResult(
+      program,
+      pullRequestRun,
+      true,
+      sourceRunArgs("feat/astro5-workers-runtime", prCommit, "171"),
+    );
+    expectJqResult(
+      program,
+      pushRun,
+      true,
+      sourceRunArgs("main", mainCommit, ""),
+    );
+    expectJqResult(
+      program,
+      { ...pushRun, head_branch: "feature" },
+      false,
+      sourceRunArgs("feature", mainCommit, ""),
+    );
+    expectJqResult(
+      program,
+      pushRun,
+      false,
+      sourceRunArgs("main", mainCommit, "", "c".repeat(40)),
+    );
+    expectJqResult(
+      program,
+      pushRun,
+      false,
+      sourceRunArgs("main", mainCommit, "", mainCommit, "c".repeat(40)),
+    );
+    expectJqResult(
+      program,
+      { ...pushRun, conclusion: "failure" },
+      false,
+      sourceRunArgs("main", mainCommit, ""),
+    );
+    expectJqResult(
+      program,
+      { ...pullRequestRun, conclusion: "cancelled" },
+      false,
+      sourceRunArgs("feat/astro5-workers-runtime", prCommit, "171"),
+    );
+    expectJqResult(
+      program,
+      pullRequestRun,
+      false,
+      sourceRunArgs("feat/astro5-workers-runtime", prCommit, ""),
+    );
+    expectJqResult(
+      program,
+      pushRun,
+      false,
+      sourceRunArgs("main", mainCommit, "171"),
+    );
+    expectJqResult(
+      program,
+      { ...pullRequestRun, pull_requests: [{ number: 999 }] },
+      false,
+      sourceRunArgs("feat/astro5-workers-runtime", prCommit, "171"),
+    );
+    expectJqResult(
+      program,
+      { ...pushRun, path: ".github/workflows/other.yml" },
+      false,
+      sourceRunArgs("main", mainCommit, ""),
+    );
+    expectJqResult(
+      program,
+      {
+        ...pushRun,
+        head_repository: { full_name: "attacker/zenml-io-v2" },
+      },
+      false,
+      sourceRunArgs("main", mainCommit, ""),
     );
   });
 

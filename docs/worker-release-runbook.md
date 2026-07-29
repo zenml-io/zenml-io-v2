@@ -12,8 +12,9 @@ U3 has four separate actions:
 1. `Website CI and Worker Artifact` builds once without credentials, validates
    that output, and publishes the exact archive plus checksum and provenance.
 2. `Upload Exact Preview Worker Version` is manually dispatched from `main`
-   after explicit review. It consumes one successful same-repository PR
-   artifact and uploads an inactive, unreachable version to
+   after explicit review. It consumes either one successful same-repository PR
+   artifact or the successful `push` artifact for the exact current `main`
+   commit, then uploads an inactive, unreachable version to
    `zenml-io-v2-worker-preview`.
 3. `Upload Worker Production Candidate` is manually dispatched from `main` with
    an exact successful CI run, branch, and commit. It uploads an inactive
@@ -107,11 +108,18 @@ checkpoint, where the plan expects the supported Astro preview path.
 
 Before dispatching `Upload Exact Preview Worker Version`, compare and enter:
 
-- source PR number;
-- exact source branch and current PR-head commit;
+- source PR number for an open same-repository PR artifact, or leave it empty
+  only for an exact current-`main` push artifact;
+- exact source branch and commit;
 - successful source CI run ID;
 - artifact SHA-256 from that exact run;
 - explicit self-review confirmation.
+
+For a PR artifact, the workflow requires the PR to remain open at the recorded
+head and tested merge commit. For a `main` artifact, the source branch must be
+exactly `main`, and the source commit, manifest build commit, trusted uploader
+dispatch commit, and live `main` tip must all remain identical. A later merge
+to `main` invalidates the earlier artifact.
 
 After it succeeds, record:
 
