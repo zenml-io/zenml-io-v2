@@ -559,18 +559,23 @@ jobs:
           auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
           activation_attempted=false
 
-          verify_deployment() {
-            local expected_version="$1"
-            local output_file="$2"
+          active_version() {
+            local output_file="$1"
             wrangler deployments list \
               --name "$worker_name" \
               --json > "$output_file"
-            jq -e --arg version "$expected_version" '
+            jq -er '
               max_by(.created_on) as $latest |
-              ($latest.versions | length) == 1 and
-              $latest.versions[0].version_id == $version and
-              $latest.versions[0].percentage == 100
-            ' "$output_file" > /dev/null
+              select(($latest.versions | length) == 1) |
+              select($latest.versions[0].percentage == 100) |
+              $latest.versions[0].version_id
+            ' "$output_file"
+          }
+
+          verify_deployment() {
+            local expected_version="$1"
+            local output_file="$2"
+            [ "$(active_version "$output_file")" = "$expected_version" ]
           }
 
           rollback_previous_version() {
@@ -578,27 +583,40 @@ jobs:
             trap - ERR
             set +e
             if [ "$activation_attempted" = true ]; then
-              echo "Post-activation verification failed; restoring previous version." >&2
-              rollback_deploy_status=1
-              rollback_verify_status=1
-              for attempt in 1 2 3; do
-                if timeout 90s \
-                  wrangler versions deploy "$PREVIOUS_VERSION_ID@100%" \
-                    --name "$worker_name" \
-                    --yes; then
-                  rollback_deploy_status=0
-                  verify_deployment \
-                    "$PREVIOUS_VERSION_ID" \
-                    "$RUNNER_TEMP/deployments-after-rollback.json"
-                  rollback_verify_status=$?
-                  if [ "$rollback_verify_status" -eq 0 ]; then
-                    break
+              current_version="$(
+                active_version \
+                  "$RUNNER_TEMP/deployments-before-inline-rollback.json"
+              )"
+              if [ "$current_version" = "$PREVIOUS_VERSION_ID" ]; then
+                echo "Previous production version is already active." >&2
+                rollback_deploy_status=0
+                rollback_verify_status=0
+              elif [ "$current_version" = "$CANDIDATE_VERSION_ID" ]; then
+                echo "Post-activation verification failed; restoring previous version." >&2
+                rollback_deploy_status=1
+                rollback_verify_status=1
+                for attempt in 1 2 3; do
+                  if timeout 90s \
+                    wrangler versions deploy "$PREVIOUS_VERSION_ID@100%" \
+                      --name "$worker_name" \
+                      --yes; then
+                    rollback_deploy_status=0
+                    verify_deployment \
+                      "$PREVIOUS_VERSION_ID" \
+                      "$RUNNER_TEMP/deployments-after-rollback.json"
+                    rollback_verify_status=$?
+                    if [ "$rollback_verify_status" -eq 0 ]; then
+                      break
+                    fi
                   fi
-                fi
-                if [ "$attempt" -lt 3 ]; then
-                  sleep $((attempt * 2))
-                fi
-              done
+                  if [ "$attempt" -lt 3 ]; then
+                    sleep $((attempt * 2))
+                  fi
+                done
+              else
+                echo "An unknown production version is active; inline rollback will not replace it." >&2
+                exit "$original_status"
+              fi
               rollback_http_status="$(
                 curl \
                   --connect-timeout 10 \
@@ -749,6 +767,7 @@ jobs:
           path: |
             ${{ runner.temp }}/candidate-version.json
             ${{ runner.temp }}/deployments-before-activation.json
+            ${{ runner.temp }}/deployments-before-inline-rollback.json
             ${{ runner.temp }}/deployments-after-activation.json
             ${{ runner.temp }}/deployments-after-rollback.json
             ${{ runner.temp }}/worker-subdomain-before-activation.json

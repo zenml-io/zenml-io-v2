@@ -78,16 +78,15 @@ merged Dagster article, API behavior, redirects, 404 behavior, and sampled
 production assets. The apex redirect is recorded separately because it is
 zone-level behavior, not behavior of the released Worker version.
 
-A failed post-activation check first attempts an inline rollback with bounded
-retries. A separate recovery job also reconciles the active deployment after a
-failed or timed-out activation job. It restores the previous version only when
-the exact candidate is active. If the previous version is already active, it
-verifies health without redeploying. If any other version is active, it fails
-without replacing that version. The release stays failed for investigation. A
-manual cancellation of the whole workflow or loss of the GitHub runner can
-also cancel the recovery job, so an operator must verify the active version
-after either event. Workflow artifacts retain candidate, deployment, smoke,
-and recovery evidence for 30 days.
+A failed post-activation check first inspects the live active version. Its
+inline rollback restores the previous version with bounded retries only when
+the exact candidate is still active. It accepts an already-restored previous
+version and refuses to replace any unknown version. A separate recovery job
+applies the same rule after a failed or timed-out activation job. The release
+stays failed for investigation. A manual cancellation of the whole workflow or
+loss of the GitHub runner can also cancel the recovery job, so an operator must
+verify the active version after either event. Workflow artifacts retain
+candidate, deployment, smoke, and recovery evidence for 30 days.
 
 ## GitHub environments and secret names
 

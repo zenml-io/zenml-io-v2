@@ -123,7 +123,10 @@ function withTemporaryHarness<T>(
   }
 }
 
-function executeReleaseTrap(shouldFail: boolean): {
+function executeReleaseTrap(
+  shouldFail: boolean,
+  activeVersion = "22222222-2222-2222-2222-222222222222",
+): {
   error: unknown;
   wranglerCalls: string[];
 } {
@@ -132,7 +135,7 @@ function executeReleaseTrap(shouldFail: boolean): {
     "Activate, smoke-test, and roll back on failure",
   );
   const run = releaseStep.run ?? "";
-  const functionsStart = run.indexOf("verify_deployment() {");
+  const functionsStart = run.indexOf("active_version() {");
   const functionsEnd = run.indexOf("trap rollback_previous_version ERR");
   expect(functionsStart).toBeGreaterThan(-1);
   expect(functionsEnd).toBeGreaterThan(functionsStart);
@@ -149,7 +152,11 @@ function executeReleaseTrap(shouldFail: boolean): {
 set -euo pipefail
 printf '%s\\n' "$*" >> "$WRANGLER_CALLS_FILE"
 if [ "$1 $2" = "deployments list" ]; then
-  printf '[{"created_on":"2026-07-29T00:00:00Z","versions":[{"version_id":"%s","percentage":100}]}]\\n' "$PREVIOUS_VERSION_ID"
+  version_id="$ACTIVE_VERSION_ID"
+  if grep -q '^versions deploy ' "$WRANGLER_CALLS_FILE"; then
+    version_id="$PREVIOUS_VERSION_ID"
+  fi
+  printf '[{"created_on":"2026-07-29T00:00:00Z","versions":[{"version_id":"%s","percentage":100}]}]\\n' "$version_id"
 fi
 `,
       );
@@ -173,6 +180,8 @@ ${shouldFail ? "false" : ":"}
         execFileSync("bash", ["-c", script], {
           env: {
             ...process.env,
+            ACTIVE_VERSION_ID: activeVersion,
+            CANDIDATE_VERSION_ID: "22222222-2222-2222-2222-222222222222",
             PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
             PREVIOUS_VERSION_ID: "11111111-1111-1111-1111-111111111111",
             RUNNER_TEMP: harnessDirectory,
@@ -1158,6 +1167,20 @@ describe("automatic post-cutover production release", () => {
     const successfulRelease = executeReleaseTrap(false);
     expect(successfulRelease.error).toBeUndefined();
     expect(successfulRelease.wranglerCalls).toEqual([]);
+
+    const unknownVersionRelease = executeReleaseTrap(
+      true,
+      "33333333-3333-3333-3333-333333333333",
+    );
+    expect(unknownVersionRelease.error).toBeDefined();
+    expect(unknownVersionRelease.wranglerCalls).toContain(
+      "deployments list --name zenml-io-v2-worker --json",
+    );
+    expect(
+      unknownVersionRelease.wranglerCalls.some((call) =>
+        call.startsWith("versions deploy "),
+      ),
+    ).toBe(false);
   });
 
   it("retries a transient curl failure instead of triggering rollback", () => {
