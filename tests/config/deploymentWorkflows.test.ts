@@ -1,11 +1,21 @@
 import { execFileSync } from "node:child_process";
-import { readdirSync, readFileSync } from "node:fs";
+import {
+  chmodSync,
+  mkdirSync,
+  mkdtempSync,
+  readdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { parse } from "yaml";
 import { REQUIRED_WORKER_SECRETS } from "../../scripts/check-worker-bindings";
 
 interface WorkflowStep {
+  "continue-on-error"?: boolean;
   env?: Record<string, string>;
   name: string;
   run?: string;
@@ -33,12 +43,20 @@ const activationWorkflow = readFileSync(
   ".github/workflows/activate-worker.yml",
   "utf8",
 );
+const releaseWorkflow = readFileSync(
+  ".github/workflows/release-worker.yml",
+  "utf8",
+);
 const candidateWorkflowConfig = parse(candidateWorkflow) as ProductionWorkflow;
 const activationWorkflowConfig = parse(
   activationWorkflow,
 ) as ProductionWorkflow;
+const releaseWorkflowConfig = parse(releaseWorkflow) as ProductionWorkflow;
 const candidateSteps = candidateWorkflowConfig.jobs["upload-candidate"].steps;
 const activationSteps = activationWorkflowConfig.jobs.activate.steps;
+const releaseUploadSteps = releaseWorkflowConfig.jobs.upload.steps;
+const releaseActivationSteps = releaseWorkflowConfig.jobs.activate.steps;
+const releaseRecoverySteps = releaseWorkflowConfig.jobs.recover.steps;
 const allWorkflows = readdirSync(".github/workflows")
   .filter((filename) => filename.endsWith(".yml"))
   .map(
@@ -89,6 +107,230 @@ function workflowStep(steps: WorkflowStep[], name: string): WorkflowStep {
   const step = steps.find((candidate) => candidate.name === name);
   expect(step, `missing workflow step: ${name}`).toBeDefined();
   return step as WorkflowStep;
+}
+
+function withTemporaryHarness<T>(
+  prefix: string,
+  run: (directory: string, binDirectory: string) => T,
+): T {
+  const directory = mkdtempSync(join(tmpdir(), prefix));
+  const binDirectory = join(directory, "bin");
+  mkdirSync(binDirectory);
+  try {
+    return run(directory, binDirectory);
+  } finally {
+    rmSync(directory, { force: true, recursive: true });
+  }
+}
+
+function executeReleaseTrap(shouldFail: boolean): {
+  error: unknown;
+  wranglerCalls: string[];
+} {
+  const releaseStep = workflowStep(
+    releaseActivationSteps,
+    "Activate, smoke-test, and roll back on failure",
+  );
+  const run = releaseStep.run ?? "";
+  const functionsStart = run.indexOf("verify_deployment() {");
+  const functionsEnd = run.indexOf("trap rollback_previous_version ERR");
+  expect(functionsStart).toBeGreaterThan(-1);
+  expect(functionsEnd).toBeGreaterThan(functionsStart);
+  const functions = run.slice(functionsStart, functionsEnd);
+
+  return withTemporaryHarness(
+    "worker-release-rollback-",
+    (harnessDirectory, binDirectory) => {
+      const callsFile = join(harnessDirectory, "wrangler-calls.txt");
+      writeFileSync(callsFile, "");
+      writeFileSync(
+        join(binDirectory, "wrangler"),
+        `#!/usr/bin/env bash
+set -euo pipefail
+printf '%s\\n' "$*" >> "$WRANGLER_CALLS_FILE"
+if [ "$1 $2" = "deployments list" ]; then
+  printf '[{"created_on":"2026-07-29T00:00:00Z","versions":[{"version_id":"%s","percentage":100}]}]\\n' "$PREVIOUS_VERSION_ID"
+fi
+`,
+      );
+      chmodSync(join(binDirectory, "wrangler"), 0o755);
+      writeFileSync(
+        join(binDirectory, "curl"),
+        "#!/usr/bin/env bash\nprintf '200\\n'\n",
+      );
+      chmodSync(join(binDirectory, "curl"), 0o755);
+
+      const script = `
+set -Eeuo pipefail
+worker_name="zenml-io-v2-worker"
+activation_attempted=true
+${functions}
+trap rollback_previous_version ERR
+${shouldFail ? "false" : ":"}
+`;
+      let error: unknown;
+      try {
+        execFileSync("bash", ["-c", script], {
+          env: {
+            ...process.env,
+            PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
+            PREVIOUS_VERSION_ID: "11111111-1111-1111-1111-111111111111",
+            RUNNER_TEMP: harnessDirectory,
+            WRANGLER_CALLS_FILE: callsFile,
+          },
+          stdio: ["ignore", "pipe", "pipe"],
+        });
+      } catch (caught) {
+        error = caught;
+      }
+      const wranglerCalls = readFileSync(callsFile, "utf8")
+        .trim()
+        .split("\n")
+        .filter(Boolean);
+      return { error, wranglerCalls };
+    },
+  );
+}
+
+function executeStatusRetry(): { curlCalls: number; error: unknown } {
+  const releaseStep = workflowStep(
+    releaseActivationSteps,
+    "Activate, smoke-test, and roll back on failure",
+  );
+  const run = releaseStep.run ?? "";
+  const functionStart = run.indexOf("expect_status() {");
+  const functionEnd = run.indexOf('expect_status 200 "https://www.zenml.io/"');
+  expect(functionStart).toBeGreaterThan(-1);
+  expect(functionEnd).toBeGreaterThan(functionStart);
+  const expectStatusFunction = run.slice(functionStart, functionEnd);
+
+  return withTemporaryHarness(
+    "worker-release-smoke-",
+    (harnessDirectory, binDirectory) => {
+      const callsFile = join(harnessDirectory, "curl-calls.txt");
+      writeFileSync(callsFile, "0\n");
+      writeFileSync(
+        join(binDirectory, "curl"),
+        `#!/usr/bin/env bash
+set -euo pipefail
+calls="$(cat "$CURL_CALLS_FILE")"
+calls=$((calls + 1))
+printf '%s\\n' "$calls" > "$CURL_CALLS_FILE"
+if [ "$calls" -eq 1 ]; then
+  exit 7
+fi
+printf '200\\n'
+`,
+      );
+      chmodSync(join(binDirectory, "curl"), 0o755);
+
+      let error: unknown;
+      try {
+        execFileSync(
+          "bash",
+          [
+            "-c",
+            `set -Eeuo pipefail
+${expectStatusFunction}
+expect_status 200 "https://www.zenml.io/" retry-test
+`,
+          ],
+          {
+            env: {
+              ...process.env,
+              CURL_CALLS_FILE: callsFile,
+              PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
+              RUNNER_TEMP: harnessDirectory,
+            },
+            stdio: ["ignore", "pipe", "pipe"],
+          },
+        );
+      } catch (caught) {
+        error = caught;
+      }
+      const curlCalls = Number.parseInt(readFileSync(callsFile, "utf8"), 10);
+      return { curlCalls, error };
+    },
+  );
+}
+
+function executeRecovery(
+  initialVersion: string,
+  deployFailures: number,
+  homeStatus: number,
+): { deployCalls: number; error: unknown } {
+  const recoveryStep = workflowStep(
+    releaseRecoverySteps,
+    "Reconcile and recover previous version",
+  );
+  const run = recoveryStep.run ?? "";
+  return withTemporaryHarness(
+    "worker-recovery-",
+    (harnessDirectory, binDirectory) => {
+      const activeVersionFile = join(harnessDirectory, "active-version.txt");
+      const deployCallsFile = join(harnessDirectory, "deploy-calls.txt");
+      writeFileSync(activeVersionFile, `${initialVersion}\n`);
+      writeFileSync(deployCallsFile, "0\n");
+      writeFileSync(
+        join(binDirectory, "wrangler"),
+        `#!/usr/bin/env bash
+set -euo pipefail
+if [ "$1 $2" = "deployments list" ]; then
+  active_version="$(cat "$ACTIVE_VERSION_FILE")"
+  printf '[{"created_on":"2026-07-29T00:00:00Z","versions":[{"version_id":"%s","percentage":100}]}]\\n' "$active_version"
+  exit 0
+fi
+if [ "$1 $2" = "versions deploy" ]; then
+  calls="$(cat "$DEPLOY_CALLS_FILE")"
+  calls=$((calls + 1))
+  printf '%s\\n' "$calls" > "$DEPLOY_CALLS_FILE"
+  if [ "$calls" -le "$DEPLOY_FAILURES" ]; then
+    exit 1
+  fi
+  printf '%s\\n' "$PREVIOUS_VERSION_ID" > "$ACTIVE_VERSION_FILE"
+  exit 0
+fi
+exit 2
+`,
+      );
+      chmodSync(join(binDirectory, "wrangler"), 0o755);
+      writeFileSync(
+        join(binDirectory, "curl"),
+        '#!/usr/bin/env bash\nprintf "%s\\n" "$RECOVERY_HOME_STATUS"\n',
+      );
+      chmodSync(join(binDirectory, "curl"), 0o755);
+      writeFileSync(
+        join(binDirectory, "sleep"),
+        "#!/usr/bin/env bash\nexit 0\n",
+      );
+      chmodSync(join(binDirectory, "sleep"), 0o755);
+
+      let error: unknown;
+      try {
+        execFileSync("bash", ["-c", run], {
+          env: {
+            ...process.env,
+            ACTIVE_VERSION_FILE: activeVersionFile,
+            DEPLOY_CALLS_FILE: deployCallsFile,
+            DEPLOY_FAILURES: String(deployFailures),
+            PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
+            PREVIOUS_VERSION_ID: "11111111-1111-1111-1111-111111111111",
+            RECOVERY_HOME_STATUS: String(homeStatus),
+            RUNNER_TEMP: harnessDirectory,
+            WORKER_NAME: "zenml-io-v2-worker",
+          },
+          stdio: ["ignore", "pipe", "pipe"],
+        });
+      } catch (caught) {
+        error = caught;
+      }
+      const deployCalls = Number.parseInt(
+        readFileSync(deployCallsFile, "utf8"),
+        10,
+      );
+      return { deployCalls, error };
+    },
+  );
 }
 
 function jqProgramReadingFrom(run: string, source: string): string {
@@ -198,6 +440,96 @@ function expectPrivateWorkerPredicates(
         },
       ],
       result_info: { total_count: 1 },
+      success: true,
+    },
+    false,
+    workerArgs,
+  );
+}
+
+function expectAcceptedWorkerRoutePredicate(run: string, source: string): void {
+  const program = jqProgramReadingFrom(run, source);
+  const acceptedRoutes = ["www.zenml.io/*", "astro-workers-staging.zenml.io/*"];
+  const workerArgs = [
+    "--arg",
+    "worker",
+    "zenml-io-v2-worker",
+    "--argjson",
+    "accepted_routes",
+    JSON.stringify(acceptedRoutes),
+  ];
+
+  expectJqResult(
+    program,
+    {
+      result: [
+        {
+          id: "zenml-io-v2-worker",
+          routes: acceptedRoutes,
+        },
+      ],
+      success: true,
+    },
+    true,
+    workerArgs,
+  );
+  expectJqResult(
+    program,
+    {
+      result: [
+        {
+          id: "zenml-io-v2-worker",
+          routes: acceptedRoutes.map((pattern) => ({
+            pattern,
+            script: "zenml-io-v2-worker",
+          })),
+        },
+      ],
+      success: true,
+    },
+    true,
+    workerArgs,
+  );
+  expectJqResult(
+    program,
+    {
+      result: [
+        {
+          id: "zenml-io-v2-worker",
+          routes: acceptedRoutes.map((pattern) => ({
+            pattern,
+            script: "another-worker",
+          })),
+        },
+      ],
+      success: true,
+    },
+    false,
+    workerArgs,
+  );
+  expectJqResult(
+    program,
+    {
+      result: [
+        {
+          id: "zenml-io-v2-worker",
+          routes: ["www.zenml.io/*"],
+        },
+      ],
+      success: true,
+    },
+    false,
+    workerArgs,
+  );
+  expectJqResult(
+    program,
+    {
+      result: [
+        {
+          id: "zenml-io-v2-worker",
+          routes: [...acceptedRoutes, "unexpected.zenml.io/*"],
+        },
+      ],
       success: true,
     },
     false,
@@ -643,6 +975,209 @@ describe("trusted production activation workflow", () => {
       false,
       args,
     );
+  });
+});
+
+describe("automatic post-cutover production release", () => {
+  it("runs only after successful current-main artifact CI", () => {
+    expect(releaseWorkflow).toContain("workflow_run:");
+    expect(releaseWorkflow).toContain(
+      'workflows: ["Website CI and Worker Artifact"]',
+    );
+    expect(releaseWorkflow).toContain("types: [completed]");
+    expect(releaseWorkflow).toContain("branches: [main]");
+    expect(releaseWorkflow).toContain(
+      "github.event.workflow_run.conclusion == 'success'",
+    );
+    expect(releaseWorkflow).toContain(
+      "github.event.workflow_run.event == 'push'",
+    );
+    expect(releaseWorkflow).toContain(
+      "github.event.workflow_run.head_branch == 'main'",
+    );
+    expect(releaseWorkflow).toContain(
+      "github.event.workflow_run.head_repository.full_name == github.repository",
+    );
+    expect(releaseWorkflow).toContain("git/ref/heads/main");
+    expect(releaseWorkflow).toContain("eligible=false");
+  });
+
+  it("serializes the complete release and promotes the exact CI artifact without rebuilding", () => {
+    expect(releaseWorkflow).toContain("'zenml-io-worker-production'");
+    expect(releaseWorkflow).toContain("cancel-in-progress: false");
+    expect(releaseWorkflow).toContain(
+      "format('zenml-io-worker-ineligible-{0}', github.run_id)",
+    );
+    expect(releaseWorkflow).toContain("actions/download-artifact@");
+    expect(releaseWorkflow).toContain(
+      "run-id: $" + "{{ github.event.workflow_run.id }}",
+    );
+    expect(releaseWorkflow).toContain("sha256sum --check worker-dist.sha256");
+    expect(releaseWorkflow).toContain("wrangler versions upload");
+    expect(releaseWorkflow).toContain("wrangler versions deploy");
+    expect(releaseWorkflow).not.toContain("pnpm install");
+    expect(releaseWorkflow).not.toContain("pnpm build");
+    expect(releaseWorkflow).not.toContain("wrangler pages deploy");
+    expectNoRouteOrDnsMutation(releaseWorkflow);
+  });
+
+  it("requires the accepted route topology and private Worker endpoints", () => {
+    expect(releaseWorkflow).toContain("astro-workers-staging.zenml.io/*");
+    expect(releaseWorkflow).toContain("www.zenml.io/*");
+    expect(releaseWorkflow).toContain(
+      ".result.enabled == false and .result.previews_enabled == false",
+    );
+    expect(releaseWorkflow).toContain("result_info.total_count == 0");
+    expect(releaseWorkflow).toContain("Unexpected Worker route topology");
+
+    const baselineStep = workflowStep(
+      releaseUploadSteps,
+      "Capture accepted production baseline",
+    );
+    const preservedUploadStep = workflowStep(
+      releaseUploadSteps,
+      "Verify inactive upload preserved production",
+    );
+    const activationBaselineStep = workflowStep(
+      releaseActivationSteps,
+      "Reverify exact candidate and production baseline",
+    );
+    const releaseStep = workflowStep(
+      releaseActivationSteps,
+      "Activate, smoke-test, and roll back on failure",
+    );
+
+    expectAcceptedWorkerRoutePredicate(
+      baselineStep.run ?? "",
+      '"$RUNNER_TEMP/workers-before-upload.json"',
+    );
+    expectAcceptedWorkerRoutePredicate(
+      preservedUploadStep.run ?? "",
+      '"$RUNNER_TEMP/workers-after-upload.json"',
+    );
+    expectAcceptedWorkerRoutePredicate(
+      activationBaselineStep.run ?? "",
+      '"$RUNNER_TEMP/workers-before-activation.json"',
+    );
+    expectAcceptedWorkerRoutePredicate(
+      releaseStep.run ?? "",
+      '"$RUNNER_TEMP/workers-after-activation.json"',
+    );
+  });
+
+  it("verifies bindings and exact version provenance before activation", () => {
+    for (const secret of REQUIRED_WORKER_SECRETS) {
+      expect(releaseWorkflow).toContain(`index("${secret}")`);
+    }
+    expect(releaseWorkflow).toContain("wrangler versions view");
+    expect(releaseWorkflow).toContain("source_commit=$SOURCE_COMMIT");
+    expect(releaseWorkflow).toContain("source_run_id=$SOURCE_RUN_ID");
+    expect(releaseWorkflow).toContain("artifact_sha256=$artifact_sha256");
+    expect(releaseWorkflow).toContain('"$CANDIDATE_VERSION_ID@100%"');
+
+    const uploadStep = workflowStep(
+      releaseUploadSteps,
+      "Upload inactive production version",
+    );
+    const activationBaselineStep = workflowStep(
+      releaseActivationSteps,
+      "Reverify exact candidate and production baseline",
+    );
+    expectSecretBindingPredicate(
+      jqProgramReadingFrom(uploadStep.run ?? "", "version-metadata.json"),
+    );
+    expectSecretBindingPredicate(
+      jqProgramReadingFrom(
+        activationBaselineStep.run ?? "",
+        '"$RUNNER_TEMP/candidate-version.json"',
+      ),
+    );
+  });
+
+  it("rechecks live main immediately before exact-version activation", () => {
+    const releaseStep = workflowStep(
+      releaseActivationSteps,
+      "Activate, smoke-test, and roll back on failure",
+    );
+    const run = releaseStep.run ?? "";
+    const liveMainCheck = run.indexOf("git/ref/heads/main");
+    const activation = run.indexOf(
+      'wrangler versions deploy "$CANDIDATE_VERSION_ID@100%"',
+    );
+    expect(releaseStep.env?.GH_TOKEN).toBe("$" + "{{ github.token }}");
+    expect(liveMainCheck).toBeGreaterThan(-1);
+    expect(activation).toBeGreaterThan(liveMainCheck);
+  });
+
+  it("smoke-tests production and restores the previous version on failure", () => {
+    expect(releaseWorkflow).toContain("/blog/dagster-alternatives");
+    expect(releaseWorkflow).toContain("/api/github-stars");
+    expect(releaseWorkflow).toContain("/api/forms/demo-request");
+    expect(releaseWorkflow).toContain("rollback_previous_version");
+    expect(releaseWorkflow).toContain('"$PREVIOUS_VERSION_ID@100%"');
+    expect(releaseWorkflow).toContain("Rollback verification failed");
+    expect(releaseWorkflow).toContain("Automatic rollback completed");
+    expect(releaseWorkflow).toContain(
+      "Recover previous production version after failed activation",
+    );
+    expect(releaseWorkflow).toContain("needs.activate.result != 'success'");
+    const recoveryStep = workflowStep(
+      releaseRecoverySteps,
+      "Reconcile and recover previous version",
+    );
+    expect(recoveryStep.run).toContain(
+      'wrangler versions deploy "$PREVIOUS_VERSION_ID@100%"',
+    );
+    expect(recoveryStep.run).toContain("for attempt in 1 2 3");
+    expect(recoveryStep.run).toContain("timeout 90s");
+    expect(
+      workflowStep(
+        releaseActivationSteps,
+        "Preserve activation and smoke evidence",
+      )["continue-on-error"],
+    ).toBe(true);
+  });
+
+  it("executes rollback after a post-activation failure and not after success", () => {
+    const failedRelease = executeReleaseTrap(true);
+    expect(failedRelease.error).toBeDefined();
+    expect(failedRelease.wranglerCalls).toContain(
+      "versions deploy 11111111-1111-1111-1111-111111111111@100% --name zenml-io-v2-worker --yes",
+    );
+    expect(failedRelease.wranglerCalls).toContain(
+      "deployments list --name zenml-io-v2-worker --json",
+    );
+
+    const successfulRelease = executeReleaseTrap(false);
+    expect(successfulRelease.error).toBeUndefined();
+    expect(successfulRelease.wranglerCalls).toEqual([]);
+  });
+
+  it("retries a transient curl failure instead of triggering rollback", () => {
+    const result = executeStatusRetry();
+    expect(result.error).toBeUndefined();
+    expect(result.curlCalls).toBe(2);
+  });
+
+  it("executes recovery reconciliation and fails closed when recovery cannot complete", () => {
+    const previousVersion = "11111111-1111-1111-1111-111111111111";
+    const candidateVersion = "22222222-2222-2222-2222-222222222222";
+
+    const alreadyRecovered = executeRecovery(previousVersion, 0, 200);
+    expect(alreadyRecovered.error).toBeUndefined();
+    expect(alreadyRecovered.deployCalls).toBe(0);
+
+    const transientFailure = executeRecovery(candidateVersion, 1, 200);
+    expect(transientFailure.error).toBeUndefined();
+    expect(transientFailure.deployCalls).toBe(2);
+
+    const exhaustedRecovery = executeRecovery(candidateVersion, 3, 200);
+    expect(exhaustedRecovery.error).toBeDefined();
+    expect(exhaustedRecovery.deployCalls).toBe(3);
+
+    const unhealthyPreviousVersion = executeRecovery(previousVersion, 0, 503);
+    expect(unhealthyPreviousVersion.error).toBeDefined();
+    expect(unhealthyPreviousVersion.deployCalls).toBe(0);
   });
 });
 

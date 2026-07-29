@@ -1,0 +1,860 @@
+name: Release Worker to Production
+
+on:
+  workflow_run:
+    workflows: ["Website CI and Worker Artifact"]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: >-
+    ${{
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_sha == github.sha &&
+      'zenml-io-worker-production' ||
+      format('zenml-io-worker-ineligible-{0}', github.run_id)
+    }}
+  cancel-in-progress: false
+
+env:
+  ACCEPTED_WORKER_ROUTES_JSON: '["astro-workers-staging.zenml.io/*","www.zenml.io/*"]'
+  WORKER_NAME: zenml-io-v2-worker
+
+jobs:
+  eligibility:
+    name: Verify current main release eligibility
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      eligible: ${{ steps.verify.outputs.eligible }}
+    steps:
+      - name: Verify exact successful current-main run
+        id: verify
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_COMMIT: ${{ github.event.workflow_run.head_sha }}
+          SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -euo pipefail
+          echo "eligible=false" >> "$GITHUB_OUTPUT"
+
+          [[ "$SOURCE_RUN_ID" =~ ^[0-9]+$ ]]
+          [[ "$SOURCE_COMMIT" =~ ^[0-9a-f]{40}$ ]]
+
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$SOURCE_RUN_ID" \
+            > source-run.json
+          jq -e \
+            --arg commit "$SOURCE_COMMIT" \
+            --arg repository "$GITHUB_REPOSITORY" \
+            '.name == "Website CI and Worker Artifact" and
+             .path == ".github/workflows/deploy.yml" and
+             .conclusion == "success" and
+             .event == "push" and
+             .head_branch == "main" and
+             .head_repository.full_name == $repository and
+             .head_sha == $commit' \
+            source-run.json > /dev/null
+
+          live_main_commit="$(
+            gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha
+          )"
+          if [ "$live_main_commit" != "$SOURCE_COMMIT" ]; then
+            {
+              echo "## Production Worker release skipped"
+              echo
+              echo "A newer main commit exists. Its CI run contains this commit"
+              echo "and will produce the release candidate instead."
+              echo
+              printf -- "- Skipped commit: \`%s\`\n" "$SOURCE_COMMIT"
+              printf -- "- Current main: \`%s\`\n" "$live_main_commit"
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "eligible=true" >> "$GITHUB_OUTPUT"
+
+  upload:
+    name: Upload inactive production version
+    needs: eligibility
+    if: needs.eligibility.outputs.eligible == 'true'
+    runs-on: ubuntu-latest
+    environment: worker-candidate
+    timeout-minutes: 15
+    outputs:
+      artifact_sha256: ${{ steps.upload.outputs.artifact_sha256 }}
+      previous_version_id: ${{ steps.baseline.outputs.previous_version_id }}
+      version_id: ${{ steps.upload.outputs.version_id }}
+    env:
+      SOURCE_BRANCH: main
+      SOURCE_COMMIT: ${{ github.event.workflow_run.head_sha }}
+      SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
+    steps:
+      - name: Download the exact CI artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: worker-dist
+          path: candidate
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Verify artifact provenance and checksum
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd candidate
+          sha256sum --check worker-dist.sha256
+          jq -e \
+            --arg artifact_sha256 "$(cut -d ' ' -f 1 worker-dist.sha256)" \
+            --arg branch "$SOURCE_BRANCH" \
+            --arg commit "$SOURCE_COMMIT" \
+            --arg run_id "$SOURCE_RUN_ID" \
+            '.artifact_sha256 == $artifact_sha256 and
+             .build_commit == $commit and
+             .event_name == "push" and
+             .source_branch == $branch and
+             .source_commit == $commit and
+             .run_id == $run_id' \
+            worker-manifest.json > /dev/null
+
+      - name: Reject unsafe Worker artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd candidate
+          tar -tzf worker-dist.tar.gz > "$RUNNER_TEMP/archive-paths.txt"
+          if grep -Eq '(^/|(^|/)\.\.(/|$))' "$RUNNER_TEMP/archive-paths.txt"; then
+            echo "Worker archive contains an unsafe path." >&2
+            exit 1
+          fi
+          tar -tvzf worker-dist.tar.gz > "$RUNNER_TEMP/archive-members.txt"
+          while read -r mode _; do
+            case "${mode:0:1}" in
+              -|d) ;;
+              *)
+                echo "Worker archive contains a link or special file." >&2
+                exit 1
+                ;;
+            esac
+          done < "$RUNNER_TEMP/archive-members.txt"
+          jq -e '
+            ((keys - [
+              "$schema", "assets", "compatibility_date",
+              "compatibility_flags", "main", "name", "preview_urls",
+              "secrets", "workers_dev"
+            ]) | length == 0) and
+            .name == "zenml-io-v2-worker" and
+            .main == "dist/_worker.js/index.js" and
+            .workers_dev == false and
+            .assets.directory == "./dist" and
+            .assets.binding == "ASSETS" and
+            (.route == null) and
+            (.routes == null) and
+            (.build == null)
+          ' wrangler.jsonc > /dev/null
+
+      - name: Prepare trusted production configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd candidate
+          mkdir dist
+          tar -C dist -xzf worker-dist.tar.gz
+          jq '.preview_urls = false | del(.secrets)' \
+            wrangler.jsonc > upload-wrangler.json
+
+      - name: Verify required production secrets
+        shell: bash
+        env:
+          SEGMENT_FORMS_WRITE_KEY: ${{ secrets.SEGMENT_FORMS_WRITE_KEY }}
+          TURNSTILE_SECRET_KEY: ${{ secrets.TURNSTILE_SECRET_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "$SEGMENT_FORMS_WRITE_KEY" ] || [ -z "$TURNSTILE_SECRET_KEY" ]; then
+            echo "Required Worker production secrets are not configured." >&2
+            exit 1
+          fi
+
+      - name: Install pinned Wrangler
+        run: npm install --global wrangler@4.110.0
+
+      - name: Capture accepted production baseline
+        id: baseline
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
+        run: |
+          set -euo pipefail
+          worker_name="$WORKER_NAME"
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+
+          wrangler deployments list \
+            --name "$worker_name" \
+            --json > "$RUNNER_TEMP/deployments-before-upload.json"
+          previous_version_id="$(
+            jq -er '
+              max_by(.created_on) as $latest |
+              select(($latest.versions | length) == 1) |
+              select($latest.versions[0].percentage == 100) |
+              $latest.versions[0].version_id
+            ' "$RUNNER_TEMP/deployments-before-upload.json"
+          )"
+          [[ "$previous_version_id" =~ ^[0-9a-f-]{36}$ ]]
+          echo "previous_version_id=$previous_version_id" >> "$GITHUB_OUTPUT"
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts/$worker_name/subdomain" \
+            > "$RUNNER_TEMP/worker-subdomain-before-upload.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' "$RUNNER_TEMP/worker-subdomain-before-upload.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" \
+            > "$RUNNER_TEMP/workers-before-upload.json"
+          if ! jq -e \
+            --arg worker "$worker_name" \
+            --argjson accepted_routes "$ACCEPTED_WORKER_ROUTES_JSON" '
+            .success == true and
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            ($workers[0].routes | type) == "array" and
+            all(
+              $workers[0].routes[];
+              (type == "string") or
+              (
+                type == "object" and
+                .script == $worker and
+                (.pattern | type) == "string"
+              )
+            ) and
+            ([
+              $workers[0].routes[] |
+              if type == "object" then .pattern else . end
+            ] | sort) == ($accepted_routes | sort)
+          ' "$RUNNER_TEMP/workers-before-upload.json" > /dev/null; then
+            echo "Unexpected Worker route topology before upload." >&2
+            exit 1
+          fi
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/domains?service=$worker_name&per_page=100" \
+            > "$RUNNER_TEMP/worker-domains-before-upload.json"
+          jq -e --arg worker "$worker_name" '
+            .success == true and
+            (.result | type) == "array" and
+            ([.result[] | select(.service == $worker)] | length == 0) and
+            .result_info.total_count == 0
+          ' "$RUNNER_TEMP/worker-domains-before-upload.json" > /dev/null
+
+      - name: Upload inactive production version
+        id: upload
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
+          PREVIOUS_VERSION_ID: ${{ steps.baseline.outputs.previous_version_id }}
+          SEGMENT_FORMS_WRITE_KEY: ${{ secrets.SEGMENT_FORMS_WRITE_KEY }}
+          TURNSTILE_SECRET_KEY: ${{ secrets.TURNSTILE_SECRET_KEY }}
+        run: |
+          set -euo pipefail
+          cd candidate
+
+          secrets_file="$RUNNER_TEMP/worker-production-secrets.env"
+          output_file="$RUNNER_TEMP/wrangler-release-output.jsonl"
+          trap 'rm -f "$secrets_file"' EXIT
+          {
+            printf 'SEGMENT_FORMS_WRITE_KEY=%s\n' "$SEGMENT_FORMS_WRITE_KEY"
+            printf 'TURNSTILE_SECRET_KEY=%s\n' "$TURNSTILE_SECRET_KEY"
+          } > "$secrets_file"
+          chmod 600 "$secrets_file"
+
+          export WRANGLER_OUTPUT_FILE_PATH="$output_file"
+          artifact_sha256="$(jq -r .artifact_sha256 worker-manifest.json)"
+          version_message="source_commit=$SOURCE_COMMIT source_branch=$SOURCE_BRANCH source_run_id=$SOURCE_RUN_ID artifact_sha256=$artifact_sha256"
+          wrangler versions upload \
+            --config upload-wrangler.json \
+            --secrets-file "$secrets_file" \
+            --strict \
+            --tag automatic-main-release \
+            --message "$version_message"
+
+          jq -s 'map(select(.type == "version-upload")) | last' \
+            "$output_file" > upload-result.json
+          version_id="$(jq -er .version_id upload-result.json)"
+          {
+            echo "artifact_sha256=$artifact_sha256"
+            echo "version_id=$version_id"
+          } >> "$GITHUB_OUTPUT"
+          jq -n \
+            --arg artifact_sha256 "$artifact_sha256" \
+            --arg previous_version_id "$PREVIOUS_VERSION_ID" \
+            --arg version_id "$version_id" \
+            '{
+              artifact_sha256: $artifact_sha256,
+              previous_version_id: $previous_version_id,
+              version_id: $version_id
+            }' > candidate-identity.json
+
+          wrangler versions view "$version_id" \
+            --name "$WORKER_NAME" \
+            --json > version-metadata.json
+          jq -e '
+            [.resources.bindings[]? |
+              select(.type == "secret_text") | .name] as $names |
+            ($names | index("TURNSTILE_SECRET_KEY") != null) and
+            ($names | index("SEGMENT_FORMS_WRITE_KEY") != null)
+          ' version-metadata.json > /dev/null
+
+          message="$(jq -er '.annotations["workers/message"]' version-metadata.json)"
+          grep -Fq -- " source_commit=$SOURCE_COMMIT " <<< " $message "
+          grep -Fq -- " source_branch=$SOURCE_BRANCH " <<< " $message "
+          grep -Fq -- " source_run_id=$SOURCE_RUN_ID " <<< " $message "
+          grep -Fq -- " artifact_sha256=$artifact_sha256 " <<< " $message "
+
+      - name: Verify inactive upload preserved production
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
+        run: |
+          set -euo pipefail
+          worker_name="$WORKER_NAME"
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+
+          wrangler deployments list \
+            --name "$worker_name" \
+            --json > "$RUNNER_TEMP/deployments-after-upload.json"
+          jq -S . "$RUNNER_TEMP/deployments-before-upload.json" \
+            > "$RUNNER_TEMP/deployments-before-upload.canonical.json"
+          jq -S . "$RUNNER_TEMP/deployments-after-upload.json" \
+            > "$RUNNER_TEMP/deployments-after-upload.canonical.json"
+          cmp \
+            "$RUNNER_TEMP/deployments-before-upload.canonical.json" \
+            "$RUNNER_TEMP/deployments-after-upload.canonical.json" || {
+              echo "Inactive upload changed the active production deployment." >&2
+              exit 1
+            }
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" \
+            > "$RUNNER_TEMP/workers-after-upload.json"
+          if ! jq -e \
+            --arg worker "$worker_name" \
+            --argjson accepted_routes "$ACCEPTED_WORKER_ROUTES_JSON" '
+            .success == true and
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            ($workers[0].routes | type) == "array" and
+            all(
+              $workers[0].routes[];
+              (type == "string") or
+              (
+                type == "object" and
+                .script == $worker and
+                (.pattern | type) == "string"
+              )
+            ) and
+            ([
+              $workers[0].routes[] |
+              if type == "object" then .pattern else . end
+            ] | sort) == ($accepted_routes | sort)
+          ' "$RUNNER_TEMP/workers-after-upload.json" > /dev/null; then
+            echo "Unexpected Worker route topology after upload." >&2
+            exit 1
+          fi
+
+      - name: Preserve upload evidence
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: automatic-worker-upload-${{ github.event.workflow_run.id }}
+          path: |
+            candidate/candidate-identity.json
+            candidate/upload-result.json
+            candidate/version-metadata.json
+            ${{ runner.temp }}/deployments-before-upload.json
+            ${{ runner.temp }}/deployments-after-upload.json
+            ${{ runner.temp }}/worker-subdomain-before-upload.json
+            ${{ runner.temp }}/workers-before-upload.json
+            ${{ runner.temp }}/workers-after-upload.json
+            ${{ runner.temp }}/worker-domains-before-upload.json
+          if-no-files-found: warn
+          retention-days: 30
+
+  activate:
+    name: Activate and verify exact production version
+    needs: upload
+    if: needs.upload.result == 'success'
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 20
+    env:
+      ARTIFACT_SHA256: ${{ needs.upload.outputs.artifact_sha256 }}
+      CANDIDATE_VERSION_ID: ${{ needs.upload.outputs.version_id }}
+      PREVIOUS_VERSION_ID: ${{ needs.upload.outputs.previous_version_id }}
+      SOURCE_BRANCH: main
+      SOURCE_COMMIT: ${{ github.event.workflow_run.head_sha }}
+      SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
+    steps:
+      - name: Install pinned Wrangler
+        run: npm install --global wrangler@4.110.0
+
+      - name: Reverify exact candidate and production baseline
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
+        run: |
+          set -euo pipefail
+          worker_name="$WORKER_NAME"
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+
+          [[ "$CANDIDATE_VERSION_ID" =~ ^[0-9a-f-]{36}$ ]]
+          [[ "$PREVIOUS_VERSION_ID" =~ ^[0-9a-f-]{36}$ ]]
+          [[ "$ARTIFACT_SHA256" =~ ^[0-9a-f]{64}$ ]]
+
+          wrangler versions view "$CANDIDATE_VERSION_ID" \
+            --name "$worker_name" \
+            --json > "$RUNNER_TEMP/candidate-version.json"
+          jq -e '
+            [.resources.bindings[]? |
+              select(.type == "secret_text") | .name] as $names |
+            ($names | index("TURNSTILE_SECRET_KEY") != null) and
+            ($names | index("SEGMENT_FORMS_WRITE_KEY") != null)
+          ' "$RUNNER_TEMP/candidate-version.json" > /dev/null
+          message="$(
+            jq -er '.annotations["workers/message"]' \
+              "$RUNNER_TEMP/candidate-version.json"
+          )"
+          grep -Fq -- " source_commit=$SOURCE_COMMIT " <<< " $message "
+          grep -Fq -- " source_branch=$SOURCE_BRANCH " <<< " $message "
+          grep -Fq -- " source_run_id=$SOURCE_RUN_ID " <<< " $message "
+          grep -Fq -- " artifact_sha256=$ARTIFACT_SHA256 " <<< " $message "
+
+          wrangler deployments list \
+            --name "$worker_name" \
+            --json > "$RUNNER_TEMP/deployments-before-activation.json"
+          jq -e --arg previous "$PREVIOUS_VERSION_ID" '
+            max_by(.created_on) as $latest |
+            ($latest.versions | length) == 1 and
+            $latest.versions[0].version_id == $previous and
+            $latest.versions[0].percentage == 100
+          ' "$RUNNER_TEMP/deployments-before-activation.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts/$worker_name/subdomain" \
+            > "$RUNNER_TEMP/worker-subdomain-before-activation.json"
+          jq -e '
+            .success == true and
+            .result.enabled == false and .result.previews_enabled == false
+          ' "$RUNNER_TEMP/worker-subdomain-before-activation.json" > /dev/null
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" \
+            > "$RUNNER_TEMP/workers-before-activation.json"
+          if ! jq -e \
+            --arg worker "$worker_name" \
+            --argjson accepted_routes "$ACCEPTED_WORKER_ROUTES_JSON" '
+            .success == true and
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            ($workers[0].routes | type) == "array" and
+            all(
+              $workers[0].routes[];
+              (type == "string") or
+              (
+                type == "object" and
+                .script == $worker and
+                (.pattern | type) == "string"
+              )
+            ) and
+            ([
+              $workers[0].routes[] |
+              if type == "object" then .pattern else . end
+            ] | sort) == ($accepted_routes | sort)
+          ' "$RUNNER_TEMP/workers-before-activation.json" > /dev/null; then
+            echo "Unexpected Worker route topology before activation." >&2
+            exit 1
+          fi
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/domains?service=$worker_name&per_page=100" \
+            > "$RUNNER_TEMP/worker-domains-before-activation.json"
+          jq -e --arg worker "$worker_name" '
+            .success == true and
+            (.result | type) == "array" and
+            ([.result[] | select(.service == $worker)] | length == 0) and
+            .result_info.total_count == 0
+          ' "$RUNNER_TEMP/worker-domains-before-activation.json" > /dev/null
+
+      - name: Activate, smoke-test, and roll back on failure
+        id: release
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -Eeuo pipefail
+          worker_name="$WORKER_NAME"
+          api_base="https://api.cloudflare.com/client/v4/accounts/$CLOUDFLARE_ACCOUNT_ID"
+          auth_header="Authorization: Bearer $CLOUDFLARE_API_TOKEN"
+          activation_attempted=false
+
+          verify_deployment() {
+            local expected_version="$1"
+            local output_file="$2"
+            wrangler deployments list \
+              --name "$worker_name" \
+              --json > "$output_file"
+            jq -e --arg version "$expected_version" '
+              max_by(.created_on) as $latest |
+              ($latest.versions | length) == 1 and
+              $latest.versions[0].version_id == $version and
+              $latest.versions[0].percentage == 100
+            ' "$output_file" > /dev/null
+          }
+
+          rollback_previous_version() {
+            local original_status=$?
+            trap - ERR
+            set +e
+            if [ "$activation_attempted" = true ]; then
+              echo "Post-activation verification failed; restoring previous version." >&2
+              rollback_deploy_status=1
+              rollback_verify_status=1
+              for attempt in 1 2 3; do
+                if timeout 90s \
+                  wrangler versions deploy "$PREVIOUS_VERSION_ID@100%" \
+                    --name "$worker_name" \
+                    --yes; then
+                  rollback_deploy_status=0
+                  verify_deployment \
+                    "$PREVIOUS_VERSION_ID" \
+                    "$RUNNER_TEMP/deployments-after-rollback.json"
+                  rollback_verify_status=$?
+                  if [ "$rollback_verify_status" -eq 0 ]; then
+                    break
+                  fi
+                fi
+                if [ "$attempt" -lt 3 ]; then
+                  sleep $((attempt * 2))
+                fi
+              done
+              rollback_http_status="$(
+                curl \
+                  --connect-timeout 10 \
+                  --max-time 30 \
+                  --silent \
+                  --show-error \
+                  --output "$RUNNER_TEMP/smoke-rollback-home.body" \
+                  --write-out "%{http_code}" \
+                  "https://www.zenml.io/"
+              )"
+              if [ "$rollback_http_status" != "200" ]; then
+                rollback_verify_status=1
+              fi
+              if [ "$rollback_deploy_status" -eq 0 ] && [ "$rollback_verify_status" -eq 0 ]; then
+                echo "Automatic rollback completed." >&2
+              else
+                echo "Rollback verification failed; immediate operator action is required." >&2
+              fi
+            fi
+            exit "$original_status"
+          }
+          trap rollback_previous_version ERR
+
+          live_main_commit="$(
+            gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha
+          )"
+          if [ "$live_main_commit" != "$SOURCE_COMMIT" ]; then
+            echo "Main advanced while the release waited for protected environments." >&2
+            exit 1
+          fi
+
+          activation_attempted=true
+          wrangler versions deploy "$CANDIDATE_VERSION_ID@100%" \
+            --name "$worker_name" \
+            --yes
+          verify_deployment \
+            "$CANDIDATE_VERSION_ID" \
+            "$RUNNER_TEMP/deployments-after-activation.json"
+
+          curl \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --header "$auth_header" \
+            "$api_base/workers/scripts" \
+            > "$RUNNER_TEMP/workers-after-activation.json"
+          if ! jq -e \
+            --arg worker "$worker_name" \
+            --argjson accepted_routes "$ACCEPTED_WORKER_ROUTES_JSON" '
+            .success == true and
+            ([.result[] | select(.id == $worker)]) as $workers |
+            ($workers | length) == 1 and
+            ($workers[0].routes | type) == "array" and
+            all(
+              $workers[0].routes[];
+              (type == "string") or
+              (
+                type == "object" and
+                .script == $worker and
+                (.pattern | type) == "string"
+              )
+            ) and
+            ([
+              $workers[0].routes[] |
+              if type == "object" then .pattern else . end
+            ] | sort) == ($accepted_routes | sort)
+          ' "$RUNNER_TEMP/workers-after-activation.json" > /dev/null; then
+            echo "Unexpected Worker route topology after activation." >&2
+            false
+          fi
+
+          expect_status() {
+            local expected="$1"
+            local url="$2"
+            local label="$3"
+            local actual
+            for attempt in 1 2 3; do
+              actual="$(
+                curl \
+                  --connect-timeout 10 \
+                  --max-time 15 \
+                  --silent \
+                  --show-error \
+                  --output "$RUNNER_TEMP/smoke-${label}.body" \
+                  --write-out "%{http_code}" \
+                  "$url"
+              )" || actual="000"
+              if [ "$actual" = "$expected" ]; then
+                return 0
+              fi
+              if [ "$attempt" -lt 3 ]; then
+                sleep 2
+              fi
+            done
+            printf '%s expected HTTP %s, received %s after 3 attempts.\n' \
+              "$url" "$expected" "$actual" >&2
+            return 1
+          }
+
+          expect_status 200 "https://www.zenml.io/" home
+          expect_status 200 "https://www.zenml.io/blog" blog
+          expect_status 200 "https://www.zenml.io/product/kitaru" kitaru
+          expect_status 200 "https://www.zenml.io/pricing" pricing
+          expect_status 200 \
+            "https://www.zenml.io/blog/dagster-alternatives" dagster
+          expect_status 200 \
+            "https://www.zenml.io/api/github-stars" github-stars
+          expect_status 405 \
+            "https://www.zenml.io/api/forms/demo-request" forms-get
+          expect_status 301 "https://www.zenml.io/sitemap.xml" sitemap
+          expect_status 404 \
+            "https://www.zenml.io/__automatic-worker-release-smoke-missing" missing
+          grep -Eo '/_astro/[^" ]+' "$RUNNER_TEMP/smoke-home.body" \
+            | sort -u \
+            | sed -n '1,6p' \
+            > "$RUNNER_TEMP/smoke-assets.txt"
+          test -s "$RUNNER_TEMP/smoke-assets.txt"
+          while read -r asset_path; do
+            expect_status 200 "https://www.zenml.io${asset_path}" asset
+          done < "$RUNNER_TEMP/smoke-assets.txt"
+
+          trap - ERR
+          {
+            echo "## Automatic production Worker release"
+            echo
+            printf -- "- Source commit: \`%s\`\n" "$SOURCE_COMMIT"
+            printf -- "- Source CI run: \`%s\`\n" "$SOURCE_RUN_ID"
+            printf -- "- Previous version: \`%s\`\n" "$PREVIOUS_VERSION_ID"
+            printf -- "- Active version: \`%s\`\n" "$CANDIDATE_VERSION_ID"
+            printf -- "- Artifact SHA-256: \`%s\`\n" "$ARTIFACT_SHA256"
+            echo "- Production smoke: passed"
+            echo "- Worker routes and DNS: unchanged"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          if ! expect_status 301 "https://zenml.io/" apex; then
+            echo "- Apex redirect check: failed (zone-level, non-rollback)" \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Preserve activation and smoke evidence
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: automatic-worker-release-${{ github.event.workflow_run.id }}
+          path: |
+            ${{ runner.temp }}/candidate-version.json
+            ${{ runner.temp }}/deployments-before-activation.json
+            ${{ runner.temp }}/deployments-after-activation.json
+            ${{ runner.temp }}/deployments-after-rollback.json
+            ${{ runner.temp }}/worker-subdomain-before-activation.json
+            ${{ runner.temp }}/workers-before-activation.json
+            ${{ runner.temp }}/workers-after-activation.json
+            ${{ runner.temp }}/worker-domains-before-activation.json
+            ${{ runner.temp }}/smoke-*.body
+            ${{ runner.temp }}/smoke-assets.txt
+          if-no-files-found: warn
+          retention-days: 30
+
+  recover:
+    name: Recover previous production version after failed activation
+    needs: [upload, activate]
+    if: >-
+      always() &&
+      needs.upload.result == 'success' &&
+      needs.activate.result != 'success'
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 10
+    env:
+      PREVIOUS_VERSION_ID: ${{ needs.upload.outputs.previous_version_id }}
+    steps:
+      - name: Install pinned Wrangler
+        run: npm install --global wrangler@4.110.0
+
+      - name: Reconcile and recover previous version
+        shell: bash
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
+        run: |
+          set -euo pipefail
+          [[ "$PREVIOUS_VERSION_ID" =~ ^[0-9a-f-]{36}$ ]]
+
+          active_version() {
+            timeout 60s wrangler deployments list \
+              --name "$WORKER_NAME" \
+              --json > "$RUNNER_TEMP/recovery-deployments.json"
+            jq -er '
+              max_by(.created_on) as $latest |
+              select(($latest.versions | length) == 1) |
+              select($latest.versions[0].percentage == 100) |
+              $latest.versions[0].version_id
+            ' "$RUNNER_TEMP/recovery-deployments.json"
+          }
+
+          recovered=false
+          if [ "$(active_version)" = "$PREVIOUS_VERSION_ID" ]; then
+            echo "Previous production version is already active."
+            recovered=true
+          else
+            for attempt in 1 2 3; do
+              if timeout 90s \
+                wrangler versions deploy "$PREVIOUS_VERSION_ID@100%" \
+                  --name "$WORKER_NAME" \
+                  --yes &&
+                [ "$(active_version)" = "$PREVIOUS_VERSION_ID" ]; then
+                recovered=true
+                break
+              fi
+              if [ "$attempt" -lt 3 ]; then
+                sleep $((attempt * 2))
+              fi
+            done
+          fi
+          if [ "$recovered" != true ]; then
+            echo "Recovery could not restore the previous Worker version." >&2
+            exit 1
+          fi
+
+          home_status="000"
+          for attempt in 1 2 3; do
+            home_status="$(
+              curl \
+                --connect-timeout 10 \
+                --max-time 15 \
+                --silent \
+                --show-error \
+                --output "$RUNNER_TEMP/recovery-home.body" \
+                --write-out "%{http_code}" \
+                "https://www.zenml.io/"
+            )" || home_status="000"
+            if [ "$home_status" = "200" ]; then
+              break
+            fi
+            if [ "$attempt" -lt 3 ]; then
+              sleep 2
+            fi
+          done
+          if [ "$home_status" != "200" ]; then
+            echo "Previous version is active but the homepage check failed." >&2
+            exit 1
+          fi
+
+          echo "Recovered and verified the previous production Worker version."
+
+      - name: Preserve recovery evidence
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: automatic-worker-recovery-${{ github.event.workflow_run.id }}
+          path: |
+            ${{ runner.temp }}/recovery-deployments.json
+            ${{ runner.temp }}/recovery-home.body
+          if-no-files-found: warn
+          retention-days: 30

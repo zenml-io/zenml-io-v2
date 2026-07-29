@@ -92,9 +92,11 @@ The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was s
 - **`pnpm check:islands` needs a browser.** First run: `pnpm exec playwright install chromium`. It serves `dist/` and drives a real Chromium to prove the Preact islands actually hydrate — `pnpm build` and `pnpm smoke:dist` only prove the HTML exists, and an island can ship perfect markup and still be inert. This matters most for framework upgrades (see the Astro 5→7 tracking issue): a broken upgrade otherwise passes a fully green CI. Dependabot and fork PRs get **no preview upload**, so this check is their only automated hydration signal
 - **Worker release boundary:** `.github/workflows/deploy.yml` never receives
   Cloudflare credentials. Preview and candidate workflows consume its exact
-  artifact without running branch package scripts. Candidate upload,
-  exact-version activation, and production route attachment are separate
-  decisions. See `docs/worker-release-runbook.md`
+  artifact without running branch package scripts. After the accepted Worker
+  cutover, the trusted default-branch release workflow may upload an exact
+  validated `main` artifact and activate it in separate GitHub-environment jobs
+  after provenance, binding, topology, and baseline checks. Production route
+  attachment remains a separate decision. See `docs/worker-release-runbook.md`
 - **Build output**: `pnpm build` generates ~2000+ lines of output listing every generated page. Always run it in background mode and use `tail` to check only the final lines for success/failure
 - **Credential management**: When you receive API credentials, tokens, or keys, **always add them to `.env`** for persistence across sessions. The `.env` file is gitignored and safe for secrets
 - VERY IMPORTANT: **Before opening a PR or making a large commit**, always run `/simplify` to review changed code for reuse opportunities, quality issues, and efficiency improvements. Fix any issues it finds before committing.
