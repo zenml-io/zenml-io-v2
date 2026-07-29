@@ -127,6 +127,8 @@ function executeReleaseTrap(
   shouldFail: boolean,
   activeVersion = "22222222-2222-2222-2222-222222222222",
   deploymentReadFailures = 0,
+  rollbackDeployFailures = 0,
+  operatorVersionAfterDeployAttempt = "",
 ): {
   deploymentReadCalls: number;
   error: unknown;
@@ -147,7 +149,9 @@ function executeReleaseTrap(
   return withTemporaryHarness(
     "worker-release-rollback-",
     (harnessDirectory, binDirectory) => {
+      const activeVersionFile = join(harnessDirectory, "active-version.txt");
       const callsFile = join(harnessDirectory, "wrangler-calls.txt");
+      writeFileSync(activeVersionFile, `${activeVersion}\n`);
       writeFileSync(callsFile, "");
       writeFileSync(
         join(binDirectory, "wrangler"),
@@ -159,12 +163,26 @@ if [ "$1 $2" = "deployments list" ]; then
   if [ "$read_calls" -le "$DEPLOYMENT_READ_FAILURES" ]; then
     exit 1
   fi
-  version_id="$ACTIVE_VERSION_ID"
-  if grep -q '^versions deploy ' "$WRANGLER_CALLS_FILE"; then
-    version_id="$PREVIOUS_VERSION_ID"
-  fi
+  version_id="$(cat "$ACTIVE_VERSION_FILE")"
   printf '[{"created_on":"2026-07-29T00:00:00Z","versions":[{"version_id":"%s","percentage":100}]}]\\n' "$version_id"
+  exit 0
 fi
+if [ "$1 $2" = "versions deploy" ]; then
+  deploy_calls="$(grep -c '^versions deploy ' "$WRANGLER_CALLS_FILE" || true)"
+  if
+    [ -n "$OPERATOR_VERSION_AFTER_DEPLOY_ATTEMPT" ] &&
+    [ "$deploy_calls" -eq 1 ]
+  then
+    printf '%s\\n' "$OPERATOR_VERSION_AFTER_DEPLOY_ATTEMPT" \
+      > "$ACTIVE_VERSION_FILE"
+  fi
+  if [ "$deploy_calls" -le "$ROLLBACK_DEPLOY_FAILURES" ]; then
+    exit 1
+  fi
+  printf '%s\\n' "$PREVIOUS_VERSION_ID" > "$ACTIVE_VERSION_FILE"
+  exit 0
+fi
+exit 2
 `,
       );
       chmodSync(join(binDirectory, "wrangler"), 0o755);
@@ -193,11 +211,14 @@ ${shouldFail ? "false" : ":"}
         execFileSync("bash", ["-c", script], {
           env: {
             ...process.env,
-            ACTIVE_VERSION_ID: activeVersion,
+            ACTIVE_VERSION_FILE: activeVersionFile,
             CANDIDATE_VERSION_ID: "22222222-2222-2222-2222-222222222222",
             DEPLOYMENT_READ_FAILURES: String(deploymentReadFailures),
+            OPERATOR_VERSION_AFTER_DEPLOY_ATTEMPT:
+              operatorVersionAfterDeployAttempt,
             PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
             PREVIOUS_VERSION_ID: "11111111-1111-1111-1111-111111111111",
+            ROLLBACK_DEPLOY_FAILURES: String(rollbackDeployFailures),
             RUNNER_TEMP: harnessDirectory,
             WRANGLER_CALLS_FILE: callsFile,
           },
@@ -287,6 +308,7 @@ function executeRecovery(
   deployFailures: number,
   homeStatus: number,
   deploymentReadFailures = 0,
+  operatorVersionAfterDeployAttempt = "",
 ): {
   deployCalls: number;
   deploymentReadCalls: number;
@@ -329,6 +351,13 @@ if [ "$1 $2" = "versions deploy" ]; then
   calls="$(cat "$DEPLOY_CALLS_FILE")"
   calls=$((calls + 1))
   printf '%s\\n' "$calls" > "$DEPLOY_CALLS_FILE"
+  if
+    [ -n "$OPERATOR_VERSION_AFTER_DEPLOY_ATTEMPT" ] &&
+    [ "$calls" -eq 1 ]
+  then
+    printf '%s\\n' "$OPERATOR_VERSION_AFTER_DEPLOY_ATTEMPT" \
+      > "$ACTIVE_VERSION_FILE"
+  fi
   if [ "$calls" -le "$DEPLOY_FAILURES" ]; then
     exit 1
   fi
@@ -362,6 +391,8 @@ exit 2
             DEPLOY_FAILURES: String(deployFailures),
             DEPLOYMENT_READ_CALLS_FILE: deploymentReadCallsFile,
             DEPLOYMENT_READ_FAILURES: String(deploymentReadFailures),
+            OPERATOR_VERSION_AFTER_DEPLOY_ATTEMPT:
+              operatorVersionAfterDeployAttempt,
             PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
             PREVIOUS_VERSION_ID: "11111111-1111-1111-1111-111111111111",
             RECOVERY_HOME_STATUS: String(homeStatus),
@@ -1254,7 +1285,7 @@ describe("automatic post-cutover production release", () => {
     expect(recoveryStep.run).toContain("for attempt in 1 2 3");
     expect(recoveryStep.run).toContain("timeout 90s");
     expect(recoveryStep.run).toContain(
-      'current_version" = "$CANDIDATE_VERSION_ID',
+      'current_version" != "$CANDIDATE_VERSION_ID',
     );
     expect(recoveryStep.run).toContain(
       "An unknown production version is active; recovery will not replace it.",
@@ -1265,6 +1296,41 @@ describe("automatic post-cutover production release", () => {
         "Preserve activation and smoke evidence",
       )["continue-on-error"],
     ).toBe(true);
+  });
+
+  it("reverifies the exact candidate after every production smoke check and before disarming rollback", () => {
+    const releaseStep = workflowStep(
+      releaseActivationSteps,
+      "Activate, smoke-test, and roll back on failure",
+    );
+    const run = releaseStep.run ?? "";
+    const lastAssetSmoke = run.indexOf(
+      `expect_status 200 "https://www.zenml.io\${asset_path}" asset`,
+    );
+    const apexSmoke = run.indexOf('expect_status 301 "https://zenml.io/" apex');
+    const finalCandidateOutput = run.indexOf(
+      '"$RUNNER_TEMP/deployments-after-smoke.json"',
+    );
+    const finalCandidateVerification = run.lastIndexOf(
+      "verify_deployment",
+      finalCandidateOutput,
+    );
+    const trapRemoval = run.indexOf("trap - ERR", finalCandidateOutput);
+    const successSummary = run.indexOf(
+      "## Automatic production Worker release",
+    );
+
+    expect(lastAssetSmoke).toBeGreaterThan(-1);
+    expect(apexSmoke).toBeGreaterThan(lastAssetSmoke);
+    expect(finalCandidateVerification).toBeGreaterThan(apexSmoke);
+    expect(finalCandidateOutput).toBeGreaterThan(finalCandidateVerification);
+    expect(trapRemoval).toBeGreaterThan(finalCandidateVerification);
+    expect(successSummary).toBeGreaterThan(trapRemoval);
+    expect(
+      run.slice(finalCandidateVerification, trapRemoval).trimEnd(),
+    ).toMatch(
+      /verify_deployment \\\n\s+"\$CANDIDATE_VERSION_ID" \\\n\s+"\$RUNNER_TEMP\/deployments-after-smoke\.json"$/,
+    );
   });
 
   it("executes rollback after a post-activation failure and not after success", () => {
@@ -1324,7 +1390,25 @@ describe("automatic post-cutover production release", () => {
       ),
     ).toBe(false);
     expect(exhaustedReadFailure.stderr).toContain(
-      "Could not read the active production version; inline rollback will not act.",
+      "Could not read the active production version from the Cloudflare control plane; inline rollback will not act.",
+    );
+
+    const operatorVersion = "33333333-3333-3333-3333-333333333333";
+    const operatorReleaseDuringRetry = executeReleaseTrap(
+      true,
+      "22222222-2222-2222-2222-222222222222",
+      0,
+      1,
+      operatorVersion,
+    );
+    expect(operatorReleaseDuringRetry.error).toBeDefined();
+    expect(
+      operatorReleaseDuringRetry.wranglerCalls.filter((call) =>
+        call.startsWith("versions deploy "),
+      ),
+    ).toHaveLength(1);
+    expect(operatorReleaseDuringRetry.stderr).toContain(
+      "An unknown production version is active; inline rollback will not replace it.",
     );
   });
 
@@ -1372,7 +1456,20 @@ describe("automatic post-cutover production release", () => {
     expect(exhaustedReadFailure.deploymentReadCalls).toBe(3);
     expect(exhaustedReadFailure.deployCalls).toBe(0);
     expect(exhaustedReadFailure.stderr).toContain(
-      "Could not read the active production version; recovery will not act.",
+      "Could not read the active production version from the Cloudflare control plane; recovery will not act.",
+    );
+
+    const operatorReleaseDuringRetry = executeRecovery(
+      candidateVersion,
+      1,
+      200,
+      0,
+      unknownVersion,
+    );
+    expect(operatorReleaseDuringRetry.error).toBeDefined();
+    expect(operatorReleaseDuringRetry.deployCalls).toBe(1);
+    expect(operatorReleaseDuringRetry.stderr).toContain(
+      "An unknown production version is active; recovery will not replace it.",
     );
   });
 });
