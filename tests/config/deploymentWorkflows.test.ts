@@ -126,8 +126,11 @@ function withTemporaryHarness<T>(
 function executeReleaseTrap(
   shouldFail: boolean,
   activeVersion = "22222222-2222-2222-2222-222222222222",
+  deploymentReadFailures = 0,
 ): {
+  deploymentReadCalls: number;
   error: unknown;
+  stderr: string;
   wranglerCalls: string[];
 } {
   const releaseStep = workflowStep(
@@ -152,6 +155,10 @@ function executeReleaseTrap(
 set -euo pipefail
 printf '%s\\n' "$*" >> "$WRANGLER_CALLS_FILE"
 if [ "$1 $2" = "deployments list" ]; then
+  read_calls="$(grep -c '^deployments list ' "$WRANGLER_CALLS_FILE" || true)"
+  if [ "$read_calls" -le "$DEPLOYMENT_READ_FAILURES" ]; then
+    exit 1
+  fi
   version_id="$ACTIVE_VERSION_ID"
   if grep -q '^versions deploy ' "$WRANGLER_CALLS_FILE"; then
     version_id="$PREVIOUS_VERSION_ID"
@@ -166,6 +173,11 @@ fi
         "#!/usr/bin/env bash\nprintf '200\\n'\n",
       );
       chmodSync(join(binDirectory, "curl"), 0o755);
+      writeFileSync(
+        join(binDirectory, "sleep"),
+        "#!/usr/bin/env bash\nexit 0\n",
+      );
+      chmodSync(join(binDirectory, "sleep"), 0o755);
 
       const script = `
 set -Eeuo pipefail
@@ -176,12 +188,14 @@ trap rollback_previous_version ERR
 ${shouldFail ? "false" : ":"}
 `;
       let error: unknown;
+      let stderr = "";
       try {
         execFileSync("bash", ["-c", script], {
           env: {
             ...process.env,
             ACTIVE_VERSION_ID: activeVersion,
             CANDIDATE_VERSION_ID: "22222222-2222-2222-2222-222222222222",
+            DEPLOYMENT_READ_FAILURES: String(deploymentReadFailures),
             PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
             PREVIOUS_VERSION_ID: "11111111-1111-1111-1111-111111111111",
             RUNNER_TEMP: harnessDirectory,
@@ -191,12 +205,17 @@ ${shouldFail ? "false" : ":"}
         });
       } catch (caught) {
         error = caught;
+        const commandError = caught as { stderr?: Buffer | string };
+        stderr = commandError.stderr?.toString() ?? "";
       }
       const wranglerCalls = readFileSync(callsFile, "utf8")
         .trim()
         .split("\n")
         .filter(Boolean);
-      return { error, wranglerCalls };
+      const deploymentReadCalls = wranglerCalls.filter((call) =>
+        call.startsWith("deployments list "),
+      ).length;
+      return { deploymentReadCalls, error, stderr, wranglerCalls };
     },
   );
 }
@@ -267,7 +286,13 @@ function executeRecovery(
   initialVersion: string,
   deployFailures: number,
   homeStatus: number,
-): { deployCalls: number; error: unknown } {
+  deploymentReadFailures = 0,
+): {
+  deployCalls: number;
+  deploymentReadCalls: number;
+  error: unknown;
+  stderr: string;
+} {
   const recoveryStep = workflowStep(
     releaseRecoverySteps,
     "Reconcile and recover previous version",
@@ -278,13 +303,24 @@ function executeRecovery(
     (harnessDirectory, binDirectory) => {
       const activeVersionFile = join(harnessDirectory, "active-version.txt");
       const deployCallsFile = join(harnessDirectory, "deploy-calls.txt");
+      const deploymentReadCallsFile = join(
+        harnessDirectory,
+        "deployment-read-calls.txt",
+      );
       writeFileSync(activeVersionFile, `${initialVersion}\n`);
       writeFileSync(deployCallsFile, "0\n");
+      writeFileSync(deploymentReadCallsFile, "0\n");
       writeFileSync(
         join(binDirectory, "wrangler"),
         `#!/usr/bin/env bash
 set -euo pipefail
 if [ "$1 $2" = "deployments list" ]; then
+  calls="$(cat "$DEPLOYMENT_READ_CALLS_FILE")"
+  calls=$((calls + 1))
+  printf '%s\\n' "$calls" > "$DEPLOYMENT_READ_CALLS_FILE"
+  if [ "$calls" -le "$DEPLOYMENT_READ_FAILURES" ]; then
+    exit 1
+  fi
   active_version="$(cat "$ACTIVE_VERSION_FILE")"
   printf '[{"created_on":"2026-07-29T00:00:00Z","versions":[{"version_id":"%s","percentage":100}]}]\\n' "$active_version"
   exit 0
@@ -315,6 +351,7 @@ exit 2
       chmodSync(join(binDirectory, "sleep"), 0o755);
 
       let error: unknown;
+      let stderr = "";
       try {
         execFileSync("bash", ["-c", run], {
           env: {
@@ -323,6 +360,8 @@ exit 2
             CANDIDATE_VERSION_ID: "22222222-2222-2222-2222-222222222222",
             DEPLOY_CALLS_FILE: deployCallsFile,
             DEPLOY_FAILURES: String(deployFailures),
+            DEPLOYMENT_READ_CALLS_FILE: deploymentReadCallsFile,
+            DEPLOYMENT_READ_FAILURES: String(deploymentReadFailures),
             PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
             PREVIOUS_VERSION_ID: "11111111-1111-1111-1111-111111111111",
             RECOVERY_HOME_STATUS: String(homeStatus),
@@ -333,12 +372,18 @@ exit 2
         });
       } catch (caught) {
         error = caught;
+        const commandError = caught as { stderr?: Buffer | string };
+        stderr = commandError.stderr?.toString() ?? "";
       }
       const deployCalls = Number.parseInt(
         readFileSync(deployCallsFile, "utf8"),
         10,
       );
-      return { deployCalls, error };
+      const deploymentReadCalls = Number.parseInt(
+        readFileSync(deploymentReadCallsFile, "utf8"),
+        10,
+      );
+      return { deployCalls, deploymentReadCalls, error, stderr };
     },
   );
 }
@@ -1073,6 +1118,27 @@ describe("automatic post-cutover production release", () => {
       releaseStep.run ?? "",
       '"$RUNNER_TEMP/workers-after-activation.json"',
     );
+
+    const subdomainProgram = jqProgramReadingFrom(
+      preservedUploadStep.run ?? "",
+      '"$RUNNER_TEMP/worker-subdomain-after-upload.json"',
+    );
+    expectJqResult(
+      subdomainProgram,
+      {
+        result: { enabled: false, previews_enabled: false },
+        success: true,
+      },
+      true,
+    );
+    expectJqResult(
+      subdomainProgram,
+      {
+        result: { enabled: false, previews_enabled: true },
+        success: true,
+      },
+      false,
+    );
   });
 
   it("verifies bindings and exact version provenance before activation", () => {
@@ -1104,7 +1170,7 @@ describe("automatic post-cutover production release", () => {
     );
   });
 
-  it("rechecks live main immediately before exact-version activation", () => {
+  it("rechecks live main and the exact production baseline immediately before activation", () => {
     const releaseStep = workflowStep(
       releaseActivationSteps,
       "Activate, smoke-test, and roll back on failure",
@@ -1114,9 +1180,56 @@ describe("automatic post-cutover production release", () => {
     const activation = run.indexOf(
       'wrangler versions deploy "$CANDIDATE_VERSION_ID@100%"',
     );
+    const liveBaselineCheck = run.indexOf(
+      '"$RUNNER_TEMP/deployments-immediately-before-activation.json"',
+    );
+    const activationAttempted = run.indexOf("activation_attempted=true");
     expect(releaseStep.env?.GH_TOKEN).toBe("$" + "{{ github.token }}");
     expect(liveMainCheck).toBeGreaterThan(-1);
+    expect(liveBaselineCheck).toBeGreaterThan(liveMainCheck);
+    expect(activationAttempted).toBeGreaterThan(liveBaselineCheck);
     expect(activation).toBeGreaterThan(liveMainCheck);
+    expect(activation).toBeGreaterThan(activationAttempted);
+    expect(run).toMatch(
+      /timeout 90s \\\n\s+wrangler versions deploy "\$CANDIDATE_VERSION_ID@100%"/,
+    );
+    expect(run).toContain(
+      "Production baseline changed before activation; refusing to overwrite it.",
+    );
+  });
+
+  it("bounds activation deployment reads and retries post-activation verification", () => {
+    const baselineStep = workflowStep(
+      releaseActivationSteps,
+      "Reverify exact candidate and production baseline",
+    );
+    const releaseStep = workflowStep(
+      releaseActivationSteps,
+      "Activate, smoke-test, and roll back on failure",
+    );
+    const run = releaseStep.run ?? "";
+    const activeVersionFunction = run.slice(
+      run.indexOf("active_version() {"),
+      run.indexOf("verify_deployment() {"),
+    );
+    const verifyDeploymentFunction = run.slice(
+      run.indexOf("verify_deployment() {"),
+      run.indexOf("rollback_previous_version() {"),
+    );
+
+    expect(baselineStep.run).toContain("timeout 60s wrangler deployments list");
+    expect(activeVersionFunction).toContain(
+      "timeout 60s wrangler deployments list",
+    );
+    expect(activeVersionFunction).toContain("for attempt in 1 2 3");
+    expect(activeVersionFunction).toContain("($latest.versions | length) == 1");
+    expect(activeVersionFunction).toContain(
+      "$latest.versions[0].percentage == 100",
+    );
+    expect(verifyDeploymentFunction).toContain("for attempt in 1 2 3");
+    expect(verifyDeploymentFunction).toContain(
+      "Active version did not converge",
+    );
   });
 
   it("smoke-tests production and restores the previous version on failure", () => {
@@ -1181,6 +1294,38 @@ describe("automatic post-cutover production release", () => {
         call.startsWith("versions deploy "),
       ),
     ).toBe(false);
+    expect(unknownVersionRelease.stderr).toContain(
+      "An unknown production version is active; inline rollback will not replace it.",
+    );
+
+    const transientReadFailure = executeReleaseTrap(
+      true,
+      "22222222-2222-2222-2222-222222222222",
+      1,
+    );
+    expect(transientReadFailure.error).toBeDefined();
+    expect(transientReadFailure.deploymentReadCalls).toBeGreaterThanOrEqual(3);
+    expect(
+      transientReadFailure.wranglerCalls.some((call) =>
+        call.startsWith("versions deploy "),
+      ),
+    ).toBe(true);
+
+    const exhaustedReadFailure = executeReleaseTrap(
+      true,
+      "22222222-2222-2222-2222-222222222222",
+      3,
+    );
+    expect(exhaustedReadFailure.error).toBeDefined();
+    expect(exhaustedReadFailure.deploymentReadCalls).toBe(3);
+    expect(
+      exhaustedReadFailure.wranglerCalls.some((call) =>
+        call.startsWith("versions deploy "),
+      ),
+    ).toBe(false);
+    expect(exhaustedReadFailure.stderr).toContain(
+      "Could not read the active production version; inline rollback will not act.",
+    );
   });
 
   it("retries a transient curl failure instead of triggering rollback", () => {
@@ -1209,10 +1354,26 @@ describe("automatic post-cutover production release", () => {
     const unknownActiveVersion = executeRecovery(unknownVersion, 0, 200);
     expect(unknownActiveVersion.error).toBeDefined();
     expect(unknownActiveVersion.deployCalls).toBe(0);
+    expect(unknownActiveVersion.stderr).toContain(
+      "An unknown production version is active; recovery will not replace it.",
+    );
 
     const unhealthyPreviousVersion = executeRecovery(previousVersion, 0, 503);
     expect(unhealthyPreviousVersion.error).toBeDefined();
     expect(unhealthyPreviousVersion.deployCalls).toBe(0);
+
+    const transientReadFailure = executeRecovery(candidateVersion, 0, 200, 1);
+    expect(transientReadFailure.error).toBeUndefined();
+    expect(transientReadFailure.deploymentReadCalls).toBeGreaterThanOrEqual(3);
+    expect(transientReadFailure.deployCalls).toBe(1);
+
+    const exhaustedReadFailure = executeRecovery(candidateVersion, 0, 200, 3);
+    expect(exhaustedReadFailure.error).toBeDefined();
+    expect(exhaustedReadFailure.deploymentReadCalls).toBe(3);
+    expect(exhaustedReadFailure.deployCalls).toBe(0);
+    expect(exhaustedReadFailure.stderr).toContain(
+      "Could not read the active production version; recovery will not act.",
+    );
   });
 });
 
