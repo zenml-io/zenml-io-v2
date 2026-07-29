@@ -135,7 +135,7 @@ jobs:
             --arg event_name "$EVENT_NAME" \
             --arg generated_config_sha256 "$generated_config_sha256" \
             --arg lockfile_sha256 "$(sha256sum pnpm-lock.yaml | cut -d ' ' -f 1)" \
-            --argjson production_release_eligible false \
+            --argjson production_release_eligible true \
             --arg run_attempt "$RUN_ATTEMPT" \
             --arg run_id "$RUN_ID" \
             --arg source_branch "$SOURCE_BRANCH" \
