@@ -14,9 +14,12 @@ The release controls now have six paths:
 2. `Release Worker to Production` runs after a successful same-repository
    `push` to the current `main`. It downloads that exact artifact, uploads it
    inactive, verifies the accepted Worker topology and bindings, records the
-   previous version, activates the returned version at 100 percent, and runs
-   production smoke tests. A failed post-activation check restores and verifies
-   the previous version before leaving the workflow failed.
+   previous version, adds the candidate to the deployment at 0 percent, and
+   smoke-tests that exact version through Cloudflare's version-override header.
+   Only after that preflight passes does it activate the candidate at 100
+   percent and run public production smoke tests. A failed preflight or
+   post-activation check restores and verifies the previous version before
+   leaving the workflow failed.
 3. `Upload Exact Preview Worker Version` is manually dispatched from `main`
    after explicit review. It consumes either one successful same-repository PR
    artifact or the successful `push` artifact for the exact current `main`
@@ -89,21 +92,32 @@ activation it rechecks the candidate provenance, bindings, previous deployment,
 routes, endpoint privacy, and custom-domain state.
 
 Immediately before exact-version activation, the workflow rechecks that the
-source commit is still the live `main`. It then verifies the 100-percent
-deployment and unchanged routes, and checks representative pages, the newly
-merged Dagster article, API behavior, redirects, 404 behavior, and sampled
-production assets. The apex redirect is recorded separately because it is
-zone-level behavior, not behavior of the released Worker version.
+source commit is still the live `main`. It first creates a deployment with the
+accepted previous version at 100 percent and the exact candidate at 0 percent.
+Normal visitors therefore continue to receive the previous version. Requests
+carrying Cloudflare's exact-version override then verify the candidate homepage
+and a sample of its content-hashed assets. Retry requests use distinct query
+strings so a transient edge 404 cannot satisfy every retry from cache.
+
+After the zero-traffic preflight passes, the workflow rechecks that the accepted
+100/0 deployment is still present. It then promotes the candidate to 100
+percent, verifies the exact deployment and unchanged routes, and checks
+representative pages, the newly merged Dagster article, API behavior, redirects,
+404 behavior, and sampled production assets. The apex redirect is recorded
+separately because it is zone-level behavior, not behavior of the released
+Worker version.
 
 A failed post-activation check first inspects the live active version. Its
 inline rollback restores the previous version with bounded retries only when
-the exact candidate is still active. It accepts an already-restored previous
-version and refuses to replace any unknown version. A separate recovery job
-applies the same rule after a failed or timed-out activation job. The release
-stays failed for investigation. A manual cancellation of the whole workflow or
-loss of the GitHub runner can also cancel the recovery job, so an operator must
-verify the active version after either event. Workflow artifacts retain
-candidate, deployment, smoke, and recovery evidence for 30 days.
+the exact candidate is active or present at 0 percent beside the previous
+version at 100 percent. It accepts an already-restored previous version and
+refuses to replace any unknown version or percentage combination. A separate
+recovery job applies the same rule after a failed or timed-out activation job.
+The release stays failed for investigation. A manual cancellation of the whole
+workflow or loss of the GitHub runner can also cancel the recovery job, so an
+operator must verify the active version after either event. Workflow artifacts
+retain candidate, deployment, preflight, smoke, and recovery evidence for 30
+days.
 
 ## GitHub environments and secret names
 
