@@ -12,21 +12,21 @@ const steps = [
     n: "01",
     tag: "Cohort",
     title: "Freeze the sessions that matter",
-    body: "The 200 real sessions you care about, fixed as a named set. Cohorts are immutable on purpose: a run's result has to keep meaning what it meant.",
+    body: "The sessions you care about, frozen as a named set. Immutable, so a run's result keeps meaning what it meant.",
     code: 'kitaru cohort create "checkout-flow"',
   },
   {
     n: "02",
     tag: "Experiment",
     title: "State one hypothesis",
-    body: "An experiment is just configuration — the model, the system prompt, the tool policy. Swap the model and you are stating a different hypothesis, so that is a different experiment.",
+    body: "Just configuration: model, system prompt, tool policy. Swap the model and you have stated a different hypothesis.",
     code: "kitaru experiment create cheap-model",
   },
   {
     n: "03",
     tag: "Two runs",
     title: "Compare like with like",
-    body: "Run it twice over the same cohort, one agent version apart. Same cases, same evaluator version, one variable moved — so the numbers mean what they appear to mean.",
+    body: "Twice over the same cohort, one version apart. One variable moved, so the numbers mean what they look like.",
     code: "kitaru experiment run cheap-model",
   },
 ] as const;
@@ -38,7 +38,7 @@ const steps = [
       <span class="section-eyebrow">THE MIGRATION YOU KEEP POSTPONING</span>
       <h2 class="section-title">Ship the cheaper model without shipping a regression.</h2>
       <p class="section-desc">
-        A new model appeared, or the old one got deprecated. The reason nobody moves is that nobody can say what it would break. Two runs over the same real sessions can.
+        Nobody moves, because nobody can say what it would break. Two runs over your real sessions can.
       </p>
 
     </div>
@@ -81,7 +81,7 @@ const steps = [
     </div>
 
     <p class="whatif-foot" data-reveal>
-      Illustrative numbers. Replay fidelity depends on how much your recorded traces kept &mdash; tool calls need both a name and a payload, and Kitaru grades every session ready, partial or unavailable at import.
+      Illustrative numbers. Kitaru grades every session ready, partial or unavailable at import, so you know before you rely on it.
     </p>
   </div>
 </section>

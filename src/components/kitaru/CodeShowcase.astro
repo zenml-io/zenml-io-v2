@@ -17,7 +17,7 @@
       One cohort, one changed variable, two runs.
     </h2>
     <p class="showcase-note" data-reveal data-reveal-delay="1">
-      An experiment holds the configuration. A run pins it to a cohort and an agent version. Tool calls are answered by one of four policies, and every one gets stamped with which. Hover any line to see what it does.
+An experiment holds the configuration; a run pins it to a cohort and a version. Hover any line.
     </p>
 
     <div class="showcase-grid">
@@ -61,27 +61,27 @@
       <div class="showcase-annotations" data-reveal="fade-right" data-reveal-delay="3">
         <div class="annotation" data-highlight="cohort">
           <code class="annotation-label">cohorts.create()</code>
-          <p>An immutable set of sessions. Immutable on purpose: a run's result depends on its cohort, so if the cohort could change the result would stop meaning anything.</p>
+          <p>An immutable set of sessions &mdash; a run depends on its cohort, so a mutable one would make old results meaningless.</p>
         </div>
         <div class="annotation" data-highlight="experiment">
           <code class="annotation-label">experiments.create()</code>
-          <p>Pure configuration &mdash; no cohort, no agent version. Change the code and it is the same experiment with a new run. Change the prompt and it is a new experiment, because you are testing a different hypothesis.</p>
+          <p>Pure configuration. Change the code and you get a new run; change the prompt and you get a new experiment.</p>
         </div>
         <div class="annotation" data-highlight="model">
           <code class="annotation-label">model="glm-5.4"</code>
-          <p>The variable under test. One per experiment: a run that moved two things at once cannot tell you which one did it.</p>
+          <p>The variable under test. A run that moved two things cannot tell you which one did it.</p>
         </div>
         <div class="annotation" data-highlight="policy">
           <code class="annotation-label">History(scope="cohort")</code>
-          <p>One of four tool policies. <code>history</code> answers a call from a recorded one, matched on tool name and canonical inputs; the others are <code>passthrough</code>, <code>static</code> and <code>llm</code>. Every intercepted node is stamped with the policy that answered it.</p>
+          <p>One of four policies &mdash; <code>history</code>, <code>passthrough</code>, <code>static</code>, <code>llm</code>. Every intercepted node is stamped with the one that answered it.</p>
         </div>
         <div class="annotation" data-highlight="run">
           <code class="annotation-label">experiment.run()</code>
-          <p>Config plus a cohort plus one agent version. Each replay creates a new session rather than overwriting the original, so the baseline's evaluations survive intact.</p>
+          <p>Each replay creates a new session instead of overwriting the original, so the baseline survives intact.</p>
         </div>
         <div class="annotation" data-highlight="compare">
           <code class="annotation-label">compare(before, after)</code>
-          <p>Runs are the unit of comparison. A replay carries no verdict and no blended score &mdash; you read the evaluation rows of two runs side by side, which is why nothing here can go stale.</p>
+          <p>No verdict, no blended score. Two runs, side by side, read by you.</p>
         </div>
       </div>
 

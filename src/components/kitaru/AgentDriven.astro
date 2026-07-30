@@ -7,36 +7,12 @@
 // is a one-use token minted by a human UI control, "never mint confirmation
 // from model-authored chat arguments, and never read silence or continued
 // conversation as acceptance."
-//
-// The plugin framing is also gone. The spec is explicit: no plugins tab,
-// because importers and evaluators share a backend shape but not a
-// user-facing one, and "plugin" implies optional while an importer is needed
-// on day one.
+
 const agents = [
   { slug: "claude", name: "Claude Code" },
   { slug: "openai", name: "Codex" },
   { slug: "cursor", name: "Cursor" },
   { slug: "gemini", name: "Gemini CLI" },
-] as const;
-
-// NB: the .ad-plugin-* class names predate this rewrite and are now a
-// misnomer — kept to avoid churning markup and CSS for no visual change.
-const boundary = [
-  {
-    kind: "Reading",
-    title: "It fetches, groups and summarises",
-    body: "Twenty sessions out of 1,824, chosen for diversity rather than frequency, laid out newest decision first so you can read an outcome backwards to the step that caused it.",
-  },
-  {
-    kind: "Writing",
-    title: "It turns your notes into a check",
-    body: "You write plain observations, never labels or dropdowns. It proposes at most three hypotheses using only the sessions you actually read — each one naming its own weakest point.",
-  },
-  {
-    kind: "Waiting",
-    title: "It cannot agree with itself",
-    body: "A criterion becomes real only when you confirm the exact wording through a control in the UI. Silence is not consent, and a conversation that drifted toward yes is not either.",
-  },
 ] as const;
 ---
 
@@ -47,7 +23,7 @@ const boundary = [
         <span class="section-eyebrow">AGENT-DRIVEN EXPERIMENTATION</span>
         <h2 class="ad-title">Your agent does the driving. You do the deciding.</h2>
         <p class="ad-desc">
-          Kitaru speaks MCP and has a CLI, so your coding agent can do all the tedious parts: import the traces, group the sessions, define the experiment, run it, read the rows back. What it cannot do is decide what good means. That part stays yours, and Kitaru is built to keep it that way.
+          Kitaru speaks MCP. Your coding agent does the tedious parts &mdash; import, group, run, read back. It cannot decide what good means, and Kitaru is built to stop it trying.
         </p>
         <div class="ad-agents">
           <span class="ad-agents-label">Drive it from</span>
@@ -83,34 +59,6 @@ const boundary = [
       </div>
     </div>
 
-    <div class="ad-plugins">
-      <div class="ad-plugins-head" data-reveal>
-        <span class="section-eyebrow">WHERE THE LINE SITS</span>
-        <h3 class="ad-plugins-title">
-          It does everything except<br />
-          <span class="ad-plugins-accent">tell you what good means.</span>
-        </h3>
-        <p class="ad-plugins-desc">
-          Every eval tool that writes your criteria for you produces criteria nobody believes. So the interview is built the other way round: the agent handles all the reading, fetching and drafting, and then stops at the one judgement only you can make.
-        </p>
-      </div>
-
-      <div class="ad-plugin-grid">
-        {
-          boundary.map((p, i) => (
-            <div class="ad-plugin-card" data-reveal="fade-up" data-reveal-delay={i + 1}>
-              <span class="ad-plugin-kind">{p.kind}</span>
-              <h4 class="ad-plugin-title">{p.title}</h4>
-              <p class="ad-plugin-body">{p.body}</p>
-            </div>
-          ))
-        }
-      </div>
-
-      <p class="ad-plugins-foot" data-reveal>
-        Before you can synthesise anything, the server wants four written observations across three different scenarios. It is the rare product feature whose job is to slow its own agent down.
-      </p>
-    </div>
   </div>
 </section>
 
@@ -278,115 +226,10 @@ const boundary = [
     text-align: center;
   }
 
-  /* ─── Self-extending: everything is a plugin ─── */
-  .ad-plugins {
-    margin-top: 72px;
-    padding-top: 56px;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .ad-plugins-head {
-    max-width: 760px;
-    margin-bottom: 36px;
-  }
-
-  .ad-plugins-title {
-    font-size: clamp(1.4rem, 2.6vw, 1.95rem);
-    font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    color: var(--color-primary);
-    margin: 14px 0 16px;
-  }
-
-  .ad-plugins-accent {
-    color: var(--color-accent);
-  }
-
-  .ad-plugins-desc {
-    margin: 0;
-    font-size: clamp(1rem, 1.5vw, 1.08rem);
-    line-height: 1.65;
-    font-weight: 300;
-    color: var(--color-secondary);
-  }
-
-  .ad-plugin-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-  }
-
-  .ad-plugin-card {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    min-width: 0;
-    padding: 28px 26px;
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    background: var(--color-surface);
-    transition: border-color 0.25s, transform 0.25s;
-  }
-
-  .ad-plugin-card:hover {
-    border-color: oklch(0.65 0.16 45 / 0.3);
-    transform: translateY(-3px);
-  }
-
-  .ad-plugin-kind {
-    align-self: flex-start;
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-accent);
-    padding: 4px 10px;
-    border: 1px solid oklch(0.65 0.16 45 / 0.28);
-    border-radius: 100px;
-    background: oklch(0.65 0.16 45 / 0.07);
-  }
-
-  .ad-plugin-title {
-    margin: 0;
-    font-size: clamp(1.02rem, 1.5vw, 1.15rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.25;
-    color: var(--color-primary);
-  }
-
-  .ad-plugin-body {
-    margin: 0;
-    font-size: 0.93rem;
-    line-height: 1.6;
-    font-weight: 300;
-    color: var(--color-secondary);
-  }
-
-  .ad-plugins-foot {
-    max-width: 68ch;
-    margin: 28px 0 0;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    font-weight: 300;
-    color: var(--color-secondary);
-  }
-
   @media (max-width: 900px) {
     .ad-grid {
       grid-template-columns: 1fr;
       gap: 28px;
-    }
-
-    .ad-plugin-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .ad-plugins {
-      margin-top: 48px;
-      padding-top: 40px;
     }
   }
 </style>

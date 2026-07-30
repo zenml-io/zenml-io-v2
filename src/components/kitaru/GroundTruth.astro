@@ -11,18 +11,15 @@
 const points = [
   {
     kind: "Field by field",
-    title: "Most of it isn't a judgement call",
-    body: "A structured write compares against what production actually did, one field at a time. No LLM judge, no calibration set, no simulated user for the bulk of your surface — just the two records, diffed.",
+    body: "A structured write diffs against production, one field at a time. No judge, no calibration set.",
   },
   {
     kind: "The residue",
-    title: "Judgement only where there is judgement",
-    body: "Keep a model-graded check for the part that genuinely is one: whether the exception email struck the right tone, whether escalating to a human was the right call. That part is small, and now it is the only part you have to calibrate.",
+    body: "Keep a model-graded check only for tone, and for whether escalating was right.",
   },
   {
     kind: "Per tenant",
-    title: "It multiplies instead of repeating",
-    body: "Every customer you onboard arrives with its own definition of correct, and its own corrections. Same loop, new cohort — not a new eval project each time.",
+    body: "Every customer brings its own corrections. Same loop, new cohort.",
   },
 ] as const;
 ---
@@ -36,25 +33,21 @@ const points = [
         <span class="gt-accent">is a label nobody is using.</span>
       </h2>
       <p class="section-desc">
-        When somebody fixes the agent&rsquo;s booking by hand, that corrected record is ground truth &mdash; a domain expert stating, in your own schema, what the answer should have been. It is sitting in your system of record right now, growing every day, and no eval tool has ever asked for it.
+        Somebody fixes the agent&rsquo;s booking by hand. That corrected record is ground truth, in your schema, from a domain expert &mdash; accumulating daily, and no eval tool has ever asked for it.
       </p>
     </div>
 
-    <div class="gt-grid">
+    <dl class="gt-points">
       {
         points.map((p, i) => (
-          <div class="gt-card" data-reveal="fade-up" data-reveal-delay={i + 1}>
-            <span class="gt-kind">{p.kind}</span>
-            <h3 class="gt-card-title">{p.title}</h3>
-            <p class="gt-card-body">{p.body}</p>
+          <div class="gt-point" data-reveal="fade-up" data-reveal-delay={i + 1}>
+            <dt class="gt-kind">{p.kind}</dt>
+            <dd class="gt-line">{p.body}</dd>
           </div>
         ))
       }
-    </div>
+    </dl>
 
-    <p class="gt-foot" data-reveal>
-      Import the traces, join them against the records your team already fixed, and the eval set writes itself out of work somebody did anyway.
-    </p>
   </div>
 </section>
 
@@ -65,8 +58,8 @@ const points = [
   }
 
   .gt-header {
-    max-width: 800px;
-    margin-bottom: 44px;
+    max-width: 780px;
+    margin-bottom: 8px;
   }
 
   .gt-accent {
@@ -81,72 +74,62 @@ const points = [
     font-weight: 300;
   }
 
-  .gt-grid {
+  /* Rule-separated points rather than a third card grid — the page already
+     has two, and this section reads better as a statement than as boxes. */
+  .gt-points {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
+    gap: 0;
+    margin: 0;
+    border-top: 1px solid var(--color-border);
   }
 
-  .gt-card {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+  .gt-point {
     min-width: 0;
-    padding: 28px 26px;
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    background: var(--color-surface-warm);
-    transition: border-color 0.25s, transform 0.25s;
+    padding: 26px 32px 4px 0;
+    border-left: 1px solid var(--color-border);
+    padding-left: 28px;
   }
 
-  .gt-card:hover {
-    border-color: oklch(0.65 0.16 45 / 0.3);
-    transform: translateY(-3px);
+  .gt-point:first-child {
+    border-left: 0;
+    padding-left: 0;
   }
 
   .gt-kind {
-    align-self: flex-start;
+    display: block;
     font-family: var(--font-mono);
-    font-size: 0.62rem;
+    font-size: 0.64rem;
     font-weight: 600;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-accent);
-    padding: 4px 10px;
-    border: 1px solid oklch(0.65 0.16 45 / 0.28);
-    border-radius: 100px;
-    background: oklch(0.65 0.16 45 / 0.07);
+    margin-bottom: 12px;
   }
 
-  .gt-card-title {
+  .gt-line {
     margin: 0;
-    font-size: clamp(1.02rem, 1.5vw, 1.18rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.25;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    font-weight: 400;
+    letter-spacing: -0.01em;
     color: var(--color-primary);
   }
 
-  .gt-card-body {
-    margin: 0;
-    font-size: 0.93rem;
-    line-height: 1.6;
-    font-weight: 300;
-    color: var(--color-secondary);
-  }
-
-  .gt-foot {
-    max-width: 68ch;
-    margin: 28px 0 0;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    font-weight: 300;
-    color: var(--color-secondary);
-  }
-
   @media (max-width: 900px) {
-    .gt-grid {
+    .gt-points {
       grid-template-columns: 1fr;
+    }
+
+    .gt-point {
+      border-left: 0;
+      padding: 22px 0 0;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .gt-point:first-child {
+      border-top: 0;
+      padding-top: 22px;
     }
   }
 </style>
