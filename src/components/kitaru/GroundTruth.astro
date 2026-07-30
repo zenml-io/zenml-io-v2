@@ -1,0 +1,152 @@
+---
+// GroundTruth.astro — the bullseye's sharpest claim: for a document-to-record
+// agent, the labels already exist. When an ops person corrects the agent's
+// write, the corrected record is ground truth, in the customer's own schema,
+// produced by a domain expert, growing daily, and used by nobody.
+//
+// The ICP doc calls this out as the thing no competitor is positioned to say,
+// so it gets its own section rather than a bullet. Also carries the
+// time-to-value argument: a structured write diffs field by field, so most of
+// the surface needs no judge, no calibration set and no simulated user.
+const points = [
+  {
+    kind: "Field by field",
+    title: "Most of it isn't a judgement call",
+    body: "A structured write compares against what production actually did, one field at a time. No LLM judge, no calibration set, no simulated user for the bulk of your surface — just the two records, diffed.",
+  },
+  {
+    kind: "The residue",
+    title: "Judgement only where there is judgement",
+    body: "Keep a model-graded check for the part that genuinely is one: whether the exception email struck the right tone, whether escalating to a human was the right call. That part is small, and now it is the only part you have to calibrate.",
+  },
+  {
+    kind: "Per tenant",
+    title: "It multiplies instead of repeating",
+    body: "Every customer you onboard arrives with its own definition of correct, and its own corrections. Same loop, new cohort — not a new eval project each time.",
+  },
+] as const;
+---
+
+<section id="ground-truth" class="gt-section section-pad">
+  <div class="section-inner">
+    <div class="gt-header" data-reveal>
+      <span class="section-eyebrow">THE LABELS YOU ALREADY HAVE</span>
+      <h2 class="section-title">
+        Every correction your ops team makes<br />
+        <span class="gt-accent">is a label nobody is using.</span>
+      </h2>
+      <p class="section-desc">
+        When somebody fixes the agent&rsquo;s booking by hand, that corrected record is ground truth &mdash; a domain expert stating, in your own schema, what the answer should have been. It is sitting in your system of record right now, growing every day, and no eval tool has ever asked for it.
+      </p>
+    </div>
+
+    <div class="gt-grid">
+      {
+        points.map((p, i) => (
+          <div class="gt-card" data-reveal="fade-up" data-reveal-delay={i + 1}>
+            <span class="gt-kind">{p.kind}</span>
+            <h3 class="gt-card-title">{p.title}</h3>
+            <p class="gt-card-body">{p.body}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="gt-foot" data-reveal>
+      Import the traces, join them against the records your team already fixed, and the eval set writes itself out of work somebody did anyway.
+    </p>
+  </div>
+</section>
+
+<style>
+  .gt-section {
+    background: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .gt-header {
+    max-width: 800px;
+    margin-bottom: 44px;
+  }
+
+  .gt-accent {
+    color: var(--color-accent);
+  }
+
+  .section-desc {
+    margin-top: 16px;
+    color: var(--color-secondary);
+    font-size: clamp(1rem, 1.6vw, 1.1rem);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  .gt-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .gt-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+    padding: 28px 26px;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    background: var(--color-surface-warm);
+    transition: border-color 0.25s, transform 0.25s;
+  }
+
+  .gt-card:hover {
+    border-color: oklch(0.65 0.16 45 / 0.3);
+    transform: translateY(-3px);
+  }
+
+  .gt-kind {
+    align-self: flex-start;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    padding: 4px 10px;
+    border: 1px solid oklch(0.65 0.16 45 / 0.28);
+    border-radius: 100px;
+    background: oklch(0.65 0.16 45 / 0.07);
+  }
+
+  .gt-card-title {
+    margin: 0;
+    font-size: clamp(1.02rem, 1.5vw, 1.18rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    color: var(--color-primary);
+  }
+
+  .gt-card-body {
+    margin: 0;
+    font-size: 0.93rem;
+    line-height: 1.6;
+    font-weight: 300;
+    color: var(--color-secondary);
+  }
+
+  .gt-foot {
+    max-width: 68ch;
+    margin: 28px 0 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    font-weight: 300;
+    color: var(--color-secondary);
+  }
+
+  @media (max-width: 900px) {
+    .gt-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

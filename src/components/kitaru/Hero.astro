@@ -28,18 +28,19 @@ import {
       </div>
 
       <h1 class="hero-headline" data-reveal data-reveal-delay="1">
-        Traces you can <span class="hero-accent">run</span>, not just read
+        Your agent writes to real systems.<br />
+        <span class="hero-accent">You can&rsquo;t test it there.</span>
       </h1>
 
       <p class="hero-kicker" data-reveal data-reveal-delay="2">
-        You notice. The agent organizes. The check gets proven.
+        You already knew that. Your architecture told you.
       </p>
 
       <p class="hero-subtitle" data-reveal data-reveal-delay="2">
-        Your agent&rsquo;s real traces become frozen, replayable worlds for your real code &mdash; the test suite production already wrote.
+        Kitaru turns your agent&rsquo;s production history into its test suite. Replay the runs it already made against your next change &mdash; a new model, a new prompt, new code &mdash; and see what would have happened, before your customers do.
       </p>
 
-      <p class="hero-install-tag" data-reveal data-reveal-delay="3">Lightweight, wraps your existing agent</p>
+      <p class="hero-install-tag" data-reveal data-reveal-delay="3">Wraps the agent you already have</p>
 
       <div class="hero-install" data-reveal data-reveal-delay="3">
         <code class="install-cmd">{KITARU_INSTALL_CMD}</code>
@@ -59,40 +60,40 @@ import {
     </div>
 
     <div class="hero-visual" data-reveal data-reveal-delay="3">
-      <div class="hv-panel" role="img" aria-label="Example: import production traces as sessions, get interviewed by your coding agent until your notes become a cohort and an evaluator, prove that evaluator blind on sessions you never read, then compare two experiment runs to show the fix worked">
+      <div class="hv-panel" role="img" aria-label="Example: import the bookings a document-intake agent already made, get interviewed by your coding agent until your notes become a cohort and an evaluator, prove that evaluator blind on runs you never read, then compare two experiment runs to show the fix worked">
         <div class="hv-panel-head">
           <span class="hv-panel-dots">
             <span class="hv-dot"></span>
             <span class="hv-dot"></span>
             <span class="hv-dot"></span>
           </span>
-          <span class="hv-panel-title">replay · support-agent</span>
+          <span class="hv-panel-title">replay · intake-agent</span>
           <span class="hv-panel-badge">case</span>
         </div>
 
         <div class="hv-code">
-          <div class="hv-code-line hv-code-comment"># 1 &middot; your traces become sessions</div>
+          <div class="hv-code-line hv-code-comment"># 1 &middot; the bookings it already made, imported</div>
           <div class="hv-code-line">kitaru session <span class="hv-code-fn">import</span> langfuse ./export.jsonl <span class="hv-code-op">\</span></div>
-          <div class="hv-code-line hv-code-cont">--agent docs-agent</div>
+          <div class="hv-code-line hv-code-cont">--agent intake-agent</div>
           <div class="hv-code-line">&nbsp;</div>
           <div class="hv-code-line hv-code-comment"># 2 &middot; get interviewed, in your coding agent</div>
-          <div class="hv-code-line hv-code-prompt hv-code-hl">read 20 of these with me and find the pattern</div>
-          <div class="hv-code-line hv-code-out">&rarr; cohort <span class="hv-code-str">"cites superseded policy"</span> &middot; 9</div>
-          <div class="hv-code-line hv-code-out">&rarr; evaluator cited-superseded-doc</div>
+          <div class="hv-code-line hv-code-prompt hv-code-hl">walk me through 20 of these</div>
+          <div class="hv-code-line hv-code-out">&rarr; cohort <span class="hv-code-str">"dropped the hazmat flag"</span> &middot; 9</div>
+          <div class="hv-code-line hv-code-out">&rarr; evaluator hazmat-flag-preserved</div>
           <div class="hv-code-line">&nbsp;</div>
-          <div class="hv-code-line hv-code-comment"># 3 &middot; prove the check on sessions you never read</div>
+          <div class="hv-code-line hv-code-comment"># 3 &middot; prove the check on runs you never read</div>
           <div class="hv-code-line hv-code-hl">kitaru experiment run eval-check <span class="hv-code-op">\</span></div>
           <div class="hv-code-line hv-code-cont">--cohort held-out --version v1</div>
           <div class="hv-code-line">&nbsp;</div>
           <div class="hv-code-line hv-code-comment"># 4 &middot; change the agent, compare the runs</div>
           <div class="hv-code-line hv-code-hl">kitaru experiment run fix-validation <span class="hv-code-op">\</span></div>
-          <div class="hv-code-line hv-code-cont">--cohort superseded-all --version pr-311</div>
+          <div class="hv-code-line hv-code-cont">--cohort hazmat-all --version pr-311</div>
         </div>
 
         <div class="hv-diff">
           <div class="hv-diff-row hv-diff-head">
             <span>Experiment run</span>
-            <span>cited-superseded-doc</span>
+            <span>hazmat-flag-preserved</span>
           </div>
           <div class="hv-diff-row">
             <span class="hv-diff-label">Your notes, 20 read</span>
@@ -113,7 +114,7 @@ import {
         </div>
 
         <div class="hv-caption">
-          The complaint is now a regression test that runs on every PR.
+          What ops caught by hand is now a check that runs on every commit.
         </div>
       </div>
     </div>

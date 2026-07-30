@@ -11,9 +11,9 @@ export const KITARU_LINKS = {
 } as const;
 
 export const PRODUCT_KITARU_SEO = {
-  title: "Kitaru: traces you can run, not just read | ZenML",
+  title: "Kitaru: replay-based evals for AI agents | ZenML",
   description:
-    "Kitaru turns your agent's production history into its test suite. Import traces from wherever they live, get interviewed about what good means until your notes become cohorts and an evaluator, prove that evaluator on sessions you never read, then compare two experiment runs to show a change worked. The same experiment becomes your CI gate. Open source, self-hosted, built by the ZenML team.",
+    "Replay-based evals for AI agents: your production traces, re-run against your next change. Built for agents that write into a system of record, where testing in production would create phantom bookings and duplicate claims. Import the runs your agent already made, turn what your team notices into an evaluator, then compare two experiment runs to see what a new model or prompt would have done. Open source, self-hosted, built by the ZenML team.",
 } as const;
 
 /**
@@ -25,11 +25,13 @@ export const PRODUCT_KITARU_SEO = {
  * page's load-bearing pitch changes.
  */
 export const PRODUCT_KITARU_MARKDOWN = {
-  title: "Kitaru: traces you can run, not just read",
+  title: "Kitaru: replay-based evals for AI agents",
   installCmd: KITARU_INSTALL_CMD,
   license: KITARU_LICENSE,
   summary: [
     "Kitaru turns your agent's production history into its test suite. Import the traces you already have, and each execution becomes a session: the top-level replayable object, with its tool calls, model calls and subagent calls as nodes underneath.",
+    "It is built first for agents that turn unstructured inbound into structured writes in a system of record — emails and PDFs into a freight booking, documents into filings, claims into claim records. Those teams cannot test in production, because a live re-run would create a phantom booking or a duplicate claim. They are also the teams for whom evaluation is cheapest: a structured write can be compared field by field against what production actually did, so most of the surface needs no model-graded judge at all.",
+    "And the labels already exist. When an ops person corrects the agent's write by hand, that corrected record is ground truth stated by a domain expert in the team's own schema. It accumulates daily in the system of record and no eval tool has ever asked for it. Import the traces, join them against the corrected records, and the eval set comes out of work somebody did anyway.",
     "The centre of the product is an interview, not a form. You read roughly twenty sessions out of thousands and write plain observations — no labels, no dropdowns, no schema. The agent organizes what you noticed into cohorts and drafts a criterion; you confirm the exact wording, and that confirmation is what makes it real. An agent cannot agree with itself on your behalf.",
     "Then you check your own check. Apply the accepted rubric blind to a held-out set of sessions you never read, lock the predictions, and only then reveal the labels. Disagreements put the rubric on trial before they put the human on trial.",
     "An experiment is pure configuration — model, system prompt, tool policy. An experiment run is that configuration plus a cohort plus an agent version, and runs are the unit of comparison. Change the code and you get a new run; change the prompt and you have stated a different hypothesis, so you get a new experiment.",
