@@ -109,6 +109,21 @@ export const PRICING_PRO_INCLUSIONS = {
 } as const;
 
 // ---------------------------------------------------------------------------
+// Plan workspaces — the /pricing plan cards are shown per workspace type.
+//
+// One subscription covers both, but the two are metered separately: a ZenML
+// pipeline run is minutes to hours of compute, a Kitaru replay is one session
+// in seconds, and a single cohort experiment can be thousands of replays in a
+// click. Showing one "executions" number for both invited the wrong reading.
+// ---------------------------------------------------------------------------
+export const PRICING_PLAN_WORKSPACES = [
+  { id: "zenml", label: "ZenML workspace", sublabel: "ML pipelines" },
+  { id: "kitaru", label: "Kitaru workspace", sublabel: "Agent evals" },
+] as const;
+
+export type PricingWorkspaceId = (typeof PRICING_PLAN_WORKSPACES)[number]["id"];
+
+// ---------------------------------------------------------------------------
 // Plan cards — Open Source / Scale / Enterprise
 // ---------------------------------------------------------------------------
 export const PRICING_PLANS: PricingPlan[] = [
@@ -191,6 +206,91 @@ export const PRICING_PLANS: PricingPlan[] = [
     ctaVariant: "secondary",
   },
 ];
+
+// ---------------------------------------------------------------------------
+// Kitaru workspace plans.
+//
+// Deliberately no slider. The replay allowance is still being set from real
+// usage data, and the launch position is to show the structure and enforce
+// nothing — so the cards state what is free, what is metered, and the limits
+// that are actually settled (agents, retention).
+// ---------------------------------------------------------------------------
+export const PRICING_PLANS_KITARU: PricingPlan[] = [
+  {
+    id: "kitaru-open-source",
+    eyebrow: "Open Source",
+    subtitle: "For individuals and small teams",
+    price: "Free",
+    limitsLine:
+      "Unlimited replays · Unlimited agents · Your own infrastructure",
+    includesLabel: "Includes",
+    features: [
+      "Import and record without limits",
+      "Cohorts, evaluators and experiment runs",
+      "Replay on your own workers, with your own keys",
+      "Community support",
+    ],
+    cta: {
+      label: "Get Started",
+      href: "/get-started",
+      analytics: "Kitaru-OSS-Get-Started",
+    },
+    ctaVariant: "secondary",
+  },
+  {
+    id: "kitaru-scale",
+    eyebrow: "Scale",
+    pill: "SaaS",
+    topBadge: "Recommended",
+    highlighted: true,
+    subtitle: "For teams shipping agents to customers",
+    price: "$999",
+    priceSuffix: "/month",
+    limitsLine:
+      "3 agents · 90-day retention · Unlimited imports, scoring and seats",
+    includesLabel: "Everything in Open Source, plus",
+    features: [
+      "Hosted dashboard and control plane",
+      "Metered on replays and experiment runs only",
+      "Unlimited seats for domain experts",
+      "Email support",
+    ],
+    cta: {
+      label: "Book a demo",
+      href: "/book-your-demo/kitaru",
+      analytics: "Kitaru-Scale-Book-Demo",
+    },
+    ctaVariant: "primary",
+  },
+  {
+    id: "kitaru-enterprise",
+    eyebrow: "Enterprise",
+    pill: "SaaS",
+    subtitle: "For organizations at scale",
+    price: "Custom",
+    limitsLine: "Unlimited agents · Custom retention · Custom replay volume",
+    includesLabel: "Everything in Scale, plus",
+    features: [
+      "SSO (SAML / OIDC)",
+      "RBAC (custom roles)",
+      "Audit logs",
+      "Remote worker pools",
+    ],
+    cta: {
+      label: "Talk to an engineer",
+      href: "/book-your-demo/kitaru",
+      analytics: "Kitaru-Enterprise-Talk",
+    },
+    ctaVariant: "secondary",
+  },
+];
+
+export const PRICING_PLANS_NOTE: Record<PricingWorkspaceId, string> = {
+  zenml:
+    "Executions are ZenML pipeline runs. Kitaru replays are metered separately — one subscription, two meters.",
+  kitaru:
+    "A session Kitaru creates is an execution: replays and experiment runs. Imports, recordings, scoring and seats are free. Nothing is enforced during launch.",
+};
 
 // ---------------------------------------------------------------------------
 // Comparison table — one unified table across all three plans

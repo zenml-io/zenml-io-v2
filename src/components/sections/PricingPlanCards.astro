@@ -1,159 +1,266 @@
 ---
-import { PRICING_PLANS } from "../../lib/pricing";
+import {
+  PRICING_PLAN_WORKSPACES,
+  PRICING_PLANS,
+  PRICING_PLANS_KITARU,
+  PRICING_PLANS_NOTE,
+} from "../../lib/pricing";
 /**
  * PricingPlanCards — the three unified plan cards (Open Source / Scale /
- * Enterprise) for /pricing.
+ * Enterprise) for /pricing, shown per workspace type.
  *
- * The Scale card carries an interactive executions slider that snaps
- * between three pricing tiers, updating the price + readout live. The
- * slider is a native range input driven by a small co-located script —
- * no Preact island needed (mirrors the old tab-switch script pattern).
- * Display strings come from `buildSliderView` so SSR and the client
- * script share one source of truth.
+ * A workspace toggle sits above the cards because one subscription covers two
+ * meters: a ZenML pipeline run is minutes to hours of compute, a Kitaru replay
+ * is one session in seconds, and a single cohort experiment can be thousands
+ * of replays in one click. A single "executions" number for both invited the
+ * wrong reading.
+ *
+ * Both panels are server-rendered and the toggle only flips `hidden`, so the
+ * numbers are in the HTML for crawlers and for anyone without JS — the ZenML
+ * panel is the no-JS default.
+ *
+ * The ZenML Scale card carries an interactive executions slider that snaps
+ * between three pricing tiers, updating the price + readout live. The slider
+ * is a native range input driven by a small co-located script — no Preact
+ * island needed. Display strings come from `buildSliderView` so SSR and the
+ * client script share one source of truth. The Kitaru cards deliberately have
+ * no slider: the replay allowance is still being set from real usage data.
  */
 import Button from "../Button.astro";
 import { buildSliderView } from "./pricingSlider";
 
 const checkIcon =
   '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>';
+
+const PLAN_SETS = {
+  zenml: PRICING_PLANS,
+  kitaru: PRICING_PLANS_KITARU,
+} as const;
+
+/** Brand accent per workspace — literal class strings so Tailwind sees them. */
+const ACCENTS = {
+  zenml: {
+    text: "text-zenml-500",
+    border: "border-zenml-500",
+    bg: "bg-zenml-500",
+  },
+  kitaru: {
+    text: "text-orange-600",
+    border: "border-orange-500",
+    bg: "bg-orange-500",
+  },
+} as const;
 ---
 
 <section class="scroll-reveal-section bg-white pt-6 pb-16 sm:pb-20">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="grid gap-6 lg:grid-cols-3 lg:items-center">
-      {
-        PRICING_PLANS.map((plan, planIdx) => {
-          const slider = plan.slider;
-          const sliderView = slider ? buildSliderView(slider) : null;
-          const defaultView =
-            slider && sliderView ? sliderView[slider.defaultIndex] : null;
-          return (
-            <article
-              class:list={[
-                "scroll-slide-top relative flex flex-col rounded-md bg-white p-6",
-                planIdx === 1 && "stagger-1",
-                planIdx === 2 && "stagger-2",
-                plan.highlighted
-                  ? "border border-zenml-500 shadow-medium"
-                  : "border border-gray-200",
-              ]}
+    {/* Workspace toggle */}
+    <div class="mb-8 flex justify-center">
+      <div
+        class="inline-flex gap-1 rounded-full border border-gray-200 bg-gray-50 p-1"
+        role="tablist"
+        aria-label="Choose a workspace type"
+      >
+        {
+          PRICING_PLAN_WORKSPACES.map((ws, wsIdx) => (
+            <button
+              type="button"
+              role="tab"
+              id={`pricing-ws-tab-${ws.id}`}
+              aria-controls={`pricing-ws-panel-${ws.id}`}
+              aria-selected={wsIdx === 0 ? "true" : "false"}
+              tabindex={wsIdx === 0 ? 0 : -1}
+              data-workspace-tab={ws.id}
+              class="workspace-tab rounded-full px-4 py-2 text-sm font-semibold text-gray-600 transition-colors sm:px-5"
             >
-              {plan.topBadge && (
-                <span class="absolute -top-3 left-6 rounded-full bg-zenml-500 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
-                  {plan.topBadge}
-                </span>
-              )}
-
-              {/* Header */}
-              <div class="flex items-center gap-2">
-                <h2 class="text-sm font-bold uppercase tracking-wider text-zenml-500">
-                  {plan.eyebrow}
-                </h2>
-                {plan.pill && (
-                  <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
-                    {plan.pill}
-                  </span>
-                )}
-              </div>
-              <p class="mt-1 text-sm text-gray-500">{plan.subtitle}</p>
-
-              {/* Price */}
-              <div class="mt-4 flex flex-wrap items-baseline gap-x-1.5">
-                <span
-                  class="text-3xl font-bold leading-none tracking-tight text-gray-900"
-                  data-slider-price={slider ? "" : undefined}
-                >
-                  {plan.price}
-                </span>
-                {plan.priceSuffix && (
-                  <span class="text-sm text-gray-500">{plan.priceSuffix}</span>
-                )}
-              </div>
-
-              {/* Slider (Scale) or static limits line */}
-              {slider && sliderView && defaultView ? (
-                <div
-                  class="mt-5"
-                  data-pricing-slider
-                  data-tiers={JSON.stringify(sliderView)}
-                >
-                  <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">
-                    {slider.caption}
-                  </span>
-                  <div class="mt-2.5 flex justify-between text-sm tabular-nums">
-                    {slider.tiers.map((tier, tierIdx) => (
-                      <span
-                        data-slider-stop={tierIdx}
-                        class={
-                          tierIdx === slider.defaultIndex
-                            ? "font-bold text-zenml-500"
-                            : "text-gray-500"
-                        }
-                      >
-                        {tier.executions}
-                      </span>
-                    ))}
-                  </div>
-                  <input
-                    type="range"
-                    min="0"
-                    max={slider.tiers.length - 1}
-                    step="1"
-                    value={slider.defaultIndex}
-                    class="exec-slider mt-3 w-full"
-                    style={`--range-fill:${defaultView.fill}`}
-                    data-slider-input
-                    aria-label={slider.caption}
-                    aria-valuetext={defaultView.valueText}
-                  />
-                  <p
-                    class="mt-3 text-center text-sm font-semibold text-zenml-500"
-                    data-slider-readout
-                  >
-                    {defaultView.readout}
-                  </p>
-                </div>
-              ) : (
-                <p class="mt-4 text-sm text-gray-600">{plan.limitsLine}</p>
-              )}
-
-              {/* CTA */}
-              <div class="mt-5">
-                <Button
-                  href={plan.cta.href}
-                  variant={plan.ctaVariant ?? "primary"}
-                  class="w-full"
-                  dataAnalytics={plan.cta.analytics}
-                >
-                  {plan.cta.label}
-                </Button>
-              </div>
-
-              {/* Includes */}
-              <hr class="my-5 border-gray-200" />
-              <p class="text-sm font-semibold text-gray-900">
-                {plan.includesLabel}
-              </p>
-              <ul class="mt-3.5 space-y-2.5">
-                {plan.features.map((feature) => (
-                  <li class="flex items-start gap-2.5 text-sm text-gray-600">
-                    <span
-                      class="mt-0.5 shrink-0 text-zenml-500"
-                      set:html={checkIcon}
-                    />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          );
-        })
-      }
+              {ws.label}
+              <span class="ml-1.5 hidden font-normal opacity-70 sm:inline">
+                {ws.sublabel}
+              </span>
+            </button>
+          ))
+        }
+      </div>
     </div>
+
+    {
+      PRICING_PLAN_WORKSPACES.map((ws, wsIdx) => {
+        const accent = ACCENTS[ws.id];
+        return (
+          <div
+            id={`pricing-ws-panel-${ws.id}`}
+            role="tabpanel"
+            aria-labelledby={`pricing-ws-tab-${ws.id}`}
+            data-workspace-panel={ws.id}
+            hidden={wsIdx !== 0}
+          >
+            <p class="mx-auto mb-8 max-w-2xl text-center text-xs leading-relaxed text-gray-500">
+              {PRICING_PLANS_NOTE[ws.id]}
+            </p>
+
+            <div class="grid gap-6 lg:grid-cols-3 lg:items-center">
+              {PLAN_SETS[ws.id].map((plan, planIdx) => {
+                const slider = plan.slider;
+                const sliderView = slider ? buildSliderView(slider) : null;
+                const defaultView =
+                  slider && sliderView ? sliderView[slider.defaultIndex] : null;
+                return (
+                  <article
+                    class:list={[
+                      "scroll-slide-top relative flex flex-col rounded-md bg-white p-6",
+                      planIdx === 1 && "stagger-1",
+                      planIdx === 2 && "stagger-2",
+                      plan.highlighted
+                        ? `border ${accent.border} shadow-medium`
+                        : "border border-gray-200",
+                    ]}
+                  >
+                    {plan.topBadge && (
+                      <span
+                        class:list={[
+                          "absolute -top-3 left-6 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white",
+                          accent.bg,
+                        ]}
+                      >
+                        {plan.topBadge}
+                      </span>
+                    )}
+
+                    {/* Header */}
+                    <div class="flex items-center gap-2">
+                      <h2
+                        class:list={[
+                          "text-sm font-bold uppercase tracking-wider",
+                          accent.text,
+                        ]}
+                      >
+                        {plan.eyebrow}
+                      </h2>
+                      {plan.pill && (
+                        <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
+                          {plan.pill}
+                        </span>
+                      )}
+                    </div>
+                    <p class="mt-1 text-sm text-gray-500">{plan.subtitle}</p>
+
+                    {/* Price */}
+                    <div class="mt-4 flex flex-wrap items-baseline gap-x-1.5">
+                      <span
+                        class="text-3xl font-bold leading-none tracking-tight text-gray-900"
+                        data-slider-price={slider ? "" : undefined}
+                      >
+                        {plan.price}
+                      </span>
+                      {plan.priceSuffix && (
+                        <span class="text-sm text-gray-500">
+                          {plan.priceSuffix}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Slider (ZenML Scale) or static limits line */}
+                    {slider && sliderView && defaultView ? (
+                      <div
+                        class="mt-5"
+                        data-pricing-slider
+                        data-tiers={JSON.stringify(sliderView)}
+                      >
+                        <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                          {slider.caption}
+                        </span>
+                        <div class="mt-2.5 flex justify-between text-sm tabular-nums">
+                          {slider.tiers.map((tier, tierIdx) => (
+                            <span
+                              data-slider-stop={tierIdx}
+                              class:list={[
+                                tierIdx === slider.defaultIndex
+                                  ? `font-bold ${accent.text}`
+                                  : "text-gray-500",
+                              ]}
+                            >
+                              {tier.executions}
+                            </span>
+                          ))}
+                        </div>
+                        <input
+                          type="range"
+                          min="0"
+                          max={slider.tiers.length - 1}
+                          step="1"
+                          value={slider.defaultIndex}
+                          class="exec-slider mt-3 w-full"
+                          style={`--range-fill:${defaultView.fill}`}
+                          data-slider-input
+                          aria-label={slider.caption}
+                          aria-valuetext={defaultView.valueText}
+                        />
+                        <p
+                          class:list={[
+                            "mt-3 text-center text-sm font-semibold",
+                            accent.text,
+                          ]}
+                          data-slider-readout
+                        >
+                          {defaultView.readout}
+                        </p>
+                      </div>
+                    ) : (
+                      <p class="mt-4 text-sm text-gray-600">{plan.limitsLine}</p>
+                    )}
+
+                    {/* CTA */}
+                    <div class="mt-5">
+                      <Button
+                        href={plan.cta.href}
+                        variant={plan.ctaVariant ?? "primary"}
+                        class="w-full"
+                        dataAnalytics={plan.cta.analytics}
+                      >
+                        {plan.cta.label}
+                      </Button>
+                    </div>
+
+                    {/* Includes */}
+                    <hr class="my-5 border-gray-200" />
+                    <p class="text-sm font-semibold text-gray-900">
+                      {plan.includesLabel}
+                    </p>
+                    <ul class="mt-3.5 space-y-2.5">
+                      {plan.features.map((feature) => (
+                        <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                          <span
+                            class:list={["mt-0.5 shrink-0", accent.text]}
+                            set:html={checkIcon}
+                          />
+                          <span>{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })
+    }
   </div>
 </section>
 
 <style>
+  /* Workspace toggle — selected pill. Kept in CSS rather than swapped classes
+     so the client script only has to flip aria-selected. */
+  .workspace-tab[aria-selected="true"] {
+    background: #fff;
+    color: #111827;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+  }
+
+  .workspace-tab:hover:not([aria-selected="true"]) {
+    color: #374151;
+  }
+
   /* Scroll-reveal — cards slide in from top with a stagger */
   .scroll-slide-top {
     opacity: 0;
@@ -179,126 +286,46 @@ const checkIcon =
       transition: none;
     }
   }
-
-  /* Executions slider — native range input styled to the brand */
-  .exec-slider {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 22px;
-    background: transparent;
-    cursor: pointer;
-  }
-  .exec-slider::-webkit-slider-runnable-track {
-    height: 6px;
-    border-radius: 999px;
-    background: linear-gradient(
-      to right,
-      var(--color-zenml-500) 0%,
-      var(--color-zenml-500) var(--range-fill, 50%),
-      #e9e6f3 var(--range-fill, 50%),
-      #e9e6f3 100%
-    );
-  }
-  .exec-slider::-moz-range-track {
-    height: 6px;
-    border-radius: 999px;
-    background: linear-gradient(
-      to right,
-      var(--color-zenml-500) 0%,
-      var(--color-zenml-500) var(--range-fill, 50%),
-      #e9e6f3 var(--range-fill, 50%),
-      #e9e6f3 100%
-    );
-  }
-  .exec-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    margin-top: -8px;
-    width: 22px;
-    height: 22px;
-    border-radius: 999px;
-    background: #fff;
-    border: 3px solid var(--color-zenml-500);
-    box-shadow: 0 1px 4px rgba(16, 24, 40, 0.24);
-    cursor: pointer;
-    transition: transform 0.12s ease;
-  }
-  .exec-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.08);
-  }
-  .exec-slider::-moz-range-thumb {
-    width: 22px;
-    height: 22px;
-    border-radius: 999px;
-    background: #fff;
-    border: 3px solid var(--color-zenml-500);
-    box-shadow: 0 1px 4px rgba(16, 24, 40, 0.24);
-    cursor: pointer;
-  }
-  .exec-slider:focus-visible {
-    outline: none;
-  }
-  .exec-slider:focus-visible::-webkit-slider-thumb {
-    box-shadow: 0 0 0 4px rgba(122, 62, 244, 0.28);
-  }
-  .exec-slider:focus-visible::-moz-range-thumb {
-    box-shadow: 0 0 0 4px rgba(122, 62, 244, 0.28);
-  }
 </style>
 
 <script>
-  import type { SliderTierView } from "./pricingSlider";
+  // Workspace toggle: flips which plan panel is visible. Both panels are in
+  // the HTML already, so this is show/hide only — no re-render, no fetch.
+  const tabs = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("[data-workspace-tab]"),
+  );
+  const panels = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-workspace-panel]"),
+  );
 
-  // Executions slider. Display strings are precomputed at build time
-  // (pricingSlider.ts) and shipped via data-tiers, so this handler is a
-  // pure index-and-assign — no formatting or math.
-  document
-    .querySelectorAll<HTMLElement>("[data-pricing-slider]")
-    .forEach((slider) => {
-      const input = slider.querySelector<HTMLInputElement>(
-        "[data-slider-input]",
-      );
-      const readout = slider.querySelector<HTMLElement>("[data-slider-readout]");
-      const stops = slider.querySelectorAll<HTMLElement>("[data-slider-stop]");
-      const price = slider
-        .closest("article")
-        ?.querySelector<HTMLElement>("[data-slider-price]");
-      const tiers: SliderTierView[] = JSON.parse(slider.dataset.tiers ?? "[]");
-      if (!input || tiers.length === 0) return;
+  const select = (id: string) => {
+    for (const tab of tabs) {
+      const on = tab.dataset.workspaceTab === id;
+      tab.setAttribute("aria-selected", on ? "true" : "false");
+      tab.tabIndex = on ? 0 : -1;
+    }
+    for (const panel of panels) {
+      panel.hidden = panel.dataset.workspacePanel !== id;
+    }
+  };
 
-      const apply = () => {
-        const idx = Number(input.value);
-        const tier = tiers[idx];
-        if (!tier) return;
-        input.style.setProperty("--range-fill", tier.fill);
-        input.setAttribute("aria-valuetext", tier.valueText);
-        if (price) price.textContent = tier.price;
-        if (readout) readout.textContent = tier.readout;
-        stops.forEach((stop, stopIdx) => {
-          const active = stopIdx === idx;
-          stop.classList.toggle("font-bold", active);
-          stop.classList.toggle("text-zenml-500", active);
-          stop.classList.toggle("text-gray-500", !active);
-        });
-      };
-
-      input.addEventListener("input", apply);
-      apply();
+  for (const [i, tab] of tabs.entries()) {
+    tab.addEventListener("click", () => {
+      const id = tab.dataset.workspaceTab;
+      if (id) select(id);
     });
 
-  // Scroll-reveal — one-shot IntersectionObserver per section.
-  document
-    .querySelectorAll<HTMLElement>(".scroll-reveal-section")
-    .forEach((section) => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            section.classList.add("in-view");
-            observer.disconnect();
-          }
-        },
-        { threshold: 0.1 },
-      );
-      observer.observe(section);
+    // Roving focus, per the WAI-ARIA tabs pattern.
+    tab.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+      event.preventDefault();
+      const step = event.key === "ArrowRight" ? 1 : -1;
+      const next = tabs[(i + step + tabs.length) % tabs.length];
+      const id = next?.dataset.workspaceTab;
+      if (id) {
+        select(id);
+        next.focus();
+      }
     });
+  }
 </script>
