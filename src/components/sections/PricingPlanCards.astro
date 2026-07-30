@@ -289,6 +289,8 @@ const ACCENTS = {
 </style>
 
 <script>
+  import type { SliderTierView } from "./pricingSlider";
+
   // Workspace toggle: flips which plan panel is visible. Both panels are in
   // the HTML already, so this is show/hide only — no re-render, no fetch.
   const tabs = Array.from(
@@ -328,4 +330,56 @@ const ACCENTS = {
       }
     });
   }
+  // Executions slider. Display strings are precomputed at build time
+  // (pricingSlider.ts) and shipped via data-tiers, so this handler is a
+  // pure index-and-assign — no formatting or math.
+  document
+    .querySelectorAll<HTMLElement>("[data-pricing-slider]")
+    .forEach((slider) => {
+      const input = slider.querySelector<HTMLInputElement>(
+        "[data-slider-input]",
+      );
+      const readout = slider.querySelector<HTMLElement>("[data-slider-readout]");
+      const stops = slider.querySelectorAll<HTMLElement>("[data-slider-stop]");
+      const price = slider
+        .closest("article")
+        ?.querySelector<HTMLElement>("[data-slider-price]");
+      const tiers: SliderTierView[] = JSON.parse(slider.dataset.tiers ?? "[]");
+      if (!input || tiers.length === 0) return;
+
+      const apply = () => {
+        const idx = Number(input.value);
+        const tier = tiers[idx];
+        if (!tier) return;
+        input.style.setProperty("--range-fill", tier.fill);
+        input.setAttribute("aria-valuetext", tier.valueText);
+        if (price) price.textContent = tier.price;
+        if (readout) readout.textContent = tier.readout;
+        stops.forEach((stop, stopIdx) => {
+          const active = stopIdx === idx;
+          stop.classList.toggle("font-bold", active);
+          stop.classList.toggle("text-zenml-500", active);
+          stop.classList.toggle("text-gray-500", !active);
+        });
+      };
+
+      input.addEventListener("input", apply);
+      apply();
+    });
+
+  // Scroll-reveal — one-shot IntersectionObserver per section.
+  document
+    .querySelectorAll<HTMLElement>(".scroll-reveal-section")
+    .forEach((section) => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            section.classList.add("in-view");
+            observer.disconnect();
+          }
+        },
+        { threshold: 0.1 },
+      );
+      observer.observe(section);
+    });
 </script>
