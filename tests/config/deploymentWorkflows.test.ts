@@ -182,7 +182,12 @@ if [ "$1 $2" = "deployments list" ]; then
     exit 1
   fi
   version_id="$(cat "$ACTIVE_VERSION_FILE")"
-  printf '[{"created_on":"2026-07-29T00:00:00Z","versions":[{"version_id":"%s","percentage":100}]}]\\n' "$version_id"
+  if [ "$version_id" = "preflight" ]; then
+    printf '[{"created_on":"2026-07-29T00:00:00Z","versions":[{"version_id":"%s","percentage":100},{"version_id":"%s","percentage":0}]}]\\n' \
+      "$PREVIOUS_VERSION_ID" "$CANDIDATE_VERSION_ID"
+  else
+    printf '[{"created_on":"2026-07-29T00:00:00Z","versions":[{"version_id":"%s","percentage":100}]}]\\n' "$version_id"
+  fi
   exit 0
 fi
 if [ "$1 $2" = "versions deploy" ]; then
@@ -259,14 +264,18 @@ ${shouldFail ? "false" : ":"}
   );
 }
 
-function executeStatusRetry(): { curlCalls: number; error: unknown } {
+function executeStatusRetry(): {
+  curlArgs: string[];
+  curlCalls: number;
+  error: unknown;
+} {
   const releaseStep = workflowStep(
     releaseActivationSteps,
     "Activate, smoke-test, and roll back on failure",
   );
   const run = releaseStep.run ?? "";
   const functionStart = run.indexOf("expect_status() {");
-  const functionEnd = run.indexOf('expect_status 200 "https://www.zenml.io/"');
+  const functionEnd = run.indexOf("rollback_previous_version() {");
   expect(functionStart).toBeGreaterThan(-1);
   expect(functionEnd).toBeGreaterThan(functionStart);
   const expectStatusFunction = run.slice(functionStart, functionEnd);
@@ -275,7 +284,9 @@ function executeStatusRetry(): { curlCalls: number; error: unknown } {
     "worker-release-smoke-",
     (harnessDirectory, binDirectory) => {
       const callsFile = join(harnessDirectory, "curl-calls.txt");
+      const argsFile = join(harnessDirectory, "curl-args.txt");
       writeFileSync(callsFile, "0\n");
+      writeFileSync(argsFile, "");
       writeFileSync(
         join(binDirectory, "curl"),
         `#!/usr/bin/env bash
@@ -283,6 +294,7 @@ set -euo pipefail
 calls="$(cat "$CURL_CALLS_FILE")"
 calls=$((calls + 1))
 printf '%s\\n' "$calls" > "$CURL_CALLS_FILE"
+printf '%s\\n' "$*" >> "$CURL_ARGS_FILE"
 if [ "$calls" -eq 1 ]; then
   exit 7
 fi
@@ -299,13 +311,16 @@ printf '200\\n'
             "-c",
             `set -Eeuo pipefail
 ${expectStatusFunction}
-expect_status 200 "https://www.zenml.io/" retry-test
+worker_name="zenml-io-v2-worker"
+expect_status 200 "https://www.zenml.io/" retry-test "22222222-2222-2222-2222-222222222222"
 `,
           ],
           {
             env: {
               ...process.env,
+              CURL_ARGS_FILE: argsFile,
               CURL_CALLS_FILE: callsFile,
+              GITHUB_RUN_ID: "12345",
               PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
               RUNNER_TEMP: harnessDirectory,
             },
@@ -316,7 +331,8 @@ expect_status 200 "https://www.zenml.io/" retry-test
         error = caught;
       }
       const curlCalls = Number.parseInt(readFileSync(callsFile, "utf8"), 10);
-      return { curlCalls, error };
+      const curlArgs = readFileSync(argsFile, "utf8").trim().split("\n");
+      return { curlArgs, curlCalls, error };
     },
   );
 }
@@ -373,7 +389,12 @@ if [ "$1 $2" = "deployments list" ]; then
     exit 1
   fi
   active_version="$(cat "$ACTIVE_VERSION_FILE")"
-  printf '[{"created_on":"2026-07-29T00:00:00Z","versions":[{"version_id":"%s","percentage":100}]}]\\n' "$active_version"
+  if [ "$active_version" = "preflight" ]; then
+    printf '[{"created_on":"2026-07-29T00:00:00Z","versions":[{"version_id":"%s","percentage":100},{"version_id":"%s","percentage":0}]}]\\n' \
+      "$PREVIOUS_VERSION_ID" "$CANDIDATE_VERSION_ID"
+  else
+    printf '[{"created_on":"2026-07-29T00:00:00Z","versions":[{"version_id":"%s","percentage":100}]}]\\n' "$active_version"
+  fi
   exit 0
 fi
 if [ "$1 $2" = "versions deploy" ]; then
@@ -1279,6 +1300,15 @@ describe("automatic post-cutover production release", () => {
     const activation = run.indexOf(
       'wrangler versions deploy "$CANDIDATE_VERSION_ID@100%"',
     );
+    const zeroTrafficPreflight = run.indexOf(
+      'wrangler versions deploy "$PREVIOUS_VERSION_ID@100%" "$CANDIDATE_VERSION_ID@0%"',
+    );
+    const candidateOverride = run.indexOf(
+      '"https://www.zenml.io/" preflight-home "$CANDIDATE_VERSION_ID"',
+    );
+    const finalPreflightCheck = run.indexOf(
+      '"$RUNNER_TEMP/deployments-immediately-before-promotion.json"',
+    );
     const liveBaselineCheck = run.indexOf(
       '"$RUNNER_TEMP/deployments-immediately-before-activation.json"',
     );
@@ -1287,6 +1317,10 @@ describe("automatic post-cutover production release", () => {
     expect(liveMainCheck).toBeGreaterThan(-1);
     expect(liveBaselineCheck).toBeGreaterThan(liveMainCheck);
     expect(activationAttempted).toBeGreaterThan(liveBaselineCheck);
+    expect(zeroTrafficPreflight).toBeGreaterThan(activationAttempted);
+    expect(candidateOverride).toBeGreaterThan(zeroTrafficPreflight);
+    expect(finalPreflightCheck).toBeGreaterThan(candidateOverride);
+    expect(activation).toBeGreaterThan(finalPreflightCheck);
     expect(activation).toBeGreaterThan(liveMainCheck);
     expect(activation).toBeGreaterThan(activationAttempted);
     expect(run).toMatch(
@@ -1340,6 +1374,9 @@ describe("automatic post-cutover production release", () => {
     expect(releaseWorkflow).toContain("Rollback verification failed");
     expect(releaseWorkflow).toContain("Automatic rollback completed");
     expect(releaseWorkflow).toContain(
+      "Previous production version is serving 100 percent with the candidate held at 0 percent.",
+    );
+    expect(releaseWorkflow).toContain(
       "Recover previous production version after failed activation",
     );
     expect(releaseWorkflow).toContain("needs.activate.result != 'success'");
@@ -1352,9 +1389,7 @@ describe("automatic post-cutover production release", () => {
     );
     expect(recoveryStep.run).toContain("for attempt in 1 2 3");
     expect(recoveryStep.run).toContain("timeout 90s");
-    expect(recoveryStep.run).toContain(
-      'current_version" != "$CANDIDATE_VERSION_ID',
-    );
+    expect(recoveryStep.run).toContain('[ "$current_state" != "candidate" ]');
     expect(recoveryStep.run).toContain(
       "An unknown production version is active; recovery will not replace it.",
     );
@@ -1363,11 +1398,11 @@ describe("automatic post-cutover production release", () => {
       'if [ "$home_status" != "200" ]',
     );
     const finalControlPlaneRead = recoveryRun.indexOf(
-      'final_version="$(active_version)"',
+      'final_state="$(deployment_state)"',
       homepageVerification,
     );
     const finalVersionComparison = recoveryRun.indexOf(
-      'if [ "$final_version" != "$PREVIOUS_VERSION_ID" ]',
+      'if [ "$final_state" != "previous" ]',
       finalControlPlaneRead,
     );
     const recoverySuccess = recoveryRun.indexOf(
@@ -1468,6 +1503,12 @@ describe("automatic post-cutover production release", () => {
       ),
     ).toBe(true);
 
+    const preflightRelease = executeReleaseTrap(true, "preflight");
+    expect(preflightRelease.error).toBeDefined();
+    expect(preflightRelease.wranglerCalls).toContain(
+      "versions deploy 11111111-1111-1111-1111-111111111111@100% --name zenml-io-v2-worker --yes",
+    );
+
     const exhaustedReadFailure = executeReleaseTrap(
       true,
       "22222222-2222-2222-2222-222222222222",
@@ -1481,7 +1522,7 @@ describe("automatic post-cutover production release", () => {
       ),
     ).toBe(false);
     expect(exhaustedReadFailure.stderr).toContain(
-      "Could not read the active production version from the Cloudflare control plane; inline rollback will not act.",
+      "Could not read the production deployment from the Cloudflare control plane; inline rollback will not act.",
     );
 
     const operatorVersion = "33333333-3333-3333-3333-333333333333";
@@ -1507,6 +1548,16 @@ describe("automatic post-cutover production release", () => {
     const result = executeStatusRetry();
     expect(result.error).toBeUndefined();
     expect(result.curlCalls).toBe(2);
+    expect(result.curlArgs).toEqual([
+      expect.stringContaining(
+        'Cloudflare-Workers-Version-Overrides: zenml-io-v2-worker="22222222-2222-2222-2222-222222222222"',
+      ),
+      expect.stringContaining(
+        'Cloudflare-Workers-Version-Overrides: zenml-io-v2-worker="22222222-2222-2222-2222-222222222222"',
+      ),
+    ]);
+    expect(result.curlArgs[0]).toContain("__worker_smoke=12345-1");
+    expect(result.curlArgs[1]).toContain("__worker_smoke=12345-2");
   });
 
   it("executes recovery reconciliation and fails closed when recovery cannot complete", () => {
@@ -1521,6 +1572,10 @@ describe("automatic post-cutover production release", () => {
     const transientFailure = executeRecovery(candidateVersion, 1, 200);
     expect(transientFailure.error).toBeUndefined();
     expect(transientFailure.deployCalls).toBe(2);
+
+    const preflightRecovery = executeRecovery("preflight", 0, 200);
+    expect(preflightRecovery.error).toBeUndefined();
+    expect(preflightRecovery.deployCalls).toBe(1);
 
     const exhaustedRecovery = executeRecovery(candidateVersion, 3, 200);
     expect(exhaustedRecovery.error).toBeDefined();
@@ -1547,7 +1602,7 @@ describe("automatic post-cutover production release", () => {
     expect(exhaustedReadFailure.deploymentReadCalls).toBe(3);
     expect(exhaustedReadFailure.deployCalls).toBe(0);
     expect(exhaustedReadFailure.stderr).toContain(
-      "Could not read the active production version from the Cloudflare control plane; recovery will not act.",
+      "Could not read the production deployment from the Cloudflare control plane; recovery will not act.",
     );
 
     const operatorReleaseDuringRetry = executeRecovery(
@@ -1584,7 +1639,7 @@ describe("automatic post-cutover production release", () => {
     expect(finalReadFailure.deployCalls).toBe(0);
     expect(finalReadFailure.deploymentReadCalls).toBe(4);
     expect(finalReadFailure.stderr).toContain(
-      "Could not read the active production version after homepage verification; recovery did not complete.",
+      "Could not read the production deployment after homepage verification; recovery did not complete.",
     );
   });
 });

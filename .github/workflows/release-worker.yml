@@ -674,6 +674,58 @@ jobs:
             return 1
           }
 
+          deployment_state() {
+            local output_file="$1"
+            local max_attempts="${2:-3}"
+            local observed_state
+            for ((attempt = 1; attempt <= max_attempts; attempt++)); do
+              if timeout 60s wrangler deployments list \
+                --name "$worker_name" \
+                --json > "$output_file" &&
+                observed_state="$(
+                  jq -r \
+                    --arg previous "$PREVIOUS_VERSION_ID" \
+                    --arg candidate "$CANDIDATE_VERSION_ID" '
+                    max_by(.created_on).versions as $versions |
+                    if
+                      ($versions | length) == 1 and
+                      $versions[0].version_id == $previous and
+                      $versions[0].percentage == 100
+                    then "previous"
+                    elif
+                      ($versions | length) == 1 and
+                      $versions[0].version_id == $candidate and
+                      $versions[0].percentage == 100
+                    then "candidate"
+                    elif
+                      ($versions | length) == 2 and
+                      ([
+                        $versions[] |
+                        select(
+                          .version_id == $previous and .percentage == 100
+                        )
+                      ] | length) == 1 and
+                      ([
+                        $versions[] |
+                        select(
+                          .version_id == $candidate and .percentage == 0
+                        )
+                      ] | length) == 1
+                    then "preflight"
+                    else "unknown"
+                    end
+                  ' "$output_file"
+                )"; then
+                printf '%s\n' "$observed_state"
+                return 0
+              fi
+              if [ "$attempt" -lt "$max_attempts" ]; then
+                sleep $((attempt * 2))
+              fi
+            done
+            return 1
+          }
+
           verify_deployment() {
             local expected_version="$1"
             local output_file="$2"
@@ -698,6 +750,64 @@ jobs:
             return 1
           }
 
+          verify_preflight_deployment() {
+            local output_file="$1"
+            local current_state=""
+            for attempt in 1 2 3; do
+              if current_state="$(deployment_state "$output_file" 1)" &&
+                [ "$current_state" = "preflight" ]; then
+                return 0
+              fi
+              if [ "$attempt" -lt 3 ]; then
+                sleep $((attempt * 2))
+              fi
+            done
+            echo "The zero-traffic candidate deployment did not converge." >&2
+            return 1
+          }
+
+          expect_status() {
+            local expected="$1"
+            local url="$2"
+            local label="$3"
+            local version_override="${4:-}"
+            local actual
+            local request_url
+            local -a curl_args
+            for attempt in 1 2 3; do
+              request_url="$url"
+              curl_args=(
+                --connect-timeout 10
+                --max-time 15
+                --silent
+                --show-error
+                --output "$RUNNER_TEMP/smoke-${label}.body"
+                --write-out "%{http_code}"
+              )
+              if [ -n "$version_override" ]; then
+                curl_args+=(
+                  --header
+                  "Cloudflare-Workers-Version-Overrides: $worker_name=\"$version_override\""
+                )
+                if [[ "$request_url" == *"?"* ]]; then
+                  request_url="${request_url}&__worker_smoke=${GITHUB_RUN_ID}-${attempt}"
+                else
+                  request_url="${request_url}?__worker_smoke=${GITHUB_RUN_ID}-${attempt}"
+                fi
+              fi
+              actual="$(curl "${curl_args[@]}" "$request_url")" || actual="000"
+              if [ "$actual" = "$expected" ]; then
+                return 0
+              fi
+              if [ "$attempt" -lt 3 ]; then
+                sleep 2
+              fi
+            done
+            printf '%s expected HTTP %s, received %s after 3 attempts.\n' \
+              "$url" "$expected" "$actual" >&2
+            return 1
+          }
+
           rollback_previous_version() {
             local original_status=$?
             trap - ERR
@@ -707,20 +817,22 @@ jobs:
               rollback_deploy_status=1
               rollback_verify_status=1
               for attempt in 1 2 3; do
-                if ! current_version="$(
-                  active_version \
+                if ! current_state="$(
+                  deployment_state \
                     "$RUNNER_TEMP/deployments-before-inline-rollback.json"
                 )"; then
-                  echo "Could not read the active production version from the Cloudflare control plane; inline rollback will not act." >&2
+                  echo "Could not read the production deployment from the Cloudflare control plane; inline rollback will not act." >&2
                   exit "$original_status"
                 fi
-                if [ "$current_version" = "$PREVIOUS_VERSION_ID" ]; then
+                if [ "$current_state" = "previous" ]; then
                   echo "Previous production version is already active." >&2
                   rollback_deploy_status=0
                   rollback_verify_status=0
                   break
                 fi
-                if [ "$current_version" != "$CANDIDATE_VERSION_ID" ]; then
+                if [ "$current_state" = "preflight" ]; then
+                  echo "Previous production version is serving 100 percent with the candidate held at 0 percent." >&2
+                elif [ "$current_state" != "candidate" ]; then
                   echo "An unknown production version is active; inline rollback will not replace it." >&2
                   exit "$original_status"
                 fi
@@ -730,18 +842,19 @@ jobs:
                     --name "$worker_name" \
                     --yes; then
                   rollback_deploy_status=0
-                  if ! current_version="$(
-                    active_version \
+                  if ! current_state="$(
+                    deployment_state \
                       "$RUNNER_TEMP/deployments-after-rollback.json"
                   )"; then
-                    echo "Could not read the active production version from the Cloudflare control plane after rollback; inline rollback will not retry." >&2
+                    echo "Could not read the production deployment from the Cloudflare control plane after rollback; inline rollback will not retry." >&2
                     exit "$original_status"
                   fi
-                  if [ "$current_version" = "$PREVIOUS_VERSION_ID" ]; then
+                  if [ "$current_state" = "previous" ]; then
                     rollback_verify_status=0
                     break
                   fi
-                  if [ "$current_version" != "$CANDIDATE_VERSION_ID" ]; then
+                  if [ "$current_state" != "candidate" ] &&
+                    [ "$current_state" != "preflight" ]; then
                     echo "An unknown production version is active; inline rollback will not replace it." >&2
                     exit "$original_status"
                   fi
@@ -796,6 +909,29 @@ jobs:
 
           activation_attempted=true
           timeout 90s \
+            wrangler versions deploy "$PREVIOUS_VERSION_ID@100%" "$CANDIDATE_VERSION_ID@0%" \
+              --name "$worker_name" \
+              --yes
+          verify_preflight_deployment \
+            "$RUNNER_TEMP/deployments-after-preflight.json"
+
+          expect_status 200 \
+            "https://www.zenml.io/" preflight-home "$CANDIDATE_VERSION_ID"
+          grep -Eo '/_astro/[^" ]+' "$RUNNER_TEMP/smoke-preflight-home.body" \
+            | sort -u \
+            | sed -n '1,6p' \
+            > "$RUNNER_TEMP/smoke-preflight-assets.txt"
+          test -s "$RUNNER_TEMP/smoke-preflight-assets.txt"
+          while read -r asset_path; do
+            expect_status 200 \
+              "https://www.zenml.io${asset_path}" \
+              preflight-asset \
+              "$CANDIDATE_VERSION_ID"
+          done < "$RUNNER_TEMP/smoke-preflight-assets.txt"
+          verify_preflight_deployment \
+            "$RUNNER_TEMP/deployments-immediately-before-promotion.json"
+
+          timeout 90s \
             wrangler versions deploy "$CANDIDATE_VERSION_ID@100%" \
               --name "$worker_name" \
               --yes
@@ -837,34 +973,6 @@ jobs:
             false
           fi
 
-          expect_status() {
-            local expected="$1"
-            local url="$2"
-            local label="$3"
-            local actual
-            for attempt in 1 2 3; do
-              actual="$(
-                curl \
-                  --connect-timeout 10 \
-                  --max-time 15 \
-                  --silent \
-                  --show-error \
-                  --output "$RUNNER_TEMP/smoke-${label}.body" \
-                  --write-out "%{http_code}" \
-                  "$url"
-              )" || actual="000"
-              if [ "$actual" = "$expected" ]; then
-                return 0
-              fi
-              if [ "$attempt" -lt 3 ]; then
-                sleep 2
-              fi
-            done
-            printf '%s expected HTTP %s, received %s after 3 attempts.\n' \
-              "$url" "$expected" "$actual" >&2
-            return 1
-          }
-
           expect_status 200 "https://www.zenml.io/" home
           expect_status 200 "https://www.zenml.io/blog" blog
           expect_status 200 "https://www.zenml.io/product/kitaru" kitaru
@@ -905,6 +1013,7 @@ jobs:
             printf -- "- Active version: \`%s\`\n" "$CANDIDATE_VERSION_ID"
             printf -- "- Artifact SHA-256: \`%s\`\n" "$ARTIFACT_SHA256"
             echo "- Production smoke: passed"
+            echo "- Zero-traffic exact-version preflight: passed"
             echo "- Worker routes and DNS: unchanged"
           } >> "$GITHUB_STEP_SUMMARY"
 
@@ -918,6 +1027,8 @@ jobs:
             ${{ runner.temp }}/candidate-version.json
             ${{ runner.temp }}/deployments-before-activation.json
             ${{ runner.temp }}/deployments-immediately-before-activation.json
+            ${{ runner.temp }}/deployments-after-preflight.json
+            ${{ runner.temp }}/deployments-immediately-before-promotion.json
             ${{ runner.temp }}/deployments-before-inline-rollback.json
             ${{ runner.temp }}/deployments-after-activation.json
             ${{ runner.temp }}/deployments-after-smoke.json
@@ -928,6 +1039,7 @@ jobs:
             ${{ runner.temp }}/worker-domains-before-activation.json
             ${{ runner.temp }}/smoke-*.body
             ${{ runner.temp }}/smoke-assets.txt
+            ${{ runner.temp }}/smoke-preflight-assets.txt
           if-no-files-found: warn
           retention-days: 30
 
@@ -958,26 +1070,47 @@ jobs:
           [[ "$CANDIDATE_VERSION_ID" =~ ^[0-9a-f-]{36}$ ]]
           [[ "$PREVIOUS_VERSION_ID" =~ ^[0-9a-f-]{36}$ ]]
 
-          active_version() {
-            local observed_version
+          deployment_state() {
+            local observed_state
             for attempt in 1 2 3; do
               if timeout 60s wrangler deployments list \
                 --name "$WORKER_NAME" \
                 --json > "$RUNNER_TEMP/recovery-deployments.json" &&
-                observed_version="$(
-                  jq -r '
-                    max_by(.created_on) as $latest |
+                observed_state="$(
+                  jq -r \
+                    --arg previous "$PREVIOUS_VERSION_ID" \
+                    --arg candidate "$CANDIDATE_VERSION_ID" '
+                    max_by(.created_on).versions as $versions |
                     if
-                      ($latest.versions | type) == "array" and
-                      ($latest.versions | length) == 1 and
-                      $latest.versions[0].percentage == 100 and
-                      ($latest.versions[0].version_id | type) == "string"
-                    then $latest.versions[0].version_id
-                    else empty
+                      ($versions | length) == 1 and
+                      $versions[0].version_id == $previous and
+                      $versions[0].percentage == 100
+                    then "previous"
+                    elif
+                      ($versions | length) == 1 and
+                      $versions[0].version_id == $candidate and
+                      $versions[0].percentage == 100
+                    then "candidate"
+                    elif
+                      ($versions | length) == 2 and
+                      ([
+                        $versions[] |
+                        select(
+                          .version_id == $previous and .percentage == 100
+                        )
+                      ] | length) == 1 and
+                      ([
+                        $versions[] |
+                        select(
+                          .version_id == $candidate and .percentage == 0
+                        )
+                      ] | length) == 1
+                    then "preflight"
+                    else "unknown"
                     end
                   ' "$RUNNER_TEMP/recovery-deployments.json"
                 )"; then
-                printf '%s\n' "$observed_version"
+                printf '%s\n' "$observed_state"
                 return 0
               fi
               if [ "$attempt" -lt 3 ]; then
@@ -989,16 +1122,18 @@ jobs:
 
           recovered=false
           for attempt in 1 2 3; do
-            if ! current_version="$(active_version)"; then
-              echo "Could not read the active production version from the Cloudflare control plane; recovery will not act." >&2
+            if ! current_state="$(deployment_state)"; then
+              echo "Could not read the production deployment from the Cloudflare control plane; recovery will not act." >&2
               exit 1
             fi
-            if [ "$current_version" = "$PREVIOUS_VERSION_ID" ]; then
+            if [ "$current_state" = "previous" ]; then
               echo "Previous production version is already active."
               recovered=true
               break
             fi
-            if [ "$current_version" != "$CANDIDATE_VERSION_ID" ]; then
+            if [ "$current_state" = "preflight" ]; then
+              echo "Removing the zero-traffic candidate from the production deployment."
+            elif [ "$current_state" != "candidate" ]; then
               echo "An unknown production version is active; recovery will not replace it." >&2
               exit 1
             fi
@@ -1007,15 +1142,16 @@ jobs:
               wrangler versions deploy "$PREVIOUS_VERSION_ID@100%" \
                 --name "$WORKER_NAME" \
                 --yes; then
-              if ! current_version="$(active_version)"; then
-                echo "Could not read the active production version from the Cloudflare control plane after rollback; recovery will not retry." >&2
+              if ! current_state="$(deployment_state)"; then
+                echo "Could not read the production deployment from the Cloudflare control plane after rollback; recovery will not retry." >&2
                 exit 1
               fi
-              if [ "$current_version" = "$PREVIOUS_VERSION_ID" ]; then
+              if [ "$current_state" = "previous" ]; then
                 recovered=true
                 break
               fi
-              if [ "$current_version" != "$CANDIDATE_VERSION_ID" ]; then
+              if [ "$current_state" != "candidate" ] &&
+                [ "$current_state" != "preflight" ]; then
                 echo "An unknown production version is active; recovery will not replace it." >&2
                 exit 1
               fi
@@ -1054,11 +1190,11 @@ jobs:
             exit 1
           fi
 
-          if ! final_version="$(active_version)"; then
-            echo "Could not read the active production version after homepage verification; recovery did not complete." >&2
+          if ! final_state="$(deployment_state)"; then
+            echo "Could not read the production deployment after homepage verification; recovery did not complete." >&2
             exit 1
           fi
-          if [ "$final_version" != "$PREVIOUS_VERSION_ID" ]; then
+          if [ "$final_state" != "previous" ]; then
             echo "Active production version changed during recovery verification; recovery did not complete." >&2
             exit 1
           fi
