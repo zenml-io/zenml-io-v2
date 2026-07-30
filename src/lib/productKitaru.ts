@@ -72,7 +72,7 @@ export const PRODUCT_KITARU_MARKDOWN = {
     },
     {
       name: "Act 2 — Traces in",
-      body: "Import from Langfuse, LangSmith or an OTel export, or record fresh runs through the adapter; downstream they are the same object. Every session is graded at import for replay readiness — ready, partial or unavailable — from whether root inputs survived, whether the node graph is complete, and whether tool calls kept both a name and a payload. Importers are expected to be custom, because everyone's traces are shaped differently.",
+      body: "Import an export from whatever tracing you already run, or record fresh runs through the adapter; downstream they are the same object. Every session is graded at import for replay readiness — ready, partial or unavailable — from whether root inputs survived, whether the node graph is complete, and whether tool calls kept both a name and a payload. Importers are expected to be custom, because everyone's traces are shaped differently.",
     },
     {
       name: "Act 3 — Get interviewed (the centre)",

@@ -40,7 +40,7 @@ import {
         So test it against what it already did. Kitaru replays your real runs against your next change, and shows you what would have broken.
       </p>
 
-      <p class="hero-install-tag" data-reveal data-reveal-delay="3">Wraps the agent you already have</p>
+      <p class="hero-install-tag" data-reveal data-reveal-delay="3">One wrapper, no rewrite</p>
 
       <div class="hero-install" data-reveal data-reveal-delay="3">
         <code class="install-cmd">{KITARU_INSTALL_CMD}</code>
@@ -60,7 +60,7 @@ import {
     </div>
 
     <div class="hero-visual" data-reveal data-reveal-delay="3">
-      <div class="hv-panel" role="img" aria-label="Example: import the bookings a document-intake agent already made, get interviewed by your coding agent until your notes become a cohort and an evaluator, prove that evaluator blind on runs you never read, then compare two experiment runs to show the fix worked">
+      <div class="hv-panel" role="img" aria-label="Example: wrap a document-intake agent with the Kitaru adapter, import the runs it already made, get interviewed by your coding agent until your notes become a cohort and an evaluator, then compare two experiment runs to show the fix worked">
         <div class="hv-panel-head">
           <span class="hv-panel-dots">
             <span class="hv-dot"></span>
@@ -72,18 +72,17 @@ import {
         </div>
 
         <div class="hv-code">
-          <div class="hv-code-line hv-code-comment"># 1 &middot; the bookings it already made, imported</div>
-          <div class="hv-code-line">kitaru session <span class="hv-code-fn">import</span> langfuse ./export.jsonl <span class="hv-code-op">\</span></div>
+          <div class="hv-code-line hv-code-comment"># 1 &middot; wrap the agent you already have</div>
+          <div class="hv-code-line hv-code-hl">agent <span class="hv-code-op">=</span> <span class="hv-code-fn">KitaruAgent</span>(intake_agent)</div>
+          <div class="hv-code-line">&nbsp;</div>
+          <div class="hv-code-line hv-code-comment"># 2 &middot; the runs it already made, imported</div>
+          <div class="hv-code-line">kitaru session <span class="hv-code-fn">import</span> ./traces.jsonl <span class="hv-code-op">\</span></div>
           <div class="hv-code-line hv-code-cont">--agent intake-agent</div>
           <div class="hv-code-line">&nbsp;</div>
-          <div class="hv-code-line hv-code-comment"># 2 &middot; get interviewed, in your coding agent</div>
+          <div class="hv-code-line hv-code-comment"># 3 &middot; get interviewed, in your coding agent</div>
           <div class="hv-code-line hv-code-prompt hv-code-hl">walk me through 20 of these</div>
           <div class="hv-code-line hv-code-out">&rarr; cohort <span class="hv-code-str">"dropped the hazmat flag"</span> &middot; 9</div>
           <div class="hv-code-line hv-code-out">&rarr; evaluator hazmat-flag-preserved</div>
-          <div class="hv-code-line">&nbsp;</div>
-          <div class="hv-code-line hv-code-comment"># 3 &middot; prove the check on runs you never read</div>
-          <div class="hv-code-line hv-code-hl">kitaru experiment run eval-check <span class="hv-code-op">\</span></div>
-          <div class="hv-code-line hv-code-cont">--cohort held-out --version v1</div>
           <div class="hv-code-line">&nbsp;</div>
           <div class="hv-code-line hv-code-comment"># 4 &middot; change the agent, compare the runs</div>
           <div class="hv-code-line hv-code-hl">kitaru experiment run fix-validation <span class="hv-code-op">\</span></div>
