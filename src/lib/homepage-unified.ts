@@ -284,7 +284,7 @@ export const HOMEPAGE_UNIFIED_VALUES = {
 
 export const HOMEPAGE_UNIFIED_PRICING_TEASER = {
   headline: "Unified pricing. Pick ML, Agent, or both.",
-  body: "Same tiers across both workspaces, billed on executions (ZenML pipeline runs and Kitaru flow executions share one quota). Start on the open-source SDK; upgrade when you need the control plane.",
+  body: "Same tiers across both workspaces, billed on executions — ZenML pipeline runs and Kitaru replays are metered separately, since they are very different units of work. Start on the open-source SDK; upgrade when you need the control plane.",
   primaryCta: { label: "See pricing", href: "/pricing" },
   secondaryCta: { label: "Compare OSS vs Pro", href: "/open-source-vs-pro" },
 } as const;

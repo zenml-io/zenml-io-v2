@@ -43,7 +43,7 @@ export const PRICING_HERO = {
 export const PRICING_PRO_INCLUSIONS = {
   eyebrow: "What's included in Pro",
   headline: "Two products, one plan.",
-  deck: "Switch SDKs without switching tools, billing, or governance. ZenML for reproducible ML. Kitaru for agents you can record, replay, and improve. Same control plane underneath.",
+  deck: "Switch SDKs without switching tools, billing, or governance. ZenML for reproducible ML. Kitaru for replay-based agent evals. Same control plane underneath.",
   cards: [
     {
       side: "zenml" as const,
@@ -76,24 +76,25 @@ export const PRICING_PRO_INCLUSIONS = {
     },
     {
       side: "kitaru" as const,
-      eyebrow: "Agent runtime",
-      title: "Replay & checkpoints",
-      body: "Long-running Python agents with checkpoints, replay, wait/resume. Two decorators, no rewrites.",
+      eyebrow: "Agent evals",
+      title: "Replay-based evals",
+      body: "Import your whole trace history for free. You are only metered when Kitaru re-runs reality.",
       bullets: [
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z" /></svg>',
-          title: "Record, replay, and improve long-running Python agents",
-          detail: "Hours-long workflows survive restarts and failures.",
+          title: "Imports, recordings and scoring are free",
+          detail: "Bring your entire history — the meter does not move.",
         },
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><line x1="10" y1="15" x2="10" y2="9" /><line x1="14" y1="15" x2="14" y2="9" /></svg>',
-          title: "Checkpoints, replay, wait/resume — two decorators",
-          detail: "Pause for human review, replay from any step.",
+          title: "Metered on replays and experiment runs",
+          detail: "A session Kitaru creates counts. One you import does not.",
         },
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="11.49" /></svg>',
-          title: "Distributed scheduling, API and webhook triggers",
-          detail: "Fan out across workers, trigger from any source.",
+          title: "Unlimited seats, including your domain experts",
+          detail:
+            "The people who know what good looks like are not a line item.",
         },
       ],
       learn: { label: "Learn about Kitaru", href: "/product/kitaru" },
@@ -104,7 +105,7 @@ export const PRICING_PRO_INCLUSIONS = {
       } as CtaLink,
     },
   ],
-  caption: "Same control plane. Same governance. Same bill.",
+  caption: "Same control plane. Same governance. One bill, two meters.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -141,7 +142,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     price: "$999",
     priceSuffix: "/month",
     slider: {
-      caption: "Monthly executions",
+      caption: "Monthly executions, per workspace",
       defaultIndex: 1,
       tiers: [
         { executions: "500", price: "$399", projects: "1", snapshots: "1" },
@@ -232,23 +233,23 @@ export const PRICING_COMPARE: PricingCompareTableData = {
       ],
     },
     {
-      heading: "Agent runtime",
+      heading: "Agent evals",
       rows: [
         {
-          feature: "Durable execution for Python agents",
+          feature: "Replay-based evals for Python agents",
           values: [true, true, true],
         },
         {
-          feature: "Checkpoints, replay, wait/resume",
+          feature: "Unlimited imports, scoring and seats",
           values: [true, true, true],
         },
         {
-          feature: "Dashboard, API, schedules, webhooks",
+          feature: "Hosted dashboard and control plane",
           values: [false, true, true],
         },
         {
-          feature: "Distributed execution",
-          values: [false, true, true],
+          feature: "Remote worker pools",
+          values: [false, false, true],
         },
       ],
     },
@@ -342,14 +343,19 @@ export const PRICING_FAQ: FaqData = {
   subheadline: "Everything you need to know about the product.",
   items: [
     {
+      question: "What counts as an execution in Kitaru?",
+      answer:
+        "A session Kitaru creates — that means replays and experiment runs. Sessions you import or record yourself are free, and so are scoring, evaluators and seats. The reasoning is simple: importing your history is step one of using the product, so charging for it would price against our own onboarding. You are metered only when Kitaru re-runs reality.",
+    },
+    {
       question: "ZenML and Kitaru — same plan?",
       answer:
-        "Yes. Pricing is unified across both workspaces. The ZenML workspace runs ML pipelines (typed step DAGs, training, batch inference). The Kitaru workspace runs production AI agents (recorded checkpoints, replay, wait/resume). You pick the workspace per project; Pro plans include both. Same $, same support tier, different SDKs and UI.",
+        "Yes — one subscription, one support tier, both workspaces. The ZenML workspace runs ML pipelines (typed step DAGs, training, batch inference). The Kitaru workspace runs replay-based agent evals (sessions, cohorts, evaluators, experiment runs). The two are metered separately, though: a pipeline run is minutes to hours of compute, while a replay is one session in seconds, so they are counted on their own meters rather than sharing a pool. No credit conversion between them.",
     },
     {
       question: "Can I self-host Kitaru like ZenML?",
       answer:
-        "Yes. Kitaru is open source under Apache 2.0 — same model as ZenML. Self-host the server in your own VPC, point it at S3/GCS/Azure Blob, and run flows on Kubernetes, Vertex, SageMaker, or AzureML. Pro adds distributed execution, dashboard/API/scheduled/webhook triggers, SSO, audit, and a hosted control plane.",
+        "Yes. Kitaru is open source under Apache 2.0 — same model as ZenML. One command brings up a local deployment in Docker, or self-host the server in your own VPC. Either way the worker runs beside your code, on your machine or your compute, using your own model keys — so replays never execute on our infrastructure. Pro adds the hosted control plane, remote worker pools, SSO, RBAC and audit.",
     },
     {
       question: "What happens if I exceed my plan’s limits?",
@@ -364,7 +370,7 @@ export const PRICING_FAQ: FaqData = {
     {
       question: "How do Run Template Triggers work?",
       answer:
-        "Run Template Triggers automate executions — ZenML pipeline runs and Kitaru flow executions — from events, schedules, webhooks, or the API. Triggers are a Pro feature: they're available on the Scale and Enterprise plans for more complex automation workflows in production.",
+        "Run Template Triggers automate executions — ZenML pipeline runs and Kitaru experiment runs — from events, schedules, webhooks, or the API. Triggers are a Pro feature: they're available on the Scale and Enterprise plans for more complex automation workflows in production.",
     },
     {
       question:
