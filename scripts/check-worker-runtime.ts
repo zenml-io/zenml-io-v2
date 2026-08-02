@@ -65,6 +65,8 @@ function startWrangler(port: number): {
       SERVER_CONFIG_PATH,
       "--env-file",
       TEST_ENV_PATH,
+      "--var",
+      "GITHUB_STARS_FORCE_FALLBACK:true",
       "--ip",
       "127.0.0.1",
       "--port",
@@ -307,10 +309,10 @@ async function runChecks(baseUrl: string): Promise<CheckResult[]> {
   const starsPayload = (await stars.json()) as Record<string, unknown>;
   check(
     results,
-    "GitHub stars API returns a live, cached, or fallback snapshot",
+    "GitHub stars API avoids external I/O in the runtime gate",
     stars.status === 200 &&
       typeof starsPayload.stars === "number" &&
-      ["github", "cache", "fallback"].includes(String(starsPayload.source)) &&
+      ["cache", "fallback"].includes(String(starsPayload.source)) &&
       stars.headers.get("cache-control") !== null,
     `status ${stars.status}, source ${String(starsPayload.source)}`,
   );
