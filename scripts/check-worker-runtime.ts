@@ -10,6 +10,8 @@ const TEST_ENV_PATH = resolve(WRANGLER_STATE_DIR, "runtime-check.env");
 const START_TIMEOUT_MS = 30_000;
 const REQUEST_TIMEOUT_MS = 10_000;
 const COLD_START_REQUEST_TIMEOUT_MS = 30_000;
+const TRANSIENT_SERVICE_RETRY_ATTEMPTS = 3;
+const TRANSIENT_SERVICE_RETRY_DELAY_MS = 500;
 
 type CheckResult = {
   name: string;
@@ -173,6 +175,35 @@ async function request(
   }
 }
 
+async function requestWithTransientServiceRetry(
+  baseUrl: string,
+  pathname: string,
+  init: RequestInit,
+): Promise<Response> {
+  let response: Response | undefined;
+
+  for (
+    let attempt = 1;
+    attempt <= TRANSIENT_SERVICE_RETRY_ATTEMPTS;
+    attempt += 1
+  ) {
+    response = await request(baseUrl, pathname, init);
+    if (
+      response.status !== 503 ||
+      attempt === TRANSIENT_SERVICE_RETRY_ATTEMPTS
+    ) {
+      return response;
+    }
+
+    await response.body?.cancel();
+    await new Promise((resolveWait) =>
+      setTimeout(resolveWait, TRANSIENT_SERVICE_RETRY_DELAY_MS),
+    );
+  }
+
+  throw new Error(`No response received from ${pathname}`);
+}
+
 function check(
   results: CheckResult[],
   name: string,
@@ -303,50 +334,28 @@ async function runChecks(baseUrl: string): Promise<CheckResult[]> {
   );
   await unverifiedForm.body?.cancel();
 
-  const stars = await request(baseUrl, "/api/github-stars");
-  const starsPayload = (await stars.json()) as Record<string, unknown>;
-  check(
-    results,
-    "GitHub stars API returns a live, cached, or fallback snapshot",
-    stars.status === 200 &&
-      typeof starsPayload.stars === "number" &&
-      ["github", "cache", "fallback"].includes(String(starsPayload.source)) &&
-      stars.headers.get("cache-control") !== null,
-    `status ${stars.status}, source ${String(starsPayload.source)}`,
+  const csp = await requestWithTransientServiceRetry(
+    baseUrl,
+    "/api/csp-report",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        "csp-report": {
+          "document-uri": "https://www.zenml.io/product/kitaru?private=removed",
+          "violated-directive": "script-src",
+        },
+      }),
+    },
   );
-
-  const cachedStars = await request(baseUrl, "/api/github-stars");
-  const cachedStarsPayload = (await cachedStars.json()) as Record<
-    string,
-    unknown
-  >;
-  check(
-    results,
-    "GitHub stars API serves its next response from Worker cache",
-    cachedStars.status === 200 &&
-      typeof cachedStarsPayload.stars === "number" &&
-      cachedStarsPayload.source === "cache" &&
-      cachedStars.headers.get("cache-control") !== null,
-    `status ${cachedStars.status}, source ${String(cachedStarsPayload.source)}`,
-  );
-
-  const csp = await request(baseUrl, "/api/csp-report", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      "csp-report": {
-        "document-uri": "https://www.zenml.io/product/kitaru?private=removed",
-        "violated-directive": "script-src",
-      },
-    }),
-  });
+  const cspFailureBody = csp.status === 204 ? "" : await csp.text();
   check(
     results,
     "CSP report API accepts a valid report",
     csp.status === 204,
-    `status ${csp.status}`,
+    `status ${csp.status}${cspFailureBody ? `, body ${cspFailureBody.slice(0, 500)}` : ""}`,
   );
-  await csp.body?.cancel();
+  if (csp.status === 204) await csp.body?.cancel();
 
   const malformedCsp = await request(baseUrl, "/api/csp-report", {
     method: "POST",

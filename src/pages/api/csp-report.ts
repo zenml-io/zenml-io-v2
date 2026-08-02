@@ -63,12 +63,15 @@ export async function POST(context: APIContext): Promise<Response> {
     const effectiveDirective = String(report["effective-directive"] ?? "");
     const blockedResource = sanitizeCspResource(report["blocked-uri"]);
 
-    console.log("[csp-report]", {
-      documentUri,
-      violatedDirective,
-      effectiveDirective,
-      blockedResource,
-    });
+    console.log(
+      "[csp-report]",
+      JSON.stringify({
+        documentUri,
+        violatedDirective,
+        effectiveDirective,
+        blockedResource,
+      }),
+    );
   } catch {
     // Malformed payload — silently accept to avoid 4xx noise
   }

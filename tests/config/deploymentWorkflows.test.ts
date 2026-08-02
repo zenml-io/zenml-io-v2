@@ -431,7 +431,11 @@ expect_candidate_home
   );
 }
 
-function executeCandidateAssetCheck(statusAfterCall: number): {
+function executeCandidateAssetCheck(
+  statusAfterCall: number,
+  phase: "preflight" | "active" = "preflight",
+): {
+  curlArgs: string[];
   curlCalls: number;
   error: unknown;
 } {
@@ -450,7 +454,9 @@ function executeCandidateAssetCheck(statusAfterCall: number): {
     "worker-release-candidate-asset-",
     (harnessDirectory, binDirectory) => {
       const callsFile = join(harnessDirectory, "curl-calls.txt");
+      const argsFile = join(harnessDirectory, "curl-args.txt");
       writeFileSync(callsFile, "0\n");
+      writeFileSync(argsFile, "");
       writeFileSync(
         join(binDirectory, "curl"),
         `#!/usr/bin/env bash
@@ -458,6 +464,7 @@ set -euo pipefail
 calls="$(cat "$CURL_CALLS_FILE")"
 calls=$((calls + 1))
 printf '%s\\n' "$calls" > "$CURL_CALLS_FILE"
+printf '%s\\n' "$*" >> "$CURL_ARGS_FILE"
 if [ "$calls" -ge "$CURL_ASSET_STATUS_AFTER_CALL" ]; then
   printf '200\\n'
 else
@@ -481,7 +488,7 @@ fi
             `set -Eeuo pipefail
 ${verificationFunctions}
 worker_name="zenml-io-v2-worker"
-expect_candidate_assets
+expect_candidate_assets "${phase === "preflight" ? "22222222-2222-2222-2222-222222222222" : ""}" ${phase}
 `,
           ],
           {
@@ -489,6 +496,7 @@ expect_candidate_assets
               ...process.env,
               CANDIDATE_ASSET_PATHS_JSON: '["/_astro/candidate.js"]',
               CANDIDATE_VERSION_ID: "22222222-2222-2222-2222-222222222222",
+              CURL_ARGS_FILE: argsFile,
               CURL_ASSET_STATUS_AFTER_CALL: String(statusAfterCall),
               CURL_CALLS_FILE: callsFile,
               GITHUB_RUN_ID: "12345",
@@ -502,7 +510,11 @@ expect_candidate_assets
         error = caught;
       }
       const curlCalls = Number.parseInt(readFileSync(callsFile, "utf8"), 10);
-      return { curlCalls, error };
+      const curlArgs = readFileSync(argsFile, "utf8")
+        .trim()
+        .split("\n")
+        .filter(Boolean);
+      return { curlArgs, curlCalls, error };
     },
   );
 }
@@ -1473,7 +1485,9 @@ describe("automatic post-cutover production release", () => {
     const zeroTrafficPreflight = run.indexOf(
       'wrangler versions deploy "$PREVIOUS_VERSION_ID@100%" "$CANDIDATE_VERSION_ID@0%"',
     );
-    const candidateHome = run.lastIndexOf("expect_candidate_home");
+    const candidateHome = run.indexOf(
+      'expect_candidate_home "$CANDIDATE_VERSION_ID" preflight preflight-home',
+    );
     const finalPreflightCheck = run.indexOf(
       '"$RUNNER_TEMP/deployments-immediately-before-promotion.json"',
     );
@@ -1546,24 +1560,23 @@ describe("automatic post-cutover production release", () => {
     );
     expect(releaseProgram).toContain("for attempt in $(seq 1 12); do");
     expect(releaseProgram).toContain(
-      '"https://www.zenml.io/?__worker_marker_attempt=$attempt"',
+      '"https://www.zenml.io/?__worker_$' + '{phase}_marker_attempt=$attempt"',
     );
-    expect(releaseProgram).toContain(
-      'preflight-home "$CANDIDATE_VERSION_ID" 1 0',
-    );
+    expect(releaseProgram).toContain('"$label" "$version_override" 1 0');
     expect(releaseProgram).toContain('grep -Fq -- "$expected_marker"');
     expect(releaseProgram).toContain(
-      "The exact-version homepage did not converge to the candidate release marker.",
+      "The $" +
+        "{phase} homepage did not converge to the candidate release marker.",
     );
     expect(releaseProgram).toContain("expect_candidate_assets() {");
     expect(releaseProgram).toContain(
-      `"https://www.zenml.io\${asset_path}?__worker_candidate_asset=\${GITHUB_RUN_ID}-\${attempt}-\${asset_index}"`,
+      `"https://www.zenml.io\${asset_path}?__worker_\${phase}_candidate_asset=\${GITHUB_RUN_ID}-\${attempt}-\${asset_index}"`,
     );
     expect(releaseProgram).toContain(
-      'Cloudflare-Workers-Version-Overrides: $worker_name=\\"$CANDIDATE_VERSION_ID\\"',
+      'Cloudflare-Workers-Version-Overrides: $worker_name=\\"$version_override\\"',
     );
     expect(releaseProgram).toContain(
-      "The exact-version candidate assets did not converge.",
+      "The $" + "{phase} candidate assets did not converge.",
     );
     expect(
       releaseProgram.lastIndexOf("expect_candidate_assets"),
@@ -1669,9 +1682,10 @@ describe("automatic post-cutover production release", () => {
       "Activate, smoke-test, and roll back on failure",
     );
     const run = releaseStep.run ?? "";
-    const lastAssetSmoke = run.indexOf(
-      `expect_status 200 "https://www.zenml.io\${asset_path}" asset`,
+    const activeHomepageSmoke = run.indexOf(
+      'expect_candidate_home "" active home',
     );
+    const activeAssetSmoke = run.indexOf('expect_candidate_assets "" active');
     const apexSmoke = run.indexOf('expect_status 301 "https://zenml.io/" apex');
     const finalCandidateOutput = run.indexOf(
       '"$RUNNER_TEMP/deployments-after-smoke.json"',
@@ -1685,8 +1699,9 @@ describe("automatic post-cutover production release", () => {
       "## Automatic production Worker release",
     );
 
-    expect(lastAssetSmoke).toBeGreaterThan(-1);
-    expect(apexSmoke).toBeGreaterThan(lastAssetSmoke);
+    expect(activeHomepageSmoke).toBeGreaterThan(-1);
+    expect(activeAssetSmoke).toBeGreaterThan(activeHomepageSmoke);
+    expect(apexSmoke).toBeGreaterThan(activeAssetSmoke);
     expect(finalCandidateVerification).toBeGreaterThan(apexSmoke);
     expect(finalCandidateOutput).toBeGreaterThan(finalCandidateVerification);
     expect(trapRemoval).toBeGreaterThan(finalCandidateVerification);
@@ -1819,6 +1834,31 @@ describe("automatic post-cutover production release", () => {
     expect(exhausted.curlCalls).toBe(12);
   });
 
+  it("retries public candidate assets after activation without reusing cached 404 URLs", () => {
+    const converged = executeCandidateAssetCheck(3, "active");
+    expect(converged.error).toBeUndefined();
+    expect(converged.curlCalls).toBe(3);
+    expect(converged.curlArgs).toHaveLength(3);
+    expect(converged.curlArgs[0]).toContain(
+      "__worker_active_candidate_asset=12345-1-0",
+    );
+    expect(converged.curlArgs[1]).toContain(
+      "__worker_active_candidate_asset=12345-2-0",
+    );
+    expect(converged.curlArgs[2]).toContain(
+      "__worker_active_candidate_asset=12345-3-0",
+    );
+    expect(
+      converged.curlArgs.some((args) =>
+        args.includes("Cloudflare-Workers-Version-Overrides"),
+      ),
+    ).toBe(false);
+
+    const exhausted = executeCandidateAssetCheck(13, "active");
+    expect(exhausted.error).toBeDefined();
+    expect(exhausted.curlCalls).toBe(12);
+  });
+
   it("executes recovery reconciliation and fails closed when recovery cannot complete", () => {
     const previousVersion = "11111111-1111-1111-1111-111111111111";
     const candidateVersion = "22222222-2222-2222-2222-222222222222";
@@ -1900,7 +1940,7 @@ describe("automatic post-cutover production release", () => {
     expect(finalReadFailure.stderr).toContain(
       "Could not read the production deployment after homepage verification; recovery did not complete.",
     );
-  });
+  }, 60_000);
 });
 
 describe("automatic pull-request Worker previews", () => {

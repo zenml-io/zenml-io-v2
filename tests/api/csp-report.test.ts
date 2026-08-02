@@ -1,5 +1,5 @@
 import type { APIContext } from "astro";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, type MockInstance, vi } from "vitest";
 import { GET, POST } from "../../src/pages/api/csp-report";
 
 function makeContext(body: string): APIContext {
@@ -10,6 +10,14 @@ function makeContext(body: string): APIContext {
       body,
     }),
   } as unknown as APIContext;
+}
+
+function getLoggedReport(log: MockInstance): Record<string, string> {
+  expect(log).toHaveBeenCalledTimes(1);
+  expect(log.mock.calls[0]?.[0]).toBe("[csp-report]");
+  const payload = log.mock.calls[0]?.[1];
+  expect(typeof payload).toBe("string");
+  return JSON.parse(String(payload)) as Record<string, string>;
 }
 
 afterEach(() => {
@@ -34,7 +42,7 @@ describe("/api/csp-report", () => {
     );
 
     expect(response.status).toBe(204);
-    expect(log).toHaveBeenCalledWith("[csp-report]", {
+    expect(getLoggedReport(log)).toEqual({
       documentUri: "https://www.zenml.io/product/kitaru",
       violatedDirective: "script-src",
       effectiveDirective: "script-src-elem",
@@ -61,10 +69,7 @@ describe("/api/csp-report", () => {
       ),
     );
 
-    expect(log).toHaveBeenCalledWith(
-      "[csp-report]",
-      expect.objectContaining({ blockedResource: expected }),
-    );
+    expect(getLoggedReport(log)).toMatchObject({ blockedResource: expected });
     expect(JSON.stringify(log.mock.calls)).not.toContain("private-identifier");
     expect(JSON.stringify(log.mock.calls)).not.toContain("alert");
   });
@@ -82,10 +87,9 @@ describe("/api/csp-report", () => {
       ),
     );
 
-    expect(log).toHaveBeenCalledWith(
-      "[csp-report]",
-      expect.objectContaining({ blockedResource: "(other-scheme)" }),
-    );
+    expect(getLoggedReport(log)).toMatchObject({
+      blockedResource: "(other-scheme)",
+    });
     expect(JSON.stringify(log.mock.calls)).not.toContain("private-sentinel");
   });
 
@@ -109,10 +113,9 @@ describe("/api/csp-report", () => {
       ),
     );
 
-    expect(log).toHaveBeenCalledWith(
-      "[csp-report]",
-      expect.objectContaining({ blockedResource: blockedUri }),
-    );
+    expect(getLoggedReport(log)).toMatchObject({
+      blockedResource: blockedUri,
+    });
   });
 
   it("logs an empty blocked resource when the field is missing", async () => {
@@ -120,10 +123,7 @@ describe("/api/csp-report", () => {
 
     await POST(makeContext(JSON.stringify({ "csp-report": {} })));
 
-    expect(log).toHaveBeenCalledWith(
-      "[csp-report]",
-      expect.objectContaining({ blockedResource: "" }),
-    );
+    expect(getLoggedReport(log)).toMatchObject({ blockedResource: "" });
   });
 
   it("logs a fixed marker for an unparseable blocked resource", async () => {
@@ -139,10 +139,9 @@ describe("/api/csp-report", () => {
       ),
     );
 
-    expect(log).toHaveBeenCalledWith(
-      "[csp-report]",
-      expect.objectContaining({ blockedResource: "(unparseable)" }),
-    );
+    expect(getLoggedReport(log)).toMatchObject({
+      blockedResource: "(unparseable)",
+    });
     expect(JSON.stringify(log.mock.calls)).not.toContain("secret");
   });
 
@@ -159,10 +158,7 @@ describe("/api/csp-report", () => {
       ),
     );
 
-    expect(log).toHaveBeenCalledWith(
-      "[csp-report]",
-      expect.objectContaining({ blockedResource: "" }),
-    );
+    expect(getLoggedReport(log)).toMatchObject({ blockedResource: "" });
     expect(JSON.stringify(log.mock.calls)).not.toContain(
       "private-secret-value",
     );
@@ -182,12 +178,9 @@ describe("/api/csp-report", () => {
       ),
     );
 
-    expect(log).toHaveBeenCalledWith(
-      "[csp-report]",
-      expect.objectContaining({
-        documentUri: "https://www.zenml.io/product/kitaru",
-      }),
-    );
+    expect(getLoggedReport(log)).toMatchObject({
+      documentUri: "https://www.zenml.io/product/kitaru",
+    });
     expect(JSON.stringify(log.mock.calls)).not.toContain("private-fragment");
   });
 
