@@ -95,15 +95,24 @@ Immediately before exact-version activation, the workflow rechecks that the
 source commit is still the live `main`. It first creates a deployment with the
 accepted previous version at 100 percent and the exact candidate at 0 percent.
 Normal visitors therefore continue to receive the previous version. Requests
-carrying Cloudflare's exact-version override then verify a source-commit marker
-embedded in the exact validated candidate homepage. The marker is part of the
-checksummed Worker artifact, so it changes for every source commit, including
-content-only releases. The workflow retries the overridden homepage and its
-marker together for a bounded convergence window because Cloudflare can briefly
-ignore a version override after a deployment changes. An ignored override
-returns the accepted previous homepage, which lacks the candidate marker, so it
-cannot produce a false pass. Retry requests use distinct query strings so a
-stale edge response cannot satisfy every retry from cache.
+carrying Cloudflare's exact-version override then verify a marker embedded in
+the exact validated candidate homepage. CI stamps the marker with the source
+commit, CI run ID, and run attempt before the static, Worker-runtime, and
+browser-hydration checks. The marker is therefore part of the checksummed
+Worker artifact and changes for every source commit and every rerun. The
+workflow retries the overridden homepage and its marker together for a bounded
+convergence window because Cloudflare can briefly ignore a version override
+after a deployment changes. An ignored override returns the accepted previous
+homepage, which lacks the candidate marker, so it cannot produce a false pass.
+Retry requests use distinct query strings so a stale edge response cannot
+satisfy every retry from cache.
+
+After the homepage marker succeeds, the workflow also requests up to six
+`/_astro` paths extracted from that exact candidate homepage. The asset requests
+run in parallel, use the same version override, and retry as one bounded set.
+This catches the case where the candidate HTML has propagated but one of its
+referenced assets has not. The zero-traffic preflight stops before promotion if
+either the homepage identity or the candidate asset set cannot converge.
 
 After the zero-traffic preflight passes, the workflow rechecks that the accepted
 100/0 deployment is still present. It then promotes the candidate to 100

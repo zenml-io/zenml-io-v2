@@ -52,6 +52,18 @@ jobs:
       - name: Build site
         run: pnpm build
 
+      - name: Stamp exact release marker
+        shell: bash
+        env:
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          RUN_ID: ${{ github.run_id }}
+          SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          set -euo pipefail
+          release_marker="worker-release-marker:$SOURCE_COMMIT:$RUN_ID:$RUN_ATTEMPT"
+          printf '\n<!-- %s -->\n' "$release_marker" >> dist/client/index.html
+          grep -Fq -- "$release_marker" dist/client/index.html
+
       - name: Smoke test built site output
         run: pnpm smoke:dist
 
@@ -108,8 +120,7 @@ jobs:
           ' dist/server/wrangler.json > /dev/null
           test -f dist/server/entry.mjs
           test -f dist/client/index.html
-          release_marker="worker-release-marker:$SOURCE_COMMIT"
-          printf '\n<!-- %s -->\n' "$release_marker" >> dist/client/index.html
+          release_marker="worker-release-marker:$SOURCE_COMMIT:$RUN_ID:$RUN_ATTEMPT"
           grep -Fq -- "$release_marker" dist/client/index.html
 
           replay_dir="$(mktemp -d)"
