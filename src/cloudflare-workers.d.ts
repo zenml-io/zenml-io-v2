@@ -4,7 +4,6 @@ declare namespace Cloudflare {
     SEGMENT_FORMS_WRITE_KEY?: string;
     GITHUB_TOKEN?: string;
     GITHUB_API_TOKEN?: string;
-    GITHUB_STARS_FORCE_FALLBACK?: string;
   }
 }
 

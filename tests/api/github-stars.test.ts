@@ -44,35 +44,6 @@ describe("GET /api/github-stars", () => {
     expect(payload.asOf).toEqual(expect.any(String));
   });
 
-  it("uses the safe fallback without external I/O when explicitly requested", async () => {
-    const fetchMock = vi.fn<typeof fetch>();
-    const cacheMatch = vi.fn();
-    const cachePut = vi.fn();
-    vi.stubGlobal("caches", {
-      default: {
-        match: cacheMatch,
-        put: cachePut,
-      },
-    });
-    vi.stubGlobal("fetch", fetchMock);
-    env.GITHUB_STARS_FORCE_FALLBACK = "true";
-
-    const response = await GET(makeContext());
-    const payload = (await response.json()) as Record<string, unknown>;
-
-    expect(response.status).toBe(200);
-    expect(response.headers.get("x-zenml-github-stars-mode")).toBe(
-      "forced-fallback",
-    );
-    expect(payload).toMatchObject({
-      repo: "zenml-io/zenml",
-      source: "fallback",
-    });
-    expect(fetchMock).not.toHaveBeenCalled();
-    expect(cacheMatch).not.toHaveBeenCalled();
-    expect(cachePut).not.toHaveBeenCalled();
-  });
-
   it("uses the primary runtime token without exposing it in the response", async () => {
     const fetchMock = vi.fn<typeof fetch>(
       async (_input, _init) =>

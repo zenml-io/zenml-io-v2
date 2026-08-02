@@ -153,16 +153,6 @@ async function refreshCache(
 
 export async function GET(context: APIContext): Promise<Response> {
   const repo = resolveStarsRepo(context.url.searchParams.get("repo"));
-  // The local Worker gate must not depend on GitHub or Miniflare cache I/O.
-  if (env.GITHUB_STARS_FORCE_FALLBACK === "true") {
-    const response = jsonResponse(
-      fallbackStarsSnapshot(new Date(), repo.fallbackStars, repo.slug),
-      true,
-    );
-    response.headers.set("X-ZenML-GitHub-Stars-Mode", "forced-fallback");
-    return response;
-  }
-
   const cache = getDefaultCache();
   const cacheKey = new Request(`${CACHE_KEY_URL}?repo=${repo.key}`);
   const githubToken = getGithubToken();
