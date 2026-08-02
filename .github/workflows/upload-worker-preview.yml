@@ -178,7 +178,8 @@ jobs:
             --arg commit "$SOURCE_COMMIT" \
             --arg run_id "$SOURCE_RUN_ID" \
             --arg source_event "$source_event" '
-              .artifact_contract == "astro-cloudflare-v6" and
+              (.artifact_contract == "astro-cloudflare-v6" or
+               .artifact_contract == "astro-cloudflare-v7") and
               .event_name == $source_event and
               .artifact_sha256 == $artifact_sha256 and
               .source_branch == $branch and

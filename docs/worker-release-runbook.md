@@ -2,10 +2,11 @@
 
 ## Current boundary
 
-The accepted Astro 5 Worker serves `www.zenml.io/*`. Cloudflare Pages remains
-available beneath that route as the deeper fallback. No release workflow
-attaches or removes a route, changes a custom domain, edits DNS, changes Access,
-or removes Pages.
+The accepted Astro 6 Worker serves `www.zenml.io/*`. The accepted Astro 5
+Worker version remains the immediate version rollback, and Cloudflare Pages
+remains available beneath the Worker route as the deeper fallback. No release
+workflow attaches or removes a route, changes a custom domain, edits DNS,
+changes Access, or removes Pages.
 
 The release controls now have six paths:
 
@@ -46,11 +47,12 @@ review-only public versions on a dedicated Worker; they cannot promote a branch
 artifact to production. Explicitly approved branch-built production promotion
 remains a separate follow-up.
 
-The Astro 6 private-preview and protected-staging checkpoints were accepted on
-2026-07-29. The artifact manifest now sets `production_release_eligible` to
-`true`, so each exact successful current-`main` artifact may continue into the
-trusted automatic production release. Changing this gate again requires a
-separate reviewed PR.
+The Astro 6 production checkpoint was accepted on 2026-08-02. During the Astro
+7 checkpoint, the artifact manifest sets `production_release_eligible` to
+`false`. Successful `main` CI still builds and publishes the exact validated
+artifact, but the automatic release workflow stops before any credentialed
+Cloudflare upload or activation. Re-enabling production release requires a
+later, separately reviewed PR after preview and protected-staging acceptance.
 
 ## Automatic current-main release
 
@@ -199,30 +201,32 @@ Worker version directly.
 
 The `worker-dist` Actions artifact contains:
 
-- `worker-dist.tar.gz`, preserving Astro 6's repo-relative `dist/` tree and
-  `.wrangler/deploy/config.json`;
+- `worker-dist.tar.gz`, preserving the installed Astro version's repo-relative
+  `dist/` tree and `.wrangler/deploy/config.json`;
 - `worker-dist.sha256`;
 - `worker-manifest.json`, recording the source and build commits, branch, event,
   run ID and attempt, artifact digest, lockfile digest, the
-  `astro-cloudflare-v6` contract marker, and separate digests for the generated
-  and redirect Wrangler configurations.
+  `astro-cloudflare-v6` or `astro-cloudflare-v7` contract marker, and separate
+  digests for the generated and redirect Wrangler configurations. The
+  credential-free producer derives this marker from the installed Astro major
+  and fails closed for every other major.
 
-Credentialed workflows verify the checksum and provenance, reject absolute or
-parent-traversing archive paths, reject links and special files, verify both
-configuration digests, and accept only the reviewed generated Wrangler
-configuration shape. The generated config points to `dist/server/entry.mjs`
-and serves assets from `dist/client`. Before publishing the artifact, the
-credential-free CI job copies only the artifact tree to a clean directory and
-runs Wrangler's upload dry-run. This proves that later jobs can upload it
-without the repository, `node_modules`, a rebuild, or branch-controlled package
-scripts.
+Credentialed workflows accept exactly those two framework contract markers,
+verify the checksum and provenance, reject absolute or parent-traversing
+archive paths, reject links and special files, verify both configuration
+digests, and accept only the reviewed generated Wrangler configuration shape.
+The generated config points to `dist/server/entry.mjs` and serves assets from
+`dist/client`. Before publishing the artifact, the credential-free CI job
+copies only the artifact tree to a clean directory and runs Wrangler's upload
+dry-run. This proves that later jobs can upload it without the repository,
+`node_modules`, a rebuild, or branch-controlled package scripts.
 
 The production-candidate workflow also requires the source commit's CI workflow
 file to match the trusted `main` definition. Credentialed consumers install
 Wrangler 4.110.0 themselves, derive a minimal upload config beside the generated
 server entrypoint, and do not execute branch-controlled package scripts.
 
-Astro 6 local preview uses `astro preview`. The dedicated Worker runtime check
+Local preview uses `astro preview`. The dedicated Worker runtime check
 still starts the generated `dist/server/wrangler.json` directly because it must
 exercise bindings, APIs, redirects, headers, assets, and 404 behavior in the
 same Worker layout that release jobs upload.
@@ -230,9 +234,10 @@ same Worker layout that release jobs upload.
 ## Runtime toolchain
 
 Local development and CI use Node 22.23.1. The package engine allows Node
-22.12.0 or newer within Node 22, which is Astro 6's supported Node line, while
-`.nvmrc` and both artifact workflow definitions pin 22.23.1 for repeatability.
-Wrangler remains pinned to 4.110.0. The site declares only the four Worker
+22.12.0 or newer within Node 22, which supports both reviewed Astro 6 and Astro
+7 contracts, while `.nvmrc` and both artifact workflow definitions pin 22.23.1
+for repeatability. Wrangler remains pinned to 4.110.0, and the Cloudflare
+compatibility date remains `2026-02-10`. The site declares only the four Worker
 environment variables it reads in `src/cloudflare-workers.d.ts`. This avoids
 loading Worker DOM globals into browser-side source while keeping
 `cloudflare:workers` imports typed.

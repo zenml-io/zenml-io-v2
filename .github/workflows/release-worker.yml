@@ -143,7 +143,8 @@ jobs:
             --arg commit "$SOURCE_COMMIT" \
             --arg run_id "$SOURCE_RUN_ID" \
             '.production_release_eligible == true and
-             .artifact_contract == "astro-cloudflare-v6" and
+             (.artifact_contract == "astro-cloudflare-v6" or
+              .artifact_contract == "astro-cloudflare-v7") and
              .artifact_sha256 == $artifact_sha256 and
              .build_commit == $commit and
              .event_name == "push" and

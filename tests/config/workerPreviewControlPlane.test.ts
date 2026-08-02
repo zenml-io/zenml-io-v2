@@ -405,7 +405,7 @@ describe("preview Worker upload workflow", () => {
       )
       .digest("hex");
 
-    expect(gitBlobSha).toBe("39d1e68210d303947f484abc436a25b4827d9990");
+    expect(gitBlobSha).toBe("6ef20a3ab00c99aba12c3437a5abfb07f9e4ee44");
     expect(trustedArtifactWorkflowText).toBe(artifactWorkflowText);
     expect(trustedArtifactWorkflowText).toContain(
       "name: Website CI and Worker Artifact",
@@ -465,8 +465,8 @@ describe("preview Worker upload workflow", () => {
     expect(safetyStep.run).toContain("dist/server/wrangler.json");
     expect(safetyStep.run).toContain("dist/server/entry.mjs");
     expect(safetyStep.run).toContain(".wrangler/deploy/config.json");
-    expect(provenanceStep.run).toContain(
-      '.artifact_contract == "astro-cloudflare-v6"',
+    expect(provenanceStep.run).toMatch(
+      /\(\.artifact_contract == "astro-cloudflare-v6" or\s+\.artifact_contract == "astro-cloudflare-v7"\)/,
     );
   });
 

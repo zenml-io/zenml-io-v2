@@ -63,12 +63,14 @@ const prPreviewWorkflow = readFileSync(
   "utf8",
 );
 const prPreviewWorkflowConfig = parse(prPreviewWorkflow) as ProductionWorkflow;
+const deployWorkflowConfig = parse(deployWorkflow) as ProductionWorkflow;
 const candidateWorkflowConfig = parse(candidateWorkflow) as ProductionWorkflow;
 const activationWorkflowConfig = parse(
   activationWorkflow,
 ) as ProductionWorkflow;
 const releaseWorkflowConfig = parse(releaseWorkflow) as ProductionWorkflow;
 const candidateSteps = candidateWorkflowConfig.jobs["upload-candidate"].steps;
+const deploySteps = deployWorkflowConfig.jobs["repo-check"].steps;
 const activationSteps = activationWorkflowConfig.jobs.activate.steps;
 const releaseUploadSteps = releaseWorkflowConfig.jobs.upload.steps;
 const releaseActivationSteps = releaseWorkflowConfig.jobs.activate.steps;
@@ -666,17 +668,20 @@ printf '%s\\n' "$RECOVERY_HOME_STATUS"
 }
 
 function jqProgramReadingFrom(run: string, source: string): string {
-  const destination = `' ${source} > /dev/null`;
-  const destinationIndex = run.indexOf(destination);
-  expect(destinationIndex, `missing jq source for ${source}`).toBeGreaterThan(
-    -1,
-  );
-  const commandPrefix = run.slice(0, destinationIndex);
+  const sourceIndex = run.indexOf(`${source} > /dev/null`);
+  expect(sourceIndex, `missing jq source for ${source}`).toBeGreaterThan(-1);
+  const commandPrefix = run.slice(0, sourceIndex);
   const commandIndex = commandPrefix.lastIndexOf("jq -e");
   expect(commandIndex, `missing jq command for ${source}`).toBeGreaterThan(-1);
-  const programStart = commandPrefix.indexOf("'", commandIndex);
-  expect(programStart, `missing jq program for ${source}`).toBeGreaterThan(-1);
-  return commandPrefix.slice(programStart + 1);
+  const programEnd = commandPrefix.lastIndexOf("'");
+  expect(programEnd, `missing jq program end for ${source}`).toBeGreaterThan(
+    commandIndex,
+  );
+  const programStart = commandPrefix.lastIndexOf("'", programEnd - 1);
+  expect(programStart, `missing jq program for ${source}`).toBeGreaterThan(
+    commandIndex,
+  );
+  return commandPrefix.slice(programStart + 1, programEnd);
 }
 
 function expectJqResult(
@@ -1026,6 +1031,59 @@ describe("trusted production candidate uploader", () => {
     expectNoRouteOrDnsMutation(candidateWorkflow);
   });
 
+  it("accepts only eligible Astro 6 or 7 artifacts with exact provenance", () => {
+    const provenanceStep = workflowStep(
+      candidateSteps,
+      "Verify artifact provenance and checksum",
+    );
+    const program = jqProgramReadingFrom(
+      provenanceStep.run ?? "",
+      "worker-manifest.json",
+    );
+    const args = [
+      "--arg",
+      "artifact_sha256",
+      "artifact-sha",
+      "--arg",
+      "branch",
+      "main",
+      "--arg",
+      "commit",
+      "source-commit",
+      "--arg",
+      "run_id",
+      "12345",
+    ];
+    const manifest = {
+      artifact_contract: "astro-cloudflare-v6",
+      artifact_sha256: "artifact-sha",
+      production_release_eligible: true,
+      run_id: "12345",
+      source_branch: "main",
+      source_commit: "source-commit",
+    };
+
+    expectJqResult(program, manifest, true, args);
+    expectJqResult(
+      program,
+      { ...manifest, artifact_contract: "astro-cloudflare-v7" },
+      true,
+      args,
+    );
+    expectJqResult(
+      program,
+      { ...manifest, production_release_eligible: false },
+      false,
+      args,
+    );
+    expectJqResult(
+      program,
+      { ...manifest, artifact_contract: "astro-cloudflare-v8" },
+      false,
+      args,
+    );
+  });
+
   it("rejects empty production secrets before creating or uploading a secrets file", () => {
     const guardStep = workflowStep(
       candidateSteps,
@@ -1313,6 +1371,67 @@ describe("trusted production activation workflow", () => {
 });
 
 describe("automatic post-cutover production release", () => {
+  it("labels only reviewed Astro 6 or 7 artifacts and pauses production release", () => {
+    const packageStep = workflowStep(
+      deploySteps,
+      "Package the validated Worker artifact",
+    );
+    const packageRun = packageStep.run ?? "";
+    const caseStart = packageRun.indexOf('case "$astro_major" in');
+    const caseEnd = packageRun.indexOf("esac", caseStart);
+
+    expect(caseStart).toBeGreaterThan(-1);
+    expect(caseEnd).toBeGreaterThan(caseStart);
+    const caseProgram = packageRun.slice(caseStart, caseEnd + "esac".length);
+    const artifactContractFor = (astroMajor: string): string =>
+      execFileSync(
+        "bash",
+        [
+          "-c",
+          `set -euo pipefail\n${caseProgram}\nprintf '%s' "$artifact_contract"`,
+        ],
+        {
+          encoding: "utf8",
+          env: { ...process.env, astro_major: astroMajor },
+          stdio: ["ignore", "pipe", "pipe"],
+        },
+      );
+
+    expect(artifactContractFor("6")).toBe("astro-cloudflare-v6");
+    expect(artifactContractFor("7")).toBe("astro-cloudflare-v7");
+    expect(() => artifactContractFor("8")).toThrow();
+
+    expect(deployWorkflow).toContain('astro_major="$(');
+    expect(deployWorkflow).toContain("node -p");
+    expect(deployWorkflow).toContain("node_modules/astro/package.json");
+    expect(deployWorkflow).toContain("6|7)");
+    expect(deployWorkflow).toContain(
+      'artifact_contract="astro-cloudflare-v$' + '{astro_major}"',
+    );
+    expect(deployWorkflow).toContain("Unsupported Astro major");
+    expect(deployWorkflow).toContain(
+      '--arg artifact_contract "$artifact_contract"',
+    );
+    expect(deployWorkflow).toContain(
+      "--argjson production_release_eligible false",
+    );
+    expect(deployWorkflow).not.toContain(
+      '--arg artifact_contract "astro-cloudflare-v6"',
+    );
+
+    for (const workflow of [
+      previewWorkflow,
+      candidateWorkflow,
+      releaseWorkflow,
+      prPreviewWorkflow,
+    ]) {
+      expect(workflow).toMatch(
+        /\(\.artifact_contract == "astro-cloudflare-v6" or\s+\.artifact_contract == "astro-cloudflare-v7"\)/,
+      );
+      expect(workflow).not.toMatch(/astro-cloudflare-v(?:[0-5]|[89]|\d{2,})/);
+    }
+  });
+
   it("runs only after successful current-main artifact CI", () => {
     expect(releaseWorkflow).toContain("workflow_run:");
     expect(releaseWorkflow).toContain(
@@ -1336,7 +1455,7 @@ describe("automatic post-cutover production release", () => {
     expect(releaseWorkflow).toContain("eligible=false");
     expect(releaseWorkflow).toContain(".production_release_eligible == true");
     expect(deployWorkflow).toContain(
-      "--argjson production_release_eligible true",
+      "--argjson production_release_eligible false",
     );
   });
 

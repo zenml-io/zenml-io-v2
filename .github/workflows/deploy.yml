@@ -141,15 +141,27 @@ jobs:
           deploy_config_sha256="$(
             sha256sum .wrangler/deploy/config.json | cut -d ' ' -f 1
           )"
+          astro_major="$(
+            node -p 'require("./node_modules/astro/package.json").version.split(".")[0]'
+          )"
+          case "$astro_major" in
+            6|7)
+              artifact_contract="astro-cloudflare-v${astro_major}"
+              ;;
+            *)
+              echo "Unsupported Astro major for Worker artifact: $astro_major" >&2
+              exit 1
+              ;;
+          esac
           jq -n \
             --arg artifact_sha256 "$(cut -d ' ' -f 1 worker-dist.sha256)" \
-            --arg artifact_contract "astro-cloudflare-v6" \
+            --arg artifact_contract "$artifact_contract" \
             --arg build_commit "$BUILD_COMMIT" \
             --arg deploy_config_sha256 "$deploy_config_sha256" \
             --arg event_name "$EVENT_NAME" \
             --arg generated_config_sha256 "$generated_config_sha256" \
             --arg lockfile_sha256 "$(sha256sum pnpm-lock.yaml | cut -d ' ' -f 1)" \
-            --argjson production_release_eligible true \
+            --argjson production_release_eligible false \
             --arg run_attempt "$RUN_ATTEMPT" \
             --arg run_id "$RUN_ID" \
             --arg source_branch "$SOURCE_BRANCH" \
