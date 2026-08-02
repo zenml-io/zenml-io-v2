@@ -108,6 +108,9 @@ jobs:
           ' dist/server/wrangler.json > /dev/null
           test -f dist/server/entry.mjs
           test -f dist/client/index.html
+          release_marker="worker-release-marker:$SOURCE_COMMIT"
+          printf '\n<!-- %s -->\n' "$release_marker" >> dist/client/index.html
+          grep -Fq -- "$release_marker" dist/client/index.html
 
           replay_dir="$(mktemp -d)"
           trap 'rm -rf "$replay_dir"' EXIT

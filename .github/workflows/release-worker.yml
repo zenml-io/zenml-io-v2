@@ -114,7 +114,6 @@ jobs:
     timeout-minutes: 15
     outputs:
       artifact_sha256: ${{ steps.upload.outputs.artifact_sha256 }}
-      candidate_asset_paths: ${{ steps.upload.outputs.candidate_asset_paths }}
       previous_version_id: ${{ steps.baseline.outputs.previous_version_id }}
       version_id: ${{ steps.upload.outputs.version_id }}
     env:
@@ -353,38 +352,8 @@ jobs:
 
           export WRANGLER_OUTPUT_FILE_PATH="$output_file"
           artifact_sha256="$(jq -r .artifact_sha256 worker-manifest.json)"
-          curl \
-            --connect-timeout 10 \
-            --max-time 30 \
-            --fail-with-body \
-            --silent \
-            --show-error \
-            "https://www.zenml.io/?__worker_candidate_baseline=$GITHUB_RUN_ID" \
-            > "$RUNNER_TEMP/accepted-production-home.html"
-          grep -Eo '/_astro/[A-Za-z0-9._-]+' dist/client/index.html \
-            | LC_ALL=C sort -u \
-            > "$RUNNER_TEMP/candidate-home-asset-paths.txt"
-          grep -Eo '/_astro/[A-Za-z0-9._-]+' \
-            "$RUNNER_TEMP/accepted-production-home.html" \
-            | LC_ALL=C sort -u \
-            > "$RUNNER_TEMP/accepted-production-asset-paths.txt"
-          comm -23 \
-            "$RUNNER_TEMP/candidate-home-asset-paths.txt" \
-            "$RUNNER_TEMP/accepted-production-asset-paths.txt" \
-            | sed -n '1,6p' \
-            > "$RUNNER_TEMP/candidate-asset-paths.txt"
-          test -s "$RUNNER_TEMP/candidate-asset-paths.txt"
-          candidate_asset_paths="$(
-            jq -R -s -c \
-              'split("\n") | map(select(length > 0))' \
-              "$RUNNER_TEMP/candidate-asset-paths.txt"
-          )"
-          jq -e '
-            type == "array" and
-            length >= 1 and
-            length <= 6 and
-            all(.[]; test("^/_astro/[A-Za-z0-9._-]+$"))
-          ' <<< "$candidate_asset_paths" > /dev/null
+          release_marker="worker-release-marker:$SOURCE_COMMIT"
+          grep -Fq -- "$release_marker" dist/client/index.html
           version_message="source_commit=$SOURCE_COMMIT source_branch=$SOURCE_BRANCH source_run_id=$SOURCE_RUN_ID artifact_sha256=$artifact_sha256"
           wrangler versions upload \
             --config dist/server/upload-wrangler.json \
@@ -413,7 +382,6 @@ jobs:
           version_id="$(jq -er .version_id upload-result.json)"
           {
             echo "artifact_sha256=$artifact_sha256"
-            echo "candidate_asset_paths=$candidate_asset_paths"
             echo "version_id=$version_id"
           } >> "$GITHUB_OUTPUT"
           jq -n \
@@ -544,7 +512,6 @@ jobs:
     timeout-minutes: 20
     env:
       ARTIFACT_SHA256: ${{ needs.upload.outputs.artifact_sha256 }}
-      CANDIDATE_ASSET_PATHS_JSON: ${{ needs.upload.outputs.candidate_asset_paths }}
       CANDIDATE_VERSION_ID: ${{ needs.upload.outputs.version_id }}
       PREVIOUS_VERSION_ID: ${{ needs.upload.outputs.previous_version_id }}
       SOURCE_BRANCH: main
@@ -845,6 +812,25 @@ jobs:
             return 1
           }
 
+          expect_candidate_home() {
+            local expected_marker="worker-release-marker:$SOURCE_COMMIT"
+            local attempt
+            for attempt in $(seq 1 12); do
+              if expect_status 200 \
+                "https://www.zenml.io/?__worker_marker_attempt=$attempt" \
+                preflight-home "$CANDIDATE_VERSION_ID" 1 0 &&
+                grep -Fq -- "$expected_marker" \
+                  "$RUNNER_TEMP/smoke-preflight-home.body"; then
+                return 0
+              fi
+              if [ "$attempt" -lt 12 ]; then
+                sleep 5
+              fi
+            done
+            echo "The exact-version homepage did not converge to the candidate release marker." >&2
+            return 1
+          }
+
           rollback_previous_version() {
             local original_status=$?
             trap - ERR
@@ -952,25 +938,7 @@ jobs:
           verify_preflight_deployment \
             "$RUNNER_TEMP/deployments-after-preflight.json"
 
-          jq -e '
-            type == "array" and
-            length >= 1 and
-            length <= 6 and
-            all(.[]; test("^/_astro/[A-Za-z0-9._-]+$"))
-          ' <<< "$CANDIDATE_ASSET_PATHS_JSON" > /dev/null
-          jq -er '.[]' <<< "$CANDIDATE_ASSET_PATHS_JSON" \
-            > "$RUNNER_TEMP/candidate-asset-paths.txt"
-          while read -r asset_path; do
-            expect_status 200 \
-              "https://www.zenml.io${asset_path}" \
-              preflight-candidate-asset "$CANDIDATE_VERSION_ID" 12 5
-          done < "$RUNNER_TEMP/candidate-asset-paths.txt"
-
-          expect_status 200 \
-            "https://www.zenml.io/" preflight-home "$CANDIDATE_VERSION_ID"
-          while read -r asset_path; do
-            grep -Fq "$asset_path" "$RUNNER_TEMP/smoke-preflight-home.body"
-          done < "$RUNNER_TEMP/candidate-asset-paths.txt"
+          expect_candidate_home
           verify_preflight_deployment \
             "$RUNNER_TEMP/deployments-immediately-before-promotion.json"
 
@@ -1082,7 +1050,6 @@ jobs:
             ${{ runner.temp }}/worker-domains-before-activation.json
             ${{ runner.temp }}/smoke-*.body
             ${{ runner.temp }}/smoke-assets.txt
-            ${{ runner.temp }}/candidate-asset-paths.txt
           if-no-files-found: warn
           retention-days: 30
 

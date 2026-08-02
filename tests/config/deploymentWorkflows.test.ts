@@ -339,6 +339,95 @@ expect_status 200 "https://www.zenml.io/" retry-test "22222222-2222-2222-2222-22
   );
 }
 
+function executeCandidateHomeCheck(markerAfterCall: number): {
+  curlCalls: number;
+  error: unknown;
+} {
+  const releaseStep = workflowStep(
+    releaseActivationSteps,
+    "Activate, smoke-test, and roll back on failure",
+  );
+  const run = releaseStep.run ?? "";
+  const functionStart = run.indexOf("expect_status() {");
+  const functionEnd = run.indexOf("rollback_previous_version() {");
+  expect(functionStart).toBeGreaterThan(-1);
+  expect(functionEnd).toBeGreaterThan(functionStart);
+  const verificationFunctions = run.slice(functionStart, functionEnd);
+
+  return withTemporaryHarness(
+    "worker-release-candidate-home-",
+    (harnessDirectory, binDirectory) => {
+      const callsFile = join(harnessDirectory, "curl-calls.txt");
+      writeFileSync(callsFile, "0\n");
+      writeFileSync(
+        join(binDirectory, "curl"),
+        `#!/usr/bin/env bash
+set -euo pipefail
+calls="$(cat "$CURL_CALLS_FILE")"
+calls=$((calls + 1))
+printf '%s\\n' "$calls" > "$CURL_CALLS_FILE"
+output_file=""
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --output)
+      output_file="$2"
+      shift 2
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
+if [ "$calls" -ge "$CURL_MARKER_AFTER_CALL" ]; then
+  printf '<!-- worker-release-marker:%s -->\\n' "$SOURCE_COMMIT" > "$output_file"
+else
+  printf '<html>old release</html>\\n' > "$output_file"
+fi
+printf '200\\n'
+`,
+      );
+      writeFileSync(
+        join(binDirectory, "sleep"),
+        "#!/usr/bin/env bash\nexit 0\n",
+      );
+      chmodSync(join(binDirectory, "curl"), 0o755);
+      chmodSync(join(binDirectory, "sleep"), 0o755);
+
+      let error: unknown;
+      try {
+        execFileSync(
+          "bash",
+          [
+            "-c",
+            `set -Eeuo pipefail
+${verificationFunctions}
+worker_name="zenml-io-v2-worker"
+expect_candidate_home
+`,
+          ],
+          {
+            env: {
+              ...process.env,
+              CANDIDATE_VERSION_ID: "22222222-2222-2222-2222-222222222222",
+              CURL_CALLS_FILE: callsFile,
+              CURL_MARKER_AFTER_CALL: String(markerAfterCall),
+              GITHUB_RUN_ID: "12345",
+              PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
+              RUNNER_TEMP: harnessDirectory,
+              SOURCE_COMMIT: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            },
+            stdio: ["ignore", "pipe", "pipe"],
+          },
+        );
+      } catch (caught) {
+        error = caught;
+      }
+      const curlCalls = Number.parseInt(readFileSync(callsFile, "utf8"), 10);
+      return { curlCalls, error };
+    },
+  );
+}
+
 function executeRecovery(
   initialVersion: string,
   deployFailures: number,
@@ -1305,12 +1394,7 @@ describe("automatic post-cutover production release", () => {
     const zeroTrafficPreflight = run.indexOf(
       'wrangler versions deploy "$PREVIOUS_VERSION_ID@100%" "$CANDIDATE_VERSION_ID@0%"',
     );
-    const candidateOverride = run.indexOf(
-      '"https://www.zenml.io/" preflight-home "$CANDIDATE_VERSION_ID"',
-    );
-    const candidateAssetOverride = run.indexOf(
-      '"https://www.zenml.io$' + '{asset_path}"',
-    );
+    const candidateHome = run.lastIndexOf("expect_candidate_home");
     const finalPreflightCheck = run.indexOf(
       '"$RUNNER_TEMP/deployments-immediately-before-promotion.json"',
     );
@@ -1323,10 +1407,8 @@ describe("automatic post-cutover production release", () => {
     expect(liveBaselineCheck).toBeGreaterThan(liveMainCheck);
     expect(activationAttempted).toBeGreaterThan(liveBaselineCheck);
     expect(zeroTrafficPreflight).toBeGreaterThan(activationAttempted);
-    expect(candidateAssetOverride).toBeGreaterThan(zeroTrafficPreflight);
-    expect(candidateOverride).toBeGreaterThan(zeroTrafficPreflight);
-    expect(candidateOverride).toBeGreaterThan(candidateAssetOverride);
-    expect(finalPreflightCheck).toBeGreaterThan(candidateOverride);
+    expect(candidateHome).toBeGreaterThan(zeroTrafficPreflight);
+    expect(finalPreflightCheck).toBeGreaterThan(candidateHome);
     expect(activation).toBeGreaterThan(finalPreflightCheck);
     expect(activation).toBeGreaterThan(liveMainCheck);
     expect(activation).toBeGreaterThan(activationAttempted);
@@ -1338,7 +1420,7 @@ describe("automatic post-cutover production release", () => {
     );
   });
 
-  it("proves the version override reached the exact candidate artifact before promotion", () => {
+  it("proves the version override reached the exact checksummed candidate artifact before promotion", () => {
     const uploadStep = workflowStep(
       releaseUploadSteps,
       "Upload inactive production version",
@@ -1350,35 +1432,43 @@ describe("automatic post-cutover production release", () => {
     const uploadProgram = uploadStep.run ?? "";
     const releaseProgram = releaseStep.run ?? "";
 
-    expect(releaseWorkflowConfig.jobs.upload.outputs).toMatchObject({
-      candidate_asset_paths:
-        "$" + "{{ steps.upload.outputs.candidate_asset_paths }}",
-    });
-    expect(uploadProgram).toContain("dist/client/index.html");
+    expect(deployWorkflow).toContain(
+      'release_marker="worker-release-marker:$SOURCE_COMMIT"',
+    );
+    expect(deployWorkflow).toContain(
+      "printf '\\n<!-- %s -->\\n' \"$release_marker\" >> dist/client/index.html",
+    );
+    expect(deployWorkflow).toContain(
+      'grep -Fq -- "$release_marker" dist/client/index.html',
+    );
+    expect(releaseWorkflowConfig.jobs.upload.outputs).not.toHaveProperty(
+      "candidate_asset_paths",
+    );
     expect(uploadProgram).toContain(
-      '"https://www.zenml.io/?__worker_candidate_baseline=$GITHUB_RUN_ID"',
+      'release_marker="worker-release-marker:$SOURCE_COMMIT"',
     );
-    expect(uploadProgram).toContain("comm -23");
     expect(uploadProgram).toContain(
-      'echo "candidate_asset_paths=$candidate_asset_paths"',
+      'grep -Fq -- "$release_marker" dist/client/index.html',
     );
-    expect(releaseWorkflowConfig.jobs.activate.env).toMatchObject({
-      CANDIDATE_ASSET_PATHS_JSON:
-        "$" + "{{ needs.upload.outputs.candidate_asset_paths }}",
-    });
-    expect(releaseProgram).toContain(
-      "jq -er '.[]' <<< \"$CANDIDATE_ASSET_PATHS_JSON\"",
+    expect(releaseWorkflowConfig.jobs.activate.env).not.toHaveProperty(
+      "CANDIDATE_ASSET_PATHS_JSON",
     );
+    expect(releaseProgram).toContain("expect_candidate_home() {");
     expect(releaseProgram).toContain(
-      '"https://www.zenml.io$' + '{asset_path}"',
+      'local expected_marker="worker-release-marker:$SOURCE_COMMIT"',
     );
-    expect(releaseProgram).toContain('grep -Fq "$asset_path"');
+    expect(releaseProgram).toContain("for attempt in $(seq 1 12); do");
     expect(releaseProgram).toContain(
-      "for ((attempt=1; attempt<=max_attempts; attempt++))",
+      '"https://www.zenml.io/?__worker_marker_attempt=$attempt"',
     );
     expect(releaseProgram).toContain(
-      'preflight-candidate-asset "$CANDIDATE_VERSION_ID" 12 5',
+      'preflight-home "$CANDIDATE_VERSION_ID" 1 0',
     );
+    expect(releaseProgram).toContain('grep -Fq -- "$expected_marker"');
+    expect(releaseProgram).toContain(
+      "The exact-version homepage did not converge to the candidate release marker.",
+    );
+    expect(releaseProgram).not.toContain("preflight-candidate-asset");
   });
 
   it("bounds activation deployment reads and retries post-activation verification", () => {
@@ -1608,6 +1698,16 @@ describe("automatic post-cutover production release", () => {
     ]);
     expect(result.curlArgs[0]).toContain("__worker_smoke=12345-1");
     expect(result.curlArgs[1]).toContain("__worker_smoke=12345-2");
+  });
+
+  it("retries a stale 200 homepage only until it carries the candidate marker", () => {
+    const converged = executeCandidateHomeCheck(2);
+    expect(converged.error).toBeUndefined();
+    expect(converged.curlCalls).toBe(2);
+
+    const exhausted = executeCandidateHomeCheck(13);
+    expect(exhausted.error).toBeDefined();
+    expect(exhausted.curlCalls).toBe(12);
   });
 
   it("executes recovery reconciliation and fails closed when recovery cannot complete", () => {
