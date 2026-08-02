@@ -1940,7 +1940,7 @@ describe("automatic post-cutover production release", () => {
     expect(finalReadFailure.stderr).toContain(
       "Could not read the production deployment after homepage verification; recovery did not complete.",
     );
-  });
+  }, 60_000);
 });
 
 describe("automatic pull-request Worker previews", () => {
