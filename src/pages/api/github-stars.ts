@@ -153,11 +153,19 @@ async function refreshCache(
 
 export async function GET(context: APIContext): Promise<Response> {
   const repo = resolveStarsRepo(context.url.searchParams.get("repo"));
+  // The local Worker gate must not depend on GitHub or Miniflare cache I/O.
+  if (env.GITHUB_STARS_FORCE_FALLBACK === "true") {
+    const response = jsonResponse(
+      fallbackStarsSnapshot(new Date(), repo.fallbackStars, repo.slug),
+      true,
+    );
+    response.headers.set("X-ZenML-GitHub-Stars-Mode", "forced-fallback");
+    return response;
+  }
+
   const cache = getDefaultCache();
   const cacheKey = new Request(`${CACHE_KEY_URL}?repo=${repo.key}`);
   const githubToken = getGithubToken();
-  // The local Worker gate uses the existing fallback path without external I/O.
-  const forceFallback = env.GITHUB_STARS_FORCE_FALLBACK === "true";
 
   if (cache) {
     const cached = await cache.match(cacheKey);
@@ -167,7 +175,7 @@ export async function GET(context: APIContext): Promise<Response> {
         if (isGithubStarsSnapshot(cachedPayload, repo.slug)) {
           const isStale =
             getSnapshotAgeSeconds(cachedPayload, new Date()) > SOFT_TTL_SECONDS;
-          if (isStale && !forceFallback) {
+          if (isStale) {
             context.locals.cfContext.waitUntil(
               refreshCache(cache, cacheKey, repo, githubToken),
             );
@@ -186,9 +194,7 @@ export async function GET(context: APIContext): Promise<Response> {
     }
   }
 
-  const liveSnapshot = forceFallback
-    ? fallbackStarsSnapshot(new Date(), repo.fallbackStars, repo.slug)
-    : await fetchLiveSnapshot(repo, githubToken);
+  const liveSnapshot = await fetchLiveSnapshot(repo, githubToken);
   if (cache) {
     await cacheSnapshot(cache, cacheKey, liveSnapshot);
   }

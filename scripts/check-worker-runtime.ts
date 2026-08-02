@@ -312,24 +312,10 @@ async function runChecks(baseUrl: string): Promise<CheckResult[]> {
     "GitHub stars API avoids external I/O in the runtime gate",
     stars.status === 200 &&
       typeof starsPayload.stars === "number" &&
-      ["cache", "fallback"].includes(String(starsPayload.source)) &&
+      starsPayload.source === "fallback" &&
+      stars.headers.get("x-zenml-github-stars-mode") === "forced-fallback" &&
       stars.headers.get("cache-control") !== null,
     `status ${stars.status}, source ${String(starsPayload.source)}`,
-  );
-
-  const cachedStars = await request(baseUrl, "/api/github-stars");
-  const cachedStarsPayload = (await cachedStars.json()) as Record<
-    string,
-    unknown
-  >;
-  check(
-    results,
-    "GitHub stars API serves its next response from Worker cache",
-    cachedStars.status === 200 &&
-      typeof cachedStarsPayload.stars === "number" &&
-      cachedStarsPayload.source === "cache" &&
-      cachedStars.headers.get("cache-control") !== null,
-    `status ${cachedStars.status}, source ${String(cachedStarsPayload.source)}`,
   );
 
   const csp = await request(baseUrl, "/api/csp-report", {
