@@ -173,7 +173,8 @@ jobs:
             --arg build_commit "$BUILD_COMMIT" \
             --arg commit "$SOURCE_COMMIT" \
             --arg run_id "$SOURCE_RUN_ID" '
-              .artifact_contract == "astro-cloudflare-v6" and
+              (.artifact_contract == "astro-cloudflare-v6" or
+               .artifact_contract == "astro-cloudflare-v7") and
               .artifact_sha256 == $artifact_sha256 and
               .build_commit == $build_commit and
               .event_name == "pull_request" and

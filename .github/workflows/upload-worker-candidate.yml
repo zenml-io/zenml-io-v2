@@ -114,7 +114,9 @@ jobs:
             --arg branch "$SOURCE_BRANCH" \
             --arg commit "$SOURCE_COMMIT" \
             --arg run_id "$SOURCE_RUN_ID" \
-            '.artifact_contract == "astro-cloudflare-v6" and
+            '(.artifact_contract == "astro-cloudflare-v6" or
+             .artifact_contract == "astro-cloudflare-v7") and
+             .production_release_eligible == true and
              .artifact_sha256 == $artifact_sha256 and
              .source_branch == $branch and
              .source_commit == $commit and
