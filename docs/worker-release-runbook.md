@@ -95,9 +95,17 @@ Immediately before exact-version activation, the workflow rechecks that the
 source commit is still the live `main`. It first creates a deployment with the
 accepted previous version at 100 percent and the exact candidate at 0 percent.
 Normal visitors therefore continue to receive the previous version. Requests
-carrying Cloudflare's exact-version override then verify the candidate homepage
-and a sample of its content-hashed assets. Retry requests use distinct query
-strings so a transient edge 404 cannot satisfy every retry from cache.
+carrying Cloudflare's exact-version override then verify content-hashed asset
+paths present in the exact validated candidate artifact but absent from the
+accepted production homepage. The workflow stops before upload if it cannot
+derive at least one candidate-only path. It allows a
+bounded convergence window because Cloudflare can briefly ignore a version
+override after a deployment changes. An ignored override reaches the accepted
+previous version, where the candidate-only hashes return 404, so it cannot
+produce a false pass. Once those assets are reachable, the workflow verifies
+that the overridden homepage references the same candidate hashes. Retry
+requests use distinct query strings so a transient edge 404 cannot satisfy
+every retry from cache.
 
 After the zero-traffic preflight passes, the workflow rechecks that the accepted
 100/0 deployment is still present. It then promotes the candidate to 100

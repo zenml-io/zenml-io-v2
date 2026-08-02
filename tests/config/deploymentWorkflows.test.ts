@@ -30,8 +30,10 @@ interface ProductionWorkflow {
   jobs: Record<
     string,
     {
+      env?: Record<string, string>;
       environment?: string;
       if?: string;
+      outputs?: Record<string, string>;
       permissions?: Record<string, string>;
       steps: WorkflowStep[];
     }
@@ -1306,6 +1308,9 @@ describe("automatic post-cutover production release", () => {
     const candidateOverride = run.indexOf(
       '"https://www.zenml.io/" preflight-home "$CANDIDATE_VERSION_ID"',
     );
+    const candidateAssetOverride = run.indexOf(
+      '"https://www.zenml.io$' + '{asset_path}"',
+    );
     const finalPreflightCheck = run.indexOf(
       '"$RUNNER_TEMP/deployments-immediately-before-promotion.json"',
     );
@@ -1318,7 +1323,9 @@ describe("automatic post-cutover production release", () => {
     expect(liveBaselineCheck).toBeGreaterThan(liveMainCheck);
     expect(activationAttempted).toBeGreaterThan(liveBaselineCheck);
     expect(zeroTrafficPreflight).toBeGreaterThan(activationAttempted);
+    expect(candidateAssetOverride).toBeGreaterThan(zeroTrafficPreflight);
     expect(candidateOverride).toBeGreaterThan(zeroTrafficPreflight);
+    expect(candidateOverride).toBeGreaterThan(candidateAssetOverride);
     expect(finalPreflightCheck).toBeGreaterThan(candidateOverride);
     expect(activation).toBeGreaterThan(finalPreflightCheck);
     expect(activation).toBeGreaterThan(liveMainCheck);
@@ -1328,6 +1335,49 @@ describe("automatic post-cutover production release", () => {
     );
     expect(run).toContain(
       "Production baseline changed before activation; refusing to overwrite it.",
+    );
+  });
+
+  it("proves the version override reached the exact candidate artifact before promotion", () => {
+    const uploadStep = workflowStep(
+      releaseUploadSteps,
+      "Upload inactive production version",
+    );
+    const releaseStep = workflowStep(
+      releaseActivationSteps,
+      "Activate, smoke-test, and roll back on failure",
+    );
+    const uploadProgram = uploadStep.run ?? "";
+    const releaseProgram = releaseStep.run ?? "";
+
+    expect(releaseWorkflowConfig.jobs.upload.outputs).toMatchObject({
+      candidate_asset_paths:
+        "$" + "{{ steps.upload.outputs.candidate_asset_paths }}",
+    });
+    expect(uploadProgram).toContain("dist/client/index.html");
+    expect(uploadProgram).toContain(
+      '"https://www.zenml.io/?__worker_candidate_baseline=$GITHUB_RUN_ID"',
+    );
+    expect(uploadProgram).toContain("comm -23");
+    expect(uploadProgram).toContain(
+      'echo "candidate_asset_paths=$candidate_asset_paths"',
+    );
+    expect(releaseWorkflowConfig.jobs.activate.env).toMatchObject({
+      CANDIDATE_ASSET_PATHS_JSON:
+        "$" + "{{ needs.upload.outputs.candidate_asset_paths }}",
+    });
+    expect(releaseProgram).toContain(
+      "jq -er '.[]' <<< \"$CANDIDATE_ASSET_PATHS_JSON\"",
+    );
+    expect(releaseProgram).toContain(
+      '"https://www.zenml.io$' + '{asset_path}"',
+    );
+    expect(releaseProgram).toContain('grep -Fq "$asset_path"');
+    expect(releaseProgram).toContain(
+      "for ((attempt=1; attempt<=max_attempts; attempt++))",
+    );
+    expect(releaseProgram).toContain(
+      'preflight-candidate-asset "$CANDIDATE_VERSION_ID" 12 5',
     );
   });
 
