@@ -850,29 +850,35 @@ jobs:
           }
 
           expect_candidate_home() {
+            local version_override="${1-$CANDIDATE_VERSION_ID}"
+            local phase="${2:-preflight}"
+            local label="${3:-preflight-home}"
             local expected_marker="worker-release-marker:$SOURCE_COMMIT:$SOURCE_RUN_ID:$SOURCE_RUN_ATTEMPT"
             local attempt
             for attempt in $(seq 1 12); do
               if expect_status 200 \
-                "https://www.zenml.io/?__worker_marker_attempt=$attempt" \
-                preflight-home "$CANDIDATE_VERSION_ID" 1 0 &&
+                "https://www.zenml.io/?__worker_${phase}_marker_attempt=$attempt" \
+                "$label" "$version_override" 1 0 &&
                 grep -Fq -- "$expected_marker" \
-                  "$RUNNER_TEMP/smoke-preflight-home.body"; then
+                  "$RUNNER_TEMP/smoke-${label}.body"; then
                 return 0
               fi
               if [ "$attempt" -lt 12 ]; then
                 sleep 5
               fi
             done
-            echo "The exact-version homepage did not converge to the candidate release marker." >&2
+            echo "The ${phase} homepage did not converge to the candidate release marker." >&2
             return 1
           }
 
           expect_candidate_assets() {
+            local version_override="${1-$CANDIDATE_VERSION_ID}"
+            local phase="${2:-preflight}"
             local attempt
             local asset_index
             local asset_path
             local actual
+            local -a curl_args
             local -a pids
 
             jq -e '
@@ -889,19 +895,26 @@ jobs:
               pids=()
               while IFS= read -r asset_path; do
                 (
+                  curl_args=(
+                    --connect-timeout 10
+                    --max-time 15
+                    --silent
+                    --show-error
+                    --output "$RUNNER_TEMP/${phase}-candidate-asset-${attempt}-${asset_index}.body"
+                    --write-out "%{http_code}"
+                  )
+                  if [ -n "$version_override" ]; then
+                    curl_args+=(
+                      --header
+                      "Cloudflare-Workers-Version-Overrides: $worker_name=\"$version_override\""
+                    )
+                  fi
                   actual="$(
-                    curl \
-                      --connect-timeout 10 \
-                      --max-time 15 \
-                      --silent \
-                      --show-error \
-                      --header "Cloudflare-Workers-Version-Overrides: $worker_name=\"$CANDIDATE_VERSION_ID\"" \
-                      --output "$RUNNER_TEMP/preflight-candidate-asset-${attempt}-${asset_index}.body" \
-                      --write-out "%{http_code}" \
-                      "https://www.zenml.io${asset_path}?__worker_candidate_asset=${GITHUB_RUN_ID}-${attempt}-${asset_index}"
+                    curl "${curl_args[@]}" \
+                      "https://www.zenml.io${asset_path}?__worker_${phase}_candidate_asset=${GITHUB_RUN_ID}-${attempt}-${asset_index}"
                   )" || actual="000"
                   printf '%s\t%s\n' "$asset_path" "$actual" \
-                    > "$RUNNER_TEMP/preflight-candidate-asset-${attempt}-${asset_index}.status"
+                    > "$RUNNER_TEMP/${phase}-candidate-asset-${attempt}-${asset_index}.status"
                 ) &
                 pids+=("$!")
                 asset_index=$((asset_index + 1))
@@ -911,14 +924,14 @@ jobs:
                 wait "$pid"
               done
               if awk -F '\t' '$2 != "200" { failed = 1 } END { exit failed }' \
-                "$RUNNER_TEMP"/preflight-candidate-asset-"$attempt"-*.status; then
+                "$RUNNER_TEMP"/"$phase"-candidate-asset-"$attempt"-*.status; then
                 return 0
               fi
               if [ "$attempt" -lt 12 ]; then
                 sleep 5
               fi
             done
-            echo "The exact-version candidate assets did not converge." >&2
+            echo "The ${phase} candidate assets did not converge." >&2
             return 1
           }
 
@@ -1029,8 +1042,8 @@ jobs:
           verify_preflight_deployment \
             "$RUNNER_TEMP/deployments-after-preflight.json"
 
-          expect_candidate_home
-          expect_candidate_assets
+          expect_candidate_home "$CANDIDATE_VERSION_ID" preflight preflight-home
+          expect_candidate_assets "$CANDIDATE_VERSION_ID" preflight
           verify_preflight_deployment \
             "$RUNNER_TEMP/deployments-immediately-before-promotion.json"
 
@@ -1076,7 +1089,7 @@ jobs:
             false
           fi
 
-          expect_status 200 "https://www.zenml.io/" home
+          expect_candidate_home "" active home
           expect_status 200 "https://www.zenml.io/blog" blog
           expect_status 200 "https://www.zenml.io/product/kitaru" kitaru
           expect_status 200 "https://www.zenml.io/pricing" pricing
@@ -1094,9 +1107,9 @@ jobs:
             | sed -n '1,6p' \
             > "$RUNNER_TEMP/smoke-assets.txt"
           test -s "$RUNNER_TEMP/smoke-assets.txt"
-          while read -r asset_path; do
-            expect_status 200 "https://www.zenml.io${asset_path}" asset
-          done < "$RUNNER_TEMP/smoke-assets.txt"
+          cmp "$RUNNER_TEMP/candidate-asset-paths.txt" \
+            "$RUNNER_TEMP/smoke-assets.txt"
+          expect_candidate_assets "" active
 
           if ! expect_status 301 "https://zenml.io/" apex; then
             echo "- Apex redirect check: failed (zone-level, non-rollback)" \
@@ -1142,6 +1155,8 @@ jobs:
             ${{ runner.temp }}/worker-domains-before-activation.json
             ${{ runner.temp }}/preflight-candidate-asset-*.body
             ${{ runner.temp }}/preflight-candidate-asset-*.status
+            ${{ runner.temp }}/active-candidate-asset-*.body
+            ${{ runner.temp }}/active-candidate-asset-*.status
             ${{ runner.temp }}/smoke-*.body
             ${{ runner.temp }}/smoke-assets.txt
           if-no-files-found: warn

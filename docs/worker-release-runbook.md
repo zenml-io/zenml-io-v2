@@ -116,11 +116,17 @@ either the homepage identity or the candidate asset set cannot converge.
 
 After the zero-traffic preflight passes, the workflow rechecks that the accepted
 100/0 deployment is still present. It then promotes the candidate to 100
-percent, verifies the exact deployment and unchanged routes, and checks
-representative pages, the newly merged Dagster article, API behavior, redirects,
-404 behavior, and sampled production assets. The apex redirect is recorded
-separately because it is zone-level behavior, not behavior of the released
-Worker version.
+percent and verifies the exact deployment and unchanged routes. Cloudflare can
+briefly serve the new homepage before every public static-asset lookup has
+converged. The workflow therefore waits for the checksummed release marker and
+the same sampled assets again through the ordinary public route. Every retry
+uses a distinct query string so an initial cached 404 cannot make later retries
+fail after the asset becomes available. This bounded post-activation window is
+for propagation only: a persistent missing asset still fails and rolls back.
+The workflow then checks representative pages, the newly merged Dagster
+article, API behavior, redirects, and 404 behavior. The apex redirect is
+recorded separately because it is zone-level behavior, not behavior of the
+released Worker version.
 
 A failed post-activation check first inspects the live active version. Its
 inline rollback restores the previous version with bounded retries only when
