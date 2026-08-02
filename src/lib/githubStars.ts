@@ -143,34 +143,32 @@ export async function fetchGithubStarsFromGitHub({
       headers.Authorization = `Bearer ${token}`;
     }
 
-    const response = await Promise.race([
-      fetchImpl(apiUrl, {
-        headers,
-        signal: controller.signal,
-      }),
-      new Promise<null>((resolveTimeout) => {
+    return await Promise.race([
+      (async (): Promise<GithubStarsFetchResult> => {
+        const response = await fetchImpl(apiUrl, {
+          headers,
+          signal: controller.signal,
+        });
+
+        if (!response.ok) {
+          return { ok: false, status: response.status };
+        }
+
+        const payload = await response.json();
+        const stars = readStargazersCount(payload);
+        if (stars === null) {
+          return { ok: false, status: response.status };
+        }
+
+        return { ok: true, stars };
+      })(),
+      new Promise<GithubStarsFetchResult>((resolveTimeout) => {
         timeoutId = setTimeout(() => {
           controller.abort();
-          resolveTimeout(null);
+          resolveTimeout({ ok: false });
         }, timeoutMs);
       }),
     ]);
-
-    if (response === null) {
-      return { ok: false };
-    }
-
-    if (!response.ok) {
-      return { ok: false, status: response.status };
-    }
-
-    const payload = await response.json();
-    const stars = readStargazersCount(payload);
-    if (stars === null) {
-      return { ok: false, status: response.status };
-    }
-
-    return { ok: true, stars };
   } catch {
     return { ok: false };
   } finally {

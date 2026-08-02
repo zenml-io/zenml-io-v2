@@ -114,7 +114,9 @@ jobs:
     timeout-minutes: 15
     outputs:
       artifact_sha256: ${{ steps.upload.outputs.artifact_sha256 }}
+      candidate_asset_paths: ${{ steps.upload.outputs.candidate_asset_paths }}
       previous_version_id: ${{ steps.baseline.outputs.previous_version_id }}
+      source_run_attempt: ${{ steps.upload.outputs.source_run_attempt }}
       version_id: ${{ steps.upload.outputs.version_id }}
     env:
       SOURCE_BRANCH: main
@@ -352,7 +354,34 @@ jobs:
 
           export WRANGLER_OUTPUT_FILE_PATH="$output_file"
           artifact_sha256="$(jq -r .artifact_sha256 worker-manifest.json)"
-          version_message="source_commit=$SOURCE_COMMIT source_branch=$SOURCE_BRANCH source_run_id=$SOURCE_RUN_ID artifact_sha256=$artifact_sha256"
+          source_run_attempt="$(
+            jq -er '
+              .run_attempt |
+              select(type == "string" and test("^[1-9][0-9]*$"))
+            ' worker-manifest.json
+          )"
+          release_marker="worker-release-marker:$SOURCE_COMMIT:$SOURCE_RUN_ID:$source_run_attempt"
+          grep -Fq -- "$release_marker" dist/client/index.html
+          grep -Eo '/_astro/[A-Za-z0-9._-]+' dist/client/index.html \
+            | LC_ALL=C sort -u \
+            | sed -n '1,6p' \
+            > "$RUNNER_TEMP/candidate-asset-paths.txt"
+          test -s "$RUNNER_TEMP/candidate-asset-paths.txt"
+          while IFS= read -r asset_path; do
+            test -f "dist/client$asset_path"
+          done < "$RUNNER_TEMP/candidate-asset-paths.txt"
+          candidate_asset_paths="$(
+            jq -R -s -c \
+              'split("\n") | map(select(length > 0))' \
+              "$RUNNER_TEMP/candidate-asset-paths.txt"
+          )"
+          jq -e '
+            type == "array" and
+            length >= 1 and
+            length <= 6 and
+            all(.[]; test("^/_astro/[A-Za-z0-9._-]+$"))
+          ' <<< "$candidate_asset_paths" > /dev/null
+          version_message="source_commit=$SOURCE_COMMIT source_branch=$SOURCE_BRANCH source_run_id=$SOURCE_RUN_ID source_run_attempt=$source_run_attempt artifact_sha256=$artifact_sha256"
           wrangler versions upload \
             --config dist/server/upload-wrangler.json \
             --secrets-file "$secrets_file" \
@@ -380,15 +409,21 @@ jobs:
           version_id="$(jq -er .version_id upload-result.json)"
           {
             echo "artifact_sha256=$artifact_sha256"
+            echo "candidate_asset_paths=$candidate_asset_paths"
+            echo "source_run_attempt=$source_run_attempt"
             echo "version_id=$version_id"
           } >> "$GITHUB_OUTPUT"
           jq -n \
             --arg artifact_sha256 "$artifact_sha256" \
+            --argjson candidate_asset_paths "$candidate_asset_paths" \
             --arg previous_version_id "$PREVIOUS_VERSION_ID" \
+            --arg source_run_attempt "$source_run_attempt" \
             --arg version_id "$version_id" \
             '{
               artifact_sha256: $artifact_sha256,
+              candidate_asset_paths: $candidate_asset_paths,
               previous_version_id: $previous_version_id,
+              source_run_attempt: $source_run_attempt,
               version_id: $version_id
             }' > candidate-identity.json
 
@@ -406,6 +441,7 @@ jobs:
           grep -Fq -- " source_commit=$SOURCE_COMMIT " <<< " $message "
           grep -Fq -- " source_branch=$SOURCE_BRANCH " <<< " $message "
           grep -Fq -- " source_run_id=$SOURCE_RUN_ID " <<< " $message "
+          grep -Fq -- " source_run_attempt=$source_run_attempt " <<< " $message "
           grep -Fq -- " artifact_sha256=$artifact_sha256 " <<< " $message "
 
       - name: Verify inactive upload preserved production
@@ -510,11 +546,13 @@ jobs:
     timeout-minutes: 20
     env:
       ARTIFACT_SHA256: ${{ needs.upload.outputs.artifact_sha256 }}
+      CANDIDATE_ASSET_PATHS_JSON: ${{ needs.upload.outputs.candidate_asset_paths }}
       CANDIDATE_VERSION_ID: ${{ needs.upload.outputs.version_id }}
       PREVIOUS_VERSION_ID: ${{ needs.upload.outputs.previous_version_id }}
       SOURCE_BRANCH: main
       SOURCE_COMMIT: ${{ github.event.workflow_run.head_sha }}
       SOURCE_RUN_ID: ${{ github.event.workflow_run.id }}
+      SOURCE_RUN_ATTEMPT: ${{ needs.upload.outputs.source_run_attempt }}
     steps:
       - name: Install pinned Wrangler
         run: npm install --global wrangler@4.110.0
@@ -550,6 +588,7 @@ jobs:
           grep -Fq -- " source_commit=$SOURCE_COMMIT " <<< " $message "
           grep -Fq -- " source_branch=$SOURCE_BRANCH " <<< " $message "
           grep -Fq -- " source_run_id=$SOURCE_RUN_ID " <<< " $message "
+          grep -Fq -- " source_run_attempt=$SOURCE_RUN_ATTEMPT " <<< " $message "
           grep -Fq -- " artifact_sha256=$ARTIFACT_SHA256 " <<< " $message "
 
           timeout 60s wrangler deployments list \
@@ -771,10 +810,12 @@ jobs:
             local url="$2"
             local label="$3"
             local version_override="${4:-}"
+            local max_attempts="${5:-3}"
+            local retry_delay="${6:-2}"
             local actual
             local request_url
             local -a curl_args
-            for attempt in 1 2 3; do
+            for ((attempt=1; attempt<=max_attempts; attempt++)); do
               request_url="$url"
               curl_args=(
                 --connect-timeout 10
@@ -799,12 +840,85 @@ jobs:
               if [ "$actual" = "$expected" ]; then
                 return 0
               fi
-              if [ "$attempt" -lt 3 ]; then
-                sleep 2
+              if [ "$attempt" -lt "$max_attempts" ]; then
+                sleep "$retry_delay"
               fi
             done
-            printf '%s expected HTTP %s, received %s after 3 attempts.\n' \
-              "$url" "$expected" "$actual" >&2
+            printf '%s expected HTTP %s, received %s after %s attempts.\n' \
+              "$url" "$expected" "$actual" "$max_attempts" >&2
+            return 1
+          }
+
+          expect_candidate_home() {
+            local expected_marker="worker-release-marker:$SOURCE_COMMIT:$SOURCE_RUN_ID:$SOURCE_RUN_ATTEMPT"
+            local attempt
+            for attempt in $(seq 1 12); do
+              if expect_status 200 \
+                "https://www.zenml.io/?__worker_marker_attempt=$attempt" \
+                preflight-home "$CANDIDATE_VERSION_ID" 1 0 &&
+                grep -Fq -- "$expected_marker" \
+                  "$RUNNER_TEMP/smoke-preflight-home.body"; then
+                return 0
+              fi
+              if [ "$attempt" -lt 12 ]; then
+                sleep 5
+              fi
+            done
+            echo "The exact-version homepage did not converge to the candidate release marker." >&2
+            return 1
+          }
+
+          expect_candidate_assets() {
+            local attempt
+            local asset_index
+            local asset_path
+            local actual
+            local -a pids
+
+            jq -e '
+              type == "array" and
+              length >= 1 and
+              length <= 6 and
+              all(.[]; test("^/_astro/[A-Za-z0-9._-]+$"))
+            ' <<< "$CANDIDATE_ASSET_PATHS_JSON" > /dev/null
+            jq -er '.[]' <<< "$CANDIDATE_ASSET_PATHS_JSON" \
+              > "$RUNNER_TEMP/candidate-asset-paths.txt"
+
+            for attempt in $(seq 1 12); do
+              asset_index=0
+              pids=()
+              while IFS= read -r asset_path; do
+                (
+                  actual="$(
+                    curl \
+                      --connect-timeout 10 \
+                      --max-time 15 \
+                      --silent \
+                      --show-error \
+                      --header "Cloudflare-Workers-Version-Overrides: $worker_name=\"$CANDIDATE_VERSION_ID\"" \
+                      --output "$RUNNER_TEMP/preflight-candidate-asset-${attempt}-${asset_index}.body" \
+                      --write-out "%{http_code}" \
+                      "https://www.zenml.io${asset_path}?__worker_candidate_asset=${GITHUB_RUN_ID}-${attempt}-${asset_index}"
+                  )" || actual="000"
+                  printf '%s\t%s\n' "$asset_path" "$actual" \
+                    > "$RUNNER_TEMP/preflight-candidate-asset-${attempt}-${asset_index}.status"
+                ) &
+                pids+=("$!")
+                asset_index=$((asset_index + 1))
+              done < "$RUNNER_TEMP/candidate-asset-paths.txt"
+              test "$asset_index" -ge 1
+              for pid in "${pids[@]}"; do
+                wait "$pid"
+              done
+              if awk -F '\t' '$2 != "200" { failed = 1 } END { exit failed }' \
+                "$RUNNER_TEMP"/preflight-candidate-asset-"$attempt"-*.status; then
+                return 0
+              fi
+              if [ "$attempt" -lt 12 ]; then
+                sleep 5
+              fi
+            done
+            echo "The exact-version candidate assets did not converge." >&2
             return 1
           }
 
@@ -915,19 +1029,8 @@ jobs:
           verify_preflight_deployment \
             "$RUNNER_TEMP/deployments-after-preflight.json"
 
-          expect_status 200 \
-            "https://www.zenml.io/" preflight-home "$CANDIDATE_VERSION_ID"
-          grep -Eo '/_astro/[^" ]+' "$RUNNER_TEMP/smoke-preflight-home.body" \
-            | sort -u \
-            | sed -n '1,6p' \
-            > "$RUNNER_TEMP/smoke-preflight-assets.txt"
-          test -s "$RUNNER_TEMP/smoke-preflight-assets.txt"
-          while read -r asset_path; do
-            expect_status 200 \
-              "https://www.zenml.io${asset_path}" \
-              preflight-asset \
-              "$CANDIDATE_VERSION_ID"
-          done < "$RUNNER_TEMP/smoke-preflight-assets.txt"
+          expect_candidate_home
+          expect_candidate_assets
           verify_preflight_deployment \
             "$RUNNER_TEMP/deployments-immediately-before-promotion.json"
 
@@ -1037,9 +1140,10 @@ jobs:
             ${{ runner.temp }}/workers-before-activation.json
             ${{ runner.temp }}/workers-after-activation.json
             ${{ runner.temp }}/worker-domains-before-activation.json
+            ${{ runner.temp }}/preflight-candidate-asset-*.body
+            ${{ runner.temp }}/preflight-candidate-asset-*.status
             ${{ runner.temp }}/smoke-*.body
             ${{ runner.temp }}/smoke-assets.txt
-            ${{ runner.temp }}/smoke-preflight-assets.txt
           if-no-files-found: warn
           retention-days: 30
 

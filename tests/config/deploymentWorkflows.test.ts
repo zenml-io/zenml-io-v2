@@ -30,8 +30,10 @@ interface ProductionWorkflow {
   jobs: Record<
     string,
     {
+      env?: Record<string, string>;
       environment?: string;
       if?: string;
+      outputs?: Record<string, string>;
       permissions?: Record<string, string>;
       steps: WorkflowStep[];
     }
@@ -333,6 +335,174 @@ expect_status 200 "https://www.zenml.io/" retry-test "22222222-2222-2222-2222-22
       const curlCalls = Number.parseInt(readFileSync(callsFile, "utf8"), 10);
       const curlArgs = readFileSync(argsFile, "utf8").trim().split("\n");
       return { curlArgs, curlCalls, error };
+    },
+  );
+}
+
+function executeCandidateHomeCheck(markerAfterCall: number): {
+  curlCalls: number;
+  error: unknown;
+} {
+  const releaseStep = workflowStep(
+    releaseActivationSteps,
+    "Activate, smoke-test, and roll back on failure",
+  );
+  const run = releaseStep.run ?? "";
+  const functionStart = run.indexOf("expect_status() {");
+  const functionEnd = run.indexOf("rollback_previous_version() {");
+  expect(functionStart).toBeGreaterThan(-1);
+  expect(functionEnd).toBeGreaterThan(functionStart);
+  const verificationFunctions = run.slice(functionStart, functionEnd);
+
+  return withTemporaryHarness(
+    "worker-release-candidate-home-",
+    (harnessDirectory, binDirectory) => {
+      const callsFile = join(harnessDirectory, "curl-calls.txt");
+      writeFileSync(callsFile, "0\n");
+      writeFileSync(
+        join(binDirectory, "curl"),
+        `#!/usr/bin/env bash
+set -euo pipefail
+calls="$(cat "$CURL_CALLS_FILE")"
+calls=$((calls + 1))
+printf '%s\\n' "$calls" > "$CURL_CALLS_FILE"
+output_file=""
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --output)
+      output_file="$2"
+      shift 2
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
+if [ "$calls" -ge "$CURL_MARKER_AFTER_CALL" ]; then
+  printf '<!-- worker-release-marker:%s:%s:%s -->\\n' \
+    "$SOURCE_COMMIT" "$SOURCE_RUN_ID" "$SOURCE_RUN_ATTEMPT" > "$output_file"
+else
+  printf '<html>old release</html>\\n' > "$output_file"
+fi
+printf '200\\n'
+`,
+      );
+      writeFileSync(
+        join(binDirectory, "sleep"),
+        "#!/usr/bin/env bash\nexit 0\n",
+      );
+      chmodSync(join(binDirectory, "curl"), 0o755);
+      chmodSync(join(binDirectory, "sleep"), 0o755);
+
+      let error: unknown;
+      try {
+        execFileSync(
+          "bash",
+          [
+            "-c",
+            `set -Eeuo pipefail
+${verificationFunctions}
+worker_name="zenml-io-v2-worker"
+expect_candidate_home
+`,
+          ],
+          {
+            env: {
+              ...process.env,
+              CANDIDATE_VERSION_ID: "22222222-2222-2222-2222-222222222222",
+              CURL_CALLS_FILE: callsFile,
+              CURL_MARKER_AFTER_CALL: String(markerAfterCall),
+              GITHUB_RUN_ID: "12345",
+              PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
+              RUNNER_TEMP: harnessDirectory,
+              SOURCE_COMMIT: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              SOURCE_RUN_ATTEMPT: "1",
+              SOURCE_RUN_ID: "12345",
+            },
+            stdio: ["ignore", "pipe", "pipe"],
+          },
+        );
+      } catch (caught) {
+        error = caught;
+      }
+      const curlCalls = Number.parseInt(readFileSync(callsFile, "utf8"), 10);
+      return { curlCalls, error };
+    },
+  );
+}
+
+function executeCandidateAssetCheck(statusAfterCall: number): {
+  curlCalls: number;
+  error: unknown;
+} {
+  const releaseStep = workflowStep(
+    releaseActivationSteps,
+    "Activate, smoke-test, and roll back on failure",
+  );
+  const run = releaseStep.run ?? "";
+  const functionStart = run.indexOf("expect_status() {");
+  const functionEnd = run.indexOf("rollback_previous_version() {");
+  expect(functionStart).toBeGreaterThan(-1);
+  expect(functionEnd).toBeGreaterThan(functionStart);
+  const verificationFunctions = run.slice(functionStart, functionEnd);
+
+  return withTemporaryHarness(
+    "worker-release-candidate-asset-",
+    (harnessDirectory, binDirectory) => {
+      const callsFile = join(harnessDirectory, "curl-calls.txt");
+      writeFileSync(callsFile, "0\n");
+      writeFileSync(
+        join(binDirectory, "curl"),
+        `#!/usr/bin/env bash
+set -euo pipefail
+calls="$(cat "$CURL_CALLS_FILE")"
+calls=$((calls + 1))
+printf '%s\\n' "$calls" > "$CURL_CALLS_FILE"
+if [ "$calls" -ge "$CURL_ASSET_STATUS_AFTER_CALL" ]; then
+  printf '200\\n'
+else
+  printf '404\\n'
+fi
+`,
+      );
+      writeFileSync(
+        join(binDirectory, "sleep"),
+        "#!/usr/bin/env bash\nexit 0\n",
+      );
+      chmodSync(join(binDirectory, "curl"), 0o755);
+      chmodSync(join(binDirectory, "sleep"), 0o755);
+
+      let error: unknown;
+      try {
+        execFileSync(
+          "bash",
+          [
+            "-c",
+            `set -Eeuo pipefail
+${verificationFunctions}
+worker_name="zenml-io-v2-worker"
+expect_candidate_assets
+`,
+          ],
+          {
+            env: {
+              ...process.env,
+              CANDIDATE_ASSET_PATHS_JSON: '["/_astro/candidate.js"]',
+              CANDIDATE_VERSION_ID: "22222222-2222-2222-2222-222222222222",
+              CURL_ASSET_STATUS_AFTER_CALL: String(statusAfterCall),
+              CURL_CALLS_FILE: callsFile,
+              GITHUB_RUN_ID: "12345",
+              PATH: `${binDirectory}:${process.env.PATH ?? ""}`,
+              RUNNER_TEMP: harnessDirectory,
+            },
+            stdio: ["ignore", "pipe", "pipe"],
+          },
+        );
+      } catch (caught) {
+        error = caught;
+      }
+      const curlCalls = Number.parseInt(readFileSync(callsFile, "utf8"), 10);
+      return { curlCalls, error };
     },
   );
 }
@@ -1303,9 +1473,7 @@ describe("automatic post-cutover production release", () => {
     const zeroTrafficPreflight = run.indexOf(
       'wrangler versions deploy "$PREVIOUS_VERSION_ID@100%" "$CANDIDATE_VERSION_ID@0%"',
     );
-    const candidateOverride = run.indexOf(
-      '"https://www.zenml.io/" preflight-home "$CANDIDATE_VERSION_ID"',
-    );
+    const candidateHome = run.lastIndexOf("expect_candidate_home");
     const finalPreflightCheck = run.indexOf(
       '"$RUNNER_TEMP/deployments-immediately-before-promotion.json"',
     );
@@ -1318,8 +1486,8 @@ describe("automatic post-cutover production release", () => {
     expect(liveBaselineCheck).toBeGreaterThan(liveMainCheck);
     expect(activationAttempted).toBeGreaterThan(liveBaselineCheck);
     expect(zeroTrafficPreflight).toBeGreaterThan(activationAttempted);
-    expect(candidateOverride).toBeGreaterThan(zeroTrafficPreflight);
-    expect(finalPreflightCheck).toBeGreaterThan(candidateOverride);
+    expect(candidateHome).toBeGreaterThan(zeroTrafficPreflight);
+    expect(finalPreflightCheck).toBeGreaterThan(candidateHome);
     expect(activation).toBeGreaterThan(finalPreflightCheck);
     expect(activation).toBeGreaterThan(liveMainCheck);
     expect(activation).toBeGreaterThan(activationAttempted);
@@ -1329,6 +1497,77 @@ describe("automatic post-cutover production release", () => {
     expect(run).toContain(
       "Production baseline changed before activation; refusing to overwrite it.",
     );
+  });
+
+  it("proves the version override reached the exact checksummed candidate artifact before promotion", () => {
+    const uploadStep = workflowStep(
+      releaseUploadSteps,
+      "Upload inactive production version",
+    );
+    const releaseStep = workflowStep(
+      releaseActivationSteps,
+      "Activate, smoke-test, and roll back on failure",
+    );
+    const uploadProgram = uploadStep.run ?? "";
+    const releaseProgram = releaseStep.run ?? "";
+
+    expect(deployWorkflow).toContain("- name: Stamp exact release marker");
+    expect(deployWorkflow).toContain(
+      'release_marker="worker-release-marker:$SOURCE_COMMIT:$RUN_ID:$RUN_ATTEMPT"',
+    );
+    expect(deployWorkflow).toContain(
+      "printf '\\n<!-- %s -->\\n' \"$release_marker\" >> dist/client/index.html",
+    );
+    expect(deployWorkflow).toContain(
+      'grep -Fq -- "$release_marker" dist/client/index.html',
+    );
+    expect(deployWorkflow.indexOf("Stamp exact release marker")).toBeLessThan(
+      deployWorkflow.indexOf("Smoke test built site output"),
+    );
+    expect(releaseWorkflowConfig.jobs.upload.outputs).toHaveProperty(
+      "candidate_asset_paths",
+    );
+    expect(uploadProgram).toContain(
+      'release_marker="worker-release-marker:$SOURCE_COMMIT:$SOURCE_RUN_ID:$source_run_attempt"',
+    );
+    expect(uploadProgram).toContain(
+      'grep -Fq -- "$release_marker" dist/client/index.html',
+    );
+    expect(uploadProgram).toContain("source_run_attempt");
+    expect(releaseWorkflowConfig.jobs.activate.env).toHaveProperty(
+      "CANDIDATE_ASSET_PATHS_JSON",
+    );
+    expect(releaseWorkflowConfig.jobs.activate.env).toHaveProperty(
+      "SOURCE_RUN_ATTEMPT",
+    );
+    expect(releaseProgram).toContain("expect_candidate_home() {");
+    expect(releaseProgram).toContain(
+      'local expected_marker="worker-release-marker:$SOURCE_COMMIT:$SOURCE_RUN_ID:$SOURCE_RUN_ATTEMPT"',
+    );
+    expect(releaseProgram).toContain("for attempt in $(seq 1 12); do");
+    expect(releaseProgram).toContain(
+      '"https://www.zenml.io/?__worker_marker_attempt=$attempt"',
+    );
+    expect(releaseProgram).toContain(
+      'preflight-home "$CANDIDATE_VERSION_ID" 1 0',
+    );
+    expect(releaseProgram).toContain('grep -Fq -- "$expected_marker"');
+    expect(releaseProgram).toContain(
+      "The exact-version homepage did not converge to the candidate release marker.",
+    );
+    expect(releaseProgram).toContain("expect_candidate_assets() {");
+    expect(releaseProgram).toContain(
+      `"https://www.zenml.io\${asset_path}?__worker_candidate_asset=\${GITHUB_RUN_ID}-\${attempt}-\${asset_index}"`,
+    );
+    expect(releaseProgram).toContain(
+      'Cloudflare-Workers-Version-Overrides: $worker_name=\\"$CANDIDATE_VERSION_ID\\"',
+    );
+    expect(releaseProgram).toContain(
+      "The exact-version candidate assets did not converge.",
+    );
+    expect(
+      releaseProgram.lastIndexOf("expect_candidate_assets"),
+    ).toBeGreaterThan(releaseProgram.lastIndexOf("expect_candidate_home"));
   });
 
   it("bounds activation deployment reads and retries post-activation verification", () => {
@@ -1558,6 +1797,26 @@ describe("automatic post-cutover production release", () => {
     ]);
     expect(result.curlArgs[0]).toContain("__worker_smoke=12345-1");
     expect(result.curlArgs[1]).toContain("__worker_smoke=12345-2");
+  });
+
+  it("retries a stale 200 homepage only until it carries the candidate marker", () => {
+    const converged = executeCandidateHomeCheck(2);
+    expect(converged.error).toBeUndefined();
+    expect(converged.curlCalls).toBe(2);
+
+    const exhausted = executeCandidateHomeCheck(13);
+    expect(exhausted.error).toBeDefined();
+    expect(exhausted.curlCalls).toBe(12);
+  });
+
+  it("retries candidate assets before promotion and fails closed when they stay unavailable", () => {
+    const converged = executeCandidateAssetCheck(2);
+    expect(converged.error).toBeUndefined();
+    expect(converged.curlCalls).toBe(2);
+
+    const exhausted = executeCandidateAssetCheck(13);
+    expect(exhausted.error).toBeDefined();
+    expect(exhausted.curlCalls).toBe(12);
   });
 
   it("executes recovery reconciliation and fails closed when recovery cannot complete", () => {
