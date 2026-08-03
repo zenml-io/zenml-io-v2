@@ -3,18 +3,20 @@
 ## Project Overview
 
 This repository powers the live [zenml.io](https://www.zenml.io) marketing
-website. The source tree is on the production-ineligible Astro 7 checkpoint;
-the accepted Astro 6 Cloudflare Worker still serves production until the later
-staging and production-enablement checkpoints complete. The site is generated
-from the Astro content collections defined in `src/content.config.ts`.
+website. The source tree is on the production-eligible Astro 7 checkpoint after
+protected-staging acceptance. The accepted Astro 6 Cloudflare Worker continues
+to serve production until the guarded current-main release succeeds. The site
+is generated from the Astro content collections defined in
+`src/content.config.ts`.
 
 The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 - **ZenML** — ML workflow orchestration (the original product)
 - **Kitaru** — durable runtime for AI agents (folded in from `kitaru.ai`)
 
 - **Production URL**: https://www.zenml.io
-- **Hosting**: The accepted Astro 6 Cloudflare Worker serves production.
-  Cloudflare Pages remains available as the deeper fallback.
+- **Hosting**: The accepted Astro 6 Cloudflare Worker serves production until
+  guarded Astro 7 promotion succeeds. Cloudflare Pages remains available as
+  the deeper fallback.
 - **Scale**: content collections defined in `src/content.config.ts`, ~2,350 content items, ~2,560 assets on R2
 - **History**: Migrated from Webflow in Feb 2026 (`docs/MIGRATION.md`). Unified with `kitaru.ai` in May 2026 (`MERGE_PLAN.md`).
 - **Private details**: See `CLAUDE.private.md` (gitignored) for infrastructure IDs, traffic numbers, and internal docs index
