@@ -62,22 +62,12 @@ updates:
         update-types:
           - minor
           - patch
-    ignore:
-      # Astro 5 -> 7 is a migration, not a bump: two majors, plus Vite 6 -> 8,
-      # plus a Node floor raise. Majors for astro and its integrations are held
-      # as a SET until that work happens (#128). Astro 5.x minor/patch and
-      # security updates still flow normally.
-      #
-      # These must be ignored together, not individually. An ignore is applied
-      # BEFORE grouping, so ignoring one member of the astro group does not hold
-      # the group back -- it silently drops that member out of the group PR. The
-      # previous @astrojs/preact-only ignore did exactly that, and produced #136:
-      # a PR bumping core to Astro 7 while pinning @astrojs/preact to an
-      # Astro-5-generation 4.x. Lift this whole block as step 1 of #128.
-      - dependency-name: 'astro'
-        update-types: ['version-update:semver-major']
-      - dependency-name: '@astrojs/*'
-        update-types: ['version-update:semver-major']
+    # The astro/@astrojs semver-major ignore block that used to sit here was
+    # lifted after the Astro 5 -> 7 migration landed (#128, merged in #204).
+    # If majors ever need holding again, ignore the WHOLE astro group together,
+    # never a single member: ignores apply BEFORE grouping, so ignoring one
+    # member silently drops it out of the group PR instead of holding the
+    # group back (that mistake produced #136).
     cooldown:
       default-days: 7
       semver-major-days: 14
