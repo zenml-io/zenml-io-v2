@@ -68,6 +68,16 @@ updates:
     # never a single member: ignores apply BEFORE grouping, so ignoring one
     # member silently drops it out of the group PR instead of holding the
     # group back (that mistake produced #136).
+    ignore:
+      # wrangler 4.114.0-4.118.0 (miniflare/workerd 20260722 snapshot) drop
+      # local connections intermittently during `wrangler dev`, failing
+      # `check:worker` on most CI runs (PR #207 has the measured rates;
+      # tracked upstream at cloudflare/workers-sdk#15002). This ignore drops
+      # broken wrangler versions out of the astro group PR while astro and
+      # @astrojs/* keep flowing — deliberately, unlike the #136 mistake.
+      # Lift criteria and boot-loop verification procedure: issue #216.
+      - dependency-name: 'wrangler'
+        versions: ['>=4.114.0']
     cooldown:
       default-days: 7
       semver-major-days: 14
