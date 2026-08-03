@@ -78,6 +78,13 @@ updates:
       # Lift criteria and boot-loop verification procedure: issue #216.
       - dependency-name: 'wrangler'
         versions: ['>=4.114.0']
+      # @types/node majors must match the pinned Node runtime major (22:
+      # .nvmrc, engines, deploy.yml). Types for a newer Node let code that
+      # uses newer-runtime-only APIs pass typecheck and then crash in CI
+      # (#219 closed for this reason). Lift to '>=25.0.0' as part of the
+      # Node 24 LTS runtime upgrade: issue #221.
+      - dependency-name: '@types/node'
+        versions: ['>=23.0.0']
     cooldown:
       default-days: 7
       semver-major-days: 14
