@@ -1418,6 +1418,21 @@ describe("automatic post-cutover production release", () => {
     expect(deployWorkflow).not.toContain(
       '--arg artifact_contract "astro-cloudflare-v6"',
     );
+    for (const workflow of [deployWorkflow, prPreviewWorkflow]) {
+      expect(workflow).toContain(
+        '($artifact_contract == "astro-cloudflare-v6") and',
+      );
+      expect(workflow).toContain(
+        '($artifact_contract == "astro-cloudflare-v7") and',
+      );
+      expect(workflow).toContain('.compatibility_flags == ["nodejs_compat"]');
+      expect(workflow).toContain(
+        '.compatibility_flags == ["nodejs_compat", "disable_nodejs_process_v2"]',
+      );
+    }
+    expect(prPreviewWorkflow).toContain(
+      'artifact_contract="$(jq -r .artifact_contract worker-manifest.json)"',
+    );
 
     for (const workflow of [
       previewWorkflow,
