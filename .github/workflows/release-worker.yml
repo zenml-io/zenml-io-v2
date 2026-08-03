@@ -193,7 +193,7 @@ jobs:
             .name == "zenml-io-v2-worker" and
             .main == "entry.mjs" and
             .compatibility_date == "2026-02-10" and
-            .compatibility_flags == ["nodejs_compat"] and
+            .compatibility_flags == ["nodejs_compat", "disable_nodejs_process_v2"] and
             .rules == [{"type":"ESModule","globs":["**/*.js","**/*.mjs"]}] and
             .workers_dev == false and
             .preview_urls == false and

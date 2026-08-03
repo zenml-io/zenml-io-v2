@@ -30,13 +30,13 @@ const config = JSON.parse(
   readFileSync("wrangler.jsonc", "utf8"),
 ) as WranglerConfig;
 
-describe("Astro 6 Worker source configuration", () => {
+describe("Astro 7 Worker source configuration", () => {
   it("uses the adapter entrypoint with the live compatibility settings", () => {
     expect(config).toMatchObject({
       name: "zenml-io-v2-worker",
       main: "@astrojs/cloudflare/entrypoints/server",
       compatibility_date: "2026-02-10",
-      compatibility_flags: ["nodejs_compat"],
+      compatibility_flags: ["nodejs_compat", "disable_nodejs_process_v2"],
       workers_dev: false,
       preview_urls: false,
     });

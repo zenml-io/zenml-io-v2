@@ -62,6 +62,16 @@ const prPreviewWorkflow = readFileSync(
   ".github/workflows/publish-pr-preview.yml",
   "utf8",
 );
+const trustedArtifactWorkflow = readFileSync(
+  ".github/trusted/worker-artifact-workflow.yml",
+  "utf8",
+);
+const workerConfig = JSON.parse(readFileSync("wrangler.jsonc", "utf8")) as {
+  compatibility_flags: string[];
+};
+const expectedCompatibilityFlags = `[${workerConfig.compatibility_flags
+  .map((flag) => JSON.stringify(flag))
+  .join(", ")}]`;
 const prPreviewWorkflowConfig = parse(prPreviewWorkflow) as ProductionWorkflow;
 const deployWorkflowConfig = parse(deployWorkflow) as ProductionWorkflow;
 const candidateWorkflowConfig = parse(candidateWorkflow) as ProductionWorkflow;
@@ -92,6 +102,21 @@ function actionReferences(workflow: string): string[] {
     ([, reference]) => reference,
   );
 }
+
+describe("Worker compatibility contract", () => {
+  it.each([
+    ["artifact producer", deployWorkflow],
+    ["trusted artifact producer", trustedArtifactWorkflow],
+    ["private preview uploader", previewWorkflow],
+    ["production candidate uploader", candidateWorkflow],
+    ["automatic release", releaseWorkflow],
+    ["PR preview publisher", prPreviewWorkflow],
+  ])("keeps the %s aligned with the source Worker config", (_, workflow) => {
+    expect(workflow).toContain(
+      `.compatibility_flags == ${expectedCompatibilityFlags}`,
+    );
+  });
+});
 
 function expectArtifactGuards(workflow: string): void {
   expect(workflow).toContain("Reject unsafe Worker artifact");
