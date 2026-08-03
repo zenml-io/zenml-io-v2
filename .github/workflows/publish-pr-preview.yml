@@ -236,11 +236,15 @@ jobs:
           test "$(
             sha256sum .wrangler/deploy/config.json | cut -d ' ' -f 1
           )" = "$(jq -r .deploy_config_sha256 worker-manifest.json)"
-          jq -e '
+          artifact_contract="$(jq -r .artifact_contract worker-manifest.json)"
+          jq -e --arg artifact_contract "$artifact_contract" '
             .name == "zenml-io-v2-worker" and
             .main == "entry.mjs" and
             .compatibility_date == "2026-02-10" and
-            .compatibility_flags == ["nodejs_compat"] and
+            ((($artifact_contract == "astro-cloudflare-v6") and
+              (.compatibility_flags == ["nodejs_compat"])) or
+             (($artifact_contract == "astro-cloudflare-v7") and
+              (.compatibility_flags == ["nodejs_compat", "disable_nodejs_process_v2"]))) and
             .rules == [{"type":"ESModule","globs":["**/*.js","**/*.mjs"]}] and
             .workers_dev == false and
             .preview_urls == false and
