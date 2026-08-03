@@ -410,15 +410,15 @@ describe("preview Worker upload workflow", () => {
     }
   });
 
-  it("pins the reviewed artifact producer without enabling it on main", () => {
-    // Keep the inactive trusted copy byte-identical to the reviewed producer.
+  it("pins the reviewed production-eligible artifact producer on main", () => {
+    // Keep the trusted copy byte-identical to the reviewed producer.
     const gitBlobSha = createHash("sha1")
       .update(
         `blob ${Buffer.byteLength(trustedArtifactWorkflowText)}\0${trustedArtifactWorkflowText}`,
       )
       .digest("hex");
 
-    expect(gitBlobSha).toBe("713fbaf5160a1a3b710ccb89b2a4a3837cad9a21");
+    expect(gitBlobSha).toBe("0e651cfdeeee565110a047cd7d731c85bf374f40");
     expect(trustedArtifactWorkflowText).toBe(artifactWorkflowText);
     expect(trustedArtifactWorkflowText).toContain(
       "name: Website CI and Worker Artifact",

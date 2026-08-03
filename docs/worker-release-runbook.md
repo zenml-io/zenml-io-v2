@@ -53,12 +53,22 @@ review-only public versions on a dedicated Worker; they cannot promote a branch
 artifact to production. Explicitly approved branch-built production promotion
 remains a separate follow-up.
 
-The Astro 6 production checkpoint was accepted on 2026-08-02. During the Astro
-7 checkpoint, the artifact manifest sets `production_release_eligible` to
-`false`. Successful `main` CI still builds and publishes the exact validated
-artifact, but the automatic release workflow stops before any credentialed
-Cloudflare upload or activation. Re-enabling production release requires a
-later, separately reviewed PR after preview and protected-staging acceptance.
+The Astro 6 production checkpoint was accepted on 2026-08-02. Exact Astro 7
+version `628ad246-8b6d-4c62-84bc-7d9c97e5176d` was then activated on the
+Access-protected staging Worker by workflow run `30807893758` and manually
+accepted in an incognito browser session on 2026-08-03. The artifact manifest
+therefore sets `production_release_eligible` to `true`. After this focused
+enablement change merges, successful `main` CI may enter the guarded automatic
+release sequence below. The release must retain Astro 6 version
+`02cc10fa-da8c-4d0d-97bb-f6c12ed4a40f` as its immediate rollback and leave the
+retained Pages project as the deeper fallback.
+
+Only an exact `push` artifact from `main` is production-eligible. Pull-request,
+branch, and mismatched-commit artifacts remain ineligible for the manual
+candidate path. For this first Astro 7 release, the workflow also requires
+production to start on the accepted Astro 6 version above before it uploads a
+candidate. Remove or update that migration-specific baseline only in a later
+reviewed PR after Astro 7 production acceptance.
 
 ## Automatic current-main release
 

@@ -156,6 +156,12 @@ jobs:
           deploy_config_sha256="$(
             sha256sum .wrangler/deploy/config.json | cut -d ' ' -f 1
           )"
+          production_release_eligible=false
+          if [ "$EVENT_NAME" = "push" ] &&
+             [ "$SOURCE_BRANCH" = "main" ] &&
+             [ "$SOURCE_COMMIT" = "$BUILD_COMMIT" ]; then
+            production_release_eligible=true
+          fi
           jq -n \
             --arg artifact_sha256 "$(cut -d ' ' -f 1 worker-dist.sha256)" \
             --arg artifact_contract "$artifact_contract" \
@@ -164,7 +170,7 @@ jobs:
             --arg event_name "$EVENT_NAME" \
             --arg generated_config_sha256 "$generated_config_sha256" \
             --arg lockfile_sha256 "$(sha256sum pnpm-lock.yaml | cut -d ' ' -f 1)" \
-            --argjson production_release_eligible false \
+            --argjson production_release_eligible "$production_release_eligible" \
             --arg run_attempt "$RUN_ATTEMPT" \
             --arg run_id "$RUN_ID" \
             --arg source_branch "$SOURCE_BRANCH" \

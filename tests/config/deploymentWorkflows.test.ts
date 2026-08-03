@@ -104,6 +104,10 @@ function actionReferences(workflow: string): string[] {
 }
 
 describe("Worker compatibility contract", () => {
+  it("keeps the branch-controlled and trusted artifact producers byte-identical", () => {
+    expect(trustedArtifactWorkflow).toBe(deployWorkflow);
+  });
+
   it.each([
     ["artifact producer", deployWorkflow],
     ["trusted artifact producer", trustedArtifactWorkflow],
@@ -1396,7 +1400,7 @@ describe("trusted production activation workflow", () => {
 });
 
 describe("automatic post-cutover production release", () => {
-  it("labels only reviewed Astro 6 or 7 artifacts and pauses production release", () => {
+  it("labels only reviewed Astro 6 or 7 artifacts and enables the accepted production release", () => {
     const packageStep = workflowStep(
       deploySteps,
       "Package the validated Worker artifact",
@@ -1438,8 +1442,53 @@ describe("automatic post-cutover production release", () => {
       '--arg artifact_contract "$artifact_contract"',
     );
     expect(deployWorkflow).toContain(
-      "--argjson production_release_eligible false",
+      '--argjson production_release_eligible "$production_release_eligible"',
     );
+    const eligibilityStart = packageRun.indexOf(
+      "production_release_eligible=false",
+    );
+    const eligibilityEnd = packageRun.indexOf("jq -n", eligibilityStart);
+    const eligibilityProgram = packageRun.slice(
+      eligibilityStart,
+      eligibilityEnd,
+    );
+    const productionEligibilityFor = (
+      eventName: string,
+      sourceBranch: string,
+      sourceCommit: string,
+      buildCommit: string,
+    ): string =>
+      execFileSync(
+        "bash",
+        [
+          "-c",
+          `set -euo pipefail\n${eligibilityProgram}\nprintf '%s' "$production_release_eligible"`,
+        ],
+        {
+          encoding: "utf8",
+          env: {
+            ...process.env,
+            BUILD_COMMIT: buildCommit,
+            EVENT_NAME: eventName,
+            SOURCE_BRANCH: sourceBranch,
+            SOURCE_COMMIT: sourceCommit,
+          },
+          stdio: ["ignore", "pipe", "pipe"],
+        },
+      );
+    const commit = "a".repeat(40);
+    expect(productionEligibilityFor("push", "main", commit, commit)).toBe(
+      "true",
+    );
+    expect(
+      productionEligibilityFor("pull_request", "feature", commit, commit),
+    ).toBe("false");
+    expect(productionEligibilityFor("push", "feature", commit, commit)).toBe(
+      "false",
+    );
+    expect(
+      productionEligibilityFor("push", "main", commit, "b".repeat(40)),
+    ).toBe("false");
     expect(deployWorkflow).not.toContain(
       '--arg artifact_contract "astro-cloudflare-v6"',
     );
@@ -1495,7 +1544,13 @@ describe("automatic post-cutover production release", () => {
     expect(releaseWorkflow).toContain("eligible=false");
     expect(releaseWorkflow).toContain(".production_release_eligible == true");
     expect(deployWorkflow).toContain(
-      "--argjson production_release_eligible false",
+      '--argjson production_release_eligible "$production_release_eligible"',
+    );
+    expect(releaseWorkflow).toContain(
+      "ACCEPTED_PREVIOUS_VERSION_ID: 02cc10fa-da8c-4d0d-97bb-f6c12ed4a40f",
+    );
+    expect(releaseWorkflow).toContain(
+      'previous_version_id" != "$ACCEPTED_PREVIOUS_VERSION_ID',
     );
   });
 
