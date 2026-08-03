@@ -1,12 +1,7 @@
 ---
-// AgentDriven.astro — your coding agent drives Kitaru's MCP server and CLI.
-//
-// Rewritten against the Jul 29 v2 spec, which draws a hard line the old copy
-// crossed. The agent does the mechanics; the human supplies the judgment, and
-// the product actively refuses to let the agent supply it instead: acceptance
-// is a one-use token minted by a human UI control, "never mint confirmation
-// from model-authored chat arguments, and never read silence or continued
-// conversation as acceptance."
+// AgentDriven.astro — your coding agent drives Kitaru's MCP server and CLI;
+// the human supplies the judgment. Acceptance is a one-use token minted by a
+// human UI control, never inferred from model-authored chat.
 
 const agents = [
   { slug: "claude", name: "Claude Code" },
@@ -58,7 +53,6 @@ const agents = [
         <p class="ad-loop-caption">The agent ran it and laid out the rows. Whether four remaining failures is shippable is not its call.</p>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -208,10 +202,6 @@ const agents = [
 
   .ad-bad {
     color: oklch(0.7 0.16 25);
-  }
-
-  .ad-kept {
-    color: var(--color-accent);
   }
 
   .ad-str {

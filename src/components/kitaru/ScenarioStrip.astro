@@ -1,12 +1,8 @@
 ---
 // ScenarioStrip.astro — the prominent second section. One cohort of recorded
-// sessions, a different question each time.
-//
-// Rewritten against the Jul 29 v2 story. The old "debug / reproduce the failure
-// 10-out-of-10" card is gone: reproduction was cut, because the interview
-// already told you it fails. Card 3 no longer says "conversations" — replay
-// diverges after the first reply on multi-turn agents, so the honest claim is
-// one cohort, one swapped variable, two runs compared.
+// sessions, a different question each time. The claims stay at one cohort, one
+// swapped variable, two runs compared — replay diverges after the first reply
+// on multi-turn agents, so the copy never promises conversation replay.
 const scenarios = [
   {
     tag: "understand",

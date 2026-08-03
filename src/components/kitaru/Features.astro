@@ -1,12 +1,8 @@
 ---
-// Features.astro — the model-migration wedge, which the Jul 24 research called
-// the killer use case and noted was unnamed: everything it needs already exists
-// in Act 4, so this is a naming and packaging job.
-//
-// Rewritten against the Jul 29 v2 vocabulary. A cohort is an immutable set of
-// sessions. An experiment is pure configuration — model, prompt, tool policy —
-// and is NOT tied to a cohort or an agent version. An experiment RUN is that
-// config plus a cohort plus a version, and runs are what you compare.
+// Features.astro — the model-migration wedge as three steps: cohort →
+// experiment → runs. The shared vocabulary (cohort immutable, experiment pure
+// config, run = config + cohort + version) is defined once in
+// PRODUCT_KITARU_MARKDOWN.primitives.
 const steps = [
   {
     n: "01",
@@ -40,7 +36,6 @@ const steps = [
       <p class="section-desc">
         Nobody moves, because nobody can say what it would break. Two runs over your real sessions can.
       </p>
-
     </div>
 
     <div class="whatif-steps">
@@ -95,14 +90,6 @@ const steps = [
   .whatif-header {
     max-width: 760px;
     margin-bottom: 48px;
-  }
-
-  .section-desc {
-    margin-top: 16px;
-    color: var(--color-secondary);
-    font-size: clamp(1rem, 1.6vw, 1.1rem);
-    line-height: 1.65;
-    font-weight: 300;
   }
 
   /* ─── Steps ─── */

@@ -226,7 +226,8 @@
   max-width: 600px;
 }
 [data-app="kitaru"] .section-desc {
-  font-size: 17px; line-height: 1.6; color: var(--color-secondary);
+  font-size: clamp(1rem, 1.6vw, 1.1rem); line-height: 1.65; font-weight: 300;
+  color: var(--color-secondary);
   max-width: 480px; margin-top: 16px;
 }
 

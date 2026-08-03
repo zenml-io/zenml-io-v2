@@ -1,13 +1,8 @@
 ---
-// CodeShowcase.astro — "Show me the code" for the experiment / run model.
-//
-// Rewritten against the Jul 29 v2 spec. The old `from_` + `overrides` +
-// `lookup_mode` replay API is gone. What ships instead: an experiment is pure
-// configuration (model, prompt, tool policy) and is NOT tied to a cohort or an
-// agent version; an experiment RUN is that config plus a cohort plus a version.
-// Tool interception is one of four policies — history, passthrough, static, llm
-// — set on the experiment, and every intercepted node is stamped with the
-// policy that answered it.
+// CodeShowcase.astro — "Show me the code" for the experiment / run model: an
+// experiment is pure configuration (model, prompt, tool policy); a run is that
+// config plus a cohort plus an agent version. Tool interception is one of four
+// policies — history, passthrough, static, llm — set on the experiment.
 ---
 
 <section class="dark-section section-pad" id="code-showcase">

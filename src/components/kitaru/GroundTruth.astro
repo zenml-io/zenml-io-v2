@@ -1,13 +1,8 @@
 ---
-// GroundTruth.astro — the bullseye's sharpest claim: for a document-to-record
-// agent, the labels already exist. When an ops person corrects the agent's
-// write, the corrected record is ground truth, in the customer's own schema,
-// produced by a domain expert, growing daily, and used by nobody.
-//
-// The ICP doc calls this out as the thing no competitor is positioned to say,
-// so it gets its own section rather than a bullet. Also carries the
-// time-to-value argument: a structured write diffs field by field, so most of
-// the surface needs no judge, no calibration set and no simulated user.
+// GroundTruth.astro — for a document-to-record agent the labels already exist:
+// when an ops person corrects the agent's write, the corrected record is
+// ground truth in the customer's own schema. A structured write diffs field by
+// field, so most of the surface needs no judge and no calibration set.
 const points = [
   {
     kind: "Field by field",
@@ -47,7 +42,6 @@ const points = [
         ))
       }
     </dl>
-
   </div>
 </section>
 
@@ -66,14 +60,6 @@ const points = [
     color: var(--color-accent);
   }
 
-  .section-desc {
-    margin-top: 16px;
-    color: var(--color-secondary);
-    font-size: clamp(1rem, 1.6vw, 1.1rem);
-    line-height: 1.65;
-    font-weight: 300;
-  }
-
   /* Rule-separated points rather than a third card grid — the page already
      has two, and this section reads better as a statement than as boxes. */
   .gt-points {
@@ -86,9 +72,8 @@ const points = [
 
   .gt-point {
     min-width: 0;
-    padding: 26px 32px 4px 0;
+    padding: 26px 32px 4px 28px;
     border-left: 1px solid var(--color-border);
-    padding-left: 28px;
   }
 
   .gt-point:first-child {
