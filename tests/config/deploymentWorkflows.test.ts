@@ -1621,7 +1621,7 @@ describe("automatic post-cutover production release", () => {
       '.annotations["workers/tag"] == "automatic-main-release"',
     );
     expect(baselineRun).toContain(
-      '"repos/$GITHUB_REPOSITORY/actions/runs/$previous_source_run_id"',
+      '"repos/$GITHUB_REPOSITORY/actions/runs/$previous_source_run_id/attempts/$previous_source_run_attempt"',
     );
     const metadataProgram = jqProgramReadingFrom(
       baselineRun,
@@ -1685,6 +1685,7 @@ describe("automatic post-cutover production release", () => {
       head_sha: sourceCommit,
       name: "Website CI and Worker Artifact",
       path: ".github/workflows/deploy.yml",
+      run_attempt: 1,
     };
     const sourceRunArgs = [
       "--arg",
@@ -1693,6 +1694,9 @@ describe("automatic post-cutover production release", () => {
       "--arg",
       "repository",
       "zenml-io/zenml-io-v2",
+      "--arg",
+      "run_attempt",
+      "1",
     ];
     expectJqResult(sourceRunProgram, trustedSourceRun, true, sourceRunArgs);
     expectJqResult(
@@ -1719,6 +1723,12 @@ describe("automatic post-cutover production release", () => {
     expectJqResult(
       sourceRunProgram,
       { ...trustedSourceRun, head_sha: "c".repeat(40) },
+      false,
+      sourceRunArgs,
+    );
+    expectJqResult(
+      sourceRunProgram,
+      { ...trustedSourceRun, run_attempt: 2 },
       false,
       sourceRunArgs,
     );

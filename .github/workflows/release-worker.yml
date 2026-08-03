@@ -278,28 +278,31 @@ jobs:
               select(.type == "secret_text") | .name] | sort) ==
             (["SEGMENT_FORMS_WRITE_KEY", "TURNSTILE_SECRET_KEY"] | sort)
           ' "$RUNNER_TEMP/previous-version-metadata.json" > /dev/null
-          read -r previous_source_commit previous_source_run_id < <(
+          read -r previous_source_commit previous_source_run_id \
+            previous_source_run_attempt < <(
             jq -r '
               .annotations["workers/message"] |
               capture(
-                "^source_commit=(?<commit>[0-9a-f]{40}) source_branch=main source_run_id=(?<run_id>[1-9][0-9]*) "
+                "^source_commit=(?<commit>[0-9a-f]{40}) source_branch=main source_run_id=(?<run_id>[1-9][0-9]*) source_run_attempt=(?<run_attempt>[1-9][0-9]*) "
               ) |
-              [.commit, .run_id] | @tsv
+              [.commit, .run_id, .run_attempt] | @tsv
             ' "$RUNNER_TEMP/previous-version-metadata.json"
           )
           gh api \
-            "repos/$GITHUB_REPOSITORY/actions/runs/$previous_source_run_id" \
+            "repos/$GITHUB_REPOSITORY/actions/runs/$previous_source_run_id/attempts/$previous_source_run_attempt" \
             > "$RUNNER_TEMP/previous-source-run.json"
           jq -e \
             --arg commit "$previous_source_commit" \
-            --arg repository "$GITHUB_REPOSITORY" '
+            --arg repository "$GITHUB_REPOSITORY" \
+            --arg run_attempt "$previous_source_run_attempt" '
             .name == "Website CI and Worker Artifact" and
             .path == ".github/workflows/deploy.yml" and
             .conclusion == "success" and
             .event == "push" and
             .head_branch == "main" and
             .head_repository.full_name == $repository and
-            .head_sha == $commit
+            .head_sha == $commit and
+            .run_attempt == ($run_attempt | tonumber)
           ' "$RUNNER_TEMP/previous-source-run.json" > /dev/null
           echo "previous_version_id=$previous_version_id" >> "$GITHUB_OUTPUT"
 
