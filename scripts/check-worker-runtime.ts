@@ -10,8 +10,8 @@ const TEST_ENV_PATH = resolve(WRANGLER_STATE_DIR, "runtime-check.env");
 const START_TIMEOUT_MS = 30_000;
 const REQUEST_TIMEOUT_MS = 10_000;
 const COLD_START_REQUEST_TIMEOUT_MS = 30_000;
-const TRANSIENT_SERVICE_RETRY_ATTEMPTS = 3;
-const TRANSIENT_SERVICE_RETRY_DELAY_MS = 500;
+const TRANSIENT_RETRY_ATTEMPTS = 3;
+const TRANSIENT_RETRY_DELAY_MS = 500;
 
 type CheckResult = {
   name: string;
@@ -121,7 +121,7 @@ async function waitForWorker(
       await response.body?.cancel();
       return;
     } catch {
-      await new Promise((resolveWait) => setTimeout(resolveWait, 200));
+      await sleep(200);
     }
   }
 
@@ -150,58 +150,52 @@ async function stopWrangler(child: ChildProcess): Promise<void> {
   }
 }
 
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolveWait) => setTimeout(resolveWait, ms));
+}
+
 async function request(
   baseUrl: string,
   pathname: string,
   init?: RequestInit,
   timeoutMs = REQUEST_TIMEOUT_MS,
 ): Promise<Response> {
-  const signal = AbortSignal.timeout(timeoutMs);
+  // workerd's local socket can drop mid-request ("Network connection lost"),
+  // surfacing either as a thrown "fetch failed" or as a spurious 5xx that has
+  // nothing to do with the endpoint. Both get a few attempts; the final
+  // attempt's 5xx response or thrown error still surfaces, so deterministic
+  // failures keep failing the gate. Timeouts fail immediately — they already
+  // waited timeoutMs. No check expects a 5xx, so retrying them is safe.
+  for (let attempt = 1; ; attempt += 1) {
+    const signal = AbortSignal.timeout(timeoutMs);
 
-  try {
-    return await fetch(`${baseUrl}${pathname}`, {
-      ...init,
-      redirect: init?.redirect ?? "manual",
-      signal,
-    });
-  } catch (error) {
-    if (signal.aborted) {
-      throw new Error(
-        `Timed out requesting ${pathname} from the Worker after ${timeoutMs}ms`,
-        { cause: error },
-      );
-    }
-    throw error;
-  }
-}
-
-async function requestWithTransientServiceRetry(
-  baseUrl: string,
-  pathname: string,
-  init: RequestInit,
-): Promise<Response> {
-  let response: Response | undefined;
-
-  for (
-    let attempt = 1;
-    attempt <= TRANSIENT_SERVICE_RETRY_ATTEMPTS;
-    attempt += 1
-  ) {
-    response = await request(baseUrl, pathname, init);
-    // Any 5xx counts as transient here: besides deliberate 503s, miniflare's
-    // internal socket to workerd can drop mid-request and surface as a 500
-    // ("Network connection lost") that has nothing to do with the endpoint.
-    if (response.status < 500 || attempt === TRANSIENT_SERVICE_RETRY_ATTEMPTS) {
-      return response;
+    try {
+      const response = await fetch(`${baseUrl}${pathname}`, {
+        ...init,
+        redirect: init?.redirect ?? "manual",
+        signal,
+      });
+      if (response.status < 500 || attempt === TRANSIENT_RETRY_ATTEMPTS) {
+        return response;
+      }
+      await response.body?.cancel();
+    } catch (error) {
+      if (signal.aborted) {
+        throw new Error(
+          `Timed out requesting ${pathname} from the Worker after ${timeoutMs}ms`,
+          { cause: error },
+        );
+      }
+      if (attempt === TRANSIENT_RETRY_ATTEMPTS) {
+        throw new Error(
+          `Network failure requesting ${pathname} after ${TRANSIENT_RETRY_ATTEMPTS} attempts`,
+          { cause: error },
+        );
+      }
     }
 
-    await response.body?.cancel();
-    await new Promise((resolveWait) =>
-      setTimeout(resolveWait, TRANSIENT_SERVICE_RETRY_DELAY_MS),
-    );
+    await sleep(TRANSIENT_RETRY_DELAY_MS);
   }
-
-  throw new Error(`No response received from ${pathname}`);
 }
 
 function check(
@@ -334,20 +328,16 @@ async function runChecks(baseUrl: string): Promise<CheckResult[]> {
   );
   await unverifiedForm.body?.cancel();
 
-  const csp = await requestWithTransientServiceRetry(
-    baseUrl,
-    "/api/csp-report",
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        "csp-report": {
-          "document-uri": "https://www.zenml.io/product/kitaru?private=removed",
-          "violated-directive": "script-src",
-        },
-      }),
-    },
-  );
+  const csp = await request(baseUrl, "/api/csp-report", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      "csp-report": {
+        "document-uri": "https://www.zenml.io/product/kitaru?private=removed",
+        "violated-directive": "script-src",
+      },
+    }),
+  });
   const cspFailureBody = csp.status === 204 ? "" : await csp.text();
   check(
     results,
