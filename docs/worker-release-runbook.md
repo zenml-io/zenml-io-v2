@@ -2,8 +2,8 @@
 
 ## Current boundary
 
-The accepted Astro 6 Worker serves `www.zenml.io/*`. The accepted Astro 5
-Worker version remains the immediate version rollback, and Cloudflare Pages
+The accepted Astro 7 Worker serves `www.zenml.io/*`. The accepted Astro 6
+Worker version remains the recorded migration rollback, and Cloudflare Pages
 remains available beneath the Worker route as the deeper fallback. No release
 workflow attaches or removes a route, changes a custom domain, edits DNS,
 changes Access, or removes Pages.
@@ -53,22 +53,21 @@ review-only public versions on a dedicated Worker; they cannot promote a branch
 artifact to production. Explicitly approved branch-built production promotion
 remains a separate follow-up.
 
-The Astro 6 production checkpoint was accepted on 2026-08-02. Exact Astro 7
-version `628ad246-8b6d-4c62-84bc-7d9c97e5176d` was then activated on the
-Access-protected staging Worker by workflow run `30807893758` and manually
-accepted in an incognito browser session on 2026-08-03. The artifact manifest
-therefore sets `production_release_eligible` to `true`. After this focused
-enablement change merges, successful `main` CI may enter the guarded automatic
-release sequence below. The release must retain Astro 6 version
-`02cc10fa-da8c-4d0d-97bb-f6c12ed4a40f` as its immediate rollback and leave the
-retained Pages project as the deeper fallback.
+Astro 7 production was accepted on 2026-08-03 after exact `main` CI run
+`30809674875`, automatic release run `30809998564`, and manual incognito
+testing. Exact Worker version `d6bf9c06-95e3-498d-991e-1897c3c18469` serves
+100 percent of production traffic. Recorded Astro 6 version
+`02cc10fa-da8c-4d0d-97bb-f6c12ed4a40f` remains available as the migration
+rollback, and the retained Pages project remains the deeper fallback.
 
 Only an exact `push` artifact from `main` is production-eligible. Pull-request,
 branch, and mismatched-commit artifacts remain ineligible for the manual
-candidate path. For this first Astro 7 release, the workflow also requires
-production to start on the accepted Astro 6 version above before it uploads a
-candidate. Remove or update that migration-specific baseline only in a later
-reviewed PR after Astro 7 production acceptance.
+candidate path. For each routine release, the workflow records the single
+version serving 100 percent immediately before upload, verifies that version's
+automatic-release tag, exact successful same-repository `main` CI provenance,
+and required bindings, then treats that exact version as the rollback target.
+It refuses unknown or mixed starting deployments instead of relying on a
+framework-specific pinned version.
 
 ## Automatic current-main release
 

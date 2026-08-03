@@ -1546,11 +1546,181 @@ describe("automatic post-cutover production release", () => {
     expect(deployWorkflow).toContain(
       '--argjson production_release_eligible "$production_release_eligible"',
     );
-    expect(releaseWorkflow).toContain(
-      "ACCEPTED_PREVIOUS_VERSION_ID: 02cc10fa-da8c-4d0d-97bb-f6c12ed4a40f",
+    expect(releaseWorkflow).not.toContain("ACCEPTED_PREVIOUS_VERSION_ID");
+    expect(releaseWorkflow).not.toContain(
+      "Production is not on the accepted Astro 6 rollback version.",
     );
     expect(releaseWorkflow).toContain(
-      'previous_version_id" != "$ACCEPTED_PREVIOUS_VERSION_ID',
+      'echo "previous_version_id=$previous_version_id" >> "$GITHUB_OUTPUT"',
+    );
+  });
+
+  it("captures only a trusted single-version production baseline", () => {
+    const baselineStep = workflowStep(
+      releaseUploadSteps,
+      "Capture accepted production baseline",
+    );
+    const baselineRun = baselineStep.run ?? "";
+    const programStart = baselineRun.indexOf(
+      "jq -er '\n",
+      baselineRun.indexOf('previous_version_id="$('),
+    );
+    const programEnd = baselineRun.indexOf(
+      '\' "$RUNNER_TEMP/deployments-before-upload.json"',
+      programStart,
+    );
+    expect(programStart).toBeGreaterThan(-1);
+    expect(programEnd).toBeGreaterThan(programStart);
+    const deploymentProgram = baselineRun.slice(programStart + 8, programEnd);
+    const versionId = "11111111-1111-1111-1111-111111111111";
+    const newerVersionId = "22222222-2222-2222-2222-222222222222";
+    const selectBaseline = (deployments: unknown): string =>
+      execFileSync("jq", ["-er", deploymentProgram], {
+        encoding: "utf8",
+        input: JSON.stringify(deployments),
+        stdio: ["pipe", "pipe", "pipe"],
+      }).trim();
+
+    expect(
+      selectBaseline([
+        {
+          created_on: "2026-08-02T00:00:00Z",
+          versions: [{ percentage: 100, version_id: versionId }],
+        },
+        {
+          created_on: "2026-08-03T00:00:00Z",
+          versions: [{ percentage: 100, version_id: newerVersionId }],
+        },
+      ]),
+    ).toBe(newerVersionId);
+    expect(() =>
+      selectBaseline([
+        {
+          created_on: "2026-08-03T00:00:00Z",
+          versions: [
+            { percentage: 100, version_id: versionId },
+            { percentage: 0, version_id: newerVersionId },
+          ],
+        },
+      ]),
+    ).toThrow();
+    expect(() =>
+      selectBaseline([
+        {
+          created_on: "2026-08-03T00:00:00Z",
+          versions: [{ percentage: 50, version_id: versionId }],
+        },
+      ]),
+    ).toThrow();
+
+    expect(baselineStep.env?.GH_TOKEN).toBe("$" + "{{ github.token }}");
+    expect(baselineRun).toContain(
+      'wrangler versions view "$previous_version_id"',
+    );
+    expect(baselineRun).toContain(
+      '.annotations["workers/tag"] == "automatic-main-release"',
+    );
+    expect(baselineRun).toContain(
+      '"repos/$GITHUB_REPOSITORY/actions/runs/$previous_source_run_id"',
+    );
+    const metadataProgram = jqProgramReadingFrom(
+      baselineRun,
+      '"$RUNNER_TEMP/previous-version-metadata.json"',
+    );
+    const trustedMetadata = {
+      annotations: {
+        "workers/message": `source_commit=${"a".repeat(40)} source_branch=main source_run_id=123 source_run_attempt=1 artifact_sha256=${"b".repeat(64)}`,
+        "workers/tag": "automatic-main-release",
+      },
+      resources: {
+        bindings: REQUIRED_WORKER_SECRETS.map((name) => ({
+          name,
+          type: "secret_text",
+        })),
+      },
+    };
+    expectJqResult(metadataProgram, trustedMetadata, true);
+    expectJqResult(
+      metadataProgram,
+      {
+        ...trustedMetadata,
+        annotations: {
+          ...trustedMetadata.annotations,
+          "workers/tag": "manual-release",
+        },
+      },
+      false,
+    );
+    expectJqResult(
+      metadataProgram,
+      {
+        ...trustedMetadata,
+        resources: { bindings: trustedMetadata.resources.bindings.slice(0, 1) },
+      },
+      false,
+    );
+    expectJqResult(
+      metadataProgram,
+      {
+        ...trustedMetadata,
+        annotations: {
+          ...trustedMetadata.annotations,
+          "workers/message":
+            "source_commit=untrusted source_branch=main source_run_id=123",
+        },
+      },
+      false,
+    );
+
+    const sourceRunProgram = jqProgramReadingFrom(
+      baselineRun,
+      '"$RUNNER_TEMP/previous-source-run.json"',
+    );
+    const sourceCommit = "a".repeat(40);
+    const trustedSourceRun = {
+      conclusion: "success",
+      event: "push",
+      head_branch: "main",
+      head_repository: { full_name: "zenml-io/zenml-io-v2" },
+      head_sha: sourceCommit,
+      name: "Website CI and Worker Artifact",
+      path: ".github/workflows/deploy.yml",
+    };
+    const sourceRunArgs = [
+      "--arg",
+      "commit",
+      sourceCommit,
+      "--arg",
+      "repository",
+      "zenml-io/zenml-io-v2",
+    ];
+    expectJqResult(sourceRunProgram, trustedSourceRun, true, sourceRunArgs);
+    expectJqResult(
+      sourceRunProgram,
+      { ...trustedSourceRun, conclusion: "failure" },
+      false,
+      sourceRunArgs,
+    );
+    expectJqResult(
+      sourceRunProgram,
+      { ...trustedSourceRun, head_branch: "feature" },
+      false,
+      sourceRunArgs,
+    );
+    expectJqResult(
+      sourceRunProgram,
+      {
+        ...trustedSourceRun,
+        head_repository: { full_name: "fork/zenml-io-v2" },
+      },
+      false,
+      sourceRunArgs,
+    );
+    expectJqResult(
+      sourceRunProgram,
+      { ...trustedSourceRun, head_sha: "c".repeat(40) },
+      false,
+      sourceRunArgs,
     );
   });
 
