@@ -443,7 +443,7 @@ describe("preview Worker upload workflow", () => {
     const safetyStep = uploadStep("Reject an unsafe Worker artifact");
 
     expect(downloadStep.uses).toBe(
-      "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+      "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
     );
     expect(downloadStep.with).toMatchObject({
       name: "worker-dist",
