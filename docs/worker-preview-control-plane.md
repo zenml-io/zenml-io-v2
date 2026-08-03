@@ -1,31 +1,32 @@
 # Preview Worker release controls
 
-This guide moves one reviewed website build onto the isolated
-`zenml-io-v2-worker-preview` Worker without exposing it to visitors. Upload,
-activation, and routing are separate actions. Completing one never authorizes
-the next.
+This guide moves one reviewed website build onto the protected staging Worker.
+Upload and activation are separate actions. Completing upload never authorizes
+activation.
 
 The preview Worker has no `workers.dev` address, no version preview URL, no
-custom domain, and no Worker route. Activating a version changes what the
-Worker would serve if it received traffic, but it does not send traffic to the
-Worker.
+custom domain, and exactly one Worker route:
+`astro-workers-staging.zenml.io/*`. Cloudflare Access protects that hostname.
+Uploading a version leaves staging traffic on the current version. Activating
+a version changes what authenticated staging visitors receive.
 
 ## Hard boundaries
 
-The three preview workflows:
+The upload and activation workflows:
 
 - run only from trusted `main`;
 - share one lock, so they cannot change the preview Worker concurrently;
 - use only the `worker-preview` GitHub environment;
 - target only `zenml-io-v2-worker-preview`;
-- never receive the Worker-routes token;
+- never receive the Worker-routes token and cannot change the fixed staging
+  route;
 - never change DNS, Pages, Access, custom domains, or production;
 - never print secret values.
 
 The Cloudflare Workers token is account-scoped because Cloudflare does not
-offer per-Worker script permissions. The fixed Worker name, trusted workflow
-code, environment branch policy, and absence of route authority are therefore
-security controls, not conveniences.
+offer per-Worker script permissions. The fixed Worker name, exact staging-route
+guard, trusted workflow code, environment branch policy, and absence of route
+mutation authority are therefore security controls, not conveniences.
 
 ## Required GitHub gate before merge
 
@@ -94,9 +95,10 @@ Pause and capture a timestamped read-only snapshot:
    trusted uploader dispatch commit and live `main` tip.
 2. The preview Worker exists.
 3. Its `workers.dev` endpoint and version preview URLs are disabled.
-4. It has no custom domain and no Worker route.
-5. `astro-workers-staging.zenml.io` still reaches retained Pages through
-   Cloudflare Access.
+4. It has no custom domain and owns exactly
+   `astro-workers-staging.zenml.io/*`, with no other route.
+5. An unauthenticated request to `astro-workers-staging.zenml.io` receives the
+   expected Cloudflare Access 302 login redirect and challenge header.
 6. `zenml.io` redirects normally and `www.zenml.io` serves the production
    site.
 7. `cloud.zenml.io`, `staging.cloud.zenml.io`, and the recorded platform-service
@@ -126,8 +128,9 @@ build commit used the immutable reviewed artifact workflow. A `main` artifact
 is accepted only when its branch and commit exactly match the trusted uploader
 dispatch commit and the live `main` tip. It then
 checks its checksum and manifest, rejects unsafe archive or Wrangler
-configuration, confirms the preview Worker is private and route-less, and
-uploads one inactive version with the two non-production form secrets.
+configuration, confirms the preview Worker has only the protected staging
+route, rechecks the anonymous Access challenge, and uploads one inactive
+version with the two non-production form secrets.
 
 The upload does not deploy the version. Its summary records the version ID and
 provenance. The workflow also preserves partial upload metadata even when a
@@ -144,7 +147,8 @@ inactive version.
 4. Its secret binding names include `TURNSTILE_SECRET_KEY` and
    `SEGMENT_FORMS_WRITE_KEY`; do not read or record their values.
 5. The active deployment is unchanged.
-6. Public Worker endpoints, custom domains, and routes remain absent.
+6. Public Worker endpoints and custom domains remain absent, and the exact
+   staging route is unchanged.
 7. Production, retained Pages, staging Access, and platform-service baselines
    remain unchanged.
 
@@ -170,9 +174,10 @@ Enter the six values recorded by the upload:
 - explicit self-review confirmation.
 
 The workflow inspects that exact version, verifies its provenance and secret
-binding names, saves the current deployment metadata, and deploys only that
-version at 100 percent on the preview Worker. It then confirms the Worker still
-has no public endpoint.
+binding names, saves the current deployment metadata, and rechecks the exact
+route plus anonymous Access challenge immediately before deploying only that
+version at 100 percent. It then confirms the route and Access protection remain
+unchanged.
 
 ### Pause and verify after activation
 
@@ -181,29 +186,23 @@ has no public endpoint.
    version metadata.
 3. The newest preview deployment contains only the approved version at
    100 percent.
-4. The preview Worker remains without public endpoints, custom domains, or
-   routes.
+4. The preview Worker remains without public Worker endpoints or custom
+   domains and still owns only the exact protected staging route.
 5. Production, retained Pages, staging Access, and platform-service baselines
    remain unchanged.
 
-At this point the new site code is active inside an unreachable Worker. There
-is still no browser URL for it. Attaching only
-`astro-workers-staging.zenml.io/*` is the next separate mutation and requires a
-fresh before-state, exact route review, explicit approval, and immediate
-after-state verification. That future route workflow must use the same
-`zenml-io-worker-preview` concurrency group so GitHub cannot interleave route
-attachment with upload or activation.
+At this point the new site code is active on the Access-protected staging URL.
+Pause for manual browser, content, form, API, redirect, header, 404, island,
+visual, and accessibility checks before any production-enablement work.
 
 ## Rollback boundaries
 
 - **Failed inactive upload:** no traffic changed. Leave the version inactive
   and stop.
-- **Failed or bad activation before a route exists:** the version may already
-  be active even if the run failed. Inspect the Worker read-only, keep the
-  route absent, and stop. The inert bootstrap version is not an accepted
-  serving fallback.
-- **Problem after the staging route is later attached:** remove only the exact
-  recorded staging route to restore retained Pages. Do not edit DNS or delete
-  Pages.
+- **Failed or bad activation:** the version may already be active even if the
+  run failed. Inspect the Worker read-only. If staging is unhealthy, restore
+  only the recorded accepted Astro 6 staging version at 100 percent. Preserve
+  the exact staging route, DNS, Access application, and retained Pages
+  fallback. Stop after verifying the restored deployment and Access challenge.
 - **Production:** these workflows cannot change it. Production cutover and
   rollback use separate controls and approvals.
