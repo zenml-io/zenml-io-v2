@@ -21,7 +21,6 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  ACCEPTED_PREVIOUS_VERSION_ID: 02cc10fa-da8c-4d0d-97bb-f6c12ed4a40f
   ACCEPTED_WORKER_ROUTES_JSON: '["www.zenml.io/*"]'
   WORKER_NAME: zenml-io-v2-worker
 
@@ -247,6 +246,7 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           worker_name="$WORKER_NAME"
@@ -265,10 +265,45 @@ jobs:
             ' "$RUNNER_TEMP/deployments-before-upload.json"
           )"
           [[ "$previous_version_id" =~ ^[0-9a-f-]{36}$ ]]
-          if [ "$previous_version_id" != "$ACCEPTED_PREVIOUS_VERSION_ID" ]; then
-            echo "Production is not on the accepted Astro 6 rollback version." >&2
-            exit 1
-          fi
+
+          wrangler versions view "$previous_version_id" \
+            --name "$worker_name" \
+            --json > "$RUNNER_TEMP/previous-version-metadata.json"
+          jq -e '
+            .annotations["workers/tag"] == "automatic-main-release" and
+            (.annotations["workers/message"] | test(
+              "^source_commit=[0-9a-f]{40} source_branch=main source_run_id=[1-9][0-9]* source_run_attempt=[1-9][0-9]* artifact_sha256=[0-9a-f]{64}$"
+            )) and
+            ([.resources.bindings[]? |
+              select(.type == "secret_text") | .name] | sort) ==
+            (["SEGMENT_FORMS_WRITE_KEY", "TURNSTILE_SECRET_KEY"] | sort)
+          ' "$RUNNER_TEMP/previous-version-metadata.json" > /dev/null
+          read -r previous_source_commit previous_source_run_id \
+            previous_source_run_attempt < <(
+            jq -r '
+              .annotations["workers/message"] |
+              capture(
+                "^source_commit=(?<commit>[0-9a-f]{40}) source_branch=main source_run_id=(?<run_id>[1-9][0-9]*) source_run_attempt=(?<run_attempt>[1-9][0-9]*) "
+              ) |
+              [.commit, .run_id, .run_attempt] | @tsv
+            ' "$RUNNER_TEMP/previous-version-metadata.json"
+          )
+          gh api \
+            "repos/$GITHUB_REPOSITORY/actions/runs/$previous_source_run_id/attempts/$previous_source_run_attempt" \
+            > "$RUNNER_TEMP/previous-source-run.json"
+          jq -e \
+            --arg commit "$previous_source_commit" \
+            --arg repository "$GITHUB_REPOSITORY" \
+            --arg run_attempt "$previous_source_run_attempt" '
+            .name == "Website CI and Worker Artifact" and
+            .path == ".github/workflows/deploy.yml" and
+            .conclusion == "success" and
+            .event == "push" and
+            .head_branch == "main" and
+            .head_repository.full_name == $repository and
+            .head_sha == $commit and
+            .run_attempt == ($run_attempt | tonumber)
+          ' "$RUNNER_TEMP/previous-source-run.json" > /dev/null
           echo "previous_version_id=$previous_version_id" >> "$GITHUB_OUTPUT"
 
           curl \
