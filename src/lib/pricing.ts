@@ -11,6 +11,7 @@ import type {
   PricingCompareTableData,
   PricingPlan,
 } from "./marketingPageTypes";
+import { KITARU_LINKS } from "./productKitaru";
 
 // ---------------------------------------------------------------------------
 // SEO
@@ -107,21 +108,6 @@ export const PRICING_PRO_INCLUSIONS = {
   ],
   caption: "Same control plane. Same governance. One bill, two meters.",
 } as const;
-
-// ---------------------------------------------------------------------------
-// Plan workspaces — the /pricing plan cards are shown per workspace type.
-//
-// One subscription covers both, but the two are metered separately: a ZenML
-// pipeline run is minutes to hours of compute, a Kitaru replay is one session
-// in seconds, and a single cohort experiment can be thousands of replays in a
-// click. Showing one "executions" number for both invited the wrong reading.
-// ---------------------------------------------------------------------------
-export const PRICING_PLAN_WORKSPACES = [
-  { id: "zenml", label: "ZenML workspace", sublabel: "ML pipelines" },
-  { id: "kitaru", label: "Kitaru workspace", sublabel: "Agent evals" },
-] as const;
-
-export type PricingWorkspaceId = (typeof PRICING_PLAN_WORKSPACES)[number]["id"];
 
 // ---------------------------------------------------------------------------
 // Plan cards — Open Source / Scale / Enterprise
@@ -257,7 +243,7 @@ export const PRICING_PLANS_KITARU: PricingPlan[] = [
     ],
     cta: {
       label: "Book a demo",
-      href: "/book-your-demo/kitaru",
+      href: KITARU_LINKS.demo.href,
       analytics: "Kitaru-Scale-Book-Demo",
     },
     ctaVariant: "primary",
@@ -278,22 +264,54 @@ export const PRICING_PLANS_KITARU: PricingPlan[] = [
     ],
     cta: {
       label: "Talk to an engineer",
-      href: "/book-your-demo/kitaru",
+      href: KITARU_LINKS.demo.href,
       analytics: "Kitaru-Enterprise-Talk",
     },
     ctaVariant: "secondary",
   },
 ];
 
-export const PRICING_PLANS_NOTE: Record<PricingWorkspaceId, string> = {
-  zenml:
-    "Executions are ZenML pipeline runs. Kitaru replays are metered separately — one subscription, two meters.",
-  kitaru:
-    "A session Kitaru creates is an execution: replays and experiment runs. Imports, recordings, scoring and seats are free. Nothing is enforced during launch.",
-};
+// ---------------------------------------------------------------------------
+// Plan workspaces — the /pricing plan cards are shown per workspace type.
+//
+// One subscription covers both, but the two are metered separately: a ZenML
+// pipeline run is minutes to hours of compute, a Kitaru replay is one session
+// in seconds, and a single cohort experiment can be thousands of replays in a
+// click. Showing one "executions" number for both invited the wrong reading.
+//
+// Each entry is the full descriptor for its panel — plans, meter note, and
+// brand accent (literal class strings so Tailwind sees them) — so adding a
+// workspace here is the whole change.
+// ---------------------------------------------------------------------------
+export const PRICING_PLAN_WORKSPACES = [
+  {
+    id: "zenml",
+    label: "ZenML workspace",
+    sublabel: "ML pipelines",
+    note: "Executions are ZenML pipeline runs. Kitaru replays are metered separately — one subscription, two meters.",
+    plans: PRICING_PLANS,
+    accent: {
+      text: "text-zenml-500",
+      border: "border-zenml-500",
+      bg: "bg-zenml-500",
+    },
+  },
+  {
+    id: "kitaru",
+    label: "Kitaru workspace",
+    sublabel: "Agent evals",
+    note: "A session Kitaru creates is an execution: replays and experiment runs. Imports, recordings, scoring and seats are free. Nothing is enforced during launch.",
+    plans: PRICING_PLANS_KITARU,
+    accent: {
+      text: "text-orange-600",
+      border: "border-orange-500",
+      bg: "bg-orange-500",
+    },
+  },
+] as const;
 
 // ---------------------------------------------------------------------------
-// Comparison table — one unified table across all three plans
+// Comparison tables — one per workspace, swapped by the plan-cards toggle
 // ---------------------------------------------------------------------------
 export const PRICING_COMPARE: PricingCompareTableData = {
   heading: "Compare every plan",
@@ -383,6 +401,83 @@ export const PRICING_COMPARE: PricingCompareTableData = {
   // Derived from PRICING_PLANS so the per-plan CTA is the single source of truth
   // for label / href / analytics / variant across both the card and the table row.
   ctaButtons: PRICING_PLANS.map((plan) => ({
+    ...plan.cta,
+    variant: plan.ctaVariant ?? "primary",
+  })),
+};
+
+// Kitaru-workspace variant, shown when the workspace toggle selects Kitaru.
+// Rows restate only what the Kitaru plan cards already claim — limits and
+// features come from PRICING_PLANS_KITARU, nothing new is promised here.
+export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
+  heading: "Compare every plan",
+  subheading:
+    "Replay-based agent evals — open source, with hosted Scale and Enterprise tiers.",
+  columnHeaders: ["Open Source", "Scale", "Enterprise"],
+  sections: [
+    {
+      heading: "Replay & evals",
+      rows: [
+        {
+          feature: "Replay-based evals for Python agents",
+          values: [true, true, true],
+        },
+        {
+          feature: "Import and record without limits",
+          values: [true, true, true],
+        },
+        {
+          feature: "Cohorts, evaluators and experiment runs",
+          values: [true, true, true],
+        },
+        {
+          feature: "Replay on your own workers, with your own keys",
+          values: [true, true, true],
+        },
+      ],
+    },
+    {
+      heading: "Hosted control plane",
+      rows: [
+        {
+          feature: "Hosted dashboard and control plane",
+          values: [false, true, true],
+        },
+        {
+          feature: "Unlimited seats for domain experts",
+          values: [false, true, true],
+        },
+        { feature: "Agents", values: ["Unlimited", "3", "Unlimited"] },
+        {
+          feature: "Retention",
+          values: ["Self-hosted", "90 days", "Custom"],
+        },
+      ],
+    },
+    {
+      heading: "Enterprise & governance",
+      rows: [
+        { feature: "SSO (SAML / OIDC)", values: [false, false, true] },
+        {
+          feature: "RBAC (custom roles)",
+          link: "https://docs.zenml.io/pro/access-management/roles",
+          values: [false, false, true],
+        },
+        { feature: "Audit logs", values: [false, false, true] },
+        { feature: "Remote worker pools", values: [false, false, true] },
+      ],
+    },
+    {
+      heading: "Support",
+      rows: [
+        {
+          feature: "Support level",
+          values: ["Community", "Email", "Dedicated + SLA"],
+        },
+      ],
+    },
+  ],
+  ctaButtons: PRICING_PLANS_KITARU.map((plan) => ({
     ...plan.cta,
     variant: plan.ctaVariant ?? "primary",
   })),
