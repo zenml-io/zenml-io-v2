@@ -91,16 +91,31 @@ jobs:
           SOURCE_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           set -euo pipefail
+          astro_major="$(
+            node -p 'require("./node_modules/astro/package.json").version.split(".")[0]'
+          )"
+          case "$astro_major" in
+            6|7)
+              artifact_contract="astro-cloudflare-v${astro_major}"
+              ;;
+            *)
+              echo "Unsupported Astro major for Worker artifact: $astro_major" >&2
+              exit 1
+              ;;
+          esac
           jq -e '
             (keys | sort) == ["auxiliaryWorkers", "configPath", "prerenderWorkerConfigPath"] and
             .configPath == "../../dist/server/wrangler.json" and
             .auxiliaryWorkers == []
           ' .wrangler/deploy/config.json > /dev/null
-          jq -e '
+          jq -e --arg artifact_contract "$artifact_contract" '
             .name == "zenml-io-v2-worker" and
             .main == "entry.mjs" and
             .compatibility_date == "2026-02-10" and
-            .compatibility_flags == ["nodejs_compat", "disable_nodejs_process_v2"] and
+            ((($artifact_contract == "astro-cloudflare-v6") and
+              (.compatibility_flags == ["nodejs_compat"])) or
+             (($artifact_contract == "astro-cloudflare-v7") and
+              (.compatibility_flags == ["nodejs_compat", "disable_nodejs_process_v2"]))) and
             .workers_dev == false and
             .preview_urls == false and
             .no_bundle == true and
@@ -141,18 +156,6 @@ jobs:
           deploy_config_sha256="$(
             sha256sum .wrangler/deploy/config.json | cut -d ' ' -f 1
           )"
-          astro_major="$(
-            node -p 'require("./node_modules/astro/package.json").version.split(".")[0]'
-          )"
-          case "$astro_major" in
-            6|7)
-              artifact_contract="astro-cloudflare-v${astro_major}"
-              ;;
-            *)
-              echo "Unsupported Astro major for Worker artifact: $astro_major" >&2
-              exit 1
-              ;;
-          esac
           jq -n \
             --arg artifact_sha256 "$(cut -d ' ' -f 1 worker-dist.sha256)" \
             --arg artifact_contract "$artifact_contract" \

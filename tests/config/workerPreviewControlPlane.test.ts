@@ -405,7 +405,7 @@ describe("preview Worker upload workflow", () => {
       )
       .digest("hex");
 
-    expect(gitBlobSha).toBe("4c04d2f6eb7d5eb44c53686d69c760e51d9b9e96");
+    expect(gitBlobSha).toBe("713fbaf5160a1a3b710ccb89b2a4a3837cad9a21");
     expect(trustedArtifactWorkflowText).toBe(artifactWorkflowText);
     expect(trustedArtifactWorkflowText).toContain(
       "name: Website CI and Worker Artifact",
