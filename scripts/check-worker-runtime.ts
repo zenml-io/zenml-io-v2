@@ -188,10 +188,10 @@ async function requestWithTransientServiceRetry(
     attempt += 1
   ) {
     response = await request(baseUrl, pathname, init);
-    if (
-      response.status !== 503 ||
-      attempt === TRANSIENT_SERVICE_RETRY_ATTEMPTS
-    ) {
+    // Any 5xx counts as transient here: besides deliberate 503s, miniflare's
+    // internal socket to workerd can drop mid-request and surface as a 500
+    // ("Network connection lost") that has nothing to do with the endpoint.
+    if (response.status < 500 || attempt === TRANSIENT_SERVICE_RETRY_ATTEMPTS) {
       return response;
     }
 
