@@ -10,10 +10,11 @@
  * wrong reading.
  *
  * Both panels are server-rendered and the toggle only flips `hidden`, so the
- * numbers are in the HTML for crawlers and for anyone without JS — the ZenML
- * panel is the no-JS default. The toggle flips every [data-workspace-panel]
- * on the page, so sibling sections (e.g. the comparison table) can join by
- * wrapping their per-workspace variants in the same attribute.
+ * numbers are in the HTML for crawlers and for anyone without JS — the first
+ * PRICING_PLAN_WORKSPACES entry (Kitaru during the v2 launch) is the default.
+ * The toggle flips every [data-workspace-panel] on the page, so sibling
+ * sections (e.g. the comparison table) can join by wrapping their
+ * per-workspace variants in the same attribute.
  */
 import { PRICING_PLAN_WORKSPACES } from "../../lib/pricing";
 import PricingPlanCard from "./PricingPlanCard.astro";
@@ -60,7 +61,13 @@ import PricingPlanCard from "./PricingPlanCard.astro";
           hidden={wsIdx !== 0}
         >
           <p class="mx-auto mb-8 max-w-2xl text-center text-xs leading-relaxed text-gray-500">
-            {ws.note}
+            {ws.note}{" "}
+            <a
+              href={ws.learn.href}
+              class={`whitespace-nowrap font-semibold ${ws.accent.text} hover:underline`}
+            >
+              {ws.learn.label} →
+            </a>
           </p>
 
           <div class="grid gap-6 lg:grid-cols-3 lg:items-center">

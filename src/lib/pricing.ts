@@ -279,33 +279,37 @@ export const PRICING_PLANS_KITARU: PricingPlan[] = [
 // in seconds, and a single cohort experiment can be thousands of replays in a
 // click. Showing one "executions" number for both invited the wrong reading.
 //
-// Each entry is the full descriptor for its panel — plans, meter note, and
-// brand accent (literal class strings so Tailwind sees them) — so adding a
-// workspace here is the whole change.
+// Each entry is the full descriptor for its panel — plans, meter note, a
+// product-page link, and brand accent (literal class strings so Tailwind sees
+// them) — so adding a workspace here is the whole change. The first entry is
+// the default panel (selected tab, no-JS fallback): Kitaru leads while the v2
+// launch is the site's front-and-center story.
 // ---------------------------------------------------------------------------
 export const PRICING_PLAN_WORKSPACES = [
-  {
-    id: "zenml",
-    label: "ZenML workspace",
-    sublabel: "ML pipelines",
-    note: "Executions are ZenML pipeline runs. Kitaru replays are metered separately — one subscription, two meters.",
-    plans: PRICING_PLANS,
-    accent: {
-      text: "text-zenml-500",
-      border: "border-zenml-500",
-      bg: "bg-zenml-500",
-    },
-  },
   {
     id: "kitaru",
     label: "Kitaru workspace",
     sublabel: "Agent evals",
     note: "A session Kitaru creates is an execution: replays and experiment runs. Imports, recordings, scoring and seats are free. Nothing is enforced during launch.",
+    learn: { label: "Learn about Kitaru", href: "/product/kitaru" },
     plans: PRICING_PLANS_KITARU,
     accent: {
       text: "text-orange-600",
       border: "border-orange-500",
       bg: "bg-orange-500",
+    },
+  },
+  {
+    id: "zenml",
+    label: "ZenML workspace",
+    sublabel: "ML pipelines",
+    note: "Executions are ZenML pipeline runs. Kitaru replays are metered separately — one subscription, two meters.",
+    learn: { label: "Learn about ZenML", href: "/product/zenml" },
+    plans: PRICING_PLANS,
+    accent: {
+      text: "text-zenml-500",
+      border: "border-zenml-500",
+      bg: "bg-zenml-500",
     },
   },
 ] as const;
@@ -407,23 +411,34 @@ export const PRICING_COMPARE: PricingCompareTableData = {
 };
 
 // Kitaru-workspace variant, shown when the workspace toggle selects Kitaru.
-// Rows restate only what the Kitaru plan cards already claim — limits and
-// features come from PRICING_PLANS_KITARU, nothing new is promised here.
+// Leads with the metering story ("pay for replays, not ingest") rather than a
+// generic feature checklist. Rows restate only what the Kitaru plan cards and
+// the v2 pricing proposal already claim — the Scale replay allowance number is
+// deliberately absent because it is still being set from real usage data.
 export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
   heading: "Compare every plan",
   subheading:
-    "Replay-based agent evals — open source, with hosted Scale and Enterprise tiers.",
+    "Pay for replays, not ingest — importing, recording, scoring and seats are free on every plan.",
   columnHeaders: ["Open Source", "Scale", "Enterprise"],
   sections: [
     {
-      heading: "Replay & evals",
+      heading: "What's metered",
+      rows: [
+        {
+          feature: "Imports, recordings, scoring and seats",
+          values: ["Free", "Free", "Free"],
+        },
+        {
+          feature: "Replays and experiment runs",
+          values: ["Unmetered", "Metered", "Custom volume"],
+        },
+      ],
+    },
+    {
+      heading: "Replay & evals — every plan",
       rows: [
         {
           feature: "Replay-based evals for Python agents",
-          values: [true, true, true],
-        },
-        {
-          feature: "Import and record without limits",
           values: [true, true, true],
         },
         {
@@ -437,6 +452,16 @@ export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
       ],
     },
     {
+      heading: "Limits",
+      rows: [
+        { feature: "Agents", values: ["Unlimited", "3", "Unlimited"] },
+        {
+          feature: "Session retention",
+          values: ["Self-hosted", "90 days", "Custom"],
+        },
+      ],
+    },
+    {
       heading: "Hosted control plane",
       rows: [
         {
@@ -446,11 +471,6 @@ export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
         {
           feature: "Unlimited seats for domain experts",
           values: [false, true, true],
-        },
-        { feature: "Agents", values: ["Unlimited", "3", "Unlimited"] },
-        {
-          feature: "Retention",
-          values: ["Self-hosted", "90 days", "Custom"],
         },
       ],
     },
