@@ -36,6 +36,7 @@ permissions: {}
 
 env:
   WORKER_NAME: zenml-io-v2-worker-preview
+  STAGING_ROUTE: astro-workers-staging.zenml.io/*
 
 jobs:
   activate:
@@ -72,7 +73,7 @@ jobs:
       - name: Install pinned Wrangler
         run: npm install --global wrangler@4.110.0
 
-      - name: Verify the preview Worker is private and route-less
+      - name: Verify the preview Worker has only the protected staging route
         shell: bash
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -120,16 +121,21 @@ jobs:
             --show-error \
             --header "$auth_header" \
             "$api_base/workers/scripts" > "$RUNNER_TEMP/workers-before-activation.json"
-          jq -e --arg worker "$WORKER_NAME" '
+          jq -e --arg route "$STAGING_ROUTE" --arg worker "$WORKER_NAME" '
             .success == true and
             ([.result[] | select(.id == $worker)]) as $workers |
             ($workers | length) == 1 and
             ($workers[0] | has("routes")) and
+            ($workers[0].routes | type) == "array" and
+            ($workers[0].routes | length) == 1 and
             (
-              $workers[0].routes == null or
+              ($workers[0].routes[0] | type) == "string" and
+              $workers[0].routes[0] == $route
+              or
               (
-                ($workers[0].routes | type) == "array" and
-                ($workers[0].routes | length) == 0
+                ($workers[0].routes[0] | type) == "object" and
+                $workers[0].routes[0].pattern == $route and
+                $workers[0].routes[0].script == $worker
               )
             )
           ' "$RUNNER_TEMP/workers-before-activation.json" > /dev/null
@@ -272,16 +278,21 @@ jobs:
             --header "$auth_header" \
             "$api_base/workers/scripts" \
             > "$RUNNER_TEMP/workers-before-deploy.json"
-          jq -e --arg worker "$WORKER_NAME" '
+          jq -e --arg route "$STAGING_ROUTE" --arg worker "$WORKER_NAME" '
             .success == true and
             ([.result[] | select(.id == $worker)]) as $workers |
             ($workers | length) == 1 and
             ($workers[0] | has("routes")) and
+            ($workers[0].routes | type) == "array" and
+            ($workers[0].routes | length) == 1 and
             (
-              $workers[0].routes == null or
+              ($workers[0].routes[0] | type) == "string" and
+              $workers[0].routes[0] == $route
+              or
               (
-                ($workers[0].routes | type) == "array" and
-                ($workers[0].routes | length) == 0
+                ($workers[0].routes[0] | type) == "object" and
+                $workers[0].routes[0].pattern == $route and
+                $workers[0].routes[0].script == $worker
               )
             )
           ' "$RUNNER_TEMP/workers-before-deploy.json" > /dev/null
@@ -351,16 +362,21 @@ jobs:
             --show-error \
             --header "$auth_header" \
             "$api_base/workers/scripts" > "$RUNNER_TEMP/workers-after-activation.json"
-          jq -e --arg worker "$WORKER_NAME" '
+          jq -e --arg route "$STAGING_ROUTE" --arg worker "$WORKER_NAME" '
             .success == true and
             ([.result[] | select(.id == $worker)]) as $workers |
             ($workers | length) == 1 and
             ($workers[0] | has("routes")) and
+            ($workers[0].routes | type) == "array" and
+            ($workers[0].routes | length) == 1 and
             (
-              $workers[0].routes == null or
+              ($workers[0].routes[0] | type) == "string" and
+              $workers[0].routes[0] == $route
+              or
               (
-                ($workers[0].routes | type) == "array" and
-                ($workers[0].routes | length) == 0
+                ($workers[0].routes[0] | type) == "object" and
+                $workers[0].routes[0].pattern == $route and
+                $workers[0].routes[0].script == $worker
               )
             )
           ' "$RUNNER_TEMP/workers-after-activation.json" > /dev/null

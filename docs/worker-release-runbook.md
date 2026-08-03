@@ -8,7 +8,7 @@ remains available beneath the Worker route as the deeper fallback. No release
 workflow attaches or removes a route, changes a custom domain, edits DNS,
 changes Access, or removes Pages.
 
-The release controls now have six paths:
+The release controls now have seven paths:
 
 1. `Website CI and Worker Artifact` builds once without credentials, validates
    that output, and publishes the exact archive plus checksum and provenance.
@@ -24,17 +24,23 @@ The release controls now have six paths:
 3. `Upload Exact Preview Worker Version` is manually dispatched from `main`
    after explicit review. It consumes either one successful same-repository PR
    artifact or the successful `push` artifact for the exact current `main`
-   commit, then uploads an inactive, unreachable version to
-   `zenml-io-v2-worker-preview`.
-4. `Upload Worker Production Candidate` is manually dispatched from `main` with
+   commit, then uploads an inactive version to `zenml-io-v2-worker-preview`
+   without changing the version currently served at the Access-protected
+   `astro-workers-staging.zenml.io/*` route. Its topology guard requires exactly
+   that one route and rejects every extra or reassigned route.
+4. `Activate Exact Preview Worker Version` is manually dispatched from `main`
+   with the inactive version's exact provenance. It rechecks the same single
+   protected staging route before and after activating that version at 100
+   percent. It does not attach, remove, or edit the route.
+5. `Upload Worker Production Candidate` is manually dispatched from `main` with
    an exact successful CI run, branch, and commit. It uploads an inactive
    version to `zenml-io-v2-worker` with public preview URLs disabled. This is a
    retained pre-cutover control and intentionally rejects the current live
    route topology.
-5. `Activate Exact Worker Version` is manually dispatched from `main` with an
+6. `Activate Exact Worker Version` is manually dispatched from `main` with an
    exact version ID and matching provenance. It is also a retained pre-cutover
    control and intentionally refuses to activate a routed Worker.
-6. `Publish Worker PR Preview` consumes successful same-repository,
+7. `Publish Worker PR Preview` consumes successful same-repository,
    non-draft PR artifacts from trusted `main` and publishes stable public
    aliases on the separate, route-less `zenml-io-v2-pr-preview` Worker. It
    never rebuilds the artifact or receives production, route, DNS, or Pages

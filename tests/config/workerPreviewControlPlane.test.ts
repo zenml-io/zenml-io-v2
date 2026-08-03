@@ -50,6 +50,7 @@ interface ManualPreviewWorkflow {
   };
   env: {
     SOURCE_RUN_PREDICATE: string;
+    STAGING_ROUTE: string;
     WORKER_NAME: string;
   };
   jobs: Record<
@@ -472,7 +473,7 @@ describe("preview Worker upload workflow", () => {
 
   it("uploads one private inactive version to only the fixed preview Worker", () => {
     const workerStep = uploadStep(
-      "Verify the preview Worker is private and route-less",
+      "Verify the preview Worker has only the protected staging route",
     );
     const configStep = uploadStep("Prepare trusted preview configuration");
     const captureDeploymentStep = uploadStep(
@@ -484,6 +485,9 @@ describe("preview Worker upload workflow", () => {
     );
 
     expect(uploadWorkflow.env.WORKER_NAME).toBe("zenml-io-v2-worker-preview");
+    expect(uploadWorkflow.env.STAGING_ROUTE).toBe(
+      "astro-workers-staging.zenml.io/*",
+    );
     expect(
       uploadWorkflowText.match(/zenml-io-v2-worker-preview/g),
     ).toHaveLength(1);
@@ -723,13 +727,20 @@ describe("preview Worker upload workflow", () => {
 
   it("executes the workflow privacy predicates against safe and public states", () => {
     const workerStep = uploadStep(
-      "Verify the preview Worker is private and route-less",
+      "Verify the preview Worker has only the protected staging route",
     );
     const run = workerStep.run ?? "";
     const subdomainProgram = jqProgramWritingTo(run, "worker-subdomain.json");
     const routesProgram = jqProgramWritingTo(run, "workers-before-upload.json");
     const domainsProgram = jqProgramWritingTo(run, "worker-domains.json");
-    const workerArgs = ["--arg", "worker", "zenml-io-v2-worker-preview"];
+    const workerArgs = [
+      "--arg",
+      "route",
+      "astro-workers-staging.zenml.io/*",
+      "--arg",
+      "worker",
+      "zenml-io-v2-worker-preview",
+    ];
 
     expectJqResult(
       subdomainProgram,
@@ -751,7 +762,17 @@ describe("preview Worker upload workflow", () => {
     expectJqResult(
       routesProgram,
       {
-        result: [{ id: "zenml-io-v2-worker-preview", routes: [] }],
+        result: [
+          {
+            id: "zenml-io-v2-worker-preview",
+            routes: [
+              {
+                pattern: "astro-workers-staging.zenml.io/*",
+                script: "zenml-io-v2-worker-preview",
+              },
+            ],
+          },
+        ],
         success: true,
       },
       true,
@@ -768,9 +789,57 @@ describe("preview Worker upload workflow", () => {
         ],
         success: true,
       },
+      true,
+      workerArgs,
+    );
+    expectJqResult(
+      routesProgram,
+      {
+        result: [
+          {
+            id: "zenml-io-v2-worker-preview",
+            routes: [],
+          },
+        ],
+        success: true,
+      },
       false,
       workerArgs,
     );
+    for (const routes of [
+      [
+        {
+          pattern: "www.zenml.io/*",
+          script: "zenml-io-v2-worker-preview",
+        },
+      ],
+      [
+        {
+          pattern: "astro-workers-staging.zenml.io/*",
+          script: "zenml-io-v2-worker",
+        },
+      ],
+      [
+        {
+          pattern: "astro-workers-staging.zenml.io/*",
+          script: "zenml-io-v2-worker-preview",
+        },
+        {
+          pattern: "extra.zenml.io/*",
+          script: "zenml-io-v2-worker-preview",
+        },
+      ],
+    ]) {
+      expectJqResult(
+        routesProgram,
+        {
+          result: [{ id: "zenml-io-v2-worker-preview", routes }],
+          success: true,
+        },
+        false,
+        workerArgs,
+      );
+    }
 
     expectJqResult(
       domainsProgram,
@@ -895,7 +964,7 @@ describe("preview Worker activation workflow", () => {
   it("validates inputs and inspects exact private-version provenance", () => {
     const validationStep = activationStep("Validate activation identifiers");
     const workerStep = activationStep(
-      "Verify the preview Worker is private and route-less",
+      "Verify the preview Worker has only the protected staging route",
     );
     const inspectStep = activationStep("Inspect the exact preview version");
     const provenanceStep = activationStep(
@@ -913,6 +982,9 @@ describe("preview Worker activation workflow", () => {
       ".result.enabled == false and .result.previews_enabled == false",
     );
     expect(workerStep.run).toContain('has("routes")');
+    expect(activationWorkflow.env.STAGING_ROUTE).toBe(
+      "astro-workers-staging.zenml.io/*",
+    );
     expect(workerStep.run).toContain(
       "/workers/domains?service=$WORKER_NAME&per_page=100",
     );
@@ -972,6 +1044,105 @@ describe("preview Worker activation workflow", () => {
     expect(activationWorkflowText).not.toContain("wrangler dns");
     expect(activationWorkflowText).not.toContain("wrangler pages");
     expect(activationWorkflowText).not.toContain("wrangler delete");
+  });
+
+  it("requires the exact protected staging route throughout activation", () => {
+    const routeChecks = [
+      [
+        activationStep(
+          "Verify the preview Worker has only the protected staging route",
+        ),
+        "workers-before-activation.json",
+      ],
+      [
+        activationStep("Activate exact preview version"),
+        "workers-before-deploy.json",
+      ],
+      [
+        activationStep("Verify exact activation and private endpoints"),
+        "workers-after-activation.json",
+      ],
+    ] as const;
+    const args = [
+      "--arg",
+      "route",
+      "astro-workers-staging.zenml.io/*",
+      "--arg",
+      "worker",
+      "zenml-io-v2-worker-preview",
+    ];
+    const acceptedWorker = {
+      id: "zenml-io-v2-worker-preview",
+      routes: [
+        {
+          pattern: "astro-workers-staging.zenml.io/*",
+          script: "zenml-io-v2-worker-preview",
+        },
+      ],
+    };
+    const rejectedWorkers = [
+      { ...acceptedWorker, routes: [] },
+      {
+        ...acceptedWorker,
+        routes: [
+          {
+            pattern: "astro-workers-staging.zenml.io/*",
+            script: "zenml-io-v2-worker",
+          },
+        ],
+      },
+      {
+        ...acceptedWorker,
+        routes: [
+          {
+            pattern: "www.zenml.io/*",
+            script: "zenml-io-v2-worker-preview",
+          },
+        ],
+      },
+      {
+        ...acceptedWorker,
+        routes: [
+          ...acceptedWorker.routes,
+          {
+            pattern: "extra.zenml.io/*",
+            script: "zenml-io-v2-worker-preview",
+          },
+        ],
+      },
+    ];
+
+    for (const [workflowStep, filename] of routeChecks) {
+      const program = jqProgramWritingTo(workflowStep.run ?? "", filename);
+      expectJqResult(
+        program,
+        { result: [acceptedWorker], success: true },
+        true,
+        args,
+      );
+      expectJqResult(
+        program,
+        {
+          result: [
+            {
+              ...acceptedWorker,
+              routes: ["astro-workers-staging.zenml.io/*"],
+            },
+          ],
+          success: true,
+        },
+        true,
+        args,
+      );
+      for (const worker of rejectedWorkers) {
+        expectJqResult(
+          program,
+          { result: [worker], success: true },
+          false,
+          args,
+        );
+      }
+    }
   });
 
   it("accepts only the newest exact 100-percent deployment", () => {
