@@ -334,6 +334,26 @@ async function runChecks(baseUrl: string): Promise<CheckResult[]> {
   );
   await unverifiedForm.body?.cancel();
 
+  const stars = await requestWithTransientServiceRetry(
+    baseUrl,
+    "/api/github-stars",
+    {},
+  );
+  const starsPayload =
+    stars.status === 200
+      ? ((await stars.json()) as Record<string, unknown>)
+      : undefined;
+  check(
+    results,
+    "GitHub stars API returns a live, cached, or fallback snapshot",
+    stars.status === 200 &&
+      typeof starsPayload?.stars === "number" &&
+      ["github", "cache", "fallback"].includes(String(starsPayload.source)) &&
+      stars.headers.get("cache-control") !== null,
+    `status ${stars.status}, source ${String(starsPayload?.source)}`,
+  );
+  if (stars.status !== 200) await stars.body?.cancel();
+
   const csp = await requestWithTransientServiceRetry(
     baseUrl,
     "/api/csp-report",

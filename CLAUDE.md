@@ -3,16 +3,18 @@
 ## Project Overview
 
 This repository powers the live [zenml.io](https://www.zenml.io) marketing
-website — an Astro v5 static site hosted on Cloudflare Pages. ~2,200 pages
-across the Astro content collections defined in `src/content.config.ts`, built in ~33 seconds.
+website. The source tree is on the production-ineligible Astro 7 checkpoint;
+the accepted Astro 6 Cloudflare Worker still serves production until the later
+staging and production-enablement checkpoints complete. The site is generated
+from the Astro content collections defined in `src/content.config.ts`.
 
 The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 - **ZenML** — ML workflow orchestration (the original product)
 - **Kitaru** — durable runtime for AI agents (folded in from `kitaru.ai`)
 
 - **Production URL**: https://www.zenml.io
-- **Hosting**: Cloudflare Pages remains live while immutable Cloudflare Worker
-  versions are validated for the planned cutover
+- **Hosting**: The accepted Astro 6 Cloudflare Worker serves production.
+  Cloudflare Pages remains available as the deeper fallback.
 - **Scale**: content collections defined in `src/content.config.ts`, ~2,350 content items, ~2,560 assets on R2
 - **History**: Migrated from Webflow in Feb 2026 (`docs/MIGRATION.md`). Unified with `kitaru.ai` in May 2026 (`MERGE_PLAN.md`).
 - **Private details**: See `CLAUDE.private.md` (gitignored) for infrastructure IDs, traffic numbers, and internal docs index
@@ -32,7 +34,7 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 |-------|--------|
 | Framework | **Astro** (TypeScript) — static-first, content collections, islands |
 | Content | **Markdown (.md) in git** — Astro Content Collections with Zod schemas. **Use `.md` NOT `.mdx`** (MDX v2 treats HTML as strict JSX, breaking raw HTML in content). **Exception:** the `compare-kitaru` collection uses `.mdx` because the ported Kitaru-vs-X pages rely on inline component imports — documented in MERGE_PLAN.md Phase 3 known gaps. |
-| Hosting | **Cloudflare Pages** in production; **Cloudflare Workers** migration candidate |
+| Hosting | **Cloudflare Workers** in production; **Cloudflare Pages** retained as the deeper fallback |
 | Assets | **Cloudflare R2** — object storage for images/files |
 | Styling | **Tailwind CSS** — utility-first |
 | Interactive | **Preact islands** — client-side components including LLMOpsFilter, MLOpsFilter, ContactForm, DemoRequestForm, BlogSearch, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, and RoiCalculator |
