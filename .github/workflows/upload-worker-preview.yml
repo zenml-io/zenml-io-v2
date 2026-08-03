@@ -35,6 +35,8 @@ concurrency:
 permissions: {}
 
 env:
+  ACCESS_LOGIN_PREFIX: https://zenml.cloudflareaccess.com/cdn-cgi/access/login/astro-workers-staging.zenml.io
+  STAGING_URL: https://astro-workers-staging.zenml.io/
   WORKER_NAME: zenml-io-v2-worker-preview
   STAGING_ROUTE: astro-workers-staging.zenml.io/*
   SOURCE_RUN_PREDICATE: |
@@ -315,6 +317,23 @@ jobs:
             ([.result[] | select(.service == $worker)] | length == 0) and
             .result_info.total_count == 0
           ' "$RUNNER_TEMP/worker-domains.json" > /dev/null
+
+          access_status="$(
+            curl \
+              --connect-timeout 10 \
+              --max-time 30 \
+              --silent \
+              --show-error \
+              --output /dev/null \
+              --dump-header "$RUNNER_TEMP/staging-access-before-upload.headers" \
+              --write-out "%{http_code}" \
+              "$STAGING_URL"
+          )"
+          test "$access_status" = "302"
+          tr -d '\r' < "$RUNNER_TEMP/staging-access-before-upload.headers" \
+            | grep -Fqi -- "location: $ACCESS_LOGIN_PREFIX"
+          tr -d '\r' < "$RUNNER_TEMP/staging-access-before-upload.headers" \
+            | grep -Fqi -- "www-authenticate: Cloudflare-Access"
 
       - name: Prepare trusted preview configuration
         shell: bash

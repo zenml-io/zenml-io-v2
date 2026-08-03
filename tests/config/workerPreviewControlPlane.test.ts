@@ -49,7 +49,9 @@ interface ManualPreviewWorkflow {
     group: string;
   };
   env: {
+    ACCESS_LOGIN_PREFIX: string;
     SOURCE_RUN_PREDICATE: string;
+    STAGING_URL: string;
     STAGING_ROUTE: string;
     WORKER_NAME: string;
   };
@@ -128,6 +130,16 @@ function expectJqResult(
   } else {
     expect(execute).toThrow();
   }
+}
+
+function expectAccessGate(step: WorkflowStep, headersFile: string): void {
+  expect(step.run).toContain(`--dump-header "$RUNNER_TEMP/${headersFile}"`);
+  expect(step.run).toContain('--write-out "%{http_code}"');
+  expect(step.run).toContain('test "$access_status" = "302"');
+  expect(step.run).toContain('grep -Fqi -- "location: $ACCESS_LOGIN_PREFIX"');
+  expect(step.run).toContain(
+    'grep -Fqi -- "www-authenticate: Cloudflare-Access"',
+  );
 }
 
 describe("preview Worker bootstrap workflow", () => {
@@ -488,6 +500,12 @@ describe("preview Worker upload workflow", () => {
     expect(uploadWorkflow.env.STAGING_ROUTE).toBe(
       "astro-workers-staging.zenml.io/*",
     );
+    expect(uploadWorkflow.env.STAGING_URL).toBe(
+      "https://astro-workers-staging.zenml.io/",
+    );
+    expect(uploadWorkflow.env.ACCESS_LOGIN_PREFIX).toBe(
+      "https://zenml.cloudflareaccess.com/cdn-cgi/access/login/astro-workers-staging.zenml.io",
+    );
     expect(
       uploadWorkflowText.match(/zenml-io-v2-worker-preview/g),
     ).toHaveLength(1);
@@ -503,6 +521,7 @@ describe("preview Worker upload workflow", () => {
       "/workers/domains?service=$WORKER_NAME&per_page=100",
     );
     expect(workerStep.run).toContain(".result_info.total_count == 0");
+    expectAccessGate(workerStep, "staging-access-before-upload.headers");
     expect(configStep.run).toContain("name: env.WORKER_NAME");
     expect(configStep.run).toContain("workers_dev: false");
     expect(configStep.run).toContain("preview_urls: false");
@@ -985,10 +1004,17 @@ describe("preview Worker activation workflow", () => {
     expect(activationWorkflow.env.STAGING_ROUTE).toBe(
       "astro-workers-staging.zenml.io/*",
     );
+    expect(activationWorkflow.env.STAGING_URL).toBe(
+      "https://astro-workers-staging.zenml.io/",
+    );
+    expect(activationWorkflow.env.ACCESS_LOGIN_PREFIX).toBe(
+      "https://zenml.cloudflareaccess.com/cdn-cgi/access/login/astro-workers-staging.zenml.io",
+    );
     expect(workerStep.run).toContain(
       "/workers/domains?service=$WORKER_NAME&per_page=100",
     );
     expect(workerStep.run).toContain(".result_info.total_count == 0");
+    expectAccessGate(workerStep, "staging-access-before-activation.headers");
     expect(inspectStep.run).toContain('wrangler versions view "$VERSION_ID"');
     expect(inspectStep.run).toContain('--name "$WORKER_NAME"');
     expect(provenanceStep.run).toContain('select(.type == "secret_text")');
@@ -1022,6 +1048,7 @@ describe("preview Worker activation workflow", () => {
     expect(activateStep.run).toContain("worker-subdomain-before-deploy.json");
     expect(activateStep.run).toContain("workers-before-deploy.json");
     expect(activateStep.run).toContain("worker-domains-before-deploy.json");
+    expectAccessGate(activateStep, "staging-access-before-deploy.headers");
     expect(activateStep.run).toContain(
       "/workers/domains?service=$WORKER_NAME&per_page=100",
     );
@@ -1037,6 +1064,7 @@ describe("preview Worker activation workflow", () => {
     );
     expect(verifyStep.run).toContain("workers-after-activation.json");
     expect(verifyStep.run).toContain("worker-domains-after-activation.json");
+    expectAccessGate(verifyStep, "staging-access-after-activation.headers");
     expect(activationWorkflowText).not.toContain(
       "secrets.CLOUDFLARE_WORKERS_PRODUCTION_TOKEN",
     );
