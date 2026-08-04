@@ -4,6 +4,7 @@ import {
   KITARU_INSTALL_CMD,
   KITARU_LICENSE,
   KITARU_LINKS,
+  KITARU_TRIAL_NOTE,
 } from "../../lib/productKitaru";
 ---
 
@@ -31,13 +32,10 @@ import {
         </button>
       </div>
       <div class="cta-links">
-        <a href={KITARU_LINKS.demo.href} class="btn-accent">{KITARU_LINKS.demo.label}</a>
-        <a href={KITARU_LINKS.github.href} target="_blank" rel="noopener" class="btn-secondary-dark">
-          {KITARU_LINKS.github.label}
-        </a>
+        <a href={KITARU_LINKS.signup.href} class="btn-accent">{KITARU_LINKS.signup.label}</a>
       </div>
     </div>
-    <p class="cta-note">Open source ({KITARU_LICENSE}). Replay real runs against your real code. Nothing reruns in production.</p>
+    <p class="cta-note">{KITARU_TRIAL_NOTE} · Open source ({KITARU_LICENSE}) — nothing reruns in production.</p>
   </div>
 </section>
 
@@ -232,9 +230,6 @@ import {
 
   .cta-links {
     display: flex;
-    gap: 14px;
-    align-items: center;
-    flex-wrap: wrap;
     justify-content: center;
   }
 
@@ -259,13 +254,11 @@ import {
     .cta-blob-3 { width: 260px; height: 260px; }
 
     .cta-links {
-      flex-direction: column;
       width: 100%;
       max-width: 320px;
     }
 
-    .cta-links .btn-accent,
-    .cta-links .btn-secondary-dark {
+    .cta-links .btn-accent {
       width: 100%;
       justify-content: center;
       text-align: center;

@@ -1,7 +1,30 @@
 export const KITARU_INSTALL_CMD = "pip install kitaru";
 export const KITARU_LICENSE = "Apache 2.0";
 
+/**
+ * Launch-pricing facts (locked Aug 4, tunable until the 18th). Every surface
+ * that quotes the price, trial terms, or Cloud-plan limits interpolates these
+ * constants, so a pre-launch tune is a one-line change here.
+ */
+export const KITARU_CLOUD_PRICE = "$39";
+export const KITARU_TRIAL_DAYS = 14;
+export const KITARU_CLOUD_LIMITS = {
+  agents: 3,
+  seats: 3,
+  retentionDays: 90,
+} as const;
+
+/** Trial terms shown next to every signup CTA. */
+export const KITARU_TRIAL_NOTE = `${KITARU_TRIAL_DAYS}-day free trial · Full access · No credit card`;
+
 export const KITARU_LINKS = {
+  // The `product=kitaru` param routes onboarding to a Kitaru-only workspace
+  // flow on the cloud side; the param name is a placeholder until the cloud
+  // onboarding change lands — a one-line fix here.
+  signup: {
+    label: "Sign up free",
+    href: "https://cloud.zenml.io/signup?product=kitaru",
+  },
   demo: { label: "Book a demo", href: "/book-your-demo/kitaru" },
   github: {
     label: "Star on GitHub",
@@ -111,5 +134,5 @@ export const PRODUCT_KITARU_MARKDOWN = {
       body: "There is no pass/fail on a replay and no blended cross-evaluator score. Its output is a new session and that session's evaluation rows, compared by whoever is reading. Nothing is stored that could later go stale.",
     },
   ],
-  ctas: [KITARU_LINKS.demo, KITARU_LINKS.github],
+  ctas: [KITARU_LINKS.signup, KITARU_LINKS.github],
 } as const;

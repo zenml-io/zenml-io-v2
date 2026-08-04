@@ -11,7 +11,12 @@ import type {
   PricingCompareTableData,
   PricingPlan,
 } from "./marketingPageTypes";
-import { KITARU_LINKS } from "./productKitaru";
+import {
+  KITARU_CLOUD_LIMITS,
+  KITARU_CLOUD_PRICE,
+  KITARU_LINKS,
+  KITARU_TRIAL_DAYS,
+} from "./productKitaru";
 
 // ---------------------------------------------------------------------------
 // SEO
@@ -79,30 +84,30 @@ export const PRICING_PRO_INCLUSIONS = {
       side: "kitaru" as const,
       eyebrow: "Agent evals",
       title: "Replay-based evals",
-      body: "Import your whole trace history for free. You are only metered when Kitaru re-runs reality.",
+      body: "Import your whole trace history, replay it against your next change, and keep every fix as a regression test — on one flat plan.",
       bullets: [
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z" /></svg>',
-          title: "Imports, recordings and scoring are free",
-          detail: "Bring your entire history — the meter does not move.",
+          title: "Sessions, cohorts, evaluators, experiments",
+          detail: "The whole replay loop — imports and scoring included.",
         },
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><line x1="10" y1="15" x2="10" y2="9" /><line x1="14" y1="15" x2="14" y2="9" /></svg>',
-          title: "Metered on replays and experiment runs",
-          detail: "A session Kitaru creates counts. One you import does not.",
+          title: `One flat ${KITARU_CLOUD_PRICE} plan — no meters to read`,
+          detail: "Replays and experiment runs included at launch.",
         },
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="11.49" /></svg>',
-          title: "Unlimited seats, including your domain experts",
+          title: "Seats for your domain experts",
           detail:
             "The people who know what good looks like are not a line item.",
         },
       ],
       learn: { label: "Learn about Kitaru", href: "/product/kitaru" },
       cta: {
-        label: "Book a demo",
-        href: "/book-your-demo",
-        analytics: "Pricing-Pro-Inclusions-Kitaru-Demo",
+        label: KITARU_LINKS.signup.label,
+        href: KITARU_LINKS.signup.href,
+        analytics: "Pricing-Pro-Inclusions-Kitaru-Signup",
       } as CtaLink,
     },
   ],
@@ -196,10 +201,11 @@ export const PRICING_PLANS: PricingPlan[] = [
 // ---------------------------------------------------------------------------
 // Kitaru workspace plans.
 //
-// Deliberately no slider. The replay allowance is still being set from real
-// usage data, and the launch position is to show the structure and enforce
-// nothing — so the cards state what is free, what is metered, and the limits
-// that are actually settled (agents, retention).
+// Launch pricing (locked Aug 4): one flat Cloud plan with a full-access
+// trial and no credit card — no free hosted tier, no metering, no middle
+// tiers. Just Open Source, Cloud, and Enterprise. The price, trial length
+// and limits are interpolated from productKitaru.ts so a pre-launch tune
+// is a one-line change there.
 // ---------------------------------------------------------------------------
 export const PRICING_PLANS_KITARU: PricingPlan[] = [
   {
@@ -224,27 +230,26 @@ export const PRICING_PLANS_KITARU: PricingPlan[] = [
     ctaVariant: "secondary",
   },
   {
-    id: "kitaru-scale",
-    eyebrow: "Scale",
+    id: "kitaru-cloud",
+    eyebrow: "Cloud",
     pill: "SaaS",
-    topBadge: "Recommended",
+    topBadge: `${KITARU_TRIAL_DAYS}-day free trial`,
     highlighted: true,
     subtitle: "For teams shipping agents to customers",
-    price: "$999",
+    price: KITARU_CLOUD_PRICE,
     priceSuffix: "/month",
-    limitsLine:
-      "3 agents · 90-day retention · Unlimited imports, scoring and seats",
+    limitsLine: `${KITARU_CLOUD_LIMITS.agents} agents · ${KITARU_CLOUD_LIMITS.seats} seats · ${KITARU_CLOUD_LIMITS.retentionDays}-day session retention`,
     includesLabel: "Everything in Open Source, plus",
     features: [
       "Hosted dashboard and control plane",
-      "Metered on replays and experiment runs only",
-      "Unlimited seats for domain experts",
+      "Replays and experiment runs included — no meters",
+      "Trial starts with full Enterprise access",
       "Email support",
     ],
     cta: {
-      label: "Book a demo",
-      href: KITARU_LINKS.demo.href,
-      analytics: "Kitaru-Scale-Book-Demo",
+      label: KITARU_LINKS.signup.label,
+      href: KITARU_LINKS.signup.href,
+      analytics: "Kitaru-Cloud-Signup",
     },
     ctaVariant: "primary",
   },
@@ -254,13 +259,13 @@ export const PRICING_PLANS_KITARU: PricingPlan[] = [
     pill: "SaaS",
     subtitle: "For organizations at scale",
     price: "Custom",
-    limitsLine: "Unlimited agents · Custom retention · Custom replay volume",
-    includesLabel: "Everything in Scale, plus",
+    limitsLine: "Unlimited agents · Custom seats and retention",
+    includesLabel: "Everything in Cloud, plus",
     features: [
       "SSO (SAML / OIDC)",
-      "RBAC (custom roles)",
       "Audit logs",
       "Remote worker pools",
+      "Custom limits and retention",
     ],
     cta: {
       label: "Talk to an engineer",
@@ -290,7 +295,7 @@ export const PRICING_PLAN_WORKSPACES = [
     id: "kitaru",
     label: "Kitaru workspace",
     sublabel: "Agent evals",
-    note: "A session Kitaru creates is an execution: replays and experiment runs. Imports, recordings, scoring and seats are free. Nothing is enforced during launch.",
+    note: `One flat plan while we launch: ${KITARU_CLOUD_PRICE} a month, every feature, no meters to read. The trial starts with full access and needs no credit card.`,
     learn: { label: "Learn about Kitaru", href: "/product/kitaru" },
     plans: PRICING_PLANS_KITARU,
     accent: {
@@ -303,7 +308,7 @@ export const PRICING_PLAN_WORKSPACES = [
     id: "zenml",
     label: "ZenML workspace",
     sublabel: "ML pipelines",
-    note: "Executions are ZenML pipeline runs. Kitaru replays are metered separately — one subscription, two meters.",
+    note: "Executions are ZenML pipeline runs. Kitaru is priced separately as a flat monthly plan — one subscription covers both workspaces.",
     learn: { label: "Learn about ZenML", href: "/product/zenml" },
     plans: PRICING_PLANS,
     accent: {
@@ -358,7 +363,7 @@ export const PRICING_COMPARE: PricingCompareTableData = {
       heading: "Agent evals",
       rows: [
         {
-          feature: "Replay-based evals for Python agents",
+          feature: "Replay-based evals (Python & TypeScript)",
           values: [true, true, true],
         },
         {
@@ -411,26 +416,28 @@ export const PRICING_COMPARE: PricingCompareTableData = {
 };
 
 // Kitaru-workspace variant, shown when the workspace toggle selects Kitaru.
-// Leads with the metering story ("pay for replays, not ingest") rather than a
-// generic feature checklist. Rows restate only what the Kitaru plan cards and
-// the v2 pricing proposal already claim — the Scale replay allowance number is
-// deliberately absent because it is still being set from real usage data.
+// Launch framing: one flat plan, nothing metered, every feature on every
+// hosted plan — the table's job is to show there is nothing to compute,
+// only the self-hosted / hosted / enterprise split to pick from.
 export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
   heading: "Compare every plan",
-  subheading:
-    "Pay for replays, not ingest — importing, recording, scoring and seats are free on every plan.",
-  columnHeaders: ["Open Source", "Scale", "Enterprise"],
+  subheading: `One flat plan at launch — ${KITARU_CLOUD_PRICE} a month, every feature, ${KITARU_TRIAL_DAYS}-day full-access trial. No meters, no usage math.`,
+  columnHeaders: ["Open Source", "Cloud", "Enterprise"],
   sections: [
     {
-      heading: "What's metered",
+      heading: "Plan",
       rows: [
         {
-          feature: "Imports, recordings, scoring and seats",
-          values: ["Free", "Free", "Free"],
+          feature: "Price",
+          values: ["Free", `${KITARU_CLOUD_PRICE} / month`, "Custom"],
         },
         {
-          feature: "Replays and experiment runs",
-          values: ["Unmetered", "Metered", "Custom volume"],
+          feature: "Free trial",
+          values: ["—", `${KITARU_TRIAL_DAYS} days, full access`, "—"],
+        },
+        {
+          feature: "Credit card to start",
+          values: ["Never", "Not for the trial", "—"],
         },
       ],
     },
@@ -438,7 +445,7 @@ export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
       heading: "Replay & evals — every plan",
       rows: [
         {
-          feature: "Replay-based evals for Python agents",
+          feature: "Replay-based evals (Python & TypeScript)",
           values: [true, true, true],
         },
         {
@@ -449,15 +456,30 @@ export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
           feature: "Replay on your own workers, with your own keys",
           values: [true, true, true],
         },
+        {
+          feature: "Imports, recordings and scoring — no usage caps",
+          values: [true, true, true],
+        },
       ],
     },
     {
       heading: "Limits",
       rows: [
-        { feature: "Agents", values: ["Unlimited", "3", "Unlimited"] },
+        {
+          feature: "Agents",
+          values: ["Unlimited", `${KITARU_CLOUD_LIMITS.agents}`, "Unlimited"],
+        },
+        {
+          feature: "Seats",
+          values: ["Unlimited", `${KITARU_CLOUD_LIMITS.seats}`, "Custom"],
+        },
         {
           feature: "Session retention",
-          values: ["Self-hosted", "90 days", "Custom"],
+          values: [
+            "Self-hosted",
+            `${KITARU_CLOUD_LIMITS.retentionDays} days`,
+            "Custom",
+          ],
         },
       ],
     },
@@ -469,7 +491,7 @@ export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
           values: [false, true, true],
         },
         {
-          feature: "Unlimited seats for domain experts",
+          feature: "Role-based access (standard roles)",
           values: [false, true, true],
         },
       ],
@@ -478,11 +500,6 @@ export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
       heading: "Enterprise & governance",
       rows: [
         { feature: "SSO (SAML / OIDC)", values: [false, false, true] },
-        {
-          feature: "RBAC (custom roles)",
-          link: "https://docs.zenml.io/pro/access-management/roles",
-          values: [false, false, true],
-        },
         { feature: "Audit logs", values: [false, false, true] },
         { feature: "Remote worker pools", values: [false, false, true] },
       ],
@@ -558,14 +575,12 @@ export const PRICING_FAQ: FaqData = {
   subheadline: "Everything you need to know about the product.",
   items: [
     {
-      question: "What counts as an execution in Kitaru?",
-      answer:
-        "A session Kitaru creates — that means replays and experiment runs. Sessions you import or record yourself are free, and so are scoring, evaluators and seats. The reasoning is simple: importing your history is step one of using the product, so charging for it would price against our own onboarding. You are metered only when Kitaru re-runs reality.",
+      question: "What does Kitaru cost?",
+      answer: `One flat plan at launch: ${KITARU_CLOUD_PRICE} a month for the hosted Cloud plan — ${KITARU_CLOUD_LIMITS.agents} agents, ${KITARU_CLOUD_LIMITS.seats} seats, ${KITARU_CLOUD_LIMITS.retentionDays}-day session retention, and everything included. Replays, experiment runs, imports, recording and scoring all come with the plan; there are no meters and no usage math. The ${KITARU_TRIAL_DAYS}-day trial starts with full access to every feature and needs no credit card — when you add one, you land on the ${KITARU_CLOUD_PRICE} plan. Need more agents, seats or governance? That's the Enterprise plan. And the open-source version is free forever on your own infrastructure.`,
     },
     {
       question: "ZenML and Kitaru — same plan?",
-      answer:
-        "Yes — one subscription, one support tier, both workspaces. The ZenML workspace runs ML pipelines (typed step DAGs, training, batch inference). The Kitaru workspace runs replay-based agent evals (sessions, cohorts, evaluators, experiment runs). The two are metered separately, though: a pipeline run is minutes to hours of compute, while a replay is one session in seconds, so they are counted on their own meters rather than sharing a pool. No credit conversion between them.",
+      answer: `One subscription covers both workspaces, but they are priced differently: ZenML's managed tiers scale with pipeline executions, while Kitaru launches as a single flat ${KITARU_CLOUD_PRICE}/month plan. The ZenML workspace runs ML pipelines (typed step DAGs, training, batch inference); the Kitaru workspace runs replay-based agent evals (sessions, cohorts, evaluators, experiment runs). Same control plane and governance underneath.`,
     },
     {
       question: "Can I self-host Kitaru like ZenML?",
