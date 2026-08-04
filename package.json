@@ -49,7 +49,7 @@
   "pnpm": {
     "overrides": {
       "@cloudflare/vite-plugin": "1.39.0",
-      "miniflare@<4.20260721.0>undici": "7.28.0",
+      "miniflare@<=4.20260721.0>undici": "7.29.0",
       "miniflare@<4.20260721.0>ws": "8.21.0",
       "@cloudflare/vite-plugin@1.39.0>ws": "8.21.0",
       "miniflare@<=4.20260721.0>sharp": "0.35.3"
