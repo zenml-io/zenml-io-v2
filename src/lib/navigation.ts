@@ -135,16 +135,8 @@ export function createNavDropdowns({
       sections: [
         {
           heading: "Products",
+          // Kitaru listed first during the v2 launch window.
           links: [
-            {
-              label: "ZenML",
-              href: "/product/zenml",
-              description: "Pipelines for ML workflows",
-              icon: ICON_ZENML_MARK,
-              iconViewBox: "0 0 20 20",
-              iconFilled: true,
-              brand: "zenml",
-            },
             {
               label: "Kitaru",
               href: "/product/kitaru",
@@ -153,6 +145,15 @@ export function createNavDropdowns({
               iconViewBox: "0 0 81 82",
               iconFilled: true,
               brand: "kitaru",
+            },
+            {
+              label: "ZenML",
+              href: "/product/zenml",
+              description: "Pipelines for ML workflows",
+              icon: ICON_ZENML_MARK,
+              iconViewBox: "0 0 20 20",
+              iconFilled: true,
+              brand: "zenml",
             },
             {
               label: "ZenML Pro",
@@ -174,19 +175,19 @@ export function createNavDropdowns({
           heading: "Documentation",
           links: [
             {
-              label: "ZenML docs",
-              href: "https://docs.zenml.io",
-              description: "Pipelines, components, integrations",
-              external: true,
-              icon: ICON_BOOK,
-            },
-            {
               label: "Kitaru docs",
               href: "https://docs.zenml.io/kitaru",
               description: "Agent runtime primitives and APIs",
               external: true,
               icon: ICON_BOOK,
               brand: "kitaru",
+            },
+            {
+              label: "ZenML docs",
+              href: "https://docs.zenml.io",
+              description: "Pipelines, components, integrations",
+              external: true,
+              icon: ICON_BOOK,
             },
           ],
         },

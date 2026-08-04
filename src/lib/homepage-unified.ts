@@ -28,11 +28,12 @@
  */
 
 import type { Surface } from "./analytics";
+import { KITARU_CLOUD_PRICE, KITARU_LINKS } from "./productKitaru";
 
 export const HOMEPAGE_UNIFIED_SEO = {
   title: "ZenML — The unified layer for ML and AI",
   description:
-    "Reproducible ML pipelines with ZenML. Replayable agent evals with Kitaru. One platform, on the infrastructure you already use.",
+    "Replayable agent evals with Kitaru. Reproducible ML pipelines with ZenML. One platform, on the infrastructure you already use.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -54,8 +55,9 @@ export const HOMEPAGE_UNIFIED_HERO = {
    */
   subtitleLead: "Built for engineers, ready for enterprise.",
   subtitle:
-    "Reproducible ML pipelines with ZenML. Replayable agent evals with Kitaru. One platform, on the infrastructure you already use.",
-  primaryCta: { label: "Book a demo", href: "/book-your-demo" },
+    "Replayable agent evals with Kitaru. Reproducible ML pipelines with ZenML. One platform, on the infrastructure you already use.",
+  /** Launch window (locked Aug 4): the site's single primary CTA is signup. */
+  primaryCta: KITARU_LINKS.signup,
   secondaryCta: { label: "Read Docs", href: "/docs" },
 } as const;
 
@@ -69,8 +71,8 @@ export const HOMEPAGE_UNIFIED_HERO = {
 export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
   eyebrow: "NEW",
   body: "Kitaru: turn agent failures into regression tests — replay real traces against your real code.",
-  linkText: "Read the docs",
-  linkHref: "https://docs.zenml.io/kitaru",
+  linkText: "Meet Kitaru",
+  linkHref: "/product/kitaru",
 } as const;
 
 /* ---------------------------------------------------------------------- */
@@ -100,62 +102,9 @@ export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
  *   - Kitaru examples: ../kitaru/examples/
  */
 export const HOMEPAGE_UNIFIED_WIDGET = {
+  // Kitaru first during the v2 launch window — the first tab is the
+  // widget's default view.
   tabs: [
-    {
-      id: "zenml" as const,
-      label: "ZenML",
-      sublabel: "",
-      subtabs: [
-        {
-          id: "pipelines" as const,
-          label: "Pipelines",
-          layout: "pipelines" as const,
-          surfaceTitle: "Pipelines",
-          surfaceSubtitle:
-            "Integrate your MLOps stack — for compute-intense, distributed ML pipelines.",
-          /** Left pane header */
-          title: "Recent runs",
-          subheader: "Last 24h · 5 runs",
-          countLabel: "200 total",
-          /** Right-pane header strip — tab-level copy (not per-example) */
-          rightEyebrow: "Integrate your MLOps stack",
-          rightSubhead: "For compute-intense, distributed ML pipelines.",
-          /** Per-example payload lives in two-workspaces/pipelines-examples.ts */
-          examplesRef: "pipelines-examples" as const,
-        },
-        {
-          id: "stacks" as const,
-          label: "Stacks",
-          layout: "stacks" as const,
-          surfaceTitle: "Stacks",
-          surfaceSubtitle:
-            "Swap orchestrator, store, tracker — same pipeline code.",
-        },
-        {
-          id: "artifacts" as const,
-          label: "Artifacts & Models",
-          layout: "artifacts-models" as const,
-          surfaceTitle: "Artifacts & Models",
-          surfaceSubtitle:
-            "Every artifact and model from every run — versioned, typed, traceable.",
-        },
-        {
-          id: "frameworks" as const,
-          label: "Frameworks",
-          layout: "frameworks-ml" as const,
-          surfaceTitle: "Frameworks",
-          surfaceSubtitle:
-            "Bring your own ML framework. ZenML wraps it — you don't change your training loop.",
-        },
-        {
-          id: "resources" as const,
-          label: "Resources",
-          layout: "resources" as const,
-          surfaceTitle: "Resources",
-          surfaceSubtitle: "Share GPU and compute pools across every pipeline.",
-        },
-      ],
-    },
     {
       id: "kitaru" as const,
       label: "Kitaru",
@@ -211,6 +160,61 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
         },
       ],
     },
+    {
+      id: "zenml" as const,
+      label: "ZenML",
+      sublabel: "",
+      subtabs: [
+        {
+          id: "pipelines" as const,
+          label: "Pipelines",
+          layout: "pipelines" as const,
+          surfaceTitle: "Pipelines",
+          surfaceSubtitle:
+            "Integrate your MLOps stack — for compute-intense, distributed ML pipelines.",
+          /** Left pane header */
+          title: "Recent runs",
+          subheader: "Last 24h · 5 runs",
+          countLabel: "200 total",
+          /** Right-pane header strip — tab-level copy (not per-example) */
+          rightEyebrow: "Integrate your MLOps stack",
+          rightSubhead: "For compute-intense, distributed ML pipelines.",
+          /** Per-example payload lives in two-workspaces/pipelines-examples.ts */
+          examplesRef: "pipelines-examples" as const,
+        },
+        {
+          id: "stacks" as const,
+          label: "Stacks",
+          layout: "stacks" as const,
+          surfaceTitle: "Stacks",
+          surfaceSubtitle:
+            "Swap orchestrator, store, tracker — same pipeline code.",
+        },
+        {
+          id: "artifacts" as const,
+          label: "Artifacts & Models",
+          layout: "artifacts-models" as const,
+          surfaceTitle: "Artifacts & Models",
+          surfaceSubtitle:
+            "Every artifact and model from every run — versioned, typed, traceable.",
+        },
+        {
+          id: "frameworks" as const,
+          label: "Frameworks",
+          layout: "frameworks-ml" as const,
+          surfaceTitle: "Frameworks",
+          surfaceSubtitle:
+            "Bring your own ML framework. ZenML wraps it — you don't change your training loop.",
+        },
+        {
+          id: "resources" as const,
+          label: "Resources",
+          layout: "resources" as const,
+          surfaceTitle: "Resources",
+          surfaceSubtitle: "Share GPU and compute pools across every pipeline.",
+        },
+      ],
+    },
   ],
 } as const;
 
@@ -224,18 +228,8 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
 export const HOMEPAGE_UNIFIED_WORKSPACES = {
   eyebrow: "Two workspaces, one platform",
   headline: "Pick your workload. Same infrastructure underneath.",
+  // Kitaru first during the v2 launch window.
   items: [
-    {
-      name: "ZenML workspace",
-      tagline: "ML pipelines",
-      body: "Reproducible training, evaluation, batch inference, and deployment. Pipeline DAGs with typed step interfaces, versioned artifacts, and a composable stack abstraction.",
-      bullets: [
-        "Runs on Kubernetes, Vertex, SageMaker, AzureML, Airflow",
-        "Artifact store + model registry + experiment tracker",
-        "Local-to-remote without code changes",
-      ],
-      cta: { label: "Explore ZenML", href: "/product/zenml" },
-    },
     {
       name: "Kitaru workspace",
       tagline: "Agent evals",
@@ -246,6 +240,17 @@ export const HOMEPAGE_UNIFIED_WORKSPACES = {
         "Replay against your real code: model, tool, or prompt swapped",
       ],
       cta: { label: "Explore Kitaru", href: "/product/kitaru" },
+    },
+    {
+      name: "ZenML workspace",
+      tagline: "ML pipelines",
+      body: "Reproducible training, evaluation, batch inference, and deployment. Pipeline DAGs with typed step interfaces, versioned artifacts, and a composable stack abstraction.",
+      bullets: [
+        "Runs on Kubernetes, Vertex, SageMaker, AzureML, Airflow",
+        "Artifact store + model registry + experiment tracker",
+        "Local-to-remote without code changes",
+      ],
+      cta: { label: "Explore ZenML", href: "/product/zenml" },
     },
   ],
   /** Subtle note under the cards — clarifies the commercial framing. */
@@ -284,7 +289,7 @@ export const HOMEPAGE_UNIFIED_VALUES = {
 
 export const HOMEPAGE_UNIFIED_PRICING_TEASER = {
   headline: "Unified pricing. Pick ML, Agent, or both.",
-  body: "Same tiers across both workspaces, billed on executions — ZenML pipeline runs and Kitaru replays are metered separately, since they are very different units of work. Start on the open-source SDK; upgrade when you need the control plane.",
+  body: `One subscription, two workspaces. Kitaru launches as a single flat ${KITARU_CLOUD_PRICE}/month plan; ZenML's managed tiers scale with pipeline executions. Start on the open-source SDKs; upgrade when you need the control plane.`,
   primaryCta: { label: "See pricing", href: "/pricing" },
   secondaryCta: { label: "Compare OSS vs Pro", href: "/open-source-vs-pro" },
 } as const;
