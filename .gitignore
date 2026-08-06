@@ -56,3 +56,6 @@ docs/plans/
 
 # Codex files
 .codex/config.toml
+
+# Git worktrees
+.worktrees/
