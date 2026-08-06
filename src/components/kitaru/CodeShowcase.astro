@@ -53,7 +53,7 @@ An experiment holds the configuration; a run pins it to a cohort and a version. 
 <span class="code-line" data-primitive="run">after <span class="op">=</span> experiment.<span class="fn">run</span>(cohort<span class="op">=</span>cohort, version<span class="op">=</span><span class="str">"pr-311"</span>)</span>
 <span class="code-line"> </span>
 <span class="code-line" data-primitive="compare">client.<span class="fn">compare</span>(before, after)</span></code></pre>
-          <pre class="showcase-code-pre code-syntax" data-lang-panel="typescript" data-filename="migration.ts" hidden aria-label="Example Kitaru migration in TypeScript: build a cohort, define an experiment whose tool calls are answered from recorded history, then run it twice one agent version apart and compare"><code><span class="code-line"><span class="kw">import</span> &#123; KitaruClient, History &#125; <span class="kw">from</span> <span class="str">"kitaru"</span>;</span>
+          <pre class="showcase-code-pre code-syntax" data-lang-panel="typescript" data-filename="migration.ts" hidden aria-label="Example Kitaru migration in TypeScript: build a cohort, define an experiment whose tool calls are answered from recorded history, then run it twice one agent version apart and compare"><code><span class="code-line"><span class="kw">import</span> &#123; KitaruClient, History &#125; <span class="kw">from</span> <span class="str">"@zenml-io/kitaru"</span>;</span>
 <span class="code-line"> </span>
 <span class="code-line"><span class="kw">const</span> client <span class="op">=</span> <span class="kw">new</span> <span class="fn">KitaruClient</span>();</span>
 <span class="code-line"> </span>
