@@ -149,7 +149,7 @@ export const PRO_FEATURES = [
     body: "Create ZenML workspaces for ML pipelines and Kitaru workspaces for AI agents under one organization — each an isolated, single-tenant deployment with shared SSO, roles, and billing, while your data stays in your cloud.",
     learnMoreHref: "/pricing",
     image: {
-      url: `https://assets.kitaru.ai/content/site/8d08be97/kitaru-dashboard.avif`,
+      url: "/images/kitaru-dashboard.avif",
       alt: "Kitaru workspace dashboard showing a recorded agent execution",
     },
   },

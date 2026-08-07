@@ -111,7 +111,7 @@ export const PRICING_PRO_INCLUSIONS = {
       } as CtaLink,
     },
   ],
-  caption: "Same control plane. Same governance. One bill, two meters.",
+  caption: "Same control plane. Same governance. One bill covers both.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -223,9 +223,9 @@ export const PRICING_PLANS_KITARU: PricingPlan[] = [
       "Community support",
     ],
     cta: {
-      label: "Get Started",
-      href: "/get-started",
-      analytics: "Kitaru-OSS-Get-Started",
+      label: "View on GitHub",
+      href: KITARU_LINKS.github.href,
+      analytics: "Kitaru-OSS-GitHub",
     },
     ctaVariant: "secondary",
   },
@@ -279,10 +279,9 @@ export const PRICING_PLANS_KITARU: PricingPlan[] = [
 // ---------------------------------------------------------------------------
 // Plan workspaces — the /pricing plan cards are shown per workspace type.
 //
-// One subscription covers both, but the two are metered separately: a ZenML
-// pipeline run is minutes to hours of compute, a Kitaru replay is one session
-// in seconds, and a single cohort experiment can be thousands of replays in a
-// click. Showing one "executions" number for both invited the wrong reading.
+// One subscription covers both, but the plans differ in shape: ZenML prices
+// by execution tiers, while Kitaru launches on a single flat plan. Showing
+// one blended card for both invited the wrong reading.
 //
 // Each entry is the full descriptor for its panel — plans, meter note, a
 // product-page link, and brand accent (literal class strings so Tailwind sees

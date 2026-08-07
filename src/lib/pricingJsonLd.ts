@@ -1,24 +1,29 @@
+import type { PricingPlan } from "./marketingPageTypes";
 import {
   PRICING_FAQ,
   PRICING_FINAL_CTA,
   PRICING_HERO,
   PRICING_PLANS,
+  PRICING_PLANS_KITARU,
   PRICING_SEO,
 } from "./pricing";
 import { absoluteUrl } from "./seo";
 import { htmlToPlainText } from "./text";
 
-function reliablePriceFields(
-  plan: (typeof PRICING_PLANS)[number],
-): Record<string, unknown> {
+function reliablePriceFields(plan: PricingPlan): Record<string, unknown> {
   if (plan.price.toLowerCase() === "free") {
     return { price: 0, priceCurrency: "USD" };
+  }
+
+  const flatDollars = plan.price.match(/^\$(\d+)$/);
+  if (flatDollars) {
+    return { price: Number(flatDollars[1]), priceCurrency: "USD" };
   }
 
   return {};
 }
 
-function planDescription(plan: (typeof PRICING_PLANS)[number]): string {
+function planDescription(plan: PricingPlan): string {
   const limits = plan.limitsLine ? ` ${plan.limitsLine}.` : "";
   const slider = plan.slider
     ? ` ${plan.slider.caption}: ${plan.slider.tiers
@@ -45,7 +50,10 @@ export function buildPricingJsonLd(): Record<string, unknown> {
         name: PRICING_SEO.title,
         description: PRICING_SEO.description,
         inLanguage: "en",
-        mainEntity: { "@id": `${pricingUrl}#software` },
+        mainEntity: [
+          { "@id": `${pricingUrl}#software-kitaru` },
+          { "@id": `${pricingUrl}#software` },
+        ],
       },
       {
         "@type": "BreadcrumbList",
@@ -76,6 +84,34 @@ export function buildPricingJsonLd(): Record<string, unknown> {
             text: htmlToPlainText(item.answer),
           },
         })),
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": `${pricingUrl}#software-kitaru`,
+        name: "Kitaru",
+        applicationCategory: "DeveloperApplication",
+        operatingSystem: "Python, Kubernetes, AWS, GCP, Azure",
+        url: absoluteUrl("/product/kitaru"),
+        description:
+          "Kitaru is an open-source platform for replay-based agent evals: import your production traces, run evaluators over them, and replay real sessions against your next change before it ships.",
+        featureList: PRICING_PLANS_KITARU.flatMap((plan) => plan.features),
+        offers: {
+          "@type": "OfferCatalog",
+          name: "Kitaru pricing plans",
+          itemListElement: PRICING_PLANS_KITARU.map((plan) => ({
+            "@type": "Offer",
+            name: plan.eyebrow,
+            url: absoluteUrl(plan.cta.href),
+            ...reliablePriceFields(plan),
+            description: planDescription(plan),
+            itemOffered: {
+              "@type": "SoftwareApplication",
+              name: `Kitaru ${plan.eyebrow}`,
+              applicationCategory: "DeveloperApplication",
+              featureList: plan.features,
+            },
+          })),
+        },
       },
       {
         "@type": "SoftwareApplication",
