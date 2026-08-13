@@ -53,7 +53,10 @@ export default defineConfig({
     },
   },
   integrations: [
-    preact(),
+    // compat aliases react → preact/compat for third-party React packages
+    // (the GrainGradient shader from @paper-design/shaders-react); first-party
+    // islands import from preact directly.
+    preact({ compat: true }),
     sitemap({
       filter: (page) => {
         const url = new URL(page);

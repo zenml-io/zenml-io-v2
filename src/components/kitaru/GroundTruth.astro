@@ -1,120 +1,42 @@
 ---
-// GroundTruth.astro — for a document-to-record agent the labels already exist:
-// when an ops person corrects the agent's write, the corrected record is
-// ground truth in the customer's own schema. A structured write diffs field by
-// field, so most of the surface needs no judge and no calibration set.
-const points = [
-  {
-    kind: "Field by field",
-    body: "A structured write diffs against production, one field at a time. No judge, no calibration set.",
-  },
-  {
-    kind: "The residue",
-    body: "Keep a model-graded check only for tone, and for whether escalating was right.",
-  },
-  {
-    kind: "Per tenant",
-    body: "Every customer brings its own corrections. Same loop, new cohort.",
-  },
-] as const;
+// GroundTruth.astro — The labels already exist in the system of record
+import { GROUND_TRUTH_POINTS } from "../../lib/kitaru-landing";
 ---
 
-<section id="ground-truth" class="gt-section section-pad">
-  <div class="section-inner">
-    <div class="gt-header" data-reveal>
-      <span class="section-eyebrow">THE LABELS YOU ALREADY HAVE</span>
-      <h2 class="section-title">
-        Every correction your ops team makes<br />
-        <span class="gt-accent">is a label nobody is using.</span>
-      </h2>
-      <p class="section-desc">
-        Somebody fixes the agent&rsquo;s booking by hand. That corrected record is ground truth, in your schema, from a domain expert &mdash; accumulating daily, and no eval tool has ever asked for it.
-      </p>
-    </div>
+<section id="ground-truth" class="relative w-full bg-background text-foreground">
+  <div class="mx-auto w-full max-w-[1180px] px-6 py-24 md:py-36">
+    <div class="grid grid-cols-1 gap-14 lg:grid-cols-[1.15fr_1fr] lg:gap-24">
+      {/* Left column: Headline + description */}
+      <div class="reveal">
+        <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">
+          The labels you already have
+        </span>
+        <h2 class="mt-5 text-balance text-3xl leading-[1.08] font-medium tracking-[-0.025em] md:text-[2.75rem]">
+          Every correction your ops team makes
+          <br />
+          <span class="text-ember">is a label nobody is using.</span>
+        </h2>
+        <p class="mt-6 max-w-xl text-base leading-relaxed text-ink-soft md:text-lg">
+          Somebody fixes the agent's booking by hand. That corrected record is ground
+          truth, in your schema, from a domain expert — accumulating daily, and no eval
+          tool has ever asked for it.
+        </p>
+      </div>
 
-    <dl class="gt-points">
-      {
-        points.map((p, i) => (
-          <div class="gt-point" data-reveal="fade-up" data-reveal-delay={i + 1}>
-            <dt class="gt-kind">{p.kind}</dt>
-            <dd class="gt-line">{p.body}</dd>
+      {/* Right column: Definition list */}
+      <dl class="flex flex-col justify-center">
+        {GROUND_TRUTH_POINTS.map((p, i) => (
+          <div
+            class="reveal-right border-t border-border py-6 last:border-b"
+            style={`--reveal-delay: ${i * 120}ms`}
+          >
+            <dt class="font-mono text-[11px] tracking-[0.16em] text-ember uppercase">
+              {p.kind}
+            </dt>
+            <dd class="mt-3 text-[15.5px] leading-relaxed text-ink-soft">{p.body}</dd>
           </div>
-        ))
-      }
-    </dl>
+        ))}
+      </dl>
+    </div>
   </div>
 </section>
-
-<style>
-  .gt-section {
-    background: var(--color-surface);
-    border-top: 1px solid var(--color-border);
-  }
-
-  .gt-header {
-    max-width: 780px;
-    margin-bottom: 8px;
-  }
-
-  .gt-accent {
-    color: var(--color-accent);
-  }
-
-  /* Rule-separated points rather than a third card grid — the page already
-     has two, and this section reads better as a statement than as boxes. */
-  .gt-points {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0;
-    margin: 0;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .gt-point {
-    min-width: 0;
-    padding: 26px 32px 4px 28px;
-    border-left: 1px solid var(--color-border);
-  }
-
-  .gt-point:first-child {
-    border-left: 0;
-    padding-left: 0;
-  }
-
-  .gt-kind {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 0.64rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-accent);
-    margin-bottom: 12px;
-  }
-
-  .gt-line {
-    margin: 0;
-    font-size: 1.05rem;
-    line-height: 1.5;
-    font-weight: 400;
-    letter-spacing: -0.01em;
-    color: var(--color-primary);
-  }
-
-  @media (max-width: 900px) {
-    .gt-points {
-      grid-template-columns: 1fr;
-    }
-
-    .gt-point {
-      border-left: 0;
-      padding: 22px 0 0;
-      border-top: 1px solid var(--color-border);
-    }
-
-    .gt-point:first-child {
-      border-top: 0;
-      padding-top: 22px;
-    }
-  }
-</style>

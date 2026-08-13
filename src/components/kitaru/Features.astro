@@ -1,273 +1,102 @@
 ---
-// Features.astro — the model-migration wedge as three steps: cohort →
-// experiment → runs. The shared vocabulary (cohort immutable, experiment pure
-// config, run = config + cohort + version) is defined once in
-// PRODUCT_KITARU_MARKDOWN.primitives.
-const steps = [
-  {
-    n: "01",
-    tag: "Cohort",
-    title: "Freeze the sessions that matter",
-    body: "The sessions you care about, frozen as a named set. Immutable, so a run's result keeps meaning what it meant.",
-    code: 'kitaru cohort create "checkout-flow"',
-  },
-  {
-    n: "02",
-    tag: "Experiment",
-    title: "State one hypothesis",
-    body: "Just configuration: model, system prompt, tool policy. Swap the model and you have stated a different hypothesis.",
-    code: "kitaru experiment create cheap-model",
-  },
-  {
-    n: "03",
-    tag: "Two runs",
-    title: "Compare like with like",
-    body: "Twice over the same cohort, one version apart. One variable moved, so the numbers mean what they look like.",
-    code: "kitaru experiment run cheap-model",
-  },
-] as const;
+// Features.astro — The migration wedge: model swap + comparison
+import { STEPS } from "../../lib/kitaru-landing";
 ---
 
-<section id="how-it-works" class="whatif-section section-pad">
-  <div class="section-inner">
-    <div class="whatif-header" data-reveal>
-      <span class="section-eyebrow">THE MIGRATION YOU KEEP POSTPONING</span>
-      <h2 class="section-title">Ship the cheaper model without shipping a regression.</h2>
-      <p class="section-desc">
-        Nobody moves, because nobody can say what it would break. Two runs over your real sessions can.
+<section id="how-it-works" class="relative w-full bg-surface text-foreground">
+  <div class="mx-auto w-full max-w-[1180px] px-6 py-24 md:py-36">
+    {/* Header with eyebrow, title, lede */}
+    <div class="reveal max-w-3xl">
+      <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">
+        The migration you keep postponing
+      </span>
+      <h2 class="mt-5 text-balance text-3xl leading-[1.1] font-medium tracking-[-0.02em] md:text-[2.75rem]">
+        Ship the cheaper model without shipping a regression.
+      </h2>
+      <p class="mt-5 max-w-2xl text-base leading-relaxed text-ink-soft md:text-lg">
+        Nobody moves, because nobody can say what it would break. Two runs over your real
+        sessions can.
       </p>
     </div>
 
-    <div class="whatif-steps">
-      {
-        steps.map((s, i) => (
-          <div class="whatif-step" data-reveal="fade-up" data-reveal-delay={i + 1}>
-            <div class="whatif-step-head">
-              <span class="whatif-step-n">{s.n}</span>
-              <span class="whatif-step-tag">{s.tag}</span>
-            </div>
-            <h3 class="whatif-step-title">{s.title}</h3>
-            <p class="whatif-step-body">{s.body}</p>
-            <code class="whatif-step-code">{s.code}</code>
+    {/* Three-column steps grid */}
+    <div class="mt-16 grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8">
+      {STEPS.map((s, i) => (
+        <div
+          class="reveal relative"
+          style={`--reveal-delay: ${i * 110}ms`}
+        >
+          <div class="flex items-baseline gap-3">
+            <span class="font-mono text-[11px] text-ember">{s.n}</span>
+            <span class="font-mono text-[11px] tracking-[0.16em] text-muted-foreground uppercase">
+              {s.tag}
+            </span>
           </div>
-        ))
-      }
+          <div class="mt-4 h-px w-full bg-border" />
+          <h3 class="mt-5 text-[19px] leading-snug font-medium tracking-[-0.015em]">
+            {s.title}
+          </h3>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-soft">{s.body}</p>
+          <pre class="mt-6 block overflow-x-auto rounded-md border border-border bg-background px-3 py-2 font-mono text-[11.5px] text-ink-soft">
+            <code class="code-syntax">
+              {s.n === "01" && (
+                <>
+                  <span class="fn">kitaru</span> cohort <span class="fn">create</span> <span class="str">"checkout-flow"</span>
+                </>
+              )}
+              {s.n === "02" && (
+                <>
+                  <span class="fn">kitaru</span> experiment <span class="fn">create</span> cheap-model
+                </>
+              )}
+              {s.n === "03" && (
+                <>
+                  <span class="fn">kitaru</span> experiment <span class="fn">run</span> cheap-model
+                </>
+              )}
+            </code>
+          </pre>
+        </div>
+      ))}
     </div>
 
-    <div class="whatif-payoff" data-reveal="fade-up" data-reveal-delay="3">
-      <div class="whatif-payoff-label">
-        <span class="whatif-payoff-eyebrow">The diff</span>
-        <p>Same 200 sessions. Same evaluator. One model swapped.</p>
-      </div>
-      <div class="whatif-payoff-metrics">
-        <div class="whatif-metric">
-          <span class="whatif-metric-value whatif-metric-win">&minus;61%</span>
-          <span class="whatif-metric-key">median cost</span>
+    {/* The diff stats box */}
+    <div
+      class="reveal mt-16"
+      style={`--reveal-delay: 260ms`}
+    >
+      <div class="grid grid-cols-1 gap-8 rounded-xl border border-border bg-background p-8 md:grid-cols-[1fr_1.4fr] md:items-center md:p-10">
+        <div>
+          <span class="font-mono text-[11px] tracking-[0.16em] text-ember uppercase">
+            The diff
+          </span>
+          <p class="mt-3 text-[15px] leading-relaxed text-ink-soft">
+            Same 200 sessions. Same evaluator. One model swapped.
+          </p>
         </div>
-        <div class="whatif-metric">
-          <span class="whatif-metric-value">196 / 200</span>
-          <span class="whatif-metric-key">outputs identical</span>
-        </div>
-        <div class="whatif-metric">
-          <span class="whatif-metric-value whatif-metric-warn">4</span>
-          <span class="whatif-metric-key">to review</span>
+        <div class="grid grid-cols-3 gap-6">
+          {[
+            { v: "−61%", k: "median cost", tone: "text-success" },
+            { v: "196 / 200", k: "outputs identical", tone: "" },
+            { v: "4", k: "to review", tone: "text-warn" },
+          ].map((m) => (
+            <div>
+              <div class={`font-mono text-2xl tracking-[-0.02em] md:text-3xl ${m.tone}`}>
+                {m.v}
+              </div>
+              <div class="mt-1.5 text-[11.5px] text-muted-foreground">{m.k}</div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
 
-    <p class="whatif-foot" data-reveal>
-      Illustrative numbers. Kitaru grades every session ready, partial or unavailable at import, so you know before you rely on it.
-    </p>
+    {/* Disclaimer note */}
+    <div class="reveal mt-6" style={`--reveal-delay: 320ms`}>
+      <p class="max-w-2xl text-[12.5px] leading-relaxed text-muted-foreground">
+        Illustrative numbers. Kitaru grades every session ready, partial or unavailable at
+        import, so you know before you rely on it.
+      </p>
+    </div>
   </div>
 </section>
-
-<style>
-  .whatif-section {
-    background: var(--color-surface-warm);
-    border-top: 1px solid var(--color-border);
-  }
-
-  .whatif-header {
-    max-width: 760px;
-    margin-bottom: 48px;
-  }
-
-  /* ─── Steps ─── */
-  .whatif-steps {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-  }
-
-  .whatif-step {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    min-width: 0;
-    padding: 28px 26px;
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    background: var(--color-surface);
-    transition: border-color 0.25s, transform 0.25s;
-  }
-
-  .whatif-step:hover {
-    border-color: oklch(0.65 0.16 45 / 0.3);
-    transform: translateY(-3px);
-  }
-
-  .whatif-step-head {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .whatif-step-n {
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-accent);
-  }
-
-  .whatif-step-tag {
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-    padding: 3px 9px;
-    border: 1px solid var(--color-border);
-    border-radius: 100px;
-  }
-
-  .whatif-step-title {
-    font-size: clamp(1.1rem, 1.6vw, 1.3rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    color: var(--color-primary);
-    margin: 0;
-  }
-
-  .whatif-step-body {
-    flex: 1;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    font-weight: 300;
-    color: var(--color-secondary);
-    margin: 0;
-  }
-
-  .whatif-step-code {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    line-height: 1.5;
-    color: var(--color-accent);
-    background: oklch(0.65 0.16 45 / 0.07);
-    border: 1px solid oklch(0.65 0.16 45 / 0.18);
-    border-radius: 8px;
-    padding: 10px 12px;
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
-
-  /* ─── Payoff: the diff ─── */
-  .whatif-payoff {
-    display: grid;
-    grid-template-columns: 1fr 1.6fr;
-    gap: 32px;
-    align-items: center;
-    margin-top: 24px;
-    padding: 28px 32px;
-    border: 1px solid oklch(0.65 0.16 45 / 0.3);
-    border-radius: 16px;
-    background: linear-gradient(
-      180deg,
-      oklch(0.65 0.16 45 / 0.07) 0%,
-      oklch(0.65 0.16 45 / 0.02) 100%
-    );
-  }
-
-  .whatif-payoff-eyebrow {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-accent);
-    margin-bottom: 8px;
-  }
-
-  .whatif-payoff-label p {
-    margin: 0;
-    font-size: 0.98rem;
-    line-height: 1.5;
-    color: var(--color-primary);
-    font-weight: 400;
-  }
-
-  .whatif-payoff-metrics {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-
-  .whatif-metric {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 16px 18px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-  }
-
-  .whatif-metric-value {
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
-    font-size: clamp(1.2rem, 2vw, 1.6rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--color-primary);
-  }
-
-  .whatif-metric-win {
-    color: var(--color-accent);
-  }
-
-  .whatif-metric-warn {
-    color: var(--color-cost-up);
-  }
-
-  .whatif-metric-key {
-    font-size: 0.72rem;
-    color: var(--color-muted);
-    letter-spacing: 0.01em;
-  }
-
-  .whatif-foot {
-    margin: 20px 0 0;
-    font-size: 0.78rem;
-    line-height: 1.5;
-    color: var(--color-muted);
-    font-style: italic;
-  }
-
-  @media (max-width: 900px) {
-    .whatif-steps {
-      grid-template-columns: 1fr;
-    }
-    .whatif-payoff {
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-  }
-
-  @media (max-width: 540px) {
-    .whatif-payoff-metrics {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
