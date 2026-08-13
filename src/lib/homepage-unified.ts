@@ -89,9 +89,9 @@ export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
  *
  * Each subtab's `layout` selects a bespoke layout component:
  *   zenml  → pipelines · stacks · artifacts-models · frameworks-ml · resources
- *   kitaru → flows · checkpoints · replay · deployments · frameworks-agents
+ *   kitaru → compare · sessions · cohorts · experiments · frameworks-agents
  *
- * Pipelines and Flows are the two v2 reference ports — they still receive
+ * Pipelines and Sessions are the two v2 reference ports — they still receive
  * header copy as props (the extra fields kept on those two entries). Every
  * other layout is self-contained: it imports its own data file from
  * `src/lib/two-workspaces/` (copy + data), so this file stays a thin nav
@@ -111,36 +111,44 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
       sublabel: "",
       subtabs: [
         {
-          id: "replay" as const,
-          label: "Replay",
-          layout: "replay" as const,
-          surfaceTitle: "Replay",
+          id: "compare" as const,
+          label: "Compare",
+          layout: "compare" as const,
+          surfaceTitle: "Compare",
           surfaceSubtitle:
-            "Fork a real execution, change one thing, and diff it against what actually happened.",
+            "Same cohort, one model swapped — the answer is two runs, compared.",
         },
         {
-          id: "flows" as const,
-          label: "Flows",
-          layout: "flows" as const,
-          surfaceTitle: "Flows",
+          id: "sessions" as const,
+          label: "Sessions",
+          layout: "sessions" as const,
+          surfaceTitle: "Sessions",
           surfaceSubtitle:
-            "Wrap your harness with one line — every model and tool call recorded.",
-          /** Left-pane (AGENT FLOWS list) header copy. Rows + code + timelines
-           *  come from src/lib/two-workspaces/flows-examples.ts. */
-          title: "Agent flows",
-          subheader: "5 examples · all from the Kitaru SDK",
-          countLabel: "examples/",
-          rightEyebrow: "Wrap your harness with one line",
+            "Each run records as a session — imported from your traces or captured live.",
+          /** Left-pane (SESSIONS list) header copy. Rows + import transcripts
+           *  + spines come from src/lib/two-workspaces/sessions-examples.ts. */
+          title: "Sessions",
+          subheader: "graded at import",
+          countLabel: "1,824 total",
+          rightEyebrow: "One wrap, every call recorded",
           rightSubhead:
-            "Every model and tool call becomes a replayable recording.",
+            "Each run records as a session, and that recording is what replay reads back.",
         },
         {
-          id: "checkpoints" as const,
-          label: "Checkpoints",
-          layout: "checkpoints" as const,
-          surfaceTitle: "Checkpoints",
+          id: "cohorts" as const,
+          label: "Cohorts",
+          layout: "cohorts" as const,
+          surfaceTitle: "Cohorts",
           surfaceSubtitle:
-            "Every step is a checkpoint — replay forks from it, crashes resume from it.",
+            "The sessions that matter, frozen as a named set — immutable, so results keep meaning what they meant.",
+        },
+        {
+          id: "experiments" as const,
+          label: "Experiments",
+          layout: "experiments" as const,
+          surfaceTitle: "Experiments",
+          surfaceSubtitle:
+            "Pure configuration: model, prompt, tool policy. Swap one and you have stated a new hypothesis.",
         },
         {
           id: "frameworks" as const,
@@ -148,15 +156,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "frameworks-agents" as const,
           surfaceTitle: "Frameworks",
           surfaceSubtitle:
-            "Wrap any agent harness. Kitaru records and replays the run around it.",
-        },
-        {
-          id: "deployments" as const,
-          label: "Deployments",
-          layout: "deployments" as const,
-          surfaceTitle: "Deployments",
-          surfaceSubtitle:
-            "Versioned deployments — promote, shadow, or roll back.",
+            "Keep your agent SDK. One wrapper makes its runs replayable.",
         },
       ],
     },

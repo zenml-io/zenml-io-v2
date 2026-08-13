@@ -1,26 +1,25 @@
 ---
 /**
- * ReplayLayout — TwoWorkspaces v2 · Kitaru · artboard A3Q-0
- * "v2-Replay (Kitaru — FLAGSHIP)"
+ * CompareLayout — TwoWorkspaces v2 · Kitaru · the flagship subtab.
  *
- * Left pane: clickable REPLAY VARIANTS list (4 variants).
- *   Each row: letter badge, version name, mono descriptor, status pill
- *   (WINNER / CANDIDATE / BASELINE).
+ * Left pane: clickable RUNS list (3 runs over one immutable cohort).
+ *   Each row: run-number badge, run label, mono experiment·version
+ *   descriptor, status pill (CANDIDATE / BASELINE). The cohort every run
+ *   was made over is pinned as a chip at the foot of the list.
  *   Selected row: cream-orange fill + orange border + badge fill orange-400.
  *   Non-selected: transparent border, white-bordered badge, ink letter.
  *
- * Right pane: BASELINE VS CANDIDATE panel — kept lean. The v2 simplification
- * dropped the per-step comparison table and the footer meta strip; the
- * aggregate metric diff carries the story. Three blocks remain:
- *   - Header strip: eyebrow (orange-600) + headline + context chip.
+ * Right pane: RUN VS RUN panel — kept lean. Three blocks:
+ *   - Header strip: eyebrow (orange-600) + headline + evaluator chip.
  *   - 2-col metric panel (BASELINE left / CANDIDATE right with delta badges).
- *   - "Ship …" decision strip with "Promote to PROD" button.
+ *   - Human-judgment strip: the count of sessions Kitaru opened, and a
+ *     button to read them. Never a verdict — Kitaru does not rule on the
+ *     remainder, it hands it to you.
  *
- * Interactive: clicking a variant row sets `data-active-example` on the
+ * Interactive: clicking a run row sets `data-active-example` on the
  * layout root; CSS attribute selectors reveal the matching right panel and
- * selected-row chrome. All 4 examples are server-rendered + stacked.
- * A small scoped vanilla script wires clicks and keyboard navigation.
- * No Preact island.
+ * selected-row chrome. All 3 runs are server-rendered + stacked.
+ * A small scoped vanilla script wires clicks. No Preact island.
  *
  * Tokens:
  *   bg-cream-warm #FAF8F4, border #EAE5DC
@@ -30,31 +29,33 @@
  */
 
 import {
-  DEFAULT_REPLAY_EXAMPLE_ID,
-  REPLAY_EXAMPLES,
-} from "../../../lib/two-workspaces/replay-examples";
+  COMPARE_COHORT,
+  COMPARE_EXAMPLES,
+  DEFAULT_COMPARE_EXAMPLE_ID,
+  type DeltaTone,
+} from "../../../lib/two-workspaces/compare-examples";
 
-const defaultId = DEFAULT_REPLAY_EXAMPLE_ID;
+const defaultId = DEFAULT_COMPARE_EXAMPLE_ID;
 
 /**
- * Delta badge appearance — positive (cost/time reduction) uses orange-50
- * background with orange-700 text. Neutral/same uses warm-taupe-light.
- * Regression (+ increase) uses a light red tint.
+ * Delta badge appearance. "gain" is the warm orange badge; "watch" is the
+ * quiet neutral badge — a count to go and read, not a failure. No red
+ * anywhere: a red badge would be a verdict.
  */
-const isDeltaNeutral = (delta: string | null) =>
-  delta === null || delta === "0%";
-const isDeltaRegression = (delta: string | null) =>
-  !!delta && delta.startsWith("+") && delta !== "+0%";
+const deltaBadgeStyle = (tone: DeltaTone | undefined) =>
+  tone === "watch"
+    ? "background-color: #F1ECE2; color: #52473A;"
+    : "background-color: #FFF4EC; color: #C2410C;";
 ---
 
 <div
-  class="replay-layout flex flex-col gap-3"
+  class="compare-layout flex flex-col gap-3"
   data-active-example={defaultId}
 >
   <div class="grid grid-cols-1 gap-3 lg:grid-cols-[304px_1fr]">
 
     {/* --------------------------------------------------------- */}
-    {/* LEFT PANE — REPLAY VARIANTS list                          */}
+    {/* LEFT PANE — RUNS list                                     */}
     {/* --------------------------------------------------------- */}
     <aside
       class="flex flex-col rounded-md border bg-cream-warm p-4"
@@ -67,83 +68,63 @@ const isDeltaRegression = (delta: string | null) =>
             class="font-sans text-[11px] font-semibold uppercase leading-[14px] tracking-[0.08em]"
             style="color: #8B7E6E; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
           >
-            REPLAY VARIANTS
+            RUNS
           </span>
           <span
             class="text-xs font-medium leading-4"
             style="color: #52473A; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
           >
-            3 replays · 1 recording
+            2 candidates · 1 baseline
           </span>
         </div>
         <span
           class="text-xs font-medium leading-4"
           style="color: #8B7E6E; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
         >
-          4 total
+          3 total
         </span>
       </div>
 
-      {/* Variant rows */}
+      {/* Run rows */}
       <div class="flex flex-col gap-1">
-        {REPLAY_EXAMPLES.map((ex) => (
+        {COMPARE_EXAMPLES.map((ex) => (
           <button
             type="button"
-            data-replay-row={ex.variant.id}
-            aria-pressed={ex.variant.id === defaultId ? "true" : "false"}
-            class="replay-row flex w-full cursor-pointer items-center gap-3 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+            data-compare-row={ex.run.id}
+            aria-pressed={ex.run.id === defaultId ? "true" : "false"}
+            class="compare-row flex w-full cursor-pointer items-center gap-3 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
           >
-            {/* Letter badge */}
+            {/* Run-number badge */}
             <span
-              class="replay-badge inline-flex size-9 shrink-0 items-center justify-center rounded-md"
+              class="compare-badge inline-flex size-9 shrink-0 items-center justify-center rounded-md"
               aria-hidden="true"
             >
               <span
-                class="replay-badge-letter font-sans text-[15px] font-bold leading-[18px]"
+                class="compare-badge-letter font-sans text-[15px] font-bold leading-[18px]"
                 style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
               >
-                {ex.variant.rowLetter}
+                {ex.run.rowLetter}
               </span>
             </span>
 
-            {/* Name + descriptor */}
+            {/* Label + descriptor */}
             <div class="flex min-w-0 flex-1 flex-col gap-0.5">
               <span
-                class="replay-row-name truncate font-sans text-[14px] leading-[18px]"
+                class="compare-row-name truncate font-sans text-[14px] leading-[18px]"
                 style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; color: #1F1A14;"
               >
-                {ex.variant.versionLabel}
+                {ex.run.versionLabel}
               </span>
               <span
                 class="truncate font-mono text-[10px] font-medium leading-3"
                 style="color: #8B7E6E; font-family: 'JetBrains Mono', monospace;"
               >
-                {ex.variant.descriptor}
+                {ex.run.descriptor}
               </span>
             </div>
 
-            {/* WINNER pill — orange-50 bg, orange-200 border */}
-            {ex.variant.statusPill.label === "WINNER" && (
-              <span
-                class="replay-pill-winner inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1"
-                style="background-color: #FFF4EC; border: 1px solid #FFD7B5;"
-              >
-                <span
-                  class="size-1.5 shrink-0 rounded-full"
-                  style="background-color: #EA580C;"
-                  aria-hidden="true"
-                ></span>
-                <span
-                  class="font-mono text-[10px] font-semibold leading-3 tracking-[0.04em]"
-                  style="color: #C2410C; font-family: 'JetBrains Mono', monospace;"
-                >
-                  WINNER
-                </span>
-              </span>
-            )}
-
             {/* CANDIDATE pill — neutral border, no bg */}
-            {ex.variant.statusPill.label === "CANDIDATE" && (
+            {ex.run.statusPill.label === "CANDIDATE" && (
               <span
                 class="inline-flex shrink-0 rounded-full px-2.5 py-1"
                 style="border: 1px solid #EAE5DC;"
@@ -158,7 +139,7 @@ const isDeltaRegression = (delta: string | null) =>
             )}
 
             {/* BASELINE pill — warm fill */}
-            {ex.variant.statusPill.label === "BASELINE" && (
+            {ex.run.statusPill.label === "BASELINE" && (
               <span
                 class="inline-flex shrink-0 rounded-full px-2.5 py-1"
                 style="background-color: #F1ECE2; border: 1px solid #EAE5DC;"
@@ -174,20 +155,50 @@ const isDeltaRegression = (delta: string | null) =>
           </button>
         ))}
       </div>
+
+      {/* Cohort block — the one immutable set every run above was made over.
+          Two lines rather than a pill: the full string wraps awkwardly at
+          this column width. */}
+      <div class="mt-auto pt-3" style="border-top: 1px solid #EAE5DC; margin-top: 12px;">
+        <div
+          class="flex items-start gap-2 rounded-md px-3 py-2"
+          style="background-color: #FFF4EC; border: 1px solid #FFD7B5;"
+        >
+          <span
+            class="mt-1 size-1.5 shrink-0 rounded-full"
+            style="background-color: #EA580C;"
+            aria-hidden="true"
+          ></span>
+          <div class="flex min-w-0 flex-col gap-0.5">
+            <span
+              class="truncate font-mono text-[11px] font-semibold leading-4"
+              style="color: #C2410C; font-family: 'JetBrains Mono', monospace;"
+            >
+              {COMPARE_COHORT.name}
+            </span>
+            <span
+              class="font-mono text-[9px] font-medium leading-3"
+              style="color: #8B7E6E; font-family: 'JetBrains Mono', monospace;"
+            >
+              {COMPARE_COHORT.detail}
+            </span>
+          </div>
+        </div>
+      </div>
     </aside>
 
     {/* --------------------------------------------------------- */}
-    {/* RIGHT PANE — all 4 comparison panels stacked;            */}
+    {/* RIGHT PANE — all 3 comparison panels stacked;            */}
     {/* CSS reveals only the active one.                         */}
     {/* --------------------------------------------------------- */}
     <section
       class="flex flex-col rounded-md border bg-cream-warm p-[22px] gap-[18px]"
       style="border-color: #EAE5DC;"
     >
-      {REPLAY_EXAMPLES.map((ex) => (
+      {COMPARE_EXAMPLES.map((ex) => (
         <div
-          data-replay-pane={ex.variant.id}
-          class="replay-pane flex flex-col gap-[18px]"
+          data-compare-pane={ex.run.id}
+          class="compare-pane flex flex-col gap-[18px]"
         >
           {/* ---- Header strip ---- */}
           <div class="flex items-start justify-between gap-4">
@@ -302,7 +313,7 @@ const isDeltaRegression = (delta: string | null) =>
                       >
                         {m.candidate}
                       </span>
-                      {isDeltaNeutral(m.delta) ? (
+                      {m.delta === null ? (
                         <span
                           class="font-mono text-[9px] font-medium leading-3"
                           style="color: #8B7E6E; font-family: 'JetBrains Mono', monospace;"
@@ -312,9 +323,7 @@ const isDeltaRegression = (delta: string | null) =>
                       ) : (
                         <span
                           class="inline-block self-start rounded px-1.5 py-px font-mono text-[10px] font-semibold leading-3"
-                          style={isDeltaRegression(m.delta)
-                            ? "background-color: #FFF1F0; color: #B91C1C;"
-                            : "background-color: #FFF4EC; color: #C2410C;"}
+                          style={deltaBadgeStyle(m.deltaTone)}
                         >
                           {m.delta}
                         </span>
@@ -326,7 +335,10 @@ const isDeltaRegression = (delta: string | null) =>
             </div>
           </div>
 
-          {/* ---- Ship / decision strip ---- */}
+          {/* ---- Human-judgment strip ----
+              Replaces the old verdict band. Kitaru states the count and
+              opens the sessions; whether that count is shippable is not
+              its call. */}
           <div
             class="flex items-center justify-between gap-4 rounded-md px-[18px] py-3.5"
             style="background-color: #FFF4EC; border: 1px solid #FFD7B5;"
@@ -336,13 +348,13 @@ const isDeltaRegression = (delta: string | null) =>
                 class="font-sans text-base font-semibold leading-5"
                 style="color: #1F1A14; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
               >
-                {ex.comparison.shipHeadline}
+                {ex.comparison.readHeadline}
               </span>
               <span
                 class="font-sans text-[12px] font-medium leading-4"
                 style="color: #52473A; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
               >
-                {ex.comparison.shipSubline}
+                {ex.comparison.readSubline}
               </span>
             </div>
             <button
@@ -350,7 +362,7 @@ const isDeltaRegression = (delta: string | null) =>
               class="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md px-3.5 py-2.5 font-sans text-[12px] font-semibold leading-4 transition-colors hover:bg-orange-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
               style="background-color: #FFF4EC; border: 1px solid #FB923C; color: #C2410C; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
             >
-              Promote to PROD
+              {ex.comparison.readButtonLabel}
               <span aria-hidden="true">→</span>
             </button>
           </div>
@@ -367,86 +379,85 @@ const isDeltaRegression = (delta: string | null) =>
   /* Every row carries a transparent 1px border at rest — no layout      */
   /* shift when a border is added on selection.                           */
   /* ------------------------------------------------------------------ */
-  .replay-row {
+  .compare-row {
     border-radius: 8px;
     padding: 12px;
     background-color: transparent;
     border: 1px solid transparent;
     cursor: pointer;
   }
-  .replay-row:hover {
+  .compare-row:hover {
     background-color: rgba(255, 244, 236, 0.5);
   }
-  .replay-row[aria-pressed="true"] {
-    background-color: #fff4ec; /* orange-50 */
-    border-color: #ffd7b5;      /* orange-200 */
+  .compare-row[aria-pressed="true"] {
+    background-color: #fff4ec; /* --kitaru-selected-row-bg / orange-50 */
+    border-color: #ffd7b5;     /* --kitaru-selected-row-border */
     /* Compensate for the 1px border added — avoid layout shift */
     padding: 11px 11px 11px 11px;
   }
   /* Row label: semibold when selected */
-  .replay-row[aria-pressed="true"] .replay-row-name {
+  .compare-row[aria-pressed="true"] .compare-row-name {
     font-weight: 600;
   }
-  .replay-row .replay-row-name {
+  .compare-row .compare-row-name {
     font-weight: 500;
   }
 
   /* Badge — orange-400 fill on selected, white+border on idle */
-  .replay-badge {
+  .compare-badge {
     background-color: #ffffff;
     border: 1px solid #eae5dc;
   }
-  .replay-badge .replay-badge-letter {
+  .compare-badge .compare-badge-letter {
     color: #52473a;
   }
-  .replay-row[aria-pressed="true"] .replay-badge {
+  .compare-row[aria-pressed="true"] .compare-badge {
     background-color: #fb923c; /* orange-400 */
     border-color: #fb923c;
   }
-  .replay-row[aria-pressed="true"] .replay-badge .replay-badge-letter {
+  .compare-row[aria-pressed="true"] .compare-badge .compare-badge-letter {
     color: #ffffff;
   }
 
   /* ------------------------------------------------------------------ */
   /* RIGHT-PANE GRID STACK                                               */
-  /* All 4 panels are rendered; only the active one is displayed.        */
+  /* All 3 panels are rendered; only the active one is displayed.        */
   /* ------------------------------------------------------------------ */
-  .replay-pane {
+  .compare-pane {
     display: none;
   }
-  .replay-layout[data-active-example="fix_v2_3"]   [data-replay-pane="fix_v2_3"],
-  .replay-layout[data-active-example="fork_tool"]  [data-replay-pane="fork_tool"],
-  .replay-layout[data-active-example="swap_flash"] [data-replay-pane="swap_flash"],
-  .replay-layout[data-active-example="tr_8f3a"]    [data-replay-pane="tr_8f3a"] {
+  .compare-layout[data-active-example="run_3_pr_311"]      [data-compare-pane="run_3_pr_311"],
+  .compare-layout[data-active-example="run_2_v1"]          [data-compare-pane="run_2_v1"],
+  .compare-layout[data-active-example="run_1_cheap_model"] [data-compare-pane="run_1_cheap_model"] {
     display: flex;
   }
 </style>
 
 <script>
   /**
-   * Wire row clicks → swap the active example on the ReplayLayout root.
+   * Wire row clicks → swap the active run on the CompareLayout root.
    * Scoped to the closest [data-active-example] ancestor so multiple
    * instances don't cross-talk (defensive — only one in TwoWorkspaces today).
    */
-  const applyReplayExample = (root: HTMLElement, id: string) => {
+  const applyCompareExample = (root: HTMLElement, id: string) => {
     root.dataset.activeExample = id;
     root
-      .querySelectorAll<HTMLButtonElement>("[data-replay-row]")
+      .querySelectorAll<HTMLButtonElement>("[data-compare-row]")
       .forEach((row) => {
         row.setAttribute(
           "aria-pressed",
-          row.dataset.replayRow === id ? "true" : "false",
+          row.dataset.compareRow === id ? "true" : "false",
         );
       });
   };
 
   document
-    .querySelectorAll<HTMLButtonElement>("[data-replay-row]")
+    .querySelectorAll<HTMLButtonElement>("[data-compare-row]")
     .forEach((btn) => {
       btn.addEventListener("click", () => {
         const root = btn.closest<HTMLElement>("[data-active-example]");
-        const id = btn.dataset.replayRow;
-        if (root && id) applyReplayExample(root, id);
+        const id = btn.dataset.compareRow;
+        if (root && id) applyCompareExample(root, id);
       });
     });
 </script>

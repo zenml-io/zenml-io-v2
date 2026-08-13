@@ -61,15 +61,15 @@
   --font-ui: var(--font-sans);
 
   /* TwoWorkspaces v2 Kitaru-subtab card surface (per Zuri's v2 brief).
-   * Used as the fill on the flows-list, code, timeline, and footer cards
-   * inside FlowsLayout — NOT on the outer section. Tinting only the
+   * Used as the fill on the sessions-list, import, spine, and footer cards
+   * inside SessionsLayout — NOT on the outer section. Tinting only the
    * cards (and not the section around them) keeps the brand-switch on
    * the cards themselves so the page background stays neutral. */
   --kitaru-cream: #FAF8F4;
 
   /* Canonical Kitaru selected-row tokens (Paper artboard AP9-0).
-   * Reuse across FlowsLayout, CheckpointsLayout, ReplayLayout,
-   * DeploymentsLayout, FrameworksAgentsLayout — same spec everywhere.
+   * Reuse across CompareLayout, SessionsLayout, CohortsLayout,
+   * ExperimentsLayout, FrameworksAgentsLayout — same spec everywhere.
    * Most resolve to the standard orange ramp; only
    * --kitaru-selected-row-border (#FFD7B5) is a one-off value that
    * sits between orange-200 (#FED7AA) and orange-300 (#FDBA74). */
