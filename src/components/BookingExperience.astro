@@ -17,15 +17,15 @@ import KitaruLogo from "./brand/KitaruLogo.astro";
  * Brand colour: the page uses `text-zenml-500` / `bg-zenml-500` utilities
  * throughout (including inside the DemoRequestForm island). Those compile
  * to `var(--color-zenml-500)`, so the Kitaru variant re-skins the whole
- * subtree to orange by overriding that variable on the wrapper
- * (`.booking-brand-kitaru` below) — no per-element or per-island edits.
+ * subtree to orange via the shared `.kitaru-brand-vars` class (global.css)
+ * on the wrapper — no per-element or per-island edits.
  *
  * NOTE: this deliberately does NOT use the usual `data-app="kitaru"` brand
  * switch. The `--color-zenml-*` ladder is intentionally data-app-invariant
  * (global.css), so `data-app="kitaru"` would leave these utilities purple;
  * and the form island hardcodes `bg-zenml-500`, which `text-primary` can't
- * reach. Overriding `--color-zenml-*` locally is the one lever that recolours
- * both the markup and the island. If you audit Kitaru surfaces by grepping
+ * reach. `.kitaru-brand-vars` is the one lever that recolours both the
+ * markup and the island. If you audit Kitaru surfaces by grepping
  * `data-app="kitaru"`, remember this page brands itself a different way.
  */
 import DemoRequestForm from "./islands/DemoRequestForm.tsx";
@@ -77,7 +77,7 @@ const {
 const isKitaru = brand === "kitaru";
 ---
 
-<div class:list={["booking-root", isKitaru && "booking-brand-kitaru"]}>
+<div class:list={["booking-root", isKitaru && "kitaru-brand-vars"]}>
   {/* Logo header */}
   <header class="border-b border-gray-100 bg-white">
     <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
@@ -221,16 +221,6 @@ const isKitaru = brand === "kitaru";
 </div>
 
 <style>
-  /* Kitaru co-brand: re-skin the ZenML brand utilities (headline accent,
-     privacy link, form submit button + focus rings) to Kitaru orange by
-     overriding the CSS variables those utilities resolve. `--primary`
-     drives the Kitaru logo ring glyph. */
-  .booking-brand-kitaru {
-    --color-zenml-500: var(--color-orange-600);
-    --color-zenml-600: var(--color-orange-700);
-    --primary: var(--color-orange-600);
-  }
-
   @keyframes demoFormSlideUp {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }

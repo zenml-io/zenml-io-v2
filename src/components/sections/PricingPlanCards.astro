@@ -17,6 +17,7 @@
  * per-workspace variants in the same attribute.
  */
 import { PRICING_PLAN_WORKSPACES } from "../../lib/pricing";
+import KitaruLogo from "../brand/KitaruLogo.astro";
 import PricingPlanCard from "./PricingPlanCard.astro";
 ---
 
@@ -39,11 +40,18 @@ import PricingPlanCard from "./PricingPlanCard.astro";
               aria-selected={wsIdx === 0 ? "true" : "false"}
               tabindex={wsIdx === 0 ? 0 : -1}
               data-workspace-tab={ws.id}
-              class="rounded-full px-4 py-2 text-sm font-semibold text-gray-600 transition-colors aria-selected:bg-white aria-selected:text-gray-900 aria-selected:shadow-sm not-aria-selected:hover:text-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500 sm:px-5"
+              class="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold text-gray-600 transition-colors aria-selected:bg-white aria-selected:text-gray-900 aria-selected:shadow-sm not-aria-selected:hover:text-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zenml-500 sm:px-5"
             >
-              {ws.label}
-              <span class="ml-1.5 hidden font-normal opacity-70 sm:inline">
-                {ws.sublabel}
+              {ws.id === "kitaru" ? (
+                <KitaruLogo iconOnly static class="h-4 w-4 shrink-0 text-orange-600" />
+              ) : (
+                <img src="/images/zenml-icon.webp" alt="" aria-hidden="true" class="h-4 w-4 shrink-0 rounded-full" />
+              )}
+              <span>
+                {ws.label}
+                <span class="ml-1.5 hidden font-normal opacity-70 sm:inline">
+                  {ws.sublabel}
+                </span>
               </span>
             </button>
           ))
@@ -58,6 +66,7 @@ import PricingPlanCard from "./PricingPlanCard.astro";
           role="tabpanel"
           aria-labelledby={`pricing-ws-tab-${ws.id}`}
           data-workspace-panel={ws.id}
+          class={ws.brandClass}
           hidden={wsIdx !== 0}
         >
           <p class="mx-auto mb-8 max-w-2xl text-center text-xs leading-relaxed text-gray-500">
@@ -81,6 +90,23 @@ import PricingPlanCard from "./PricingPlanCard.astro";
   </div>
 </section>
 
+<style is:global>
+  /* Workspace panel crossfade — see the `select()` handler below, which
+     drives this by toggling `.is-fading` before flipping `hidden`, then
+     waits for `transitionend` on this rule (no duplicated duration). */
+  [data-workspace-panel] {
+    transition: opacity 220ms ease;
+  }
+  [data-workspace-panel].is-fading {
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-workspace-panel] {
+      transition: none;
+    }
+  }
+</style>
+
 <script>
   import type { SliderTierView } from "./pricingSlider";
 
@@ -96,6 +122,12 @@ import PricingPlanCard from "./PricingPlanCard.astro";
   const panels = Array.from(
     document.querySelectorAll<HTMLElement>("[data-workspace-panel]"),
   );
+  // Reduced-motion users get an instant swap: with `transition: none` (see
+  // the <style> block), `transitionend` never fires, so the fade-driven
+  // hand-off below must be skipped rather than left waiting on it.
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
 
   const select = (id: string) => {
     const prev = tabs.find(
@@ -106,9 +138,37 @@ import PricingPlanCard from "./PricingPlanCard.astro";
       tab.setAttribute("aria-selected", on ? "true" : "false");
       tab.tabIndex = on ? 0 : -1;
     }
-    for (const panel of panels) {
-      panel.hidden = panel.dataset.workspacePanel !== id;
+
+    if (prev !== id) {
+      for (const panel of panels) {
+        const isTarget = panel.dataset.workspacePanel === id;
+        if (isTarget) {
+          panel.hidden = false;
+          if (!prefersReducedMotion) {
+            // Reveal, but start transparent so it can fade in alongside
+            // the outgoing panel's fade-out.
+            panel.classList.add("is-fading");
+            void panel.offsetWidth; // force a reflow before un-fading
+            requestAnimationFrame(() => panel.classList.remove("is-fading"));
+          }
+        } else if (!panel.hidden) {
+          if (prefersReducedMotion) {
+            panel.hidden = true;
+          } else {
+            panel.classList.add("is-fading");
+            panel.addEventListener(
+              "transitionend",
+              () => {
+                panel.hidden = true;
+                panel.classList.remove("is-fading");
+              },
+              { once: true },
+            );
+          }
+        }
+      }
     }
+
     if (prev && prev !== id) {
       track("Pricing: Workspace Switch", { from: prev, to: id });
     }
