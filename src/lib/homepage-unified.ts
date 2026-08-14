@@ -56,7 +56,7 @@ export const HOMEPAGE_UNIFIED_HERO = {
   subtitleLead: "Built for engineers, ready for enterprise.",
   subtitle:
     "Replayable agent evals with Kitaru. Reproducible ML pipelines with ZenML. One platform, on the infrastructure you already use.",
-  /** Launch window (locked Aug 4): the site's single primary CTA is signup. */
+  /** The site's single primary CTA is signup. */
   primaryCta: KITARU_LINKS.signup,
   secondaryCta: { label: "Read Docs", href: "/docs" },
 } as const;
@@ -102,8 +102,7 @@ export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
  *   - Kitaru examples: ../kitaru/examples/
  */
 export const HOMEPAGE_UNIFIED_WIDGET = {
-  // Kitaru first during the v2 launch window — the first tab is the
-  // widget's default view.
+  // Kitaru first — the first tab is the widget's default view.
   tabs: [
     {
       id: "kitaru" as const,
@@ -228,7 +227,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
 export const HOMEPAGE_UNIFIED_WORKSPACES = {
   eyebrow: "Two workspaces, one platform",
   headline: "Pick your workload. Same infrastructure underneath.",
-  // Kitaru first during the v2 launch window.
+  // Kitaru first.
   items: [
     {
       name: "Kitaru workspace",

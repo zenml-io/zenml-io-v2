@@ -146,6 +146,7 @@ export function Hero() {
               <CopyCommand cmd={KITARU_INSTALL_CMD} />
               <a
                 href={KITARU_LINKS.signup.href}
+                data-analytics="Kitaru-Hero-Signup"
                 className="group inline-flex items-center gap-2 rounded-md bg-ember px-5 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-ember-deep cursor-pointer"
               >
                 {KITARU_LINKS.signup.label}

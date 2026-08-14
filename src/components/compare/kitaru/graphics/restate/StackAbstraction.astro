@@ -4,12 +4,12 @@
 <figure class="fig">
   <div class="top">
     <div class="flow">
-      <span class="mono flow-name">review_flow</span>
-      <span class="flow-sub">one `@flow` decorator on your Python function</span>
+      <span class="mono flow-name">your agent</span>
+      <span class="flow-sub">wrapped once by a Kitaru adapter</span>
     </div>
     <div class="switch">
-      <span class="switch-label">stack config</span>
-      <span class="switch-hint">switch backend without changing flow code</span>
+      <span class="switch-label">record + replay</span>
+      <span class="switch-hint">the agent's own code runs, unchanged</span>
     </div>
   </div>
 
@@ -22,20 +22,20 @@
 
   <div class="targets">
     <div class="target">
-      <span class="t-label">Kubernetes</span>
-      <span class="t-sub">any cluster</span>
+      <span class="t-label">PydanticAI</span>
+      <span class="t-sub">KitaruAgent</span>
     </div>
     <div class="target">
-      <span class="t-label">AWS</span>
-      <span class="t-sub">S3 + IAM + EKS</span>
+      <span class="t-label">LangGraph</span>
+      <span class="t-sub">KitaruGraphRunner</span>
     </div>
     <div class="target">
-      <span class="t-label">GCP</span>
-      <span class="t-sub">GCS + Vertex AI</span>
+      <span class="t-label">OpenAI Agents</span>
+      <span class="t-sub">KitaruRunner</span>
     </div>
     <div class="target">
-      <span class="t-label">Azure</span>
-      <span class="t-sub">Blob + AzureML</span>
+      <span class="t-label">Mastra · Vercel</span>
+      <span class="t-sub">TS adapters</span>
     </div>
   </div>
 
@@ -43,7 +43,7 @@
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M4 6 L20 6 M4 12 L20 12 M4 18 L20 18" />
     </svg>
-    <span><strong>Restate:</strong> <code>restate-server</code> self-hosts on any of these; handlers deploy however you already deploy backend services. The runtime does not abstract the cloud backend for you.</span>
+    <span><strong>Restate:</strong> handler SDKs ship in six languages, from the runtime up. <strong>Kitaru's</strong> adapters cover today's most common Python and TypeScript agent frameworks, with a trace-import path (Langfuse, LangSmith, Braintrust, OTel) for anything else.</span>
   </div>
 </figure>
 

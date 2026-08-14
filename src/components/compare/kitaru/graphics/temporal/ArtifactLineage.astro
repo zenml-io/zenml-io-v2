@@ -4,79 +4,79 @@
 <figure class="fig">
   <div class="tree tree--b">
     <div class="head">
-      <span class="exec">exec_id 7c1b</span>
-      <span class="ts">Mon · 11:47</span>
-      <span class="total">total $0.15</span>
+      <span class="exec">experiment · v1</span>
+      <span class="ts">gpt-5.4</span>
+      <span class="total">7/10 passed</span>
     </div>
     <div class="step">
       <div class="step-head">
-        <span class="cp">@checkpoint research</span>
-        <span class="cost">$0.04</span>
+        <span class="cp">session s_8f2a</span>
+        <span class="cost">pass</span>
       </div>
       <div class="artifacts">
-        <span class="artifact">brief.json</span>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-head">
-        <span class="cp">@checkpoint draft</span>
-        <span class="cost">$0.09</span>
-      </div>
-      <div class="artifacts">
-        <span class="artifact">draft.md</span>
+        <span class="artifact">refund-check ✓</span>
       </div>
     </div>
     <div class="step">
       <div class="step-head">
-        <span class="cp">@checkpoint review</span>
-        <span class="cost">$0.02</span>
+        <span class="cp">session s_71cd</span>
+        <span class="cost">fail</span>
       </div>
       <div class="artifacts">
-        <span class="artifact">review.json</span>
+        <span class="artifact">refund-check ✗</span>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-head">
+        <span class="cp">session s_c93e</span>
+        <span class="cost">pass</span>
+      </div>
+      <div class="artifacts">
+        <span class="artifact">refund-check ✓</span>
       </div>
     </div>
   </div>
 
   <div class="diff">
-    <span class="diff-label">kitaru.load()</span>
+    <span class="diff-label">client.compare()</span>
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M4 12 L20 12" />
       <path d="M16 8 L20 12 L16 16" />
     </svg>
-    <span class="diff-hint">reuses brief.json</span>
+    <span class="diff-hint">same cohort, diffed</span>
   </div>
 
   <div class="tree tree--a">
     <div class="head">
-      <span class="exec">exec_id 9f2a</span>
-      <span class="ts">today · 14:02</span>
-      <span class="total">total $0.10</span>
+      <span class="exec">experiment · pr-311</span>
+      <span class="ts">gpt-5-mini</span>
+      <span class="total">9/10 passed</span>
     </div>
     <div class="step step--reused">
       <div class="step-head">
-        <span class="cp">@checkpoint research</span>
-        <span class="badge-reused">loaded</span>
+        <span class="cp">session s_8f2a</span>
+        <span class="badge-reused">fixed</span>
       </div>
       <div class="artifacts">
-        <span class="artifact artifact--reused">brief.json · from 7c1b</span>
+        <span class="artifact artifact--reused">refund-check ✓ · was ✗ in v1</span>
       </div>
     </div>
     <div class="step">
       <div class="step-head">
-        <span class="cp">@checkpoint draft</span>
-        <span class="cost">$0.08</span>
+        <span class="cp">session s_71cd</span>
+        <span class="cost">pass</span>
       </div>
       <div class="artifacts">
-        <span class="artifact">draft.md</span>
+        <span class="artifact">refund-check ✓</span>
       </div>
     </div>
     <div class="step">
       <div class="step-head">
-        <span class="cp">@checkpoint review</span>
-        <span class="cost">$0.02</span>
+        <span class="cp">session s_c93e</span>
+        <span class="cost">pass</span>
       </div>
       <div class="artifacts">
-        <span class="artifact">review.json</span>
+        <span class="artifact">refund-check ✓</span>
       </div>
     </div>
   </div>

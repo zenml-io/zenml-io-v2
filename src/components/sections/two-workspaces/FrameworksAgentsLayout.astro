@@ -4,8 +4,8 @@
  * "your agent SDK · Kitaru wraps around it."
  *
  * Three-column layout:
- *   Col 1 — HARNESS: clickable list of 6 agent SDKs (PydanticAI, OpenAI
- *            Agents SDK, Claude Agent SDK, Gemini, Google ADK, Your own
+ *   Col 1 — HARNESS: clickable list of the shipped adapters (PydanticAI,
+ *            OpenAI Agents SDK, LangGraph, Mastra, Vercel AI SDK, Your own
  *            loop) — the same set the landing's OneImport section offers.
  *            Selected row: orange-50 bg + orange-400 badge + orange border.
  *            Unselected: white bg, ink badge.
@@ -600,22 +600,22 @@ const ganttDurColor = (kind: GanttSpanKind): string =>
   }
 
   /* Reveal the active pane for col 2 */
-  [data-active-example="pydantic_ai"]      .fw-col-2-stack > [data-fw-pane="pydantic_ai"],
-  [data-active-example="openai_agents"]    .fw-col-2-stack > [data-fw-pane="openai_agents"],
-  [data-active-example="claude_agent_sdk"] .fw-col-2-stack > [data-fw-pane="claude_agent_sdk"],
-  [data-active-example="gemini"]           .fw-col-2-stack > [data-fw-pane="gemini"],
-  [data-active-example="google_adk"]       .fw-col-2-stack > [data-fw-pane="google_adk"],
-  [data-active-example="your_own_loop"]    .fw-col-2-stack > [data-fw-pane="your_own_loop"] {
+  [data-active-example="pydantic_ai"]   .fw-col-2-stack > [data-fw-pane="pydantic_ai"],
+  [data-active-example="openai_agents"] .fw-col-2-stack > [data-fw-pane="openai_agents"],
+  [data-active-example="langgraph"]     .fw-col-2-stack > [data-fw-pane="langgraph"],
+  [data-active-example="mastra"]        .fw-col-2-stack > [data-fw-pane="mastra"],
+  [data-active-example="vercel_ai"]     .fw-col-2-stack > [data-fw-pane="vercel_ai"],
+  [data-active-example="your_own_loop"] .fw-col-2-stack > [data-fw-pane="your_own_loop"] {
     display: flex;
   }
 
   /* Reveal the active pane for col 3 */
-  [data-active-example="pydantic_ai"]      .fw-col-3-stack > [data-fw-pane="pydantic_ai"],
-  [data-active-example="openai_agents"]    .fw-col-3-stack > [data-fw-pane="openai_agents"],
-  [data-active-example="claude_agent_sdk"] .fw-col-3-stack > [data-fw-pane="claude_agent_sdk"],
-  [data-active-example="gemini"]           .fw-col-3-stack > [data-fw-pane="gemini"],
-  [data-active-example="google_adk"]       .fw-col-3-stack > [data-fw-pane="google_adk"],
-  [data-active-example="your_own_loop"]    .fw-col-3-stack > [data-fw-pane="your_own_loop"] {
+  [data-active-example="pydantic_ai"]   .fw-col-3-stack > [data-fw-pane="pydantic_ai"],
+  [data-active-example="openai_agents"] .fw-col-3-stack > [data-fw-pane="openai_agents"],
+  [data-active-example="langgraph"]     .fw-col-3-stack > [data-fw-pane="langgraph"],
+  [data-active-example="mastra"]        .fw-col-3-stack > [data-fw-pane="mastra"],
+  [data-active-example="vercel_ai"]     .fw-col-3-stack > [data-fw-pane="vercel_ai"],
+  [data-active-example="your_own_loop"] .fw-col-3-stack > [data-fw-pane="your_own_loop"] {
     display: flex;
   }
 

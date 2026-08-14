@@ -1,10 +1,10 @@
 ---
 competitor: "CrewAI"
 competitorLogo: "/compare/crewai.svg"
-title: "Kitaru vs CrewAI: Pause, resume, replay your crew"
-description: "Add durable pause, resume, and replay to a CrewAI crew (or any Python agent harness) without rewriting it. Self-hosted runtime on your own cloud."
-cardSubtitle: "Pause, resume, and replay any Python agent harness, including a CrewAI crew, on your own cloud."
-ctaHeading: "Put the runtime under your crew"
+title: "Kitaru vs CrewAI: harness and eval layer, composed"
+description: "CrewAI is how the crew collaborates. Kitaru records what it did and replays it as an eval — import the traces you already collect, since there's no CrewAI adapter yet."
+cardSubtitle: "Design the crew with CrewAI. Import its traces into Kitaru and replay them as evals."
+ctaHeading: "Put replay-based evals under your CrewAI crew"
 order: 45
 ---
 
@@ -19,20 +19,20 @@ import CheckpointReplay from '../../components/compare/kitaru/graphics/crewai/Ch
 import SelfHostedRuntime from '../../components/compare/kitaru/graphics/crewai/SelfHostedRuntime.astro';
 import HarnessFreedom from '../../components/compare/kitaru/graphics/crewai/HarnessFreedom.astro';
 
-CrewAI is a framework for designing multi-agent systems. You model your agents as a crew of roles, give each one a task, and let `crew.kickoff()` coordinate the work. AMP wraps the whole thing in a managed platform on top. If your problem is shaped like teamwork and role-based delegation, CrewAI is built for that.
+CrewAI and Kitaru solve different problems at different layers. CrewAI is an **agent harness**: model your agents as a crew of roles, give each one a task, and let `crew.kickoff()` coordinate the work. AMP wraps the whole thing in a managed platform on top. If your problem is shaped like teamwork and role-based delegation, CrewAI is built for that.
 
-Kitaru is not another framework. It lives one layer down as the durable runtime, so any Python agent (CrewAI, PydanticAI, OpenAI Agents SDK, or a plain while loop) can survive the production reality. Crashes at step 12 do not make you pay for steps 1 through 11 again. Human approvals release compute instead of keeping it idle for hours. Replay is a primitive, not a project.
+Kitaru is a **replay-based eval layer**: it records every run as a session, and a session re-executes &mdash; unchanged for a faithful baseline, or forked with one thing changed. There&rsquo;s no first-class CrewAI adapter yet, so the honest path in is to import the traces you already collect (Langfuse, LangSmith, Braintrust, or OTel) &mdash; an [imported session](https://docs.zenml.io/kitaru) replays and evaluates exactly like a recorded one. If you want native recording, the fastest path is a project-local adapter built with the `kitaru-adapter-builder` agent skill; it lives in your repo, not ours.
 
 <WhenToUseEach
   competitorLabel="CrewAI"
   kitaru={{
     title: "Use Kitaru if you are",
     items: [
-      "Wrapping an existing Python agent in durability without rewriting it as a CrewAI crew",
-      "Running agents long enough that crashes, pod evictions, and timeouts are a real cost problem",
-      "Pausing for hours or days on human approval without keeping compute alive",
-      "Self-hosting on your own Kubernetes, AWS, GCP, or Azure with execution state in your own object storage",
-      "Replaying from any checkpoint and inspecting the artifacts the agent actually produced",
+      "Running a CrewAI crew (or any agent) in production and want to test a change against real history instead of a vibe check",
+      "Already tracing crew runs to Langfuse, LangSmith, or Braintrust and want those traces runnable, not just readable",
+      "Turning the sessions that caught a failure into a cohort that gates every future change",
+      "Comparing a model or prompt swap on the same frozen population before you ship it",
+      "Self-hosting eval infrastructure so traces and credentials stay in your own systems",
     ],
   }}
   competitor={{
@@ -46,54 +46,54 @@ Kitaru is not another framework. It lives one layer down as the durable runtime,
 />
 
 <PullQuote
-  quote="CrewAI helps you design the agent team. Kitaru helps the agent survive production execution."
+  quote="CrewAI designs how the crew collaborates. Kitaru proves whether a change to it actually helped."
 />
 
-<FeatureWithGraphic title="Runtime layer underneath the agent stack">
+<FeatureWithGraphic title="Different questions, different layers">
   <RuntimeLayer slot="graphic" />
 
-  CrewAI is a framework, and it ships a platform (AMP) above it. Kitaru is a runtime, and it sits below the harness you already picked. Two different jobs at two different layers. Adopting CrewAI means modeling your agents inside its abstractions. Adopting Kitaru means adding `@flow` and `@checkpoint` to Python you already wrote.
+  CrewAI is asking: how do I model a team of agents that collaborate on a task? Kitaru is asking: once that crew ships, which of its runs can I re-run? Import its traces, replay them, and see what a change actually did.
 
   <Fragment slot="bullets">
-    - Kitaru owns one layer of the stack. Durable execution, replay, pause and resume, and artifact lineage all live here. Your model, your tools, and your platform stay where you put them.
-    - A CrewAI rollout looks like rewriting an agent as a crew of roles and tasks. A Kitaru rollout looks like wrapping the agent you already have in two decorators.
-    - A CrewAI crew can run inside a Kitaru `@checkpoint`. The runtime persists the kickoff result as an artifact, and the larger flow resumes from the last completed step.
+    - Kitaru doesn&rsquo;t compete for the harness layer. It has no opinion on roles, tasks, or delegation &mdash; that&rsquo;s CrewAI&rsquo;s job.
+    - A CrewAI rollout looks like modeling agents as a crew. A Kitaru rollout looks like importing the traces the crew already produces, or building a small project-local adapter against the recording API.
+    - The kickoff result &mdash; and the trace behind it &mdash; becomes a session you can replay with tool calls answered from the recording, or fork with one variable changed.
   </Fragment>
 </FeatureWithGraphic>
 
-<FeatureWithGraphic title="Checkpoint replay vs stateful flow orchestration" reverse={true}>
+<FeatureWithGraphic title="No adapter? Three honest ways in." reverse={true}>
   <CheckpointReplay slot="graphic" />
 
-  Your agent crashes two hours in, at step 12 of a sixteen-step run. What happens next is the question. CrewAI has its own recovery primitives: Flow persistence can save Flow state for resuming after crashes or human-input waits, and Crew task replay can restart from a task in the latest kickoff while retaining prior task context. **Kitaru's difference is lower-level checkpoint artifact replay: each `@checkpoint` persists its output, and replay can reuse completed checkpoint outputs while re-running from the selected boundary onward.** Here's what Kitaru offers:
+  There&rsquo;s no first-class CrewAI adapter today, and Kitaru would rather say that plainly than fake one. Three paths in, in order of cost: import the traces you already collect (Langfuse, LangSmith, Braintrust, or OTel) &mdash; the cheapest, and an imported session replays and evaluates exactly like a recorded one. Build a project-local adapter against the recording API if you want native capture &mdash; the `kitaru-adapter-builder` skill generates the smallest one that works and tells you what it can and can&rsquo;t see. Or, if the crew runs somewhere you can&rsquo;t wrap, register it as a function and let Kitaru call your system instead.
 
   <Fragment slot="bullets">
-    - `kitaru executions replay <exec_id> --from <checkpoint>` re-runs the flow from the top, but every checkpoint above the named one reads cached output. The LLM calls you already paid for do not get re-billed.
-    - The PydanticAI adapter checkpoints individual model calls, tool calls, and MCP calls inside an agent turn. A single failed tool call does not burn the whole run.
-    - Every checkpoint output is written as a typed, versioned artifact tied to the execution. Inside a checkpoint, `kitaru.load(exec_id, name)` can read a named value from another execution's checkpoint; outside checkpoints, use `KitaruClient().artifacts.get(...).load()` to inspect completed artifacts.
+    - **Import.** `kitaru session import crew-trace.jsonl --importer kitaru/langfuse@latest --agent crew@latest --wait` &mdash; no code change, no adapter, sessions land exactly like a native recording.
+    - **Project-local adapter.** Ordinary code that calls the recording API and lives in your repo. Wrap the public `crew.kickoff()` entrypoint, change nothing else &mdash; a recording that changes behavior isn&rsquo;t a recording.
+    - **Function agent.** When the crew runs somewhere you don&rsquo;t control, register it as a function; Kitaru calls it, and the session adopts once you import the result.
   </Fragment>
 </FeatureWithGraphic>
 
-<FeatureWithGraphic title="Self-hosted runtime on your own cloud">
+<FeatureWithGraphic title="Self-hosted, on your own cloud">
   <SelfHostedRuntime slot="graphic" />
 
-  CrewAI AMP is a managed agent platform with a hosted control plane. If you want the platform handled for you, that's a real value proposition. Kitaru takes the opposite trade. The Kitaru server is a single self-hosted service deployable via Helm, artifacts live in your own object storage, and a stack abstraction targets the cloud underneath without rewriting any flow code. Here's what we offer:
+  CrewAI AMP is a managed agent platform with a hosted control plane. If you want the platform handled for you, that&rsquo;s a real value proposition. Kitaru takes the opposite trade: one self-hosted FastAPI + Postgres server, workers that execute replays and evaluations inside your environment, and sessions that never have to leave your systems.
 
   <Fragment slot="bullets">
-    - **Where data lives?** Checkpoint outputs and saved artifacts live in the active stack's artifact store, which can be local filesystem, S3, GCS, or Azure Blob. `kitaru.llm()` captures prompt/response artifacts and logs usage/latency metadata.
-    - **Stack abstraction:** Configure a stack once for Kubernetes, AWS, GCP, Azure, or local. Every flow targets the same runtime. Switching clouds is a stack swap, not a flow rewrite.
-    - **Versioned deployments:** `flow.deploy()` freezes code and dependencies as an immutable snapshot. A tag move promotes a version to default or canary. Rollback is the same tag move in reverse.
+    - **Self-hosted, Apache 2.0.** One server, run it however you run services today.
+    - **Workers in your environment.** Replays, imports, and evaluations execute where you deploy them &mdash; your traces and credentials don&rsquo;t leave your systems.
+    - **Beside your observability, not instead of it.** Langfuse, LangSmith, and Braintrust remain where you watch production; Kitaru is where you re-run it.
   </Fragment>
 </FeatureWithGraphic>
 
 <FeatureWithGraphic title="Bring-your-own harness vs CrewAI abstractions" reverse={true}>
   <HarnessFreedom slot="graphic" />
 
-  CrewAI asks engineers to model their agents inside its building blocks. Kitaru asks for two decorators. The harness inside a `@checkpoint` can be CrewAI, PydanticAI, the OpenAI Agents SDK, an Anthropic call, or hand-written Python. The durability contract is the same; the harness stays your choice.
+  CrewAI asks engineers to model their agents inside its building blocks. Kitaru asks for a trace. The harness underneath a session can be CrewAI, Pydantic AI, the OpenAI Agents SDK, or hand-written Python &mdash; Kitaru mostly cares whether it can see a recording, not how you produced it.
 
   <Fragment slot="bullets">
-    - **Adapter or generic:** In Kitaru, the PydanticAI adapter exists for per-call checkpoint granularity. The OpenAI Agents adapter supports `runner_call` and per-call strategies. Anything else, including CrewAI, wraps with `@checkpoint` as ordinary Python.
-    - **No graph DSL:** Kitaru flows are normal Python. `if`/`else`, `while`, `try`/`except`, dynamic branches, and runtime-decided tool calls stay where you wrote them.
-    - **We take care of different harness needs:** When different teams in the org want different harnesses, one durable runtime under all of them is a smaller standardization ask than one harness across the org.
+    - **Native or imported.** Pydantic AI, the OpenAI Agents SDK, LangGraph, Mastra, and the Vercel AI SDK have a first-class adapter. CrewAI doesn&rsquo;t yet &mdash; import its traces, or build a project-local adapter against the recording API.
+    - **No graph DSL.** Whatever the harness decides &mdash; task delegation, tool calls, conditional branches &mdash; Kitaru records the result rather than re-implementing the decision logic.
+    - **Different harnesses, one eval layer.** When different teams pick different harnesses, one place to record and replay is a smaller ask than one harness across the org.
   </Fragment>
 </FeatureWithGraphic>
 
@@ -102,65 +102,54 @@ Kitaru is not another framework. It lives one layer down as the durable runtime,
 <ComparisonTable
   competitorLabel="CrewAI"
   rows={[
-    { feature: "Durable execution / recover after failure", kitaru: true, competitor: true },
-    { feature: "Checkpoint artifact replay that skips completed upstream work", kitaru: true, competitor: "partial" },
-    { feature: "Typed, versioned artifact lineage per checkpoint (cross-run diff)", kitaru: true, competitor: false },
-    { feature: "Durable wait/resume that releases compute during long pauses", kitaru: true, competitor: false },
-    { feature: "Self-hosted runtime with stack abstraction (Kubernetes, AWS, GCP, Azure) and data in your own bucket", kitaru: true, competitor: false },
-    { feature: "Framework portability (wrap PydanticAI, OpenAI Agents, Anthropic, raw Python, or CrewAI itself)", kitaru: true, competitor: false },
     { feature: "Multi-agent abstractions (Agents, Tasks, Crews, Flows) with role-based delegation", kitaru: false, competitor: true },
     { feature: "Tools, knowledge/RAG, MCP servers, and an integrations marketplace", kitaru: false, competitor: true },
-    { feature: "Visual no-code agent builder and AI copilot", kitaru: false, competitor: true },
+    { feature: "Visual no-code agent builder and AI copilot (AMP)", kitaru: false, competitor: true },
     { feature: "Built-in unified Memory system for agents", kitaru: false, competitor: true },
-    { feature: "Execution inspection, logs, and lifecycle control", kitaru: true, competitor: true },
+    { feature: "Record production runs as replayable sessions", kitaru: true, competitor: false },
+    { feature: "First-class adapter (no CrewAI adapter yet — import a trace or build a project-local one)", kitaru: "partial", competitor: false },
+    { feature: "Replay with tool calls answered from the recording — nothing touches real systems", kitaru: true, competitor: false },
+    { feature: "Cohorts: frozen, immutable session sets", kitaru: true, competitor: false },
+    { feature: "Experiments: same cohort, one variable moved, compared", kitaru: true, competitor: false },
+    { feature: "Deterministic and model-graded evaluators", kitaru: true, competitor: false },
+    { feature: "Self-hosted eval server with no mandatory hosted control plane in the data path", kitaru: true, competitor: false },
+    { feature: "Framework portability (record or import CrewAI, Pydantic AI, OpenAI Agents, LangGraph, or raw Python runs)", kitaru: true, competitor: false },
   ]}
 />
 
 ## How the two surfaces map
 
-| Concept | Kitaru | CrewAI |
+| Concept | CrewAI | Kitaru |
 |---|---|---|
-| Agent boundary | `@flow` plus ordinary Python | `Agent` with role, goal, backstory |
-| Durable step | `@checkpoint` around any Python function | `Task` inside a `Crew` or step inside a `Flow` |
-| Multi-agent composition | Compose in normal Python; agents wrap inside checkpoints | `Crew` with task delegation and processes |
-| Pause / resume | `kitaru.wait()` with compute released | HITL hooks and approval gates |
-| Tools | Bring your own; wrap tool calls in `@checkpoint` | CrewAI Tools, MCP servers, Apps |
-| Memory | Out of scope for Kitaru today | CrewAI unified Memory system |
-| Deployment | `flow.deploy()` to your stack, tag-routed versions | CrewAI AMP (GitHub/ZIP, env vars, endpoints, tokens) |
-| Observability | Per-execution artifact graph, checkpoint outputs, runtime logs | AMP tracing of agent decisions, task timelines, tool usage |
+| Layer | Agent harness (how the crew collaborates) | Replay-based evals (how you test what it did) |
+| Core unit | Crew run (`kickoff`) | Session &mdash; recorded model and tool calls, re-executable |
+| Composition | Standalone framework, AMP on top | Imported trace, or a project-local adapter |
+| Tool calls in tests | Hit real systems, or you mock them by hand | Answered from the recording per tool policy |
+| "Did my change help?" | Read the trace or AMP dashboard, compare by eye | Two runs over the same cohort, diffed |
+| Getting a session | No adapter yet &mdash; import the trace you already collect | First-class for Pydantic AI, OpenAI Agents SDK, LangGraph, Mastra, Vercel AI SDK |
+| Where it runs | Your process, or AMP's hosted control plane | Self-hosted server; workers replay in your environment |
 
 <CodeCompare
-  kitaruLabel="Kitaru (wraps any harness)"
+  kitaruLabel="Kitaru (imports the crew's trace)"
   competitorLabel="CrewAI"
-  kitaruCode={`import kitaru
-from kitaru import checkpoint, flow
+  kitaruCode={`# CrewAI has no first-class Kitaru adapter yet.
+# Import the trace you already collect instead:
+#
+#   kitaru session import crew-trace.jsonl \\
+#     --importer kitaru/langfuse@latest \\
+#     --agent crew@latest --wait
+#
+# The imported session replays and evaluates
+# exactly like a recorded one.
+import kitaru
 
-@checkpoint
-def research(topic: str) -> str:
-    return kitaru.llm(
-        prompt=f"Research: {topic}. Return a brief.",
-        model="fast",
-    )
+client = kitaru.KitaruClient()
+cohort = client.cohorts.create("hard-crews", sessions=session_ids)
+experiment = client.experiments.create("cheap-model", model="gpt-5-mini")
 
-@checkpoint
-def draft(brief: str) -> str:
-    return kitaru.llm(
-        prompt=f"Write a draft from this brief:\\n{brief}",
-        model="fast",
-    )
-
-@flow
-def review_flow(topic: str) -> str:
-    brief = research(topic)
-    text = draft(brief)
-    approved = kitaru.wait(
-        name="approve_draft",
-        question="Approve draft?",
-        schema=bool,
-    )
-    return text if approved else "Rejected"
-
-review_flow.run("Durable agents")`}
+before = experiment.run(cohort=cohort, version="v1")
+after = experiment.run(cohort=cohort, version="pr-311")
+client.compare(before, after)`}
   competitorCode={`from crewai import Agent, Task, Crew, Process
 
 researcher = Agent(
@@ -187,7 +176,6 @@ draft = Task(
     description="Write a draft from the brief.",
     expected_output="A short blog draft.",
     agent=writer,
-    human_input=True,  # CrewAI HITL trigger
 )
 
 crew = Crew(
@@ -196,11 +184,10 @@ crew = Crew(
     process=Process.sequential,
 )
 
-# CrewAI has its own task replay and Flow persistence.
-# Kitaru-style checkpoint artifact replay would live outside this snippet.
-result = crew.kickoff(inputs={"topic": "Durable agents"})`}
+# This kickoff produces a trace Kitaru can import.
+result = crew.kickoff(inputs={"topic": "Q3 roadmap"})`}
 />
 
 <ComparisonCta headline={frontmatter.ctaHeading}>
-If your problem is designing how a team of agents collaborates, CrewAI is built for that and worth adopting. If your problem is keeping that team alive across hour-long runs, human approvals, and crashes mid-process, Kitaru sits one layer underneath. Including under a CrewAI crew, when that's the harness you have already picked.
+If your problem is designing how a team of agents collaborates, CrewAI is built for that and worth adopting. If your problem is proving that a change to the crew actually helped, Kitaru sits one layer underneath &mdash; import the traces you already collect today, or build a small project-local adapter when you want native recording.
 </ComparisonCta>

@@ -274,6 +274,7 @@ export function CodeShowcase() {
                     <button
                       key={l}
                       type="button"
+                      aria-pressed={lang === l}
                       onClick={() => setLang(l)}
                       className={cn(
                         "rounded px-2.5 py-1 font-mono text-[11px] transition-colors cursor-pointer",

@@ -463,14 +463,28 @@ function findClientMountedHelpers(): string[] {
   };
   walk("src");
 
+  const contents = sources.map((path) => readFileSync(path, "utf8"));
   const mounted: string[] = [];
 
   for (const helper of KITARU_ISLAND_HELPERS) {
-    // `[^>]*?` spans newlines, so multi-line mounts are caught too.
-    const mountPattern = new RegExp(`<${helper}\\b[^>]*?client:`, "s");
+    // A helper module usually exports components under names unrelated to its
+    // filename (primitives.tsx → CopyCommand, brand-icons.tsx → PydanticIcon,
+    // …), so the guard must match on the export names, not the filename.
+    const helperSource = readFileSync(
+      join(KITARU_ISLANDS_DIR, `${helper}.tsx`),
+      "utf8",
+    );
+    const exportNames = [
+      ...helperSource.matchAll(/export (?:function|const) (\w+)/g),
+    ].map((match) => match[1]);
 
-    if (sources.some((path) => mountPattern.test(readFileSync(path, "utf8")))) {
-      mounted.push(helper);
+    for (const name of exportNames) {
+      // `[^>]*?` spans newlines, so multi-line mounts are caught too.
+      const mountPattern = new RegExp(`<${name}\\b[^>]*?client:`, "s");
+      if (contents.some((source) => mountPattern.test(source))) {
+        mounted.push(`${helper} (as <${name}>)`);
+        break;
+      }
     }
   }
 

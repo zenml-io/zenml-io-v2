@@ -2,15 +2,15 @@ export const KITARU_INSTALL_CMD = "pip install kitaru";
 export const KITARU_LICENSE = "Apache 2.0";
 
 /**
- * Launch-pricing facts (locked Aug 4, tunable until the 18th). Every surface
- * that quotes the price, trial terms, or Cloud-plan limits interpolates these
- * constants, so a pre-launch tune is a one-line change here.
+ * Pricing facts. Every surface that quotes the price, trial terms, or
+ * Cloud-plan limits interpolates these constants, so a change is one line
+ * here.
  */
 export const KITARU_CLOUD_PRICE = "$39";
 export const KITARU_TRIAL_DAYS = 14;
 export const KITARU_CLOUD_LIMITS = {
   agents: 3,
-  seats: 3,
+  seats: 2,
   retentionDays: 90,
 } as const;
 

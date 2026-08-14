@@ -51,8 +51,11 @@ const starsCountText = isKitaruSurface
   ? formatStars(KITARU_FALLBACK_STARS)
   : headerStarsFallback;
 const docsCta = NAV_CTAS[0];
-// Launch decision (Aug 4): single CTA on Kitaru surfaces = sign up.
+// Single primary CTA on Kitaru surfaces = sign up.
 const primaryCta = isKitaruSurface ? KITARU_LINKS.signup : NAV_CTAS[1];
+const primaryCtaAnalytics = isKitaruSurface
+  ? "Nav-Kitaru-Signup"
+  : "Nav-Book-Demo";
 const llmopsCaseStudyCount = await getNonDraftLlmopsDatabaseCount();
 const navDropdowns = createNavDropdowns({ llmopsCaseStudyCount });
 
@@ -421,7 +424,12 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
         <Button href={docsCta.href} variant="secondary" size="sm">
           {docsCta.label}
         </Button>
-        <Button href={primaryCta.href} variant="primary" size="sm">
+        <Button
+          href={primaryCta.href}
+          variant="primary"
+          size="sm"
+          dataAnalytics={primaryCtaAnalytics}
+        >
           {primaryCta.label}
         </Button>
       </div>
@@ -530,7 +538,13 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
           <Button href={docsCta.href} variant="secondary" size="md" class="w-full justify-center">
             {docsCta.label}
           </Button>
-          <Button href={primaryCta.href} variant="primary" size="md" class="w-full justify-center">
+          <Button
+            href={primaryCta.href}
+            variant="primary"
+            size="md"
+            class="w-full justify-center"
+            dataAnalytics={primaryCtaAnalytics}
+          >
             {primaryCta.label}
           </Button>
         </div>

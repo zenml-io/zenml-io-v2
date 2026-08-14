@@ -8,9 +8,8 @@
  *   Product ▾ Docs ▾ Case Studies ▾ | Pricing Blog
  * — which is standard practice (dropdowns clustered left).
  *
- * Compare was pulled from the top nav for the v2 launch window (the
- * compare pages still carry pre-launch positioning); it stays reachable
- * via the footer's "All comparisons" link.
+ * Compare is not in the top nav; it stays reachable via the footer's
+ * "All comparisons" link.
  */
 
 export interface NavLink {
@@ -139,7 +138,7 @@ export function createNavDropdowns({
       sections: [
         {
           heading: "Products",
-          // Kitaru listed first during the v2 launch window.
+          // Kitaru listed first.
           links: [
             {
               label: "Kitaru",

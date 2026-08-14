@@ -45,6 +45,20 @@ const pricingJsonLd = buildPricingJsonLd();
   <JsonLd data={pricingJsonLd} slot="head" />
 
   <main>
+    {/*
+      No-JS fallback: the workspace toggle needs JS to flip `hidden` on the
+      [data-workspace-panel] wrappers, so without scripting the ZenML half
+      of the page (plans + table) would be unreachable. This unhides every
+      panel — both workspaces render stacked — whenever scripting is off.
+    */}
+    <noscript>
+      <style>
+        [data-workspace-panel][hidden] {
+          display: block;
+        }
+      </style>
+    </noscript>
+
     {/* Hero */}
     <section class="bg-linear-to-b from-zenml-50 to-white pt-8 pb-8 sm:pt-12 sm:pb-12">
       <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">

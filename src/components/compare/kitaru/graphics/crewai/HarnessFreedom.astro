@@ -23,24 +23,19 @@ crew.<span class="fn">kickoff</span>(inputs=&#123;<span class="str">"topic"</spa
 
   <div class="panel panel--kitaru">
     <div class="panel-head">
-      <span class="panel-label panel-label--accent">Kitaru · wrap whatever you already use</span>
-      <span class="panel-sub">@flow + @checkpoint over ordinary Python</span>
+      <span class="panel-label panel-label--accent">Kitaru · record whatever you already use</span>
+      <span class="panel-sub">Native adapter, imported trace, or a project-local adapter</span>
     </div>
-    <pre class="code"><span class="hl"><span class="cmt"># A CrewAI crew inside a Kitaru checkpoint</span></span>
-<span class="hl"><span class="dec">@checkpoint</span></span>
-<span class="kw">def</span> <span class="fn">run_crew</span>(topic: <span class="cls">str</span>) -&gt; <span class="cls">str</span>:
-    <span class="kw">return</span> crew.<span class="fn">kickoff</span>(inputs=&#123;<span class="str">"topic"</span>: topic&#125;).raw
+    <pre class="code"><span class="hl"><span class="cmt"># No CrewAI adapter yet — import the trace</span></span>
+kitaru session import crew-trace.jsonl \
+    --importer kitaru/langfuse@latest --agent crew@latest
 
-<span class="hl"><span class="cmt"># A PydanticAI agent inside a Kitaru checkpoint</span></span>
-<span class="hl"><span class="dec">@checkpoint</span></span>
-<span class="kw">def</span> <span class="fn">critique</span>(text: <span class="cls">str</span>) -&gt; <span class="cls">str</span>:
-    <span class="kw">return</span> pydantic_agent.<span class="fn">run_sync</span>(text).output
+<span class="hl"><span class="cmt"># A Pydantic AI agent — native adapter, one wrapper</span></span>
+<span class="kw">from</span> <span class="mod">kitaru_pydantic_ai</span> <span class="kw">import</span> <span class="cls">KitaruAgent</span>
 
-<span class="hl"><span class="cmt"># An OpenAI Agents SDK call inside a Kitaru checkpoint</span></span>
-<span class="hl"><span class="dec">@checkpoint</span></span>
-<span class="kw">def</span> <span class="fn">decide</span>(text: <span class="cls">str</span>) -&gt; <span class="cls">str</span>:
-    <span class="kw">return</span> Runner.<span class="fn">run_sync</span>(agent, text).final_output</pre>
-    <div class="foot foot--accent">One durable runtime under whatever harness you picked.</div>
+support = <span class="cls">KitaruAgent</span>(agent, agent_id=AGENT_ID)
+support.<span class="fn">run_sync</span>(text)</pre>
+    <div class="foot foot--accent">One eval layer under whatever harness you picked — recorded natively, or imported.</div>
   </div>
 </figure>
 

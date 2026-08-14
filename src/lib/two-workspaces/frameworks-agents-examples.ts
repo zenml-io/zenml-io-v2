@@ -7,15 +7,15 @@
  * column (KITARU ADDS — recorded session) and the right column (EVERY CALL
  * RECORDED — the session that run produced).
  *
- * The adapter set and the class names match the landing page's OneImport
- * section (`src/components/kitaru/OneImport.astro`), which is the source of
- * truth for what Kitaru actually ships:
- *   - PydanticAI:        kitaru.adapters.pydantic_ai      → KitaruAgent
- *   - OpenAI Agents SDK: kitaru.adapters.openai_agents    → KitaruRunner
- *   - Claude Agent SDK:  kitaru.adapters.claude_agent_sdk → KitaruClaudeRunner
- *   - Gemini:            kitaru.adapters.gemini           → KitaruGeminiInteractionsRunner
- *   - Google ADK:        kitaru.adapters.google_adk       → KitaruADKRunner
- *   - Your own loop:     any callable — the "bring your own loop" pattern
+ * The adapter set and the entry points match the shipped adapters on kitaru
+ * `develop` (docs/book/adapters) and the landing page's OneImport island
+ * (`src/components/kitaru/islands/OneImport.tsx`):
+ *   - PydanticAI:        kitaru_pydantic_ai          → KitaruAgent
+ *   - OpenAI Agents SDK: kitaru_openai_agents        → KitaruRunner
+ *   - LangGraph:         kitaru_langgraph            → KitaruGraphRunner
+ *   - Mastra:            @zenml-io/kitaru-mastra     → KitaruAgent
+ *   - Vercel AI SDK:     @zenml-io/kitaru-vercel-ai  → createKitaruGenerateText
+ *   - Your own loop:     no adapter — import traces or record with the client
  *
  * The mini-Gantt shows one recorded session per SDK. The 6-span shape is
  * constant — run → model_request → tool call → checkpoint → model_request →
@@ -226,7 +226,7 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     withoutText: "one log line per run · nothing to replay",
     goodFit: "Typed agents where you want schema validation on every step.",
     tradeOff: "Adds a Pydantic dependency and some per-call overhead.",
-    sourceCitation: "kitaru.adapters.pydantic_ai — KitaruAgent",
+    sourceCitation: "kitaru_pydantic_ai — KitaruAgent",
   },
   {
     /* (2) OpenAI Agents SDK — the Runner pattern, wrapped by KitaruRunner. */
@@ -257,21 +257,22 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     withoutText: "one log line per run · nothing to replay",
     goodFit: "Multi-agent runs with handoffs via the Agents SDK Runner.",
     tradeOff: "Tied to OpenAI-hosted models and their rate limits.",
-    sourceCitation: "kitaru.adapters.openai_agents — KitaruRunner",
+    sourceCitation: "kitaru_openai_agents — KitaruRunner",
   },
   {
-    /* (3) Claude Agent SDK — the query/options pattern, wrapped by
-     *     KitaruClaudeRunner with an options_factory. */
-    id: "claude_agent_sdk",
-    rowLetter: "C",
-    rowLabel: "Claude Agent SDK",
-    rowSubtitle: "query(...)",
+    /* (3) LangGraph — a compiled graph, wrapped by KitaruGraphRunner.
+     *     LangChain's create_agent and Deep Agents run on LangGraph, so
+     *     this adapter covers them too. */
+    id: "langgraph",
+    rowLetter: "L",
+    rowLabel: "LangGraph",
+    rowSubtitle: "graph.invoke",
     badgeBg: "#F7F7F7",
     badgeColor: "#101828",
-    kitaruChip: "KitaruClaudeRunner(...)",
+    kitaruChip: "KitaruGraphRunner(graph)",
     underlyingHarness: {
-      label: "Claude Agent SDK",
-      chips: ["messages", "tools", "stream"],
+      label: "LangGraph",
+      chips: ["graphs", "tools", "subagents"],
     },
     capabilityTiles: SHARED_CAPABILITIES,
     sessionLabel: "ses_3019c4de · recorded",
@@ -284,24 +285,25 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
       { name: "reply", durationLabel: "recorded", widthPct: 8.0 },
     ]),
     axisTicks: ["0s", "13s", "26s", "39s", "52s"],
-    withKitaruText: "every turn and tool block recorded · this session replays",
+    withKitaruText:
+      "every graph, model and tool callback recorded · this session replays",
     withoutText: "one log line per run · nothing to replay",
-    goodFit: "Long tool-use sessions with expensive context to rebuild.",
-    tradeOff: "Checkpoints land between turns — mid-stream tokens aren't kept.",
-    sourceCitation: "kitaru.adapters.claude_agent_sdk — KitaruClaudeRunner",
+    goodFit: "Graph agents — LangChain create_agent and Deep Agents included.",
+    tradeOff: "Replay depth depends on how the graph was constructed.",
+    sourceCitation: "kitaru_langgraph — KitaruGraphRunner",
   },
   {
-    /* (4) Gemini — the interactions runner. */
-    id: "gemini",
-    rowLetter: "G",
-    rowLabel: "Gemini",
-    rowSubtitle: "generate_content",
+    /* (4) Mastra — the TypeScript Agent class, wrapped by KitaruAgent. */
+    id: "mastra",
+    rowLetter: "M",
+    rowLabel: "Mastra",
+    rowSubtitle: "agent.generate",
     badgeBg: "#F7F7F7",
     badgeColor: "#101828",
-    kitaruChip: "KitaruGeminiInteractionsRunner(...)",
+    kitaruChip: "new KitaruAgent(agent)",
     underlyingHarness: {
-      label: "Gemini",
-      chips: ["interactions", "tools", "output"],
+      label: "Mastra",
+      chips: ["agents", "tools", "workflows"],
     },
     capabilityTiles: SHARED_CAPABILITIES,
     sessionLabel: "ses_2291f70b · recorded",
@@ -314,24 +316,24 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
       { name: "reply", durationLabel: "recorded", widthPct: 9.0 },
     ]),
     axisTicks: ["0s", "9s", "18s", "27s", "36s"],
-    withKitaruText: "every interaction recorded · this session replays",
+    withKitaruText: "every generate() call recorded · this session replays",
     withoutText: "one log line per run · nothing to replay",
-    goodFit: "Gemini agents where the tool results are the expensive part.",
-    tradeOff: "Interaction-level recording, so sub-call detail stays coarse.",
-    sourceCitation: "kitaru.adapters.gemini — KitaruGeminiInteractionsRunner",
+    goodFit: "TypeScript agents on Mastra — generate() behaves unchanged.",
+    tradeOff: "Non-streaming calls only for now.",
+    sourceCitation: "@zenml-io/kitaru-mastra — KitaruAgent",
   },
   {
-    /* (5) Google ADK — the ADK Runner, wrapped by KitaruADKRunner. */
-    id: "google_adk",
-    rowLetter: "A",
-    rowLabel: "Google ADK",
-    rowSubtitle: "Runner.run_async",
+    /* (5) Vercel AI SDK — generateText, wrapped by createKitaruGenerateText. */
+    id: "vercel_ai",
+    rowLetter: "V",
+    rowLabel: "Vercel AI SDK",
+    rowSubtitle: "generateText",
     badgeBg: "#F7F7F7",
     badgeColor: "#101828",
-    kitaruChip: "KitaruADKRunner(runner)",
+    kitaruChip: "createKitaruGenerateText(...)",
     underlyingHarness: {
-      label: "Google ADK",
-      chips: ["sessions", "tools", "events"],
+      label: "Vercel AI SDK",
+      chips: ["generateText", "tools", "providers"],
     },
     capabilityTiles: SHARED_CAPABILITIES,
     sessionLabel: "ses_1102de55 · recorded",
@@ -344,25 +346,26 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
       { name: "reply", durationLabel: "recorded", widthPct: 7.0 },
     ]),
     axisTicks: ["0s", "13s", "26s", "39s", "52s"],
-    withKitaruText: "every ADK event recorded · this session replays",
+    withKitaruText: "every generation recorded · this session replays",
     withoutText: "one log line per run · nothing to replay",
-    goodFit: "ADK apps that already model runs as sessions and events.",
-    tradeOff: "ADK's own session store and Kitaru's both keep a copy.",
-    sourceCitation: "kitaru.adapters.google_adk — KitaruADKRunner",
+    goodFit: "Drop-in for generateText — same call signature, now recorded.",
+    tradeOff: "Wraps non-streaming generateText; streamText isn't covered.",
+    sourceCitation: "@zenml-io/kitaru-vercel-ai — createKitaruGenerateText",
   },
   {
-    /* (6) Your own loop — bare Python. The "bring your own loop" pattern:
-     *     any callable that takes an input and returns an output. */
+    /* (6) Your own loop — no adapter. The documented custom path: import
+     *     the traces you already collect, or record sessions directly with
+     *     the Python/TypeScript client. */
     id: "your_own_loop",
     rowLetter: "+",
     rowLabel: "Your own loop",
-    rowSubtitle: "function",
+    rowSubtitle: "no adapter",
     badgeBg: "#94A3B8", // slate-400
     badgeColor: "#FFFFFF",
-    kitaruChip: "KitaruAgent(fn)",
+    kitaruChip: "createSession(...)",
     underlyingHarness: {
       label: "Custom loop",
-      chips: ["any callable", "sync / async"],
+      chips: ["import traces", "client API"],
     },
     capabilityTiles: SHARED_CAPABILITIES,
     sessionLabel: "ses_66df2e14 · recorded",
@@ -375,11 +378,14 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
       { name: "reply", durationLabel: "recorded", widthPct: 11.0 },
     ]),
     axisTicks: ["0s", "12s", "24s", "36s", "48s"],
-    withKitaruText: "every call you wrap is recorded · this session replays",
+    withKitaruText:
+      "imported or client-recorded sessions replay like any other",
     withoutText: "one log line per run · nothing to replay",
-    goodFit: "Any Python callable — no framework lock-in at all.",
-    tradeOff: "You mark the call boundaries; Kitaru can't infer them.",
-    sourceCitation: "kitaru — bring your own loop (any callable)",
+    goodFit:
+      "Any framework — import Langfuse, LangSmith, Braintrust or OTel traces.",
+    tradeOff: "You define the session's nodes; Kitaru can't infer them.",
+    sourceCitation:
+      "docs/book/adapters/custom.md — no adapter for your framework",
   },
 ] as const;
 

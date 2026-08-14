@@ -1,6 +1,7 @@
 import type { ComponentChildren } from "preact";
 import { useState } from "preact/hooks";
 import { cn } from "../../../lib/utils";
+import { copyToClipboard } from "../../../scripts/kitaru/clipboard";
 import { Check, Copy } from "./icons";
 
 export function Section({
@@ -112,9 +113,14 @@ export function CopyCommand({
         type="button"
         aria-label="Copy install command"
         onClick={() => {
-          void navigator.clipboard?.writeText(cmd);
-          setCopied(true);
-          setTimeout(() => setCopied(false), 1600);
+          copyToClipboard(cmd)
+            .then(() => {
+              setCopied(true);
+              setTimeout(() => setCopied(false), 1600);
+            })
+            .catch(() => {
+              // Copy failed — leave the icon as-is rather than show a false success.
+            });
         }}
         className={cn(
           "ml-2 rounded p-1.5 transition-colors cursor-pointer",
