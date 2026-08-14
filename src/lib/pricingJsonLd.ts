@@ -15,9 +15,22 @@ function reliablePriceFields(plan: PricingPlan): Record<string, unknown> {
     return { price: 0, priceCurrency: "USD" };
   }
 
-  const flatDollars = plan.price.match(/^\$(\d+)$/);
+  // A slider plan's headline price is only one tier of a range — publishing
+  // it as THE price would misstate the plan, so emit nothing for those.
+  const flatDollars = plan.slider ? null : plan.price.match(/^\$(\d+)$/);
   if (flatDollars) {
-    return { price: Number(flatDollars[1]), priceCurrency: "USD" };
+    const price = Number(flatDollars[1]);
+    const fields: Record<string, unknown> = { price, priceCurrency: "USD" };
+    if (plan.priceSuffix === "/month") {
+      fields.priceSpecification = {
+        "@type": "UnitPriceSpecification",
+        price,
+        priceCurrency: "USD",
+        billingIncrement: 1,
+        unitCode: "MON",
+      };
+    }
+    return fields;
   }
 
   return {};

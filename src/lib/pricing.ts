@@ -201,11 +201,10 @@ export const PRICING_PLANS: PricingPlan[] = [
 // ---------------------------------------------------------------------------
 // Kitaru workspace plans.
 //
-// Launch pricing (locked Aug 4): one flat Cloud plan with a full-access
-// trial and no credit card — no free hosted tier, no metering, no middle
-// tiers. Just Open Source, Cloud, and Enterprise. The price, trial length
-// and limits are interpolated from productKitaru.ts so a pre-launch tune
-// is a one-line change there.
+// One flat Cloud plan with a full-access trial and no credit card — no
+// free hosted tier, no metering, no middle tiers. Just Open Source, Cloud,
+// and Enterprise. The price, trial length and limits are interpolated from
+// productKitaru.ts so a change is one line there.
 // ---------------------------------------------------------------------------
 export const PRICING_PLANS_KITARU: PricingPlan[] = [
   {
@@ -244,7 +243,7 @@ export const PRICING_PLANS_KITARU: PricingPlan[] = [
       "Hosted dashboard and control plane",
       "Replays and experiment runs included — no meters",
       "Trial starts with full Enterprise access",
-      "Email support",
+      "Community support",
     ],
     cta: {
       label: KITARU_LINKS.signup.label,
@@ -508,7 +507,7 @@ export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
       rows: [
         {
           feature: "Support level",
-          values: ["Community", "Email", "Dedicated + SLA"],
+          values: ["Community", "Community", "Dedicated + SLA"],
         },
       ],
     },

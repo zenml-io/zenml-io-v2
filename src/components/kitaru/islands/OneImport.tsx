@@ -1,17 +1,22 @@
 // OneImport — keep the inner harness, add the outer runtime. Tabbed
 // before/after code comparison per agent SDK. Framework tab state is local;
-// the before/after code samples are inline here (as in the redesign source),
-// tokenized to keep the site's existing `.code-syntax` highlighting instead
-// of the redesign's flat single-color code lines.
+// the before/after code samples are inline here, tokenized to keep the
+// site's existing `.code-syntax` highlighting.
+//
+// The tab set mirrors the shipped adapters on kitaru `develop`
+// (docs/book/adapters): Python — PydanticAI (`kitaru_pydantic_ai`),
+// OpenAI Agents SDK (`kitaru_openai_agents`), LangGraph
+// (`kitaru_langgraph`); TypeScript — Mastra (`@zenml-io/kitaru-mastra`),
+// Vercel AI SDK (`@zenml-io/kitaru-vercel-ai`). Import paths and entry
+// points here must match those docs — don't invent adapter APIs.
 import { useState } from "preact/hooks";
 import { cn } from "../../../lib/utils";
 import {
-  AnthropicIcon,
-  GeminiIcon,
-  GoogleIcon,
+  LangChainIcon,
+  MastraIcon,
   OpenAIIcon,
   PydanticIcon,
-  PythonIcon,
+  VercelIcon,
 } from "./brand-icons";
 import { type CodeLine, renderCodeLines } from "./code-tokens";
 import { ArrowRight } from "./icons";
@@ -22,6 +27,8 @@ type Framework = {
   id: string;
   Icon: typeof PydanticIcon;
   label: string;
+  /** Filename shown in the code block chrome — carries the language. */
+  file: string;
   before: CodeLine[];
   after: CodeLine[];
 };
@@ -31,6 +38,7 @@ const frameworks: Framework[] = [
     id: "pydanticai",
     Icon: PydanticIcon,
     label: "PydanticAI",
+    file: "agent.py",
     before: [
       [{ kw: "from" }, " pydantic_ai ", { kw: "import" }, " Agent"],
       [],
@@ -58,7 +66,7 @@ const frameworks: Framework[] = [
     after: [
       [
         { kw: "from" },
-        " kitaru.adapters.pydantic_ai ",
+        " kitaru_pydantic_ai ",
         { kw: "import" },
         " KitaruAgent",
       ],
@@ -98,19 +106,19 @@ const frameworks: Framework[] = [
     id: "openai",
     Icon: OpenAIIcon,
     label: "OpenAI Agents SDK",
+    file: "agent.py",
     before: [
-      [{ kw: "from" }, " agents ", { kw: "import" }, " Runner"],
-      [
-        { kw: "from" },
-        " agents.sandbox ",
-        { kw: "import" },
-        " SandboxAgent, Manifest",
-      ],
+      [{ kw: "from" }, " agents ", { kw: "import" }, " Agent, Runner"],
       [],
-      ["agent ", { op: "=" }, " ", { fn: "SandboxAgent" }, "("],
+      ["agent ", { op: "=" }, " ", { fn: "Agent" }, "("],
       ["    name", { op: "=" }, { str: '"Compliance Reviewer"' }, ","],
+      [
+        "    instructions",
+        { op: "=" },
+        { str: '"Answer briefly and accurately."' },
+        ",",
+      ],
       ["    model", { op: "=" }, { str: '"gpt-5-mini"' }, ","],
-      ["    default_manifest", { op: "=" }, "manifest,"],
       [")"],
       [],
       [
@@ -124,35 +132,34 @@ const frameworks: Framework[] = [
       ],
     ],
     after: [
+      [{ kw: "from" }, " agents ", { kw: "import" }, " Agent"],
       [
         { kw: "from" },
-        " kitaru.adapters.openai_agents ",
+        " kitaru_openai_agents ",
         { kw: "import" },
-        " KitaruRunner, OpenAIRunRequest",
-      ],
-      [
-        { kw: "from" },
-        " agents.sandbox ",
-        { kw: "import" },
-        " SandboxAgent, Manifest",
+        " KitaruRunner",
       ],
       [],
-      ["agent ", { op: "=" }, " ", { fn: "SandboxAgent" }, "("],
+      ["agent ", { op: "=" }, " ", { fn: "Agent" }, "("],
       ["    name", { op: "=" }, { str: '"Compliance Reviewer"' }, ","],
+      [
+        "    instructions",
+        { op: "=" },
+        { str: '"Answer briefly and accurately."' },
+        ",",
+      ],
       ["    model", { op: "=" }, { str: '"gpt-5-mini"' }, ","],
-      ["    default_manifest", { op: "=" }, "manifest,"],
       [")"],
-      [],
       [
         "runner ",
         { op: "=" },
         " ",
         { fn: "KitaruRunner" },
-        "(agent, checkpoint_strategy",
+        "(agent_id",
         { op: "=" },
-        { str: '"calls"' },
-        ")",
+        "AGENT_ID)",
       ],
+      [],
       [
         "result ",
         { op: "=" },
@@ -160,283 +167,265 @@ const frameworks: Framework[] = [
         { kw: "await" },
         " runner.",
         { fn: "run" },
-        "(OpenAIRunRequest.",
-        { fn: "start" },
-        "(task))",
+        "(agent, task)",
       ],
     ],
   },
   {
-    id: "anthropic",
-    Icon: AnthropicIcon,
-    label: "Claude Agent SDK",
+    id: "langgraph",
+    Icon: LangChainIcon,
+    label: "LangGraph",
+    file: "agent.py",
     before: [
       [
         { kw: "from" },
-        " claude_agent_sdk ",
+        " langgraph.graph ",
         { kw: "import" },
-        " query, ClaudeAgentOptions",
+        " END, START, StateGraph",
       ],
       [],
-      ["options ", { op: "=" }, " ", { fn: "ClaudeAgentOptions" }, "("],
+      ["builder ", { op: "=" }, " ", { fn: "StateGraph" }, "(SupportState)"],
       [
-        "    system_prompt",
-        { op: "=" },
-        { str: '"You are a compliance reviewer."' },
-        ",",
+        "builder.",
+        { fn: "add_node" },
+        "(",
+        { str: '"normalize"' },
+        ", normalize)",
       ],
-      ["    allowed_tools", { op: "=" }, "[],"],
-      [")"],
+      ["builder.", { fn: "add_edge" }, "(START, ", { str: '"normalize"' }, ")"],
+      ["builder.", { fn: "add_edge" }, "(", { str: '"normalize"' }, ", END)"],
       [],
+      ["graph ", { op: "=" }, " builder.", { fn: "compile" }, "()"],
       [
-        { kw: "async for" },
-        " msg ",
-        { kw: "in" },
-        " ",
-        { fn: "query" },
-        "(prompt",
+        "result ",
         { op: "=" },
-        "task, options",
-        { op: "=" },
-        "options):",
+        " graph.",
+        { fn: "invoke" },
+        "({",
+        { str: '"request"' },
+        ": task})",
       ],
-      ["    process(msg)"],
     ],
     after: [
-      [{ kw: "from" }, " kitaru ", { kw: "import" }, " flow"],
       [
         { kw: "from" },
-        " claude_agent_sdk ",
+        " kitaru_langgraph ",
         { kw: "import" },
-        " ClaudeAgentOptions",
+        " KitaruGraphRunner",
       ],
       [
         { kw: "from" },
-        " kitaru.adapters.claude_agent_sdk ",
+        " langgraph.graph ",
         { kw: "import" },
-        " ClaudeRunRequest, ClaudeRunResult, KitaruClaudeRunner",
+        " END, START, StateGraph",
       ],
       [],
-      ["runner ", { op: "=" }, " ", { fn: "KitaruClaudeRunner" }, "("],
-      ["    name", { op: "=" }, { str: '"compliance_review"' }, ","],
+      ["builder ", { op: "=" }, " ", { fn: "StateGraph" }, "(SupportState)"],
       [
-        "    options_factory",
-        { op: "=" },
-        { kw: "lambda" },
-        " request: ",
-        { fn: "ClaudeAgentOptions" },
+        "builder.",
+        { fn: "add_node" },
         "(",
+        { str: '"normalize"' },
+        ", normalize)",
       ],
-      [
-        "        system_prompt",
-        { op: "=" },
-        { str: '"You are a compliance reviewer."' },
-        ",",
-      ],
-      ["        allowed_tools", { op: "=" }, "[],"],
-      ["        max_turns", { op: "=" }, "request.max_turns,"],
-      ["    ),"],
-      [")"],
-      [],
-      [{ dec: "@flow" }],
-      [
-        { kw: "def" },
-        " ",
-        { fn: "review" },
-        "(task: ",
-        { var: "str" },
-        ") ",
-        { op: "->" },
-        " ",
-        { var: "ClaudeRunResult" },
-        ":",
-      ],
-      [
-        "    ",
-        { kw: "return" },
-        " runner.",
-        { fn: "run_sync" },
-        "(ClaudeRunRequest.",
-        { fn: "start" },
-        "(task, max_turns",
-        { op: "=" },
-        "3))",
-      ],
-    ],
-  },
-  {
-    id: "gemini",
-    Icon: GeminiIcon,
-    label: "Gemini",
-    before: [
-      [{ kw: "from" }, " google ", { kw: "import" }, " genai"],
-      [],
-      ["client ", { op: "=" }, " genai.", { fn: "Client" }, "()"],
-      [],
-      [
-        "interaction ",
-        { op: "=" },
-        " client.interactions.",
-        { fn: "create" },
-        "(",
-      ],
-      ["    model", { op: "=" }, { str: '"gemini-3.5-flash"' }, ","],
-      ["    input", { op: "=" }, "task,"],
-      [")"],
-      [{ fn: "print" }, "(interaction.output_text)"],
-    ],
-    after: [
-      [{ kw: "from" }, " kitaru ", { kw: "import" }, " flow"],
-      [{ kw: "from" }, " kitaru.adapters.gemini ", { kw: "import" }, " ("],
-      ["    GeminiInteractionRequest, KitaruGeminiInteractionsRunner,"],
-      [")"],
+      ["builder.", { fn: "add_edge" }, "(START, ", { str: '"normalize"' }, ")"],
+      ["builder.", { fn: "add_edge" }, "(", { str: '"normalize"' }, ", END)"],
       [],
       [
         "runner ",
         { op: "=" },
         " ",
-        { fn: "KitaruGeminiInteractionsRunner" },
-        "(name",
-        { op: "=" },
-        { str: '"review"' },
-        ")",
+        { fn: "KitaruGraphRunner" },
+        "(builder.",
+        { fn: "compile" },
+        "())",
       ],
-      [],
-      [{ dec: "@flow" }],
-      [{ kw: "def" }, " ", { fn: "review" }, "(task: ", { var: "str" }, "):"],
-      [
-        "    request ",
-        { op: "=" },
-        " GeminiInteractionRequest.",
-        { fn: "start" },
-        "(",
-      ],
-      ["        task, model", { op: "=" }, { str: '"gemini-3.5-flash"' }, ","],
-      ["    )"],
-      ["    ", { kw: "return" }, " runner.", { fn: "run_sync" }, "(request)"],
-    ],
-  },
-  {
-    id: "adk",
-    Icon: GoogleIcon,
-    label: "Google ADK",
-    before: [
-      [{ kw: "from" }, " google.adk.runners ", { kw: "import" }, " Runner"],
-      [],
-      ["runner ", { op: "=" }, " ", { fn: "Runner" }, "("],
-      ["    agent", { op: "=" }, "agent,"],
-      ["    app_name", { op: "=" }, { str: '"support"' }, ","],
-      ["    session_service", { op: "=" }, "sessions,"],
-      [")"],
-      [],
       [
         "result ",
         { op: "=" },
-        " ",
-        { kw: "await" },
         " runner.",
-        { fn: "run_async" },
-        "(",
+        { fn: "invoke" },
+        "({",
+        { str: '"request"' },
+        ": task})",
       ],
-      ["    user_id", { op: "=" }, { str: '"user-123"' }, ","],
-      ["    session_id", { op: "=" }, { str: '"s-456"' }, ","],
-      ["    new_message", { op: "=" }, "msg,"],
-      [")"],
-    ],
-    after: [
-      [
-        { kw: "from" },
-        " kitaru.adapters.google_adk ",
-        { kw: "import" },
-        " ADKRunRequest, KitaruADKRunner",
-      ],
-      [],
-      ["kitaru_runner ", { op: "=" }, " ", { fn: "KitaruADKRunner" }, "("],
-      ["    adk_runner,"],
-      ["    name", { op: "=" }, { str: '"support_agent"' }, ","],
-      ["    checkpoint_strategy", { op: "=" }, { str: '"runner_call"' }, ","],
-      [")"],
-      [],
-      [
-        "result ",
-        { op: "=" },
-        " ",
-        { kw: "await" },
-        " kitaru_runner.",
-        { fn: "run" },
-        "(",
-        { fn: "ADKRunRequest" },
-        "(",
-      ],
-      ["    user_id", { op: "=" }, { str: '"user-123"' }, ","],
-      ["    session_id", { op: "=" }, { str: '"s-456"' }, ","],
-      ["    message", { op: "=" }, "msg,"],
-      ["))"],
     ],
   },
   {
-    id: "custom",
-    Icon: PythonIcon,
-    label: "Raw Python",
+    id: "mastra",
+    Icon: MastraIcon,
+    label: "Mastra",
+    file: "agent.ts",
     before: [
-      [{ kw: "from" }, " anthropic ", { kw: "import" }, " Anthropic"],
-      [],
-      ["client ", { op: "=" }, " ", { fn: "Anthropic" }, "()"],
+      [
+        { kw: "import" },
+        " { Agent } ",
+        { kw: "from" },
+        " ",
+        { str: '"@mastra/core/agent"' },
+        ";",
+      ],
       [],
       [
-        { kw: "def" },
+        { kw: "const" },
+        " agent ",
+        { op: "=" },
         " ",
-        { fn: "my_agent" },
-        "(task: ",
-        { var: "str" },
-        ") ",
-        { op: "->" },
+        { kw: "new" },
         " ",
-        { var: "str" },
-        ":",
+        { fn: "Agent" },
+        "({",
       ],
-      ["    plan ", { op: "=" }, " ", { fn: "analyze" }, "(client, task)"],
+      ["  id: ", { str: '"support-agent"' }, ","],
+      ["  name: ", { str: '"Support agent"' }, ","],
+      ["  instructions: ", { str: '"Answer support requests."' }, ","],
+      ["  model: ", { str: '"openai/gpt-5-mini"' }, ","],
+      ["  tools,"],
+      ["});"],
+      [],
       [
-        "    ",
-        { cmt: "# nothing recorded — nothing to replay or test against." },
+        { kw: "const" },
+        " result ",
+        { op: "=" },
+        " ",
+        { kw: "await" },
+        " agent.",
+        { fn: "generate" },
+        "(messages);",
       ],
-      ["    result ", { op: "=" }, " ", { fn: "execute" }, "(client, plan)"],
-      ["    ", { kw: "return" }, " result"],
     ],
     after: [
-      [{ kw: "from" }, " kitaru ", { kw: "import" }, " flow, checkpoint"],
-      [{ kw: "from" }, " anthropic ", { kw: "import" }, " Anthropic"],
-      [],
-      ["client ", { op: "=" }, " ", { fn: "Anthropic" }, "()"],
-      [],
-      [{ dec: "@flow" }],
       [
-        { kw: "def" },
+        { kw: "import" },
+        " { Agent } ",
+        { kw: "from" },
         " ",
-        { fn: "my_agent" },
-        "(task: ",
-        { var: "str" },
-        ") ",
-        { op: "->" },
-        " ",
-        { var: "str" },
-        ":",
+        { str: '"@mastra/core/agent"' },
+        ";",
       ],
       [
-        "    plan ",
+        { kw: "import" },
+        " { KitaruAgent } ",
+        { kw: "from" },
+        " ",
+        { str: '"@zenml-io/kitaru-mastra"' },
+        ";",
+      ],
+      [],
+      [
+        { kw: "const" },
+        " agent ",
         { op: "=" },
         " ",
-        { fn: "checkpoint" },
-        "(analyze)(client, task)",
+        { kw: "new" },
+        " ",
+        { fn: "KitaruAgent" },
+        "(",
+        { kw: "new" },
+        " ",
+        { fn: "Agent" },
+        "({",
       ],
+      ["  id: ", { str: '"support-agent"' }, ","],
+      ["  name: ", { str: '"Support agent"' }, ","],
+      ["  instructions: ", { str: '"Answer support requests."' }, ","],
+      ["  model: ", { str: '"openai/gpt-5-mini"' }, ","],
+      ["  tools,"],
+      ["}), { agentId: AGENT_ID });"],
+      [],
       [
-        "    result ",
+        { kw: "const" },
+        " result ",
         { op: "=" },
         " ",
-        { fn: "checkpoint" },
-        "(execute)(client, plan)",
+        { kw: "await" },
+        " agent.",
+        { fn: "generate" },
+        "(messages);",
       ],
-      ["    ", { kw: "return" }, " result"],
+    ],
+  },
+  {
+    id: "vercel",
+    Icon: VercelIcon,
+    label: "Vercel AI SDK",
+    file: "agent.ts",
+    before: [
+      [
+        { kw: "import" },
+        " { openai } ",
+        { kw: "from" },
+        " ",
+        { str: '"@ai-sdk/openai"' },
+        ";",
+      ],
+      [
+        { kw: "import" },
+        " { generateText } ",
+        { kw: "from" },
+        " ",
+        { str: '"ai"' },
+        ";",
+      ],
+      [],
+      [
+        { kw: "const" },
+        " result ",
+        { op: "=" },
+        " ",
+        { kw: "await" },
+        " ",
+        { fn: "generateText" },
+        "({",
+      ],
+      ["  model: ", { fn: "openai" }, "(", { str: '"gpt-5-nano"' }, "),"],
+      ["  prompt: task,"],
+      ["});"],
+      [],
+      ["console.", { fn: "log" }, "(result.text);"],
+    ],
+    after: [
+      [
+        { kw: "import" },
+        " { openai } ",
+        { kw: "from" },
+        " ",
+        { str: '"@ai-sdk/openai"' },
+        ";",
+      ],
+      [
+        { kw: "import" },
+        " { createKitaruGenerateText } ",
+        { kw: "from" },
+        " ",
+        { str: '"@zenml-io/kitaru-vercel-ai"' },
+        ";",
+      ],
+      [],
+      [
+        { kw: "const" },
+        " generateText ",
+        { op: "=" },
+        " ",
+        { fn: "createKitaruGenerateText" },
+        "({ agentId: AGENT_ID });",
+      ],
+      [],
+      [
+        { kw: "const" },
+        " result ",
+        { op: "=" },
+        " ",
+        { kw: "await" },
+        " ",
+        { fn: "generateText" },
+        "({",
+      ],
+      ["  model: ", { fn: "openai" }, "(", { str: '"gpt-5-nano"' }, "),"],
+      ["  prompt: task,"],
+      ["});"],
+      [],
+      ["console.", { fn: "log" }, "(result.text);"],
     ],
   },
 ];
@@ -444,6 +433,23 @@ const frameworks: Framework[] = [
 export function OneImport() {
   const [active, setActive] = useState<string>(frameworks[0].id);
   const fw = frameworks.find((f) => f.id === active) ?? frameworks[0];
+
+  // WAI-ARIA tabs pattern: arrow keys move selection with roving focus, so
+  // the tablist is one Tab stop instead of five.
+  const onTablistKeyDown = (event: KeyboardEvent) => {
+    const index = frameworks.findIndex((f) => f.id === active);
+    let next = -1;
+    if (event.key === "ArrowRight") next = (index + 1) % frameworks.length;
+    else if (event.key === "ArrowLeft")
+      next = (index - 1 + frameworks.length) % frameworks.length;
+    else if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = frameworks.length - 1;
+    if (next === -1) return;
+    event.preventDefault();
+    const id = frameworks[next].id;
+    setActive(id);
+    document.getElementById(`one-import-tab-${id}`)?.focus();
+  };
 
   return (
     <Section id="one-import">
@@ -459,33 +465,48 @@ export function OneImport() {
         </Lede>
       </Reveal>
 
-      <Reveal delay={80} className="mt-12 flex flex-wrap gap-2">
-        {frameworks.map((f) => (
-          <button
-            key={f.id}
-            type="button"
-            role="tab"
-            aria-selected={f.id === active}
-            onClick={() => setActive(f.id)}
-            className={cn(
-              "inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-mono text-[12px] transition-all cursor-pointer",
-              f.id === active
-                ? "border-ink bg-ink text-background"
-                : "border-border bg-surface text-ink-soft hover:border-ember/50 hover:text-ink",
-            )}
-          >
-            <f.Icon className="size-3.5 shrink-0" />
-            {f.label}
-          </button>
-        ))}
+      <Reveal delay={80} className="mt-12">
+        <div
+          role="tablist"
+          aria-label="Agent SDK"
+          className="flex flex-wrap gap-2"
+          onKeyDown={onTablistKeyDown}
+        >
+          {frameworks.map((f) => (
+            <button
+              key={f.id}
+              id={`one-import-tab-${f.id}`}
+              type="button"
+              role="tab"
+              aria-selected={f.id === active}
+              aria-controls="one-import-panel"
+              tabIndex={f.id === active ? 0 : -1}
+              onClick={() => setActive(f.id)}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-mono text-[12px] transition-all cursor-pointer",
+                f.id === active
+                  ? "border-ink bg-ink text-background"
+                  : "border-border bg-surface text-ink-soft hover:border-ember/50 hover:text-ink",
+              )}
+            >
+              <f.Icon className="size-3.5 shrink-0" />
+              {f.label}
+            </button>
+          ))}
+        </div>
       </Reveal>
 
-      <div className="mt-8 grid grid-cols-1 items-center gap-5 lg:grid-cols-[1fr_auto_1fr]">
+      <div
+        role="tabpanel"
+        id="one-import-panel"
+        aria-labelledby={`one-import-tab-${fw.id}`}
+        className="mt-8 grid grid-cols-1 items-center gap-5 lg:grid-cols-[1fr_auto_1fr]"
+      >
         <Reveal delay={120} variant="left" key={`${fw.id}-before`}>
           <CodeBlock
             code={renderCodeLines(fw.before)}
             label="Before"
-            filename="agent.py"
+            filename={fw.file}
           />
         </Reveal>
         <div className="flex justify-center text-ember">
@@ -495,7 +516,7 @@ export function OneImport() {
           <CodeBlock
             code={renderCodeLines(fw.after)}
             label="With Kitaru"
-            filename="agent.py"
+            filename={fw.file}
             accent
           />
         </Reveal>
