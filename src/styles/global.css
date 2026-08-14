@@ -136,6 +136,21 @@ html { scroll-behavior: smooth; }
   --color-zenml-800: #1b0c3b;  /* darkest */
 }
 
+/* Kitaru brand override, for subtrees that render "always sage" zenml-*
+ * scale utilities (see VOCABULARY above) but need to appear as Kitaru
+ * orange — Navigation's Kitaru-surface CTAs, the /book-your-demo/kitaru
+ * co-brand, and the pricing page's Kitaru workspace panel. `data-app`
+ * doesn't reach these: the zenml-* scale is intentionally invariant to it.
+ * Apply this class to the subtree's root; unused vars are harmless. */
+.kitaru-brand-vars {
+  --primary: var(--color-orange-600);
+  --color-zenml-500: var(--color-orange-600);
+  --color-zenml-600: var(--color-orange-700);
+  --color-zenml-700: var(--color-orange-800);
+  --shadow-focus-primary: 0 1px 2px 0 rgba(16, 24, 40, 0.05),
+    0 0 0 4px var(--color-orange-100);
+}
+
 /* ╔════════════════════════════════════════════════════════════════════════╗
  * ║                  TAILWIND UTILITY BINDING                              ║
  * ║   Exposes semantic vars from BRAND CONFIG above as Tailwind utilities  ║

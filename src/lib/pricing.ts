@@ -301,6 +301,10 @@ export const PRICING_PLAN_WORKSPACES = [
       border: "border-orange-500",
       bg: "bg-orange-500",
     },
+    /* Recolors this panel's zenml-* Tailwind utilities (Button's primary
+     * variant, comparison-table checkmarks) to Kitaru orange — see
+     * .kitaru-brand-vars in global.css for why data-app can't do this. */
+    brandClass: "kitaru-brand-vars",
   },
   {
     id: "zenml",
@@ -314,6 +318,7 @@ export const PRICING_PLAN_WORKSPACES = [
       border: "border-zenml-500",
       bg: "bg-zenml-500",
     },
+    brandClass: undefined,
   },
 ] as const;
 
