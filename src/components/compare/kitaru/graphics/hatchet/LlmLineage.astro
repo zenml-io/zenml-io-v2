@@ -32,21 +32,21 @@
 
   <div class="panel panel--kitaru">
     <div class="panel-head">
-      <span class="panel-label panel-label--accent">Kitaru · LLM as a captured checkpoint event</span>
-      <span class="panel-sub">Prompt, response, tokens, latency, and cost on captured LLM calls when reported</span>
+      <span class="panel-label panel-label--accent">Kitaru · LLM call captured as a session node</span>
+      <span class="panel-sub">Prompt, response, tokens, latency, and cost on every recorded llm_call node</span>
     </div>
 
     <div class="code code--accent">
-      <div class="code-row"><span class="mono code-deco">@checkpoint</span></div>
-      <div class="code-row"><span class="mono">def research(topic):</span></div>
-      <div class="code-row indent"><span class="mono">return <span class="code-accent">kitaru.llm</span>(prompt=..., model="fast")</span></div>
+      <div class="code-row"><span class="mono code-deco">from kitaru_pydantic_ai import KitaruAgent</span></div>
+      <div class="code-row"><span class="mono">support = KitaruAgent(agent, agent_id=AGENT_ID)</span></div>
+      <div class="code-row indent"><span class="mono"><span class="code-accent">support.run_sync</span>(ticket_text)</span></div>
     </div>
 
     <div class="record">
-      <span class="record-label">checkpoint.research · captured</span>
+      <span class="record-label">llm_call · triage · captured</span>
       <div class="record-rows">
-        <div class="record-row"><span class="rkey">prompt</span><span class="rval">"Research: durable agents..."</span></div>
-        <div class="record-row"><span class="rkey">response</span><span class="rval">"A durable agent runtime..."</span></div>
+        <div class="record-row"><span class="rkey">prompt</span><span class="rval">"Refund order #4821..."</span></div>
+        <div class="record-row"><span class="rkey">response</span><span class="rval">"Routing to refund_payment..."</span></div>
         <div class="record-row"><span class="rkey">model</span><span class="rval mono">claude-sonnet-4-6</span></div>
         <div class="record-row"><span class="rkey">tokens</span><span class="rval">in 312 · out 488</span></div>
         <div class="record-row"><span class="rkey">latency</span><span class="rval">4.1s</span></div>
@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <div class="foot foot--accent">Captured by default. Linked to the checkpoint, queryable per run.</div>
+    <div class="foot foot--accent">Captured by the adapter. Linked to the session, queryable per run.</div>
   </div>
 </figure>
 

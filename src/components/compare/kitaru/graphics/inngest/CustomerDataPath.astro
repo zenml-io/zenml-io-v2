@@ -9,7 +9,7 @@
 >
   <figcaption class="sr-only">
     <span id="customer-data-path-title">Customer-controlled data path versus managed cloud.</span>
-    <span id="customer-data-path-desc">Compares Inngest Cloud as a hosted engine and dashboard with Kitaru self-hosting where artifacts and compute stay in the customer cloud.</span>
+    <span id="customer-data-path-desc">Compares Inngest Cloud as a hosted engine and dashboard with Kitaru's self-hosted server and workers, where sessions and traces stay in the customer's environment.</span>
   </figcaption>
   <div class="panel panel--competitor">
     <div class="panel-head">
@@ -47,12 +47,12 @@
 
   <div class="panel panel--kitaru">
     <div class="panel-head">
-      <span class="panel-label panel-label--accent">Kitaru · self-hosted, one stack abstraction</span>
-      <span class="panel-sub">Pick a stack; data and compute stay in your cloud</span>
+      <span class="panel-label panel-label--accent">Kitaru · self-hosted, Apache 2.0</span>
+      <span class="panel-sub">One server, your own workers, your environment</span>
     </div>
 
     <div class="row row--top">
-      <span class="node node--accent">your <code>@flow</code></span>
+      <span class="node node--accent">your sessions</span>
     </div>
 
     <svg class="conn" viewBox="0 0 100 24" preserveAspectRatio="none" aria-hidden="true">
@@ -61,23 +61,23 @@
 
     <div class="server">
       <span class="server-name">Kitaru server</span>
-      <span class="server-sub">metadata · checkpoint state · logs · short-lived creds</span>
+      <span class="server-sub">FastAPI + Postgres · sessions, cohorts, experiments, evaluators</span>
     </div>
 
     <div class="targets">
-      <span class="t">your S3</span>
-      <span class="t">your GCS</span>
-      <span class="t">Azure Blob</span>
+      <span class="t">your Postgres</span>
+      <span class="t">your workers</span>
+      <span class="t">your traces</span>
     </div>
 
     <div class="targets targets--compute">
-      <span class="t t--ghost">Kubernetes</span>
-      <span class="t t--ghost">Vertex AI</span>
-      <span class="t t--ghost">SageMaker</span>
-      <span class="t t--ghost">AzureML</span>
+      <span class="t t--ghost">Pydantic AI</span>
+      <span class="t t--ghost">OpenAI Agents SDK</span>
+      <span class="t t--ghost">LangGraph</span>
+      <span class="t t--ghost">Mastra / Vercel AI</span>
     </div>
 
-    <div class="foot foot--accent">Spend buys internal platform ownership; data stays in your bucket.</div>
+    <div class="foot foot--accent">Self-hosted, Apache 2.0 — traces and credentials never leave your systems.</div>
   </div>
 </figure>
 

@@ -4,75 +4,75 @@
 <figure class="fig">
   <div class="row row--competitor">
     <div class="row-head">
-      <span class="tag tag--muted">CrewAI Flow</span>
-      <span class="row-sub">Stateful Flow, replay starts from the top</span>
+      <span class="tag tag--muted">CrewAI · kickoff()</span>
+      <span class="row-sub">A crew run produces a trace you can watch, not run again</span>
     </div>
     <div class="timeline">
       <div class="step step--rerun">
-        <span class="step-key">step 1</span>
-        <span class="step-val">research()</span>
+        <span class="step-key">task 1</span>
+        <span class="step-val">Researcher</span>
         <span class="step-cost">LLM</span>
       </div>
       <span class="conn">→</span>
       <div class="step step--rerun">
-        <span class="step-key">step 2</span>
-        <span class="step-val">plan()</span>
+        <span class="step-key">task 2</span>
+        <span class="step-val">Writer</span>
         <span class="step-cost">LLM</span>
       </div>
       <span class="conn">→</span>
       <div class="step step--rerun">
-        <span class="step-key">step 3</span>
-        <span class="step-val">draft()</span>
+        <span class="step-key">task 3</span>
+        <span class="step-val">Reviewer</span>
         <span class="step-cost">LLM</span>
       </div>
       <span class="conn">→</span>
       <div class="step step--fail">
-        <span class="step-key">step 4</span>
-        <span class="step-val">critique()</span>
-        <span class="step-cost step-cost--fail">crash</span>
+        <span class="step-key">trace</span>
+        <span class="step-val">OTel / Langfuse export</span>
+        <span class="step-cost step-cost--fail">read-only</span>
       </div>
     </div>
     <div class="row-foot">
-      <span class="rerun-tag">Re-run</span>
-      <span>All 4 LLM calls billed again on the next run.</span>
+      <span class="rerun-tag">Read-only</span>
+      <span>The trace tells you what happened. It isn't runnable yet.</span>
     </div>
   </div>
 
   <div class="row row--kitaru">
     <div class="row-head">
-      <span class="tag tag--accent">Kitaru · @checkpoint</span>
-      <span class="row-sub">Replay reuses cached outputs above the failure</span>
+      <span class="tag tag--accent">Kitaru · three ways in</span>
+      <span class="row-sub">No CrewAI adapter yet — none of these need one</span>
     </div>
     <div class="timeline">
       <div class="step step--cached">
-        <span class="step-key">step 1</span>
-        <span class="step-val">research()</span>
-        <span class="step-cost step-cost--cached">cached</span>
+        <span class="step-key">import</span>
+        <span class="step-val">Langfuse / LangSmith / Braintrust / OTel</span>
+        <span class="step-cost step-cost--cached">no adapter needed</span>
       </div>
       <span class="conn conn--accent">→</span>
       <div class="step step--cached">
-        <span class="step-key">step 2</span>
-        <span class="step-val">plan()</span>
-        <span class="step-cost step-cost--cached">cached</span>
+        <span class="step-key">adapter</span>
+        <span class="step-val">project-local, built with kitaru-adapter-builder</span>
+        <span class="step-cost step-cost--cached">lives in your repo</span>
       </div>
       <span class="conn conn--accent">→</span>
       <div class="step step--cached">
-        <span class="step-key">step 3</span>
-        <span class="step-val">draft()</span>
-        <span class="step-cost step-cost--cached">cached</span>
+        <span class="step-key">function</span>
+        <span class="step-val">Kitaru calls your system</span>
+        <span class="step-cost step-cost--cached">crew unreachable</span>
       </div>
       <span class="conn conn--accent">→</span>
       <div class="step step--replay">
-        <span class="step-key">step 4</span>
-        <span class="step-val">critique()</span>
-        <span class="step-cost step-cost--replay">re-runs</span>
+        <span class="step-key">session</span>
+        <span class="step-val">replays and evaluates</span>
+        <span class="step-cost step-cost--replay">ready</span>
       </div>
     </div>
     <div class="row-foot row-foot--accent">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M3 12 A9 9 0 1 0 6 5 L3 8 M3 3 L3 8 L8 8" />
       </svg>
-      <span><code>kitaru executions replay &lt;exec_id&gt; --from step_4</code> reads steps 1-3 from the artifact store.</span>
+      <span>Import once with <code>kitaru session import sessions.jsonl --importer kitaru/langfuse@latest --agent crew@latest --wait</code>, then replay and evaluate like a native recording.</span>
     </div>
   </div>
 </figure>

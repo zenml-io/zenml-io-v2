@@ -26,31 +26,31 @@
 
   <div class="panel panel--kitaru">
     <div class="panel-head">
-      <span class="panel-label panel-label--accent">Kitaru · agent-shaped</span>
-      <span class="panel-sub">Primitives for LLM, wait, artifacts</span>
+      <span class="panel-label panel-label--accent">Kitaru</span>
+      <span class="panel-sub">Replay-based evals for agent runs</span>
     </div>
 
     <div class="wrap">
-      <span class="mono wrap-label">@flow</span>
-      <span class="wrap-sub">wraps your agent</span>
+      <span class="mono wrap-label">adapter</span>
+      <span class="wrap-sub">wraps your agent, no rewrite</span>
     </div>
 
     <div class="prims">
       <div class="prim prim--accent">
-        <span class="mono pkey">kitaru.llm()</span>
-        <span class="pval">alias-resolved keys · per-call token/latency logging</span>
+        <span class="mono pkey">session</span>
+        <span class="pval">every run recorded &mdash; model calls, tool calls, tokens, cost</span>
       </div>
       <div class="prim">
-        <span class="mono pkey">kitaru.wait()</span>
-        <span class="pval">compute-released human-in-the-loop</span>
+        <span class="mono pkey">replay</span>
+        <span class="pval">re-executes against real code; recording answers tool calls</span>
       </div>
       <div class="prim">
-        <span class="mono pkey">@checkpoint</span>
-        <span class="pval">versioned artifacts per step</span>
+        <span class="mono pkey">cohort → experiment</span>
+        <span class="pval">same sessions, one variable moved, compared</span>
       </div>
     </div>
 
-    <div class="foot foot--accent">PydanticAI adapter ships in the box.</div>
+    <div class="foot foot--accent">Adapters ship for PydanticAI, LangGraph, OpenAI Agents SDK, Mastra, and Vercel AI SDK.</div>
   </div>
 </figure>
 
