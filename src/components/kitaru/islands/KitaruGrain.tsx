@@ -21,6 +21,14 @@ type KitaruGrainProps = {
   variant: KitaruGrainVariant;
   class?: string;
   className?: string;
+  /** Controlled reveal: when set, the grain fades with `active` instead of
+   *  the parent's CSS `group-hover`, so state shared across elements (e.g.
+   *  CodeShowcase's code-line ↔ annotation link) can drive it. */
+  active?: boolean;
+  /** Override the palette's blend flag. Pass `false` when text renders above
+   *  the grain — Safari mis-stacks mix-blend layers over z-indexed siblings,
+   *  swallowing the text. */
+  blend?: boolean;
 };
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
@@ -46,19 +54,34 @@ export function KitaruGrain({
   variant,
   class: classProp,
   className,
+  active,
+  blend,
 }: KitaruGrainProps) {
   const cfg = KITARU_GRAIN[variant];
+  const effectiveBlend = blend ?? cfg.blend;
   const reducedMotion = usePrefersReducedMotion();
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const isCard = variant === "card";
-  const [mounted, setMounted] = useState(!isCard);
+  const controlled = typeof active === "boolean";
+  // Hover cards and controlled reveals defer the WebGL mount until first
+  // shown; everything else mounts immediately.
+  const [mounted, setMounted] = useState(!isCard && !controlled);
+
+  // Controlled mode: mount the shader the first time the card becomes active.
+  useEffect(() => {
+    if (active) setMounted(true);
+  }, [active]);
 
   useEffect(() => {
-    if (!isCard || mounted) return;
+    if (!isCard || controlled || mounted) return;
     if (typeof window === "undefined") return;
     if (!window.matchMedia(HOVER_CAPABLE_QUERY).matches) return;
 
-    const parent = wrapperRef.current?.parentElement;
+    // Anchor the mount trigger to the same `.group` card the CSS reveal
+    // (group-hover) uses — closest() also traverses the display:contents
+    // <astro-island> wrapper that sits between when mounted as its own
+    // island from a static section.
+    const parent = wrapperRef.current?.closest(".group");
     if (!parent) return;
 
     const mount = () => setMounted(true);
@@ -69,14 +92,16 @@ export function KitaruGrain({
       parent.removeEventListener("mouseenter", mount);
       parent.removeEventListener("focusin", mount);
     };
-  }, [isCard, mounted]);
+  }, [isCard, controlled, mounted]);
 
   const passthroughClass = [classProp, className].filter(Boolean).join(" ");
   const wrapperClass = [
     "pointer-events-none absolute inset-0",
-    isCard
-      ? "opacity-0 transition-opacity duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-100"
-      : "",
+    controlled
+      ? `transition-opacity duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${active ? "opacity-100" : "opacity-0"}`
+      : isCard
+        ? "opacity-0 transition-opacity duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-100"
+        : "",
     passthroughClass,
   ]
     .filter(Boolean)
@@ -95,13 +120,17 @@ export function KitaruGrain({
       {mounted && (
         <GrainGradient
           className={
-            cfg.blend
+            effectiveBlend
               ? "absolute inset-0 size-full opacity-90 mix-blend-darken"
               : "absolute inset-0 size-full"
           }
           shape="dots"
           colors={cfg.shaderColors}
-          speed={reducedMotion ? 0 : cfg.speed}
+          // speed 0 cancels the shader's rAF loop entirely — controlled cards
+          // that faded back out would otherwise keep drawing every frame at
+          // opacity 0 (opacity does not pause the shader; only viewport exit
+          // and tab-hide do).
+          speed={reducedMotion || (controlled && !active) ? 0 : cfg.speed}
           scale={cfg.scale}
           rotation={cfg.rotation}
           noise={cfg.noise}

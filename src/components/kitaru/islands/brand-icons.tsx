@@ -71,11 +71,15 @@ export function PythonIcon(props: IconProps) {
   );
 }
 
-/** Cursor — cube mark */
+/** Cursor — the official faceted-cube mark, monochrome via per-facet opacity */
 export function CursorIcon(props: IconProps) {
   return (
     <svg {...base} aria-hidden="true" {...props}>
-      <path d="M12 1.8 2.6 7.05v9.9L12 22.2l9.4-5.25v-9.9L12 1.8Zm0 2.3 7 3.9-7 3.9-7-3.9 7-3.9ZM4.4 9.4l6.7 3.74v6.62l-6.7-3.74V9.4Zm8.5 10.36V13.14L19.6 9.4v6.62l-6.7 3.74Z" />
+      <path d="M11.925 24l10.425-6-10.425-6L1.5 18l10.425 6z" opacity=".4" />
+      <path d="M22.35 18V6L11.925 0v12l10.425 6z" opacity=".2" />
+      <path d="M11.925 0L1.5 6v12l10.425-6V0z" opacity=".65" />
+      <path d="M22.35 6L11.925 24V12L22.35 6z" opacity=".55" />
+      <path d="M22.35 6l-10.425 6L1.5 6h20.85z" />
     </svg>
   );
 }

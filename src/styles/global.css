@@ -294,6 +294,11 @@ html { scroll-behavior: smooth; }
   /* === Container Width === */
   --container-lg: 1440px;
 
+  /* === Chrome === */
+  /* Sticky navbar height — consumed by Navigation.astro (h-), the blog
+     CategoryBar (sticky top-), and the Kitaru hero (first-screen height). */
+  --nav-h: 72px;
+
   /* === Border Radius === */
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;

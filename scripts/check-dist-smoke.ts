@@ -383,6 +383,22 @@ function checkBlogSearchIndex() {
  * the manifest below fails the build.
  */
 const ISLANDS_DIR = "src/components/islands";
+const KITARU_ISLANDS_DIR = "src/components/kitaru/islands";
+
+/**
+ * Modules in KITARU_ISLANDS_DIR that never mount as an <astro-island> of their
+ * own — they are imported *by* the islands (shared primitives, icon sets, the
+ * Reveal wrapper). Listed explicitly so the completeness check can demand
+ * manifest coverage for every real island in that directory without
+ * false-flagging these. Adding a helper module there means adding it here.
+ */
+const KITARU_ISLAND_HELPERS = new Set([
+  "Reveal",
+  "brand-icons",
+  "code-tokens",
+  "icons",
+  "primitives",
+]);
 
 const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   {
@@ -412,39 +428,95 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   { island: "MLOpsFilter", pages: ["mlops-database.html"] },
   { island: "ProTestimonialCarousel", pages: ["pro.html"] },
   { island: "BlogSearch", pages: ["blog.html"] },
+  // The Kitaru landing sections (KitaruGrain doubles as a plain subcomponent
+  // inside the other islands, but the static Cta.astro and the _HighlightPanel
+  // shells rendered by Features.astro also mount it as its own island for
+  // their shader backdrops).
+  { island: "Hero", pages: ["product/kitaru.html"] },
+  { island: "ScenarioStrip", pages: ["product/kitaru.html"] },
+  { island: "OneImport", pages: ["product/kitaru.html"] },
+  { island: "CodeShowcase", pages: ["product/kitaru.html"] },
+  { island: "AgentDriven", pages: ["product/kitaru.html"] },
+  { island: "SocialProof", pages: ["product/kitaru.html"] },
+  { island: "KitaruGrain", pages: ["product/kitaru.html"] },
 ];
 
 /**
- * Fail if an island exists in src/ but is listed in neither ISLAND_MOUNTS nor
- * ISLAND_MOUNTS. Without this, adding an island and forgetting the manifest would
- * leave it with zero coverage in BOTH hydration checks, silently — which is
- * precisely the drift they exist to catch.
+ * Fail if an island exists in src/ but is missing from ISLAND_MOUNTS. Without
+ * this, adding an island and forgetting the manifest would leave it with zero
+ * coverage in BOTH hydration checks, silently — which is precisely the drift
+ * they exist to catch.
+ *
+ * The KITARU_ISLAND_HELPERS exclusion is guarded in the reverse direction
+ * too: if a listed helper ever gains a `client:` mount (i.e. becomes a real
+ * island), the check fails instead of silently excluding it forever.
  */
-function checkIslandManifestIsComplete() {
-  const declared = new Set([...ISLAND_MOUNTS.map(({ island }) => island)]);
+function findClientMountedHelpers(): string[] {
+  const sources: string[] = [];
 
-  const onDisk = readdirSync(ISLANDS_DIR)
-    .filter((file) => file.endsWith(".tsx"))
-    .map((file) => file.replace(/\.tsx$/, ""));
-
-  const undeclared = onDisk.filter((island) => !declared.has(island));
-
-  if (undeclared.length > 0) {
-    for (const island of undeclared) {
-      logResult(
-        false,
-        `${ISLANDS_DIR}/${island}.tsx is not in ISLAND_MOUNTS — add it with the page(s) it mounts on`,
-      );
+  const walk = (dir: string) => {
+    for (const entry of readdirSync(dir)) {
+      const path = join(dir, entry);
+      if (statSync(path).isDirectory()) walk(path);
+      else if (/\.(astro|tsx|mdx)$/.test(entry)) sources.push(path);
     }
+  };
+  walk("src");
 
-    return undeclared.length;
+  const mounted: string[] = [];
+
+  for (const helper of KITARU_ISLAND_HELPERS) {
+    // `[^>]*?` spans newlines, so multi-line mounts are caught too.
+    const mountPattern = new RegExp(`<${helper}\\b[^>]*?client:`, "s");
+
+    if (sources.some((path) => mountPattern.test(readFileSync(path, "utf8")))) {
+      mounted.push(helper);
+    }
   }
 
-  logResult(
-    true,
-    `Manifest covers all ${onDisk.length} islands in ${ISLANDS_DIR}`,
+  return mounted;
+}
+
+function checkIslandManifestIsComplete() {
+  let failures = 0;
+
+  for (const helper of findClientMountedHelpers()) {
+    logResult(
+      false,
+      `${helper} is in KITARU_ISLAND_HELPERS but is mounted with a client: directive — it is an island now; move it into ISLAND_MOUNTS`,
+    );
+    failures += 1;
+  }
+
+  const declared = new Set([...ISLAND_MOUNTS.map(({ island }) => island)]);
+
+  const onDisk = [ISLANDS_DIR, KITARU_ISLANDS_DIR].flatMap((dir) =>
+    readdirSync(dir)
+      .filter((file) => file.endsWith(".tsx"))
+      .map((file) => ({ dir, island: file.replace(/\.tsx$/, "") }))
+      .filter(
+        ({ island }) =>
+          dir !== KITARU_ISLANDS_DIR || !KITARU_ISLAND_HELPERS.has(island),
+      ),
   );
-  return 0;
+
+  const undeclared = onDisk.filter(({ island }) => !declared.has(island));
+
+  for (const { dir, island } of undeclared) {
+    logResult(
+      false,
+      `${dir}/${island}.tsx is not in ISLAND_MOUNTS — add it with the page(s) it mounts on`,
+    );
+  }
+  failures += undeclared.length;
+
+  if (failures === 0) {
+    logResult(
+      true,
+      `Manifest covers all ${onDisk.length} islands in ${ISLANDS_DIR} and ${KITARU_ISLANDS_DIR}`,
+    );
+  }
+  return failures;
 }
 
 function checkIslandMounts() {

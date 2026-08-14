@@ -105,7 +105,9 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background" />
       </div>
 
-      <div className="relative mx-auto grid w-full max-w-[1180px] grid-cols-1 items-center gap-16 px-6 pt-36 pb-24 md:pt-44 md:pb-32 lg:grid-cols-[1.05fr_1fr]">
+      {/* Subtracting the sticky navbar height centers the hero in the space
+          actually visible on the first screen. */}
+      <div className="relative mx-auto grid min-h-[calc(100svh-var(--nav-h))] w-full max-w-[1180px] grid-cols-1 content-center items-center gap-16 px-6 py-20 md:py-24 lg:grid-cols-[1.05fr_1fr]">
         <div>
           <Reveal className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-2 rounded-full border border-ember/30 bg-ember-light/70 px-3 py-1 text-[12px] text-ember-deep">

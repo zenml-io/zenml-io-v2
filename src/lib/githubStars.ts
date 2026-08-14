@@ -17,7 +17,7 @@ export const GITHUB_REPO_API_URL =
  * Stable fallback shown whenever live GitHub data is unavailable.
  * Keep this in sync with recent known stargazer count.
  */
-export const FALLBACK_STARS = 6200;
+export const FALLBACK_STARS = 5556;
 
 // Kitaru repo — shown on Kitaru surfaces (public repo, live count).
 export const KITARU_GITHUB_REPO = {
@@ -30,7 +30,7 @@ export const KITARU_GITHUB_REPO_URL =
   `https://github.com/${KITARU_GITHUB_REPO_SLUG}` as const;
 export const KITARU_GITHUB_REPO_API_URL =
   `https://api.github.com/repos/${KITARU_GITHUB_REPO_SLUG}` as const;
-export const KITARU_FALLBACK_STARS = 189;
+export const KITARU_FALLBACK_STARS = 235;
 
 export type StarsRepoKey = "zenml" | "kitaru";
 

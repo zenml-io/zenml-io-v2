@@ -8,6 +8,7 @@ import { useState } from "preact/hooks";
 import { ANNOTATIONS } from "../../../lib/kitaru-landing";
 import { cn } from "../../../lib/utils";
 import { type CodeLine, renderCodeLines } from "./code-tokens";
+import { KitaruGrain } from "./KitaruGrain";
 import { Eyebrow } from "./primitives";
 import { Reveal } from "./Reveal";
 
@@ -323,20 +324,25 @@ export function CodeShowcase() {
                 key={a.key}
                 onMouseEnter={() => setHot(a.key)}
                 onMouseLeave={() => setHot(null)}
-                className={cn(
-                  "bg-night px-5 py-4 transition-colors",
-                  hot === a.key && "bg-night-surface",
-                )}
+                className="relative isolate overflow-hidden bg-night px-5 py-4"
               >
+                {/* blend={false}: text renders above this grain, and Safari
+                    mis-stacks mix-blend layers over z-indexed siblings. */}
+                <KitaruGrain
+                  variant="dark"
+                  blend={false}
+                  active={hot === a.key}
+                  className="z-0"
+                />
                 <code
                   className={cn(
-                    "font-mono text-[12px] transition-colors",
+                    "relative z-10 font-mono text-[12px] transition-colors",
                     hot === a.key ? "text-ember" : "text-night-text/70",
                   )}
                 >
                   {a.label}
                 </code>
-                <p className="mt-2 text-[13px] leading-relaxed text-night-text/55">
+                <p className="relative z-10 mt-2 text-[13px] leading-relaxed text-night-text/55">
                   {a.body}
                 </p>
               </div>

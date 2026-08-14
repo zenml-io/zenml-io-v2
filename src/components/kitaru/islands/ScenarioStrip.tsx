@@ -1,4 +1,6 @@
+import { useState } from "preact/hooks";
 import { SCENARIOS } from "../../../lib/kitaru-landing";
+import { cn } from "../../../lib/utils";
 import { KitaruGrain } from "./KitaruGrain";
 import { Eyebrow, Section } from "./primitives";
 import { Reveal } from "./Reveal";
@@ -12,6 +14,11 @@ const checkpoints = [
 ];
 
 export function ScenarioStrip() {
+  // Links checkpoint i+1 on the session spine to card i below — hovering
+  // either side highlights both, same shared-state pattern as CodeShowcase's
+  // code-line ↔ annotation link. "run" (index 0) has no card.
+  const [hot, setHot] = useState<number | null>(null);
+
   return (
     <Section id="scenario-strip" tone="surface">
       <Reveal className="max-w-3xl">
@@ -33,26 +40,55 @@ export function ScenarioStrip() {
           session ses_8f3a91c2 · recorded
         </div>
         <div className="relative flex items-center justify-between border-t border-dashed border-border pt-0">
-          <div className="absolute inset-x-0 top-0 h-px bg-border" />
-          {checkpoints.map((c) => (
-            <div
-              key={c}
-              className="relative -mt-[5px] flex flex-col items-center gap-2"
-            >
-              <span className="size-2.5 rounded-full border border-ember bg-background" />
-              <span className="hidden font-mono text-[10.5px] text-muted-foreground sm:block">
-                {c}
-              </span>
-            </div>
-          ))}
+          {checkpoints.map((c, i) => {
+            const linked = i > 0 ? i - 1 : null;
+            return (
+              // biome-ignore lint/a11y/noStaticElementInteractions: decorative hover link, not a keyboard control
+              <div
+                key={c}
+                onMouseEnter={
+                  linked === null ? undefined : () => setHot(linked)
+                }
+                onMouseLeave={linked === null ? undefined : () => setHot(null)}
+                className="relative -mt-[5px] flex flex-col items-center gap-2"
+              >
+                <span
+                  className={cn(
+                    "size-2.5 rounded-full border border-ember transition-colors",
+                    linked !== null && hot === linked
+                      ? "bg-ember"
+                      : "bg-background",
+                  )}
+                />
+                <span
+                  className={cn(
+                    "hidden font-mono text-[10.5px] transition-colors sm:block",
+                    linked !== null && hot === linked
+                      ? "text-ember"
+                      : "text-muted-foreground",
+                  )}
+                >
+                  {c}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </Reveal>
 
       <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
         {SCENARIOS.map((s, i) => (
           <Reveal key={s.tag} delay={120 + i * 90} className="flex">
-            <div className="group relative isolate flex flex-1 flex-col justify-between overflow-hidden bg-background p-7 transition-colors hover:bg-ember-light/50">
-              <KitaruGrain variant="card" className="z-0" />
+            {/* biome-ignore lint/a11y/noStaticElementInteractions: decorative hover link, not a keyboard control */}
+            <div
+              onMouseEnter={() => setHot(i)}
+              onMouseLeave={() => setHot(null)}
+              className={cn(
+                "group relative isolate flex flex-1 flex-col justify-between overflow-hidden bg-background p-7 transition-colors",
+                hot === i && "bg-ember-light/50",
+              )}
+            >
+              <KitaruGrain variant="card" active={hot === i} className="z-0" />
               <div className="relative z-10">
                 <span className="font-mono text-[11px] tracking-[0.16em] text-ember uppercase">
                   {s.tag}

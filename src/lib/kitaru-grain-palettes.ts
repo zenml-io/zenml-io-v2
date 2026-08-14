@@ -33,11 +33,14 @@ const light: KitaruGrainConfig = {
   blend: false,
 };
 
+// Diverges from SIGNUP_SHOWCASE by request: the CTA band wants a darker,
+// near-monochrome grain — deep warm umbers instead of the signup screens'
+// bright ember pops.
 const dark: KitaruGrainConfig = {
-  shaderColors: ["#071512", "#E28C46", "#995000", "#071512"],
-  panel: "#34302B",
-  blobA: "#3A352FE6",
-  blobB: "#7A4F30CC",
+  shaderColors: ["#0A0703", "#332415", "#1E140C", "#0A0703"],
+  panel: "#211D18",
+  blobA: "#26221CE6",
+  blobB: "#3A2C1FCC",
   speed: 2,
   scale: 1.75,
   rotation: -24,

@@ -18,12 +18,11 @@ export const KITARU_CLOUD_LIMITS = {
 export const KITARU_TRIAL_NOTE = `${KITARU_TRIAL_DAYS}-day free trial · Full access · No credit card`;
 
 export const KITARU_LINKS = {
-  // The `product=kitaru` param routes onboarding to a Kitaru-only workspace
-  // flow on the cloud side; the param name is a placeholder until the cloud
-  // onboarding change lands — a one-line fix here.
   signup: {
+    // Kitaru signup lives on its own cloud app (Aug 2026 decision),
+    // superseding the earlier cloud.zenml.io?product=kitaru placeholder.
     label: "Sign up free",
-    href: "https://cloud.zenml.io/signup?product=kitaru",
+    href: "https://cloud.kitaru.ai",
   },
   demo: { label: "Book a demo", href: "/book-your-demo/kitaru" },
   github: {

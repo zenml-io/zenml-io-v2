@@ -50,21 +50,18 @@ export const STEPS = [
     tag: "Cohort",
     title: "Freeze the sessions that matter",
     body: "The sessions you care about, frozen as a named set. Immutable, so a run's result keeps meaning what it meant.",
-    code: 'kitaru cohort create "checkout-flow"',
   },
   {
     n: "02",
     tag: "Experiment",
     title: "State one hypothesis",
     body: "Just configuration: model, system prompt, tool policy. Swap the model and you have stated a different hypothesis.",
-    code: "kitaru experiment create cheap-model",
   },
   {
     n: "03",
     tag: "Two runs",
     title: "Compare like with like",
     body: "Twice over the same cohort, one version apart. One variable moved, so the numbers mean what they look like.",
-    code: "kitaru experiment run cheap-model",
   },
 ] as const;
 
