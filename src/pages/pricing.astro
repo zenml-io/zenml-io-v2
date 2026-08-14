@@ -20,6 +20,7 @@ import JsonLd from "../components/seo/JsonLd.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
   PRICING_COMPARE,
+  PRICING_COMPARE_KITARU,
   PRICING_COMPLIANCE,
   PRICING_FAQ,
   PRICING_FINAL_CTA,
@@ -44,6 +45,20 @@ const pricingJsonLd = buildPricingJsonLd();
   <JsonLd data={pricingJsonLd} slot="head" />
 
   <main>
+    {/*
+      No-JS fallback: the workspace toggle needs JS to flip `hidden` on the
+      [data-workspace-panel] wrappers, so without scripting the ZenML half
+      of the page (plans + table) would be unreachable. This unhides every
+      panel — both workspaces render stacked — whenever scripting is off.
+    */}
+    <noscript>
+      <style>
+        [data-workspace-panel][hidden] {
+          display: block;
+        }
+      </style>
+    </noscript>
+
     {/* Hero */}
     <section class="bg-linear-to-b from-zenml-50 to-white pt-8 pb-8 sm:pt-12 sm:pb-12">
       <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
@@ -60,10 +75,17 @@ const pricingJsonLd = buildPricingJsonLd();
     {/* Plan cards — Open Source / Scale / Enterprise */}
     <PricingPlanCards />
 
-    {/* Comparison table */}
+    {/* Comparison table — one per workspace; the plan-cards toggle flips
+        `hidden` on every [data-workspace-panel] on the page, so these swap
+        in sync with the cards above. */}
     <section id="compare-table" class="scroll-mt-24 bg-white pb-16 sm:pb-20">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <PricingComparisonTable data={PRICING_COMPARE} />
+        <div data-workspace-panel="kitaru">
+          <PricingComparisonTable data={PRICING_COMPARE_KITARU} />
+        </div>
+        <div data-workspace-panel="zenml" hidden>
+          <PricingComparisonTable data={PRICING_COMPARE} />
+        </div>
       </div>
     </section>
 

@@ -6,28 +6,28 @@
     <span class="tag tag--muted">DBOS · @DBOS.step</span>
     <div class="opaque">
       <code>openai.chat.completions.create(prompt=&hellip;)</code>
-      <span class="dim">OTel traces via instrumentation. You own alias resolution and secrets.</span>
+      <span class="dim">OTel traces via instrumentation &mdash; tokens, cost, and retries are your code.</span>
     </div>
   </div>
 
   <div class="record">
     <div class="record-head">
-      <span class="tag tag--accent">Kitaru · kitaru.llm()</span>
-      <span class="mono exec">checkpoint: research · exec_id 9f2a&hellip;</span>
+      <span class="tag tag--accent">Kitaru · session node</span>
+      <span class="mono exec">session s_9f2a&hellip;</span>
     </div>
 
     <div class="mono-call">
-      <span class="fn">kitaru.llm</span>(<span class="str">prompt</span>, <span class="str">model=</span><span class="val">"fast"</span>)
+      <span class="fn">support</span>.<span class="str">run_sync</span>(<span class="val">"Refund order #4821&hellip;"</span>)
     </div>
 
     <dl class="fields">
       <div>
-        <dt>prompt</dt>
-        <dd class="mono">Research: Durable agents&hellip;</dd>
+        <dt>model</dt>
+        <dd class="mono">gpt-5.4 · anthropic</dd>
       </div>
       <div>
-        <dt>response</dt>
-        <dd class="mono">Durable execution keeps&hellip;</dd>
+        <dt>recorded</dt>
+        <dd class="mono">model call + tool call, as nodes</dd>
       </div>
       <div class="row">
         <div class="chip">
@@ -46,7 +46,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M3 12 A9 9 0 1 0 6 5 L3 8 M3 3 L3 8 L8 8" />
       </svg>
-      <span>Logs roll up under the enclosing checkpoint. No separate LLM pipeline.</span>
+      <span>On replay, Kitaru answers the tool call from the recording &mdash; nothing touches real systems.</span>
     </div>
   </div>
 </figure>

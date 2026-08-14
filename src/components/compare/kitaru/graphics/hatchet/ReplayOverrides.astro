@@ -42,14 +42,14 @@
 
   <div class="panel panel--kitaru">
     <div class="panel-head">
-      <span class="panel-label panel-label--accent">Kitaru · checkpoint-output override</span>
-      <span class="panel-sub">Pin a value at any checkpoint, replay surgically</span>
+      <span class="panel-label panel-label--accent">Kitaru · replay, then fork</span>
+      <span class="panel-sub">Unchanged, the replay reproduces the original — then fork one variable</span>
     </div>
 
     <div class="dag">
       <div class="step step--cached">
-        <span class="mono step-name">research</span>
-        <span class="step-tag">cached</span>
+        <span class="mono step-name">recorded session</span>
+        <span class="step-tag">baseline</span>
       </div>
       <div class="arrow arrow--accent" aria-hidden="true">
         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -58,8 +58,8 @@
         </svg>
       </div>
       <div class="step step--override">
-        <span class="mono step-name">draft</span>
-        <span class="step-tag step-tag--accent">override</span>
+        <span class="mono step-name">replay</span>
+        <span class="step-tag step-tag--accent">unchanged</span>
       </div>
       <div class="arrow arrow--accent" aria-hidden="true">
         <svg viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -68,18 +68,18 @@
         </svg>
       </div>
       <div class="step step--rerun">
-        <span class="mono step-name">wait</span>
-        <span class="step-tag">re-execute</span>
+        <span class="mono step-name">fork</span>
+        <span class="step-tag">model swapped</span>
       </div>
     </div>
 
     <div class="override-call">
-      <span class="mono">kitaru replay --override checkpoint.draft="..."</span>
+      <span class="mono">experiment.run(cohort=cohort, version="pr-311")</span>
     </div>
 
-    <div class="caption">Swap one checkpoint's output. Downstream re-executes against the new value, upstream stays cached.</div>
+    <div class="caption">Replay unchanged to confirm the baseline. Then run the same cohort again with one variable moved — model, prompt, or tool policy — and compare.</div>
 
-    <div class="foot foot--accent">Built-in. No event-log surgery, no per-step override scaffolding.</div>
+    <div class="foot foot--accent">Built-in. No event-log surgery — cohorts and experiments do the forking.</div>
   </div>
 </figure>
 

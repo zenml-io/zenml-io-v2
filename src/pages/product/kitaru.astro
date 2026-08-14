@@ -1,31 +1,43 @@
 ---
-import AgentDriven from "../../components/kitaru/AgentDriven.astro";
-import CodeShowcase from "../../components/kitaru/CodeShowcase.astro";
 import Cta from "../../components/kitaru/Cta.astro";
 import Features from "../../components/kitaru/Features.astro";
-import Hero from "../../components/kitaru/Hero.astro";
-import OneImport from "../../components/kitaru/OneImport.astro";
-import ScenarioStrip from "../../components/kitaru/ScenarioStrip.astro";
-import SocialProof from "../../components/kitaru/SocialProof.astro";
+import GroundTruth from "../../components/kitaru/GroundTruth.astro";
+import { AgentDriven } from "../../components/kitaru/islands/AgentDriven";
+import { CodeShowcase } from "../../components/kitaru/islands/CodeShowcase";
+import { Hero } from "../../components/kitaru/islands/Hero";
+import { OneImport } from "../../components/kitaru/islands/OneImport";
+import { ScenarioStrip } from "../../components/kitaru/islands/ScenarioStrip";
+import { SocialProof } from "../../components/kitaru/islands/SocialProof";
 /**
  * /product/kitaru — landing page introducing Kitaru as a sub-product
  * under the unified ZenML umbrella.
  *
- * Deep port from `kitaru/site/src/pages/index.astro`. All 9 sections
- * ported verbatim with original scoped CSS preserved. Kitaru-era CSS
- * tokens (--color-bg, --color-accent, --font-ui) are bridged onto our
- * unified tokens by `src/styles/kitaru-compat.css`, scoped to the
- * `[data-app="kitaru"]` wrapper that flips the theme.
+ * Ported from the 2026 Kitaru landing redesign (design/kitaru-redesign-src).
+ * Hero, ScenarioStrip, OneImport, CodeShowcase, AgentDriven and SocialProof
+ * are Preact islands (interactive: copy buttons, hover state, in-component
+ * scroll reveal). Features, GroundTruth and Cta are static — their
+ * scroll-reveal is driven by the page-level `reveal-static` script below.
  *
- * Sections (what-if-led order):
- *   Hero          → what-if hero: replay a real run, one thing changed, diff
- *   ScenarioStrip → bigger "one recorded run, a different question each time"
+ * Aimed at the bullseye ICP: teams whose agent turns unstructured inbound into
+ * structured writes in a system of record (logistics, fintech, insurance,
+ * legal, back-office). They are replay-hungry by construction — re-running
+ * live would create phantom bookings — so the page never has to argue for
+ * replay, only show it. Those agents are also single-execution pipelines,
+ * which is why the multi-turn divergence caveat does not surface here.
+ *
+ * Sections:
+ *   Hero          → the problem sentence, then history-as-test-suite
+ *   ScenarioStrip → four questions asked of one cohort of real sessions
  *   OneImport     → works with your agent SDK (before/after)
- *   Features      → the what-if workflow (replay → cheap model + faked tool → diff)
- *   CodeShowcase  → "see the code" for that same workflow + hoverable verbs
- *   AgentDriven   → MCP/CLI: let a coding agent run the replay loop + hill-climb
+ *   Features      → the model-migration wedge, in experiment/run terms
+ *   GroundTruth   → the labels already exist, in the system of record
+ *   CodeShowcase  → cohort → experiment → two runs, with tool policies
+ *   AgentDriven   → the agent drives; the human keeps the judgement
  *   SocialProof   → ZenML lineage, testimonials + logos
  *   Cta           → closing CTA band
+ *
+ * The onboarding journey (login, skills, worker, triage) is deliberately
+ * docs-only — it lives in PRODUCT_KITARU_MARKDOWN.journey → /product/kitaru.md.
  *
  * See MERGE_PLAN.md §4 (Phase 2b).
  */
@@ -37,22 +49,23 @@ import "../../styles/kitaru-compat.css";
 <BaseLayout {...PRODUCT_KITARU_SEO} surface="agent">
   <div data-app="kitaru" class="bg-background text-foreground">
     <main id="kitaru-main">
-      <Hero />
-      <ScenarioStrip />
-      <OneImport />
+      <Hero client:visible />
+      <ScenarioStrip client:visible />
+      <OneImport client:visible />
       <Features />
-      <CodeShowcase />
-      <AgentDriven />
-      <div class="gradient-divider"></div>
-      <SocialProof />
-      <div class="gradient-divider"></div>
+      <GroundTruth />
+      <CodeShowcase client:visible />
+      <AgentDriven client:visible />
+      <SocialProof client:visible />
       <Cta />
     </main>
   </div>
 </BaseLayout>
 
-{/* Scroll-reveal observer — drives the [data-reveal] fade-in animations on
-    every Kitaru section. Loaded once for the whole page. */}
+{/* Scroll-reveal observer for the static sections (Features, GroundTruth,
+    Cta) — sets data-shown="true" on .reveal/.reveal-left/.reveal-right
+    elements. The hydrated islands drive their own reveal via the
+    useReveal hook, so this only needs to cover the static markup. */}
 <script>
-  import "../../scripts/kitaru/scroll-reveal";
+  import "../../scripts/kitaru/reveal-static";
 </script>

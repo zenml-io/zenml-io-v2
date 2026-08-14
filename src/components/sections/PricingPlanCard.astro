@@ -1,0 +1,255 @@
+---
+/**
+ * PricingPlanCard — one plan card inside PricingPlanCards' workspace panels.
+ *
+ * The ZenML Scale card carries an interactive executions slider that snaps
+ * between three pricing tiers, updating the price + readout live. Display
+ * strings come from `buildSliderView` so SSR and the client script (in
+ * PricingPlanCards) share one source of truth.
+ */
+import type { PricingPlan } from "../../lib/marketingPageTypes";
+import Button from "../Button.astro";
+import { buildSliderView } from "./pricingSlider";
+
+interface Props {
+  plan: PricingPlan;
+  /** Workspace brand accent — literal Tailwind classes from pricing.ts. */
+  accent: { text: string; border: string; bg: string };
+  planIdx: number;
+}
+
+const { plan, accent, planIdx } = Astro.props;
+
+const checkIcon =
+  '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>';
+
+const slider = plan.slider;
+const sliderView = slider ? buildSliderView(slider) : null;
+const defaultView =
+  slider && sliderView ? sliderView[slider.defaultIndex] : null;
+---
+
+<article
+  class:list={[
+    "scroll-slide-top relative flex flex-col rounded-md bg-white p-6",
+    planIdx === 1 && "stagger-1",
+    planIdx === 2 && "stagger-2",
+    plan.highlighted
+      ? `border ${accent.border} shadow-medium`
+      : "border border-gray-200",
+  ]}
+>
+  {
+    plan.topBadge && (
+      <span
+        class={`absolute -top-3 left-6 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white ${accent.bg}`}
+      >
+        {plan.topBadge}
+      </span>
+    )
+  }
+
+  {/* Header */}
+  <div class="flex items-center gap-2">
+    <h2 class={`text-sm font-bold uppercase tracking-wider ${accent.text}`}>
+      {plan.eyebrow}
+    </h2>
+    {
+      plan.pill && (
+        <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600">
+          {plan.pill}
+        </span>
+      )
+    }
+  </div>
+  <p class="mt-1 text-sm text-gray-500">{plan.subtitle}</p>
+
+  {/* Price */}
+  <div class="mt-4 flex flex-wrap items-baseline gap-x-1.5">
+    <span
+      class="text-3xl font-bold leading-none tracking-tight text-gray-900"
+      data-slider-price={slider ? "" : undefined}
+    >
+      {plan.price}
+    </span>
+    {
+      plan.priceSuffix && (
+        <span class="text-sm text-gray-500">{plan.priceSuffix}</span>
+      )
+    }
+  </div>
+
+  {/* Slider (ZenML Scale) or static limits line */}
+  {
+    slider && sliderView && defaultView ? (
+      <div
+        class="mt-5"
+        data-pricing-slider
+        data-tiers={JSON.stringify(sliderView)}
+        data-accent-text={accent.text}
+      >
+        <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">
+          {slider.caption}
+        </span>
+        <div class="mt-2.5 flex justify-between text-sm tabular-nums">
+          {slider.tiers.map((tier, tierIdx) => (
+            <span
+              data-slider-stop={tierIdx}
+              class={
+                tierIdx === slider.defaultIndex
+                  ? `font-bold ${accent.text}`
+                  : "text-gray-500"
+              }
+            >
+              {tier.executions}
+            </span>
+          ))}
+        </div>
+        <input
+          type="range"
+          min="0"
+          max={slider.tiers.length - 1}
+          step="1"
+          value={slider.defaultIndex}
+          class="exec-slider mt-3 w-full"
+          style={`--range-fill:${defaultView.fill}`}
+          data-slider-input
+          aria-label={slider.caption}
+          aria-valuetext={defaultView.valueText}
+        />
+        <p
+          class={`mt-3 text-center text-sm font-semibold ${accent.text}`}
+          data-slider-readout
+        >
+          {defaultView.readout}
+        </p>
+      </div>
+    ) : (
+      <p class="mt-4 text-sm text-gray-600">{plan.limitsLine}</p>
+    )
+  }
+
+  {/* CTA */}
+  <div class="mt-5">
+    <Button
+      href={plan.cta.href}
+      variant={plan.ctaVariant ?? "primary"}
+      class="w-full"
+      dataAnalytics={plan.cta.analytics}
+    >
+      {plan.cta.label}
+    </Button>
+  </div>
+
+  {/* Includes */}
+  <hr class="my-5 border-gray-200" />
+  <p class="text-sm font-semibold text-gray-900">{plan.includesLabel}</p>
+  <ul class="mt-3.5 space-y-2.5">
+    {
+      plan.features.map((feature) => (
+        <li class="flex items-start gap-2.5 text-sm text-gray-600">
+          <span
+            class={`mt-0.5 shrink-0 ${accent.text}`}
+            set:html={checkIcon}
+          />
+          <span>{feature}</span>
+        </li>
+      ))
+    }
+  </ul>
+</article>
+
+<style>
+  /* Scroll-reveal — cards slide in from top with a stagger. The `.in-view`
+     trigger class lands on the ancestor section (PricingPlanCards), hence
+     the :global() on that half of the selector. */
+  .scroll-slide-top {
+    opacity: 0;
+    transform: translateY(-30px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+  .stagger-1 {
+    transition-delay: 0.12s;
+  }
+  .stagger-2 {
+    transition-delay: 0.24s;
+  }
+  :global(.scroll-reveal-section.in-view) .scroll-slide-top {
+    opacity: 1;
+    transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-slide-top {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /* Executions slider — native range input styled to the brand */
+  .exec-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 22px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .exec-slider::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(
+      to right,
+      var(--color-zenml-500) 0%,
+      var(--color-zenml-500) var(--range-fill, 50%),
+      #e9e6f3 var(--range-fill, 50%),
+      #e9e6f3 100%
+    );
+  }
+  .exec-slider::-moz-range-track {
+    height: 6px;
+    border-radius: 999px;
+    background: linear-gradient(
+      to right,
+      var(--color-zenml-500) 0%,
+      var(--color-zenml-500) var(--range-fill, 50%),
+      #e9e6f3 var(--range-fill, 50%),
+      #e9e6f3 100%
+    );
+  }
+  .exec-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    margin-top: -8px;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: #fff;
+    border: 3px solid var(--color-zenml-500);
+    box-shadow: 0 1px 4px rgba(16, 24, 40, 0.24);
+    cursor: pointer;
+    transition: transform 0.12s ease;
+  }
+  .exec-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.08);
+  }
+  .exec-slider::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    background: #fff;
+    border: 3px solid var(--color-zenml-500);
+    box-shadow: 0 1px 4px rgba(16, 24, 40, 0.24);
+    cursor: pointer;
+  }
+  .exec-slider:focus-visible {
+    outline: none;
+  }
+  .exec-slider:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px rgba(122, 62, 244, 0.28);
+  }
+  .exec-slider:focus-visible::-moz-range-thumb {
+    box-shadow: 0 0 0 4px rgba(122, 62, 244, 0.28);
+  }
+</style>

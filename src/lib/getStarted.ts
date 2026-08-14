@@ -240,7 +240,7 @@ export const GET_STARTED_KITARU = {
         title: "Add a human-in-the-loop gate",
         body: "Wrap an agent you already have, checkpoint the expensive calls, and <code>wait</code> for a human before anything ships:",
         code: `from kitaru import flow, wait
-from kitaru.adapters.pydantic_ai import KitaruAgent
+from kitaru_pydantic_ai import KitaruAgent
 from pydantic_ai import Agent
 
 # KitaruAgent turns PydanticAI model + tool calls into replayable checkpoints.

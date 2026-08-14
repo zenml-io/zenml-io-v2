@@ -1,403 +1,247 @@
 ---
-// Features.astro — the what-if workflow, told as the cheap-model use case:
-// replay 200 real runs with a cheaper model and a faked checkpoint result,
-// then diff.
-// Replaces the old durable-execution scroll-stack. No fragile scroll JS —
-// data-reveal only.
-const steps = [
-  {
-    n: "01",
-    tag: "Replay",
-    title: "Start from execution IDs",
-    body: "200 real executions whose Kitaru-visible steps and model/tool calls are already checkpointed. Production stays untouched.",
-    code: "exec_ids = cohort.exec_ids",
-  },
-  {
-    n: "02",
-    tag: "Change one thing",
-    title: "Cheaper model, flaky tool",
-    body: "Replay from the decision point with a cheaper model, or replace a recorded lookup result. Production stays exactly as it was.",
-    code: 'replay(id, from_="decide", model="fast")',
-  },
-  {
-    n: "03",
-    tag: "Diff",
-    title: "See what would have happened",
-    body: "Compare each candidate to its source execution: cost, changed outputs, first divergence. The decision now has evidence.",
-    code: "cheap.llm_usage_summary",
-  },
-] as const;
-
-// Source logos for the "Start from" panel. slug → /images/kitaru-sources/{slug}.png
-const recordedSources = [
-  { slug: "pydantic", name: "Pydantic AI" },
-  { slug: "langgraph", name: "LangGraph" },
-  { slug: "openai", name: "OpenAI Agents SDK" },
-  { slug: "claude", name: "Claude Agent SDK" },
-  { slug: "gemini", name: "Gemini" },
-  { slug: "google-adk", name: "Google ADK" },
-  { slug: "python", name: "Raw Python" },
-] as const;
+// Features.astro — The migration wedge: model swap + comparison
+import { STEPS } from "../../lib/kitaru-landing";
+import HighlightPanel from "./_HighlightPanel.astro";
 ---
 
-<section id="how-it-works" class="whatif-section section-pad">
-  <div class="section-inner">
-    <div class="whatif-header" data-reveal>
-      <span class="section-eyebrow">THE WHAT-IF WORKFLOW</span>
-      <h2 class="section-title">Ask anything of the runs you already have.</h2>
-      <p class="section-desc">
-        Cheaper model? Flaky tool result? New prompt? Replay real executions with one thing changed, read the diff &mdash; and never touch production.
+<section id="how-it-works" class="relative w-full bg-surface text-foreground">
+  <div class="mx-auto w-full max-w-[1180px] px-6 py-24 md:py-36">
+    {/* Header with eyebrow, title, lede */}
+    <div class="reveal max-w-3xl">
+      <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">
+        The migration you keep postponing
+      </span>
+      <h2 class="mt-5 text-balance text-3xl leading-[1.1] font-medium tracking-[-0.02em] md:text-[2.75rem]">
+        Ship the cheaper model without shipping a regression.
+      </h2>
+      <p class="mt-5 max-w-2xl text-base leading-relaxed text-ink-soft md:text-lg">
+        Nobody moves, because nobody can say what it would break. Two runs over your real
+        sessions can.
       </p>
-
     </div>
 
-    <div class="whatif-sources" data-reveal>
-      <span class="whatif-sources-label">Start from</span>
-      <span class="src-pill">Kitaru-recorded executions</span>
-    </div>
-
-    <div class="src-panels" data-reveal>
-      <div class="src-panel is-active" id="src-recorded" role="region" aria-label="Start from Kitaru-recorded executions">
-        <p class="src-line">Wrap your agent so model/tool calls and steps exposed through Kitaru primitives or adapters become replayable checkpoints.</p>
-        <div class="src-logos">
-          {
-            recordedSources.map((s) => (
-              <span class="src-logo">
-                <img src={`/images/kitaru-sources/${s.slug}.png`} alt="" aria-hidden="true" width="22" height="22" loading="lazy" />
-                {s.name}
-              </span>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-
-    <div class="whatif-steps">
-      {
-        steps.map((s, i) => (
-          <div class="whatif-step" data-reveal="fade-up" data-reveal-delay={i + 1}>
-            <div class="whatif-step-head">
-              <span class="whatif-step-n">{s.n}</span>
-              <span class="whatif-step-tag">{s.tag}</span>
-            </div>
-            <h3 class="whatif-step-title">{s.title}</h3>
-            <p class="whatif-step-body">{s.body}</p>
-            <code class="whatif-step-code">{s.code}</code>
+    {/* Three-column steps grid */}
+    <div class="mt-16 grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8">
+      {STEPS.map((s, i) => (
+        <div
+          class="reveal relative"
+          style={`--reveal-delay: ${i * 110}ms`}
+        >
+          <div class="flex items-baseline gap-3">
+            <span class="font-mono text-[11px] text-ember">{s.n}</span>
+            <span class="font-mono text-[11px] tracking-[0.16em] text-muted-foreground uppercase">
+              {s.tag}
+            </span>
           </div>
-        ))
-      }
+          <div class="mt-4 h-px w-full bg-border" />
+          <h3 class="mt-5 text-[19px] leading-snug font-medium tracking-[-0.015em]">
+            {s.title}
+          </h3>
+          <p class="mt-3 text-[14px] leading-relaxed text-ink-soft">{s.body}</p>
+
+          {/* Minimal product-UI highlight — visual abstractions of the MVP screens
+              in the Paper "Kitaru MVP" file (05 Cohorts / 07a New experiment /
+              13 Comparison · run vs run): skeleton bars carry the shape, one
+              fact per panel carries the meaning. */}
+          {s.n === "01" && (
+            <HighlightPanel>
+              <div class="relative z-10 flex flex-1 flex-col justify-center space-y-1.5" aria-hidden="true">
+                <div class="fh-wash flex items-center gap-2 rounded border border-ember/30 bg-ember-light/50 px-2 py-1.5" style="--fh-delay: 700ms">
+                  <span class="fh-pop size-1.5 shrink-0 rounded-full bg-ember" style="--fh-delay: 700ms"></span>
+                  <span class="fh-bar h-1.5 w-2/3 rounded-full bg-ember/30" style="--fh-delay: 250ms"></span>
+                </div>
+                <div class="flex items-center gap-2 px-2 py-1.5">
+                  <span class="fh-pop size-1.5 shrink-0 rounded-full bg-border" style="--fh-delay: 340ms"></span>
+                  <span class="fh-bar h-1.5 w-3/5 rounded-full bg-border/70" style="--fh-delay: 340ms"></span>
+                </div>
+                <div class="fh-wash flex items-center gap-2 rounded border border-ember/30 bg-ember-light/50 px-2 py-1.5" style="--fh-delay: 800ms">
+                  <span class="fh-pop size-1.5 shrink-0 rounded-full bg-ember" style="--fh-delay: 800ms"></span>
+                  <span class="fh-bar h-1.5 w-1/2 rounded-full bg-ember/30" style="--fh-delay: 430ms"></span>
+                </div>
+                <div class="fh-wash flex items-center gap-2 rounded border border-ember/30 bg-ember-light/50 px-2 py-1.5" style="--fh-delay: 900ms">
+                  <span class="fh-pop size-1.5 shrink-0 rounded-full bg-ember" style="--fh-delay: 900ms"></span>
+                  <span class="fh-bar h-1.5 w-3/4 rounded-full bg-ember/30" style="--fh-delay: 520ms"></span>
+                </div>
+                <div class="flex items-center gap-2 px-2 py-1.5">
+                  <span class="fh-pop size-1.5 shrink-0 rounded-full bg-border" style="--fh-delay: 610ms"></span>
+                  <span class="fh-bar h-1.5 w-2/5 rounded-full bg-border/70" style="--fh-delay: 610ms"></span>
+                </div>
+              </div>
+              <div class="relative z-10 mt-auto flex items-center justify-between border-t border-border/60 pt-2.5 font-mono text-[10.5px]">
+                <span class="text-muted-foreground">200 sessions &middot; v1 &middot; fixed</span>
+                <span class="fh-pop rounded-md bg-ember px-2.5 py-1 font-medium text-accent-foreground" style="--fh-delay: 1050ms">Create "checkout-flow"</span>
+              </div>
+            </HighlightPanel>
+          )}
+          {s.n === "02" && (
+            <HighlightPanel>
+              <div class="relative z-10 flex flex-1 flex-col justify-center space-y-2">
+                <div class="flex items-center gap-2 px-2 py-1">
+                  <span class="font-mono text-[10.5px] text-muted-foreground">name</span>
+                  <span class="fh-pop ml-auto rounded-md border border-border bg-surface px-2 py-1 font-mono text-[10.5px]" style="--fh-delay: 350ms">cheap-model</span>
+                </div>
+                <div class="fh-wash flex items-center gap-2 rounded border border-ember/30 bg-ember-light/50 px-2 py-1.5" style="--fh-delay: 700ms">
+                  <span class="font-mono text-[10.5px] text-muted-foreground">model</span>
+                  <span class="fh-pop ml-auto flex items-center gap-1.5 rounded-md border border-ember/40 bg-surface px-2 py-1 font-mono text-[10.5px] text-ember-deep" style="--fh-delay: 850ms">
+                    claude-haiku-4.5
+                    <svg class="size-3 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </span>
+                </div>
+                <div class="flex items-center gap-2 px-2 py-1.5" aria-hidden="true">
+                  <span class="fh-bar h-1.5 w-10 shrink-0 rounded-full bg-border/70" style="--fh-delay: 430ms"></span>
+                  <span class="fh-bar h-1.5 flex-1 rounded-full bg-border/50" style="--fh-delay: 500ms"></span>
+                </div>
+                <div class="flex items-center gap-2 px-2 py-1.5" aria-hidden="true">
+                  <span class="fh-bar h-1.5 w-16 shrink-0 rounded-full bg-border/70" style="--fh-delay: 520ms"></span>
+                  <span class="fh-bar h-1.5 flex-1 rounded-full bg-border/50" style="--fh-delay: 590ms"></span>
+                </div>
+              </div>
+              <div class="relative z-10 mt-auto border-t border-border/60 pt-2.5 font-mono text-[10.5px] text-muted-foreground">
+                1 of 4 overridden
+              </div>
+            </HighlightPanel>
+          )}
+          {s.n === "03" && (
+            <HighlightPanel>
+              <div class="relative z-10 border-b border-border/60 pb-2">
+                <div class="fh-pop font-mono text-[10.5px] font-medium" style="--fh-delay: 250ms">cheap-model</div>
+                <div class="mt-1.5 flex flex-col gap-1 font-mono text-[10px]">
+                  <span class="fh-pop flex items-center gap-1.5 text-muted-foreground" style="--fh-delay: 330ms"><span class="size-1.5 shrink-0 rounded-full bg-border"></span>#1 &middot; claude-sonnet-4.5</span>
+                  <span class="fh-pop flex items-center gap-1.5 text-ember-deep" style="--fh-delay: 410ms"><span class="size-1.5 shrink-0 rounded-full bg-ember"></span>#2 &middot; claude-haiku-4.5</span>
+                </div>
+              </div>
+              <div class="relative z-10 flex flex-1 flex-col justify-evenly">
+                <div class="flex items-center gap-3 font-mono text-[10.5px]">
+                  <div class="flex-1 space-y-1" aria-hidden="true">
+                    <div class="fh-bar h-1.5 w-[72%] rounded-full bg-border/70" style="--fh-delay: 350ms"></div>
+                    <div class="fh-bar h-1.5 w-[46%] rounded-full bg-ember/60" style="--fh-delay: 430ms"></div>
+                  </div>
+                  <span class="fh-pop w-10 text-right text-muted-foreground" style="--fh-delay: 600ms">&minus;31%</span>
+                  <span class="fh-pop w-10 text-right" style="--fh-delay: 600ms">&minus;52%</span>
+                  <span class="fh-pop w-12 text-right text-success" style="--fh-delay: 700ms">&minus;21pp</span>
+                </div>
+                <div class="flex items-center gap-3 font-mono text-[10.5px]">
+                  <div class="flex-1 space-y-1" aria-hidden="true">
+                    <div class="fh-bar h-1.5 w-[60%] rounded-full bg-border/70" style="--fh-delay: 550ms"></div>
+                    <div class="fh-bar h-1.5 w-[38%] rounded-full bg-ember/60" style="--fh-delay: 630ms"></div>
+                  </div>
+                  <span class="fh-pop w-10 text-right text-muted-foreground" style="--fh-delay: 800ms">&minus;3.9s</span>
+                  <span class="fh-pop w-10 text-right" style="--fh-delay: 800ms">&minus;5.9s</span>
+                  <span class="fh-pop w-12 text-right text-success" style="--fh-delay: 900ms">&minus;2.0s</span>
+                </div>
+                <div class="flex items-center gap-3 font-mono text-[10.5px]">
+                  <div class="flex-1 space-y-1" aria-hidden="true">
+                    <div class="fh-bar h-1.5 w-[64%] rounded-full bg-border/70" style="--fh-delay: 750ms"></div>
+                    <div class="fh-bar h-1.5 w-[71%] rounded-full bg-ember/60" style="--fh-delay: 830ms"></div>
+                  </div>
+                  <span class="fh-pop w-10 text-right text-muted-foreground" style="--fh-delay: 1000ms">0.73</span>
+                  <span class="fh-pop w-10 text-right" style="--fh-delay: 1000ms">0.81</span>
+                  <span class="fh-pop w-12 text-right text-success" style="--fh-delay: 1100ms">+0.08</span>
+                </div>
+              </div>
+            </HighlightPanel>
+          )}
+
+          {/* Whitespace inside <pre> renders literally in .astro templates, so the
+              content below must stay free of raw newlines/indentation. */}
+          <pre class="mt-3 block overflow-x-auto rounded-md border border-border bg-night px-3.5 py-2.5 font-mono text-[11.5px] text-night-text/85"><code class="code-syntax">{
+            s.n === "01" && (
+              <><span class="fn">kitaru</span> cohort <span class="fn">create</span> <span class="str">"checkout-flow"</span></>
+            )
+          }{
+            s.n === "02" && (
+              <><span class="fn">kitaru</span> experiment <span class="fn">create</span> cheap-model</>
+            )
+          }{
+            s.n === "03" && (
+              <><span class="fn">kitaru</span> experiment <span class="fn">run</span> cheap-model</>
+            )
+          }</code></pre>
+        </div>
+      ))}
     </div>
 
-    <div class="whatif-payoff" data-reveal="fade-up" data-reveal-delay="3">
-      <div class="whatif-payoff-label">
-        <span class="whatif-payoff-eyebrow">The diff</span>
-        <p>Same 200 executions. Cheap model. Order lookup result replaced.</p>
-      </div>
-      <div class="whatif-payoff-metrics">
-        <div class="whatif-metric">
-          <span class="whatif-metric-value whatif-metric-win">&minus;61%</span>
-          <span class="whatif-metric-key">median cost</span>
+    {/* The diff stats box */}
+    <div
+      class="reveal mt-16"
+      style={`--reveal-delay: 260ms`}
+    >
+      <div class="grid grid-cols-1 gap-8 rounded-xl border border-border bg-background p-8 md:grid-cols-[1fr_1.4fr] md:items-center md:p-10">
+        <div>
+          <span class="font-mono text-[11px] tracking-[0.16em] text-ember uppercase">
+            The diff
+          </span>
+          <p class="mt-3 text-[15px] leading-relaxed text-ink-soft">
+            Same 200 sessions. Same evaluator. One model swapped.
+          </p>
         </div>
-        <div class="whatif-metric">
-          <span class="whatif-metric-value">196 / 200</span>
-          <span class="whatif-metric-key">outputs identical</span>
-        </div>
-        <div class="whatif-metric">
-          <span class="whatif-metric-value whatif-metric-warn">4</span>
-          <span class="whatif-metric-key">to review</span>
+        <div class="grid grid-cols-3 gap-6">
+          {[
+            { v: "−61%", k: "median cost", tone: "text-success" },
+            { v: "196 / 200", k: "outputs identical", tone: "" },
+            { v: "4", k: "to review", tone: "text-warn" },
+          ].map((m) => (
+            <div>
+              <div class={`font-mono text-2xl tracking-[-0.02em] md:text-3xl ${m.tone}`}>
+                {m.v}
+              </div>
+              <div class="mt-1.5 text-[11.5px] text-muted-foreground">{m.k}</div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
 
-    <p class="whatif-foot" data-reveal>
-      Illustrative numbers. Tool-level detail depends on the primitives or adapter boundaries your agent exposes to Kitaru.
-    </p>
+    {/* Disclaimer note */}
+    <div class="reveal mt-6" style={`--reveal-delay: 320ms`}>
+      <p class="max-w-2xl text-[12.5px] leading-relaxed text-muted-foreground">
+        Illustrative numbers. Kitaru grades every session ready, partial or unavailable at
+        import, so you know before you rely on it.
+      </p>
+    </div>
   </div>
 </section>
 
 <style>
-  .whatif-section {
-    background: var(--color-surface-warm);
-    border-top: 1px solid var(--color-border);
+  /* Highlight-panel choreography, keyed off the reveal system's data-shown
+     contract: bars draw in from the left, chips/values fade up, selection
+     washes tint in last. Delays are per-element via --fh-delay. */
+  .fh-bar {
+    transform-origin: left center;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--fh-delay, 0ms);
+  }
+  .reveal:not([data-shown="true"]) .fh-bar {
+    transform: scaleX(0);
   }
 
-  .whatif-header {
-    max-width: 760px;
-    margin-bottom: 28px;
+  .fh-pop {
+    transition:
+      opacity 0.5s ease-out,
+      transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--fh-delay, 0ms);
+  }
+  .reveal:not([data-shown="true"]) .fh-pop {
+    opacity: 0;
+    transform: translateY(4px);
   }
 
-  .section-desc {
-    margin-top: 16px;
-    color: var(--color-secondary);
-    font-size: clamp(1rem, 1.6vw, 1.1rem);
-    line-height: 1.65;
-    font-weight: 300;
+  .fh-wash {
+    transition:
+      background-color 0.6s ease-out,
+      border-color 0.6s ease-out;
+    transition-delay: var(--fh-delay, 0ms);
+  }
+  .reveal:not([data-shown="true"]) .fh-wash {
+    background-color: transparent;
+    border-color: transparent;
   }
 
-  /* ─── "Start from" source panel ─── */
-  .whatif-sources {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 10px;
-    margin-top: 24px;
-  }
-
-  .whatif-sources-label {
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-  }
-
-  .src-pill {
-    font-family: inherit;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-accent);
-    padding: 6px 14px;
-    border: 1px solid oklch(0.65 0.16 45 / 0.4);
-    border-radius: 100px;
-    background: oklch(0.65 0.16 45 / 0.08);
-  }
-
-  /* Reveal panels */
-  .src-panels {
-    margin-top: 16px;
-    margin-bottom: 48px;
-  }
-
-  .src-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    padding: 28px 30px;
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    background: var(--color-surface);
-    animation: src-fade 0.3s ease;
-  }
-
-
-  @keyframes src-fade {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .src-line {
-    margin: 0;
-    font-size: 1.05rem;
-    line-height: 1.5;
-    color: var(--color-primary);
-    font-weight: 500;
-  }
-
-  .src-logos {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .src-logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.92rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--color-primary);
-    padding: 11px 18px;
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-    background: var(--color-surface-warm);
-  }
-
-  .src-logo img {
-    width: 22px;
-    height: 22px;
-    border-radius: 5px;
-    object-fit: contain;
-    flex-shrink: 0;
-  }
-
-  /* ─── Steps ─── */
-  .whatif-steps {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-  }
-
-  .whatif-step {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    min-width: 0;
-    padding: 28px 26px;
-    border: 1px solid var(--color-border);
-    border-radius: 16px;
-    background: var(--color-surface);
-    transition: border-color 0.25s, transform 0.25s;
-  }
-
-  .whatif-step:hover {
-    border-color: oklch(0.65 0.16 45 / 0.3);
-    transform: translateY(-3px);
-  }
-
-  .whatif-step-head {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .whatif-step-n {
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-accent);
-  }
-
-  .whatif-step-tag {
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-muted);
-    padding: 3px 9px;
-    border: 1px solid var(--color-border);
-    border-radius: 100px;
-  }
-
-  .whatif-step-title {
-    font-size: clamp(1.1rem, 1.6vw, 1.3rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.2;
-    color: var(--color-primary);
-    margin: 0;
-  }
-
-  .whatif-step-body {
-    flex: 1;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    font-weight: 300;
-    color: var(--color-secondary);
-    margin: 0;
-  }
-
-  .whatif-step-code {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    line-height: 1.5;
-    color: var(--color-accent);
-    background: oklch(0.65 0.16 45 / 0.07);
-    border: 1px solid oklch(0.65 0.16 45 / 0.18);
-    border-radius: 8px;
-    padding: 10px 12px;
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
-
-  /* ─── Payoff: the diff ─── */
-  .whatif-payoff {
-    display: grid;
-    grid-template-columns: 1fr 1.6fr;
-    gap: 32px;
-    align-items: center;
-    margin-top: 24px;
-    padding: 28px 32px;
-    border: 1px solid oklch(0.65 0.16 45 / 0.3);
-    border-radius: 16px;
-    background: linear-gradient(
-      180deg,
-      oklch(0.65 0.16 45 / 0.07) 0%,
-      oklch(0.65 0.16 45 / 0.02) 100%
-    );
-  }
-
-  .whatif-payoff-eyebrow {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--color-accent);
-    margin-bottom: 8px;
-  }
-
-  .whatif-payoff-label p {
-    margin: 0;
-    font-size: 0.98rem;
-    line-height: 1.5;
-    color: var(--color-primary);
-    font-weight: 400;
-  }
-
-  .whatif-payoff-metrics {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-
-  .whatif-metric {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 16px 18px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 12px;
-  }
-
-  .whatif-metric-value {
-    font-family: var(--font-mono);
-    font-variant-numeric: tabular-nums;
-    font-size: clamp(1.2rem, 2vw, 1.6rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--color-primary);
-  }
-
-  .whatif-metric-win {
-    color: var(--color-accent);
-  }
-
-  .whatif-metric-warn {
-    color: var(--color-cost-up);
-  }
-
-  .whatif-metric-key {
-    font-size: 0.72rem;
-    color: var(--color-muted);
-    letter-spacing: 0.01em;
-  }
-
-  .whatif-foot {
-    margin: 20px 0 0;
-    font-size: 0.78rem;
-    line-height: 1.5;
-    color: var(--color-muted);
-    font-style: italic;
-  }
-
-  @media (max-width: 900px) {
-    .whatif-steps {
-      grid-template-columns: 1fr;
-    }
-    .whatif-payoff {
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-  }
-
-  @media (max-width: 540px) {
-    .whatif-payoff-metrics {
-      grid-template-columns: 1fr;
+  @media (prefers-reduced-motion: reduce) {
+    .fh-bar,
+    .fh-pop,
+    .fh-wash {
+      transition: none;
     }
   }
 </style>

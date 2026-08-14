@@ -4,58 +4,58 @@
 <figure class="fig">
   <div class="panel panel--competitor">
     <div class="panel-label">OpenAI Agents SDK alone</div>
-    <div class="panel-sub">Crash mid-run, restart from step 1</div>
+    <div class="panel-sub">A trace of the run — read only</div>
     <div class="rail">
       <div class="step">
         <span class="step-num">1</span>
-        <span class="step-mono">research</span>
-        <span class="step-cost">$0.04</span>
+        <span class="step-mono">model.request</span>
+        <span class="step-cost">gpt-5-nano</span>
       </div>
       <div class="step">
         <span class="step-num">2</span>
-        <span class="step-mono">draft</span>
-        <span class="step-cost">$0.09</span>
+        <span class="step-mono">tool.check_order</span>
+        <span class="step-cost">live call</span>
       </div>
       <div class="step step--fail">
         <span class="step-num">3</span>
-        <span class="step-mono">review</span>
-        <span class="step-cost">crash</span>
+        <span class="step-mono">handoff</span>
+        <span class="step-cost">trace ends here</span>
       </div>
       <div class="redo">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M3 12 A9 9 0 1 1 12 21" />
           <path d="M3 6 L3 12 L9 12" />
         </svg>
-        <span class="redo-label">restart from step 1</span>
+        <span class="redo-label">read the trace again — that's the only rerun you get</span>
       </div>
-      <div class="repay">re-pays $0.13 in tokens already spent</div>
+      <div class="repay">a trace can't answer &ldquo;what if&rdquo; about the run</div>
     </div>
   </div>
 
   <div class="panel panel--kitaru">
     <div class="panel-label">Kitaru-wrapped</div>
-    <div class="panel-sub">Replay from the failed checkpoint</div>
+    <div class="panel-sub">Recorded once, replayed for the experiment</div>
     <div class="rail">
       <div class="step step--cached">
         <span class="step-num">1</span>
-        <span class="step-mono">@checkpoint research</span>
-        <span class="badge-cached">cached</span>
+        <span class="step-mono">tool.check_order</span>
+        <span class="badge-cached">answered from recording</span>
       </div>
       <div class="step step--cached">
         <span class="step-num">2</span>
-        <span class="step-mono">@checkpoint draft</span>
-        <span class="badge-cached">cached</span>
+        <span class="step-mono">tool.refund_payment</span>
+        <span class="badge-cached">answered from recording</span>
       </div>
       <div class="step step--retry">
         <span class="step-num">3</span>
-        <span class="step-mono">@checkpoint review</span>
-        <span class="badge-retry">re-run</span>
+        <span class="step-mono">model.request</span>
+        <span class="badge-retry">live · gpt-5-mini</span>
       </div>
       <div class="cmd">
-        <span class="cmd-prompt">$</span>
-        <span class="cmd-text">kitaru executions replay &lt;exec_id&gt; --from review</span>
+        <span class="cmd-prompt">&gt;&gt;&gt;</span>
+        <span class="cmd-text">experiment.run(cohort=cohort, version="pr-311")</span>
       </div>
-      <div class="repay repay--ok">only the failing step re-bills</div>
+      <div class="repay repay--ok">tool calls stay faithful to the recording — only the model changes</div>
     </div>
   </div>
 </figure>

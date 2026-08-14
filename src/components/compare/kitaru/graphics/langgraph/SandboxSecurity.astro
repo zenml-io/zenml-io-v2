@@ -4,53 +4,53 @@
 <figure class="fig">
   <div class="panel panel--competitor">
     <div class="panel-head">
-      <span class="panel-label">LangSmith · packaged security</span>
-      <span class="panel-sub">Isolation bundled with the runtime</span>
+      <span class="panel-label">LangGraph · native checkpointer</span>
+      <span class="panel-sub">Resume and time-travel inside the graph</span>
     </div>
 
     <div class="block">
-      <span class="block-title">LangSmith Sandboxes</span>
-      <span class="block-sub">ephemeral, locked-down environments</span>
+      <span class="block-title">Checkpointer</span>
+      <span class="block-sub">persists state between supersteps, resumes after a crash</span>
     </div>
     <div class="block">
-      <span class="block-title">Auth proxy</span>
-      <span class="block-sub">secrets never enter the sandbox</span>
+      <span class="block-title">Time travel</span>
+      <span class="block-sub">step back through recorded graph state</span>
     </div>
     <div class="block">
-      <span class="block-title">OpenTelemetry tracing</span>
-      <span class="block-sub">native to the platform</span>
+      <span class="block-title">Interrupts</span>
+      <span class="block-sub">pause / resume via Command(resume=...) on your thread</span>
     </div>
 
-    <div class="foot">Usable isolation story out of the box.</div>
+    <div class="foot">Durability lives inside the graph model.</div>
   </div>
 
   <div class="panel panel--kitaru">
     <div class="panel-head">
-      <span class="panel-label panel-label--accent">Kitaru · configurable boundary</span>
-      <span class="panel-sub">Policy at each execution boundary</span>
+      <span class="panel-label panel-label--accent">Kitaru · session replay for eval</span>
+      <span class="panel-sub">Sits beside the checkpointer, not instead of it</span>
     </div>
 
     <div class="api">
-      <span class="api-call"><span class="fn">@checkpoint</span>(runtime=<span class="str">"isolated"</span>)</span>
-      <span class="api-sub">separate pod / job on your stack</span>
+      <span class="api-call"><span class="fn">KitaruGraphRunner</span>(<span class="str">graph</span>)</span>
+      <span class="api-sub">wraps the compiled graph without recompiling it</span>
     </div>
 
     <div class="rows">
       <div class="row">
-        <span class="rkey">Sandbox</span>
-        <span class="rval">bring your own provider</span>
+        <span class="rkey">Recording</span>
+        <span class="rval">one session per invoke() call</span>
       </div>
       <div class="row">
-        <span class="rkey">Secrets</span>
-        <span class="rval">your secret manager</span>
+        <span class="rkey">Replay</span>
+        <span class="rval">tool results per policy; model overrides via create_agent</span>
       </div>
       <div class="row">
-        <span class="rkey">Tracing</span>
-        <span class="rval">OTel, pointed at your backend</span>
+        <span class="rkey">Depth</span>
+        <span class="rval">set by how the graph was built</span>
       </div>
     </div>
 
-    <div class="foot foot--accent">Runtime exposes the boundary. Policy stays with your platform.</div>
+    <div class="foot foot--accent">LangGraph resumes a crashed graph. Kitaru replays a session to test a change.</div>
   </div>
 </figure>
 

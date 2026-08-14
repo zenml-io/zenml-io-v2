@@ -1,4 +1,5 @@
 ---
+import type { Surface } from "../lib/analytics";
 import {
   FALLBACK_STARS,
   formatStars,
@@ -20,21 +21,25 @@ import Button from "./Button.astro";
  * Desktop: hover-driven dropdown panels with two-column layout.
  * Mobile: hamburger toggle with accordion sections.
  */
+import KitaruLogo from "./brand/KitaruLogo.astro";
 import ZenmlLogo from "./brand/ZenmlLogo.astro";
 
 interface Props {
   currentPath?: string;
+  /** The page's analytics surface — "agent" flips the navbar to Kitaru
+   *  branding (logo lockup, star repo, signup CTA). Passed by BaseLayout
+   *  from its required `surface` prop, so the one taxonomy every page
+   *  already declares also drives the chrome. */
+  surface?: Surface;
 }
 
-const { currentPath = Astro.url.pathname } = Astro.props;
+const { currentPath = Astro.url.pathname, surface } = Astro.props;
 const headerStarsFallback = formatStars(FALLBACK_STARS);
 
 // On Kitaru surfaces, point the header star button at the Kitaru repo instead
 // of zenml/zenml. The live count is zenml-only, so we drop the number there
 // rather than show a misleading figure next to the Kitaru link.
-const isKitaruSurface =
-  currentPath.startsWith("/product/kitaru") ||
-  currentPath.startsWith("/compare/kitaru");
+const isKitaruSurface = surface === "agent";
 const starsHref = isKitaruSurface
   ? "https://github.com/zenml-io/kitaru"
   : GITHUB_REPO_URL;
@@ -46,7 +51,11 @@ const starsCountText = isKitaruSurface
   ? formatStars(KITARU_FALLBACK_STARS)
   : headerStarsFallback;
 const docsCta = NAV_CTAS[0];
-const demoCta = isKitaruSurface ? KITARU_LINKS.demo : NAV_CTAS[1];
+// Single primary CTA on Kitaru surfaces = sign up.
+const primaryCta = isKitaruSurface ? KITARU_LINKS.signup : NAV_CTAS[1];
+const primaryCtaAnalytics = isKitaruSurface
+  ? "Nav-Kitaru-Signup"
+  : "Nav-Book-Demo";
 const llmopsCaseStudyCount = await getNonDraftLlmopsDatabaseCount();
 const navDropdowns = createNavDropdowns({ llmopsCaseStudyCount });
 
@@ -63,11 +72,19 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
 
 <header class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200/60">
   <div class="mx-auto max-w-[var(--container-lg)] px-4 sm:px-6 lg:px-8">
-    <div class="flex h-[72px] items-center">
-      {/* Logo */}
-      <a href="/" class="flex shrink-0 items-center gap-2 text-foreground" aria-label="ZenML">
-        <ZenmlLogo class="h-7 w-auto" />
-      </a>
+    <div class="flex h-[var(--nav-h)] items-center">
+      {/* Logo — Kitaru surfaces show "Kitaru by ZenML" so first-time
+        * launch traffic isn't confused by a ZenML mark on a Kitaru page. */}
+      {isKitaruSurface ? (
+        <a href="/product/kitaru" class="nav-kitaru-brand flex shrink-0 items-baseline gap-2 text-foreground" aria-label="Kitaru by ZenML">
+          <KitaruLogo class="h-5 w-auto" />
+          <span class="text-xs font-medium text-gray-500">by ZenML</span>
+        </a>
+      ) : (
+        <a href="/" class="flex shrink-0 items-center gap-2 text-foreground" aria-label="ZenML">
+          <ZenmlLogo class="h-7 w-auto" />
+        </a>
+      )}
 
       {/* Desktop Nav */}
       <nav class="hidden lg:flex lg:items-center lg:gap-1 lg:ml-12 h-full" role="navigation" aria-label="Main navigation">
@@ -379,7 +396,7 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
       </nav>
 
       {/* Desktop CTAs */}
-      <div class="hidden lg:ml-auto lg:flex lg:items-center lg:gap-3">
+      <div class:list={["hidden lg:ml-auto lg:flex lg:items-center lg:gap-3", isKitaruSurface && "nav-kitaru-brand"]}>
         <div class="h-[28px]">
           <a
             href={starsHref}
@@ -407,8 +424,13 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
         <Button href={docsCta.href} variant="secondary" size="sm">
           {docsCta.label}
         </Button>
-        <Button href={demoCta.href} variant="primary" size="sm">
-          {demoCta.label}
+        <Button
+          href={primaryCta.href}
+          variant="primary"
+          size="sm"
+          dataAnalytics={primaryCtaAnalytics}
+        >
+          {primaryCta.label}
         </Button>
       </div>
 
@@ -512,12 +534,18 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
         ))}
 
         {/* Mobile CTAs */}
-        <div class="mt-4 flex flex-col gap-2 pt-4 border-t border-gray-200">
+        <div class:list={["mt-4 flex flex-col gap-2 pt-4 border-t border-gray-200", isKitaruSurface && "nav-kitaru-brand"]}>
           <Button href={docsCta.href} variant="secondary" size="md" class="w-full justify-center">
             {docsCta.label}
           </Button>
-          <Button href={demoCta.href} variant="primary" size="md" class="w-full justify-center">
-            {demoCta.label}
+          <Button
+            href={primaryCta.href}
+            variant="primary"
+            size="md"
+            class="w-full justify-center"
+            dataAnalytics={primaryCtaAnalytics}
+          >
+            {primaryCta.label}
           </Button>
         </div>
       </nav>
@@ -532,6 +560,21 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
     visibility: hidden !important;
     opacity: 0 !important;
     pointer-events: none !important;
+  }
+
+  /* Kitaru-surface brand override — scoped to the logo and CTA containers
+   * only, so the ZenML entries in the dropdowns keep their own brand color.
+   * Remapping the vars (rather than data-app="kitaru") is the one lever that
+   * reaches both the logo ring's `text-primary` and Button's hardcoded
+   * `zenml-*` classes — same approach as BookingExperience's
+   * `.booking-brand-kitaru`. */
+  .nav-kitaru-brand {
+    --primary: var(--color-orange-600);
+    --color-zenml-500: var(--color-orange-600);
+    --color-zenml-600: var(--color-orange-700);
+    --color-zenml-700: var(--color-orange-800);
+    --shadow-focus-primary: 0 1px 2px 0 rgba(16, 24, 40, 0.05),
+      0 0 0 4px var(--color-orange-100);
   }
 </style>
 

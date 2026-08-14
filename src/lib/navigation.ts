@@ -2,11 +2,14 @@
  * Navigation data — post-Kitaru-merge structure.
  *
  * See MERGE_PLAN.md for the IA decisions. Top nav:
- *   Product ▾    Docs ▾    Compare    Pricing    Blog    Case Studies ▾
+ *   Product ▾    Docs ▾    Pricing    Blog    Case Studies ▾
  *
  * Note: dropdowns render before direct links, so the visual order is
- *   Product ▾ Docs ▾ Case Studies ▾ | Compare Pricing Blog
+ *   Product ▾ Docs ▾ Case Studies ▾ | Pricing Blog
  * — which is standard practice (dropdowns clustered left).
+ *
+ * Compare is not in the top nav; it stays reachable via the footer's
+ * "All comparisons" link.
  */
 
 export interface NavLink {
@@ -135,16 +138,8 @@ export function createNavDropdowns({
       sections: [
         {
           heading: "Products",
+          // Kitaru listed first.
           links: [
-            {
-              label: "ZenML",
-              href: "/product/zenml",
-              description: "Pipelines for ML workflows",
-              icon: ICON_ZENML_MARK,
-              iconViewBox: "0 0 20 20",
-              iconFilled: true,
-              brand: "zenml",
-            },
             {
               label: "Kitaru",
               href: "/product/kitaru",
@@ -153,6 +148,15 @@ export function createNavDropdowns({
               iconViewBox: "0 0 81 82",
               iconFilled: true,
               brand: "kitaru",
+            },
+            {
+              label: "ZenML",
+              href: "/product/zenml",
+              description: "Pipelines for ML workflows",
+              icon: ICON_ZENML_MARK,
+              iconViewBox: "0 0 20 20",
+              iconFilled: true,
+              brand: "zenml",
             },
             {
               label: "ZenML Pro",
@@ -174,19 +178,19 @@ export function createNavDropdowns({
           heading: "Documentation",
           links: [
             {
-              label: "ZenML docs",
-              href: "https://docs.zenml.io",
-              description: "Pipelines, components, integrations",
-              external: true,
-              icon: ICON_BOOK,
-            },
-            {
               label: "Kitaru docs",
               href: "https://docs.zenml.io/kitaru",
               description: "Agent runtime primitives and APIs",
               external: true,
               icon: ICON_BOOK,
               brand: "kitaru",
+            },
+            {
+              label: "ZenML docs",
+              href: "https://docs.zenml.io",
+              description: "Pipelines, components, integrations",
+              external: true,
+              icon: ICON_BOOK,
             },
           ],
         },
@@ -227,7 +231,6 @@ export function createNavDropdowns({
 // ---------------------------------------------------------------------------
 
 export const NAV_LINKS: NavLink[] = [
-  { label: "Compare", href: "/compare" },
   { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
 ];

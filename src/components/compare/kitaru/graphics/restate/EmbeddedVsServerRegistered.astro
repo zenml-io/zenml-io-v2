@@ -45,20 +45,20 @@ import { KITARU_INSTALL_CMD } from "../../../../../lib/productKitaru";
   <div class="panel panel--kitaru">
     <div class="panel-head">
       <span class="panel-label panel-label--accent">Kitaru · embedded</span>
-      <span class="panel-sub">Flow runs in your process; server holds metadata</span>
+      <span class="panel-sub">Recording runs in your process; server holds metadata</span>
     </div>
 
     <div class="proc">
       <span class="proc-label">your python process</span>
       <div class="proc-body">
         <div class="deco">
-          <span class="mono deco-key">@flow</span>
+          <span class="mono deco-key">KitaruAgent(agent)</span>
         </div>
         <div class="deco">
-          <span class="mono deco-key">@checkpoint</span>
+          <span class="mono deco-key">run_sync(...)</span>
         </div>
         <div class="deco deco--accent">
-          <span class="mono deco-key">kitaru.llm()</span>
+          <span class="mono deco-key">&rarr; session</span>
         </div>
       </div>
       <span class="proc-foot">{KITARU_INSTALL_CMD} · no server process in the request path</span>
@@ -74,7 +74,7 @@ import { KITARU_INSTALL_CMD } from "../../../../../lib/productKitaru";
       </div>
     </div>
 
-    <div class="foot foot--accent">Server is for the metadata, not the request path.</div>
+    <div class="foot foot--accent">Server holds metadata and drives replay; recording happens in your process.</div>
   </div>
 </figure>
 

@@ -4,33 +4,33 @@
 <figure class="fig">
   <div class="layer layer--kitaru">
     <div class="layer-head">
-      <span class="layer-label">Kitaru · runtime</span>
+      <span class="layer-label">Kitaru · replay evals</span>
       <span class="layer-sub">Adds on top — no agent rewrite</span>
     </div>
     <div class="caps">
       <div class="cap">
-        <span class="mono ckey">durable execution</span>
-        <span class="cval">crash &rarr; replay · cached checkpoints, no re-burn</span>
+        <span class="mono ckey">sessions</span>
+        <span class="cval">every run recorded · model + tool calls, tokens, cost</span>
       </div>
       <div class="cap">
-        <span class="mono ckey">kitaru.wait()</span>
-        <span class="cval">pause, release compute, resume hours later</span>
+        <span class="mono ckey">replay</span>
+        <span class="cval">re-execute · the recording answers the tool calls</span>
       </div>
       <div class="cap">
-        <span class="mono ckey">flow.deploy()</span>
-        <span class="cval">immutable versioned snapshots · tag routing</span>
+        <span class="mono ckey">cohorts.create()</span>
+        <span class="cval">the sessions that matter, frozen as a named set</span>
       </div>
       <div class="cap">
-        <span class="mono ckey">artifact lineage</span>
-        <span class="cval">typed artifacts per checkpoint · cross-run diff</span>
+        <span class="mono ckey">experiments.create()</span>
+        <span class="cval">same cohort, one variable moved · two runs compared</span>
       </div>
       <div class="cap">
-        <span class="mono ckey">@checkpoint(runtime="isolated")</span>
-        <span class="cval">per-step pod / job on K8s, AWS, GCP, Azure</span>
+        <span class="mono ckey">evaluators</span>
+        <span class="cval">deterministic diffs first · model-graded for the residue</span>
       </div>
       <div class="cap">
         <span class="mono ckey">self-hosted</span>
-        <span class="cval">Helm service · artifacts in your own bucket</span>
+        <span class="cval">FastAPI + Postgres · workers in your environment</span>
       </div>
     </div>
   </div>
@@ -49,7 +49,7 @@
     </div>
     <div class="adapter">
       <span class="mono adapter-key">KitaruAgent(Agent(...))</span>
-      <span class="adapter-sub">first-class adapter &middot; model + tool calls as child events</span>
+      <span class="adapter-sub">first-class adapter &middot; every run lands as a session</span>
     </div>
   </div>
 </figure>
