@@ -166,47 +166,47 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "So is this an observability tool?",
     answer:
-      "No. It sits beside your observability stack, not in place of it. Traces tell you what happened; Kitaru re-runs them against your actual code. Think a debugger with a memory, not a dashboard of spans.",
+      "No. It sits beside your observability stack. Traces tell you what happened; Kitaru re-runs them against your actual code: a debugger with a memory rather than another dashboard of spans.",
   },
   {
     question: "My agent writes to real systems. Isn't replay dangerous?",
     answer:
-      "Replay answers the agent's tool calls from the recording — nothing touches real systems. Per-tool policies control the rest: answer from history and stop the run rather than fall through when a call has no recorded answer, pin a static result, or deliberately pass a specific tool through live when that's what you want. We don't test in prod — we make prod's past your test bench.",
+      "Replay answers the agent's tool calls from the recording, so nothing touches real systems. Per-tool policies control the rest: answer from history and stop the run when a call has no recorded answer, pin a static result, or deliberately pass a specific tool through live. We don't test in prod. We make prod's past your test bench.",
   },
   {
     question: "The model isn't deterministic. How is replay trustworthy?",
     answer:
-      "The recorded world is held constant — same inputs, same tool responses — so the diff you see comes from your change, not from ambient noise. Comparison is done by evaluators plus side-by-side diff, not by pretending LLMs are deterministic. And no, temperature=0 is not determinism — we have the divergence data.",
+      "The recorded world is held constant, same inputs and same tool responses, so the diff you see comes from your change rather than ambient noise. Evaluators and a side-by-side diff do the comparison; nobody has to pretend LLMs are deterministic. (And no, temperature=0 is not determinism. We have the divergence data.)",
   },
   {
     question: "Where do the eval criteria come from? We never wrote any down.",
     answer:
-      "From the people who already judge the agent every day. Your coding assistant, using Kitaru's investigation skill, interviews you over real sessions, pins your judgments to the exact evidence in the trace, and drafts evaluators from them — and those evaluators are calibrated against your verdicts before they gate anything.",
+      "From the people who already judge the agent every day. Your coding assistant, using Kitaru's investigation skill, interviews you over real sessions, pins your judgments to the exact evidence in the trace, and drafts evaluators from them. Each evaluator is checked against your verdicts before it gates anything.",
   },
   {
     question: "What frameworks does it work with?",
     answer:
-      "Recording adapters wrap your existing agent — one wrapper, no rewrite. Python: PydanticAI, the OpenAI Agents SDK, and LangGraph (including LangChain agents and Deep Agents). TypeScript: the Vercel AI SDK and Mastra. Anything else: import the trace history you already have from Langfuse, LangSmith or Braintrust, or write a one-page custom importer.",
+      "Recording adapters wrap your existing agent in one line, with no rewrite. Python: PydanticAI, the OpenAI Agents SDK, and LangGraph (including LangChain agents and Deep Agents). TypeScript: the Vercel AI SDK and Mastra. Anything else: import the trace history you already have from Langfuse, LangSmith or Braintrust, or write a one-page custom importer.",
   },
   {
     question: "My agent is TypeScript. Can I use Kitaru?",
     answer:
-      "Yes — natively. TypeScript agents record and replay through the Vercel AI SDK and Mastra adapters, with a framework-neutral TypeScript SDK alongside. The CLI, workers and evaluators run on Python today, so there's Python in the loop even when the agent itself is TypeScript.",
+      "Yes, natively. TypeScript agents record and replay through the Vercel AI SDK and Mastra adapters, with a framework-neutral TypeScript SDK alongside. The CLI, workers and evaluators run on Python today, so there's Python in the loop even when the agent itself is TypeScript.",
   },
   {
     question: "Is it open source? Can I self-host?",
     answer:
-      "Yes — Apache 2.0, self-hosted by default. The server and workers run in your infrastructure and replay executes in your environment, so your traces never have to leave your systems. A managed offering is available through ZenML Pro.",
+      "Yes: Apache 2.0, self-hosted by default. The server and workers run in your infrastructure and replay executes in your environment, so your traces never have to leave your systems. ZenML Pro offers a managed version if you want one.",
   },
   {
     question: "Does this replace human review?",
     answer:
-      "No. Evals change the review ratio, not the review requirement. The goal is that humans review the sessions worth reviewing, with evidence attached — not that nobody reviews.",
+      "No. Evals change how much humans review, not whether they do. The goal is that people spend their review time on the sessions that deserve it, with evidence attached.",
   },
   {
-    question: "Who is this for — and who isn't it for?",
+    question: "Who is this for, and who isn't it for?",
     answer:
-      "Teams shipping agents to customers whose regression process is honestly a few samples and a vibe check — Kitaru installs the rigor loop. Not for single-dev prototypes, and not for teams buying a fully managed agent platform: if you're buying an agent platform, Kitaru will feel low-level. If you're building one, that's the point.",
+      "Teams shipping agents to customers whose regression process is honestly a few samples and a vibe check. Kitaru installs the rigor loop. It fits badly for single-dev prototypes and for teams buying a fully managed agent platform: if you're buying an agent platform, Kitaru will feel low-level. If you're building one, that's the point.",
   },
   {
     question: "Something's broken. How do I reach you?",

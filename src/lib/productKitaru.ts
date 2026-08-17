@@ -24,7 +24,7 @@ export const KITARU_TRIAL_NOTE = `${KITARU_TRIAL_DAYS}-day free trial · Full ac
  * the /pricing Kitaru FAQ and the /product/kitaru FAQ.
  */
 export const KITARU_VS_OBSERVABILITY_ANSWER =
-  "They tell you what happened — traces you read, dashboards you check. Kitaru re-runs what happened: your agent's real code executes again against the recorded world, so you can test your next change against your last thousand sessions before it ships. And it's a complement, not a replacement — Kitaru imports your existing Langfuse, Braintrust or LangSmith traces, and your observability tool stays your system of record.";
+  "They tell you what happened: traces you read, dashboards you check. Kitaru re-runs what happened. Your agent's real code executes again against the recorded world, so you can test your next change against your last thousand sessions before it ships. Kitaru also imports your existing Langfuse, Braintrust or LangSmith traces, so your observability tool stays your system of record.";
 
 export const KITARU_LINKS = {
   signup: {

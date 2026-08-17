@@ -585,11 +585,11 @@ export const PRICING_FAQ_KITARU: FaqData = {
   items: [
     {
       question: "What does Kitaru cost?",
-      answer: `${KITARU_CLOUD_PRICE} a month, flat. The hosted Cloud plan includes ${KITARU_CLOUD_LIMITS.agents} agents, ${KITARU_CLOUD_LIMITS.seats} seats, ${KITARU_CLOUD_LIMITS.retentionDays}-day session retention, and every feature — replays, experiment runs, imports and recording all come with it. No meters, no usage math. Need more agents, seats or governance? That's the Enterprise plan.`,
+      answer: `${KITARU_CLOUD_PRICE} a month, flat. The hosted Cloud plan includes ${KITARU_CLOUD_LIMITS.agents} agents, ${KITARU_CLOUD_LIMITS.seats} seats, ${KITARU_CLOUD_LIMITS.retentionDays}-day session retention, and every feature. Replays, experiment runs, imports and recording all come with it. No meters, no usage math. Need more agents, seats or governance? That's the Enterprise plan.`,
     },
     {
       question: `What happens after the ${KITARU_TRIAL_DAYS}-day trial?`,
-      answer: `The trial is full access to everything and needs no credit card. When it ends, add a card and you're on the ${KITARU_CLOUD_PRICE}/month plan — nothing about your workspace changes except the billing. There's no free hosted tier: the free option is the open-source version, self-hosted on your own infrastructure, forever.`,
+      answer: `The trial is full access to everything and needs no credit card. When it ends, add a card and you're on the ${KITARU_CLOUD_PRICE}/month plan. Nothing about your workspace changes except the billing. There's no free hosted tier: the free option is the open-source version, self-hosted on your own infrastructure, forever.`,
     },
     {
       question: "What does the Enterprise plan add?",
@@ -603,16 +603,16 @@ export const PRICING_FAQ_KITARU: FaqData = {
     {
       question: "Can I self-host Kitaru?",
       answer:
-        "Yes. Kitaru is open source under Apache 2.0 — same model as ZenML. One command brings up a local deployment in Docker, or self-host the server in your own VPC. Either way the worker runs beside your code, on your machine or your compute, using your own model keys — so replays never execute on our infrastructure. Cloud adds the hosted control plane and remote worker pools; Enterprise adds SSO, RBAC and audit.",
+        "Yes. Kitaru is open source under Apache 2.0, the same model as ZenML. One command brings up a local deployment in Docker, or self-host the server in your own VPC. Either way the worker runs beside your code, on your machine or your compute, using your own model keys, so replays never execute on our infrastructure. Cloud adds the hosted control plane and remote worker pools; Enterprise adds SSO, RBAC and audit.",
     },
     {
       question: "Do you see my traces?",
       answer:
-        "Self-hosted, no: the server and workers run in your infrastructure and your traces never have to leave your systems. On the hosted Cloud plan the control plane is managed by us, but replay still executes on your own workers with your own keys — the recorded sessions are yours.",
+        "Self-hosted, no: the server and workers run in your infrastructure and your traces never have to leave your systems. On the hosted Cloud plan we manage the control plane, but replay still executes on your own workers with your own keys. The recorded sessions are yours.",
     },
     {
       question: "Do I need a separate subscription for ZenML?",
-      answer: `No — one subscription covers both workspaces. They're priced differently (ZenML's managed tiers scale with pipeline executions; Kitaru is a flat ${KITARU_CLOUD_PRICE}/month), but it's the same control plane, the same governance, and one bill.`,
+      answer: `No, one subscription covers both workspaces. They're priced differently (ZenML's managed tiers scale with pipeline executions; Kitaru is a flat ${KITARU_CLOUD_PRICE}/month), but it's the same control plane, the same governance, and one bill.`,
     },
   ],
   slackCta: PRICING_FAQ_SLACK_CTA,
@@ -626,12 +626,12 @@ export const PRICING_FAQ_ZENML: FaqData = {
     {
       question: "Can I self-host ZenML?",
       answer:
-        "Yes — ZenML is open source and free to self-host; that's the Open Source plan. If you want the Pro control plane on your own infrastructure, Enterprise covers self-hosted and air-gapped deployment. Either way, ZenML stores only metadata: your data, artifacts and compute stay in your VPC end-to-end.",
+        "Yes. ZenML is open source and free to self-host; that's the Open Source plan. If you want the Pro control plane on your own infrastructure, Enterprise covers self-hosted and air-gapped deployment. Either way, ZenML stores only metadata: your data, artifacts and compute stay in your VPC end-to-end.",
     },
     {
       question: "How is the Scale plan billed?",
       answer:
-        "By monthly pipeline executions per workspace. The slider on the Scale card above sets your tier — projects and snapshots scale with it. Pick the tier that matches your run volume and move between tiers as you grow; there's no per-seat pricing.",
+        "By monthly pipeline executions per workspace. The slider on the Scale card above sets your tier, and projects and snapshots scale with it. Pick the tier that matches your run volume and move between tiers as you grow; there's no per-seat pricing.",
     },
     {
       question: "What happens if I exceed my plan's executions?",
@@ -641,12 +641,12 @@ export const PRICING_FAQ_ZENML: FaqData = {
     {
       question: "What's the difference between Open Source and the Pro plans?",
       answer:
-        "Open Source is the full framework, managed by you. Scale and Enterprise add the managed control plane — automatic updates and guaranteed uptime — plus the Model Control Plane, Artifact Control Plane, snapshots and Codespaces. Enterprise adds SSO, custom-role RBAC, audit logs and air-gapped deployment on top.",
+        "Open Source is the full framework, managed by you. Scale and Enterprise add the managed control plane (automatic updates, guaranteed uptime) plus the Model Control Plane, Artifact Control Plane, snapshots and Codespaces. Enterprise adds SSO, custom-role RBAC, audit logs and air-gapped deployment on top.",
     },
     {
       question: "Is there a startup or academic discount?",
       answer:
-        'Yes — early-stage companies building ML-powered products, universities, research institutions and educational use cases can apply for special pricing on ZenML Pro. <a href="/startups-and-academics">Apply here</a>.',
+        'Yes. Early-stage companies building ML-powered products, universities, research institutions and educational use cases can apply for special pricing on ZenML Pro. <a href="/startups-and-academics">Apply here</a>.',
     },
     {
       question: "How is my data handled?",
@@ -655,7 +655,7 @@ export const PRICING_FAQ_ZENML: FaqData = {
     },
     {
       question: "Do I need a separate subscription for Kitaru?",
-      answer: `No — your ZenML subscription covers the Kitaru workspace too. Kitaru is priced on its own terms (a flat ${KITARU_CLOUD_PRICE}/month rather than execution tiers), but it's the same control plane, the same governance, and one bill.`,
+      answer: `No, your ZenML subscription covers the Kitaru workspace too. Kitaru is priced on its own terms, a flat ${KITARU_CLOUD_PRICE}/month rather than execution tiers, but both workspaces run on the same control plane and land on one bill.`,
     },
     {
       question: "What kind of support is included in each plan?",
