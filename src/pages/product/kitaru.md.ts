@@ -5,6 +5,7 @@ import {
   markdownPreamble,
   markdownResponse,
 } from "../../lib/agentMarkdown";
+import { KITARU_INSTALL_CMD } from "../../lib/kitaru-landing";
 import {
   PRODUCT_KITARU_MARKDOWN,
   PRODUCT_KITARU_SEO,
@@ -22,7 +23,7 @@ export function GET(): Response {
     joinMarkdownSections(
       "## Summary",
       ...PRODUCT_KITARU_MARKDOWN.summary,
-      `Install: \`${PRODUCT_KITARU_MARKDOWN.installCmd}\``,
+      `Install: \`${KITARU_INSTALL_CMD}\``,
     ),
     joinMarkdownSections(
       "## Main CTAs",
@@ -30,9 +31,13 @@ export function GET(): Response {
     ),
     joinMarkdownSections(
       "## The five acts",
-      ...PRODUCT_KITARU_MARKDOWN.journey.map((step) =>
-        joinMarkdownSections(`### ${step.name}`, step.body),
-      ),
+      ...PRODUCT_KITARU_MARKDOWN.journey.map((step) => {
+        const body = step.body.replace(
+          `\`${PRODUCT_KITARU_MARKDOWN.installCmd}\``,
+          `\`${KITARU_INSTALL_CMD}\``,
+        );
+        return joinMarkdownSections(`### ${step.name}`, body);
+      }),
     ),
     joinMarkdownSections(
       "## The object model",

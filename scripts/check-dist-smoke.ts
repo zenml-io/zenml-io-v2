@@ -7,6 +7,7 @@ const AGENT_SKILLS_INDEX_PATH = ".well-known/agent-skills/index.json";
 const REQUIRED_FILES = [
   "index.html",
   "product/kitaru.html",
+  "product/kitaru.md",
   "product/zenml.html",
   "compare.html",
   "blog.html",
@@ -150,8 +151,19 @@ const CONTENT_MARKER_CHECKS: ContentMarkerCheck[] = [
   },
   {
     file: "product/kitaru.html",
-    markers: ['data-app="kitaru"', 'id="kitaru-main"'],
-    message: "dist/product/kitaru.html contains Kitaru page identity markers",
+    markers: [
+      'data-app="kitaru"',
+      'id="kitaru-main"',
+      "kitaru/kitaru-jsonl@latest",
+      "kitaru experiment run start baseline",
+      "kitaru_workflow_start",
+    ],
+    message: "dist/product/kitaru.html contains current Kitaru code markers",
+  },
+  {
+    file: "product/kitaru.md",
+    markers: ['uv add "kitaru[cli,worker]" kitaru-pydantic-ai'],
+    message: "dist/product/kitaru.md contains the page-local install command",
   },
   {
     file: "product/zenml.html",

@@ -29,16 +29,18 @@ type Framework = {
   label: string;
   /** Filename shown in the code block chrome — carries the language. */
   file: string;
+  install: string;
   before: CodeLine[];
   after: CodeLine[];
 };
 
-const frameworks: Framework[] = [
+export const FRAMEWORKS: Framework[] = [
   {
     id: "pydanticai",
     Icon: PydanticIcon,
     label: "PydanticAI",
     file: "agent.py",
+    install: 'uv add "kitaru-pydantic-ai[openai]"',
     before: [
       [{ kw: "from" }, " pydantic_ai ", { kw: "import" }, " Agent"],
       [],
@@ -89,7 +91,7 @@ const frameworks: Framework[] = [
         ",",
       ],
       ["    tools", { op: "=" }, "[search_docs, fetch_policy],"],
-      ["))"],
+      ["), agent_id", { op: "=" }, "AGENT_ID)"],
       [],
       [
         "result ",
@@ -107,6 +109,7 @@ const frameworks: Framework[] = [
     Icon: OpenAIIcon,
     label: "OpenAI Agents SDK",
     file: "agent.py",
+    install: "uv add kitaru-openai-agents",
     before: [
       [{ kw: "from" }, " agents ", { kw: "import" }, " Agent, Runner"],
       [],
@@ -176,6 +179,7 @@ const frameworks: Framework[] = [
     Icon: LangChainIcon,
     label: "LangGraph",
     file: "agent.py",
+    install: "uv add kitaru-langgraph",
     before: [
       [
         { kw: "from" },
@@ -238,7 +242,9 @@ const frameworks: Framework[] = [
         { fn: "KitaruGraphRunner" },
         "(builder.",
         { fn: "compile" },
-        "())",
+        "(), agent_id",
+        { op: "=" },
+        "AGENT_ID)",
       ],
       [
         "result ",
@@ -256,6 +262,7 @@ const frameworks: Framework[] = [
     Icon: MastraIcon,
     label: "Mastra",
     file: "agent.ts",
+    install: "pnpm add @zenml-io/kitaru-mastra @mastra/core@1.51.0",
     before: [
       [
         { kw: "import" },
@@ -350,6 +357,8 @@ const frameworks: Framework[] = [
     Icon: VercelIcon,
     label: "Vercel AI SDK",
     file: "agent.ts",
+    install:
+      "pnpm add @zenml-io/kitaru-vercel-ai ai@7.0.65 @ai-sdk/openai@4.0.20 zod@4.4.3",
     before: [
       [
         { kw: "import" },
@@ -431,22 +440,22 @@ const frameworks: Framework[] = [
 ];
 
 export function OneImport() {
-  const [active, setActive] = useState<string>(frameworks[0].id);
-  const fw = frameworks.find((f) => f.id === active) ?? frameworks[0];
+  const [active, setActive] = useState<string>(FRAMEWORKS[0].id);
+  const fw = FRAMEWORKS.find((f) => f.id === active) ?? FRAMEWORKS[0];
 
   // WAI-ARIA tabs pattern: arrow keys move selection with roving focus, so
   // the tablist is one Tab stop instead of five.
   const onTablistKeyDown = (event: KeyboardEvent) => {
-    const index = frameworks.findIndex((f) => f.id === active);
+    const index = FRAMEWORKS.findIndex((f) => f.id === active);
     let next = -1;
-    if (event.key === "ArrowRight") next = (index + 1) % frameworks.length;
+    if (event.key === "ArrowRight") next = (index + 1) % FRAMEWORKS.length;
     else if (event.key === "ArrowLeft")
-      next = (index - 1 + frameworks.length) % frameworks.length;
+      next = (index - 1 + FRAMEWORKS.length) % FRAMEWORKS.length;
     else if (event.key === "Home") next = 0;
-    else if (event.key === "End") next = frameworks.length - 1;
+    else if (event.key === "End") next = FRAMEWORKS.length - 1;
     if (next === -1) return;
     event.preventDefault();
-    const id = frameworks[next].id;
+    const id = FRAMEWORKS[next].id;
     setActive(id);
     document.getElementById(`one-import-tab-${id}`)?.focus();
   };
@@ -472,7 +481,7 @@ export function OneImport() {
           className="flex flex-wrap gap-2"
           onKeyDown={onTablistKeyDown}
         >
-          {frameworks.map((f) => (
+          {FRAMEWORKS.map((f) => (
             <button
               key={f.id}
               id={`one-import-tab-${f.id}`}
@@ -502,6 +511,12 @@ export function OneImport() {
         aria-labelledby={`one-import-tab-${fw.id}`}
         className="mt-8 grid grid-cols-1 items-center gap-5 lg:grid-cols-[1fr_auto_1fr]"
       >
+        <p className="col-span-full overflow-x-auto rounded-lg border border-border bg-surface px-4 py-3 font-mono text-xs text-ink-soft">
+          <span className="mr-3 uppercase tracking-wider text-ember">
+            Install
+          </span>
+          {fw.install}
+        </p>
         <Reveal delay={120} variant="left" key={`${fw.id}-before`}>
           <CodeBlock
             code={renderCodeLines(fw.before)}
