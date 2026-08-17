@@ -128,7 +128,7 @@ export const ARTICLES = [
     kind: "Origin story",
     title: "From ZenML to Kitaru",
     summary:
-      "Why agent runtime needed a new interface, and what we kept from production ML infrastructure.",
+      "Why we built a second product, and what we kept from production ML infrastructure.",
     href: "/blog/from-zenml-to-kitaru",
   },
   {
@@ -142,7 +142,7 @@ export const ARTICLES = [
     kind: "Perspective",
     title: "Agents need more than traces",
     summary:
-      "Traces explain what happened. Runtime artifacts, replay, and approval gates let you do something about it.",
+      "Traces show you what happened. The case for infrastructure that lets you act on it.",
     href: "/blog/agents-need-more-than-traces",
   },
 ] as const;
@@ -167,6 +167,11 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     question: "So is this an observability tool?",
     answer:
       "No. It sits beside your observability stack. Traces tell you what happened; Kitaru re-runs them against your actual code: a debugger with a memory rather than another dashboard of spans.",
+  },
+  {
+    question: "Do I have to change my agent's code?",
+    answer:
+      "Not to get started. Import your traces and you already get the session views, investigations, cohorts and evaluators; your code stays untouched. An adapter enters only when you want to replay sessions against a change: one line for the supported frameworks, or a small custom one for CLI-harness agents like Claude Code or Gemini CLI.",
   },
   {
     question: "My agent writes to real systems. Isn't replay dangerous?",
