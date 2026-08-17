@@ -4,24 +4,24 @@
 <figure class="fig">
   <div class="lane lane--competitor">
     <div class="lane-head">
-      <span class="lane-label">OpenAI Agents SDK approval</span>
-      <span class="lane-sub">Worker stays alive while it waits</span>
+      <span class="lane-label">Rerun outside Kitaru</span>
+      <span class="lane-sub">Every check hits your real systems again</span>
     </div>
     <div class="timeline">
       <div class="tick">
         <span class="tick-dot"></span>
-        <span class="tick-text">tool approval pause</span>
+        <span class="tick-text">tool call: refund_payment()</span>
       </div>
       <div class="bar bar--busy">
-        <span class="bar-text">process alive · 6h idle</span>
+        <span class="bar-text">calls the live payments API</span>
       </div>
       <div class="tick">
         <span class="tick-dot tick-dot--done"></span>
-        <span class="tick-text">human approves</span>
+        <span class="tick-text">response comes back — maybe different this time</span>
       </div>
     </div>
     <div class="meter">
-      <span class="meter-key">Compute</span>
+      <span class="meter-key">Real systems touched</span>
       <span class="meter-bar"><span class="meter-fill meter-fill--full"></span></span>
       <span class="meter-val meter-val--bad">100%</span>
     </div>
@@ -29,24 +29,24 @@
 
   <div class="lane lane--kitaru">
     <div class="lane-head">
-      <span class="lane-label lane-label--accent">kitaru.wait()</span>
-      <span class="lane-sub">Compute released, flow resumes on signal</span>
+      <span class="lane-label lane-label--accent">Kitaru replay</span>
+      <span class="lane-sub">Tool calls answered from the recording</span>
     </div>
     <div class="timeline">
       <div class="tick">
         <span class="tick-dot tick-dot--accent"></span>
-        <span class="tick-text"><code>wait(name="approve")</code></span>
+        <span class="tick-text">tool policy: static substitution</span>
       </div>
       <div class="bar bar--idle">
-        <span class="bar-text">no container · 6h waiting</span>
+        <span class="bar-text">recording answers the call</span>
       </div>
       <div class="tick">
         <span class="tick-dot tick-dot--accent"></span>
-        <span class="tick-text">signal arrives, flow resumes</span>
+        <span class="tick-text">same inputs reproduce the original run</span>
       </div>
     </div>
     <div class="meter">
-      <span class="meter-key">Compute</span>
+      <span class="meter-key">Real systems touched</span>
       <span class="meter-bar"><span class="meter-fill meter-fill--zero"></span></span>
       <span class="meter-val meter-val--ok">0%</span>
     </div>

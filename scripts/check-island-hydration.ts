@@ -54,6 +54,15 @@
  *   would have to select them positionally — brittle, for a low-traffic page.
  * All four are still covered structurally by the island manifest in
  * check-dist-smoke.ts. Please do not "helpfully" add them back here.
+ * - Of the /product/kitaru islands, only OneImport is checked. They are all
+ *   client:visible siblings on one page sharing the same bundle pipeline, so one
+ *   check proves the page hydrates. The others have nothing better to assert on:
+ *   Hero's sole interaction is a clipboard write (permission-gated in headless),
+ *   CodeShowcase's lang toggle is a near-identical sibling of OneImport's tabs,
+ *   KitaruGrain is a WebGL shader, AgentDriven/SocialProof render static content
+ *   through Reveal wrappers, and ScenarioStrip's only state is a decorative
+ *   hover-linked highlight — a progressive enhancement we accept going untested
+ *   rather than asserting on hover-driven class flips.
  *
  * - Console errors and pageerror are NOT failure triggers. Pagefind's wasm load,
  *   the aborted third-party requests and image 404s all produce noise; failing on
@@ -327,6 +336,25 @@ const CHECKS: IslandCheck[] = [
           `the form did a native POST navigation (now at ${pathname}) — preventDefault() never ran`,
         );
       }
+    },
+  },
+  {
+    name: "OneImport switches its framework tab on click",
+    route: "/product/kitaru#one-import",
+    island: "OneImport",
+    seedConsent: true,
+    async assert(page, root) {
+      // Every island on /product/kitaru is client:visible, so nothing hydrates
+      // until it scrolls into view — the #one-import hash lands the section in
+      // the viewport on load, which is what arms the runner's hydration gate.
+      // SSR ships the first framework tab selected; only an onClick can move it.
+      const tab = (n: number) => `${root} [role="tab"]:nth-of-type(${n})`;
+      await page.waitForSelector(`${tab(1)}[aria-selected="true"]`);
+
+      await page.locator(tab(2)).click();
+
+      await page.waitForSelector(`${tab(2)}[aria-selected="true"]`);
+      await page.waitForSelector(`${tab(1)}[aria-selected="false"]`);
     },
   },
 ];

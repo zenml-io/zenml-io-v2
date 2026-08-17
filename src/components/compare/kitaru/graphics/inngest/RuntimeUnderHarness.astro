@@ -8,8 +8,8 @@
   aria-describedby="runtime-under-harness-desc"
 >
   <figcaption class="sr-only">
-    <span id="runtime-under-harness-title">Runtime under your harness versus platform across your stack.</span>
-    <span id="runtime-under-harness-desc">Compares Inngest as a packaged event-driven platform with Kitaru as the runtime layer beneath an existing Python agent harness.</span>
+    <span id="runtime-under-harness-title">Durable execution platform versus replay-based eval layer.</span>
+    <span id="runtime-under-harness-desc">Compares Inngest as a packaged durable-execution platform with Kitaru as a replay-based eval layer that records and replays agent runs.</span>
   </figcaption>
   <div class="panel panel--competitor">
     <div class="panel-head">
@@ -34,30 +34,30 @@
 
   <div class="panel panel--kitaru">
     <div class="panel-head">
-      <span class="panel-label panel-label--accent">Kitaru · runtime, one layer of four</span>
-      <span class="panel-sub">Owns the runtime, leaves harness and platform untouched</span>
+      <span class="panel-label panel-label--accent">Kitaru · replay-based eval layer</span>
+      <span class="panel-sub">Sits beside production, records and replays runs</span>
     </div>
 
     <div class="layers">
       <div class="layer">
-        <span class="layer-key">Platform</span>
-        <span class="layer-val">your auth, entitlements, observability</span>
-      </div>
-      <div class="layer">
-        <span class="layer-key">Harness</span>
-        <span class="layer-val">Pydantic AI, OpenAI, Claude, LangGraph, raw Python</span>
+        <span class="layer-key">Record</span>
+        <span class="layer-val">wrap with an adapter, or import Langfuse / LangSmith / Braintrust / OTel traces</span>
       </div>
       <div class="layer layer--accent">
-        <span class="layer-key">Runtime</span>
-        <span class="layer-val">Kitaru: <code>@flow</code>, <code>@checkpoint</code>, <code>llm()</code>, <code>wait()</code>, <code>memory</code></span>
+        <span class="layer-key">Replay</span>
+        <span class="layer-val">session re-executes; tool calls answered from the recording</span>
       </div>
       <div class="layer">
-        <span class="layer-key">Model</span>
-        <span class="layer-val">OpenAI, Anthropic, Google, open-weights</span>
+        <span class="layer-key">Cohort</span>
+        <span class="layer-val">the sessions that matter, frozen as an immutable set</span>
+      </div>
+      <div class="layer">
+        <span class="layer-key">Experiment</span>
+        <span class="layer-val">same cohort, one variable moved, compared side by side</span>
       </div>
     </div>
 
-    <div class="foot foot--accent">Kitaru owns one layer. The rest of your stack stays as you picked it.</div>
+    <div class="foot foot--accent">Kitaru doesn't orchestrate anything. It records what already ran and replays it.</div>
   </div>
 </figure>
 

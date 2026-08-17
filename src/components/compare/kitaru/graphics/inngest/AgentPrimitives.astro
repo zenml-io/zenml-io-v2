@@ -8,8 +8,8 @@
   aria-describedby="agent-primitives-desc"
 >
   <figcaption class="sr-only">
-    <span id="agent-primitives-title">Python agent primitives versus polyglot durable functions.</span>
-    <span id="agent-primitives-desc">Compares Inngest step primitives across several languages with Kitaru primitives for Python agent workloads.</span>
+    <span id="agent-primitives-title">Durable step primitives versus recorded session primitives.</span>
+    <span id="agent-primitives-desc">Compares Inngest step primitives across several languages with Kitaru's adapter and client primitives for recording and replaying agent sessions.</span>
   </figcaption>
   <div class="panel panel--competitor">
     <div class="panel-head">
@@ -43,40 +43,40 @@
       </div>
     </div>
 
-    <div class="foot">Polyglot, app-shaped. Agent telemetry is glue you write on top.</div>
+    <div class="foot">Durable, general-purpose. Session recording isn't built in.</div>
   </div>
 
   <div class="panel panel--kitaru">
     <div class="panel-head">
-      <span class="panel-label panel-label--accent">Kitaru · Python agent primitives</span>
-      <span class="panel-sub">The glue every Python agent team writes, shipped in the box</span>
+      <span class="panel-label panel-label--accent">Kitaru · record and replay primitives</span>
+      <span class="panel-sub">One wrapper to record, one client to test a change</span>
     </div>
 
     <div class="wrap">
-      <span class="mono wrap-label">@flow</span>
-      <span class="wrap-sub">on ordinary Python 3.11+</span>
+      <span class="mono wrap-label">KitaruAgent</span>
+      <span class="wrap-sub">wraps a Pydantic AI agent transparently</span>
     </div>
 
     <div class="prims">
       <div class="prim prim--accent">
-        <span class="mono pkey">kitaru.llm()</span>
-        <span class="pval">alias-resolved keys · prompt + token + latency per call</span>
+        <span class="mono pkey">support.run_sync()</span>
+        <span class="pval">runs exactly as before · lands as a session</span>
       </div>
       <div class="prim">
-        <span class="mono pkey">kitaru.wait()</span>
-        <span class="pval">human or external input, compute released</span>
+        <span class="mono pkey">cohorts.create()</span>
+        <span class="pval">freeze the sessions that matter into a named set</span>
       </div>
       <div class="prim">
-        <span class="mono pkey">kitaru.memory</span>
-        <span class="pval">typed scopes, versioned across runs</span>
+        <span class="mono pkey">experiments.create()</span>
+        <span class="pval">model, prompt, tool policy — pure configuration</span>
       </div>
       <div class="prim">
-        <span class="mono pkey">@checkpoint</span>
-        <span class="pval">typed versioned artifact in your bucket</span>
+        <span class="mono pkey">client.compare()</span>
+        <span class="pval">diff two experiment runs over the same cohort</span>
       </div>
     </div>
 
-    <div class="foot foot--accent">Pydantic AI adapter ships in the box; OpenAI / Claude / LangGraph wrap.</div>
+    <div class="foot foot--accent">Adapters ship for Pydantic AI, OpenAI Agents SDK, LangGraph, Mastra, Vercel AI SDK — or import traces for anything else.</div>
   </div>
 </figure>
 

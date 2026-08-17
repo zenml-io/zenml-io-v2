@@ -61,15 +61,15 @@
   --font-ui: var(--font-sans);
 
   /* TwoWorkspaces v2 Kitaru-subtab card surface (per Zuri's v2 brief).
-   * Used as the fill on the flows-list, code, timeline, and footer cards
-   * inside FlowsLayout — NOT on the outer section. Tinting only the
+   * Used as the fill on the sessions-list, import, spine, and footer cards
+   * inside SessionsLayout — NOT on the outer section. Tinting only the
    * cards (and not the section around them) keeps the brand-switch on
    * the cards themselves so the page background stays neutral. */
   --kitaru-cream: #FAF8F4;
 
   /* Canonical Kitaru selected-row tokens (Paper artboard AP9-0).
-   * Reuse across FlowsLayout, CheckpointsLayout, ReplayLayout,
-   * DeploymentsLayout, FrameworksAgentsLayout — same spec everywhere.
+   * Reuse across CompareLayout, SessionsLayout, CohortsLayout,
+   * ExperimentsLayout, FrameworksAgentsLayout — same spec everywhere.
    * Most resolve to the standard orange ramp; only
    * --kitaru-selected-row-border (#FFD7B5) is a one-off value that
    * sits between orange-200 (#FED7AA) and orange-300 (#FDBA74). */
@@ -81,12 +81,100 @@
   --kitaru-pill-text:           var(--color-orange-700);  /* #C2410C */
 }
 
+/* ─── 1b. Kitaru landing primitives (warm paper / ink / ember) ────────────────
+ * Underlying vars for the redesigned /product/kitaru landing. The matching
+ * Tailwind registration lives in src/styles/global.css ("KITARU LANDING TOKENS
+ * + UTILITIES") — every one of those tokens is `inline`, so `bg-ember` compiles
+ * to `background-color: var(--ember)` and only resolves inside this scope.
+ *
+ * These duplicate values already present in block 1 under the older
+ * `--color-*` names (--cream == --color-bg, --ember == --color-accent, …).
+ * Kept as a second set on purpose: block 1 feeds the hand-written rules
+ * further down this file, this block feeds the Tailwind utilities the new
+ * sections use. The single value that is NOT a duplicate is --night-surface
+ * (oklch 0.17) vs --color-dark-surface (oklch 0.16).
+ */
+[data-app="kitaru"] {
+  --cream:         oklch(0.975 0.008 75);
+  --surface:       oklch(1 0 0);
+  --surface-warm:  oklch(0.99 0.003 90);
+  --ink:           oklch(0.13 0.015 60);
+  --ink-soft:      oklch(0.49 0.015 55);
+  --ember:         oklch(0.65 0.16 45);
+  --ember-deep:    oklch(0.55 0.17 45);
+  --ember-light:   oklch(0.95 0.015 70);
+  --success:       oklch(0.55 0.1 155);
+  --warn:          oklch(0.68 0.14 70);
+  --night:         oklch(0.13 0.015 60);
+  --night-surface: oklch(0.17 0.015 60);
+  --night-text:    oklch(0.92 0.01 70);
+  --hairline:      oklch(0.91 0.01 70);
+
+  /* `text-ink` / `bg-ink` already exist site-wide (#0F0F12, the TwoWorkspaces
+   * ink scale in global.css). Re-point the utility at the Kitaru ink here so
+   * the class means the right thing inside the wrapper and is untouched
+   * outside it. Same trick for --success, which global.css maps `text-success`
+   * onto. */
+  --color-ink: var(--ink);
+
+  /* Semantic vars. global.css registers bg-background, text-foreground,
+   * border-border, bg-secondary, text-muted-foreground, text-accent-foreground,
+   * bg-primary, bg-card, bg-muted, bg-accent, border-input and ring-ring
+   * against these underlying names, so overriding them re-themes those
+   * utilities inside the Kitaru wrapper without adding new class names. */
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --popover: var(--surface);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: oklch(0.985 0.005 75);
+  --secondary: oklch(0.96 0.006 75);
+  --secondary-foreground: var(--ink);
+  --muted: oklch(0.96 0.006 75);
+  --muted-foreground: oklch(0.55 0.015 60);
+  --accent: var(--ember);
+  --accent-foreground: oklch(0.99 0.005 75);
+  --destructive: oklch(0.55 0.2 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: var(--hairline);
+  --input: var(--hairline);
+  --ring: var(--ember);
+
+  /* Radius scale — the landing design system derives every step from --radius,
+   * which lands 2–4px tighter than the site defaults in global.css. Scoped so
+   * `rounded-md` / `rounded-lg` / `rounded-xl` match the design inside the
+   * wrapper and keep their site values everywhere else. */
+  --radius:     0.5rem;
+  --radius-sm:  calc(var(--radius) - 4px);
+  --radius-md:  calc(var(--radius) - 2px);
+  --radius-lg:  var(--radius);
+  --radius-xl:  calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  /* Fonts. Inter is the Kitaru body face (global.css already self-hosts it);
+   * without this re-assert the wrapper inherits Plus Jakarta Sans from
+   * <html data-app="zenml">. Plus Jakarta Sans stays on headings. */
+  --font-sans:    "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+[data-app="kitaru"] :is(h1, h2, h3, h4, h5, h6) {
+  font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
 /* ─── 2. Wrapper base — replaces Kitaru's body { ... } rules ─────────────── */
 [data-app="kitaru"] {
   font-family: var(--font-ui);
   background: var(--color-bg);
   color: var(--color-primary);
   -webkit-font-smoothing: antialiased;
+  /* Inter alternates (single-storey a, open digits) — part of the redesign's
+   * type identity, scoped with the rest of the Kitaru base. */
+  font-feature-settings: "cv11", "ss01";
 }
 
 /* Grain overlay scoped to the wrapper */
@@ -173,23 +261,23 @@
   50% { background-position: 0% 50%; }
 }
 
+/* Landing-design keyframes. Consumed by the `pulse-dot` utility and the
+ * stroke-drawing SVGs in the Kitaru sections; the utility itself is registered
+ * in global.css because that is the Tailwind root. */
+@keyframes kitaru-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.7); }
+}
+@keyframes kitaru-draw {
+  to { stroke-dashoffset: 0; }
+}
+
 /* ─── 5. Shared utility classes ──────────────────────────────────────────── */
-[data-app="kitaru"] .pulse-dot {
-  position: relative;
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  flex-shrink: 0;
-}
-[data-app="kitaru"] .pulse-dot::after {
-  content: '';
-  position: absolute;
-  inset: -3px;
-  border-radius: 50%;
-  background: oklch(0.65 0.16 45 / 0.4);
-  animation: kitaru-pulse-ring 2s ease-in-out infinite;
-  z-index: -1;
-}
+/* NOTE: `.pulse-dot` is no longer defined here. The landing design system owns
+ * it as a Tailwind `@utility` in global.css (a ::before that fills the box and
+ * runs kitaru-pulse), and callers size it themselves — `pulse-dot size-1.5`.
+ * The previous 8px-dot-plus-ring rule was scoped here and would have stacked
+ * on top of it. `kitaru-pulse-ring` is kept above; other sections still use it. */
 
 [data-app="kitaru"] .accent-shimmer {
   color: var(--color-accent);
@@ -226,7 +314,8 @@
   max-width: 600px;
 }
 [data-app="kitaru"] .section-desc {
-  font-size: 17px; line-height: 1.6; color: var(--color-secondary);
+  font-size: clamp(1rem, 1.6vw, 1.1rem); line-height: 1.65; font-weight: 300;
+  color: var(--color-secondary);
   max-width: 480px; margin-top: 16px;
 }
 
@@ -364,7 +453,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   [data-app="kitaru"] [data-reveal] { opacity: 1; transform: none; transition: none; }
-  [data-app="kitaru"] .pulse-dot::after { animation: none; }
+  [data-app="kitaru"] .pulse-dot::before { animation: none; }
   [data-app="kitaru"] .accent-shimmer {
     -webkit-text-fill-color: var(--color-accent);
     background: none; animation: none;

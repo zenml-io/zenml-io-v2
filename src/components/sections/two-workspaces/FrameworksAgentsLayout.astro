@@ -1,43 +1,47 @@
 ---
 /**
- * FrameworksAgents subtab — TwoWorkspaces v2 · Kitaru · artboard A3S-0.
- * "typed agent logic · Kitaru wraps around it."
+ * FrameworksAgents subtab — TwoWorkspaces v2 · Kitaru.
+ * "your agent SDK · Kitaru wraps around it."
  *
  * Three-column layout:
- *   Col 1 — HARNESS: clickable list of 5 frameworks (PydanticAI, OpenAI SDK,
- *            LangGraph, Claude SDK, Your loop). Selected row: orange-50 bg +
- *            orange-400 badge + orange border. Unselected: white bg, ink badge.
- *   Col 2 — KITARU ADDS: durable run layer card — KitaruAgent(agent) chip,
- *            dashed orange Kitaru runtime box with 4 capability tiles (flow /
- *            checkpoint / wait / replay), and a "Model + tools" row.
- *   Col 3 — AFTER A CRASH: mini-Gantt (6 spans with summary stripe, axis,
- *            span rows) + with-kitaru / without comparison block.
+ *   Col 1 — HARNESS: clickable list of the shipped adapters (PydanticAI,
+ *            OpenAI Agents SDK, LangGraph, Mastra, Vercel AI SDK, Your own
+ *            loop) — the same set the landing's OneImport section offers.
+ *            Selected row: orange-50 bg + orange-400 badge + orange border.
+ *            Unselected: white bg, ink badge.
+ *   Col 2 — KITARU ADDS: recorded-session card — the adapter chip, a dashed
+ *            orange Kitaru runtime box with 4 capability tiles (session /
+ *            checkpoint / cohort / replay), and a "Model + tools" row.
+ *   Col 3 — EVERY CALL RECORDED: mini-Gantt of the session that run produced
+ *            (6 spans with summary stripe, axis, span rows) + with-kitaru /
+ *            without comparison block.
  *
  * Interactive: clicking a harness row sets `data-active-example` on the
  * layout root. CSS attribute selectors reveal the matching col-2/col-3
- * panels. No Preact island — identical pattern to FlowsLayout.astro.
+ * panels. No Preact island — identical pattern to SessionsLayout.astro.
  *
  * The mini-Gantt is built BESPOKE inline here; it is NOT extracted as a
- * shared component and does NOT import from FlowsLayout.
+ * shared component and does NOT import from SessionsLayout.
  *
- * Design tokens (from artboard computed styles A3S-0):
+ * Design tokens:
  *   Cream ground:  #FAF8F4  (bg-cream-warm)
  *   Runtime box:   #FFF4EC  bg / #FB923C 1.5px dashed border
  *   Tile cards:    #FFFFFF  bg / #FED7AA border
  *   Row selected:  #FFF4EC  bg / #FFD7B5 border
  *   Row default:   #FFFFFF  bg / #E5E7EB border
  *   Badge selected: #FB923C (orange-400)
- *   Badge default:  #101828 (ink) — except "Your loop" which is slate-400
+ *   Badge default:  #101828 (ink) — except "Your own loop" which is slate-400
  *   Eyebrow:        #988573  (warm-taupe)
  *   "Kitaru runtime" label: #C2410C (orange-700)
  *   "outer layer" label:    #C2410C, opacity 0.7
- *   Gantt track bg: #F2E9E2 (warm-taupe-track)
- *   classify bar:   #FB923C (orange-400)
- *   checkpoint bar: #9A3412 (orange-800)
- *   crashed bar:    #EF4444 (red-500)
- *   resumed bar:    #FB923C (orange-400)
- *   tool bar:       #F97316 (orange-500)
- *   artifact bar:   #9A3412 (orange-800)
+ *   Gantt track bg:    #F2E9E2 (warm-taupe-track)
+ *   run bar:           #FDD9A8 (orange-200, the session's own bookend)
+ *   model_request bar: #FB923C (orange-400)
+ *   tool bar:          #F97316 (orange-500)
+ *   checkpoint bar:    #9A3412 (orange-800)
+ *   reply bar:         #EA580C (orange-600)
+ *
+ * Nothing here is red: this pane records a run, it does not judge one.
  */
 
 import {
@@ -51,27 +55,21 @@ const defaultId = DEFAULT_FRAMEWORK_AGENT_EXAMPLE_ID;
 /** Bar fill hex per gantt span kind. */
 const ganttBarColor = (kind: GanttSpanKind): string =>
   ({
-    classify: "#FB923C", // orange-400
-    checkpoint: "#9A3412", // orange-800
-    crashed: "#EF4444", // red-500
-    resumed: "#FB923C", // orange-400
+    run: "#FDD9A8", // orange-200
+    model_request: "#FB923C", // orange-400
     tool: "#F97316", // orange-500
-    artifact: "#9A3412", // orange-800
+    checkpoint: "#9A3412", // orange-800
+    reply: "#EA580C", // orange-600
   })[kind];
 
 /** Dot color for the LHS span name row. */
 const ganttDotColor = (kind: GanttSpanKind): string =>
-  kind === "crashed"
-    ? "#EF4444"
-    : kind === "resumed"
-      ? "#FB923C"
-      : kind === "checkpoint" || kind === "artifact"
-        ? "#9A3412"
-        : "#F97316";
+  kind === "checkpoint" ? "#9A3412" : kind === "run" ? "#FDD9A8" : "#F97316";
 
-/** Duration text color per kind. */
+/** Duration text color per kind — checkpoints and the reply read as the
+ *  recording's own marks, so they carry the warm accent. */
 const ganttDurColor = (kind: GanttSpanKind): string =>
-  kind === "crashed" ? "#EF4444" : kind === "resumed" ? "#C2410C" : "#988573";
+  kind === "checkpoint" || kind === "reply" ? "#C2410C" : "#988573";
 ---
 
 <div
@@ -92,7 +90,7 @@ const ganttDurColor = (kind: GanttSpanKind): string =>
         class="text-base font-semibold leading-5"
         style="color:#101828; font-family:'Plus Jakarta Sans', system-ui, sans-serif;"
       >
-        typed agent logic
+        your agent SDK
       </span>
     </div>
 
@@ -189,7 +187,7 @@ const ganttDurColor = (kind: GanttSpanKind): string =>
               class="text-base font-semibold leading-5"
               style="color:#101828; font-family:'Plus Jakarta Sans', system-ui, sans-serif;"
             >
-              durable run layer
+              recorded session
             </span>
           </div>
           {/* KitaruAgent chip */}
@@ -420,16 +418,16 @@ const ganttDurColor = (kind: GanttSpanKind): string =>
               class="font-sans text-[10px] font-semibold uppercase leading-3 tracking-[0.08em]"
               style="color:#988573; font-family:'Plus Jakarta Sans', system-ui, sans-serif;"
             >
-              AFTER A CRASH
+              EVERY CALL RECORDED
             </span>
             <span
-              class="text-base font-semibold leading-5"
-              style="color:#101828; font-family:'Plus Jakarta Sans', system-ui, sans-serif;"
+              class="font-mono text-[13px] font-semibold leading-5"
+              style="color:#101828;"
             >
-              {ex.runLabel}
+              {ex.sessionLabel}
             </span>
           </div>
-          {/* Resumed chip */}
+          {/* Recorded chip */}
           <span
             class="inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-[5px]"
             style="background-color:#FFF4EC; border-color:#FED7AA;"
@@ -443,7 +441,7 @@ const ganttDurColor = (kind: GanttSpanKind): string =>
               class="font-mono text-[11px] font-medium leading-[13px]"
               style="font-family:'JetBrains Mono', monospace; color:#C2410C;"
             >
-              resumed
+              recorded
             </span>
           </span>
         </div>
@@ -602,20 +600,22 @@ const ganttDurColor = (kind: GanttSpanKind): string =>
   }
 
   /* Reveal the active pane for col 2 */
-  [data-active-example="pydantic_ai"]  .fw-col-2-stack > [data-fw-pane="pydantic_ai"],
-  [data-active-example="openai_sdk"]   .fw-col-2-stack > [data-fw-pane="openai_sdk"],
-  [data-active-example="langgraph"]    .fw-col-2-stack > [data-fw-pane="langgraph"],
-  [data-active-example="claude_sdk"]   .fw-col-2-stack > [data-fw-pane="claude_sdk"],
-  [data-active-example="your_loop"]    .fw-col-2-stack > [data-fw-pane="your_loop"] {
+  [data-active-example="pydantic_ai"]   .fw-col-2-stack > [data-fw-pane="pydantic_ai"],
+  [data-active-example="openai_agents"] .fw-col-2-stack > [data-fw-pane="openai_agents"],
+  [data-active-example="langgraph"]     .fw-col-2-stack > [data-fw-pane="langgraph"],
+  [data-active-example="mastra"]        .fw-col-2-stack > [data-fw-pane="mastra"],
+  [data-active-example="vercel_ai"]     .fw-col-2-stack > [data-fw-pane="vercel_ai"],
+  [data-active-example="your_own_loop"] .fw-col-2-stack > [data-fw-pane="your_own_loop"] {
     display: flex;
   }
 
   /* Reveal the active pane for col 3 */
-  [data-active-example="pydantic_ai"]  .fw-col-3-stack > [data-fw-pane="pydantic_ai"],
-  [data-active-example="openai_sdk"]   .fw-col-3-stack > [data-fw-pane="openai_sdk"],
-  [data-active-example="langgraph"]    .fw-col-3-stack > [data-fw-pane="langgraph"],
-  [data-active-example="claude_sdk"]   .fw-col-3-stack > [data-fw-pane="claude_sdk"],
-  [data-active-example="your_loop"]    .fw-col-3-stack > [data-fw-pane="your_loop"] {
+  [data-active-example="pydantic_ai"]   .fw-col-3-stack > [data-fw-pane="pydantic_ai"],
+  [data-active-example="openai_agents"] .fw-col-3-stack > [data-fw-pane="openai_agents"],
+  [data-active-example="langgraph"]     .fw-col-3-stack > [data-fw-pane="langgraph"],
+  [data-active-example="mastra"]        .fw-col-3-stack > [data-fw-pane="mastra"],
+  [data-active-example="vercel_ai"]     .fw-col-3-stack > [data-fw-pane="vercel_ai"],
+  [data-active-example="your_own_loop"] .fw-col-3-stack > [data-fw-pane="your_own_loop"] {
     display: flex;
   }
 

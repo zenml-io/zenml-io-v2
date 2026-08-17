@@ -19,44 +19,44 @@
 
   <div class="panel panel--kitaru">
     <div class="panel-head">
-      <span class="panel-label panel-label--accent">Kitaru · immutable versioned snapshots</span>
-      <span class="panel-sub">Tag routing, not redeploys</span>
+      <span class="panel-label panel-label--accent">Kitaru · compare, don&rsquo;t deploy</span>
+      <span class="panel-sub">Two runs, one cohort, one diff</span>
     </div>
 
     <div class="flow">
-      <span class="mono flow-name">research_flow</span>
+      <span class="mono flow-name">support_agent</span>
       <div class="versions">
         <span class="ver">v1</span>
         <span class="ver">v2</span>
         <span class="ver ver--current">v3</span>
-        <span class="ver ver--current">v4</span>
+        <span class="ver ver--current">pr-311</span>
       </div>
     </div>
 
     <div class="tags">
       <div class="tag-row">
-        <span class="tag tag--default">default</span>
+        <span class="tag tag--default">before</span>
         <span class="tag-arrow">→</span>
-        <span class="mono tag-ver">v4</span>
+        <span class="mono tag-ver">v1</span>
       </div>
       <div class="tag-row">
-        <span class="tag tag--canary">canary</span>
+        <span class="tag tag--canary">after</span>
         <span class="tag-arrow">→</span>
-        <span class="mono tag-ver">v3</span>
+        <span class="mono tag-ver">pr-311</span>
       </div>
     </div>
 
     <div class="invokes">
-      <div class="invoke-title">Invoke via</div>
+      <div class="invoke-title">Drive it via</div>
       <div class="invoke-pills">
         <span class="ipill">CLI</span>
         <span class="ipill">Python SDK</span>
-        <span class="ipill">MCP</span>
-        <span class="ipill">curl</span>
+        <span class="ipill">TypeScript SDK</span>
+        <span class="ipill">coding agent</span>
       </div>
     </div>
 
-    <div class="foot foot--accent">Promotion = tag move. Workspace-scoped auth.</div>
+    <div class="foot foot--accent">before and after run against the same cohort.</div>
   </div>
 </figure>
 

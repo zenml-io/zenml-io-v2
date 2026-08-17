@@ -8,8 +8,8 @@
   aria-describedby="artifact-lineage-desc"
 >
   <figcaption class="sr-only">
-    <span id="artifact-lineage-title">Versioned deployments and artifact lineage versus event-sourced steps.</span>
-    <span id="artifact-lineage-desc">Compares Inngest step memoization and replay tooling with Kitaru typed artifacts, checkpoint lineage, and tag-routed deployment versions.</span>
+    <span id="artifact-lineage-title">Step memoization versus session replay.</span>
+    <span id="artifact-lineage-desc">Compares Inngest step memoization and replay tooling with Kitaru's recorded session nodes, cohorts, and experiment comparisons.</span>
   </figcaption>
   <div class="panel panel--competitor">
     <div class="panel-head">
@@ -38,42 +38,41 @@
 
   <div class="panel panel--kitaru">
     <div class="panel-head">
-      <span class="panel-label panel-label--accent">Kitaru · artifacts + versioned deployments</span>
-      <span class="panel-sub">Typed artifacts in your bucket, snapshots routed by tag</span>
+      <span class="panel-label panel-label--accent">Kitaru · sessions + experiments</span>
+      <span class="panel-sub">Every call recorded, cohorts frozen, runs compared</span>
     </div>
 
     <div class="run">
-      <span class="run-label run-label--accent">execution · review_flow v3</span>
+      <span class="run-label run-label--accent">session · support-ticket-4821</span>
       <div class="ckpts">
         <div class="ckpt">
-          <span class="ckpt-name">@checkpoint research</span>
-          <span class="ckpt-art">artifact: brief.md (in your S3)</span>
+          <span class="ckpt-name">llm_call · triage</span>
+          <span class="ckpt-art">recorded: prompt, response, tokens, cost</span>
         </div>
         <div class="ckpt">
-          <span class="ckpt-name">@checkpoint draft</span>
-          <span class="ckpt-art">artifact: draft.md (typed, versioned)</span>
+          <span class="ckpt-name">tool_call · refund_payment</span>
+          <span class="ckpt-art">recorded: args + result (replay answers from here)</span>
         </div>
         <div class="ckpt ckpt--wait">
-          <span class="ckpt-name">kitaru.wait · approve</span>
-          <span class="ckpt-art">resumable from CLI / SDK / MCP</span>
+          <span class="ckpt-name">evaluator · structured_diff</span>
+          <span class="ckpt-art">deterministic check, model-graded for the residue</span>
         </div>
       </div>
     </div>
 
     <div class="deploy">
       <div class="deploy-head">
-        <span class="mono">kitaru deploy review_flow</span>
+        <span class="mono">client.compare(before, after)</span>
       </div>
       <div class="versions">
-        <span class="ver">v1</span>
-        <span class="ver">v2</span>
-        <span class="ver ver--current">v3</span>
-        <span class="tag">default → v3</span>
-        <span class="tag tag--canary">canary → v3</span>
+        <span class="ver">before · v1</span>
+        <span class="ver ver--current">after · pr-311</span>
+        <span class="tag">cohort: hard-cases</span>
+        <span class="tag tag--canary">10 sessions</span>
       </div>
     </div>
 
-    <div class="foot foot--accent">Cross-run diff and tag-routed promotion in the box.</div>
+    <div class="foot foot--accent">Cohorts freeze the set; experiments diff before vs after.</div>
   </div>
 </figure>
 

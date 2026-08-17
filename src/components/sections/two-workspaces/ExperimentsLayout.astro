@@ -1,0 +1,354 @@
+---
+import {
+  CONFIG_CARD,
+  CONFIG_KEYS,
+  EXPERIMENTS_LIST,
+  FOOTER_META,
+  RIGHT_HEADER,
+  RUNS_BLOCK,
+} from "../../../lib/two-workspaces/experiments-data";
+
+/**
+ * ExperimentsLayout — TwoWorkspaces v2 · Kitaru.
+ *
+ * Static port — no JS, no interactivity. The left list renders all 3 rows
+ * with the pre-selected state baked in (cheap-model highlighted).
+ *
+ * Layout:
+ *   Left pane: EXPERIMENTS list — letter badge, name, subtitle, and a pill
+ *     naming the one thing that experiment moves (MODEL / PROMPT / TOOL
+ *     POLICY). Selected row: orange-50 bg + orange-200 border.
+ *   Right pane: PURE CONFIGURATION header strip (eyebrow + title + context
+ *     chip), the three config-key pills, the selected experiment's literal
+ *     config card, then its runs — because a run is config + cohort +
+ *     version, and two runs one version apart are what you compare.
+ *
+ * Takes NO props — all copy lives in experiments-data.ts.
+ */
+---
+
+<div class="flex flex-col gap-3">
+  <div class="grid grid-cols-1 gap-3 lg:grid-cols-[360px_1fr]">
+
+    {/* ── Left pane: EXPERIMENTS list ─────────────────────────────── */}
+    <aside
+      class="flex flex-col rounded-md border border-[#EFE7DA] bg-cream-warm"
+      style="padding: 20px 16px;"
+    >
+      {/* List header */}
+      <div
+        class="flex items-start justify-between"
+        style="border-bottom: 1px solid #F0E8DA; padding-bottom: 8px; padding-left: 4px; padding-right: 4px; margin-bottom: 14px;"
+      >
+        <div class="flex flex-col" style="gap: 3px;">
+          <span
+            class="font-sans uppercase"
+            style="font-size: 10px; font-weight: 600; letter-spacing: 0.08em; line-height: 12px; color: #7A6B57; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+          >
+            EXPERIMENTS
+          </span>
+          <span
+            class="font-mono"
+            style="font-size: 10px; line-height: 12px; color: #8C7E68;"
+          >
+            3 hypotheses · 1 cohort
+          </span>
+        </div>
+        <span
+          class="font-mono"
+          style="font-size: 10px; line-height: 12px; color: #8C7E68;"
+        >
+          3 total
+        </span>
+      </div>
+
+      {/* Experiment rows */}
+      <div class="flex flex-col" style="gap: 8px;">
+        {EXPERIMENTS_LIST.map((exp) => (
+          <div
+            class:list={[
+              "exp-row flex items-center",
+              exp.selected ? "exp-row--selected" : "",
+            ]}
+            style="gap: 12px; border-radius: 8px; padding: 12px; border: 1px solid transparent;"
+          >
+            {/* Letter badge */}
+            <span
+              class="exp-badge inline-flex shrink-0 items-center justify-center font-sans font-bold"
+              aria-hidden="true"
+              style={`width: 32px; height: 32px; border-radius: 8px; font-size: 14px; line-height: 14px; color: #FFFFFF; background-color: ${exp.selected ? "#FB923C" : "#1F1B14"}; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;`}
+            >
+              {exp.letter}
+            </span>
+
+            {/* Name + subtitle */}
+            <div class="flex min-w-0 flex-1 flex-col" style="gap: 3px;">
+              <span
+                class="font-mono truncate"
+                style={`font-size: 13px; font-weight: ${exp.selected ? 600 : 500}; line-height: 14px; color: #1F1B14;`}
+              >
+                {exp.name}
+              </span>
+              <span
+                class="font-mono truncate"
+                style="font-size: 10px; font-weight: 400; line-height: 12px; color: #8C7E68;"
+              >
+                {exp.subtitle}
+              </span>
+            </div>
+
+            {/* Swaps pill — what this experiment moves */}
+            <span
+              class="inline-flex shrink-0 items-center"
+              style={`gap: 5px; border-radius: 999px; border: 1px solid ${exp.selected ? "#FED7AA" : "#EFE7DA"}; background-color: ${exp.selected ? "#FFF4E6" : "#FFFFFF"}; padding: 3px 8px;`}
+            >
+              <span
+                aria-hidden="true"
+                style={`width: 5px; height: 5px; border-radius: 999px; flex-shrink: 0; background-color: ${exp.selected ? "#F97316" : "#B9A98C"};`}
+              ></span>
+              <span
+                class="font-mono"
+                style={`font-size: 9px; font-weight: 500; letter-spacing: 0.06em; line-height: 12px; white-space: nowrap; color: ${exp.selected ? "#C2410C" : "#7A6B57"};`}
+              >
+                {exp.swaps}
+              </span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </aside>
+
+    {/* ── Right pane: PURE CONFIGURATION ──────────────────────────── */}
+    <section
+      class="flex flex-col rounded-md border border-[#EFE7DA] bg-cream-warm"
+      style="padding: 20px 22px; gap: 18px;"
+    >
+      {/* Header: eyebrow + title + context chip */}
+      <div class="flex items-start justify-between" style="gap: 24px;">
+        <div class="flex min-w-0 flex-1 flex-col" style="gap: 5px;">
+          <span
+            class="font-sans uppercase"
+            style="font-size: 10px; font-weight: 600; letter-spacing: 0.08em; line-height: 12px; color: #C2410C; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+          >
+            {RIGHT_HEADER.eyebrow}
+          </span>
+          <span
+            class="font-sans"
+            style="font-size: 17px; font-weight: 600; letter-spacing: -0.005em; line-height: 22px; color: #1F1B14; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+          >
+            {RIGHT_HEADER.title}
+          </span>
+        </div>
+        {/* Context chip */}
+        <span
+          class="inline-flex shrink-0 items-center"
+          style="gap: 6px; border-radius: 999px; border: 1px solid #FFD08A; background-color: #FFF4E6; padding: 4px 10px;"
+        >
+          <span
+            aria-hidden="true"
+            style="width: 5px; height: 5px; border-radius: 999px; flex-shrink: 0; background-color: #F97316;"
+          ></span>
+          <span
+            class="font-mono"
+            style="font-size: 10px; font-weight: 500; line-height: 12px; color: #C2410C;"
+          >
+            {RIGHT_HEADER.contextChip}
+          </span>
+        </span>
+      </div>
+
+      {/* Config-key pills — the three dimensions an experiment is made of */}
+      <div class="flex flex-wrap items-center" style="gap: 8px;">
+        {CONFIG_KEYS.map((key) => (
+          <span
+            class="inline-flex items-center"
+            style="gap: 8px; border-radius: 999px; border: 1px solid #FFD08A; background-color: #FFF4E6; padding: 7px 12px;"
+          >
+            <span
+              aria-hidden="true"
+              style="width: 6px; height: 6px; border-radius: 999px; flex-shrink: 0; background-color: #F97316;"
+            ></span>
+            <span
+              class="font-mono"
+              style="font-size: 12px; font-weight: 600; line-height: 14px; color: #C2410C; white-space: nowrap;"
+            >
+              {key}
+            </span>
+          </span>
+        ))}
+      </div>
+
+      {/* ── Config card — the literal configuration ─────────────────── */}
+      <div
+        class="flex flex-col"
+        style="border-radius: 8px; border: 1px solid #EFE7DA; background-color: #FFFFFF; padding: 14px 16px; gap: 10px;"
+      >
+        <div class="flex items-center justify-between">
+          <span
+            class="font-sans uppercase"
+            style="font-size: 9px; font-weight: 600; letter-spacing: 0.1em; line-height: 12px; color: #9C8060; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+          >
+            {CONFIG_CARD.label}
+          </span>
+          <span
+            class="font-mono"
+            style="font-size: 10px; line-height: 12px; color: #8C7E68;"
+          >
+            {CONFIG_CARD.filename}
+          </span>
+        </div>
+        <div class="flex flex-col" style="gap: 6px;">
+          {CONFIG_CARD.lines.map((line) => (
+            <div
+              class="flex items-center justify-between"
+              style={`gap: 12px; border-radius: 6px; padding: 8px 10px; border: 1px solid ${line.moved ? "#FFD7B5" : "#F0E8DA"}; background-color: ${line.moved ? "#FFF4EC" : "#FCFAF6"};`}
+            >
+              <span class="flex min-w-0 flex-wrap items-baseline" style="gap: 6px;">
+                <span
+                  class="font-mono"
+                  style={`font-size: 11px; font-weight: 600; line-height: 16px; color: ${line.moved ? "#C2410C" : "#5A4F3F"};`}
+                >
+                  {line.key}
+                </span>
+                <span
+                  class="font-mono"
+                  style="font-size: 11px; line-height: 16px; color: #9C8060;"
+                >
+                  =
+                </span>
+                <span
+                  class="font-mono"
+                  style="font-size: 11px; font-weight: 500; line-height: 16px; color: #1F1B14; overflow-wrap: anywhere;"
+                >
+                  {line.value}
+                </span>
+              </span>
+              <span
+                class="font-mono shrink-0"
+                style={`font-size: 9px; font-weight: 500; letter-spacing: 0.04em; line-height: 12px; white-space: nowrap; color: ${line.moved ? "#C2410C" : "#9C8060"};`}
+              >
+                {line.note}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Runs — config + cohort + version ────────────────────────── */}
+      <div
+        class="flex flex-col"
+        style="border-radius: 8px; border: 1px solid #EFE7DA; background-color: #FFFFFF; padding: 14px 16px; gap: 10px;"
+      >
+        <div class="flex items-center justify-between" style="gap: 12px;">
+          <span
+            class="font-sans uppercase"
+            style="font-size: 9px; font-weight: 600; letter-spacing: 0.1em; line-height: 12px; color: #9C8060; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+          >
+            {RUNS_BLOCK.label}
+          </span>
+          <span
+            class="font-mono"
+            style="font-size: 10px; line-height: 12px; color: #8C7E68;"
+          >
+            {RUNS_BLOCK.definition}
+          </span>
+        </div>
+
+        <div class="flex flex-col" style="gap: 6px;">
+          {RUNS_BLOCK.runs.map((run) => (
+            <div
+              class="flex flex-wrap items-center"
+              style={`gap: 10px; border-radius: 6px; padding: 10px 12px; border: 1px solid ${run.current ? "#FFD7B5" : "#F0E8DA"}; background-color: ${run.current ? "#FFF4EC" : "#FCFAF6"};`}
+            >
+              <span
+                class="font-mono shrink-0"
+                style={`font-size: 12px; font-weight: 600; line-height: 16px; color: ${run.current ? "#C2410C" : "#1F1B14"};`}
+              >
+                {run.label}
+              </span>
+              <span class="font-mono" style="font-size: 11px; line-height: 16px; color: #B9A98C;">·</span>
+              <span
+                class="font-mono"
+                style="font-size: 11px; font-weight: 500; line-height: 16px; color: #5A4F3F;"
+              >
+                {run.cohort}
+              </span>
+              <span class="font-mono" style="font-size: 11px; line-height: 16px; color: #B9A98C;">·</span>
+              <span
+                class="font-mono"
+                style="font-size: 11px; font-weight: 500; line-height: 16px; color: #5A4F3F;"
+              >
+                {run.version}
+              </span>
+              <span class="flex-1" style="min-width: 8px;"></span>
+              <span
+                class="font-mono shrink-0"
+                style="font-size: 11px; font-weight: 500; line-height: 16px; color: #1F1B14; white-space: nowrap;"
+              >
+                {run.result}
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Compare affordance — two runs, one version apart, read side by side */}
+        <button
+          type="button"
+          class="exp-compare-btn flex cursor-pointer items-center justify-center self-start"
+          style="gap: 6px; border-radius: 6px; border: 1px solid #FB923C; background-color: #FFF4EC; padding: 7px 12px;"
+        >
+          <span
+            class="font-sans"
+            style="font-size: 11px; font-weight: 600; line-height: 12px; color: #C2410C; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;"
+          >
+            {RUNS_BLOCK.compareLabel}
+          </span>
+          <span
+            aria-hidden="true"
+            class="font-sans"
+            style="font-size: 11px; font-weight: 600; line-height: 12px; color: #C2410C;"
+          >→</span>
+        </button>
+      </div>
+
+      {/* Footer meta strip */}
+      <div
+        class="flex items-center justify-between"
+        style="border-top: 1px solid #F0E8DA; padding-top: 14px; margin-top: auto;"
+      >
+        <span
+          class="font-mono"
+          style="font-size: 10px; line-height: 12px; color: #8C7E68;"
+        >
+          {FOOTER_META.left}
+        </span>
+        <span class="inline-flex items-center" style="gap: 6px;">
+          <span
+            aria-hidden="true"
+            style="width: 6px; height: 6px; border-radius: 999px; flex-shrink: 0; background-color: #F97316;"
+          ></span>
+          <span
+            class="font-mono"
+            style="font-size: 10px; font-weight: 500; letter-spacing: 0.04em; line-height: 12px; color: #C2410C;"
+          >
+            {FOOTER_META.rightLabel}
+          </span>
+        </span>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<style>
+  /* Selected experiment row */
+  .exp-row--selected {
+    background-color: #fff4ec; /* --kitaru-selected-row-bg / orange-50 */
+    border-color: #ffd7b5 !important; /* --kitaru-selected-row-border */
+  }
+
+  /* Compare button — hover state (no JS required). */
+  .exp-compare-btn:hover {
+    background-color: #ffe8d5;
+  }
+</style>

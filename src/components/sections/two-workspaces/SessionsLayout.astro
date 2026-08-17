@@ -1,0 +1,499 @@
+---
+import {
+  DEFAULT_SESSION_EXAMPLE_ID,
+  type ReadinessGrade,
+  SESSION_EXAMPLES,
+  type SpanState,
+  type SpanType,
+} from "../../../lib/two-workspaces/sessions-examples";
+
+/**
+ * Sessions subtab — "Each run records as a session — imported from your
+ * traces or captured live."
+ *
+ * Interactive: click any row in the SESSIONS list to swap the right pane
+ * to that session. All 5 sessions are server-rendered; visibility is
+ * driven by a `data-active-example` attribute on the layout root. No
+ * Preact island — a small scoped script wires the click handlers (same
+ * pattern TwoWorkspaces.astro uses for outer tabs).
+ *
+ * Layout:
+ *   Left pane: SESSIONS list, 5 rows with letter-badge icon and a
+ *     readiness pill. Kitaru grades every session READY, PARTIAL or
+ *     UNAVAILABLE at import — the pill is that grade, not a status.
+ *   Right pane: header strip (eyebrow + title + context chip), then a
+ *     side-by-side row: the import transcript on the left + the session's
+ *     checkpoint spine on the right.
+ *   Footer: thin meta strip with provenance + the readiness chip.
+ *
+ * Readiness is carried by color as well as text: recorded spans are warm
+ * orange, partial spans are hatched neutral, unavailable spans are a bare
+ * dashed track. Nothing is red — an ungraded session is not a failure.
+ */
+
+interface Props {
+  title: string;
+  subheader: string;
+  countLabel: string;
+  /** Per-tab header copy that doesn't change between sessions. */
+  rightEyebrow: string;
+  rightSubhead: string;
+}
+
+const { title, subheader, countLabel, rightEyebrow, rightSubhead } =
+  Astro.props;
+
+const defaultExampleId = DEFAULT_SESSION_EXAMPLE_ID;
+
+/** Bar fill color per span type. Kept inline because these are 4
+ *  distinct tokens — extracting feels like over-abstraction. */
+const barColor = (t: SpanType) =>
+  ({
+    session: "bg-[#FDD9A8]", // orange-200, faint parent track
+    model: "bg-orange-400",
+    tool: "bg-orange-500",
+    checkpoint: "bg-[#9A3412]", // orange-800
+  })[t];
+
+/** Status dot in the spine row LHS — readiness, not health. */
+const dotClass = (s: SpanState) =>
+  s === "recorded"
+    ? "bg-orange-500"
+    : s === "partial"
+      ? "bg-[#B6AC97]"
+      : "bg-[#D6CFC2]";
+
+/** Unrecorded spans render as an outline, so an absent call reads as
+ *  absent rather than as a shorter call. */
+const barIsHollow = (s: SpanState) => s !== "recorded";
+
+/** Readiness pill palette. UNAVAILABLE stays neutral — it is a fact about
+ *  the trace you handed Kitaru, not a fault. */
+const gradePill = (grade: ReadinessGrade) =>
+  ({
+    READY: {
+      bg: "#FFF4EC",
+      border: "#FFD7B5",
+      dot: "#F97316",
+      text: "#C2410C",
+    },
+    PARTIAL: {
+      bg: "#FFFFFF",
+      border: "#E7E2D6",
+      dot: "#B6AC97",
+      text: "#7A6F5C",
+    },
+    UNAVAILABLE: {
+      bg: "#F6F3EC",
+      border: "#E7E2D6",
+      dot: "#D6CFC2",
+      text: "#8B7E6E",
+    },
+  })[grade];
+---
+
+<div class="flex flex-col gap-3" data-active-example={defaultExampleId}>
+  <div class="grid grid-cols-1 gap-3 lg:grid-cols-[360px_1fr]">
+    {/* Left pane — sessions list */}
+    <aside class="flex flex-col rounded-md border border-gray-200 bg-cream-warm p-3.5">
+      <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-3">
+        <div class="flex flex-col gap-0.5">
+          <span class="font-mono text-[10px] uppercase leading-[14px] tracking-[0.08em] text-gray-500">
+            {title}
+          </span>
+          <span class="text-xs leading-4 text-gray-400">{subheader}</span>
+        </div>
+        <span class="font-mono text-[10px] leading-[14px] tracking-[0.04em] text-gray-400">
+          {countLabel}
+        </span>
+      </div>
+
+      <div class="flex flex-col pt-2 gap-1">
+        {SESSION_EXAMPLES.map((ex) => {
+          const pill = gradePill(ex.readiness);
+          return (
+            <button
+              type="button"
+              data-session-row={ex.id}
+              class="kitaru-row flex w-full items-center gap-3 text-left transition-colors hover:bg-[#FDF4EC] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+              aria-pressed={ex.id === defaultExampleId ? "true" : "false"}
+            >
+              <span
+                class="kitaru-row-badge inline-flex size-8 shrink-0 items-center justify-center font-mono text-[13px] font-semibold leading-none text-white"
+                data-session-row-badge
+                aria-hidden="true"
+              >
+                {ex.rowLetter}
+              </span>
+              <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+                <span
+                  class="kitaru-row-name truncate font-mono text-[12px] leading-[18px] text-ink"
+                  data-session-row-name
+                >
+                  {ex.rowLabel}
+                </span>
+                <span class="kitaru-row-meta truncate font-mono text-[10px] font-normal leading-[14px] text-gray-500">
+                  {ex.rowSubtitle}
+                </span>
+              </div>
+              {/* Readiness grade — assigned at import, same in every row
+                  state, so there is no selected/idle pill swap here. */}
+              <span
+                class="inline-flex shrink-0 items-center gap-1.5 rounded-full px-2 py-0.75"
+                style={`background-color:${pill.bg}; border:1px solid ${pill.border};`}
+              >
+                <span
+                  class="size-1.5 shrink-0 rounded-full"
+                  style={`background-color:${pill.dot};`}
+                  aria-hidden="true"
+                ></span>
+                <span
+                  class="font-mono text-[9px] font-semibold uppercase leading-3 tracking-[0.04em]"
+                  style={`color:${pill.text};`}
+                >
+                  {ex.readiness}
+                </span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </aside>
+
+    {/* Right pane — all five sessions stacked; CSS reveals the active one */}
+    <section class="flex flex-col gap-3.5 rounded-md border border-gray-200 bg-cream-warm p-4">
+      {/* Header strip — eyebrow + subhead are shared across sessions;
+          the right chip swaps per session. */}
+      <div class="flex items-start justify-between gap-3 border-b border-gray-100 pb-3">
+        <div class="flex min-w-0 flex-col gap-0.75">
+          <span class="font-mono text-[10px] uppercase leading-[14px] tracking-[0.12em] text-orange-600">
+            {rightEyebrow}
+          </span>
+          <span class="text-sm font-semibold leading-5 text-ink">{rightSubhead}</span>
+        </div>
+        <div class="session-context-stack relative">
+          {SESSION_EXAMPLES.map((ex) => (
+            <span
+              data-session-pane={ex.id}
+              data-session-context-chip
+              class="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-gray-200 bg-white px-2.5 py-1"
+            >
+              <span class="size-1.5 rounded-full bg-orange-500" aria-hidden="true"></span>
+              <span class="font-mono text-[10px] font-medium leading-[14px] text-gray-600">
+                {ex.contextChip}
+              </span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Import transcript + checkpoint spine — one panel per session,
+          stacked. The `data-session-pane` attribute matches up with
+          `data-active-example` on the layout root. */}
+      <div class="session-example-stack">
+        {SESSION_EXAMPLES.map((ex) => (
+          <div data-session-pane={ex.id} class="session-example-pane flex flex-col gap-3.5">
+            <div class="flex flex-col items-stretch gap-3.5 self-stretch lg:flex-row">
+              {/* Import transcript card — how this session got here */}
+              <div class="flex shrink-0 flex-col self-stretch overflow-hidden rounded-md border border-gray-200 bg-cream-lift lg:w-[340px]">
+                <div class="flex items-center gap-2 border-b border-gray-200 bg-[#F4EFE7] px-3 py-2">
+                  <div class="flex gap-1">
+                    <span class="size-2 shrink-0 rounded-full bg-[#E0D5C0]" aria-hidden="true"></span>
+                    <span class="size-2 shrink-0 rounded-full bg-[#E0D5C0]" aria-hidden="true"></span>
+                    <span class="size-2 shrink-0 rounded-full bg-[#E0D5C0]" aria-hidden="true"></span>
+                  </div>
+                  <span class="pl-1.5 font-mono text-[11px] font-medium leading-[14px] text-gray-600">
+                    {ex.importFilename}
+                  </span>
+                  <span class="flex-1"></span>
+                  <span class="inline-flex items-center gap-1 rounded-full border border-orange-200 bg-orange-50 px-1.75 py-0.5">
+                    <span class="size-1.25 rounded-full bg-orange-500" aria-hidden="true"></span>
+                    <span class="font-mono text-[9px] font-semibold leading-3 tracking-[0.06em] text-orange-600">
+                      KITARU
+                    </span>
+                  </span>
+                </div>
+                <div class="flex min-w-0 flex-1 flex-col gap-1.5 overflow-x-auto bg-white px-3.5 py-3">
+                  {ex.importLines.map((line) => (
+                    <span
+                      class:list={[
+                        "font-mono text-[10px] leading-4",
+                        line.kind === "cmd"
+                          ? "font-medium text-ink"
+                          : "font-normal text-gray-500",
+                      ]}
+                    >
+                      {line.kind === "cmd" && (
+                        <span class="pr-1.5 font-semibold text-orange-600" aria-hidden="true">$</span>
+                      )}
+                      {line.text}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Checkpoint spine */}
+              <div class="flex flex-1 flex-col overflow-hidden self-stretch rounded-md border border-gray-200 bg-cream-lift">
+                {/* Header: label + summary stripe + legend */}
+                <div class="flex flex-col gap-1.5 px-3.5 pt-3.5">
+                  <div class="flex items-center justify-between gap-3">
+                    <span class="font-sans text-[10px] font-semibold uppercase leading-3 tracking-[0.08em] text-warm-taupe">
+                      Checkpoint spine
+                    </span>
+                    <div class="flex items-center gap-2.5">
+                      <span class="inline-flex items-center gap-1">
+                        <span class="size-2 shrink-0 rounded-xs bg-[#FDD9A8]" aria-hidden="true"></span>
+                        <span class="font-sans text-[10px] font-medium leading-3 text-warm-taupe">session</span>
+                      </span>
+                      <span class="inline-flex items-center gap-1">
+                        <span class="size-2 shrink-0 rounded-xs bg-orange-400" aria-hidden="true"></span>
+                        <span class="font-sans text-[10px] font-medium leading-3 text-warm-taupe">model</span>
+                      </span>
+                      <span class="inline-flex items-center gap-1">
+                        <span class="size-2 shrink-0 rounded-xs bg-orange-500" aria-hidden="true"></span>
+                        <span class="font-sans text-[10px] font-medium leading-3 text-warm-taupe">tool</span>
+                      </span>
+                      <span class="inline-flex items-center gap-1">
+                        <span class="size-2 shrink-0 rounded-xs bg-[#9A3412]" aria-hidden="true"></span>
+                        <span class="font-sans text-[10px] font-medium leading-3 text-warm-taupe">checkpoint</span>
+                      </span>
+                    </div>
+                  </div>
+                  {/* Summary stripe — derived from this session's own spans,
+                      so a partial or unavailable session reads as gappy. */}
+                  <div class="flex h-2 overflow-hidden rounded-[3px] bg-warm-taupe-track">
+                    {ex.timeline.spans
+                      .filter((span) => !span.parent)
+                      .map((span) => (
+                        <div
+                          class:list={[barColor(span.type)]}
+                          style={`width:${span.widthPct}%; min-width:3px; opacity:${barIsHollow(span.state) ? 0.25 : 1}`}
+                        ></div>
+                      ))}
+                  </div>
+                </div>
+
+                {/* Node axis row — ticks come from the session. */}
+                <div class="flex items-center px-3.5 pt-3.5">
+                  <div class="flex w-[228px] shrink-0 items-center px-1">
+                    <span class="font-sans text-[10px] font-semibold uppercase leading-3 tracking-[0.08em] text-warm-taupe">Node</span>
+                  </div>
+                  <div class="relative h-3.5 flex-1">
+                    {ex.timeline.axisTicks.map((tick, i) => {
+                      const positions = ["left-[0%]", "left-[20%]", "left-[40%]", "left-[60%]", "right-0"];
+                      const translate = i > 0 && i < positions.length - 1 ? "translate-x-[-50%]" : "";
+                      return (
+                        <span
+                          class:list={[
+                            "absolute top-0 w-max font-sans text-[11px] font-medium leading-[14px] text-warm-taupe-light",
+                            positions[i],
+                            translate,
+                          ]}
+                        >
+                          {tick}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Span rows */}
+                <div class="flex flex-col pb-3.5 px-3.5 pt-1.5">
+                  {ex.timeline.spans.map((span) => {
+                    const isParent = span.parent;
+                    const hollow = barIsHollow(span.state);
+                    const opacity = isParent ? 0.18 : hollow ? 0.3 : 1;
+                    return (
+                      <div class="flex h-[26px] shrink-0 items-center">
+                        <div class="flex w-[228px] shrink-0 items-center gap-1.5 px-1">
+                          {/* Indent column: chevron for the session row, blank for nodes */}
+                          <span class="w-2.75 shrink-0">
+                            {isParent && (
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#705C4D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <polyline points="6 9 12 15 18 9" />
+                              </svg>
+                            )}
+                          </span>
+                          <span class="w-3.5 shrink-0">
+                            {isParent && (
+                              <span class="block size-1.5 rounded-[1px] bg-warm-taupe"></span>
+                            )}
+                          </span>
+                          <span
+                            class:list={["size-1.5 shrink-0 rounded-full", dotClass(span.state)]}
+                            aria-hidden="true"
+                          ></span>
+                          <span
+                            class:list={[
+                              "min-w-0 flex-1 truncate font-mono text-[11px] leading-[14px]",
+                              isParent
+                                ? "font-semibold text-warm-taupe-ink"
+                                : span.state === "recorded"
+                                  ? "font-medium text-warm-taupe-dark"
+                                  : "font-medium text-warm-taupe",
+                            ]}
+                          >
+                            {span.name}
+                          </span>
+                          {/* An unrecorded node says why, so the gap in the
+                              track is explained rather than just empty. */}
+                          <span
+                            class:list={[
+                              "shrink-0 font-mono text-[10px] font-medium tabular-nums leading-3",
+                              hollow ? "text-warm-taupe" : "text-warm-taupe-light",
+                            ]}
+                          >
+                            {span.durationLabel}
+                          </span>
+                        </div>
+                        <div class="relative h-4 flex-1 px-1">
+                          <div
+                            class:list={[
+                              "absolute top-1 h-2 rounded-[3px]",
+                              hollow ? "" : barColor(span.type),
+                            ]}
+                            style={`left:calc(${span.leftPct}% + 4px); width:max(3px, ${span.widthPct}%); opacity:${opacity};${
+                              hollow
+                                ? " border:1px dashed #C0B4A2; background-color:transparent;"
+                                : ""
+                            }`}
+                            aria-hidden="true"
+                          ></div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Footer meta strip — sits inside the right pane card, per session. */}
+            <div class="flex items-center justify-between gap-3 border-t border-gray-100 pt-2">
+              <span class="font-mono text-[10px] font-medium leading-[14px] tracking-[0.02em] text-gray-500">
+                {ex.footerMeta}
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <span
+                  class="size-1.5 rounded-full"
+                  style={`background-color:${gradePill(ex.readiness).dot}`}
+                  aria-hidden="true"
+                ></span>
+                <span
+                  class="font-mono text-[10px] font-medium leading-[14px]"
+                  style={`color:${gradePill(ex.readiness).text}`}
+                >
+                  {ex.timeline.readinessLabel}
+                </span>
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+</div>
+
+<style>
+  /* Grid-stack the per-session right-pane panels so they share one cell
+   * (constant card height as you click through rows). */
+  .session-example-stack {
+    display: grid;
+    grid-template-areas: "stack";
+  }
+  .session-example-stack > .session-example-pane {
+    grid-area: stack;
+    min-width: 0;
+    display: none;
+  }
+  [data-active-example="ses_8f3a91c2"] .session-example-stack > [data-session-pane="ses_8f3a91c2"],
+  [data-active-example="ses_4c1d77e0"] .session-example-stack > [data-session-pane="ses_4c1d77e0"],
+  [data-active-example="ses_9b3e21af"] .session-example-stack > [data-session-pane="ses_9b3e21af"],
+  [data-active-example="ses_2d5a08c4"] .session-example-stack > [data-session-pane="ses_2d5a08c4"],
+  [data-active-example="ses_7e6b33d1"] .session-example-stack > [data-session-pane="ses_7e6b33d1"] {
+    display: flex;
+  }
+
+  /* Header context chip — same grid-stack trick so only the active chip
+   * is visible. */
+  .session-context-stack {
+    display: grid;
+    grid-template-areas: "stack";
+  }
+  .session-context-stack > [data-session-context-chip] {
+    grid-area: stack;
+    display: none;
+  }
+  [data-active-example="ses_8f3a91c2"] .session-context-stack > [data-session-pane="ses_8f3a91c2"],
+  [data-active-example="ses_4c1d77e0"] .session-context-stack > [data-session-pane="ses_4c1d77e0"],
+  [data-active-example="ses_9b3e21af"] .session-context-stack > [data-session-pane="ses_9b3e21af"],
+  [data-active-example="ses_2d5a08c4"] .session-context-stack > [data-session-pane="ses_2d5a08c4"],
+  [data-active-example="ses_7e6b33d1"] .session-context-stack > [data-session-pane="ses_7e6b33d1"] {
+    display: inline-flex;
+  }
+
+  /* Canonical Kitaru row (Paper artboard AP9-0). Tokens mirror
+   * kitaru-compat.css `--kitaru-selected-row-*`. */
+  .kitaru-row {
+    border-radius: 8px;
+    padding: 14px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .kitaru-row[aria-pressed="true"] {
+    background-color: #fff4ec; /* --kitaru-selected-row-bg / orange-50 */
+    border-color: #ffd7b5;      /* --kitaru-selected-row-border */
+    /* Selected: keep inner baseline by subtracting 1px from padding (border
+       grows the row by 1px otherwise). */
+    padding: 13px 13px 13px 13px;
+  }
+  /* Letter badge color — orange-400 on selected, ink elsewhere. */
+  .kitaru-row[aria-pressed="true"] [data-session-row-badge] {
+    background-color: #fb923c; /* orange-400 */
+  }
+  .kitaru-row [data-session-row-badge] {
+    background-color: #101828; /* ink */
+  }
+  .kitaru-row-badge {
+    border-radius: 8px;
+  }
+  /* Row name: bumps to semibold on selected. */
+  .kitaru-row[aria-pressed="true"] [data-session-row-name] {
+    font-weight: 600;
+  }
+  .kitaru-row [data-session-row-name] {
+    font-weight: 500;
+  }
+</style>
+
+<script>
+  /**
+   * Wire row clicks → swap the active session on the SessionsLayout root.
+   *
+   * Scoped to whichever SessionsLayout instance contains the click target,
+   * so multiple instances (defensive — there's only one in TwoWorkspaces
+   * today) don't cross-talk.
+   */
+  const sessionRowButtons = document.querySelectorAll<HTMLButtonElement>(
+    "[data-session-row]",
+  );
+
+  const applySession = (root: HTMLElement, exampleId: string) => {
+    root.dataset.activeExample = exampleId;
+    const rowsInRoot = root.querySelectorAll<HTMLButtonElement>("[data-session-row]");
+    rowsInRoot.forEach((row) => {
+      row.setAttribute(
+        "aria-pressed",
+        row.dataset.sessionRow === exampleId ? "true" : "false",
+      );
+    });
+  };
+
+  sessionRowButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const root = btn.closest<HTMLElement>("[data-active-example]");
+      const id = btn.dataset.sessionRow;
+      if (root && id) applySession(root, id);
+    });
+  });
+</script>

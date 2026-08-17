@@ -28,11 +28,12 @@
  */
 
 import type { Surface } from "./analytics";
+import { KITARU_CLOUD_PRICE, KITARU_LINKS } from "./productKitaru";
 
 export const HOMEPAGE_UNIFIED_SEO = {
   title: "ZenML — The unified layer for ML and AI",
   description:
-    "Reproducible ML pipelines with ZenML. Replayable agent evals with Kitaru. One platform, on the infrastructure you already use.",
+    "Replayable agent evals with Kitaru. Reproducible ML pipelines with ZenML. One platform, on the infrastructure you already use.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -54,8 +55,9 @@ export const HOMEPAGE_UNIFIED_HERO = {
    */
   subtitleLead: "Built for engineers, ready for enterprise.",
   subtitle:
-    "Reproducible ML pipelines with ZenML. Replayable agent evals with Kitaru. One platform, on the infrastructure you already use.",
-  primaryCta: { label: "Book a demo", href: "/book-your-demo" },
+    "Replayable agent evals with Kitaru. Reproducible ML pipelines with ZenML. One platform, on the infrastructure you already use.",
+  /** The site's single primary CTA is signup. */
+  primaryCta: KITARU_LINKS.signup,
   secondaryCta: { label: "Read Docs", href: "/docs" },
 } as const;
 
@@ -69,8 +71,8 @@ export const HOMEPAGE_UNIFIED_HERO = {
 export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
   eyebrow: "NEW",
   body: "Kitaru: turn agent failures into regression tests — replay real traces against your real code.",
-  linkText: "Read the docs",
-  linkHref: "https://docs.zenml.io/kitaru",
+  linkText: "Meet Kitaru",
+  linkHref: "/product/kitaru",
 } as const;
 
 /* ---------------------------------------------------------------------- */
@@ -87,9 +89,9 @@ export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
  *
  * Each subtab's `layout` selects a bespoke layout component:
  *   zenml  → pipelines · stacks · artifacts-models · frameworks-ml · resources
- *   kitaru → flows · checkpoints · replay · deployments · frameworks-agents
+ *   kitaru → compare · sessions · cohorts · experiments · frameworks-agents
  *
- * Pipelines and Flows are the two v2 reference ports — they still receive
+ * Pipelines and Sessions are the two v2 reference ports — they still receive
  * header copy as props (the extra fields kept on those two entries). Every
  * other layout is self-contained: it imports its own data file from
  * `src/lib/two-workspaces/` (copy + data), so this file stays a thin nav
@@ -100,7 +102,63 @@ export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
  *   - Kitaru examples: ../kitaru/examples/
  */
 export const HOMEPAGE_UNIFIED_WIDGET = {
+  // Kitaru first — the first tab is the widget's default view.
   tabs: [
+    {
+      id: "kitaru" as const,
+      label: "Kitaru",
+      sublabel: "",
+      subtabs: [
+        {
+          id: "compare" as const,
+          label: "Compare",
+          layout: "compare" as const,
+          surfaceTitle: "Compare",
+          surfaceSubtitle:
+            "Same cohort, one model swapped — the answer is two runs, compared.",
+        },
+        {
+          id: "sessions" as const,
+          label: "Sessions",
+          layout: "sessions" as const,
+          surfaceTitle: "Sessions",
+          surfaceSubtitle:
+            "Each run records as a session — imported from your traces or captured live.",
+          /** Left-pane (SESSIONS list) header copy. Rows + import transcripts
+           *  + spines come from src/lib/two-workspaces/sessions-examples.ts. */
+          title: "Sessions",
+          subheader: "graded at import",
+          countLabel: "1,824 total",
+          rightEyebrow: "One wrap, every call recorded",
+          rightSubhead:
+            "Each run records as a session, and that recording is what replay reads back.",
+        },
+        {
+          id: "cohorts" as const,
+          label: "Cohorts",
+          layout: "cohorts" as const,
+          surfaceTitle: "Cohorts",
+          surfaceSubtitle:
+            "The sessions that matter, frozen as a named set — immutable, so results keep meaning what they meant.",
+        },
+        {
+          id: "experiments" as const,
+          label: "Experiments",
+          layout: "experiments" as const,
+          surfaceTitle: "Experiments",
+          surfaceSubtitle:
+            "Pure configuration: model, prompt, tool policy. Swap one and you have stated a new hypothesis.",
+        },
+        {
+          id: "frameworks" as const,
+          label: "Frameworks",
+          layout: "frameworks-agents" as const,
+          surfaceTitle: "Frameworks",
+          surfaceSubtitle:
+            "Keep your agent SDK. One wrapper makes its runs replayable.",
+        },
+      ],
+    },
     {
       id: "zenml" as const,
       label: "ZenML",
@@ -156,61 +214,6 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
         },
       ],
     },
-    {
-      id: "kitaru" as const,
-      label: "Kitaru",
-      sublabel: "",
-      subtabs: [
-        {
-          id: "replay" as const,
-          label: "Replay",
-          layout: "replay" as const,
-          surfaceTitle: "Replay",
-          surfaceSubtitle:
-            "Fork a real execution, change one thing, and diff it against what actually happened.",
-        },
-        {
-          id: "flows" as const,
-          label: "Flows",
-          layout: "flows" as const,
-          surfaceTitle: "Flows",
-          surfaceSubtitle:
-            "Wrap your harness with one line — every model and tool call recorded.",
-          /** Left-pane (AGENT FLOWS list) header copy. Rows + code + timelines
-           *  come from src/lib/two-workspaces/flows-examples.ts. */
-          title: "Agent flows",
-          subheader: "5 examples · all from the Kitaru SDK",
-          countLabel: "examples/",
-          rightEyebrow: "Wrap your harness with one line",
-          rightSubhead:
-            "Every model and tool call becomes a replayable recording.",
-        },
-        {
-          id: "checkpoints" as const,
-          label: "Checkpoints",
-          layout: "checkpoints" as const,
-          surfaceTitle: "Checkpoints",
-          surfaceSubtitle:
-            "Every step is a checkpoint — replay forks from it, crashes resume from it.",
-        },
-        {
-          id: "frameworks" as const,
-          label: "Frameworks",
-          layout: "frameworks-agents" as const,
-          surfaceTitle: "Frameworks",
-          surfaceSubtitle:
-            "Wrap any agent harness. Kitaru records and replays the run around it.",
-        },
-        {
-          id: "deployments" as const,
-          label: "Deployments",
-          layout: "deployments" as const,
-          surfaceTitle: "Deployments",
-          surfaceSubtitle:
-            "Versioned deployments — promote, shadow, or roll back.",
-        },
-      ],
-    },
   ],
 } as const;
 
@@ -224,18 +227,8 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
 export const HOMEPAGE_UNIFIED_WORKSPACES = {
   eyebrow: "Two workspaces, one platform",
   headline: "Pick your workload. Same infrastructure underneath.",
+  // Kitaru first.
   items: [
-    {
-      name: "ZenML workspace",
-      tagline: "ML pipelines",
-      body: "Reproducible training, evaluation, batch inference, and deployment. Pipeline DAGs with typed step interfaces, versioned artifacts, and a composable stack abstraction.",
-      bullets: [
-        "Runs on Kubernetes, Vertex, SageMaker, AzureML, Airflow",
-        "Artifact store + model registry + experiment tracker",
-        "Local-to-remote without code changes",
-      ],
-      cta: { label: "Explore ZenML", href: "/product/zenml" },
-    },
     {
       name: "Kitaru workspace",
       tagline: "Agent evals",
@@ -246,6 +239,17 @@ export const HOMEPAGE_UNIFIED_WORKSPACES = {
         "Replay against your real code: model, tool, or prompt swapped",
       ],
       cta: { label: "Explore Kitaru", href: "/product/kitaru" },
+    },
+    {
+      name: "ZenML workspace",
+      tagline: "ML pipelines",
+      body: "Reproducible training, evaluation, batch inference, and deployment. Pipeline DAGs with typed step interfaces, versioned artifacts, and a composable stack abstraction.",
+      bullets: [
+        "Runs on Kubernetes, Vertex, SageMaker, AzureML, Airflow",
+        "Artifact store + model registry + experiment tracker",
+        "Local-to-remote without code changes",
+      ],
+      cta: { label: "Explore ZenML", href: "/product/zenml" },
     },
   ],
   /** Subtle note under the cards — clarifies the commercial framing. */
@@ -284,7 +288,7 @@ export const HOMEPAGE_UNIFIED_VALUES = {
 
 export const HOMEPAGE_UNIFIED_PRICING_TEASER = {
   headline: "Unified pricing. Pick ML, Agent, or both.",
-  body: "Same tiers across both workspaces, billed on executions (ZenML pipeline runs and Kitaru flow executions share one quota). Start on the open-source SDK; upgrade when you need the control plane.",
+  body: `One subscription, two workspaces. Kitaru launches as a single flat ${KITARU_CLOUD_PRICE}/month plan; ZenML's managed tiers scale with pipeline executions. Start on the open-source SDKs; upgrade when you need the control plane.`,
   primaryCta: { label: "See pricing", href: "/pricing" },
   secondaryCta: { label: "Compare OSS vs Pro", href: "/open-source-vs-pro" },
 } as const;

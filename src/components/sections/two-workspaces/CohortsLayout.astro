@@ -1,0 +1,426 @@
+---
+/**
+ * CohortsLayout — TwoWorkspaces v2 · Kitaru.
+ *
+ * STATIC port — no interactivity, no JS, single state. The highlighted row
+ * marks which cohort the right pane details.
+ *
+ * Layout:
+ *   Left pane: COHORTS list — 3 rows with letter badge, cohort name,
+ *     subtitle, IMMUTABLE pill. Selected row uses orange-50 bg + #FFD7B5
+ *     border; idle rows use ink badge + neutral pill.
+ *
+ *   Right pane: header strip (eyebrow + title + context chip), then a
+ *     white card carrying the derivation track — a horizontal circular-node
+ *     run from what the import found, through the twenty sessions you read,
+ *     to the cohorts and evaluator your notes produced — followed by the
+ *     member-session chips. Then a paired immutability card + created-from
+ *     card (with the CLI line). Footer meta strip.
+ *
+ * The circular-node track is bespoke to this tab — inline HTML nodes over a
+ * baseline rule. No shared component extracted.
+ *
+ * Data: src/lib/two-workspaces/cohorts-data.ts (all copy + node list).
+ */
+
+import { COHORTS_DATA } from "../../../lib/two-workspaces/cohorts-data";
+
+const d = COHORTS_DATA;
+---
+
+<div class="flex flex-col gap-3">
+  <div class="grid grid-cols-1 gap-3 lg:grid-cols-[360px_1fr]">
+
+    {/* ── Left pane — COHORTS ── */}
+    <aside class="flex flex-col rounded-md border border-[#EFE8DC] bg-cream-warm p-5" style="gap:14px">
+      {/* Header */}
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex flex-col gap-0.5">
+          <span
+            class="font-sans text-[10px] font-semibold uppercase leading-3 tracking-[0.08em]"
+            style="color:#7A6F5C; font-family:'Plus Jakarta Sans',system-ui,sans-serif"
+          >
+            {d.leftHeader.title}
+          </span>
+          <span
+            class="font-mono text-[10px] leading-3"
+            style="color:#9A8E78"
+          >
+            {d.leftHeader.subtitle}
+          </span>
+        </div>
+        <span
+          class="font-mono text-[10px] leading-3"
+          style="color:#9A8E78; padding-top:2px"
+        >
+          {d.leftHeader.countLabel}
+        </span>
+      </div>
+
+      {/* Cohort rows */}
+      <div class="flex flex-col gap-1.5">
+        {d.cohorts.map((cohort) => {
+          const isSelected = cohort.selected;
+          return (
+            <div
+              class="cohort-row flex w-full items-center gap-3"
+              aria-current={isSelected ? "true" : undefined}
+            >
+              {/* Letter badge */}
+              <span
+                class="cohort-row-badge inline-flex size-8 shrink-0 items-center justify-center font-sans text-sm font-bold leading-none text-white"
+                style={`font-family:'Plus Jakarta Sans',system-ui,sans-serif; border-radius:8px; background-color:${isSelected ? "#FB923C" : "#101828"}`}
+                aria-hidden="true"
+              >
+                {cohort.letter}
+              </span>
+
+              {/* Name + subtitle */}
+              <div class="flex min-w-0 flex-1 flex-col gap-[3px]">
+                <span
+                  class="cohort-row-name truncate font-mono text-[12px] leading-[18px]"
+                  style={`font-weight:${isSelected ? 600 : 500}; color:${isSelected ? "#101828" : "#1F2937"}`}
+                >
+                  {cohort.name}
+                </span>
+                <span
+                  class="truncate font-mono text-[10px] leading-3"
+                  style="color:#6B7280"
+                >
+                  {cohort.subtitle}
+                </span>
+              </div>
+
+              {/* Status pill */}
+              <span
+                class="inline-flex shrink-0 items-center gap-1.5 rounded-full"
+                style={isSelected
+                  ? "background-color:#FFF4EC; border:1px solid #FFD7B5; padding:3px 8px"
+                  : "background-color:#FFFFFF; border:1px solid #E7E2D6; padding:3px 8px"}
+              >
+                <span
+                  class="size-1.5 shrink-0 rounded-full"
+                  style={`background-color:${isSelected ? "#FB923C" : "#B6AC97"}`}
+                  aria-hidden="true"
+                ></span>
+                <span
+                  class="font-mono font-semibold uppercase"
+                  style={`font-size:9px; line-height:12px; letter-spacing:0.04em; color:${isSelected ? "#C2410C" : "#7A6F5C"}`}
+                >
+                  {cohort.status}
+                </span>
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </aside>
+
+    {/* ── Right pane — COHORT COMPOSITION ── */}
+    <section
+      class="flex flex-col rounded-md border border-[#EFE8DC] bg-cream-warm"
+      style="padding:22px 24px; gap:16px"
+    >
+      {/* Header strip */}
+      <div class="flex items-start justify-between gap-4">
+        <div class="flex min-w-0 flex-1 flex-col gap-1.5">
+          <span
+            class="font-sans font-semibold uppercase leading-3"
+            style="font-family:'Plus Jakarta Sans',system-ui,sans-serif; font-size:10px; letter-spacing:0.08em; color:#C2410C"
+          >
+            {d.rightEyebrow}
+          </span>
+          <span
+            class="font-sans font-semibold leading-6"
+            style="font-family:'Plus Jakarta Sans',system-ui,sans-serif; font-size:17px; color:#101828; max-width:560px"
+          >
+            {d.rightTitle}
+          </span>
+        </div>
+        {/* Context chip */}
+        <span
+          class="inline-flex shrink-0 items-center gap-1.5 rounded-full"
+          style="background-color:#FFF4EC; border:1px solid #FFD7B5; padding:4px 9px; margin-top:2px; height:22px"
+        >
+          <span
+            class="size-1.5 shrink-0 rounded-full"
+            style="background-color:#FB923C"
+            aria-hidden="true"
+          ></span>
+          <span
+            class="font-mono font-semibold"
+            style="font-size:10px; line-height:12px; color:#C2410C"
+          >
+            {d.contextChip}
+          </span>
+        </span>
+      </div>
+
+      {/* ── Derivation card ── */}
+      <div
+        class="flex flex-col rounded-md border border-[#EFE8DC] bg-white"
+        style="padding:18px 16px 14px; gap:12px"
+      >
+        {/* Card header: label + legend */}
+        <div class="flex items-center justify-between">
+          <span
+            class="font-sans font-semibold uppercase leading-3"
+            style="font-family:'Plus Jakarta Sans',system-ui,sans-serif; font-size:10px; letter-spacing:0.08em; color:#7A6F5C"
+          >
+            {d.derivationLabel}
+          </span>
+          {/* Legend */}
+          <div class="flex items-center gap-3.5">
+            {d.legend.map((item) => (
+              <span class="inline-flex items-center gap-1.5">
+                <span
+                  class="size-1.5 shrink-0 rounded-full"
+                  style={item.kind === "dot-orange"
+                    ? "background-color:#FB923C"
+                    : "background-color:#FFFFFF; border:1.5px solid #C2410C"}
+                  aria-hidden="true"
+                ></span>
+                <span class="font-mono" style="font-size:9px; line-height:12px; color:#6B7280">
+                  {item.label}
+                </span>
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Node track: baseline + 4 circular nodes (justify-between) + labels row */}
+        <div style="padding:4px 4px 0; gap:10px; display:flex; flex-direction:column">
+          {/* Track area */}
+          <div class="relative" style="height:32px">
+            {/* Baseline rule */}
+            <div
+              class="absolute"
+              style="left:0; right:0; top:50%; height:2px; background-color:#FFE3CC; border-radius:1px; transform:translateY(-50%)"
+              aria-hidden="true"
+            ></div>
+
+            {/* Node row */}
+            <div class="absolute inset-0 flex items-center justify-between px-0">
+              {d.nodes.map((node) => (
+                <div
+                  class="inline-flex shrink-0 items-center justify-center"
+                  style={node.kind === "done"
+                    ? "width:14px; height:14px; border-radius:999px; background-color:#FB923C; border:2px solid #C2410C"
+                    : "width:14px; height:14px; border-radius:999px; background-color:#FFFFFF; border:2px solid #C2410C"}
+                  aria-label={node.label}
+                ></div>
+              ))}
+            </div>
+          </div>
+
+          {/* Labels row — each box is node-width so `justify-between` spaces
+              the label centers exactly onto the node centers above. Labels
+              overflow the box (they are short enough never to collide); the
+              first and last anchor inward so they don't spill past the card,
+              the same trick the axis ticks use elsewhere in the widget. */}
+          <div class="flex items-start justify-between">
+            {d.nodes.map((node, i) => {
+              const isOwn = node.kind === "done";
+              const align =
+                i === 0
+                  ? "items-start"
+                  : i === d.nodes.length - 1
+                    ? "items-end"
+                    : "items-center";
+              return (
+                <div
+                  class:list={["flex flex-col gap-[3px] shrink-0", align]}
+                  style="width:14px; overflow:visible; white-space:nowrap"
+                >
+                  <span
+                    class="font-mono leading-3"
+                    style={`font-size:10px; font-weight:${isOwn ? 600 : 500}; color:${isOwn ? "#C2410C" : "#1F2937"}`}
+                  >
+                    {node.label}
+                  </span>
+                  <span
+                    class="font-mono leading-3"
+                    style={`font-size:9px; color:${isOwn ? "#C2410C" : "#9A8E78"}`}
+                  >
+                    {node.detail}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Member-session chips */}
+        <div
+          class="flex flex-col gap-2"
+          style="border-top:1px solid #F0E8DA; padding-top:12px"
+        >
+          <span
+            class="font-sans font-semibold uppercase leading-3"
+            style="font-family:'Plus Jakarta Sans',system-ui,sans-serif; font-size:9px; letter-spacing:0.1em; color:#9C8060"
+          >
+            {d.membersLabel}
+          </span>
+          <div class="flex flex-wrap items-center gap-1.5">
+            {d.members.map((member) => (
+              <span
+                class="inline-flex items-center gap-1.5 rounded-full"
+                style={member.overflow
+                  ? "background-color:#F6F3EC; border:1px solid #E7E2D6; padding:4px 10px"
+                  : "background-color:#FFFFFF; border:1px solid #EFE8DC; padding:4px 10px"}
+              >
+                {!member.overflow && (
+                  <span
+                    class="size-1.5 shrink-0 rounded-full"
+                    style="background-color:#FB923C"
+                    aria-hidden="true"
+                  ></span>
+                )}
+                <span
+                  class="font-mono"
+                  style={`font-size:10px; line-height:12px; color:${member.overflow ? "#8B7E6E" : "#374151"}`}
+                >
+                  {member.label}
+                </span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Paired cards ── */}
+      <div class="flex gap-3">
+        {/* Immutability card */}
+        <div
+          class="flex flex-1 flex-col rounded-md"
+          style="background-color:#FFFFFF; border:1px solid #EFE8DC; padding:14px 16px; gap:6px"
+        >
+          <div class="flex items-center justify-between">
+            <span
+              class="font-mono font-semibold"
+              style="font-size:11px; line-height:14px; letter-spacing:0.04em; color:#7A6F5C"
+            >
+              {d.immutableCard.title}
+            </span>
+            <span
+              class="font-mono"
+              style="font-size:10px; line-height:12px; color:#9A8E78"
+            >
+              {d.immutableCard.timestamp}
+            </span>
+          </div>
+          <span
+            class="font-sans"
+            style="font-family:'Plus Jakarta Sans',system-ui,sans-serif; font-size:11px; line-height:16px; color:#374151"
+          >
+            {d.immutableCard.body}
+          </span>
+        </div>
+
+        {/* Created-from card */}
+        <div
+          class="flex flex-1 flex-col rounded-md"
+          style="background-color:#FFF4EC; border:1px solid #FFD7B5; padding:14px 16px; gap:10px"
+        >
+          <div class="flex items-center justify-between">
+            <span
+              class="font-sans font-semibold"
+              style="font-family:'Plus Jakarta Sans',system-ui,sans-serif; font-size:12px; line-height:16px; letter-spacing:0.04em; color:#C2410C"
+            >
+              {d.createdFromCard.title}
+            </span>
+            <span
+              class="font-mono"
+              style="font-size:10px; line-height:12px; color:#C2410C; opacity:0.75"
+            >
+              {d.createdFromCard.timestamp}
+            </span>
+          </div>
+          {/* CLI block */}
+          <div
+            class="flex items-center gap-2 rounded-[6px]"
+            style="background-color:#FFFFFF; border:1px solid #FFD7B5; padding:9px 12px"
+          >
+            <span
+              class="font-mono font-semibold shrink-0"
+              style="font-size:11px; line-height:14px; color:#C2410C"
+            >
+              $
+            </span>
+            <span
+              class="font-mono"
+              style="font-size:11px; line-height:14px; color:#1F2937"
+            >
+              {d.createdFromCard.cliCommand}
+            </span>
+          </div>
+          {/* Summary */}
+          <div class="flex flex-wrap items-center gap-1.5" style="padding-top:2px">
+            <span class="font-mono" style="font-size:10px; line-height:12px; color:#374151">Froze</span>
+            <span class="font-mono font-semibold" style="font-size:10px; line-height:12px; color:#C2410C">
+              {d.createdFromCard.summary.sessionCount}
+            </span>
+            <span class="font-mono" style="font-size:10px; line-height:12px; color:#374151">· reads through</span>
+            <span class="font-mono font-semibold" style="font-size:10px; line-height:12px; color:#C2410C">
+              {d.createdFromCard.summary.evaluator}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Footer meta strip ── */}
+      <div
+        class="flex items-center justify-between"
+        style="border-top:1px solid #EFE8DC; padding-top:8px"
+      >
+        <div class="flex items-center gap-2">
+          <span class="font-mono" style="font-size:11px; line-height:14px; color:#374151">
+            {d.footer.cohortName}
+          </span>
+          <span class="font-mono" style="font-size:11px; line-height:14px; color:#9A8E78">·</span>
+          <span class="font-mono" style="font-size:11px; line-height:14px; color:#374151">
+            {d.footer.sessionsLabel}
+          </span>
+          <span class="font-mono" style="font-size:11px; line-height:14px; color:#9A8E78">·</span>
+          <span class="font-mono" style="font-size:11px; line-height:14px; color:#374151">
+            {d.footer.frozenLabel}
+          </span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <span
+            class="shrink-0 rounded-full"
+            style="width:7px; height:7px; background-color:#FB923C; display:inline-block"
+            aria-hidden="true"
+          ></span>
+          <span
+            class="font-mono font-semibold"
+            style="font-size:11px; line-height:14px; color:#C2410C"
+          >
+            {d.footer.statusLabel}
+          </span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<style>
+  /* ── Selected-row spec ────────────────────────────────────────────────── */
+  /* Static layout — the highlight marks which cohort the right pane details;
+     rows are not interactive, so no cursor/hover/focus affordances. */
+  .cohort-row {
+    border-radius: 8px;
+    padding: 10px 12px;
+    background-color: transparent;
+    border: 1px solid transparent;
+  }
+  .cohort-row[aria-current="true"] {
+    background-color: #fff4ec; /* --kitaru-selected-row-bg / orange-50 */
+    border-color: #ffd7b5;     /* --kitaru-selected-row-border */
+    /* Keep stable by matching the same box model — 1px border, 10px block padding */
+  }
+  .cohort-row-badge {
+    border-radius: 8px;
+  }
+</style>
