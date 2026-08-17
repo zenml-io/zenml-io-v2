@@ -12,7 +12,9 @@ import {
 import {
   PRICING_COMPARE,
   PRICING_COMPLIANCE,
-  PRICING_FAQ,
+  PRICING_FAQ_KITARU,
+  PRICING_FAQ_SLACK_CTA,
+  PRICING_FAQ_ZENML,
   PRICING_FINAL_CTA,
   PRICING_HERO,
   PRICING_PLANS,
@@ -92,17 +94,16 @@ function renderProInclusions(): string {
 
 function renderFaq(): string {
   return joinMarkdownSections(
-    `## ${PRICING_FAQ.headline}`,
-    PRICING_FAQ.subheadline ?? "",
-    PRICING_FAQ.items
-      .map((item) => `### ${item.question}\n\n${htmlToPlainText(item.answer)}`)
-      .join("\n\n"),
-    PRICING_FAQ.slackCta
-      ? `Still not clear? ${markdownLink(
-          PRICING_FAQ.slackCta.label,
-          PRICING_FAQ.slackCta.href,
-        )}`
-      : "",
+    ...[PRICING_FAQ_KITARU, PRICING_FAQ_ZENML].flatMap((faq) => [
+      `## ${faq.headline}`,
+      ...faq.items.map(
+        (item) => `### ${item.question}\n\n${htmlToPlainText(item.answer)}`,
+      ),
+    ]),
+    `Still not clear? ${markdownLink(
+      PRICING_FAQ_SLACK_CTA.label,
+      PRICING_FAQ_SLACK_CTA.href,
+    )}`,
   );
 }
 
@@ -124,6 +125,7 @@ export function GET(): Response {
     ),
     `## Plans\n\n${PRICING_PLANS.map(renderPlan).join("\n\n")}`,
     renderComparisonTables(),
+    renderFaq(),
     renderProInclusions(),
     joinMarkdownSections(
       `## ${PRICING_STARTUP_BANNER.headline}`,
@@ -149,7 +151,6 @@ export function GET(): Response {
         PRICING_STATS.items.map((item) => `${item.value} ${item.label}`),
       ),
     ),
-    renderFaq(),
     joinMarkdownSections(
       `## ${PRICING_FINAL_CTA.headline}`,
       PRICING_FINAL_CTA.body,

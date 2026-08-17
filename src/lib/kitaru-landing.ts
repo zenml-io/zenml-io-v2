@@ -1,3 +1,6 @@
+import type { FaqItem } from "./marketingPageTypes";
+import { KITARU_VS_OBSERVABILITY_ANSWER } from "./productKitaru";
+
 // Re-export shared constants from productKitaru to avoid duplication
 export {
   KITARU_INSTALL_CMD,
@@ -143,4 +146,46 @@ export const LINEAGE = [
   { name: "JetBrains", href: "https://www.zenml.io/case-study/jetbrains" },
   { name: "Adeo", href: "https://www.zenml.io/case-study/adeo-leroy-merlin" },
   { name: "Brevo", href: "https://www.zenml.io/case-study/brevo" },
+] as const;
+
+/**
+ * FAQ — the objections and questions that come up in every demo, answered
+ * in the same register the rest of the page uses. Pricing questions live
+ * on /pricing; these are product questions.
+ */
+export const FAQ_ITEMS: readonly FaqItem[] = [
+  {
+    question: "How is this different from Langfuse, Braintrust or LangSmith?",
+    answer: KITARU_VS_OBSERVABILITY_ANSWER,
+  },
+  {
+    question: "My agent writes to real systems. Isn't replay dangerous?",
+    answer:
+      "Replay answers the agent's tool calls from the recording — nothing touches real systems. Per-tool policies control the rest: recorded, blocked, live in a sandbox, or simulated, where an LLM answers the tool call in-distribution so the session keeps going realistically past the recorded data. We don't test in prod — we make prod's past your test bench.",
+  },
+  {
+    question: "The model isn't deterministic. How is replay trustworthy?",
+    answer:
+      "The recorded world is held constant — same inputs, same tool responses — so the diff you see comes from your change, not from ambient noise. Comparison is done by evaluators plus side-by-side diff, not by pretending LLMs are deterministic. And no, temperature=0 is not determinism — we have the divergence data.",
+  },
+  {
+    question: "Where do the eval criteria come from? We never wrote any down.",
+    answer:
+      "From the people who already judge the agent every day. Kitaru interviews your domain expert, compiles their criteria into evaluators, then calibrates them against human pairwise judgments before they gate anything.",
+  },
+  {
+    question: "What frameworks does it work with?",
+    answer:
+      "Recording adapters wrap your existing agent — one wrapper, no rewrite — for PydanticAI, the OpenAI Agents SDK, LangGraph and Mastra. Or skip recording entirely and import the trace history you already have from Langfuse, Braintrust, LangSmith or plain files.",
+  },
+  {
+    question: "Is it open source? Can I self-host?",
+    answer:
+      "Yes — Apache 2.0, self-hosted by default. The server and workers run in your infrastructure and replay executes in your environment, so your traces never have to leave your systems. A managed offering is available through ZenML Pro.",
+  },
+  {
+    question: "Does this replace human review?",
+    answer:
+      "No. Evals change the review ratio, not the review requirement. The goal is that humans review the sessions worth reviewing, with evidence attached — not that nobody reviews.",
+  },
 ] as const;

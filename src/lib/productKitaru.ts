@@ -17,6 +17,14 @@ export const KITARU_CLOUD_LIMITS = {
 /** Trial terms shown next to every signup CTA. */
 export const KITARU_TRIAL_NOTE = `${KITARU_TRIAL_DAYS}-day free trial · Full access · No credit card`;
 
+/**
+ * Canonical answer to "how is this different from Langfuse / Braintrust /
+ * LangSmith?" — say the sentence the same way every time. Used verbatim by
+ * the /pricing Kitaru FAQ and the /product/kitaru FAQ.
+ */
+export const KITARU_VS_OBSERVABILITY_ANSWER =
+  "They tell you what happened — traces you read, dashboards you check. Kitaru re-runs what happened: your agent's real code executes again against the recorded world, so you can test your next change against your last thousand sessions before it ships. And it's a complement, not a replacement — Kitaru imports your existing Langfuse, Braintrust or LangSmith traces, and your observability tool stays your system of record.";
+
 export const KITARU_LINKS = {
   signup: {
     // Kitaru signup lives on its own cloud app (Aug 2026 decision),
@@ -43,7 +51,8 @@ export const PRODUCT_KITARU_SEO = {
  *
  * This prose is NOT derived from src/components/kitaru/*. The install command,
  * license string, and canonical demo/GitHub links ARE shared through constants
- * above; the rest of this summary should be updated when the Kitaru landing
+ * above (and the .md route also appends FAQ_ITEMS from kitaru-landing.ts);
+ * the rest of this summary should be updated when the Kitaru landing
  * page's load-bearing pitch changes.
  */
 export const PRODUCT_KITARU_MARKDOWN = {

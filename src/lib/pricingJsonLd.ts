@@ -1,6 +1,7 @@
 import type { PricingPlan } from "./marketingPageTypes";
 import {
-  PRICING_FAQ,
+  PRICING_FAQ_KITARU,
+  PRICING_FAQ_ZENML,
   PRICING_FINAL_CTA,
   PRICING_HERO,
   PRICING_PLANS,
@@ -89,7 +90,10 @@ export function buildPricingJsonLd(): Record<string, unknown> {
       {
         "@type": "FAQPage",
         "@id": `${pricingUrl}#faq`,
-        mainEntity: PRICING_FAQ.items.map((item) => ({
+        mainEntity: [
+          ...PRICING_FAQ_KITARU.items,
+          ...PRICING_FAQ_ZENML.items,
+        ].map((item) => ({
           "@type": "Question",
           name: item.question,
           acceptedAnswer: {

@@ -232,11 +232,11 @@ export const HOMEPAGE_UNIFIED_WORKSPACES = {
     {
       name: "Kitaru workspace",
       tagline: "Agent evals",
-      body: "Your agent's real traces become frozen, replayable worlds. Score what happened, replay your real code with one thing changed, and keep every fix as a regression test.",
+      body: "Your agent's real traces become frozen, replayable worlds. Evaluate what happened, replay your real code with one thing changed, and keep every fix as a regression test.",
       bullets: [
         "Import traces from anywhere, or record natively",
-        "Score thousands of executions: the agent never runs",
-        "Replay against your real code: model, tool, or prompt swapped",
+        "Replay them against your next change and see what would have broken",
+        "Keep what caught the failure as a permanent regression test",
       ],
       cta: { label: "Explore Kitaru", href: "/product/kitaru" },
     },
