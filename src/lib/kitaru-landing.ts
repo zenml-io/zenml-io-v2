@@ -33,7 +33,7 @@ export const SCENARIOS = [
     tag: "decide",
     q: "Can we ship the cheaper model?",
     outcome:
-      "Same cohort, one model swapped — the answer is two runs, compared.",
+      "Same reviewed cohort, one model swapped. Replay once and score both sides.",
     stat: "−84%",
     statLabel: "cost · 192/200 outputs identical",
   },
@@ -52,24 +52,24 @@ export const STEPS = [
     n: "01",
     tag: "Cohort",
     title: "Freeze the sessions that matter",
-    body: "The sessions you care about, frozen as a named set. Immutable, so a run's result keeps meaning what it meant.",
+    body: "The cases a human reviewed, frozen as an immutable version so every comparison uses the same evidence.",
     command:
       "COHORT_VERSION_ID=$(kitaru cohort create checkout-flow --agent checkout-agent --sessions-file session-ids.txt --output json --machine --non-interactive --no-browser | jq -r '.item.version.id')",
   },
   {
     n: "02",
     tag: "Experiment",
-    title: "State the two hypotheses",
-    body: "Each experiment is just configuration. Keep the baseline fixed, then change only the model in the candidate.",
-    command: `kitaru experiment create baseline --agent checkout-agent --tool-policy '{"default":{"type":"history","scope":"cohort_version","on_miss":"fail"}}' --evaluator response-quality@latest\nkitaru experiment create cheap-model --agent checkout-agent --override '{"model":"claude-haiku-4.5"}' --tool-policy '{"default":{"type":"history","scope":"cohort_version","on_miss":"fail"}}' --evaluator response-quality@latest`,
+    title: "Define the candidate",
+    body: "The experiment pins the model change, recorded-history policy, and exact evaluator version.",
+    command: `kitaru experiment create cheaper-model --agent checkout-agent --override '{"model":"claude-haiku-4.5"}' --tool-policy '{"default":{"type":"history","scope":"baseline","on_miss":"fail"}}' --evaluator returns-behavior@1`,
   },
   {
     n: "03",
-    tag: "Two runs",
+    tag: "One run",
     title: "Compare like with like",
-    body: "Run the baseline and candidate over the same cohort and agent version. One model moved, so the numbers mean what they look like.",
+    body: "Replay the reviewed cohort once and score the original sessions with the same evaluator.",
     command:
-      'kitaru experiment run start baseline --cohort-version "$COHORT_VERSION_ID" --agent checkout-agent@v1 --wait\nkitaru experiment run start cheap-model --cohort-version "$COHORT_VERSION_ID" --agent checkout-agent@v1 --wait',
+      'kitaru experiment run start cheaper-model --cohort-version "$COHORT_VERSION_ID" --agent checkout-agent@v1 --evaluate-baselines --wait',
   },
 ] as const;
 
@@ -92,10 +92,10 @@ export const ANNOTATIONS = [
   {
     key: "cohort",
     label: {
-      python: "cohort_version_id=...",
-      typescript: "cohort_version_id: ...",
+      python: "cohort_version_id=REVIEWED_COHORT_VERSION_ID",
+      typescript: "cohort_version_id: reviewedCohortVersionId",
     },
-    body: "An immutable set of sessions — a run depends on its cohort, so a mutable one would make old results meaningless.",
+    body: "The cases a human reviewed, frozen as an immutable version so every later comparison refers to the same evidence.",
   },
   {
     key: "experiment",
@@ -103,7 +103,7 @@ export const ANNOTATIONS = [
       python: "experiments.create(...)",
       typescript: "experiments.create(...)",
     },
-    body: "Pure configuration. Change the code and you get a new run; change the prompt and you get a new experiment.",
+    body: "One candidate configuration: the change under test, its tool policy, and the exact evaluator version chosen from reviewed behavior.",
   },
   {
     key: "model",
@@ -116,10 +116,10 @@ export const ANNOTATIONS = [
   {
     key: "policy",
     label: {
-      python: 'HistoryConfig(scope="cohort_version")',
-      typescript: '{ type: "history", scope: "cohort_version" }',
+      python: 'HistoryConfig(scope="baseline")',
+      typescript: '{ type: "history", scope: "baseline" }',
     },
-    body: "One of four policies — history, passthrough, static, llm. Every intercepted node is stamped with the one that answered it.",
+    body: "Recorded history answers tool calls. Baseline scope keeps each replay tied to its own original case, and a missing result stops the run.",
   },
   {
     key: "run",
@@ -127,7 +127,7 @@ export const ANNOTATIONS = [
       python: "experiments.start_run(...)",
       typescript: "experiments.startRun(...)",
     },
-    body: "Both experiments run over the same cohort and agent version, so the model is the only variable that moved.",
+    body: "One run replays the candidate and scores the original sessions with the same evaluator, producing the paired comparison.",
   },
 ] as const;
 

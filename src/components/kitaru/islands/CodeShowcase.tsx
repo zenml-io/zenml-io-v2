@@ -16,53 +16,14 @@ type Line = { tokens: CodeLine; key?: string; dim?: boolean };
 
 export const PYTHON_SHOWCASE: Line[] = [
   {
-    tokens: [{ cmt: "# Inside an async function, compare one model change." }],
+    tokens: [
+      { cmt: "# Replay one model change against cases a human has reviewed." },
+    ],
     dim: true,
   },
   {
     tokens: [
-      "policy ",
-      { op: "=" },
-      " ",
-      { fn: "ToolPolicy" },
-      "(default",
-      { op: "=" },
-      { fn: "HistoryConfig" },
-      "(",
-    ],
-    key: "policy",
-  },
-  {
-    tokens: [
-      "    scope",
-      { op: "=" },
-      { str: '"cohort_version"' },
-      ", on_miss",
-      { op: "=" },
-      { str: '"fail"' },
-      "))",
-    ],
-    key: "policy",
-  },
-  {
-    tokens: [
-      "evaluator ",
-      { op: "=" },
-      " ",
-      { fn: "EvaluatorConfig" },
-      "(evaluator",
-      { op: "=" },
-      { str: '"response-quality"' },
-      ", version",
-      { op: "=" },
-      "1)",
-    ],
-    key: "experiment",
-  },
-  { tokens: [] },
-  {
-    tokens: [
-      "baseline ",
+      "experiment ",
       { op: "=" },
       " ",
       { kw: "await" },
@@ -73,51 +34,15 @@ export const PYTHON_SHOWCASE: Line[] = [
     key: "experiment",
   },
   {
-    tokens: [
-      "    ",
-      { fn: "ExperimentCreateRequest" },
-      "(name",
-      { op: "=" },
-      { str: '"baseline"' },
-      ", agent_id",
-      { op: "=" },
-      "AGENT_ID,",
-    ],
+    tokens: ["    ", { fn: "ExperimentCreateRequest" }, "("],
     key: "experiment",
   },
   {
-    tokens: [
-      "        tool_policy",
-      { op: "=" },
-      "policy, evaluators",
-      { op: "=" },
-      "[evaluator]))",
-    ],
+    tokens: ["        name", { op: "=" }, { str: '"cheaper-model"' }, ","],
     key: "experiment",
   },
   {
-    tokens: [
-      "candidate ",
-      { op: "=" },
-      " ",
-      { kw: "await" },
-      " client.experiments.",
-      { fn: "create" },
-      "(",
-    ],
-    key: "experiment",
-  },
-  {
-    tokens: [
-      "    ",
-      { fn: "ExperimentCreateRequest" },
-      "(name",
-      { op: "=" },
-      { str: '"cheap-model"' },
-      ", agent_id",
-      { op: "=" },
-      "AGENT_ID,",
-    ],
+    tokens: ["        agent_id", { op: "=" }, "AGENT_ID,"],
     key: "experiment",
   },
   {
@@ -133,101 +58,94 @@ export const PYTHON_SHOWCASE: Line[] = [
     key: "model",
   },
   {
+    tokens: ["        tool_policy", { op: "=" }, { fn: "ToolPolicy" }, "("],
+    key: "policy",
+  },
+  {
     tokens: [
-      "        tool_policy",
+      "            default",
       { op: "=" },
-      "policy, evaluators",
+      { fn: "HistoryConfig" },
+      "(scope",
       { op: "=" },
-      "[evaluator]))",
+      { str: '"baseline"' },
+      ", on_miss",
+      { op: "=" },
+      { str: '"fail"' },
+      "),",
+    ],
+    key: "policy",
+  },
+  { tokens: ["        ),"], key: "policy" },
+  {
+    tokens: ["        evaluators", { op: "=" }, "["],
+    key: "experiment",
+  },
+  {
+    tokens: [
+      "            ",
+      { fn: "EvaluatorConfig" },
+      "(evaluator",
+      { op: "=" },
+      { str: '"returns-behavior"' },
+      ", version",
+      { op: "=" },
+      "1),",
     ],
     key: "experiment",
   },
+  { tokens: ["        ],"], key: "experiment" },
+  { tokens: ["    )"], key: "experiment" },
+  { tokens: [")"], key: "experiment" },
   { tokens: [] },
   {
     tokens: [
-      "run_spec ",
+      "run ",
       { op: "=" },
       " ",
-      { fn: "ExperimentRunCreateRequest" },
+      { kw: "await" },
+      " client.experiments.",
+      { fn: "start_run" },
       "(",
     ],
-    key: "cohort",
+    key: "run",
   },
+  { tokens: ["    experiment.id,"], key: "run" },
   {
-    tokens: ["    cohort_version_id", { op: "=" }, "COHORT_VERSION_ID,"],
-    key: "cohort",
+    tokens: ["    ", { fn: "ExperimentRunCreateRequest" }, "("],
+    key: "run",
   },
   {
     tokens: [
-      "    agent_version_id",
+      "        cohort_version_id",
       { op: "=" },
-      "AGENT_VERSION_ID, evaluate_baselines",
-      { op: "=" },
-      { kw: "True" },
-      ")",
+      "REVIEWED_COHORT_VERSION_ID,",
     ],
     key: "cohort",
   },
   {
-    tokens: [{ kw: "await" }, " ", { fn: "asyncio.gather" }, "("],
+    tokens: ["        agent_version_id", { op: "=" }, "AGENT_VERSION_ID,"],
     key: "run",
   },
   {
-    tokens: [
-      "    client.experiments.",
-      { fn: "start_run" },
-      "(baseline.id, run_spec),",
-    ],
+    tokens: ["        evaluate_baselines", { op: "=" }, { kw: "True" }, ","],
     key: "run",
   },
-  {
-    tokens: [
-      "    client.experiments.",
-      { fn: "start_run" },
-      "(candidate.id, run_spec),",
-    ],
-    key: "run",
-  },
+  { tokens: ["    ),"], key: "run" },
   { tokens: [")"], key: "run" },
 ];
 
 export const TYPESCRIPT_SHOWCASE: Line[] = [
   {
-    tokens: [{ cmt: "// One shared setup; only the model changes." }],
+    tokens: [
+      { cmt: "// Replay one model change against cases a human has reviewed." },
+    ],
     dim: true,
   },
   {
-    tokens: [{ kw: "const" }, " common ", { op: "=" }, " { agent_id: agentId,"],
-    key: "experiment",
-  },
-  {
-    tokens: ["  tool_policy: { default: { type: ", { str: '"history"' }, ","],
-    key: "policy",
-  },
-  {
-    tokens: [
-      "    scope: ",
-      { str: '"cohort_version"' },
-      ", on_miss: ",
-      { str: '"fail"' },
-      " } },",
-    ],
-    key: "policy",
-  },
-  {
-    tokens: [
-      "  evaluators: [{ evaluator: ",
-      { str: '"response-quality"' },
-      ", version: 1 }],",
-    ],
-    key: "experiment",
-  },
-  { tokens: ["};"], key: "experiment" },
-  { tokens: [] },
-  {
     tokens: [
       { kw: "const" },
-      " baseline ",
+      " experiment ",
       { op: "=" },
       " ",
       { kw: "await" },
@@ -238,70 +156,61 @@ export const TYPESCRIPT_SHOWCASE: Line[] = [
     key: "experiment",
   },
   {
-    tokens: ["  name: ", { str: '"baseline"' }, ", ...common });"],
+    tokens: ["  name: ", { str: '"cheaper-model"' }, ","],
     key: "experiment",
   },
-  {
-    tokens: [
-      { kw: "const" },
-      " candidate ",
-      { op: "=" },
-      " ",
-      { kw: "await" },
-      " client.experiments.",
-      { fn: "create" },
-      "({",
-    ],
-    key: "experiment",
-  },
-  {
-    tokens: ["  name: ", { str: '"cheap-model"' }, ", ...common,"],
-    key: "experiment",
-  },
+  { tokens: ["  agent_id: agentId,"], key: "experiment" },
   {
     tokens: ["  override: { model: ", { str: '"claude-haiku-4.5"' }, " },"],
     key: "model",
+  },
+  { tokens: ["  tool_policy: {"], key: "policy" },
+  {
+    tokens: [
+      "    default: { type: ",
+      { str: '"history"' },
+      ", scope: ",
+      { str: '"baseline"' },
+      ", on_miss: ",
+      { str: '"fail"' },
+      " },",
+    ],
+    key: "policy",
+  },
+  { tokens: ["  },"], key: "policy" },
+  {
+    tokens: [
+      "  evaluators: [{ evaluator: ",
+      { str: '"returns-behavior"' },
+      ", version: 1 }],",
+    ],
+    key: "experiment",
   },
   { tokens: ["});"], key: "experiment" },
   { tokens: [] },
   {
     tokens: [
       { kw: "const" },
-      " runSpec ",
+      " run ",
       { op: "=" },
-      " { cohort_version_id: cohortVersionId,",
+      " ",
+      { kw: "await" },
+      " client.experiments.",
+      { fn: "startRun" },
+      "(experiment.id, {",
     ],
+    key: "run",
+  },
+  {
+    tokens: ["  cohort_version_id: reviewedCohortVersionId,"],
     key: "cohort",
   },
+  { tokens: ["  agent_version_id: agentVersionId,"], key: "run" },
   {
-    tokens: [
-      "  agent_version_id: agentVersionId, evaluate_baselines: ",
-      { kw: "true" },
-      " };",
-    ],
-    key: "cohort",
-  },
-  {
-    tokens: [{ kw: "await" }, " ", { fn: "Promise.all" }, "(["],
+    tokens: ["  evaluate_baselines: ", { kw: "true" }, ","],
     key: "run",
   },
-  {
-    tokens: [
-      "  client.experiments.",
-      { fn: "startRun" },
-      "(baseline.id, runSpec),",
-    ],
-    key: "run",
-  },
-  {
-    tokens: [
-      "  client.experiments.",
-      { fn: "startRun" },
-      "(candidate.id, runSpec),",
-    ],
-    key: "run",
-  },
-  { tokens: ["]);"], key: "run" },
+  { tokens: ["});"], key: "run" },
 ];
 
 export function CodeShowcase() {
@@ -318,12 +227,12 @@ export function CodeShowcase() {
         <Reveal className="max-w-3xl">
           <Eyebrow>See the code</Eyebrow>
           <h2 className="mt-5 text-balance text-3xl leading-[1.1] font-medium tracking-[-0.025em] md:text-[2.75rem]">
-            One cohort, one changed variable, two runs.
+            One reviewed cohort, one changed variable, one comparison.
           </h2>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-night-text/60 md:text-lg">
-            Each experiment holds one configuration; each run pins it to the
-            same cohort and agent version. The same SDK excerpt is shown in
-            Python and TypeScript. Hover any line.
+            The experiment holds the candidate configuration. Its run replays
+            the reviewed cohort and scores the recorded baselines with the same
+            evaluator. Hover any line.
           </p>
         </Reveal>
 

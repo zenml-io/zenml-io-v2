@@ -104,11 +104,14 @@ describe("Kitaru product-page snippets", () => {
     `);
     expect(featureCommands).toMatchInlineSnapshot(`
       "COHORT_VERSION_ID=$(kitaru cohort create checkout-flow --agent checkout-agent --sessions-file session-ids.txt --output json --machine --non-interactive --no-browser | jq -r '.item.version.id')
-      kitaru experiment create baseline --agent checkout-agent --tool-policy '{"default":{"type":"history","scope":"cohort_version","on_miss":"fail"}}' --evaluator response-quality@latest
-      kitaru experiment create cheap-model --agent checkout-agent --override '{"model":"claude-haiku-4.5"}' --tool-policy '{"default":{"type":"history","scope":"cohort_version","on_miss":"fail"}}' --evaluator response-quality@latest
-      kitaru experiment run start baseline --cohort-version "$COHORT_VERSION_ID" --agent checkout-agent@v1 --wait
-      kitaru experiment run start cheap-model --cohort-version "$COHORT_VERSION_ID" --agent checkout-agent@v1 --wait"
+      kitaru experiment create cheaper-model --agent checkout-agent --override '{"model":"claude-haiku-4.5"}' --tool-policy '{"default":{"type":"history","scope":"baseline","on_miss":"fail"}}' --evaluator returns-behavior@1
+      kitaru experiment run start cheaper-model --cohort-version "$COHORT_VERSION_ID" --agent checkout-agent@v1 --evaluate-baselines --wait"
     `);
+    expect(featureCommands.match(/kitaru experiment create/g)).toHaveLength(1);
+    expect(featureCommands.match(/kitaru experiment run start/g)).toHaveLength(
+      1,
+    );
+    expect(featureCommands).toContain("--evaluate-baselines");
   });
 
   it("renders the complete current adapter examples", () => {
@@ -254,48 +257,47 @@ describe("Kitaru product-page snippets", () => {
     expectValidPython(python);
     expectValidTypeScript(typescript);
     expect(python).toMatchInlineSnapshot(`
-      "# Inside an async function, compare one model change.
-      policy = ToolPolicy(default=HistoryConfig(
-          scope="cohort_version", on_miss="fail"))
-      evaluator = EvaluatorConfig(evaluator="response-quality", version=1)
-
-      baseline = await client.experiments.create(
-          ExperimentCreateRequest(name="baseline", agent_id=AGENT_ID,
-              tool_policy=policy, evaluators=[evaluator]))
-      candidate = await client.experiments.create(
-          ExperimentCreateRequest(name="cheap-model", agent_id=AGENT_ID,
+      "# Replay one model change against cases a human has reviewed.
+      experiment = await client.experiments.create(
+          ExperimentCreateRequest(
+              name="cheaper-model",
+              agent_id=AGENT_ID,
               override=ReplayOverride(model="claude-haiku-4.5"),
-              tool_policy=policy, evaluators=[evaluator]))
+              tool_policy=ToolPolicy(
+                  default=HistoryConfig(scope="baseline", on_miss="fail"),
+              ),
+              evaluators=[
+                  EvaluatorConfig(evaluator="returns-behavior", version=1),
+              ],
+          )
+      )
 
-      run_spec = ExperimentRunCreateRequest(
-          cohort_version_id=COHORT_VERSION_ID,
-          agent_version_id=AGENT_VERSION_ID, evaluate_baselines=True)
-      await asyncio.gather(
-          client.experiments.start_run(baseline.id, run_spec),
-          client.experiments.start_run(candidate.id, run_spec),
+      run = await client.experiments.start_run(
+          experiment.id,
+          ExperimentRunCreateRequest(
+              cohort_version_id=REVIEWED_COHORT_VERSION_ID,
+              agent_version_id=AGENT_VERSION_ID,
+              evaluate_baselines=True,
+          ),
       )"
     `);
     expect(typescript).toMatchInlineSnapshot(`
-      "// One shared setup; only the model changes.
-      const common = { agent_id: agentId,
-        tool_policy: { default: { type: "history",
-          scope: "cohort_version", on_miss: "fail" } },
-        evaluators: [{ evaluator: "response-quality", version: 1 }],
-      };
-
-      const baseline = await client.experiments.create({
-        name: "baseline", ...common });
-      const candidate = await client.experiments.create({
-        name: "cheap-model", ...common,
+      "// Replay one model change against cases a human has reviewed.
+      const experiment = await client.experiments.create({
+        name: "cheaper-model",
+        agent_id: agentId,
         override: { model: "claude-haiku-4.5" },
+        tool_policy: {
+          default: { type: "history", scope: "baseline", on_miss: "fail" },
+        },
+        evaluators: [{ evaluator: "returns-behavior", version: 1 }],
       });
 
-      const runSpec = { cohort_version_id: cohortVersionId,
-        agent_version_id: agentVersionId, evaluate_baselines: true };
-      await Promise.all([
-        client.experiments.startRun(baseline.id, runSpec),
-        client.experiments.startRun(candidate.id, runSpec),
-      ]);"
+      const run = await client.experiments.startRun(experiment.id, {
+        cohort_version_id: reviewedCohortVersionId,
+        agent_version_id: agentVersionId,
+        evaluate_baselines: true,
+      });"
     `);
     expect(python).not.toContain("kitaru.KitaruClient");
     expect(python).not.toContain("client.compare");
@@ -311,10 +313,10 @@ describe("Kitaru product-page snippets", () => {
       ANNOTATIONS.map((annotation) => annotation.label.python),
     ).toMatchInlineSnapshot(`
         [
-          "cohort_version_id=...",
+          "cohort_version_id=REVIEWED_COHORT_VERSION_ID",
           "experiments.create(...)",
           "ReplayOverride(model="claude-haiku-4.5")",
-          "HistoryConfig(scope="cohort_version")",
+          "HistoryConfig(scope="baseline")",
           "experiments.start_run(...)",
         ]
       `);
@@ -322,10 +324,10 @@ describe("Kitaru product-page snippets", () => {
       ANNOTATIONS.map((annotation) => annotation.label.typescript),
     ).toMatchInlineSnapshot(`
         [
-          "cohort_version_id: ...",
+          "cohort_version_id: reviewedCohortVersionId",
           "experiments.create(...)",
           "override: { model: "claude-haiku-4.5" }",
-          "{ type: "history", scope: "cohort_version" }",
+          "{ type: "history", scope: "baseline" }",
           "experiments.startRun(...)",
         ]
       `);
