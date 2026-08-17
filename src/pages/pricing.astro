@@ -12,9 +12,9 @@ import PricingProInclusions from "../components/sections/PricingProInclusions.as
  *
  * Unified single-page pricing: three plan cards (Open Source / Scale /
  * Enterprise — the Scale card carries an executions slider), one feature
- * comparison table, then the "Two workspaces" breakdown. Additional
- * sections: startup/academic banner, compliance, FAQ, stats/trust,
- * and final CTA.
+ * comparison table, then a per-workspace FAQ and the "Two workspaces"
+ * breakdown. Additional sections: startup/academic banner, compliance,
+ * stats/trust, and final CTA.
  */
 import JsonLd from "../components/seo/JsonLd.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -22,7 +22,8 @@ import {
   PRICING_COMPARE,
   PRICING_COMPARE_KITARU,
   PRICING_COMPLIANCE,
-  PRICING_FAQ,
+  PRICING_FAQ_KITARU,
+  PRICING_FAQ_ZENML,
   PRICING_FINAL_CTA,
   PRICING_HERO,
   PRICING_SEO,
@@ -88,6 +89,15 @@ const pricingJsonLd = buildPricingJsonLd();
         </div>
       </div>
     </section>
+
+    {/* FAQ — one per workspace, riding the same [data-workspace-panel]
+        toggle as the plan cards and comparison table above. */}
+    <div data-workspace-panel="kitaru" class="kitaru-brand-vars">
+      <FaqSection {...PRICING_FAQ_KITARU} />
+    </div>
+    <div data-workspace-panel="zenml" hidden>
+      <FaqSection {...PRICING_FAQ_ZENML} />
+    </div>
 
     {/* What's included in Pro — two workspaces breakdown */}
     <PricingProInclusions />
@@ -159,15 +169,6 @@ const pricingJsonLd = buildPricingJsonLd();
         </div>
       </div>
     </section>
-
-    {/* FAQ */}
-    <FaqSection
-      eyebrow={PRICING_FAQ.eyebrow}
-      headline={PRICING_FAQ.headline}
-      subheadline={PRICING_FAQ.subheadline}
-      items={PRICING_FAQ.items}
-      slackCta={PRICING_FAQ.slackCta}
-    />
 
     {/* Stats + Trust */}
     <section class="border-t border-gray-200 bg-cover bg-center py-20 sm:py-28" style="background-image: url('/images/zenml_light_bg-02.avif')">

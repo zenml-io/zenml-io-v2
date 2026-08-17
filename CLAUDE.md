@@ -9,7 +9,7 @@ collections defined in `src/content.config.ts`.
 
 The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 - **ZenML** — ML workflow orchestration (the original product)
-- **Kitaru** — durable runtime for AI agents (folded in from `kitaru.ai`)
+- **Kitaru** — replay-based evals for AI agents (folded in from `kitaru.ai`; pivoted from the earlier durable-runtime positioning in Aug 2026)
 
 - **Production URL**: https://www.zenml.io
 - **Hosting**: The accepted Astro 7 Cloudflare Worker serves production.

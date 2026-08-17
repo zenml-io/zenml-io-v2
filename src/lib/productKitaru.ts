@@ -1,4 +1,5 @@
-export const KITARU_INSTALL_CMD = "uv add kitaru";
+export const KITARU_INSTALL_CMD =
+  'uv add "kitaru[cli,worker]" kitaru-pydantic-ai';
 export const KITARU_LICENSE = "Apache 2.0";
 
 /**
@@ -16,6 +17,14 @@ export const KITARU_CLOUD_LIMITS = {
 
 /** Trial terms shown next to every signup CTA. */
 export const KITARU_TRIAL_NOTE = `${KITARU_TRIAL_DAYS}-day free trial · Full access · No credit card`;
+
+/**
+ * Canonical answer to "how is this different from Langfuse / Braintrust /
+ * LangSmith?" — say the sentence the same way every time. Used verbatim by
+ * the /pricing Kitaru FAQ and the /product/kitaru FAQ.
+ */
+export const KITARU_VS_OBSERVABILITY_ANSWER =
+  "They tell you what happened: traces you read, dashboards you check. Kitaru re-runs what happened. Your agent's real code executes again against the recorded world, so you can test your next change against your last thousand sessions before it ships. Kitaru also imports your existing Langfuse, Braintrust or LangSmith traces, so your observability tool stays your system of record.";
 
 export const KITARU_LINKS = {
   signup: {
@@ -43,7 +52,8 @@ export const PRODUCT_KITARU_SEO = {
  *
  * This prose is NOT derived from src/components/kitaru/*. The install command,
  * license string, and canonical demo/GitHub links ARE shared through constants
- * above; the rest of this summary should be updated when the Kitaru landing
+ * above (and the .md route also appends FAQ_ITEMS from kitaru-landing.ts);
+ * the rest of this summary should be updated when the Kitaru landing
  * page's load-bearing pitch changes.
  */
 export const PRODUCT_KITARU_MARKDOWN = {
@@ -90,7 +100,7 @@ export const PRODUCT_KITARU_MARKDOWN = {
   journey: [
     {
       name: "Act 1 — Get in",
-      body: "`uv add kitaru` then `kitaru login`. Two questions decide your path: do you have a repo with an agent, and do you have traces? No repo, or an unrecognised framework, and you start from the template repo — a small PydanticAI agent already wrapped, with a trace file beside it. Registering the agent stores an entrypoint module path server-side; nothing is written into your repo. Then `kitaru worker start` runs a plain Python process in your virtualenv, which polls — the server never connects inbound.",
+      body: `\`${KITARU_INSTALL_CMD}\` then \`kitaru login --local\`. Two questions decide your path: do you have a repo with an agent, and do you have traces? No repo, or an unrecognised framework, and you start from the template repo — a small PydanticAI agent already wrapped, with a trace file beside it. Registering the agent stores an entrypoint module path server-side; nothing is written into your repo. Then \`kitaru worker start\` runs a plain Python process in your virtualenv, which polls — the server never connects inbound.`,
     },
     {
       name: "Act 2 — Traces in",

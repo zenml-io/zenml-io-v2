@@ -1,0 +1,39 @@
+---
+// Faq.astro — product questions, in the register of the rest of the page.
+// Static (native <details>/<summary>, zero JS); scroll-reveal comes from
+// the page-level reveal-static script like Features and GroundTruth.
+import { FAQ_ITEMS } from "../../lib/kitaru-landing";
+---
+
+<section id="faq" class="relative w-full bg-background text-foreground">
+  <div class="mx-auto w-full max-w-[840px] px-6 py-24 md:py-36">
+    <div class="reveal">
+      <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">
+        FAQ
+      </span>
+      <h2 class="mt-5 text-balance text-3xl leading-[1.08] font-medium tracking-[-0.025em] md:text-[2.75rem]">
+        The questions that come up
+        <br />
+        <span class="text-ember">in every demo.</span>
+      </h2>
+    </div>
+
+    <div class="reveal mt-12 border-t border-border" style="--reveal-delay: 120ms">
+      {FAQ_ITEMS.map((item) => (
+        <details class="group border-b border-border">
+          <summary class="flex cursor-pointer items-center justify-between gap-6 py-6 text-left text-[17px] font-medium leading-snug [&::-webkit-details-marker]:hidden">
+            <span>{item.question}</span>
+            <span
+              class="font-mono text-lg leading-none text-ember transition-transform duration-200 group-open:rotate-45"
+              aria-hidden="true">+</span
+            >
+          </summary>
+          <p
+            class="pb-7 max-w-2xl text-[15.5px] leading-relaxed text-ink-soft [&_a]:underline [&_a]:decoration-ember/40 [&_a]:underline-offset-2 hover:[&_a]:decoration-ember"
+            set:html={item.answer}
+          />
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
