@@ -14,234 +14,509 @@ import { Reveal } from "./Reveal";
 
 type Line = { tokens: CodeLine; key?: string; dim?: boolean };
 
-const python: Line[] = [
-  { tokens: [{ kw: "import" }, " kitaru"], dim: true },
-  { tokens: [] },
+export const PYTHON_SHOWCASE: Line[] = [
   {
-    tokens: ["client ", { op: "=" }, " kitaru.", { fn: "KitaruClient" }, "()"],
-  },
-  { tokens: [] },
-  {
-    tokens: [{ cmt: "# the sessions that matter, frozen as a named set" }],
+    tokens: [{ kw: "import" }, " asyncio"],
     dim: true,
   },
   {
-    tokens: ["cohort ", { op: "=" }, " client.cohorts.", { fn: "create" }, "("],
-    key: "cohort",
+    tokens: [
+      { kw: "from" },
+      " kitaru.api_models.v1.experiment ",
+      { kw: "import" },
+      " ExperimentCreateRequest",
+    ],
+    dim: true,
+  },
+  {
+    tokens: [
+      { kw: "from" },
+      " kitaru.api_models.v1.experiment_run ",
+      { kw: "import" },
+      " ExperimentRunCreateRequest, ExperimentRunStatus",
+    ],
+    dim: true,
+  },
+  {
+    tokens: [
+      { kw: "from" },
+      " kitaru.api_models.v1.replay_config ",
+      { kw: "import" },
+      " EvaluatorConfig, HistoryConfig, ReplayOverride, ToolPolicy",
+    ],
+    dim: true,
+  },
+  {
+    tokens: [
+      { kw: "from" },
+      " kitaru.client ",
+      { kw: "import" },
+      " KitaruAPIClient",
+    ],
+    dim: true,
+  },
+  { tokens: [] },
+  {
+    tokens: [
+      "TERMINAL ",
+      { op: "=" },
+      " {ExperimentRunStatus.COMPLETED, ExperimentRunStatus.FAILED,",
+    ],
+    dim: true,
+  },
+  {
+    tokens: ["    ExperimentRunStatus.CANCELED}"],
+    dim: true,
+  },
+  {
+    tokens: [
+      { kw: "async def" },
+      " ",
+      { fn: "wait_for_run" },
+      "(client, run_id):",
+    ],
+    dim: true,
+  },
+  {
+    tokens: ["    ", { kw: "while True" }, ":"],
+    dim: true,
+  },
+  {
+    tokens: [
+      "        run ",
+      { op: "=" },
+      " ",
+      { kw: "await" },
+      " client.experiment_runs.",
+      { fn: "get" },
+      "(run_id)",
+    ],
+    dim: true,
+  },
+  {
+    tokens: [
+      "        ",
+      { kw: "if" },
+      " run.status ",
+      { kw: "in" },
+      " TERMINAL:",
+    ],
+    dim: true,
+  },
+  {
+    tokens: ["            ", { kw: "return" }, " run"],
+    dim: true,
+  },
+  {
+    tokens: ["        ", { kw: "await" }, " ", { fn: "asyncio.sleep" }, "(1)"],
+    dim: true,
+  },
+  { tokens: [] },
+  {
+    tokens: [
+      "policy ",
+      { op: "=" },
+      " ",
+      { fn: "ToolPolicy" },
+      "(default",
+      { op: "=" },
+      { fn: "HistoryConfig" },
+      "(",
+    ],
+    key: "policy",
+  },
+  {
+    tokens: [
+      "    scope",
+      { op: "=" },
+      { str: '"cohort_version"' },
+      ", on_miss",
+      { op: "=" },
+      { str: '"fail"' },
+      "))",
+    ],
+    key: "policy",
+  },
+  {
+    tokens: [
+      "evaluator ",
+      { op: "=" },
+      " ",
+      { fn: "EvaluatorConfig" },
+      "(evaluator",
+      { op: "=" },
+      { str: '"response-quality"' },
+      ", version",
+      { op: "=" },
+      "1)",
+    ],
+  },
+  { tokens: [] },
+  {
+    tokens: [{ kw: "async def" }, " ", { fn: "main" }, "():"],
   },
   {
     tokens: [
       "    ",
-      { str: '"checkout-flow"' },
-      ", sessions",
-      { op: "=" },
-      "session_ids,",
+      { kw: "async with" },
+      " ",
+      { fn: "KitaruAPIClient" },
+      "() ",
+      { kw: "as" },
+      " client:",
     ],
-    key: "cohort",
-  },
-  { tokens: [")"], key: "cohort" },
-  { tokens: [] },
-  {
-    tokens: [{ cmt: "# configuration only — no cohort, no version" }],
-    dim: true,
   },
   {
     tokens: [
-      "experiment ",
+      "        baseline ",
       { op: "=" },
+      " ",
+      { kw: "await" },
       " client.experiments.",
       { fn: "create" },
       "(",
     ],
     key: "experiment",
   },
-  { tokens: ["    ", { str: '"cheap-model"' }, ","], key: "experiment" },
   {
-    tokens: ["    model", { op: "=" }, { str: '"glm-5.4"' }, ","],
+    tokens: [
+      "            ",
+      { fn: "ExperimentCreateRequest" },
+      "(name",
+      { op: "=" },
+      { str: '"baseline"' },
+      ", agent_id",
+      { op: "=" },
+      "AGENT_ID,",
+    ],
+    key: "experiment",
+  },
+  {
+    tokens: [
+      "                tool_policy",
+      { op: "=" },
+      "policy, evaluators",
+      { op: "=" },
+      "[evaluator]))",
+    ],
+    key: "experiment",
+  },
+  {
+    tokens: [
+      "        candidate ",
+      { op: "=" },
+      " ",
+      { kw: "await" },
+      " client.experiments.",
+      { fn: "create" },
+      "(",
+    ],
+    key: "experiment",
+  },
+  {
+    tokens: [
+      "            ",
+      { fn: "ExperimentCreateRequest" },
+      "(name",
+      { op: "=" },
+      { str: '"cheap-model"' },
+      ", agent_id",
+      { op: "=" },
+      "AGENT_ID,",
+    ],
+    key: "experiment",
+  },
+  {
+    tokens: [
+      "                override",
+      { op: "=" },
+      { fn: "ReplayOverride" },
+      "(model",
+      { op: "=" },
+      { str: '"claude-haiku-4.5"' },
+      "),",
+    ],
     key: "model",
   },
   {
     tokens: [
-      "    tool_policy",
+      "                tool_policy",
       { op: "=" },
-      { fn: "History" },
-      "(scope",
+      "policy, evaluators",
       { op: "=" },
-      { str: '"cohort"' },
-      ", on_miss",
-      { op: "=" },
-      { str: '"fail"' },
-      "),",
+      "[evaluator]))",
     ],
-    key: "policy",
+    key: "experiment",
   },
-  { tokens: [")"], key: "experiment" },
   { tokens: [] },
-  { tokens: [{ cmt: "# a run is config + cohort + version." }], dim: true },
   {
     tokens: [
-      "before ",
+      "        run_spec ",
       { op: "=" },
-      " experiment.",
-      { fn: "run" },
-      "(cohort",
+      " ",
+      { fn: "ExperimentRunCreateRequest" },
+      "(",
+    ],
+    key: "cohort",
+  },
+  {
+    tokens: [
+      "            cohort_version_id",
       { op: "=" },
-      "cohort, version",
+      "COHORT_VERSION_ID, agent_version_id",
       { op: "=" },
-      { str: '"v1"' },
+      "AGENT_VERSION_ID,",
+    ],
+    key: "cohort",
+  },
+  {
+    tokens: [
+      "            evaluate_baselines",
+      { op: "=" },
+      { kw: "True" },
       ")",
+    ],
+    key: "cohort",
+  },
+  {
+    tokens: [
+      "        before, after ",
+      { op: "=" },
+      " ",
+      { kw: "await" },
+      " ",
+      { fn: "asyncio.gather" },
+      "(",
     ],
     key: "run",
   },
   {
     tokens: [
-      "after ",
-      { op: "=" },
-      " experiment.",
-      { fn: "run" },
-      "(cohort",
-      { op: "=" },
-      "cohort, version",
-      { op: "=" },
-      { str: '"pr-311"' },
-      ")",
+      "            client.experiments.",
+      { fn: "start_run" },
+      "(baseline.id, run_spec),",
     ],
     key: "run",
   },
+  {
+    tokens: [
+      "            client.experiments.",
+      { fn: "start_run" },
+      "(candidate.id, run_spec),",
+    ],
+    key: "run",
+  },
+  { tokens: ["        )"], key: "run" },
   { tokens: [] },
-  { tokens: ["client.", { fn: "compare" }, "(before, after)"], key: "compare" },
+  {
+    tokens: [
+      "        ",
+      { kw: "async with" },
+      " ",
+      { fn: "asyncio.timeout" },
+      "(300):",
+    ],
+    key: "inspect",
+  },
+  {
+    tokens: [
+      "            before, after ",
+      { op: "=" },
+      " ",
+      { kw: "await" },
+      " ",
+      { fn: "asyncio.gather" },
+      "(",
+    ],
+    key: "inspect",
+  },
+  {
+    tokens: [
+      "                ",
+      { fn: "wait_for_run" },
+      "(client, before.id),",
+    ],
+    key: "inspect",
+  },
+  {
+    tokens: ["                ", { fn: "wait_for_run" }, "(client, after.id),"],
+    key: "inspect",
+  },
+  { tokens: ["            )"], key: "inspect" },
+  { tokens: [] },
+  {
+    tokens: [{ fn: "asyncio.run" }, "(", { fn: "main" }, "())"],
+  },
 ];
 
-const typescript: Line[] = [
+export const TYPESCRIPT_SHOWCASE: Line[] = [
   {
     tokens: [
       { kw: "import" },
-      " { KitaruClient, History } ",
+      " { createKitaruClient } ",
       { kw: "from" },
       " ",
-      { str: '"@zenml-io/kitaru"' },
+      { str: '"@zenml-io/kitaru/node"' },
       ";",
     ],
     dim: true,
   },
-  { tokens: [] },
   {
     tokens: [
       { kw: "const" },
       " client ",
       { op: "=" },
       " ",
-      { kw: "new" },
+      { kw: "await" },
       " ",
-      { fn: "KitaruClient" },
+      { fn: "createKitaruClient" },
       "();",
     ],
   },
   { tokens: [] },
   {
-    tokens: [{ cmt: "// the sessions that matter, frozen as a named set" }],
-    dim: true,
+    tokens: [{ kw: "const" }, " common ", { op: "=" }, " { agent_id: agentId,"],
+    key: "experiment",
+  },
+  {
+    tokens: ["  tool_policy: { default: { type: ", { str: '"history"' }, ","],
+    key: "policy",
   },
   {
     tokens: [
-      { kw: "const" },
-      " cohort ",
-      { op: "=" },
-      " ",
-      { kw: "await" },
-      " client.cohorts.",
-      { fn: "create" },
-      "(",
+      "    scope: ",
+      { str: '"cohort_version"' },
+      ", on_miss: ",
+      { str: '"fail"' },
+      " } },",
     ],
-    key: "cohort",
+    key: "policy",
   },
   {
-    tokens: ["    ", { str: '"checkout-flow"' }, ", { sessions: sessionIds },"],
-    key: "cohort",
+    tokens: [
+      "  evaluators: [{ evaluator: ",
+      { str: '"response-quality"' },
+      ", version: 1 }],",
+    ],
   },
-  { tokens: [");"], key: "cohort" },
+  { tokens: ["};"], key: "experiment" },
   { tokens: [] },
   {
-    tokens: [{ cmt: "// configuration only — no cohort, no version" }],
-    dim: true,
-  },
-  {
     tokens: [
       { kw: "const" },
-      " experiment ",
+      " baseline ",
       { op: "=" },
       " ",
       { kw: "await" },
       " client.experiments.",
       { fn: "create" },
-      "(",
-      { str: '"cheap-model"' },
-      ", {",
+      "({",
     ],
     key: "experiment",
   },
-  { tokens: ["    model: ", { str: '"glm-5.4"' }, ","], key: "model" },
+  {
+    tokens: ["  name: ", { str: '"baseline"' }, ", ...common });"],
+    key: "experiment",
+  },
   {
     tokens: [
-      "    toolPolicy: ",
-      { fn: "History" },
-      "({ scope: ",
-      { str: '"cohort"' },
-      ", onMiss: ",
-      { str: '"fail"' },
-      " }),",
+      { kw: "const" },
+      " candidate ",
+      { op: "=" },
+      " ",
+      { kw: "await" },
+      " client.experiments.",
+      { fn: "create" },
+      "({",
     ],
-    key: "policy",
+    key: "experiment",
+  },
+  {
+    tokens: ["  name: ", { str: '"cheap-model"' }, ", ...common,"],
+    key: "experiment",
+  },
+  {
+    tokens: ["  override: { model: ", { str: '"claude-haiku-4.5"' }, " },"],
+    key: "model",
   },
   { tokens: ["});"], key: "experiment" },
   { tokens: [] },
-  { tokens: [{ cmt: "// a run is config + cohort + version." }], dim: true },
   {
     tokens: [
       { kw: "const" },
-      " before ",
+      " runSpec ",
+      { op: "=" },
+      " { cohort_version_id: cohortVersionId,",
+    ],
+    key: "cohort",
+  },
+  {
+    tokens: [
+      "  agent_version_id: agentVersionId, evaluate_baselines: ",
+      { kw: "true" },
+      " };",
+    ],
+    key: "cohort",
+  },
+  {
+    tokens: [
+      { kw: "const" },
+      " [before, after] ",
       { op: "=" },
       " ",
       { kw: "await" },
-      " experiment.",
-      { fn: "run" },
-      "({ cohort, version: ",
-      { str: '"v1"' },
-      " });",
+      " ",
+      { fn: "Promise.all" },
+      "([",
     ],
     key: "run",
   },
   {
     tokens: [
-      { kw: "const" },
-      " after ",
-      { op: "=" },
-      " ",
-      { kw: "await" },
-      " experiment.",
-      { fn: "run" },
-      "({ cohort, version: ",
-      { str: '"pr-311"' },
-      " });",
+      "  client.experiments.",
+      { fn: "startRun" },
+      "(baseline.id, runSpec),",
     ],
     key: "run",
   },
+  {
+    tokens: [
+      "  client.experiments.",
+      { fn: "startRun" },
+      "(candidate.id, runSpec),",
+    ],
+    key: "run",
+  },
+  { tokens: ["]);"], key: "run" },
   { tokens: [] },
   {
     tokens: [
+      { kw: "const" },
+      " [beforeResult, afterResult] ",
+      { op: "=" },
+      " ",
       { kw: "await" },
-      " client.",
-      { fn: "compare" },
-      "(before, after);",
+      " ",
+      { fn: "Promise.all" },
+      "([",
     ],
-    key: "compare",
+    key: "inspect",
   },
+  {
+    tokens: ["  client.experimentRuns.", { fn: "wait" }, "(before.id),"],
+    key: "inspect",
+  },
+  {
+    tokens: ["  client.experimentRuns.", { fn: "wait" }, "(after.id),"],
+    key: "inspect",
+  },
+  { tokens: ["]);"], key: "inspect" },
 ];
 
 export function CodeShowcase() {
   const [lang, setLang] = useState<"python" | "typescript">("python");
   const [hot, setHot] = useState<string | null>(null);
-  const lines = lang === "python" ? python : typescript;
+  const lines = lang === "python" ? PYTHON_SHOWCASE : TYPESCRIPT_SHOWCASE;
 
   return (
     <section
@@ -255,8 +530,9 @@ export function CodeShowcase() {
             One cohort, one changed variable, two runs.
           </h2>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-night-text/60 md:text-lg">
-            An experiment holds the configuration; a run pins it to a cohort and
-            a version. Same model in Python and TypeScript. Hover any line.
+            Each experiment holds one configuration; each run pins it to the
+            same cohort and agent version. The workflow is available in Python
+            and TypeScript. Hover any line.
           </p>
         </Reveal>
 

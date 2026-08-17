@@ -10,24 +10,33 @@ import { KitaruGrain } from "./KitaruGrain";
 import { CopyCommand } from "./primitives";
 import { Reveal } from "./Reveal";
 
-const codeLines: Array<{ text: string; kind?: "cmt" | "hl" | "out" | "cont" }> =
-  [
-    { text: "# 1 · wrap the agent you already have", kind: "cmt" },
-    { text: "agent = KitaruAgent(intake_agent)", kind: "hl" },
-    { text: "" },
-    { text: "# 2 · the runs it already made, imported", kind: "cmt" },
-    { text: "kitaru session import ./traces.jsonl \\" },
-    { text: "  --agent intake-agent", kind: "cont" },
-    { text: "" },
-    { text: "# 3 · get interviewed, in your coding agent", kind: "cmt" },
-    { text: "walk me through 20 of these", kind: "hl" },
-    { text: '→ cohort "dropped the hazmat flag" · 9', kind: "out" },
-    { text: "→ evaluator hazmat-flag-preserved", kind: "out" },
-    { text: "" },
-    { text: "# 4 · change the agent, compare the runs", kind: "cmt" },
-    { text: "kitaru experiment run fix-validation \\", kind: "hl" },
-    { text: "  --cohort hazmat-all --version pr-311", kind: "cont" },
-  ];
+export const HERO_CODE_LINES: Array<{
+  text: string;
+  kind?: "cmt" | "hl" | "out" | "cont";
+}> = [
+  { text: "# 1 · wrap the agent you already have", kind: "cmt" },
+  { text: "from kitaru_pydantic_ai import KitaruAgent" },
+  { text: "agent = KitaruAgent(intake_agent, agent_id=AGENT_ID)", kind: "hl" },
+  { text: "" },
+  { text: "# 2 · the runs it already made, imported", kind: "cmt" },
+  { text: "kitaru session import ./traces.jsonl \\" },
+  {
+    text: "  --importer kitaru/kitaru-jsonl@latest --agent intake-agent@latest --wait",
+    kind: "cont",
+  },
+  { text: "" },
+  { text: "# 3 · get interviewed, in your coding agent", kind: "cmt" },
+  { text: "walk me through 20 of these", kind: "hl" },
+  { text: '→ cohort "dropped the hazmat flag" · 9', kind: "out" },
+  { text: "→ evaluator hazmat-flag-preserved", kind: "out" },
+  { text: "" },
+  { text: "# 4 · change the agent, compare the runs", kind: "cmt" },
+  { text: "kitaru experiment run start fix-validation \\", kind: "hl" },
+  {
+    text: "  --cohort-version $COHORT_VERSION_ID --agent intake-agent@pr-311 --wait",
+    kind: "cont",
+  },
+];
 
 const diffRows = [
   { label: "Your notes, 20 read", value: "1 evaluator, 3 cohorts" },
@@ -177,7 +186,7 @@ export function Hero() {
 
             <pre className="code-syntax overflow-x-auto px-5 py-5 font-mono text-[12px] leading-[1.75]">
               <code>
-                {codeLines.map((l, i) => (
+                {HERO_CODE_LINES.map((l, i) => (
                   <CodeLine key={i} text={l.text} kind={l.kind} />
                 ))}
               </code>

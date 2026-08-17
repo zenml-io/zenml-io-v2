@@ -104,10 +104,10 @@ import HighlightPanel from "./_HighlightPanel.astro";
           {s.n === "03" && (
             <HighlightPanel>
               <div class="relative z-10 border-b border-border/60 pb-2">
-                <div class="fh-pop font-mono text-[10.5px] font-medium" style="--fh-delay: 250ms">cheap-model</div>
+                <div class="fh-pop font-mono text-[10.5px] font-medium" style="--fh-delay: 250ms">same cohort &middot; same agent version</div>
                 <div class="mt-1.5 flex flex-col gap-1 font-mono text-[10px]">
-                  <span class="fh-pop flex items-center gap-1.5 text-muted-foreground" style="--fh-delay: 330ms"><span class="size-1.5 shrink-0 rounded-full bg-border"></span>#1 &middot; claude-sonnet-4.5</span>
-                  <span class="fh-pop flex items-center gap-1.5 text-ember-deep" style="--fh-delay: 410ms"><span class="size-1.5 shrink-0 rounded-full bg-ember"></span>#2 &middot; claude-haiku-4.5</span>
+                  <span class="fh-pop flex items-center gap-1.5 text-muted-foreground" style="--fh-delay: 330ms"><span class="size-1.5 shrink-0 rounded-full bg-border"></span>baseline &middot; claude-sonnet-4.5</span>
+                  <span class="fh-pop flex items-center gap-1.5 text-ember-deep" style="--fh-delay: 410ms"><span class="size-1.5 shrink-0 rounded-full bg-ember"></span>cheap-model &middot; claude-haiku-4.5</span>
                 </div>
               </div>
               <div class="relative z-10 flex flex-1 flex-col justify-evenly">
@@ -142,21 +142,7 @@ import HighlightPanel from "./_HighlightPanel.astro";
             </HighlightPanel>
           )}
 
-          {/* Whitespace inside <pre> renders literally in .astro templates, so the
-              content below must stay free of raw newlines/indentation. */}
-          <pre class="mt-3 block overflow-x-auto rounded-md border border-border bg-night px-3.5 py-2.5 font-mono text-[11.5px] text-night-text/85"><code class="code-syntax">{
-            s.n === "01" && (
-              <><span class="fn">kitaru</span> cohort <span class="fn">create</span> <span class="str">"checkout-flow"</span></>
-            )
-          }{
-            s.n === "02" && (
-              <><span class="fn">kitaru</span> experiment <span class="fn">create</span> cheap-model</>
-            )
-          }{
-            s.n === "03" && (
-              <><span class="fn">kitaru</span> experiment <span class="fn">run</span> cheap-model</>
-            )
-          }</code></pre>
+          <pre class="mt-3 block overflow-x-auto rounded-md border border-border bg-night px-3.5 py-2.5 font-mono text-[11.5px] text-night-text/85"><code>{s.command}</code></pre>
         </div>
       ))}
     </div>

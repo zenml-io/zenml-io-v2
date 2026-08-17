@@ -1,11 +1,14 @@
 // Re-export shared constants from productKitaru to avoid duplication
 export {
-  KITARU_INSTALL_CMD,
   KITARU_LICENSE,
   KITARU_LINKS,
   KITARU_TRIAL_DAYS,
   KITARU_TRIAL_NOTE,
 } from "./productKitaru";
+
+/** Install the CLI and worker exercised by this landing page. */
+export const KITARU_INSTALL_CMD =
+  'uv add "kitaru[cli,worker]" kitaru-pydantic-ai';
 
 // Note: PRODUCT_KITARU_SEO is retained in productKitaru.ts as it serves the page's meta tags
 
@@ -50,18 +53,23 @@ export const STEPS = [
     tag: "Cohort",
     title: "Freeze the sessions that matter",
     body: "The sessions you care about, frozen as a named set. Immutable, so a run's result keeps meaning what it meant.",
+    command:
+      "COHORT_VERSION_ID=$(kitaru cohort create checkout-flow --agent checkout-agent --sessions-file session-ids.txt --output json --machine --non-interactive --no-browser | jq -r '.item.version.id')",
   },
   {
     n: "02",
     tag: "Experiment",
-    title: "State one hypothesis",
-    body: "Just configuration: model, system prompt, tool policy. Swap the model and you have stated a different hypothesis.",
+    title: "State the two hypotheses",
+    body: "Each experiment is just configuration. Keep the baseline fixed, then change only the model in the candidate.",
+    command: `kitaru experiment create baseline --agent checkout-agent --tool-policy '{"default":{"type":"history","scope":"cohort_version","on_miss":"fail"}}' --evaluator response-quality@latest\nkitaru experiment create cheap-model --agent checkout-agent --override '{"model":"claude-haiku-4.5"}' --tool-policy '{"default":{"type":"history","scope":"cohort_version","on_miss":"fail"}}' --evaluator response-quality@latest`,
   },
   {
     n: "03",
     tag: "Two runs",
     title: "Compare like with like",
-    body: "Twice over the same cohort, one version apart. One variable moved, so the numbers mean what they look like.",
+    body: "Run the baseline and candidate over the same cohort and agent version. One model moved, so the numbers mean what they look like.",
+    command:
+      'kitaru experiment run start baseline --cohort-version "$COHORT_VERSION_ID" --agent checkout-agent@v1 --wait\nkitaru experiment run start cheap-model --cohort-version "$COHORT_VERSION_ID" --agent checkout-agent@v1 --wait',
   },
 ] as const;
 
@@ -83,33 +91,33 @@ export const GROUND_TRUTH_POINTS = [
 export const ANNOTATIONS = [
   {
     key: "cohort",
-    label: "cohorts.create()",
+    label: "cohort_version_id=...",
     body: "An immutable set of sessions — a run depends on its cohort, so a mutable one would make old results meaningless.",
   },
   {
     key: "experiment",
-    label: "experiments.create()",
+    label: "experiments.create(...)",
     body: "Pure configuration. Change the code and you get a new run; change the prompt and you get a new experiment.",
   },
   {
     key: "model",
-    label: 'model="glm-5.4"',
+    label: 'ReplayOverride(model="claude-haiku-4.5")',
     body: "The variable under test. A run that moved two things cannot tell you which one did it.",
   },
   {
     key: "policy",
-    label: 'History(scope="cohort")',
+    label: 'HistoryConfig(scope="cohort_version")',
     body: "One of four policies — history, passthrough, static, llm. Every intercepted node is stamped with the one that answered it.",
   },
   {
     key: "run",
-    label: "experiment.run()",
+    label: "experiments.start_run(...)",
     body: "Each replay creates a new session instead of overwriting the original, so the baseline survives intact.",
   },
   {
-    key: "compare",
-    label: "compare(before, after)",
-    body: "No verdict, no blended score. Two runs, side by side, read by you.",
+    key: "inspect",
+    label: "wait_for_run(...) / experimentRuns.wait(...)",
+    body: "Wait for both exact runs to settle, then inspect their comparison in Kitaru. It does not invent a verdict or a blended score.",
   },
 ] as const;
 
