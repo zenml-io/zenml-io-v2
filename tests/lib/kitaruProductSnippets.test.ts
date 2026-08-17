@@ -365,25 +365,21 @@ describe("Kitaru product-page snippets", () => {
     const transcript = AGENT_TRANSCRIPT.map((line) => line.text).join("\n");
 
     expect(
-      AGENT_TRANSCRIPT.filter(
-        (line) => line.text === "kitaru_workflow_start({",
+      AGENT_TRANSCRIPT.filter((line) =>
+        line.text.startsWith("kitaru_workflow_start({"),
       ),
     ).toHaveLength(2);
-    expect(AGENT_TRANSCRIPT.filter((line) => line.text === "})")).toHaveLength(
-      2,
-    );
+    expect(
+      AGENT_TRANSCRIPT.filter(
+        (line) =>
+          line.text.startsWith("kitaru_workflow_start({") &&
+          line.text.endsWith("})"),
+      ),
+    ).toHaveLength(2);
     expect(transcript).toMatchInlineSnapshot(`
-      "kitaru_workflow_start({
-      "operation": "experiment_run",
-      "experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID",
-      "agent_version_id": "$V1_AGENT_VERSION_ID"
-      })
+      "kitaru_workflow_start({ "operation": "experiment_run", "experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID", "agent_version_id": "$V1_AGENT_VERSION_ID" })
       90 sessions · cited-superseded-doc true 90 · false 0
-      kitaru_workflow_start({
-      "operation": "experiment_run",
-      "experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID",
-      "agent_version_id": "$CANDIDATE_AGENT_VERSION_ID"
-      })
+      kitaru_workflow_start({ "operation": "experiment_run", "experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID", "agent_version_id": "$CANDIDATE_AGENT_VERSION_ID" })
       cited-superseded-doc true 4 · false 86
       4 still failing — opening these for you to read"
     `);
