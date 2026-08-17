@@ -592,6 +592,11 @@ export const PRICING_FAQ_KITARU: FaqData = {
       answer: `The trial is full access to everything and needs no credit card. When it ends, add a card and you're on the ${KITARU_CLOUD_PRICE}/month plan — nothing about your workspace changes except the billing. There's no free hosted tier: the free option is the open-source version, self-hosted on your own infrastructure, forever.`,
     },
     {
+      question: "What does the Enterprise plan add?",
+      answer:
+        "Unlimited agents, custom seats and session retention, plus the governance layer: SSO, role-based access and audit. If the Cloud plan's limits are the only thing in your way, that's the conversation to have with us.",
+    },
+    {
       question: "How is this different from Langfuse, Braintrust or LangSmith?",
       answer: KITARU_VS_OBSERVABILITY_ANSWER,
     },
@@ -637,6 +642,16 @@ export const PRICING_FAQ_ZENML: FaqData = {
       question: "What's the difference between Open Source and the Pro plans?",
       answer:
         "Open Source is the full framework, managed by you. Scale and Enterprise add the managed control plane — automatic updates and guaranteed uptime — plus the Model Control Plane, Artifact Control Plane, snapshots and Codespaces. Enterprise adds SSO, custom-role RBAC, audit logs and air-gapped deployment on top.",
+    },
+    {
+      question: "Is there a startup or academic discount?",
+      answer:
+        'Yes — early-stage companies building ML-powered products, universities, research institutions and educational use cases can apply for special pricing on ZenML Pro. <a href="/startups-and-academics">Apply here</a>.',
+    },
+    {
+      question: "How is my data handled?",
+      answer:
+        "ZenML is a metadata layer on top of your existing infrastructure: your data, artifacts and compute stay in your VPC, and only metadata reaches the control plane. ZenML is SOC 2 Type II and ISO/IEC 27001 certified.",
     },
     {
       question: "Do I need a separate subscription for Kitaru?",

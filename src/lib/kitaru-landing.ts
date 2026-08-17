@@ -159,6 +159,11 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     answer: KITARU_VS_OBSERVABILITY_ANSWER,
   },
   {
+    question: "So is this an observability tool?",
+    answer:
+      "No. It sits beside your observability stack, not in place of it. Traces tell you what happened; Kitaru re-runs them against your actual code. Think a debugger with a memory, not a dashboard of spans.",
+  },
+  {
     question: "My agent writes to real systems. Isn't replay dangerous?",
     answer:
       "Replay answers the agent's tool calls from the recording — nothing touches real systems. Per-tool policies control the rest: recorded, blocked, live in a sandbox, or simulated, where an LLM answers the tool call in-distribution so the session keeps going realistically past the recorded data. We don't test in prod — we make prod's past your test bench.",
@@ -179,6 +184,11 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
       "Recording adapters wrap your existing agent — one wrapper, no rewrite — for PydanticAI, the OpenAI Agents SDK, LangGraph and Mastra. Or skip recording entirely and import the trace history you already have from Langfuse, Braintrust, LangSmith or plain files.",
   },
   {
+    question: "My agent is TypeScript. Can I use Kitaru?",
+    answer:
+      "Today: import your traces — file-based or a Langfuse export — and you get triage, evaluators and experiments over them. Recording adapters are Python-first; an OTel-shaped ingestion path for any-language stacks is on the roadmap.",
+  },
+  {
     question: "Is it open source? Can I self-host?",
     answer:
       "Yes — Apache 2.0, self-hosted by default. The server and workers run in your infrastructure and replay executes in your environment, so your traces never have to leave your systems. A managed offering is available through ZenML Pro.",
@@ -187,5 +197,10 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     question: "Does this replace human review?",
     answer:
       "No. Evals change the review ratio, not the review requirement. The goal is that humans review the sessions worth reviewing, with evidence attached — not that nobody reviews.",
+  },
+  {
+    question: "Who is this for — and who isn't it for?",
+    answer:
+      "Teams shipping agents to customers whose regression process is honestly a few samples and a vibe check — Kitaru installs the rigor loop. Not for single-dev prototypes, and not for teams buying a fully managed agent platform: if you're buying an agent platform, Kitaru will feel low-level. If you're building one, that's the point.",
   },
 ] as const;
