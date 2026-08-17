@@ -3,15 +3,12 @@ import { KITARU_VS_OBSERVABILITY_ANSWER } from "./productKitaru";
 
 // Re-export shared constants from productKitaru to avoid duplication
 export {
+  KITARU_INSTALL_CMD,
   KITARU_LICENSE,
   KITARU_LINKS,
   KITARU_TRIAL_DAYS,
   KITARU_TRIAL_NOTE,
 } from "./productKitaru";
-
-/** Install the CLI and worker exercised by this landing page. */
-export const KITARU_INSTALL_CMD =
-  'uv add "kitaru[cli,worker]" kitaru-pydantic-ai';
 
 // Note: PRODUCT_KITARU_SEO is retained in productKitaru.ts as it serves the page's meta tags
 
@@ -174,7 +171,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "My agent writes to real systems. Isn't replay dangerous?",
     answer:
-      "Replay answers the agent's tool calls from the recording — nothing touches real systems. Per-tool policies control the rest: recorded, blocked, live in a sandbox, or simulated, where an LLM answers the tool call in-distribution so the session keeps going realistically past the recorded data. We don't test in prod — we make prod's past your test bench.",
+      "Replay answers the agent's tool calls from the recording — nothing touches real systems. Per-tool policies control the rest: answer from history and stop the run rather than fall through when a call has no recorded answer, pin a static result, or deliberately pass a specific tool through live when that's what you want. We don't test in prod — we make prod's past your test bench.",
   },
   {
     question: "The model isn't deterministic. How is replay trustworthy?",
@@ -184,17 +181,17 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "Where do the eval criteria come from? We never wrote any down.",
     answer:
-      "From the people who already judge the agent every day. Kitaru interviews your domain expert, compiles their criteria into evaluators, then calibrates them against human pairwise judgments before they gate anything.",
+      "From the people who already judge the agent every day. Your coding assistant, using Kitaru's investigation skill, interviews you over real sessions, pins your judgments to the exact evidence in the trace, and drafts evaluators from them — and those evaluators are calibrated against your verdicts before they gate anything.",
   },
   {
     question: "What frameworks does it work with?",
     answer:
-      "Recording adapters wrap your existing agent — one wrapper, no rewrite — for PydanticAI, the OpenAI Agents SDK, LangGraph and Mastra. Or skip recording entirely and import the trace history you already have from Langfuse, Braintrust, LangSmith or plain files.",
+      "Recording adapters wrap your existing agent — one wrapper, no rewrite. Python: PydanticAI, the OpenAI Agents SDK, and LangGraph (including LangChain agents and Deep Agents). TypeScript: the Vercel AI SDK and Mastra. Anything else: import the trace history you already have from Langfuse, LangSmith or Braintrust, or write a one-page custom importer.",
   },
   {
     question: "My agent is TypeScript. Can I use Kitaru?",
     answer:
-      "Today: import your traces — file-based or a Langfuse export — and you get triage, evaluators and experiments over them. Recording adapters are Python-first; an OTel-shaped ingestion path for any-language stacks is on the roadmap.",
+      "Yes — natively. TypeScript agents record and replay through the Vercel AI SDK and Mastra adapters, with a framework-neutral TypeScript SDK alongside. The CLI, workers and evaluators run on Python today, so there's Python in the loop even when the agent itself is TypeScript.",
   },
   {
     question: "Is it open source? Can I self-host?",
@@ -210,5 +207,10 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
     question: "Who is this for — and who isn't it for?",
     answer:
       "Teams shipping agents to customers whose regression process is honestly a few samples and a vibe check — Kitaru installs the rigor loop. Not for single-dev prototypes, and not for teams buying a fully managed agent platform: if you're buying an agent platform, Kitaru will feel low-level. If you're building one, that's the point.",
+  },
+  {
+    question: "Something's broken. How do I reach you?",
+    answer:
+      'Three routes, all reaching a human: the <a href="https://kitaru.ai/slack">Slack community</a>, <a href="https://kitaru.ai/help">kitaru.ai/help</a> (goes straight to GitHub issues), or <a href="mailto:support@kitaru.ai">support@kitaru.ai</a>. An issue with a session ID attached gets fixed fastest.',
   },
 ] as const;

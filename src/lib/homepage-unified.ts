@@ -77,8 +77,8 @@ export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
 
 /* ---------------------------------------------------------------------- */
 /* Workspace widget — TwoWorkspaces v2 tabbed product demo                 */
-/*   ZenML tab shows reproducible ML pipelines; Kitaru tab shows durable   */
-/*   agent flows. The widget is the centerpiece of the unified `/`.        */
+/*   ZenML tab shows reproducible ML pipelines; Kitaru tab shows replay-   */
+/*   based agent evals. The widget is the centerpiece of the unified `/`.  */
 /* ---------------------------------------------------------------------- */
 
 /**
