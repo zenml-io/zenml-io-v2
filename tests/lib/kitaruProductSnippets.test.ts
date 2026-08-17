@@ -9,7 +9,11 @@ import {
 import type { CodeLine } from "../../src/components/kitaru/islands/code-tokens";
 import { HERO_CODE_LINES } from "../../src/components/kitaru/islands/Hero";
 import { FRAMEWORKS } from "../../src/components/kitaru/islands/OneImport";
-import { KITARU_INSTALL_CMD, STEPS } from "../../src/lib/kitaru-landing";
+import {
+  ANNOTATIONS,
+  KITARU_INSTALL_CMD,
+  STEPS,
+} from "../../src/lib/kitaru-landing";
 import { GET as getKitaruMarkdown } from "../../src/pages/product/kitaru.md";
 
 function renderTokens(tokens: CodeLine): string {
@@ -330,17 +334,52 @@ describe("Kitaru product-page snippets", () => {
     expect(typescript).not.toContain("client.compare");
   });
 
+  it("labels each SDK workflow with its own syntax", () => {
+    expect(
+      ANNOTATIONS.map((annotation) => annotation.label.python),
+    ).toMatchInlineSnapshot(`
+        [
+          "cohort_version_id=...",
+          "experiments.create(...)",
+          "ReplayOverride(model="claude-haiku-4.5")",
+          "HistoryConfig(scope="cohort_version")",
+          "experiments.start_run(...)",
+          "wait_for_run(...)",
+        ]
+      `);
+    expect(
+      ANNOTATIONS.map((annotation) => annotation.label.typescript),
+    ).toMatchInlineSnapshot(`
+        [
+          "cohort_version_id: ...",
+          "experiments.create(...)",
+          "override: { model: "claude-haiku-4.5" }",
+          "{ type: "history", scope: "cohort_version" }",
+          "experiments.startRun(...)",
+          "experimentRuns.wait(...)",
+        ]
+      `);
+  });
+
   it("renders the complete exact-ID MCP transcript", () => {
     const transcript = AGENT_TRANSCRIPT.map((line) => line.text).join("\n");
 
+    expect(
+      AGENT_TRANSCRIPT.filter((line) =>
+        line.text.startsWith("kitaru_workflow_start({"),
+      ),
+    ).toHaveLength(2);
+    expect(
+      AGENT_TRANSCRIPT.filter(
+        (line) =>
+          line.text.startsWith("kitaru_workflow_start({") &&
+          line.text.endsWith("})"),
+      ),
+    ).toHaveLength(2);
     expect(transcript).toMatchInlineSnapshot(`
-      "kitaru_workflow_start { "operation": "experiment_run",
-      "experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID",
-      "agent_version_id": "$V1_AGENT_VERSION_ID" }
+      "kitaru_workflow_start({ "operation": "experiment_run", "experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID", "agent_version_id": "$V1_AGENT_VERSION_ID" })
       90 sessions · cited-superseded-doc true 90 · false 0
-      kitaru_workflow_start { "operation": "experiment_run",
-      "experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID",
-      "agent_version_id": "$CANDIDATE_AGENT_VERSION_ID" }
+      kitaru_workflow_start({ "operation": "experiment_run", "experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID", "agent_version_id": "$CANDIDATE_AGENT_VERSION_ID" })
       cited-superseded-doc true 4 · false 86
       4 still failing — opening these for you to read"
     `);

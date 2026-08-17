@@ -536,7 +536,10 @@ export function CodeShowcase() {
           </p>
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-[1.25fr_1fr]">
+        <div
+          data-kitaru-showcase-grid
+          className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-[1.25fr_1fr]"
+        >
           <Reveal variant="left" delay={80}>
             <div className="overflow-hidden rounded-xl border border-white/10 bg-night-surface">
               <div className="flex items-center gap-4 border-b border-white/10 px-4 py-3">
@@ -551,7 +554,10 @@ export function CodeShowcase() {
                       key={l}
                       type="button"
                       aria-pressed={lang === l}
-                      onClick={() => setLang(l)}
+                      onClick={() => {
+                        setLang(l);
+                        setHot(null);
+                      }}
                       className={cn(
                         "rounded px-2.5 py-1 font-mono text-[11px] transition-colors cursor-pointer",
                         lang === l
@@ -590,40 +596,42 @@ export function CodeShowcase() {
             </div>
           </Reveal>
 
-          <Reveal
-            variant="right"
-            delay={140}
-            className="flex flex-col gap-px bg-white/10"
-          >
-            {ANNOTATIONS.map((a) => (
-              // biome-ignore lint/a11y/noStaticElementInteractions: decorative hover highlight, not a keyboard control
-              <div
-                key={a.key}
-                onMouseEnter={() => setHot(a.key)}
-                onMouseLeave={() => setHot(null)}
-                className="relative isolate overflow-hidden bg-night px-5 py-4"
-              >
-                {/* blend={false}: text renders above this grain, and Safari
-                    mis-stacks mix-blend layers over z-indexed siblings. */}
-                <KitaruGrain
-                  variant="dark"
-                  blend={false}
-                  active={hot === a.key}
-                  className="z-0"
-                />
-                <code
-                  className={cn(
-                    "relative z-10 font-mono text-[12px] transition-colors",
-                    hot === a.key ? "text-ember" : "text-night-text/70",
-                  )}
+          <Reveal variant="right" delay={140} className="self-start">
+            <div
+              data-kitaru-annotations
+              className="flex flex-col gap-px bg-white/10"
+            >
+              {ANNOTATIONS.map((a) => (
+                // biome-ignore lint/a11y/noStaticElementInteractions: decorative hover highlight, not a keyboard control
+                <div
+                  key={a.key}
+                  data-kitaru-annotation
+                  onMouseEnter={() => setHot(a.key)}
+                  onMouseLeave={() => setHot(null)}
+                  className="relative isolate overflow-hidden bg-night px-5 py-4"
                 >
-                  {a.label}
-                </code>
-                <p className="relative z-10 mt-2 text-[13px] leading-relaxed text-night-text/55">
-                  {a.body}
-                </p>
-              </div>
-            ))}
+                  {/* blend={false}: text renders above this grain, and Safari
+                      mis-stacks mix-blend layers over z-indexed siblings. */}
+                  <KitaruGrain
+                    variant="dark"
+                    blend={false}
+                    active={hot === a.key}
+                    className="z-0"
+                  />
+                  <code
+                    className={cn(
+                      "relative z-10 font-mono text-[12px] transition-colors",
+                      hot === a.key ? "text-ember" : "text-night-text/70",
+                    )}
+                  >
+                    {a.label[lang]}
+                  </code>
+                  <p className="relative z-10 mt-2 text-[13px] leading-relaxed text-night-text/55">
+                    {a.body}
+                  </p>
+                </div>
+              ))}
+            </div>
           </Reveal>
         </div>
       </div>

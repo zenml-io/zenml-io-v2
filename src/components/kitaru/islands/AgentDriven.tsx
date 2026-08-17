@@ -17,28 +17,12 @@ const agentIcons: Record<string, typeof AnthropicIcon> = {
 
 export const AGENT_TRANSCRIPT = [
   {
-    text: 'kitaru_workflow_start { "operation": "experiment_run",',
-    kind: "agent",
-  },
-  {
-    text: '"experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID",',
-    kind: "agent",
-  },
-  {
-    text: '"agent_version_id": "$V1_AGENT_VERSION_ID" }',
+    text: 'kitaru_workflow_start({ "operation": "experiment_run", "experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID", "agent_version_id": "$V1_AGENT_VERSION_ID" })',
     kind: "agent",
   },
   { text: "90 sessions · cited-superseded-doc true 90 · false 0", kind: "out" },
   {
-    text: 'kitaru_workflow_start { "operation": "experiment_run",',
-    kind: "agent",
-  },
-  {
-    text: '"experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID",',
-    kind: "agent",
-  },
-  {
-    text: '"agent_version_id": "$CANDIDATE_AGENT_VERSION_ID" }',
+    text: 'kitaru_workflow_start({ "operation": "experiment_run", "experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID", "agent_version_id": "$CANDIDATE_AGENT_VERSION_ID" })',
     kind: "agent",
   },
   { text: "cited-superseded-doc true 4 · false 86", kind: "good" },
