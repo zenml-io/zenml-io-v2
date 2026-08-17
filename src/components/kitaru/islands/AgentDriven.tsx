@@ -15,13 +15,32 @@ const agentIcons: Record<string, typeof AnthropicIcon> = {
   "Gemini CLI": GeminiIcon,
 };
 
-const transcript = [
+export const AGENT_TRANSCRIPT = [
   {
-    text: 'run cheap-model · cohort="checkout-flow" · version="v1"',
+    text: 'kitaru_workflow_start { "operation": "experiment_run",',
+    kind: "agent",
+  },
+  {
+    text: '"experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID",',
+    kind: "agent",
+  },
+  {
+    text: '"agent_version_id": "$V1_AGENT_VERSION_ID" }',
     kind: "agent",
   },
   { text: "90 sessions · cited-superseded-doc true 90 · false 0", kind: "out" },
-  { text: 'run cheap-model · version="pr-311"', kind: "agent" },
+  {
+    text: 'kitaru_workflow_start { "operation": "experiment_run",',
+    kind: "agent",
+  },
+  {
+    text: '"experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID",',
+    kind: "agent",
+  },
+  {
+    text: '"agent_version_id": "$CANDIDATE_AGENT_VERSION_ID" }',
+    kind: "agent",
+  },
   { text: "cited-superseded-doc true 4 · false 86", kind: "good" },
   { text: "4 still failing — opening these for you to read", kind: "bad" },
 ] as const;
@@ -80,7 +99,7 @@ export function AgentDriven() {
               </span>
             </div>
             <div className="flex flex-col gap-2.5 px-5 py-6 font-mono text-[12.5px] leading-relaxed">
-              {transcript.map((l, i) => (
+              {AGENT_TRANSCRIPT.map((l, i) => (
                 <div
                   key={i}
                   className={
