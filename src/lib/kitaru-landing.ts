@@ -91,32 +91,50 @@ export const GROUND_TRUTH_POINTS = [
 export const ANNOTATIONS = [
   {
     key: "cohort",
-    label: "cohort_version_id=...",
+    label: {
+      python: "cohort_version_id=...",
+      typescript: "cohort_version_id: ...",
+    },
     body: "An immutable set of sessions — a run depends on its cohort, so a mutable one would make old results meaningless.",
   },
   {
     key: "experiment",
-    label: "experiments.create(...)",
+    label: {
+      python: "experiments.create(...)",
+      typescript: "experiments.create(...)",
+    },
     body: "Pure configuration. Change the code and you get a new run; change the prompt and you get a new experiment.",
   },
   {
     key: "model",
-    label: 'ReplayOverride(model="claude-haiku-4.5")',
+    label: {
+      python: 'ReplayOverride(model="claude-haiku-4.5")',
+      typescript: 'override: { model: "claude-haiku-4.5" }',
+    },
     body: "The variable under test. A run that moved two things cannot tell you which one did it.",
   },
   {
     key: "policy",
-    label: 'HistoryConfig(scope="cohort_version")',
+    label: {
+      python: 'HistoryConfig(scope="cohort_version")',
+      typescript: '{ type: "history", scope: "cohort_version" }',
+    },
     body: "One of four policies — history, passthrough, static, llm. Every intercepted node is stamped with the one that answered it.",
   },
   {
     key: "run",
-    label: "experiments.start_run(...)",
+    label: {
+      python: "experiments.start_run(...)",
+      typescript: "experiments.startRun(...)",
+    },
     body: "Each replay creates a new session instead of overwriting the original, so the baseline survives intact.",
   },
   {
     key: "inspect",
-    label: "wait_for_run(...) / experimentRuns.wait(...)",
+    label: {
+      python: "wait_for_run(...)",
+      typescript: "experimentRuns.wait(...)",
+    },
     body: "Wait for both exact runs to settle, then inspect their comparison in Kitaru. It does not invent a verdict or a blended score.",
   },
 ] as const;

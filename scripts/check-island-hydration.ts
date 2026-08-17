@@ -54,12 +54,11 @@
  *   would have to select them positionally — brittle, for a low-traffic page.
  * All four are still covered structurally by the island manifest in
  * check-dist-smoke.ts. Please do not "helpfully" add them back here.
- * - Of the /product/kitaru islands, only OneImport is checked. They are all
- *   client:visible siblings on one page sharing the same bundle pipeline, so one
- *   check proves the page hydrates. The others have nothing better to assert on:
- *   Hero's sole interaction is a clipboard write (permission-gated in headless),
- *   CodeShowcase's lang toggle is a near-identical sibling of OneImport's tabs,
- *   KitaruGrain is a WebGL shader, AgentDriven/SocialProof render static content
+ * - Of the remaining /product/kitaru islands, OneImport and CodeShowcase cover
+ *   the interactive contracts that have regressed. The others have nothing better
+ *   to assert on: Hero's sole interaction is a clipboard write (permission-gated
+ *   in headless), KitaruGrain is a WebGL shader, and AgentDriven/SocialProof
+ *   render static content
  *   through Reveal wrappers, and ScenarioStrip's only state is a decorative
  *   hover-linked highlight — a progressive enhancement we accept going untested
  *   rather than asserting on hover-driven class flips.
@@ -355,6 +354,70 @@ const CHECKS: IslandCheck[] = [
 
       await page.waitForSelector(`${tab(2)}[aria-selected="true"]`);
       await page.waitForSelector(`${tab(1)}[aria-selected="false"]`);
+    },
+  },
+  {
+    name: "CodeShowcase switches language-specific annotations without a trailing panel",
+    route: "/product/kitaru#code-showcase",
+    island: "CodeShowcase",
+    seedConsent: true,
+    async assert(page, root) {
+      const annotations = page.locator(`${root} [data-kitaru-annotations]`);
+      const pythonModelLabel = annotations.getByText(
+        'ReplayOverride(model="claude-haiku-4.5")',
+        { exact: true },
+      );
+      await pythonModelLabel.waitFor({ state: "visible" });
+
+      await page
+        .locator(root)
+        .getByRole("button", { name: "TypeScript", exact: true })
+        .click();
+      await page.waitForSelector(
+        `${root} button[aria-pressed="true"]:has-text("TypeScript")`,
+      );
+      await annotations
+        .getByText('override: { model: "claude-haiku-4.5" }', { exact: true })
+        .waitFor({ state: "visible" });
+      await pythonModelLabel.waitFor({ state: "detached" });
+
+      const trailingGap = await annotations.evaluate((column) => {
+        const boundary = column.closest("[data-kitaru-showcase-grid]");
+        if (boundary === null) return Number.POSITIVE_INFINITY;
+
+        const last = column.querySelector(
+          "[data-kitaru-annotation]:last-child",
+        );
+        if (last === null) return Number.POSITIVE_INFINITY;
+
+        const lastBottom = last.getBoundingClientRect().bottom;
+        let paintedBottom = lastBottom;
+        for (
+          let element: Element | null = column;
+          element !== null && element !== boundary;
+          element = element.parentElement
+        ) {
+          const style = getComputedStyle(element);
+          const hasBackground =
+            (style.backgroundColor !== "rgba(0, 0, 0, 0)" &&
+              style.backgroundColor !== "transparent") ||
+            style.backgroundImage !== "none";
+          if (hasBackground) {
+            paintedBottom = Math.max(
+              paintedBottom,
+              element.getBoundingClientRect().bottom,
+            );
+          }
+        }
+
+        return paintedBottom - lastBottom;
+      });
+
+      if (Math.abs(trailingGap) > 1) {
+        throw new Error(
+          `annotation column leaves a ${trailingGap}px trailing background panel`,
+        );
+      }
     },
   },
 ];
