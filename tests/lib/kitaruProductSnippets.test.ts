@@ -247,62 +247,37 @@ describe("Kitaru product-page snippets", () => {
     `);
   });
 
-  it("renders the complete current Python and TypeScript workflows", () => {
+  it("keeps the SDK excerpts concise and on current public APIs", () => {
     const python = renderLines(PYTHON_SHOWCASE);
     const typescript = renderLines(TYPESCRIPT_SHOWCASE);
 
     expectValidPython(python);
     expectValidTypeScript(typescript);
     expect(python).toMatchInlineSnapshot(`
-      "import asyncio
-      from kitaru.api_models.v1.experiment import ExperimentCreateRequest
-      from kitaru.api_models.v1.experiment_run import ExperimentRunCreateRequest, ExperimentRunStatus
-      from kitaru.api_models.v1.replay_config import EvaluatorConfig, HistoryConfig, ReplayOverride, ToolPolicy
-      from kitaru.client import KitaruAPIClient
+      "# Inside an async function; only the model changes.
+      common = dict(
+          agent_id=AGENT_ID,
+          tool_policy=ToolPolicy(default=HistoryConfig(
+              scope="cohort_version", on_miss="fail")),
+          evaluators=[EvaluatorConfig(evaluator="response-quality", version=1)],
+      )
 
-      TERMINAL = {ExperimentRunStatus.COMPLETED, ExperimentRunStatus.FAILED,
-          ExperimentRunStatus.CANCELED}
-      async def wait_for_run(client, run_id):
-          while True:
-              run = await client.experiment_runs.get(run_id)
-              if run.status in TERMINAL:
-                  return run
-              await asyncio.sleep(1)
+      baseline = await client.experiments.create(
+          ExperimentCreateRequest(name="baseline", **common))
+      candidate = await client.experiments.create(
+          ExperimentCreateRequest(name="cheap-model",
+              override=ReplayOverride(model="claude-haiku-4.5"), **common))
 
-      policy = ToolPolicy(default=HistoryConfig(
-          scope="cohort_version", on_miss="fail"))
-      evaluator = EvaluatorConfig(evaluator="response-quality", version=1)
-
-      async def main():
-          async with KitaruAPIClient() as client:
-              baseline = await client.experiments.create(
-                  ExperimentCreateRequest(name="baseline", agent_id=AGENT_ID,
-                      tool_policy=policy, evaluators=[evaluator]))
-              candidate = await client.experiments.create(
-                  ExperimentCreateRequest(name="cheap-model", agent_id=AGENT_ID,
-                      override=ReplayOverride(model="claude-haiku-4.5"),
-                      tool_policy=policy, evaluators=[evaluator]))
-
-              run_spec = ExperimentRunCreateRequest(
-                  cohort_version_id=COHORT_VERSION_ID, agent_version_id=AGENT_VERSION_ID,
-                  evaluate_baselines=True)
-              before, after = await asyncio.gather(
-                  client.experiments.start_run(baseline.id, run_spec),
-                  client.experiments.start_run(candidate.id, run_spec),
-              )
-
-              async with asyncio.timeout(300):
-                  before, after = await asyncio.gather(
-                      wait_for_run(client, before.id),
-                      wait_for_run(client, after.id),
-                  )
-
-      asyncio.run(main())"
+      run_spec = ExperimentRunCreateRequest(
+          cohort_version_id=COHORT_VERSION_ID,
+          agent_version_id=AGENT_VERSION_ID, evaluate_baselines=True)
+      await asyncio.gather(
+          client.experiments.start_run(baseline.id, run_spec),
+          client.experiments.start_run(candidate.id, run_spec),
+      )"
     `);
     expect(typescript).toMatchInlineSnapshot(`
-      "import { createKitaruClient } from "@zenml-io/kitaru/node";
-      const client = await createKitaruClient();
-
+      "// One shared setup; only the model changes.
       const common = { agent_id: agentId,
         tool_policy: { default: { type: "history",
           scope: "cohort_version", on_miss: "fail" } },
@@ -318,20 +293,18 @@ describe("Kitaru product-page snippets", () => {
 
       const runSpec = { cohort_version_id: cohortVersionId,
         agent_version_id: agentVersionId, evaluate_baselines: true };
-      const [before, after] = await Promise.all([
+      await Promise.all([
         client.experiments.startRun(baseline.id, runSpec),
         client.experiments.startRun(candidate.id, runSpec),
-      ]);
-
-      const [beforeResult, afterResult] = await Promise.all([
-        client.experimentRuns.wait(before.id),
-        client.experimentRuns.wait(after.id),
       ]);"
     `);
     expect(python).not.toContain("kitaru.KitaruClient");
     expect(python).not.toContain("client.compare");
+    expect(python).not.toContain("wait_for_run");
+    expect(python).not.toContain("experiment_runs.get");
     expect(typescript).not.toContain("new KitaruClient()");
     expect(typescript).not.toContain("client.compare");
+    expect(typescript).not.toContain("experimentRuns.wait");
   });
 
   it("labels each SDK workflow with its own syntax", () => {
@@ -344,7 +317,6 @@ describe("Kitaru product-page snippets", () => {
           "ReplayOverride(model="claude-haiku-4.5")",
           "HistoryConfig(scope="cohort_version")",
           "experiments.start_run(...)",
-          "wait_for_run(...)",
         ]
       `);
     expect(
@@ -356,9 +328,21 @@ describe("Kitaru product-page snippets", () => {
           "override: { model: "claude-haiku-4.5" }",
           "{ type: "history", scope: "cohort_version" }",
           "experiments.startRun(...)",
-          "experimentRuns.wait(...)",
         ]
       `);
+  });
+
+  it("keeps every annotation connected to both code excerpts", () => {
+    const annotationKeys = new Set(
+      ANNOTATIONS.map((annotation) => annotation.key),
+    );
+
+    for (const showcase of [PYTHON_SHOWCASE, TYPESCRIPT_SHOWCASE]) {
+      const lineKeys = new Set(
+        showcase.flatMap((line) => (line.key ? [line.key] : [])),
+      );
+      expect(lineKeys).toEqual(annotationKeys);
+    }
   });
 
   it("renders the complete exact-ID MCP transcript", () => {

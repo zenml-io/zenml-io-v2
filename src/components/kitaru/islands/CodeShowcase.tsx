@@ -16,107 +16,21 @@ type Line = { tokens: CodeLine; key?: string; dim?: boolean };
 
 export const PYTHON_SHOWCASE: Line[] = [
   {
-    tokens: [{ kw: "import" }, " asyncio"],
+    tokens: [{ cmt: "# Inside an async function; only the model changes." }],
     dim: true,
   },
   {
-    tokens: [
-      { kw: "from" },
-      " kitaru.api_models.v1.experiment ",
-      { kw: "import" },
-      " ExperimentCreateRequest",
-    ],
-    dim: true,
+    tokens: ["common ", { op: "=" }, " ", { fn: "dict" }, "("],
+    key: "experiment",
+  },
+  {
+    tokens: ["    agent_id", { op: "=" }, "AGENT_ID,"],
+    key: "experiment",
   },
   {
     tokens: [
-      { kw: "from" },
-      " kitaru.api_models.v1.experiment_run ",
-      { kw: "import" },
-      " ExperimentRunCreateRequest, ExperimentRunStatus",
-    ],
-    dim: true,
-  },
-  {
-    tokens: [
-      { kw: "from" },
-      " kitaru.api_models.v1.replay_config ",
-      { kw: "import" },
-      " EvaluatorConfig, HistoryConfig, ReplayOverride, ToolPolicy",
-    ],
-    dim: true,
-  },
-  {
-    tokens: [
-      { kw: "from" },
-      " kitaru.client ",
-      { kw: "import" },
-      " KitaruAPIClient",
-    ],
-    dim: true,
-  },
-  { tokens: [] },
-  {
-    tokens: [
-      "TERMINAL ",
+      "    tool_policy",
       { op: "=" },
-      " {ExperimentRunStatus.COMPLETED, ExperimentRunStatus.FAILED,",
-    ],
-    dim: true,
-  },
-  {
-    tokens: ["    ExperimentRunStatus.CANCELED}"],
-    dim: true,
-  },
-  {
-    tokens: [
-      { kw: "async def" },
-      " ",
-      { fn: "wait_for_run" },
-      "(client, run_id):",
-    ],
-    dim: true,
-  },
-  {
-    tokens: ["    ", { kw: "while True" }, ":"],
-    dim: true,
-  },
-  {
-    tokens: [
-      "        run ",
-      { op: "=" },
-      " ",
-      { kw: "await" },
-      " client.experiment_runs.",
-      { fn: "get" },
-      "(run_id)",
-    ],
-    dim: true,
-  },
-  {
-    tokens: [
-      "        ",
-      { kw: "if" },
-      " run.status ",
-      { kw: "in" },
-      " TERMINAL:",
-    ],
-    dim: true,
-  },
-  {
-    tokens: ["            ", { kw: "return" }, " run"],
-    dim: true,
-  },
-  {
-    tokens: ["        ", { kw: "await" }, " ", { fn: "asyncio.sleep" }, "(1)"],
-    dim: true,
-  },
-  { tokens: [] },
-  {
-    tokens: [
-      "policy ",
-      { op: "=" },
-      " ",
       { fn: "ToolPolicy" },
       "(default",
       { op: "=" },
@@ -127,83 +41,61 @@ export const PYTHON_SHOWCASE: Line[] = [
   },
   {
     tokens: [
-      "    scope",
+      "        scope",
       { op: "=" },
       { str: '"cohort_version"' },
       ", on_miss",
       { op: "=" },
       { str: '"fail"' },
-      "))",
+      ")),",
     ],
     key: "policy",
   },
   {
     tokens: [
-      "evaluator ",
+      "    evaluators",
       { op: "=" },
-      " ",
+      "[",
       { fn: "EvaluatorConfig" },
       "(evaluator",
       { op: "=" },
       { str: '"response-quality"' },
       ", version",
       { op: "=" },
-      "1)",
+      "1)],",
     ],
+    key: "experiment",
   },
+  { tokens: [")"], key: "experiment" },
   { tokens: [] },
   {
-    tokens: [{ kw: "async def" }, " ", { fn: "main" }, "():"],
+    tokens: [
+      "baseline ",
+      { op: "=" },
+      " ",
+      { kw: "await" },
+      " client.experiments.",
+      { fn: "create" },
+      "(",
+    ],
+    key: "experiment",
   },
   {
     tokens: [
       "    ",
-      { kw: "async with" },
-      " ",
-      { fn: "KitaruAPIClient" },
-      "() ",
-      { kw: "as" },
-      " client:",
-    ],
-  },
-  {
-    tokens: [
-      "        baseline ",
-      { op: "=" },
-      " ",
-      { kw: "await" },
-      " client.experiments.",
-      { fn: "create" },
-      "(",
-    ],
-    key: "experiment",
-  },
-  {
-    tokens: [
-      "            ",
       { fn: "ExperimentCreateRequest" },
       "(name",
       { op: "=" },
       { str: '"baseline"' },
-      ", agent_id",
-      { op: "=" },
-      "AGENT_ID,",
+      ", ",
+      { op: "**" },
+      "common))",
     ],
     key: "experiment",
   },
   {
     tokens: [
-      "                tool_policy",
-      { op: "=" },
-      "policy, evaluators",
-      { op: "=" },
-      "[evaluator]))",
-    ],
-    key: "experiment",
-  },
-  {
-    tokens: [
-      "        candidate ",
+      "candidate ",
       { op: "=" },
       " ",
       { kw: "await" },
@@ -215,43 +107,33 @@ export const PYTHON_SHOWCASE: Line[] = [
   },
   {
     tokens: [
-      "            ",
+      "    ",
       { fn: "ExperimentCreateRequest" },
       "(name",
       { op: "=" },
       { str: '"cheap-model"' },
-      ", agent_id",
-      { op: "=" },
-      "AGENT_ID,",
+      ",",
     ],
     key: "experiment",
   },
   {
     tokens: [
-      "                override",
+      "        override",
       { op: "=" },
       { fn: "ReplayOverride" },
       "(model",
       { op: "=" },
       { str: '"claude-haiku-4.5"' },
-      "),",
+      "), ",
+      { op: "**" },
+      "common))",
     ],
     key: "model",
-  },
-  {
-    tokens: [
-      "                tool_policy",
-      { op: "=" },
-      "policy, evaluators",
-      { op: "=" },
-      "[evaluator]))",
-    ],
-    key: "experiment",
   },
   { tokens: [] },
   {
     tokens: [
-      "        run_spec ",
+      "run_spec ",
       { op: "=" },
       " ",
       { fn: "ExperimentRunCreateRequest" },
@@ -260,18 +142,14 @@ export const PYTHON_SHOWCASE: Line[] = [
     key: "cohort",
   },
   {
-    tokens: [
-      "            cohort_version_id",
-      { op: "=" },
-      "COHORT_VERSION_ID, agent_version_id",
-      { op: "=" },
-      "AGENT_VERSION_ID,",
-    ],
+    tokens: ["    cohort_version_id", { op: "=" }, "COHORT_VERSION_ID,"],
     key: "cohort",
   },
   {
     tokens: [
-      "            evaluate_baselines",
+      "    agent_version_id",
+      { op: "=" },
+      "AGENT_VERSION_ID, evaluate_baselines",
       { op: "=" },
       { kw: "True" },
       ")",
@@ -279,20 +157,12 @@ export const PYTHON_SHOWCASE: Line[] = [
     key: "cohort",
   },
   {
-    tokens: [
-      "        before, after ",
-      { op: "=" },
-      " ",
-      { kw: "await" },
-      " ",
-      { fn: "asyncio.gather" },
-      "(",
-    ],
+    tokens: [{ kw: "await" }, " ", { fn: "asyncio.gather" }, "("],
     key: "run",
   },
   {
     tokens: [
-      "            client.experiments.",
+      "    client.experiments.",
       { fn: "start_run" },
       "(baseline.id, run_spec),",
     ],
@@ -300,80 +170,20 @@ export const PYTHON_SHOWCASE: Line[] = [
   },
   {
     tokens: [
-      "            client.experiments.",
+      "    client.experiments.",
       { fn: "start_run" },
       "(candidate.id, run_spec),",
     ],
     key: "run",
   },
-  { tokens: ["        )"], key: "run" },
-  { tokens: [] },
-  {
-    tokens: [
-      "        ",
-      { kw: "async with" },
-      " ",
-      { fn: "asyncio.timeout" },
-      "(300):",
-    ],
-    key: "inspect",
-  },
-  {
-    tokens: [
-      "            before, after ",
-      { op: "=" },
-      " ",
-      { kw: "await" },
-      " ",
-      { fn: "asyncio.gather" },
-      "(",
-    ],
-    key: "inspect",
-  },
-  {
-    tokens: [
-      "                ",
-      { fn: "wait_for_run" },
-      "(client, before.id),",
-    ],
-    key: "inspect",
-  },
-  {
-    tokens: ["                ", { fn: "wait_for_run" }, "(client, after.id),"],
-    key: "inspect",
-  },
-  { tokens: ["            )"], key: "inspect" },
-  { tokens: [] },
-  {
-    tokens: [{ fn: "asyncio.run" }, "(", { fn: "main" }, "())"],
-  },
+  { tokens: [")"], key: "run" },
 ];
 
 export const TYPESCRIPT_SHOWCASE: Line[] = [
   {
-    tokens: [
-      { kw: "import" },
-      " { createKitaruClient } ",
-      { kw: "from" },
-      " ",
-      { str: '"@zenml-io/kitaru/node"' },
-      ";",
-    ],
+    tokens: [{ cmt: "// One shared setup; only the model changes." }],
     dim: true,
   },
-  {
-    tokens: [
-      { kw: "const" },
-      " client ",
-      { op: "=" },
-      " ",
-      { kw: "await" },
-      " ",
-      { fn: "createKitaruClient" },
-      "();",
-    ],
-  },
-  { tokens: [] },
   {
     tokens: [{ kw: "const" }, " common ", { op: "=" }, " { agent_id: agentId,"],
     key: "experiment",
@@ -398,6 +208,7 @@ export const TYPESCRIPT_SHOWCASE: Line[] = [
       { str: '"response-quality"' },
       ", version: 1 }],",
     ],
+    key: "experiment",
   },
   { tokens: ["};"], key: "experiment" },
   { tokens: [] },
@@ -459,16 +270,7 @@ export const TYPESCRIPT_SHOWCASE: Line[] = [
     key: "cohort",
   },
   {
-    tokens: [
-      { kw: "const" },
-      " [before, after] ",
-      { op: "=" },
-      " ",
-      { kw: "await" },
-      " ",
-      { fn: "Promise.all" },
-      "([",
-    ],
+    tokens: [{ kw: "await" }, " ", { fn: "Promise.all" }, "(["],
     key: "run",
   },
   {
@@ -488,29 +290,6 @@ export const TYPESCRIPT_SHOWCASE: Line[] = [
     key: "run",
   },
   { tokens: ["]);"], key: "run" },
-  { tokens: [] },
-  {
-    tokens: [
-      { kw: "const" },
-      " [beforeResult, afterResult] ",
-      { op: "=" },
-      " ",
-      { kw: "await" },
-      " ",
-      { fn: "Promise.all" },
-      "([",
-    ],
-    key: "inspect",
-  },
-  {
-    tokens: ["  client.experimentRuns.", { fn: "wait" }, "(before.id),"],
-    key: "inspect",
-  },
-  {
-    tokens: ["  client.experimentRuns.", { fn: "wait" }, "(after.id),"],
-    key: "inspect",
-  },
-  { tokens: ["]);"], key: "inspect" },
 ];
 
 export function CodeShowcase() {
@@ -531,8 +310,8 @@ export function CodeShowcase() {
           </h2>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-night-text/60 md:text-lg">
             Each experiment holds one configuration; each run pins it to the
-            same cohort and agent version. The workflow is available in Python
-            and TypeScript. Hover any line.
+            same cohort and agent version. The same SDK excerpt is shown in
+            Python and TypeScript. Hover any line.
           </p>
         </Reveal>
 

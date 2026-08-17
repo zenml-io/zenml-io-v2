@@ -127,15 +127,7 @@ export const ANNOTATIONS = [
       python: "experiments.start_run(...)",
       typescript: "experiments.startRun(...)",
     },
-    body: "Each replay creates a new session instead of overwriting the original, so the baseline survives intact.",
-  },
-  {
-    key: "inspect",
-    label: {
-      python: "wait_for_run(...)",
-      typescript: "experimentRuns.wait(...)",
-    },
-    body: "Wait for both exact runs to settle, then inspect their comparison in Kitaru. It does not invent a verdict or a blended score.",
+    body: "Both experiments run over the same cohort and agent version, so the model is the only variable that moved.",
   },
 ] as const;
 
