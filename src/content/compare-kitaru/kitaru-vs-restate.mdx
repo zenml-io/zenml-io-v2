@@ -92,7 +92,7 @@ The two layers don't compete. A Restate-run agent can still be wrapped by a Kita
   Both tools have a server. The wedge is whether your agent's request path has to cross it.
 
   <Fragment slot="bullets">
-    - **Kitaru:** `pip install kitaru`, wrap the agent with an adapter, and it runs in your process exactly as before. The Kitaru server stores session metadata and powers replay, the UI, the CLI, and auth &mdash; it isn't a proxy every invocation crosses.
+    - **Kitaru:** `uv add kitaru`, wrap the agent with an adapter, and it runs in your process exactly as before. The Kitaru server stores session metadata and powers replay, the UI, the CLI, and auth &mdash; it isn't a proxy every invocation crosses.
     - **Restate:** handlers register with `restate-server`, and invocations flow through it. The server journals progress, routes requests, handles retries, and drives replay. That's not incidental; it's the durability model.
     - **Different jobs, different shapes.** Restate's server is in the request path because durability requires it. Kitaru's server holds metadata because recording doesn't.
   </Fragment>
