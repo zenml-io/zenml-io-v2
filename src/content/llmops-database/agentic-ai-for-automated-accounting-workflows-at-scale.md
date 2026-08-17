@@ -1,0 +1,119 @@
+---
+title: "Agentic AI for Automated Accounting Workflows at Scale"
+slug: "agentic-ai-for-automated-accounting-workflows-at-scale"
+draft: false
+llmopsTags:
+  - "document-processing"
+  - "data-analysis"
+  - "classification"
+  - "agent-based"
+  - "multi-agent-systems"
+  - "prompt-engineering"
+  - "anthropic"
+  - "openai"
+industryTags: "finance"
+company: "Basis"
+summary: "Basis, an AI startup founded in 2023, addresses the critical shortage of accountants in the US by deploying agentic AI systems that automate end-to-end accounting workflows. The company serves approximately 30% of the top 25 accounting firms and 25% of the top 150 firms in the country. By focusing on building reasoning-capable agentic systems rather than simple chatbots, Basis enables accountants to automate manual, time-consuming verification and reconciliation tasks that previously took 10-100 hours down to minutes, while maintaining high accuracy. The company uses an outcomes-based pricing model tied to the actual work completed rather than seats or tokens, and has achieved success by leveraging local context alongside large language model capabilities to handle the organization-specific complexity inherent in accounting work."
+link: "https://www.youtube.com/watch?v=cGHQ3Hkk1To"
+year: 2026
+seo:
+  title: "Basis: Agentic AI for Automated Accounting Workflows at Scale - ZenML LLMOps Database"
+  description: "Basis, an AI startup founded in 2023, addresses the critical shortage of accountants in the US by deploying agentic AI systems that automate end-to-end accounting workflows. The company serves approximately 30% of the top 25 accounting firms and 25% of the top 150 firms in the country. By focusing on building reasoning-capable agentic systems rather than simple chatbots, Basis enables accountants to automate manual, time-consuming verification and reconciliation tasks that previously took 10-100 hours down to minutes, while maintaining high accuracy. The company uses an outcomes-based pricing model tied to the actual work completed rather than seats or tokens, and has achieved success by leveraging local context alongside large language model capabilities to handle the organization-specific complexity inherent in accounting work."
+  canonical: "https://www.zenml.io/llmops-database/agentic-ai-for-automated-accounting-workflows-at-scale"
+  ogTitle: "Basis: Agentic AI for Automated Accounting Workflows at Scale - ZenML LLMOps Database"
+  ogDescription: "Basis, an AI startup founded in 2023, addresses the critical shortage of accountants in the US by deploying agentic AI systems that automate end-to-end accounting workflows. The company serves approximately 30% of the top 25 accounting firms and 25% of the top 150 firms in the country. By focusing on building reasoning-capable agentic systems rather than simple chatbots, Basis enables accountants to automate manual, time-consuming verification and reconciliation tasks that previously took 10-100 hours down to minutes, while maintaining high accuracy. The company uses an outcomes-based pricing model tied to the actual work completed rather than seats or tokens, and has achieved success by leveraging local context alongside large language model capabilities to handle the organization-specific complexity inherent in accounting work."
+notion:
+  pageId: "3bcf8dff-2538-80f2-9cde-d6acbde5aeb4"
+  databaseId: "1a9eaa1f57dd47d5af958caa57742b6b"
+  createdTime: "2026-08-14T06:37:00.000Z"
+  lastEditedTime: "2026-08-14T06:37:00.000Z"
+  publishedAt: "2026-08-14T06:56:05Z"
+---
+
+## Overview
+
+Basis is an AI startup founded in 2023 by Matt Harp and Mitch that has built what they describe as the most accurate and capable AI for accounting. The company recently raised $100 million at a $1.15 billion valuation and serves accounting teams across approximately 30% of the top 25 accounting firms and 25% of the top 150 firms in the United States. The company addresses a critical problem in the accounting industry: a severe shortage of accountants coupled with intense manual workload that leads to burnout, mental health challenges, and high attrition rates, particularly during busy tax seasons.
+
+The founding story provides important context for their LLMOps approach. Matt Harp came to accounting from a healthcare analytics background where he worked on mortality trends around the opioid epidemic. While working at Boston Consulting Group with health systems, he discovered that most US hospitals cannot answer basic questions about the cost of providing procedures to patients. This realization led him to understand that accounting is fundamentally about structuring and systematizing economic activity so organizations can understand their operations and make better decisions. However, the 3 million accountants in the US spend most of their time on compliance activities like preparing financials and tax returns, leaving little capacity for higher-value analytical work. With approximately 300,000 accountants retiring in a two-year period and roughly 75% expected to retire in the next decade, there is an urgent need for AI to augment the remaining workforce.
+
+## Technical Architecture and LLMOps Philosophy
+
+The most distinctive aspect of Basis's LLMOps approach is their early and unwavering commitment to building agentic systems rather than conversational chatbots. From day one, the company bet on end-to-end automation of workflows built around the reasoning capabilities of large language models. This was a contrarian position when they started, as most applied AI companies in various verticals were focused on text-in, text-out chat experiences. Many investors, customers, and advisors pushed Basis to build a chatbot for accountants, arguing it would lead to faster initial traction and revenue growth. The company resisted this pressure for over a year, accepting slower initial growth in favor of building what they believed would be the right long-term architecture.
+
+The emphasis on reasoning capabilities over generative capabilities represents a philosophical stance on what makes LLMs valuable in production. Matt Harp argues that the early framing around "generative AI" potentially misdirected many companies by focusing on content generation rather than on the reasoning abilities that unlock automation of complex knowledge work. For accounting specifically, the workflows require understanding context, verifying information across multiple sources, identifying inconsistencies, and making structured decisions - all tasks that benefit from reasoning rather than generation.
+
+The company's technical approach combines global model capabilities with local learning and context. Previous attempts to automate accounting using machine learning had focused on global learning across large datasets from many companies to train models for specific tasks. Basis recognized that accounting differs dramatically from organization to organization and from context to context, meaning that global models miss critical local information needed for accurate automation. Their approach leverages large language models as a foundation but then applies them in local contexts, allowing the systems to crystallize learnings specific to individual entities. This hybrid approach enables the models to understand the particular conventions, categorization schemes, and business logic of each organization they work with.
+
+## Production Workflows and Capabilities
+
+The workflows that Basis automates in production environments typically involve taking complex information from real-world events, structuring that information into accounting records, and then verifying that the information was properly structured and systematized. A typical example involves processes where an organization has thousands of economic events - credit card swipes, contract signings, payments - that need to be verified against corroborating evidence. Traditionally, this requires accountants to pull up documents side by side, examine them for consistency, check numbers across multiple systems, and investigate any discrepancies by navigating through various information stores.
+
+Basis automates these end-to-end processes, performing all the retrieval, comparison, verification, and reconciliation steps, and then presents results to accountants showing what the system is certain and uncertain about. This allows accountants to triage their time to focus only on the most important issues rather than spending hours on routine verification. Processes that previously took 10 to 100 hours depending on volume can now be completed in minutes with extremely high accuracy levels while still giving accountants the information they need to be confident in the results.
+
+The agentic systems that Basis has deployed in production represent some of the most sophisticated production agents among applied AI companies. The company was forced to develop strong competencies in building agentic systems early because the preconditions in accounting - the complexity, the need for multi-step reasoning, the requirement to interact with multiple systems and documents - demanded this architecture from the start. Rather than incrementally moving from chat to agents, Basis built agentic capabilities from day one and has been compounding that expertise over time.
+
+## Development and Deployment Process
+
+The company's approach to building and deploying their LLM systems began with extensive shadowing and observation of actual accounting work. Before writing significant code, Matt and his co-founder Mitch worked with Mitch's mother, who owns a pharmacy in New York, to access her accounting system and build initial prototypes. They then convinced several accounting firms to allow them to shadow accountants through NDA agreements, spending extensive time understanding how accountants actually spend their day.
+
+This observational approach was crucial because there is often significant dissonance between what firm leadership thinks is valuable and what accountants actually spend time on. Leadership is often far removed from the day-to-day work and may not remember the current reality of how processes function. By shadowing the actual practitioners, Basis could identify the workflows that would have the most immediate impact if automated and that represented the highest-value use of their technology.
+
+The company took a disciplined approach to commercialization, refusing to launch with a seat-based pricing model or token-consumption model despite pressure to do so. Instead, they held out until they had developed an outcomes-based pricing model where customers pay based on the actual accounting work completed rather than based on the number of users or the computational resources consumed. This required the AI to be good enough to complete meaningful portions of accounting workflows with high enough accuracy to truly contribute to measurable outcomes. While this delayed revenue growth compared to what a seat-based model might have enabled, it forced the team to focus on delivering real value and ensured strong alignment between Basis's incentives and customer outcomes.
+
+For accounting firms, outcomes-based pricing works well because there is relatively clear attribution. Firms deliver services for clients, perform specific tasks, and get paid monthly or yearly for that work. The contributions that Basis makes to those outcomes can be tied directly to the work automated. This contrasts with consumption-based token pricing, which divorces the vendor from the ROI story and puts the burden on the customer to determine whether token usage is delivering value.
+
+## Technical Team and Talent Strategy
+
+Basis positions itself as the home for applied AI talent in New York City, competing with companies like Ramp AI and Modal for top machine learning researchers and engineers. Notably, the company has succeeded in attracting exceptional ML talent despite working in accounting, a domain that most engineers have no background in or inherent passion for. Approximately 90-95% of the engineering and ML team has no accounting background, though interestingly about 5-10% of the company overall are people whose parents are accountants.
+
+The pitch to technical talent emphasizes the frontier research problems that accounting requires. Because Basis started building agentic systems from day one rather than chatbots, the company was forced to tackle challenging problems around building multi-step reasoning systems, orchestrating complex workflows, and deploying autonomous agents in production environments. This gave Basis a head start in developing expertise in agentic AI and has allowed them to compound that advantage over time. For ML researchers and engineers interested in pushing the boundaries of what's possible in applied machine learning, particularly in building production agent systems, Basis offers compelling technical challenges despite the unglamorous domain.
+
+The company also emphasizes that all core research and engineering efforts are based in New York City, making it one of the few or potentially the only company at scale with this profile headquartered in New York with all technical work done locally rather than distributed or offshore.
+
+## Competitive Positioning and Defensibility
+
+The company has given significant thought to long-term defensibility against two major threats: competition from large language model labs like OpenAI, Anthropic, and Google, and the broader challenge of a post-AGI world where the cost of building software asymptotes to zero. These considerations influenced their choice of vertical and business model from the founding.
+
+Regarding competition from large labs, Basis argues that the labs naturally focus on areas one degree removed from their core competencies. Labs have successfully attacked products that are proximal to what they already do well: helping generate and edit text in documents, performing internet research, building spreadsheets and presentations. These are natural extensions of their existing capabilities and products. When a startup's product largely revolves around these core activities that labs already provide to every consumer and business, there is significant risk of competition and pricing pressure even if the startup has some differentiated features.
+
+Accounting differs substantially from this pattern. Basis has never been a text-in, text-out system. The workflows don't primarily operate in Word documents, PowerPoints, or standard Excel configurations. The systems require sign-offs, permissions, integrations with specialized accounting systems, and domain-specific logic that are not within the natural wheelhouse of large labs. Additionally, the labs can only focus on a limited number of areas despite their resources, and they are unlikely to invest deeply in the specialized infrastructure and domain expertise required for accounting automation. This makes meaningful competition from labs less likely.
+
+The company acknowledges that labs will inevitably have some accounting and finance capabilities, and tools like ChatGPT subscriptions provide value for basic productivity tasks. However, Basis argues that domain-specific AI is necessary in accounting for reasons beyond just feature differentiation - the work requires deep integration with systems, understanding of complex regulations and conventions, and the ability to handle the extreme context-specificity that characterizes accounting across different organizations.
+
+On the question of post-AGI defensibility, Basis's focus on accounting provides some inherent advantages. The need for trust, verification, regulatory compliance, and human oversight in financial matters is unlikely to disappear even as AI capabilities advance. The outcomes-based pricing model also provides some insulation, as it ties Basis to the value delivered rather than to the cost of underlying computation. As model costs decrease, companies with token-based pricing face margin pressure, while outcomes-based pricing can maintain economics if the value delivered remains constant even as costs fall.
+
+## Market Penetration and Customer Success
+
+Basis has achieved significant market penetration in a short time, reaching approximately 30% of the top 25 accounting firms and 25% of the top 150 firms in the country. This rapid adoption was enabled by the fact that the shortage of accountants was a top-three priority for most accounting firm leaders. Firms face tremendous difficulty hiring new accountants, have high attrition rates, and cannot easily solve the problem through traditional means. They cannot unilaterally convince large numbers of people to study accounting and become CPAs, and while offshoring is an option, it comes with significant complexity and has had mixed success.
+
+When Basis approached firms, they offered a solution to this critical problem: making manual processes more efficient to enable growth despite hiring challenges, removing the tedious aspects of work that drive people to leave the profession, and providing opportunities for staff to learn cutting-edge technology that could serve as a competitive hiring advantage. By demonstrating that they could make an aggregate impact on entire practices rather than just optimizing niche workflows, Basis made itself relevant to the top priorities of firm leadership.
+
+The company did encounter skepticism, particularly given the history of accounting technology companies overpromising and underdelivering. There is a pattern of second-time founders who, after working with accounting processes in their first company, think the work should be more efficient and attempt to solve the problem, only to discover that accounting is more complicated than it appears and that startup accounting is much simpler than the accounting at more developed organizations. Multiple well-funded companies in the five to seven years before Basis had failed to make significant progress in automating accounting workflows, creating skepticism that persisted when Basis entered the market.
+
+To overcome this skepticism, Basis focused on demonstrating actual results. They targeted accountants who were most excited about AI potential and showed them working systems that could complete meaningful portions of their workflows with high accuracy. The proof of capability in real workflows was more persuasive than any pitch about potential future capabilities.
+
+## Business Model and Pricing Evolution
+
+The company's commitment to outcomes-based pricing distinguishes it from most of the AI application market, which has largely moved toward either seat-based pricing or token-consumption models. Two years ago, many people were enthusiastic about outcomes-based pricing, with companies like Salesforce announcing such models and Intercom famously succeeding with them. However, the market has largely moved in the opposite direction. Salesforce has reportedly reverted from its outcomes-based model, and many companies have adopted token-based consumption models where they mark up the underlying computational costs and pass them through to customers.
+
+Basis argues that token-consumption models often punt the question of ROI and attribution to the customer. When a company uses a coding tool, for example, it must determine for itself whether the token usage is valuable enough based on productivity improvements, without clear attribution to specific outcomes. This divorces the vendor from the ROI story and makes customers vulnerable to pricing pressure as they are essentially pegged to an underlying resource that can be swapped in or out. As the cost of models decreases dramatically over time, companies with token-based pricing may face margin compression.
+
+The outcomes model requires more discipline and delayed gratification. Basis spent over a year building toward this model when they could have grown revenue faster with a seat-based approach. However, the outcomes model ensures strong alignment between vendor and customer success, forces the company to focus on delivering measurable value, and provides better long-term defensibility. In accounting specifically, the clear attribution to firm revenue and the work-based nature of billing make outcomes pricing more feasible than in many other domains.
+
+## Future Vision and Philosophy
+
+Basis's vision is that every accounting team globally should use Basis to do their core accounting work, with humans remaining central to the process. The company explicitly does not envision fully automated accounting without human accountants. Instead, they see a future where accountants become more valuable and better compensated because they can accomplish significantly more with AI assistance.
+
+This vision is grounded in several observations. First, there is a massive shortage of accountants even for existing work, so increasing productivity is necessary just to maintain current service levels. Second, there is an order of magnitude more accounting work that could be done but isn't because of capacity constraints - the kind of cost accounting and analytical work that would help organizations like hospitals understand their operations and make better decisions. Third, nearly every company in America has a relationship with an accounting firm built on trust, and that human relationship and advisory capacity becomes more valuable as accountants spend less time on manual work and more time on strategic advising.
+
+The company believes that as accountants are freed from manual tasks during busy seasons, they will be able to focus on the relationship-building and advisory work that led them to choose accounting as a career in the first place. This is work that humans are uniquely suited to do and that provides the most value to clients. The reduction in tedious work should also reduce burnout, mental health challenges, and attrition from the profession, potentially making accounting more attractive to new entrants.
+
+## Reflections on LLMOps Maturity and Lessons
+
+Several aspects of Basis's approach offer insights into successful LLMOps for complex knowledge work. The willingness to resist short-term pressures in favor of building the right long-term architecture - choosing agentic systems over chatbots despite investor and customer pressure - required conviction but enabled distinctive capabilities. The focus on reasoning over generation as the core value of LLMs shaped their entire technical approach and differentiated them from competitors focused on conversational interfaces.
+
+The combination of global model capabilities with local learning addresses a fundamental challenge in applying AI to complex, context-dependent domains. Pure global models trained across many organizations miss the specificity needed for accurate automation in accounting, while pure local systems lack the broad reasoning capabilities of foundation models. The hybrid approach enables the benefits of both.
+
+The outcomes-based pricing model, while difficult to implement, creates strong alignment and forces the technology to deliver measurable value rather than just plausible activity. This discipline likely contributed to the company's focus on end-to-end automation rather than partial assistance, as partial automation is harder to price based on outcomes.
+
+Finally, the company's approach to talent - hiring exceptional ML researchers and engineers without accounting backgrounds and motivating them with frontier technical problems rather than domain passion - demonstrates that LLMOps success in verticals may depend more on solving hard technical problems than on domain expertise. The domain knowledge can be acquired through observation and partnership, but the ability to build sophisticated agentic systems in production requires rare technical capabilities.
