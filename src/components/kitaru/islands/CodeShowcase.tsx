@@ -538,9 +538,9 @@ export function CodeShowcase() {
 
         <div
           data-kitaru-showcase-grid
-          className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-[1.25fr_1fr]"
+          className="mt-14 grid grid-cols-1 gap-8 lg:grid-cols-[3fr_2fr]"
         >
-          <Reveal variant="left" delay={80}>
+          <Reveal variant="left" delay={80} className="min-w-0">
             <div className="overflow-hidden rounded-xl border border-white/10 bg-night-surface">
               <div className="flex items-center gap-4 border-b border-white/10 px-4 py-3">
                 <span className="flex gap-1.5">
@@ -596,7 +596,7 @@ export function CodeShowcase() {
             </div>
           </Reveal>
 
-          <Reveal variant="right" delay={140} className="self-start">
+          <Reveal variant="right" delay={140} className="min-w-0 self-start">
             <div
               data-kitaru-annotations
               className="flex flex-col gap-px bg-white/10"

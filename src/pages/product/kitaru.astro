@@ -6,6 +6,7 @@ import GroundTruth from "../../components/kitaru/GroundTruth.astro";
 import { AgentDriven } from "../../components/kitaru/islands/AgentDriven";
 import { CodeShowcase } from "../../components/kitaru/islands/CodeShowcase";
 import { Hero } from "../../components/kitaru/islands/Hero";
+import { Importers } from "../../components/kitaru/islands/Importers";
 import { OneImport } from "../../components/kitaru/islands/OneImport";
 import { ScenarioStrip } from "../../components/kitaru/islands/ScenarioStrip";
 import { SocialProof } from "../../components/kitaru/islands/SocialProof";
@@ -14,10 +15,11 @@ import { SocialProof } from "../../components/kitaru/islands/SocialProof";
  * under the unified ZenML umbrella.
  *
  * Ported from the 2026 Kitaru landing redesign (design/kitaru-redesign-src).
- * Hero, ScenarioStrip, OneImport, CodeShowcase, AgentDriven and SocialProof
- * are Preact islands (interactive: copy buttons, hover state, in-component
- * scroll reveal). Features, GroundTruth, Faq and Cta are static — their
- * scroll-reveal is driven by the page-level `reveal-static` script below.
+ * Hero, ScenarioStrip, OneImport, Importers, CodeShowcase, AgentDriven and
+ * SocialProof are Preact islands (interactive: copy buttons, hover state,
+ * in-component scroll reveal). Features, GroundTruth, Faq and Cta are static —
+ * their scroll-reveal is driven by the page-level `reveal-static` script
+ * below.
  *
  * Aimed at the bullseye ICP: teams whose agent turns unstructured inbound into
  * structured writes in a system of record (logistics, fintech, insurance,
@@ -30,6 +32,7 @@ import { SocialProof } from "../../components/kitaru/islands/SocialProof";
  *   Hero          → the problem sentence, then history-as-test-suite
  *   ScenarioStrip → four questions asked of one cohort of real sessions
  *   OneImport     → works with your agent SDK (before/after)
+ *   Importers     → the traces you already have, one import command each
  *   Features      → the model-migration wedge, in experiment/run terms
  *   GroundTruth   → the labels already exist, in the system of record
  *   CodeShowcase  → cohort → experiment → two runs, with tool policies
@@ -71,6 +74,7 @@ const faqJsonLd = {
       <Hero client:visible />
       <ScenarioStrip client:visible />
       <OneImport client:visible />
+      <Importers client:visible />
       <Features />
       <GroundTruth />
       <CodeShowcase client:visible />

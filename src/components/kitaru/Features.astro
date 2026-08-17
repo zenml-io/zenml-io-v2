@@ -4,7 +4,7 @@ import { STEPS } from "../../lib/kitaru-landing";
 import HighlightPanel from "./_HighlightPanel.astro";
 ---
 
-<section id="how-it-works" class="relative w-full bg-surface text-foreground">
+<section id="how-it-works" class="relative w-full bg-background text-foreground">
   <div class="mx-auto w-full max-w-[1180px] px-6 py-24 md:py-36">
     {/* Header with eyebrow, title, lede */}
     <div class="reveal max-w-3xl">
@@ -78,11 +78,11 @@ import HighlightPanel from "./_HighlightPanel.astro";
               <div class="relative z-10 flex flex-1 flex-col justify-center space-y-2">
                 <div class="flex items-center gap-2 px-2 py-1">
                   <span class="font-mono text-[10.5px] text-muted-foreground">name</span>
-                  <span class="fh-pop ml-auto rounded-md border border-border bg-surface px-2 py-1 font-mono text-[10.5px]" style="--fh-delay: 350ms">cheap-model</span>
+                  <span class="fh-pop ml-auto rounded-md border border-border bg-background px-2 py-1 font-mono text-[10.5px]" style="--fh-delay: 350ms">cheap-model</span>
                 </div>
                 <div class="fh-wash flex items-center gap-2 rounded border border-ember/30 bg-ember-light/50 px-2 py-1.5" style="--fh-delay: 700ms">
                   <span class="font-mono text-[10.5px] text-muted-foreground">model</span>
-                  <span class="fh-pop ml-auto flex items-center gap-1.5 rounded-md border border-ember/40 bg-surface px-2 py-1 font-mono text-[10.5px] text-ember-deep" style="--fh-delay: 850ms">
+                  <span class="fh-pop ml-auto flex items-center gap-1.5 rounded-md border border-ember/40 bg-background px-2 py-1 font-mono text-[10.5px] text-ember-deep" style="--fh-delay: 850ms">
                     claude-haiku-4.5
                     <svg class="size-3 opacity-70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
                   </span>
@@ -152,7 +152,7 @@ import HighlightPanel from "./_HighlightPanel.astro";
       class="reveal mt-16"
       style={`--reveal-delay: 260ms`}
     >
-      <div class="grid grid-cols-1 gap-8 rounded-xl border border-border bg-background p-8 md:grid-cols-[1fr_1.4fr] md:items-center md:p-10">
+      <div class="grid grid-cols-1 gap-8 rounded-xl border border-border bg-surface p-8 md:grid-cols-[1fr_1.4fr] md:items-center md:p-10">
         <div>
           <span class="font-mono text-[11px] tracking-[0.16em] text-ember uppercase">
             The diff
