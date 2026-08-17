@@ -1,4 +1,4 @@
-export const KITARU_INSTALL_CMD = "pip install kitaru";
+export const KITARU_INSTALL_CMD = "uv add kitaru";
 export const KITARU_LICENSE = "Apache 2.0";
 
 /**
@@ -90,7 +90,7 @@ export const PRODUCT_KITARU_MARKDOWN = {
   journey: [
     {
       name: "Act 1 — Get in",
-      body: "`pip install kitaru` then `kitaru login`. Two questions decide your path: do you have a repo with an agent, and do you have traces? No repo, or an unrecognised framework, and you start from the template repo — a small PydanticAI agent already wrapped, with a trace file beside it. Registering the agent stores an entrypoint module path server-side; nothing is written into your repo. Then `kitaru worker start` runs a plain Python process in your virtualenv, which polls — the server never connects inbound.",
+      body: "`uv add kitaru` then `kitaru login`. Two questions decide your path: do you have a repo with an agent, and do you have traces? No repo, or an unrecognised framework, and you start from the template repo — a small PydanticAI agent already wrapped, with a trace file beside it. Registering the agent stores an entrypoint module path server-side; nothing is written into your repo. Then `kitaru worker start` runs a plain Python process in your virtualenv, which polls — the server never connects inbound.",
     },
     {
       name: "Act 2 — Traces in",
