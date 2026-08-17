@@ -254,19 +254,18 @@ describe("Kitaru product-page snippets", () => {
     expectValidPython(python);
     expectValidTypeScript(typescript);
     expect(python).toMatchInlineSnapshot(`
-      "# Inside an async function; only the model changes.
-      common = dict(
-          agent_id=AGENT_ID,
-          tool_policy=ToolPolicy(default=HistoryConfig(
-              scope="cohort_version", on_miss="fail")),
-          evaluators=[EvaluatorConfig(evaluator="response-quality", version=1)],
-      )
+      "# Inside an async function, compare one model change.
+      policy = ToolPolicy(default=HistoryConfig(
+          scope="cohort_version", on_miss="fail"))
+      evaluator = EvaluatorConfig(evaluator="response-quality", version=1)
 
       baseline = await client.experiments.create(
-          ExperimentCreateRequest(name="baseline", **common))
+          ExperimentCreateRequest(name="baseline", agent_id=AGENT_ID,
+              tool_policy=policy, evaluators=[evaluator]))
       candidate = await client.experiments.create(
-          ExperimentCreateRequest(name="cheap-model",
-              override=ReplayOverride(model="claude-haiku-4.5"), **common))
+          ExperimentCreateRequest(name="cheap-model", agent_id=AGENT_ID,
+              override=ReplayOverride(model="claude-haiku-4.5"),
+              tool_policy=policy, evaluators=[evaluator]))
 
       run_spec = ExperimentRunCreateRequest(
           cohort_version_id=COHORT_VERSION_ID,
