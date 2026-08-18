@@ -29,6 +29,13 @@ const sitemapExcludePaths = new Set([
   ...STALE_RAY_SUMMIT_REDIRECT_PATHS,
 ]);
 
+// The content datastore outgrew the Cloudflare dev isolate — with the adapter
+// active, every dev-server page 500s inside getCollection. DEV_NODE=1 (the
+// `pnpm dev:node` script) drops the adapter so dev runs in plain Node with hot
+// reload. Dev-only: builds and API routes still require the adapter.
+const devWithoutAdapter =
+  process.env.DEV_NODE === "1" && process.argv.includes("dev");
+
 export default defineConfig({
   site: "https://www.zenml.io",
   output: "static",
@@ -37,9 +44,11 @@ export default defineConfig({
     // the Cloudflare adapter from auto-provisioning an unused SESSION KV.
     driver: { entrypoint: "unstorage/drivers/null" },
   },
-  adapter: cloudflare({
-    imageService: "compile",
-  }),
+  adapter: devWithoutAdapter
+    ? undefined
+    : cloudflare({
+        imageService: "compile",
+      }),
   trailingSlash: "never",
   build: {
     format: "file",

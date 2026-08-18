@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "dev:node": "DEV_NODE=1 astro dev",
     "build": "astro build && pagefind --site dist/client --glob '*ops-database/*.html'",
     "preview": "astro preview",
     "check": "astro check --tsconfig ./tsconfig.check.json",

@@ -89,14 +89,22 @@ export function KitaruGrain({
   const isCard = variant === "card";
   const controlled = typeof active === "boolean";
   const isDeferred = isCard || controlled;
-  // Deferred variants mount only while revealed; everything else mounts
-  // immediately and stays mounted.
-  const [mounted, setMounted] = useState(!isDeferred);
+  // Deferred variants mount only while revealed; everything else mounts on
+  // the client right after hydration and stays mounted. Never during SSR —
+  // GrainGradient is a React-shaped component preact-render-to-string can't
+  // serialize (it crashes Node-mode dev SSR), and a WebGL canvas has nothing
+  // to say in HTML anyway: the wrapper's static gradient is the SSR output.
+  const [mounted, setMounted] = useState(false);
   // Uncontrolled cards track their `.group` parent's hover state here.
   const [hovered, setHovered] = useState(false);
   const unmountTimer = useRef<number | undefined>(undefined);
 
   const shown = controlled ? active === true : hovered;
+
+  // Client-side mount for the always-on variants (hero/dark).
+  useEffect(() => {
+    if (!isDeferred) setMounted(true);
+  }, [isDeferred]);
 
   // Uncontrolled card: follow hover/focus on the same `.group` card the CSS
   // reveal (group-hover) uses — closest() also traverses the display:contents
