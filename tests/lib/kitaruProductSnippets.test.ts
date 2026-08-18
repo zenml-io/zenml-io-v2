@@ -3,8 +3,10 @@ import ts from "typescript";
 import { describe, expect, it } from "vitest";
 import type { CodeLine } from "../../src/components/kitaru/islands/code-tokens";
 import { HERO_CODE_LINES } from "../../src/components/kitaru/islands/Hero";
-import { IMPORTERS } from "../../src/components/kitaru/islands/Importers";
-import { FRAMEWORKS } from "../../src/components/kitaru/islands/OneImport";
+import {
+  FRAMEWORKS,
+  IMPORTERS,
+} from "../../src/components/kitaru/islands/TwoDoors";
 import { KITARU_INSTALL_CMD, STEPS } from "../../src/lib/kitaru-landing";
 import { GET as getKitaruMarkdown } from "../../src/pages/product/kitaru.md";
 

@@ -442,6 +442,17 @@
 [data-app="kitaru"] .code-syntax .dec { color: oklch(0.68 0.12 50); font-style: italic; }
 [data-app="kitaru"] .code-syntax .cmt { color: oklch(0.67 0.015 60); font-style: italic; }
 
+/* Light-surface variant of the same token vocabulary, for code rendered on
+   paper-colored panes (e.g. the TwoDoors record door). Keep in sync with the
+   dark rules above. */
+[data-app="kitaru"] .code-syntax-light .kw,
+[data-app="kitaru"] .code-syntax-light .fn  { color: var(--ember-deep); }
+[data-app="kitaru"] .code-syntax-light .str { color: oklch(0.42 0.09 155); }
+[data-app="kitaru"] .code-syntax-light .var { color: var(--ink); }
+[data-app="kitaru"] .code-syntax-light .op  { color: oklch(0.58 0.02 60); }
+[data-app="kitaru"] .code-syntax-light .dec { color: var(--ember-deep); font-style: italic; }
+[data-app="kitaru"] .code-syntax-light .cmt { color: oklch(0.58 0.02 60); font-style: italic; }
+
 @media (max-width: 600px) {
   [data-app="kitaru"] .section-pad,
   [data-app="kitaru"] .section-pad-compact { padding: 48px 16px; }

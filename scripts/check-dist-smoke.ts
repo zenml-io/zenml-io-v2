@@ -445,8 +445,7 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   // their shader backdrops).
   { island: "Hero", pages: ["product/kitaru.html"] },
   { island: "ScenarioStrip", pages: ["product/kitaru.html"] },
-  { island: "OneImport", pages: ["product/kitaru.html"] },
-  { island: "Importers", pages: ["product/kitaru.html"] },
+  { island: "TwoDoors", pages: ["product/kitaru.html"] },
   { island: "KitaruGrain", pages: ["product/kitaru.html"] },
 ];
 

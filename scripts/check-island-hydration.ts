@@ -54,7 +54,7 @@
  *   would have to select them positionally — brittle, for a low-traffic page.
  * All four are still covered structurally by the island manifest in
  * check-dist-smoke.ts. Please do not "helpfully" add them back here.
- * - Of the remaining /product/kitaru islands, OneImport covers the interactive
+ * - Of the remaining /product/kitaru islands, TwoDoors covers the interactive
  *   contract that has regressed. The others have nothing better to assert on:
  *   Hero's sole interaction is a clipboard write (permission-gated in
  *   headless), KitaruGrain is a WebGL shader, and ScenarioStrip's only state
@@ -336,22 +336,27 @@ const CHECKS: IslandCheck[] = [
     },
   },
   {
-    name: "OneImport switches its framework tab on click",
-    route: "/product/kitaru#one-import",
-    island: "OneImport",
+    name: "TwoDoors switches its importer tab on click",
+    route: "/product/kitaru#two-doors",
+    island: "TwoDoors",
     seedConsent: true,
-    async assert(page, root) {
+    async assert(page) {
       // Every island on /product/kitaru is client:visible, so nothing hydrates
-      // until it scrolls into view — the #one-import hash lands the section in
+      // until it scrolls into view — the #two-doors hash lands the section in
       // the viewport on load, which is what arms the runner's hydration gate.
-      // SSR ships the first framework tab selected; only an onClick can move it.
-      const tab = (n: number) => `${root} [role="tab"]:nth-of-type(${n})`;
-      await page.waitForSelector(`${tab(1)}[aria-selected="true"]`);
+      // SSR ships the first importer tab selected; only an onClick can move it.
+      const tab = (id: string) => `#two-doors-import-tab-${id}`;
+      await page.waitForSelector(`${tab("langfuse")}[aria-selected="true"]`);
 
-      await page.locator(tab(2)).click();
+      await page.locator(tab("langsmith")).click();
 
-      await page.waitForSelector(`${tab(2)}[aria-selected="true"]`);
-      await page.waitForSelector(`${tab(1)}[aria-selected="false"]`);
+      await page.waitForSelector(`${tab("langsmith")}[aria-selected="true"]`);
+      const panelContent = await page.textContent("#two-doors-import-panel");
+      if (!panelContent?.includes("langsmith-export.jsonl")) {
+        throw new Error(
+          "clicking LangSmith tab did not update the import panel content",
+        );
+      }
     },
   },
 ];

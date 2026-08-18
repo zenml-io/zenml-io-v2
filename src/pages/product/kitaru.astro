@@ -3,15 +3,14 @@ import Cta from "../../components/kitaru/Cta.astro";
 import Faq from "../../components/kitaru/Faq.astro";
 import Features from "../../components/kitaru/Features.astro";
 import { Hero } from "../../components/kitaru/islands/Hero";
-import { Importers } from "../../components/kitaru/islands/Importers";
-import { OneImport } from "../../components/kitaru/islands/OneImport";
 import { ScenarioStrip } from "../../components/kitaru/islands/ScenarioStrip";
+import { TwoDoors } from "../../components/kitaru/islands/TwoDoors";
 /**
  * /product/kitaru — landing page introducing Kitaru as a sub-product
  * under the unified ZenML umbrella.
  *
  * Ported from the 2026 Kitaru landing redesign (design/kitaru-redesign-src).
- * Hero, ScenarioStrip, OneImport and Importers are Preact islands
+ * Hero, ScenarioStrip, and TwoDoors are Preact islands
  * (interactive: copy buttons, hover state, in-component scroll reveal).
  * Features, Faq and Cta are static — their scroll-reveal is driven by the
  * page-level `reveal-static` script below.
@@ -26,8 +25,7 @@ import { ScenarioStrip } from "../../components/kitaru/islands/ScenarioStrip";
  * Sections:
  *   Hero          → the problem sentence, then history-as-test-suite
  *   ScenarioStrip → four questions asked of one cohort of real sessions
- *   OneImport     → works with your agent SDK (before/after)
- *   Importers     → the traces you already have, one import command each
+ *   TwoDoors      → two paths in: wrap an agent or import existing traces
  *   Features      → the model-migration wedge, in experiment/run terms
  *   Faq           → the questions that come up in every demo
  *   Cta           → closing CTA band
@@ -64,8 +62,7 @@ const faqJsonLd = {
     <main id="kitaru-main">
       <Hero client:visible />
       <ScenarioStrip client:visible />
-      <OneImport client:visible />
-      <Importers client:visible />
+      <TwoDoors client:visible />
       <Features />
       <Faq />
       <Cta />
