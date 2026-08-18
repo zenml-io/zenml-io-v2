@@ -15,22 +15,23 @@ const checkpoints = [
 
 export function ScenarioStrip() {
   // Links checkpoint i+1 on the session spine to card i below — hovering
-  // either side highlights both, same shared-state pattern as CodeShowcase's
-  // code-line ↔ annotation link. "run" (index 0) has no card.
+  // either side highlights both via shared hover state. "run" (index 0)
+  // has no card.
   const [hot, setHot] = useState<number | null>(null);
 
   return (
     <Section id="scenario-strip" tone="surface">
       <Reveal className="max-w-3xl">
-        <Eyebrow>The same move, every time</Eyebrow>
+        <Eyebrow>Stop guessing</Eyebrow>
         <h2 className="mt-5 text-balance text-3xl leading-[1.1] font-medium tracking-[-0.025em] md:text-[2.75rem]">
-          One cohort of real sessions.
+          You already suspect what's wrong.
           <br />
-          <span className="text-ember">A different question each time.</span>
+          <span className="text-ember">Now you can check.</span>
         </h2>
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-ink-soft md:text-lg">
-          You read a few. The agent groups the rest. One change per experiment,
-          and the answer is two runs side by side.
+          Every trace you import becomes a session, a replayable record of one
+          real agent run. Take the ones that went sideways, change the one thing
+          you suspect, and run them again. Two runs, side by side, and you know.
         </p>
       </Reveal>
 

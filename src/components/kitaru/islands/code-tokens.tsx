@@ -1,8 +1,8 @@
 // code-tokens — shared renderer for token-level code syntax highlighting
 // (kw/fn/str/var/op/dec/cmt spans), styled by the `.code-syntax` rules in
-// kitaru-compat.css. Used by OneImport and CodeShowcase so both islands
-// keep the site's existing highlighted-code look instead of the redesign's
-// flat single-color code lines.
+// kitaru-compat.css. Used by the code-rendering island (TwoDoors)
+// so it keeps the site's existing highlighted-code look
+// instead of the redesign's flat single-color code lines.
 
 import type { ComponentChildren } from "preact";
 import { Fragment } from "preact";

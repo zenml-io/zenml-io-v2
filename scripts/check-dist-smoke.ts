@@ -154,9 +154,10 @@ const CONTENT_MARKER_CHECKS: ContentMarkerCheck[] = [
     markers: [
       'data-app="kitaru"',
       'id="kitaru-main"',
-      "kitaru/kitaru-jsonl@latest",
-      "kitaru experiment run start baseline",
-      "kitaru_workflow_start",
+      "kitaru session import ./traces.jsonl",
+      // Prefix only: the experiment name after `start` is hero copy and may
+      // change; the command itself proves the CLI showcase rendered.
+      "kitaru experiment run start",
     ],
     message: "dist/product/kitaru.html contains current Kitaru code markers",
   },
@@ -446,11 +447,7 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   // their shader backdrops).
   { island: "Hero", pages: ["product/kitaru.html"] },
   { island: "ScenarioStrip", pages: ["product/kitaru.html"] },
-  { island: "OneImport", pages: ["product/kitaru.html"] },
-  { island: "Importers", pages: ["product/kitaru.html"] },
-  { island: "CodeShowcase", pages: ["product/kitaru.html"] },
-  { island: "AgentDriven", pages: ["product/kitaru.html"] },
-  { island: "SocialProof", pages: ["product/kitaru.html"] },
+  { island: "TwoDoors", pages: ["product/kitaru.html"] },
   { island: "KitaruGrain", pages: ["product/kitaru.html"] },
 ];
 

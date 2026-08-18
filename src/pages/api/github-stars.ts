@@ -1,4 +1,3 @@
-import { env } from "cloudflare:workers";
 import type { APIContext } from "astro";
 import {
   createStarsSnapshot,
@@ -43,8 +42,20 @@ function getDefaultCache(): Cache | null {
   return cacheStorage?.default ?? null;
 }
 
-function getGithubToken(): string | undefined {
-  return env.GITHUB_TOKEN?.trim() || env.GITHUB_API_TOKEN?.trim() || undefined;
+type TokenEnv = { GITHUB_TOKEN?: string; GITHUB_API_TOKEN?: string };
+
+async function getGithubToken(): Promise<string | undefined> {
+  let vars: TokenEnv;
+  try {
+    // Static import would crash Node-mode dev (`pnpm dev:node`), where the
+    // workerd-only `cloudflare:workers` module doesn't exist.
+    vars = (await import("cloudflare:workers")).env as TokenEnv;
+  } catch {
+    vars = (globalThis as { process?: { env?: TokenEnv } }).process?.env ?? {};
+  }
+  return (
+    vars.GITHUB_TOKEN?.trim() || vars.GITHUB_API_TOKEN?.trim() || undefined
+  );
 }
 
 function isStarsSource(value: unknown): value is GithubStarsSnapshot["source"] {
@@ -155,7 +166,7 @@ export async function GET(context: APIContext): Promise<Response> {
   const repo = resolveStarsRepo(context.url.searchParams.get("repo"));
   const cache = getDefaultCache();
   const cacheKey = new Request(`${CACHE_KEY_URL}?repo=${repo.key}`);
-  const githubToken = getGithubToken();
+  const githubToken = await getGithubToken();
 
   if (cache) {
     const cached = await cache.match(cacheKey);

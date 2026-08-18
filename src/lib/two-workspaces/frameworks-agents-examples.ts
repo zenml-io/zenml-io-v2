@@ -8,8 +8,8 @@
  * RECORDED — the session that run produced).
  *
  * The adapter set and the entry points match the shipped adapters on kitaru
- * `develop` (docs/book/adapters) and the landing page's OneImport island
- * (`src/components/kitaru/islands/OneImport.tsx`):
+ * `develop` (docs/book/adapters) and the landing page's TwoDoors island
+ * (`src/components/kitaru/islands/TwoDoors.tsx`):
  *   - PydanticAI:        kitaru_pydantic_ai          → KitaruAgent
  *   - OpenAI Agents SDK: kitaru_openai_agents        → KitaruRunner
  *   - LangGraph:         kitaru_langgraph            → KitaruGraphRunner

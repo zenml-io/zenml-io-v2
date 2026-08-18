@@ -25,7 +25,7 @@ export function Section({
         className,
       )}
     >
-      <div className="mx-auto w-full max-w-[1180px] px-6 py-24 md:py-36">
+      <div className="mx-auto w-full max-w-[1440px] px-6 py-20 md:py-28">
         {children}
       </div>
     </section>
@@ -133,49 +133,6 @@ export function CopyCommand({
           <Copy class="size-3.5 opacity-60" />
         )}
       </button>
-    </div>
-  );
-}
-
-export function CodeBlock({
-  code,
-  filename,
-  label,
-  accent = false,
-  className,
-}: {
-  code: ComponentChildren;
-  filename?: string;
-  label?: string;
-  accent?: boolean;
-  className?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "overflow-hidden rounded-lg border bg-night",
-        accent ? "border-ember/40" : "border-white/10",
-        className,
-      )}
-    >
-      {(filename || label) && (
-        <div className="flex items-center justify-between border-b border-white/10 px-4 py-2.5">
-          <span
-            className={cn(
-              "font-mono text-[11px] tracking-[0.12em] uppercase",
-              accent ? "text-ember" : "text-night-text/50",
-            )}
-          >
-            {label}
-          </span>
-          <span className="font-mono text-[11px] text-night-text/40">
-            {filename}
-          </span>
-        </div>
-      )}
-      <pre className="overflow-x-auto px-4 py-4 font-mono text-[12.5px] leading-[1.7] text-night-text/85 code-syntax">
-        <code>{code}</code>
-      </pre>
     </div>
   );
 }

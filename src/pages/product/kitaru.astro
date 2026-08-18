@@ -2,24 +2,18 @@
 import Cta from "../../components/kitaru/Cta.astro";
 import Faq from "../../components/kitaru/Faq.astro";
 import Features from "../../components/kitaru/Features.astro";
-import GroundTruth from "../../components/kitaru/GroundTruth.astro";
-import { AgentDriven } from "../../components/kitaru/islands/AgentDriven";
-import { CodeShowcase } from "../../components/kitaru/islands/CodeShowcase";
 import { Hero } from "../../components/kitaru/islands/Hero";
-import { Importers } from "../../components/kitaru/islands/Importers";
-import { OneImport } from "../../components/kitaru/islands/OneImport";
 import { ScenarioStrip } from "../../components/kitaru/islands/ScenarioStrip";
-import { SocialProof } from "../../components/kitaru/islands/SocialProof";
+import { TwoDoors } from "../../components/kitaru/islands/TwoDoors";
 /**
  * /product/kitaru — landing page introducing Kitaru as a sub-product
  * under the unified ZenML umbrella.
  *
  * Ported from the 2026 Kitaru landing redesign (design/kitaru-redesign-src).
- * Hero, ScenarioStrip, OneImport, Importers, CodeShowcase, AgentDriven and
- * SocialProof are Preact islands (interactive: copy buttons, hover state,
- * in-component scroll reveal). Features, GroundTruth, Faq and Cta are static —
- * their scroll-reveal is driven by the page-level `reveal-static` script
- * below.
+ * Hero, ScenarioStrip, and TwoDoors are Preact islands
+ * (interactive: copy buttons, hover state, in-component scroll reveal).
+ * Features, Faq and Cta are static — their scroll-reveal is driven by the
+ * page-level `reveal-static` script below.
  *
  * Aimed at the bullseye ICP: teams whose agent turns unstructured inbound into
  * structured writes in a system of record (logistics, fintech, insurance,
@@ -31,13 +25,8 @@ import { SocialProof } from "../../components/kitaru/islands/SocialProof";
  * Sections:
  *   Hero          → the problem sentence, then history-as-test-suite
  *   ScenarioStrip → four questions asked of one cohort of real sessions
- *   OneImport     → works with your agent SDK (before/after)
- *   Importers     → the traces you already have, one import command each
+ *   TwoDoors      → two paths in: wrap an agent or import existing traces
  *   Features      → the model-migration wedge, in experiment/run terms
- *   GroundTruth   → the labels already exist, in the system of record
- *   CodeShowcase  → cohort → experiment → two runs, with tool policies
- *   AgentDriven   → the agent drives; the human keeps the judgement
- *   SocialProof   → ZenML lineage, testimonials + logos
  *   Faq           → the questions that come up in every demo
  *   Cta           → closing CTA band
  *
@@ -73,23 +62,18 @@ const faqJsonLd = {
     <main id="kitaru-main">
       <Hero client:visible />
       <ScenarioStrip client:visible />
-      <OneImport client:visible />
-      <Importers client:visible />
+      <TwoDoors client:visible />
       <Features />
-      <GroundTruth />
-      <CodeShowcase client:visible />
-      <AgentDriven client:visible />
-      <SocialProof client:visible />
       <Faq />
       <Cta />
     </main>
   </div>
 </BaseLayout>
 
-{/* Scroll-reveal observer for the static sections (Features, GroundTruth,
-    Faq, Cta) — sets data-shown="true" on .reveal/.reveal-left/.reveal-right
-    elements. The hydrated islands drive their own reveal via the
-    useReveal hook, so this only needs to cover the static markup. */}
+{/* Scroll-reveal observer for the static sections (Features, Faq, Cta) —
+    sets data-shown="true" on .reveal/.reveal-left/.reveal-right elements.
+    The hydrated islands drive their own reveal via the useReveal hook, so
+    this only needs to cover the static markup. */}
 <script>
   import "../../scripts/kitaru/reveal-static";
 </script>

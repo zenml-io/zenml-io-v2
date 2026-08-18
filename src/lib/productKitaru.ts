@@ -26,6 +26,19 @@ export const KITARU_TRIAL_NOTE = `${KITARU_TRIAL_DAYS}-day free trial · Full ac
 export const KITARU_VS_OBSERVABILITY_ANSWER =
   "They tell you what happened: traces you read, dashboards you check. Kitaru re-runs what happened. Your agent's real code executes again against the recorded world, so you can test your next change against your last thousand sessions before it ships. Kitaru also imports your existing Langfuse, Braintrust or LangSmith traces, so your observability tool stays your system of record.";
 
+/**
+ * The 90-second launch video behind the hero's poster card. The iframe is
+ * only injected while the modal is open, and the nocookie host must stay in
+ * sync with the `frame-src` allowlist in public/_headers.
+ */
+export const KITARU_VIDEO = {
+  id: "jQ1HZVCFJZM",
+  embedUrl:
+    "https://www.youtube-nocookie.com/embed/jQ1HZVCFJZM?autoplay=1&rel=0",
+  title: "Kitaru launch video",
+  caption: "Watch the launch video — 90 seconds",
+} as const;
+
 export const KITARU_LINKS = {
   signup: {
     // Kitaru signup lives on its own cloud app (Aug 2026 decision),

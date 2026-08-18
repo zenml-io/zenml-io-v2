@@ -12,6 +12,30 @@ export {
 
 // Note: PRODUCT_KITARU_SEO is retained in productKitaru.ts as it serves the page's meta tags
 
+/**
+ * FAQ help rail — one home for these destinations so the help links, the FAQ
+ * answers that mention them, and any derived surfaces can't drift apart.
+ * "Kitaru Docs" uses the site chrome's canonical docs URL (see
+ * src/lib/navigation.ts), not the kitaru.ai/docs legacy host.
+ */
+export const FAQ_HELP_LINKS = [
+  {
+    label: "Slack Community",
+    href: "https://kitaru.ai/slack",
+    analytics: "Kitaru-FAQ-Help-Slack",
+  },
+  {
+    label: "Kitaru Docs",
+    href: "https://docs.zenml.io/kitaru",
+    analytics: "Kitaru-FAQ-Help-Docs",
+  },
+  {
+    label: "Support",
+    href: "https://kitaru.ai/help",
+    analytics: "Kitaru-FAQ-Help-Support",
+  },
+] as const;
+
 export const SCENARIOS = [
   {
     tag: "understand",
@@ -34,8 +58,8 @@ export const SCENARIOS = [
     q: "Can we ship the cheaper model?",
     outcome:
       "Same cohort, one model swapped — the answer is two runs, compared.",
-    stat: "−84%",
-    statLabel: "cost · 192/200 outputs identical",
+    stat: "−61%",
+    statLabel: "cost · 196/200 unchanged",
   },
   {
     tag: "guard",
@@ -51,124 +75,21 @@ export const STEPS = [
   {
     n: "01",
     tag: "Cohort",
-    title: "Freeze the sessions that matter",
-    body: "The sessions you care about, frozen as a named set. Immutable, so a run's result keeps meaning what it meant.",
-    command:
-      "COHORT_VERSION_ID=$(kitaru cohort create checkout-flow --agent checkout-agent --sessions-file session-ids.txt --output json --machine --non-interactive --no-browser | jq -r '.item.version.id')",
+    title: "Pick the production cases that matter",
+    body: "Start with a cohort you found during investigation, or hand-pick your own. Versioning the set means you compare every change against the same cases.",
   },
   {
     n: "02",
     tag: "Experiment",
-    title: "State the two hypotheses",
-    body: "Each experiment is just configuration. Keep the baseline fixed, then change only the model in the candidate.",
-    command: `kitaru experiment create baseline --agent checkout-agent --tool-policy '{"default":{"type":"history","scope":"cohort_version","on_miss":"fail"}}' --evaluator response-quality@latest\nkitaru experiment create cheap-model --agent checkout-agent --override '{"model":"claude-haiku-4.5"}' --tool-policy '{"default":{"type":"history","scope":"cohort_version","on_miss":"fail"}}' --evaluator response-quality@latest`,
+    title: "Change one thing",
+    body: "Keep the agent setup fixed and swap the model. Now any difference in the replay comes from the change you are testing.",
   },
   {
     n: "03",
-    tag: "Two runs",
-    title: "Compare like with like",
-    body: "Run the baseline and candidate over the same cohort and agent version. One model moved, so the numbers mean what they look like.",
-    command:
-      'kitaru experiment run start baseline --cohort-version "$COHORT_VERSION_ID" --agent checkout-agent@v1 --wait\nkitaru experiment run start cheap-model --cohort-version "$COHORT_VERSION_ID" --agent checkout-agent@v1 --wait',
+    tag: "Compare",
+    title: "See what actually changed",
+    body: "Replay the same cohort with both setups and compare cost, latency, evaluator results, and behavior side by side.",
   },
-] as const;
-
-export const GROUND_TRUTH_POINTS = [
-  {
-    kind: "Field by field",
-    body: "A structured write diffs against production, one field at a time. No judge, no calibration set.",
-  },
-  {
-    kind: "The residue",
-    body: "Keep a model-graded check only for tone, and for whether escalating was right.",
-  },
-  {
-    kind: "Per tenant",
-    body: "Every customer brings its own corrections. Same loop, new cohort.",
-  },
-] as const;
-
-export const ANNOTATIONS = [
-  {
-    key: "cohort",
-    label: {
-      python: "cohort_version_id=...",
-      typescript: "cohort_version_id: ...",
-    },
-    body: "An immutable set of sessions — a run depends on its cohort, so a mutable one would make old results meaningless.",
-  },
-  {
-    key: "experiment",
-    label: {
-      python: "experiments.create(...)",
-      typescript: "experiments.create(...)",
-    },
-    body: "Pure configuration. Change the code and you get a new run; change the prompt and you get a new experiment.",
-  },
-  {
-    key: "model",
-    label: {
-      python: 'ReplayOverride(model="claude-haiku-4.5")',
-      typescript: 'override: { model: "claude-haiku-4.5" }',
-    },
-    body: "The variable under test. A run that moved two things cannot tell you which one did it.",
-  },
-  {
-    key: "policy",
-    label: {
-      python: 'HistoryConfig(scope="cohort_version")',
-      typescript: '{ type: "history", scope: "cohort_version" }',
-    },
-    body: "One of four policies — history, passthrough, static, llm. Every intercepted node is stamped with the one that answered it.",
-  },
-  {
-    key: "run",
-    label: {
-      python: "experiments.start_run(...)",
-      typescript: "experiments.startRun(...)",
-    },
-    body: "Each replay creates a new session instead of overwriting the original, so the baseline survives intact.",
-  },
-  {
-    key: "inspect",
-    label: {
-      python: "wait_for_run(...)",
-      typescript: "experimentRuns.wait(...)",
-    },
-    body: "Wait for both exact runs to settle, then inspect their comparison in Kitaru. It does not invent a verdict or a blended score.",
-  },
-] as const;
-
-export const AGENTS = ["Claude Code", "Codex", "Cursor", "Gemini CLI"] as const;
-
-export const ARTICLES = [
-  {
-    kind: "Origin story",
-    title: "From ZenML to Kitaru",
-    summary:
-      "Why we built a second product, and what we kept from production ML infrastructure.",
-    href: "/blog/from-zenml-to-kitaru",
-  },
-  {
-    kind: "Foundations",
-    title: "The Anatomy of a Production Coding Agent",
-    summary:
-      "Not a prompt and a while loop — eight stages, each with different failure modes, costs, and human touchpoints.",
-    href: "/blog/anatomy-of-a-production-agent",
-  },
-  {
-    kind: "Perspective",
-    title: "Agents need more than traces",
-    summary:
-      "Traces show you what happened. The case for infrastructure that lets you act on it.",
-    href: "/blog/agents-need-more-than-traces",
-  },
-] as const;
-
-export const LINEAGE = [
-  { name: "JetBrains", href: "https://www.zenml.io/case-study/jetbrains" },
-  { name: "Adeo", href: "https://www.zenml.io/case-study/adeo-leroy-merlin" },
-  { name: "Brevo", href: "https://www.zenml.io/case-study/brevo" },
 ] as const;
 
 /**
@@ -199,7 +120,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "The model isn't deterministic. How is replay trustworthy?",
     answer:
-      "The recorded world is held constant, same inputs and same tool responses, so the diff you see comes from your change rather than ambient noise. Evaluators and a side-by-side diff do the comparison; nobody has to pretend LLMs are deterministic. (And no, temperature=0 is not determinism. We have the divergence data.)",
+      "The recorded world is held constant, same inputs and same tool responses, so replay removes every source of variation except the model itself. For the variation that remains, you create multiple experiment runs over the same cohort and compare the distributions, so you can tell a real regression from run-to-run noise instead of judging from a single sample.",
   },
   {
     question: "Where do the eval criteria come from? We never wrote any down.",
@@ -209,12 +130,17 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "What frameworks does it work with?",
     answer:
-      "Recording adapters wrap your existing agent in one line, with no rewrite. Python: PydanticAI, the OpenAI Agents SDK, and LangGraph (including LangChain agents and Deep Agents). TypeScript: the Vercel AI SDK and Mastra. Anything else: import the trace history you already have from Langfuse, LangSmith, Braintrust or Pydantic Logfire, or write a one-page custom importer. Traces in raw OpenTelemetry format convert to Kitaru's JSONL import format.",
+      "Recording adapters wrap your existing agent in one line, with no rewrite. Python: PydanticAI, the OpenAI Agents SDK, and LangGraph (including LangChain agents and Deep Agents). TypeScript: the Vercel AI SDK and Mastra. For a custom harness or a framework we don't support yet, Kitaru ships a skill that walks your coding assistant through generating a new adapter for it.",
+  },
+  {
+    question: "Can I use traces I already have?",
+    answer:
+      "Yes. Importers bring in the trace history you already have from Langfuse, LangSmith, Braintrust or Pydantic Logfire, or you can write a one-page custom importer for your own store. Traces in raw OpenTelemetry format convert to Kitaru's JSONL import format.",
   },
   {
     question: "My agent is TypeScript. Can I use Kitaru?",
     answer:
-      "Yes, natively. TypeScript agents record and replay through the Vercel AI SDK and Mastra adapters, with a framework-neutral TypeScript SDK alongside. The CLI, workers and evaluators run on Python today, so there's Python in the loop even when the agent itself is TypeScript.",
+      "Yes, natively. TypeScript agents record and replay through the Vercel AI SDK and Mastra adapters, with a framework-neutral TypeScript SDK alongside — and the adapter-generation skill covers custom TypeScript harnesses too. The CLI, workers and evaluators run on Python today, so there's Python in the loop even when the agent itself is TypeScript.",
   },
   {
     question: "Is it open source? Can I self-host?",
@@ -234,6 +160,6 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "Something's broken. How do I reach you?",
     answer:
-      'Three routes, all reaching a human: the <a href="https://kitaru.ai/slack">Slack community</a>, <a href="https://kitaru.ai/help">kitaru.ai/help</a> (goes straight to GitHub issues), or <a href="mailto:support@kitaru.ai">support@kitaru.ai</a>. An issue with a session ID attached gets fixed fastest.',
+      'Three routes, all reaching a human: the <a href="https://kitaru.ai/slack">Slack community</a>, <a href="https://kitaru.ai/help">kitaru.ai/help</a> (goes straight to GitHub issues), or <a href="mailto:support@kitaru.ai">support@kitaru.ai</a>.',
   },
 ] as const;
