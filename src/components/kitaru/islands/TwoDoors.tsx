@@ -21,6 +21,7 @@
 import type { SVGAttributes } from "preact";
 import { useState } from "preact/hooks";
 import { cn } from "../../../lib/utils";
+import { copyToClipboard } from "../../../scripts/kitaru/clipboard";
 import {
   BraintrustIcon,
   KitaruIcon,
@@ -54,6 +55,66 @@ function CustomFormatIcon(props: SVGAttributes<SVGSVGElement>) {
       <line x1="12" y1="8" x2="12" y2="16" />
       <line x1="8" y1="12" x2="16" y2="12" />
     </svg>
+  );
+}
+
+/** Compact copy-on-click chip for an install command. Lives in a flex row,
+ *  so `min-w-0` + `truncate` let it give way with an ellipsis instead of
+ *  pushing the row wider on narrow screens. */
+function InstallCommand({ command }: { command: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const onCopy = () => {
+    copyToClipboard(command).then(
+      () => {
+        setCopied(true);
+        window.setTimeout(() => setCopied(false), 1600);
+      },
+      () => {},
+    );
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={onCopy}
+      title={command}
+      aria-label={copied ? "Copied" : `Copy install command: ${command}`}
+      className="flex min-w-0 cursor-pointer items-center gap-1.5 rounded-md border border-border bg-surface py-1 pr-2 pl-2.5 font-mono text-[11px] text-ink-soft transition-colors hover:text-ink"
+    >
+      <span className="text-ember select-none" aria-hidden="true">
+        $
+      </span>
+      <span className="truncate">{command}</span>
+      {copied ? (
+        <svg
+          className="size-3 shrink-0 text-success"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      ) : (
+        <svg
+          className="size-3 shrink-0 opacity-60"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </svg>
+      )}
+    </button>
   );
 }
 
@@ -891,16 +952,12 @@ export function TwoDoors() {
         {/* Door 02 — record */}
         <Reveal delay={140} variant="right" className="h-full">
           <div className="flex h-full flex-col rounded-[14px] border border-border bg-surface p-7">
-            <div className="flex items-baseline justify-between gap-4">
-              <span className="font-mono text-[11px] tracking-[0.14em] text-ink-soft uppercase">
+            <div className="flex items-center justify-between gap-4">
+              <span className="shrink-0 font-mono text-[11px] tracking-[0.14em] text-ink-soft uppercase">
                 door 02 · record
               </span>
-              <span
-                className="truncate font-mono text-[11.5px] text-ink-soft"
-                title={framework.install}
-              >
-                $ {framework.install}
-              </span>
+              {/* key resets the "copied" check when the tab (and command) changes */}
+              <InstallCommand key={framework.id} command={framework.install} />
             </div>
             <h3 className="mt-2 font-heading text-[21px] font-semibold text-ink">
               Have an agent? Wrap it.
@@ -931,7 +988,7 @@ export function TwoDoors() {
                   recording adapter
                 </span>
                 <div className="ml-auto flex items-center gap-3">
-                  <div className="flex items-center rounded-full border border-border p-0.5">
+                  <div className="flex items-center rounded-full border border-border bg-surface p-0.5">
                     {(["before", "after"] as const).map((v) => (
                       <button
                         key={v}
@@ -939,13 +996,13 @@ export function TwoDoors() {
                         aria-pressed={recordView === v}
                         onClick={() => setRecordView(v)}
                         className={cn(
-                          "rounded-full px-2 py-0.5 font-mono text-[10.5px] cursor-pointer transition-colors",
+                          "rounded-full px-2 py-0.5 font-mono text-[10.5px] whitespace-nowrap cursor-pointer transition-colors",
                           recordView === v
                             ? "bg-ink text-background"
                             : "text-ink-soft hover:text-ink",
                         )}
                       >
-                        {v}
+                        {v === "after" ? "with Kitaru" : v}
                       </button>
                     ))}
                   </div>
