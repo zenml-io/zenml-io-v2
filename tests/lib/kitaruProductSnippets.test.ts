@@ -74,21 +74,18 @@ describe("Kitaru product-page snippets", () => {
 
     expect(hero).toMatchInlineSnapshot(`
       "# 1 · wrap the agent you already have
-      from kitaru_pydantic_ai import KitaruAgent
       agent = KitaruAgent(intake_agent, agent_id=AGENT_ID)
 
       # 2 · the runs it already made, imported
-      kitaru session import ./traces.jsonl \\
-        --importer kitaru/kitaru-jsonl@latest --agent intake-agent@latest --wait
+      kitaru session import ./traces.jsonl
 
       # 3 · get interviewed, in your coding agent
       walk me through 20 of these
       → cohort "dropped the hazmat flag" · 9
-      → evaluator hazmat-flag-preserved
 
       # 4 · change the agent, compare the runs
-      kitaru experiment run start fix-validation \\
-        --cohort-version $COHORT_VERSION_ID --agent intake-agent@pr-311 --wait"
+      kitaru experiment run start fix-validation
+      v1 → 90 / 90 fail      pr-311 → 4 / 90 fail"
     `);
     expect(featureCommands).toMatchInlineSnapshot(`
       "COHORT_VERSION_ID=$(kitaru cohort create checkout-flow --agent checkout-agent --sessions-file session-ids.txt --output json --machine --non-interactive --no-browser | jq -r '.item.version.id')
