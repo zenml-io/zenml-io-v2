@@ -155,7 +155,7 @@ const CONTENT_MARKER_CHECKS: ContentMarkerCheck[] = [
       'data-app="kitaru"',
       'id="kitaru-main"',
       "kitaru session import ./traces.jsonl",
-      "kitaru experiment run start baseline",
+      "kitaru experiment run start",
     ],
     message: "dist/product/kitaru.html contains current Kitaru code markers",
   },

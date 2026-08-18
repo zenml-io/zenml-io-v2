@@ -130,16 +130,14 @@ export function Hero() {
 
           <Reveal delay={80}>
             <h1 className="mt-7 max-w-[920px] text-balance text-[2.1rem] leading-[1.17] font-medium tracking-[-0.02em] md:text-[46px] md:leading-[54px]">
-              Why write test cases for your agent when production already wrote
-              better ones?
+              Your best eval data is already in production
             </h1>
           </Reveal>
 
           <Reveal delay={160}>
             <p className="mt-5 max-w-[600px] text-[17px] leading-[27px] text-ink-soft">
-              Change a model or a prompt. Kitaru replays your real production
-              sessions and shows what would have broken — nothing touches
-              production.
+              Turn real traces into replayable evals and test changes against
+              what your agent has actually seen.
             </p>
           </Reveal>
 

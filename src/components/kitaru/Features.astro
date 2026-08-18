@@ -9,16 +9,16 @@ import HighlightPanel from "./_HighlightPanel.astro";
     {/* Header with eyebrow, title, lede */}
     <div class="reveal max-w-3xl">
       <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">
-        The migration you keep postponing
+        The model swap you keep postponing
       </span>
       <h2 class="mt-5 text-balance text-3xl leading-[1.1] font-medium tracking-[-0.02em] md:text-[2.75rem]">
         Want the cheaper model?<br />
         <span class="text-ember">Here's how you find out if it's safe.</span>
       </h2>
       <p class="mt-5 max-w-2xl text-base leading-relaxed text-ink-soft md:text-lg">
-        Freeze a set of real sessions. Run them once with the model you have, and once with
-        the model you want. Every difference between the two runs is something the swap
-        would have changed in production — laid out for you to read.
+        Freeze a set of real production sessions. Replay them with the model you have and
+        the model you want. Then see exactly which cases changed, and whether those changes
+        are acceptable.
       </p>
     </div>
 
@@ -159,8 +159,8 @@ import HighlightPanel from "./_HighlightPanel.astro";
             The verdict
           </span>
           <p class="mt-3 text-[15px] leading-relaxed text-ink-soft">
-            Out of 200 real sessions, 196 came back identical. You read the other four and
-            ship.
+            Out of 200 real sessions, 196 came back unchanged. Now you only have four
+            differences to review before deciding whether to ship.
           </p>
           <p class="mt-3 text-[11.5px] leading-relaxed text-muted-foreground">
             Illustrative numbers from a sample run.
@@ -168,9 +168,9 @@ import HighlightPanel from "./_HighlightPanel.astro";
         </div>
         <div class="grid grid-cols-3 gap-6">
           {[
+            { v: "196 / 200", k: "unchanged", tone: "" },
+            { v: "4", k: "sessions need review", tone: "text-warn" },
             { v: "−61%", k: "median cost per session", tone: "text-success" },
-            { v: "196 / 200", k: "outputs identical", tone: "" },
-            { v: "4", k: "worth reading", tone: "text-warn" },
           ].map((m) => (
             <div>
               <div class={`font-mono text-2xl tracking-[-0.02em] md:text-3xl ${m.tone}`}>
