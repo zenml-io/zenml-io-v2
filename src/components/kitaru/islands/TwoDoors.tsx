@@ -826,13 +826,15 @@ export function TwoDoors() {
   return (
     <Section id="two-doors">
       <Reveal className="max-w-3xl">
-        <Eyebrow>Every run becomes a session</Eyebrow>
+        <Eyebrow>Start where you are</Eyebrow>
         <SectionTitle className="mt-5">
-          Two doors in. <span className="text-ember">Same replay.</span>
+          Already have traces? Good.{" "}
+          <span className="text-ember">Starting fresh? Also good.</span>
         </SectionTitle>
         <Lede className="mt-5">
-          Wrap your agent to record new runs, or import the traces you already
-          have. Either way you land in the same place: replayable sessions.
+          Import what your current tools already collected, or wrap your agent
+          in one line and record new runs. Both roads end at the same thing:
+          sessions you can replay.
         </Lede>
       </Reveal>
 
@@ -842,7 +844,7 @@ export function TwoDoors() {
           <div className="flex h-full flex-col rounded-[14px] border border-border bg-surface p-7">
             <div className="flex items-baseline justify-between gap-4">
               <span className="font-mono text-[11px] tracking-[0.14em] text-ember uppercase">
-                door 01 · import
+                01 · import
               </span>
               <span className="font-mono text-[11.5px] text-ink-soft">
                 no code changes
@@ -954,7 +956,7 @@ export function TwoDoors() {
           <div className="flex h-full flex-col rounded-[14px] border border-border bg-surface p-7">
             <div className="flex items-center justify-between gap-4">
               <span className="shrink-0 font-mono text-[11px] tracking-[0.14em] text-ink-soft uppercase">
-                door 02 · record
+                02 · record
               </span>
               {/* key resets the "copied" check when the tab (and command) changes */}
               <InstallCommand key={framework.id} command={framework.install} />

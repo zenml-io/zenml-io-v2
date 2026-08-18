@@ -75,25 +75,20 @@ export const STEPS = [
   {
     n: "01",
     tag: "Cohort",
-    title: "Freeze the sessions that matter",
-    body: "The sessions you care about, frozen as a named set. Immutable, so a run's result keeps meaning what it meant.",
-    command:
-      "COHORT_VERSION_ID=$(kitaru cohort create checkout-flow --agent checkout-agent --sessions-file session-ids.txt --output json --machine --non-interactive --no-browser | jq -r '.item.version.id')",
+    title: "Pick the sessions worth testing against",
+    body: "Start from a cohort the investigation grouped for you, or hand-pick your own. Freezing them as a named set means nothing shifts underneath your results.",
   },
   {
     n: "02",
     tag: "Experiment",
-    title: "State the two hypotheses",
-    body: "Each experiment is just configuration. Keep the baseline fixed, then change only the model in the candidate.",
-    command: `kitaru experiment create baseline --agent checkout-agent --tool-policy '{"default":{"type":"history","scope":"cohort_version","on_miss":"fail"}}' --evaluator response-quality@latest\nkitaru experiment create cheap-model --agent checkout-agent --override '{"model":"claude-haiku-4.5"}' --tool-policy '{"default":{"type":"history","scope":"cohort_version","on_miss":"fail"}}' --evaluator response-quality@latest`,
+    title: "Describe the change you want to try",
+    body: "An experiment is the same agent with one thing different — here, the model you'd like to afford. Everything else stays exactly as it runs today.",
   },
   {
     n: "03",
     tag: "Two runs",
-    title: "Compare like with like",
-    body: "Run the baseline and candidate over the same cohort and agent version. One model moved, so the numbers mean what they look like.",
-    command:
-      'kitaru experiment run start baseline --cohort-version "$COHORT_VERSION_ID" --agent checkout-agent@v1 --wait\nkitaru experiment run start cheap-model --cohort-version "$COHORT_VERSION_ID" --agent checkout-agent@v1 --wait',
+    title: "Run both and read the difference",
+    body: "Kitaru replays the cohort once with each setup. Every gap between the columns comes from your one change — cost, speed, and quality, side by side.",
   },
 ] as const;
 

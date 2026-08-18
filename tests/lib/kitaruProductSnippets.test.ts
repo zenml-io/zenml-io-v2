@@ -7,7 +7,7 @@ import {
   FRAMEWORKS,
   IMPORTERS,
 } from "../../src/components/kitaru/islands/TwoDoors";
-import { KITARU_INSTALL_CMD, STEPS } from "../../src/lib/kitaru-landing";
+import { KITARU_INSTALL_CMD } from "../../src/lib/kitaru-landing";
 import { GET as getKitaruMarkdown } from "../../src/pages/product/kitaru.md";
 
 function renderTokens(tokens: CodeLine): string {
@@ -72,7 +72,6 @@ describe("Kitaru product-page snippets", () => {
 
   it("renders the complete current CLI workflow", () => {
     const hero = HERO_CODE_LINES.map((line) => line.text).join("\n");
-    const featureCommands = STEPS.map((step) => step.command).join("\n");
 
     expect(hero).toMatchInlineSnapshot(`
       "# 1 · wrap the agent you already have
@@ -88,13 +87,6 @@ describe("Kitaru product-page snippets", () => {
       # 4 · change the agent, compare the runs
       kitaru experiment run start fix-validation
       v1 → 90 / 90 fail      pr-311 → 4 / 90 fail"
-    `);
-    expect(featureCommands).toMatchInlineSnapshot(`
-      "COHORT_VERSION_ID=$(kitaru cohort create checkout-flow --agent checkout-agent --sessions-file session-ids.txt --output json --machine --non-interactive --no-browser | jq -r '.item.version.id')
-      kitaru experiment create baseline --agent checkout-agent --tool-policy '{"default":{"type":"history","scope":"cohort_version","on_miss":"fail"}}' --evaluator response-quality@latest
-      kitaru experiment create cheap-model --agent checkout-agent --override '{"model":"claude-haiku-4.5"}' --tool-policy '{"default":{"type":"history","scope":"cohort_version","on_miss":"fail"}}' --evaluator response-quality@latest
-      kitaru experiment run start baseline --cohort-version "$COHORT_VERSION_ID" --agent checkout-agent@v1 --wait
-      kitaru experiment run start cheap-model --cohort-version "$COHORT_VERSION_ID" --agent checkout-agent@v1 --wait"
     `);
   });
 
