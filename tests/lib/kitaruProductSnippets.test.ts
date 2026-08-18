@@ -265,9 +265,14 @@ describe("Kitaru product-page snippets", () => {
 
       $ kitaru importer scaffold my-format
 
-      $ kitaru importer test my_format_importer.py --entrypoint parse --payload sample-export.jsonl
+      $ kitaru importer test my_format_importer.py \\
+          --entrypoint parse \\
+          --payload sample-export.jsonl
 
-      $ kitaru importer register my-format --script my_format_importer.py --entrypoint parse --provider my-format",
+      $ kitaru importer register my-format \\
+          --script my_format_importer.py \\
+          --entrypoint parse \\
+          --provider my-format",
         "kitaru-jsonl": "$ kitaru session import sessions.jsonl \\
           --importer kitaru/kitaru-jsonl@latest \\
           --agent support-agent@latest \\
