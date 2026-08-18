@@ -120,52 +120,57 @@ export function Hero() {
 
       {/* Subtracting the sticky navbar height centers the hero in the space
           actually visible on the first screen. */}
-      <div className="relative mx-auto flex min-h-[calc(100svh-var(--nav-h))] w-full max-w-[1440px] flex-col items-center justify-center px-6 py-12 text-center md:py-14">
-        <Reveal className="flex flex-col items-center">
-          <p className="font-mono text-[12px] font-semibold tracking-[0.14em] text-ember uppercase">
-            Kitaru by ZenML · Replay-based evals for AI agents
-          </p>
-        </Reveal>
+      <div className="relative mx-auto flex min-h-[calc(100svh-var(--nav-h))] w-full max-w-[1440px] flex-col items-center justify-center px-6 py-12 text-center md:py-14 lg:flex-row lg:items-center lg:gap-16 lg:px-12 lg:text-left">
+        <div className="flex flex-col items-center lg:flex-1 lg:items-start">
+          <Reveal className="flex flex-col items-center lg:items-start">
+            <p className="font-mono text-[12px] font-semibold tracking-[0.14em] text-ember uppercase">
+              Kitaru by ZenML · Replay-based evals for AI agents
+            </p>
+          </Reveal>
 
-        <Reveal delay={80}>
-          <h1 className="mt-7 max-w-[920px] text-balance text-[2.1rem] leading-[1.17] font-medium tracking-[-0.02em] md:text-[46px] md:leading-[54px]">
-            Why write test cases for your agent when production already wrote
-            better ones?
-          </h1>
-        </Reveal>
+          <Reveal delay={80}>
+            <h1 className="mt-7 max-w-[920px] text-balance text-[2.1rem] leading-[1.17] font-medium tracking-[-0.02em] md:text-[46px] md:leading-[54px]">
+              Why write test cases for your agent when production already wrote
+              better ones?
+            </h1>
+          </Reveal>
 
-        <Reveal delay={160}>
-          <p className="mt-5 max-w-[600px] text-[17px] leading-[27px] text-ink-soft">
-            Change a model or a prompt. Kitaru replays your real production
-            sessions and shows what would have broken — nothing touches
-            production.
-          </p>
-        </Reveal>
+          <Reveal delay={160}>
+            <p className="mt-5 max-w-[600px] text-[17px] leading-[27px] text-ink-soft">
+              Change a model or a prompt. Kitaru replays your real production
+              sessions and shows what would have broken — nothing touches
+              production.
+            </p>
+          </Reveal>
 
-        <Reveal delay={240} className="mt-8 flex flex-col items-center gap-2">
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <a
-              href={KITARU_LINKS.signup.href}
-              data-analytics="Kitaru-Hero-Signup"
-              className="group inline-flex items-center gap-2 rounded-md bg-ember px-5 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-ember-deep cursor-pointer"
-            >
-              {KITARU_LINKS.signup.label}
-              <ArrowRight class="size-4 transition-transform group-hover:translate-x-0.5" />
-            </a>
-            <a
-              href={KITARU_LINKS.demo.href}
-              data-analytics="Kitaru-Hero-Demo"
-              className="inline-flex items-center rounded-md border border-border bg-surface px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-secondary cursor-pointer"
-            >
-              {KITARU_LINKS.demo.label}
-            </a>
-          </div>
-          <p className="text-[12.5px] text-muted-foreground">
-            {KITARU_TRIAL_NOTE}
-          </p>
-        </Reveal>
+          <Reveal
+            delay={240}
+            className="mt-8 flex flex-col items-center gap-2 lg:items-start"
+          >
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <a
+                href={KITARU_LINKS.signup.href}
+                data-analytics="Kitaru-Hero-Signup"
+                className="group inline-flex items-center gap-2 rounded-md bg-ember px-5 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-ember-deep cursor-pointer"
+              >
+                {KITARU_LINKS.signup.label}
+                <ArrowRight class="size-4 transition-transform group-hover:translate-x-0.5" />
+              </a>
+              <a
+                href={KITARU_LINKS.demo.href}
+                data-analytics="Kitaru-Hero-Demo"
+                className="inline-flex items-center rounded-md border border-border bg-surface px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-secondary cursor-pointer"
+              >
+                {KITARU_LINKS.demo.label}
+              </a>
+            </div>
+            <p className="text-[12.5px] text-muted-foreground">
+              {KITARU_TRIAL_NOTE}
+            </p>
+          </Reveal>
+        </div>
 
-        <Reveal delay={320} className="mt-8 w-full">
+        <Reveal delay={320} className="mt-8 w-full lg:mt-0 lg:flex-1">
           <button
             type="button"
             ref={playRef}
@@ -207,7 +212,7 @@ export function Hero() {
               </span>
             </span>
           </button>
-          <p className="mt-[18px] text-center font-mono text-[12px] font-medium tracking-[0.06em] text-muted-foreground">
+          <p className="mt-[18px] text-center font-heading text-[13px] font-medium text-ink-soft">
             {KITARU_VIDEO.caption}
           </p>
         </Reveal>

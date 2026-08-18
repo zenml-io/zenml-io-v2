@@ -36,7 +36,7 @@ export const KITARU_VIDEO = {
   embedUrl:
     "https://www.youtube-nocookie.com/embed/jQ1HZVCFJZM?autoplay=1&rel=0",
   title: "Kitaru launch video",
-  caption: "Watch the launch — 90 seconds",
+  caption: "Watch the launch video — 90 seconds",
 } as const;
 
 export const KITARU_LINKS = {
