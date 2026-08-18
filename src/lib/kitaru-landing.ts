@@ -58,8 +58,8 @@ export const SCENARIOS = [
     q: "Can we ship the cheaper model?",
     outcome:
       "Same cohort, one model swapped — the answer is two runs, compared.",
-    stat: "−84%",
-    statLabel: "cost · 192/200 outputs identical",
+    stat: "−61%",
+    statLabel: "cost · 196/200 outputs identical",
   },
   {
     tag: "guard",

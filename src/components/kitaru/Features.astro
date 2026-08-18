@@ -148,7 +148,7 @@ import HighlightPanel from "./_HighlightPanel.astro";
       ))}
     </div>
 
-    {/* The diff stats box */}
+    {/* The verdict box — the section's payoff: what reading the diff feels like */}
     <div
       class="reveal mt-16"
       style={`--reveal-delay: 260ms`}
@@ -156,17 +156,21 @@ import HighlightPanel from "./_HighlightPanel.astro";
       <div class="grid grid-cols-1 gap-8 rounded-xl border border-border bg-surface p-8 md:grid-cols-[1fr_1.4fr] md:items-center md:p-10">
         <div>
           <span class="font-mono text-[11px] tracking-[0.16em] text-ember uppercase">
-            The diff
+            The verdict
           </span>
           <p class="mt-3 text-[15px] leading-relaxed text-ink-soft">
-            Same 200 sessions. Same evaluator. One model swapped.
+            Out of 200 real sessions, 196 came back identical. You read the other four and
+            ship.
+          </p>
+          <p class="mt-3 text-[11.5px] leading-relaxed text-muted-foreground">
+            Illustrative numbers from a sample run.
           </p>
         </div>
         <div class="grid grid-cols-3 gap-6">
           {[
-            { v: "−61%", k: "median cost", tone: "text-success" },
+            { v: "−61%", k: "median cost per session", tone: "text-success" },
             { v: "196 / 200", k: "outputs identical", tone: "" },
-            { v: "4", k: "to review", tone: "text-warn" },
+            { v: "4", k: "worth reading", tone: "text-warn" },
           ].map((m) => (
             <div>
               <div class={`font-mono text-2xl tracking-[-0.02em] md:text-3xl ${m.tone}`}>
@@ -177,14 +181,6 @@ import HighlightPanel from "./_HighlightPanel.astro";
           ))}
         </div>
       </div>
-    </div>
-
-    {/* Disclaimer note */}
-    <div class="reveal mt-6" style={`--reveal-delay: 320ms`}>
-      <p class="max-w-2xl text-[12.5px] leading-relaxed text-muted-foreground">
-        Illustrative numbers. Kitaru grades every session ready, partial or unavailable at
-        import, so you know before you rely on it.
-      </p>
     </div>
   </div>
 </section>
