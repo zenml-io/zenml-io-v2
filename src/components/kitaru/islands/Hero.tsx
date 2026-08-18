@@ -165,13 +165,6 @@ export function Hero() {
                 {KITARU_LINKS.signup.label}
                 <ArrowRight class="size-4 transition-transform group-hover:translate-x-0.5" />
               </a>
-              <a
-                href={KITARU_LINKS.demo.href}
-                data-analytics="Kitaru-Hero-Demo"
-                className="inline-flex items-center rounded-md border border-border bg-surface px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-secondary cursor-pointer"
-              >
-                {KITARU_LINKS.demo.label}
-              </a>
             </div>
             <p className="text-[12.5px] text-muted-foreground">
               {KITARU_TRIAL_NOTE}
