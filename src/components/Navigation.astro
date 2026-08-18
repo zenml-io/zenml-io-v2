@@ -50,8 +50,9 @@ const starsRepoKey = isKitaruSurface ? "kitaru" : "zenml";
 const starsCountText = isKitaruSurface
   ? formatStars(KITARU_FALLBACK_STARS)
   : headerStarsFallback;
+// The docs button is ZenML-only: Kitaru surfaces keep a single signup CTA,
+// and /docs is a ZenML page (Kitaru docs live in the Docs dropdown).
 const docsCta = NAV_CTAS[0];
-// Single primary CTA on Kitaru surfaces = sign up.
 const primaryCta = isKitaruSurface ? KITARU_LINKS.signup : NAV_CTAS[1];
 const primaryCtaAnalytics = isKitaruSurface
   ? "Nav-Kitaru-Signup"
@@ -423,9 +424,11 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
             >{starsCountText}</span>
           </a>
         </div>
-        <Button href={docsCta.href} variant="secondary" size="sm">
-          {docsCta.label}
-        </Button>
+        {!isKitaruSurface && (
+          <Button href={docsCta.href} variant="secondary" size="sm">
+            {docsCta.label}
+          </Button>
+        )}
         <Button
           href={primaryCta.href}
           variant="primary"
@@ -537,9 +540,11 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
 
         {/* Mobile CTAs */}
         <div class:list={["mt-4 flex flex-col gap-2 pt-4 border-t border-gray-200", isKitaruSurface && "kitaru-brand-vars"]}>
-          <Button href={docsCta.href} variant="secondary" size="md" class="w-full justify-center">
-            {docsCta.label}
-          </Button>
+          {!isKitaruSurface && (
+            <Button href={docsCta.href} variant="secondary" size="md" class="w-full justify-center">
+              {docsCta.label}
+            </Button>
+          )}
           <Button
             href={primaryCta.href}
             variant="primary"
