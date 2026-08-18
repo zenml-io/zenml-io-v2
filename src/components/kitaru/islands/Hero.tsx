@@ -122,7 +122,18 @@ export function Hero() {
           actually visible on the first screen. */}
       <div className="relative mx-auto flex min-h-[calc(100svh-var(--nav-h))] w-full max-w-[1440px] flex-col items-center justify-center px-6 py-12 text-center md:py-14 lg:flex-row lg:items-center lg:gap-16 lg:px-12 lg:text-left">
         <div className="flex flex-col items-center lg:flex-1 lg:items-start">
-          <Reveal className="flex flex-col items-center lg:items-start">
+          <Reveal className="flex flex-col items-center gap-4 lg:items-start">
+            <a
+              href="/blog/introducing-the-new-kitaru"
+              data-analytics="Kitaru-Hero-Launch-Post"
+              className="group inline-flex items-center gap-2 rounded-full border border-ember/40 bg-ember-light/40 py-1.5 pr-3.5 pl-2 text-[13px] text-ink transition-colors hover:border-ember/70"
+            >
+              <span className="rounded-full bg-ember px-2 py-0.5 text-[11px] font-semibold text-accent-foreground">
+                New
+              </span>
+              Introducing the new Kitaru — read the launch post
+              <ArrowRight class="size-3.5 text-ember transition-transform group-hover:translate-x-0.5" />
+            </a>
             <p className="font-mono text-[12px] font-semibold tracking-[0.14em] text-ember uppercase">
               Kitaru by ZenML · Replay-based evals for AI agents
             </p>
