@@ -122,7 +122,18 @@ export function Hero() {
           actually visible on the first screen. */}
       <div className="relative mx-auto flex min-h-[calc(100svh-var(--nav-h))] w-full max-w-[1440px] flex-col items-center justify-center px-6 py-12 text-center md:py-14 lg:flex-row lg:items-center lg:gap-16 lg:px-12 lg:text-left">
         <div className="flex flex-col items-center lg:flex-1 lg:items-start">
-          <Reveal className="flex flex-col items-center lg:items-start">
+          <Reveal className="flex flex-col items-center gap-4 lg:items-start">
+            <a
+              href="/blog/introducing-the-new-kitaru"
+              data-analytics="Kitaru-Hero-Launch-Post"
+              className="group inline-flex items-center gap-2 rounded-full border border-ember/40 bg-ember-light/40 py-1.5 pr-3.5 pl-2 text-[13px] text-ink transition-colors hover:border-ember/70"
+            >
+              <span className="rounded-full bg-ember px-2 py-0.5 text-[11px] font-semibold text-accent-foreground">
+                New
+              </span>
+              Introducing the new Kitaru — read the launch post
+              <ArrowRight class="size-3.5 text-ember transition-transform group-hover:translate-x-0.5" />
+            </a>
             <p className="font-mono text-[12px] font-semibold tracking-[0.14em] text-ember uppercase">
               Kitaru by ZenML · Replay-based evals for AI agents
             </p>
@@ -130,7 +141,7 @@ export function Hero() {
 
           <Reveal delay={80}>
             <h1 className="mt-7 max-w-[920px] text-balance text-[2.1rem] leading-[1.17] font-medium tracking-[-0.02em] md:text-[46px] md:leading-[54px]">
-              Your best eval data is already in production
+              Your agent's best eval data is already in production
             </h1>
           </Reveal>
 
@@ -153,6 +164,13 @@ export function Hero() {
               >
                 {KITARU_LINKS.signup.label}
                 <ArrowRight class="size-4 transition-transform group-hover:translate-x-0.5" />
+              </a>
+              <a
+                href={KITARU_LINKS.demo.href}
+                data-analytics="Kitaru-Hero-Demo"
+                className="inline-flex items-center rounded-md border border-border bg-surface px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-secondary cursor-pointer"
+              >
+                {KITARU_LINKS.demo.label}
               </a>
             </div>
             <p className="text-[12.5px] text-muted-foreground">
