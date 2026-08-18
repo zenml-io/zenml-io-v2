@@ -141,7 +141,7 @@ export function Hero() {
 
           <Reveal delay={80}>
             <h1 className="mt-7 max-w-[920px] text-balance text-[2.1rem] leading-[1.17] font-medium tracking-[-0.02em] md:text-[46px] md:leading-[54px]">
-              Your best eval data is already in production
+              Your agent's best eval data is already in production
             </h1>
           </Reveal>
 
