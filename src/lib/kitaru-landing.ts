@@ -12,6 +12,30 @@ export {
 
 // Note: PRODUCT_KITARU_SEO is retained in productKitaru.ts as it serves the page's meta tags
 
+/**
+ * FAQ help rail — one home for these destinations so the help links, the FAQ
+ * answers that mention them, and any derived surfaces can't drift apart.
+ * "Kitaru Docs" uses the site chrome's canonical docs URL (see
+ * src/lib/navigation.ts), not the kitaru.ai/docs legacy host.
+ */
+export const FAQ_HELP_LINKS = [
+  {
+    label: "Slack Community",
+    href: "https://kitaru.ai/slack",
+    analytics: "Kitaru-FAQ-Help-Slack",
+  },
+  {
+    label: "Kitaru Docs",
+    href: "https://docs.zenml.io/kitaru",
+    analytics: "Kitaru-FAQ-Help-Docs",
+  },
+  {
+    label: "Support",
+    href: "https://kitaru.ai/help",
+    analytics: "Kitaru-FAQ-Help-Support",
+  },
+] as const;
+
 export const SCENARIOS = [
   {
     tag: "understand",

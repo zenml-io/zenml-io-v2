@@ -2,38 +2,110 @@
 // Faq.astro — product questions, in the register of the rest of the page.
 // Static (native <details>/<summary>, zero JS); scroll-reveal comes from
 // the page-level reveal-static script like Features and Cta.
-import { FAQ_ITEMS } from "../../lib/kitaru-landing";
+import { FAQ_HELP_LINKS, FAQ_ITEMS } from "../../lib/kitaru-landing";
 ---
 
 <section id="faq" class="relative w-full bg-background text-foreground">
-  <div class="mx-auto w-full max-w-[840px] px-6 py-20 md:py-28">
-    <div class="reveal">
-      <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">
-        FAQ
-      </span>
-      <h2 class="mt-5 text-balance text-3xl leading-[1.08] font-medium tracking-[-0.025em] md:text-[2.75rem]">
-        The questions that come up
-        <br />
-        <span class="text-ember">in every demo.</span>
-      </h2>
-    </div>
+  <div class="mx-auto w-full max-w-[1440px] px-6 py-20 md:py-28">
+    <div class="grid grid-cols-1 gap-14 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-20">
+      {/* Left column: eyebrow, headline, lede, help links */}
+      <div class="lg:sticky lg:top-24 lg:self-start">
+        <div class="reveal">
+          <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">
+            FAQ
+          </span>
+          <h2 class="mt-5 text-balance text-3xl leading-[1.08] font-medium tracking-[-0.025em] md:text-[2.75rem]">
+            The questions that come up
+            <br />
+            <span class="text-ember">in every demo.</span>
+          </h2>
+          <p class="mt-5 text-[17px] leading-relaxed text-ink-soft">
+            Straight answers, no sales call required.
+          </p>
+        </div>
 
-    <div class="reveal mt-12 border-t border-border" style="--reveal-delay: 120ms">
-      {FAQ_ITEMS.map((item) => (
-        <details class="group border-b border-border">
-          <summary class="flex cursor-pointer items-center justify-between gap-6 py-6 text-left text-[17px] font-medium leading-snug [&::-webkit-details-marker]:hidden">
-            <span>{item.question}</span>
-            <span
-              class="font-mono text-lg leading-none text-ember transition-transform duration-200 group-open:rotate-45"
-              aria-hidden="true">+</span
-            >
-          </summary>
-          <p
-            class="pb-7 max-w-2xl text-[15.5px] leading-relaxed text-ink-soft [&_a]:underline [&_a]:decoration-ember/40 [&_a]:underline-offset-2 hover:[&_a]:decoration-ember"
-            set:html={item.answer}
-          />
-        </details>
-      ))}
+        <div class="reveal mt-12" style="--reveal-delay: 120ms">
+          <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ink-soft uppercase">
+            Help
+          </span>
+          <div class="mt-4">
+            {FAQ_HELP_LINKS.map((link) => (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener"
+                data-analytics={link.analytics}
+                class="group flex items-center justify-between border-b border-border py-4 first:border-t"
+              >
+                <span class="text-[16px] font-medium text-ink">{link.label}</span>
+                <svg
+                  class="size-3.5 shrink-0 text-ink-soft transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-ember"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Right column: FAQ accordion. One reveal wrapper — per-item reveal
+          would give each <details> its own observer (dead delay + invisible
+          focusable summaries), and the max-w keeps summary rows readable at
+          840–1023px where the grid is still single-column. */}
+      <div class="reveal max-w-3xl border-t border-border" style="--reveal-delay: 120ms">
+        {FAQ_ITEMS.map((item) => (
+          <details class="group border-b border-border">
+            <summary class="flex cursor-pointer items-center justify-between gap-6 py-6 text-left text-[17px] font-medium leading-snug [&::-webkit-details-marker]:hidden">
+              <span>{item.question}</span>
+              <span
+                class="font-mono text-lg leading-none text-ember transition-transform duration-200 group-open:rotate-45"
+                aria-hidden="true">+</span
+              >
+            </summary>
+            <p
+              class="pb-7 max-w-2xl text-[15.5px] leading-relaxed text-ink-soft [&_a]:underline [&_a]:decoration-ember/40 [&_a]:underline-offset-2 hover:[&_a]:decoration-ember"
+              set:html={item.answer}
+            />
+          </details>
+        ))}
+      </div>
     </div>
   </div>
 </section>
+
+{/* Accordion open/close transition — CSS-only progressive enhancement.
+    Scoped here (not in kitaru-compat.css) so the rules live and die with the
+    markup. The @supports gate matters: Firefox/Safari versions that support
+    ::details-content but not interpolate-size would otherwise get a broken
+    discrete half-animation instead of a clean instant toggle. */}
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (interpolate-size: allow-keywords) {
+      section {
+        interpolate-size: allow-keywords;
+      }
+      details::details-content {
+        opacity: 0;
+        block-size: 0;
+        overflow-y: clip;
+        transition:
+          content-visibility 300ms allow-discrete,
+          opacity 300ms ease,
+          block-size 300ms ease;
+      }
+      details[open]::details-content {
+        opacity: 1;
+        block-size: auto;
+      }
+    }
+  }
+</style>
