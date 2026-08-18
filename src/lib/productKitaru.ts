@@ -58,6 +58,8 @@ export const PRODUCT_KITARU_SEO = {
   title: "Kitaru: replay-based evals for AI agents | ZenML",
   description:
     "Replay-based evals for AI agents: your production traces, re-run against your next change. Built for agents that write into a system of record, where testing in production would create phantom bookings and duplicate claims. Import the runs your agent already made, turn what your team notices into an evaluator, then compare two experiment runs to see what a new model or prompt would have done. Open source, self-hosted, built by the ZenML team.",
+  // OG cards need JPEG, not AVIF — social platforms don't render AVIF (PR #73).
+  ogImage: "https://assets.zenml.io/content/og/439a52c0/kitaru-product-og.jpg",
 } as const;
 
 /**
