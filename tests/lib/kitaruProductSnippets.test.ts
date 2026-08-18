@@ -1,20 +1,11 @@
 import { spawnSync } from "node:child_process";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
-import { AGENT_TRANSCRIPT } from "../../src/components/kitaru/islands/AgentDriven";
-import {
-  PYTHON_SHOWCASE,
-  TYPESCRIPT_SHOWCASE,
-} from "../../src/components/kitaru/islands/CodeShowcase";
 import type { CodeLine } from "../../src/components/kitaru/islands/code-tokens";
 import { HERO_CODE_LINES } from "../../src/components/kitaru/islands/Hero";
 import { IMPORTERS } from "../../src/components/kitaru/islands/Importers";
 import { FRAMEWORKS } from "../../src/components/kitaru/islands/OneImport";
-import {
-  ANNOTATIONS,
-  KITARU_INSTALL_CMD,
-  STEPS,
-} from "../../src/lib/kitaru-landing";
+import { KITARU_INSTALL_CMD, STEPS } from "../../src/lib/kitaru-landing";
 import { GET as getKitaruMarkdown } from "../../src/pages/product/kitaru.md";
 
 function renderTokens(tokens: CodeLine): string {
@@ -23,10 +14,6 @@ function renderTokens(tokens: CodeLine): string {
       typeof token === "string" ? token : (Object.values(token)[0] ?? ""),
     )
     .join("");
-}
-
-function renderLines(lines: Array<{ tokens: CodeLine }>): string {
-  return lines.map((line) => renderTokens(line.tokens)).join("\n");
 }
 
 function expectValidPython(source: string): void {
@@ -303,143 +290,5 @@ describe("Kitaru product-page snippets", () => {
     // Aug 2026 (kitaru repo, "Remove OpenTelemetry importer") while parts of
     // the docs still mention it — guard against it creeping back in here.
     expect(Object.values(commands).join("\n")).not.toContain("OpenTelemetry");
-  });
-
-  it("renders the complete current Python and TypeScript workflows", () => {
-    const python = renderLines(PYTHON_SHOWCASE);
-    const typescript = renderLines(TYPESCRIPT_SHOWCASE);
-
-    expectValidPython(python);
-    expectValidTypeScript(typescript);
-    expect(python).toMatchInlineSnapshot(`
-      "import asyncio
-      from kitaru.api_models.v1.experiment import ExperimentCreateRequest
-      from kitaru.api_models.v1.experiment_run import ExperimentRunCreateRequest, ExperimentRunStatus
-      from kitaru.api_models.v1.replay_config import EvaluatorConfig, HistoryConfig, ReplayOverride, ToolPolicy
-      from kitaru.client import KitaruAPIClient
-
-      TERMINAL = {ExperimentRunStatus.COMPLETED, ExperimentRunStatus.FAILED,
-          ExperimentRunStatus.CANCELED}
-      async def wait_for_run(client, run_id):
-          while True:
-              run = await client.experiment_runs.get(run_id)
-              if run.status in TERMINAL:
-                  return run
-              await asyncio.sleep(1)
-
-      policy = ToolPolicy(default=HistoryConfig(
-          scope="cohort_version", on_miss="fail"))
-      evaluator = EvaluatorConfig(evaluator="response-quality", version=1)
-
-      async def main():
-          async with KitaruAPIClient() as client:
-              baseline = await client.experiments.create(
-                  ExperimentCreateRequest(name="baseline", agent_id=AGENT_ID,
-                      tool_policy=policy, evaluators=[evaluator]))
-              candidate = await client.experiments.create(
-                  ExperimentCreateRequest(name="cheap-model", agent_id=AGENT_ID,
-                      override=ReplayOverride(model="claude-haiku-4.5"),
-                      tool_policy=policy, evaluators=[evaluator]))
-
-              run_spec = ExperimentRunCreateRequest(
-                  cohort_version_id=COHORT_VERSION_ID, agent_version_id=AGENT_VERSION_ID,
-                  evaluate_baselines=True)
-              before, after = await asyncio.gather(
-                  client.experiments.start_run(baseline.id, run_spec),
-                  client.experiments.start_run(candidate.id, run_spec),
-              )
-
-              async with asyncio.timeout(300):
-                  before, after = await asyncio.gather(
-                      wait_for_run(client, before.id),
-                      wait_for_run(client, after.id),
-                  )
-
-      asyncio.run(main())"
-    `);
-    expect(typescript).toMatchInlineSnapshot(`
-      "import { createKitaruClient } from "@zenml-io/kitaru/node";
-      const client = await createKitaruClient();
-
-      const common = { agent_id: agentId,
-        tool_policy: { default: { type: "history",
-          scope: "cohort_version", on_miss: "fail" } },
-        evaluators: [{ evaluator: "response-quality", version: 1 }],
-      };
-
-      const baseline = await client.experiments.create({
-        name: "baseline", ...common });
-      const candidate = await client.experiments.create({
-        name: "cheap-model", ...common,
-        override: { model: "claude-haiku-4.5" },
-      });
-
-      const runSpec = { cohort_version_id: cohortVersionId,
-        agent_version_id: agentVersionId, evaluate_baselines: true };
-      const [before, after] = await Promise.all([
-        client.experiments.startRun(baseline.id, runSpec),
-        client.experiments.startRun(candidate.id, runSpec),
-      ]);
-
-      const [beforeResult, afterResult] = await Promise.all([
-        client.experimentRuns.wait(before.id),
-        client.experimentRuns.wait(after.id),
-      ]);"
-    `);
-    expect(python).not.toContain("kitaru.KitaruClient");
-    expect(python).not.toContain("client.compare");
-    expect(typescript).not.toContain("new KitaruClient()");
-    expect(typescript).not.toContain("client.compare");
-  });
-
-  it("labels each SDK workflow with its own syntax", () => {
-    expect(
-      ANNOTATIONS.map((annotation) => annotation.label.python),
-    ).toMatchInlineSnapshot(`
-        [
-          "cohort_version_id=...",
-          "experiments.create(...)",
-          "ReplayOverride(model="claude-haiku-4.5")",
-          "HistoryConfig(scope="cohort_version")",
-          "experiments.start_run(...)",
-          "wait_for_run(...)",
-        ]
-      `);
-    expect(
-      ANNOTATIONS.map((annotation) => annotation.label.typescript),
-    ).toMatchInlineSnapshot(`
-        [
-          "cohort_version_id: ...",
-          "experiments.create(...)",
-          "override: { model: "claude-haiku-4.5" }",
-          "{ type: "history", scope: "cohort_version" }",
-          "experiments.startRun(...)",
-          "experimentRuns.wait(...)",
-        ]
-      `);
-  });
-
-  it("renders the complete exact-ID MCP transcript", () => {
-    const transcript = AGENT_TRANSCRIPT.map((line) => line.text).join("\n");
-
-    expect(
-      AGENT_TRANSCRIPT.filter((line) =>
-        line.text.startsWith("kitaru_workflow_start({"),
-      ),
-    ).toHaveLength(2);
-    expect(
-      AGENT_TRANSCRIPT.filter(
-        (line) =>
-          line.text.startsWith("kitaru_workflow_start({") &&
-          line.text.endsWith("})"),
-      ),
-    ).toHaveLength(2);
-    expect(transcript).toMatchInlineSnapshot(`
-      "kitaru_workflow_start({ "operation": "experiment_run", "experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID", "agent_version_id": "$V1_AGENT_VERSION_ID" })
-      90 sessions · cited-superseded-doc true 90 · false 0
-      kitaru_workflow_start({ "operation": "experiment_run", "experiment_id": "$EXPERIMENT_ID", "cohort_version_id": "$COHORT_VERSION_ID", "agent_version_id": "$CANDIDATE_AGENT_VERSION_ID" })
-      cited-superseded-doc true 4 · false 86
-      4 still failing — opening these for you to read"
-    `);
   });
 });

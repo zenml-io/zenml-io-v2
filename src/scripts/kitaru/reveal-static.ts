@@ -1,5 +1,5 @@
 // Intersection Observer for scroll-triggered reveals on the statically
-// rendered Kitaru sections (Features, GroundTruth, Cta). Matches the
+// rendered Kitaru sections (Features, Faq, Cta). Matches the
 // `.reveal` / `.reveal-left` / `.reveal-right` utility classes defined in
 // global.css and the `data-shown` contract used by the Preact islands'
 // `Reveal` component (src/components/kitaru/islands/Reveal.tsx) so both

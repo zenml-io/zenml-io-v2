@@ -15,8 +15,8 @@ const checkpoints = [
 
 export function ScenarioStrip() {
   // Links checkpoint i+1 on the session spine to card i below — hovering
-  // either side highlights both, same shared-state pattern as CodeShowcase's
-  // code-line ↔ annotation link. "run" (index 0) has no card.
+  // either side highlights both via shared hover state. "run" (index 0)
+  // has no card.
   const [hot, setHot] = useState<number | null>(null);
 
   return (

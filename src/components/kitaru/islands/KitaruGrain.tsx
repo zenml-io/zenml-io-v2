@@ -47,8 +47,8 @@ type KitaruGrainProps = {
   class?: string;
   className?: string;
   /** Controlled reveal: when set, the grain fades with `active` instead of
-   *  the parent's CSS `group-hover`, so state shared across elements (e.g.
-   *  CodeShowcase's code-line ↔ annotation link) can drive it. */
+   *  the parent's CSS `group-hover`, so state shared across elements can
+   *  drive it. */
   active?: boolean;
   /** Override the palette's blend flag. Pass `false` when text renders above
    *  the grain — Safari mis-stacks mix-blend layers over z-indexed siblings,
