@@ -155,7 +155,9 @@ const CONTENT_MARKER_CHECKS: ContentMarkerCheck[] = [
       'data-app="kitaru"',
       'id="kitaru-main"',
       "kitaru session import ./traces.jsonl",
-      "kitaru experiment run start baseline",
+      // Prefix only: the experiment name after `start` is hero copy and may
+      // change; the command itself proves the CLI showcase rendered.
+      "kitaru experiment run start",
     ],
     message: "dist/product/kitaru.html contains current Kitaru code markers",
   },
