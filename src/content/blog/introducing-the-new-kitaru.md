@@ -2,6 +2,7 @@
 title: "Introducing the new Kitaru: from production traces to repeatable evals"
 slug: "introducing-the-new-kitaru"
 draft: false
+featured: true
 author: "hamza-tahir"
 category: "kitaru"
 tags:
