@@ -8,6 +8,7 @@ import {
 } from "../../src/components/kitaru/islands/CodeShowcase";
 import type { CodeLine } from "../../src/components/kitaru/islands/code-tokens";
 import { HERO_CODE_LINES } from "../../src/components/kitaru/islands/Hero";
+import { IMPORTERS } from "../../src/components/kitaru/islands/Importers";
 import { FRAMEWORKS } from "../../src/components/kitaru/islands/OneImport";
 import {
   ANNOTATIONS,
@@ -245,6 +246,63 @@ describe("Kitaru product-page snippets", () => {
         },
       }
     `);
+  });
+
+  it("renders the complete current importer commands", () => {
+    const commands = Object.fromEntries(
+      IMPORTERS.map((tab) => [tab.id, tab.lines.map(renderTokens).join("\n")]),
+    );
+
+    expect(commands).toMatchInlineSnapshot(`
+      {
+        "braintrust": "$ kitaru session import braintrust-export.jsonl \\
+          --importer kitaru/braintrust@latest \\
+          --agent support-agent@latest \\
+          --tag imported-baseline \\
+          --media-type application/x-ndjson \\
+          --wait",
+        "custom": "# one entrypoint function — about a page of Python
+
+      $ kitaru importer scaffold my-format
+
+      $ kitaru importer test my_format_importer.py \\
+          --entrypoint parse \\
+          --payload sample-export.jsonl
+
+      $ kitaru importer register my-format \\
+          --script my_format_importer.py \\
+          --entrypoint parse \\
+          --provider my-format",
+        "kitaru-jsonl": "$ kitaru session import sessions.jsonl \\
+          --importer kitaru/kitaru-jsonl@latest \\
+          --agent support-agent@latest \\
+          --tag imported-baseline \\
+          --media-type application/x-ndjson \\
+          --wait",
+        "langfuse": "$ kitaru session import langfuse-export.jsonl \\
+          --importer kitaru/langfuse@latest \\
+          --agent support-agent@latest \\
+          --tag imported-baseline \\
+          --media-type application/x-ndjson \\
+          --wait",
+        "langsmith": "$ kitaru session import langsmith-export.jsonl \\
+          --importer kitaru/langsmith@latest \\
+          --agent support-agent@latest \\
+          --tag imported-baseline \\
+          --media-type application/x-ndjson \\
+          --wait",
+        "logfire": "$ kitaru session import logfire-export.ndjson \\
+          --importer kitaru/logfire@latest \\
+          --agent support-agent@latest \\
+          --tag imported-baseline \\
+          --media-type application/x-ndjson \\
+          --wait",
+      }
+    `);
+    // The kitaru/opentelemetry importer was removed from the product in
+    // Aug 2026 (kitaru repo, "Remove OpenTelemetry importer") while parts of
+    // the docs still mention it — guard against it creeping back in here.
+    expect(Object.values(commands).join("\n")).not.toContain("OpenTelemetry");
   });
 
   it("renders the complete current Python and TypeScript workflows", () => {
