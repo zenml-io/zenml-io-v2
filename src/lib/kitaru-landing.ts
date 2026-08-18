@@ -59,7 +59,7 @@ export const SCENARIOS = [
     outcome:
       "Same cohort, one model swapped — the answer is two runs, compared.",
     stat: "−61%",
-    statLabel: "cost · 196/200 outputs identical",
+    statLabel: "cost · 196/200 unchanged",
   },
   {
     tag: "guard",
@@ -75,20 +75,20 @@ export const STEPS = [
   {
     n: "01",
     tag: "Cohort",
-    title: "Pick the sessions worth testing against",
-    body: "Start from a cohort the investigation grouped for you, or hand-pick your own. Freezing them as a named set means nothing shifts underneath your results.",
+    title: "Pick the production cases that matter",
+    body: "Start with a cohort you found during investigation, or hand-pick your own. Versioning the set means you compare every change against the same cases.",
   },
   {
     n: "02",
     tag: "Experiment",
-    title: "Describe the change you want to try",
-    body: "An experiment is the same agent with one thing different — here, the model you'd like to afford. Everything else stays exactly as it runs today.",
+    title: "Change one thing",
+    body: "Keep the agent setup fixed and swap the model. Now any difference in the replay comes from the change you are testing.",
   },
   {
     n: "03",
-    tag: "Two runs",
-    title: "Run both and read the difference",
-    body: "Kitaru replays the cohort once with each setup. Every gap between the columns comes from your one change — cost, speed, and quality, side by side.",
+    tag: "Compare",
+    title: "See what actually changed",
+    body: "Replay the same cohort with both setups and compare cost, latency, evaluator results, and behavior side by side.",
   },
 ] as const;
 
@@ -120,7 +120,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "The model isn't deterministic. How is replay trustworthy?",
     answer:
-      "The recorded world is held constant, same inputs and same tool responses, so the diff you see comes from your change rather than ambient noise. Evaluators and a side-by-side diff do the comparison; nobody has to pretend LLMs are deterministic. (And no, temperature=0 is not determinism. We have the divergence data.)",
+      "The recorded world is held constant, same inputs and same tool responses, so replay removes every source of variation except the model itself. For the variation that remains, you create multiple experiment runs over the same cohort and compare the distributions, so you can tell a real regression from run-to-run noise instead of judging from a single sample.",
   },
   {
     question: "Where do the eval criteria come from? We never wrote any down.",
@@ -130,12 +130,17 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "What frameworks does it work with?",
     answer:
-      "Recording adapters wrap your existing agent in one line, with no rewrite. Python: PydanticAI, the OpenAI Agents SDK, and LangGraph (including LangChain agents and Deep Agents). TypeScript: the Vercel AI SDK and Mastra. Anything else: import the trace history you already have from Langfuse, LangSmith, Braintrust or Pydantic Logfire, or write a one-page custom importer. Traces in raw OpenTelemetry format convert to Kitaru's JSONL import format.",
+      "Recording adapters wrap your existing agent in one line, with no rewrite. Python: PydanticAI, the OpenAI Agents SDK, and LangGraph (including LangChain agents and Deep Agents). TypeScript: the Vercel AI SDK and Mastra. For a custom harness or a framework we don't support yet, Kitaru ships a skill that walks your coding assistant through generating a new adapter for it.",
+  },
+  {
+    question: "Can I use traces I already have?",
+    answer:
+      "Yes. Importers bring in the trace history you already have from Langfuse, LangSmith, Braintrust or Pydantic Logfire, or you can write a one-page custom importer for your own store. Traces in raw OpenTelemetry format convert to Kitaru's JSONL import format.",
   },
   {
     question: "My agent is TypeScript. Can I use Kitaru?",
     answer:
-      "Yes, natively. TypeScript agents record and replay through the Vercel AI SDK and Mastra adapters, with a framework-neutral TypeScript SDK alongside. The CLI, workers and evaluators run on Python today, so there's Python in the loop even when the agent itself is TypeScript.",
+      "Yes, natively. TypeScript agents record and replay through the Vercel AI SDK and Mastra adapters, with a framework-neutral TypeScript SDK alongside — and the adapter-generation skill covers custom TypeScript harnesses too. The CLI, workers and evaluators run on Python today, so there's Python in the loop even when the agent itself is TypeScript.",
   },
   {
     question: "Is it open source? Can I self-host?",
@@ -155,6 +160,6 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "Something's broken. How do I reach you?",
     answer:
-      'Three routes, all reaching a human: the <a href="https://kitaru.ai/slack">Slack community</a>, <a href="https://kitaru.ai/help">kitaru.ai/help</a> (goes straight to GitHub issues), or <a href="mailto:support@kitaru.ai">support@kitaru.ai</a>. An issue with a session ID attached gets fixed fastest.',
+      'Three routes, all reaching a human: the <a href="https://kitaru.ai/slack">Slack community</a>, <a href="https://kitaru.ai/help">kitaru.ai/help</a> (goes straight to GitHub issues), or <a href="mailto:support@kitaru.ai">support@kitaru.ai</a>.',
   },
 ] as const;
