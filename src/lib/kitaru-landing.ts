@@ -135,7 +135,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "Can I use traces I already have?",
     answer:
-      "Yes. Importers bring in the trace history you already have from Langfuse, LangSmith, Braintrust or Pydantic Logfire, or you can write a one-page custom importer for your own store. Traces in raw OpenTelemetry format convert to Kitaru's JSONL import format.",
+      "Yes. Importers bring in trace files exported from Langfuse, LangSmith, Braintrust, Pydantic Logfire or Arize Phoenix, or you can write a one-page custom importer for your own store. The Phoenix importer reads JSONL downloaded from the Phoenix UI or JSON retrieved with the Phoenix CLI; it does not connect to the Phoenix API or use Phoenix credentials. Traces in raw OpenTelemetry format convert to Kitaru's JSONL import format.",
   },
   {
     question: "My agent is TypeScript. Can I use Kitaru?",

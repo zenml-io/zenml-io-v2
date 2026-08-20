@@ -68,6 +68,8 @@ describe("Kitaru product-page snippets", () => {
       markdown.match(/uv add "kitaru\[cli,worker\]" kitaru-pydantic-ai/g),
     ).toHaveLength(2);
     expect(markdown).not.toContain("`uv add kitaru`");
+    expect(markdown).toContain("Arize Phoenix");
+    expect(markdown).toContain("does not connect to the Phoenix API");
   });
 
   it("renders the complete current CLI workflow", () => {
@@ -271,6 +273,12 @@ describe("Kitaru product-page snippets", () => {
           --wait",
         "logfire": "$ kitaru session import logfire-export.ndjson \\
           --importer kitaru/logfire@latest \\
+          --agent support-agent@latest \\
+          --tag imported-baseline \\
+          --media-type application/x-ndjson \\
+          --wait",
+        "phoenix": "$ kitaru session import phoenix-traces.jsonl \\
+          --importer kitaru/phoenix@latest \\
           --agent support-agent@latest \\
           --tag imported-baseline \\
           --media-type application/x-ndjson \\

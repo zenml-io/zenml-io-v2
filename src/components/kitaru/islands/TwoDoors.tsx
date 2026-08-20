@@ -11,13 +11,14 @@
 // points here must match those docs — don't invent adapter APIs.
 //
 // Commands in the import door must match the shipped `kitaru session
-// import` CLI exactly — don't invent flags. The five built-in importers
+// import` CLI exactly — don't invent flags. The six built-in importers
 // (kitaru/langfuse, kitaru/langsmith, kitaru/braintrust, kitaru/logfire,
-// kitaru/kitaru-jsonl) and the `kitaru importer scaffold/test/register`
+// kitaru/phoenix, kitaru/kitaru-jsonl) and the `kitaru importer
+// scaffold/test/register`
 // custom-importer flow are verified against current CLI docs ("Import your
 // traces" overview: "Importers for Langfuse, LangSmith, Braintrust,
-// Logfire, and a native JSONL format are built in, registered ... under the
-// kitaru/ namespace").
+// Logfire, Arize Phoenix, and a native JSONL format are built in, registered
+// ... under the kitaru/ namespace").
 import type { SVGAttributes } from "preact";
 import { useState } from "preact/hooks";
 import { cn } from "../../../lib/utils";
@@ -30,6 +31,7 @@ import {
   LogfireIcon,
   MastraIcon,
   OpenAIIcon,
+  PhoenixIcon,
   PydanticIcon,
   VercelIcon,
 } from "./brand-icons";
@@ -551,9 +553,9 @@ function flagLine(flag: string, value: string, continued = true): CodeLine {
   return line;
 }
 
-/** The five built-in importers share every flag except the source file and
+/** The six built-in importers share every flag except the source file and
  *  the `--importer` reference, so the command is built once and varied
- *  per-tab instead of retyping the same lines five times. */
+ *  per-tab instead of retyping the same lines six times. */
 function importCommandLines(file: string, importer: string): CodeLine[] {
   return [
     [
@@ -656,6 +658,12 @@ export const IMPORTERS: ImporterTab[] = [
     lines: importCommandLines("logfire-export.ndjson", "kitaru/logfire@latest"),
   },
   {
+    id: "phoenix",
+    Icon: PhoenixIcon,
+    label: "Arize Phoenix",
+    lines: importCommandLines("phoenix-traces.jsonl", "kitaru/phoenix@latest"),
+  },
+  {
     id: "kitaru-jsonl",
     Icon: KitaruIcon,
     label: "Kitaru JSONL",
@@ -669,7 +677,7 @@ export const IMPORTERS: ImporterTab[] = [
   },
 ];
 
-/** The five built-in importer tabs each open their command with
+/** The six built-in importer tabs each open their command with
  *  `$ kitaru session import <file> \` — the export filename is the `str`
  *  token that follows `session import`. Deriving it from the tab's own
  *  command data (instead of a parallel id → file lookup) keeps the

@@ -348,15 +348,20 @@ const CHECKS: IslandCheck[] = [
       const tab = (id: string) => `#two-doors-import-tab-${id}`;
       await page.waitForSelector(`${tab("langfuse")}[aria-selected="true"]`);
 
-      await page.locator(tab("langsmith")).click();
+      await page.locator(tab("phoenix")).click();
 
-      await page.waitForSelector(`${tab("langsmith")}[aria-selected="true"]`);
+      await page.waitForSelector(`${tab("phoenix")}[aria-selected="true"]`);
       const panelContent = await page.textContent("#two-doors-import-panel");
-      if (!panelContent?.includes("langsmith-export.jsonl")) {
+      if (!panelContent?.includes("phoenix-traces.jsonl")) {
         throw new Error(
-          "clicking LangSmith tab did not update the import panel content",
+          "clicking Arize Phoenix tab did not update the import panel content",
         );
       }
+
+      await page.locator(tab("phoenix")).press("ArrowRight");
+      await page.waitForSelector(
+        `${tab("kitaru-jsonl")}[aria-selected="true"]:focus`,
+      );
     },
   },
 ];
