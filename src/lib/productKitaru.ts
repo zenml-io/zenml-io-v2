@@ -24,7 +24,7 @@ export const KITARU_TRIAL_NOTE = `${KITARU_TRIAL_DAYS}-day free trial · Full ac
  * the /pricing Kitaru FAQ and the /product/kitaru FAQ.
  */
 export const KITARU_VS_OBSERVABILITY_ANSWER =
-  "They tell you what happened: traces you read, dashboards you check. Kitaru re-runs what happened. Your agent's real code executes again against the recorded world, so you can test your next change against your last thousand sessions before it ships. Kitaru also imports your existing Langfuse, Braintrust or LangSmith traces, so your observability tool stays your system of record.";
+  "They tell you what happened: traces you read, dashboards you check. Kitaru re-runs what happened. Your agent's real code executes again against the recorded world, so you can test your next change against your last thousand sessions before it ships. Kitaru also imports trace files exported from Langfuse, LangSmith, Braintrust, Logfire or Arize Phoenix, so your observability tool stays your system of record.";
 
 /**
  * The 90-second launch video behind the hero's poster card. The iframe is
@@ -119,7 +119,7 @@ export const PRODUCT_KITARU_MARKDOWN = {
     },
     {
       name: "Act 2 — Traces in",
-      body: "Import an export from whatever tracing you already run, or record fresh runs through the adapter; downstream they are the same object. Every session is graded at import for replay readiness — ready, partial or unavailable — from whether root inputs survived, whether the node graph is complete, and whether tool calls kept both a name and a payload. Built-in importers cover Langfuse, LangSmith, Braintrust, Logfire and native JSONL; anything else is a custom importer, about a page of Python.",
+      body: "Import an export from whatever tracing you already run, or record fresh runs through the adapter; downstream they are the same object. Every session is graded at import for replay readiness — ready, partial or unavailable — from whether root inputs survived, whether the node graph is complete, and whether tool calls kept both a name and a payload. Built-in importers cover Langfuse, LangSmith, Braintrust, Logfire, Arize Phoenix and native JSONL; anything else is a custom importer, about a page of Python.",
     },
     {
       name: "Act 3 — Get interviewed (the centre)",

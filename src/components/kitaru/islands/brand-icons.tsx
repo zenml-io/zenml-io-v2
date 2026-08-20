@@ -8,6 +8,31 @@ const base = {
   "aria-hidden": "true",
 } as const;
 
+/** Arize Phoenix: official project mark, normalized to the Hashi 24x24
+ *  service-logo contract from Arize's phoenix-assets repository. The source
+ *  asset stays full-color; this tab-sized rendering follows the importer's
+ *  monochrome currentColor treatment. */
+export function PhoenixIcon({ className }: IconProps) {
+  return (
+    <span
+      aria-hidden="true"
+      className={className}
+      style={{
+        backgroundColor: "currentColor",
+        display: "inline-block",
+        WebkitMaskImage: 'url("/images/service-logos/arize-phoenix.svg")',
+        WebkitMaskPosition: "center",
+        WebkitMaskRepeat: "no-repeat",
+        WebkitMaskSize: "contain",
+        maskImage: 'url("/images/service-logos/arize-phoenix.svg")',
+        maskPosition: "center",
+        maskRepeat: "no-repeat",
+        maskSize: "contain",
+      }}
+    />
+  );
+}
+
 /** Pydantic — official logo mark */
 export function PydanticIcon(props: IconProps) {
   return (

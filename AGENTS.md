@@ -64,6 +64,7 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 
 ## Images & Assets (Two-Tier System)
 - **UI/static assets** (`public/images/`): logos, icons, favicons, backgrounds. Reference as `"/images/filename.svg"` (root-relative). Just place the file in `public/images/`.
+- **Third-party service logos**: follow the `add-service-logo` skill in the ZenML frontend monorepo (`.claude/skills/add-service-logo/SKILL.md`) for current-mark sourcing, 24x24 normalization, and mandatory rendered review before integration. Preserve full-color brand marks rather than recoloring them.
 - **Content/CMS images** (R2 bucket): blog heroes, screenshots, team photos, OG images. Must be **absolute URLs** — content schemas enforce `z.string().url()`. Upload via `uv run scripts/r2-upload.py <file>`.
 - **Alt text matters for SEO**: give every image descriptive, non-empty alt text (`<img>`, `mainImage`, `logo`) unless there's a clear reason not to (e.g. a decorative image already labelled by an adjacent `aria-label`).
 - In `src/lib/*.ts` data files, build R2 URLs from `ASSET_BASE_URL` constant — never hardcode the R2 domain.
