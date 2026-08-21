@@ -15,6 +15,7 @@
     "check:tests": "astro sync && tsc --noEmit -p tsconfig.tests.json",
     "check:surface": "tsx scripts/check-surface-coverage.ts",
     "check:alt": "tsx scripts/check-alt-coverage.ts",
+    "check:registry": "tsx scripts/check-registry.ts",
     "smoke:dist": "tsx scripts/check-dist-smoke.ts",
     "check:worker": "tsx scripts/check-worker-runtime.ts",
     "check:worker-bindings": "tsx scripts/check-worker-bindings.ts",
