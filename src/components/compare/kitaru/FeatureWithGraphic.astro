@@ -11,8 +11,6 @@
  * then a 2-column bullet grid with accent-colored labels. Use this for
  * sections whose body is dominated by a bulleted list of bold-labeled items.
  */
-import SectionIntro from "../../system/SectionIntro.astro";
-
 interface Props {
   title: string;
   image?: string;
@@ -42,18 +40,8 @@ const isList = layout === "list" || hasBulletsSlot;
 <section class:list={["feature-graphic", { "feature-graphic--reverse": reverse && !isList, "feature-graphic--bg-strip": bgStrip, "feature-graphic--list": isList }]} data-reveal>
   <div class="feature-graphic-grid">
     <div class="feature-graphic-copy">
-      <SectionIntro
-        eyebrow={number}
-        heading={title}
-        headingLevel={headingLevel}
-        classOverrides={{
-          eyebrow:
-            "inline-block text-[12px] font-semibold tracking-[0.12em] uppercase text-[var(--color-accent)]",
-          heading:
-            "text-[clamp(24px,2.6vw,30px)] font-bold tracking-[-0.01em] leading-[1.2] mb-3.5 text-[var(--color-primary)]",
-          headingSpacing: number ? "mt-3" : "",
-        }}
-      />
+      {number && <span class="feature-graphic-eyebrow">{number}</span>}
+      {headingLevel === 3 ? <h3>{title}</h3> : <h2>{title}</h2>}
       <div class="feature-graphic-body">
         <slot />
       </div>
@@ -101,6 +89,24 @@ const isList = layout === "list" || hasBulletsSlot;
   .feature-graphic--reverse .feature-graphic-copy { order: 2; }
   .feature-graphic--reverse .feature-graphic-media { order: 1; }
 
+  .feature-graphic-eyebrow {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: 12px;
+  }
+  .feature-graphic-copy h2,
+  .feature-graphic-copy h3 {
+    font-size: clamp(24px, 2.6vw, 30px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin: 0 0 14px;
+    color: var(--color-primary);
+  }
   .feature-graphic-body :global(p) {
     font-size: 17px;
     line-height: 1.7;

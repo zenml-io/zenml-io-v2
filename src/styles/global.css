@@ -417,10 +417,12 @@ html { scroll-behavior: smooth; }
   --section-accent-on: var(--brand-accent-on);
 }
 
-section[data-tone] {
-  background: var(--section-surface);
-  color: var(--section-text);
-}
+/* Deliberately NO `section[data-tone] { background: ... }` base rule: the
+ * `background` shorthand at (0,1,1) specificity would reset the
+ * background-size/position utilities (.bg-cover/.bg-center) of any toned
+ * band that layers an image — verified live on FeaturesHubCTA. Tone
+ * consumers set their own `bg-[var(--section-surface)]` /
+ * `text-[var(--section-text)]` utilities instead. */
 
 /* ─── 3. ZenML brand scale (original purple, theme-independent) ─────────────
  * Used by components that need an explicit shade from the ZenML brand ladder
