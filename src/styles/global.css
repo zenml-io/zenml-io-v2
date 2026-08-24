@@ -312,7 +312,14 @@ html { scroll-behavior: smooth; }
   --spacing-space-xxl: 5rem; /* 80px */
 
   /* === Container Width === */
-  --container-lg: 1440px;
+  /* --container-chrome (not --container-lg): Tailwind v4 generates
+     max-w-* utilities from every --container-* token, so --container-lg
+     silently redefined the stock max-w-lg utility (32rem -> 1440px).
+     --container-chrome yields max-w-chrome instead, which collides with
+     nothing, and names its actual role: the nav/footer/blog chrome width. */
+  --container-chrome: 1440px;
+  --container-content: 1524px; /* centered-section content cap; yields max-w-content */
+  --spacing-gutter: clamp(16px, 3vw, 48px); /* section lateral gutter: 16px on small screens, fluid, 48px from ~1600px; yields px-gutter etc. */
 
   /* === Chrome === */
   /* Sticky navbar height — consumed by Navigation.astro (h-), the blog
@@ -506,6 +513,12 @@ body {
   color: var(--color-gray-900);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Full-bleed sections break out with `width: 100vw`, which includes the
+   * scrollbar gutter on desktop platforms with a classic scrollbar. This is
+   * the page-root guard DESIGN.md's responsive contract names: clip (not
+   * hidden — sticky descendants keep working) so that overshoot never
+   * becomes page-level horizontal scroll. */
+  overflow-x: clip;
 }
 
 /* ============================================================================

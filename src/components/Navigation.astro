@@ -72,7 +72,7 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
 ---
 
 <header class="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-gray-200/60">
-  <div class="mx-auto max-w-[var(--container-lg)] px-4 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-[var(--container-chrome)] px-4 sm:px-6 lg:px-8">
     <div class="flex h-[var(--nav-h)] items-center">
       {/* Logo — Kitaru surfaces show "Kitaru by ZenML" so first-time launch
         * traffic isn't confused by a ZenML mark, but the link still goes home
@@ -243,7 +243,7 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
             {/* Dropdown panel — positioned relative to the <header> (sticky = containing block) */}
             <div class="pointer-events-none invisible absolute inset-x-0 top-full z-50 opacity-0 transition-[opacity,visibility] duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100">
               <div class="bg-white shadow-large border-t border-b border-gray-100">
-              <div class="mx-auto max-w-[var(--container-lg)] px-4 sm:px-6 lg:px-8">
+              <div class="mx-auto max-w-[var(--container-chrome)] px-4 sm:px-6 lg:px-8">
                 <div class="flex">
                   {/* Link columns — all equal width */}
                   {dropdown.sections.slice(0, 2).map((section) => (
