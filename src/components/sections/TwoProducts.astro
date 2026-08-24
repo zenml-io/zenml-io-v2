@@ -17,6 +17,8 @@
  * uses sessions / replay / cohorts / evaluators (the replay-based-evals
  * vocabulary), not pipeline / orchestrator.
  */
+import SectionIntro from "../system/SectionIntro.astro";
+
 const CARDS = [
   {
     eyebrow: "Kitaru — Agent Evals",
@@ -57,27 +59,34 @@ const CARDS = [
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <!-- Header: eyebrow + headline -->
     <div class="scroll-slide-top max-w-3xl">
-      <div class="text-[13px] font-semibold uppercase tracking-[0.08em] text-gray-600">
-        Two products · one team
-      </div>
-      <h2 class="mt-5 text-3xl font-bold leading-tight tracking-tight text-gray-900">
-        Agent systems today. ML systems all along. One engineering team underneath both.
-      </h2>
+      <SectionIntro
+        eyebrow="Two products · one team"
+        heading="Agent systems today. ML systems all along. One engineering team underneath both."
+        classOverrides={{
+          eyebrow: "text-[13px] font-semibold uppercase tracking-[0.08em] text-gray-600",
+          heading: "text-3xl font-bold leading-tight tracking-tight text-gray-900",
+          headingSpacing: "mt-5",
+        }}
+      />
     </div>
 
     <!-- Descriptor row: two product cards -->
     <div class="scroll-fade-in stagger-1 mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
       {CARDS.map((card) => (
         <div class="group flex flex-col rounded-md border border-gray-200 bg-white p-8 transition-colors hover:border-gray-300">
-          <p class:list={["text-sm font-semibold uppercase tracking-wider", card.eyebrowClass]}>
-            {card.eyebrow}
-          </p>
-          <h3 class="mt-3 text-2xl font-bold leading-snug text-gray-900">
-            {card.title}
-          </h3>
-          <p class="mt-3 text-base leading-relaxed text-gray-600">
-            {card.body}
-          </p>
+          <SectionIntro
+            eyebrow={card.eyebrow}
+            heading={card.title}
+            headingLevel={3}
+            description={card.body}
+            classOverrides={{
+              eyebrow: `text-sm font-semibold uppercase tracking-wider ${card.eyebrowClass}`,
+              heading: "text-2xl font-bold leading-snug text-gray-900",
+              headingSpacing: "mt-3",
+              description: "text-base leading-relaxed text-gray-600",
+              descriptionSpacing: "mt-3",
+            }}
+          />
           <ul class="mt-6 flex flex-1 flex-col gap-3">
             {card.bullets.map((item) => (
               <li class="flex items-start gap-3">
