@@ -10,6 +10,7 @@ import BlogCard from "../../components/blog/BlogCard.astro";
 import CategoryBar from "../../components/blog/CategoryBar.astro";
 import TagCloud from "../../components/blog/TagCloud.astro";
 import EmptyState from "../../components/system/EmptyState.astro";
+import { EMPTY_STATE_PRESETS } from "../../components/system/emptyStateStyles";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   getCategoryCounts,
@@ -107,8 +108,7 @@ for (const post of allPosts) {
         heading="No posts in this category yet."
         reserveHeight={false}
         classOverrides={{
-          container: "block",
-          inner: "",
+          ...EMPTY_STATE_PRESETS.bareList,
           heading: "text-center text-gray-500",
         }}
       />

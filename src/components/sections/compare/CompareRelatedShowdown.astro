@@ -1,4 +1,5 @@
 ---
+import SectionIntro from "../../system/SectionIntro.astro";
 /**
  * CompareRelatedShowdown — related comparison pages grid.
  *
@@ -6,7 +7,7 @@
  * (ZenML icon "vs" tool icon) and linked card layout. Matches Webflow's
  * uui-section_layout76-2 section with hide-if-empty behavior.
  */
-import SectionIntro from "../../system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../../system/sectionIntro.shared";
 
 interface CompareItem {
   slug: string;
@@ -37,7 +38,7 @@ const {
           eyebrow={eyebrow}
           heading={headline}
           classOverrides={{
-            heading: "text-2xl font-bold text-gray-900 sm:text-3xl",
+            heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
             headingSpacing: "mt-3",
           }}
         />

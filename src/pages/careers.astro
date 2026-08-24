@@ -1,5 +1,6 @@
 ---
 import Button from "../components/Button.astro";
+import SectionIntro from "../components/system/SectionIntro.astro";
 /**
  * Careers page.
  *
@@ -8,7 +9,7 @@ import Button from "../components/Button.astro";
  * Recruitment landing: hero with CTAs, mission section (photo + text),
  * "Why work here" grid, hiring process steps, and open positions.
  */
-import SectionIntro from "../components/system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../components/system/sectionIntro.shared";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
   CAREERS_HERO,
@@ -38,7 +39,7 @@ import { OPEN_POSITIONS } from "../lib/company";
           headingLevel={1}
           description={CAREERS_HERO.deck}
           classOverrides={{
-            heading: "text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl",
+            heading: SECTION_INTRO_PRESETS.pageHero.heading,
           }}
         />
         <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">

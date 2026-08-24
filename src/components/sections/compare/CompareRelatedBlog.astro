@@ -7,6 +7,7 @@
  */
 import BlogCard from "../../blog/BlogCard.astro";
 import SectionIntro from "../../system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../../system/sectionIntro.shared";
 
 interface BlogPost {
   slug: string;
@@ -38,7 +39,7 @@ const {
           eyebrow={eyebrow}
           heading={headline}
           classOverrides={{
-            heading: "text-2xl font-bold text-gray-900 sm:text-3xl",
+            heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
             headingSpacing: "mt-3",
           }}
         />

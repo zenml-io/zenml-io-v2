@@ -7,6 +7,7 @@
  */
 import Button from "../Button.astro";
 import SectionIntro from "../system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../system/sectionIntro.shared";
 
 interface Props {
   title: string;
@@ -28,7 +29,7 @@ const { title, category, deck, image, primaryCta, secondaryCta } = Astro.props;
       headingLevel={1}
       description={deck}
       classOverrides={{
-        heading: "text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl",
+        heading: SECTION_INTRO_PRESETS.pageHero.heading,
       }}
     />
 

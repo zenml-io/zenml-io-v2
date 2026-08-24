@@ -494,6 +494,33 @@ function classify(
   return null;
 }
 
+/**
+ * Resolves a list of scope-qualified fg/bg token-name pairs (DECLARED_PAIRS
+ * or CHROME_PAIRS) against the parsed color tokens and computes each pair's
+ * WCAG 2.1 contrast ratio. A pair is silently skipped — not an error — when
+ * either token isn't declared in that scope, resolves to UNRESOLVED, or
+ * isn't a parseable color; that's the normal case for a token the current
+ * scope doesn't redeclare (see DECLARED_PAIRS' own comment on `[data-app="zenml"]`).
+ */
+function computeContrastRows(
+  pairs: ReadonlyArray<{ scope: string; fg: string; bg: string }>,
+  colorByKey: Map<string, TokenRow>,
+): ContrastRow[] {
+  const rows: ContrastRow[] = [];
+  for (const pair of pairs) {
+    const fg = colorByKey.get(`${pair.scope}|${pair.fg}`);
+    const bg = colorByKey.get(`${pair.scope}|${pair.bg}`);
+    if (!fg || !bg) continue;
+    if (fg.value === UNRESOLVED || bg.value === UNRESOLVED) continue;
+    const fgColor = parseColor(fg.value);
+    const bgColor = parseColor(bg.value);
+    if (!fgColor || !bgColor) continue;
+    const ratio = wcagContrast(fgColor, bgColor);
+    rows.push({ fg, bg, ratio, passes: ratio >= 4.5 });
+  }
+  return rows;
+}
+
 /* ============================================================================
  * ENTRY POINT
  * ========================================================================= */
@@ -548,35 +575,13 @@ export function getStyleguideData(): StyleguideData {
   const colorByKey = new Map<string, TokenRow>();
   for (const row of colors) colorByKey.set(`${row.scope}|${row.name}`, row);
 
-  const contrast: ContrastRow[] = [];
-  for (const pair of DECLARED_PAIRS) {
-    const fg = colorByKey.get(`${pair.scope}|${pair.fg}`);
-    const bg = colorByKey.get(`${pair.scope}|${pair.bg}`);
-    if (!fg || !bg) continue;
-    if (fg.value === UNRESOLVED || bg.value === UNRESOLVED) continue;
-    const fgColor = parseColor(fg.value);
-    const bgColor = parseColor(bg.value);
-    if (!fgColor || !bgColor) continue;
-    const ratio = wcagContrast(fgColor, bgColor);
-    contrast.push({ fg, bg, ratio, passes: ratio >= 4.5 });
-  }
+  const contrast = computeContrastRows(DECLARED_PAIRS, colorByKey);
 
   // `@theme` is the flat namespace every `--color-gray-*` token lives in
   // (a literal scale, not scoped per data-app); `--color-white` is a
   // Tailwind built-in with no token declaration in global.css, so it
   // resolves to its fixed value directly instead of a colorByKey lookup.
-  const chrome: ContrastRow[] = [];
-  for (const pair of CHROME_PAIRS) {
-    const fg = colorByKey.get(`${pair.scope}|${pair.fg}`);
-    const bg = colorByKey.get(`${pair.scope}|${pair.bg}`);
-    if (!fg || !bg) continue;
-    if (fg.value === UNRESOLVED || bg.value === UNRESOLVED) continue;
-    const fgColor = parseColor(fg.value);
-    const bgColor = parseColor(bg.value);
-    if (!fgColor || !bgColor) continue;
-    const ratio = wcagContrast(fgColor, bgColor);
-    chrome.push({ fg, bg, ratio, passes: ratio >= 4.5 });
-  }
+  const chrome = computeContrastRows(CHROME_PAIRS, colorByKey);
 
   const registry = TEMPLATE_REGISTRY.map((entry) => ({
     entry,

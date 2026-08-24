@@ -19,6 +19,11 @@
  * the markup shell.
  */
 import { cn } from "../../../lib/utils";
+import {
+  EMPTY_STATE_DESCRIPTION,
+  EMPTY_STATE_HEADING,
+  EMPTY_STATE_INNER,
+} from "../../system/emptyStateStyles";
 
 const FOCUS_RING =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-1";
@@ -72,11 +77,9 @@ export function FilterEmptyState({
       role="status"
       class="block rounded-lg border border-gray-200 bg-gray-50 py-16 text-center"
     >
-      <div class="mx-auto max-w-md px-4">
-        <p class="text-lg font-medium text-gray-700">
-          No entries match your filters
-        </p>
-        <p class="mt-2 text-sm text-gray-500">
+      <div class={EMPTY_STATE_INNER}>
+        <p class={EMPTY_STATE_HEADING}>No entries match your filters</p>
+        <p class={EMPTY_STATE_DESCRIPTION}>
           {hasTags && hasIndustry && hasQuery
             ? "Try removing some filters to broaden your search."
             : hasTags && isAndMode && selectedTagsCount > 1

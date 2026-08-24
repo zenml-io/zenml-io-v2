@@ -10,6 +10,7 @@ import BlogCard from "../../components/blog/BlogCard.astro";
 import CategoryBar from "../../components/blog/CategoryBar.astro";
 import Image from "../../components/Image.astro";
 import EmptyState from "../../components/system/EmptyState.astro";
+import { EMPTY_STATE_PRESETS } from "../../components/system/emptyStateStyles";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCategoryCounts, getMainFeedPosts } from "../../lib/blog";
 
@@ -114,8 +115,7 @@ for (const post of allPosts) {
         heading="No posts by this author yet."
         reserveHeight={false}
         classOverrides={{
-          container: "block",
-          inner: "",
+          ...EMPTY_STATE_PRESETS.bareList,
           heading: "text-center text-gray-500",
         }}
       />

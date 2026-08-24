@@ -4,7 +4,7 @@
  * Both render through `./stack.shared` so they can't drift.
  */
 import type { ComponentChildren } from "preact";
-import type { ResponsiveSpace } from "./spacing.shared";
+import type { ResponsiveSpace } from "./classMaps";
 import { type StackAlign, stackClasses } from "./stack.shared";
 
 interface Props {

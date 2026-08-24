@@ -2,7 +2,7 @@
  * Stack — shared classes (issue #248). See `Stack.astro` for the contract.
  */
 import { cn } from "../../../lib/utils";
-import { gapClasses, type ResponsiveSpace } from "./spacing.shared";
+import { type ResponsiveSpace, resolveSpace } from "./classMaps";
 
 export type StackAlign = "start" | "center" | "end" | "stretch";
 
@@ -23,7 +23,7 @@ export interface StackOptions {
 export function stackClasses(opts: StackOptions): string {
   return cn(
     "flex flex-col",
-    gapClasses(opts.space, "sm"),
+    resolveSpace(opts.space, "sm"),
     ALIGN_CLASS[opts.align],
     // Hairline lives in the gap the flow already reserves; tone-correct via
     // --section-border rather than a fixed gray literal.

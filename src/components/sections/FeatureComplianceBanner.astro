@@ -1,11 +1,12 @@
 ---
+import SectionIntro from "../system/SectionIntro.astro";
 /**
  * FeatureComplianceBanner — SOC2/ISO compliance banner.
  *
  * Used only on the security-guardrails-always feature page.
  * Renders compliance badge images + headline + body text.
  */
-import SectionIntro from "../system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../system/sectionIntro.shared";
 
 interface Props {
   eyebrow?: string;
@@ -44,7 +45,7 @@ const {
           headingLevel={3}
           description={body}
           classOverrides={{
-            eyebrow: "text-sm font-semibold uppercase tracking-wider text-zenml-400",
+            eyebrow: SECTION_INTRO_PRESETS.darkBandEyebrow,
             heading: "text-xl font-bold text-white sm:text-2xl",
             headingSpacing: "mt-1",
             description: "text-gray-300 leading-relaxed",

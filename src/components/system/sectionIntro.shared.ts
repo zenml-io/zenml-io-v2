@@ -28,6 +28,30 @@ export const SECTION_INTRO_CLASSES = {
 } as const;
 
 /**
+ * `classOverrides` clusters verified to recur identically across 3+
+ * migrated call sites (#248 altitude review). Each is a recurring
+ * migration-parity override, deduplicated so a rebrand cutover retunes one
+ * export instead of N call sites — same escape-hatch semantics as
+ * `classOverrides` itself: only for a site whose classes genuinely deviate
+ * from `SECTION_INTRO_CLASSES`, never for new code.
+ *
+ * `pageHero` is the one multi-key preset: 4 of its 7 heading sites also use
+ * `.wrap`, so those spread the whole object (`{...SECTION_INTRO_PRESETS.pageHero}`);
+ * the other 3 reference `.pageHero.heading` alone, keeping their own
+ * external wrapper (a `data-reveal` div, etc.) unspread.
+ */
+export const SECTION_INTRO_PRESETS = {
+  pageHero: {
+    heading: "text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl",
+    wrap: "mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8",
+  },
+  sectionHeading2xl: "text-2xl font-bold text-gray-900 sm:text-3xl",
+  darkBandEyebrow:
+    "text-sm font-semibold uppercase tracking-wider text-zenml-400",
+  cardEyebrow: "text-xs font-semibold uppercase tracking-wider text-zenml-500",
+} as const;
+
+/**
  * Resolves the effective per-piece classes, applying the migration-parity
  * `classOverrides` escape hatch from `SectionIntroProps`: an override
  * REPLACES the house default for that piece (spacing classes still apply on

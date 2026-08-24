@@ -1,6 +1,7 @@
 /**
- * Shared Tailwind class lookup tables for the layout primitive set (#248
- * Wave 1) — Stack, Inline, Split, Bleed, Grid.
+ * Shared Tailwind class lookup tables (plus the `ResponsiveSpace` type they
+ * resolve) for the layout primitive set (#248 Wave 1) — Stack, Inline,
+ * Split, Bleed, Grid.
  *
  * Tailwind's build-time scanner only picks up class names that appear as
  * complete literal strings somewhere in a scanned source file. A class
@@ -14,6 +15,11 @@
  * cannot drift apart.
  */
 import type { Breakpoint, SpaceStep } from "../../../lib/section";
+
+/** A fixed step, or per-breakpoint overrides layered on top of the primitive's own default. */
+export type ResponsiveSpace =
+  | SpaceStep
+  | Partial<Record<Breakpoint, SpaceStep>>;
 
 export const BREAKPOINTS: readonly Breakpoint[] = [
   "sm",

@@ -1,12 +1,12 @@
 ---
-import type { ResponsiveSpace } from "./spacing.shared";
+import type { ResponsiveSpace } from "./classMaps";
 /**
  * Stack — vertical flow, one gap step between every child (issue #248).
  *
  * Owns no surrounding whitespace: the gap is only ever *between* children
  * (`gap-space-*`), never a margin the caller has to cancel. `space` accepts
  * either a single `SpaceStep` or a per-breakpoint override object; see
- * `./spacing.shared` for how that resolves to classes.
+ * `./classMaps` for how that resolves to classes.
  *
  * `dividers` draws a hairline between children using `--section-border`
  * (never a fixed gray literal), so it stays correct under whichever

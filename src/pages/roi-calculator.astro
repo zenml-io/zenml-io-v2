@@ -2,6 +2,7 @@
 import RoiCalculatorIsland from "../components/islands/RoiCalculator";
 import FeaturesHubCTA from "../components/sections/FeaturesHubCTA.astro";
 import SectionIntro from "../components/system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../components/system/sectionIntro.shared";
 /**
  * /roi-calculator — Interactive ROI calculator page.
  *
@@ -26,8 +27,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       headingLevel={1}
       classOverrides={{
         eyebrow: "text-sm font-semibold uppercase tracking-wider text-primary-600",
-        heading: "text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl",
-        wrap: "mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8",
+        ...SECTION_INTRO_PRESETS.pageHero,
       }}
     />
   </section>

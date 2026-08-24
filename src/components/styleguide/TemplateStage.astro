@@ -8,12 +8,13 @@
  * and is exercised by `pnpm build`. See CLAUDE.md's derivation rule and
  * issue #266.
  *
- * Resolution is by componentPath, via Vite's import.meta.glob over both the
- * templates and system-primitives directories (eager, so this stays a
- * static page — no client JS). A path that doesn't resolve to a real file
- * renders an honest notice instead of failing the build, since a stale
- * registry entry (path edited, file moved) should be visible on the page,
- * not a 500.
+ * Resolution is by componentPath, against `./templateModules`'s merged eager
+ * glob of both the templates and system-primitives directories (hoisted to
+ * module scope so it runs once, not once per `TemplateStage` instantiation —
+ * see that file's own doc comment). Eager, so this stays a static page — no
+ * client JS. A path that doesn't resolve to a real file renders an honest
+ * notice instead of failing the build, since a stale registry entry (path
+ * edited, file moved) should be visible on the page, not a 500.
  *
  * `demoProps` is the registry entry's own `demoProps` field, spread onto the
  * live component. `demoSlots` is its sibling for slot-composed primitives
@@ -21,6 +22,8 @@
  * so Stack/Inline/Split/Bleed/Grid render with visible children instead of
  * as empty elements.
  */
+import { templateModules } from "./templateModules";
+
 interface Props {
   componentPath: string;
   demoProps?: Readonly<Record<string, unknown>>;
@@ -28,11 +31,6 @@ interface Props {
 }
 
 const { componentPath, demoProps, demoSlots } = Astro.props;
-
-const templateModules = {
-  ...import.meta.glob("/src/components/templates/**/*.astro", { eager: true }),
-  ...import.meta.glob("/src/components/system/**/*.astro", { eager: true }),
-} as Record<string, { default: unknown }>;
 
 const key = componentPath.startsWith("/") ? componentPath : `/${componentPath}`;
 const Component = templateModules[key]?.default;

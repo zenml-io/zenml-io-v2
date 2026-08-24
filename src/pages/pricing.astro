@@ -18,6 +18,7 @@ import PricingProInclusions from "../components/sections/PricingProInclusions.as
  */
 import JsonLd from "../components/seo/JsonLd.astro";
 import SectionIntro from "../components/system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../components/system/sectionIntro.shared";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
   PRICING_COMPARE,
@@ -70,10 +71,9 @@ const pricingJsonLd = buildPricingJsonLd();
         headingLevel={1}
         description={PRICING_HERO.deck}
         classOverrides={{
-          heading: "text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl",
           headingSpacing: "mt-3",
           description: "text-lg text-gray-600",
-          wrap: "mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8",
+          ...SECTION_INTRO_PRESETS.pageHero,
         }}
       />
     </section>
@@ -135,7 +135,7 @@ const pricingJsonLd = buildPricingJsonLd();
           heading={PRICING_COMPLIANCE.headline}
           description={PRICING_COMPLIANCE.body}
           classOverrides={{
-            heading: "text-2xl font-bold text-gray-900 sm:text-3xl",
+            heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
             description: "text-lg text-gray-600",
             descriptionSpacing: "mt-3",
           }}
@@ -170,7 +170,7 @@ const pricingJsonLd = buildPricingJsonLd();
               headingLevel={3}
               description={PRICING_COMPLIANCE.bannerBody}
               classOverrides={{
-                eyebrow: "text-xs font-semibold uppercase tracking-wider text-zenml-500",
+                eyebrow: SECTION_INTRO_PRESETS.cardEyebrow,
                 heading: "text-lg font-semibold text-gray-900",
                 headingSpacing: "mt-1",
                 description: "text-sm text-gray-600",

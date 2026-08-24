@@ -1,6 +1,7 @@
 ---
 import Button from "../components/Button.astro";
 import SectionIntro from "../components/system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../components/system/sectionIntro.shared";
 /**
  * Deployments page.
  *
@@ -75,7 +76,7 @@ import {
             heading={DEPLOYMENTS_ARCHITECTURE.headline}
             description={DEPLOYMENTS_ARCHITECTURE.body}
             classOverrides={{
-              eyebrow: "text-sm font-semibold uppercase tracking-wider text-zenml-400",
+              eyebrow: SECTION_INTRO_PRESETS.darkBandEyebrow,
               heading: "text-2xl font-bold text-white sm:text-3xl",
               description: "text-lg text-gray-300",
               descriptionSpacing: "mt-3",
@@ -258,7 +259,7 @@ import {
             heading={DEPLOYMENTS_TABS.headline}
             description={DEPLOYMENTS_TABS.body}
             classOverrides={{
-              heading: "text-2xl font-bold text-gray-900 sm:text-3xl",
+              heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
               description: "text-lg text-gray-600",
               descriptionSpacing: "mt-3",
             }}

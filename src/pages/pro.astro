@@ -8,6 +8,7 @@ import ProTestimonial02 from "../components/sections/ProTestimonial02.astro";
 import ProTestimonial15Section from "../components/sections/ProTestimonial15Section.astro";
 import VsCta02 from "../components/sections/VsCta02.astro";
 import SectionIntro from "../components/system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../components/system/sectionIntro.shared";
 /**
  * ZenML Pro marketing page.
  *
@@ -127,7 +128,7 @@ import {
             heading={PRO_ONBOARDING.headline}
             description={PRO_ONBOARDING.body}
             classOverrides={{
-              eyebrow: "text-sm font-semibold uppercase tracking-wider text-zenml-400",
+              eyebrow: SECTION_INTRO_PRESETS.darkBandEyebrow,
               heading: "text-2xl font-bold text-white sm:text-3xl",
               description: "text-lg text-gray-300 leading-relaxed",
               descriptionSpacing: "mt-3",
@@ -175,7 +176,7 @@ import {
           heading={PRO_COMPLIANCE.headline}
           description={PRO_COMPLIANCE.body}
           classOverrides={{
-            heading: "text-2xl font-bold text-gray-900 sm:text-3xl",
+            heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
             description: "text-lg text-gray-600",
             descriptionSpacing: "mt-3",
           }}
@@ -210,7 +211,7 @@ import {
               headingLevel={3}
               description={PRO_COMPLIANCE.bannerBody}
               classOverrides={{
-                eyebrow: "text-xs font-semibold uppercase tracking-wider text-zenml-500",
+                eyebrow: SECTION_INTRO_PRESETS.cardEyebrow,
                 heading: "text-lg font-semibold text-gray-900",
                 headingSpacing: "mt-1",
                 description: "text-sm text-gray-600",
@@ -232,7 +233,7 @@ import {
             heading={PRO_OSS_GRID.headline}
             description={PRO_OSS_GRID.body}
             classOverrides={{
-              heading: "text-2xl font-bold text-gray-900 sm:text-3xl",
+              heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
               descriptionSpacing: "mt-3",
             }}
           />
