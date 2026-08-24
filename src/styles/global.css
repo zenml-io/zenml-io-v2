@@ -19,6 +19,7 @@ html { scroll-behavior: smooth; }
  *   - :root                 → Kitaru theme (warm orange primary, cream ground)
  *   - [data-app="kitaru"]   → same as :root (explicit override)
  *   - [data-app="zenml"]    → ZenML theme (purple primary, white ground — original brand)
+ *   - [data-app="zenml-next"] → 2026 rebrand scope, type roles only so far (no page sets it yet)
  *
  * BaseLayout.astro sets data-app="zenml" by default for the whole site.
  * Per-page overrides (e.g. /product/kitaru) set data-app="kitaru".
@@ -85,6 +86,9 @@ html { scroll-behavior: smooth; }
     sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
   --font-display: "DM Serif Display", Georgia, "Times New Roman", serif;
+  /* `--font-label` — UI accents: eyebrows, buttons, labels, tabs. Defaults to
+   * the mono stack; the 2026 rebrand scope re-points it to Nudica Mono. */
+  --font-label: var(--font-mono);
 
   /* Shape */
   --radius: 0.5rem;
@@ -119,6 +123,21 @@ html { scroll-behavior: smooth; }
   /* Typography — original ZenML font */
   --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
+}
+
+/* ─── 2b. ZenML 2026 rebrand scope (in progress — issue #246) ───────────────
+ * Type roles for the rebranded template system. No page sets this attribute
+ * yet; Phase 3 templates and the /styleguide mount under it. Components must
+ * reference the role tokens (--font-display / --font-sans / --font-label),
+ * never family names, so a substitution stays a token edit.
+ * Code blocks keep JetBrains Mono (--font-mono is deliberately not overridden). */
+[data-app="zenml-next"] {
+  /* Borna is a geometric sans-serif (display role ≠ serif classification) */
+  --font-display: "Borna", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --font-sans: "Rethink Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --font-label: "Nudica Mono", ui-monospace, monospace;
 }
 
 /* ─── 3. ZenML brand scale (original purple, theme-independent) ─────────────
@@ -184,6 +203,7 @@ html { scroll-behavior: smooth; }
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-display: var(--font-display);
+  --font-label: var(--font-label);
 }
 
 @theme inline {
@@ -501,6 +521,79 @@ html { scroll-behavior: smooth; }
     U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F,
     U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
     U+A720-A7FF;
+}
+
+/* 2026 rebrand typefaces (issue #253). Consumed only inside the
+ * `[data-app="zenml-next"]` scope above, so no page downloads these until a
+ * rebrand surface ships. Foundry-supplied woff2 files served as-is (full
+ * character set, hence no unicode-range). No preloads yet on purpose — add
+ * them alongside the first shipped rebrand surface. */
+
+/* Borna — display face for headlines and section headers */
+@font-face {
+  font-family: "Borna";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/borna-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Borna";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/borna-medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Borna";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/borna-semibold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Borna";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/borna-bold.woff2") format("woff2");
+}
+
+/* Rethink Sans — variable body face, single file per style covers 400–800 */
+@font-face {
+  font-family: "Rethink Sans";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/rethink-sans-variable.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Rethink Sans";
+  font-style: italic;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/rethink-sans-italic-variable.woff2") format("woff2");
+}
+
+/* Nudica Mono — backs --font-label; see the token declaration in :root for the role */
+@font-face {
+  font-family: "Nudica Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/nudica-mono-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Nudica Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/nudica-mono-medium.woff2") format("woff2");
 }
 
 /* ============================================================================
