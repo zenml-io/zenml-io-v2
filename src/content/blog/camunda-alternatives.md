@@ -25,7 +25,7 @@ Camunda is a process orchestration and workflow automation platform for teams al
 
 But honestly, BPMN to an agent now feels like what Markdown is to an LLM. It struggles with modern agentic AI workflows that often start in a Python file. So when you use Camunda for work that’s closer to agent runtime control or involves chaotic back-and-forth loops, it feels less native for the process.
 
-For this article, we reviewed and picked the best Camunda alternatives that fit AI engineers building complex agents with retries, approvals, and long-running execution.
+For this article, we reviewed and picked the best Camunda alternatives that fit ML engineers and Python developers building complex agents with retries, approvals, and long-running execution.
 
 ## A Quick Overview of the Best Camunda Alternatives
 
@@ -71,7 +71,7 @@ Before we deep dive into tool reviews, here’s a quick comparison table to help
 
 | Camunda Alternative | Best For | Key Features | Pricing |
 | --- | --- | --- | --- |
-| [Kitaru by ZenML](https://www.zenml.io/product/kitaru) | Python agent runtimes | - Durable checkpoints with replay - Pause/resume without active compute - Wraps your agent SDK, no BPMN | - Free (open source, Apache 2.0) - Paid plans start at $399/month |
+| [Kitaru by ZenML](https://www.zenml.io/product/kitaru) | Testing agent changes against real production runs | - Full-run replay with recorded tool history - Production-derived regression cohorts - Versioned evaluators and experiments - Wraps your agent SDK, no BPMN | - Free (open source, Apache 2.0) - Paid plans start at $39/month |
 | [**Temporal**](https://temporal.io/) | Durable agent workflows | - Code-defined durable workflow execution - Retryable external activity handling - Persistent event history tracking | - Free (Open-source) - Paid plans start at $100/month |
 | [**LangGraph**](https://www.langchain.com/langgraph) | Stateful agent graphs | - Explicit stateful agent graph modeling - Persistent memory across interactions - Human approval workflow interruptions | - Free tier - Paid plans start at $39/seat/month |
 | [**Inngest**](https://www.inngest.com/) | Event-driven functions | - Durable step state persistence - Event-triggered workflow continuation - Configurable retry backoff policies | - Free tier available - Paid plans start at $75/month |
@@ -85,63 +85,96 @@ Before we deep dive into tool reviews, here’s a quick comparison table to help
 
 ### 1. Kitaru by ZenML
 
-![Kitaru by ZenML](https://assets.zenml.io/content/blog/camunda-alternatives/d5e9cebd/kitaru-by-zenml.avif)
+![Kitaru by ZenML](https://assets.zenml.io/content/blog/camunda-alternatives/cfdf47c4/kitaru-by-zenml.avif)
 
-[Kitaru](https://www.zenml.io/product/kitaru) is an open-source runtime for durable Python agents, built by the team behind ZenML. Instead of mapping work onto BPMN tasks on a canvas, you wrap ordinary Python functions with `@flow` and `@checkpoint`, and Kitaru gives the agent loop durable execution, replay, and pause/resume underneath.
+[Kitaru](https://www.zenml.io/product/kitaru) is an open-source, self-hosted replay and evaluation test bench for AI agents. As a Camunda alternative, it makes the most sense when your problem is capturing real behavior, replaying it against changed code or prompts, and checking whether a fix solves one case without breaking ten others.
 
-Our platform sits as the outer runtime around whatever agent harness you already use (OpenAI Agents SDK, Anthropic Agent SDK, PydanticAI, LangGraph, or raw Python), so your reasoning loop stays in Python, and the durability lives below it. For teams that found Camunda’s diagram-first model too heavy for agent work, everything stays in the editor with version control and tests.
+Kitaru sits beside the framework you already use, like PydanticAI, LangGraph, OpenAI Agents SDK, Mastra, or Vercel AI SDK. Your framework owns the loop, while Kitaru records or imports complete sessions and turns selected production runs into repeatable tests.
 
-#### Feature 1. Replay from Checkpoint
+#### Feature 1. Replay Production Runs Without Rebuilding Them As BPMN
 
-![Kitaru replay from checkpoint](https://assets.zenml.io/content/blog/camunda-alternatives/314b2e72/kitaru-replay-from-checkpoint.avif)
+![Kitaru replay jobs list showing completed and failed replays](https://assets.zenml.io/content/blog/camunda-alternatives/719fb57b/kitaru-replay-jobs.avif)
 
-Durable checkpoints with replay from the point of failure. Every `@checkpoint` persists its inputs and outputs to your artifact store as the flow runs. If an agent crashes at step 8 of a 30-step job, you fix the issue and replay from step 8 with Kitaru executions replay `<exec_id> --from <checkpoint>`.
+Kitaru records complete agent sessions or imports traces from Langfuse, LangSmith, Braintrust, Logfire, Arize Phoenix, and Kitaru JSONL. You can then use those real production cases for replay instead of recreating the agent’s behavior as a BPMN process or hand-written test. You can change the model, system prompt, user input, model parameters, or code version and record a new session for comparison.
 
-Checkpoints before that boundary return cached output, so you don’t re-pay for the expensive LLM and tool calls that already succeeded. This is the resume behavior the evaluation looked for, without the deterministic-code rules a general workflow engine imposes on you.
+During replay, Kitaru starts the agent’s real code from the beginning with the original session input. That makes it useful when the behavior you care about lives inside the agent loop rather than in a process diagram.
 
-#### Feature 2. Pause and Resume Workflows without Compute
+#### Feature 2. Re-Run Agent Code Against Controlled Tool History
 
-![Kitaru pause and resume without active compute](https://assets.zenml.io/content/blog/camunda-alternatives/b6204eb1/kitaru-pause-resume.gif)
+```python
+import asyncio
 
-Pause, release compute, and resume for approvals and long waits. `kitaru.wait()` suspends a run when it needs a human decision, another agent, or a webhook, then shuts the worker down so nothing is billed while it waits.
+from kitaru.client import KitaruAPIClient
+from kitaru.api_models.v1.replay import ReplayCreateRequest
+from kitaru.api_models.v1.replay_config import (
+    EvaluatorConfig,
+    HistoryConfig,
+    ToolPolicy,
+)
 
-When the input arrives minutes, hours, or days later, Kitaru rehydrates the same execution and continues from where it paused. Human approvals and long-running tasks become primitive instead of a separate scheduler plus state store you wire up around the engine.
 
-#### Feature 3. Keep the Harness and Just Add Durability with Kitaru
+async def main() -> None:
+    client = KitaruAPIClient()
+    replay = await client.replays.create(
+        ReplayCreateRequest(
+            baseline_session_id=BASELINE_ID,
+            evaluators=[EvaluatorConfig(evaluator="refund-check")],
+            tool_policy=ToolPolicy(
+                default=HistoryConfig(scope="baseline", on_miss="fail")
+            ),
+            evaluate_baselines=True,
+        )
+    )
+    print(replay.id, replay.job_id, replay.status)
 
-![Kitaru wrapping an existing agent harness](https://assets.zenml.io/content/blog/camunda-alternatives/e3495ccf/kitaru-wrap-harness.gif)
 
-Wrap your agent framework, and isolate the risky parts. Kitaru does not ask you to move your reasoning loop into a new modeling language. 
+asyncio.run(main())
+```
 
-You keep the harness your team already picked and add durability at the boundaries that matter through thin adapters such as `KitaruRunner` for the OpenAI Agents SDK or `KitaruAgent` for PydanticAI.
+Agent testing gets risky during tool calls. Replaying a refund, email, database write, or other external action against the live system can turn debugging into a second incident.
 
-The runner owns durable control flow while execution targets do the work, so a risky tool call can run in an isolated job or sandbox, and a failure there becomes one failed checkpoint instead of a lost agent.
+Kitaru lets a replay use recorded tool results, fixed responses, permitted live calls, or supported model-generated responses instead of blindly repeating every external action.
 
-#### Feature 4. Agent-Native Primitives
+For tools with side effects, you can use recorded history with a fail-on-miss rule. If the changed agent asks for a tool result that does not exist in history, the replay can fail or remain inconclusive instead of quietly treating the test as a pass.
 
-Agent-native primitives you would otherwise hand-build. `kitaru.llm()` logs the prompt, response, token counts, latency, and resolved model on every call, and reads the captured response from the checkpoint on replay, so the provider is not hit again unless the input changed.
+#### Feature 3. Test Prompt, Model, and Code Changes Across Frozen Production Cases
+
+![Kitaru experiment run comparing a candidate against a baseline cohort](https://assets.zenml.io/content/blog/camunda-alternatives/619a3678/kitaru-experiment-run.avif)
+
+Kitaru groups selected production sessions into immutable cohort versions. You can then change a model, prompt, model parameters, input, or agent code version and run one replay for every case in that cohort.
+
+The baseline and candidate can be scored with the same evaluator versions. Instead of checking whether one demo looks better, you can see which real cases improved, regressed, traded one behavior for another, or could not be judged with the available evidence.
+
+#### Feature 4. Turn Human Review Into Reusable Agent Checks
+
+![Kitaru investigation view with a reviewer annotating a tool call in a session](https://assets.zenml.io/content/blog/camunda-alternatives/fbfa54ac/kitaru-investigations.avif)
+
+Kitaru Investigations let reviewers label complete sessions or attach annotations to specific nodes and payload fields. Those judgments can then be used to check and calibrate versioned evaluators before they become part of a regression suite.
+
+Kitaru also includes offline checks for tool failures, repeated calls, output contracts, resource budgets, model rules, and expected tool workflows. These checks inspect recorded sessions without rerunning the agent or calling external tools.
+
+#### Feature 5. Keep Your Existing Agent Framework and Run Tests in Your Environment
+
+Kitaru does not ask you to move the agent loop into another workflow model. Its adapters record and replay around existing frameworks, while importers can bring in traces from Langfuse, LangSmith, Braintrust, Logfire, or Kitaru JSONL.
+
+The server uses FastAPI and PostgreSQL, while workers execute agent replays, evaluators, and imports inside environments you control. Your application packages, credentials, and tool access can stay with your team rather than moving into a separate BPMN-based process layer.
 
 #### Pricing
 
-ZenML and Kitaru have the same pricing. Pricing is unified across both workspaces. The ZenML workspace runs ML pipelines (typed step DAGs, training, batch inference). The Kitaru workspace runs production AI agents (recorded checkpoints, replay, wait/resume). You pick the workspace per project; Pro plans include both. Same $, same support tier, different SDKs and UI.
+Kitaru’s open-source version is **free to self-host**, with unlimited recording and imports, cohorts, evaluators, experiment runs, and replay on your own workers. Other than that, we offer a 14-day free trial of our hosted cloud plan (no credit card required) priced at:
 
-Let’s talk about the one you will need: Kitaru. It’s free and open source under the Apache 2.0 license, and you self-host the server with artifacts in your own S3, GCS, or Azure Blob storage. Apart from the open-source plan, ZenML also offers two paid plans with premium features for Kitaru.
+- **Cloud:** $39 per month
+- **Enterprise:** Custom
 
-Scale SaaS plan:
+Sign up to Kitaru, it’s free: [cloud.kitaru.ai](https://cloud.kitaru.ai/)
 
-- **500 monthly executions:** $399 per month. 1 project and 1 snapshot.
-- **2,000 monthly executions:** $999 per month. 3 projects and 5 snapshots.
-- **5,000 monthly executions:** $2,499 per month. 10 projects and 20 snapshots.
-
-Lastly, ZenML also offers an Enterprise plan with unlimited executions and projects for which you can [talk to an engineer from our team](https://www.zenml.io/book-your-demo).
-
-![Kitaru pricing](https://assets.zenml.io/content/blog/camunda-alternatives/4bcf3d8a/kitaru-pricing.avif)
+![Kitaru pricing plans: free open source, $39 per month Cloud, and custom Enterprise](https://assets.zenml.io/content/blog/camunda-alternatives/5f82de0f/kitaru-pricing.avif)
 
 #### Pros and Cons
 
-Kitaru is the strongest fit here when the work is shaped like a Python agent: dynamic tool loops, conditional branches, and hours-long waits for a human. It is code-first by design, runs in your own cloud with no mandatory SaaS in the data path, and gives you durable checkpoints, cheap waiting, and replay-to-compare without locking you into a model, a harness, or a platform. You move from a laptop session to Kubernetes, SageMaker, Vertex AI, or AzureML with the same flow.
+Kitaru’s strength is replay. Your production runs become the regression suite, and replay re-executes your real code against recorded tool results, so a refund or a database write never fires twice while you test. It also asks for no rewrite, wrapping PydanticAI, LangGraph, OpenAI Agents SDK, Mastra, or Vercel AI SDK in Python or TypeScript instead of moving your agent loop into a process model.
 
-The trade-offs are the flip side of that focus. Kitaru is Python-only, so it will not serve a polyglot fleet the way Temporal’s seven SDKs can, and it is younger than mature engines like Temporal or Camunda, with a smaller ecosystem. It is also deliberately scoped to agent-shaped durable execution rather than general business-process modeling. If you genuinely need formal BPMN diagrams, a visual process modeler, or broad non-agent workflow automation, a general engine still fits that job better.
+The limit sits upstream of Kitaru. Replay needs root inputs, a complete node graph, and tool calls that kept both a name and a payload, and many observability exports keep only messages and responses. Kitaru grades each session ready, partial, or unavailable at import, so you find out on day one, but message-only traces mean instrumenting before replay works.
 
 ### 2. Temporal
 
@@ -194,7 +227,7 @@ The tradeoff is operational and conceptual weight; teams must learn Temporal’s
 
 ![LangGraph pricing](https://assets.zenml.io/content/blog/camunda-alternatives/38619634/langgraph-pricing.avif)
 
-Read our detailed guide on [LangGraph pricing](https://www.zenml.io/blog/langgraph-pricing).
+📚 Read our detailed guide on [LangGraph pricing](https://www.zenml.io/blog/langgraph-pricing).
 
 #### Pros and Cons
 
@@ -407,12 +440,11 @@ OpenAI Agents SDK is a natural fit for teams that want agent behavior close to m
 
 ## The Best Camunda Alternatives for Agentic Orchestration
 
-There is no single best Camunda alternative. The right pick depends on how agent-shaped your work is, what language your team builds in, and how much of the durable runtime you want handed to you versus assembled yourself. Based on our testing, here are the three that stand out:
+There is no single best Camunda alternative. The right pick depends on how agent-shaped your work is, what language your team builds in, and how much of the durable runtime you want handed to you versus assembled yourself. Based on our testing, here are the top two that stand out:
 
-- [Kitaru by ZenML](https://www.zenml.io/product/kitaru) is best (of course, we are a little biased) when the work is a Python agent loop, and you want checkpoints, replay, cheap waiting, and `llm()` logging as primitives, wrapped around the harness you already use.
 - Temporal is best when the durability problem spans Go, Java, and TypeScript services and is not specifically agent-shaped.
 - LangGraph is best when you want explicit nodes, edges, checkpoints, and human-in-the-loop interrupts in one graph.
 
-If you are moving agents from a prototype to something that has to survive a failed step, a three-day wait for an approval, or a model swap, the question stops being “can I draw this workflow” and becomes “can I run it durably without re-paying for everything above the failure.” That is the gap Kitaru was built for. It keeps your inner loop in plain Python and your chosen agent SDK, then adds the outer runtime around it.
+If your agent already runs in Python or TypeScript and your bigger problem is testing changes safely, [Kitaru by ZenML](https://www.zenml.io/product/kitaru) is best (of course, we are a little biased). It turns real production sessions into replayable regression cases, lets you test prompt, model, and code changes against controlled tool history, and compares the candidate against the original behavior before you ship.
 
 Star the project on [GitHub](https://github.com/zenml-io/kitaru), read the [docs](https://docs.zenml.io/kitaru), or [book a demo](https://www.zenml.io/book-your-demo) if your team needs a managed control plane through ZenML Pro.
