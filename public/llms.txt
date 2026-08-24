@@ -27,14 +27,14 @@ These repo-owned Markdown mirrors are alternate, cleaner representations of high
 - [Homepage Markdown](https://www.zenml.io/index.md): plain Markdown mirror of the homepage positioning, ZenML and Kitaru workspaces, platform value points, FAQs, and CTAs.
 - [Pricing Markdown](https://www.zenml.io/pricing.md): plain Markdown mirror of pricing plans, Pro inclusions, comparison tables, compliance notes, FAQs, and CTAs.
 - [ZenML Product Markdown](https://www.zenml.io/product/zenml.md): plain Markdown mirror of the ZenML product page for ML pipelines and MLOps orchestration.
-- [Kitaru Product Markdown](https://www.zenml.io/product/kitaru.md): plain Markdown mirror of the Kitaru product page for durable Python agents.
+- [Kitaru Product Markdown](https://www.zenml.io/product/kitaru.md): plain Markdown mirror of the Kitaru product page for replay-based agent evals.
 - [Compare Hub Markdown](https://www.zenml.io/compare.md): plain Markdown mirror of the ZenML/Kitaru comparison hub.
 
 ## Product & Features
 
 - [Features](https://www.zenml.io/features): overview page describing ZenML's capabilities.
 - [ZenML Product](https://www.zenml.io/product/zenml): product page for ZenML's ML pipeline and MLOps workspace.
-- [Kitaru Product](https://www.zenml.io/product/kitaru): product page for Kitaru's durable runtime for long-running Python agents.
+- [Kitaru Product](https://www.zenml.io/product/kitaru): product page for Kitaru's replay-based evals for AI agents — import your production traces and re-run them against your next model, prompt, or code change.
 - [Iterate at warp speed](https://www.zenml.io/features/iterate-at-warp-speed): accelerate experiments with seamless local-to-cloud transitions, caching and containerization.
 - [Auto-track everything](https://www.zenml.io/features/auto-track-everything): automatic logging and versioning for full pipeline observability and reproducibility.
 - [Shared ML building blocks](https://www.zenml.io/features/shared-ml-building-blocks): reusable components to boost team productivity.
@@ -66,7 +66,7 @@ These repo-owned Markdown mirrors are alternate, cleaner representations of high
 
 ## Comparisons
 
-- [Compare Hub](https://www.zenml.io/compare): hub for ZenML/MLOps and Kitaru/agent-runtime comparison pages.
+- [Compare Hub](https://www.zenml.io/compare): hub for ZenML/MLOps and Kitaru/agent-evals comparison pages.
 - [ZenML vs Orchestrators](https://www.zenml.io/vs/zenml-vs-orchestrators): overview comparing ZenML to traditional orchestrators like Airflow, Kubeflow and Kedro.
 - [ZenML vs Experiment Trackers](https://www.zenml.io/vs/zenml-vs-experiment-trackers): overview of comparisons with MLflow, Weights & Biases, Neptune AI and CometML.
 - [ZenML vs End-to-End Platforms](https://www.zenml.io/vs/zenml-vs-e2e-platforms): overview comparing ZenML with complete platforms like AWS Sagemaker, ClearML, Metaflow, Valohai, Vertex AI and Azure ML.
@@ -84,6 +84,7 @@ These repo-owned Markdown mirrors are alternate, cleaner representations of high
 ## Company & Culture
 
 - [Company & Our Values](https://www.zenml.io/company): culture, values, team and job applications.
+- [Contact](https://www.zenml.io/contact): how to reach the team — email `hello@zenml.io`, community Slack, or book a demo.
 - [Careers](https://www.zenml.io/careers): open roles and application information.
 - [Startups and Academics](https://www.zenml.io/startups-and-academics): special pricing program for startups and research institutions.
 - [ROI Calculator](https://www.zenml.io/roi-calculator): interactive calculator estimating return on investment.
