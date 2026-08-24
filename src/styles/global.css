@@ -19,7 +19,7 @@ html { scroll-behavior: smooth; }
  *   - :root                 → Kitaru theme (warm orange primary, cream ground)
  *   - [data-app="kitaru"]   → same as :root (explicit override)
  *   - [data-app="zenml"]    → ZenML theme (purple primary, white ground — original brand)
- *   - [data-app="zenml-next"] → 2026 rebrand scope, type roles only so far (no page sets it yet)
+ *   - [data-app="zenml-next"] → 2026 rebrand scope (type roles + palette; /styleguide mounts it)
  *
  * BaseLayout.astro sets data-app="zenml" by default for the whole site.
  * Per-page overrides (e.g. /product/kitaru) set data-app="kitaru".
@@ -126,10 +126,10 @@ html { scroll-behavior: smooth; }
 }
 
 /* ─── 2b. ZenML 2026 rebrand scope (in progress — issue #246) ───────────────
- * Type roles for the rebranded template system. No page sets this attribute
- * yet; Phase 3 templates and the /styleguide mount under it. Components must
- * reference the role tokens (--font-display / --font-sans / --font-label),
- * never family names, so a substitution stays a token edit.
+ * Type roles + full color palette for the rebranded template system. First
+ * consumer: /styleguide (wrapper div); Phase 3 templates mount under it next.
+ * Components must reference the role and semantic tokens, never family names
+ * or raw hexes, so a substitution stays a token edit.
  * Code blocks keep JetBrains Mono (--font-mono is deliberately not overridden). */
 [data-app="zenml-next"] {
   /* Borna is a geometric sans-serif (display role ≠ serif classification) */
@@ -138,6 +138,153 @@ html { scroll-behavior: smooth; }
   --font-sans: "Rethink Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   --font-label: "Nudica Mono", ui-monospace, monospace;
+
+  /* Display tracking */
+  /* Borna headlines take negative tracking, scaled by size: −2% at medium
+   * headline sizes, tightening to −4% at the largest display sizes. */
+  --tracking-heading: -0.02em;
+  --tracking-display: -0.04em;
+
+  /* Rendering: match the site-wide body smoothing (so the scope is
+   * self-contained wherever it mounts), and refuse synthesized bold/italic —
+   * a weight or style we don't ship must render in a real cut, visibly,
+   * not as a browser-faked approximation of the brand faces. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+
+  /* --- 2026 rebrand palette (issue #266) -----------------------------------
+   * Generated verbatim from the canonical brand token source — never edit a
+   * hex here by hand; regenerate from the source so the two cannot drift.
+   * Add new tokens under one of the labelled subsections below (the
+   * styleguide derives its group headings from those labels), never
+   * directly under this header.
+   * Roles: sage + cream carry surfaces; orange + blue are complementary
+   * accents only; purple + magenta are tertiary, sparing, never large
+   * surfaces or Kitaru-associated. Dark semantic set deferred to the tone work.
+   * CAUTION: the orange/blue/purple ramps below shadow same-named tokens in
+   * the site-wide @theme scale INSIDE this scope — a stock utility like
+   * `bg-orange-600` resolves to the rebrand value under [data-app="zenml-next"].
+   * Intended at cutover; until then, don't render old-scale components here. */
+
+  /* Semantic (light) */
+  --background: #FAF8F4;
+  --foreground: #413D37;
+  --card: #FFFEFC;
+  --card-foreground: #413D37;
+  --popover: #FCFAF6;
+  --popover-foreground: #413D37;
+  --primary: #5D7545;
+  --primary-foreground: #F5F7F4;
+  --secondary: #FCFAF6;
+  --secondary-foreground: #645D54;
+  --secondary-fill: #F1ECE3;
+  --muted: #EEE8DC;
+  --muted-foreground: #6E6055;
+  --accent: #EEE8DC;
+  --accent-foreground: #645D54;
+  --border: #E9E4DC;
+  --input: #E9E4DC;
+  --ring: #5D7545;
+  --destructive: #B5494F;
+  --destructive-foreground: #FEFCFA;
+  --brand-mark-bg: #F6F9F1;
+  --brand-mark-fg: #3C4C38;
+
+  /* Sage ramp */
+  --color-sage-50: #F6F9F1;
+  --color-sage-100: #EBF0D8;
+  --color-sage-200: #E3E8CD;
+  --color-sage-300: #DBE0C2;
+  --color-sage-400: #BECAA6;
+  --color-sage-500: #9AAD82;
+  --color-sage-600: #7A9268;
+  --color-sage-700: #63775E;
+  --color-sage-800: #3C4C38;
+  --color-sage-900: #151E19;
+
+  /* Cream ramp */
+  --color-cream-50: #F5F7F4;
+  --color-cream-100: #EEE8DC;
+  --color-cream-200: #E0CFB7;
+  --color-cream-300: #D5B595;
+  --color-cream-400: #C3A37C;
+  --color-cream-500: #AC947F;
+  --color-cream-600: #8C7D70;
+  --color-cream-700: #645D54;
+  --color-cream-800: #413D37;
+  --color-cream-900: #1C1E1A;
+
+  /* Olive ramp */
+  --color-olive-base: #9AAD82;
+  --color-olive-mid: #7A9268;
+  --color-olive-deep: #63775E;
+  --color-olive-dark: #3C4C38;
+  --color-olive-darkest: #151E19;
+
+  /* Orange ramp */
+  --color-orange-50: #FCF7F2;
+  --color-orange-100: #FBE8DB;
+  --color-orange-200: #FAD3B8;
+  --color-orange-300: #F7B382;
+  --color-orange-400: #F3934F;
+  --color-orange-500: #EB7119;
+  --color-orange-600: #B65916;
+  --color-orange-700: #844315;
+  --color-orange-800: #5A2F11;
+  --color-orange-900: #361E0D;
+
+  /* Blue ramp */
+  --color-blue-50: #F5F9FA;
+  --color-blue-100: #E1F1F4;
+  --color-blue-200: #C4E7ED;
+  --color-blue-300: #9FD9E5;
+  --color-blue-400: #81CBD9;
+  --color-blue-500: #47BAD1;
+  --color-blue-600: #239FB8;
+  --color-blue-700: #157A8E;
+  --color-blue-800: #0D5563;
+  --color-blue-900: #093139;
+
+  /* Purple ramp */
+  --color-purple-50: #F5F0FC;
+  --color-purple-100: #EDE7F5;
+  --color-purple-200: #D9CEEE;
+  --color-purple-300: #C2B0E4;
+  --color-purple-400: #A994D4;
+  --color-purple-500: #9074C3;
+  --color-purple-600: #7255AE;
+  --color-purple-700: #573E92;
+  --color-purple-800: #3D2870;
+  --color-purple-900: #2B1A4A;
+
+  /* Magenta ramp */
+  --color-magenta-50: #FBF4F8;
+  --color-magenta-100: #F6DFEE;
+  --color-magenta-200: #F1C0E1;
+  --color-magenta-300: #EB94CE;
+  --color-magenta-400: #E160B6;
+  --color-magenta-500: #D5309E;
+  --color-magenta-600: #A5277B;
+  --color-magenta-700: #79205B;
+  --color-magenta-800: #52193F;
+  --color-magenta-900: #311126;
+
+  /* Section tone bands */
+  --tone-light-canvas: #F6F9F1;
+  --tone-sage-tint-band: #DBE0C2;
+  --tone-sage-deep-band: #BECAA6;
+  --tone-dark-band: #413D37;
+
+  /* Accent aliases */
+  /* Blue pair as ratified — but it MEASURES 4.30:1, just under the 4.5 floor
+   * (the styleguide's contrast table flags it FAIL). Known open item; do not
+   * ship it as body-size text until the value is re-adjudicated. */
+  --color-accent-blue-tint: var(--color-blue-100);
+  --color-accent-blue-text: var(--color-blue-700);
+  /* Kitaru orange text-on-light companion (not a ramp stop): AA on both the
+   * cream ground and the orange tint band. */
+  --color-accent-orange-text: #995000;
 }
 
 /* ─── 3. ZenML brand scale (original purple, theme-independent) ─────────────
@@ -524,10 +671,11 @@ html { scroll-behavior: smooth; }
 }
 
 /* 2026 rebrand typefaces (issue #253). Consumed only inside the
- * `[data-app="zenml-next"]` scope above, so no page downloads these until a
- * rebrand surface ships. Foundry-supplied woff2 files served as-is (full
- * character set, hence no unicode-range). No preloads yet on purpose — add
- * them alongside the first shipped rebrand surface. */
+ * `[data-app="zenml-next"]` scope above — today that is /styleguide alone;
+ * every other page still downloads zero of these bytes. Foundry-supplied
+ * woff2 files served as-is (full character set, hence no unicode-range).
+ * No preloads yet on purpose — add them with the first MARKETING surface
+ * that mounts the scope, not for the unlisted reference page. */
 
 /* Borna — display face for headlines and section headers */
 @font-face {

@@ -1,0 +1,47 @@
+---
+/**
+ * TemplateStage — renders a `built` template registry entry live, inside a
+ * bordered stage, for the Components section of /styleguide.
+ *
+ * Every entry in src/lib/templates/registry.ts is `componentPath: null`
+ * today (Wave 1/#248 hasn't landed a template yet), so this component has
+ * no live caller and cannot be exercised by `pnpm build` yet — it exists so
+ * the render path is correct the moment the first template's componentPath
+ * stops being null, instead of being written retroactively under review
+ * pressure. See CLAUDE.md's derivation rule and issue #266.
+ *
+ * Resolution is by componentPath, via Vite's import.meta.glob over the
+ * templates directory (eager, so this stays a static page — no client JS).
+ * A path that doesn't resolve to a real file renders an honest notice
+ * instead of failing the build, since a stale registry entry (path edited,
+ * file moved) should be visible on the page, not a 500.
+ */
+interface Props {
+  componentPath: string;
+}
+
+const { componentPath } = Astro.props;
+
+const templateModules = import.meta.glob(
+  "/src/components/templates/**/*.astro",
+  {
+    eager: true,
+  },
+) as Record<string, { default: unknown }>;
+
+const key = componentPath.startsWith("/") ? componentPath : `/${componentPath}`;
+const Component = templateModules[key]?.default;
+---
+
+{
+  Component ? (
+    <div class="rounded-md border border-gray-200 p-space-sm">
+      {/* @ts-expect-error — resolved dynamically from the registry's componentPath; not statically typeable */}
+      <Component />
+    </div>
+  ) : (
+    <p class="rounded-md border border-gray-200 bg-gray-50 p-space-xs font-mono text-sm text-gray-500">
+      Registry says built, but no file resolves at {componentPath}.
+    </p>
+  )
+}
