@@ -51,44 +51,6 @@ export function Eyebrow({
   );
 }
 
-export function SectionTitle({
-  children,
-  className,
-}: {
-  children: ComponentChildren;
-  className?: string;
-}) {
-  return (
-    <h2
-      className={cn(
-        "text-balance text-3xl leading-[1.1] font-medium tracking-[-0.02em] md:text-[2.75rem]",
-        className,
-      )}
-    >
-      {children}
-    </h2>
-  );
-}
-
-export function Lede({
-  children,
-  className,
-}: {
-  children: ComponentChildren;
-  className?: string;
-}) {
-  return (
-    <p
-      className={cn(
-        "max-w-2xl text-base leading-relaxed text-ink-soft md:text-lg",
-        className,
-      )}
-    >
-      {children}
-    </p>
-  );
-}
-
 export function CopyCommand({
   cmd,
   tone = "light",
