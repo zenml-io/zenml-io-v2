@@ -68,7 +68,10 @@ export function FilterEmptyState({
   const hasQuery = !!query;
 
   return (
-    <output class="block rounded-lg border border-gray-200 bg-gray-50 py-16 text-center">
+    <div
+      role="status"
+      class="block rounded-lg border border-gray-200 bg-gray-50 py-16 text-center"
+    >
       <div class="mx-auto max-w-md px-4">
         <p class="text-lg font-medium text-gray-700">
           No entries match your filters
@@ -167,6 +170,6 @@ export function FilterEmptyState({
           </div>
         )}
       </div>
-    </output>
+    </div>
   );
 }

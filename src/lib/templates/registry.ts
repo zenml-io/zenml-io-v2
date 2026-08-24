@@ -423,6 +423,8 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoProps: {
       eyebrow: "The platform advantage",
       heading: "One foundation for ML pipelines and AI agents",
+      // h3: the demo renders under Components (h2) > entry (h3) on /styleguide
+      headingLevel: 3,
       emphasis: "AI agents",
       description:
         "ZenML is a metadata layer on top of your existing infrastructure, meaning all data and compute stays on your side.",

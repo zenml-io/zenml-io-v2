@@ -51,7 +51,7 @@ export default function EmptyState({
   const headingClass = classOverrides?.heading ?? EMPTY_STATE_HEADING;
 
   return (
-    <output class={containerClasses}>
+    <div role="status" class={containerClasses}>
       <div class={innerClass}>
         <p class={headingClass}>{heading}</p>
         {description && <p class={EMPTY_STATE_DESCRIPTION}>{description}</p>}
@@ -69,6 +69,6 @@ export default function EmptyState({
           </div>
         )}
       </div>
-    </output>
+    </div>
   );
 }
