@@ -298,13 +298,18 @@ html { scroll-behavior: smooth; }
   --color-dev-bg:    #dbeafe;
   --color-dev-fg:    #1d4ed8;
 
-  /* === Custom Spacing === */
-  --spacing-space-xxs: 0.5rem;
-  --spacing-space-xs: 1rem;
-  --spacing-space-sm: 1.5rem;
-  --spacing-space-md: 2rem;
-  --spacing-space-lg: 3rem;
-  --spacing-space-xxl: 5rem;
+  /* === Custom Spacing ===
+     8 · 16 · 24 · 32 · 48 · 64 · 80 — every step a multiple of 8, stepping by 8
+     up to 32 and by 16 above it.
+     Tailwind v4 generates utilities from the `--spacing-*` namespace, so these
+     are available as `p-space-md`, `gap-space-lg`, `py-space-xl` and so on. */
+  --spacing-space-xxs: 0.5rem; /* 8px  */
+  --spacing-space-xs: 1rem; /* 16px */
+  --spacing-space-sm: 1.5rem; /* 24px */
+  --spacing-space-md: 2rem; /* 32px */
+  --spacing-space-lg: 3rem; /* 48px */
+  --spacing-space-xl: 4rem; /* 64px */
+  --spacing-space-xxl: 5rem; /* 80px */
 
   /* === Container Width === */
   --container-lg: 1440px;

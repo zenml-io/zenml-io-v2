@@ -14,7 +14,7 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 - **Production URL**: https://www.zenml.io
 - **Hosting**: The accepted Astro 7 Cloudflare Worker serves production.
   Cloudflare Pages remains available as the deeper fallback.
-- **Scale**: content collections defined in `src/content.config.ts`, ~2,350 content items, ~2,560 assets on R2
+- **Scale**: 24 content collections defined in `src/content.config.ts`, ~3,335 content items, ~2,560 assets on R2
 - **History**: Migrated from Webflow in Feb 2026 (`docs/MIGRATION.md`). Unified with `kitaru.ai` in May 2026 (`MERGE_PLAN.md`).
 - **Private details**: See `CLAUDE.private.md` (gitignored) for infrastructure IDs, traffic numbers, and internal docs index
 
@@ -36,7 +36,7 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 | Hosting | **Cloudflare Workers** in production; **Cloudflare Pages** retained as the deeper fallback |
 | Assets | **Cloudflare R2** — object storage for images/files |
 | Styling | **Tailwind CSS** — utility-first |
-| Interactive | **Preact islands** — client-side components including LLMOpsFilter, MLOpsFilter, ContactForm, DemoRequestForm, BlogSearch, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, and RoiCalculator |
+| Interactive | **Preact islands** — client-side components: LLMOpsFilter, MLOpsFilter, ContactForm, DemoRequestForm, BlogSearch, CookieConsent, FeatureTabsSlider, ProTestimonialCarousel, and RoiCalculator (9 in `src/components/islands/`; Kitaru's are separate, see below) |
 | Search | **Pagefind** — build-time full-text search index for ops-database pages, paired with JSON faceted filtering |
 | Forms | `ContactForm` / `DemoRequestForm` Preact islands → `src/pages/api/forms/[formType].ts` (`prerender: false`) → Segment HTTP API. Cal.com for demo booking (`/book-your-demo` is the canonical URL). Brevo for newsletter. The Kitaru landing surfaces all share these flows; the standalone kitaru.ai endpoints were never wired into the merged site. |
 | Analytics | **Plausible** (`script.pageview-props.js` with `event-surface`) + GA4 + **single Segment workspace** (D4 was superseded — audit showed the Kitaru-side write key had no callers in the merged site). The Segment `analytics.page()` call still receives `{surface}` as a property so downstream segmentation/CRM routing can filter by it. Hostname-gated to production. See "Unified Brand & Surface" below. |
@@ -79,13 +79,19 @@ The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was s
 - **This is a public repository.** All commits, documentation, and code are visible to the public. Never commit secrets, API keys, infrastructure IDs, internal URLs, traffic numbers, or other sensitive information. Use `CLAUDE.private.md` (gitignored) for private details. The `design/` folder and `scripts/internal/` are also gitignored for internal-only artifacts
 - `design/` folder is for heavy artifacts (exports, screenshots, JSON dumps, internal docs) — **never commit to git**
 - Make targeted git commits (only relevant files)
+- **Keep `AGENTS.md` in sync with this file**: any change to conventions, commands, or quality gates in `CLAUDE.md` must be checked against — and reflected in — `AGENTS.md` in the same commit, and vice versa
 - **Do not commit intermediate planning/review artifacts by default.** Files under `docs/plans/`, `docs/reviews/`, `prompt-exports/`, or similar orchestration scratch locations are working notes for agents unless the user explicitly asks to keep them. Before staging, check `git status --short` and leave unrelated or intermediate plans/reviews unstaged. If a plan becomes a durable product/architecture document, confirm that intent before committing it
 - After running tests, re-run them if you make subsequent changes
-- **Before pushing code changes**, run the same local quality gates that PR CI runs: `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`, `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm smoke:dist`, `pnpm check:worker`, then `pnpm check:islands` (or the combined command `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:worker && pnpm check:islands`). If you change code after any of those commands, rerun the affected check before pushing. Documentation-only edits can skip the build unless they change generated content or site behavior
+- **Before pushing code changes**, run the same local quality gates that PR CI runs: `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`, `pnpm check:registry`, `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm smoke:dist`, `pnpm check:worker`, then `pnpm check:islands` (or the combined command `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm check:registry && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:worker && pnpm check:islands`). If you change code after any of those commands, rerun the affected check before pushing. Documentation-only edits can skip the build unless they change generated content or site behavior
 - PR CI enforces the package quality gates in the required `Repo checks` job:
   `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`,
   `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm smoke:dist`,
-  `pnpm check:worker`, then `pnpm check:islands`. It packages that exact
+  `pnpm check:worker`, then `pnpm check:islands`. **`pnpm check:registry` is
+  NOT yet in this job** — adding a step to `deploy.yml` also requires updating
+  its byte-identical trusted mirror `.github/trusted/worker-artifact-workflow.yml`
+  and the git-blob-SHA pin in `tests/config/workerPreviewControlPlane.test.ts`,
+  which is a reviewed release-boundary change and not a side effect. Run it
+  locally until then; see `docs/worker-release-runbook.md`. It packages that exact
   validated `dist/` output. A trusted manual workflow on `main` may upload the
   exact artifact from an eligible same-repository PR to the isolated preview
   Worker after explicit review; fork and Dependabot runs receive no Cloudflare
@@ -281,9 +287,9 @@ Important rules:
 - `src/lib/footer.ts` — Footer data (typed, not hardcoded)
 
 ### Homepage
-- `src/pages/index.astro` — Homepage composition (13 section components)
+- `src/pages/index.astro` — Homepage composition (15 section components)
 - `src/lib/homepage.ts` — All homepage marketing copy, stats, URLs, FAQ
-- `src/components/sections/` — 37 section components
+- `src/components/sections/` — 43 section components
 
 ### Preact Islands (interactive client-side components)
 - `src/components/islands/LLMOpsFilter.tsx` — LLMOps database "Research Hub" (faceted sidebar with industry/tag facets, Pagefind full-text search, AND/OR tag mode, sort, clickable chips, mobile drawer, WCAG-compliant accessibility)
@@ -293,7 +299,6 @@ Important rules:
 - `src/components/islands/DemoRequestForm.tsx` — Demo request form used by `/book-your-demo`
 - `src/components/islands/CookieConsent.tsx` — Cookie consent banner (4 categories)
 - `src/components/islands/FeatureTabsSlider.tsx` — Homepage auto-cycling feature tabs
-- `src/components/islands/LottieHero.tsx` — Hero Lottie animation player
 - `src/components/islands/ProTestimonialCarousel.tsx` — /pro page testimonial carousel
 - `src/components/islands/RoiCalculator.tsx` — ROI calculator interactive form
 
@@ -314,7 +319,8 @@ The old standalone `kitaru.ai` API routes (`get-started`, `waitlist`, `newslette
 - `src/content/compare-kitaru/*.mdx` — Kitaru-vs-X comparison pages
 
 ### Get Started routing
-- `src/pages/get-started.astro` — ZenML open-source onboarding (hero, 3-step walkthrough, architecture, projects, resources). The Phase-4 ML/Agent chooser was removed; `/get-started/zenml` 301-redirects here (`public/_redirects`). Kitaru's entry point is its own `/product/kitaru` landing.
+- `src/pages/get-started.astro` — ZenML open-source onboarding (hero, 3-step walkthrough, architecture, projects, resources). `/get-started/zenml` 301-redirects here (`public/_redirects`). Kitaru's entry point is its own `/product/kitaru` landing.
+  - **KNOWN BUG — the Phase-4 ML/Agent chooser was only half-removed.** The routing revert landed (`public/_redirects:152`) but the UI did not: `GET_STARTED_TABS` in `src/lib/getStarted.ts:51` still renders a live `role="tablist"` chooser in this page. Its Kitaru tab reads *"Agent runtime"* — the durable-runtime positioning retired in the Aug 2026 pivot. This file previously claimed the chooser "was removed"; it ships. Finish the revert or re-decide the page, but do not trust the old claim.
 
 ### Layouts
 - `src/layouts/BaseLayout.astro` — Main layout (nav, footer, head slots, analytics)
