@@ -20,6 +20,7 @@
     "check:worker": "tsx scripts/check-worker-runtime.ts",
     "check:worker-bindings": "tsx scripts/check-worker-bindings.ts",
     "check:islands": "tsx scripts/check-island-hydration.ts",
+    "check:motion": "tsx scripts/check-motion.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "validate:content": "tsx scripts/phase2/validate-content.ts",
@@ -27,8 +28,8 @@
     "validate:mlops": "tsx scripts/phase2/validate-content.ts --collection=mlops-database",
     "og:compare": "tsx scripts/og/generate-compare-og.ts",
     "og:compare:write": "tsx scripts/og/generate-compare-og.ts --write",
-    "lint": "biome check src/ tests/ vitest.config.ts scripts/check-dist-smoke.ts scripts/check-island-hydration.ts scripts/check-worker-bindings.ts scripts/check-worker-runtime.ts",
-    "lint:fix": "biome check --fix src/ tests/ vitest.config.ts scripts/check-dist-smoke.ts scripts/check-island-hydration.ts scripts/check-worker-bindings.ts scripts/check-worker-runtime.ts",
+    "lint": "biome check src/ tests/ vitest.config.ts scripts/check-dist-smoke.ts scripts/check-island-hydration.ts scripts/check-motion.ts scripts/check-worker-bindings.ts scripts/check-worker-runtime.ts",
+    "lint:fix": "biome check --fix src/ tests/ vitest.config.ts scripts/check-dist-smoke.ts scripts/check-island-hydration.ts scripts/check-motion.ts scripts/check-worker-bindings.ts scripts/check-worker-runtime.ts",
     "format": "biome format --write src/",
     "astro": "astro"
   },

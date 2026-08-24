@@ -85,14 +85,87 @@ Additional rules:
 - Clickable elements always get `cursor-pointer` — browsers do not default
   `<button>` to it.
 
+## Responsive contract
+
+Every section is one of two width modes — there is no third option:
+
+- **Centered.** Content caps at the content-width token (1524px) with the
+  fluid gutter token (`clamp(16px, 3vw, 48px)`) on each side. The box tops
+  out at 1620px, is auto-centered, and is fully fluid below that. No
+  breakpoint participates in the container itself — width and gutter are
+  continuous functions of viewport, not a step function.
+- **Full-bleed.** Spans the entire viewport. The canonical breakout is
+  `width: 100vw` with `margin-inline: calc(50% - 50vw)`. On desktop
+  platforms with a classic (space-taking) scrollbar, `100vw` includes the
+  scrollbar gutter, which overshoots the visual viewport and creates
+  page-level horizontal overflow — so every full-bleed section pairs with
+  `overflow-x: clip` on the page root as the named guard. Full-bleed
+  sections still center their inner content per the centered mode above
+  unless the design is intentionally edge-to-edge.
+
+This supersedes the earlier 1440px content-width convention. Breakpoints
+stay as defined in code (stock Tailwind plus the one 2xl override); the
+container itself is breakpoint-independent — it never steps. The contract
+binds everything built from here on; existing sections migrate to it wave
+by wave, not in one sweep.
+
+**Artboard mapping**: design artboards are authored at 375 and 1440. A 1440
+artboard reflows into the wider built container — the layout grows, gutters
+and columns absorb the extra width — it is never scaled up.
+
+One named default per content shape, chosen so nobody has to invent a menu
+of options at build time:
+
+- **Wide tables**: horizontal scroll inside the section, an explicit
+  `min-width` (never below 600px), a sticky first column, and a visible
+  scroll affordance (edge fade or inset shadow) — silent truncation is a
+  defect. Card-collapse is never used for comparison matrices; pricing-tier
+  cards are the sole sanctioned card-collapse.
+- **Diagrams**: a re-authored narrow variant below the medium breakpoint —
+  fewer nodes, shorter labels, vertical flow that preserves causal order —
+  never a scaled-down wide SVG. A diagram without its narrow variant does
+  not ship.
+- **Grids**: explicit column steps per grid (e.g. 1 → 2 → 3), stated where
+  the grid is defined. `auto-fit`/`minmax` column counts are banned for
+  marketing grids — column count is a design decision, not a viewport
+  accident. Grids inside the 1524 container state their top step
+  explicitly.
+- **Code panes**: never wrap, never reflow, never step type below 13px —
+  the pane scrolls horizontally inside its own container with the same
+  visible affordance as tables. The copy control is pinned outside the
+  scroll region and copies the full source, never the visible slice. On
+  the smallest screens a code pane may go full-bleed while the surrounding
+  prose stays centered.
+- **Heroes/headlines**: step down in size, never truncate.
+
+The page body never scrolls horizontally; anything wider than its
+container scrolls inside its own region.
+
 ## Motion and atmosphere
 
+- **Budget: at most 3 motion moments per page.** A moment is any animation
+  a visitor would notice as animation. The house scroll-reveal on section
+  entry is the baseline and does not count toward it.
 - **At most one ambient/atmospheric section per page** — shader backdrop,
   grain field, or glow wash. A second ambient section on the same page is a
-  review blocker, not a taste call.
+  review blocker, not a taste call. Enforced by `pnpm check:motion` against
+  the built output.
+- **Hydrated-island budget: at most 3 islands per page at `client:load` /
+  `client:visible`**, not counting the site-wide consent banner. Anything
+  beyond hydrates via `client:idle` or `client:media` and carries a written
+  justification at its mount site. Enforced by `pnpm check:motion` against
+  the built output.
 - Every new section adopts the site scroll-reveal pattern: revealed section,
   staggered children.
-- All motion honors `prefers-reduced-motion`.
+- **Reduced motion must reveal, never hide.** The server-rendered state is
+  visible; scripts add animation on top, they never gate visibility —
+  content that needs JS to become visible is a defect. Ambient/WebGL
+  treatments must not allocate or draw under `prefers-reduced-motion`;
+  frozen-but-still-running does not comply.
+- **No simulated typing animations, ever.** A static blinking caret is
+  permitted and counts as a motion moment. Count-up numerals are permitted
+  only where the final value is server-rendered, so the number is correct
+  with JS off and under reduced motion.
 
 ## Content and data conventions
 
