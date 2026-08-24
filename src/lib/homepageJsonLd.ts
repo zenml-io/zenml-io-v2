@@ -1,4 +1,4 @@
-import { SITE_URL } from "./constants";
+import { COMPANY_ADDRESS, CONTACT_EMAIL, SITE_URL } from "./constants";
 import { FAQ } from "./homepage";
 import {
   HOMEPAGE_UNIFIED_SEO,
@@ -44,16 +44,24 @@ export function buildHomepageJsonLd(): Record<string, unknown> {
         ],
         address: {
           "@type": "PostalAddress",
-          streetAddress: "Schellingstr. 36",
-          postalCode: "80799",
-          addressLocality: "Munich",
-          addressCountry: "DE",
+          streetAddress: COMPANY_ADDRESS.street,
+          postalCode: COMPANY_ADDRESS.postalCode,
+          addressLocality: COMPANY_ADDRESS.city,
+          addressCountry: COMPANY_ADDRESS.countryCode,
         },
-        contactPoint: {
-          "@type": "ContactPoint",
-          contactType: "sales",
-          url: absoluteUrl("/book-your-demo"),
-        },
+        contactPoint: [
+          {
+            "@type": "ContactPoint",
+            contactType: "sales",
+            url: absoluteUrl("/book-your-demo"),
+          },
+          {
+            "@type": "ContactPoint",
+            contactType: "customer support",
+            email: CONTACT_EMAIL,
+            url: absoluteUrl("/contact"),
+          },
+        ],
       },
       {
         "@type": "WebPage",

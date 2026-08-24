@@ -77,6 +77,7 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
       { label: "Careers", href: "/careers" },
       { label: "About", href: "/company" },
       { label: "Newsletter", href: "/newsletter-signup" },
+      { label: "Contact", href: "/contact" },
       { label: "Community Slack", href: "/slack" },
     ],
   },
