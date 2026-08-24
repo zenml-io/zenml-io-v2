@@ -11,6 +11,7 @@ import { getCollection } from "astro:content";
 import Button from "../../components/Button.astro";
 import CaseStudyCard from "../../components/sections/CaseStudyCard.astro";
 import FeaturesHubCTA from "../../components/sections/FeaturesHubCTA.astro";
+import SectionIntro from "../../components/system/SectionIntro.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   CASE_STUDIES_HUB_BANNER,
@@ -37,15 +38,17 @@ const caseStudies = allCaseStudies.sort(
     {/* Hero */}
     <section class="bg-linear-to-t from-zenml-50 to-white border-b border-gray-200 pt-16 pb-12 sm:pt-24 sm:pb-16">
       <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-        <span class="mb-3 inline-block text-xs font-semibold uppercase tracking-wider text-zenml-500">
-          {CASE_STUDIES_HUB_HERO.eyebrow}
-        </span>
-        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
-          {CASE_STUDIES_HUB_HERO.headline}
-        </h1>
-        <p class="mt-4 text-lg text-gray-600 leading-relaxed">
-          {CASE_STUDIES_HUB_HERO.body}
-        </p>
+        <SectionIntro
+          eyebrow={CASE_STUDIES_HUB_HERO.eyebrow}
+          heading={CASE_STUDIES_HUB_HERO.headline}
+          headingLevel={1}
+          description={CASE_STUDIES_HUB_HERO.body}
+          classOverrides={{
+            eyebrow: "text-xs font-semibold uppercase tracking-wider text-zenml-500",
+            heading: "text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl",
+            headingSpacing: "mt-3",
+          }}
+        />
         <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Button href={CASE_STUDIES_HUB_HERO.primaryCta.href} size="lg">
             {CASE_STUDIES_HUB_HERO.primaryCta.label}

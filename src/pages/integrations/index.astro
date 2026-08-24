@@ -9,6 +9,7 @@
 import { getCollection } from "astro:content";
 import Button from "../../components/Button.astro";
 import IntegrationCard from "../../components/integrations/IntegrationCard.astro";
+import SectionIntro from "../../components/system/SectionIntro.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { R2_WEBFLOW_BASE } from "../../lib/constants";
 
@@ -38,16 +39,18 @@ for (const i of allIntegrations) {
   {/* ── Hero ─────────────────────────────────────────────────── */}
   <div class="bg-white">
     <div class="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-20 lg:px-8">
-      <div class="mb-4 text-sm font-semibold uppercase tracking-widest text-primary-600/40">
-        Integrations
-      </div>
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
-        Explore the MLOps Landscape with ZenML
-      </h1>
-      <div class="mt-4" />
-      <p class="mx-auto max-w-2xl text-lg text-gray-600">
-        ZenML integrates with many different third-party tools. Once code is organized into a ZenML pipeline, you can supercharge your ML workflows with the best-in-class solutions from various MLOps areas.
-      </p>
+      <SectionIntro
+        eyebrow="Integrations"
+        heading="Explore the MLOps Landscape with ZenML"
+        headingLevel={1}
+        description="ZenML integrates with many different third-party tools. Once code is organized into a ZenML pipeline, you can supercharge your ML workflows with the best-in-class solutions from various MLOps areas."
+        classOverrides={{
+          eyebrow: "text-sm font-semibold uppercase tracking-widest text-primary-600/40",
+          heading: "text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl",
+          headingSpacing: "mt-4",
+          description: "mx-auto max-w-2xl text-lg text-gray-600",
+        }}
+      />
       <div class="mt-4" />
       <a
         href="https://docs.zenml.io/stacks-and-components/component-guide/integration-overview"

@@ -7,6 +7,7 @@
  */
 import { getCollection } from "astro:content";
 import Badge from "../../components/Badge.astro";
+import SectionIntro from "../../components/system/SectionIntro.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getMLOpsIndustryTagCounts } from "../../lib/mlops";
 
@@ -43,13 +44,18 @@ const commonIndustries = (await getMLOpsIndustryTagCounts(allEntries)).slice(
 >
   <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
     <header class="mb-12">
-      <p class="mb-3 text-sm font-semibold uppercase tracking-wider text-success-700">MLOps topic</p>
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900">
-        MLOps Tag: {tag.data.name}
-      </h1>
-      <p class="mt-4 text-lg text-gray-600">
-        {allEntries.length} {allEntries.length === 1 ? "entry" : "entries"} with this tag
-      </p>
+      <SectionIntro
+        eyebrow="MLOps topic"
+        heading={`MLOps Tag: ${tag.data.name}`}
+        headingLevel={1}
+        description={`${allEntries.length} ${allEntries.length === 1 ? "entry" : "entries"} with this tag`}
+        classOverrides={{
+          eyebrow: "text-sm font-semibold uppercase tracking-wider text-success-700",
+          heading: "text-4xl font-bold tracking-tight text-gray-900",
+          headingSpacing: "mt-3",
+          description: "text-lg text-gray-600",
+        }}
+      />
       <a href="/mlops-database" class="mt-2 inline-block text-sm text-primary-600 hover:text-primary-700">
         &larr; Back to MLOps Database
       </a>

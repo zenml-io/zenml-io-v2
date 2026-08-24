@@ -1,5 +1,6 @@
 ---
 import Button from "../components/Button.astro";
+import SectionIntro from "../components/system/SectionIntro.astro";
 /**
  * Deployments page.
  *
@@ -69,15 +70,17 @@ import {
     <section class="deployments-dark-rail py-24 sm:py-28">
       <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-3xl text-center" data-reveal>
-          <p class="text-sm font-semibold uppercase tracking-wider text-zenml-400">
-            {DEPLOYMENTS_ARCHITECTURE.eyebrow}
-          </p>
-          <h2 class="mt-2 text-2xl font-bold text-white sm:text-3xl">
-            {DEPLOYMENTS_ARCHITECTURE.headline}
-          </h2>
-          <p class="mt-3 text-lg text-gray-300">
-            {DEPLOYMENTS_ARCHITECTURE.body}
-          </p>
+          <SectionIntro
+            eyebrow={DEPLOYMENTS_ARCHITECTURE.eyebrow}
+            heading={DEPLOYMENTS_ARCHITECTURE.headline}
+            description={DEPLOYMENTS_ARCHITECTURE.body}
+            classOverrides={{
+              eyebrow: "text-sm font-semibold uppercase tracking-wider text-zenml-400",
+              heading: "text-2xl font-bold text-white sm:text-3xl",
+              description: "text-lg text-gray-300",
+              descriptionSpacing: "mt-3",
+            }}
+          />
         </div>
         <div class="mt-8" data-reveal style="transition-delay: 80ms;">
           <img
@@ -89,13 +92,19 @@ import {
         </div>
         <div class="deployments-arch-cards mt-16 grid gap-8 sm:grid-cols-3" data-reveal style="transition-delay: 160ms;">
           {DEPLOYMENTS_ARCHITECTURE.features.map((feat) => (
-            <div class="deployments-arch-card">
-              <p class="text-sm font-semibold uppercase tracking-wider text-orange-400">
-                {feat.eyebrow}
-              </p>
-              <h3 class="mt-2 text-lg font-semibold text-white">{feat.title}</h3>
-              <p class="mt-2 text-sm text-gray-300">{feat.body}</p>
-            </div>
+            <SectionIntro
+              eyebrow={feat.eyebrow}
+              heading={feat.title}
+              headingLevel={3}
+              description={feat.body}
+              classOverrides={{
+                eyebrow: "text-sm font-semibold uppercase tracking-wider text-orange-400",
+                heading: "text-lg font-semibold text-white",
+                description: "text-sm text-gray-300",
+                descriptionSpacing: "mt-2",
+                wrap: "deployments-arch-card",
+              }}
+            />
           ))}
         </div>
       </div>
@@ -105,12 +114,13 @@ import {
     <section class="deployments-comparison-section pb-24 sm:pb-28">
       <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-3xl text-center" data-reveal>
-          <p class="deployments-comparison-eyebrow text-sm font-semibold uppercase tracking-wider">
-            {DEPLOYMENTS_COMPARISON.eyebrow}
-          </p>
-          <h2 class="mt-2 text-2xl font-bold text-white sm:text-3xl">
-            {DEPLOYMENTS_COMPARISON.headline}
-          </h2>
+          <SectionIntro
+            eyebrow={DEPLOYMENTS_COMPARISON.eyebrow}
+            heading={DEPLOYMENTS_COMPARISON.headline}
+            classOverrides={{
+              heading: "text-2xl font-bold text-white sm:text-3xl",
+            }}
+          />
         </div>
         <div class="mt-8 overflow-x-auto" data-reveal>
           <table class="w-full min-w-[640px] deployments-comparison-table text-sm">
@@ -243,13 +253,16 @@ import {
     <section class="bg-white py-16 sm:py-20">
       <div class="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
         <div data-reveal>
-          <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
-            {DEPLOYMENTS_TABS.eyebrow}
-          </p>
-          <h2 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
-            {DEPLOYMENTS_TABS.headline}
-          </h2>
-          <p class="mt-3 text-lg text-gray-600">{DEPLOYMENTS_TABS.body}</p>
+          <SectionIntro
+            eyebrow={DEPLOYMENTS_TABS.eyebrow}
+            heading={DEPLOYMENTS_TABS.headline}
+            description={DEPLOYMENTS_TABS.body}
+            classOverrides={{
+              heading: "text-2xl font-bold text-gray-900 sm:text-3xl",
+              description: "text-lg text-gray-600",
+              descriptionSpacing: "mt-3",
+            }}
+          />
         </div>
 
         <div class="deployments-tabs" data-deployments-tabs data-reveal>
@@ -372,10 +385,6 @@ import {
     width: 100%;
     padding: 1.5rem;
     display: flex;
-  }
-
-  [data-page="deployments"] .deployments-comparison-eyebrow {
-    color: var(--color-zenml-500);
   }
 
   [data-page="deployments"] .deployments-comparison-table {
