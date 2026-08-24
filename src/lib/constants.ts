@@ -14,6 +14,20 @@ export function isProdHostname(hostname: string): boolean {
 export const DEFAULT_DESCRIPTION =
   "ZenML — Build portable, production-ready MLOps pipelines.";
 
+/** Canonical contact email — single source for /contact, /imprint,
+ *  terms-of-service, and the Organization JSON-LD contactPoint. */
+export const CONTACT_EMAIL = "hello@zenml.io";
+
+/** Registered office address — keep in sync with the commercial register.
+ *  Single source for /contact, /imprint, and the Organization JSON-LD. */
+export const COMPANY_ADDRESS = {
+  street: "Schellingstr. 36",
+  postalCode: "80799",
+  city: "Munich",
+  countryCode: "DE",
+  countryName: "Germany",
+} as const;
+
 /** Asset base URL (R2 bucket via custom domain for HTTP/2 multiplexing) */
 export const ASSET_BASE_URL = "https://assets.zenml.io";
 
