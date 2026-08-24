@@ -44,6 +44,13 @@ interface Props {
   pagefindIgnore?: boolean;
   /** "slash" (default) = the three-site house idiom. "chevron" = the llmops/mlops detail-page idiom. */
   separator?: "slash" | "chevron";
+  /**
+   * Default true. Demo stages only — a real route must never pass false.
+   * Every live breadcrumb needs its BreadcrumbList JSON-LD; this exists
+   * solely so /styleguide can render the visual crumb trail without also
+   * emitting structured data for a fabricated page that doesn't exist.
+   */
+  jsonLd?: boolean;
 }
 
 const {
@@ -51,6 +58,7 @@ const {
   class: className,
   pagefindIgnore = false,
   separator = "slash",
+  jsonLd = true,
 } = Astro.props;
 
 const isChevron = separator === "chevron";
@@ -73,11 +81,17 @@ const navClass = isChevron
   ? "mb-8 flex items-center gap-2 text-sm text-gray-500"
   : "text-sm text-gray-500";
 const olClass = isChevron ? "flex items-center gap-2" : "";
+// Chevron's ol-level gap-2 only ever separates li's from one another. Once the
+// separator moves inside the following li (see below), the ol only has as
+// many flex items as there are crumbs, so the gap between the separator and
+// the label it precedes has to come from the li itself instead — same 8px,
+// just supplied one level down so the ol's own gap doesn't have to double up.
+const liClass = isChevron ? "flex items-center gap-2" : "inline";
 const linkClass = isChevron ? "hover:text-primary-600" : "hover:text-zenml-500";
 const currentClass = isChevron ? "text-gray-900 line-clamp-1" : "text-gray-900";
 ---
 
-<JsonLd data={breadcrumbJsonLd} />
+{jsonLd && <JsonLd data={breadcrumbJsonLd} />}
 <nav
   aria-label="Breadcrumb"
   class:list={[navClass, className]}
@@ -87,7 +101,7 @@ const currentClass = isChevron ? "text-gray-900 line-clamp-1" : "text-gray-900";
     {items.map((item, i) => {
       const isLast = i === items.length - 1;
       return (
-        <>
+        <li class={liClass}>
           {i > 0 &&
             (isChevron ? (
               <svg
@@ -107,20 +121,18 @@ const currentClass = isChevron ? "text-gray-900 line-clamp-1" : "text-gray-900";
                 /
               </span>
             ))}
-          <li class="inline">
-            {isLast ? (
-              <span class={currentClass} aria-current="page">
-                {item.label}
-              </span>
-            ) : item.href ? (
-              <a href={item.href} class={linkClass}>
-                {item.label}
-              </a>
-            ) : (
-              <span>{item.label}</span>
-            )}
-          </li>
-        </>
+          {isLast ? (
+            <span class={currentClass} aria-current="page">
+              {item.label}
+            </span>
+          ) : item.href ? (
+            <a href={item.href} class={linkClass}>
+              {item.label}
+            </a>
+          ) : (
+            <span>{item.label}</span>
+          )}
+        </li>
       );
     })}
   </ol>

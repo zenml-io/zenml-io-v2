@@ -33,16 +33,16 @@ const {
 {posts.length > 0 && (
   <section class="blog-section bg-gradient-to-b from-gray-50 to-white py-16 sm:py-20">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-      <SectionIntro
-        align="center"
-        eyebrow={eyebrow}
-        heading={headline}
-        classOverrides={{
-          heading: "text-2xl font-bold text-gray-900 sm:text-3xl",
-          headingSpacing: "mt-3",
-          wrap: "text-center mb-10 fade-in-element",
-        }}
-      />
+      <div class="text-center mb-10 fade-in-element">
+        <SectionIntro
+          eyebrow={eyebrow}
+          heading={headline}
+          classOverrides={{
+            heading: "text-2xl font-bold text-gray-900 sm:text-3xl",
+            headingSpacing: "mt-3",
+          }}
+        />
+      </div>
 
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 fade-in-element">
         {posts.map((post) => (

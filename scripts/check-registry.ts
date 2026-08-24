@@ -25,12 +25,15 @@
  *   3. No duplicate ids.
  *   4. Any `contentShape` present has a sane range: minItems >= 0,
  *      maxItems >= minItems.
- *   5. Collection-bound template families (blog-cards, integrations-wall,
- *      testimonials, logo-cloud, comparison-table, feature-grid) declare a
- *      `contentShape` once they are built (componentPath set). This is a
- *      forward gate — every entry in these families is still `componentPath:
- *      null` today, so it does not fail yet, but a family build in a later
- *      wave cannot land a real component without also filling in its budgets.
+ *   5. Entries flagged `collectionBound: true` (see `TemplateEntry` in
+ *      registry.ts) declare a `contentShape` once they are built
+ *      (componentPath set). This is a forward gate — every flagged entry is
+ *      still `componentPath: null` today, so it does not fail yet, but a
+ *      build in a later wave cannot land a real component without also
+ *      filling in its budgets. Keyed on the flag itself, not a family-name
+ *      list — an earlier version matched on family name and the list
+ *      silently stopped matching any real registry entry, making the gate
+ *      permanently vacuous without failing or warning.
  *
  * What it reports but does not fail on:
  *   - Adoption count per template, counted from real imports. Zero adoption is a
@@ -48,26 +51,11 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 
-import { familyOf, TEMPLATE_REGISTRY, statusOf } from "../src/lib/templates/registry.ts";
+import { TEMPLATE_REGISTRY, statusOf } from "../src/lib/templates/registry.ts";
 
 const ROOT = resolve(process.cwd());
 const TEMPLATES_DIR = join(ROOT, "src/components/templates");
 const SYSTEM_DIR = join(ROOT, "src/components/system");
-
-/**
- * Families whose templates are bound to a content collection (as opposed to
- * hand-authored props) and therefore need a documented `contentShape` once
- * built — an unbounded collection is exactly the case a layout can silently
- * break under.
- */
-const COLLECTION_BOUND_FAMILIES = new Set([
-  "blog-cards",
-  "integrations-wall",
-  "testimonials",
-  "logo-cloud",
-  "comparison-table",
-  "feature-grid",
-]);
 
 /** Recursively collect component files under a directory. */
 function collectComponents(dir: string): string[] {
@@ -199,14 +187,13 @@ function check(): void {
     }
   }
 
-  // 5. Collection-bound template families need contentShape once built (forward gate)
+  // 5. collectionBound entries need contentShape once built (forward gate)
   for (const entry of TEMPLATE_REGISTRY) {
-    if (entry.kind !== "template") continue;
-    if (!COLLECTION_BOUND_FAMILIES.has(familyOf(entry.id))) continue;
+    if (!entry.collectionBound) continue;
     if (!entry.componentPath) continue; // not built yet — the gate does not apply
     if (!entry.contentShape) {
       violations.push(
-        `  ${entry.id} — collection-bound family "${familyOf(entry.id)}" is built but has no contentShape\n` +
+        `  ${entry.id} — collectionBound but has no contentShape\n` +
           `    Add minItems/maxItems and the overflow behaviour before this ships.`,
       );
     }

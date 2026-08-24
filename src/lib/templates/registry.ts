@@ -82,6 +82,18 @@ export interface TemplateEntry {
   readonly paperPage: number;
   readonly notes?: string;
   /**
+   * Renders an items[] collection; must declare `contentShape` once built.
+   * True for a template that pours an array of CMS/data-driven items into a
+   * layout (a card grid, a rail, a table body) — false/omitted for a
+   * single-instance template (a page header, a hero) and for a generic
+   * layout primitive that takes arbitrary slotted children rather than an
+   * items[] prop (Stack/Inline/Split/Bleed/Grid). `scripts/check-registry.ts`
+   * checks this flag directly, never a family-name list — a name list can
+   * silently stop matching any real entry and go vacuous without anyone
+   * noticing (that happened once; see the script's own history).
+   */
+  readonly collectionBound?: true;
+  /**
    * How this template tolerates the shape of the content poured into it —
    * item counts, heading/item text lengths, and what happens outside the
    * planned range. Optional: only collection-bound templates (blog cards,
@@ -207,6 +219,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "data-display.metadata-block",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["item count", "chip count", "value length", "sticky"],
     tones: ["default"],
     responsive: "reflow",
@@ -219,6 +232,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "data-display.spec-table",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["column count", "sticky header", "row wrap"],
     tones: ["default"],
     responsive: "scroll",
@@ -231,6 +245,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "data-display.description-list",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["column count", "ragged terms", "two-part terms"],
     tones: ["default"],
     responsive: "collapse",
@@ -242,6 +257,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "data-display.stacked-list",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["density", "row count", "in-prose"],
     tones: ["default"],
     responsive: "reflow",
@@ -255,6 +271,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "term-hub.editorial",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["member count", "term register", "identity block"],
     tones: ["default"],
     responsive: "reflow",
@@ -267,6 +284,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "term-hub.entry-index",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["member count", "cross-link block", "dual collection"],
     tones: ["default"],
     responsive: "reflow",
@@ -278,6 +296,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "term-hub.catalog",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["item count", "logo shape"],
     tones: ["default"],
     responsive: "reflow",
@@ -291,6 +310,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "process-steps.vertical-code",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["step count", "code present", "copied state"],
     tones: ["default"],
     responsive: "reauthored",
@@ -302,6 +322,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "process-steps.compact-list",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["step count", "trailing link", "ragged rows"],
     tones: ["default"],
     responsive: "reflow",
@@ -316,6 +337,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "related-content.rail",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["column count", "sidebar", "item count"],
     tones: ["default"],
     responsive: "reflow",
@@ -330,6 +352,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "filterable-index.shell",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["facet count", "facet select mode", "search engine"],
     tones: ["default"],
     responsive: "reauthored",
@@ -472,6 +495,11 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
         { label: "Features", href: "/features" },
         { label: "Model Control Plane" },
       ],
+      // Demo stage only (see Breadcrumb.astro's TSDoc) — /styleguide renders
+      // this crumb trail for a page that doesn't exist, so it must not emit
+      // a fabricated BreadcrumbList into the page's structured data. A real
+      // route must never pass this.
+      jsonLd: false,
     },
   },
   {
@@ -565,17 +593,16 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "layout.grid",
     kind: "primitive",
     componentPath: "src/components/system/layout/Grid.astro",
-    variantAxes: ["cols: per-breakpoint 1-12", "lastRow: start | center"],
+    variantAxes: ["cols: per-breakpoint 1-12"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 1,
     notes:
-      'Explicit-column grid; repeat(auto-fit, minmax()) is banned by the contract. lastRow="center" only centers a single leftover item, not a multi-item incomplete row. Preact twin at Grid.tsx.',
+      "Explicit-column grid; repeat(auto-fit, minmax()) is banned by the contract. Has no lastRow/odd-count handling — CSS can't know item count from here, and the correct nth-child formula interacts badly with responsive cols. Odd-count handling is a per-family contract that lands with the first collection family that needs it (#248 defers it). Preact twin at Grid.tsx.",
     demoProps: {
       cols: { base: 1, sm: 2, lg: 3 },
       space: "sm",
-      lastRow: "center",
     },
     demoSlots: {
       default:

@@ -220,9 +220,11 @@ export default function BlogSearch({ searchIndexUrl }: Props) {
               </a>
             ))
           ) : (
+            // biome-ignore lint/a11y/useValidAriaRole: `role` is a prop EmptyState forwards to its own root's role attribute, not a literal ARIA role on this element — null is EmptyState's own contract for "render no role" (this listbox already has its own role governing its children).
             <EmptyState
               heading="No posts found"
               reserveHeight={false}
+              role={null}
               classOverrides={{
                 container: "block px-4 py-6 text-center",
                 inner: "",

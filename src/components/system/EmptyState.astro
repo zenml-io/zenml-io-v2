@@ -26,6 +26,12 @@
  * (BlogSearch), a bare build-time `<p>` (tags/category/author), or a node a
  * vanilla `<script>` toggles by id (integrations). `id` is layout-specific,
  * not part of the shared `EmptyStateProps` contract.
+ *
+ * `role` defaults to `"status"`. Pass `null` when the host already carries
+ * its own ARIA role that governs this node's children — e.g. BlogSearch's
+ * dropdown, whose `role="listbox"` container requires option/group children
+ * only, so a `role="status"` empty-state row inside it is an
+ * aria-required-children violation.
  */
 import type { EmptyStateProps } from "../../lib/section";
 import {
@@ -44,6 +50,8 @@ interface Props extends EmptyStateProps {
   class?: string;
   id?: string;
   classOverrides?: EmptyStateClassOverrides;
+  /** Default "status". Pass null to render no role attribute at all. */
+  role?: string | null;
 }
 
 const {
@@ -55,6 +63,7 @@ const {
   class: className,
   id,
   classOverrides,
+  role = "status",
 } = Astro.props;
 
 const containerClasses = emptyStateContainerClasses(
@@ -67,7 +76,10 @@ const innerClass = classOverrides?.inner ?? EMPTY_STATE_INNER;
 const headingClass = classOverrides?.heading ?? EMPTY_STATE_HEADING;
 ---
 
-<div id={id} role="status" class={containerClasses}>
+{/* `role` is typed `string | null` (not the closed AriaRole union) so a
+    caller isn't locked to one hardcoded role name — cast only here, at the
+    DOM boundary, where the stricter type actually applies. */}
+<div id={id} role={(role ?? undefined) as any} class={containerClasses}>
   <div class={innerClass}>
     <p class={headingClass}>{heading}</p>
     {description && <p class={EMPTY_STATE_DESCRIPTION}>{description}</p>}

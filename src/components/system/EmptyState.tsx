@@ -13,6 +13,12 @@
  * `classOverrides` (container/inner/heading) mirrors the `.astro` twin — see
  * its TSDoc — for migrating a pre-#248 empty state whose shape isn't the
  * house card (BlogSearch's dropdown row).
+ *
+ * `role` defaults to `"status"`. Pass `null` when the host already carries
+ * its own ARIA role that governs this node's children — e.g. BlogSearch's
+ * dropdown, whose `role="listbox"` container requires option/group children
+ * only, so a `role="status"` empty-state row inside it is an
+ * aria-required-children violation.
  */
 import type { EmptyStateProps } from "../../lib/section";
 import {
@@ -30,6 +36,8 @@ interface Props extends EmptyStateProps {
   minHeightClass?: string;
   class?: string;
   classOverrides?: EmptyStateClassOverrides;
+  /** Default "status". Pass null to render no role attribute at all. */
+  role?: string | null;
 }
 
 export default function EmptyState({
@@ -40,6 +48,7 @@ export default function EmptyState({
   minHeightClass,
   class: className,
   classOverrides,
+  role = "status",
 }: Props) {
   const containerClasses = emptyStateContainerClasses(
     reserveHeight,
@@ -51,7 +60,11 @@ export default function EmptyState({
   const headingClass = classOverrides?.heading ?? EMPTY_STATE_HEADING;
 
   return (
-    <div role="status" class={containerClasses}>
+    // `role` is typed `string | null` (not the closed AriaRole union) so a
+    // caller isn't locked to one hardcoded role name — cast only here, at
+    // the DOM boundary, where the stricter type actually applies.
+    // biome-ignore lint/suspicious/noExplicitAny: see comment above
+    <div role={(role ?? undefined) as any} class={containerClasses}>
       <div class={innerClass}>
         <p class={headingClass}>{heading}</p>
         {description && <p class={EMPTY_STATE_DESCRIPTION}>{description}</p>}
