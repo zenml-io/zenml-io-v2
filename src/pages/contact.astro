@@ -1,0 +1,54 @@
+---
+import ContentLayout from "../layouts/ContentLayout.astro";
+/**
+ * Contact — how to reach the ZenML team.
+ *
+ * Exists as a conventional, guessable URL for humans and AI agents alike
+ * (agents commonly probe /contact to verify a business is reachable).
+ * Uses ContentLayout like /imprint; surface is "unified" because it
+ * covers both ZenML and Kitaru.
+ *
+ * Route: /contact
+ */
+import { COMPANY_ADDRESS, CONTACT_EMAIL } from "../lib/constants";
+---
+
+<ContentLayout
+  title="Contact — ZenML"
+  description="How to reach the ZenML team: email hello@zenml.io, join the community Slack, or book a demo."
+  surface="unified"
+>
+  <h1>Contact ZenML</h1>
+
+  <p>
+    The fastest way to reach us is by email at
+    <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. We read everything —
+    product questions, partnership ideas, press inquiries, and feedback about
+    ZenML or Kitaru all land in the same place.
+  </p>
+
+  <h2>Community Slack</h2>
+  <p>
+    For technical questions, troubleshooting, and conversation with other
+    practitioners, <a href="/slack">join our community Slack</a>. The ZenML
+    team is active there every working day, and it's usually the quickest
+    route to an answer about pipelines, deployments, or integrations.
+  </p>
+
+  <h2>Sales and demos</h2>
+  <p>
+    If you'd like a guided walkthrough of ZenML Pro or Kitaru,
+    <a href="/book-your-demo">book a demo</a> and we'll set up a call.
+  </p>
+
+  <h2>Office</h2>
+  <p>
+    ZenML GmbH<br />
+    {COMPANY_ADDRESS.street}<br />
+    {COMPANY_ADDRESS.postalCode}
+    {COMPANY_ADDRESS.city}, {COMPANY_ADDRESS.countryName}
+  </p>
+  <p>
+    Full legal details are on our <a href="/imprint">imprint</a> page.
+  </p>
+</ContentLayout>

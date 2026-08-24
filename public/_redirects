@@ -7,6 +7,12 @@
 # ── Sitemap compatibility (Webflow → Astro) ───────────────────────
 /sitemap.xml /sitemap-index.xml 301
 
+# ── Conventional slugs agents and humans guess (agent-readiness) ──
+/about /company 301
+/about/ /company 301
+/privacy /privacy-policy 301
+/privacy/ /privacy-policy 301
+
 # ── Internal redirects (from Webflow) ──────────────────────────────
 /open-source-vs-managed /open-source-vs-pro 301
 /open-source-vs-managed/ /open-source-vs-pro 301
