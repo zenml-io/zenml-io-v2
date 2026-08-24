@@ -161,21 +161,105 @@ const TYPE_ROLES = [
   },
 ] as const;
 
+const SPECIMEN_TEXT = "The quick brown fox jumps over the lazy dog";
+
 /**
- * Representative specimen sizes. No px type-scale ladder exists yet in
- * global.css or DESIGN.md (only a component-scoped list of ad hoc
- * font-size declarations, none of them a role-level scale) — these are
- * standard Tailwind scale steps, not invented pixel values, shown only to
- * demonstrate each role's live rendering. Provisional per CONTENT HONESTY;
- * see the note rendered inline and the "questions" raised alongside this PR.
+ * Type-scale rungs (global.css section 2b, issue #248), in the file's own
+ * declaration order. `fontToken` and `trackingToken` are a structural
+ * association — which face and tracking rung each named size uses — read
+ * directly off that section's own inline comments and its "Tracking
+ * bindings" note; the actual font-size/line-height/tracking VALUES are
+ * never hand-typed here, only looked up live from the parsed
+ * `data.typeScale` tokens below (see `typeScaleValue`).
  */
-const SPECIMEN_STEPS = [
-  { label: "Small", className: "text-xl" },
-  { label: "Medium", className: "text-3xl" },
-  { label: "Large", className: "text-5xl md:text-6xl" },
+const TYPE_SCALE_RUNGS = [
+  {
+    name: "display",
+    label: "Display",
+    fontToken: "--font-display",
+    trackingToken: "--tracking-display",
+  },
+  {
+    name: "headline",
+    label: "Headline",
+    fontToken: "--font-display",
+    trackingToken: "--tracking-heading",
+  },
+  {
+    name: "subhead",
+    label: "Subhead",
+    fontToken: "--font-display",
+    trackingToken: null,
+  },
+  {
+    name: "card-title",
+    label: "Card title",
+    fontToken: "--font-display",
+    trackingToken: null,
+  },
+  {
+    name: "large-body",
+    label: "Large body",
+    fontToken: "--font-sans",
+    trackingToken: null,
+  },
+  {
+    name: "body",
+    label: "Body",
+    fontToken: "--font-sans",
+    trackingToken: null,
+  },
+  {
+    name: "caption",
+    label: "Caption",
+    fontToken: "--font-sans",
+    trackingToken: null,
+  },
+  {
+    name: "eyebrow",
+    label: "Eyebrow",
+    fontToken: "--font-label",
+    trackingToken: null,
+  },
+  {
+    name: "prose-h1",
+    label: "Prose H1",
+    fontToken: "--font-display",
+    trackingToken: "--tracking-heading",
+  },
+  {
+    name: "prose-h2",
+    label: "Prose H2",
+    fontToken: "--font-display",
+    trackingToken: "--tracking-prose",
+  },
+  {
+    name: "prose-h3",
+    label: "Prose H3",
+    fontToken: "--font-display",
+    trackingToken: "--tracking-prose",
+  },
 ] as const;
 
-const SPECIMEN_TEXT = "The quick brown fox jumps over the lazy dog";
+function typeScaleValue(name: string): TokenRow | undefined {
+  return data.typeScale.find(
+    (row) => row.scope === ZENML_NEXT_SCOPE && row.name === name,
+  );
+}
+
+const typeScaleRows = TYPE_SCALE_RUNGS.map((rung) => {
+  const fontSize = typeScaleValue(`--text-${rung.name}`);
+  const lineHeight = typeScaleValue(`--leading-${rung.name}`);
+  const tracking = rung.trackingToken
+    ? typeScaleValue(rung.trackingToken)
+    : undefined;
+  return {
+    ...rung,
+    fontSize: fontSize?.value ?? UNRESOLVED,
+    lineHeight: lineHeight?.value ?? UNRESOLVED,
+    tracking: tracking?.value,
+  };
+});
 
 // ---------------------------------------------------------------------------
 // Scale — spacing + radii, in file order (already the order global.css
@@ -408,14 +492,9 @@ const designMdSections = parseDesignRules(designMdRaw);
         <h2 class="mt-space-xxs text-balance font-display text-3xl tracking-[var(--tracking-heading)] text-foreground">Type</h2>
         <p class="mt-space-xs max-w-2xl text-pretty text-secondary-foreground">
           The four type roles, rendered live under <code class="font-mono text-sm">[data-app="zenml-next"]</code> —
-          the same scope this page itself renders under.
-        </p>
-        <p class="mt-space-xs max-w-2xl border border-border bg-muted p-space-xs text-sm text-secondary-foreground">
-          Sizes below are provisional — finalized with #248. No px type-scale
-          ladder exists yet in <code class="font-mono text-xs">global.css</code> or
-          <code class="font-mono text-xs">DESIGN.md</code>; these are standard
-          Tailwind scale steps shown only to demonstrate each role live, not a
-          ruled type ladder.
+          the same scope this page itself renders under. Each specimen is
+          rendered at its real <code class="font-mono text-sm">--text-*</code>/<code class="font-mono text-sm">--leading-*</code>/<code class="font-mono text-sm">--tracking-*</code>
+          value from <code class="font-mono text-sm">global.css</code>, not a Tailwind scale step.
         </p>
 
         <div class="mt-space-lg space-y-space-xl">
@@ -423,6 +502,7 @@ const designMdSections = parseDesignRules(designMdRaw);
             TYPE_ROLES.map((role) => {
               const row = fontRowFor(role.tokenName);
               const stack = row?.value ?? UNRESOLVED;
+              const rungs = typeScaleRows.filter((rung) => rung.fontToken === role.tokenName);
               return (
                 <div class="border-t border-border pt-space-sm">
                   <div class="flex flex-wrap items-baseline justify-between gap-space-xs">
@@ -430,14 +510,25 @@ const designMdSections = parseDesignRules(designMdRaw);
                     <p class="font-mono text-xs text-muted-foreground">{role.tokenName}</p>
                   </div>
 
-                  <div class="mt-space-xs space-y-space-xxs">
-                    {SPECIMEN_STEPS.map((step) => (
-                      <p
-                        class:list={[step.className, "text-balance text-foreground"]}
-                        style={{ fontFamily: stack === UNRESOLVED ? undefined : stack }}
-                      >
-                        {SPECIMEN_TEXT}
-                      </p>
+                  <div class="mt-space-xs space-y-space-sm">
+                    {rungs.map((rung) => (
+                      <div>
+                        <p
+                          class="text-balance text-foreground"
+                          style={{
+                            fontFamily: stack === UNRESOLVED ? undefined : stack,
+                            fontSize: rung.fontSize === UNRESOLVED ? undefined : rung.fontSize,
+                            lineHeight: rung.lineHeight === UNRESOLVED ? undefined : rung.lineHeight,
+                            letterSpacing: rung.tracking,
+                          }}
+                        >
+                          {SPECIMEN_TEXT}
+                        </p>
+                        <p class="mt-space-xxs font-mono text-xs tabular-nums text-muted-foreground">
+                          {rung.label} · --text-{rung.name} {rung.fontSize} / --leading-{rung.name} {rung.lineHeight}
+                          {rung.tracking ? ` / ${rung.trackingToken} ${rung.tracking}` : ""}
+                        </p>
+                      </div>
                     ))}
                   </div>
 
@@ -545,8 +636,8 @@ const designMdSections = parseDesignRules(designMdRaw);
         <p class="mt-space-xs max-w-2xl text-pretty text-secondary-foreground">
           The section-template registry (<code class="font-mono text-sm">src/lib/templates/registry.ts</code>),
           grouped by family. A <code class="font-mono text-sm">built</code> entry
-          renders live below its row; every entry today is
-          <code class="font-mono text-sm">planned</code>.
+          renders live below its row, with its registry <code class="font-mono text-sm">demoProps</code>;
+          most entries today are still <code class="font-mono text-sm">planned</code>.
         </p>
 
         <div class="mt-space-lg space-y-space-lg">
@@ -590,7 +681,11 @@ const designMdSections = parseDesignRules(designMdRaw);
                           {status === "built" && entry.componentPath && (
                             <tr class="border-b border-border last:border-b-0">
                               <td colspan="5" class="px-space-xs py-space-xs">
-                                <TemplateStage componentPath={entry.componentPath} />
+                                <TemplateStage
+                                  componentPath={entry.componentPath}
+                                  demoProps={entry.demoProps}
+                                  demoSlots={entry.demoSlots}
+                                />
                               </td>
                             </tr>
                           )}

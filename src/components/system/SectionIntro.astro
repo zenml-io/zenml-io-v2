@@ -1,0 +1,143 @@
+---
+/**
+ * SectionIntro — the eyebrow/heading/description/link block that opens a
+ * section (issue #248).
+ *
+ * Owns: the eyebrow, the heading (h1/h2/h3 per `headingLevel`, default 2),
+ * one emphasised substring of the heading, the description, the link, the
+ * alignment, and the vertical spacing *between* those pieces. It owns no
+ * surrounding whitespace — the section/layout that places this component
+ * owns the gap above and below it.
+ *
+ * Absence collapses: every piece except `heading` is optional, and an
+ * omitted piece renders nothing and leaves no gap (see
+ * `computeSectionIntroSpacing` in `./sectionIntro.shared`). There are no
+ * `show*` booleans — presence of the data is the only signal.
+ *
+ * Default styling reproduces the current ZenML house idiom byte-for-byte
+ * (see `./sectionIntro.shared` for the source call sites), so swapping an
+ * existing section header for this component is pixel-identical. Tone
+ * colours are NOT wired into the default rendering this wave (parity
+ * first) — `class` is a plain passthrough onto the root element for the
+ * tone-override work landing in #248 Wave 2.
+ *
+ * A Preact twin (`SectionIntro.tsx`) exists because islands cannot import
+ * `.astro` components; the two are kept in lockstep via the shared module.
+ */
+import type { SectionIntroProps } from "../../lib/section";
+import {
+  computeSectionIntroSpacing,
+  headingTag,
+  resolveSectionIntroClasses,
+  SECTION_INTRO_CLASSES,
+  splitHeadingEmphasis,
+} from "./sectionIntro.shared";
+
+interface Props extends SectionIntroProps {}
+
+const {
+  eyebrow,
+  heading,
+  headingLevel = 2,
+  emphasis,
+  description,
+  link,
+  align = "start",
+  layout = "stacked",
+  class: className,
+  classOverrides,
+} = Astro.props;
+
+const Heading = headingTag(headingLevel);
+const {
+  before,
+  emphasis: emphasisText,
+  after,
+} = splitHeadingEmphasis(heading, emphasis);
+const spacing = computeSectionIntroSpacing({
+  eyebrow,
+  description,
+  layout,
+  classOverrides,
+});
+const isSplit = layout === "split";
+const isCentered = !isSplit && align === "center";
+const c = resolveSectionIntroClasses(classOverrides, isCentered);
+---
+
+{
+  isSplit ? (
+    <div class:list={[SECTION_INTRO_CLASSES.splitGrid, className]}>
+      <div>
+        {eyebrow && <p class={c.eyebrow}>{eyebrow}</p>}
+        <Heading class:list={[c.heading, spacing.heading]}>
+          {before}
+          {emphasisText && (
+            <span class={c.emphasis}>{emphasisText}</span>
+          )}
+          {after}
+        </Heading>
+      </div>
+      <div>
+        {description && (
+          <p class:list={[c.description, spacing.description]}>
+            {description}
+          </p>
+        )}
+        {link && (
+          <a
+            href={link.href}
+            class:list={[c.link, spacing.link]}
+          >
+            {link.label}
+            <svg
+              class={SECTION_INTRO_CLASSES.linkIcon}
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              aria-hidden="true"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M3 10a.75.75 0 0 1 .75-.75h10.638l-3.47-3.47a.75.75 0 1 1 1.06-1.06l4.773 4.773a.748.748 0 0 1 0 1.014l-4.773 4.773a.75.75 0 0 1-1.06-1.06l3.47-3.47H3.75A.75.75 0 0 1 3 10Z"
+              />
+            </svg>
+          </a>
+        )}
+      </div>
+    </div>
+  ) : (
+    <div class:list={[c.wrap, className]}>
+      {eyebrow && <p class={c.eyebrow}>{eyebrow}</p>}
+      <Heading class:list={[c.heading, spacing.heading]}>
+        {before}
+        {emphasisText && (
+          <span class={c.emphasis}>{emphasisText}</span>
+        )}
+        {after}
+      </Heading>
+      {description && (
+        <p class:list={[c.description, spacing.description]}>
+          {description}
+        </p>
+      )}
+      {link && (
+        <a href={link.href} class:list={[c.link, spacing.link]}>
+          {link.label}
+          <svg
+            class={SECTION_INTRO_CLASSES.linkIcon}
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M3 10a.75.75 0 0 1 .75-.75h10.638l-3.47-3.47a.75.75 0 1 1 1.06-1.06l4.773 4.773a.748.748 0 0 1 0 1.014l-4.773 4.773a.75.75 0 0 1-1.06-1.06l3.47-3.47H3.75A.75.75 0 0 1 3 10Z"
+            />
+          </svg>
+        </a>
+      )}
+    </div>
+  )
+}

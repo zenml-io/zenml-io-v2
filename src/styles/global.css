@@ -92,6 +92,16 @@ html { scroll-behavior: smooth; }
 
   /* Shape */
   --radius: 0.5rem;
+
+  /* Brand accent layer (tone system, #248). [data-app] scopes switch these
+   * and nothing else; the [data-tone] layer consumes them so a tone never
+   * names a colour. `-invert` is the accent on a dark band — no Kitaru dark
+   * marketing band exists yet to measure, so it holds the primary as a
+   * flagged placeholder until one ships. */
+  --brand-accent: var(--primary);
+  --brand-accent-soft: var(--accent);
+  --brand-accent-on: var(--primary-foreground);
+  --brand-accent-invert: var(--primary);
 }
 
 /* ─── 2. ZenML theme (original purple) ─────────────────────────────────────── */
@@ -123,6 +133,14 @@ html { scroll-behavior: smooth; }
   /* Typography — original ZenML font */
   --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
+
+  /* Brand accent layer (tone system, #248). `-invert` is the measured accent
+   * the existing dark bands already use for eyebrows/check glyphs
+   * (text-zenml-400), so tone adoption on those bands is pixel-identical. */
+  --brand-accent: var(--primary);
+  --brand-accent-soft: var(--accent);
+  --brand-accent-on: var(--primary-foreground);
+  --brand-accent-invert: var(--color-zenml-400);
 }
 
 /* ─── 2b. ZenML 2026 rebrand scope (in progress — issue #246) ───────────────
@@ -144,6 +162,9 @@ html { scroll-behavior: smooth; }
    * headline sizes, tightening to −4% at the largest display sizes. */
   --tracking-heading: -0.02em;
   --tracking-display: -0.04em;
+  /* Interior/prose headings (H2/H3) are ruled at −0.015em — a distinct rung,
+   * not a rounding of --tracking-heading (adjudicated with #248). */
+  --tracking-prose: -0.015em;
 
   /* Rendering: match the site-wide body smoothing (so the scope is
    * self-contained wherever it mounts), and refuse synthesized bold/italic —
@@ -285,6 +306,120 @@ html { scroll-behavior: smooth; }
   /* Kitaru orange text-on-light companion (not a ramp stop): AA on both the
    * cream ground and the orange tint band. */
   --color-accent-orange-text: #995000;
+
+  /* Type scale (adjudicated with #248 — replaces the styleguide's provisional
+   * Tailwind steps). Fluid rungs interpolate between the 375 artboard and the
+   * 1620px box cap (the container ruling: 1524px content + fluid gutter), so
+   * type stops growing exactly where the layout does. Sizes below the section
+   * headline are fixed across breakpoints. Tracking bindings: display →
+   * --tracking-display, headline + prose H1 → --tracking-heading, prose
+   * H2/H3 → --tracking-prose, everything smaller → none. */
+  --text-display: clamp(40px, 27.95px + 3.21vw, 80px); /* hero; Borna */
+  --leading-display: 1.05;
+  --text-headline: clamp(32px, 28.39px + 0.96vw, 44px); /* section; Borna */
+  --leading-headline: 1.15;
+  --text-subhead: 28px; /* Borna */
+  --leading-subhead: 1.4;
+  --text-card-title: 24px; /* Borna */
+  --leading-card-title: 1.35;
+  --text-large-body: 18px; /* Rethink Sans */
+  --leading-large-body: 1.55;
+  --text-body: 16px; /* Rethink Sans */
+  --leading-body: 1.6;
+  --text-caption: 14px; /* Rethink Sans */
+  --leading-caption: 1.45;
+  --text-eyebrow: 13px; /* Nudica Mono (--font-label), uppercase */
+  --leading-eyebrow: 1.3;
+  --text-prose-h1: 36px; /* interior pages; Borna */
+  --leading-prose-h1: 1.15;
+  --text-prose-h2: 32px;
+  --leading-prose-h2: 42px; /* ruled as px pairs, kept exact */
+  --text-prose-h3: 24px;
+  --leading-prose-h3: 34px;
+
+  /* Tone intermediaries (#248). The [data-tone] layer reads these through
+   * fallbacks — var(--tone-canvas, var(--background)) — so this scope routes
+   * tones to the rebrand grounds while the current site falls back to its
+   * live semantic tokens with zero pixel change. `-up`, `-paper-muted` and
+   * `-charcoal-line` are flagged proposals with no consumer yet. */
+  --tone-canvas: var(--tone-light-canvas);
+  --tone-card-surface: var(--card);
+  --tone-ink: var(--foreground);
+  --tone-ink-muted: var(--muted-foreground);
+  --tone-hairline: var(--border);
+  --tone-tint: var(--tone-sage-tint-band);
+  --tone-tint-deep: var(--tone-sage-deep-band);
+  --tone-charcoal: var(--tone-dark-band);
+  --tone-charcoal-up: var(--color-cream-700);
+  --tone-paper: var(--color-cream-50);
+  --tone-paper-muted: var(--color-cream-100);
+  --tone-charcoal-line: var(--color-cream-700);
+
+  /* Brand accent layer (tone system, #248). Inverted-band eyebrow steps to
+   * the sage 400 stop per the brand ground rules; flagged until a built
+   * rebrand dark band verifies it. */
+  --brand-accent: var(--primary);
+  --brand-accent-soft: var(--color-sage-100);
+  --brand-accent-on: var(--primary-foreground);
+  --brand-accent-invert: var(--color-sage-400);
+}
+
+/* ─── 2c. Section tone layer (#248) ─────────────────────────────────────────
+ * One ground-band modifier for every section: data-tone="default|muted|
+ * inverted|brand" on the section root. Two-layer contract: the brand scopes
+ * above own the colour decisions (--brand-accent* and the --tone-*
+ * intermediaries); these blocks only route vars — a tone never names a
+ * colour, so no hex, oklch() or brand-family token may appear here (the
+ * fallbacks reference the live semantic set, which each brand scope owns).
+ * Under the current site the fallbacks resolve to the exact values the
+ * migrated dark bands already use (gray-900 ≡ --foreground, white ≡
+ * --background, zenml-400 ≡ --brand-accent-invert), so adoption is
+ * pixel-identical. "brand" is a bounded element, never a full-bleed band,
+ * capped at one per section. */
+[data-tone="default"] {
+  --section-surface: var(--tone-canvas, var(--background));
+  --section-surface-raised: var(--tone-card-surface, var(--card));
+  --section-text: var(--tone-ink, var(--foreground));
+  --section-text-muted: var(--tone-ink-muted, var(--muted-foreground));
+  --section-border: var(--tone-hairline, var(--border));
+  --section-accent: var(--brand-accent);
+  --section-accent-on: var(--brand-accent-on);
+}
+[data-tone="muted"] {
+  --section-surface: var(--tone-tint, var(--muted));
+  --section-surface-raised: var(--tone-tint-deep, var(--secondary));
+  --section-text: var(--tone-ink, var(--foreground));
+  --section-text-muted: var(--tone-ink-muted, var(--muted-foreground));
+  --section-border: var(--tone-hairline, var(--border));
+  --section-accent: var(--brand-accent);
+  --section-accent-on: var(--brand-accent-on);
+}
+[data-tone="inverted"] {
+  --section-surface: var(--tone-charcoal, var(--foreground));
+  /* raised/muted/border on a dark band have no migrated consumer yet; the
+   * fallbacks are structural placeholders, flagged in #248. The three
+   * existing muted-gray literals (gray-200/300/400) deliberately stay
+   * un-migrated this wave — one token cannot match all three. */
+  --section-surface-raised: var(--tone-charcoal-up, var(--foreground));
+  --section-text: var(--tone-paper, var(--background));
+  --section-text-muted: var(--tone-paper-muted, var(--muted-foreground));
+  --section-border: var(--tone-charcoal-line, var(--border));
+  --section-accent: var(--brand-accent-invert);
+  --section-accent-on: var(--tone-ink, var(--foreground));
+}
+[data-tone="brand"] {
+  --section-surface: var(--brand-accent-soft);
+  --section-surface-raised: var(--tone-card-surface, var(--card));
+  --section-text: var(--tone-ink, var(--foreground));
+  --section-text-muted: var(--tone-ink-muted, var(--muted-foreground));
+  --section-border: var(--brand-accent);
+  --section-accent: var(--brand-accent);
+  --section-accent-on: var(--brand-accent-on);
+}
+
+section[data-tone] {
+  background: var(--section-surface);
+  color: var(--section-text);
 }
 
 /* ─── 3. ZenML brand scale (original purple, theme-independent) ─────────────

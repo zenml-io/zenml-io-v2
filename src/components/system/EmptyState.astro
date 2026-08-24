@@ -1,0 +1,76 @@
+---
+/**
+ * EmptyState — the "nothing matched" state for a filtered or searched surface.
+ *
+ * Contract: `EmptyStateProps` (`src/lib/section.ts`). `heading` names what's
+ * missing in the reader's terms, never "No results" — e.g. `No entries
+ * tagged "vector-database" yet.` or `This tag is used by 0 of 2,026 database
+ * entries.`. `description`, if present, names the constraint that produced
+ * the empty state. At most one `action` (e.g. `{ label: "Browse all
+ * entries", href: "/llmops-database" }`) — a second is a menu, not a recovery
+ * action, and belongs on the caller's own markup instead.
+ *
+ * `reserveHeight` (default true) applies a min-height so a filtered
+ * zero-result swap doesn't move anything below it. Each surface's populated
+ * grid is a different height, so pass `minHeightClass` with the real value
+ * (e.g. `min-h-[36rem]`) — the built-in fallback is only a rough default.
+ *
+ * Reproduces the current LLMOpsFilter empty state's look (bg-gray-50 card,
+ * muted text, no illustration, no icon) so migrating that island onto this
+ * primitive is pixel-identical. Has a required Preact twin
+ * (`EmptyState.tsx`) because the main consumers — LLMOpsFilter, MLOpsFilter,
+ * BlogSearch — are islands, which cannot import `.astro` components.
+ */
+import type { EmptyStateProps } from "../../lib/section";
+import {
+  EMPTY_STATE_ACTION_WRAP,
+  EMPTY_STATE_DESCRIPTION,
+  EMPTY_STATE_HEADING,
+  EMPTY_STATE_INNER,
+  emptyStateActionClasses,
+  emptyStateContainerClasses,
+} from "./emptyStateStyles";
+
+interface Props extends EmptyStateProps {
+  /** Tailwind min-height utility applied when reserveHeight is true (e.g. "min-h-[36rem]"). Ignored when reserveHeight is false. */
+  minHeightClass?: string;
+  class?: string;
+}
+
+const {
+  heading,
+  description,
+  action,
+  reserveHeight = true,
+  minHeightClass,
+  class: className,
+} = Astro.props;
+
+const containerClasses = emptyStateContainerClasses(
+  reserveHeight,
+  minHeightClass,
+  className,
+);
+---
+
+<output class={containerClasses}>
+  <div class={EMPTY_STATE_INNER}>
+    <p class={EMPTY_STATE_HEADING}>{heading}</p>
+    {description && <p class={EMPTY_STATE_DESCRIPTION}>{description}</p>}
+    {
+      action && (
+        <div class={EMPTY_STATE_ACTION_WRAP}>
+          <a
+            href={action.href}
+            class={emptyStateActionClasses(action.weight)}
+            data-analytics={action.analytics}
+            target={action.external ? "_blank" : undefined}
+            rel={action.external ? "noopener noreferrer" : undefined}
+          >
+            {action.label}
+          </a>
+        </div>
+      )
+    }
+  </div>
+</output>

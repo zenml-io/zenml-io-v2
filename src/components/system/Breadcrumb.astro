@@ -1,0 +1,87 @@
+---
+/**
+ * Breadcrumb — one prop list drives both the visual crumb trail and its
+ * BreadcrumbList JSON-LD, so a route cannot ship one without the other
+ * (#248).
+ *
+ * Visual idiom is copied byte-for-byte from the three call sites that
+ * carried it independently before this primitive existed —
+ * `src/pages/features/[slug].astro`, `src/pages/case-study/[slug].astro`,
+ * and `src/pages/cloud-features/ml-models-control-plane.astro` — plus the
+ * accessible `<nav><ol><li>` structure and `aria-current="page"` on top.
+ * The only structural addition beyond those three (`<ol>`/`<li>`) is kept
+ * visually inert: `<li>` is forced back to `inline` (its default is
+ * `list-item`, which would stack crumbs vertically), and Tailwind's
+ * preflight already zeroes `ol`/`li` margin, padding, and markers — so the
+ * added semantics don't move a pixel.
+ *
+ * No Preact twin: only static `.astro` pages use this.
+ */
+import { absoluteUrl } from "../../lib/seo";
+import JsonLd from "../seo/JsonLd.astro";
+
+export interface BreadcrumbItem {
+  label: string;
+  /** Omit on the current page — it renders as text, never a link. */
+  href?: string;
+}
+
+interface Props {
+  /** Last item is the current page. */
+  items: BreadcrumbItem[];
+  class?: string;
+  /** Excludes the crumb trail from the Pagefind index (llmops/mlops detail pages need this). */
+  pagefindIgnore?: boolean;
+}
+
+const { items, class: className, pagefindIgnore = false } = Astro.props;
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: items.map((item, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: item.label,
+    // Matches BlogLayout's convention: the current page (last item) has no `item` URL.
+    ...(i < items.length - 1 && item.href
+      ? { item: absoluteUrl(item.href) }
+      : {}),
+  })),
+};
+---
+
+<JsonLd data={breadcrumbJsonLd} />
+<nav
+  aria-label="Breadcrumb"
+  class:list={["text-sm text-gray-500", className]}
+  data-pagefind-ignore={pagefindIgnore || undefined}
+>
+  <ol>
+    {items.map((item, i) => {
+      const isLast = i === items.length - 1;
+      return (
+        <>
+          {i > 0 && (
+            <span class="mx-2" aria-hidden="true">
+              /
+            </span>
+          )}
+          <li class="inline">
+            {isLast ? (
+              <span class="text-gray-900" aria-current="page">
+                {item.label}
+              </span>
+            ) : item.href ? (
+              <a href={item.href} class="hover:text-zenml-500">
+                {item.label}
+              </a>
+            ) : (
+              <span>{item.label}</span>
+            )}
+          </li>
+        </>
+      );
+    })}
+  </ol>
+</nav>

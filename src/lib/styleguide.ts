@@ -2,7 +2,8 @@
  * styleguide.ts — build-time derivation layer for /styleguide (issue #266).
  *
  * Everything this module exports is *parsed*, not written down: colors, fonts,
- * spacing, and radii come from `src/styles/global.css`; contrast ratios are
+ * spacing, radii, and the type-scale rungs (`--text-*`/`--leading-*`/
+ * `--tracking-*`) come from `src/styles/global.css`; contrast ratios are
  * computed with `culori`; template status comes from
  * `src/lib/templates/registry.ts`. The page that renders `/styleguide` must
  * never hardcode a hex, a px value, a radius, or a family name where this
@@ -57,6 +58,15 @@ export interface StyleguideData {
   fonts: TokenRow[];
   spacing: TokenRow[];
   radii: TokenRow[];
+  /**
+   * `--text-*` / `--leading-*` / `--tracking-*` tokens (global.css section
+   * 2b, issue #248) — the rebrand's fluid type-scale rungs and their
+   * tracking bindings. Kept as one flat list, same shape as the other token
+   * groups, so consumers can filter by name prefix (`text-`, `leading-`,
+   * `tracking-`) themselves rather than this module pre-deciding a rung
+   * taxonomy that belongs to the page, not the parser.
+   */
+  typeScale: TokenRow[];
   contrast: ContrastRow[];
   chrome: ContrastRow[];
   registry: ReadonlyArray<{ entry: TemplateEntry; status: string }>;
@@ -464,10 +474,19 @@ function isColorValue(value: string): boolean {
 function classify(
   name: string,
   resolvedValue: string,
-): "colors" | "fonts" | "spacing" | "radii" | null {
+): "colors" | "fonts" | "spacing" | "radii" | "typeScale" | null {
   if (name === "radius" || name.startsWith("radius-")) return "radii";
   if (name.startsWith("spacing-") || name.startsWith("container-"))
     return "spacing";
+  // Checked before the "font-" test below: --text-*/--leading-*/--tracking-*
+  // are the type-scale rungs (font-size/line-height/letter-spacing), not
+  // font-family stacks — those are namespaced --font-* and stay in "fonts".
+  if (
+    name.startsWith("text-") ||
+    name.startsWith("leading-") ||
+    name.startsWith("tracking-")
+  )
+    return "typeScale";
   if (name.startsWith("font-")) return "fonts";
   if (isColorValue(resolvedValue)) return "colors";
   if (name.startsWith("color-") || SEMANTIC_COLOR_NAMES.has(name))
@@ -506,6 +525,7 @@ export function getStyleguideData(): StyleguideData {
   const fonts: TokenRow[] = [];
   const spacing: TokenRow[] = [];
   const radii: TokenRow[] = [];
+  const typeScale: TokenRow[] = [];
 
   for (const decl of rawDecls) {
     const resolved = resolveValue(decl.value, decl.scope, byScope);
@@ -520,6 +540,7 @@ export function getStyleguideData(): StyleguideData {
     if (group === "colors") colors.push(row);
     else if (group === "fonts") fonts.push(row);
     else if (group === "spacing") spacing.push(row);
+    else if (group === "typeScale") typeScale.push(row);
     else radii.push(row);
   }
 
@@ -562,6 +583,15 @@ export function getStyleguideData(): StyleguideData {
     status: statusOf(entry),
   }));
 
-  cached = { colors, fonts, spacing, radii, contrast, chrome, registry };
+  cached = {
+    colors,
+    fonts,
+    spacing,
+    radii,
+    typeScale,
+    contrast,
+    chrome,
+    registry,
+  };
   return cached;
 }

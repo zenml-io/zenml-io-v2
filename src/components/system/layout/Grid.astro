@@ -1,0 +1,51 @@
+---
+/**
+ * Grid — explicit-column grid layout primitive (#248).
+ *
+ * `cols` is required and takes an explicit column count per breakpoint
+ * (`"base"` = unprefixed / mobile-first). `repeat(auto-fit, minmax())` is
+ * banned by the contract — every column count a Grid renders must be one
+ * of the explicit literals in `./classMaps`.
+ *
+ * `lastRow="center"` centers a lone trailing item when the grid doesn't
+ * divide evenly (e.g. 7 items at 3 columns) by spanning it full-width and
+ * centering it via `:last-child`. KNOWN LIMITATION: this only centers a
+ * remainder of exactly one leftover item — it does not compute or center a
+ * multi-item incomplete row (e.g. 2 leftover items in a 3-column grid),
+ * which would need an item-count prop or client-side measurement that
+ * isn't part of this signature. Flagged for design review (see Wave 1
+ * agent output); `lastRow="start"` (default) is a no-op either way.
+ *
+ * Preact twin: `Grid.tsx` (same directory) — islands cannot import .astro
+ * components. Keep the two emitting identical markup/classes.
+ */
+import type { Breakpoint, SpaceStep } from "../../../lib/section";
+import { type GridColsProp, resolveGridCols, resolveSpace } from "./classMaps";
+
+type LastRow = "start" | "center";
+
+interface Props {
+  cols: GridColsProp;
+  space?: SpaceStep | Partial<Record<Breakpoint, SpaceStep>>;
+  lastRow?: LastRow;
+  class?: string;
+}
+
+const { cols, space, lastRow = "start", class: className } = Astro.props;
+
+const classes = [
+  "grid",
+  resolveGridCols(cols),
+  resolveSpace(space, "sm"),
+  lastRow === "center"
+    ? "[&>*:last-child]:col-span-full [&>*:last-child]:justify-self-center"
+    : "",
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<div class={classes}>
+  <slot />
+</div>
