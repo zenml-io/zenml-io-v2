@@ -21,7 +21,7 @@ import { COMPANY_ADDRESS, CONTACT_EMAIL } from "../lib/constants";
   <h1>Contact ZenML</h1>
 
   <p>
-    The fastest way to reach us is by email at
+    The fastest way to reach us is by email at{" "}
     <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. We read everything —
     product questions, partnership ideas, press inquiries, and feedback about
     ZenML or Kitaru all land in the same place.
@@ -45,8 +45,7 @@ import { COMPANY_ADDRESS, CONTACT_EMAIL } from "../lib/constants";
   <p>
     ZenML GmbH<br />
     {COMPANY_ADDRESS.street}<br />
-    {COMPANY_ADDRESS.postalCode}
-    {COMPANY_ADDRESS.city}, {COMPANY_ADDRESS.countryName}
+    {COMPANY_ADDRESS.postalCode} {COMPANY_ADDRESS.city}, {COMPANY_ADDRESS.countryName}
   </p>
   <p>
     Full legal details are on our <a href="/imprint">imprint</a> page.
