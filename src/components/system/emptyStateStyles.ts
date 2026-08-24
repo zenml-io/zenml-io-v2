@@ -47,13 +47,27 @@ export function emptyStateActionClasses(
   return [ACTION_BASE, ACTION_WEIGHT_CLASSES[weight]].join(" ");
 }
 
+/**
+ * Migration-parity escape hatch, mirroring SectionIntro's `classOverrides`
+ * (#248): each key REPLACES the house default for that piece so a call site
+ * whose empty state predates this primitive can reproduce its exact classes
+ * (a dropdown row, a bare build-time `<p>`, a JS-toggled DOM node) instead of
+ * inheriting the card-style default. New code must not pass this.
+ */
+export interface EmptyStateClassOverrides {
+  container?: string;
+  inner?: string;
+  heading?: string;
+}
+
 export function emptyStateContainerClasses(
   reserveHeight: boolean,
   minHeightClass: string | undefined,
   className: string | undefined,
+  containerOverride?: string,
 ): string {
   return [
-    EMPTY_STATE_CONTAINER,
+    containerOverride ?? EMPTY_STATE_CONTAINER,
     reserveHeight ? (minHeightClass ?? EMPTY_STATE_DEFAULT_MIN_HEIGHT) : "",
     className,
   ]

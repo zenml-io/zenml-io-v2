@@ -9,6 +9,7 @@
 import { getCollection } from "astro:content";
 import Button from "../../components/Button.astro";
 import IntegrationCard from "../../components/integrations/IntegrationCard.astro";
+import EmptyState from "../../components/system/EmptyState.astro";
 import SectionIntro from "../../components/system/SectionIntro.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { R2_WEBFLOW_BASE } from "../../lib/constants";
@@ -115,9 +116,16 @@ for (const i of allIntegrations) {
           </div>
 
           {/* Empty state (hidden by default, shown by JS) */}
-          <div id="empty-state" class="hidden py-12 text-center text-gray-500">
-            No integrations found for this category.
-          </div>
+          <EmptyState
+            id="empty-state"
+            heading="No integrations found for this category."
+            reserveHeight={false}
+            classOverrides={{
+              container: "hidden block py-12 text-center",
+              inner: "",
+              heading: "text-gray-500",
+            }}
+          />
         </div>
       </div>
     </div>

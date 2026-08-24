@@ -15,6 +15,16 @@
  * preflight already zeroes `ol`/`li` margin, padding, and markers — so the
  * added semantics don't move a pixel.
  *
+ * `separator="chevron"` reproduces the llmops-database/mlops-database detail
+ * pages' second arrangement byte-for-byte: an SVG chevron instead of a `/`
+ * character, `hover:text-primary-600` instead of `hover:text-zenml-500`,
+ * `line-clamp-1` on the current-page label, and the nav's own `mb-8`. That
+ * variant lays the crumbs out as a flex row (`gap-2`), so the flex classes
+ * move onto `<ol>` — the nav can't be the flex container once it wraps a
+ * single `<ol>`, since gap only distributes space between DIRECT children.
+ * Both variants emit the identical JSON-LD and `aria-current="page"` pattern
+ * — `separator` only changes paint, never structure or semantics.
+ *
  * No Preact twin: only static `.astro` pages use this.
  */
 import { absoluteUrl } from "../../lib/seo";
@@ -32,9 +42,18 @@ interface Props {
   class?: string;
   /** Excludes the crumb trail from the Pagefind index (llmops/mlops detail pages need this). */
   pagefindIgnore?: boolean;
+  /** "slash" (default) = the three-site house idiom. "chevron" = the llmops/mlops detail-page idiom. */
+  separator?: "slash" | "chevron";
 }
 
-const { items, class: className, pagefindIgnore = false } = Astro.props;
+const {
+  items,
+  class: className,
+  pagefindIgnore = false,
+  separator = "slash",
+} = Astro.props;
+
+const isChevron = separator === "chevron";
 
 const breadcrumbJsonLd = {
   "@context": "https://schema.org",
@@ -49,31 +68,52 @@ const breadcrumbJsonLd = {
       : {}),
   })),
 };
+
+const navClass = isChevron
+  ? "mb-8 flex items-center gap-2 text-sm text-gray-500"
+  : "text-sm text-gray-500";
+const olClass = isChevron ? "flex items-center gap-2" : "";
+const linkClass = isChevron ? "hover:text-primary-600" : "hover:text-zenml-500";
+const currentClass = isChevron ? "text-gray-900 line-clamp-1" : "text-gray-900";
 ---
 
 <JsonLd data={breadcrumbJsonLd} />
 <nav
   aria-label="Breadcrumb"
-  class:list={["text-sm text-gray-500", className]}
+  class:list={[navClass, className]}
   data-pagefind-ignore={pagefindIgnore || undefined}
 >
-  <ol>
+  <ol class:list={[olClass]}>
     {items.map((item, i) => {
       const isLast = i === items.length - 1;
       return (
         <>
-          {i > 0 && (
-            <span class="mx-2" aria-hidden="true">
-              /
-            </span>
-          )}
+          {i > 0 &&
+            (isChevron ? (
+              <svg
+                class="h-4 w-4 text-gray-400"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.67"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M7.5 5L12.5 10L7.5 15" />
+              </svg>
+            ) : (
+              <span class="mx-2" aria-hidden="true">
+                /
+              </span>
+            ))}
           <li class="inline">
             {isLast ? (
-              <span class="text-gray-900" aria-current="page">
+              <span class={currentClass} aria-current="page">
                 {item.label}
               </span>
             ) : item.href ? (
-              <a href={item.href} class="hover:text-zenml-500">
+              <a href={item.href} class={linkClass}>
                 {item.label}
               </a>
             ) : (

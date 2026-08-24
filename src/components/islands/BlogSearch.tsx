@@ -6,6 +6,7 @@
  * Ctrl+K focus, arrow key navigation, Escape to clear.
  */
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
+import EmptyState from "../system/EmptyState";
 
 interface PostEntry {
   title: string;
@@ -219,9 +220,15 @@ export default function BlogSearch({ searchIndexUrl }: Props) {
               </a>
             ))
           ) : (
-            <div class="px-4 py-6 text-center text-sm text-gray-500">
-              No posts found
-            </div>
+            <EmptyState
+              heading="No posts found"
+              reserveHeight={false}
+              classOverrides={{
+                container: "block px-4 py-6 text-center",
+                inner: "",
+                heading: "text-sm text-gray-500",
+              }}
+            />
           )}
         </div>
       )}

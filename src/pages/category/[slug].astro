@@ -9,6 +9,7 @@ import { getCollection, getEntry } from "astro:content";
 import BlogCard from "../../components/blog/BlogCard.astro";
 import CategoryBar from "../../components/blog/CategoryBar.astro";
 import TagCloud from "../../components/blog/TagCloud.astro";
+import EmptyState from "../../components/system/EmptyState.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   getCategoryCounts,
@@ -102,7 +103,15 @@ for (const post of allPosts) {
     </div>
 
     {allPosts.length === 0 && (
-      <p class="text-center text-gray-500">No posts in this category yet.</p>
+      <EmptyState
+        heading="No posts in this category yet."
+        reserveHeight={false}
+        classOverrides={{
+          container: "block",
+          inner: "",
+          heading: "text-center text-gray-500",
+        }}
+      />
     )}
   </div>
 

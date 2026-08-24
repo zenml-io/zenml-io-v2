@@ -21,6 +21,7 @@ import {
   useRef,
   useState,
 } from "preact/hooks";
+import { FilterEmptyState } from "./shared/FilterEmptyState";
 
 // ── Types ──────────────────────────────────────────────────────────
 
@@ -782,115 +783,6 @@ export default function LLMOpsFilter({
     );
   };
 
-  // ── Enhanced empty state ────────────────────────────────────────
-
-  const renderEmptyState = () => {
-    const hasTags = selectedTags.length > 0;
-    const hasIndustry = !!selectedIndustry;
-    const hasQuery = !!query;
-    const isAndMode = tagMode === "and";
-
-    return (
-      <output class="block rounded-lg border border-gray-200 bg-gray-50 py-16 text-center">
-        <div class="mx-auto max-w-md px-4">
-          <p class="text-lg font-medium text-gray-700">
-            No entries match your filters
-          </p>
-          <p class="mt-2 text-sm text-gray-500">
-            {hasTags && hasIndustry && hasQuery
-              ? "Try removing some filters to broaden your search."
-              : hasTags && isAndMode && selectedTags.length > 1
-                ? 'These tags don\'t overlap. Try switching to "Match Any" mode.'
-                : hasQuery
-                  ? `No results for "${query}". Try different search terms.`
-                  : "Try adjusting your filter selections."}
-          </p>
-          <div class="mt-4 flex flex-wrap items-center justify-center gap-2">
-            {hasTags && isAndMode && selectedTags.length > 1 && (
-              <button
-                type="button"
-                class={`rounded-md border border-primary-200 bg-primary-50 px-3 py-1.5 text-sm font-medium text-primary-700 hover:bg-primary-100 ${FOCUS_RING}`}
-                onClick={() => {
-                  setTagMode("or");
-                  resetPage();
-                }}
-              >
-                Switch to Match Any
-              </button>
-            )}
-            {hasTags && (
-              <button
-                type="button"
-                class={`rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 ${FOCUS_RING}`}
-                onClick={() => {
-                  setSelectedTags([]);
-                  resetPage();
-                }}
-              >
-                Clear tags
-              </button>
-            )}
-            {hasIndustry && (
-              <button
-                type="button"
-                class={`rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 ${FOCUS_RING}`}
-                onClick={() => {
-                  setSelectedIndustry("");
-                  resetPage();
-                }}
-              >
-                Clear industry
-              </button>
-            )}
-            {hasQuery && (
-              <button
-                type="button"
-                class={`rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100 ${FOCUS_RING}`}
-                onClick={() => {
-                  setQuery("");
-                  resetPage();
-                }}
-              >
-                Clear search
-              </button>
-            )}
-            <button
-              type="button"
-              class={`text-sm font-medium text-gray-500 underline hover:text-gray-700 ${FOCUS_RING}`}
-              onClick={clearAll}
-            >
-              Clear all
-            </button>
-          </div>
-
-          {/* Suggest popular tags */}
-          {popularTags.length > 0 && (
-            <div class="mt-6">
-              <p class="mb-2 text-xs font-medium text-gray-400">
-                Popular tags to explore:
-              </p>
-              <div class="flex flex-wrap justify-center gap-1.5">
-                {popularTags.slice(0, 6).map((slug) => (
-                  <button
-                    key={slug}
-                    type="button"
-                    onClick={() => {
-                      clearAll();
-                      toggleTag(slug);
-                    }}
-                    class={`rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100 ${FOCUS_RING}`}
-                  >
-                    {tagMap.get(slug) || slug}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </output>
-    );
-  };
-
   // ── Loading / Error states ───────────────────────────────────────
 
   if (loading) {
@@ -1163,7 +1055,35 @@ export default function LLMOpsFilter({
 
         {/* Results grid */}
         {paged.length === 0 ? (
-          renderEmptyState()
+          <FilterEmptyState
+            selectedTagsCount={selectedTags.length}
+            hasIndustry={!!selectedIndustry}
+            query={query}
+            isAndMode={tagMode === "and"}
+            popularTags={popularTags}
+            tagLabel={(slug) => tagMap.get(slug) || slug}
+            onSwitchToOrMode={() => {
+              setTagMode("or");
+              resetPage();
+            }}
+            onClearTags={() => {
+              setSelectedTags([]);
+              resetPage();
+            }}
+            onClearIndustry={() => {
+              setSelectedIndustry("");
+              resetPage();
+            }}
+            onClearQuery={() => {
+              setQuery("");
+              resetPage();
+            }}
+            onClearAll={clearAll}
+            onSelectPopularTag={(slug) => {
+              clearAll();
+              toggleTag(slug);
+            }}
+          />
         ) : (
           <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
             {paged.map((item) => (

@@ -20,6 +20,12 @@
  * primitive is pixel-identical. Has a required Preact twin
  * (`EmptyState.tsx`) because the main consumers — LLMOpsFilter, MLOpsFilter,
  * BlogSearch — are islands, which cannot import `.astro` components.
+ *
+ * `classOverrides` (container/inner/heading) and `id` exist for migrating a
+ * pre-#248 empty state whose shape isn't the house card — a dropdown row
+ * (BlogSearch), a bare build-time `<p>` (tags/category/author), or a node a
+ * vanilla `<script>` toggles by id (integrations). `id` is layout-specific,
+ * not part of the shared `EmptyStateProps` contract.
  */
 import type { EmptyStateProps } from "../../lib/section";
 import {
@@ -27,6 +33,7 @@ import {
   EMPTY_STATE_DESCRIPTION,
   EMPTY_STATE_HEADING,
   EMPTY_STATE_INNER,
+  type EmptyStateClassOverrides,
   emptyStateActionClasses,
   emptyStateContainerClasses,
 } from "./emptyStateStyles";
@@ -35,6 +42,8 @@ interface Props extends EmptyStateProps {
   /** Tailwind min-height utility applied when reserveHeight is true (e.g. "min-h-[36rem]"). Ignored when reserveHeight is false. */
   minHeightClass?: string;
   class?: string;
+  id?: string;
+  classOverrides?: EmptyStateClassOverrides;
 }
 
 const {
@@ -44,18 +53,23 @@ const {
   reserveHeight = true,
   minHeightClass,
   class: className,
+  id,
+  classOverrides,
 } = Astro.props;
 
 const containerClasses = emptyStateContainerClasses(
   reserveHeight,
   minHeightClass,
   className,
+  classOverrides?.container,
 );
+const innerClass = classOverrides?.inner ?? EMPTY_STATE_INNER;
+const headingClass = classOverrides?.heading ?? EMPTY_STATE_HEADING;
 ---
 
-<output class={containerClasses}>
-  <div class={EMPTY_STATE_INNER}>
-    <p class={EMPTY_STATE_HEADING}>{heading}</p>
+<output id={id} class={containerClasses}>
+  <div class={innerClass}>
+    <p class={headingClass}>{heading}</p>
     {description && <p class={EMPTY_STATE_DESCRIPTION}>{description}</p>}
     {
       action && (
