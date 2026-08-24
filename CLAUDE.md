@@ -56,7 +56,7 @@ Two attributes on `<html>` carry the unified-product state to every page:
 
 | Attribute | Values | Drives | Set by |
 |-----------|--------|--------|--------|
-| `data-app` | `zenml` (default) \| `kitaru` | CSS brand-token switching in `src/styles/global.css` (sage green vs warm orange) | `<html data-app="zenml">` in BaseLayout/MinimalLayout; Kitaru pages wrap content in `<div data-app="kitaru">` for scoped override |
+| `data-app` | `zenml` (default) \| `kitaru` \| `zenml-next` | CSS brand-token switching in `src/styles/global.css` (sage green vs warm orange; `zenml-next` = the in-progress 2026 rebrand scope: type roles + palette) | `<html data-app="zenml">` in BaseLayout/MinimalLayout; Kitaru pages wrap content in `<div data-app="kitaru">` for scoped override; `/styleguide` wraps content in `<div data-app="zenml-next">` (sole consumer so far) |
 | `data-surface` | `ml` \| `agent` \| `unified` | Plausible `surface` custom prop on every pageview + custom event (D3); included as a property on Segment page events for downstream segmentation | BaseLayout/MinimalLayout require a `surface` prop; passed by page templates |
 
 **Surface taxonomy** (`src/lib/analytics.ts`):
@@ -277,7 +277,11 @@ Important rules:
 ### Core Architecture
 - `astro.config.ts` — Astro config (static output, Cloudflare, Preact, sitemap, Shiki)
 - `src/content.config.ts` — Content collection schemas (Zod). Reads `categories/`, `tags/`, etc. at config eval time to build slug-reference validation sets — adding a new category/tag file requires a dev-server restart.
-- `src/styles/global.css` — Tailwind v4 `@theme` block + design tokens; `:root` defaults are Kitaru, `[data-app="zenml"]` overrides flip to ZenML
+- `src/styles/global.css` — Tailwind v4 `@theme` block + design tokens; `:root` defaults are Kitaru, `[data-app="zenml"]` overrides flip to ZenML, `[data-app="zenml-next"]` holds the 2026 rebrand type roles + palette (in progress, #246)
+- `src/pages/styleguide.astro` — generated design-system reference (public-but-unlisted, noindex, no nav/sitemap links); renders tokens/type/scale/registry/rules derived at build time — never hand-write design values into it
+- `src/lib/styleguide.ts` — styleguide derivation layer: parses `global.css` tokens, computes WCAG contrast for declared pairs (`DECLARED_PAIRS`/`CHROME_PAIRS`)
+- `src/lib/designRules.ts` — parses DESIGN.md rule sections for the styleguide's Rules section
+- `src/components/styleguide/TemplateStage.astro` — live render stage for built registry entries on /styleguide
 - `src/styles/kitaru-compat.css` — Kitaru OKLch tokens scoped to `[data-app="kitaru"]`
 - `src/lib/constants.ts` — `SITE_URL` and shared constants
 - `src/lib/seo.ts` — SEO contract (`SEOProps`, `resolveSeo()`, `buildCanonical()`)

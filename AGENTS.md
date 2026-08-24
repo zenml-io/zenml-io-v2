@@ -13,7 +13,8 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
   - `content/` markdown CMS content, validated by the collection definitions in `src/content.config.ts`. Two compare collections: `compare/` (ZenML-vs-X, MLOps) and `compare-kitaru/` (Kitaru-vs-X, agents).
   - `lib/` typed utilities/data contracts. `analytics.ts` defines the surface taxonomy; `consentConfig.ts` contains the unified analytics script registry; shared form helpers live in `formTypes.ts`, `formValidation.ts`, and related form data modules.
   - `scripts/kitaru/` client-side scripts the Kitaru landing relies on.
-  - `styles/global.css` Tailwind v4 theme tokens. `kitaru-compat.css` scopes Kitaru's OKLch tokens to `[data-app="kitaru"]`.
+  - `styles/global.css` Tailwind v4 theme tokens; `[data-app="zenml-next"]` holds the in-progress 2026 rebrand scope (type roles + palette), consumed only by `/styleguide` so far. `kitaru-compat.css` scopes Kitaru's OKLch tokens to `[data-app="kitaru"]`.
+  - `pages/styleguide.astro` + `lib/styleguide.ts` + `lib/designRules.ts` + `components/styleguide/` — the generated design-system reference (unlisted, noindex). Derived at build time from `global.css`, the template registry, and DESIGN.md; never hand-write design values into it.
 - `public/` stores static assets and edge config (`_redirects`, `_headers`).
 - `scripts/` contains maintenance and validation tooling. Some directories retain legacy names (`phase2/`, `phase4/`, `phase6/`) from the original Webflow migration — these tools are still active (e.g., `pnpm validate:content` runs `scripts/phase2/validate-content.ts`).
 - `docs/MIGRATION.md` (Webflow → Astro, Feb 2026) and `docs/kitaru-seo-inventory.md` (Phase 10a redirect audit template) are historical / operational docs, not architecture authority.

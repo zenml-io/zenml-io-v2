@@ -1,0 +1,646 @@
+---
+/**
+ * /styleguide — generated design-system reference (issue #266).
+ *
+ * Everything below is derived at build time, never hand-authored:
+ *   - Tokens, Type, Scale sections   -> src/lib/styleguide.ts (parses global.css)
+ *   - Components section             -> src/lib/templates/registry.ts
+ *   - Rules section                  -> DESIGN.md, re-flowed (src/lib/designRules.ts)
+ *
+ * Per DESIGN.md's "The styleguide" rule, this route is public but unlisted:
+ * noindex, and linked from no nav, footer, or sitemap (see the sitemap
+ * exclusion list in astro.config.ts). This is the first page to render
+ * under [data-app="zenml-next"], the 2026 rebrand's type system.
+ *
+ * Fully static: no <script>, no client: directives, no islands beyond what
+ * MinimalLayout itself always mounts (cookie consent).
+ */
+// Read at *build* time via Vite's `?raw` import — see src/lib/styleguide.ts
+// for why `readFileSync` + `fileURLToPath(import.meta.url)` breaks the
+// Cloudflare adapter's prerender bundle.
+import designMdRaw from "../../DESIGN.md?raw";
+import TemplateStage from "../components/styleguide/TemplateStage.astro";
+import MinimalLayout from "../layouts/MinimalLayout.astro";
+import { parseDesignRules } from "../lib/designRules";
+import { getStyleguideData, type TokenRow } from "../lib/styleguide";
+import { familyOf } from "../lib/templates/registry";
+
+const data = getStyleguideData();
+
+// ---------------------------------------------------------------------------
+// Tokens — color rows grouped by scope, then by in-file group label.
+// ---------------------------------------------------------------------------
+
+/**
+ * Display order for scope sections. Not a design value — this is the exact
+ * six-scope sequence global.css's own cascade defines (the styleguide
+ * module's author's notes list it in this order); used purely to keep
+ * related scopes adjacent instead of whatever order Array/Set iteration
+ * happens to produce. Any scope not in this list (there shouldn't be one)
+ * sorts after all named ones.
+ */
+const SCOPE_ORDER = [
+  ":root",
+  '[data-app="zenml"]',
+  '[data-app="zenml-next"]',
+  ".kitaru-brand-vars",
+  "@theme",
+  "@theme inline",
+];
+const scopeRank = (scope: string) => {
+  const i = SCOPE_ORDER.indexOf(scope);
+  return i === -1 ? SCOPE_ORDER.length : i;
+};
+
+function groupByScope(rows: TokenRow[]): Map<string, TokenRow[]> {
+  const byScope = new Map<string, TokenRow[]>();
+  for (const row of rows) {
+    const bucket = byScope.get(row.scope);
+    if (bucket) bucket.push(row);
+    else byScope.set(row.scope, [row]);
+  }
+  return new Map(
+    [...byScope.entries()].sort((a, b) => scopeRank(a[0]) - scopeRank(b[0])),
+  );
+}
+
+function groupByLabel(rows: TokenRow[]): Map<string, TokenRow[]> {
+  const byLabel = new Map<string, TokenRow[]>();
+  for (const row of rows) {
+    const bucket = byLabel.get(row.group);
+    if (bucket) bucket.push(row);
+    else byLabel.set(row.group, [row]);
+  }
+  return byLabel;
+}
+
+const colorsByScope = groupByScope(data.colors);
+
+// Contrast rows aren't TokenRow themselves; group the ContrastRow list by
+// its (shared) fg/bg scope directly instead of forcing it through groupByScope.
+const contrastGroups = new Map<string, typeof data.contrast>();
+for (const row of data.contrast) {
+  const bucket = contrastGroups.get(row.fg.scope);
+  if (bucket) bucket.push(row);
+  else contrastGroups.set(row.fg.scope, [row]);
+}
+const orderedContrastScopes = [...contrastGroups.keys()].sort(
+  (a, b) => scopeRank(a) - scopeRank(b),
+);
+
+const UNRESOLVED = "var(...)";
+
+// ---------------------------------------------------------------------------
+// Type — the four role stacks, resolved for the [data-app="zenml-next"]
+// scope this page renders under, falling back to :root for a role
+// zenml-next doesn't redeclare (font-mono: code keeps JetBrains Mono
+// everywhere, so zenml-next never overrides it — see global.css's own
+// comment on that scope block).
+// ---------------------------------------------------------------------------
+
+const ZENML_NEXT_SCOPE = '[data-app="zenml-next"]';
+
+function fontRowFor(name: string): TokenRow | undefined {
+  return (
+    data.fonts.find(
+      (row) => row.scope === ZENML_NEXT_SCOPE && row.name === name,
+    ) ?? data.fonts.find((row) => row.scope === ":root" && row.name === name)
+  );
+}
+
+/**
+ * Weight cuts per face, read from global.css's own @font-face declarations
+ * (font-weight ranges) — TokenRow doesn't carry weight data (custom
+ * properties only), so this is sourced directly from the same file
+ * styleguide.ts parses, not invented. Update alongside any @font-face change.
+ */
+const TYPE_ROLES = [
+  {
+    tokenName: "--font-display",
+    label: "Display",
+    utility: "font-display",
+    weights: [
+      { label: "400", value: 400 },
+      { label: "500", value: 500 },
+      { label: "600", value: 600 },
+      { label: "700", value: 700 },
+    ],
+    weightNote: "Borna — four static cuts",
+  },
+  {
+    tokenName: "--font-sans",
+    label: "Sans",
+    utility: "font-sans",
+    weights: [
+      { label: "400", value: 400 },
+      { label: "600", value: 600 },
+      { label: "800", value: 800 },
+    ],
+    weightNote: "Rethink Sans — variable, 400–800",
+  },
+  {
+    tokenName: "--font-label",
+    label: "Label",
+    utility: "font-label",
+    weights: [
+      { label: "400", value: 400 },
+      { label: "500", value: 500 },
+    ],
+    weightNote: "Nudica Mono — two static cuts",
+  },
+  {
+    tokenName: "--font-mono",
+    label: "Mono",
+    utility: "font-mono",
+    weights: [
+      { label: "400", value: 400 },
+      { label: "600", value: 600 },
+      { label: "800", value: 800 },
+    ],
+    weightNote: "JetBrains Mono — variable, 100–800",
+  },
+] as const;
+
+/**
+ * Representative specimen sizes. No px type-scale ladder exists yet in
+ * global.css or DESIGN.md (only a component-scoped list of ad hoc
+ * font-size declarations, none of them a role-level scale) — these are
+ * standard Tailwind scale steps, not invented pixel values, shown only to
+ * demonstrate each role's live rendering. Provisional per CONTENT HONESTY;
+ * see the note rendered inline and the "questions" raised alongside this PR.
+ */
+const SPECIMEN_STEPS = [
+  { label: "Small", className: "text-xl" },
+  { label: "Medium", className: "text-3xl" },
+  { label: "Large", className: "text-5xl md:text-6xl" },
+] as const;
+
+const SPECIMEN_TEXT = "The quick brown fox jumps over the lazy dog";
+
+// ---------------------------------------------------------------------------
+// Scale — spacing + radii, in file order (already the order global.css
+// declares them, smallest to largest by convention).
+// ---------------------------------------------------------------------------
+
+const containerTokens = data.spacing.filter(
+  (row) =>
+    row.name.startsWith("--container-") || row.name === "--spacing-gutter",
+);
+const spaceTokens = data.spacing.filter(
+  (row) =>
+    !containerTokens.some((c) => c.name === row.name && c.scope === row.scope),
+);
+
+// ---------------------------------------------------------------------------
+// Components — registry grouped by family, in registry declaration order.
+// ---------------------------------------------------------------------------
+
+type RegistryRow = (typeof data.registry)[number];
+
+const familyOrder: string[] = [];
+const byFamily = new Map<string, RegistryRow[]>();
+for (const row of data.registry) {
+  const family = familyOf(row.entry.id);
+  const bucket = byFamily.get(family);
+  if (bucket) bucket.push(row);
+  else {
+    byFamily.set(family, [row]);
+    familyOrder.push(family);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Rules — DESIGN.md, re-flowed (see src/lib/designRules.ts).
+// ---------------------------------------------------------------------------
+
+const designMdSections = parseDesignRules(designMdRaw);
+---
+
+<MinimalLayout
+  title="Styleguide — ZenML"
+  description="Generated design-system reference for the ZenML rebrand: color tokens, type roles, spacing scale, the section-template registry, and DESIGN.md's rules — derived from code, never hand-authored."
+  noindex
+  surface="unified"
+>
+  <div data-app="zenml-next" class="overflow-x-clip bg-background font-sans text-foreground">
+    <main class="mx-auto max-w-content px-gutter py-space-xxl">
+      <!-- ============================================================ -->
+      <!-- Header                                                        -->
+      <!-- ============================================================ -->
+      <header class="max-w-3xl border-b border-border pb-space-lg">
+        <p class="font-label text-[13px] uppercase text-muted-foreground">Design system</p>
+        <h1 class="mt-space-xxs text-balance font-display text-5xl tracking-[var(--tracking-display)] text-foreground md:text-6xl">
+          Styleguide
+        </h1>
+        <p class="mt-space-sm text-pretty text-lg leading-relaxed text-secondary-foreground">
+          This page is generated, not written: every color, font stack, spacing
+          value, and template status below is parsed from <code class="font-mono text-base">src/styles/global.css</code>,
+          the section-template registry, and <code class="font-mono text-base">DESIGN.md</code> at build
+          time — nothing here is a hardcoded value a component author has to
+          keep in sync by hand. It is public but unlisted: <code class="font-mono text-base">noindex</code>,
+          and linked from no navigation, footer, or sitemap.
+        </p>
+      </header>
+
+      <!-- ============================================================ -->
+      <!-- 1. Tokens                                                     -->
+      <!-- ============================================================ -->
+      <section id="tokens" class="border-b border-border py-space-xxl">
+        <p class="font-label text-[13px] uppercase text-muted-foreground">01</p>
+        <h2 class="mt-space-xxs text-balance font-display text-3xl tracking-[var(--tracking-heading)] text-foreground">Tokens</h2>
+        <p class="mt-space-xs max-w-2xl text-pretty text-secondary-foreground">
+          Every custom property in <code class="font-mono text-sm">global.css</code> that
+          resolves — or is classified — as a color, grouped by the CSS scope
+          that declares it.
+        </p>
+
+        <div class="mt-space-lg space-y-space-xl">
+          {
+            [...colorsByScope.entries()].map(([scope, rows]) => (
+              <div>
+                <h3 class="font-mono text-sm text-muted-foreground">{scope}</h3>
+                <div class="mt-space-xs space-y-space-sm">
+                  {[...groupByLabel(rows).entries()].map(([label, groupRows]) => (
+                    <div>
+                      {label && (
+                        <p class="font-label text-[13px] uppercase text-muted-foreground">{label}</p>
+                      )}
+                      <div class="mt-space-xxs grid grid-cols-2 gap-x-space-sm gap-y-space-xs sm:grid-cols-3 lg:grid-cols-4">
+                        {groupRows.map((row) => (
+                          <div class="flex items-center gap-space-xxs rounded-md border border-border p-space-xxs">
+                            {row.value === UNRESOLVED ? (
+                              <div
+                                class="h-10 w-10 shrink-0 rounded-md border border-dashed border-border bg-muted"
+                                aria-hidden="true"
+                              />
+                            ) : (
+                              <div
+                                class="h-10 w-10 shrink-0 rounded-md border border-border"
+                                style={{ backgroundColor: row.value }}
+                              />
+                            )}
+                            <div class="min-w-0">
+                              <p class="truncate font-mono text-xs text-foreground">{row.name}</p>
+                              <p class="truncate font-mono text-xs text-muted-foreground">
+                                {row.value === UNRESOLVED ? "unresolved" : row.value}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <h3 class="mt-space-xl font-display text-2xl tracking-[var(--tracking-heading)] text-foreground">Contrast</h3>
+        <p class="mt-space-xxs max-w-2xl text-pretty text-secondary-foreground">
+          Every foreground/background pair actually declared together in one
+          scope block (<code class="font-mono text-sm">DECLARED_PAIRS</code>),
+          checked against the WCAG 2.1 4.5:1 text-contrast floor.
+        </p>
+
+        <div class="mt-space-sm space-y-space-lg">
+          {
+            orderedContrastScopes.map((scope) => (
+              <div>
+                <h4 class="font-mono text-sm text-muted-foreground">{scope}</h4>
+                <div class="mt-space-xs overflow-x-auto rounded-md border border-border">
+                  <table class="w-full min-w-[640px] border-collapse text-left text-sm">
+                    <thead>
+                      <tr class="border-b border-border bg-muted">
+                        <th scope="col" class="px-space-xs py-space-xxs font-label text-[13px] font-normal uppercase text-muted-foreground">Foreground</th>
+                        <th scope="col" class="px-space-xs py-space-xxs font-label text-[13px] font-normal uppercase text-muted-foreground">Background</th>
+                        <th scope="col" class="px-space-xs py-space-xxs text-right font-label text-[13px] font-normal uppercase text-muted-foreground">Ratio</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {contrastGroups.get(scope)!.map((row) => (
+                        <tr class="border-b border-border last:border-b-0">
+                          <td class="px-space-xs py-space-xxs">
+                            <span class="mr-space-xxs inline-block h-4 w-4 rounded-sm border border-border align-text-bottom" style={{ backgroundColor: row.fg.value }} />
+                            <span class="font-mono text-xs text-foreground">{row.fg.name}</span>
+                          </td>
+                          <td class="px-space-xs py-space-xxs">
+                            <span class="mr-space-xxs inline-block h-4 w-4 rounded-sm border border-border align-text-bottom" style={{ backgroundColor: row.bg.value }} />
+                            <span class="font-mono text-xs text-foreground">{row.bg.name}</span>
+                          </td>
+                          <td class="px-space-xs py-space-xxs text-right">
+                            <span
+                              class:list={[
+                                // py-[2px]: the spacing scale's smallest step is --spacing-space-xxs (8px);
+                                // this badge needs a sub-scale vertical inset to keep single-line text from
+                                // looking loose, so it stays an isolated arbitrary value.
+                                "inline-block rounded-sm px-space-xxs py-[2px] font-mono text-xs tabular-nums",
+                                row.passes
+                                  ? "border border-border text-foreground"
+                                  : "border border-foreground bg-foreground text-background",
+                              ]}
+                            >
+                              {row.passes ? "PASS" : "FAIL"} {row.ratio.toFixed(1)}:1
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <h3 class="mt-space-xl font-display text-2xl tracking-[var(--tracking-heading)] text-foreground">UI chrome</h3>
+        <p class="mt-space-xxs max-w-2xl text-pretty text-secondary-foreground">
+          The page's own eyebrow, label, and body text colors — checked
+          against the same 4.5:1 floor, not assumed safe.
+        </p>
+
+        <div class="mt-space-sm overflow-x-auto rounded-md border border-border">
+          <table class="w-full min-w-[480px] border-collapse text-left text-sm">
+            <thead>
+              <tr class="border-b border-border bg-muted">
+                <th scope="col" class="px-space-xs py-space-xxs font-label text-[13px] font-normal uppercase text-muted-foreground">Foreground</th>
+                <th scope="col" class="px-space-xs py-space-xxs font-label text-[13px] font-normal uppercase text-muted-foreground">Background</th>
+                <th scope="col" class="px-space-xs py-space-xxs text-right font-label text-[13px] font-normal uppercase text-muted-foreground">Ratio</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                data.chrome.map((row) => (
+                  <tr class="border-b border-border last:border-b-0">
+                    <td class="px-space-xs py-space-xxs">
+                      <span class="mr-space-xxs inline-block h-4 w-4 rounded-sm border border-border align-text-bottom" style={{ backgroundColor: row.fg.value }} />
+                      <span class="font-mono text-xs text-foreground">{row.fg.name}</span>
+                    </td>
+                    <td class="px-space-xs py-space-xxs">
+                      <span class="mr-space-xxs inline-block h-4 w-4 rounded-sm border border-border align-text-bottom" style={{ backgroundColor: row.bg.value }} />
+                      <span class="font-mono text-xs text-foreground">{row.bg.name}</span>
+                    </td>
+                    <td class="px-space-xs py-space-xxs text-right">
+                      <span
+                        class:list={[
+                          "inline-block rounded-sm px-space-xxs py-[2px] font-mono text-xs tabular-nums",
+                          row.passes
+                            ? "border border-border text-foreground"
+                            : "border border-foreground bg-foreground text-background",
+                        ]}
+                      >
+                        {row.passes ? "PASS" : "FAIL"} {row.ratio.toFixed(1)}:1
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 2. Type                                                       -->
+      <!-- ============================================================ -->
+      <section id="type" class="border-b border-border py-space-xxl">
+        <p class="font-label text-[13px] uppercase text-muted-foreground">02</p>
+        <h2 class="mt-space-xxs text-balance font-display text-3xl tracking-[var(--tracking-heading)] text-foreground">Type</h2>
+        <p class="mt-space-xs max-w-2xl text-pretty text-secondary-foreground">
+          The four type roles, rendered live under <code class="font-mono text-sm">[data-app="zenml-next"]</code> —
+          the same scope this page itself renders under.
+        </p>
+        <p class="mt-space-xs max-w-2xl border border-border bg-muted p-space-xs text-sm text-secondary-foreground">
+          Sizes below are provisional — finalized with #248. No px type-scale
+          ladder exists yet in <code class="font-mono text-xs">global.css</code> or
+          <code class="font-mono text-xs">DESIGN.md</code>; these are standard
+          Tailwind scale steps shown only to demonstrate each role live, not a
+          ruled type ladder.
+        </p>
+
+        <div class="mt-space-lg space-y-space-xl">
+          {
+            TYPE_ROLES.map((role) => {
+              const row = fontRowFor(role.tokenName);
+              const stack = row?.value ?? UNRESOLVED;
+              return (
+                <div class="border-t border-border pt-space-sm">
+                  <div class="flex flex-wrap items-baseline justify-between gap-space-xs">
+                    <h3 class="font-display text-xl tracking-[var(--tracking-heading)] text-foreground">{role.label}</h3>
+                    <p class="font-mono text-xs text-muted-foreground">{role.tokenName}</p>
+                  </div>
+
+                  <div class="mt-space-xs space-y-space-xxs">
+                    {SPECIMEN_STEPS.map((step) => (
+                      <p
+                        class:list={[step.className, "text-balance text-foreground"]}
+                        style={{ fontFamily: stack === UNRESOLVED ? undefined : stack }}
+                      >
+                        {SPECIMEN_TEXT}
+                      </p>
+                    ))}
+                  </div>
+
+                  <div class="mt-space-sm flex flex-wrap items-end gap-space-sm">
+                    {role.weights.map((weight) => (
+                      <div class="flex flex-col items-start gap-space-xxs">
+                        <p
+                          class="text-2xl text-foreground"
+                          style={{
+                            fontFamily: stack === UNRESOLVED ? undefined : stack,
+                            fontWeight: weight.value,
+                          }}
+                        >
+                          Aa
+                        </p>
+                        <p class="font-mono text-xs tabular-nums text-muted-foreground">{weight.label}</p>
+                      </div>
+                    ))}
+                    <p class="ml-space-xs font-mono text-xs text-muted-foreground">{role.weightNote}</p>
+                  </div>
+
+                  <p class="mt-space-sm break-words rounded-md border border-border bg-muted p-space-xxs font-mono text-xs text-secondary-foreground">
+                    {stack}
+                  </p>
+                </div>
+              );
+            })
+          }
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 3. Scale                                                      -->
+      <!-- ============================================================ -->
+      <section id="scale" class="border-b border-border py-space-xxl">
+        <p class="font-label text-[13px] uppercase text-muted-foreground">03</p>
+        <h2 class="mt-space-xxs text-balance font-display text-3xl tracking-[var(--tracking-heading)] text-foreground">Scale</h2>
+        <p class="mt-space-xs max-w-2xl text-pretty text-secondary-foreground">
+          Spacing, container, and radius tokens, measured at their real value.
+        </p>
+
+        <div class="mt-space-lg grid gap-space-xl md:grid-cols-2">
+          <div>
+            <h3 class="font-mono text-sm text-muted-foreground">Spacing</h3>
+            <div class="mt-space-xs space-y-space-xxs">
+              {spaceTokens.map((row) => (
+                <div class="flex items-center gap-space-xs">
+                  <div class="w-32 shrink-0 font-mono text-xs text-foreground">{row.name}</div>
+                  <div class="h-3 flex-1 bg-muted">
+                    <div
+                      class="h-3 rounded-sm bg-[var(--color-sage-400)]"
+                      style={{ width: row.value === UNRESOLVED ? "0" : `min(${row.value}, 100%)` }}
+                    />
+                  </div>
+                  <div class="w-16 shrink-0 text-right font-mono text-xs tabular-nums text-muted-foreground">
+                    {row.value}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h3 class="font-mono text-sm text-muted-foreground">Container &amp; gutter</h3>
+            <div class="mt-space-xs space-y-space-sm">
+              {containerTokens.map((row) => (
+                <div>
+                  <div class="flex items-baseline justify-between">
+                    <p class="font-mono text-xs text-foreground">{row.name}</p>
+                    <p class="font-mono text-xs tabular-nums text-muted-foreground">{row.value}</p>
+                  </div>
+                  <div class="mt-space-xxs h-3 w-full bg-muted">
+                    <div
+                      class="h-3 rounded-sm bg-[var(--color-sage-400)]"
+                      style={{ width: row.value === UNRESOLVED ? "0" : `min(${row.value}, 100%)` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <h3 class="mt-space-lg font-mono text-sm text-muted-foreground">Radius</h3>
+            <div class="mt-space-xs flex flex-wrap gap-space-sm">
+              {data.radii.map((row) => (
+                <div class="flex flex-col items-center gap-space-xxs">
+                  <div
+                    class="h-16 w-16 border border-border bg-muted"
+                    style={{ borderRadius: row.value === UNRESOLVED ? "0" : row.value }}
+                  />
+                  <p class="font-mono text-xs text-foreground">{row.name}</p>
+                  <p class="font-mono text-xs tabular-nums text-muted-foreground">{row.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 4. Components                                                 -->
+      <!-- ============================================================ -->
+      <section id="components" class="border-b border-border py-space-xxl">
+        <p class="font-label text-[13px] uppercase text-muted-foreground">04</p>
+        <h2 class="mt-space-xxs text-balance font-display text-3xl tracking-[var(--tracking-heading)] text-foreground">Components</h2>
+        <p class="mt-space-xs max-w-2xl text-pretty text-secondary-foreground">
+          The section-template registry (<code class="font-mono text-sm">src/lib/templates/registry.ts</code>),
+          grouped by family. A <code class="font-mono text-sm">built</code> entry
+          renders live below its row; every entry today is
+          <code class="font-mono text-sm">planned</code>.
+        </p>
+
+        <div class="mt-space-lg space-y-space-lg">
+          {
+            familyOrder.map((family) => (
+              <div>
+                <h3 class="font-mono text-sm text-muted-foreground">{family}</h3>
+                <div class="mt-space-xs overflow-x-auto rounded-md border border-border">
+                  <table class="w-full min-w-[640px] border-collapse text-left text-sm">
+                    <thead>
+                      <tr class="border-b border-border bg-muted">
+                        <th scope="col" class="px-space-xs py-space-xxs font-label text-[13px] font-normal uppercase text-muted-foreground">ID</th>
+                        <th scope="col" class="px-space-xs py-space-xxs font-label text-[13px] font-normal uppercase text-muted-foreground">Kind</th>
+                        <th scope="col" class="px-space-xs py-space-xxs font-label text-[13px] font-normal uppercase text-muted-foreground">Paper page</th>
+                        <th scope="col" class="px-space-xs py-space-xxs font-label text-[13px] font-normal uppercase text-muted-foreground">Responsive</th>
+                        <th scope="col" class="px-space-xs py-space-xxs font-label text-[13px] font-normal uppercase text-muted-foreground">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {byFamily.get(family)!.map(({ entry, status }) => (
+                        <>
+                          <tr class="border-b border-border last:border-b-0">
+                            <td class="px-space-xs py-space-xxs font-mono text-xs text-foreground">{entry.id}</td>
+                            <td class="px-space-xs py-space-xxs text-foreground">{entry.kind}</td>
+                            <td class="px-space-xs py-space-xxs font-mono text-xs tabular-nums text-foreground">{entry.paperPage}</td>
+                            <td class="px-space-xs py-space-xxs text-foreground">{entry.responsive}</td>
+                            <td class="px-space-xs py-space-xxs">
+                              <span
+                                class:list={[
+                                  // py-[2px]: same sub-scale exception as the Tokens section's ratio badge above.
+                                  "inline-block rounded-sm border px-space-xxs py-[2px] font-mono text-xs uppercase",
+                                  status === "built"
+                                    ? "border-foreground bg-foreground text-background"
+                                    : "border-border text-muted-foreground",
+                                ]}
+                              >
+                                {status}
+                              </span>
+                            </td>
+                          </tr>
+                          {status === "built" && entry.componentPath && (
+                            <tr class="border-b border-border last:border-b-0">
+                              <td colspan="5" class="px-space-xs py-space-xs">
+                                <TemplateStage componentPath={entry.componentPath} />
+                              </td>
+                            </tr>
+                          )}
+                        </>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- 5. Rules                                                      -->
+      <!-- ============================================================ -->
+      <section id="rules" class="py-space-xxl">
+        <p class="font-label text-[13px] uppercase text-muted-foreground">05</p>
+        <h2 class="mt-space-xxs text-balance font-display text-3xl tracking-[var(--tracking-heading)] text-foreground">Rules</h2>
+        <p class="mt-space-xs max-w-2xl text-pretty text-secondary-foreground">
+          The design judgment calls that can't be derived from a token —
+          quoted from <code class="font-mono text-sm">DESIGN.md</code> at the repo
+          root, not paraphrased.
+        </p>
+
+        <div class="mt-space-lg space-y-space-lg">
+          {
+            designMdSections.map((section) => (
+              <div>
+                <h3 class="font-display text-xl tracking-[var(--tracking-heading)] text-foreground">{section.title}</h3>
+                <dl class="mt-space-xs divide-y divide-gray-100 border-t border-border">
+                  {section.rules.map((rule) =>
+                    rule.gist ? (
+                      <div class="grid gap-space-xxs py-space-xxs sm:grid-cols-[minmax(0,220px)_1fr] sm:gap-space-sm">
+                        <dt class="text-sm font-semibold text-foreground">{rule.name}</dt>
+                        <dd class="text-sm text-pretty text-secondary-foreground">{rule.gist}</dd>
+                      </div>
+                    ) : (
+                      <div class="py-space-xxs">
+                        <dt class="inline text-sm font-semibold text-foreground">{rule.name}</dt>
+                      </div>
+                    ),
+                  )}
+                </dl>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+    </main>
+  </div>
+</MinimalLayout>

@@ -37,8 +37,11 @@ The stack is three faces plus one carve-out, split strictly by role (#6):
 
 Additional rules:
 
-- `letter-spacing: 0` binds to hero display sizes **only**; every other size
-  keeps its ladder tracking.
+- Borna headlines take **negative tracking, scaled by size**: −2% (`-0.02em`,
+  token `--tracking-heading`) at medium headline sizes, tightening toward −4%
+  (`-0.04em`, token `--tracking-display`) at the largest display sizes. Body
+  and label faces keep their own ladder tracking — this rule is Borna-only.
+  (Supersedes the earlier "letter-spacing 0 on hero display" rule.)
 - List/bullet marker slots are sized to optically center the marker on the
   first line of body text — whenever body size changes, the marker slot moves
   with it.

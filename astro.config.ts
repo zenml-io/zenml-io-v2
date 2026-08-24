@@ -26,6 +26,7 @@ const sitemapExcludePaths = new Set([
   "/newsletter-success",
   "/success-calendar",
   "/404",
+  "/styleguide",
   ...STALE_RAY_SUMMIT_REDIRECT_PATHS,
 ]);
 
