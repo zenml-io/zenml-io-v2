@@ -1,7 +1,7 @@
-# Design Rules — 2026 Rebrand Template System
+# Design Rules
 
-This file holds the judgment rules of the rebrand that cannot be derived from
-code: the decisions a contributor or agent needs while building or editing
+This file holds the design judgment rules that cannot be derived from code:
+the decisions a contributor or agent needs while building or editing
 templates, which no token value or type signature can express.
 
 **What does NOT belong here:** token values, the component inventory, type
