@@ -21,6 +21,8 @@ updates:
 
   - package-ecosystem: npm
     directory: /
+    # Dependabot's updater runs pnpm 11, which ignores package.json's "pnpm"
+    # field — keep overrides in pnpm-workspace.yaml (see pnpm-workspace.yaml).
     schedule:
       interval: weekly
       day: tuesday
