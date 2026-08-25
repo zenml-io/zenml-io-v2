@@ -23,8 +23,9 @@ import type { SpaceStep } from "../../lib/section";
  * of markup it doesn't render.
  */
 import { cn } from "../../lib/utils";
+import Badge from "../Badge.astro";
 import Stack from "../system/layout/Stack.astro";
-import { CHIP_VARIANT_CLASS, type ChipVariant } from "./chipStyles";
+import type { ChipVariant } from "./chipStyles";
 
 export type MetadataLinkIcon = "docs" | "github";
 
@@ -79,9 +80,6 @@ const {
 const Label = labelTag;
 const LABEL_CLASS =
   "text-xs font-semibold uppercase tracking-wider text-gray-400";
-
-const CHIP_BASE =
-  "inline-flex items-center rounded-pill px-2.5 py-0.5 text-xs font-medium transition-colors";
 ---
 
 <Stack space={space} class={cn(sticky && "sticky top-24", className)}>
@@ -156,16 +154,11 @@ const CHIP_BASE =
               item.value.chips.length > 1 && "flex flex-wrap gap-space-xxs",
             ]}
           >
-            {item.value.chips.map((chip) => {
-              const variantClass = CHIP_VARIANT_CLASS[chip.variant ?? "gray"];
-              return chip.href ? (
-                <a href={chip.href} class={cn(CHIP_BASE, variantClass)}>
-                  {chip.label}
-                </a>
-              ) : (
-                <span class={cn(CHIP_BASE, variantClass)}>{chip.label}</span>
-              );
-            })}
+            {item.value.chips.map((chip) => (
+              <Badge variant={chip.variant ?? "gray"} href={chip.href}>
+                {chip.label}
+              </Badge>
+            ))}
           </div>
         )}
         {item.value.kind === "compare" && (

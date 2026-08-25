@@ -7,8 +7,9 @@
  */
 import { getCollection } from "astro:content";
 import PageHeader from "../../components/templates/PageHeader.astro";
+import { TAXONOMY_INDEX_INTRO } from "../../components/templates/pageHeaderPresets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { filterUsedTerms } from "../../lib/blog";
+import { filterUsedTerms } from "../../lib/relatedIndex";
 
 const allIntegrations = await getCollection(
   "integrations",
@@ -44,11 +45,7 @@ const types = filterUsedTerms(merged).sort(
       heading="Integration Types"
       description={`${types.length} ${types.length === 1 ? "type" : "types"} of integration`}
       backLinks={[{ href: "/integrations", label: "Back to all integrations" }]}
-      classOverrides={{
-        heading: "text-4xl font-bold tracking-tight text-gray-900",
-        description: "text-lg text-gray-600",
-        descriptionSpacing: "mt-3",
-      }}
+      classOverrides={TAXONOMY_INDEX_INTRO}
     />
 
     <nav aria-label="All integration types">

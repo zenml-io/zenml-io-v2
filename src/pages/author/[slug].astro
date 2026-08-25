@@ -8,6 +8,7 @@
 import { getCollection, getEntry } from "astro:content";
 import CategoryBar from "../../components/blog/CategoryBar.astro";
 import PageHeader from "../../components/templates/PageHeader.astro";
+import { TAXONOMY_BAND } from "../../components/templates/pageHeaderPresets";
 import TermHubEditorial from "../../components/templates/TermHubEditorial.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCategoryCounts, getMainFeedPosts } from "../../lib/blog";
@@ -15,10 +16,9 @@ import { getCategoryCounts, getMainFeedPosts } from "../../lib/blog";
 export async function getStaticPaths() {
   const authors = await getCollection("authors");
   const allPosts = await getCollection("blog", ({ data }) => !data.draft);
+  const usedSlugs = new Set(allPosts.map((p) => p.data.author));
   return authors
-    .filter((author) =>
-      allPosts.some((p) => p.data.author === author.data.slug),
-    )
+    .filter((author) => usedSlugs.has(author.data.slug))
     .map((author) => ({
       params: { slug: author.data.slug },
       props: { author },
@@ -64,8 +64,7 @@ for (const post of allPosts) {
   {/* Author header — gradient section */}
   <PageHeader
     tone="brand"
-    bandClass="bg-linear-to-t from-primary-50 to-white border-b border-gray-200"
-    containerClass="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 sm:py-14 lg:px-8"
+    {...TAXONOMY_BAND}
     heading={author.data.name}
     masthead={{
       avatar: author.data.avatar,

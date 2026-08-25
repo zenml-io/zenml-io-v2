@@ -133,7 +133,6 @@ const totalEntries = sections.reduce((sum, s) => sum + sectionCount(s), 0);
 
 {sections.map((section, i) => {
   const count = sectionCount(section);
-  const HeadingTag = section.heading ? "h2" : undefined;
   return (
     count > 0 && (
       <section
@@ -143,7 +142,7 @@ const totalEntries = sections.reduce((sum, s) => sum + sectionCount(s), 0);
             : undefined
         }
       >
-        {HeadingTag && (
+        {section.heading && (
           <h2 class="mb-6 text-2xl font-bold tracking-tight text-gray-900">
             {section.heading}
           </h2>

@@ -19,10 +19,9 @@ export async function getStaticPaths() {
     "llmops-database",
     ({ data }) => !data.draft,
   );
+  const usedSlugs = new Set(allEntries.flatMap((e) => e.data.llmopsTags));
   return llmopsTags
-    .filter((tag) =>
-      allEntries.some((e) => e.data.llmopsTags.includes(tag.data.slug)),
-    )
+    .filter((tag) => usedSlugs.has(tag.data.slug))
     .map((tag) => ({
       params: { slug: tag.data.slug },
       props: { tag, tagMap },

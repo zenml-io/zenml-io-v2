@@ -7,10 +7,11 @@
  */
 import { getCollection } from "astro:content";
 import PageHeader from "../../components/templates/PageHeader.astro";
+import { TAXONOMY_INDEX_INTRO } from "../../components/templates/pageHeaderPresets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { filterUsedTerms } from "../../lib/blog";
 import type { TaxonomyCount } from "../../lib/llmops";
 import { getAllPublishedEntries, getLLMOpsTagCounts } from "../../lib/llmops";
+import { filterUsedTerms } from "../../lib/relatedIndex";
 
 const entries = await getAllPublishedEntries();
 const usedCounts = await getLLMOpsTagCounts(entries);
@@ -40,11 +41,7 @@ const tags = filterUsedTerms(merged).sort(
       heading="LLMOps Tags"
       description={`${tags.length} ${tags.length === 1 ? "tag" : "tags"} in the database`}
       backLinks={[{ href: "/llmops-database", label: "Back to LLMOps Database" }]}
-      classOverrides={{
-        heading: "text-4xl font-bold tracking-tight text-gray-900",
-        description: "text-lg text-gray-600",
-        descriptionSpacing: "mt-3",
-      }}
+      classOverrides={TAXONOMY_INDEX_INTRO}
     />
 
     <nav aria-label="All LLMOps tags">

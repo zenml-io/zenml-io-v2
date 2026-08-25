@@ -7,14 +7,15 @@
  */
 import { getCollection } from "astro:content";
 import PageHeader from "../../components/templates/PageHeader.astro";
+import { TAXONOMY_INDEX_INTRO } from "../../components/templates/pageHeaderPresets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { filterUsedTerms } from "../../lib/blog";
 import type { TaxonomyCount } from "../../lib/llmops";
 import { getAllPublishedEntries, getIndustryTagCounts } from "../../lib/llmops";
 import {
   getAllPublishedMLOpsEntries,
   getMLOpsIndustryTagCounts,
 } from "../../lib/mlops";
+import { filterUsedTerms } from "../../lib/relatedIndex";
 
 const llmopsEntries = await getAllPublishedEntries();
 const mlopsEntries = await getAllPublishedMLOpsEntries();
@@ -53,11 +54,7 @@ const industries = filterUsedTerms(merged).sort(
         { href: "/llmops-database", label: "LLMOps Database" },
         { href: "/mlops-database", label: "MLOps Database" },
       ]}
-      classOverrides={{
-        heading: "text-4xl font-bold tracking-tight text-gray-900",
-        description: "text-lg text-gray-600",
-        descriptionSpacing: "mt-3",
-      }}
+      classOverrides={TAXONOMY_INDEX_INTRO}
     />
 
     <nav aria-label="All industries">

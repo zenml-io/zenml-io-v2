@@ -12,6 +12,20 @@
 
 export type TaxonomyCount = { slug: string; name: string; count: number };
 
+/**
+ * Drops zero-count terms from a hub index list (#249 zero-entry filter).
+ * A term with no matching entries no longer builds a `[slug]` detail page,
+ * so listing it on the hub would link into a 301 back to this same hub.
+ * Shared across every taxonomy hub index — tags, categories, authors,
+ * integration types, LLMOps tags, industry tags — rather than six inline
+ * `.filter()` copies.
+ */
+export function filterUsedTerms<T extends { count: number }>(
+  terms: readonly T[],
+): T[] {
+  return terms.filter((t) => t.count > 0);
+}
+
 export interface RelatedIndex<TEntry> {
   byTag: Map<string, Set<string>>;
   byIndustry: Map<string, Set<string>>;

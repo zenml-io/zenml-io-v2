@@ -7,6 +7,7 @@
  */
 import { getCollection } from "astro:content";
 import PageHeader from "../../components/templates/PageHeader.astro";
+import { TAXONOMY_INDEX_INTRO } from "../../components/templates/pageHeaderPresets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import type { TaxonomyCount } from "../../lib/mlops";
 import {
@@ -41,11 +42,9 @@ const tags: TaxonomyCount[] = allTags
       description={`${tags.length} ${tags.length === 1 ? "tag" : "tags"} in the database`}
       backLinks={[{ href: "/mlops-database", label: "Back to MLOps Database" }]}
       classOverrides={{
+        ...TAXONOMY_INDEX_INTRO,
         eyebrow: "text-sm font-semibold uppercase tracking-wider text-success-700",
-        heading: "text-4xl font-bold tracking-tight text-gray-900",
         headingSpacing: "mt-3",
-        description: "text-lg text-gray-600",
-        descriptionSpacing: "mt-3",
       }}
     />
 

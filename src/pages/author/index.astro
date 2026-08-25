@@ -7,8 +7,10 @@
  */
 import { getCollection } from "astro:content";
 import PageHeader from "../../components/templates/PageHeader.astro";
+import { TAXONOMY_INDEX_INTRO } from "../../components/templates/pageHeaderPresets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { filterUsedTerms, getAllPublishedPosts } from "../../lib/blog";
+import { getAllPublishedPosts } from "../../lib/blog";
+import { filterUsedTerms } from "../../lib/relatedIndex";
 
 const allPosts = await getAllPublishedPosts();
 const countMap = new Map<string, number>();
@@ -42,11 +44,7 @@ const authors = filterUsedTerms(merged).sort(
       heading="Blog Authors"
       description={`${authors.length} ${authors.length === 1 ? "author" : "authors"} on the blog`}
       backLinks={[{ href: "/blog", label: "Back to the blog" }]}
-      classOverrides={{
-        heading: "text-4xl font-bold tracking-tight text-gray-900",
-        description: "text-lg text-gray-600",
-        descriptionSpacing: "mt-3",
-      }}
+      classOverrides={TAXONOMY_INDEX_INTRO}
     />
 
     <nav aria-label="All blog authors">

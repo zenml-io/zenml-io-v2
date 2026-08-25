@@ -20,10 +20,9 @@ export async function getStaticPaths() {
     "mlops-database",
     ({ data }) => !data.draft,
   );
+  const usedSlugs = new Set(allEntries.flatMap((e) => e.data.mlopsTags));
   return mlopsTags
-    .filter((tag) =>
-      allEntries.some((e) => e.data.mlopsTags.includes(tag.data.slug)),
-    )
+    .filter((tag) => usedSlugs.has(tag.data.slug))
     .map((tag) => ({
       params: { slug: tag.data.slug },
       props: { tag, tagMap },

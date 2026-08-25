@@ -30,12 +30,12 @@ export async function getStaticPaths() {
     ({ data }) => !data.draft,
   );
 
+  const usedSlugs = new Set([
+    ...allLLMOpsEntries.map((e) => e.data.industryTags),
+    ...allMLOpsEntries.map((e) => e.data.industryTags),
+  ]);
   return industryTags
-    .filter(
-      (tag) =>
-        allLLMOpsEntries.some((e) => e.data.industryTags === tag.data.slug) ||
-        allMLOpsEntries.some((e) => e.data.industryTags === tag.data.slug),
-    )
+    .filter((tag) => usedSlugs.has(tag.data.slug))
     .map((tag) => ({
       params: { slug: tag.data.slug },
       props: { tag, llmopsTagMap, mlopsTagMap },

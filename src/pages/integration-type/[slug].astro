@@ -18,10 +18,9 @@ export async function getStaticPaths() {
     "integrations",
     ({ data }) => !data.draft,
   );
+  const usedSlugs = new Set(allIntegrations.map((i) => i.data.integrationType));
   return integrationTypes
-    .filter((itype) =>
-      allIntegrations.some((i) => i.data.integrationType === itype.data.slug),
-    )
+    .filter((itype) => usedSlugs.has(itype.data.slug))
     .map((itype) => ({
       params: { slug: itype.data.slug },
       props: { integrationType: itype },

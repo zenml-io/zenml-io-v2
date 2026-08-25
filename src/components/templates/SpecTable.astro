@@ -116,13 +116,14 @@ const stickyCol = stickyFirstColumn ? "sticky left-0" : "";
               </tr>
             )}
             {section.rows.map((row, rowIdx) => {
+              const isOddRow = rowIdx % 2 === 1;
               const rowBg = stickyFirstColumn
-                ? rowIdx % 2 === 1
+                ? isOddRow
                   ? "bg-gray-50/50"
                   : "bg-white"
                 : "";
               return (
-                <tr class:list={["border-b border-gray-200", rowIdx % 2 === 1 && "bg-gray-50/50"]}>
+                <tr class:list={["border-b border-gray-200", isOddRow && "bg-gray-50/50"]}>
                   <td class:list={[stickyCol, rowBg, "px-4 py-3 font-medium text-gray-900"]}>
                     {row.href ? (
                       <a
