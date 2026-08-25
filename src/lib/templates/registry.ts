@@ -208,7 +208,10 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     notes:
       "Consumes the breadcrumb primitive, which emits visual crumbs and BreadcrumbList JSON-LD together (#248).",
     demoProps: {
-      breadcrumb: [{ label: "Docs", href: "/docs" }, { label: "Getting started" }],
+      breadcrumb: [
+        { label: "Docs", href: "/docs" },
+        { label: "Getting started" },
+      ],
       heading: "Getting started",
     },
   },
@@ -250,7 +253,11 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
         bio: "Writes about MLOps in production.",
         meta: "12 posts",
         links: [
-          { href: "https://www.linkedin.com", label: "LinkedIn", external: true },
+          {
+            href: "https://www.linkedin.com",
+            label: "LinkedIn",
+            external: true,
+          },
         ],
       },
     },
@@ -351,19 +358,38 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
   {
     id: "process-steps.vertical-code",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/ProcessSteps.astro",
     collectionBound: true,
     variantAxes: ["step count", "code present", "copied state"],
     tones: ["default"],
     responsive: "reauthored",
-    island: true,
+    island: false,
     paperPage: 25,
-    notes: "Copy-to-clipboard makes it interactive.",
+    notes:
+      "Copy-to-clipboard (the drawn copied state) is the new-brand affordance — the live get-started blocks it absorbs have no copy button, so the parity build is static HTML. Flips to an island when the copy affordance ships at cutover. highlightedHtml is Shiki output produced in the page's frontmatter; Shiki never runs in the component.",
+    contentShape: {
+      minItems: 3,
+      maxItems: 3,
+      itemBudget:
+        "One short heading and 1-2 sentences per step; the code block scrolls horizontally inside its own container past ~80 columns.",
+      overflow: "Steps stack vertically; the list itself never truncates.",
+    },
+    demoProps: {
+      layout: "vertical-code",
+      steps: [
+        {
+          title: "Install ZenML",
+          body: "Get the CLI installed and connect to a stack.",
+          highlightedHtml:
+            '<pre class="dark-code-block"><code>pip install zenml</code></pre>',
+        },
+      ],
+    },
   },
   {
     id: "process-steps.compact-list",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/ProcessSteps.astro",
     collectionBound: true,
     variantAxes: ["step count", "trailing link", "ragged rows"],
     tones: ["default"],
@@ -371,7 +397,32 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 25,
     notes:
-      "Numerals are zero-padded (01, never 1) per DECISIONS #76. careers.astro emits raw 1–4 from CAREERS_HIRING_PROCESS: pad in the component, never edit the data.",
+      "Numerals are zero-padded (01, never 1) per DECISIONS #76 — but only on the numeralStyle: 'zero-padded' new-brand/demo path. Live careers.astro renders raw 1–4 from CAREERS_HIRING_PROCESS via the default 'raw'; pad in the component, never edit the data. An empty duration collapses (the live 4th step has one).",
+    contentShape: {
+      minItems: 2,
+      maxItems: 6,
+      itemBudget:
+        "Title one line, duration a few words, body 1-3 sentences; long bodies just grow the card.",
+      overflow: "The 2-column grid wraps to further rows.",
+    },
+    demoProps: {
+      layout: "compact-list",
+      numeralStyle: "zero-padded",
+      steps: [
+        {
+          number: 1,
+          title: "Application review",
+          duration: "3 days",
+          body: "We review your CV and portfolio.",
+        },
+        {
+          number: 2,
+          title: "Technical challenge",
+          duration: "2 hours",
+          body: "A short exercise close to the real work.",
+        },
+      ],
+    },
   },
 
   // ── related-content (Paper 26) ───────────────────────────────────────────
