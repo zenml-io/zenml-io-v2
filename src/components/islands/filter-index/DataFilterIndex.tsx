@@ -15,6 +15,7 @@ import { FilterEmptyState } from "../shared/FilterEmptyState";
 import { FacetRail } from "./FacetRail";
 import { CloseIcon, FilterIcon, FOCUS_RING, SearchIcon } from "./icons";
 import { Pagination } from "./Pagination";
+import { ResultsCount } from "./ResultsCount";
 import type { MultiFacetConfig, SingleFacetConfig } from "./types";
 import {
   type SearchConfig,
@@ -33,6 +34,8 @@ export interface DataFilterIndexProps<T> {
   sort?: SortConfig<T>;
   singleFacet?: SingleFacetConfig<T>;
   multiFacet?: MultiFacetConfig<T>;
+  /** Noun for the result count / status line. Default "entries". */
+  resultNounPlural?: string;
   loadingLabel: string;
   renderItem: (
     item: T,
@@ -56,6 +59,7 @@ export function DataFilterIndex<T>({
   sort,
   singleFacet,
   multiFacet,
+  resultNounPlural = "entries",
   loadingLabel,
   renderItem,
   gridClassName = "grid gap-4 sm:grid-cols-2 xl:grid-cols-3",
@@ -71,6 +75,7 @@ export function DataFilterIndex<T>({
     sort,
     singleFacet,
     multiFacet,
+    resultNounPlural,
   });
 
   const drawerId = `${idPrefix}-filters-drawer`;
@@ -380,18 +385,12 @@ export function DataFilterIndex<T>({
         )}
 
         {/* Results count — live region for screen readers */}
-        <output
-          class="mb-4 block text-sm text-gray-500"
-          aria-live="polite"
-          aria-atomic="true"
-        >
-          <span aria-hidden="true">
-            {state.filtered.length === state.items.length
-              ? `${state.items.length.toLocaleString("en-US")} entries`
-              : `${state.filtered.length.toLocaleString("en-US")} of ${state.items.length.toLocaleString("en-US")} entries`}
-          </span>
-          <span class="sr-only">{state.resultsStatusText}</span>
-        </output>
+        <ResultsCount
+          shown={state.filtered.length}
+          total={state.items.length}
+          noun={resultNounPlural}
+          statusText={state.resultsStatusText}
+        />
 
         {/* Results grid */}
         {state.paged.length === 0 ? (

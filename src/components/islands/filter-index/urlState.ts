@@ -76,7 +76,13 @@ export function writeFilterStateToUrl(
 ): void {
   if (typeof window === "undefined") return;
 
-  const params = new URLSearchParams();
+  // Start from the current URL and touch only the filter-owned params —
+  // anything else (?utm_source=..., ?ref=...) and the #hash must survive
+  // the mount-time sync on marketing routes like /blog and /integrations.
+  const params = new URLSearchParams(window.location.search);
+  for (const key of Object.values(keys)) {
+    if (key) params.delete(key);
+  }
   if (keys.search && state.q) params.set(keys.search, state.q);
   if (keys.multi && state.multi.length)
     params.set(keys.multi, state.multi.join(","));
@@ -88,6 +94,9 @@ export function writeFilterStateToUrl(
     params.set(keys.sort, state.sort);
 
   const search = params.toString();
-  const url = window.location.pathname + (search ? `?${search}` : "");
+  const url =
+    window.location.pathname +
+    (search ? `?${search}` : "") +
+    window.location.hash;
   window.history.replaceState(null, "", url);
 }

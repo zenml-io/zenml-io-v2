@@ -4,19 +4,30 @@
  *
  * Migrated onto the shared FilterIndex island (#249), matching the
  * LLMOps/MLOps database pages: a facet rail (Category single-select, Tags
- * multi-select) + search box + client-side pagination, fetching
- * /blog/search-index.json. The featured-post hero and the static
+ * multi-select) + search box + client-side pagination. The island gets the
+ * search-index entries as props (not via fetch) so the first page of post
+ * cards is real server-rendered HTML — /blog is a high-volume SEO surface
+ * and must keep crawlable post links when JavaScript fails (guarded by
+ * check-dist-smoke.ts). The featured-post hero and the static
  * /blog/page/N pagination route are retired (BlogHero and the shared
  * Pagination component went with them) — see CategoryBar.astro's doc
- * comment and public/_redirects for the 301s.
+ * comment and public/_redirects for the ?page=N-preserving 301s.
  *
  * Only main-feed posts (getMainFeedPosts — excludes drafts and the
  * "discovery" tag corpus) ever reach the rail's facets or results.
+ *
+ * Deep links (?page=N, ?category=..., ?q=...) are honored at hydration:
+ * this page is statically prerendered, so the served HTML is always page 1
+ * unfiltered and the island snaps to the URL state on mount. That is the
+ * same contract as the LLMOps/MLOps database pages' bookmarked filter
+ * URLs — a request-time render would need prerender=false, which /blog
+ * deliberately is not.
  */
 import BlogIndex from "../../components/islands/filter-index/BlogIndex";
 import PageHeader from "../../components/templates/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
+  buildBlogSearchIndex,
   getCategoryCounts,
   getMainFeedPosts,
   getTagCounts,
@@ -24,6 +35,7 @@ import {
 } from "../../lib/blog";
 
 const mainFeedPosts = await getMainFeedPosts();
+const searchEntries = await buildBlogSearchIndex(mainFeedPosts);
 
 // Facet option universes: only categories/tags with at least one main-feed
 // post — a term used exclusively by the discovery corpus never appears here.
@@ -51,6 +63,6 @@ const tagOptions = (await getTagCounts(mainFeedPosts))
       }}
     />
 
-    <BlogIndex client:load categories={categoryOptions} tags={tagOptions} pageSize={PAGE_SIZE} />
+    <BlogIndex client:load items={searchEntries} categories={categoryOptions} tags={tagOptions} pageSize={PAGE_SIZE} />
   </div>
 </BaseLayout>

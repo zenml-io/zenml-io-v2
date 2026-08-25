@@ -377,6 +377,45 @@ function checkBlogSearchIndex() {
 }
 
 /**
+ * /blog must ship real server-rendered post cards. The BlogIndex island gets
+ * its items as props (not via a client fetch) precisely so the crawlable
+ * HTML of this high-volume SEO surface never depends on JavaScript or on
+ * /blog/search-index.json loading — this assertion is the contract's guard:
+ * blog.html must contain at least one anchor to a post slug that actually
+ * exists in the search index.
+ */
+function checkBlogSsrCards() {
+  try {
+    const html = readDistFile("blog.html");
+    const index = JSON.parse(
+      readDistFile("blog/search-index.json"),
+    ) as SearchIndexEntry[];
+    const slugs = new Set(
+      (Array.isArray(index) ? index : []).map((entry) => entry.slug),
+    );
+
+    const linked = [...html.matchAll(/href="\/blog\/([^"/?#]+)"/g)].some(
+      ([, slug]) => slugs.has(slug),
+    );
+
+    logResult(
+      linked,
+      linked
+        ? "dist/blog.html server-renders at least one real /blog/<slug> post link"
+        : "dist/blog.html must contain a server-rendered link to a post slug present in blog/search-index.json — the BlogIndex island may have regressed to fetch-only rendering",
+    );
+
+    return linked ? 0 : 1;
+  } catch (error) {
+    logResult(
+      false,
+      `Could not check blog.html SSR cards: ${(error as Error).message}`,
+    );
+    return 1;
+  }
+}
+
+/**
  * Every client:* Preact island, and the page(s) that are expected to mount it.
  *
  * This is the browser-free half of the hydration story. It proves an island is
@@ -621,13 +660,16 @@ function main() {
   console.log("\n4. Blog search index shape:");
   totalFailures += checkBlogSearchIndex();
 
-  console.log("\n5. Agent skills index shape:");
+  console.log("\n5. Blog SSR post cards:");
+  totalFailures += checkBlogSsrCards();
+
+  console.log("\n6. Agent skills index shape:");
   totalFailures += checkAgentSkillsIndex();
 
-  console.log("\n6. Island mounts:");
+  console.log("\n7. Island mounts:");
   totalFailures += checkIslandMounts();
 
-  console.log("\n7. Rendered content snapshots:");
+  console.log("\n8. Rendered content snapshots:");
   totalFailures += checkRenderedSnapshots();
 
   console.log("\n========== DIST SMOKE REPORT ==========");

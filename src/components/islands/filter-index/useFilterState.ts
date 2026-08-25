@@ -53,6 +53,8 @@ export interface UseFilterStateOptions<T> {
   sort?: SortConfig<T>;
   singleFacet?: SingleFacetConfig<T>;
   multiFacet?: MultiFacetConfig<T>;
+  /** Noun for the result count / status line. Default "entries". */
+  resultNounPlural?: string;
 }
 
 function matchesSubstring(searchText: string | undefined, q: string): boolean {
@@ -72,6 +74,7 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
     sort,
     singleFacet,
     multiFacet,
+    resultNounPlural = "entries",
   } = options;
 
   const isFetchMode = dataUrl !== undefined;
@@ -417,13 +420,14 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
   }, [items, multiFacet]);
 
   const resultsStatusText = useMemo(() => {
-    if (filtered.length === 0) return "No entries match your filters.";
+    if (filtered.length === 0)
+      return `No ${resultNounPlural} match your filters.`;
     if (pageSize === undefined)
-      return `Showing all ${filtered.length} entries.`;
+      return `Showing all ${filtered.length} ${resultNounPlural}.`;
     const start = (safePage - 1) * pageSize + 1;
     const end = Math.min(safePage * pageSize, filtered.length);
-    return `Showing ${start} to ${end} of ${filtered.length} entries. Page ${safePage} of ${totalPages}.`;
-  }, [filtered.length, safePage, totalPages, pageSize]);
+    return `Showing ${start} to ${end} of ${filtered.length} ${resultNounPlural}. Page ${safePage} of ${totalPages}.`;
+  }, [filtered.length, safePage, totalPages, pageSize, resultNounPlural]);
 
   // Sync URL
   useEffect(() => {

@@ -17,6 +17,7 @@ import { useEffect, useMemo, useRef } from "preact/hooks";
 import type { SingleFacetTone } from "./FacetRail";
 import { FacetRail } from "./FacetRail";
 import { CloseIcon, FilterIcon, FOCUS_RING, SearchIcon } from "./icons";
+import { ResultsCount } from "./ResultsCount";
 import type { SingleFacetConfig } from "./types";
 import { useFilterState } from "./useFilterState";
 
@@ -27,6 +28,8 @@ export interface ControlFilterIndexProps<T> {
   getSearchText: (item: T) => string;
   singleFacet: SingleFacetConfig<T>;
   singleTone?: SingleFacetTone;
+  /** Noun for the result count / status line. Default "entries". */
+  resultNounPlural?: string;
   searchPlaceholder?: string;
   searchAriaLabel?: string;
   /** Attribute (no leading "data-") the rendered cards carry their slug in. */
@@ -43,6 +46,7 @@ export function ControlFilterIndex<T>({
   getSearchText,
   singleFacet,
   singleTone,
+  resultNounPlural = "entries",
   searchPlaceholder,
   searchAriaLabel,
   slugAttr = "data-slug",
@@ -61,6 +65,7 @@ export function ControlFilterIndex<T>({
       ariaLabel: searchAriaLabel,
     },
     singleFacet,
+    resultNounPlural,
   });
 
   const gridRef = useRef<HTMLDivElement | null>(null);
@@ -213,8 +218,15 @@ export function ControlFilterIndex<T>({
       </div>
 
       {/* Card grid — server-rendered markup, unchanged; only visibility is controlled here */}
-      <div ref={gridRef} class="flex-1">
-        {children}
+      <div class="min-w-0 flex-1">
+        {/* Results count — same visible polite live region as DataFilterIndex (#249 contract) */}
+        <ResultsCount
+          shown={state.filtered.length}
+          total={items.length}
+          noun={resultNounPlural}
+          statusText={state.resultsStatusText}
+        />
+        <div ref={gridRef}>{children}</div>
       </div>
     </div>
   );

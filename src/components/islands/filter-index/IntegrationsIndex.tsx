@@ -40,6 +40,7 @@ export default function IntegrationsIndex({
         getValue: (item) => item.type,
       }}
       singleTone="primary"
+      resultNounPlural="integrations"
       searchPlaceholder="Search integrations..."
       searchAriaLabel="Search integrations"
     >

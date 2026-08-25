@@ -1,15 +1,20 @@
 /**
  * Blog index filter island — thin FilterIndex config on top of the shared
- * `DataFilterIndex` engine (#249). Fetches `/blog/search-index.json` (now
- * also the FilterIndex item source, not just BlogSearch.tsx's Cmd+K data —
- * see `buildBlogSearchIndex` in `src/lib/blog.ts`) and renders the same
- * card design `BlogCard.astro`'s "grid" variant uses. `BlogCard` itself is
- * an Astro component and can't be rendered inside a Preact island (same
- * constraint as `IntegrationCard` — see `ControlFilterIndex`'s TSDoc), so
- * this file carries a Preact port of its "grid" variant markup; it has no
- * scoped `<style>` to lose (all utility classes), so the port is low-risk.
+ * `DataFilterIndex` engine (#249). The page passes the built search-index
+ * entries in as `items` (`buildBlogSearchIndex` in `src/lib/blog.ts` — the
+ * same data `/blog/search-index.json` serves BlogSearch.tsx's Cmd+K), so
+ * the first page of post cards and their `/blog/<slug>` links are in the
+ * server-rendered HTML — /blog is a high-volume SEO surface and must not
+ * depend on a client fetch for its crawlable content (guarded by a
+ * `check-dist-smoke.ts` assertion). Renders the same card design
+ * `BlogCard.astro`'s "grid" variant uses. `BlogCard` itself is an Astro
+ * component and can't be rendered inside a Preact island (same constraint
+ * as `IntegrationCard` — see `ControlFilterIndex`'s TSDoc), so this file
+ * carries a Preact port of its "grid" variant markup; it has no scoped
+ * `<style>` to lose (all utility classes), so the port is low-risk.
  */
 import { DataFilterIndex } from "./DataFilterIndex";
+import { formatUtcDate } from "./dates";
 import { FOCUS_RING } from "./icons";
 import type { FilterOption } from "./types";
 
@@ -29,6 +34,7 @@ export interface BlogIndexItem {
 }
 
 export interface BlogIndexProps {
+  items: BlogIndexItem[];
   categories: FilterOption[];
   tags: FilterOption[];
   pageSize?: number;
@@ -46,15 +52,8 @@ function scoreRelevance(item: BlogIndexItem, q: string): number {
   return score;
 }
 
-function formatDate(iso: string): string {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(new Date(iso));
-}
-
 export default function BlogIndex({
+  items,
   categories,
   tags,
   pageSize = 12,
@@ -63,7 +62,8 @@ export default function BlogIndex({
     <DataFilterIndex<BlogIndexItem>
       idPrefix="blog"
       pageSize={pageSize}
-      dataUrl="/blog/search-index.json"
+      items={items}
+      resultNounPlural="posts"
       getSlug={(item) => item.slug}
       getTitle={(item) => item.title}
       loadingLabel="Loading posts..."
@@ -164,7 +164,7 @@ export default function BlogIndex({
                 </div>
               )}
               <div class="mt-2 flex items-center gap-1.5 text-xs text-gray-400">
-                <span>{formatDate(item.date)}</span>
+                <span>{formatUtcDate(item.date)}</span>
                 {item.readingTime && <span aria-hidden="true">&middot;</span>}
                 {item.readingTime && <span>{item.readingTime}</span>}
               </div>

@@ -360,14 +360,21 @@ const CHECKS: IslandCheck[] = [
     async assert(page, root) {
       // IntegrationsIndex is the "control" flavor of FilterIndex: the card
       // grid is plain Astro-rendered markup (see ControlFilterIndex's
-      // TSDoc), and the island only toggles `display` on [data-slug] cards
-      // by a shared attribute — there is no aria-live result count to read,
-      // so the assertion is the visible-card count itself.
+      // TSDoc), and the island toggles `display` on [data-slug] cards by a
+      // shared attribute. It renders the same polite aria-live result count
+      // as the data flavor (#249 contract), so the assertion covers both
+      // the visible-card count AND that the live region announces the
+      // change.
       const cardCount = () => page.locator("[data-slug]:visible").count();
+      const status = `${root} output[aria-live="polite"]`;
 
       const before = await cardCount();
       if (before === 0) {
         throw new Error("no [data-slug] cards were visible before filtering");
+      }
+      const statusBefore = (await page.locator(status).innerText()).trim();
+      if (!statusBefore) {
+        throw new Error("the aria-live result count rendered empty");
       }
 
       await page
@@ -386,6 +393,13 @@ const CHECKS: IslandCheck[] = [
       if (afterFacet === 0 || afterFacet >= before) {
         throw new Error(
           `expected the type facet to narrow the grid below ${before} visible cards, got ${afterFacet}`,
+        );
+      }
+
+      const statusAfterFacet = (await page.locator(status).innerText()).trim();
+      if (statusAfterFacet === statusBefore) {
+        throw new Error(
+          `expected the aria-live result count to change after faceting, still "${statusBefore}"`,
         );
       }
 
@@ -416,13 +430,14 @@ const CHECKS: IslandCheck[] = [
     },
   },
   {
-    name: "BlogIndex loads its index, applies a category facet, and searches",
+    name: "BlogIndex applies a category facet and searches",
     route: "/blog",
     island: "BlogIndex",
     seedConsent: true,
     async assert(page, root) {
-      // Same DataFilterIndex shape as LlmopsIndex/MlopsIndex, fetching
-      // /blog/search-index.json instead of a *-index.json endpoint.
+      // Same DataFilterIndex shape as LlmopsIndex/MlopsIndex, but the items
+      // arrive as server props (SSR post cards for SEO) instead of a
+      // fetched *-index.json endpoint.
       await page.waitForSelector("#blog-search", { timeout: NAV_TIMEOUT });
 
       const status = `${root} output[aria-live="polite"]`;
