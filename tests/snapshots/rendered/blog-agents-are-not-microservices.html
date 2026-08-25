@@ -1,0 +1,405 @@
+<div class="prose prose-zoomable">
+<p>Temporal grew out of Uber’s Cadence project, which was built for durable workflow orchestration across Uber’s services. Public materials describe it as supporting long-running applications, millions of concurrent executions, and high-throughput task processing.
+</p>
+
+<p>That’s not what your AI agent does.
+</p>
+
+<p>Your agent spends 45 seconds on a single LLM call. It makes decisions at runtime that change the entire execution path. It costs $2 per run in API tokens. It might need a human to approve something and wait for hours.
+</p>
+
+<p>These are fundamentally different workloads. They need different infrastructure.
+</p>
+
+<h2 id="the-microservice-assumptions">The microservice assumptions
+</h2>
+
+<p>Durable execution engines were designed around a set of assumptions that made perfect sense for their original workloads:
+</p>
+
+<p>
+<strong>High concurrency, low compute per task.
+</strong> A payment flow does a database write, calls a payment API, sends a notification. Each step takes milliseconds. You run 100,000 of these concurrently, so you need workers that can multiplex thousands of workflows in a single process.
+</p>
+
+<p>
+<strong>Predictable execution paths.
+</strong> A payment either succeeds, fails, or needs retry. You know the shape upfront. Deterministic replay works because the logic is deterministic.
+</p>
+
+<p>
+<strong>Sub-second resume.
+</strong> When a payment callback arrives, you need to resume the workflow immediately. Customers are waiting. Spinning up a new process would be too slow.
+</p>
+
+<p>
+<strong>Long-running workers.
+</strong> Workers poll for tasks and stay alive indefinitely. This amortizes startup cost across thousands of workflow executions.
+</p>
+
+<p>Every design decision in Temporal, Restate, and similar systems flows from these assumptions. They’re good assumptions for microservices.
+</p>
+
+<h2 id="the-agent-reality">The agent reality
+</h2>
+
+<p>AI agents violate every one of these assumptions:
+</p>
+
+<p>
+<strong>Low concurrency, high compute per task.
+</strong> A research agent makes 40 LLM calls at $0.05-$5 each. Each call takes 5-30 seconds. You’re running 10 of these, not 100,000. The bottleneck is LLM API cost, not workflow throughput.
+</p>
+
+<p>
+<strong>Unpredictable execution paths.
+</strong> The agent decides at runtime which tools to call, how many times to iterate, and when to ask a human. You can’t predict the sequence of operations upfront. Deterministic workflow engines constrain the orchestration layer, not the agent’s LLM or tool calls themselves. Dynamic agent decisions can still happen at runtime as long as those decisions are captured through durable workflow steps.
+</p>
+
+<p>
+<strong>Resume latency doesn’t matter.
+</strong> When a human approves a PR review at 3 PM after the agent submitted it at 11 AM, nobody cares if resume takes 2 seconds instead of 17 milliseconds.
+</p>
+
+<p>
+<strong>Short-lived processes.
+</strong> An agent runs for 10 minutes, hits a 
+<code>wait()
+</code>, and the process should die. When the human responds hours later, a new process starts. There’s no reason to keep a worker alive.
+</p>
+
+<h2 id="what-agents-actually-need">What agents actually need
+</h2>
+
+<p>Strip away the microservice assumptions and ask: what does an AI agent workload actually require?
+</p>
+
+<p>
+<strong>Crash recovery without re-burning tokens.
+</strong> If the agent crashes at step 38, resume from step 38. Don’t re-run the $25 worth of LLM calls that already succeeded.
+</p>
+
+<p>
+<strong>Human-in-the-loop as a first-class primitive.
+</strong> Not signals. Not callbacks. A real 
+<code>wait()
+</code> that suspends the execution, releases compute, and resumes when input arrives; minutes, hours, or days later.
+</p>
+
+<p>
+<strong>No determinism constraints.
+</strong> Agents call 
+<code>datetime.now()
+</code>, use 
+<code>random()
+</code>, make HTTP requests in their main logic. A framework that bans these from workflow code is a non-starter.
+</p>
+
+<p>
+<strong>Cost visibility.
+</strong> How much did this execution cost? Which LLM call was the most expensive? How does run #47 compare to run #46? This is table stakes for agent operations.
+</p>
+
+<p>
+<strong>Artifact tracking.
+</strong> Every intermediate result should be inspectable, comparable across runs, and queryable. Not just a trace; actual versioned outputs.
+</p>
+
+<h2 id="the-right-tool-for-the-job">The right tool for the job
+</h2>
+
+<p>This isn’t about which platform is “better.” It’s about fit:
+</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead>
+<tr>
+<th>Workload
+</th>
+<th>What it needs
+</th>
+<th>Best fit
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Payment processing
+</td>
+<td>Sub-ms resume, 100k concurrent, deterministic
+</td>
+<td>Temporal
+</td>
+</tr>
+<tr>
+<td>Serverless RPC handlers
+</td>
+<td>Push-based, short-lived, stateless
+</td>
+<td>Restate, Inngest
+</td>
+</tr>
+<tr>
+<td>AI agents
+</td>
+<td>Crash recovery, human-in-the-loop, cost tracking, no determinism
+</td>
+<td>Kitaru
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>Temporal is excellent at what it does. So is Restate. But using them for AI agents means accepting constraints that were designed for a different problem and working around them at every turn.
+</p>
+
+<h2 id="start-from-the-workload-not-the-architecture">Start from the workload, not the architecture
+</h2>
+
+<p>Kitaru’s execution model is simple: each checkpoint caches its output. On resume, cached outputs are returned instantly. Failed or new checkpoints execute live. No journal. No replay. No worker fleet.
+</p>
+
+<p>This is “too simple” for payment processing, you’d need sub-millisecond resume and hundred-thousand concurrent workflows. But for 10 agents doing expensive LLM work with humans in the loop, simplicity is the feature.
+</p>
+
+<pre class="astro-code zenml-light" style="background-color:#f3f4f6;color:#1f0c47; overflow-x: auto;" tabindex="0" data-language="python">
+<code>
+<span class="line">
+<span style="color:#228A8A">import
+</span>
+<span style="color:#1F0C47"> kitaru
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A">from
+</span>
+<span style="color:#1F0C47"> kitaru 
+</span>
+<span style="color:#228A8A">import
+</span>
+<span style="color:#1F0C47"> checkpoint
+</span>
+<span style="color:#F53D81">,
+</span>
+<span style="color:#1F0C47"> flow
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F53D81">@checkpoint
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A">def
+</span>
+<span style="color:#7A3EF4"> deep_research
+</span>
+<span style="color:#1F0C47">(
+</span>
+<span style="color:#7641BB">topic
+</span>
+<span style="color:#F53D81">:
+</span>
+<span style="color:#7641BB"> str
+</span>
+<span style="color:#1F0C47">) 
+</span>
+<span style="color:#F53D81">-&gt;
+</span>
+<span style="color:#7641BB"> str
+</span>
+<span style="color:#1F0C47">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#676B79;font-style:italic">    # 30 seconds, $2 in tokens
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A">    return
+</span>
+<span style="color:#7A3EF4"> call_llm(
+</span>
+<span style="color:#228A8A">f
+</span>
+<span style="color:#4AA819">"Research 
+</span>
+<span style="color:#F53D81">{
+</span>
+<span style="color:#7A3EF4">topic
+</span>
+<span style="color:#F53D81">}
+</span>
+<span style="color:#4AA819"> thoroughly"
+</span>
+<span style="color:#7A3EF4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F53D81">@flow
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A">def
+</span>
+<span style="color:#7A3EF4"> research_agent
+</span>
+<span style="color:#1F0C47">(
+</span>
+<span style="color:#7641BB">topic
+</span>
+<span style="color:#F53D81">:
+</span>
+<span style="color:#7641BB"> str
+</span>
+<span style="color:#1F0C47">) 
+</span>
+<span style="color:#F53D81">-&gt;
+</span>
+<span style="color:#7641BB"> str
+</span>
+<span style="color:#1F0C47">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1F0C47">    research 
+</span>
+<span style="color:#F53D81">=
+</span>
+<span style="color:#7A3EF4"> deep_research(topic)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#1F0C47">    kitaru
+</span>
+<span style="color:#F53D81">.
+</span>
+<span style="color:#7A3EF4">wait(
+</span>
+</span>
+
+<span class="line">
+<span style="color:#7641BB">        schema
+</span>
+<span style="color:#F53D81">=
+</span>
+<span style="color:#7641BB">bool
+</span>
+<span style="color:#F53D81">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#7641BB">        question
+</span>
+<span style="color:#F53D81">=
+</span>
+<span style="color:#4AA819">"Research complete. Proceed to analysis?"
+</span>
+<span style="color:#F53D81">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#7A3EF4">    )
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#228A8A">    return
+</span>
+<span style="color:#7A3EF4"> analyze(research)
+</span>
+<span style="color:#676B79;font-style:italic">  # research is cached, not re-computed
+</span>
+</span>
+</code>
+</pre>
+
+<p>Two decorators. 
+<code>pip install kitaru
+</code>. Your Python stays Python.
+</p>
+
+<p>The agent landscape is evolving fast. Maybe someday agents will need microservice-scale throughput. But today, the agents hitting production: coding agents, research agents, content workflows, are long-running, expensive, and human-supervised. That’s the workload Kitaru is built for.
+</p>
+
+<h2 id="continue-in-the-docs">Continue in the docs
+</h2>
+
+<ul>
+
+<li>
+<a href="https://kitaru.ai/docs/concepts/execution-model">Execution Model
+</a>
+</li>
+
+<li>
+<a href="https://kitaru.ai/docs/concepts/checkpoints">Checkpoints
+</a>
+</li>
+
+<li>
+<a href="https://kitaru.ai/docs/getting-started/wait-and-resume">Wait and Resume
+</a>
+</li>
+
+</ul>
+<div class="mt-10 border-t border-gray-200 pt-6">
+<div class="flex flex-wrap gap-2">
+<a href="/tags/kitaru" class="inline-flex items-center rounded-pill px-2.5 py-0.5 text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200">kitaru
+</a>
+<a href="/tags/agents" class="inline-flex items-center rounded-pill px-2.5 py-0.5 text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200">agents
+</a>
+<a href="/tags/infrastructure" class="inline-flex items-center rounded-pill px-2.5 py-0.5 text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200">infrastructure
+</a>
+<a href="/tags/thought-leadership" class="inline-flex items-center rounded-pill px-2.5 py-0.5 text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200">Thought Leadership
+</a>
+</div>
+</div>
+</div>
