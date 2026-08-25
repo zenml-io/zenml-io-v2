@@ -17,7 +17,8 @@
  *     "LLMOps entries" / "MLOps entries" split) each get their own `<h2>`
  *     (or `<h3>` via `headingLevel` when nested under a section heading).
  *
- * A section carries EITHER `cards` OR `items`, never both:
+ * A section carries EITHER `cards` OR `items`, never both — enforced by
+ * the `TermHubEntrySection` union, not just documented:
  *   - `cards` — the entry card grid (`grid gap-6 md:grid-cols-2
  *     lg:grid-cols-3`, title + company/meta line + summary + up to 4 tag
  *     badges + overflow badge) every live route renders today. This is the
@@ -70,14 +71,26 @@ export interface TermHubEntryCardItem {
   tagVariant?: "blue" | "success";
 }
 
-export interface TermHubEntrySection {
+interface TermHubEntrySectionBase {
   /** Omit for a single-collection page (no `<h2>` renders); set for a dual-collection split. */
   heading?: string;
-  /** The live parity arrangement — set this on every live route today. */
-  cards?: readonly TermHubEntryCardItem[];
-  /** The new-brand/demo arrangement — no live route sets this yet. */
-  items?: readonly StackedListItem[];
 }
+
+/** The live parity arrangement — every live route sets `cards` today. */
+export interface TermHubEntryCardsSection extends TermHubEntrySectionBase {
+  cards: readonly TermHubEntryCardItem[];
+  items?: never;
+}
+
+/** The new-brand/demo arrangement — no live route sets `items` yet. */
+export interface TermHubEntryStackedSection extends TermHubEntrySectionBase {
+  items: readonly StackedListItem[];
+  cards?: never;
+}
+
+export type TermHubEntrySection =
+  | TermHubEntryCardsSection
+  | TermHubEntryStackedSection;
 
 interface Props {
   crossLinks?: readonly TermHubCrossLinkGroup[];
@@ -197,7 +210,7 @@ const totalEntries = sections.reduce((sum, s) => sum + sectionCount(s), 0);
             })}
           </div>
         ) : (
-          <StackedList items={section.items ?? []} />
+          <StackedList items={section.items} />
         )}
       </section>
     )

@@ -41,25 +41,28 @@ export interface ProcessStepsCompactListStep {
   body: string;
 }
 
-interface Props {
-  layout: "vertical-code" | "compact-list";
-  steps:
-    | readonly ProcessStepsVerticalCodeStep[]
-    | readonly ProcessStepsCompactListStep[];
-  /** compact-list only. Default "raw" (live parity: `1`-`4`, not `01`-`04`). */
-  numeralStyle?: "raw" | "zero-padded";
-  class?: string;
-}
+type Props =
+  | {
+      layout: "vertical-code";
+      steps: readonly ProcessStepsVerticalCodeStep[];
+      class?: string;
+    }
+  | {
+      layout: "compact-list";
+      steps: readonly ProcessStepsCompactListStep[];
+      /** Default "raw" (live parity: `1`-`4`, not `01`-`04`). */
+      numeralStyle?: "raw" | "zero-padded";
+      class?: string;
+    };
 
-const { layout, steps, numeralStyle = "raw", class: className } = Astro.props;
+const props = Astro.props;
+const className = props.class;
 
-const isVerticalCode = layout === "vertical-code";
-const verticalSteps = isVerticalCode
-  ? (steps as readonly ProcessStepsVerticalCodeStep[])
-  : [];
-const compactSteps = isVerticalCode
-  ? []
-  : (steps as readonly ProcessStepsCompactListStep[]);
+const isVerticalCode = props.layout === "vertical-code";
+const verticalSteps = props.layout === "vertical-code" ? props.steps : [];
+const compactSteps = props.layout === "compact-list" ? props.steps : [];
+const numeralStyle =
+  (props.layout === "compact-list" ? props.numeralStyle : undefined) ?? "raw";
 
 function formatNumeral(n: number): string {
   return numeralStyle === "zero-padded"
