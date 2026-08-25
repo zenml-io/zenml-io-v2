@@ -6,8 +6,8 @@
  * island, so re-implementing the card in TSX would risk silently losing
  * that styling (the exact Wave-1 "scoped-cid classes die across component
  * boundaries" trap). Instead, the grid keeps rendering server-side and is
- * passed in as the `grid` slot; this component owns only the facet rail +
- * search box, and flips `display` on the rendered cards by a shared
+ * passed in as the default slot (`children`); this component owns only the
+ * facet rail + search box, and flips `display` on the rendered cards by a shared
  * `data-slug` attribute — the same mechanism the vanilla filter script
  * used, just driven by the shared rail's state instead of one `data-filter`
  * click handler.
@@ -31,9 +31,9 @@ export interface ControlFilterIndexProps<T> {
   searchAriaLabel?: string;
   /** Attribute (no leading "data-") the rendered cards carry their slug in. */
   slugAttr?: string;
-  /** CSS selector for the empty-state element inside `grid`. */
+  /** CSS selector for the empty-state element inside `children`. */
   emptyStateSelector?: string;
-  grid: ComponentChildren;
+  children: ComponentChildren;
 }
 
 export function ControlFilterIndex<T>({
@@ -47,7 +47,7 @@ export function ControlFilterIndex<T>({
   searchAriaLabel,
   slugAttr = "data-slug",
   emptyStateSelector = "#empty-state",
-  grid,
+  children,
 }: ControlFilterIndexProps<T>) {
   const state = useFilterState<T>({
     idPrefix,
@@ -209,7 +209,7 @@ export function ControlFilterIndex<T>({
 
       {/* Card grid — server-rendered markup, unchanged; only visibility is controlled here */}
       <div ref={gridRef} class="flex-1">
-        {grid}
+        {children}
       </div>
     </div>
   );
