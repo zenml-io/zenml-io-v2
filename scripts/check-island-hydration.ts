@@ -277,9 +277,9 @@ const CHECKS: IslandCheck[] = [
     },
   },
   {
-    name: "LLMOpsFilter loads its index and applies an industry facet",
+    name: "LlmopsIndex loads its index and applies an industry facet",
     route: "/llmops-database",
-    island: "LLMOpsFilter",
+    island: "LlmopsIndex",
     seedConsent: true,
     async assert(page, root) {
       // The SSR payload is only "Loading LLMOps database...". #llmops-search exists

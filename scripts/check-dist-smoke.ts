@@ -437,8 +437,8 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
     island: "DemoRequestForm",
     pages: ["book-your-demo.html", "book-your-demo/kitaru.html"],
   },
-  { island: "LLMOpsFilter", pages: ["llmops-database.html"] },
-  { island: "MLOpsFilter", pages: ["mlops-database.html"] },
+  { island: "LlmopsIndex", pages: ["llmops-database.html"] },
+  { island: "MlopsIndex", pages: ["mlops-database.html"] },
   { island: "ProTestimonialCarousel", pages: ["pro.html"] },
   { island: "BlogSearch", pages: ["blog.html"] },
   // The Kitaru landing sections (KitaruGrain doubles as a plain subcomponent

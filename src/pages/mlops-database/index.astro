@@ -9,7 +9,7 @@
  * Route: /mlops-database
  */
 import { getCollection } from "astro:content";
-import MLOpsFilter from "../../components/islands/MLOpsFilter";
+import MlopsIndex from "../../components/islands/filter-index/MlopsIndex";
 import BrevoNewsletterForm from "../../components/sections/BrevoNewsletterForm.astro";
 import SectionIntro from "../../components/system/SectionIntro.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -49,7 +49,7 @@ const entryCount = (
       />
     </header>
 
-    <MLOpsFilter
+    <MlopsIndex
       client:load
       tags={allTags}
       industries={allIndustries}
