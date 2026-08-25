@@ -655,20 +655,33 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
   {
     id: "filterable-index.shell",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/islands/filter-index/DataFilterIndex.tsx",
     collectionBound: true,
-    variantAxes: ["facet count", "facet select mode", "search engine"],
+    variantAxes: [
+      "flavor: data (island renders results) | control (island toggles server-rendered cards)",
+      "facet count",
+      "facet select mode",
+      "search engine (Pagefind | JSON substring)",
+    ],
     tones: ["default"],
     responsive: "reauthored",
     island: true,
     paperPage: 29,
     notes:
-      "Rail everywhere; no horizontal facet bar exists and no prop reaches one (#64, #90). At 375 the rail becomes a drawer. Count header is the aria-live region.",
+      "Rail everywhere; no horizontal facet bar exists and no prop reaches one (#64, #90). At 375 the rail becomes a drawer behind one Filters trigger. Count header is the aria-live region; counts are comma-formatted count-of-total in a 44px right-aligned lane. Two flavors share the rail/state/URL machinery: DataFilterIndex (LLMOps/MLOps/blog — the island renders the result cards) and ControlFilterIndex (integrations — the island toggles visibility of server-rendered cards passed as children). Live consumers wire domain accessors as function props, so there is no static demoProps demo — TemplateStage shows its unresolved-path notice for this entry until a fixture wrapper exists.",
+    contentShape: {
+      minItems: 66,
+      maxItems: 2100,
+      itemBudget:
+        "Facet ranges it must survive: a 15-term single-select facet with zero-result rows disabled in place, and a 122-term multi-select facet collapsed to 10 behind a Show-all control.",
+      overflow:
+        "Results paginate client-side; the rail scrolls its own facet list; nothing truncates.",
+    },
   },
   {
     id: "filterable-index.zero-results",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/islands/shared/FilterEmptyState.tsx",
     variantAxes: [],
     tones: ["default"],
     responsive: "reauthored",
