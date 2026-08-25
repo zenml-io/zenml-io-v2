@@ -158,3 +158,35 @@
 # ── /get-started reverted from ML/Agent chooser to ZenML onboarding ──
 /get-started/zenml /get-started 301
 /get-started/zenml/ /get-started 301
+
+# ── Zero-entry term pages removed (#249 term-hub) ──────────────────
+/tags/covid /tags 301
+/tags/covid/ /tags 301
+/tags/tensorflow /tags 301
+/tags/tensorflow/ /tags 301
+/tags/hub /tags 301
+/tags/hub/ /tags 301
+/category/sales-blog /category 301
+/category/sales-blog/ /category 301
+/author/dickson-neoh /author 301
+/author/dickson-neoh/ /author 301
+/author/dickson-neoh-tze-how /author 301
+/author/dickson-neoh-tze-how/ /author 301
+/author/james-w-browne /author 301
+/author/james-w-browne/ /author 301
+/author/andrew-hinh-and-aleks-hiidenhovi /author 301
+/author/andrew-hinh-and-aleks-hiidenhovi/ /author 301
+/integration-type/e2e-platform /integration-type 301
+/integration-type/e2e-platform/ /integration-type 301
+/integration-type/secrets-manager /integration-type 301
+/integration-type/secrets-manager/ /integration-type 301
+/integration-type/other /integration-type 301
+/integration-type/other/ /integration-type 301
+/llmops-tags/bentoml /llmops-tags 301
+/llmops-tags/bentoml/ /llmops-tags 301
+/llmops-tags/zenml /llmops-tags 301
+/llmops-tags/zenml/ /llmops-tags 301
+/llmops-tags/haystack /llmops-tags 301
+/llmops-tags/haystack/ /llmops-tags 301
+/industry-tags/monitoring-observability /industry-tags 301
+/industry-tags/monitoring-observability/ /industry-tags 301

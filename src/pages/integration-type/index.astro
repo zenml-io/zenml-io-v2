@@ -1,0 +1,70 @@
+---
+/**
+ * Integration types index page.
+ *
+ * Lists all integration types with integration counts, sorted by popularity.
+ * Route: /integration-type
+ */
+import { getCollection } from "astro:content";
+import PageHeader from "../../components/templates/PageHeader.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { filterUsedTerms } from "../../lib/blog";
+
+const allIntegrations = await getCollection(
+  "integrations",
+  ({ data }) => !data.draft,
+);
+const countMap = new Map<string, number>();
+for (const integration of allIntegrations) {
+  const t = integration.data.integrationType;
+  countMap.set(t, (countMap.get(t) ?? 0) + 1);
+}
+
+// Merge all taxonomy terms with used counts, then drop zero-count types
+// (#249) — a zero-count type has no [slug] page to link to any more.
+const allTypes = await getCollection("integration-types");
+const merged = allTypes.map((t) => ({
+  slug: t.data.slug,
+  name: t.data.name,
+  count: countMap.get(t.data.slug) ?? 0,
+}));
+const types = filterUsedTerms(merged).sort(
+  (a, b) => b.count - a.count || a.name.localeCompare(b.name),
+);
+---
+
+<BaseLayout
+  title="Integration Types - ZenML"
+  description="Browse all integration categories in the ZenML MLOps landscape."
+  surface="ml"
+>
+  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+    <PageHeader
+      class="mb-10"
+      heading="Integration Types"
+      description={`${types.length} ${types.length === 1 ? "type" : "types"} of integration`}
+      backLinks={[{ href: "/integrations", label: "Back to all integrations" }]}
+      classOverrides={{
+        heading: "text-4xl font-bold tracking-tight text-gray-900",
+        description: "text-lg text-gray-600",
+        descriptionSpacing: "mt-3",
+      }}
+    />
+
+    <nav aria-label="All integration types">
+      <ul class="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
+        {types.map((t) => (
+          <li>
+            <a
+              href={`/integration-type/${t.slug}`}
+              class="flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50"
+            >
+              <span class="font-medium text-gray-900">{t.name}</span>
+              <span class="text-xs tabular-nums text-gray-400">{t.count}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</BaseLayout>

@@ -6,20 +6,23 @@
  * Generates /author/<slug> for each author in the collection.
  */
 import { getCollection, getEntry } from "astro:content";
-import BlogCard from "../../components/blog/BlogCard.astro";
 import CategoryBar from "../../components/blog/CategoryBar.astro";
-import EmptyState from "../../components/system/EmptyState.astro";
-import { EMPTY_STATE_PRESETS } from "../../components/system/emptyStateStyles";
 import PageHeader from "../../components/templates/PageHeader.astro";
+import TermHubEditorial from "../../components/templates/TermHubEditorial.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCategoryCounts, getMainFeedPosts } from "../../lib/blog";
 
 export async function getStaticPaths() {
   const authors = await getCollection("authors");
-  return authors.map((author) => ({
-    params: { slug: author.data.slug },
-    props: { author },
-  }));
+  const allPosts = await getCollection("blog", ({ data }) => !data.draft);
+  return authors
+    .filter((author) =>
+      allPosts.some((p) => p.data.author === author.data.slug),
+    )
+    .map((author) => ({
+      params: { slug: author.data.slug },
+      props: { author },
+    }));
 }
 
 const { author } = Astro.props;
@@ -81,34 +84,22 @@ for (const post of allPosts) {
   />
 
   <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 lg:px-8">
-    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {allPosts.map((post) => {
+    <TermHubEditorial
+      posts={allPosts.map((post) => {
         const category = categoryMap.get(post.data.category || "");
-        return (
-          <BlogCard
-            href={`/blog/${post.data.slug}`}
-            title={post.data.title}
-            excerpt={post.data.seo?.description}
-            image={post.data.mainImage}
-            authorName={author.data.name}
-            authorSlug={author.data.slug}
-            readingTime={post.data.readingTime}
-            categoryName={category?.name}
-            categorySlug={category?.slug}
-          />
-        );
+        return {
+          href: `/blog/${post.data.slug}`,
+          title: post.data.title,
+          excerpt: post.data.seo?.description,
+          image: post.data.mainImage,
+          authorName: author.data.name,
+          authorSlug: author.data.slug,
+          readingTime: post.data.readingTime,
+          categoryName: category?.name,
+          categorySlug: category?.slug,
+        };
       })}
-    </div>
-
-    {allPosts.length === 0 && (
-      <EmptyState
-        heading="No posts by this author yet."
-        reserveHeight={false}
-        classOverrides={{
-          ...EMPTY_STATE_PRESETS.bareList,
-          heading: "text-center text-gray-500",
-        }}
-      />
-    )}
+      emptyHeading="No posts by this author yet."
+    />
   </div>
 </BaseLayout>

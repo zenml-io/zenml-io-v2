@@ -8,6 +8,7 @@
 import { getCollection } from "astro:content";
 import PageHeader from "../../components/templates/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { filterUsedTerms } from "../../lib/blog";
 import type { TaxonomyCount } from "../../lib/llmops";
 import { getAllPublishedEntries, getIndustryTagCounts } from "../../lib/llmops";
 import {
@@ -25,15 +26,17 @@ for (const item of [...llmopsCounts, ...mlopsCounts]) {
   usedMap.set(item.slug, (usedMap.get(item.slug) ?? 0) + item.count);
 }
 
-// Merge all taxonomy terms with used counts (include zero-count industries)
+// Merge all taxonomy terms with used counts, then drop zero-count industries
+// (#249) — a zero-count industry has no [slug] page to link to any more.
 const allIndustries = await getCollection("industry-tags");
-const industries: TaxonomyCount[] = allIndustries
-  .map((t) => ({
-    slug: t.data.slug,
-    name: t.data.name,
-    count: usedMap.get(t.data.slug) ?? 0,
-  }))
-  .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+const merged: TaxonomyCount[] = allIndustries.map((t) => ({
+  slug: t.data.slug,
+  name: t.data.name,
+  count: usedMap.get(t.data.slug) ?? 0,
+}));
+const industries = filterUsedTerms(merged).sort(
+  (a, b) => b.count - a.count || a.name.localeCompare(b.name),
+);
 ---
 
 <BaseLayout

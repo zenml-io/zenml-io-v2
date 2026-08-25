@@ -12,14 +12,22 @@ interface Props {
   logo?: { url: string; alt?: string };
   /** data-type attribute for client-side filtering on the hub page */
   dataType?: string;
+  class?: string;
 }
 
-const { href, title, categoryLabel, logo, dataType } = Astro.props;
+const {
+  href,
+  title,
+  categoryLabel,
+  logo,
+  dataType,
+  class: className,
+} = Astro.props;
 ---
 
 <a
   href={href}
-  class="integration-card group"
+  class:list={["integration-card group", className]}
   {...(dataType ? { "data-type": dataType } : {})}
 >
   <div class="integration-card-img">

@@ -8,16 +8,24 @@
  * Generates /integration-type/<slug> for each integration type.
  */
 import { getCollection } from "astro:content";
-import IntegrationCard from "../../components/integrations/IntegrationCard.astro";
 import PageHeader from "../../components/templates/PageHeader.astro";
+import TermHubCatalog from "../../components/templates/TermHubCatalog.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
   const integrationTypes = await getCollection("integration-types");
-  return integrationTypes.map((itype) => ({
-    params: { slug: itype.data.slug },
-    props: { integrationType: itype },
-  }));
+  const allIntegrations = await getCollection(
+    "integrations",
+    ({ data }) => !data.draft,
+  );
+  return integrationTypes
+    .filter((itype) =>
+      allIntegrations.some((i) => i.data.integrationType === itype.data.slug),
+    )
+    .map((itype) => ({
+      params: { slug: itype.data.slug },
+      props: { integrationType: itype },
+    }));
 }
 
 const { integrationType } = Astro.props;
@@ -55,19 +63,14 @@ const allIntegrations = (
     />
 
     {/* Integration grid — same card style as hub */}
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {allIntegrations.map((integration) => (
-        <IntegrationCard
-          href={`/integrations/${integration.data.slug}`}
-          title={integration.data.title}
-          categoryLabel={integrationType.data.name}
-          logo={integration.data.logo}
-        />
-      ))}
-    </div>
-
-    {allIntegrations.length === 0 && (
-      <p class="py-12 text-center text-gray-500">No integrations of this type yet.</p>
-    )}
+    <TermHubCatalog
+      items={allIntegrations.map((integration) => ({
+        href: `/integrations/${integration.data.slug}`,
+        title: integration.data.title,
+        categoryLabel: integrationType.data.name,
+        logo: integration.data.logo,
+      }))}
+      emptyHeading="No integrations of this type yet."
+    />
   </div>
 </BaseLayout>

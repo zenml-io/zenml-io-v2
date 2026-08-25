@@ -1,0 +1,65 @@
+---
+/**
+ * TermHubCatalog — the integration-type term-page listing (issue #249).
+ *
+ * Covers `/integration-type/[slug]`. Renders only the listing — the page
+ * keeps its own container and `PageHeader` exactly as before.
+ *
+ * Reuses `IntegrationCard`'s 120px logo box unchanged. A "thin" grid — fewer
+ * items than the widest breakpoint's column count — centers instead of
+ * packing to the left with trailing empty columns; this only changes rows
+ * that would otherwise render with visible empty grid cells, not the
+ * populated 3-column case.
+ */
+import IntegrationCard from "../integrations/IntegrationCard.astro";
+import EmptyState from "../system/EmptyState.astro";
+
+export interface TermHubCatalogItem {
+  href: string;
+  title: string;
+  categoryLabel: string;
+  logo?: { url: string; alt?: string };
+}
+
+interface Props {
+  items: readonly TermHubCatalogItem[];
+  /** e.g. "No integrations of this type yet." */
+  emptyHeading: string;
+}
+
+const { items, emptyHeading } = Astro.props;
+
+// Fewer items than the lg (3-column) breakpoint's column count would leave
+// visible empty cells in a left-packed grid, so a thin row centers instead.
+const isThin = items.length > 0 && items.length < 3;
+---
+
+<div
+  class:list={[
+    isThin
+      ? "flex flex-wrap justify-center gap-4"
+      : "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3",
+  ]}
+>
+  {items.map((item) => (
+    <IntegrationCard
+      href={item.href}
+      title={item.title}
+      categoryLabel={item.categoryLabel}
+      logo={item.logo}
+      class={isThin ? "w-full sm:w-72" : undefined}
+    />
+  ))}
+</div>
+
+{items.length === 0 && (
+  <EmptyState
+    heading={emptyHeading}
+    reserveHeight={false}
+    classOverrides={{
+      container: "block py-12",
+      inner: "",
+      heading: "text-center text-gray-500",
+    }}
+  />
+)}

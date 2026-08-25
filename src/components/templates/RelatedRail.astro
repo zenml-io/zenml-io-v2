@@ -172,7 +172,7 @@ const GRID_VARIANT_CLASS: Record<RelatedRailGridVariant, string> = {
                       {tag}
                     </span>
                   ))}
-                  {item.extraTagCount && item.extraTagCount > 0 && (
+                  {(item.extraTagCount ?? 0) > 0 && (
                     <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">
                       +{item.extraTagCount}
                     </span>

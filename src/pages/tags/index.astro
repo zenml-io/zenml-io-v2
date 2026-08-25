@@ -1,24 +1,27 @@
 ---
 /**
- * LLMOps tags index page.
+ * Blog tags index page.
  *
- * Lists all LLMOps tags with entry counts, sorted by popularity.
- * Route: /llmops-tags
+ * Lists all blog tags with post counts, sorted by popularity.
+ * Route: /tags
  */
 import { getCollection } from "astro:content";
 import PageHeader from "../../components/templates/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { filterUsedTerms } from "../../lib/blog";
-import type { TaxonomyCount } from "../../lib/llmops";
-import { getAllPublishedEntries, getLLMOpsTagCounts } from "../../lib/llmops";
+import type { TaxonomyCount } from "../../lib/blog";
+import {
+  filterUsedTerms,
+  getAllPublishedPosts,
+  getTagCounts,
+} from "../../lib/blog";
 
-const entries = await getAllPublishedEntries();
-const usedCounts = await getLLMOpsTagCounts(entries);
+const allPosts = await getAllPublishedPosts();
+const usedCounts = await getTagCounts(allPosts);
 const usedMap = new Map(usedCounts.map((t) => [t.slug, t.count]));
 
 // Merge all taxonomy terms with used counts, then drop zero-count tags
 // (#249) — a zero-count tag has no [slug] page to link to any more.
-const allTags = await getCollection("llmops-tags");
+const allTags = await getCollection("tags");
 const merged: TaxonomyCount[] = allTags.map((t) => ({
   slug: t.data.slug,
   name: t.data.name,
@@ -30,16 +33,16 @@ const tags = filterUsedTerms(merged).sort(
 ---
 
 <BaseLayout
-  title="LLMOps Tags - ZenML"
-  description="Browse all LLMOps tags used in the ZenML LLMOps Database."
+  title="Blog Tags - ZenML"
+  description="Browse all tags used on the ZenML blog."
   surface="ml"
 >
   <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
     <PageHeader
       class="mb-10"
-      heading="LLMOps Tags"
-      description={`${tags.length} ${tags.length === 1 ? "tag" : "tags"} in the database`}
-      backLinks={[{ href: "/llmops-database", label: "Back to LLMOps Database" }]}
+      heading="Blog Tags"
+      description={`${tags.length} ${tags.length === 1 ? "tag" : "tags"} on the blog`}
+      backLinks={[{ href: "/blog", label: "Back to the blog" }]}
       classOverrides={{
         heading: "text-4xl font-bold tracking-tight text-gray-900",
         description: "text-lg text-gray-600",
@@ -47,12 +50,12 @@ const tags = filterUsedTerms(merged).sort(
       }}
     />
 
-    <nav aria-label="All LLMOps tags">
+    <nav aria-label="All blog tags">
       <ul class="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
         {tags.map((t) => (
           <li>
             <a
-              href={`/llmops-tags/${t.slug}`}
+              href={`/tags/${t.slug}`}
               class="flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50"
             >
               <span class="font-medium text-gray-900">{t.name}</span>

@@ -431,7 +431,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
   {
     id: "term-hub.editorial",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/TermHubEditorial.astro",
     collectionBound: true,
     variantAxes: ["member count", "term register", "identity block"],
     tones: ["default"],
@@ -439,31 +439,104 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 24,
     notes:
-      "Carries a 170px image slot and a category chip, so it keeps its own card rather than adopting card.hex-corner (#87). Terms render verbatim — no normalisation.",
+      "Carries a 170px image slot and a category chip, so it keeps its own card rather than adopting card.hex-corner (#87). Terms render verbatim — no normalisation (one live tag name really ends in a space). The identity block (author avatar/bio) is the page-header split-masthead's job, not this component's — it renders only the post listing.",
+    contentShape: {
+      minItems: 1,
+      maxItems: 60,
+      itemBudget:
+        "Title clamps at 2 lines, excerpt at 2; a missing image collapses the media slot.",
+      overflow: "The card grid wraps to further rows; nothing paginates yet.",
+    },
+    demoProps: {
+      emptyHeading: "No posts with this tag yet.",
+      posts: [
+        {
+          href: "/blog/zenmls-month-of-mlops-recap",
+          title: "ZenML's Month of MLOps recap",
+          excerpt: "How the community shipped production pipelines in a month.",
+          authorName: "Hamza Tahir",
+          readingTime: "7 Mins Read",
+          categoryName: "ZenML",
+          categorySlug: "zenml",
+        },
+      ],
+    },
   },
   {
     id: "term-hub.entry-index",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/TermHubEntryIndex.astro",
     collectionBound: true,
-    variantAxes: ["member count", "cross-link block", "dual collection"],
+    variantAxes: [
+      "arrangement: cards | items",
+      "member count",
+      "cross-link block",
+      "dual collection",
+    ],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 24,
-    notes: "A stacked list, not a card grid.",
+    notes:
+      "Two arrangements per section, never both: cards (live parity — the entry card grid every database term route renders today) and items (the drawn stacked list of data-display.stacked-list rows — new-brand/cutover, no live caller; the demo exercises it). A section without a heading renders no <h2> (single-collection page); the industry pages pass two headed sections (dual collection).",
+    contentShape: {
+      minItems: 0,
+      maxItems: 200,
+      overflow:
+        "The grid/list grows with the term's matching entries; a zero-entry term no longer builds a page, but the component still collapses to its empty state at 0.",
+    },
+    demoProps: {
+      emptyHeading: "No LLMOps entries with this tag yet.",
+      sections: [
+        {
+          items: [
+            {
+              title: "Evaluating conversational agents at scale",
+              href: "#",
+              meta: ["Acme", "2025"],
+            },
+            {
+              title: "Replay-based evals for a support copilot",
+              href: "#",
+              meta: ["Initech", "2024"],
+            },
+          ],
+        },
+      ],
+    },
   },
   {
     id: "term-hub.catalog",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/TermHubCatalog.astro",
     collectionBound: true,
     variantAxes: ["item count", "logo shape"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 24,
-    notes: "120x40 logo optical box. Thin grids centre rather than left-align.",
+    notes:
+      "120x40 logo optical box. A row thinner than the 3-column breakpoint centres rather than left-aligning (leaving packed empty cells reads as broken). Reuses IntegrationCard for the tile itself.",
+    contentShape: {
+      minItems: 1,
+      maxItems: 20,
+      overflow: "The tile grid wraps to further rows.",
+    },
+    demoProps: {
+      emptyHeading: "No integrations of this type yet.",
+      items: [
+        {
+          href: "/integrations/airflow",
+          title: "Apache Airflow",
+          categoryLabel: "Orchestrator",
+        },
+        {
+          href: "/integrations/mlflow",
+          title: "MLflow",
+          categoryLabel: "Experiment Tracker",
+        },
+      ],
+    },
   },
 
   // ── process-steps (Paper 25) ─────────────────────────────────────────────
