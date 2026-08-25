@@ -64,9 +64,9 @@
     "gray-matter": "^4.0.3",
     "pagefind": "^1.5.2",
     "playwright": "^1.62.1",
-    "satori": "^0.29.0",
+    "satori": "^0.29.1",
     "tsx": "^4.23.12",
-    "vitest": "^4.1.10",
+    "vitest": "^4.1.11",
     "wrangler": "4.113.0",
     "yaml": "2.9.0"
   }
