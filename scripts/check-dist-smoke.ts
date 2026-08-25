@@ -1,7 +1,11 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import {
+  checkRenderedSnapshots,
+  DIST_DIR,
+  logResult,
+} from "./check-dist-snapshots";
 
-const DIST_DIR = "dist/client";
 const AGENT_SKILLS_INDEX_PATH = ".well-known/agent-skills/index.json";
 
 const REQUIRED_FILES = [
@@ -98,10 +102,6 @@ function nonEmptyDirectoryExists(relativePath: string) {
 
 function readDistFile(relativePath: string) {
   return readFileSync(distPath(relativePath), "utf-8");
-}
-
-function logResult(ok: boolean, message: string) {
-  console.log(`   ${ok ? "✅" : "❌"} ${message}`);
 }
 
 function checkRequiredFiles() {
@@ -619,6 +619,9 @@ function main() {
 
   console.log("\n6. Island mounts:");
   totalFailures += checkIslandMounts();
+
+  console.log("\n7. Rendered content snapshots:");
+  totalFailures += checkRenderedSnapshots();
 
   console.log("\n========== DIST SMOKE REPORT ==========");
   console.log(`Failures: ${totalFailures}`);

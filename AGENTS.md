@@ -23,7 +23,7 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 
 ## Build, Test, and Development Commands
 - `pnpm install` installs dependencies.
-- pnpm settings (`overrides`, `onlyBuiltDependencies`) live in `pnpm-workspace.yaml`, never in a `pnpm` field in `package.json` — pnpm 11 (which Dependabot runs) ignores that field. Why: see "Development Conventions" in `CLAUDE.md`.
+- pnpm settings (`overrides`, `onlyBuiltDependencies`) live in `pnpm-workspace.yaml`, never in a `pnpm` field in `package.json` — pnpm 11 (which Dependabot runs) ignores that field. `pnpm check:lockfile` (also run by `pnpm test`) rejects that field and diffs the `overrides` in `pnpm-workspace.yaml` against the lockfile header, naming any missing override. Why: see "Development Conventions" in `CLAUDE.md`.
 - `pnpm dev` starts local dev server at `http://localhost:4321`.
 - `pnpm build` runs Astro build and Pagefind indexing (`dist/` output).
 - `pnpm preview` serves `dist/` through the checked-in Cloudflare Workers configuration.
@@ -34,7 +34,7 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 - `pnpm check:registry` validates the rebrand template registry (`src/lib/templates/registry.ts`) against the files on disk — every registered `componentPath` resolves, no orphan components under `src/components/templates/` or `src/components/system/` (a `.tsx` twin beside a same-name `.astro` is exempt), no duplicate ids, and `contentShape` bounds are sane.
 - `pnpm lint` runs Biome checks on configured source, test, config, and smoke-script files.
 - `pnpm test` runs the Vitest suite once.
-- `pnpm smoke:dist` smoke-tests `dist/` after `pnpm build`, including that every Preact island is still mounted on its pages with its bundle on disk.
+- `pnpm smoke:dist` smoke-tests `dist/` after `pnpm build`, including that every Preact island is still mounted on its pages with its bundle on disk, and that the rendered content of one blog post and one Kitaru-vs-X MDX page still matches the goldens in `tests/snapshots/rendered/` (`pnpm check:snapshots` alone; `pnpm snapshots:update` to regenerate after an intended change — review the golden diff before committing it).
 - `pnpm check:worker` starts Wrangler locally from `wrangler.jsonc` and checks the generated Astro Worker, static assets, redirects, headers, 404, and API routes. Run it after `pnpm build` for Worker runtime or deployment changes.
 - `pnpm check:worker-bindings -- <metadata.json>` refuses promotion metadata that does not contain both required form-secret bindings.
 - `pnpm check:islands` serves `dist/` and drives a real Chromium to prove the Preact islands actually **hydrate** (become interactive) — an island can ship perfect markup and still be inert. Needs `pnpm exec playwright install chromium` on first run.
