@@ -54,19 +54,17 @@
  * All three are still covered structurally by the island manifest in
  * check-dist-smoke.ts. Please do not "helpfully" add them back here.
  *
- * LlmopsIndex, MlopsIndex and IntegrationsIndex (#249) are three separate
- * thin wrappers around the same shared FilterIndex engine
+ * LlmopsIndex, MlopsIndex, IntegrationsIndex, and BlogIndex (#249) are four
+ * separate thin wrappers around the same shared FilterIndex engine
  * (src/components/islands/filter-index/), not near-duplicates of each other
  * the way the old LLMOpsFilter/MLOpsFilter pair was — each wires its own
  * data source, facet fields and (for Integrations) a DOM-visibility search
  * mode, so each gets its own real-interaction check below; a bug in one
- * page's wiring would not be caught by testing another. The planned fourth
- * route, /blog, is not covered here yet — CategoryBar/TagCloud (the blog
- * index's current header/footer chrome) turned out to be shared across the
- * whole blog surface (every post page, plus the category/tag/author hub
- * pages), not just the index, so migrating the index onto FilterIndex needs
- * a scope decision beyond this one page first. Add its check here once
- * that migration lands.
+ * page's wiring would not be caught by testing another. CategoryBar/TagCloud
+ * (the blog index's former header/footer chrome) turned out to be shared
+ * across the rest of the blog surface (post pages, plus the category/tag/
+ * author hub pages) — they stay in place there, only retired from the
+ * index; see their doc comments.
  * - Of the remaining /product/kitaru islands, TwoDoors covers the interactive
  *   contract that has regressed. The others have nothing better to assert on:
  *   Hero's sole interaction is a clipboard write (permission-gated in
@@ -415,6 +413,57 @@ const CHECKS: IslandCheck[] = [
           `expected exactly 1 visible card for the "kubernetes" query, got ${searchVisibleCount}`,
         );
       }
+    },
+  },
+  {
+    name: "BlogIndex loads its index, applies a category facet, and searches",
+    route: "/blog",
+    island: "BlogIndex",
+    seedConsent: true,
+    async assert(page, root) {
+      // Same DataFilterIndex shape as LlmopsIndex/MlopsIndex, fetching
+      // /blog/search-index.json instead of a *-index.json endpoint.
+      await page.waitForSelector("#blog-search", { timeout: NAV_TIMEOUT });
+
+      const status = `${root} output[aria-live="polite"]`;
+      const before = (await page.locator(status).innerText()).trim();
+
+      await page
+        .locator(`${root} aside button[aria-pressed="false"]:not([disabled])`)
+        .first()
+        .click();
+
+      await page.waitForSelector(`${root} aside button[aria-pressed="true"]`);
+
+      await page.waitForFunction(
+        (args: { selector: string; before: string }) => {
+          const element = document.querySelector<HTMLElement>(args.selector);
+          return element !== null && element.innerText.trim() !== args.before;
+        },
+        { selector: status, before },
+      );
+
+      // A search interaction, independent of the facet click above: clear
+      // the facet, then search for a string no post title/excerpt contains.
+      // A real word risks matching most posts and leaving the count
+      // unchanged (a false pass); a guaranteed-zero query deterministically
+      // proves the search box re-filters (and exercises the zero-results
+      // empty state as a bonus).
+      await page
+        .locator(`${root} aside button[aria-pressed="true"]`)
+        .first()
+        .click();
+
+      const afterClear = (await page.locator(status).innerText()).trim();
+      await page.locator("#blog-search").fill("zzzznonexistentqueryzzzz");
+
+      await page.waitForFunction(
+        (args: { selector: string; before: string }) => {
+          const element = document.querySelector<HTMLElement>(args.selector);
+          return element !== null && element.innerText.trim() !== args.before;
+        },
+        { selector: status, before: afterClear },
+      );
     },
   },
   {

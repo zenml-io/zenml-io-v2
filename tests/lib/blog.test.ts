@@ -12,7 +12,6 @@ vi.mock("astro:content", () => ({
 
 import {
   type BlogPost,
-  blogPageHref,
   buildBlogSearchIndex,
   getAllPublishedPosts,
   getCategoryCounts,
@@ -268,18 +267,14 @@ describe("blog helpers", () => {
     expect(getPaginationItems(9, 10)).toEqual([1, "ellipsis", 6, 7, 8, 9, 10]);
   });
 
-  it("builds blog page hrefs", () => {
-    expect(blogPageHref(1)).toBe("/blog");
-    expect(blogPageHref(2)).toBe("/blog/page/2");
-  });
-
-  it("builds search index entries with resolved category names", async () => {
+  it("builds search index entries with resolved category names, slugs, and tags", async () => {
     const posts = [
       fakePost({
         slug: "first-post",
         title: "First post",
         date: "2025-05-01T12:00:00.000Z",
         category: "kitaru",
+        tags: ["agents", "evaluation"],
         description: "First excerpt",
       }),
     ];
@@ -291,6 +286,8 @@ describe("blog helpers", () => {
         excerpt: "First excerpt",
         date: "2025-05-01T12:00:00.000Z",
         category: "Kitaru",
+        categorySlug: "kitaru",
+        tags: ["agents", "evaluation"],
       },
     ]);
     expect(getCollectionMock).toHaveBeenCalledWith("categories");

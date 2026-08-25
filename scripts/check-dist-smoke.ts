@@ -440,8 +440,14 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   { island: "LlmopsIndex", pages: ["llmops-database.html"] },
   { island: "MlopsIndex", pages: ["mlops-database.html"] },
   { island: "IntegrationsIndex", pages: ["integrations.html"] },
+  { island: "BlogIndex", pages: ["blog.html"] },
   { island: "ProTestimonialCarousel", pages: ["pro.html"] },
-  { island: "BlogSearch", pages: ["blog.html"] },
+  // BlogSearch lives inside CategoryBar's hub/back-link modes, not its
+  // breadcrumb mode — so it was never on blog.html specifically, but it WAS
+  // reachable via CategoryBar there before the blog index migrated onto
+  // FilterIndex and retired CategoryBar (#249). category/[slug].astro still
+  // renders CategoryBar in back-link mode, so it's still covered.
+  { island: "BlogSearch", pages: ["category/llmops.html"] },
   // The Kitaru landing sections (KitaruGrain doubles as a plain subcomponent
   // inside the other islands, but the static Cta.astro and the _HighlightPanel
   // shells rendered by Features.astro also mount it as its own island for
