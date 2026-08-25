@@ -150,7 +150,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
   {
     id: "page-header.plain",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/PageHeader.astro",
     variantAxes: ["h1 length", "meta parts present"],
     tones: ["default"],
     responsive: "reflow",
@@ -158,31 +158,48 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 22,
     notes:
       "Build from the meta-collapse board first: it encodes the separator rule, and getting that wrong breaks every other page-header variant.",
+    demoProps: {
+      heading: "Our Team",
+      description: "Meet the people building the future of MLOps.",
+    },
   },
   {
     id: "page-header.centered",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/PageHeader.astro",
     variantAxes: ["h1 length", "dek present"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 22,
+    demoProps: {
+      align: "center",
+      eyebrow: "Integrations",
+      heading: "Explore the MLOps landscape with ZenML",
+      description: "ZenML integrates with many different third-party tools.",
+    },
   },
   {
     id: "page-header.tinted",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/PageHeader.astro",
     variantAxes: ["band height", "tier count"],
     tones: ["default", "brand"],
     responsive: "reflow",
     island: false,
     paperPage: 22,
+    demoProps: {
+      tone: "brand",
+      align: "center",
+      eyebrow: "Careers",
+      heading: "Join the team building the future of MLOps",
+      description: "We're a small, remote-first team.",
+    },
   },
   {
     id: "page-header.with-breadcrumb",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/PageHeader.astro",
     variantAxes: ["crumb count", "year present"],
     tones: ["default"],
     responsive: "reflow",
@@ -190,21 +207,35 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 22,
     notes:
       "Consumes the breadcrumb primitive, which emits visual crumbs and BreadcrumbList JSON-LD together (#248).",
+    demoProps: {
+      breadcrumb: [{ label: "Docs", href: "/docs" }, { label: "Getting started" }],
+      heading: "Getting started",
+    },
   },
   {
     id: "page-header.with-action",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/PageHeader.astro",
     variantAxes: ["action present"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 22,
+    notes:
+      "The action is the unnamed default slot — the same slot TemplateStage wires via demoSlots.default.",
+    demoProps: {
+      eyebrow: "Careers",
+      heading: "Join the team",
+    },
+    demoSlots: {
+      default:
+        '<div class="mt-8 flex gap-3"><a href="/careers" class="inline-flex items-center rounded-md bg-zenml-500 px-4 py-2 text-sm font-semibold text-white">See open roles</a></div>',
+    },
   },
   {
     id: "page-header.split-masthead",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/PageHeader.astro",
     variantAxes: ["lane content", "year present"],
     tones: ["default"],
     responsive: "reauthored",
@@ -212,6 +243,17 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 22,
     notes:
       "Drops below lg to a re-authored single-lane layout rather than squeezing the split.",
+    demoProps: {
+      heading: "Jane Doe",
+      masthead: {
+        name: "Jane Doe",
+        bio: "Writes about MLOps in production.",
+        meta: "12 posts",
+        links: [
+          { href: "https://www.linkedin.com", label: "LinkedIn", external: true },
+        ],
+      },
+    },
   },
 
   // ── data-display (Paper 23) ──────────────────────────────────────────────

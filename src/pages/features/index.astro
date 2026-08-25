@@ -10,6 +10,7 @@ import FeaturesCTA05 from "../../components/sections/FeaturesCTA05.astro";
  * Renders a hero section with gradient background, a grid of 7 feature
  * cards (hardcoded from HUB_CARDS), and a CTA05-style purple panel.
  */
+import PageHeader from "../../components/templates/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   FEATURES_HUB_CTA,
@@ -28,20 +29,23 @@ import {
     {/* Hero */}
     <section class="hero-section">
       <div class="mx-auto max-w-3xl px-8 text-center">
-        <h1 class="text-[3rem] font-bold text-gray-900 leading-tight tracking-tight">
-          {FEATURES_HUB_HERO.headline}
-        </h1>
-        <p class="mt-6 text-lg text-gray-600 leading-relaxed">
-          {FEATURES_HUB_HERO.body}
-        </p>
-        <div class="mt-12 flex flex-col-reverse items-center gap-6 sm:flex-row sm:justify-center" data-reveal>
-          <Button href={FEATURES_HUB_HERO.secondaryCta.href} variant="secondary" size="lg">
-            {FEATURES_HUB_HERO.secondaryCta.label}
-          </Button>
-          <Button href={FEATURES_HUB_HERO.primaryCta.href} size="lg" target="_blank">
-            {FEATURES_HUB_HERO.primaryCta.label}
-          </Button>
-        </div>
+        <PageHeader
+          heading={FEATURES_HUB_HERO.headline}
+          description={FEATURES_HUB_HERO.body}
+          classOverrides={{
+            heading: "text-[3rem] font-bold text-gray-900 leading-tight tracking-tight",
+            descriptionSpacing: "mt-6",
+          }}
+        >
+          <div class="mt-12 flex flex-col-reverse items-center gap-6 sm:flex-row sm:justify-center" data-reveal>
+            <Button href={FEATURES_HUB_HERO.secondaryCta.href} variant="secondary" size="lg">
+              {FEATURES_HUB_HERO.secondaryCta.label}
+            </Button>
+            <Button href={FEATURES_HUB_HERO.primaryCta.href} size="lg" target="_blank">
+              {FEATURES_HUB_HERO.primaryCta.label}
+            </Button>
+          </div>
+        </PageHeader>
       </div>
     </section>
 

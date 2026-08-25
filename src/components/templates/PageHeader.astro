@@ -1,0 +1,247 @@
+---
+/**
+ * PageHeader — the top-of-page header family (issue #249).
+ *
+ * Covers six arrangements by collapsing props/slots, never a `variant=`
+ * string: `plain` (no `tone`, no `breadcrumb`, no `masthead`), `centered`
+ * (`align="center"`), `tinted` (`tone="brand"`), `with-breadcrumb`
+ * (`breadcrumb` present), `with-action` (the default slot present), and
+ * `split-masthead` (`masthead` present — a structurally different render
+ * path, since an avatar/bio/links layout shares no markup with the
+ * eyebrow/heading/description shape the other five arrangements use).
+ *
+ * Composes the Wave 1 substrate: `SectionIntro` for the eyebrow/heading/
+ * description/link piece, `Breadcrumb` for the with-breadcrumb arrangement,
+ * and `Image` for the masthead avatar. Owns two wrapper elements of its
+ * own — the `tone="brand"` band `<section>` and its inner centered
+ * container — because those are the two pieces every tinted live page
+ * shares; `bandClass`/`containerClass` exist because the live band/
+ * container classes genuinely vary page to page (band padding, container
+ * max-width, gradient source color) in ways that predate this component.
+ * Same migration-parity role as `SectionIntro`'s `classOverrides`: reproduce
+ * the live page byte-for-byte where a fixed default can't, never used by
+ * new code.
+ *
+ * A `tone="default"` header does not own an outer container — it renders
+ * only the `<header>` landmark; the page keeps whatever container it
+ * already wraps the header in (this is what lets `docs.astro` keep its own
+ * decorative dots and `relative overflow-hidden` header classes untouched).
+ *
+ * Two deliberate branch asymmetries, both live-parity reproductions:
+ * `tone="brand"` centers with `text-center` on its own container and does
+ * NOT forward `align` to `SectionIntro` — the live tinted heroes center via
+ * their band container and never had SectionIntro's centered-wrap
+ * (`max-w-3xl mx-auto`) constraint; forwarding `align` would add it. And
+ * the `masthead` branch ignores `headingLevel` — its one live shape (the
+ * author page) is always the page `<h1>`.
+ */
+import type { BreadcrumbItem } from "../../lib/breadcrumb";
+import type { SectionIntroProps } from "../../lib/section";
+import Image from "../Image.astro";
+import Breadcrumb from "../system/Breadcrumb.astro";
+import SectionIntro from "../system/SectionIntro.astro";
+
+export interface PageHeaderMasthead {
+  avatar?: { url: string; alt?: string; width?: number; height?: number };
+  name: string;
+  bio?: string;
+  /** e.g. "12 posts" — renders as the first item in the meta row. */
+  meta?: string;
+  links?: Array<{ href: string; label: string; external?: boolean }>;
+}
+
+interface Props {
+  eyebrow?: string;
+  heading: string;
+  headingLevel?: 1 | 2 | 3;
+  emphasis?: string;
+  description?: string;
+  align?: "start" | "center";
+  /** "brand" = the tinted gradient band; renders its own `<section>` + container. */
+  tone?: "default" | "brand";
+  breadcrumb?: BreadcrumbItem[];
+  breadcrumbSeparator?: "slash" | "chevron";
+  /** A single "back to hub" link with a leading chevron, rendered above the heading. */
+  leadingLink?: { href: string; label: string };
+  /**
+   * "Back to X" links below the description. One link renders as a bare
+   * inline-block anchor, several as a wrapping flex row — the two live hub
+   * shapes; the single-anchor line box is ~2px shorter than a flex row.
+   */
+  backLinks?: Array<{ href: string; label: string }>;
+  /** Split avatar/bio/links arrangement — takes over the whole render, no SectionIntro. */
+  masthead?: PageHeaderMasthead;
+  /** `tone="brand"` band `<section>` classes. Migration-parity escape hatch. */
+  bandClass?: string;
+  /** `tone="brand"` inner centered container classes. Migration-parity escape hatch. */
+  containerClass?: string;
+  class?: string;
+  /** Forwarded verbatim to the internal `SectionIntro`. Migration-parity escape hatch. */
+  classOverrides?: SectionIntroProps["classOverrides"];
+}
+
+const {
+  eyebrow,
+  heading,
+  headingLevel = 1,
+  emphasis,
+  description,
+  align = "start",
+  tone = "default",
+  breadcrumb,
+  breadcrumbSeparator = "slash",
+  leadingLink,
+  backLinks,
+  masthead,
+  bandClass = "bg-linear-to-t from-zenml-50 to-white border-b border-gray-200 pt-16 pb-12 sm:pt-24 sm:pb-16",
+  containerClass = "mx-auto max-w-4xl px-4 sm:px-6 lg:px-8",
+  class: className,
+  classOverrides,
+} = Astro.props;
+
+const isBrand = tone === "brand";
+const Tag = isBrand ? "section" : "header";
+const wrapClass = isBrand ? [bandClass, className] : [className];
+const alignClass = isBrand && align === "center" ? "text-center" : undefined;
+---
+
+<Tag class:list={wrapClass}>
+  {
+    masthead ? (
+      <div class:list={[containerClass, alignClass]}>
+        <div class="flex items-center gap-6">
+          {masthead.avatar && (
+            <Image
+              image={masthead.avatar}
+              alt={masthead.name}
+              class="h-20 w-20 rounded-full object-cover"
+            />
+          )}
+          <div>
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900">
+              {masthead.name}
+            </h1>
+            {masthead.bio && (
+              <p class="mt-2 text-base leading-relaxed text-gray-600">
+                {masthead.bio}
+              </p>
+            )}
+            {(masthead.meta || masthead.links?.length) && (
+              <div class="mt-3 flex items-center gap-4">
+                {masthead.meta && (
+                  <span class="text-sm text-gray-500">{masthead.meta}</span>
+                )}
+                {masthead.links?.map((link) => (
+                  <a
+                    href={link.href}
+                    class="text-sm font-medium text-primary-600 hover:text-primary-700"
+                    target={link.external ? "_blank" : undefined}
+                    rel={link.external ? "noopener noreferrer" : undefined}
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    ) : (
+      <Fragment>
+        <slot name="decoration" />
+        {isBrand ? (
+          <div class:list={[containerClass, alignClass]}>
+            {breadcrumb && (
+              <Breadcrumb items={breadcrumb} separator={breadcrumbSeparator} />
+            )}
+            <SectionIntro
+              eyebrow={eyebrow}
+              heading={heading}
+              headingLevel={headingLevel}
+              emphasis={emphasis}
+              description={description}
+              classOverrides={classOverrides}
+            />
+            {backLinks && backLinks.length === 1 && (
+              <a
+                href={backLinks[0].href}
+                class="mt-2 inline-block text-sm text-primary-600 hover:text-primary-700"
+              >
+                &larr; {backLinks[0].label}
+              </a>
+            )}
+            {backLinks && backLinks.length > 1 && (
+              <div class="mt-2 flex flex-wrap gap-4 text-sm">
+                {backLinks.map((link) => (
+                  <a
+                    href={link.href}
+                    class="text-primary-600 hover:text-primary-700"
+                  >
+                    &larr; {link.label}
+                  </a>
+                ))}
+              </div>
+            )}
+            <slot />
+          </div>
+        ) : (
+          <Fragment>
+            {leadingLink && (
+              <a
+                href={leadingLink.href}
+                class="inline-flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700"
+              >
+                <svg
+                  class="h-4 w-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M20 12H4M4 12L10 18M4 12L10 6" />
+                </svg>
+                {leadingLink.label}
+              </a>
+            )}
+            {breadcrumb && (
+              <Breadcrumb items={breadcrumb} separator={breadcrumbSeparator} />
+            )}
+            <SectionIntro
+              eyebrow={eyebrow}
+              heading={heading}
+              headingLevel={headingLevel}
+              emphasis={emphasis}
+              description={description}
+              align={align}
+              classOverrides={classOverrides}
+            />
+            {backLinks && backLinks.length === 1 && (
+              <a
+                href={backLinks[0].href}
+                class="mt-2 inline-block text-sm text-primary-600 hover:text-primary-700"
+              >
+                &larr; {backLinks[0].label}
+              </a>
+            )}
+            {backLinks && backLinks.length > 1 && (
+              <div class="mt-2 flex flex-wrap gap-4 text-sm">
+                {backLinks.map((link) => (
+                  <a
+                    href={link.href}
+                    class="text-primary-600 hover:text-primary-700"
+                  >
+                    &larr; {link.label}
+                  </a>
+                ))}
+              </div>
+            )}
+            <slot />
+          </Fragment>
+        )}
+      </Fragment>
+    )
+  }
+</Tag>

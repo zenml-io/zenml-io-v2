@@ -8,9 +8,9 @@
 import { getCollection, getEntry } from "astro:content";
 import BlogCard from "../../components/blog/BlogCard.astro";
 import CategoryBar from "../../components/blog/CategoryBar.astro";
-import Image from "../../components/Image.astro";
 import EmptyState from "../../components/system/EmptyState.astro";
 import { EMPTY_STATE_PRESETS } from "../../components/system/emptyStateStyles";
+import PageHeader from "../../components/templates/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCategoryCounts, getMainFeedPosts } from "../../lib/blog";
 
@@ -59,36 +59,26 @@ for (const post of allPosts) {
   <CategoryBar backLink categories={categories} />
 
   {/* Author header — gradient section */}
-  <section class="bg-linear-to-t from-primary-50 to-white border-b border-gray-200">
-    <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-      <div class="flex items-center gap-6">
-        {author.data.avatar && (
-          <Image
-            image={author.data.avatar}
-            alt={author.data.name}
-            class="h-20 w-20 rounded-full object-cover"
-          />
-        )}
-        <div>
-          <h1 class="text-3xl font-bold tracking-tight text-gray-900">{author.data.name}</h1>
-          {author.data.bio && <p class="mt-2 text-base leading-relaxed text-gray-600">{author.data.bio}</p>}
-          <div class="mt-3 flex items-center gap-4">
-            <span class="text-sm text-gray-500">{allPosts.length} {allPosts.length === 1 ? "post" : "posts"}</span>
-            {author.data.email && (
-              <a href={`mailto:${author.data.email}`} class="text-sm font-medium text-primary-600 hover:text-primary-700">
-                Email
-              </a>
-            )}
-            {author.data.linkedin && (
-              <a href={author.data.linkedin} class="text-sm font-medium text-primary-600 hover:text-primary-700" target="_blank" rel="noopener noreferrer">
-                LinkedIn
-              </a>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <PageHeader
+    tone="brand"
+    bandClass="bg-linear-to-t from-primary-50 to-white border-b border-gray-200"
+    containerClass="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 sm:py-14 lg:px-8"
+    heading={author.data.name}
+    masthead={{
+      avatar: author.data.avatar,
+      name: author.data.name,
+      bio: author.data.bio,
+      meta: `${allPosts.length} ${allPosts.length === 1 ? "post" : "posts"}`,
+      links: [
+        ...(author.data.email
+          ? [{ href: `mailto:${author.data.email}`, label: "Email" }]
+          : []),
+        ...(author.data.linkedin
+          ? [{ href: author.data.linkedin, label: "LinkedIn", external: true }]
+          : []),
+      ],
+    }}
+  />
 
   <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 lg:px-8">
     <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">

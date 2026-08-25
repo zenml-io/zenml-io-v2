@@ -14,6 +14,7 @@
  * (footer.ts / nav / content) — no invented deep links.
  */
 import SectionIntro from "../components/system/SectionIntro.astro";
+import PageHeader from "../components/templates/PageHeader.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const SEO = {
@@ -139,28 +140,28 @@ const RESOURCES = [
     <div class="docs-hub scroll-reveal-section">
 
       {/* ── Hero ── */}
-      <header class="relative overflow-hidden">
+      <PageHeader
+        class="relative overflow-hidden"
+        align="center"
+        eyebrow="Documentation"
+        heading="Documentation for ZenML and Kitaru"
+        description="Two products under one subscription. Pick the workspace you're building in — guides, references, and examples for each."
+        classOverrides={{
+          heading:
+            "text-balance text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl",
+          headingSpacing: "mt-3",
+          description:
+            "mx-auto max-w-xl text-pretty text-lg leading-relaxed text-gray-600",
+          wrap: "relative mx-auto max-w-2xl px-4 pt-16 pb-12 text-center sm:px-6 sm:pt-24 sm:pb-16 lg:px-8",
+        }}
+      >
         <div
+          slot="decoration"
           class="docs-hero-dots pointer-events-none absolute inset-0"
           aria-hidden="true"
         >
         </div>
-        <SectionIntro
-          align="center"
-          eyebrow="Documentation"
-          heading="Documentation for ZenML and Kitaru"
-          headingLevel={1}
-          description="Two products under one subscription. Pick the workspace you're building in — guides, references, and examples for each."
-          classOverrides={{
-            heading:
-              "text-balance text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl",
-            headingSpacing: "mt-3",
-            description:
-              "mx-auto max-w-xl text-pretty text-lg leading-relaxed text-gray-600",
-            wrap: "relative mx-auto max-w-2xl px-4 pt-16 pb-12 text-center sm:px-6 sm:pt-24 sm:pb-16 lg:px-8",
-          }}
-        />
-      </header>
+      </PageHeader>
 
       {/* ── Product diptych ── */}
       <section

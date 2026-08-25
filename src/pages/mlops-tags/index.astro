@@ -6,7 +6,7 @@
  * Route: /mlops-tags
  */
 import { getCollection } from "astro:content";
-import SectionIntro from "../../components/system/SectionIntro.astro";
+import PageHeader from "../../components/templates/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import type { TaxonomyCount } from "../../lib/mlops";
 import {
@@ -34,24 +34,20 @@ const tags: TaxonomyCount[] = allTags
   surface="ml"
 >
   <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-10">
-      <SectionIntro
-        eyebrow="Machine Learning Operations"
-        heading="MLOps Tags"
-        headingLevel={1}
-        description={`${tags.length} ${tags.length === 1 ? "tag" : "tags"} in the database`}
-        classOverrides={{
-          eyebrow: "text-sm font-semibold uppercase tracking-wider text-success-700",
-          heading: "text-4xl font-bold tracking-tight text-gray-900",
-          headingSpacing: "mt-3",
-          description: "text-lg text-gray-600",
-          descriptionSpacing: "mt-3",
-        }}
-      />
-      <a href="/mlops-database" class="mt-2 inline-block text-sm text-primary-600 hover:text-primary-700">
-        &larr; Back to MLOps Database
-      </a>
-    </header>
+    <PageHeader
+      class="mb-10"
+      eyebrow="Machine Learning Operations"
+      heading="MLOps Tags"
+      description={`${tags.length} ${tags.length === 1 ? "tag" : "tags"} in the database`}
+      backLinks={[{ href: "/mlops-database", label: "Back to MLOps Database" }]}
+      classOverrides={{
+        eyebrow: "text-sm font-semibold uppercase tracking-wider text-success-700",
+        heading: "text-4xl font-bold tracking-tight text-gray-900",
+        headingSpacing: "mt-3",
+        description: "text-lg text-gray-600",
+        descriptionSpacing: "mt-3",
+      }}
+    />
 
     <nav aria-label="All MLOps tags">
       <ul class="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">

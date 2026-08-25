@@ -6,6 +6,7 @@
  * Route: /industry-tags
  */
 import { getCollection } from "astro:content";
+import PageHeader from "../../components/templates/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import type { TaxonomyCount } from "../../lib/llmops";
 import { getAllPublishedEntries, getIndustryTagCounts } from "../../lib/llmops";
@@ -41,20 +42,20 @@ const industries: TaxonomyCount[] = allIndustries
   surface="ml"
 >
   <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-10">
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900">Industries</h1>
-      <p class="mt-3 text-lg text-gray-600">
-        {industries.length} {industries.length === 1 ? "industry" : "industries"} across the LLMOps and MLOps databases
-      </p>
-      <div class="mt-2 flex flex-wrap gap-4 text-sm">
-        <a href="/llmops-database" class="text-primary-600 hover:text-primary-700">
-          &larr; LLMOps Database
-        </a>
-        <a href="/mlops-database" class="text-primary-600 hover:text-primary-700">
-          &larr; MLOps Database
-        </a>
-      </div>
-    </header>
+    <PageHeader
+      class="mb-10"
+      heading="Industries"
+      description={`${industries.length} ${industries.length === 1 ? "industry" : "industries"} across the LLMOps and MLOps databases`}
+      backLinks={[
+        { href: "/llmops-database", label: "LLMOps Database" },
+        { href: "/mlops-database", label: "MLOps Database" },
+      ]}
+      classOverrides={{
+        heading: "text-4xl font-bold tracking-tight text-gray-900",
+        description: "text-lg text-gray-600",
+        descriptionSpacing: "mt-3",
+      }}
+    />
 
     <nav aria-label="All industries">
       <ul class="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">

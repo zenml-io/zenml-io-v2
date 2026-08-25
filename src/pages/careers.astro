@@ -1,6 +1,6 @@
 ---
 import Button from "../components/Button.astro";
-import SectionIntro from "../components/system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../components/system/sectionIntro.shared";
 /**
  * Careers page.
  *
@@ -9,7 +9,7 @@ import SectionIntro from "../components/system/SectionIntro.astro";
  * Recruitment landing: hero with CTAs, mission section (photo + text),
  * "Why work here" grid, hiring process steps, and open positions.
  */
-import { SECTION_INTRO_PRESETS } from "../components/system/sectionIntro.shared";
+import PageHeader from "../components/templates/PageHeader.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
   CAREERS_HERO,
@@ -31,27 +31,25 @@ import { OPEN_POSITIONS } from "../lib/company";
 >
   <main>
     {/* Hero */}
-    <section class="bg-linear-to-t from-zenml-50 to-white border-b border-gray-200 pt-16 pb-12 sm:pt-24 sm:pb-16">
-      <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-        <SectionIntro
-          eyebrow={CAREERS_HERO.eyebrow}
-          heading={CAREERS_HERO.headline}
-          headingLevel={1}
-          description={CAREERS_HERO.deck}
-          classOverrides={{
-            heading: SECTION_INTRO_PRESETS.pageHero.heading,
-          }}
-        />
-        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Button href={CAREERS_HERO.primaryCta.href} variant="secondary" size="lg">
-            {CAREERS_HERO.primaryCta.label}
-          </Button>
-          <Button href={CAREERS_HERO.secondaryCta.href} size="lg">
-            {CAREERS_HERO.secondaryCta.label}
-          </Button>
-        </div>
+    <PageHeader
+      tone="brand"
+      align="center"
+      eyebrow={CAREERS_HERO.eyebrow}
+      heading={CAREERS_HERO.headline}
+      description={CAREERS_HERO.deck}
+      classOverrides={{
+        heading: SECTION_INTRO_PRESETS.pageHero.heading,
+      }}
+    >
+      <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <Button href={CAREERS_HERO.primaryCta.href} variant="secondary" size="lg">
+          {CAREERS_HERO.primaryCta.label}
+        </Button>
+        <Button href={CAREERS_HERO.secondaryCta.href} size="lg">
+          {CAREERS_HERO.secondaryCta.label}
+        </Button>
       </div>
-    </section>
+    </PageHeader>
 
     {/* Mission section — photo + text */}
     <section class="bg-white py-space-lg sm:py-space-xl">
