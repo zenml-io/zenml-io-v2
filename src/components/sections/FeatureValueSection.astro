@@ -1,4 +1,5 @@
 ---
+import Split from "../system/layout/Split.astro";
 /**
  * FeatureValueSection — a two-column section with text + image.
  *
@@ -36,11 +37,13 @@ const isImageLeft = imageSide === "left";
 
 <section class="bg-white py-16">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class:list={[
-      "grid items-center gap-10 lg:grid-cols-2 lg:gap-16",
-      isImageLeft && "lg:[direction:rtl] lg:*:[direction:ltr]",
-    ]}>
-      <div class="max-w-[80%]" data-reveal>
+    <Split
+      mediaSide={isImageLeft ? "left" : "right"}
+      space={{ base: "mlg", lg: "xl" }}
+    >
+      {/* lg:ml-auto: with media on the left, the width-capped prose box
+          right-aligns in its lane so the two lanes stay mirror-symmetric. */}
+      <div class:list={["max-w-[80%]", isImageLeft && "lg:ml-auto"]} data-reveal>
         <SectionIntro
           eyebrow={eyebrow}
           heading={title}
@@ -71,7 +74,7 @@ const isImageLeft = imageSide === "left";
         )}
       </div>
       {image?.url && (
-        <div class="overflow-hidden rounded-lg" data-reveal>
+        <div slot="media" class="overflow-hidden rounded-lg" data-reveal>
           <img
             src={image.url}
             alt={image.alt || title}
@@ -80,6 +83,6 @@ const isImageLeft = imageSide === "left";
           />
         </div>
       )}
-    </div>
+    </Split>
   </div>
 </section>

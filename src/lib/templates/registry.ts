@@ -558,7 +558,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 1,
     notes:
-      "Two-lane prose/media layout. Prose is always first in the DOM regardless of mediaSide (screen-reader order matches stacked order); the visual side flips with CSS order, never direction: rtl. Empty media slot collapses to a single centred column. Preact twin at Split.tsx.",
+      "Two-lane prose/media layout. Prose is always first in the DOM regardless of mediaSide (screen-reader order matches stacked order); the visual side flips with CSS order, never direction: rtl. Empty media slot collapses to a single centred column. space accepts ResponsiveSpace (base + breakpoint overrides); the mlg step (40px, between md 32 and lg 48) exists for the live two-column sections that pair a 40px stacked gap with a wider split gap. Preact twin at Split.tsx.",
     demoProps: {
       mediaSide: "right",
       ratio: "1/2",

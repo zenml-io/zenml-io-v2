@@ -16,10 +16,15 @@
  */
 import type { Breakpoint, SpaceStep } from "../../../lib/section";
 
-/** A fixed step, or per-breakpoint overrides layered on top of the primitive's own default. */
+/**
+ * A fixed step, or per-breakpoint overrides layered on top of the primitive's
+ * own default. `base` (like `GridColsProp`'s) replaces that default for the
+ * unprefixed utility when the call site needs a non-default step *and*
+ * breakpoint overrides at once.
+ */
 export type ResponsiveSpace =
   | SpaceStep
-  | Partial<Record<Breakpoint, SpaceStep>>;
+  | Partial<Record<Breakpoint | "base", SpaceStep>>;
 
 export const BREAKPOINTS: readonly Breakpoint[] = [
   "sm",
@@ -35,6 +40,7 @@ export const GAP: Record<SpaceStep, string> = {
   xs: "gap-space-xs",
   sm: "gap-space-sm",
   md: "gap-space-md",
+  mlg: "gap-space-mlg",
   lg: "gap-space-lg",
   xl: "gap-space-xl",
   xxl: "gap-space-xxl",
@@ -47,6 +53,7 @@ export const GAP_AT: Record<Breakpoint, Record<SpaceStep, string>> = {
     xs: "sm:gap-space-xs",
     sm: "sm:gap-space-sm",
     md: "sm:gap-space-md",
+    mlg: "sm:gap-space-mlg",
     lg: "sm:gap-space-lg",
     xl: "sm:gap-space-xl",
     xxl: "sm:gap-space-xxl",
@@ -56,6 +63,7 @@ export const GAP_AT: Record<Breakpoint, Record<SpaceStep, string>> = {
     xs: "md:gap-space-xs",
     sm: "md:gap-space-sm",
     md: "md:gap-space-md",
+    mlg: "md:gap-space-mlg",
     lg: "md:gap-space-lg",
     xl: "md:gap-space-xl",
     xxl: "md:gap-space-xxl",
@@ -65,6 +73,7 @@ export const GAP_AT: Record<Breakpoint, Record<SpaceStep, string>> = {
     xs: "lg:gap-space-xs",
     sm: "lg:gap-space-sm",
     md: "lg:gap-space-md",
+    mlg: "lg:gap-space-mlg",
     lg: "lg:gap-space-lg",
     xl: "lg:gap-space-xl",
     xxl: "lg:gap-space-xxl",
@@ -74,6 +83,7 @@ export const GAP_AT: Record<Breakpoint, Record<SpaceStep, string>> = {
     xs: "xl:gap-space-xs",
     sm: "xl:gap-space-sm",
     md: "xl:gap-space-md",
+    mlg: "xl:gap-space-mlg",
     lg: "xl:gap-space-lg",
     xl: "xl:gap-space-xl",
     xxl: "xl:gap-space-xxl",
@@ -83,6 +93,7 @@ export const GAP_AT: Record<Breakpoint, Record<SpaceStep, string>> = {
     xs: "2xl:gap-space-xs",
     sm: "2xl:gap-space-sm",
     md: "2xl:gap-space-md",
+    mlg: "2xl:gap-space-mlg",
     lg: "2xl:gap-space-lg",
     xl: "2xl:gap-space-xl",
     xxl: "2xl:gap-space-xxl",
@@ -92,17 +103,16 @@ export const GAP_AT: Record<Breakpoint, Record<SpaceStep, string>> = {
 /**
  * Resolves a `space` prop to a class string. A bare `SpaceStep` maps to the
  * unprefixed utility. A per-breakpoint object layers breakpoint-prefixed
- * overrides on top of `fallback` (the family default) — `Breakpoint` has no
- * "base" member, so the unprefixed step always comes from `fallback`, never
- * from the object.
+ * overrides on top of `fallback` (the family default); its optional `base`
+ * key replaces `fallback` for the unprefixed step.
  */
 export function resolveSpace(
-  space: SpaceStep | Partial<Record<Breakpoint, SpaceStep>> | undefined,
+  space: ResponsiveSpace | undefined,
   fallback: SpaceStep,
 ): string {
   if (space === undefined) return GAP[fallback];
   if (typeof space === "string") return GAP[space];
-  const classes = [GAP[fallback]];
+  const classes = [GAP[space.base ?? fallback]];
   for (const bp of BREAKPOINTS) {
     const step = space[bp];
     if (step) classes.push(GAP_AT[bp][step]);
@@ -162,41 +172,46 @@ export const BLEED_RESET_AT: Record<Breakpoint, string> = {
   "2xl": "2xl:w-auto 2xl:mx-0",
 };
 
-/** Split's `ratio` (prose share) as a two-column `grid-template-columns`. */
+/**
+ * Split's `ratio` (prose share) as a two-column `grid-template-columns`.
+ * Tracks are `minmax(0, nfr)`, not bare `nfr`: a bare fr track refuses to
+ * shrink below its content's min-content size, so a long word or a replaced
+ * element would push the lanes off the drawn ratio.
+ */
 export type SplitRatio = "1/2" | "2/5" | "3/5";
 
 export const RATIO_COLS: Record<SplitRatio, string> = {
-  "1/2": "grid-cols-[1fr_1fr]",
-  "2/5": "grid-cols-[2fr_3fr]",
-  "3/5": "grid-cols-[3fr_2fr]",
+  "1/2": "grid-cols-[minmax(0,1fr)_minmax(0,1fr)]",
+  "2/5": "grid-cols-[minmax(0,2fr)_minmax(0,3fr)]",
+  "3/5": "grid-cols-[minmax(0,3fr)_minmax(0,2fr)]",
 };
 
 /** Breakpoint-prefixed version of `RATIO_COLS`, for Split's `collapseBelow`. */
 export const RATIO_COLS_AT: Record<Breakpoint, Record<SplitRatio, string>> = {
   sm: {
-    "1/2": "sm:grid-cols-[1fr_1fr]",
-    "2/5": "sm:grid-cols-[2fr_3fr]",
-    "3/5": "sm:grid-cols-[3fr_2fr]",
+    "1/2": "sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]",
+    "2/5": "sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]",
+    "3/5": "sm:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]",
   },
   md: {
-    "1/2": "md:grid-cols-[1fr_1fr]",
-    "2/5": "md:grid-cols-[2fr_3fr]",
-    "3/5": "md:grid-cols-[3fr_2fr]",
+    "1/2": "md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]",
+    "2/5": "md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]",
+    "3/5": "md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]",
   },
   lg: {
-    "1/2": "lg:grid-cols-[1fr_1fr]",
-    "2/5": "lg:grid-cols-[2fr_3fr]",
-    "3/5": "lg:grid-cols-[3fr_2fr]",
+    "1/2": "lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]",
+    "2/5": "lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]",
+    "3/5": "lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]",
   },
   xl: {
-    "1/2": "xl:grid-cols-[1fr_1fr]",
-    "2/5": "xl:grid-cols-[2fr_3fr]",
-    "3/5": "xl:grid-cols-[3fr_2fr]",
+    "1/2": "xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]",
+    "2/5": "xl:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]",
+    "3/5": "xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]",
   },
   "2xl": {
-    "1/2": "2xl:grid-cols-[1fr_1fr]",
-    "2/5": "2xl:grid-cols-[2fr_3fr]",
-    "3/5": "2xl:grid-cols-[3fr_2fr]",
+    "1/2": "2xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]",
+    "2/5": "2xl:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]",
+    "3/5": "2xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]",
   },
 };
 

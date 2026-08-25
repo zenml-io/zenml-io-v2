@@ -611,6 +611,7 @@ html { scroll-behavior: smooth; }
   --spacing-space-xs: 1rem; /* 16px */
   --spacing-space-sm: 1.5rem; /* 24px */
   --spacing-space-md: 2rem; /* 32px */
+  --spacing-space-mlg: 2.5rem; /* 40px */
   --spacing-space-lg: 3rem; /* 48px */
   --spacing-space-xl: 4rem; /* 64px */
   --spacing-space-xxl: 5rem; /* 80px */

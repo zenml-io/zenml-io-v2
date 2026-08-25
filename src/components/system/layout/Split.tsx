@@ -9,12 +9,13 @@
  * collapses to a single centred column at full width.
  */
 import type { ComponentChildren } from "preact";
-import type { Breakpoint, SpaceStep } from "../../../lib/section";
+import type { Breakpoint } from "../../../lib/section";
 import {
-  GAP,
   ORDER_1_AT,
   ORDER_2_AT,
   RATIO_COLS_AT,
+  type ResponsiveSpace,
+  resolveSpace,
   type SplitRatio,
 } from "./classMaps";
 
@@ -24,7 +25,7 @@ type AlignY = "top" | "center";
 interface Props {
   mediaSide?: MediaSide;
   ratio?: SplitRatio;
-  space?: SpaceStep;
+  space?: ResponsiveSpace;
   collapseBelow?: Breakpoint;
   mediaFirstWhenStacked?: boolean;
   alignY?: AlignY;
@@ -41,7 +42,7 @@ const ALIGN_Y_CLASS: Record<AlignY, string> = {
 export default function Split({
   mediaSide = "right",
   ratio = "1/2",
-  space = "lg",
+  space,
   collapseBelow = "lg",
   mediaFirstWhenStacked = false,
   alignY = "center",
@@ -72,7 +73,7 @@ export default function Split({
   const containerClasses = [
     "grid grid-cols-1",
     hasMedia ? RATIO_COLS_AT[collapseBelow][ratio] : "",
-    GAP[space],
+    resolveSpace(space, "lg"),
     hasMedia ? ALIGN_Y_CLASS[alignY] : "",
     className,
   ]

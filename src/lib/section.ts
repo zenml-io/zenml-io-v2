@@ -9,8 +9,16 @@
 /** Named background/foreground register a section renders in. Never a colour name. */
 export type Tone = "default" | "muted" | "inverted" | "brand";
 
-/** One of the 7 spacing tokens (`--spacing-space-xxs..xxl`). No raw spacing literals. */
-export type SpaceStep = "xxs" | "xs" | "sm" | "md" | "lg" | "xl" | "xxl";
+/** One of the 8 spacing tokens (`--spacing-space-xxs..xxl`). No raw spacing literals. */
+export type SpaceStep =
+  | "xxs"
+  | "xs"
+  | "sm"
+  | "md"
+  | "mlg"
+  | "lg"
+  | "xl"
+  | "xxl";
 
 /**
  * Tailwind's responsive prefixes, in ascending order. `--breakpoint-2xl` is

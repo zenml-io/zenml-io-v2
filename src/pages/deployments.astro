@@ -1,5 +1,6 @@
 ---
 import Button from "../components/Button.astro";
+import Split from "../components/system/layout/Split.astro";
 import SectionIntro from "../components/system/SectionIntro.astro";
 import { SECTION_INTRO_PRESETS } from "../components/system/sectionIntro.shared";
 /**
@@ -181,42 +182,42 @@ import {
     <section class="bg-white py-16 sm:py-20">
       <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-16">
         {DEPLOYMENTS_SCENARIOS.map((scenario, i) => (
-          <div class:list={[
-            "grid items-center gap-10 lg:grid-cols-2",
-            i % 2 === 1 && "lg:[direction:rtl] lg:[&>*]:[direction:ltr]",
-          ]} data-reveal>
-            <div>
-              <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
-                {scenario.title}
-              </h2>
-              <ul class="mt-4 space-y-2">
-                {scenario.bullets.map((bullet) => (
-                  <li class="flex items-start gap-2 text-gray-600">
-                    <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-zenml-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4" />
-                    </svg>
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-              <a
-                href={scenario.learnMoreHref}
-                target={scenario.learnMoreHref.startsWith("http") ? "_blank" : undefined}
-                rel={scenario.learnMoreHref.startsWith("http") ? "noopener noreferrer" : undefined}
-                class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-zenml-500 hover:text-zenml-600"
-              >
-                Learn More
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12" />
-                </svg>
-              </a>
-            </div>
-            <img
-              src={scenario.image.url}
-              alt={scenario.image.alt}
-              class="w-full rounded-md"
-              loading="lazy"
-            />
+          <div data-reveal>
+            <Split mediaSide={i % 2 === 1 ? "left" : "right"} space="mlg">
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
+                  {scenario.title}
+                </h2>
+                <ul class="mt-4 space-y-2">
+                  {scenario.bullets.map((bullet) => (
+                    <li class="flex items-start gap-2 text-gray-600">
+                      <svg class="mt-0.5 h-5 w-5 flex-shrink-0 text-zenml-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4" />
+                      </svg>
+                      {bullet}
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={scenario.learnMoreHref}
+                  target={scenario.learnMoreHref.startsWith("http") ? "_blank" : undefined}
+                  rel={scenario.learnMoreHref.startsWith("http") ? "noopener noreferrer" : undefined}
+                  class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-zenml-500 hover:text-zenml-600"
+                >
+                  Learn More
+                  <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5-5 5M6 12h12" />
+                  </svg>
+                </a>
+              </div>
+              <img
+                slot="media"
+                src={scenario.image.url}
+                alt={scenario.image.alt}
+                class="w-full rounded-md"
+                loading="lazy"
+              />
+            </Split>
           </div>
         ))}
       </div>
