@@ -6,8 +6,9 @@
  * LLMOps/MLOps database pages: a facet rail (Category single-select, Tags
  * multi-select) + search box + client-side pagination, fetching
  * /blog/search-index.json. The featured-post hero and the static
- * /blog/page/N pagination route are retired — see BlogHero.astro's and
- * CategoryBar.astro's doc comments, and public/_redirects for the 301s.
+ * /blog/page/N pagination route are retired (BlogHero and the shared
+ * Pagination component went with them) — see CategoryBar.astro's doc
+ * comment and public/_redirects for the 301s.
  *
  * Only main-feed posts (getMainFeedPosts — excludes drafts and the
  * "discovery" tag corpus) ever reach the rail's facets or results.

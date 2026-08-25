@@ -164,39 +164,11 @@ export async function resolveAuthor(
 }
 
 // ---------------------------------------------------------------------------
-// Pagination math
+// Pagination
 // ---------------------------------------------------------------------------
 
-/** Also the FilterIndex island's page size on /blog (#249). */
+/** The FilterIndex island's page size on /blog (#249). */
 export const PAGE_SIZE = 12;
-
-export function getPaginationItems(
-  currentPage: number,
-  totalPages: number,
-  maxVisible = 7,
-): Array<number | "ellipsis"> {
-  if (totalPages <= maxVisible) {
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
-  }
-
-  const items: Array<number | "ellipsis"> = [1];
-  const half = Math.floor((maxVisible - 2) / 2); // slots around current (excluding 1 and last)
-
-  let start = Math.max(2, currentPage - half);
-  let end = Math.min(totalPages - 1, currentPage + half);
-
-  // Adjust if near edges
-  if (currentPage - half <= 2) end = Math.min(totalPages - 1, maxVisible - 2);
-  if (currentPage + half >= totalPages - 1)
-    start = Math.max(2, totalPages - maxVisible + 3);
-
-  if (start > 2) items.push("ellipsis");
-  for (let i = start; i <= end; i++) items.push(i);
-  if (end < totalPages - 1) items.push("ellipsis");
-  items.push(totalPages);
-
-  return items;
-}
 
 // ---------------------------------------------------------------------------
 // Blog search index (used by /blog/search-index.json endpoint)
