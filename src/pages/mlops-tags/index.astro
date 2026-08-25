@@ -14,19 +14,23 @@ import {
   getAllPublishedMLOpsEntries,
   getMLOpsTagCounts,
 } from "../../lib/mlops";
+import { filterUsedTerms } from "../../lib/relatedIndex";
 
 const entries = await getAllPublishedMLOpsEntries();
 const usedCounts = await getMLOpsTagCounts(entries);
 const usedMap = new Map(usedCounts.map((tag) => [tag.slug, tag.count]));
 
 const allTags = await getCollection("mlops-tags");
-const tags: TaxonomyCount[] = allTags
-  .map((tag) => ({
-    slug: tag.data.slug,
-    name: tag.data.name,
-    count: usedMap.get(tag.data.slug) ?? 0,
-  }))
-  .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+const merged: TaxonomyCount[] = allTags.map((tag) => ({
+  slug: tag.data.slug,
+  name: tag.data.name,
+  count: usedMap.get(tag.data.slug) ?? 0,
+}));
+// No mlops tag is zero-entry today, but the [slug] route already skips them
+// at build — an unfiltered row here would link into a 404 the day one goes.
+const tags = filterUsedTerms(merged).sort(
+  (a, b) => b.count - a.count || a.name.localeCompare(b.name),
+);
 ---
 
 <BaseLayout

@@ -112,7 +112,9 @@ const relatedItems: RelatedRailItem[] = relatedPosts.map((post) => ({
 
 <aside class="w-full shrink-0 lg:w-64">
   <div class="sticky top-24 space-y-8">
-    <MetadataBlock items={metadataItems} labelTag="h3" space="md" />
+    {metadataItems.length > 0 && (
+      <MetadataBlock items={metadataItems} labelTag="h3" space="md" />
+    )}
 
     {/* Related Resources */}
     {relatedItems.length > 0 && (

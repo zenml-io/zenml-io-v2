@@ -25,13 +25,18 @@ interface Props {
   items: readonly TermHubCatalogItem[];
   /** e.g. "No integrations of this type yet." */
   emptyHeading: string;
+  /**
+   * Centre a row thinner than the 3-column breakpoint instead of leaving
+   * left-packed empty cells — the drawn cutover treatment. Off by default:
+   * the live routes render the plain grid at every count today, and four of
+   * them are thin.
+   */
+  centerThin?: boolean;
 }
 
-const { items, emptyHeading } = Astro.props;
+const { items, emptyHeading, centerThin = false } = Astro.props;
 
-// Fewer items than the lg (3-column) breakpoint's column count would leave
-// visible empty cells in a left-packed grid, so a thin row centers instead.
-const isThin = items.length > 0 && items.length < 3;
+const isThin = centerThin && items.length > 0 && items.length < 3;
 ---
 
 <div

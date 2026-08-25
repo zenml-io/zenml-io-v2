@@ -1,4 +1,5 @@
 ---
+import { CHIP_VARIANT_CLASS } from "../../lib/chipStyles";
 /**
  * RelatedRail — the items arrangement for a "related content" section
  * (issue #249). Static HTML, not an island.
@@ -23,7 +24,6 @@
  * off.
  */
 import BlogCard from "../blog/BlogCard.astro";
-import { CHIP_VARIANT_CLASS } from "./chipStyles";
 
 export interface RelatedRailMetaCardItem {
   kind: "meta-card";

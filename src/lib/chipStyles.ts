@@ -1,10 +1,12 @@
 /**
- * Shared chip color variants for the Wave 2 templates (issue #249).
+ * Shared chip color variants (issue #249).
  *
  * One source for the per-variant background/text classes so Badge (the chip
  * component) and RelatedRail's tag chips cannot drift apart. Only the colors
  * are shared — RelatedRail keeps its own base shape classes (radius/padding
- * differ between the live surfaces and are parity, not drift).
+ * differ between the live surfaces and are parity, not drift). Lives in
+ * lib/ because Badge is a base primitive: the base layer must not depend
+ * upward on the wave-scoped templates directory.
  */
 export type ChipVariant = "gray" | "primary" | "success" | "warning" | "blue";
 

@@ -10,10 +10,12 @@ import PageHeader from "../../components/templates/PageHeader.astro";
 import { TAXONOMY_INDEX_INTRO } from "../../components/templates/pageHeaderPresets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import type { TaxonomyCount } from "../../lib/blog";
-import { getAllPublishedPosts, getTagCounts } from "../../lib/blog";
+import { getMainFeedPosts, getTagCounts } from "../../lib/blog";
 import { filterUsedTerms } from "../../lib/relatedIndex";
 
-const allPosts = await getAllPublishedPosts();
+// Main-feed posts only: counts must match the TagCloud the blog shows,
+// and the internal discovery corpus must not surface on a public hub.
+const allPosts = await getMainFeedPosts();
 const usedCounts = await getTagCounts(allPosts);
 const usedMap = new Map(usedCounts.map((t) => [t.slug, t.count]));
 
