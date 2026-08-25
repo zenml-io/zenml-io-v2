@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
-import SectionIntro from "../components/system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../components/system/sectionIntro.shared";
 /**
  * Company page.
  *
@@ -9,7 +9,7 @@ import SectionIntro from "../components/system/SectionIntro.astro";
  * About ZenML: hero, team photo + about text, company values (5),
  * team member grid (CMS), and open positions.
  */
-import { SECTION_INTRO_PRESETS } from "../components/system/sectionIntro.shared";
+import PageHeader from "../components/templates/PageHeader.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import {
   COMPANY_ABOUT,
@@ -47,19 +47,17 @@ const SPEECH_BUBBLES_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill
 >
   <main>
     {/* Hero */}
-    <section class="bg-linear-to-t from-zenml-50 to-white border-b border-gray-200 pt-16 pb-12 sm:pt-24 sm:pb-16">
-      <SectionIntro
-        align="center"
-        eyebrow={COMPANY_HERO.eyebrow}
-        heading={COMPANY_HERO.headline}
-        headingLevel={1}
-        description={COMPANY_HERO.deck}
-        classOverrides={{
-          description: "text-lg text-gray-600",
-          ...SECTION_INTRO_PRESETS.pageHero,
-        }}
-      />
-    </section>
+    <PageHeader
+      tone="brand"
+      align="center"
+      eyebrow={COMPANY_HERO.eyebrow}
+      heading={COMPANY_HERO.headline}
+      description={COMPANY_HERO.deck}
+      classOverrides={{
+        description: "text-lg text-gray-600",
+        heading: SECTION_INTRO_PRESETS.pageHero.heading,
+      }}
+    />
 
     {/* About section — photo + text side-by-side */}
     <section class="bg-white py-space-lg sm:py-space-xl">

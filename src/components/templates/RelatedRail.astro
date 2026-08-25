@@ -1,0 +1,301 @@
+---
+import { CHIP_VARIANT_CLASS } from "../../lib/chipStyles";
+/**
+ * RelatedRail — the items arrangement for a "related content" section
+ * (issue #249). Static HTML, not an island.
+ *
+ * Owns only the items arrangement (grid or list) and each item's card
+ * shape — not the section wrapper, background, max-width, or heading. The
+ * six live sections this consolidates keep wildly different heading
+ * treatments (a centered `SectionIntro`, a plain left-aligned `<h2>`, a
+ * small-caps sidebar label) and section chrome, so parity keeps each site
+ * owning its own heading and wrapper exactly as before; this component
+ * starts at the grid/list itself.
+ *
+ * `items` is a discriminated union by card shape — every live surface uses
+ * exactly one shape per rail, so a caller passes a uniform array. There is
+ * no shared "value" prop bag: each shape only carries the fields it
+ * actually renders, and an absent optional field (a tag list, a tool icon,
+ * a summary) collapses rather than leaving a placeholder gap.
+ *
+ * `gridVariant` covers the three gap/breakpoint combinations the live
+ * sections actually use. `reveal` reproduces the scroll fade-in the two
+ * compare-page sections had — the other four never had it, so it defaults
+ * off.
+ */
+import BlogCard from "../blog/BlogCard.astro";
+
+export interface RelatedRailMetaCardItem {
+  kind: "meta-card";
+  href: string;
+  title: string;
+  /** `emphasis` marks the one part (typically the company/name) that renders bold; `capitalize` applies CSS `text-transform` rather than mutating the string — both are per-token style flags, not positional. */
+  meta?: readonly { text: string; emphasis?: boolean; capitalize?: boolean }[];
+  summary?: string;
+  tags?: readonly string[];
+  extraTagCount?: number;
+  tagVariant?: "blue" | "success";
+}
+
+export interface RelatedRailLogoLockupItem {
+  kind: "logo-lockup";
+  href: string;
+  title: string;
+  leftImage: { src: string; alt: string };
+  rightImage?: { src: string; alt: string };
+  rightInitial?: string;
+}
+
+export interface RelatedRailIconLinkItem {
+  kind: "icon-link";
+  href: string;
+  title: string;
+  icon?: { src: string; alt: string };
+}
+
+export interface RelatedRailBlogCardItem {
+  kind: "blog-card";
+  href: string;
+  title: string;
+  excerpt?: string;
+  image?: { url: string; alt?: string; width?: number; height?: number };
+  authorName?: string;
+  authorSlug?: string;
+  readingTime?: string;
+  categoryName?: string;
+  categorySlug?: string;
+}
+
+export interface RelatedRailThumbnailItem {
+  kind: "thumbnail";
+  href: string;
+  title: string;
+  imageUrl?: string;
+}
+
+export type RelatedRailItem =
+  | RelatedRailMetaCardItem
+  | RelatedRailLogoLockupItem
+  | RelatedRailIconLinkItem
+  | RelatedRailBlogCardItem
+  | RelatedRailThumbnailItem;
+
+export type RelatedRailGridVariant =
+  | "gap-sm-2col-sm"
+  | "gap-md-2col-sm"
+  | "gap-md-2col-md";
+
+interface Props {
+  items: readonly RelatedRailItem[];
+  gridVariant?: RelatedRailGridVariant;
+  reveal?: boolean;
+  class?: string;
+}
+
+const {
+  items,
+  gridVariant = "gap-sm-2col-sm",
+  reveal = false,
+  class: className,
+} = Astro.props;
+
+const isThumbnailList = items.length > 0 && items[0].kind === "thumbnail";
+
+const GRID_VARIANT_CLASS: Record<RelatedRailGridVariant, string> = {
+  "gap-sm-2col-sm": "grid gap-space-sm sm:grid-cols-2 lg:grid-cols-3",
+  "gap-md-2col-sm": "grid gap-space-md sm:grid-cols-2 lg:grid-cols-3",
+  "gap-md-2col-md": "grid gap-space-md md:grid-cols-2 lg:grid-cols-3",
+};
+---
+
+{
+  isThumbnailList ? (
+    <div class:list={["space-y-[0.75rem]", className]}>
+      {items.map((item) => (
+        <a href={item.href} class="group flex items-center gap-3">
+          {"imageUrl" in item && item.imageUrl && (
+            <img
+              src={item.imageUrl}
+              alt=""
+              aria-hidden="true"
+              width="56"
+              height="56"
+              class="h-14 w-14 shrink-0 rounded-lg object-cover"
+              loading="lazy"
+            />
+          )}
+          <span class="line-clamp-2 text-sm font-medium text-gray-700 group-hover:text-primary-600">
+            {item.title}
+          </span>
+        </a>
+      ))}
+    </div>
+  ) : (
+    <div class:list={[GRID_VARIANT_CLASS[gridVariant], reveal && "fade-in-element", className]}>
+      {items.map((item) => {
+        if (item.kind === "meta-card") {
+          return (
+            <a
+              href={item.href}
+              class="group flex flex-col rounded-lg border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md"
+            >
+              <h3 class="font-semibold text-gray-900 group-hover:text-primary-600 line-clamp-2">
+                {item.title}
+              </h3>
+              {item.meta && item.meta.length > 0 && (
+                <div class="mt-space-xxs flex flex-wrap items-center gap-2 text-xs text-gray-500">
+                  {/* Live parity: each separator is its own flex item, so a
+                      wrap leaves the dot at the line end (the drawn
+                      bind-to-following-token form lands at cutover). */}
+                  {item.meta.map((part, i) => (
+                    <>
+                      {i > 0 && <span aria-hidden="true">&middot;</span>}
+                      <span
+                        class:list={[
+                          part.emphasis && "font-medium text-gray-700",
+                          part.capitalize && "capitalize",
+                        ]}
+                      >
+                        {part.text}
+                      </span>
+                    </>
+                  ))}
+                </div>
+              )}
+              {item.summary && (
+                <p class="mt-space-xxs text-sm text-gray-600 line-clamp-2">{item.summary}</p>
+              )}
+              {item.tags && item.tags.length > 0 && (
+                <div class="mt-auto flex flex-wrap gap-1 pt-3">
+                  {item.tags.map((tag) => (
+                    <span class:list={["rounded-full px-2 py-0.5 text-xs", CHIP_VARIANT_CLASS[item.tagVariant ?? "blue"]]}>
+                      {tag}
+                    </span>
+                  ))}
+                  {(item.extraTagCount ?? 0) > 0 && (
+                    <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">
+                      +{item.extraTagCount}
+                    </span>
+                  )}
+                </div>
+              )}
+            </a>
+          );
+        }
+        if (item.kind === "logo-lockup") {
+          return (
+            <a
+              href={item.href}
+              class="group flex items-center gap-4 rounded-md border border-gray-200 bg-white p-5 transition-all hover:border-zenml-300 hover:shadow-md"
+            >
+              <div class="flex items-center gap-2 shrink-0">
+                <img src={item.leftImage.src} alt={item.leftImage.alt} width="60" height="60" class="rounded-lg" />
+                <span class="text-lg font-light text-gray-400">vs</span>
+                {item.rightImage ? (
+                  <img src={item.rightImage.src} alt={item.rightImage.alt} width="60" height="60" class="rounded-lg" />
+                ) : (
+                  <div class="flex h-[60px] w-[60px] items-center justify-center rounded-lg bg-gray-100 text-lg font-bold text-gray-400">
+                    {item.rightInitial}
+                  </div>
+                )}
+              </div>
+              <div class="min-w-0">
+                <p class="text-sm font-semibold text-gray-900 group-hover:text-zenml-600 transition-colors">
+                  {item.title}
+                </p>
+              </div>
+            </a>
+          );
+        }
+        if (item.kind === "icon-link") {
+          return (
+            <a
+              href={item.href}
+              class="group flex items-center gap-4 rounded-md border border-gray-200 bg-white p-5 shadow-sm transition hover:border-zenml-300 hover:shadow-md"
+            >
+              {item.icon && (
+                <img
+                  src={item.icon.src}
+                  alt={item.icon.alt}
+                  class="h-10 w-10 shrink-0 rounded-lg object-contain"
+                  loading="lazy"
+                />
+              )}
+              <span class="text-sm font-semibold text-gray-900 group-hover:text-zenml-500 transition">
+                {item.title}
+              </span>
+              <svg
+                class="ml-auto h-4 w-4 shrink-0 text-gray-400 transition group-hover:text-zenml-500 group-hover:translate-x-0.5"
+                viewBox="0 0 21 20"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4.667 10h11.666m0 0L10.5 4.167M16.333 10 10.5 15.833"
+                  stroke="currentColor"
+                  stroke-width="1.67"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </a>
+          );
+        }
+        if (item.kind === "blog-card") {
+          return (
+            <BlogCard
+              href={item.href}
+              title={item.title}
+              excerpt={item.excerpt}
+              image={item.image}
+              authorName={item.authorName}
+              authorSlug={item.authorSlug}
+              readingTime={item.readingTime}
+              categoryName={item.categoryName}
+              categorySlug={item.categorySlug}
+            />
+          );
+        }
+        return null;
+      })}
+    </div>
+  )
+}
+
+{
+  reveal && (
+    <>
+      {/* is:global — a page composing this rail also marks its own heading
+          wrapper `.fade-in-element` (the live sections revealed the heading
+          and the grid together), and that markup lives outside this
+          component's scope, so the rule can't stay cid-scoped to here. */}
+      <style is:global>
+        .fade-in-element {
+          opacity: 0;
+          transform: translateY(1rem);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .fade-in-element.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      </style>
+      <script>
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1 },
+        );
+        document.querySelectorAll(".fade-in-element").forEach((el) => {
+          observer.observe(el);
+        });
+      </script>
+    </>
+  )
+}

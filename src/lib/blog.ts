@@ -90,7 +90,9 @@ export function getRelatedPosts(
 // Taxonomy counts
 // ---------------------------------------------------------------------------
 
-export type TaxonomyCount = { slug: string; name: string; count: number };
+export type { TaxonomyCount } from "./relatedIndex";
+
+import type { TaxonomyCount } from "./relatedIndex";
 
 export async function getCategoryCounts(
   posts: BlogPost[],

@@ -6,11 +6,14 @@
  * and TagCloud at bottom.
  */
 import { getCollection, getEntry } from "astro:content";
-import BlogCard from "../../components/blog/BlogCard.astro";
 import CategoryBar from "../../components/blog/CategoryBar.astro";
 import TagCloud from "../../components/blog/TagCloud.astro";
-import EmptyState from "../../components/system/EmptyState.astro";
-import { EMPTY_STATE_PRESETS } from "../../components/system/emptyStateStyles";
+import PageHeader from "../../components/templates/PageHeader.astro";
+import {
+  TAXONOMY_BAND,
+  TAXONOMY_DETAIL_INTRO,
+} from "../../components/templates/pageHeaderPresets";
+import TermHubEditorial from "../../components/templates/TermHubEditorial.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   getCategoryCounts,
@@ -21,10 +24,14 @@ import {
 
 export async function getStaticPaths() {
   const categories = await getCollection("categories");
-  return categories.map((cat) => ({
-    params: { slug: cat.data.slug },
-    props: { category: cat },
-  }));
+  const allPosts = await getCollection("blog", ({ data }) => !data.draft);
+  const usedSlugs = new Set(allPosts.map((p) => p.data.category));
+  return categories
+    .filter((cat) => usedSlugs.has(cat.data.slug))
+    .map((cat) => ({
+      params: { slug: cat.data.slug },
+      props: { category: cat },
+    }));
 }
 
 const { category } = Astro.props;
@@ -71,48 +78,35 @@ for (const post of allPosts) {
   <CategoryBar categories={categories} activeCategory={category.data.slug} backLink />
 
   {/* Category header — gradient section */}
-  <section class="bg-linear-to-t from-primary-50 to-white border-b border-gray-200">
-    <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900">{category.data.name}</h1>
-      <p class="mt-2 text-base text-gray-600">
-        {allPosts.length} {allPosts.length === 1 ? "post" : "posts"} in this category
-      </p>
-    </div>
-  </section>
+  <PageHeader
+    tone="brand"
+    {...TAXONOMY_BAND}
+    heading={category.data.name}
+    description={`${allPosts.length} ${allPosts.length === 1 ? "post" : "posts"} in this category`}
+    classOverrides={TAXONOMY_DETAIL_INTRO}
+  />
 
   <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 lg:px-8">
-    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-      {allPosts.map((post) => {
+    <TermHubEditorial
+      posts={allPosts.map((post) => {
         const author = authorMap.get(post.data.author || "");
         const cat = categoryMap.get(post.data.category || "");
-        return (
-          <BlogCard
-            href={`/blog/${post.data.slug}`}
-            title={post.data.title}
-            excerpt={post.data.seo?.description}
-            image={post.data.mainImage}
-            authorName={author?.name}
-            authorSlug={author?.slug}
-            authorAvatar={author?.avatar}
-            readingTime={post.data.readingTime}
-            publishedDate={post.data.date}
-            categoryName={cat?.name}
-            categorySlug={cat?.slug}
-          />
-        );
+        return {
+          href: `/blog/${post.data.slug}`,
+          title: post.data.title,
+          excerpt: post.data.seo?.description,
+          image: post.data.mainImage,
+          authorName: author?.name,
+          authorSlug: author?.slug,
+          authorAvatar: author?.avatar,
+          readingTime: post.data.readingTime,
+          publishedDate: post.data.date,
+          categoryName: cat?.name,
+          categorySlug: cat?.slug,
+        };
       })}
-    </div>
-
-    {allPosts.length === 0 && (
-      <EmptyState
-        heading="No posts in this category yet."
-        reserveHeight={false}
-        classOverrides={{
-          ...EMPTY_STATE_PRESETS.bareList,
-          heading: "text-center text-gray-500",
-        }}
-      />
-    )}
+      emptyHeading="No posts in this category yet."
+    />
   </div>
 
   {/* Footer tag cloud */}

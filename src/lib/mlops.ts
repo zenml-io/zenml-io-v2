@@ -4,6 +4,15 @@
  */
 import type { CollectionEntry } from "astro:content";
 import { getCollection, getEntry } from "astro:content";
+import {
+  buildRelatedIndex as buildRelatedIndexGeneric,
+  type RelatedIndex as GenericRelatedIndex,
+  getRelatedFromIndex as getRelatedFromIndexGeneric,
+  type RelatedIndexConfig,
+  type TaxonomyCount,
+} from "./relatedIndex";
+
+export type { TaxonomyCount };
 
 export type MLOpsEntry = CollectionEntry<"mlops-database">;
 
@@ -60,50 +69,25 @@ export function deriveMLOpsAddedDate(data: MLOpsProvenance): Date | null {
 // Related entries (by shared tags, industry, company)
 // ---------------------------------------------------------------------------
 
-export interface MLOpsRelatedIndex {
-  byTag: Map<string, Set<string>>;
-  byIndustry: Map<string, Set<string>>;
-  byCompany: Map<string, Set<string>>;
-  entryMap: Map<string, MLOpsEntry>;
-}
+/**
+ * The index build + top-k lookup is shared with `llmops.ts` via
+ * `./relatedIndex` — both database libs scored an identical +3 tag / +2
+ * industry / +1 company shape independently of each other. This file
+ * supplies only the field accessors for `MLOpsEntry`.
+ */
+export type MLOpsRelatedIndex = GenericRelatedIndex<MLOpsEntry>;
+
+const RELATED_CONFIG: RelatedIndexConfig<MLOpsEntry> = {
+  slug: (e) => e.data.slug,
+  tags: (e) => e.data.mlopsTags,
+  industry: (e) => e.data.industryTags,
+  company: (e) => e.data.company,
+};
 
 export function buildMLOpsRelatedIndex(
   entries: MLOpsEntry[],
 ): MLOpsRelatedIndex {
-  const byTag = new Map<string, Set<string>>();
-  const byIndustry = new Map<string, Set<string>>();
-  const byCompany = new Map<string, Set<string>>();
-  const entryMap = new Map<string, MLOpsEntry>();
-
-  for (const entry of entries) {
-    const slug = entry.data.slug;
-    entryMap.set(slug, entry);
-
-    for (const tag of entry.data.mlopsTags) {
-      let set = byTag.get(tag);
-      if (!set) {
-        set = new Set();
-        byTag.set(tag, set);
-      }
-      set.add(slug);
-    }
-
-    let industrySet = byIndustry.get(entry.data.industryTags);
-    if (!industrySet) {
-      industrySet = new Set();
-      byIndustry.set(entry.data.industryTags, industrySet);
-    }
-    industrySet.add(slug);
-
-    let companySet = byCompany.get(entry.data.company);
-    if (!companySet) {
-      companySet = new Set();
-      byCompany.set(entry.data.company, companySet);
-    }
-    companySet.add(slug);
-  }
-
-  return { byTag, byIndustry, byCompany, entryMap };
+  return buildRelatedIndexGeneric(entries, RELATED_CONFIG);
 }
 
 export function getMLOpsRelatedFromIndex(
@@ -111,52 +95,12 @@ export function getMLOpsRelatedFromIndex(
   current: MLOpsEntry,
   limit = 3,
 ): MLOpsEntry[] {
-  const currentSlug = current.data.slug;
-  const scores = new Map<string, number>();
-
-  for (const tag of current.data.mlopsTags) {
-    const peers = index.byTag.get(tag);
-    if (!peers) continue;
-    for (const slug of peers) {
-      if (slug !== currentSlug) scores.set(slug, (scores.get(slug) || 0) + 3);
-    }
-  }
-
-  const industryPeers = index.byIndustry.get(current.data.industryTags);
-  if (industryPeers) {
-    for (const slug of industryPeers) {
-      if (slug !== currentSlug) scores.set(slug, (scores.get(slug) || 0) + 2);
-    }
-  }
-
-  const companyPeers = index.byCompany.get(current.data.company);
-  if (companyPeers) {
-    for (const slug of companyPeers) {
-      if (slug !== currentSlug) scores.set(slug, (scores.get(slug) || 0) + 1);
-    }
-  }
-
-  const topK: { slug: string; score: number }[] = [];
-  for (const [slug, score] of scores) {
-    if (topK.length < limit) {
-      topK.push({ slug, score });
-      if (topK.length === limit) topK.sort((a, b) => b.score - a.score);
-    } else if (score > topK[limit - 1].score) {
-      topK[limit - 1] = { slug, score };
-      topK.sort((a, b) => b.score - a.score);
-    }
-  }
-
-  return topK
-    .map(({ slug }) => index.entryMap.get(slug))
-    .filter((entry): entry is MLOpsEntry => Boolean(entry));
+  return getRelatedFromIndexGeneric(index, current, RELATED_CONFIG, limit);
 }
 
 // ---------------------------------------------------------------------------
 // Taxonomy counts
 // ---------------------------------------------------------------------------
-
-export type TaxonomyCount = { slug: string; name: string; count: number };
 
 export async function getMLOpsTagCounts(
   entries: MLOpsEntry[],

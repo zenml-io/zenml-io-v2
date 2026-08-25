@@ -1,0 +1,66 @@
+---
+/**
+ * Blog authors index page.
+ *
+ * Lists all blog authors with post counts, sorted by popularity.
+ * Route: /author
+ */
+import { getCollection } from "astro:content";
+import PageHeader from "../../components/templates/PageHeader.astro";
+import { TAXONOMY_INDEX_INTRO } from "../../components/templates/pageHeaderPresets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getAllPublishedPosts } from "../../lib/blog";
+import { filterUsedTerms } from "../../lib/relatedIndex";
+
+const allPosts = await getAllPublishedPosts();
+const countMap = new Map<string, number>();
+for (const post of allPosts) {
+  if (post.data.author) {
+    countMap.set(post.data.author, (countMap.get(post.data.author) ?? 0) + 1);
+  }
+}
+
+// Merge all taxonomy terms with used counts, then drop zero-count authors
+// (#249) — a zero-count author has no [slug] page to link to any more.
+const allAuthors = await getCollection("authors");
+const merged = allAuthors.map((a) => ({
+  slug: a.data.slug,
+  name: a.data.name,
+  count: countMap.get(a.data.slug) ?? 0,
+}));
+const authors = filterUsedTerms(merged).sort(
+  (a, b) => b.count - a.count || a.name.localeCompare(b.name),
+);
+---
+
+<BaseLayout
+  title="Blog Authors - ZenML"
+  description="Browse all authors who have written for the ZenML blog."
+  surface="ml"
+>
+  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+    <PageHeader
+      class="mb-10"
+      heading="Blog Authors"
+      description={`${authors.length} ${authors.length === 1 ? "author" : "authors"} on the blog`}
+      backLinks={[{ href: "/blog", label: "Back to the blog" }]}
+      classOverrides={TAXONOMY_INDEX_INTRO}
+    />
+
+    <nav aria-label="All blog authors">
+      <ul class="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
+        {authors.map((a) => (
+          <li>
+            <a
+              href={`/author/${a.slug}`}
+              class="flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50"
+            >
+              <span class="font-medium text-gray-900">{a.name}</span>
+              <span class="text-xs tabular-nums text-gray-400">{a.count}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</BaseLayout>

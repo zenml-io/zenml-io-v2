@@ -6,26 +6,31 @@
  * Route: /mlops-tags
  */
 import { getCollection } from "astro:content";
-import SectionIntro from "../../components/system/SectionIntro.astro";
+import PageHeader from "../../components/templates/PageHeader.astro";
+import { TAXONOMY_INDEX_INTRO } from "../../components/templates/pageHeaderPresets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import type { TaxonomyCount } from "../../lib/mlops";
 import {
   getAllPublishedMLOpsEntries,
   getMLOpsTagCounts,
 } from "../../lib/mlops";
+import { filterUsedTerms } from "../../lib/relatedIndex";
 
 const entries = await getAllPublishedMLOpsEntries();
 const usedCounts = await getMLOpsTagCounts(entries);
 const usedMap = new Map(usedCounts.map((tag) => [tag.slug, tag.count]));
 
 const allTags = await getCollection("mlops-tags");
-const tags: TaxonomyCount[] = allTags
-  .map((tag) => ({
-    slug: tag.data.slug,
-    name: tag.data.name,
-    count: usedMap.get(tag.data.slug) ?? 0,
-  }))
-  .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+const merged: TaxonomyCount[] = allTags.map((tag) => ({
+  slug: tag.data.slug,
+  name: tag.data.name,
+  count: usedMap.get(tag.data.slug) ?? 0,
+}));
+// No mlops tag is zero-entry today, but the [slug] route already skips them
+// at build — an unfiltered row here would link into a 404 the day one goes.
+const tags = filterUsedTerms(merged).sort(
+  (a, b) => b.count - a.count || a.name.localeCompare(b.name),
+);
 ---
 
 <BaseLayout
@@ -34,24 +39,18 @@ const tags: TaxonomyCount[] = allTags
   surface="ml"
 >
   <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-10">
-      <SectionIntro
-        eyebrow="Machine Learning Operations"
-        heading="MLOps Tags"
-        headingLevel={1}
-        description={`${tags.length} ${tags.length === 1 ? "tag" : "tags"} in the database`}
-        classOverrides={{
-          eyebrow: "text-sm font-semibold uppercase tracking-wider text-success-700",
-          heading: "text-4xl font-bold tracking-tight text-gray-900",
-          headingSpacing: "mt-3",
-          description: "text-lg text-gray-600",
-          descriptionSpacing: "mt-3",
-        }}
-      />
-      <a href="/mlops-database" class="mt-2 inline-block text-sm text-primary-600 hover:text-primary-700">
-        &larr; Back to MLOps Database
-      </a>
-    </header>
+    <PageHeader
+      class="mb-10"
+      eyebrow="Machine Learning Operations"
+      heading="MLOps Tags"
+      description={`${tags.length} ${tags.length === 1 ? "tag" : "tags"} in the database`}
+      backLinks={[{ href: "/mlops-database", label: "Back to MLOps Database" }]}
+      classOverrides={{
+        ...TAXONOMY_INDEX_INTRO,
+        eyebrow: "text-sm font-semibold uppercase tracking-wider text-success-700",
+        headingSpacing: "mt-3",
+      }}
+    />
 
     <nav aria-label="All MLOps tags">
       <ul class="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">

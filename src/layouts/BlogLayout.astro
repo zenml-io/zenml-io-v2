@@ -1,11 +1,13 @@
 ---
 import BlogTOC from "../components/BlogTOC.astro";
 import Button from "../components/Button.astro";
-import BlogCard from "../components/blog/BlogCard.astro";
 import CategoryBar from "../components/blog/CategoryBar.astro";
 import Image from "../components/Image.astro";
 import FeaturesHubCTA from "../components/sections/FeaturesHubCTA.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
+import RelatedRail, {
+  type RelatedRailItem,
+} from "../components/templates/RelatedRail.astro";
 import type { Surface } from "../lib/analytics";
 import { BLOG_FINAL_CTA, BLOG_SIDEBAR_CTA } from "../lib/blog";
 import { SITE_URL } from "../lib/constants";
@@ -107,6 +109,19 @@ const {
 
 // Display title: prefer postTitle (the actual post title), fall back to SEO title
 const displayTitle = postTitle || seoProps.title;
+
+const relatedRailItems: RelatedRailItem[] = relatedPosts.map((rp) => ({
+  kind: "blog-card",
+  href: rp.href,
+  title: rp.title,
+  excerpt: rp.excerpt,
+  image: rp.image,
+  authorName: rp.authorName,
+  authorSlug: rp.authorSlug,
+  readingTime: rp.readingTime,
+  categoryName: rp.categoryName,
+  categorySlug: rp.categorySlug,
+}));
 
 // H2-only TOC — consistent with BlogTOC.astro desktop sidebar
 const tocHeadings = headings.filter((h) => h.depth === 2);
@@ -384,25 +399,11 @@ const articleJsonLd = {
   />
 
   {/* Continue Reading — related posts (full width, outside the article grid) */}
-  {relatedPosts.length > 0 && (
+  {relatedRailItems.length > 0 && (
     <div class="border-t border-gray-200 bg-gray-50">
       <div class="mx-auto max-w-[1440px] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <h2 class="mb-8 text-2xl font-bold text-gray-900">Continue Reading</h2>
-        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {relatedPosts.map((rp) => (
-            <BlogCard
-              href={rp.href}
-              title={rp.title}
-              excerpt={rp.excerpt}
-              image={rp.image}
-              authorName={rp.authorName}
-              authorSlug={rp.authorSlug}
-              readingTime={rp.readingTime}
-              categoryName={rp.categoryName}
-              categorySlug={rp.categorySlug}
-            />
-          ))}
-        </div>
+        <RelatedRail items={relatedRailItems} gridVariant="gap-md-2col-md" />
       </div>
     </div>
   )}

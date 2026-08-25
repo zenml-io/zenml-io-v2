@@ -9,6 +9,7 @@
  */
 import { getCollection } from "astro:content";
 import Button from "../../components/Button.astro";
+import PageHeader from "../../components/templates/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 const allProjects = (
@@ -24,15 +25,16 @@ const allProjects = (
   {/* Hero */}
   <div class="py-16 sm:py-20">
     <div class="mx-auto max-w-3xl px-4 text-center sm:px-6">
-      <span class="inline-flex items-center rounded-full bg-zenml-50 px-3 py-0.5 text-sm font-semibold text-zenml-500">
-        ZenML Projects
-      </span>
-      <h1 class="mt-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl sm:leading-[1.2]" style="letter-spacing: -0.05rem">
-        A home for machine learning projects built using ZenML and various integrations
-      </h1>
-      <p class="mt-4 text-lg leading-relaxed text-gray-600">
-        Browse our projects for everything you need to replicate a production-grade use case — demo, video, blog, and code.
-      </p>
+      <PageHeader
+        eyebrow="ZenML Projects"
+        heading="A home for machine learning projects built using ZenML and various integrations"
+        description="Browse our projects for everything you need to replicate a production-grade use case — demo, video, blog, and code."
+        classOverrides={{
+          eyebrow: "inline-flex items-center rounded-full bg-zenml-50 px-3 py-0.5 text-sm font-semibold text-zenml-500",
+          heading: "text-4xl font-bold text-gray-900 sm:text-5xl sm:leading-[1.2] tracking-[-0.05rem]",
+          headingSpacing: "mt-4",
+        }}
+      />
     </div>
   </div>
 

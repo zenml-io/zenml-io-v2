@@ -1,0 +1,87 @@
+---
+/**
+ * StackedList — a vertical list of linked rows (issue #249).
+ *
+ * The row primitive behind `term-hub.entry-index` (not built this wave —
+ * no live page consumes `StackedList` yet, so it ships as a standalone
+ * primitive exercised only on `/styleguide`). Item shape is deliberately
+ * generic (title, meta parts, href, trailing count) so that consumer can
+ * pass rows without reshaping them: a row with no `meta` renders no meta
+ * line, a row with no `trailingCount` renders no count lane — there is no
+ * `showMeta`/`showCount` boolean.
+ *
+ * `meta` parts join with a middot that binds as the first child of the
+ * token it introduces — the first part never gets a leading separator.
+ * `trailingCount` renders comma-formatted in a fixed 44px right-aligned
+ * lane, matching the count convention used by the facet rails this list
+ * shares a codebase with.
+ *
+ * Row spacing comes from each row's own vertical padding (`density`) plus
+ * the hairline divider between rows, not a `gap` — a `<ul>` of `<li>` rows
+ * isn't a flex/grid container, so there is nothing for a `SpaceStep` gap
+ * token to apply to here.
+ */
+export interface StackedListItem {
+  title: string;
+  href: string;
+  meta?: readonly string[];
+  trailingCount?: number;
+}
+
+interface Props {
+  items: readonly StackedListItem[];
+  density?: "compact" | "comfortable";
+  /** Set when this list renders inside `.prose` body copy, so it can drop the border rule it otherwise draws for itself. */
+  inProse?: boolean;
+  class?: string;
+}
+
+const {
+  items,
+  density = "comfortable",
+  inProse = false,
+  class: className,
+} = Astro.props;
+
+const rowPadding = density === "compact" ? "py-space-xxs" : "py-space-xs";
+---
+
+<ul
+  class:list={[
+    "list-none",
+    !inProse && "divide-y divide-gray-200 border-t border-b border-gray-200",
+    className,
+  ]}
+>
+  {
+    items.map((item) => (
+      <li class={rowPadding}>
+        <a
+          href={item.href}
+          class="group flex items-center justify-between gap-space-xs"
+        >
+          <span class="min-w-0 flex-1">
+            <span class="block truncate text-sm font-medium text-gray-900 group-hover:text-primary-600">
+              {item.title}
+            </span>
+            {item.meta && item.meta.length > 0 && (
+              <span class="mt-space-xxs flex flex-wrap items-center gap-1 text-xs text-gray-500">
+                {item.meta.map((part, i) => (
+                  <span>
+                    {i > 0 && <span aria-hidden="true">&middot; </span>}
+                    {part}
+                  </span>
+                ))}
+              </span>
+            )}
+          </span>
+          {item.trailingCount !== undefined && (
+            <span class="w-11 shrink-0 text-right text-sm text-gray-400 tabular-nums">
+              {item.trailingCount.toLocaleString("en-US")}
+            </span>
+          )}
+        </a>
+      </li>
+    ))
+  }
+</ul>
