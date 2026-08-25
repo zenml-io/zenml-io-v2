@@ -23,6 +23,7 @@ import type { SVGAttributes } from "preact";
 import { useState } from "preact/hooks";
 import { cn } from "../../../lib/utils";
 import { copyToClipboard } from "../../../scripts/kitaru/clipboard";
+import SectionIntro from "../../system/SectionIntro";
 import {
   BraintrustIcon,
   KitaruIcon,
@@ -36,7 +37,7 @@ import {
   VercelIcon,
 } from "./brand-icons";
 import { type CodeLine, renderCodeLines } from "./code-tokens";
-import { Eyebrow, Lede, Section, SectionTitle } from "./primitives";
+import { Section } from "./primitives";
 import { Reveal } from "./Reveal";
 
 /** Plus-in-a-circle — "bring your own format" is the only tab without a
@@ -834,16 +835,23 @@ export function TwoDoors() {
   return (
     <Section id="two-doors">
       <Reveal className="max-w-3xl">
-        <Eyebrow>Start where you are</Eyebrow>
-        <SectionTitle className="mt-5">
-          Already have traces? Good.{" "}
-          <span className="text-ember">Starting fresh? Also good.</span>
-        </SectionTitle>
-        <Lede className="mt-5">
-          Import what your current tools already collected, or wrap your agent
-          in one line and record new runs. Both roads end at the same thing:
-          sessions you can replay.
-        </Lede>
+        <SectionIntro
+          eyebrow="Start where you are"
+          heading="Already have traces? Good. Starting fresh? Also good."
+          emphasis="Starting fresh? Also good."
+          description="Import what your current tools already collected, or wrap your agent in one line and record new runs. Both roads end at the same thing: sessions you can replay."
+          classOverrides={{
+            eyebrow:
+              "inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase",
+            heading:
+              "text-balance text-3xl leading-[1.1] font-medium tracking-[-0.02em] md:text-[2.75rem]",
+            headingSpacing: "mt-5",
+            emphasis: "text-ember",
+            description:
+              "max-w-2xl text-base leading-relaxed text-ink-soft md:text-lg",
+            descriptionSpacing: "mt-5",
+          }}
+        />
       </Reveal>
 
       <div className="mt-12 grid grid-cols-1 gap-7 lg:grid-cols-2">
@@ -858,9 +866,14 @@ export function TwoDoors() {
                 no code changes
               </span>
             </div>
-            <h3 className="mt-2 font-heading text-[21px] font-semibold text-ink">
-              Have traces? Import them.
-            </h3>
+            <SectionIntro
+              heading="Have traces? Import them."
+              headingLevel={3}
+              classOverrides={{
+                heading: "font-heading text-[21px] font-semibold text-ink",
+                headingSpacing: "mt-2",
+              }}
+            />
 
             <DoorTabs
               rows={IMPORTER_ROWS}
@@ -969,9 +982,14 @@ export function TwoDoors() {
               {/* key resets the "copied" check when the tab (and command) changes */}
               <InstallCommand key={framework.id} command={framework.install} />
             </div>
-            <h3 className="mt-2 font-heading text-[21px] font-semibold text-ink">
-              Have an agent? Wrap it.
-            </h3>
+            <SectionIntro
+              heading="Have an agent? Wrap it."
+              headingLevel={3}
+              classOverrides={{
+                heading: "font-heading text-[21px] font-semibold text-ink",
+                headingSpacing: "mt-2",
+              }}
+            />
 
             <DoorTabs
               rows={FRAMEWORK_ROWS}

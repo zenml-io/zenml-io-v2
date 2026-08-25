@@ -9,6 +9,7 @@
  * Used on /pricing, /pro, and other marketing pages.
  */
 import type { FaqData } from "../../lib/marketingPageTypes";
+import SectionIntro from "../system/SectionIntro.astro";
 
 interface Props extends FaqData {}
 
@@ -18,19 +19,17 @@ const { eyebrow, headline, subheadline, items, slackCta } = Astro.props;
 <section class="bg-white py-16 sm:py-24">
   <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
     {/* Header */}
-    <div class="text-center">
-      {eyebrow && (
-        <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
-          {eyebrow}
-        </p>
-      )}
-      <h2 class="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
-        {headline}
-      </h2>
-      {subheadline && (
-        <p class="mt-2 text-lg text-gray-600">{subheadline}</p>
-      )}
-    </div>
+    <SectionIntro
+      align="center"
+      eyebrow={eyebrow}
+      heading={headline}
+      description={subheadline}
+      classOverrides={{
+        description: "text-lg text-gray-600",
+        descriptionSpacing: "mt-2",
+        wrap: "text-center",
+      }}
+    />
 
     {/* Accordion items */}
     <div class="mt-12 divide-y divide-gray-200 border-t border-gray-200">

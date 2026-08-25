@@ -1,4 +1,5 @@
 ---
+import SectionIntro from "../system/SectionIntro.astro";
 /**
  * VsRelatedCompareGrid — grid of related tool-specific comparisons.
  *
@@ -6,6 +7,8 @@
  * The items are passed in from the page template which filters
  * the compare collection by compareCategory.
  */
+import { SECTION_INTRO_PRESETS } from "../system/sectionIntro.shared";
+
 interface Props {
   eyebrow?: string;
   headline?: string;
@@ -22,15 +25,21 @@ const { eyebrow, headline, items } = Astro.props;
 {items.length > 0 && (
   <section class="bg-gray-50 py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      {eyebrow && (
-        <span class="text-xs font-semibold uppercase tracking-wider text-zenml-500">
-          {eyebrow}
-        </span>
-      )}
-      {headline && (
-        <h2 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
-          {headline}
-        </h2>
+      {headline ? (
+        <SectionIntro
+          eyebrow={eyebrow}
+          heading={headline}
+          classOverrides={{
+            eyebrow: SECTION_INTRO_PRESETS.cardEyebrow,
+            heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
+          }}
+        />
+      ) : (
+        eyebrow && (
+          <span class="text-xs font-semibold uppercase tracking-wider text-zenml-500">
+            {eyebrow}
+          </span>
+        )
       )}
       <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (

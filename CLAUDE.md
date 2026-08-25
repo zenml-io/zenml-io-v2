@@ -279,11 +279,12 @@ Important rules:
 ### Core Architecture
 - `astro.config.ts` — Astro config (static output, Cloudflare, Preact, sitemap, Shiki)
 - `src/content.config.ts` — Content collection schemas (Zod). Reads `categories/`, `tags/`, etc. at config eval time to build slug-reference validation sets — adding a new category/tag file requires a dev-server restart.
-- `src/styles/global.css` — Tailwind v4 `@theme` block + design tokens; `:root` defaults are Kitaru, `[data-app="zenml"]` overrides flip to ZenML, `[data-app="zenml-next"]` holds the 2026 rebrand type roles + palette (in progress, #246)
+- `src/styles/global.css` — Tailwind v4 `@theme` block + design tokens; `:root` defaults are Kitaru, `[data-app="zenml"]` overrides flip to ZenML, `[data-app="zenml-next"]` holds the 2026 rebrand type roles + palette + type-scale ladder (in progress, #246). Also home of the `[data-tone]` section-tone layer (#248): tone blocks route only `var()`s the brand scopes own — never a hex — and there is deliberately no `section[data-tone]` base rule (the background shorthand would reset bg-image utilities); tone consumers set explicit `bg-[var(--section-surface)]`-style utilities
+- `src/components/system/` — the substrate primitives (#248): `SectionIntro`, `Breadcrumb` (visual + BreadcrumbList JSON-LD from one prop list), `EmptyState`, and `layout/` (`Stack`/`Inline`/`Split`/`Bleed`/`Grid`). Contract: absence collapses (no `show*` booleans), spacing via `SpaceStep` tokens only, `Split` emits prose-first DOM. Components consumed by islands ship an `.astro` + `.tsx` twin kept in lockstep via a shared module. `classOverrides` on SectionIntro/EmptyState is a migration-parity escape hatch — new code must not pass it. Contract types live in `src/lib/section.ts`
 - `src/pages/styleguide.astro` — generated design-system reference (public-but-unlisted, noindex, no nav/sitemap links); renders tokens/type/scale/registry/rules derived at build time — never hand-write design values into it
 - `src/lib/styleguide.ts` — styleguide derivation layer: parses `global.css` tokens, computes WCAG contrast for declared pairs (`DECLARED_PAIRS`/`CHROME_PAIRS`)
 - `src/lib/designRules.ts` — parses DESIGN.md rule sections for the styleguide's Rules section
-- `src/components/styleguide/TemplateStage.astro` — live render stage for built registry entries on /styleguide
+- `src/components/styleguide/TemplateStage.astro` — live render stage for built registry entries on /styleguide; renders each entry with its registry `demoProps` (spread) and `demoSlots` (static demo HTML for slot-composed primitives); the glob covers `src/components/templates/**` and `src/components/system/**`
 - `src/styles/kitaru-compat.css` — Kitaru OKLch tokens scoped to `[data-app="kitaru"]`
 - `src/lib/constants.ts` — `SITE_URL` and shared constants
 - `src/lib/seo.ts` — SEO contract (`SEOProps`, `resolveSeo()`, `buildCanonical()`)

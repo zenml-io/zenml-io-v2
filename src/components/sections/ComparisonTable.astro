@@ -7,6 +7,8 @@
  * Used on /open-source-vs-pro.
  */
 import type { ComparisonTableData } from "../../lib/marketingPageTypes";
+import SectionIntro from "../system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../system/sectionIntro.shared";
 
 interface Props extends ComparisonTableData {}
 
@@ -19,17 +21,16 @@ const hasIcons = rows.some((r) => r.icon);
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     {/* Header */}
     <div class="mb-10 text-center">
-      {eyebrow && (
-        <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
-          {eyebrow}
-        </p>
-      )}
-      <h2 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
-        {headline}
-      </h2>
-      {subheadline && (
-        <p class="mt-2 text-lg text-gray-600">{subheadline}</p>
-      )}
+      <SectionIntro
+        eyebrow={eyebrow}
+        heading={headline}
+        description={subheadline}
+        classOverrides={{
+          heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
+          description: "text-lg text-gray-600",
+          descriptionSpacing: "mt-2",
+        }}
+      />
     </div>
 
     {/* Table wrapper — horizontal scroll on mobile */}

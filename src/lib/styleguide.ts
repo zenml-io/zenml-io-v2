@@ -2,7 +2,8 @@
  * styleguide.ts — build-time derivation layer for /styleguide (issue #266).
  *
  * Everything this module exports is *parsed*, not written down: colors, fonts,
- * spacing, and radii come from `src/styles/global.css`; contrast ratios are
+ * spacing, radii, and the type-scale rungs (`--text-*`/`--leading-*`/
+ * `--tracking-*`) come from `src/styles/global.css`; contrast ratios are
  * computed with `culori`; template status comes from
  * `src/lib/templates/registry.ts`. The page that renders `/styleguide` must
  * never hardcode a hex, a px value, a radius, or a family name where this
@@ -57,6 +58,15 @@ export interface StyleguideData {
   fonts: TokenRow[];
   spacing: TokenRow[];
   radii: TokenRow[];
+  /**
+   * `--text-*` / `--leading-*` / `--tracking-*` tokens (global.css section
+   * 2b, issue #248) — the rebrand's fluid type-scale rungs and their
+   * tracking bindings. Kept as one flat list, same shape as the other token
+   * groups, so consumers can filter by name prefix (`text-`, `leading-`,
+   * `tracking-`) themselves rather than this module pre-deciding a rung
+   * taxonomy that belongs to the page, not the parser.
+   */
+  typeScale: TokenRow[];
   contrast: ContrastRow[];
   chrome: ContrastRow[];
   registry: ReadonlyArray<{ entry: TemplateEntry; status: string }>;
@@ -464,15 +474,51 @@ function isColorValue(value: string): boolean {
 function classify(
   name: string,
   resolvedValue: string,
-): "colors" | "fonts" | "spacing" | "radii" | null {
+): "colors" | "fonts" | "spacing" | "radii" | "typeScale" | null {
   if (name === "radius" || name.startsWith("radius-")) return "radii";
   if (name.startsWith("spacing-") || name.startsWith("container-"))
     return "spacing";
+  // Checked before the "font-" test below: --text-*/--leading-*/--tracking-*
+  // are the type-scale rungs (font-size/line-height/letter-spacing), not
+  // font-family stacks — those are namespaced --font-* and stay in "fonts".
+  if (
+    name.startsWith("text-") ||
+    name.startsWith("leading-") ||
+    name.startsWith("tracking-")
+  )
+    return "typeScale";
   if (name.startsWith("font-")) return "fonts";
   if (isColorValue(resolvedValue)) return "colors";
   if (name.startsWith("color-") || SEMANTIC_COLOR_NAMES.has(name))
     return "colors";
   return null;
+}
+
+/**
+ * Resolves a list of scope-qualified fg/bg token-name pairs (DECLARED_PAIRS
+ * or CHROME_PAIRS) against the parsed color tokens and computes each pair's
+ * WCAG 2.1 contrast ratio. A pair is silently skipped — not an error — when
+ * either token isn't declared in that scope, resolves to UNRESOLVED, or
+ * isn't a parseable color; that's the normal case for a token the current
+ * scope doesn't redeclare (see DECLARED_PAIRS' own comment on `[data-app="zenml"]`).
+ */
+function computeContrastRows(
+  pairs: ReadonlyArray<{ scope: string; fg: string; bg: string }>,
+  colorByKey: Map<string, TokenRow>,
+): ContrastRow[] {
+  const rows: ContrastRow[] = [];
+  for (const pair of pairs) {
+    const fg = colorByKey.get(`${pair.scope}|${pair.fg}`);
+    const bg = colorByKey.get(`${pair.scope}|${pair.bg}`);
+    if (!fg || !bg) continue;
+    if (fg.value === UNRESOLVED || bg.value === UNRESOLVED) continue;
+    const fgColor = parseColor(fg.value);
+    const bgColor = parseColor(bg.value);
+    if (!fgColor || !bgColor) continue;
+    const ratio = wcagContrast(fgColor, bgColor);
+    rows.push({ fg, bg, ratio, passes: ratio >= 4.5 });
+  }
+  return rows;
 }
 
 /* ============================================================================
@@ -506,6 +552,7 @@ export function getStyleguideData(): StyleguideData {
   const fonts: TokenRow[] = [];
   const spacing: TokenRow[] = [];
   const radii: TokenRow[] = [];
+  const typeScale: TokenRow[] = [];
 
   for (const decl of rawDecls) {
     const resolved = resolveValue(decl.value, decl.scope, byScope);
@@ -520,6 +567,7 @@ export function getStyleguideData(): StyleguideData {
     if (group === "colors") colors.push(row);
     else if (group === "fonts") fonts.push(row);
     else if (group === "spacing") spacing.push(row);
+    else if (group === "typeScale") typeScale.push(row);
     else radii.push(row);
   }
 
@@ -527,41 +575,28 @@ export function getStyleguideData(): StyleguideData {
   const colorByKey = new Map<string, TokenRow>();
   for (const row of colors) colorByKey.set(`${row.scope}|${row.name}`, row);
 
-  const contrast: ContrastRow[] = [];
-  for (const pair of DECLARED_PAIRS) {
-    const fg = colorByKey.get(`${pair.scope}|${pair.fg}`);
-    const bg = colorByKey.get(`${pair.scope}|${pair.bg}`);
-    if (!fg || !bg) continue;
-    if (fg.value === UNRESOLVED || bg.value === UNRESOLVED) continue;
-    const fgColor = parseColor(fg.value);
-    const bgColor = parseColor(bg.value);
-    if (!fgColor || !bgColor) continue;
-    const ratio = wcagContrast(fgColor, bgColor);
-    contrast.push({ fg, bg, ratio, passes: ratio >= 4.5 });
-  }
+  const contrast = computeContrastRows(DECLARED_PAIRS, colorByKey);
 
   // `@theme` is the flat namespace every `--color-gray-*` token lives in
   // (a literal scale, not scoped per data-app); `--color-white` is a
   // Tailwind built-in with no token declaration in global.css, so it
   // resolves to its fixed value directly instead of a colorByKey lookup.
-  const chrome: ContrastRow[] = [];
-  for (const pair of CHROME_PAIRS) {
-    const fg = colorByKey.get(`${pair.scope}|${pair.fg}`);
-    const bg = colorByKey.get(`${pair.scope}|${pair.bg}`);
-    if (!fg || !bg) continue;
-    if (fg.value === UNRESOLVED || bg.value === UNRESOLVED) continue;
-    const fgColor = parseColor(fg.value);
-    const bgColor = parseColor(bg.value);
-    if (!fgColor || !bgColor) continue;
-    const ratio = wcagContrast(fgColor, bgColor);
-    chrome.push({ fg, bg, ratio, passes: ratio >= 4.5 });
-  }
+  const chrome = computeContrastRows(CHROME_PAIRS, colorByKey);
 
   const registry = TEMPLATE_REGISTRY.map((entry) => ({
     entry,
     status: statusOf(entry),
   }));
 
-  cached = { colors, fonts, spacing, radii, contrast, chrome, registry };
+  cached = {
+    colors,
+    fonts,
+    spacing,
+    radii,
+    typeScale,
+    contrast,
+    chrome,
+    registry,
+  };
   return cached;
 }

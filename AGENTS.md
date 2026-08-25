@@ -9,7 +9,8 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 - `src/` contains the Astro app:
   - `pages/` route files (`.astro`) and dynamic templates.
   - `pages/api/` server-side API routes (`prerender: false`). The merged site uses the unified form/API surface here (for example `forms/[formType].ts`, `csp-report.ts`, and `github-stars.ts`). The old standalone `kitaru.ai` API routes (`get-started`, `waitlist`, `newsletter`) were not carried forward. **Do NOT use `functions/`** — the Cloudflare adapter silently ignores it.
-  - `components/` shared UI and `components/islands/` for hydrated Preact interactivity. Kitaru landing sections live in `components/kitaru/`; Kitaru-vs-X compare components in `components/compare/kitaru/`.
+  - `components/` shared UI and `components/islands/` for hydrated Preact interactivity (`islands/shared/` holds pieces both filter islands consume). Kitaru landing sections live in `components/kitaru/`; Kitaru-vs-X compare components in `components/compare/kitaru/`.
+  - `components/system/` — the #248 substrate primitives (`SectionIntro`, `Breadcrumb` with built-in BreadcrumbList JSON-LD, `EmptyState`, and the `layout/` set `Stack`/`Inline`/`Split`/`Bleed`/`Grid`). Absence collapses (no `show*` booleans); spacing via the `--spacing-space-*` tokens only; island-consumed primitives ship `.astro` + `.tsx` twins in lockstep via a shared module; `classOverrides` is a migration-parity escape hatch new code must not pass. Contract types in `lib/section.ts`. The `[data-tone]` layer in `global.css` routes only brand-owned `var()`s — never a hex — and has no `section[data-tone]` base rule on purpose; tone consumers set explicit `bg-[var(--section-surface)]`-style utilities.
   - `content/` markdown CMS content, validated by the collection definitions in `src/content.config.ts`. Two compare collections: `compare/` (ZenML-vs-X, MLOps) and `compare-kitaru/` (Kitaru-vs-X, agents).
   - `lib/` typed utilities/data contracts. `analytics.ts` defines the surface taxonomy; `consentConfig.ts` contains the unified analytics script registry; shared form helpers live in `formTypes.ts`, `formValidation.ts`, and related form data modules.
   - `scripts/kitaru/` client-side scripts the Kitaru landing relies on.
@@ -30,7 +31,7 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 - `pnpm check:tests` type-checks tests, Vitest config, and the dist smoke script.
 - `pnpm check:surface` verifies pages/components declare their analytics surface.
 - `pnpm check:alt` verifies image alt-text coverage.
-- `pnpm check:registry` validates the rebrand template registry (`src/lib/templates/registry.ts`) against the files on disk — every registered `componentPath` resolves, no orphan template components, no duplicate ids.
+- `pnpm check:registry` validates the rebrand template registry (`src/lib/templates/registry.ts`) against the files on disk — every registered `componentPath` resolves, no orphan components under `src/components/templates/` or `src/components/system/` (a `.tsx` twin beside a same-name `.astro` is exempt), no duplicate ids, and `contentShape` bounds are sane.
 - `pnpm lint` runs Biome checks on configured source, test, config, and smoke-script files.
 - `pnpm test` runs the Vitest suite once.
 - `pnpm smoke:dist` smoke-tests `dist/` after `pnpm build`, including that every Preact island is still mounted on its pages with its bundle on disk, and that the rendered content of one blog post and one Kitaru-vs-X MDX page still matches the goldens in `tests/snapshots/rendered/` (`pnpm check:snapshots` alone; `pnpm snapshots:update` to regenerate after an intended change — review the golden diff before committing it).

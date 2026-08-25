@@ -1,0 +1,45 @@
+---
+/**
+ * Grid — explicit-column grid layout primitive (#248).
+ *
+ * `cols` is required and takes an explicit column count per breakpoint
+ * (`"base"` = unprefixed / mobile-first). `repeat(auto-fit, minmax())` is
+ * banned by the contract — every column count a Grid renders must be one
+ * of the explicit literals in `./classMaps`.
+ *
+ * Has no incomplete-last-row handling (no `lastRow` prop). A CSS-only
+ * primitive can't know the item count, so it can't tell a complete row
+ * from a short one — an earlier `lastRow="center"` attempt centered
+ * complete rows too, and the correct nth-child formula for that would
+ * still interact badly with responsive `cols`. Odd-count handling is a
+ * per-family contract that lands with the first collection family that
+ * actually needs it (#248 defers it) — it does not belong on this generic
+ * layout primitive.
+ *
+ * Preact twin: `Grid.tsx` (same directory) — islands cannot import .astro
+ * components. Keep the two emitting identical markup/classes.
+ */
+import type { Breakpoint, SpaceStep } from "../../../lib/section";
+import { type GridColsProp, resolveGridCols, resolveSpace } from "./classMaps";
+
+interface Props {
+  cols: GridColsProp;
+  space?: SpaceStep | Partial<Record<Breakpoint, SpaceStep>>;
+  class?: string;
+}
+
+const { cols, space, class: className } = Astro.props;
+
+const classes = [
+  "grid",
+  resolveGridCols(cols),
+  resolveSpace(space, "sm"),
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<div class={classes}>
+  <slot />
+</div>

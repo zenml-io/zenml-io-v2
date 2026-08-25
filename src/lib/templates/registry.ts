@@ -20,7 +20,8 @@
  * `adoptionCount` (that is counted from real imports by `scripts/check-registry.ts`).
  *
  * Enforced by `pnpm check:registry` (DECISIONS #93):
- *   - every file in `src/components/templates/` has an entry here
+ *   - every file in `src/components/templates/` and `src/components/system/`
+ *     has an entry here (a paired Preact twin `.tsx` is exempt)
  *   - every entry with a `componentPath` points at a file that exists
  *   - no duplicate ids
  *
@@ -80,6 +81,61 @@ export interface TemplateEntry {
   /** Paper page holding its artboards. The hand-carried link to the design catalog. */
   readonly paperPage: number;
   readonly notes?: string;
+  /**
+   * Renders an items[] collection; must declare `contentShape` once built.
+   * True for a template that pours an array of CMS/data-driven items into a
+   * layout (a card grid, a rail, a table body) — false/omitted for a
+   * single-instance template (a page header, a hero) and for a generic
+   * layout primitive that takes arbitrary slotted children rather than an
+   * items[] prop (Stack/Inline/Split/Bleed/Grid). `scripts/check-registry.ts`
+   * checks this flag directly, never a family-name list — a name list can
+   * silently stop matching any real entry and go vacuous without anyone
+   * noticing (that happened once; see the script's own history).
+   */
+  readonly collectionBound?: true;
+  /**
+   * How this template tolerates the shape of the content poured into it —
+   * item counts, heading/item text lengths, and what happens outside the
+   * planned range. Optional: only collection-bound templates (blog cards,
+   * integration walls, testimonials, logo clouds, comparison tables,
+   * feature grids) need it, and only once they are actually built.
+   *
+   * The budgets are a ceiling chosen so the layout never has to reach for
+   * its overflow fallback in normal use — `overflow` documents the safety
+   * net, not the plan. If a family is routinely hitting its overflow
+   * behaviour, the budget was wrong, not the content.
+   */
+  readonly contentShape?: {
+    /** Fewest items the layout was drawn for. Fewer and it looks unfinished, not empty (see `EmptyStateProps`). */
+    readonly minItems?: number;
+    /** Most items the layout was drawn for before `overflow` takes over. */
+    readonly maxItems?: number;
+    /** Whether/why the layout wants an odd or even count (e.g. a 3-up grid reads badly at 4). Prose, not a boolean. */
+    readonly oddCount?: string;
+    /** Heading string length the layout was drawn for, and what happens past it. */
+    readonly headingBudget?: string;
+    /** Per-item text length the layout was drawn for, and what happens past it. */
+    readonly itemBudget?: string;
+    /** The fallback behaviour when content exceeds the budgets above — e.g. "scrolls", "wraps to a second row", "truncates with an ellipsis". */
+    readonly overflow?: string;
+  };
+  /**
+   * Props `TemplateStage` spreads onto the live component when it renders
+   * this entry on `/styleguide` (`<Component {...(demoProps ?? {})} />`).
+   * Optional: a component whose every prop is optional is zero-prop-safe and
+   * can omit this; a component with a required prop (e.g. `heading`,
+   * `items`) needs it or `TemplateStage` throws. Values here are demo data
+   * only — realistic, never invented placeholder lorem — and are never
+   * read by anything except the styleguide render.
+   */
+  readonly demoProps?: Readonly<Record<string, unknown>>;
+  /**
+   * Static demo HTML `TemplateStage` renders into the component's slots on
+   * `/styleguide`. Keys are slot names — `default` and `media` are the two
+   * the stage supports. Needed only by primitives whose whole job is
+   * composing slotted children (the layout set); like `demoProps`, demo-only.
+   */
+  readonly demoSlots?: Readonly<Partial<Record<"default" | "media", string>>>;
 }
 
 /**
@@ -163,6 +219,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "data-display.metadata-block",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["item count", "chip count", "value length", "sticky"],
     tones: ["default"],
     responsive: "reflow",
@@ -175,6 +232,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "data-display.spec-table",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["column count", "sticky header", "row wrap"],
     tones: ["default"],
     responsive: "scroll",
@@ -187,6 +245,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "data-display.description-list",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["column count", "ragged terms", "two-part terms"],
     tones: ["default"],
     responsive: "collapse",
@@ -198,6 +257,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "data-display.stacked-list",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["density", "row count", "in-prose"],
     tones: ["default"],
     responsive: "reflow",
@@ -211,6 +271,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "term-hub.editorial",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["member count", "term register", "identity block"],
     tones: ["default"],
     responsive: "reflow",
@@ -223,6 +284,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "term-hub.entry-index",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["member count", "cross-link block", "dual collection"],
     tones: ["default"],
     responsive: "reflow",
@@ -234,6 +296,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "term-hub.catalog",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["item count", "logo shape"],
     tones: ["default"],
     responsive: "reflow",
@@ -247,6 +310,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "process-steps.vertical-code",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["step count", "code present", "copied state"],
     tones: ["default"],
     responsive: "reauthored",
@@ -258,6 +322,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "process-steps.compact-list",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["step count", "trailing link", "ragged rows"],
     tones: ["default"],
     responsive: "reflow",
@@ -272,6 +337,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "related-content.rail",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["column count", "sidebar", "item count"],
     tones: ["default"],
     responsive: "reflow",
@@ -286,6 +352,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "filterable-index.shell",
     kind: "template",
     componentPath: null,
+    collectionBound: true,
     variantAxes: ["facet count", "facet select mode", "search engine"],
     tones: ["default"],
     responsive: "reauthored",
@@ -355,6 +422,192 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     notes:
       "One consumer of mark.hex-corner. Title-led, no excerpt slot (#83). 363x260 is this card's chosen size, not a constraint the corner imposes.",
+  },
+
+  // ── section primitives (Paper 1, Wave 1 substrate #248) ──────────────────
+  // paperPage: 1 follows the existing primitive convention above; unconfirmed
+  // against the real design catalog for these specifically — see the Wave 1
+  // handoff notes.
+  {
+    id: "section-intro.default",
+    kind: "primitive",
+    componentPath: "src/components/system/SectionIntro.astro",
+    variantAxes: [
+      "align: start | center",
+      "layout: stacked | split",
+      "headingLevel: 1 | 2 | 3",
+    ],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    notes:
+      "Eyebrow/heading/description/link block. Absence collapses — every piece but heading is optional and an omitted one leaves no gap. Default styling reproduces the current house idiom byte-for-byte (see sectionIntro.shared.ts); tone colours are not wired into default rendering this wave. Preact twin at SectionIntro.tsx for island call sites.",
+    demoProps: {
+      eyebrow: "The platform advantage",
+      heading: "One foundation for ML pipelines and AI agents",
+      // h3: the demo renders under Components (h2) > entry (h3) on /styleguide
+      headingLevel: 3,
+      emphasis: "AI agents",
+      description:
+        "ZenML is a metadata layer on top of your existing infrastructure, meaning all data and compute stays on your side.",
+      link: { href: "/features", label: "See all features" },
+      align: "center",
+      layout: "stacked",
+    },
+  },
+  {
+    id: "empty-state.quiet",
+    kind: "primitive",
+    componentPath: "src/components/system/EmptyState.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "static",
+    island: false,
+    paperPage: 1,
+    notes:
+      "Reproduces the LLMOps/MLOps filter empty-state look (bg-gray-50 card, not tone tokens); that surface itself is FilterEmptyState.tsx, which shares this primitive's class constants but stays outside its contract by design. At most one recovery action — a second belongs on the caller's own markup, not this primitive. Preact twin at EmptyState.tsx, required because island consumers (BlogSearch) can't import .astro components.",
+    demoProps: {
+      heading: 'No entries tagged "vector-database" yet.',
+      description: "This tag is used by 0 of 2,026 database entries.",
+      action: {
+        href: "/llmops-database",
+        label: "Browse all entries",
+        weight: "outline",
+      },
+      reserveHeight: true,
+      minHeightClass: "min-h-[16rem]",
+    },
+  },
+  {
+    id: "breadcrumb.default",
+    kind: "primitive",
+    componentPath: "src/components/system/Breadcrumb.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "static",
+    island: false,
+    paperPage: 1,
+    notes:
+      "One prop list drives both the visual crumb trail and its BreadcrumbList JSON-LD. Matches the pre-existing features/case-study/cloud-features crumb (text separator, zenml-500 hover) — not the llmops/mlops chevron variant, which is a different shape (SVG separator, no outer wrapper, different hover color, line-clamp) and has no registry entry yet.",
+    demoProps: {
+      items: [
+        { label: "Features", href: "/features" },
+        { label: "Model Control Plane" },
+      ],
+      // Demo stage only (see Breadcrumb.astro's TSDoc) — /styleguide renders
+      // this crumb trail for a page that doesn't exist, so it must not emit
+      // a fabricated BreadcrumbList into the page's structured data. A real
+      // route must never pass this.
+      jsonLd: false,
+    },
+  },
+  {
+    id: "layout.stack",
+    kind: "primitive",
+    componentPath: "src/components/system/layout/Stack.astro",
+    variantAxes: [
+      "align: start | center | end | stretch",
+      "dividers: true | false",
+    ],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    notes:
+      "Vertical flow, one gap step between children. Owns no surrounding whitespace — the gap is only ever between children, never a margin the caller cancels. dividers draws a hairline via --section-border. Preact twin at Stack.tsx.",
+    demoProps: { space: "sm", align: "stretch", dividers: true },
+    demoSlots: {
+      default:
+        '<p class="text-sm">First child</p><p class="text-sm">Second child</p><p class="text-sm">Third child</p>',
+    },
+  },
+  {
+    id: "layout.inline",
+    kind: "primitive",
+    componentPath: "src/components/system/layout/Inline.astro",
+    variantAxes: [
+      "align: start | center | end | between",
+      "alignY: top | center | bottom",
+      "wrap: true | false",
+      "collapseBelow: breakpoint",
+    ],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    notes:
+      "Horizontal row of children with one spacing step between them. collapseBelow forces children to full-width/stacked below a breakpoint (e.g. a button group). Preact twin at Inline.tsx.",
+    demoProps: { space: "xs", alignY: "center", align: "start", wrap: true },
+    demoSlots: {
+      default:
+        '<span class="rounded-full border border-gray-200 px-3 py-1 text-sm">Orchestration</span><span class="rounded-full border border-gray-200 px-3 py-1 text-sm">Evals</span><span class="rounded-full border border-gray-200 px-3 py-1 text-sm">Registry</span>',
+    },
+  },
+  {
+    id: "layout.split",
+    kind: "primitive",
+    componentPath: "src/components/system/layout/Split.astro",
+    variantAxes: [
+      "mediaSide: left | right",
+      "ratio: 1/2 | 2/5 | 3/5",
+      "collapseBelow: breakpoint",
+    ],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 1,
+    notes:
+      "Two-lane prose/media layout. Prose is always first in the DOM regardless of mediaSide (screen-reader order matches stacked order); the visual side flips with CSS order, never direction: rtl. Empty media slot collapses to a single centred column. Preact twin at Split.tsx.",
+    demoProps: {
+      mediaSide: "right",
+      ratio: "1/2",
+      space: "lg",
+      collapseBelow: "lg",
+    },
+    demoSlots: {
+      default:
+        '<h3 class="text-lg font-semibold">Prose lane</h3><p class="mt-2 text-sm text-gray-600">Copy sits first in the DOM regardless of which side the media renders on.</p>',
+      media:
+        '<div class="flex h-40 items-center justify-center rounded-md border border-gray-200 bg-gray-50 text-sm text-gray-500">media slot</div>',
+    },
+  },
+  {
+    id: "layout.bleed",
+    kind: "primitive",
+    componentPath: "src/components/system/layout/Bleed.astro",
+    variantAxes: ["to: container | viewport"],
+    tones: ["default"],
+    responsive: "static",
+    island: false,
+    paperPage: 1,
+    notes:
+      'Breaks a child out of its horizontal inset. to="container" cancels exactly --spacing-gutter; to="viewport" reuses the established full-bleed trick already in CodeCompare.astro/PullQuote.astro. Preact twin at Bleed.tsx.',
+    demoProps: { to: "container" },
+    demoSlots: {
+      default:
+        '<div class="rounded-md border border-gray-200 bg-gray-50 p-space-xs text-center text-sm text-gray-500">bleeds to the container edge</div>',
+    },
+  },
+  {
+    id: "layout.grid",
+    kind: "primitive",
+    componentPath: "src/components/system/layout/Grid.astro",
+    variantAxes: ["cols: per-breakpoint 1-12"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    notes:
+      "Explicit-column grid; repeat(auto-fit, minmax()) is banned by the contract. Has no lastRow/odd-count handling — CSS can't know item count from here, and the correct nth-child formula interacts badly with responsive cols. Odd-count handling is a per-family contract that lands with the first collection family that needs it (#248 defers it). Preact twin at Grid.tsx.",
+    demoProps: {
+      cols: { base: 1, sm: 2, lg: 3 },
+      space: "sm",
+    },
+    demoSlots: {
+      default:
+        '<div class="rounded-md border border-gray-200 p-space-xs text-center text-sm">One</div><div class="rounded-md border border-gray-200 p-space-xs text-center text-sm">Two</div><div class="rounded-md border border-gray-200 p-space-xs text-center text-sm">Three</div><div class="rounded-md border border-gray-200 p-space-xs text-center text-sm">Four</div>',
+    },
   },
 ];
 

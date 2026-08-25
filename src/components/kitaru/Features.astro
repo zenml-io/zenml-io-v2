@@ -1,6 +1,7 @@
 ---
 // Features.astro — The migration wedge: model swap + comparison
 import { STEPS } from "../../lib/kitaru-landing";
+import SectionIntro from "../system/SectionIntro.astro";
 import HighlightPanel from "./_HighlightPanel.astro";
 ---
 
@@ -36,10 +37,17 @@ import HighlightPanel from "./_HighlightPanel.astro";
             </span>
           </div>
           <div class="mt-4 h-px w-full bg-border" />
-          <h3 class="mt-5 text-[19px] leading-snug font-medium tracking-[-0.015em]">
-            {s.title}
-          </h3>
-          <p class="mt-3 text-[14px] leading-relaxed text-ink-soft">{s.body}</p>
+          <SectionIntro
+            heading={s.title}
+            headingLevel={3}
+            description={s.body}
+            classOverrides={{
+              heading: "text-[19px] leading-snug font-medium tracking-[-0.015em]",
+              headingSpacing: "mt-5",
+              description: "text-[14px] leading-relaxed text-ink-soft",
+              descriptionSpacing: "mt-3",
+            }}
+          />
 
           {/* Minimal product-UI highlight — visual abstractions of the MVP screens
               in the Paper "Kitaru MVP" file (05 Cohorts / 07a New experiment /

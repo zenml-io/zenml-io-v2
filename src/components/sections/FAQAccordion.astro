@@ -6,20 +6,23 @@
  * FAQ answers contain inline HTML links (defined in homepage.ts).
  */
 import { FAQ } from "../../lib/homepage";
+import SectionIntro from "../system/SectionIntro.astro";
 ---
 
 <section class="bg-white py-16 sm:py-24">
   <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
     <!-- Header -->
-    <div class="text-center">
-      <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
-        {FAQ.eyebrow}
-      </p>
-      <h2 class="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
-        {FAQ.headline}
-      </h2>
-      <p class="mt-2 text-lg text-gray-600">{FAQ.subheadline}</p>
-    </div>
+    <SectionIntro
+      align="center"
+      eyebrow={FAQ.eyebrow}
+      heading={FAQ.headline}
+      description={FAQ.subheadline}
+      classOverrides={{
+        description: "text-lg text-gray-600",
+        descriptionSpacing: "mt-2",
+        wrap: "text-center",
+      }}
+    />
 
     <!-- Accordion items -->
     <div class="mt-12 divide-y divide-gray-200 border-t border-gray-200">

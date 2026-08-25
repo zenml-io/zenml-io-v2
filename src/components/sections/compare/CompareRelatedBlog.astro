@@ -6,6 +6,8 @@
  * Reuses the BlogCard component for consistent site-wide styling.
  */
 import BlogCard from "../../blog/BlogCard.astro";
+import SectionIntro from "../../system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../../system/sectionIntro.shared";
 
 interface BlogPost {
   slug: string;
@@ -33,8 +35,14 @@ const {
   <section class="blog-section bg-gradient-to-b from-gray-50 to-white py-16 sm:py-20">
     <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-10 fade-in-element">
-        <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500 mb-3">{eyebrow}</p>
-        <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">{headline}</h2>
+        <SectionIntro
+          eyebrow={eyebrow}
+          heading={headline}
+          classOverrides={{
+            heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
+            headingSpacing: "mt-3",
+          }}
+        />
       </div>
 
       <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 fade-in-element">
