@@ -1,4 +1,5 @@
 ---
+import type { SpaceStep } from "../../lib/section";
 /**
  * MetadataBlock — a stack of "small-caps label + value" pairs (issue #249).
  *
@@ -22,8 +23,8 @@
  * of markup it doesn't render.
  */
 import { cn } from "../../lib/utils";
-import type { SpaceStep } from "../../lib/section";
 import Stack from "../system/layout/Stack.astro";
+import { CHIP_VARIANT_CLASS, type ChipVariant } from "./chipStyles";
 
 export type MetadataLinkIcon = "docs" | "github";
 
@@ -36,7 +37,7 @@ export interface MetadataLink {
 export interface MetadataChip {
   label: string;
   href?: string;
-  variant?: "gray" | "primary" | "success" | "warning" | "blue";
+  variant?: ChipVariant;
 }
 
 export type MetadataValue =
@@ -79,16 +80,6 @@ const Label = labelTag;
 const LABEL_CLASS =
   "text-xs font-semibold uppercase tracking-wider text-gray-400";
 
-const CHIP_VARIANT_CLASS: Record<
-  NonNullable<MetadataChip["variant"]>,
-  string
-> = {
-  gray: "bg-gray-100 text-gray-700 hover:bg-gray-200",
-  primary: "bg-zenml-50 text-zenml-700 hover:bg-zenml-100",
-  success: "bg-success-50 text-success-700",
-  warning: "bg-orange-50 text-orange-700",
-  blue: "bg-blue-50 text-blue-700",
-};
 const CHIP_BASE =
   "inline-flex items-center rounded-pill px-2.5 py-0.5 text-xs font-medium transition-colors";
 ---

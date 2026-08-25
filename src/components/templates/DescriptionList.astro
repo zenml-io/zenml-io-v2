@@ -16,7 +16,12 @@
  */
 import type { SpaceStep } from "../../lib/section";
 
-export type DescriptionIcon = "building" | "link" | "people" | "cloud" | "store";
+export type DescriptionIcon =
+  | "building"
+  | "link"
+  | "people"
+  | "cloud"
+  | "store";
 
 export type DescriptionValue =
   | { kind: "text"; text: string; icon?: DescriptionIcon }
@@ -53,7 +58,8 @@ const SPACE_CLASS: Record<SpaceStep, string> = {
   xxl: "space-y-space-xxl",
 };
 
-const TERM_CLASS = "text-xs font-semibold uppercase tracking-wider text-zenml-500";
+const TERM_CLASS =
+  "text-xs font-semibold uppercase tracking-wider text-zenml-500";
 const ICON_CLASS = "h-5 w-5 flex-shrink-0 text-gray-400";
 
 const ICON_PATHS: Record<DescriptionIcon, readonly string[]> = {
@@ -67,7 +73,9 @@ const ICON_PATHS: Record<DescriptionIcon, readonly string[]> = {
   people: [
     "M16 3.468a4.5 4.5 0 0 1 0 7.064M18 16.12c1.045.367 1.91.986 2.573 1.786M1 17.906c0-1.848 2.015-3.406 4.5-3.406s4.5 1.558 4.5 3.406M8.25 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z",
   ],
-  cloud: ["M6.5 19a4.5 4.5 0 0 1-.42-8.98 7 7 0 0 1 13.84 0A4.5 4.5 0 0 1 17.5 19h-11Z"],
+  cloud: [
+    "M6.5 19a4.5 4.5 0 0 1-.42-8.98 7 7 0 0 1 13.84 0A4.5 4.5 0 0 1 17.5 19h-11Z",
+  ],
   store: [
     "M3 21h18M3 7l3-4h12l3 4M3 7h18M3 7v14m18-14v14M7 11h4v4H7v-4Zm6 6h4v4h-4v-4Z",
   ],

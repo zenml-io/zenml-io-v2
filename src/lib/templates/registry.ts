@@ -555,7 +555,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 26,
     notes:
-      "Image-free by ruling (#63). Renders only the items arrangement (grid or list) — the six live surfaces keep their own heading treatments and section chrome, so 'More like this' as the one sitewide heading and card.hex-corner on grid cards are the new-brand cutover states, not this parity build. The live parity build keeps per-surface headings and hex-corner-free cards.",
+      "Image-free by ruling (#63). Renders only the items arrangement (grid or list) — the six live surfaces keep their own heading treatments and section chrome, so 'More like this' as the one sitewide heading, card.hex-corner on grid cards, and the bind-separator-to-following-token meta form are the new-brand cutover states, not this parity build. The live parity build keeps per-surface headings, hex-corner-free cards, and free-standing meta separators (a wrap leaves the dot at the line end).",
     contentShape: {
       minItems: 1,
       maxItems: 3,

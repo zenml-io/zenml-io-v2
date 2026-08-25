@@ -10,6 +10,9 @@ import Breadcrumb from "../../components/system/Breadcrumb.astro";
 import MetadataBlock, {
   type MetadataBlockItem,
 } from "../../components/templates/MetadataBlock.astro";
+import RelatedRail, {
+  type RelatedRailItem,
+} from "../../components/templates/RelatedRail.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   buildMLOpsRelatedIndex,
@@ -120,6 +123,22 @@ if (tags.length > 0) {
 const metadataTrailingClass =
   tags.length > 0 ? "mb-space-md" : industryEntry ? "mb-space-sm" : "";
 
+const relatedItems: RelatedRailItem[] = relatedWithTags.map((r) => ({
+  kind: "meta-card",
+  href: `/mlops-database/${r.slug}`,
+  title: r.title,
+  meta: [
+    { text: r.company, emphasis: true },
+    ...(r.platformName !== r.company ? [{ text: r.platformName }] : []),
+    { text: r.contentType, capitalize: true },
+    ...(r.year ? [{ text: String(r.year) }] : []),
+  ],
+  summary: r.summary,
+  tags: r.tags.map((tag) => tag.name),
+  extraTagCount: r.extraTagCount,
+  tagVariant: "success",
+}));
+
 const seoTitle =
   entry.data.seo?.title || `${entry.data.title} - ZenML MLOps Database`;
 const seoDescription = entry.data.seo?.description || entry.data.summary;
@@ -212,55 +231,10 @@ const ogImage = entry.data.seo?.ogImage;
       <Content />
     </div>
 
-    {relatedWithTags.length > 0 && (
+    {relatedItems.length > 0 && (
       <section class="mt-16 border-t border-gray-200 pt-10" data-pagefind-ignore>
         <h2 class="mb-6 text-xl font-bold text-gray-900">More Like This</h2>
-        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {relatedWithTags.map((relatedEntry) => (
-            <a
-              href={`/mlops-database/${relatedEntry.slug}`}
-              class="group flex flex-col rounded-lg border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md"
-            >
-              <h3 class="font-semibold text-gray-900 group-hover:text-primary-600 line-clamp-2">
-                {relatedEntry.title}
-              </h3>
-              <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-gray-500">
-                <span class="font-medium text-gray-700">{relatedEntry.company}</span>
-                {relatedEntry.platformName !== relatedEntry.company && (
-                  <>
-                    <span aria-hidden="true">&middot;</span>
-                    <span>{relatedEntry.platformName}</span>
-                  </>
-                )}
-                <>
-                  <span aria-hidden="true">&middot;</span>
-                  <span class="capitalize">{relatedEntry.contentType}</span>
-                </>
-                {relatedEntry.year && (
-                  <>
-                    <span aria-hidden="true">&middot;</span>
-                    <span>{relatedEntry.year}</span>
-                  </>
-                )}
-              </div>
-              <p class="mt-2 text-sm text-gray-600 line-clamp-2">{relatedEntry.summary}</p>
-              {relatedEntry.tags.length > 0 && (
-                <div class="mt-auto flex flex-wrap gap-1 pt-3">
-                  {relatedEntry.tags.map((tag) => (
-                    <span class="rounded-full bg-success-50 px-2 py-0.5 text-xs text-success-700">
-                      {tag.name}
-                    </span>
-                  ))}
-                  {relatedEntry.extraTagCount > 0 && (
-                    <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">
-                      +{relatedEntry.extraTagCount}
-                    </span>
-                  )}
-                </div>
-              )}
-            </a>
-          ))}
-        </div>
+        <RelatedRail items={relatedItems} gridVariant="gap-sm-2col-sm" />
       </section>
     )}
   </div>

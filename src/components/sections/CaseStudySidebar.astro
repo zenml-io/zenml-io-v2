@@ -32,22 +32,39 @@ const {
 
 const items: DescriptionListItem[] = [];
 if (company) {
-  items.push({ term: "Company", value: { kind: "text", text: company, icon: "building" } });
+  items.push({
+    term: "Company",
+    value: { kind: "text", text: company, icon: "building" },
+  });
 }
 if (website) {
   items.push({
     term: "Website",
-    value: { kind: "link", href: website.href, label: website.label, icon: "link" },
+    value: {
+      kind: "link",
+      href: website.href,
+      label: website.label,
+      icon: "link",
+    },
   });
 }
 if (mlTeamSize) {
-  items.push({ term: "ML Team Size", value: { kind: "text", text: mlTeamSize, icon: "people" } });
+  items.push({
+    term: "ML Team Size",
+    value: { kind: "text", text: mlTeamSize, icon: "people" },
+  });
 }
 if (cloudProvider) {
-  items.push({ term: "Cloud Provider", value: { kind: "text", text: cloudProvider, icon: "cloud" } });
+  items.push({
+    term: "Cloud Provider",
+    value: { kind: "text", text: cloudProvider, icon: "cloud" },
+  });
 }
 if (industry) {
-  items.push({ term: "Industry", value: { kind: "text", text: industry, icon: "store" } });
+  items.push({
+    term: "Industry",
+    value: { kind: "text", text: industry, icon: "store" },
+  });
 }
 ---
 

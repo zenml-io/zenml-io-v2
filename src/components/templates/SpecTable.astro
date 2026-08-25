@@ -49,6 +49,13 @@ interface Props {
   columns: readonly string[];
   sections: readonly SpecTableSection[];
   actions?: readonly SpecTableAction[];
+  /**
+   * Pin the first column while the value columns scroll (the drawn mobile
+   * strategy). Adds opaque per-row backgrounds to the pinned cells — see
+   * the note on `stickyCol` below for why the two are one unit and why the
+   * default is off.
+   */
+  stickyFirstColumn?: boolean;
   class?: string;
 }
 

@@ -8,6 +8,9 @@
 import MetadataBlock, {
   type MetadataBlockItem,
 } from "../templates/MetadataBlock.astro";
+import RelatedRail, {
+  type RelatedRailItem,
+} from "../templates/RelatedRail.astro";
 
 interface RelatedPost {
   href: string;
@@ -44,7 +47,11 @@ const metadataItems: MetadataBlockItem[] = [];
 if (type) {
   metadataItems.push({
     label: "Category",
-    value: { kind: "pill", href: `/integration-type/${type.slug}`, label: type.name },
+    value: {
+      kind: "pill",
+      href: `/integration-type/${type.slug}`,
+      label: type.name,
+    },
   });
 }
 
@@ -55,10 +62,22 @@ if (docsUrl || githubUrl) {
       kind: "links",
       links: [
         ...(docsUrl
-          ? [{ href: docsUrl, label: documentationLinkText || "Documentation", icon: "docs" as const }]
+          ? [
+              {
+                href: docsUrl,
+                label: documentationLinkText || "Documentation",
+                icon: "docs" as const,
+              },
+            ]
           : []),
         ...(githubUrl
-          ? [{ href: githubUrl, label: githubLinkText || "Get Started", icon: "github" as const }]
+          ? [
+              {
+                href: githubUrl,
+                label: githubLinkText || "Get Started",
+                icon: "github" as const,
+              },
+            ]
           : []),
       ],
     },
@@ -74,11 +93,21 @@ if (compareSlug) {
       label: compareName || compareSlug.replace("zenml-vs-", "ZenML vs "),
       leftImage: { src: "/images/zenml-icon.webp", alt: "ZenML" },
       rightImage: integrationLogo
-        ? { src: integrationLogo.url, alt: compareName || "" }
+        ? {
+            src: integrationLogo.url,
+            alt: compareName || compareSlug.replace("zenml-vs-", "ZenML vs "),
+          }
         : undefined,
     },
   });
 }
+
+const relatedItems: RelatedRailItem[] = relatedPosts.map((post) => ({
+  kind: "thumbnail",
+  href: post.href,
+  title: post.title,
+  imageUrl: post.imageUrl,
+}));
 ---
 
 <aside class="w-full shrink-0 lg:w-64">
@@ -86,21 +115,10 @@ if (compareSlug) {
     <MetadataBlock items={metadataItems} labelTag="h3" space="md" />
 
     {/* Related Resources */}
-    {relatedPosts.length > 0 && (
+    {relatedItems.length > 0 && (
       <div>
         <h3 class="text-xs font-semibold uppercase tracking-wider text-gray-400">Related Resources</h3>
-        <div class="mt-2 space-y-3">
-          {relatedPosts.map((post) => (
-            <a href={post.href} class="flex items-center gap-3 group">
-              {post.imageUrl && (
-                <img src={post.imageUrl} alt="" aria-hidden="true" width="56" height="56" class="h-14 w-14 shrink-0 rounded-lg object-cover" loading="lazy" />
-              )}
-              <span class="line-clamp-2 text-sm font-medium text-gray-700 group-hover:text-primary-600">
-                {post.title}
-              </span>
-            </a>
-          ))}
-        </div>
+        <RelatedRail items={relatedItems} class="mt-space-xxs" />
       </div>
     )}
   </div>
