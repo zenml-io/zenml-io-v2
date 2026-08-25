@@ -1,1 +1,14 @@
-onlyBuiltDependencies: esbuild,sharp,workerd
+# pnpm settings live here, not in package.json's "pnpm" field: pnpm 11 no
+# longer reads that field at all, and Dependabot's updater runs pnpm 11, so
+# overrides kept in package.json vanish from every bot-regenerated lockfile.
+# pnpm 10 (CI, local) reads both. See https://github.com/pnpm/pnpm/issues/11536
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - workerd
+overrides:
+  '@cloudflare/vite-plugin': 1.39.0
+  'miniflare@<=4.20260721.0>undici': 7.29.0
+  'miniflare@<4.20260721.0>ws': 8.21.0
+  '@cloudflare/vite-plugin@1.39.0>ws': 8.21.0
+  'miniflare@<=4.20260721.0>sharp': 0.35.3
