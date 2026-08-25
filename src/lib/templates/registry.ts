@@ -267,52 +267,164 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
   {
     id: "data-display.metadata-block",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/MetadataBlock.astro",
     collectionBound: true,
-    variantAxes: ["item count", "chip count", "value length", "sticky"],
+    variantAxes: [
+      "item count",
+      "value kind (pill/links/chips/compare)",
+      "chip count",
+      "sticky",
+    ],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 23,
     notes:
-      "Drawn at 1 item and at 93 chips. It is a cardinality-and-overflow component; the styling barely moves.",
+      "Drawn at 1 item and at 93 chips. It is a cardinality-and-overflow component; the styling barely moves. Label color and heading level are hardcoded to the current single live usage (gray-400) — a second consumer needing another color gets a prop added, never a normalize. The sticky axis isn't exercised live: IntegrationDetailSidebar composes this under one page-owned sticky wrapper.",
+    contentShape: {
+      minItems: 1,
+      maxItems: 4,
+      overflow:
+        "No cap observed live; the chips value kind is the tested high-cardinality path.",
+    },
+    demoProps: {
+      items: [
+        {
+          label: "Category",
+          value: {
+            kind: "pill",
+            href: "/integration-type/orchestrator",
+            label: "Orchestrator",
+          },
+        },
+        {
+          label: "Technologies",
+          value: {
+            kind: "chips",
+            chips: [
+              { label: "LangChain", href: "#", variant: "blue" },
+              { label: "RAG", href: "#", variant: "blue" },
+            ],
+          },
+        },
+      ],
+    },
   },
   {
     id: "data-display.spec-table",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/SpecTable.astro",
     collectionBound: true,
-    variantAxes: ["column count", "sticky header", "row wrap"],
+    variantAxes: [
+      "column count",
+      "section count",
+      "row wrap",
+      "CTA row present",
+    ],
     tones: ["default"],
     responsive: "scroll",
     island: false,
     paperPage: 23,
     notes:
-      "Scrolls horizontally inside its own container. The page body never scrolls sideways.",
+      "Scrolls horizontally inside its own container; the page body never scrolls sideways. stickyFirstColumn pins the label column with position: sticky, each pinned cell repeating its row background so scrolled content can't show through — opt-in because the pinned cells' opaque backgrounds shift the live table's transparent-cell blend, and the live pricing route stays pixel-parity until cutover. The demo exercises the pin.",
+    contentShape: {
+      minItems: 3,
+      maxItems: 24,
+      overflow:
+        "Rows scroll with the table body inside the bordered container; nothing truncates.",
+    },
+    demoProps: {
+      stickyFirstColumn: true,
+      columns: ["Open Source", "Scale", "Enterprise"],
+      sections: [
+        {
+          heading: "Core platform",
+          rows: [
+            { label: "Pipeline orchestration", values: [true, true, true] },
+            {
+              label: "Support level",
+              values: ["Community", "Priority", "Dedicated"],
+            },
+          ],
+        },
+      ],
+    },
   },
   {
     id: "data-display.description-list",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/DescriptionList.astro",
     collectionBound: true,
-    variantAxes: ["column count", "ragged terms", "two-part terms"],
+    variantAxes: [
+      "item count",
+      "icon presence",
+      "trailing chip group",
+      "two-part terms",
+    ],
     tones: ["default"],
     responsive: "collapse",
     island: false,
     paperPage: 23,
-    notes: "Two-column form collapses at 768.",
+    notes:
+      "Two-column form collapses at 768. The trailing chip group renders outside the dl (hr + bare term/value div) — reproducing the one live consumer's actual DOM, not the idealized single-dl shape. Label color (zenml-500) and the 5-icon set are only proven against that one consumer (CaseStudySidebar) so far.",
+    contentShape: {
+      minItems: 1,
+      maxItems: 6,
+      overflow:
+        "The list grows with no cap; the live consumer draws at 5 items plus one trailing chip group.",
+    },
+    demoProps: {
+      items: [
+        {
+          term: "Company",
+          value: { kind: "text", text: "Acme Corp", icon: "building" },
+        },
+        {
+          term: "Website",
+          value: { kind: "link", href: "#", label: "acme.com", icon: "link" },
+        },
+      ],
+      trailing: {
+        term: "Use Cases",
+        chips: ["Fraud detection", "Forecasting"],
+      },
+    },
   },
   {
     id: "data-display.stacked-list",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/StackedList.astro",
     collectionBound: true,
-    variantAxes: ["density", "row count", "in-prose"],
+    variantAxes: [
+      "density",
+      "row count",
+      "meta parts present",
+      "trailing count present",
+      "in-prose",
+    ],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 23,
-    notes: "The row primitive behind term-hub.entry-index. Build it once.",
+    notes:
+      "The row primitive behind term-hub.entry-index. Built standalone this wave — no live duplicate existed to migrate, so /styleguide is its only render until term-hub lands.",
+    contentShape: {
+      minItems: 1,
+      maxItems: 122,
+      overflow:
+        "No built-in cap; term-hub.entry-index is expected to pass up to the tag facet's 122 rows.",
+    },
+    demoProps: {
+      items: [
+        {
+          title: "vector-database",
+          href: "#",
+          meta: ["ML", "122 entries"],
+          trailingCount: 122,
+        },
+        { title: "fine-tuning", href: "#", meta: ["ML"], trailingCount: 34 },
+      ],
+    },
   },
 
   // ── term-hub (Paper 24) ──────────────────────────────────────────────────
@@ -429,15 +541,41 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
   {
     id: "related-content.rail",
     kind: "template",
-    componentPath: null,
+    componentPath: "src/components/templates/RelatedRail.astro",
     collectionBound: true,
-    variantAxes: ["column count", "sidebar", "item count"],
+    variantAxes: [
+      "card shape (meta-card/logo-lockup/icon-link/blog-card/thumbnail)",
+      "column count",
+      "sidebar",
+      "item count",
+      "reveal-on-scroll",
+    ],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 26,
     notes:
-      "Image-free by ruling (#63). One heading string sitewide: 'More like this'. Grid arrangements use card.hex-corner; the sidebar and 1-item arrangements deliberately do not (#87).",
+      "Image-free by ruling (#63). Renders only the items arrangement (grid or list) — the six live surfaces keep their own heading treatments and section chrome, so 'More like this' as the one sitewide heading and card.hex-corner on grid cards are the new-brand cutover states, not this parity build. The live parity build keeps per-surface headings and hex-corner-free cards.",
+    contentShape: {
+      minItems: 1,
+      maxItems: 3,
+      overflow:
+        "All six live surfaces cap related items at 3; the sidebar thumbnail list has no observed cap.",
+    },
+    demoProps: {
+      items: [
+        {
+          kind: "meta-card",
+          href: "#",
+          title: "Evaluating conversational agents at scale",
+          meta: [{ text: "Acme", emphasis: true }, { text: "2025" }],
+          summary: "How a support team replayed production traces as evals.",
+          tags: ["RAG", "Agents"],
+          extraTagCount: 2,
+          tagVariant: "blue",
+        },
+      ],
+    },
   },
 
   // ── filterable-index (Paper 28, 29) ──────────────────────────────────────

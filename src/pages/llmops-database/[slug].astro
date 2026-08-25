@@ -7,8 +7,10 @@
  * Generates /llmops-database/<slug> for each published entry.
  */
 import { getEntry, render } from "astro:content";
-import Badge from "../../components/Badge.astro";
 import Breadcrumb from "../../components/system/Breadcrumb.astro";
+import MetadataBlock, {
+  type MetadataBlockItem,
+} from "../../components/templates/MetadataBlock.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   buildRelatedIndex,
@@ -66,6 +68,41 @@ const relatedWithTags = await Promise.all(
     };
   }),
 );
+
+// Industry + Technologies meta blocks (mirrored byte-for-byte on the MLOps
+// twin page). Trailing spacing after the block is data-dependent: whichever
+// item renders last owns the gap before the body content.
+const metadataItems: MetadataBlockItem[] = [];
+if (industryEntry) {
+  metadataItems.push({
+    label: "Industry",
+    value: {
+      kind: "chips",
+      chips: [
+        {
+          label: industryEntry.data.name,
+          href: `/industry-tags/${industryEntry.data.slug}`,
+          variant: "primary",
+        },
+      ],
+    },
+  });
+}
+if (tags.length > 0) {
+  metadataItems.push({
+    label: "Technologies",
+    value: {
+      kind: "chips",
+      chips: tags.map((tag) => ({
+        label: tag.name,
+        href: `/llmops-tags/${tag.slug}`,
+        variant: "blue",
+      })),
+    },
+  });
+}
+const metadataTrailingClass =
+  tags.length > 0 ? "mb-space-md" : industryEntry ? "mb-space-sm" : "";
 
 // SEO
 const seoTitle =
@@ -145,28 +182,14 @@ const ogImage = entry.data.seo?.ogImage;
       </div>
     )}
 
-    {/* Industry */}
-    {industryEntry && (
-      <div class="mb-6">
-        <h2 class="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">Industry</h2>
-        <Badge href={`/industry-tags/${industryEntry.data.slug}`} variant="primary">
-          {industryEntry.data.name}
-        </Badge>
-      </div>
-    )}
-
-    {/* Technologies */}
-    {tags.length > 0 && (
-      <div class="mb-8">
-        <h2 class="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">Technologies</h2>
-        <div class="flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <Badge href={`/llmops-tags/${tag.slug}`} variant="blue">
-              {tag.name}
-            </Badge>
-          ))}
-        </div>
-      </div>
+    {/* Industry + Technologies */}
+    {metadataItems.length > 0 && (
+      <MetadataBlock
+        items={metadataItems}
+        labelTag="h2"
+        space="sm"
+        class={metadataTrailingClass}
+      />
     )}
 
     {/* Body content */}

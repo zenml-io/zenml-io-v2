@@ -6,8 +6,10 @@
  * summary, source link, body, and related entries.
  */
 import { getEntry, render } from "astro:content";
-import Badge from "../../components/Badge.astro";
 import Breadcrumb from "../../components/system/Breadcrumb.astro";
+import MetadataBlock, {
+  type MetadataBlockItem,
+} from "../../components/templates/MetadataBlock.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   buildMLOpsRelatedIndex,
@@ -82,6 +84,41 @@ const relatedWithTags = await Promise.all(
     };
   }),
 );
+
+// Industry + MLOps Topics meta blocks (mirrored byte-for-byte on the LLMOps
+// twin page). Trailing spacing after the block is data-dependent: whichever
+// item renders last owns the gap before the body content.
+const metadataItems: MetadataBlockItem[] = [];
+if (industryEntry) {
+  metadataItems.push({
+    label: "Industry",
+    value: {
+      kind: "chips",
+      chips: [
+        {
+          label: industryEntry.data.name,
+          href: `/industry-tags/${industryEntry.data.slug}`,
+          variant: "primary",
+        },
+      ],
+    },
+  });
+}
+if (tags.length > 0) {
+  metadataItems.push({
+    label: "MLOps Topics",
+    value: {
+      kind: "chips",
+      chips: tags.map((tag) => ({
+        label: tag.name,
+        href: `/mlops-tags/${tag.slug}`,
+        variant: "success",
+      })),
+    },
+  });
+}
+const metadataTrailingClass =
+  tags.length > 0 ? "mb-space-md" : industryEntry ? "mb-space-sm" : "";
 
 const seoTitle =
   entry.data.seo?.title || `${entry.data.title} - ZenML MLOps Database`;
@@ -162,26 +199,13 @@ const ogImage = entry.data.seo?.ogImage;
       <p class="text-gray-700">{entry.data.summary}</p>
     </div>
 
-    {industryEntry && (
-      <div class="mb-6">
-        <h2 class="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">Industry</h2>
-        <Badge href={`/industry-tags/${industryEntry.data.slug}`} variant="primary">
-          {industryEntry.data.name}
-        </Badge>
-      </div>
-    )}
-
-    {tags.length > 0 && (
-      <div class="mb-8">
-        <h2 class="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-400">MLOps Topics</h2>
-        <div class="flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <Badge href={`/mlops-tags/${tag.slug}`} variant="success">
-              {tag.name}
-            </Badge>
-          ))}
-        </div>
-      </div>
+    {metadataItems.length > 0 && (
+      <MetadataBlock
+        items={metadataItems}
+        labelTag="h2"
+        space="sm"
+        class={metadataTrailingClass}
+      />
     )}
 
     <div class="prose prose-gray max-w-none">
