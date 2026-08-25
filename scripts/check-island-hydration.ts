@@ -49,11 +49,24 @@
  *   transform we would assert on. Gratuitously timing-sensitive.
  * - BlogSearch: client:media="(min-width: 640px)", so it does not hydrate at all
  *   below that viewport, plus a fetch-on-focus.
- * - MLOpsFilter: a near-identical sibling of LLMOpsFilter. Redundant here.
  * - RoiCalculator: its three range inputs have no id, name or aria-label, so a test
  *   would have to select them positionally — brittle, for a low-traffic page.
- * All four are still covered structurally by the island manifest in
+ * All three are still covered structurally by the island manifest in
  * check-dist-smoke.ts. Please do not "helpfully" add them back here.
+ *
+ * LlmopsIndex, MlopsIndex and IntegrationsIndex (#249) are three separate
+ * thin wrappers around the same shared FilterIndex engine
+ * (src/components/islands/filter-index/), not near-duplicates of each other
+ * the way the old LLMOpsFilter/MLOpsFilter pair was — each wires its own
+ * data source, facet fields and (for Integrations) a DOM-visibility search
+ * mode, so each gets its own real-interaction check below; a bug in one
+ * page's wiring would not be caught by testing another. The planned fourth
+ * route, /blog, is not covered here yet — CategoryBar/TagCloud (the blog
+ * index's current header/footer chrome) turned out to be shared across the
+ * whole blog surface (every post page, plus the category/tag/author hub
+ * pages), not just the index, so migrating the index onto FilterIndex needs
+ * a scope decision beyond this one page first. Add its check here once
+ * that migration lands.
  * - Of the remaining /product/kitaru islands, TwoDoors covers the interactive
  *   contract that has regressed. The others have nothing better to assert on:
  *   Hero's sole interaction is a clipboard write (permission-gated in
@@ -308,6 +321,100 @@ const CHECKS: IslandCheck[] = [
         },
         { selector: status, before },
       );
+    },
+  },
+  {
+    name: "MlopsIndex loads its index and applies an industry facet",
+    route: "/mlops-database",
+    island: "MlopsIndex",
+    seedConsent: true,
+    async assert(page, root) {
+      // Same shape as the LlmopsIndex check above — MlopsIndex is a separate
+      // wiring of the same FilterIndex engine (its own data URL, its own
+      // facet field names), so a broken prop on this page specifically would
+      // not be caught by the LLMOps check.
+      await page.waitForSelector("#mlops-search", { timeout: NAV_TIMEOUT });
+
+      const status = `${root} output[aria-live="polite"]`;
+      const before = (await page.locator(status).innerText()).trim();
+
+      await page
+        .locator(`${root} aside button[aria-pressed="false"]:not([disabled])`)
+        .first()
+        .click();
+
+      await page.waitForSelector(`${root} aside button[aria-pressed="true"]`);
+
+      await page.waitForFunction(
+        (args: { selector: string; before: string }) => {
+          const element = document.querySelector<HTMLElement>(args.selector);
+          return element !== null && element.innerText.trim() !== args.before;
+        },
+        { selector: status, before },
+      );
+    },
+  },
+  {
+    name: "IntegrationsIndex applies a type facet and a search query",
+    route: "/integrations",
+    island: "IntegrationsIndex",
+    seedConsent: true,
+    async assert(page, root) {
+      // IntegrationsIndex is the "control" flavor of FilterIndex: the card
+      // grid is plain Astro-rendered markup (see ControlFilterIndex's
+      // TSDoc), and the island only toggles `display` on [data-slug] cards
+      // by a shared attribute — there is no aria-live result count to read,
+      // so the assertion is the visible-card count itself.
+      const cardCount = () => page.locator("[data-slug]:visible").count();
+
+      const before = await cardCount();
+      if (before === 0) {
+        throw new Error("no [data-slug] cards were visible before filtering");
+      }
+
+      await page
+        .locator(`${root} aside button[aria-pressed="false"]:not([disabled])`)
+        .first()
+        .click();
+
+      await page.waitForFunction(
+        (n: number) =>
+          document.querySelectorAll('[data-slug]:not([style*="display: none"])')
+            .length !== n,
+        before,
+      );
+
+      const afterFacet = await cardCount();
+      if (afterFacet === 0 || afterFacet >= before) {
+        throw new Error(
+          `expected the type facet to narrow the grid below ${before} visible cards, got ${afterFacet}`,
+        );
+      }
+
+      // A real query, not the facet: proves the search box is wired to the
+      // same matching logic, independent of the facet click above. Clear
+      // the facet first so the query is the only active filter.
+      await page
+        .locator(`${root} aside button[aria-pressed="true"]`)
+        .first()
+        .click();
+      // Desktop-sized viewport (the default here), so the sidebar's search
+      // box — not the mobile controls row's duplicate — is the visible one.
+      await page
+        .locator(`${root} #integrations-search-desktop`)
+        .fill("kubernetes");
+
+      await page.waitForFunction(() => {
+        const card = document.querySelector('[data-slug="kubernetes"]');
+        return card !== null && getComputedStyle(card).display !== "none";
+      });
+
+      const searchVisibleCount = await cardCount();
+      if (searchVisibleCount !== 1) {
+        throw new Error(
+          `expected exactly 1 visible card for the "kubernetes" query, got ${searchVisibleCount}`,
+        );
+      }
     },
   },
   {

@@ -87,7 +87,6 @@ export function ControlFilterIndex<T>({
 
   const drawerId = `${idPrefix}-filters-drawer`;
   const drawerTitleId = `${idPrefix}-filters-drawer-title`;
-  const searchId = `${idPrefix}-search`;
 
   const renderFacets = (scope: "desktop" | "mobile") => (
     <FacetRail
@@ -103,26 +102,32 @@ export function ControlFilterIndex<T>({
     />
   );
 
-  const searchBox = (
-    <div class="relative flex-1">
-      <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-        <SearchIcon />
+  // Rendered once per scope (desktop sidebar, mobile controls row) — each
+  // needs its own id, the same way FacetRail scopes its own ids, so the two
+  // <input>s don't collide.
+  const renderSearchBox = (scope: "desktop" | "mobile") => {
+    const searchId = `${idPrefix}-search-${scope}`;
+    return (
+      <div class="relative flex-1">
+        <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+          <SearchIcon />
+        </div>
+        <label for={searchId} class="sr-only">
+          {searchAriaLabel ?? "Search"}
+        </label>
+        <input
+          id={searchId}
+          type="search"
+          value={state.query}
+          onInput={(e) =>
+            state.handleQueryChange((e.target as HTMLInputElement).value)
+          }
+          placeholder={searchPlaceholder ?? "Search..."}
+          class="w-full rounded-lg border border-gray-300 py-2.5 pl-9 pr-4 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600"
+        />
       </div>
-      <label for={searchId} class="sr-only">
-        {searchAriaLabel ?? "Search"}
-      </label>
-      <input
-        id={searchId}
-        type="search"
-        value={state.query}
-        onInput={(e) =>
-          state.handleQueryChange((e.target as HTMLInputElement).value)
-        }
-        placeholder={searchPlaceholder ?? "Search..."}
-        class="w-full rounded-lg border border-gray-300 py-2.5 pl-9 pr-4 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600"
-      />
-    </div>
-  );
+    );
+  };
 
   return (
     <div class="flex flex-col gap-8 lg:flex-row lg:gap-12">
@@ -144,13 +149,13 @@ export function ControlFilterIndex<T>({
             </span>
           )}
         </button>
-        {searchBox}
+        {renderSearchBox("mobile")}
       </div>
 
       {/* Desktop sidebar */}
       <aside class="hidden lg:block lg:w-56 lg:shrink-0">
         <div class="sticky top-24 flex flex-col gap-4">
-          {searchBox}
+          {renderSearchBox("desktop")}
           {renderFacets("desktop")}
         </div>
       </aside>
