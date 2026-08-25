@@ -466,7 +466,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 1,
     notes:
-      "Reproduces LLMOpsFilter's current renderEmptyState look literally (bg-gray-50 card, not tone tokens) for pixel-parity migration. At most one recovery action — a second belongs on the caller's own markup, not this primitive. Preact twin at EmptyState.tsx, required because the main consumers (LLMOpsFilter, MLOpsFilter, BlogSearch) are islands.",
+      "Reproduces the LLMOps/MLOps filter empty-state look (bg-gray-50 card, not tone tokens); that surface itself is FilterEmptyState.tsx, which shares this primitive's class constants but stays outside its contract by design. At most one recovery action — a second belongs on the caller's own markup, not this primitive. Preact twin at EmptyState.tsx, required because island consumers (BlogSearch) can't import .astro components.",
     demoProps: {
       heading: 'No entries tagged "vector-database" yet.',
       description: "This tag is used by 0 of 2,026 database entries.",

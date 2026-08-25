@@ -23,17 +23,28 @@
  *      entry, not a separate registered unit.
  *   2. Every entry with a componentPath points at a file that exists.
  *   3. No duplicate ids.
- *   4. Any `contentShape` present has a sane range: minItems >= 0,
- *      maxItems >= minItems.
+ *   4. Any `contentShape` present has a sane range: minItems and maxItems
+ *      are both non-negative integers when set, and maxItems >= minItems
+ *      when both are set. A negative maxItems is rejected even when
+ *      minItems is absent — the two bounds are checked independently.
  *   5. Entries flagged `collectionBound: true` (see `TemplateEntry` in
- *      registry.ts) declare a `contentShape` once they are built
- *      (componentPath set). This is a forward gate — every flagged entry is
- *      still `componentPath: null` today, so it does not fail yet, but a
- *      build in a later wave cannot land a real component without also
- *      filling in its budgets. Keyed on the flag itself, not a family-name
- *      list — an earlier version matched on family name and the list
- *      silently stopped matching any real registry entry, making the gate
- *      permanently vacuous without failing or warning.
+ *      registry.ts) declare a *complete* `contentShape` once they are built
+ *      (componentPath set): minItems, maxItems, and a non-empty `overflow`
+ *      rule (whitespace-only doesn't count). `contentShape: {}` no longer
+ *      passes — each missing piece is named. This is a forward gate — every
+ *      flagged entry is still `componentPath: null` today, so it does not
+ *      fail yet, but a build in a later wave cannot land a real component
+ *      without also filling in its budgets. Keyed on the flag itself, not a
+ *      family-name list — an earlier version matched on family name and the
+ *      list silently stopped matching any real registry entry, making the
+ *      gate permanently vacuous without failing or warning.
+ *
+ *   Checks 3–5 are filesystem-free, so they live in the pure
+ *   `findRegistryShapeViolations()` (src/lib/templates/registryCheck.ts) and
+ *   are exercised against synthetic bad registries in
+ *   tests/lib/registryCheck.test.ts — this script only ever ran them against
+ *   the one real, valid registry, which meant a rejection branch could go
+ *   silently dead and nothing would notice.
  *
  * What it reports but does not fail on:
  *   - Adoption count per template, counted from real imports. Zero adoption is a
@@ -51,6 +62,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 
+import { findRegistryShapeViolations } from "../src/lib/templates/registryCheck.ts";
 import { TEMPLATE_REGISTRY, statusOf } from "../src/lib/templates/registry.ts";
 
 const ROOT = resolve(process.cwd());
@@ -132,15 +144,6 @@ function countAdoption(componentPath: string): number {
 function check(): void {
   const violations: string[] = [];
 
-  // 3. Duplicate ids
-  const seen = new Set<string>();
-  for (const entry of TEMPLATE_REGISTRY) {
-    if (seen.has(entry.id)) {
-      violations.push(`  duplicate id in registry: ${entry.id}`);
-    }
-    seen.add(entry.id);
-  }
-
   // 2. Entries pointing at files that do not exist
   const registeredPaths = new Set<string>();
   for (const entry of TEMPLATE_REGISTRY) {
@@ -169,35 +172,10 @@ function check(): void {
     }
   }
 
-  // 4. contentShape ranges must be sane
-  for (const entry of TEMPLATE_REGISTRY) {
-    const shape = entry.contentShape;
-    if (!shape) continue;
-    if (shape.minItems !== undefined && shape.minItems < 0) {
-      violations.push(`  ${entry.id} — contentShape.minItems is negative: ${shape.minItems}`);
-    }
-    if (
-      shape.minItems !== undefined &&
-      shape.maxItems !== undefined &&
-      shape.maxItems < shape.minItems
-    ) {
-      violations.push(
-        `  ${entry.id} — contentShape.maxItems (${shape.maxItems}) is less than minItems (${shape.minItems})`,
-      );
-    }
-  }
-
-  // 5. collectionBound entries need contentShape once built (forward gate)
-  for (const entry of TEMPLATE_REGISTRY) {
-    if (!entry.collectionBound) continue;
-    if (!entry.componentPath) continue; // not built yet — the gate does not apply
-    if (!entry.contentShape) {
-      violations.push(
-        `  ${entry.id} — collectionBound but has no contentShape\n` +
-          `    Add minItems/maxItems and the overflow behaviour before this ships.`,
-      );
-    }
-  }
+  // 3–5. Duplicate ids, contentShape range sanity, collectionBound forward
+  // gate — all filesystem-free, so they live in the pure, independently
+  // tested checker.
+  violations.push(...findRegistryShapeViolations(TEMPLATE_REGISTRY));
 
   const built = TEMPLATE_REGISTRY.filter((e) => statusOf(e) === "built");
   const planned = TEMPLATE_REGISTRY.length - built.length;

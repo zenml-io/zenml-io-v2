@@ -1,14 +1,18 @@
 /**
- * Shared class strings for EmptyState.astro and EmptyState.tsx (#248).
+ * Shared class strings and renderer Props contract for EmptyState.astro and
+ * EmptyState.tsx (#248).
  *
  * Plain TS, no framework import, so both the Astro primitive and its Preact
  * twin can pull from the same source instead of hand-copying class strings
- * into two files that then drift apart.
+ * (or a Props list) into two files that then drift apart.
  *
- * The container/heading/description classes reproduce the current
- * LLMOpsFilter empty state (`src/components/islands/LLMOpsFilter.tsx`,
- * `renderEmptyState`) literally, so a future migration of that island onto
- * this primitive is pixel-identical. The action classes build on
+ * The container/heading/description classes reproduce the LLMOps/MLOps
+ * filter empty state — since extracted to
+ * `src/components/islands/shared/FilterEmptyState.tsx`, which imports the
+ * heading/inner/description constants below (while staying outside the
+ * EmptyState contract by design — see its TSDoc), so the two surfaces stay
+ * pixel-identical (spacing via the equivalent named tokens).
+ * The action classes build on
  * `../../lib/buttonStyles`'s shared constants — `solid`/`outline`/`ghost`
  * weights map onto Button.astro's `primary`/`secondary`/`ghost` variants —
  * rather than hand-copying those strings a second time (never import the
@@ -19,14 +23,14 @@ import {
   BUTTON_SIZE_CLASSES,
   BUTTON_VARIANT_CLASSES,
 } from "../../lib/buttonStyles";
-import type { CtaProps } from "../../lib/section";
+import type { CtaProps, EmptyStateProps } from "../../lib/section";
 
 export const EMPTY_STATE_CONTAINER =
-  "flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-gray-50 py-16 text-center";
-export const EMPTY_STATE_INNER = "mx-auto max-w-md px-4";
+  "flex flex-col items-center justify-center rounded-lg border border-gray-200 bg-gray-50 py-space-xl text-center";
+export const EMPTY_STATE_INNER = "mx-auto max-w-md px-space-xs";
 export const EMPTY_STATE_HEADING = "text-lg font-medium text-gray-700";
-export const EMPTY_STATE_DESCRIPTION = "mt-2 text-sm text-gray-500";
-export const EMPTY_STATE_ACTION_WRAP = "mt-4 flex justify-center";
+export const EMPTY_STATE_DESCRIPTION = "mt-space-xxs text-sm text-gray-500";
+export const EMPTY_STATE_ACTION_WRAP = "mt-space-xs flex justify-center";
 
 /**
  * Reserved height when `reserveHeight` is true and a call site doesn't pass
@@ -62,6 +66,26 @@ export interface EmptyStateClassOverrides {
   container?: string;
   inner?: string;
   heading?: string;
+}
+
+/**
+ * The twins' full renderer contract: the shared `EmptyStateProps` content
+ * contract plus the layout-level props both renderers accept. Declared once
+ * here — the same lockstep mechanism as the class strings above — so the two
+ * files' Props cannot drift apart (they did once: `.astro` grew `id` and
+ * `.tsx` silently didn't; `tests/lib/emptyStateParity.test.ts` guards the
+ * pattern). `id` is layout-specific — a hook for a node a vanilla `<script>`
+ * toggles by id (integrations) — and deliberately not part of the shared
+ * `EmptyStateProps` content contract in `src/lib/section.ts`.
+ */
+export interface EmptyStateRendererProps extends EmptyStateProps {
+  /** Tailwind min-height utility applied when reserveHeight is true (e.g. "min-h-[36rem]"). Ignored when reserveHeight is false. */
+  minHeightClass?: string;
+  class?: string;
+  id?: string;
+  classOverrides?: EmptyStateClassOverrides;
+  /** Default "status". Pass null to render no role attribute at all. */
+  role?: string | null;
 }
 
 /**

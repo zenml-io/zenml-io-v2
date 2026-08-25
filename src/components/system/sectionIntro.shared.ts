@@ -7,11 +7,12 @@
  * logic that affects markup lives here once, so the twins can't drift out
  * of lockstep — each of them only wires these values into JSX/Astro syntax.
  *
- * Classes below reproduce the current ZenML house idiom exactly (copied from
- * real call sites — see e.g. FeatureHero.astro, VsHero.astro,
+ * Classes below reproduce the current ZenML house idiom (copied from real
+ * call sites — see e.g. FeatureHero.astro, VsHero.astro,
  * ComplianceSection.astro, BookingExperience.astro's emphasis span) so that
- * migrating a call site to `<SectionIntro>` is pixel-identical. Do not tune
- * these values for taste; that's a separate, deliberate change.
+ * migrating a call site to `<SectionIntro>` is pixel-identical (spacing via
+ * the equivalent named tokens). Do not tune these values for taste; that's a
+ * separate, deliberate change.
  */
 import type { SectionIntroProps } from "../../lib/section";
 
@@ -20,7 +21,7 @@ export const SECTION_INTRO_CLASSES = {
   heading: "text-3xl font-bold text-gray-900 sm:text-4xl",
   emphasis: "text-zenml-500",
   description: "text-lg text-gray-600 leading-relaxed",
-  link: "inline-flex items-center gap-2 text-base font-semibold text-zenml-500 transition-colors hover:text-zenml-600",
+  link: "inline-flex items-center gap-space-xxs text-base font-semibold text-zenml-500 transition-colors hover:text-zenml-600",
   linkIcon: "h-5 w-5",
   /** Stacked + center: the house pattern for every centered intro on the site. */
   centeredWrap: "mx-auto max-w-3xl text-center",

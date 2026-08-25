@@ -15,17 +15,19 @@
  * grid is a different height, so pass `minHeightClass` with the real value
  * (e.g. `min-h-[36rem]`) — the built-in fallback is only a rough default.
  *
- * Reproduces the current LLMOpsFilter empty state's look (bg-gray-50 card,
- * muted text, no illustration, no icon) so migrating that island onto this
- * primitive is pixel-identical. Has a required Preact twin
- * (`EmptyState.tsx`) because the main consumers — LLMOpsFilter, MLOpsFilter,
- * BlogSearch — are islands, which cannot import `.astro` components.
+ * Reproduces the LLMOps/MLOps filter empty state's look (bg-gray-50 card,
+ * muted text, no illustration, no icon) — that state now lives in
+ * `FilterEmptyState.tsx`, which shares this primitive's class constants but
+ * stays outside its contract by design (a multi-action menu, not a single
+ * recovery link). Has a required Preact twin (`EmptyState.tsx`) because
+ * island consumers like BlogSearch cannot import `.astro` components.
  *
- * `classOverrides` (container/inner/heading) and `id` exist for migrating a
- * pre-#248 empty state whose shape isn't the house card — a dropdown row
- * (BlogSearch), a bare build-time `<p>` (tags/category/author), or a node a
- * vanilla `<script>` toggles by id (integrations). `id` is layout-specific,
- * not part of the shared `EmptyStateProps` contract.
+ * `classOverrides` (container/inner/heading) and `id` — both present on the
+ * Preact twin too — exist for migrating a pre-#248 empty state whose shape
+ * isn't the house card — a dropdown row (BlogSearch), a bare build-time
+ * `<p>` (tags/category/author), or a node a vanilla `<script>` toggles by id
+ * (integrations). `id` is layout-specific, not part of the shared
+ * `EmptyStateProps` contract.
  *
  * `role` defaults to `"status"`. Pass `null` when the host already carries
  * its own ARIA role that governs this node's children — e.g. BlogSearch's
@@ -33,26 +35,19 @@
  * only, so a `role="status"` empty-state row inside it is an
  * aria-required-children violation.
  */
-import type { EmptyStateProps } from "../../lib/section";
 import {
   EMPTY_STATE_ACTION_WRAP,
   EMPTY_STATE_DESCRIPTION,
   EMPTY_STATE_HEADING,
   EMPTY_STATE_INNER,
-  type EmptyStateClassOverrides,
+  type EmptyStateRendererProps,
   emptyStateActionClasses,
   emptyStateContainerClasses,
 } from "./emptyStateStyles";
 
-interface Props extends EmptyStateProps {
-  /** Tailwind min-height utility applied when reserveHeight is true (e.g. "min-h-[36rem]"). Ignored when reserveHeight is false. */
-  minHeightClass?: string;
-  class?: string;
-  id?: string;
-  classOverrides?: EmptyStateClassOverrides;
-  /** Default "status". Pass null to render no role attribute at all. */
-  role?: string | null;
-}
+// One shared Props contract for both twins (see its TSDoc in
+// emptyStateStyles.ts) — neither file declares its own, so they can't drift.
+type Props = EmptyStateRendererProps;
 
 const {
   heading,
