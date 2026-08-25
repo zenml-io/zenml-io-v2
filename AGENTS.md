@@ -22,6 +22,7 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 
 ## Build, Test, and Development Commands
 - `pnpm install` installs dependencies.
+- pnpm settings (`overrides`, `onlyBuiltDependencies`) live in `pnpm-workspace.yaml`, never in a `pnpm` field in `package.json` — pnpm 11 (which Dependabot runs) ignores that field. Why: see "Development Conventions" in `CLAUDE.md`.
 - `pnpm dev` starts local dev server at `http://localhost:4321`.
 - `pnpm build` runs Astro build and Pagefind indexing (`dist/` output).
 - `pnpm preview` serves `dist/` through the checked-in Cloudflare Workers configuration.
