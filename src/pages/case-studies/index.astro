@@ -27,6 +27,13 @@ const allCaseStudies = await getCollection(
 const caseStudies = allCaseStudies.sort(
   (a, b) => (a.data.hub.order ?? 99) - (b.data.hub.order ?? 99),
 );
+
+// The LLMOps banner splits the grid after at most one full row of cards, so
+// it still sits between rows when there are fewer cards than a row holds.
+const CARDS_BEFORE_BANNER = 3;
+const bannerIndex = Math.min(CARDS_BEFORE_BANNER, caseStudies.length);
+const cardsBeforeBanner = caseStudies.slice(0, bannerIndex);
+const cardsAfterBanner = caseStudies.slice(bannerIndex);
 ---
 
 <BaseLayout
@@ -60,12 +67,12 @@ const caseStudies = allCaseStudies.sort(
       </div>
     </PageHeader>
 
-    {/* Case study cards + LLMOps banner — Webflow layout: 3 cards, banner, 2 cards */}
+    {/* Case study cards, split by the LLMOps banner */}
     <section class="bg-white py-16 sm:py-20">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* First row: 3 cards */}
+        {/* First row */}
         <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {caseStudies.slice(0, 3).map((cs) => (
+          {cardsBeforeBanner.map((cs) => (
             <CaseStudyCard
               href={`/case-study/${cs.data.slug}`}
               title={cs.data.hub.cardTitle}
@@ -91,9 +98,9 @@ const caseStudies = allCaseStudies.sort(
         </a>
 
         {/* Second row: remaining cards */}
-        {caseStudies.length > 3 && (
+        {cardsAfterBanner.length > 0 && (
           <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {caseStudies.slice(3).map((cs) => (
+            {cardsAfterBanner.map((cs) => (
               <CaseStudyCard
                 href={`/case-study/${cs.data.slug}`}
                 title={cs.data.hub.cardTitle}
