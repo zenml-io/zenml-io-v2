@@ -68,6 +68,20 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
     covers:
       "MDX compare-page body: component imports, ComparisonTable, CodeCompare panes (Shiki)",
   },
+  {
+    page: "projects/floracast.html",
+    selector: ".prose",
+    golden: "project-floracast.html",
+    covers:
+      "project details column: the hand-rolled markdown-to-HTML converter (headings, paragraphs, pass-through raw HTML)",
+  },
+  {
+    page: "projects/sign-language-detection-with-yolov5.html",
+    selector: ".prose",
+    golden: "project-sign-language-detection-with-yolov5.html",
+    covers:
+      "project details column where the stack section holds the body's only <ul> — the split leaves a details region with no list",
+  },
 ];
 
 /**
