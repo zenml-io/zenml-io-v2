@@ -2,22 +2,19 @@
 /**
  * Project detail page.
  *
- * Matches Webflow's detail_projects template: header with back link + project
- * image + title, then a 2-column layout with sticky left sidebar (project
- * metadata rows) and right content column (details + gallery).
- *
- * Body splitting: Webflow stores Pipelines, Recommended Stack, and Details as
- * separate CMS fields. Our Phase 1 export merged them into one markdown body.
- * We parse the body at build time to split them back:
- *   - #### headings before "Stack Components" → Pipelines (sidebar)
- *   - #### Stack Components <ul>...</ul> → Recommended Stack (sidebar)
- *   - Everything after → Details (right column)
+ * Header with back link + project image + title, then a 2-column layout with
+ * a sticky left sidebar (project metadata rows) and a right content column
+ * (details + gallery).
  *
  * Route: /projects/<slug>
  */
 import { getCollection } from "astro:content";
 import Button from "../../components/Button.astro";
+import DescriptionList, {
+  type DescriptionListItem,
+} from "../../components/templates/DescriptionList.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { markdownToHtml } from "../../lib/projectBody";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects", ({ data }) => !data.draft);
@@ -28,98 +25,67 @@ export async function getStaticPaths() {
 }
 
 const { project } = Astro.props;
+const {
+  title,
+  description,
+  projectId,
+  githubUrl,
+  pipelines,
+  stackHtml,
+  tools,
+  tags,
+  mainImageLink,
+  previewImage,
+} = project.data;
 
-const seoTitle =
-  project.data.seo?.title || `${project.data.title} - ZenML Projects`;
-const seoDescription =
-  project.data.seo?.description || project.data.description;
+const seoTitle = project.data.seo?.title || `${title} - ZenML Projects`;
+const seoDescription = project.data.seo?.description || description;
 
-/**
- * Parse the raw markdown body into three sections matching Webflow's CMS fields.
- * Pattern: #### Pipeline headings → #### Stack Components <ul> → main description
- */
-interface Pipeline {
-  name: string;
-  description: string;
+const detailsHtml = markdownToHtml((project.body ?? "").trim());
+
+const sidebarItems: DescriptionListItem[] = [
+  { term: "Project", value: { kind: "text", text: title } },
+];
+if (projectId) {
+  sidebarItems.push({
+    term: "Project ID",
+    value: {
+      kind: "identifier",
+      text: projectId,
+      note: "Use this id to create a new project in ZenML",
+    },
+  });
 }
-
-function splitBody(body: string): {
-  pipelines: Pipeline[];
-  stackHtml: string;
-  detailsHtml: string;
-} {
-  const pipelines: Pipeline[] = [];
-  let stackHtml = "";
-  let detailsRaw = "";
-
-  // Find the Stack Components marker
-  const stackIdx = body.indexOf("#### Stack Components");
-
-  if (stackIdx === -1) {
-    // No pipelines/stack section — entire body is details
-    return {
-      pipelines: [],
-      stackHtml: "",
-      detailsHtml: markdownToHtml(body.trim()),
-    };
-  }
-
-  // Everything before Stack Components is pipeline entries
-  const pipelinesRaw = body.substring(0, stackIdx);
-  const pipelineRegex = /####\s+(.+)\n\n([\s\S]*?)(?=####|\s*$)/g;
-  let match: RegExpExecArray | null = pipelineRegex.exec(pipelinesRaw);
-  while (match !== null) {
-    pipelines.push({
-      name: match[1].trim(),
-      description: match[2].trim(),
-    });
-    match = pipelineRegex.exec(pipelinesRaw);
-  }
-
-  // Extract stack HTML (<ul>...</ul>) and everything after it
-  const afterStack = body.substring(stackIdx);
-  const ulStart = afterStack.indexOf("<ul>");
-  const ulEnd = afterStack.indexOf("</ul>");
-
-  if (ulStart !== -1 && ulEnd !== -1) {
-    stackHtml = afterStack.substring(ulStart, ulEnd + 5);
-    detailsRaw = afterStack.substring(ulEnd + 5).trim();
-  } else {
-    // No <ul> found — rest is details
-    detailsRaw = afterStack.replace(/####\s+Stack Components\s*/, "").trim();
-  }
-
-  return {
-    pipelines,
-    stackHtml,
-    detailsHtml: markdownToHtml(detailsRaw),
-  };
+if (githubUrl) {
+  sidebarItems.push({
+    term: "GitHub Repository",
+    value: { kind: "link", href: githubUrl, label: githubUrl },
+  });
 }
-
-/** Minimal markdown-to-HTML for the details section (headings + paragraphs). */
-function markdownToHtml(md: string): string {
-  if (!md) return "";
-  return (
-    md
-      // Convert ### headings
-      .replace(/^### (.+)$/gm, "<h3>$1</h3>")
-      // Convert #### headings
-      .replace(/^#### (.+)$/gm, "<h4>$1</h4>")
-      // Wrap plain text paragraphs (lines not starting with < or empty)
-      .split("\n\n")
-      .map((block) => {
-        const trimmed = block.trim();
-        if (!trimmed) return "";
-        // Already HTML (starts with < tag)
-        if (trimmed.startsWith("<")) return trimmed;
-        return `<p>${trimmed}</p>`;
-      })
-      .filter(Boolean)
-      .join("\n")
-  );
+if (pipelines.length > 0) {
+  sidebarItems.push({
+    term: "Pipelines",
+    value: { kind: "entries", entries: pipelines },
+  });
 }
-
-const { pipelines, stackHtml, detailsHtml } = splitBody(project.body || "");
+if (stackHtml) {
+  sidebarItems.push({
+    term: "Recommended Stack",
+    value: { kind: "html", html: stackHtml },
+  });
+}
+if (tools.length > 0) {
+  sidebarItems.push({
+    term: "Tools",
+    value: { kind: "chips", chips: tools, tone: "neutral" },
+  });
+}
+if (tags.length > 0) {
+  sidebarItems.push({
+    term: "Tags",
+    value: { kind: "chips", chips: tags, tone: "brand" },
+  });
+}
 ---
 
 <BaseLayout
@@ -130,12 +96,11 @@ const { pipelines, stackHtml, detailsHtml } = splitBody(project.body || "");
   {/* Header: back link + project image + title */}
   <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
     <div class="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
-      {/* Project image — uses mainImageLink (the colorful gradient), matching Webflow */}
-      {project.data.mainImageLink && (
+      {mainImageLink && (
         <div class="flex h-[180px] w-[180px] flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border border-gray-300 bg-white">
           <img
-            src={project.data.mainImageLink}
-            alt={project.data.title}
+            src={mainImageLink}
+            alt={title}
             class="h-full w-full object-cover"
           />
         </div>
@@ -150,9 +115,9 @@ const { pipelines, stackHtml, detailsHtml } = splitBody(project.body || "");
           </svg>
           All Projects
         </a>
-        <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">{project.data.title}</h1>
-        {project.data.description && (
-          <p class="mt-2 text-lg leading-relaxed text-gray-600">{project.data.description}</p>
+        <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">{title}</h1>
+        {description && (
+          <p class="mt-2 text-lg leading-relaxed text-gray-600">{description}</p>
         )}
       </div>
     </div>
@@ -165,121 +130,39 @@ const { pipelines, stackHtml, detailsHtml } = splitBody(project.body || "");
       {/* Left column: sticky sidebar */}
       <div class="lg:sticky lg:top-20 lg:self-start">
         <div class="overflow-hidden rounded-lg bg-gray-50">
-          {/* Sidebar image — uses mainImageLink (same as header) matching Webflow */}
-          {project.data.mainImageLink && (
+          {mainImageLink && (
             <div class="flex h-[140px] items-center justify-center overflow-hidden">
               <img
-                src={project.data.mainImageLink}
-                alt={project.data.title}
+                src={mainImageLink}
+                alt={title}
                 class="h-full w-full object-cover"
                 loading="lazy"
               />
             </div>
           )}
 
-          {/* Project details rows */}
-          <div class="divide-y divide-gray-100">
-            {/* Project name */}
-            <div class="px-4 py-3 first:pt-4">
-              <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Project</div>
-              <div class="mt-1 text-base font-semibold text-gray-900">{project.data.title}</div>
-            </div>
-
-            {/* Project ID */}
-            {project.data.projectId && (
-              <div class="px-4 py-3">
-                <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Project ID</div>
-                <div class="mt-1 font-mono text-lg text-[#7f56d9]">{project.data.projectId}</div>
-                <p class="mt-0.5 text-xs text-gray-500">Use this id to create a new project in ZenML</p>
-              </div>
-            )}
-
-            {/* GitHub repository */}
-            {project.data.githubUrl && (
-              <div class="px-4 py-3">
-                <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">GitHub Repository</div>
-                <a
-                  href={project.data.githubUrl}
-                  class="mt-1 block text-sm text-gray-600 hover:text-zenml-500 break-all transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {project.data.githubUrl}
-                </a>
-              </div>
-            )}
-
-            {/* Pipelines — extracted from body, matching Webflow's separate CMS field */}
-            {pipelines.length > 0 && (
-              <div class="px-4 py-3">
-                <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Pipelines</div>
-                <div class="mt-2 space-y-3">
-                  {pipelines.map((p) => (
-                    <div>
-                      <div class="text-sm font-semibold text-gray-900">{p.name}</div>
-                      {p.description && (
-                        <p class="mt-0.5 text-sm text-gray-600">{p.description}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Recommended Stack — extracted from body */}
-            {stackHtml && (
-              <div class="px-4 py-3">
-                <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Recommended Stack</div>
-                <div class="mt-2 text-sm text-gray-700 [&_li]:mt-1 [&_strong]:font-semibold" set:html={stackHtml} />
-              </div>
-            )}
-
-            {/* Tools */}
-            {project.data.tools.length > 0 && (
-              <div class="px-4 py-3">
-                <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Tools</div>
-                <div class="mt-2 flex flex-wrap gap-1.5">
-                  {project.data.tools.map((tool: string) => (
-                    <span class="rounded-full bg-gray-100 px-2.5 py-0.5 text-sm font-semibold text-gray-700">
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Tags */}
-            {project.data.tags.length > 0 && (
-              <div class="px-4 py-3 last:pb-4">
-                <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Tags</div>
-                <div class="mt-2 flex flex-wrap gap-1.5">
-                  {project.data.tags.map((tag: string) => (
-                    <span class="rounded-full bg-zenml-50 px-2.5 py-0.5 text-sm font-semibold text-zenml-500">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+          <DescriptionList
+            items={sidebarItems}
+            frame="divided"
+            termTone="muted"
+          />
         </div>
       </div>
 
       {/* Right column: details + gallery */}
       <div>
-        {/* Details section — only the main description, not pipelines/stack */}
-        <div class:list={["pb-6 mb-6", project.data.previewImage?.url && "border-b border-gray-100"]}>
+        <div class:list={["pb-6 mb-6", previewImage?.url && "border-b border-gray-100"]}>
           <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Details</div>
           <div class="prose prose-gray mt-3 max-w-none" set:html={detailsHtml} />
         </div>
 
-        {/* Gallery — show previewImage (the architecture/pipeline diagram) */}
-        {project.data.previewImage?.url && (
+        {/* Gallery — the architecture/pipeline diagram */}
+        {previewImage?.url && (
           <div>
             <div class="text-xs font-semibold uppercase tracking-wider text-gray-400">Gallery</div>
             <img
-              src={project.data.previewImage.url}
-              alt={project.data.previewImage.alt || project.data.title}
+              src={previewImage.url}
+              alt={previewImage.alt || title}
               class="mt-3 w-full rounded-lg"
               loading="lazy"
             />
