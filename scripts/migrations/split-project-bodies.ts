@@ -148,6 +148,16 @@ let failures = 0;
 for (const name of files) {
   const path = join(CONTENT_DIR, name);
   const raw = readFileSync(path, "utf8");
+
+  // Already migrated: the body has no marker left to split, so a second pass
+  // would compare an empty split against the frontmatter it wrote last time
+  // and report a mismatch that means nothing.
+  const existing = matter(raw).data;
+  if (existing.pipelines !== undefined || existing.stackHtml !== undefined) {
+    console.log(`↷ ${name}: already migrated`);
+    continue;
+  }
+
   const expected = splitBody(matter(raw).content);
 
   const { frontmatter, body } = splitFile(raw);
