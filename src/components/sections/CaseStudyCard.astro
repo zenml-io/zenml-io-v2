@@ -2,8 +2,12 @@
 /**
  * CaseStudyCard — card component for the case studies hub grid.
  *
- * Matches the Webflow uui-layout47_content layout: logo(s), title,
- * and "Learn more" link as separate clickable elements (no card border/shadow).
+ * Logo row, title, and "Learn more" affordance, with no card border or
+ * shadow. The whole card is one link: the title anchor stretches a
+ * `::before` overlay across the card box, so the logos and the "Learn
+ * more" row stay non-interactive content rather than repeating the same
+ * destination as extra tab stops. Hover state is driven from the card
+ * container via `group-hover`, since the overlay is the hit target.
  */
 interface Props {
   href: string;
@@ -14,9 +18,9 @@ interface Props {
 const { href, title, logos } = Astro.props;
 ---
 
-<div class="group flex flex-col">
+<div class="group relative flex flex-col">
   {logos.length > 0 && (
-    <a href={href} class="flex items-center gap-3">
+    <div class="flex items-center gap-3">
       {logos.map((logo) => (
         <img
           src={logo.url}
@@ -25,20 +29,19 @@ const { href, title, logos } = Astro.props;
           loading="lazy"
         />
       ))}
-    </a>
+    </div>
   )}
-  <div class="mt-4"></div>
-  <a href={href} class="block">
-    <h3 class="text-lg font-semibold leading-snug text-gray-900 transition hover:text-zenml-500">
+  <h3 class="mt-4 text-lg font-semibold leading-snug text-gray-900 transition group-hover:text-zenml-500">
+    <a href={href} class="before:absolute before:inset-0 before:content-['']">
       {title}
-    </h3>
-  </a>
+    </a>
+  </h3>
   <div class="mt-auto pt-4">
-    <a href={href} class="inline-flex items-center text-sm font-semibold text-zenml-500 transition hover:text-zenml-600">
+    <span class="inline-flex items-center text-sm font-semibold text-zenml-500 transition group-hover:text-zenml-600">
       Learn more
       <svg class="ml-1 h-4 w-4 transition group-hover:translate-x-0.5" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M4.667 10h11.666m0 0L10.5 4.167M16.333 10 10.5 15.833" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-    </a>
+    </span>
   </div>
 </div>
