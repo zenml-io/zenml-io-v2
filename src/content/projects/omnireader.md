@@ -34,6 +34,12 @@ tools:
 createdAt: "2025-04-09T13:00:04.601Z"
 updatedAt: "2025-08-26T08:33:58.952Z"
 projectId: "omni-reader"
+pipelines:
+  - name: "Batch OCR Pipeline"
+    description: "Pipeline for efficient processing of large document volumes, extracting text using selected models."
+  - name: "Evaluation Pipeline"
+    description: "Pipeline for comparing model outputs against ground truth data using quantitative metrics."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> sagemaker</li><li><strong>Artifact Store:</strong> s3</li></ul>"
 seo:
   title: "OmniReader"
   description: "A scalable multi-model OCR workflow framework for batch document processing and model evaluation."
@@ -43,15 +49,7 @@ seo:
   ogDescription: "A scalable multi-model OCR workflow framework for batch document processing and model evaluation."
 ---
 
-#### Batch OCR Pipeline
-
-Pipeline for efficient processing of large document volumes, extracting text using selected models.
-
-#### Evaluation Pipeline
-
-Pipeline for comparing model outputs against ground truth data using quantitative metrics.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> sagemaker</li><li><strong>Artifact Store:</strong> s3</li></ul>OmniReader is a flexible, scalable multi-model OCR workflow that orchestrates document processing pipelines, integrates various vision-language models, and tracks performance metrics to ensure reliable text extraction at scale.
+OmniReader is a flexible, scalable multi-model OCR workflow that orchestrates document processing pipelines, integrates various vision-language models, and tracks performance metrics to ensure reliable text extraction at scale.
 
 ### What It Does
 

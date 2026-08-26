@@ -31,6 +31,10 @@ tools:
 createdAt: "2025-03-24T11:02:59.609Z"
 updatedAt: "2025-08-26T08:33:54.059Z"
 projectId: "gamesense"
+pipelines:
+  - name: "LLM PEFT Full Finetune"
+    description: "Pipeline for finetuning an LLM with peft. It runs prepare_data, finetune, evaluate_model, and promote steps."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> default</li><li><strong>Step Operator:</strong> default</li></ul>"
 seo:
   title: "GameSense: The LLM That Understands Gamers"
   description: "Elevate your gaming platform with an AI that translates player language into actionable data. A model that understands gaming terminology, extracts key attributes, and structures conversations for intelligent recommendations and support."
@@ -40,11 +44,7 @@ seo:
   ogDescription: "Elevate your gaming platform with an AI that translates player language into actionable data. A model that understands gaming terminology, extracts key attributes, and structures conversations for intelligent recommendations and support."
 ---
 
-#### LLM PEFT Full Finetune
-
-Pipeline for finetuning an LLM with peft. It runs prepare_data, finetune, evaluate_model, and promote steps.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> default</li><li><strong>Step Operator:</strong> default</li></ul>GameSense is a specialized language model that understands gaming terminology and player communication, transforming casual conversations into structured, actionable data for gaming platforms.
+GameSense is a specialized language model that understands gaming terminology and player communication, transforming casual conversations into structured, actionable data for gaming platforms.
 
 ### What It Does
 

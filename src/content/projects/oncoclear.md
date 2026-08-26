@@ -30,6 +30,16 @@ tools:
 createdAt: "2025-04-17T14:52:00.368Z"
 updatedAt: "2025-08-26T08:33:52.698Z"
 projectId: "oncoclear"
+pipelines:
+  - name: "Feature Engineering Pipeline"
+    description: "Pipeline that loads the Wisconsin Breast Cancer diagnostic dataset, performs preprocessing, and splits data into training and testing sets."
+  - name: "Training Pipeline"
+    description: "Pipeline that trains classification models (SGD and Random Forest) and evaluates them on test data, promoting the best performer to production."
+  - name: "Inference Pipeline"
+    description: "Pipeline that uses the production model to generate predictions on new data, leveraging the same preprocessing as during training."
+  - name: "Deployment Pipeline"
+    description: "Pipeline that deploys the production model as a FastAPI service, making it accessible via REST API with interactive Swagger documentation."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> default</li><li><strong>Step Operator:</strong> default</li></ul>"
 seo:
   title: "OncoClear"
   description: "A production-ready MLOps pipeline for accurate breast cancer classification using machine learning."
@@ -39,23 +49,7 @@ seo:
   ogDescription: "A production-ready MLOps pipeline for accurate breast cancer classification using machine learning."
 ---
 
-#### Feature Engineering Pipeline
-
-Pipeline that loads the Wisconsin Breast Cancer diagnostic dataset, performs preprocessing, and splits data into training and testing sets.
-
-#### Training Pipeline
-
-Pipeline that trains classification models (SGD and Random Forest) and evaluates them on test data, promoting the best performer to production.
-
-#### Inference Pipeline
-
-Pipeline that uses the production model to generate predictions on new data, leveraging the same preprocessing as during training.
-
-#### Deployment Pipeline
-
-Pipeline that deploys the production model as a FastAPI service, making it accessible via REST API with interactive Swagger documentation.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> default</li><li><strong>Step Operator:</strong> default</li></ul>OncoClear is an end-to-end MLOps solution that transforms raw diagnostic measurements into reliable cancer classification predictions. Built with ZenML's robust framework, it delivers enterprise-grade machine learning pipelines that can be deployed in both development and production environments.
+OncoClear is an end-to-end MLOps solution that transforms raw diagnostic measurements into reliable cancer classification predictions. Built with ZenML's robust framework, it delivers enterprise-grade machine learning pipelines that can be deployed in both development and production environments.
 
 ### What It Does
 
