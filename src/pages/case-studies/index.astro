@@ -18,22 +18,17 @@ import {
   CASE_STUDIES_HUB_BANNER,
   CASE_STUDIES_HUB_CTA,
   CASE_STUDIES_HUB_HERO,
+  orderCaseStudies,
+  splitAtBanner,
 } from "../../lib/case-studies";
 
 const allCaseStudies = await getCollection(
   "case-studies",
   ({ data }) => !data.draft,
 );
-const caseStudies = [...allCaseStudies].sort(
-  (a, b) => (a.data.hub.order ?? 99) - (b.data.hub.order ?? 99),
-);
-
-// One value drives both the split point and whether a second row renders, so
-// the banner cannot end up trailing the grid instead of dividing it.
-const CARDS_BEFORE_BANNER = 3;
-const bannerIndex = Math.min(CARDS_BEFORE_BANNER, caseStudies.length);
-const cardsBeforeBanner = caseStudies.slice(0, bannerIndex);
-const cardsAfterBanner = caseStudies.slice(bannerIndex);
+const caseStudies = orderCaseStudies(allCaseStudies);
+const { before: cardsBeforeBanner, after: cardsAfterBanner } =
+  splitAtBanner(caseStudies);
 ---
 
 <BaseLayout

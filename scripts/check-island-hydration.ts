@@ -236,11 +236,18 @@ interface IslandCheck {
    * :not([ssr]) note in the header. Forgetting that wait is the one mistake that
    * reintroduces an unfixable flake, so it is enforced here rather than trusted
    * to each check body.
+   *
+   * `null` for a check on static markup whose behaviour only a real browser can
+   * decide — hit testing, stacking order, sticky positioning. There is no island
+   * to wait for and nothing to hydrate.
    */
-  island: string;
+  island: string | null;
   /** False only for the CookieConsent check, which needs a virgin localStorage. */
   seedConsent: boolean;
-  /** `root` is the selector for this island's hydrated <astro-island> wrapper. */
+  /**
+   * `root` is the selector for this island's hydrated <astro-island> wrapper,
+   * or the empty string when `island` is null.
+   */
   assert: (page: Page, root: string) => Promise<void>;
 }
 
@@ -535,6 +542,60 @@ const CHECKS: IslandCheck[] = [
       );
     },
   },
+  {
+    name: "CaseStudyCard's whole card is one link, arrow glyph included",
+    route: "/case-studies",
+    // Static markup. Whether a click lands is decided by hit testing and paint
+    // order, which no amount of reading the HTML settles.
+    island: null,
+    seedConsent: true,
+    async assert(page) {
+      const href = "/case-study/jetbrains";
+      const arrow = await page.evaluate((target) => {
+        const link = document.querySelector(`a[href="${target}"]`);
+        const glyph = link?.closest(".group")?.querySelector("div.mt-auto svg");
+        if (!glyph) return null;
+        const box = glyph.getBoundingClientRect();
+        return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+      }, href);
+
+      if (arrow === null) {
+        throw new Error("could not find the card's arrow glyph");
+      }
+
+      // Hover first: the glyph only takes its transform on hover, and that
+      // transform is what once promoted it above the anchor's overlay and ate
+      // the click. Probing without hovering cannot see the failure.
+      await page.mouse.move(arrow.x, arrow.y);
+      const hit = await page.evaluate(
+        (point) =>
+          document
+            .elementFromPoint(point.x, point.y)
+            ?.closest("a")
+            ?.getAttribute("href") ?? null,
+        arrow,
+      );
+
+      if (hit !== href) {
+        throw new Error(
+          `hovering the arrow glyph hits ${hit ?? "no link"}, not ${href}: the card has a dead click zone`,
+        );
+      }
+
+      // One tab stop per card: the logos and the "Learn more" row must not
+      // repeat the same destination.
+      const linkCount = await page.evaluate(
+        (target) => document.querySelectorAll(`a[href="${target}"]`).length,
+        href,
+      );
+
+      if (linkCount !== 1) {
+        throw new Error(
+          `card renders ${linkCount} links to ${href}, expected 1`,
+        );
+      }
+    },
+  },
 ];
 
 // ── Runner ─────────────────────────────────────────────────────────
@@ -582,9 +643,13 @@ async function attempt(
     // and no retry can recover it. Doing this here rather than in each assert() means
     // a new check cannot forget it. If this times out, the island never came alive:
     // that IS the failure this script exists to report.
-    await page.waitForSelector(hydrated(spec.island), { timeout: NAV_TIMEOUT });
+    if (spec.island !== null) {
+      await page.waitForSelector(hydrated(spec.island), {
+        timeout: NAV_TIMEOUT,
+      });
+    }
 
-    await spec.assert(page, island(spec.island));
+    await spec.assert(page, spec.island === null ? "" : island(spec.island));
     return null;
   } catch (error) {
     const message = (error as Error).message.split("\n")[0];
@@ -670,7 +735,7 @@ async function check(): Promise<number> {
   }
 
   console.log(
-    `\n✓ ${CHECKS.length} island checks passed — the Preact islands hydrate`,
+    `\n✓ ${CHECKS.length} browser checks passed — the islands hydrate and the static hit targets hold`,
   );
   return 0;
 }

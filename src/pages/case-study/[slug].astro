@@ -15,33 +15,28 @@ import RelatedRail, {
   type RelatedRailItem,
 } from "../../components/templates/RelatedRail.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { orderCaseStudies, siblingCaseStudies } from "../../lib/case-studies";
 
 export async function getStaticPaths() {
   const caseStudies = await getCollection(
     "case-studies",
     ({ data }) => !data.draft,
   );
-  // Same order the hub uses, so the rail reads as the hub minus this entry.
-  const ordered = [...caseStudies].sort(
-    (a, b) => (a.data.hub.order ?? 99) - (b.data.hub.order ?? 99),
-  );
-  return ordered.map((cs) => ({
+  return orderCaseStudies(caseStudies).map((cs) => ({
     params: { slug: cs.data.slug },
     props: {
       cs,
-      related: ordered
-        .filter((sibling) => sibling.data.slug !== cs.data.slug)
-        .map((sibling) => ({
-          kind: "meta-card" as const,
-          href: `/case-study/${sibling.data.slug}`,
-          title: sibling.data.hub.cardTitle,
-          meta: [
-            { text: sibling.data.sidebar.company, emphasis: true },
-            ...(sibling.data.sidebar.industry
-              ? [{ text: sibling.data.sidebar.industry }]
-              : []),
-          ],
-        })) satisfies RelatedRailItem[],
+      related: siblingCaseStudies(caseStudies, cs.data.slug).map((sibling) => ({
+        kind: "meta-card" as const,
+        href: `/case-study/${sibling.data.slug}`,
+        title: sibling.data.hub.cardTitle,
+        meta: [
+          { text: sibling.data.sidebar.company, emphasis: true },
+          ...(sibling.data.sidebar.industry
+            ? [{ text: sibling.data.sidebar.industry }]
+            : []),
+        ],
+      })) satisfies RelatedRailItem[],
     },
   }));
 }
