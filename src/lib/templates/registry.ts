@@ -926,6 +926,29 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
         '<div class="rounded-md border border-gray-200 p-space-xs text-center text-sm">One</div><div class="rounded-md border border-gray-200 p-space-xs text-center text-sm">Two</div><div class="rounded-md border border-gray-200 p-space-xs text-center text-sm">Three</div><div class="rounded-md border border-gray-200 p-space-xs text-center text-sm">Four</div>',
     },
   },
+
+  // ── conversion-utility (Paper TBD) ────────────────────────────────────────
+  {
+    id: "conversion.shell",
+    kind: "template",
+    componentPath: "src/components/templates/ConversionShell.astro",
+    variantAxes: ["frame: calendar | form"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    notes:
+      "Two structurally different arrangements selected by `frame`: `calendar` is the two-section Cal-hero shape (success-calendar, book-a-demo-success, schedule-a-demo); `form` is the single-section narrow shape above a lead-capture form (book-a-demo, signup-for-demo). The default slot is the conversion widget (CalEmbed or ContactForm island).",
+    demoProps: {
+      headline: "Thanks — pick a time that works for you",
+      deck: "We'll be in touch shortly.",
+      frame: "calendar",
+    },
+    demoSlots: {
+      default:
+        '<div class="flex h-64 items-center justify-center rounded-md border border-gray-200 bg-gray-50 text-sm text-gray-500">widget slot (CalEmbed / ContactForm)</div>',
+    },
+  },
 ];
 
 /** Family prefix — the part of the id before the dot. Derived, never stored. */
