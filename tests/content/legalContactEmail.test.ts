@@ -9,6 +9,8 @@ import { CONTACT_EMAIL } from "../../src/lib/constants";
 describe("legal content contact email", () => {
   it("terms-of-service.md carries the canonical CONTACT_EMAIL literal", () => {
     const body = readFileSync("src/content/legal/terms-of-service.md", "utf8");
-    expect(body).toContain(`mailto:${CONTACT_EMAIL}`);
+    expect(body).toContain(
+      `<a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>`,
+    );
   });
 });

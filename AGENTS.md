@@ -38,7 +38,7 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 - `pnpm smoke:dist` smoke-tests `dist/` after `pnpm build`, including that every Preact island is still mounted on its pages with its bundle on disk, and that the rendered content of one blog post and one Kitaru-vs-X MDX page still matches the goldens in `tests/snapshots/rendered/` (`pnpm check:snapshots` alone; `pnpm snapshots:update` to regenerate after an intended change — review the golden diff before committing it).
 - `pnpm check:worker` starts Wrangler locally from `wrangler.jsonc` and checks the generated Astro Worker, static assets, redirects, headers, 404, and API routes. Run it after `pnpm build` for Worker runtime or deployment changes.
 - `pnpm check:worker-bindings -- <metadata.json>` refuses promotion metadata that does not contain both required form-secret bindings.
-- `pnpm check:islands` serves `dist/` and drives a real Chromium to prove the Preact islands actually **hydrate** (become interactive) — an island can ship perfect markup and still be inert. Needs `pnpm exec playwright install chromium` on first run.
+- `pnpm check:islands` serves `dist/` and drives a real Chromium to prove the Preact islands actually **hydrate** (become interactive) — an island can ship perfect markup and still be inert. It also checks the Storylane embed on `/live-demo` (not an island): under both rejected and accepted consent, the iframe and enhancement script must load with exactly one `#storylane-embed` script. Needs `pnpm exec playwright install chromium` on first run.
 - `pnpm lint:fix` auto-fixes lint issues.
 - `pnpm format` formats configured files with Biome.
 - `pnpm validate:content` runs content schema and consistency checks.

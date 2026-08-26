@@ -1,9 +1,15 @@
 # Third-party embed contract
 
-This document lists every third-party embed and script family on the site: which
-pages host it, how it's sized, when it loads, what happens without JavaScript,
-and how it relates to cookie consent. Update this file whenever an embed's
-loading behavior or consent category changes.
+This document covers every third-party embed and script family shipped through a
+shared component: which pages host it, how it's sized, when it loads, what happens
+without JavaScript, and how it relates to cookie consent. Update this file whenever
+an embed's loading behavior or consent category changes.
+
+It does **not** cover raw `<iframe>` embeds hand-authored inside markdown content
+bodies (`src/content/blog/*.md`, `src/content/integrations/*.md`) — those render as
+literal HTML through Astro's markdown pipeline (no `rehype-raw` needed; inline HTML
+passes through by default) with no component, no consent gate, and no sandbox or
+lazy-loading attributes. See "Raw-content embeds" below for the inventory.
 
 ## Cal.com (booking calendar)
 
@@ -161,7 +167,31 @@ was not added to the consent registry.
 Some older blog posts (`src/content/*.md`) also embed `youtube-nocookie.com` iframes
 directly as raw HTML in their markdown body. Those are per-post content, not a shared
 component, and follow the same no-cookies-until-playback property of the nocookie
-domain.
+domain. See "Raw-content embeds" below for the rest of that inventory.
+
+## Raw-content embeds
+
+These embeds are hand-authored `<iframe>` HTML inside markdown content bodies, not a
+shared component. They render wherever the collection's page template dumps the
+body's raw HTML (`src/pages/blog/[slug].astro`, `src/pages/integrations/[slug].astro`)
+— Astro's markdown pipeline passes inline HTML through untouched, so every one of
+these iframes loads unconditionally as soon as the post page renders. None of them
+carry a `sandbox` attribute or a `loading="lazy"` attribute, and none are gated by the
+consent registry — a visitor who rejects all consent categories still gets every one
+of these on page load. Counts below are files containing at least one matching
+`<iframe>` (a file can contain more than one embed, so file counts don't sum to a
+single "total embeds" figure).
+
+| Host | Collection | Files | Notes |
+|---|---|---|---|
+| `www.youtube.com` (regular embed domain) | blog (18 files), integrations (3 files) | 21 | Same `/embed/<id>` pattern as the componentized nocookie embed above, but the plain `youtube.com` domain sets tracking cookies on load — unlike the Kitaru hero's `youtube-nocookie.com` iframe, these are not privacy-enhanced |
+| `www.youtube-nocookie.com` | blog | 10 | Privacy-enhanced domain; no tracking cookies until playback starts |
+| `player.fireside.fm` | blog | 22 | Podcast episode player (Pipeline Conversations episode posts) |
+| `giphy.com/embed` | blog | 9 | Inline GIF embeds |
+| `share.descript.com/embed` | blog | 11 | Descript audio/video share embeds |
+| `www.loom.com/embed` | blog | 3 | Native Loom iframe (`loom.com/embed/<id>` directly as the `src`) |
+| `cdn.embedly.com` wrapping Loom | blog | 2 | Legacy Webflow export pattern: an Embedly `media.html` iframe whose `src` query param encodes a `loom.com/embed/<id>` URL, rather than a direct Loom iframe |
+| `drive.google.com/…/preview` | blog | 1 | Google Drive file preview (a PDF, embedded via the `/preview` path) |
 
 ## Consent registry contract
 

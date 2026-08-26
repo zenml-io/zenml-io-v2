@@ -19,11 +19,14 @@
  *
  * Absence collapses: an omitted `deck` renders no `<p>`.
  */
-export interface Props {
+interface ConversionShellBase {
   headline: string;
   deck?: string;
-  frame: "calendar" | "form";
 }
+
+type Props =
+  | (ConversionShellBase & { frame: "calendar" })
+  | (ConversionShellBase & { frame: "form" });
 
 const { headline, deck, frame } = Astro.props;
 ---
