@@ -103,15 +103,17 @@ const ogImage = data.seo?.ogImage;
     <section class="bg-white pb-16 sm:pb-20">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="grid gap-10 lg:grid-cols-[280px_1fr] lg:items-start">
-          <CaseStudySidebar
-            company={data.sidebar.company}
-            website={data.sidebar.website}
-            mlTeamSize={data.sidebar.mlTeamSize}
-            cloudProvider={data.sidebar.cloudProvider}
-            industry={data.sidebar.industry}
-            useCases={data.sidebar.useCases}
-            pdfDownload={data.sidebar.pdfDownload}
-          />
+          <div class="lg:sticky lg:top-20">
+            <CaseStudySidebar
+              company={data.sidebar.company}
+              website={data.sidebar.website}
+              mlTeamSize={data.sidebar.mlTeamSize}
+              cloudProvider={data.sidebar.cloudProvider}
+              industry={data.sidebar.industry}
+              useCases={data.sidebar.useCases}
+              pdfDownload={data.sidebar.pdfDownload}
+            />
+          </div>
           <div class="prose prose-gray max-w-none">
             <Content />
           </div>
