@@ -366,7 +366,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 23,
     notes:
-      "Two-column form collapses at 768. The trailing chip group renders outside the dl (hr + bare term/value div) — reproducing the one live consumer's actual DOM, not the idealized single-dl shape. Label color (zenml-500) and the 5-icon set are only proven against that one consumer (CaseStudySidebar) so far.",
+      "The spaced frame: items separated by vertical space, brand-purple terms. Two-column form collapses at 768. The trailing chip group renders outside the dl (hr + bare term/value div) — reproducing the one live consumer's actual DOM, not the idealized single-dl shape. The 5-icon set is only proven against that one consumer (CaseStudySidebar). The same component's hairline-banded arrangement is registered separately as data-display.description-list-divided.",
     contentShape: {
       minItems: 1,
       maxItems: 6,
@@ -388,6 +388,71 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
         term: "Use Cases",
         chips: ["Fraud detection", "Forecasting"],
       },
+    },
+  },
+  {
+    id: "data-display.description-list-divided",
+    kind: "template",
+    componentPath: "src/components/templates/DescriptionList.astro",
+    collectionBound: true,
+    variantAxes: ["item count", "value kind", "chip tone"],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 23,
+    notes:
+      "The divided frame: hairline-separated bands with their own inset padding, muted gray terms, tighter term-to-value gap. Carries the value kinds the spaced frame has no consumer for — identifier (monospaced id plus hint), entries (named sub-rows), html (markup authored in content), and chips in two tones. The host card owns the surrounding radius and background; the first and last band hug it.",
+    contentShape: {
+      minItems: 1,
+      maxItems: 8,
+      overflow:
+        "The list grows with no cap; the live consumer draws at 7 bands, the longest being a chip group that wraps.",
+    },
+    demoProps: {
+      frame: "divided",
+      termTone: "muted",
+      items: [
+        {
+          term: "Project",
+          value: { kind: "text", text: "Retail Forecast" },
+        },
+        {
+          term: "Project ID",
+          value: {
+            kind: "identifier",
+            text: "retail-forecast",
+            note: "Use this id to create a new project in ZenML",
+          },
+        },
+        {
+          term: "Pipelines",
+          value: {
+            kind: "entries",
+            entries: [
+              {
+                name: "training",
+                description: "Trains and evaluates the forecasting model.",
+              },
+              { name: "inference" },
+            ],
+          },
+        },
+        {
+          term: "Recommended Stack",
+          value: {
+            kind: "html",
+            html: "<ul><li><strong>Orchestrator:</strong> Kubernetes</li><li><strong>Registry:</strong> MLflow</li></ul>",
+          },
+        },
+        {
+          term: "Tools",
+          value: { kind: "chips", chips: ["zenml", "mlflow"], tone: "neutral" },
+        },
+        {
+          term: "Tags",
+          value: { kind: "chips", chips: ["time-series"], tone: "brand" },
+        },
+      ],
     },
   },
   {
