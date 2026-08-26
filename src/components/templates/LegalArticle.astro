@@ -1,0 +1,21 @@
+---
+/**
+ * LegalArticle — h1 + optional "Last updated" line for legal content pages.
+ *
+ * Renders inside ContentLayout's .prose <article>. Owns exactly the two
+ * elements that used to be hand-authored at the top of each legal page's
+ * markup; the rest of the body is the page's own rendered Markdown content
+ * passed through the default slot. `lastUpdated` absent collapses — no line,
+ * no gap (privacy-policy has no "Last updated" line today).
+ */
+interface Props {
+  title: string;
+  lastUpdated?: string;
+}
+
+const { title, lastUpdated } = Astro.props;
+---
+
+<h1>{title}</h1>
+{lastUpdated && <p class="text-lg text-gray-500">Last updated {lastUpdated}</p>}
+<slot />
