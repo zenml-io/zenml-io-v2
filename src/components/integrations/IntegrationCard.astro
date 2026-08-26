@@ -12,6 +12,8 @@ interface Props {
   logo?: { url: string; alt?: string };
   /** data-type attribute for client-side filtering on the hub page */
   dataType?: string;
+  /** data-slug attribute — lets the hub page's filter island match this card to its index entry */
+  slug?: string;
   class?: string;
 }
 
@@ -21,6 +23,7 @@ const {
   categoryLabel,
   logo,
   dataType,
+  slug,
   class: className,
 } = Astro.props;
 ---
@@ -29,6 +32,7 @@ const {
   href={href}
   class:list={["integration-card group", className]}
   {...(dataType ? { "data-type": dataType } : {})}
+  {...(slug ? { "data-slug": slug } : {})}
 >
   <div class="integration-card-img">
     {logo ? (

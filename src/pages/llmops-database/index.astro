@@ -9,7 +9,7 @@
  * Route: /llmops-database
  */
 import { getCollection } from "astro:content";
-import LLMOpsFilter from "../../components/islands/LLMOpsFilter";
+import LlmopsIndex from "../../components/islands/filter-index/LlmopsIndex";
 import BrevoNewsletterForm from "../../components/sections/BrevoNewsletterForm.astro";
 import PageHeader from "../../components/templates/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -46,7 +46,7 @@ const entryCount = await getNonDraftLlmopsDatabaseCount();
     />
 
     {/* Interactive filter island — hydrates immediately */}
-    <LLMOpsFilter
+    <LlmopsIndex
       client:load
       tags={allTags}
       industries={allIndustries}

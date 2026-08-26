@@ -2,13 +2,15 @@
 /**
  * Integrations hub page — matches Webflow layout.
  *
- * Hero section + 2-column layout: left filter radio list, right integrations list.
- * Client-side filtering via inline script (progressive enhancement).
+ * Hero section + 2-column layout: left facet rail (FilterIndex island),
+ * right integrations list. The card grid stays server-rendered; the island
+ * only owns the rail + search box and toggles card visibility by slug.
  * Route: /integrations
  */
 import { getCollection } from "astro:content";
 import Button from "../../components/Button.astro";
 import IntegrationCard from "../../components/integrations/IntegrationCard.astro";
+import IntegrationsIndex from "../../components/islands/filter-index/IntegrationsIndex";
 import EmptyState from "../../components/system/EmptyState.astro";
 import PageHeader from "../../components/templates/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -24,12 +26,17 @@ const allTypes = (await getCollection("integration-types")).sort((a, b) =>
 );
 const typeMap = new Map(allTypes.map((t) => [t.data.slug, t.data.name]));
 
-// Count integrations per type for filter display
-const typeCountMap = new Map<string, number>();
-for (const i of allIntegrations) {
-  const t = i.data.integrationType;
-  typeCountMap.set(t, (typeCountMap.get(t) || 0) + 1);
-}
+// Lightweight index for the facet rail: search text + facet value only, no
+// content bodies — the card markup itself stays server-rendered below.
+const filterItems = allIntegrations.map((i) => ({
+  slug: i.data.slug,
+  title: i.data.title,
+  type: i.data.integrationType,
+}));
+const filterTypes = allTypes.map((t) => ({
+  slug: t.data.slug,
+  name: t.data.name,
+}));
 ---
 
 <BaseLayout
@@ -76,58 +83,32 @@ for (const i of allIntegrations) {
   {/* ── Main: filter + list ─────────────────────────────────── */}
   <section class="bg-gray-50 py-16 sm:py-20">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col gap-8 lg:flex-row lg:gap-12">
-        {/* ── Left: Filter list ─── */}
-        <aside class="w-full shrink-0 lg:w-56">
-          <nav id="integration-filters" class="sticky top-24 flex flex-row flex-wrap gap-2 lg:flex-col lg:gap-0">
-            <button
-              data-filter="__all__"
-              class="filter-btn is-active w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-900 transition-colors hover:bg-primary-50 hover:text-primary-700"
-            >
-              All Integrations
-              <span class="ml-1 text-xs text-gray-400">({allIntegrations.length})</span>
-            </button>
-            {allTypes.map((type) => (
-              <button
-                data-filter={type.data.slug}
-                class="filter-btn w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-gray-600 transition-colors hover:bg-primary-50 hover:text-primary-700"
-              >
-                {type.data.name}
-                <span class="ml-1 text-xs text-gray-400">
-                  ({typeCountMap.get(type.data.slug) || 0})
-                </span>
-              </button>
-            ))}
-          </nav>
-        </aside>
-
-        {/* ── Right: Integrations grid ─── */}
-        <div class="flex-1">
-          <div id="integrations-list" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {allIntegrations.map((integration) => (
-              <IntegrationCard
-                href={`/integrations/${integration.data.slug}`}
-                title={integration.data.title}
-                categoryLabel={typeMap.get(integration.data.integrationType) || integration.data.integrationType}
-                logo={integration.data.logo}
-                dataType={integration.data.integrationType}
-              />
-            ))}
-          </div>
-
-          {/* Empty state (hidden by default, shown by JS) */}
-          <EmptyState
-            id="empty-state"
-            heading="No integrations found for this category."
-            reserveHeight={false}
-            classOverrides={{
-              container: "hidden py-12 text-center",
-              inner: "",
-              heading: "text-gray-500",
-            }}
-          />
+      <IntegrationsIndex client:load items={filterItems} types={filterTypes}>
+        <div id="integrations-list" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {allIntegrations.map((integration) => (
+            <IntegrationCard
+              href={`/integrations/${integration.data.slug}`}
+              title={integration.data.title}
+              categoryLabel={typeMap.get(integration.data.integrationType) || integration.data.integrationType}
+              logo={integration.data.logo}
+              dataType={integration.data.integrationType}
+              slug={integration.data.slug}
+            />
+          ))}
         </div>
-      </div>
+
+        {/* Empty state (hidden by default, shown by the island) */}
+        <EmptyState
+          id="empty-state"
+          heading="No integrations found for this category."
+          reserveHeight={false}
+          classOverrides={{
+            container: "hidden py-12 text-center",
+            inner: "",
+            heading: "text-gray-500",
+          }}
+        />
+      </IntegrationsIndex>
     </div>
   </section>
 
@@ -178,58 +159,3 @@ for (const i of allIntegrations) {
     </div>
   </section>
 </BaseLayout>
-
-<style>
-  .filter-btn.is-active {
-    background-color: var(--color-primary-50);
-    color: var(--color-primary-700);
-    font-weight: 600;
-  }
-</style>
-
-<script>
-  // Client-side integration filtering
-  document.addEventListener("DOMContentLoaded", () => {
-    const filters = document.querySelectorAll<HTMLButtonElement>("[data-filter]");
-    const cards = document.querySelectorAll<HTMLElement>("[data-type]");
-    const emptyState = document.getElementById("empty-state");
-
-    function applyFilter(type: string | null) {
-      let visibleCount = 0;
-      cards.forEach((card) => {
-        const show = !type || type === "__all__" || card.dataset.type === type;
-        card.style.display = show ? "" : "none";
-        if (show) visibleCount++;
-      });
-      if (emptyState) {
-        emptyState.classList.toggle("hidden", visibleCount > 0);
-      }
-      // Update active state
-      filters.forEach((btn) => {
-        const isActive = btn.dataset.filter === (type || "__all__");
-        btn.classList.toggle("is-active", isActive);
-      });
-      // Update URL for deep linking (without page reload)
-      const url = new URL(window.location.href);
-      if (type && type !== "__all__") {
-        url.searchParams.set("type", type);
-      } else {
-        url.searchParams.delete("type");
-      }
-      history.replaceState(null, "", url.toString());
-    }
-
-    filters.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        applyFilter(btn.dataset.filter || null);
-      });
-    });
-
-    // Apply filter from URL on load
-    const params = new URLSearchParams(window.location.search);
-    const initialFilter = params.get("type");
-    if (initialFilter) {
-      applyFilter(initialFilter);
-    }
-  });
-</script>

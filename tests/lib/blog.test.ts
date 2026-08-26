@@ -12,12 +12,10 @@ vi.mock("astro:content", () => ({
 
 import {
   type BlogPost,
-  blogPageHref,
   buildBlogSearchIndex,
   getAllPublishedPosts,
   getCategoryCounts,
   getMainFeedPosts,
-  getPaginationItems,
   getPrevNext,
   getRelatedPosts,
   getTagCounts,
@@ -251,35 +249,14 @@ describe("blog helpers", () => {
     ).toEqual(["high", "equal-newer", "equal-older"]);
   });
 
-  it("returns compact pagination items for small, near-start, middle, and near-end ranges", () => {
-    expect(getPaginationItems(1, 5)).toEqual([1, 2, 3, 4, 5]);
-    expect(getPaginationItems(2, 10)).toEqual([1, 2, 3, 4, 5, "ellipsis", 10]);
-    expect(getPaginationItems(5, 10)).toEqual([
-      1,
-      "ellipsis",
-      3,
-      4,
-      5,
-      6,
-      7,
-      "ellipsis",
-      10,
-    ]);
-    expect(getPaginationItems(9, 10)).toEqual([1, "ellipsis", 6, 7, 8, 9, 10]);
-  });
-
-  it("builds blog page hrefs", () => {
-    expect(blogPageHref(1)).toBe("/blog");
-    expect(blogPageHref(2)).toBe("/blog/page/2");
-  });
-
-  it("builds search index entries with resolved category names", async () => {
+  it("builds search index entries with resolved category names, slugs, and tags", async () => {
     const posts = [
       fakePost({
         slug: "first-post",
         title: "First post",
         date: "2025-05-01T12:00:00.000Z",
         category: "kitaru",
+        tags: ["agents", "evaluation"],
         description: "First excerpt",
       }),
     ];
@@ -291,6 +268,8 @@ describe("blog helpers", () => {
         excerpt: "First excerpt",
         date: "2025-05-01T12:00:00.000Z",
         category: "Kitaru",
+        categorySlug: "kitaru",
+        tags: ["agents", "evaluation"],
       },
     ]);
     expect(getCollectionMock).toHaveBeenCalledWith("categories");

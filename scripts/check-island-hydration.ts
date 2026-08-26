@@ -49,11 +49,22 @@
  *   transform we would assert on. Gratuitously timing-sensitive.
  * - BlogSearch: client:media="(min-width: 640px)", so it does not hydrate at all
  *   below that viewport, plus a fetch-on-focus.
- * - MLOpsFilter: a near-identical sibling of LLMOpsFilter. Redundant here.
  * - RoiCalculator: its three range inputs have no id, name or aria-label, so a test
  *   would have to select them positionally — brittle, for a low-traffic page.
- * All four are still covered structurally by the island manifest in
+ * All three are still covered structurally by the island manifest in
  * check-dist-smoke.ts. Please do not "helpfully" add them back here.
+ *
+ * LlmopsIndex, MlopsIndex, IntegrationsIndex, and BlogIndex (#249) are four
+ * separate thin wrappers around the same shared FilterIndex engine
+ * (src/components/islands/filter-index/), not near-duplicates of each other
+ * the way the old LLMOpsFilter/MLOpsFilter pair was — each wires its own
+ * data source, facet fields and (for Integrations) a DOM-visibility search
+ * mode, so each gets its own real-interaction check below; a bug in one
+ * page's wiring would not be caught by testing another. CategoryBar/TagCloud
+ * (the blog index's former header/footer chrome) turned out to be shared
+ * across the rest of the blog surface (post pages, plus the category/tag/
+ * author hub pages) — they stay in place there, only retired from the
+ * index; see their doc comments.
  * - Of the remaining /product/kitaru islands, TwoDoors covers the interactive
  *   contract that has regressed. The others have nothing better to assert on:
  *   Hero's sole interaction is a clipboard write (permission-gated in
@@ -277,9 +288,9 @@ const CHECKS: IslandCheck[] = [
     },
   },
   {
-    name: "LLMOpsFilter loads its index and applies an industry facet",
+    name: "LlmopsIndex loads its index and applies an industry facet",
     route: "/llmops-database",
-    island: "LLMOpsFilter",
+    island: "LlmopsIndex",
     seedConsent: true,
     async assert(page, root) {
       // The SSR payload is only "Loading LLMOps database...". #llmops-search exists
@@ -307,6 +318,166 @@ const CHECKS: IslandCheck[] = [
           return element !== null && element.innerText.trim() !== args.before;
         },
         { selector: status, before },
+      );
+    },
+  },
+  {
+    name: "MlopsIndex loads its index and applies an industry facet",
+    route: "/mlops-database",
+    island: "MlopsIndex",
+    seedConsent: true,
+    async assert(page, root) {
+      // Same shape as the LlmopsIndex check above — MlopsIndex is a separate
+      // wiring of the same FilterIndex engine (its own data URL, its own
+      // facet field names), so a broken prop on this page specifically would
+      // not be caught by the LLMOps check.
+      await page.waitForSelector("#mlops-search", { timeout: NAV_TIMEOUT });
+
+      const status = `${root} output[aria-live="polite"]`;
+      const before = (await page.locator(status).innerText()).trim();
+
+      await page
+        .locator(`${root} aside button[aria-pressed="false"]:not([disabled])`)
+        .first()
+        .click();
+
+      await page.waitForSelector(`${root} aside button[aria-pressed="true"]`);
+
+      await page.waitForFunction(
+        (args: { selector: string; before: string }) => {
+          const element = document.querySelector<HTMLElement>(args.selector);
+          return element !== null && element.innerText.trim() !== args.before;
+        },
+        { selector: status, before },
+      );
+    },
+  },
+  {
+    name: "IntegrationsIndex applies a type facet and a search query",
+    route: "/integrations",
+    island: "IntegrationsIndex",
+    seedConsent: true,
+    async assert(page, root) {
+      // IntegrationsIndex is the "control" flavor of FilterIndex: the card
+      // grid is plain Astro-rendered markup (see ControlFilterIndex's
+      // TSDoc), and the island toggles `display` on [data-slug] cards by a
+      // shared attribute. It renders the same polite aria-live result count
+      // as the data flavor (#249 contract), so the assertion covers both
+      // the visible-card count AND that the live region announces the
+      // change.
+      const cardCount = () => page.locator("[data-slug]:visible").count();
+      const status = `${root} output[aria-live="polite"]`;
+
+      const before = await cardCount();
+      if (before === 0) {
+        throw new Error("no [data-slug] cards were visible before filtering");
+      }
+      const statusBefore = (await page.locator(status).innerText()).trim();
+      if (!statusBefore) {
+        throw new Error("the aria-live result count rendered empty");
+      }
+
+      await page
+        .locator(`${root} aside button[aria-pressed="false"]:not([disabled])`)
+        .first()
+        .click();
+
+      await page.waitForFunction(
+        (n: number) =>
+          document.querySelectorAll('[data-slug]:not([style*="display: none"])')
+            .length !== n,
+        before,
+      );
+
+      const afterFacet = await cardCount();
+      if (afterFacet === 0 || afterFacet >= before) {
+        throw new Error(
+          `expected the type facet to narrow the grid below ${before} visible cards, got ${afterFacet}`,
+        );
+      }
+
+      const statusAfterFacet = (await page.locator(status).innerText()).trim();
+      if (statusAfterFacet === statusBefore) {
+        throw new Error(
+          `expected the aria-live result count to change after faceting, still "${statusBefore}"`,
+        );
+      }
+
+      // A real query, not the facet: proves the search box is wired to the
+      // same matching logic, independent of the facet click above. Clear
+      // the facet first so the query is the only active filter.
+      await page
+        .locator(`${root} aside button[aria-pressed="true"]`)
+        .first()
+        .click();
+      // Desktop-sized viewport (the default here), so the sidebar's search
+      // box — not the mobile controls row's duplicate — is the visible one.
+      await page
+        .locator(`${root} #integrations-search-desktop`)
+        .fill("kubernetes");
+
+      await page.waitForFunction(() => {
+        const card = document.querySelector('[data-slug="kubernetes"]');
+        return card !== null && getComputedStyle(card).display !== "none";
+      });
+
+      const searchVisibleCount = await cardCount();
+      if (searchVisibleCount !== 1) {
+        throw new Error(
+          `expected exactly 1 visible card for the "kubernetes" query, got ${searchVisibleCount}`,
+        );
+      }
+    },
+  },
+  {
+    name: "BlogIndex applies a category facet and searches",
+    route: "/blog",
+    island: "BlogIndex",
+    seedConsent: true,
+    async assert(page, root) {
+      // Same DataFilterIndex shape as LlmopsIndex/MlopsIndex, but the items
+      // arrive as server props (SSR post cards for SEO) instead of a
+      // fetched *-index.json endpoint.
+      await page.waitForSelector("#blog-search", { timeout: NAV_TIMEOUT });
+
+      const status = `${root} output[aria-live="polite"]`;
+      const before = (await page.locator(status).innerText()).trim();
+
+      await page
+        .locator(`${root} aside button[aria-pressed="false"]:not([disabled])`)
+        .first()
+        .click();
+
+      await page.waitForSelector(`${root} aside button[aria-pressed="true"]`);
+
+      await page.waitForFunction(
+        (args: { selector: string; before: string }) => {
+          const element = document.querySelector<HTMLElement>(args.selector);
+          return element !== null && element.innerText.trim() !== args.before;
+        },
+        { selector: status, before },
+      );
+
+      // A search interaction, independent of the facet click above: clear
+      // the facet, then search for a string no post title/excerpt contains.
+      // A real word risks matching most posts and leaving the count
+      // unchanged (a false pass); a guaranteed-zero query deterministically
+      // proves the search box re-filters (and exercises the zero-results
+      // empty state as a bonus).
+      await page
+        .locator(`${root} aside button[aria-pressed="true"]`)
+        .first()
+        .click();
+
+      const afterClear = (await page.locator(status).innerText()).trim();
+      await page.locator("#blog-search").fill("zzzznonexistentqueryzzzz");
+
+      await page.waitForFunction(
+        (args: { selector: string; before: string }) => {
+          const element = document.querySelector<HTMLElement>(args.selector);
+          return element !== null && element.innerText.trim() !== args.before;
+        },
+        { selector: status, before: afterClear },
       );
     },
   },

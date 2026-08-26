@@ -256,6 +256,34 @@ async function runChecks(baseUrl: string): Promise<CheckResult[]> {
     );
   }
 
+  // The static /blog/page/N pagination route was retired for client-side
+  // pagination (#249) — public/_redirects enumerates every page number that
+  // was ever built (2 through the highest at retirement) rather than a
+  // splat, since a splat's behavior under the Workers _redirects engine (as
+  // opposed to native Cloudflare Pages) wasn't a known quantity. Spot-check
+  // the first and last enumerated entries end-to-end through the built
+  // Worker, not just that _redirects parsing works in general. The query
+  // string is asserted too: the redirect target carries ?page=N so saved
+  // links keep their approximate position, and a target that silently
+  // collapses back to page 1 must fail here.
+  for (const [pathname, page] of [
+    ["/blog/page/2", "2"],
+    ["/blog/page/2/", "2"],
+    ["/blog/page/18", "18"],
+    ["/blog/page/18/", "18"],
+  ] as const) {
+    const redirect = await request(baseUrl, pathname);
+    const location = new URL(redirect.headers.get("location") ?? "/", baseUrl);
+    check(
+      results,
+      `${pathname} redirects to /blog?page=${page}`,
+      redirect.status === 301 &&
+        location.pathname === "/blog" &&
+        location.search === `?page=${page}`,
+      `status ${redirect.status}, location ${redirect.headers.get("location")}`,
+    );
+  }
+
   const notFound = await request(baseUrl, "/worker-runtime-missing-page");
   const notFoundHtml = await notFound.text();
   check(
