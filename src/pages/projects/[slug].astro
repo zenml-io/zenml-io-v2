@@ -9,7 +9,7 @@
  * Route: /projects/<slug>
  */
 import { getCollection } from "astro:content";
-import Button from "../../components/Button.astro";
+import ProjectsCTA from "../../components/sections/ProjectsCTA.astro";
 import DescriptionList, {
   type DescriptionListItem,
 } from "../../components/templates/DescriptionList.astro";
@@ -173,42 +173,5 @@ if (tags.length > 0) {
     </div>
   </div>
 
-  {/* CTA section — same dark purple banner as listing page */}
-  <section class="bg-[#281158]">
-    <div class="bg-[url('/images/gradient_01.webp')] bg-cover bg-center">
-      <div class="mx-auto max-w-7xl px-8 sm:px-12">
-        <div class="grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-2 lg:gap-8">
-          <div>
-            <h2 class="text-2xl font-bold text-white sm:text-3xl">
-              Unify Your ML and LLM Workflows
-            </h2>
-            <div class="mt-6 space-y-3">
-              <div class="flex items-start gap-3">
-                <svg class="mt-0.5 h-7 w-7 flex-shrink-0" viewBox="0 0 28 28" fill="none">
-                  <path d="M8.75 14l3.5 3.5 7-7m6.417 3.5c0 6.443-5.224 11.667-11.667 11.667S2.333 20.823 2.333 14 7.557 2.333 14 2.333 25.667 7.557 25.667 14z" stroke="#7A3EF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span class="text-lg text-white">Open-source foundation, no vendor lock-in</span>
-              </div>
-              <div class="flex items-start gap-3">
-                <svg class="mt-0.5 h-7 w-7 flex-shrink-0" viewBox="0 0 28 28" fill="none">
-                  <path d="M8.75 14l3.5 3.5 7-7m6.417 3.5c0 6.443-5.224 11.667-11.667 11.667S2.333 20.823 2.333 14 7.557 2.333 14 2.333 25.667 7.557 25.667 14z" stroke="#7A3EF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span class="text-lg text-white">Works with any infrastructure</span>
-              </div>
-              <div class="flex items-start gap-3">
-                <svg class="mt-0.5 h-7 w-7 flex-shrink-0" viewBox="0 0 28 28" fill="none">
-                  <path d="M8.75 14l3.5 3.5 7-7m6.417 3.5c0 6.443-5.224 11.667-11.667 11.667S2.333 20.823 2.333 14 7.557 2.333 14 2.333 25.667 7.557 25.667 14z" stroke="#7A3EF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span class="text-lg text-white">Upgrade to managed Pro features</span>
-              </div>
-            </div>
-            <div class="mt-8 flex flex-wrap gap-3">
-              <Button href="/book-your-demo" size="lg">Book a demo</Button>
-              <Button href="/docs" variant="secondary" size="lg">Read Docs</Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <ProjectsCTA />
 </BaseLayout>
