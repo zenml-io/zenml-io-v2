@@ -687,6 +687,8 @@ async function check(): Promise<number> {
   );
 
   const violations: string[] = [];
+  let staticFailures = 0;
+  let hydrationFailures = 0;
 
   for (const spec of CHECKS) {
     // Retry once, in a fresh context — the cheapest possible stand-in for a test
@@ -703,6 +705,11 @@ async function check(): Promise<number> {
     } else {
       console.log(`  ✗ ${spec.route} — ${spec.name}`);
       violations.push(`${spec.route} — ${spec.name}: ${failure}`);
+      if (spec.island === null) {
+        staticFailures++;
+      } else {
+        hydrationFailures++;
+      }
     }
   }
 
@@ -725,12 +732,25 @@ async function check(): Promise<number> {
     }
 
     console.error(`\n✗ ${violations.length} island check(s) failed`);
-    console.error(
-      "  Fix: open the route with `pnpm dev`, look for a hydration error in the browser",
-    );
-    console.error(
-      "       console, and confirm the component still carries its `client:*` directive.",
-    );
+
+    if (hydrationFailures > 0) {
+      console.error(
+        "  Fix (hydration): open the route with `pnpm dev`, look for a hydration error in",
+      );
+      console.error(
+        "       the browser console, and confirm the component still carries its `client:*` directive.",
+      );
+    }
+
+    if (staticFailures > 0) {
+      console.error(
+        "  Fix (static): open the route with `pnpm dev` and inspect stacking order, hit",
+      );
+      console.error(
+        "       testing, and DOM structure around the failing element — no `client:*` directive is involved.",
+      );
+    }
+
     return 1;
   }
 

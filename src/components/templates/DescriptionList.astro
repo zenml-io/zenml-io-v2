@@ -14,8 +14,13 @@
  *   - `divided` — items are hairline-separated bands with their own inset
  *     padding, values tighter and heavier, terms in muted gray. The project
  *     detail sidebar.
- * Both frames render the same `items`; the value kinds available are the same
- * either way, but each frame styles them to its own surface.
+ * The two frames intentionally accept different value kinds, typed as
+ * separate unions (`SpacedDescriptionValue` / `DividedDescriptionValue`):
+ * `spaced` supports `text` and `link`, both with an optional icon; `divided`
+ * supports `text`, `link`, `identifier`, `chips`, `entries`, and `html`, but
+ * no icon on any of them — `divided` drops the flex row that gives an icon
+ * its gap, so an icon in a `divided` band is a compile error rather than a
+ * bare, unstyled glyph.
  *
  * `trailing` is a chip-group term/value pair that sits after an `<hr>`,
  * outside the `<dl>` itself — the sidebar this was extracted from renders
