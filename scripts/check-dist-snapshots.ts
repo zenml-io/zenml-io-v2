@@ -76,6 +76,13 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
       "project details column: the hand-rolled markdown-to-HTML converter (headings, paragraphs, pass-through raw HTML)",
   },
   {
+    page: "projects/floracast.html",
+    selector: "dl",
+    golden: "project-floracast-sidebar.html",
+    covers:
+      "project detail sidebar: the divided DescriptionList frame — band padding, term tone, and all six value kinds",
+  },
+  {
     page: "projects/sign-language-detection-with-yolov5.html",
     selector: ".prose",
     golden: "project-sign-language-detection-with-yolov5.html",

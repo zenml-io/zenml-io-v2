@@ -10,7 +10,8 @@
  *
  * `splitBody` below is the page's parser as it stood, unchanged apart from
  * also returning the details Markdown the page used to convert immediately.
- * Any edit to it changes what 16 published pages render.
+ * It has already run: every entry now trips the already-migrated guard, so
+ * the function is a record of how the 16 bodies were split, not a live path.
  *
  * Frontmatter is edited as text rather than re-serialised: re-dumping the YAML
  * would restyle every quoted scalar in all 16 files and bury the two added
@@ -22,20 +23,18 @@
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import matter from "gray-matter";
-import { markdownToHtml } from "../../src/lib/projectBody";
 
 const CONTENT_DIR = "src/content/projects";
 
 interface Pipeline {
   name: string;
-  description: string;
+  description?: string;
 }
 
 function splitBody(body: string): {
   pipelines: Pipeline[];
   stackHtml: string;
   detailsRaw: string;
-  detailsHtml: string;
 } {
   const pipelines: Pipeline[] = [];
   let stackHtml = "";
@@ -50,7 +49,6 @@ function splitBody(body: string): {
       pipelines: [],
       stackHtml: "",
       detailsRaw: body.trim(),
-      detailsHtml: markdownToHtml(body.trim()),
     };
   }
 
@@ -59,10 +57,9 @@ function splitBody(body: string): {
   const pipelineRegex = /####\s+(.+)\n\n([\s\S]*?)(?=####|\s*$)/g;
   let match: RegExpExecArray | null = pipelineRegex.exec(pipelinesRaw);
   while (match !== null) {
-    pipelines.push({
-      name: match[1].trim(),
-      description: match[2].trim(),
-    });
+    const description = match[2].trim();
+    // Written form omits an empty description, so the comparison side must too.
+    pipelines.push(description ? { name: match[1].trim(), description } : { name: match[1].trim() });
     match = pipelineRegex.exec(pipelinesRaw);
   }
 
@@ -79,12 +76,7 @@ function splitBody(body: string): {
     detailsRaw = afterStack.replace(/####\s+Stack Components\s*/, "").trim();
   }
 
-  return {
-    pipelines,
-    stackHtml,
-    detailsRaw,
-    detailsHtml: markdownToHtml(detailsRaw),
-  };
+  return { pipelines, stackHtml, detailsRaw };
 }
 
 /**
@@ -147,11 +139,23 @@ let failures = 0;
 
 for (const name of files) {
   const path = join(CONTENT_DIR, name);
-  const raw = readFileSync(path, "utf8");
+  let raw: string;
+  let frontmatter: string;
+  let body: string;
+  try {
+    raw = readFileSync(path, "utf8");
+    ({ frontmatter, body } = splitFile(raw));
+  } catch (error) {
+    console.error(`❌ ${name}: ${(error as Error).message}`);
+    failures += 1;
+    continue;
+  }
 
   // Already migrated: the body has no marker left to split, so a second pass
   // would compare an empty split against the frontmatter it wrote last time
-  // and report a mismatch that means nothing.
+  // and report a mismatch that means nothing. An entry that never had a marker
+  // writes neither key, so it is re-processed instead — harmless, since its
+  // whole body is the details section either way.
   const existing = matter(raw).data;
   if (existing.pipelines !== undefined || existing.stackHtml !== undefined) {
     console.log(`↷ ${name}: already migrated`);
@@ -160,7 +164,6 @@ for (const name of files) {
 
   const expected = splitBody(matter(raw).content);
 
-  const { frontmatter, body } = splitFile(raw);
   if (body.trim() !== matter(raw).content.trim()) {
     console.error(`❌ ${name}: body extraction disagrees with gray-matter`);
     failures += 1;
@@ -176,8 +179,7 @@ for (const name of files) {
     JSON.stringify(parsed.data.pipelines ?? []) ===
     JSON.stringify(expected.pipelines);
   const stackOk = (parsed.data.stackHtml ?? "") === expected.stackHtml;
-  const detailsOk =
-    markdownToHtml(parsed.content.trim()) === expected.detailsHtml;
+  const detailsOk = parsed.content.trim() === expected.detailsRaw;
 
   if (!pipelinesOk || !stackOk || !detailsOk) {
     console.error(

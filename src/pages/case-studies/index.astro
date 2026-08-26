@@ -24,12 +24,12 @@ const allCaseStudies = await getCollection(
   "case-studies",
   ({ data }) => !data.draft,
 );
-const caseStudies = allCaseStudies.sort(
+const caseStudies = [...allCaseStudies].sort(
   (a, b) => (a.data.hub.order ?? 99) - (b.data.hub.order ?? 99),
 );
 
-// The LLMOps banner splits the grid after at most one full row of cards, so
-// it still sits between rows when there are fewer cards than a row holds.
+// One value drives both the split point and whether a second row renders, so
+// the banner cannot end up trailing the grid instead of dividing it.
 const CARDS_BEFORE_BANNER = 3;
 const bannerIndex = Math.min(CARDS_BEFORE_BANNER, caseStudies.length);
 const cardsBeforeBanner = caseStudies.slice(0, bannerIndex);

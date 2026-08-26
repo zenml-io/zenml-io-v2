@@ -3,9 +3,10 @@
  * DescriptionList — a real `<dl>` of term/value pairs (issue #249).
  *
  * Owns: the `<dl>`/`<dt>`/`<dd>` semantics, the small-caps term typography,
- * the value row shapes, and the separation between items. Owns no surrounding
- * whitespace or card chrome — the aside/card that hosts this list owns its own
- * border, background, and padding.
+ * the value row shapes, and the separation between items. The host card owns
+ * its own border, background, and outer whitespace — except in the `divided`
+ * frame, where the bands own the horizontal inset so their hairlines can run
+ * the full width of a card that carries no padding of its own.
  *
  * Two arrangements, selected by `frame`:
  *   - `spaced` — items separated by vertical space, values sit flush with the
@@ -84,26 +85,36 @@ export interface DescriptionListTrailing {
 }
 
 export type DescriptionFrame = "spaced" | "divided";
-export type DescriptionTermTone = "brand" | "muted";
 
 interface CommonProps {
-  termTone?: DescriptionTermTone;
-  trailing?: DescriptionListTrailing;
-  /** Gap between items. `spaced` only — `divided` separates with rules. */
-  space?: SpaceStep;
   class?: string;
 }
 
+/**
+ * `space` and `trailing` belong to `spaced` alone: `divided` separates its
+ * bands with rules rather than a gap, and has no styling for the trailing
+ * chip group, which would otherwise render its own rule and warm chips into
+ * a card built for neither.
+ */
 type Props = CommonProps &
   (
-    | { frame?: "spaced"; items: readonly SpacedDescriptionListItem[] }
-    | { frame: "divided"; items: readonly DividedDescriptionListItem[] }
+    | {
+        frame?: "spaced";
+        items: readonly SpacedDescriptionListItem[];
+        space?: SpaceStep;
+        trailing?: DescriptionListTrailing;
+      }
+    | {
+        frame: "divided";
+        items: readonly DividedDescriptionListItem[];
+        space?: never;
+        trailing?: never;
+      }
   );
 
 const {
   items,
   frame = "spaced",
-  termTone = "brand",
   trailing,
   space = "sm",
   class: className,
@@ -123,33 +134,53 @@ const SPACE_CLASS: Record<SpaceStep, string> = {
   xxl: "space-y-space-xxl",
 };
 
-const TERM_TONE_CLASS: Record<DescriptionTermTone, string> = {
-  brand: "text-zenml-500",
-  muted: "text-gray-400",
+/**
+ * Everything the two frames style differently, in one table.
+ *
+ * `valueSpacing` is the gap between a term and its value: 8px spaced, 4px
+ * divided. 4px sits below the smallest `SpaceStep`, so it stays raw — as do
+ * the 12px and 6px gaps inside the richer value rows below. Those richer rows
+ * (entries, html, chips) sit at 8px in the divided frame while the plain ones
+ * sit at 4px; that asymmetry is what the live sidebar draws, not an oversight
+ * waiting to be unified.
+ */
+const FRAME_CLASS: Record<
+  DescriptionFrame,
+  {
+    term: string;
+    row?: string;
+    valueSpacing: string;
+    text: string;
+    linkRow?: string;
+    link: string;
+  }
+> = {
+  spaced: {
+    term: "text-zenml-500",
+    valueSpacing: "mt-space-xxs",
+    text: "flex items-center gap-2 text-base font-medium text-gray-900",
+    linkRow: "flex items-center gap-2",
+    link: "text-base font-medium text-zenml-600 underline decoration-transparent hover:decoration-zenml-500 transition-colors",
+  },
+  divided: {
+    term: "text-gray-400",
+    // Bands carry their own inset; the first and last hug the host card.
+    row: "px-space-xs py-3 first:pt-space-xs last:pb-space-xs",
+    valueSpacing: "mt-1",
+    text: "text-base font-semibold text-gray-900",
+    link: "block break-all text-sm text-gray-600 transition-colors hover:text-zenml-500",
+  },
 };
-const termClass = `text-xs font-semibold uppercase tracking-wider ${TERM_TONE_CLASS[termTone]}`;
 
+const f = FRAME_CLASS[frame];
+const termClass = `text-xs font-semibold uppercase tracking-wider ${f.term}`;
 const listClass =
   frame === "divided" ? "divide-y divide-gray-100" : SPACE_CLASS[space];
-/** `divided` bands carry their own inset; the first and last hug the card. */
-const rowClass =
-  frame === "divided" ? "px-4 py-3 first:pt-4 last:pb-4" : undefined;
-
-/**
- * The gap between a term and its value: 8px in `spaced`, 4px in `divided`.
- * 4px sits below the smallest `SpaceStep`, so it stays a raw utility.
- */
-const VALUE_SPACING = frame === "divided" ? "mt-1" : "mt-space-xxs";
-const textClass =
-  frame === "divided"
-    ? `${VALUE_SPACING} text-base font-semibold text-gray-900`
-    : `${VALUE_SPACING} flex items-center gap-2 text-base font-medium text-gray-900`;
-const linkRowClass =
-  frame === "divided" ? undefined : `${VALUE_SPACING} flex items-center gap-2`;
-const linkClass =
-  frame === "divided"
-    ? `${VALUE_SPACING} block break-all text-sm text-gray-600 transition-colors hover:text-zenml-500`
-    : "text-base font-medium text-zenml-600 underline decoration-transparent hover:decoration-zenml-500 transition-colors";
+const rowClass = f.row;
+const VALUE_SPACING = f.valueSpacing;
+const textClass = `${VALUE_SPACING} ${f.text}`;
+const linkRowClass = f.linkRow && `${VALUE_SPACING} ${f.linkRow}`;
+const linkClass = f.linkRow ? f.link : `${VALUE_SPACING} ${f.link}`;
 
 /**
  * Chips keep their own colour classes rather than reusing `chipStyles.ts`:
@@ -249,7 +280,7 @@ const ICON_PATHS: Record<DescriptionIcon, readonly string[]> = {
           </dd>
         )}
         {value.kind === "entries" && (
-          <dd class="mt-2 space-y-3">
+          <dd class="mt-space-xxs space-y-3">
             {value.entries.map((entry) => (
               <div>
                 <div class="text-sm font-semibold text-gray-900">
@@ -266,12 +297,12 @@ const ICON_PATHS: Record<DescriptionIcon, readonly string[]> = {
         )}
         {value.kind === "html" && (
           <dd
-            class="mt-2 text-sm text-gray-700 [&_li]:mt-1 [&_strong]:font-semibold"
+            class="mt-space-xxs text-sm text-gray-700 [&_li]:mt-1 [&_strong]:font-semibold"
             set:html={value.html}
           />
         )}
         {value.kind === "chips" && (
-          <dd class="mt-2 flex flex-wrap gap-1.5">
+          <dd class="mt-space-xxs flex flex-wrap gap-1.5">
             {value.chips.map((chip) => (
               <span
                 class:list={[

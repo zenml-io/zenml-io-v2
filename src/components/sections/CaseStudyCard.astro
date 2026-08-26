@@ -8,6 +8,11 @@
  * more" row stay non-interactive content rather than repeating the same
  * destination as extra tab stops. Hover state is driven from the card
  * container via `group-hover`, since the overlay is the hit target.
+ *
+ * The overlay is raised above the card's content: the arrow glyph takes a
+ * transform on hover, which makes it paint as its own stacking context, and
+ * an untouched overlay would sit under it — leaving the glyph a dead click
+ * zone exactly when the pointer is over it.
  */
 interface Props {
   href: string;
@@ -32,14 +37,14 @@ const { href, title, logos } = Astro.props;
     </div>
   )}
   <h3 class="mt-4 text-lg font-semibold leading-snug text-gray-900 transition group-hover:text-zenml-500">
-    <a href={href} class="before:absolute before:inset-0 before:content-['']">
+    <a href={href} class="before:absolute before:inset-0 before:z-10 before:content-['']">
       {title}
     </a>
   </h3>
   <div class="mt-auto pt-4">
     <span class="inline-flex items-center text-sm font-semibold text-zenml-500 transition group-hover:text-zenml-600">
       Learn more
-      <svg class="ml-1 h-4 w-4 transition group-hover:translate-x-0.5" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="ml-1 h-4 w-4 transition group-hover:translate-x-0.5 pointer-events-none" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M4.667 10h11.666m0 0L10.5 4.167M16.333 10 10.5 15.833" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </span>

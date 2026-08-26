@@ -22,7 +22,7 @@ export async function getStaticPaths() {
     ({ data }) => !data.draft,
   );
   // Same order the hub uses, so the rail reads as the hub minus this entry.
-  const ordered = caseStudies.sort(
+  const ordered = [...caseStudies].sort(
     (a, b) => (a.data.hub.order ?? 99) - (b.data.hub.order ?? 99),
   );
   return ordered.map((cs) => ({

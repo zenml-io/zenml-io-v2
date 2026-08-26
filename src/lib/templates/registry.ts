@@ -356,8 +356,6 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     componentPath: "src/components/templates/DescriptionList.astro",
     collectionBound: true,
     variantAxes: [
-      "frame (spaced | divided)",
-      "term tone (brand | muted)",
       "item count",
       "icon presence",
       "trailing chip group",
@@ -403,7 +401,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 23,
     notes:
-      "The divided frame: hairline-separated bands with their own inset padding, muted gray terms, tighter term-to-value gap, and no icon rows — the type contract makes an icon a compile error here, since the band drops the flex row that would give it a gap. Stages the four value kinds the spaced frame has no consumer for: identifier (monospaced id plus hint), entries (named sub-rows), html (markup authored in content), and chips in two tones. The host card owns the surrounding radius and background. Every band carries first:pt-4 last:pb-4, which reproduces the live project sidebar only because that sidebar always renders more than one band.",
+      "The divided frame: hairline-separated bands with their own inset padding, muted gray terms (the frame carries the term colour — there is no separate tone axis), tighter term-to-value gap, and no icon rows — the type contract makes an icon a compile error here, since the band drops the flex row that would give it a gap. Stages the four value kinds the spaced frame has no consumer for: identifier (monospaced id plus hint), entries (named sub-rows), html (markup authored in content), and chips in two tones. The host card owns the surrounding radius and background. Every band carries the same first/last padding step, where the markup it replaces put the opening step only on the first row and the closing step only on the tags row. Those agree for as long as tags is the last band; a project without tags gains 4px under its final band, which is the tidier result rather than a regression.",
     contentShape: {
       minItems: 1,
       maxItems: 7,
@@ -412,7 +410,6 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     },
     demoProps: {
       frame: "divided",
-      termTone: "muted",
       items: [
         {
           term: "Project",
@@ -695,12 +692,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 26,
     notes:
-      "Image-free by ruling (#63). Renders only the items arrangement (grid or list) — the six live surfaces keep their own heading treatments and section chrome, so 'More like this' as the one sitewide heading, card.hex-corner on grid cards, and the bind-separator-to-following-token meta form are the new-brand cutover states, not this parity build. The live parity build keeps per-surface headings, hex-corner-free cards, and free-standing meta separators (a wrap leaves the dot at the line end).",
+      "Image-free by ruling (#63). Renders only the items arrangement (grid or list) — the seven live surfaces keep their own heading treatments and section chrome, so 'More like this' as the one sitewide heading, card.hex-corner on grid cards, and the bind-separator-to-following-token meta form are the new-brand cutover states, not this parity build. The live parity build keeps per-surface headings, hex-corner-free cards, and free-standing meta separators (a wrap leaves the dot at the line end).",
     contentShape: {
       minItems: 1,
-      maxItems: 3,
+      maxItems: 4,
       overflow:
-        "All six live surfaces cap related items at 3; the sidebar thumbnail list has no observed cap.",
+        "Six surfaces cap related items at 3; the case-study rail is uncapped — it lists every sibling in the collection, four today. The sidebar thumbnail list has no observed cap either.",
     },
     demoProps: {
       items: [
