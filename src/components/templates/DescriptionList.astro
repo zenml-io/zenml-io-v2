@@ -40,21 +40,43 @@ export interface DescriptionEntry {
   description?: string;
 }
 
-export type DescriptionValue =
+/**
+ * The value kinds are split by frame rather than pooled: `divided` drops the
+ * flex row that gives an icon its gap, so an icon there would sit bare against
+ * the text, and `spaced` has no styling for the richer kinds. Keeping the two
+ * unions apart makes each wrong combination a compile error instead of a
+ * silently misrendered row.
+ */
+export type SpacedDescriptionValue =
   | { kind: "text"; text: string; icon?: DescriptionIcon }
+  | { kind: "link"; href: string; label: string; icon?: DescriptionIcon };
+
+export type DividedDescriptionValue =
+  | { kind: "text"; text: string; icon?: never }
   /** Monospaced accent value — an id meant to be copied, with optional hint. */
   | { kind: "identifier"; text: string; note?: string }
-  | { kind: "link"; href: string; label: string; icon?: DescriptionIcon }
+  | { kind: "link"; href: string; label: string; icon?: never }
   | { kind: "chips"; chips: readonly string[]; tone: DescriptionChipTone }
   /** Named sub-entries, each with an optional line of description. */
   | { kind: "entries"; entries: readonly DescriptionEntry[] }
   /** Pre-rendered markup authored in content (e.g. a stack `<ul>`). */
   | { kind: "html"; html: string };
 
-export interface DescriptionListItem {
+export type DescriptionValue = SpacedDescriptionValue | DividedDescriptionValue;
+
+export interface SpacedDescriptionListItem {
   term: string;
-  value: DescriptionValue;
+  value: SpacedDescriptionValue;
 }
+
+export interface DividedDescriptionListItem {
+  term: string;
+  value: DividedDescriptionValue;
+}
+
+export type DescriptionListItem =
+  | SpacedDescriptionListItem
+  | DividedDescriptionListItem;
 
 export interface DescriptionListTrailing {
   term: string;
@@ -64,15 +86,19 @@ export interface DescriptionListTrailing {
 export type DescriptionFrame = "spaced" | "divided";
 export type DescriptionTermTone = "brand" | "muted";
 
-interface Props {
-  items: readonly DescriptionListItem[];
-  frame?: DescriptionFrame;
+interface CommonProps {
   termTone?: DescriptionTermTone;
   trailing?: DescriptionListTrailing;
   /** Gap between items. `spaced` only — `divided` separates with rules. */
   space?: SpaceStep;
   class?: string;
 }
+
+type Props = CommonProps &
+  (
+    | { frame?: "spaced"; items: readonly SpacedDescriptionListItem[] }
+    | { frame: "divided"; items: readonly DividedDescriptionListItem[] }
+  );
 
 const {
   items,
@@ -82,6 +108,9 @@ const {
   space = "sm",
   class: className,
 } = Astro.props;
+
+/** Widened for rendering; the union above is what constrains callers. */
+const rows: readonly DescriptionListItem[] = items;
 
 const SPACE_CLASS: Record<SpaceStep, string> = {
   xxs: "space-y-space-xxs",
@@ -155,7 +184,7 @@ const ICON_PATHS: Record<DescriptionIcon, readonly string[]> = {
 
 <dl class:list={[listClass, className]}>
   {
-    items.map((item) => {
+    rows.map((item) => {
       const value = item.value;
       return (
       <div class={rowClass}>

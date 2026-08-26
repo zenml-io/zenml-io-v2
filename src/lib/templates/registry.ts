@@ -356,6 +356,8 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     componentPath: "src/components/templates/DescriptionList.astro",
     collectionBound: true,
     variantAxes: [
+      "frame (spaced | divided)",
+      "term tone (brand | muted)",
       "item count",
       "icon presence",
       "trailing chip group",
@@ -366,7 +368,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 23,
     notes:
-      "The spaced frame: items separated by vertical space, brand-purple terms. Two-column form collapses at 768. The trailing chip group renders outside the dl (hr + bare term/value div) — reproducing the one live consumer's actual DOM, not the idealized single-dl shape. The 5-icon set is only proven against that one consumer (CaseStudySidebar). The same component's hairline-banded arrangement is registered separately as data-display.description-list-divided.",
+      "The spaced frame: items separated by vertical space, brand-purple terms. Two-column form collapses at 768. The trailing chip group renders outside the dl (hr + bare term/value div) — reproducing CaseStudySidebar's actual DOM, not the idealized single-dl shape. This entry stages the spaced frame; data-display.description-list-divided stages the divided one. The zenml-500 term color and the 5-icon set are proven only against CaseStudySidebar.",
     contentShape: {
       minItems: 1,
       maxItems: 6,
@@ -401,12 +403,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 23,
     notes:
-      "The divided frame: hairline-separated bands with their own inset padding, muted gray terms, tighter term-to-value gap. Carries the value kinds the spaced frame has no consumer for — identifier (monospaced id plus hint), entries (named sub-rows), html (markup authored in content), and chips in two tones. The host card owns the surrounding radius and background; the first and last band hug it.",
+      "The divided frame: hairline-separated bands with their own inset padding, muted gray terms, tighter term-to-value gap, and no icon rows — the type contract makes an icon a compile error here, since the band drops the flex row that would give it a gap. Stages the four value kinds the spaced frame has no consumer for: identifier (monospaced id plus hint), entries (named sub-rows), html (markup authored in content), and chips in two tones. The host card owns the surrounding radius and background. Every band carries first:pt-4 last:pb-4, which reproduces the live project sidebar only because that sidebar always renders more than one band.",
     contentShape: {
       minItems: 1,
-      maxItems: 8,
+      maxItems: 7,
       overflow:
-        "The list grows with no cap; the live consumer draws at 7 bands, the longest being a chip group that wraps.",
+        "The list grows with no cap; the live project sidebar draws seven bands — project, id, repository, pipelines, stack, tools, tags.",
     },
     demoProps: {
       frame: "divided",
