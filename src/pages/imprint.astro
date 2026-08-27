@@ -4,7 +4,10 @@ import ContentLayout from "../layouts/ContentLayout.astro";
  * Imprint — legal company information page (required by German law).
  *
  * Uses ContentLayout for the prose wrapper, but the content is a simple
- * three-column grid rather than long-form text.
+ * three-column grid rather than long-form text. Deliberately NOT built on
+ * LegalArticle — it's a not-prose fact grid, not the long-form h1 + body
+ * shape LegalArticle owns, and a different page type than privacy-policy /
+ * terms-of-service.
  *
  * Route: /imprint
  */
@@ -14,6 +17,7 @@ import { COMPANY_ADDRESS } from "../lib/constants";
 <ContentLayout
   title="Imprint — ZenML"
   description="Legal company information for ZenML GmbH, Munich, Germany."
+  surface="ml"
 >
   <h1>Imprint</h1>
 
