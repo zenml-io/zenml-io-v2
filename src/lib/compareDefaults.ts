@@ -1,12 +1,24 @@
 /**
  * Category-level defaults for /compare/ pages.
  *
- * These values are used when a compare page's frontmatter doesn't specify
- * its own valueSections, strategyCtaHeadline, or finalCta. Content is sourced
- * from the /vs/ category pages (orchestrators, e2e-platforms, experiment-trackers)
- * which define the canonical marketing copy per category.
+ * NO PAGE READS THIS COPY ANY MORE. Every compare page used to fall back here
+ * for its value sections, strategy-CTA headline and closing CTA when its own
+ * frontmatter left them unset — which was all 25 of them. The conversion
+ * resolved those fallbacks once and wrote the results into each entry, so the
+ * pages now render what their own content says.
  *
- * Categories without a /vs/ page get generic defaults that work for any tool.
+ * What still uses this module: `ZENML_ICON_URL`, imported by the comparison
+ * template, and `getCategoryDefaults`, imported by the one-off migration
+ * scripts in `scripts/migrations/compare-blocks/` so their record of how the
+ * copy was resolved cannot drift from the copy itself.
+ *
+ * The copy below is therefore a historical record, kept because the migration
+ * scripts read it. Editing it changes nothing on the site; to change what a
+ * compare page says, edit that page's `blocks[]`.
+ *
+ * Content originally came from the /vs/ category pages (orchestrators,
+ * e2e-platforms, experiment-trackers); categories without one used the generic
+ * set, which is what 7 of the 25 entries were resolved against.
  */
 
 // ---------------------------------------------------------------------------
