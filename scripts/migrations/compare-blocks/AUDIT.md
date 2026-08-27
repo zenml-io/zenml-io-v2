@@ -1,6 +1,6 @@
 # Compare-page extraction audit
 
-**Generated from commit:** a41bbf1742e319f5e215798f444d6038d2c99241
+**Generated from commit:** 893cc240a5c7f160aebaa824e78aab8c3665104c
 
 **Regenerate with:** `pnpm exec tsx scripts/migrations/compare-blocks/audit.ts --write`
 
