@@ -95,7 +95,7 @@ Before the individual reviews, here is the shortlist side by side:
 
 ## 1. Kitaru by ZenML
 
-![Kitaru by ZenML landing page with the headline "Your agent’s best eval data is already in production" beside a replay code example](https://assets.zenml.io/content/blog/trigger-dev-alternatives/20588ce0/01-kitaru-hero.avif)
+![Kitaru by ZenML homepage with the headline “Your agent’s best eval data is already in production” beside a replay code example](https://assets.zenml.io/content/blog/trigger-dev-alternatives/4ce6a2bf/01-kitaru-hero.avif)
 
 Kitaru is an open-source, self-hosted test bench for AI agents. It records or imports production sessions, reruns the agent code against controlled recorded tool history, and scores the new behavior against the original.
 
