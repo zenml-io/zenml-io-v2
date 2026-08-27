@@ -385,227 +385,221 @@ if (item.collection === "compare") {
   canonical={canonical}
   surface="ml"
 >
-  {(() => {
-    const content =
-      renderModel.family === "compare"
-        ? (() => {
-            const { hero, toolName, toolIcon, resolvedBlocks } = renderModel;
-            return (
-              <>
-                <CompareHero
-                  toolName={toolName}
-                  toolIcon={toolIcon}
-                  headline={hero.headline}
-                  deck={hero.deck}
-                  primaryCta={hero.primaryCta}
-                  secondaryCta={hero.secondaryCta}
-                  zenmlIconUrl={ZENML_ICON_URL}
-                />
+  {renderModel.family === "compare"
+    ? (() => {
+        const { hero, toolName, toolIcon, resolvedBlocks } = renderModel;
+        return (
+          <>
+            <CompareHero
+              toolName={toolName}
+              toolIcon={toolIcon}
+              headline={hero.headline}
+              deck={hero.deck}
+              primaryCta={hero.primaryCta}
+              secondaryCta={hero.secondaryCta}
+              zenmlIconUrl={ZENML_ICON_URL}
+            />
 
-                {resolvedBlocks.map((block) => {
-                  switch (block.kind) {
-                    case "value":
-                      return (
-                        <FeatureValueSection
-                          title={block.title}
-                          bullets={block.bullets}
-                          image={block.image}
-                          imageSide={block.imageSide}
+            {resolvedBlocks.map((block) => {
+              switch (block.kind) {
+                case "value":
+                  return (
+                    <FeatureValueSection
+                      title={block.title}
+                      bullets={block.bullets}
+                      image={block.image}
+                      imageSide={block.imageSide}
+                    />
+                  );
+
+                case "quote":
+                  return (
+                    <VsTestimonial
+                      quote={block.text}
+                      name={block.author}
+                      title={block.position}
+                      avatar={block.avatar}
+                      companyLogo={block.companyLogo}
+                    />
+                  );
+
+                case "featureTable":
+                  return (
+                    <CompareFeatureHeader
+                      toolName={toolName}
+                      toolIcon={toolIcon}
+                      zenmlIconUrl={ZENML_ICON_URL}
+                      tableHtml={block.tableHtml}
+                    />
+                  );
+
+                case "codeComparison":
+                  return (
+                    <CompareCodeComparison
+                      toolName={toolName}
+                      toolIcon={toolIcon}
+                      zenmlIconUrl={ZENML_ICON_URL}
+                      zenmlCode={block.zenmlCode}
+                      toolCode={block.toolCode}
+                      zenmlLanguage={block.zenmlLanguage}
+                      toolLanguage={block.toolLanguage}
+                    />
+                  );
+
+                case "strategyCta":
+                  return (
+                    <CompareStrategyCta
+                      headline={block.headline}
+                      advantages={block.advantages}
+                    />
+                  );
+
+                case "showdown":
+                case "blogRail":
+                  return (
+                    <section class={RAIL_CHROME[block.kind].section}>
+                      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+                        <div class="text-center mb-10 fade-in-element">
+                          <SectionIntro
+                            eyebrow={block.eyebrow}
+                            heading={block.headline}
+                            classOverrides={{
+                              heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
+                              headingSpacing: "mt-3",
+                            }}
+                          />
+                        </div>
+                        <RelatedRail
+                          items={block.items}
+                          gridVariant={RAIL_CHROME[block.kind].gridVariant}
+                          reveal
                         />
-                      );
+                      </div>
+                    </section>
+                  );
 
-                    case "quote":
-                      return (
-                        <VsTestimonial
-                          quote={block.text}
-                          name={block.author}
-                          title={block.position}
-                          avatar={block.avatar}
-                          companyLogo={block.companyLogo}
-                        />
-                      );
+                case "cta02":
+                  return (
+                    <VsCta02
+                      headline={block.headline}
+                      bullets={block.bullets}
+                      primaryCta={block.primaryCta}
+                      secondaryCta={block.secondaryCta}
+                      image={block.image}
+                      variant="gradient"
+                      padded
+                    />
+                  );
 
-                    case "featureTable":
-                      return (
-                        <CompareFeatureHeader
-                          toolName={toolName}
-                          toolIcon={toolIcon}
-                          zenmlIconUrl={ZENML_ICON_URL}
-                          tableHtml={block.tableHtml}
-                        />
-                      );
+                default: {
+                  const unreachable: never = block;
+                  throw new Error(
+                    `Unhandled resolved block: ${JSON.stringify(unreachable)}`,
+                  );
+                }
+              }
+            })}
+          </>
+        );
+      })()
+    : (() => {
+        const { hero, blocks, related: relatedItems } = renderModel;
+        // `/vs` wraps its section stack in <main>; `/compare` never has.
+        return (
+          <main>
+            <VsHero
+              eyebrow={hero.eyebrow}
+              headline={hero.headline}
+              deck={hero.deck}
+              primaryCta={hero.primaryCta}
+              secondaryCta={hero.secondaryCta}
+            />
 
-                    case "codeComparison":
-                      return (
-                        <CompareCodeComparison
-                          toolName={toolName}
-                          toolIcon={toolIcon}
-                          zenmlIconUrl={ZENML_ICON_URL}
-                          zenmlCode={block.zenmlCode}
-                          toolCode={block.toolCode}
-                          zenmlLanguage={block.zenmlLanguage}
-                          toolLanguage={block.toolLanguage}
-                        />
-                      );
+            {blocks.map((block) => {
+              switch (block.kind) {
+                case "intro":
+                  return (
+                    <section class="bg-white py-8">
+                      <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+                        <p class="text-lg text-gray-600 leading-relaxed">
+                          {block.body}
+                        </p>
+                      </div>
+                    </section>
+                  );
 
-                    case "strategyCta":
-                      return (
-                        <CompareStrategyCta
-                          headline={block.headline}
-                          advantages={block.advantages}
-                        />
-                      );
+                case "value":
+                  return (
+                    <FeatureValueSection
+                      title={block.title}
+                      bullets={block.bullets}
+                      image={block.image}
+                      imageSide={block.imageSide}
+                    />
+                  );
 
-                    case "showdown":
-                    case "blogRail":
-                      return (
-                        <section class={RAIL_CHROME[block.kind].section}>
-                          <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-                            <div class="text-center mb-10 fade-in-element">
-                              <SectionIntro
-                                eyebrow={block.eyebrow}
-                                heading={block.headline}
-                                classOverrides={{
-                                  heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
-                                  headingSpacing: "mt-3",
-                                }}
-                              />
-                            </div>
-                            <RelatedRail
-                              items={block.items}
-                              gridVariant={RAIL_CHROME[block.kind].gridVariant}
-                              reveal
+                case "testimonial":
+                  return (
+                    <VsTestimonial
+                      quote={block.quote}
+                      name={block.name}
+                      title={block.title}
+                      avatar={block.avatar}
+                      companyLogo={block.companyLogo}
+                    />
+                  );
+
+                case "relatedCompare":
+                  return (
+                    relatedItems.length > 0 && (
+                      <section class="bg-gray-50 py-16 sm:py-20">
+                        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                          {block.headline ? (
+                            <SectionIntro
+                              eyebrow={block.eyebrow}
+                              heading={block.headline}
+                              classOverrides={{
+                                eyebrow: SECTION_INTRO_PRESETS.cardEyebrow,
+                                heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
+                              }}
                             />
-                          </div>
-                        </section>
-                      );
+                          ) : (
+                            block.eyebrow && (
+                              <span class="text-xs font-semibold uppercase tracking-wider text-zenml-500">
+                                {block.eyebrow}
+                              </span>
+                            )
+                          )}
+                          <RelatedRail
+                            items={relatedItems}
+                            gridVariant="gap-sm-2col-sm"
+                            class="mt-space-md"
+                          />
+                        </div>
+                      </section>
+                    )
+                  );
 
-                    case "cta02":
-                      return (
-                        <VsCta02
-                          headline={block.headline}
-                          bullets={block.bullets}
-                          primaryCta={block.primaryCta}
-                          secondaryCta={block.secondaryCta}
-                          image={block.image}
-                          variant="gradient"
-                          padded
-                        />
-                      );
+                case "cta02":
+                  return (
+                    <VsCta02
+                      headline={block.headline}
+                      bullets={block.bullets}
+                      primaryCta={block.primaryCta}
+                      secondaryCta={block.secondaryCta}
+                      image={block.image}
+                    />
+                  );
 
-                    default: {
-                      const unreachable: never = block;
-                      throw new Error(
-                        `Unhandled resolved block: ${JSON.stringify(unreachable)}`,
-                      );
-                    }
-                  }
-                })}
-              </>
-            );
-          })()
-        : (() => {
-            const { hero, blocks, related: relatedItems } = renderModel;
-            return (
-              <>
-                <VsHero
-                  eyebrow={hero.eyebrow}
-                  headline={hero.headline}
-                  deck={hero.deck}
-                  primaryCta={hero.primaryCta}
-                  secondaryCta={hero.secondaryCta}
-                />
-
-                {blocks.map((block) => {
-                  switch (block.kind) {
-                    case "intro":
-                      return (
-                        <section class="bg-white py-8">
-                          <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-                            <p class="text-lg text-gray-600 leading-relaxed">
-                              {block.body}
-                            </p>
-                          </div>
-                        </section>
-                      );
-
-                    case "value":
-                      return (
-                        <FeatureValueSection
-                          title={block.title}
-                          bullets={block.bullets}
-                          image={block.image}
-                          imageSide={block.imageSide}
-                        />
-                      );
-
-                    case "testimonial":
-                      return (
-                        <VsTestimonial
-                          quote={block.quote}
-                          name={block.name}
-                          title={block.title}
-                          avatar={block.avatar}
-                          companyLogo={block.companyLogo}
-                        />
-                      );
-
-                    case "relatedCompare":
-                      return (
-                        relatedItems.length > 0 && (
-                          <section class="bg-gray-50 py-16 sm:py-20">
-                            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                              {block.headline ? (
-                                <SectionIntro
-                                  eyebrow={block.eyebrow}
-                                  heading={block.headline}
-                                  classOverrides={{
-                                    eyebrow: SECTION_INTRO_PRESETS.cardEyebrow,
-                                    heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
-                                  }}
-                                />
-                              ) : (
-                                block.eyebrow && (
-                                  <span class="text-xs font-semibold uppercase tracking-wider text-zenml-500">
-                                    {block.eyebrow}
-                                  </span>
-                                )
-                              )}
-                              <RelatedRail
-                                items={relatedItems}
-                                gridVariant="gap-sm-2col-sm"
-                                class="mt-space-md"
-                              />
-                            </div>
-                          </section>
-                        )
-                      );
-
-                    case "cta02":
-                      return (
-                        <VsCta02
-                          headline={block.headline}
-                          bullets={block.bullets}
-                          primaryCta={block.primaryCta}
-                          secondaryCta={block.secondaryCta}
-                          image={block.image}
-                        />
-                      );
-
-                    default: {
-                      const unreachable: never = block;
-                      throw new Error(
-                        `Unhandled /vs block: ${JSON.stringify(unreachable)}`,
-                      );
-                    }
-                  }
-                })}
-              </>
-            );
-          })();
-
-    // `/vs` wraps its section stack in <main>; `/compare` never has. The
-    // family already decides this, so it is derived, not passed in.
-    return renderModel.family === "vs" ? <main>{content}</main> : content;
-  })()}
+                default: {
+                  const unreachable: never = block;
+                  throw new Error(
+                    `Unhandled /vs block: ${JSON.stringify(unreachable)}`,
+                  );
+                }
+              }
+            })}
+          </main>
+        );
+      })()}
 </BaseLayout>
