@@ -536,10 +536,120 @@ const compareFinalCtaSchema = z.object({
   image: imageSchema.optional(),
 });
 
+/**
+ * Two-column value section. Shared by feature pages, `/vs/*` and the
+ * comparison pages, so it is defined here, above the first consumer.
+ */
+const valueBlockSchema = z.object({
+  kind: z.literal("value"),
+  title: z.string(),
+  body: z.string().optional(),
+  bullets: z.array(z.string()).optional(),
+  image: imageSchema.optional(),
+  imageSide: z.enum(["left", "right"]).optional(),
+});
+
+/** Rich closing CTA, shared by `/vs/*` and the comparison pages. */
+const vsCta02BlockSchema = z.object({
+  kind: z.literal("cta02"),
+  headline: z.string(),
+  bullets: z.array(z.string()).default([]),
+  primaryCta: ctaSchema,
+  secondaryCta: ctaSchema.optional(),
+  image: imageSchema.optional(),
+});
+
+// ---------------------------------------------------------------------------
+// Shared comparison block pool (Wave 3 PR3)
+//
+// One union backs both `/compare/zenml-vs-*` and `/vs/*`, so the two families
+// can render through a single template. The kinds below are the ones the
+// compare pages need; the `/vs` pages keep their existing `intro`,
+// `relatedCompare` and inline `testimonial` kinds and share `value` + `cta02`.
+//
+// `quote` is a slug reference (the compare entries already carry one) while
+// `/vs`'s `testimonial` inlines its copy — they render the same component from
+// different sources, so they stay separate kinds rather than one widened bag.
+// ---------------------------------------------------------------------------
+
+const compareQuoteBlockSchema = z.object({
+  kind: z.literal("quote"),
+  quote: slugReference("quotes", referenceSlugSets.quotes),
+});
+
+const compareFeatureTableBlockSchema = z.object({
+  kind: z.literal("featureTable"),
+  tableHtml: z.string(),
+});
+
+const compareCodeComparisonBlockSchema = z.object({
+  kind: z.literal("codeComparison"),
+  zenmlCode: z.string(),
+  zenmlLanguage: z.string().default("python"),
+  toolCode: z.string(),
+  toolLanguage: z.string().default("python"),
+});
+
+const compareStrategyCtaBlockSchema = z.object({
+  kind: z.literal("strategyCta"),
+  headline: z.string(),
+  advantages: slugReferenceArray("advantages", referenceSlugSets.advantages),
+});
+
+/**
+ * The related-posts rail. `slugs` is deliberately optional and unset on every
+ * compare entry: the rail renders the three most recent posts dynamically, and
+ * materialising today's three would freeze 25 rails and rot silently.
+ */
+const compareBlogRailBlockSchema = z.object({
+  kind: z.literal("blogRail"),
+  eyebrow: z.string().optional(),
+  headline: z.string().optional(),
+  slugs: z.array(z.string()).optional(),
+});
+
+/**
+ * The sibling-comparison rail ("showdown"). Items are computed from the
+ * collection at render time, so the block carries only its own chrome.
+ */
+const compareShowdownBlockSchema = z.object({
+  kind: z.literal("showdown"),
+  eyebrow: z.string().optional(),
+  headline: z.string().optional(),
+});
+
+const comparisonBlockSchema = z.discriminatedUnion("kind", [
+  valueBlockSchema,
+  compareQuoteBlockSchema,
+  compareFeatureTableBlockSchema,
+  compareCodeComparisonBlockSchema,
+  compareStrategyCtaBlockSchema,
+  compareShowdownBlockSchema,
+  compareBlogRailBlockSchema,
+  vsCta02BlockSchema,
+]);
+
 const compareSchema = z.object({
   title: z.string(),
   slug: z.string(),
   draft: z.boolean().default(false),
+
+  /**
+   * Ordered page body. Optional during the PR3 migration: entries still
+   * carrying the flat fields below render through the old path until the
+   * conversion lands, so the build stays green at every commit.
+   */
+  blocks: z.array(comparisonBlockSchema).optional(),
+
+  /** Hero, materialised by the conversion (CTAs were never set per entry). */
+  hero: z
+    .object({
+      headline: z.string().optional(),
+      deck: z.string().optional(),
+      primaryCta: ctaSchema,
+      secondaryCta: ctaSchema.optional(),
+    })
+    .optional(),
 
   // VS page-specific fields (original)
   toolName: z.string().optional(),
@@ -719,15 +829,6 @@ const featureHeroSchema = z.object({
   secondaryCta: ctaSchema.optional(),
 });
 
-const valueBlockSchema = z.object({
-  kind: z.literal("value"),
-  title: z.string(),
-  body: z.string().optional(),
-  bullets: z.array(z.string()).optional(),
-  image: imageSchema.optional(),
-  imageSide: z.enum(["left", "right"]).optional(),
-});
-
 const complianceBannerBlockSchema = z.object({
   kind: z.literal("complianceBanner"),
   eyebrow: z.string().optional(),
@@ -843,15 +944,6 @@ const vsRelatedCompareBlockSchema = z.object({
   kind: z.literal("relatedCompare"),
   eyebrow: z.string().optional(),
   headline: z.string().optional(),
-});
-
-const vsCta02BlockSchema = z.object({
-  kind: z.literal("cta02"),
-  headline: z.string(),
-  bullets: z.array(z.string()).default([]),
-  primaryCta: ctaSchema,
-  secondaryCta: ctaSchema.optional(),
-  image: imageSchema.optional(),
 });
 
 /**
