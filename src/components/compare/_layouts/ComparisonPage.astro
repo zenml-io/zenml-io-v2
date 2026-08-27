@@ -2,10 +2,10 @@
 /**
  * ComparisonPage — blocks-driven ZenML-vs-X comparison detail template.
  *
- * Reads an ordered `item.data.blocks[]` instead of computing section
- * fallbacks from flat frontmatter fields (that path stays on
- * MlopsCompare.astro during the migration). Each block kind renders the
- * same section MlopsCompare.astro already renders:
+ * Reads an ordered `item.data.blocks[]`. The template it replaced computed
+ * each section from flat frontmatter fields, falling back to per-category
+ * defaults; all of that is now materialised into the entry itself, so what
+ * renders is what the content says. Block kinds map to sections as:
  *
  *   value          -> FeatureValueSection
  *   quote          -> VsTestimonial (slug resolved against the quotes collection)
@@ -16,19 +16,18 @@
  *   blogRail       -> related-posts rail (RelatedRail, blog-card cards)
  *   cta02          -> VsCta02
  *
- * The hero, and the SEO title/description/ogImage, stay flat top-level
- * fields on the compare entry (they were already 25/25-set, never part of
- * the fallback machinery blocks replace) and are computed here exactly as
- * MlopsCompare.astro computes them today.
+ * The hero comes from `item.data.hero`. The SEO title, description and card
+ * image stay flat top-level fields, because three entries carry no `seo:`
+ * block at all and take their description and image from `seoDescription`
+ * and `openGraphImage`.
  *
  * The showdown and blog rails carry only their own chrome (eyebrow/headline)
- * in the block — their items are sibling/related content resolved at
- * render time, same as MlopsCompare.astro, so a stale block can never freeze
- * a rail's contents.
+ * in the block — their items are sibling and recent-post lookups resolved at
+ * render time, so a stale block can never freeze a rail's contents.
  *
  * Layout details that differ between the two page families this template is
  * meant to serve (`/compare/zenml-vs-*`, which renders sections directly
- * under `<BaseLayout>`, and `/vs/*`, which wraps them in `<main>`) are
+ * under the page layout, and `/vs/*`, which wraps them in `<main>`) are
  * exposed as props with defaults that reproduce today's `/compare` output,
  * rather than baked into the markup below.
  */
@@ -121,7 +120,7 @@ interface RelatedRailSectionConfig {
 interface Props {
   item: CollectionEntry<"compare">;
   /**
-   * `/compare/zenml-vs-*` renders sections directly under `<BaseLayout>`
+   * `/compare/zenml-vs-*` renders sections directly under the page layout
    * (default). `/vs/*` wraps the same section stack in `<main>` — pass
    * `true` for that family rather than hardcoding one shape here.
    */
