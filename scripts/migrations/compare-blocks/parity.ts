@@ -431,7 +431,10 @@ function runCapture() {
   // HTML normaliser masks by design, so they must be captured separately or
   // they are outside the gate entirely (see the stylesheet note in the docblock).
   const stylesheets = collectStylesheets(DIST_DIR, routes);
-  for (const href of stylesheets.values()) {
+  // De-duplicated: the map is keyed per route kind, so a bundle both kinds
+  // reference (global.css) appears under two keys but is one file.
+  const stylesheetFiles = [...new Set(stylesheets.values())].sort();
+  for (const href of stylesheetFiles) {
     const src = join(DIST_DIR, href.replace(/^\//, ""));
     if (!existsSync(src)) {
       console.error(
@@ -454,12 +457,12 @@ function runCapture() {
     gitDirty: hasTrackedModifications(),
     routes: routes.map((r) => r.route),
     guardRoutes: guardRoutes.map((r) => r.route),
-    stylesheets: [...stylesheets.values()],
+    stylesheets: stylesheetFiles,
   };
   writeFileSync(MANIFEST_PATH, `${JSON.stringify(manifest, null, 2)}\n`);
 
   console.log(
-    `\n${routes.length} route(s), ${guardRoutes.length} kitaru guard route(s) and ${stylesheets.size} stylesheet(s) captured to ${BASELINE_DIR}/ (manifest: ${MANIFEST_PATH}).`,
+    `\n${routes.length} route(s), ${guardRoutes.length} kitaru guard route(s) and ${stylesheetFiles.length} stylesheet(s) captured to ${BASELINE_DIR}/ (manifest: ${MANIFEST_PATH}).`,
   );
 }
 
