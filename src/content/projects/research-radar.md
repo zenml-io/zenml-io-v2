@@ -32,6 +32,16 @@ tools:
 createdAt: "2025-03-24T11:03:05.540Z"
 updatedAt: "2025-08-26T08:34:01.923Z"
 projectId: "research-radar"
+pipelines:
+  - name: "Classification Pipeline"
+    description: "Classifies articles using DeepSeek R1 and saves classification results for evaluation or dataset augmentation."
+  - name: "Training Pipeline"
+    description: "Fine-tunes ModernBERT for specialized article classification with comprehensive metrics tracking."
+  - name: "Comparison Pipeline"
+    description: "Compares the fine-tuned model against Claude Haiku to evaluate performance."
+  - name: "Deployment Pipeline"
+    description: "Deploys the fine-tuned model to Hugging Face for easy access and sharing."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> kubernetes</li><li><strong>Artifact Store:</strong> default</li><li><strong>Step Operator:</strong> default</li></ul>"
 seo:
   title: "Research Radar"
   description: "End-to-end pipeline that automates research paper discovery and classification for specialized research domains."
@@ -41,23 +51,7 @@ seo:
   ogDescription: "End-to-end pipeline that automates research paper discovery and classification for specialized research domains."
 ---
 
-#### Classification Pipeline
-
-Classifies articles using DeepSeek R1 and saves classification results for evaluation or dataset augmentation.
-
-#### Training Pipeline
-
-Fine-tunes ModernBERT for specialized article classification with comprehensive metrics tracking.
-
-#### Comparison Pipeline
-
-Compares the fine-tuned model against Claude Haiku to evaluate performance.
-
-#### Deployment Pipeline
-
-Deploys the fine-tuned model to Hugging Face for easy access and sharing.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> kubernetes</li><li><strong>Artifact Store:</strong> default</li><li><strong>Step Operator:</strong> default</li></ul>Research Radar automates research paper classification across multiple sources, helping researchers stay current with relevant publications without hours of manual filtering.
+Research Radar automates research paper classification across multiple sources, helping researchers stay current with relevant publications without hours of manual filtering.
 
 ### What It Does
 

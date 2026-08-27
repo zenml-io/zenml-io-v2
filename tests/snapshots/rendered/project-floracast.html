@@ -1,0 +1,93 @@
+<div class="prose prose-gray mt-3 max-w-none">
+<p>FloraCast is an end-to-end forecasting solution that demonstrates how to
+build production-grade time series prediction workflows with ZenML and Darts.
+It provides reproducible training, automatic model versioning, and scheduled
+batch inference with rich visualizations to support demand and sales forecasting
+use cases in retail, e-commerce, and supply chain.
+</p>
+
+<h3>What It Does
+</h3>
+
+<ul>
+
+<li>
+
+<p>Trains advanced forecasting models (Temporal Fusion Transformer by default; ExponentialSmoothing fallback)
+</p>
+
+</li>
+
+<li>
+
+<p>Evaluates models with SMAPE and produces clear visual reports
+</p>
+
+</li>
+
+<li>
+
+<p>Registers and promotes the best-performing models using ZenML's Model Control Plane
+</p>
+
+</li>
+
+<li>
+
+<p>Runs automated batch inference to generate future forecasts on a schedule
+</p>
+
+</li>
+
+</ul>
+
+<h3>How It Works
+</h3>
+
+<ul>
+
+<li>
+
+<p>Ingests ecommerce sales data and converts it into Darts TimeSeries objects
+</p>
+
+</li>
+
+<li>
+
+<p>Applies standardized preprocessing, including train/validation split and frequency alignment
+</p>
+
+</li>
+
+<li>
+
+<p>Trains a configurable TFT model and computes evaluation metrics
+</p>
+
+</li>
+
+<li>
+
+<p>Stores artifacts with custom materializers, including timeseries visualizations
+</p>
+
+</li>
+
+<li>
+
+<p>Loads the production model for batch inference and exports predictions to CSV
+</p>
+
+</li>
+
+</ul>
+
+<h3>Architecture
+</h3>
+
+<p>The architecture connects data ingestion, preprocessing, model training, evaluation,
+and scheduled batch inference through ZenML pipelines, leveraging the Model Control
+Plane for lineage, versioning, and promotion.
+</p>
+</div>

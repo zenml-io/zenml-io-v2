@@ -11,20 +11,37 @@ import { getCollection, render } from "astro:content";
 import CaseStudySidebar from "../../components/sections/CaseStudySidebar.astro";
 import FinalCTA from "../../components/sections/FinalCTA.astro";
 import Breadcrumb from "../../components/system/Breadcrumb.astro";
+import RelatedRail, {
+  type RelatedRailItem,
+} from "../../components/templates/RelatedRail.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { orderCaseStudies, siblingCaseStudies } from "../../lib/case-studies";
 
 export async function getStaticPaths() {
   const caseStudies = await getCollection(
     "case-studies",
     ({ data }) => !data.draft,
   );
-  return caseStudies.map((cs) => ({
+  return orderCaseStudies(caseStudies).map((cs) => ({
     params: { slug: cs.data.slug },
-    props: { cs },
+    props: {
+      cs,
+      related: siblingCaseStudies(caseStudies, cs.data.slug).map((sibling) => ({
+        kind: "meta-card" as const,
+        href: `/case-study/${sibling.data.slug}`,
+        title: sibling.data.hub.cardTitle,
+        meta: [
+          { text: sibling.data.sidebar.company, emphasis: true },
+          ...(sibling.data.sidebar.industry
+            ? [{ text: sibling.data.sidebar.industry }]
+            : []),
+        ],
+      })) satisfies RelatedRailItem[],
+    },
   }));
 }
 
-const { cs } = Astro.props;
+const { cs, related } = Astro.props;
 const { data } = cs;
 const { Content } = await render(cs);
 
@@ -80,22 +97,36 @@ const ogImage = data.seo?.ogImage;
     {/* Main content: sidebar + body */}
     <section class="bg-white pb-16 sm:pb-20">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="grid gap-10 lg:grid-cols-[280px_1fr]">
-          <CaseStudySidebar
-            company={data.sidebar.company}
-            website={data.sidebar.website}
-            mlTeamSize={data.sidebar.mlTeamSize}
-            cloudProvider={data.sidebar.cloudProvider}
-            industry={data.sidebar.industry}
-            useCases={data.sidebar.useCases}
-            pdfDownload={data.sidebar.pdfDownload}
-          />
+        <div class="grid gap-10 lg:grid-cols-[280px_1fr] lg:items-start">
+          <div class="lg:sticky lg:top-20">
+            <CaseStudySidebar
+              company={data.sidebar.company}
+              website={data.sidebar.website}
+              mlTeamSize={data.sidebar.mlTeamSize}
+              cloudProvider={data.sidebar.cloudProvider}
+              industry={data.sidebar.industry}
+              useCases={data.sidebar.useCases}
+              pdfDownload={data.sidebar.pdfDownload}
+            />
+          </div>
           <div class="prose prose-gray max-w-none">
             <Content />
           </div>
         </div>
       </div>
     </section>
+
+    {/* Sibling case studies */}
+    {related.length > 0 && (
+      <section class="bg-white pb-16 sm:pb-20">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="border-t border-gray-200 pt-10">
+            <h2 class="mb-6 text-xl font-bold text-gray-900">More case studies</h2>
+            <RelatedRail items={related} gridVariant="gap-sm-2col-sm" />
+          </div>
+        </div>
+      </section>
+    )}
 
     <FinalCTA />
   </main>
