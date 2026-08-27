@@ -104,7 +104,7 @@ We evaluated each Inngest alternative against three areas that decide whether a 
 
 ### 1. Kitaru by ZenML
 
-![Kitaru by ZenML homepage with the headline 'Your agent’s best eval data is already in production' beside a replay code example](https://assets.zenml.io/content/blog/inngest-alternatives/20588ce0/kitaru-homepage.avif)
+![Kitaru by ZenML homepage with the headline “Your agent’s best eval data is already in production” beside a replay code example](https://assets.zenml.io/content/blog/inngest-alternatives/4ce6a2bf/kitaru-homepage.avif)
 
 [Kitaru](https://www.zenml.io/product/kitaru), from ZenML, is a replay and evaluation test bench for AI agents. It’s the best Inngest alternative if you need a layer to run different agent sessions and compare them against version, prompt, or code changes before it reaches the end user.
 
