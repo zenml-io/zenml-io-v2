@@ -32,6 +32,10 @@ tools:
 createdAt: "2025-06-18T14:14:31.420Z"
 updatedAt: "2025-08-26T08:34:05.502Z"
 projectId: "codespace-tutorial"
+pipelines:
+  - name: "Tutorial Pipeline Examples"
+    description: "Collection of 10 progressive ZenML pipeline examples covering core MLOps concepts"
+stackHtml: "<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> default</li></ul>"
 seo:
   title: "ZenML Codespace Tutorial"
   description: "Interactive VS Code extension that provides hands-on ZenML pipeline tutorials directly in your development environment"
@@ -41,11 +45,7 @@ seo:
   ogDescription: "Interactive VS Code extension that provides hands-on ZenML pipeline tutorials directly in your development environment"
 ---
 
-#### Tutorial Pipeline Examples
-
-Collection of 10 progressive ZenML pipeline examples covering core MLOps concepts#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> default</li></ul>The ZenML VS Code Tutorial Extension provides an interactive learning experience for ZenML directly within your development environment. Perfect for developers who want to learn MLOps concepts through hands-on coding exercises.
+The ZenML VS Code Tutorial Extension provides an interactive learning experience for ZenML directly within your development environment. Perfect for developers who want to learn MLOps concepts through hands-on coding exercises.
 
 ### What It Does
 

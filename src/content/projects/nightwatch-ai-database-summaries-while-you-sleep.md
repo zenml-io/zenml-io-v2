@@ -31,6 +31,10 @@ tools:
 createdAt: "2025-03-24T11:03:07.130Z"
 updatedAt: "2025-08-26T08:34:02.814Z"
 projectId: "nightwatch-ai"
+pipelines:
+  - name: "Summary Pipeline"
+    description: "Pipeline that imports data from Supabase, generates a summary using GPT-4, and sends it to Slack."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> local</li><li><strong>Artifact Store:</strong> gcp</li></ul>"
 seo:
   title: "NightWatch: AI Database Summaries While You Sleep"
   description: "Wake up to AI-generated insights from your Supabase database every morning. This ZenML pipeline uses OpenAI's GPT-4 to analyze yesterday's database activity, compare it to historical trends, and deliver concise summaries directly to your Slack channels."
@@ -40,11 +44,7 @@ seo:
   ogDescription: "Wake up to AI-generated insights from your Supabase database every morning. This ZenML pipeline uses OpenAI's GPT-4 to analyze yesterday's database activity, compare it to historical trends, and deliver concise summaries directly to your Slack channels."
 ---
 
-#### Summary Pipeline
-
-Pipeline that imports data from Supabase, generates a summary using GPT-4, and sends it to Slack.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> local</li><li><strong>Artifact Store:</strong> gcp</li></ul>🌙 NightWatch transforms raw database activity into actionable business intelligence while you sleep, delivering AI-generated insights from your Supabase database directly to Slack.
+🌙 NightWatch transforms raw database activity into actionable business intelligence while you sleep, delivering AI-generated insights from your Supabase database directly to Slack.
 
 ### What It Does
 

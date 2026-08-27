@@ -29,6 +29,10 @@ tools:
 createdAt: "2025-08-26T08:27:41.738Z"
 updatedAt: "2025-08-26T08:33:51.946Z"
 projectId: "qualityflow"
+pipelines:
+  - name: "Generate & Evaluate Pipeline"
+    description: "Selects code, generates tests with LLM and baseline, runs them with coverage, and reports results."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> default</li></ul>"
 seo:
   title: "QualityFlow"
   description: "AI-powered automated test generation and coverage analysis pipeline built with ZenML and LLMs."
@@ -38,11 +42,7 @@ seo:
   ogDescription: "AI-powered automated test generation and coverage analysis pipeline built with ZenML and LLMs."
 ---
 
-#### Generate & Evaluate Pipeline
-
-Selects code, generates tests with LLM and baseline, runs them with coverage, and reports results.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> default</li></ul>QualityFlow is an AI-powered test generation pipeline that demonstrates how to
+QualityFlow is an AI-powered test generation pipeline that demonstrates how to
 build production-ready workflows for automated unit test generation using
 Large Language Models (LLMs) with ZenML. It focuses on generating tests,
 comparing against a baseline, and producing real coverage analysis.

@@ -1133,7 +1133,6 @@ body {
 
 .prose .uui-testimonial04_component {
   background-color: var(--color-purple-25);
-  border-left: 4px solid var(--color-warning-300);
   border-radius: var(--radius-xl);
   padding: 2rem 2.5rem;
   margin: 2rem 0;

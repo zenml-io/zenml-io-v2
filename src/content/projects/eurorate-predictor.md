@@ -32,6 +32,14 @@ tools:
 createdAt: "2025-03-24T11:02:58.100Z"
 updatedAt: "2025-08-26T08:33:58.317Z"
 projectId: "eurorate-predictor"
+pipelines:
+  - name: "ETL Pipeline"
+    description: "Pipeline that extracts raw ECB interest rate data, transforms and cleans it."
+  - name: "Feature Engineering Pipeline"
+    description: "Pipeline that augments the transformed dataset with additional features."
+  - name: "Model Training Pipeline"
+    description: "Pipeline that trains an XGBoost regression model and evaluates it for potential promotion."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> cloud-composer</li><li><strong>Artifact Store:</strong> gcs</li><li><strong>Step Operator:</strong> vertex-ai</li></ul>"
 seo:
   title: "EuroRate Predictor"
   description: "Turn European Central Bank data into actionable interest rate forecasts with this comprehensive MLOps solution."
@@ -41,19 +49,7 @@ seo:
   ogDescription: "Turn European Central Bank data into actionable interest rate forecasts with this comprehensive MLOps solution."
 ---
 
-#### ETL Pipeline
-
-Pipeline that extracts raw ECB interest rate data, transforms and cleans it.
-
-#### Feature Engineering Pipeline
-
-Pipeline that augments the transformed dataset with additional features.
-
-#### Model Training Pipeline
-
-Pipeline that trains an XGBoost regression model and evaluates it for potential promotion.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> cloud-composer</li><li><strong>Artifact Store:</strong> gcs</li><li><strong>Step Operator:</strong> vertex-ai</li></ul>EuroRate Predictor transforms European Central Bank data into accurate interest rate forecasts, empowering financial decision-makers with reliable predictive insights.
+EuroRate Predictor transforms European Central Bank data into accurate interest rate forecasts, empowering financial decision-makers with reliable predictive insights.
 
 ### What It Does
 
