@@ -8,7 +8,7 @@ webflow:
   exportedAt: "2026-02-11T13:30:32.135Z"
   source: "live"
   lastPublished: "2026-06-29T14:23:41.508Z"
-  lastUpdated: "2026-06-29T14:23:41.508Z"
+  lastUpdated: "2026-08-27T14:58:03.522Z"
   createdOn: "2025-12-17T04:57:32.942Z"
 author: "hamza-tahir"
 category: "mlops"
@@ -19,7 +19,7 @@ tags:
   - "teams"
   - "framework"
 date: "2025-12-17T00:00:00.000Z"
-readingTime: 21 mins
+readingTime: 22 mins
 mainImage:
   url: "https://assets.zenml.io/content/blog/31fffb10/temporal-alternatives-hero.avif"
   alt: "ZenML blog cover comparing Temporal with the 9 best alternatives for durable execution and AI agent workflows, including Kitaru, Restate, DBOS, Inngest, Hatchet, Argo Workflows, Azure Durable Functions, and Camunda"
@@ -46,7 +46,7 @@ That's what this article is about. We tested and compared the 9 best Temporal al
 
 - **Who Should Care:** AI platform teams, ML engineers, Python developers, and backend teams running agents or workflows who can’t afford to restart from Step 0 after a crash.
 
-- **What to Expect:** A breakdown of 9 Temporal alternatives, from agent runtimes like Kitaru to durable workflow tools like Restate, DBOS, Inngest, and more.
+- **What to Expect:** A breakdown of 9 Temporal alternatives, from agent replay and evaluation tools like Kitaru to durable workflow tools like Restate, DBOS, Inngest, and more.
 
 ## The Need for a Temporal Alternative?
 
@@ -94,7 +94,7 @@ We evaluated each Temporal alternative against the criteria that matter for dura
 
 - **Operational model:** We examined how each tool is deployed and run, from managed cloud to self-hosted setups. We reviewed infrastructure needs and ongoing overhead to understand what it takes to run in production.
 
-- **AI agent fit:** We looked at how well each tool supports real agent patterns like LLM calls, tools, human approvals, and long waits, and whether it can resume from failures without redoing work.
+- **AI agent fit:** We looked at how well each tool supports real agent patterns like LLM and tool calls, human approvals, and long waits. We also checked for production-derived replay, regression testing, and human review, and, where relevant, whether a run can resume from failure without redoing completed work.
 
 - **State and storage:** We reviewed storage options and flexibility to understand how each tool handles data ownership and control. We checked where workflow state lives and how much control teams have over it. This includes whether it stays in your cloud, database, or object store.
 
@@ -105,7 +105,7 @@ We evaluated each Temporal alternative against the criteria that matter for dura
 Before we deep dive into tool reviews, here’s a quick comparison table to help you make a decision.
 
 <table> <thead> <tr> <th>Temporal Alternative</th> <th>Best For</th> <th>Key Features</th> <th>Pricing</th> </tr> </thead> <tbody>
-<tr> <td> <a href="https://www.zenml.io/product/kitaru" target="_blank" rel="noopener noreferrer">Kitaru</a> </td> <td>Python AI agents</td> <td>• Step-level checkpoint persistence<br /> • Selective replay execution control<br /> • Human-in-loop wait handling<br /> • Versioned deployment support<br /> • Own-cloud infrastructure control</td> <td>Free (open source, Apache 2.0)<br /> Paid plans start at $399/month</td> </tr>
+<tr> <td> <a href="https://www.zenml.io/product/kitaru" target="_blank" rel="noopener noreferrer">Kitaru</a> </td> <td>Testing agent changes against production runs</td> <td>• Full-run agent replay<br /> • Controlled tool history<br /> • Immutable regression cohorts<br /> • Versioned evaluators<br /> • Self-hosted workers</td> <td>Free (open source, Apache 2.0)<br /> Paid plans start at $39/month</td> </tr>
 <tr> <td> <a href="https://www.restate.dev/" target="_blank" rel="noopener noreferrer">Restate</a> </td> <td>Lightweight runtime for durable backends</td> <td>• Stateful virtual object abstraction<br /> • Built-in timer scheduling support<br /> • Fault-tolerant agent recovery logic<br /> • Service-oriented workflow coordination</td> <td>Free tier available<br /> Paid plans start at $75/month</td> </tr>
 <tr> <td> <a href="https://dbos.dev/" target="_blank" rel="noopener noreferrer">DBOS</a> </td> <td>Postgres-backed workflows</td> <td>• Database-backed workflow state storage<br /> • Transactional step execution guarantees<br /> • Integrated workflow recovery mechanisms<br /> • Postgres-native idempotency handling</td> <td>Free and open-source<br /> Paid plans start at $99/month</td> </tr>
 <tr> <td> <a href="https://www.inngest.com/" target="_blank" rel="noopener noreferrer">Inngest</a> </td> <td>Event-driven durable functions</td> <td>• Event-triggered function execution<br /> • Step-based retry handling system<br /> • Built-in sleep and delay support<br /> • Serverless execution environment</td> <td>Free tier available<br /> Paid plans start at $75/month</td> </tr>
@@ -118,65 +118,73 @@ Before we deep dive into tool reviews, here’s a quick comparison table to help
 
 ## 1. Kitaru by ZenML
 
-![Screenshot of the Kitaru by ZenML homepage](https://assets.zenml.io/content/blog/4dde448e/kitaru-homepage.avif)
+![Kitaru by ZenML homepage headlined ‘Your agent’s best eval data is already in production’, describing replay-based evals that turn real traces into replayable tests](https://assets.zenml.io/content/blog/755fc201/kitaru-homepage.avif)
 
-[Kitaru](https://www.zenml.io/product/kitaru), from ZenML, is a newer, open-source runtime for durable Python agents. It’s an agent-focused Temporal alternative for teams whose work revolves around an agent loop rather than a fixed backend workflow.
+[Kitaru](https://www.zenml.io/product/kitaru), from ZenML, is an open-source, self-hosted replay and evaluation test bench for AI agents. While Temporal keeps production workflows running through failures, Kitaru helps you test what happens when you change an agent.
 
-Kitaru doesn’t force you or your engineering team into a new workflow model. Instead, it sits under your existing agent frameworks, wraps normal Python, and prioritizes agent survival rather than generic microservice workflows. Your team keeps its current logic while gaining durable execution features.
+Instead of moving agent logic into deterministic Workflows and Activities, Kitaru sits beside the framework you already use. It records or imports complete production sessions, reruns the agent’s real code against controlled tool history, and compares the new behavior with the original.
 
-Where Kitaru helps is letting you build these agents without Temporal’s determinism burden, especially for long-running workflows that involve checkpoints, tool calls, and sandboxed steps.
+If your problem is figuring out whether a model, prompt, or code change will break real agent behavior before you ship it, Kitaru is built around that job.
 
 Here are some key features Kitaru offers:
 
-### Feature 1. Checkpointing and Replay
+### Feature 1. Replay Real Production Runs Without Temporal’s Deterministic Workflow Rules
 
-![Screenshot of the Kitaru dashboard showing an agent run with checkpointed steps and a checkpoint detail panel](https://assets.zenml.io/content/blog/75665a37/kitaru-checkpointing-replay.avif)
+![Kitaru code example titled ‘Every what-if is one replay call’, showing a support agent run replayed with a different model, a faked tool output, and a forced timeout](https://assets.zenml.io/content/blog/8c0f504c/kitaru-wait-function.avif)
 
-Kitaru lets you add checkpoints around expensive or critical agent steps using the `@checkpoint` decorator. Each checkpoint saves the output of that step so that if a run fails later, the system can resume from the last successful checkpoint instead of starting over.
+Kitaru starts the agent’s real code from the beginning and lets it reason again. Except unlike Temporal, it doesn’t force you into deterministic decisions.
 
-If your AI agents rely on costly model calls or external tools, this approach is a huge savings on bills. Instead of repeating every step after a failure, Kitaru reuses previously completed results, reducing both latency and compute cost.
+You can change the model, prompt, input, model parameters, or agent code version and record the resulting trajectory as a new session. The candidate is allowed to take a different path because that difference is exactly what you are trying to test.
 
-### Feature 2. Flexible Execution Without Determinism Constraints
+Kitaru recommends running an unchanged replay first. Once you know the recorded session can be reproduced closely enough, you can introduce one change and judge the difference with more confidence.
 
-Unlike systems that rely on deterministic replay, Kitaru does not require workflows to produce identical outputs across runs. It avoids the complexity of event-history replay by storing completed step results directly.
+### Feature 2. Test Tool-Using Agents Without Repeating Real Side Effects
 
-You can write normal Python code without worrying about restrictions on randomness, time, or external calls. As a result, agent logic can remain flexible and expressive. A critical add-on for workflows that depend on model outputs and dynamic decision-making.
+Agent changes become harder to test when tools send emails, modify databases, approve claims, or issue refunds. Running those calls again just to test a new prompt is usually a bad idea.
 
-### Feature 3. Built-in Waiting for External Input
+Kitaru gives each replay a tool policy. It can return a matching result from recorded history, provide a fixed response, permit a real call, or use supported model-generated results. For side-effecting tools, recorded history with `on_miss="fail"` lets the test stop if the new trajectory asks for a result that was never recorded.
 
-![Kitaru replay code example titled 'Every what-if is one replay call', showing checkpoint-based replay variations of a support agent run](https://assets.zenml.io/content/blog/8c0f504c/kitaru-wait-function.avif)
+This gives agent teams a controlled external world for testing. Temporal can keep Activity results in event history for workflow recovery, but Kitaru uses recorded tool behavior specifically to test how a changed agent would act against the same production case.
 
-Kitaru has a `wait()` function that allows agent workflows to pause execution when they need input from a human, a webhook, or another system. During this pause, the workflow does not consume compute resources.
+### Feature 3. Regression-Test Changes Across Real Production Cases
 
-Once the required input arrives, the workflow resumes from the exact point where it stopped. This makes it easier to build agents that involve approvals, asynchronous events, or multi-step interactions without implementing custom polling or state management.
+![Kitaru dashboard showing a list of past agent executions alongside the step-by-step detail of a single run](https://assets.zenml.io/content/blog/75665a37/kitaru-checkpointing-replay.avif)
 
-### Feature 4. Compatibility with Existing Agent Frameworks
+One successful replay does not tell you whether a fix is safe across the rest of your traffic. Kitaru lets you collect production sessions into immutable cohort versions and run an experiment across the entire set.
 
-![Diagram showing Kitaru at the center connected to agent frameworks: OpenAI Agents SDK, Anthropic Agent SDK, PydanticAI, and LangGraph](https://assets.zenml.io/content/blog/83fd77b0/kitaru-agent-framework-compatibility.webp)
+An experiment can test a model, prompt, parameter, or code change with one replay per session. The baseline and candidate can then run through the same versioned evaluators, so you can see which cases improved, regressed, created a trade-off, or could not be judged with the available evidence.
 
-Kitaru is designed to work alongside existing agent frameworks rather than replace them. It integrates with tools such as OpenAI Agents SDK, Anthropic Agent SDK, PydanticAI, LangGraph, and raw Python workflows.
+Human review fits into the same loop. Investigations and annotations capture what domain experts thought was wrong with a session, and those judgments can be used to check evaluators before you depend on them as release criteria.
 
-This lets you keep their current agent logic and simply add durability features on top. You don’t need to rewrite your agents to fit a new execution model, which lowers adoption friction and speeds up production readiness.
+### Feature 4. Keep Your Agent Framework, Trace Store, and Compute
+
+![Kitaru trace import screen with importer tabs for Langfuse, LangSmith, Braintrust, Logfire, Arize Phoenix, Kitaru JSONL and a custom format, above a terminal running kitaru session import on a Langfuse export](https://assets.zenml.io/content/blog/e9f42297/kitaru-trace-import.avif)
+
+Adopting Temporal means writing work around its Workflow and Activity model. Kitaru leaves the agent loop with the framework that already owns it.
+
+Current adapters cover PydanticAI, LangGraph, OpenAI Agents SDK, Mastra, and Vercel AI SDK. You can also import sessions from Langfuse, LangSmith, Braintrust, Logfire, or Kitaru JSONL instead of replacing your existing trace store.
+
+Kitaru coordinates replay and evaluation work through its server, while workers in your environment execute the agent code, evaluators, and imports. That gives teams a smaller change to their existing agent stack when the goal is testing rather than production workflow orchestration.
 
 ### Pricing
 
-Kitaru’s full SDK is open-source under Apache 2.0 and free forever. Apart from the open-source version, we offer three plans. These plans give you access to both ZenML (for ML pipelines) and Kitaru (to run durable AI agents):
+Kitaru is **open-source and free to self-host** under Apache 2.0. The open-source version includes unlimited recording and imports, cohorts, evaluators, experiment runs, and replay on your own workers.
 
-- **500 monthly executions:** $399 per month. 1 project and 1 snapshot.
+Apart from the open-source version, we offer two paid plans:
 
-- **2,000 monthly executions:** $999 per month. 3 projects and 5 snapshots.
+- **Cloud (SaaS):** $39 per month; 3 agents, 2 seats, 90 days session retention, and replay and experiment runs without usage meters.
 
-- **5,000 monthly executions:** $2,499 per month. 10 projects and 20 snapshots.
+- **Enterprise:** Custom; unlimited agents, custom seats and retention, SSO, audit logs, remote worker pools, and custom limits.
 
-ZenML also offers an Enterprise plan with unlimited executions and projects for which you can [talk to an engineer from our team](https://www.zenml.io/book-your-demo).
+For more details on our Enterprise plan you can [talk to an engineer from our team](https://www.zenml.io/book-your-demo).
 
-![Screenshot of the ZenML and Kitaru pricing plans](https://assets.zenml.io/content/blog/124fbb96/kitaru-pricing.avif)
+![Kitaru pricing plans: free self-hosted Open Source, Cloud at $39 per month with 3 agents, 2 seats and 90-day session retention, and a custom Enterprise plan](https://assets.zenml.io/content/blog/9fc811b1/kitaru-pricing.avif)
 
 ### Pros and Cons
 
-Kitaru is at its best when the work is a long-running background agent written in Python. It’s feature-rich for that job, lets you add durable execution while avoiding Temporal’s deterministic model, and gives you visual dashboards to inspect and debug runs, steps, artifacts, and costs without moving logic into BPMN.
+Kitaru is the best pick in this list when your production agent already runs somewhere else and you want to test changes against cases it has actually seen. You keep your framework, reuse existing traces, control tool behavior during replay, and turn production incidents into regression cases. Visual dashboards provide a bird-eye view to evals and experimental projects without moving logic into BPMN.
 
-The honest tradeoffs are maturity and scope. Kitaru is a young, open-source project, so it doesn’t yet have the years of at-scale production hardening that tools like Temporal, Argo Workflows, Azure Durable Functions, and Camunda have from running inside real companies every day. It’s also deliberately narrow, built for Python agents rather than every kind of backend workflow. If you need a proven, multi-language engine, formal process diagrams, or non-agent workloads, several of the other tools here are the safer pick today. Kitaru’s bet is that an agent-native runtime matters more than a long track record for this specific job.
+The tradeoff is that Kitaru does not replace Temporal’s production durability. Replays start from the beginning rather than resuming from a mid-run checkpoint, and Kitaru does not provide the live timers, waits, and workflow recovery Temporal is built for. It’s also currently Alpha, so adapter behavior and interfaces may still change.
 
 **Read Comparison:** [Kitaru vs Temporal](https://www.zenml.io/compare/kitaru-vs-temporal)
 
@@ -212,7 +220,7 @@ Restate offers a free cloud tier and four paid plans:
 
 ### Pros and Cons
 
-Restate is strong when your workflow lives close to backend services. It gives you durable steps, timers, and messaging without forcing every process into Temporal-style workflow code.
+Restate is strong when your workflow lives close to backend services. It gives you durable steps, timers, and messaging without forcing every process into Temporal-style workflow code. Restate and Kitaru can work side by side. So while Restate keeps production workflows running, Kitaru can help you test changes against real agent sessions without forcing a full migration.
 
 The downside is that your team still needs to adopt Restate’s service model. If you already have a large Temporal setup, Restate may feel like a new runtime to run and learn. If your agents are pure Python loops, Kitaru may feel more natural.
 
@@ -318,7 +326,7 @@ Hatchet is free to use as an open-source platform. It also has a free cloud-base
 
 Hatchet gives you complete control over workers, retries, concurrency, and failures. These controls are built into the task system rather than requiring external infrastructure. It also provides strong observability through its UI. Additionally, its queue-based model aligns well with existing background job patterns, making migration from tools like Celery or Bull easier.
 
-The tradeoff is that Hatchet is less suited to formal workflow modeling than Camunda and less agent-specific than Kitaru. It’s simpler when the problem looks like task queues and workers, but its Durable Tasks still require a deterministic structure around checkpoints. It is not a free-form Python agent loop.
+The tradeoff is that Hatchet is less suited to formal workflow modeling than Camunda. It’s simpler when the problem looks like task queues and workers, but its Durable Tasks still require a deterministic structure around checkpoints. It is not a free-form Python agent loop.
 
 ## 6. Trigger.dev
 
@@ -378,7 +386,7 @@ Argo Workflows is free and open source. You still pay for the Kubernetes cluster
 
 If your team is already comfortable with Kubernetes, Argo feels like a natural extension rather than a new system to learn. It works well for ML pipelines, batch jobs, CI/CD pipelines, and infrastructure-heavy workloads where each step is already packaged as a container. Tight integration with Kubernetes primitives like secrets, RBAC, and resource scheduling simplifies operations for platform teams.
 
-The tradeoff is that Argo is not an agent runtime. You can run agent jobs in containers, but it does not give you agent-level checkpointing, model call replay, or `wait()` semantics the way Kitaru does.
+The tradeoff is that Argo is not an agent runtime. Plus, it does not provide Kitaru’s production-session replay, controlled tool-history testing, or production-derived regression cohorts.
 
 ## 8. Azure Durable Functions
 
@@ -430,22 +438,20 @@ Camunda offers a 30-day SaaS trial. After the trial, users can keep a free accou
 
 Camunda is strongest when process modeling matters as much as execution. If your workflows span people, systems, approvals, audit needs, and business process owners, BPMN can help. Built-in support for human tasks, approvals, and observability tools like Camunda Operate make it a natural fit for enterprise workflows.
 
-The downside is that BPMN can feel over-structured for your code-first process. If the real work is a Python loop with tool calls, model retries, checkpoints, and stateful waits, Kitaru or Restate will usually feel closer to how the work is written.
+The downside is that BPMN can feel over-structured for your code-first process. If the real work is a Python loop with tool calls, model retries, checkpoints, and stateful waits, Restate will usually feel closer. But if it’s testing changes against past production cases, Kitaru is the more relevant comparison.
 
 ## The Best Temporal Alternatives for Durable Execution
 
 During our review, we found no single best Temporal alternative. The right tool depends on the shape of the work, the language your team uses, and the environment you want to live in.
 
-- **Kitaru by ZenML** is the best fit when the work is a Python AI agent. It keeps your agent framework in place and adds checkpoints, replay, wait(), versioned deployments, and own-cloud control around it.
-
 - **Restate** is best when you want durable services, timers, messaging, and state around backend code.
 
-- **DBOS** is best when Postgres is already the system you trust for state.
+- **DBOS** is the best fit when Postgres is already the system you trust for state.
 
 - **Inngest**, **Hatchet**, and **Trigger.dev** are strong choices for durable background jobs and event-driven app workflows.
 
-If you are moving agents from prototype to production, the question is not just whether the workflow can run. It’s whether the agent can survive a failed model call, a three-day human approval, or a bad tool result without redoing every completed step.
+**Kitaru by ZenML** is the best fit when you want to replay real agent sessions, test model, prompt, or code changes against controlled tool history, and turn production cases into regression suites.
 
-That is the gap Kitaru was built for. It keeps your inner loop in Python and wraps it with the runtime layer agents need: save, recover, wait, inspect, and replay.
+Kitaru takes real production sessions, reruns them against the candidate change, and compares the result before that change reaches users.
 
 [Book a demo](https://www.zenml.io/book-your-demo/kitaru) with us and explore how we can help you set up Kitaru and make your AI workflows more efficient.
