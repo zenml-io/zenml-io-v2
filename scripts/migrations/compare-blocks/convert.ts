@@ -36,9 +36,10 @@
  * which makes honouring the stored field byte-safe only by luck. Writing the
  * computed alternation instead removes that luck dependency.
  *
- * `blogRail.slugs` is never written, even though the schema allows it — the
- * rail renders the three most recently published posts dynamically, and
- * pinning today's three would freeze all 25 rails and let them rot silently.
+ * The blog rail is written with chrome only. It renders the three most
+ * recently published posts dynamically, and pinning today's three would
+ * freeze all 25 rails and let them rot silently. The schema briefly carried
+ * a `slugs` field for pinning; nothing ever set it and it has since gone.
  *
  * The `<ul id="">` quirk (dvc, kserve): the CTA-bullet regex demands a bare
  * `<ul>`, so those two entries' authored bullets never match and the
