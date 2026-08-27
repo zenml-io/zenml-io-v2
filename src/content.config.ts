@@ -611,11 +611,15 @@ const compareBlogRailBlockSchema = z.object({
 /**
  * The sibling-comparison rail ("showdown"). Items are computed from the
  * collection at render time, so the block carries only its own chrome.
+ *
+ * Both strings are REQUIRED: they vary per category, so a renderer that had to
+ * default them would have to invent copy, and the wrong category's wording
+ * would ship with no error. Making them required moves that into `astro check`.
  */
 const compareShowdownBlockSchema = z.object({
   kind: z.literal("showdown"),
-  eyebrow: z.string().optional(),
-  headline: z.string().optional(),
+  eyebrow: z.string(),
+  headline: z.string(),
 });
 
 const comparisonBlockSchema = z.discriminatedUnion("kind", [

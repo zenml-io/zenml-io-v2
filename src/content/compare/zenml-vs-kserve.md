@@ -27,6 +27,325 @@ learnMoreUrl: "https://docs.zenml.io/user-guides/production-guide"
 seoDescription: "ZenML is the open-source alternative for end-to-end MLOps: train, evaluate, version, and ship models to KServe for scalable serving"
 openGraphImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/339035e8/6996da517c6f077586ba921d_compare-KServe.avif"
+blocks:
+  - kind: "value"
+    title: "Open-source and vendor-neutral"
+    bullets:
+      - "ZenML is fully open-source, giving you complete control over your ML infrastructure."
+      - "Avoid platform lock-in — run the same pipelines across any cloud or on-prem environment."
+      - "Benefit from a transparent, community-driven development process."
+    image:
+      url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/514b3df0/6526abf3a9418f8674b15b23_01_Local_to_production.webp"
+      alt: "Dashboard mockup showing local-to-production workflow"
+    imageSide: "right"
+  - kind: "value"
+    title: "Composable stack architecture"
+    bullets:
+      - "Choose your own orchestrator, experiment tracker, artifact store, and model deployer."
+      - "Swap infrastructure components without rewriting pipeline code."
+      - "Integrate new tools instantly as they emerge without waiting for vendor support."
+    image:
+      url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b7d6eb47/6526ae31bf639b6c8874a597_05_Integrations_showcase.webp"
+      alt: "Dashboard mockup showing integrations"
+    imageSide: "left"
+  - kind: "value"
+    title: "Code-first, Python-native workflows"
+    bullets:
+      - "Define pipelines in pure Python with simple decorators — no YAML or DSL to learn."
+      - "Start locally with pip install and scale to production on any cloud."
+      - "Version control your entire ML workflow alongside your application code."
+    image:
+      url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c0fce5c/6526ad04f45d52aff741b914_13_Productionalization_Showcase.webp"
+      alt: "Dashboard mockup showing productionalization workflow"
+    imageSide: "right"
+  - kind: "quote"
+    quote: "francois-serra-3"
+  - kind: "featureTable"
+    tableHtml: |-
+      <div data-rt-embed-type="true"><table>
+        <tbody><tr>
+          <td>Workflow Orchestration</td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Built around defining and running end-to-end ML/AI pipelines with steps, artifacts, and repeatable executions across environments</span>
+          </td>
+          <td class="tooltip">
+            <span class="icon no"></span>
+            <span class="tooltiptext">Orchestrates serving resources on Kubernetes, not training or evaluation workflows — no native pipeline or DAG system</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Integration Flexibility</td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Composable stack with 50+ MLOps integrations — swap orchestrators, trackers, and deployers without code changes</span>
+          </td>
+          <td class="tooltip">
+            <span class="icon no"></span>
+            <span class="tooltiptext">Deep integration with K8s serving runtimes, but scoped to inference — doesn't integrate across the broader ML toolchain</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Vendor Lock-In</td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Cloud-agnostic by design — stacks make it easy to switch infrastructure providers and tools as needs change</span>
+          </td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Open-source CNCF project not tied to any cloud — lock-in is to Kubernetes itself and optionally Knative/Istio for key features</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Setup Complexity</td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">pip install zenml — start locally and progressively adopt infrastructure via stack components without needing K8s on day one</span>
+          </td>
+          <td class="tooltip">
+            <span class="icon no"></span>
+            <span class="tooltiptext">Requires installing Kubernetes controllers, CRDs, and optionally Knative and networking dependencies for full feature set</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Learning Curve</td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Python-first abstraction matches how ML engineers write training code, with infrastructure details pushed into configuration</span>
+          </td>
+          <td class="tooltip">
+            <span class="icon no"></span>
+            <span class="tooltiptext">Approachable for K8s-native teams but demands comfort with CRDs, cluster networking, and serving runtime concepts</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Scalability</td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Delegates compute to scalable backends — Kubernetes, Spark, cloud ML services — for unlimited horizontal scaling</span>
+          </td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Designed for scalable multi-tenant inference with request-based autoscaling, scale-to-zero, and canary rollout patterns</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Cost Model</td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Open-source core is free — pay only for your own infrastructure, with optional managed cloud for enterprise features</span>
+          </td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Apache-2.0 with no per-seat or per-request fees — costs are infrastructure and operations, with scale-to-zero reducing waste</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Collaboration</td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Code-native collaboration through Git, CI/CD, and code review — ZenML Pro adds RBAC, workspaces, and team dashboards</span>
+          </td>
+          <td class="tooltip">
+            <span class="icon no"></span>
+            <span class="tooltiptext">Relies on Kubernetes-native collaboration (GitOps, cluster RBAC) — no ML-specific collaboration layer for experiments or artifacts</span>
+          </td>
+        </tr>
+        <tr>
+          <td>ML Frameworks</td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Use any Python ML framework — TensorFlow, PyTorch, scikit-learn, XGBoost, LightGBM — with native materializers and tracking</span>
+          </td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Multi-framework serving support (TensorFlow, PyTorch, scikit-learn, XGBoost, ONNX) plus growing GenAI/LLM runtimes</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Monitoring</td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Integrates Evidently, WhyLogs, and other monitoring tools as stack components for automated drift detection and alerting</span>
+          </td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Serving-time metrics via Prometheus, payload logging, and drift/outlier detection integrations — scoped to inference endpoints</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Governance</td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">ZenML Pro provides RBAC, SSO, workspaces, and audit trails — self-hosted option keeps all data in your own infrastructure</span>
+          </td>
+          <td class="tooltip">
+            <span class="icon no"></span>
+            <span class="tooltiptext">Governance inherited from Kubernetes (RBAC, namespaces) — ML-specific governance like training-to-deploy lineage is out of scope</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Experiment Tracking</td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Native metadata tracking plus seamless integration with MLflow, Weights &amp; Biases, Neptune, and Comet for rich experiment comparison</span>
+          </td>
+          <td class="tooltip">
+            <span class="icon no"></span>
+            <span class="tooltiptext">Does not track experiments — serves whatever model artifact is provided and exposes runtime-level status and metrics</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Reproducibility</td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Automatic artifact versioning, code-to-Git linking, and containerized execution guarantee reproducible pipeline runs</span>
+          </td>
+          <td class="tooltip">
+            <span class="icon no"></span>
+            <span class="tooltiptext">Serving configs are reproducible via K8s manifests, but end-to-end reproducibility of training data, code, and environments is out of scope</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Auto-Retraining</td>
+          <td class="tooltip">
+            <span class="icon yes"></span>
+            <span class="tooltiptext">Schedule pipelines via any orchestrator or use ZenML Pro event triggers for drift-based automated retraining workflows</span>
+          </td>
+          <td class="tooltip">
+            <span class="icon no"></span>
+            <span class="tooltiptext">Can roll out new model versions once produced, but does not automate retraining or the upstream triggers that decide when to retrain</span>
+          </td>
+        </tr>
+      </tbody></table></div>
+  - kind: "codeComparison"
+    zenmlCode: |
+      from zenml import pipeline, step, Model
+      from zenml.integrations.mlflow.steps import (
+          mlflow_model_deployer_step,
+      )
+      import pandas as pd
+      from sklearn.ensemble import RandomForestRegressor
+      from sklearn.metrics import mean_squared_error
+      import numpy as np
+
+      @step
+      def ingest_data() -> pd.DataFrame:
+          return pd.read_csv("data/dataset.csv")
+
+      @step
+      def train_model(df: pd.DataFrame) -> RandomForestRegressor:
+          X, y = df.drop("target", axis=1), df["target"]
+          model = RandomForestRegressor(n_estimators=100)
+          model.fit(X, y)
+          return model
+
+      @step
+      def evaluate(model: RandomForestRegressor, df: pd.DataFrame) -> float:
+          X, y = df.drop("target", axis=1), df["target"]
+          preds = model.predict(X)
+          return float(np.sqrt(mean_squared_error(y, preds)))
+
+      @step
+      def check_drift(df: pd.DataFrame) -> bool:
+          # Plug in Evidently, Great Expectations, etc.
+          return detect_drift(df)
+
+      @pipeline(model=Model(name="my_model"))
+      def ml_pipeline():
+          df = ingest_data()
+          model = train_model(df)
+          rmse = evaluate(model, df)
+          drift = check_drift(df)
+
+      # Runs on any orchestrator, logs to MLflow,
+      # tracks artifacts, and triggers retraining — all
+      # in one portable, version-controlled pipeline
+      ml_pipeline()
+    zenmlLanguage: "python"
+    toolCode: |
+      import asyncio
+      from kubernetes import client
+      from kserve import (
+          KServeClient, constants,
+          V1beta1InferenceService, V1beta1InferenceServiceSpec,
+          V1beta1PredictorSpec, V1beta1SKLearnSpec,
+          RESTConfig, InferenceRESTClient,
+      )
+
+      async def main():
+          name, namespace = "sklearn-iris", "kserve-test"
+          isvc = V1beta1InferenceService(
+              api_version=constants.KSERVE_V1BETA1,
+              kind=constants.KSERVE_KIND,
+              metadata=client.V1ObjectMeta(
+                  name=name, namespace=namespace
+              ),
+              spec=V1beta1InferenceServiceSpec(
+                  predictor=V1beta1PredictorSpec(
+                      sklearn=V1beta1SKLearnSpec(
+                          storage_uri="s3://my-bucket/iris/model.joblib"
+                      )
+                  )
+              ),
+          )
+          ksc = KServeClient()
+          ksc.create(isvc)
+          ksc.wait_isvc_ready(name, namespace=namespace)
+
+          rest = InferenceRESTClient(
+              RESTConfig(protocol="v1", retries=5, timeout=30)
+          )
+          result = await rest.infer(
+              f"http://{name}.{namespace}",
+              {"instances": [[6.8, 2.8, 4.8, 1.4]]},
+              model_name=name,
+          )
+          print(result)
+
+      asyncio.run(main())
+
+      # Deploys and serves a model on Kubernetes.
+      # No pipeline orchestration, experiment tracking,
+      # artifact lineage, or retraining automation.
+      # Focused purely on the inference endpoint.
+    toolLanguage: "python"
+  - kind: "strategyCta"
+    headline: "Book Your Free ZenML Strategy Talk"
+    advantages:
+      - "open-source-and-vendor-neutral"
+      - "lightweight-code-first-development"
+      - "composable-stack-architecture"
+  - kind: "showdown"
+    eyebrow: "Tool Showdown"
+    headline: "Explore the Advantages of ZenML Over Other Tools"
+  - kind: "blogRail"
+    eyebrow: "Expand Your Knowledge"
+    headline: "Broaden Your MLOps Understanding with ZenML"
+  - kind: "cta02"
+    headline: "Ready to Deliver Models to KServe with Reproducible Pipelines?"
+    bullets:
+      - "See ZenML's superior model orchestration in action"
+      - "Discover how ZenML offers more with your existing ML tools"
+      - "Find out why data security with ZenML outshines the rest"
+    primaryCta:
+      label: "Book a demo"
+      href: "/book-your-demo"
+    secondaryCta:
+      label: "Read Docs"
+      href: "/docs"
+    image:
+      url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/339bb62b/66e9556fd34d2791885b0c5f_model_control_plane_01.png"
+      alt: "Dashboard displaying ML models with versions, authors, and tags"
+hero:
+  headline: "KServe Serves Models. ZenML Ships ML Systems."
+  deck: "KServe is excellent at production model serving on Kubernetes — autoscaling, rollouts, and multi-framework runtimes. ZenML covers everything KServe doesn't: building reproducible pipelines, tracking artifacts and lineage, and delivering models to production with confidence. Use KServe for the endpoint, ZenML for the lifecycle that produces it. Together, they turn a model file into a governed, repeatable production system."
+  primaryCta:
+    label: "Book a demo"
+    href: "/book-your-demo"
+  secondaryCta:
+    label: "Learn More"
+    href: "#feature-comparison"
 seo:
   title: "ZenML vs KServe - KServe Serves Models. ZenML Ships ML Systems."
   description: "ZenML is the open-source alternative for end-to-end MLOps: train, evaluate, version, and ship models to KServe for scalable serving"
