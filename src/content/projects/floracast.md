@@ -27,6 +27,12 @@ tools:
 createdAt: "2025-08-20T07:58:44.644Z"
 updatedAt: "2025-08-26T08:33:55.402Z"
 projectId: "floracast"
+pipelines:
+  - name: "Training Pipeline"
+    description: "Loads and preprocesses data, trains a TFT model, and evaluates it with SMAPE."
+  - name: "Batch Inference Pipeline"
+    description: "Loads the production model and generates future forecasts, exporting predictions to CSV."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> default</li></ul>"
 seo:
   title: "FloraCast"
   description: "A production-ready MLOps pipeline for time series forecasting using ZenML and Darts, featuring TFT-based training and scheduled batch inference."
@@ -36,15 +42,7 @@ seo:
   ogDescription: "A production-ready MLOps pipeline for time series forecasting using ZenML and Darts, featuring TFT-based training and scheduled batch inference."
 ---
 
-#### Training Pipeline
-
-Loads and preprocesses data, trains a TFT model, and evaluates it with SMAPE.
-
-#### Batch Inference Pipeline
-
-Loads the production model and generates future forecasts, exporting predictions to CSV.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> default</li></ul>FloraCast is an end-to-end forecasting solution that demonstrates how to
+FloraCast is an end-to-end forecasting solution that demonstrates how to
 build production-grade time series prediction workflows with ZenML and Darts.
 It provides reproducible training, automatic model versioning, and scheduled
 batch inference with rich visualizations to support demand and sales forecasting

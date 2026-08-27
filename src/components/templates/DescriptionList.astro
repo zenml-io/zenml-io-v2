@@ -3,9 +3,24 @@
  * DescriptionList — a real `<dl>` of term/value pairs (issue #249).
  *
  * Owns: the `<dl>`/`<dt>`/`<dd>` semantics, the small-caps term typography,
- * the icon-plus-value row shape, and the gap between items. Owns no
- * surrounding whitespace or card chrome — the aside/card that hosts this
- * list owns its own border, background, and padding.
+ * the value row shapes, and the separation between items. The host card owns
+ * its own border, background, and outer whitespace — except in the `divided`
+ * frame, where the bands own the horizontal inset so their hairlines can run
+ * the full width of a card that carries no padding of its own.
+ *
+ * Two arrangements, selected by `frame`:
+ *   - `spaced` — items separated by vertical space, values sit flush with the
+ *     card padding, terms in brand purple. The case-study sidebar.
+ *   - `divided` — items are hairline-separated bands with their own inset
+ *     padding, values tighter and heavier, terms in muted gray. The project
+ *     detail sidebar.
+ * The two frames intentionally accept different value kinds, typed as
+ * separate unions (`SpacedDescriptionValue` / `DividedDescriptionValue`):
+ * `spaced` supports `text` and `link`, both with an optional icon; `divided`
+ * supports `text`, `link`, `identifier`, `chips`, `entries`, and `html`, but
+ * no icon on any of them — `divided` drops the flex row that gives an icon
+ * its gap, so an icon in a `divided` band is a compile error rather than a
+ * bare, unstyled glyph.
  *
  * `trailing` is a chip-group term/value pair that sits after an `<hr>`,
  * outside the `<dl>` itself — the sidebar this was extracted from renders
@@ -23,29 +38,95 @@ export type DescriptionIcon =
   | "cloud"
   | "store";
 
-export type DescriptionValue =
+/** Chip colouring for a `chips` value row. */
+export type DescriptionChipTone = "neutral" | "brand";
+
+export interface DescriptionEntry {
+  name: string;
+  description?: string;
+}
+
+/**
+ * The value kinds are split by frame rather than pooled: `divided` drops the
+ * flex row that gives an icon its gap, so an icon there would sit bare against
+ * the text, and `spaced` has no styling for the richer kinds. Keeping the two
+ * unions apart makes each wrong combination a compile error instead of a
+ * silently misrendered row.
+ */
+export type SpacedDescriptionValue =
   | { kind: "text"; text: string; icon?: DescriptionIcon }
   | { kind: "link"; href: string; label: string; icon?: DescriptionIcon };
 
-export interface DescriptionListItem {
+export type DividedDescriptionValue =
+  | { kind: "text"; text: string; icon?: never }
+  /** Monospaced accent value — an id meant to be copied, with optional hint. */
+  | { kind: "identifier"; text: string; note?: string }
+  | { kind: "link"; href: string; label: string; icon?: never }
+  | { kind: "chips"; chips: readonly string[]; tone: DescriptionChipTone }
+  /** Named sub-entries, each with an optional line of description. */
+  | { kind: "entries"; entries: readonly DescriptionEntry[] }
+  /** Pre-rendered markup authored in content (e.g. a stack `<ul>`). */
+  | { kind: "html"; html: string };
+
+export type DescriptionValue = SpacedDescriptionValue | DividedDescriptionValue;
+
+export interface SpacedDescriptionListItem {
   term: string;
-  value: DescriptionValue;
+  value: SpacedDescriptionValue;
 }
+
+export interface DividedDescriptionListItem {
+  term: string;
+  value: DividedDescriptionValue;
+}
+
+export type DescriptionListItem =
+  | SpacedDescriptionListItem
+  | DividedDescriptionListItem;
 
 export interface DescriptionListTrailing {
   term: string;
   chips: readonly string[];
 }
 
-interface Props {
-  items: readonly DescriptionListItem[];
-  trailing?: DescriptionListTrailing;
-  /** Gap between items. Default reproduces the case-study sidebar (24px). */
-  space?: SpaceStep;
+export type DescriptionFrame = "spaced" | "divided";
+
+interface CommonProps {
   class?: string;
 }
 
-const { items, trailing, space = "sm", class: className } = Astro.props;
+/**
+ * `space` and `trailing` belong to `spaced` alone: `divided` separates its
+ * bands with rules rather than a gap, and has no styling for the trailing
+ * chip group, which would otherwise render its own rule and warm chips into
+ * a card built for neither.
+ */
+type Props = CommonProps &
+  (
+    | {
+        frame?: "spaced";
+        items: readonly SpacedDescriptionListItem[];
+        space?: SpaceStep;
+        trailing?: DescriptionListTrailing;
+      }
+    | {
+        frame: "divided";
+        items: readonly DividedDescriptionListItem[];
+        space?: never;
+        trailing?: never;
+      }
+  );
+
+const {
+  items,
+  frame = "spaced",
+  trailing,
+  space = "sm",
+  class: className,
+} = Astro.props;
+
+/** Widened for rendering; the union above is what constrains callers. */
+const rows: readonly DescriptionListItem[] = items;
 
 const SPACE_CLASS: Record<SpaceStep, string> = {
   xxs: "space-y-space-xxs",
@@ -58,8 +139,63 @@ const SPACE_CLASS: Record<SpaceStep, string> = {
   xxl: "space-y-space-xxl",
 };
 
-const TERM_CLASS =
-  "text-xs font-semibold uppercase tracking-wider text-zenml-500";
+/**
+ * Everything the two frames style differently, in one table.
+ *
+ * `valueSpacing` is the gap between a term and its value: 8px spaced, 4px
+ * divided. 4px sits below the smallest `SpaceStep`, so it stays raw — as do
+ * the 12px and 6px gaps inside the richer value rows below. Those richer rows
+ * (entries, html, chips) sit at 8px in the divided frame while the plain ones
+ * sit at 4px; that asymmetry is what the live sidebar draws, not an oversight
+ * waiting to be unified.
+ */
+const FRAME_CLASS: Record<
+  DescriptionFrame,
+  {
+    term: string;
+    row?: string;
+    valueSpacing: string;
+    text: string;
+    linkRow?: string;
+    link: string;
+  }
+> = {
+  spaced: {
+    term: "text-zenml-500",
+    valueSpacing: "mt-space-xxs",
+    text: "flex items-center gap-2 text-base font-medium text-gray-900",
+    linkRow: "flex items-center gap-2",
+    link: "text-base font-medium text-zenml-600 underline decoration-transparent hover:decoration-zenml-500 transition-colors",
+  },
+  divided: {
+    term: "text-gray-400",
+    // Bands carry their own inset; the first and last hug the host card.
+    row: "px-space-xs py-3 first:pt-space-xs last:pb-space-xs",
+    valueSpacing: "mt-1",
+    text: "text-base font-semibold text-gray-900",
+    link: "block break-all text-sm text-gray-600 transition-colors hover:text-zenml-500",
+  },
+};
+
+const f = FRAME_CLASS[frame];
+const termClass = `text-xs font-semibold uppercase tracking-wider ${f.term}`;
+const listClass =
+  frame === "divided" ? "divide-y divide-gray-100" : SPACE_CLASS[space];
+const rowClass = f.row;
+const VALUE_SPACING = f.valueSpacing;
+const textClass = `${VALUE_SPACING} ${f.text}`;
+const linkRowClass = f.linkRow && `${VALUE_SPACING} ${f.linkRow}`;
+const linkClass = f.linkRow ? f.link : `${VALUE_SPACING} ${f.link}`;
+
+/**
+ * Chips keep their own colour classes rather than reusing `chipStyles.ts`:
+ * Badge's variants carry hover states these static metadata chips do not have.
+ */
+const CHIP_TONE_CLASS: Record<DescriptionChipTone, string> = {
+  neutral: "bg-gray-100 text-gray-700",
+  brand: "bg-zenml-50 text-zenml-500",
+};
+
 const ICON_CLASS = "h-5 w-5 flex-shrink-0 text-gray-400";
 
 const ICON_PATHS: Record<DescriptionIcon, readonly string[]> = {
@@ -82,14 +218,16 @@ const ICON_PATHS: Record<DescriptionIcon, readonly string[]> = {
 };
 ---
 
-<dl class:list={[SPACE_CLASS[space], className]}>
+<dl class:list={[listClass, className]}>
   {
-    items.map((item) => (
-      <div>
-        <dt class={TERM_CLASS}>{item.term}</dt>
-        {item.value.kind === "text" && (
-          <dd class="mt-space-xxs flex items-center gap-2 text-base font-medium text-gray-900">
-            {item.value.icon && (
+    rows.map((item) => {
+      const value = item.value;
+      return (
+      <div class={rowClass}>
+        <dt class={termClass}>{item.term}</dt>
+        {value.kind === "text" && (
+          <dd class={textClass}>
+            {value.icon && (
               <svg
                 class={ICON_CLASS}
                 viewBox="0 0 24 24"
@@ -100,17 +238,27 @@ const ICON_PATHS: Record<DescriptionIcon, readonly string[]> = {
                 stroke-linejoin="round"
                 aria-hidden="true"
               >
-                {ICON_PATHS[item.value.icon].map((d) => (
+                {ICON_PATHS[value.icon].map((d) => (
                   <path d={d} />
                 ))}
               </svg>
             )}
-            {item.value.text}
+            {value.text}
           </dd>
         )}
-        {item.value.kind === "link" && (
-          <dd class="mt-space-xxs flex items-center gap-2">
-            {item.value.icon && (
+        {value.kind === "identifier" && (
+          <dd>
+            <div class={`${VALUE_SPACING} font-mono text-lg text-purple-600`}>
+              {value.text}
+            </div>
+            {value.note && (
+              <p class="mt-0.5 text-xs text-gray-500">{value.note}</p>
+            )}
+          </dd>
+        )}
+        {value.kind === "link" && (
+          <dd class={linkRowClass}>
+            {value.icon && (
               <svg
                 class={ICON_CLASS}
                 viewBox="0 0 24 24"
@@ -121,23 +269,60 @@ const ICON_PATHS: Record<DescriptionIcon, readonly string[]> = {
                 stroke-linejoin="round"
                 aria-hidden="true"
               >
-                {ICON_PATHS[item.value.icon].map((d) => (
+                {ICON_PATHS[value.icon].map((d) => (
                   <path d={d} />
                 ))}
               </svg>
             )}
             <a
-              href={item.value.href}
+              href={value.href}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-base font-medium text-zenml-600 underline decoration-transparent hover:decoration-zenml-500 transition-colors"
+              class={linkClass}
             >
-              {item.value.label}
+              {value.label}
             </a>
           </dd>
         )}
+        {value.kind === "entries" && (
+          <dd class="mt-space-xxs space-y-3">
+            {value.entries.map((entry) => (
+              <div>
+                <div class="text-sm font-semibold text-gray-900">
+                  {entry.name}
+                </div>
+                {entry.description && (
+                  <p class="mt-0.5 text-sm text-gray-600">
+                    {entry.description}
+                  </p>
+                )}
+              </div>
+            ))}
+          </dd>
+        )}
+        {value.kind === "html" && (
+          <dd
+            class="mt-space-xxs text-sm text-gray-700 [&_li]:mt-1 [&_strong]:font-semibold"
+            set:html={value.html}
+          />
+        )}
+        {value.kind === "chips" && (
+          <dd class="mt-space-xxs flex flex-wrap gap-1.5">
+            {value.chips.map((chip) => (
+              <span
+                class:list={[
+                  "rounded-full px-2.5 py-0.5 text-sm font-semibold",
+                  CHIP_TONE_CLASS[value.tone],
+                ]}
+              >
+                {chip}
+              </span>
+            ))}
+          </dd>
+        )}
       </div>
-    ))
+      );
+    })
   }
 </dl>
 {
@@ -145,7 +330,7 @@ const ICON_PATHS: Record<DescriptionIcon, readonly string[]> = {
     <>
       <hr class="my-space-sm border-gray-200" />
       <div>
-        <dt class={TERM_CLASS}>{trailing.term}</dt>
+        <dt class={termClass}>{trailing.term}</dt>
         <dd class="mt-[0.75rem] flex flex-wrap gap-2">
           {trailing.chips.map((chip) => (
             <span class="rounded-full bg-warning-300/30 px-3 py-1 text-sm font-medium text-gray-800">
