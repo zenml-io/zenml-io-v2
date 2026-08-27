@@ -30,6 +30,12 @@ tools:
 createdAt: "2025-06-18T14:14:37.422Z"
 updatedAt: "2025-08-26T08:33:57.009Z"
 projectId: "retail-forecast"
+pipelines:
+  - name: "Training Pipeline"
+    description: "Imports historical data, trains Prophet models for each store-item combination, and evaluates performance."
+  - name: "Inference Pipeline"
+    description: "Generates predictions using pre-trained models and creates interactive dashboards with forecasts."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> local</li><li><strong>Artifact Store:</strong> default</li></ul>"
 seo:
   title: "Retail Forecast"
   description: "A robust MLOps pipeline for retail sales forecasting designed for retail data scientists and ML engineers."
@@ -39,15 +45,7 @@ seo:
   ogDescription: "A robust MLOps pipeline for retail sales forecasting designed for retail data scientists and ML engineers."
 ---
 
-#### Training Pipeline
-
-Imports historical data, trains Prophet models for each store-item combination, and evaluates performance.
-
-#### Inference Pipeline
-
-Generates predictions using pre-trained models and creates interactive dashboards with forecasts.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> local</li><li><strong>Artifact Store:</strong> default</li></ul>In retail, accurate demand forecasting is critical for optimizing inventory, staff scheduling, and financial planning. This project provides a production-ready sales forecasting solution that can be immediately deployed in retail environments to:
+In retail, accurate demand forecasting is critical for optimizing inventory, staff scheduling, and financial planning. This project provides a production-ready sales forecasting solution that can be immediately deployed in retail environments to:
 
 <ul>
 <li>Predict future sales volumes across multiple stores and products</li>

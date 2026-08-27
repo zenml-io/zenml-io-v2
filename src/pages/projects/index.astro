@@ -6,9 +6,14 @@
  * "ZenML Projects" badge, 3-column card grid with hover-lift animation.
  * Cards show image, title, description, license badge, and setup time.
  * Route: /projects
+ *
+ * The header's `classOverrides` stay inline: the nearest named preset,
+ * TAXONOMY_INDEX_INTRO, differs on every line this header sets — no eyebrow
+ * badge, `tracking-tight` rather than `-0.05rem`, no `sm:text-5xl` step-up,
+ * and a description override this header does not take.
  */
 import { getCollection } from "astro:content";
-import Button from "../../components/Button.astro";
+import ProjectsCTA from "../../components/sections/ProjectsCTA.astro";
 import PageHeader from "../../components/templates/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
@@ -68,9 +73,9 @@ const allProjects = (
                 <svg class="h-5 w-5 flex-shrink-0" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M10 2.5a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5zM7.2 2.917a2.917 2.917 0 015.592 0H16.667a.833.833 0 010 1.666H12.796a2.917 2.917 0 01-1.963 1.963V16.667h5.834a.833.833 0 010 1.666H3.333a.833.833 0 010-1.666H9.167V6.546A2.917 2.917 0 017.204 4.583H3.333a.833.833 0 010-1.666H7.2z" fill="#7A3EF4"/>
                 </svg>
-                Apache - 2.0 License
+                {project.data.license}
               </div>
-              <p class="text-sm text-gray-600">Setup time: 5-10 mins</p>
+              <p class="text-sm text-gray-600">Setup time: {project.data.setupTime}</p>
             </div>
           </a>
         ))}
@@ -78,42 +83,5 @@ const allProjects = (
     </div>
   </div>
 
-  {/* CTA section — dark purple banner matching Webflow's uui-section_cta02 */}
-  <section class="bg-[#281158]">
-    <div class="bg-[url('/images/gradient_01.webp')] bg-cover bg-center">
-      <div class="mx-auto max-w-7xl px-8 sm:px-12">
-        <div class="grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-2 lg:gap-8">
-          <div>
-            <h2 class="text-2xl font-bold text-white sm:text-3xl">
-              Unify Your ML and LLM Workflows
-            </h2>
-            <div class="mt-6 space-y-3">
-              <div class="flex items-start gap-3">
-                <svg class="mt-0.5 h-7 w-7 flex-shrink-0" viewBox="0 0 28 28" fill="none">
-                  <path d="M8.75 14l3.5 3.5 7-7m6.417 3.5c0 6.443-5.224 11.667-11.667 11.667S2.333 20.823 2.333 14 7.557 2.333 14 2.333 25.667 7.557 25.667 14z" stroke="#7A3EF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span class="text-lg text-white">Open-source foundation, no vendor lock-in</span>
-              </div>
-              <div class="flex items-start gap-3">
-                <svg class="mt-0.5 h-7 w-7 flex-shrink-0" viewBox="0 0 28 28" fill="none">
-                  <path d="M8.75 14l3.5 3.5 7-7m6.417 3.5c0 6.443-5.224 11.667-11.667 11.667S2.333 20.823 2.333 14 7.557 2.333 14 2.333 25.667 7.557 25.667 14z" stroke="#7A3EF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span class="text-lg text-white">Works with any infrastructure</span>
-              </div>
-              <div class="flex items-start gap-3">
-                <svg class="mt-0.5 h-7 w-7 flex-shrink-0" viewBox="0 0 28 28" fill="none">
-                  <path d="M8.75 14l3.5 3.5 7-7m6.417 3.5c0 6.443-5.224 11.667-11.667 11.667S2.333 20.823 2.333 14 7.557 2.333 14 2.333 25.667 7.557 25.667 14z" stroke="#7A3EF4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span class="text-lg text-white">Upgrade to managed Pro features</span>
-              </div>
-            </div>
-            <div class="mt-8 flex flex-wrap gap-3">
-              <Button href="/book-your-demo" size="lg">Book a demo</Button>
-              <Button href="/docs" variant="secondary" size="lg">Read Docs</Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <ProjectsCTA />
 </BaseLayout>

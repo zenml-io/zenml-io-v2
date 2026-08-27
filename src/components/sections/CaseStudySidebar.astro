@@ -7,7 +7,7 @@
  * Styled to match the Webflow original with icons and purple labels.
  */
 import DescriptionList, {
-  type DescriptionListItem,
+  type SpacedDescriptionListItem,
 } from "../templates/DescriptionList.astro";
 
 interface Props {
@@ -30,7 +30,7 @@ const {
   pdfDownload,
 } = Astro.props;
 
-const items: DescriptionListItem[] = [];
+const items: SpacedDescriptionListItem[] = [];
 if (company) {
   items.push({
     term: "Company",
