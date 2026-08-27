@@ -334,7 +334,7 @@ const resolvedBlocks = (await Promise.all(rawBlocks.map(resolveBlock))).filter(
 
 const seoTitle = item.data.seo?.title || `${item.data.title} - ZenML`;
 const seoDescription =
-  item.data.seo?.description || item.data.seoDescription || item.data.heroText;
+  item.data.seo?.description || item.data.seoDescription || hero.deck;
 const ogImage = item.data.seo?.ogImage || item.data.openGraphImage?.url;
 ---
 
