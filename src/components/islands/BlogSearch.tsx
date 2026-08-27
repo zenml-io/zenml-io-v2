@@ -6,6 +6,7 @@
  * Ctrl+K focus, arrow key navigation, Escape to clear.
  */
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
+import EmptyState from "../system/EmptyState";
 
 interface PostEntry {
   title: string;
@@ -219,9 +220,17 @@ export default function BlogSearch({ searchIndexUrl }: Props) {
               </a>
             ))
           ) : (
-            <div class="px-4 py-6 text-center text-sm text-gray-500">
-              No posts found
-            </div>
+            // biome-ignore lint/a11y/useValidAriaRole: `role` is a prop EmptyState forwards to its own root's role attribute, not a literal ARIA role on this element — null is EmptyState's own contract for "render no role" (this listbox already has its own role governing its children).
+            <EmptyState
+              heading="No posts found"
+              reserveHeight={false}
+              role={null}
+              classOverrides={{
+                container: "block px-4 py-6 text-center",
+                inner: "",
+                heading: "text-sm text-gray-500",
+              }}
+            />
           )}
         </div>
       )}

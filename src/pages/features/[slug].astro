@@ -13,6 +13,7 @@ import FeatureHero from "../../components/sections/FeatureHero.astro";
 import FeatureTestimonial from "../../components/sections/FeatureTestimonial.astro";
 import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
 import FinalCTA from "../../components/sections/FinalCTA.astro";
+import Breadcrumb from "../../components/system/Breadcrumb.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
@@ -47,11 +48,12 @@ const ogImage = data.seo?.ogImage || data.hero.image?.url;
   <main>
     {/* Breadcrumb */}
     <div class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-      <nav class="text-sm text-gray-500">
-        <a href="/features" class="hover:text-zenml-500">Features</a>
-        <span class="mx-2">/</span>
-        <span class="text-gray-900">{data.hub.title}</span>
-      </nav>
+      <Breadcrumb
+        items={[
+          { label: "Features", href: "/features" },
+          { label: data.hub.title },
+        ]}
+      />
     </div>
 
     <FeatureHero

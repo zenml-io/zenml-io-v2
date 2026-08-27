@@ -1,0 +1,65 @@
+---
+/**
+ * Blog tags index page.
+ *
+ * Lists all blog tags with post counts, sorted by popularity.
+ * Route: /tags
+ */
+import { getCollection } from "astro:content";
+import PageHeader from "../../components/templates/PageHeader.astro";
+import { TAXONOMY_INDEX_INTRO } from "../../components/templates/pageHeaderPresets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import type { TaxonomyCount } from "../../lib/blog";
+import { getMainFeedPosts, getTagCounts } from "../../lib/blog";
+import { filterUsedTerms } from "../../lib/relatedIndex";
+
+// Main-feed posts only: counts must match the TagCloud the blog shows,
+// and the internal discovery corpus must not surface on a public hub.
+const allPosts = await getMainFeedPosts();
+const usedCounts = await getTagCounts(allPosts);
+const usedMap = new Map(usedCounts.map((t) => [t.slug, t.count]));
+
+// Merge all taxonomy terms with used counts, then drop zero-count tags
+// (#249) — a zero-count tag has no [slug] page to link to any more.
+const allTags = await getCollection("tags");
+const merged: TaxonomyCount[] = allTags.map((t) => ({
+  slug: t.data.slug,
+  name: t.data.name,
+  count: usedMap.get(t.data.slug) ?? 0,
+}));
+const tags = filterUsedTerms(merged).sort(
+  (a, b) => b.count - a.count || a.name.localeCompare(b.name),
+);
+---
+
+<BaseLayout
+  title="Blog Tags - ZenML"
+  description="Browse all tags used on the ZenML blog."
+  surface="ml"
+>
+  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+    <PageHeader
+      class="mb-10"
+      heading="Blog Tags"
+      description={`${tags.length} ${tags.length === 1 ? "tag" : "tags"} on the blog`}
+      backLinks={[{ href: "/blog", label: "Back to the blog" }]}
+      classOverrides={TAXONOMY_INDEX_INTRO}
+    />
+
+    <nav aria-label="All blog tags">
+      <ul class="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
+        {tags.map((t) => (
+          <li>
+            <a
+              href={`/tags/${t.slug}`}
+              class="flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50"
+            >
+              <span class="font-medium text-gray-900">{t.name}</span>
+              <span class="text-xs tabular-nums text-gray-400">{t.count}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</BaseLayout>

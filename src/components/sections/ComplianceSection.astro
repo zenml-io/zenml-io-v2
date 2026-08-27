@@ -5,19 +5,19 @@
  * Includes scroll-triggered reveal animations.
  */
 import { COMPLIANCE } from "../../lib/homepage";
+import SectionIntro from "../system/SectionIntro.astro";
 ---
 
 <section class="bg-gray-50 py-16 sm:py-24" data-reveal-scope="compliance">
   <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
     <!-- Centered header -->
     <div class="mx-auto max-w-3xl text-center" data-reveal>
-      <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
-        {COMPLIANCE.eyebrow}
-      </p>
-      <h2 class="mt-2 text-3xl font-bold text-gray-900 sm:text-4xl">
-        {COMPLIANCE.headline}
-      </h2>
-      <p class="mt-4 text-lg text-gray-600">{COMPLIANCE.body}</p>
+      <SectionIntro
+        eyebrow={COMPLIANCE.eyebrow}
+        heading={COMPLIANCE.headline}
+        description={COMPLIANCE.body}
+        classOverrides={{ description: "text-lg text-gray-600" }}
+      />
     </div>
 
     <!-- Full-width architecture diagram -->

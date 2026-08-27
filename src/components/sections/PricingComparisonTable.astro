@@ -2,116 +2,37 @@
 /**
  * PricingComparisonTable — sectioned feature comparison with ✓/✗ icons.
  *
- * Unlike ComparisonTable.astro (plain text columns), this component supports:
- * - boolean values rendered as check/cross SVG icons
- * - section headers (grouping rows by category)
- * - CTA button row at the bottom
- * - Optional links on feature names
- *
- * Used on /pricing — one instance per workspace, swapped by the plan-cards
- * workspace toggle.
+ * Thin adapter from the pricing page's data shape onto `SpecTable`
+ * (`data-display.spec-table`). Used on /pricing — one instance per
+ * workspace, swapped by the plan-cards workspace toggle.
  */
 import type { PricingCompareTableData } from "../../lib/marketingPageTypes";
-import Button from "../Button.astro";
+import SpecTable from "../templates/SpecTable.astro";
 
 interface Props {
   data: PricingCompareTableData;
 }
 
 const { data } = Astro.props;
-const colCount = data.columnHeaders.length;
 ---
 
-<div>
-  <div class="mb-8 text-center">
-    <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
-      {data.heading}
-    </h2>
-    {data.subheading && <p class="mt-2 text-gray-600">{data.subheading}</p>}
-  </div>
-  <div class="overflow-x-auto rounded-md border border-gray-200">
-    <table class="w-full min-w-[600px] border-collapse text-sm">
-      {/* Column headers */}
-      <thead>
-        <tr class="border-b border-gray-200">
-          <th class="px-4 py-3 text-left font-medium text-gray-500">Plans</th>
-          {data.columnHeaders.map((header) => (
-            <th class="px-4 py-3 text-center font-bold text-gray-900">{header}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.sections.map((section) => (
-          <>
-            {/* Section header row */}
-            <tr>
-              <td
-                colspan={colCount + 1}
-                class="bg-gray-50 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gray-500"
-              >
-                {section.heading}
-              </td>
-            </tr>
-            {/* Data rows */}
-            {section.rows.map((row, rowIdx) => (
-              <tr class:list={[
-                "border-b border-gray-200",
-                rowIdx % 2 === 1 ? "bg-gray-50/50" : "",
-              ]}>
-                <td class="px-4 py-3 font-medium text-gray-900">
-                  {row.link ? (
-                    <a
-                      href={row.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-zenml-500 hover:text-zenml-600"
-                    >
-                      {row.feature} ↗
-                    </a>
-                  ) : (
-                    row.feature
-                  )}
-                </td>
-                {row.values.map((val) => (
-                  <td class="px-4 py-3 text-center">
-                    {val === true ? (
-                      <svg class="mx-auto h-5 w-5 text-zenml-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5" />
-                      </svg>
-                    ) : val === false ? (
-                      <svg class="mx-auto h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10" />
-                      </svg>
-                    ) : val === "COMING SOON" ? (
-                      <span class="inline-block rounded bg-zenml-500 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-tight text-white">
-                        Coming Soon
-                      </span>
-                    ) : (
-                      <span class="text-gray-700">{val}</span>
-                    )}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </>
-        ))}
-        {/* CTA button row */}
-        <tr class="border-t border-gray-200">
-          <td></td>
-          {data.ctaButtons.map((cta) => (
-            <td class="px-4 pt-5 pb-4 text-center">
-              <Button
-                href={cta.href}
-                size="sm"
-                variant={cta.variant ?? "primary"}
-                dataAnalytics={cta.analytics}
-              >
-                {cta.label}
-              </Button>
-            </td>
-          ))}
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+<SpecTable
+  heading={data.heading}
+  subheading={data.subheading}
+  rowHeaderLabel="Plans"
+  columns={data.columnHeaders}
+  sections={data.sections.map((section) => ({
+    heading: section.heading,
+    rows: section.rows.map((row) => ({
+      label: row.feature,
+      href: row.link,
+      values: row.values,
+    })),
+  }))}
+  actions={data.ctaButtons.map((cta) => ({
+    label: cta.label,
+    href: cta.href,
+    variant: cta.variant ?? "primary",
+    analytics: cta.analytics,
+  }))}
+/>

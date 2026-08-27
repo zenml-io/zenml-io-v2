@@ -1,0 +1,99 @@
+---
+/**
+ * Split — two-lane prose/media layout primitive (#248).
+ *
+ * Two slots: the default slot is prose, the named "media" slot is media.
+ * Prose is ALWAYS first in the DOM regardless of `mediaSide` — screen-reader
+ * order matches the stacked-mobile order — and the visual side is flipped
+ * with CSS `order` on the two lanes, never `direction: rtl`.
+ *
+ * Empty media slot collapses to a single centred column at full width
+ * instead of leaving a half-width column of dead space.
+ *
+ * Preact twin: `Split.tsx` (same directory) — islands cannot import .astro
+ * components. Keep the two emitting identical markup/classes.
+ */
+import type { Breakpoint } from "../../../lib/section";
+import {
+  ORDER_1_AT,
+  ORDER_2_AT,
+  RATIO_COLS_AT,
+  type ResponsiveSpace,
+  resolveSpace,
+  type SplitRatio,
+} from "./classMaps";
+
+type MediaSide = "left" | "right";
+type AlignY = "top" | "center";
+
+interface Props {
+  mediaSide?: MediaSide;
+  ratio?: SplitRatio;
+  space?: ResponsiveSpace;
+  collapseBelow?: Breakpoint;
+  mediaFirstWhenStacked?: boolean;
+  alignY?: AlignY;
+  class?: string;
+}
+
+const {
+  mediaSide = "right",
+  ratio = "1/2",
+  space,
+  collapseBelow = "lg",
+  mediaFirstWhenStacked = false,
+  alignY = "center",
+  class: className,
+} = Astro.props;
+
+const hasMedia = Astro.slots.has("media");
+
+const ALIGN_Y_CLASS: Record<AlignY, string> = {
+  top: "items-start",
+  center: "items-center",
+};
+
+// Stacked (below collapseBelow) uses the unprefixed order, set only when
+// mediaFirstWhenStacked flips it off DOM order; split (at/above it) uses
+// the breakpoint-prefixed order, set by mediaSide. The two are independent.
+const proseOrder = [
+  mediaFirstWhenStacked ? "order-2" : "",
+  mediaSide === "left" ? ORDER_2_AT[collapseBelow] : ORDER_1_AT[collapseBelow],
+]
+  .filter(Boolean)
+  .join(" ");
+
+const mediaOrder = [
+  mediaFirstWhenStacked ? "order-1" : "",
+  mediaSide === "left" ? ORDER_1_AT[collapseBelow] : ORDER_2_AT[collapseBelow],
+]
+  .filter(Boolean)
+  .join(" ");
+
+const containerClasses = [
+  "grid grid-cols-1",
+  hasMedia ? RATIO_COLS_AT[collapseBelow][ratio] : "",
+  resolveSpace(space, "lg"),
+  hasMedia ? ALIGN_Y_CLASS[alignY] : "",
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<div class={containerClasses}>
+  {
+    hasMedia ? (
+      <>
+        <div class={proseOrder}>
+          <slot />
+        </div>
+        <div class={mediaOrder}>
+          <slot name="media" />
+        </div>
+      </>
+    ) : (
+      <slot />
+    )
+  }
+</div>

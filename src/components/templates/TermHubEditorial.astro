@@ -1,0 +1,58 @@
+---
+/**
+ * TermHubEditorial — the blog-side term-page listing (issue #249).
+ *
+ * The card grid + zero-state that `/tags/[slug]`, `/category/[slug]`, and
+ * `/author/[slug]` each rendered as an identical inline block before this
+ * migration. Renders only the listing — the page keeps its own container,
+ * `PageHeader`, `CategoryBar`, and `TagCloud` exactly as before (same
+ * ownership split `PageHeader`'s `tone="default"` already establishes: a
+ * component that sits between two page-owned siblings doesn't reach up for
+ * a container of its own).
+ *
+ * `posts` is the exact shape `BlogCard`'s "grid" variant takes — this
+ * component is a thin dedup of the post grid + `EmptyState` pairing, not a
+ * new card. An absent `posts` array renders the empty state; there is no
+ * `showEmpty` boolean.
+ */
+import BlogCard from "../blog/BlogCard.astro";
+import EmptyState from "../system/EmptyState.astro";
+import { EMPTY_STATE_PRESETS } from "../system/emptyStateStyles";
+
+export interface TermHubEditorialPost {
+  href: string;
+  title: string;
+  excerpt?: string;
+  image?: { url: string; alt?: string; width?: number; height?: number };
+  authorName?: string;
+  authorSlug?: string;
+  authorAvatar?: { url: string; alt?: string };
+  readingTime?: string;
+  publishedDate?: Date;
+  categoryName?: string;
+  categorySlug?: string;
+}
+
+interface Props {
+  posts: readonly TermHubEditorialPost[];
+  /** e.g. "No posts with this tag yet." — names what's missing, never "No results". */
+  emptyHeading: string;
+}
+
+const { posts, emptyHeading } = Astro.props;
+---
+
+<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+  {posts.map((post) => <BlogCard {...post} />)}
+</div>
+
+{posts.length === 0 && (
+  <EmptyState
+    heading={emptyHeading}
+    reserveHeight={false}
+    classOverrides={{
+      ...EMPTY_STATE_PRESETS.bareList,
+      heading: "text-center text-gray-500",
+    }}
+  />
+)}

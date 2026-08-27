@@ -90,7 +90,9 @@ export function getRelatedPosts(
 // Taxonomy counts
 // ---------------------------------------------------------------------------
 
-export type TaxonomyCount = { slug: string; name: string; count: number };
+export type { TaxonomyCount } from "./relatedIndex";
+
+import type { TaxonomyCount } from "./relatedIndex";
 
 export async function getCategoryCounts(
   posts: BlogPost[],
@@ -162,50 +164,11 @@ export async function resolveAuthor(
 }
 
 // ---------------------------------------------------------------------------
-// Pagination math
+// Pagination
 // ---------------------------------------------------------------------------
 
+/** The FilterIndex island's page size on /blog (#249). */
 export const PAGE_SIZE = 12;
-
-/**
- * Number of grid posts on page 1 (featured post is shown separately above).
- * Shared between blog/index.astro and blog/page/[page].astro to keep
- * pagination offsets consistent.
- */
-export const PAGE_1_GRID_COUNT = PAGE_SIZE;
-
-export function getPaginationItems(
-  currentPage: number,
-  totalPages: number,
-  maxVisible = 7,
-): Array<number | "ellipsis"> {
-  if (totalPages <= maxVisible) {
-    return Array.from({ length: totalPages }, (_, i) => i + 1);
-  }
-
-  const items: Array<number | "ellipsis"> = [1];
-  const half = Math.floor((maxVisible - 2) / 2); // slots around current (excluding 1 and last)
-
-  let start = Math.max(2, currentPage - half);
-  let end = Math.min(totalPages - 1, currentPage + half);
-
-  // Adjust if near edges
-  if (currentPage - half <= 2) end = Math.min(totalPages - 1, maxVisible - 2);
-  if (currentPage + half >= totalPages - 1)
-    start = Math.max(2, totalPages - maxVisible + 3);
-
-  if (start > 2) items.push("ellipsis");
-  for (let i = start; i <= end; i++) items.push(i);
-  if (end < totalPages - 1) items.push("ellipsis");
-  items.push(totalPages);
-
-  return items;
-}
-
-/** Returns the href for a given blog page number. */
-export function blogPageHref(page: number): string {
-  return page === 1 ? "/blog" : `/blog/page/${page}`;
-}
 
 // ---------------------------------------------------------------------------
 // Blog search index (used by /blog/search-index.json endpoint)
@@ -216,23 +179,58 @@ export interface BlogSearchEntry {
   slug: string;
   excerpt: string;
   date: string;
+  /** Category display name — kept for BlogSearch.tsx's Cmd+K result rows. */
   category: string;
+  /** Category slug — added for the blog index's FilterIndex single facet (#249). */
+  categorySlug: string;
+  /** Tag slugs — added for the blog index's FilterIndex multi facet (#249). */
+  tags: string[];
+  readingTime?: string;
+  image?: { url: string; alt?: string; width?: number; height?: number };
+  authorName?: string;
+  authorSlug?: string;
+  authorAvatar?: { url: string; alt?: string };
 }
 
-/** Build the search index payload for all given posts. */
+/**
+ * Build the search index payload for all given posts. Also the item source
+ * for the blog index's FilterIndex island (#249) — not just BlogSearch.tsx's
+ * Cmd+K — so it carries everything BlogCard needs to render a full card, not
+ * just search-result fields.
+ */
 export async function buildBlogSearchIndex(
   posts: BlogPost[],
 ): Promise<BlogSearchEntry[]> {
   const allCategories = await getCollection("categories");
   const catMap = new Map(allCategories.map((c) => [c.data.slug, c.data.name]));
 
-  return posts.map((p) => ({
-    title: p.data.title,
-    slug: p.data.slug,
-    excerpt: p.data.seo?.description || "",
-    date: p.data.date.toISOString(),
-    category: catMap.get(p.data.category || "") || "",
-  }));
+  const authorCache = new Map<string, ResolvedAuthor | undefined>();
+  async function resolveAuthorCached(slug?: string) {
+    if (!slug) return undefined;
+    if (!authorCache.has(slug))
+      authorCache.set(slug, await resolveAuthor(slug));
+    return authorCache.get(slug);
+  }
+
+  return Promise.all(
+    posts.map(async (p) => {
+      const author = await resolveAuthorCached(p.data.author);
+      return {
+        title: p.data.title,
+        slug: p.data.slug,
+        excerpt: p.data.seo?.description || "",
+        date: p.data.date.toISOString(),
+        category: catMap.get(p.data.category || "") || "",
+        categorySlug: p.data.category || "",
+        tags: p.data.tags,
+        readingTime: p.data.readingTime,
+        image: p.data.mainImage,
+        authorName: author?.name,
+        authorSlug: author?.slug,
+        authorAvatar: author?.avatar,
+      };
+    }),
+  );
 }
 
 // ---------------------------------------------------------------------------

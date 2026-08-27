@@ -1,4 +1,5 @@
 ---
+import ContentLayout from "../layouts/ContentLayout.astro";
 /**
  * Imprint — legal company information page (required by German law).
  *
@@ -7,7 +8,7 @@
  *
  * Route: /imprint
  */
-import ContentLayout from "../layouts/ContentLayout.astro";
+import { COMPANY_ADDRESS } from "../lib/constants";
 ---
 
 <ContentLayout
@@ -20,8 +21,8 @@ import ContentLayout from "../layouts/ContentLayout.astro";
     <div>
       <p class="text-sm text-gray-700">
         <strong>ZenML GmbH</strong><br /><br />
-        Schellingstr. 36<br />
-        80799 Munich, Germany
+        {COMPANY_ADDRESS.street}<br />
+        {COMPANY_ADDRESS.postalCode} {COMPANY_ADDRESS.city}, {COMPANY_ADDRESS.countryName}
       </p>
     </div>
     <div>

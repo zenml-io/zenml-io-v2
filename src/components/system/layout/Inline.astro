@@ -1,0 +1,69 @@
+---
+/**
+ * Inline — horizontal layout primitive. Composes a row of children with one
+ * of the 7 spacing steps between them (#248).
+ *
+ * `collapseBelow` is for content that must go full-width and stack below a
+ * breakpoint (a button group, for example): below it, children are forced
+ * to `w-full` in a column; at and above it, they return to their intrinsic
+ * width in a row.
+ *
+ * Preact twin: `Inline.tsx` (same directory) — islands cannot import .astro
+ * components. Keep the two emitting identical markup/classes.
+ */
+import type { Breakpoint, SpaceStep } from "../../../lib/section";
+import { CHILDREN_AUTO_WIDTH_AT, FLEX_ROW_AT, resolveSpace } from "./classMaps";
+
+type AlignY = "top" | "center" | "bottom";
+type Align = "start" | "center" | "end" | "between";
+
+interface Props {
+  space?: SpaceStep | Partial<Record<Breakpoint, SpaceStep>>;
+  alignY?: AlignY;
+  align?: Align;
+  wrap?: boolean;
+  collapseBelow?: Breakpoint;
+  class?: string;
+}
+
+const {
+  space,
+  alignY = "center",
+  align = "start",
+  wrap = true,
+  collapseBelow,
+  class: className,
+} = Astro.props;
+
+const ALIGN_Y_CLASS: Record<AlignY, string> = {
+  top: "items-start",
+  center: "items-center",
+  bottom: "items-end",
+};
+
+const ALIGN_CLASS: Record<Align, string> = {
+  start: "justify-start",
+  center: "justify-center",
+  end: "justify-end",
+  between: "justify-between",
+};
+
+const classes = [
+  "flex",
+  collapseBelow ? "flex-col" : "flex-row",
+  resolveSpace(space, "xs"),
+  ALIGN_Y_CLASS[alignY],
+  ALIGN_CLASS[align],
+  wrap ? "flex-wrap" : "flex-nowrap",
+  collapseBelow ? "[&>*]:w-full" : "",
+  collapseBelow ? FLEX_ROW_AT[collapseBelow] : "",
+  collapseBelow ? CHILDREN_AUTO_WIDTH_AT[collapseBelow] : "",
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<div class={classes}>
+  <slot />
+</div>

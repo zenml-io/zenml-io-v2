@@ -8,15 +8,23 @@
  * Generates /integration-type/<slug> for each integration type.
  */
 import { getCollection } from "astro:content";
-import IntegrationCard from "../../components/integrations/IntegrationCard.astro";
+import PageHeader from "../../components/templates/PageHeader.astro";
+import TermHubCatalog from "../../components/templates/TermHubCatalog.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
   const integrationTypes = await getCollection("integration-types");
-  return integrationTypes.map((itype) => ({
-    params: { slug: itype.data.slug },
-    props: { integrationType: itype },
-  }));
+  const allIntegrations = await getCollection(
+    "integrations",
+    ({ data }) => !data.draft,
+  );
+  const usedSlugs = new Set(allIntegrations.map((i) => i.data.integrationType));
+  return integrationTypes
+    .filter((itype) => usedSlugs.has(itype.data.slug))
+    .map((itype) => ({
+      params: { slug: itype.data.slug },
+      props: { integrationType: itype },
+    }));
 }
 
 const { integrationType } = Astro.props;
@@ -37,38 +45,31 @@ const allIntegrations = (
   surface="ml"
 >
   <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-10">
-      <a
-        href={`/integrations?type=${integrationType.data.slug}`}
-        class="inline-flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700"
-      >
-        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 12H4M4 12L10 18M4 12L10 6" />
-        </svg>
-        All integrations
-      </a>
-      <h1 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-        {integrationType.data.name}
-      </h1>
-      <p class="mt-2 text-lg text-gray-600">
-        {allIntegrations.length} {allIntegrations.length === 1 ? "integration" : "integrations"} in this category
-      </p>
-    </header>
+    <PageHeader
+      class="mb-10"
+      leadingLink={{
+        href: `/integrations?type=${integrationType.data.slug}`,
+        label: "All integrations",
+      }}
+      heading={integrationType.data.name}
+      description={`${allIntegrations.length} ${allIntegrations.length === 1 ? "integration" : "integrations"} in this category`}
+      classOverrides={{
+        heading: "text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl",
+        headingSpacing: "mt-2",
+        description: "text-lg text-gray-600",
+        descriptionSpacing: "mt-2",
+      }}
+    />
 
     {/* Integration grid — same card style as hub */}
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {allIntegrations.map((integration) => (
-        <IntegrationCard
-          href={`/integrations/${integration.data.slug}`}
-          title={integration.data.title}
-          categoryLabel={integrationType.data.name}
-          logo={integration.data.logo}
-        />
-      ))}
-    </div>
-
-    {allIntegrations.length === 0 && (
-      <p class="py-12 text-center text-gray-500">No integrations of this type yet.</p>
-    )}
+    <TermHubCatalog
+      items={allIntegrations.map((integration) => ({
+        href: `/integrations/${integration.data.slug}`,
+        title: integration.data.title,
+        categoryLabel: integrationType.data.name,
+        logo: integration.data.logo,
+      }))}
+      emptyHeading="No integrations of this type yet."
+    />
   </div>
 </BaseLayout>

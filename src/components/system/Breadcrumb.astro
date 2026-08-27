@@ -1,0 +1,125 @@
+---
+/**
+ * Breadcrumb — one prop list drives both the visual crumb trail and its
+ * BreadcrumbList JSON-LD, so a route cannot ship one without the other
+ * (#248).
+ *
+ * Visual idiom is pixel-identical (spacing via the equivalent named tokens)
+ * to the three call sites that carried it independently before this
+ * primitive existed — `src/pages/features/[slug].astro`,
+ * `src/pages/case-study/[slug].astro`, and
+ * `src/pages/cloud-features/ml-models-control-plane.astro` — plus the
+ * accessible `<nav><ol><li>` structure and `aria-current="page"` on top.
+ * The only structural addition beyond those three (`<ol>`/`<li>`) is kept
+ * visually inert: `<li>` is forced back to `inline` (its default is
+ * `list-item`, which would stack crumbs vertically), and Tailwind's
+ * preflight already zeroes `ol`/`li` margin, padding, and markers — so the
+ * added semantics don't move a pixel.
+ *
+ * `separator="chevron"` reproduces the llmops-database/mlops-database detail
+ * pages' second arrangement pixel-identical (spacing via the equivalent
+ * named tokens): an SVG chevron instead of a `/` character,
+ * `hover:text-primary-600` instead of `hover:text-zenml-500`,
+ * `line-clamp-1` on the current-page label, and the nav's own `mb-space-md`.
+ * That variant lays the crumbs out as a flex row (`gap-space-xxs`), so the
+ * flex classes move onto `<ol>` — the nav can't be the flex container once
+ * it wraps a single `<ol>`, since gap only distributes space between DIRECT
+ * children. Both variants emit the identical JSON-LD and
+ * `aria-current="page"` pattern — `separator` only changes paint, never
+ * structure or semantics.
+ *
+ * No Preact twin: only static `.astro` pages use this.
+ */
+import type { BreadcrumbItem } from "../../lib/breadcrumb";
+import { buildBreadcrumbJsonLd } from "../../lib/breadcrumb";
+import JsonLd from "../seo/JsonLd.astro";
+
+export type { BreadcrumbItem } from "../../lib/breadcrumb";
+
+interface Props {
+  /** Last item is the current page. */
+  items: BreadcrumbItem[];
+  class?: string;
+  /** Excludes the crumb trail from the Pagefind index (llmops/mlops detail pages need this). */
+  pagefindIgnore?: boolean;
+  /** "slash" (default) = the three-site house idiom. "chevron" = the llmops/mlops detail-page idiom. */
+  separator?: "slash" | "chevron";
+  /**
+   * Default true. Demo stages only — a real route must never pass false.
+   * Every live breadcrumb needs its BreadcrumbList JSON-LD; this exists
+   * solely so /styleguide can render the visual crumb trail without also
+   * emitting structured data for a fabricated page that doesn't exist.
+   */
+  jsonLd?: boolean;
+}
+
+const {
+  items,
+  class: className,
+  pagefindIgnore = false,
+  separator = "slash",
+  jsonLd = true,
+} = Astro.props;
+
+const isChevron = separator === "chevron";
+
+const navClass = isChevron
+  ? "mb-space-md flex items-center gap-space-xxs text-sm text-gray-500"
+  : "text-sm text-gray-500";
+const olClass = isChevron ? "flex items-center gap-space-xxs" : "";
+// Chevron's ol-level gap-space-xxs only ever separates li's from one another. Once the
+// separator moves inside the following li (see below), the ol only has as
+// many flex items as there are crumbs, so the gap between the separator and
+// the label it precedes has to come from the li itself instead — same 8px,
+// just supplied one level down so the ol's own gap doesn't have to double up.
+const liClass = isChevron ? "flex items-center gap-space-xxs" : "inline";
+const linkClass = isChevron ? "hover:text-primary-600" : "hover:text-zenml-500";
+const currentClass = isChevron ? "text-gray-900 line-clamp-1" : "text-gray-900";
+---
+
+{jsonLd && <JsonLd data={buildBreadcrumbJsonLd(items)} />}
+<nav
+  aria-label="Breadcrumb"
+  class:list={[navClass, className]}
+  data-pagefind-ignore={pagefindIgnore || undefined}
+>
+  <ol class:list={[olClass]}>
+    {items.map((item, i) => {
+      const isLast = i === items.length - 1;
+      return (
+        <li class={liClass}>
+          {i > 0 &&
+            (isChevron ? (
+              <svg
+                class="h-4 w-4 text-gray-400"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.67"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M7.5 5L12.5 10L7.5 15" />
+              </svg>
+            ) : (
+              <span class="mx-space-xxs" aria-hidden="true">
+                /
+              </span>
+            ))}
+          {isLast ? (
+            <span class={currentClass} aria-current="page">
+              {item.label}
+            </span>
+          ) : item.href ? (
+            <a href={item.href} class={linkClass}>
+              {item.label}
+            </a>
+          ) : (
+            <span>{item.label}</span>
+          )}
+        </li>
+      );
+    })}
+  </ol>
+</nav>

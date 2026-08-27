@@ -6,23 +6,28 @@
  * Route: /llmops-tags
  */
 import { getCollection } from "astro:content";
+import PageHeader from "../../components/templates/PageHeader.astro";
+import { TAXONOMY_INDEX_INTRO } from "../../components/templates/pageHeaderPresets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import type { TaxonomyCount } from "../../lib/llmops";
 import { getAllPublishedEntries, getLLMOpsTagCounts } from "../../lib/llmops";
+import { filterUsedTerms } from "../../lib/relatedIndex";
 
 const entries = await getAllPublishedEntries();
 const usedCounts = await getLLMOpsTagCounts(entries);
 const usedMap = new Map(usedCounts.map((t) => [t.slug, t.count]));
 
-// Merge all taxonomy terms with used counts (include zero-count tags)
+// Merge all taxonomy terms with used counts, then drop zero-count tags
+// (#249) — a zero-count tag has no [slug] page to link to any more.
 const allTags = await getCollection("llmops-tags");
-const tags: TaxonomyCount[] = allTags
-  .map((t) => ({
-    slug: t.data.slug,
-    name: t.data.name,
-    count: usedMap.get(t.data.slug) ?? 0,
-  }))
-  .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+const merged: TaxonomyCount[] = allTags.map((t) => ({
+  slug: t.data.slug,
+  name: t.data.name,
+  count: usedMap.get(t.data.slug) ?? 0,
+}));
+const tags = filterUsedTerms(merged).sort(
+  (a, b) => b.count - a.count || a.name.localeCompare(b.name),
+);
 ---
 
 <BaseLayout
@@ -31,15 +36,13 @@ const tags: TaxonomyCount[] = allTags
   surface="ml"
 >
   <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-10">
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900">LLMOps Tags</h1>
-      <p class="mt-3 text-lg text-gray-600">
-        {tags.length} {tags.length === 1 ? "tag" : "tags"} in the database
-      </p>
-      <a href="/llmops-database" class="mt-2 inline-block text-sm text-primary-600 hover:text-primary-700">
-        &larr; Back to LLMOps Database
-      </a>
-    </header>
+    <PageHeader
+      class="mb-10"
+      heading="LLMOps Tags"
+      description={`${tags.length} ${tags.length === 1 ? "tag" : "tags"} in the database`}
+      backLinks={[{ href: "/llmops-database", label: "Back to LLMOps Database" }]}
+      classOverrides={TAXONOMY_INDEX_INTRO}
+    />
 
     <nav aria-label="All LLMOps tags">
       <ul class="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">

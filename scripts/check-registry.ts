@@ -13,10 +13,38 @@
  * same reason: `astro check` does not catch this class of problem.
  *
  * What it checks:
- *   1. Every .astro file under src/components/templates/ has a registry entry
- *      whose componentPath points at it.
+ *   1. Every .astro/.tsx file under src/components/templates/ AND
+ *      src/components/system/ has a registry entry whose componentPath
+ *      points at it — same rule check:surface/check:alt use for their own
+ *      grep-based gates: a file with no entry is invisible to the registry,
+ *      so it fails loud instead of drifting silently. A `.tsx` file paired
+ *      with a same-named `.astro` sibling (the Astro/Preact twin pattern,
+ *      #248) is exempt: it is the twin of the `.astro` primitive's own
+ *      entry, not a separate registered unit.
  *   2. Every entry with a componentPath points at a file that exists.
  *   3. No duplicate ids.
+ *   4. Any `contentShape` present has a sane range: minItems and maxItems
+ *      are both non-negative integers when set, and maxItems >= minItems
+ *      when both are set. A negative maxItems is rejected even when
+ *      minItems is absent — the two bounds are checked independently.
+ *   5. Entries flagged `collectionBound: true` (see `TemplateEntry` in
+ *      registry.ts) declare a *complete* `contentShape` once they are built
+ *      (componentPath set): minItems, maxItems, and a non-empty `overflow`
+ *      rule (whitespace-only doesn't count). `contentShape: {}` no longer
+ *      passes — each missing piece is named. This is a forward gate — every
+ *      flagged entry is still `componentPath: null` today, so it does not
+ *      fail yet, but a build in a later wave cannot land a real component
+ *      without also filling in its budgets. Keyed on the flag itself, not a
+ *      family-name list — an earlier version matched on family name and the
+ *      list silently stopped matching any real registry entry, making the
+ *      gate permanently vacuous without failing or warning.
+ *
+ *   Checks 3–5 are filesystem-free, so they live in the pure
+ *   `findRegistryShapeViolations()` (src/lib/templates/registryCheck.ts) and
+ *   are exercised against synthetic bad registries in
+ *   tests/lib/registryCheck.test.ts — this script only ever ran them against
+ *   the one real, valid registry, which meant a rejection branch could go
+ *   silently dead and nothing would notice.
  *
  * What it reports but does not fail on:
  *   - Adoption count per template, counted from real imports. Zero adoption is a
@@ -34,10 +62,12 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 
+import { findRegistryShapeViolations } from "../src/lib/templates/registryCheck.ts";
 import { TEMPLATE_REGISTRY, statusOf } from "../src/lib/templates/registry.ts";
 
 const ROOT = resolve(process.cwd());
 const TEMPLATES_DIR = join(ROOT, "src/components/templates");
+const SYSTEM_DIR = join(ROOT, "src/components/system");
 
 /** Recursively collect component files under a directory. */
 function collectComponents(dir: string): string[] {
@@ -52,6 +82,18 @@ function collectComponents(dir: string): string[] {
     }
   }
   return results;
+}
+
+/**
+ * True for a `.tsx` file that has a same-directory, same-basename `.astro`
+ * sibling — the Astro/Preact twin pattern (#248, e.g. `SectionIntro.astro` /
+ * `SectionIntro.tsx`). That `.tsx` is the twin of the `.astro` primitive's
+ * own registry entry, not a separate registered unit, so it is exempt from
+ * check 1 rather than needing its own `id`.
+ */
+function isPairedTwin(file: string): boolean {
+  if (!file.endsWith(".tsx")) return false;
+  return existsSync(`${file.slice(0, -".tsx".length)}.astro`);
 }
 
 /** Any `from "..."` specifier. The path is resolved properly rather than matched by name. */
@@ -102,15 +144,6 @@ function countAdoption(componentPath: string): number {
 function check(): void {
   const violations: string[] = [];
 
-  // 3. Duplicate ids
-  const seen = new Set<string>();
-  for (const entry of TEMPLATE_REGISTRY) {
-    if (seen.has(entry.id)) {
-      violations.push(`  duplicate id in registry: ${entry.id}`);
-    }
-    seen.add(entry.id);
-  }
-
   // 2. Entries pointing at files that do not exist
   const registeredPaths = new Set<string>();
   for (const entry of TEMPLATE_REGISTRY) {
@@ -124,8 +157,12 @@ function check(): void {
     }
   }
 
-  // 1. Files with no entry
-  for (const file of collectComponents(TEMPLATES_DIR)) {
+  // 1. Files with no entry (templates/ and system/ — see docblock)
+  for (const file of [
+    ...collectComponents(TEMPLATES_DIR),
+    ...collectComponents(SYSTEM_DIR),
+  ]) {
+    if (isPairedTwin(file)) continue;
     const rel = relative(ROOT, file);
     if (!registeredPaths.has(rel)) {
       violations.push(
@@ -134,6 +171,11 @@ function check(): void {
       );
     }
   }
+
+  // 3–5. Duplicate ids, contentShape range sanity, collectionBound forward
+  // gate — all filesystem-free, so they live in the pure, independently
+  // tested checker.
+  violations.push(...findRegistryShapeViolations(TEMPLATE_REGISTRY));
 
   const built = TEMPLATE_REGISTRY.filter((e) => statusOf(e) === "built");
   const planned = TEMPLATE_REGISTRY.length - built.length;

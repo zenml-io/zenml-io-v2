@@ -1,0 +1,229 @@
+---
+/**
+ * TermHubEntryIndex — the database-side term-page listing (issue #249).
+ *
+ * Covers `/llmops-tags/[slug]`, `/mlops-tags/[slug]`, and
+ * `/industry-tags/[slug]`. Renders only the listing — the page keeps its
+ * own container and header exactly as before.
+ *
+ * Two live pieces, both collapsing on absence:
+ *   - `crossLinks` — the "Common industries" / "Common LLMOps tags" /
+ *     "Common MLOps topics" badge blocks. One group renders as a single
+ *     block; two groups (industry-tags' dual collection) render side by
+ *     side. A group with no items renders nothing; the wrapper itself
+ *     renders nothing when every group is empty.
+ *   - `sections` — the entry rows themselves. One section (llmops-tags,
+ *     mlops-tags) renders with no heading; two sections (industry-tags'
+ *     "LLMOps entries" / "MLOps entries" split) each get their own `<h2>`
+ *     (or `<h3>` via `headingLevel` when nested under a section heading).
+ *
+ * A section carries EITHER `cards` OR `items`, never both — enforced by
+ * the `TermHubEntrySection` union, not just documented:
+ *   - `cards` — the entry card grid (`grid gap-6 md:grid-cols-2
+ *     lg:grid-cols-3`, title + company/meta line + summary + up to 4 tag
+ *     badges + overflow badge) every live route renders today. This is the
+ *     parity arrangement — byte-faithful to the pre-migration markup.
+ *   - `items` — `data-display.stacked-list` rows (title/meta/count only,
+ *     no summary, no per-row tag chips). This is the new-brand/demo
+ *     arrangement; no live route uses it yet, so it only appears on
+ *     `/styleguide` today.
+ *
+ * `emptyHeading` renders only when every section is empty combined —
+ * matches the live pages' single catch-all zero state.
+ */
+import Badge from "../Badge.astro";
+import EmptyState from "../system/EmptyState.astro";
+import { EMPTY_STATE_PRESETS } from "../system/emptyStateStyles";
+import StackedList, { type StackedListItem } from "./StackedList.astro";
+
+export interface TermHubCrossLinkItem {
+  name: string;
+  slug: string;
+  count: number;
+  href: string;
+}
+
+export interface TermHubCrossLinkGroup {
+  heading: string;
+  viewAllHref: string;
+  viewAllLabel: string;
+  items: readonly TermHubCrossLinkItem[];
+  badgeVariant?: "primary" | "blue" | "success";
+}
+
+export interface TermHubEntryCardTag {
+  label: string;
+  href: string;
+}
+
+export interface TermHubEntryCardItem {
+  title: string;
+  href: string;
+  /** Defaults to 2. industry-tags nests cards under its own section `<h2>`, so its cards use 3. */
+  headingLevel?: 2 | 3;
+  /** Plain "company" line (llmops shape) — renders a bare `<p>` only when present. */
+  company?: string;
+  /** Dot-joined meta line (mlops shape: company · platformName · contentType) — renders a `<div>` flex row only when present. Mutually exclusive with `company`. */
+  metaLine?: readonly string[];
+  summary?: string;
+  tags?: readonly TermHubEntryCardTag[];
+  extraTagCount?: number;
+  tagVariant?: "blue" | "success";
+}
+
+interface TermHubEntrySectionBase {
+  /** Omit for a single-collection page (no `<h2>` renders); set for a dual-collection split. */
+  heading?: string;
+}
+
+/** The live parity arrangement — every live route sets `cards` today. */
+export interface TermHubEntryCardsSection extends TermHubEntrySectionBase {
+  cards: readonly TermHubEntryCardItem[];
+  items?: never;
+}
+
+/** The new-brand/demo arrangement — no live route sets `items` yet. */
+export interface TermHubEntryStackedSection extends TermHubEntrySectionBase {
+  items: readonly StackedListItem[];
+  cards?: never;
+}
+
+export type TermHubEntrySection =
+  | TermHubEntryCardsSection
+  | TermHubEntryStackedSection;
+
+interface Props {
+  crossLinks?: readonly TermHubCrossLinkGroup[];
+  sections: readonly TermHubEntrySection[];
+  /** e.g. "No LLMOps entries with this tag yet." — shown only when every section is empty. */
+  emptyHeading: string;
+}
+
+const { crossLinks = [], sections, emptyHeading } = Astro.props;
+
+function sectionCount(section: TermHubEntrySection): number {
+  return section.cards?.length ?? section.items?.length ?? 0;
+}
+
+const hasCrossLinks = crossLinks.some((group) => group.items.length > 0);
+const totalEntries = sections.reduce((sum, s) => sum + sectionCount(s), 0);
+---
+
+{hasCrossLinks && (
+  <section
+    class:list={[
+      "mb-10",
+      crossLinks.length > 1 && "grid gap-6 md:grid-cols-2",
+    ]}
+  >
+    {crossLinks.map(
+      (group) =>
+        group.items.length > 0 && (
+          <div>
+            <div class="flex items-baseline justify-between gap-4">
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-gray-400">
+                {group.heading}
+              </h2>
+              <a
+                href={group.viewAllHref}
+                class="text-xs font-medium text-primary-600 hover:text-primary-700"
+              >
+                {group.viewAllLabel} &rarr;
+              </a>
+            </div>
+            <div class="mt-3 flex flex-wrap gap-2">
+              {group.items.map((item) => (
+                <Badge variant={group.badgeVariant ?? "primary"} href={item.href}>
+                  {item.name} ({item.count})
+                </Badge>
+              ))}
+            </div>
+          </div>
+        ),
+    )}
+  </section>
+)}
+
+{sections.map((section, i) => {
+  const count = sectionCount(section);
+  return (
+    count > 0 && (
+      <section
+        class={
+          sections.slice(i + 1).some((s) => sectionCount(s) > 0)
+            ? "mb-14"
+            : undefined
+        }
+      >
+        {section.heading && (
+          <h2 class="mb-6 text-2xl font-bold tracking-tight text-gray-900">
+            {section.heading}
+          </h2>
+        )}
+        {section.cards ? (
+          <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {section.cards.map((card) => {
+              const CardHeading = card.headingLevel === 3 ? "h3" : "h2";
+              return (
+                <div class="group relative flex flex-col rounded-lg border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md">
+                  <CardHeading class="text-lg font-semibold text-gray-900 group-hover:text-primary-600">
+                    <a
+                      href={card.href}
+                      class="before:absolute before:inset-0 before:content-['']"
+                    >
+                      {card.title}
+                    </a>
+                  </CardHeading>
+                  {card.company && (
+                    <p class="mt-1 text-sm text-gray-500">{card.company}</p>
+                  )}
+                  {card.metaLine && (
+                    <div class="mt-1 flex flex-wrap items-center gap-2 text-sm text-gray-500">
+                      {card.metaLine.map((part, partIndex) => (
+                        <>
+                          {partIndex > 0 && <span aria-hidden="true">&middot;</span>}
+                          <span class:list={[partIndex === card.metaLine!.length - 1 && "capitalize"]}>
+                            {part}
+                          </span>
+                        </>
+                      ))}
+                    </div>
+                  )}
+                  {card.summary && (
+                    <p class="mt-2 line-clamp-3 text-sm text-gray-600">{card.summary}</p>
+                  )}
+                  {/* Rendered even with zero tags: the live pages emit this
+                      row unconditionally, so a tagless card keeps its 16px
+                      pt-4 foot. Collapsing it is a cutover change. */}
+                  <div class="mt-auto flex flex-wrap gap-1.5 pt-4">
+                    {card.tags?.map((tag) => (
+                      <Badge variant={card.tagVariant ?? "blue"} href={tag.href} class="relative">
+                        {tag.label}
+                      </Badge>
+                    ))}
+                    {(card.extraTagCount ?? 0) > 0 && (
+                      <Badge variant="gray">+{card.extraTagCount}</Badge>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <StackedList items={section.items} />
+        )}
+      </section>
+    )
+  );
+})}
+
+{totalEntries === 0 && (
+  <EmptyState
+    heading={emptyHeading}
+    reserveHeight={false}
+    classOverrides={{
+      ...EMPTY_STATE_PRESETS.bareList,
+      heading: "text-center text-gray-500",
+    }}
+  />
+)}

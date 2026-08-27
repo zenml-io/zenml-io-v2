@@ -6,7 +6,7 @@
  * Generates /industry-tags/<slug> for each industry tag in the collection.
  */
 import { getCollection } from "astro:content";
-import Badge from "../../components/Badge.astro";
+import TermHubEntryIndex from "../../components/templates/TermHubEntryIndex.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getLLMOpsTagCounts } from "../../lib/llmops";
 import { getMLOpsTagCounts } from "../../lib/mlops";
@@ -21,11 +21,25 @@ export async function getStaticPaths() {
   const mlopsTagMap = Object.fromEntries(
     allMLOpsTags.map((tag) => [tag.data.slug, tag.data.name]),
   );
+  const allLLMOpsEntries = await getCollection(
+    "llmops-database",
+    ({ data }) => !data.draft,
+  );
+  const allMLOpsEntries = await getCollection(
+    "mlops-database",
+    ({ data }) => !data.draft,
+  );
 
-  return industryTags.map((tag) => ({
-    params: { slug: tag.data.slug },
-    props: { tag, llmopsTagMap, mlopsTagMap },
-  }));
+  const usedSlugs = new Set([
+    ...allLLMOpsEntries.map((e) => e.data.industryTags),
+    ...allMLOpsEntries.map((e) => e.data.industryTags),
+  ]);
+  return industryTags
+    .filter((tag) => usedSlugs.has(tag.data.slug))
+    .map((tag) => ({
+      params: { slug: tag.data.slug },
+      props: { tag, llmopsTagMap, mlopsTagMap },
+    }));
 }
 
 const { tag, llmopsTagMap, mlopsTagMap } = Astro.props;
@@ -72,138 +86,74 @@ const commonMLOpsTags = (await getMLOpsTagCounts(mlopsEntries)).slice(0, 8);
       </div>
     </header>
 
-    {(commonLLMOpsTags.length > 0 || commonMLOpsTags.length > 0) && (
-      <section class="mb-10 grid gap-6 md:grid-cols-2">
-        {commonLLMOpsTags.length > 0 && (
-          <div>
-            <div class="flex items-baseline justify-between gap-4">
-              <h2 class="text-xs font-semibold uppercase tracking-wider text-gray-400">
-                Common LLMOps tags
-              </h2>
-              <a
-                href="/llmops-tags"
-                class="text-xs font-medium text-primary-600 hover:text-primary-700"
-              >
-                View all &rarr;
-              </a>
-            </div>
-            <div class="mt-3 flex flex-wrap gap-2">
-              {commonLLMOpsTags.map((item) => (
-                <Badge variant="blue" href={`/llmops-tags/${item.slug}`}>
-                  {item.name} ({item.count})
-                </Badge>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {commonMLOpsTags.length > 0 && (
-          <div>
-            <div class="flex items-baseline justify-between gap-4">
-              <h2 class="text-xs font-semibold uppercase tracking-wider text-gray-400">
-                Common MLOps topics
-              </h2>
-              <a
-                href="/mlops-tags"
-                class="text-xs font-medium text-primary-600 hover:text-primary-700"
-              >
-                View all &rarr;
-              </a>
-            </div>
-            <div class="mt-3 flex flex-wrap gap-2">
-              {commonMLOpsTags.map((item) => (
-                <Badge variant="success" href={`/mlops-tags/${item.slug}`}>
-                  {item.name} ({item.count})
-                </Badge>
-              ))}
-            </div>
-          </div>
-        )}
-      </section>
-    )}
-
-    {llmopsEntries.length > 0 && (
-      <section class={mlopsEntries.length > 0 ? "mb-14" : undefined}>
-        <h2 class="mb-6 text-2xl font-bold tracking-tight text-gray-900">LLMOps entries</h2>
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {llmopsEntries.map((entry) => (
-            <div
-              class="group relative flex flex-col rounded-lg border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md"
-            >
-              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600">
-                <a
-                  href={`/llmops-database/${entry.data.slug}`}
-                  class="before:absolute before:inset-0 before:content-['']"
-                >
-                  {entry.data.title}
-                </a>
-              </h3>
-              {entry.data.company && (
-                <p class="mt-1 text-sm text-gray-500">{entry.data.company}</p>
-              )}
-              {entry.data.summary && (
-                <p class="mt-2 line-clamp-3 text-sm text-gray-600">{entry.data.summary}</p>
-              )}
-              <div class="mt-auto flex flex-wrap gap-1.5 pt-4">
-                {entry.data.llmopsTags.slice(0, 4).map((tagSlug: string) => (
-                  <Badge variant="blue" href={`/llmops-tags/${tagSlug}`} class="relative">{llmopsTagMap[tagSlug] || tagSlug}</Badge>
-                ))}
-                {entry.data.llmopsTags.length > 4 && (
-                  <Badge variant="gray">+{entry.data.llmopsTags.length - 4}</Badge>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
-
-    {mlopsEntries.length > 0 && (
-      <section>
-        <h2 class="mb-6 text-2xl font-bold tracking-tight text-gray-900">MLOps entries</h2>
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {mlopsEntries.map((entry) => (
-            <div
-              class="group relative flex flex-col rounded-lg border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md"
-            >
-              <h3 class="text-lg font-semibold text-gray-900 group-hover:text-primary-600">
-                <a
-                  href={`/mlops-database/${entry.data.slug}`}
-                  class="before:absolute before:inset-0 before:content-['']"
-                >
-                  {entry.data.title}
-                </a>
-              </h3>
-              <div class="mt-1 flex flex-wrap items-center gap-2 text-sm text-gray-500">
-                <span>{entry.data.company}</span>
-                {entry.data.platformName !== entry.data.company && (
-                  <>
-                    <span aria-hidden="true">&middot;</span>
-                    <span>{entry.data.platformName}</span>
-                  </>
-                )}
-                <>
-                  <span aria-hidden="true">&middot;</span>
-                  <span class="capitalize">{entry.data.contentType}</span>
-                </>
-              </div>
-              <p class="mt-2 line-clamp-3 text-sm text-gray-600">{entry.data.summary}</p>
-              <div class="mt-auto flex flex-wrap gap-1.5 pt-4">
-                {entry.data.mlopsTags.slice(0, 4).map((tagSlug: string) => (
-                  <Badge variant="success" href={`/mlops-tags/${tagSlug}`} class="relative">{mlopsTagMap[tagSlug] || tagSlug}</Badge>
-                ))}
-                {entry.data.mlopsTags.length > 4 && (
-                  <Badge variant="gray">+{entry.data.mlopsTags.length - 4}</Badge>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
-
-    {totalEntries === 0 && (
-      <p class="text-center text-gray-500">No LLMOps or MLOps entries in this industry yet.</p>
-    )}
+    <TermHubEntryIndex
+      crossLinks={[
+        {
+          heading: "Common LLMOps tags",
+          viewAllHref: "/llmops-tags",
+          viewAllLabel: "View all",
+          badgeVariant: "blue",
+          items: commonLLMOpsTags.map((item) => ({
+            name: item.name,
+            slug: item.slug,
+            count: item.count,
+            href: `/llmops-tags/${item.slug}`,
+          })),
+        },
+        {
+          heading: "Common MLOps topics",
+          viewAllHref: "/mlops-tags",
+          viewAllLabel: "View all",
+          badgeVariant: "success",
+          items: commonMLOpsTags.map((item) => ({
+            name: item.name,
+            slug: item.slug,
+            count: item.count,
+            href: `/mlops-tags/${item.slug}`,
+          })),
+        },
+      ]}
+      sections={[
+        {
+          heading: "LLMOps entries",
+          cards: llmopsEntries.map((entry) => ({
+            title: entry.data.title,
+            href: `/llmops-database/${entry.data.slug}`,
+            headingLevel: 3 as const,
+            company: entry.data.company,
+            summary: entry.data.summary,
+            tags: entry.data.llmopsTags.slice(0, 4).map((tagSlug: string) => ({
+              label: llmopsTagMap[tagSlug] || tagSlug,
+              href: `/llmops-tags/${tagSlug}`,
+            })),
+            extraTagCount: Math.max(0, entry.data.llmopsTags.length - 4),
+            tagVariant: "blue" as const,
+          })),
+        },
+        {
+          heading: "MLOps entries",
+          cards: mlopsEntries.map((entry) => ({
+            title: entry.data.title,
+            href: `/mlops-database/${entry.data.slug}`,
+            headingLevel: 3 as const,
+            metaLine: [
+              entry.data.company,
+              ...(entry.data.platformName !== entry.data.company
+                ? [entry.data.platformName]
+                : []),
+              entry.data.contentType,
+            ],
+            summary: entry.data.summary,
+            tags: entry.data.mlopsTags.slice(0, 4).map((tagSlug: string) => ({
+              label: mlopsTagMap[tagSlug] || tagSlug,
+              href: `/mlops-tags/${tagSlug}`,
+            })),
+            extraTagCount: Math.max(0, entry.data.mlopsTags.length - 4),
+            tagVariant: "success" as const,
+          })),
+        },
+      ]}
+      emptyHeading="No LLMOps or MLOps entries in this industry yet."
+    />
   </div>
 </BaseLayout>

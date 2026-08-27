@@ -19,6 +19,7 @@ html { scroll-behavior: smooth; }
  *   - :root                 → Kitaru theme (warm orange primary, cream ground)
  *   - [data-app="kitaru"]   → same as :root (explicit override)
  *   - [data-app="zenml"]    → ZenML theme (purple primary, white ground — original brand)
+ *   - [data-app="zenml-next"] → 2026 rebrand scope (type roles + palette; /styleguide mounts it)
  *
  * BaseLayout.astro sets data-app="zenml" by default for the whole site.
  * Per-page overrides (e.g. /product/kitaru) set data-app="kitaru".
@@ -85,9 +86,22 @@ html { scroll-behavior: smooth; }
     sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
   --font-display: "DM Serif Display", Georgia, "Times New Roman", serif;
+  /* `--font-label` — UI accents: eyebrows, buttons, labels, tabs. Defaults to
+   * the mono stack; the 2026 rebrand scope re-points it to Nudica Mono. */
+  --font-label: var(--font-mono);
 
   /* Shape */
   --radius: 0.5rem;
+
+  /* Brand accent layer (tone system, #248). [data-app] scopes switch these
+   * and nothing else; the [data-tone] layer consumes them so a tone never
+   * names a colour. `-invert` is the accent on a dark band — no Kitaru dark
+   * marketing band exists yet to measure, so it holds the primary as a
+   * flagged placeholder until one ships. */
+  --brand-accent: var(--primary);
+  --brand-accent-soft: var(--accent);
+  --brand-accent-on: var(--primary-foreground);
+  --brand-accent-invert: var(--primary);
 }
 
 /* ─── 2. ZenML theme (original purple) ─────────────────────────────────────── */
@@ -119,7 +133,296 @@ html { scroll-behavior: smooth; }
   /* Typography — original ZenML font */
   --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
+
+  /* Brand accent layer (tone system, #248). `-invert` is the measured accent
+   * the existing dark bands already use for eyebrows/check glyphs
+   * (text-zenml-400), so tone adoption on those bands is pixel-identical. */
+  --brand-accent: var(--primary);
+  --brand-accent-soft: var(--accent);
+  --brand-accent-on: var(--primary-foreground);
+  --brand-accent-invert: var(--color-zenml-400);
 }
+
+/* ─── 2b. ZenML 2026 rebrand scope (in progress — issue #246) ───────────────
+ * Type roles + full color palette for the rebranded template system. First
+ * consumer: /styleguide (wrapper div); Phase 3 templates mount under it next.
+ * Components must reference the role and semantic tokens, never family names
+ * or raw hexes, so a substitution stays a token edit.
+ * Code blocks keep JetBrains Mono (--font-mono is deliberately not overridden). */
+[data-app="zenml-next"] {
+  /* Borna is a geometric sans-serif (display role ≠ serif classification) */
+  --font-display: "Borna", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --font-sans: "Rethink Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --font-label: "Nudica Mono", ui-monospace, monospace;
+
+  /* Display tracking */
+  /* Borna headlines take negative tracking, scaled by size: −2% at medium
+   * headline sizes, tightening to −4% at the largest display sizes. */
+  --tracking-heading: -0.02em;
+  --tracking-display: -0.04em;
+  /* Interior/prose headings (H2/H3) are ruled at −0.015em — a distinct rung,
+   * not a rounding of --tracking-heading (adjudicated with #248). */
+  --tracking-prose: -0.015em;
+
+  /* Rendering: match the site-wide body smoothing (so the scope is
+   * self-contained wherever it mounts), and refuse synthesized bold/italic —
+   * a weight or style we don't ship must render in a real cut, visibly,
+   * not as a browser-faked approximation of the brand faces. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis: none;
+
+  /* --- 2026 rebrand palette (issue #266) -----------------------------------
+   * Generated verbatim from the canonical brand token source — never edit a
+   * hex here by hand; regenerate from the source so the two cannot drift.
+   * Add new tokens under one of the labelled subsections below (the
+   * styleguide derives its group headings from those labels), never
+   * directly under this header.
+   * Roles: sage + cream carry surfaces; orange + blue are complementary
+   * accents only; purple + magenta are tertiary, sparing, never large
+   * surfaces or Kitaru-associated. Dark semantic set deferred to the tone work.
+   * CAUTION: the orange/blue/purple ramps below shadow same-named tokens in
+   * the site-wide @theme scale INSIDE this scope — a stock utility like
+   * `bg-orange-600` resolves to the rebrand value under [data-app="zenml-next"].
+   * Intended at cutover; until then, don't render old-scale components here. */
+
+  /* Semantic (light) */
+  --background: #FAF8F4;
+  --foreground: #413D37;
+  --card: #FFFEFC;
+  --card-foreground: #413D37;
+  --popover: #FCFAF6;
+  --popover-foreground: #413D37;
+  --primary: #5D7545;
+  --primary-foreground: #F5F7F4;
+  --secondary: #FCFAF6;
+  --secondary-foreground: #645D54;
+  --secondary-fill: #F1ECE3;
+  --muted: #EEE8DC;
+  --muted-foreground: #6E6055;
+  --accent: #EEE8DC;
+  --accent-foreground: #645D54;
+  --border: #E9E4DC;
+  --input: #E9E4DC;
+  --ring: #5D7545;
+  --destructive: #B5494F;
+  --destructive-foreground: #FEFCFA;
+  --brand-mark-bg: #F6F9F1;
+  --brand-mark-fg: #3C4C38;
+
+  /* Sage ramp */
+  --color-sage-50: #F6F9F1;
+  --color-sage-100: #EBF0D8;
+  --color-sage-200: #E3E8CD;
+  --color-sage-300: #DBE0C2;
+  --color-sage-400: #BECAA6;
+  --color-sage-500: #9AAD82;
+  --color-sage-600: #7A9268;
+  --color-sage-700: #63775E;
+  --color-sage-800: #3C4C38;
+  --color-sage-900: #151E19;
+
+  /* Cream ramp */
+  --color-cream-50: #F5F7F4;
+  --color-cream-100: #EEE8DC;
+  --color-cream-200: #E0CFB7;
+  --color-cream-300: #D5B595;
+  --color-cream-400: #C3A37C;
+  --color-cream-500: #AC947F;
+  --color-cream-600: #8C7D70;
+  --color-cream-700: #645D54;
+  --color-cream-800: #413D37;
+  --color-cream-900: #1C1E1A;
+
+  /* Olive ramp */
+  --color-olive-base: #9AAD82;
+  --color-olive-mid: #7A9268;
+  --color-olive-deep: #63775E;
+  --color-olive-dark: #3C4C38;
+  --color-olive-darkest: #151E19;
+
+  /* Orange ramp */
+  --color-orange-50: #FCF7F2;
+  --color-orange-100: #FBE8DB;
+  --color-orange-200: #FAD3B8;
+  --color-orange-300: #F7B382;
+  --color-orange-400: #F3934F;
+  --color-orange-500: #EB7119;
+  --color-orange-600: #B65916;
+  --color-orange-700: #844315;
+  --color-orange-800: #5A2F11;
+  --color-orange-900: #361E0D;
+
+  /* Blue ramp */
+  --color-blue-50: #F5F9FA;
+  --color-blue-100: #E1F1F4;
+  --color-blue-200: #C4E7ED;
+  --color-blue-300: #9FD9E5;
+  --color-blue-400: #81CBD9;
+  --color-blue-500: #47BAD1;
+  --color-blue-600: #239FB8;
+  --color-blue-700: #157A8E;
+  --color-blue-800: #0D5563;
+  --color-blue-900: #093139;
+
+  /* Purple ramp */
+  --color-purple-50: #F5F0FC;
+  --color-purple-100: #EDE7F5;
+  --color-purple-200: #D9CEEE;
+  --color-purple-300: #C2B0E4;
+  --color-purple-400: #A994D4;
+  --color-purple-500: #9074C3;
+  --color-purple-600: #7255AE;
+  --color-purple-700: #573E92;
+  --color-purple-800: #3D2870;
+  --color-purple-900: #2B1A4A;
+
+  /* Magenta ramp */
+  --color-magenta-50: #FBF4F8;
+  --color-magenta-100: #F6DFEE;
+  --color-magenta-200: #F1C0E1;
+  --color-magenta-300: #EB94CE;
+  --color-magenta-400: #E160B6;
+  --color-magenta-500: #D5309E;
+  --color-magenta-600: #A5277B;
+  --color-magenta-700: #79205B;
+  --color-magenta-800: #52193F;
+  --color-magenta-900: #311126;
+
+  /* Section tone bands */
+  --tone-light-canvas: #F6F9F1;
+  --tone-sage-tint-band: #DBE0C2;
+  --tone-sage-deep-band: #BECAA6;
+  --tone-dark-band: #413D37;
+
+  /* Accent aliases */
+  /* Blue pair as ratified — but it MEASURES 4.30:1, just under the 4.5 floor
+   * (the styleguide's contrast table flags it FAIL). Known open item; do not
+   * ship it as body-size text until the value is re-adjudicated. */
+  --color-accent-blue-tint: var(--color-blue-100);
+  --color-accent-blue-text: var(--color-blue-700);
+  /* Kitaru orange text-on-light companion (not a ramp stop): AA on both the
+   * cream ground and the orange tint band. */
+  --color-accent-orange-text: #995000;
+
+  /* Type scale (adjudicated with #248 — replaces the styleguide's provisional
+   * Tailwind steps). Fluid rungs interpolate between the 375 artboard and the
+   * 1620px box cap (the container ruling: 1524px content + fluid gutter), so
+   * type stops growing exactly where the layout does. Sizes below the section
+   * headline are fixed across breakpoints. Tracking bindings: display →
+   * --tracking-display, headline + prose H1 → --tracking-heading, prose
+   * H2/H3 → --tracking-prose, everything smaller → none. */
+  --text-display: clamp(40px, 27.95px + 3.21vw, 80px); /* hero; Borna */
+  --leading-display: 1.05;
+  --text-headline: clamp(32px, 28.39px + 0.96vw, 44px); /* section; Borna */
+  --leading-headline: 1.15;
+  --text-subhead: 28px; /* Borna */
+  --leading-subhead: 1.4;
+  --text-card-title: 24px; /* Borna */
+  --leading-card-title: 1.35;
+  --text-large-body: 18px; /* Rethink Sans */
+  --leading-large-body: 1.55;
+  --text-body: 16px; /* Rethink Sans */
+  --leading-body: 1.6;
+  --text-caption: 14px; /* Rethink Sans */
+  --leading-caption: 1.45;
+  --text-eyebrow: 13px; /* Nudica Mono (--font-label), uppercase */
+  --leading-eyebrow: 1.3;
+  --text-prose-h1: 36px; /* interior pages; Borna */
+  --leading-prose-h1: 1.15;
+  --text-prose-h2: 32px;
+  --leading-prose-h2: 42px; /* ruled as px pairs, kept exact */
+  --text-prose-h3: 24px;
+  --leading-prose-h3: 34px;
+
+  /* Tone intermediaries (#248). The [data-tone] layer reads these through
+   * fallbacks — var(--tone-canvas, var(--background)) — so this scope routes
+   * tones to the rebrand grounds while the current site falls back to its
+   * live semantic tokens with zero pixel change. `-up`, `-paper-muted` and
+   * `-charcoal-line` are flagged proposals with no consumer yet. */
+  --tone-canvas: var(--tone-light-canvas);
+  --tone-card-surface: var(--card);
+  --tone-ink: var(--foreground);
+  --tone-ink-muted: var(--muted-foreground);
+  --tone-hairline: var(--border);
+  --tone-tint: var(--tone-sage-tint-band);
+  --tone-tint-deep: var(--tone-sage-deep-band);
+  --tone-charcoal: var(--tone-dark-band);
+  --tone-charcoal-up: var(--color-cream-700);
+  --tone-paper: var(--color-cream-50);
+  --tone-paper-muted: var(--color-cream-100);
+  --tone-charcoal-line: var(--color-cream-700);
+
+  /* Brand accent layer (tone system, #248). Inverted-band eyebrow steps to
+   * the sage 400 stop per the brand ground rules; flagged until a built
+   * rebrand dark band verifies it. */
+  --brand-accent: var(--primary);
+  --brand-accent-soft: var(--color-sage-100);
+  --brand-accent-on: var(--primary-foreground);
+  --brand-accent-invert: var(--color-sage-400);
+}
+
+/* ─── 2c. Section tone layer (#248) ─────────────────────────────────────────
+ * One ground-band modifier for every section: data-tone="default|muted|
+ * inverted|brand" on the section root. Two-layer contract: the brand scopes
+ * above own the colour decisions (--brand-accent* and the --tone-*
+ * intermediaries); these blocks only route vars — a tone never names a
+ * colour, so no hex, oklch() or brand-family token may appear here (the
+ * fallbacks reference the live semantic set, which each brand scope owns).
+ * Under the current site the fallbacks resolve to the exact values the
+ * migrated dark bands already use (gray-900 ≡ --foreground, white ≡
+ * --background, zenml-400 ≡ --brand-accent-invert), so adoption is
+ * pixel-identical. "brand" is a bounded element, never a full-bleed band,
+ * capped at one per section. */
+[data-tone="default"] {
+  --section-surface: var(--tone-canvas, var(--background));
+  --section-surface-raised: var(--tone-card-surface, var(--card));
+  --section-text: var(--tone-ink, var(--foreground));
+  --section-text-muted: var(--tone-ink-muted, var(--muted-foreground));
+  --section-border: var(--tone-hairline, var(--border));
+  --section-accent: var(--brand-accent);
+  --section-accent-on: var(--brand-accent-on);
+}
+[data-tone="muted"] {
+  --section-surface: var(--tone-tint, var(--muted));
+  --section-surface-raised: var(--tone-tint-deep, var(--secondary));
+  --section-text: var(--tone-ink, var(--foreground));
+  --section-text-muted: var(--tone-ink-muted, var(--muted-foreground));
+  --section-border: var(--tone-hairline, var(--border));
+  --section-accent: var(--brand-accent);
+  --section-accent-on: var(--brand-accent-on);
+}
+[data-tone="inverted"] {
+  --section-surface: var(--tone-charcoal, var(--foreground));
+  /* raised/muted/border on a dark band have no migrated consumer yet; the
+   * fallbacks are structural placeholders, flagged in #248. The three
+   * existing muted-gray literals (gray-200/300/400) deliberately stay
+   * un-migrated this wave — one token cannot match all three. */
+  --section-surface-raised: var(--tone-charcoal-up, var(--foreground));
+  --section-text: var(--tone-paper, var(--background));
+  --section-text-muted: var(--tone-paper-muted, var(--muted-foreground));
+  --section-border: var(--tone-charcoal-line, var(--border));
+  --section-accent: var(--brand-accent-invert);
+  --section-accent-on: var(--tone-ink, var(--foreground));
+}
+[data-tone="brand"] {
+  --section-surface: var(--brand-accent-soft);
+  --section-surface-raised: var(--tone-card-surface, var(--card));
+  --section-text: var(--tone-ink, var(--foreground));
+  --section-text-muted: var(--tone-ink-muted, var(--muted-foreground));
+  --section-border: var(--brand-accent);
+  --section-accent: var(--brand-accent);
+  --section-accent-on: var(--brand-accent-on);
+}
+
+/* Deliberately NO `section[data-tone] { background: ... }` base rule: the
+ * `background` shorthand at (0,1,1) specificity would reset the
+ * background-size/position utilities (.bg-cover/.bg-center) of any toned
+ * band that layers an image — verified live on FeaturesHubCTA. Tone
+ * consumers set their own `bg-[var(--section-surface)]` /
+ * `text-[var(--section-text)]` utilities instead. */
 
 /* ─── 3. ZenML brand scale (original purple, theme-independent) ─────────────
  * Used by components that need an explicit shade from the ZenML brand ladder
@@ -184,6 +487,7 @@ html { scroll-behavior: smooth; }
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
   --font-display: var(--font-display);
+  --font-label: var(--font-label);
 }
 
 @theme inline {
@@ -307,12 +611,20 @@ html { scroll-behavior: smooth; }
   --spacing-space-xs: 1rem; /* 16px */
   --spacing-space-sm: 1.5rem; /* 24px */
   --spacing-space-md: 2rem; /* 32px */
+  --spacing-space-mlg: 2.5rem; /* 40px */
   --spacing-space-lg: 3rem; /* 48px */
   --spacing-space-xl: 4rem; /* 64px */
   --spacing-space-xxl: 5rem; /* 80px */
 
   /* === Container Width === */
-  --container-lg: 1440px;
+  /* --container-chrome (not --container-lg): Tailwind v4 generates
+     max-w-* utilities from every --container-* token, so --container-lg
+     silently redefined the stock max-w-lg utility (32rem -> 1440px).
+     --container-chrome yields max-w-chrome instead, which collides with
+     nothing, and names its actual role: the nav/footer/blog chrome width. */
+  --container-chrome: 1440px;
+  --container-content: 1524px; /* centered-section content cap; yields max-w-content */
+  --spacing-gutter: clamp(16px, 3vw, 48px); /* section lateral gutter: 16px on small screens, fluid, 48px from ~1600px; yields px-gutter etc. */
 
   /* === Chrome === */
   /* Sticky navbar height — consumed by Navigation.astro (h-), the blog
@@ -496,6 +808,80 @@ html { scroll-behavior: smooth; }
     U+A720-A7FF;
 }
 
+/* 2026 rebrand typefaces (issue #253). Consumed only inside the
+ * `[data-app="zenml-next"]` scope above — today that is /styleguide alone;
+ * every other page still downloads zero of these bytes. Foundry-supplied
+ * woff2 files served as-is (full character set, hence no unicode-range).
+ * No preloads yet on purpose — add them with the first MARKETING surface
+ * that mounts the scope, not for the unlisted reference page. */
+
+/* Borna — display face for headlines and section headers */
+@font-face {
+  font-family: "Borna";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/borna-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Borna";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/borna-medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Borna";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/borna-semibold.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Borna";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/borna-bold.woff2") format("woff2");
+}
+
+/* Rethink Sans — variable body face, single file per style covers 400–800 */
+@font-face {
+  font-family: "Rethink Sans";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/rethink-sans-variable.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Rethink Sans";
+  font-style: italic;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/rethink-sans-italic-variable.woff2") format("woff2");
+}
+
+/* Nudica Mono — backs --font-label; see the token declaration in :root for the role */
+@font-face {
+  font-family: "Nudica Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/nudica-mono-regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Nudica Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/nudica-mono-medium.woff2") format("woff2");
+}
+
 /* ============================================================================
  * Base typography & body styles
  * ============================================================================ */
@@ -506,6 +892,12 @@ body {
   color: var(--color-gray-900);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Full-bleed sections break out with `width: 100vw`, which includes the
+   * scrollbar gutter on desktop platforms with a classic scrollbar. This is
+   * the page-root guard DESIGN.md's responsive contract names: clip (not
+   * hidden — sticky descendants keep working) so that overshoot never
+   * becomes page-level horizontal scroll. */
+  overflow-x: clip;
 }
 
 /* ============================================================================

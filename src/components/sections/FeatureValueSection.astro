@@ -1,4 +1,5 @@
 ---
+import Split from "../system/layout/Split.astro";
 /**
  * FeatureValueSection — a two-column section with text + image.
  *
@@ -8,6 +9,8 @@
  * Matches Webflow's uui-layout08 section: 48px heading, circle-check
  * bullets in ZenML purple, 4rem grid gap, 4rem vertical padding.
  */
+import SectionIntro from "../system/SectionIntro.astro";
+
 interface Props {
   eyebrow?: string;
   title: string;
@@ -34,18 +37,23 @@ const isImageLeft = imageSide === "left";
 
 <section class="bg-white py-16">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class:list={[
-      "grid items-center gap-10 lg:grid-cols-2 lg:gap-16",
-      isImageLeft && "lg:[direction:rtl] lg:*:[direction:ltr]",
-    ]}>
-      <div class="max-w-[80%]" data-reveal>
-        {eyebrow && (
-          <p class="mb-3 text-sm font-semibold uppercase tracking-wider text-zenml-500">{eyebrow}</p>
-        )}
-        <h2 class="text-3xl font-semibold text-gray-900 leading-tight sm:text-[2.75rem] lg:text-[3rem]">{title}</h2>
-        {body && (
-          <p class="mt-4 text-lg text-gray-600 leading-relaxed">{body}</p>
-        )}
+    <Split
+      mediaSide={isImageLeft ? "left" : "right"}
+      space={{ base: "mlg", lg: "xl" }}
+    >
+      {/* lg:ml-auto: with media on the left, the width-capped prose box
+          right-aligns in its lane so the two lanes stay mirror-symmetric. */}
+      <div class:list={["max-w-[80%]", isImageLeft && "lg:ml-auto"]} data-reveal>
+        <SectionIntro
+          eyebrow={eyebrow}
+          heading={title}
+          description={body}
+          classOverrides={{
+            heading:
+              "text-3xl font-semibold text-gray-900 leading-tight sm:text-[2.75rem] lg:text-[3rem]",
+            headingSpacing: eyebrow ? "mt-3" : "",
+          }}
+        />
         {bullets && bullets.length > 0 && (
           <ul class="mt-8 space-y-5">
             {bullets.map((item) => (
@@ -66,7 +74,7 @@ const isImageLeft = imageSide === "left";
         )}
       </div>
       {image?.url && (
-        <div class="overflow-hidden rounded-lg" data-reveal>
+        <div slot="media" class="overflow-hidden rounded-lg" data-reveal>
           <img
             src={image.url}
             alt={image.alt || title}
@@ -75,6 +83,6 @@ const isImageLeft = imageSide === "left";
           />
         </div>
       )}
-    </div>
+    </Split>
   </div>
 </section>

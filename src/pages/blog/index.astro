@@ -1,66 +1,50 @@
 ---
 /**
- * Blog listing page (page 1).
+ * Blog listing page.
  *
- * Layout: CategoryBar → hero → 3-col grid → pagination → tag cloud.
- * Page 2+ handled by blog/page/[page].astro.
+ * Migrated onto the shared FilterIndex island (#249), matching the
+ * LLMOps/MLOps database pages: a facet rail (Category single-select, Tags
+ * multi-select) + search box + client-side pagination. The island gets the
+ * search-index entries as props (not via fetch) so the first page of post
+ * cards is real server-rendered HTML — /blog is a high-volume SEO surface
+ * and must keep crawlable post links when JavaScript fails (guarded by
+ * check-dist-smoke.ts). The featured-post hero and the static
+ * /blog/page/N pagination route are retired (BlogHero and the shared
+ * Pagination component went with them) — see CategoryBar.astro's doc
+ * comment and public/_redirects for the ?page=N-preserving 301s.
+ *
+ * Only main-feed posts (getMainFeedPosts — excludes drafts and the
+ * "discovery" tag corpus) ever reach the rail's facets or results.
+ *
+ * Deep links (?page=N, ?category=..., ?q=...) are honored at hydration:
+ * this page is statically prerendered, so the served HTML is always page 1
+ * unfiltered and the island snaps to the URL state on mount. That is the
+ * same contract as the LLMOps/MLOps database pages' bookmarked filter
+ * URLs — a request-time render would need prerender=false, which /blog
+ * deliberately is not.
  */
-import { getEntry } from "astro:content";
-import BlogCard from "../../components/blog/BlogCard.astro";
-import BlogHero from "../../components/blog/BlogHero.astro";
-import CategoryBar from "../../components/blog/CategoryBar.astro";
-import TagCloud from "../../components/blog/TagCloud.astro";
-import Pagination from "../../components/Pagination.astro";
+import BlogIndex from "../../components/islands/filter-index/BlogIndex";
+import PageHeader from "../../components/templates/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
-  blogPageHref,
+  buildBlogSearchIndex,
   getCategoryCounts,
   getMainFeedPosts,
   getTagCounts,
-  PAGE_1_GRID_COUNT,
   PAGE_SIZE,
-  resolveAuthor,
 } from "../../lib/blog";
 
-const allPosts = await getMainFeedPosts();
+const mainFeedPosts = await getMainFeedPosts();
+const searchEntries = await buildBlogSearchIndex(mainFeedPosts);
 
-// Featured post: prefer a post with `featured: true`, fall back to newest
-const featuredPost = allPosts.find((p) => p.data.featured) ?? allPosts[0];
-const remainingPosts = allPosts.filter((p) => p !== featuredPost);
-
-// Grid posts — fill rest of page 1 (multiple of 3 for clean 3-col grid)
-const gridPosts = remainingPosts.slice(0, PAGE_1_GRID_COUNT);
-const totalPages =
-  1 +
-  Math.ceil(Math.max(remainingPosts.length - PAGE_1_GRID_COUNT, 0) / PAGE_SIZE);
-
-// Taxonomy data
-const categories = await getCategoryCounts(allPosts);
-const popularTags = await getTagCounts(allPosts);
-
-// Resolve featured post metadata
-const featuredCategory = featuredPost?.data.category
-  ? await getEntry("categories", featuredPost.data.category)
-  : undefined;
-const featuredAuthor = await resolveAuthor(featuredPost?.data.author);
-
-// Resolve metadata for grid posts
-const authorMap = new Map<string, Awaited<ReturnType<typeof resolveAuthor>>>();
-const categoryMap = new Map<string, { name: string; slug: string }>();
-for (const post of gridPosts) {
-  if (post.data.author && !authorMap.has(post.data.author)) {
-    const a = await resolveAuthor(post.data.author);
-    if (a) authorMap.set(post.data.author, a);
-  }
-  if (post.data.category && !categoryMap.has(post.data.category)) {
-    const cat = await getEntry("categories", post.data.category);
-    if (cat)
-      categoryMap.set(post.data.category, {
-        name: cat.data.name,
-        slug: cat.data.slug,
-      });
-  }
-}
+// Facet option universes: only categories/tags with at least one main-feed
+// post — a term used exclusively by the discovery corpus never appears here.
+const categoryOptions = (await getCategoryCounts(mainFeedPosts))
+  .map(({ slug, name }) => ({ slug, name }))
+  .sort((a, b) => a.name.localeCompare(b.name));
+const tagOptions = (await getTagCounts(mainFeedPosts))
+  .map(({ slug, name }) => ({ slug, name }))
+  .sort((a, b) => a.name.localeCompare(b.name));
 ---
 
 <BaseLayout
@@ -68,61 +52,17 @@ for (const post of gridPosts) {
   description="Insights on MLOps, LLMOps, and production machine learning from the ZenML team."
   surface="ml"
 >
-  {/* Section header: sticky CategoryBar at top */}
-  <CategoryBar categories={categories} />
-
-  {/* Editorial Hero */}
-  {featuredPost && (
-    <BlogHero
-      href={`/blog/${featuredPost.data.slug}`}
-      title={featuredPost.data.title}
-      excerpt={featuredPost.data.seo?.description}
-      image={featuredPost.data.mainImage}
-      categoryName={featuredCategory?.data.name}
-      categorySlug={featuredCategory?.data.slug}
-      publishedDate={featuredPost.data.date}
-      readingTime={featuredPost.data.readingTime}
-      authorName={featuredAuthor?.name}
-      authorSlug={featuredAuthor?.slug}
-      authorAvatar={featuredAuthor?.avatar}
+  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <PageHeader
+      class="mb-10"
+      heading="Blog"
+      description="Insights on MLOps, LLMOps, and production machine learning from the ZenML team."
+      classOverrides={{
+        heading: "text-4xl font-bold tracking-tight text-gray-900",
+        description: "max-w-2xl text-lg text-gray-600",
+      }}
     />
-  )}
 
-  <div class="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
-    {/* Post Grid */}
-    {gridPosts.length > 0 && (
-      <div class="grid gap-8 pt-10 pb-2 md:grid-cols-2 xl:grid-cols-3">
-        {gridPosts.map((post) => {
-          const author = authorMap.get(post.data.author || "");
-          const category = categoryMap.get(post.data.category || "");
-          return (
-            <BlogCard
-              href={`/blog/${post.data.slug}`}
-              title={post.data.title}
-              excerpt={post.data.seo?.description}
-              image={post.data.mainImage}
-              authorName={author?.name}
-              authorSlug={author?.slug}
-              authorAvatar={author?.avatar}
-              readingTime={post.data.readingTime}
-              publishedDate={post.data.date}
-              categoryName={category?.name}
-              categorySlug={category?.slug}
-            />
-          );
-        })}
-      </div>
-    )}
-
-    {/* Pagination */}
-    <Pagination
-      currentPage={1}
-      totalPages={totalPages}
-      getHref={blogPageHref}
-      ariaLabel="Blog pagination"
-    />
+    <BlogIndex client:load items={searchEntries} categories={categoryOptions} tags={tagOptions} pageSize={PAGE_SIZE} />
   </div>
-
-  {/* Footer Tag Cloud */}
-  <TagCloud tags={popularTags} />
 </BaseLayout>

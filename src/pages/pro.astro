@@ -7,6 +7,8 @@ import ProFeaturedTestimonial09 from "../components/sections/ProFeaturedTestimon
 import ProTestimonial02 from "../components/sections/ProTestimonial02.astro";
 import ProTestimonial15Section from "../components/sections/ProTestimonial15Section.astro";
 import VsCta02 from "../components/sections/VsCta02.astro";
+import SectionIntro from "../components/system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../components/system/sectionIntro.shared";
 /**
  * ZenML Pro marketing page.
  *
@@ -121,15 +123,17 @@ import {
     <section class="bg-gray-900 py-16 sm:py-20">
       <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <div data-reveal>
-          <p class="text-sm font-semibold uppercase tracking-wider text-zenml-400">
-            {PRO_ONBOARDING.eyebrow}
-          </p>
-          <h2 class="mt-2 text-2xl font-bold text-white sm:text-3xl">
-            {PRO_ONBOARDING.headline}
-          </h2>
-          <p class="mt-3 text-lg text-gray-300 leading-relaxed">
-            {PRO_ONBOARDING.body}
-          </p>
+          <SectionIntro
+            eyebrow={PRO_ONBOARDING.eyebrow}
+            heading={PRO_ONBOARDING.headline}
+            description={PRO_ONBOARDING.body}
+            classOverrides={{
+              eyebrow: SECTION_INTRO_PRESETS.darkBandEyebrow,
+              heading: "text-2xl font-bold text-white sm:text-3xl",
+              description: "text-lg text-gray-300 leading-relaxed",
+              descriptionSpacing: "mt-3",
+            }}
+          />
         </div>
         <div class="mt-10 grid gap-6 sm:grid-cols-3">
           {PRO_ONBOARDING.items.map((item) => (
@@ -167,13 +171,16 @@ import {
     {/* Compliance: "Your VPC, your data" */}
     <section class="bg-white py-16 sm:py-20">
       <div class="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8" data-reveal>
-        <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
-          {PRO_COMPLIANCE.eyebrow}
-        </p>
-        <h2 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
-          {PRO_COMPLIANCE.headline}
-        </h2>
-        <p class="mt-3 text-lg text-gray-600">{PRO_COMPLIANCE.body}</p>
+        <SectionIntro
+          eyebrow={PRO_COMPLIANCE.eyebrow}
+          heading={PRO_COMPLIANCE.headline}
+          description={PRO_COMPLIANCE.body}
+          classOverrides={{
+            heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
+            description: "text-lg text-gray-600",
+            descriptionSpacing: "mt-3",
+          }}
+        />
         <div class="mt-8">
           <picture>
             <source media="(max-width: 767px)" srcset={PRO_COMPLIANCE.image.mobile.url} />
@@ -198,15 +205,20 @@ import {
                 />
               ))}
             </div>
-            <div class="text-left">
-              <p class="text-xs font-semibold uppercase tracking-wider text-zenml-500">
-                {PRO_COMPLIANCE.bannerEyebrow}
-              </p>
-              <h3 class="mt-1 text-lg font-semibold text-gray-900">
-                {PRO_COMPLIANCE.bannerHeadline}
-              </h3>
-              <p class="mt-1 text-sm text-gray-600">{PRO_COMPLIANCE.bannerBody}</p>
-            </div>
+            <SectionIntro
+              eyebrow={PRO_COMPLIANCE.bannerEyebrow}
+              heading={PRO_COMPLIANCE.bannerHeadline}
+              headingLevel={3}
+              description={PRO_COMPLIANCE.bannerBody}
+              classOverrides={{
+                eyebrow: SECTION_INTRO_PRESETS.cardEyebrow,
+                heading: "text-lg font-semibold text-gray-900",
+                headingSpacing: "mt-1",
+                description: "text-sm text-gray-600",
+                descriptionSpacing: "mt-1",
+                wrap: "text-left",
+              }}
+            />
           </div>
         </div>
       </div>
@@ -216,13 +228,15 @@ import {
     <section class="bg-[#f5f8fd] py-16 sm:py-20">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="max-w-3xl" data-reveal>
-          <p class="text-sm font-semibold uppercase tracking-wider text-zenml-500">
-            {PRO_OSS_GRID.eyebrow}
-          </p>
-          <h2 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
-            {PRO_OSS_GRID.headline}
-          </h2>
-          <p class="mt-3 text-lg text-gray-600 leading-relaxed">{PRO_OSS_GRID.body}</p>
+          <SectionIntro
+            eyebrow={PRO_OSS_GRID.eyebrow}
+            heading={PRO_OSS_GRID.headline}
+            description={PRO_OSS_GRID.body}
+            classOverrides={{
+              heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
+              descriptionSpacing: "mt-3",
+            }}
+          />
         </div>
         <div class="mt-10 grid items-center gap-10 lg:grid-cols-2">
           <div class="grid gap-6 sm:grid-cols-2">

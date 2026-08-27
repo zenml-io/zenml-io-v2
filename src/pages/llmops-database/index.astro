@@ -9,8 +9,9 @@
  * Route: /llmops-database
  */
 import { getCollection } from "astro:content";
-import LLMOpsFilter from "../../components/islands/LLMOpsFilter";
+import LlmopsIndex from "../../components/islands/filter-index/LlmopsIndex";
 import BrevoNewsletterForm from "../../components/sections/BrevoNewsletterForm.astro";
+import PageHeader from "../../components/templates/PageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
 import { getNonDraftLlmopsDatabaseCount } from "../../lib/llmops";
@@ -34,16 +35,18 @@ const entryCount = await getNonDraftLlmopsDatabaseCount();
   surface="ml"
 >
   <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-10">
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900">LLMOps Database</h1>
-      <p class="mt-4 max-w-2xl text-lg text-gray-600">
-        Explore {entryCount} real-world LLMOps use cases, tools, and implementations.
-        Filter by technology, industry, or search for specific topics.
-      </p>
-    </header>
+    <PageHeader
+      class="mb-10"
+      heading="LLMOps Database"
+      description={`Explore ${entryCount} real-world LLMOps use cases, tools, and implementations. Filter by technology, industry, or search for specific topics.`}
+      classOverrides={{
+        heading: "text-4xl font-bold tracking-tight text-gray-900",
+        description: "max-w-2xl text-lg text-gray-600",
+      }}
+    />
 
     {/* Interactive filter island — hydrates immediately */}
-    <LLMOpsFilter
+    <LlmopsIndex
       client:load
       tags={allTags}
       industries={allIndustries}

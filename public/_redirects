@@ -7,6 +7,12 @@
 # ── Sitemap compatibility (Webflow → Astro) ───────────────────────
 /sitemap.xml /sitemap-index.xml 301
 
+# ── Conventional slugs agents and humans guess (agent-readiness) ──
+/about /company 301
+/about/ /company 301
+/privacy /privacy-policy 301
+/privacy/ /privacy-policy 301
+
 # ── Internal redirects (from Webflow) ──────────────────────────────
 /open-source-vs-managed /open-source-vs-pro 301
 /open-source-vs-managed/ /open-source-vs-pro 301
@@ -152,3 +158,71 @@
 # ── /get-started reverted from ML/Agent chooser to ZenML onboarding ──
 /get-started/zenml /get-started 301
 /get-started/zenml/ /get-started 301
+
+# ── Zero-entry term pages removed (#249 term-hub) ──────────────────
+/tags/covid /tags 301
+/tags/covid/ /tags 301
+/tags/tensorflow /tags 301
+/tags/tensorflow/ /tags 301
+/tags/hub /tags 301
+/tags/hub/ /tags 301
+/category/sales-blog /category 301
+/category/sales-blog/ /category 301
+/author/dickson-neoh /author 301
+/author/dickson-neoh/ /author 301
+/author/dickson-neoh-tze-how /author 301
+/author/dickson-neoh-tze-how/ /author 301
+/author/james-w-browne /author 301
+/author/james-w-browne/ /author 301
+/author/andrew-hinh-and-aleks-hiidenhovi /author 301
+/author/andrew-hinh-and-aleks-hiidenhovi/ /author 301
+/integration-type/e2e-platform /integration-type 301
+/integration-type/e2e-platform/ /integration-type 301
+/integration-type/secrets-manager /integration-type 301
+/integration-type/secrets-manager/ /integration-type 301
+/integration-type/other /integration-type 301
+/integration-type/other/ /integration-type 301
+/llmops-tags/bentoml /llmops-tags 301
+/llmops-tags/bentoml/ /llmops-tags 301
+/llmops-tags/zenml /llmops-tags 301
+/llmops-tags/zenml/ /llmops-tags 301
+/llmops-tags/haystack /llmops-tags 301
+/llmops-tags/haystack/ /llmops-tags 301
+/industry-tags/monitoring-observability /industry-tags 301
+/industry-tags/monitoring-observability/ /industry-tags 301
+
+# ── Blog pagination retired (#249) — client-side pagination replaces it; ?page=N keeps saved links on their page ──
+/blog/page/2 /blog?page=2 301
+/blog/page/2/ /blog?page=2 301
+/blog/page/3 /blog?page=3 301
+/blog/page/3/ /blog?page=3 301
+/blog/page/4 /blog?page=4 301
+/blog/page/4/ /blog?page=4 301
+/blog/page/5 /blog?page=5 301
+/blog/page/5/ /blog?page=5 301
+/blog/page/6 /blog?page=6 301
+/blog/page/6/ /blog?page=6 301
+/blog/page/7 /blog?page=7 301
+/blog/page/7/ /blog?page=7 301
+/blog/page/8 /blog?page=8 301
+/blog/page/8/ /blog?page=8 301
+/blog/page/9 /blog?page=9 301
+/blog/page/9/ /blog?page=9 301
+/blog/page/10 /blog?page=10 301
+/blog/page/10/ /blog?page=10 301
+/blog/page/11 /blog?page=11 301
+/blog/page/11/ /blog?page=11 301
+/blog/page/12 /blog?page=12 301
+/blog/page/12/ /blog?page=12 301
+/blog/page/13 /blog?page=13 301
+/blog/page/13/ /blog?page=13 301
+/blog/page/14 /blog?page=14 301
+/blog/page/14/ /blog?page=14 301
+/blog/page/15 /blog?page=15 301
+/blog/page/15/ /blog?page=15 301
+/blog/page/16 /blog?page=16 301
+/blog/page/16/ /blog?page=16 301
+/blog/page/17 /blog?page=17 301
+/blog/page/17/ /blog?page=17 301
+/blog/page/18 /blog?page=18 301
+/blog/page/18/ /blog?page=18 301

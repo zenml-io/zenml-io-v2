@@ -1,0 +1,199 @@
+---
+/**
+ * SpecTable — a sectioned comparison table with check/cross cells (issue #249).
+ *
+ * Owns: the table itself (header row, grouped section rows, boolean/text/
+ * "coming soon" cell rendering, and an optional trailing CTA row). Owns no
+ * page-level heading chrome beyond the optional `heading`/`subheading` pair
+ * it was extracted with.
+ *
+ * Responsive strategy is `scroll`: the table scrolls horizontally inside
+ * its own bordered container so the page body never scrolls sideways. With
+ * `stickyFirstColumn`, the first column (`rowHeaderLabel` plus every row's
+ * `label`) stays pinned via `position: sticky` while the value columns
+ * scroll underneath it — every pinned cell then carries the same background
+ * as its row so scrolled content doesn't show through the seam. The pin is
+ * opt-in: the live pricing table predates it and keeps its transparent
+ * label cells.
+ *
+ * A cell value of `true`/`false` renders a check/cross icon; the literal
+ * string `"COMING SOON"` renders the pill used for a feature that isn't
+ * live yet; any other string renders as plain text.
+ */
+import Button from "../Button.astro";
+
+export type SpecTableCellValue = boolean | string;
+
+export interface SpecTableRow {
+  label: string;
+  href?: string;
+  values: readonly SpecTableCellValue[];
+}
+
+export interface SpecTableSection {
+  heading?: string;
+  rows: readonly SpecTableRow[];
+}
+
+export interface SpecTableAction {
+  label: string;
+  href: string;
+  variant?: "primary" | "secondary";
+  analytics?: string;
+}
+
+interface Props {
+  heading?: string;
+  subheading?: string;
+  rowHeaderLabel?: string;
+  columns: readonly string[];
+  sections: readonly SpecTableSection[];
+  actions?: readonly SpecTableAction[];
+  /**
+   * Pin the first column while the value columns scroll (the drawn mobile
+   * strategy). Adds opaque per-row backgrounds to the pinned cells — see
+   * the note on `stickyCol` below for why the two are one unit and why the
+   * default is off.
+   */
+  stickyFirstColumn?: boolean;
+  class?: string;
+}
+
+const {
+  heading,
+  subheading,
+  rowHeaderLabel = "Plans",
+  columns,
+  sections,
+  actions,
+  class: className,
+  stickyFirstColumn = false,
+} = Astro.props;
+
+const colCount = columns.length;
+// Sticky pin + the opaque cell backgrounds it needs are one unit: a pinned
+// cell without its row's background lets scrolled content show through the
+// seam, and an explicit background on an unpinned cell shifts the blend the
+// live transparent cells produce over the page tint. Off by default — the
+// live pricing table predates the pin and stays pixel-parity.
+const stickyCol = stickyFirstColumn ? "sticky left-0" : "";
+---
+
+<div class:list={[className]}>
+  {
+    (heading || subheading) && (
+      <div class="mb-8 text-center">
+        {heading && (
+          <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">{heading}</h2>
+        )}
+        {subheading && <p class="mt-2 text-gray-600">{subheading}</p>}
+      </div>
+    )
+  }
+  <div class="overflow-x-auto rounded-md border border-gray-200">
+    <table class="w-full min-w-[600px] border-collapse text-sm">
+      <thead>
+        <tr class="border-b border-gray-200">
+          <th class:list={[stickyCol, stickyFirstColumn && "bg-white", "px-4 py-3 text-left font-medium text-gray-500"]}>
+            {rowHeaderLabel}
+          </th>
+          {columns.map((column) => (
+            <th class="px-4 py-3 text-center font-bold text-gray-900">{column}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {sections.map((section) => (
+          <>
+            {section.heading && (
+              <tr>
+                <td
+                  colspan={colCount + 1}
+                  class="bg-gray-50 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gray-500"
+                >
+                  {section.heading}
+                </td>
+              </tr>
+            )}
+            {section.rows.map((row, rowIdx) => {
+              const isOddRow = rowIdx % 2 === 1;
+              const rowBg = stickyFirstColumn
+                ? isOddRow
+                  ? "bg-gray-50/50"
+                  : "bg-white"
+                : "";
+              return (
+                <tr class:list={["border-b border-gray-200", isOddRow && "bg-gray-50/50"]}>
+                  <td class:list={[stickyCol, rowBg, "px-4 py-3 font-medium text-gray-900"]}>
+                    {row.href ? (
+                      <a
+                        href={row.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-zenml-500 hover:text-zenml-600"
+                      >
+                        {row.label} &#8599;
+                      </a>
+                    ) : (
+                      row.label
+                    )}
+                  </td>
+                  {row.values.map((val) => (
+                    <td class="px-4 py-3 text-center">
+                      {val === true ? (
+                        <svg
+                          class="mx-auto h-5 w-5 text-zenml-500"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          aria-hidden="true"
+                        >
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5" />
+                        </svg>
+                      ) : val === false ? (
+                        <svg
+                          class="mx-auto h-5 w-5 text-gray-300"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          aria-hidden="true"
+                        >
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10" />
+                        </svg>
+                      ) : val === "COMING SOON" ? (
+                        <span class="inline-block rounded bg-zenml-500 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-tight text-white">
+                          Coming Soon
+                        </span>
+                      ) : (
+                        <span class="text-gray-700">{val}</span>
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </>
+        ))}
+        {actions && actions.length > 0 && (
+          <tr class="border-t border-gray-200">
+            <td class:list={[stickyCol, stickyFirstColumn && "bg-white"]} />
+            {actions.map((action) => (
+              <td class="px-4 pt-5 pb-4 text-center">
+                <Button
+                  href={action.href}
+                  size="sm"
+                  variant={action.variant ?? "primary"}
+                  dataAnalytics={action.analytics}
+                >
+                  {action.label}
+                </Button>
+              </td>
+            ))}
+          </tr>
+        )}
+      </tbody>
+    </table>
+  </div>
+</div>

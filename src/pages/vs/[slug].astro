@@ -14,8 +14,12 @@ import { getCollection } from "astro:content";
 import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
 import VsCta02 from "../../components/sections/VsCta02.astro";
 import VsHero from "../../components/sections/VsHero.astro";
-import VsRelatedCompareGrid from "../../components/sections/VsRelatedCompareGrid.astro";
 import VsTestimonial from "../../components/sections/VsTestimonial.astro";
+import SectionIntro from "../../components/system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../../components/system/sectionIntro.shared";
+import RelatedRail, {
+  type RelatedRailItem,
+} from "../../components/templates/RelatedRail.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export async function getStaticPaths() {
@@ -27,12 +31,15 @@ export async function getStaticPaths() {
 
   return vsPages.map((page) => {
     // Filter compare entries by this page's category
-    const related = compareEntries
+    const related: RelatedRailItem[] = compareEntries
       .filter((c) => c.data.category === page.data.hero.compareCategory)
       .map((c) => ({
+        kind: "icon-link",
         title: `ZenML vs ${c.data.toolName || c.data.title}`,
         href: `/compare/${c.data.slug}`,
-        toolIcon: c.data.toolIcon,
+        icon: c.data.toolIcon
+          ? { src: c.data.toolIcon.url, alt: c.data.toolIcon.alt || "" }
+          : undefined,
       }));
 
     return {
@@ -101,11 +108,29 @@ const seoDescription = data.seo?.description || data.hero.deck;
       }
       if (block.kind === "relatedCompare") {
         return (
-          <VsRelatedCompareGrid
-            eyebrow={block.eyebrow}
-            headline={block.headline}
-            items={related}
-          />
+          related.length > 0 && (
+            <section class="bg-gray-50 py-16 sm:py-20">
+              <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                {block.headline ? (
+                  <SectionIntro
+                    eyebrow={block.eyebrow}
+                    heading={block.headline}
+                    classOverrides={{
+                      eyebrow: SECTION_INTRO_PRESETS.cardEyebrow,
+                      heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
+                    }}
+                  />
+                ) : (
+                  block.eyebrow && (
+                    <span class="text-xs font-semibold uppercase tracking-wider text-zenml-500">
+                      {block.eyebrow}
+                    </span>
+                  )
+                )}
+                <RelatedRail items={related} gridVariant="gap-sm-2col-sm" class="mt-space-md" />
+              </div>
+            </section>
+          )
         );
       }
       if (block.kind === "cta02") {
