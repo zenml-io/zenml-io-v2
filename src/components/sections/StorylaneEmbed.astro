@@ -25,18 +25,12 @@ const { src, title } = Astro.props;
     style="position:absolute;top:0;left:0;width:100%;height:100%;border:1px solid rgba(63,95,172,0.35);box-shadow:0px 0px 18px rgba(26,19,72,0.15);border-radius:10px;box-sizing:border-box;"
   ></iframe>
 </div>
-{/* Storylane enhancement script — gated behind marketing consent + prod hostname */}
+{/* Storylane enhancement script — loads unconditionally alongside the iframe */}
 <script is:inline>
   (function() {
-    var hosts = ['www.zenml.io','zenml.io'];
-    if (hosts.indexOf(window.location.hostname) === -1) return;
-    try {
-      var c = JSON.parse(localStorage.getItem('cookie_consent') || '{}');
-      if (!c.marketing) return;
-    } catch(e) { return; }
-    if (document.getElementById('cc-storylane')) return;
+    if (document.getElementById('storylane-embed')) return;
     var s = document.createElement('script');
-    s.id = 'cc-storylane';
+    s.id = 'storylane-embed';
     s.src = 'https://js.storylane.io/js/v1/storylane.js';
     document.head.appendChild(s);
   })();

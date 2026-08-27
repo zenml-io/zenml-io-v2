@@ -755,6 +755,32 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
       "Replaces the result region only. Header, chip strip and facet rail all stay exactly in place.",
   },
 
+  // ── legal (Wave 3 PR1, #250) ──────────────────────────────────────────────
+  // Not part of the Rounds A+B design catalog (page-header/data-display/etc.
+  // above) — a Wave 3 addition for the two legal text pages. paperPage: 1
+  // follows the existing "unconfirmed against the real design catalog"
+  // convention used by the section primitives below, not a real citation.
+  {
+    id: "legal.article",
+    kind: "template",
+    componentPath: "src/components/templates/LegalArticle.astro",
+    variantAxes: ["lastUpdated present"],
+    tones: ["default"],
+    responsive: "static",
+    island: false,
+    paperPage: 1,
+    notes:
+      'h1 + optional "Last updated" line for the two legal content pages (privacy-policy, terms-of-service); the body is the page\'s own rendered Markdown passed through the default slot. lastUpdated absent collapses — no line, no gap (privacy-policy has none today).',
+    demoProps: {
+      title: "ZenML GmbH Terms of Service",
+      lastUpdated: "16.02.2024",
+    },
+    demoSlots: {
+      default:
+        "<p>Your data's security and privacy are ZenML's top priorities.</p>",
+    },
+  },
+
   // ── primitives (Paper 1) ─────────────────────────────────────────────────
   {
     id: "mark.hexagon",
@@ -988,6 +1014,29 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoSlots: {
       default:
         '<div class="rounded-md border border-gray-200 p-space-xs text-center text-sm">One</div><div class="rounded-md border border-gray-200 p-space-xs text-center text-sm">Two</div><div class="rounded-md border border-gray-200 p-space-xs text-center text-sm">Three</div><div class="rounded-md border border-gray-200 p-space-xs text-center text-sm">Four</div>',
+    },
+  },
+
+  // ── conversion-utility (Paper TBD) ────────────────────────────────────────
+  {
+    id: "conversion.shell",
+    kind: "template",
+    componentPath: "src/components/templates/ConversionShell.astro",
+    variantAxes: ["frame: calendar | form"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    notes:
+      "Two structurally different arrangements selected by `frame`: `calendar` is the two-section Cal-hero shape (success-calendar, book-a-demo-success, schedule-a-demo); `form` is the single-section narrow shape above a lead-capture form (book-a-demo, signup-for-demo). The default slot is the conversion widget (CalEmbed or ContactForm island).",
+    demoProps: {
+      headline: "Thanks — pick a time that works for you",
+      deck: "We'll be in touch shortly.",
+      frame: "calendar",
+    },
+    demoSlots: {
+      default:
+        '<div class="flex h-64 items-center justify-center rounded-md border border-gray-200 bg-gray-50 text-sm text-gray-500">widget slot (CalEmbed / ContactForm)</div>',
     },
   },
 ];

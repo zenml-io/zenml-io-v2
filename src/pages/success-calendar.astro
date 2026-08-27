@@ -1,5 +1,6 @@
 ---
 import CalEmbed from "../components/sections/CalEmbed.astro";
+import ConversionShell from "../components/templates/ConversionShell.astro";
 /**
  * Success Calendar — post-form thank-you page with Cal.com embed.
  *
@@ -20,19 +21,12 @@ import {
   surface="unified"
 >
   <main>
-    <section class="bg-white pt-16 pb-4 sm:pt-24 sm:pb-8">
-      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
-          {SUCCESS_CALENDAR_HERO.headline}
-        </h1>
-        <p class="mt-3 text-lg text-gray-600">{SUCCESS_CALENDAR_HERO.deck}</p>
-      </div>
-    </section>
-
-    <section class="bg-white pb-16 sm:pb-20">
-      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <CalEmbed config={SUCCESS_CALENDAR_CAL} />
-      </div>
-    </section>
+    <ConversionShell
+      headline={SUCCESS_CALENDAR_HERO.headline}
+      deck={SUCCESS_CALENDAR_HERO.deck}
+      frame="calendar"
+    >
+      <CalEmbed config={SUCCESS_CALENDAR_CAL} />
+    </ConversionShell>
   </main>
 </BaseLayout>

@@ -876,6 +876,25 @@ const vsPageSchema = baseContentSchema.extend({
 });
 
 // ============================================================================
+// Legal Pages Schema (Wave 3 PR1)
+// ============================================================================
+
+/**
+ * Legal pages schema
+ * Route: /privacy-policy, /terms-of-service
+ * Count: 2 items
+ *
+ * Bodies are raw HTML inside markdown, not markdown syntax — the legal prose
+ * contains inline HTML whose exact markup must be preserved; do not re-author.
+ * lastUpdated is optional: pages without it render no "Last updated" line.
+ */
+const legalSchema = z.object({
+  title: z.string(),
+  lastUpdated: z.string().optional(),
+  seo: seoSchema,
+});
+
+// ============================================================================
 // Collection Definitions (Astro v5 with glob loaders)
 // ============================================================================
 
@@ -1007,5 +1026,9 @@ export const collections = {
   "vs-pages": defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/content/vs-pages" }),
     schema: vsPageSchema,
+  }),
+  legal: defineCollection({
+    loader: glob({ pattern: "**/*.md", base: "./src/content/legal" }),
+    schema: legalSchema,
   }),
 };

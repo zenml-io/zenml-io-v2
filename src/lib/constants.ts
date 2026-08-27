@@ -14,8 +14,10 @@ export function isProdHostname(hostname: string): boolean {
 export const DEFAULT_DESCRIPTION =
   "ZenML — Build portable, production-ready MLOps pipelines.";
 
-/** Canonical contact email — single source for /contact, /imprint,
- *  terms-of-service, and the Organization JSON-LD contactPoint. */
+/** Canonical contact email — single source for /contact, /imprint, and the
+ *  Organization JSON-LD contactPoint. Also appears as a literal in
+ *  src/content/legal/terms-of-service.md (markdown bodies cannot interpolate
+ *  constants); tests/content/legalContactEmail.test.ts enforces the pairing. */
 export const CONTACT_EMAIL = "hello@zenml.io";
 
 /** Registered office address — keep in sync with the commercial register.
