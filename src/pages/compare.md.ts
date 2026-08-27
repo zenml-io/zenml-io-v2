@@ -39,7 +39,7 @@ export async function GET(): Promise<Response> {
           item.data.title,
           item.data.category?.replace(/-/g, " ") ?? "MLOps",
           item.data.seoDescription ??
-            item.data.hero?.deck ??
+            item.data.hero.deck ??
             "ZenML comparison page.",
           absoluteUrl(`/compare/${item.data.slug}`),
         ]),

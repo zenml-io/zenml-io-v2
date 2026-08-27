@@ -564,15 +564,17 @@ const compareStrategyCtaBlockSchema = z.object({
 });
 
 /**
- * The related-posts rail. `slugs` is deliberately optional and unset on every
- * compare entry: the rail renders the three most recent posts dynamically, and
- * materialising today's three would freeze 25 rails and rot silently.
+ * The related-posts rail. Carries only its own chrome: the rail always renders
+ * the three most recent posts, resolved at render time. There is deliberately
+ * no way to pin specific posts — materialising today's three would freeze 25
+ * rails and rot silently.
+ *
+ * Both strings are REQUIRED for the same reason as `showdown` below.
  */
 const compareBlogRailBlockSchema = z.object({
   kind: z.literal("blogRail"),
-  eyebrow: z.string().optional(),
-  headline: z.string().optional(),
-  slugs: z.array(z.string()).optional(),
+  eyebrow: z.string(),
+  headline: z.string(),
 });
 
 /**
@@ -606,25 +608,23 @@ const compareSchema = z.object({
   draft: z.boolean().default(false),
 
   /**
-   * Ordered page body. Optional during the PR3 migration: entries still
-   * carrying the flat fields below render through the old path until the
-   * conversion lands, so the build stays green at every commit.
+   * Ordered page body — the whole page. Required: the template renders from
+   * `blocks` exclusively, so an optional one would let an entry build green
+   * and ship a page with nothing on it but a hero.
    */
-  blocks: z.array(comparisonBlockSchema).optional(),
+  blocks: z.array(comparisonBlockSchema).min(1),
 
   /**
    * Hero, materialised by the conversion (CTAs were never set per entry).
    * `headline` is required because the hero component requires it and the
    * conversion always resolves one; `deck` collapses when absent.
    */
-  hero: z
-    .object({
-      headline: z.string(),
-      deck: z.string().optional(),
-      primaryCta: ctaSchema,
-      secondaryCta: ctaSchema.optional(),
-    })
-    .optional(),
+  hero: z.object({
+    headline: z.string(),
+    deck: z.string().optional(),
+    primaryCta: ctaSchema,
+    secondaryCta: ctaSchema.optional(),
+  }),
 
   /**
    * Tool identity. Kept top-level rather than folded into `hero` because the
