@@ -36,6 +36,14 @@ tools:
 createdAt: "2025-05-23T14:36:38.921Z"
 updatedAt: "2025-08-26T08:34:03.677Z"
 projectId: "credit-scorer"
+pipelines:
+  - name: "Feature Engineering Pipeline"
+    description: "Pipeline that ingests raw credit data, profiles quality with WhyLogs, applies cleaning and encoding, and stores versioned feature sets. Addresses EU AI Act Articles 10 and 12."
+  - name: "Training Pipeline"
+    description: "Pipeline that trains LightGBM models with bias-aware techniques, evaluates performance across demographic groups, and conducts comprehensive risk assessment. Addresses Articles 9, 11, and 15."
+  - name: "Deployment Pipeline"
+    description: "Pipeline that implements human oversight gates, deploys models to Modal, generates SBOM and Annex IV documentation, and sets up post-market monitoring. Addresses Articles 14, 17, and 18."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> aws-zenml-dev</li></ul>"
 seo:
   title: "Credit Scorer: EU AI Act Compliant MLOps"
   description: "An end-to-end credit scoring workflow that automatically generates the technical evidence required by the EU AI Act."
@@ -45,19 +53,7 @@ seo:
   ogDescription: "An end-to-end credit scoring workflow that automatically generates the technical evidence required by the EU AI Act."
 ---
 
-#### Feature Engineering Pipeline
-
-Pipeline that ingests raw credit data, profiles quality with WhyLogs, applies cleaning and encoding, and stores versioned feature sets. Addresses EU AI Act Articles 10 and 12.
-
-#### Training Pipeline
-
-Pipeline that trains LightGBM models with bias-aware techniques, evaluates performance across demographic groups, and conducts comprehensive risk assessment. Addresses Articles 9, 11, and 15.
-
-#### Deployment Pipeline
-
-Pipeline that implements human oversight gates, deploys models to Modal, generates SBOM and Annex IV documentation, and sets up post-market monitoring. Addresses Articles 14, 17, and 18.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> aws-zenml-dev</li></ul>Credit Scorer is a production-ready credit scoring system that demonstrates full EU AI Act compliance for high-risk AI systems. Built with comprehensive MLOps pipelines, it automatically generates all required technical documentation, ensures robust risk management, and maintains complete audit trails with versioned artifacts.
+Credit Scorer is a production-ready credit scoring system that demonstrates full EU AI Act compliance for high-risk AI systems. Built with comprehensive MLOps pipelines, it automatically generates all required technical documentation, ensures robust risk management, and maintains complete audit trails with versioned artifacts.
 
 ### What It Does
 

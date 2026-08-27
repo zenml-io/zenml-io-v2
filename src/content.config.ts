@@ -637,6 +637,30 @@ const projectSchema = z.object({
   updatedAt: z.string().optional(),
   projectId: z.string().optional(),
 
+  /**
+   * Sidebar fields the original CMS kept separate and the Markdown export
+   * merged into one body. They live in frontmatter again so the detail page
+   * reads structured data instead of parsing prose at build time.
+   */
+  pipelines: z
+    .array(
+      z.object({
+        name: z.string(),
+        description: z.string().optional(),
+      }),
+    )
+    .default([]),
+  /** Recommended-stack markup, authored as a `<ul>` in content. */
+  stackHtml: z.string().optional(),
+
+  /**
+   * Card/sidebar facts that were hardcoded in the page templates. The defaults
+   * are the strings every project rendered before they became data, so an
+   * entry only carries them when it differs.
+   */
+  license: z.string().default("Apache - 2.0 License"),
+  setupTime: z.string().default("5-10 mins"),
+
   // SEO & Webflow
   seo: seoSchema,
   webflow: webflowMetaSchema,

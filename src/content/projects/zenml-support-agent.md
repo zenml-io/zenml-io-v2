@@ -31,6 +31,10 @@ tools:
 createdAt: "2025-03-24T11:03:00.932Z"
 updatedAt: "2025-08-26T08:34:00.179Z"
 projectId: "zenml-support-agent"
+pipelines:
+  - name: "Agent Creation Pipeline"
+    description: "Pipeline that handles data ingestion, vector store construction, and agent creation."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> local</li><li><strong>Artifact Store:</strong> local</li><li><strong>Step Operator:</strong> local</li></ul>"
 seo:
   title: "ZenML Support Agent"
   description: "A production-ready agent that can help you with your ZenML questions."
@@ -40,11 +44,7 @@ seo:
   ogDescription: "A production-ready agent that can help you with your ZenML questions."
 ---
 
-#### Agent Creation Pipeline
-
-Pipeline that handles data ingestion, vector store construction, and agent creation.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> local</li><li><strong>Artifact Store:</strong> local</li><li><strong>Step Operator:</strong> local</li></ul>The ZenML Support Agent is an intelligent assistant that provides instant, accurate answers to ZenML-related questions through a production-ready RAG architecture.
+The ZenML Support Agent is an intelligent assistant that provides instant, accurate answers to ZenML-related questions through a production-ready RAG architecture.
 
 ### What It Does
 

@@ -29,6 +29,14 @@ tools:
 createdAt: "2025-03-24T11:03:08.393Z"
 updatedAt: "2025-08-26T08:33:54.740Z"
 projectId: "zencoder"
+pipelines:
+  - name: "Deployment Pipeline"
+    description: "This pipeline pushes the model to the hub."
+  - name: "Finetune Starcoder"
+    description: "This pipeline finetunes the starcoder model."
+  - name: "Generate Code Dataset"
+    description: "This pipeline generates the code dataset."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> default</li><li><strong>Step Operator:</strong> gcp</li></ul>"
 seo:
   title: "ZenCoder: Your Own MLOps Engineer"
   description: "Transform your ML workflow with an AI assistant that actually understands ZenML. This project fine-tunes open-source LLMs to generate production-ready MLOps pipelines."
@@ -38,19 +46,7 @@ seo:
   ogDescription: "Transform your ML workflow with an AI assistant that actually understands ZenML. This project fine-tunes open-source LLMs to generate production-ready MLOps pipelines."
 ---
 
-#### Deployment Pipeline
-
-This pipeline pushes the model to the hub.
-
-#### Finetune Starcoder
-
-This pipeline finetunes the starcoder model.
-
-#### Generate Code Dataset
-
-This pipeline generates the code dataset.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> default</li><li><strong>Artifact Store:</strong> default</li><li><strong>Step Operator:</strong> gcp</li></ul>ZenCoder transforms ML workflow development by fine-tuning open-source LLMs to generate production-ready MLOps pipelines with ZenML.
+ZenCoder transforms ML workflow development by fine-tuning open-source LLMs to generate production-ready MLOps pipelines with ZenML.
 
 ### What It Does
 

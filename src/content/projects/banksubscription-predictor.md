@@ -30,6 +30,10 @@ tools:
 createdAt: "2025-06-18T14:14:21.300Z"
 updatedAt: "2025-08-26T08:33:51.601Z"
 projectId: "bank-subscription-prediction"
+pipelines:
+  - name: "Model Training Pipeline"
+    description: "Trains an XGBoost classifier to predict term deposit subscriptions."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> local</li><li><strong>Artifact Store:</strong> local</li></ul>"
 seo:
   title: "BankSubscription Predictor"
   description: "Predict bank clients most likely to subscribe to term deposits using machine learning."
@@ -38,11 +42,7 @@ seo:
   ogDescription: "Predict bank clients most likely to subscribe to term deposits using machine learning."
 ---
 
-#### Model Training Pipeline
-
-Trains an XGBoost classifier to predict term deposit subscriptions.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> local</li><li><strong>Artifact Store:</strong> local</li></ul>A comprehensive MLOps solution for predicting which bank clients are most likely to subscribe to term deposits, enabling more effective marketing campaigns.
+A comprehensive MLOps solution for predicting which bank clients are most likely to subscribe to term deposits, enabling more effective marketing campaigns.
 
 ### What It Does
 

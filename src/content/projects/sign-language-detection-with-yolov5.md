@@ -28,6 +28,14 @@ tools:
 createdAt: "2025-03-24T11:03:02.776Z"
 updatedAt: "2025-08-26T08:34:05.070Z"
 projectId: "sign-language-detection-yolov5"
+pipelines:
+  - name: "Training Pipeline"
+    description: "Pipeline that loads data from Roboflow, augments it, and trains a YOLOv5 model on Vertex AI."
+  - name: "Deployment Pipeline"
+    description: "Pipeline that loads the trained model, builds a BentoML bundle, and deploys it to Vertex AI."
+  - name: "Inference Pipeline"
+    description: "Pipeline that loads test data and runs predictions using the deployed model."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> local</li><li><strong>Artifact Store:</strong> gcp</li><li><strong>Step Operator:</strong> vertex</li></ul>"
 seo:
   title: "Sign Language Detection with YOLOv5"
   description: "End-to-end computer vision pipeline that trains a YOLOv5 model to detect and recognize American Sign Language alphabet in real-time images, with deployment to Vertex AI."
@@ -36,19 +44,7 @@ seo:
   ogDescription: "End-to-end computer vision pipeline that trains a YOLOv5 model to detect and recognize American Sign Language alphabet in real-time images, with deployment to Vertex AI."
 ---
 
-#### Training Pipeline
-
-Pipeline that loads data from Roboflow, augments it, and trains a YOLOv5 model on Vertex AI.
-
-#### Deployment Pipeline
-
-Pipeline that loads the trained model, builds a BentoML bundle, and deploys it to Vertex AI.
-
-#### Inference Pipeline
-
-Pipeline that loads test data and runs predictions using the deployed model.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> local</li><li><strong>Artifact Store:</strong> gcp</li><li><strong>Step Operator:</strong> vertex</li></ul>This project demonstrates how AI can bridge communication gaps for the deaf community by automatically recognizing American Sign Language (ASL) alphabet signs in real-time images. Using computer vision and modern MLOps practices, I've built an end-to-end pipeline that can detect and interpret ASL signs with high accuracy.
+This project demonstrates how AI can bridge communication gaps for the deaf community by automatically recognizing American Sign Language (ASL) alphabet signs in real-time images. Using computer vision and modern MLOps practices, I've built an end-to-end pipeline that can detect and interpret ASL signs with high accuracy.
 
 ### What It Does
 

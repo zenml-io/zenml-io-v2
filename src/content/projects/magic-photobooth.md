@@ -31,6 +31,12 @@ tools:
 createdAt: "2025-03-24T11:03:04.312Z"
 updatedAt: "2025-08-26T08:34:00.703Z"
 projectId: "magic-photobooth"
+pipelines:
+  - name: "Dreambooth Pipeline"
+    description: "Pipeline that finetunes Flux models using DreamBooth and LoRA adapters for personalized image generation."
+  - name: "Inference Pipeline"
+    description: "Pipeline that generates personalized images and short animated videos using finetuned models."
+stackHtml: "<ul><li><strong>Orchestrator:</strong> kubernetes</li><li><strong>Artifact Store:</strong> default</li><li><strong>Step Operator:</strong> default</li></ul>"
 seo:
   title: "Magic Photobooth"
   description: "A personalized AI image generation product that can create your avatars from a selfie."
@@ -40,15 +46,7 @@ seo:
   ogDescription: "A personalized AI image generation product that can create your avatars from a selfie."
 ---
 
-#### Dreambooth Pipeline
-
-Pipeline that finetunes Flux models using DreamBooth and LoRA adapters for personalized image generation.
-
-#### Inference Pipeline
-
-Pipeline that generates personalized images and short animated videos using finetuned models.#### Stack Components
-
-<ul><li><strong>Orchestrator:</strong> kubernetes</li><li><strong>Artifact Store:</strong> default</li><li><strong>Step Operator:</strong> default</li></ul>Magic Photobooth transforms ordinary photos into personalized AI-generated avatars, allowing users to see themselves in any style, setting, or scenario imaginable.
+Magic Photobooth transforms ordinary photos into personalized AI-generated avatars, allowing users to see themselves in any style, setting, or scenario imaginable.
 
 ### What It Does
 

@@ -6,7 +6,7 @@ import { CHIP_VARIANT_CLASS } from "../../lib/chipStyles";
  *
  * Owns only the items arrangement (grid or list) and each item's card
  * shape — not the section wrapper, background, max-width, or heading. The
- * six live sections this consolidates keep wildly different heading
+ * seven live sections this consolidates keep wildly different heading
  * treatments (a centered `SectionIntro`, a plain left-aligned `<h2>`, a
  * small-caps sidebar label) and section chrome, so parity keeps each site
  * owning its own heading and wrapper exactly as before; this component
@@ -20,7 +20,7 @@ import { CHIP_VARIANT_CLASS } from "../../lib/chipStyles";
  *
  * `gridVariant` covers the three gap/breakpoint combinations the live
  * sections actually use. `reveal` reproduces the scroll fade-in the two
- * compare-page sections had — the other four never had it, so it defaults
+ * compare-page sections had — the other five never had it, so it defaults
  * off.
  */
 import BlogCard from "../blog/BlogCard.astro";

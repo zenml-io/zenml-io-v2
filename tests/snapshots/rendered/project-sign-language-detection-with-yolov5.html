@@ -1,0 +1,25 @@
+<div class="prose prose-gray mt-3 max-w-none">
+<p>This project demonstrates how AI can bridge communication gaps for the deaf community by automatically recognizing American Sign Language (ASL) alphabet signs in real-time images. Using computer vision and modern MLOps practices, I've built an end-to-end pipeline that can detect and interpret ASL signs with high accuracy.
+</p>
+
+<h3>What It Does
+</h3>
+
+<p>The system uses YOLOv5, a state-of-the-art object detection algorithm, to identify and classify hand signs representing the ASL alphabet. This enables real-time translation of sign language into text, making communication more accessible for deaf individuals.
+</p>
+
+<h3>How It Works
+</h3>
+
+<p>The project leverages ZenML to orchestrate a sophisticated machine learning workflow:
+- **Data Processing:** Automatically downloads and prepares ASL alphabet images from Roboflow
+- **Data Augmentation:** Enhances training data using Albumentations to improve model robustness
+- **GPU-Accelerated Training:** Trains the YOLOv5 model on Google Vertex AI with GPU support
+- **Experiment Tracking:** Records all training metrics and parameters with MLflow
+- **Deployment:** Packages the model with BentoML for production-ready inference
+- **Inference Pipeline:** Provides a streamlined way to make predictions on new images
+</p>
+
+<p>This project showcases how modern MLOps practices can be applied to create AI solutions that make a real difference in people's lives, while demonstrating advanced skills in computer vision, cloud computing, and machine learning engineering.
+</p>
+</div>
