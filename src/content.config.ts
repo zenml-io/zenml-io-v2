@@ -504,39 +504,6 @@ const mlopsDatabaseSchema = z.object({
  *   ctaHeadline, learnMoreUrl, seoDescription, openGraphImage
  */
 /**
- * Compare value section schema (layout08 two-column blocks)
- * 3 per category — pulled from compareDefaults.ts if not in frontmatter
- */
-const compareValueSectionSchema = z.object({
-  title: z.string(),
-  bullets: z.array(z.string()),
-  image: imageSchema.optional(),
-  imageSide: z.enum(["left", "right"]).default("right"),
-});
-
-/**
- * Compare code comparison schema (side-by-side code blocks)
- * Extracted from markdown body fenced code blocks
- */
-const compareCodeComparisonSchema = z.object({
-  zenmlCode: z.string(),
-  zenmlLanguage: z.string().default("python"),
-  toolCode: z.string(),
-  toolLanguage: z.string().default("python"),
-});
-
-/**
- * Compare final CTA schema (rich dark/gradient CTA at page bottom)
- */
-const compareFinalCtaSchema = z.object({
-  headline: z.string(),
-  bullets: z.array(z.string()).default([]),
-  primaryCta: ctaSchema,
-  secondaryCta: ctaSchema.optional(),
-  image: imageSchema.optional(),
-});
-
-/**
  * Two-column value section. Shared by feature pages, `/vs/*` and the
  * comparison pages, so it is defined here, above the first consumer.
  */
@@ -659,7 +626,11 @@ const compareSchema = z.object({
     })
     .optional(),
 
-  // VS page-specific fields (original)
+  /**
+   * Tool identity. Kept top-level rather than folded into `hero` because the
+   * `/vs` showdown rails and `getStaticPaths` read them off the collection
+   * without rendering the page.
+   */
   toolName: z.string().optional(),
   toolIcon: imageSchema.optional(),
   category: z.string().optional(),
@@ -667,36 +638,14 @@ const compareSchema = z.object({
     "integration-types",
     referenceSlugSets["integration-types"],
   ).optional(),
-  advantages: slugReferenceArray("advantages", referenceSlugSets.advantages),
-  quote: slugReference("quotes", referenceSlugSets.quotes).optional(),
-  headline: z.string().optional(),
-  heroText: z.string().optional(),
-  ctaHeadline: z.string().optional(),
-  learnMoreUrl: z.url().optional(),
+
+  /**
+   * SEO inputs that predate the `seo:` block. Three entries (alteryx, dataiku,
+   * domino-data-lab) have no `seo:` block at all and take their description
+   * and card image from exactly these two, so neither is retired.
+   */
   seoDescription: z.string().optional(),
   openGraphImage: imageSchema.optional(),
-
-  // Hero CTA overrides (defaults: Book a demo + Learn More → #feature-comparison)
-  heroPrimaryCta: ctaSchema.optional(),
-  heroSecondaryCta: ctaSchema.optional(),
-
-  // Value proposition sections (3 per category, from compareDefaults.ts if absent)
-  valueSections: z.array(compareValueSectionSchema).optional(),
-
-  // Code comparison (extracted from body fenced code blocks)
-  codeComparison: compareCodeComparisonSchema.optional(),
-
-  // Feature comparison table HTML (extracted from body)
-  featureTableHtml: z.string().optional(),
-
-  // Strategy CTA headline override (default from category in compareDefaults.ts)
-  strategyCtaHeadline: z.string().optional(),
-
-  // Final rich CTA (defaults from compareDefaults.ts if absent)
-  finalCta: compareFinalCtaSchema.optional(),
-
-  // Related blog posts (manual slugs; auto-resolved from recent posts if omitted)
-  relatedBlogSlugs: z.array(z.string()).optional(),
 
   // SEO & Webflow
   seo: seoSchema,
