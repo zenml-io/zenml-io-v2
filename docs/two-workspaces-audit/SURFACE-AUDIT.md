@@ -5,6 +5,10 @@
 **Related issue:** #63  
 **Prerequisites for:** #2 (fix surface misattributions), #3 (product-separated navigation epic)
 
+> **The route table below is out of date.** For the current route → layout → template
+> inventory, see `docs/page-recipes.md`. This file stands as the historical May 2026
+> analytics-surface audit; nothing else here is maintained.
+
 ---
 
 ## How surface works (verified implementation state)
