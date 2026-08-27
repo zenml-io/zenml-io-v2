@@ -2,6 +2,11 @@
 
 **Generated from commit:** 893cc240a5c7f160aebaa824e78aab8c3665104c
 
+> **Historical record.** This describes the tree at the commit above, before the
+> conversion moved these values into `blocks[]` and blanked the bodies. The
+> entries no longer carry the markup measured here, so this file is not
+> regenerable from the current tree and should not be updated.
+
 **Regenerate with:** `pnpm exec tsx scripts/migrations/compare-blocks/audit.ts --write`
 
 ## Totals

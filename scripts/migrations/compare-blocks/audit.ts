@@ -1,13 +1,18 @@
 /**
  * audit.ts — PR3 comparison-consolidation audit.
  *
- * Measures what the live MlopsCompare template extracts from each of the 25
- * `/compare/zenml-vs-*` entry bodies and which fallbacks each entry engages,
- * and writes the result to AUDIT.md as committed, reviewable evidence for the
- * consolidation. The three body-extraction expressions are copied
- * character-for-character from
- * `src/components/compare/_layouts/MlopsCompare.astro` — never re-implement
- * them; if that file changes, re-copy.
+ * Measured what the old MlopsCompare template extracted from each of the 25
+ * `/compare/zenml-vs-*` entry bodies and which fallbacks each entry engaged,
+ * and wrote AUDIT.md as committed, reviewable evidence for the consolidation.
+ *
+ * IT HAS ALREADY RUN, AND ITS SUBJECT IS GONE. The conversion materialised
+ * those values into `blocks[]` and blanked the bodies, and MlopsCompare.astro
+ * was deleted. This file is a record of how the 25 entries were read, not a
+ * live path: run it now and it reports that there is nothing left to measure.
+ * AUDIT.md describes the tree at the commit it names — do not regenerate it.
+ *
+ * The three body-extraction expressions were copied character-for-character
+ * from MlopsCompare.astro so the audit could not disagree with the template.
  *
  * Extraction mirrors the template's precedence: an explicit frontmatter field
  * (`featureTableHtml`, `codeComparison`, and — at the OBJECT level, not the
@@ -487,7 +492,21 @@ function main(): void {
     process.exit(1);
   }
 
-  const results = readCompareEntries().map(extractAndAudit);
+  const entries = readCompareEntries();
+
+  // The conversion blanked the bodies this script measures, so from that point
+  // on it can only report zeros. AUDIT.md is the pre-conversion record and is
+  // meant to stay exactly as it was — say so rather than reporting it stale.
+  if (entries.every((e) => e.body.trim().length === 0)) {
+    console.log(
+      "· The conversion has run: all 25 bodies are empty, so there is nothing left to measure.\n" +
+        `  ${REPORT_PATH} is the pre-conversion record and should not be regenerated.\n` +
+        "  Read it at the commit it names, or check out a commit before the conversion to re-derive it.",
+    );
+    return;
+  }
+
+  const results = entries.map(extractAndAudit);
   const sha = execSync("git rev-parse HEAD", {
     cwd: ROOT,
     encoding: "utf-8",
