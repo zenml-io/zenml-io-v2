@@ -1,5 +1,6 @@
 ---
 import ContactForm from "../components/islands/ContactForm.tsx";
+import ConversionShell from "../components/templates/ConversionShell.astro";
 /**
  * Signup for Demo — identical form to /book-a-demo, different route.
  *
@@ -22,27 +23,22 @@ import {
   surface="unified"
 >
   <main>
-    <section class="bg-white py-16 sm:py-24">
-      <div class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8">
-        <div class="mb-8 text-center">
-          <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
-            {SIGNUP_FOR_DEMO_HERO.headline}
-          </h1>
-          <p class="mt-3 text-lg text-gray-600">{SIGNUP_FOR_DEMO_HERO.deck}</p>
-        </div>
-
-        <ContactForm
-          client:load
-          formType="demo-request"
-          endpoint="/api/forms/demo-request"
-          fields={SIGNUP_FOR_DEMO_FIELDS}
-          submitLabel="Send Request"
-          loadingLabel="Sending…"
-          successMessage="Thank you! We'll be in touch shortly."
-          successCta={{ label: "Book a time now", href: "/book-your-demo" }}
-          turnstileSiteKey={TURNSTILE_SITE_KEY}
-        />
-      </div>
-    </section>
+    <ConversionShell
+      headline={SIGNUP_FOR_DEMO_HERO.headline}
+      deck={SIGNUP_FOR_DEMO_HERO.deck}
+      frame="form"
+    >
+      <ContactForm
+        client:load
+        formType="demo-request"
+        endpoint="/api/forms/demo-request"
+        fields={SIGNUP_FOR_DEMO_FIELDS}
+        submitLabel="Send Request"
+        loadingLabel="Sending…"
+        successMessage="Thank you! We'll be in touch shortly."
+        successCta={{ label: "Book a time now", href: "/book-your-demo" }}
+        turnstileSiteKey={TURNSTILE_SITE_KEY}
+      />
+    </ConversionShell>
   </main>
 </BaseLayout>

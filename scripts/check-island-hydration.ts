@@ -1,8 +1,11 @@
 /**
- * check-island-hydration.ts — proves the Preact islands in dist/client actually hydrate.
+ * check-island-hydration.ts — proves the Preact islands in dist/client actually hydrate,
+ * and that the Storylane embed (a plain .astro component, not an island) loads its
+ * iframe and enhancement script regardless of consent state.
  *
  * Run via: pnpm check:islands (after pnpm build — it reads dist/client)
- * Exits with code 1 (failing CI) if any island fails to become interactive.
+ * Exits with code 1 (failing CI) if any island fails to become interactive or the
+ * Storylane checks fail.
  *
  * Why this exists
  * ---------------
@@ -84,6 +87,7 @@ import type { AddressInfo } from "node:net";
 import { extname, resolve, sep } from "node:path";
 import type { Browser, Page } from "playwright";
 import { chromium } from "playwright";
+import type { ConsentCategory } from "../src/lib/consentConfig.ts";
 
 const DIST = resolve("dist/client");
 const NAV_TIMEOUT = 20_000;
@@ -598,6 +602,137 @@ const CHECKS: IslandCheck[] = [
   },
 ];
 
+// ── Storylane embed (not a Preact island) ─────────────────────────
+//
+// StorylaneEmbed has no `client:*` directive — it's a plain `.astro`
+// component with an unconditional `<script is:inline>` — so there is no
+// `astro-island` to wait on and it cannot be expressed as an IslandCheck.
+// The script used to gate its enhancement script behind marketing consent,
+// checked once at parse time; that broke first-visit hydration and was
+// removed, moving the embed's dedup id off the `cc-` prefix in the process
+// (see the component's history). Nothing else exercises this component, so
+// a later consent cleanup could reintroduce the gate, or break dedup, while
+// every other check still passes. This runs the embed in both a rejected-
+// and an accepted-marketing-consent state and proves the iframe and the
+// enhancement script both actually load in each.
+
+const STORYLANE_ROUTE = "/live-demo";
+
+const STORYLANE_CONSENT_STATES: {
+  label: string;
+  consent: Record<ConsentCategory, boolean>;
+}[] = [
+  {
+    label: "rejected consent",
+    consent: {
+      essential: true,
+      analytics: false,
+      marketing: false,
+      personalization: false,
+    },
+  },
+  {
+    label: "accepted consent",
+    consent: {
+      essential: true,
+      analytics: true,
+      marketing: true,
+      personalization: true,
+    },
+  },
+];
+
+/**
+ * One attempt in a fresh, hermetic context, mirroring `attempt()` above but
+ * for a non-island component: no hydration gate to wait on, and the
+ * Storylane iframe/script requests are stubbed (rather than aborted like
+ * every other external request) so the check can prove they actually fire
+ * and resolve, without a real network dependency.
+ */
+async function attemptStorylane(
+  browser: Browser,
+  baseUrl: string,
+  consent: Record<ConsentCategory, boolean>,
+): Promise<string | null> {
+  const context = await browser.newContext();
+
+  await context.addInitScript(
+    (c) => localStorage.setItem("cookie_consent", JSON.stringify(c)),
+    consent,
+  );
+
+  await context.route("**/*", (route) => {
+    const url = route.request().url();
+
+    if (url.startsWith(baseUrl)) {
+      return route.continue();
+    }
+
+    if (url.includes("storylane.io")) {
+      return route.fulfill({
+        status: 200,
+        contentType: url.endsWith(".js") ? "text/javascript" : "text/html",
+        body: url.endsWith(".js") ? "" : "<!doctype html><title>stub</title>",
+      });
+    }
+
+    return route.abort();
+  });
+
+  const page = await context.newPage();
+  page.setDefaultTimeout(ACTION_TIMEOUT);
+
+  const pageErrors: string[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+
+  try {
+    const iframeLoaded = page.waitForResponse(
+      (response) => response.url().startsWith("https://app.storylane.io/demo/"),
+      { timeout: NAV_TIMEOUT },
+    );
+    const scriptLoaded = page.waitForResponse(
+      (response) =>
+        response.url() === "https://js.storylane.io/js/v1/storylane.js",
+      { timeout: NAV_TIMEOUT },
+    );
+
+    await page.goto(`${baseUrl}${STORYLANE_ROUTE}`, {
+      waitUntil: "domcontentloaded",
+      timeout: NAV_TIMEOUT,
+    });
+
+    const iframeResponse = await iframeLoaded;
+    if (!iframeResponse.ok()) {
+      throw new Error(
+        `the Storylane iframe request resolved with status ${iframeResponse.status()}`,
+      );
+    }
+
+    const scriptResponse = await scriptLoaded;
+    if (!scriptResponse.ok()) {
+      throw new Error(
+        `the storylane.js enhancement script request resolved with status ${scriptResponse.status()}`,
+      );
+    }
+
+    const scriptCount = await page.locator("script#storylane-embed").count();
+    if (scriptCount !== 1) {
+      throw new Error(
+        `expected exactly one #storylane-embed script, found ${scriptCount}`,
+      );
+    }
+
+    return null;
+  } catch (error) {
+    const message = (error as Error).message.split("\n")[0];
+    return pageErrors.length > 0
+      ? `${message} [page error: ${pageErrors[0]}]`
+      : message;
+  } finally {
+    await context.close();
+  }
+}
+
 // ── Runner ─────────────────────────────────────────────────────────
 
 /** One attempt in a fresh, hermetic context. Returns null on success. */
@@ -713,6 +848,28 @@ async function check(): Promise<number> {
     }
   }
 
+  let storylaneChecked = 0;
+  let storylaneFailures = 0;
+
+  for (const { label, consent } of STORYLANE_CONSENT_STATES) {
+    const name = `StorylaneEmbed loads the iframe and enhancement script (${label})`;
+
+    let failure = await attemptStorylane(browser, server.baseUrl, consent);
+    if (failure !== null) {
+      failure = await attemptStorylane(browser, server.baseUrl, consent);
+    }
+
+    storylaneChecked += 1;
+
+    if (failure === null) {
+      console.log(`  ✓ ${STORYLANE_ROUTE} — ${name}`);
+    } else {
+      console.log(`  ✗ ${STORYLANE_ROUTE} — ${name}`);
+      violations.push(`${STORYLANE_ROUTE} — ${name}: ${failure}`);
+      storylaneFailures++;
+    }
+  }
+
   await browser.close();
   await server.close();
 
@@ -731,7 +888,7 @@ async function check(): Promise<number> {
       );
     }
 
-    console.error(`\n✗ ${violations.length} island check(s) failed`);
+    console.error(`\n✗ ${violations.length} check(s) failed`);
 
     if (hydrationFailures > 0) {
       console.error(
@@ -751,11 +908,23 @@ async function check(): Promise<number> {
       );
     }
 
+    if (storylaneFailures > 0) {
+      console.error(
+        "  Fix (Storylane): open /live-demo with `pnpm dev` and check that StorylaneEmbed still",
+      );
+      console.error(
+        "       renders its iframe and inline enhancement script unconditionally — no consent gate,",
+      );
+      console.error(
+        "       and exactly one `#storylane-embed` script. There is no `client:*` directive here.",
+      );
+    }
+
     return 1;
   }
 
   console.log(
-    `\n✓ ${CHECKS.length} browser checks passed — the islands hydrate and the static hit targets hold`,
+    `\n✓ ${CHECKS.length + storylaneChecked} browser checks passed — the islands hydrate, the static hit targets hold, and the Storylane embed loads`,
   );
   return 0;
 }
