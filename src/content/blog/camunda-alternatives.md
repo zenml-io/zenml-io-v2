@@ -85,7 +85,7 @@ Before we deep dive into tool reviews, here’s a quick comparison table to help
 
 ### 1. Kitaru by ZenML
 
-![Kitaru by ZenML](https://assets.zenml.io/content/blog/camunda-alternatives/cfdf47c4/kitaru-by-zenml.avif)
+![Kitaru by ZenML homepage with the headline “Your agent’s best eval data is already in production” beside a replay code example](https://assets.zenml.io/content/blog/camunda-alternatives/4ce6a2bf/kitaru-by-zenml.avif)
 
 [Kitaru](https://www.zenml.io/product/kitaru) is an open-source, self-hosted replay and evaluation test bench for AI agents. As a Camunda alternative, it makes the most sense when your problem is capturing real behavior, replaying it against changed code or prompts, and checking whether a fix solves one case without breaking ten others.
 
