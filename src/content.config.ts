@@ -645,10 +645,14 @@ const compareSchema = z.object({
    */
   blocks: z.array(comparisonBlockSchema).optional(),
 
-  /** Hero, materialised by the conversion (CTAs were never set per entry). */
+  /**
+   * Hero, materialised by the conversion (CTAs were never set per entry).
+   * `headline` is required because the hero component requires it and the
+   * conversion always resolves one; `deck` collapses when absent.
+   */
   hero: z
     .object({
-      headline: z.string().optional(),
+      headline: z.string(),
       deck: z.string().optional(),
       primaryCta: ctaSchema,
       secondaryCta: ctaSchema.optional(),

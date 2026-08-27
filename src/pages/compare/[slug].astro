@@ -7,15 +7,15 @@
  * (`zenml-vs-*` vs `kitaru-vs-*`), so a single getStaticPaths can emit
  * both and we branch on `kind` to the right template.
  *
- * MLOps detail = src/components/compare/_layouts/MlopsCompare.astro
+ * MLOps detail = src/components/compare/_layouts/ComparisonPage.astro
  *                (the 9-section ZenML template — sage green chrome)
  * Agents detail = src/components/compare/_layouts/KitaruCompare.astro
  *                (Kitaru's MDX-driven template — warm orange chrome via
  *                data-app="kitaru")
  */
 import { getCollection } from "astro:content";
+import ComparisonPage from "../../components/compare/_layouts/ComparisonPage.astro";
 import KitaruCompare from "../../components/compare/_layouts/KitaruCompare.astro";
-import MlopsCompare from "../../components/compare/_layouts/MlopsCompare.astro";
 
 export async function getStaticPaths() {
   const mlopsItems = await getCollection("compare", ({ data }) => !data.draft);
@@ -56,6 +56,6 @@ const props = Astro.props;
       competitorOptions={props.competitorOptions}
     />
   ) : (
-    <MlopsCompare item={props.item} />
+    <ComparisonPage item={props.item} />
   )
 }

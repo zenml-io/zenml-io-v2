@@ -1,0 +1,484 @@
+---
+/**
+ * ComparisonPage — blocks-driven ZenML-vs-X comparison detail template.
+ *
+ * Reads an ordered `item.data.blocks[]` instead of computing section
+ * fallbacks from flat frontmatter fields (that path stays on
+ * MlopsCompare.astro during the migration). Each block kind renders the
+ * same section MlopsCompare.astro already renders:
+ *
+ *   value          -> FeatureValueSection
+ *   quote          -> VsTestimonial (slug resolved against the quotes collection)
+ *   featureTable   -> CompareFeatureHeader
+ *   codeComparison -> CompareCodeComparison
+ *   strategyCta    -> CompareStrategyCta
+ *   showdown       -> sibling-comparison rail (RelatedRail, logo-lockup cards)
+ *   blogRail       -> related-posts rail (RelatedRail, blog-card cards)
+ *   cta02          -> VsCta02
+ *
+ * The hero, and the SEO title/description/ogImage, stay flat top-level
+ * fields on the compare entry (they were already 25/25-set, never part of
+ * the fallback machinery blocks replace) and are computed here exactly as
+ * MlopsCompare.astro computes them today.
+ *
+ * The showdown and blog rails carry only their own chrome (eyebrow/headline)
+ * in the block — their items are sibling/related content resolved at
+ * render time, same as MlopsCompare.astro, so a stale block can never freeze
+ * a rail's contents.
+ *
+ * Layout details that differ between the two page families this template is
+ * meant to serve (`/compare/zenml-vs-*`, which renders sections directly
+ * under `<BaseLayout>`, and `/vs/*`, which wraps them in `<main>`) are
+ * exposed as props with defaults that reproduce today's `/compare` output,
+ * rather than baked into the markup below.
+ */
+import type { CollectionEntry } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getMainFeedPosts } from "../../../lib/blog";
+import { ZENML_ICON_URL } from "../../../lib/compareDefaults";
+import CompareCodeComparison from "../../sections/compare/CompareCodeComparison.astro";
+import CompareFeatureHeader from "../../sections/compare/CompareFeatureHeader.astro";
+import CompareHero from "../../sections/compare/CompareHero.astro";
+import CompareStrategyCta from "../../sections/compare/CompareStrategyCta.astro";
+import FeatureValueSection from "../../sections/FeatureValueSection.astro";
+import VsCta02 from "../../sections/VsCta02.astro";
+import VsTestimonial from "../../sections/VsTestimonial.astro";
+import SectionIntro from "../../system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../../system/sectionIntro.shared";
+import RelatedRail, {
+  type RelatedRailGridVariant,
+  type RelatedRailItem,
+} from "../../templates/RelatedRail.astro";
+
+// ---------------------------------------------------------------------------
+// Block types — narrowed from the content collection's own inferred type
+// rather than restated, so a schema change here is a compile error instead
+// of a silent drift.
+// ---------------------------------------------------------------------------
+
+type CompareBlock = NonNullable<
+  CollectionEntry<"compare">["data"]["blocks"]
+>[number];
+
+type ValueBlock = Extract<CompareBlock, { kind: "value" }>;
+type FeatureTableBlock = Extract<CompareBlock, { kind: "featureTable" }>;
+type CodeComparisonBlock = Extract<CompareBlock, { kind: "codeComparison" }>;
+type Cta02Block = Extract<CompareBlock, { kind: "cta02" }>;
+
+interface AdvantageItem {
+  title: string;
+  content: string;
+  image?: { url: string; alt?: string };
+}
+
+interface ResolvedQuoteBlock {
+  kind: "quote";
+  text: string;
+  author: string;
+  position?: string;
+  avatar?: { url: string; alt?: string };
+  companyLogo?: { url: string; alt?: string };
+}
+
+interface ResolvedStrategyCtaBlock {
+  kind: "strategyCta";
+  headline: string;
+  advantages: AdvantageItem[];
+}
+
+interface ResolvedShowdownBlock {
+  kind: "showdown";
+  /** Required: the copy varies per category, so there is nothing safe to default to. */
+  eyebrow: string;
+  headline: string;
+  items: RelatedRailItem[];
+}
+
+interface ResolvedBlogRailBlock {
+  kind: "blogRail";
+  eyebrow?: string;
+  headline?: string;
+  items: RelatedRailItem[];
+}
+
+type ResolvedBlock =
+  | ValueBlock
+  | ResolvedQuoteBlock
+  | FeatureTableBlock
+  | CodeComparisonBlock
+  | ResolvedStrategyCtaBlock
+  | ResolvedShowdownBlock
+  | ResolvedBlogRailBlock
+  | Cta02Block;
+
+interface RelatedRailSectionConfig {
+  gridVariant?: RelatedRailGridVariant;
+  reveal?: boolean;
+  class?: string;
+}
+
+interface Props {
+  item: CollectionEntry<"compare">;
+  /**
+   * `/compare/zenml-vs-*` renders sections directly under `<BaseLayout>`
+   * (default). `/vs/*` wraps the same section stack in `<main>` — pass
+   * `true` for that family rather than hardcoding one shape here.
+   */
+  wrapInMain?: boolean;
+  /** VsCta02's own variant/padded — /compare uses "gradient" + padded, /vs uses neither. */
+  ctaVariant?: "dark" | "gradient";
+  ctaPadded?: boolean;
+  /** Sibling-comparison rail RelatedRail call-site; defaults match today's /compare output. */
+  showdownRail?: RelatedRailSectionConfig;
+  /** Related-posts rail RelatedRail call-site; defaults match today's /compare output. */
+  blogRailConfig?: RelatedRailSectionConfig;
+}
+
+const {
+  item,
+  wrapInMain = false,
+  ctaVariant = "gradient",
+  ctaPadded = true,
+  showdownRail = {},
+  blogRailConfig = {},
+} = Astro.props;
+
+const {
+  gridVariant: showdownGridVariant = "gap-sm-2col-sm",
+  reveal: showdownReveal = true,
+  class: showdownClass,
+} = showdownRail;
+
+const {
+  gridVariant: blogGridVariant = "gap-md-2col-sm",
+  reveal: blogReveal = true,
+  class: blogClass,
+} = blogRailConfig;
+
+const toolName = item.data.toolName || item.data.title.replace("ZenML vs ", "");
+
+// ---------------------------------------------------------------------------
+// Computed-at-render data (siblings/posts are looked up fresh every render,
+// never frozen into the block — see the module docblock).
+// ---------------------------------------------------------------------------
+
+async function buildShowdownItems(
+  current: CollectionEntry<"compare">,
+): Promise<RelatedRailItem[]> {
+  const allCompareItems = await getCollection(
+    "compare",
+    ({ data }) => !data.draft,
+  );
+  const relatedCompareItems = allCompareItems
+    .filter(
+      (c) =>
+        c.data.category === current.data.category &&
+        c.data.slug !== current.data.slug,
+    )
+    .map((c) => ({
+      slug: c.data.slug,
+      toolName: c.data.toolName || c.data.title.replace("ZenML vs ", ""),
+      toolIcon: c.data.toolIcon,
+    }));
+
+  const items: RelatedRailItem[] = relatedCompareItems.map((c) => ({
+    kind: "logo-lockup",
+    href: `/compare/${c.slug}`,
+    title: `ZenML vs ${c.toolName}`,
+    leftImage: { src: ZENML_ICON_URL, alt: "ZenML" },
+    rightImage: c.toolIcon
+      ? { src: c.toolIcon.url, alt: c.toolIcon.alt || c.toolName }
+      : undefined,
+    rightInitial: c.toolName[0],
+  }));
+  return items;
+}
+
+async function buildBlogRailItems(
+  slugs?: string[],
+): Promise<RelatedRailItem[]> {
+  let blogPosts: Array<{
+    slug: string;
+    title: string;
+    mainImage?: { url: string; alt?: string; width?: number; height?: number };
+    seoDescription?: string;
+  }> = [];
+
+  if (slugs && slugs.length > 0) {
+    const entries = await Promise.all(
+      slugs.map((slug) => getEntry("blog", slug)),
+    );
+    blogPosts = entries.flatMap((e) =>
+      e
+        ? [
+            {
+              slug: e.data.slug,
+              title: e.data.title,
+              mainImage: e.data.mainImage,
+              seoDescription: e.data.seo?.description,
+            },
+          ]
+        : [],
+    );
+  } else {
+    const recentPosts = await getMainFeedPosts();
+    blogPosts = recentPosts.slice(0, 3).map((p) => ({
+      slug: p.data.slug,
+      title: p.data.title,
+      mainImage: p.data.mainImage,
+      seoDescription: p.data.seo?.description,
+    }));
+  }
+
+  const items: RelatedRailItem[] = blogPosts.map((p) => ({
+    kind: "blog-card",
+    href: `/blog/${p.slug}`,
+    title: p.title,
+    image: p.mainImage,
+    excerpt: p.seoDescription,
+  }));
+  return items;
+}
+
+async function resolveBlock(
+  block: CompareBlock,
+): Promise<ResolvedBlock | null> {
+  switch (block.kind) {
+    case "value":
+    case "featureTable":
+    case "codeComparison":
+    case "cta02":
+      return block;
+
+    case "quote": {
+      const entry = await getEntry("quotes", block.quote);
+      return entry
+        ? {
+            kind: "quote",
+            text: entry.data.text,
+            author: entry.data.author,
+            position: entry.data.position,
+            avatar: entry.data.avatar,
+            companyLogo: entry.data.companyLogo,
+          }
+        : null;
+    }
+
+    case "strategyCta": {
+      const advantageEntries = await Promise.all(
+        block.advantages.map((slug) => getEntry("advantages", slug)),
+      );
+      const advantages = advantageEntries.flatMap((adv) =>
+        adv
+          ? [
+              {
+                title: adv.data.title,
+                content: adv.data.content,
+                image: adv.data.image,
+              },
+            ]
+          : [],
+      );
+      return { kind: "strategyCta", headline: block.headline, advantages };
+    }
+
+    case "showdown": {
+      const items = await buildShowdownItems(item);
+      return items.length > 0
+        ? {
+            kind: "showdown",
+            eyebrow: block.eyebrow,
+            headline: block.headline,
+            items,
+          }
+        : null;
+    }
+
+    case "blogRail": {
+      const items = await buildBlogRailItems(block.slugs);
+      return items.length > 0
+        ? {
+            kind: "blogRail",
+            eyebrow: block.eyebrow,
+            headline: block.headline,
+            items,
+          }
+        : null;
+    }
+
+    default:
+      return null;
+  }
+}
+
+// `blocks` and `hero` are optional in the schema only while the migration is
+// in flight. This template renders from them exclusively, so an entry without
+// them would build green and ship a page with nothing on it but a hero.
+const rawBlocks = item.data.blocks;
+if (!rawBlocks || rawBlocks.length === 0) {
+  throw new Error(
+    `${item.data.slug}: has no blocks[]. Run scripts/migrations/compare-blocks/convert.ts before rendering this entry.`,
+  );
+}
+const hero = item.data.hero;
+if (!hero) {
+  throw new Error(
+    `${item.data.slug}: has no hero. Run scripts/migrations/compare-blocks/convert.ts before rendering this entry.`,
+  );
+}
+
+const resolvedBlocks = (await Promise.all(rawBlocks.map(resolveBlock))).filter(
+  (block): block is ResolvedBlock => block !== null,
+);
+
+const seoTitle = item.data.seo?.title || `${item.data.title} - ZenML`;
+const seoDescription =
+  item.data.seo?.description || item.data.seoDescription || item.data.heroText;
+const ogImage = item.data.seo?.ogImage || item.data.openGraphImage?.url;
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  ogImage={ogImage}
+  ogTitle={item.data.seo?.ogTitle}
+  ogDescription={item.data.seo?.ogDescription}
+  canonical={item.data.seo?.canonical}
+  surface="ml"
+>
+  {(() => {
+    const content = (
+      <>
+        <CompareHero
+          toolName={toolName}
+          toolIcon={item.data.toolIcon}
+          headline={hero.headline}
+          deck={hero.deck}
+          primaryCta={hero.primaryCta}
+          secondaryCta={hero.secondaryCta}
+          zenmlIconUrl={ZENML_ICON_URL}
+        />
+
+        {resolvedBlocks.map((block) => {
+      switch (block.kind) {
+        case "value":
+          return (
+            <FeatureValueSection
+              title={block.title}
+              bullets={block.bullets}
+              image={block.image}
+              imageSide={block.imageSide}
+            />
+          );
+
+        case "quote":
+          return (
+            <VsTestimonial
+              quote={block.text}
+              name={block.author}
+              title={block.position}
+              avatar={block.avatar}
+              companyLogo={block.companyLogo}
+            />
+          );
+
+        case "featureTable":
+          return (
+            <CompareFeatureHeader
+              toolName={toolName}
+              toolIcon={item.data.toolIcon}
+              zenmlIconUrl={ZENML_ICON_URL}
+              tableHtml={block.tableHtml}
+            />
+          );
+
+        case "codeComparison":
+          return (
+            <CompareCodeComparison
+              toolName={toolName}
+              toolIcon={item.data.toolIcon}
+              zenmlIconUrl={ZENML_ICON_URL}
+              zenmlCode={block.zenmlCode}
+              toolCode={block.toolCode}
+              zenmlLanguage={block.zenmlLanguage}
+              toolLanguage={block.toolLanguage}
+            />
+          );
+
+        case "strategyCta":
+          return (
+            <CompareStrategyCta headline={block.headline} advantages={block.advantages} />
+          );
+
+        case "showdown":
+          return (
+            <section class="showdown-section bg-white py-16 sm:py-20">
+              <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10 fade-in-element">
+                  <SectionIntro
+                    eyebrow={block.eyebrow}
+                    heading={block.headline}
+                    classOverrides={{
+                      heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
+                      headingSpacing: "mt-3",
+                    }}
+                  />
+                </div>
+                <RelatedRail
+                  items={block.items}
+                  gridVariant={showdownGridVariant}
+                  reveal={showdownReveal}
+                  class={showdownClass}
+                />
+              </div>
+            </section>
+          );
+
+        case "blogRail":
+          return (
+            <section class="blog-section bg-gradient-to-b from-gray-50 to-white py-16 sm:py-20">
+              <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10 fade-in-element">
+                  <SectionIntro
+                    eyebrow={block.eyebrow || "Expand Your Knowledge"}
+                    heading={block.headline || "Broaden Your MLOps Understanding with ZenML"}
+                    classOverrides={{
+                      heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
+                      headingSpacing: "mt-3",
+                    }}
+                  />
+                </div>
+                <RelatedRail
+                  items={block.items}
+                  gridVariant={blogGridVariant}
+                  reveal={blogReveal}
+                  class={blogClass}
+                />
+              </div>
+            </section>
+          );
+
+        case "cta02":
+          return (
+            <VsCta02
+              headline={block.headline}
+              bullets={block.bullets}
+              primaryCta={block.primaryCta}
+              secondaryCta={block.secondaryCta}
+              image={block.image}
+              variant={ctaVariant}
+              padded={ctaPadded}
+            />
+          );
+
+        default:
+          return null;
+      }
+        })}
+      </>
+    );
+
+    return wrapInMain ? <main>{content}</main> : content;
+  })()}
+</BaseLayout>
