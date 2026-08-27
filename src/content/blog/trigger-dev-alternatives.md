@@ -75,9 +75,9 @@ Language support affects how much orchestration code sits outside the agent itse
 
 A Python team gets the cleanest setup when workflows, retries, queues, and durable steps live in the same runtime as the model and tool code. So we gave preference to tools that support first-class Python workflows.
 
-### Replay and debugging depth
+### Replay and agent testing depth
 
-Trigger.dev’s built-in Replay creates a fresh run from the previous payload rather than re-entering a historical run at an arbitrary model or tool step. That’s a problem when there are alternatives to Trigger.dev that let you re-enter a finished run at a specific model or tool call, hold everything upstream fixed, change exactly one variable, and continue from there.
+Trigger.dev’s only option for a replay or debug is a fresh run from the original payload. That’s icky when there are alternatives to Trigger.dev, like Kitaru, that let you reproduce production behavior, control external tool interactions, compare versions, and test changes across multiple sessions.
 
 ## What are the Top Alternatives to Trigger.dev
 
@@ -85,7 +85,7 @@ Before the individual reviews, here is the shortlist side by side:
 
 | Trigger.dev Alternative | Best For | Key Features | Pricing |
 |---|---|---|---|
-| **[Kitaru](https://www.zenml.io/product/kitaru)** | Python agent runtimes | Checkpoint-level replay with overrides<br>Native Python flows and checkpoints<br>Pause and resume without active compute<br>Wraps your existing agent SDK | Free (open source, Apache 2.0)<br>Paid plans start at $399/month |
+| **[Kitaru](https://www.zenml.io/product/kitaru)** | Replay and evaluation of production agent sessions | Full-session replay against recorded tool history<br>Baseline vs candidate evaluation<br>Versioned evaluators<br>Experiments across immutable production-derived cohorts | Free (open source, Apache 2.0)<br>Paid plans start at $39/month |
 | **[Inngest](https://www.inngest.com/)** | Event-driven durable functions | Memoized step output across retries<br>First-party Python, TypeScript, and Go SDKs<br>Event triggers, sleeps, and waits | Free tier available<br>Paid plans start at $99/month |
 | **[Hatchet](https://hatchet.run/)** | Queues, workers, and task control | Replay a run from the failed step<br>Editable step input before replay<br>Fine-grained concurrency controls | Free tier available<br>Paid plans start at $500/month |
 | **[Temporal](https://temporal.io/)** | Polyglot durable execution | Event-history-based deterministic replay<br>Workflow reset to a specific event ID<br>Per-activity retry policies | Free (self-hosted)<br>Temporal Cloud starts at $100/month |
@@ -95,71 +95,71 @@ Before the individual reviews, here is the shortlist side by side:
 
 ## 1. Kitaru by ZenML
 
-![Kitaru by ZenML landing page with the headline "Traces you can run, not just read" beside a replay CLI panel showing import, evaluate, replay and fork commands](https://assets.zenml.io/content/blog/trigger-dev-alternatives/758eb8a1/01-kitaru-hero.avif)
+![Kitaru by ZenML landing page with the headline "Your agent’s best eval data is already in production" beside a replay code example](https://assets.zenml.io/content/blog/trigger-dev-alternatives/20588ce0/01-kitaru-hero.avif)
 
-[Kitaru](https://www.zenml.io/product/kitaru), from the team behind ZenML, is an open-source runtime for durable Python agents.
+Kitaru is an open-source, self-hosted test bench for AI agents. It records or imports production sessions, reruns the agent code against controlled recorded tool history, and scores the new behavior against the original.
 
-You add `@flow` and `@checkpoint` to ordinary Python functions, then run the agent through the framework you already use, including PydanticAI, the OpenAI Agents SDK, the Claude Agent SDK, Google ADK, or even raw Python. Kitaru records checkpoint inputs and outputs as the flow progresses.
+Instead of debugging from a fresh input every time, you can turn real agent failures into test cases you keep around. That is a useful distinction against Trigger.dev Replay, which creates a new run from an earlier payload.
 
-If you’ve hit the TypeScript boundary in Trigger.dev, that is the structural change Kitaru adds. There is no TypeScript or Node.js layer to cross. Your agent loop, tool calls, and durable boundaries all stay in Python.
+Here are some key features Kitaru offers:
 
-Some features that make Kitaru a reliable alternative to Trigger.dev:
+### Feature 1. Turn a Production Failure Into a Reusable Test Case
 
-### Feature 1. Replay from a Specific Checkpoint, with Overrides
+![Kitaru sessions list for a returns-resolver agent, showing replayed and imported production sessions scored by a refund-policy evaluator](https://assets.zenml.io/content/blog/trigger-dev-alternatives/5acd7ead/02-kitaru-session-replay.avif)
 
-Kitaru replays an execution from a named checkpoint and lets you change exactly one thing about it. Checkpoints before that point reuse their recorded outputs, so those Python functions do not run again.
+Kitaru and Trigger.dev react differently upon a production failure. Suppose an agent approves the wrong refund because it misread a policy returned by a tool.
 
-In practice, the CLI command looks like this:
+- Trigger.dev reruns the task, but the new run may encounter different model responses or external state before reaching the same decision.
+- Kitaru lets you save that production session and rerun the agent against its recorded tool history. The agent still executes from the beginning, but external interactions can be controlled by what happened in the original session.
 
-```python
-kitaru executions replay kr-a8f3c2 \
-  --at lookup_policy_tool \
-  --invocation-overrides '{"lookup_policy_tool":{"model":"openai:gpt-5-nano"}}'
-```
+Now the bad refund is not just an incident to inspect once. It becomes a repeatable case you can run again after changing a prompt, model, tool policy, or agent version.
 
-In the image, checkpoints before `at` reuse their recorded outputs. Their Python functions do not run again.
+### Feature 2. Test Agent Changes Without Calling the Same Production Tools Again
 
-So a replay from step 48 does not re-pay for steps 1 through 47. You can also swap a model, replace a recorded value, or change a checkpoint input without paying for the earlier calls again. That is how you test whether a bad retrieval result caused a bad answer.
+![Diagram titled 'Replay against the recorded world' showing a candidate agent’s refund_payment tool call answered from Kitaru’s recorded history instead of the live CRM or payment API](https://assets.zenml.io/content/blog/trigger-dev-alternatives/bb0af91a/03-kitaru-tool-history.avif)
 
-### Feature 2. A Baseline You Can Compare Against
+Replaying agent code against live tools can muddy a comparison. The CRM record may have changed, an API may return new data, or a tool with side effects may do something you never intended to repeat.
 
-![Three-panel Kitaru replay flow: start from execution IDs, swap in a cheaper model or flaky tool, then diff the candidates, reporting 61 percent lower median cost and 196 of 200 outputs identical](https://assets.zenml.io/content/blog/trigger-dev-alternatives/2604c094/02-kitaru-replay-overrides.avif)
+Kitaru uses recorded tool history to control those interactions during replay. If the agent asks for something already captured in the session, the replay can use that recorded response rather than depending on the current production system.
 
-A replay without changes can reproduce the original run from recorded checkpoints. Once that baseline exists, you can change one checkpoint and keep everything upstream fixed, so any difference in the trajectory comes from that change.
+There is a catch worth knowing. If the candidate agent makes a tool request that does not match the recorded history, Kitaru may not have a safe response to provide. That replay can fail or end up inconclusive rather than quietly inventing one.
 
-This is the part that Trigger.dev’s whole-run replay cannot do. It creates a fresh run and may produce different model outputs before it reaches the step under investigation.
+### Feature 3. Check Whether the Fix Actually Improved the Agent
 
-In Kitaru, we keep earlier checkpoint values fixed, so the test starts from the same recorded state. Production is untouched either way, because the replay runs against recorded state.
+![Kitaru evaluator detail view for a versioned refund-policy-gates evaluator, showing its definition, registration metadata, and source code](https://assets.zenml.io/content/blog/trigger-dev-alternatives/5c315cd2/04-kitaru-evaluators.avif)
 
-### Feature 3. Pause and Resume without Burning Compute
+Two traces can look different without telling you which one is better. Kitaru adds versioned evaluators so the original behavior and the changed agent can be scored with the same test logic.
 
-![Diagram of kitaru.wait() suspending a run after checkpoint c2 and releasing compute while the server holds durable state, then resuming at c3 when input arrives from a human, agent, webhook, CLI, MCP or UI](https://assets.zenml.io/content/blog/trigger-dev-alternatives/c6081d90/03-kitaru-wait-resume.avif)
+You might evaluate whether the final answer was correct, whether the agent chose an allowed tool, or whether it completed the task without violating a policy. The evaluator version is stored with the result, so you know which rules produced the score.
 
-`kitaru.wait()` suspends a run when it needs a human decision, another agent, or a webhook, then releases the worker so nothing is billed while it waits. When the input arrives, Kitaru resumes the same execution and continues.
+Before comparing versions, Kitaru recommends replaying the unchanged agent first. If the baseline itself cannot reproduce an acceptable result from the recorded session, you know the test case needs attention.
 
-Trigger.dev can also pause and release workers while they are idle. But it doesn’t let you restore the execution exactly as it was before that step.
+### Feature 4. Experiment Across the Cohort
 
-Say an agent completes 50 steps, but step 48 calls the wrong tool. In Trigger.dev, replay starts a new run from the original payload, so the earlier model and tool calls run again unless you build them as separate durable tasks. Kitaru can replay from step 48, reuse the recorded outputs from steps 1 through 47, and let you change only the prompt, model, or tool result at that checkpoint.
+![Kitaru experiment run comparing a candidate agent against a baseline cohort, with three of three sessions passing the refund-policy evaluator](https://assets.zenml.io/content/blog/trigger-dev-alternatives/26f3892a/05-kitaru-cohort-experiment.avif)
+
+Fixing the session that sent you debugging at 11 p.m. is nice. It does not tell you what the same change does to the other 500 sessions your agent handles differently.
+
+Kitaru groups sessions into versioned cohorts that stay fixed for an experiment. You can take a candidate agent and run it across a set such as refund requests, failed tool calls, or sessions where a particular evaluator scored poorly.
+
+The result is closer to a regression suite built from production behavior. One troublesome session helps you understand the bug. A cohort tells you whether the fix travels well.
 
 ### Pricing
 
-Kitaru is free and open source under the Apache 2.0 license, and you self-host the server with artifacts in your own S3, GCS, or Azure Blob storage.
+Kitaru is open source under the Apache 2.0 license and free to self-host. Its server uses FastAPI and PostgreSQL, while replay and experiment jobs can run on workers controlled by your team.
 
-ZenML’s paid plans cover both ZenML pipelines and Kitaru agent runs. The [Scale plan](https://www.zenml.io/pricing) is priced by monthly executions:
+Apart from the open source version, we’ve two paid plans:
 
-- **500 monthly executions:** $399 per month, with 1 project and 1 snapshot.
-- **2,000 monthly executions:** $999 per month, with 3 projects and 5 snapshots.
-- **5,000 monthly executions:** $2,499 per month, with 10 projects and 20 snapshots.
+- **Cloud:** $39 per month; 3 agents, 2 seats, 90-day session retention, and no meters on replay and experiments.
+- **Enterprise:** Custom; unlimited agents, custom seats, limits and retention, plus full enterprise governance.
 
-![ZenML pricing page showing the free open source tier, the recommended Scale plan at 999 dollars per month for 2,000 monthly executions, and a custom Enterprise tier](https://assets.zenml.io/content/blog/trigger-dev-alternatives/85b827b7/04-kitaru-pricing.avif)
-
-**👀 Note:** We are soon going to launch Kitaru v2 with new features and pricing. Get in touch with our founder via [LinkedIn](https://www.linkedin.com/in/hamzatahirofficial/) for early access + 3 months of free Kitaru!
+![Kitaru pricing plans: free open source, $39 per month Cloud with a 14-day trial, and a custom Enterprise tier](https://assets.zenml.io/content/blog/trigger-dev-alternatives/c2e4ffb6/06-kitaru-pricing.avif)
 
 ### Pros and Cons
 
-Kitaru is the best fit here when the workload is a Python agent and the debugging problem sits in the middle of a long trajectory. Its replay model is built for testing one changed model call, tool result, or checkpoint input.
+Kitaru makes sense when your Trigger.dev problem starts after the run finishes. You already have the trace, but you need a repeatable way to test a fix against that production behavior and see whether the new agent performs better across similar sessions.
 
-On the flip side, Kitaru is Python-only and focused on agent-shaped execution. It is also younger than Temporal or Inngest, with a smaller ecosystem. If what you need is a managed queue for TypeScript webhooks, Trigger.dev is a better tool.
+It is not a replacement for Trigger.dev queues, schedules, retries, or background task execution. Kitaru is also in Alpha, and replay quality depends on the recorded session. Tool-history misses and adapter differences can make some tests fail or produce an inconclusive result.
 
 **Related read:** [Kitaru vs Temporal](https://www.zenml.io/compare/kitaru-vs-temporal)
 
@@ -359,13 +359,12 @@ The problem is that the Python agent stack is as awkward as it is on Trigger.dev
 
 The right choice depends on what pushed you away from Trigger.dev:
 
-- Choose Kitaru when you run Python agents and need to replay a chosen checkpoint with one changed input, model, or tool result.
 - If the blocker is language, Inngest is the shortest move. First-party Python, memoized steps, and an event-driven model that will feel familiar coming from Trigger.dev.
 - Suppose durability extends across services, choose Temporal or Restate. Temporal for depth and reset-to-event-ID, Restate for six SDK languages and pricing you can actually forecast.
 - If you are already in LangChain, LangGraph with LangSmith Deployment. Just price in that a fork re-executes every node downstream of it.
 
-Every option on this list, except Kitaru, treats replay as a recovery mechanism. That design works for background jobs, but agent debugging requires holding a recorded trajectory fixed, changing one model or one retrieved value, and comparing.
+Choose [Kitaru](https://www.zenml.io/product/kitaru) when you want to turn real production agent sessions into repeatable tests, then compare agent changes against the same sessions with versioned evaluators.
 
-That is the gap [Kitaru](https://www.zenml.io/product/kitaru) was built for, and it is why its replay reads recorded checkpoints instead of re-executing them.
+Most tools on this list use replay mainly to recover or rerun workflow execution. Kitaru uses replay as an agent-testing primitive.
 
-Star the project on [GitHub](https://github.com/zenml-io/kitaru), read the [docs](https://docs.zenml.io/kitaru), or [book a demo](https://www.zenml.io/book-your-demo/kitaru) if your team needs a managed control plane through ZenML Pro.
+Star the project on [GitHub](https://github.com/zenml-io/kitaru), read the [docs](https://docs.zenml.io/kitaru), or [book a demo](https://cal.com/zenml/kitaru-product-demo) if your team needs a managed control plane through ZenML Pro.
