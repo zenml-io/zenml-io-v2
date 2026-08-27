@@ -366,7 +366,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 23,
     notes:
-      "Two-column form collapses at 768. The trailing chip group renders outside the dl (hr + bare term/value div) — reproducing the one live consumer's actual DOM, not the idealized single-dl shape. Label color (zenml-500) and the 5-icon set are only proven against that one consumer (CaseStudySidebar) so far.",
+      "The spaced frame: items separated by vertical space, brand-purple terms. Two-column form collapses at 768. The trailing chip group renders outside the dl (hr + bare term/value div) — reproducing CaseStudySidebar's actual DOM, not the idealized single-dl shape. This entry stages the spaced frame; data-display.description-list-divided stages the divided one. The zenml-500 term color and the 5-icon set are proven only against CaseStudySidebar.",
     contentShape: {
       minItems: 1,
       maxItems: 6,
@@ -388,6 +388,70 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
         term: "Use Cases",
         chips: ["Fraud detection", "Forecasting"],
       },
+    },
+  },
+  {
+    id: "data-display.description-list-divided",
+    kind: "template",
+    componentPath: "src/components/templates/DescriptionList.astro",
+    collectionBound: true,
+    variantAxes: ["item count", "value kind", "chip tone"],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 23,
+    notes:
+      "The divided frame: hairline-separated bands with their own inset padding, muted gray terms (the frame carries the term colour — there is no separate tone axis), tighter term-to-value gap, and no icon rows — the type contract makes an icon a compile error here, since the band drops the flex row that would give it a gap. Stages the four value kinds the spaced frame has no consumer for: identifier (monospaced id plus hint), entries (named sub-rows), html (markup authored in content), and chips in two tones. The host card owns the surrounding radius and background. Every band carries the same first/last padding step, where the markup it replaces put the opening step only on the first row and the closing step only on the tags row. Those agree for as long as tags is the last band; a project without tags gains 4px under its final band, which is the tidier result rather than a regression.",
+    contentShape: {
+      minItems: 1,
+      maxItems: 7,
+      overflow:
+        "The list grows with no cap; the live project sidebar draws seven bands — project, id, repository, pipelines, stack, tools, tags.",
+    },
+    demoProps: {
+      frame: "divided",
+      items: [
+        {
+          term: "Project",
+          value: { kind: "text", text: "Retail Forecast" },
+        },
+        {
+          term: "Project ID",
+          value: {
+            kind: "identifier",
+            text: "retail-forecast",
+            note: "Use this id to create a new project in ZenML",
+          },
+        },
+        {
+          term: "Pipelines",
+          value: {
+            kind: "entries",
+            entries: [
+              {
+                name: "training",
+                description: "Trains and evaluates the forecasting model.",
+              },
+              { name: "inference" },
+            ],
+          },
+        },
+        {
+          term: "Recommended Stack",
+          value: {
+            kind: "html",
+            html: "<ul><li><strong>Orchestrator:</strong> Kubernetes</li><li><strong>Registry:</strong> MLflow</li></ul>",
+          },
+        },
+        {
+          term: "Tools",
+          value: { kind: "chips", chips: ["zenml", "mlflow"], tone: "neutral" },
+        },
+        {
+          term: "Tags",
+          value: { kind: "chips", chips: ["time-series"], tone: "brand" },
+        },
+      ],
     },
   },
   {
@@ -628,12 +692,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 26,
     notes:
-      "Image-free by ruling (#63). Renders only the items arrangement (grid or list) — the six live surfaces keep their own heading treatments and section chrome, so 'More like this' as the one sitewide heading, card.hex-corner on grid cards, and the bind-separator-to-following-token meta form are the new-brand cutover states, not this parity build. The live parity build keeps per-surface headings, hex-corner-free cards, and free-standing meta separators (a wrap leaves the dot at the line end).",
+      "Image-free by ruling (#63). Renders only the items arrangement (grid or list) — the seven live surfaces keep their own heading treatments and section chrome, so 'More like this' as the one sitewide heading, card.hex-corner on grid cards, and the bind-separator-to-following-token meta form are the new-brand cutover states, not this parity build. The live parity build keeps per-surface headings, hex-corner-free cards, and free-standing meta separators (a wrap leaves the dot at the line end).",
     contentShape: {
       minItems: 1,
-      maxItems: 3,
+      maxItems: 4,
       overflow:
-        "All six live surfaces cap related items at 3; the sidebar thumbnail list has no observed cap.",
+        "Six surfaces cap related items at 3; the case-study rail is uncapped — it lists every sibling in the collection, four today. The sidebar thumbnail list has no observed cap either.",
     },
     demoProps: {
       items: [
