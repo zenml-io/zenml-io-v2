@@ -25,7 +25,7 @@ Camunda is a process orchestration and workflow automation platform for teams al
 
 But honestly, BPMN to an agent now feels like what Markdown is to an LLM. It struggles with modern agentic AI workflows that often start in a Python file. So when you use Camunda for work that’s closer to agent runtime control or involves chaotic back-and-forth loops, it feels less native for the process.
 
-For this article, we reviewed and picked the best Camunda alternatives that fit ML engineers and Python developers building complex agents with retries, approvals, and long-running execution.
+For this article, we reviewed and picked the best Camunda alternatives that fit AI and ML engineers and Python developers building complex agents with retries, approvals, and long-running execution.
 
 ## A Quick Overview of the Best Camunda Alternatives
 
