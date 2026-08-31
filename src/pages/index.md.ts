@@ -70,7 +70,7 @@ export function GET(): Response {
     joinMarkdownSections(
       "## Main CTAs",
       markdownCtaList([
-        HOMEPAGE_UNIFIED_HERO.primaryCta,
+        ...HOMEPAGE_UNIFIED_HERO.productCtas,
         HOMEPAGE_UNIFIED_HERO.secondaryCta,
         HOMEPAGE_UNIFIED_FINAL_CTA.primaryCta,
         HOMEPAGE_UNIFIED_FINAL_CTA.secondaryCta,

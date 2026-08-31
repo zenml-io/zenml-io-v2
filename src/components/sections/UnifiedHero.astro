@@ -18,7 +18,7 @@ const {
   headlineAccent,
   headlineSuffix,
   subtitle,
-  primaryCta,
+  productCtas,
   secondaryCta,
 } = HOMEPAGE_UNIFIED_HERO;
 const headline = `${headlinePrefix}${headlineAccent}${headlineSuffix}`;
@@ -34,9 +34,16 @@ const headline = `${headlinePrefix}${headlineAccent}${headlineSuffix}`;
         {subtitle}
       </p>
       <div class="mt-8 flex flex-wrap justify-center gap-4">
-        <Button href={primaryCta.href} size="lg" dataAnalytics="Home-Hero-Signup">
-          {primaryCta.label}
-        </Button>
+        {productCtas.map((cta) => (
+          <Button
+            href={cta.href}
+            variant={cta.variant ?? "primary"}
+            size="lg"
+            dataAnalytics={cta.analytics}
+          >
+            {cta.label}
+          </Button>
+        ))}
         <Button href={secondaryCta.href} variant="secondary" size="lg">
           {secondaryCta.label}
         </Button>
