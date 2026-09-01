@@ -28,7 +28,8 @@
  */
 
 import type { Surface } from "./analytics";
-import { KITARU_CLOUD_PRICE, KITARU_LINKS } from "./productKitaru";
+import { productSignupCtas } from "./productCtas";
+import { KITARU_CLOUD_PRICE } from "./productKitaru";
 
 export const HOMEPAGE_UNIFIED_SEO = {
   title: "ZenML — The unified layer for ML and AI",
@@ -41,6 +42,12 @@ export const HOMEPAGE_UNIFIED_SEO = {
 /* Hero                                                                    */
 /* ---------------------------------------------------------------------- */
 
+/** One signup button per product, labelled by what you do there. */
+const HERO_PRODUCT_CTAS = productSignupCtas(
+  { zenml: "Orchestrate workflows", kitaru: "Diagnose agents" },
+  "Home-Hero-Signup",
+);
+
 export const HOMEPAGE_UNIFIED_HERO = {
   headlinePrefix: "The unified layer for ",
   headlineAccent: "ML and AI",
@@ -51,14 +58,11 @@ export const HOMEPAGE_UNIFIED_HERO = {
    * the buyer who's worried about vendor lock-in.
    *
    * Notion feedback (item 1): subtitle shortened to the single crisp sentence.
-   * Notion feedback (item 2): CTAs → "Book a demo" primary, "Read Docs" secondary.
    */
   subtitleLead: "Built for engineers, ready for enterprise.",
   subtitle:
     "Replayable agent evals with Kitaru. Reproducible ML pipelines with ZenML. One platform, on the infrastructure you already use.",
-  /** The site's single primary CTA is signup. */
-  primaryCta: KITARU_LINKS.signup,
-  secondaryCta: { label: "Read Docs", href: "/docs" },
+  productCtas: HERO_PRODUCT_CTAS,
 } as const;
 
 /* ---------------------------------------------------------------------- */

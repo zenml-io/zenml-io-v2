@@ -6,6 +6,15 @@
  * design pass (Zuri).
  */
 
+/** Canonical ZenML-side links — counterpart to KITARU_LINKS in productKitaru.ts (separate cloud apps, Aug 2026). */
+export const ZENML_LINKS = {
+  signup: {
+    label: "Sign up free",
+    href: "https://cloud.zenml.io",
+  },
+  demo: { label: "Book a demo", href: "/book-your-demo" },
+} as const;
+
 export const PRODUCT_ZENML_SEO = {
   title: "ZenML — The MLOps layer for your existing stack",
   description:
@@ -20,11 +29,9 @@ export const PRODUCT_ZENML_HERO = {
   subtitle:
     "Orchestrate ML pipelines from your laptop to Kubernetes, Vertex, SageMaker, and AzureML. Reproducible artifacts, model registry, and a composable stack — without vendor lock-in.",
   installCmd: "pip install zenml",
-  primaryCta: { label: "Book a demo", href: "/book-your-demo" },
-  secondaryCta: {
-    label: "Read Docs",
-    href: "/docs",
-  },
+  // Signup-first for parity with the Kitaru landing.
+  primaryCta: ZENML_LINKS.signup,
+  secondaryCta: ZENML_LINKS.demo,
 } as const;
 
 export const PRODUCT_ZENML_BENEFITS = {
@@ -48,7 +55,7 @@ export const PRODUCT_ZENML_BENEFITS = {
 export const PRODUCT_ZENML_FINAL_CTA = {
   headline: "Ship ML pipelines, not infrastructure plumbing.",
   body: "Start with the open-source SDK, scale to managed when you need governance and a hosted control plane.",
-  primaryCta: { label: "Book a demo", href: "/book-your-demo" },
-  secondaryCta: { label: "Read Docs", href: "/docs" },
+  primaryCta: ZENML_LINKS.signup,
+  secondaryCta: ZENML_LINKS.demo,
   installCmd: "pip install zenml",
 } as const;

@@ -18,6 +18,7 @@ import {
   KITARU_TRIAL_DAYS,
   KITARU_VS_OBSERVABILITY_ANSWER,
 } from "./productKitaru";
+import { ZENML_LINKS } from "./productZenml";
 
 // ---------------------------------------------------------------------------
 // SEO
@@ -76,9 +77,9 @@ export const PRICING_PRO_INCLUSIONS = {
       ],
       learn: { label: "Learn about ZenML", href: "/product/zenml" },
       cta: {
-        label: "Book a demo",
-        href: "/book-your-demo",
-        analytics: "Pricing-Pro-Inclusions-ZenML-Demo",
+        label: ZENML_LINKS.signup.label,
+        href: ZENML_LINKS.signup.href,
+        analytics: "Pricing-Pro-Inclusions-ZenML-Signup",
       } as CtaLink,
     },
     {
