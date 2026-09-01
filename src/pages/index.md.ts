@@ -71,7 +71,6 @@ export function GET(): Response {
       "## Main CTAs",
       markdownCtaList([
         ...HOMEPAGE_UNIFIED_HERO.productCtas,
-        HOMEPAGE_UNIFIED_HERO.secondaryCta,
         HOMEPAGE_UNIFIED_FINAL_CTA.primaryCta,
         HOMEPAGE_UNIFIED_FINAL_CTA.secondaryCta,
       ]),

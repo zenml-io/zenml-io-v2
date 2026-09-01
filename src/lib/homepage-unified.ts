@@ -72,7 +72,6 @@ export const HOMEPAGE_UNIFIED_HERO = {
   subtitle:
     "Replayable agent evals with Kitaru. Reproducible ML pipelines with ZenML. One platform, on the infrastructure you already use.",
   productCtas: HERO_PRODUCT_CTAS,
-  secondaryCta: ZENML_LINKS.demo,
 } as const;
 
 /* ---------------------------------------------------------------------- */

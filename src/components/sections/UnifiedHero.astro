@@ -19,7 +19,6 @@ const {
   headlineSuffix,
   subtitle,
   productCtas,
-  secondaryCta,
 } = HOMEPAGE_UNIFIED_HERO;
 const headline = `${headlinePrefix}${headlineAccent}${headlineSuffix}`;
 ---
@@ -44,9 +43,6 @@ const headline = `${headlinePrefix}${headlineAccent}${headlineSuffix}`;
             {cta.label}
           </Button>
         ))}
-        <Button href={secondaryCta.href} variant="secondary" size="lg">
-          {secondaryCta.label}
-        </Button>
       </div>
     </div>
   </div>
