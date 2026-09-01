@@ -43,15 +43,20 @@ export const HOMEPAGE_UNIFIED_SEO = {
 /* Hero                                                                    */
 /* ---------------------------------------------------------------------- */
 
+/** `brand` picks the button colour: Kitaru renders in its orange via `.kitaru-brand-vars`. */
+export type HeroProductCta = CtaLink & { brand: "zenml" | "kitaru" };
+
 /** One signup button per sub-product — separate cloud apps (Aug 2026). */
-const HERO_PRODUCT_CTAS: readonly CtaLink[] = [
+const HERO_PRODUCT_CTAS: readonly HeroProductCta[] = [
   {
     ...ZENML_LINKS.signup,
+    brand: "zenml",
     label: "Sign up for ZenML",
     analytics: "Home-Hero-Signup-ZenML",
   },
   {
     ...KITARU_LINKS.signup,
+    brand: "kitaru",
     label: "Sign up for Kitaru",
     analytics: "Home-Hero-Signup-Kitaru",
   },
