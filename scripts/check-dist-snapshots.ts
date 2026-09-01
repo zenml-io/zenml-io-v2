@@ -35,8 +35,8 @@ import { pathToFileURL } from "node:url";
 import { load } from "cheerio";
 
 export const DIST_DIR = "dist/client";
-const SNAPSHOT_DIR = "tests/snapshots/rendered";
-const ACTUAL_DIR = ".cache/snapshots";
+export const SNAPSHOT_DIR = "tests/snapshots/rendered";
+export const ACTUAL_DIR = ".cache/snapshots";
 
 export function logResult(ok: boolean, message: string) {
   console.log(`   ${ok ? "✅" : "❌"} ${message}`);
