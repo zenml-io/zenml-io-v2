@@ -1,5 +1,6 @@
 ---
 import { HOMEPAGE_UNIFIED_HERO } from "../../lib/homepage-unified";
+import { brandButtonClass } from "../../lib/productCtas";
 import Button from "../Button.astro";
 
 /**
@@ -11,8 +12,7 @@ import Button from "../Button.astro";
  * TwoWorkspaces widget plays that role on the unified page).
  *
  * Reads from `HOMEPAGE_UNIFIED_HERO` in src/lib/homepage-unified.ts.
- * Both signup buttons are `primary`; the Kitaru one gets the shared
- * `.kitaru-brand-vars` override (global.css) so it renders orange.
+ * Both signup buttons are `primary`; `brandButtonClass` turns the Kitaru one orange.
  */
 
 const {
@@ -40,7 +40,7 @@ const headline = `${headlinePrefix}${headlineAccent}${headlineSuffix}`;
             href={cta.href}
             variant={cta.variant ?? "primary"}
             size="lg"
-            class={cta.brand === "kitaru" ? "kitaru-brand-vars" : undefined}
+            class={brandButtonClass(cta.brand)}
             dataAnalytics={cta.analytics}
           >
             {cta.label}

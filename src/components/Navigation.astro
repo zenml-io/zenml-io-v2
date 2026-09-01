@@ -7,13 +7,16 @@ import {
   KITARU_FALLBACK_STARS,
 } from "../lib/githubStars";
 import { getNonDraftLlmopsDatabaseCount } from "../lib/llmops";
+import type { BrandedCtaLink } from "../lib/marketingPageTypes";
 import {
   createNavDropdowns,
   isActivePath,
   NAV_BRAND_STYLES,
-  NAV_CTAS,
+  NAV_DOCS_CTA,
   NAV_LINKS,
+  NAV_SIGNUP_CTAS,
 } from "../lib/navigation";
+import { brandButtonClass } from "../lib/productCtas";
 import { KITARU_LINKS } from "../lib/productKitaru";
 import Button from "./Button.astro";
 /**
@@ -50,13 +53,18 @@ const starsRepoKey = isKitaruSurface ? "kitaru" : "zenml";
 const starsCountText = isKitaruSurface
   ? formatStars(KITARU_FALLBACK_STARS)
   : headerStarsFallback;
-// The docs button is ZenML-only: Kitaru surfaces keep a single signup CTA,
-// and /docs is a ZenML page (Kitaru docs live in the Docs dropdown).
-const docsCta = NAV_CTAS[0];
-const primaryCta = isKitaruSurface ? KITARU_LINKS.signup : NAV_CTAS[1];
-const primaryCtaAnalytics = isKitaruSurface
-  ? "Nav-Kitaru-Signup"
-  : "Nav-Book-Demo";
+// Kitaru surfaces keep a single Kitaru signup CTA (and no docs button, since
+// /docs is a ZenML page); every other surface gets one signup per product.
+const docsCta = NAV_DOCS_CTA;
+const signupCtas: readonly BrandedCtaLink[] = isKitaruSurface
+  ? [
+      {
+        ...KITARU_LINKS.signup,
+        brand: "kitaru",
+        analytics: "Nav-Kitaru-Signup",
+      },
+    ]
+  : NAV_SIGNUP_CTAS;
 const llmopsCaseStudyCount = await getNonDraftLlmopsDatabaseCount();
 const navDropdowns = createNavDropdowns({ llmopsCaseStudyCount });
 
@@ -429,14 +437,17 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
             {docsCta.label}
           </Button>
         )}
-        <Button
-          href={primaryCta.href}
-          variant="primary"
-          size="sm"
-          dataAnalytics={primaryCtaAnalytics}
-        >
-          {primaryCta.label}
-        </Button>
+        {signupCtas.map((cta) => (
+          <Button
+            href={cta.href}
+            variant="primary"
+            size="sm"
+            class={brandButtonClass(cta.brand)}
+            dataAnalytics={cta.analytics}
+          >
+            {cta.label}
+          </Button>
+        ))}
       </div>
 
       {/* Mobile menu button */}
@@ -545,15 +556,17 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
               {docsCta.label}
             </Button>
           )}
-          <Button
-            href={primaryCta.href}
-            variant="primary"
-            size="md"
-            class="w-full justify-center"
-            dataAnalytics={primaryCtaAnalytics}
-          >
-            {primaryCta.label}
-          </Button>
+          {signupCtas.map((cta) => (
+            <Button
+              href={cta.href}
+              variant="primary"
+              size="md"
+              class={["w-full justify-center", brandButtonClass(cta.brand)].filter(Boolean).join(" ")}
+              dataAnalytics={cta.analytics}
+            >
+              {cta.label}
+            </Button>
+          ))}
         </div>
       </nav>
     </div>

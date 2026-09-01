@@ -28,9 +28,8 @@
  */
 
 import type { Surface } from "./analytics";
-import type { CtaLink } from "./marketingPageTypes";
-import { KITARU_CLOUD_PRICE, KITARU_LINKS } from "./productKitaru";
-import { ZENML_LINKS } from "./productZenml";
+import { productSignupCtas } from "./productCtas";
+import { KITARU_CLOUD_PRICE } from "./productKitaru";
 
 export const HOMEPAGE_UNIFIED_SEO = {
   title: "ZenML — The unified layer for ML and AI",
@@ -43,24 +42,11 @@ export const HOMEPAGE_UNIFIED_SEO = {
 /* Hero                                                                    */
 /* ---------------------------------------------------------------------- */
 
-/** `brand` picks the button colour: Kitaru renders in its orange via `.kitaru-brand-vars`. */
-export type HeroProductCta = CtaLink & { brand: "zenml" | "kitaru" };
-
-/** One signup button per sub-product — separate cloud apps (Aug 2026). */
-const HERO_PRODUCT_CTAS: readonly HeroProductCta[] = [
-  {
-    ...ZENML_LINKS.signup,
-    brand: "zenml",
-    label: "Sign up for ZenML",
-    analytics: "Home-Hero-Signup-ZenML",
-  },
-  {
-    ...KITARU_LINKS.signup,
-    brand: "kitaru",
-    label: "Sign up for Kitaru",
-    analytics: "Home-Hero-Signup-Kitaru",
-  },
-];
+/** One signup button per product, labelled by what you do there. */
+const HERO_PRODUCT_CTAS = productSignupCtas(
+  { zenml: "Run your first pipeline", kitaru: "Replay your first trace" },
+  "Home-Hero-Signup",
+);
 
 export const HOMEPAGE_UNIFIED_HERO = {
   headlinePrefix: "The unified layer for ",

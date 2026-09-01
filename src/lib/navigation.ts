@@ -2,15 +2,17 @@
  * Navigation data — post-Kitaru-merge structure.
  *
  * See MERGE_PLAN.md for the IA decisions. Top nav:
- *   Product ▾    Docs ▾    Pricing    Blog    Case Studies ▾
+ *   Product ▾    Docs ▾    Pricing    Blog    Book a demo    Case Studies ▾
  *
  * Note: dropdowns render before direct links, so the visual order is
- *   Product ▾ Docs ▾ Case Studies ▾ | Pricing Blog
+ *   Product ▾ Docs ▾ Case Studies ▾ | Pricing Blog Book a demo
  * — which is standard practice (dropdowns clustered left).
  *
  * Compare is not in the top nav; it stays reachable via the footer's
  * "All comparisons" link.
  */
+
+import { productSignupCtas } from "./productCtas";
 
 export interface NavLink {
   label: string;
@@ -233,16 +235,21 @@ export function createNavDropdowns({
 export const NAV_LINKS: NavLink[] = [
   { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
+  { label: "Book a demo", href: "/book-your-demo" },
 ];
 
 // ---------------------------------------------------------------------------
 // CTA Buttons
 // ---------------------------------------------------------------------------
 
-export const NAV_CTAS: NavLink[] = [
-  { label: "Read Docs", href: "/docs" },
-  { label: "Book a demo", href: "/book-your-demo" },
-];
+/** ZenML-only: /docs is a ZenML page (Kitaru docs live in the Docs dropdown). */
+export const NAV_DOCS_CTA: NavLink = { label: "Read Docs", href: "/docs" };
+
+/** Compact per-product signup pair for ZenML/unified surfaces. */
+export const NAV_SIGNUP_CTAS = productSignupCtas(
+  { zenml: "Try ZenML", kitaru: "Try Kitaru" },
+  "Nav-Signup",
+);
 
 // ---------------------------------------------------------------------------
 // Helpers
