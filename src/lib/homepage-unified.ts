@@ -44,7 +44,7 @@ export const HOMEPAGE_UNIFIED_SEO = {
 
 /** One signup button per product, labelled by what you do there. */
 const HERO_PRODUCT_CTAS = productSignupCtas(
-  { zenml: "Orchestrate your first workflow", kitaru: "Diagnose your agent" },
+  { zenml: "Orchestrate workflows", kitaru: "Diagnose agents" },
   "Home-Hero-Signup",
 );
 
