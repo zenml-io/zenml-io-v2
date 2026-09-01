@@ -18,7 +18,7 @@ import { existsSync } from "node:fs";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { resolve, join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 import matter from "gray-matter";
 import satori from "satori";
@@ -51,7 +51,7 @@ interface CompareEntry {
   frontmatter: Frontmatter;
 }
 
-async function loadFonts() {
+export async function loadFonts() {
   return Promise.all(
     FONT_SPECS.map(async (spec) => {
       const path = join(
@@ -69,7 +69,7 @@ async function loadFonts() {
   );
 }
 
-async function loadEntries(filterSlugs: string[] | null): Promise<CompareEntry[]> {
+export async function loadEntries(filterSlugs: string[] | null): Promise<CompareEntry[]> {
   const files = await readdir(COMPARE_DIR);
   const entries: CompareEntry[] = [];
   for (const file of files) {
@@ -85,7 +85,7 @@ async function loadEntries(filterSlugs: string[] | null): Promise<CompareEntry[]
 
 type Font = Awaited<ReturnType<typeof loadFonts>>[number];
 
-async function renderJpeg(entry: CompareEntry, fonts: Font[]): Promise<Buffer> {
+export async function renderJpeg(entry: CompareEntry, fonts: Font[]): Promise<Buffer> {
   const { competitor, cardSubtitle } = entry.frontmatter;
   if (!competitor) throw new Error(`${entry.slug}: missing frontmatter.competitor`);
   if (!cardSubtitle) throw new Error(`${entry.slug}: missing frontmatter.cardSubtitle`);
@@ -167,7 +167,11 @@ async function main(): Promise<void> {
   }
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+// Only run when invoked directly (`pnpm og:compare`); `check-og-golden.ts`
+// imports the pipeline above without rendering every card.
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}
