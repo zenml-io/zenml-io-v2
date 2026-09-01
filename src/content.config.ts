@@ -504,31 +504,21 @@ const mlopsDatabaseSchema = z.object({
  *   ctaHeadline, learnMoreUrl, seoDescription, openGraphImage
  */
 /**
- * Compare value section schema (layout08 two-column blocks)
- * 3 per category — pulled from compareDefaults.ts if not in frontmatter
+ * Two-column value section. Shared by feature pages, `/vs/*` and the
+ * comparison pages, so it is defined here, above the first consumer.
  */
-const compareValueSectionSchema = z.object({
+const valueBlockSchema = z.object({
+  kind: z.literal("value"),
   title: z.string(),
-  bullets: z.array(z.string()),
+  body: z.string().optional(),
+  bullets: z.array(z.string()).optional(),
   image: imageSchema.optional(),
-  imageSide: z.enum(["left", "right"]).default("right"),
+  imageSide: z.enum(["left", "right"]).optional(),
 });
 
-/**
- * Compare code comparison schema (side-by-side code blocks)
- * Extracted from markdown body fenced code blocks
- */
-const compareCodeComparisonSchema = z.object({
-  zenmlCode: z.string(),
-  zenmlLanguage: z.string().default("python"),
-  toolCode: z.string(),
-  toolLanguage: z.string().default("python"),
-});
-
-/**
- * Compare final CTA schema (rich dark/gradient CTA at page bottom)
- */
-const compareFinalCtaSchema = z.object({
+/** Rich closing CTA, shared by `/vs/*` and the comparison pages. */
+const vsCta02BlockSchema = z.object({
+  kind: z.literal("cta02"),
   headline: z.string(),
   bullets: z.array(z.string()).default([]),
   primaryCta: ctaSchema,
@@ -536,12 +526,111 @@ const compareFinalCtaSchema = z.object({
   image: imageSchema.optional(),
 });
 
+// ---------------------------------------------------------------------------
+// Shared comparison block pool (Wave 3 PR3)
+//
+// One union backs both `/compare/zenml-vs-*` and `/vs/*`, so the two families
+// can render through a single template. The kinds below are the ones the
+// compare pages need; the `/vs` pages keep their existing `intro`,
+// `relatedCompare` and inline `testimonial` kinds and share `value` + `cta02`.
+//
+// `quote` is a slug reference (the compare entries already carry one) while
+// `/vs`'s `testimonial` inlines its copy — they render the same component from
+// different sources, so they stay separate kinds rather than one widened bag.
+// ---------------------------------------------------------------------------
+
+const compareQuoteBlockSchema = z.object({
+  kind: z.literal("quote"),
+  quote: slugReference("quotes", referenceSlugSets.quotes),
+});
+
+const compareFeatureTableBlockSchema = z.object({
+  kind: z.literal("featureTable"),
+  tableHtml: z.string(),
+});
+
+const compareCodeComparisonBlockSchema = z.object({
+  kind: z.literal("codeComparison"),
+  zenmlCode: z.string(),
+  zenmlLanguage: z.string().default("python"),
+  toolCode: z.string(),
+  toolLanguage: z.string().default("python"),
+});
+
+const compareStrategyCtaBlockSchema = z.object({
+  kind: z.literal("strategyCta"),
+  headline: z.string(),
+  advantages: slugReferenceArray("advantages", referenceSlugSets.advantages),
+});
+
+/**
+ * The related-posts rail. Carries only its own chrome: the rail always renders
+ * the three most recent posts, resolved at render time. There is deliberately
+ * no way to pin specific posts — materialising today's three would freeze 25
+ * rails and rot silently.
+ *
+ * Both strings are REQUIRED for the same reason as `showdown` below.
+ */
+const compareBlogRailBlockSchema = z.object({
+  kind: z.literal("blogRail"),
+  eyebrow: z.string(),
+  headline: z.string(),
+});
+
+/**
+ * The sibling-comparison rail ("showdown"). Items are computed from the
+ * collection at render time, so the block carries only its own chrome.
+ *
+ * Both strings are REQUIRED: they vary per category, so a renderer that had to
+ * default them would have to invent copy, and the wrong category's wording
+ * would ship with no error. Making them required moves that into `astro check`.
+ */
+const compareShowdownBlockSchema = z.object({
+  kind: z.literal("showdown"),
+  eyebrow: z.string(),
+  headline: z.string(),
+});
+
+const comparisonBlockSchema = z.discriminatedUnion("kind", [
+  valueBlockSchema,
+  compareQuoteBlockSchema,
+  compareFeatureTableBlockSchema,
+  compareCodeComparisonBlockSchema,
+  compareStrategyCtaBlockSchema,
+  compareShowdownBlockSchema,
+  compareBlogRailBlockSchema,
+  vsCta02BlockSchema,
+]);
+
 const compareSchema = z.object({
   title: z.string(),
   slug: z.string(),
   draft: z.boolean().default(false),
 
-  // VS page-specific fields (original)
+  /**
+   * Ordered page body — the whole page. Required: the template renders from
+   * `blocks` exclusively, so an optional one would let an entry build green
+   * and ship a page with nothing on it but a hero.
+   */
+  blocks: z.array(comparisonBlockSchema).min(1),
+
+  /**
+   * Hero, materialised by the conversion (CTAs were never set per entry).
+   * `headline` is required because the hero component requires it and the
+   * conversion always resolves one; `deck` collapses when absent.
+   */
+  hero: z.object({
+    headline: z.string(),
+    deck: z.string().optional(),
+    primaryCta: ctaSchema,
+    secondaryCta: ctaSchema.optional(),
+  }),
+
+  /**
+   * Tool identity. Kept top-level rather than folded into `hero` because the
+   * `/vs` showdown rails and `getStaticPaths` read them off the collection
+   * without rendering the page.
+   */
   toolName: z.string().optional(),
   toolIcon: imageSchema.optional(),
   category: z.string().optional(),
@@ -549,36 +638,14 @@ const compareSchema = z.object({
     "integration-types",
     referenceSlugSets["integration-types"],
   ).optional(),
-  advantages: slugReferenceArray("advantages", referenceSlugSets.advantages),
-  quote: slugReference("quotes", referenceSlugSets.quotes).optional(),
-  headline: z.string().optional(),
-  heroText: z.string().optional(),
-  ctaHeadline: z.string().optional(),
-  learnMoreUrl: z.url().optional(),
+
+  /**
+   * SEO inputs that predate the `seo:` block. Three entries (alteryx, dataiku,
+   * domino-data-lab) have no `seo:` block at all and take their description
+   * and card image from exactly these two, so neither is retired.
+   */
   seoDescription: z.string().optional(),
   openGraphImage: imageSchema.optional(),
-
-  // Hero CTA overrides (defaults: Book a demo + Learn More → #feature-comparison)
-  heroPrimaryCta: ctaSchema.optional(),
-  heroSecondaryCta: ctaSchema.optional(),
-
-  // Value proposition sections (3 per category, from compareDefaults.ts if absent)
-  valueSections: z.array(compareValueSectionSchema).optional(),
-
-  // Code comparison (extracted from body fenced code blocks)
-  codeComparison: compareCodeComparisonSchema.optional(),
-
-  // Feature comparison table HTML (extracted from body)
-  featureTableHtml: z.string().optional(),
-
-  // Strategy CTA headline override (default from category in compareDefaults.ts)
-  strategyCtaHeadline: z.string().optional(),
-
-  // Final rich CTA (defaults from compareDefaults.ts if absent)
-  finalCta: compareFinalCtaSchema.optional(),
-
-  // Related blog posts (manual slugs; auto-resolved from recent posts if omitted)
-  relatedBlogSlugs: z.array(z.string()).optional(),
 
   // SEO & Webflow
   seo: seoSchema,
@@ -719,15 +786,6 @@ const featureHeroSchema = z.object({
   secondaryCta: ctaSchema.optional(),
 });
 
-const valueBlockSchema = z.object({
-  kind: z.literal("value"),
-  title: z.string(),
-  body: z.string().optional(),
-  bullets: z.array(z.string()).optional(),
-  image: imageSchema.optional(),
-  imageSide: z.enum(["left", "right"]).optional(),
-});
-
 const complianceBannerBlockSchema = z.object({
   kind: z.literal("complianceBanner"),
   eyebrow: z.string().optional(),
@@ -843,15 +901,6 @@ const vsRelatedCompareBlockSchema = z.object({
   kind: z.literal("relatedCompare"),
   eyebrow: z.string().optional(),
   headline: z.string().optional(),
-});
-
-const vsCta02BlockSchema = z.object({
-  kind: z.literal("cta02"),
-  headline: z.string(),
-  bullets: z.array(z.string()).default([]),
-  primaryCta: ctaSchema,
-  secondaryCta: ctaSchema.optional(),
-  image: imageSchema.optional(),
 });
 
 /**

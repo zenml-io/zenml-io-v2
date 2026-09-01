@@ -82,6 +82,15 @@ export interface TemplateEntry {
   readonly paperPage: number;
   readonly notes?: string;
   /**
+   * Set `false` for an entry the styleguide catalogues but must not render a
+   * live stage for. Two cases need it: a page-level template that renders its
+   * own document (staging it would nest a whole page inside the styleguide),
+   * and a component outside `TemplateStage`'s module glob, which would
+   * otherwise show its "no file resolves" error despite the file existing.
+   * Absence means stage it, so this never silently hides a real template.
+   */
+  readonly stage?: false;
+  /**
    * Renders an items[] collection; must declare `contentShape` once built.
    * True for a template that pours an array of CMS/data-driven items into a
    * layout (a card grid, a rail, a table body) — false/omitted for a
@@ -1038,6 +1047,124 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
       default:
         '<div class="flex h-64 items-center justify-center rounded-md border border-gray-200 bg-gray-50 text-sm text-gray-500">widget slot (CalEmbed / ContactForm)</div>',
     },
+  },
+  // ---------------------------------------------------------------------------
+  // Comparison (Wave 3 PR3)
+  //
+  // The ZenML-vs-X family: 25 `/compare/zenml-vs-*` routes and 3 `/vs/*`
+  // routes, all rendered by one blocks-driven page template. These components
+  // were extracted from live pages in parity mode rather than designed, so
+  // they have no Paper artboards, and they live outside `templates/` —
+  // `check:registry` does not require entries for them, but leaving the
+  // family out would make the site's largest page group invisible here.
+  //
+  // All carry `stage: false`: the page template renders its own document, and
+  // the section components sit outside TemplateStage's module glob.
+  // ---------------------------------------------------------------------------
+  {
+    id: "comparison.page",
+    kind: "template",
+    componentPath: "src/components/compare/_layouts/ComparisonPage.astro",
+    variantAxes: ["page family (compare | vs)", "block sequence"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Renders an ordered blocks[] for both families off one discriminated union keyed on the content collection. `/compare` uses tool hero, nine block kinds, and a gradient padded closing CTA; `/vs` uses the category hero, five kinds, a `<main>` wrapper, and an unpadded CTA. Page-level, so it is never stage-rendered.",
+  },
+  {
+    id: "comparison.hero-tool",
+    kind: "template",
+    componentPath: "src/components/sections/compare/CompareHero.astro",
+    variantAxes: ["tool icon present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "ZenML-vs-one-tool hero: paired product marks, headline, deck, two CTAs. Selected by the `compare` collection.",
+  },
+  {
+    id: "comparison.hero-category",
+    kind: "template",
+    componentPath: "src/components/sections/VsHero.astro",
+    variantAxes: ["eyebrow present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "ZenML-vs-a-category hero for the 3 `/vs/*` routes. Carries an eyebrow the tool hero has no slot for.",
+  },
+  {
+    id: "comparison.feature-table",
+    kind: "template",
+    componentPath: "src/components/sections/compare/CompareFeatureHeader.astro",
+    variantAxes: ["row count"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Two-column yes/no scorecard. Known debt, tracked for the rebrand: no table semantics (the visible header row is a sibling div), yes/no carried only by a CSS background-image on an empty span served from a third-party legacy CDN, and the reasoning lives in a hover-only tooltip.",
+  },
+  {
+    id: "comparison.code-compare",
+    kind: "template",
+    componentPath:
+      "src/components/sections/compare/CompareCodeComparison.astro",
+    variantAxes: ["language pair"],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Side-by-side ZenML/competitor code panes, highlighted at build time. Both languages default to python when a fence carries no tag.",
+  },
+  {
+    id: "comparison.strategy-cta",
+    kind: "template",
+    componentPath: "src/components/sections/compare/CompareStrategyCta.astro",
+    variantAxes: ["advantage count"],
+    tones: ["brand"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Mid-page tinted band: a headline plus advantage cards resolved from the advantages collection. Renders a three-column grid, so it reads thin at one or two advantages.",
+  },
+  {
+    id: "comparison.testimonial",
+    kind: "template",
+    componentPath: "src/components/sections/VsTestimonial.astro",
+    variantAxes: ["avatar present", "company logo present"],
+    tones: ["inverted"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Single dark-band quote. Fed by a slug reference on `/compare` and by inline block copy on `/vs`; 7 of the 25 compare entries have no quote and render no band at all.",
+  },
+  {
+    id: "comparison.final-cta",
+    kind: "template",
+    componentPath: "src/components/sections/VsCta02.astro",
+    variantAxes: ["variant (dark | gradient)", "padded"],
+    tones: ["default", "brand"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      'Closing CTA with bullets and an image. `/compare` passes variant="gradient" and padded; `/vs` passes neither — the two call-sites are deliberately different and must stay so.',
   },
 ];
 

@@ -1,0 +1,606 @@
+---
+/**
+ * ComparisonPage — blocks-driven ZenML-vs-X comparison detail template.
+ *
+ * Serves two page families off one `item.data.blocks[]` contract:
+ *
+ *   - `/compare/zenml-vs-*` (the `compare` collection) — renders sections
+ *     directly under the page layout.
+ *   - `/vs/*` (the `vs-pages` collection) — wraps the same section stack in
+ *     a `<main>`, and passes a precomputed `related` list built by its own
+ *     getStaticPaths (icon-link cards, category-scoped).
+ *
+ * Everything that differs between the families is derived from that
+ * discriminant, never passed in: the hero component, the block-kind set, the
+ * `<main>` wrapper, the closing CTA's variant, and the SEO fallback chain.
+ * `related` is the one genuine prop, because only the route knows it.
+ *
+ * `item` is a union over the two collections' own entry types, discriminated
+ * by Astro's `collection` field — that single check is what selects both the
+ * hero component and the block-kind set below, so an entry from the wrong
+ * family is a compile error, not a runtime guess.
+ *
+ * Block kinds:
+ *   value          -> FeatureValueSection (both families)
+ *   cta02          -> VsCta02 (both families; /compare renders it gradient and
+ *                     padded, /vs plain — a deliberate difference)
+ *   quote          -> VsTestimonial (compare only; slug resolved against the
+ *                     quotes collection)
+ *   testimonial    -> VsTestimonial (vs only; inline copy, not a slug ref —
+ *                     kept as a separate kind rather than merged with `quote`)
+ *   featureTable   -> CompareFeatureHeader (compare only)
+ *   codeComparison -> CompareCodeComparison (compare only)
+ *   strategyCta    -> CompareStrategyCta (compare only)
+ *   showdown       -> sibling-comparison rail (compare only; RelatedRail,
+ *                     logo-lockup cards, computed at render time)
+ *   blogRail       -> related-posts rail (compare only; RelatedRail,
+ *                     blog-card cards, the three most recent posts). Resolves
+ *                     to the same shape as `showdown` and shares its render
+ *                     arm — only the band and grid differ (RAIL_CHROME).
+ *   intro          -> a plain lede paragraph (vs only)
+ *   relatedCompare -> sibling-compare rail (vs only; RelatedRail, icon-link
+ *                     cards, passed in via the `related` prop rather than
+ *                     recomputed here)
+ *
+ * The hero comes from `item.data.hero` in both families, but the two hero
+ * shapes and components differ (`CompareHero` vs `VsHero`), so they aren't
+ * unified into one shape.
+ *
+ * The SEO title/description/card-image fallback chains genuinely differ
+ * between the two families (three compare entries fall back to flat
+ * `seoDescription`/`openGraphImage` fields that don't exist on `vs-pages`;
+ * `/vs` has no `openGraphImage` fallback at all) — reproduced separately
+ * per family rather than merged into one chain that happens to work for both.
+ *
+ * The showdown and blog rails carry only their own chrome (eyebrow/headline)
+ * in the block — their items are sibling and recent-post lookups resolved at
+ * render time, so a stale block can never freeze a rail's contents.
+ */
+import type { CollectionEntry } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getMainFeedPosts } from "../../../lib/blog";
+import { ZENML_ICON_URL } from "../../../lib/compareDefaults";
+import CompareCodeComparison from "../../sections/compare/CompareCodeComparison.astro";
+import CompareFeatureHeader from "../../sections/compare/CompareFeatureHeader.astro";
+import CompareHero from "../../sections/compare/CompareHero.astro";
+import CompareStrategyCta from "../../sections/compare/CompareStrategyCta.astro";
+import FeatureValueSection from "../../sections/FeatureValueSection.astro";
+import VsCta02 from "../../sections/VsCta02.astro";
+import VsHero from "../../sections/VsHero.astro";
+import VsTestimonial from "../../sections/VsTestimonial.astro";
+import SectionIntro from "../../system/SectionIntro.astro";
+import { SECTION_INTRO_PRESETS } from "../../system/sectionIntro.shared";
+import RelatedRail, {
+  type RelatedRailGridVariant,
+  type RelatedRailItem,
+} from "../../templates/RelatedRail.astro";
+
+// ---------------------------------------------------------------------------
+// Compare-family block types — narrowed from the `compare` collection's own
+// inferred type rather than restated, so a schema change here is a compile
+// error instead of a silent drift.
+// ---------------------------------------------------------------------------
+
+type CompareBlock = CollectionEntry<"compare">["data"]["blocks"][number];
+
+type ValueBlock = Extract<CompareBlock, { kind: "value" }>;
+type FeatureTableBlock = Extract<CompareBlock, { kind: "featureTable" }>;
+type CodeComparisonBlock = Extract<CompareBlock, { kind: "codeComparison" }>;
+type Cta02Block = Extract<CompareBlock, { kind: "cta02" }>;
+
+// `/vs`'s block union, narrowed the same way from the `vs-pages` collection.
+type VsBlock = CollectionEntry<"vs-pages">["data"]["blocks"][number];
+
+interface AdvantageItem {
+  title: string;
+  content: string;
+  image?: { url: string; alt?: string };
+}
+
+interface ResolvedQuoteBlock {
+  kind: "quote";
+  text: string;
+  author: string;
+  position?: string;
+  avatar?: { url: string; alt?: string };
+  companyLogo?: { url: string; alt?: string };
+}
+
+interface ResolvedStrategyCtaBlock {
+  kind: "strategyCta";
+  headline: string;
+  advantages: AdvantageItem[];
+}
+
+/**
+ * Both rails resolve to the same shape — chrome from the block, items looked
+ * up at render time — and differ only in the band they sit in, so they share
+ * one resolved type and one render arm (see RAIL_CHROME).
+ */
+interface ResolvedRailBlock {
+  kind: "showdown" | "blogRail";
+  /** Required: the copy varies per page, so there is nothing safe to default to. */
+  eyebrow: string;
+  headline: string;
+  items: RelatedRailItem[];
+}
+
+type ResolvedBlock =
+  | ValueBlock
+  | ResolvedQuoteBlock
+  | FeatureTableBlock
+  | CodeComparisonBlock
+  | ResolvedStrategyCtaBlock
+  | ResolvedRailBlock
+  | Cta02Block;
+
+/** The only thing that differs between the two rails. */
+const RAIL_CHROME: Record<
+  ResolvedRailBlock["kind"],
+  { section: string; gridVariant: RelatedRailGridVariant }
+> = {
+  showdown: {
+    section: "showdown-section bg-white py-16 sm:py-20",
+    gridVariant: "gap-sm-2col-sm",
+  },
+  blogRail: {
+    section:
+      "blog-section bg-gradient-to-b from-gray-50 to-white py-16 sm:py-20",
+    gridVariant: "gap-md-2col-sm",
+  },
+};
+
+// ---------------------------------------------------------------------------
+// Per-family render model — a discriminated union (tag: `family`) built once
+// in the script below, so the template's branch on `renderModel.family`
+// narrows every field with no `as` casts. `item`'s own union (discriminated
+// by Astro's `collection` field) drives which branch gets built; the model
+// exists as a separate step because the two `hero` shapes and block sets
+// genuinely differ and shouldn't be forced into one widened shape.
+// ---------------------------------------------------------------------------
+
+interface CompareRenderModel {
+  family: "compare";
+  toolName: string;
+  toolIcon: CollectionEntry<"compare">["data"]["toolIcon"];
+  hero: CollectionEntry<"compare">["data"]["hero"];
+  resolvedBlocks: ResolvedBlock[];
+}
+
+interface VsRenderModel {
+  family: "vs";
+  hero: CollectionEntry<"vs-pages">["data"]["hero"];
+  blocks: VsBlock[];
+  related: RelatedRailItem[];
+}
+
+type RenderModel = CompareRenderModel | VsRenderModel;
+
+interface Props {
+  item: CollectionEntry<"compare"> | CollectionEntry<"vs-pages">;
+  /**
+   * `/vs`'s precomputed relatedCompare rail items (icon-link cards), built
+   * once in its getStaticPaths from the compare collection's category.
+   * Passed in rather than recomputed here. Required whenever `item` is a
+   * `vs-pages` entry; unused for `compare` entries, which build their own
+   * showdown/blog rails internally at render time.
+   */
+  related?: RelatedRailItem[];
+}
+
+const { item, related } = Astro.props;
+
+// ---------------------------------------------------------------------------
+// Compare-family computed-at-render data (siblings/posts are looked up fresh
+// every render, never frozen into the block — see the module docblock).
+// ---------------------------------------------------------------------------
+
+async function buildShowdownItems(
+  current: CollectionEntry<"compare">,
+): Promise<RelatedRailItem[]> {
+  const allCompareItems = await getCollection(
+    "compare",
+    ({ data }) => !data.draft,
+  );
+  return allCompareItems
+    .filter(
+      (c) =>
+        c.data.category === current.data.category &&
+        c.data.slug !== current.data.slug,
+    )
+    .map((c) => {
+      const toolName = c.data.toolName || c.data.title.replace("ZenML vs ", "");
+      return {
+        kind: "logo-lockup",
+        href: `/compare/${c.data.slug}`,
+        title: `ZenML vs ${toolName}`,
+        leftImage: { src: ZENML_ICON_URL, alt: "ZenML" },
+        rightImage: c.data.toolIcon
+          ? { src: c.data.toolIcon.url, alt: c.data.toolIcon.alt || toolName }
+          : undefined,
+        rightInitial: toolName[0],
+      };
+    });
+}
+
+/** The three most recent posts. The rail has no way to pin specific ones. */
+async function buildBlogRailItems(): Promise<RelatedRailItem[]> {
+  const recentPosts = await getMainFeedPosts();
+  return recentPosts.slice(0, 3).map((p) => ({
+    kind: "blog-card",
+    href: `/blog/${p.data.slug}`,
+    title: p.data.title,
+    image: p.data.mainImage,
+    excerpt: p.data.seo?.description,
+  }));
+}
+
+async function resolveBlock(
+  compareItem: CollectionEntry<"compare">,
+  block: CompareBlock,
+): Promise<ResolvedBlock | null> {
+  switch (block.kind) {
+    case "value":
+    case "featureTable":
+    case "codeComparison":
+    case "cta02":
+      return block;
+
+    case "quote": {
+      const entry = await getEntry("quotes", block.quote);
+      return entry
+        ? {
+            kind: "quote",
+            text: entry.data.text,
+            author: entry.data.author,
+            position: entry.data.position,
+            avatar: entry.data.avatar,
+            companyLogo: entry.data.companyLogo,
+          }
+        : null;
+    }
+
+    case "strategyCta": {
+      const advantageEntries = await Promise.all(
+        block.advantages.map((slug) => getEntry("advantages", slug)),
+      );
+      const advantages = advantageEntries.flatMap((adv) =>
+        adv
+          ? [
+              {
+                title: adv.data.title,
+                content: adv.data.content,
+                image: adv.data.image,
+              },
+            ]
+          : [],
+      );
+      return { kind: "strategyCta", headline: block.headline, advantages };
+    }
+
+    case "showdown":
+    case "blogRail": {
+      const items =
+        block.kind === "showdown"
+          ? await buildShowdownItems(compareItem)
+          : await buildBlogRailItems();
+      // A rail with nothing to show collapses rather than rendering empty chrome.
+      return items.length > 0
+        ? {
+            kind: block.kind,
+            eyebrow: block.eyebrow,
+            headline: block.headline,
+            items,
+          }
+        : null;
+    }
+
+    default: {
+      // Exhaustive over the schema's union: a new block kind is a compile
+      // error here rather than a section that silently never renders.
+      const unreachable: never = block;
+      throw new Error(
+        `Unhandled comparison block kind: ${JSON.stringify(unreachable)}`,
+      );
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Build the render model. `item.collection` is the discriminant — narrowing
+// on it here (once) drives everything downstream, including SEO, so neither
+// branch has to re-derive it.
+// ---------------------------------------------------------------------------
+
+let renderModel: RenderModel;
+let seoTitle: string;
+let seoDescription: string | undefined;
+let ogTitle: string | undefined;
+let ogDescription: string | undefined;
+let ogImage: string | undefined;
+let canonical: string | undefined;
+
+if (item.collection === "compare") {
+  const compareItem = item;
+  const toolName =
+    compareItem.data.toolName ||
+    compareItem.data.title.replace("ZenML vs ", "");
+
+  const hero = compareItem.data.hero;
+
+  const resolvedBlocks = (
+    await Promise.all(
+      compareItem.data.blocks.map((b) => resolveBlock(compareItem, b)),
+    )
+  ).filter((b): b is ResolvedBlock => b !== null);
+
+  renderModel = {
+    family: "compare",
+    toolName,
+    toolIcon: compareItem.data.toolIcon,
+    hero,
+    resolvedBlocks,
+  };
+
+  seoTitle = compareItem.data.seo?.title || `${compareItem.data.title} - ZenML`;
+  seoDescription =
+    compareItem.data.seo?.description ||
+    compareItem.data.seoDescription ||
+    hero.deck;
+  ogTitle = compareItem.data.seo?.ogTitle;
+  ogDescription = compareItem.data.seo?.ogDescription;
+  ogImage =
+    compareItem.data.seo?.ogImage || compareItem.data.openGraphImage?.url;
+  canonical = compareItem.data.seo?.canonical;
+} else {
+  const vsItem = item;
+  if (!related) {
+    throw new Error(
+      `${vsItem.data.slug}: rendered as a vs-pages entry without a \`related\` prop — build it in getStaticPaths from the compare collection.`,
+    );
+  }
+
+  renderModel = {
+    family: "vs",
+    hero: vsItem.data.hero,
+    blocks: vsItem.data.blocks,
+    related,
+  };
+
+  seoTitle = vsItem.data.seo?.title || `${vsItem.data.hero.headline} - ZenML`;
+  seoDescription = vsItem.data.seo?.description || vsItem.data.hero.deck;
+  ogTitle = vsItem.data.seo?.ogTitle;
+  ogDescription = vsItem.data.seo?.ogDescription;
+  ogImage = vsItem.data.seo?.ogImage;
+  canonical = vsItem.data.seo?.canonical;
+}
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  ogImage={ogImage}
+  ogTitle={ogTitle}
+  ogDescription={ogDescription}
+  canonical={canonical}
+  surface="ml"
+>
+  {renderModel.family === "compare"
+    ? (() => {
+        const { hero, toolName, toolIcon, resolvedBlocks } = renderModel;
+        return (
+          <>
+            <CompareHero
+              toolName={toolName}
+              toolIcon={toolIcon}
+              headline={hero.headline}
+              deck={hero.deck}
+              primaryCta={hero.primaryCta}
+              secondaryCta={hero.secondaryCta}
+              zenmlIconUrl={ZENML_ICON_URL}
+            />
+
+            {resolvedBlocks.map((block) => {
+              switch (block.kind) {
+                case "value":
+                  return (
+                    <FeatureValueSection
+                      title={block.title}
+                      bullets={block.bullets}
+                      image={block.image}
+                      imageSide={block.imageSide}
+                    />
+                  );
+
+                case "quote":
+                  return (
+                    <VsTestimonial
+                      quote={block.text}
+                      name={block.author}
+                      title={block.position}
+                      avatar={block.avatar}
+                      companyLogo={block.companyLogo}
+                    />
+                  );
+
+                case "featureTable":
+                  return (
+                    <CompareFeatureHeader
+                      toolName={toolName}
+                      toolIcon={toolIcon}
+                      zenmlIconUrl={ZENML_ICON_URL}
+                      tableHtml={block.tableHtml}
+                    />
+                  );
+
+                case "codeComparison":
+                  return (
+                    <CompareCodeComparison
+                      toolName={toolName}
+                      toolIcon={toolIcon}
+                      zenmlIconUrl={ZENML_ICON_URL}
+                      zenmlCode={block.zenmlCode}
+                      toolCode={block.toolCode}
+                      zenmlLanguage={block.zenmlLanguage}
+                      toolLanguage={block.toolLanguage}
+                    />
+                  );
+
+                case "strategyCta":
+                  return (
+                    <CompareStrategyCta
+                      headline={block.headline}
+                      advantages={block.advantages}
+                    />
+                  );
+
+                case "showdown":
+                case "blogRail":
+                  return (
+                    <section class={RAIL_CHROME[block.kind].section}>
+                      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+                        <div class="text-center mb-10 fade-in-element">
+                          <SectionIntro
+                            eyebrow={block.eyebrow}
+                            heading={block.headline}
+                            classOverrides={{
+                              heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
+                              headingSpacing: "mt-3",
+                            }}
+                          />
+                        </div>
+                        <RelatedRail
+                          items={block.items}
+                          gridVariant={RAIL_CHROME[block.kind].gridVariant}
+                          reveal
+                        />
+                      </div>
+                    </section>
+                  );
+
+                case "cta02":
+                  return (
+                    <VsCta02
+                      headline={block.headline}
+                      bullets={block.bullets}
+                      primaryCta={block.primaryCta}
+                      secondaryCta={block.secondaryCta}
+                      image={block.image}
+                      variant="gradient"
+                      padded
+                    />
+                  );
+
+                default: {
+                  const unreachable: never = block;
+                  throw new Error(
+                    `Unhandled resolved block: ${JSON.stringify(unreachable)}`,
+                  );
+                }
+              }
+            })}
+          </>
+        );
+      })()
+    : (() => {
+        const { hero, blocks, related: relatedItems } = renderModel;
+        // `/vs` wraps its section stack in <main>; `/compare` never has.
+        return (
+          <main>
+            <VsHero
+              eyebrow={hero.eyebrow}
+              headline={hero.headline}
+              deck={hero.deck}
+              primaryCta={hero.primaryCta}
+              secondaryCta={hero.secondaryCta}
+            />
+
+            {blocks.map((block) => {
+              switch (block.kind) {
+                case "intro":
+                  return (
+                    <section class="bg-white py-8">
+                      <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+                        <p class="text-lg text-gray-600 leading-relaxed">
+                          {block.body}
+                        </p>
+                      </div>
+                    </section>
+                  );
+
+                case "value":
+                  return (
+                    <FeatureValueSection
+                      title={block.title}
+                      bullets={block.bullets}
+                      image={block.image}
+                      imageSide={block.imageSide}
+                    />
+                  );
+
+                case "testimonial":
+                  return (
+                    <VsTestimonial
+                      quote={block.quote}
+                      name={block.name}
+                      title={block.title}
+                      avatar={block.avatar}
+                      companyLogo={block.companyLogo}
+                    />
+                  );
+
+                case "relatedCompare":
+                  return (
+                    relatedItems.length > 0 && (
+                      <section class="bg-gray-50 py-16 sm:py-20">
+                        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                          {block.headline ? (
+                            <SectionIntro
+                              eyebrow={block.eyebrow}
+                              heading={block.headline}
+                              classOverrides={{
+                                eyebrow: SECTION_INTRO_PRESETS.cardEyebrow,
+                                heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
+                              }}
+                            />
+                          ) : (
+                            block.eyebrow && (
+                              <span class="text-xs font-semibold uppercase tracking-wider text-zenml-500">
+                                {block.eyebrow}
+                              </span>
+                            )
+                          )}
+                          <RelatedRail
+                            items={relatedItems}
+                            gridVariant="gap-sm-2col-sm"
+                            class="mt-space-md"
+                          />
+                        </div>
+                      </section>
+                    )
+                  );
+
+                case "cta02":
+                  return (
+                    <VsCta02
+                      headline={block.headline}
+                      bullets={block.bullets}
+                      primaryCta={block.primaryCta}
+                      secondaryCta={block.secondaryCta}
+                      image={block.image}
+                    />
+                  );
+
+                default: {
+                  const unreachable: never = block;
+                  throw new Error(
+                    `Unhandled /vs block: ${JSON.stringify(unreachable)}`,
+                  );
+                }
+              }
+            })}
+          </main>
+        );
+      })()}
+</BaseLayout>
