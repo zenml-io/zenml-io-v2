@@ -242,9 +242,6 @@ export const NAV_LINKS: NavLink[] = [
 // CTA Buttons
 // ---------------------------------------------------------------------------
 
-/** ZenML-only: /docs is a ZenML page (Kitaru docs live in the Docs dropdown). */
-export const NAV_DOCS_CTA: NavLink = { label: "Read Docs", href: "/docs" };
-
 /** Compact per-product signup pair for ZenML/unified surfaces. */
 export const NAV_SIGNUP_CTAS = productSignupCtas(
   { zenml: "Try ZenML", kitaru: "Try Kitaru" },

@@ -12,7 +12,6 @@ import {
   createNavDropdowns,
   isActivePath,
   NAV_BRAND_STYLES,
-  NAV_DOCS_CTA,
   NAV_LINKS,
   NAV_SIGNUP_CTAS,
 } from "../lib/navigation";
@@ -53,9 +52,8 @@ const starsRepoKey = isKitaruSurface ? "kitaru" : "zenml";
 const starsCountText = isKitaruSurface
   ? formatStars(KITARU_FALLBACK_STARS)
   : headerStarsFallback;
-// Kitaru surfaces keep a single Kitaru signup CTA (and no docs button, since
-// /docs is a ZenML page); every other surface gets one signup per product.
-const docsCta = NAV_DOCS_CTA;
+// Kitaru surfaces keep a single Kitaru signup CTA; every other surface gets
+// one signup per product. Docs live in the Docs dropdown, not the button row.
 const signupCtas: readonly BrandedCtaLink[] = isKitaruSurface
   ? [
       {
@@ -432,11 +430,6 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
             >{starsCountText}</span>
           </a>
         </div>
-        {!isKitaruSurface && (
-          <Button href={docsCta.href} variant="secondary" size="sm">
-            {docsCta.label}
-          </Button>
-        )}
         {signupCtas.map((cta) => (
           <Button
             href={cta.href}
@@ -551,11 +544,6 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
 
         {/* Mobile CTAs */}
         <div class:list={["mt-4 flex flex-col gap-2 pt-4 border-t border-gray-200", isKitaruSurface && "kitaru-brand-vars"]}>
-          {!isKitaruSurface && (
-            <Button href={docsCta.href} variant="secondary" size="md" class="w-full justify-center">
-              {docsCta.label}
-            </Button>
-          )}
           {signupCtas.map((cta) => (
             <Button
               href={cta.href}
