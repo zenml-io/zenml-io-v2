@@ -2,10 +2,10 @@
  * Navigation data — post-Kitaru-merge structure.
  *
  * See MERGE_PLAN.md for the IA decisions. Top nav:
- *   Product ▾    Docs ▾    Pricing    Blog    Book a demo    Case Studies ▾
+ *   Product ▾    Docs ▾    Pricing    Blog    Case Studies ▾
  *
  * Note: dropdowns render before direct links, so the visual order is
- *   Product ▾ Docs ▾ Case Studies ▾ | Pricing Blog Book a demo
+ *   Product ▾ Docs ▾ Case Studies ▾ | Pricing Blog
  * — which is standard practice (dropdowns clustered left).
  *
  * Compare is not in the top nav; it stays reachable via the footer's
@@ -235,7 +235,6 @@ export function createNavDropdowns({
 export const NAV_LINKS: NavLink[] = [
   { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
-  { label: "Book a demo", href: "/book-your-demo" },
 ];
 
 // ---------------------------------------------------------------------------
