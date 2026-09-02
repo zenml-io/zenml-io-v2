@@ -21,10 +21,10 @@ import { KITARU_INSTALL_CMD } from "./productKitaru";
 export const GET_STARTED_SEO = {
   title: "Get Started with ZenML or Kitaru | ZenML",
   description:
-    "Set up ZenML for ML and data pipelines, Kitaru for production agents — install, run locally, and bring both into the same workflow.",
+    "Set up ZenML to orchestrate AI workflows and Kitaru to diagnose your agents — install, run locally, and bring both into the same workflow.",
   ogTitle: "Get Started with ZenML or Kitaru",
   ogDescription:
-    "Set up ZenML for ML and data pipelines, Kitaru for production agents — install, run locally, and bring both into the same workflow.",
+    "Set up ZenML to orchestrate AI workflows and Kitaru to diagnose your agents — install, run locally, and bring both into the same workflow.",
   ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
@@ -185,7 +185,7 @@ if __name__ == "__main__":
   resources: {
     eyebrow: "Resources",
     headline: "Your Complete ZenML Learning Toolkit",
-    body: "Dive deeper into ZenML with comprehensive documentation, development tools, hands-on tutorials, and a thriving community of ML engineers ready to help you succeed.",
+    body: "Dive deeper into ZenML with comprehensive documentation, development tools, hands-on tutorials, and a thriving community of ML and AI engineers ready to help you succeed.",
     items: [
       {
         title: "Official Documentation",
@@ -210,7 +210,7 @@ if __name__ == "__main__":
       },
       {
         title: "Slack Community",
-        body: "Join thousands of ML engineers sharing knowledge and best practices.",
+        body: "Join thousands of ML and AI engineers sharing knowledge and best practices.",
         href: "/slack",
         external: false,
         color: "gray",

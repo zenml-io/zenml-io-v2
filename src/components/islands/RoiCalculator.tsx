@@ -24,7 +24,7 @@ interface SliderConfig {
 const SLIDERS: SliderConfig[] = [
   {
     id: "models",
-    label: "Number of ML models in production",
+    label: "Number of models or agents in production",
     min: 0,
     max: 500,
     step: 10,

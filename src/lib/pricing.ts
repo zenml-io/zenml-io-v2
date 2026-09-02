@@ -672,7 +672,7 @@ export const PRICING_FAQ_ZENML: FaqData = {
 // ---------------------------------------------------------------------------
 export const PRICING_STATS = {
   headline: "Trusted by 1,000s of members of top companies",
-  deck: "Join the ZenML Community and start improving your MLOps",
+  deck: "Join the ZenML Community and start improving your AI workflows",
   items: [
     { value: "1,000,000", label: "pipelines run in ZenML" },
     { value: "100,000", label: "pipelines run last month" },
@@ -740,7 +740,7 @@ export const PRICING_STATS = {
 // ---------------------------------------------------------------------------
 export const PRICING_FINAL_CTA = {
   headline: "Start deploying reproducible AI workflows today",
-  body: "Enterprise-grade MLOps platform trusted by thousands of companies in production.",
+  body: "Enterprise-grade AI orchestration platform trusted by thousands of companies in production.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",

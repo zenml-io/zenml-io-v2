@@ -10,10 +10,10 @@
 export const COMPANY_SEO = {
   title: "Company - ZenML",
   description:
-    "Meet the team behind ZenML. We're a young, dynamic team building the open-source MLOps framework trusted by ML engineers worldwide.",
+    "Meet the team behind ZenML. We're a young, dynamic team building the open-source AI orchestration framework trusted by ML and AI engineers worldwide.",
   ogTitle: "Company - ZenML",
   ogDescription:
-    "Meet the team behind ZenML. We're a young, dynamic team building the open-source MLOps framework.",
+    "Meet the team behind ZenML. We're a young, dynamic team building the open-source AI orchestration framework.",
   ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 

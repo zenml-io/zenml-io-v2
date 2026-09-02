@@ -23,7 +23,7 @@ export async function GET(): Promise<Response> {
     markdownPreamble({
       title: "Compare — ZenML and Kitaru vs. alternatives",
       description:
-        "Side-by-side comparisons of ZenML for MLOps and Kitaru for agent runtimes against other tools and platforms.",
+        "Side-by-side comparisons of ZenML for AI orchestration and Kitaru for agent evals against other tools and platforms.",
       canonicalPath: "/compare",
     }),
     joinMarkdownSections(
@@ -32,7 +32,7 @@ export async function GET(): Promise<Response> {
       "This first Markdown mirror summarizes the compare hub only. It does not create Markdown mirrors for every comparison detail page.",
     ),
     joinMarkdownSections(
-      "## MLOps comparisons — ZenML vs. other ML orchestrators and platforms",
+      "## AI orchestration comparisons — ZenML vs. other workflow orchestrators and platforms",
       markdownTable(
         ["Comparison", "Category", "Short description", "URL"],
         mlopsItems.map((item) => [

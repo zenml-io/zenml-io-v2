@@ -32,7 +32,7 @@ import { productSignupCtas } from "./productCtas";
 import { KITARU_CLOUD_PRICE } from "./productKitaru";
 
 export const HOMEPAGE_UNIFIED_SEO = {
-  title: "ZenML — The unified layer for ML and AI",
+  title: "ZenML — The unified layer for AI workflows and agents",
   description:
     "Orchestrate any AI workflow with ZenML. Diagnose and regression-test agents with Kitaru. One platform, on the infrastructure you already use.",
   surface: "unified" satisfies Surface,
@@ -50,7 +50,7 @@ const HERO_PRODUCT_CTAS = productSignupCtas(
 
 export const HOMEPAGE_UNIFIED_HERO = {
   headlinePrefix: "The unified layer for ",
-  headlineAccent: "ML and AI",
+  headlineAccent: "AI workflows and agents",
   headlineSuffix: "",
   /**
    * Lead phrase + body. Focus Lab's USP language transposed into hero

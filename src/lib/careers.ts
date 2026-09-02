@@ -65,8 +65,8 @@ export const CAREERS_WHY = {
       body: "We love what we do and want to share it with the world. Open-source is the best way to build software.",
     },
     {
-      title: "Set industry standards in MLOps",
-      body: "MLOps is still at the beginning and ZenML will be covering the whole ML Lifecycle. Make a difference!",
+      title: "Set industry standards in AI orchestration",
+      body: "AI orchestration is still at the beginning and ZenML will be covering the whole lifecycle, from training pipelines to agent evals. Make a difference!",
     },
     {
       title: "Become part of the core team",

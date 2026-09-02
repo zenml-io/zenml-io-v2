@@ -208,7 +208,7 @@ export function createNavDropdowns({
             {
               label: "Customer stories",
               href: "/case-studies",
-              description: "How teams ship ML and agents with ZenML",
+              description: "How teams ship AI workflows and agents with ZenML",
               icon: ICON_BUILDING,
             },
             {

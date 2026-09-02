@@ -12,10 +12,10 @@ import type { CtaLink } from "./marketingPageTypes";
 export const DEPLOYMENTS_SEO = {
   title: "Deployments - ZenML",
   description:
-    "Flexible deployment for your MLOps needs. Streamline your machine learning workflows with ZenML's adaptable deployment options.",
+    "Flexible deployment for your AI workflows. Run ZenML on our SaaS, in your cloud, or fully self-hosted.",
   ogTitle: "Deployments - ZenML",
   ogDescription:
-    "Flexible deployment for your MLOps needs. Streamline your ML workflows with ZenML.",
+    "Flexible deployment for your AI workflows. SaaS, your cloud, or self-hosted.",
   ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
@@ -23,8 +23,8 @@ export const DEPLOYMENTS_SEO = {
 // Hero
 // ---------------------------------------------------------------------------
 export const DEPLOYMENTS_HERO = {
-  headline: "Flexible Deployment for Your MLOps Needs",
-  deck: "Streamline your machine learning workflows with ZenML's adaptable deployment options. Whether you're experimenting locally or scaling to production, ZenML empowers you to orchestrate, manage, and deploy your models with ease.",
+  headline: "Flexible Deployment for Your AI Workflows",
+  deck: "Run ZenML wherever your AI workflows live. Whether you're experimenting locally or scaling to production, ZenML lets you orchestrate, manage, and deploy on our SaaS, in your cloud, or fully self-hosted.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",
@@ -122,7 +122,7 @@ export const DEPLOYMENTS_SCENARIOS = [
   {
     title: "Easily upgrade to ZenML Pro to unlock enterprise-grade features",
     bullets: [
-      "Best for teams and organizations looking to scale MLOps",
+      "Best for teams and organizations scaling AI workflows",
       "Pro adds on top of OSS with advanced functionality and enterprise controls",
       "Seamlessly upgrade to ZenML Pro from OSS with one-click",
     ],
@@ -173,7 +173,7 @@ export const DEPLOYMENTS_METHODS = [
 // ---------------------------------------------------------------------------
 export const DEPLOYMENTS_TABS = {
   eyebrow: "ZenML architecture",
-  headline: "Focus on What Matters - Your MLOps",
+  headline: "Focus on What Matters - Your Workflows",
   body: "ZenML is a metadata layer on top of your existing infrastructure, meaning all data and compute stays on your side.",
   tabs: [
     {
@@ -181,7 +181,7 @@ export const DEPLOYMENTS_TABS = {
       badge: "OSS",
       badgeVariant: "default" as const,
       description:
-        "A FastAPI-based server managing metadata of pipelines, artifacts, and stacks. Free with Apache 2.0 license, perfect for individual projects and small teams starting their MLOps journey.",
+        "A FastAPI-based server managing metadata of pipelines, artifacts, and stacks. Free with Apache 2.0 license, perfect for individual projects and small teams getting started.",
       image: {
         url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a0c2a2dd/deployment_diagram_1.png`,
         alt: "ZenML OSS deployment architecture showing two user environments with ZenML Client connecting to a centralized ZenML OSS Server, Dashboard, and MySQL Metadata Store.",
@@ -192,7 +192,7 @@ export const DEPLOYMENTS_TABS = {
       badge: "PRO",
       badgeVariant: "pro" as const,
       description:
-        "Fully managed ZenML deployment with enhanced collaboration features, RBAC, and enterprise support. Ideal for teams looking for a zero-maintenance MLOps solution.",
+        "Fully managed ZenML deployment with enhanced collaboration features, RBAC, and enterprise support. Ideal for teams looking for a zero-maintenance orchestration layer.",
       image: {
         url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a44cd000/deployment_diagram_2.png`,
         alt: "ZenML Pro Deployment architecture with control plane, identity provider, Pro Server, PostgreSQL, and two OSS Tenants with Pro Features.",
@@ -217,7 +217,7 @@ export const DEPLOYMENTS_TABS = {
     },
     {
       title: "Simplified workflow",
-      body: "Allows you to focus on your ML workflows without infrastructure management overhead.",
+      body: "Allows you to focus on your AI workflows without infrastructure management overhead.",
     },
     {
       title: "Scalable architecture",

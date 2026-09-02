@@ -15,11 +15,12 @@ import type {
 // SEO
 // ---------------------------------------------------------------------------
 export const PRO_SEO = {
-  title: "Managed MLOps for your Cloud - ZenML Pro",
+  title: "Managed AI orchestration for your cloud - ZenML Pro",
   description:
-    "Supercharge your MLOps with a fully-managed control plane. Forget the infrastructure setup and security concerns. Get a single pane of glass view into your entire organization.",
-  ogTitle: "Managed MLOps for your Cloud - ZenML Pro",
-  ogDescription: "Supercharge your MLOps with a fully-managed control plane.",
+    "Run your AI workflows and agent evals on a fully-managed control plane. Forget the infrastructure setup and security concerns. Get a single pane of glass view into your entire organization.",
+  ogTitle: "Managed AI orchestration for your cloud - ZenML Pro",
+  ogDescription:
+    "Run your AI workflows and agent evals on a fully-managed control plane.",
   ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
@@ -125,7 +126,7 @@ export const PRO_ONBOARDING = {
     },
     {
       title: "Seamless Infrastructure Setup",
-      body: "We handle the setup of your MLOps infrastructure, so you can focus on building exceptional models. Bring your own cloud!",
+      body: "We handle the setup of your orchestration infrastructure, so you can focus on building exceptional models and agents. Bring your own cloud!",
     },
     {
       title: "Production Ready",
@@ -186,7 +187,7 @@ export const PRO_FEATURES = [
   {
     eyebrow: "Speed",
     title: "Enterprise-Grade Support and Onboarding",
-    body: "Get access to our network of experts for advice on setting up your MLOps platform and onboarding onto ZenML.",
+    body: "Get access to our network of experts for advice on setting up your AI platform and onboarding onto ZenML.",
     learnMoreHref: "/features/enterprise-grade-support-and-onboarding",
     image: {
       url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/20f1bf87/features_onboarding.png`,
@@ -225,7 +226,7 @@ export const PRO_COMPLIANCE = {
   bannerHeadline: "We Take Security Seriously",
   bannerEyebrow: "ZenML is SOC2 and ISO 27001 Compliant",
   bannerBody:
-    "ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your ML workflows and data.",
+    "ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your AI workflows and data.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -250,7 +251,7 @@ export const PRO_OSS_GRID = {
     },
     {
       title: "Enhanced observability",
-      body: "ZenML Pro tenants have an enhanced dashboard with more features including a model control plane to view all your ML models, and the ability to trigger pipelines, do CI/CD and lots more.",
+      body: "ZenML Pro tenants have an enhanced dashboard with more features including a model control plane to view all your models, and the ability to trigger pipelines, do CI/CD and lots more.",
     },
   ] satisfies FeatureGridItem[],
   primaryCta: {
@@ -341,7 +342,7 @@ export const PRO_FAQ: FaqData = {
     {
       question: "What about data security and compliance?",
       answer:
-        'ZenML is designed architecturally in a way that <strong>no data</strong> flows through the actual ZenML Pro side, but remains inside your own cloud infrastructure behind your VPC. Only metadata is transferred to our servers (names of pipelines, models, statuses, metrics, etc), which we store encrypted at transit and at rest.<br><br>We are <strong>SOC2 compliant</strong>, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your ML workflows and data.<br><br>Please refer to our <a href="/terms-of-service">terms of service and privacy policy</a> for more details.',
+        'ZenML is designed architecturally in a way that <strong>no data</strong> flows through the actual ZenML Pro side, but remains inside your own cloud infrastructure behind your VPC. Only metadata is transferred to our servers (names of pipelines, models, statuses, metrics, etc), which we store encrypted at transit and at rest.<br><br>We are <strong>SOC2 compliant</strong>, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your AI workflows and data.<br><br>Please refer to our <a href="/terms-of-service">terms of service and privacy policy</a> for more details.',
     },
     {
       question: "How does ZenML Pro interface with my internal services?",

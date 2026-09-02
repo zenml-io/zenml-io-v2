@@ -16,7 +16,7 @@ export const ANNOUNCEMENT_BANNER = {
 /*  Hero                                                              */
 /* ------------------------------------------------------------------ */
 export const HERO = {
-  headline: "The single layer for ML and AI.",
+  headline: "The unified layer for AI workflows and agents.",
   subheadline:
     "Orchestrate ML and Agent workloads on your infrastructure. Modular, flexible, and open-source — always.",
   primaryCta: {
@@ -364,7 +364,7 @@ export const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
 
 /** Purple LLMOps banner between case study cards and testimonials */
 export const LLMOPS_BANNER = {
-  headline: "Track production ML and AI deployments across the industry",
+  headline: "Track production AI deployments across the industry",
   subtext: "See the LLMOps database →",
   href: "/llmops-database",
 };
@@ -415,12 +415,12 @@ export const FAQ = {
   items: [
     {
       question:
-        "What is the difference between ZenML and other machine learning orchestrators?",
+        "What is the difference between ZenML and other workflow orchestrators?",
       answer:
         'ZenML doesn\'t take an opinion on the orchestration layer. Start writing locally, deploy on any orchestrator. We support <a href="https://docs.zenml.io/stacks/orchestrators" class="text-zenml-500 underline">many orchestrators</a> natively and can be extended to work with <a href="https://docs.zenml.io/stacks/orchestrators/custom" class="text-zenml-500 underline">custom orchestrators</a>. Read more about how ZenML <a href="/vs/zenml-vs-orchestrators" class="text-zenml-500 underline">compares to orchestrators</a>.',
     },
     {
-      question: "Does ZenML integrate with my MLOps stack?",
+      question: "Does ZenML integrate with my existing stack?",
       answer:
         'Yes! ZenML supports <a href="/integrations/kubernetes" class="text-zenml-500 underline">Kubernetes</a>, <a href="/integrations/aws" class="text-zenml-500 underline">AWS</a>, <a href="/integrations/gcp-vertexai" class="text-zenml-500 underline">GCP Vertex AI</a>, <a href="/integrations/kubeflow" class="text-zenml-500 underline">Kubeflow</a>, <a href="/integrations/airflow" class="text-zenml-500 underline">Apache Airflow</a>, and many more. Artifact, secrets, and container storage for all major cloud providers.',
     },
@@ -435,7 +435,7 @@ export const FAQ = {
         'Kitaru is ZenML\'s agent experimentation platform. It records your agents\' real production runs as replayable executions. You can score a recording without ever running the agent again, or replay your real code against the recorded world — with one thing changed, like a model, tool, or prompt — to see what would have happened. Re-run a replay in CI and it becomes a regression test. Read more in the <a href="https://docs.zenml.io/kitaru" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">Kitaru docs</a>.',
     },
     {
-      question: "How can I build my MLOps/LLMOps platform using ZenML?",
+      question: "How can I build my AI platform using ZenML?",
       answer:
         'Start simple with our <a href="https://docs.zenml.io/user-guides" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">user guides</a>, then extend with experiment trackers, model deployers, model registries and more from the <a href="https://docs.zenml.io/stacks" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">stack components</a> library.',
     },
