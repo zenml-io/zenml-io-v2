@@ -34,7 +34,7 @@ import { KITARU_CLOUD_PRICE } from "./productKitaru";
 export const HOMEPAGE_UNIFIED_SEO = {
   title: "ZenML — Ship AI you can trust",
   description:
-    "ZenML orchestrates your training, inference, and agent workflows on the infrastructure you already run. Kitaru replays your agents against every change so regressions never reach production.",
+    "ZenML orchestrates your AI workflows on your own infrastructure. Kitaru replays your agents so regressions never ship.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -61,7 +61,7 @@ export const HOMEPAGE_UNIFIED_HERO = {
    */
   subtitleLead: "Built for engineers, ready for enterprise.",
   subtitle:
-    "ZenML orchestrates your training, inference, and agent workflows on the infrastructure you already run. Kitaru replays your agents against every change so regressions never reach production.",
+    "ZenML orchestrates your AI workflows on your own infrastructure. Kitaru replays your agents so regressions never ship.",
   productCtas: HERO_PRODUCT_CTAS,
 } as const;
 
