@@ -189,7 +189,7 @@ export const VALUE_PROPS: ValueProp[] = [
   {
     title: "Lineage and replay across both workspaces",
     description:
-      "Every execution is recorded and every artifact version is tracked in the same metadata store. When something breaks, replay the exact recorded run to reproduce it — and the fix becomes a regression test that guards against it coming back.",
+      "Every execution is recorded and every artifact version is tracked in the same metadata store. When something breaks, replay the exact recorded run to reproduce it, and the fix becomes a regression test that guards against it coming back.",
     iconBg: "#d6ebf0",
     iconColor: "#309DB2",
     iconMode: "stroke",
@@ -432,7 +432,7 @@ export const FAQ = {
     {
       question: "What is Kitaru?",
       answer:
-        'Kitaru is ZenML\'s agent experimentation platform. It records your agents\' real production runs as replayable executions. You can score a recording without ever running the agent again, or replay your real code against the recorded world — with one thing changed, like a model, tool, or prompt — to see what would have happened. Re-run a replay in CI and it becomes a regression test. Read more in the <a href="https://docs.zenml.io/kitaru" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">Kitaru docs</a>.',
+        'Kitaru is ZenML\'s agent experimentation platform. It records your agents\' real production runs as replayable executions. You can score a recording without ever running the agent again, or replay your real code against the recorded world, with one thing changed like a model, tool, or prompt, to see what would have happened. Re-run a replay in CI and it becomes a regression test. Read more in the <a href="https://docs.zenml.io/kitaru" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">Kitaru docs</a>.',
     },
     {
       question: "How can I build my AI platform using ZenML?",
