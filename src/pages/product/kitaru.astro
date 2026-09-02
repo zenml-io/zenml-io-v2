@@ -1,8 +1,8 @@
 ---
 import Cloud from "../../components/kitaru/Cloud.astro";
-import Compatibility from "../../components/kitaru/Compatibility.astro";
 import Cta from "../../components/kitaru/Cta.astro";
 import Faq from "../../components/kitaru/Faq.astro";
+import Features from "../../components/kitaru/Features.astro";
 import FirstRun from "../../components/kitaru/FirstRun.astro";
 import { Hero } from "../../components/kitaru/islands/Hero";
 import { ScenarioStrip } from "../../components/kitaru/islands/ScenarioStrip";
@@ -27,9 +27,9 @@ import { TwoDoors } from "../../components/kitaru/islands/TwoDoors";
  * Sections (terminal-first order, Sep 2026):
  *   Hero          → the install command, then the prompt for your coding agent
  *   FirstRun      → the first five minutes as a terminal transcript + outcomes
- *   Compatibility → frameworks, trace sources, coding agents
  *   TwoDoors      → two paths in: wrap an agent or import existing traces
  *   ScenarioStrip → four questions asked of one cohort of real sessions
+ *   Features      → the model-migration wedge, in experiment/run terms
  *   Cloud         → what the hosted server adds
  *   Faq           → the questions that come up in every demo
  *   Cta           → closing CTA band
@@ -66,9 +66,9 @@ const faqJsonLd = {
     <main id="kitaru-main">
       <Hero client:visible />
       <FirstRun />
-      <Compatibility />
       <TwoDoors client:visible />
       <ScenarioStrip client:visible />
+      <Features />
       <Cloud />
       <Faq />
       <Cta />

@@ -38,9 +38,17 @@ const lineClass: Record<string, string> = {
             <span class={`block ${lineClass[line.kind]} term-line`} data-i={i}>{line.kind === "cmd" && !line.text.startsWith(">") ? <span class="text-ember select-none">$ </span> : null}{line.text || " "}</span>
           ))}</code></pre>
         </div>
-        <div class="mt-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-          <InstallCommand cmd={KITARU_INSTALL_CMD} label="Kitaru" brand="kitaru" analytics="Kitaru-FirstRun-Install" />
-          <p class="text-[13px] text-ink-soft">Then: <span class="font-mono text-ink">{FIRST_RUN.prompt}</span></p>
+        <div class="mt-5 flex flex-col items-start gap-3">
+          <InstallCommand
+            cmd={KITARU_INSTALL_CMD}
+            label="Kitaru"
+            brand="kitaru"
+            analytics="Kitaru-FirstRun-Install"
+          />
+          <p class="text-[14px] leading-relaxed text-ink-soft">
+            Then, in your agent's repo, tell your coding agent:
+            <span class="mt-1 block font-mono text-[13px] text-ink">{FIRST_RUN.prompt}</span>
+          </p>
         </div>
       </div>
 

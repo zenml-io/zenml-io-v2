@@ -4,7 +4,6 @@
  *
  *   FirstRun      → what the first five minutes look like, as a terminal
  *                   transcript plus three outcome blocks
- *   Compatibility → frameworks, trace sources, coding agents
  *   Cloud         → what the hosted server adds on top of the local install
  *
  * Numbers reuse the landing's canonical example (the returns agent: 1,824
@@ -99,58 +98,6 @@ export const FIRST_RUN_OUTCOMES = [
   },
 ] as const;
 
-export const COMPATIBILITY = {
-  eyebrow: "Works with your stack",
-  headline: "Bring the agent, the traces, and the editor you already have.",
-  rows: [
-    {
-      label: "Agent frameworks",
-      note: "One-line wrapper, records every run",
-      items: [
-        "PydanticAI",
-        "LangGraph",
-        "LangChain agents",
-        "Deep Agents",
-        "OpenAI Agents SDK",
-        "Mastra",
-        "Vercel AI SDK",
-      ],
-      more: {
-        label: "Any other: build an adapter with the skill",
-        href: "https://docs.zenml.io/kitaru/adapters/custom",
-      },
-    },
-    {
-      label: "Trace sources",
-      note: "Import what you already collect",
-      items: [
-        "Langfuse",
-        "LangSmith",
-        "Braintrust",
-        "Logfire",
-        "Arize Phoenix",
-        "OpenTelemetry",
-        "JSONL",
-      ],
-      more: {
-        label: "Any other: write a one-page importer",
-        href: "https://docs.zenml.io/kitaru/import-your-traces/custom-importer",
-      },
-    },
-    {
-      label: "Coding agents",
-      note: "Skills and MCP server, installed for you",
-      items: ["Claude Code", "Codex", "Cursor", "Windsurf", "Any MCP client"],
-      more: {
-        label: "Setup details",
-        href: "https://docs.zenml.io/kitaru/agent-native/setup",
-      },
-    },
-  ],
-  footnote:
-    "Python and TypeScript SDKs talk to the same server. Self-hosted by design: the server runs on your infrastructure and no user code executes on it.",
-} as const;
-
 export const CLOUD = {
   eyebrow: "ZenML Pro",
   headline: "Same loop, managed for your team.",
@@ -171,6 +118,6 @@ export const CLOUD = {
   ],
   price: `${KITARU_CLOUD_PRICE} a month, flat`,
   trial: `${KITARU_TRIAL_DAYS}-day full-access trial, no card`,
-  cta: { label: "Try ZenML Pro free", href: KITARU_LINKS.signup.href },
+  cta: { label: "Try the hosted version free", href: KITARU_LINKS.signup.href },
   secondary: { label: "See pricing", href: "/pricing" },
 } as const;
