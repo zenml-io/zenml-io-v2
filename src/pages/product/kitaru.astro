@@ -1,5 +1,4 @@
 ---
-import Cloud from "../../components/kitaru/Cloud.astro";
 import Cta from "../../components/kitaru/Cta.astro";
 import Faq from "../../components/kitaru/Faq.astro";
 import Features from "../../components/kitaru/Features.astro";
@@ -30,7 +29,6 @@ import { TwoDoors } from "../../components/kitaru/islands/TwoDoors";
  *   TwoDoors      → two paths in: wrap an agent or import existing traces
  *   ScenarioStrip → four questions asked of one cohort of real sessions
  *   Features      → the model-migration wedge, in experiment/run terms
- *   Cloud         → what the hosted server adds
  *   Faq           → the questions that come up in every demo
  *   Cta           → closing CTA band
  *
@@ -69,7 +67,6 @@ const faqJsonLd = {
       <TwoDoors client:visible />
       <ScenarioStrip client:visible />
       <Features />
-      <Cloud />
       <Faq />
       <Cta />
     </main>

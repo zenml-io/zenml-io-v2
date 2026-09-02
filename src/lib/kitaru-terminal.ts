@@ -4,18 +4,12 @@
  *
  *   FirstRun      → what the first five minutes look like, as a terminal
  *                   transcript plus three outcome blocks
- *   Cloud         → what the hosted server adds on top of the local install
  *
  * Numbers reuse the landing's canonical example (the returns agent: 1,824
  * sessions imported, the "dropped the hazmat flag" cohort, 90 → 4 failing).
  */
 
-import {
-  KITARU_CLOUD_PRICE,
-  KITARU_INSTALL_CMD,
-  KITARU_LINKS,
-  KITARU_TRIAL_DAYS,
-} from "./productKitaru";
+import { KITARU_INSTALL_CMD } from "./productKitaru";
 
 export type TerminalLine = {
   text: string;
@@ -42,7 +36,7 @@ export const TERMINAL: readonly TerminalLine[] = [
   { kind: "blank", text: "" },
   {
     kind: "agent",
-    text: "Found a Langfuse export at ./traces.jsonl. Importing.",
+    text: "Found your Langfuse project. Importing every session, automatically.",
   },
   {
     kind: "out",
@@ -61,9 +55,9 @@ export const TERMINAL: readonly TerminalLine[] = [
   { kind: "blank", text: "" },
   {
     kind: "agent",
-    text: "Opened three of them for you to read. Is this the behavior you'd fix?",
+    text: "Opened three of them in the Kitaru UI. Go read them and tell me if this is a real bug.",
   },
-  { kind: "cmd", text: "> yes, that's a bug" },
+  { kind: "cmd", text: "> yes, it's real" },
   { kind: "blank", text: "" },
   {
     kind: "agent",
@@ -97,27 +91,3 @@ export const FIRST_RUN_OUTCOMES = [
     body: "Your real code runs again against the recorded world, with one thing changed. The cohort that caught the failure becomes the gate that keeps it caught.",
   },
 ] as const;
-
-export const CLOUD = {
-  eyebrow: "ZenML Pro",
-  headline: "Same loop, managed for your team.",
-  lede: "The local install is the whole product. ZenML Pro adds the parts that only matter once more than one person is looking at the same agent.",
-  items: [
-    {
-      title: "One server for the team",
-      body: "Sessions, cohorts, and experiments in one place, with the frontend review links the skill hands you.",
-    },
-    {
-      title: "Workers in your VPC",
-      body: "Replays and imports still run on your machines with your credentials. Only metadata leaves.",
-    },
-    {
-      title: "SSO, roles, audit",
-      body: "The same control plane as ZenML: SOC 2 and ISO 27001, BYOK, multi-region.",
-    },
-  ],
-  price: `${KITARU_CLOUD_PRICE} a month, flat`,
-  trial: `${KITARU_TRIAL_DAYS}-day full-access trial, no card`,
-  cta: { label: "Try the hosted version free", href: KITARU_LINKS.signup.href },
-  secondary: { label: "See pricing", href: "/pricing" },
-} as const;
