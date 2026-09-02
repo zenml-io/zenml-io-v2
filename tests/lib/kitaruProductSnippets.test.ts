@@ -56,16 +56,16 @@ function expectValidTypeScript(source: string): void {
 }
 
 describe("Kitaru product-page snippets", () => {
-  it("installs the CLI and worker used by the page", () => {
+  it("points at the one-line installer served by kitaru.ai", () => {
     expect(KITARU_INSTALL_CMD).toBe(
-      'uv add "kitaru[cli,worker]" kitaru-pydantic-ai',
+      "curl -fsSL https://kitaru.ai/install | bash",
     );
   });
 
   it("uses the same page-local install command in the markdown alternate", async () => {
     const markdown = await getKitaruMarkdown().text();
     expect(
-      markdown.match(/uv add "kitaru\[cli,worker\]" kitaru-pydantic-ai/g),
+      markdown.match(/curl -fsSL https:\/\/kitaru\.ai\/install \| bash/g),
     ).toHaveLength(2);
     expect(markdown).not.toContain("`uv add kitaru`");
     expect(markdown).toContain("Arize Phoenix");

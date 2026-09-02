@@ -1,5 +1,8 @@
 ---
-import { HOMEPAGE_UNIFIED_HERO } from "../../lib/homepage-unified";
+import {
+  HOMEPAGE_INSTALL_COMMANDS,
+  HOMEPAGE_UNIFIED_HERO,
+} from "../../lib/homepage-unified";
 import { brandButtonClass } from "../../lib/productCtas";
 import Button from "../Button.astro";
 
@@ -47,6 +50,54 @@ const headline = `${headlinePrefix}${headlineAccent}${headlineSuffix}`;
           </Button>
         ))}
       </div>
+
+      {/* Install lines: the terminal is the front door for both products. */}
+      <ul class="mt-6 flex flex-col items-center gap-2 sm:flex-row sm:justify-center sm:gap-3">
+        {HOMEPAGE_INSTALL_COMMANDS.map((item) => (
+          <li class="flex max-w-full items-center gap-2 rounded-md border border-gray-200 bg-white/70 py-2 pl-2 pr-2.5 font-mono text-[13px] shadow-sm">
+            <span
+              class={[
+                "rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em]",
+                item.brand === "kitaru"
+                  ? "bg-orange-100 text-orange-700"
+                  : "bg-zenml-100 text-zenml-700",
+              ].join(" ")}
+            >
+              {item.label}
+            </span>
+            <span class="text-gray-400" aria-hidden="true">$</span>
+            <code class="truncate text-gray-900">{item.cmd}</code>
+            <button
+              type="button"
+              class="ml-1 inline-flex shrink-0 items-center text-gray-400 transition-colors hover:text-gray-800"
+              aria-label={`Copy ${item.label} install command`}
+              data-copy={item.cmd}
+              data-analytics={`Home-Hero-Install-${item.label}`}
+            >
+              <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+              <svg class="check-icon hidden text-green-600" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   </div>
 </header>
+
+<script>
+  // Copy-to-clipboard for the hero install lines; swaps the icon briefly.
+  document.querySelectorAll<HTMLButtonElement>("header [data-copy]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const text = btn.dataset.copy;
+      if (!text) return;
+      navigator.clipboard?.writeText(text).then(() => {
+        btn.querySelector(".copy-icon")?.classList.add("hidden");
+        btn.querySelector(".check-icon")?.classList.remove("hidden");
+        setTimeout(() => {
+          btn.querySelector(".copy-icon")?.classList.remove("hidden");
+          btn.querySelector(".check-icon")?.classList.add("hidden");
+        }, 1500);
+      });
+    });
+  });
+</script>

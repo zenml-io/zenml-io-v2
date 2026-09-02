@@ -1,8 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
-import { KITARU_LINKS, KITARU_TRIAL_NOTE } from "../../../lib/kitaru-landing";
+import {
+  KITARU_INSTALL_CMD,
+  KITARU_LINKS,
+  KITARU_TRIAL_NOTE,
+} from "../../../lib/kitaru-landing";
 import { KITARU_VIDEO } from "../../../lib/productKitaru";
 import { ArrowRight } from "./icons";
 import { KitaruGrain } from "./KitaruGrain";
+import { CopyCommand } from "./primitives";
 import { Reveal } from "./Reveal";
 
 /**
@@ -156,19 +161,29 @@ export function Hero() {
             delay={240}
             className="mt-8 flex flex-col items-center gap-2 lg:items-start"
           >
-            <div className="flex flex-wrap items-center justify-center gap-3">
+            {/* The command is the primary CTA: one line installs the CLI,
+                MCP server and coding-agent skills locally. Cloud signup is
+                the second door. */}
+            <CopyCommand cmd={KITARU_INSTALL_CMD} />
+            <p className="text-[12.5px] text-muted-foreground">
+              Free, local, open source. Then tell your coding agent:{" "}
+              <span className="font-mono text-ink">
+                Use kitaru-investigation to investigate this agent.
+              </span>
+            </p>
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
               <a
                 href={KITARU_LINKS.signup.href}
                 data-analytics="Kitaru-Hero-Signup"
-                className="group inline-flex items-center gap-2 rounded-md bg-ember px-5 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-ember-deep cursor-pointer"
+                className="group inline-flex items-center gap-2 rounded-md border border-ember px-5 py-3 text-sm font-medium text-ember transition-colors hover:bg-ember hover:text-accent-foreground cursor-pointer"
               >
-                {KITARU_LINKS.signup.label}
+                Or use Kitaru Cloud
                 <ArrowRight class="size-4 transition-transform group-hover:translate-x-0.5" />
               </a>
+              <span className="text-[12.5px] text-muted-foreground">
+                {KITARU_TRIAL_NOTE}
+              </span>
             </div>
-            <p className="text-[12.5px] text-muted-foreground">
-              {KITARU_TRIAL_NOTE}
-            </p>
           </Reveal>
         </div>
 

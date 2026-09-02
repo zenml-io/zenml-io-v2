@@ -233,7 +233,7 @@ export const GET_STARTED_KITARU = {
     items: [
       {
         title: "Install Kitaru",
-        body: "Get Kitaru up and running in minutes. You just need to install it.",
+        body: "One command installs the CLI, the MCP server and the coding-agent skills, and starts a local server if Docker is running. Nothing needs sudo.",
         code: KITARU_INSTALL_CMD,
       },
       {
