@@ -1,0 +1,30 @@
+---
+// Compatibility.astro — frameworks, trace sources, coding agents.
+import { COMPATIBILITY } from "../../lib/kitaru-terminal";
+---
+
+<section id="compatibility" class="relative w-full bg-background text-foreground">
+  <div class="mx-auto w-full max-w-[1440px] px-6 py-20 md:py-28">
+    <div class="reveal max-w-3xl">
+      <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">{COMPATIBILITY.eyebrow}</span>
+      <h2 class="mt-5 text-balance text-3xl leading-[1.1] font-medium tracking-[-0.02em] md:text-[2.75rem]">{COMPATIBILITY.headline}</h2>
+    </div>
+    <dl class="mt-12 divide-y divide-border border-y border-border">
+      {COMPATIBILITY.rows.map((row, i) => (
+        <div class="reveal grid grid-cols-1 gap-4 py-7 md:grid-cols-[220px_1fr] md:gap-10" style={`--reveal-delay: ${80 + i * 60}ms`}>
+          <dt>
+            <span class="block text-[16px] font-medium text-ink">{row.label}</span>
+            <span class="mt-1 block text-[13px] text-ink-soft">{row.note}</span>
+          </dt>
+          <dd class="flex flex-wrap items-center gap-2">
+            {row.items.map((item) => (
+              <span class="rounded-md border border-border bg-surface px-3 py-1.5 text-[14px] text-ink">{item}</span>
+            ))}
+            <a href={row.more.href} class="ml-1 text-[13px] text-ember underline-offset-4 hover:underline">{row.more.label}</a>
+          </dd>
+        </div>
+      ))}
+    </dl>
+    <p class="reveal mt-6 max-w-[720px] text-[14px] leading-relaxed text-ink-soft" style="--reveal-delay: 260ms">{COMPATIBILITY.footnote}</p>
+  </div>
+</section>

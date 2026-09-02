@@ -1,0 +1,86 @@
+---
+import {
+  FIRST_RUN,
+  FIRST_RUN_OUTCOMES,
+  TERMINAL,
+} from "../../lib/kitaru-terminal";
+import { KITARU_INSTALL_CMD } from "../../lib/productKitaru";
+// FirstRun.astro — the first five minutes: terminal transcript (progressive
+// reveal, respects reduced motion) beside three outcome blocks.
+import InstallCommand from "../InstallCommand.astro";
+
+const lineClass: Record<string, string> = {
+  cmd: "text-night-text",
+  out: "text-night-text/60",
+  agent: "text-ember",
+  note: "text-night-text/40 italic",
+  blank: "",
+};
+---
+
+<section id="first-run" class="relative w-full bg-surface text-foreground">
+  <div class="mx-auto w-full max-w-[1440px] px-6 py-20 md:py-28">
+    <div class="reveal max-w-3xl">
+      <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">{FIRST_RUN.eyebrow}</span>
+      <h2 class="mt-5 text-balance text-3xl leading-[1.1] font-medium tracking-[-0.02em] md:text-[2.75rem]">{FIRST_RUN.headline}</h2>
+      <p class="mt-5 max-w-[640px] text-[17px] leading-relaxed text-ink-soft">{FIRST_RUN.lede}</p>
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-12">
+      {/* Terminal */}
+      <div class="reveal" style="--reveal-delay: 80ms">
+        <div id="first-run-terminal" class="overflow-hidden rounded-md border border-white/10 bg-night shadow-[0_40px_120px_-50px_oklch(0.13_0.015_60/0.8)]">
+          <div class="flex items-center gap-1.5 border-b border-white/10 px-4 py-2.5">
+            <span class="size-2.5 rounded-full bg-white/15"></span><span class="size-2.5 rounded-full bg-white/15"></span><span class="size-2.5 rounded-full bg-white/15"></span>
+            <span class="ml-3 font-mono text-[11px] text-night-text/40">~/returns-agent</span>
+          </div>
+          <pre class="whitespace-pre-wrap break-words px-5 py-5 font-mono text-[12.5px] leading-[1.7] sm:text-[13px]"><code>{TERMINAL.map((line, i) => (
+            <span class={`block ${lineClass[line.kind]} term-line`} data-i={i}>{line.kind === "cmd" && !line.text.startsWith(">") ? <span class="text-ember select-none">$ </span> : null}{line.text || " "}</span>
+          ))}</code></pre>
+        </div>
+        <div class="mt-4 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+          <InstallCommand cmd={KITARU_INSTALL_CMD} label="Kitaru" brand="kitaru" analytics="Kitaru-FirstRun-Install" />
+          <p class="text-[13px] text-ink-soft">Then: <span class="font-mono text-ink">{FIRST_RUN.prompt}</span></p>
+        </div>
+      </div>
+
+      {/* Outcomes */}
+      <ol class="flex flex-col gap-4">
+        {FIRST_RUN_OUTCOMES.map((o, i) => (
+          <li class="reveal rounded-md border border-border bg-background p-5" style={`--reveal-delay: ${120 + i * 80}ms`}>
+            <div class="flex items-baseline gap-2">
+              <span class="font-mono text-[22px] font-medium tracking-[-0.02em] text-ember">{o.stat}</span>
+              <span class="font-mono text-[11px] tracking-[0.12em] text-ink-soft uppercase">{o.label}</span>
+            </div>
+            <h3 class="mt-2 text-[17px] font-medium text-ink">{o.title}</h3>
+            <p class="mt-1.5 text-[14px] leading-relaxed text-ink-soft">{o.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Reveal the transcript line by line once it scrolls into view. Reduced
+  // motion: everything is visible immediately (lines start visible; we only
+  // hide them when we intend to animate).
+  const term = document.getElementById("first-run-terminal");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (term && !reduce) {
+    const lines = Array.from(term.querySelectorAll<HTMLElement>(".term-line"));
+    for (const l of lines) l.style.opacity = "0";
+    const io = new IntersectionObserver((entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      io.disconnect();
+      let t = 0;
+      lines.forEach((l, i) => {
+        const prev = lines[i - 1];
+        // Pause longer after a typed command, as if something is running.
+        t += prev?.classList.contains("text-night-text") && !prev.textContent?.startsWith(">") ? 420 : 160;
+        setTimeout(() => { l.style.transition = "opacity 180ms ease-out"; l.style.opacity = "1"; }, t);
+      });
+    }, { threshold: 0.35 });
+    io.observe(term);
+  }
+</script>

@@ -1,0 +1,32 @@
+---
+// Cloud.astro — the hosted upsell, after the local product has been shown.
+import { CLOUD } from "../../lib/kitaru-terminal";
+---
+
+<section id="cloud" class="relative w-full bg-surface text-foreground">
+  <div class="mx-auto w-full max-w-[1440px] px-6 py-20 md:py-28">
+    <div class="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-20">
+      <div class="reveal">
+        <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">{CLOUD.eyebrow}</span>
+        <h2 class="mt-5 text-balance text-3xl leading-[1.1] font-medium tracking-[-0.02em] md:text-[2.75rem]">{CLOUD.headline}</h2>
+        <p class="mt-5 text-[17px] leading-relaxed text-ink-soft">{CLOUD.lede}</p>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a href={CLOUD.cta.href} data-analytics="Kitaru-Cloud-Signup" class="group inline-flex items-center gap-2 rounded-md bg-ember px-5 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-ember-deep">
+            {CLOUD.cta.label}
+            <svg class="size-4 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+          <a href={CLOUD.secondary.href} class="text-[14px] text-ink-soft underline-offset-4 hover:text-ink hover:underline">{CLOUD.secondary.label}</a>
+        </div>
+        <p class="mt-4 text-[12.5px] text-ink-soft">{CLOUD.price} · {CLOUD.trial}</p>
+      </div>
+      <ul class="divide-y divide-border border-y border-border">
+        {CLOUD.items.map((item, i) => (
+          <li class="reveal grid grid-cols-1 gap-2 py-6 sm:grid-cols-[220px_1fr] sm:gap-8" style={`--reveal-delay: ${100 + i * 60}ms`}>
+            <h3 class="text-[16px] font-medium text-ink">{item.title}</h3>
+            <p class="text-[15px] leading-relaxed text-ink-soft">{item.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
