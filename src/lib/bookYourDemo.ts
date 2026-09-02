@@ -161,4 +161,4 @@ export const BOOK_KITARU_DEMO_HERO = {
 
 /** Co-brand credibility line shown above the customer logos on the Kitaru page. */
 export const BOOK_KITARU_DEMO_PROOF =
-  "Built by the ZenML team — trusted by 1,000+ teams running AI workflows and agents in production.";
+  "Built by the ZenML team, trusted by 1,000+ teams running AI workflows and agents in production.";

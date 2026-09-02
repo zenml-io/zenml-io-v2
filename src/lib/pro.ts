@@ -75,7 +75,7 @@ export const PRO_UNIFIED_PITCH = {
     {
       kind: "enterprise",
       heading: "Enterprise governance",
-      lede: "What buyers need to ship in regulated environments — across both workspaces.",
+      lede: "What buyers need to ship in regulated environments, across both workspaces.",
       items: [
         {
           name: "SSO + RBAC + audit",
@@ -147,7 +147,7 @@ export const PRO_FEATURES = [
   {
     eyebrow: "Workspaces",
     title: "Workspaces for pipelines and agents",
-    body: "Create ZenML workspaces for AI workflow orchestration and Kitaru workspaces for agent evals under one organization — each an isolated, single-tenant deployment with shared SSO, roles, and billing, while your data stays in your cloud.",
+    body: "Create ZenML workspaces for AI workflow orchestration and Kitaru workspaces for agent evals under one organization, each an isolated, single-tenant deployment with shared SSO, roles, and billing, while your data stays in your cloud.",
     learnMoreHref: "/pricing",
     image: {
       url: "/images/kitaru-dashboard.avif",
@@ -167,7 +167,7 @@ export const PRO_FEATURES = [
   {
     eyebrow: "Optimization",
     title: "Triggers and run management",
-    body: "Run templates, schedules, and API or webhook triggers — launch and control AI workflows and agent flows straight from the dashboard.",
+    body: "Run templates, schedules, and API or webhook triggers. Launch and control AI workflows and agent flows straight from the dashboard.",
     learnMoreHref: "/features/streamlined-pipeline-management",
     image: {
       url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/70ab3904/653249d5a55b6cc59610a9f2_20_CI_CD_CT_Showcase_95f04728ec.webp`,
@@ -239,7 +239,7 @@ export const PRO_OSS_GRID = {
   items: [
     {
       title: "Managed control plane",
-      body: "ZenML Pro offers multi-tenant, fully-managed deployments. Workspaces come in two types — ZenML for AI workflow orchestration, Kitaru for agent evals — under the same organization, roles, and billing, with dev, staging, and production servers separated.",
+      body: "ZenML Pro offers multi-tenant, fully-managed deployments. Workspaces come in two types, ZenML for AI workflow orchestration and Kitaru for agent evals, under the same organization, roles, and billing, with dev, staging, and production servers separated.",
     },
     {
       title: "Roles and Permissions",
@@ -337,7 +337,7 @@ export const PRO_FAQ: FaqData = {
     {
       question: "Does ZenML Pro cover the Kitaru agent workspace too?",
       answer:
-        "Yes. ZenML Pro is the paid plane over both sub-products — ZenML for AI workflow orchestration and Kitaru for replay-based agent evals. Same control plane, same SSO/RBAC/audit, same compliance posture (SOC 2, ISO 27001, BYOK, multi-region). Per-project: pick the ZenML workspace, the Kitaru workspace, or both.",
+        "Yes. ZenML Pro is the paid plane over both sub-products: ZenML for AI workflow orchestration and Kitaru for replay-based agent evals. Same control plane, same SSO/RBAC/audit, same compliance posture (SOC 2, ISO 27001, BYOK, multi-region). Per-project: pick the ZenML workspace, the Kitaru workspace, or both.",
     },
     {
       question: "What about data security and compliance?",

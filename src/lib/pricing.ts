@@ -39,7 +39,7 @@ export const PRICING_SEO = {
 export const PRICING_HERO = {
   eyebrow: "Pricing",
   headline: "Orchestrate AI workflows and ship agents with confidence",
-  deck: "Start open source and self-hosted. Upgrade to Pro for the managed control plane — on our SaaS or your own infrastructure.",
+  deck: "Start open source and self-hosted. Upgrade to Pro for the managed control plane, on our SaaS or your own infrastructure.",
 } as const;
 
 /**
@@ -67,7 +67,7 @@ export const PRICING_PRO_INCLUSIONS = {
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" /></svg>',
           title: "Run on Kubernetes, Vertex, SageMaker, AzureML",
-          detail: "One pipeline, any orchestrator — no rewrites.",
+          detail: "One pipeline, any orchestrator, no rewrites.",
         },
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>',
@@ -86,16 +86,16 @@ export const PRICING_PRO_INCLUSIONS = {
       side: "kitaru" as const,
       eyebrow: "Agent evals",
       title: "Replay-based evals",
-      body: "Import your whole trace history, replay it against your next change, and keep every fix as a regression test — on one flat plan.",
+      body: "Import your whole trace history, replay it against your next change, and keep every fix as a regression test, on one flat plan.",
       bullets: [
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z" /></svg>',
           title: "Sessions, cohorts, evaluators, experiments",
-          detail: "The whole replay loop — imports and scoring included.",
+          detail: "The whole replay loop, imports and scoring included.",
         },
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><line x1="10" y1="15" x2="10" y2="9" /><line x1="14" y1="15" x2="14" y2="9" /></svg>',
-          title: `One flat ${KITARU_CLOUD_PRICE} plan — no meters to read`,
+          title: `One flat ${KITARU_CLOUD_PRICE} plan, no meters to read`,
           detail: "Replays and experiment runs included at launch.",
         },
         {
@@ -242,7 +242,7 @@ export const PRICING_PLANS_KITARU: PricingPlan[] = [
     includesLabel: "Everything in Open Source, plus",
     features: [
       "Hosted dashboard and control plane",
-      "Replays and experiment runs included — no meters",
+      "Replays and experiment runs included, no meters",
       "Trial starts with full Enterprise access",
       "Community support",
     ],
@@ -311,7 +311,7 @@ export const PRICING_PLAN_WORKSPACES = [
     id: "zenml",
     label: "ZenML workspace",
     sublabel: "AI orchestration",
-    note: "Executions are ZenML pipeline runs. Kitaru is priced separately as a flat monthly plan — one subscription covers both workspaces.",
+    note: "Executions are ZenML pipeline runs. Kitaru is priced separately as a flat monthly plan. One subscription covers both workspaces.",
     learn: { label: "Learn about ZenML", href: "/product/zenml" },
     plans: PRICING_PLANS,
     accent: {
@@ -328,7 +328,7 @@ export const PRICING_PLAN_WORKSPACES = [
 // ---------------------------------------------------------------------------
 export const PRICING_COMPARE: PricingCompareTableData = {
   heading: "Compare every plan",
-  subheading: "Open Source and Pro — with Scale and Enterprise feature tiers.",
+  subheading: "Open Source and Pro, with Scale and Enterprise feature tiers.",
   columnHeaders: ["Open Source", "Scale", "Enterprise"],
   sections: [
     {
@@ -425,7 +425,7 @@ export const PRICING_COMPARE: PricingCompareTableData = {
 // only the self-hosted / hosted / enterprise split to pick from.
 export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
   heading: "Compare every plan",
-  subheading: `One flat plan at launch — ${KITARU_CLOUD_PRICE} a month, every feature, ${KITARU_TRIAL_DAYS}-day full-access trial. No meters, no usage math.`,
+  subheading: `One flat plan at launch: ${KITARU_CLOUD_PRICE} a month, every feature, ${KITARU_TRIAL_DAYS}-day full-access trial. No meters, no usage math.`,
   columnHeaders: ["Open Source", "Cloud", "Enterprise"],
   sections: [
     {
@@ -446,7 +446,7 @@ export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
       ],
     },
     {
-      heading: "Replay & evals — every plan",
+      heading: "Replay & evals on every plan",
       rows: [
         {
           feature: "Replay-based evals (Python & TypeScript)",
@@ -461,7 +461,7 @@ export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
           values: [true, true, true],
         },
         {
-          feature: "Imports, recordings and scoring — no usage caps",
+          feature: "Imports, recordings and scoring, no usage caps",
           values: [true, true, true],
         },
       ],

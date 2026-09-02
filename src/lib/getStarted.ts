@@ -21,10 +21,10 @@ import { KITARU_INSTALL_CMD } from "./productKitaru";
 export const GET_STARTED_SEO = {
   title: "Get Started with ZenML or Kitaru | ZenML",
   description:
-    "Set up ZenML to orchestrate AI workflows and Kitaru to diagnose your agents — install, run locally, and bring both into the same workflow.",
+    "Set up ZenML to orchestrate AI workflows and Kitaru to diagnose your agents. Install, run locally, and bring both into the same workflow.",
   ogTitle: "Get Started with ZenML or Kitaru",
   ogDescription:
-    "Set up ZenML to orchestrate AI workflows and Kitaru to diagnose your agents — install, run locally, and bring both into the same workflow.",
+    "Set up ZenML to orchestrate AI workflows and Kitaru to diagnose your agents. Install, run locally, and bring both into the same workflow.",
   ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
@@ -130,7 +130,7 @@ export const GET_STARTED_ZENML = {
       },
       {
         title: "Track inputs and outputs",
-        body: "Wire two steps into a training pipeline — ZenML tracks every input and output as a versioned artifact:",
+        body: "Wire two steps into a training pipeline. ZenML tracks every input and output as a versioned artifact:",
         code: `from sklearn.base import ClassifierMixin
 from sklearn.datasets import load_iris
 from sklearn.svm import SVC
@@ -179,7 +179,7 @@ if __name__ == "__main__":
   projects: {
     eyebrow: "Projects",
     headline: "Start with one of our ready-made projects",
-    deck: "Everything you need to replicate a production-grade use case — demo, video, blog, and code.",
+    deck: "Everything you need to replicate a production-grade use case: demo, video, blog, and code.",
     cta: { label: "View All Projects", href: "/projects" },
   },
   resources: {
@@ -257,7 +257,7 @@ if __name__ == "__main__":
       },
       {
         title: "Run it, walk away, resume it",
-        body: "Run it. It pauses at the approval gate and releases compute. Answer hours later and it resumes from where it stopped — no idle container, no lost work.",
+        body: "Run it. It pauses at the approval gate and releases compute. Answer hours later and it resumes from where it stopped. No idle container, no lost work.",
         code: "python flow.py",
       },
     ],
@@ -265,7 +265,7 @@ if __name__ == "__main__":
   resources: {
     eyebrow: "Resources",
     headline: "Your Complete Kitaru Learning Toolkit",
-    body: "Docs, examples, and a community building production agents — start where you are.",
+    body: "Docs, examples, and a community building production agents. Start where you are.",
     items: [
       {
         title: "Kitaru Docs",
@@ -283,14 +283,14 @@ if __name__ == "__main__":
       },
       {
         title: "From ZenML to Kitaru",
-        body: "Why we built a separate runtime for agents — and what it does for you.",
+        body: "Why we built a separate runtime for agents, and what it does for you.",
         href: "/blog/from-zenml-to-kitaru",
         external: false,
         color: "purple",
       },
       {
         title: "Slack Community",
-        body: "Join engineers shipping production agents — get help, share patterns.",
+        body: "Join engineers shipping production agents. Get help, share patterns.",
         href: "/slack",
         external: false,
         color: "blue",

@@ -18,7 +18,7 @@ export const ANNOUNCEMENT_BANNER = {
 export const HERO = {
   headline: "Ship AI you can trust.",
   subheadline:
-    "Orchestrate ML and Agent workloads on your infrastructure. Modular, flexible, and open-source — always.",
+    "Orchestrate ML and Agent workloads on your infrastructure. Modular, flexible, and open-source, always.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",
@@ -112,7 +112,7 @@ export const FEATURE_TABS: FeatureTab[] = [
   {
     title: "Unified Workflow Orchestration",
     description:
-      "Stop glue-coding your stack. Orchestrate scikit-learn training jobs and long-running LangGraph agent loops in the same unified execution model. State management, data passing, and termination control — across training pipelines and agent flows.",
+      "Stop glue-coding your stack. Orchestrate scikit-learn training jobs and long-running LangGraph agent loops in the same unified execution model. State management, data passing, and termination control across training pipelines and agent flows.",
     image: `${R2}/70e94eb1/68d1536e3bb1899a400a8dec_tab01.avif`,
     imageAlt:
       "Unified workflow orchestration dashboard showing ML and agent runs",
@@ -120,14 +120,14 @@ export const FEATURE_TABS: FeatureTab[] = [
   {
     title: "Artifact & Checkpoint Versioning",
     description:
-      '"It worked on my machine" is not a strategy. Every step result is versioned — trained models, evaluation datasets, and recorded agent executions alike. When a library update or prompt change breaks a run, inspect the diff, replay the recorded execution, and roll back to a working state instantly.',
+      '"It worked on my machine" is not a strategy. Every step result is versioned: trained models, evaluation datasets, and recorded agent executions alike. When a library update or prompt change breaks a run, inspect the diff, replay the recorded execution, and roll back to a working state instantly.',
     image: `${R2}/6a1e96df/68d273e1d31e42957153098b_tab02.avif`,
     imageAlt: "Artifact and checkpoint versioning view",
   },
   {
     title: "Infrastructure Abstraction",
     description:
-      "Define your compute needs in Python. The platform handles dockerization, GPU provisioning, and pod scaling — whether you're running a distributed training job or deploying an agent swarm on Kubernetes. Same code, any cloud.",
+      "Define your compute needs in Python. The platform handles dockerization, GPU provisioning, and pod scaling, whether you're running a distributed training job or deploying an agent swarm on Kubernetes. Same code, any cloud.",
     image: `${R2}/ba122f13/68d122c72dcdb1f17db0ea87_tab03.avif`,
     imageAlt: "Infrastructure abstraction across clouds",
   },
@@ -167,7 +167,7 @@ export const VALUE_PROPS: ValueProp[] = [
   {
     title: "Your stack, not ours",
     description:
-      "Run in your VPC, point at your object store, train on your clusters. The platform is a metadata layer — your artifacts, prompts, and code stay inside your infrastructure end to end. No lock-in on either side.",
+      "Run in your VPC, point at your object store, train on your clusters. The platform is a metadata layer. Your artifacts, prompts, and code stay inside your infrastructure end to end. No lock-in on either side.",
     iconBg: "#fff6ea",
     iconColor: "#FA9E33",
     iconMode: "stroke",
@@ -178,7 +178,7 @@ export const VALUE_PROPS: ValueProp[] = [
   {
     title: "From local prototype to production",
     description:
-      "Stop rewriting code to move between environments. The same pipeline step or agent flow runs locally for debugging and on Kubernetes for production — without changing your logic. The platform handles the wiring.",
+      "Stop rewriting code to move between environments. The same pipeline step or agent flow runs locally for debugging and on Kubernetes for production, without changing your logic. The platform handles the wiring.",
     iconBg: "#cfe7fc",
     iconColor: "#0E85F2",
     iconMode: "stroke",
@@ -213,7 +213,7 @@ export const VALUE_PROPS: ValueProp[] = [
 export const VALUE_PROPS_CTA = {
   headline: "Pick your workspace and start shipping.",
   subtext:
-    "Open source at the core. AI workflows, agent evals, or both — same plans, same control plane.",
+    "Open source at the core. AI workflows, agent evals, or both. Same plans, same control plane.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",
@@ -227,7 +227,7 @@ export const VALUE_PROPS_CTA = {
 export const INTEGRATIONS_MARQUEE = {
   headline: "Works with the tools you already use",
   subheadline:
-    "60+ integrations across the AI ecosystem — from scikit-learn to LangGraph, PyTorch to OpenAI Agents SDK.",
+    "60+ integrations across the AI ecosystem, from scikit-learn to LangGraph, PyTorch to OpenAI Agents SDK.",
   primaryCta: { label: "Book a demo", href: "/book-your-demo" },
   secondaryCta: { label: "See all integrations", href: "/integrations" },
 };

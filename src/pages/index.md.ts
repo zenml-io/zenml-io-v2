@@ -84,10 +84,10 @@ export function GET(): Response {
     joinMarkdownSections(
       "## Key product links",
       markdownBulletList([
-        `${markdownLink("ZenML product page", "/product/zenml")} — AI workflow orchestration: training, inference, evals, and agent pipelines on your own stack.`,
-        `${markdownLink("Kitaru product page", "/product/kitaru")} — replay-based evals that diagnose and regression-test AI agents.`,
-        `${markdownLink("Pricing", "/pricing")} — unified plans for ML, agent, or both workloads.`,
-        `${markdownLink("Documentation", "/docs")} — product docs, tutorials, and setup guides.`,
+        `${markdownLink("ZenML product page", "/product/zenml")}: AI workflow orchestration, training, inference, evals, and agent pipelines on your own stack.`,
+        `${markdownLink("Kitaru product page", "/product/kitaru")}: replay-based evals that diagnose and regression-test AI agents.`,
+        `${markdownLink("Pricing", "/pricing")}: unified plans for ML, agent, or both workloads.`,
+        `${markdownLink("Documentation", "/docs")}: product docs, tutorials, and setup guides.`,
       ]),
     ),
     renderFaq(),

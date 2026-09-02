@@ -32,7 +32,7 @@ import { productSignupCtas } from "./productCtas";
 import { KITARU_CLOUD_PRICE } from "./productKitaru";
 
 export const HOMEPAGE_UNIFIED_SEO = {
-  title: "ZenML — Ship AI you can trust",
+  title: "ZenML: Ship AI you can trust",
   description:
     "ZenML orchestrates your AI workflows on your own infrastructure. Kitaru replays your agents so regressions never ship.",
   surface: "unified" satisfies Surface,
@@ -74,7 +74,7 @@ export const HOMEPAGE_UNIFIED_HERO = {
 
 export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
   eyebrow: "NEW",
-  body: "Kitaru: turn agent failures into regression tests — replay real traces against your real code.",
+  body: "Kitaru: turn agent failures into regression tests. Replay real traces against your real code.",
   linkText: "Meet Kitaru",
   linkHref: "/product/kitaru",
 } as const;
@@ -119,7 +119,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "compare" as const,
           surfaceTitle: "Compare",
           surfaceSubtitle:
-            "Same cohort, one model swapped — the answer is two runs, compared.",
+            "Same cohort, one model swapped. The answer is two runs, compared.",
         },
         {
           id: "sessions" as const,
@@ -127,7 +127,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "sessions" as const,
           surfaceTitle: "Sessions",
           surfaceSubtitle:
-            "Each run records as a session — imported from your traces or captured live.",
+            "Each run records as a session, imported from your traces or captured live.",
           /** Left-pane (SESSIONS list) header copy. Rows + import transcripts
            *  + spines come from src/lib/two-workspaces/sessions-examples.ts. */
           title: "Sessions",
@@ -143,7 +143,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "cohorts" as const,
           surfaceTitle: "Cohorts",
           surfaceSubtitle:
-            "The sessions that matter, frozen as a named set — immutable, so results keep meaning what they meant.",
+            "The sessions that matter, frozen as a named, immutable set, so results keep meaning what they meant.",
         },
         {
           id: "experiments" as const,
@@ -174,7 +174,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "pipelines" as const,
           surfaceTitle: "Pipelines",
           surfaceSubtitle:
-            "Orchestrate any AI workflow — training, batch inference, evals — on your own stack.",
+            "Orchestrate any AI workflow, from training and batch inference to evals, on your own stack.",
           /** Left pane header */
           title: "Recent runs",
           subheader: "Last 24h · 5 runs",
@@ -191,7 +191,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "stacks" as const,
           surfaceTitle: "Stacks",
           surfaceSubtitle:
-            "Swap orchestrator, store, tracker — same pipeline code.",
+            "Swap orchestrator, store, tracker. Same pipeline code.",
         },
         {
           id: "artifacts" as const,
@@ -199,7 +199,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "artifacts-models" as const,
           surfaceTitle: "Artifacts & Models",
           surfaceSubtitle:
-            "Every artifact and model from every run — versioned, typed, traceable.",
+            "Every artifact and model from every run: versioned, typed, traceable.",
         },
         {
           id: "frameworks" as const,
@@ -207,7 +207,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "frameworks-ml" as const,
           surfaceTitle: "Frameworks",
           surfaceSubtitle:
-            "Bring your own ML framework. ZenML wraps it — you don't change your training loop.",
+            "Bring your own ML framework. ZenML wraps it, so you don't change your training loop.",
         },
         {
           id: "resources" as const,
@@ -271,11 +271,11 @@ export const HOMEPAGE_UNIFIED_VALUES = {
   items: [
     {
       name: "Your stack, your data",
-      body: "Run in your VPC, point at your object store, train on your clusters. Metadata is the only thing ZenML touches — your artifacts, prompts, and code stay inside your infrastructure end-to-end.",
+      body: "Run in your VPC, point at your object store, train on your clusters. Metadata is the only thing ZenML touches. Your artifacts, prompts, and code stay inside your infrastructure end-to-end.",
     },
     {
       name: "Modular, not monolithic",
-      body: "Swap any component in your stack — orchestrator, artifact store, experiment tracker, model registry — without rewriting your pipelines or flows. Build with the tools you already trust.",
+      body: "Swap any component in your stack, from orchestrator and artifact store to experiment tracker and model registry, without rewriting your pipelines or flows. Build with the tools you already trust.",
     },
     {
       name: "Open source, always",
