@@ -143,15 +143,6 @@ export function createNavDropdowns({
           // Kitaru listed first.
           links: [
             {
-              label: "Kitaru",
-              href: "/product/kitaru",
-              description: "Replay and improve AI agents",
-              icon: ICON_KITARU_RING,
-              iconViewBox: "0 0 81 82",
-              iconFilled: true,
-              brand: "kitaru",
-            },
-            {
               label: "ZenML",
               href: "/product/zenml",
               description: "Orchestrate pipelines and agents",
@@ -159,6 +150,15 @@ export function createNavDropdowns({
               iconViewBox: "0 0 20 20",
               iconFilled: true,
               brand: "zenml",
+            },
+            {
+              label: "Kitaru",
+              href: "/product/kitaru",
+              description: "Replay and improve AI agents",
+              icon: ICON_KITARU_RING,
+              iconViewBox: "0 0 81 82",
+              iconFilled: true,
+              brand: "kitaru",
             },
             {
               label: "ZenML Pro",
