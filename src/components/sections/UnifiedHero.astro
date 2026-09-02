@@ -52,12 +52,12 @@ const headline = `${headlinePrefix}${headlineAccent}${headlineSuffix}`;
       </div>
 
       {/* Install lines: the terminal is the front door for both products. */}
-      <ul class="mt-6 flex flex-col items-center gap-2 sm:flex-row sm:justify-center sm:gap-3">
+      <ul class="mt-5 flex flex-col items-stretch gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
         {HOMEPAGE_INSTALL_COMMANDS.map((item) => (
-          <li class="flex max-w-full items-center gap-2 rounded-md border border-gray-200 bg-white/70 py-2 pl-2 pr-2.5 font-mono text-[13px] shadow-sm">
+          <li class="flex items-center gap-2.5 rounded-md border border-gray-200 bg-white px-3 py-2.5 text-left font-mono text-[13px] leading-snug shadow-sm sm:w-auto sm:leading-none">
             <span
               class={[
-                "rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em]",
+                "shrink-0 rounded px-1.5 py-1 text-[10px] font-semibold uppercase leading-none tracking-[0.12em]",
                 item.brand === "kitaru"
                   ? "bg-orange-100 text-orange-700"
                   : "bg-zenml-100 text-zenml-700",
@@ -65,11 +65,11 @@ const headline = `${headlinePrefix}${headlineAccent}${headlineSuffix}`;
             >
               {item.label}
             </span>
-            <span class="text-gray-400" aria-hidden="true">$</span>
-            <code class="truncate text-gray-900">{item.cmd}</code>
+            <span class="shrink-0 text-gray-400" aria-hidden="true">$</span>
+            <code class="min-w-0 break-all text-gray-900 sm:whitespace-nowrap">{item.cmd}</code>
             <button
               type="button"
-              class="ml-1 inline-flex shrink-0 items-center text-gray-400 transition-colors hover:text-gray-800"
+              class="ml-auto inline-flex shrink-0 items-center pl-1 text-gray-400 transition-colors hover:text-gray-800"
               aria-label={`Copy ${item.label} install command`}
               data-copy={item.cmd}
               data-analytics={`Home-Hero-Install-${item.label}`}
