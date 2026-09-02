@@ -1,0 +1,299 @@
+---
+/**
+ * /kitaru/investigate — free trace investigation intake (front-end mock).
+ *
+ * Second intake channel for the "Give us your traces" GTM motion: the
+ * Twitter outreach agent links here instead of asking for a file in a DM.
+ * The drop zone is a mock (no upload, no API route yet); submitting swaps
+ * the form for the queued state so the journey can be reviewed end to end.
+ *
+ * Static markup + one inline script, no islands, so the island manifest in
+ * scripts/check-dist-smoke.ts is untouched.
+ */
+import JsonLd from "../../components/seo/JsonLd.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  INVESTIGATE_CTA,
+  INVESTIGATE_FAQ,
+  INVESTIGATE_FINDINGS,
+  INVESTIGATE_FORM,
+  INVESTIGATE_HERO,
+  INVESTIGATE_PRIVACY,
+  INVESTIGATE_SEO,
+  INVESTIGATE_STEPS,
+} from "../../lib/kitaruInvestigate";
+import { absoluteUrl } from "../../lib/seo";
+import "../../styles/kitaru-compat.css";
+
+const pageUrl = absoluteUrl("/kitaru/investigate");
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": `${pageUrl}#faq`,
+  mainEntity: INVESTIGATE_FAQ.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: { "@type": "Answer", text: item.answer },
+  })),
+};
+---
+
+<BaseLayout {...INVESTIGATE_SEO} surface="agent">
+  <JsonLd data={faqJsonLd} slot="head" />
+  <div data-app="kitaru" class="bg-background text-foreground">
+    <main id="investigate-main">
+      {/* Hero + intake */}
+      <section id="intake" class="relative overflow-hidden">
+        <div class="absolute inset-0" aria-hidden="true">
+          <div class="absolute inset-0 bg-gradient-to-b from-ember-light/40 via-transparent to-background"></div>
+        </div>
+        <div class="relative mx-auto grid w-full max-w-[1440px] grid-cols-1 gap-12 px-6 py-16 md:py-24 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:gap-16">
+          <div>
+            <p class="font-mono text-[12px] font-semibold tracking-[0.14em] text-ember uppercase">
+              {INVESTIGATE_HERO.eyebrow}
+            </p>
+            <h1 class="mt-6 max-w-[720px] text-balance text-[2.1rem] leading-[1.15] font-medium tracking-[-0.02em] md:text-[46px] md:leading-[54px]">
+              {INVESTIGATE_HERO.headline}
+              <br />
+              <span class="text-ember">{INVESTIGATE_HERO.headlineAccent}</span>
+            </h1>
+            <p class="mt-5 max-w-[600px] text-[17px] leading-[27px] text-ink-soft">
+              {INVESTIGATE_HERO.lede}
+            </p>
+            <p class="mt-4 inline-flex items-center gap-2 rounded-full border border-ember/40 bg-ember-light/40 px-3.5 py-1.5 text-[13px] text-ink">
+              <span class="size-1.5 rounded-full bg-ember" aria-hidden="true"></span>
+              {INVESTIGATE_HERO.turnaround}
+            </p>
+
+            <ol class="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-3">
+              {INVESTIGATE_STEPS.map((s) => (
+                <li>
+                  <span class="font-mono text-[11px] tracking-[0.22em] text-ember">{s.step}</span>
+                  <h2 class="mt-2 text-[16px] font-medium text-ink">{s.title}</h2>
+                  <p class="mt-1.5 text-[14px] leading-relaxed text-ink-soft">{s.body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          {/* Intake card */}
+          <div class="lg:pt-2">
+            <form
+              id="investigate-form"
+              class="rounded-md border border-border bg-surface p-6 shadow-[0_30px_80px_-50px_oklch(0.13_0.015_60/0.6)] md:p-8"
+              novalidate
+            >
+              <label
+                for="trace-file"
+                id="drop-zone"
+                class="flex cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-ember/50 bg-background px-6 py-12 text-center transition-colors hover:bg-ember-light/30 data-[over=true]:bg-ember-light/50"
+              >
+                <svg class="size-8 text-ember" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span id="drop-label" class="mt-4 text-[16px] font-medium text-ink">{INVESTIGATE_FORM.dropLabel}</span>
+                <span id="drop-hint" class="mt-1 text-[13px] text-ink-soft">{INVESTIGATE_FORM.dropHint}</span>
+                <input id="trace-file" name="trace-file" type="file" accept=".jsonl,.json,application/json" class="sr-only" />
+              </label>
+
+              <div class="mt-6">
+                <label for="email" class="block text-[13px] font-medium text-ink">{INVESTIGATE_FORM.emailLabel}</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  autocomplete="email"
+                  placeholder={INVESTIGATE_FORM.emailPlaceholder}
+                  class="mt-2 w-full rounded-md border border-border bg-background px-3.5 py-2.5 text-[15px] text-ink placeholder:text-ink-soft/60 focus:border-ember focus:outline-none focus:ring-2 focus:ring-ember/30"
+                />
+              </div>
+
+              <label class="mt-5 flex items-start gap-3 text-[13px] leading-relaxed text-ink-soft">
+                <input id="consent" name="consent" type="checkbox" required class="mt-1 size-4 shrink-0 accent-[var(--color-ember)]" />
+                <span>{INVESTIGATE_FORM.consentLabel}</span>
+              </label>
+
+              <p id="form-error" class="mt-4 hidden text-[13px] text-ember" role="alert"></p>
+
+              <button
+                type="submit"
+                data-analytics="Kitaru-Investigate-Submit"
+                class="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-md bg-ember px-5 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-ember-deep"
+              >
+                {INVESTIGATE_FORM.submitLabel}
+                <svg class="size-4 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </button>
+              <p class="mt-3 text-center font-mono text-[11px] tracking-[0.08em] text-ink-soft/70 uppercase">{INVESTIGATE_FORM.mockNote}</p>
+            </form>
+
+            <div id="investigate-success" class="hidden rounded-md border border-border bg-night p-6 text-night-text md:p-8" aria-live="polite">
+              <p class="font-mono text-[11px] tracking-[0.22em] text-ember uppercase">{INVESTIGATE_FORM.successEyebrow}</p>
+              <h2 class="mt-4 text-[28px] leading-tight font-medium tracking-[-0.02em]">{INVESTIGATE_FORM.successHeadline}</h2>
+              <p class="mt-3 text-[15px] leading-relaxed text-night-text/75">{INVESTIGATE_FORM.successBody}</p>
+              <dl class="mt-6 grid grid-cols-2 gap-4 border-t border-white/10 pt-5 font-mono text-[12px]">
+                <div><dt class="text-night-text/50">Investigation</dt><dd id="success-id" class="mt-1 text-night-text">inv_</dd></div>
+                <div><dt class="text-night-text/50">File</dt><dd id="success-file" class="mt-1 truncate text-night-text"></dd></div>
+              </dl>
+              <ol class="mt-6 space-y-2.5">
+                {INVESTIGATE_FORM.successNext.map((step, i) => (
+                  <li class="flex items-start gap-3 text-[14px] text-night-text/85">
+                    <span class="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-ember/20 font-mono text-[10px] text-ember">{i + 1}</span>
+                    {step}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Findings wall */}
+      <section id="findings" class="relative w-full bg-night text-night-text">
+        <div class="mx-auto w-full max-w-[1440px] px-6 py-20 md:py-28">
+          <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">What investigations find</span>
+          <h2 class="mt-5 max-w-[760px] text-balance text-3xl leading-[1.08] font-medium tracking-[-0.025em] md:text-[2.75rem]">
+            One finding each. All of them were already in the traces.
+          </h2>
+          <p class="mt-4 max-w-[600px] text-[16px] leading-relaxed text-night-text/70">
+            Anonymised from recent investigations. Every one came from sessions the team already had and nobody had queried.
+          </p>
+          <ul class="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
+            {INVESTIGATE_FINDINGS.map((f) => (
+              <li class="rounded-md border border-white/10 bg-white/[0.03] p-6">
+                <p class="font-mono text-[12px] tracking-[0.12em] text-ember uppercase">{f.scale}</p>
+                <p class="mt-3 text-[19px] leading-snug font-medium text-night-text">{f.finding}</p>
+                <p class="mt-3 text-[14px] leading-relaxed text-night-text/70">{f.detail}</p>
+                <p class="mt-5 font-mono text-[11px] text-night-text/45">{f.agent}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Privacy */}
+      <section id="privacy" class="relative w-full bg-surface">
+        <div class="mx-auto w-full max-w-[1440px] px-6 py-20 md:py-28">
+          <div class="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-20">
+            <div>
+              <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">{INVESTIGATE_PRIVACY.eyebrow}</span>
+              <h2 class="mt-5 text-balance text-3xl leading-[1.08] font-medium tracking-[-0.025em] md:text-[2.5rem]">{INVESTIGATE_PRIVACY.headline}</h2>
+            </div>
+            <ul class="divide-y divide-border border-y border-border">
+              {INVESTIGATE_PRIVACY.items.map((item) => (
+                <li class="grid grid-cols-1 gap-2 py-6 sm:grid-cols-[220px_1fr] sm:gap-8">
+                  <h3 class="text-[16px] font-medium text-ink">{item.title}</h3>
+                  <p class="text-[15px] leading-relaxed text-ink-soft">{item.body}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section id="faq" class="relative w-full bg-background">
+        <div class="mx-auto w-full max-w-[1440px] px-6 py-20 md:py-28">
+          <div class="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-20">
+            <div>
+              <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">FAQ</span>
+              <h2 class="mt-5 text-balance text-3xl leading-[1.08] font-medium tracking-[-0.025em] md:text-[2.5rem]">Before you send anything</h2>
+            </div>
+            <div class="divide-y divide-border border-y border-border">
+              {INVESTIGATE_FAQ.map((item) => (
+                <details class="group py-5">
+                  <summary class="flex cursor-pointer list-none items-center justify-between gap-6 text-[17px] font-medium text-ink">
+                    {item.question}
+                    <span class="text-ember transition-transform group-open:rotate-45" aria-hidden="true">+</span>
+                  </summary>
+                  <p class="mt-3 max-w-[640px] text-[15px] leading-relaxed text-ink-soft">{item.answer}</p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Closing CTA */}
+      <section class="relative w-full border-t border-border bg-surface">
+        <div class="mx-auto flex w-full max-w-[1440px] flex-col items-center gap-5 px-6 py-16 text-center md:flex-row md:justify-between md:text-left">
+          <div>
+            <h2 class="text-[22px] font-medium tracking-[-0.02em] text-ink">{INVESTIGATE_CTA.headline}</h2>
+            <p class="mt-1 text-[15px] text-ink-soft">{INVESTIGATE_CTA.body}</p>
+          </div>
+          <a
+            href={INVESTIGATE_CTA.cta.href}
+            data-analytics="Kitaru-Investigate-Signup"
+            class="inline-flex items-center gap-2 rounded-md border border-ember px-5 py-3 text-sm font-medium text-ember transition-colors hover:bg-ember hover:text-accent-foreground"
+          >
+            {INVESTIGATE_CTA.cta.label}
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>
+
+<script>
+  // Mock intake: no upload. Reflect the chosen file, validate email +
+  // consent, then swap the form for the queued state.
+  const form = document.getElementById("investigate-form") as HTMLFormElement | null;
+  const zone = document.getElementById("drop-zone");
+  const fileInput = document.getElementById("trace-file") as HTMLInputElement | null;
+  const dropLabel = document.getElementById("drop-label");
+  const dropHint = document.getElementById("drop-hint");
+  const error = document.getElementById("form-error");
+  const success = document.getElementById("investigate-success");
+
+  function showFile(file: File) {
+    if (dropLabel) dropLabel.textContent = file.name;
+    if (dropHint) dropHint.textContent = `${(file.size / 1024 / 1024).toFixed(1)} MB, ready`;
+  }
+
+  fileInput?.addEventListener("change", () => {
+    const f = fileInput.files?.[0];
+    if (f) showFile(f);
+  });
+
+  zone?.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    zone.dataset.over = "true";
+  });
+  zone?.addEventListener("dragleave", () => {
+    delete zone.dataset.over;
+  });
+  zone?.addEventListener("drop", (e) => {
+    e.preventDefault();
+    delete zone.dataset.over;
+    const f = e.dataTransfer?.files?.[0];
+    if (f && fileInput) {
+      const dt = new DataTransfer();
+      dt.items.add(f);
+      fileInput.files = dt.files;
+      showFile(f);
+    }
+  });
+
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value.trim();
+    const consent = (form.elements.namedItem("consent") as HTMLInputElement).checked;
+    const file = fileInput?.files?.[0];
+    let msg = "";
+    if (!file) msg = "Add a Langfuse export first.";
+    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) msg = "Enter the email the finding should go to.";
+    else if (!consent) msg = "Confirm you can share these traces.";
+    if (error) {
+      error.textContent = msg;
+      error.classList.toggle("hidden", msg === "");
+    }
+    if (msg) return;
+
+    const id = `inv_${Math.random().toString(16).slice(2, 10)}`;
+    const idEl = document.getElementById("success-id");
+    const fileEl = document.getElementById("success-file");
+    if (idEl) idEl.textContent = id;
+    if (fileEl && file) fileEl.textContent = file.name;
+    form.classList.add("hidden");
+    success?.classList.remove("hidden");
+    success?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+</script>

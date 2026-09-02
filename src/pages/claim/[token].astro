@@ -1,0 +1,110 @@
+---
+/**
+ * /claim/<token> — where the investigation email or outreach DM lands.
+ *
+ * Renders the one selected finding with its evidence, then hands off to
+ * Kitaru signup with the claim token. Mock: a single static token ("demo")
+ * renders CLAIM_SAMPLE. The real version will be a server route that looks
+ * the token up (needs the prospect investigation context, ticket T5/T9).
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { CLAIM_SAMPLE, CLAIM_SEO } from "../../lib/kitaruInvestigate";
+import "../../styles/kitaru-compat.css";
+
+export function getStaticPaths() {
+  return [{ params: { token: CLAIM_SAMPLE.token } }];
+}
+
+const inv = CLAIM_SAMPLE;
+const lineClass: Record<string, string> = {
+  tool: "text-ember",
+  model: "text-night-text/85",
+  note: "text-night-text/45 italic",
+};
+---
+
+<BaseLayout {...CLAIM_SEO} surface="agent">
+  <div data-app="kitaru" class="bg-background text-foreground">
+    <main id="claim-main">
+      <section class="relative overflow-hidden">
+        <div class="absolute inset-0" aria-hidden="true">
+          <div class="absolute inset-0 bg-gradient-to-b from-ember-light/40 via-transparent to-background"></div>
+        </div>
+        <div class="relative mx-auto w-full max-w-[1100px] px-6 py-16 md:py-24">
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[12px] tracking-[0.12em] uppercase">
+            <span class="text-ember">{inv.eyebrow}</span>
+            <span class="text-ink-soft/60">Prepared for {inv.preparedFor}</span>
+            <span class="text-ink-soft/60">{inv.source}</span>
+          </div>
+          <h1 class="mt-7 max-w-[900px] text-balance text-[2rem] leading-[1.15] font-medium tracking-[-0.02em] md:text-[44px] md:leading-[52px]">
+            {inv.headline}
+          </h1>
+          <p class="mt-6 max-w-[720px] text-[17px] leading-[27px] text-ink-soft">{inv.summary}</p>
+
+          <dl class="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border md:grid-cols-4">
+            {inv.stats.map((s) => (
+              <div class="bg-surface px-5 py-5">
+                <dd class="text-[28px] font-medium tracking-[-0.02em] text-ink">{s.value}</dd>
+                <dt class="mt-1 text-[13px] text-ink-soft">{s.label}</dt>
+              </div>
+            ))}
+          </dl>
+
+          <div class="mt-10 flex flex-wrap items-center gap-4">
+            <a
+              href={inv.claim.href}
+              data-analytics="Kitaru-Claim-Signup"
+              class="group inline-flex items-center gap-2 rounded-md bg-ember px-5 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-ember-deep"
+            >
+              {inv.claim.label}
+              <svg class="size-4 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            </a>
+            <p class="text-[13px] text-ink-soft">{inv.claim.note}</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="relative w-full bg-night text-night-text">
+        <div class="mx-auto w-full max-w-[1100px] px-6 py-16 md:py-24">
+          <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">Evidence</span>
+          <h2 class="mt-4 text-[26px] leading-tight font-medium tracking-[-0.02em]">Three of the {inv.stats[2].value} sessions</h2>
+          <p class="mt-2 text-[15px] text-night-text/65">Excerpts from your export. The full sessions open when you claim the investigation.</p>
+          <ul class="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-3">
+            {inv.evidence.map((ev) => (
+              <li class="rounded-md border border-white/10 bg-white/[0.03] p-5">
+                <div class="flex items-center justify-between font-mono text-[11px] text-night-text/50">
+                  <span class="text-night-text/80">{ev.session}</span>
+                  <span>{ev.when}</span>
+                </div>
+                <ol class="mt-4 space-y-2 font-mono text-[12px] leading-relaxed">
+                  {ev.excerpt.map((line) => (
+                    <li class={`flex gap-2 ${lineClass[line.kind]}`}>
+                      <span class="shrink-0 select-none text-night-text/30" aria-hidden="true">{line.kind === "tool" ? "→" : line.kind === "model" ? "·" : "#"}</span>
+                      <span class="min-w-0 break-words">{line.text}</span>
+                    </li>
+                  ))}
+                </ol>
+              </li>
+            ))}
+          </ul>
+
+          <div class="mt-12 rounded-md border border-ember/30 bg-ember/10 p-6">
+            <span class="font-mono text-[11px] tracking-[0.22em] text-ember uppercase">Investigator's hypothesis</span>
+            <p class="mt-3 max-w-[760px] text-[15px] leading-relaxed text-night-text/85">{inv.hypothesis}</p>
+          </div>
+
+          <div class="mt-10 flex flex-wrap items-center gap-4">
+            <a
+              href={inv.claim.href}
+              data-analytics="Kitaru-Claim-Signup-Bottom"
+              class="inline-flex items-center gap-2 rounded-md bg-ember px-5 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-ember-deep"
+            >
+              {inv.claim.label}
+            </a>
+            <a href={inv.secondary.href} class="text-[14px] text-night-text/70 underline-offset-4 hover:text-night-text hover:underline">{inv.secondary.label}</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</BaseLayout>
