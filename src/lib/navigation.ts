@@ -154,7 +154,7 @@ export function createNavDropdowns({
             {
               label: "ZenML",
               href: "/product/zenml",
-              description: "Orchestrate any AI workflow",
+              description: "Orchestrate pipelines and agents",
               icon: ICON_ZENML_MARK,
               iconViewBox: "0 0 20 20",
               iconFilled: true,
