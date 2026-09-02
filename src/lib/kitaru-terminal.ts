@@ -152,9 +152,9 @@ export const COMPATIBILITY = {
 } as const;
 
 export const CLOUD = {
-  eyebrow: "Kitaru Cloud",
-  headline: "Same loop, shared with your team.",
-  lede: "The local install is the whole product. Cloud adds the parts that only matter once more than one person is looking at the same agent.",
+  eyebrow: "ZenML Pro",
+  headline: "Same loop, managed for your team.",
+  lede: "The local install is the whole product. ZenML Pro adds the parts that only matter once more than one person is looking at the same agent.",
   items: [
     {
       title: "One server for the team",
@@ -166,11 +166,11 @@ export const CLOUD = {
     },
     {
       title: "SSO, roles, audit",
-      body: "Under ZenML Pro: the same control plane, SOC 2 and ISO 27001, BYOK, multi-region.",
+      body: "The same control plane as ZenML: SOC 2 and ISO 27001, BYOK, multi-region.",
     },
   ],
   price: `${KITARU_CLOUD_PRICE} a month, flat`,
   trial: `${KITARU_TRIAL_DAYS}-day full-access trial, no card`,
-  cta: { label: "Start on Kitaru Cloud", href: KITARU_LINKS.signup.href },
+  cta: { label: "Try ZenML Pro free", href: KITARU_LINKS.signup.href },
   secondary: { label: "See pricing", href: "/pricing" },
 } as const;
