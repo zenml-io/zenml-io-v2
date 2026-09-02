@@ -32,9 +32,9 @@ import { productSignupCtas } from "./productCtas";
 import { KITARU_CLOUD_PRICE } from "./productKitaru";
 
 export const HOMEPAGE_UNIFIED_SEO = {
-  title: "ZenML — The unified layer for AI workflows and agents",
+  title: "ZenML — Ship AI you can trust",
   description:
-    "Orchestrate any AI workflow with ZenML. Diagnose and regression-test agents with Kitaru. One platform, on the infrastructure you already use.",
+    "ZenML orchestrates your training, inference, and agent workflows on the infrastructure you already run. Kitaru replays your agents against every change so regressions never reach production.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -49,9 +49,9 @@ const HERO_PRODUCT_CTAS = productSignupCtas(
 );
 
 export const HOMEPAGE_UNIFIED_HERO = {
-  headlinePrefix: "The unified layer for ",
-  headlineAccent: "AI workflows and agents",
-  headlineSuffix: "",
+  headlinePrefix: "Ship AI you can ",
+  headlineAccent: "trust",
+  headlineSuffix: ".",
   /**
    * Lead phrase + body. Focus Lab's USP language transposed into hero
    * copy. Keep it specific to "your stack" so the message lands for
@@ -61,7 +61,7 @@ export const HOMEPAGE_UNIFIED_HERO = {
    */
   subtitleLead: "Built for engineers, ready for enterprise.",
   subtitle:
-    "Orchestrate any AI workflow with ZenML. Diagnose and regression-test agents with Kitaru. One platform, on the infrastructure you already use.",
+    "ZenML orchestrates your training, inference, and agent workflows on the infrastructure you already run. Kitaru replays your agents against every change so regressions never reach production.",
   productCtas: HERO_PRODUCT_CTAS,
 } as const;
 

@@ -16,7 +16,7 @@ export const ANNOUNCEMENT_BANNER = {
 /*  Hero                                                              */
 /* ------------------------------------------------------------------ */
 export const HERO = {
-  headline: "The unified layer for AI workflows and agents.",
+  headline: "Ship AI you can trust.",
   subheadline:
     "Orchestrate ML and Agent workloads on your infrastructure. Modular, flexible, and open-source — always.",
   primaryCta: {
