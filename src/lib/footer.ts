@@ -28,7 +28,7 @@ export interface SocialLink {
 }
 
 /** Brand tagline that sits under the logo. */
-export const FOOTER_TAGLINE = "The single layer for ML and AI workloads.";
+export const FOOTER_TAGLINE = "Ship AI you can trust.";
 
 /**
  * Primary nav columns. Four columns; rendered in a single grid.

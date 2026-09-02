@@ -32,9 +32,9 @@ import { productSignupCtas } from "./productCtas";
 import { KITARU_CLOUD_PRICE } from "./productKitaru";
 
 export const HOMEPAGE_UNIFIED_SEO = {
-  title: "ZenML — The unified layer for ML and AI",
+  title: "ZenML: Ship AI you can trust",
   description:
-    "Replayable agent evals with Kitaru. Reproducible ML pipelines with ZenML. One platform, on the infrastructure you already use.",
+    "ZenML orchestrates your pipelines and agents on your own infrastructure. Kitaru replays your agents so regressions never ship.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -44,14 +44,14 @@ export const HOMEPAGE_UNIFIED_SEO = {
 
 /** One signup button per product, labelled by what you do there. */
 const HERO_PRODUCT_CTAS = productSignupCtas(
-  { zenml: "Orchestrate workflows", kitaru: "Diagnose agents" },
+  { zenml: "Orchestrate AI", kitaru: "Diagnose agents" },
   "Home-Hero-Signup",
 );
 
 export const HOMEPAGE_UNIFIED_HERO = {
-  headlinePrefix: "The unified layer for ",
-  headlineAccent: "ML and AI",
-  headlineSuffix: "",
+  headlinePrefix: "Ship AI you can ",
+  headlineAccent: "trust",
+  headlineSuffix: ".",
   /**
    * Lead phrase + body. Focus Lab's USP language transposed into hero
    * copy. Keep it specific to "your stack" so the message lands for
@@ -61,7 +61,7 @@ export const HOMEPAGE_UNIFIED_HERO = {
    */
   subtitleLead: "Built for engineers, ready for enterprise.",
   subtitle:
-    "Replayable agent evals with Kitaru. Reproducible ML pipelines with ZenML. One platform, on the infrastructure you already use.",
+    "ZenML orchestrates your pipelines and agents on your own infrastructure. Kitaru replays your agents so regressions never ship.",
   productCtas: HERO_PRODUCT_CTAS,
 } as const;
 
@@ -74,14 +74,14 @@ export const HOMEPAGE_UNIFIED_HERO = {
 
 export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
   eyebrow: "NEW",
-  body: "Kitaru: turn agent failures into regression tests — replay real traces against your real code.",
+  body: "Kitaru: turn agent failures into regression tests. Replay real traces against your real code.",
   linkText: "Meet Kitaru",
   linkHref: "/product/kitaru",
 } as const;
 
 /* ---------------------------------------------------------------------- */
 /* Workspace widget — TwoWorkspaces v2 tabbed product demo                 */
-/*   ZenML tab shows reproducible ML pipelines; Kitaru tab shows replay-   */
+/*   ZenML tab shows AI workflow orchestration; Kitaru tab shows replay-   */
 /*   based agent evals. The widget is the centerpiece of the unified `/`.  */
 /* ---------------------------------------------------------------------- */
 
@@ -119,7 +119,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "compare" as const,
           surfaceTitle: "Compare",
           surfaceSubtitle:
-            "Same cohort, one model swapped — the answer is two runs, compared.",
+            "Same cohort, one model swapped. The answer is two runs, compared.",
         },
         {
           id: "sessions" as const,
@@ -127,7 +127,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "sessions" as const,
           surfaceTitle: "Sessions",
           surfaceSubtitle:
-            "Each run records as a session — imported from your traces or captured live.",
+            "Each run records as a session, imported from your traces or captured live.",
           /** Left-pane (SESSIONS list) header copy. Rows + import transcripts
            *  + spines come from src/lib/two-workspaces/sessions-examples.ts. */
           title: "Sessions",
@@ -143,7 +143,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "cohorts" as const,
           surfaceTitle: "Cohorts",
           surfaceSubtitle:
-            "The sessions that matter, frozen as a named set — immutable, so results keep meaning what they meant.",
+            "The sessions that matter, frozen as a named, immutable set, so results keep meaning what they meant.",
         },
         {
           id: "experiments" as const,
@@ -174,14 +174,14 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "pipelines" as const,
           surfaceTitle: "Pipelines",
           surfaceSubtitle:
-            "Integrate your MLOps stack — for compute-intense, distributed ML pipelines.",
+            "Orchestrate any AI workflow, from training and batch inference to evals, on your own stack.",
           /** Left pane header */
           title: "Recent runs",
           subheader: "Last 24h · 5 runs",
           countLabel: "200 total",
           /** Right-pane header strip — tab-level copy (not per-example) */
-          rightEyebrow: "Integrate your MLOps stack",
-          rightSubhead: "For compute-intense, distributed ML pipelines.",
+          rightEyebrow: "Orchestrate on your stack",
+          rightSubhead: "For compute-heavy, distributed AI workloads.",
           /** Per-example payload lives in two-workspaces/pipelines-examples.ts */
           examplesRef: "pipelines-examples" as const,
         },
@@ -191,7 +191,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "stacks" as const,
           surfaceTitle: "Stacks",
           surfaceSubtitle:
-            "Swap orchestrator, store, tracker — same pipeline code.",
+            "Swap orchestrator, store, tracker. Same pipeline code.",
         },
         {
           id: "artifacts" as const,
@@ -199,7 +199,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "artifacts-models" as const,
           surfaceTitle: "Artifacts & Models",
           surfaceSubtitle:
-            "Every artifact and model from every run — versioned, typed, traceable.",
+            "Every artifact and model from every run: versioned, typed, traceable.",
         },
         {
           id: "frameworks" as const,
@@ -207,7 +207,7 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "frameworks-ml" as const,
           surfaceTitle: "Frameworks",
           surfaceSubtitle:
-            "Bring your own ML framework. ZenML wraps it — you don't change your training loop.",
+            "Bring your own ML framework. ZenML wraps it, so you don't change your training loop.",
         },
         {
           id: "resources" as const,
@@ -235,7 +235,7 @@ export const HOMEPAGE_UNIFIED_WORKSPACES = {
   items: [
     {
       name: "Kitaru workspace",
-      tagline: "Agent evals",
+      tagline: "Agent replay",
       body: "Your agent's real traces become frozen, replayable worlds. Evaluate what happened, replay your real code with one thing changed, and keep every fix as a regression test.",
       bullets: [
         "Import traces from anywhere, or record natively",
@@ -246,8 +246,8 @@ export const HOMEPAGE_UNIFIED_WORKSPACES = {
     },
     {
       name: "ZenML workspace",
-      tagline: "ML pipelines",
-      body: "Reproducible training, evaluation, batch inference, and deployment. Pipeline DAGs with typed step interfaces, versioned artifacts, and a composable stack abstraction.",
+      tagline: "AI orchestration",
+      body: "Orchestrate training, evaluation, batch inference, and agent workflows as reproducible pipelines. Typed step interfaces, versioned artifacts, and a composable stack abstraction.",
       bullets: [
         "Runs on Kubernetes, Vertex, SageMaker, AzureML, Airflow",
         "Artifact store + model registry + experiment tracker",
@@ -271,11 +271,11 @@ export const HOMEPAGE_UNIFIED_VALUES = {
   items: [
     {
       name: "Your stack, your data",
-      body: "Run in your VPC, point at your object store, train on your clusters. Metadata is the only thing ZenML touches — your artifacts, prompts, and code stay inside your infrastructure end-to-end.",
+      body: "Run in your VPC, point at your object store, train on your clusters. Metadata is the only thing ZenML touches. Your artifacts, prompts, and code stay inside your infrastructure end-to-end.",
     },
     {
       name: "Modular, not monolithic",
-      body: "Swap any component in your stack — orchestrator, artifact store, experiment tracker, model registry — without rewriting your pipelines or flows. Build with the tools you already trust.",
+      body: "Swap any component in your stack, from orchestrator and artifact store to experiment tracker and model registry, without rewriting your pipelines or flows. Build with the tools you already trust.",
     },
     {
       name: "Open source, always",

@@ -12,7 +12,7 @@ export function isProdHostname(hostname: string): boolean {
 
 /** Default SEO description */
 export const DEFAULT_DESCRIPTION =
-  "ZenML — Build portable, production-ready MLOps pipelines.";
+  "ZenML: Orchestrate any AI workflow on your own stack.";
 
 /** Canonical contact email — single source for /contact, /imprint, and the
  *  Organization JSON-LD contactPoint. Also appears as a literal in

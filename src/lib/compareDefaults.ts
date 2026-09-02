@@ -171,7 +171,7 @@ const E2E_PLATFORMS: CompareCategoryDefaults = {
       title: "Avoid getting locked in to a vendor",
       bullets: [
         "Avoid tangling up code with tooling libraries that make it hard to transition.",
-        "Easily set up multiple MLOps stacks for different teams with different requirements.",
+        "Easily set up multiple stacks for different teams with different requirements.",
         "Switch between tools and platforms seamlessly.",
       ],
       image: DASHBOARD_IMAGES.productionalizationShowcase,
@@ -234,7 +234,7 @@ const GENERIC: CompareCategoryDefaults = {
     {
       title: "Open-source and vendor-neutral",
       bullets: [
-        "ZenML is fully open-source, giving you complete control over your ML infrastructure.",
+        "ZenML is fully open-source, giving you complete control over your AI infrastructure.",
         "Avoid platform lock-in — run the same pipelines across any cloud or on-prem environment.",
         "Benefit from a transparent, community-driven development process.",
       ],

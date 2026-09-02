@@ -63,7 +63,7 @@ const PYTORCH: FrameworkMLExample = {
   descriptor: "deep learning · nn.Module · CUDA",
   eyebrow: "INSIDE THE @STEP",
   title: "Use PyTorch in any @step.",
-  body: "Bring your own. ZenML wraps it — you don't change your training loop.",
+  body: "Bring your own. ZenML wraps it, so you don't change your training loop.",
   versionChip: "torch 2.4.1 · CUDA 12.1",
   codeFilename: "training_pipeline.py",
   codeSource: [
@@ -100,7 +100,7 @@ const TENSORFLOW: FrameworkMLExample = {
   descriptor: "keras · tf.data · SavedModel",
   eyebrow: "INSIDE THE @STEP",
   title: "Train Keras models in any @step.",
-  body: "ZenML snapshots your SavedModel automatically — no boilerplate.",
+  body: "ZenML snapshots your SavedModel automatically. No boilerplate.",
   versionChip: "tensorflow 2.16.1 · Keras 3",
   codeFilename: "train_classifier.py",
   codeSource: [
@@ -123,7 +123,7 @@ const TENSORFLOW: FrameworkMLExample = {
     { letter: "c", label: "auto caching" },
   ],
   goodFit: "Production Keras models with a stable SavedModel format.",
-  tradeOff: "Heavier dependency — version pinning matters across environments.",
+  tradeOff: "Heavier dependency. Version pinning matters across environments.",
   sourceCitation:
     "zenml-io/zenml: docs.zenml.io/stacks-and-components/component-guide/artifact-stores — TensorFlow materializer pattern",
 };
@@ -175,7 +175,7 @@ const PANDAS: FrameworkMLExample = {
   descriptor: "DataFrames · ETL · feature prep",
   eyebrow: "INSIDE THE @STEP",
   title: "Return DataFrames from any @step.",
-  body: "ZenML materializes your DataFrame as a versioned artifact — no manual saving.",
+  body: "ZenML materializes your DataFrame as a versioned artifact. No manual saving.",
   versionChip: "pandas 2.2.2",
   codeFilename: "steps/data_loader.py",
   codeSource: [
@@ -226,7 +226,7 @@ const HUGGINGFACE: FrameworkMLExample = {
     ") -> str:",
     "    model = AutoModelForCausalLM.from_pretrained(base_model_name)",
     "    model = get_peft_model(model, LoraConfig(r=16, lora_alpha=32))",
-    "    # trainer.train() — ZenML tracks the checkpoint",
+    "    # trainer.train(): ZenML tracks the checkpoint",
     "    return datasets_dir",
   ].join("\n"),
   pills: [
@@ -235,7 +235,7 @@ const HUGGINGFACE: FrameworkMLExample = {
     { letter: "R", label: "remote GPU stack" },
   ],
   goodFit: "Fine-tuning transformers and LLMs with PEFT or LoRA.",
-  tradeOff: "Checkpoints are large — budget artifact-store space and transfer.",
+  tradeOff: "Checkpoints are large. Budget artifact-store space and transfer.",
   sourceCitation:
     "zenml-io/zenml: examples/llm_finetuning/run.py — pipelines/train.py finetune step pattern",
 };
@@ -322,7 +322,7 @@ const NUMPY: FrameworkMLExample = {
   descriptor: "ndarray · numerical kernels",
   eyebrow: "INSIDE THE @STEP",
   title: "Pass ndarrays between @steps.",
-  body: "ZenML serializes NumPy arrays automatically — share them across steps.",
+  body: "ZenML serializes NumPy arrays automatically. Share them across steps.",
   versionChip: "numpy 2.1.0",
   codeFilename: "steps/preprocess.py",
   codeSource: [
@@ -346,7 +346,7 @@ const NUMPY: FrameworkMLExample = {
     { letter: "c", label: "content-hashed" },
   ],
   goodFit: "Passing numerical arrays cleanly between steps.",
-  tradeOff: "Raw ndarrays carry no schema — annotate outputs for clarity.",
+  tradeOff: "Raw ndarrays carry no schema. Annotate outputs for clarity.",
   sourceCitation:
     "zenml-io/zenml: docs.zenml.io — NumPy materializer; Annotated tuple return pattern",
 };
@@ -360,7 +360,7 @@ const POLARS: FrameworkMLExample = {
   descriptor: "Rust-backed · lazy DataFrames",
   eyebrow: "INSIDE THE @STEP",
   title: "Use Polars DataFrames in a @step.",
-  body: "ZenML materializes Polars DataFrames — fast ETL without Spark overhead.",
+  body: "ZenML materializes Polars DataFrames. Fast ETL without Spark overhead.",
   versionChip: "polars 1.9.0",
   codeFilename: "steps/feature_eng.py",
   codeSource: [
@@ -384,7 +384,7 @@ const POLARS: FrameworkMLExample = {
     { letter: "f", label: "fast ETL" },
   ],
   goodFit: "Large ETL that's too big for pandas, too small for Spark.",
-  tradeOff: "Newer ecosystem — fewer integrations than pandas.",
+  tradeOff: "Newer ecosystem. Fewer integrations than pandas.",
   sourceCitation:
     "zenml-io/zenml: docs.zenml.io — Polars materializer integration",
 };
@@ -398,7 +398,7 @@ const WANDB: FrameworkMLExample = {
   descriptor: "eval · tracking · sweeps",
   eyebrow: "INSIDE THE @STEP",
   title: "Log experiments to W&B from a @step.",
-  body: "ZenML connects your stack's experiment tracker — one decorator, full lineage.",
+  body: "ZenML connects your stack's experiment tracker. One decorator, full lineage.",
   versionChip: "wandb 0.18.3",
   codeFilename: "steps/train_with_tracking.py",
   codeSource: [

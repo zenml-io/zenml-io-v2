@@ -2,10 +2,10 @@
  * Navigation data — post-Kitaru-merge structure.
  *
  * See MERGE_PLAN.md for the IA decisions. Top nav:
- *   Product ▾    Docs ▾    Pricing    Blog    Book a demo    Case Studies ▾
+ *   Product ▾    Docs ▾    Pricing    Blog    Case Studies ▾
  *
  * Note: dropdowns render before direct links, so the visual order is
- *   Product ▾ Docs ▾ Case Studies ▾ | Pricing Blog Book a demo
+ *   Product ▾ Docs ▾ Case Studies ▾ | Pricing Blog
  * — which is standard practice (dropdowns clustered left).
  *
  * Compare is not in the top nav; it stays reachable via the footer's
@@ -143,6 +143,15 @@ export function createNavDropdowns({
           // Kitaru listed first.
           links: [
             {
+              label: "ZenML",
+              href: "/product/zenml",
+              description: "Orchestrate pipelines and agents",
+              icon: ICON_ZENML_MARK,
+              iconViewBox: "0 0 20 20",
+              iconFilled: true,
+              brand: "zenml",
+            },
+            {
               label: "Kitaru",
               href: "/product/kitaru",
               description: "Replay and improve AI agents",
@@ -150,15 +159,6 @@ export function createNavDropdowns({
               iconViewBox: "0 0 81 82",
               iconFilled: true,
               brand: "kitaru",
-            },
-            {
-              label: "ZenML",
-              href: "/product/zenml",
-              description: "Pipelines for ML workflows",
-              icon: ICON_ZENML_MARK,
-              iconViewBox: "0 0 20 20",
-              iconFilled: true,
-              brand: "zenml",
             },
             {
               label: "ZenML Pro",
@@ -208,7 +208,7 @@ export function createNavDropdowns({
             {
               label: "Customer stories",
               href: "/case-studies",
-              description: "How teams ship ML and agents with ZenML",
+              description: "How teams ship AI workflows and agents with ZenML",
               icon: ICON_BUILDING,
             },
             {
@@ -235,7 +235,6 @@ export function createNavDropdowns({
 export const NAV_LINKS: NavLink[] = [
   { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
-  { label: "Book a demo", href: "/book-your-demo" },
 ];
 
 // ---------------------------------------------------------------------------

@@ -21,18 +21,18 @@ export async function GET(): Promise<Response> {
 
   const markdown = joinMarkdownSections(
     markdownPreamble({
-      title: "Compare — ZenML and Kitaru vs. alternatives",
+      title: "Compare: ZenML and Kitaru vs. alternatives",
       description:
-        "Side-by-side comparisons of ZenML for MLOps and Kitaru for agent runtimes against other tools and platforms.",
+        "Side-by-side comparisons of ZenML for AI orchestration and Kitaru for agent replay against other tools and platforms.",
       canonicalPath: "/compare",
     }),
     joinMarkdownSections(
       "## Summary",
-      "ZenML is for ML pipelines. Kitaru is for durable AI agents. This hub points readers and agents to the detailed comparison pages for each product area.",
+      "ZenML is for AI workflow orchestration. Kitaru is for replaying and regression-testing agents. This hub points readers and agents to the detailed comparison pages for each product area.",
       "This first Markdown mirror summarizes the compare hub only. It does not create Markdown mirrors for every comparison detail page.",
     ),
     joinMarkdownSections(
-      "## MLOps comparisons — ZenML vs. other ML orchestrators and platforms",
+      "## AI orchestration comparisons: ZenML vs. other workflow orchestrators and platforms",
       markdownTable(
         ["Comparison", "Category", "Short description", "URL"],
         mlopsItems.map((item) => [

@@ -50,11 +50,10 @@ describe("seo helpers", () => {
   it("fills default SEO values", () => {
     expect(resolveSeo({ title: "Demo" }, "/demo")).toEqual({
       title: "Demo",
-      description: "ZenML — Build portable, production-ready MLOps pipelines.",
+      description: "ZenML: Orchestrate any AI workflow on your own stack.",
       canonical: "https://www.zenml.io/demo",
       ogTitle: "Demo",
-      ogDescription:
-        "ZenML — Build portable, production-ready MLOps pipelines.",
+      ogDescription: "ZenML: Orchestrate any AI workflow on your own stack.",
       ogImage: "https://www.zenml.io/images/og-default.jpg",
       twitterCard: "summary_large_image",
       noindex: false,
