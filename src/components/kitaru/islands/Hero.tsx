@@ -177,7 +177,7 @@ export function Hero() {
                 data-analytics="Kitaru-Hero-Signup"
                 className="group inline-flex items-center gap-2 rounded-md border border-ember px-5 py-3 text-sm font-medium text-ember transition-colors hover:bg-ember hover:text-accent-foreground cursor-pointer"
               >
-                Or try ZenML Pro free
+                Or try the hosted version free
                 <ArrowRight class="size-4 transition-transform group-hover:translate-x-0.5" />
               </a>
               <span className="text-[12.5px] text-muted-foreground">
