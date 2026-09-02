@@ -852,7 +852,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
       "Eyebrow/heading/description/link block. Absence collapses — every piece but heading is optional and an omitted one leaves no gap. Default styling reproduces the current house idiom byte-for-byte (see sectionIntro.shared.ts); tone colours are not wired into default rendering this wave. Preact twin at SectionIntro.tsx for island call sites.",
     demoProps: {
       eyebrow: "The platform advantage",
-      heading: "One foundation for ML pipelines and AI agents",
+      heading: "One foundation for AI workflows and agents",
       // h3: the demo renders under Components (h2) > entry (h3) on /styleguide
       headingLevel: 3,
       emphasis: "AI agents",

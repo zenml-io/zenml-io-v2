@@ -34,7 +34,7 @@ import { KITARU_CLOUD_PRICE } from "./productKitaru";
 export const HOMEPAGE_UNIFIED_SEO = {
   title: "ZenML — The unified layer for ML and AI",
   description:
-    "Replayable agent evals with Kitaru. Reproducible ML pipelines with ZenML. One platform, on the infrastructure you already use.",
+    "Orchestrate any AI workflow with ZenML. Diagnose and regression-test agents with Kitaru. One platform, on the infrastructure you already use.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -61,7 +61,7 @@ export const HOMEPAGE_UNIFIED_HERO = {
    */
   subtitleLead: "Built for engineers, ready for enterprise.",
   subtitle:
-    "Replayable agent evals with Kitaru. Reproducible ML pipelines with ZenML. One platform, on the infrastructure you already use.",
+    "Orchestrate any AI workflow with ZenML. Diagnose and regression-test agents with Kitaru. One platform, on the infrastructure you already use.",
   productCtas: HERO_PRODUCT_CTAS,
 } as const;
 
@@ -81,7 +81,7 @@ export const HOMEPAGE_UNIFIED_ANNOUNCEMENT = {
 
 /* ---------------------------------------------------------------------- */
 /* Workspace widget — TwoWorkspaces v2 tabbed product demo                 */
-/*   ZenML tab shows reproducible ML pipelines; Kitaru tab shows replay-   */
+/*   ZenML tab shows AI workflow orchestration; Kitaru tab shows replay-   */
 /*   based agent evals. The widget is the centerpiece of the unified `/`.  */
 /* ---------------------------------------------------------------------- */
 
@@ -174,14 +174,14 @@ export const HOMEPAGE_UNIFIED_WIDGET = {
           layout: "pipelines" as const,
           surfaceTitle: "Pipelines",
           surfaceSubtitle:
-            "Integrate your MLOps stack — for compute-intense, distributed ML pipelines.",
+            "Orchestrate any AI workflow — training, batch inference, evals — on your own stack.",
           /** Left pane header */
           title: "Recent runs",
           subheader: "Last 24h · 5 runs",
           countLabel: "200 total",
           /** Right-pane header strip — tab-level copy (not per-example) */
-          rightEyebrow: "Integrate your MLOps stack",
-          rightSubhead: "For compute-intense, distributed ML pipelines.",
+          rightEyebrow: "Orchestrate on your stack",
+          rightSubhead: "For compute-heavy, distributed AI workloads.",
           /** Per-example payload lives in two-workspaces/pipelines-examples.ts */
           examplesRef: "pipelines-examples" as const,
         },
@@ -246,8 +246,8 @@ export const HOMEPAGE_UNIFIED_WORKSPACES = {
     },
     {
       name: "ZenML workspace",
-      tagline: "ML pipelines",
-      body: "Reproducible training, evaluation, batch inference, and deployment. Pipeline DAGs with typed step interfaces, versioned artifacts, and a composable stack abstraction.",
+      tagline: "AI orchestration",
+      body: "Orchestrate training, evaluation, batch inference, and agent workflows as reproducible pipelines. Typed step interfaces, versioned artifacts, and a composable stack abstraction.",
       bullets: [
         "Runs on Kubernetes, Vertex, SageMaker, AzureML, Airflow",
         "Artifact store + model registry + experiment tracker",

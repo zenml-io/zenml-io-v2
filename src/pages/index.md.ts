@@ -65,7 +65,7 @@ export function GET(): Response {
     joinMarkdownSections(
       "## Summary",
       `${HOMEPAGE_UNIFIED_HERO.subtitleLead} ${HOMEPAGE_UNIFIED_HERO.subtitle}`,
-      "ZenML presents one platform for two related workloads: reproducible ML pipelines in the ZenML workspace, and production AI agents in the Kitaru workspace.",
+      "ZenML presents one platform for two related workloads: AI workflow orchestration in the ZenML workspace, and replay-based agent evals in the Kitaru workspace.",
     ),
     joinMarkdownSections(
       "## Main CTAs",
@@ -84,8 +84,8 @@ export function GET(): Response {
     joinMarkdownSections(
       "## Key product links",
       markdownBulletList([
-        `${markdownLink("ZenML product page", "/product/zenml")} — ML pipelines and MLOps orchestration.`,
-        `${markdownLink("Kitaru product page", "/product/kitaru")} — durable Python agents with record, replay, and improvement workflows.`,
+        `${markdownLink("ZenML product page", "/product/zenml")} — AI workflow orchestration: training, inference, evals, and agent pipelines on your own stack.`,
+        `${markdownLink("Kitaru product page", "/product/kitaru")} — replay-based evals that diagnose and regression-test AI agents.`,
         `${markdownLink("Pricing", "/pricing")} — unified plans for ML, agent, or both workloads.`,
         `${markdownLink("Documentation", "/docs")} — product docs, tutorials, and setup guides.`,
       ]),

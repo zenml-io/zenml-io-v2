@@ -26,10 +26,10 @@ import { ZENML_LINKS } from "./productZenml";
 export const PRICING_SEO = {
   title: "Pricing - ZenML",
   description:
-    "Ship ML pipelines with confidence. Predictable, transparent pricing that scales with value.",
+    "Orchestrate AI workflows and ship agents with confidence. Predictable, transparent pricing that scales with value.",
   ogTitle: "Pricing - ZenML",
   ogDescription:
-    "Ship ML pipelines with confidence. Predictable, transparent pricing that scales with value.",
+    "Orchestrate AI workflows and ship agents with confidence. Predictable, transparent pricing that scales with value.",
   ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
@@ -38,26 +38,26 @@ export const PRICING_SEO = {
 // ---------------------------------------------------------------------------
 export const PRICING_HERO = {
   eyebrow: "Pricing",
-  headline: "Ship ML pipelines and AI agents with confidence",
+  headline: "Orchestrate AI workflows and ship agents with confidence",
   deck: "Start open source and self-hosted. Upgrade to Pro for the managed control plane — on our SaaS or your own infrastructure.",
 } as const;
 
 /**
  * "What's included in Pro" block rendered below the comparison table. Two
- * cards — ML pipelines (ZenML side, purple) and Agent runtime (Kitaru side,
+ * cards — AI orchestration (ZenML side, purple) and Agent runtime (Kitaru side,
  * orange) — each with three bullet pairings. Icons are inline SVG strings so
  * the card component stays declarative.
  */
 export const PRICING_PRO_INCLUSIONS = {
   eyebrow: "What's included in Pro",
   headline: "Two products, one plan.",
-  deck: "Switch SDKs without switching tools, billing, or governance. ZenML for reproducible ML. Kitaru for replay-based agent evals. Same control plane underneath.",
+  deck: "Switch SDKs without switching tools, billing, or governance. ZenML for AI workflow orchestration. Kitaru for replay-based agent evals. Same control plane underneath.",
   cards: [
     {
       side: "zenml" as const,
-      eyebrow: "ML pipelines",
+      eyebrow: "AI orchestration",
       title: "Pipelines & artifacts",
-      body: "Reproducible training, batch inference, evaluation. One DAG, versioned artifacts, every orchestrator.",
+      body: "Training, batch inference, evals, agent workflows. One DAG, versioned artifacts, every orchestrator.",
       bullets: [
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="3" x2="6" y2="15" /><circle cx="18" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><path d="M18 9a9 9 0 0 1-9 9" /></svg>',
@@ -310,7 +310,7 @@ export const PRICING_PLAN_WORKSPACES = [
   {
     id: "zenml",
     label: "ZenML workspace",
-    sublabel: "ML pipelines",
+    sublabel: "AI orchestration",
     note: "Executions are ZenML pipeline runs. Kitaru is priced separately as a flat monthly plan — one subscription covers both workspaces.",
     learn: { label: "Learn about ZenML", href: "/product/zenml" },
     plans: PRICING_PLANS,
@@ -567,7 +567,7 @@ export const PRICING_COMPLIANCE = {
   bannerHeadline: "We Take Security Seriously",
   bannerEyebrow: "ZenML is SOC2 and ISO 27001 Compliant",
   bannerBody:
-    "ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your ML workflows and data.",
+    "ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your AI workflows and data.",
 } as const;
 
 // ---------------------------------------------------------------------------

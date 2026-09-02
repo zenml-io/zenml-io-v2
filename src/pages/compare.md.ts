@@ -28,7 +28,7 @@ export async function GET(): Promise<Response> {
     }),
     joinMarkdownSections(
       "## Summary",
-      "ZenML is for ML pipelines. Kitaru is for durable AI agents. This hub points readers and agents to the detailed comparison pages for each product area.",
+      "ZenML is for AI workflow orchestration. Kitaru is for replay-based agent evals. This hub points readers and agents to the detailed comparison pages for each product area.",
       "This first Markdown mirror summarizes the compare hub only. It does not create Markdown mirrors for every comparison detail page.",
     ),
     joinMarkdownSections(

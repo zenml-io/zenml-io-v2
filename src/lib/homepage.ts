@@ -45,7 +45,7 @@ import { R2_WEBFLOW_BASE } from "./constants";
 const R2 = R2_WEBFLOW_BASE;
 
 export const LOGO_CLOUD: { label: string; logos: LogoItem[] } = {
-  label: "Trusted by teams shipping ML pipelines and AI agents",
+  label: "Trusted by teams shipping AI workflows and agents",
   logos: [
     { name: "AXA", src: `${R2}/5f1b0e8a/670e2f23b0b89bea22ecee3c_axa-min.svg` },
     {
@@ -105,14 +105,14 @@ export interface FeatureTab {
 export const FEATURE_TABS_HEADER = {
   eyebrow: "The platform advantage",
   headline: "One foundation.",
-  subheadline: "ML pipelines and AI agents.",
+  subheadline: "AI workflows and agents.",
 };
 
 export const FEATURE_TABS: FeatureTab[] = [
   {
     title: "Unified Workflow Orchestration",
     description:
-      "Stop glue-coding your stack. Orchestrate scikit-learn training jobs and long-running LangGraph agent loops in the same unified execution model. State management, data passing, and termination control — across both ML pipelines and AI agent flows.",
+      "Stop glue-coding your stack. Orchestrate scikit-learn training jobs and long-running LangGraph agent loops in the same unified execution model. State management, data passing, and termination control — across training pipelines and agent flows.",
     image: `${R2}/70e94eb1/68d1536e3bb1899a400a8dec_tab01.avif`,
     imageAlt:
       "Unified workflow orchestration dashboard showing ML and agent runs",
@@ -213,7 +213,7 @@ export const VALUE_PROPS: ValueProp[] = [
 export const VALUE_PROPS_CTA = {
   headline: "Pick your workspace and start shipping.",
   subtext:
-    "Open source at the core. ML pipelines, agent flows, or both — same plans, same control plane.",
+    "Open source at the core. AI workflows, agent evals, or both — same plans, same control plane.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",
@@ -379,7 +379,7 @@ export const COMPLIANCE = {
   badgeHeadline: "ZenML is SOC2 and ISO 27001 Compliant",
   badgeSubheadline: "We Take Security Seriously",
   badgeBody:
-    "ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your ML workflows and data.",
+    "ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your AI workflows and data.",
   architectureImage: `${R2}/68b844a2/66c7398e738654118d4024fb_why-zenml-min.png`,
   architectureImageMobile: `${R2}/8978f34c/66c73e7cfd15ae9889f59705_why-zenml-mobile-min.webp`,
   soc2Badge: `${R2}/f7e1dfa3/67ae0f84d539a001cc441a43_soc2type2_zenml.png`,
