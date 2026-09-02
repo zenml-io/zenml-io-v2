@@ -235,7 +235,7 @@ export const HOMEPAGE_UNIFIED_WORKSPACES = {
   items: [
     {
       name: "Kitaru workspace",
-      tagline: "Agent evals",
+      tagline: "Agent replay",
       body: "Your agent's real traces become frozen, replayable worlds. Evaluate what happened, replay your real code with one thing changed, and keep every fix as a regression test.",
       bullets: [
         "Import traces from anywhere, or record natively",

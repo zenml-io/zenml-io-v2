@@ -17,10 +17,10 @@ import type {
 export const PRO_SEO = {
   title: "Managed AI orchestration for your cloud - ZenML Pro",
   description:
-    "Run your AI workflows and agent evals on a fully-managed control plane. Forget the infrastructure setup and security concerns. Get a single pane of glass view into your entire organization.",
+    "Run your AI workflows and agent replays on a fully-managed control plane. Forget the infrastructure setup and security concerns. Get a single pane of glass view into your entire organization.",
   ogTitle: "Managed AI orchestration for your cloud - ZenML Pro",
   ogDescription:
-    "Run your AI workflows and agent evals on a fully-managed control plane.",
+    "Run your AI workflows and agent replays on a fully-managed control plane.",
   ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
@@ -29,7 +29,7 @@ export const PRO_SEO = {
 // ---------------------------------------------------------------------------
 export const PRO_HERO: HeroData = {
   headline: "A managed control plane for AI workflows and agents",
-  deck: "ZenML Pro runs both workspaces under one paid product: ZenML for AI workflow orchestration, Kitaru for replay-based agent evals. Single pane of glass, enterprise governance, no infrastructure setup.",
+  deck: "ZenML Pro runs both workspaces under one paid product: ZenML for AI workflow orchestration, Kitaru for agent replay and regression testing. Single pane of glass, enterprise governance, no infrastructure setup.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",
@@ -147,7 +147,7 @@ export const PRO_FEATURES = [
   {
     eyebrow: "Workspaces",
     title: "Workspaces for pipelines and agents",
-    body: "Create ZenML workspaces for AI workflow orchestration and Kitaru workspaces for agent evals under one organization, each an isolated, single-tenant deployment with shared SSO, roles, and billing, while your data stays in your cloud.",
+    body: "Create ZenML workspaces for AI workflow orchestration and Kitaru workspaces for agent replay under one organization, each an isolated, single-tenant deployment with shared SSO, roles, and billing, while your data stays in your cloud.",
     learnMoreHref: "/pricing",
     image: {
       url: "/images/kitaru-dashboard.avif",
@@ -239,7 +239,7 @@ export const PRO_OSS_GRID = {
   items: [
     {
       title: "Managed control plane",
-      body: "ZenML Pro offers multi-tenant, fully-managed deployments. Workspaces come in two types, ZenML for AI workflow orchestration and Kitaru for agent evals, under the same organization, roles, and billing, with dev, staging, and production servers separated.",
+      body: "ZenML Pro offers multi-tenant, fully-managed deployments. Workspaces come in two types, ZenML for AI workflow orchestration and Kitaru for agent replay, under the same organization, roles, and billing, with dev, staging, and production servers separated.",
     },
     {
       title: "Roles and Permissions",
@@ -337,7 +337,7 @@ export const PRO_FAQ: FaqData = {
     {
       question: "Does ZenML Pro cover the Kitaru agent workspace too?",
       answer:
-        "Yes. ZenML Pro is the paid plane over both sub-products: ZenML for AI workflow orchestration and Kitaru for replay-based agent evals. Same control plane, same SSO/RBAC/audit, same compliance posture (SOC 2, ISO 27001, BYOK, multi-region). Per-project: pick the ZenML workspace, the Kitaru workspace, or both.",
+        "Yes. ZenML Pro is the paid plane over both sub-products: ZenML for AI workflow orchestration and Kitaru for agent replay and regression testing. Same control plane, same SSO/RBAC/audit, same compliance posture (SOC 2, ISO 27001, BYOK, multi-region). Per-project: pick the ZenML workspace, the Kitaru workspace, or both.",
     },
     {
       question: "What about data security and compliance?",

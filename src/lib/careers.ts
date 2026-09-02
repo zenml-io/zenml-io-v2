@@ -66,7 +66,7 @@ export const CAREERS_WHY = {
     },
     {
       title: "Set industry standards in AI orchestration",
-      body: "AI orchestration is still at the beginning and ZenML will be covering the whole lifecycle, from training pipelines to agent evals. Make a difference!",
+      body: "AI orchestration is still at the beginning and ZenML will be covering the whole lifecycle, from training pipelines to agent replay. Make a difference!",
     },
     {
       title: "Become part of the core team",

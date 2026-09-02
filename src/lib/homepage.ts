@@ -213,7 +213,7 @@ export const VALUE_PROPS: ValueProp[] = [
 export const VALUE_PROPS_CTA = {
   headline: "Pick your workspace and start shipping.",
   subtext:
-    "Open source at the core. AI workflows, agent evals, or both. Same plans, same control plane.",
+    "Open source at the core. AI workflows, agent replay, or both. Same plans, same control plane.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",

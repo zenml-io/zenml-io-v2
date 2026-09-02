@@ -51,7 +51,7 @@ export const PRICING_HERO = {
 export const PRICING_PRO_INCLUSIONS = {
   eyebrow: "What's included in Pro",
   headline: "Two products, one plan.",
-  deck: "Switch SDKs without switching tools, billing, or governance. ZenML for AI workflow orchestration. Kitaru for replay-based agent evals. Same control plane underneath.",
+  deck: "Switch SDKs without switching tools, billing, or governance. ZenML for AI workflow orchestration. Kitaru to replay and regression-test your agents. Same control plane underneath.",
   cards: [
     {
       side: "zenml" as const,
@@ -84,7 +84,7 @@ export const PRICING_PRO_INCLUSIONS = {
     },
     {
       side: "kitaru" as const,
-      eyebrow: "Agent evals",
+      eyebrow: "Agent replay",
       title: "Replay-based evals",
       body: "Import your whole trace history, replay it against your next change, and keep every fix as a regression test, on one flat plan.",
       bullets: [
@@ -293,7 +293,7 @@ export const PRICING_PLAN_WORKSPACES = [
   {
     id: "kitaru",
     label: "Kitaru workspace",
-    sublabel: "Agent evals",
+    sublabel: "Agent replay",
     note: `One flat plan while we launch: ${KITARU_CLOUD_PRICE} a month, every feature, no meters to read. The trial starts with full access and needs no credit card.`,
     learn: { label: "Learn about Kitaru", href: "/product/kitaru" },
     plans: PRICING_PLANS_KITARU,
@@ -364,7 +364,7 @@ export const PRICING_COMPARE: PricingCompareTableData = {
       ],
     },
     {
-      heading: "Agent evals",
+      heading: "Agent replay",
       rows: [
         {
           feature: "Replay-based evals (Python & TypeScript)",

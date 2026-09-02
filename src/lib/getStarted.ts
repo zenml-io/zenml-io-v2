@@ -307,7 +307,7 @@ if __name__ == "__main__":
 // ---------------------------------------------------------------------------
 export const GET_STARTED_FINAL_CTA = {
   headline: "Ready for the next level?",
-  body: "Run AI workflows or agent evals on a managed control plane. RBAC, audit logs, and dedicated support.",
+  body: "Run AI workflows or agent replays on a managed control plane. RBAC, audit logs, and dedicated support.",
   primaryCta: {
     label: "Compare OSS vs Pro",
     href: "/open-source-vs-pro",
