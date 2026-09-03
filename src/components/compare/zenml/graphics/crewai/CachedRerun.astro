@@ -41,7 +41,7 @@
   <div class="row row--zenml">
     <div class="row-head">
       <span class="tag tag--accent">ZenML · @step</span>
-      <span class="row-sub">Replay reuses cached outputs above the failure</span>
+      <span class="row-sub">Retry reuses cached outputs above the failure</span>
     </div>
     <div class="timeline">
       <div class="step step--cached">
@@ -72,7 +72,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M3 12 A9 9 0 1 0 6 5 L3 8 M3 3 L3 8 L8 8" />
       </svg>
-      <span><code>python crew_pipeline.py   # re-run</code> reads steps 1-3 from the artifact store.</span>
+      <span><code>zenml pipeline runs retry &lt;run&gt;</code> reads steps 1-3 from the artifact store.</span>
     </div>
   </div>
 </figure>

@@ -5,7 +5,7 @@
   <div class="layer layer--zenml">
     <div class="layer-head">
       <span class="layer-label">ZenML · orchestration</span>
-      <span class="layer-sub">Adds on top — no agent rewrite</span>
+      <span class="layer-sub">Adds on top, no agent rewrite</span>
     </div>
     <div class="caps">
       <div class="cap">
@@ -14,23 +14,23 @@
       </div>
       <div class="cap">
         <span class="mono ckey">enable_cache</span>
-        <span class="cval">unchanged steps served from cache on re-runs</span>
+        <span class="cval">unchanged steps served from cache, keyed on step, params, inputs</span>
       </div>
       <div class="cap">
         <span class="mono ckey">zenml pipeline deploy</span>
         <span class="cval">serve it; every request is a run with lineage</span>
       </div>
       <div class="cap">
-        <span class="mono ckey">artifact lineage</span>
-        <span class="cval">versioned artifacts per step · loadable by name</span>
+        <span class="mono ckey">wait()</span>
+        <span class="cval">pause for a human, resume the run later</span>
       </div>
       <div class="cap">
         <span class="mono ckey">zenml stack set</span>
         <span class="cval">same code on K8s, Vertex, SageMaker, AzureML</span>
       </div>
       <div class="cap">
-        <span class="mono ckey">self-hosted</span>
-        <span class="cval">Helm service · artifacts in your own bucket</span>
+        <span class="mono ckey">sandbox</span>
+        <span class="cval">isolated exec() for the agent's tools</span>
       </div>
     </div>
   </div>
@@ -48,8 +48,8 @@
       <span class="layer-sub">Your existing agent, unchanged</span>
     </div>
     <div class="adapter">
-      <span class="mono adapter-key">ZenMLAgent(Agent(...))</span>
-      <span class="adapter-sub">first-class adapter &middot; model + tool calls as child events</span>
+      <span class="mono adapter-key">agent.run_sync(...) inside a @step</span>
+      <span class="adapter-sub">no adapter, no rewrite &middot; the validated output becomes a versioned artifact</span>
     </div>
   </div>
 </figure>

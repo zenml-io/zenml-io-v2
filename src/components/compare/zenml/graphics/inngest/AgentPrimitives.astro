@@ -8,8 +8,8 @@
   aria-describedby="agent-primitives-desc"
 >
   <figcaption class="sr-only">
-    <span id="agent-primitives-title">Python agent primitives versus polyglot durable functions.</span>
-    <span id="agent-primitives-desc">Compares Inngest step primitives across several languages with ZenML primitives for Python agent workloads.</span>
+    <span id="agent-primitives-title">Durable waits and dynamic graphs in Python versus polyglot durable functions.</span>
+    <span id="agent-primitives-desc">Compares Inngest step primitives across several languages with ZenML dynamic pipelines, wait(), caching and step retries for Python pipelines and agents.</span>
   </figcaption>
   <div class="panel panel--competitor">
     <div class="panel-head">
@@ -48,35 +48,35 @@
 
   <div class="panel panel--zenml">
     <div class="panel-head">
-      <span class="panel-label panel-label--accent">ZenML · Python agent primitives</span>
-      <span class="panel-sub">The glue every Python agent team writes, shipped in the box</span>
+      <span class="panel-label panel-label--accent">ZenML · durable waits and dynamic graphs in Python</span>
+      <span class="panel-sub">The agent cases that usually get a second engine, inside the pipeline</span>
     </div>
 
     <div class="wrap">
-      <span class="mono wrap-label">@pipeline</span>
-      <span class="wrap-sub">on ordinary Python 3.11+</span>
+      <span class="mono wrap-label">@pipeline(dynamic=True)</span>
+      <span class="wrap-sub">graph built from ordinary Python</span>
     </div>
 
     <div class="prims">
       <div class="prim prim--accent">
-        <span class="mono pkey">enable_cache</span>
-        <span class="pval">unchanged steps served from cache on every re-run</span>
+        <span class="mono pkey">wait()</span>
+        <span class="pval">pause for a human or an external system; run marked PAUSED, resumed later</span>
+      </div>
+      <div class="prim">
+        <span class="mono pkey">step.map()</span>
+        <span class="pval">fan out over a list at run time; loops and branches are plain Python</span>
       </div>
       <div class="prim">
         <span class="mono pkey">StepRetryConfig</span>
         <span class="pval">per-step retries with delay and backoff</span>
       </div>
       <div class="prim">
-        <span class="mono pkey">get_artifact_version()</span>
-        <span class="pval">load any earlier run's output by name</span>
-      </div>
-      <div class="prim">
-        <span class="mono pkey">@step</span>
-        <span class="pval">typed versioned artifact in your bucket</span>
+        <span class="mono pkey">enable_cache</span>
+        <span class="pval">unchanged steps served from cache across runs, output versioned in your bucket</span>
       </div>
     </div>
 
-    <div class="foot foot--accent">Pydantic AI adapter ships in the box; OpenAI / Claude / LangGraph wrap.</div>
+    <div class="foot foot--accent">Python only. Approvals, retries and caching without a second engine.</div>
   </div>
 </figure>
 

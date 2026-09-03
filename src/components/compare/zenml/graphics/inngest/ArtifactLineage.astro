@@ -8,8 +8,8 @@
   aria-describedby="artifact-lineage-desc"
 >
   <figcaption class="sr-only">
-    <span id="artifact-lineage-title">Versioned deployments and artifact lineage versus event-sourced steps.</span>
-    <span id="artifact-lineage-desc">Compares Inngest step memoization and replay tooling with ZenML typed artifacts, step lineage, and tag-routed deployment versions.</span>
+    <span id="artifact-lineage-title">Versioned artifacts and deployments versus event-sourced steps.</span>
+    <span id="artifact-lineage-desc">Compares Inngest step memoization and replay tooling with ZenML typed artifacts, a paused wait condition, and a deployed pipeline where every request is a tracked run.</span>
   </figcaption>
   <div class="panel panel--competitor">
     <div class="panel-head">
@@ -38,42 +38,40 @@
 
   <div class="panel panel--zenml">
     <div class="panel-head">
-      <span class="panel-label panel-label--accent">ZenML · artifacts + versioned deployments</span>
-      <span class="panel-sub">Typed artifacts in your bucket, snapshots routed by tag</span>
+      <span class="panel-label panel-label--accent">ZenML · artifacts + deployments</span>
+      <span class="panel-sub">Typed artifacts in your bucket, a paused run you can resume</span>
     </div>
 
     <div class="run">
-      <span class="run-label run-label--accent">execution · review_flow v3</span>
+      <span class="run-label run-label--accent">run · review_pipeline</span>
       <div class="ckpts">
         <div class="ckpt">
           <span class="ckpt-name">@step research</span>
-          <span class="ckpt-art">artifact: brief.md (in your S3)</span>
+          <span class="ckpt-art">artifact: brief (v4, in your S3)</span>
         </div>
         <div class="ckpt">
           <span class="ckpt-name">@step draft</span>
-          <span class="ckpt-art">artifact: draft.md (typed, versioned)</span>
+          <span class="ckpt-art">artifact: draft (typed, versioned)</span>
         </div>
         <div class="ckpt ckpt--wait">
-          <span class="ckpt-name">@step evaluate</span>
-          <span class="ckpt-art">artifact: scores.json (loadable by name)</span>
+          <span class="ckpt-name">wait() · human_approval</span>
+          <span class="ckpt-art">run PAUSED; resolve, then zenml pipeline runs resume</span>
         </div>
       </div>
     </div>
 
     <div class="deploy">
       <div class="deploy-head">
-        <span class="mono">zenml pipeline deploy review_pipeline</span>
+        <span class="mono">zenml pipeline deploy run.review_pipeline --name review-svc</span>
       </div>
       <div class="versions">
-        <span class="ver">v1</span>
-        <span class="ver">v2</span>
-        <span class="ver ver--current">v3</span>
-        <span class="tag">default → v3</span>
-        <span class="tag tag--canary">canary → v3</span>
+        <span class="ver">request</span>
+        <span class="tag">= tracked run</span>
+        <span class="tag tag--canary">same artifacts, same lineage</span>
       </div>
     </div>
 
-    <div class="foot foot--accent">Cross-run diff and tag-routed promotion in the box.</div>
+    <div class="foot foot--accent">One record for a batch run and a served request.</div>
   </div>
 </figure>
 
@@ -234,11 +232,6 @@
     background: var(--color-surface);
     border: 1px solid var(--color-border-light);
     border-radius: 3px;
-  }
-  .ver--current {
-    color: var(--color-accent);
-    border-color: var(--color-accent);
-    background: var(--color-surface);
   }
   .tag {
     font-family: var(--font-mono);

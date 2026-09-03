@@ -4,8 +4,8 @@ competitorLogo: "/compare/claude-agent-sdk.svg"
 competitorTagline: "Build AI agents that autonomously read files, run commands, search the web, edit code, and more."
 title: "ZenML vs Claude Agent SDK: build the agent, orchestrate it as a pipeline"
 shortTitle: "Orchestration above the Agent SDK"
-description: "ZenML and the Claude Agent SDK solve different problems. Keep the SDK for building the agent, and put a ZenML pipeline around it for versioned artifacts, step caching, lineage across runs, and deployment on your own cloud."
-cardSubtitle: "Keep the SDK. Add versioned artifacts, step caching, and deployment on your own cloud around it."
+description: "ZenML and the Claude Agent SDK solve different problems. Keep the SDK for building the agent, and put a ZenML pipeline around it for versioned artifacts, step caching, approvals, sandboxes, and deployment on your own cloud."
+cardSubtitle: "Keep the SDK. Add versioned artifacts, step caching, approvals, and deployment on your own cloud around it."
 ctaHeading: "Put a pipeline around your Agent SDK work"
 order: 10
 ---
@@ -16,11 +16,11 @@ import CodeCompare from '../../components/compare/zenml/CodeCompare.astro';
 import ComparisonCta from '../../components/compare/zenml/ComparisonCta.astro';
 import PullQuote from '../../components/compare/zenml/PullQuote.astro';
 
-ZenML and the Claude Agent SDK are not alternatives. The Agent SDK builds agents that read files, run commands, search the web, and edit code inside a session you start. It is a very good way to write the agent itself.
+ZenML and the Claude Agent SDK aren't alternatives. The Agent SDK builds agents that read files, run commands, search the web, and edit code inside a session you start. It's a very good way to write the agent itself.
 
-ZenML is the orchestration layer you put around that work when it stops being a session and becomes a workload. The agent code stays exactly as you wrote it, running inside a `@step`. What ZenML adds is everything around the call: the run record, the versioned artifacts, the cache that stops you paying twice for work that did not change, and a stack that puts the whole thing on Kubernetes, Vertex AI, SageMaker, or AzureML without a rewrite.
+ZenML is the orchestration layer you put around that work when it stops being a session and becomes a workload. The agent code stays exactly as you wrote it, inside a `@step`. What ZenML adds is everything around the call: the run record, the versioned artifacts, the cache that stops you paying twice for work that didn't change, an approval gate a human can answer days later, and a stack that puts the whole thing on Kubernetes, Vertex AI, SageMaker, or AzureML without a rewrite.
 
-For a one-off task at your keyboard, you do not need any of that. For a hundred runs a day whose outputs someone will ask about next month, you do.
+For a one-off task at your keyboard, you don't need any of that. For a hundred runs a day whose outputs someone will ask about next month, you do.
 
 <WhenToUseEach
   competitorLabel="Claude Agent SDK"
@@ -28,8 +28,9 @@ For a one-off task at your keyboard, you do not need any of that. For a hundred 
     title: "Use ZenML if you are",
     items: [
       "Running agent work as a scheduled or served workload rather than an interactive session",
-      "Needing to know which output came from which run, from which inputs, weeks later",
+      "Asked, weeks later, which output came from which run and which inputs",
       "Re-running a pipeline often enough that skipping unchanged steps saves real money",
+      "Gating an agent's action behind a human approval that may take hours or days to arrive",
       "Deploying into your own cloud (Kubernetes, Vertex AI, SageMaker, AzureML) for security or compliance",
       "Combining the agent with the rest of a pipeline: retrieval, evaluation, batch inference, a training step",
     ],
@@ -38,9 +39,9 @@ For a one-off task at your keyboard, you do not need any of that. For a hundred 
     title: "Use the Claude Agent SDK if you are",
     items: [
       "Building autonomous coding agents that edit files, run bash, and search codebases",
-      "Running interactive sessions where you are at the keyboard to approve and guide",
+      "Running interactive sessions where you're at the keyboard to approve and guide",
       "Prototyping a one-off task or a short-lived workflow",
-      "Relying on its sandboxing, tool permissions, and file-edit rewind",
+      "Relying on its per-tool permission model, hooks, and file-edit rewind",
     ],
   }}
 />
@@ -55,29 +56,40 @@ The Agent SDK gives you a session. A ZenML pipeline gives that session a place i
 
 - **The run:** Wrapping the agent call in a `@step` inside a `@pipeline` makes each execution a run with a start, an end, a status, and a history you can open in the dashboard.
 - **Versioned artifacts:** Whatever the step returns is stored in your artifact store, versioned, and addressable. Return `Annotated[str, "patch"]` and the output is retrievable by name across runs rather than buried in a session log.
-- **Metadata:** ZenML has no LLM-specific primitive, and it does not try to parse what the SDK did. It gives you a place to put what you care about: `log_metadata()` attaches token counts, cost, or tool-call counts to the step.
+- **Metadata:** ZenML has no LLM-specific primitive, and it doesn't try to parse what the SDK did. It gives you a place to put what you care about: `log_metadata()` attaches the turn count, cost, or tool-call count from the SDK's result message to the step.
+- **Async steps:** The SDK's `query()` is an async generator. A step can be declared `async def`, and ZenML runs the coroutine to completion when the step executes, so the stream is consumed inside the step with no wrapper.
 
-## Not re-paying for work that did not change
+## Not re-paying for work that didn't change
 
-The Agent SDK writes session history to disk and can rewind file edits. That is useful while you are working, but it is not a cache across runs.
+The Agent SDK writes session history to disk and can rewind file edits. That's useful while you're working, but it isn't a cache across runs.
 
-- **The cache key:** ZenML hashes a step's code, inputs, and parameters. If nothing changed, the stored artifact is returned and the body never executes.
-- **What that means in practice:** In a pipeline that retrieves context, runs the agent, then evaluates the result, editing only the evaluation step re-runs only the evaluation step. The retrieval and the agent call are served from cache.
-- **Turning it off:** A step that must always execute takes `@step(enable_cache=False)`, which is the right setting for the agent step itself whenever non-determinism is the point.
+- **The cache key:** ZenML keys the cache on the step, its parameters, and its inputs: the step's source path, the parameter values, the input artifact IDs, the output definitions and materializers, plus the environment variables and secrets the step declares. If nothing changed, you get the stored artifact back and the body never executes. Every run, not only after a failure.
+- **What that means in practice:** Retrieve context, run the agent, evaluate the result. Edit only the evaluation step and only the evaluation step re-runs. Retrieval and the agent call come from cache.
+- **Turning it off:** A step that must always execute takes `@step(enable_cache=False)`, which is the right setting for the agent step itself whenever non-determinism is the point. A `cache_policy` on the step narrows what the key includes when the default is too eager.
+
+## Approvals, sandboxes, and retries
+
+Three things the Agent SDK handles inside a session and ZenML handles around the step.
+
+- **Waiting for a human:** In a dynamic pipeline, `wait(schema=bool, question="Apply this patch?")` pauses the run until someone answers it from the dashboard, the CLI, or the API. Once the wait's timeout elapses and no other work in the run is in flight, ZenML marks the run `PAUSED` so the orchestration process can be torn down, and `zenml pipeline runs resume` picks it up later. The SDK's permission prompts assume you're at the keyboard. The wait doesn't.
+- **Isolated tool loops:** A `sandbox` is a stack component with local, Docker, Kubernetes, and Modal flavors. Inside a step, `Client().active_stack.sandbox.create_session()` gives the agent an isolated environment to run generated code in, with `session.exec([...])`, streamed output, and snapshots you can store as artifacts and restore in a later run.
+- **Retries:** A step takes `retry=StepRetryConfig(max_retries=3, delay=10, backoff=2)`. A failed run is retried with `zenml pipeline runs retry`, and the steps that already completed are served from cache. ZenML retries at step granularity. It won't resume a step mid-body.
 
 ## Your infrastructure, your data
 
-- **Where it runs:** `zenml stack set` repoints the same pipeline from your laptop to Kubernetes, Vertex AI, SageMaker, or AzureML. The agent code does not change.
+- **Where it runs:** `zenml stack set` repoints the same pipeline from your laptop to Kubernetes, Vertex AI, SageMaker, or AzureML. The agent code doesn't change.
 - **Where artifacts land:** Your own S3, GCS, or Azure Blob bucket. Self-host the ZenML server and the run metadata stays with you too.
 - **Serving:** `zenml pipeline deploy` stands the pipeline up behind an endpoint, and every request becomes a run with the same artifacts and lineage as a batch job.
 
-## What ZenML does not do
+## What ZenML doesn't do
 
-Worth saying plainly, because it decides whether you need both.
+Three things the SDK does that ZenML won't. They decide how you use the two together.
 
-- ZenML has **no sandbox and no tool-permission model**. The Agent SDK's isolation, allowed-tools configuration, and file-edit rewind have no ZenML equivalent, and you should keep using them.
-- ZenML has **no durable wait**. If the agent needs to pause for a human for two days without holding compute, neither of these tools is the answer; a durable execution engine is.
-- ZenML does **not** make a crashed step resume mid-execution. It re-runs the pipeline and serves the completed steps above the failure from cache, which gets you the cost saving but is not the same mechanism.
+- ZenML has **no per-tool permission model**. The SDK's `allowed_tools`, `permission_mode`, and hooks decide what the agent may touch inside the step, and there is no ZenML equivalent. A sandbox isolates where code runs; it doesn't decide which tools the model may call.
+- ZenML has **no file-edit rewind**. A step returns artifacts, and a re-run produces new artifact versions. It doesn't roll back what the agent did to a working tree.
+- ZenML has **no agent abstractions**. It doesn't define agents, tools, or sessions. It runs whatever you built and records what came out.
+
+Want to replay the same agent against a prompt or model change? Kitaru's Claude Agent SDK adapter records one-shot `query()` calls and reruns them. See [Kitaru vs Claude Agent SDK](/compare/kitaru-vs-claude-agent-sdk).
 
 ## What makes ZenML different
 
@@ -85,13 +97,14 @@ Worth saying plainly, because it decides whether you need both.
   competitorLabel="Claude Agent SDK"
   rows={[
     { feature: "Versioned artifacts and lineage across runs", zenml: true, competitor: false, note: "Step outputs are stored and loadable by name; the SDK keeps a session history." },
-    { feature: "Caching that skips unchanged steps on a re-run", zenml: true, competitor: false, note: "ZenML hashes code and inputs. Prompt caching in the Claude stack is a different mechanism." },
+    { feature: "Caching that skips unchanged steps on a re-run", zenml: true, competitor: false, note: "Keyed on the step, its parameters, and its inputs. Prompt caching in the Claude stack is a different mechanism." },
+    { feature: "Durable human approval that outlives the process", zenml: true, competitor: "partial", note: "`wait()` pauses the run until a human resolves it. The SDK's permission prompts need someone at the keyboard." },
+    { feature: "Isolated environment for tool execution", zenml: true, competitor: true, note: "ZenML: the sandbox stack component (Docker, Kubernetes, Modal). The SDK: its own sandboxing options." },
     { feature: "One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML", zenml: true, competitor: false, note: "Configure once, every pipeline uses it." },
     { feature: "Run history you can inspect and compare", zenml: true, competitor: "partial", note: "The SDK writes session transcripts; ZenML records runs, steps, and artifacts in a server." },
     { feature: "Serve it and get lineage per request", zenml: true, competitor: false, note: "`zenml pipeline deploy` makes every request a tracked run." },
-    { feature: "Agent sandboxing and tool permissions", zenml: false, competitor: true, note: "The SDK's job. Keep using it inside the step." },
-    { feature: "Autonomous file editing, bash, and codebase search", zenml: false, competitor: true, note: "ZenML orchestrates the agent; it is not an agent." },
-    { feature: "Interactive, human-in-the-loop sessions", zenml: false, competitor: true, note: "ZenML has no durable wait primitive." },
+    { feature: "Per-tool permission model and file-edit rewind", zenml: false, competitor: true, note: "The SDK's job. Keep using it inside the step." },
+    { feature: "Autonomous file editing, bash, and codebase search", zenml: false, competitor: true, note: "ZenML orchestrates the agent; it isn't an agent." },
     { feature: "Open source, self-hostable", zenml: true, competitor: true },
   ]}
 />
@@ -105,6 +118,8 @@ Worth saying plainly, because it decides whether you need both.
 | History | Session transcript on disk | Runs, steps, and artifacts in the server |
 | Outputs | Files the agent edited | Versioned artifacts in your bucket |
 | Avoiding repeat work | Prompt caching, file-edit rewind | `enable_cache` across runs |
+| Human approval | Permission prompts in the session | `wait()` in a dynamic pipeline |
+| Isolation | SDK sandboxing and `allowed_tools` | `sandbox` stack component |
 | Where it runs | Wherever you start the session | Stack orchestrator (`zenml stack set`) |
 | Serving | Your own wrapper | `zenml pipeline deploy --name ...` |
 | Cross-run reuse | Not applicable | `get_artifact_version(...).load()` |
@@ -114,7 +129,7 @@ Worth saying plainly, because it decides whether you need both.
   competitorLabel="Claude Agent SDK alone"
   zenmlCode={`from typing import Annotated
 
-from claude_agent_sdk import query
+from claude_agent_sdk import ClaudeAgentOptions, ResultMessage, query
 from zenml import log_metadata, pipeline, step
 from zenml.client import Client
 
@@ -123,12 +138,26 @@ def gather_context(repo: str) -> Annotated[str, "context"]:
     return read_repo_summary(repo)
 
 # The agent step is non-deterministic, so caching is off here
-# while the steps around it stay cached.
+# while the steps around it stay cached. query() is an async
+# generator, so the step is async and ZenML runs it to completion.
 @step(enable_cache=False)
-def run_agent(context: str, task: str) -> Annotated[str, "patch"]:
-    result = query(prompt=f"{context}\\n\\nTask: {task}")
-    log_metadata(metadata={"task": task, "chars": len(result)})
-    return result
+async def run_agent(context: str, task: str) -> Annotated[str, "patch"]:
+    options = ClaudeAgentOptions(
+        allowed_tools=["Read", "Edit", "Bash"],
+        permission_mode="acceptEdits",
+    )
+    patch = ""
+    async for message in query(
+        prompt=f"{context}\\n\\nTask: {task}", options=options
+    ):
+        if isinstance(message, ResultMessage):
+            patch = message.result or ""
+            log_metadata(metadata={
+                "task": task,
+                "turns": message.num_turns,
+                "cost_usd": message.total_cost_usd,
+            })
+    return patch
 
 @step
 def evaluate(patch: str) -> Annotated[dict, "scores"]:
@@ -145,25 +174,39 @@ Client().get_artifact_version("patch").load()
 
 # Same code on your cloud:
 #   zenml stack set k8s_stack && python agent_pipeline.py`}
-  competitorCode={`from claude_agent_sdk import query
+  competitorCode={`import asyncio
+
+from claude_agent_sdk import ClaudeAgentOptions, ResultMessage, query
 
 # The SDK builds and runs the agent. It reads files, runs
 # commands, and edits code inside a session you start.
-context = read_repo_summary("zenml-io/zenml")
-task = "add retry to the client"
+async def main() -> None:
+    context = read_repo_summary("zenml-io/zenml")
+    task = "add retry to the client"
+    options = ClaudeAgentOptions(
+        allowed_tools=["Read", "Edit", "Bash"],
+        permission_mode="acceptEdits",
+    )
 
-result = query(prompt=f"{context}\\n\\nTask: {task}")
+    patch = ""
+    async for message in query(
+        prompt=f"{context}\\n\\nTask: {task}", options=options
+    ):
+        if isinstance(message, ResultMessage):
+            patch = message.result or ""
 
-scores = score(result)
-print(scores)
+    print(score(patch))
+
+asyncio.run(main())
 
 # The session transcript is written to disk, and file edits can
 # be rewound. What there isn't: a run record, a versioned
 # artifact you can load back by name next month, a cache that
-# skips gather_context on the next run, or a way to put this
-# same code on Kubernetes without writing the deployment.`}
+# skips read_repo_summary on the next run, an approval that
+# survives the process exiting, or a way to put this same code
+# on Kubernetes without writing the deployment.`}
 />
 
 <ComparisonCta headline={frontmatter.ctaHeading}>
-Keep the Claude Agent SDK. It builds the agent, sandboxes the tools, and does the work. Add ZenML when that work becomes a workload: when someone needs to know what a run produced, when re-running everything from scratch starts costing real money, and when it has to run on your own infrastructure rather than your laptop.
+Keep the Claude Agent SDK. It builds the agent, decides which tools it may call, and does the work. Add ZenML when that work becomes a workload: someone needs to know what a run produced, a human has to approve the action and might not be around for a day, re-running everything from scratch starts costing real money, and it has to run on your own infrastructure rather than your laptop.
 </ComparisonCta>

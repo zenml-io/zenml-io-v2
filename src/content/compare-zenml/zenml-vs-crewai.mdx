@@ -2,8 +2,8 @@
 competitor: "CrewAI"
 competitorLogo: "/compare/crewai.svg"
 title: "ZenML vs CrewAI: build the crew, orchestrate it as a pipeline"
-description: "CrewAI is a Python framework for multi-agent crews with roles, tasks, and Flows. ZenML is the orchestration layer you put around a crew: versioned artifacts, step caching, lineage across runs, and one stack abstraction targeting Kubernetes, Vertex AI, SageMaker, and AzureML."
-cardSubtitle: "Keep the crew. Add versioned artifacts, step caching, and your own cloud around it."
+description: "CrewAI is a Python framework for multi-agent crews with roles, tasks, and Flows. ZenML is the orchestration layer around it: versioned artifacts, step caching, human approval, sandboxes, your own cloud."
+cardSubtitle: "Keep the crew. Add versioned artifacts, step caching, approvals, and your own cloud around it."
 ctaHeading: "Put a pipeline around your crew"
 order: 70
 ---
@@ -19,22 +19,22 @@ import CachedRerun from '../../components/compare/zenml/graphics/crewai/CachedRe
 import SelfHostedRuntime from '../../components/compare/zenml/graphics/crewai/SelfHostedRuntime.astro';
 import HarnessFreedom from '../../components/compare/zenml/graphics/crewai/HarnessFreedom.astro';
 
-CrewAI is a framework for building multi-agent systems: agents with roles and backstories, tasks with expected outputs, and Flows for when you need explicit control over the sequence. It is opinionated about how agents collaborate, and that opinion is the reason to pick it.
+CrewAI is a framework for building multi-agent systems: agents with roles and backstories, tasks with expected outputs, and Flows for when you need explicit control over the sequence. It's opinionated about how agents collaborate, and that opinion is the reason to pick it.
 
-ZenML is not another opinion about agent collaboration. It is the orchestration layer around whatever you built. Your crew runs unchanged inside a `@step`, and ZenML supplies the pipeline around it: a run record, versioned artifacts in your own bucket, a cache that skips steps whose code and inputs did not change, and a stack that puts the whole thing on Kubernetes, Vertex AI, SageMaker, or AzureML.
+ZenML isn't another opinion about agent collaboration. It's the orchestration layer around whatever you built. Your crew runs unchanged inside a `@step`, and ZenML supplies the pipeline around it: a run record, versioned artifacts in your own bucket, a cache keyed on the step, its parameters and its inputs, a `wait()` that pauses the run until a human approves what the crew proposed, sandboxes for the code the crew's tools execute, and a stack that puts the whole thing on Kubernetes, Vertex AI, SageMaker, AzureML, Airflow, Databricks and more.
 
-The question CrewAI answers is how the agents work together. The question ZenML answers is what happened when they did, and what it costs to do it again.
+CrewAI answers how the agents work together. ZenML answers what happened when they did, who signed off on it, and what it costs to do it again.
 
 <WhenToUseEach
   competitorLabel="CrewAI"
   zenml={{
     title: "Use ZenML if you are",
     items: [
-      "Running a crew as a scheduled or served workload rather than a script you launch by hand",
-      "Needing to know which output came from which run, from which inputs, weeks later",
+      "Running a crew on a schedule or behind an endpoint, not from a terminal by hand",
+      "Asked, weeks later, which output came from which run and which inputs",
+      "Pausing for a human to approve what the crew produced before the next step acts on it",
       "Re-running often enough that skipping unchanged steps saves real money",
-      "Deploying into your own cloud (Kubernetes, Vertex AI, SageMaker, AzureML) for security or compliance",
-      "Wiring the crew into a wider pipeline: retrieval, evaluation, batch inference, a training step",
+      "Deploying into your own cloud for security or compliance, with the outputs in your own bucket",
     ],
   }}
   competitor={{
@@ -43,35 +43,35 @@ The question CrewAI answers is how the agents work together. The question ZenML 
       "Designing how multiple agents divide work, delegate, and collaborate on a task",
       "Wanting roles, goals, and task definitions as the primary abstraction",
       "Using Flows for explicit, stateful control over a multi-step agent process",
-      "Prototyping quickly, where the crew itself is the thing you are iterating on",
+      "Prototyping quickly, where the crew itself is the thing you're iterating on",
     ],
   }}
 />
 
 <PullQuote
-  quote="CrewAI decides how the agents work together. ZenML decides what the run produced, where it lives, and whether you have to pay for it twice."
+  quote="CrewAI decides how the agents work together. ZenML decides what the run produced, where it lives, who approved it, and whether you have to pay for it twice."
 />
 
 <FeatureWithGraphic title="Orchestration around the agent stack">
   <RuntimeLayer slot="graphic" />
 
-  The two live at different levels. A crew is a program; a pipeline is the thing that runs programs and remembers what they did.
+  A crew is a program. A pipeline is the thing that runs programs and remembers what they did.
 
   <Fragment slot="bullets">
     - **No rewrite:** `crew.kickoff()` goes inside a `@step`. Your agents, tasks, and tools are untouched.
-    - **What ZenML owns:** The run record, the artifacts, the cache, and the deployment target. Not the agent logic.
-    - **What CrewAI keeps owning:** Roles, delegation, task routing, and the collaboration model. ZenML has no opinion about any of it.
+    - **What ZenML owns:** The run record, the artifacts, the cache, the approval gate, the sandbox, and the deployment target. Not the agent logic.
+    - **What CrewAI keeps owning:** Roles, delegation, task routing, and the collaboration model. ZenML doesn't define agents, it runs them.
   </Fragment>
 </FeatureWithGraphic>
 
 <FeatureWithGraphic title="Re-running without re-paying" reverse={true}>
   <CachedRerun slot="graphic" />
 
-  A crew that makes a dozen LLM calls is expensive to run and more expensive to run repeatedly while you tune the step after it. Re-running should not mean re-paying for the part you did not touch.
+  A crew that makes a dozen LLM calls is expensive to run once and painful to run ten times while you tune the step after it. Re-running shouldn't mean re-paying for the part you didn't touch.
 
   <Fragment slot="bullets">
-    - **Cache key:** ZenML hashes a step's code, inputs, and parameters. If nothing changed, the stored artifact is returned and the step body never executes.
-    - **In practice:** In a pipeline that prepares context, runs the crew, then evaluates the output, editing only the evaluation re-runs only the evaluation. The crew call is served from cache.
+    - **Cache key:** ZenML keys the cache on the step, its parameters and its inputs, plus its output definitions and the artifact store. If nothing changed, you get the stored artifact back and the step body never executes. That's every run, not only after a failure.
+    - **After a failure:** `zenml pipeline runs retry <run>` re-runs a failed run, and the steps that completed come from cache. ZenML retries at step granularity; it won't resume a step part-way through its body.
     - **The exception:** Mark the crew step `@step(enable_cache=False)` when you want it to execute every time, and keep the cache on the deterministic steps around it.
   </Fragment>
 </FeatureWithGraphic>
@@ -79,26 +79,46 @@ The question CrewAI answers is how the agents work together. The question ZenML 
 <FeatureWithGraphic title="Your own cloud, your own bucket">
   <SelfHostedRuntime slot="graphic" />
 
-  CrewAI offers a managed platform for deploying and monitoring crews. ZenML's answer to the same question is the stack, and the difference that matters is where the data ends up.
+  CrewAI offers a managed platform for deploying and monitoring crews. ZenML's answer is the stack. Here's the difference: where the data ends up.
 
   <Fragment slot="bullets">
-    - **Stack components:** An orchestrator plus an artifact store, registered once with `zenml stack register`, then used by every pipeline.
-    - **Switching:** `zenml stack set sagemaker` repoints the same code from a local orchestrator to Kubernetes, Vertex AI, SageMaker, or AzureML.
-    - **Where data lives:** Artifacts land in your own S3, GCS, or Azure Blob bucket. Self-host the server and nothing about a run leaves your infrastructure.
+    - **Stack components:** An orchestrator plus an artifact store, registered once with `zenml stack register`, then used by every pipeline. Add a sandbox component and the crew's tools get an isolated place to run code.
+    - **Switching:** `zenml stack set sagemaker` repoints the same code from a local orchestrator to Kubernetes, Vertex AI, SageMaker, AzureML, or any other orchestrator flavor.
+    - **Serving:** `zenml pipeline deploy` runs the pipeline as a long-running HTTP service, and every request becomes a tracked run with the same artifacts as a batch job.
+    - **Where data lives:** Artifacts land in your own S3, GCS, or Azure Blob bucket. Self-host the server with Helm, or use ZenML Pro for the managed control plane; the artifacts stay in your bucket either way.
   </Fragment>
 </FeatureWithGraphic>
 
 <FeatureWithGraphic title="One pipeline, whichever framework each team picked" reverse={true}>
   <HarnessFreedom slot="graphic" />
 
-  Most organisations do not standardise on one agent framework. One team is on CrewAI, another on Pydantic AI, a third calls the OpenAI Agents SDK directly. ZenML sits under all of them because a step is just Python.
+  Most organisations don't standardise on one agent framework. One team is on CrewAI, another on Pydantic AI, a third calls the OpenAI Agents SDK directly. ZenML sits under all of them because a step is just Python.
 
   <Fragment slot="bullets">
     - **No adapter needed:** Whatever the framework, the call goes in a step and the return value becomes an artifact.
     - **One record:** Runs from every team land in the same server, with the same artifact and lineage model.
-    - **The trade:** ZenML gives you nothing framework-specific in return. It does not know what a crew is, and it will not help you design one.
+    - **The trade:** ZenML gives you nothing framework-specific in return. It doesn't know what a crew is, and it won't help you design one.
   </Fragment>
 </FeatureWithGraphic>
+
+## Where the human comes in
+
+A crew that drafts something is easy. A crew whose draft gets acted on is where someone wants to sign off first. In a dynamic pipeline, `wait()` is that signature:
+
+```python
+from zenml import pipeline, step, wait
+
+@pipeline(dynamic=True)
+def crew_pipeline(topic: str):
+    draft = run_crew(gather_context(topic), topic)
+    approved = wait(schema=bool, question="Publish this brief?")
+    if approved:
+        publish(draft)
+```
+
+The run polls for the answer for up to `timeout` seconds. Nobody answered? The run is marked paused and the orchestration process can be torn down instead of sitting open for days. Someone resolves the condition from the dashboard, the API, or `zenml pipeline runs wait-conditions resolve --run <id> --interactive`, and `zenml pipeline runs resume <run>` continues from that point with the crew's draft still in the artifact store. The `schema` can be a Pydantic model, so the approver can hand back edits, not just a yes.
+
+What ZenML doesn't do is trace the LLM and tool calls inside the crew step. Want to record those runs and replay them against a prompt or model change? That's [Kitaru's job](/compare/kitaru-vs-crewai).
 
 ## What makes ZenML different
 
@@ -106,13 +126,16 @@ The question CrewAI answers is how the agents work together. The question ZenML 
   competitorLabel="CrewAI"
   rows={[
     { feature: "Versioned artifacts and lineage across runs", zenml: true, competitor: false, note: "Step outputs are stored and loadable by name." },
-    { feature: "Caching that skips unchanged steps on a re-run", zenml: true, competitor: false, note: "ZenML hashes code and inputs; a crew re-run starts from the top." },
-    { feature: "One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML", zenml: true, competitor: "partial", note: "CrewAI has a managed deployment platform; ZenML targets your own clouds." },
+    { feature: "Caching that skips unchanged steps on a re-run", zenml: true, competitor: false, note: "Keyed on the step, its parameters and its inputs; a crew re-run starts from the top." },
+    { feature: "Pause the run for human approval, resume later", zenml: true, competitor: "partial", note: "`wait()` in a dynamic pipeline pauses the run until it's resolved from the CLI, dashboard or API. CrewAI can prompt for input while the process waits." },
+    { feature: "Isolated code execution for tool loops", zenml: true, competitor: "partial", note: "ZenML's sandbox is a stack component with local, Docker, Kubernetes and Modal flavors. CrewAI's code interpreter tool runs in Docker." },
+    { feature: "Serve it and get a tracked run per request", zenml: true, competitor: "partial", note: "`zenml pipeline deploy` on your own infrastructure; CrewAI's platform hosts the deployment for you." },
+    { feature: "One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML and more", zenml: true, competitor: "partial", note: "CrewAI has a managed deployment platform; ZenML targets your own clouds." },
     { feature: "Artifacts and run data stay in your own infrastructure", zenml: true, competitor: "partial", note: "ZenML writes to your bucket and self-hosts." },
     { feature: "Works with any agent framework, not just one", zenml: true, competitor: false, note: "A step is ordinary Python; CrewAI is the harness itself." },
-    { feature: "Multi-agent roles, delegation, and collaboration", zenml: false, competitor: true, note: "CrewAI's whole point. ZenML has no agent abstractions." },
+    { feature: "Multi-agent roles, delegation, and collaboration", zenml: false, competitor: true, note: "CrewAI's whole point. ZenML doesn't define agents, it runs them." },
     { feature: "Stateful Flows for explicit agent control", zenml: false, competitor: true, note: "Use CrewAI Flows inside a ZenML step." },
-    { feature: "Durable human-in-the-loop waiting", zenml: false, competitor: false, note: "Neither has a durable wait; a durable execution engine does." },
+    { feature: "Tracing of LLM and tool calls inside the run", zenml: false, competitor: true, note: "ZenML records the step, its metadata and its artifacts, not the calls within it." },
     { feature: "Open source, self-hostable", zenml: true, competitor: true },
   ]}
 />
@@ -123,9 +146,11 @@ The question CrewAI answers is how the agents work together. The question ZenML 
 |---|---|---|
 | Unit of work | Task, executed by an Agent | `@step` (the crew runs inside it) |
 | Boundary | `Crew` / `Flow` | `@pipeline` |
-| Control flow | Sequential or hierarchical process | The pipeline graph |
+| Control flow | Sequential or hierarchical process | The pipeline graph, or Python control flow with `dynamic=True` |
+| Human approval | `human_input=True` on a Task, in the terminal | `wait()` in a dynamic pipeline, resolved from CLI, dashboard or API |
+| Code execution | Code interpreter tool in Docker | Sandbox stack component (local, Docker, Kubernetes, Modal) |
 | Outputs | `CrewOutput` returned in memory | Versioned artifacts in your bucket |
-| Avoiding repeat work | Re-run starts from the top | `enable_cache` across runs |
+| Avoiding repeat work | Re-run starts from the top | `enable_cache` across runs, `zenml pipeline runs retry` after a failure |
 | Where it runs | Your process, or CrewAI's platform | Stack orchestrator (`zenml stack set`) |
 | Cross-run reuse | Bring your own store | `get_artifact_version(...).load()` |
 | Serving | Your own wrapper, or the platform | `zenml pipeline deploy --name ...` |
@@ -136,7 +161,7 @@ The question CrewAI answers is how the agents work together. The question ZenML 
   zenmlCode={`from typing import Annotated
 
 from crewai import Agent, Crew, Task
-from zenml import pipeline, step
+from zenml import pipeline, step, wait
 from zenml.client import Client
 
 @step
@@ -161,16 +186,21 @@ def run_crew(context: str, topic: str) -> Annotated[str, "draft"]:
     return str(crew.kickoff())
 
 @step
-def evaluate(draft: str) -> Annotated[dict, "scores"]:
-    return score(draft)
+def publish(draft: str) -> None:
+    post_to_cms(draft)
 
-@pipeline
+@pipeline(dynamic=True)
 def crew_pipeline(topic: str):
-    evaluate(run_crew(gather_context(topic), topic))
+    draft = run_crew(gather_context(topic), topic)
+    # Pauses the run until someone answers from the
+    # dashboard, the API, or the CLI.
+    approved = wait(schema=bool, question="Publish this brief?")
+    if approved:
+        publish(draft)
 
 crew_pipeline("AI orchestration")
 
-# Edit evaluate() and re-run: gather_context is cached.
+# Edit publish() and re-run: gather_context is cached.
 Client().get_artifact_version("draft").load()`}
   competitorCode={`from crewai import Agent, Crew, Task
 
@@ -191,14 +221,16 @@ crew = Crew(
 )
 
 draft = str(crew.kickoff())
-scores = score(draft)
+if input("Publish this brief? ") == "y":
+    post_to_cms(draft)
 
 # The crew runs and returns. What there isn't: a run record,
 # a versioned artifact you can load back by name next month,
-# a cache that skips retrieval on the next run, or a way to
-# put this on Kubernetes without writing the deployment.`}
+# a cache that skips retrieval on the next run, an approval
+# that survives the process being torn down, or a way to put
+# this on Kubernetes without writing the deployment.`}
 />
 
 <ComparisonCta headline={frontmatter.ctaHeading}>
-Keep CrewAI for what it is good at: deciding how agents divide work and collaborate. Add ZenML when the crew becomes a workload rather than a script, when someone needs to know what a run produced, and when it has to run on your own infrastructure with the outputs stored somewhere you control.
+Keep CrewAI for what it's good at: deciding how agents divide work and collaborate. Add ZenML when the crew stops being a script: a human has to approve what it produced, someone will ask next month what a run produced, and it has to run on your own infrastructure with the outputs in a bucket you control.
 </ComparisonCta>

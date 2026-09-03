@@ -1,43 +1,62 @@
 ---
+/**
+ * WaitResume — a ZenML dynamic pipeline pausing on `wait()` and resuming
+ * after a human resolves the condition, set against the competitor's own
+ * wait primitive. Shared by the durable-engine comparison pages; the
+ * competitor row is the only thing that differs between them.
+ */
+interface Props {
+  /** Tag label, e.g. "Temporal · signal". */
+  competitor: string;
+  /** The competitor's wait call, rendered verbatim in a <code>. */
+  call: string;
+  /** One line on what holds the wait on the competitor's side. */
+  note: string;
+}
+const { competitor, call, note } = Astro.props;
 ---
 
-<figure class="fig">
-  <div class="temporal-row">
-    <span class="tag tag--muted">Temporal &middot; event history</span>
+<figure class="fig" aria-label="A ZenML dynamic pipeline pausing on wait() and resuming after a human resolves the condition">
+  <div class="competitor-row">
+    <span class="tag tag--muted">{competitor}</span>
     <div class="opaque">
-      <code>replay completed Activities on resume</code>
-      <span class="dim">recovery path only &middot; a clean re-run starts from scratch</span>
+      <code>{call}</code>
+      <span class="dim">{note}</span>
     </div>
   </div>
 
   <div class="record">
     <div class="record-head">
-      <span class="tag tag--accent">ZenML &middot; @step</span>
+      <span class="tag tag--accent">ZenML &middot; @pipeline(dynamic=True)</span>
       <span class="mono exec">run 9f2a&hellip;</span>
     </div>
 
     <div class="mono-call">
-      <span class="fn">@step</span>(<span class="str">enable_cache=</span><span class="val">True</span>)
+      approved = <span class="fn">wait</span>(<span class="str">schema=</span><span class="val">bool</span>, <span class="str">question=</span><span class="val">"Approve and deploy?"</span>)
     </div>
 
     <dl class="fields">
       <div>
-        <dt>step</dt>
-        <dd class="mono">research(topic="AI orchestration")</dd>
+        <dt>status</dt>
+        <dd class="mono">PAUSED &middot; orchestration process torn down</dd>
       </div>
       <div>
-        <dt>cache key</dt>
-        <dd class="mono">step + parameters + inputs &rarr; unchanged</dd>
+        <dt>resolve</dt>
+        <dd class="mono">dashboard &middot; CLI &middot; API &rarr; true</dd>
+      </div>
+      <div>
+        <dt>resume</dt>
+        <dd class="mono">zenml pipeline runs resume 9f2a</dd>
       </div>
       <div class="row">
         <div class="chip">
-          <span class="chip-k">status</span><span class="chip-v">cached</span>
+          <span class="chip-k">plan</span><span class="chip-v">reused</span>
         </div>
         <div class="chip">
-          <span class="chip-k">runtime</span><span class="chip-v">0.0s of 1.4s</span>
+          <span class="chip-k">research &times;3</span><span class="chip-v">reused</span>
         </div>
         <div class="chip">
-          <span class="chip-k">artifact</span><span class="chip-v">brief &middot; v4</span>
+          <span class="chip-k">deploy</span><span class="chip-v">runs now</span>
         </div>
       </div>
     </dl>
@@ -46,7 +65,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M3 12 A9 9 0 1 0 6 5 L3 8 M3 3 L3 8 L8 8" />
       </svg>
-      <span>Step, parameters and inputs unchanged, so the stored artifact is returned and the step body never runs. On every run, not only after a failure.</span>
+      <span>Completed steps are reused on resume. The pipeline continues from the wait, and the whole run stays one tracked record.</span>
     </div>
   </div>
 </figure>
@@ -77,7 +96,7 @@
     color: var(--color-accent-deep);
   }
 
-  .temporal-row {
+  .competitor-row {
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -91,6 +110,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+    flex-wrap: wrap;
   }
   .opaque code {
     font-family: var(--font-mono);
@@ -114,6 +134,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
     margin-bottom: 12px;
   }
   .exec {
@@ -129,6 +151,7 @@
     border-radius: 6px;
     background: var(--color-bg);
     margin-bottom: 12px;
+    overflow-wrap: anywhere;
   }
   .fn { color: var(--color-accent); font-weight: 600; }
   .str { color: var(--color-secondary); }

@@ -26,26 +26,26 @@
   <div class="panel panel--zenml">
     <div class="panel-head">
       <span class="panel-label panel-label--accent">ZenML</span>
-      <span class="panel-sub">Named, versioned deployment with tag routing</span>
+      <span class="panel-sub">Named deployment, one tracked run per request</span>
     </div>
     <div class="deployment">
       <div class="dep-head">
-        <span class="mono name">review_flow</span>
-        <span class="mono version">@v3</span>
+        <span class="mono name">weather-agent-service</span>
+        <span class="mono version">zenml pipeline deploy</span>
       </div>
       <div class="tags">
-        <span class="tag tag--default">default</span>
-        <span class="tag">staging</span>
-        <span class="tag tag--muted">preview</span>
+        <span class="tag tag--default">local</span>
+        <span class="tag">Docker</span>
+        <span class="tag">Kubernetes</span>
+        <span class="tag tag--muted">Cloud Run · App Runner</span>
       </div>
     </div>
     <div class="invokes">
       <div class="invoke-label">Invoke by name</div>
       <div class="invoke-chips">
-        <span class="chip">CLI</span>
-        <span class="chip">SDK</span>
-        <span class="chip">MCP</span>
+        <span class="chip">zenml deployment invoke</span>
         <span class="chip">curl</span>
+        <span class="chip">Python client</span>
       </div>
     </div>
     <div class="auth">
@@ -53,7 +53,7 @@
         <rect x="5" y="11" width="14" height="10" rx="2" />
         <path d="M8 11 V7 a4 4 0 0 1 8 0 V11" />
       </svg>
-      <span>Workspace-scoped keys. No per-deployment tokens to rotate.</span>
+      <span>Every request becomes a pipeline run with artifacts, metadata and step history.</span>
     </div>
   </div>
 </figure>

@@ -1,7 +1,7 @@
 ---
 ---
 
-<figure class="fig">
+<figure class="fig" aria-label="LangSmith packages MCP, A2A, Agent Protocol, human-in-the-loop and memory endpoints with the runtime. ZenML deploys a pipeline as a named service, updates it in place with a new snapshot, and records every invocation as a run.">
   <div class="panel panel--competitor">
     <div class="panel-head">
       <span class="panel-label">LangSmith · packaged endpoints</span>
@@ -19,30 +19,30 @@
 
   <div class="panel panel--zenml">
     <div class="panel-head">
-      <span class="panel-label panel-label--accent">ZenML · immutable versioned snapshots</span>
-      <span class="panel-sub">Tag routing, not redeploys</span>
+      <span class="panel-label panel-label--accent">ZenML · named deployment, versioned snapshots</span>
+      <span class="panel-sub">One name, updated in place</span>
     </div>
 
     <div class="flow">
-      <span class="mono flow-name">research_flow</span>
+      <span class="mono flow-name">agent-service</span>
       <div class="versions">
         <span class="ver">v1</span>
         <span class="ver">v2</span>
-        <span class="ver ver--current">v3</span>
+        <span class="ver">v3</span>
         <span class="ver ver--current">v4</span>
       </div>
     </div>
 
     <div class="tags">
       <div class="tag-row">
-        <span class="tag tag--default">default</span>
+        <span class="tag tag--default">serving</span>
         <span class="tag-arrow">→</span>
-        <span class="mono tag-ver">v4</span>
+        <span class="mono tag-ver">snapshot v4</span>
       </div>
       <div class="tag-row">
-        <span class="tag tag--canary">canary</span>
+        <span class="tag tag--canary">each request</span>
         <span class="tag-arrow">→</span>
-        <span class="mono tag-ver">v3</span>
+        <span class="mono tag-ver">a tracked run</span>
       </div>
     </div>
 
@@ -51,12 +51,11 @@
       <div class="invoke-pills">
         <span class="ipill">CLI</span>
         <span class="ipill">Python SDK</span>
-        <span class="ipill">MCP</span>
         <span class="ipill">curl</span>
       </div>
     </div>
 
-    <div class="foot foot--accent">Promotion = tag move. Workspace-scoped auth.</div>
+    <div class="foot foot--accent">zenml deployment provision agent-service --snapshot v4</div>
   </div>
 </figure>
 

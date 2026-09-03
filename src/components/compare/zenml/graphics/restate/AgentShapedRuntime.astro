@@ -27,7 +27,7 @@
   <div class="panel panel--zenml">
     <div class="panel-head">
       <span class="panel-label panel-label--accent">ZenML · pipeline-shaped</span>
-      <span class="panel-sub">Pipelines, versioned artifacts, portable stacks</span>
+      <span class="panel-sub">Dynamic pipelines, wait(), versioned artifacts, one stack</span>
     </div>
 
     <div class="wrap">
@@ -41,12 +41,16 @@
         <span class="pval">ordinary Python · output stored as a versioned artifact</span>
       </div>
       <div class="prim">
+        <span class="mono pkey">wait()</span>
+        <span class="pval">pause a dynamic pipeline for approval, resume later</span>
+      </div>
+      <div class="prim">
         <span class="mono pkey">enable_cache</span>
         <span class="pval">unchanged steps skipped on every re-run</span>
       </div>
       <div class="prim">
         <span class="mono pkey">zenml stack set</span>
-        <span class="pval">K8s, Vertex, SageMaker, AzureML &mdash; no code change</span>
+        <span class="pval">Kubernetes, Vertex AI, SageMaker, AzureML, no code change</span>
       </div>
     </div>
 

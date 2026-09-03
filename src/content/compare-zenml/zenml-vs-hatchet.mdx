@@ -1,10 +1,10 @@
 ---
 competitor: "Hatchet"
 competitorLogo: "/compare/hatchet.svg"
-title: "ZenML vs Hatchet: AI pipeline orchestration vs general task orchestration"
-description: "Hatchet is a distributed task queue and orchestration platform built on Postgres, with durable execution, queues, and cron. ZenML is an open-source AI orchestration layer for Python, with versioned artifacts, step caching, lineage across runs, and one stack abstraction targeting Kubernetes, Vertex AI, SageMaker, and AzureML."
-cardSubtitle: "AI orchestration for Python pipelines, with versioned artifacts, step caching, and a portable stack abstraction."
-ctaHeading: "The orchestration layer underneath your AI workloads"
+title: "ZenML vs Hatchet: AI orchestration vs a durable task queue"
+description: "Hatchet is a durable task queue on Postgres. ZenML is open-source AI orchestration for Python: dynamic pipelines, wait() approvals, caching, sandboxes, versioned artifacts, and one stack for your clouds."
+cardSubtitle: "Pipelines and agents with durable waits, caching, sandboxes and versioned artifacts. No Hatchet underneath."
+ctaHeading: "One orchestrator for pipelines and agents"
 order: 40
 ---
 
@@ -15,74 +15,75 @@ import FeatureWithGraphic from '../../components/compare/zenml/FeatureWithGraphi
 import ComparisonCta from '../../components/compare/zenml/ComparisonCta.astro';
 import PullQuote from '../../components/compare/zenml/PullQuote.astro';
 import RuntimeVsPlatform from '../../components/compare/zenml/graphics/hatchet/RuntimeVsPlatform.astro';
-import LlmLineage from '../../components/compare/zenml/graphics/hatchet/LlmLineage.astro';
+import DurableWait from '../../components/compare/zenml/graphics/hatchet/DurableWait.astro';
 import CacheBoundary from '../../components/compare/zenml/graphics/hatchet/CacheBoundary.astro';
 
-Hatchet is a distributed task queue with durable execution on top, backed by Postgres. It gives you workers, queues, concurrency and rate-limit controls, cron scheduling, fan-out, and a dashboard for the whole fleet. If your problem is throughput and reliability across a lot of heterogeneous background work, that is a strong platform to adopt.
+Hatchet is a distributed task queue with durable execution on top, backed by Postgres. You get workers, queues, concurrency and rate-limit controls, cron, durable sleeps, and a dashboard for the whole fleet, with SDKs in Python, TypeScript and Go. If your problem is pushing a lot of mixed background work through reliably, that's what Hatchet is for, and it's good at it.
 
-ZenML is narrower and differently shaped. It orchestrates AI workloads written in Python as pipelines of steps, and the thing it is built around is the output rather than the queue. Every step's return value becomes a versioned artifact, unchanged steps are served from cache rather than re-executed, and the same pipeline runs on Kubernetes, Vertex AI, SageMaker, or AzureML by swapping a stack.
+ZenML is AI orchestration for Python. It runs pipelines and agents on your own infrastructure and remembers what they did. A dynamic pipeline builds its graph from plain Python, `wait()` pauses a run until a human or another system answers, failed steps retry with backoff, steps you didn't touch come from cache, and agent tool loops run inside a sandbox. Every step output is a versioned artifact in your own bucket, and the same code runs on Kubernetes, Vertex AI, SageMaker, AzureML, Airflow, Databricks and more when you swap the stack.
 
-The two are not really competing for the same slot. Hatchet decides how work gets scheduled and retried across your infrastructure. ZenML decides what a run of an AI pipeline is, what it produced, and how you get that back.
+So do you need Hatchet underneath ZenML to run an agent durably? For approvals, loops, retries and sandboxed tool use, no. For queues, concurrency keys and rate limits across a general task fleet, Hatchet is the better tool, and ZenML doesn't try to be one.
 
 <WhenToUseEach
   competitorLabel="Hatchet"
   zenml={{
     title: "Use ZenML if you are",
     items: [
-      "Orchestrating Python AI workloads (training, batch inference, evals, agent workflows) and want versioned artifacts and lineage by default",
-      "Iterating on a pipeline where re-running unchanged steps is the expensive part, and step caching pays for itself",
-      "Targeting Kubernetes, Vertex AI, SageMaker, or AzureML and want one pipeline definition that runs on all of them",
-      "Needing to answer which artifact came from which run, from which inputs, months later",
+      "Orchestrating Python pipelines and agents (training, batch inference, evaluation pipelines, agent workflows) and want versioned artifacts and lineage by default",
+      "Pausing a run for human approval, looping or fanning out at run time, and retrying failed steps without bolting on a second engine",
+      "Running agent tool loops in an isolated sandbox and serving a pipeline as an HTTP endpoint with a tracked run per request",
+      "Targeting Kubernetes, Vertex AI, SageMaker, AzureML or Airflow and want one pipeline definition that runs on all of them",
     ],
   }}
   competitor={{
     title: "Use Hatchet if you are",
     items: [
-      "Running a high-throughput task fleet where queueing, concurrency limits, and rate limiting are the hard part",
-      "Coordinating general background work (webhooks, jobs, fan-out) and not specifically AI pipelines",
-      "Wanting cron scheduling, durable sleeps, and event-driven triggers as first-class platform features",
+      "Running a high-throughput task fleet where queueing, concurrency keys and rate limiting are the hard part",
+      "Coordinating general background work (webhooks, billing jobs, fan-out) that isn't an AI workload",
+      "Wanting event subscriptions, cron and durable sleeps that free the worker slot the moment they start, all as platform features",
       "Operating across TypeScript and Go as well as Python",
     ],
   }}
 />
 
 <PullQuote
-  quote="Hatchet is the orchestration platform you adopt for how work runs. ZenML is the layer that makes an AI run reproducible once it has."
+  quote="Hatchet decides how work gets dispatched. ZenML runs the AI workload and can tell you afterwards exactly what it produced."
 />
 
-<FeatureWithGraphic title="Pipeline orchestration vs task orchestration">
+<FeatureWithGraphic title="One orchestrator vs a task queue underneath">
   <RuntimeVsPlatform slot="graphic" />
 
-  Hatchet's model is tasks and workers: you register functions, workers pull from queues, and the platform handles retries, concurrency, and scheduling. ZenML's model is a pipeline of typed steps whose outputs are persisted and connected.
+  Hatchet's model is tasks and workers: you register functions, workers pull from queues, and the engine handles retries, concurrency and scheduling. ZenML's model is a pipeline of typed steps whose outputs get stored and wired together, run by whatever orchestrator is already in your stack.
 
   <Fragment slot="bullets">
-    - **Unit of work:** A Hatchet task is a unit of scheduling. A ZenML `@step` is a unit of record, whose return value is stored and versioned.
-    - **What the platform owns:** Hatchet owns dispatch, concurrency, and rate limits. ZenML delegates execution to a stack orchestrator (which can be Kubernetes, Vertex AI, SageMaker, AzureML, Airflow, or Kubeflow) and owns the run and artifact metadata.
-    - **Adoption shape:** Hatchet is a platform you run and route work through. ZenML is a library you write pipelines in, plus a server that records them.
+    - **Unit of work:** A Hatchet task is a unit of scheduling. A ZenML `@step` is a unit of record: its return value gets stored and versioned.
+    - **Who runs it:** Hatchet runs tasks on workers you deploy and look after. ZenML hands the pipeline to the stack orchestrator (Kubernetes, Vertex AI, SageMaker, AzureML, Airflow or Databricks) and records the run.
+    - **What you adopt:** Hatchet is a platform you route work through. ZenML is a library you write pipelines in, plus a server that records them. There's no engine of its own to operate.
   </Fragment>
 </FeatureWithGraphic>
 
-<FeatureWithGraphic title="The step is the captured unit" reverse={true}>
-  <LlmLineage slot="graphic" />
+<FeatureWithGraphic title="Durable waits and dynamic graphs, without a second engine" reverse={true}>
+  <DurableWait slot="graphic" />
 
-  In an AI pipeline the expensive step is a training run or a batch of LLM calls, and the question afterwards is what it produced. Hatchet records that a task succeeded and what it returned into the run's event history. ZenML records the return value itself, as an artifact you can go and load.
+  Agents loop, branch, fan out and stop to ask a human. Hatchet covers that with durable tasks and child workflows. ZenML covers it inside the pipeline itself, and every branch taken leaves an artifact behind.
 
   <Fragment slot="bullets">
-    - **Artifacts:** Every step output is stored in your artifact store, versioned, and attached to the run. Name it with `Annotated[str, "brief"]` and it becomes addressable across runs.
-    - **Metadata:** ZenML has no LLM-specific primitive. It gives you the place to put the numbers: `log_metadata()` attaches token counts, cost, or model identity to the step, and they show up beside the artifact.
-    - **Retrieval:** `get_artifact_version(...).load()` on the ZenML client pulls any earlier run's output back into a notebook or a later pipeline.
+    - **Dynamic pipelines:** `@pipeline(dynamic=True)` builds the graph at run time from plain Python: `for` loops, `if` branches, and `step.map()` fan-out over a list. Hatchet gets the same shape by spawning child workflows from a task.
+    - **`wait()`:** Inside a dynamic pipeline, `wait(schema=bool, question=...)` pauses the run until someone answers from the dashboard, the CLI or the API. Until the timeout the orchestration process keeps polling. After that the run is marked `PAUSED`, the process can go away, and `zenml pipeline runs resume` picks it back up. Hatchet's durable `wait_for` frees the worker slot at once and resumes on the event.
+    - **Failure handling:** `StepRetryConfig` retries a step with delay and backoff. `zenml pipeline runs retry` retries a failed run, and the steps that finished come from cache. ZenML retries the step; Hatchet resumes a durable task mid-body from its journal.
+    - **Sandboxes:** A `sandbox` stack component (local, Docker, Kubernetes and Modal flavors) gives an agent step an isolated session to run generated code in, snapshot it, and restore it later. Hatchet has nothing like it; tools run on the worker.
   </Fragment>
 </FeatureWithGraphic>
 
 <FeatureWithGraphic title="Where the cache boundary falls">
   <CacheBoundary slot="graphic" />
 
-  Change one step in the middle of a pipeline and re-run it. What happens to the steps above it decides how fast you can iterate and how much you pay to do it.
+  Edit one step in the middle of a pipeline and re-run. What happens to the steps above it decides how fast you iterate and what it costs you.
 
   <Fragment slot="bullets">
-    - **ZenML:** The cache key is the step's code, inputs, and parameters. Edit `draft` and re-run: `research` above it is served from cache and never executes, `draft` and everything downstream of it re-runs against the new value.
-    - **Hatchet:** Re-running a workflow starts it again. Skipping completed work is something you build inside task bodies, against your own store.
-    - **When it applies:** ZenML's caching is not a recovery mechanism. It applies on every run, including the ordinary case where you edited one step and re-ran the file.
+    - **ZenML:** The cache key is the step, its parameters and its inputs. Edit `draft` and re-run: `research` above it comes from cache and never runs, `draft` and everything below it re-runs against the new value.
+    - **Hatchet:** Re-running a workflow starts it from the top. Skipping finished work is yours to build inside task bodies, against your own store.
+    - **When it applies:** ZenML's caching isn't just for recovery. It kicks in on every run, including the boring case where you edited one step and re-ran the file. When the agent itself changes, [Kitaru](/product/kitaru) replays recorded production runs against the new version, which is a different job from orchestrating it.
   </Fragment>
 </FeatureWithGraphic>
 
@@ -91,15 +92,19 @@ The two are not really competing for the same slot. Hatchet decides how work get
 <ComparisonTable
   competitorLabel="Hatchet"
   rows={[
-    { feature: "Caching on ordinary re-runs, not only on recovery", zenml: true, competitor: false, note: "ZenML skips steps whose code and inputs are unchanged, on every run." },
+    { feature: "Caching on ordinary re-runs, not only on recovery", zenml: true, competitor: false, note: "ZenML skips steps whose parameters and inputs are unchanged, on every run." },
     { feature: "Versioned artifacts and lineage across runs", zenml: true, competitor: false, note: "Step outputs are stored and loadable by name; Hatchet leaves artifact handling to you." },
-    { feature: "One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML", zenml: true, competitor: false, note: "Configure once, every pipeline uses it." },
-    { feature: "Recover after failure without re-executing completed work", zenml: "partial", competitor: true, note: "Hatchet resumes durably. ZenML re-runs and serves unchanged steps from cache." },
-    { feature: "Queueing, concurrency limits, and rate limiting", zenml: false, competitor: true, note: "Hatchet's core strength. ZenML delegates execution to the stack orchestrator." },
-    { feature: "Native cron scheduling and event triggers", zenml: "partial", competitor: true, note: "ZenML schedules are delegated to the underlying orchestrator, so support varies by stack." },
-    { feature: "Durable sleeps and human-in-the-loop waits", zenml: false, competitor: true, note: "ZenML has no durable wait primitive." },
+    { feature: "Graph built at run time from Python loops, branches and fan-out", zenml: true, competitor: true, note: "ZenML: @pipeline(dynamic=True) with step.map(). Hatchet: child workflows spawned from a task." },
+    { feature: "Pause a run for human approval and resume it later", zenml: true, competitor: true, note: "ZenML: wait() in a dynamic pipeline, resolved from dashboard, CLI or API. Hatchet: durable tasks waiting on a user event." },
+    { feature: "Durable sleeps that release compute immediately", zenml: "partial", competitor: true, note: "ZenML's wait() polls until its timeout, then marks the run PAUSED so the process can go away. Resume is a CLI command." },
+    { feature: "Sandboxed code execution for agent tool loops", zenml: true, competitor: false, note: "Stack component with local, Docker, Kubernetes and Modal flavors; sessions can be snapshotted and restored." },
+    { feature: "Serve a pipeline as an HTTP endpoint with a tracked run per request", zenml: true, competitor: "partial", note: "zenml pipeline deploy on local, Docker, Kubernetes, Cloud Run or App Runner. Hatchet exposes a trigger API; the request/response service is yours to write." },
+    { feature: "One stack for Kubernetes, Vertex AI, SageMaker, AzureML, Airflow, Databricks", zenml: true, competitor: false, note: "Configure once, every pipeline uses it. Hatchet runs on workers you operate." },
+    { feature: "Resume a failed task mid-body from a journal", zenml: false, competitor: true, note: "ZenML retries at step granularity and serves completed steps from cache on the retried run." },
+    { feature: "Queueing, concurrency keys and rate limiting", zenml: false, competitor: true, note: "Hatchet's home turf. ZenML hands execution to the stack orchestrator." },
+    { feature: "Native cron and event subscriptions", zenml: "partial", competitor: true, note: "ZenML hands scheduling to the orchestrator (Kubernetes, Vertex AI, SageMaker, Airflow and others). Pipelines are invoked, scheduled or deployed; they don't subscribe to events." },
     { feature: "TypeScript and Go as well as Python", zenml: false, competitor: true, note: "ZenML is Python only." },
-    { feature: "Open source, self-hostable", zenml: true, competitor: true },
+    { feature: "Open source, self-hostable", zenml: true, competitor: true, note: "ZenML: Apache 2.0, Helm chart for the server, artifacts stay in your own bucket." },
   ]}
 />
 
@@ -107,21 +112,23 @@ The two are not really competing for the same slot. Hatchet decides how work get
 
 | Concept | Hatchet | ZenML |
 |---|---|---|
-| Workflow boundary | Workflow definition | `@pipeline` |
-| Unit of work | Task (queued, retried) | `@step` (ordinary Python) |
-| What persists | Run and task event history | Step outputs as versioned artifacts |
-| Skipping completed work | Durable resume after failure | `enable_cache` on every run |
+| Workflow boundary | `hatchet.workflow(name=...)` | `@pipeline` or `@pipeline(dynamic=True)` |
+| Unit of work | `@wf.task()` (queued, retried) | `@step` (ordinary Python, versioned output) |
+| Run-time branching and fan-out | Child workflows spawned from a task | Python control flow and `step.map()` in a dynamic pipeline |
+| Human approval | `@wf.durable_task()` waiting on a `UserEventCondition` | `wait(schema=..., question=...)`, resolved via dashboard, CLI or API |
+| Skipping completed work | Durable resume after failure | `enable_cache` on every run, plus `zenml pipeline runs retry` |
+| Isolated tool execution | On the worker | `Client().active_stack.sandbox.create_session()` |
+| Serving | Trigger API, service is yours | `zenml pipeline deploy`, a tracked run per request |
 | Scheduling | Cron, events, queues | Delegated to the stack orchestrator |
-| Concurrency control | Concurrency and rate-limit keys | Delegated to the stack orchestrator |
 | Where it runs | Hatchet workers you deploy | Stack orchestrator (`zenml stack set`) |
-| Cross-run reuse | Bring your own store | `get_artifact_version(...).load()` |
+| Cross-run reuse | Bring your own store | `Client().get_artifact_version(...).load()` |
 
 <CodeCompare
   zenmlLabel="ZenML"
-  competitorLabel="Hatchet (Python SDK)"
+  competitorLabel="Hatchet (Python SDK v1)"
   zenmlCode={`from typing import Annotated
 
-from zenml import pipeline, step
+from zenml import pipeline, step, wait
 from zenml.client import Client
 from zenml.config.retry_config import StepRetryConfig
 
@@ -133,51 +140,69 @@ def research(topic: str) -> Annotated[str, "brief"]:
 def draft(brief: str) -> Annotated[str, "draft"]:
     return call_llm(f"Write a draft from:\\n{brief}")
 
-@step(enable_cache=False)
-def evaluate(text: str) -> Annotated[dict, "scores"]:
-    return score(text)
+@step
+def publish(text: str) -> None:
+    send_to_cms(text)
 
-@pipeline
+@pipeline(dynamic=True)
 def review_pipeline(topic: str):
-    evaluate(draft(research(topic)))
+    text = draft(research(topic))
+    approved = wait(
+        schema=bool,
+        question="Publish this draft?",
+        name="human_approval",
+    )
+    if approved:
+        publish(text)
 
 review_pipeline("AI orchestration")
 
-# Edit draft() and re-run: research is served from cache,
-# draft and evaluate re-execute against the new value.
-Client().get_artifact_version("draft").load()
-
-# Same code on another cloud:
-#   zenml stack set vertex_stack && python review_pipeline.py`}
-  competitorCode={`from hatchet_sdk import Context, Hatchet
+# The run pauses at wait(). Resolve it in the dashboard, or:
+#   zenml pipeline runs wait-conditions resolve --run <id> --interactive
+#   zenml pipeline runs resume <id>
+# Edit draft() and re-run: research comes from cache.
+Client().get_artifact_version("draft").load()`}
+  competitorCode={`from hatchet_sdk import Context, DurableContext, Hatchet, UserEventCondition
+from pydantic import BaseModel
 
 hatchet = Hatchet()
 
-@hatchet.workflow(on_events=["review:create"])
-class ReviewWorkflow:
+class ReviewInput(BaseModel):
+    topic: str
 
-    @hatchet.step(retries=3)
-    def research(self, ctx: Context) -> dict:
-        topic = ctx.workflow_input()["topic"]
-        return {"brief": call_llm(f"Research: {topic}")}
+review = hatchet.workflow(
+    name="review", input_validator=ReviewInput, on_events=["review:create"]
+)
 
-    @hatchet.step(parents=["research"])
-    def draft(self, ctx: Context) -> dict:
-        brief = ctx.step_output("research")["brief"]
-        return {"draft": call_llm(f"Write a draft from:\\n{brief}")}
+@review.task(retries=3, backoff_factor=2)
+def research(input: ReviewInput, ctx: Context) -> dict:
+    return {"brief": call_llm(f"Research: {input.topic}")}
 
-    @hatchet.step(parents=["draft"])
-    def evaluate(self, ctx: Context) -> dict:
-        return {"scores": score(ctx.step_output("draft")["draft"])}
+@review.task(parents=[research])
+def draft(input: ReviewInput, ctx: Context) -> dict:
+    brief = ctx.task_output(research)["brief"]
+    return {"draft": call_llm(f"Write a draft from:\\n{brief}")}
 
-# Workers pull from the queue; the platform owns retries,
-# concurrency and rate limits. Step outputs live in the run's
-# event history, so persisting artifacts is your call.
-worker = hatchet.worker("review-worker")
-worker.register_workflow(ReviewWorkflow())
+@review.durable_task(parents=[draft])
+async def approve(input: ReviewInput, ctx: DurableContext) -> dict:
+    # Releases the worker slot until the event arrives.
+    await ctx.aio_wait_for(
+        "approval", UserEventCondition(event_key="review:approved")
+    )
+    return {"approved": True}
+
+@review.task(parents=[approve])
+def publish(input: ReviewInput, ctx: Context) -> dict:
+    send_to_cms(ctx.task_output(draft)["draft"])
+    return {}
+
+# Workers pull from the queue; the engine owns retries, concurrency
+# and rate limits. Task outputs live in the run's history, so
+# persisting artifacts is your call.
+worker = hatchet.worker("review-worker", workflows=[review])
 worker.start()`}
 />
 
 <ComparisonCta headline={frontmatter.ctaHeading}>
-If the hard part is throughput, queueing, and keeping a large fleet of background tasks reliable, Hatchet is the platform to adopt. If the hard part is knowing what an AI pipeline produced, not paying twice for steps that did not change, and running the same code on four clouds, ZenML is the layer you want underneath it. Plenty of teams end up with both.
+If the hard part is throughput, queueing, and keeping a large fleet of background tasks reliable across three languages, Hatchet is the platform to adopt. If the hard part is running pipelines and agents on your own infrastructure, pausing for approval, retrying what failed, sandboxing tool use, and knowing afterwards exactly what each run produced, ZenML does that on its own. You don't need Hatchet underneath it.
 </ComparisonCta>

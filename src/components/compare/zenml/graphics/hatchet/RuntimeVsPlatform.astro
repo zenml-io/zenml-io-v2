@@ -25,30 +25,30 @@
 
   <div class="panel panel--zenml">
     <div class="panel-head">
-      <span class="panel-label panel-label--accent">ZenML · runtime, one layer of four</span>
-      <span class="panel-sub">Owns the runtime, leaves harness and platform untouched</span>
+      <span class="panel-label panel-label--accent">ZenML · one orchestrator, your infrastructure</span>
+      <span class="panel-sub">Runs pipelines and agents where you already have compute; no engine to operate</span>
     </div>
 
     <div class="layers">
       <div class="layer">
-        <span class="layer-key">Platform</span>
-        <span class="layer-val">your auth, entitlements, observability</span>
-      </div>
-      <div class="layer">
-        <span class="layer-key">Harness</span>
-        <span class="layer-val">Pydantic AI, OpenAI, Claude, LangGraph, raw Python</span>
+        <span class="layer-key">Agent</span>
+        <span class="layer-val">Pydantic AI, OpenAI Agents, LangGraph, raw Python</span>
       </div>
       <div class="layer layer--accent">
-        <span class="layer-key">Runtime</span>
-        <span class="layer-val">ZenML: <code>@pipeline</code>, <code>@step</code>, <code>llm()</code>, <code>wait()</code>, <code>save/load</code></span>
+        <span class="layer-key">ZenML</span>
+        <span class="layer-val"><code>@pipeline(dynamic=True)</code>, <code>@step</code>, <code>wait()</code>, sandbox, <code>deploy</code></span>
       </div>
       <div class="layer">
-        <span class="layer-key">Model</span>
-        <span class="layer-val">OpenAI, Anthropic, Google, open-weights</span>
+        <span class="layer-key">Stack</span>
+        <span class="layer-val">Kubernetes, Vertex AI, SageMaker, AzureML, Airflow, Databricks</span>
+      </div>
+      <div class="layer">
+        <span class="layer-key">Bucket</span>
+        <span class="layer-val">versioned artifacts in your S3, GCS or Azure Blob</span>
       </div>
     </div>
 
-    <div class="foot foot--accent">ZenML owns one layer. The rest of your stack stays as you picked it.</div>
+    <div class="foot foot--accent">No second engine underneath. Your clouds run it; ZenML records it.</div>
   </div>
 </figure>
 

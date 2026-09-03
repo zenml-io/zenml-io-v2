@@ -34,7 +34,7 @@
 
   <div class="panel panel--zenml">
     <div class="panel-label">ZenML-wrapped</div>
-    <div class="panel-sub">Re-run: completed steps come from cache</div>
+    <div class="panel-sub">Retry: completed steps come from cache</div>
     <div class="rail">
       <div class="step step--cached">
         <span class="step-num">1</span>
@@ -53,7 +53,7 @@
       </div>
       <div class="cmd">
         <span class="cmd-prompt">$</span>
-        <span class="cmd-text">python agent_pipeline.py   # re-run</span>
+        <span class="cmd-text">zenml pipeline runs retry &lt;run&gt;</span>
       </div>
       <div class="repay repay--ok">only the failing step re-bills</div>
     </div>
