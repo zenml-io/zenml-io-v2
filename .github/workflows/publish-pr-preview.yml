@@ -76,6 +76,21 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           INPUT_PR_NUMBER: ${{ inputs.pr_number }}
           INPUT_SOURCE_BRANCH: ${{ inputs.source_branch }}
+          SOURCE_PR_NUMBER_SELECTOR: |
+            [
+              .pull_requests[]?
+              | select(
+                  (.number | type) == "number" and
+                  .head.ref == $branch and
+                  .head.sha == $commit
+                )
+              | .number
+            ] |
+            if length == 1 then
+              .[0]
+            else
+              error("source run must identify exactly one matching pull request")
+            end
           SOURCE_RUN_ID: ${{ github.event.workflow_run.id || inputs.source_run_id }}
         run: |
           set -euo pipefail
@@ -103,38 +118,31 @@ jobs:
             echo "The supplied source branch does not own this exact CI run." >&2
             exit 1
           fi
-          repo_owner="${GITHUB_REPOSITORY%%/*}"
-          gh api \
-            --method GET \
-            "repos/$GITHUB_REPOSITORY/pulls" \
-            -f state=open \
-            -f head="$repo_owner:$source_branch" \
-            -f per_page=100 > "$RUNNER_TEMP/source-pr-candidates.json"
-          jq \
-            --arg branch "$source_branch" \
-            --arg commit "$source_commit" \
-            --arg repository "$GITHUB_REPOSITORY" '
-              [.[] |
-                select(
-                  .state == "open" and
-                  .draft == false and
-                  .head.repo.full_name == $repository and
-                  .user.login != "dependabot[bot]" and
-                  .head.ref == $branch and
-                  .head.sha == $commit
-                )
-              ]
-            ' "$RUNNER_TEMP/source-pr-candidates.json" \
-            > "$RUNNER_TEMP/eligible-prs.json"
-          test "$(jq 'length' "$RUNNER_TEMP/eligible-prs.json")" = "1"
-          jq '.[0]' "$RUNNER_TEMP/eligible-prs.json" \
-            > "$RUNNER_TEMP/source-pr.json"
-
-          pr_number="$(jq -er '.number | tostring' "$RUNNER_TEMP/source-pr.json")"
+          pr_number="$(
+            jq -er \
+              --arg branch "$source_branch" \
+              --arg commit "$source_commit" \
+              "$SOURCE_PR_NUMBER_SELECTOR" \
+              "$RUNNER_TEMP/source-run.json"
+          )"
           if [ -n "$INPUT_PR_NUMBER" ] && [ "$INPUT_PR_NUMBER" != "$pr_number" ]; then
             echo "The supplied PR number does not own this exact CI run." >&2
             exit 1
           fi
+          gh api \
+            "repos/$GITHUB_REPOSITORY/pulls/$pr_number" \
+            > "$RUNNER_TEMP/source-pr.json"
+          jq -e \
+            --arg branch "$source_branch" \
+            --arg commit "$source_commit" \
+            --arg repository "$GITHUB_REPOSITORY" '
+              .state == "open" and
+              .draft == false and
+              .head.repo.full_name == $repository and
+              .user.login != "dependabot[bot]" and
+              .head.ref == $branch and
+              .head.sha == $commit
+            ' "$RUNNER_TEMP/source-pr.json" > /dev/null
           build_commit="$(jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json")"
           [[ "$build_commit" =~ ^[0-9a-f]{40}$ ]]
 
