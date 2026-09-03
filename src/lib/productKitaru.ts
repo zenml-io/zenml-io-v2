@@ -1,7 +1,7 @@
 /**
  * The one-line installer: CLI + MCP server in an isolated uv environment,
  * the coding-agent skills, MCP registration for Claude Code / Codex, and
- * `kitaru login --local` when Docker is running. Served by the kitaru.ai
+ * then prints the two ways to get a server. Served by the kitaru.ai
  * worker from install.sh in the Kitaru repo.
  */
 export const KITARU_INSTALL_CMD = "curl -fsSL https://kitaru.ai/install | bash";
@@ -123,7 +123,7 @@ export const PRODUCT_KITARU_MARKDOWN = {
   journey: [
     {
       name: "Act 1 — Get in",
-      body: `\`${KITARU_INSTALL_CMD}\` installs the CLI, the MCP server and the coding-agent skills, and logs you in locally when Docker is running. Two questions decide your path: do you have a repo with an agent, and do you have traces? No repo, or an unrecognised framework, and you start from the template repo — a small PydanticAI agent already wrapped, with a trace file beside it. Registering the agent stores an entrypoint module path server-side; nothing is written into your repo. Then \`kitaru worker start\` runs a plain Python process in your virtualenv, which polls — the server never connects inbound.`,
+      body: `\`${KITARU_INSTALL_CMD}\` installs the CLI, the MCP server and the coding-agent skills, then prints the two ways to get a server: `kitaru login --local` in Docker, or the managed cloud. Two questions decide your path: do you have a repo with an agent, and do you have traces? No repo, or an unrecognised framework, and you start from the template repo — a small PydanticAI agent already wrapped, with a trace file beside it. Registering the agent stores an entrypoint module path server-side; nothing is written into your repo. Then \`kitaru worker start\` runs a plain Python process in your virtualenv, which polls — the server never connects inbound.`,
     },
     {
       name: "Act 2 — Traces in",

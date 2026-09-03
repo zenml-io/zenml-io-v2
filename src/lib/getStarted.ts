@@ -233,7 +233,7 @@ export const GET_STARTED_KITARU = {
     items: [
       {
         title: "Install Kitaru",
-        body: "One command installs the CLI, the MCP server and the coding-agent skills, and starts a local server if Docker is running. Nothing needs sudo.",
+        body: "One command installs the CLI, the MCP server and the coding-agent skills. Nothing needs sudo. It ends by showing the two ways to get a server: local in Docker, or the managed cloud.",
         code: KITARU_INSTALL_CMD,
       },
       {
