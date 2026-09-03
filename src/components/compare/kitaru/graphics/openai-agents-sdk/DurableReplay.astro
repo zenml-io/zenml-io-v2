@@ -4,7 +4,7 @@
 <figure class="fig">
   <div class="panel panel--competitor">
     <div class="panel-label">OpenAI Agents SDK alone</div>
-    <div class="panel-sub">A trace of the run — read only</div>
+    <div class="panel-sub">A trace of the run, read only</div>
     <div class="rail">
       <div class="step">
         <span class="step-num">1</span>
@@ -26,7 +26,7 @@
           <path d="M3 12 A9 9 0 1 1 12 21" />
           <path d="M3 6 L3 12 L9 12" />
         </svg>
-        <span class="redo-label">read the trace again — that's the only rerun you get</span>
+        <span class="redo-label">read the trace again: that's the only rerun you get</span>
       </div>
       <div class="repay">a trace can't answer &ldquo;what if&rdquo; about the run</div>
     </div>
@@ -53,9 +53,9 @@
       </div>
       <div class="cmd">
         <span class="cmd-prompt">&gt;&gt;&gt;</span>
-        <span class="cmd-text">experiment.run(cohort=cohort, version="pr-311")</span>
+        <span class="cmd-text">kitaru experiment run start cheaper-model --agent reviewer@2 --wait</span>
       </div>
-      <div class="repay repay--ok">tool calls stay faithful to the recording — only the model changes</div>
+      <div class="repay repay--ok">named tools answered from the recording; only the model changes</div>
     </div>
   </div>
 </figure>
