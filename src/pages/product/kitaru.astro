@@ -2,6 +2,7 @@
 import Cta from "../../components/kitaru/Cta.astro";
 import Faq from "../../components/kitaru/Faq.astro";
 import Features from "../../components/kitaru/Features.astro";
+import FirstRun from "../../components/kitaru/FirstRun.astro";
 import { Hero } from "../../components/kitaru/islands/Hero";
 import { ScenarioStrip } from "../../components/kitaru/islands/ScenarioStrip";
 import { TwoDoors } from "../../components/kitaru/islands/TwoDoors";
@@ -22,10 +23,11 @@ import { TwoDoors } from "../../components/kitaru/islands/TwoDoors";
  * replay, only show it. Those agents are also single-execution pipelines,
  * which is why the multi-turn divergence caveat does not surface here.
  *
- * Sections:
- *   Hero          → the problem sentence, then history-as-test-suite
- *   ScenarioStrip → four questions asked of one cohort of real sessions
+ * Sections (terminal-first order, Sep 2026):
+ *   Hero          → the install command, then the prompt for your coding agent
+ *   FirstRun      → the first five minutes as a terminal transcript + outcomes
  *   TwoDoors      → two paths in: wrap an agent or import existing traces
+ *   ScenarioStrip → four questions asked of one cohort of real sessions
  *   Features      → the model-migration wedge, in experiment/run terms
  *   Faq           → the questions that come up in every demo
  *   Cta           → closing CTA band
@@ -61,8 +63,9 @@ const faqJsonLd = {
   <div data-app="kitaru" class="bg-background text-foreground">
     <main id="kitaru-main">
       <Hero client:visible />
-      <ScenarioStrip client:visible />
+      <FirstRun />
       <TwoDoors client:visible />
+      <ScenarioStrip client:visible />
       <Features />
       <Faq />
       <Cta />

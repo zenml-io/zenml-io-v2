@@ -29,7 +29,8 @@
 
 import type { Surface } from "./analytics";
 import { productSignupCtas } from "./productCtas";
-import { KITARU_CLOUD_PRICE } from "./productKitaru";
+import { KITARU_CLOUD_PRICE, KITARU_INSTALL_CMD } from "./productKitaru";
+import { PRODUCT_ZENML_HERO } from "./productZenml";
 
 export const HOMEPAGE_UNIFIED_SEO = {
   title: "ZenML: Ship AI you can trust",
@@ -47,6 +48,16 @@ const HERO_PRODUCT_CTAS = productSignupCtas(
   { zenml: "Orchestrate AI", kitaru: "Diagnose agents" },
   "Home-Hero-Signup",
 );
+
+/**
+ * One install line per product, shown under the hero buttons. The command
+ * is the lowest-friction door into each product; the buttons above it are
+ * the hosted-signup door.
+ */
+export const HOMEPAGE_INSTALL_COMMANDS = [
+  { brand: "zenml", label: "ZenML", cmd: PRODUCT_ZENML_HERO.installCmd },
+  { brand: "kitaru", label: "Kitaru", cmd: KITARU_INSTALL_CMD },
+] as const;
 
 export const HOMEPAGE_UNIFIED_HERO = {
   headlinePrefix: "Ship AI you can ",

@@ -164,7 +164,7 @@ const CONTENT_MARKER_CHECKS: ContentMarkerCheck[] = [
   },
   {
     file: "product/kitaru.md",
-    markers: ['uv add "kitaru[cli,worker]" kitaru-pydantic-ai'],
+    markers: ["curl -fsSL https://kitaru.ai/install | bash"],
     message: "dist/product/kitaru.md contains the page-local install command",
   },
   {

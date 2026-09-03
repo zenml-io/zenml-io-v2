@@ -6,7 +6,7 @@
  * design pass (Zuri).
  */
 
-export const ZENML_INSTALL_CMD = "pip install zenml";
+export const ZENML_INSTALL_CMD = "uv add zenml";
 
 /** Canonical ZenML-side links — counterpart to KITARU_LINKS in productKitaru.ts (separate cloud apps, Aug 2026). */
 export const ZENML_LINKS = {
@@ -34,7 +34,7 @@ export const PRODUCT_ZENML_HERO = {
   headlineAccent: "your stack",
   subtitleLead: "Bring your own tools.",
   subtitle:
-    "Orchestrate any AI workflow, from training and batch inference to evals and agents, from your laptop to Kubernetes, Vertex, SageMaker, and AzureML. Reproducible artifacts, model registry, and a composable stack, without vendor lock-in.",
+    "Orchestrate training, inference, evals, and agents on the infrastructure you already run, from your laptop to Kubernetes. Reproducible, composable, no lock-in.",
   installCmd: ZENML_INSTALL_CMD,
   // Signup-first for parity with the Kitaru landing.
   primaryCta: ZENML_LINKS.signup,
