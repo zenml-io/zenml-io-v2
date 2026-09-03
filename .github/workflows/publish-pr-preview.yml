@@ -88,6 +88,8 @@ jobs:
             ] |
             if length == 1 then
               .[0]
+            elif length == 0 then
+              ""
             else
               error("source run must identify exactly one matching pull request")
             end
@@ -124,7 +126,44 @@ jobs:
               --arg commit "$source_commit" \
               "$SOURCE_PR_NUMBER_SELECTOR" \
               "$RUNNER_TEMP/source-run.json"
-          )"
+          )" || exit 1
+          if [ -z "$pr_number" ]; then
+            if [ -n "$INPUT_PR_NUMBER" ]; then
+              pr_number="$INPUT_PR_NUMBER"
+            else
+              repo_owner="${GITHUB_REPOSITORY%%/*}"
+              gh api \
+                --method GET \
+                "repos/$GITHUB_REPOSITORY/pulls" \
+                -f state=open \
+                -f head="$repo_owner:$source_branch" \
+                -f per_page=100 > "$RUNNER_TEMP/source-pr-candidates.json"
+              pr_number="$(
+                jq -er \
+                  --arg branch "$source_branch" \
+                  --arg commit "$source_commit" \
+                  --arg repository "$GITHUB_REPOSITORY" '
+                    [
+                      .[]
+                      | select(
+                          .state == "open" and
+                          .draft == false and
+                          .head.repo.full_name == $repository and
+                          .user.login != "dependabot[bot]" and
+                          .head.ref == $branch and
+                          .head.sha == $commit
+                        )
+                      | .number
+                    ]
+                    | if length == 1 then
+                        .[0]
+                      else
+                        error("fallback lookup must identify exactly one matching pull request")
+                      end
+                  ' "$RUNNER_TEMP/source-pr-candidates.json"
+              )"
+            fi
+          fi
           if [ -n "$INPUT_PR_NUMBER" ] && [ "$INPUT_PR_NUMBER" != "$pr_number" ]; then
             echo "The supplied PR number does not own this exact CI run." >&2
             exit 1

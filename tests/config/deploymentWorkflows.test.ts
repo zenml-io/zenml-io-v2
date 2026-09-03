@@ -2440,7 +2440,7 @@ describe("automatic pull-request Worker previews", () => {
         .toString()
         .trim(),
     ).toBe("296");
-    expectJqResult(selector ?? "", { pull_requests: [] }, false, selectorArgs);
+    expectJqResult(selector ?? "", { pull_requests: [] }, true, selectorArgs);
     expectJqResult(
       selector ?? "",
       {
@@ -2451,15 +2451,28 @@ describe("automatic pull-request Worker previews", () => {
           },
         ],
       },
+      true,
+      selectorArgs,
+    );
+    expectJqResult(
+      selector ?? "",
+      {
+        pull_requests: [
+          { head: { ref: branch, sha: commit }, number: 296 },
+          { head: { ref: branch, sha: commit }, number: 297 },
+        ],
+      },
       false,
       selectorArgs,
     );
     expect(resolutionRun).toContain('"$SOURCE_PR_NUMBER_SELECTOR"');
+    expect(resolutionRun).toContain('if [ -z "$pr_number" ]; then');
+    expect(resolutionRun).toContain('if [ -n "$INPUT_PR_NUMBER" ]; then');
     expect(resolutionRun).toContain(
       '"repos/$GITHUB_REPOSITORY/pulls/$pr_number"',
     );
-    expect(resolutionRun).not.toContain('"repos/$GITHUB_REPOSITORY/pulls"');
-    expect(resolutionRun).not.toContain("source-pr-candidates.json");
+    expect(resolutionRun).toContain('"repos/$GITHUB_REPOSITORY/pulls"');
+    expect(resolutionRun).toContain("source-pr-candidates.json");
   });
 
   it("uploads the exact validated artifact to one route-less dedicated Worker with a stable per-PR alias", () => {
