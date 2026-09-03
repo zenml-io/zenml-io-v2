@@ -18,6 +18,7 @@
 import type { CollectionEntry } from "astro:content";
 import { render } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { compareOgUrl } from "../../../lib/seo";
 // Structure first, then the ZenML token layer that re-points it.
 import "../../../styles/kitaru-compat.css";
 import "../../../styles/zenml-compare-compat.css";
@@ -33,9 +34,9 @@ interface Props {
 }
 const { entry, competitorOptions } = Astro.props;
 const { Content } = await render(entry);
-// No auto-generated OG card for this collection yet (compareOgUrl is wired to
-// the Kitaru compare slugs), so a page opts in via frontmatter `ogImage:`.
-const ogImage = entry.data.ogImage;
+// Auto-generated OG card at a deterministic R2 key (scripts/og/generate-compare-og.ts,
+// ZenML brand variant). `ogImage:` still wins if a page wants a custom card.
+const ogImage = entry.data.ogImage ?? compareOgUrl("zenml", entry.id);
 ---
 
 <BaseLayout

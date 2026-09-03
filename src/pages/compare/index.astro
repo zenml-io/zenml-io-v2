@@ -2,35 +2,28 @@
 /**
  * Compare hub page — Phase 3.
  *
- * Three visually-distinct sections:
- *   - MLOps comparisons (ZenML vs X) — sage-green tinted
+ * Two visually-distinct sections, one per product:
  *   - Agent comparisons (Kitaru vs X) — warm-orange tinted
+ *   - ZenML comparisons — sage-green tinted
  *
- * Clicking an MLOps card → /compare/zenml-vs-X (existing ZenML template).
- * Clicking a ZenML agent-era card → /compare/zenml-vs-X (MDX template).
  * Clicking an Agent card → /compare/kitaru-vs-X (Kitaru template,
  * theme flipped to data-app="kitaru").
- *
- * Three collections, three sections: `compare` (Webflow-era MLOps
- * platforms), `compare-zenml` (agent-era engines and frameworks) and
- * `compare-kitaru`. The two ZenML sections sit next to each other so the
- * brand reads as one block, with Kitaru's warm-orange band above them.
+ * Clicking a ZenML card → /compare/zenml-vs-X. The ZenML section merges
+ * two collections into one grid; src/lib/compareHub.ts normalises both
+ * sections' cards so the grid does not care which collection a row came
+ * from (the Markdown mirror at /compare.md reads the same lists).
  */
-import { getCollection } from "astro:content";
 import SectionIntro from "../../components/system/SectionIntro.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  getKitaruCompareCards,
+  getZenmlCompareCards,
+} from "../../lib/compareHub";
 
-const mlopsItems = (
-  await getCollection("compare", ({ data }) => !data.draft)
-).sort((a, b) => a.data.title.localeCompare(b.data.title));
-
-const agentItems = (
-  await getCollection("compare-kitaru", ({ data }) => !data.draft)
-).sort((a, b) => a.data.order - b.data.order);
-
-const zenmlItems = (
-  await getCollection("compare-zenml", ({ data }) => !data.draft)
-).sort((a, b) => a.data.order - b.data.order);
+const [kitaruCards, zenmlCards] = await Promise.all([
+  getKitaruCompareCards(),
+  getZenmlCompareCards(),
+]);
 ---
 
 <BaseLayout
@@ -68,7 +61,7 @@ const zenmlItems = (
         </span>
         <SectionIntro
           eyebrow="Agents · Kitaru"
-          heading="Kitaru vs. other agent runtimes & workflow engines"
+          heading="Kitaru vs. agent frameworks and SDKs"
           classOverrides={{
             eyebrow: "text-xs font-semibold uppercase tracking-[0.15em] text-orange-700",
             heading: "text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl",
@@ -78,29 +71,31 @@ const zenmlItems = (
       </div>
 
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {agentItems.map((item) => (
+        {kitaruCards.map((card) => (
           <a
-            href={`/compare/${item.id}`}
+            href={card.href}
             class="group flex items-center gap-4 rounded-lg border border-orange-200/60 bg-white p-5 transition-all hover:border-orange-400/60 hover:shadow-md"
           >
-            {item.data.competitorLogo ? (
+            {card.logo ? (
               <img
-                src={item.data.competitorLogo}
-                alt={item.data.competitor}
+                src={card.logo}
+                alt={card.name}
                 class="h-10 w-10 shrink-0 rounded-md object-contain"
               />
             ) : (
               <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-orange-100 text-base font-bold text-orange-600">
-                {item.data.competitor[0]}
+                {card.name[0]}
               </div>
             )}
             <div class="min-w-0">
               <h3 class="truncate font-semibold text-gray-900 group-hover:text-orange-700">
-                Kitaru vs. {item.data.competitor}
+                {card.title}
               </h3>
-              <p class="mt-0.5 text-xs leading-snug text-gray-500 line-clamp-2">
-                {item.data.cardSubtitle}
-              </p>
+              {card.sub && (
+                <p class="mt-0.5 text-xs leading-snug text-gray-500 line-clamp-2">
+                  {card.sub.text}
+                </p>
+              )}
             </div>
           </a>
         ))}
@@ -109,9 +104,9 @@ const zenmlItems = (
   </section>
 
   {/* ════════════════════════════════════════════════════════════════════
-       AI orchestration — ZenML vs agent-era engines and frameworks
+       AI orchestration — ZenML comparisons (sage green tint)
        ════════════════════════════════════════════════════════════════════ */}
-  <section class="border-y border-zenml-100 bg-white">
+  <section class="border-y border-zenml-100 bg-zenml-25/50">
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
       <div class="mb-10 flex items-center gap-4">
         <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-zenml-500/15 text-zenml-700">
@@ -123,7 +118,7 @@ const zenmlItems = (
         </span>
         <SectionIntro
           eyebrow="AI orchestration · ZenML"
-          heading="ZenML vs. durable execution engines & agent frameworks"
+          heading="ZenML vs. orchestrators, durable execution engines & agent frameworks"
           classOverrides={{
             eyebrow: "text-xs font-semibold uppercase tracking-[0.15em] text-zenml-700",
             heading: "text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl",
@@ -133,82 +128,35 @@ const zenmlItems = (
       </div>
 
       <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {zenmlItems.map((item) => (
+        {zenmlCards.map((card) => (
           <a
-            href={`/compare/${item.id}`}
+            href={card.href}
             class="group flex items-center gap-4 rounded-lg border border-zenml-100 bg-white p-5 transition-all hover:border-zenml-300 hover:shadow-md"
           >
-            {item.data.competitorLogo ? (
+            {card.logo ? (
               <img
-                src={item.data.competitorLogo}
-                alt={item.data.competitor}
+                src={card.logo}
+                alt={card.name}
                 class="h-10 w-10 shrink-0 rounded-md object-contain"
               />
             ) : (
               <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-zenml-50 text-base font-bold text-zenml-600">
-                {item.data.competitor[0]}
+                {card.name[0]}
               </div>
             )}
             <div class="min-w-0">
               <h3 class="truncate font-semibold text-gray-900 group-hover:text-zenml-700">
-                ZenML vs. {item.data.competitor}
+                {card.title}
               </h3>
-              <p class="mt-0.5 text-xs leading-snug text-gray-500 line-clamp-2">
-                {item.data.cardSubtitle}
-              </p>
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  {/* ════════════════════════════════════════════════════════════════════
-       MLOps — ZenML comparisons (sage green tint)
-       ════════════════════════════════════════════════════════════════════ */}
-  <section class="border-y border-zenml-100 bg-zenml-25/50">
-    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-      <div class="mb-10 flex items-center gap-4">
-        <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-zenml-500/15 text-zenml-700">
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M9 3.5V2M5.06066 5.06066L4 4M5.06066 13L4 14.0607M13 5.06066L14.0607 4M3.5 9H2M15.8645 16.1896L13.3727 20.817C13.0881 21.3457 12.9457 21.61 12.7745 21.6769C12.6259 21.7349 12.4585 21.7185 12.324 21.6328C12.1689 21.534 12.0806 21.2471 11.9038 20.6733L8.44519 9.44525C8.3008 8.97651 8.2286 8.74213 8.28669 8.58383C8.33729 8.44595 8.44595 8.33729 8.58383 8.2867C8.74213 8.22861 8.9765 8.3008 9.44525 8.44519L20.6732 11.9038C21.247 12.0806 21.5339 12.169 21.6327 12.324C21.7185 12.4586 21.7348 12.6259 21.6768 12.7745C21.61 12.9458 21.3456 13.0881 20.817 13.3728L16.1896 15.8645C16.111 15.9068 16.0717 15.9279 16.0374 15.9551C16.0068 15.9792 15.9792 16.0068 15.9551 16.0374C15.9279 16.0717 15.9068 16.111 15.8645 16.1896Z"/>
-          </svg>
-        </span>
-        <SectionIntro
-          eyebrow="AI orchestration · ZenML"
-          heading="ZenML vs. other workflow orchestrators & platforms"
-          classOverrides={{
-            eyebrow: "text-xs font-semibold uppercase tracking-[0.15em] text-zenml-700",
-            heading: "text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl",
-            headingSpacing: "",
-          }}
-        />
-      </div>
-
-      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {mlopsItems.map((item) => (
-          <a
-            href={`/compare/${item.data.slug}`}
-            class="group flex items-center gap-4 rounded-lg border border-zenml-100 bg-white p-5 transition-all hover:border-zenml-300 hover:shadow-md"
-          >
-            {item.data.toolIcon ? (
-              <img
-                src={item.data.toolIcon.url}
-                alt={item.data.toolName || item.data.title}
-                class="h-10 w-10 shrink-0 rounded-md object-contain"
-              />
-            ) : (
-              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-gray-100 text-base font-bold text-gray-400">
-                {(item.data.toolName || item.data.title)[0]}
-              </div>
-            )}
-            <div class="min-w-0">
-              <h3 class="truncate font-semibold text-gray-900 group-hover:text-zenml-700">
-                {item.data.title}
-              </h3>
-              {item.data.category && (
-                <p class="mt-0.5 text-xs uppercase tracking-wider text-gray-500">
-                  {item.data.category.replace(/-/g, " ")}
+              {card.sub && (
+                <p
+                  class={
+                    card.sub.kind === "category"
+                      ? "mt-0.5 text-xs uppercase tracking-wider text-gray-500"
+                      : "mt-0.5 text-xs leading-snug text-gray-500 line-clamp-2"
+                  }
+                >
+                  {card.sub.text}
                 </p>
               )}
             </div>

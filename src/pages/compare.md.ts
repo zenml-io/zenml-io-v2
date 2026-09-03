@@ -1,26 +1,29 @@
-import { getCollection } from "astro:content";
 import {
   joinMarkdownSections,
   markdownPreamble,
   markdownResponse,
   markdownTable,
 } from "../lib/agentMarkdown";
+import {
+  type CompareCard,
+  getKitaruCompareCards,
+  getZenmlCompareCards,
+} from "../lib/compareHub";
 import { absoluteUrl } from "../lib/seo";
 
 export const prerender = true;
 
 export async function GET(): Promise<Response> {
-  const [mlopsItems, zenmlMdxItems, agentItems] = await Promise.all([
-    getCollection("compare", ({ data }) => !data.draft).then((items) =>
-      items.sort((a, b) => a.data.title.localeCompare(b.data.title)),
-    ),
-    getCollection("compare-zenml", ({ data }) => !data.draft).then((items) =>
-      items.sort((a, b) => a.data.order - b.data.order),
-    ),
-    getCollection("compare-kitaru", ({ data }) => !data.draft).then((items) =>
-      items.sort((a, b) => a.data.order - b.data.order),
-    ),
+  const [zenmlCards, kitaruCards] = await Promise.all([
+    getZenmlCompareCards(),
+    getKitaruCompareCards(),
   ]);
+  const toRow = (card: CompareCard) => [
+    card.title,
+    card.meta,
+    card.blurb,
+    absoluteUrl(card.href),
+  ];
 
   const markdown = joinMarkdownSections(
     markdownPreamble({
@@ -35,41 +38,17 @@ export async function GET(): Promise<Response> {
       "This first Markdown mirror summarizes the compare hub only. It does not create Markdown mirrors for every comparison detail page.",
     ),
     joinMarkdownSections(
-      "## AI orchestration comparisons: ZenML vs. other workflow orchestrators and platforms",
+      "## AI orchestration comparisons: ZenML vs. orchestrators, durable execution engines and agent frameworks",
       markdownTable(
-        ["Comparison", "Category", "Short description", "URL"],
-        mlopsItems.map((item) => [
-          item.data.title,
-          item.data.category?.replace(/-/g, " ") ?? "MLOps",
-          item.data.seoDescription ??
-            item.data.heroText ??
-            "ZenML comparison page.",
-          absoluteUrl(`/compare/${item.data.slug}`),
-        ]),
+        ["Comparison", "Competitor or category", "Short description", "URL"],
+        zenmlCards.map(toRow),
       ),
     ),
     joinMarkdownSections(
-      "## AI orchestration comparisons: ZenML vs. durable execution engines and agent frameworks",
+      "## Agent replay comparisons: Kitaru vs. agent frameworks and SDKs",
       markdownTable(
         ["Comparison", "Competitor", "Short description", "URL"],
-        zenmlMdxItems.map((item) => [
-          item.data.shortTitle ?? item.data.title,
-          item.data.competitor,
-          item.data.cardSubtitle,
-          absoluteUrl(`/compare/${item.id}`),
-        ]),
-      ),
-    ),
-    joinMarkdownSections(
-      "## Agent comparisons — Kitaru vs. other agent runtimes and workflow engines",
-      markdownTable(
-        ["Comparison", "Competitor", "Short description", "URL"],
-        agentItems.map((item) => [
-          item.data.shortTitle ?? item.data.title,
-          item.data.competitor,
-          item.data.cardSubtitle,
-          absoluteUrl(`/compare/${item.id}`),
-        ]),
+        kitaruCards.map(toRow),
       ),
     ),
   );

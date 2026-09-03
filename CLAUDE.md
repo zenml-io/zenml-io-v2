@@ -97,7 +97,7 @@ The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was s
   Worker after explicit review; fork and Dependabot runs receive no Cloudflare
   credentials. Preview upload is not the required merge gate
 - **`pnpm check:islands` needs a browser.** First run: `pnpm exec playwright install chromium`. It serves `dist/` and drives a real Chromium to prove the Preact islands actually hydrate — `pnpm build` and `pnpm smoke:dist` only prove the HTML exists, and an island can ship perfect markup and still be inert. This matters most for framework upgrades (see the Astro 5→7 tracking issue): a broken upgrade otherwise passes a fully green CI. Dependabot and fork PRs get **no preview upload**, so this check is their only automated hydration signal. Beyond the islands, it also checks the Storylane embed on `/live-demo` (a plain `.astro` component, no `client:*` directive): under both rejected and accepted consent, the iframe and enhancement script must load and exactly one `#storylane-embed` script may be inserted
-- **`pnpm smoke:dist` also diffs rendered content against goldens** in `tests/snapshots/rendered/` (`scripts/check-dist-snapshots.ts`): the `.prose` body of one Markdown blog post, the `.compare-body-inner` of one Kitaru-vs-X MDX page, the `.prose` details column of two project detail pages, and the `<dl>` sidebar of one of them — one tag per line, asset hashes normalised. Nothing else in CI looks at what remark/rehype/Shiki/MDX actually emit — #268 flipped smart quotes on 11 pages and shipped green. The project targets guard a second thing: those pages run a deliberately minimal in-repo converter, and one of them depends on it *not* handling list syntax. If you changed a snapshotted page, a rendering plugin, or the project sidebar on purpose: `pnpm build && pnpm snapshots:update`, read the golden diff, commit it. A golden diff you didn't expect is the finding, not noise. Step 9 of the same smoke run is a pixel-tolerance golden of one Open Graph card (`scripts/check-og-golden.ts`, `tests/snapshots/rendered/og-kitaru-vs-temporal.jpg`; `pnpm og:golden:update` after an intended change) — the only thing in CI that executes satori/resvg/sharp; the script header has the rationale
+- **`pnpm smoke:dist` also diffs rendered content against goldens** in `tests/snapshots/rendered/` (`scripts/check-dist-snapshots.ts`): the `.prose` body of one Markdown blog post, the `.compare-body-inner` of one Kitaru-vs-X MDX page, the `.prose` details column of two project detail pages, and the `<dl>` sidebar of one of them — one tag per line, asset hashes normalised. Nothing else in CI looks at what remark/rehype/Shiki/MDX actually emit — #268 flipped smart quotes on 11 pages and shipped green. The project targets guard a second thing: those pages run a deliberately minimal in-repo converter, and one of them depends on it *not* handling list syntax. If you changed a snapshotted page, a rendering plugin, or the project sidebar on purpose: `pnpm build && pnpm snapshots:update`, read the golden diff, commit it. A golden diff you didn't expect is the finding, not noise. Step 9 of the same smoke run is a pixel-tolerance golden of one Open Graph card per brand (`scripts/check-og-golden.ts`, `tests/snapshots/rendered/og-{kitaru,zenml}-vs-pydantic-ai.jpg`; `pnpm og:golden:update` after an intended change) — the only thing in CI that executes satori/resvg/sharp; the script header has the rationale
 - **Worker release boundary:** `.github/workflows/deploy.yml` never receives
   Cloudflare credentials. Preview and candidate workflows consume its exact
   artifact without running branch package scripts. After the accepted Worker
@@ -174,14 +174,18 @@ const url = `${ASSET_BASE_URL}/content/uploads/1a2b3c4d/hero.webp`;
 
 ### Compare-page OG card generator
 
-The Kitaru-vs-X comparison pages use programmatic OG cards rendered from
-each `.mdx`'s frontmatter (`competitor`, `cardSubtitle`). Pipeline:
+The MDX comparison pages (`compare-kitaru` and `compare-zenml`) use
+programmatic OG cards rendered from each `.mdx`'s frontmatter
+(`competitor`, `cardSubtitle`). The template has two brand variants,
+picked by collection: Kitaru (orange, Paper artboard) and ZenML (purple,
+`public/images/zenml-logo.svg` wordmark). Pipeline:
 satori (JSX → SVG) → `@resvg/resvg-js` (SVG → PNG at 2× native) → sharp
 (PNG → JPEG, q85 mozjpeg 4:2:0) → R2 upload at a deterministic key.
 
 The OG URL is **derived at render time** from the entry slug via
-`compareOgUrl(slug)` in `src/lib/seo.ts` — pointing at
-`${ASSET_BASE_URL}/${KITARU_COMPARE_OG_PREFIX}/<slug>.jpg`. The script
+`compareOgUrl(brand, slug)` in `src/lib/seo.ts` — pointing at
+`${ASSET_BASE_URL}/${COMPARE_OG_PREFIX[brand]}/<slug>.jpg`; each compare
+layout passes its own brand. The script
 uploads there with `r2-upload.py --literal-key` so re-renders overwrite
 in place. No frontmatter mutation. A page can still override by setting
 its own `ogImage:` frontmatter line.
@@ -196,7 +200,7 @@ its own `ogImage:` frontmatter line.
   same R2 key → overwrite in place. No `.mdx` files are ever modified.
 - `pnpm og:compare --slug=kitaru-vs-foo` — limit to specific pages.
 
-**When adding a new kitaru-vs-X page:** create the `.mdx` with the
+**When adding a new kitaru-vs-X or zenml-vs-X MDX page:** create the `.mdx` with the
 `competitor` and `cardSubtitle` frontmatter fields, then run
 `pnpm og:compare:write --slug=<new-slug>`. No frontmatter change needed
 — the layout derives the OG URL automatically.
@@ -327,6 +331,7 @@ The old standalone `kitaru.ai` API routes (`get-started`, `waitlist`, `newslette
 - `src/components/compare/_layouts/KitaruCompare.astro` — Kitaru-vs-X comparison page template
 - `src/components/compare/kitaru/*` — Kitaru compare components (ComparisonHero, ComparisonTable, CodePane, CodeCompare, FeatureWithGraphic, WhenToUseEach, ComparisonCta)
 - `src/content/compare-kitaru/*.mdx` — Kitaru-vs-X comparison pages
+- `src/content/compare-zenml/*.mdx` — ZenML-vs-X pages in the same MDX template (`ZenmlMdxCompare.astro`, components under `src/components/compare/zenml/`), covering durable execution engines (Temporal, DBOS, Hatchet, Inngest, Restate) and agent frameworks. Positioning: ZenML orchestrates and runs agents durably (dynamic pipelines, `wait()` approvals, sandboxes, deployments); the Kitaru-vs-X set is limited to frameworks Kitaru has adapters for. The old `kitaru-vs-{temporal,dbos,hatchet,inngest,restate}` pages 301 to their ZenML twins (`public/_redirects`)
 
 ### Get Started routing
 - `src/pages/get-started.astro` — ZenML open-source onboarding (hero, 3-step walkthrough, architecture, projects, resources). `/get-started/zenml` 301-redirects here (`public/_redirects`). Kitaru's entry point is its own `/product/kitaru` landing.

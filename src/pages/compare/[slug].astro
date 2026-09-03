@@ -77,7 +77,11 @@ export async function getStaticPaths() {
     })),
     ...agentItems.map((entry) => ({
       params: { slug: entry.id },
-      props: { kind: "agents" as const, entry, competitorOptions: kitaruOptions },
+      props: {
+        kind: "agents" as const,
+        entry,
+        competitorOptions: kitaruOptions,
+      },
     })),
   ];
 }

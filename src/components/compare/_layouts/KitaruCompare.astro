@@ -30,7 +30,7 @@ const { entry, competitorOptions } = Astro.props;
 const { Content } = await render(entry);
 // Default each compare page to its auto-generated OG card. Frontmatter
 // `ogImage:` still wins if a page wants a custom card.
-const ogImage = entry.data.ogImage ?? compareOgUrl(entry.id);
+const ogImage = entry.data.ogImage ?? compareOgUrl("kitaru", entry.id);
 ---
 
 <BaseLayout
