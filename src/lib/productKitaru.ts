@@ -1,4 +1,12 @@
-export const KITARU_INSTALL_CMD =
+/**
+ * The one-line installer: CLI + MCP server in an isolated uv environment,
+ * the coding-agent skills, MCP registration for Claude Code / Codex, and
+ * then prints the two ways to get a server. Served by the kitaru.ai
+ * worker from install.sh in the Kitaru repo.
+ */
+export const KITARU_INSTALL_CMD = "curl -fsSL https://kitaru.ai/install | bash";
+/** Adding the SDK to a project's own environment (the embedded, in-process form). */
+export const KITARU_SDK_ADD_CMD =
   'uv add "kitaru[cli,worker]" kitaru-pydantic-ai';
 export const KITARU_LICENSE = "Apache 2.0";
 
@@ -115,7 +123,7 @@ export const PRODUCT_KITARU_MARKDOWN = {
   journey: [
     {
       name: "Act 1 — Get in",
-      body: `\`${KITARU_INSTALL_CMD}\` then \`kitaru login --local\`. Two questions decide your path: do you have a repo with an agent, and do you have traces? No repo, or an unrecognised framework, and you start from the template repo — a small PydanticAI agent already wrapped, with a trace file beside it. Registering the agent stores an entrypoint module path server-side; nothing is written into your repo. Then \`kitaru worker start\` runs a plain Python process in your virtualenv, which polls — the server never connects inbound.`,
+      body: `\`${KITARU_INSTALL_CMD}\` run inside your agent's repo adds Kitaru to that project's environment, installs the coding-agent skills and the MCP server, then prints the two ways to get a server: \`kitaru login --local\` in Docker, or the managed cloud. Two questions decide your path: do you have a repo with an agent, and do you have traces? No repo, or an unrecognised framework, and you start from the template repo — a small PydanticAI agent already wrapped, with a trace file beside it. Registering the agent stores an entrypoint module path server-side; nothing is written into your repo. Then \`kitaru worker start\` runs a plain Python process in your virtualenv, which polls — the server never connects inbound.`,
     },
     {
       name: "Act 2 — Traces in",
