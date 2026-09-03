@@ -5,15 +5,19 @@ import {
   formatStars,
   GITHUB_REPO_URL,
   KITARU_FALLBACK_STARS,
+  KITARU_GITHUB_REPO_URL,
+  type StarsRepoKey,
 } from "../lib/githubStars";
 import { getNonDraftLlmopsDatabaseCount } from "../lib/llmops";
+import type { BrandedCtaLink } from "../lib/marketingPageTypes";
 import {
   createNavDropdowns,
   isActivePath,
   NAV_BRAND_STYLES,
-  NAV_CTAS,
   NAV_LINKS,
+  NAV_SIGNUP_CTAS,
 } from "../lib/navigation";
+import { brandButtonClass } from "../lib/productCtas";
 import { KITARU_LINKS } from "../lib/productKitaru";
 import Button from "./Button.astro";
 /**
@@ -36,27 +40,46 @@ interface Props {
 const { currentPath = Astro.url.pathname, surface } = Astro.props;
 const headerStarsFallback = formatStars(FALLBACK_STARS);
 
-// On Kitaru surfaces, point the header star button at the Kitaru repo instead
-// of zenml/zenml. The live count is zenml-only, so we drop the number there
-// rather than show a misleading figure next to the Kitaru link.
 const isKitaruSurface = surface === "agent";
-const starsHref = isKitaruSurface
-  ? "https://github.com/zenml-io/kitaru"
-  : GITHUB_REPO_URL;
-const starsAriaLabel = isKitaruSurface
-  ? "Star zenml-io/kitaru on GitHub"
-  : "Star zenml-io/zenml on GitHub";
-const starsRepoKey = isKitaruSurface ? "kitaru" : "zenml";
-const starsCountText = isKitaruSurface
-  ? formatStars(KITARU_FALLBACK_STARS)
-  : headerStarsFallback;
-// The docs button is ZenML-only: Kitaru surfaces keep a single signup CTA,
-// and /docs is a ZenML page (Kitaru docs live in the Docs dropdown).
-const docsCta = NAV_CTAS[0];
-const primaryCta = isKitaruSurface ? KITARU_LINKS.signup : NAV_CTAS[1];
-const primaryCtaAnalytics = isKitaruSurface
-  ? "Nav-Kitaru-Signup"
-  : "Nav-Book-Demo";
+
+/** GitHub star pills. Kitaru surfaces show the Kitaru repo alone; every
+ *  other surface shows both products — the nav's signup pair covers both,
+ *  so a ZenML-only star count would read as lopsided. */
+interface StarPill {
+  repo: StarsRepoKey;
+  label: string;
+  href: string;
+  ariaLabel: string;
+  countText: string;
+}
+const zenmlPill: StarPill = {
+  repo: "zenml",
+  label: "ZenML",
+  href: GITHUB_REPO_URL,
+  ariaLabel: "Star zenml-io/zenml on GitHub",
+  countText: headerStarsFallback,
+};
+const kitaruPill: StarPill = {
+  repo: "kitaru",
+  label: "Kitaru",
+  href: KITARU_GITHUB_REPO_URL,
+  ariaLabel: "Star zenml-io/kitaru on GitHub",
+  countText: formatStars(KITARU_FALLBACK_STARS),
+};
+const starPills: StarPill[] = isKitaruSurface
+  ? [{ ...kitaruPill, label: "Star" }]
+  : [zenmlPill, kitaruPill];
+// Kitaru surfaces keep a single Kitaru signup CTA; every other surface gets
+// one signup per product. Docs live in the Docs dropdown, not the button row.
+const signupCtas: readonly BrandedCtaLink[] = isKitaruSurface
+  ? [
+      {
+        ...KITARU_LINKS.signup,
+        brand: "kitaru",
+        analytics: "Nav-Kitaru-Signup",
+      },
+    ]
+  : NAV_SIGNUP_CTAS;
 const llmopsCaseStudyCount = await getNonDraftLlmopsDatabaseCount();
 const navDropdowns = createNavDropdowns({ llmopsCaseStudyCount });
 
@@ -400,10 +423,11 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
 
       {/* Desktop CTAs */}
       <div class:list={["hidden lg:ml-auto lg:flex lg:items-center lg:gap-3", isKitaruSurface && "kitaru-brand-vars"]}>
-        <div class="h-[28px]">
+        {starPills.map((pill) => (
+          <div class="h-[28px]">
           <a
-            href={starsHref}
-            aria-label={starsAriaLabel}
+            href={pill.href}
+            aria-label={pill.ariaLabel}
             class="inline-flex h-full items-center gap-1.5 rounded border border-gray-300 bg-white px-2.5 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-50"
           >
             <svg
@@ -415,28 +439,27 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
             >
               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.538 1.118l-2.8-2.034a1 1 0 0 0-1.175 0l-2.8 2.034c-.783.57-1.838-.197-1.538-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 0 0 .951-.69l1.07-3.292Z" />
             </svg>
-            <span>Star</span>
+            <span>{pill.label}</span>
             <span aria-hidden="true">·</span>
             <span
               class="tabular-nums"
               data-github-stars-count
-              data-github-stars-repo={starsRepoKey}
-            >{starsCountText}</span>
+              data-github-stars-repo={pill.repo}
+            >{pill.countText}</span>
           </a>
-        </div>
-        {!isKitaruSurface && (
-          <Button href={docsCta.href} variant="secondary" size="sm">
-            {docsCta.label}
+          </div>
+        ))}
+        {signupCtas.map((cta) => (
+          <Button
+            href={cta.href}
+            variant="primary"
+            size="sm"
+            class={brandButtonClass(cta.brand)}
+            dataAnalytics={cta.analytics}
+          >
+            {cta.label}
           </Button>
-        )}
-        <Button
-          href={primaryCta.href}
-          variant="primary"
-          size="sm"
-          dataAnalytics={primaryCtaAnalytics}
-        >
-          {primaryCta.label}
-        </Button>
+        ))}
       </div>
 
       {/* Mobile menu button */}
@@ -540,20 +563,17 @@ const productDropdownLinks = (dropdown: (typeof navDropdowns)[number]) => {
 
         {/* Mobile CTAs */}
         <div class:list={["mt-4 flex flex-col gap-2 pt-4 border-t border-gray-200", isKitaruSurface && "kitaru-brand-vars"]}>
-          {!isKitaruSurface && (
-            <Button href={docsCta.href} variant="secondary" size="md" class="w-full justify-center">
-              {docsCta.label}
+          {signupCtas.map((cta) => (
+            <Button
+              href={cta.href}
+              variant="primary"
+              size="md"
+              class={["w-full justify-center", brandButtonClass(cta.brand)].filter(Boolean).join(" ")}
+              dataAnalytics={cta.analytics}
+            >
+              {cta.label}
             </Button>
-          )}
-          <Button
-            href={primaryCta.href}
-            variant="primary"
-            size="md"
-            class="w-full justify-center"
-            dataAnalytics={primaryCtaAnalytics}
-          >
-            {primaryCta.label}
-          </Button>
+          ))}
         </div>
       </nav>
     </div>

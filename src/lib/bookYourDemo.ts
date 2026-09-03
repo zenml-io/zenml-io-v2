@@ -17,10 +17,10 @@ const R2 = R2_WEBFLOW_BASE;
 export const BOOK_YOUR_DEMO_SEO: SEOProps = {
   title: "Signup for Demo",
   description:
-    "Schedule a Live Demo to Unlock the True Potential of Your MLOps Journey and Supercharge Your Machine Learning Projects.",
+    "Schedule a live demo and see how ZenML orchestrates your AI workflows and Kitaru diagnoses your agents.",
   ogTitle: "Signup for Demo",
   ogDescription:
-    "Schedule a Live Demo to Unlock the True Potential of Your MLOps Journey and Supercharge Your Machine Learning Projects.",
+    "Schedule a live demo and see how ZenML orchestrates your AI workflows and Kitaru diagnoses your agents.",
 };
 
 // ---------------------------------------------------------------------------
@@ -35,16 +35,19 @@ export const BOOK_YOUR_DEMO_HERO = {
 };
 
 export const BOOK_YOUR_DEMO_STATS = [
-  { value: "78%", label: "Faster time-to-market for ML models in production" },
+  {
+    value: "78%",
+    label: "Faster time-to-market for models and agents in production",
+  },
   {
     value: "65%",
-    label: "Reduced engineering overhead on MLOps infrastructure",
+    label: "Reduced engineering overhead on orchestration infrastructure",
   },
   {
     value: "3x",
     label: "More workflows running in production environments",
   },
-  { value: "1,000+", label: "ML teams trust ZenML worldwide" },
+  { value: "1,000+", label: "ML and AI teams trust ZenML worldwide" },
 ];
 
 export const BOOK_YOUR_DEMO_LOGOS = [
@@ -158,4 +161,4 @@ export const BOOK_KITARU_DEMO_HERO = {
 
 /** Co-brand credibility line shown above the customer logos on the Kitaru page. */
 export const BOOK_KITARU_DEMO_PROOF =
-  "Built by the ZenML team — trusted by 1,000+ teams running ML and AI agents in production.";
+  "Built by the ZenML team, trusted by 1,000+ teams running AI workflows and agents in production.";

@@ -18,10 +18,10 @@ import type {
 export const OSS_VS_PRO_SEO = {
   title: "ZenML Open Source vs Cloud",
   description:
-    "Transform your ML workflows from single-player experiments to multiplayer production systems. Compare ZenML Open Source and ZenML Pro features.",
+    "Transform your AI workflows from single-player experiments to multiplayer production systems. Compare ZenML Open Source and ZenML Pro features.",
   ogTitle: "ZenML Open Source vs Cloud",
   ogDescription:
-    "Transform your ML workflows from single-player experiments to multiplayer production systems. Compare ZenML Open Source and ZenML Pro features.",
+    "Transform your AI workflows from single-player experiments to multiplayer production systems. Compare ZenML Open Source and ZenML Pro features.",
   ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
@@ -31,7 +31,7 @@ export const OSS_VS_PRO_SEO = {
 export const OSS_VS_PRO_HERO: HeroData = {
   eyebrow: "From Solo Science to Team Engineering",
   headline: "ZenML Open Source vs Pro",
-  deck: "Transform your ML workflows from single-player experiments to multiplayer production systems. ZenML Pro builds on the same open-source foundation you trust: no code rewrites, no metadata migrations required.",
+  deck: "Transform your AI workflows from single-player experiments to multiplayer production systems. ZenML Pro builds on the same open-source foundation you trust: no code rewrites, no metadata migrations required.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",
@@ -61,7 +61,7 @@ export const OSS_VS_PRO_FEATURE_GRID = {
     },
     {
       title: "Enhanced observability",
-      body: "ZenML Pro tenants have an enhanced dashboard with more features including a model control plane to view all your ML models, and the ability to trigger pipelines, do CI/CD and lots more.",
+      body: "ZenML Pro tenants have an enhanced dashboard with more features including a model control plane to view all your models, and the ability to trigger pipelines, do CI/CD and lots more.",
     },
   ] satisfies FeatureGridItem[],
   primaryCta: { label: "Book a demo", href: "/book-your-demo" } as CtaLink,
@@ -81,7 +81,7 @@ export const OSS_VS_PRO_SUBWAY_MAP = {
     alt: "A metro line map showing Collaboration, Governance, Automation and Reliability stations in the ZenML OSS line",
   },
   headline: "Is Your ML Team Ready for the Next Station?",
-  body: "Our subway map framework helps you identify pain signals that indicate it\u2019s time to upgrade your ML infrastructure.",
+  body: "Our subway map framework helps you identify pain signals that indicate it\u2019s time to upgrade your AI infrastructure.",
   cards: [
     {
       title: "Collaboration",
@@ -138,7 +138,7 @@ export const OSS_VS_PRO_COMPARISON: ComparisonTableData = {
     {
       feature: "Pipelines",
       description:
-        "ML pipelines are Python workflows that execute a machine learning task",
+        "Pipelines are Python workflows that execute a training, inference, eval, or agent task",
       icon: ICON_PIPELINES,
       columns: [
         "Basic Controls with legacy dashboard",
@@ -202,7 +202,7 @@ export const OSS_VS_PRO_COMPARISON: ComparisonTableData = {
     {
       feature: "Service Connectors",
       description:
-        "Credentials, authorization, and access control for your ML stack components",
+        "Credentials, authorization, and access control for your stack components",
       icon: ICON_CONNECTORS,
       columns: ["CLI only", "Modern dashboard"],
     },
@@ -220,9 +220,9 @@ export const OSS_VS_PRO_COMPARISON: ComparisonTableData = {
       columns: ["Community", "Dedicated 24/7"],
     },
     {
-      feature: "Setup of MLOps workflow",
+      feature: "Setup of AI workflows",
       description:
-        "Setting up of the codebase and infrastructure required to build a successful MLOps platform",
+        "Setting up of the codebase and infrastructure required to build a successful AI platform",
       icon: ICON_SETTINGS,
       columns: ["Self managed", "Specialized onboarding"],
     },
@@ -234,7 +234,7 @@ export const OSS_VS_PRO_COMPARISON: ComparisonTableData = {
 // ---------------------------------------------------------------------------
 export const OSS_VS_PRO_FINAL_CTA = {
   headline: "Start deploying reproducible AI workflows today",
-  body: "Enterprise-grade MLOps platform trusted by thousands of companies in production.",
+  body: "Enterprise-grade AI orchestration platform trusted by thousands of companies in production.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",

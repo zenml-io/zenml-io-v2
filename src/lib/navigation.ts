@@ -12,6 +12,8 @@
  * "All comparisons" link.
  */
 
+import { productSignupCtas } from "./productCtas";
+
 export interface NavLink {
   label: string;
   href: string;
@@ -141,6 +143,15 @@ export function createNavDropdowns({
           // Kitaru listed first.
           links: [
             {
+              label: "ZenML",
+              href: "/product/zenml",
+              description: "Orchestrate pipelines and agents",
+              icon: ICON_ZENML_MARK,
+              iconViewBox: "0 0 20 20",
+              iconFilled: true,
+              brand: "zenml",
+            },
+            {
               label: "Kitaru",
               href: "/product/kitaru",
               description: "Replay and improve AI agents",
@@ -148,15 +159,6 @@ export function createNavDropdowns({
               iconViewBox: "0 0 81 82",
               iconFilled: true,
               brand: "kitaru",
-            },
-            {
-              label: "ZenML",
-              href: "/product/zenml",
-              description: "Pipelines for ML workflows",
-              icon: ICON_ZENML_MARK,
-              iconViewBox: "0 0 20 20",
-              iconFilled: true,
-              brand: "zenml",
             },
             {
               label: "ZenML Pro",
@@ -206,7 +208,7 @@ export function createNavDropdowns({
             {
               label: "Customer stories",
               href: "/case-studies",
-              description: "How teams ship ML and agents with ZenML",
+              description: "How teams ship AI workflows and agents with ZenML",
               icon: ICON_BUILDING,
             },
             {
@@ -239,10 +241,11 @@ export const NAV_LINKS: NavLink[] = [
 // CTA Buttons
 // ---------------------------------------------------------------------------
 
-export const NAV_CTAS: NavLink[] = [
-  { label: "Read Docs", href: "/docs" },
-  { label: "Book a demo", href: "/book-your-demo" },
-];
+/** Compact per-product signup pair for ZenML/unified surfaces. */
+export const NAV_SIGNUP_CTAS = productSignupCtas(
+  { zenml: "Try ZenML", kitaru: "Try Kitaru" },
+  "Nav-Signup",
+);
 
 // ---------------------------------------------------------------------------
 // Helpers

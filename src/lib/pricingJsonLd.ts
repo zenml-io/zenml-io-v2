@@ -110,7 +110,7 @@ export function buildPricingJsonLd(): Record<string, unknown> {
         operatingSystem: "Python, Kubernetes, AWS, GCP, Azure",
         url: absoluteUrl("/product/kitaru"),
         description:
-          "Kitaru is an open-source platform for replay-based agent evals: import your production traces, run evaluators over them, and replay real sessions against your next change before it ships.",
+          "Kitaru is an open-source platform for replaying and regression-testing AI agents: import your production traces, run evaluators over them, and replay real sessions against your next change before it ships.",
         featureList: PRICING_PLANS_KITARU.flatMap((plan) => plan.features),
         offers: {
           "@type": "OfferCatalog",

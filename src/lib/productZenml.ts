@@ -1,30 +1,37 @@
 /**
  * Page copy for /product/zenml — the ZenML sub-product landing.
  *
- * Mirrors /product/kitaru in shape but pitches the ML workspace.
+ * Mirrors /product/kitaru in shape but pitches the AI orchestration workspace.
  * Baseline copy; iterate on tone/specifics before Phase 9's full
  * design pass (Zuri).
  */
 
+/** Canonical ZenML-side links — counterpart to KITARU_LINKS in productKitaru.ts (separate cloud apps, Aug 2026). */
+export const ZENML_LINKS = {
+  signup: {
+    label: "Sign up free",
+    href: "https://cloud.zenml.io",
+  },
+  demo: { label: "Book a demo", href: "/book-your-demo" },
+} as const;
+
 export const PRODUCT_ZENML_SEO = {
-  title: "ZenML — The MLOps layer for your existing stack",
+  title: "ZenML: AI orchestration on your existing stack",
   description:
-    "Open-source MLOps orchestration. Reproducible pipelines from your laptop to Kubernetes, Vertex, SageMaker, and AzureML — without rewriting your code.",
+    "Open-source AI orchestration. Run training, batch inference, evals, and agent workflows as reproducible pipelines on Kubernetes, Vertex, SageMaker, and AzureML, without rewriting your code.",
 } as const;
 
 export const PRODUCT_ZENML_HERO = {
-  badges: ["ZenML — ML workspace", "Open source · Apache 2.0"],
-  headline: "The MLOps layer that fits ",
+  badges: ["ZenML: AI orchestration", "Open source · Apache 2.0"],
+  headline: "The AI orchestration layer that fits ",
   headlineAccent: "your stack",
   subtitleLead: "Bring your own tools.",
   subtitle:
-    "Orchestrate ML pipelines from your laptop to Kubernetes, Vertex, SageMaker, and AzureML. Reproducible artifacts, model registry, and a composable stack — without vendor lock-in.",
+    "Orchestrate any AI workflow, from training and batch inference to evals and agents, from your laptop to Kubernetes, Vertex, SageMaker, and AzureML. Reproducible artifacts, model registry, and a composable stack, without vendor lock-in.",
   installCmd: "pip install zenml",
-  primaryCta: { label: "Book a demo", href: "/book-your-demo" },
-  secondaryCta: {
-    label: "Read Docs",
-    href: "/docs",
-  },
+  // Signup-first for parity with the Kitaru landing.
+  primaryCta: ZENML_LINKS.signup,
+  secondaryCta: ZENML_LINKS.demo,
 } as const;
 
 export const PRODUCT_ZENML_BENEFITS = {
@@ -36,7 +43,7 @@ export const PRODUCT_ZENML_BENEFITS = {
     },
     {
       name: "Reproducibility, by default",
-      body: "Every artifact is versioned and tracked. Every run is queryable. Re-execute any pipeline from any step — the artifact store handles the rest.",
+      body: "Every artifact is versioned and tracked. Every run is queryable. Re-execute any pipeline from any step. The artifact store handles the rest.",
     },
     {
       name: "Composable stack, not a monolith",
@@ -46,9 +53,9 @@ export const PRODUCT_ZENML_BENEFITS = {
 } as const;
 
 export const PRODUCT_ZENML_FINAL_CTA = {
-  headline: "Ship ML pipelines, not infrastructure plumbing.",
+  headline: "Ship AI workflows, not infrastructure plumbing.",
   body: "Start with the open-source SDK, scale to managed when you need governance and a hosted control plane.",
-  primaryCta: { label: "Book a demo", href: "/book-your-demo" },
-  secondaryCta: { label: "Read Docs", href: "/docs" },
+  primaryCta: ZENML_LINKS.signup,
+  secondaryCta: ZENML_LINKS.demo,
   installCmd: "pip install zenml",
 } as const;

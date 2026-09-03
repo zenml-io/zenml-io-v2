@@ -141,7 +141,7 @@ export const COHORTS_DATA: CohortsData = {
 
   rightEyebrow: "COHORT COMPOSITION",
   rightTitle:
-    "The sessions that matter, frozen as a named set — so results keep meaning what they meant.",
+    "The sessions that matter, frozen as a named set, so results keep meaning what they meant.",
   contextChip: "checkout-flow · immutable",
 
   derivationLabel: "FROM YOUR NOTES",
