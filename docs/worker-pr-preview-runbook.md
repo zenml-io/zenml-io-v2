@@ -28,11 +28,12 @@ Draft pull requests, fork pull requests, failed CI runs, closed pull requests,
 stale heads, stale test merges, and artifacts built by an untrusted workflow
 definition fail closed before upload.
 
-GitHub's `workflow_run.pull_requests` list is not reliable enough to identify
-the source PR. The workflow instead reads the completed CI run, queries the
-open same-repository PR for that exact branch and head SHA, requires exactly
-one non-draft match, and then verifies its current test-merge commit against
-the artifact manifest.
+The workflow first identifies the source PR from the completed CI run's
+`pull_requests` association. When GitHub omits that association, automatic
+publication queries the open same-repository PR for the exact branch and head
+SHA, while reviewed manual dispatch uses its supplied PR number. Every path
+then fetches that exact PR, requires a current non-draft match, and verifies its
+test-merge commit against the artifact manifest.
 
 ## Stable aliases and concurrent PRs
 
