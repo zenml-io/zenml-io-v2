@@ -2,46 +2,82 @@
 /**
  * Compare detail dispatcher — /compare/<slug>
  *
- * Routes BOTH the MLOps (ZenML) comparisons and the Agents (Kitaru)
- * comparisons under the same URL prefix. Slug patterns don't overlap
- * (`zenml-vs-*` vs `kitaru-vs-*`), so a single getStaticPaths can emit
- * both and we branch on `kind` to the right template.
+ * Routes three collections under the same URL prefix:
  *
- * MLOps detail = src/components/compare/_layouts/MlopsCompare.astro
- *                (the 9-section ZenML template — sage green chrome)
- * Agents detail = src/components/compare/_layouts/KitaruCompare.astro
- *                (Kitaru's MDX-driven template — warm orange chrome via
- *                data-app="kitaru")
+ *   compare        → MlopsCompare.astro     (the legacy 9-section ZenML
+ *                    template, driven by structured frontmatter on
+ *                    Webflow-migrated .md)
+ *   compare-zenml  → ZenmlMdxCompare.astro  (the MDX-driven ZenML template
+ *                    — code panes, graphics, comparison tables)
+ *   compare-kitaru → KitaruCompare.astro    (the same MDX template in
+ *                    Kitaru's warm orange chrome via data-app="kitaru")
+ *
+ * `compare` and `compare-zenml` both emit `zenml-vs-*` slugs, so a slug
+ * present in both would produce duplicate static paths. Astro's error for
+ * that names the route, not the offending slug, so we assert here with a
+ * message that names it.
  */
+import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import KitaruCompare from "../../components/compare/_layouts/KitaruCompare.astro";
 import MlopsCompare from "../../components/compare/_layouts/MlopsCompare.astro";
+import ZenmlMdxCompare from "../../components/compare/_layouts/ZenmlMdxCompare.astro";
 
 export async function getStaticPaths() {
   const mlopsItems = await getCollection("compare", ({ data }) => !data.draft);
+  const zenmlItems = await getCollection(
+    "compare-zenml",
+    ({ data }) => !data.draft,
+  );
   const agentItems = await getCollection(
     "compare-kitaru",
     ({ data }) => !data.draft,
   );
 
-  // Agent detail pages need the full list of siblings for the hero dropdown.
-  const competitorOptions = agentItems
-    .slice()
-    .sort((a, b) => a.data.order - b.data.order)
-    .map((e) => ({
-      slug: e.id,
-      competitor: e.data.competitor,
-      competitorLogo: e.data.competitorLogo,
-    }));
+  const legacySlugs = new Set(mlopsItems.map((item) => item.data.slug));
+  const collision = zenmlItems.find((entry) => legacySlugs.has(entry.id));
+  if (collision) {
+    throw new Error(
+      `/compare/[slug]: "${collision.id}" is defined in both the ` +
+        `\`compare\` and \`compare-zenml\` collections. Each comparison ` +
+        `must live in exactly one collection.`,
+    );
+  }
+
+  // Detail pages in each MDX collection need the full list of siblings for
+  // the hero dropdown. The two sets stay separate: a ZenML page offers other
+  // ZenML comparisons, a Kitaru page other Kitaru ones.
+  const toOptions = (
+    entries: CollectionEntry<"compare-zenml" | "compare-kitaru">[],
+  ) =>
+    entries
+      .slice()
+      .sort((a, b) => a.data.order - b.data.order)
+      .map((e) => ({
+        slug: e.id,
+        competitor: e.data.competitor,
+        competitorLogo: e.data.competitorLogo,
+      }));
+
+  const zenmlOptions = toOptions(zenmlItems);
+  const kitaruOptions = toOptions(agentItems);
 
   return [
     ...mlopsItems.map((item) => ({
       params: { slug: item.data.slug },
       props: { kind: "mlops" as const, item },
     })),
+    ...zenmlItems.map((entry) => ({
+      params: { slug: entry.id },
+      props: {
+        kind: "zenml" as const,
+        entry,
+        competitorOptions: zenmlOptions,
+      },
+    })),
     ...agentItems.map((entry) => ({
       params: { slug: entry.id },
-      props: { kind: "agents" as const, entry, competitorOptions },
+      props: { kind: "agents" as const, entry, competitorOptions: kitaruOptions },
     })),
   ];
 }
@@ -49,9 +85,18 @@ export async function getStaticPaths() {
 const props = Astro.props;
 ---
 
+{/* Branching per kind rather than picking one component from a ternary: the
+    two MDX layouts take structurally identical props, but their `entry` types
+    are tied to different collections, so a shared variable intersects them to
+    `never`. The branch lets each arm narrow. */}
 {
   props.kind === "agents" ? (
     <KitaruCompare
+      entry={props.entry}
+      competitorOptions={props.competitorOptions}
+    />
+  ) : props.kind === "zenml" ? (
+    <ZenmlMdxCompare
       entry={props.entry}
       competitorOptions={props.competitorOptions}
     />

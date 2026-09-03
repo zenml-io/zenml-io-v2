@@ -10,9 +10,12 @@ import { absoluteUrl } from "../lib/seo";
 export const prerender = true;
 
 export async function GET(): Promise<Response> {
-  const [mlopsItems, agentItems] = await Promise.all([
+  const [mlopsItems, zenmlMdxItems, agentItems] = await Promise.all([
     getCollection("compare", ({ data }) => !data.draft).then((items) =>
       items.sort((a, b) => a.data.title.localeCompare(b.data.title)),
+    ),
+    getCollection("compare-zenml", ({ data }) => !data.draft).then((items) =>
+      items.sort((a, b) => a.data.order - b.data.order),
     ),
     getCollection("compare-kitaru", ({ data }) => !data.draft).then((items) =>
       items.sort((a, b) => a.data.order - b.data.order),
@@ -42,6 +45,18 @@ export async function GET(): Promise<Response> {
             item.data.heroText ??
             "ZenML comparison page.",
           absoluteUrl(`/compare/${item.data.slug}`),
+        ]),
+      ),
+    ),
+    joinMarkdownSections(
+      "## AI orchestration comparisons: ZenML vs. durable execution engines and agent frameworks",
+      markdownTable(
+        ["Comparison", "Competitor", "Short description", "URL"],
+        zenmlMdxItems.map((item) => [
+          item.data.shortTitle ?? item.data.title,
+          item.data.competitor,
+          item.data.cardSubtitle,
+          absoluteUrl(`/compare/${item.id}`),
         ]),
       ),
     ),
