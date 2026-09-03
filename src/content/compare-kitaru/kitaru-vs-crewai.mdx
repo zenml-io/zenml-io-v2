@@ -144,7 +144,7 @@ Kitaru is a **replay-based eval layer**: it records every run as a session, and 
 #
 #   kitaru cohort create hard-crews --agent crew \\
 #     --tag imported-baseline --display-version week-32
-#   kitaru session evaluate --cohort hard-crews \\
+#   kitaru session evaluate --cohort hard-crews@latest \\
 #     --evaluator brief-quality@latest --evaluator kitaru/cost@latest --wait
 #
 # Replay with a model override needs an adapter in the

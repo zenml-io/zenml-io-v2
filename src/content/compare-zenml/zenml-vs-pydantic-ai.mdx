@@ -20,7 +20,7 @@ import WhatZenMLAddsOnTop from '../../components/compare/zenml/graphics/pydantic
 
 Pydantic AI brings the Pydantic team's approach to agents: typed dependencies, validated structured outputs, and a model-agnostic API that still reads like Python. If you want an agent whose output you can trust to match a schema, it's a very good choice.
 
-ZenML isn't a competing harness. It's the orchestration layer around the agent: your `Agent` runs unchanged inside a `@step`, and ZenML supplies the pipeline, the versioned artifacts, the cache, a `wait()` that pauses the run for a human, a sandbox for the code the agent's tools execute, and the stack that puts it on Kubernetes, Vertex AI, SageMaker, AzureML, Airflow, Databricks and more.
+ZenML isn't a competing harness. It's the orchestration layer around the agent: your `Agent` runs unchanged inside a `@step`, and ZenML supplies the pipeline, the versioned artifacts, the cache, a `wait()` that pauses the run for a human, a sandbox for the code the agent's tools execute, and the stack that puts it on Kubernetes, Vertex AI, SageMaker, AzureML and more.
 
 They compose cleanly because both are ordinary Python. Pydantic AI validates what comes out of the model. ZenML stores what comes out of the step, remembers which run produced it, and decides what happens next.
 
@@ -69,10 +69,10 @@ They compose cleanly because both are ordinary Python. Pydantic AI validates wha
   The agent code doesn't change. What changes is what exists around it once it's run.
 
   <Fragment slot="bullets">
-    - **`@pipeline`:** Wraps the agent in a run with a status, a history, and steps you can inspect in the dashboard. With `dynamic=True`, loops and branches in the pipeline body decide at run time which steps exist, and `.map()` fans an agent step out over a list.
+    - **`@pipeline`:** Wraps the agent in a run with a status, a history, and steps you can inspect in the dashboard. With `dynamic=True`, loops and branches in the pipeline body decide at run time which steps exist, and `.map()` fans an agent step out over a list another step returned.
     - **Versioned artifacts:** Return `Annotated[Brief, "brief"]` and the validated Pydantic model is stored, versioned, and loadable by name across runs. The type survives the round trip.
-    - **`enable_cache`:** The cache is keyed on the step, its parameters and its inputs. Unchanged steps are served from cache on every run, so tuning the step after the agent doesn't re-invoke the agent, and `zenml pipeline runs retry` after a failure re-runs only what didn't complete.
-    - **`wait()`:** In a dynamic pipeline, pauses the run until a human resolves it from the dashboard, the API, or the CLI. The orchestration process can be torn down while it waits, and `zenml pipeline runs resume` picks the run up again.
+    - **`enable_cache`:** The cache is keyed on the step, its parameters and its inputs. Unchanged steps are served from cache on every run, so tuning the step after the agent doesn't re-invoke the agent, and `zenml pipeline runs retry` after a failed dynamic pipeline run re-runs only what didn't complete.
+    - **`wait()`:** In a dynamic pipeline, pauses the run until a human resolves it from the dashboard, the API, or the CLI. The orchestration process can be torn down while it waits, and `zenml pipeline runs resume` picks the run up again, or ZenML Pro resumes it automatically.
     - **Sandboxes:** A stack component (local, Docker, Kubernetes, Modal) whose sessions the agent's tools call `exec()` on. The `sandbox_pydantic_ai` example in the ZenML repo does exactly this: a Pydantic AI agent with `run_python` and `run_shell` tools backed by one session per subagent.
     - **`zenml stack set`:** The same pipeline runs on Kubernetes, Vertex AI, SageMaker, or AzureML with no code change, and artifacts land in your own bucket. Self-host the server with Helm, or use ZenML Pro for the managed control plane.
   </Fragment>
@@ -96,7 +96,7 @@ Neither one lets you take a recorded run and re-run it against a prompt or model
     { feature: "Versioned artifacts and lineage across runs", zenml: true, competitor: false, note: "Step outputs are stored and loadable by name, including validated Pydantic models." },
     { feature: "Caching that skips unchanged steps on a re-run", zenml: true, competitor: false, note: "Keyed on the step, its parameters and its inputs; an agent re-run starts fresh." },
     { feature: "Pause the run for human approval, resume later", zenml: true, competitor: "partial", note: "`wait()` in a dynamic pipeline pauses the whole run. Pydantic AI can defer a tool call for approval, but you own the storage and the process between turns." },
-    { feature: "Isolated code execution for tool loops", zenml: true, competitor: "partial", note: "ZenML's sandbox is a stack component with local, Docker, Kubernetes and Modal flavors. Pydantic's MCP Run Python server sandboxes Python in Pyodide." },
+    { feature: "Isolated code execution for tool loops", zenml: true, competitor: "partial", note: "ZenML's sandbox is a stack component with local, Docker, Kubernetes and Modal flavors. Pydantic's Code Mode (in pydantic-ai-harness) runs the model's tool-calling code inside the Monty sandbox, a Python subset interpreter." },
     { feature: "One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML and more", zenml: true, competitor: false, note: "Configure once, every pipeline uses it." },
     { feature: "Serve it and get lineage per request", zenml: true, competitor: false, note: "`zenml pipeline deploy` makes every request a tracked run." },
     { feature: "Works with any agent framework, not just one", zenml: true, competitor: false, note: "A step is ordinary Python." },
@@ -116,9 +116,9 @@ Neither one lets you take a recorded run and re-run it against a prompt or model
 | Control flow | The agent loop | The pipeline graph, or Python control flow with `dynamic=True` |
 | Typing | Validated structured output | `Annotated[T, "name"]` on the artifact |
 | Human approval | Deferred tool calls, your own persistence | `wait()` in a dynamic pipeline, resolved from CLI, dashboard or API |
-| Code execution | MCP Run Python | Sandbox stack component (local, Docker, Kubernetes, Modal) |
+| Code execution | Code Mode in the Monty sandbox | Sandbox stack component (local, Docker, Kubernetes, Modal) |
 | Outputs | `AgentRunResult` in memory | Versioned artifacts in your bucket |
-| Avoiding repeat work | Not applicable | `enable_cache` across runs, `zenml pipeline runs retry` after a failure |
+| Avoiding repeat work | Not applicable | `enable_cache` across runs, `zenml pipeline runs retry` after a failed dynamic run |
 | Observability | Logfire traces inside the run | Runs, steps, and artifacts around it |
 | Where it runs | Your process | Stack orchestrator (`zenml stack set`) |
 | Serving | Your own wrapper | `zenml pipeline deploy --name ...` |

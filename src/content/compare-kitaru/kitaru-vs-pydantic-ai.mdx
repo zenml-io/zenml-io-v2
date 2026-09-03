@@ -89,7 +89,7 @@ result = reviewer.run_sync(case)`}
     - **Replay.** A session re-executes against your real code, with tool calls answered from the recording. Unchanged, it reproduces the original, the faithful baseline that makes a diff trustworthy. Then fork it: a different model, a new prompt, your working tree registered as a new agent version.
     - **Cohorts.** The sessions you care about, frozen as a named, immutable version, so a run&rsquo;s result keeps meaning what it meant.
     - **Experiments.** The change as configuration: override, tool policy, evaluators. Runs over the same cohort version, evaluated on both sides.
-    - **Evaluators.** Deterministic checks first: a structured write diffs against production field by field. Keep a model-graded check only for the residue.
+    - **Evaluators.** Deterministic checks first: plain Python over the recorded nodes, versioned like the agent. Keep a model-graded check only for the residue.
     - **Self-hosted, Apache 2.0.** One FastAPI + Postgres server. Replays and evaluations execute on workers in your environment, so traces and credentials don&rsquo;t leave your systems.
   </Fragment>
 </FeatureWithGraphic>

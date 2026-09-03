@@ -20,7 +20,7 @@ import SelfHostVsPackaged from '../../components/compare/zenml/graphics/langgrap
 import SandboxSecurity from '../../components/compare/zenml/graphics/langgraph/SandboxSecurity.astro';
 import VersionedDeployments from '../../components/compare/zenml/graphics/langgraph/VersionedDeployments.astro';
 
-LangGraph models an agent as a graph: nodes, edges, and state that persists across steps, with checkpointers for durability and Deep Agents layering planning and sub-agents on top. Behind it sits a packaged path to production through LangGraph Platform and LangSmith, which handle deployment, persistence, and observability for you.
+LangGraph models an agent as a graph: nodes, edges, and state that persists across steps, with checkpointers for durability and Deep Agents layering planning and sub-agents on top. Behind it sits a packaged path to production through LangSmith Deployment (formerly LangGraph Platform) and LangSmith tracing, which handle deployment, persistence, and observability for you.
 
 That packaging is the real decision. Adopting the graph is one commitment. Adopting the platform underneath it is a much bigger one, and they arrive together. ZenML sells the second half separately: keep the graph, run it as a step inside a pipeline on your own infrastructure, with artifacts in your own bucket and run metadata in a server you can self-host.
 
@@ -44,7 +44,7 @@ Weighing LangGraph purely as a way to build agents? The [ZenML vs LangGraph](/co
       "Modelling the agent as an explicit graph with branching, loops, and persisted state",
       "Wanting checkpointers, interrupts, and time-travel over graph state as first-class features",
       "Building planning and sub-agent patterns where Deep Agents does the heavy lifting",
-      "Happy to adopt LangGraph Platform and LangSmith for deployment and observability",
+      "Happy to adopt LangSmith Deployment and LangSmith tracing for deployment and observability",
     ],
   }}
 />
@@ -60,7 +60,7 @@ Weighing LangGraph purely as a way to build agents? The [ZenML vs LangGraph](/co
 
   <Fragment slot="bullets">
     - **ZenML:** A server you deploy (Helm chart or ZenML Pro), an artifact store that is your own S3, GCS, or Azure Blob bucket, and an orchestrator that is your existing Kubernetes, Vertex AI, SageMaker, or AzureML.
-    - **LangGraph Platform:** Deployment, persistence, and scaling as a managed product, with self-hosted tiers available on the paid plans.
+    - **LangSmith Deployment:** Deployment, persistence, and scaling as a managed product, with hybrid and self-hosted options on the Enterprise plan.
     - **The trade:** The packaged path is faster to production and has graph-aware features ZenML has no equivalent for. The self-hosted path keeps prompts, retrieved documents, and model outputs in your own account.
   </Fragment>
 </FeatureWithGraphic>
@@ -94,8 +94,8 @@ Weighing LangGraph purely as a way to build agents? The [ZenML vs LangGraph](/co
 The graph loops, pauses, and rewinds inside the agent. ZenML does the equivalent around the agent, at step granularity.
 
 - **Loops and branches:** A `@pipeline(dynamic=True)` builds its graph at run time from ordinary Python: `for` loops over an artifact's contents, `if` branches on a step's result, and fan-out with `.map()`. Each iteration is a real step with its own artifacts.
-- **Waiting for a human:** `wait(schema=bool, question="Approve?")` in a dynamic pipeline pauses the run until someone resolves it from the dashboard, the CLI, or the API. Once the wait's timeout elapses and nothing else is in flight, the run is marked `PAUSED` so the orchestration process can be torn down, and `zenml pipeline runs resume` continues it. Both `on_pause` and `on_resume` hooks are available.
-- **Recovery:** Steps retry with `StepRetryConfig`, and a failed run is retried with `zenml pipeline runs retry`, serving the completed steps from cache. ZenML doesn't resume a step mid-body, and it doesn't rewind a run to an earlier state the way a checkpointer rewinds a graph.
+- **Waiting for a human:** `wait(schema=bool, question="Approve?")` in a dynamic pipeline pauses the run until someone resolves it from the dashboard, the CLI, or the API. Once the wait's timeout elapses and nothing else is in flight, the run is marked `PAUSED` so the orchestration process can be torn down, and `zenml pipeline runs resume` continues it, or ZenML Pro resumes it automatically. Both `on_pause` and `on_resume` hooks are available.
+- **Recovery:** Steps retry with `StepRetryConfig`, and a failed dynamic pipeline run is retried with `zenml pipeline runs retry`, reusing the completed steps. ZenML doesn't resume a step mid-body, and it doesn't rewind a run to an earlier state the way a checkpointer rewinds a graph.
 
 ## The gap, named
 
@@ -104,7 +104,7 @@ LangGraph has a set of features ZenML doesn't attempt, and pretending otherwise 
 - **Graph semantics inside the agent.** Nodes, conditional edges, and cycles over a shared state object are LangGraph's model. A ZenML dynamic pipeline gives you loops and branches between steps, but it doesn't model the agent's own reasoning loop, and it doesn't try to.
 - **Checkpointers and time travel over graph state.** A checkpointer lets a graph pause mid-node, be inspected, resumed, and rewound to an earlier state. ZenML's `wait()` pauses between steps and its retry resumes from the last completed step. That's coarser, and step caching isn't a checkpointer.
 - **Deep Agents patterns.** Planning, sub-agents, and file-system tooling are harness concerns. ZenML orchestrates whatever you build; it doesn't help you build it.
-- **The packaged path.** LangGraph Platform gives you deployment, persistence, and observability as one product. ZenML gives you the pieces and your own cloud.
+- **The packaged path.** LangSmith Deployment gives you deployment, persistence, and observability as one product. ZenML gives you the pieces and your own cloud.
 
 What ZenML gives you in exchange is narrower: artifacts you own, caching across runs, approvals that outlive the process, sandboxes for generated code, and one orchestration layer that works the same whether the team picked LangGraph, CrewAI, Pydantic AI, or the OpenAI SDK.
 
@@ -115,18 +115,18 @@ To replay a LangGraph or Deep Agents agent against a prompt or model change, see
 <ComparisonTable
   competitorLabel="LangGraph & Deep Agents"
   rows={[
-    { feature: "Artifacts and run data stay in your own infrastructure", zenml: true, competitor: "partial", note: "ZenML writes to your bucket by default. LangGraph Platform self-hosting is a paid tier." },
+    { feature: "Artifacts and run data stay in your own infrastructure", zenml: true, competitor: "partial", note: "ZenML writes to your bucket by default. LangSmith Deployment self-hosting is an Enterprise-plan option." },
     { feature: "Versioned artifacts and lineage across runs", zenml: true, competitor: false, note: "Step outputs are stored and loadable by name; checkpointers persist graph state, not artifacts." },
     { feature: "Caching that skips unchanged steps on a re-run", zenml: true, competitor: false, note: "Keyed on the step, its parameters, and its inputs." },
     { feature: "Loops and branches decided at run time", zenml: true, competitor: true, note: "ZenML: dynamic pipelines, between steps. LangGraph: edges and cycles, inside the graph." },
     { feature: "Pause for a human and resume later", zenml: true, competitor: true, note: "ZenML: `wait()` between steps. LangGraph: interrupts inside a node, backed by a checkpointer." },
-    { feature: "Isolated environment for generated code", zenml: true, competitor: "partial", note: "ZenML: the sandbox stack component. LangGraph: sandboxes are part of the Platform." },
+    { feature: "Isolated environment for generated code", zenml: true, competitor: "partial", note: "ZenML: the sandbox stack component. LangGraph: LangSmith Sandboxes, part of the LangSmith platform." },
     { feature: "One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML", zenml: true, competitor: false, note: "Configure once, every pipeline uses it." },
     { feature: "Works with any agent framework, not just one", zenml: true, competitor: false, note: "A step is ordinary Python; LangGraph is the harness itself." },
     { feature: "Graph semantics inside the agent: conditional edges, cycles over state", zenml: false, competitor: true, note: "ZenML loops between steps, not inside the agent's reasoning." },
     { feature: "Time travel and mid-node resume over graph state", zenml: false, competitor: true, note: "Checkpointers are LangGraph's. ZenML retries at step granularity." },
     { feature: "Planning and sub-agent patterns (Deep Agents)", zenml: false, competitor: true, note: "Harness concerns. ZenML doesn't define agents, it runs them." },
-    { feature: "Open source, self-hostable", zenml: true, competitor: "partial", note: "LangGraph is open source; the Platform's self-hosting sits on paid tiers." },
+    { feature: "Open source, self-hostable", zenml: true, competitor: "partial", note: "LangGraph is open source; LangSmith Deployment self-hosting sits on the Enterprise plan." },
   ]}
 />
 
@@ -139,10 +139,10 @@ To replay a LangGraph or Deep Agents agent against a prompt or model change, see
 | Control flow | Edges, conditional edges, cycles | Python control flow in `@pipeline(dynamic=True)` |
 | State | Persisted graph state via checkpointers | Versioned artifacts in your bucket |
 | Pause and resume | Interrupts, time travel | `wait()` and `zenml pipeline runs resume` |
-| Isolation | Platform sandboxes | `sandbox` stack component |
+| Isolation | LangSmith Sandboxes | `sandbox` stack component |
 | Avoiding repeat work | Checkpointer resume | `enable_cache` across runs |
-| Where it runs | Your process, or LangGraph Platform | Stack orchestrator (`zenml stack set`) |
-| Serving | LangGraph Platform | `zenml pipeline deploy --name ...` |
+| Where it runs | Your process, or LangSmith Deployment | Stack orchestrator (`zenml stack set`) |
+| Serving | LangSmith Deployment | `zenml pipeline deploy --name ...` |
 
 <CodeCompare
   zenmlLabel="ZenML (wrapping the graph)"
@@ -210,8 +210,8 @@ result = graph.invoke(
 )
 
 # Cycles, interrupts and time travel over state are all here.
-# Getting to production usually means LangGraph Platform and
-# LangSmith, which is a larger adoption than the graph itself.`}
+# Getting to production usually means LangSmith Deployment and
+# tracing, which is a larger adoption than the graph itself.`}
 />
 
 <ComparisonCta headline={frontmatter.ctaHeading}>

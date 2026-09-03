@@ -19,7 +19,7 @@ import ArtifactLineage from '../../components/compare/zenml/graphics/openai-agen
 
 The OpenAI Agents SDK is a deliberately small framework: agents with instructions and tools, handoffs between them, guardrails on inputs and outputs, and sessions that carry conversation history. It stays out of your way, and for building the agent itself that restraint is the point.
 
-That restraint is also why teams reach for something else once the agent stops being a script. The SDK runs your agent. It doesn't decide where the run is recorded, what happened to the output, who approved it, or how you avoid paying for the same work twice. ZenML is the orchestration layer that does: your `Runner.run()` goes inside a `@step`, and the pipeline around it gives you a run record, versioned artifacts in your own bucket, a cache keyed on the step, its parameters and its inputs, a `wait()` that pauses the run for a human, a sandbox for the code the agent's tools execute, and a stack that targets Kubernetes, Vertex AI, SageMaker, AzureML, Airflow, Databricks and more.
+That restraint is also why teams reach for something else once the agent stops being a script. The SDK runs your agent. It doesn't decide where the run is recorded, what happened to the output, who approved it, or how you avoid paying for the same work twice. ZenML is the orchestration layer that does: your `Runner.run()` goes inside a `@step`, and the pipeline around it gives you a run record, versioned artifacts in your own bucket, a cache keyed on the step, its parameters and its inputs, a `wait()` that pauses the run for a human, a sandbox for the code the agent's tools execute, and a stack that targets Kubernetes, Vertex AI, SageMaker, AzureML and more.
 
 <WhenToUseEach
   competitorLabel="OpenAI Agents SDK"
@@ -55,7 +55,7 @@ That restraint is also why teams reach for something else once the agent stops b
 
   <Fragment slot="bullets">
     - **Cache key:** ZenML keys the cache on the step, its parameters and its inputs, plus its output definitions and the artifact store. If nothing changed, you get the stored artifact back and the body never executes. That's every run, not only after a failure.
-    - **After a failure:** `zenml pipeline runs retry <run>` re-runs a failed run and the steps that completed come from cache, so the retry doesn't re-pay for the work above the failure. ZenML retries at step granularity. It won't resume a step part-way through its body.
+    - **After a failure:** `zenml pipeline runs retry <run>` re-runs a failed dynamic pipeline run and the steps that completed are reused rather than re-executed, so the retry doesn't re-pay for the work above the failure. ZenML retries at step granularity. It won't resume a step part-way through its body.
     - **The agent step:** Mark it `@step(enable_cache=False)` when it must execute every time, and keep the cache on the deterministic steps around it. Add `retry=StepRetryConfig(...)` for the flaky ones.
   </Fragment>
 </FeatureWithGraphic>
@@ -87,7 +87,7 @@ def agent_pipeline(topic: str):
         publish(draft)
 ```
 
-The run polls for the answer for up to `timeout` seconds. Nobody answered? The run is marked paused and the orchestration process can be torn down instead of sitting open for days. Someone resolves the condition from the dashboard, the API, or `zenml pipeline runs wait-conditions resolve --run <id> --interactive`, and `zenml pipeline runs resume <run>` continues from that point with the draft still in the artifact store. The `schema` can be a Pydantic model, so the approver can hand back edits, not just a yes. `on_pause` and `on_resume` hooks on the pipeline are where the Slack message goes.
+The run polls for the answer for `timeout` seconds (600 by default). Nobody answered? The run is marked paused and the orchestration process can be torn down instead of sitting open for days. Someone resolves the condition from the dashboard, the API, or `zenml pipeline runs wait-conditions resolve --run <id> --interactive`, and `zenml pipeline runs resume <run>` (or ZenML Pro, automatically) continues from that point with the draft still in the artifact store. The `schema` can be a Pydantic model, so the approver can hand back edits, not just a yes. `on_pause` and `on_resume` hooks on the pipeline are where the Slack message goes.
 
 `wait()` only works in the pipeline body of a dynamic pipeline, not inside a step. The SDK's own interruption for tool approval lives inside the run and hands you the state to persist yourself. Different scopes, and they compose.
 
@@ -101,7 +101,7 @@ What ZenML doesn't do is trace the model and tool calls inside `Runner.run()`. W
     { feature: "Versioned artifacts and lineage across runs", zenml: true, competitor: false, note: "Step outputs are stored and loadable by name; the SDK traces a run." },
     { feature: "Caching that skips unchanged steps on a re-run", zenml: true, competitor: false, note: "Keyed on the step, its parameters and its inputs." },
     { feature: "Pause the run for human approval, resume later", zenml: true, competitor: "partial", note: "`wait()` in a dynamic pipeline pauses the whole run. The SDK can interrupt a run for tool approval, but you own the storage and the process between turns." },
-    { feature: "Isolated code execution for tool loops", zenml: true, competitor: "partial", note: "ZenML's sandbox is a stack component with local, Docker, Kubernetes and Modal flavors. The SDK's hosted code interpreter tool runs on OpenAI's side." },
+    { feature: "Isolated code execution for tool loops", zenml: true, competitor: "partial", note: "ZenML's sandbox is a stack component with local, Docker, Kubernetes and Modal flavors. The SDK's hosted code interpreter runs on OpenAI's side, and its beta sandbox agents give an agent a container of its own." },
     { feature: "One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML and more", zenml: true, competitor: false, note: "Configure once, every pipeline uses it." },
     { feature: "Serve it and get lineage per request", zenml: true, competitor: false, note: "`zenml pipeline deploy` makes every request a tracked run." },
     { feature: "Works with any agent framework, not just one", zenml: true, competitor: false, note: "A step is ordinary Python." },
@@ -121,9 +121,9 @@ What ZenML doesn't do is trace the model and tool calls inside `Runner.run()`. W
 | Control flow | Handoffs between agents | The pipeline graph, or Python control flow with `dynamic=True` |
 | Validation | Input and output guardrails | Artifact types on the step signature |
 | Human approval | Tool approval inside the run, your own persistence | `wait()` in a dynamic pipeline, resolved from CLI, dashboard or API |
-| Code execution | Hosted code interpreter tool | Sandbox stack component (local, Docker, Kubernetes, Modal) |
+| Code execution | Hosted code interpreter, sandbox agents (beta) | Sandbox stack component (local, Docker, Kubernetes, Modal) |
 | Outputs | `RunResult` in memory | Versioned artifacts in your bucket |
-| Avoiding repeat work | Not applicable | `enable_cache` across runs, `zenml pipeline runs retry` after a failure |
+| Avoiding repeat work | Not applicable | `enable_cache` across runs, `zenml pipeline runs retry` after a failed dynamic run |
 | Observability | Traces of a single run | Runs, steps, and artifacts across runs |
 | Where it runs | Your process | Stack orchestrator (`zenml stack set`) |
 | Serving | Your own wrapper | `zenml pipeline deploy --name ...` |

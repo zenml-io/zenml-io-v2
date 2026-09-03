@@ -170,7 +170,7 @@ runner = KitaruGraphRunner(builder.compile(), agent_id=AGENT_ID)
 result = runner.invoke({"request": "Reset my password"})
 
 # Later: freeze the sessions that matter, test a change.
-# (Model overrides need the create_agent or Deep Agents path.)
+# (Model overrides and tool substitution need the create_agent or Deep Agents path.)
 #   kitaru cohort create hard-cases --agent support --tag needs-review
 #   kitaru experiment create cheaper-model --agent support \\
 #     --evaluator resolved-check@latest \\

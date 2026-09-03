@@ -41,25 +41,25 @@
   <div class="row row--zenml">
     <div class="row-head">
       <span class="tag tag--accent">ZenML · @step</span>
-      <span class="row-sub">Retry reuses cached outputs above the failure</span>
+      <span class="row-sub">Retry reuses the completed steps above the failure</span>
     </div>
     <div class="timeline">
       <div class="step step--cached">
         <span class="step-key">step 1</span>
         <span class="step-val">research()</span>
-        <span class="step-cost step-cost--cached">cached</span>
+        <span class="step-cost step-cost--cached">reused</span>
       </div>
       <span class="conn conn--accent">→</span>
       <div class="step step--cached">
         <span class="step-key">step 2</span>
         <span class="step-val">plan()</span>
-        <span class="step-cost step-cost--cached">cached</span>
+        <span class="step-cost step-cost--cached">reused</span>
       </div>
       <span class="conn conn--accent">→</span>
       <div class="step step--cached">
         <span class="step-key">step 3</span>
         <span class="step-val">draft()</span>
-        <span class="step-cost step-cost--cached">cached</span>
+        <span class="step-cost step-cost--cached">reused</span>
       </div>
       <span class="conn conn--accent">→</span>
       <div class="step step--replay">

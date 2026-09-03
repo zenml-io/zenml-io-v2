@@ -2,7 +2,7 @@
 competitor: "Temporal"
 competitorLogo: "/compare/temporal.svg"
 title: "ZenML vs Temporal: AI orchestration or general durable execution"
-description: "Temporal makes any execution durable, in seven languages. ZenML is open-source AI orchestration for Python: dynamic pipelines, wait() approvals, retries, sandboxes, versioned artifacts, and one stack for your clouds."
+description: "Temporal makes any execution durable, in eight languages. ZenML is open-source AI orchestration for Python: dynamic pipelines, wait() approvals, retries, sandboxes, versioned artifacts, and one stack for your clouds."
 cardSubtitle: "Pipelines and agents with durable waits, versioned artifacts and step caching. No Temporal underneath."
 ctaHeading: "One orchestrator for pipelines and agents"
 order: 20
@@ -19,7 +19,7 @@ import WaitResume from '../../components/compare/zenml/graphics/WaitResume.astro
 import StepCaching from '../../components/compare/zenml/graphics/temporal/StepCaching.astro';
 import ArtifactLineage from '../../components/compare/zenml/graphics/temporal/ArtifactLineage.astro';
 
-Temporal is a general-purpose durable execution platform with seven official SDKs (Go, Java, Python, TypeScript, Ruby, PHP, and .NET). It has been in production for a decade and has the battle scars to show for it. If your problem is keeping a long-running process alive across crashes, retries, and hours-long waits, especially across more than one language, that's what Temporal is for, and it's good at it.
+Temporal is a general-purpose durable execution platform with eight official SDKs (Go, Java, Python, TypeScript, Ruby, PHP, .NET, and Rust). Its lineage runs back a decade to Cadence at Uber, and it has the battle scars to show for it. If your problem is keeping a long-running process alive across crashes, retries, and hours-long waits, especially across more than one language, that's what Temporal is for, and it's good at it.
 
 ZenML is the orchestrator for pipelines and agents in Python: training runs, batch inference, evaluation pipelines, tool-use loops, all written as steps. A dynamic pipeline builds its graph at run time from plain Python. `wait()` pauses a run for a human and picks it back up later. Steps retry, a failed run retries without redoing the steps that finished, and every step output lands as a versioned artifact in your own store. Swap the stack and the same pipeline runs on Kubernetes, Vertex AI, SageMaker, AzureML and more.
 
@@ -42,7 +42,7 @@ Here's the difference: Temporal keeps any execution alive. ZenML keeps an AI run
       "Running a polyglot fleet where Go, Java, and TypeScript services need one durability contract",
       "Running general workflows (billing, provisioning, ETL, saga patterns), not AI workloads",
       "Depending on mid-step journal resume, per-signal event handling, or timers that fire inside a single long function",
-      "Leaning on task queues, rate limits, namespacing, and a service tier with a decade of production behind it",
+      "Leaning on task queues, rate limits, namespacing, and a service tier with years of production behind it",
     ],
   }}
 />
@@ -87,8 +87,8 @@ Here's the difference: Temporal keeps any execution alive. ZenML keeps an AI run
 
   <Fragment slot="bullets">
     - **Cache key:** ZenML keys the cache on the step, its parameters, and its inputs. Nothing changed? The stored artifact comes back and the step body never runs. Switch it per step or per pipeline with `@step(enable_cache=True)` and `@pipeline(enable_cache=False)`.
-    - **Failure handling:** `StepRetryConfig(max_retries=3, delay=10, backoff=2)` retries a step. Execution modes decide whether the rest of the run fails fast, stops, or keeps going. `zenml pipeline runs retry` restarts a failed run and reuses the steps that finished. ZenML retries the step; Temporal resumes mid-function from the journal.
-    - **Sandboxes:** An agent that runs generated code gets a `sandbox` stack component with local, Docker, Kubernetes, and Modal flavors: `Client().active_stack.sandbox.create_session()`, then `session.exec([...])`, with snapshot and restore. Temporal leaves isolation up to your Activity.
+    - **Failure handling:** `StepRetryConfig(max_retries=3, delay=10, backoff=2)` retries a step. Execution modes decide whether the rest of the run fails fast, stops, or keeps going. `zenml pipeline runs retry` restarts a failed dynamic run, and completed steps are reused rather than re-executed. ZenML retries the step; Temporal resumes mid-function from the journal.
+    - **Sandboxes:** An agent that runs generated code gets a `sandbox` stack component with local, Docker, Kubernetes, and Modal flavors: `Client().active_stack.sandbox.create_session()`, then `session.exec([...])`, with snapshot and restore on the Docker and Modal flavors. Temporal leaves isolation up to your Activity.
   </Fragment>
 </FeatureWithGraphic>
 
@@ -117,7 +117,7 @@ Here's the difference: Temporal keeps any execution alive. ZenML keeps an AI run
     { feature: "Isolated sandboxes for agent tool loops", zenml: true, competitor: false, note: "ZenML sandbox stack component (local, Docker, Kubernetes, Modal). Temporal leaves isolation to the Activity." },
     { feature: "Serve as an HTTP service with a tracked run per request", zenml: true, competitor: "partial", note: "zenml pipeline deploy. Temporal workflows are started from your own service." },
     { feature: "One stack abstraction for your clouds", zenml: true, competitor: false, note: "Configure once, every pipeline uses it. Temporal Workers are deployed per environment." },
-    { feature: "Polyglot SDKs (Go, Java, TypeScript, Ruby, PHP, .NET)", zenml: false, competitor: true, note: "ZenML is Python only." },
+    { feature: "Polyglot SDKs (Go, Java, TypeScript, Ruby, PHP, .NET, Rust)", zenml: false, competitor: true, note: "ZenML is Python only." },
     { feature: "Task queues, rate limits, and concurrency keys", zenml: false, competitor: true, note: "ZenML leaves queueing to the orchestrator." },
     { feature: "Native cron scheduling and namespacing", zenml: "partial", competitor: true, note: "ZenML hands scheduling to the orchestrator; works on Kubernetes, Vertex AI, SageMaker, Airflow and others, not on local." },
     { feature: "Open source, self-hostable", zenml: true, competitor: true },
@@ -135,7 +135,7 @@ Here's the difference: Temporal keeps any execution alive. ZenML keeps an AI run
 | Pause / resume | `wait_condition` + signal | `wait(schema, question)` in a dynamic pipeline; `zenml pipeline runs resume` |
 | Where it runs | Workers you deploy per environment | Stack orchestrator (`zenml stack set`) |
 | Outputs | Thread through Activity returns | Versioned artifacts on the run, loadable by name |
-| Retries | Activity retry policy | `StepRetryConfig(max_retries=..., delay=..., backoff=...)` and `zenml pipeline runs retry` |
+| Retries | Activity retry policy | `StepRetryConfig(max_retries=..., delay=..., backoff=...)` and `zenml pipeline runs retry` for a failed dynamic run |
 | Serving | Start workflows from your own service | `zenml pipeline deploy`, one tracked run per request |
 
 <CodeCompare

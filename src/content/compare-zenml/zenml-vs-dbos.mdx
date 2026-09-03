@@ -19,7 +19,7 @@ import WaitResume from '../../components/compare/zenml/graphics/WaitResume.astro
 import ArtifactVersioning from '../../components/compare/zenml/graphics/dbos/ArtifactVersioning.astro';
 import NamedDeployments from '../../components/compare/zenml/graphics/dbos/NamedDeployments.astro';
 
-DBOS is a library, not a platform. You decorate ordinary Python or TypeScript functions, it checkpoints workflow state into Postgres, and a crashed process picks up where it left off. There's no orchestrator to run: the durability lives in a library and a database you already operate. For transactional app workflows, that's about as light as it gets.
+DBOS is a library, not a platform. You decorate ordinary Python, TypeScript, Go, or Java functions, it checkpoints workflow state into Postgres, and a crashed process picks up where it left off. There's no orchestrator to run: the durability lives in a library and a database you already operate. For transactional app workflows, that's about as light as it gets.
 
 ZenML is the orchestrator for pipelines and agents in Python. A dynamic pipeline builds its graph at run time from plain Python. `wait()` pauses a run for a human and picks it back up later. Steps retry, a failed run retries without redoing the steps that finished, tool loops get an isolated sandbox, and every step output lands as a versioned artifact in your own store. Swap the stack and the same pipeline runs on Kubernetes, Vertex AI, SageMaker, AzureML and more.
 
@@ -41,7 +41,7 @@ DBOS remembers where a workflow got to. ZenML remembers that too, step by step, 
     items: [
       "Adding crash recovery to transactional app workflows, and you already run Postgres",
       "Wanting durability as a library inside the service you already have, with nothing new to operate",
-      "Writing in TypeScript as well as Python, under one durability contract",
+      "Writing in TypeScript, Go, or Java as well as Python, under one durability contract",
       "Depending on queues, rate limits, exactly-once messaging, and resume from inside a single function",
     ],
   }}
@@ -76,7 +76,7 @@ DBOS remembers where a workflow got to. ZenML remembers that too, step by step, 
   <Fragment slot="bullets">
     - **Dynamic pipelines:** `@pipeline(dynamic=True)` builds the graph at run time from plain Python. Loop over agent tasks, branch on a result, fan out with `.map()`. `wait()` lives here and only here: not inside a step body, not in a static pipeline.
     - **What happens while it waits:** `wait(schema=bool, question=...)` polls until its timeout, then marks the run `PAUSED` so the orchestration process can go away. Answer it from the dashboard, the API, or `zenml pipeline runs wait-conditions resolve`, then `zenml pipeline runs resume` carries on without re-running the steps that finished. `on_pause` and `on_resume` hooks fire on the way.
-    - **Failure handling:** `StepRetryConfig(max_retries=3, delay=10, backoff=2)` retries a step, execution modes decide whether the run fails fast, stops, or keeps going, and `zenml pipeline runs retry` restarts a failed run without redoing what finished. DBOS resumes from inside the function; ZenML retries the step.
+    - **Failure handling:** `StepRetryConfig(max_retries=3, delay=10, backoff=2)` retries a step, execution modes decide whether the run fails fast, stops, or keeps going, and `zenml pipeline runs retry` restarts a failed dynamic run, and completed steps are reused rather than re-executed. DBOS resumes from inside the function; ZenML retries the step.
   </Fragment>
 </FeatureWithGraphic>
 
@@ -88,7 +88,7 @@ DBOS remembers where a workflow got to. ZenML remembers that too, step by step, 
   <Fragment slot="bullets">
     - **Versions:** Re-run a step with different inputs and you get a new version of the same named artifact, not an overwrite. Both stay loadable. Steps you didn't touch come from cache on every run, keyed on the step, its parameters, and its inputs.
     - **Cross-run load:** A later run, or a notebook, pulls an earlier run's output by name with `get_artifact_version(...).load()` on the ZenML client.
-    - **Sandboxes:** An agent that runs generated code gets a `sandbox` stack component with local, Docker, Kubernetes, and Modal flavors: `Client().active_stack.sandbox.create_session()`, then `session.exec([...])`, with snapshot and restore. DBOS leaves isolation to your service.
+    - **Sandboxes:** An agent that runs generated code gets a `sandbox` stack component with local, Docker, Kubernetes, and Modal flavors: `Client().active_stack.sandbox.create_session()`, then `session.exec([...])`, with snapshot and restore on the Docker and Modal flavors. DBOS leaves isolation to your service.
   </Fragment>
 </FeatureWithGraphic>
 
@@ -119,7 +119,7 @@ DBOS remembers where a workflow got to. ZenML remembers that too, step by step, 
     { feature: "Serve it and get lineage per request", zenml: true, competitor: "partial", note: "zenml pipeline deploy makes every request a tracked run." },
     { feature: "Runs as a library with no orchestrator to operate", zenml: false, competitor: true, note: "DBOS needs only Postgres. ZenML expects a server and a configured stack." },
     { feature: "Queues, rate limits, and exactly-once messaging", zenml: false, competitor: true, note: "First-class in DBOS. ZenML leaves queueing to the orchestrator." },
-    { feature: "TypeScript as well as Python", zenml: false, competitor: true, note: "ZenML is Python only." },
+    { feature: "TypeScript, Go, and Java as well as Python", zenml: false, competitor: true, note: "ZenML is Python only." },
     { feature: "Open source, self-hostable", zenml: true, competitor: true },
   ]}
 />
@@ -205,6 +205,7 @@ def agent_workflow(goal: str) -> dict:
 # Durability comes from the library plus your Postgres.
 # No orchestrator process to operate, and no artifact
 # store: what a step returned is yours to persist.
+DBOS(config={"name": "agent"})
 DBOS.launch()`}
 />
 

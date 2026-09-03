@@ -63,7 +63,7 @@ The Agent SDK gives you a session. A ZenML pipeline gives that session a place i
 
 The Agent SDK writes session history to disk and can rewind file edits. That's useful while you're working, but it isn't a cache across runs.
 
-- **The cache key:** ZenML keys the cache on the step, its parameters, and its inputs: the step's source path, the parameter values, the input artifact IDs, the output definitions and materializers, plus the environment variables and secrets the step declares. If nothing changed, you get the stored artifact back and the body never executes. Every run, not only after a failure.
+- **The cache key:** ZenML keys the cache on the step, its parameters, and its inputs: the step's source path, the parameter values, the input artifacts, the output definitions and materializers, plus the environment variables and secrets the step declares. If nothing changed, you get the stored artifact back and the body never executes. Every run, not only after a failure.
 - **What that means in practice:** Retrieve context, run the agent, evaluate the result. Edit only the evaluation step and only the evaluation step re-runs. Retrieval and the agent call come from cache.
 - **Turning it off:** A step that must always execute takes `@step(enable_cache=False)`, which is the right setting for the agent step itself whenever non-determinism is the point. A `cache_policy` on the step narrows what the key includes when the default is too eager.
 
@@ -71,9 +71,9 @@ The Agent SDK writes session history to disk and can rewind file edits. That's u
 
 Three things the Agent SDK handles inside a session and ZenML handles around the step.
 
-- **Waiting for a human:** In a dynamic pipeline, `wait(schema=bool, question="Apply this patch?")` pauses the run until someone answers it from the dashboard, the CLI, or the API. Once the wait's timeout elapses and no other work in the run is in flight, ZenML marks the run `PAUSED` so the orchestration process can be torn down, and `zenml pipeline runs resume` picks it up later. The SDK's permission prompts assume you're at the keyboard. The wait doesn't.
-- **Isolated tool loops:** A `sandbox` is a stack component with local, Docker, Kubernetes, and Modal flavors. Inside a step, `Client().active_stack.sandbox.create_session()` gives the agent an isolated environment to run generated code in, with `session.exec([...])`, streamed output, and snapshots you can store as artifacts and restore in a later run.
-- **Retries:** A step takes `retry=StepRetryConfig(max_retries=3, delay=10, backoff=2)`. A failed run is retried with `zenml pipeline runs retry`, and the steps that already completed are served from cache. ZenML retries at step granularity. It won't resume a step mid-body.
+- **Waiting for a human:** In a dynamic pipeline, `wait(schema=bool, question="Apply this patch?")` pauses the run until someone answers it from the dashboard, the CLI, or the API. Once the wait's timeout elapses and no other work in the run is in flight, ZenML marks the run `PAUSED` so the orchestration process can be torn down, and `zenml pipeline runs resume` picks it up later, or ZenML Pro resumes it automatically. The SDK's permission prompts go to a callback in the running process, so the process has to stay up to answer them. The wait doesn't.
+- **Isolated tool loops:** A `sandbox` is a stack component with local, Docker, Kubernetes, and Modal flavors. Inside a step, `Client().active_stack.sandbox.create_session()` gives the agent an isolated environment to run generated code in, with `session.exec([...])`, streamed output, and, on the Docker and Modal flavors, snapshots you can store as artifacts and restore in a later run.
+- **Retries:** A step takes `retry=StepRetryConfig(max_retries=3, delay=10, backoff=2)`. A failed dynamic pipeline run is retried with `zenml pipeline runs retry`, which reuses the steps that already completed. A static pipeline like the one below gets the same effect from the cache on a re-run. ZenML retries at step granularity. It won't resume a step mid-body.
 
 ## Your infrastructure, your data
 
@@ -98,14 +98,14 @@ Want to replay the same agent against a prompt or model change? Kitaru's Claude 
   rows={[
     { feature: "Versioned artifacts and lineage across runs", zenml: true, competitor: false, note: "Step outputs are stored and loadable by name; the SDK keeps a session history." },
     { feature: "Caching that skips unchanged steps on a re-run", zenml: true, competitor: false, note: "Keyed on the step, its parameters, and its inputs. Prompt caching in the Claude stack is a different mechanism." },
-    { feature: "Durable human approval that outlives the process", zenml: true, competitor: "partial", note: "`wait()` pauses the run until a human resolves it. The SDK's permission prompts need someone at the keyboard." },
+    { feature: "Durable human approval that outlives the process", zenml: true, competitor: "partial", note: "`wait()` pauses the run until a human resolves it. The SDK's permission prompts need the process to stay up to answer them." },
     { feature: "Isolated environment for tool execution", zenml: true, competitor: true, note: "ZenML: the sandbox stack component (Docker, Kubernetes, Modal). The SDK: its own sandboxing options." },
     { feature: "One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML", zenml: true, competitor: false, note: "Configure once, every pipeline uses it." },
     { feature: "Run history you can inspect and compare", zenml: true, competitor: "partial", note: "The SDK writes session transcripts; ZenML records runs, steps, and artifacts in a server." },
     { feature: "Serve it and get lineage per request", zenml: true, competitor: false, note: "`zenml pipeline deploy` makes every request a tracked run." },
     { feature: "Per-tool permission model and file-edit rewind", zenml: false, competitor: true, note: "The SDK's job. Keep using it inside the step." },
     { feature: "Autonomous file editing, bash, and codebase search", zenml: false, competitor: true, note: "ZenML orchestrates the agent; it isn't an agent." },
-    { feature: "Open source, self-hostable", zenml: true, competitor: true },
+    { feature: "Open source, self-hostable", zenml: true, competitor: "partial", note: "The SDK is MIT. It drives the bundled Claude Code CLI against Anthropic's API, neither of which you host." },
   ]}
 />
 
@@ -199,8 +199,8 @@ async def main() -> None:
 
 asyncio.run(main())
 
-# The session transcript is written to disk, and file edits can
-# be rewound. What there isn't: a run record, a versioned
+# The session transcript is written to disk, and with file
+# checkpointing on, edits can be rewound. What there isn't: a run record, a versioned
 # artifact you can load back by name next month, a cache that
 # skips read_repo_summary on the next run, an approval that
 # survives the process exiting, or a way to put this same code

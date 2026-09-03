@@ -21,7 +21,7 @@ import ArtifactLineage from '../../components/compare/zenml/graphics/inngest/Art
 
 Inngest is an event-driven durable functions platform. You send events, functions react, and each `step.run` is memoized so a retry doesn't repeat finished work. You get sleeps that release compute, waits on future events, throttling and concurrency controls, and SDKs for TypeScript, Python and Go. For event-driven app workflows, it's a well-built platform.
 
-ZenML is AI orchestration for Python. It runs pipelines and agents on your own infrastructure and remembers what they did. A dynamic pipeline builds its graph from plain Python, `wait()` pauses a run until a human or another system answers, failed steps retry with backoff, steps you didn't touch come from cache across runs, and agent tool loops run inside a sandbox. Every step output is a versioned artifact in your own bucket, and the same code runs on Kubernetes, Vertex AI, SageMaker, AzureML, Airflow, Databricks and more when you swap the stack.
+ZenML is AI orchestration for Python. It runs pipelines and agents on your own infrastructure and remembers what they did. A dynamic pipeline builds its graph from plain Python, `wait()` pauses a run until a human or another system answers, failed steps retry with backoff, steps you didn't touch come from cache across runs, and agent tool loops run inside a sandbox. Every step output is a versioned artifact in your own bucket, and the same code runs on Kubernetes, Vertex AI, SageMaker, AzureML and more when you swap the stack.
 
 Both skip finished work and both can stop a run and wait. Here's the difference: who drives, and what survives. Inngest calls your function step by step and keeps the run history on its side. ZenML runs your pipeline where you already have compute, and what it keeps is a set of artifacts you can open a month later. You don't need Inngest underneath ZenML to run an agent durably.
 
@@ -71,8 +71,8 @@ Both skip finished work and both can stop a run and wait. Here's the difference:
   <Fragment slot="bullets">
     - **`@pipeline(dynamic=True)`:** The graph builds at run time from plain Python: `for` loops, `if` branches, and `step.map()` fan-out over a list. No determinism rules on step bodies, and every branch taken leaves a versioned artifact.
     - **`wait()`:** Inside a dynamic pipeline, `wait(schema=bool, question=...)` pauses the run until someone answers from the dashboard, the CLI or the API. Until the timeout the orchestration process keeps polling. After that the run is marked `PAUSED`, the process can go away, and `zenml pipeline runs resume` picks it back up. Inngest's `step.wait_for_event` and `step.sleep` release compute the moment they start.
-    - **`StepRetryConfig` and run retry:** Per-step retries with delay and backoff, and `zenml pipeline runs retry` for a failed run, with the steps that finished coming from cache. ZenML retries the step; Inngest resumes a function mid-body from memoized steps.
-    - **Sandboxes:** A `sandbox` stack component (local, Docker, Kubernetes and Modal flavors) gives an agent step an isolated session to run generated code in, snapshot it, and restore it later. Inngest has nothing like it. Fair's fair: throttling, concurrency keys and event subscriptions have no ZenML equivalent either.
+    - **`StepRetryConfig` and run retry:** Per-step retries with delay and backoff, and `zenml pipeline runs retry` for a failed dynamic run, where completed steps are reused rather than re-executed. ZenML retries the step; Inngest resumes a function mid-body from memoized steps.
+    - **Sandboxes:** A `sandbox` stack component (local, Docker, Kubernetes and Modal flavors) gives an agent step an isolated session to run generated code in, and on the Docker and Modal flavors snapshot it and restore it later. Inngest has nothing like it. Fair's fair: throttling, concurrency keys and event subscriptions have no ZenML equivalent either.
   </Fragment>
 </FeatureWithGraphic>
 
@@ -109,16 +109,16 @@ Both skip finished work and both can stop a run and wait. Here's the difference:
     { feature: "Versioned artifacts and lineage across runs", zenml: true, competitor: false, note: "Step outputs are stored and loadable by name; Inngest keeps step results in run history." },
     { feature: "Graph built at run time from Python loops, branches and fan-out", zenml: true, competitor: true, note: "ZenML: @pipeline(dynamic=True) with step.map(). Inngest: ordinary control flow around step.run, with parallel steps and events for fan-out." },
     { feature: "Pause a run for human approval and resume it later", zenml: true, competitor: true, note: "ZenML: wait() in a dynamic pipeline, resolved from dashboard, CLI or API. Inngest: step.wait_for_event." },
-    { feature: "Durable sleeps that release compute immediately", zenml: "partial", competitor: true, note: "ZenML's wait() polls until its timeout, then marks the run PAUSED so the process can go away. Resume is a CLI command." },
-    { feature: "Sandboxed code execution for agent tool loops", zenml: true, competitor: false, note: "Stack component with local, Docker, Kubernetes and Modal flavors; sessions can be snapshotted and restored." },
+    { feature: "Durable sleeps that release compute immediately", zenml: "partial", competitor: true, note: "ZenML's wait() polls until its timeout, then marks the run PAUSED so the process can go away. Resume is a CLI command, or automatic in ZenML Pro." },
+    { feature: "Sandboxed code execution for agent tool loops", zenml: true, competitor: false, note: "Stack component with local, Docker, Kubernetes and Modal flavors; Docker and Modal sessions can be snapshotted and restored." },
     { feature: "Serve a pipeline as an HTTP endpoint with a tracked run per request", zenml: true, competitor: "partial", note: "zenml pipeline deploy. Inngest functions are invoked by events; the request/response service is your app." },
     { feature: "One stack for Kubernetes, Vertex AI, SageMaker, AzureML, Airflow, Databricks", zenml: true, competitor: false, note: "Configure once, every pipeline uses it." },
     { feature: "Artifacts and run data stay in your own infrastructure", zenml: true, competitor: "partial", note: "ZenML writes to your bucket. Inngest self-hosting exists; the managed cloud is the default." },
-    { feature: "Resume a function mid-body from memoized steps", zenml: false, competitor: true, note: "ZenML retries at step granularity and serves completed steps from cache on the retried run." },
+    { feature: "Resume a function mid-body from memoized steps", zenml: false, competitor: true, note: "ZenML retries at step granularity; on a retried dynamic run, completed steps are reused rather than re-executed." },
     { feature: "Throttling, concurrency keys and flow control", zenml: false, competitor: true, note: "ZenML leaves this to the stack orchestrator." },
-    { feature: "Event subscriptions as triggers", zenml: false, competitor: true, note: "ZenML pipelines are invoked, scheduled through the orchestrator, or deployed; they don't subscribe to events." },
+    { feature: "Event subscriptions as triggers", zenml: false, competitor: true, note: "ZenML pipelines are invoked, scheduled through the orchestrator or ZenML Pro, or deployed; they don't subscribe to external events, though ZenML Pro can trigger a pipeline when another run finishes." },
     { feature: "TypeScript and Go as well as Python", zenml: false, competitor: true, note: "ZenML is Python only." },
-    { feature: "Open source, self-hostable", zenml: true, competitor: true },
+    { feature: "Open source, self-hostable", zenml: true, competitor: "partial", note: "ZenML is Apache 2.0. The Inngest server is SSPL with delayed Apache 2.0 publication, and its SDKs are Apache 2.0. Self-hosting is supported." },
   ]}
 />
 
@@ -130,7 +130,7 @@ Both skip finished work and both can stop a run and wait. Here's the difference:
 | Unit of work | `step.run` (memoized) | `@step` (cached, versioned output) |
 | Trigger | An event you send | An invocation, an orchestrator schedule, or a deployment |
 | Run-time branching and fan-out | Control flow around `step.run`, events for fan-out | Python control flow and `step.map()` in a dynamic pipeline |
-| Skipping completed work | Step memoization within a run | `enable_cache` across runs, plus `zenml pipeline runs retry` |
+| Skipping completed work | Step memoization within a run | `enable_cache` across runs, plus `zenml pipeline runs retry` for a failed dynamic run |
 | Durable pause | `step.sleep`, `step.wait_for_event` | `wait(schema=..., question=...)`, run marked `PAUSED` after the timeout |
 | Isolated tool execution | In your app | `Client().active_stack.sandbox.create_session()` |
 | Where it runs | Your app, driven by the platform | Stack orchestrator (`zenml stack set`) |

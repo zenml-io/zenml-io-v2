@@ -21,7 +21,7 @@ import HarnessFreedom from '../../components/compare/zenml/graphics/crewai/Harne
 
 CrewAI is a framework for building multi-agent systems: agents with roles and backstories, tasks with expected outputs, and Flows for when you need explicit control over the sequence. It's opinionated about how agents collaborate, and that opinion is the reason to pick it.
 
-ZenML isn't another opinion about agent collaboration. It's the orchestration layer around whatever you built. Your crew runs unchanged inside a `@step`, and ZenML supplies the pipeline around it: a run record, versioned artifacts in your own bucket, a cache keyed on the step, its parameters and its inputs, a `wait()` that pauses the run until a human approves what the crew proposed, sandboxes for the code the crew's tools execute, and a stack that puts the whole thing on Kubernetes, Vertex AI, SageMaker, AzureML, Airflow, Databricks and more.
+ZenML isn't another opinion about agent collaboration. It's the orchestration layer around whatever you built. Your crew runs unchanged inside a `@step`, and ZenML supplies the pipeline around it: a run record, versioned artifacts in your own bucket, a cache keyed on the step, its parameters and its inputs, a `wait()` that pauses the run until a human approves what the crew proposed, sandboxes for the code the crew's tools execute, and a stack that puts the whole thing on Kubernetes, Vertex AI, SageMaker, AzureML and more.
 
 CrewAI answers how the agents work together. ZenML answers what happened when they did, who signed off on it, and what it costs to do it again.
 
@@ -71,7 +71,7 @@ CrewAI answers how the agents work together. ZenML answers what happened when th
 
   <Fragment slot="bullets">
     - **Cache key:** ZenML keys the cache on the step, its parameters and its inputs, plus its output definitions and the artifact store. If nothing changed, you get the stored artifact back and the step body never executes. That's every run, not only after a failure.
-    - **After a failure:** `zenml pipeline runs retry <run>` re-runs a failed run, and the steps that completed come from cache. ZenML retries at step granularity; it won't resume a step part-way through its body.
+    - **After a failure:** `zenml pipeline runs retry <run>` re-runs a failed dynamic pipeline run, and the steps that completed are reused rather than re-executed. ZenML retries at step granularity; it won't resume a step part-way through its body.
     - **The exception:** Mark the crew step `@step(enable_cache=False)` when you want it to execute every time, and keep the cache on the deterministic steps around it.
   </Fragment>
 </FeatureWithGraphic>
@@ -116,7 +116,7 @@ def crew_pipeline(topic: str):
         publish(draft)
 ```
 
-The run polls for the answer for up to `timeout` seconds. Nobody answered? The run is marked paused and the orchestration process can be torn down instead of sitting open for days. Someone resolves the condition from the dashboard, the API, or `zenml pipeline runs wait-conditions resolve --run <id> --interactive`, and `zenml pipeline runs resume <run>` continues from that point with the crew's draft still in the artifact store. The `schema` can be a Pydantic model, so the approver can hand back edits, not just a yes.
+The run polls for the answer for `timeout` seconds (600 by default). Nobody answered? The run is marked paused and the orchestration process can be torn down instead of sitting open for days. Someone resolves the condition from the dashboard, the API, or `zenml pipeline runs wait-conditions resolve --run <id> --interactive`, and `zenml pipeline runs resume <run>` (or ZenML Pro, automatically) continues from that point with the crew's draft still in the artifact store. The `schema` can be a Pydantic model, so the approver can hand back edits, not just a yes.
 
 What ZenML doesn't do is trace the LLM and tool calls inside the crew step. Want to record those runs and replay them against a prompt or model change? That's [Kitaru's job](/compare/kitaru-vs-crewai).
 
@@ -150,7 +150,7 @@ What ZenML doesn't do is trace the LLM and tool calls inside the crew step. Want
 | Human approval | `human_input=True` on a Task, in the terminal | `wait()` in a dynamic pipeline, resolved from CLI, dashboard or API |
 | Code execution | Code interpreter tool in Docker | Sandbox stack component (local, Docker, Kubernetes, Modal) |
 | Outputs | `CrewOutput` returned in memory | Versioned artifacts in your bucket |
-| Avoiding repeat work | Re-run starts from the top | `enable_cache` across runs, `zenml pipeline runs retry` after a failure |
+| Avoiding repeat work | Re-run starts from the top | `enable_cache` across runs, `zenml pipeline runs retry` after a failed dynamic run |
 | Where it runs | Your process, or CrewAI's platform | Stack orchestrator (`zenml stack set`) |
 | Cross-run reuse | Bring your own store | `get_artifact_version(...).load()` |
 | Serving | Your own wrapper, or the platform | `zenml pipeline deploy --name ...` |
