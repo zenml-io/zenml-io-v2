@@ -1,0 +1,198 @@
+---
+competitor: "LangGraph & Deep Agents"
+competitorLogo: "/compare/langgraph-deep-agents.svg"
+competitorTagline: "Graph-native agent harness plus Deep Agents, with a packaged deployment platform via LangSmith."
+title: "ZenML vs LangGraph & Deep Agents: self-hosted orchestration vs a packaged platform"
+shortTitle: "Self-hosted orchestration vs a packaged platform"
+description: "LangGraph and Deep Agents are a graph-native agent harness with a packaged deployment platform behind LangSmith. ZenML is self-hosted AI orchestration: versioned artifacts, step caching, lineage across runs, and one stack abstraction targeting Kubernetes, Vertex AI, SageMaker, and AzureML."
+cardSubtitle: "Keep the graph. Run it on your own cloud, with versioned artifacts and lineage you own."
+ctaHeading: "Pick the orchestration layer without picking the platform"
+order: 100
+---
+
+import WhenToUseEach from '../../components/compare/zenml/WhenToUseEach.astro';
+import ComparisonTable from '../../components/compare/zenml/ComparisonTable.astro';
+import CodeCompare from '../../components/compare/zenml/CodeCompare.astro';
+import FeatureWithGraphic from '../../components/compare/zenml/FeatureWithGraphic.astro';
+import ComparisonCta from '../../components/compare/zenml/ComparisonCta.astro';
+import PullQuote from '../../components/compare/zenml/PullQuote.astro';
+import SelfHostVsPackaged from '../../components/compare/zenml/graphics/langgraph/SelfHostVsPackaged.astro';
+import SandboxSecurity from '../../components/compare/zenml/graphics/langgraph/SandboxSecurity.astro';
+import VersionedDeployments from '../../components/compare/zenml/graphics/langgraph/VersionedDeployments.astro';
+
+LangGraph models an agent as a graph: nodes, edges, and state that persists across steps, with checkpointers for durability and Deep Agents layering planning and sub-agents on top. Behind it sits a packaged path to production through LangGraph Platform and LangSmith, which handles deployment, persistence, and observability for you.
+
+That packaging is the real decision. Adopting the graph is one commitment; adopting the platform underneath it is a much larger one, and the two arrive together. ZenML offers the second half separately: keep the graph, and run it as a step inside a pipeline you orchestrate on your own infrastructure, with artifacts in your own bucket and run metadata in a server you can self-host.
+
+If you are weighing LangGraph purely as a way to build agents, the [ZenML vs LangGraph](/compare/zenml-vs-langgraph) comparison covers that. This page is about the deployment and ownership question.
+
+<WhenToUseEach
+  competitorLabel="LangGraph & Deep Agents"
+  zenml={{
+    title: "Use ZenML if you are",
+    items: [
+      "Wanting production infrastructure you run yourself, with artifacts and run history in your own account",
+      "Unwilling to route agent state and traces through a vendor's managed control plane",
+      "Running more than one agent framework across teams and wanting a single orchestration layer under all of them",
+      "Targeting Kubernetes, Vertex AI, SageMaker, or AzureML with one pipeline definition",
+      "Needing versioned artifacts and step caching more than you need graph semantics",
+    ],
+  }}
+  competitor={{
+    title: "Use LangGraph & Deep Agents if you are",
+    items: [
+      "Modelling the agent as an explicit graph with branching, loops, and persisted state",
+      "Wanting checkpointers, interrupts, and time-travel over graph state as first-class features",
+      "Building planning and sub-agent patterns where Deep Agents does the heavy lifting",
+      "Happy to adopt LangGraph Platform and LangSmith for deployment and observability",
+    ],
+  }}
+/>
+
+<PullQuote
+  quote="LangGraph asks you to adopt a graph and, for production, a platform. ZenML asks you to adopt a pipeline, and leaves the infrastructure yours."
+/>
+
+<FeatureWithGraphic title="Self-hosted vs packaged">
+  <SelfHostVsPackaged slot="graphic" />
+
+  Both give you a route from a working agent to something running in production. They differ in who operates it and where the data sits.
+
+  <Fragment slot="bullets">
+    - **ZenML:** A server you deploy (Helm chart or ZenML Pro), an artifact store that is your own S3, GCS, or Azure Blob bucket, and an orchestrator that is your existing Kubernetes, Vertex AI, SageMaker, or AzureML.
+    - **LangGraph Platform:** Deployment, persistence, and scaling as a managed product, with self-hosted tiers available on the paid plans.
+    - **The trade:** The packaged path is faster to production and gives you graph-aware features ZenML has no equivalent for. The self-hosted path keeps prompts, retrieved documents, and model outputs inside your own account.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Where the sensitive values live" reverse={true}>
+  <SandboxSecurity slot="graphic" />
+
+  For agent workloads the intermediate values are the sensitive part: prompts, retrieved documents, customer records, model outputs. Where those are written tends to decide a security review.
+
+  <Fragment slot="bullets">
+    - **Artifacts:** ZenML writes every step output to your artifact store. Nothing about a run's contents leaves your infrastructure when the server is self-hosted.
+    - **Credentials:** Model keys stay in your own execution environment. ZenML has no LLM primitive and never brokers a provider call.
+    - **What ZenML does not give you:** No sandboxing, and no tool-permission model. If the agent runs untrusted code, that isolation is on you or on the harness.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Versioned runs and deployments">
+  <VersionedDeployments slot="graphic" />
+
+  Both let you put a version of an agent behind an endpoint. What differs is what you get back per call.
+
+  <Fragment slot="bullets">
+    - **Artifacts per run:** Every step output is stored, versioned, and loadable by name with `get_artifact_version(...).load()`, so a change to a prompt is visible as a new artifact version rather than a new log line.
+    - **Serving:** `zenml pipeline deploy run.agent_pipeline --name agent-service` stands the pipeline up behind an endpoint, and every request is a run with the same artifacts and lineage as a batch job.
+    - **Caching:** Unchanged steps are served from cache on every run, which matters most when you are iterating on the step after the agent.
+  </Fragment>
+</FeatureWithGraphic>
+
+## Being honest about the gap
+
+LangGraph has a set of features ZenML does not attempt, and a fair comparison should name them.
+
+- **Graph semantics.** Branching, cycles, and conditional edges are LangGraph's model. A ZenML pipeline is a DAG of steps; it does not loop.
+- **Persisted graph state, interrupts, and time travel.** Checkpointers let a graph pause mid-execution, be inspected, resumed, and rewound to an earlier state. ZenML has no equivalent, and step caching is not one.
+- **Deep Agents patterns.** Planning, sub-agents, and file-system tooling are harness concerns. ZenML orchestrates whatever you build; it does not help you build it.
+
+What ZenML gives you in exchange is narrower and differently valuable: artifacts you own, caching across runs, and one orchestration layer that works the same whether the team picked LangGraph, CrewAI, Pydantic AI, or the OpenAI SDK.
+
+## What makes ZenML different
+
+<ComparisonTable
+  competitorLabel="LangGraph & Deep Agents"
+  rows={[
+    { feature: "Artifacts and run data stay in your own infrastructure", zenml: true, competitor: "partial", note: "ZenML writes to your bucket by default. LangGraph Platform self-hosting is a paid tier." },
+    { feature: "Versioned artifacts and lineage across runs", zenml: true, competitor: false, note: "Step outputs are stored and loadable by name; checkpointers persist graph state, not artifacts." },
+    { feature: "Caching that skips unchanged steps on a re-run", zenml: true, competitor: false, note: "ZenML hashes code and inputs." },
+    { feature: "One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML", zenml: true, competitor: false, note: "Configure once, every pipeline uses it." },
+    { feature: "Works with any agent framework, not just one", zenml: true, competitor: false, note: "A step is ordinary Python; LangGraph is the harness itself." },
+    { feature: "Graph semantics: branching, cycles, conditional edges", zenml: false, competitor: true, note: "A ZenML pipeline is a DAG and does not loop." },
+    { feature: "Persisted graph state, interrupts, and time travel", zenml: false, competitor: true, note: "Checkpointers are LangGraph's, and step caching is not the same thing." },
+    { feature: "Planning and sub-agent patterns (Deep Agents)", zenml: false, competitor: true, note: "Harness concerns. ZenML has no agent abstractions." },
+    { feature: "Open source, self-hostable", zenml: true, competitor: "partial", note: "LangGraph is open source; the Platform's self-hosting sits on paid tiers." },
+  ]}
+/>
+
+## How the two surfaces map
+
+| Concept | LangGraph & Deep Agents | ZenML |
+|---|---|---|
+| Unit of work | Graph node | `@step` (the graph runs inside it) |
+| Boundary | `StateGraph` | `@pipeline` |
+| Control flow | Edges, conditional edges, cycles | A DAG of steps, no loops |
+| State | Persisted graph state via checkpointers | Versioned artifacts in your bucket |
+| Pause and resume | Interrupts, time travel | Not supported |
+| Avoiding repeat work | Checkpointer resume | `enable_cache` across runs |
+| Where it runs | Your process, or LangGraph Platform | Stack orchestrator (`zenml stack set`) |
+| Serving | LangGraph Platform | `zenml pipeline deploy --name ...` |
+
+<CodeCompare
+  zenmlLabel="ZenML (wrapping the graph)"
+  competitorLabel="LangGraph alone"
+  zenmlCode={`from typing import Annotated
+
+from zenml import pipeline, step
+from zenml.client import Client
+
+from my_agent import build_graph   # your existing StateGraph
+
+graph = build_graph()
+
+@step
+def gather_context(topic: str) -> Annotated[str, "context"]:
+    return retrieve_documents(topic)
+
+@step(enable_cache=False)
+def run_graph(context: str, topic: str) -> Annotated[str, "draft"]:
+    # The graph is untouched: branching, cycles and state all
+    # stay LangGraph's. ZenML records what came out.
+    result = graph.invoke({"context": context, "topic": topic})
+    return result["draft"]
+
+@step
+def evaluate(draft: str) -> Annotated[dict, "scores"]:
+    return score(draft)
+
+@pipeline
+def agent_pipeline(topic: str):
+    evaluate(run_graph(gather_context(topic), topic))
+
+agent_pipeline("AI orchestration")
+
+# Artifacts are in your bucket, versioned, loadable by name:
+Client().get_artifact_version("draft").load()
+
+# Your cloud, no platform:
+#   zenml stack set k8s_stack && python agent_pipeline.py`}
+  competitorCode={`from langgraph.graph import StateGraph, END
+from langgraph.checkpoint.memory import MemorySaver
+
+builder = StateGraph(AgentState)
+builder.add_node("research", research_node)
+builder.add_node("draft", draft_node)
+builder.add_conditional_edges(
+    "draft", needs_more_research, {"yes": "research", "no": END}
+)
+builder.set_entry_point("research")
+
+# Checkpointers persist graph state so a run can be paused,
+# inspected, resumed, and rewound. Swap MemorySaver for a
+# Postgres saver in production.
+graph = builder.compile(checkpointer=MemorySaver())
+
+result = graph.invoke(
+    {"topic": "AI orchestration"},
+    config={"configurable": {"thread_id": "run-1"}},
+)
+
+# Cycles, interrupts and time travel over state are all here.
+# Getting to production usually means LangGraph Platform and
+# LangSmith, which is a larger adoption than the graph itself.`}
+/>
+
+<ComparisonCta headline={frontmatter.ctaHeading}>
+If the graph is the right model for your agent, keep it: cycles, interrupts, and persisted state are things ZenML does not do. What you do not have to accept along with it is the packaged platform. Run the graph inside a ZenML pipeline and the infrastructure stays yours, with artifacts in your own bucket and the same orchestration layer under whatever the next team picks.
+</ComparisonCta>

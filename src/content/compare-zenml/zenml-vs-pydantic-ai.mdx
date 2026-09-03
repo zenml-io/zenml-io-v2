@@ -1,0 +1,181 @@
+---
+competitor: "Pydantic AI"
+competitorLogo: "/compare/pydantic-ai.svg"
+competitorTagline: "Type-safe, Pythonic agent framework from the Pydantic team."
+title: "ZenML vs Pydantic AI: harness and orchestration, composed"
+description: "Pydantic AI is a type-safe agent framework with structured outputs and dependency injection. ZenML is the orchestration layer you put around it: versioned artifacts, step caching, lineage across runs, and one stack abstraction targeting Kubernetes, Vertex AI, SageMaker, and AzureML."
+cardSubtitle: "Build the agent with Pydantic AI. Orchestrate it, version its outputs, and run it on your cloud with ZenML."
+ctaHeading: "Put a pipeline around your Pydantic AI agents"
+order: 80
+---
+
+import WhenToUseEach from '../../components/compare/zenml/WhenToUseEach.astro';
+import ComparisonTable from '../../components/compare/zenml/ComparisonTable.astro';
+import CodeCompare from '../../components/compare/zenml/CodeCompare.astro';
+import FeatureWithGraphic from '../../components/compare/zenml/FeatureWithGraphic.astro';
+import ComparisonCta from '../../components/compare/zenml/ComparisonCta.astro';
+import PullQuote from '../../components/compare/zenml/PullQuote.astro';
+import DifferentQuestions from '../../components/compare/zenml/graphics/pydantic-ai/DifferentQuestions.astro';
+import WhatZenMLAddsOnTop from '../../components/compare/zenml/graphics/pydantic-ai/WhatZenMLAddsOnTop.astro';
+
+Pydantic AI brings the Pydantic team's approach to agents: typed dependencies, validated structured outputs, and a model-agnostic API that stays recognisably Python. If you want an agent whose output you can trust to match a schema, it is a very good choice.
+
+ZenML is not a competing harness. It is the orchestration layer around the agent: your `Agent` runs unchanged inside a `@step`, and ZenML supplies the pipeline, the versioned artifacts, the cache, and the stack that puts it on Kubernetes, Vertex AI, SageMaker, or AzureML.
+
+These compose cleanly because both are ordinary Python. Pydantic AI validates what comes out of the model. ZenML stores what comes out of the step, and remembers which run produced it.
+
+<WhenToUseEach
+  competitorLabel="Pydantic AI"
+  zenml={{
+    title: "Use ZenML if you are",
+    items: [
+      "Running agent work as a scheduled or served workload rather than a script you launch by hand",
+      "Needing to know which output came from which run, from which inputs, weeks later",
+      "Re-running often enough that skipping unchanged steps saves real money",
+      "Deploying into your own cloud (Kubernetes, Vertex AI, SageMaker, AzureML) for security or compliance",
+      "Wiring the agent into a wider pipeline: retrieval, evaluation, batch inference, a training step",
+    ],
+  }}
+  competitor={{
+    title: "Use Pydantic AI if you are",
+    items: [
+      "Building the agent itself, and want typed dependencies and validated structured outputs",
+      "Switching between model providers behind one API",
+      "Wanting a framework that reads like ordinary, type-checked Python",
+      "Using Logfire for tracing individual agent runs",
+    ],
+  }}
+/>
+
+<PullQuote
+  quote="Pydantic AI guarantees the shape of what the model returned. ZenML guarantees you can find it again, and tells you which run it came from."
+/>
+
+<FeatureWithGraphic title="Different questions">
+  <DifferentQuestions slot="graphic" />
+
+  It is worth being precise about the split, because "agent framework" and "orchestrator" get used loosely enough that they sound like alternatives.
+
+  <Fragment slot="bullets">
+    - **Pydantic AI asks:** How do I define this agent, give it typed dependencies, call a model, and validate what comes back against a schema?
+    - **ZenML asks:** This ran. What did it produce, where is that stored, which inputs made it, and do I have to compute it again?
+    - **No overlap:** ZenML has no agent abstractions at all. It does not know what a tool call is, and it will not help you design one.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="What a pipeline adds on top" reverse={true}>
+  <WhatZenMLAddsOnTop slot="graphic" />
+
+  The agent code does not change. What changes is what exists around it after it runs.
+
+  <Fragment slot="bullets">
+    - **`@pipeline`:** Wraps the agent in a run with a status, a history, and steps you can inspect in the dashboard.
+    - **Versioned artifacts:** Return `Annotated[Brief, "brief"]` and the validated Pydantic model is stored, versioned, and loadable by name across runs. The type survives the round trip.
+    - **`enable_cache`:** Unchanged steps are served from cache on every run, so tuning the step after the agent does not re-invoke the agent.
+    - **`zenml stack set`:** The same pipeline runs on Kubernetes, Vertex AI, SageMaker, or AzureML with no code change, and artifacts land in your own bucket.
+  </Fragment>
+</FeatureWithGraphic>
+
+## Where they overlap, and where they do not
+
+Both projects touch observability, and it is the one place a reader might reasonably expect a conflict. There is not one.
+
+- **Logfire** traces what happened *inside* an agent run: the model calls, the tool calls, the timings. That is a level of detail ZenML does not capture and does not try to.
+- **ZenML** records what happened *around* the step: which run, which inputs, which artifact version, on which stack. That is a level Logfire is not aiming at.
+- Teams commonly run both, and they answer different questions during an incident.
+
+## What makes ZenML different
+
+<ComparisonTable
+  competitorLabel="Pydantic AI"
+  rows={[
+    { feature: "Versioned artifacts and lineage across runs", zenml: true, competitor: false, note: "Step outputs are stored and loadable by name, including validated Pydantic models." },
+    { feature: "Caching that skips unchanged steps on a re-run", zenml: true, competitor: false, note: "ZenML hashes code and inputs; an agent re-run starts fresh." },
+    { feature: "One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML", zenml: true, competitor: false, note: "Configure once, every pipeline uses it." },
+    { feature: "Serve it and get lineage per request", zenml: true, competitor: false, note: "`zenml pipeline deploy` makes every request a tracked run." },
+    { feature: "Works with any agent framework, not just one", zenml: true, competitor: false, note: "A step is ordinary Python." },
+    { feature: "Typed dependencies and validated structured outputs", zenml: false, competitor: true, note: "Pydantic AI's whole point. Use it inside the step." },
+    { feature: "Model-provider abstraction", zenml: false, competitor: true, note: "ZenML has no LLM primitive; call whichever SDK you like from a step." },
+    { feature: "Tracing inside an agent run (model and tool calls)", zenml: false, competitor: true, note: "Logfire's level of detail. ZenML records the step, not the calls within it." },
+    { feature: "Open source, self-hostable", zenml: true, competitor: true },
+  ]}
+/>
+
+## How the two surfaces map
+
+| Concept | Pydantic AI | ZenML |
+|---|---|---|
+| Unit of work | `Agent.run()` | `@step` (the agent runs inside it) |
+| Boundary | The agent and its dependencies | `@pipeline` |
+| Typing | Validated structured output | `Annotated[T, "name"]` on the artifact |
+| Outputs | `AgentRunResult` in memory | Versioned artifacts in your bucket |
+| Avoiding repeat work | Not applicable | `enable_cache` across runs |
+| Observability | Logfire traces inside the run | Runs, steps, and artifacts around it |
+| Where it runs | Your process | Stack orchestrator (`zenml stack set`) |
+| Serving | Your own wrapper | `zenml pipeline deploy --name ...` |
+
+<CodeCompare
+  zenmlLabel="ZenML (wrapping the agent)"
+  competitorLabel="Pydantic AI alone"
+  zenmlCode={`from typing import Annotated
+
+from pydantic import BaseModel
+from pydantic_ai import Agent
+from zenml import pipeline, step
+from zenml.client import Client
+
+class Brief(BaseModel):
+    summary: str
+    sources: list[str]
+
+agent = Agent("anthropic:claude-sonnet-4-6", output_type=Brief)
+
+@step
+def gather_context(topic: str) -> Annotated[str, "context"]:
+    return retrieve_documents(topic)
+
+@step(enable_cache=False)
+def run_agent(context: str, topic: str) -> Annotated[Brief, "brief"]:
+    # The validated Pydantic model is stored as the artifact,
+    # so the type survives the round trip.
+    return agent.run_sync(f"{context}\\n\\nBrief on: {topic}").output
+
+@step
+def evaluate(brief: Brief) -> Annotated[dict, "scores"]:
+    return score(brief.summary)
+
+@pipeline
+def brief_pipeline(topic: str):
+    evaluate(run_agent(gather_context(topic), topic))
+
+brief_pipeline("AI orchestration")
+
+# Comes back typed, from any past run:
+brief = Client().get_artifact_version("brief").load()`}
+  competitorCode={`from pydantic import BaseModel
+from pydantic_ai import Agent
+
+class Brief(BaseModel):
+    summary: str
+    sources: list[str]
+
+agent = Agent("anthropic:claude-sonnet-4-6", output_type=Brief)
+
+topic = "AI orchestration"
+context = retrieve_documents(topic)
+
+result = agent.run_sync(f"{context}\\n\\nBrief on: {topic}")
+brief = result.output          # validated Brief
+
+scores = score(brief.summary)
+
+# The output is type-safe and Logfire can trace the model and
+# tool calls inside this run. What there isn't: a run record
+# across runs, a versioned artifact you can load back by name
+# next month, a cache that skips retrieval on the next run,
+# or a way to put this on Vertex AI without writing it.`}
+/>
+
+<ComparisonCta headline={frontmatter.ctaHeading}>
+These are not alternatives, and picking one does not rule out the other. Build the agent with Pydantic AI, keep its typing and its tracing, and add ZenML when the agent becomes a workload: when the outputs need versioning, when re-running everything gets expensive, and when it has to run on your own infrastructure.
+</ComparisonCta>

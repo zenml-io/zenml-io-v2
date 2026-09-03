@@ -1,0 +1,197 @@
+---
+competitor: "DBOS"
+competitorLogo: "/compare/dbos.svg"
+title: "ZenML vs DBOS: Durable app workflows or reproducible AI pipelines"
+description: "DBOS is a lightweight durable execution library that checkpoints workflow state into Postgres. ZenML is an open-source AI orchestration layer for Python, with versioned artifacts, step caching, lineage across runs, and one stack abstraction targeting Kubernetes, Vertex AI, SageMaker, and AzureML."
+cardSubtitle: "AI orchestration for Python pipelines, with versioned artifacts, step caching, and a portable stack abstraction."
+ctaHeading: "The orchestration layer underneath your AI workloads"
+order: 30
+---
+
+import WhenToUseEach from '../../components/compare/zenml/WhenToUseEach.astro';
+import ComparisonTable from '../../components/compare/zenml/ComparisonTable.astro';
+import CodeCompare from '../../components/compare/zenml/CodeCompare.astro';
+import FeatureWithGraphic from '../../components/compare/zenml/FeatureWithGraphic.astro';
+import ComparisonCta from '../../components/compare/zenml/ComparisonCta.astro';
+import PullQuote from '../../components/compare/zenml/PullQuote.astro';
+import StepRecord from '../../components/compare/zenml/graphics/dbos/StepRecord.astro';
+import ArtifactVersioning from '../../components/compare/zenml/graphics/dbos/ArtifactVersioning.astro';
+import StackDeployment from '../../components/compare/zenml/graphics/dbos/StackDeployment.astro';
+import NamedDeployments from '../../components/compare/zenml/graphics/dbos/NamedDeployments.astro';
+
+DBOS is a durable execution library rather than a platform. You add decorators to ordinary Python or TypeScript functions, it checkpoints workflow state into Postgres, and a crashed process picks up where it left off. There is no separate orchestrator to run: the durability lives in a library and a database you already operate. For transactional application workflows, that is a genuinely light footprint.
+
+ZenML answers a different question. It is the orchestration layer for AI workloads written in Python, where the thing you care about is not only that a process survived, but what it produced: which artifact came from which run, from which inputs, under which version of the code. Steps write versioned artifacts, unchanged steps are served from cache instead of re-running, and the same pipeline moves between Kubernetes, Vertex AI, SageMaker, and AzureML by swapping a stack.
+
+Put plainly: DBOS remembers where a workflow got to. ZenML remembers what a pipeline produced.
+
+<WhenToUseEach
+  competitorLabel="DBOS"
+  zenml={{
+    title: "Use ZenML if you are",
+    items: [
+      "Orchestrating Python AI workloads (training, batch inference, evals, agent workflows) and want versioned artifacts and lineage by default",
+      "Iterating on a pipeline where re-running unchanged steps is the expensive part, and step caching pays for itself",
+      "Targeting Kubernetes, Vertex AI, SageMaker, or AzureML and want one pipeline definition that runs on all of them",
+      "Comparing two runs of the same pipeline and needing to see exactly what differed",
+    ],
+  }}
+  competitor={{
+    title: "Use DBOS if you are",
+    items: [
+      "Adding durability to transactional application workflows and already run Postgres",
+      "Wanting crash recovery with no orchestrator to operate, as a library inside your existing service",
+      "Writing in TypeScript as well as Python, under one durability contract",
+      "Depending on durable sleeps, queues, and exactly-once messaging as first-class primitives",
+    ],
+  }}
+/>
+
+<PullQuote
+  quote="DBOS was shaped for app workflows on Postgres. ZenML was shaped for AI pipelines whose outputs you have to be able to trust twice."
+/>
+
+<FeatureWithGraphic title="The step is the unit of record">
+  <StepRecord slot="graphic" />
+
+  In DBOS, the unit is the workflow step, and what persists is the state needed to resume it. In ZenML, the unit is the `@step`, and what persists is what the step produced: its return value, stored in the artifact store, versioned, and attached to the run.
+
+  <Fragment slot="bullets">
+    - **What is stored:** DBOS checkpoints step state to Postgres so execution can resume. ZenML stores the step's output as an artifact in your bucket (S3, GCS, Azure Blob) and records the run metadata in the ZenML server.
+    - **Naming:** Return `Annotated[str, "brief"]` and the artifact is addressable by name across runs rather than by an opaque id.
+    - **Metadata:** ZenML has no LLM-specific primitive. What it gives you is a place to put the numbers: `log_metadata()` attaches token counts, cost, or anything else to the step, and it shows up on the run beside the artifact.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Artifact versioning across every step" reverse={true}>
+  <ArtifactVersioning slot="graphic" />
+
+  A Postgres checkpoint table tells you a workflow completed. It does not tell you that this run's embeddings differ from last week's, or let you pull last week's back out. ZenML versions every step output, so a run is a set of inspectable, retrievable artifacts rather than a log line.
+
+  <Fragment slot="bullets">
+    - **Versions:** Re-run a step with changed inputs and you get a new version of the same named artifact, not an overwrite. Both stay retrievable.
+    - **Cross-run load:** A later run, or a notebook, can pull an earlier run's output by name with `get_artifact_version(...).load()` on the ZenML client.
+    - **Comparison:** Two runs of the same pipeline can be compared in the dashboard on what they produced, which is the question you actually ask after a model or prompt change.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="One stack, four clouds">
+  <StackDeployment slot="graphic" />
+
+  DBOS runs wherever your service runs, and DBOS Cloud hosts it for you. Its footprint is deliberately small: a library plus Postgres. ZenML's equivalent lever is the stack, which is where its opinion sits.
+
+  <Fragment slot="bullets">
+    - **Stack components:** An orchestrator plus an artifact store, and whatever else the workload needs. Configure it once with `zenml stack register`, and every pipeline uses it.
+    - **Switching:** `zenml stack set sagemaker` repoints the same pipeline code from a local orchestrator to Kubernetes, Vertex AI, SageMaker, or AzureML. No code change, no redeploy of a service.
+    - **Where data lives:** Artifacts land in your own bucket. Self-host the server and nothing about a run leaves your infrastructure.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Deploy a pipeline and call it by name" reverse={true}>
+  <NamedDeployments slot="graphic" />
+
+  Both let you turn code into something callable. The difference is what you get back when it runs.
+
+  <Fragment slot="bullets">
+    - **Serving:** `zenml pipeline deploy run.weather_agent --name weather-agent-service` stands the pipeline up behind an HTTP endpoint.
+    - **Per-request lineage:** Every request to that endpoint is a ZenML run, so the artifacts, metadata, and step history exist for a single call the same way they do for a batch job.
+    - **DBOS:** Durable workflows are invoked from inside your own service, which keeps the footprint smaller but leaves the run record to you.
+  </Fragment>
+</FeatureWithGraphic>
+
+## What makes ZenML different
+
+<ComparisonTable
+  competitorLabel="DBOS"
+  rows={[
+    { feature: "Recover after failure without re-executing completed work", zenml: "partial", competitor: true, note: "DBOS resumes mid-workflow from its Postgres checkpoint. ZenML re-runs the pipeline and serves unchanged steps from cache." },
+    { feature: "Caching on ordinary re-runs, not only on recovery", zenml: true, competitor: false, note: "ZenML skips steps whose code and inputs are unchanged on every run." },
+    { feature: "Versioned artifacts and lineage across runs", zenml: true, competitor: false, note: "Step outputs are stored, versioned, and loadable by name; DBOS persists state, not artifacts." },
+    { feature: "One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML", zenml: true, competitor: false, note: "Configure once, every pipeline uses it. DBOS runs wherever your service runs." },
+    { feature: "Runs as a library with no orchestrator to operate", zenml: false, competitor: true, note: "DBOS needs only Postgres. ZenML expects a server and a configured stack." },
+    { feature: "Durable sleeps, queues, and exactly-once messaging", zenml: false, competitor: true, note: "First-class in DBOS. ZenML has no durable wait primitive." },
+    { feature: "TypeScript as well as Python", zenml: false, competitor: true, note: "ZenML is Python only." },
+    { feature: "Serve it and get lineage per request", zenml: true, competitor: "partial", note: "`zenml pipeline deploy` makes every request a tracked run." },
+    { feature: "Open source, self-hostable", zenml: true, competitor: true },
+  ]}
+/>
+
+## How the two surfaces map
+
+| Concept | DBOS | ZenML |
+|---|---|---|
+| Workflow boundary | `@DBOS.workflow` | `@pipeline` |
+| Unit of work | `@DBOS.step` | `@step` |
+| What persists | Workflow state in Postgres | Step outputs as versioned artifacts |
+| Skipping completed work | Checkpoint resume after a crash | `enable_cache` on every run |
+| Durable pause | Durable sleep and queues | Not supported |
+| Where it runs | Inside your service, or DBOS Cloud | Stack orchestrator (`zenml stack set`) |
+| Cross-run reuse | Bring your own store | `get_artifact_version(...).load()` |
+| Serving | Invoke from your own service | `zenml pipeline deploy --name ...` |
+
+<CodeCompare
+  zenmlLabel="ZenML"
+  competitorLabel="DBOS (Python)"
+  zenmlCode={`from typing import Annotated
+
+from zenml import log_metadata, pipeline, step
+from zenml.client import Client
+
+@step
+def research(topic: str) -> Annotated[str, "brief"]:
+    text = call_llm(f"Research: {topic}")
+    # No llm() primitive: attach whatever you want recorded.
+    log_metadata(metadata={"model": "fast", "chars": len(text)})
+    return text
+
+@step
+def draft(brief: str) -> Annotated[str, "draft"]:
+    return call_llm(f"Write a draft from:\\n{brief}")
+
+@step(enable_cache=False)
+def evaluate(text: str) -> Annotated[dict, "scores"]:
+    return score(text)
+
+@pipeline
+def review_pipeline(topic: str):
+    evaluate(draft(research(topic)))
+
+review_pipeline("AI orchestration")
+
+# Re-run after editing evaluate(): research and draft are served
+# from cache. Pull any past run's output back by name:
+Client().get_artifact_version("draft").load()
+
+# Same code on another cloud:
+#   zenml stack set sagemaker && python review_pipeline.py`}
+  competitorCode={`from dbos import DBOS
+
+@DBOS.step()
+def research(topic: str) -> str:
+    return call_llm(f"Research: {topic}")
+
+@DBOS.step()
+def draft(brief: str) -> str:
+    return call_llm(f"Write a draft from:\\n{brief}")
+
+@DBOS.step()
+def evaluate(text: str) -> dict:
+    return score(text)
+
+@DBOS.workflow()
+def review_workflow(topic: str) -> dict:
+    brief = research(topic)
+    text = draft(brief)
+    # Each step is checkpointed to Postgres. If the process
+    # dies here, recovery resumes without re-running the above.
+    return evaluate(text)
+
+# Durability comes from the library plus your Postgres.
+# There is no orchestrator process to operate, and no
+# artifact store: what a step returned is yours to persist.
+DBOS.launch()`}
+/>
+
+<ComparisonCta headline={frontmatter.ctaHeading}>
+If you want crash-proof application workflows with the smallest possible footprint, and you already run Postgres, DBOS is a clean answer. If the work is a Python AI pipeline where you care about which version of an artifact came from which run, and about running the same code on Kubernetes today and Vertex AI next quarter, ZenML is the layer you want underneath it.
+</ComparisonCta>

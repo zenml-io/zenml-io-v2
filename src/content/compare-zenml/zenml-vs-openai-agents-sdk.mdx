@@ -1,0 +1,171 @@
+---
+competitor: "OpenAI Agents SDK"
+competitorLogo: "/compare/openai-agents-sdk.svg"
+title: "ZenML vs OpenAI Agents SDK: build the agent, orchestrate it as a pipeline"
+description: "The OpenAI Agents SDK is a lightweight framework for agents, handoffs, and guardrails. ZenML is the orchestration layer you put around it: versioned artifacts, step caching, lineage across runs, and one stack abstraction targeting Kubernetes, Vertex AI, SageMaker, and AzureML."
+cardSubtitle: "Build the agent with the OpenAI SDK. Orchestrate it, version its outputs, and run it on your cloud with ZenML."
+ctaHeading: "Put a pipeline around your OpenAI agents"
+order: 90
+---
+
+import WhenToUseEach from '../../components/compare/zenml/WhenToUseEach.astro';
+import ComparisonTable from '../../components/compare/zenml/ComparisonTable.astro';
+import CodeCompare from '../../components/compare/zenml/CodeCompare.astro';
+import FeatureWithGraphic from '../../components/compare/zenml/FeatureWithGraphic.astro';
+import ComparisonCta from '../../components/compare/zenml/ComparisonCta.astro';
+import PullQuote from '../../components/compare/zenml/PullQuote.astro';
+import CachedRerun from '../../components/compare/zenml/graphics/openai-agents-sdk/CachedRerun.astro';
+import ArtifactLineage from '../../components/compare/zenml/graphics/openai-agents-sdk/ArtifactLineage.astro';
+
+The OpenAI Agents SDK is a deliberately small framework: agents with instructions and tools, handoffs between them, guardrails on inputs and outputs, and sessions that carry conversation history. It stays out of your way, and for building the agent itself that restraint is the point.
+
+The restraint is also why teams reach for something else once the agent stops being a script. The SDK runs your agent; it does not decide where the run is recorded, what happened to the output, or how you avoid paying for the same work twice. ZenML is the orchestration layer that answers those: your `Runner.run()` goes inside a `@step`, and the pipeline around it gives you a run record, versioned artifacts in your own bucket, a cache keyed on code and inputs, and a stack that targets Kubernetes, Vertex AI, SageMaker, or AzureML.
+
+<WhenToUseEach
+  competitorLabel="OpenAI Agents SDK"
+  zenml={{
+    title: "Use ZenML if you are",
+    items: [
+      "Running agent work as a scheduled or served workload rather than a script you launch by hand",
+      "Needing to know which output came from which run, from which inputs, weeks later",
+      "Re-running often enough that skipping unchanged steps saves real money",
+      "Deploying into your own cloud (Kubernetes, Vertex AI, SageMaker, AzureML) for security or compliance",
+      "Wiring the agent into a wider pipeline: retrieval, evaluation, batch inference, a training step",
+    ],
+  }}
+  competitor={{
+    title: "Use the OpenAI Agents SDK if you are",
+    items: [
+      "Building the agent itself: instructions, tools, handoffs between specialised agents",
+      "Wanting guardrails that validate inputs and outputs as a first-class concept",
+      "Relying on Sessions to carry conversation history across turns",
+      "Prototyping quickly, with the smallest possible framework in the way",
+    ],
+  }}
+/>
+
+<PullQuote
+  quote="The SDK runs the agent. ZenML records what the run produced, and makes sure the next run does not pay for the parts that did not change."
+/>
+
+<FeatureWithGraphic title="Re-running without starting from step one">
+  <CachedRerun slot="graphic" />
+
+  A multi-step agent pipeline that crashes at the end is expensive to restart, and so is tuning the last step while the first three keep re-executing.
+
+  <Fragment slot="bullets">
+    - **Cache key:** ZenML hashes a step's code, inputs, and parameters. If nothing changed, the stored artifact is returned and the body never executes, so a re-run after a failure does not re-pay for the completed steps above it.
+    - **Not crash recovery:** Worth being exact. ZenML does not resume a pipeline mid-step the way a durable execution engine does. It re-runs, and the cache is what makes that cheap.
+    - **The agent step:** Mark it `@step(enable_cache=False)` when it must execute every time, and keep the cache on the deterministic steps around it.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Artifacts you can open, not just traces of what happened" reverse={true}>
+  <ArtifactLineage slot="graphic" />
+
+  The SDK's tracing shows you the shape of a run: which agent ran, which tools were called, where a handoff happened. That is the right tool for debugging a single run. It is not a store of what the run produced.
+
+  <Fragment slot="bullets">
+    - **Artifacts:** Every step output is written to your artifact store, versioned, and attached to the run. Name it with `Annotated[str, "draft"]` and it becomes addressable across runs.
+    - **Cross-run load:** `get_artifact_version(...).load()` on the ZenML client pulls any earlier run's output into a notebook or a later pipeline.
+    - **Serving:** `zenml pipeline deploy` stands the pipeline up behind an endpoint, and every request becomes a run with the same artifacts and lineage as a batch job.
+  </Fragment>
+</FeatureWithGraphic>
+
+## What neither of these does
+
+The v1 version of this page argued for durable, compute-free waits on human approval. That is worth correcting rather than quietly dropping, because it is a real gap.
+
+ZenML has **no durable wait primitive**. If your agent must pause for a human for hours or days without holding a process open, neither ZenML nor the Agents SDK solves it. A durable execution engine does, and Temporal, Restate, DBOS, and Inngest all have a genuine answer. ZenML sits alongside that rather than replacing it.
+
+## What makes ZenML different
+
+<ComparisonTable
+  competitorLabel="OpenAI Agents SDK"
+  rows={[
+    { feature: "Versioned artifacts and lineage across runs", zenml: true, competitor: false, note: "Step outputs are stored and loadable by name; the SDK traces a run." },
+    { feature: "Caching that skips unchanged steps on a re-run", zenml: true, competitor: false, note: "ZenML hashes code and inputs." },
+    { feature: "One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML", zenml: true, competitor: false, note: "Configure once, every pipeline uses it." },
+    { feature: "Serve it and get lineage per request", zenml: true, competitor: false, note: "`zenml pipeline deploy` makes every request a tracked run." },
+    { feature: "Works with any agent framework, not just one", zenml: true, competitor: false, note: "A step is ordinary Python." },
+    { feature: "Agents, tools, and handoffs between specialised agents", zenml: false, competitor: true, note: "The SDK's whole point. Use it inside the step." },
+    { feature: "Input and output guardrails", zenml: false, competitor: true, note: "No ZenML equivalent." },
+    { feature: "Sessions carrying conversation history", zenml: false, competitor: true, note: "ZenML runs are not conversational." },
+    { feature: "Durable human-in-the-loop waiting", zenml: false, competitor: false, note: "Neither one. Use a durable execution engine for this." },
+  ]}
+/>
+
+## How the two surfaces map
+
+| Concept | OpenAI Agents SDK | ZenML |
+|---|---|---|
+| Unit of work | `Runner.run()` | `@step` (the agent runs inside it) |
+| Boundary | An agent and its handoffs | `@pipeline` |
+| Validation | Input and output guardrails | Artifact types on the step signature |
+| Outputs | `RunResult` in memory | Versioned artifacts in your bucket |
+| Avoiding repeat work | Not applicable | `enable_cache` across runs |
+| Observability | Traces of a single run | Runs, steps, and artifacts across runs |
+| Where it runs | Your process | Stack orchestrator (`zenml stack set`) |
+| Serving | Your own wrapper | `zenml pipeline deploy --name ...` |
+
+<CodeCompare
+  zenmlLabel="ZenML (wrapping the SDK)"
+  competitorLabel="OpenAI Agents SDK alone"
+  zenmlCode={`from typing import Annotated
+
+from agents import Agent, Runner
+from zenml import pipeline, step
+from zenml.client import Client
+
+researcher = Agent(name="Researcher", instructions="Research the topic.")
+writer = Agent(name="Writer", instructions="Write a brief.")
+
+@step
+def gather_context(topic: str) -> Annotated[str, "context"]:
+    return retrieve_documents(topic)
+
+@step(enable_cache=False)
+def run_agent(context: str, topic: str) -> Annotated[str, "draft"]:
+    result = Runner.run_sync(
+        researcher, f"{context}\\n\\nTopic: {topic}"
+    )
+    return str(Runner.run_sync(writer, result.final_output).final_output)
+
+@step
+def evaluate(draft: str) -> Annotated[dict, "scores"]:
+    return score(draft)
+
+@pipeline
+def agent_pipeline(topic: str):
+    evaluate(run_agent(gather_context(topic), topic))
+
+agent_pipeline("AI orchestration")
+
+# Edit evaluate() and re-run: gather_context is cached.
+Client().get_artifact_version("draft").load()
+
+# Same code on your cloud:
+#   zenml stack set vertex_stack && python agent_pipeline.py`}
+  competitorCode={`from agents import Agent, Runner
+
+researcher = Agent(name="Researcher", instructions="Research the topic.")
+writer = Agent(name="Writer", instructions="Write a brief.")
+
+topic = "AI orchestration"
+context = retrieve_documents(topic)
+
+result = Runner.run_sync(researcher, f"{context}\\n\\nTopic: {topic}")
+draft = str(Runner.run_sync(writer, result.final_output).final_output)
+
+scores = score(draft)
+
+# Tracing shows which agent ran, which tools fired, and where
+# the handoff happened. What there isn't: a versioned artifact
+# you can load back by name next month, a cache that skips
+# retrieval on the next run, or a way to put this on Vertex AI
+# without writing the deployment yourself.`}
+/>
+
+<ComparisonCta headline={frontmatter.ctaHeading}>
+Keep the OpenAI Agents SDK for building the agent: the handoffs, the guardrails, the tools. Add ZenML when it becomes a workload rather than a script, when someone needs to know what a run produced, and when it has to run on your own infrastructure with the outputs stored somewhere you control. If you also need durable waits, put a durable execution engine underneath both.
+</ComparisonCta>

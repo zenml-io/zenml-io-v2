@@ -1,0 +1,196 @@
+---
+competitor: "Inngest"
+competitorLogo: "https://assets.zenml.io/compare/aab08903/inngest-mark.png"
+title: "ZenML vs Inngest: AI pipeline orchestration vs event-driven durable functions"
+description: "Inngest is an event-driven durable functions platform with steps, sleeps, and flow control across TypeScript, Python, and Go. ZenML is an open-source AI orchestration layer for Python, with versioned artifacts, step caching, lineage across runs, and one stack abstraction targeting Kubernetes, Vertex AI, SageMaker, and AzureML."
+cardSubtitle: "AI orchestration for Python pipelines, with versioned artifacts, step caching, and a portable stack abstraction."
+ctaHeading: "The orchestration layer underneath your AI workloads"
+order: 50
+---
+
+import WhenToUseEach from '../../components/compare/zenml/WhenToUseEach.astro';
+import ComparisonTable from '../../components/compare/zenml/ComparisonTable.astro';
+import CodeCompare from '../../components/compare/zenml/CodeCompare.astro';
+import FeatureWithGraphic from '../../components/compare/zenml/FeatureWithGraphic.astro';
+import ComparisonCta from '../../components/compare/zenml/ComparisonCta.astro';
+import PullQuote from '../../components/compare/zenml/PullQuote.astro';
+import RuntimeUnderHarness from '../../components/compare/zenml/graphics/inngest/RuntimeUnderHarness.astro';
+import AgentPrimitives from '../../components/compare/zenml/graphics/inngest/AgentPrimitives.astro';
+import CustomerDataPath from '../../components/compare/zenml/graphics/inngest/CustomerDataPath.astro';
+import ArtifactLineage from '../../components/compare/zenml/graphics/inngest/ArtifactLineage.astro';
+
+Inngest is an event-driven durable functions platform. You send events, functions react to them, and each `step.run` is memoized so a retry does not repeat completed work. It gives you sleeps that release compute, waits on future events, throttling and concurrency controls, and SDKs across TypeScript, Python, and Go. For application workflows driven by events, that is a well-shaped platform.
+
+ZenML sits at a different layer. It orchestrates Python AI workloads as pipelines of steps, and it is organised around the artifact rather than the event. A step's return value is stored and versioned in your own bucket, unchanged steps are served from cache rather than re-executed, and the same pipeline runs on Kubernetes, Vertex AI, SageMaker, or AzureML by swapping a stack.
+
+Both memoize completed work. The difference is what survives afterwards: Inngest keeps the step result so the run can continue, ZenML keeps it so you can go back and ask what a run produced.
+
+<WhenToUseEach
+  competitorLabel="Inngest"
+  zenml={{
+    title: "Use ZenML if you are",
+    items: [
+      "Orchestrating Python AI workloads (training, batch inference, evals, agent workflows) and want versioned artifacts and lineage by default",
+      "Iterating on a pipeline where re-running unchanged steps is the expensive part, and step caching pays for itself",
+      "Targeting Kubernetes, Vertex AI, SageMaker, or AzureML and want one pipeline definition that runs on all of them",
+      "Keeping artifacts and run history inside your own infrastructure rather than a managed cloud",
+    ],
+  }}
+  competitor={{
+    title: "Use Inngest if you are",
+    items: [
+      "Building event-driven application workflows where fan-out, waits on events, and throttling are the hard part",
+      "Wanting durable sleeps that release compute for hours or days",
+      "Operating across TypeScript and Go as well as Python, under one contract",
+      "Happy with a managed platform coordinating execution, and wanting no orchestrator of your own",
+    ],
+  }}
+/>
+
+<PullQuote
+  quote="Inngest memoizes a step so the run can carry on. ZenML stores it so you can come back in a month and ask what the run produced."
+/>
+
+<FeatureWithGraphic title="Pipelines you own vs functions the platform drives">
+  <RuntimeUnderHarness slot="graphic" />
+
+  Inngest's model inverts control: your functions are registered, and the Inngest platform decides when to invoke each step, tracking progress on its side. ZenML's model keeps the pipeline as a program you run, with a stack orchestrator executing it and a server recording what happened.
+
+  <Fragment slot="bullets">
+    - **Who drives:** Inngest calls back into your app step by step. ZenML submits the pipeline to the orchestrator in your stack (Kubernetes, Vertex AI, SageMaker, AzureML, Airflow, Kubeflow) and records the run.
+    - **Where the record lives:** Inngest's run history lives in the Inngest platform. ZenML's lives in a server you can self-host, with artifacts in your own bucket.
+    - **What you adopt:** Inngest is a platform your application routes work through. ZenML is a library your pipelines are written in.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Pipeline primitives vs polyglot durable functions" reverse={true}>
+  <AgentPrimitives slot="graphic" />
+
+  Inngest's primitives are shaped for applications and span three languages. ZenML's are shaped for Python pipelines and stop at the boundary of the language, which is the trade it makes deliberately.
+
+  <Fragment slot="bullets">
+    - **`@step` / `@pipeline`:** Ordinary Python functions. No determinism constraint on the body, and the return value is captured as a versioned artifact.
+    - **`enable_cache`:** Unchanged code and inputs are served from cache on every run, not only on a retry.
+    - **`StepRetryConfig`:** Per-step retries with delay and backoff. Inngest gives you more here: sleeps, waits on events, throttling, and concurrency keys have no ZenML equivalent.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Where your data actually sits">
+  <CustomerDataPath slot="graphic" />
+
+  For AI workloads the intermediate values are the sensitive part: prompts, retrieved documents, customer records, model outputs. Where those live is a procurement question as much as a technical one.
+
+  <Fragment slot="bullets">
+    - **ZenML:** Artifacts are written to your artifact store, which is your S3, GCS, or Azure Blob bucket. Self-host the server and the run metadata stays with you too.
+    - **Inngest:** Step outputs pass through the Inngest platform as part of how the run is coordinated. Inngest offers self-hosting, and the managed cloud is the default path.
+    - **Why it matters:** In a regulated environment the difference between "our bucket" and "a vendor's coordination layer" tends to decide the review.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Versioned artifacts vs event-sourced steps" reverse={true}>
+  <ArtifactLineage slot="graphic" />
+
+  Both keep a record of a run. Inngest's is an event stream of what the platform did. ZenML's is a set of artifacts you can open.
+
+  <Fragment slot="bullets">
+    - **Versions:** Re-run a step with changed inputs and you get a new version of the same named artifact rather than an overwrite. Both remain retrievable.
+    - **Cross-run load:** `get_artifact_version(...).load()` pulls an earlier run's output into a notebook or a later pipeline, by name.
+    - **Serving:** `zenml pipeline deploy` stands a pipeline up behind an endpoint, and every request becomes a run with the same artifacts and lineage as a batch job.
+  </Fragment>
+</FeatureWithGraphic>
+
+## What makes ZenML different
+
+<ComparisonTable
+  competitorLabel="Inngest"
+  rows={[
+    { feature: "Caching on ordinary re-runs, not only on retry", zenml: true, competitor: "partial", note: "Inngest memoizes steps within a run. ZenML caches across runs, keyed on code and inputs." },
+    { feature: "Versioned artifacts and lineage across runs", zenml: true, competitor: false, note: "Step outputs are stored and loadable by name; Inngest keeps step results in run history." },
+    { feature: "One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML", zenml: true, competitor: false, note: "Configure once, every pipeline uses it." },
+    { feature: "Artifacts and run data stay in your own infrastructure", zenml: true, competitor: "partial", note: "ZenML writes to your bucket. Inngest self-hosting exists; the managed cloud is the default." },
+    { feature: "Durable sleeps and waits on future events", zenml: false, competitor: true, note: "Inngest's core strength. ZenML has no durable wait primitive." },
+    { feature: "Throttling, concurrency keys, and flow control", zenml: false, competitor: true, note: "Delegated to the stack orchestrator in ZenML." },
+    { feature: "Event-driven triggers and fan-out", zenml: false, competitor: true, note: "ZenML pipelines are invoked, scheduled, or deployed; they do not subscribe to events." },
+    { feature: "TypeScript and Go as well as Python", zenml: false, competitor: true, note: "ZenML is Python only." },
+    { feature: "Open source, self-hostable", zenml: true, competitor: true },
+  ]}
+/>
+
+## How the two surfaces map
+
+| Concept | Inngest | ZenML |
+|---|---|---|
+| Workflow boundary | `inngest.create_function` | `@pipeline` |
+| Unit of work | `step.run` (memoized) | `@step` (cached, versioned output) |
+| Trigger | An event you send | An invocation, schedule, or deployment |
+| Skipping completed work | Step memoization within a run | `enable_cache` across runs |
+| Durable pause | `step.sleep`, `step.wait_for_event` | Not supported |
+| Where it runs | Your app, driven by the platform | Stack orchestrator (`zenml stack set`) |
+| Outputs | Step results in run history | Versioned artifacts in your bucket |
+| Cross-run reuse | Bring your own store | `get_artifact_version(...).load()` |
+
+<CodeCompare
+  zenmlLabel="ZenML"
+  competitorLabel="Inngest (Python SDK)"
+  zenmlCode={`from typing import Annotated
+
+from zenml import pipeline, step
+from zenml.client import Client
+
+@step
+def research(topic: str) -> Annotated[str, "brief"]:
+    return call_llm(f"Research: {topic}")
+
+@step
+def draft(brief: str) -> Annotated[str, "draft"]:
+    return call_llm(f"Write a draft from:\\n{brief}")
+
+@step(enable_cache=False)
+def evaluate(text: str) -> Annotated[dict, "scores"]:
+    return score(text)
+
+@pipeline
+def review_pipeline(topic: str):
+    evaluate(draft(research(topic)))
+
+review_pipeline("AI orchestration")
+
+# Artifacts land in your own bucket, versioned, and any past
+# run's output comes back by name:
+Client().get_artifact_version("draft").load()
+
+# Serve it, and every request becomes a tracked run:
+#   zenml pipeline deploy run.review_pipeline --name review-svc`}
+  competitorCode={`import inngest
+
+client = inngest.Inngest(app_id="review")
+
+@client.create_function(
+    fn_id="review",
+    trigger=inngest.TriggerEvent(event="review/requested"),
+)
+async def review(ctx: inngest.Context) -> dict:
+    topic = ctx.event.data["topic"]
+
+    brief = await ctx.step.run(
+        "research", lambda: call_llm(f"Research: {topic}")
+    )
+    text = await ctx.step.run(
+        "draft", lambda: call_llm(f"Write a draft from:\\n{brief}")
+    )
+
+    # Durable wait: releases compute, resumes on the event.
+    await ctx.step.wait_for_event(
+        "await-approval", event="review/approved", timeout="24h"
+    )
+
+    return await ctx.step.run("evaluate", lambda: score(text))
+
+# Each step.run is memoized, so a retry does not repeat
+# completed work. The platform drives the function and holds
+# the run history.`}
+/>
+
+<ComparisonCta headline={frontmatter.ctaHeading}>
+If your workflows are event-driven and the hard parts are waits, fan-out and flow control across more than one language, Inngest is the platform to adopt. If the work is a Python AI pipeline where you care about which artifact came from which run, about not re-paying for steps that did not change, and about keeping all of it in your own infrastructure, ZenML is the layer you want underneath it.
+</ComparisonCta>
