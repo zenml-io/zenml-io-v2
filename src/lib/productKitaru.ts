@@ -123,7 +123,7 @@ export const PRODUCT_KITARU_MARKDOWN = {
   journey: [
     {
       name: "Act 1 — Get in",
-      body: `\`${KITARU_INSTALL_CMD}\` installs the CLI, the MCP server and the coding-agent skills, then prints the two ways to get a server: `kitaru login --local` in Docker, or the managed cloud. Two questions decide your path: do you have a repo with an agent, and do you have traces? No repo, or an unrecognised framework, and you start from the template repo — a small PydanticAI agent already wrapped, with a trace file beside it. Registering the agent stores an entrypoint module path server-side; nothing is written into your repo. Then \`kitaru worker start\` runs a plain Python process in your virtualenv, which polls — the server never connects inbound.`,
+      body: `\`${KITARU_INSTALL_CMD}\` installs the CLI, the MCP server and the coding-agent skills, then prints the two ways to get a server: \`kitaru login --local\` in Docker, or the managed cloud. Two questions decide your path: do you have a repo with an agent, and do you have traces? No repo, or an unrecognised framework, and you start from the template repo — a small PydanticAI agent already wrapped, with a trace file beside it. Registering the agent stores an entrypoint module path server-side; nothing is written into your repo. Then \`kitaru worker start\` runs a plain Python process in your virtualenv, which polls — the server never connects inbound.`,
     },
     {
       name: "Act 2 — Traces in",
