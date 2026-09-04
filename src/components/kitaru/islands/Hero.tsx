@@ -136,24 +136,25 @@ export function Hero() {
               <span className="rounded-full bg-ember px-2 py-0.5 text-[11px] font-semibold text-accent-foreground">
                 New
               </span>
-              Introducing the new Kitaru — read the launch post
+              Introducing the new Kitaru: read the launch post
               <ArrowRight class="size-3.5 text-ember transition-transform group-hover:translate-x-0.5" />
             </a>
             <p className="font-mono text-[12px] font-semibold tracking-[0.14em] text-ember uppercase">
-              Kitaru by ZenML · Replay-based evals for AI agents
+              Kitaru by ZenML · Replay your agents on production data
             </p>
           </Reveal>
 
           <Reveal delay={80}>
             <h1 className="mt-7 max-w-[920px] text-balance text-[2.1rem] leading-[1.17] font-medium tracking-[-0.02em] md:text-[46px] md:leading-[54px]">
-              Your agent's best eval data is already in production
+              Better, faster, cheaper agents, tested on production data
             </h1>
           </Reveal>
 
           <Reveal delay={160}>
             <p className="mt-5 max-w-[600px] text-[17px] leading-[27px] text-ink-soft">
-              Turn real traces into replayable evals and test changes against
-              what your agent has actually seen.
+              Your coding agent investigates real sessions, finds what repeats,
+              and replays the fix, so you know what improved, what regressed,
+              and what it costs before it ships.
             </p>
           </Reveal>
 

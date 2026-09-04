@@ -113,6 +113,12 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
       "Not to get started. Import your traces and you already get the session views, investigations, cohorts and evaluators; your code stays untouched. An adapter enters only when you want to replay sessions against a change: one line for the supported frameworks, or a small custom one for CLI-harness agents like Claude Code or Gemini CLI.",
   },
   {
+    question:
+      "We don't have agents, just LLM calls inside a workflow. Is Kitaru for us?",
+    answer:
+      "Yes. A one-shot call with a prompt, a model and a structured output, say an address pulled out of a PDF, is a session like any other. Import it from Langfuse or wrap the call, group the ones that matter into a cohort, and replay them against a cheaper model or a new prompt before the change ships. Most teams start exactly here. Tool calls and multi-step agents add replay policies on top; they are not a requirement.",
+  },
+  {
     question: "My agent writes to real systems. Isn't replay dangerous?",
     answer:
       "Replay answers the agent's tool calls from the recording, so nothing touches real systems. Per-tool policies control the rest: answer from history and stop the run when a call has no recorded answer, pin a static result, or deliberately pass a specific tool through live. We don't test in prod. We make prod's past your test bench.",
@@ -130,7 +136,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "What frameworks does it work with?",
     answer:
-      "Recording adapters wrap your existing agent in one line, with no rewrite. Python: PydanticAI, the OpenAI Agents SDK, and LangGraph (including LangChain agents and Deep Agents). TypeScript: the Vercel AI SDK and Mastra. For a custom harness or a framework we don't support yet, Kitaru ships a skill that walks your coding assistant through generating a new adapter for it.",
+      "Recording adapters wrap your existing agent in one line, with no rewrite. Python: PydanticAI, the OpenAI Agents SDK, and LangGraph (including LangChain agents and Deep Agents). TypeScript: the Vercel AI SDK and Mastra. Any framework at all, if the agent already reports to Langfuse, LangSmith, Braintrust, Logfire or Phoenix: the importer-backed adapter wraps the entrypoint and pulls the provider's trace in as the session, at the cost of replay being passthrough only. For a custom harness or a framework we don't support yet, Kitaru ships a skill that walks your coding assistant through generating a new adapter for it.",
   },
   {
     question: "Can I use traces I already have?",
@@ -155,7 +161,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "Who is this for, and who isn't it for?",
     answer:
-      "Teams shipping agents to customers whose regression process is honestly a few samples and a vibe check. Kitaru installs the rigor loop. It fits badly for single-dev prototypes and for teams buying a fully managed agent platform: if you're buying an agent platform, Kitaru will feel low-level. If you're building one, that's the point.",
+      "Teams shipping agents, or LLM steps inside a product workflow, to customers whose regression process is honestly a few samples and a vibe check. Kitaru installs the rigor loop. It fits badly for single-dev prototypes and for teams buying a fully managed agent platform: if you're buying an agent platform, Kitaru will feel low-level. If you're building one, that's the point.",
   },
   {
     question: "Something's broken. How do I reach you?",
