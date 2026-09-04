@@ -117,7 +117,7 @@ describe("Kitaru product-page snippets", () => {
       async def run(task):
           stream = runner.query(
               prompt=task,
-              options=ClaudeAgentOptions(model="claude-sonnet-4-5"),
+              options=ClaudeAgentOptions(model="claude-fable-5-1"),
           )
           async for message in stream:
               print(message)",
@@ -126,7 +126,7 @@ describe("Kitaru product-page snippets", () => {
       async def run(task):
           stream = query(
               prompt=task,
-              options=ClaudeAgentOptions(model="claude-sonnet-4-5"),
+              options=ClaudeAgentOptions(model="claude-fable-5-1"),
           )
           async for message in stream:
               print(message)",
