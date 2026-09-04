@@ -125,7 +125,7 @@ export function Hero() {
 
       {/* Subtracting the sticky navbar height centers the hero in the space
           actually visible on the first screen. */}
-      <div className="relative mx-auto flex min-h-[calc(100svh-var(--nav-h))] w-full max-w-[1440px] flex-col items-center justify-center px-6 py-12 text-center md:py-14 lg:flex-row lg:items-center lg:gap-16 lg:px-12 lg:text-left">
+      <div className="relative mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center px-6 py-14 text-center md:py-20 lg:min-h-[640px] lg:py-24 lg:flex-row lg:items-center lg:gap-16 lg:px-12 lg:text-left">
         <div className="flex flex-col items-center lg:flex-1 lg:items-start">
           <Reveal className="flex flex-col items-center gap-4 lg:items-start">
             <a
@@ -139,9 +139,6 @@ export function Hero() {
               Introducing the new Kitaru: read the launch post
               <ArrowRight class="size-3.5 text-ember transition-transform group-hover:translate-x-0.5" />
             </a>
-            <p className="font-mono text-[12px] font-semibold tracking-[0.14em] text-ember uppercase">
-              Replay your agents on production data
-            </p>
           </Reveal>
 
           <Reveal delay={80}>
