@@ -131,7 +131,7 @@ export function Hero() {
             <a
               href="/blog/introducing-the-new-kitaru"
               data-analytics="Kitaru-Hero-Launch-Post"
-              className="group inline-flex items-center gap-2 rounded-full border border-ember/40 bg-ember-light/40 py-1.5 pr-3.5 pl-2 text-[13px] text-ink transition-colors hover:border-ember/70"
+              className="group inline-flex items-center gap-2 rounded-full border border-ember/40 bg-ember-light/40 py-1.5 pr-3.5 pl-2 text-[14px] text-ink transition-colors hover:border-ember/70"
             >
               <span className="rounded-full bg-ember px-2 py-0.5 text-[11px] font-semibold text-accent-foreground">
                 New
@@ -140,7 +140,7 @@ export function Hero() {
               <ArrowRight class="size-3.5 text-ember transition-transform group-hover:translate-x-0.5" />
             </a>
             <p className="font-mono text-[12px] font-semibold tracking-[0.14em] text-ember uppercase">
-              Kitaru by ZenML · Replay your agents on production data
+              Replay your agents on production data
             </p>
           </Reveal>
 
@@ -166,11 +166,8 @@ export function Hero() {
                 MCP server and coding-agent skills locally. Cloud signup is
                 the second door. */}
             <CopyCommand cmd={KITARU_INSTALL_CMD} />
-            <p className="text-[12.5px] text-muted-foreground">
-              Free, local, open source. Then tell your coding agent:{" "}
-              <span className="font-mono text-ink">
-                Use kitaru-investigation to investigate this agent.
-              </span>
+            <p className="text-[14px] text-muted-foreground">
+              Free, local, open source.
             </p>
             <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
               <a
@@ -181,7 +178,7 @@ export function Hero() {
                 Or try the hosted version free
                 <ArrowRight class="size-4 transition-transform group-hover:translate-x-0.5" />
               </a>
-              <span className="text-[12.5px] text-muted-foreground">
+              <span className="text-[14px] text-muted-foreground">
                 {KITARU_TRIAL_NOTE}
               </span>
             </div>
