@@ -1,9 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
-import {
-  KITARU_INSTALL_CMD,
-  KITARU_LINKS,
-  KITARU_TRIAL_NOTE,
-} from "../../../lib/kitaru-landing";
+import { KITARU_INSTALL_CMD, KITARU_LINKS } from "../../../lib/kitaru-landing";
 import { KITARU_VIDEO } from "../../../lib/productKitaru";
 import { ArrowRight } from "./icons";
 import { KitaruGrain } from "./KitaruGrain";
@@ -175,9 +171,6 @@ export function Hero() {
                 Or try the hosted version free
                 <ArrowRight class="size-4 transition-transform group-hover:translate-x-0.5" />
               </a>
-              <span className="text-[14px] text-muted-foreground">
-                {KITARU_TRIAL_NOTE}
-              </span>
             </div>
           </Reveal>
         </div>
