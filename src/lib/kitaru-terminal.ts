@@ -60,7 +60,7 @@ export const TERMINAL: readonly TerminalLine[] = [
   { kind: "out", text: "v1       90 / 90 fail" },
   { kind: "out", text: "pr-311    4 / 90 fail" },
   { kind: "blank", text: "" },
-  { kind: "agent", text: "Same cohort, cheaper model:" },
+  { kind: "agent", text: "Suggested improvement: same cohort, cheaper model." },
   { kind: "out", text: "gpt-5        4 / 90 fail    $0.31 per session" },
   { kind: "out", text: "gpt-5-mini   4 / 90 fail    $0.09 per session" },
   { kind: "win", text: "same quality, a third of the cost" },
@@ -78,12 +78,6 @@ export const FIRST_RUN_OUTCOMES = [
     label: "not 1,824",
     title: "One finding, with the evidence",
     body: "The skill reads a handful, says what repeats, and pins it to the trace. You judge; your verdict becomes a cohort and an evaluator.",
-  },
-  {
-    stat: "90 → 4",
-    label: "failing after the fix",
-    title: "A replay you can put in CI",
-    body: "Your real code runs again against the recorded world with one thing changed. The cohort that caught it becomes the gate.",
   },
   {
     stat: "3×",
