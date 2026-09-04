@@ -6,6 +6,10 @@
  * 1. `window.__zenmlPlausibleTrack(eventName, props?)` — consent-safe helper
  * 2. Delegated click handler: any element with `data-analytics="EventName"`
  *    automatically fires `plausible("EventName")` on click.
+ * 3. Delegated copy tracking: a click on any `[data-copy]` button (the install
+ *    command chips on the homepage, product pages, compare pages, and the
+ *    Kitaru hero) fires `Install Command Copied` with the command and product,
+ *    so Plausible can show how many visitors copy the one-liner.
  *
  * Consent-safe / existence-safe: only fires if `window.plausible` exists.
  * Plausible itself is loaded directly by SiteHeaderScripts on production hostnames.
@@ -29,12 +33,20 @@
     };
 
     document.addEventListener("click", function (e) {
-      var el = e.target && e.target.closest
-        ? e.target.closest("[data-analytics]")
-        : null;
-      if (!el) return;
-      var name = el.getAttribute("data-analytics");
-      if (name) window.__zenmlPlausibleTrack(name);
+      if (!e.target || !e.target.closest) return;
+      var el = e.target.closest("[data-analytics]");
+      if (el) {
+        var name = el.getAttribute("data-analytics");
+        if (name) window.__zenmlPlausibleTrack(name);
+      }
+      var copy = e.target.closest("[data-copy]");
+      if (copy) {
+        var cmd = copy.getAttribute("data-copy") || "";
+        window.__zenmlPlausibleTrack("Install Command Copied", {
+          command: cmd,
+          product: cmd.indexOf("kitaru") !== -1 ? "kitaru" : "zenml",
+        });
+      }
     });
   }
 </script>
