@@ -20,7 +20,7 @@ export type TerminalLine = {
 export const FIRST_RUN = {
   eyebrow: "The first five minutes",
   headline: "Install, then let your coding agent do the investigation.",
-  lede: "One command on your laptop. One sentence to Claude Code, Codex, or Cursor. Kitaru imports the runs your agent already made, and the skill walks the evidence with you.",
+  lede: "One command on your laptop. One sentence to Claude Code, Codex, or Cursor. Kitaru imports the runs your agent already made, the skill finds what repeats, and the fix comes back as a PR with the numbers that justify it.",
   prompt: "Use kitaru-investigation to investigate this agent.",
 } as const;
 
@@ -71,6 +71,11 @@ export const TERMINAL: readonly TerminalLine[] = [
   },
   { kind: "out", text: "v1      90 / 90 fail" },
   { kind: "out", text: "pr-311   4 / 90 fail      4 opened for you to read" },
+  { kind: "blank", text: "" },
+  {
+    kind: "agent",
+    text: "Opened PR #311 with the before and after numbers. One more thing: on this cohort gpt-5-mini matches gpt-5 at a third of the cost. Want that as a second experiment?",
+  },
 ];
 
 export const FIRST_RUN_OUTCOMES = [
@@ -91,5 +96,11 @@ export const FIRST_RUN_OUTCOMES = [
     label: "failing after the fix",
     title: "A replay you can put in CI",
     body: "Your real code runs again against the recorded world, with one thing changed. The cohort that caught the failure becomes the gate that keeps it caught.",
+  },
+  {
+    stat: "1 PR",
+    label: "opened at the end",
+    title: "A fix, a cheaper model, a caught regression",
+    body: "The same loop answers the questions you actually have. Would a cheaper model score the same on these sessions? Did last week's prompt change quietly regress a case? Is this bug real? Each answer arrives with the sessions that prove it, and when it is a fix, as a PR you review.",
   },
 ] as const;

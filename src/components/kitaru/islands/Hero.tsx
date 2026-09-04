@@ -152,8 +152,9 @@ export function Hero() {
 
           <Reveal delay={160}>
             <p className="mt-5 max-w-[600px] text-[17px] leading-[27px] text-ink-soft">
-              Replay real sessions against a new model or prompt and see what
-              improves, what regresses, and what it costs, before it ships.
+              Your coding agent investigates real sessions, finds what repeats,
+              and replays the fix, so you know what improved, what regressed,
+              and what it costs before it ships.
             </p>
           </Reveal>
 
