@@ -65,7 +65,7 @@ export const KITARU_LINKS = {
 export const PRODUCT_KITARU_SEO = {
   title: "Kitaru: replay-based evals for AI agents | ZenML",
   description:
-    "Replay-based evals for AI agents: your production traces, re-run against your next change. Built for agents that write into a system of record, where testing in production would create phantom bookings and duplicate claims. Import the runs your agent already made, turn what your team notices into an evaluator, then compare two experiment runs to see what a new model or prompt would have done. Open source, self-hosted, built by the ZenML team.",
+    "Replay-based evals for AI agents and LLM workflows: your production traces, re-run against your next change, whether the agent is a tool-using loop or one LLM call inside a product flow. Built for agents that write into a system of record, where testing in production would create phantom bookings and duplicate claims. Import the runs your agent already made, turn what your team notices into an evaluator, then compare two experiment runs to see what a new model or prompt would have done. Open source, self-hosted, built by the ZenML team.",
   // OG cards need JPEG, not AVIF — social platforms don't render AVIF (PR #73).
   ogImage: "https://assets.zenml.io/content/og/439a52c0/kitaru-product-og.jpg",
 } as const;
@@ -84,7 +84,7 @@ export const PRODUCT_KITARU_MARKDOWN = {
   installCmd: KITARU_INSTALL_CMD,
   license: KITARU_LICENSE,
   summary: [
-    "Kitaru turns your agent's production history into its test suite. Import the traces you already have, and each execution becomes a session: the top-level replayable object, with its tool calls, model calls and subagent calls as nodes underneath.",
+    "Kitaru turns your agent's production history into its test suite. Import the traces you already have, and each execution becomes a session: the top-level replayable object, with its tool calls, model calls and subagent calls as nodes underneath. A single LLM call inside a workflow, say an address extracted from a PDF, is a session too; tools and multi-step agents are not a requirement.",
     "It is built first for agents that turn unstructured inbound into structured writes in a system of record — emails and PDFs into a freight booking, documents into filings, claims into claim records. Those teams cannot test in production, because a live re-run would create a phantom booking or a duplicate claim. They are also the teams for whom evaluation is cheapest: a structured write can be compared field by field against what production actually did, so most of the surface needs no model-graded judge at all.",
     "And the labels already exist. When an ops person corrects the agent's write by hand, that corrected record is ground truth stated by a domain expert in the team's own schema. It accumulates daily in the system of record and no eval tool has ever asked for it. Import the traces, join them against the corrected records, and the eval set comes out of work somebody did anyway.",
     "The centre of the product is an interview, not a form. You read roughly twenty sessions out of thousands and write plain observations — no labels, no dropdowns, no schema. The agent organizes what you noticed into cohorts and drafts a criterion; you confirm the exact wording, and that confirmation is what makes it real. An agent cannot agree with itself on your behalf.",
