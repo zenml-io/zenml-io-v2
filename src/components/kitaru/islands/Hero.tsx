@@ -152,8 +152,9 @@ export function Hero() {
 
           <Reveal delay={160}>
             <p className="mt-5 max-w-[600px] text-[17px] leading-[27px] text-ink-soft">
-              Turn real traces into replayable evals and test changes against
-              what your agent has actually seen.
+              Turn real traces into replayable evals and test a new model or
+              prompt against what your agent has actually seen. A single LLM
+              call counts as an agent here.
             </p>
           </Reveal>
 

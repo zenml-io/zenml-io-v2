@@ -840,7 +840,7 @@ export function TwoDoors() {
           eyebrow="Start where you are"
           heading="Already have traces? Good. Starting fresh? Also good."
           emphasis="Starting fresh? Also good."
-          description="Import what your current tools already collected, or wrap your agent in one line and record new runs. Both roads end at the same thing: sessions you can replay."
+          description="Import what your current tools already collected, or wrap your agent in one line and record new runs. One LLM call counts as an agent here. Both roads end at the same thing: sessions you can replay."
           classOverrides={{
             eyebrow:
               "inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase",
