@@ -21,13 +21,13 @@ const lineClass: Record<string, string> = {
 
 <section id="first-run" class="relative w-full bg-surface text-foreground">
   <div class="mx-auto w-full max-w-[1440px] px-6 py-20 md:py-28">
-    <div class="reveal max-w-3xl">
+    <div class="reveal mx-auto max-w-3xl text-center">
       <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">{FIRST_RUN.eyebrow}</span>
-      <h2 class="mt-5 text-balance text-3xl leading-[1.1] font-medium tracking-[-0.02em] md:text-[2.75rem]">{FIRST_RUN.headline}</h2>
-      <p class="mt-5 max-w-[640px] text-[17px] leading-relaxed text-ink-soft">{FIRST_RUN.lede}</p>
+      <h2 class="mt-5 text-balance text-3xl leading-[1.12] font-medium tracking-[-0.02em] md:text-[2.75rem]">{FIRST_RUN.headline}</h2>
+      <p class="mx-auto mt-5 max-w-[640px] text-[17px] leading-relaxed text-ink-soft">{FIRST_RUN.lede}</p>
     </div>
 
-    <div class="mt-12 max-w-[880px]">
+    <div class="mx-auto mt-12 max-w-[880px]">
       {/* Terminal */}
       <div class="reveal" style="--reveal-delay: 80ms">
         <div id="first-run-terminal" class="overflow-hidden rounded-md border border-white/10 bg-night shadow-[0_40px_120px_-50px_oklch(0.13_0.015_60/0.8)]">
@@ -39,7 +39,7 @@ const lineClass: Record<string, string> = {
             <span class={`block ${lineClass[line.kind]} term-line`} data-i={i}>{line.kind === "cmd" && !line.text.startsWith(">") ? <span class="text-ember select-none">$ </span> : null}{line.text || " "}</span>
           ))}</code></pre>
         </div>
-        <div class="mt-5 flex flex-col items-start gap-3">
+        <div class="mt-5 flex flex-col items-center gap-3 text-center">
           <InstallCommand
             cmd={KITARU_INSTALL_CMD}
             label="Kitaru"
@@ -54,7 +54,7 @@ const lineClass: Record<string, string> = {
       </div>
 
       {/* Outcomes: a quiet strip, the transcript stays the story */}
-      <ol class="reveal mt-8 flex flex-wrap gap-x-8 gap-y-2 border-t border-border pt-5 font-mono text-[12px] text-ink-soft" style="--reveal-delay: 200ms">
+      <ol class="reveal mt-8 flex flex-wrap justify-center gap-x-8 gap-y-2 border-t border-border pt-5 font-mono text-[12px] text-ink-soft" style="--reveal-delay: 200ms">
         {FIRST_RUN_OUTCOMES.map((o) => (
           <li class="flex items-baseline gap-2">
             <span class="text-[15px] font-medium text-ember">{o.stat}</span>
