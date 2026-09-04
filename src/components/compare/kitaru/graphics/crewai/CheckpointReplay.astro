@@ -28,7 +28,7 @@
       <span class="conn">→</span>
       <div class="step step--fail">
         <span class="step-key">trace</span>
-        <span class="step-val">OTel / Langfuse export</span>
+        <span class="step-val">Langfuse / Logfire export</span>
         <span class="step-cost step-cost--fail">read-only</span>
       </div>
     </div>
@@ -40,13 +40,13 @@
 
   <div class="row row--kitaru">
     <div class="row-head">
-      <span class="tag tag--accent">Kitaru · three ways in</span>
-      <span class="row-sub">No CrewAI adapter yet — none of these need one</span>
+      <span class="tag tag--accent">Kitaru · two ways in</span>
+      <span class="row-sub">No CrewAI adapter yet; neither path needs one from us</span>
     </div>
     <div class="timeline">
       <div class="step step--cached">
         <span class="step-key">import</span>
-        <span class="step-val">Langfuse / LangSmith / Braintrust / OTel</span>
+        <span class="step-val">Langfuse / LangSmith / Braintrust / Logfire / Phoenix</span>
         <span class="step-cost step-cost--cached">no adapter needed</span>
       </div>
       <span class="conn conn--accent">→</span>
@@ -56,15 +56,9 @@
         <span class="step-cost step-cost--cached">lives in your repo</span>
       </div>
       <span class="conn conn--accent">→</span>
-      <div class="step step--cached">
-        <span class="step-key">function</span>
-        <span class="step-val">Kitaru calls your system</span>
-        <span class="step-cost step-cost--cached">crew unreachable</span>
-      </div>
-      <span class="conn conn--accent">→</span>
       <div class="step step--replay">
         <span class="step-key">session</span>
-        <span class="step-val">replays and evaluates</span>
+        <span class="step-val">investigate, evaluate, replay</span>
         <span class="step-cost step-cost--replay">ready</span>
       </div>
     </div>
@@ -72,7 +66,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M3 12 A9 9 0 1 0 6 5 L3 8 M3 3 L3 8 L8 8" />
       </svg>
-      <span>Import once with <code>kitaru session import sessions.jsonl --importer kitaru/langfuse@latest --agent crew@latest --wait</code>, then replay and evaluate like a native recording.</span>
+      <span>Import once with <code>kitaru session import sessions.jsonl --importer kitaru/langfuse@latest --agent crew@latest --wait</code>, then investigate and evaluate like a native recording. Replay with overrides needs an adapter in the process.</span>
     </div>
   </div>
 </figure>

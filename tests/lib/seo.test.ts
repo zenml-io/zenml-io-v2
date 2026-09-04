@@ -41,10 +41,12 @@ describe("seo helpers", () => {
   });
 
   it("builds compare OG URLs from the slug", () => {
-    const url = compareOgUrl("kitaru-vs-langgraph");
-
-    expect(url).toContain("kitaru-vs-langgraph");
-    expect(url).toMatch(/\.jpg$/);
+    expect(compareOgUrl("kitaru", "kitaru-vs-langgraph")).toMatch(
+      /compare\/kitaru-og\/kitaru-vs-langgraph\.jpg$/,
+    );
+    expect(compareOgUrl("zenml", "zenml-vs-temporal")).toMatch(
+      /compare\/zenml-og\/zenml-vs-temporal\.jpg$/,
+    );
   });
 
   it("fills default SEO values", () => {

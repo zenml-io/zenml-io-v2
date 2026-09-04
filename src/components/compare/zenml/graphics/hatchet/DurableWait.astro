@@ -1,0 +1,253 @@
+---
+---
+
+<figure
+  class="fig"
+  role="group"
+  aria-labelledby="durable-wait-title"
+  aria-describedby="durable-wait-desc"
+>
+  <figcaption class="sr-only">
+    <span id="durable-wait-title">A human approval gate in Hatchet and in ZenML.</span>
+    <span id="durable-wait-desc">Hatchet pauses a durable task on a user event and can evict it to free the worker slot. ZenML pauses a dynamic pipeline at wait(), marks the run PAUSED after the timeout, and resumes it with a CLI command.</span>
+  </figcaption>
+  <div class="panel panel--competitor">
+    <div class="panel-head">
+      <span class="panel-label">Hatchet · durable task on a user event</span>
+      <span class="panel-sub">The worker slot is released the moment the wait starts</span>
+    </div>
+
+    <div class="dag">
+      <div class="step">
+        <span class="mono step-name">research</span>
+        <span class="step-tag">task</span>
+      </div>
+      <div class="arrow" aria-hidden="true">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M5 50 L95 50" />
+          <path d="M88 42 L96 50 L88 58" />
+        </svg>
+      </div>
+      <div class="step step--wait">
+        <span class="mono step-name">approve</span>
+        <span class="step-tag">durable_task</span>
+      </div>
+      <div class="arrow" aria-hidden="true">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M5 50 L95 50" />
+          <path d="M88 42 L96 50 L88 58" />
+        </svg>
+      </div>
+      <div class="step">
+        <span class="mono step-name">publish</span>
+        <span class="step-tag">task</span>
+      </div>
+    </div>
+
+    <div class="call">
+      <span class="mono">await ctx.aio_wait_for("approval", UserEventCondition(...))</span>
+    </div>
+
+    <div class="caption">Resumes from the journal when the event arrives. Outputs stay in run history; artifacts are your call.</div>
+
+    <div class="foot">Durable sleeps and event waits are platform features.</div>
+  </div>
+
+  <div class="panel panel--zenml">
+    <div class="panel-head">
+      <span class="panel-label panel-label--accent">ZenML &middot; wait() in a dynamic pipeline</span>
+      <span class="panel-sub">Run paused, artifacts kept, resumed on your command</span>
+    </div>
+
+    <div class="dag">
+      <div class="step step--done">
+        <span class="mono step-name">research</span>
+        <span class="step-tag">artifact</span>
+      </div>
+      <div class="arrow arrow--accent" aria-hidden="true">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M5 50 L95 50" />
+          <path d="M88 42 L96 50 L88 58" />
+        </svg>
+      </div>
+      <div class="step step--accent">
+        <span class="mono step-name">wait()</span>
+        <span class="step-tag step-tag--accent">PAUSED</span>
+      </div>
+      <div class="arrow arrow--accent" aria-hidden="true">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+          <path d="M5 50 L95 50" />
+          <path d="M88 42 L96 50 L88 58" />
+        </svg>
+      </div>
+      <div class="step step--done">
+        <span class="mono step-name">publish</span>
+        <span class="step-tag">if approved</span>
+      </div>
+    </div>
+
+    <div class="call call--accent">
+      <span class="mono">zenml pipeline runs resume &lt;run&gt;</span>
+    </div>
+
+    <div class="caption">Polls until the timeout, then the run is marked PAUSED and the process can go. Resolve from the dashboard, CLI or API.</div>
+
+    <div class="foot foot--accent">Approval gate, loops and fan-out inside the pipeline. No second engine.</div>
+  </div>
+</figure>
+
+<style>
+  .fig {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .panel {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 16px 16px 14px;
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+  }
+  .panel--competitor { background: var(--color-surface-warm); }
+  .panel--zenml { border-color: var(--color-accent); }
+
+  .panel-head { margin-bottom: 14px; }
+  .panel-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 4px;
+  }
+  .panel-label--accent { color: var(--color-accent); }
+  .panel-sub {
+    font-size: 12px;
+    color: var(--color-secondary);
+  }
+
+  .dag {
+    display: grid;
+    grid-template-columns: 1fr 20px 1fr 20px 1fr;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 12px;
+  }
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 8px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 8px;
+    background: var(--color-surface);
+    min-height: 56px;
+    justify-content: center;
+  }
+  .step--done { background: var(--color-bg); }
+  .step--wait { border-style: dashed; border-color: var(--color-muted); }
+  .step--accent {
+    background: var(--color-accent-light);
+    border-color: var(--color-accent);
+  }
+  .step-name {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+  .step--accent .step-name { color: var(--color-accent); }
+  .step-tag {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: var(--color-surface);
+  }
+  .step-tag--accent { color: var(--color-accent); }
+
+  .arrow {
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .arrow svg {
+    width: 100%;
+    height: 12px;
+    overflow: visible;
+  }
+  .arrow path {
+    fill: none;
+    stroke: var(--color-muted);
+    stroke-width: 1.3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+  .arrow--accent path { stroke: var(--color-accent); }
+
+  .call {
+    padding: 8px 12px;
+    background: var(--color-bg);
+    border: 1px dashed var(--color-border);
+    border-radius: 6px;
+    margin-bottom: 10px;
+    font-size: 10.5px;
+    color: var(--color-primary);
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .call--accent { border-color: var(--color-accent); }
+  .mono { font-family: var(--font-mono); }
+
+  .caption {
+    font-size: 11px;
+    color: var(--color-secondary);
+    line-height: 1.45;
+    margin-bottom: 10px;
+  }
+
+  .foot {
+    margin-top: auto;
+    font-size: 11px;
+    color: var(--color-muted);
+    font-style: italic;
+  }
+  .foot--accent {
+    color: var(--color-accent-deep);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  @media (max-width: 560px) {
+    .fig { grid-template-columns: 1fr; }
+    .dag {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+    .arrow {
+      height: 16px;
+      transform: rotate(90deg);
+    }
+  }
+</style>

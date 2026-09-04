@@ -3,9 +3,9 @@ competitor: "Claude Agent SDK"
 competitorLogo: "/compare/claude-agent-sdk.svg"
 competitorTagline: "Build AI agents that autonomously read files, run commands, search the web, edit code, and more."
 title: "Kitaru vs Claude Agent SDK: replay-based evals for agents you build with it"
-shortTitle: "Replay-based evals above the Agent SDK"
-description: "Kitaru and the Claude Agent SDK solve different problems. Keep the SDK, add Kitaru beside it: import your traces or record with a small project-local adapter, then replay and evaluate what your agent actually did."
-cardSubtitle: "Keep the SDK. Import or record its runs, then replay and evaluate them with Kitaru."
+shortTitle: "Replay-based evals beside the Agent SDK"
+description: "Keep the Claude Agent SDK. Wrap its query() with KitaruClaudeRunner and every run lands as a session you can replay and evaluate. Use both: there's a first-class adapter."
+cardSubtitle: "Build the agent with the Claude Agent SDK. Record, replay, and evaluate its runs with Kitaru."
 ctaHeading: "Put replay-based evals beside your Agent SDK"
 order: 10
 ---
@@ -15,64 +15,141 @@ import ComparisonTable from '../../components/compare/kitaru/ComparisonTable.ast
 import CodeCompare from '../../components/compare/kitaru/CodeCompare.astro';
 import FeatureWithGraphic from '../../components/compare/kitaru/FeatureWithGraphic.astro';
 import ComparisonCta from '../../components/compare/kitaru/ComparisonCta.astro';
+import PullQuote from '../../components/compare/kitaru/PullQuote.astro';
+import CodePane from '../../components/compare/kitaru/CodePane.astro';
 
-Kitaru and the Claude Agent SDK solve different problems. The Agent SDK builds agents that read files, run commands, and solve coding tasks in a session you kick off yourself. Kitaru is a **replay-based eval layer**: it records an agent's runs as sessions, and a session re-executes &mdash; unchanged for a faithful baseline, or forked with one thing changed and compared.
+The Claude Agent SDK and Kitaru solve different problems. The Agent SDK is the **agent harness**: it builds agents that read files, run commands, call tools, and solve whatever task you hand to `query()`. Kitaru is a **replay-based eval layer**: every run lands as a session, and a session re-executes. Unchanged, you get a faithful baseline. Forked with one thing changed, you get a comparison.
 
-There's no shipped Claude Agent SDK adapter today. That's an honest gap, not a missing checkbox &mdash; and it doesn't block you. Import the traces you already collect, or wrap the SDK's entrypoint yourself; either way the sessions replay and evaluate the same as a natively recorded one.
+They don't compete. They compose. Kitaru ships a [first-class Claude Agent SDK adapter](https://docs.zenml.io/kitaru/adapters/claude-agent-sdk): `KitaruClaudeRunner` wraps the SDK's one-shot `query()`, yields the same message objects your code already consumes, and records the prompt, model calls, tool calls, subagents, usage, cost, and failures as one session. Running that same agent durably in production is ZenML's job; Kitaru replays and improves it. See [ZenML vs Claude Agent SDK](/compare/zenml-vs-claude-agent-sdk).
 
 <WhenToUseEach
   competitorLabel="Claude Agent SDK"
   kitaru={{
     title: "Use Kitaru if you are",
     items: [
-      "Already tracing Claude Agent SDK runs to Langfuse, LangSmith, Braintrust, or OTel — import them and they replay and evaluate like a recorded session",
-      "Willing to wrap your own agent's entrypoint against Kitaru's recording API — the kitaru-adapter-builder skill builds the smallest adapter that works inside your project",
-      "Running the agent inside a service you don't control, or in another language — register it as a function and let Kitaru call it",
+      "Running Agent SDK queries in production and want the run that failed on your desk, re-runnable without touching production",
+      "Deciding a model or prompt swap and want two runs over the same cohort compared, not a vibe check",
       "Turning the sessions that caught a failure into a cohort that gates the next change",
-      "Self-hosting eval infrastructure so traces and credentials stay in your own systems",
+      "Declaring your in-process SDK MCP tools once so replay answers them from the recording",
+      "Self-hosting eval infrastructure so prompts, tool results, and credentials stay in your own systems",
     ],
   }}
   competitor={{
     title: "Use the Claude Agent SDK if you are",
     items: [
       "Building autonomous coding agents that edit files, run bash, and search codebases",
-      "Running interactive sessions where you are at the keyboard to approve and guide",
-      "Prototyping one-off tasks or short-lived workflows where you don't need a recorded session yet",
-      "Wanting native, first-party recording without writing or importing anything — that needs a shipped adapter Kitaru doesn't have for this SDK yet",
+      "Running interactive sessions with ClaudeSDKClient, or resuming, continuing, and forking provider sessions: the Kitaru adapter records one-shot string query() calls only",
+      "Needing Claude's built-in tools or external MCP servers substituted in a test: Kitaru records them but can only pass them through",
+      "Prototyping one-off tasks where you don't need a recorded session yet",
     ],
   }}
 />
 
-<FeatureWithGraphic
-  title="No adapter yet — import what you already have"
-  image="https://assets.zenml.io/content/compare/kitaru-vs-claude-agent-sdk/d3999bfa/durable-execution-card.avif"
-  imageAlt="Kitaru session replay"
->
-There's no `kitaru-claude-agent-sdk` package. If you already trace the SDK's runs somewhere &mdash; Langfuse, LangSmith, Braintrust, or plain OTel &mdash; that's the fastest path in: import the trace and it replays and evaluates exactly like a natively recorded session. You lose nothing by not having a first-class wrapper; you just start from the traces you already collect instead of a live one.
+<PullQuote
+  quote="The Claude Agent SDK runs the query. Kitaru turns each query into something you can run again."
+/>
 
-The Agent SDK's own session history and file-edit rewinds (Write, Edit, NotebookEdit) are real and useful for interactive work. They're not what Kitaru needs, though &mdash; importing doesn't touch any of that. It reads whatever trace format you already export.
+<FeatureWithGraphic title="Wrap query(), keep the messages">
+  <CodePane
+    slot="graphic"
+    code={`import contextlib, os, uuid
+from claude_agent_sdk import ClaudeAgentOptions
+from kitaru_claude_agent_sdk import KitaruClaudeRunner
+
+runner = KitaruClaudeRunner(
+    agent_id=uuid.UUID(os.environ["KITARU_AGENT_ID"]),
+)
+stream = runner.query(
+    prompt="Investigate ticket 4821.",
+    options=ClaudeAgentOptions(model="claude-sonnet-4-5"),
+)
+# Same Claude messages as before. The run lands as a session.
+async with contextlib.aclosing(stream) as messages:
+    async for message in messages:
+        print(message)`}
+  />
+
+  Install it next to the SDK with `uv add kitaru-claude-agent-sdk`. The adapter calls the SDK's public `query()` and yields every message unchanged. It copies your `ClaudeAgentOptions` before adding its recording hooks, so the options and hook collections you passed in never change under you.
+
+  Register the agent once with `kitaru agent register` and hand its id to the runner. Under a Kitaru worker, `KITARU_TASK_ID` supplies the identity instead, so the same script records on your laptop, in production, and inside a replay without an edit. Wrap the stream in `contextlib.aclosing()` and a consumer that bails early still finalizes the partial session.
 </FeatureWithGraphic>
 
-<FeatureWithGraphic
-  title="No agent code to change — build a project-local adapter, or don't"
-  image="https://assets.zenml.io/content/compare/kitaru-vs-claude-agent-sdk/2f52da59/infra-ownership-and-deployment-flexibility.avif"
-  imageAlt="Building a project-local Kitaru adapter"
-  reverse={true}
->
-If wrapping the SDK's entrypoint is on the table, a project-local adapter is ordinary code that calls Kitaru's recording API &mdash; it's not a privileged plugin, and there's no requirement to contribute it upstream. The `kitaru-adapter-builder` agent skill builds the smallest one that works inside your project, in Python or TypeScript, and reports what it observed and what it couldn't see.
+<FeatureWithGraphic title="Declare the tools replay is allowed to answer" reverse={true}>
+  <CodePane
+    slot="graphic"
+    code={`from claude_agent_sdk import ClaudeAgentOptions, SdkMcpTool
+from kitaru_claude_agent_sdk import replayable_sdk_mcp_server
 
-If wrapping isn't on the table &mdash; the agent runs behind a queue, inside a service you don't own, or in another language &mdash; register the agent version as a function instead. Kitaru calls your function, your function runs the agent however it already runs, and it hands back the external id of the session it produced. Kitaru creates a placeholder session that adopts the real content once you import it.
+support_server = replayable_sdk_mcp_server(
+    name="support",
+    tools=[SdkMcpTool(name="lookup", description="Look up a record.",
+                      input_schema=LOOKUP_SCHEMA, handler=lookup)],
+)
+
+stream = runner.query(
+    prompt="Look up ticket 4821.",
+    options=ClaudeAgentOptions(
+        tools=[], mcp_servers={},
+        allowed_tools=["mcp__support__lookup"],
+    ),
+    replayable_servers=[support_server],
+)`}
+  />
+
+  The SDK's in-process `SdkMcpTool` handler is the one tool boundary Kitaru can stand in for. Declare those tools through `replayable_sdk_mcp_server()` instead of building the server yourself, and pass the definition to every query that might use them. The policy identity is `mcp__<server>__<tool>`. The adapter builds a fresh SDK MCP server per query, so no handler or history state leaks between runs.
+
+  During a replay, `history` answers a wrapped tool with the recorded result that matches its identity and canonical arguments, `static` returns a canned case, `error_result` hands Claude a tool error on a miss, and `passthrough` calls the real handler. Only wrapped SDK MCP tools get substituted. Claude's built-in tools and external MCP servers are recorded when the public messages expose them, but in a replay they can only pass through.
 </FeatureWithGraphic>
 
-<FeatureWithGraphic
-  title="What a session actually gets you"
-  image="https://assets.zenml.io/content/compare/kitaru-vs-claude-agent-sdk/e21ddc22/artifact-lineage-and-run-tracking.avif"
-  imageAlt="Replaying and scoring a Kitaru session"
-  reverse={true}
->
-An imported or adapter-recorded session isn't just a copy of a trace &mdash; it's something you can replay. Fork it with a different model or prompt, and the replay reproduces the original when nothing changed, which is the faithful baseline that makes a diff trustworthy.
+<FeatureWithGraphic title="Fail closed, or don't substitute at all">
+  <CodePane
+    slot="graphic"
+    code={`# Substituting replay: prove every enabled tool is wrapped.
+options = ClaudeAgentOptions(tools=[], mcp_servers={},
+                             allowed_tools=["mcp__support__lookup"])
 
-Freeze the sessions that matter into a cohort, and evaluators &mdash; deterministic checks first, a model-graded check for the residue &mdash; score both sides of an experiment. The Agent SDK's OTel traces and per-session logs are real observability for interactive work; Kitaru is where those same runs, imported or wrapped, become something you can run again.
+# Rejected before Claude runs, because each can add an
+# unwrapped tool: pre-existing mcp_servers, unwrapped
+# allowed_tools, settings sources, plugins, skills,
+# agent definitions, extra CLI args.
+
+# Recording-only runs and all-passthrough replays keep
+# your tool configuration exactly as it is.`}
+  />
+
+  Substitution only fails closed when the adapter can prove every enabled tool is one it wrapped. So a replay with `static` or `history` substitution requires `ClaudeAgentOptions(tools=[])`. The adapter injects the wrapped tools itself, and before calling Claude it sets `setting_sources=[]` and `strict_mcp_config=True` on its private copy, so user settings, project settings, and `.mcp.json` can't sneak in an unwrapped server.
+
+  A `history` miss under `on_miss="fail"` raises `ToolPolicyMissError` and marks the session failed. That's the guarantee: nothing unrecorded reaches a live system. Passthrough is a live call, so a database write or an outbound message happens again. Put side-effecting tools behind a substituting policy, or run the replay in a sandbox you can throw away.
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="What Kitaru adds on top" reverse={true}>
+  <CodePane
+    slot="graphic"
+    code={`# One change, the whole cohort, both sides evaluated.
+kitaru cohort create hard-cases --agent support \\
+  --tag needs-review --display-version week-32
+
+kitaru experiment create cheaper-model --agent support \\
+  --evaluator ticket-resolved@latest \\
+  --override '{"model": {"claude-sonnet-4-5": "claude-haiku-4-5"}}' \\
+  --tool-policy '{"default": {"type": "history",
+    "scope": "cohort_version", "on_miss": "fail"}}'
+
+kitaru experiment run start cheaper-model \\
+  --cohort-version <id> --agent support@2 \\
+  --evaluate-baselines --wait`}
+  />
+
+  A replay starts a fresh Claude query from the recorded root input. It doesn't send the old assistant messages back or resume the provider session, so Claude is free to take a different path, and every model call is live. That's the point: you see what a different model or prompt actually does.
+
+  <Fragment slot="bullets">
+    - **Sessions, recorded.** One runner, no rewrite. Prompt, model calls, wrapped and built-in tool calls, subagents, usage, cost, and failures land as nodes on one session.
+    - **Replay.** Re-run from the top with the recorded prompt, or fork it: swap the prompt, the system prompt, or the model, either directly or mapped from the current one. A mapped override has to name the model set in your options, or the adapter stops before it calls Claude.
+    - **Cohorts.** The sessions you care about, frozen as a named, immutable version, so a run's result keeps meaning what it meant.
+    - **Experiments.** The change as configuration: override, tool policy, evaluators. One run per cohort version and agent version, evaluated on both sides.
+    - **Evaluators.** Versioned Python callables over the session. Deterministic checks first, a model-graded check only for what's left. Replay proves the new run completed. The evaluator says whether it helped.
+    - **Self-hosted, Apache 2.0.** One FastAPI + Postgres server. Workers run replays and evaluations in your environment, next to your Anthropic credentials.
+  </Fragment>
 </FeatureWithGraphic>
 
 ## What makes Kitaru unique
@@ -81,70 +158,107 @@ Freeze the sessions that matter into a cohort, and evaluators &mdash; determinis
   competitorLabel="Claude Agent SDK"
   rows={[
     {
-      feature: "Interactive coding agent UX",
-      kitaru: "no",
-      competitor: "yes",
-      note: "Claude's Read/Edit/Bash/WebSearch toolkit is best-in-class. Kitaru doesn't replace it.",
+      feature: "Interactive coding agent toolkit (Read, Edit, Bash, WebSearch)",
+      kitaru: false,
+      competitor: true,
+      note: "Claude's built-in tools are best-in-class. Kitaru records them; it doesn't replace them.",
     },
     {
-      feature: "Import traces from Langfuse / LangSmith / Braintrust / OTel",
-      kitaru: "yes",
-      competitor: "no",
-      note: "An imported session replays and evaluates exactly like a recorded one — no adapter needed.",
+      feature: "Interactive sessions, resume, continue, and fork (ClaudeSDKClient)",
+      kitaru: false,
+      competitor: true,
+      note: "The adapter records one-shot string query() calls only. It rejects resume, continue, and fork options during replay.",
     },
     {
-      feature: "Project-local adapter via the recording API",
-      kitaru: "yes",
-      competitor: "no",
-      note: "Ordinary code you own. The kitaru-adapter-builder skill builds the smallest one that fits your project.",
+      feature: "Every query recorded as a replayable session",
+      kitaru: true,
+      competitor: false,
+      note: "KitaruClaudeRunner yields the same messages and writes the session beside them.",
     },
     {
-      feature: "Function agents (Kitaru calls your system)",
-      kitaru: "yes",
-      competitor: "no",
-      note: "For agents behind a queue, another language, or a service you don't control.",
+      feature: "Replay with prompt, system prompt, or model replaced",
+      kitaru: true,
+      competitor: false,
+      note: "A fresh query from the recorded root input, every model call live. No model_params override in this release.",
     },
     {
-      feature: "Replay: fork a session, one thing changed",
-      kitaru: "yes",
-      competitor: "no",
-      note: "Unchanged, a replay reproduces the original — the faithful baseline that makes a diff trustworthy.",
+      feature: "Tool calls answered from the recording",
+      kitaru: "partial",
+      competitor: false,
+      note: "Static and history substitution for SDK MCP tools declared through replayable_sdk_mcp_server(). Built-in tools and external MCP servers are passthrough only.",
     },
     {
-      feature: "Cohorts and experiments (same population, one variable moved)",
-      kitaru: "yes",
-      competitor: "no",
+      feature: "Fail-closed isolation for substituting replays",
+      kitaru: true,
+      competitor: false,
+      note: "Requires tools=[]; unwrapped tools, settings sources, plugins, skills, and extra CLI args are rejected before Claude runs.",
     },
     {
-      feature: "Observability and log inspection",
-      kitaru: "yes",
-      competitor: "yes",
-      note: "SDK: OTel traces + per-session logs. Kitaru: a replayable, diffable session built from those same traces.",
+      feature: "Cohorts: frozen session sets as regression suites",
+      kitaru: true,
+      competitor: false,
     },
     {
-      feature: "Self-hosted, Apache 2.0",
-      kitaru: "yes",
-      competitor: "no",
+      feature: "Experiments: same cohort, one variable moved, evaluated on both sides",
+      kitaru: true,
+      competitor: false,
+    },
+    {
+      feature: "Self-hosted server and workers (Apache 2.0)",
+      kitaru: true,
+      competitor: false,
     },
   ]}
 />
-<CodeCompare
-  kitaruLabel="Kitaru (import or project-local adapter)"
-  competitorLabel="Claude Agent SDK alone"
-  kitaruCode={`# However the session got here — imported from your existing
-# traces, or recorded by a project-local adapter — it replays
-# and evaluates the same way.
-import kitaru
 
-client = kitaru.KitaruClient()
-cohort = client.cohorts.create("hard-cases", sessions=session_ids)
-experiment = client.experiments.create(
-    "cheap-model",
-    model="claude-sonnet-5",
+## How the two surfaces map
+
+| Concept | Claude Agent SDK | Kitaru |
+|---|---|---|
+| Layer | Agent harness (how the agent thinks and acts) | Replay-based evals (how you test what it did) |
+| Core unit | One `query()` and its message stream | Session: recorded model, tool, and subagent nodes, replayable |
+| Composition | `query(prompt=..., options=...)` | Same call through `KitaruClaudeRunner(agent_id=...).query(...)` |
+| Tool boundary | `SdkMcpTool` handlers, built-in tools, external MCP | Wrapped SDK MCP tools substituted per policy; everything else passthrough |
+| Replay | Not a concept; a session is history on disk | Fresh query from the recorded root input; prompt, system prompt, or model replaced |
+| Sessions, resume, fork | `ClaudeSDKClient`, `resume`, `fork_session` | Not supported by the adapter; one-shot string prompts only |
+| "Did my change help?" | Read the transcript, compare by eye | Two runs over the same cohort, evaluated on both sides |
+| Where it runs | Your process | Self-hosted server; workers replay in your environment |
+
+<CodeCompare
+  kitaruLabel="Claude Agent SDK + Kitaru"
+  competitorLabel="Claude Agent SDK alone"
+  kitaruCode={`import contextlib, os, uuid
+from claude_agent_sdk import ClaudeAgentOptions
+from kitaru_claude_agent_sdk import KitaruClaudeRunner
+
+runner = KitaruClaudeRunner(
+    agent_id=uuid.UUID(os.environ["KITARU_AGENT_ID"]),
 )
-before = experiment.run(cohort=cohort, version="v1")
-after = experiment.run(cohort=cohort, version="pr-311")
-client.compare(before, after)`}
+
+async def review(topic: str) -> None:
+    stream = runner.query(
+        prompt=f"Draft a short blog post on: {topic}",
+        options=ClaudeAgentOptions(
+            model="claude-sonnet-4-5",
+            tools=[], mcp_servers={},
+            allowed_tools=["mcp__support__lookup"],
+        ),
+        replayable_servers=[support_server],
+    )
+    # Same messages as before. The run lands as a session.
+    async with contextlib.aclosing(stream) as messages:
+        async for message in messages:
+            print(message)
+
+# Later: freeze the sessions that matter, test a change.
+#   kitaru cohort create hard-cases --agent support --tag needs-review
+#   kitaru experiment create cheaper-model --agent support \\
+#     --evaluator ticket-resolved@latest \\
+#     --override '{"model": {"claude-sonnet-4-5": "claude-haiku-4-5"}}' \\
+#     --tool-policy '{"default": {"type": "history",
+#       "scope": "cohort_version", "on_miss": "fail"}}'
+#   kitaru experiment run start cheaper-model \\
+#     --cohort-version <id> --agent support@2 --evaluate-baselines --wait`}
   competitorCode={`import asyncio
 from claude_agent_sdk import query, ClaudeAgentOptions, ResultMessage
 
@@ -158,11 +272,11 @@ async def review(topic: str) -> str:
             result_text = msg.result or ""
     return result_text
 
-asyncio.run(review("Durable agents"))
-# One session history on disk. Useful for this run —
-# not something you can replay with the model swapped.`}
+asyncio.run(review("Replay-based evals"))
+# One session history on disk. Useful for this run,
+# not something you can run again with the model swapped.`}
 />
 
 <ComparisonCta headline={frontmatter.ctaHeading}>
-If you are running agents locally or in short interactive sessions, stick with what you have. If you are taking an Agent SDK build to production and want its runs turned into something you can test against, import the traces you already have or wrap the entrypoint yourself &mdash; either way, Kitaru is where those runs become replayable evals.
+If you're driving the Agent SDK interactively, or your entrypoint is a `ClaudeSDKClient` conversation, stick with what you have. If you're taking a one-shot `query()` build to production and wish you could test against its runs, wrap it with `KitaruClaudeRunner`: record the sessions, replay them as evals, and gate regressions with the cohort that caught the failure.
 </ComparisonCta>

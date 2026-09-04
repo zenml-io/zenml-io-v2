@@ -1,0 +1,212 @@
+---
+competitor: "Restate"
+competitorLogo: "/compare/restate.svg"
+title: "ZenML vs Restate: AI orchestration or durable execution for services"
+description: "Restate makes services durable: a journal, Virtual Objects, durable RPC, several languages. ZenML is open-source AI orchestration for Python: dynamic pipelines, wait() approvals, retries, sandboxes, versioned artifacts, one stack for your clouds."
+cardSubtitle: "Pipelines and agents with durable waits, versioned artifacts and step caching. No Restate underneath."
+ctaHeading: "One orchestrator for pipelines and agents"
+order: 60
+---
+
+import WhenToUseEach from '../../components/compare/zenml/WhenToUseEach.astro';
+import ComparisonTable from '../../components/compare/zenml/ComparisonTable.astro';
+import CodeCompare from '../../components/compare/zenml/CodeCompare.astro';
+import FeatureWithGraphic from '../../components/compare/zenml/FeatureWithGraphic.astro';
+import ComparisonCta from '../../components/compare/zenml/ComparisonCta.astro';
+import PullQuote from '../../components/compare/zenml/PullQuote.astro';
+import AgentShapedRuntime from '../../components/compare/zenml/graphics/restate/AgentShapedRuntime.astro';
+import WaitResume from '../../components/compare/zenml/graphics/WaitResume.astro';
+import ArtifactLineage from '../../components/compare/zenml/graphics/restate/ArtifactLineage.astro';
+import EmbeddedVsServerRegistered from '../../components/compare/zenml/graphics/restate/EmbeddedVsServerRegistered.astro';
+
+Restate is a durable execution engine for services. Handlers register with the Restate server, every action gets journalled, and a crashed handler resumes from the journal instead of from the top. Virtual Objects give you keyed, single-writer state; durable RPC and promises let services call each other without losing work. It does all that across TypeScript, Java, Go, Kotlin, Rust, and Python, and it does it well.
+
+ZenML is the orchestrator for pipelines and agents in Python. A dynamic pipeline builds its graph at run time from plain Python. `wait()` pauses a run for a human and picks it back up later. Steps retry, a failed run retries without redoing the steps that finished, tool loops get an isolated sandbox, and every step output lands as a versioned artifact in your own bucket. Swap the stack and the same pipeline runs on Kubernetes, Vertex AI, SageMaker, AzureML and more.
+
+Restate makes a service resilient. ZenML makes an AI run something you can pause, re-run, and move between clouds. If the workload is an agent or a pipeline, ZenML is the whole answer; you don't need Restate underneath it. If the workload is a fleet of services with keyed state and RPC between them, that's Restate's job.
+
+<WhenToUseEach
+  competitorLabel="Restate"
+  zenml={{
+    title: "Use ZenML if you are",
+    items: [
+      "Orchestrating Python pipelines and agents (training, batch inference, evaluation, tool-use loops) and want versioned artifacts and lineage by default",
+      "Pausing an agent run for a human approval with wait(), then resuming it from the dashboard, CLI, or API",
+      "Targeting Kubernetes, Vertex AI, SageMaker, AzureML and more, and want one pipeline definition that runs on all of them",
+      "Loading an earlier run's output back out, by name, months later",
+    ],
+  }}
+  competitor={{
+    title: "Use Restate if you are",
+    items: [
+      "Making distributed services resilient, where journalled recovery and durable RPC are the hard part",
+      "Wanting keyed, single-writer state from Virtual Objects instead of reaching for a database",
+      "Operating across TypeScript, Java, Go, Kotlin, or Rust as well as Python",
+      "Depending on resume from inside a single handler, or on many awakeables and promises per invocation",
+    ],
+  }}
+/>
+
+<PullQuote
+  quote="Restate keeps your services alive. ZenML keeps your pipelines and agents alive, and remembers what they produced. Pick by the shape of the workload."
+/>
+
+<FeatureWithGraphic title="Pipeline-shaped vs service-shaped">
+  <AgentShapedRuntime slot="graphic" />
+
+  Restate's unit is the handler: a service endpoint where every action gets journalled so it can resume. ZenML's unit is the step: a Python function whose output is stored, versioned, and wired to the steps around it. A dynamic pipeline decides at run time which steps exist at all.
+
+  <Fragment slot="bullets">
+    - **`@step`:** Ordinary Python, no determinism rules on the body. Its return value lands as a versioned artifact, not a journal entry. `StepRetryConfig(max_retries=3, delay=10, backoff=2)` retries it; `zenml pipeline runs retry` restarts a failed dynamic run, and completed steps are reused rather than re-executed.
+    - **`@pipeline(dynamic=True)`:** Loop over agent tasks, branch on a result, fan out with `.map()`. The graph builds itself as the Python runs, and `wait()` can pause it between steps.
+    - **`zenml stack set`:** The same pipeline runs on Kubernetes, Vertex AI, SageMaker, AzureML, Airflow, Databricks and more, no code change. Your agent or model code sits inside the step and never knows the difference.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Pause for approval, resume later" reverse={true}>
+  <WaitResume
+    slot="graphic"
+    competitor="Restate · durable promise"
+    call='await ctx.promise("approval").value()'
+    note="Journalled by the server; a handler resolves it later"
+  />
+
+  Restate's answer to a human in the loop is a durable promise on a Workflow: the `run` handler awaits `ctx.promise("approval")`, and a second handler on the same Workflow resolves it later. ZenML's answer is `wait()` inside a dynamic pipeline. The run pauses, someone answers the question, and the run picks up where it stopped.
+
+  <Fragment slot="bullets">
+    - **What happens while it waits:** `wait(schema=bool, question=...)` polls until its timeout, then marks the run `PAUSED` so the orchestration process can go away. Answer it from the dashboard, the API, or `zenml pipeline runs wait-conditions resolve`, then `zenml pipeline runs resume` carries on without re-running the steps that finished. `on_pause` and `on_resume` hooks fire on the way.
+    - **Sandboxes:** An agent that runs generated code gets a `sandbox` stack component with local, Docker, Kubernetes, and Modal flavors: `Client().active_stack.sandbox.create_session()`, then `session.exec([...])`, with snapshot and restore on the Docker and Modal flavors. Restate leaves isolation to the handler.
+    - **The gap:** Restate resumes from any point inside a handler and can juggle many promises and awakeables per invocation. ZenML waits between steps, one typed condition at a time.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Artifact lineage vs journal and Virtual Object state">
+  <ArtifactLineage slot="graphic" />
+
+  Restate's journal is a replay log: it exists so a handler can resume correctly. Virtual Object state is a keyed store you read and write. Neither is an artifact history. Ask either one what a particular run produced three weeks ago and you get nothing back.
+
+  <Fragment slot="bullets">
+    - **Artifacts:** Every step return value goes to your artifact store, versioned and browsable on the run. Name it with `Annotated[dict, "training_data"]` and you fetch it by name. Steps you didn't touch come from cache on every run, keyed on the step, its parameters, and its inputs.
+    - **Cross-run load:** `get_artifact_version(...).load()` on the ZenML client pulls any earlier run's output into a notebook or a later pipeline.
+    - **Comparison:** Put two runs of the same pipeline side by side and compare what they produced, which is the question you actually ask after a prompt or model change. To test that change against real production runs before it ships, pair ZenML with [Kitaru](/product/kitaru), replay-based regression testing for agents.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Server-registered handlers vs a library you import" reverse={true}>
+  <EmbeddedVsServerRegistered slot="graphic" />
+
+  Restate puts a server in the request path. ZenML puts a server beside it.
+
+  <Fragment slot="bullets">
+    - **Restate:** The Restate server is the coordinator. Handlers register with it and invocations flow through it; that's what makes journalled recovery and durable RPC possible. Where it runs is up to you: Kubernetes, a VM, or serverless.
+    - **ZenML:** `pip install zenml`, write a pipeline, run it. The ZenML server records runs, artifacts, and metadata. It doesn't execute steps, and it isn't in the request path of a deployed pipeline. Self-host it or use ZenML Pro; artifacts stay in your own bucket either way.
+    - **Serving:** When a pipeline does need an endpoint, `zenml pipeline deploy my_module.my_pipeline --name svc` gives it one on local, Docker, Kubernetes, GCP Cloud Run, AWS App Runner, or Hugging Face, and every request becomes a run with full lineage.
+  </Fragment>
+</FeatureWithGraphic>
+
+## What makes ZenML different
+
+<ComparisonTable
+  competitorLabel="Restate"
+  rows={[
+    { feature: "Durable human-in-the-loop wait and resume", zenml: true, competitor: true, note: "Restate: durable promises and awakeables. ZenML: wait() in a dynamic pipeline; the run pauses and resumes with completed steps reused." },
+    { feature: "Loops, branches, and fan-out decided at run time", zenml: true, competitor: true, note: "ZenML dynamic pipelines use plain Python control flow, as Restate handlers do." },
+    { feature: "Recover mid-handler without re-executing completed work", zenml: "partial", competitor: true, note: "Restate resumes from its journal. ZenML retries at step granularity and reuses completed steps." },
+    { feature: "Caching on ordinary re-runs, not only on recovery", zenml: true, competitor: false, note: "ZenML skips steps whose parameters and inputs are unchanged, on every run." },
+    { feature: "Versioned artifacts and lineage across runs", zenml: true, competitor: false, note: "Step outputs are stored and loadable by name; Restate journals actions, not artifacts." },
+    { feature: "Isolated sandboxes for agent tool loops", zenml: true, competitor: false, note: "ZenML sandbox stack component (local, Docker, Kubernetes, Modal). Restate leaves isolation to the handler." },
+    { feature: "One stack abstraction for your clouds", zenml: true, competitor: false, note: "Configure once, every pipeline uses it. Restate leaves deployment to you." },
+    { feature: "Serve as an HTTP service with a tracked run per request", zenml: true, competitor: "partial", note: "zenml pipeline deploy. Restate handlers are HTTP-invocable but keep no run record of outputs." },
+    { feature: "Keyed, single-writer state (Virtual Objects)", zenml: false, competitor: true, note: "No ZenML equivalent; use a database." },
+    { feature: "Durable RPC and event subscriptions between services", zenml: false, competitor: true, note: "ZenML composes steps in a pipeline, not services over the network." },
+    { feature: "TypeScript, Java, Go, Kotlin, Rust as well as Python", zenml: false, competitor: true, note: "ZenML is Python only." },
+    { feature: "Open source, self-hostable", zenml: true, competitor: "partial", note: "ZenML is Apache 2.0. The Restate server is BSL 1.1, converting to Apache 2.0 after four years; its SDKs are MIT. Self-hosting is supported." },
+  ]}
+/>
+
+## How the two surfaces map
+
+| Concept | Restate | ZenML |
+|---|---|---|
+| Boundary | Service, Virtual Object, or Workflow handler | `@pipeline` or `@pipeline(dynamic=True)` |
+| Unit of work | Journalled action / `ctx.run_typed` | `@step` (ordinary Python) |
+| What persists | The invocation journal | Step completion plus outputs as versioned artifacts |
+| Skipping completed work | Journal replay on recovery | `enable_cache` on every run; completed steps reused on retry and resume |
+| Durable pause | Durable promises (Workflow), awakeables | `wait(schema, question)` in a dynamic pipeline; `zenml pipeline runs resume` |
+| Keyed state | Virtual Objects | Bring your own store |
+| Where it runs | Handlers you deploy, coordinated by the Restate server | Stack orchestrator (`zenml stack set`) |
+| Cross-run reuse | Virtual Object state | `get_artifact_version(...).load()` |
+
+<CodeCompare
+  zenmlLabel="ZenML"
+  competitorLabel="Restate (Python SDK)"
+  zenmlCode={`from typing import Annotated
+
+from zenml import pipeline, step, wait
+
+@step
+def plan(goal: str) -> Annotated[list[str], "tasks"]:
+    return call_llm(f"Break down: {goal}")
+
+@step
+def research(task: str) -> Annotated[str, "finding"]:
+    return call_llm(f"Research: {task}")
+
+@step
+def deploy(findings: list[str]) -> Annotated[dict, "release"]:
+    return ship(findings)
+
+@pipeline(dynamic=True)
+def agent_pipeline(goal: str):
+    tasks = plan(goal)
+    findings = research.map(task=tasks)   # fan-out decided at run time
+
+    # Pause for approval. The run goes PAUSED, the process can be
+    # torn down, and a human resolves it from the dashboard or CLI.
+    approved = wait(schema=bool, question="Approve and deploy?")
+    if approved:
+        deploy(findings)
+
+agent_pipeline("prepare the release notes")
+
+# Resolve and resume later; completed steps are reused:
+#   zenml pipeline runs wait-conditions resolve --run <id> --interactive
+#   zenml pipeline runs resume <id>
+# No server in the execution path. Artifacts land in your bucket.
+# Same code on another cloud:
+#   zenml stack set vertex_stack && python agent_pipeline.py`}
+  competitorCode={`import restate
+from restate import Workflow, WorkflowContext, WorkflowSharedContext
+
+# Durable promises live on Workflow handlers, keyed by workflow id.
+agent = Workflow("agent")
+
+@agent.main()
+async def run(ctx: WorkflowContext, goal: str) -> dict:
+    # ctx.run_typed journals each result, so a crash resumes here
+    # rather than re-executing the call.
+    tasks = await ctx.run_typed("plan", call_llm, prompt=f"Break down: {goal}")
+    findings = [
+        await ctx.run_typed(f"research-{i}", call_llm, prompt=f"Research: {t}")
+        for i, t in enumerate(tasks)
+    ]
+
+    # Durable promise: journalled by the server, resolved by the
+    # approve handler below, survives restarts.
+    approved = await ctx.promise("approval", type_hint=bool).value()
+    if not approved:
+        return {"status": "rejected"}
+    return await ctx.run_typed("deploy", ship, findings=findings)
+
+@agent.handler()
+async def approve(ctx: WorkflowSharedContext, ok: bool) -> None:
+    await ctx.promise("approval", type_hint=bool).resolve(ok)
+
+# Handlers register with the Restate server, which coordinates
+# invocations and owns the journal.
+app = restate.app([agent])`}
+/>
+
+<ComparisonCta headline={frontmatter.ctaHeading}>
+If the problem is distributed services that have to survive crashes, talk over durable RPC, and hold keyed state, Restate is built for exactly that. If the problem is a Python pipeline or agent that needs an approval gate, versioned outputs, step retries, and the same code on Kubernetes today and Vertex AI next quarter, ZenML is the orchestrator. You don't need Restate underneath it.
+</ComparisonCta>

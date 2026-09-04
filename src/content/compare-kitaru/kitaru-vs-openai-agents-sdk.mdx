@@ -2,7 +2,7 @@
 competitor: "OpenAI Agents SDK"
 competitorLogo: "/compare/openai-agents-sdk.svg"
 title: "Kitaru vs OpenAI Agents SDK: replay-based evals for the agent you built"
-description: "The OpenAI Agents SDK builds the agent loop. Kitaru records its runs as sessions and replays them as evals. Use both — there's a first-class adapter."
+description: "The OpenAI Agents SDK builds the agent loop. Kitaru records its runs as sessions and replays them as evals. Use both: there's a first-class adapter."
 cardSubtitle: "Build the agent with the OpenAI SDK. Replay and eval its runs with Kitaru."
 ctaHeading: "Put replay-based evals under your OpenAI agents"
 order: 55
@@ -18,9 +18,9 @@ import DurableReplay from '../../components/compare/kitaru/graphics/openai-agent
 import DurableWait from '../../components/compare/kitaru/graphics/openai-agents-sdk/DurableWait.astro';
 import ArtifactLineage from '../../components/compare/kitaru/graphics/openai-agents-sdk/ArtifactLineage.astro';
 
-The OpenAI Agents SDK is the code-first harness for defining and running an agent. It's OpenAI's opinionated stack for building agent behavior in Python and TypeScript.
+The OpenAI Agents SDK is OpenAI's code-first harness: an opinionated toolkit for defining and running an agent in Python or TypeScript.
 
-Kitaru is not another harness. It's a **replay-based eval layer** that sits beside it: wrap the agent with `KitaruRunner` and every run lands as a Kitaru session &mdash; model calls, tools, hosted tools, and handoffs recorded as nodes you can inspect, replay, and score. The two are complementary, with a first-class [OpenAI Agents adapter](https://docs.zenml.io/kitaru) that does the wiring.
+Kitaru isn't another harness. It's a **replay-based eval layer** that sits beside it: wrap the agent with `KitaruRunner` and every run lands as a session, with model calls, tools, hosted tools, and handoffs recorded as nodes you can inspect, replay, and evaluate. They don't compete. They compose, and the first-class [OpenAI Agents adapter](https://docs.zenml.io/kitaru/adapters/openai-agents) does the wiring. Running that same agent durably in production is ZenML's job; Kitaru replays and improves it. See [ZenML vs OpenAI Agents SDK](/compare/zenml-vs-openai-agents-sdk).
 
 <WhenToUseEach
   competitorLabel="OpenAI Agents SDK"
@@ -30,7 +30,7 @@ Kitaru is not another harness. It's a **replay-based eval layer** that sits besi
       "Running OpenAI Agents SDK agents in production and want their runs turned into a suite you can run again",
       "Deciding a model or prompt swap and want two runs over the same cohort compared side by side, not a vibe check",
       "Turning the sessions that caught a failure into a cohort that gates the next change",
-      "Already tracing to Langfuse, LangSmith, or Braintrust and want those traces runnable, not just readable",
+      "Already tracing to Langfuse, LangSmith, Braintrust, Logfire, or Arize Phoenix and want those traces runnable, not just readable",
       "Self-hosting eval infrastructure so traces and credentials stay in your own systems",
     ],
   }}
@@ -39,7 +39,7 @@ Kitaru is not another harness. It's a **replay-based eval layer** that sits besi
     items: [
       "Building an Agents SDK-native agent and want a tight code-first harness for tools, handoffs, guardrails, structured outputs, and OpenAI platform integrations",
       "Standardizing on OpenAI's tracing, evals, sandbox agents, and hosted tools in one ecosystem",
-      "Streaming responses, or relying on a tool approval interruption that resumes later — the current Kitaru adapter doesn't record streamed runs or resume approvals durably",
+      "Streaming responses with run_streamed, or relying on a tool approval interruption that resumes later: the current Kitaru adapter records non-streaming runs only and fails closed on approval interruptions",
       "Running short-lived or prototype agents where you don't need replay yet",
     ],
   }}
@@ -52,23 +52,23 @@ Kitaru is not another harness. It's a **replay-based eval layer** that sits besi
 <FeatureWithGraphic title="Record once, replay it">
   <DurableReplay slot="graphic" />
 
-  The OpenAI Agents SDK gives you the agent loop, and OpenAI's own tracing shows what happened. What tracing doesn't give you is a run you can execute again. Kitaru's adapter wraps `Runner` so every call becomes a session you can replay.
+  The OpenAI Agents SDK gives you the agent loop, and OpenAI's tracing shows you what happened. Then what? A trace isn't a run you can execute again. Kitaru's adapter wraps `Runner` so every call becomes a session you can replay.
 
   <Fragment slot="bullets">
-    - **One wrapper records everything.** `KitaruRunner(agent_id=...)` in front of `run_sync` or `run` &mdash; model calls, tools, hosted tools, and handoffs land as nodes on one session, and OpenAI's own `RunResult` comes back exactly as it would without Kitaru.
-    - **Replay answers tool calls from the recording.** A replay re-executes through the same runner. Tool calls follow a policy &mdash; passthrough calls the real tool, static returns the recorded value &mdash; so a comparison doesn't have to touch production systems.
-    - **The model call stays live.** There's no cached model response. A replay's model call runs live, which is what lets you see what a different model or prompt actually does.
+    - **One wrapper records everything.** Install `kitaru-openai-agents`, put `KitaruRunner(agent_id=...)` in front of `run_sync` or `run`, and model calls, direct function tools, hosted tools, and handoffs land as nodes on one session. OpenAI's own `RunResult` comes back exactly as it would without Kitaru.
+    - **Replay answers tool calls from the recording.** A replay re-executes through the same runner. Direct `FunctionTool` calls follow a named policy: `history` returns the recorded result for the same canonical arguments, `static` returns a configured value, `passthrough` calls the real tool.
+    - **The model call stays live.** No cached model responses. A replay can swap the root input, the starting agent's instructions, the run-level model, and model settings, and the model call still runs live. That's what lets you see what a different model or prompt actually does.
   </Fragment>
 </FeatureWithGraphic>
 
 <FeatureWithGraphic title="Nothing touches production unless you say so" reverse={true}>
   <DurableWait slot="graphic" />
 
-  Every OpenAI Agents SDK run means live tool calls too &mdash; the payment API, the ticketing system, whatever your agent touches. That's fine in production. It's a liability in a test.
+  Every OpenAI Agents SDK run means live tool calls too: the payment API, the ticketing system, whatever your agent touches. That's fine in production. It's a liability in a test.
 
   <Fragment slot="bullets">
-    - **Passthrough is the default.** A replay calls your real tool exactly like the original run did &mdash; useful when hitting the dependency is safe and part of the test.
-    - **Static swaps in the recording.** Match a tool to a static policy and its call is answered from the recorded or configured value instead &mdash; the real tool is never invoked.
+    - **Passthrough is the default, and stays the default.** This adapter doesn't support a `history` default. Leave the default at `passthrough` and add a named `history` or `static` entry for each direct function tool you want answered from the recording. Those tools never get called live.
+    - **Only direct function tools get substituted.** A named policy has to match one ordinary, enabled, non-approval `FunctionTool` on the starting agent. Try to substitute a hosted tool, an MCP tool, an agent-as-tool, or a handoff target and the adapter rejects it before a session exists, so a misconfigured policy fails before OpenAI ever calls the model.
     - **Set per replay, not per call.** A Kitaru worker selects the replay via `KITARU_REPLAY_ID`; there's no per-run replay argument to thread through your own code.
   </Fragment>
 </FeatureWithGraphic>
@@ -76,12 +76,12 @@ Kitaru is not another harness. It's a **replay-based eval layer** that sits besi
 <FeatureWithGraphic title="A session you can inspect, not just a trace you can read">
   <ArtifactLineage slot="graphic" />
 
-  OpenAI's tracing is genuinely useful &mdash; model calls, tool calls, handoffs, guardrails, and custom spans all land in the dashboard. What tracing doesn't give you is something you can run again and score. Kitaru sessions do.
+  OpenAI's tracing is good: model calls, tool calls, handoffs, guardrails, and custom spans all land in the dashboard. What it doesn't give you is something you can run again and evaluate. A Kitaru session is exactly that.
 
   <Fragment slot="bullets">
-    - **Every node, one session.** Model calls, direct tool calls, hosted tools, and handoffs land as nodes on the session the adapter creates before OpenAI executes the agent.
-    - **Replay, then evaluate.** A replayed session gets scored by the same evaluators as the original &mdash; deterministic checks first, a model-graded check for what's left.
-    - **Compare, not just read.** Freeze the sessions that matter into a cohort, run an experiment with one variable moved, and diff before against after.
+    - **Every node, one session.** Model calls, direct tool calls, hosted tools, and handoffs land as nodes on the session the adapter creates before OpenAI executes the agent. A `session_observer` callback hands you the session id so you can tie it to the native result.
+    - **Replay, then evaluate.** A replayed session gets the same evaluators as the original: deterministic checks first, a model-graded check for what's left.
+    - **Compare, not just read.** Freeze the sessions that matter into a cohort version, run an experiment with one variable moved, and read the evaluations on both sides.
   </Fragment>
 </FeatureWithGraphic>
 
@@ -92,13 +92,13 @@ Kitaru is not another harness. It's a **replay-based eval layer** that sits besi
   rows={[
     { feature: "First-class Agent abstraction with instructions, tools, handoffs, guardrails", kitaru: false, competitor: true },
     { feature: "First-party tracing, evals, and hosted tools", kitaru: false, competitor: true },
-    { feature: "Streaming responses (run_streamed)", kitaru: false, competitor: true },
-    { feature: "Durable resume of a tool approval interruption", kitaru: false, competitor: true },
+    { feature: "Streaming responses (run_streamed)", kitaru: false, competitor: true, note: "The adapter records run and run_sync only." },
+    { feature: "Resume a tool approval interruption (RunState)", kitaru: false, competitor: true, note: "Approval interruptions fail closed in the adapter; RunState input is rejected." },
     { feature: "Every run recorded as a replayable session (model calls, tools, hosted tools, handoffs)", kitaru: true, competitor: false },
-    { feature: "Tool calls answered from the recording during replay (static or passthrough policy)", kitaru: true, competitor: false },
+    { feature: "Direct function tools answered from the recording during replay (named history or static policy)", kitaru: true, competitor: false, note: "Hosted, MCP, and handoff tools are recorded but not substituted." },
     { feature: "Cohorts: frozen session sets as regression suites", kitaru: true, competitor: false },
     { feature: "Experiments: same cohort, one variable moved, compared side by side", kitaru: true, competitor: false },
-    { feature: "Import Langfuse / LangSmith / Braintrust / OTel traces", kitaru: true, competitor: false },
+    { feature: "Import Langfuse / LangSmith / Braintrust / Logfire / Phoenix traces", kitaru: true, competitor: false },
     { feature: "Self-hosted server and workers (Apache 2.0)", kitaru: true, competitor: false },
     { feature: "First-class adapter for the other", kitaru: true, competitor: false },
   ]}
@@ -109,12 +109,12 @@ Kitaru is not another harness. It's a **replay-based eval layer** that sits besi
 | Concept | OpenAI Agents SDK | Kitaru |
 |---|---|---|
 | Layer | Agent harness (how the agent thinks and acts) | Replay-based evals (how you test what it did) |
-| Core unit | Agent run | Session &mdash; recorded model, tool, and handoff nodes, replayable |
-| Composition | `Runner.run_sync(agent, input)` | Same agent wrapped once by `KitaruRunner` |
-| Tool calls in a replay | Hit real systems, or you mock them by hand | Passthrough (default) or static, answered from the recording |
-| "Did my change help?" | Read the trace, compare by eye | Two runs over the same cohort, diffed |
+| Core unit | Agent run | Session: recorded model, tool, and handoff nodes, replayable |
+| Composition | `Runner.run_sync(agent, input)` | Same agent through `KitaruRunner(agent_id=...).run_sync(agent, input)` |
+| Tool calls in a replay | Hit real systems, or you mock them by hand | Passthrough by default; named `history` or `static` per direct function tool |
+| "Did my change help?" | Read the trace, compare by eye | Two runs over the same cohort, evaluated on both sides |
 | Streaming | `run_streamed()` with live events | Not supported by the current adapter |
-| Tool approval interruptions | Native `RunState` interrupt and resume | Fails closed &mdash; not durably resumable yet |
+| Tool approval interruptions | Native `RunState` interrupt and resume | Fails closed; not supported by the adapter |
 | Where it runs | Whatever Python service you wrap the agent in | Self-hosted server; workers replay in your environment |
 
 <CodeCompare
@@ -131,23 +131,22 @@ reviewer = Agent(
 )
 runner = KitaruRunner(agent_id=uuid.UUID(AGENT_ID))
 
-# Runs exactly as before — and lands as a session:
+# Runs exactly as before, and lands as a session:
 # every model call, tool call, and handoff.
 result = runner.run_sync(reviewer, case)
 print(result.final_output)
 
 # Later: freeze the sessions that matter, test a change.
-import kitaru
-
-client = kitaru.KitaruClient()
-cohort = client.cohorts.create("hard-cases", sessions=session_ids)
-experiment = client.experiments.create(
-    "cheap-model",
-    model="gpt-5-mini",
-)
-before = experiment.run(cohort=cohort, version="v1")
-after = experiment.run(cohort=cohort, version="pr-311")
-client.compare(before, after)`}
+# Default stays passthrough; name each tool to replay.
+#   kitaru cohort create hard-cases --agent reviewer --tag needs-review
+#   kitaru experiment create cheaper-model --agent reviewer \\
+#     --evaluator compliance-check@latest \\
+#     --override '{"model": {"gpt-5-nano": "gpt-5-mini"}}' \\
+#     --tool-policy '{"default": {"type": "passthrough"},
+#       "tools": {"check_order": {"type": "history",
+#       "scope": "cohort_version", "on_miss": "fail"}}}'
+#   kitaru experiment run start cheaper-model \\
+#     --cohort-version <id> --agent reviewer@2 --evaluate-baselines --wait`}
   competitorCode={`from agents import Agent, Runner
 
 reviewer = Agent(
@@ -159,10 +158,10 @@ reviewer = Agent(
 result = Runner.run_sync(reviewer, case)
 print(result.final_output)
 # One trace per run, in the OpenAI dashboard. The run that
-# caught the bug is a transcript you can read — not a test
+# caught the bug is a transcript you can read, not a test
 # you can run again with the model swapped.`}
 />
 
 <ComparisonCta headline={frontmatter.ctaHeading}>
-If your OpenAI agent still fits in a notebook or a short-lived script, the SDK on its own is the right answer. If it's shipping &mdash; writing to real systems, generating traffic you wish you could test against &mdash; Kitaru makes those runs runnable: record them as sessions, replay them as evals, and gate regressions with the cohort that caught the failure.
+If your OpenAI agent still fits in a notebook or a short-lived script, the SDK on its own is the right answer. If it's shipping, writing to real systems and generating traffic you wish you could test against, Kitaru makes those runs runnable: record them as sessions, replay them as evals, and gate regressions with the cohort that caught the failure.
 </ComparisonCta>

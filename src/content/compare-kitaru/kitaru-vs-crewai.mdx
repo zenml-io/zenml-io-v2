@@ -2,7 +2,7 @@
 competitor: "CrewAI"
 competitorLogo: "/compare/crewai.svg"
 title: "Kitaru vs CrewAI: harness and eval layer, composed"
-description: "CrewAI is how the crew collaborates. Kitaru records what it did and replays it as an eval — import the traces you already collect, since there's no CrewAI adapter yet."
+description: "CrewAI is how the crew collaborates. Kitaru records what it did and replays it as an eval. No CrewAI adapter yet, so import the traces you already collect."
 cardSubtitle: "Design the crew with CrewAI. Import its traces into Kitaru and replay them as evals."
 ctaHeading: "Put replay-based evals under your CrewAI crew"
 order: 45
@@ -19,9 +19,9 @@ import CheckpointReplay from '../../components/compare/kitaru/graphics/crewai/Ch
 import SelfHostedRuntime from '../../components/compare/kitaru/graphics/crewai/SelfHostedRuntime.astro';
 import HarnessFreedom from '../../components/compare/kitaru/graphics/crewai/HarnessFreedom.astro';
 
-CrewAI and Kitaru solve different problems at different layers. CrewAI is an **agent harness**: model your agents as a crew of roles, give each one a task, and let `crew.kickoff()` coordinate the work. AMP wraps the whole thing in a managed platform on top. If your problem is shaped like teamwork and role-based delegation, CrewAI is built for that.
+CrewAI and Kitaru solve different problems at different layers. CrewAI is an **agent harness**: model your agents as a crew of roles, give each one a task, and let `crew.kickoff()` coordinate the work. AMP wraps the whole thing in a managed platform on top. If your problem looks like teamwork and role-based delegation, CrewAI was built for it.
 
-Kitaru is a **replay-based eval layer**: it records every run as a session, and a session re-executes &mdash; unchanged for a faithful baseline, or forked with one thing changed. There&rsquo;s no first-class CrewAI adapter yet, so the honest path in is to import the traces you already collect (Langfuse, LangSmith, Braintrust, or OTel) &mdash; an [imported session](https://docs.zenml.io/kitaru) replays and evaluates exactly like a recorded one. If you want native recording, the fastest path is a project-local adapter built with the `kitaru-adapter-builder` agent skill; it lives in your repo, not ours.
+Kitaru is a **replay-based eval layer**: it records every run as a session, and a session re-executes. Unchanged, you get a faithful baseline. Forked with one thing changed, you get an answer. There&rsquo;s no first-class CrewAI adapter yet, so the way in is to import the traces you already collect from Langfuse, LangSmith, Braintrust, Logfire, or Arize Phoenix. An [imported session](https://docs.zenml.io/kitaru/adapters/custom) inspects, investigates, and evaluates exactly like a recorded one. Want native recording and replay with overrides? The fastest route is a project-local adapter built with the `kitaru-adapter-builder` agent skill. It lives in your repo, not ours. Running that same crew durably in production is ZenML's job; Kitaru replays and improves it. See [ZenML vs CrewAI](/compare/zenml-vs-crewai).
 
 <WhenToUseEach
   competitorLabel="CrewAI"
@@ -29,9 +29,9 @@ Kitaru is a **replay-based eval layer**: it records every run as a session, and 
     title: "Use Kitaru if you are",
     items: [
       "Running a CrewAI crew (or any agent) in production and want to test a change against real history instead of a vibe check",
-      "Already tracing crew runs to Langfuse, LangSmith, or Braintrust and want those traces runnable, not just readable",
+      "Already tracing crew runs to Langfuse, LangSmith, Braintrust, Logfire, or Arize Phoenix and want those traces runnable, not just readable",
       "Turning the sessions that caught a failure into a cohort that gates every future change",
-      "Comparing a model or prompt swap on the same frozen population before you ship it",
+      "Comparing a model or prompt swap on the same frozen cohort before you ship it",
       "Self-hosting eval infrastructure so traces and credentials stay in your own systems",
     ],
   }}
@@ -39,8 +39,8 @@ Kitaru is a **replay-based eval layer**: it records every run as a session, and 
     title: "Use CrewAI if you are",
     items: [
       "Modeling agent teams where roles, goals, and task delegation are the main abstraction",
-      "Standardizing your whole stack inside CrewAI's model and AMP",
-      "Wanting a packaged managed platform with visual building, automations, and tracing",
+      "Standardizing your whole toolchain inside CrewAI's model and AMP",
+      "After a packaged managed platform with visual building, automations, and tracing",
     ],
   }}
 />
@@ -55,44 +55,43 @@ Kitaru is a **replay-based eval layer**: it records every run as a session, and 
   CrewAI is asking: how do I model a team of agents that collaborate on a task? Kitaru is asking: once that crew ships, which of its runs can I re-run? Import its traces, replay them, and see what a change actually did.
 
   <Fragment slot="bullets">
-    - Kitaru doesn&rsquo;t compete for the harness layer. It has no opinion on roles, tasks, or delegation &mdash; that&rsquo;s CrewAI&rsquo;s job.
-    - A CrewAI rollout looks like modeling agents as a crew. A Kitaru rollout looks like importing the traces the crew already produces, or building a small project-local adapter against the recording API.
-    - The kickoff result &mdash; and the trace behind it &mdash; becomes a session you can replay with tool calls answered from the recording, or fork with one variable changed.
+    - Kitaru doesn&rsquo;t compete for the harness layer. It has no opinion on roles, tasks, or delegation; that&rsquo;s CrewAI&rsquo;s job.
+    - Rolling out CrewAI means modeling your agents as a crew. Rolling out Kitaru means importing the traces the crew already produces, or writing a small project-local adapter against the recording API.
+    - The kickoff result, and the trace behind it, becomes a session you can investigate, evaluate, and replay. Overrides and tool substitution need an adapter in the process. An imported session on its own replays passthrough.
   </Fragment>
 </FeatureWithGraphic>
 
-<FeatureWithGraphic title="No adapter? Three honest ways in." reverse={true}>
+<FeatureWithGraphic title="No adapter? Two honest ways in." reverse={true}>
   <CheckpointReplay slot="graphic" />
 
-  There&rsquo;s no first-class CrewAI adapter today, and Kitaru would rather say that plainly than fake one. Three paths in, in order of cost: import the traces you already collect (Langfuse, LangSmith, Braintrust, or OTel) &mdash; the cheapest, and an imported session replays and evaluates exactly like a recorded one. Build a project-local adapter against the recording API if you want native capture &mdash; the `kitaru-adapter-builder` skill generates the smallest one that works and tells you what it can and can&rsquo;t see. Or, if the crew runs somewhere you can&rsquo;t wrap, register it as a function and let Kitaru call your system instead.
+  There&rsquo;s no first-class CrewAI adapter today, and we&rsquo;d rather say so than fake one. Two ways in, cheapest first. Import the traces you already collect from Langfuse, LangSmith, Braintrust, Logfire, or Arize Phoenix: no code, and an imported session inspects and evaluates exactly like a recorded one. Or build a project-local adapter against the recording API when you want native recording plus replay with overrides and tool policies. The `kitaru-adapter-builder` skill generates the smallest one that works and tells you what it can and can&rsquo;t see.
 
   <Fragment slot="bullets">
-    - **Import.** `kitaru session import crew-trace.jsonl --importer kitaru/langfuse@latest --agent crew@latest --wait` &mdash; no code change, no adapter, sessions land exactly like a native recording.
-    - **Project-local adapter.** Ordinary code that calls the recording API and lives in your repo. Wrap the public `crew.kickoff()` entrypoint, change nothing else &mdash; a recording that changes behavior isn&rsquo;t a recording.
-    - **Function agent.** When the crew runs somewhere you don&rsquo;t control, register it as a function; Kitaru calls it, and the session adopts once you import the result.
+    - **Import.** `kitaru session import crew-trace.jsonl --importer kitaru/langfuse@latest --agent crew@latest --wait`: no code change, no adapter. Sessions land ready for investigation, cohorts, and evaluators. A replay of an imported session runs the crew again for real, with no overrides and no tool substitution.
+    - **Project-local adapter.** Ordinary code that calls the recording API and lives in your repo. Wrap the public `crew.kickoff()` entrypoint and change nothing else; a recording that changes behavior isn&rsquo;t a recording. The same wrapper applies overrides and answers tool calls per policy during replay.
   </Fragment>
 </FeatureWithGraphic>
 
 <FeatureWithGraphic title="Self-hosted, on your own cloud">
   <SelfHostedRuntime slot="graphic" />
 
-  CrewAI AMP is a managed agent platform with a hosted control plane. If you want the platform handled for you, that&rsquo;s a real value proposition. Kitaru takes the opposite trade: one self-hosted FastAPI + Postgres server, workers that execute replays and evaluations inside your environment, and sessions that never have to leave your systems.
+  CrewAI AMP is a managed agent platform with a hosted control plane. If you want someone else to run the platform, that&rsquo;s a fair trade. Kitaru takes the opposite one: one self-hosted FastAPI + Postgres server, workers that run replays and evaluations inside your environment, and sessions that never have to leave your systems.
 
   <Fragment slot="bullets">
     - **Self-hosted, Apache 2.0.** One server, run it however you run services today.
-    - **Workers in your environment.** Replays, imports, and evaluations execute where you deploy them &mdash; your traces and credentials don&rsquo;t leave your systems.
-    - **Beside your observability, not instead of it.** Langfuse, LangSmith, and Braintrust remain where you watch production; Kitaru is where you re-run it.
+    - **Workers in your environment.** Replays, imports, and evaluations execute where you run them, so your traces and credentials don&rsquo;t leave your systems.
+    - **Beside your observability, not instead of it.** Langfuse, LangSmith, Braintrust, Logfire, and Arize Phoenix remain where you watch production; Kitaru is where you re-run it.
   </Fragment>
 </FeatureWithGraphic>
 
 <FeatureWithGraphic title="Bring-your-own harness vs CrewAI abstractions" reverse={true}>
   <HarnessFreedom slot="graphic" />
 
-  CrewAI asks engineers to model their agents inside its building blocks. Kitaru asks for a trace. The harness underneath a session can be CrewAI, Pydantic AI, the OpenAI Agents SDK, or hand-written Python &mdash; Kitaru mostly cares whether it can see a recording, not how you produced it.
+  CrewAI asks you to model your agents inside its building blocks. Kitaru asks for a trace. The harness under a session can be CrewAI, Pydantic AI, the OpenAI Agents SDK, or hand-written Python. Kitaru cares whether it can see a recording, not how you produced it.
 
   <Fragment slot="bullets">
-    - **Native or imported.** Pydantic AI, the OpenAI Agents SDK, LangGraph, Mastra, and the Vercel AI SDK have a first-class adapter. CrewAI doesn&rsquo;t yet &mdash; import its traces, or build a project-local adapter against the recording API.
-    - **No graph DSL.** Whatever the harness decides &mdash; task delegation, tool calls, conditional branches &mdash; Kitaru records the result rather than re-implementing the decision logic.
+    - **Native or imported.** Pydantic AI, the OpenAI Agents SDK, LangGraph, the Claude Agent SDK, Mastra, and the Vercel AI SDK have a first-class adapter. CrewAI doesn&rsquo;t yet: import its traces, or build a project-local adapter against the recording API.
+    - **No graph DSL.** Whatever the harness decides (task delegation, tool calls, conditional branches), Kitaru records the outcome instead of re-implementing the decision logic.
     - **Different harnesses, one eval layer.** When different teams pick different harnesses, one place to record and replay is a smaller ask than one harness across the org.
   </Fragment>
 </FeatureWithGraphic>
@@ -106,9 +105,9 @@ Kitaru is a **replay-based eval layer**: it records every run as a session, and 
     { feature: "Tools, knowledge/RAG, MCP servers, and an integrations marketplace", kitaru: false, competitor: true },
     { feature: "Visual no-code agent builder and AI copilot (AMP)", kitaru: false, competitor: true },
     { feature: "Built-in unified Memory system for agents", kitaru: false, competitor: true },
-    { feature: "Record production runs as replayable sessions", kitaru: true, competitor: false },
-    { feature: "First-class adapter (no CrewAI adapter yet — import a trace or build a project-local one)", kitaru: "partial", competitor: false },
-    { feature: "Replay with tool calls answered from the recording — nothing touches real systems", kitaru: true, competitor: false },
+    { feature: "Production runs as sessions you can investigate and evaluate", kitaru: true, competitor: false },
+    { feature: "First-class adapter (no CrewAI adapter yet: import a trace or build a project-local one)", kitaru: "partial", competitor: false },
+    { feature: "Replay with tool calls answered from the recording", kitaru: "partial", competitor: false, note: "Needs an adapter in the crew's process. An imported session replays passthrough only." },
     { feature: "Cohorts: frozen, immutable session sets", kitaru: true, competitor: false },
     { feature: "Experiments: same cohort, one variable moved, compared", kitaru: true, competitor: false },
     { feature: "Deterministic and model-graded evaluators", kitaru: true, competitor: false },
@@ -122,11 +121,11 @@ Kitaru is a **replay-based eval layer**: it records every run as a session, and 
 | Concept | CrewAI | Kitaru |
 |---|---|---|
 | Layer | Agent harness (how the crew collaborates) | Replay-based evals (how you test what it did) |
-| Core unit | Crew run (`kickoff`) | Session &mdash; recorded model and tool calls, re-executable |
+| Core unit | Crew run (`kickoff`) | Session: recorded model and tool calls, re-executable |
 | Composition | Standalone framework, AMP on top | Imported trace, or a project-local adapter |
-| Tool calls in tests | Hit real systems, or you mock them by hand | Answered from the recording per tool policy |
-| "Did my change help?" | Read the trace or AMP dashboard, compare by eye | Two runs over the same cohort, diffed |
-| Getting a session | No adapter yet &mdash; import the trace you already collect | First-class for Pydantic AI, OpenAI Agents SDK, LangGraph, Mastra, Vercel AI SDK |
+| Tool calls in tests | Hit real systems, or you mock them by hand | Answered from the recording per tool policy, once an adapter is in the process |
+| "Did my change help?" | Read the trace or AMP dashboard, compare by eye | Two runs over the same cohort, evaluated on both sides |
+| Getting a session | No adapter yet: import the trace you already collect | First-class for Pydantic AI, OpenAI Agents SDK, LangGraph, Claude Agent SDK, Mastra, Vercel AI SDK |
 | Where it runs | Your process, or AMP's hosted control plane | Self-hosted server; workers replay in your environment |
 
 <CodeCompare
@@ -135,21 +134,21 @@ Kitaru is a **replay-based eval layer**: it records every run as a session, and 
   kitaruCode={`# CrewAI has no first-class Kitaru adapter yet.
 # Import the trace you already collect instead:
 #
+#   kitaru agent register crew --command "python crew.py"
 #   kitaru session import crew-trace.jsonl \\
 #     --importer kitaru/langfuse@latest \\
-#     --agent crew@latest --wait
+#     --agent crew@latest --tag imported-baseline --wait
 #
-# The imported session replays and evaluates
-# exactly like a recorded one.
-import kitaru
-
-client = kitaru.KitaruClient()
-cohort = client.cohorts.create("hard-crews", sessions=session_ids)
-experiment = client.experiments.create("cheap-model", model="gpt-5-mini")
-
-before = experiment.run(cohort=cohort, version="v1")
-after = experiment.run(cohort=cohort, version="pr-311")
-client.compare(before, after)`}
+# The imported sessions evaluate exactly like recorded ones.
+# Freeze the ones that matter and run the evaluators:
+#
+#   kitaru cohort create hard-crews --agent crew \\
+#     --tag imported-baseline --display-version week-32
+#   kitaru session evaluate --cohort hard-crews@latest \\
+#     --evaluator brief-quality@latest --evaluator kitaru/cost@latest --wait
+#
+# Replay with a model override needs an adapter in the
+# crew's process; build one with kitaru-adapter-builder.`}
   competitorCode={`from crewai import Agent, Task, Crew, Process
 
 researcher = Agent(
@@ -189,5 +188,5 @@ result = crew.kickoff(inputs={"topic": "Q3 roadmap"})`}
 />
 
 <ComparisonCta headline={frontmatter.ctaHeading}>
-If your problem is designing how a team of agents collaborates, CrewAI is built for that and worth adopting. If your problem is proving that a change to the crew actually helped, Kitaru sits one layer underneath &mdash; import the traces you already collect today, or build a small project-local adapter when you want native recording.
+If your problem is designing how a team of agents collaborates, CrewAI was built for it and worth adopting. If your problem is proving a change to the crew actually helped, Kitaru sits one layer underneath: import the traces you already collect, or build a small project-local adapter when you want native recording and replay.
 </ComparisonCta>
