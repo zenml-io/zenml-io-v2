@@ -218,6 +218,20 @@ describe("Kitaru product-page snippets", () => {
       result = await Runner.run(agent, task)",
           "install": "uv add kitaru-openai-agents",
         },
+        "provider": {
+          "after": "# any framework, already reporting to Langfuse
+      # same for LangSmith, Braintrust, Logfire, Phoenix
+      from kitaru_langfuse_importer.adapter import LangfuseAdapter
+      from my_agent import run_agent
+
+      adapter = LangfuseAdapter()
+      result = adapter.run(run_agent, question)",
+          "before": "# any framework, already reporting to Langfuse
+      from my_agent import run_agent
+
+      result = run_agent(question)",
+          "install": "uv add "kitaru-langfuse-importer[adapter]"",
+        },
         "pydanticai": {
           "after": "from kitaru_pydantic_ai import KitaruAgent
       from pydantic_ai import Agent

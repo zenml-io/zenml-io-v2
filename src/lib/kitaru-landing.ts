@@ -130,7 +130,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "What frameworks does it work with?",
     answer:
-      "Recording adapters wrap your existing agent in one line, with no rewrite. Python: PydanticAI, the OpenAI Agents SDK, and LangGraph (including LangChain agents and Deep Agents). TypeScript: the Vercel AI SDK and Mastra. For a custom harness or a framework we don't support yet, Kitaru ships a skill that walks your coding assistant through generating a new adapter for it.",
+      "Recording adapters wrap your existing agent in one line, with no rewrite. Python: PydanticAI, the OpenAI Agents SDK, and LangGraph (including LangChain agents and Deep Agents). TypeScript: the Vercel AI SDK and Mastra. Any framework at all, if the agent already reports to Langfuse, LangSmith, Braintrust, Logfire or Phoenix: the importer-backed adapter wraps the entrypoint and pulls the provider's trace in as the session, at the cost of replay being passthrough only. For a custom harness or a framework we don't support yet, Kitaru ships a skill that walks your coding assistant through generating a new adapter for it.",
   },
   {
     question: "Can I use traces I already have?",

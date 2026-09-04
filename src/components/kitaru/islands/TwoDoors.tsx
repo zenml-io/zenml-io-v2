@@ -141,6 +141,11 @@ type Framework = {
  *  shows the adapter-builder path instead of a real package import. */
 const CUSTOM_RECORD_TAB_ID = "custom-adapter";
 
+/** Importer-backed adapters (docs/book/adapters/importer-backed.md): wrap
+ *  the entrypoint, let the observability provider ingest the trace, then
+ *  import it as the session. Framework-agnostic; replay is passthrough only. */
+const PROVIDER_RECORD_TAB_ID = "provider";
+
 export const FRAMEWORKS: Framework[] = [
   {
     id: "pydanticai",
@@ -616,6 +621,39 @@ export const FRAMEWORKS: Framework[] = [
     ],
   },
   {
+    id: PROVIDER_RECORD_TAB_ID,
+    Icon: LangfuseIcon,
+    label: "Langfuse & co",
+    file: "agent.py",
+    install: 'uv add "kitaru-langfuse-importer[adapter]"',
+    before: [
+      [{ cmt: "# any framework, already reporting to Langfuse" }],
+      [{ kw: "from" }, " my_agent ", { kw: "import" }, " run_agent"],
+      [],
+      ["result ", { op: "=" }, " ", { fn: "run_agent" }, "(question)"],
+    ],
+    after: [
+      [{ cmt: "# any framework, already reporting to Langfuse" }],
+      [{ cmt: "# same for LangSmith, Braintrust, Logfire, Phoenix" }],
+      [
+        { kw: "from" },
+        " kitaru_langfuse_importer.adapter ",
+        { kw: "import" },
+        " LangfuseAdapter",
+      ],
+      [{ kw: "from" }, " my_agent ", { kw: "import" }, " run_agent"],
+      [],
+      ["adapter ", { op: "=" }, " ", { fn: "LangfuseAdapter" }, "()"],
+      [
+        "result ",
+        { op: "=" },
+        " adapter.",
+        { fn: "run" },
+        "(run_agent, question)",
+      ],
+    ],
+  },
+  {
     id: CUSTOM_RECORD_TAB_ID,
     Icon: CustomFormatIcon,
     label: "Your framework",
@@ -826,7 +864,7 @@ const PANE_MIN_LINES = Math.max(
 const PANE_MIN_HEIGHT = `calc(${PANE_MIN_LINES * 1.85}em + 2rem)`;
 
 /* Chips break deliberately into balanced rows on desktop (4+2 import,
-   4+3 record); each row still wraps on its own below that. */
+   4+4 record); each row still wraps on its own below that. */
 const IMPORTER_ROWS = [IMPORTERS.slice(0, 4), IMPORTERS.slice(4)];
 const FRAMEWORK_ROWS = [FRAMEWORKS.slice(0, 4), FRAMEWORKS.slice(4)];
 
@@ -1167,7 +1205,16 @@ export function TwoDoors() {
 
               <div className="border-t border-border px-5 py-4 font-mono text-[11px]">
                 {recordView === "after" &&
-                framework.id === CUSTOM_RECORD_TAB_ID ? (
+                framework.id === PROVIDER_RECORD_TAB_ID ? (
+                  <>
+                    <span className="text-ink">
+                      session recorded from the Langfuse trace
+                    </span>
+                    <span className="text-ink-soft"> · </span>
+                    <span className="text-warn">replay: passthrough only</span>
+                  </>
+                ) : recordView === "after" &&
+                  framework.id === CUSTOM_RECORD_TAB_ID ? (
                   <>
                     <span className="text-ink">
                       adapter written into your repo
