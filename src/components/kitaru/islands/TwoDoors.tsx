@@ -81,6 +81,7 @@ function InstallCommand({ command }: { command: string }) {
     <button
       type="button"
       onClick={onCopy}
+      data-copy={command}
       title={command}
       aria-label={copied ? "Copied" : `Copy install command: ${command}`}
       className="flex min-w-0 cursor-pointer items-center gap-1.5 rounded-md border border-border bg-warm-taupe-track py-1 pr-2 pl-2.5 font-mono text-[11px] text-ink-soft transition-colors hover:text-ink"
