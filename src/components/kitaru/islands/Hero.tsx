@@ -1,9 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
-import {
-  KITARU_INSTALL_CMD,
-  KITARU_LINKS,
-  KITARU_TRIAL_NOTE,
-} from "../../../lib/kitaru-landing";
+import { KITARU_INSTALL_CMD, KITARU_LINKS } from "../../../lib/kitaru-landing";
 import { KITARU_VIDEO } from "../../../lib/productKitaru";
 import { ArrowRight } from "./icons";
 import { KitaruGrain } from "./KitaruGrain";
@@ -125,13 +121,13 @@ export function Hero() {
 
       {/* Subtracting the sticky navbar height centers the hero in the space
           actually visible on the first screen. */}
-      <div className="relative mx-auto flex min-h-[calc(100svh-var(--nav-h))] w-full max-w-[1440px] flex-col items-center justify-center px-6 py-12 text-center md:py-14 lg:flex-row lg:items-center lg:gap-16 lg:px-12 lg:text-left">
+      <div className="relative mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center px-6 py-14 text-center md:py-20 lg:min-h-[640px] lg:py-24 lg:flex-row lg:items-center lg:gap-16 lg:px-12 lg:text-left">
         <div className="flex flex-col items-center lg:flex-1 lg:items-start">
           <Reveal className="flex flex-col items-center gap-4 lg:items-start">
             <a
               href="/blog/introducing-the-new-kitaru"
               data-analytics="Kitaru-Hero-Launch-Post"
-              className="group inline-flex items-center gap-2 rounded-full border border-ember/40 bg-ember-light/40 py-1.5 pr-3.5 pl-2 text-[13px] text-ink transition-colors hover:border-ember/70"
+              className="group inline-flex items-center gap-2 rounded-full border border-ember/40 bg-ember-light/40 py-1.5 pr-3.5 pl-2 text-[14px] text-ink transition-colors hover:border-ember/70"
             >
               <span className="rounded-full bg-ember px-2 py-0.5 text-[11px] font-semibold text-accent-foreground">
                 New
@@ -139,9 +135,6 @@ export function Hero() {
               Introducing the new Kitaru: read the launch post
               <ArrowRight class="size-3.5 text-ember transition-transform group-hover:translate-x-0.5" />
             </a>
-            <p className="font-mono text-[12px] font-semibold tracking-[0.14em] text-ember uppercase">
-              Kitaru by ZenML · Replay your agents on production data
-            </p>
           </Reveal>
 
           <Reveal delay={80}>
@@ -166,11 +159,8 @@ export function Hero() {
                 MCP server and coding-agent skills locally. Cloud signup is
                 the second door. */}
             <CopyCommand cmd={KITARU_INSTALL_CMD} />
-            <p className="text-[12.5px] text-muted-foreground">
-              Free, local, open source. Then tell your coding agent:{" "}
-              <span className="font-mono text-ink">
-                Use kitaru-investigation to investigate this agent.
-              </span>
+            <p className="text-[14px] text-muted-foreground">
+              Free, local, open source.
             </p>
             <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
               <a
@@ -181,9 +171,6 @@ export function Hero() {
                 Or try the hosted version free
                 <ArrowRight class="size-4 transition-transform group-hover:translate-x-0.5" />
               </a>
-              <span className="text-[12.5px] text-muted-foreground">
-                {KITARU_TRIAL_NOTE}
-              </span>
             </div>
           </Reveal>
         </div>
@@ -230,7 +217,7 @@ export function Hero() {
               </span>
             </span>
           </button>
-          <p className="mt-[18px] text-center font-heading text-[13px] font-medium text-ink-soft">
+          <p className="mt-[18px] text-center text-[14px] text-ink-soft">
             {KITARU_VIDEO.caption}
           </p>
         </Reveal>
