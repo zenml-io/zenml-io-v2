@@ -146,14 +146,14 @@ export function Hero() {
 
           <Reveal delay={80}>
             <h1 className="mt-7 max-w-[920px] text-balance text-[2.1rem] leading-[1.17] font-medium tracking-[-0.02em] md:text-[46px] md:leading-[54px]">
-              Your agent's best eval data is already in production
+              Better, faster, cheaper agents, tested on production data
             </h1>
           </Reveal>
 
           <Reveal delay={160}>
             <p className="mt-5 max-w-[600px] text-[17px] leading-[27px] text-ink-soft">
-              Turn real traces into replayable evals and test a new model or
-              prompt against what your agent has actually seen.
+              Replay real sessions against a new model or prompt and see what
+              improves, what regresses, and what it costs, before it ships.
             </p>
           </Reveal>
 
