@@ -6,8 +6,11 @@
 // The tab set mirrors the shipped adapters on kitaru `develop`
 // (docs/book/adapters): Python — PydanticAI (`kitaru_pydantic_ai`),
 // OpenAI Agents SDK (`kitaru_openai_agents`), LangGraph
-// (`kitaru_langgraph`); TypeScript — Mastra (`@zenml-io/kitaru-mastra`),
-// Vercel AI SDK (`@zenml-io/kitaru-vercel-ai`). Import paths and entry
+// (`kitaru_langgraph`), Claude Agent SDK (`kitaru_claude_agent_sdk`,
+// zenml-io/kitaru#940); TypeScript — Mastra (`@zenml-io/kitaru-mastra`),
+// Vercel AI SDK (`@zenml-io/kitaru-vercel-ai`). The dashed "Your
+// framework" tab is the project-local adapter path from
+// docs/book/adapters/custom.md (the kitaru-adapter-builder skill). Import paths and entry
 // points here must match those docs — don't invent adapter APIs.
 //
 // Commands in the import door must match the shipped `kitaru session
@@ -25,6 +28,7 @@ import { cn } from "../../../lib/utils";
 import { copyToClipboard } from "../../../scripts/kitaru/clipboard";
 import SectionIntro from "../../system/SectionIntro";
 import {
+  AnthropicIcon,
   BraintrustIcon,
   KitaruIcon,
   LangChainIcon,
@@ -131,6 +135,10 @@ type Framework = {
   before: CodeLine[];
   after: CodeLine[];
 };
+
+/** The record door's one non-vendor tab: no shipped adapter, so the pane
+ *  shows the adapter-builder path instead of a real package import. */
+const CUSTOM_RECORD_TAB_ID = "custom-adapter";
 
 export const FRAMEWORKS: Framework[] = [
   {
@@ -535,6 +543,108 @@ export const FRAMEWORKS: Framework[] = [
       ["console.", { fn: "log" }, "(result.text);"],
     ],
   },
+  {
+    id: "claude",
+    Icon: AnthropicIcon,
+    label: "Claude Agent SDK",
+    file: "agent.py",
+    install: "uv add kitaru-claude-agent-sdk",
+    before: [
+      [
+        { kw: "from" },
+        " claude_agent_sdk ",
+        { kw: "import" },
+        " ClaudeAgentOptions, query",
+      ],
+      [],
+      [{ kw: "async def" }, " ", { fn: "run" }, "(task):"],
+      ["    stream ", { op: "=" }, " ", { fn: "query" }, "("],
+      ["        prompt", { op: "=" }, "task,"],
+      [
+        "        options",
+        { op: "=" },
+        { fn: "ClaudeAgentOptions" },
+        "(model",
+        { op: "=" },
+        { str: '"claude-sonnet-4-5"' },
+        "),",
+      ],
+      ["    )"],
+      ["    ", { kw: "async for" }, " message ", { kw: "in" }, " stream:"],
+      ["        ", { fn: "print" }, "(message)"],
+    ],
+    after: [
+      [
+        { kw: "from" },
+        " claude_agent_sdk ",
+        { kw: "import" },
+        " ClaudeAgentOptions",
+      ],
+      [
+        { kw: "from" },
+        " kitaru_claude_agent_sdk ",
+        { kw: "import" },
+        " KitaruClaudeRunner",
+      ],
+      [],
+      [
+        "runner ",
+        { op: "=" },
+        " ",
+        { fn: "KitaruClaudeRunner" },
+        "(agent_id",
+        { op: "=" },
+        "AGENT_ID)",
+      ],
+      [],
+      [{ kw: "async def" }, " ", { fn: "run" }, "(task):"],
+      ["    stream ", { op: "=" }, " runner.", { fn: "query" }, "("],
+      ["        prompt", { op: "=" }, "task,"],
+      [
+        "        options",
+        { op: "=" },
+        { fn: "ClaudeAgentOptions" },
+        "(model",
+        { op: "=" },
+        { str: '"claude-sonnet-4-5"' },
+        "),",
+      ],
+      ["    )"],
+      ["    ", { kw: "async for" }, " message ", { kw: "in" }, " stream:"],
+      ["        ", { fn: "print" }, "(message)"],
+    ],
+  },
+  {
+    id: CUSTOM_RECORD_TAB_ID,
+    Icon: CustomFormatIcon,
+    label: "Your framework",
+    file: "agent.py",
+    install: "npx skills add zenml-io/kitaru-skills",
+    before: [
+      [{ kw: "from" }, " my_agent ", { kw: "import" }, " run_agent"],
+      [],
+      ["result ", { op: "=" }, " ", { fn: "run_agent" }, "(task)"],
+    ],
+    after: [
+      [{ cmt: "# no adapter for your framework? tell your coding agent:" }],
+      [{ cmt: '#   "Use kitaru-adapter-builder to wrap run_agent."' }],
+      [{ cmt: "# it writes one project-local adapter: record and replay," }],
+      [{ cmt: "# in your repo, nothing to contribute upstream" }],
+      [],
+      [{ kw: "from" }, " kitaru_adapter ", { kw: "import" }, " KitaruRunAgent"],
+      [{ kw: "from" }, " my_agent ", { kw: "import" }, " run_agent"],
+      [],
+      [
+        "result ",
+        { op: "=" },
+        " ",
+        { fn: "KitaruRunAgent" },
+        "(run_agent, agent_id",
+        { op: "=" },
+        "AGENT_ID)(task)",
+      ],
+    ],
+  },
 ];
 
 type ImporterTab = {
@@ -698,6 +808,7 @@ function importedFile(tab: ImporterTab): string | null {
  *  as the tab panel's accessible name via aria-labelledby. */
 const RECORD_CHIP_LABEL: Record<string, string> = {
   openai: "OpenAI Agents",
+  claude: "Claude SDK",
 };
 
 /* Both panes share one reserved height — the tallest snippet across BOTH
@@ -714,9 +825,9 @@ const PANE_MIN_LINES = Math.max(
 const PANE_MIN_HEIGHT = `calc(${PANE_MIN_LINES * 1.85}em + 2rem)`;
 
 /* Chips break deliberately into balanced rows on desktop (4+2 import,
-   3+2 record); each row still wraps on its own below that. */
+   4+3 record); each row still wraps on its own below that. */
 const IMPORTER_ROWS = [IMPORTERS.slice(0, 4), IMPORTERS.slice(4)];
-const FRAMEWORK_ROWS = [FRAMEWORKS.slice(0, 3), FRAMEWORKS.slice(3)];
+const FRAMEWORK_ROWS = [FRAMEWORKS.slice(0, 4), FRAMEWORKS.slice(4)];
 
 /* Shared WAI-ARIA horizontal tablist keydown handling: ArrowLeft/ArrowRight
    move selection with roving focus, Home/End jump to the ends — the same
@@ -1000,6 +1111,7 @@ export function TwoDoors() {
               onSelect={setRecordActive}
               onKeyDown={onRecordTablistKeyDown}
               chipLabel={(t) => RECORD_CHIP_LABEL[t.id] ?? t.label}
+              dashedId={CUSTOM_RECORD_TAB_ID}
             />
 
             <div
@@ -1053,7 +1165,16 @@ export function TwoDoors() {
               </Reveal>
 
               <div className="border-t border-border px-5 py-4 font-mono text-[11px]">
-                {recordView === "after" ? (
+                {recordView === "after" &&
+                framework.id === CUSTOM_RECORD_TAB_ID ? (
+                  <>
+                    <span className="text-ink">
+                      adapter written into your repo
+                    </span>
+                    <span className="text-ink-soft"> · </span>
+                    <span className="text-success">record and replay</span>
+                  </>
+                ) : recordView === "after" ? (
                   <>
                     <span className="text-ink">
                       session ses_8f3a91c2 recorded
@@ -1070,6 +1191,11 @@ export function TwoDoors() {
                 )}
               </div>
             </div>
+            <p className="mt-4 text-[12.5px] leading-relaxed text-ink-soft">
+              Agent running on Claude Code, Codex, or the Gemini CLI? Import its
+              session logs today, no adapter needed. For replay, the
+              adapter-builder skill wraps the harness call the same way.
+            </p>
           </div>
         </Reveal>
       </div>

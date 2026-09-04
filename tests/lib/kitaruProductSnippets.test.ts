@@ -108,6 +108,45 @@ describe("Kitaru product-page snippets", () => {
 
     expect(samples).toMatchInlineSnapshot(`
       {
+        "claude": {
+          "after": "from claude_agent_sdk import ClaudeAgentOptions
+      from kitaru_claude_agent_sdk import KitaruClaudeRunner
+
+      runner = KitaruClaudeRunner(agent_id=AGENT_ID)
+
+      async def run(task):
+          stream = runner.query(
+              prompt=task,
+              options=ClaudeAgentOptions(model="claude-sonnet-4-5"),
+          )
+          async for message in stream:
+              print(message)",
+          "before": "from claude_agent_sdk import ClaudeAgentOptions, query
+
+      async def run(task):
+          stream = query(
+              prompt=task,
+              options=ClaudeAgentOptions(model="claude-sonnet-4-5"),
+          )
+          async for message in stream:
+              print(message)",
+          "install": "uv add kitaru-claude-agent-sdk",
+        },
+        "custom-adapter": {
+          "after": "# no adapter for your framework? tell your coding agent:
+      #   "Use kitaru-adapter-builder to wrap run_agent."
+      # it writes one project-local adapter: record and replay,
+      # in your repo, nothing to contribute upstream
+
+      from kitaru_adapter import KitaruRunAgent
+      from my_agent import run_agent
+
+      result = KitaruRunAgent(run_agent, agent_id=AGENT_ID)(task)",
+          "before": "from my_agent import run_agent
+
+      result = run_agent(task)",
+          "install": "npx skills add zenml-io/kitaru-skills",
+        },
         "langgraph": {
           "after": "from kitaru_langgraph import KitaruGraphRunner
       from langgraph.graph import END, START, StateGraph
