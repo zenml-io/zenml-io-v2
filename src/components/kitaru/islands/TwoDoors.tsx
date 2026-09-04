@@ -665,10 +665,16 @@ export const FRAMEWORKS: Framework[] = [
       ["result ", { op: "=" }, " ", { fn: "run_agent" }, "(task)"],
     ],
     after: [
-      [{ cmt: "# no adapter for your framework? tell your coding agent:" }],
-      [{ cmt: '#   "Use kitaru-adapter-builder to wrap run_agent."' }],
-      [{ cmt: "# it writes one project-local adapter: record and replay," }],
-      [{ cmt: "# in your repo, nothing to contribute upstream" }],
+      [
+        {
+          cmt: '# tell your coding agent: "Use kitaru-adapter-builder to wrap run_agent."',
+        },
+      ],
+      [
+        {
+          cmt: "# it writes one project-local adapter, record and replay, in your repo",
+        },
+      ],
       [],
       [{ kw: "from" }, " kitaru_adapter ", { kw: "import" }, " KitaruRunAgent"],
       [{ kw: "from" }, " my_agent ", { kw: "import" }, " run_agent"],

@@ -136,11 +136,11 @@ export function Hero() {
               <span className="rounded-full bg-ember px-2 py-0.5 text-[11px] font-semibold text-accent-foreground">
                 New
               </span>
-              Introducing the new Kitaru — read the launch post
+              Introducing the new Kitaru: read the launch post
               <ArrowRight class="size-3.5 text-ember transition-transform group-hover:translate-x-0.5" />
             </a>
             <p className="font-mono text-[12px] font-semibold tracking-[0.14em] text-ember uppercase">
-              Kitaru by ZenML · Replay-based evals for AI agents
+              Kitaru by ZenML · Replay your agents on production data
             </p>
           </Reveal>
 

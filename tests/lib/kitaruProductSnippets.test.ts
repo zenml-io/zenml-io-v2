@@ -133,10 +133,8 @@ describe("Kitaru product-page snippets", () => {
           "install": "uv add kitaru-claude-agent-sdk",
         },
         "custom-adapter": {
-          "after": "# no adapter for your framework? tell your coding agent:
-      #   "Use kitaru-adapter-builder to wrap run_agent."
-      # it writes one project-local adapter: record and replay,
-      # in your repo, nothing to contribute upstream
+          "after": "# tell your coding agent: "Use kitaru-adapter-builder to wrap run_agent."
+      # it writes one project-local adapter, record and replay, in your repo
 
       from kitaru_adapter import KitaruRunAgent
       from my_agent import run_agent

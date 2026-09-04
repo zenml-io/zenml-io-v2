@@ -70,19 +70,21 @@ export const FIRST_RUN_OUTCOMES = [
   {
     stat: "1,824",
     label: "sessions imported",
-    title: "Your history becomes the test suite",
-    body: "Import from Langfuse, LangSmith, Braintrust, Logfire or Phoenix, or wrap the agent. Every session is graded for replay readiness.",
+    body: "Your production history, from Langfuse or a one-line wrapper, becomes the test suite.",
   },
   {
     stat: "20 read",
     label: "not 1,824",
-    title: "One finding, with the evidence",
-    body: "The skill reads a handful, says what repeats, and pins it to the trace. You judge; your verdict becomes a cohort and an evaluator.",
+    body: "The skill reads a handful, says what repeats, and pins it to the trace. You judge.",
+  },
+  {
+    stat: "90 → 4",
+    label: "failing after the fix",
+    body: "Your real code runs again against the recorded world with one thing changed.",
   },
   {
     stat: "3×",
     label: "cheaper, same quality",
-    title: "Cut cost without cutting quality",
-    body: "Swap the model on the same cohort and compare failures and spend side by side. The saving is proven before it ships.",
+    body: "Swap the model on the same cohort. The saving is proven before it ships.",
   },
 ] as const;
