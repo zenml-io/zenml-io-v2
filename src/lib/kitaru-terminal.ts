@@ -14,13 +14,13 @@ import { KITARU_INSTALL_CMD } from "./productKitaru";
 export type TerminalLine = {
   text: string;
   /** cmd = typed by you, out = program output, agent = the coding agent talking, note = comment */
-  kind: "cmd" | "out" | "agent" | "note" | "blank";
+  kind: "cmd" | "out" | "agent" | "note" | "blank" | "win";
 };
 
 export const FIRST_RUN = {
   eyebrow: "The first five minutes",
   headline: "Install, then let your coding agent do the investigation.",
-  lede: "One command on your laptop. One sentence to Claude Code, Codex, or Cursor. The skill finds what repeats in your real runs and comes back with a PR and the numbers behind it.",
+  lede: "One command on your laptop. One sentence to Claude Code, Codex, or Cursor. The skill finds what repeats in your real runs, fixes it, and shows where you can save cost without losing quality.",
   prompt: "Use kitaru-investigation to investigate this agent.",
 } as const;
 
@@ -60,10 +60,10 @@ export const TERMINAL: readonly TerminalLine[] = [
   { kind: "out", text: "v1       90 / 90 fail" },
   { kind: "out", text: "pr-311    4 / 90 fail" },
   { kind: "blank", text: "" },
-  {
-    kind: "agent",
-    text: "PR #311 opened with the numbers. Also: gpt-5-mini matches gpt-5 here at a third of the cost.",
-  },
+  { kind: "agent", text: "Same cohort, cheaper model:" },
+  { kind: "out", text: "gpt-5        4 / 90 fail    $0.31 per session" },
+  { kind: "out", text: "gpt-5-mini   4 / 90 fail    $0.09 per session" },
+  { kind: "win", text: "same quality, a third of the cost" },
 ];
 
 export const FIRST_RUN_OUTCOMES = [
@@ -86,9 +86,9 @@ export const FIRST_RUN_OUTCOMES = [
     body: "Your real code runs again against the recorded world with one thing changed. The cohort that caught it becomes the gate.",
   },
   {
-    stat: "1 PR",
-    label: "opened at the end",
-    title: "A fix, a cheaper model, a caught regression",
-    body: "Each answer comes with the sessions that prove it, and as a PR when it is a fix.",
+    stat: "3×",
+    label: "cheaper, same quality",
+    title: "Cut cost without cutting quality",
+    body: "Swap the model on the same cohort and compare failures and spend side by side. The saving is proven before it ships.",
   },
 ] as const;
