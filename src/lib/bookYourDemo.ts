@@ -148,7 +148,7 @@ export const BOOK_YOUR_DEMO_TESTIMONIAL = {
 export const BOOK_KITARU_DEMO_SEO: SEOProps = {
   title: "Book a Kitaru demo",
   description:
-    "See Kitaru in action — the open-source durable runtime for Python agents. Record every step, replay with overrides, and ship updates with confidence. 30 minutes with the ZenML team.",
+    "See Kitaru in action: replay-based evals for AI agents. Record or import production runs, replay them against your next change, and see what improved before you ship. 30 minutes with the ZenML team.",
   // ogTitle / ogDescription intentionally omitted — resolveSeo() falls back to title / description.
 };
 
@@ -156,7 +156,7 @@ export const BOOK_KITARU_DEMO_HERO = {
   headlinePrefix: "See ",
   headlineHighlight: "Kitaru",
   headlineSuffix: " in action",
-  deck: "Get a personalized walkthrough of Kitaru: record, replay, and improve your Python agents with durable checkpoints, wait/resume, and versioned deployments on your own cloud. 30 minutes with our team.",
+  deck: "Get a personalized walkthrough of Kitaru: record or import your agent's production runs, replay them against a model, prompt, or code change, and compare with evaluators over a frozen cohort. 30 minutes with our team.",
 };
 
 /** Co-brand credibility line shown above the customer logos on the Kitaru page. */

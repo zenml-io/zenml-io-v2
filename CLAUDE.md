@@ -321,7 +321,7 @@ The old standalone `kitaru.ai` API routes (`get-started`, `waitlist`, `newslette
 
 ### Kitaru content & components
 - `src/pages/product/kitaru.astro` — Kitaru landing (Aug 2026 redesign; copy lives in `src/lib/kitaru-landing.ts`, CTA links in `src/lib/productKitaru.ts`)
-- `src/components/kitaru/*` — landing section shells (Features, Faq, Cta, `_HighlightPanel`) plus `Architecture.astro` (used by `/get-started`, not the landing). Cta mounts `KitaruGrain` directly as a standalone island for its shader backdrop; Features gets the same via the `_HighlightPanel` shells it renders
+- `src/components/kitaru/*` — landing section shells (Features, Faq, Cta, `_HighlightPanel`). Cta mounts `KitaruGrain` directly as a standalone island for its shader backdrop; Features gets the same via the `_HighlightPanel` shells it renders. The v1 `Architecture.astro` (flows/checkpoints diagram) was deleted in Sep 2026
 - `src/components/kitaru/islands/*` — Preact landing islands (Hero, ScenarioStrip, TwoDoors, KitaruGrain WebGL shader) plus shared helper modules (the authoritative list is `KITARU_ISLAND_HELPERS` in `scripts/check-dist-smoke.ts`). TwoDoors merges the former OneImport (record) and Importers (import) sections into one two-column island. The three sections mount `client:visible` from `product/kitaru.astro`; hydration is covered by `pnpm check:islands` (TwoDoors importer-tab check) and the `check-dist-smoke.ts` island manifest
 - `src/scripts/kitaru/*` — Kitaru-page client scripts (clipboard, reveal-static, scroll-reveal); `src/hooks/use-reveal.ts` is the Preact-island counterpart of reveal-static
 - `src/components/compare/_layouts/KitaruCompare.astro` — Kitaru-vs-X comparison page template
@@ -329,8 +329,7 @@ The old standalone `kitaru.ai` API routes (`get-started`, `waitlist`, `newslette
 - `src/content/compare-kitaru/*.mdx` — Kitaru-vs-X comparison pages
 
 ### Get Started routing
-- `src/pages/get-started.astro` — ZenML open-source onboarding (hero, 3-step walkthrough, architecture, projects, resources). `/get-started/zenml` 301-redirects here (`public/_redirects`). Kitaru's entry point is its own `/product/kitaru` landing.
-  - **KNOWN BUG — the Phase-4 ML/Agent chooser was only half-removed.** The routing revert landed (`public/_redirects:152`) but the UI did not: `GET_STARTED_TABS` in `src/lib/getStarted.ts:51` still renders a live `role="tablist"` chooser in this page. Its Kitaru tab reads *"Agent runtime"* — the durable-runtime positioning retired in the Aug 2026 pivot. This file previously claimed the chooser "was removed"; it ships. Finish the revert or re-decide the page, but do not trust the old claim.
+- `src/pages/get-started.astro` — ZenML open-source onboarding (hero, 3-step walkthrough, architecture, projects, resources) with one pointer line to `/product/kitaru`. `/get-started/zenml` 301-redirects here (`public/_redirects`). The Phase-4 ML/Agent chooser and its Kitaru panel (`GET_STARTED_TABS`, `GET_STARTED_KITARU`, the v1 `@flow`/`@checkpoint` walkthrough) were removed in Sep 2026; Kitaru's entry point is its own landing
 
 ### Layouts
 - `src/layouts/BaseLayout.astro` — Main layout (nav, footer, head slots, analytics)
