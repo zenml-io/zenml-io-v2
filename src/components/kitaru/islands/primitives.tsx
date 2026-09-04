@@ -74,6 +74,7 @@ export function CopyCommand({
       <button
         type="button"
         aria-label="Copy install command"
+        data-copy={cmd}
         onClick={() => {
           copyToClipboard(cmd)
             .then(() => {

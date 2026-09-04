@@ -44,7 +44,7 @@ export const PRICING_HERO = {
 
 /**
  * "What's included in Pro" block rendered below the comparison table. Two
- * cards — AI orchestration (ZenML side, purple) and Agent runtime (Kitaru side,
+ * cards — AI orchestration (ZenML side, purple) and Agent replay (Kitaru side,
  * orange) — each with three bullet pairings. Icons are inline SVG strings so
  * the card component stays declarative.
  */
