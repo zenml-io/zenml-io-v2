@@ -227,7 +227,7 @@ export function Hero() {
               </span>
             </span>
           </button>
-          <p className="mt-[18px] text-center font-heading text-[13px] font-medium text-ink-soft">
+          <p className="mt-[18px] text-center text-[14px] text-ink-soft">
             {KITARU_VIDEO.caption}
           </p>
         </Reveal>
