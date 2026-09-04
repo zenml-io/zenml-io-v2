@@ -6,7 +6,7 @@ import {
 } from "../../lib/kitaru-terminal";
 import { KITARU_INSTALL_CMD } from "../../lib/productKitaru";
 // FirstRun.astro — the first five minutes: terminal transcript (progressive
-// reveal, respects reduced motion) beside three outcome blocks.
+// reveal, respects reduced motion) with a quiet outcomes strip beneath it.
 import InstallCommand from "../InstallCommand.astro";
 
 const lineClass: Record<string, string> = {
@@ -27,7 +27,7 @@ const lineClass: Record<string, string> = {
       <p class="mt-5 max-w-[640px] text-[17px] leading-relaxed text-ink-soft">{FIRST_RUN.lede}</p>
     </div>
 
-    <div class="mt-12 grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-12">
+    <div class="mt-12 max-w-[880px]">
       {/* Terminal */}
       <div class="reveal" style="--reveal-delay: 80ms">
         <div id="first-run-terminal" class="overflow-hidden rounded-md border border-white/10 bg-night shadow-[0_40px_120px_-50px_oklch(0.13_0.015_60/0.8)]">
@@ -53,15 +53,12 @@ const lineClass: Record<string, string> = {
         </div>
       </div>
 
-      {/* Outcomes */}
-      <ol class="flex flex-col justify-between gap-6 divide-y divide-border lg:pl-2">
-        {FIRST_RUN_OUTCOMES.map((o, i) => (
-          <li class="reveal pt-6 first:pt-0" style={`--reveal-delay: ${120 + i * 80}ms`}>
-            <div class="flex items-baseline gap-3">
-              <span class="font-mono text-[34px] leading-none font-medium tracking-[-0.03em] text-ember">{o.stat}</span>
-              <span class="font-mono text-[11px] tracking-[0.14em] text-ink-soft uppercase">{o.label}</span>
-            </div>
-            <p class="mt-3 max-w-[38ch] text-[15px] leading-relaxed text-ink-soft">{o.body}</p>
+      {/* Outcomes: a quiet strip, the transcript stays the story */}
+      <ol class="reveal mt-8 flex flex-wrap gap-x-8 gap-y-2 border-t border-border pt-5 font-mono text-[12px] text-ink-soft" style="--reveal-delay: 200ms">
+        {FIRST_RUN_OUTCOMES.map((o) => (
+          <li class="flex items-baseline gap-2">
+            <span class="text-[15px] font-medium text-ember">{o.stat}</span>
+            <span class="tracking-[0.1em] uppercase">{o.label}</span>
           </li>
         ))}
       </ol>
