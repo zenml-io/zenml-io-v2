@@ -56,16 +56,16 @@ function expectValidTypeScript(source: string): void {
 }
 
 describe("Kitaru product-page snippets", () => {
-  it("installs the CLI and worker used by the page", () => {
+  it("points at the one-line installer served by kitaru.ai", () => {
     expect(KITARU_INSTALL_CMD).toBe(
-      'uv add "kitaru[cli,worker]" kitaru-pydantic-ai',
+      "curl -fsSL https://kitaru.ai/install | bash",
     );
   });
 
   it("uses the same page-local install command in the markdown alternate", async () => {
     const markdown = await getKitaruMarkdown().text();
     expect(
-      markdown.match(/uv add "kitaru\[cli,worker\]" kitaru-pydantic-ai/g),
+      markdown.match(/curl -fsSL https:\/\/kitaru\.ai\/install \| bash/g),
     ).toHaveLength(2);
     expect(markdown).not.toContain("`uv add kitaru`");
     expect(markdown).toContain("Arize Phoenix");
@@ -108,6 +108,43 @@ describe("Kitaru product-page snippets", () => {
 
     expect(samples).toMatchInlineSnapshot(`
       {
+        "claude": {
+          "after": "from claude_agent_sdk import ClaudeAgentOptions
+      from kitaru_claude_agent_sdk import KitaruClaudeRunner
+
+      runner = KitaruClaudeRunner(agent_id=AGENT_ID)
+
+      async def run(task):
+          stream = runner.query(
+              prompt=task,
+              options=ClaudeAgentOptions(model="claude-fable-5-1"),
+          )
+          async for message in stream:
+              print(message)",
+          "before": "from claude_agent_sdk import ClaudeAgentOptions, query
+
+      async def run(task):
+          stream = query(
+              prompt=task,
+              options=ClaudeAgentOptions(model="claude-fable-5-1"),
+          )
+          async for message in stream:
+              print(message)",
+          "install": "uv add kitaru-claude-agent-sdk",
+        },
+        "custom-adapter": {
+          "after": "# tell your coding agent: "Use kitaru-adapter-builder to wrap run_agent."
+      # it writes one project-local adapter, record and replay, in your repo
+
+      from kitaru_adapter import KitaruRunAgent
+      from my_agent import run_agent
+
+      result = KitaruRunAgent(run_agent, agent_id=AGENT_ID)(task)",
+          "before": "from my_agent import run_agent
+
+      result = run_agent(task)",
+          "install": "npx skills add zenml-io/kitaru-skills",
+        },
         "langgraph": {
           "after": "from kitaru_langgraph import KitaruGraphRunner
       from langgraph.graph import END, START, StateGraph
@@ -178,6 +215,20 @@ describe("Kitaru product-page snippets", () => {
 
       result = await Runner.run(agent, task)",
           "install": "uv add kitaru-openai-agents",
+        },
+        "provider": {
+          "after": "# any framework, already reporting to Langfuse
+      # same for LangSmith, Braintrust, Logfire, Phoenix
+      from kitaru_langfuse_importer.adapter import LangfuseAdapter
+      from my_agent import run_agent
+
+      adapter = LangfuseAdapter()
+      result = adapter.run(run_agent, question)",
+          "before": "# any framework, already reporting to Langfuse
+      from my_agent import run_agent
+
+      result = run_agent(question)",
+          "install": "uv add "kitaru-langfuse-importer[adapter]"",
         },
         "pydanticai": {
           "after": "from kitaru_pydantic_ai import KitaruAgent

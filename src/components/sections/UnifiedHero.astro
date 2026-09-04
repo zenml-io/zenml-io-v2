@@ -1,7 +1,11 @@
 ---
-import { HOMEPAGE_UNIFIED_HERO } from "../../lib/homepage-unified";
+import {
+  HOMEPAGE_INSTALL_COMMANDS,
+  HOMEPAGE_UNIFIED_HERO,
+} from "../../lib/homepage-unified";
 import { brandButtonClass } from "../../lib/productCtas";
 import Button from "../Button.astro";
+import InstallCommand from "../InstallCommand.astro";
 
 /**
  * UnifiedHero — hero for the unified `/` (Variant C copy).
@@ -47,6 +51,22 @@ const headline = `${headlinePrefix}${headlineAccent}${headlineSuffix}`;
           </Button>
         ))}
       </div>
+
+      {/* Install lines: the terminal is the front door for both products. */}
+      <ul class="mt-5 flex flex-col items-stretch gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
+        {HOMEPAGE_INSTALL_COMMANDS.map((item) => (
+          <li class="flex">
+            <InstallCommand
+              cmd={item.cmd}
+              label={item.label}
+              brand={item.brand}
+              analytics={`Home-Hero-Install-${item.label}`}
+              class="w-full"
+            />
+          </li>
+        ))}
+      </ul>
     </div>
   </div>
 </header>
+

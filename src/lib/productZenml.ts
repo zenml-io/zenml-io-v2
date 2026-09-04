@@ -27,8 +27,8 @@ export const PRODUCT_ZENML_HERO = {
   headlineAccent: "your stack",
   subtitleLead: "Bring your own tools.",
   subtitle:
-    "Orchestrate any AI workflow, from training and batch inference to evals and agents, from your laptop to Kubernetes, Vertex, SageMaker, and AzureML. Reproducible artifacts, model registry, and a composable stack, without vendor lock-in.",
-  installCmd: "pip install zenml",
+    "Orchestrate training, inference, evals, and agents on the infrastructure you already run, from your laptop to Kubernetes. Reproducible, composable, no lock-in.",
+  installCmd: "uv add zenml",
   // Signup-first for parity with the Kitaru landing.
   primaryCta: ZENML_LINKS.signup,
   secondaryCta: ZENML_LINKS.demo,
@@ -57,5 +57,5 @@ export const PRODUCT_ZENML_FINAL_CTA = {
   body: "Start with the open-source SDK, scale to managed when you need governance and a hosted control plane.",
   primaryCta: ZENML_LINKS.signup,
   secondaryCta: ZENML_LINKS.demo,
-  installCmd: "pip install zenml",
+  installCmd: "uv add zenml",
 } as const;

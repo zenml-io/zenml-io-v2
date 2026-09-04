@@ -1,8 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
-import { KITARU_LINKS, KITARU_TRIAL_NOTE } from "../../../lib/kitaru-landing";
+import {
+  KITARU_INSTALL_CMD,
+  KITARU_LINKS,
+  KITARU_TRIAL_NOTE,
+} from "../../../lib/kitaru-landing";
 import { KITARU_VIDEO } from "../../../lib/productKitaru";
 import { ArrowRight } from "./icons";
 import { KitaruGrain } from "./KitaruGrain";
+import { CopyCommand } from "./primitives";
 import { Reveal } from "./Reveal";
 
 /**
@@ -131,24 +136,25 @@ export function Hero() {
               <span className="rounded-full bg-ember px-2 py-0.5 text-[11px] font-semibold text-accent-foreground">
                 New
               </span>
-              Introducing the new Kitaru — read the launch post
+              Introducing the new Kitaru: read the launch post
               <ArrowRight class="size-3.5 text-ember transition-transform group-hover:translate-x-0.5" />
             </a>
             <p className="font-mono text-[12px] font-semibold tracking-[0.14em] text-ember uppercase">
-              Kitaru by ZenML · Replay-based evals for AI agents
+              Kitaru by ZenML · Replay your agents on production data
             </p>
           </Reveal>
 
           <Reveal delay={80}>
             <h1 className="mt-7 max-w-[920px] text-balance text-[2.1rem] leading-[1.17] font-medium tracking-[-0.02em] md:text-[46px] md:leading-[54px]">
-              Your agent's best eval data is already in production
+              Better, faster, cheaper agents, tested on production data
             </h1>
           </Reveal>
 
           <Reveal delay={160}>
             <p className="mt-5 max-w-[600px] text-[17px] leading-[27px] text-ink-soft">
-              Turn real traces into replayable evals and test changes against
-              what your agent has actually seen.
+              Your coding agent investigates real sessions, finds what repeats,
+              and replays the fix, so you know what improved, what regressed,
+              and what it costs before it ships.
             </p>
           </Reveal>
 
@@ -156,19 +162,29 @@ export function Hero() {
             delay={240}
             className="mt-8 flex flex-col items-center gap-2 lg:items-start"
           >
-            <div className="flex flex-wrap items-center justify-center gap-3">
+            {/* The command is the primary CTA: one line installs the CLI,
+                MCP server and coding-agent skills locally. Cloud signup is
+                the second door. */}
+            <CopyCommand cmd={KITARU_INSTALL_CMD} />
+            <p className="text-[12.5px] text-muted-foreground">
+              Free, local, open source. Then tell your coding agent:{" "}
+              <span className="font-mono text-ink">
+                Use kitaru-investigation to investigate this agent.
+              </span>
+            </p>
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-3">
               <a
                 href={KITARU_LINKS.signup.href}
                 data-analytics="Kitaru-Hero-Signup"
-                className="group inline-flex items-center gap-2 rounded-md bg-ember px-5 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-ember-deep cursor-pointer"
+                className="group inline-flex items-center gap-2 rounded-md border border-ember px-5 py-3 text-sm font-medium text-ember transition-colors hover:bg-ember hover:text-accent-foreground cursor-pointer"
               >
-                {KITARU_LINKS.signup.label}
+                Or try the hosted version free
                 <ArrowRight class="size-4 transition-transform group-hover:translate-x-0.5" />
               </a>
+              <span className="text-[12.5px] text-muted-foreground">
+                {KITARU_TRIAL_NOTE}
+              </span>
             </div>
-            <p className="text-[12.5px] text-muted-foreground">
-              {KITARU_TRIAL_NOTE}
-            </p>
           </Reveal>
         </div>
 
