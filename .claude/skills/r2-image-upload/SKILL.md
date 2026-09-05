@@ -1,16 +1,19 @@
 ---
 name: r2-image-upload
 description: >-
-  Upload images and assets to ZenML's Cloudflare R2 bucket. Use when adding
-  new images to blog posts, content pages, marketing data files, or any
-  content that needs an R2-hosted URL. Handles uploading, key generation,
-  and prints paste-ready frontmatter. Triggers: "upload image", "add image
-  to R2", "new blog image", "upload asset", "R2 upload".
+  Upload content images or assets to R2 when authorized; verify URLs and provide
+  references. Skip UI assets stored in public/images.
 ---
 
 # R2 Image Upload
 
 Upload images to the ZenML R2 bucket (`zenml-assets`) and get back absolute URLs for use in content frontmatter or `src/lib/*.ts` data files.
+
+Use existing task authorization before uploading; this skill does not itself
+authorize an external write. Prepare assets independently if authorization is
+pending. Do not automatically persist credentials received in conversation;
+follow the root credential policy. Run scripts/r2-upload.py from the repository
+root with absolute image paths when files are in a temporary directory.
 
 ## Two-Tier Image Decision
 
@@ -67,7 +70,9 @@ uv run scripts/r2-upload.py path/to/hero.webp --frontmatter
 
 ### R2 key structure
 
-New uploads use: `content/uploads/{sha256_8}/{sanitized-filename}`
+New uploads default to `content/uploads/{sha256_8}/{sanitized-filename}`.
+A custom `--prefix` replaces content/uploads; for example, blog uploads can
+use content/blog/<slug>. The hash and filename suffix remain content-addressed.
 
 Example: `content/uploads/1a2b3c4d/hero-image.avif`
 
@@ -75,7 +80,7 @@ Webflow-migrated images (existing): `webflow/{siteId}/{sha8}/{filename}`
 
 ### After uploading
 
-1. **Verify** the URL loads: `curl -sI <url>` should return HTTP 200
+1. **Verify every uploaded URL** with `curl -sI <url>`; each must return HTTP 200 before committing references.
 2. **Paste** the URL into frontmatter or data file
 3. For `src/lib/*.ts` files: prefer building URLs from `ASSET_BASE_URL`:
    ```ts

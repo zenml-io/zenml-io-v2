@@ -1,47 +1,27 @@
 # Repository Guidelines
 
-## Project Structure & Module Organization
-This is the unified ZenML × Kitaru marketing site. ZenML pages are the
-default; Kitaru content lives under `/product/kitaru`, `/compare/kitaru-vs-*`,
-and Kitaru-origin blog posts. See `CLAUDE.md` for the brand/surface model
-and `MERGE_PLAN.md` for the merge plan + progress log.
+This is the unified ZenML × Kitaru marketing site, built with Astro and Preact.
+ZenML pages are the default; Kitaru lives under /product/kitaru,
+/compare/kitaru-vs-*, and Kitaru-origin blog posts. See CLAUDE.md for brand
+positioning; MERGE_PLAN.md records the merge history.
 
-- `src/` contains the Astro app:
-  - `pages/` route files (`.astro`) and dynamic templates.
-  - `pages/api/` server-side API routes (`prerender: false`). The merged site uses the unified form/API surface here (for example `forms/[formType].ts`, `csp-report.ts`, and `github-stars.ts`). The old standalone `kitaru.ai` API routes (`get-started`, `waitlist`, `newsletter`) were not carried forward. **Do NOT use `functions/`** — the Cloudflare adapter silently ignores it.
-  - `components/` shared UI and `components/islands/` for hydrated Preact interactivity (`islands/shared/` holds pieces both filter islands consume). Kitaru landing sections live in `components/kitaru/`; Kitaru-vs-X compare components in `components/compare/kitaru/`.
-  - `components/system/` — the #248 substrate primitives (`SectionIntro`, `Breadcrumb` with built-in BreadcrumbList JSON-LD, `EmptyState`, and the `layout/` set `Stack`/`Inline`/`Split`/`Bleed`/`Grid`). Absence collapses (no `show*` booleans); spacing via the `--spacing-space-*` tokens only (8 steps, `xxs`–`xxl` incl. `mlg` = 40px); island-consumed primitives ship `.astro` + `.tsx` twins in lockstep via a shared module; `classOverrides` is a migration-parity escape hatch — new code must not pass ad-hoc override objects, but may pass a named family preset (`SECTION_INTRO_PRESETS`, `templates/pageHeaderPresets.ts`). Contract types in `lib/section.ts`. The `[data-tone]` layer in `global.css` routes only brand-owned `var()`s — never a hex — and has no `section[data-tone]` base rule on purpose; tone consumers set explicit `bg-[var(--section-surface)]`-style utilities.
-  - `components/templates/` — the #249 Wave 2 section families on that substrate, registered in `src/lib/templates/registry.ts`: `PageHeader`, `ProcessSteps`, `MetadataBlock`/`SpecTable`/`DescriptionList`/`StackedList` (`DescriptionList` has a `spaced` and a `divided` frame with per-frame value-kind unions), `RelatedRail`, `TermHubEditorial`/`TermHubEntryIndex`/`TermHubCatalog`, plus `pageHeaderPresets.ts` (named family presets; plain `.ts` helpers are exempt from `check:registry`), and the #250 Wave 3 page-type templates: `ConversionShell` (conversion-utility shells) and `LegalArticle` (legal-page article header for the `legal` collection). Live routes render current-brand parity arrangements; the drawn new-brand states (zero-padded numerals, leading meta separators, stacked entry lists, sticky spec-table first column) are demo/cutover paths exercised on `/styleguide` via registry `demoProps`, with each deviation documented in the entry's `notes`. Prop contracts are type-enforced, not documented: an arrangement-selecting prop (e.g. `layout`) or a mutually-exclusive field pair (e.g. `cards`/`items`) gets a discriminated union `Props` (or an `?: never`-excluded union for keyless either/or pairs) — never a widened bag of optionals narrowed by `as` casts in the body; `astro check` is the only enforcement layer template props have (see `ProcessSteps.astro` / `TermHubEntryIndex.astro` for the two shapes). Related-entry scoring is consolidated in `lib/relatedIndex.ts` (wrapped by `llmops.ts`/`mlops.ts`); `lib/relatedIndex.ts` also holds the `filterUsedTerms` zero-entry hub filter; `lib/blog.ts` keeps `getRelatedPosts`; `lib/chipStyles.ts` holds the shared chip color variants. `lib/projectBody.ts` holds the `/projects/<slug>` details converter — deliberately minimal, pinned by two rendered-content goldens; project `pipelines`/`stackHtml` live in frontmatter, migrated by a one-off script under `scripts/migrations/`.
-  - `content/` markdown CMS content, validated by the collection definitions in `src/content.config.ts`. Two compare collections: `compare/` (ZenML-vs-X, MLOps) and `compare-kitaru/` (Kitaru-vs-X, agents).
-  - `lib/` typed utilities/data contracts. `analytics.ts` defines the surface taxonomy; `consentConfig.ts` contains the unified analytics script registry; shared form helpers live in `formTypes.ts`, `formValidation.ts`, and related form data modules.
-  - `scripts/kitaru/` client-side scripts the Kitaru landing relies on.
-  - `styles/global.css` Tailwind v4 theme tokens; `[data-app="zenml-next"]` holds the in-progress 2026 rebrand scope (type roles + palette), consumed only by `/styleguide` so far. `kitaru-compat.css` scopes Kitaru's OKLch tokens to `[data-app="kitaru"]`.
-  - `pages/styleguide.astro` + `lib/styleguide.ts` + `lib/designRules.ts` + `components/styleguide/` — the generated design-system reference (unlisted, noindex). Derived at build time from `global.css`, the template registry, and DESIGN.md; never hand-write design values into it.
-- `public/` stores static assets and edge config (`_redirects`, `_headers`).
-- `scripts/` contains maintenance and validation tooling. Some directories retain legacy names (`phase2/`, `phase4/`, `phase6/`) from the original Webflow migration — these tools are still active (e.g., `pnpm validate:content` runs `scripts/phase2/validate-content.ts`).
-- `docs/MIGRATION.md` (Webflow → Astro, Feb 2026) and `docs/kitaru-seo-inventory.md` (Phase 10a redirect audit template) are historical / operational docs, not architecture authority.
-- `design/` and `scripts/internal/` are internal artifacts and are gitignored; do not commit from them.
+## Working Agreements
+- Complete the requested work through relevant verification. Infer routine choices from the repository and source material, state material assumptions, and ask only when missing information changes the result or an action needs authorization. Continue independent authorized work while waiting.
+- Skills describe procedures; they do not grant permission to commit, push, publish, upload, request reviews, or change account settings. Use authorization already given or clearly implied by the task; do not ask for it again. An audit request authorizes an audit, not its proposed edits.
+- Explicit user instructions take precedence over skill guidance within applicable system and tool constraints. If an instruction prevents completion, name and link its file, quote the requirement, and explain what remains blocked.
+- Keep shared engineering policy equivalent in AGENTS.md, CLAUDE.md, and their repo skill copies in the same commit. Tool-specific invocation paths may differ. Codex uses .agents/skills; Claude uses .claude/skills. Do not assume nested instruction files load for a task started at the repo root.
 
-## Build, Test, and Development Commands
-- `pnpm install` installs dependencies.
-- pnpm settings (`overrides`, `onlyBuiltDependencies`) live in `pnpm-workspace.yaml`, never in a `pnpm` field in `package.json` — pnpm 11 (which Dependabot runs) ignores that field. `pnpm check:lockfile` (also run by `pnpm test`) rejects that field and diffs the `overrides` in `pnpm-workspace.yaml` against the lockfile header, naming any missing override. Why: see "Development Conventions" in `CLAUDE.md`.
-- `pnpm dev` starts local dev server at `http://localhost:4321`.
-- `pnpm build` runs Astro build and Pagefind indexing (`dist/` output).
-- `pnpm preview` serves `dist/` through the checked-in Cloudflare Workers configuration.
-- `pnpm check` runs Astro/TypeScript checks for site source.
-- `pnpm check:tests` type-checks tests, Vitest config, and the dist smoke script.
-- `pnpm check:surface` verifies pages/components declare their analytics surface.
-- `pnpm check:alt` verifies image alt-text coverage.
-- `pnpm check:registry` validates the rebrand template registry (`src/lib/templates/registry.ts`) against the files on disk — every registered `componentPath` resolves, no orphan components under `src/components/templates/` or `src/components/system/` (a `.tsx` twin beside a same-name `.astro` is exempt), no duplicate ids, and `contentShape` bounds are sane.
-- `pnpm lint` runs Biome checks on configured source, test, config, and smoke-script files.
-- `pnpm test` runs the Vitest suite once.
-- `pnpm smoke:dist` smoke-tests `dist/` after `pnpm build`, including that every Preact island is still mounted on its pages with its bundle on disk, and that the rendered content of one blog post, one Kitaru-vs-X MDX page, and two project detail pages (details column plus one sidebar) still matches the goldens in `tests/snapshots/rendered/` (`pnpm check:snapshots` alone; `pnpm snapshots:update` to regenerate after an intended change — review the golden diff before committing it). Step 9 of the same smoke run is a pixel-tolerance golden of one Open Graph card (`scripts/check-og-golden.ts`, `tests/snapshots/rendered/og-kitaru-vs-temporal.jpg`; `pnpm og:golden:update` after an intended change) — the only thing in CI that executes satori/resvg/sharp; the script header has the rationale.
-- `pnpm check:worker` starts Wrangler locally from `wrangler.jsonc` and checks the generated Astro Worker, static assets, redirects, headers, 404, and API routes. Run it after `pnpm build` for Worker runtime or deployment changes.
-- `pnpm check:worker-bindings -- <metadata.json>` refuses promotion metadata that does not contain both required form-secret bindings.
-- `pnpm check:islands` serves `dist/` and drives a real Chromium to prove the Preact islands actually **hydrate** (become interactive) — an island can ship perfect markup and still be inert. It also checks the Storylane embed on `/live-demo` (not an island): under both rejected and accepted consent, the iframe and enhancement script must load with exactly one `#storylane-embed` script. Needs `pnpm exec playwright install chromium` on first run.
-- `pnpm lint:fix` auto-fixes lint issues.
-- `pnpm format` formats configured files with Biome.
-- `pnpm validate:content` runs content schema and consistency checks.
+## Project Structure & Contracts
+- Routes and server APIs live in `src/pages/` and `src/pages/api/` (`prerender: false`). Do not use `functions/`; the Cloudflare adapter ignores it. Shared UI lives in `src/components/`, hydrated Preact components in `islands/`, typed data in `src/lib/`, and CMS Markdown in `src/content/` with schemas in `src/content.config.ts`.
+- Read [the architecture reference](docs/agent-reference/site-architecture.md) before changing routes, templates, design primitives, or rendering. The website-development skill routes to this and validation details. `docs/MIGRATION.md` and `docs/kitaru-seo-inventory.md` are historical/operational context, not architecture authority.
+- System primitives use `--spacing-space-*` tokens (`SpaceStep`, including `mlg`); absence collapses layout without `show*` booleans. Keep island-consumed `.astro` and `.tsx` twins in lockstep through shared modules. New code must not pass ad-hoc `classOverrides`; use named family presets.
+- Template arrangement selectors and mutually exclusive fields require discriminated unions or `?: never` exclusions. Never hide invalid combinations in bags of optional props narrowed by `as` casts. Register templates in `src/lib/templates/registry.ts`.
+- The `[data-tone]` layer routes brand-owned `var()` values, never hex colors. Do not add a base `section[data-tone]` background rule; consumers set explicit background utilities. The styleguide derives values from global.css, the registry, and DESIGN.md; never hand-write design values into it.
+- Preserve published URLs or add 301 redirects; verify canonicals and redirects for URL/SEO changes. Pass explicit analytics `surface=` to BaseLayout/MinimalLayout and use the taxonomy in `src/lib/analytics.ts`.
+
+## Development Commands
+- Use `pnpm install`, `pnpm dev` (localhost:4321), `pnpm check`, `pnpm lint`, `pnpm test`, and `pnpm build`. Package scripts are defined in package.json; [validation details](docs/agent-reference/validation.md) explains specialized checks.
+- pnpm settings (`overrides`, `onlyBuiltDependencies`) belong in pnpm-workspace.yaml, never a `pnpm` field in package.json. `pnpm check:lockfile`, also run by tests, checks overrides against the lockfile.
 
 ## Coding Style & Naming Conventions
 - Use TypeScript + Astro with 2-space indentation (see `biome.json`).
@@ -49,45 +29,36 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 - Use kebab-case for content slugs/filenames in `src/content/`.
 - Prefer typed data modules in `src/lib/` over hardcoded copy in components.
 - Use `.md` for content files (not `.mdx`). The `compare-kitaru/` collection is the documented exception (inline component imports inherited from the Kitaru port).
+- Before a code PR or substantial code commit, review changed code for reuse, clarity, and unnecessary work; use an available simplify skill or perform that review directly. Fix worthwhile findings and rerun affected checks.
 
 ## Testing Guidelines
-- The root test suite runs with `pnpm test`.
-- Minimum quality gate before PR: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm check:registry && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:worker && pnpm check:islands`. PR CI enforces these in the required `Repo checks` job and packages that exact validated artifact — except `pnpm check:registry`, which is **not yet in that job** (wiring it in touches the trusted workflow mirror and its blob-SHA pin, a reviewed release-boundary change; see `CLAUDE.md`): run it locally until then. A trusted workflow may upload an isolated, inactive preview afterward for eligible same-repository PRs, but preview upload is not the required merge gate.
-- Before pushing code changes, run the same local gates that CI runs: `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`, `pnpm check:registry`, `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm smoke:dist`, `pnpm check:worker`, then `pnpm check:islands` (or the combined command above). If you edit code after running any check, rerun the affected check before pushing. Documentation-only edits can skip the build unless they change generated content or site behavior.
-- Worker release changes follow `docs/worker-release-runbook.md`. CI, preview upload, production-candidate upload, exact-version activation, and production route attachment remain separate actions. Never add Cloudflare credentials to the branch-controlled build job. After the accepted Worker cutover, the trusted default-branch release workflow may upload the exact validated `main` artifact and activate it in separate GitHub-environment jobs after provenance, binding, topology, and baseline checks; route attachment remains a separate action.
-- For content-heavy changes, also run `pnpm validate:content`.
-- If you edit code after running checks, rerun the affected checks.
+- During implementation, run checks that exercise the changed behavior. Before pushing code or opening a code PR, run the full gate below once on the final relevant state. Mixed code/content changes use the full gate, plus content validation when applicable.
+- Pure instruction or documentation changes that do not alter generated content, executable scripts, or site behavior need diff, reference, and instruction-consistency checks; no application build or test suite is required. Rendered content-only changes require `pnpm validate:content`, `pnpm check`, `pnpm build`, and `pnpm smoke:dist`, plus browser inspection of changed pages and redirect/canonical checks when relevant. CI remains unchanged and may run broader checks.
+- After later edits, rerun affected checks. Once required checks pass, broaden testing only for a new change, failure, or unresolved concern. Test observable behavior; do not add tests that merely repeat the implementation. Report passed, failed, and blocked checks separately; establish current baseline evidence before calling a failure pre-existing.
+- Full code gate: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm check:registry && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:worker && pnpm check:islands`.
+- `pnpm check:registry` is required locally but not yet in the required CI `Repo checks` job. Adding it there changes the trusted workflow mirror and blob-SHA pin and needs a reviewed release change. Preview upload is not the merge gate.
+- Review intended rendered-content and OG golden changes before committing them; investigate unexpected differences rather than accepting new snapshots. Hydration requires `pnpm check:islands`; build and smoke markup checks alone do not prove interactivity.
+- Worker changes follow [the release runbook](docs/worker-release-runbook.md). CI, preview upload, candidate upload, activation, and route attachment are separate actions. Never add Cloudflare credentials to the branch-controlled build job. Production release consumes the exact validated main artifact through separate upload/activation jobs with provenance, binding, topology, and baseline checks.
+- Read [validation details](docs/agent-reference/validation.md) for command coverage, browser setup, snapshots, and release checks. Capture long build output in a log and check the actual process exit status; foreground or background execution is fine.
 
 ## Commit & Pull Request Guidelines
-- Follow existing commit style: imperative, concise subject lines (`Fix ...`, `Add ...`, `Update ...`).
-- Keep commits focused; stage only relevant files.
-- **`CLAUDE.md` and `AGENTS.md` are kept in sync**: any change to conventions, commands, or quality gates in one must be checked against — and reflected in — the other in the same commit.
-- Do **not** commit intermediate planning/review artifacts by default. Files under `docs/plans/`, `docs/reviews/`, `prompt-exports/`, or similar orchestration scratch locations are working notes unless the user explicitly asks to keep them. Before committing, check `git status --short` and leave unrelated or intermediate plans/reviews unstaged.
-- PR descriptions should be friendly and reviewer-oriented. Include: a short summary; grouped feature/change bullets; a “what reviewers should focus on” section for gnarly or judgement-heavy areas; validation commands/review loops run; and concrete preview URLs or paths to check when relevant.
-- Do not hard-wrap PR descriptions at a fixed column width. Keep each paragraph and each bullet on one source line, use blank lines between logical blocks, and let GitHub wrap the rendered text for the viewer.
-- PRs should include screenshots for UI changes.
-- Verify redirects/canonicals when URL or SEO-related files change.
+- Use focused commits with imperative subjects (`Fix ...`, `Add ...`, `Update ...`). Verify the checkout and working state; stage only task-relevant files.
+- Do not commit intermediate plans/reviews by default (docs/plans/, docs/reviews/, prompt-exports/); include them only when the user requests it. Keep unrelated changes unstaged. Never commit from design/ or scripts/internal/; these are gitignored internal artifacts.
+- PR descriptions lead with the problem and resulting behavior, then grouped changes and validation. Add reviewer-focus guidance for judgment-heavy changes and preview paths/screenshots for UI changes. Scale detail to the change.
+- Do not hard-wrap PR descriptions: one logical line per paragraph or bullet, with blank lines between blocks. Match existing wrapping when editing Markdown files.
 
-## Images & Assets (Two-Tier System)
-- **UI/static assets** (`public/images/`): logos, icons, favicons, backgrounds. Reference as `"/images/filename.svg"` (root-relative). Just place the file in `public/images/`.
-- **Third-party service logos**: follow the `add-service-logo` skill in the ZenML frontend monorepo (`.claude/skills/add-service-logo/SKILL.md`) for current-mark sourcing, 24x24 normalization, and mandatory rendered review before integration. Preserve full-color brand marks rather than recoloring them.
-- **Content/CMS images** (R2 bucket): blog heroes, screenshots, team photos, OG images. Must be **absolute URLs** — content schemas enforce `z.string().url()`. Upload via `uv run scripts/r2-upload.py <file>`.
-- **Alt text matters for SEO**: give every image descriptive, non-empty alt text (`<img>`, `mainImage`, `logo`) unless there's a clear reason not to (e.g. a decorative image already labelled by an adjacent `aria-label`).
-- In `src/lib/*.ts` data files, build R2 URLs from `ASSET_BASE_URL` constant — never hardcode the R2 domain.
-- New R2 uploads use the key prefix `content/uploads/{sha8}/{filename}`. Legacy assets from the original Webflow migration live under `webflow/...` and are still served.
-- After uploading, always verify the URL returns HTTP 200 before committing.
-- **Claude Code skill**: Use the `r2-image-upload` skill (`.claude/skills/r2-image-upload/SKILL.md`) for the full upload workflow.
+## Images & Assets
+- Static UI assets (logos, icons, favicons, backgrounds) go in public/images/ with root-relative URLs. CMS images go to R2 and must use absolute URLs. In src/lib/*.ts, build R2 URLs from ASSET_BASE_URL; never hardcode the domain.
+- **Third-party service logos:** locate the `zenml-frontend-monorepo` checkout, then read `.claude/skills/add-service-logo/SKILL.md` there before sourcing or integrating a logo. Try the sibling checkout first; if absent, use available project discovery. If unavailable, report the missing skill and continue unrelated work. Preserve full-color marks, normalize to 24x24, and obtain user approval of the rendered result before integration; do not bypass that review.
+- Give images descriptive, non-empty alt text unless decorative and already labeled. Prefer AVIF for in-page content images and a separate JPEG URL for seo.ogImage.
+- New uploads default to `content/uploads/{sha8}/{filename}`; task-specific `--prefix` values such as `content/blog/<slug>` are supported. Legacy webflow/ assets remain served; do not move them. Verify every uploaded URL returns HTTP 200 before committing references.
+- Use [r2-image-upload](.agents/skills/r2-image-upload/SKILL.md) for upload steps after authorization.
 
 ## Contributing Blog Posts
-- New blog posts go in `src/content/blog/<slug>.md` on a feature branch (`blog/<slug>`).
-- Frontmatter must match the `blogSchema` in `src/content.config.ts`. The `webflow` field is NOT needed for new native posts.
-- Author, category, and tag fields are slug references to their respective collections. If a referenced tag or author doesn't exist, create the `.md` file first. **Note:** adding a new file under `src/content/categories/` or `src/content/tags/` requires a `pnpm dev` restart — `referenceSlugSets` reads the directory at config eval time.
-- For **Kitaru-themed posts** (anything about agents, durable execution, Kitaru launches/features), use `category: "kitaru"` and prepend `"kitaru"` to the tags array — that surfaces them on `/category/kitaru` and in the unified blog sidebar.
-- All content images must be absolute R2 URLs. Upload via `uv run scripts/r2-upload.py`.
-- **Claude Code skill**: Use the `blog-post-contributor` skill (`.claude/skills/blog-post-contributor/SKILL.md`) for the full workflow — supports both local markdown files and Notion pages as sources.
+- Use [blog-post-contributor](.agents/skills/blog-post-contributor/SKILL.md) to import Markdown or Notion content into src/content/blog/<slug>.md on a blog/<slug> branch. Reuse an explicitly authorized feature branch rather than switching a user's active checkout.
+- Match blogSchema in src/content.config.ts; webflow metadata is unnecessary for native posts. Resolve author/category/tag slugs against their collections; create missing authors/tags from supplied facts. Restart pnpm dev after adding categories/tags because referenceSlugSets loads at config evaluation.
+- For Kitaru posts, use category: "kitaru" and make "kitaru" the first tag. Preserve source authorship and intended publication state. Missing cover art blocks readiness to publish, not independent content preparation; do not invent image URLs.
 
-## Security & Configuration Tips
-- Never commit secrets, API keys, infra IDs, or private notes.
-- Store local secrets in `.env` (gitignored). See `.env.example` for required variables.
-- Treat this repo as public by default.
-- `docs/MIGRATION.md` documents how the site was migrated from Webflow — it is historical context, not current architecture guidance.
+## Security & Configuration
+- Treat this repo as public. Never commit secrets, API keys, infrastructure IDs, internal URLs, traffic numbers, or private notes.
+- Use credentials only for the authorized task. Do not automatically persist supplied credentials. When persistence is requested or required for an authorized local setup, use gitignored .env and only the necessary keys; never print their values. See .env.example for variable names.

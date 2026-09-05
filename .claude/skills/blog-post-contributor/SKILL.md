@@ -1,18 +1,14 @@
 ---
 name: blog-post-contributor
 description: >-
-  Add a new blog post to the ZenML website. Supports two workflows: (1) from a
-  local markdown file, or (2) directly from a Notion page via the Notion MCP
-  server. Handles frontmatter validation, image processing (AVIF conversion + R2
-  upload), cover image prompting, SEO tagging (discovery tag for SEO posts),
-  feature branch setup, build verification, PR creation with reviewer tagging,
-  and tag/author creation. Triggers: "new blog post", "add blog", "publish
-  blog", "blog from Notion", "blog from markdown", "contribute blog".
+  Add or import a blog post from Markdown or Notion; prepare content, metadata,
+  and assets. External actions require task authorization. Skip ordinary edits
+  to existing posts.
 ---
 
 # Blog Post Contributor
 
-Add a new blog post to the ZenML website (`src/content/blog/`). This skill supports two source workflows and handles all the plumbing: frontmatter, images, taxonomy entries, git branching, build verification, and PR creation.
+Prepare a new blog post in `src/content/blog/` from Markdown or Notion: frontmatter, images, taxonomy entries, and validation. Follow the authorized task scope for branching, uploads, and PR creation.
 
 ## Quick Reference
 
@@ -27,9 +23,11 @@ Add a new blog post to the ZenML website (`src/content/blog/`). This skill suppo
 | AVIF compression script | `~/.claude/skills/avif-image-compressor/scripts/convert_to_avif.sh` |
 | R2 image prefix | `content/blog/<slug>/` |
 
-## Step 0: Gather Key Information
+## Step 0: Read the source and resolve missing information
 
-Before any work, ask the user for (if not already provided):
+Read the supplied article and metadata first. Infer routine choices from that source and repository conventions; state material assumptions. Ask only for unresolved facts that change the result, such as authorship or a scheduled date. Continue independent preparation while waiting. Skills do not authorize uploading, committing, pushing, publishing, or requesting reviews; use the user's existing authorization for each action without asking again.
+
+Resolve these fields from the source before asking:
 
 1. **Source**: Local markdown file path, or Notion page URL?
 2. **Author**: Who should be listed? (check `src/content/authors/` for existing slugs)
@@ -39,15 +37,7 @@ Before any work, ask the user for (if not already provided):
 
 ## Step 1: Create a Feature Branch
 
-Always pull the latest main first, then branch:
-
-```bash
-git checkout main
-git pull origin main
-git checkout -b blog/<slug>
-```
-
-Use the blog post's slug as the branch name suffix (e.g., `blog/runai-vs-clearml`).
+Inspect the repository, current branch, and working tree. Reuse an explicitly authorized feature branch. For fresh work, fetch main and create blog/<slug> from origin/main in a clean checkout or an isolated worktree under .worktrees/. Do not switch or pull into a checkout containing unrelated work. Preserve local commits and report any unresolved base conflict.
 
 ## Choose Your Path
 
@@ -71,7 +61,7 @@ Read the user's `.md` file. Identify:
 Derive the slug from the title:
 - Lowercase, hyphen-separated, no special characters
 - Keep it concise but descriptive (e.g., `introducing-zenml-pipelines`)
-- Confirm the slug with the user
+- Use the source slug or derive one without a routine confirmation. Ask if it conflicts with an existing URL or the intended canonical URL is unclear.
 
 ### A3. Skip to [Common Steps](#common-steps-both-paths)
 
@@ -79,14 +69,11 @@ Derive the slug from the title:
 
 ## Path B: From Notion Page
 
-Use the **Notion MCP server** (`mcp__claude_ai_Notion__notion-fetch`) to fetch the page content directly. This preserves formatting better than manual export and gives us image URLs we can download.
+Use the available Notion connector to fetch the supplied page directly. Discover its current fetch tool rather than assuming a host-specific tool name.
 
 ### B1. Fetch the Notion page
 
-```
-mcp__claude_ai_Notion__notion-fetch
-  id: "<notion-page-url>"
-```
+Fetch the supplied page URL or ID with the connector.
 
 This returns the full page content in enhanced Markdown format, including:
 - Image references as `![](https://prod-files-secure.s3.us-west-2.amazonaws.com/...)` with temporary pre-signed S3 URLs
@@ -163,12 +150,10 @@ sips -s format jpeg cover.avif --out cover.jpg
 
 #### Upload to R2
 
-Upload both the AVIF (for in-page rendering) and the JPEG (for OG):
+Once uploading is authorized, upload both the AVIF (for in-page rendering) and the JPEG (for OG). Run the repository upload script from the repository root using absolute image paths; conversion may have changed the working directory. For example, from the repo root:
 
 ```bash
-for f in *.avif *.jpg; do
-  uv run scripts/r2-upload.py "$f" --prefix content/blog/<slug>
-done
+uv run scripts/r2-upload.py /tmp/<slug>-images/cover.avif /tmp/<slug>-images/cover.jpg --prefix content/blog/<slug>
 ```
 
 Record each R2 URL. The cover image will have two URLs at the same prefix
@@ -176,16 +161,16 @@ Record each R2 URL. The cover image will have two URLs at the same prefix
 
 #### Verify R2 uploads
 
-Spot-check at least 2 URLs with `curl -sI <url>` — must return HTTP 200.
+Verify every uploaded URL with `curl -sI <url>`; each must return HTTP 200 before committing references.
 
 ### C2. Handle the cover image
 
 Check if the content has a dedicated cover/hero image:
 
 - **Cover image provided** (in Notion or by user): Convert to AVIF (quality 25, resize 1200) and upload to R2
-- **No cover image**: **Ask the user** to create one and provide a path (e.g., `~/Downloads/cover.png`). Suggest they can use Canva, Figma, or the `image-generator` skill. This is a **blocking step** — blog posts should have a cover image for social sharing and the blog listing page.
+- **No cover image:** Ask for a suitable asset or offer to generate one with an available image tool. Continue content preparation and checks independent of the cover. Keep the post draft while assets are incomplete; do not invent image URLs or mark it ready to publish.
 
-The cover image URL goes into both `mainImage.url` and `seo.ogImage`.
+Put the AVIF URL in `mainImage.url` and the separate JPEG URL in `seo.ogImage`.
 
 ### C3. Validate or create the author
 
@@ -262,7 +247,7 @@ Category is optional. Don't create new categories — use the closest match. **F
 
 ### C6. Build the frontmatter
 
-Assemble the complete frontmatter block:
+Assemble the complete frontmatter block. This example is a ready-to-publish post with resolved assets; use draft: true for incomplete preparation:
 
 ```yaml
 ---
@@ -297,7 +282,7 @@ seo:
 - `mainImage.url` must be an absolute URL (R2-hosted)
 - `seo.canonical` must be `https://www.zenml.io/blog/<slug>`
 - `seo.description` can come from the Notion "Meta description:" line if present
-- `draft: false` always — new blog posts are never drafts, even if a cover image is missing
+- Preserve an explicitly requested draft state. Use `draft: true` while required content or cover assets remain unresolved; use `draft: false` only when the post is complete and intended for publication. Draft is not a privacy boundary.
 - `webflow` field is NOT needed for new native posts
 
 ### C7. Write the blog post file
@@ -321,8 +306,11 @@ pnpm validate:content
 # TypeScript check
 pnpm check
 
-# Full build (run in background, check tail for success — output is 2000+ lines)
-pnpm build 2>&1 | tail -30
+# Full build; capture output without masking the exit code
+pnpm build > /tmp/blog-build.log 2>&1
+
+# Rendered-content and asset smoke checks after a successful build
+pnpm smoke:dist
 ```
 
 Fix any issues. Common problems:
@@ -331,9 +319,11 @@ Fix any issues. Common problems:
 - Image URL not absolute (must start with `https://`)
 - Invalid date format
 
-Pre-existing errors (e.g., old slug format warnings, `mdast` type error) are NOT caused by the new post — ignore them.
+Check the actual build exit status and inspect /tmp/blog-build.log. Do not proceed to smoke checks after a failed build. Inspect the changed page in a browser and verify its canonical URL. Follow the root testing policy for mixed code/content changes. Classify failures as pre-existing only with current baseline evidence; report any failed or blocked checks instead of ignoring historical error names.
 
-### C9. Commit and create PR
+### C9. Commit and create PR when authorized
+
+Proceed only when the user requested or already authorized these actions and the applicable root validation gate is satisfied. Otherwise return the prepared files and validation results. An incomplete post can be submitted as a draft PR when requested, with unresolved publication requirements stated explicitly.
 
 ```bash
 # Stage only relevant files
@@ -341,51 +331,25 @@ git add src/content/blog/<slug>.md
 git add src/content/authors/<new-author>.md  # if new
 git add src/content/tags/<new-tag>.md        # if new
 
-git commit -m "Add blog post: <short-title>"
-git push -u origin blog/<slug>
+git commit -m "Add blog post: <short-title>" -- src/content/blog/<slug>.md
+# Include any newly created author/tag paths in the commit path list too.
+git push -u origin HEAD
 ```
 
-Then create a PR with `gh pr create`:
+Write the PR body to a temporary file and use `gh pr create --body-file <path>`. Include the source, author/date, image handling, validation evidence, and any unresolved publication requirements. Do not expose private source URLs in this public repository; describe the source without its private link when needed.
 
-```bash
-gh pr create --title "Add <title> blog post" --body "$(cat <<'EOF'
-## Summary
-- Adds new blog post: "<title>"
-- Author: <author>, publish date: <date>
-- <N> images converted to AVIF and uploaded to R2
-- Source: <Notion URL or "local markdown">
-
-## Test plan
-- [ ] Verify blog post renders on Cloudflare Pages preview
-- [ ] Check all external links work
-- [ ] Confirm images load correctly
-EOF
-)"
-```
-
-#### PR Reviewer Tagging
-
-After creating the PR, tag the appropriate reviewer:
-
-| Post creator / Author context | Tag for review |
-|-------------------------------|----------------|
-| Tanish (SEO/GTM content) | `@strickvl` |
-| Other team members | Ask the user who should review |
-
-```bash
-gh pr edit <pr-number> --add-reviewer <github-username>
-```
+Request reviewers only when authorized; use the user-specified reviewers. A missing reviewer preference does not block preparation or an authorized PR.
 
 ### C10. Summarize for the user
 
 Print a summary:
 - Blog post file path and branch name
-- Slug and live URL: `https://www.zenml.io/blog/<slug>`
+- Slug and intended production URL (do not call it live before deployment): `https://www.zenml.io/blog/<slug>`
 - Cover image URL
 - Any new tags/authors created
 - Whether `discovery` tag was added (and why)
-- PR URL and tagged reviewer
-- Reminder: check the Cloudflare Pages preview deploy
+- PR URL and requested reviewers, if those actions were authorized
+- Preview URL when available; report publication status separately
 
 ## Frontmatter Field Reference
 
@@ -405,9 +369,9 @@ Print a summary:
 | `seo.title` | No | string | `"Title - ZenML Blog"` |
 | `seo.description` | No | string | `"150-char description"` |
 | `seo.canonical` | No | absolute URL | `"https://www.zenml.io/blog/slug"` |
-| `seo.ogImage` | No | absolute URL | Same as mainImage.url |
+| `seo.ogImage` | No | absolute URL | Separate JPEG cover URL |
 
-*`mainImage` is technically optional but this skill treats it as required — always prompt for a cover image.
+*`mainImage` is schema-optional, but a cover is required for publication readiness. Missing art does not block independent preparation.
 
 ## Notion Formatting Cleanup Reference
 
@@ -427,9 +391,9 @@ When processing Notion MCP content, apply these transformations:
 
 1. **Notion MCP works well for fetching content** — returns enhanced Markdown with image URLs. The old advice to avoid it was based on block-level JSON; the current MCP returns clean markdown.
 2. **Notion image URLs expire in ~1 hour** — download immediately after fetching the page. Verify each download with `file <name>`.
-3. **Always `git pull origin main` before branching** — avoids conflicts with recently merged content.
+3. **Start from current main for fresh work** while preserving the authorized checkout and unrelated local changes.
 4. **AVIF compression is dramatic** — typical 80-96% reduction. Use quality 28 + resize 800 for inline images, quality 25 + resize 1200 for cover/hero images.
 5. **Verify R2 uploads via public URL** — the boto3 API can succeed but the public domain may not serve the file. Always `curl -sI` to confirm HTTP 200.
 6. **Discovery tag for SEO posts** — posts under Tanish's GTM content or with "vs"/"alternative" patterns should get the `discovery` tag to keep them off the main blog listing.
-7. **Build output is 2000+ lines** — always check only the tail for success/failure status.
-8. **Pre-existing validation errors are normal** — old slug format warnings and the `mdast` type error are known issues, not regressions.
+7. **Build logs are long**: capture them and check the actual process exit status, then read relevant failure output.
+8. **Baseline failures need current evidence**: old notes do not establish that a failure is unrelated to this change.
