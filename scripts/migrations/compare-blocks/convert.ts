@@ -315,7 +315,7 @@ function materialise(fm: Record<string, unknown>, body: string): Materialised {
   blocks.push({
     kind: "blogRail",
     eyebrow: "Expand Your Knowledge",
-    headline: "Broaden Your MLOps Understanding with ZenML",
+    headline: "Broaden Your AI Orchestration Understanding with ZenML",
   });
 
   const bodyBullets = extractCtaBullets(body);

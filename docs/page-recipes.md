@@ -45,7 +45,8 @@ can be assembled from.
 **Routes** — `/compare/zenml-vs-<slug>` (25 pages) and `/vs/<slug>` (3 category
 pages), all published entries in the `compare` and `vs-pages` collections.
 **Layout** — no page-level layout wrapper; `ComparisonPage` renders its own
-document (`wrapInMain` toggles a `<main>` for the `/vs` family).
+document (the `/vs` family wraps its section stack in a `<main>`; `/compare`
+never has one — derived from the `item.collection` discriminant, not a prop).
 **Surface** — `ml` for all 28 routes; `ComparisonPage` sets it once and neither
 family overrides it (verified against the rendered `data-surface` attribute).
 **Sequence** — one ordered `blocks[]` array per entry, rendered through a
@@ -562,9 +563,11 @@ from it yet.
 under `data-app="zenml-next"` for the in-progress rebrand scope — that's the
 brand scope, which is a separate axis from the analytics surface.
 **Sequence** — generated sections: design tokens, type scale, spacing scale,
-a live-rendered stage for every built registry entry (via `TemplateStage`,
-using each entry's `demoProps`/`demoSlots`), and a rules section parsed from
-`DESIGN.md`.
+a live-rendered stage for every built registry entry that doesn't opt out
+via `stage: false` (via `TemplateStage`, using each entry's
+`demoProps`/`demoSlots`) — the eight `comparison.*` entries do opt out,
+since they render through the shared comparison dispatcher rather than as
+standalone templates — and a rules section parsed from `DESIGN.md`.
 **Required data** — `src/lib/styleguide.ts`; `src/lib/designRules.ts`;
 `src/lib/templates/registry.ts` itself.
 **Buildable today** — no, and not meaningfully applicable — this page *is*

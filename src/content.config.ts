@@ -495,13 +495,12 @@ const mlopsDatabaseSchema = z.object({
 /**
  * Compare/VS Pages schema
  * Route: /compare/<slug>
- * Count: 17 items
+ * Count: 25 items
  *
  * MAJOR DISCREPANCIES FROM PLAN:
  * - Field is "toolName" (not "competitor")
  * - Many additional fields for VS page rendering:
- *   toolIcon, category, integrationType, quote, headline, heroText,
- *   ctaHeadline, learnMoreUrl, seoDescription, openGraphImage
+ *   toolIcon, category, integrationType, seoDescription, openGraphImage
  */
 /**
  * Two-column value section. Shared by feature pages, `/vs/*` and the
@@ -546,14 +545,14 @@ const compareQuoteBlockSchema = z.object({
 
 const compareFeatureTableBlockSchema = z.object({
   kind: z.literal("featureTable"),
-  tableHtml: z.string(),
+  tableHtml: z.string().min(1),
 });
 
 const compareCodeComparisonBlockSchema = z.object({
   kind: z.literal("codeComparison"),
-  zenmlCode: z.string(),
+  zenmlCode: z.string().min(1),
   zenmlLanguage: z.string().default("python"),
-  toolCode: z.string(),
+  toolCode: z.string().min(1),
   toolLanguage: z.string().default("python"),
 });
 

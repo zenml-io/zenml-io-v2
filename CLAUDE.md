@@ -286,7 +286,7 @@ Important rules:
 - `src/pages/styleguide.astro` — generated design-system reference (public-but-unlisted, noindex, no nav/sitemap links); renders tokens/type/scale/registry/rules derived at build time — never hand-write design values into it
 - `src/lib/styleguide.ts` — styleguide derivation layer: parses `global.css` tokens, computes WCAG contrast for declared pairs (`DECLARED_PAIRS`/`CHROME_PAIRS`)
 - `src/lib/designRules.ts` — parses DESIGN.md rule sections for the styleguide's Rules section
-- `src/components/styleguide/TemplateStage.astro` — live render stage for built registry entries on /styleguide; renders each entry with its registry `demoProps` (spread) and `demoSlots` (static demo HTML for slot-composed primitives); the glob covers `src/components/templates/**` and `src/components/system/**`
+- `src/components/styleguide/TemplateStage.astro` — live render stage for built registry entries on /styleguide that don't opt out via `stage: false` (the eight `comparison.*` entries opt out — they render through the shared comparison dispatcher, not as standalone templates, and are catalogued without a live stage); renders each staged entry with its registry `demoProps` (spread) and `demoSlots` (static demo HTML for slot-composed primitives); the glob covers `src/components/templates/**` and `src/components/system/**`
 - `src/styles/kitaru-compat.css` — Kitaru OKLch tokens scoped to `[data-app="kitaru"]`
 - `src/lib/constants.ts` — `SITE_URL` and shared constants
 - `src/lib/seo.ts` — SEO contract (`SEOProps`, `resolveSeo()`, `buildCanonical()`)
