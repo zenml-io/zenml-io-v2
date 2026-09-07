@@ -1,10 +1,5 @@
 ---
 import Button from "../../components/Button.astro";
-import CustomerStories from "../../components/sections/CustomerStories.astro";
-import FeatureTabs from "../../components/sections/FeatureTabs.astro";
-import IntegrationsMarquee from "../../components/sections/IntegrationsMarquee.astro";
-import LogoCloud from "../../components/sections/LogoCloud.astro";
-import ValueProps from "../../components/sections/ValueProps.astro";
 /**
  * /product/zenml — ZenML sub-product landing.
  *
@@ -16,6 +11,12 @@ import ValueProps from "../../components/sections/ValueProps.astro";
  * Phase 9 baseline: copy + structure only. Visual polish (custom hero
  * canvas, mesh gradient, etc.) deferred to Zuri's design pass.
  */
+import InstallCommand from "../../components/InstallCommand.astro";
+import CustomerStories from "../../components/sections/CustomerStories.astro";
+import FeatureTabs from "../../components/sections/FeatureTabs.astro";
+import IntegrationsMarquee from "../../components/sections/IntegrationsMarquee.astro";
+import LogoCloud from "../../components/sections/LogoCloud.astro";
+import ValueProps from "../../components/sections/ValueProps.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   PRODUCT_ZENML_BENEFITS,
@@ -60,24 +61,7 @@ import {
           {PRODUCT_ZENML_HERO.subtitle}
         </p>
 
-        <div class="mt-8 flex justify-center">
-          <div class="inline-flex items-center gap-2 rounded-md border border-gray-200 bg-gray-50 px-4 py-2.5 font-mono text-sm">
-            <span class="text-gray-400" aria-hidden="true">$</span>
-            <code class="text-gray-900">{PRODUCT_ZENML_HERO.installCmd}</code>
-            <button
-              class="ml-2 inline-flex items-center text-gray-400 hover:text-gray-700 transition-colors"
-              aria-label="Copy install command"
-              data-copy={PRODUCT_ZENML_HERO.installCmd}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="9" y="9" width="13" height="13" rx="2" />
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Button href={PRODUCT_ZENML_HERO.primaryCta.href} variant="primary" size="lg">
             {PRODUCT_ZENML_HERO.primaryCta.label}
           </Button>
@@ -88,6 +72,14 @@ import {
           >
             {PRODUCT_ZENML_HERO.secondaryCta.label}
           </Button>
+        </div>
+
+        <div class="mt-5 flex justify-center">
+          <InstallCommand
+            cmd={PRODUCT_ZENML_HERO.installCmd}
+            label="ZenML"
+            analytics="ZenML-Hero-Install"
+          />
         </div>
       </div>
     </section>
@@ -134,14 +126,7 @@ import {
           {PRODUCT_ZENML_FINAL_CTA.body}
         </p>
 
-        <div class="mt-8 flex justify-center">
-          <div class="inline-flex items-center gap-2 rounded-md border border-gray-200 bg-white px-4 py-2.5 font-mono text-sm">
-            <span class="text-gray-400" aria-hidden="true">$</span>
-            <code class="text-gray-900">{PRODUCT_ZENML_FINAL_CTA.installCmd}</code>
-          </div>
-        </div>
-
-        <div class="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Button href={PRODUCT_ZENML_FINAL_CTA.primaryCta.href} variant="primary" size="lg">
             {PRODUCT_ZENML_FINAL_CTA.primaryCta.label}
           </Button>
@@ -149,18 +134,16 @@ import {
             {PRODUCT_ZENML_FINAL_CTA.secondaryCta.label}
           </Button>
         </div>
+
+        <div class="mt-5 flex justify-center">
+          <InstallCommand
+            cmd={PRODUCT_ZENML_FINAL_CTA.installCmd}
+            label="ZenML"
+            analytics="ZenML-CTA-Install"
+          />
+        </div>
       </div>
     </section>
   </main>
 </BaseLayout>
 
-<script>
-  // Tiny clipboard helper for the hero install command.
-  document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const text = btn.dataset.copy;
-      if (!text) return;
-      navigator.clipboard?.writeText(text);
-    });
-  });
-</script>

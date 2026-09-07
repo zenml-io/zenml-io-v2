@@ -16,9 +16,9 @@ export const ANNOUNCEMENT_BANNER = {
 /*  Hero                                                              */
 /* ------------------------------------------------------------------ */
 export const HERO = {
-  headline: "The single layer for ML and AI.",
+  headline: "Ship AI you can trust.",
   subheadline:
-    "Orchestrate ML and Agent workloads on your infrastructure. Modular, flexible, and open-source — always.",
+    "Orchestrate ML and Agent workloads on your infrastructure. Modular, flexible, and open-source, always.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",
@@ -45,7 +45,7 @@ import { R2_WEBFLOW_BASE } from "./constants";
 const R2 = R2_WEBFLOW_BASE;
 
 export const LOGO_CLOUD: { label: string; logos: LogoItem[] } = {
-  label: "Trusted by teams shipping ML pipelines and AI agents",
+  label: "Trusted by teams shipping AI workflows and agents",
   logos: [
     { name: "AXA", src: `${R2}/5f1b0e8a/670e2f23b0b89bea22ecee3c_axa-min.svg` },
     {
@@ -105,14 +105,14 @@ export interface FeatureTab {
 export const FEATURE_TABS_HEADER = {
   eyebrow: "The platform advantage",
   headline: "One foundation.",
-  subheadline: "ML pipelines and AI agents.",
+  subheadline: "AI workflows and agents.",
 };
 
 export const FEATURE_TABS: FeatureTab[] = [
   {
     title: "Unified Workflow Orchestration",
     description:
-      "Stop glue-coding your stack. Orchestrate scikit-learn training jobs and long-running LangGraph agent loops in the same unified execution model. State management, data passing, and termination control — across both ML pipelines and AI agent flows.",
+      "Stop glue-coding your stack. Orchestrate scikit-learn training jobs and long-running LangGraph agent loops in the same unified execution model. State management, data passing, and termination control across training pipelines and agent flows.",
     image: `${R2}/70e94eb1/68d1536e3bb1899a400a8dec_tab01.avif`,
     imageAlt:
       "Unified workflow orchestration dashboard showing ML and agent runs",
@@ -120,14 +120,14 @@ export const FEATURE_TABS: FeatureTab[] = [
   {
     title: "Artifact & Checkpoint Versioning",
     description:
-      '"It worked on my machine" is not a strategy. Every step result is versioned — trained models, evaluation datasets, and recorded agent executions alike. When a library update or prompt change breaks a run, inspect the diff, replay the recorded execution, and roll back to a working state instantly.',
+      '"It worked on my machine" is not a strategy. Every step result is versioned: trained models, evaluation datasets, and recorded agent executions alike. When a library update or prompt change breaks a run, inspect the diff, replay the recorded execution, and roll back to a working state instantly.',
     image: `${R2}/6a1e96df/68d273e1d31e42957153098b_tab02.avif`,
     imageAlt: "Artifact and checkpoint versioning view",
   },
   {
     title: "Infrastructure Abstraction",
     description:
-      "Define your compute needs in Python. The platform handles dockerization, GPU provisioning, and pod scaling — whether you're running a distributed training job or deploying an agent swarm on Kubernetes. Same code, any cloud.",
+      "Define your compute needs in Python. The platform handles dockerization, GPU provisioning, and pod scaling, whether you're running a distributed training job or deploying an agent swarm on Kubernetes. Same code, any cloud.",
     image: `${R2}/ba122f13/68d122c72dcdb1f17db0ea87_tab03.avif`,
     imageAlt: "Infrastructure abstraction across clouds",
   },
@@ -167,7 +167,7 @@ export const VALUE_PROPS: ValueProp[] = [
   {
     title: "Your stack, not ours",
     description:
-      "Run in your VPC, point at your object store, train on your clusters. The platform is a metadata layer — your artifacts, prompts, and code stay inside your infrastructure end to end. No lock-in on either side.",
+      "Run in your VPC, point at your object store, train on your clusters. The platform is a metadata layer. Your artifacts, prompts, and code stay inside your infrastructure end to end. No lock-in on either side.",
     iconBg: "#fff6ea",
     iconColor: "#FA9E33",
     iconMode: "stroke",
@@ -178,7 +178,7 @@ export const VALUE_PROPS: ValueProp[] = [
   {
     title: "From local prototype to production",
     description:
-      "Stop rewriting code to move between environments. The same pipeline step or agent flow runs locally for debugging and on Kubernetes for production — without changing your logic. The platform handles the wiring.",
+      "Stop rewriting code to move between environments. The same pipeline step or agent flow runs locally for debugging and on Kubernetes for production, without changing your logic. The platform handles the wiring.",
     iconBg: "#cfe7fc",
     iconColor: "#0E85F2",
     iconMode: "stroke",
@@ -189,7 +189,7 @@ export const VALUE_PROPS: ValueProp[] = [
   {
     title: "Lineage and replay across both workspaces",
     description:
-      "Every execution is recorded and every artifact version is tracked in the same metadata store. When something breaks, replay the exact recorded run to reproduce it — and the fix becomes a regression test that guards against it coming back.",
+      "Every execution is recorded and every artifact version is tracked in the same metadata store. When something breaks, replay the exact recorded run to reproduce it, and the fix becomes a regression test that guards against it coming back.",
     iconBg: "#d6ebf0",
     iconColor: "#309DB2",
     iconMode: "stroke",
@@ -213,7 +213,7 @@ export const VALUE_PROPS: ValueProp[] = [
 export const VALUE_PROPS_CTA = {
   headline: "Pick your workspace and start shipping.",
   subtext:
-    "Open source at the core. ML pipelines, agent flows, or both — same plans, same control plane.",
+    "Open source at the core. AI workflows, agent replay, or both. Same plans, same control plane.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",
@@ -227,7 +227,7 @@ export const VALUE_PROPS_CTA = {
 export const INTEGRATIONS_MARQUEE = {
   headline: "Works with the tools you already use",
   subheadline:
-    "60+ integrations across the AI ecosystem — from scikit-learn to LangGraph, PyTorch to OpenAI Agents SDK.",
+    "60+ integrations across the AI ecosystem, from scikit-learn to LangGraph, PyTorch to OpenAI Agents SDK.",
   primaryCta: { label: "Book a demo", href: "/book-your-demo" },
   secondaryCta: { label: "See all integrations", href: "/integrations" },
 };
@@ -364,7 +364,7 @@ export const HOMEPAGE_TESTIMONIALS: Testimonial[] = [
 
 /** Purple LLMOps banner between case study cards and testimonials */
 export const LLMOPS_BANNER = {
-  headline: "Track production ML and AI deployments across the industry",
+  headline: "Track production AI deployments across the industry",
   subtext: "See the LLMOps database →",
   href: "/llmops-database",
 };
@@ -379,7 +379,7 @@ export const COMPLIANCE = {
   badgeHeadline: "ZenML is SOC2 and ISO 27001 Compliant",
   badgeSubheadline: "We Take Security Seriously",
   badgeBody:
-    "ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your ML workflows and data.",
+    "ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your AI workflows and data.",
   architectureImage: `${R2}/68b844a2/66c7398e738654118d4024fb_why-zenml-min.png`,
   architectureImageMobile: `${R2}/8978f34c/66c73e7cfd15ae9889f59705_why-zenml-mobile-min.webp`,
   soc2Badge: `${R2}/f7e1dfa3/67ae0f84d539a001cc441a43_soc2type2_zenml.png`,
@@ -415,12 +415,12 @@ export const FAQ = {
   items: [
     {
       question:
-        "What is the difference between ZenML and other machine learning orchestrators?",
+        "What is the difference between ZenML and other workflow orchestrators?",
       answer:
         'ZenML doesn\'t take an opinion on the orchestration layer. Start writing locally, deploy on any orchestrator. We support <a href="https://docs.zenml.io/stacks/orchestrators" class="text-zenml-500 underline">many orchestrators</a> natively and can be extended to work with <a href="https://docs.zenml.io/stacks/orchestrators/custom" class="text-zenml-500 underline">custom orchestrators</a>. Read more about how ZenML <a href="/vs/zenml-vs-orchestrators" class="text-zenml-500 underline">compares to orchestrators</a>.',
     },
     {
-      question: "Does ZenML integrate with my MLOps stack?",
+      question: "Does ZenML integrate with my existing stack?",
       answer:
         'Yes! ZenML supports <a href="/integrations/kubernetes" class="text-zenml-500 underline">Kubernetes</a>, <a href="/integrations/aws" class="text-zenml-500 underline">AWS</a>, <a href="/integrations/gcp-vertexai" class="text-zenml-500 underline">GCP Vertex AI</a>, <a href="/integrations/kubeflow" class="text-zenml-500 underline">Kubeflow</a>, <a href="/integrations/airflow" class="text-zenml-500 underline">Apache Airflow</a>, and many more. Artifact, secrets, and container storage for all major cloud providers.',
     },
@@ -432,10 +432,10 @@ export const FAQ = {
     {
       question: "What is Kitaru?",
       answer:
-        'Kitaru is ZenML\'s agent experimentation platform. It records your agents\' real production runs as replayable executions. You can score a recording without ever running the agent again, or replay your real code against the recorded world — with one thing changed, like a model, tool, or prompt — to see what would have happened. Re-run a replay in CI and it becomes a regression test. Read more in the <a href="https://docs.zenml.io/kitaru" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">Kitaru docs</a>.',
+        'Kitaru is ZenML\'s agent experimentation platform. It records your agents\' real production runs as replayable executions. You can score a recording without ever running the agent again, or replay your real code against the recorded world, with one thing changed like a model, tool, or prompt, to see what would have happened. Re-run a replay in CI and it becomes a regression test. Read more in the <a href="https://docs.zenml.io/kitaru" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">Kitaru docs</a>.',
     },
     {
-      question: "How can I build my MLOps/LLMOps platform using ZenML?",
+      question: "How can I build my AI platform using ZenML?",
       answer:
         'Start simple with our <a href="https://docs.zenml.io/user-guides" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">user guides</a>, then extend with experiment trackers, model deployers, model registries and more from the <a href="https://docs.zenml.io/stacks" class="text-zenml-500 underline" target="_blank" rel="noopener noreferrer">stack components</a> library.',
     },

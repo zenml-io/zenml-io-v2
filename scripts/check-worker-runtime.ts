@@ -168,6 +168,7 @@ async function request(
   // waited timeoutMs. No check expects a 5xx, so retrying them is safe.
   for (let attempt = 1; ; attempt += 1) {
     const signal = AbortSignal.timeout(timeoutMs);
+    let transient: string;
 
     try {
       const response = await fetch(`${baseUrl}${pathname}`, {
@@ -179,6 +180,7 @@ async function request(
         return response;
       }
       await response.body?.cancel();
+      transient = `HTTP ${response.status}`;
     } catch (error) {
       if (signal.aborted) {
         throw new Error(
@@ -192,8 +194,14 @@ async function request(
           { cause: error },
         );
       }
+      transient = error instanceof Error ? error.message : String(error);
     }
 
+    // A rescued drop must stay visible: a green run that needed retries is
+    // the early signal of the wrangler regression tracked in issue #216.
+    console.warn(
+      `   ⚠ transient failure on ${pathname} (attempt ${attempt}/${TRANSIENT_RETRY_ATTEMPTS}: ${transient}); retrying`,
+    );
     await sleep(TRANSIENT_RETRY_DELAY_MS);
   }
 }

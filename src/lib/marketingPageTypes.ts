@@ -16,6 +16,13 @@ export interface CtaLink {
   variant?: "primary" | "secondary";
 }
 
+export type ProductBrand = "zenml" | "kitaru";
+
+/** A CTA tied to one sub-product; `brand` selects the button colour. */
+export interface BrandedCtaLink extends CtaLink {
+  brand: ProductBrand;
+}
+
 /** A standard hero section. */
 export interface HeroData {
   eyebrow?: string;

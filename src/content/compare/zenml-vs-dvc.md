@@ -22,7 +22,7 @@ blocks:
   - kind: "value"
     title: "Open-source and vendor-neutral"
     bullets:
-      - "ZenML is fully open-source, giving you complete control over your ML infrastructure."
+      - "ZenML is fully open-source, giving you complete control over your AI infrastructure."
       - "Avoid platform lock-in — run the same pipelines across any cloud or on-prem environment."
       - "Benefit from a transparent, community-driven development process."
     image:
@@ -118,7 +118,7 @@ blocks:
     headline: "Explore the Advantages of ZenML Over Other Tools"
   - kind: "blogRail"
     eyebrow: "Expand Your Knowledge"
-    headline: "Broaden Your MLOps Understanding with ZenML"
+    headline: "Broaden Your AI Orchestration Understanding with ZenML"
   - kind: "cta02"
     headline: "Ready to move beyond Git-based experiments to portable production pipelines?"
     bullets:

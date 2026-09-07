@@ -21,7 +21,23 @@ import SectionIntro from "../system/SectionIntro.astro";
 
 const CARDS = [
   {
-    eyebrow: "Kitaru — Agent Evals",
+    eyebrow: "ZenML: AI orchestration",
+    eyebrowClass: "text-zenml-500",
+    title: "The open-source platform for orchestrating AI workflows.",
+    body: "Orchestrate training, inference, evals, and agent workflows across your existing tools, clouds, and environments. Modular, agnostic, no lock-in.",
+    bullets: [
+      "Pipelines and stacks across any cloud",
+      "Model registry, lineage, and reproducibility built in",
+      "Open source: your stack, your data, your governance",
+    ],
+    bulletBgClass: "bg-zenml-50",
+    bulletIconClass: "text-zenml-600",
+    href: "/features",
+    linkLabel: "Explore ZenML",
+    linkClass: "text-zenml-500 group-hover:text-zenml-600",
+  },
+  {
+    eyebrow: "Kitaru: Agent replay",
     eyebrowClass: "text-orange-700",
     title: "Turn agent failures into regression tests.",
     body: "Your agent’s real traces become frozen, replayable worlds. Evaluate what happened, replay your real code against it, and keep every fix as a regression test. Self-hosted, framework-agnostic, no lock-in.",
@@ -36,22 +52,6 @@ const CARDS = [
     linkLabel: "Explore Kitaru",
     linkClass: "text-orange-700 group-hover:text-orange-800",
   },
-  {
-    eyebrow: "ZenML — ML/AI Orchestration",
-    eyebrowClass: "text-zenml-500",
-    title: "The open-source platform for production ML systems.",
-    body: "Orchestrate workflows across your existing tools, clouds, and environments. Modular, agnostic, no lock-in.",
-    bullets: [
-      "Pipelines and stacks across any cloud",
-      "Model registry, lineage, and reproducibility built in",
-      "Open source — your stack, your data, your governance",
-    ],
-    bulletBgClass: "bg-zenml-50",
-    bulletIconClass: "text-zenml-600",
-    href: "/features",
-    linkLabel: "Explore ZenML",
-    linkClass: "text-zenml-500 group-hover:text-zenml-600",
-  },
 ];
 ---
 
@@ -61,7 +61,7 @@ const CARDS = [
     <div class="scroll-slide-top max-w-3xl">
       <SectionIntro
         eyebrow="Two products · one team"
-        heading="Agent systems today. ML systems all along. One engineering team underneath both."
+        heading="Orchestrate the workflows. Diagnose the agents. One engineering team underneath both."
         classOverrides={{
           eyebrow: "text-[13px] font-semibold uppercase tracking-[0.08em] text-gray-600",
           heading: "text-3xl font-bold leading-tight tracking-tight text-gray-900",

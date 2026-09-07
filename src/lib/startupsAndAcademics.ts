@@ -21,7 +21,7 @@ export const STARTUPS_SEO: SEOProps = {
 
 export const STARTUPS_HERO = {
   eyebrow: "ZenML for Startups and Academics",
-  headline: "Empowering Startups and Researchers in MLOps",
+  headline: "Empowering Startups and Researchers in ML and AI",
   deck: "Apply to join our program for ZenML Pro access, expert guidance, and a network of innovative startups and researchers.",
 };
 

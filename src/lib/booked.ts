@@ -10,7 +10,7 @@ import type { SEOProps } from "./seo";
 export const BOOKED_SEO: SEOProps = {
   title: "Thank you for booking a demo!",
   description:
-    "Thank you for Scheduling a Live Demo to Unlock the True Potential of Your MLOps Journey and Supercharge Your Machine Learning Projects.",
+    "Thank you for scheduling a live demo. We'll show you how ZenML orchestrates your AI workflows and Kitaru diagnoses your agents.",
   noindex: true,
 };
 

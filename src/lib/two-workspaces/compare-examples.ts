@@ -83,7 +83,7 @@ export type RunComparison = {
    * Human-judgment strip. Replaces the old verdict band — Kitaru opens the
    * remaining sessions, it does not rule on them.
    */
-  readHeadline: string; // e.g. "4 still failing — opened for you to read."
+  readHeadline: string; // e.g. "4 still failing, opened for you to read."
   readSubline: string;
   readButtonLabel: string; // e.g. "Read the 4"
 };
@@ -154,7 +154,7 @@ export const COMPARE_EXAMPLES: ReadonlyArray<CompareExample> = [
           deltaTone: "gain",
         },
       ],
-      readHeadline: "4 still failing — opened for you to read.",
+      readHeadline: "4 still failing, opened for you to read.",
       readSubline: NO_VERDICT_LINE,
       readButtonLabel: "Read the 4",
     },
@@ -201,7 +201,7 @@ export const COMPARE_EXAMPLES: ReadonlyArray<CompareExample> = [
           deltaQualifier: "unchanged",
         },
       ],
-      readHeadline: "90 failing — opened for you to read.",
+      readHeadline: "90 failing, opened for you to read.",
       readSubline:
         "The cohort is immutable, so this run keeps meaning what it meant.",
       readButtonLabel: "Read the 90",
@@ -250,7 +250,7 @@ export const COMPARE_EXAMPLES: ReadonlyArray<CompareExample> = [
           deltaTone: "gain",
         },
       ],
-      readHeadline: "6 diverged — opened for you to read.",
+      readHeadline: "6 diverged, opened for you to read.",
       readSubline: NO_VERDICT_LINE,
       readButtonLabel: "Read the 6",
     },

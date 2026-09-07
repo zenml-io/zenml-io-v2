@@ -288,7 +288,7 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     withKitaruText:
       "every graph, model and tool callback recorded · this session replays",
     withoutText: "one log line per run · nothing to replay",
-    goodFit: "Graph agents — LangChain create_agent and Deep Agents included.",
+    goodFit: "Graph agents, LangChain create_agent and Deep Agents included.",
     tradeOff: "Replay depth depends on how the graph was constructed.",
     sourceCitation: "kitaru_langgraph — KitaruGraphRunner",
   },
@@ -318,7 +318,7 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     axisTicks: ["0s", "9s", "18s", "27s", "36s"],
     withKitaruText: "every generate() call recorded · this session replays",
     withoutText: "one log line per run · nothing to replay",
-    goodFit: "TypeScript agents on Mastra — generate() behaves unchanged.",
+    goodFit: "TypeScript agents on Mastra. generate() behaves unchanged.",
     tradeOff: "Non-streaming calls only for now.",
     sourceCitation: "@zenml-io/kitaru-mastra — KitaruAgent",
   },
@@ -348,7 +348,7 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
     axisTicks: ["0s", "13s", "26s", "39s", "52s"],
     withKitaruText: "every generation recorded · this session replays",
     withoutText: "one log line per run · nothing to replay",
-    goodFit: "Drop-in for generateText — same call signature, now recorded.",
+    goodFit: "Drop-in for generateText. Same call signature, now recorded.",
     tradeOff: "Wraps non-streaming generateText; streamText isn't covered.",
     sourceCitation: "@zenml-io/kitaru-vercel-ai — createKitaruGenerateText",
   },
@@ -382,7 +382,7 @@ export const FRAMEWORK_AGENT_EXAMPLES: ReadonlyArray<FrameworkAgentExample> = [
       "imported or client-recorded sessions replay like any other",
     withoutText: "one log line per run · nothing to replay",
     goodFit:
-      "Any framework — import Langfuse, LangSmith, Braintrust or OTel traces.",
+      "Any framework. Import Langfuse, LangSmith, Braintrust or OTel traces.",
     tradeOff: "You define the session's nodes; Kitaru can't infer them.",
     sourceCitation:
       "docs/book/adapters/custom.md — no adapter for your framework",

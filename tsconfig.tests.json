@@ -11,6 +11,7 @@
     "vitest.config.ts",
     "scripts/check-dist-smoke.ts",
     "scripts/check-dist-snapshots.ts",
+    "scripts/check-og-golden.ts",
     "scripts/check-lockfile.ts",
     "scripts/check-island-hydration.ts",
     "scripts/check-worker-bindings.ts",

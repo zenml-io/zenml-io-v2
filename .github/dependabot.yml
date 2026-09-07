@@ -71,13 +71,17 @@ updates:
     # member silently drops it out of the group PR instead of holding the
     # group back (that mistake produced #136).
     ignore:
-      # wrangler 4.114.0-4.118.0 (miniflare/workerd 20260722 snapshot) drop
-      # local connections intermittently during `wrangler dev`, failing
-      # `check:worker` on most CI runs (PR #207 has the measured rates;
-      # tracked upstream at cloudflare/workers-sdk#15002). This ignore drops
-      # broken wrangler versions out of the astro group PR while astro and
-      # @astrojs/* keep flowing — deliberately, unlike the #136 mistake.
-      # Lift criteria and boot-loop verification procedure: issue #216.
+      # wrangler >=4.114.0 intermittently kills `wrangler dev` mid-request
+      # ("Network connection lost" -> process exit -> ECONNREFUSED), failing
+      # `check:worker` on most CI runs. Root cause: miniflare 4.20260722.0
+      # started auto-restarting workerd behind an `unsafeHandleRuntimeRestart`
+      # hook that wrangler never implemented, so it treats the restart as
+      # fatal. Still present in 4.127.1 (3/25 local boot-loop failures on
+      # 2026-09-01; 4.113.0 = 0/25). Canonical upstream issue:
+      # cloudflare/workers-sdk#14926 (our #15002 was closed as its duplicate).
+      # This ignore drops broken wrangler versions out of the astro group PR
+      # while astro and @astrojs/* keep flowing — deliberately, unlike the
+      # #136 mistake. Lift criteria and boot-loop procedure: issue #216.
       - dependency-name: 'wrangler'
         versions: ['>=4.114.0']
       # @types/node majors must match the pinned Node runtime major (22:

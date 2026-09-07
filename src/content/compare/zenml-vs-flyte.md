@@ -131,7 +131,7 @@ blocks:
     headline: "Explore the Advantages of ZenML Over Other Orchestrator Tools"
   - kind: "blogRail"
     eyebrow: "Expand Your Knowledge"
-    headline: "Broaden Your MLOps Understanding with ZenML"
+    headline: "Broaden Your AI Orchestration Understanding with ZenML"
   - kind: "cta02"
     headline: "Accelerate Your ML Workflows with ZenML's Agile Orchestration"
     bullets:

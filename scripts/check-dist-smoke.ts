@@ -5,6 +5,7 @@ import {
   DIST_DIR,
   logResult,
 } from "./check-dist-snapshots";
+import { checkOgGolden } from "./check-og-golden";
 
 const AGENT_SKILLS_INDEX_PATH = ".well-known/agent-skills/index.json";
 
@@ -163,7 +164,7 @@ const CONTENT_MARKER_CHECKS: ContentMarkerCheck[] = [
   },
   {
     file: "product/kitaru.md",
-    markers: ['uv add "kitaru[cli,worker]" kitaru-pydantic-ai'],
+    markers: ["curl -fsSL https://kitaru.ai/install | bash"],
     message: "dist/product/kitaru.md contains the page-local install command",
   },
   {
@@ -635,7 +636,7 @@ function checkIslandMounts() {
   return failures;
 }
 
-function main() {
+async function main() {
   if (!existsSync(DIST_DIR)) {
     console.error(
       `ERROR: ${DIST_DIR}/ not found. Run pnpm build before pnpm smoke:dist.`,
@@ -672,6 +673,9 @@ function main() {
   console.log("\n8. Rendered content snapshots:");
   totalFailures += checkRenderedSnapshots();
 
+  console.log("\n9. Open Graph card golden:");
+  totalFailures += await checkOgGolden();
+
   console.log("\n========== DIST SMOKE REPORT ==========");
   console.log(`Failures: ${totalFailures}`);
   console.log(totalFailures === 0 ? "✅ PASS" : "❌ FAIL");
@@ -679,4 +683,7 @@ function main() {
   process.exit(totalFailures > 0 ? 1 : 0);
 }
 
-main();
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

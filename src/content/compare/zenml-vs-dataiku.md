@@ -43,7 +43,7 @@ blocks:
     title: "Avoid getting locked in to a vendor"
     bullets:
       - "Avoid tangling up code with tooling libraries that make it hard to transition."
-      - "Easily set up multiple MLOps stacks for different teams with different requirements."
+      - "Easily set up multiple stacks for different teams with different requirements."
       - "Switch between tools and platforms seamlessly."
     image:
       url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c0fce5c/6526ad04f45d52aff741b914_13_Productionalization_Showcase.webp"
@@ -138,7 +138,7 @@ blocks:
     headline: "Explore the Advantages of ZenML Over Other E2E Platform Tools"
   - kind: "blogRail"
     eyebrow: "Expand Your Knowledge"
-    headline: "Broaden Your MLOps Understanding with ZenML"
+    headline: "Broaden Your AI Orchestration Understanding with ZenML"
   - kind: "cta02"
     headline: "Build Portable ML Pipelines With Full Stack Freedom"
     bullets:

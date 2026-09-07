@@ -2412,6 +2412,69 @@ describe("automatic pull-request Worker previews", () => {
     );
   });
 
+  it("resolves the PR from the completed source run before fetching it directly", () => {
+    const resolutionStep = workflowStep(
+      prPreviewPublishSteps,
+      "Resolve one current eligible pull request",
+    );
+    const selector = resolutionStep.env?.SOURCE_PR_NUMBER_SELECTOR;
+    const resolutionRun = resolutionStep.run ?? "";
+    const branch = "feat/kitaru-landing-terminal";
+    const commit = "a".repeat(40);
+    const selectorArgs = ["--arg", "branch", branch, "--arg", "commit", commit];
+    const sourceRun = {
+      pull_requests: [
+        {
+          head: { ref: branch, sha: commit },
+          number: 296,
+        },
+      ],
+    };
+
+    expect(selector).toBeDefined();
+    expect(
+      execFileSync("jq", ["-er", ...selectorArgs, selector ?? ""], {
+        input: JSON.stringify(sourceRun),
+        stdio: ["pipe", "pipe", "pipe"],
+      })
+        .toString()
+        .trim(),
+    ).toBe("296");
+    expectJqResult(selector ?? "", { pull_requests: [] }, true, selectorArgs);
+    expectJqResult(
+      selector ?? "",
+      {
+        pull_requests: [
+          {
+            head: { ref: branch, sha: "b".repeat(40) },
+            number: 296,
+          },
+        ],
+      },
+      true,
+      selectorArgs,
+    );
+    expectJqResult(
+      selector ?? "",
+      {
+        pull_requests: [
+          { head: { ref: branch, sha: commit }, number: 296 },
+          { head: { ref: branch, sha: commit }, number: 297 },
+        ],
+      },
+      false,
+      selectorArgs,
+    );
+    expect(resolutionRun).toContain('"$SOURCE_PR_NUMBER_SELECTOR"');
+    expect(resolutionRun).toContain('if [ -z "$pr_number" ]; then');
+    expect(resolutionRun).toContain('if [ -n "$INPUT_PR_NUMBER" ]; then');
+    expect(resolutionRun).toContain(
+      '"repos/$GITHUB_REPOSITORY/pulls/$pr_number"',
+    );
+    expect(resolutionRun).toContain('"repos/$GITHUB_REPOSITORY/pulls"');
+    expect(resolutionRun).toContain("source-pr-candidates.json");
+  });
+
   it("uploads the exact validated artifact to one route-less dedicated Worker with a stable per-PR alias", () => {
     expect(prPreviewWorkflow).toContain("WORKER_NAME: zenml-io-v2-pr-preview");
     expect(prPreviewWorkflow).toContain("actions/download-artifact@");

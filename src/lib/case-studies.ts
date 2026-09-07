@@ -24,7 +24,7 @@ export const CASE_STUDIES_HUB_BANNER = {
 
 export const CASE_STUDIES_HUB_CTA = {
   headline: "Start deploying reproducible AI workflows today",
-  body: "Enterprise-grade MLOps platform trusted by thousands of companies in production.",
+  body: "Enterprise-grade AI orchestration platform trusted by thousands of companies in production.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",

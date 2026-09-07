@@ -1,0 +1,78 @@
+---
+/**
+ * InstallCommand — a copyable `$ command` chip with an optional brand pill.
+ * Used by the homepage hero (one per product) and the ZenML product page.
+ * Ships its own clipboard script; Astro dedupes it across instances.
+ */
+import type { ProductBrand } from "../lib/marketingPageTypes";
+
+interface Props {
+  cmd: string;
+  /** Brand pill text; omit for a plain chip. */
+  label?: string;
+  brand?: ProductBrand;
+  analytics?: string;
+  class?: string;
+}
+
+const {
+  cmd,
+  label,
+  brand = "zenml",
+  analytics,
+  class: className,
+} = Astro.props;
+const pillClass =
+  brand === "kitaru"
+    ? "bg-orange-100 text-orange-700"
+    : "bg-zenml-100 text-zenml-700";
+---
+
+<div
+  class={[
+    "flex items-center gap-2.5 rounded-md border border-gray-200 bg-white px-3 py-2.5 text-left font-mono text-[13px] leading-snug shadow-sm sm:w-auto sm:leading-none",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ")}
+>
+  {label && (
+    <span
+      class={`shrink-0 rounded px-1.5 py-1 text-[10px] font-semibold uppercase leading-none tracking-[0.12em] ${pillClass}`}
+    >
+      {label}
+    </span>
+  )}
+  <span class="shrink-0 text-gray-400" aria-hidden="true">$</span>
+  <code class="min-w-0 break-all text-gray-900 sm:whitespace-nowrap">{cmd}</code>
+  <button
+    type="button"
+    class="ml-auto inline-flex shrink-0 items-center pl-1 text-gray-400 transition-colors hover:text-gray-800"
+    aria-label={label ? `Copy install command (${label})` : "Copy install command"}
+    data-copy={cmd}
+    data-analytics={analytics}
+  >
+    <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+    <svg class="check-icon hidden text-green-600" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+  </button>
+</div>
+
+<script>
+  // Copy-to-clipboard; swaps the icon briefly on success.
+  document.querySelectorAll<HTMLButtonElement>("button[data-copy]").forEach((btn) => {
+    if (btn.dataset.copyWired) return;
+    btn.dataset.copyWired = "1";
+    btn.addEventListener("click", () => {
+      const text = btn.dataset.copy;
+      if (!text) return;
+      navigator.clipboard?.writeText(text).then(() => {
+        btn.querySelector(".copy-icon")?.classList.add("hidden");
+        btn.querySelector(".check-icon")?.classList.remove("hidden");
+        setTimeout(() => {
+          btn.querySelector(".copy-icon")?.classList.remove("hidden");
+          btn.querySelector(".check-icon")?.classList.add("hidden");
+        }, 1500);
+      });
+    });
+  });
+</script>
