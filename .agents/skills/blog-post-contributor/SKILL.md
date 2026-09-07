@@ -27,13 +27,13 @@ Prepare a new blog post in `src/content/blog/` from Markdown or Notion: frontmat
 
 Read the supplied article and metadata first. Infer routine choices from that source and repository conventions; state material assumptions. Ask only for unresolved facts that change the result, such as authorship or a scheduled date. Continue independent preparation while waiting. Skills do not authorize uploading, committing, pushing, publishing, or requesting reviews; use the user's existing authorization for each action without asking again.
 
-Resolve these fields from the source before asking:
+Fields to settle from the source (ask only for what it does not settle):
 
-1. **Source**: Local markdown file path, or Notion page URL?
-2. **Author**: Who should be listed? (check `src/content/authors/` for existing slugs)
-3. **Publish date**: Today, or a specific date?
-4. **Is this an SEO/comparison post?** (e.g., from Tanish's GTM content — these need the `discovery` tag)
-5. **Which workspace does this post belong to?** ZenML/ML content uses `category: "mlops"` or `"zenml"`; Kitaru/agent content uses `category: "kitaru"` and includes `"kitaru"` as the first tag. See `MERGE_PLAN.md` for the unified ZenML × Kitaru taxonomy.
+- **Source** — a local `.md` path (Path A) or a Notion page URL (Path B).
+- **Author** — an existing slug in `src/content/authors/`, or the facts for a new one (C3).
+- **Publish date** — the source's date, else today.
+- **SEO/comparison post** — comparison or alternatives content, including Tanish's GTM posts, gets the `discovery` tag (C4).
+- **Workspace** — ZenML/ML content uses `category: "mlops"` or `"zenml"`; Kitaru/agent content uses `category: "kitaru"` with `"kitaru"` as the first tag (C5).
 
 ## Step 1: Create a Feature Branch
 
@@ -141,7 +141,7 @@ Record each R2 URL.
 
 #### Verify R2 uploads
 
-Verify every uploaded URL with `curl -sI <url>`; each must return HTTP 200 before committing references.
+Verify every uploaded URL with `curl -sI <url>`; each must return HTTP 200 before committing references — the boto3 upload can succeed while the public domain does not serve the file.
 
 ### C2. Handle the cover image
 
@@ -256,7 +256,7 @@ seo:
 ---
 ```
 
-> **Critical:** `mainImage.url` uses **AVIF** (browsers render it fine, ~20× smaller); `seo.ogImage` uses **JPEG** (social platforms — LinkedIn, Twitter/X, Slack, Facebook, Discord — reject AVIF in Open Graph cards). Mismatching these silently breaks social previews. See PR #73 for the site-wide fix where 103 posts all had AVIF og images and were rendering without preview cards on LinkedIn.
+> `mainImage.url` uses **AVIF** (browsers render it fine, far smaller); `seo.ogImage` uses **JPEG** — social platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) reject AVIF in Open Graph cards, so an AVIF `ogImage` renders with no preview card at all.
 
 **Key rules:**
 - `slug` MUST match the filename (e.g., `your-blog-post-slug.md`)
@@ -369,14 +369,3 @@ When processing Notion MCP content, apply these transformations:
 | `***Disclaimer:***` | `***Note:***` (softer tone) |
 | Metadata lines (Primary keyword, Meta description, URL slug) | Extract to frontmatter, remove from body |
 | First H1 (duplicate of title) | Remove entirely |
-
-## Lessons Learned
-
-1. **Notion MCP works well for fetching content** — returns enhanced Markdown with image URLs. The old advice to avoid it was based on block-level JSON; the current MCP returns clean markdown.
-2. **Notion image URLs expire in ~1 hour** — download immediately after fetching the page. Verify each download with `file <name>`.
-3. **Start from current main for fresh work** while preserving the authorized checkout and unrelated local changes.
-4. **AVIF compression is dramatic** — typical 80-96% reduction. Use `pnpm images:convert --preset inline` for inline images. For the cover image, see the `figma-blog-cover` skill (`.claude/skills/figma-blog-cover/SKILL.md`) — it owns the cover's dimensions, quality settings and the JPEG sibling.
-5. **Verify R2 uploads via public URL** — the boto3 API can succeed but the public domain may not serve the file. Always `curl -sI` to confirm HTTP 200.
-6. **Discovery tag for SEO posts** — posts under Tanish's GTM content or with "vs"/"alternative" patterns should get the `discovery` tag to keep them off the main blog listing.
-7. **Build logs are long**: capture them and check the actual process exit status, then read relevant failure output.
-8. **Baseline failures need current evidence**: old notes do not establish that a failure is unrelated to this change.

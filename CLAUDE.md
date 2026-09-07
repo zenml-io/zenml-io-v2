@@ -42,10 +42,10 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 | Hosting | **Cloudflare Workers** in production; **Cloudflare Pages** retained as the deeper fallback |
 | Assets | **Cloudflare R2** — object storage for images/files |
 | Styling | **Tailwind CSS** — utility-first |
-| Interactive | **Preact islands** — client-side components: LLMOpsFilter, MLOpsFilter, ContactForm, DemoRequestForm, BlogSearch, CookieConsent, FeatureTabsSlider, ProTestimonialCarousel, and RoiCalculator (9 in `src/components/islands/`; Kitaru's are separate, see below) |
+| Interactive | **Preact islands** — client-side components in `src/components/islands/`: the `filter-index/` family (`LlmopsIndex`, `MlopsIndex`, `BlogIndex`, `IntegrationsIndex` on the shared `DataFilterIndex`/`ControlFilterIndex`), ContactForm, DemoRequestForm, BlogSearch, CookieConsent, FeatureTabsSlider, ProTestimonialCarousel, and RoiCalculator (Kitaru's are separate, see below) |
 | Search | **Pagefind** — build-time full-text search index for ops-database pages, paired with JSON faceted filtering |
 | Forms | `ContactForm` / `DemoRequestForm` Preact islands → `src/pages/api/forms/[formType].ts` (`prerender: false`) → Segment HTTP API. Cal.com for demo booking (`/book-your-demo` is the canonical URL). Brevo for newsletter. The Kitaru landing surfaces all share these flows; the standalone kitaru.ai endpoints were never wired into the merged site. |
-| Analytics | **Plausible** (`script.pageview-props.js` with `event-surface`) + GA4 + **single Segment workspace** (D4 was superseded — audit showed the Kitaru-side write key had no callers in the merged site). The Segment `analytics.page()` call still receives `{surface}` as a property so downstream segmentation/CRM routing can filter by it. Hostname-gated to production. See "Unified Brand & Surface" below. |
+| Analytics | **Plausible** (`script.pageview-props.js` with `event-surface`) + GA4 + **single Segment workspace** (one ZenML write key for both products). The Segment `analytics.page()` call receives `{surface}` as a property so downstream segmentation/CRM routing can filter by it. Hostname-gated to production. See "Unified Brand & Surface" below. |
 | Code highlighting | **Shiki** (custom `zenml-light`/`zenml-dark` themes) at build time + **JetBrains Mono** monospace font (self-hosted variable woff2) |
 
 ## Key Technical Decisions
@@ -70,13 +70,13 @@ Two attributes on `<html>` carry the unified-product state to every page:
 - **`agent`** — Kitaru-side pages (`/product/kitaru`, `/compare/kitaru-vs-*`, and future Kitaru-only blog templates if they explicitly pass `surface="agent"`)
 - **`unified`** — cross-product pages (`/compare`, `/get-started`, `/pricing`, `/pro`)
 
-The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was superseded after audit — the standalone kitaru.ai routes that needed the Kitaru key turned out to be dead code and were removed). The page-init call passes `{surface}` as a property so the same dimension is queryable in Segment, Plausible, and downstream CRM tools. `PlausibleBridge.astro` merges `surface` into every custom event so click-tracking matches pageview tagging.
+The Segment loader in `consentConfig.ts` runs a single ZenML write key; there is no Kitaru-side key. The page-init call passes `{surface}` as a property so the same dimension is queryable in Segment, Plausible, and downstream CRM tools. `PlausibleBridge.astro` merges `surface` into every custom event so click-tracking matches pageview tagging.
 
-**`surface` is a required prop** (as of #64). `BaseLayout` and `MinimalLayout` no longer have a default — every page template must pass an explicit value. `BlogLayout` and `ContentLayout` accept an optional `surface?` prop that they forward to `BaseLayout` (both default to `"ml"`, which is correct for their content types).
+**`surface` is a required prop.** `BaseLayout` and `MinimalLayout` have no default — every page template passes an explicit value. `BlogLayout` and `ContentLayout` accept an optional `surface?` prop that they forward to `BaseLayout` (both default to `"ml"`, which is correct for their content types).
 
 **Enforcement:** `pnpm check:surface` (`scripts/check-surface-coverage.ts`) scans all `.astro` files in `src/pages/` and `src/components/` and fails if any `<BaseLayout>` or `<MinimalLayout>` usage omits `surface=`. Run this before committing page changes. Note: `astro check` alone does NOT catch missing required props on `.astro` components — the grep check is the enforcing mechanism.
 
-**When adding a new page:** always pass an explicit `surface=` to the layout. Use the taxonomy below. Don't omit it — there is no default fallback any more.
+**When adding a new page:** pass an explicit `surface=` to the layout, using the taxonomy below; there is no default.
 
 **When adding a page that pitches both products** (cross-workspace marketing): pass `surface="unified"`. When adding a Kitaru-only page (e.g., a future `/product/kitaru/...` subpath): pass `surface="agent"`. For ZenML-specific pages (features, integrations, blog, etc.): pass `surface="ml"`.
 
@@ -97,7 +97,7 @@ The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was s
 - Read [validation details](docs/agent-reference/validation.md) for command coverage, browser setup, snapshots, and release checks. Capture long build output in a log and check the actual process exit status; foreground or background execution is fine.
 
 - **Credential management:** Use credentials only for the authorized task. Do not automatically persist supplied credentials. When persistence is requested or required for an authorized local setup, use gitignored .env and only the necessary keys; never print their values.
-- **pnpm settings live in `pnpm-workspace.yaml`, never in a `pnpm` field in `package.json`.** That covers `overrides` (the security pins from #226) and `onlyBuiltDependencies`. pnpm 11 silently ignores the `package.json` field (Dependabot's updater runs pnpm 11), so overrides kept there vanish from every bot-regenerated lockfile and CI fails at `pnpm install --frozen-lockfile` with `ERR_PNPM_LOCKFILE_CONFIG_MISMATCH`. pnpm 10 (CI, local) reads the workspace file too, so the lockfile is identical either way. `pnpm check:lockfile` (also run on every `pnpm test` via `tests/config/lockfileOverrides.test.ts`) rejects a `pnpm` field in `package.json` — that is the regression CI can catch, because pnpm 10 would install it fine. It also diffs the workspace `overrides` against the lockfile header and names any missing override; in CI `pnpm install --frozen-lockfile` runs first and fails on that drift before the test does, so the named message is for local use on a red bot branch
+- **pnpm settings live in `pnpm-workspace.yaml`, never in a `pnpm` field in `package.json`.** That covers `overrides` (the security pins) and `onlyBuiltDependencies`. pnpm 11 silently ignores the `package.json` field (Dependabot's updater runs pnpm 11), so overrides kept there vanish from every bot-regenerated lockfile and CI fails at `pnpm install --frozen-lockfile` with `ERR_PNPM_LOCKFILE_CONFIG_MISMATCH`. pnpm 10 (CI, local) reads the workspace file too, so the lockfile is identical either way. `pnpm check:lockfile` (also run on every `pnpm test` via `tests/config/lockfileOverrides.test.ts`) rejects a `pnpm` field in `package.json` — that is the regression CI can catch, because pnpm 10 would install it fine. It also diffs the workspace `overrides` against the lockfile header and names any missing override; in CI `pnpm install --frozen-lockfile` runs first and fails on that drift before the test does, so the named message is for local use on a red bot branch
 - Before a code PR or substantial code commit, review changed code for reuse, clarity, and unnecessary work; use an available simplify skill or perform that review directly. Fix worthwhile findings and rerun affected checks.
 
 ### PR Description Style
@@ -150,7 +150,7 @@ uv run scripts/r2-upload.py output.avif --frontmatter                # print YAM
 
 **Default to AVIF for R2 uploads** — typically 50-250× smaller than the source.
 
-**Exception — Open Graph card images need JPEG.** Social platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) don't support AVIF in OG cards. For any image referenced by `seo.ogImage` in content frontmatter, upload a JPEG sibling at the same R2 prefix and reference the `.jpg` from `ogImage` while keeping the `.avif` for `mainImage.url`. See PR #73 for the site-wide fix where 103 posts all had AVIF og images and were rendering with no preview card on LinkedIn.
+**Exception — Open Graph card images need JPEG.** Social platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) don't support AVIF in OG cards; an AVIF `ogImage` renders with no preview card at all. For any image referenced by `seo.ogImage` in content frontmatter, upload a JPEG sibling at the same R2 prefix and reference the `.jpg` from `ogImage` while keeping the `.avif` for `mainImage.url`.
 
 Requires R2 credentials in `.env` — see `.env.example`.
 
@@ -210,24 +210,11 @@ URL rewriting source code is not enough. After uploading images to R2, **test
 the public URL** to confirm the file is actually accessible. The boto3 API can
 succeed but the public domain may point to a different account/bucket.
 
-### Template literal URLs are invisible to regex audits
-
-Source code like `` `${R2}/hash/file.svg` `` expands to a full URL at runtime,
-but regex scanning for the R2 domain string won't find it. When auditing for
-broken R2 references, **scan for both patterns** (literal domain URLs and
-template literal `${R2}/` references).
-
 ### `public/` assets must be explicitly placed
 
 Astro doesn't error when a component references `/images/logo.svg` but
 `public/images/logo.svg` doesn't exist — it just silently 404s at runtime.
 After adding `/images/*` references, verify the files exist in `public/images/`.
-
-### Filenames with spaces break regex URL matching
-
-R2 keys with spaces get truncated by `[^\s...]` regex patterns. For
-comprehensive audits, match only the 8-char hash prefix (`[a-f0-9]{8}`) and
-verify it exists in the bucket, rather than trying to capture the full filename.
 
 ## Cloudflare Pages Functions vs Astro API Routes
 
@@ -257,12 +244,13 @@ This site was migrated from Webflow in Feb 2026 and unified with kitaru.ai in Ma
 ### Kitaru merge (May 2026)
 - **Kitaru R2/source-domain references** — audit current source before assuming any `assets.kitaru.ai` hotlinks remain. The merge removed known live-source references; historical design/migration artifacts may still mention old domains.
 - **Standalone Kitaru form/API code was removed** — the merged site uses unified form helpers and analytics (`formTypes.ts`, `formValidation.ts`, `consentConfig.ts`). Do not recreate `kitaru-form-types.ts`, `kitaru-segment.ts`, or standalone `/api/get-started`, `/api/waitlist`, `/api/newsletter` routes unless the product decision changes.
+- **v1 Kitaru surfaces are gone** — the `Architecture.astro` flows/checkpoints diagram, the `/get-started` ML/Agent chooser (`GET_STARTED_TABS`, `GET_STARTED_KITARU`) and the `@flow`/`@checkpoint` walkthrough. Do not recreate them; `/product/kitaru` is the entry point.
 - **`compare-kitaru` and `compare-zenml` collections** use `.mdx` (vs project default `.md`) — the ported Kitaru-vs-X pages and their ZenML twins use inline component imports.
 - **`MERGE_PLAN.md`** — the merge's running plan + progress log; not current architecture authority (CLAUDE.md is).
 
 ## LLMOpsDB Native Publish Workflow
 
-LLMOps database entries are no longer only historical Webflow-migration artifacts. New entries can now be published natively from the sibling `llmops-db-notion` repo into:
+LLMOps database entries have two sources: entries migrated from Webflow, and entries published natively from the sibling `llmops-db-notion` repo into:
 
 - `src/content/llmops-database/*.md`
 
@@ -309,8 +297,7 @@ never optional-prop bags hidden by as casts. Register new templates.
 - `src/components/sections/` — 43 section components
 
 ### Preact Islands (interactive client-side components)
-- `src/components/islands/LLMOpsFilter.tsx` — LLMOps database "Research Hub" (faceted sidebar with industry/tag facets, Pagefind full-text search, AND/OR tag mode, sort, clickable chips, mobile drawer, WCAG-compliant accessibility)
-- `src/components/islands/MLOpsFilter.tsx` — MLOps database filter/search island
+- `src/components/islands/filter-index/` — one filterable-index family: `LlmopsIndex.tsx` (LLMOps database), `MlopsIndex.tsx` (MLOps database), `IntegrationsIndex.tsx`, `BlogIndex.tsx`, built on `DataFilterIndex`/`ControlFilterIndex` with `FacetRail`, `Pagination`, `ResultsCount`
 - `src/components/islands/BlogSearch.tsx` — Blog search with Cmd+K shortcut, lazy-fetches `/blog/search-index.json` on focus (`client:media` — desktop only)
 - `src/components/islands/ContactForm.tsx` — Form submission → Astro API routes
 - `src/components/islands/DemoRequestForm.tsx` — Demo request form used by `/book-your-demo`
@@ -324,11 +311,9 @@ never optional-prop bags hidden by as casts. Register new templates.
 - `src/pages/api/csp-report.ts` — CSP violation report sink (logs redacted summary, returns 204)
 - `src/pages/api/github-stars.ts` — GitHub star count fetcher with edge cache (`context.locals.cfContext.waitUntil`)
 
-The old standalone `kitaru.ai` API routes (`get-started`, `waitlist`, `newsletter`) were removed during the merge. The Kitaru landing now shares the merged site's form and analytics infrastructure.
-
 ### Kitaru content & components
 - `src/pages/product/kitaru.astro` — Kitaru landing (Aug 2026 redesign; copy lives in `src/lib/kitaru-landing.ts`, CTA links in `src/lib/productKitaru.ts`)
-- `src/components/kitaru/*` — landing section shells (Features, Faq, Cta, `_HighlightPanel`). Cta mounts `KitaruGrain` directly as a standalone island for its shader backdrop; Features gets the same via the `_HighlightPanel` shells it renders. The v1 `Architecture.astro` (flows/checkpoints diagram) was deleted in Sep 2026
+- `src/components/kitaru/*` — landing section shells (Features, Faq, Cta, `_HighlightPanel`). Cta mounts `KitaruGrain` directly as a standalone island for its shader backdrop; Features gets the same via the `_HighlightPanel` shells it renders
 - `src/components/kitaru/islands/*` — Preact landing islands (Hero, ScenarioStrip, TwoDoors, KitaruGrain WebGL shader) plus shared helper modules (the authoritative list is `KITARU_ISLAND_HELPERS` in `scripts/check-dist-smoke.ts`). TwoDoors merges the former OneImport (record) and Importers (import) sections into one two-column island. The three sections mount `client:visible` from `product/kitaru.astro`; hydration is covered by `pnpm check:islands` (TwoDoors importer-tab check) and the `check-dist-smoke.ts` island manifest
 - `src/scripts/kitaru/*` — Kitaru-page client scripts (clipboard, reveal-static, scroll-reveal); `src/hooks/use-reveal.ts` is the Preact-island counterpart of reveal-static
 - `src/components/compare/_layouts/KitaruCompare.astro` — Kitaru-vs-X comparison page template
@@ -337,7 +322,7 @@ The old standalone `kitaru.ai` API routes (`get-started`, `waitlist`, `newslette
 - `src/content/compare-zenml/*.mdx` — ZenML-vs-X pages in the same MDX template (`ZenmlMdxCompare.astro`, components under `src/components/compare/zenml/`), covering durable execution engines (Temporal, DBOS, Hatchet, Inngest, Restate) and agent frameworks. Positioning: ZenML orchestrates and runs agents durably (dynamic pipelines, `wait()` approvals, sandboxes, deployments); the Kitaru-vs-X set is limited to frameworks Kitaru has adapters for. The old `kitaru-vs-{temporal,dbos,hatchet,inngest,restate}` pages 301 to their ZenML twins (`public/_redirects`)
 
 ### Get Started routing
-- `src/pages/get-started.astro` — ZenML open-source onboarding (hero, 3-step walkthrough, architecture, projects, resources) with one pointer line to `/product/kitaru`. `/get-started/zenml` 301-redirects here (`public/_redirects`). The Phase-4 ML/Agent chooser and its Kitaru panel (`GET_STARTED_TABS`, `GET_STARTED_KITARU`, the v1 `@flow`/`@checkpoint` walkthrough) were removed in Sep 2026; Kitaru's entry point is its own landing
+- `src/pages/get-started.astro` — ZenML open-source onboarding (hero, 3-step walkthrough, architecture, projects, resources) with one pointer line to `/product/kitaru`. `/get-started/zenml` 301-redirects here (`public/_redirects`). There is no ML/Agent chooser here; Kitaru's entry point is its own landing
 
 ### Layouts
 - `src/layouts/BaseLayout.astro` — Main layout (nav, footer, head slots, analytics)

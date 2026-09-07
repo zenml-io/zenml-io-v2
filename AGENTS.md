@@ -25,7 +25,7 @@ positioning; MERGE_PLAN.md records the merge history.
 
 ## Coding Style & Naming Conventions
 - Use TypeScript + Astro with 2-space indentation (see `biome.json`).
-- Keep components in PascalCase (for example `BlogCard.astro`, `LLMOpsFilter.tsx`).
+- Keep components in PascalCase (for example `BlogCard.astro`, `LlmopsIndex.tsx`).
 - Use kebab-case for content slugs/filenames in `src/content/`.
 - Prefer typed data modules in `src/lib/` over hardcoded copy in components.
 - Use `.md` for content files (not `.mdx`). The `compare-kitaru/` and `compare-zenml/` collections are the documented exception (inline component imports inherited from the Kitaru port).

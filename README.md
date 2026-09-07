@@ -168,11 +168,12 @@ Edit the data file, not the `.astro` template. Components import from these file
 src/
 ├── components/
 │   ├── islands/         # Preact interactive components (client:load)
+│   │   ├── filter-index/    # LlmopsIndex, MlopsIndex, BlogIndex, IntegrationsIndex
+│   │   ├── BlogSearch.tsx
 │   │   ├── ContactForm.tsx
 │   │   ├── CookieConsent.tsx
+│   │   ├── DemoRequestForm.tsx
 │   │   ├── FeatureTabsSlider.tsx
-│   │   ├── LLMOpsFilter.tsx
-│   │   ├── LottieHero.tsx
 │   │   ├── ProTestimonialCarousel.tsx
 │   │   └── RoiCalculator.tsx
 │   ├── sections/        # Homepage + shared section components
@@ -248,10 +249,10 @@ Plus 13 supporting collections (tags, categories, authors, integration types, et
 Interactive components use Astro's [islands architecture](https://docs.astro.build/en/concepts/islands/). Only components that need client-side JS are hydrated:
 
 ```astro
-<LLMOpsFilter client:load tags={tags} industries={industries} />
+<LlmopsIndex client:load tags={tags} industries={industries} />
 ```
 
-7 islands in `src/components/islands/` — LLMOpsFilter, ContactForm, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, RoiCalculator.
+Islands in `src/components/islands/` — the `filter-index/` family (LlmopsIndex, MlopsIndex, BlogIndex, IntegrationsIndex), BlogSearch, ContactForm, CookieConsent, DemoRequestForm, FeatureTabsSlider, ProTestimonialCarousel, RoiCalculator.
 
 ### Styling
 
