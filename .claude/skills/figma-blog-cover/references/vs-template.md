@@ -31,50 +31,14 @@ Frame 15 > INSTANCE "kitaru-hexagon"            (brand tile, no props)
 
 Supplied, never discovered from `use_figma` (`figma.teamLibrary.*` is not implemented there). Order of lookup for a slug: `service-logo-keys.md` → `mainComponent.key` off an existing `ServiceLogo/<slug>` instance in the file → `get_libraries` / `search_design_system` exact name `ServiceLogo/<slug>` (fuzzy hit = miss). Append new keys to the table. Any slug still unknown → fallback.
 
-## Recipe (as written in the Spike; every `tiles[i].key` must already be known)
+## Recipe (every `tiles[i].key` must already be known)
 
-find-slot emits this object under `P.vs` (`name`, `sectionName`, `x`, `y`, `brand`, `count`, `includeZenml`, `title`, `subtitleLead`, `subtitleRest`, `tiles[{index, slug, key}]`, `tileBatches`, `tileBatch`, `tileRange`) — it carries `sectionName`, not `sectionId`; the section id comes from S1. `scripts/figma/s3-vs-comparison.js` is the runnable form; where its `P` keys differ from the comment below, the script's header wins. The runnable script also loads the variant's / instance's actual text fonts (read with `getStyledTextSegments`) on top of the three pairs below before `createInstance` and `appendChild` — the sketch below shows the three measured pairs only.
+find-slot emits the card under `P.vs` (`name`, `sectionName`, `brand`, `count`, `includeZenml`, `title`, `subtitleLead`, `subtitleRest`, `tiles[{index, slug, key}]`, `tileBatches`, `tileBatch`, `tileRange`) — it carries `sectionName`, not `sectionId`, and no coordinates: the section id comes from S1 and the slot position from `P.positions[P.vs.name]`. `scripts/figma/s3-vs-comparison.js` is the runnable form and its header is the contract for `P`. What it does, in order:
 
-```js
-const P = __PARAMS__; // { name, sectionId, x, y, brand:'ZenML'|'Kitaru', count:'6', includeZenml:'True'|'False', title, subtitleLead:'for ', subtitleRest, tiles:[{index:0,key:'…'}, …] }
-await figma.setCurrentPageAsync(await figma.getNodeByIdAsync('174:1785'));
-// 1. fonts BEFORE any text write or appendChild of a subtree containing these fonts
-await Promise.all([
-  figma.loadFontAsync({ family: 'Borna', style: 'Medium' }),
-  figma.loadFontAsync({ family: 'Borna', style: 'SemiBold' }),
-  figma.loadFontAsync({ family: 'Rethink Sans', style: 'Medium' }),
-]);
-// 2. instance from the exact variant (setProperties on Brand/Count/Include ZenML is equivalent; variant lookup avoids a
-//    second render pass). Existing instance named P.name in the section is reused, never duplicated.
-const set = await figma.getNodeByIdAsync('113:300');
-const variantName = `Count=${P.count}, Include ZenML=${P.includeZenml}, Brand=${P.brand}`;
-const variant = set.children.find(c => c.name === variantName);
-if (!variant) throw new Error('no variant ' + variantName);
-const section = await figma.getNodeByIdAsync(P.sectionId);
-let inst = section.children.find(c => c.type === 'INSTANCE' && c.name === P.name);
-if (!inst) { inst = variant.createInstance(); section.appendChild(inst); }
-else { inst.setProperties({ Brand: P.brand, Count: P.count, 'Include ZenML': P.includeZenml }); }
-inst.name = P.name;
-inst.x = P.x; inst.y = P.y; // SECTION-relative; verify with absoluteBoundingBox afterwards
-// 3. texts — the two TEXT children of "Frame 11", document order: headline then sub-line
-const frame11 = inst.findOne(n => n.type === 'FRAME' && n.name === 'Frame 11');
-const [headline, subline] = frame11.children.filter(n => n.type === 'TEXT');
-headline.characters = P.title;                                   // e.g. "7 Trigger.dev Alternatives"
-subline.characters = P.subtitleLead + P.subtitleRest;             // e.g. "for " + "Durable Python Agents"
-subline.setRangeFontName(0, subline.characters.length, { family: 'Borna', style: 'Medium' });
-subline.setRangeFontName(P.subtitleLead.length, subline.characters.length, { family: 'Borna', style: 'SemiBold' });
-// 4. tile swaps — tiles in document order (top row then bottom row); swap the nested ServiceLogo, not the tile
-const tiles = inst.findAll(n => n.type === 'INSTANCE' && n.name === 'vs-hexagon');
-if (tiles.length !== Number(P.count)) throw new Error(`expected ${P.count} vs-hexagon tiles, found ${tiles.length}`);
-const imported = await Promise.all(P.tiles.map(t => figma.importComponentByKeyAsync(t.key)));
-const swapped = [];
-P.tiles.forEach((t, i) => {
-  const logo = tiles[t.index].findOne(n => n.type === 'INSTANCE' && n.name.startsWith('ServiceLogo/'));
-  if (!logo) throw new Error('no ServiceLogo in tile ' + t.index);
-  logo.swapComponent(imported[i]);   // InstanceNode.swapComponent(componentNode) — d.ts L9707
-  swapped.push(logo.id);
-});
-return { createdNodeIds: [inst.id], mutatedNodeIds: [headline.id, subline.id, ...swapped], tileIds: tiles.map(t => t.id), variant: variantName };
-```
+1. Loads Borna Medium, Borna SemiBold and Rethink Sans Medium plus every font the variant / existing instance actually uses (`getStyledTextSegments`) before any text write or `appendChild`.
+2. Finds the exact variant `Count=${count}, Include ZenML=${includeZenml}, Brand=${brand}` on the VS set (`P.ids.vsSetId`, i.e. `113:300`); reuses an instance named `P.vs.name` in the section (refusing one from the other component set, updating its variant props) or creates one, names it, sets section-relative x/y from `P.positions`.
+3. Writes the two TEXT children of `Frame 11` in document order — the headline, then the sub-line as `subtitleLead + subtitleRest` with `setRangeFontName` (Medium for the lead, SemiBold for the rest).
+4. Imports each tile's key in `P.vs.tileRange` with `importComponentByKeyAsync` and calls `swapComponent` on the nested `ServiceLogo/*` instance inside `vs-hexagon` tile `index` — the tile itself has no swap prop.
+5. Returns the instance (`nodeId`, `created`, `sectionId`, `x`/`y`/`width`/`height`), `createdNodeIds` / `mutatedNodeIds` / `tileIds` / `swapped`, `variant`, and `remainingTiles` — the tile indexes outside this call's `tileRange`, which the batch-1 run below still has to swap.
 
 Ops: 1 create + 2 texts + N swaps ≤ 10, so the runnable script swaps only `P.vs.tileRange` (≤7 tiles). For `Count >= 8` find-slot emits `vs.tileBatches = [[0,7],[7,N]]` and `vs.tileRange = tileBatches[--tile-batch]` (default 0): run `s3-vs-comparison.js` with the batch-0 `P` (create + texts + first 7 swaps), then re-run find-slot with the same flags plus `--tile-batch 1` and run the script again with that `P` — it re-finds `inst` by name, skips the variant switch when it already matches, rewrites the two texts with the same values, and swaps the remaining tiles. This is the single procedure; SKILL.md S3 and traps.md say the same.

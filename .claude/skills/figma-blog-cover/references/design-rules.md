@@ -1,6 +1,6 @@
 # Cover design rules
 
-Rules Zuri set for the 331-cover batch (2026-08-27/28) and the 2026-09-07 ruling. find-slot applies them deterministically; flags may override only inside the legal set — an illegal combination is rejected with a question, not silently corrected.
+Rules for every cover. find-slot applies them deterministically; flags may override only inside the legal set — an illegal combination is rejected with a question, not silently corrected.
 
 ## Format and placement
 
@@ -28,7 +28,7 @@ Rules Zuri set for the 331-cover batch (2026-08-27/28) and the 2026-09-07 ruling
 ## Text
 
 - Eyebrow `BLOG`. Site stays at the component default `ZENML.IO`.
-- **Cover copy stays minimal** (Zuri, 2026-09-07, after rejecting a cover that carried the full four-line title and `seo.description` as a four-line subtitle). The post title and `seo.description` are inputs (`P.titleSource`, `P.subtitleSource`), never pasted onto the card.
+- **Cover copy stays minimal** — a card carrying the full four-line title with `seo.description` as a four-line subtitle is rejected. The post title and `seo.description` are inputs (`P.titleSource`, `P.subtitleSource`), never pasted onto the card.
 - Headline: **at most three lines, no orphan word on the last line.** The character budget is a copy cap, not a line count: about **55 characters** on `Text` and `Full Bleed`, about **60** on `Panel Bottom` / `Image Left` / `Image Right` (find-slot emits it as `P.titleBudget`). Shorten faithfully, never rewrite or invent: drop trailing clauses and questions, keep numbers and product names, keep the published title's meaning (including retired vocabulary if the title uses it). Example: `Braintrust Pricing Guide: How Much Does It Actually Cost?` → `Braintrust Pricing Guide`. find-slot cuts at a punctuation boundary itself; pass `--title` for a better cut.
 - How the headline breaks depends on the layout's title measure (`figma-ids.md`): `Image Left` / `Image Right` set it in **800 px**, `Text` / `Full Bleed` in 1680 px, `Panel Bottom` in 1760 px. At 800 px about 18 characters fit on a line (`Braintrust Pricing Guide` became `Braintrust Pricing / Guide` — an orphan). find-slot estimates the breaks (`P.titleLines`) and, when the last line would be a single word or a fourth line appears, suggests the widest legal layout for the slot; take it with `--layout` before S3, or re-cut with `--title`. The S6 screenshot is the final judge.
 - Subtitle: **present by default, shortened to one line** — find-slot derives one line, at most 55 characters, from `seo.description`: the first clause up to a clause boundary (`:`, `;`, `,`, ` — `, ` - `, `.`) that fits the budget, with a trailing period stripped; when no clause fits it cuts at the last word boundary instead and flags a suggestion asking for a better line. `--subtitle "<line>"` overrides (e.g. `Plans, meters and the real monthly bill`); `--no-subtitle` clears it to `showSubtitle: false`, `Subtitle` written as `""`, `Show subtitle#162:33 = false`. Never the full `seo.description`, never two lines. A subtitle equal to `seo.description` is a question; one that restates the title is a suggestion, not a question.
