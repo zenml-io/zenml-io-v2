@@ -2,7 +2,8 @@
 name: blog-post-contributor
 description: >-
   Add or import a blog post from Markdown or Notion; prepare content, metadata,
-  and assets. Skip ordinary edits to existing posts.
+  and assets. External actions require task authorization. Skip ordinary edits
+  to existing posts.
 ---
 
 # Blog Post Contributor
@@ -103,7 +104,7 @@ Clean the Notion-specific formatting:
 
 ### B4. Download images from Notion
 
-Notion's image URLs are temporary pre-signed S3 URLs that expire within about an hour, so download them right after fetching the page.
+**IMPORTANT**: Notion's image URLs are **temporary pre-signed S3 URLs** that expire within ~1 hour. Download them immediately after fetching the page.
 
 1. Create a temp directory: `mkdir -p /tmp/<slug>-images`
 2. Download each image with `curl -sL -o <descriptive-name>.png "<notion-url>"`
@@ -210,7 +211,7 @@ slug: "tag-slug"
 ---
 ```
 
-Existing tags cover most topics. Common tags: `mlops`, `llmops`, `zenml`, `genai`, `agents`, `tutorials`, `best-practices`, `cloud`, `open-source`, `pipelines`, `infrastructure`, `kubernetes`.
+Existing tags (118+) cover most topics. Common tags: `mlops`, `llmops`, `zenml`, `genai`, `agents`, `tutorials`, `best-practices`, `cloud`, `open-source`, `pipelines`, `infrastructure`, `kubernetes`.
 
 #### SEO / Discovery Tag Rule
 
@@ -274,7 +275,7 @@ seo:
 ---
 ```
 
-> Recap: `mainImage.url` is the AVIF (browser-rendered); `seo.ogImage` is the JPEG sibling (social platforms reject AVIF in Open Graph cards, so a mismatch silently renders the preview without an image).
+> **Critical:** `mainImage.url` uses **AVIF** (browsers render it fine, ~20× smaller); `seo.ogImage` uses **JPEG** (social platforms — LinkedIn, Twitter/X, Slack, Facebook, Discord — reject AVIF in Open Graph cards). Mismatching these silently breaks social previews. See PR #73 for the site-wide fix where 103 posts all had AVIF og images and were rendering without preview cards on LinkedIn.
 
 **Key rules:**
 - `slug` MUST match the filename (e.g., `your-blog-post-slug.md`)

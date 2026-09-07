@@ -32,7 +32,7 @@ Default to **AVIF** for everything — best compression, browsers render it fine
 
 **Exception:** images referenced from `seo.ogImage` need a **JPEG** sibling alongside the AVIF. Social platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) do NOT support AVIF in Open Graph cards. Using AVIF for `seo.ogImage` silently renders previews without an image.
 
-Pattern: upload **both** under the same R2 prefix, reference AVIF from `mainImage.url` and JPEG from `seo.ogImage`.
+Pattern: upload **both** under the same R2 prefix, reference AVIF from `mainImage.url` and JPEG from `seo.ogImage`. See PR #73 for the site-wide fix where 103 posts all had AVIF og images and were broken on LinkedIn.
 
 ```bash
 # Convert + upload both formats
