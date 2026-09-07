@@ -80,7 +80,7 @@ pnpm build
 
 ### Adding a Blog Post
 
-**With Claude Code:** Say "new blog post" or "add blog" — the `blog-post-contributor` skill handles everything: branch creation, frontmatter, image processing (AVIF conversion + R2 upload), tag/author validation, and PR setup. See `.claude/skills/blog-post-contributor/SKILL.md` for the full workflow.
+**With Claude Code:** Say "new blog post" or "add blog" — the `blog-post-contributor` skill handles everything: branch creation, frontmatter, image processing (AVIF conversion + R2 upload), tag/author validation, and PR setup. See `.claude/skills/blog-post-contributor/SKILL.md` for the full workflow. Cover images come from the `figma-blog-cover` skill (Figma template → R2).
 
 **Manually:**
 
@@ -353,6 +353,6 @@ See `docs/branch-protection-spec.md` for the full governance spec.
 | `docs/MIGRATION.md` | How the site was migrated from Webflow (Feb 2026) |
 | `docs/kitaru-seo-inventory.md` | Phase 10a SEO inventory + redirect audit template |
 | `docs/branch-protection-spec.md` | Branch protection rules and reviewer configuration |
-| `.claude/skills/` | Claude Code automation skills (blog posts, image uploads) |
+| `.claude/skills/` | Claude Code automation skills (blog posts, image uploads, Figma blog covers) |
 | `.env.example` | All available environment variables with documentation |
 | `src/content.config.ts` | All 21 content collection schemas (Zod) |

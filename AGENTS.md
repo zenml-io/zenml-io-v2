@@ -70,13 +70,14 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 
 ## Images & Assets (Two-Tier System)
 - **UI/static assets** (`public/images/`): logos, icons, favicons, backgrounds. Reference as `"/images/filename.svg"` (root-relative). Just place the file in `public/images/`.
-- **Third-party service logos**: follow the `add-service-logo` skill in the ZenML frontend monorepo (`.claude/skills/add-service-logo/SKILL.md`) for current-mark sourcing, 24x24 normalization, and mandatory rendered review before integration. Preserve full-color brand marks rather than recoloring them.
+- **Third-party service logos**: follow the `add-service-logo` skill in the ZenML frontend monorepo (`.claude/skills/add-service-logo/SKILL.md`) for current-mark sourcing, 24x24 normalization, and mandatory rendered review before integration. Preserve full-color brand marks rather than recoloring them. For comparison covers, the figma-blog-cover skill wraps the same steps.
 - **Content/CMS images** (R2 bucket): blog heroes, screenshots, team photos, OG images. Must be **absolute URLs** — content schemas enforce `z.string().url()`. Upload via `uv run scripts/r2-upload.py <file>`.
 - **Alt text matters for SEO**: give every image descriptive, non-empty alt text (`<img>`, `mainImage`, `logo`) unless there's a clear reason not to (e.g. a decorative image already labelled by an adjacent `aria-label`).
 - In `src/lib/*.ts` data files, build R2 URLs from `ASSET_BASE_URL` constant — never hardcode the R2 domain.
 - New R2 uploads use the key prefix `content/uploads/{sha8}/{filename}`. Legacy assets from the original Webflow migration live under `webflow/...` and are still served.
 - After uploading, always verify the URL returns HTTP 200 before committing.
 - **Claude Code skill**: Use the `r2-image-upload` skill (`.claude/skills/r2-image-upload/SKILL.md`) for the full upload workflow.
+- **Blog covers** come from the `figma-blog-cover` skill, not from hand-made files.
 
 ## Contributing Blog Posts
 - New blog posts go in `src/content/blog/<slug>.md` on a feature branch (`blog/<slug>`).
@@ -85,6 +86,7 @@ and `MERGE_PLAN.md` for the merge plan + progress log.
 - For **Kitaru-themed posts** (anything about agents, durable execution, Kitaru launches/features), use `category: "kitaru"` and prepend `"kitaru"` to the tags array — that surfaces them on `/category/kitaru` and in the unified blog sidebar.
 - All content images must be absolute R2 URLs. Upload via `uv run scripts/r2-upload.py`.
 - **Claude Code skill**: Use the `blog-post-contributor` skill (`.claude/skills/blog-post-contributor/SKILL.md`) for the full workflow — supports both local markdown files and Notion pages as sources.
+- **Claude Code skill**: Use the `figma-blog-cover` skill (`.claude/skills/figma-blog-cover/SKILL.md`) to generate the post's cover from the Figma template — it creates the cover on the Blog Covers page, exports it, and uploads AVIF + JPEG to R2. Also adds missing competitor marks to the Hashi Design System library: source the icon from public sources, normalize it to contract, create the component in Figma, then a human republishes the library.
 
 ## Security & Configuration Tips
 - Never commit secrets, API keys, infra IDs, or private notes.

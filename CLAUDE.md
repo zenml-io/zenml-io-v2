@@ -171,6 +171,7 @@ const url = `${ASSET_BASE_URL}/content/uploads/1a2b3c4d/hero.webp`;
 **Claude Code skills:**
 - `r2-image-upload` (`.claude/skills/r2-image-upload/SKILL.md`) — upload images to R2. Triggers: "upload image", "add image to R2", "new blog image".
 - `blog-post-contributor` (`.claude/skills/blog-post-contributor/SKILL.md`) — full blog post workflow from markdown or Notion. Triggers: "new blog post", "add blog", "blog from Notion".
+- `figma-blog-cover` (`.claude/skills/figma-blog-cover/SKILL.md`) — create a post's cover from the Figma Blog Cover component on the Blog Covers page, export, convert to AVIF + JPEG, upload to R2, print frontmatter. Also adds missing competitor marks to the Hashi Design System library: source the icon from public sources, normalize it to contract, create the component in Figma, then a human republishes the library. Triggers: "blog cover", "figma cover", "cover image for post", "add logo", "missing mark", "new service logo".
 
 ### Compare-page OG card generator
 

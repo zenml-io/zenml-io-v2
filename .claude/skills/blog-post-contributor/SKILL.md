@@ -4,7 +4,7 @@ description: >-
   Add a new blog post to the ZenML website. Supports two workflows: (1) from a
   local markdown file, or (2) directly from a Notion page via the Notion MCP
   server. Handles frontmatter validation, image processing (AVIF conversion + R2
-  upload), cover image prompting, SEO tagging (discovery tag for SEO posts),
+  upload), cover generation via the figma-blog-cover skill, SEO tagging (discovery tag for SEO posts),
   feature branch setup, build verification, PR creation with reviewer tagging,
   and tag/author creation. Triggers: "new blog post", "add blog", "publish
   blog", "blog from Notion", "blog from markdown", "contribute blog".
@@ -134,6 +134,8 @@ Clean the Notion-specific formatting:
 
 ### C1. Process images
 
+Inline images only — the cover image is handled separately in C2.
+
 #### Convert all images to AVIF
 
 ```bash
@@ -143,36 +145,15 @@ for f in *.png *.jpg *.jpeg; do
 done
 ```
 
-For the **cover/hero image**, use larger dimensions:
-```bash
-~/.claude/skills/avif-image-compressor/scripts/convert_to_avif.sh cover.png --quality 25 --resize 1200
-```
-
-**Also generate a JPEG sibling of the cover for the OG card.** Social
-platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) do NOT support
-AVIF in Open Graph cards — using AVIF for `seo.ogImage` makes the
-preview card render with no image. Keep AVIF for `mainImage.url` (browser-
-rendered, AVIF is fine), JPEG for `seo.ogImage` (social-rendered).
-
-```bash
-# JPEG variant of the cover, same dimensions, sized for OG (1200×627 ideal):
-sips -s format jpeg cover.png --out cover.jpg --resampleHeightWidthMax 1200
-# Or if starting from the converted AVIF:
-sips -s format jpeg cover.avif --out cover.jpg
-```
-
 #### Upload to R2
 
-Upload both the AVIF (for in-page rendering) and the JPEG (for OG):
-
 ```bash
-for f in *.avif *.jpg; do
+for f in *.avif; do
   uv run scripts/r2-upload.py "$f" --prefix content/blog/<slug>
 done
 ```
 
-Record each R2 URL. The cover image will have two URLs at the same prefix
-— `.avif` for `mainImage.url`, `.jpg` for `seo.ogImage`.
+Record each R2 URL.
 
 #### Verify R2 uploads
 
@@ -182,10 +163,11 @@ Spot-check at least 2 URLs with `curl -sI <url>` — must return HTTP 200.
 
 Check if the content has a dedicated cover/hero image:
 
-- **Cover image provided** (in Notion or by user): Convert to AVIF (quality 25, resize 1200) and upload to R2
-- **No cover image**: **Ask the user** to create one and provide a path (e.g., `~/Downloads/cover.png`). Suggest they can use Canva, Figma, or the `image-generator` skill. This is a **blocking step** — blog posts should have a cover image for social sharing and the blog listing page.
+- **Cover image provided** (in Notion or by user): run `pnpm exec tsx .claude/skills/figma-blog-cover/scripts/publish-cover.ts <slug> <file> --allow-any-source`. It resizes to 1200x675, writes the AVIF + JPEG pair, uploads both to `content/blog/<slug>` on R2 and prints the `mainImage` / `seo.ogImage` snippet. The source must be 16:9 (crop it first — the script never crops) and at least 1200 px wide; do not send the cover through the C1 loop
+- **No cover image**: run the `figma-blog-cover` skill (`.claude/skills/figma-blog-cover/SKILL.md`) with the post slug. It creates the cover in Figma, exports it, converts it, uploads to R2, and returns the `mainImage` / `seo.ogImage` snippet to paste in C6
+- **Figma unavailable** (only then): ask the user for a 16:9 PNG and publish it with the same `publish-cover.ts ... --allow-any-source` command
 
-The cover image URL goes into both `mainImage.url` and `seo.ogImage`.
+`mainImage.url` is the AVIF, `seo.ogImage` is the JPEG sibling — never the same URL.
 
 ### C3. Validate or create the author
 
@@ -278,13 +260,13 @@ tags:
 date: "2026-04-06T00:00:00.000Z"
 readingTime: "X mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/<slug>/<hash>/cover.avif"
+  url: "https://assets.zenml.io/content/blog/<slug>/<hash>/<slug>-cover.avif"
   alt: "Description of the cover image"
 seo:
   title: "Your Blog Post Title"
   description: "A concise 150-160 char description for search engines."
   canonical: "https://www.zenml.io/blog/your-blog-post-slug"
-  ogImage: "https://assets.zenml.io/content/blog/<slug>/<hash>/cover.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/<slug>/<hash>/<slug>-cover.jpg"
 ---
 ```
 
@@ -407,7 +389,7 @@ Print a summary:
 | `seo.canonical` | No | absolute URL | `"https://www.zenml.io/blog/slug"` |
 | `seo.ogImage` | No | absolute URL | Same as mainImage.url |
 
-*`mainImage` is technically optional but this skill treats it as required — always prompt for a cover image.
+*`mainImage` is technically optional but this skill treats it as required — every post gets a cover via C2 (the figma-blog-cover skill by default).
 
 ## Notion Formatting Cleanup Reference
 
@@ -428,7 +410,7 @@ When processing Notion MCP content, apply these transformations:
 1. **Notion MCP works well for fetching content** — returns enhanced Markdown with image URLs. The old advice to avoid it was based on block-level JSON; the current MCP returns clean markdown.
 2. **Notion image URLs expire in ~1 hour** — download immediately after fetching the page. Verify each download with `file <name>`.
 3. **Always `git pull origin main` before branching** — avoids conflicts with recently merged content.
-4. **AVIF compression is dramatic** — typical 80-96% reduction. Use quality 28 + resize 800 for inline images, quality 25 + resize 1200 for cover/hero images.
+4. **AVIF compression is dramatic** — typical 80-96% reduction. Use quality 28 + resize 800 for inline images. For the cover image, see the `figma-blog-cover` skill (`.claude/skills/figma-blog-cover/SKILL.md`) — it owns the cover's dimensions, quality settings, and AVIF/JPEG pair.
 5. **Verify R2 uploads via public URL** — the boto3 API can succeed but the public domain may not serve the file. Always `curl -sI` to confirm HTTP 200.
 6. **Discovery tag for SEO posts** — posts under Tanish's GTM content or with "vs"/"alternative" patterns should get the `discovery` tag to keep them off the main blog listing.
 7. **Build output is 2000+ lines** — always check only the tail for success/failure status.
