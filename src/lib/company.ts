@@ -94,8 +94,8 @@ export const COMPANY_VALUES = [
 // ---------------------------------------------------------------------------
 export const OPEN_POSITIONS = [
   {
-    title: "GTM Engineer - San Francisco",
+    title: "Developer Relations Engineer (f/m/d) - San Francisco",
     type: "Full-time",
-    href: "https://zenml.notion.site/GTM-Engineer-San-Francisco-3a3f8dff25388093a9cdd9efc71f30d2",
+    href: "https://zenml.notion.site/Developer-Relations-Engineer-f-m-d-San-Francisco-3a3f8dff25388093a9cdd9efc71f30d2",
   },
 ] as const;
