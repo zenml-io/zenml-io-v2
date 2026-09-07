@@ -96,12 +96,18 @@
  * is reported in two sections: the 28 parity routes'
  * bundles under "Stylesheets referenced by these routes", the 15 guard
  * routes' bundles under their own "MDX guard stylesheets" heading, keyed
- * `guard:<base name>` so a guard-only bundle can never collide with a
+ * `guard-kitaru:<base name>` or `guard-zenml:<base name>` so a guard-only
+ * bundle can never collide with a
  * `compare:`/`vs:` key even when it's the very same shared file. That
  * keying is also what keeps a guard page's own per-page bundle apart from
  * a parity route's assets: a `compare-zenml` entry emits
  * `zenml-vs-<slug>.<hash>.css`, a name in the same shape as a parity
- * route's slug, but it is only ever reached under a `guard:` key. A
+ * route's slug, but it is only ever reached under a guard key. The guard
+ * space is split in two because `compare/kitaru/` and `compare/zenml/`
+ * each hold a `PullQuote.astro`, so both emit a `PullQuote.<hash>.css`
+ * with different content; one `guard:` space would silently keep only one
+ * of them (see guardKeyKind). Any two distinct bundles that still land on
+ * one key are a hard error, not a last-write-wins overwrite. A
  * `global.css` change is a site-wide edit to explain, not one of the 28
  * routes (or the 15 guard routes) regressing. The `_slug_` bundle is the
  * one exception in both sections — see "The accepted /vs delta" below for
@@ -265,6 +271,7 @@ import {
   mkdirSync,
   readdirSync,
   readFileSync,
+  rmSync,
   writeFileSync,
 } from "node:fs";
 import { dirname, join } from "node:path";
@@ -545,6 +552,26 @@ function referencedStylesheets(html: string): string[] {
 }
 
 /**
+ * A route's stylesheet key space. `guardKeyKind` splits the guard routes
+ * into two, because the two MDX collections each have their own copy of a
+ * component whose bundle Astro names identically: `compare/kitaru/` and
+ * `compare/zenml/` both hold a `PullQuote.astro`, so both emit a
+ * `PullQuote.<hash>.css`, with different content. Under one `guard:` key
+ * space the second would overwrite the first, and 22 KB of Kitaru
+ * component CSS would drop out of the gate on both sides. The split is
+ * derived from the route name rather than the collection because compare
+ * mode only ever has the route string. A future entry that breaks the
+ * `<product>-vs-<competitor>` naming would land in the wrong space, which
+ * the collision check in collectStylesheets turns into a named failure
+ * rather than a silent one.
+ */
+function guardKeyKind(route: Route): string {
+  return route.slug.startsWith("kitaru-vs-") ? "guard-kitaru" : "guard-zenml";
+}
+
+type StylesheetKeyKind = string | ((route: Route) => string);
+
+/**
  * Union of the stylesheets referenced by a set of HTML files, keyed
  * `<kind>:<base name>` → dist-relative href.
  *
@@ -556,21 +583,40 @@ function referencedStylesheets(html: string): string[] {
  * compare bundle would drop out of the gate and the tool would diff a baseline
  * compare bundle against a new vs bundle. `keyKind`, when passed, overrides
  * `r.kind` for every route in this call — used to key the 15 MDX guard
- * routes' bundles under `guard:` instead of `compare:`, so a guard-only
+ * routes' bundles under `guard-kitaru:`/`guard-zenml:` instead of
+ * `compare:`, so a guard-only
  * bundle can never collide with (or be shadowed by) a real parity-route key,
  * even when the underlying file is the very same shared `_slug_` bundle.
+ *
+ * Two DISTINCT bundles landing on one key is the exact failure this keying
+ * exists to prevent, so it is a hard error rather than a last-write-wins
+ * overwrite: silently dropping one of them would take its rules outside the
+ * gate on both sides, where a restyle of it reads as green.
  */
 function collectStylesheets(
   dir: string,
   routes: Route[],
-  keyKind?: string,
+  keyKind?: StylesheetKeyKind,
 ): Map<string, string> {
   const byKey = new Map<string, string>();
   for (const r of routes) {
     const p = join(dir, r.route);
     if (!existsSync(p)) continue;
+    const kind =
+      typeof keyKind === "function" ? keyKind(r) : (keyKind ?? r.kind);
     for (const href of referencedStylesheets(readFileSync(p, "utf8"))) {
-      byKey.set(`${keyKind ?? r.kind}:${stylesheetBaseName(href)}`, href);
+      const key = `${kind}:${stylesheetBaseName(href)}`;
+      const seen = byKey.get(key);
+      if (seen !== undefined && seen !== href) {
+        console.error(
+          `ERROR: two different bundles share the key ${key} in ${dir}: ` +
+            `${seen} and ${href} (the second reached via ${r.route}). One ` +
+            "would overwrite the other and fall outside the gate. Give " +
+            "them separate key spaces before trusting this run.",
+        );
+        process.exit(1);
+      }
+      byKey.set(key, href);
     }
   }
   return byKey;
@@ -1433,6 +1479,12 @@ function runPrepare(refArg: string | undefined, rebuild: boolean) {
     process.exit(1);
   }
 
+  // Cleared, not merged into: pageCssMultiset resolves a page's bundle
+  // hrefs against the capture DIRECTORY, not the manifest, so a file left
+  // behind by an earlier --prepare of the same SHA still gets read and
+  // counted. One side carrying such a leftover and the other not is a
+  // difference this script would report as real.
+  rmSync(captureDir, { recursive: true, force: true });
   mkdirSync(captureDir, { recursive: true });
   const files: Record<string, string> = {};
   for (const r of allRoutes) {
@@ -1446,13 +1498,19 @@ function runPrepare(refArg: string | undefined, rebuild: boolean) {
   // The component styles these pages render with live in a hashed bundle the
   // HTML normaliser masks by design, so they must be captured separately or
   // they are outside the gate entirely (see the stylesheet note in the docblock).
-  // The 15 MDX guard routes are captured too, keyed under "guard" — they
+  // The 15 MDX guard routes are captured too, keyed under "guard-kitaru"
+  // and "guard-zenml" (see guardKeyKind) — they
   // link a few component-specific bundles (FeatureWithGraphic, PullQuote,
   // and one per-page bundle per MDX entry) that the 28 parity routes never
   // reference, and those would otherwise never be captured or compared.
   const stylesheets = collectStylesheets(distDir, routes);
-  const guardStylesheets = collectStylesheets(distDir, guardRoutes, "guard");
-  // De-duplicated: the map is keyed per route kind (or "guard"), so a bundle
+  const guardStylesheets = collectStylesheets(
+    distDir,
+    guardRoutes,
+    guardKeyKind,
+  );
+  // De-duplicated: the map is keyed per key space (route kind or one of
+  // the two guard spaces), so a bundle
   // referenced under more than one key — global.css, or the shared _slug_
   // bundle a guard route and a parity route both link — appears more than
   // once in the map but is one file.
@@ -1718,9 +1776,10 @@ function compareRouteSet(
  * purpose (per-route checkRouteCss verifies exactly that move), so
  * byte-comparing it here would just re-report the same accepted change as
  * a false failure. `keyKind`, when passed, overrides every route's own
- * kind for this call — used for the 15 MDX guard routes, so their
- * bundles are keyed `guard:<base name>` and reported under `heading`
- * instead of folding into (or colliding with) the parity routes' table.
+ * kind for this call — used for the 15 MDX guard routes, whose bundles are
+ * keyed `guard-kitaru:`/`guard-zenml:<base name>` and reported under
+ * `heading` instead of folding into (or colliding with) the parity
+ * routes' table.
  *
  * Returns the number of failing bundles.
  */
@@ -1728,7 +1787,7 @@ function compareStylesheets(
   routes: Route[],
   baseDir: string,
   candidateDir: string,
-  options: { keyKind?: string; heading?: string } = {},
+  options: { keyKind?: StylesheetKeyKind; heading?: string } = {},
 ): number {
   const { keyKind, heading = "\nStylesheets referenced by these routes:" } =
     options;
@@ -1903,7 +1962,7 @@ function runCompare(
     baseDir,
     candidateDir,
     {
-      keyKind: "guard",
+      keyKind: guardKeyKind,
       heading: "\nMDX guard stylesheets (must be untouched):",
     },
   );
