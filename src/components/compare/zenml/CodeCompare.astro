@@ -1,0 +1,243 @@
+---
+import {
+  renderZenmlCode,
+  type ZenmlLang,
+} from "../../../lib/zenml-highlighter";
+
+// CodeCompare lives in a dark band. Shiki bakes both themes into each token
+// (the light value inline, the dark value in the `--shiki-dark` CSS var); the
+// `pre span` rule below forces every token to its dark (zenml-dark) value.
+//
+// Rendered via shiki.codeToHtml + set:html (not Astro's `<Code>`) — see
+// src/lib/zenml-highlighter.ts (and kitaru-highlighter.ts) for the rationale.
+
+interface Props {
+  title?: string;
+  eyebrow?: string;
+  zenmlLabel?: string;
+  competitorLabel?: string;
+  zenmlCode: string;
+  competitorCode: string;
+  lang?: ZenmlLang;
+}
+const {
+  title = "Code comparison",
+  eyebrow,
+  zenmlLabel = "ZenML",
+  competitorLabel = "Alternative",
+  zenmlCode,
+  competitorCode,
+  lang = "python",
+} = Astro.props;
+
+const [zenmlHtml, competitorHtml] = await Promise.all([
+  renderZenmlCode(zenmlCode, lang),
+  renderZenmlCode(competitorCode, lang),
+]);
+---
+
+<section class="codecompare" data-reveal>
+  <div class="codecompare-inner">
+    {eyebrow && <span class="codecompare-eyebrow">{eyebrow}</span>}
+    {title && <h2 class="codecompare-title">{title}</h2>}
+  </div>
+  <div class="codecompare-grid">
+    <article class="codecompare-pane codecompare-pane--zenml" aria-label="Recommended: ZenML implementation">
+      <header>
+        <span class="codecompare-dot codecompare-dot--zenml" aria-hidden="true"></span>
+        <span class="codecompare-label">{zenmlLabel}</span>
+        <span class="codecompare-pill">Recommended</span>
+      </header>
+      <div class="codecompare-code" set:html={zenmlHtml}></div>
+    </article>
+    <article class="codecompare-pane">
+      <header>
+        <span class="codecompare-dot codecompare-dot--competitor" aria-hidden="true"></span>
+        <span class="codecompare-label">{competitorLabel}</span>
+      </header>
+      <div class="codecompare-code" set:html={competitorHtml}></div>
+    </article>
+  </div>
+</section>
+
+<style>
+  /* ─── Code highlighting palette ───
+     Section chrome: --code-var/-bg/-pane/-line drive the title, labels, dark
+     band, pane surfaces and borders. Syntax token colors come straight from
+     the zenml-dark palette in src/styles/zenml-dark.json via Shiki's
+     --shiki-dark vars; the --code-kw/-fn/-str/-op/-cmt values mirror that
+     palette for reference only — keep them aligned with zenml-dark.json. */
+  .codecompare {
+    --code-kw:   #5eead4;
+    --code-fn:   #a78bfa;
+    --code-str:  #86efac;
+    --code-var:  #e2e8f0;
+    --code-op:   #fb7185;
+    --code-cmt:  #64748b;
+    --code-bg:   #1a1a2e;
+    --code-pane: #21213d;
+    --code-line: oklch(1 0 0 / 0.12);
+  }
+  /* Full-bleed dark band — breaks out of the .compare-body article column
+     (max-width 1192px) to the viewport edges so the section reads as its own
+     dark chapter on the page, matching the homepage's .dark-section pattern. */
+  .codecompare {
+    position: relative;
+    /* Break out of any ancestor with a max-width to reach viewport edges. */
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    margin-top: 72px;
+    margin-bottom: 72px;
+    padding: 64px 24px;
+    /* Same dark surface as the homepage "See the code" section. */
+    background:
+      radial-gradient(circle at 12% 10%, oklch(0.55 0.24 295 / 0.30), transparent 34rem),
+      radial-gradient(circle at 88% 0%, oklch(0.70 0.14 300 / 0.16), transparent 30rem),
+      var(--code-bg);
+    color: var(--code-var);
+    border-top: 1px solid var(--code-line);
+    border-bottom: 1px solid var(--code-line);
+  }
+  @media (min-width: 820px) {
+    .codecompare { padding: 80px 32px; }
+  }
+  /* Heading that lives inside the dark band so the section reads as its own
+     dark chapter on the page (not a floating pair of cards). */
+  .codecompare-inner {
+    max-width: 1280px;
+    margin: 0 auto 32px;
+    text-align: left;
+  }
+  .codecompare-eyebrow {
+    display: inline-block;
+    color: var(--color-accent);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  /* The title sits in the dark band — keep it light regardless of the
+     `.compare-body-inner h2` prose rule inherited from the ZenmlMdxCompare
+     layout. */
+  .codecompare .codecompare-title {
+    max-width: 820px;
+    font-size: clamp(30px, 3.2vw, 42px);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.12;
+    color: var(--code-var) !important;
+    margin: 0;
+  }
+  /* Inner max-width matches the rest of the article column so the two panes
+     align with the surrounding prose. */
+  .codecompare-grid {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  /* Each pane uses the homepage code-window surface. */
+  .codecompare-pane {
+    min-width: 0;
+    border: 1px solid var(--code-line);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--code-pane) 94%, white 6%);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow:
+      0 28px 70px -42px oklch(0 0 0 / 0.75),
+      inset 0 1px 0 oklch(1 0 0 / 0.06);
+  }
+  .codecompare-pane--zenml {
+    border-color: oklch(0.62 0.22 295 / 0.55);
+  }
+  .codecompare-pane header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--code-line);
+    background: linear-gradient(180deg, oklch(1 0 0 / 0.055), oklch(1 0 0 / 0.02));
+  }
+  .codecompare-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: oklch(1 0 0 / 0.45);
+  }
+  .codecompare-dot--zenml { background: var(--color-accent); }
+  .codecompare-dot--competitor { background: #94a3b8; }
+  .codecompare-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--code-var);
+    letter-spacing: 0.02em;
+  }
+  .codecompare-pill {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: oklch(0.62 0.22 295 / 0.28);
+    color: #c4b5fd;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .codecompare-code {
+    flex: 1;
+  }
+  .codecompare-code :global(pre) {
+    margin: 0;
+    padding: 22px 24px 24px;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.72;
+    background: transparent !important;
+    /* Default color for text nodes Shiki didn't wrap (whitespace, commas).
+       Without this the page-level `.compare-body-inner code` rule sets them
+       to var(--color-primary) which is dark in light mode.
+       Uses --code-var from @theme — same token the homepage reads. */
+    color: var(--code-var) !important;
+    overflow-x: auto;
+    scrollbar-color: oklch(1 0 0 / 0.28) transparent;
+  }
+  .codecompare-code :global(code) {
+    font-family: inherit;
+    color: var(--code-var);
+    tab-size: 2;
+  }
+  /* Shiki bakes both themes into every token — the light value inline and the
+     dark value in `--shiki-dark`. CodeCompare lives in a dark band, so force
+     every token to its dark-theme (zenml-dark) value. */
+  .codecompare-code :global(pre span) {
+    color: var(--shiki-dark) !important;
+    font-style: var(--shiki-dark-font-style, inherit) !important;
+    font-weight: var(--shiki-dark-font-weight, inherit) !important;
+    text-decoration: var(--shiki-dark-text-decoration, inherit) !important;
+  }
+
+  @media (max-width: 1180px) {
+    .codecompare-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .codecompare {
+      margin-top: 56px;
+      margin-bottom: 56px;
+      padding: 48px 16px;
+    }
+    .codecompare-code :global(pre) {
+      padding: 18px;
+      font-size: 13px;
+    }
+  }
+</style>

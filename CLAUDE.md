@@ -38,7 +38,7 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 | Layer | Choice |
 |-------|--------|
 | Framework | **Astro** (TypeScript) — static-first, content collections, islands |
-| Content | **Markdown (.md) in git** — Astro Content Collections with Zod schemas. **Use `.md` NOT `.mdx`** (MDX v2 treats HTML as strict JSX, breaking raw HTML in content). **Exception:** the `compare-kitaru` collection uses `.mdx` because the ported Kitaru-vs-X pages rely on inline component imports — documented in MERGE_PLAN.md Phase 3 known gaps. |
+| Content | **Markdown (.md) in git** — Astro Content Collections with Zod schemas. **Use `.md` NOT `.mdx`** (MDX v2 treats HTML as strict JSX, breaking raw HTML in content). **Exception:** the `compare-kitaru` and `compare-zenml` collections use `.mdx` because the ported Kitaru-vs-X pages (and their ZenML twins) rely on inline component imports — documented in MERGE_PLAN.md Phase 3 known gaps. |
 | Hosting | **Cloudflare Workers** in production; **Cloudflare Pages** retained as the deeper fallback |
 | Assets | **Cloudflare R2** — object storage for images/files |
 | Styling | **Tailwind CSS** — utility-first |
@@ -169,14 +169,18 @@ const url = `${ASSET_BASE_URL}/content/uploads/1a2b3c4d/hero.webp`;
 
 ### Compare-page OG card generator
 
-The Kitaru-vs-X comparison pages use programmatic OG cards rendered from
-each `.mdx`'s frontmatter (`competitor`, `cardSubtitle`). Pipeline:
+The MDX comparison pages (`compare-kitaru` and `compare-zenml`) use
+programmatic OG cards rendered from each `.mdx`'s frontmatter
+(`competitor`, `cardSubtitle`). The template has two brand variants,
+picked by collection: Kitaru (orange, Paper artboard) and ZenML (purple,
+`public/images/zenml-logo.svg` wordmark). Pipeline:
 satori (JSX → SVG) → `@resvg/resvg-js` (SVG → PNG at 2× native) → sharp
 (PNG → JPEG, q85 mozjpeg 4:2:0) → R2 upload at a deterministic key.
 
 The OG URL is **derived at render time** from the entry slug via
-`compareOgUrl(slug)` in `src/lib/seo.ts` — pointing at
-`${ASSET_BASE_URL}/${KITARU_COMPARE_OG_PREFIX}/<slug>.jpg`. The script
+`compareOgUrl(brand, slug)` in `src/lib/seo.ts` — pointing at
+`${ASSET_BASE_URL}/${COMPARE_OG_PREFIX[brand]}/<slug>.jpg`; each compare
+layout passes its own brand. The script
 uploads there with `r2-upload.py --literal-key` so re-renders overwrite
 in place. No frontmatter mutation. A page can still override by setting
 its own `ogImage:` frontmatter line.
@@ -191,7 +195,7 @@ its own `ogImage:` frontmatter line.
   same R2 key → overwrite in place. No `.mdx` files are ever modified.
 - `pnpm og:compare --slug=kitaru-vs-foo` — limit to specific pages.
 
-**When adding a new kitaru-vs-X page:** create the `.mdx` with the
+**When adding a new kitaru-vs-X or zenml-vs-X MDX page:** create the `.mdx` with the
 `competitor` and `cardSubtitle` frontmatter fields, then run
 `pnpm og:compare:write --slug=<new-slug>`. No frontmatter change needed
 — the layout derives the OG URL automatically.
@@ -251,7 +255,7 @@ This site was migrated from Webflow in Feb 2026 and unified with kitaru.ai in Ma
 ### Kitaru merge (May 2026)
 - **Kitaru R2/source-domain references** — audit current source before assuming any `assets.kitaru.ai` hotlinks remain. The merge removed known live-source references; historical design/migration artifacts may still mention old domains.
 - **Standalone Kitaru form/API code was removed** — the merged site uses unified form helpers and analytics (`formTypes.ts`, `formValidation.ts`, `consentConfig.ts`). Do not recreate `kitaru-form-types.ts`, `kitaru-segment.ts`, or standalone `/api/get-started`, `/api/waitlist`, `/api/newsletter` routes unless the product decision changes.
-- **`compare-kitaru` collection** uses `.mdx` (vs project default `.md`) — the ported Kitaru-vs-X pages use inline component imports.
+- **`compare-kitaru` and `compare-zenml` collections** use `.mdx` (vs project default `.md`) — the ported Kitaru-vs-X pages and their ZenML twins use inline component imports.
 - **`MERGE_PLAN.md`** — the merge's running plan + progress log; not current architecture authority (CLAUDE.md is).
 
 ## LLMOpsDB Native Publish Workflow
@@ -328,6 +332,7 @@ The old standalone `kitaru.ai` API routes (`get-started`, `waitlist`, `newslette
 - `src/components/compare/_layouts/KitaruCompare.astro` — Kitaru-vs-X comparison page template
 - `src/components/compare/kitaru/*` — Kitaru compare components (ComparisonHero, ComparisonTable, CodePane, CodeCompare, FeatureWithGraphic, WhenToUseEach, ComparisonCta)
 - `src/content/compare-kitaru/*.mdx` — Kitaru-vs-X comparison pages
+- `src/content/compare-zenml/*.mdx` — ZenML-vs-X pages in the same MDX template (`ZenmlMdxCompare.astro`, components under `src/components/compare/zenml/`), covering durable execution engines (Temporal, DBOS, Hatchet, Inngest, Restate) and agent frameworks. Positioning: ZenML orchestrates and runs agents durably (dynamic pipelines, `wait()` approvals, sandboxes, deployments); the Kitaru-vs-X set is limited to frameworks Kitaru has adapters for. The old `kitaru-vs-{temporal,dbos,hatchet,inngest,restate}` pages 301 to their ZenML twins (`public/_redirects`)
 
 ### Get Started routing
 - `src/pages/get-started.astro` — ZenML open-source onboarding (hero, 3-step walkthrough, architecture, projects, resources) with one pointer line to `/product/kitaru`. `/get-started/zenml` 301-redirects here (`public/_redirects`). The Phase-4 ML/Agent chooser and its Kitaru panel (`GET_STARTED_TABS`, `GET_STARTED_KITARU`, the v1 `@flow`/`@checkpoint` walkthrough) were removed in Sep 2026; Kitaru's entry point is its own landing

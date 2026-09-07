@@ -8,9 +8,10 @@
 
 import {
   ASSET_BASE_URL,
+  COMPARE_OG_PREFIX,
+  type CompareOgBrand,
   DEFAULT_DESCRIPTION,
   DEFAULT_OG_IMAGE,
-  KITARU_COMPARE_OG_PREFIX,
   SITE_URL,
 } from "./constants";
 
@@ -73,15 +74,15 @@ export function buildCanonical(pathname: string, override?: string): string {
 }
 
 /**
- * URL of the auto-generated OG card for a Kitaru-vs-X compare page.
+ * URL of the auto-generated OG card for an MDX compare page.
  *
- * The card lives at a deterministic R2 key keyed only on slug (no content
- * hash) — uploaded by `scripts/og/generate-compare-og.ts`, overwritten in
- * place on regen. The compare layout uses this as a fallback when the
- * `.mdx` doesn't specify an explicit `ogImage:` override.
+ * The card lives at a deterministic R2 key keyed on brand and slug (no
+ * content hash) — uploaded by `scripts/og/generate-compare-og.ts`,
+ * overwritten in place on regen. Each compare layout passes its own brand
+ * and uses this as the fallback when the `.mdx` has no `ogImage:` override.
  */
-export function compareOgUrl(slug: string): string {
-  return `${ASSET_BASE_URL}/${KITARU_COMPARE_OG_PREFIX}/${slug}.jpg`;
+export function compareOgUrl(brand: CompareOgBrand, slug: string): string {
+  return `${ASSET_BASE_URL}/${COMPARE_OG_PREFIX[brand]}/${slug}.jpg`;
 }
 
 /**

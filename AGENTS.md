@@ -28,7 +28,7 @@ positioning; MERGE_PLAN.md records the merge history.
 - Keep components in PascalCase (for example `BlogCard.astro`, `LLMOpsFilter.tsx`).
 - Use kebab-case for content slugs/filenames in `src/content/`.
 - Prefer typed data modules in `src/lib/` over hardcoded copy in components.
-- Use `.md` for content files (not `.mdx`). The `compare-kitaru/` collection is the documented exception (inline component imports inherited from the Kitaru port).
+- Use `.md` for content files (not `.mdx`). The `compare-kitaru/` and `compare-zenml/` collections are the documented exception (inline component imports inherited from the Kitaru port).
 - Before a code PR or substantial code commit, review changed code for reuse, clarity, and unnecessary work; use an available simplify skill or perform that review directly. Fix worthwhile findings and rerun affected checks.
 
 ## Testing Guidelines

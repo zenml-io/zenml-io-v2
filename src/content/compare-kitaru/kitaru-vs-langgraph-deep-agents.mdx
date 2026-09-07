@@ -20,9 +20,9 @@ import SelfHostVsPackaged from '../../components/compare/kitaru/graphics/langgra
 import SandboxSecurity from '../../components/compare/kitaru/graphics/langgraph/SandboxSecurity.astro';
 import VersionedDeployments from '../../components/compare/kitaru/graphics/langgraph/VersionedDeployments.astro';
 
-LangGraph is a real, graph-native agent runtime with its own checkpointer for resuming and time-traveling through a run. Deep Agents and LangChain's `create_agent` are built on top of it. LangSmith Deployment packages all of that with sandboxes, an auth proxy, tracing, and hosted infra. If you adopt that stack, you get a lot for free.
+LangGraph is a real graph-native agent runtime, with its own checkpointer for resuming a run and stepping back through it. Deep Agents and LangChain's `create_agent` sit on top of it. LangSmith Deployment packages all of that with sandboxes, an auth proxy, tracing, and hosted infra. Adopt the platform and you get a lot for free.
 
-Kitaru is a different layer. It's a **replay-based eval layer** that sits beside whatever harness you picked: `kitaru-langgraph` wraps your compiled graph &mdash; or your `create_agent` or Deep Agents build &mdash; and every `invoke()` lands as a session: model calls, tool calls, and graph callbacks recorded as nodes you can replay and score. It's framework-agnostic by design &mdash; the same eval loop works whether the team next to you is on LangGraph, Pydantic AI, the OpenAI Agents SDK, Mastra, or the Vercel AI SDK.
+Kitaru is a different layer. It's a **replay-based eval layer** that sits beside whatever harness you picked: [`kitaru-langgraph`](https://docs.zenml.io/kitaru/adapters/langgraph) wraps your compiled graph, or your `create_agent` or Deep Agents build, and every `invoke()` lands as a session, with model calls, tool calls, and graph callbacks recorded as nodes you can replay and evaluate. It's framework-agnostic on purpose. The same eval loop works whether the team next to you is on LangGraph, Pydantic AI, the OpenAI Agents SDK, the Claude Agent SDK, Mastra, or the Vercel AI SDK. Running that same graph durably in production is ZenML's job; Kitaru replays and improves it. See [ZenML vs LangGraph & Deep Agents](/compare/zenml-vs-langgraph-deep-agents).
 
 <WhenToUseEach
   competitorLabel="LangGraph / Deep Agents"
@@ -30,10 +30,10 @@ Kitaru is a different layer. It's a **replay-based eval layer** that sits beside
     title: "Use Kitaru if you are",
     items: [
       "A platform team whose app teams use multiple agent frameworks and want one eval loop across all of them",
-      "Running on regulated or on-prem infrastructure where a hosted control plane is not acceptable — Kitaru self-hosts, Apache 2.0",
+      "Running on regulated or on-prem infrastructure where a hosted control plane isn't an option: Kitaru self-hosts, Apache 2.0",
       "Turning the sessions that caught a failure into a cohort that gates the next change",
       "Deciding a model or prompt swap and want two runs over the same cohort compared side by side",
-      "Already tracing to Langfuse, LangSmith, or Braintrust and want those traces runnable, not just readable",
+      "Already tracing to Langfuse, LangSmith, Braintrust, Logfire, or Arize Phoenix and want those traces runnable, not just readable",
     ],
   }}
   competitor={{
@@ -41,7 +41,8 @@ Kitaru is a different layer. It's a **replay-based eval layer** that sits beside
     items: [
       "Standardizing on LangGraph or Deep Agents as the single harness across teams",
       "Happy to adopt LangSmith Deployment as the packaged runtime + deployment story",
-      "Resuming a crashed or interrupted graph from its own checkpointer — that's LangGraph's job, not Kitaru's",
+      "Resuming a crashed or interrupted graph from its own checkpointer: that's LangGraph's job, not Kitaru's",
+      "Streaming graph output with stream() or astream_events(): the Kitaru adapter records invoke() and ainvoke() only",
       "Building graph-native agents where the graph abstraction is a feature, not an obstacle",
     ],
   }}
@@ -60,9 +61,9 @@ runner = KitaruGraphRunner(builder.compile(), agent_id=AGENT_ID)
 result = runner.invoke({"request": task})`}
   />
 
-  LangGraph&rsquo;s checkpointer, resume, and time-travel are powerful &mdash; inside the graph/state-machine model. Your agent is a graph of nodes and edges, and LangGraph persists state between supersteps.
+  LangGraph&rsquo;s checkpointer, resume, and time-travel are powerful inside the graph model. Your agent is a graph of nodes and edges, and LangGraph persists its state between supersteps.
 
-  Kitaru doesn&rsquo;t require you to change the graph. `KitaruGraphRunner` wraps the compiled graph you already built &mdash; it doesn&rsquo;t recompile it, replace the checkpointer, or change the result. `invoke()` and `ainvoke()` come back exactly as LangGraph returns them; the session is what&rsquo;s new.
+  Kitaru doesn&rsquo;t ask you to touch the graph. Install it with `uv add kitaru-langgraph`. `KitaruGraphRunner` wraps the compiled graph you already built: no recompile, no swapped checkpointer, no different result. `invoke()` and `ainvoke()` come back exactly as LangGraph returns them. The session is what&rsquo;s new.
 </FeatureWithGraphic>
 
 <FeatureWithGraphic title="One adapter, three ways in" reverse={true}>
@@ -71,7 +72,7 @@ result = runner.invoke({"request": task})`}
     code={`# Direct compiled graph
 runner = KitaruGraphRunner(builder.compile(), agent_id=AGENT_ID)
 
-# LangChain's create_agent — also a LangGraph runnable
+# LangChain's create_agent, also a LangGraph runnable
 from langchain.agents import create_agent
 runner = KitaruGraphRunner.from_agent_factory(
     create_agent,
@@ -79,24 +80,24 @@ runner = KitaruGraphRunner.from_agent_factory(
     agent_id=AGENT_ID,
 )
 
-# Deep Agents — same adapter, optional extra
+# Deep Agents: same adapter, the [deepagents] extra
 from deepagents import create_deep_agent
 runner = KitaruGraphRunner.from_agent_factory(
     create_deep_agent, factory_kwargs={...}, agent_id=AGENT_ID,
 )`}
   />
 
-  LangChain&rsquo;s `create_agent` and Deep Agents both return LangGraph runnables under the hood, so the same `kitaru-langgraph` adapter covers all three construction paths.
+  LangChain&rsquo;s `create_agent` and Deep Agents both return LangGraph runnables under the hood, so the same `kitaru-langgraph` adapter covers all three construction paths. Deep Agents needs the `kitaru-langgraph[deepagents]` extra.
 
-  What changes is how much of the graph is replayable. A direct wrapper records the call and can replace the whole input. The two factory paths install middleware that also lets a replay override the model &mdash; with one live model call, never a cached response &mdash; and substitute matching tool results. Wrap a subagent opaquely and it still shows up in the outer session; it just doesn&rsquo;t get its own substitution capabilities.
+  What changes is how much of the graph you can replay. A direct wrapper records the call and can replace the whole input. The two factory paths install middleware that also lets a replay override the model, prompt, system prompt, or model parameters, with exactly one live model call and never a cached response, and substitute matching `static` or `history` tool results. Wrap a subagent opaquely and it still shows up in the outer session; it just doesn&rsquo;t get its own substitution. `runner.capabilities` tells you which set you got.
 </FeatureWithGraphic>
 
 <FeatureWithGraphic title="Self-hosted eval server vs packaged platform">
   <SelfHostVsPackaged slot="graphic" />
 
-  LangSmith Deployment packages runtime + sandboxes + auth proxy + tracing into a managed product. That&rsquo;s genuinely useful if you want to offload the platform layer.
+  LangSmith Deployment packages runtime, sandboxes, auth proxy, and tracing into one managed product. If you want to offload the platform layer, that&rsquo;s a real offer.
 
-  Kitaru ships the eval layer as a primitive you self-host: one FastAPI + Postgres server, with workers that replay and evaluate inside your own environment. It sits beside your observability stack rather than replacing it &mdash; Langfuse, LangSmith, and Braintrust stay your system of record; Kitaru is where you re-run what they recorded.
+  Kitaru ships the eval layer as a primitive you self-host: one FastAPI + Postgres server, with workers that replay and evaluate inside your own environment. It sits beside your observability rather than replacing it: Langfuse, LangSmith, Braintrust, Logfire, and Arize Phoenix stay your system of record, and Kitaru is where you re-run what they recorded.
 
   If your security team needs to know exactly where prompts, outputs, and traces live, &ldquo;in our own systems&rdquo; is a shorter conversation than a data-residency addendum on a hosted control plane.
 </FeatureWithGraphic>
@@ -104,9 +105,9 @@ runner = KitaruGraphRunner.from_agent_factory(
 <FeatureWithGraphic title="Two different jobs: resume a graph vs replay a session" reverse={true}>
   <SandboxSecurity slot="graphic" />
 
-  LangSmith ships real infrastructure for its job: LangGraph&rsquo;s checkpointer persists state between supersteps so an interrupted or crashed graph can resume, and you can step back through recorded graph state. That durability lives inside the graph model, and it&rsquo;s genuinely useful.
+  There&rsquo;s real infrastructure on the LangGraph side for its job: the checkpointer persists state between supersteps, so an interrupted or crashed graph resumes, and you can step back through recorded graph state. That lives inside the graph model, and it&rsquo;s good at it.
 
-  Kitaru is solving a different problem. `KitaruGraphRunner` wraps the compiled graph without recompiling it or replacing its checkpointer &mdash; it records one session per `invoke()` call, alongside whatever LangGraph is already doing. Depth depends on how the graph was built: a direct wrapper replays the whole input; `create_agent` or Deep Agents construction adds model and tool-result overrides on top.
+  Kitaru solves a different problem. `KitaruGraphRunner` wraps the compiled graph without recompiling it or replacing its checkpointer, and records one session per `invoke()` alongside whatever LangGraph is already doing. Hit an interrupt and it comes back unchanged, recorded on the session. Resume the thread with your own checkpointer and `Command(resume=...)`, and that resume call becomes a second session. Workers don&rsquo;t resume interrupts: a replay that hits one fails explicitly instead of pretending to finish.
 
   Two different jobs, not competing answers: LangGraph resumes a crashed graph. Kitaru replays a session to test a change.
 </FeatureWithGraphic>
@@ -114,11 +115,11 @@ runner = KitaruGraphRunner.from_agent_factory(
 <FeatureWithGraphic title="Compare runs, don't manage deployments">
   <VersionedDeployments slot="graphic" />
 
-  Both products have a real story here &mdash; aimed at different questions.
+  Both have a real story here. They answer different questions.
 
   LangSmith Deployment exposes agent endpoints (MCP, A2A, Agent Protocol, HITL, memory APIs) as part of its packaged runtime.
 
-  Kitaru isn&rsquo;t a deployment platform. An experiment runs the same cohort twice &mdash; once at a baseline, once with one variable moved &mdash; and `client.compare(before, after)` puts the two side by side. Drive it from the `kitaru` CLI, the Python SDK, the TypeScript SDK, or your coding agent.
+  Kitaru isn&rsquo;t a deployment platform. An experiment holds the change: override, tool policy, evaluators. An experiment run applies it to one cohort version and one agent version, fans out one replay per session, and evaluates baseline and replay alike. Drive it from the `kitaru` CLI, the Python client, the TypeScript SDK, or your coding agent through the `kitaru-mcp` server.
 </FeatureWithGraphic>
 
 ## What makes Kitaru unique
@@ -130,13 +131,14 @@ runner = KitaruGraphRunner.from_agent_factory(
     { feature: "Native checkpointer with resume and time-travel", kitaru: false, competitor: true },
     { feature: "Packaged sandboxes + auth proxy + tracing (LangSmith Deployment)", kitaru: false, competitor: true },
     { feature: "Hosted control plane option", kitaru: false, competitor: true },
+    { feature: "Streaming invocation (stream, astream_events)", kitaru: false, competitor: true, note: "The adapter records invoke() and ainvoke() only." },
     { feature: "Every invoke() / ainvoke() call recorded as a replayable session", kitaru: true, competitor: false },
-    { feature: "Tool calls answered from the recording during replay", kitaru: true, competitor: false },
+    { feature: "Tool calls answered from the recording during replay", kitaru: "partial", competitor: false, note: "Static and history substitution via the create_agent and create_deep_agent factory paths. A direct compiled-graph wrapper replaces the whole input only." },
     { feature: "Cohorts: frozen session sets as regression suites", kitaru: true, competitor: false },
     { feature: "Experiments: same cohort, one variable moved, compared side by side", kitaru: true, competitor: false },
-    { feature: "Framework-agnostic adapters (Pydantic AI, LangGraph, OpenAI Agents SDK, Mastra, Vercel AI SDK)", kitaru: true, competitor: false },
+    { feature: "Framework-agnostic adapters (Pydantic AI, LangGraph, OpenAI Agents SDK, Claude Agent SDK, Mastra, Vercel AI SDK)", kitaru: true, competitor: false },
     { feature: "Self-hosted server, Apache 2.0 (FastAPI + Postgres, workers in your environment)", kitaru: true, competitor: false },
-    { feature: "Import Langfuse / LangSmith / Braintrust / OTel traces", kitaru: true, competitor: false },
+    { feature: "Import Langfuse / LangSmith / Braintrust / Logfire / Phoenix traces", kitaru: true, competitor: false },
   ]}
 />
 
@@ -145,11 +147,11 @@ runner = KitaruGraphRunner.from_agent_factory(
 | Concept | LangGraph / Deep Agents | Kitaru |
 |---|---|---|
 | Layer | Graph-native agent harness + runtime | Replay-based evals (how you test what it did) |
-| Core unit | A node, persisted by the checkpointer between supersteps | A session &mdash; recorded model, tool, and graph callbacks, replayable |
+| Core unit | A node, persisted by the checkpointer between supersteps | A session: recorded model, tool, and graph callbacks, replayable |
 | Composition | Compiled graph, or `create_agent` / `create_deep_agent` | Same graph wrapped once by `KitaruGraphRunner` |
-| Resume after a crash | Checkpointer + `Command(resume=...)` on your own thread | Not the job &mdash; Kitaru replays a session, it doesn't resume a crashed graph |
-| Replay depth | &mdash; | Direct wrapper: whole-input only. `create_agent` / Deep Agents: model and tool overrides too |
-| "Did my change help?" | Read the traces, compare by eye | Two runs over the same cohort, diffed |
+| Resume after a crash | Checkpointer + `Command(resume=...)` on your own thread | Not the job. Kitaru replays a session; it doesn't resume a crashed graph |
+| Replay depth | Not a concept | Direct wrapper: whole-input only. `create_agent` / Deep Agents: model, prompt, and tool-result overrides too |
+| "Did my change help?" | Read the traces, compare by eye | Two runs over the same cohort, evaluated on both sides |
 | Deployment / hosting | LangSmith Deployment (packaged runtime + auth proxy + tracing) | Self-hosted server; workers replay in your environment |
 <CodeCompare
   kitaruLabel="Kitaru + LangGraph adapter"
@@ -164,21 +166,19 @@ builder.add_edge("normalize", END)
 
 runner = KitaruGraphRunner(builder.compile(), agent_id=AGENT_ID)
 
-# Runs exactly as before — and lands as a session.
+# Runs exactly as before, and lands as a session.
 result = runner.invoke({"request": "Reset my password"})
 
 # Later: freeze the sessions that matter, test a change.
-import kitaru
-
-client = kitaru.KitaruClient()
-cohort = client.cohorts.create("hard-cases", sessions=session_ids)
-experiment = client.experiments.create(
-    "cheap-model",
-    model="gpt-5-mini",
-)
-before = experiment.run(cohort=cohort, version="v1")
-after = experiment.run(cohort=cohort, version="pr-311")
-client.compare(before, after)`}
+# (Model overrides and tool substitution need the create_agent or Deep Agents path.)
+#   kitaru cohort create hard-cases --agent support --tag needs-review
+#   kitaru experiment create cheaper-model --agent support \\
+#     --evaluator resolved-check@latest \\
+#     --override '{"model": {"openai:gpt-5.4-mini": "openai:gpt-5-nano"}}' \\
+#     --tool-policy '{"default": {"type": "history",
+#       "scope": "cohort_version", "on_miss": "fail"}}'
+#   kitaru experiment run start cheaper-model \\
+#     --cohort-version <id> --agent support@2 --evaluate-baselines --wait`}
   competitorCode={`from langgraph.graph import StateGraph, END, START
 from langgraph.checkpoint.memory import MemorySaver
 
@@ -190,10 +190,10 @@ builder.add_edge("normalize", END)
 app = builder.compile(checkpointer=MemorySaver())
 result = app.invoke({"request": "Reset my password"})
 # One trace per invocation. The run that caught the bug
-# is a transcript you can read — not a test you can run
+# is a transcript you can read, not a test you can run
 # again with the model swapped.`}
 />
 
 <ComparisonCta headline={frontmatter.ctaHeading}>
-If everyone on your team has standardized on LangGraph or Deep Agents and you're moving onto LangSmith Deployment as the packaged runtime and platform, use what you have &mdash; Kitaru adds less there. If multiple harnesses live across your teams, or you want your production traffic turned into a regression suite you control, Kitaru gives you one self-hosted eval loop underneath whatever your teams already picked.
+If everyone on your team has standardized on LangGraph or Deep Agents and you're moving onto LangSmith Deployment as the packaged runtime, use what you have. Kitaru adds less there. If your teams run more than one harness, or you want production traffic turned into a regression suite you control, Kitaru gives you one self-hosted eval loop underneath whatever they already picked.
 </ComparisonCta>

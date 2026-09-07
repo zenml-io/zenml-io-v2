@@ -226,3 +226,15 @@
 /blog/page/17/ /blog?page=17 301
 /blog/page/18 /blog?page=18 301
 /blog/page/18/ /blog?page=18 301
+
+# ── Kitaru v2 pivot: durable-execution comparisons are ZenML's now ──
+/compare/kitaru-vs-temporal /compare/zenml-vs-temporal 301
+/compare/kitaru-vs-temporal/ /compare/zenml-vs-temporal 301
+/compare/kitaru-vs-dbos /compare/zenml-vs-dbos 301
+/compare/kitaru-vs-dbos/ /compare/zenml-vs-dbos 301
+/compare/kitaru-vs-hatchet /compare/zenml-vs-hatchet 301
+/compare/kitaru-vs-hatchet/ /compare/zenml-vs-hatchet 301
+/compare/kitaru-vs-inngest /compare/zenml-vs-inngest 301
+/compare/kitaru-vs-inngest/ /compare/zenml-vs-inngest 301
+/compare/kitaru-vs-restate /compare/zenml-vs-restate 301
+/compare/kitaru-vs-restate/ /compare/zenml-vs-restate 301

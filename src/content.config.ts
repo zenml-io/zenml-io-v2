@@ -1003,6 +1003,35 @@ export const collections = {
       ogImage: z.url().optional(),
     }),
   }),
+  /**
+   * ZenML comparisons in the MDX template — the ZenML-themed twin of
+   * compare-kitaru. Same rich section vocabulary (code panes, graphics,
+   * comparison tables); distinct from the legacy `compare` collection, which
+   * is Webflow-migrated .md driven by structured frontmatter.
+   *
+   * Slugs are `zenml-vs-*`, the same pattern the legacy `compare` collection
+   * emits, so a slug must not exist in both. src/pages/compare/[slug].astro
+   * asserts this at build time.
+   */
+  "compare-zenml": defineCollection({
+    loader: glob({
+      pattern: "**/*.{md,mdx}",
+      base: "./src/content/compare-zenml",
+    }),
+    schema: z.object({
+      competitor: z.string(),
+      competitorLogo: z.string().optional(),
+      competitorTagline: z.string().optional(),
+      title: z.string(),
+      shortTitle: z.string().optional(),
+      description: z.string(),
+      cardSubtitle: z.string(),
+      ctaHeading: z.string().default("Ready to try ZenML?"),
+      order: z.number().default(100),
+      draft: z.boolean().default(false),
+      ogImage: z.url().optional(),
+    }),
+  }),
   team: defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/content/team" }),
     schema: teamSchema,
