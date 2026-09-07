@@ -18,6 +18,12 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 - **History**: Migrated from Webflow in Feb 2026 (`docs/MIGRATION.md`). Unified with `kitaru.ai` in May 2026 (`MERGE_PLAN.md`).
 - **Private details**: See `CLAUDE.private.md` (gitignored) for infrastructure IDs, traffic numbers, and internal docs index
 
+## Working Agreements
+- Complete the requested work through relevant verification. Infer routine choices from the repository and source material, state material assumptions, and ask only when missing information changes the result or an action needs authorization. Continue independent authorized work while waiting.
+- Skills describe procedures; they do not grant permission to commit, push, publish, upload, request reviews, or change account settings. Use authorization already given or clearly implied by the task; do not ask for it again. An audit request authorizes an audit, not its proposed edits.
+- Explicit user instructions take precedence over skill guidance within applicable system and tool constraints. If an instruction prevents completion, name and link its file, quote the requirement, and explain what remains blocked.
+- Keep shared engineering policy equivalent in AGENTS.md, CLAUDE.md, and their repo skill copies in the same commit. Tool-specific invocation paths may differ. Codex uses .agents/skills; Claude uses .claude/skills. Do not assume nested instruction files load for a task started at the repo root.
+
 ## Operational Constraints
 
 - **No broken links** — all published URLs must be preserved or 301-redirected
@@ -79,36 +85,20 @@ The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was s
 - **This is a public repository.** All commits, documentation, and code are visible to the public. Never commit secrets, API keys, infrastructure IDs, internal URLs, traffic numbers, or other sensitive information. Use `CLAUDE.private.md` (gitignored) for private details. The `design/` folder and `scripts/internal/` are also gitignored for internal-only artifacts
 - `design/` folder is for heavy artifacts (exports, screenshots, JSON dumps, internal docs) — **never commit to git**
 - Make targeted git commits (only relevant files)
-- **Keep `AGENTS.md` in sync with this file**: any change to conventions, commands, or quality gates in `CLAUDE.md` must be checked against — and reflected in — `AGENTS.md` in the same commit, and vice versa
 - **Do not commit intermediate planning/review artifacts by default.** Files under `docs/plans/`, `docs/reviews/`, `prompt-exports/`, or similar orchestration scratch locations are working notes for agents unless the user explicitly asks to keep them. Before staging, check `git status --short` and leave unrelated or intermediate plans/reviews unstaged. If a plan becomes a durable product/architecture document, confirm that intent before committing it
-- After running tests, re-run them if you make subsequent changes
-- **Before pushing code changes**, run the same local quality gates that PR CI runs: `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`, `pnpm check:registry`, `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm smoke:dist`, `pnpm check:worker`, then `pnpm check:islands` (or the combined command `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm check:registry && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:worker && pnpm check:islands`). If you change code after any of those commands, rerun the affected check before pushing. Documentation-only edits can skip the build unless they change generated content or site behavior
-- PR CI enforces the package quality gates in the required `Repo checks` job:
-  `pnpm check`, `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`,
-  `pnpm lint`, `pnpm test`, `pnpm build`, `pnpm smoke:dist`,
-  `pnpm check:worker`, then `pnpm check:islands`. **`pnpm check:registry` is
-  NOT yet in this job** — adding a step to `deploy.yml` also requires updating
-  its byte-identical trusted mirror `.github/trusted/worker-artifact-workflow.yml`
-  and the git-blob-SHA pin in `tests/config/workerPreviewControlPlane.test.ts`,
-  which is a reviewed release-boundary change and not a side effect. Run it
-  locally until then; see `docs/worker-release-runbook.md`. It packages that exact
-  validated `dist/` output. A trusted manual workflow on `main` may upload the
-  exact artifact from an eligible same-repository PR to the isolated preview
-  Worker after explicit review; fork and Dependabot runs receive no Cloudflare
-  credentials. Preview upload is not the required merge gate
-- **`pnpm check:islands` needs a browser.** First run: `pnpm exec playwright install chromium`. It serves `dist/` and drives a real Chromium to prove the Preact islands actually hydrate — `pnpm build` and `pnpm smoke:dist` only prove the HTML exists, and an island can ship perfect markup and still be inert. This matters most for framework upgrades (see the Astro 5→7 tracking issue): a broken upgrade otherwise passes a fully green CI. Dependabot and fork PRs get **no preview upload**, so this check is their only automated hydration signal. Beyond the islands, it also checks the Storylane embed on `/live-demo` (a plain `.astro` component, no `client:*` directive): under both rejected and accepted consent, the iframe and enhancement script must load and exactly one `#storylane-embed` script may be inserted
-- **`pnpm smoke:dist` also diffs rendered content against goldens** in `tests/snapshots/rendered/` (`scripts/check-dist-snapshots.ts`): the `.prose` body of one Markdown blog post, the `.compare-body-inner` of one Kitaru-vs-X MDX page, the `.prose` details column of two project detail pages, and the `<dl>` sidebar of one of them — one tag per line, asset hashes normalised. Nothing else in CI looks at what remark/rehype/Shiki/MDX actually emit — #268 flipped smart quotes on 11 pages and shipped green. The project targets guard a second thing: those pages run a deliberately minimal in-repo converter, and one of them depends on it *not* handling list syntax. If you changed a snapshotted page, a rendering plugin, or the project sidebar on purpose: `pnpm build && pnpm snapshots:update`, read the golden diff, commit it. A golden diff you didn't expect is the finding, not noise. Step 9 of the same smoke run is a pixel-tolerance golden of one Open Graph card (`scripts/check-og-golden.ts`, `tests/snapshots/rendered/og-kitaru-vs-temporal.jpg`; `pnpm og:golden:update` after an intended change) — the only thing in CI that executes satori/resvg/sharp; the script header has the rationale
-- **Worker release boundary:** `.github/workflows/deploy.yml` never receives
-  Cloudflare credentials. Preview and candidate workflows consume its exact
-  artifact without running branch package scripts. After the accepted Worker
-  cutover, the trusted default-branch release workflow may upload an exact
-  validated `main` artifact and activate it in separate GitHub-environment jobs
-  after provenance, binding, topology, and baseline checks. Production route
-  attachment remains a separate decision. See `docs/worker-release-runbook.md`
-- **Build output**: `pnpm build` generates ~2000+ lines of output listing every generated page. Always run it in background mode and use `tail` to check only the final lines for success/failure
-- **Credential management**: When you receive API credentials, tokens, or keys, **always add them to `.env`** for persistence across sessions. The `.env` file is gitignored and safe for secrets
+### Testing Guidelines
+- During implementation, run checks that exercise the changed behavior. Before pushing code or opening a code PR, run the full gate below once on the final relevant state. Mixed code/content changes use the full gate, plus content validation when applicable.
+- Pure instruction or documentation changes that do not alter generated content, executable scripts, or site behavior need diff, reference, and instruction-consistency checks; no application build or test suite is required. Rendered content-only changes require `pnpm validate:content`, `pnpm check`, `pnpm build`, and `pnpm smoke:dist`, plus browser inspection of changed pages and redirect/canonical checks when relevant. CI remains unchanged and may run broader checks.
+- After later edits, rerun affected checks. Once required checks pass, broaden testing only for a new change, failure, or unresolved concern. Test observable behavior; do not add tests that merely repeat the implementation. Report passed, failed, and blocked checks separately; establish current baseline evidence before calling a failure pre-existing.
+- Full code gate: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm check:registry && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:worker && pnpm check:islands`.
+- `pnpm check:registry` is required locally but not yet in the required CI `Repo checks` job. Adding it there changes the trusted workflow mirror and blob-SHA pin and needs a reviewed release change. Preview upload is not the merge gate.
+- Review intended rendered-content and OG golden changes before committing them; investigate unexpected differences rather than accepting new snapshots. Hydration requires `pnpm check:islands`; build and smoke markup checks alone do not prove interactivity.
+- Worker changes follow [the release runbook](docs/worker-release-runbook.md). CI, preview upload, candidate upload, activation, and route attachment are separate actions. Never add Cloudflare credentials to the branch-controlled build job. Production release consumes the exact validated main artifact through separate upload/activation jobs with provenance, binding, topology, and baseline checks.
+- Read [validation details](docs/agent-reference/validation.md) for command coverage, browser setup, snapshots, and release checks. Capture long build output in a log and check the actual process exit status; foreground or background execution is fine.
+
+- **Credential management:** Use credentials only for the authorized task. Do not automatically persist supplied credentials. When persistence is requested or required for an authorized local setup, use gitignored .env and only the necessary keys; never print their values.
 - **pnpm settings live in `pnpm-workspace.yaml`, never in a `pnpm` field in `package.json`.** That covers `overrides` (the security pins from #226) and `onlyBuiltDependencies`. pnpm 11 silently ignores the `package.json` field (Dependabot's updater runs pnpm 11), so overrides kept there vanish from every bot-regenerated lockfile and CI fails at `pnpm install --frozen-lockfile` with `ERR_PNPM_LOCKFILE_CONFIG_MISMATCH`. pnpm 10 (CI, local) reads the workspace file too, so the lockfile is identical either way. `pnpm check:lockfile` (also run on every `pnpm test` via `tests/config/lockfileOverrides.test.ts`) rejects a `pnpm` field in `package.json` — that is the regression CI can catch, because pnpm 10 would install it fine. It also diffs the workspace `overrides` against the lockfile header and names any missing override; in CI `pnpm install --frozen-lockfile` runs first and fails on that drift before the test does, so the named message is for local use on a red bot branch
-- VERY IMPORTANT: **Before opening a PR or making a large commit**, always run `/simplify` to review changed code for reuse opportunities, quality issues, and efficiency improvements. Fix any issues it finds before committing.
+- Before a code PR or substantial code commit, review changed code for reuse, clarity, and unnecessary work; use an available simplify skill or perform that review directly. Fix worthwhile findings and rerun affected checks.
 
 ### PR Description Style
 
@@ -137,9 +127,14 @@ Do not hard-wrap PR descriptions at a fixed column width. Keep each paragraph an
 
 ### Adding new images
 
+- **Third-party service logos:** locate the `zenml-frontend-monorepo` checkout, then read `.claude/skills/add-service-logo/SKILL.md` there before sourcing or integrating a logo. Try the sibling checkout first; if absent, use available project discovery. If unavailable, report the missing skill and continue unrelated work. Preserve full-color marks, normalize to 24x24, and obtain user approval of the rendered result before integration; do not bypass that review.
+
+Use `.claude/skills/r2-image-upload/SKILL.md` for authorized uploads and
+`.claude/skills/blog-post-contributor/SKILL.md` for blog imports.
+
 **Tier A (static):** Just place the file in `public/images/` and reference it as `"/images/..."`.
 
-**Tier B (R2):** Always **convert to AVIF first**, then upload:
+**Tier B (R2):** After upload authorization, prefer AVIF for in-page images and a separate JPEG for Open Graph:
 
 ```bash
 # Step 1: Convert to AVIF (use the avif-image-compressor skill)
@@ -278,11 +273,17 @@ Important rules:
 ## Key Files
 
 ### Core Architecture
+
+Read [the detailed architecture map](docs/agent-reference/site-architecture.md)
+for system primitives and template families. Contracts: use SpaceStep tokens
+(including mlg), absence instead of show* booleans, and paired Astro/TSX twins
+for island consumers. New code must not use ad-hoc classOverrides; use named
+family presets. Template alternatives require discriminated unions or ?: never,
+never optional-prop bags hidden by as casts. Register new templates.
+
 - `astro.config.ts` — Astro config (static output, Cloudflare, Preact, sitemap, Shiki)
 - `src/content.config.ts` — Content collection schemas (Zod). Reads `categories/`, `tags/`, etc. at config eval time to build slug-reference validation sets — adding a new category/tag file requires a dev-server restart.
 - `src/styles/global.css` — Tailwind v4 `@theme` block + design tokens; `:root` defaults are Kitaru, `[data-app="zenml"]` overrides flip to ZenML, `[data-app="zenml-next"]` holds the 2026 rebrand type roles + palette + type-scale ladder (in progress, #246). Also home of the `[data-tone]` section-tone layer (#248): tone blocks route only `var()`s the brand scopes own — never a hex — and there is deliberately no `section[data-tone]` base rule (the background shorthand would reset bg-image utilities); tone consumers set explicit `bg-[var(--section-surface)]`-style utilities
-- `src/components/system/` — the substrate primitives (#248): `SectionIntro`, `Breadcrumb` (visual + BreadcrumbList JSON-LD from one prop list), `EmptyState`, and `layout/` (`Stack`/`Inline`/`Split`/`Bleed`/`Grid`). Contract: absence collapses (no `show*` booleans), spacing via `SpaceStep` tokens only (8 steps, `xxs`–`xxl` incl. `mlg` = 40px), `Split` emits prose-first DOM with `minmax(0, nfr)` ratio tracks and accepts `ResponsiveSpace`. Components consumed by islands ship an `.astro` + `.tsx` twin kept in lockstep via a shared module. `classOverrides` on SectionIntro/EmptyState is a migration-parity escape hatch — new code must not pass ad-hoc override objects; a page family that legitimately shares one look uses a named preset (`SECTION_INTRO_PRESETS`, `pageHeaderPresets.ts`) instead, which new pages may pass. Contract types live in `src/lib/section.ts`
-- `src/components/templates/` — the Wave 2 section families (#249), built on the substrate and registered in `src/lib/templates/registry.ts`: `PageHeader` (six collapsing arrangements incl. tinted band + split-masthead), `ProcessSteps` (`vertical-code` + `compact-list`, semantic `<ol>`), `MetadataBlock`/`SpecTable`/`DescriptionList`/`StackedList` (data-display; `DescriptionList` has two frames — `spaced` for the case-study sidebar, `divided` for the project sidebar — and the value kinds are split per frame so an icon in a `divided` band is a compile error), `RelatedRail` (related-content items arrangement — static, not an island), `TermHubEditorial`/`TermHubEntryIndex`/`TermHubCatalog` (term-hub shapes), plus `pageHeaderPresets.ts` (named family presets; plain `.ts` helpers are exempt from `check:registry`), and the Wave 3 page-type templates (#250): `ConversionShell` (Cal-hero + lead-capture form shells behind the conversion-utility routes) and `LegalArticle` (h1 + optional last-updated line for the `legal` collection pages). Live routes render current-brand parity arrangements; the drawn new-brand states (zero-padded numerals, leading meta separators, stacked entry lists, sticky spec-table first column, hex-corner cards) exist as demo/cutover paths and are exercised on `/styleguide` via registry `demoProps` — each deviation is documented in the entry's `notes`. **Prop contracts are type-enforced, not documented:** when a prop selects between structurally different arrangements (e.g. `layout`) or two fields are mutually exclusive (e.g. `cards`/`items`), type `Props` as a discriminated union keyed on the selector (or an `?: never`-excluded union for keyless either/or pairs) so the invalid combination is a compile error — never a widened bag of optionals narrowed by `as` casts in the body. `astro check` is the only enforcement layer template props have, and a cast hides the mismatch until render (see `ProcessSteps.astro` / `TermHubEntryIndex.astro` for the two shapes)
 - `src/pages/styleguide.astro` — generated design-system reference (public-but-unlisted, noindex, no nav/sitemap links); renders tokens/type/scale/registry/rules derived at build time — never hand-write design values into it
 - `src/lib/styleguide.ts` — styleguide derivation layer: parses `global.css` tokens, computes WCAG contrast for declared pairs (`DECLARED_PAIRS`/`CHROME_PAIRS`)
 - `src/lib/designRules.ts` — parses DESIGN.md rule sections for the styleguide's Rules section
