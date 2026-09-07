@@ -2,8 +2,7 @@
 name: blog-post-contributor
 description: >-
   Add or import a blog post from Markdown or Notion; prepare content, metadata,
-  and assets. External actions require task authorization. Skip ordinary edits
-  to existing posts.
+  and assets. Skip ordinary edits to existing posts.
 ---
 
 # Blog Post Contributor
@@ -20,7 +19,7 @@ Prepare a new blog post in `src/content/blog/` from Markdown or Notion: frontmat
 | Tags dir | `src/content/tags/` |
 | Schema source of truth | `src/content.config.ts` (`blogSchema`) |
 | Image upload script | `scripts/r2-upload.py` |
-| AVIF compression script | `~/.claude/skills/avif-image-compressor/scripts/convert_to_avif.sh` |
+| AVIF compression script | `convert_to_avif.sh` from the `avif-image-compressor` plugin skill (invoke the skill to resolve its path) |
 | R2 image prefix | `content/blog/<slug>/` |
 
 ## Step 0: Read the source and resolve missing information
@@ -104,7 +103,7 @@ Clean the Notion-specific formatting:
 
 ### B4. Download images from Notion
 
-**IMPORTANT**: Notion's image URLs are **temporary pre-signed S3 URLs** that expire within ~1 hour. Download them immediately after fetching the page.
+Notion's image URLs are temporary pre-signed S3 URLs that expire within about an hour, so download them right after fetching the page.
 
 1. Create a temp directory: `mkdir -p /tmp/<slug>-images`
 2. Download each image with `curl -sL -o <descriptive-name>.png "<notion-url>"`
@@ -124,15 +123,17 @@ Clean the Notion-specific formatting:
 #### Convert all images to AVIF
 
 ```bash
+# AVIF_SKILL = directory of the avif-image-compressor skill (a plugin skill; resolve it by invoking
+# the skill rather than hardcoding a ~/.claude path — the install location moves)
 cd /tmp/<slug>-images
 for f in *.png *.jpg *.jpeg; do
-  ~/.claude/skills/avif-image-compressor/scripts/convert_to_avif.sh "$f" --quality 28 --resize 800
+  "$AVIF_SKILL"/scripts/convert_to_avif.sh "$f" --quality 28 --resize 800
 done
 ```
 
 For the **cover/hero image**, use larger dimensions:
 ```bash
-~/.claude/skills/avif-image-compressor/scripts/convert_to_avif.sh cover.png --quality 25 --resize 1200
+"$AVIF_SKILL"/scripts/convert_to_avif.sh cover.png --quality 25 --resize 1200
 ```
 
 **Also generate a JPEG sibling of the cover for the OG card.** Social
@@ -209,7 +210,7 @@ slug: "tag-slug"
 ---
 ```
 
-Existing tags (118+) cover most topics. Common tags: `mlops`, `llmops`, `zenml`, `genai`, `agents`, `tutorials`, `best-practices`, `cloud`, `open-source`, `pipelines`, `infrastructure`, `kubernetes`.
+Existing tags cover most topics. Common tags: `mlops`, `llmops`, `zenml`, `genai`, `agents`, `tutorials`, `best-practices`, `cloud`, `open-source`, `pipelines`, `infrastructure`, `kubernetes`.
 
 #### SEO / Discovery Tag Rule
 
@@ -273,7 +274,7 @@ seo:
 ---
 ```
 
-> **Critical:** `mainImage.url` uses **AVIF** (browsers render it fine, ~20× smaller); `seo.ogImage` uses **JPEG** (social platforms — LinkedIn, Twitter/X, Slack, Facebook, Discord — reject AVIF in Open Graph cards). Mismatching these silently breaks social previews. See PR #73 for the site-wide fix where 103 posts all had AVIF og images and were rendering without preview cards on LinkedIn.
+> Recap: `mainImage.url` is the AVIF (browser-rendered); `seo.ogImage` is the JPEG sibling (social platforms reject AVIF in Open Graph cards, so a mismatch silently renders the preview without an image).
 
 **Key rules:**
 - `slug` MUST match the filename (e.g., `your-blog-post-slug.md`)
@@ -389,7 +390,7 @@ When processing Notion MCP content, apply these transformations:
 
 ## Lessons Learned
 
-1. **Notion MCP works well for fetching content** — returns enhanced Markdown with image URLs. The old advice to avoid it was based on block-level JSON; the current MCP returns clean markdown.
+1. **Fetch Notion pages through the Notion connector** — it returns Markdown with image URLs.
 2. **Notion image URLs expire in ~1 hour** — download immediately after fetching the page. Verify each download with `file <name>`.
 3. **Start from current main for fresh work** while preserving the authorized checkout and unrelated local changes.
 4. **AVIF compression is dramatic** — typical 80-96% reduction. Use quality 28 + resize 800 for inline images, quality 25 + resize 1200 for cover/hero images.

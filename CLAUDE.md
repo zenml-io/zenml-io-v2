@@ -14,7 +14,7 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 - **Production URL**: https://www.zenml.io
 - **Hosting**: The accepted Astro 7 Cloudflare Worker serves production.
   Cloudflare Pages remains available as the deeper fallback.
-- **Scale**: 25 content collections defined in `src/content.config.ts`, ~3,337 content items, ~2,560 assets on R2
+- **Scale**: two dozen content collections defined in `src/content.config.ts`, a few thousand content items under `src/content/`, a couple of thousand assets on R2
 - **History**: Migrated from Webflow in Feb 2026 (`docs/MIGRATION.md`). Unified with `kitaru.ai` in May 2026 (`MERGE_PLAN.md`).
 - **Private details**: See `CLAUDE.private.md` (gitignored) for infrastructure IDs, traffic numbers, and internal docs index
 
@@ -42,10 +42,10 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 | Hosting | **Cloudflare Workers** in production; **Cloudflare Pages** retained as the deeper fallback |
 | Assets | **Cloudflare R2** — object storage for images/files |
 | Styling | **Tailwind CSS** — utility-first |
-| Interactive | **Preact islands** — client-side components: LLMOpsFilter, MLOpsFilter, ContactForm, DemoRequestForm, BlogSearch, CookieConsent, FeatureTabsSlider, ProTestimonialCarousel, and RoiCalculator (9 in `src/components/islands/`; Kitaru's are separate, see below) |
+| Interactive | **Preact islands** — client-side components in `src/components/islands/` (forms, cookie consent, blog search, homepage/pro widgets, and the `filter-index/` family behind the database, integrations, and blog indexes) plus the Kitaru landing islands (see below). The authoritative mount list is `ISLAND_MOUNTS` in `scripts/check-dist-smoke.ts`; `pnpm smoke:dist` fails if an island on disk is missing from it |
 | Search | **Pagefind** — build-time full-text search index for ops-database pages, paired with JSON faceted filtering |
 | Forms | `ContactForm` / `DemoRequestForm` Preact islands → `src/pages/api/forms/[formType].ts` (`prerender: false`) → Segment HTTP API. Cal.com for demo booking (`/book-your-demo` is the canonical URL). Brevo for newsletter. The Kitaru landing surfaces all share these flows; the standalone kitaru.ai endpoints were never wired into the merged site. |
-| Analytics | **Plausible** (`script.pageview-props.js` with `event-surface`) + GA4 + **single Segment workspace** (D4 was superseded — audit showed the Kitaru-side write key had no callers in the merged site). The Segment `analytics.page()` call still receives `{surface}` as a property so downstream segmentation/CRM routing can filter by it. Hostname-gated to production. See "Unified Brand & Surface" below. |
+| Analytics | **Plausible** (`script.pageview-props.js` with `event-surface`) + GA4 + **single Segment workspace**. The Segment `analytics.page()` call receives `{surface}` as a property so downstream segmentation/CRM routing can filter by it. Hostname-gated to production. See "Unified Brand & Surface" below. |
 | Code highlighting | **Shiki** (custom `zenml-light`/`zenml-dark` themes) at build time + **JetBrains Mono** monospace font (self-hosted variable woff2) |
 
 ## Key Technical Decisions
@@ -70,13 +70,13 @@ Two attributes on `<html>` carry the unified-product state to every page:
 - **`agent`** — Kitaru-side pages (`/product/kitaru`, `/compare/kitaru-vs-*`, and future Kitaru-only blog templates if they explicitly pass `surface="agent"`)
 - **`unified`** — cross-product pages (`/compare`, `/get-started`, `/pricing`, `/pro`)
 
-The Segment loader in `consentConfig.ts` runs a single ZenML write key (D4 was superseded after audit — the standalone kitaru.ai routes that needed the Kitaru key turned out to be dead code and were removed). The page-init call passes `{surface}` as a property so the same dimension is queryable in Segment, Plausible, and downstream CRM tools. `PlausibleBridge.astro` merges `surface` into every custom event so click-tracking matches pageview tagging.
+The Segment loader in `consentConfig.ts` runs a single ZenML write key. The page-init call passes `{surface}` as a property so the same dimension is queryable in Segment, Plausible, and downstream CRM tools. `PlausibleBridge.astro` merges `surface` into every custom event so click-tracking matches pageview tagging.
 
-**`surface` is a required prop** (as of #64). `BaseLayout` and `MinimalLayout` no longer have a default — every page template must pass an explicit value. `BlogLayout` and `ContentLayout` accept an optional `surface?` prop that they forward to `BaseLayout` (both default to `"ml"`, which is correct for their content types).
+**`surface` is a required prop** on `BaseLayout` and `MinimalLayout`; there is no default, so every page template passes an explicit value. `BlogLayout` and `ContentLayout` accept an optional `surface?` prop that they forward to `BaseLayout` (both default to `"ml"`, which is correct for their content types).
 
 **Enforcement:** `pnpm check:surface` (`scripts/check-surface-coverage.ts`) scans all `.astro` files in `src/pages/` and `src/components/` and fails if any `<BaseLayout>` or `<MinimalLayout>` usage omits `surface=`. Run this before committing page changes. Note: `astro check` alone does NOT catch missing required props on `.astro` components — the grep check is the enforcing mechanism.
 
-**When adding a new page:** always pass an explicit `surface=` to the layout. Use the taxonomy below. Don't omit it — there is no default fallback any more.
+**When adding a new page:** pass an explicit `surface=` to the layout, using the taxonomy above.
 
 **When adding a page that pitches both products** (cross-workspace marketing): pass `surface="unified"`. When adding a Kitaru-only page (e.g., a future `/product/kitaru/...` subpath): pass `surface="agent"`. For ZenML-specific pages (features, integrations, blog, etc.): pass `surface="ml"`.
 
@@ -138,9 +138,11 @@ Use `.claude/skills/r2-image-upload/SKILL.md` for authorized uploads and
 
 ```bash
 # Step 1: Convert to AVIF (use the avif-image-compressor skill)
+# AVIF_SKILL = directory of the avif-image-compressor skill (a plugin skill; resolve it by invoking
+# the skill rather than hardcoding a ~/.claude path — the install location moves)
 # For photos (team, blog heroes, screenshots): --quality 28, --resize 800
 # For larger hero/banner images: --quality 25, --resize 1200
-~/.claude/skills/avif-image-compressor/scripts/convert_to_avif.sh input.png --quality 28 --resize 800
+"$AVIF_SKILL"/scripts/convert_to_avif.sh input.png --quality 28 --resize 800
 
 # Step 2: Upload the AVIF to R2
 uv run scripts/r2-upload.py output.avif --prefix content/blog       # custom prefix
@@ -149,7 +151,7 @@ uv run scripts/r2-upload.py output.avif --frontmatter                # print YAM
 
 **Default to AVIF for R2 uploads** — typically 50-250× smaller than the source. Use the `avif-image-compressor` skill for conversion.
 
-**Exception — Open Graph card images need JPEG.** Social platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) don't support AVIF in OG cards. For any image referenced by `seo.ogImage` in content frontmatter, upload a JPEG sibling at the same R2 prefix and reference the `.jpg` from `ogImage` while keeping the `.avif` for `mainImage.url`. See PR #73 for the site-wide fix where 103 posts all had AVIF og images and were rendering with no preview card on LinkedIn.
+**Exception — Open Graph card images need JPEG.** Social platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) don't support AVIF in OG cards. For any image referenced by `seo.ogImage` in content frontmatter, upload a JPEG sibling at the same R2 prefix and reference the `.jpg` from `ogImage` while keeping the `.avif` for `mainImage.url`.
 
 Requires R2 credentials in `.env` — see `.env.example`.
 
@@ -162,10 +164,6 @@ Requires R2 credentials in `.env` — see `.env.example`.
 import { ASSET_BASE_URL } from "./constants";
 const url = `${ASSET_BASE_URL}/content/uploads/1a2b3c4d/hero.webp`;
 ```
-
-**Claude Code skills:**
-- `r2-image-upload` (`.claude/skills/r2-image-upload/SKILL.md`) — upload images to R2. Triggers: "upload image", "add image to R2", "new blog image".
-- `blog-post-contributor` (`.claude/skills/blog-post-contributor/SKILL.md`) — full blog post workflow from markdown or Notion. Triggers: "new blog post", "add blog", "blog from Notion".
 
 ### Compare-page OG card generator
 
@@ -256,7 +254,7 @@ This site was migrated from Webflow in Feb 2026 and unified with kitaru.ai in Ma
 
 ## LLMOpsDB Native Publish Workflow
 
-LLMOps database entries are no longer only historical Webflow-migration artifacts. New entries can now be published natively from the sibling `llmops-db-notion` repo into:
+New LLMOps database entries are published from the sibling `llmops-db-notion` repo into:
 
 - `src/content/llmops-database/*.md`
 
@@ -298,13 +296,12 @@ never optional-prop bags hidden by as casts. Register new templates.
 - `src/lib/footer.ts` — Footer data (typed, not hardcoded)
 
 ### Homepage
-- `src/pages/index.astro` — Homepage composition (15 section components)
+- `src/pages/index.astro` — Homepage composition (imports its sections from `src/components/sections/`)
 - `src/lib/homepage.ts` — All homepage marketing copy, stats, URLs, FAQ
-- `src/components/sections/` — 43 section components
+- `src/components/sections/` — homepage and shared section components
 
 ### Preact Islands (interactive client-side components)
-- `src/components/islands/LLMOpsFilter.tsx` — LLMOps database "Research Hub" (faceted sidebar with industry/tag facets, Pagefind full-text search, AND/OR tag mode, sort, clickable chips, mobile drawer, WCAG-compliant accessibility)
-- `src/components/islands/MLOpsFilter.tsx` — MLOps database filter/search island
+- `src/components/islands/filter-index/` — the shared FilterIndex engine and its per-page wirings: `LlmopsIndex` (`/llmops-database`: facets, Pagefind full-text search, AND/OR tag mode, sort, mobile drawer), `MlopsIndex` (`/mlops-database`), `IntegrationsIndex` (`/integrations`), `BlogIndex` (`/blog`)
 - `src/components/islands/BlogSearch.tsx` — Blog search with Cmd+K shortcut, lazy-fetches `/blog/search-index.json` on focus (`client:media` — desktop only)
 - `src/components/islands/ContactForm.tsx` — Form submission → Astro API routes
 - `src/components/islands/DemoRequestForm.tsx` — Demo request form used by `/book-your-demo`
@@ -317,8 +314,6 @@ never optional-prop bags hidden by as casts. Register new templates.
 - `src/pages/api/forms/[formType].ts` — Unified form submission handler → Segment HTTP API (identify + track), using the site's Segment workspace
 - `src/pages/api/csp-report.ts` — CSP violation report sink (logs redacted summary, returns 204)
 - `src/pages/api/github-stars.ts` — GitHub star count fetcher with edge cache (`context.locals.cfContext.waitUntil`)
-
-The old standalone `kitaru.ai` API routes (`get-started`, `waitlist`, `newsletter`) were removed during the merge. The Kitaru landing now shares the merged site's form and analytics infrastructure.
 
 ### Kitaru content & components
 - `src/pages/product/kitaru.astro` — Kitaru landing (Aug 2026 redesign; copy lives in `src/lib/kitaru-landing.ts`, CTA links in `src/lib/productKitaru.ts`)
