@@ -33,8 +33,9 @@
     "validate:mlops": "tsx scripts/phase2/validate-content.ts --collection=mlops-database",
     "og:compare": "tsx scripts/og/generate-compare-og.ts",
     "og:compare:write": "tsx scripts/og/generate-compare-og.ts --write",
-    "lint": "biome check src/ tests/ vitest.config.ts scripts/check-dist-smoke.ts scripts/check-dist-snapshots.ts scripts/check-og-golden.ts scripts/og/ scripts/check-lockfile.ts scripts/check-island-hydration.ts scripts/check-motion.ts scripts/check-worker-bindings.ts scripts/check-worker-runtime.ts",
-    "lint:fix": "biome check --fix src/ tests/ vitest.config.ts scripts/check-dist-smoke.ts scripts/check-dist-snapshots.ts scripts/check-og-golden.ts scripts/og/ scripts/check-lockfile.ts scripts/check-island-hydration.ts scripts/check-motion.ts scripts/check-worker-bindings.ts scripts/check-worker-runtime.ts",
+    "images:convert": "tsx scripts/convert-images.ts",
+    "lint": "biome check src/ tests/ vitest.config.ts scripts/check-dist-smoke.ts scripts/check-dist-snapshots.ts scripts/check-og-golden.ts scripts/og/ scripts/check-lockfile.ts scripts/check-island-hydration.ts scripts/check-motion.ts scripts/check-worker-bindings.ts scripts/check-worker-runtime.ts scripts/convert-images.ts",
+    "lint:fix": "biome check --fix src/ tests/ vitest.config.ts scripts/check-dist-smoke.ts scripts/check-dist-snapshots.ts scripts/check-og-golden.ts scripts/og/ scripts/check-lockfile.ts scripts/check-island-hydration.ts scripts/check-motion.ts scripts/check-worker-bindings.ts scripts/check-worker-runtime.ts scripts/convert-images.ts",
     "format": "biome format --write src/",
     "astro": "astro"
   },

@@ -25,7 +25,7 @@ positioning; MERGE_PLAN.md records the merge history.
 
 ## Coding Style & Naming Conventions
 - Use TypeScript + Astro with 2-space indentation (see `biome.json`).
-- Keep components in PascalCase (for example `BlogCard.astro`, `LLMOpsFilter.tsx`).
+- Keep components in PascalCase (for example `BlogCard.astro`, `LlmopsIndex.tsx`).
 - Use kebab-case for content slugs/filenames in `src/content/`.
 - Prefer typed data modules in `src/lib/` over hardcoded copy in components.
 - Use `.md` for content files (not `.mdx`). The `compare-kitaru/` and `compare-zenml/` collections are the documented exception (inline component imports inherited from the Kitaru port).
@@ -53,9 +53,11 @@ positioning; MERGE_PLAN.md records the merge history.
 - Give images descriptive, non-empty alt text unless decorative and already labeled. Prefer AVIF for in-page content images and a separate JPEG URL for seo.ogImage.
 - New uploads default to `content/uploads/{sha8}/{filename}`; task-specific `--prefix` values such as `content/blog/<slug>` are supported. Legacy webflow/ assets remain served; do not move them. Verify every uploaded URL returns HTTP 200 before committing references.
 - Use [r2-image-upload](.agents/skills/r2-image-upload/SKILL.md) for upload steps after authorization.
+- Blog covers come from [figma-blog-cover](.agents/skills/figma-blog-cover/SKILL.md), not from hand-made files; it can also add a missing competitor mark to the Hashi library (source, normalize, create the component, then a human republish).
 
 ## Contributing Blog Posts
 - Use [blog-post-contributor](.agents/skills/blog-post-contributor/SKILL.md) to import Markdown or Notion content into src/content/blog/<slug>.md on a blog/<slug> branch. Reuse an explicitly authorized feature branch rather than switching a user's active checkout.
+- Use [figma-blog-cover](.agents/skills/figma-blog-cover/SKILL.md) to generate the post's cover from the Figma template; it places the cover on the Blog Covers page, exports it, and uploads AVIF + JPEG to R2.
 - Match blogSchema in src/content.config.ts; webflow metadata is unnecessary for native posts. Resolve author/category/tag slugs against their collections; create missing authors/tags from supplied facts. Restart pnpm dev after adding categories/tags because referenceSlugSets loads at config evaluation.
 - For Kitaru posts, use category: "kitaru" and make "kitaru" the first tag. Preserve source authorship and intended publication state. Missing cover art blocks readiness to publish, not independent content preparation; do not invent image URLs.
 

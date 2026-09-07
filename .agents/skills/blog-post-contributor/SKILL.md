@@ -2,7 +2,7 @@
 name: blog-post-contributor
 description: >-
   Add or import a blog post from Markdown or Notion; prepare content, metadata,
-  and assets. External actions require task authorization. Skip ordinary edits
+  and assets, including the cover via the figma-blog-cover skill. External actions require task authorization. Skip ordinary edits
   to existing posts.
 ---
 
@@ -20,20 +20,20 @@ Prepare a new blog post in `src/content/blog/` from Markdown or Notion: frontmat
 | Tags dir | `src/content/tags/` |
 | Schema source of truth | `src/content.config.ts` (`blogSchema`) |
 | Image upload script | `scripts/r2-upload.py` |
-| AVIF compression script | `~/.Codex/skills/avif-image-compressor/scripts/convert_to_avif.sh` |
+| AVIF compression script | `scripts/convert-images.ts` (`pnpm images:convert`) |
 | R2 image prefix | `content/blog/<slug>/` |
 
 ## Step 0: Read the source and resolve missing information
 
 Read the supplied article and metadata first. Infer routine choices from that source and repository conventions; state material assumptions. Ask only for unresolved facts that change the result, such as authorship or a scheduled date. Continue independent preparation while waiting. Skills do not authorize uploading, committing, pushing, publishing, or requesting reviews; use the user's existing authorization for each action without asking again.
 
-Resolve these fields from the source before asking:
+Fields to settle from the source (ask only for what it does not settle):
 
-1. **Source**: Local markdown file path, or Notion page URL?
-2. **Author**: Who should be listed? (check `src/content/authors/` for existing slugs)
-3. **Publish date**: Today, or a specific date?
-4. **Is this an SEO/comparison post?** (e.g., from Tanish's GTM content — these need the `discovery` tag)
-5. **Which workspace does this post belong to?** ZenML/ML content uses `category: "mlops"` or `"zenml"`; Kitaru/agent content uses `category: "kitaru"` and includes `"kitaru"` as the first tag. See `MERGE_PLAN.md` for the unified ZenML × Kitaru taxonomy.
+- **Source** — a local `.md` path (Path A) or a Notion page URL (Path B).
+- **Author** — an existing slug in `src/content/authors/`, or the facts for a new one (C3).
+- **Publish date** — the source's date, else today.
+- **SEO/comparison post** — comparison or alternatives content, including Tanish's GTM posts, gets the `discovery` tag (C4).
+- **Workspace** — ZenML/ML content uses `category: "mlops"` or `"zenml"`; Kitaru/agent content uses `category: "kitaru"` with `"kitaru"` as the first tag (C5).
 
 ## Step 1: Create a Feature Branch
 
@@ -121,56 +121,39 @@ Clean the Notion-specific formatting:
 
 ### C1. Process images
 
+Inline images only — the cover image is handled separately in C2.
+
 #### Convert all images to AVIF
 
 ```bash
-cd /tmp/<slug>-images
-for f in *.png *.jpg *.jpeg; do
-  ~/.Codex/skills/avif-image-compressor/scripts/convert_to_avif.sh "$f" --quality 28 --resize 800
-done
-```
-
-For the **cover/hero image**, use larger dimensions:
-```bash
-~/.Codex/skills/avif-image-compressor/scripts/convert_to_avif.sh cover.png --quality 25 --resize 1200
-```
-
-**Also generate a JPEG sibling of the cover for the OG card.** Social
-platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) do NOT support
-AVIF in Open Graph cards — using AVIF for `seo.ogImage` makes the
-preview card render with no image. Keep AVIF for `mainImage.url` (browser-
-rendered, AVIF is fine), JPEG for `seo.ogImage` (social-rendered).
-
-```bash
-# JPEG variant of the cover, same dimensions, sized for OG (1200×627 ideal):
-sips -s format jpeg cover.png --out cover.jpg --resampleHeightWidthMax 1200
-# Or if starting from the converted AVIF:
-sips -s format jpeg cover.avif --out cover.jpg
+pnpm images:convert /tmp/<slug>-images/*.png /tmp/<slug>-images/*.jpg /tmp/<slug>-images/*.jpeg --preset inline
 ```
 
 #### Upload to R2
 
-Once uploading is authorized, upload both the AVIF (for in-page rendering) and the JPEG (for OG). Run the repository upload script from the repository root using absolute image paths; conversion may have changed the working directory. For example, from the repo root:
+Once uploading is authorized, upload the inline AVIFs (the cover is handled in C2). Run the repository upload script from the repository root using absolute image paths; conversion may have changed the working directory.
 
 ```bash
-uv run scripts/r2-upload.py /tmp/<slug>-images/cover.avif /tmp/<slug>-images/cover.jpg --prefix content/blog/<slug>
+uv run scripts/r2-upload.py /tmp/<slug>-images/*.avif --prefix content/blog/<slug>
 ```
 
-Record each R2 URL. The cover image will have two URLs at the same prefix
-— `.avif` for `mainImage.url`, `.jpg` for `seo.ogImage`.
+Record each R2 URL.
 
 #### Verify R2 uploads
 
-Verify every uploaded URL with `curl -sI <url>`; each must return HTTP 200 before committing references.
+Verify every uploaded URL with `curl -sI <url>`; each must return HTTP 200 before committing references — the boto3 upload can succeed while the public domain does not serve the file.
 
 ### C2. Handle the cover image
 
 Check if the content has a dedicated cover/hero image:
 
-- **Cover image provided** (in Notion or by user): Convert to AVIF (quality 25, resize 1200) and upload to R2
-- **No cover image:** Ask for a suitable asset or offer to generate one with an available image tool. Continue content preparation and checks independent of the cover. Keep the post draft while assets are incomplete; do not invent image URLs or mark it ready to publish.
+- **Cover image provided** (in Notion or by user): run `pnpm exec tsx .claude/skills/figma-blog-cover/scripts/publish-cover.ts <slug> <file> --allow-any-source`. It writes a 1920x1080 AVIF and a 1200x675 JPEG, uploads both to `content/blog/<slug>` on R2 and prints the `mainImage` / `seo.ogImage` snippet. The source must be 16:9 (crop it first — the script never crops) and at least 1200 px wide; do not send the cover through the C1 loop
+- **No cover image**: run the `figma-blog-cover` skill (`.claude/skills/figma-blog-cover/SKILL.md`) with the post slug. It creates the cover in Figma, exports it, converts it, uploads to R2, and returns the `mainImage` / `seo.ogImage` snippet to paste in C6
+- **Figma unavailable** (only then): ask the user for a 16:9 PNG and publish it with the same `publish-cover.ts ... --allow-any-source` command
 
-Put the AVIF URL in `mainImage.url` and the separate JPEG URL in `seo.ogImage`.
+Continue content preparation and checks independent of the cover. Keep the post draft while assets are incomplete; do not invent image URLs.
+
+`mainImage.url` is the AVIF, `seo.ogImage` is the JPEG sibling — never the same URL.
 
 ### C3. Validate or create the author
 
@@ -263,17 +246,17 @@ tags:
 date: "2026-04-06T00:00:00.000Z"
 readingTime: "X mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/<slug>/<hash>/cover.avif"
+  url: "https://assets.zenml.io/content/blog/<slug>/<hash>/<slug>-cover.avif"
   alt: "Description of the cover image"
 seo:
   title: "Your Blog Post Title"
   description: "A concise 150-160 char description for search engines."
   canonical: "https://www.zenml.io/blog/your-blog-post-slug"
-  ogImage: "https://assets.zenml.io/content/blog/<slug>/<hash>/cover.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/<slug>/<hash>/<slug>-cover.jpg"
 ---
 ```
 
-> **Critical:** `mainImage.url` uses **AVIF** (browsers render it fine, ~20× smaller); `seo.ogImage` uses **JPEG** (social platforms — LinkedIn, Twitter/X, Slack, Facebook, Discord — reject AVIF in Open Graph cards). Mismatching these silently breaks social previews. See PR #73 for the site-wide fix where 103 posts all had AVIF og images and were rendering without preview cards on LinkedIn.
+> `mainImage.url` uses **AVIF** (browsers render it fine, far smaller); `seo.ogImage` uses **JPEG** — social platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) reject AVIF in Open Graph cards, so an AVIF `ogImage` renders with no preview card at all.
 
 **Key rules:**
 - `slug` MUST match the filename (e.g., `your-blog-post-slug.md`)
@@ -371,7 +354,7 @@ Print a summary:
 | `seo.canonical` | No | absolute URL | `"https://www.zenml.io/blog/slug"` |
 | `seo.ogImage` | No | absolute URL | Separate JPEG cover URL |
 
-*`mainImage` is schema-optional, but a cover is required for publication readiness. Missing art does not block independent preparation.
+*`mainImage` is schema-optional, but a cover is required for publication readiness; C2 generates it (the figma-blog-cover skill by default). Missing art does not block independent preparation.
 
 ## Notion Formatting Cleanup Reference
 
@@ -386,14 +369,3 @@ When processing Notion MCP content, apply these transformations:
 | `***Disclaimer:***` | `***Note:***` (softer tone) |
 | Metadata lines (Primary keyword, Meta description, URL slug) | Extract to frontmatter, remove from body |
 | First H1 (duplicate of title) | Remove entirely |
-
-## Lessons Learned
-
-1. **Notion MCP works well for fetching content** — returns enhanced Markdown with image URLs. The old advice to avoid it was based on block-level JSON; the current MCP returns clean markdown.
-2. **Notion image URLs expire in ~1 hour** — download immediately after fetching the page. Verify each download with `file <name>`.
-3. **Start from current main for fresh work** while preserving the authorized checkout and unrelated local changes.
-4. **AVIF compression is dramatic** — typical 80-96% reduction. Use quality 28 + resize 800 for inline images, quality 25 + resize 1200 for cover/hero images.
-5. **Verify R2 uploads via public URL** — the boto3 API can succeed but the public domain may not serve the file. Always `curl -sI` to confirm HTTP 200.
-6. **Discovery tag for SEO posts** — posts under Tanish's GTM content or with "vs"/"alternative" patterns should get the `discovery` tag to keep them off the main blog listing.
-7. **Build logs are long**: capture them and check the actual process exit status, then read relevant failure output.
-8. **Baseline failures need current evidence**: old notes do not establish that a failure is unrelated to this change.
