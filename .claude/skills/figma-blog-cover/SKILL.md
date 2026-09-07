@@ -17,6 +17,20 @@ description: >-
 
 # Figma Blog Cover
 
+## Quick start
+
+For a person:
+
+1. Open the ZenML Templates file in the Figma desktop app (the shared ZenML editor account, see `.env`).
+2. Make sure the post exists at `src/content/blog/<slug>.md` with a `date` and a `title`.
+3. Ask Claude Code: `make the cover for <slug>`. For an alternatives or versus post add the competitors: `make the comparison card for <slug> with langfuse, langsmith, arize`.
+4. Look at the screenshot it shows you. The title fits in three lines and there is no subtitle unless you asked for one.
+5. Paste the printed `mainImage` and `seo.ogImage` block into the post's frontmatter and open the PR. Until the 16:9 site layout ships, keep the block in the PR description instead.
+
+If a competitor has no logo in Hashi yet, say `add logo <slug>`; the skill sources it, builds the component, and tells you when the library needs a republish.
+
+For an agent: run the Preconditions, then Steps S0 to S7 in order, then Verification, then Report. Every rule you need is in this file and the references it links.
+
 Contract: `figma-blog-cover <slug> [--brand ZenML|Kitaru] [--layout <Layout>] [--bg <Style>] [--title "..."] [--subtitle "..."] [--comparison a,b,c] [--include-zenml True|False] [--tile-batch N] [--fallback "<reason>"] [--allow-new-column] [--dry-run]`.
 Every flag is passed straight to find-slot (S0); `--dry-run` and `--allow-new-column` take no value, the rest take one. `find-slot.ts --month YYYY-MM` is the second form (no slug): it reflows one month section and is only used by the Idempotency rule below.
 The slug is the post file `src/content/blog/<slug>.md`. One cover per post, 16:9, instance name = slug.
