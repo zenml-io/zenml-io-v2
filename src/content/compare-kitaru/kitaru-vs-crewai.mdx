@@ -21,7 +21,9 @@ import HarnessFreedom from '../../components/compare/kitaru/graphics/crewai/Harn
 
 CrewAI and Kitaru solve different problems at different layers. CrewAI is an **agent harness**: model your agents as a crew of roles, give each one a task, and let `crew.kickoff()` coordinate the work. AMP wraps the whole thing in a managed platform on top. If your problem looks like teamwork and role-based delegation, CrewAI was built for it.
 
-Kitaru is a **replay-based eval layer**: it records every run as a session, and a session re-executes. Unchanged, you get a faithful baseline. Forked with one thing changed, you get an answer. There&rsquo;s no first-class CrewAI adapter yet, so the way in is to import the traces you already collect from Langfuse, LangSmith, Braintrust, Logfire, or Arize Phoenix. An [imported session](https://docs.zenml.io/kitaru/adapters/custom) inspects, investigates, and evaluates exactly like a recorded one. Want native recording and replay with overrides? The fastest route is a project-local adapter built with the `kitaru-adapter-builder` agent skill. It lives in your repo, not ours. Running that same crew durably in production is ZenML's job; Kitaru replays and improves it. See [ZenML vs CrewAI](/compare/zenml-vs-crewai).
+Kitaru is a **replay-based eval layer**: it records every run as a session, and a session re-executes. Unchanged, you get a faithful baseline. Forked with one thing changed, you get an answer.
+
+There&rsquo;s no first-class CrewAI adapter yet, so the way in is to import the traces you already collect from Langfuse, LangSmith, Braintrust, Logfire, or Arize Phoenix. An [imported session](https://docs.zenml.io/kitaru/adapters/custom) inspects, investigates, and evaluates exactly like a recorded one. Want native recording and replay with overrides? The fastest route is a project-local adapter built with the `kitaru-adapter-builder` agent skill. It lives in your repo, not ours. Running that same crew durably in production is ZenML's job; Kitaru replays and improves it. See [ZenML vs CrewAI](/compare/zenml-vs-crewai).
 
 <WhenToUseEach
   competitorLabel="CrewAI"

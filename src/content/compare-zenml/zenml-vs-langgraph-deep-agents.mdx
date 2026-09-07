@@ -20,7 +20,7 @@ import SelfHostVsPackaged from '../../components/compare/zenml/graphics/langgrap
 import SandboxSecurity from '../../components/compare/zenml/graphics/langgraph/SandboxSecurity.astro';
 import VersionedDeployments from '../../components/compare/zenml/graphics/langgraph/VersionedDeployments.astro';
 
-LangGraph models an agent as a graph: nodes, edges, and state that persists across steps, with checkpointers for durability and Deep Agents layering planning and sub-agents on top. Behind it sits a packaged path to production through LangSmith Deployment (formerly LangGraph Platform) and LangSmith tracing, which handle deployment, persistence, and observability for you.
+LangGraph models an agent as a graph: nodes, edges, and state that persists across steps. Checkpointers add durability, and Deep Agents layers planning and sub-agents on top. Behind it sits a packaged path to production through LangSmith Deployment (formerly LangGraph Platform) and LangSmith tracing, which handle deployment, persistence, and observability for you.
 
 That packaging is the real decision. Adopting the graph is one commitment. Adopting the platform underneath it is a much bigger one, and they arrive together. ZenML sells the second half separately: keep the graph, run it as a step inside a pipeline on your own infrastructure, with artifacts in your own bucket and run metadata in a server you can self-host.
 
@@ -41,7 +41,7 @@ Weighing LangGraph purely as a way to build agents? The [ZenML vs LangGraph](/co
   competitor={{
     title: "Use LangGraph & Deep Agents if you are",
     items: [
-      "Modelling the agent as an explicit graph with branching, loops, and persisted state",
+      "Modeling the agent as an explicit graph with branching, loops, and persisted state",
       "Wanting checkpointers, interrupts, and time-travel over graph state as first-class features",
       "Building planning and sub-agent patterns where Deep Agents does the heavy lifting",
       "Happy to adopt LangSmith Deployment and LangSmith tracing for deployment and observability",
@@ -68,7 +68,7 @@ Weighing LangGraph purely as a way to build agents? The [ZenML vs LangGraph](/co
 <FeatureWithGraphic title="Where the sensitive values live" reverse={true}>
   <SandboxSecurity slot="graphic" />
 
-  For agent workloads the intermediate values are the sensitive part: prompts, retrieved documents, customer records, model outputs. Where those get written, and where generated code runs, is usually what decides a security review.
+  For agent workloads the intermediate values are the sensitive part: prompts, retrieved documents, customer records, model outputs. Where those get written and where generated code runs usually decides a security review.
 
   <Fragment slot="bullets">
     - **Artifacts:** ZenML writes every step output to your artifact store. Nothing about a run's contents leaves your infrastructure when the server is self-hosted.
@@ -85,7 +85,7 @@ Weighing LangGraph purely as a way to build agents? The [ZenML vs LangGraph](/co
   <Fragment slot="bullets">
     - **Artifacts per run:** Every step output is stored, versioned, and loadable by name with `get_artifact_version(...).load()`, so a change to a prompt is visible as a new artifact version rather than a new log line.
     - **Serving:** `zenml pipeline deploy run.agent_pipeline --name agent-service` stands the pipeline up behind an endpoint, and every request is a run with the same artifacts and lineage as a batch job. Deploying a new snapshot to the same name updates it in place.
-    - **Caching:** Unchanged steps are served from cache on every run. The key covers the step, its parameters, and its inputs, which matters most when you're iterating on the step after the agent.
+    - **Caching:** Unchanged steps are served from cache on every run. The key covers the step, its parameters, and its inputs. That matters most when you're iterating on the step after the agent.
   </Fragment>
 </FeatureWithGraphic>
 

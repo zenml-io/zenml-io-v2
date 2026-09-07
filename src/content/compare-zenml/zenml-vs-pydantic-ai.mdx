@@ -22,7 +22,7 @@ Pydantic AI brings the Pydantic team's approach to agents: typed dependencies, v
 
 ZenML isn't a competing harness. It's the orchestration layer around the agent: your `Agent` runs unchanged inside a `@step`, and ZenML supplies the pipeline, the versioned artifacts, the cache, a `wait()` that pauses the run for a human, a sandbox for the code the agent's tools execute, and the stack that puts it on Kubernetes, Vertex AI, SageMaker, AzureML and more.
 
-They compose cleanly because both are ordinary Python. Pydantic AI validates what comes out of the model. ZenML stores what comes out of the step, remembers which run produced it, and decides what happens next.
+Both are ordinary Python, so they compose cleanly. Pydantic AI validates what comes out of the model. ZenML stores what comes out of the step, remembers which run produced it, and decides what happens next.
 
 <WhenToUseEach
   competitorLabel="Pydantic AI"
@@ -59,7 +59,7 @@ They compose cleanly because both are ordinary Python. Pydantic AI validates wha
   <Fragment slot="bullets">
     - **Pydantic AI asks:** How do I define this agent, give it typed dependencies, call a model, and validate what comes back against a schema?
     - **ZenML asks:** This ran. What did it produce, where is that stored, which inputs made it, does a human need to approve it, and do I have to compute it again?
-    - **Little overlap:** ZenML doesn't define agents, it runs them. The agent loop, the tools and the output schema are Pydantic AI's. The run around them, the approval gate, the sandbox the tools execute in, and the deployment are ZenML's.
+    - **Little overlap:** ZenML doesn't define agents, it runs them. The agent loop, the tools and the output schema are Pydantic AI's. ZenML owns the run around them, the approval gate, the sandbox the tools execute in, and the deployment.
   </Fragment>
 </FeatureWithGraphic>
 

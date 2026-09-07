@@ -20,7 +20,7 @@ import CacheBoundary from '../../components/compare/zenml/graphics/hatchet/Cache
 
 Hatchet is a distributed task queue with durable execution on top, backed by Postgres. You get workers, queues, concurrency and rate-limit controls, cron, durable sleeps, and a dashboard for the whole fleet, with SDKs in Python, TypeScript, Go and Ruby. If your problem is pushing a lot of mixed background work through reliably, that's what Hatchet is for, and it's good at it.
 
-ZenML is AI orchestration for Python. It runs pipelines and agents on your own infrastructure and remembers what they did. A dynamic pipeline builds its graph from plain Python, `wait()` pauses a run until a human or another system answers, failed steps retry with backoff, steps you didn't touch come from cache, and agent tool loops run inside a sandbox. Every step output is a versioned artifact in your own bucket, and the same code runs on Kubernetes, Vertex AI, SageMaker, AzureML and more when you swap the stack.
+ZenML is AI orchestration for Python. It runs pipelines and agents on your own infrastructure and remembers what they did. A dynamic pipeline builds its graph from plain Python, and `wait()` pauses a run until a human or another system answers. Failed steps retry with backoff, steps you didn't touch come from cache, and agent tool loops run inside a sandbox.
 
 So do you need Hatchet underneath ZenML to run an agent durably? For approvals, loops, retries and sandboxed tool use, no. For queues, concurrency keys and rate limits across a general task fleet, Hatchet is the better tool, and ZenML doesn't try to be one.
 
@@ -71,7 +71,7 @@ So do you need Hatchet underneath ZenML to run an agent durably? For approvals, 
     - **Dynamic pipelines:** `@pipeline(dynamic=True)` builds the graph at run time from plain Python: `for` loops, `if` branches, and `step.map()` fan-out over a list. Hatchet gets the same shape by spawning child workflows from a task.
     - **`wait()`:** Inside a dynamic pipeline, `wait(schema=bool, question=...)` pauses the run until someone answers from the dashboard, the CLI or the API. Until the timeout the orchestration process keeps polling. After that the run is marked `PAUSED`, the process can go away, and `zenml pipeline runs resume` picks it back up. Hatchet's durable `aio_wait_for` consumes nothing while it waits, can be evicted to free the worker slot, and resumes on the event.
     - **Failure handling:** `StepRetryConfig` retries a step with delay and backoff. `zenml pipeline runs retry` retries a failed dynamic run, and completed steps are reused rather than re-executed. ZenML retries the step; Hatchet resumes a durable task mid-body from its journal.
-    - **Sandboxes:** A `sandbox` stack component (local, Docker, Kubernetes and Modal flavors) gives an agent step an isolated session to run generated code in, and on the Docker and Modal flavors snapshot it and restore it later. Hatchet has nothing like it; tools run on the worker.
+    - **Sandboxes:** A `sandbox` stack component gives an agent step an isolated session to run generated code in. It comes in local, Docker, Kubernetes and Modal flavors; Docker and Modal add snapshot and restore. Hatchet has nothing like it; tools run on the worker.
   </Fragment>
 </FeatureWithGraphic>
 

@@ -18,7 +18,7 @@ import ComparisonCta from '../../components/compare/kitaru/ComparisonCta.astro';
 import PullQuote from '../../components/compare/kitaru/PullQuote.astro';
 import CodePane from '../../components/compare/kitaru/CodePane.astro';
 
-The Claude Agent SDK and Kitaru solve different problems. The Agent SDK is the **agent harness**: it builds agents that read files, run commands, call tools, and solve whatever task you hand to `query()`. Kitaru is a **replay-based eval layer**: every run lands as a session, and a session re-executes. Unchanged, you get a faithful baseline. Forked with one thing changed, you get a comparison.
+The Claude Agent SDK and Kitaru solve different problems. The Agent SDK is the **agent harness**: it builds agents that read files, run commands, call tools, and solve whatever task you hand to `query()`. Kitaru is a **replay-based eval layer**. Every run lands as a session, and a session re-executes. Unchanged, you get a faithful baseline. Forked with one thing changed, you get a comparison.
 
 They don't compete. They compose. Kitaru ships a [first-class Claude Agent SDK adapter](https://docs.zenml.io/kitaru/adapters/claude-agent-sdk): `KitaruClaudeRunner` wraps the SDK's one-shot `query()`, yields the same message objects your code already consumes, and records the prompt, model calls, tool calls, subagents, usage, cost, and failures as one session. Running that same agent durably in production is ZenML's job; Kitaru replays and improves it. See [ZenML vs Claude Agent SDK](/compare/zenml-vs-claude-agent-sdk).
 

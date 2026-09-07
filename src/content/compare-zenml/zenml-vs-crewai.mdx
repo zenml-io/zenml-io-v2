@@ -21,9 +21,9 @@ import HarnessFreedom from '../../components/compare/zenml/graphics/crewai/Harne
 
 CrewAI is a framework for building multi-agent systems: agents with roles and backstories, tasks with expected outputs, and Flows for when you need explicit control over the sequence. It's opinionated about how agents collaborate, and that opinion is the reason to pick it.
 
-ZenML isn't another opinion about agent collaboration. It's the orchestration layer around whatever you built. Your crew runs unchanged inside a `@step`, and ZenML supplies the pipeline around it: a run record, versioned artifacts in your own bucket, a cache keyed on the step, its parameters and its inputs, a `wait()` that pauses the run until a human approves what the crew proposed, sandboxes for the code the crew's tools execute, and a stack that puts the whole thing on Kubernetes, Vertex AI, SageMaker, AzureML and more.
+ZenML isn't another opinion about agent collaboration; it's the orchestration layer around whatever you built. Your crew runs unchanged inside a `@step`, and ZenML supplies the pipeline around it: a run record, versioned artifacts in your own bucket, a cache keyed on the step, its parameters and its inputs, a `wait()` that pauses the run until a human approves what the crew proposed, sandboxes for the code the crew's tools execute, and a stack that puts the whole thing on Kubernetes, Vertex AI, SageMaker, AzureML and more.
 
-CrewAI answers how the agents work together. ZenML answers what happened when they did, who signed off on it, and what it costs to do it again.
+CrewAI answers how the agents work together, and ZenML answers what happened when they did, who signed off on it, and what it costs to do it again.
 
 <WhenToUseEach
   competitorLabel="CrewAI"
@@ -92,7 +92,7 @@ CrewAI answers how the agents work together. ZenML answers what happened when th
 <FeatureWithGraphic title="One pipeline, whichever framework each team picked" reverse={true}>
   <HarnessFreedom slot="graphic" />
 
-  Most organisations don't standardise on one agent framework. One team is on CrewAI, another on Pydantic AI, a third calls the OpenAI Agents SDK directly. ZenML sits under all of them because a step is just Python.
+  Most organizations don't standardize on one agent framework. One team is on CrewAI, another on Pydantic AI, a third calls the OpenAI Agents SDK directly. A step is just Python, so ZenML sits under all of them.
 
   <Fragment slot="bullets">
     - **No adapter needed:** Whatever the framework, the call goes in a step and the return value becomes an artifact.

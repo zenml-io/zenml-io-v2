@@ -47,14 +47,14 @@ For a one-off task at your keyboard, you don't need any of that. For a hundred r
 />
 
 <PullQuote
-  quote="The Agent SDK decides what the agent does. ZenML decides what happens to the result: where it is stored, what it is called, and whether you ever have to compute it again."
+  quote="The Agent SDK decides what the agent does, and ZenML decides what happens to the result: where it is stored, what it is called, and whether you ever have to compute it again."
 />
 
 ## What a pipeline adds around the agent
 
 The Agent SDK gives you a session. A ZenML pipeline gives that session a place in a system of record.
 
-- **The run:** Wrapping the agent call in a `@step` inside a `@pipeline` makes each execution a run with a start, an end, a status, and a history you can open in the dashboard.
+- **The run:** Wrap the agent call in a `@step` inside a `@pipeline` and each execution becomes a run with a start, an end, a status, and a history you can open in the dashboard.
 - **Versioned artifacts:** Whatever the step returns is stored in your artifact store, versioned, and addressable. Return `Annotated[str, "patch"]` and the output is retrievable by name across runs rather than buried in a session log.
 - **Metadata:** ZenML has no LLM-specific primitive, and it doesn't try to parse what the SDK did. It gives you a place to put what you care about: `log_metadata()` attaches the turn count, cost, or tool-call count from the SDK's result message to the step.
 - **Async steps:** The SDK's `query()` is an async generator. A step can be declared `async def`, and ZenML runs the coroutine to completion when the step executes, so the stream is consumed inside the step with no wrapper.
@@ -65,15 +65,15 @@ The Agent SDK writes session history to disk and can rewind file edits. That's u
 
 - **The cache key:** ZenML keys the cache on the step, its parameters, and its inputs: the step's source path, the parameter values, the input artifacts, the output definitions and materializers, plus the environment variables and secrets the step declares. If nothing changed, you get the stored artifact back and the body never executes. Every run, not only after a failure.
 - **What that means in practice:** Retrieve context, run the agent, evaluate the result. Edit only the evaluation step and only the evaluation step re-runs. Retrieval and the agent call come from cache.
-- **Turning it off:** A step that must always execute takes `@step(enable_cache=False)`, which is the right setting for the agent step itself whenever non-determinism is the point. A `cache_policy` on the step narrows what the key includes when the default is too eager.
+- **Turning it off:** A step that must always execute takes `@step(enable_cache=False)`That's the right setting for the agent step itself whenever non-determinism is the point. A `cache_policy` on the step narrows what the key includes when the default is too eager.
 
 ## Approvals, sandboxes, and retries
 
 Three things the Agent SDK handles inside a session and ZenML handles around the step.
 
-- **Waiting for a human:** In a dynamic pipeline, `wait(schema=bool, question="Apply this patch?")` pauses the run until someone answers it from the dashboard, the CLI, or the API. Once the wait's timeout elapses and no other work in the run is in flight, ZenML marks the run `PAUSED` so the orchestration process can be torn down, and `zenml pipeline runs resume` picks it up later, or ZenML Pro resumes it automatically. The SDK's permission prompts go to a callback in the running process, so the process has to stay up to answer them. The wait doesn't.
+- **Waiting for a human:** In a dynamic pipeline, `wait(schema=bool, question="Apply this patch?")`  pauses the run until someone answers it from the dashboard, the CLI, or the API. Once the wait's timeout elapses and no other work in the run is in flight, ZenML marks the run `PAUSED` so the orchestration process can be torn down, and `zenml pipeline runs resume` picks it up later, or ZenML Pro resumes it automatically. The SDK's permission prompts go to a callback in the running process, so the process has to stay up to answer them but the wait doesn't.
 - **Isolated tool loops:** A `sandbox` is a stack component with local, Docker, Kubernetes, and Modal flavors. Inside a step, `Client().active_stack.sandbox.create_session()` gives the agent an isolated environment to run generated code in, with `session.exec([...])`, streamed output, and, on the Docker and Modal flavors, snapshots you can store as artifacts and restore in a later run.
-- **Retries:** A step takes `retry=StepRetryConfig(max_retries=3, delay=10, backoff=2)`. A failed dynamic pipeline run is retried with `zenml pipeline runs retry`, which reuses the steps that already completed. A static pipeline like the one below gets the same effect from the cache on a re-run. ZenML retries at step granularity. It won't resume a step mid-body.
+- **Retries:** A step takes `retry=StepRetryConfig(max_retries=3, delay=10, backoff=2)`. A failed dynamic pipeline run is retried with `zenml pipeline runs retry`, which reuses the steps that already completed. A static pipeline like the one below gets the same effect from the cache on a re-run. ZenML retries at step granularity; it won't resume a step mid-body.
 
 ## Your infrastructure, your data
 
@@ -83,11 +83,11 @@ Three things the Agent SDK handles inside a session and ZenML handles around the
 
 ## What ZenML doesn't do
 
-Three things the SDK does that ZenML won't. They decide how you use the two together.
+Three things the SDK does that ZenML won't. They decide how you use the two together. ZenML has:
 
-- ZenML has **no per-tool permission model**. The SDK's `allowed_tools`, `permission_mode`, and hooks decide what the agent may touch inside the step, and there is no ZenML equivalent. A sandbox isolates where code runs; it doesn't decide which tools the model may call.
-- ZenML has **no file-edit rewind**. A step returns artifacts, and a re-run produces new artifact versions. It doesn't roll back what the agent did to a working tree.
-- ZenML has **no agent abstractions**. It doesn't define agents, tools, or sessions. It runs whatever you built and records what came out.
+- **No per-tool permission model: **The SDK's `allowed_tools`, `permission_mode`, and hooks decide what the agent may touch inside the step, and there is no ZenML equivalent. A sandbox isolates where code runs; it doesn't decide which tools the model may call.
+- **No file-edit rewind:** A step returns artifacts, and a re-run produces new artifact versions. It doesn't roll back what the agent did to a working tree.
+- **No agent abstractions:** Doesn't define agents, tools, or sessions. It runs whatever you built and records what came out.
 
 Want to replay the same agent against a prompt or model change? Kitaru's Claude Agent SDK adapter records one-shot `query()` calls and reruns them. See [Kitaru vs Claude Agent SDK](/compare/kitaru-vs-claude-agent-sdk).
 

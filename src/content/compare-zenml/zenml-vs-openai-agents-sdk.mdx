@@ -55,7 +55,7 @@ That restraint is also why teams reach for something else once the agent stops b
 
   <Fragment slot="bullets">
     - **Cache key:** ZenML keys the cache on the step, its parameters and its inputs, plus its output definitions and the artifact store. If nothing changed, you get the stored artifact back and the body never executes. That's every run, not only after a failure.
-    - **After a failure:** `zenml pipeline runs retry <run>` re-runs a failed dynamic pipeline run and the steps that completed are reused rather than re-executed, so the retry doesn't re-pay for the work above the failure. ZenML retries at step granularity. It won't resume a step part-way through its body.
+    - **After a failure:** `zenml pipeline runs retry <run>` re-runs a failed dynamic pipeline run, and the steps that completed are reused rather than re-executed, so the retry doesn't re-pay for the work above the failure. ZenML retries at step granularity. It won't resume a step part-way through its body.
     - **The agent step:** Mark it `@step(enable_cache=False)` when it must execute every time, and keep the cache on the deterministic steps around it. Add `retry=StepRetryConfig(...)` for the flaky ones.
   </Fragment>
 </FeatureWithGraphic>
