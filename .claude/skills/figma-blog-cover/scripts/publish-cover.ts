@@ -11,8 +11,9 @@
  * Figma export): any sharp-readable image that is 16:9 (within 1%) and at least
  * 1200 px wide is accepted, with a printed warning naming its size.
  *
- * Output: .cache/covers/<slug>-cover.avif and <slug>-cover.jpg at 1200x675.
- *   AVIF: quality 60, effort 6 (target ≤150 KB for a real cover)
+ * Output: .cache/covers/<slug>-cover.avif at 1920x1080 (2x for the hero; the site
+ *   serves one <img> with no srcset) and <slug>-cover.jpg at 1200x675 (Open Graph).
+ *   AVIF: quality 75, effort 6, 4:4:4 chroma (crisp type; ~50 KB for a real cover)
  *   JPEG: the exact recipe from scripts/og/generate-compare-og.ts
  *         (quality 85, mozjpeg, 4:2:0, trellis, overshoot deringing, optimiseScans)
  * Then, unless --no-upload:
@@ -38,8 +39,10 @@ const REPO = resolve(SCRIPT_DIR, "../../../..");
 const OUT_DIR = join(REPO, ".cache/covers");
 const R2_UPLOAD = "scripts/r2-upload.py";
 
-const OUT_WIDTH = 1200;
-const OUT_HEIGHT = 675;
+const AVIF_OUT = { width: 1920, height: 1080 };
+const JPEG_OUT = { width: 1200, height: 675 };
+const OUT_WIDTH = JPEG_OUT.width;
+const OUT_HEIGHT = JPEG_OUT.height;
 const FULL = { width: 3840, height: 2160 };
 const HALF = { width: 1920, height: 1080 };
 const AVIF_TARGET_BYTES = 150 * 1024;
@@ -64,8 +67,11 @@ function parseArgs(argv: string[]): { slug: string; png: string; upload: boolean
 }
 
 async function convert(png: string, avifPath: string, jpgPath: string): Promise<void> {
-  const base = sharp(png).resize(OUT_WIDTH, OUT_HEIGHT, { fit: "fill", kernel: "lanczos3" });
-  await base.clone().avif({ quality: 60, effort: 6 }).toFile(avifPath);
+  await sharp(png)
+    .resize(AVIF_OUT.width, AVIF_OUT.height, { fit: "fill", kernel: "lanczos3" })
+    .avif({ quality: 75, effort: 6, chromaSubsampling: "4:4:4" })
+    .toFile(avifPath);
+  const base = sharp(png).resize(JPEG_OUT.width, JPEG_OUT.height, { fit: "fill", kernel: "lanczos3" });
   // JPEG recipe verbatim from scripts/og/generate-compare-og.ts (renderCard).
   await base
     .clone()
@@ -137,8 +143,8 @@ async function main(): Promise<void> {
   const avifPath = join(OUT_DIR, `${slug}-cover.avif`);
   const jpgPath = join(OUT_DIR, `${slug}-cover.jpg`);
   await convert(png, avifPath, jpgPath);
-  await assertDims(avifPath, OUT_WIDTH, OUT_HEIGHT);
-  await assertDims(jpgPath, OUT_WIDTH, OUT_HEIGHT);
+  await assertDims(avifPath, AVIF_OUT.width, AVIF_OUT.height);
+  await assertDims(jpgPath, JPEG_OUT.width, JPEG_OUT.height);
 
   const sizes = { avif: (await stat(avifPath)).size, jpg: (await stat(jpgPath)).size };
   if (sizes.avif > AVIF_TARGET_BYTES) console.error(`WARNING: AVIF is ${sizes.avif} bytes (> ${AVIF_TARGET_BYTES}); check the source before publishing.`);

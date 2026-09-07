@@ -11,7 +11,7 @@
  *
  * Presets (explicit flags override):
  *   inline (default) — resize to max 800px, AVIF only
- *   cover             — resize to max 1200px, AVIF + a JPEG sibling
+ *   cover             — AVIF at max 1920px (2x hero) + a 1200px JPEG sibling (Open Graph)
  *
  * Output is written next to each input (or under --out-dir) as
  * <basename>.avif and, when a JPEG is produced, <basename>.jpg. The input
@@ -28,14 +28,15 @@ const IMAGE_EXTENSIONS = new Set([".png", ".jpg", ".jpeg", ".webp", ".gif", ".ti
 interface Preset {
   resize: number;
   jpeg: boolean;
+  jpegResize?: number;
 }
 
 const PRESETS: Record<"inline" | "cover", Preset> = {
   inline: { resize: 800, jpeg: false },
-  cover: { resize: 1200, jpeg: true },
+  cover: { resize: 1920, jpeg: true, jpegResize: 1200 },
 };
 
-const AVIF_QUALITY = 60;
+const AVIF_QUALITY = 75;
 const AVIF_EFFORT = 6;
 
 function parseArgs(argv: string[]) {
@@ -73,7 +74,7 @@ function fmtBytes(n: number): string {
 
 async function convertOne(
   file: string,
-  opts: { resize: number; quality: number; jpeg: boolean; outDir?: string },
+  opts: { resize: number; quality: number; jpeg: boolean; jpegResize?: number; outDir?: string },
 ): Promise<boolean> {
   const inputPath = resolve(file);
   if (!existsSync(inputPath)) {
@@ -100,15 +101,17 @@ async function convertOne(
   try {
     const src = sharp(inputPath).resize(opts.resize, opts.resize, { fit: "inside", withoutEnlargement: true });
 
-    await src.clone().avif({ quality: opts.quality, effort: AVIF_EFFORT }).toFile(avifPath);
+    await src.clone().avif({ quality: opts.quality, effort: AVIF_EFFORT, chromaSubsampling: "4:4:4" }).toFile(avifPath);
     const avifMeta = await sharp(avifPath).metadata();
     const avifBytes = (await stat(avifPath)).size;
     const avifReduction = (100 * (1 - avifBytes / sourceBytes)).toFixed(0);
     console.log(`✓ ${avifPath}  ${avifMeta.width}x${avifMeta.height}  ${fmtBytes(avifBytes)}  (${avifReduction}% smaller than source ${fmtBytes(sourceBytes)})`);
 
     if (opts.jpeg) {
-      await src
-        .clone()
+      const jpegSrc = opts.jpegResize
+        ? sharp(inputPath).resize(opts.jpegResize, opts.jpegResize, { fit: "inside", withoutEnlargement: true })
+        : src.clone();
+      await jpegSrc
         .jpeg({
           quality: 85,
           mozjpeg: true,
@@ -136,6 +139,7 @@ async function main(): Promise<void> {
     resize: resize ?? preset.resize,
     quality: quality ?? AVIF_QUALITY,
     jpeg: jpeg || preset.jpeg,
+    jpegResize: resize ? undefined : preset.jpegResize,
     outDir,
   };
 

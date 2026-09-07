@@ -147,7 +147,7 @@ Verify every uploaded URL with `curl -sI <url>`; each must return HTTP 200 befor
 
 Check if the content has a dedicated cover/hero image:
 
-- **Cover image provided** (in Notion or by user): run `pnpm exec tsx .claude/skills/figma-blog-cover/scripts/publish-cover.ts <slug> <file> --allow-any-source`. It resizes to 1200x675, writes the AVIF + JPEG pair, uploads both to `content/blog/<slug>` on R2 and prints the `mainImage` / `seo.ogImage` snippet. The source must be 16:9 (crop it first — the script never crops) and at least 1200 px wide; do not send the cover through the C1 loop
+- **Cover image provided** (in Notion or by user): run `pnpm exec tsx .claude/skills/figma-blog-cover/scripts/publish-cover.ts <slug> <file> --allow-any-source`. It writes a 1920x1080 AVIF and a 1200x675 JPEG, uploads both to `content/blog/<slug>` on R2 and prints the `mainImage` / `seo.ogImage` snippet. The source must be 16:9 (crop it first — the script never crops) and at least 1200 px wide; do not send the cover through the C1 loop
 - **No cover image**: run the `figma-blog-cover` skill (`.claude/skills/figma-blog-cover/SKILL.md`) with the post slug. It creates the cover in Figma, exports it, converts it, uploads to R2, and returns the `mainImage` / `seo.ogImage` snippet to paste in C6
 - **Figma unavailable** (only then): ask the user for a 16:9 PNG and publish it with the same `publish-cover.ts ... --allow-any-source` command
 

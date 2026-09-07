@@ -76,7 +76,7 @@ curl -sL -o "$S/<slug>.png" "<result export.url>"   # $S = scratch dir; the URL 
 ```
 Ignore the `rawImages` / `svgAssets` URLs in the result, and a `svgAssetsTruncated` / "select a smaller node" notice — a VS card's subtree holds more than 20 vectors, so it always says that; `export.url` is still the full PNG and it is not an error. `get_screenshot` is not an export path — it caps at the node's natural 1920x1080.
 
-**S7 publish.** `pnpm exec tsx .claude/skills/figma-blog-cover/scripts/publish-cover.ts <slug> "$S/<slug>.png" [--no-upload] [--allow-1x]`. It asserts the PNG is exactly 3840x2160 (1920x1080 only behind `--allow-1x`, with a printed warning), resizes to 1200x675, writes `<slug>-cover.avif` and `<slug>-cover.jpg`, uploads both to `content/blog/<slug>` on R2, HEADs the URLs, and prints JSON + the YAML block. `--no-upload` stops after the local files. (`--allow-any-source` — any 16:9 image ≥1200 px wide — exists for blog-post-contributor's "cover provided" path only; never for a Figma export.)
+**S7 publish.** `pnpm exec tsx .claude/skills/figma-blog-cover/scripts/publish-cover.ts <slug> "$S/<slug>.png" [--no-upload] [--allow-1x]`. It asserts the PNG is exactly 3840x2160 (1920x1080 only behind `--allow-1x`, with a printed warning), writes `<slug>-cover.avif` at 1920x1080 (quality 75, 4:4:4) and `<slug>-cover.jpg` at 1920x1080 AVIF / 1200x675 JPEG for Open Graph, uploads both to `content/blog/<slug>` on R2, HEADs the URLs, and prints JSON + the YAML block. `--no-upload` stops after the local files. (`--allow-any-source` — any 16:9 image ≥1200 px wide — exists for blog-post-contributor's "cover provided" path only; never for a Figma export.)
 
 ## Copy: headline, subtitle, alt text
 
@@ -114,7 +114,7 @@ When a VS card needs a `ServiceLogo/<slug>` that isn't in `references/service-lo
 - The S6 screenshot passed the copy check: title on at most three lines with no orphan word on the last line, subtitle absent or a single line at most 55 characters that adds something the title does not say (S3's `props.ShowSubtitle` matches `P.showSubtitle`).
 - Pre-existing mismatches S5 reported in sections this run did not touch are listed in the report as such, and were not reflowed.
 - `sips -g pixelWidth -g pixelHeight "$S/<slug>.png"` → 3840 x 2160.
-- `.cache/covers/<slug>-cover.avif` and `.jpg` are 1200x675; `curl -sI <url>` on both R2 URLs → `200` with `content-type: image/avif` / `image/jpeg`.
+- `.cache/covers/<slug>-cover.avif` is 1920x1080 and `.jpg` is 1200x675; `curl -sI <url>` on both R2 URLs → `200` with `content-type: image/avif` / `image/jpeg`.
 - The YAML uses the AVIF for `mainImage.url` and the JPEG for `seo.ogImage` — never the same URL.
 
 ## Report
