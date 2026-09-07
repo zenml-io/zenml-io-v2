@@ -5,7 +5,7 @@
  *   pnpm exec tsx .claude/skills/figma-blog-cover/scripts/find-slot.ts <slug> \
  *     [--siblings '<json array of {slug,layout,bgStyle,date?}>'] \
  *     [--brand ZenML|Kitaru] [--layout <Layout>] [--bg <Style>] \
- *     [--title <headline>] [--subtitle <text>] [--comparison a,b,c] [--include-zenml True|False] \
+ *     [--title <headline>] [--subtitle <text>] [--no-subtitle] [--comparison a,b,c] [--include-zenml True|False] \
  *     [--tile-batch <n>] [--fallback "<reason>"] [--allow-new-column] [--dry-run]
  *
  *   pnpm exec tsx .claude/skills/figma-blog-cover/scripts/find-slot.ts --month YYYY-MM [--siblings ...]
@@ -23,7 +23,8 @@
  * Boolean flags (no value): --dry-run echoes `dryRun: true` and changes nothing
  * else (the agent stops after S1); --allow-new-column sets `allowNewColumn: true`
  * so S2 may create the first section of a year column (S1 reports `columnMissing`;
- * ask before passing this). Every other flag takes exactly one value.
+ * ask before passing this); --no-subtitle sets `subtitle: ""` and `showSubtitle: false`
+ * (mutually exclusive with --subtitle). Every other flag takes exactly one value.
  *
  * --fallback "<reason>": the documented fallback for a --comparison run that
  * cannot be honoured. Forces Layout "Panel Bottom" (the adjacency rule is passed
@@ -42,9 +43,15 @@
  *   Full Bleed, 60 on Panel Bottom / Image Left / Image Right ≈ three lines).
  *   A derived headline that still exceeds the budget is a question (pass --title);
  *   a supplied one that exceeds it gets a warning (stderr + `suggestions`).
- *   `subtitle` = "" and `showSubtitle` = false by default. --subtitle "<text>"
- *   sets both (one line, ≤55 chars, written by the agent). A subtitle equal to
- *   seo.description or restating the headline is rejected with a question.
+ *   `subtitle` is present by default (owner correction 2026-09-07): one line, at most 55
+ *   chars, derived from seo.description (`subtitleSource`). deriveSubtitle takes the first
+ *   clause up to a clause boundary (`:`, `;`, `,`, ` — `, ` - `, `.`) that fits the budget and
+ *   strips a trailing period; when no clause fits it cuts at the last word boundary at or
+ *   under the budget and adds a suggestion asking for a better `--subtitle` line (never a
+ *   question). `--subtitle "<text>"` overrides both fields (still a warning past 55 chars);
+ *   `--no-subtitle` sets `subtitle` = "" and `showSubtitle` = false. A subtitle equal to
+ *   seo.description is rejected with a question; one that restates the headline (containment
+ *   either way, case-insensitive) is a suggestion, not a question.
  *   VS card: `vs.title` = --title, else `<N> <Competitor> Alternatives` derived from the title
  *   (N = competitor tiles + the brand tile when Include ZenML=True; "Best", "We Tested …" and
  *   the rest are dropped — the pattern the live cards use, E2E 2026-09-07); `vs.title` ≤34 chars
@@ -138,7 +145,7 @@ const TITLE_BUDGET: Record<Layout, number> = {
   "Image Left": 60,
   "Image Right": 60,
 };
-const SUBTITLE_MAX = 55; // one line, agent-written, never seo.description
+const SUBTITLE_MAX = 55; // one line; derived from seo.description by default, never copied verbatim
 // Title layer width (px) per Layout, read off the Kitaru variants of 162:1845 in the 2026-09-07
 // E2E (ZenML variants not measured; assumed equal until read). The image layouts are less than
 // half the width of the others, so the same headline breaks very differently.
@@ -202,6 +209,34 @@ function normalizeCopy(s: string): string {
   return s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 }
 
+/**
+ * Subtitle default (owner correction 2026-09-07): present by default, one line, at most `max`
+ * chars, derived from seo.description. Takes the first clause up to a clause boundary that fits
+ * `max`, strips a trailing period. Falls back to a last-word-boundary cut when no clause fits
+ * (or there is no boundary at all); the caller turns `isFallback` into a suggestion, never a
+ * question, asking for a better `--subtitle` line.
+ */
+function deriveSubtitle(description: string, max: number): { text: string; isFallback: boolean } {
+  const d = description.trim();
+  if (!d) return { text: "", isFallback: false };
+  const stripPeriod = (s: string): string => s.replace(/\.$/, "").trim();
+  if (d.length <= max) return { text: stripPeriod(d), isFallback: false };
+  const BOUNDARY = /:|;|,| — | - |\./g;
+  const idxs = [...d.matchAll(BOUNDARY)].map((m) => m.index as number);
+  if (idxs.length > 0) {
+    const cut = stripPeriod(d.slice(0, idxs[0]));
+    if (cut.length > 0 && cut.length <= max) return { text: cut, isFallback: false };
+  }
+  // No clause fits: cut at the last word boundary at or under `max`.
+  let out = "";
+  for (const w of d.split(/\s+/).filter(Boolean)) {
+    const next = out ? `${out} ${w}` : w;
+    if (next.length > max) break;
+    out = next;
+  }
+  return { text: stripPeriod(out), isFallback: true };
+}
+
 const LAUNCH_RE = /introducing|launch|release/i;
 const COMPARISON_RE = /alternatives|\bvs\b/i;
 const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -222,15 +257,16 @@ interface Args {
   fallback?: string;
   allowNewColumn: boolean;
   dryRun: boolean;
+  noSubtitle: boolean;
 }
 
 const USAGE =
-  "usage: find-slot.ts <slug> [--siblings JSON] [--brand ZenML|Kitaru] [--layout L] [--bg S] [--title T] [--subtitle T] [--comparison a,b,c] [--include-zenml True|False] [--tile-batch N] [--fallback REASON] [--allow-new-column] [--dry-run]\n" +
+  "usage: find-slot.ts <slug> [--siblings JSON] [--brand ZenML|Kitaru] [--layout L] [--bg S] [--title T] [--subtitle T] [--no-subtitle] [--comparison a,b,c] [--include-zenml True|False] [--tile-batch N] [--fallback REASON] [--allow-new-column] [--dry-run]\n" +
   "       find-slot.ts --month YYYY-MM [--siblings JSON] [--allow-new-column] [--dry-run]";
 
 function parseArgs(argv: string[]): Args {
-  const args: Args = { allowNewColumn: false, dryRun: false };
-  const valueFlags: Record<string, keyof Omit<Args, "allowNewColumn" | "dryRun">> = {
+  const args: Args = { allowNewColumn: false, dryRun: false, noSubtitle: false };
+  const valueFlags: Record<string, keyof Omit<Args, "allowNewColumn" | "dryRun" | "noSubtitle">> = {
     "--month": "month",
     "--siblings": "siblings",
     "--brand": "brand",
@@ -243,9 +279,10 @@ function parseArgs(argv: string[]): Args {
     "--tile-batch": "tileBatch",
     "--fallback": "fallback",
   };
-  const boolFlags: Record<string, "allowNewColumn" | "dryRun"> = {
+  const boolFlags: Record<string, "allowNewColumn" | "dryRun" | "noSubtitle"> = {
     "--allow-new-column": "allowNewColumn",
     "--dry-run": "dryRun",
+    "--no-subtitle": "noSubtitle",
   };
   let i = 0;
   if (argv[0] !== undefined && !argv[0].startsWith("--")) {
@@ -289,6 +326,10 @@ function parseArgs(argv: string[]): Args {
   }
   if (args.fallback && args.layout) {
     console.error(`--fallback forces --layout "${FALLBACK_LAYOUT}"; drop --layout`);
+    process.exit(2);
+  }
+  if (args.subtitle !== undefined && args.noSubtitle) {
+    console.error("give either --subtitle or --no-subtitle, not both");
     process.exit(2);
   }
   return args;
@@ -630,8 +671,8 @@ function main(): void {
   }
 
   // Headline / subtitle (copy rule A8). titleSource / subtitleSource are inputs only.
-  // Subtitle is omitted by default: showSubtitle drives `Show subtitle#162:33` and S3 writes an
-  // empty Subtitle whenever it is false.
+  // Subtitle is present by default (owner correction 2026-09-07): showSubtitle drives
+  // `Show subtitle#162:33` and S3 writes an empty Subtitle only when it is false.
   const warn = (msg: string): void => {
     console.error(`warning: ${msg}`);
     suggestions.push(msg);
@@ -663,15 +704,35 @@ function main(): void {
     const problem = orphan ? `leave "${lastLine}" alone on its last line` : `run to ${titleLines.length} lines`;
     suggestions.push(`Headline "${headline}" is likely to ${problem} in the ${titleMeasure} px measure of "${chosenLayout}" (estimate: ${JSON.stringify(titleLines)}; the S6 screenshot decides). ${remedy}`);
   }
-  const subtitle = args.subtitle?.trim() ?? "";
-  const showSubtitle = subtitle.length > 0;
-  if (showSubtitle) {
+  const restatesHeadline = (s: string): boolean => {
+    const nh = normalizeCopy(headline);
+    const ns = normalizeCopy(s);
+    return nh.includes(ns) || ns.includes(nh);
+  };
+  let subtitle: string;
+  let showSubtitle: boolean;
+  if (args.subtitle !== undefined) {
+    subtitle = args.subtitle.trim();
+    showSubtitle = subtitle.length > 0;
     if (/[\r\n]/.test(subtitle)) questions.push("--subtitle must be a single line (no line breaks).");
-    if (subtitle.length > SUBTITLE_MAX) warn(`Subtitle is ${subtitle.length} chars; the limit is ${SUBTITLE_MAX} (one line). Shorten it or drop it — the default is no subtitle.`);
+    if (subtitle.length > SUBTITLE_MAX) warn(`Subtitle is ${subtitle.length} chars; the limit is ${SUBTITLE_MAX} (one line). Shorten it, or drop --subtitle to use the derived default.`);
     if (post.description && normalizeCopy(subtitle) === normalizeCopy(post.description)) {
-      questions.push("--subtitle equals seo.description. The subtitle is written by the agent (one line ≤55 chars that adds something the title does not say); seo.description is input only, never copied onto the cover. Drop --subtitle or write a new one.");
-    } else if (normalizeCopy(subtitle) === normalizeCopy(headline) || normalizeCopy(headline).includes(normalizeCopy(subtitle))) {
-      questions.push("--subtitle restates the headline. Keep a subtitle only when it adds something the title does not say; otherwise drop it.");
+      questions.push("--subtitle equals seo.description. The subtitle is written by the agent (one line at most 55 chars that adds something the title does not say); seo.description is input only, never copied onto the cover. Pass a shorter line, or --no-subtitle.");
+    } else if (subtitle && restatesHeadline(subtitle)) {
+      suggestions.push("--subtitle restates the headline. Keep a subtitle only when it adds something the title does not say; otherwise pass --no-subtitle.");
+    }
+  } else if (args.noSubtitle) {
+    subtitle = "";
+    showSubtitle = false;
+  } else {
+    const derived = deriveSubtitle(post.description, SUBTITLE_MAX);
+    subtitle = derived.text;
+    showSubtitle = subtitle.length > 0;
+    if (derived.isFallback) {
+      suggestions.push(`No clause boundary in seo.description fits ${SUBTITLE_MAX} chars, so the subtitle was cut at the last word boundary instead: "${subtitle}". Pass --subtitle "<better line>" for a cleaner cut.`);
+    }
+    if (subtitle && restatesHeadline(subtitle)) {
+      suggestions.push(`Derived subtitle "${subtitle}" restates the headline. Pass --subtitle "<better line>" or --no-subtitle.`);
     }
   }
   if (isLaunch && chosenLayout !== "Full Bleed") suggestions.push("Launch-style title: consider --layout 'Full Bleed'.");

@@ -24,15 +24,15 @@ For a person:
 1. Open the ZenML Templates file in the Figma desktop app (the shared ZenML editor account, see `.env`).
 2. Make sure the post exists at `src/content/blog/<slug>.md` with a `date` and a `title`.
 3. Ask Claude Code: `make the cover for <slug>`. For an alternatives or versus post add the competitors: `make the comparison card for <slug> with langfuse, langsmith, arize`.
-4. Look at the screenshot it shows you. The title fits in three lines and there is no subtitle unless you asked for one.
+4. Look at the screenshot it shows you. The title fits in three lines and the subtitle, if any, is one short line that adds something the title doesn't say.
 5. Paste the printed `mainImage` and `seo.ogImage` block into the post's frontmatter and open the PR. Until the 16:9 site layout ships, keep the block in the PR description instead.
 
 If a competitor has no logo in Hashi yet, say `add logo <slug>`; the skill sources it, builds the component, and tells you when the library needs a republish.
 
 For an agent: run the Preconditions, then Steps S0 to S7 in order, then Verification, then Report. Every rule you need is in this file and the references it links.
 
-Contract: `figma-blog-cover <slug> [--brand ZenML|Kitaru] [--layout <Layout>] [--bg <Style>] [--title "..."] [--subtitle "..."] [--comparison a,b,c] [--include-zenml True|False] [--tile-batch N] [--fallback "<reason>"] [--allow-new-column] [--dry-run]`.
-Every flag is passed straight to find-slot (S0); `--dry-run` and `--allow-new-column` take no value, the rest take one. `find-slot.ts --month YYYY-MM` is the second form (no slug): it reflows one month section and is only used by the Idempotency rule below.
+Contract: `figma-blog-cover <slug> [--brand ZenML|Kitaru] [--layout <Layout>] [--bg <Style>] [--title "..."] [--subtitle "..."] [--no-subtitle] [--comparison a,b,c] [--include-zenml True|False] [--tile-batch N] [--fallback "<reason>"] [--allow-new-column] [--dry-run]`.
+Every flag is passed straight to find-slot (S0); `--dry-run`, `--allow-new-column` and `--no-subtitle` take no value, the rest take one. `find-slot.ts --month YYYY-MM` is the second form (no slug): it reflows one month section and is only used by the Idempotency rule below.
 The slug is the post file `src/content/blog/<slug>.md`. One cover per post, 16:9, instance name = slug.
 Read `references/figma-ids.md` before the first Figma call; the other references are listed at the end.
 
@@ -47,7 +47,7 @@ Read `references/figma-ids.md` before the first Figma call; the other references
 
 ## Defaults (find-slot derives them, flags override)
 
-- `title` → `titleSource` → headline shortened to at most three lines (see Copy below); `seo.description` → `subtitleSource`, **input only** — the subtitle is omitted by default; `date` → month section and slot.
+- `title` → `titleSource` → headline shortened to at most three lines (see Copy below); `seo.description` → `subtitleSource`, **input only** — the subtitle is present by default, one line derived from it; `date` → month section and slot.
 - `category == kitaru` or `kitaru ∈ tags` → Brand `Kitaru`, else `ZenML`.
 - Title matching `/alternatives|\bvs\b/i` → find-slot suggests `--comparison`; `/introducing|launch|release/i` → suggests `Full Bleed`.
 - Eyebrow `BLOG`; Site stays at the component default (`ZENML.IO`).
@@ -63,7 +63,7 @@ Run every step in order. Each `scripts/figma/s*.js` starts with `const P = __PAR
 
 **S2 ensure section.** Run S2 every time; it writes nothing when the column is already correct. `scripts/figma/s2-ensure-section.js` creates the section if absent (`YYYY-MM · Month YYYY`, width 10720, height per `references/grid.md`), resizes it when `P.sectionHeight` differs (S1 reports `rowsGrew` for the report), and shifts the later sections of that column down. **Ops: at most 10 per call — the create (if any) plus section moves; the sections still to move come back in `pending`; re-run S2 while `pending` is non-empty.** Only y-values that differ are written, so re-runs converge. A year with no column → S2 throws unless `P.allowNewColumn` (see S1).
 
-**S3 upsert cover.** `scripts/figma/s3-upsert-cover.js`: find the instance named `<slug>` or create it from the `162:1845` variant `Brand=<brand>, Layout=<layout>` (fonts of that variant loaded before `createInstance`; the instance's own fonts read back before any text write — Borna Medium, Nudica Mono Regular, Nudica Mono Medium are the floor, not the list), `setProperties` with the `#id` keys (`Show subtitle#162:33` = `P.showSubtitle`, false by default; when false the script also writes `Subtitle#162:32` as `""`), set the exposed `Background` nested instance's `Brand`/`Style`, `appendChild` into the month section, name = slug, then x/y (section-relative). For `--comparison` run `scripts/figma/s3-vs-comparison.js` instead — read `references/vs-template.md` first; every competitor needs a key from `references/service-logo-keys.md`. **Tile batches:** the script swaps only `P.vs.tileRange` (≤7 swaps per call). For Count ≤ 7 that is every tile in one call. For Count ≥ 8 find-slot emits `vs.tileBatches = [[0,7],[7,N]]`: run S3-vs with the batch-0 `P`, then re-run find-slot with the same flags plus `--tile-batch 1` and run S3-vs again with that `P` (it finds the instance by name and only swaps). Never edit `P` by hand.
+**S3 upsert cover.** `scripts/figma/s3-upsert-cover.js`: find the instance named `<slug>` or create it from the `162:1845` variant `Brand=<brand>, Layout=<layout>` (fonts of that variant loaded before `createInstance`; the instance's own fonts read back before any text write — Borna Medium, Nudica Mono Regular, Nudica Mono Medium are the floor, not the list), `setProperties` with the `#id` keys (`Show subtitle#162:33` = `P.showSubtitle`, true by default; when false the script also writes `Subtitle#162:32` as `""`), set the exposed `Background` nested instance's `Brand`/`Style`, `appendChild` into the month section, name = slug, then x/y (section-relative). For `--comparison` run `scripts/figma/s3-vs-comparison.js` instead — read `references/vs-template.md` first; every competitor needs a key from `references/service-logo-keys.md`. **Tile batches:** the script swaps only `P.vs.tileRange` (≤7 swaps per call). For Count ≤ 7 that is every tile in one call. For Count ≥ 8 find-slot emits `vs.tileBatches = [[0,7],[7,N]]`: run S3-vs with the batch-0 `P`, then re-run find-slot with the same flags plus `--tile-batch 1` and run S3-vs again with that `P` (it finds the instance by name and only swaps). Never edit `P` by hand.
 
 **S4 reflow.** `scripts/figma/s4-reflow.js` sets x/y of every child of the month section from `P`'s ordered positions and the section height. **Ops: at most 10 per call — a section resize (if any) plus child moves; the rest come back in `pending`; re-run while non-empty** (a section holds at most 20 covers, so at most two or three calls). **Hard rule: when S4 resized the section (`mutatedNodeIds` contains the section id), it must be followed by S2 → S5** — S4 never moves the sections below, so skipping S2 leaves the grown section overlapping the next month.
 
@@ -83,7 +83,7 @@ Ignore the `rawImages` / `svgAssets` URLs in the result, and a `svgAssetsTruncat
 **Cover copy stays minimal.** The post title and `seo.description` are inputs (`P.titleSource`, `P.subtitleSource`), never pasted onto the card. Character budgets, the punctuation-boundary shortening rule, and worked examples all live in `references/design-rules.md` (Text section) — read it before writing any copy; this section states the rule, not the numbers.
 
 - Headline: **at most three lines, no orphan word on the last line** (`P.titleBudget` carries the layout's character cap). Shorten faithfully, never rewrite — drop trailing clauses and questions, keep numbers and product names, and keep the published title's meaning. find-slot cuts at a punctuation boundary itself and asks (exit 3) when that is not enough; pass `--title "<short title>"` for the final wording.
-- Subtitle: **omit by default** — find-slot emits `showSubtitle: false` and `subtitle: ""`, S3 writes `Show subtitle` false and an empty `Subtitle`. Keep one only when a single line adds something the title does not say, written by the agent and passed as `--subtitle "<line>"` (sets both fields). Never copy `seo.description` or a body sentence, never restate the title — find-slot rejects those with a question.
+- Subtitle: **present by default** — find-slot derives one line, at most 55 characters, from `seo.description` (`--subtitle "<line>"` overrides, `--no-subtitle` clears both fields to `showSubtitle: false` / `subtitle: ""`). Never the full `seo.description`, never two lines, never a body sentence. A derived or supplied subtitle that restates the title is a suggestion, not a question; a supplied subtitle equal to `seo.description` is still a question.
 - VS card: headline `<N> <Competitor> Alternatives`; sub-line `for ` + the title's qualifier (`--subtitle` here sets the qualifier). N counts the listed competitors plus the brand tile when `--include-zenml` is true. find-slot derives the headline from the title and flags a suggestion when the title's own count differs; `--title` overrides a bad derivation.
 - Every cover is screenshot-checked (S6) before it is reported: a copy defect (design-rules.md's Visual acceptance section) must be fixed before export.
 - Alt text (goes in the YAML): one sentence describing what is on the card — brand, headline, and for a VS card the logos in tile order. Pattern from the existing posts: `ZenML blog cover for <title>, showing the logos of A, B, C`; VS card: `<Brand> comparison card for <headline> <for-line>, showing the logos of <Brand>, A, B, C` (brand tile first, then the competitors in tile order).
@@ -111,7 +111,7 @@ When a VS card needs a `ServiceLogo/<slug>` that isn't in `references/service-lo
 ## Verification (before reporting done)
 
 - S5 returned `mismatches: []` for every touched section — including the old month's section after a month change; the new instance's `name === slug`.
-- The S6 screenshot passed the copy check: title on at most three lines with no orphan word on the last line, subtitle absent or a single line that adds something the title does not say (S3's `props.ShowSubtitle` is `false` unless `--subtitle` was given).
+- The S6 screenshot passed the copy check: title on at most three lines with no orphan word on the last line, subtitle absent or a single line at most 55 characters that adds something the title does not say (S3's `props.ShowSubtitle` matches `P.showSubtitle`).
 - Pre-existing mismatches S5 reported in sections this run did not touch are listed in the report as such, and were not reflowed.
 - `sips -g pixelWidth -g pixelHeight "$S/<slug>.png"` → 3840 x 2160.
 - `.cache/covers/<slug>-cover.avif` and `.jpg` are 1200x675; `curl -sI <url>` on both R2 URLs → `200` with `content-type: image/avif` / `image/jpeg`.
@@ -119,7 +119,7 @@ When a VS card needs a `ServiceLogo/<slug>` that isn't in `references/service-lo
 
 ## Report
 
-One JSON block `{figmaNodeId, sectionName, slot, layout, brand, bgStyle, headline, subtitle, png, avif, jpg, urls, fallback, questions}` (`subtitle` is `""` when omitted) followed by the paste-ready YAML:
+One JSON block `{figmaNodeId, sectionName, slot, layout, brand, bgStyle, headline, subtitle, png, avif, jpg, urls, fallback, questions}` (`subtitle` is `""` only when `--no-subtitle` was passed or `seo.description` is empty) followed by the paste-ready YAML:
 ```yaml
 mainImage:
   url: "https://assets.zenml.io/content/blog/<slug>/<sha8>/<slug>-cover.avif"
