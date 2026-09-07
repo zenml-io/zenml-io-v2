@@ -4,9 +4,9 @@
  *
  * Routes three collections under the same URL prefix:
  *
- *   compare        → MlopsCompare.astro     (the legacy 9-section ZenML
- *                    template, driven by structured frontmatter on
- *                    Webflow-migrated .md)
+ *   compare        → ComparisonPage.astro   (the blocks-driven ZenML
+ *                    template, rendered from a `hero` plus an ordered
+ *                    `blocks[]` list in structured frontmatter)
  *   compare-zenml  → ZenmlMdxCompare.astro  (the MDX-driven ZenML template
  *                    — code panes, graphics, comparison tables)
  *   compare-kitaru → KitaruCompare.astro    (the same MDX template in
@@ -19,8 +19,8 @@
  */
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
+import ComparisonPage from "../../components/compare/_layouts/ComparisonPage.astro";
 import KitaruCompare from "../../components/compare/_layouts/KitaruCompare.astro";
-import MlopsCompare from "../../components/compare/_layouts/MlopsCompare.astro";
 import ZenmlMdxCompare from "../../components/compare/_layouts/ZenmlMdxCompare.astro";
 
 export async function getStaticPaths() {
@@ -105,6 +105,6 @@ const props = Astro.props;
       competitorOptions={props.competitorOptions}
     />
   ) : (
-    <MlopsCompare item={props.item} />
+    <ComparisonPage item={props.item} />
   )
 }

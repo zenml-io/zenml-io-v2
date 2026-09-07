@@ -74,7 +74,7 @@ export async function getZenmlCompareCards(): Promise<CompareCard[]> {
         meta: category ?? "MLOps",
         blurb:
           item.data.seoDescription ??
-          item.data.heroText ??
+          item.data.hero.deck ??
           "ZenML comparison page.",
         sub: category ? { text: category, kind: "category" } : undefined,
       };

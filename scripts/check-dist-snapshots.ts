@@ -99,7 +99,7 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
 const ASSET_HASH_RE = /(\/_astro\/[^"'\s]+?)\.[A-Za-z0-9_-]{8}\.(\w+)/g;
 const SCOPED_STYLE_ID_RE = /data-astro-cid-[a-z0-9]+/g;
 
-function normaliseSnapshot(html: string): string {
+export function normaliseSnapshot(html: string): string {
   const normalised = html
     .replace(ASSET_HASH_RE, "$1.[hash].$2")
     .replace(SCOPED_STYLE_ID_RE, "data-astro-cid-[hash]")
