@@ -127,7 +127,8 @@
  *     unchanged, applies:
  *
  *   - CSS is tokenized into individual rules (tokenizeCssRules — a container
- *     at-rule like @media/@supports/@layer/@container is unwrapped so its
+ *     at-rule like @media, @supports, @layer or a container query is
+ *     unwrapped so its
  *     inner rules are checked individually; @keyframes and other leaf
  *     at-rules are kept whole) and diffed as a MULTISET per route, combining
  *     each page's own inline `<style>` blocks with every `/_astro/*.css`
@@ -537,16 +538,25 @@ function collectStylesheets(
 // No dependency is added for this (postcss is not hoisted in
 // node_modules) — the tokenizer below only has to handle what these
 // bundles/inline blocks actually contain: plain rules, @media/@supports
-// (and Tailwind v4's @layer/@container), and @keyframes.
-
-const CSS_CONTAINER_AT_RULE_PREFIXES = [
-  "@media",
-  "@supports",
-  "@layer",
-  "@container",
-  "@document",
-  "@-moz-document",
+// (and Tailwind v4's @layer and container-query blocks), and @keyframes.
+//
+// The names are written WITHOUT their "@" and joined below on purpose:
+// Tailwind v4 scans every non-ignored file in the repo (this script
+// included) for utility candidates, and the container-query at-rule's
+// name is also a Tailwind utility, so spelling it out here as a literal
+// added that utility to the site's global.css and failed the very parity
+// run this script performs.
+const CSS_CONTAINER_AT_RULE_NAMES = [
+  "media",
+  "supports",
+  "layer",
+  "container",
+  "document",
+  "-moz-document",
 ];
+const CSS_CONTAINER_AT_RULE_PREFIXES = CSS_CONTAINER_AT_RULE_NAMES.map(
+  (name) => `@${name}`,
+);
 
 function stripCssComments(css: string): string {
   return css.replace(/\/\*[\s\S]*?\*\//g, "");
@@ -560,8 +570,9 @@ function normaliseCssWhitespace(s: string): string {
  * Tokenizes CSS text into a flat array of top-level rule keys. A "rule" is a
  * selector (or at-rule prelude) plus its declaration block, whitespace-
  * normalised — a multi-selector rule (`th,td{...}`) is kept as one rule, not
- * split apart. Container at-rules (@media, @supports, @layer, @container,
- * @document — Tailwind v4 nests almost everything in @layer) are unwrapped:
+ * split apart. Container at-rules (@media, @supports, @layer, the
+ * container-query at-rule, @document — Tailwind v4 nests almost everything
+ * in @layer) are unwrapped:
  * each inner rule becomes its own entry, keyed with the container's
  * normalised prelude prefixed on, so a declaration moving in or out of a
  * @media block (or one @layer deeper) is a real identity change, not
