@@ -703,7 +703,9 @@ const designMdSections = parseDesignRules(designMdRaw);
                               </span>
                             </td>
                           </tr>
-                          {status === "built" && entry.componentPath && (
+                          {status === "built" &&
+                            entry.componentPath &&
+                            entry.stage !== false && (
                             <tr class="border-b border-border last:border-b-0">
                               <td colspan="5" class="px-space-xs py-space-xs">
                                 <TemplateStage

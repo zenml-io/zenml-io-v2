@@ -7,10 +7,10 @@
  * ComparisonCta), rendered in ZenML's palette by wrapping the body in
  * <div data-app="zenml-compare">.
  *
- * This is deliberately NOT MlopsCompare.astro. That template is driven by
- * structured frontmatter on the legacy Webflow-migrated `compare` collection
- * (25 pages, 9 fixed sections, no code panes or graphics). This one renders an
- * MDX body, which is what the agent-era comparisons need.
+ * This is deliberately NOT ComparisonPage.astro. That template is driven by
+ * structured frontmatter on the Webflow-migrated `compare` collection (25
+ * pages, an ordered `blocks[]` list, no MDX body). This one renders an MDX
+ * body, which is what the agent-era comparisons need.
  *
  * Loaded by src/pages/compare/[slug].astro for any slug in the compare-zenml
  * collection.
