@@ -177,19 +177,31 @@ interface VsRenderModel {
 
 type RenderModel = CompareRenderModel | VsRenderModel;
 
-interface Props {
-  item: CollectionEntry<"compare"> | CollectionEntry<"vs-pages">;
-  /**
-   * `/vs`'s precomputed relatedCompare rail items (icon-link cards), built
-   * once in its getStaticPaths from the compare collection's category.
-   * Passed in rather than recomputed here. Required whenever `item` is a
-   * `vs-pages` entry; unused for `compare` entries, which build their own
-   * showdown/blog rails internally at render time.
-   */
-  related?: RelatedRailItem[];
-}
+/**
+ * Discriminated on `item`'s own collection so the `related` prop is
+ * type-enforced rather than documented: required for `vs-pages` (its
+ * precomputed relatedCompare rail items, built once in its getStaticPaths
+ * from the compare collection's category), forbidden for `compare` (which
+ * builds its own showdown/blog rails internally at render time).
+ */
+type Props =
+  | { item: CollectionEntry<"compare">; related?: never }
+  | { item: CollectionEntry<"vs-pages">; related: RelatedRailItem[] };
 
-const { item, related } = Astro.props;
+const props = Astro.props;
+
+/**
+ * A user-defined guard, not a re-check of `item.collection` inline: TS's
+ * control-flow narrowing only narrows the object whose own property is
+ * tested (`props.item`), not an ancestor (`props`) discriminated by a
+ * nested field — so narrowing `props.item.collection` alone would leave
+ * `props.related` unnarrowed. This guard narrows `props` itself.
+ */
+function isCompareProps(
+  p: Props,
+): p is Extract<Props, { item: CollectionEntry<"compare"> }> {
+  return p.item.collection === "compare";
+}
 
 // ---------------------------------------------------------------------------
 // Compare-family computed-at-render data (siblings/posts are looked up fresh
@@ -321,8 +333,8 @@ let ogDescription: string | undefined;
 let ogImage: string | undefined;
 let canonical: string | undefined;
 
-if (item.collection === "compare") {
-  const compareItem = item;
+if (isCompareProps(props)) {
+  const compareItem = props.item;
   const toolName =
     compareItem.data.toolName ||
     compareItem.data.title.replace("ZenML vs ", "");
@@ -354,12 +366,7 @@ if (item.collection === "compare") {
     compareItem.data.seo?.ogImage || compareItem.data.openGraphImage?.url;
   canonical = compareItem.data.seo?.canonical;
 } else {
-  const vsItem = item;
-  if (!related) {
-    throw new Error(
-      `${vsItem.data.slug}: rendered as a vs-pages entry without a \`related\` prop — build it in getStaticPaths from the compare collection.`,
-    );
-  }
+  const { item: vsItem, related } = props;
 
   renderModel = {
     family: "vs",
@@ -566,7 +573,7 @@ if (item.collection === "compare") {
                             />
                           ) : (
                             block.eyebrow && (
-                              <span class="text-xs font-semibold uppercase tracking-wider text-zenml-500">
+                              <span class={SECTION_INTRO_PRESETS.cardEyebrow}>
                                 {block.eyebrow}
                               </span>
                             )
