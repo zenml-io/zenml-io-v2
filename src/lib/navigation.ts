@@ -182,7 +182,7 @@ export function createNavDropdowns({
             {
               label: "Kitaru docs",
               href: "https://docs.zenml.io/kitaru",
-              description: "Agent runtime primitives and APIs",
+              description: "Record, replay, and evaluate agents",
               external: true,
               icon: ICON_BOOK,
               brand: "kitaru",

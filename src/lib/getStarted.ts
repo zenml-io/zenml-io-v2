@@ -3,28 +3,23 @@
  *
  * Used by src/pages/get-started.astro.
  *
- * The page has two tabs (ZenML / Kitaru) under one /get-started URL with
- * surface="unified". GET_STARTED_HERO + GET_STARTED_FINAL_CTA + GET_STARTED_SEO
- * are shared across both tabs. GET_STARTED_ZENML and GET_STARTED_KITARU
- * hold the per-tab content.
+ * ZenML open-source onboarding. Kitaru's onboarding lives on /product/kitaru;
+ * this page only points there.
  *
  * ZenML copy was extracted from the original Webflow snapshot + SEO baseline.
- * Kitaru code snippets follow the public docs at https://docs.zenml.io/kitaru
- * (decorators: @flow + @checkpoint; flows are invoked via `.run()`).
  */
 import type { CtaLink } from "./marketingPageTypes";
-import { KITARU_INSTALL_CMD } from "./productKitaru";
 
 // ---------------------------------------------------------------------------
 // SEO (one page, one URL)
 // ---------------------------------------------------------------------------
 export const GET_STARTED_SEO = {
-  title: "Get Started with ZenML or Kitaru | ZenML",
+  title: "Get Started with ZenML",
   description:
-    "Set up ZenML to orchestrate AI workflows and Kitaru to diagnose your agents. Install, run locally, and bring both into the same workflow.",
-  ogTitle: "Get Started with ZenML or Kitaru",
+    "Install ZenML, run your first pipeline locally, and orchestrate AI workflows and agents on the infrastructure you already use.",
+  ogTitle: "Get Started with ZenML",
   ogDescription:
-    "Set up ZenML to orchestrate AI workflows and Kitaru to diagnose your agents. Install, run locally, and bring both into the same workflow.",
+    "Install ZenML, run your first pipeline locally, and orchestrate AI workflows and agents on the infrastructure you already use.",
   ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
 } as const;
 
@@ -34,34 +29,8 @@ export const GET_STARTED_SEO = {
 export const GET_STARTED_HERO = {
   eyebrow: "Open Source",
   headline: "Get started.",
-  deck: "ZenML runs your ML and data pipelines. Kitaru keeps agents alive across crashes, waits, and retries. Plenty of teams run both.",
+  deck: "Install ZenML, run a pipeline on your laptop, then point the same code at your own cloud. Open source, no lock-in.",
 } as const;
-
-// ---------------------------------------------------------------------------
-// Tab definitions (id, label, subtitle, brand dot)
-// ---------------------------------------------------------------------------
-export interface GetStartedTab {
-  id: "zenml" | "kitaru";
-  label: string;
-  subtitle: string;
-  /** Tailwind background utility for the 8px brand dot inside the tab pill. */
-  dotClass: string;
-}
-
-export const GET_STARTED_TABS: readonly GetStartedTab[] = [
-  {
-    id: "zenml",
-    label: "ZenML",
-    subtitle: "AI orchestration",
-    dotClass: "bg-zenml-500",
-  },
-  {
-    id: "kitaru",
-    label: "Kitaru",
-    subtitle: "Agent runtime",
-    dotClass: "bg-orange-500",
-  },
-] as const;
 
 // ---------------------------------------------------------------------------
 // Shared types
@@ -221,84 +190,6 @@ if __name__ == "__main__":
   steps: GetStartedSteps;
   architecture: GetStartedArchitecture;
   projects: GetStartedProjects;
-  resources: GetStartedResources;
-};
-
-// ---------------------------------------------------------------------------
-// Kitaru tab
-// ---------------------------------------------------------------------------
-export const GET_STARTED_KITARU = {
-  steps: {
-    headline: "Pause for a human, survive a crash",
-    items: [
-      {
-        title: "Install Kitaru",
-        body: "Run this inside your agent's repo. It adds Kitaru to that project's environment, installs the coding-agent skills, and wires the MCP server. Nothing needs sudo. It ends by showing the two ways to get a server: local in Docker, or the managed cloud.",
-        code: KITARU_INSTALL_CMD,
-      },
-      {
-        title: "Add a human-in-the-loop gate",
-        body: "Wrap an agent you already have, checkpoint the expensive calls, and <code>wait</code> for a human before anything ships:",
-        code: `from kitaru import flow, wait
-from kitaru_pydantic_ai import KitaruAgent
-from pydantic_ai import Agent
-
-# KitaruAgent turns PydanticAI model + tool calls into replayable checkpoints.
-agent = KitaruAgent(Agent("openai:gpt-5-mini", system_prompt="You draft customer replies."))
-
-@flow
-def support_flow(ticket: str) -> str:
-    reply = agent.run_sync(f"Draft a reply to: {ticket}").output
-    approved = wait(schema=bool, question=f"Send this?\n\n{reply}")
-    return reply if approved else "escalated to a human"
-
-if __name__ == "__main__":
-    print(support_flow.run("my invoice is wrong").wait())`,
-      },
-      {
-        title: "Run it, walk away, resume it",
-        body: "Run it. It pauses at the approval gate and releases compute. Answer hours later and it resumes from where it stopped. No idle container, no lost work.",
-        code: "python flow.py",
-      },
-    ],
-  },
-  resources: {
-    eyebrow: "Resources",
-    headline: "Your Complete Kitaru Learning Toolkit",
-    body: "Docs, examples, and a community building production agents. Start where you are.",
-    items: [
-      {
-        title: "Kitaru Docs",
-        body: "Primitives, APIs, and recipes for building production agents.",
-        href: "https://docs.zenml.io/kitaru",
-        external: true,
-        color: "orange",
-      },
-      {
-        title: "GitHub Repo",
-        body: "Star, file issues, and read the source on github.com/zenml-io/kitaru.",
-        href: "https://github.com/zenml-io/kitaru",
-        external: true,
-        color: "gray",
-      },
-      {
-        title: "From ZenML to Kitaru",
-        body: "Why we built a separate runtime for agents, and what it does for you.",
-        href: "/blog/from-zenml-to-kitaru",
-        external: false,
-        color: "purple",
-      },
-      {
-        title: "Slack Community",
-        body: "Join engineers shipping production agents. Get help, share patterns.",
-        href: "/slack",
-        external: false,
-        color: "blue",
-      },
-    ],
-  },
-} as const satisfies {
-  steps: GetStartedSteps;
   resources: GetStartedResources;
 };
 
