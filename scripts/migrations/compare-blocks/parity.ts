@@ -21,7 +21,7 @@
  *   --prepare <ref> [--rebuild]
  *                     Resolve <ref> to a full commit SHA, build it in an
  *                     isolated detached worktree, and capture its 28 routes,
- *                     the 10 kitaru guard routes, and the CSS bundles they
+ *                     the 15 MDX guard routes, and the CSS bundles they
  *                     reference into .cache/compare-parity/captures/<sha>/.
  *                     A capture is keyed by that immutable SHA: re-running
  *                     --prepare with a ref that resolves to a SHA already
@@ -87,17 +87,23 @@
  * `normaliseSnapshot` masks that hash — so comparing HTML alone leaves every
  * one of those rules outside the gate, and a restyle would pass green. Each
  * capture therefore also stores every `/_astro/*.css` bundle the 28 parity
- * routes AND the 10 kitaru guard routes reference — including bundles only
- * a guard route links (e.g. `ComparisonCta.<hash>.css`, a per-page
- * `kitaru-vs-<slug>.<hash>.css`) — and compare mode diffs them by base name
- * (the hash moves with content, so the name is the identity and the content
- * is the check). This is reported in two sections: the 28 parity routes'
- * bundles under "Stylesheets referenced by these routes", the 10 guard
- * routes' bundles under their own "Kitaru guard stylesheets" heading, keyed
+ * routes AND the 15 MDX guard routes reference — including bundles only
+ * a guard route links (e.g. `FeatureWithGraphic.<hash>.css` and
+ * `PullQuote.<hash>.css`, plus one per-page
+ * `kitaru-vs-<slug>.<hash>.css` or `zenml-vs-<slug>.<hash>.css` per MDX
+ * entry) — and compare mode diffs them by base name (the hash moves with
+ * content, so the name is the identity and the content is the check). This
+ * is reported in two sections: the 28 parity routes'
+ * bundles under "Stylesheets referenced by these routes", the 15 guard
+ * routes' bundles under their own "MDX guard stylesheets" heading, keyed
  * `guard:<base name>` so a guard-only bundle can never collide with a
- * `compare:`/`vs:` key even when it's the very same shared file. A
+ * `compare:`/`vs:` key even when it's the very same shared file. That
+ * keying is also what keeps a guard page's own per-page bundle apart from
+ * a parity route's assets: a `compare-zenml` entry emits
+ * `zenml-vs-<slug>.<hash>.css`, a name in the same shape as a parity
+ * route's slug, but it is only ever reached under a `guard:` key. A
  * `global.css` change is a site-wide edit to explain, not one of the 28
- * routes (or the 10 guard routes) regressing. The `_slug_` bundle is the
+ * routes (or the 15 guard routes) regressing. The `_slug_` bundle is the
  * one exception in both sections — see "The accepted /vs delta" below for
  * why it is exempted from the byte compare and checked a different way
  * instead.
@@ -133,7 +139,7 @@
  *     at-rules are kept whole) and diffed as a MULTISET per route, combining
  *     each page's own inline `<style>` blocks with every `/_astro/*.css`
  *     bundle it references (checkRouteCss). `/compare/*` routes (and the
- *     kitaru guard routes, which share the same dispatcher) must match the
+ *     MDX guard routes, which share the same dispatcher) must match the
  *     base multiset exactly in either regime. In the "relocation" regime,
  *     `/vs/*` routes must match base plus EXACTLY the 20 rules in
  *     ACCEPTED_VS_EXTRA_RULES — each identified by a stable fingerprint
@@ -165,22 +171,31 @@
  * `verifyAcceptedRulesAreRelocated` names the bundle it looked in and
  * needs its lookup key ("compare:_slug_") updated too.
  *
- * Kitaru guard set: `src/pages/compare/[slug].astro` emits the 10
- * `kitaru-vs-*` routes from the SAME dispatcher as the 25 `zenml-vs-*` ones,
- * and they share the same CSS bundle — so a change to the dispatcher or to a
- * shared component could regress them while all 28 parity routes stay
- * green. The ruling for this wave is that those pages are untouched;
+ * MDX guard set: `src/pages/compare/[slug].astro` emits 15 MDX-backed
+ * routes from the SAME dispatcher as the 25 blocks-driven `zenml-vs-*`
+ * ones. Those 15 are the 5 `kitaru-vs-*` pages in
+ * `src/content/compare-kitaru` plus the 10 `zenml-vs-*` pages in
+ * `src/content/compare-zenml`, and they share the same CSS bundle, so a
+ * change to the dispatcher or to a shared component could regress them
+ * while all 28 parity routes stay green. The ruling for this wave is that
+ * those pages are untouched;
  * comparing them is the cheapest proof, so they are captured and compared
  * as a separate guard set, reported under its own heading and counted
  * separately from the 28. They are NOT part of the parity set and no
  * ruling about them changes.
  *
+ * The two sets must also stay disjoint. `compare` and `compare-zenml` both
+ * emit `zenml-vs-*` URLs, so one id defined in both collections would be a
+ * single route counted in the parity set AND in the guard set, judged
+ * twice under two different rule sets. deriveGuardRoutes exits by name on
+ * that, the way the dispatcher itself refuses to build it.
+ *
  * The guard set is also asserted, not just compared: EXPECTED_GUARD_ROUTE_
- * COUNT (10) is checked against the base manifest, the candidate manifest,
+ * COUNT (15) is checked against the base manifest, the candidate manifest,
  * AND a live re-derivation from each worktree's own content — all four must
- * agree on the same 10 routes, by name, or compare mode refuses to run.
+ * agree on the same 15 routes, by name, or compare mode refuses to run.
  * Deriving only from "whatever the dispatcher currently emits" would let a
- * removed or drafted route silently turn 10/10 green into 9/9 green. That
+ * removed or drafted route silently turn 15/15 green into 14/14 green. That
  * live re-derivation first checks the worktree still exists — a pruned
  * worktree fails by a named error, not a raw ENOENT — then re-verifies its
  * HEAD and cleanliness against the SHA the capture claims, so a worktree
@@ -258,13 +273,20 @@ import { normaliseSnapshot } from "../../check-dist-snapshots.ts";
 
 const COMPARE_SUBDIR = "src/content/compare";
 const VS_SUBDIR = "src/content/vs-pages";
-const KITARU_SUBDIR = "src/content/compare-kitaru";
+/**
+ * The two MDX comparison collections the same dispatcher emits, captured as
+ * the guard set (see the docblock's "MDX guard set" section).
+ */
+const GUARD_MDX_SUBDIRS = [
+  "src/content/compare-kitaru",
+  "src/content/compare-zenml",
+];
 const DIST_SUBDIR = "dist/client";
 const CACHE_DIR = ".cache/compare-parity";
 const WORKTREES_DIR = join(CACHE_DIR, "worktrees");
 const CAPTURES_DIR = join(CACHE_DIR, "captures");
 const EXPECTED_ROUTE_COUNT = 28;
-const EXPECTED_GUARD_ROUTE_COUNT = 10;
+const EXPECTED_GUARD_ROUTE_COUNT = 15;
 
 interface Route {
   /**
@@ -428,25 +450,56 @@ function deriveRoutes(rootDir: string): Route[] {
 }
 
 /**
- * The 10 `kitaru-vs-*` routes for a given checkout. They are NOT part of the
- * 28-route parity set, but `src/pages/compare/[slug].astro` emits them from
+ * The 15 MDX guard routes for a given checkout: the 5 `kitaru-vs-*` pages
+ * in `src/content/compare-kitaru` plus the 10 `zenml-vs-*` pages in
+ * `src/content/compare-zenml`. They are NOT part of the 28-route parity
+ * set, but `src/pages/compare/[slug].astro` emits them from
  * the same dispatcher and they share the same `_slug_.css` bundle, so a
  * change to the dispatcher or to a shared component can regress them while
  * all 28 stay green. The ruling for this wave is that they are untouched;
  * comparing them is the cheapest proof of that, so they are captured and
  * compared as a separate guard set.
  *
- * They key off the entry id (filename), not a frontmatter `slug` — these
- * entries have no `slug` field and the dispatcher routes them by `e.id`.
+ * Both collections key off the entry id (filename), not a frontmatter
+ * `slug` — these entries have no `slug` field and the dispatcher routes
+ * them by `e.id`.
+ *
+ * `compare` and `compare-zenml` both emit `zenml-vs-*` URLs, so an id
+ * defined in both would be one route counted in the parity set AND in the
+ * guard set, judged twice under two different rule sets. That exits by
+ * name here, the way the dispatcher itself refuses to build it. Neither
+ * count means anything while the two sets overlap.
  */
 function deriveGuardRoutes(rootDir: string): Route[] {
-  return readFrontmatterEntries(join(rootDir, KITARU_SUBDIR), ".mdx")
-    .filter(({ data }) => !data.draft)
-    .map(({ file }) => ({
-      route: `compare/${file.replace(/\.mdx$/, "")}.html`,
-      slug: file.replace(/\.mdx$/, ""),
-      kind: "compare" as const,
-    }));
+  const guardRoutes = GUARD_MDX_SUBDIRS.flatMap((subdir) =>
+    readFrontmatterEntries(join(rootDir, subdir), ".mdx")
+      .filter(({ data }) => !data.draft)
+      .map(({ file }) => ({
+        route: `compare/${file.replace(/\.mdx$/, "")}.html`,
+        slug: file.replace(/\.mdx$/, ""),
+        kind: "compare" as const,
+      })),
+  );
+
+  const paritySlugs = new Set(
+    readFrontmatterEntries(join(rootDir, COMPARE_SUBDIR))
+      .filter(({ data }) => !data.draft)
+      .map(({ data }) => String(data.slug)),
+  );
+  const collisions = guardRoutes
+    .map((r) => r.slug)
+    .filter((slug) => paritySlugs.has(slug));
+  if (collisions.length > 0) {
+    console.error(
+      `ERROR: ${collisions.join(", ")} defined in both the \`compare\` ` +
+        `collection and an MDX guard collection in ${rootDir}. The parity ` +
+        "set and the guard set must stay disjoint. Resolve the duplicate " +
+        "before trusting either count.",
+    );
+    process.exit(1);
+  }
+
+  return guardRoutes;
 }
 
 /**
@@ -502,7 +555,7 @@ function referencedStylesheets(html: string): string[] {
  * the base name alone would then let one silently overwrite the other, so the
  * compare bundle would drop out of the gate and the tool would diff a baseline
  * compare bundle against a new vs bundle. `keyKind`, when passed, overrides
- * `r.kind` for every route in this call — used to key the 10 kitaru guard
+ * `r.kind` for every route in this call — used to key the 15 MDX guard
  * routes' bundles under `guard:` instead of `compare:`, so a guard-only
  * bundle can never collide with (or be shadowed by) a real parity-route key,
  * even when the underlying file is the very same shared `_slug_` bundle.
@@ -650,7 +703,7 @@ const bundleRuleMultisetCache = new Map<string, Map<string, number>>();
 
 /**
  * Tokenizes one CSS bundle file's rules, cached by path — the same global.css
- * is read for every one of the 28+10 routes.
+ * is read for every one of the 28+15 routes.
  */
 function bundleRuleMultiset(path: string): Map<string, number> {
   const cached = bundleRuleMultisetCache.get(path);
@@ -670,12 +723,13 @@ function extractInlineStyleContents(html: string): string[] {
 /**
  * The full CSS rule multiset a page renders with: its own inline `<style>`
  * blocks plus every `/_astro/*.css` bundle it links, resolved against `dir`
- * (a capture directory). A referenced bundle this script didn't capture
- * (the 10 kitaru guard routes link a couple of component-specific bundles
- * `--prepare` never collects, since it only scans the 28 parity routes —
- * see the docblock) contributes nothing on either side rather than erroring,
- * which is safe for a base/candidate DIFF (missing on both cancels out) but
- * means such a bundle's own content isn't independently verified here.
+ * (a capture directory). `--prepare` captures every bundle the 28 parity
+ * routes and the 15 MDX guard routes link, so a missing bundle here means
+ * a capture is incomplete. One that is missing contributes nothing on
+ * either side rather than erroring, which is safe for a base/candidate
+ * DIFF (missing on both cancels out) but means such a bundle's own content
+ * isn't independently verified here; the byte compare of every captured
+ * stylesheet in compare mode is what covers the bundles themselves.
  */
 function pageCssMultiset(dir: string, html: string): Map<string, number> {
   const result = ruleMultiset(
@@ -822,7 +876,7 @@ type VsRegime = "identical" | "relocation";
 
 /**
  * Finding 2: asserts the CSS rule multiset a route's kind allows.
- * `/compare/*` (and the kitaru guard routes, which share the dispatcher):
+ * `/compare/*` (and the MDX guard routes, which share the dispatcher):
  * candidate must equal base exactly — nothing added, nothing removed, in
  * either regime.
  * `/vs/*`: when `vsRegime` is "identical", the same rule applies — nothing
@@ -1392,10 +1446,10 @@ function runPrepare(refArg: string | undefined, rebuild: boolean) {
   // The component styles these pages render with live in a hashed bundle the
   // HTML normaliser masks by design, so they must be captured separately or
   // they are outside the gate entirely (see the stylesheet note in the docblock).
-  // The 10 kitaru guard routes are captured too, keyed under "guard" — they
-  // link a couple of component-specific bundles (e.g. ComparisonCta,
-  // per-page kitaru-vs-<slug>) that the 28 parity routes never reference, and
-  // those would otherwise never be captured or compared at all.
+  // The 15 MDX guard routes are captured too, keyed under "guard" — they
+  // link a few component-specific bundles (FeatureWithGraphic, PullQuote,
+  // and one per-page bundle per MDX entry) that the 28 parity routes never
+  // reference, and those would otherwise never be captured or compared.
   const stylesheets = collectStylesheets(distDir, routes);
   const guardStylesheets = collectStylesheets(distDir, guardRoutes, "guard");
   // De-duplicated: the map is keyed per route kind (or "guard"), so a bundle
@@ -1437,7 +1491,7 @@ function runPrepare(refArg: string | undefined, rebuild: boolean) {
   );
 
   console.log(
-    `\n${routes.length} route(s), ${guardRoutes.length} kitaru guard route(s) and ` +
+    `\n${routes.length} route(s), ${guardRoutes.length} MDX guard route(s) and ` +
       `${stylesheetFiles.length} stylesheet(s) captured to ${captureDir}/ ` +
       `(manifest: ${join(captureDir, "manifest.json")}).`,
   );
@@ -1518,9 +1572,9 @@ function deriveGuardRoutesForManifest(manifest: Manifest): Route[] {
 /**
  * Finding 3: assert the base manifest's guard routes, the candidate
  * manifest's guard routes, and the guard routes derived live from each
- * worktree's own content are all the same set of exactly 10 — reporting
+ * worktree's own content are all the same set of exactly 15 — reporting
  * any drift by name and refusing to compare rather than silently going
- * 9/9 green. A route present on one side and absent on another is a
+ * 14/14 green. A route present on one side and absent on another is a
  * failure here, not a skip.
  */
 function verifyGuardRouteSet(base: Manifest, candidate: Manifest) {
@@ -1545,7 +1599,7 @@ function verifyGuardRouteSet(base: Manifest, candidate: Manifest) {
   for (const s of sets) {
     if (s.routes.length !== EXPECTED_GUARD_ROUTE_COUNT) {
       console.error(
-        `ERROR: ${s.label} has ${s.routes.length} kitaru guard route(s), ` +
+        `ERROR: ${s.label} has ${s.routes.length} MDX guard route(s), ` +
           `expected ${EXPECTED_GUARD_ROUTE_COUNT}: ${s.routes.join(", ") || "(none)"}`,
       );
       ok = false;
@@ -1562,7 +1616,7 @@ function verifyGuardRouteSet(base: Manifest, candidate: Manifest) {
       .map((s) => s.label);
     if (missingFrom.length > 0) {
       console.error(
-        `ERROR: kitaru guard route ${route} is missing from: ${missingFrom.join(", ")}`,
+        `ERROR: MDX guard route ${route} is missing from: ${missingFrom.join(", ")}`,
       );
       ok = false;
     }
@@ -1570,8 +1624,9 @@ function verifyGuardRouteSet(base: Manifest, candidate: Manifest) {
 
   if (!ok) {
     console.error(
-      "\nKitaru guard route set drifted from the expected 10 — refusing to " +
-        "compare. A route was removed, drafted, or added on one side; " +
+      `\nMDX guard route set drifted from the expected ` +
+        `${EXPECTED_GUARD_ROUTE_COUNT} — refusing to compare. A route was ` +
+        "removed, drafted, or added on one side; " +
         "resolve that before trusting any of the numbers below.",
     );
     process.exit(1);
@@ -1663,7 +1718,7 @@ function compareRouteSet(
  * purpose (per-route checkRouteCss verifies exactly that move), so
  * byte-comparing it here would just re-report the same accepted change as
  * a false failure. `keyKind`, when passed, overrides every route's own
- * kind for this call — used for the 10 kitaru guard routes, so their
+ * kind for this call — used for the 15 MDX guard routes, so their
  * bundles are keyed `guard:<base name>` and reported under `heading`
  * instead of folding into (or colliding with) the parity routes' table.
  *
@@ -1834,7 +1889,7 @@ function runCompare(
     baseDir,
     candidateDir,
     vsRegime,
-    "\nKitaru guard routes (must be untouched — same dispatcher, same bundle):",
+    "\nMDX guard routes (must be untouched — same dispatcher, same bundle):",
   );
 
   const styleFailures = compareStylesheets(
@@ -1849,7 +1904,7 @@ function runCompare(
     candidateDir,
     {
       keyKind: "guard",
-      heading: "\nKitaru guard stylesheets (must be untouched):",
+      heading: "\nMDX guard stylesheets (must be untouched):",
     },
   );
 
@@ -1868,9 +1923,9 @@ function runCompare(
 
   console.log(
     `\n${tally.passed} passed, ${tally.failed} failed, ${tally.skipped} skipped-missing (of ${routes.length} routes); ` +
-      `${guard.passed}/${guard.passed + guard.failed + guard.skipped} kitaru guard routes unchanged; ` +
+      `${guard.passed}/${guard.passed + guard.failed + guard.skipped} MDX guard routes unchanged; ` +
       `${styleFailures} stylesheet(s) changed; ` +
-      `${guardStyleFailures} kitaru guard stylesheet(s) changed.`,
+      `${guardStyleFailures} MDX guard stylesheet(s) changed.`,
   );
   const bad =
     tally.failed +
