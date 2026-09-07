@@ -30,9 +30,13 @@ import sharp from "sharp";
 import { ACTUAL_DIR, logResult, SNAPSHOT_DIR } from "./check-dist-snapshots";
 import { loadEntries, loadFonts, renderJpeg } from "./og/generate-compare-og";
 
-/** Same page the MDX rendered-content golden uses, so one slug covers both. */
-export const OG_GOLDEN_SLUG = "kitaru-vs-temporal";
-export const OG_GOLDEN_PATH = join(SNAPSHOT_DIR, `og-${OG_GOLDEN_SLUG}.jpg`);
+/**
+ * One card per brand variant. The Kitaru slug is the same page the MDX
+ * rendered-content golden uses; the ZenML slug exercises the template's
+ * <img> data-URI path through satori/resvg, which the Kitaru card never hits.
+ */
+export const OG_GOLDEN_SLUGS = ["kitaru-vs-pydantic-ai", "zenml-vs-pydantic-ai"] as const;
+const goldenPath = (slug: string) => join(SNAPSHOT_DIR, `og-${slug}.jpg`);
 
 /** Per-channel difference (0–255) at or below which a pixel counts as unchanged. */
 export const CHANNEL_DELTA = 24;
@@ -67,48 +71,61 @@ export function changedPixelPct(a: RawImage, b: RawImage): number {
   return (changed / pixels) * 100;
 }
 
-async function renderGoldenCard(): Promise<Buffer> {
-  const [[entry], fonts] = await Promise.all([loadEntries([OG_GOLDEN_SLUG]), loadFonts()]);
-  if (!entry) throw new Error(`No compare entry named ${OG_GOLDEN_SLUG}`);
-  return renderJpeg(entry, fonts);
+async function renderGoldenCards(): Promise<Array<{ slug: string; jpeg: Buffer }>> {
+  const [entries, fonts] = await Promise.all([loadEntries([...OG_GOLDEN_SLUGS]), loadFonts()]);
+  return Promise.all(
+    OG_GOLDEN_SLUGS.map(async (slug) => {
+      const entry = entries.find((e) => e.slug === slug);
+      if (!entry) throw new Error(`No compare entry named ${slug}`);
+      return { slug, jpeg: await renderJpeg(entry, fonts) };
+    }),
+  );
 }
 
-/** Returns the failure count (0 or 1), matching the other smoke checks. */
+/** Returns the failure count, matching the other smoke checks. */
 export async function checkOgGolden(): Promise<number> {
-  const actual = await renderGoldenCard();
   mkdirSync(ACTUAL_DIR, { recursive: true });
-  const actualPath = join(ACTUAL_DIR, `og-${OG_GOLDEN_SLUG}.jpg`);
-  writeFileSync(actualPath, actual);
+  let failures = 0;
+  for (const { slug, jpeg: actual } of await renderGoldenCards()) {
+    const actualPath = join(ACTUAL_DIR, `og-${slug}.jpg`);
+    writeFileSync(actualPath, actual);
+    const golden = goldenPath(slug);
 
-  if (!existsSync(OG_GOLDEN_PATH)) {
-    logResult(false, `Missing golden ${OG_GOLDEN_PATH}. Run pnpm og:golden:update.`);
-    return 1;
-  }
-  const [want, got] = await Promise.all([decodeRgb(readFileSync(OG_GOLDEN_PATH)), decodeRgb(actual)]);
-  if (want.width !== got.width || want.height !== got.height) {
+    if (!existsSync(golden)) {
+      logResult(false, `Missing golden ${golden}. Run pnpm og:golden:update.`);
+      failures++;
+      continue;
+    }
+    const [want, got] = await Promise.all([decodeRgb(readFileSync(golden)), decodeRgb(actual)]);
+    if (want.width !== got.width || want.height !== got.height) {
+      logResult(
+        false,
+        `OG card ${slug} size changed: golden ${want.width}×${want.height}, rendered ${got.width}×${got.height}`,
+      );
+      failures++;
+      continue;
+    }
+    const changedPct = changedPixelPct(want, got);
+    const ok = changedPct <= MAX_CHANGED_PCT;
     logResult(
-      false,
-      `OG card size changed: golden ${want.width}×${want.height}, rendered ${got.width}×${got.height}`,
+      ok,
+      ok
+        ? `OG card ${slug}: ${changedPct.toFixed(3)}% of pixels changed (limit ${MAX_CHANGED_PCT}%)`
+        : `OG card ${slug} drifted from its golden: ${changedPct.toFixed(3)}% of pixels changed (limit ${MAX_CHANGED_PCT}%). ` +
+            `Compare ${golden} with ${actualPath}; if the change is intended, run pnpm og:golden:update.`,
     );
-    return 1;
+    if (!ok) failures++;
   }
-  const changedPct = changedPixelPct(want, got);
-  const ok = changedPct <= MAX_CHANGED_PCT;
-  logResult(
-    ok,
-    ok
-      ? `OG card ${OG_GOLDEN_SLUG}: ${changedPct.toFixed(3)}% of pixels changed (limit ${MAX_CHANGED_PCT}%)`
-      : `OG card ${OG_GOLDEN_SLUG} drifted from its golden: ${changedPct.toFixed(3)}% of pixels changed (limit ${MAX_CHANGED_PCT}%). ` +
-          `Compare ${OG_GOLDEN_PATH} with ${actualPath}; if the change is intended, run pnpm og:golden:update.`,
-  );
-  return ok ? 0 : 1;
+  return failures;
 }
 
 async function main() {
   if (process.argv.includes("--update")) {
     mkdirSync(SNAPSHOT_DIR, { recursive: true });
-    writeFileSync(OG_GOLDEN_PATH, await renderGoldenCard());
-    logResult(true, `wrote ${OG_GOLDEN_PATH} — look at it before committing`);
+    for (const { slug, jpeg } of await renderGoldenCards()) {
+      writeFileSync(goldenPath(slug), jpeg);
+      logResult(true, `wrote ${goldenPath(slug)} — look at it before committing`);
+    }
     return;
   }
   process.exit(await checkOgGolden());

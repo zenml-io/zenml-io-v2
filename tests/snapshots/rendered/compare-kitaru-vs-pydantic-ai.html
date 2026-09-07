@@ -1,0 +1,1215 @@
+<article class="compare-body-inner" data-astro-cid-[hash]="">
+<p>Pydantic AI and Kitaru solve different problems at different layers. Pydantic AI is an 
+<strong>agent harness
+</strong>: the best-in-class Pythonic library for writing type-safe agent logic, with tool calling, structured outputs, dependency injection, and streaming. Kitaru is a 
+<strong>replay-based eval layer
+</strong>: it records every run as a session, and a session re-executes. Unchanged, you get a faithful baseline. Forked with one thing changed, you get an answer.
+</p>
+
+<p>They don’t compete. They compose. Kitaru ships a 
+<a href="https://docs.zenml.io/kitaru/adapters/pydantic-ai">first-class Pydantic AI adapter
+</a>: wrap the agent once with 
+<code>KitaruAgent
+</code> and every run lands as a session with its model requests, tool calls, token usage, and cost. Running that same agent durably in production is ZenML’s job; Kitaru replays and improves it. See 
+<a href="/compare/zenml-vs-pydantic-ai">ZenML vs Pydantic AI
+</a>.
+</p>
+
+<section class="when" data-reveal="" data-astro-cid-[hash]="">
+<div class="when-grid" data-astro-cid-[hash]="">
+<article class="when-card when-card--kitaru" data-astro-cid-[hash]="">
+<div class="when-card-head" data-astro-cid-[hash]="">
+<span class="when-tag when-tag--kitaru" data-astro-cid-[hash]="">Kitaru
+</span>
+<h2 data-astro-cid-[hash]="">Use Kitaru if you are
+</h2>
+</div>
+<ul data-astro-cid-[hash]="">
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Running Pydantic AI agents in production and can't test against real systems: a history tool policy answers tool calls from the recording
+</span>
+</li>
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Deciding a model or prompt swap and want a like-for-like comparison instead of a vibe check
+</span>
+</li>
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Turning the sessions that caught a failure into a regression suite that runs on every change
+</span>
+</li>
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Already tracing to Langfuse, LangSmith, Braintrust, Logfire, or Arize Phoenix and want those traces runnable, not just readable
+</span>
+</li>
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Self-hosting eval infrastructure so traces and credentials stay in your own systems
+</span>
+</li>
+</ul>
+</article>
+<article class="when-card when-card--competitor" data-astro-cid-[hash]="">
+<div class="when-card-head" data-astro-cid-[hash]="">
+<span class="when-tag when-tag--competitor" data-astro-cid-[hash]="">Pydantic AI
+</span>
+<h2 data-astro-cid-[hash]="">Use Pydantic AI if you are
+</h2>
+</div>
+<ul data-astro-cid-[hash]="">
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Writing agent logic in Python and want type-safe inputs, outputs, and tools
+</span>
+</li>
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Building short-lived or interactive agents, or using Pydantic AI's own Temporal, DBOS, Prefect, and Restate integrations where they fit
+</span>
+</li>
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Prototyping an agent before deciding whether it needs an eval loop around it
+</span>
+</li>
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Happy with your existing observability and only need better agent ergonomics
+</span>
+</li>
+</ul>
+</article>
+</div>
+</section>
+
+<figure class="pullquote" data-reveal="" data-astro-cid-[hash]="">
+<div class="pullquote-inner" data-astro-cid-[hash]="">
+<span class="pullquote-mark" aria-hidden="true" data-astro-cid-[hash]="">“
+</span>
+<blockquote data-astro-cid-[hash]="">Pydantic AI gives you a great way to write an agent. Kitaru gives you a great way to prove a change to it.
+</blockquote>
+</div>
+</figure>
+
+<section class="feature-graphic" data-reveal="" data-astro-cid-[hash]="">
+<div class="feature-graphic-grid" data-astro-cid-[hash]="">
+<div class="feature-graphic-copy" data-astro-cid-[hash]="">
+<h2 data-astro-cid-[hash]="">Different questions
+</h2>
+<div class="feature-graphic-body" data-astro-cid-[hash]="">
+<p>Pydantic AI is asking: how do I write a typed, ergonomic agent loop with first-class tools and structured outputs? Kitaru is asking: once this agent ships, which of its runs can I re-run? Did the model swap actually help, and what regressed?
+</p>
+<p>In practice that means Pydantic AI keeps running your agent exactly as before. Kitaru sits beside it, recording each run and re-running the ones that matter.
+</p>
+</div>
+</div>
+<div class="feature-graphic-media" data-astro-cid-[hash]="">
+<figure class="fig" data-astro-cid-[hash]="">
+<div class="panel panel--competitor" data-astro-cid-[hash]="">
+<div class="panel-head" data-astro-cid-[hash]="">
+<span class="panel-label" data-astro-cid-[hash]="">Pydantic AI · harness
+</span>
+<span class="panel-sub" data-astro-cid-[hash]="">How the agent thinks
+</span>
+</div>
+<div class="quote" data-astro-cid-[hash]="">
+<div class="quote-mark" aria-hidden="true" data-astro-cid-[hash]="">?
+</div>
+<div class="quote-text" data-astro-cid-[hash]="">How do I write a typed, ergonomic agent loop with first-class tools and structured outputs?
+</div>
+</div>
+<div class="concerns" data-astro-cid-[hash]="">
+<span class="chip" data-astro-cid-[hash]="">typed I/O
+</span>
+<span class="chip" data-astro-cid-[hash]="">tool calls
+</span>
+<span class="chip" data-astro-cid-[hash]="">structured outputs
+</span>
+<span class="chip" data-astro-cid-[hash]="">streaming
+</span>
+</div>
+<div class="foot" data-astro-cid-[hash]="">Scope: a single agent invocation.
+</div>
+</div>
+<div class="panel panel--kitaru" data-astro-cid-[hash]="">
+<div class="panel-head" data-astro-cid-[hash]="">
+<span class="panel-label panel-label--accent" data-astro-cid-[hash]="">Kitaru · replay evals
+</span>
+<span class="panel-sub" data-astro-cid-[hash]="">How you test what it did
+</span>
+</div>
+<div class="quote quote--accent" data-astro-cid-[hash]="">
+<div class="quote-mark quote-mark--accent" aria-hidden="true" data-astro-cid-[hash]="">?
+</div>
+<div class="quote-text" data-astro-cid-[hash]="">Once this agent ships, which of its runs can I re-run? Did the model swap actually help — and what regressed?
+</div>
+</div>
+<div class="concerns" data-astro-cid-[hash]="">
+<span class="chip chip--accent" data-astro-cid-[hash]="">record
+</span>
+<span class="chip chip--accent" data-astro-cid-[hash]="">replay
+</span>
+<span class="chip chip--accent" data-astro-cid-[hash]="">cohorts
+</span>
+<span class="chip chip--accent" data-astro-cid-[hash]="">experiments
+</span>
+<span class="chip chip--accent" data-astro-cid-[hash]="">evaluators
+</span>
+</div>
+<div class="foot foot--accent" data-astro-cid-[hash]="">Scope: every production run, replayable.
+</div>
+</div>
+</figure>
+</div>
+</div>
+</section>
+
+<section class="feature-graphic feature-graphic--reverse" data-reveal="" data-astro-cid-[hash]="">
+<div class="feature-graphic-grid" data-astro-cid-[hash]="">
+<div class="feature-graphic-copy" data-astro-cid-[hash]="">
+<h2 data-astro-cid-[hash]="">Compose, don’t replace
+</h2>
+<div class="feature-graphic-body" data-astro-cid-[hash]="">
+<p>Kitaru doesn’t ask you to give up the Pydantic AI agent you already wrote. Install it with 
+<code>uv add kitaru-pydantic-ai
+</code>. 
+<code>KitaruAgent
+</code> is a transparent 
+<code>WrapperAgent
+</code>: 
+<code>run
+</code>, 
+<code>run_sync
+</code>, 
+<code>iter
+</code>, tools, output types, and capabilities behave exactly as on the wrapped agent.
+</p>
+<p>The adapter records every model request and tool call as a node on the session, and the same wrapper runs replays: model swaps and 
+<code>model_params
+</code> apply at the model-request boundary, and tool calls get answered per policy. Under a 
+<code>history
+</code> policy with 
+<code>on_miss="fail"
+</code>, anything unrecorded raises 
+<code>ToolPolicyMissError
+</code> instead of touching a live system. If the process dies mid-run, the partial session is exactly the evidence you want.
+</p>
+</div>
+</div>
+<div class="feature-graphic-media" data-astro-cid-[hash]="">
+<article class="codepane" data-astro-cid-[hash]="">
+<pre class="shiki shiki-themes kitaru-light kitaru-dark" style="background-color:#FAF6EF;--shiki-dark-bg:#1E1B16;color:#1A1310;--shiki-dark:#E9E4DE" tabindex="0">
+<code>
+<span class="line">
+<span style="color:#5A4A1E;--shiki-dark:#C89F70">from
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> pydantic_ai 
+</span>
+<span style="color:#5A4A1E;--shiki-dark:#C89F70">import
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> Agent
+</span>
+</span>
+
+<span class="line">
+<span style="color:#5A4A1E;--shiki-dark:#C89F70">from
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> kitaru_pydantic_ai 
+</span>
+<span style="color:#5A4A1E;--shiki-dark:#C89F70">import
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> KitaruAgent
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">agent 
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">=
+</span>
+<span style="color:#9A3F10;--shiki-dark:#D38151"> Agent
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">(
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">"
+</span>
+<span style="color:#1F5A33;--shiki-dark:#6FB789">openai:gpt-5.4
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">"
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">,
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> name
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">=
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">"
+</span>
+<span style="color:#1F5A33;--shiki-dark:#6FB789">reviewer
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">"
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">            system_prompt
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">=
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">"
+</span>
+<span style="color:#1F5A33;--shiki-dark:#6FB789">You're a compliance reviewer.
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">"
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">reviewer 
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">=
+</span>
+<span style="color:#9A3F10;--shiki-dark:#D38151"> KitaruAgent
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">(
+</span>
+<span style="color:#9A3F10;--shiki-dark:#D38151">agent
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">,
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> agent_id
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">=
+</span>
+<span style="color:#9A3F10;--shiki-dark:#D38151">AGENT_ID
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic"># Runs exactly as before, and lands as a session:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic"># every model request, tool call, tokens, cost.
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">result 
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">=
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> reviewer
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">.
+</span>
+<span style="color:#9A3F10;--shiki-dark:#D38151">run_sync
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">(
+</span>
+<span style="color:#9A3F10;--shiki-dark:#D38151">case
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">)
+</span>
+</span>
+</code>
+</pre>
+</article>
+</div>
+</div>
+</section>
+
+<section class="feature-graphic feature-graphic--list" data-reveal="" data-astro-cid-[hash]="">
+<div class="feature-graphic-grid" data-astro-cid-[hash]="">
+<div class="feature-graphic-copy" data-astro-cid-[hash]="">
+<h2 data-astro-cid-[hash]="">What Kitaru adds on top
+</h2>
+<div class="feature-graphic-body" data-astro-cid-[hash]="">
+<p>Pydantic AI is an agent harness, and its own docs cover the Temporal, DBOS, Prefect, and Restate integrations for running it. What Kitaru adds is the eval loop on top of your recorded runs:
+</p>
+</div>
+</div>
+<div class="feature-graphic-media" data-astro-cid-[hash]="">
+<figure class="fig" data-astro-cid-[hash]="">
+<div class="layer layer--kitaru" data-astro-cid-[hash]="">
+<div class="layer-head" data-astro-cid-[hash]="">
+<span class="layer-label" data-astro-cid-[hash]="">Kitaru · replay evals
+</span>
+<span class="layer-sub" data-astro-cid-[hash]="">Adds on top, no agent rewrite
+</span>
+</div>
+<div class="caps" data-astro-cid-[hash]="">
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">sessions
+</span>
+<span class="cval" data-astro-cid-[hash]="">every run recorded · model + tool calls, tokens, cost
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">replay
+</span>
+<span class="cval" data-astro-cid-[hash]="">re-execute · the recording answers the tool calls
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">cohorts.create()
+</span>
+<span class="cval" data-astro-cid-[hash]="">the sessions that matter, frozen as a named set
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">experiments.create()
+</span>
+<span class="cval" data-astro-cid-[hash]="">same cohort, one variable moved · two runs compared
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">evaluators
+</span>
+<span class="cval" data-astro-cid-[hash]="">deterministic diffs first · model-graded for the residue
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">self-hosted
+</span>
+<span class="cval" data-astro-cid-[hash]="">FastAPI + Postgres · workers in your environment
+</span>
+</div>
+</div>
+</div>
+<div class="connector" aria-hidden="true" data-astro-cid-[hash]="">
+<div class="connector-pill" data-astro-cid-[hash]="">
+<span class="connector-arrow" data-astro-cid-[hash]="">↓
+</span>
+<span class="connector-label" data-astro-cid-[hash]="">wraps
+</span>
+</div>
+</div>
+<div class="layer layer--competitor" data-astro-cid-[hash]="">
+<div class="layer-head" data-astro-cid-[hash]="">
+<span class="layer-label layer-label--muted" data-astro-cid-[hash]="">Pydantic AI · harness
+</span>
+<span class="layer-sub" data-astro-cid-[hash]="">Your existing agent, unchanged
+</span>
+</div>
+<div class="adapter" data-astro-cid-[hash]="">
+<span class="mono adapter-key" data-astro-cid-[hash]="">KitaruAgent(Agent(...))
+</span>
+<span class="adapter-sub" data-astro-cid-[hash]="">first-class adapter · every run lands as a session
+</span>
+</div>
+</div>
+</figure>
+</div>
+<div class="feature-graphic-bullets" data-astro-cid-[hash]="">
+<ul>
+
+<li>
+<strong>Sessions, recorded.
+</strong> One wrapper, no rewrite. Every run lands as a session: model calls, tool calls, token usage, cost. Or import the traces you already collect in Langfuse, LangSmith, Braintrust, Logfire, or Arize Phoenix.
+</li>
+
+<li>
+<strong>Replay.
+</strong> A session re-executes against your real code, with tool calls answered from the recording. Unchanged, it reproduces the original, the faithful baseline that makes a diff trustworthy. Then fork it: a different model, a new prompt, your working tree registered as a new agent version.
+</li>
+
+<li>
+<strong>Cohorts.
+</strong> The sessions you care about, frozen as a named, immutable version, so a run’s result keeps meaning what it meant.
+</li>
+
+<li>
+<strong>Experiments.
+</strong> The change as configuration: override, tool policy, evaluators. Runs over the same cohort version, evaluated on both sides.
+</li>
+
+<li>
+<strong>Evaluators.
+</strong> Deterministic checks first: plain Python over the recorded nodes, versioned like the agent. Keep a model-graded check only for the residue.
+</li>
+
+<li>
+<strong>Self-hosted, Apache 2.0.
+</strong> One FastAPI + Postgres server. Replays and evaluations execute on workers in your environment, so traces and credentials don’t leave your systems.
+</li>
+
+</ul>
+</div>
+</div>
+</section>
+
+<h2 id="what-makes-kitaru-unique">What makes Kitaru unique
+</h2>
+
+<div class="ctable-wrap" data-reveal="" data-astro-cid-[hash]="">
+<table class="ctable has-notes" data-astro-cid-[hash]="">
+<thead data-astro-cid-[hash]="">
+<tr data-astro-cid-[hash]="">
+<th class="col-feature" data-astro-cid-[hash]="">Feature
+</th>
+<th class="col-kitaru" data-astro-cid-[hash]="">Kitaru
+</th>
+<th class="col-competitor" data-astro-cid-[hash]="">Pydantic AI
+</th>
+<th class="col-note" data-astro-cid-[hash]="">What that means
+</th>
+</tr>
+</thead>
+<tbody data-astro-cid-[hash]="">
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Typed agent inputs, outputs, tools
+</td>
+<td class="col-kitaru" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-competitor" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Structured model outputs
+</td>
+<td class="col-kitaru" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-competitor" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Dependency injection for tools
+</td>
+<td class="col-kitaru" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-competitor" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Every run recorded as a replayable session
+</td>
+<td class="col-kitaru" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Replay with tool calls answered from the recording (history, static, passthrough)
+</td>
+<td class="col-kitaru" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">The API accepts an llm tool policy; this adapter doesn't support it.
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Cohorts: frozen session sets as regression suites
+</td>
+<td class="col-kitaru" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Experiments: same cohort, one variable moved
+</td>
+<td class="col-kitaru" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Import Langfuse / LangSmith / Braintrust / Logfire / Phoenix traces
+</td>
+<td class="col-kitaru" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Self-hosted server and workers (Apache 2.0)
+</td>
+<td class="col-kitaru" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">First-class adapter for the other
+</td>
+<td class="col-kitaru" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 id="how-the-two-surfaces-map">How the two surfaces map
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead>
+<tr>
+<th>Concept
+</th>
+<th>Pydantic AI
+</th>
+<th>Kitaru
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Layer
+</td>
+<td>Agent harness (how the agent thinks)
+</td>
+<td>Replay-based evals (how you test what it did)
+</td>
+</tr>
+<tr>
+<td>Core unit
+</td>
+<td>Agent run
+</td>
+<td>Session: recorded model and tool calls, re-executable
+</td>
+</tr>
+<tr>
+<td>Composition
+</td>
+<td>Standalone Pythonic agent
+</td>
+<td>Same agent wrapped once by 
+<code>KitaruAgent
+</code>
+</td>
+</tr>
+<tr>
+<td>Tool calls in tests
+</td>
+<td>Hit real systems, or you mock them by hand
+</td>
+<td>Answered from the recording per tool policy
+</td>
+</tr>
+<tr>
+<td>“Did my change help?”
+</td>
+<td>Read the traces, compare by eye
+</td>
+<td>Two runs over the same cohort, evaluated on both sides
+</td>
+</tr>
+<tr>
+<td>Crash mid-run
+</td>
+<td>Run is gone
+</td>
+<td>Partial session recorded, so the evidence survives
+</td>
+</tr>
+<tr>
+<td>Where it runs
+</td>
+<td>Whatever Python service you wrap the agent in
+</td>
+<td>Self-hosted server; workers replay in your environment
+</td>
+</tr>
+</tbody>
+</table>
+
+<section class="codecompare" data-reveal="" data-astro-cid-[hash]="">
+<div class="codecompare-inner" data-astro-cid-[hash]="">
+<h2 class="codecompare-title" data-astro-cid-[hash]="">Code comparison
+</h2>
+</div>
+<div class="codecompare-grid" data-astro-cid-[hash]="">
+<article class="codecompare-pane codecompare-pane--kitaru" aria-label="Recommended — Kitaru implementation" data-astro-cid-[hash]="">
+<header data-astro-cid-[hash]="">
+<span class="codecompare-dot codecompare-dot--kitaru" aria-hidden="true" data-astro-cid-[hash]="">
+</span>
+<span class="codecompare-label" data-astro-cid-[hash]="">Pydantic AI + Kitaru
+</span>
+<span class="codecompare-pill" data-astro-cid-[hash]="">Recommended
+</span>
+</header>
+<div class="codecompare-code" data-astro-cid-[hash]="">
+<pre class="shiki shiki-themes kitaru-light kitaru-dark" style="background-color:#FAF6EF;--shiki-dark-bg:#1E1B16;color:#1A1310;--shiki-dark:#E9E4DE" tabindex="0">
+<code>
+<span class="line">
+<span style="color:#5A4A1E;--shiki-dark:#C89F70">from
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> pydantic_ai 
+</span>
+<span style="color:#5A4A1E;--shiki-dark:#C89F70">import
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> Agent
+</span>
+</span>
+
+<span class="line">
+<span style="color:#5A4A1E;--shiki-dark:#C89F70">from
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> kitaru_pydantic_ai 
+</span>
+<span style="color:#5A4A1E;--shiki-dark:#C89F70">import
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> KitaruAgent
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">reviewer 
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">=
+</span>
+<span style="color:#9A3F10;--shiki-dark:#D38151"> KitaruAgent
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">(
+</span>
+</span>
+
+<span class="line">
+<span style="color:#9A3F10;--shiki-dark:#D38151">  Agent
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">(
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">"
+</span>
+<span style="color:#1F5A33;--shiki-dark:#6FB789">openai:gpt-5.4
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">"
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">,
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> system_prompt
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">=
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">"
+</span>
+<span style="color:#1F5A33;--shiki-dark:#6FB789">You're a compliance reviewer.
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">"
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">),
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">  agent_id
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">=
+</span>
+<span style="color:#9A3F10;--shiki-dark:#D38151">AGENT_ID
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#635951;--shiki-dark:#AEA298">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic"># Production runs: each one lands as a session.
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">result 
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">=
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> reviewer
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">.
+</span>
+<span style="color:#9A3F10;--shiki-dark:#D38151">run_sync
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">(
+</span>
+<span style="color:#9A3F10;--shiki-dark:#D38151">case
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic"># Later: freeze the sessions that matter, test a change.
+</span>
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#   kitaru cohort create hard-cases --agent reviewer --tag needs-review
+</span>
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#   kitaru experiment create cheaper-model --agent reviewer \
+</span>
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#     --evaluator compliance-check@latest \
+</span>
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#     --override '{"model": {"openai:gpt-5.4": "openai:gpt-5-mini"}}' \
+</span>
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#     --tool-policy '{"default": {"type": "history",
+</span>
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#       "scope": "cohort_version", "on_miss": "fail"}}'
+</span>
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#   kitaru experiment run start cheaper-model \
+</span>
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#     --cohort-version &lt;id&gt; --agent reviewer@2 --evaluate-baselines --wait
+</span>
+</span>
+</code>
+</pre>
+</div>
+</article>
+<article class="codecompare-pane" data-astro-cid-[hash]="">
+<header data-astro-cid-[hash]="">
+<span class="codecompare-dot codecompare-dot--competitor" aria-hidden="true" data-astro-cid-[hash]="">
+</span>
+<span class="codecompare-label" data-astro-cid-[hash]="">Pydantic AI alone
+</span>
+</header>
+<div class="codecompare-code" data-astro-cid-[hash]="">
+<pre class="shiki shiki-themes kitaru-light kitaru-dark" style="background-color:#FAF6EF;--shiki-dark-bg:#1E1B16;color:#1A1310;--shiki-dark:#E9E4DE" tabindex="0">
+<code>
+<span class="line">
+<span style="color:#5A4A1E;--shiki-dark:#C89F70">from
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> pydantic_ai 
+</span>
+<span style="color:#5A4A1E;--shiki-dark:#C89F70">import
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> Agent
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">reviewer 
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">=
+</span>
+<span style="color:#9A3F10;--shiki-dark:#D38151"> Agent
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">(
+</span>
+</span>
+
+<span class="line">
+<span style="color:#635951;--shiki-dark:#AEA298">  "
+</span>
+<span style="color:#1F5A33;--shiki-dark:#6FB789">openai:gpt-5.4
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">"
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">  system_prompt
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">=
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">"
+</span>
+<span style="color:#1F5A33;--shiki-dark:#6FB789">You're a compliance reviewer.
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">"
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#635951;--shiki-dark:#AEA298">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">result 
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">=
+</span>
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> reviewer
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">.
+</span>
+<span style="color:#9A3F10;--shiki-dark:#D38151">run_sync
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">(
+</span>
+<span style="color:#9A3F10;--shiki-dark:#D38151">case
+</span>
+<span style="color:#635951;--shiki-dark:#AEA298">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic"># One log line per run. The run that caught the bug
+</span>
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic"># is a transcript you can read, not a test you can
+</span>
+</span>
+
+<span class="line">
+<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic"># run again with the model swapped.
+</span>
+</span>
+</code>
+</pre>
+</div>
+</article>
+</div>
+</section>
+
+<section class="ccta-section" id="cta" data-astro-cid-[hash]="">
+<div class="ccta-card" data-reveal="" data-astro-cid-[hash]="">
+<div class="ccta-eyebrow" aria-hidden="true" data-astro-cid-[hash]="">
+<span class="ccta-eyebrow-dot" data-astro-cid-[hash]="">
+</span>
+<span class="ccta-eyebrow-text" data-astro-cid-[hash]="">The lifecycle layer underneath
+</span>
+</div>
+<h2 class="ccta-headline" data-astro-cid-[hash]="">Put replay-based evals under your Pydantic AI agents
+</h2>
+<div class="ccta-body" data-astro-cid-[hash]="">
+<p>If the Pydantic AI agent you wrote is still a notebook script or a short-lived interactive tool, Pydantic AI on its own is the right answer. If it’s shipping, writing to real systems and generating traffic you wish you could test against, Kitaru makes those runs runnable: record them as sessions, replay them as evals, and gate regressions with the cohort that caught the failure.
+</p>
+</div>
+<div class="ccta-shelf" data-astro-cid-[hash]="">
+<div class="ccta-install" data-astro-cid-[hash]="">
+<span class="ccta-install-prompt" aria-hidden="true" data-astro-cid-[hash]="">$
+</span>
+<code class="ccta-install-cmd" data-astro-cid-[hash]="">curl -fsSL https://kitaru.ai/install | bash
+</code>
+<button class="ccta-copy-btn" aria-label="Copy install command" data-copy="curl -fsSL https://kitaru.ai/install | bash" data-astro-cid-[hash]="">
+<svg class="ccta-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
+<rect x="9" y="9" width="13" height="13" rx="2" data-astro-cid-[hash]="">
+</rect>
+<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" data-astro-cid-[hash]="">
+</path>
+</svg>
+<svg class="ccta-check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
+<polyline points="20 6 9 17 4 12" data-astro-cid-[hash]="">
+</polyline>
+</svg>
+</button>
+</div>
+<a href="https://cloud.kitaru.ai" data-analytics="Kitaru-Compare-CTA-Signup" class="ccta-primary" data-astro-cid-[hash]="">
+<span data-astro-cid-[hash]="">Sign up free
+</span>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
+<path d="M5 12h14" data-astro-cid-[hash]="">
+</path>
+<path d="m13 5 7 7-7 7" data-astro-cid-[hash]="">
+</path>
+</svg>
+</a>
+</div>
+<div class="ccta-footer" data-astro-cid-[hash]="">
+<a href="https://docs.zenml.io/kitaru" target="_blank" rel="noopener noreferrer" class="ccta-link" data-astro-cid-[hash]="">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
+<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" data-astro-cid-[hash]="">
+</path>
+<path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Read the docs
+</span>
+</a>
+<span class="ccta-dot" aria-hidden="true" data-astro-cid-[hash]="">
+</span>
+<a href="/book-your-demo/kitaru" class="ccta-link" data-astro-cid-[hash]="">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
+<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Talk to the team
+</span>
+</a>
+<span class="ccta-dot" aria-hidden="true" data-astro-cid-[hash]="">
+</span>
+<a href="https://github.com/zenml-io/kitaru" target="_blank" rel="noopener noreferrer" class="ccta-link" data-astro-cid-[hash]="">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
+<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Star on GitHub
+</span>
+</a>
+</div>
+</div>
+</section>
+<script type="module" src="/_astro/ComparisonCta.astro_astro_type_script_index_0_lang.[hash].js">
+</script>
+</article>
