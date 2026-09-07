@@ -32,12 +32,11 @@ Default to **AVIF** for everything — best compression, browsers render it fine
 
 **Exception:** images referenced from `seo.ogImage` need a **JPEG** sibling alongside the AVIF. Social platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) do NOT support AVIF in Open Graph cards. Using AVIF for `seo.ogImage` silently renders previews without an image.
 
-Pattern: upload **both** under the same R2 prefix, reference AVIF from `mainImage.url` and JPEG from `seo.ogImage`. See PR #73 for the site-wide fix where 103 posts all had AVIF og images and were broken on LinkedIn.
+Pattern: upload **both** under the same R2 prefix, reference AVIF from `mainImage.url` and JPEG from `seo.ogImage`.
 
 ```bash
-# Convert + upload both formats
-sips -s format jpeg cover.png --out cover.jpg --resampleHeightWidthMax 1200
-~/.Codex/skills/avif-image-compressor/scripts/convert_to_avif.sh cover.png --quality 25 --resize 1200
+# Convert (AVIF + JPEG sibling) then upload both formats
+pnpm images:convert cover.png --preset cover
 uv run scripts/r2-upload.py cover.jpg cover.avif --prefix content/blog/<slug>
 ```
 
