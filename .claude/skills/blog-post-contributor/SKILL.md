@@ -319,7 +319,7 @@ Fix any issues. Common problems:
 - Image URL not absolute (must start with `https://`)
 - Invalid date format
 
-Check the actual build exit status and inspect /tmp/blog-build.log. Do not proceed to smoke checks after a failed build. Inspect the changed page in a browser and verify its canonical URL. Follow the root testing policy for mixed code/content changes. Classify failures as pre-existing only with current baseline evidence; report any failed or blocked checks instead of ignoring historical error names.
+Check the actual build exit status and inspect /tmp/blog-build.log. Do not proceed to smoke checks after a failed build. For posts intended for publication with `draft: false`, inspect the changed page in a browser and verify its canonical URL. Posts kept at `draft: true` are excluded from generated blog routes; explicitly report browser inspection and canonical verification as deferred until the post is complete and intended for publication. Keep the post draft and continue all checks that do not require its rendered page. Follow the root testing policy for mixed code/content changes. Classify failures as pre-existing only with current baseline evidence; report any failed or blocked checks instead of ignoring historical error names.
 
 ### C9. Commit and create PR when authorized
 
