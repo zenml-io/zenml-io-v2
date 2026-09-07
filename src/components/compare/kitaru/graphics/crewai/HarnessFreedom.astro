@@ -26,16 +26,16 @@ crew.<span class="fn">kickoff</span>(inputs=&#123;<span class="str">"topic"</spa
       <span class="panel-label panel-label--accent">Kitaru · record whatever you already use</span>
       <span class="panel-sub">Native adapter, imported trace, or a project-local adapter</span>
     </div>
-    <pre class="code"><span class="hl"><span class="cmt"># No CrewAI adapter yet — import the trace</span></span>
+    <pre class="code"><span class="hl"><span class="cmt"># No CrewAI adapter yet: import the trace</span></span>
 kitaru session import crew-trace.jsonl \
     --importer kitaru/langfuse@latest --agent crew@latest
 
-<span class="hl"><span class="cmt"># A Pydantic AI agent — native adapter, one wrapper</span></span>
+<span class="hl"><span class="cmt"># A Pydantic AI agent: native adapter, one wrapper</span></span>
 <span class="kw">from</span> <span class="mod">kitaru_pydantic_ai</span> <span class="kw">import</span> <span class="cls">KitaruAgent</span>
 
 support = <span class="cls">KitaruAgent</span>(agent, agent_id=AGENT_ID)
 support.<span class="fn">run_sync</span>(text)</pre>
-    <div class="foot foot--accent">One eval layer under whatever harness you picked — recorded natively, or imported.</div>
+    <div class="foot foot--accent">One eval layer under whatever harness you picked, recorded natively or imported.</div>
   </div>
 </figure>
 
@@ -93,7 +93,6 @@ support.<span class="fn">run_sync</span>(text)</pre>
     background: var(--color-surface);
   }
   .kw  { color: var(--color-accent); font-weight: 600; }
-  .dec { color: var(--color-accent-deep); font-weight: 600; }
   .fn  { color: var(--color-primary); font-weight: 600; }
   .cls { color: var(--color-accent-deep); }
   .mod { color: var(--color-secondary); }

@@ -62,9 +62,9 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
       "plain-Markdown blog body: headings, table, fenced code (Shiki), smart quotes, links",
   },
   {
-    page: "compare/kitaru-vs-temporal.html",
+    page: "compare/kitaru-vs-pydantic-ai.html",
     selector: ".compare-body-inner",
-    golden: "compare-kitaru-vs-temporal.html",
+    golden: "compare-kitaru-vs-pydantic-ai.html",
     covers:
       "MDX compare-page body: component imports, ComparisonTable, CodeCompare panes (Shiki)",
   },

@@ -3,7 +3,7 @@ competitor: "Pydantic AI"
 competitorLogo: "/compare/pydantic-ai.svg"
 competitorTagline: "Type-safe, Pythonic agent framework from the Pydantic team."
 title: "Kitaru vs Pydantic AI: harness and eval layer, composed"
-description: "Pydantic AI is how the agent thinks. Kitaru records its runs and replays them as evals. Use both — there's a first-class adapter."
+description: "Pydantic AI is how the agent thinks. Kitaru records its runs and replays them as evals. Use both: there's a first-class adapter."
 cardSubtitle: "Build the agent with Pydantic AI. Replay and eval it with Kitaru."
 ctaHeading: "Put replay-based evals under your Pydantic AI agents"
 order: 50
@@ -19,19 +19,19 @@ import CodePane from '../../components/compare/kitaru/CodePane.astro';
 import DifferentQuestions from '../../components/compare/kitaru/graphics/pydantic-ai/DifferentQuestions.astro';
 import WhatKitaruAddsOnTop from '../../components/compare/kitaru/graphics/pydantic-ai/WhatKitaruAddsOnTop.astro';
 
-Pydantic AI and Kitaru solve different problems at different layers. Pydantic AI is an **agent harness**: it&rsquo;s the best-in-class Pythonic library for writing type-safe agent logic &mdash; tool calling, structured outputs, dependency injection, streaming. Kitaru is a **replay-based eval layer**: it records every run as a session, and a session re-executes &mdash; unchanged for a faithful baseline, or forked with one thing changed.
+Pydantic AI and Kitaru solve different problems at different layers. Pydantic AI is an **agent harness**: the best-in-class Pythonic library for writing type-safe agent logic, with tool calling, structured outputs, dependency injection, and streaming. Kitaru is a **replay-based eval layer**: it records every run as a session, and a session re-executes. Unchanged, you get a faithful baseline. Forked with one thing changed, you get an answer.
 
-They don&rsquo;t compete. They compose. Kitaru ships a [first-class Pydantic AI adapter](https://docs.zenml.io/kitaru) &mdash; wrap the agent once with `KitaruAgent` and every run lands as a session: model requests, tool calls, token usage, cost.
+They don&rsquo;t compete. They compose. Kitaru ships a [first-class Pydantic AI adapter](https://docs.zenml.io/kitaru/adapters/pydantic-ai): wrap the agent once with `KitaruAgent` and every run lands as a session with its model requests, tool calls, token usage, and cost. Running that same agent durably in production is ZenML's job; Kitaru replays and improves it. See [ZenML vs Pydantic AI](/compare/zenml-vs-pydantic-ai).
 
 <WhenToUseEach
   competitorLabel="Pydantic AI"
   kitaru={{
     title: "Use Kitaru if you are",
     items: [
-      "Running Pydantic AI agents in production and can't test against real systems — replay answers tool calls from the recording",
+      "Running Pydantic AI agents in production and can't test against real systems: a history tool policy answers tool calls from the recording",
       "Deciding a model or prompt swap and want a like-for-like comparison instead of a vibe check",
       "Turning the sessions that caught a failure into a regression suite that runs on every change",
-      "Already tracing to Langfuse, LangSmith, or Braintrust and want those traces runnable, not just readable",
+      "Already tracing to Langfuse, LangSmith, Braintrust, Logfire, or Arize Phoenix and want those traces runnable, not just readable",
       "Self-hosting eval infrastructure so traces and credentials stay in your own systems",
     ],
   }}
@@ -39,7 +39,7 @@ They don&rsquo;t compete. They compose. Kitaru ships a [first-class Pydantic AI 
     title: "Use Pydantic AI if you are",
     items: [
       "Writing agent logic in Python and want type-safe inputs, outputs, and tools",
-      "Building short-lived or interactive agents, or using Pydantic AI's own durable execution integrations (Temporal, DBOS, Prefect, Restate) where they fit your stack",
+      "Building short-lived or interactive agents, or using Pydantic AI's own Temporal, DBOS, Prefect, and Restate integrations where they fit",
       "Prototyping an agent before deciding whether it needs an eval loop around it",
       "Happy with your existing observability and only need better agent ergonomics",
     ],
@@ -53,9 +53,9 @@ They don&rsquo;t compete. They compose. Kitaru ships a [first-class Pydantic AI 
 <FeatureWithGraphic title="Different questions">
   <DifferentQuestions slot="graphic" />
 
-  Pydantic AI is asking: how do I write a typed, ergonomic agent loop with first-class tools and structured outputs? Kitaru is asking: once this agent ships, which of its runs can I re-run? Did the model swap actually help &mdash; and what regressed?
+  Pydantic AI is asking: how do I write a typed, ergonomic agent loop with first-class tools and structured outputs? Kitaru is asking: once this agent ships, which of its runs can I re-run? Did the model swap actually help, and what regressed?
 
-  In practice that means Pydantic AI keeps running your agent exactly as before. Kitaru sits beside it, recording each run &mdash; and re-running the ones that matter.
+  In practice that means Pydantic AI keeps running your agent exactly as before. Kitaru sits beside it, recording each run and re-running the ones that matter.
 </FeatureWithGraphic>
 
 <FeatureWithGraphic title="Compose, don&rsquo;t replace" reverse={true}>
@@ -69,28 +69,28 @@ agent = Agent("openai:gpt-5.4", name="reviewer",
 
 reviewer = KitaruAgent(agent, agent_id=AGENT_ID)
 
-# Runs exactly as before — and lands as a session:
+# Runs exactly as before, and lands as a session:
 # every model request, tool call, tokens, cost.
 result = reviewer.run_sync(case)`}
   />
 
-  Kitaru doesn&rsquo;t ask you to give up the Pydantic AI agent you already wrote. `KitaruAgent` is a transparent wrapper &mdash; `run`, `run_sync`, `iter`, tools, and output types behave exactly as on the wrapped agent.
+  Kitaru doesn&rsquo;t ask you to give up the Pydantic AI agent you already wrote. Install it with `uv add kitaru-pydantic-ai`. `KitaruAgent` is a transparent `WrapperAgent`: `run`, `run_sync`, `iter`, tools, output types, and capabilities behave exactly as on the wrapped agent.
 
-  The adapter records every model request and tool call as a node on the session, and the same wrapper executes replays: the recording answers tool calls, so nothing touches real systems. If the process dies mid-run, the partial session is exactly the evidence you want.
+  The adapter records every model request and tool call as a node on the session, and the same wrapper runs replays: model swaps and `model_params` apply at the model-request boundary, and tool calls get answered per policy. Under a `history` policy with `on_miss="fail"`, anything unrecorded raises `ToolPolicyMissError` instead of touching a live system. If the process dies mid-run, the partial session is exactly the evidence you want.
 </FeatureWithGraphic>
 
 <FeatureWithGraphic title="What Kitaru adds on top">
   <WhatKitaruAddsOnTop slot="graphic" />
 
-  Pydantic AI is an agent harness &mdash; and its own docs cover durable execution through Temporal, DBOS, Prefect, and Restate integrations. Kitaru&rsquo;s difference is the eval loop it builds on top of your recorded runs:
+  Pydantic AI is an agent harness, and its own docs cover the Temporal, DBOS, Prefect, and Restate integrations for running it. What Kitaru adds is the eval loop on top of your recorded runs:
 
   <Fragment slot="bullets">
-    - **Sessions, recorded.** One wrapper, no rewrite. Every run lands as a session &mdash; model calls, tool calls, token usage, cost &mdash; or import the traces you already collect in Langfuse, LangSmith, Braintrust, or OTel.
-    - **Replay.** A session re-executes against your real code, with tool calls answered from the recording. Unchanged, it reproduces the original &mdash; the faithful baseline that makes a diff trustworthy. Then fork it: a different model, a new prompt, your working tree.
-    - **Cohorts.** The sessions you care about, frozen as a named, immutable set &mdash; so a run&rsquo;s result keeps meaning what it meant.
-    - **Experiments.** Pure configuration: model, prompt, tool policy. Two runs over the same cohort, one variable moved, compared side by side.
-    - **Evaluators.** Deterministic checks first &mdash; a structured write diffs against production field by field. Keep a model-graded check only for the residue.
-    - **Self-hosted, Apache 2.0.** One FastAPI + Postgres server. Replays and evaluations execute on workers in your environment &mdash; traces and credentials don&rsquo;t leave your systems.
+    - **Sessions, recorded.** One wrapper, no rewrite. Every run lands as a session: model calls, tool calls, token usage, cost. Or import the traces you already collect in Langfuse, LangSmith, Braintrust, Logfire, or Arize Phoenix.
+    - **Replay.** A session re-executes against your real code, with tool calls answered from the recording. Unchanged, it reproduces the original, the faithful baseline that makes a diff trustworthy. Then fork it: a different model, a new prompt, your working tree registered as a new agent version.
+    - **Cohorts.** The sessions you care about, frozen as a named, immutable version, so a run&rsquo;s result keeps meaning what it meant.
+    - **Experiments.** The change as configuration: override, tool policy, evaluators. Runs over the same cohort version, evaluated on both sides.
+    - **Evaluators.** Deterministic checks first: plain Python over the recorded nodes, versioned like the agent. Keep a model-graded check only for the residue.
+    - **Self-hosted, Apache 2.0.** One FastAPI + Postgres server. Replays and evaluations execute on workers in your environment, so traces and credentials don&rsquo;t leave your systems.
   </Fragment>
 </FeatureWithGraphic>
 
@@ -103,10 +103,10 @@ result = reviewer.run_sync(case)`}
     { feature: "Structured model outputs", kitaru: false, competitor: true },
     { feature: "Dependency injection for tools", kitaru: false, competitor: true },
     { feature: "Every run recorded as a replayable session", kitaru: true, competitor: false },
-    { feature: "Replay with tool calls answered from the recording", kitaru: true, competitor: false },
+    { feature: "Replay with tool calls answered from the recording (history, static, passthrough)", kitaru: true, competitor: false, note: "The API accepts an llm tool policy; this adapter doesn't support it." },
     { feature: "Cohorts: frozen session sets as regression suites", kitaru: true, competitor: false },
     { feature: "Experiments: same cohort, one variable moved", kitaru: true, competitor: false },
-    { feature: "Import Langfuse / LangSmith / Braintrust / OTel traces", kitaru: true, competitor: false },
+    { feature: "Import Langfuse / LangSmith / Braintrust / Logfire / Phoenix traces", kitaru: true, competitor: false },
     { feature: "Self-hosted server and workers (Apache 2.0)", kitaru: true, competitor: false },
     { feature: "First-class adapter for the other", kitaru: true, competitor: false },
   ]}
@@ -117,11 +117,11 @@ result = reviewer.run_sync(case)`}
 | Concept | Pydantic AI | Kitaru |
 |---|---|---|
 | Layer | Agent harness (how the agent thinks) | Replay-based evals (how you test what it did) |
-| Core unit | Agent run | Session &mdash; recorded model and tool calls, re-executable |
+| Core unit | Agent run | Session: recorded model and tool calls, re-executable |
 | Composition | Standalone Pythonic agent | Same agent wrapped once by `KitaruAgent` |
 | Tool calls in tests | Hit real systems, or you mock them by hand | Answered from the recording per tool policy |
-| "Did my change help?" | Read the traces, compare by eye | Two runs over the same cohort, diffed |
-| Crash mid-run | Run is gone | Partial session recorded &mdash; the evidence survives |
+| "Did my change help?" | Read the traces, compare by eye | Two runs over the same cohort, evaluated on both sides |
+| Crash mid-run | Run is gone | Partial session recorded, so the evidence survives |
 | Where it runs | Whatever Python service you wrap the agent in | Self-hosted server; workers replay in your environment |
 <CodeCompare
   kitaruLabel="Pydantic AI + Kitaru"
@@ -134,23 +134,18 @@ reviewer = KitaruAgent(
     agent_id=AGENT_ID,
 )
 
-# Production runs — each one lands as a session.
+# Production runs: each one lands as a session.
 result = reviewer.run_sync(case)
 
 # Later: freeze the sessions that matter, test a change.
-import kitaru
-
-client = kitaru.KitaruClient()
-cohort = client.cohorts.create("hard-cases", sessions=session_ids)
-experiment = client.experiments.create(
-    "cheap-model",
-    model="gpt-5-mini",
-    tool_policy=History(scope="cohort", on_miss="fail"),
-)
-
-before = experiment.run(cohort=cohort, version="v1")
-after = experiment.run(cohort=cohort, version="pr-311")
-client.compare(before, after)`}
+#   kitaru cohort create hard-cases --agent reviewer --tag needs-review
+#   kitaru experiment create cheaper-model --agent reviewer \\
+#     --evaluator compliance-check@latest \\
+#     --override '{"model": {"openai:gpt-5.4": "openai:gpt-5-mini"}}' \\
+#     --tool-policy '{"default": {"type": "history",
+#       "scope": "cohort_version", "on_miss": "fail"}}'
+#   kitaru experiment run start cheaper-model \\
+#     --cohort-version <id> --agent reviewer@2 --evaluate-baselines --wait`}
   competitorCode={`from pydantic_ai import Agent
 
 reviewer = Agent(
@@ -160,10 +155,10 @@ reviewer = Agent(
 
 result = reviewer.run_sync(case)
 # One log line per run. The run that caught the bug
-# is a transcript you can read — not a test you can
+# is a transcript you can read, not a test you can
 # run again with the model swapped.`}
 />
 
 <ComparisonCta headline={frontmatter.ctaHeading}>
-If the Pydantic AI agent you wrote is still a notebook script or a short-lived interactive tool, Pydantic AI on its own is the right answer. If it's shipping — writing to real systems, generating traffic you wish you could test against — Kitaru makes those runs runnable: record them as sessions, replay them as evals, and gate regressions with the cohort that caught the failure.
+If the Pydantic AI agent you wrote is still a notebook script or a short-lived interactive tool, Pydantic AI on its own is the right answer. If it's shipping, writing to real systems and generating traffic you wish you could test against, Kitaru makes those runs runnable: record them as sessions, replay them as evals, and gate regressions with the cohort that caught the failure.
 </ComparisonCta>

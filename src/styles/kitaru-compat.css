@@ -1,6 +1,6 @@
 /**
  * kitaru-compat.css — full Kitaru landing stylesheet, scoped to
- * [data-app="kitaru"] so it doesn't leak into the rest of the site.
+ * :is([data-app="kitaru"], [data-app="zenml-compare"]) so it doesn't leak into the rest of the site.
  *
  * Source: kitaru/site/src/styles/global.css — verbatim port with every
  * selector prefixed by the wrapper attribute. Lets us copy Kitaru
@@ -12,7 +12,7 @@
  */
 
 /* ─── 1. Kitaru token re-assert (overrides BaseLayout's data-app="zenml") ── */
-[data-app="kitaru"] {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) {
   /* Backgrounds */
   --color-bg: oklch(0.975 0.008 75);
   --color-surface: oklch(1 0 0);
@@ -94,7 +94,7 @@
  * sections use. The single value that is NOT a duplicate is --night-surface
  * (oklch 0.17) vs --color-dark-surface (oklch 0.16).
  */
-[data-app="kitaru"] {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) {
   --cream:         oklch(0.975 0.008 75);
   --surface:       oklch(1 0 0);
   --surface-warm:  oklch(0.99 0.003 90);
@@ -162,12 +162,12 @@
   --font-heading: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
-[data-app="kitaru"] :is(h1, h2, h3, h4, h5, h6) {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) :is(h1, h2, h3, h4, h5, h6) {
   font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
 /* ─── 2. Wrapper base — replaces Kitaru's body { ... } rules ─────────────── */
-[data-app="kitaru"] {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) {
   font-family: var(--font-ui);
   background: var(--color-bg);
   color: var(--color-primary);
@@ -178,7 +178,7 @@
 }
 
 /* Grain overlay scoped to the wrapper */
-[data-app="kitaru"]::before {
+:is([data-app="kitaru"], [data-app="zenml-compare"])::before {
   content: '';
   position: fixed; inset: 0; z-index: 200;
   pointer-events: none;
@@ -188,17 +188,17 @@
   transform: translateZ(0);
 }
 @media (max-width: 768px) {
-  [data-app="kitaru"]::before { display: none; }
+  :is([data-app="kitaru"], [data-app="zenml-compare"])::before { display: none; }
 }
 
-[data-app="kitaru"] ::selection { background: oklch(0.65 0.16 45 / 0.15); }
-[data-app="kitaru"] :focus-visible {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) ::selection { background: oklch(0.65 0.16 45 / 0.15); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
-[data-app="kitaru"] :focus:not(:focus-visible) { outline: none; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) :focus:not(:focus-visible) { outline: none; }
 
-[data-app="kitaru"] .skip-link {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .skip-link {
   position: absolute;
   top: -100%; left: 16px; z-index: 10000;
   padding: 8px 16px;
@@ -210,9 +210,9 @@
   text-decoration: none;
   transition: top 0.2s;
 }
-[data-app="kitaru"] .skip-link:focus { top: 0; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .skip-link:focus { top: 0; }
 
-[data-app="kitaru"] .sr-only {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .sr-only {
   position: absolute;
   width: 1px; height: 1px; overflow: hidden;
   clip: rect(0, 0, 0, 0);
@@ -220,27 +220,27 @@
 }
 
 /* ─── 3. Scroll reveal ───────────────────────────────────────────────────── */
-[data-app="kitaru"] [data-reveal] {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) [data-reveal] {
   opacity: 0;
   transform: translateY(32px);
   transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
               transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
-[data-app="kitaru"] [data-reveal="fade-left"] { transform: translateX(-32px); }
-[data-app="kitaru"] [data-reveal="fade-right"] { transform: translateX(32px); }
-[data-app="kitaru"] [data-reveal="scale-up"] { transform: scale(0.92); }
-[data-app="kitaru"] [data-reveal].revealed {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) [data-reveal="fade-left"] { transform: translateX(-32px); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) [data-reveal="fade-right"] { transform: translateX(32px); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) [data-reveal="scale-up"] { transform: scale(0.92); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) [data-reveal].revealed {
   opacity: 1;
   transform: translateY(0) translateX(0) scale(1);
 }
-[data-app="kitaru"] [data-reveal-delay="1"] { transition-delay: 0.1s; }
-[data-app="kitaru"] [data-reveal-delay="2"] { transition-delay: 0.2s; }
-[data-app="kitaru"] [data-reveal-delay="3"] { transition-delay: 0.3s; }
-[data-app="kitaru"] [data-reveal-delay="4"] { transition-delay: 0.4s; }
-[data-app="kitaru"] [data-reveal-delay="5"] { transition-delay: 0.5s; }
-[data-app="kitaru"] [data-reveal-delay="6"] { transition-delay: 0.6s; }
-[data-app="kitaru"] [data-reveal-delay="7"] { transition-delay: 0.7s; }
-[data-app="kitaru"] [data-reveal-delay="8"] { transition-delay: 0.8s; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) [data-reveal-delay="1"] { transition-delay: 0.1s; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) [data-reveal-delay="2"] { transition-delay: 0.2s; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) [data-reveal-delay="3"] { transition-delay: 0.3s; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) [data-reveal-delay="4"] { transition-delay: 0.4s; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) [data-reveal-delay="5"] { transition-delay: 0.5s; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) [data-reveal-delay="6"] { transition-delay: 0.6s; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) [data-reveal-delay="7"] { transition-delay: 0.7s; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) [data-reveal-delay="8"] { transition-delay: 0.8s; }
 
 /* ─── 4. Keyframes (don't need scoping) ──────────────────────────────────── */
 @keyframes kitaru-ring-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -279,7 +279,7 @@
  * The previous 8px-dot-plus-ring rule was scoped here and would have stacked
  * on top of it. `kitaru-pulse-ring` is kept above; other sections still use it. */
 
-[data-app="kitaru"] .accent-shimmer {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .accent-shimmer {
   color: var(--color-accent);
   background: linear-gradient(90deg, var(--color-accent) 0%, oklch(0.78 0.14 55) 40%, var(--color-accent) 80%);
   background-size: 200% 100%;
@@ -289,49 +289,49 @@
   animation: kitaru-accent-shimmer 4s ease-in-out infinite;
 }
 
-[data-app="kitaru"] .code-dot { width: 10px; height: 10px; border-radius: 50%; }
-[data-app="kitaru"] .code-dot:nth-child(1) { background: oklch(0.57 0.19 25); }
-[data-app="kitaru"] .code-dot:nth-child(2) { background: oklch(0.73 0.12 80); }
-[data-app="kitaru"] .code-dot:nth-child(3) { background: oklch(0.72 0.18 145); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-dot { width: 10px; height: 10px; border-radius: 50%; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-dot:nth-child(1) { background: oklch(0.57 0.19 25); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-dot:nth-child(2) { background: oklch(0.73 0.12 80); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-dot:nth-child(3) { background: oklch(0.72 0.18 145); }
 
-[data-app="kitaru"] .section-pad { padding: 64px clamp(24px, 5vw, 80px) 72px; }
-[data-app="kitaru"] .section-pad-compact { padding: 36px clamp(24px, 5vw, 80px) 44px; }
-[data-app="kitaru"] .section-inner { max-width: 1200px; width: 100%; margin: 0 auto; overflow: clip; }
-[data-app="kitaru"] .section-eyebrow {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .section-pad { padding: 64px clamp(24px, 5vw, 80px) 72px; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .section-pad-compact { padding: 36px clamp(24px, 5vw, 80px) 44px; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .section-inner { max-width: 1200px; width: 100%; margin: 0 auto; overflow: clip; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .section-eyebrow {
   display: block;
   font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--color-accent);
   margin-bottom: 16px;
 }
-[data-app="kitaru"] .divider-line { height: 1px; background: var(--color-border-light); }
-[data-app="kitaru"] .gradient-divider {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .divider-line { height: 1px; background: var(--color-border-light); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .gradient-divider {
   height: 1px; max-width: 600px; margin: 0 auto;
   background: linear-gradient(90deg, transparent, var(--color-border), transparent);
 }
-[data-app="kitaru"] .section-title {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .section-title {
   font-size: clamp(32px, 4vw, 48px);
   font-weight: 700; letter-spacing: -0.03em; line-height: 1.1;
   max-width: 600px;
 }
-[data-app="kitaru"] .section-desc {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .section-desc {
   font-size: clamp(1rem, 1.6vw, 1.1rem); line-height: 1.65; font-weight: 300;
   color: var(--color-secondary);
   max-width: 480px; margin-top: 16px;
 }
 
 /* Buttons */
-[data-app="kitaru"] .btn-primary {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .btn-primary {
   font-family: var(--font-ui); font-size: 15px; font-weight: 600;
   color: oklch(1 0 0); background: var(--color-primary);
   padding: 14px 32px; border-radius: 8px; border: none;
   cursor: pointer; transition: opacity 0.2s, transform 0.15s;
   text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
 }
-[data-app="kitaru"] .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
-[data-app="kitaru"] .btn-primary:active { transform: translateY(1px); opacity: 0.95; }
-[data-app="kitaru"] .btn-primary svg { width: 16px; height: 16px; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .btn-primary:active { transform: translateY(1px); opacity: 0.95; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .btn-primary svg { width: 16px; height: 16px; }
 
-[data-app="kitaru"] .btn-secondary {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .btn-secondary {
   font-family: var(--font-ui); font-size: 15px; font-weight: 500;
   color: var(--color-secondary); background: var(--color-surface);
   padding: 14px 28px; border-radius: 8px;
@@ -339,14 +339,14 @@
   cursor: pointer; transition: all 0.2s;
   text-decoration: none;
 }
-[data-app="kitaru"] .btn-secondary:hover {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .btn-secondary:hover {
   border-color: var(--color-muted);
   color: var(--color-primary);
   transform: translateY(-1px);
 }
-[data-app="kitaru"] .btn-secondary:active { transform: translateY(1px); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .btn-secondary:active { transform: translateY(1px); }
 
-[data-app="kitaru"] .btn-accent {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .btn-accent {
   font-family: var(--font-ui); font-size: 15px; font-weight: 600;
   color: oklch(1 0 0); background: var(--color-accent-darker);
   padding: 14px 32px; border-radius: 8px;
@@ -354,10 +354,10 @@
   cursor: pointer; transition: opacity 0.2s, transform 0.15s;
   text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
 }
-[data-app="kitaru"] .btn-accent:hover { opacity: 0.9; transform: translateY(-2px); }
-[data-app="kitaru"] .btn-accent:active { transform: translateY(1px); opacity: 0.95; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .btn-accent:hover { opacity: 0.9; transform: translateY(-2px); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .btn-accent:active { transform: translateY(1px); opacity: 0.95; }
 
-[data-app="kitaru"] .btn-secondary-dark {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .btn-secondary-dark {
   font-family: var(--font-ui); font-size: 15px; font-weight: 500;
   color: oklch(1 0 0 / 0.7); background: transparent;
   padding: 14px 28px; border-radius: 8px;
@@ -365,12 +365,12 @@
   cursor: pointer; transition: all 0.2s;
   text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
 }
-[data-app="kitaru"] .btn-secondary-dark:hover {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .btn-secondary-dark:hover {
   border-color: oklch(1 0 0 / 0.3);
   color: oklch(1 0 0 / 0.9);
 }
 
-[data-app="kitaru"] .pill-badge {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .pill-badge {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 5px 14px;
   border-radius: 100px;
@@ -380,13 +380,13 @@
   color: var(--color-secondary);
 }
 
-[data-app="kitaru"] .dark-section {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .dark-section {
   background: var(--color-dark-bg);
   color: var(--color-dark-text);
 }
 
 /* Card patterns */
-[data-app="kitaru"] .card-glow {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .card-glow {
   position: absolute;
   inset: 0;
   background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), oklch(0.65 0.16 45 / 0.04), transparent 60%);
@@ -395,86 +395,86 @@
   transition: opacity 0.3s;
   z-index: 1;
 }
-[data-app="kitaru"] .why-card:hover .card-glow,
-[data-app="kitaru"] .feature-card:hover .card-glow,
-[data-app="kitaru"] .gs-step-card:hover .card-glow,
-[data-app="kitaru"] .gs-form-card:hover .card-glow { opacity: 1; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .why-card:hover .card-glow,
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .feature-card:hover .card-glow,
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .gs-step-card:hover .card-glow,
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .gs-form-card:hover .card-glow { opacity: 1; }
 
-[data-app="kitaru"] .why-card {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .why-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 12px;
   position: relative; overflow: hidden;
   transition: border-color 0.3s;
 }
-[data-app="kitaru"] .why-card:hover { border-color: var(--color-muted); }
-[data-app="kitaru"] .why-card-image {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .why-card:hover { border-color: var(--color-muted); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .why-card-image {
   width: 100%;
   border-bottom: 1px solid var(--color-border);
   background: var(--color-surface-warm, oklch(0.97 0.005 70));
   min-height: 120px;
 }
-[data-app="kitaru"] .why-card-image img {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .why-card-image img {
   width: 100%; aspect-ratio: 16 / 9;
   object-fit: cover; display: block;
 }
-[data-app="kitaru"] .why-card-content {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .why-card-content {
   position: relative; z-index: 2;
   padding: 24px 28px 28px;
 }
-[data-app="kitaru"] .why-card h3 {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .why-card h3 {
   font-size: 1.05rem; font-weight: 600;
   margin-bottom: 8px;
   letter-spacing: -0.01em; line-height: 1.3;
 }
-[data-app="kitaru"] .why-card p {
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .why-card p {
   color: var(--color-secondary);
   font-size: 0.85rem; line-height: 1.6;
   font-weight: 300;
 }
 
 /* Syntax highlighting */
-[data-app="kitaru"] .code-syntax .kw  { color: oklch(0.73 0.08 70); }
-[data-app="kitaru"] .code-syntax .fn  { color: oklch(0.68 0.12 50); }
-[data-app="kitaru"] .code-syntax .str { color: oklch(0.72 0.1 155); }
-[data-app="kitaru"] .code-syntax .var { color: var(--color-dark-text); }
-[data-app="kitaru"] .code-syntax .op  { color: oklch(0.72 0.02 65); }
-[data-app="kitaru"] .code-syntax .dec { color: oklch(0.68 0.12 50); font-style: italic; }
-[data-app="kitaru"] .code-syntax .cmt { color: oklch(0.67 0.015 60); font-style: italic; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-syntax .kw  { color: oklch(0.73 0.08 70); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-syntax .fn  { color: oklch(0.68 0.12 50); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-syntax .str { color: oklch(0.72 0.1 155); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-syntax .var { color: var(--color-dark-text); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-syntax .op  { color: oklch(0.72 0.02 65); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-syntax .dec { color: oklch(0.68 0.12 50); font-style: italic; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-syntax .cmt { color: oklch(0.67 0.015 60); font-style: italic; }
 
 /* Light-surface variant of the same token vocabulary, for code rendered on
    paper-colored panes (e.g. the TwoDoors record door). Keep in sync with the
    dark rules above. */
-[data-app="kitaru"] .code-syntax-light .kw,
-[data-app="kitaru"] .code-syntax-light .fn  { color: var(--ember-deep); }
-[data-app="kitaru"] .code-syntax-light .str { color: oklch(0.42 0.09 155); }
-[data-app="kitaru"] .code-syntax-light .var { color: var(--ink); }
-[data-app="kitaru"] .code-syntax-light .op  { color: oklch(0.58 0.02 60); }
-[data-app="kitaru"] .code-syntax-light .dec { color: var(--ember-deep); font-style: italic; }
-[data-app="kitaru"] .code-syntax-light .cmt { color: oklch(0.58 0.02 60); font-style: italic; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-syntax-light .kw,
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-syntax-light .fn  { color: var(--ember-deep); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-syntax-light .str { color: oklch(0.42 0.09 155); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-syntax-light .var { color: var(--ink); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-syntax-light .op  { color: oklch(0.58 0.02 60); }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-syntax-light .dec { color: var(--ember-deep); font-style: italic; }
+:is([data-app="kitaru"], [data-app="zenml-compare"]) .code-syntax-light .cmt { color: oklch(0.58 0.02 60); font-style: italic; }
 
 @media (max-width: 600px) {
-  [data-app="kitaru"] .section-pad,
-  [data-app="kitaru"] .section-pad-compact { padding: 48px 16px; }
+  :is([data-app="kitaru"], [data-app="zenml-compare"]) .section-pad,
+  :is([data-app="kitaru"], [data-app="zenml-compare"]) .section-pad-compact { padding: 48px 16px; }
 }
 @media (max-width: 480px) {
-  [data-app="kitaru"] .section-title { font-size: clamp(24px, 6vw, 32px); }
-  [data-app="kitaru"] .section-desc { font-size: 15px; }
+  :is([data-app="kitaru"], [data-app="zenml-compare"]) .section-title { font-size: clamp(24px, 6vw, 32px); }
+  :is([data-app="kitaru"], [data-app="zenml-compare"]) .section-desc { font-size: 15px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-app="kitaru"] [data-reveal] { opacity: 1; transform: none; transition: none; }
-  [data-app="kitaru"] .pulse-dot::before { animation: none; }
-  [data-app="kitaru"] .accent-shimmer {
+  :is([data-app="kitaru"], [data-app="zenml-compare"]) [data-reveal] { opacity: 1; transform: none; transition: none; }
+  :is([data-app="kitaru"], [data-app="zenml-compare"]) .pulse-dot::before { animation: none; }
+  :is([data-app="kitaru"], [data-app="zenml-compare"]) .accent-shimmer {
     -webkit-text-fill-color: var(--color-accent);
     background: none; animation: none;
   }
-  [data-app="kitaru"] .ascii-canvas { display: none; }
-  [data-app="kitaru"]::before { display: none; }
-  [data-app="kitaru"] .features-sticky-container { padding-bottom: 0; }
-  [data-app="kitaru"] .feature-card {
+  :is([data-app="kitaru"], [data-app="zenml-compare"]) .ascii-canvas { display: none; }
+  :is([data-app="kitaru"], [data-app="zenml-compare"])::before { display: none; }
+  :is([data-app="kitaru"], [data-app="zenml-compare"]) .features-sticky-container { padding-bottom: 0; }
+  :is([data-app="kitaru"], [data-app="zenml-compare"]) .feature-card {
     position: relative; top: auto;
     min-height: auto; margin-bottom: 48px;
   }
-  [data-app="kitaru"] .feature-card.feature-card--last { margin-bottom: 0; }
+  :is([data-app="kitaru"], [data-app="zenml-compare"]) .feature-card.feature-card--last { margin-bottom: 0; }
 }

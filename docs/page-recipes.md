@@ -75,13 +75,32 @@ the site's largest page family would make this ledger misleading.
 **Sequence** — `SectionIntro` header, then two tinted sections (Kitaru agent
 comparisons in orange, ZenML MLOps comparisons in sage) each with its own
 `SectionIntro` and a hand-rolled card grid linking into the family above.
-**Required data** — `compare` collection; `compare-kitaru` collection.
+**Required data** — `compare`, `compare-zenml` and `compare-kitaru`
+collections, normalised into one card shape by `src/lib/compareHub.ts`.
 **Buildable today** — partial. `SectionIntro` covers both headers; the two
 card grids (icon/logo tile, title, subtitle) are page-specific markup with no
 registry equivalent.
 
+### ZenML MDX comparison pages
+**Routes** — `/compare/zenml-vs-<slug>` (10 `.mdx` entries in
+`compare-zenml`), served by `src/pages/compare/[slug].astro`, the same
+dispatcher that routes the other two compare collections.
+**Layout** — `ZenmlMdxCompare`
+(`src/components/compare/_layouts/ZenmlMdxCompare.astro`), MDX-driven, ZenML
+chrome via `data-app="zenml-compare"`.
+**Surface** — `ml`.
+**Sequence** — hero with a competitor dropdown, then MDX body content via
+inline component imports (`ComparisonHero`, `ComparisonTable`, `CodeCompare`,
+`FeatureWithGraphic`, `WhenToUseEach`, `ComparisonCta`, `PullQuote` under
+`src/components/compare/zenml/`).
+**Required data** — `compare-zenml` collection (`.mdx`, not `.md`, for the
+inline component imports); the per-competitor graphics under
+`src/components/compare/zenml/graphics/`.
+**Buildable today** — no. The ZenML-themed twin of the Kitaru template, with
+the same MDX-plus-inline-components shape and no registry equivalent.
+
 ### Kitaru comparison pages
-**Routes** — `/compare/kitaru-vs-<slug>` (10 `.mdx` entries in
+**Routes** — `/compare/kitaru-vs-<slug>` (5 `.mdx` entries in
 `compare-kitaru`).
 **Layout** — `KitaruCompare` (`src/components/compare/_layouts/KitaruCompare.astro`),
 MDX-driven, orange chrome via `data-app="kitaru"`.
@@ -645,6 +664,7 @@ listed first within each verdict group.
 | ZenML product landing (`/product/zenml`) | no | reuses homepage sections by import, not through the registry |
 | Open Source vs Pro (`/open-source-vs-pro`) | no | `VsHero`/`ComparisonTable` reused by import only; grid and subway-map sections are one-off |
 | Kitaru comparison pages (`/compare/kitaru-vs-*`) | no | frozen pending the evals-positioning pivot; catalogued, not scheduled |
+| ZenML MDX comparison pages (`/compare/zenml-vs-*` in `compare-zenml`) | no | MDX body with inline component imports; no registry equivalent |
 | Book Your Demo (`/book-your-demo`, `/book-your-demo/kitaru`) | no | `BookingExperience` covers the whole page and takes a brand, so another variant of this shape is cheap — but it sits outside the registry, and a differently-shaped conversion page gets nothing from it |
 | Newsletter signup (`/newsletter-signup`) | no | two-column, image-paired shape doesn't match either `ConversionShell` frame |
 | Newsletter success (`/newsletter-success`) | no | `SuccessPanel` is a standalone component with one consumer |

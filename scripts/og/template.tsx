@@ -1,38 +1,81 @@
 /**
- * Satori JSX template for Kitaru-vs-X compare OG cards.
+ * Satori JSX template for the MDX compare OG cards, in two brand variants.
  *
- * Specs come from Paper artboard "D - Custom" in the "Kitaru Landing Page"
- * file, Open Graph page. Palette + type ladder must stay in sync with that
- * artboard — Paper is the source of truth (per project memory).
+ * Kitaru: specs come from Paper artboard "D - Custom" in the "Kitaru Landing
+ * Page" file, Open Graph page. Palette + type ladder must stay in sync with
+ * that artboard — Paper is the source of truth (per project memory).
+ *
+ * ZenML: the same layout with ZenML's purple (`--color-zenml-500` /
+ * the wordmark's #431D93) in place of the orange, and the ZenML wordmark
+ * (`public/images/zenml-logo.svg`, passed in as a data URI) in the eyebrow.
  */
 
+import { readFileSync } from "node:fs";
 import type { ReactElement } from "react";
+import type { CompareOgBrand } from "../../src/lib/constants.js";
+
+export type { CompareOgBrand };
 
 export interface CompareOgProps {
   /** Competitor display name, e.g. "Temporal". */
   competitor: string;
   /** Body copy (cardSubtitle from frontmatter). */
   subtitle: string;
+  /** Which product the card is for; selects palette, wordmark and headline. */
+  brand: CompareOgBrand;
 }
 
-const PALETTE = {
-  cream: "#FAF8F4",
-  ink: "#0C0603", // headline
-  wordmark: "#362F26", // Kitaru wordmark letters
-  muted: "#534B45", // subtitle
-  eyebrow: "#787069", // eyebrow + secondary marks
-  ringOrange: "#F17829", // brand orange used by the ring glyph
-  ruleOrange: "#DC692E", // deeper orange used by the bottom rule
-} as const;
+/** The site's ZenML wordmark, inlined once so the template owns its assets. */
+const ZENML_LOGO_DATA_URI = `data:image/svg+xml;base64,${readFileSync(
+  new URL("../../public/images/zenml-logo.svg", import.meta.url),
+).toString("base64")}`;
 
-export function CompareOg({ competitor, subtitle }: CompareOgProps): ReactElement {
+interface Palette {
+  ground: string;
+  ink: string;
+  wordmark: string;
+  muted: string;
+  eyebrow: string;
+  accent: string;
+  rule: string;
+}
+
+const PALETTES: Record<CompareOgBrand, Palette> = {
+  kitaru: {
+    ground: "#FAF8F4", // cream
+    ink: "#0C0603", // headline
+    wordmark: "#362F26", // Kitaru wordmark letters
+    muted: "#534B45", // subtitle
+    eyebrow: "#787069", // eyebrow + secondary marks
+    accent: "#F17829", // brand orange used by the ring glyph
+    rule: "#DC692E", // deeper orange used by the bottom rule
+  },
+  zenml: {
+    ground: "#F8F6FC", // cool off-white, sibling of --color-zenml-25
+    ink: "#0B0620",
+    wordmark: "#431D93", // the wordmark's own purple
+    muted: "#4B4560",
+    eyebrow: "#6E6884",
+    accent: "#7A3EF4", // --color-zenml-500
+    rule: "#431D93",
+  },
+};
+
+/** Ground colour per brand, exported so the rasteriser can match it. */
+export function compareOgBackground(brand: CompareOgBrand): string {
+  return PALETTES[brand].ground;
+}
+
+export function CompareOg({ competitor, subtitle, brand }: CompareOgProps): ReactElement {
+  const PALETTE = PALETTES[brand];
+  const productName = brand === "zenml" ? "ZenML" : "Kitaru";
   return (
     <div
       style={{
         width: 1200,
         height: 627,
-        backgroundColor: PALETTE.cream,
-        borderBottom: `10px solid ${PALETTE.ruleOrange}`,
+        backgroundColor: PALETTE.ground,
+        borderBottom: `10px solid ${PALETTE.rule}`,
         boxSizing: "border-box",
         display: "flex",
         flexDirection: "column",
@@ -53,7 +96,7 @@ export function CompareOg({ competitor, subtitle }: CompareOgProps): ReactElemen
           width: "100%",
         }}
       >
-        <KitaruMark />
+        {brand === "zenml" ? <ZenmlMark /> : <KitaruMark />}
         <div
           style={{
             fontFamily: "JetBrains Mono",
@@ -89,7 +132,7 @@ export function CompareOg({ competitor, subtitle }: CompareOgProps): ReactElemen
             color: PALETTE.ink,
           }}
         >
-          Kitaru vs
+          {`${productName} vs`}
         </div>
         <div
           style={{
@@ -133,6 +176,7 @@ export function CompareOg({ competitor, subtitle }: CompareOgProps): ReactElemen
  * Geometry copied from src/components/brand/KitaruLogo.astro.
  */
 function KitaruMark(): ReactElement {
+  const PALETTE = PALETTES.kitaru;
   return (
     <div
       style={{
@@ -180,9 +224,22 @@ function KitaruMark(): ReactElement {
         {/* Ring glyph in brand orange */}
         <path
           d="M40.5 0.426758C18.1325 0.426758 0 18.5592 0 40.9268C0 63.2943 18.1325 81.4268 40.5 81.4268C62.8675 81.4268 81 63.2943 81 40.9268C81 18.5592 62.8675 0.426758 40.5 0.426758ZM40.5 11.998C56.4767 11.998 69.4285 24.9501 69.4287 40.9268C69.4287 56.9036 56.4768 69.8555 40.5 69.8555C24.5234 69.8552 11.5723 56.9034 11.5723 40.9268C11.5724 24.9503 24.5235 11.9983 40.5 11.998Z"
-          fill={PALETTE.ringOrange}
+          fill={PALETTE.accent}
         />
       </svg>
+    </div>
+  );
+}
+
+/**
+ * ZenML wordmark — `public/images/zenml-logo.svg` (800×196), rendered through
+ * an <img> so the SVG paths are not duplicated here. Height matches the
+ * Kitaru mark's 44px row.
+ */
+function ZenmlMark(): ReactElement {
+  return (
+    <div style={{ display: "flex", alignItems: "center", height: 44 }}>
+      <img src={ZENML_LOGO_DATA_URI} width={180} height={44} style={{ display: "block" }} />
     </div>
   );
 }

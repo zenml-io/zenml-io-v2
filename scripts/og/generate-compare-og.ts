@@ -1,5 +1,8 @@
 /**
- * Generate Open Graph JPEG cards for every Kitaru-vs-X compare page.
+ * Generate Open Graph JPEG cards for every MDX compare page: the
+ * `compare-kitaru` collection (Kitaru brand) and the `compare-zenml`
+ * collection (ZenML brand). The brand is picked by collection directory
+ * and decides the template palette and the R2 prefix.
  *
  * Pipeline: gray-matter (parse frontmatter) → satori (JSX → SVG)
  *           → @resvg/resvg-js (SVG → PNG @ 2x) → sharp (PNG → JPEG)
@@ -10,7 +13,7 @@
  * no frontmatter mutation needed.
  *
  * Pass --slug=<basename> (repeatable) to limit to specific pages, e.g.
- *   pnpm og:compare --slug=kitaru-vs-temporal
+ *   pnpm og:compare --slug=kitaru-vs-pydantic-ai
  */
 
 import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
@@ -25,14 +28,18 @@ import satori from "satori";
 import { Resvg } from "@resvg/resvg-js";
 import sharp from "sharp";
 
-import { CompareOg } from "./template.js";
-import { KITARU_COMPARE_OG_PREFIX } from "../../src/lib/constants.js";
+import { CompareOg, compareOgBackground } from "./template.js";
+import { COMPARE_OG_PREFIX, type CompareOgBrand } from "../../src/lib/constants.js";
 
 const execFileP = promisify(execFile);
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, "..", "..");
-const COMPARE_DIR = join(REPO_ROOT, "src/content/compare-kitaru");
+const COLLECTION_DIRS: Record<CompareOgBrand, string> = {
+  kitaru: join(REPO_ROOT, "src/content/compare-kitaru"),
+  zenml: join(REPO_ROOT, "src/content/compare-zenml"),
+};
+const BRANDS = Object.keys(COLLECTION_DIRS) as CompareOgBrand[];
 const CACHE_DIR = join(REPO_ROOT, ".cache/og");
 
 const FONT_SPECS = [
@@ -48,6 +55,7 @@ interface Frontmatter {
 
 interface CompareEntry {
   slug: string;
+  brand: CompareOgBrand;
   frontmatter: Frontmatter;
 }
 
@@ -70,17 +78,23 @@ export async function loadFonts() {
 }
 
 export async function loadEntries(filterSlugs: string[] | null): Promise<CompareEntry[]> {
-  const files = await readdir(COMPARE_DIR);
-  const entries: CompareEntry[] = [];
-  for (const file of files) {
-    if (!file.endsWith(".mdx")) continue;
-    const slug = file.replace(/\.mdx$/, "");
-    if (filterSlugs && !filterSlugs.includes(slug)) continue;
-    const raw = await readFile(join(COMPARE_DIR, file), "utf8");
-    entries.push({ slug, frontmatter: matter(raw).data as Frontmatter });
-  }
-  entries.sort((a, b) => a.slug.localeCompare(b.slug));
-  return entries;
+  const perBrand = await Promise.all(
+    BRANDS.map(async (brand) => {
+      const dir = COLLECTION_DIRS[brand];
+      const files = (await readdir(dir)).filter((file) => file.endsWith(".mdx"));
+      return Promise.all(
+        files
+          .map((file) => ({ file, slug: file.replace(/\.mdx$/, "") }))
+          .filter(({ slug }) => !filterSlugs || filterSlugs.includes(slug))
+          .map(async ({ file, slug }) => ({
+            slug,
+            brand,
+            frontmatter: matter(await readFile(join(dir, file), "utf8")).data as Frontmatter,
+          })),
+      );
+    }),
+  );
+  return perBrand.flat().sort((a, b) => a.slug.localeCompare(b.slug));
 }
 
 type Font = Awaited<ReturnType<typeof loadFonts>>[number];
@@ -90,7 +104,7 @@ export async function renderJpeg(entry: CompareEntry, fonts: Font[]): Promise<Bu
   if (!competitor) throw new Error(`${entry.slug}: missing frontmatter.competitor`);
   if (!cardSubtitle) throw new Error(`${entry.slug}: missing frontmatter.cardSubtitle`);
 
-  const svg = await satori(CompareOg({ competitor, subtitle: cardSubtitle }), {
+  const svg = await satori(CompareOg({ competitor, subtitle: cardSubtitle, brand: entry.brand }), {
     width: 1200,
     height: 627,
     fonts,
@@ -103,7 +117,7 @@ export async function renderJpeg(entry: CompareEntry, fonts: Font[]): Promise<Bu
   // ratio at higher density and is well within consumer limits.
   const png = new Resvg(svg, {
     fitTo: { mode: "width", value: 2400 },
-    background: "#FAF8F4",
+    background: compareOgBackground(entry.brand),
   })
     .render()
     .asPng();
@@ -123,12 +137,13 @@ export async function renderJpeg(entry: CompareEntry, fonts: Font[]): Promise<Bu
     .toBuffer();
 }
 
-async function uploadToR2(filePath: string, slug: string): Promise<void> {
+async function uploadToR2(brand: CompareOgBrand, filePaths: string[]): Promise<void> {
   // --literal-key writes to `${prefix}/${filename}` (no sha8 segment) so the
-  // URL is `compareOgUrl(slug)` — deterministic, overwrites in place on regen.
+  // URL is `compareOgUrl(brand, slug)` — deterministic, overwrites in place
+  // on regen. One `uv run` per brand: the uploader takes many files at once.
   await execFileP(
     "uv",
-    ["run", "scripts/r2-upload.py", filePath, "--prefix", KITARU_COMPARE_OG_PREFIX, "--literal-key", "--overwrite"],
+    ["run", "scripts/r2-upload.py", ...filePaths, "--prefix", COMPARE_OG_PREFIX[brand], "--literal-key", "--overwrite"],
     { cwd: REPO_ROOT },
   );
 }
@@ -151,14 +166,21 @@ async function main(): Promise<void> {
   const fonts = await loadFonts();
   console.log(`Rendering ${entries.length} card(s) — mode: ${write ? "WRITE" : "DRY-RUN"}`);
 
+  const rendered: Array<{ brand: CompareOgBrand; outPath: string }> = [];
   for (const entry of entries) {
     const outPath = join(CACHE_DIR, `${entry.slug}.jpg`);
     const jpeg = await renderJpeg(entry, fonts);
     await writeFile(outPath, jpeg);
-    console.log(`  ✓ ${entry.slug}.jpg (${(jpeg.byteLength / 1024).toFixed(1)} KB)`);
-    if (write) {
-      await uploadToR2(outPath, entry.slug);
-      console.log(`    ↳ uploaded`);
+    rendered.push({ brand: entry.brand, outPath });
+    console.log(`  ✓ [${entry.brand}] ${entry.slug}.jpg (${(jpeg.byteLength / 1024).toFixed(1)} KB)`);
+  }
+
+  if (write) {
+    for (const brand of BRANDS) {
+      const paths = rendered.filter((r) => r.brand === brand).map((r) => r.outPath);
+      if (paths.length === 0) continue;
+      await uploadToR2(brand, paths);
+      console.log(`  ↳ uploaded ${paths.length} ${brand} card(s) to ${COMPARE_OG_PREFIX[brand]}/`);
     }
   }
 

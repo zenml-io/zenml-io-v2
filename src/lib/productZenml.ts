@@ -6,6 +6,8 @@
  * design pass (Zuri).
  */
 
+export const ZENML_INSTALL_CMD = "uv add zenml";
+
 /** Canonical ZenML-side links — counterpart to KITARU_LINKS in productKitaru.ts (separate cloud apps, Aug 2026). */
 export const ZENML_LINKS = {
   signup: {
@@ -13,6 +15,11 @@ export const ZENML_LINKS = {
     href: "https://cloud.zenml.io",
   },
   demo: { label: "Book a demo", href: "/book-your-demo" },
+  github: {
+    label: "Star on GitHub",
+    href: "https://github.com/zenml-io/zenml",
+    external: true,
+  },
 } as const;
 
 export const PRODUCT_ZENML_SEO = {
@@ -28,7 +35,7 @@ export const PRODUCT_ZENML_HERO = {
   subtitleLead: "Bring your own tools.",
   subtitle:
     "Orchestrate training, inference, evals, and agents on the infrastructure you already run, from your laptop to Kubernetes. Reproducible, composable, no lock-in.",
-  installCmd: "uv add zenml",
+  installCmd: ZENML_INSTALL_CMD,
   // Signup-first for parity with the Kitaru landing.
   primaryCta: ZENML_LINKS.signup,
   secondaryCta: ZENML_LINKS.demo,
@@ -57,5 +64,5 @@ export const PRODUCT_ZENML_FINAL_CTA = {
   body: "Start with the open-source SDK, scale to managed when you need governance and a hosted control plane.",
   primaryCta: ZENML_LINKS.signup,
   secondaryCta: ZENML_LINKS.demo,
-  installCmd: "uv add zenml",
+  installCmd: ZENML_INSTALL_CMD,
 } as const;

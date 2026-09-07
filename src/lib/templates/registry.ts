@@ -1051,9 +1051,11 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
   // ---------------------------------------------------------------------------
   // Comparison (Wave 3 PR3)
   //
-  // The ZenML-vs-X family: 25 `/compare/zenml-vs-*` routes and 3 `/vs/*`
-  // routes, all rendered by one blocks-driven page template. These components
-  // were extracted from live pages in parity mode rather than designed, so
+  // The blocks-driven ZenML-vs-X family: the 25 `/compare/zenml-vs-*`
+  // routes that come from the `compare` collection, plus 3 `/vs/*` routes,
+  // all rendered by one page template. The 10 `/compare/zenml-vs-*` routes
+  // in `compare-zenml` are a separate MDX family and are not listed here.
+  // These components were extracted from live pages in parity mode rather than designed, so
   // they have no Paper artboards, and they live outside `templates/` —
   // `check:registry` does not require entries for them, but leaving the
   // family out would make the site's largest page group invisible here.
