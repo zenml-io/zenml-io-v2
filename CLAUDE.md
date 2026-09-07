@@ -42,7 +42,7 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 | Hosting | **Cloudflare Workers** in production; **Cloudflare Pages** retained as the deeper fallback |
 | Assets | **Cloudflare R2** — object storage for images/files |
 | Styling | **Tailwind CSS** — utility-first |
-| Interactive | **Preact islands** — client-side components in `src/components/islands/` (forms, cookie consent, blog search, homepage/pro widgets, and the `filter-index/` family behind the database, integrations, and blog indexes) plus the Kitaru landing islands (see below). The authoritative mount list is `ISLAND_MOUNTS` in `scripts/check-dist-smoke.ts`; `pnpm smoke:dist` fails if an island on disk is missing from it |
+| Interactive | **Preact islands** — client-side components in `src/components/islands/` (forms, cookie consent, blog search, homepage/pro widgets, and the `filter-index/` family behind the database, integrations, and blog indexes) plus the Kitaru landing islands (see below). The authoritative mount list is `ISLAND_MOUNTS` in `scripts/check-dist-smoke.ts`; `pnpm smoke:dist` fails if a top-level `.tsx` in either islands directory is missing from it (it does not scan nested folders such as `filter-index/`, so add those entries by hand) |
 | Search | **Pagefind** — build-time full-text search index for ops-database pages, paired with JSON faceted filtering |
 | Forms | `ContactForm` / `DemoRequestForm` Preact islands → `src/pages/api/forms/[formType].ts` (`prerender: false`) → Segment HTTP API. Cal.com for demo booking (`/book-your-demo` is the canonical URL). Brevo for newsletter. The Kitaru landing surfaces all share these flows; the standalone kitaru.ai endpoints were never wired into the merged site. |
 | Analytics | **Plausible** (`script.pageview-props.js` with `event-surface`) + GA4 + **single Segment workspace**. The Segment `analytics.page()` call receives `{surface}` as a property so downstream segmentation/CRM routing can filter by it. Hostname-gated to production. See "Unified Brand & Surface" below. |
@@ -138,8 +138,8 @@ Use `.claude/skills/r2-image-upload/SKILL.md` for authorized uploads and
 
 ```bash
 # Step 1: Convert to AVIF (use the avif-image-compressor skill)
-# AVIF_SKILL = directory of the avif-image-compressor skill (a plugin skill; resolve it by invoking
-# the skill rather than hardcoding a ~/.claude path — the install location moves)
+# Resolve the avif-image-compressor skill directory (a plugin skill; its install path moves, so find it):
+AVIF_SKILL=$(find ~/.claude/plugins ~/.codex/skills -type d -name avif-image-compressor -print -quit 2>/dev/null)
 # For photos (team, blog heroes, screenshots): --quality 28, --resize 800
 # For larger hero/banner images: --quality 25, --resize 1200
 "$AVIF_SKILL"/scripts/convert_to_avif.sh input.png --quality 28 --resize 800

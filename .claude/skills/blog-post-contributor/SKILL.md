@@ -19,7 +19,7 @@ Prepare a new blog post in `src/content/blog/` from Markdown or Notion: frontmat
 | Tags dir | `src/content/tags/` |
 | Schema source of truth | `src/content.config.ts` (`blogSchema`) |
 | Image upload script | `scripts/r2-upload.py` |
-| AVIF compression script | `convert_to_avif.sh` from the `avif-image-compressor` plugin skill (invoke the skill to resolve its path) |
+| AVIF compression script | `convert_to_avif.sh` from the `avif-image-compressor` plugin skill (see C1 for resolving its path) |
 | R2 image prefix | `content/blog/<slug>/` |
 
 ## Step 0: Read the source and resolve missing information
@@ -123,8 +123,8 @@ Notion's image URLs are temporary pre-signed S3 URLs that expire within about an
 #### Convert all images to AVIF
 
 ```bash
-# AVIF_SKILL = directory of the avif-image-compressor skill (a plugin skill; resolve it by invoking
-# the skill rather than hardcoding a ~/.claude path — the install location moves)
+# Resolve the avif-image-compressor skill directory (a plugin skill; its install path moves, so find it):
+AVIF_SKILL=$(find ~/.claude/plugins ~/.codex/skills -type d -name avif-image-compressor -print -quit 2>/dev/null)
 cd /tmp/<slug>-images
 for f in *.png *.jpg *.jpeg; do
   "$AVIF_SKILL"/scripts/convert_to_avif.sh "$f" --quality 28 --resize 800
