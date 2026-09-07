@@ -24,7 +24,7 @@ Add a new blog post to the ZenML website (`src/content/blog/`). This skill suppo
 | Tags dir | `src/content/tags/` |
 | Schema source of truth | `src/content.config.ts` (`blogSchema`) |
 | Image upload script | `scripts/r2-upload.py` |
-| AVIF compression script | `~/.Codex/skills/avif-image-compressor/scripts/convert_to_avif.sh` |
+| AVIF compression script | `scripts/convert-images.ts` (`pnpm images:convert`) |
 | R2 image prefix | `content/blog/<slug>/` |
 
 ## Step 0: Gather Key Information
@@ -139,16 +139,13 @@ Inline images only — the cover image is handled separately in C2.
 #### Convert all images to AVIF
 
 ```bash
-cd /tmp/<slug>-images
-for f in *.png *.jpg *.jpeg; do
-  ~/.Codex/skills/avif-image-compressor/scripts/convert_to_avif.sh "$f" --quality 28 --resize 800
-done
+pnpm images:convert /tmp/<slug>-images/*.png /tmp/<slug>-images/*.jpg /tmp/<slug>-images/*.jpeg --preset inline
 ```
 
 #### Upload to R2
 
 ```bash
-for f in *.avif; do
+for f in /tmp/<slug>-images/*.avif; do
   uv run scripts/r2-upload.py "$f" --prefix content/blog/<slug>
 done
 ```

@@ -142,17 +142,18 @@ Do not hard-wrap PR descriptions at a fixed column width. Keep each paragraph an
 **Tier B (R2):** Always **convert to AVIF first**, then upload:
 
 ```bash
-# Step 1: Convert to AVIF (use the avif-image-compressor skill)
-# For photos (team, blog heroes, screenshots): --quality 28, --resize 800
-# For larger hero/banner images: --quality 25, --resize 1200
-~/.claude/skills/avif-image-compressor/scripts/convert_to_avif.sh input.png --quality 28 --resize 800
+# Step 1: Convert to AVIF (repo-local script, no external dependency)
+# For photos (team, blog heroes, screenshots): --preset inline (max 800px, AVIF only)
+pnpm images:convert input.png --preset inline
+# For larger hero/banner images: --preset cover (max 1200px, AVIF + a JPEG sibling for seo.ogImage)
+pnpm images:convert input.png --preset cover
 
 # Step 2: Upload the AVIF to R2
 uv run scripts/r2-upload.py output.avif --prefix content/blog       # custom prefix
 uv run scripts/r2-upload.py output.avif --frontmatter                # print YAML snippet
 ```
 
-**Default to AVIF for R2 uploads** — typically 50-250× smaller than the source. Use the `avif-image-compressor` skill for conversion.
+**Default to AVIF for R2 uploads** — typically 50-250× smaller than the source.
 
 **Exception — Open Graph card images need JPEG.** Social platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) don't support AVIF in OG cards. For any image referenced by `seo.ogImage` in content frontmatter, upload a JPEG sibling at the same R2 prefix and reference the `.jpg` from `ogImage` while keeping the `.avif` for `mainImage.url`. See PR #73 for the site-wide fix where 103 posts all had AVIF og images and were rendering with no preview card on LinkedIn.
 
