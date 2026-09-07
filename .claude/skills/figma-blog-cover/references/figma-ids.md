@@ -10,7 +10,7 @@ All values read live on 2026-09-07 (Spike). Never re-derive an id from a name se
 | Page | `174:1785` **Blog Covers** — a PAGE of its own (the root has three: `0:1` Social Media, `102:8` Swag - Postcards, `174:1785` Blog Covers); `await figma.setCurrentPageAsync(await figma.getNodeByIdAsync('174:1785'))` once per call |
 | Blog Covers container | `174:1785` — the same PAGE node; the month sections are its direct children, so section x/y are page coordinates and the page has no `absoluteBoundingBox` (S5 treats the container origin as 0,0) |
 | Account gate | `whoami` → the shared ZenML Figma editor account: email equal to `FIGMA_EDITOR_EMAIL` in `.env` (the address is never written into a repo file), plans: ZenML (seat **Full**, tier org), Libraries (seat View, tier starter). `figma.currentUser` inside `use_figma` throws `in get_currentUser: "currentUser" is not a supported API` — do not call it |
-| File-open check | first `use_figma` call returns `figma.root.name === "Document"` (not the file title) and `await figma.setCurrentPageAsync(await figma.getNodeByIdAsync('174:1785'))` succeeds with `figma.currentPage.name === "Blog Covers"`; any error → stop with a question. (E2E 2026-09-07: an earlier draft gated on `0:1` Social Media — that is a different page and holds no covers; `figma.currentPage` at the start of a call is whatever page the desktop app last showed, so do not gate on it) |
+| File-open check | first `use_figma` call returns `figma.root.name === "Document"` (not the file title) and `await figma.setCurrentPageAsync(await figma.getNodeByIdAsync('174:1785'))` succeeds with `figma.currentPage.name === "Blog Covers"`; any error → stop with a question. Gate on `174:1785` only: `0:1` (Social Media) holds no covers, and `figma.currentPage` at the start of a call is whatever page the desktop app last showed, so it proves nothing |
 
 ## Blog Cover / 16:9 — component set `162:1845`
 
@@ -56,21 +56,23 @@ ZenML variants were not measured; find-slot assumes the same widths until someon
 
 Axes: `Count` (`"10"` … `"1"`, default `"10"`), `Include ZenML` (`"True"`, `"False"`, default `"True"`), `Brand` (`ZenML`, `Kitaru`, default `ZenML`) — 40 variants named literally `Count=<n>, Include ZenML=<bool>, Brand=<brand>`. No TEXT or INSTANCE_SWAP properties on the set; texts and logos are edited on nested nodes (`vs-template.md`). Live example: `232:3744` `trigger-dev-alternatives` = `Count=6, Include ZenML=True, Brand=Kitaru` (main component `193:2371`). `vs-hexagon` set `111:224`; `kitaru-hexagon` `187:1794`.
 
-## 2026 column sections (state after the 2026-09-07 E2E run)
+## 2026 column section ids
 
-| id | name | y | height | covers |
-|---|---|---|---|---|
-| `379:15512` | `2026-09 · September 2026` | 0 | 1480 | 1 (`braintrust-pricing`) |
-| `307:4218` | `2026-08 · August 2026` | 1880 | 1480 | 4 (`braintrust-alternatives` `390:15531` VS card at slot 0 since the 2026-09-07 E2E; the three older covers shifted one slot right) |
-| `307:4219` | `2026-07 · July 2026` | 3760 | 2760 | 7 |
-| `307:4220` | `2026-06 · June 2026` | 6920 | 1480 | 2 |
-| `307:4221` | `2026-05 · May 2026` | 8800 | 2760 | 6 |
-| `307:4222` | `2026-04 · April 2026` | 11960 | 1480 | 5 |
-| `307:4223` | `2026-03 · March 2026` | 13840 | 2760 | 9 |
-| `307:4224` | `2026-02 · February 2026` | 17000 | 4040 | 11 |
-| `307:4225` | `2026-01 · January 2026` | 21440 | 4040 | 12 |
+S1 reads the live column every run; this list is only for reading S1 output or a report by eye.
 
-All at x 0, width 10720; the E2E's S2 inserted `2026-09` at y 0 and shifted the eight older sections by 1880. S1 re-reads this list every run; the table is a snapshot, not an input. Known pre-existing within-section mismatches from the 2026-08-27/28 batch (reported by S5 `--month` runs, not touched by the skill): `2026-05` two covers swapped, `2026-03` `why-agents-need-durable-execution` and `e2b-vs-daytona` on the same slot (4400,1520), `2026-02` five and `2026-01` ten slot mismatches. Reflowing them is Zuri's call (`find-slot.ts --month`).
+| id | name |
+|---|---|
+| `379:15512` | `2026-09 · September 2026` |
+| `307:4218` | `2026-08 · August 2026` |
+| `307:4219` | `2026-07 · July 2026` |
+| `307:4220` | `2026-06 · June 2026` |
+| `307:4221` | `2026-05 · May 2026` |
+| `307:4222` | `2026-04 · April 2026` |
+| `307:4223` | `2026-03 · March 2026` |
+| `307:4224` | `2026-02 · February 2026` |
+| `307:4225` | `2026-01 · January 2026` |
+
+All at x 0, width 10720. Known pre-existing within-section mismatches from the 2026-08-27/28 batch (reported by S5 `--month` runs, not touched by the skill): `2026-05` two covers swapped, `2026-03` `why-agents-need-durable-execution` and `e2b-vs-daytona` on the same slot (4400,1520), `2026-02` five and `2026-01` ten slot mismatches. Reflowing them is Zuri's call (`find-slot.ts --month`).
 
 ## Fonts (all present in `figma.listAvailableFontsAsync()` on this machine)
 

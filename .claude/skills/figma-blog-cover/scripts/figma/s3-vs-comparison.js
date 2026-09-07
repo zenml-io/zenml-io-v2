@@ -1,9 +1,8 @@
 // s3-vs-comparison.js — find-or-create the Template — VS Comparison (113:300) instance for P.slug.
 // Paste find-slot.ts output (run with --comparison) over the `const P = ...` placeholder; uses P.vs and P.positions.
-// Recipe = the Spike's live read of 232:3744 (trigger-dev-alternatives). UNVERIFIED as a write until
-// the first real run (A4: no throwaway instance; braintrust-alternatives is the first run; a broken
-// instance is removed and retried; if createInstance or swapComponent fails, take the Blog Cover +
-// Panel Bottom fallback and report it).
+// Recipe = the live read of 232:3744 (trigger-dev-alternatives). A broken instance is removed and
+// retried; if createInstance or swapComponent fails, take the Blog Cover + Panel Bottom fallback
+// and report it (SKILL.md, Fallback rule).
 //
 // Ops budget: 1 create/reuse + 2 texts + N logo swaps ≤ 10 → at most 7 swaps per call. find-slot
 // emits P.vs.tileBatches ([[0,7],[7,N]] for N > 7, else [[0,N]]) and P.vs.tileRange = the batch

@@ -1,18 +1,12 @@
 ---
 name: figma-blog-cover
 description: >-
-  Generate a blog post's cover from the Blog Cover / 16:9 component in the
-  ZenML Templates Figma file: place one instance per post in its month section
-  on the Blog Covers page, export it at 3840x2160, convert to AVIF + JPEG,
-  upload both to R2 and print the paste-ready mainImage / seo.ogImage
-  frontmatter. Also builds Kitaru-vs-X comparison cards from the VS template,
-  and can add a missing ServiceLogo component (named by slug) to the Hashi
-  Design System library when a VS card needs a competitor mark that doesn't
-  exist yet. Use when a post in src/content/blog/ has no Figma cover, when a cover
-  must be regenerated, or when blog-post-contributor reaches its cover step.
-  Triggers: "blog cover", "figma cover", "cover image for post", "make the
-  cover", "generate cover", "new cover", "comparison card", "add logo",
-  "missing mark", "new service logo".
+  Create a blog post's cover in Figma from the Blog Cover / 16:9 component (or a
+  Kitaru-vs-X comparison card from the VS template), export it, convert to AVIF +
+  JPEG, upload to R2 and print the mainImage / seo.ogImage frontmatter. Can also
+  add a missing ServiceLogo mark to the Hashi Design System library. Use for any
+  request to make, regenerate or fix a post's cover or comparison card, to add a
+  missing competitor logo, or when blog-post-contributor reaches its cover step.
 ---
 
 # Figma Blog Cover
@@ -41,7 +35,7 @@ Read `references/figma-ids.md` before the first Figma call; the other references
 1. `whoami` (Figma MCP) reports the email held in `FIGMA_EDITOR_EMAIL` (`.env`; the address never goes into a repo file) with a **Full** seat on the **ZenML** org. Any other account: stop. `figma.currentUser` is not readable inside `use_figma`, so this is the whole account gate.
 2. The file `tDusxGZ3wyvc08u3GiUpy4` is open in the Figma desktop app. Check = the first `use_figma` call returns `figma.root.name` (it returns `"Document"`, not the file title) and `await figma.setCurrentPageAsync(await figma.getNodeByIdAsync('174:1785'))` succeeds with page name `Blog Covers` (S1 does this; `174:1785` is a PAGE, not a frame under `0:1`). Any error: stop.
 3. `.env` has `FIGMA_EDITOR_EMAIL`, `CLOUDFLARE_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`.
-4. Load the `figma:figma-use` skill with the Skill tool before the first `use_figma` call. Its ops rule binds: **at most 10 logical operations per `use_figma` call**, and a loop counts one op per node it touches. Chunk accordingly (S2, S4).
+4. Load the `figma:figma-use` skill with the Skill tool before the first `use_figma` call. Its ops rule binds: **at most 10 logical operations per `use_figma` call**, and a loop counts one op per node it touches. Chunk accordingly (S2, S4). That skill and the `use_figma` tool come from the Figma plugin for Claude Code. If the plugin is not installed, stop here and say so.
 5. `src/content/blog/<slug>.md` exists with a parseable `date`.
 6. Only one lane touches Figma at a time. Never run this skill in parallel with another Figma writer.
 
@@ -76,7 +70,7 @@ curl -sL -o "$S/<slug>.png" "<result export.url>"   # $S = scratch dir; the URL 
 ```
 Ignore the `rawImages` / `svgAssets` URLs in the result, and a `svgAssetsTruncated` / "select a smaller node" notice — a VS card's subtree holds more than 20 vectors, so it always says that; `export.url` is still the full PNG and it is not an error. `get_screenshot` is not an export path — it caps at the node's natural 1920x1080.
 
-**S7 publish.** `pnpm exec tsx .claude/skills/figma-blog-cover/scripts/publish-cover.ts <slug> "$S/<slug>.png" [--no-upload] [--allow-1x]`. It asserts the PNG is exactly 3840x2160 (1920x1080 only behind `--allow-1x`, with a printed warning), writes `<slug>-cover.avif` at 1920x1080 (quality 75, 4:4:4) and `<slug>-cover.jpg` at 1920x1080 AVIF / 1200x675 JPEG for Open Graph, uploads both to `content/blog/<slug>` on R2, HEADs the URLs, and prints JSON + the YAML block. `--no-upload` stops after the local files. (`--allow-any-source` — any 16:9 image ≥1200 px wide — exists for blog-post-contributor's "cover provided" path only; never for a Figma export.)
+**S7 publish.** `pnpm exec tsx .claude/skills/figma-blog-cover/scripts/publish-cover.ts <slug> "$S/<slug>.png" [--no-upload] [--allow-1x]`. It asserts the PNG is exactly 3840x2160 (1920x1080 only behind `--allow-1x`, with a printed warning), writes `<slug>-cover.avif` at 1920x1080 (quality 75, 4:4:4) and `<slug>-cover.jpg` at 1200x675 for Open Graph, uploads both to `content/blog/<slug>` on R2, HEADs the URLs, and prints JSON + the YAML block. `--no-upload` stops after the local files. (`--allow-any-source` — any 16:9 image ≥1200 px wide — exists for blog-post-contributor's "cover provided" path only; never for a Figma export.)
 
 ## Copy: headline, subtitle, alt text
 

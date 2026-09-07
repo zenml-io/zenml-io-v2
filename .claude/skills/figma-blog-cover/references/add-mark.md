@@ -181,9 +181,9 @@ republish itself.
    with a one-line "ask a Hashi library editor to republish before using these in a VS card."
 2. **Monorepo commit** — the normalized SVG(s) written to
    `shared/hashi/assets/service-logos/<slug>.svg` are new untracked files in the monorepo working
-   tree; committing them is a separate, deliberate step (never run git in the monorepo
-   automatically — 804 uncommitted files live there already; adding an SVG is allowed, running git
-   is not).
+   tree; committing them is a separate, deliberate step. Never run git in the monorepo from this
+   skill — it is someone else's working tree with its own uncommitted changes; adding an SVG file
+   is allowed, running git is not.
 3. **FIGMA-PARITY.md counts** — if that doc tracks a total mark count or an inventory list, it is
    now stale by the number of marks added; flag it, don't edit it silently.
 4. **Sourced-from-a-different-domain marks** — any mark whose actual source URL doesn't match a
