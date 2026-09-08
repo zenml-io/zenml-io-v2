@@ -1,0 +1,71 @@
+---
+/**
+ * LabsInstallChip — a copyable `$ command` pill for the Labs bands. The
+ * command scrolls inside the chip on narrow viewports instead of wrapping
+ * (code never reflows); the copy button sits outside the scroll region and
+ * copies the full command. `tone="dark"` is the variant for the sage-900
+ * closing band. The clipboard script is shared with every instance on the
+ * page (guarded, so a second instance never double-wires a button).
+ */
+import type { LabsInstallChip as Content } from "../../lib/labs-home";
+
+type Tone = "light" | "dark";
+
+interface Props {
+  content: Content;
+  tone?: Tone;
+  class?: string;
+}
+
+const { content, tone = "light", class: className } = Astro.props;
+
+const TONE_CLASSES: Record<Tone, string> = {
+  light:
+    "border-border bg-card text-(--color-cream-900) [--chip-muted:var(--color-cream-600)] [--chip-hover:var(--color-cream-100)]",
+  dark: "border-[rgba(219,224,194,0.3)] text-(--color-cream-50) [--chip-muted:var(--color-sage-300)] [--chip-hover:var(--color-sage-800)]",
+};
+
+const classes = [
+  "inline-flex h-11 max-w-full items-center gap-3 rounded-full border pl-4 pr-1.5 font-mono text-[13px]",
+  TONE_CLASSES[tone],
+  className,
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+<div class={classes}>
+  <span class="shrink-0 text-(--chip-muted)" aria-hidden="true">$</span>
+  <code class="min-w-0 overflow-x-auto whitespace-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">{content.cmd}</code>
+  <button
+    type="button"
+    class="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-(--chip-muted) transition-colors duration-200 ease-out hover:bg-(--chip-hover) hover:text-current"
+    aria-label="Copy install command"
+    data-copy={content.cmd}
+    data-analytics={content.analytics}
+  >
+    <svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="9" y="9" width="13" height="13" rx="2" /><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" /></svg>
+    <svg class="check-icon hidden" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><polyline points="20 6 9 17 4 12" /></svg>
+  </button>
+</div>
+
+<script>
+  // Copy-to-clipboard; swaps the icon briefly on success. Same guard as the
+  // site-wide InstallCommand so both can coexist on one page.
+  document.querySelectorAll<HTMLButtonElement>("button[data-copy]").forEach((btn) => {
+    if (btn.dataset.copyWired) return;
+    btn.dataset.copyWired = "1";
+    btn.addEventListener("click", () => {
+      const text = btn.dataset.copy;
+      if (!text) return;
+      navigator.clipboard?.writeText(text).then(() => {
+        btn.querySelector(".copy-icon")?.classList.add("hidden");
+        btn.querySelector(".check-icon")?.classList.remove("hidden");
+        setTimeout(() => {
+          btn.querySelector(".copy-icon")?.classList.remove("hidden");
+          btn.querySelector(".check-icon")?.classList.add("hidden");
+        }, 1500);
+      });
+    });
+  });
+</script>

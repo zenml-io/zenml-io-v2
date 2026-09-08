@@ -1,0 +1,94 @@
+---
+/**
+ * LabsIntegrationsGrid — static grid of integration logos on a sage tint
+ * band. No marquee, no animation of any kind: the page's motion budget is
+ * spent elsewhere. Logos come from the `integrations` content collection at
+ * build time, read the same way `IntegrationsMarquee.astro` reads them,
+ * sorted by title, first 24 shown (a 6x4 block at the widest); the rest of
+ * the count lives in the CTA row.
+ */
+import { getCollection } from "astro:content";
+import type { IntegrationsContent } from "../../lib/labs-product-zenml";
+import LabsButton from "./LabsButton.astro";
+
+interface Props {
+  content: IntegrationsContent;
+}
+const { headline, deck, cta } = Astro.props.content;
+
+type LogoItem = {
+  name: string;
+  src: string;
+  alt: string;
+  href: string;
+};
+
+const integrations = await getCollection(
+  "integrations",
+  ({ data }) => !data.draft,
+);
+const logos: LogoItem[] = integrations
+  .flatMap((i) => {
+    const logo = i.data.logo;
+    if (!logo?.url) {
+      return [];
+    }
+
+    return [
+      {
+        name: i.data.title,
+        src: logo.url,
+        alt: logo.alt || i.data.title,
+        href: `/integrations/${i.data.slug}`,
+      },
+    ];
+  })
+  .sort((a, b) => a.name.localeCompare(b.name));
+const gridLogos = logos.slice(0, 24);
+---
+
+<section class="bg-(--color-sage-300) py-24 md:py-32">
+  <div class="mx-auto max-w-content px-gutter text-center">
+    <p class="font-label text-[13px] uppercase tracking-[0.05em] text-(--color-sage-800)">
+      Integrations
+    </p>
+    <h2 class="mt-space-sm font-display text-[32px] leading-[36px] text-(--color-cream-900) text-balance md:text-[44px] md:leading-[48px]">
+      {headline}
+    </h2>
+    {
+      deck && (
+        <p class="mx-auto mt-space-sm max-w-[640px] font-sans text-[17px] leading-[26px] text-(--color-cream-800) md:text-[18px] md:leading-[27px]">
+          {deck}
+        </p>
+      )
+    }
+
+    <div class="mt-space-xl grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6 md:gap-4">
+      {
+        gridLogos.map((logo) => (
+          <a
+            href={logo.href}
+            class="group flex h-[88px] cursor-pointer items-center justify-center rounded-[16px] border border-border bg-card px-4 transition-colors duration-200 ease-out hover:border-(--color-sage-600)"
+            aria-label={logo.name}
+          >
+            {/* aria-label above names the link; the image is decorative on
+               purpose so screen readers announce the logo once, not twice. */}
+            <img
+              src={logo.src}
+              alt=""
+              aria-hidden="true"
+              class="h-9 w-9 object-contain"
+              width="36"
+              height="36"
+              loading="lazy"
+            />
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="mt-space-mlg flex justify-center">
+      <LabsButton cta={cta} tone="ghost" />
+    </div>
+  </div>
+</section>

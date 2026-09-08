@@ -18,6 +18,10 @@ import {
   type LogoItem,
 } from "./homepage";
 import { KITARU_LINKS } from "./productKitaru";
+import { ZENML_LINKS } from "./productZenml";
+
+/** The two products the Labs shell can be "inside" (header wordmark, switcher, CTA target). */
+export type LabsProduct = "zenml" | "kitaru";
 
 export const LABS_HOME_SEO = {
   title: "ZenML Labs: The unified infrastructure layer for AI in production",
@@ -56,6 +60,20 @@ export const LABS_FINAL_SIGNUP: LabsCta = {
   analytics: "Final-Signup-Kitaru",
 };
 
+/**
+ * Nav pill on a product page follows the product (2026-09-08 ruling): same
+ * label, the product's own cloud app. Pages without a product keep
+ * LABS_NAV_SIGNUP.
+ */
+export const LABS_NAV_SIGNUP_BY_PRODUCT: Record<LabsProduct, LabsCta> = {
+  kitaru: LABS_NAV_SIGNUP,
+  zenml: {
+    label: LABS_SIGNUP.label,
+    href: ZENML_LINKS.signup.href,
+    analytics: "Nav-Signup-ZenML",
+  },
+};
+
 /* ---------------------------------------------------------------------- */
 /* Shell                                                                   */
 /* ---------------------------------------------------------------------- */
@@ -63,12 +81,14 @@ export const LABS_FINAL_SIGNUP: LabsCta = {
 export interface LabsNavLink {
   label: string;
   href: string;
-  /** Rendered with a chevron; the menu itself lands with the product pages. */
+  /** Rendered with a chevron; Docs/Case studies menus land in a later step. */
   hasMenu?: boolean;
+  /** The one menu that exists today: the product switcher (rows from LABS_DOORS). */
+  menu?: "products";
 }
 
 export const LABS_NAV_LINKS: readonly LabsNavLink[] = [
-  { label: "Product", href: "/product/zenml", hasMenu: true },
+  { label: "Products", href: "/product/zenml", hasMenu: true, menu: "products" },
   {
     label: "Docs",
     href: "https://docs.zenml.io/getting-started/introduction",
@@ -97,6 +117,21 @@ export interface LabsBandContent {
   headlineLines: readonly [string, string];
   deck: string;
   cta: LabsCta;
+}
+
+/** A product page's opening/closing band: the homepage shape plus the product
+ * wordmark above the headline, an optional ghost pill and a copyable install
+ * command. Every extra is optional, so the homepage content still fits. */
+export interface LabsProductBandContent extends LabsBandContent {
+  product?: LabsProduct;
+  secondaryCta?: LabsCta;
+  install?: LabsInstallChip;
+}
+
+export interface LabsInstallChip {
+  cmd: string;
+  /** Plausible event for the copy button. */
+  analytics: string;
 }
 
 export const LABS_HERO: LabsBandContent = {

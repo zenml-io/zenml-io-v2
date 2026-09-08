@@ -1,0 +1,44 @@
+---
+/**
+ * LabsValueProps — three-card value-prop grid for /product/zenml (04 Value
+ * props). Numbered labels stand in for the icon set that is still being
+ * drawn; no icons, no coloured squares. Copy arrives through `content`
+ * (`ZENML_VALUE_PROPS` in `src/lib/labs-product-zenml.ts`); nothing here is
+ * retyped.
+ */
+import type { ValuePropsContent } from "../../lib/labs-product-zenml";
+import LabsButton from "./LabsButton.astro";
+
+interface Props {
+  content: ValuePropsContent;
+}
+const { content } = Astro.props;
+---
+
+<section class="py-24 md:py-32">
+  <div class="mx-auto max-w-content px-gutter">
+    <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) text-balance md:text-[44px] md:leading-[48px]">
+      {content.headline}
+    </h2>
+
+    <div class="mt-space-xl grid grid-cols-1 gap-6 md:grid-cols-3">
+      {content.items.map((item) => (
+        <div class="flex flex-col gap-space-md rounded-[20px] border border-border bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10">
+          <span class="font-label text-[15px] tracking-[0.05em] text-(--color-cream-700)">
+            {item.index}
+          </span>
+          <h3 class="font-display text-[24px] leading-[30px] text-(--color-cream-900)">
+            {item.title}
+          </h3>
+          <p class="font-sans text-[16px] leading-[24px] text-foreground">
+            {item.body}
+          </p>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-space-mlg flex">
+      <LabsButton cta={content.cta} />
+    </div>
+  </div>
+</section>

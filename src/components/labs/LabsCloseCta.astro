@@ -1,14 +1,16 @@
 ---
 import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
-import type { LabsBandContent } from "../../lib/labs-home";
+import type { LabsProductBandContent } from "../../lib/labs-home";
 // LabsCloseCta.astro — the page's closing band: dark sage panel, two-line
 // headline, deck, one signup pill. Copy comes in through the `content` prop
-// (LABS_CLOSE on `/`).
+// (LABS_CLOSE on `/`, ZENML_CLOSE on `/product/zenml`); a product page may
+// add a copyable install command under the pill, absent on the homepage.
 import { GrainBackdrop } from "../islands/GrainBackdrop";
 import LabsButton from "./LabsButton.astro";
+import LabsInstallChip from "./LabsInstallChip.astro";
 
 interface Props {
-  content: LabsBandContent;
+  content: LabsProductBandContent;
 }
 const { content } = Astro.props;
 ---
@@ -42,5 +44,11 @@ const { content } = Astro.props;
     <div class="mt-10 flex flex-wrap items-center gap-7">
       <LabsButton cta={content.cta} tone="sage" />
     </div>
+
+    {content.install && (
+      <div class="mt-space-md flex max-w-full">
+        <LabsInstallChip content={content.install} tone="dark" />
+      </div>
+    )}
   </div>
 </section>
