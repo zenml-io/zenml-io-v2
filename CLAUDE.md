@@ -14,7 +14,7 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 - **Production URL**: https://www.zenml.io
 - **Hosting**: The accepted Astro 7 Cloudflare Worker serves production.
   Cloudflare Pages remains available as the deeper fallback.
-- **Scale**: 25 content collections defined in `src/content.config.ts`, ~3,337 content items, ~2,560 assets on R2
+- **Scale**: two dozen content collections defined in `src/content.config.ts`, a few thousand content items under `src/content/`, a couple of thousand assets on R2
 - **History**: Migrated from Webflow in Feb 2026 (`docs/MIGRATION.md`). Unified with `kitaru.ai` in May 2026 (`MERGE_PLAN.md`).
 - **Private details**: See `CLAUDE.private.md` (gitignored) for infrastructure IDs, traffic numbers, and internal docs index
 
@@ -42,7 +42,7 @@ The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
 | Hosting | **Cloudflare Workers** in production; **Cloudflare Pages** retained as the deeper fallback |
 | Assets | **Cloudflare R2** — object storage for images/files |
 | Styling | **Tailwind CSS** — utility-first |
-| Interactive | **Preact islands** — client-side components in `src/components/islands/`: the `filter-index/` family (`LlmopsIndex`, `MlopsIndex`, `BlogIndex`, `IntegrationsIndex` on the shared `DataFilterIndex`/`ControlFilterIndex`), ContactForm, DemoRequestForm, BlogSearch, CookieConsent, FeatureTabsSlider, ProTestimonialCarousel, and RoiCalculator (Kitaru's are separate, see below) |
+| Interactive | **Preact islands** — client-side components in `src/components/islands/`: the `filter-index/` family (`LlmopsIndex`, `MlopsIndex`, `BlogIndex`, `IntegrationsIndex` on the shared `DataFilterIndex`/`ControlFilterIndex`), ContactForm, DemoRequestForm, BlogSearch, CookieConsent, FeatureTabsSlider, ProTestimonialCarousel, and RoiCalculator (Kitaru's are separate, see below). The authoritative mount list is `ISLAND_MOUNTS` in `scripts/check-dist-smoke.ts`; `pnpm smoke:dist` fails if a top-level `.tsx` in either islands directory is missing from it, except Kitaru helper modules listed in `KITARU_ISLAND_HELPERS`; it does not scan nested folders such as `filter-index/`, so add those entries by hand |
 | Search | **Pagefind** — build-time full-text search index for ops-database pages, paired with JSON faceted filtering |
 | Forms | `ContactForm` / `DemoRequestForm` Preact islands → `src/pages/api/forms/[formType].ts` (`prerender: false`) → Segment HTTP API. Cal.com for demo booking (`/book-your-demo` is the canonical URL). Brevo for newsletter. The Kitaru landing surfaces all share these flows; the standalone kitaru.ai endpoints were never wired into the merged site. |
 | Analytics | **Plausible** (`script.pageview-props.js` with `event-surface`) + GA4 + **single Segment workspace** (one ZenML write key for both products). The Segment `analytics.page()` call receives `{surface}` as a property so downstream segmentation/CRM routing can filter by it. Hostname-gated to production. See "Unified Brand & Surface" below. |
@@ -76,7 +76,7 @@ The Segment loader in `consentConfig.ts` runs a single ZenML write key; there is
 
 **Enforcement:** `pnpm check:surface` (`scripts/check-surface-coverage.ts`) scans all `.astro` files in `src/pages/` and `src/components/` and fails if any `<BaseLayout>` or `<MinimalLayout>` usage omits `surface=`. Run this before committing page changes. Note: `astro check` alone does NOT catch missing required props on `.astro` components — the grep check is the enforcing mechanism.
 
-**When adding a new page:** pass an explicit `surface=` to the layout, using the taxonomy below; there is no default.
+**When adding a new page:** pass an explicit `surface=` to the layout, using the taxonomy above; there is no default.
 
 **When adding a page that pitches both products** (cross-workspace marketing): pass `surface="unified"`. When adding a Kitaru-only page (e.g., a future `/product/kitaru/...` subpath): pass `surface="agent"`. For ZenML-specific pages (features, integrations, blog, etc.): pass `surface="ml"`.
 
@@ -295,9 +295,9 @@ never optional-prop bags hidden by as casts. Register new templates.
 - `src/lib/footer.ts` — Footer data (typed, not hardcoded)
 
 ### Homepage
-- `src/pages/index.astro` — Homepage composition (15 section components)
+- `src/pages/index.astro` — Homepage composition (imports its sections from `src/components/sections/`)
 - `src/lib/homepage.ts` — All homepage marketing copy, stats, URLs, FAQ
-- `src/components/sections/` — 43 section components
+- `src/components/sections/` — homepage and shared section components
 
 ### Preact Islands (interactive client-side components)
 - `src/components/islands/filter-index/` — one filterable-index family: `LlmopsIndex.tsx` (LLMOps database), `MlopsIndex.tsx` (MLOps database), `IntegrationsIndex.tsx`, `BlogIndex.tsx`, built on `DataFilterIndex`/`ControlFilterIndex` with `FacetRail`, `Pagination`, `ResultsCount`

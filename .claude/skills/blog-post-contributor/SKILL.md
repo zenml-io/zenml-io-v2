@@ -2,8 +2,8 @@
 name: blog-post-contributor
 description: >-
   Add or import a blog post from Markdown or Notion; prepare content, metadata,
-  and assets, including the cover via the figma-blog-cover skill. External actions require task authorization. Skip ordinary edits
-  to existing posts.
+  and assets, including the cover via the figma-blog-cover skill. Skip ordinary
+  edits to existing posts.
 ---
 
 # Blog Post Contributor
@@ -104,7 +104,7 @@ Clean the Notion-specific formatting:
 
 ### B4. Download images from Notion
 
-**IMPORTANT**: Notion's image URLs are **temporary pre-signed S3 URLs** that expire within ~1 hour. Download them immediately after fetching the page.
+Notion's image URLs are temporary pre-signed S3 URLs that expire within about an hour, so download them right after fetching the page.
 
 1. Create a temp directory: `mkdir -p /tmp/<slug>-images`
 2. Download each image with `curl -sL -o <descriptive-name>.png "<notion-url>"`
@@ -192,7 +192,7 @@ slug: "tag-slug"
 ---
 ```
 
-Existing tags (118+) cover most topics. Common tags: `mlops`, `llmops`, `zenml`, `genai`, `agents`, `tutorials`, `best-practices`, `cloud`, `open-source`, `pipelines`, `infrastructure`, `kubernetes`.
+Existing tags cover most topics. Common tags: `mlops`, `llmops`, `zenml`, `genai`, `agents`, `tutorials`, `best-practices`, `cloud`, `open-source`, `pipelines`, `infrastructure`, `kubernetes`.
 
 #### SEO / Discovery Tag Rule
 
