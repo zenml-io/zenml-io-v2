@@ -55,7 +55,11 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
     {seo.ogImage && <meta name="twitter:image" content={seo.ogImage} />}
 
     {/* Favicon */}
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
     <SiteHeaderScripts surface={surface} />
   </head>
