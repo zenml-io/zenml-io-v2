@@ -80,7 +80,7 @@ pnpm build
 
 ### Adding a Blog Post
 
-**With Claude Code:** Say "new blog post" or "add blog" — the `blog-post-contributor` skill handles everything: branch creation, frontmatter, image processing (AVIF conversion + R2 upload), tag/author validation, and PR setup. See `.claude/skills/blog-post-contributor/SKILL.md` for the full workflow.
+**With Claude Code:** Say "new blog post" or "add blog" — the `blog-post-contributor` skill handles everything: branch creation, frontmatter, image processing (AVIF conversion + R2 upload), tag/author validation, and PR setup. See `.claude/skills/blog-post-contributor/SKILL.md` for the full workflow. Cover images come from the `figma-blog-cover` skill (Figma template → R2).
 
 **Manually:**
 
@@ -168,11 +168,12 @@ Edit the data file, not the `.astro` template. Components import from these file
 src/
 ├── components/
 │   ├── islands/         # Preact interactive components (client:load)
+│   │   ├── filter-index/    # LlmopsIndex, MlopsIndex, BlogIndex, IntegrationsIndex
+│   │   ├── BlogSearch.tsx
 │   │   ├── ContactForm.tsx
 │   │   ├── CookieConsent.tsx
+│   │   ├── DemoRequestForm.tsx
 │   │   ├── FeatureTabsSlider.tsx
-│   │   ├── LLMOpsFilter.tsx
-│   │   ├── LottieHero.tsx
 │   │   ├── ProTestimonialCarousel.tsx
 │   │   └── RoiCalculator.tsx
 │   ├── sections/        # Homepage + shared section components
@@ -248,10 +249,10 @@ Plus 13 supporting collections (tags, categories, authors, integration types, et
 Interactive components use Astro's [islands architecture](https://docs.astro.build/en/concepts/islands/). Only components that need client-side JS are hydrated:
 
 ```astro
-<LLMOpsFilter client:load tags={tags} industries={industries} />
+<LlmopsIndex client:load tags={tags} industries={industries} />
 ```
 
-7 islands in `src/components/islands/` — LLMOpsFilter, ContactForm, CookieConsent, FeatureTabsSlider, LottieHero, ProTestimonialCarousel, RoiCalculator.
+Islands in `src/components/islands/` — the `filter-index/` family (LlmopsIndex, MlopsIndex, BlogIndex, IntegrationsIndex), BlogSearch, ContactForm, CookieConsent, DemoRequestForm, FeatureTabsSlider, ProTestimonialCarousel, RoiCalculator.
 
 ### Styling
 
@@ -353,6 +354,6 @@ See `docs/branch-protection-spec.md` for the full governance spec.
 | `docs/MIGRATION.md` | How the site was migrated from Webflow (Feb 2026) |
 | `docs/kitaru-seo-inventory.md` | Phase 10a SEO inventory + redirect audit template |
 | `docs/branch-protection-spec.md` | Branch protection rules and reviewer configuration |
-| `.claude/skills/` | Claude Code automation skills (blog posts, image uploads) |
+| `.claude/skills/` | Claude Code automation skills (blog posts, image uploads, Figma blog covers) |
 | `.env.example` | All available environment variables with documentation |
 | `src/content.config.ts` | All 21 content collection schemas (Zod) |

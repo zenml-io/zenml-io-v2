@@ -62,9 +62,9 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
       "plain-Markdown blog body: headings, table, fenced code (Shiki), smart quotes, links",
   },
   {
-    page: "compare/kitaru-vs-temporal.html",
+    page: "compare/kitaru-vs-pydantic-ai.html",
     selector: ".compare-body-inner",
-    golden: "compare-kitaru-vs-temporal.html",
+    golden: "compare-kitaru-vs-pydantic-ai.html",
     covers:
       "MDX compare-page body: component imports, ComparisonTable, CodeCompare panes (Shiki)",
   },
@@ -99,7 +99,7 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
 const ASSET_HASH_RE = /(\/_astro\/[^"'\s]+?)\.[A-Za-z0-9_-]{8}\.(\w+)/g;
 const SCOPED_STYLE_ID_RE = /data-astro-cid-[a-z0-9]+/g;
 
-function normaliseSnapshot(html: string): string {
+export function normaliseSnapshot(html: string): string {
   const normalised = html
     .replace(ASSET_HASH_RE, "$1.[hash].$2")
     .replace(SCOPED_STYLE_ID_RE, "data-astro-cid-[hash]")

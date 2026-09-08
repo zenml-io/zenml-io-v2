@@ -1,26 +1,21 @@
 ---
 /**
- * VS category page.
+ * VS category page — /vs/<slug>
  *
  * Renders static marketing pages comparing ZenML to categories of tools
- * (orchestrators, experiment trackers, e2e platforms).
+ * (orchestrators, experiment trackers, e2e platforms) through the shared
+ * ComparisonPage template (see its docblock for the full block/hero/SEO
+ * contract for this family).
  *
  * The relatedCompare block dynamically pulls matching entries from the
- * compare collection by category.
+ * compare collection by category — built once here and passed down, rather
+ * than recomputed inside the template.
  *
  * Generates /vs/<slug> for each of the 3 VS category pages.
  */
 import { getCollection } from "astro:content";
-import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
-import VsCta02 from "../../components/sections/VsCta02.astro";
-import VsHero from "../../components/sections/VsHero.astro";
-import VsTestimonial from "../../components/sections/VsTestimonial.astro";
-import SectionIntro from "../../components/system/SectionIntro.astro";
-import { SECTION_INTRO_PRESETS } from "../../components/system/sectionIntro.shared";
-import RelatedRail, {
-  type RelatedRailItem,
-} from "../../components/templates/RelatedRail.astro";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import ComparisonPage from "../../components/compare/_layouts/ComparisonPage.astro";
+import type { RelatedRailItem } from "../../components/templates/RelatedRail.astro";
 
 export async function getStaticPaths() {
   const vsPages = await getCollection("vs-pages", ({ data }) => !data.draft);
@@ -50,100 +45,6 @@ export async function getStaticPaths() {
 }
 
 const { page, related } = Astro.props;
-const { data } = page;
-
-// SEO
-const seoTitle = data.seo?.title || `${data.hero.headline} - ZenML`;
-const seoDescription = data.seo?.description || data.hero.deck;
 ---
 
-<BaseLayout
-  title={seoTitle}
-  description={seoDescription}
-  ogTitle={data.seo?.ogTitle}
-  ogDescription={data.seo?.ogDescription}
-  ogImage={data.seo?.ogImage}
-  canonical={data.seo?.canonical}
-  surface="ml"
->
-  <main>
-    <VsHero
-      eyebrow={data.hero.eyebrow}
-      headline={data.hero.headline}
-      deck={data.hero.deck}
-      primaryCta={data.hero.primaryCta}
-      secondaryCta={data.hero.secondaryCta}
-    />
-
-    {data.blocks.map((block) => {
-      if (block.kind === "intro") {
-        return (
-          <section class="bg-white py-8">
-            <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-              <p class="text-lg text-gray-600 leading-relaxed">{block.body}</p>
-            </div>
-          </section>
-        );
-      }
-      if (block.kind === "value") {
-        return (
-          <FeatureValueSection
-            title={block.title}
-            bullets={block.bullets}
-            image={block.image}
-            imageSide={block.imageSide}
-          />
-        );
-      }
-      if (block.kind === "testimonial") {
-        return (
-          <VsTestimonial
-            quote={block.quote}
-            name={block.name}
-            title={block.title}
-            avatar={block.avatar}
-            companyLogo={block.companyLogo}
-          />
-        );
-      }
-      if (block.kind === "relatedCompare") {
-        return (
-          related.length > 0 && (
-            <section class="bg-gray-50 py-16 sm:py-20">
-              <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                {block.headline ? (
-                  <SectionIntro
-                    eyebrow={block.eyebrow}
-                    heading={block.headline}
-                    classOverrides={{
-                      eyebrow: SECTION_INTRO_PRESETS.cardEyebrow,
-                      heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
-                    }}
-                  />
-                ) : (
-                  block.eyebrow && (
-                    <span class="text-xs font-semibold uppercase tracking-wider text-zenml-500">
-                      {block.eyebrow}
-                    </span>
-                  )
-                )}
-                <RelatedRail items={related} gridVariant="gap-sm-2col-sm" class="mt-space-md" />
-              </div>
-            </section>
-          )
-        );
-      }
-      if (block.kind === "cta02") {
-        return (
-          <VsCta02
-            headline={block.headline}
-            bullets={block.bullets}
-            primaryCta={block.primaryCta}
-            secondaryCta={block.secondaryCta}
-            image={block.image}
-          />
-        );
-      }
-    })}
-  </main>
-</BaseLayout>
+<ComparisonPage item={page} related={related} />

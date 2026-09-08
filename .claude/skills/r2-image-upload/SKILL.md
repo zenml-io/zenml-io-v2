@@ -35,11 +35,8 @@ Default to **AVIF** for everything — best compression, browsers render it fine
 Pattern: upload **both** under the same R2 prefix, reference AVIF from `mainImage.url` and JPEG from `seo.ogImage`.
 
 ```bash
-# Convert + upload both formats
-# Resolve the avif-image-compressor skill directory (a plugin skill; its install path moves, so find it):
-AVIF_SKILL=$(find ~/.claude/plugins ~/.codex/skills -type d -name avif-image-compressor -print -quit 2>/dev/null)
-sips -s format jpeg cover.png --out cover.jpg --resampleHeightWidthMax 1200
-"$AVIF_SKILL"/scripts/convert_to_avif.sh cover.png --quality 25 --resize 1200
+# Convert (AVIF + JPEG sibling) then upload both formats
+pnpm images:convert cover.png --preset cover
 uv run scripts/r2-upload.py cover.jpg cover.avif --prefix content/blog/<slug>
 ```
 

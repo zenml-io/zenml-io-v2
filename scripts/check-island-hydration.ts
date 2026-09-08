@@ -555,16 +555,49 @@ const CHECKS: IslandCheck[] = [
     seedConsent: true,
     async assert(page) {
       const href = "/case-study/jetbrains";
+
+      // Settle the layout before measuring anything. The self-hosted webfont
+      // swaps in after domcontentloaded and reflows the hero, which moves this
+      // card down by about 24px. A coordinate read before the swap is stale by
+      // more than the glyph's own height, so the hit test below would probe a
+      // spot the glyph has already left.
+      await page.evaluate(() => document.fonts.ready.then(() => undefined));
+
+      // Scroll before measuring, and measure in the same call. Where this card
+      // lands on the page is not fixed: it sits near the fold of the default
+      // 1280x720 viewport with only ~23px to spare, so one extra wrapped line
+      // in the hero or in a sibling card title (mt-auto pins the glyph to the
+      // bottom of the grid row) puts it below the fold. elementFromPoint
+      // returns null for a point outside the viewport, and this check would
+      // then report a dead click zone that does not exist.
+      //
+      // block: "center" clears both viewport edges and the sticky header.
+      // The explicit instant behaviour is required: global.css sets
+      // scroll-behavior: smooth, so the default would animate and every
+      // measurement here would race the animation.
       const arrow = await page.evaluate((target) => {
         const link = document.querySelector(`a[href="${target}"]`);
         const glyph = link?.closest(".group")?.querySelector("div.mt-auto svg");
         if (!glyph) return null;
+        glyph.scrollIntoView({ block: "center", behavior: "instant" });
         const box = glyph.getBoundingClientRect();
-        return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+        return {
+          x: box.x + box.width / 2,
+          y: box.y + box.height / 2,
+          viewportHeight: window.innerHeight,
+        };
       }, href);
 
       if (arrow === null) {
         throw new Error("could not find the card's arrow glyph");
+      }
+
+      // Guard the precondition rather than let it masquerade as the failure
+      // this check is looking for.
+      if (arrow.y < 0 || arrow.y >= arrow.viewportHeight) {
+        throw new Error(
+          `the arrow glyph is at y=${arrow.y} in a ${arrow.viewportHeight}px viewport after scrolling it into view: the hit test below cannot reach it`,
+        );
       }
 
       // Hover first: the glyph only takes its transform on hover, and that
