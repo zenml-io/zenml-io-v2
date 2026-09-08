@@ -1,22 +1,26 @@
 ---
 import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
-import type { LabsBandContent } from "../../lib/labs-home";
+import type { LabsProductBandContent } from "../../lib/labs-home";
 // LabsHero.astro — the page's opening band: sage grain shader over a cream
-// panel, two-line headline, deck, one signup pill. Copy comes in through
-// the `content` prop (LABS_HERO on `/`). The site nav renders as an absolutely
-// positioned overlay from BaseLayout/LabsNavigation, not from this
-// component — the top 120px stay free of copy.
+// panel, two-line headline, deck, one signup pill, the block vertically
+// centered in the band. Copy comes in through the `content` prop (LABS_HERO
+// on `/`, ZENML_HERO on `/product/zenml`). A product page's content adds an
+// optional ghost pill next to the signup and a copyable install command;
+// each is absent on the homepage and its slot collapses. The site nav
+// renders as an absolutely positioned overlay from BaseLayout/LabsNavigation,
+// not from this component — the top 120px stay free of copy.
 import { GrainBackdrop } from "../islands/GrainBackdrop";
 import LabsButton from "./LabsButton.astro";
+import LabsInstallChip from "./LabsInstallChip.astro";
 
 interface Props {
-  /** Headline lines, deck and the one pill — e.g. LABS_HERO for `/`. */
-  content: LabsBandContent;
+  /** Headline lines, deck and the pills — e.g. LABS_HERO for `/`. */
+  content: LabsProductBandContent;
 }
 const { content } = Astro.props;
 ---
 
-<section class="relative min-h-[640px] overflow-hidden bg-(--color-sage-50) lg:min-h-[900px]">
+<section class="relative flex min-h-[640px] flex-col overflow-hidden bg-(--color-sage-50) lg:min-h-[900px]">
   {
     /*
       client:visible on purpose: this is the page's one always-on ambient
@@ -36,8 +40,8 @@ const { content } = Astro.props;
   >
   </div>
 
-  <div class="relative mx-auto max-w-content px-gutter pt-[120px] pb-space-xxl">
-    <div class="pt-space-xl lg:pt-[200px]">
+  <div class="relative mx-auto flex w-full max-w-content flex-1 flex-col justify-center px-gutter pt-[120px] pb-space-xxl">
+    <div>
       <h1 class="font-display text-[44px] leading-[48px] text-(--color-cream-900) md:text-[80px] md:leading-[86px]">
         {content.headlineLines[0]}
         <br />
@@ -50,7 +54,16 @@ const { content } = Astro.props;
 
       <div class="mt-space-mlg flex flex-wrap items-center gap-space-md">
         <LabsButton cta={content.cta} />
+        {content.secondaryCta && (
+          <LabsButton cta={content.secondaryCta} tone="ghost" />
+        )}
       </div>
+
+      {content.install && (
+        <div class="mt-space-md flex max-w-full">
+          <LabsInstallChip content={content.install} />
+        </div>
+      )}
     </div>
   </div>
 </section>

@@ -1179,7 +1179,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: true,
     paperPage: 0,
     notes:
-      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, `content: LabsBandContent` (LABS_HERO on `/`) gives the two-line headline + deck + one signup pill. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component.",
+      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, `content: LabsProductBandContent` (LABS_HERO on `/`, ZENML_HERO on `/product/zenml`) gives the two-line headline + deck + one signup pill, vertically centered in the band; a product page's content adds a ghost secondary pill and a copyable install chip (LabsInstallChip), each collapsing when absent. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component.",
     stage: false,
     demoProps: {},
   },
@@ -1281,7 +1281,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: true,
     paperPage: 0,
     notes:
-      "Copy arrives through `content: LabsBandContent` (LABS_CLOSE on `/`). Mounts GrainBackdrop client:idle deliberately - the hero shader is the page's one always-on ambient island, so this one hydrates once the browser is idle instead of competing with it.",
+      "Copy arrives through `content: LabsProductBandContent` (LABS_CLOSE on `/`, ZENML_CLOSE on `/product/zenml`; a product page adds the dark-tone install chip under the pill). Mounts GrainBackdrop client:idle deliberately - the hero shader is the page's one always-on ambient island, so this one hydrates once the browser is idle instead of competing with it.",
     stage: false,
     demoProps: {},
   },
@@ -1295,7 +1295,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "ZenML Labs shell nav: floating pill over the hero (transparent at scroll-top, solid card once scrolled) with a hamburger panel below `lg`. paperPage is a placeholder — no design-catalog page assigned yet; fill in the real handoff page number.",
+      "ZenML Labs shell nav: floating pill over the hero (transparent at scroll-top, solid card once scrolled) with a hamburger panel below `lg`. `product` (from BaseLayout) shows the product's mark at rest in the brand link (ZenML: the lockup with its labs script hidden; Kitaru: KitaruLockup) and the ZenML Labs lockup on hover/focus, marks that product current in the product switcher (the Products item opens a role=menu list of LABS_DOORS rows, 1px sage border on the current row, Esc/arrow keys, focus return) and in the mobile chip switcher, and points the signup pill at that product's app (LABS_NAV_SIGNUP_BY_PRODUCT). Docs/Case studies menus land in a later step. paperPage is a placeholder — no design-catalog page assigned yet; fill in the real handoff page number.",
     stage: false,
     demoProps: {},
   },
@@ -1312,6 +1312,54 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
       "Dark shell footer for the Labs homepage: tagline + FOOTER_COLUMNS, a full-width ZenML wordmark (ZenmlWordmark, aria-hidden), and a legal row with LABS_FOOTER.compliance pills. Reads FOOTER_COLUMNS/FOOTER_LEGAL from src/lib/footer.ts and LABS_FOOTER from src/lib/labs-home.ts; no props.",
     stage: false,
     demoProps: {},
+  },
+  {
+    id: "labs.feature-tabs",
+    kind: "template",
+    componentPath: "src/components/labs/LabsFeatureTabs.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: true,
+    paperPage: 0,
+    notes:
+      "Headline block (no eyebrow, deck optional) over the auto-cycling FeatureTabsSlider island (vertical 40% tab menu + 60% screenshot panel, collapsing to a stacked column below 1024). Mounts the frozen FeatureTabsSlider with client:load, defaultIndex 3, autoDurationMs 9000 — the page's one non-ambient island; its auto-cycle is user-pausable interaction (click resets), not a motion moment. Content comes from ZENML_FEATURE_TABS (FeatureTabsContent: headline, deck?, tabs). The old stats grid is not ported.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.value-props",
+    kind: "template",
+    componentPath: "src/components/labs/LabsValueProps.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      'Three-card value-prop grid for /product/zenml. Numbered labels (item.index, e.g. "01.") stand in for icons — no icons, no coloured squares. Section headline only (no eyebrow, no deck). One LabsButton after the grid. No island.',
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.integrations-grid",
+    kind: "template",
+    componentPath: "src/components/labs/LabsIntegrationsGrid.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Static integrations wall on the sage tint band: hard-coded 'Integrations' eyebrow, headline/deck from content, then a 6x4-at-widest logo grid (grid-cols-3 sm:4 md:6) read live from the integrations collection (same read as IntegrationsMarquee.astro), sorted by title, first 24 shown, and a ghost-tone LabsButton CTA row. No marquee, no animation of any kind — this page's motion budget is spent on other sections.",
+    stage: false,
+    demoProps: {},
+    collectionBound: true,
+    contentShape: {
+      minItems: 12,
+      maxItems: 24,
+      overflow: "the grid shows the first 24, the CTA leads to the full index",
+    },
   },
 ];
 

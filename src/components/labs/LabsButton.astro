@@ -1,13 +1,14 @@
 ---
 /**
- * LabsButton — the one pill CTA of the Labs shell. Two tones: `dark` (ink on
- * cream, the hero/product cards) and `sage` (nav + closing band). Every
- * instance carries the same hover transition; call sites only pick the tone.
+ * LabsButton — the one pill CTA of the Labs shell. Three tones: `dark` (ink on
+ * cream, the hero/product cards), `sage` (nav + closing band) and `ghost`
+ * (hairline outline, the secondary next to a dark pill). Every instance
+ * carries the same hover transition; call sites only pick the tone.
  * Renders <a> when `href` is given, <button> otherwise.
  */
 import type { LabsCta } from "../../lib/labs-home";
 
-type Tone = "dark" | "sage";
+type Tone = "dark" | "sage" | "ghost";
 
 interface Props {
   cta: LabsCta;
@@ -20,6 +21,8 @@ const { cta, tone = "dark", class: className } = Astro.props;
 const TONE_CLASSES: Record<Tone, string> = {
   dark: "bg-(--color-cream-900) text-(--color-cream-50) hover:bg-(--color-sage-800)",
   sage: "bg-(--color-sage-400) text-(--color-cream-800) hover:bg-(--color-sage-500)",
+  ghost:
+    "border border-(--color-cream-600) text-(--color-cream-800) hover:bg-(--color-cream-100)",
 };
 
 const classes = [

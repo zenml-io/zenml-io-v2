@@ -1,149 +1,48 @@
 ---
-import Button from "../../components/Button.astro";
 /**
- * /product/zenml — ZenML sub-product landing.
+ * /product/zenml — ZenML sub-product landing, Labs shell.
  *
- * Mirrors /product/kitaru in shape: hero → benefits → features (sticky tabs)
- * → integrations → social proof → final CTA. Reuses homepage section
- * components for everything below the hero — those already speak to the
- * ZenML workspace, so the page reads tight without new section code.
+ * Composes the Labs section components in order: hero → logo strip →
+ * feature tabs → value props → integrations → customer stories → close.
+ * Copy comes from src/lib/labs-product-zenml.ts (the ZENML_* constants);
+ * this page only wires content into components, nothing is retyped here.
  *
- * Phase 9 baseline: copy + structure only. Visual polish (custom hero
- * canvas, mesh gradient, etc.) deferred to Zuri's design pass.
+ * Route: /product/zenml
  */
-import InstallCommand from "../../components/InstallCommand.astro";
-import CustomerStories from "../../components/sections/CustomerStories.astro";
-import FeatureTabs from "../../components/sections/FeatureTabs.astro";
-import IntegrationsMarquee from "../../components/sections/IntegrationsMarquee.astro";
-import LogoCloud from "../../components/sections/LogoCloud.astro";
-import ValueProps from "../../components/sections/ValueProps.astro";
+import CustomerStoryCards from "../../components/labs/CustomerStoryCards.astro";
+import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
+import LabsFeatureTabs from "../../components/labs/LabsFeatureTabs.astro";
+import LabsHero from "../../components/labs/LabsHero.astro";
+import LabsIntegrationsGrid from "../../components/labs/LabsIntegrationsGrid.astro";
+import LabsValueProps from "../../components/labs/LabsValueProps.astro";
+import LogoMarquee from "../../components/labs/LogoMarquee.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
-  PRODUCT_ZENML_BENEFITS,
-  PRODUCT_ZENML_FINAL_CTA,
-  PRODUCT_ZENML_HERO,
-  PRODUCT_ZENML_SEO,
-} from "../../lib/productZenml";
+  LABS_PRODUCT_ZENML_SEO,
+  ZENML_CLOSE,
+  ZENML_FEATURE_TABS,
+  ZENML_HERO,
+  ZENML_INTEGRATIONS,
+  ZENML_LOGO_GRID,
+  ZENML_STORIES,
+  ZENML_VALUE_PROPS,
+} from "../../lib/labs-product-zenml";
 ---
 
 <BaseLayout
-  title={PRODUCT_ZENML_SEO.title}
-  description={PRODUCT_ZENML_SEO.description}
-  surface="ml"
+  app="labs"
+  product="zenml"
+  surface={LABS_PRODUCT_ZENML_SEO.surface}
+  title={LABS_PRODUCT_ZENML_SEO.title}
+  description={LABS_PRODUCT_ZENML_SEO.description}
 >
   <main>
-    {/* Hero */}
-    <section class="relative overflow-hidden bg-linear-to-b from-zenml-50 to-white pt-16 pb-20 sm:pt-24 sm:pb-28">
-      <div class="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
-        <div class="flex flex-wrap items-center justify-center gap-2">
-          {PRODUCT_ZENML_HERO.badges.map((badge, i) => (
-            <span
-              class:list={[
-                "inline-flex items-center gap-2 rounded-full border border-zenml-200 bg-white/60 px-3 py-1 text-xs font-medium text-zenml-700",
-                i === 0 && "ring-1 ring-zenml-300",
-              ]}
-            >
-              {i === 0 && (
-                <span class="inline-block h-2 w-2 rounded-full bg-zenml-500 animate-pulse" aria-hidden="true"></span>
-              )}
-              {badge}
-            </span>
-          ))}
-        </div>
-
-        <h1 class="mt-6 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-          {PRODUCT_ZENML_HERO.headline}<span class="text-zenml-600">{PRODUCT_ZENML_HERO.headlineAccent}</span>.
-        </h1>
-
-        <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-gray-600 sm:text-xl">
-          <span class="font-semibold text-gray-900">{PRODUCT_ZENML_HERO.subtitleLead}</span>
-          {' '}
-          {PRODUCT_ZENML_HERO.subtitle}
-        </p>
-
-        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Button href={PRODUCT_ZENML_HERO.primaryCta.href} variant="primary" size="lg">
-            {PRODUCT_ZENML_HERO.primaryCta.label}
-          </Button>
-          <Button
-            href={PRODUCT_ZENML_HERO.secondaryCta.href}
-            variant="secondary"
-            size="lg"
-          >
-            {PRODUCT_ZENML_HERO.secondaryCta.label}
-          </Button>
-        </div>
-
-        <div class="mt-5 flex justify-center">
-          <InstallCommand
-            cmd={PRODUCT_ZENML_HERO.installCmd}
-            label="ZenML"
-            analytics="ZenML-Hero-Install"
-          />
-        </div>
-      </div>
-    </section>
-
-    {/* Trust bar */}
-    <LogoCloud bgClass="bg-white" fadeFromClass="from-white" />
-
-    {/* 3 benefits block */}
-    <section class="bg-white py-16 sm:py-20">
-      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <p class="text-center text-sm font-semibold uppercase tracking-wider text-zenml-500">
-          {PRODUCT_ZENML_BENEFITS.eyebrow}
-        </p>
-        <div class="mt-10 grid gap-6 md:grid-cols-3 md:gap-8">
-          {PRODUCT_ZENML_BENEFITS.items.map((item) => (
-            <article class="rounded-xl border border-gray-200 bg-white p-6 sm:p-8">
-              <h2 class="text-lg font-bold tracking-tight text-gray-900">{item.name}</h2>
-              <p class="mt-3 text-sm leading-relaxed text-gray-600">{item.body}</p>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    {/* Feature tabs — reused from homepage */}
-    <FeatureTabs />
-
-    {/* Value props — reused from homepage */}
-    <ValueProps />
-
-    {/* Integration logos — the ZenML "deploy anywhere" story */}
-    <IntegrationsMarquee />
-
-    {/* Customer stories — social proof */}
-    <CustomerStories />
-
-    {/* Final CTA */}
-    <section class="bg-linear-to-t from-zenml-50 to-white py-16 sm:py-20">
-      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-        <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          {PRODUCT_ZENML_FINAL_CTA.headline}
-        </h2>
-        <p class="mt-4 text-lg leading-relaxed text-gray-600">
-          {PRODUCT_ZENML_FINAL_CTA.body}
-        </p>
-
-        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-          <Button href={PRODUCT_ZENML_FINAL_CTA.primaryCta.href} variant="primary" size="lg">
-            {PRODUCT_ZENML_FINAL_CTA.primaryCta.label}
-          </Button>
-          <Button href={PRODUCT_ZENML_FINAL_CTA.secondaryCta.href} variant="secondary" size="lg">
-            {PRODUCT_ZENML_FINAL_CTA.secondaryCta.label}
-          </Button>
-        </div>
-
-        <div class="mt-5 flex justify-center">
-          <InstallCommand
-            cmd={PRODUCT_ZENML_FINAL_CTA.installCmd}
-            label="ZenML"
-            analytics="ZenML-CTA-Install"
-          />
-        </div>
-      </div>
-    </section>
+    <LabsHero content={ZENML_HERO} />
+    <LogoMarquee content={ZENML_LOGO_GRID} />
+    <LabsFeatureTabs content={ZENML_FEATURE_TABS} />
+    <LabsValueProps content={ZENML_VALUE_PROPS} />
+    <LabsIntegrationsGrid content={ZENML_INTEGRATIONS} />
+    <CustomerStoryCards content={ZENML_STORIES} />
+    <LabsCloseCta content={ZENML_CLOSE} />
   </main>
 </BaseLayout>
-

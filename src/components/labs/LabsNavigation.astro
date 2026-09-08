@@ -1,62 +1,194 @@
 ---
-import { LABS_NAV_LINKS, LABS_NAV_SIGNUP } from "../../lib/labs-home";
+import {
+  LABS_DOORS,
+  LABS_NAV_LINKS,
+  LABS_NAV_SIGNUP,
+  LABS_NAV_SIGNUP_BY_PRODUCT,
+  type LabsProduct,
+} from "../../lib/labs-home";
 /**
  * LabsNavigation — the ZenML Labs shell nav: a floating pill over the hero
  * that starts transparent (server-rendered transparent so the first paint
  * matches the at-rest state; a tiny scroll listener turns it solid once the
- * page has moved past the top) and a hamburger panel on
- * narrow viewports. No dropdown menus in this step — `hasMenu` links just
- * go straight to their hub page.
+ * page has moved past the top) and a hamburger panel on narrow viewports.
+ *
+ * Product context (`product` prop, set by product pages through BaseLayout):
+ * the brand link shows the product's mark at rest (ZenML: the company lockup
+ * with its "labs" script hidden; Kitaru: the Z mark + Kitaru lockup) and
+ * turns into the ZenML Labs lockup on hover/focus — "labs" fades in beside
+ * "ZenML", or the Kitaru letterforms crossfade to "ZenML labs" while the
+ * shared Z mark stays put — and always links to `/`. The "Products" item
+ * opens the product switcher with that product marked current (1px
+ * all-around sage border, never a left rail), the mobile panel leads with a
+ * chip switcher, and the signup pill points at that product's app. Without
+ * a product (homepage, cross-product pages) the full lockup shows at rest,
+ * the switcher marks nothing and the pill keeps LABS_NAV_SIGNUP.
+ * The switcher rows are LABS_DOORS (name + lead line + product page), so
+ * the nav never retypes product copy. Docs/Case studies menus land later.
  */
+import KitaruLockup from "../brand/KitaruLockup.astro";
+import KitaruWordmark from "../brand/KitaruWordmark.astro";
 import ZenmlLabsLogo from "../brand/ZenmlLabsLogo.astro";
+import ZenmlWordmark from "../brand/ZenmlWordmark.astro";
 import LabsButton from "./LabsButton.astro";
 
 interface Props {
   currentPath?: string;
+  product?: LabsProduct;
 }
-const { currentPath = Astro.url.pathname } = Astro.props;
+const { currentPath = Astro.url.pathname, product } = Astro.props;
 void currentPath;
+
+const PRODUCT_KEY: Record<
+  (typeof LABS_DOORS.doors)[number]["name"],
+  LabsProduct
+> = {
+  ZenML: "zenml",
+  Kitaru: "kitaru",
+};
+const switcherRows = LABS_DOORS.doors.map((door) => ({
+  key: PRODUCT_KEY[door.name],
+  name: door.name,
+  leadLine: door.leadLine,
+  href: door.cta.href,
+  tint: door.tint,
+}));
+const signup = product ? LABS_NAV_SIGNUP_BY_PRODUCT[product] : LABS_NAV_SIGNUP;
+/* On a product page the chip switcher replaces the "Products" entry in the panel. */
+const panelLinks = product
+  ? LABS_NAV_LINKS.filter((link) => link.menu !== "products")
+  : LABS_NAV_LINKS;
+
+const navItemClass =
+  "inline-flex h-9 cursor-pointer items-center gap-1 rounded-full px-3.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors hover:bg-muted";
+const menuId = "labs-product-menu";
 ---
 
 <header
   data-labs-nav-shell
-  class="fixed inset-x-4 top-4 z-50 flex h-[76px] items-center justify-between rounded-[20px] border border-border bg-card pl-6 pr-4 lg:inset-x-16 lg:top-8"
+  class="fixed inset-x-4 top-4 z-50 flex h-[76px] items-center justify-between rounded-[20px] border border-border bg-card pl-5 pr-4 lg:inset-x-16 lg:top-8 lg:pl-6"
   data-at-top
 >
-  <a href="/" aria-label="ZenML Labs" class="shrink-0 cursor-pointer text-foreground">
-    <ZenmlLabsLogo class="h-8 w-auto" />
+  <a
+    href="/"
+    aria-label="ZenML Labs"
+    data-labs-brand={product}
+    class="group relative block h-8 shrink-0 cursor-pointer text-foreground"
+  >
+    {product === "kitaru" ? (
+      <span class="relative block h-full" style="aspect-ratio: 226.004 / 36.134">
+        <KitaruLockup class="absolute inset-y-0 left-0 h-full w-auto transition-opacity duration-200 ease-out group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none" />
+        <ZenmlLabsLogo class="absolute inset-y-0 left-0 h-full w-auto opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none" />
+      </span>
+    ) : (
+      <ZenmlLabsLogo class="h-full w-auto" />
+    )}
   </a>
 
   <nav aria-label="Main navigation" class="hidden items-center gap-1 lg:flex">
-    {LABS_NAV_LINKS.map((link) => (
-      <a
-        href={link.href}
-        class="inline-flex h-9 cursor-pointer items-center gap-1 rounded-full px-3.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors hover:bg-muted"
-      >
-        {link.label}
-        {link.hasMenu && (
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            class="h-2.5 w-2.5 shrink-0 text-muted-foreground"
-            viewBox="0 0 10 10"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+    {LABS_NAV_LINKS.map((link) =>
+      link.menu === "products" ? (
+        <div class="relative" data-labs-switcher>
+          <button
+            type="button"
+            class={navItemClass}
+            aria-haspopup="menu"
+            aria-expanded="false"
+            aria-controls={menuId}
+            data-labs-switcher-toggle
           >
-            <path d="M2.25 3.75L5 6.5L7.75 3.75" />
-          </svg>
-        )}
-      </a>
-    ))}
+            {link.label}
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              class="h-2.5 w-2.5 shrink-0 text-muted-foreground"
+              viewBox="0 0 10 10"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M2.25 3.75L5 6.5L7.75 3.75" />
+            </svg>
+          </button>
+          <ul
+            id={menuId}
+            role="menu"
+            aria-label="Products"
+            hidden
+            class="absolute left-0 top-full mt-3 flex w-[400px] flex-col gap-1 rounded-[20px] border border-border bg-card p-2"
+            data-labs-switcher-menu
+          >
+            {switcherRows.map((row) => (
+              <li role="none">
+                <a
+                  role="menuitem"
+                  href={row.href}
+                  aria-current={row.key === product ? "page" : undefined}
+                  class="flex cursor-pointer items-center gap-4 rounded-[14px] border border-transparent px-4 py-3.5 text-foreground transition-colors duration-200 ease-out hover:border-(--color-sage-400) aria-[current=page]:border-(--color-sage-600) aria-[current=page]:bg-(--color-sage-100)"
+                >
+                  <span
+                    role="img"
+                    aria-label={row.name}
+                    class="flex h-4 w-[76px] shrink-0 items-center text-(--color-cream-900)"
+                  >
+                    {row.key === "kitaru" ? (
+                      <KitaruWordmark class="h-4 w-auto" />
+                    ) : (
+                      <ZenmlWordmark class="h-4 w-auto" />
+                    )}
+                  </span>
+                  <span class="flex-1 font-sans text-[15px] leading-[22px] text-muted-foreground">
+                    {row.leadLine}
+                  </span>
+                  {row.key === product && (
+                    <svg
+                      aria-hidden="true"
+                      focusable="false"
+                      class="h-4 w-4 shrink-0 text-primary"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M3.5 9.5L7 13L14.5 5" />
+                    </svg>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <a href={link.href} class={navItemClass}>
+          {link.label}
+          {link.hasMenu && (
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              class="h-2.5 w-2.5 shrink-0 text-muted-foreground"
+              viewBox="0 0 10 10"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M2.25 3.75L5 6.5L7.75 3.75" />
+            </svg>
+          )}
+        </a>
+      ),
+    )}
   </nav>
 
   {/* `lg:contents` keeps the pill in the header's flex row without a display
       utility fighting the button's own `inline-flex`. */}
   <div class="hidden lg:contents">
-    <LabsButton cta={LABS_NAV_SIGNUP} tone="sage" />
+    <LabsButton cta={signup} tone="sage" />
   </div>
 
   <button
@@ -80,11 +212,33 @@ void currentPath;
 
   <div
     id="labs-nav-mobile-panel"
-    class="absolute inset-x-0 top-full z-40 mt-2 hidden flex-col gap-1 rounded-[20px] border border-border bg-card p-4 lg:hidden"
+    hidden
+    class="absolute inset-x-0 top-full z-40 mt-2 flex flex-col gap-1 rounded-[20px] border border-border bg-card p-4 lg:hidden"
     data-labs-nav-panel
   >
+    {product && (
+      <div
+        role="group"
+        aria-label="Products"
+        class="mb-2 inline-flex w-fit items-center gap-1 rounded-full bg-(--color-sage-100) p-1"
+      >
+        {switcherRows.map((row) => (
+          <a
+            href={row.href}
+            aria-current={row.key === product ? "page" : undefined}
+            class="inline-flex h-10 cursor-pointer items-center gap-2 rounded-full border border-transparent px-4 font-label text-[13px] uppercase tracking-[0.05em] text-muted-foreground transition-colors duration-200 ease-out aria-[current=page]:border-(--color-sage-600) aria-[current=page]:bg-card aria-[current=page]:text-foreground"
+          >
+            <span
+              class={`h-2 w-2 shrink-0 rounded-full ${row.tint === "orange" ? "bg-(--color-orange-500)" : "bg-primary"}`}
+              aria-hidden="true"
+            ></span>
+            {row.name}
+          </a>
+        ))}
+      </div>
+    )}
     <nav aria-label="Mobile navigation" class="flex flex-col gap-1">
-      {LABS_NAV_LINKS.map((link) => (
+      {panelLinks.map((link) => (
         <a
           href={link.href}
           class="cursor-pointer rounded-[12px] px-3 py-2.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors hover:bg-muted"
@@ -93,7 +247,7 @@ void currentPath;
         </a>
       ))}
     </nav>
-    <LabsButton cta={LABS_NAV_SIGNUP} tone="sage" class="mt-2 w-full" />
+    <LabsButton cta={signup} tone="sage" class="mt-2 w-full" />
   </div>
 </header>
 
@@ -117,6 +271,27 @@ void currentPath;
       transition: none;
     }
   }
+
+  /* ZenML product pages: the lockup's "labs" script is hidden at rest and
+   * fades in beside "ZenML" on hover/focus (opacity back to the artwork's
+   * own 0.5). The slot keeps the full lockup width, so nothing shifts. */
+  /* :global — the script group lives inside ZenmlLabsLogo, outside this
+   * component's style scope. */
+  /* Opacity only: a CSS transform would replace the group's own SVG
+   * transform attribute and move the script off the canvas. */
+  [data-labs-brand="zenml"] :global([data-part="labs"]) {
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+  }
+  [data-labs-brand="zenml"]:hover :global([data-part="labs"]),
+  [data-labs-brand="zenml"]:focus-visible :global([data-part="labs"]) {
+    opacity: 0.5;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-labs-brand="zenml"] :global([data-part="labs"]) {
+      transition: none;
+    }
+  }
 </style>
 
 <script>
@@ -134,20 +309,65 @@ void currentPath;
   window.addEventListener("scroll", syncScrollState, { passive: true });
 
   // Mobile hamburger toggle.
-  const toggle = document.querySelector("[data-labs-nav-toggle]");
-  const panel = document.querySelector("[data-labs-nav-panel]");
+  const toggle = document.querySelector<HTMLButtonElement>("[data-labs-nav-toggle]");
+  const panel = document.querySelector<HTMLElement>("[data-labs-nav-panel]");
   const openIcon = toggle?.querySelector('[data-icon="open"]');
   const closeIcon = toggle?.querySelector('[data-icon="close"]');
 
   toggle?.addEventListener("click", () => {
-    const willOpen = panel?.classList.contains("hidden") ?? false;
-    panel?.classList.toggle("hidden", !willOpen);
-    panel?.classList.toggle("flex", willOpen);
+    const willOpen = panel?.hidden === true;
+    if (panel) panel.hidden = !willOpen;
     toggle.setAttribute("aria-expanded", String(willOpen));
     toggle.setAttribute("aria-label", willOpen ? "Close menu" : "Open menu");
     openIcon?.classList.toggle("hidden", willOpen);
     openIcon?.classList.toggle("block", !willOpen);
     closeIcon?.classList.toggle("hidden", !willOpen);
     closeIcon?.classList.toggle("block", willOpen);
+  });
+
+  // Product switcher (desktop): a real button + role=menu list. Esc closes
+  // and returns focus; clicking outside closes; arrows move between rows.
+  const switcher = document.querySelector<HTMLElement>("[data-labs-switcher]");
+  const switcherToggle = switcher?.querySelector<HTMLButtonElement>("[data-labs-switcher-toggle]");
+  const menu = switcher?.querySelector<HTMLElement>("[data-labs-switcher-menu]");
+  const menuItems = () =>
+    Array.from(menu?.querySelectorAll<HTMLAnchorElement>('[role="menuitem"]') ?? []);
+
+  const setMenuOpen = (open: boolean) => {
+    if (!menu || !switcherToggle) return;
+    menu.hidden = !open;
+    switcherToggle.setAttribute("aria-expanded", String(open));
+  };
+
+  switcherToggle?.addEventListener("click", () => {
+    const willOpen = menu?.hidden === true;
+    setMenuOpen(willOpen);
+    if (willOpen) menuItems()[0]?.focus();
+  });
+
+  switcher?.addEventListener("keydown", (event) => {
+    if (!menu || menu.hidden) return;
+    const items = menuItems();
+    const index = items.indexOf(document.activeElement as HTMLAnchorElement);
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setMenuOpen(false);
+      switcherToggle?.focus();
+    } else if (event.key === "ArrowDown") {
+      event.preventDefault();
+      items[(index + 1) % items.length]?.focus();
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      items[(index - 1 + items.length) % items.length]?.focus();
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!menu || menu.hidden) return;
+    if (!switcher?.contains(event.target as Node)) setMenuOpen(false);
+  });
+  switcher?.addEventListener("focusout", (event) => {
+    if (!menu || menu.hidden) return;
+    if (!switcher.contains(event.relatedTarget as Node | null)) setMenuOpen(false);
   });
 </script>
