@@ -1179,7 +1179,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: true,
     paperPage: 0,
     notes:
-      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, `content: LabsProductBandContent` (LABS_HERO on `/`, ZENML_HERO on `/product/zenml`) gives the two-line headline + deck + one signup pill; a product page's content adds the product wordmark above the headline, a ghost secondary pill and a copyable install chip (LabsInstallChip), each collapsing when absent. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component.",
+      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, `content: LabsProductBandContent` (LABS_HERO on `/`, ZENML_HERO on `/product/zenml`) gives the two-line headline + deck + one signup pill, vertically centered in the band; a product page's content adds a ghost secondary pill and a copyable install chip (LabsInstallChip), each collapsing when absent. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component.",
     stage: false,
     demoProps: {},
   },

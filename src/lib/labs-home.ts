@@ -88,7 +88,12 @@ export interface LabsNavLink {
 }
 
 export const LABS_NAV_LINKS: readonly LabsNavLink[] = [
-  { label: "Products", href: "/product/zenml", hasMenu: true, menu: "products" },
+  {
+    label: "Products",
+    href: "/product/zenml",
+    hasMenu: true,
+    menu: "products",
+  },
   {
     label: "Docs",
     href: "https://docs.zenml.io/getting-started/introduction",
@@ -119,11 +124,10 @@ export interface LabsBandContent {
   cta: LabsCta;
 }
 
-/** A product page's opening/closing band: the homepage shape plus the product
- * wordmark above the headline, an optional ghost pill and a copyable install
- * command. Every extra is optional, so the homepage content still fits. */
+/** A product page's opening/closing band: the homepage shape plus an optional
+ * ghost pill and a copyable install command. Every extra is optional, so the
+ * homepage content still fits. */
 export interface LabsProductBandContent extends LabsBandContent {
-  product?: LabsProduct;
   secondaryCta?: LabsCta;
   install?: LabsInstallChip;
 }

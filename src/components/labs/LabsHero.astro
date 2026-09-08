@@ -1,12 +1,10 @@
 ---
 import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
 import type { LabsProductBandContent } from "../../lib/labs-home";
-import KitaruWordmark from "../brand/KitaruWordmark.astro";
-import ZenmlWordmark from "../brand/ZenmlWordmark.astro";
 // LabsHero.astro — the page's opening band: sage grain shader over a cream
-// panel, two-line headline, deck, one signup pill. Copy comes in through
-// the `content` prop (LABS_HERO on `/`, ZENML_HERO on `/product/zenml`). A
-// product page's content adds the product wordmark above the headline, an
+// panel, two-line headline, deck, one signup pill, the block vertically
+// centered in the band. Copy comes in through the `content` prop (LABS_HERO
+// on `/`, ZENML_HERO on `/product/zenml`). A product page's content adds an
 // optional ghost pill next to the signup and a copyable install command;
 // each is absent on the homepage and its slot collapses. The site nav
 // renders as an absolutely positioned overlay from BaseLayout/LabsNavigation,
@@ -20,10 +18,9 @@ interface Props {
   content: LabsProductBandContent;
 }
 const { content } = Astro.props;
-const productName = content.product === "kitaru" ? "Kitaru" : "ZenML";
 ---
 
-<section class="relative min-h-[640px] overflow-hidden bg-(--color-sage-50) lg:min-h-[900px]">
+<section class="relative flex min-h-[640px] flex-col overflow-hidden bg-(--color-sage-50) lg:min-h-[900px]">
   {
     /*
       client:visible on purpose: this is the page's one always-on ambient
@@ -43,22 +40,8 @@ const productName = content.product === "kitaru" ? "Kitaru" : "ZenML";
   >
   </div>
 
-  <div class="relative mx-auto max-w-content px-gutter pt-[120px] pb-space-xxl">
-    <div class="pt-space-xl lg:pt-[200px]">
-      {content.product && (
-        <span
-          role="img"
-          aria-label={productName}
-          class="mb-space-md flex h-[22px] items-center text-(--color-cream-900)"
-        >
-          {content.product === "kitaru" ? (
-            <KitaruWordmark class="h-[22px] w-auto" />
-          ) : (
-            <ZenmlWordmark class="h-[22px] w-auto" />
-          )}
-        </span>
-      )}
-
+  <div class="relative mx-auto flex w-full max-w-content flex-1 flex-col justify-center px-gutter pt-[120px] pb-space-xxl">
+    <div>
       <h1 class="font-display text-[44px] leading-[48px] text-(--color-cream-900) md:text-[80px] md:leading-[86px]">
         {content.headlineLines[0]}
         <br />

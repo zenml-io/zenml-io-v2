@@ -83,7 +83,6 @@ export const ZENML_STORIES_ALL: LabsCta = {
 /* ---------------------------------------------------------------------- */
 
 export const ZENML_HERO: LabsProductBandContent = {
-  product: "zenml",
   headlineLines: ["AI orchestration,", "on the infra you choose"],
   deck: "Write pipelines and agents in Python. Run them on Kubernetes, Vertex AI, SageMaker, or your laptop, without rewriting the code.",
   cta: ZENML_HERO_SIGNUP,
