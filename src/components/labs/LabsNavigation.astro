@@ -1,0 +1,23 @@
+---
+import { LABS_NAV_LINKS, LABS_NAV_SIGNUP } from "../../lib/labs-home";
+/**
+ * LabsNavigation — the ZenML Labs shell nav (floating pill over the hero,
+ * solid card pill once the page scrolls). STUB: the Labs homepage build fills
+ * this in from `src/lib/labs-home.ts` (LABS_NAV_LINKS, LABS_NAV_SIGNUP).
+ */
+import ZenmlLabsLogo from "../brand/ZenmlLabsLogo.astro";
+
+interface Props {
+  currentPath?: string;
+}
+const { currentPath = Astro.url.pathname } = Astro.props;
+void currentPath;
+---
+
+<header class="w-full">
+  <a href="/" aria-label="ZenML Labs" class="text-foreground"><ZenmlLabsLogo class="h-8 w-auto" /></a>
+  <nav aria-label="Main navigation">
+    {LABS_NAV_LINKS.map((link) => <a href={link.href}>{link.label}</a>)}
+  </nav>
+  <a href={LABS_NAV_SIGNUP.href} data-analytics={LABS_NAV_SIGNUP.analytics}>{LABS_NAV_SIGNUP.label}</a>
+</header>

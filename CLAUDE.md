@@ -324,10 +324,15 @@ never optional-prop bags hidden by as casts. Register new templates.
 - `src/content/compare-kitaru/*.mdx` — Kitaru-vs-X comparison pages
 - `src/content/compare-zenml/*.mdx` — ZenML-vs-X pages in the same MDX template (`ZenmlMdxCompare.astro`, components under `src/components/compare/zenml/`), covering durable execution engines (Temporal, DBOS, Hatchet, Inngest, Restate) and agent frameworks. Positioning: ZenML orchestrates and runs agents durably (dynamic pipelines, `wait()` approvals, sandboxes, deployments); the Kitaru-vs-X set is limited to frameworks Kitaru has adapters for. The old `kitaru-vs-{temporal,dbos,hatchet,inngest,restate}` pages 301 to their ZenML twins (`public/_redirects`)
 
+### ZenML Labs shell + homepage (rebrand branch, 2026-09)
+- `src/pages/index.astro` — the ZenML Labs parent homepage (`app="labs"`, `surface="unified"`); copy, links and analytics event names live in `src/lib/labs-home.ts` (facts are imported from their canonical constants, never retyped)
+- `src/components/labs/*` — the Labs shell (`LabsNavigation`, `LabsFooter`) and the homepage sections; `src/components/brand/ZenmlLabsLogo.astro` is the inline company lockup (aria-hidden; the wrapping anchor names it), with a static copy at `public/images/zenml-labs-lockup.svg`
+- `src/components/islands/GrainBackdrop.tsx` — the generic GrainGradient shader backdrop (reveal gating, WebGL error boundary, SSR guard, reduced motion); `KitaruGrain` is a thin wrapper over it. Palettes: `src/lib/grainConfig.ts` (type), `src/lib/kitaru-grain-palettes.ts`, `src/lib/labs-grain-palettes.ts`. `pnpm check:motion` counts both as ambient islands
+
 ### Get Started routing
 - `src/pages/get-started.astro` — ZenML open-source onboarding (hero, 3-step walkthrough, architecture, projects, resources) with one pointer line to `/product/kitaru`. `/get-started/zenml` 301-redirects here (`public/_redirects`). There is no ML/Agent chooser here; Kitaru's entry point is its own landing
 
 ### Layouts
-- `src/layouts/BaseLayout.astro` — Main layout (nav, footer, head slots, analytics)
+- `src/layouts/BaseLayout.astro` — Main layout (nav, footer, head slots, analytics); optional `app?: "zenml" | "labs"` (default `zenml`) sets `<html data-app>` AND swaps the chrome to the Labs shell (`LabsNavigation` + `LabsFooter`) in one move — tokens and chrome always travel together
 - `src/layouts/BlogLayout.astro` — Blog post layout (conditional TOC sidebar)
 - `src/layouts/MinimalLayout.astro` — Lightweight shell (no nav/footer) for embeds

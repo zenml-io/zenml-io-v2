@@ -7,19 +7,11 @@
 // Hex only — `@paper-design/shaders-react` rejects oklch / named colors
 // at the GL layer.
 
-export type GrainTheme = "light" | "dark";
+import type { GrainConfig, GrainTheme } from "./grainConfig";
 
-export type KitaruGrainConfig = {
-  shaderColors: [string, string, string, string];
-  panel: string;
-  blobA: string;
-  blobB: string;
-  speed: number;
-  scale: number;
-  rotation: number;
-  noise: number;
-  blend: boolean;
-};
+export type { GrainTheme };
+
+export type KitaruGrainConfig = GrainConfig;
 
 const light: KitaruGrainConfig = {
   shaderColors: ["#F0CDB4", "#F3D8BA", "#F3D7B9", "#F4DABD"],

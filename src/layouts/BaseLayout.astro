@@ -3,6 +3,8 @@ import PlausibleBridge from "../components/analytics/PlausibleBridge.astro";
 import SiteHeaderScripts from "../components/analytics/SiteHeaderScripts.astro";
 import Footer from "../components/Footer.astro";
 import CookieConsent from "../components/islands/CookieConsent.tsx";
+import LabsFooter from "../components/labs/LabsFooter.astro";
+import LabsNavigation from "../components/labs/LabsNavigation.astro";
 import Navigation from "../components/Navigation.astro";
 /**
  * BaseLayout — the root HTML shell for every page.
@@ -26,14 +28,23 @@ interface Props extends SEOProps {
    * Taxonomy: "ml" | "agent" | "unified" (see src/lib/analytics.ts).
    */
   surface: Surface;
+  /**
+   * Brand scope. "labs" mounts the ZenML Labs rebrand scope
+   * (`<html data-app="labs">`, tokens in global.css) AND swaps the chrome to
+   * the Labs shell (LabsNavigation + LabsFooter) — tokens and chrome always
+   * travel together. Default keeps every existing page on the current ZenML
+   * tokens with Navigation/Footer.
+   */
+  app?: "zenml" | "labs";
 }
 
-const { bodyClass, surface, ...seoProps } = Astro.props;
+const { bodyClass, surface, app = "zenml", ...seoProps } = Astro.props;
+const labsShell = app === "labs";
 const seo = resolveSeo(seoProps, Astro.url.pathname);
 ---
 
 <!doctype html>
-<html lang="en" data-app="zenml" data-surface={surface}>
+<html lang="en" data-app={app} data-surface={surface}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -69,9 +80,13 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
   </head>
   <body class:list={["min-h-screen bg-white text-gray-900 antialiased", bodyClass]}>
     <slot name="before-nav" />
-    <Navigation currentPath={Astro.url.pathname} surface={surface} />
+    {labsShell ? (
+      <LabsNavigation currentPath={Astro.url.pathname} />
+    ) : (
+      <Navigation currentPath={Astro.url.pathname} surface={surface} />
+    )}
     <slot />
-    <Footer />
+    {labsShell ? <LabsFooter /> : <Footer />}
 
     <script is:inline>
       (async () => {

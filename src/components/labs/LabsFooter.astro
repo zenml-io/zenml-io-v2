@@ -1,0 +1,22 @@
+---
+/**
+ * LabsFooter — the ZenML Labs shell footer (dark band, four link columns,
+ * the ZenML wordmark set huge, legal row with compliance pills). STUB: the
+ * Labs homepage build fills this in from `src/lib/footer.ts` + LABS_FOOTER.
+ */
+import { FOOTER_COLUMNS, FOOTER_LEGAL } from "../../lib/footer";
+import { LABS_FOOTER } from "../../lib/labs-home";
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-foreground text-background">
+  <p>{LABS_FOOTER.tagline}</p>
+  <nav aria-label="Footer">
+    {FOOTER_COLUMNS.map((col) => (
+      <ul>{col.links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}</ul>
+    ))}
+  </nav>
+  <p>&copy; {currentYear} {LABS_FOOTER.copyright}</p>
+  <ul>{FOOTER_LEGAL.map((link) => <li><a href={link.href}>{link.label}</a></li>)}</ul>
+</footer>
