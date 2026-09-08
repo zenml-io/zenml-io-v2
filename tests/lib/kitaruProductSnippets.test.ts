@@ -2,7 +2,7 @@ import { spawnSync } from "node:child_process";
 import ts from "typescript";
 import { describe, expect, it } from "vitest";
 import type { CodeLine } from "../../src/components/kitaru/islands/code-tokens";
-import { HERO_CODE_LINES } from "../../src/components/kitaru/islands/Hero";
+import { HERO_CODE_LINES } from "../../src/components/kitaru/islands/HeroVideo";
 import {
   FRAMEWORKS,
   IMPORTERS,

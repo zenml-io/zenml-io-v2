@@ -478,3 +478,88 @@
   }
   :is([data-app="kitaru"], [data-app="zenml-compare"]) .feature-card.feature-card--last { margin-bottom: 0; }
 }
+
+/* ─── 6. Labs shell bridge ───────────────────────────────────────────────────
+ * When the Kitaru wrapper renders inside the 2026 rebrand scope
+ * (`<html data-app="labs">` — /product/kitaru in the Labs shell), every value
+ * above is re-pointed at the rebrand tokens, so the utilities the landing
+ * sections use (`bg-ember`, `text-ink-soft`, `bg-night`, …) resolve to the
+ * new palette without a class rename: surfaces and text come from the labs
+ * semantic set, the ember accent is orange-600 (the one orange on the page),
+ * the dark band is cream-900, and type comes from the labs roles — Borna on
+ * headings, Rethink Sans on body, Nudica Mono on labels; JetBrains Mono stays
+ * on code. The compare pages import this sheet under `data-app="zenml"` and
+ * never match these selectors. */
+[data-app="labs"] :is([data-app="kitaru"]) {
+  /* Semantic set: take the labs values from the scope root. */
+  --background: inherit;
+  --foreground: inherit;
+  --card: inherit;
+  --card-foreground: inherit;
+  --popover: inherit;
+  --popover-foreground: inherit;
+  --secondary: inherit;
+  --secondary-foreground: inherit;
+  --muted: inherit;
+  --muted-foreground: inherit;
+  --border: inherit;
+  --input: inherit;
+  --destructive: inherit;
+  --destructive-foreground: inherit;
+  --primary: var(--color-orange-600);
+  --primary-foreground: var(--color-cream-50);
+  --accent: var(--color-orange-600);
+  --accent-foreground: var(--color-cream-50);
+  --ring: var(--color-orange-600);
+
+  /* Landing primitives (block 1b). */
+  --cream: var(--background);
+  --surface: var(--card);
+  --surface-warm: var(--secondary);
+  --ink: var(--color-cream-900);
+  --ink-soft: var(--color-cream-700);
+  --ember: var(--color-orange-600);
+  --ember-deep: var(--color-orange-700);
+  --ember-light: var(--color-orange-100);
+  --warn: var(--color-orange-600);
+  --night: var(--color-cream-900);
+  --night-surface: color-mix(in oklab, var(--color-cream-900) 75%, var(--color-cream-800));
+  --night-text: var(--color-cream-50);
+  --hairline: var(--border);
+
+  /* Block 1 names, read by the hand-written rules (focus ring, selection). */
+  --color-bg: var(--background);
+  --color-surface: var(--card);
+  --color-primary: var(--foreground);
+  --color-secondary: var(--color-cream-700);
+  --color-muted: var(--muted-foreground);
+  --color-accent: var(--color-orange-600);
+  --color-accent-darker: var(--color-orange-700);
+  --color-accent-light: var(--color-orange-100);
+  --color-border: var(--border);
+  --color-border-light: var(--border);
+  --color-dark-bg: var(--color-cream-900);
+  --color-dark-text: var(--color-cream-50);
+
+  /* Type roles from the labs scope; the Inter alternates no longer apply. */
+  --font-sans: inherit;
+  --font-heading: var(--font-display);
+  --font-ui: var(--font-sans);
+  font-feature-settings: normal;
+}
+
+[data-app="labs"] :is([data-app="kitaru"]) :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: var(--tracking-heading);
+}
+
+/* The Labs shell has no film-grain overlay; the shader backdrops carry the
+ * atmosphere on their own. */
+[data-app="labs"] :is([data-app="kitaru"])::before {
+  display: none;
+}
+
+[data-app="labs"] :is([data-app="kitaru"]) ::selection {
+  background: color-mix(in oklab, var(--color-orange-600) 18%, transparent);
+}

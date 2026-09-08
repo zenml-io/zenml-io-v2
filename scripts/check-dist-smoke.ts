@@ -449,7 +449,6 @@ const KITARU_ISLAND_HELPERS = new Set([
   "Reveal",
   "brand-icons",
   "code-tokens",
-  "icons",
   "primitives",
 ]);
 
@@ -496,10 +495,10 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   // renders CategoryBar in back-link mode, so it's still covered.
   { island: "BlogSearch", pages: ["category/llmops.html"] },
   // The Kitaru landing sections (KitaruGrain doubles as a plain subcomponent
-  // inside the other islands, but the static Cta.astro and the _HighlightPanel
-  // shells rendered by Features.astro also mount it as its own island for
-  // their shader backdrops).
-  { island: "Hero", pages: ["product/kitaru.html"] },
+  // inside the other islands, but the static Hero.astro, Cta.astro and the
+  // _HighlightPanel shells rendered by Features.astro also mount it as its
+  // own island for their shader backdrops).
+  { island: "HeroVideo", pages: ["product/kitaru.html"] },
   { island: "ScenarioStrip", pages: ["product/kitaru.html"] },
   { island: "TwoDoors", pages: ["product/kitaru.html"] },
   { island: "KitaruGrain", pages: ["product/kitaru.html"] },
@@ -532,7 +531,7 @@ function findClientMountedHelpers(): string[] {
 
   for (const helper of KITARU_ISLAND_HELPERS) {
     // A helper module usually exports components under names unrelated to its
-    // filename (primitives.tsx → CopyCommand, brand-icons.tsx → PydanticIcon,
+    // filename (primitives.tsx → Section, brand-icons.tsx → PydanticIcon,
     // …), so the guard must match on the export names, not the filename.
     const helperSource = readFileSync(
       join(KITARU_ISLANDS_DIR, `${helper}.tsx`),

@@ -6,17 +6,17 @@ import HighlightPanel from "./_HighlightPanel.astro";
 ---
 
 <section id="how-it-works" class="relative w-full bg-surface text-foreground">
-  <div class="mx-auto w-full max-w-[1440px] px-6 py-20 md:py-28">
+  <div class="mx-auto w-full max-w-content px-gutter py-20 md:py-28">
     {/* Header with eyebrow, title, lede */}
     <div class="reveal max-w-3xl">
-      <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">
+      <span class="inline-block font-label text-[13px] tracking-[0.05em] text-ember uppercase">
         The model swap you keep postponing
       </span>
-      <h2 class="mt-5 text-balance text-3xl leading-[1.1] font-medium tracking-[-0.02em] md:text-[2.75rem]">
+      <h2 class="mt-space-sm font-display text-[32px] leading-[36px] text-balance text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
         Want the cheaper model?<br />
         <span class="text-ember">Here's how you find out if it's safe.</span>
       </h2>
-      <p class="mt-5 max-w-2xl text-base leading-relaxed text-ink-soft md:text-lg">
+      <p class="mt-space-sm max-w-2xl font-sans text-[17px] leading-[26px] text-foreground md:text-[18px] md:leading-[27px]">
         Freeze a set of real production sessions. Replay them with the model you have and
         the model you want. Then see exactly which cases changed, and whether those changes
         are acceptable.
@@ -30,9 +30,9 @@ import HighlightPanel from "./_HighlightPanel.astro";
           class="reveal relative"
           style={`--reveal-delay: ${i * 110}ms`}
         >
-          <div class="flex items-baseline gap-3">
-            <span class="font-mono text-[11px] text-ember">{s.n}</span>
-            <span class="font-mono text-[11px] tracking-[0.16em] text-muted-foreground uppercase">
+          <div class="flex items-baseline gap-3 font-label text-[13px] tracking-[0.05em]">
+            <span class="text-ember">{s.n}</span>
+            <span class="text-muted-foreground uppercase">
               {s.tag}
             </span>
           </div>
@@ -42,9 +42,9 @@ import HighlightPanel from "./_HighlightPanel.astro";
             headingLevel={3}
             description={s.body}
             classOverrides={{
-              heading: "text-[19px] leading-snug font-medium tracking-[-0.015em]",
+              heading: "font-display text-[24px] leading-[30px] text-(--color-cream-900)",
               headingSpacing: "mt-5",
-              description: "text-[14px] leading-relaxed text-ink-soft",
+              description: "text-[15px] leading-[1.6] text-ink-soft",
               descriptionSpacing: "mt-3",
             }}
           />
@@ -79,7 +79,7 @@ import HighlightPanel from "./_HighlightPanel.astro";
               </div>
               <div class="relative z-10 mt-auto flex items-center justify-between border-t border-border/60 pt-2.5 font-mono text-[10.5px]">
                 <span class="text-muted-foreground">200 sessions &middot; v1 &middot; fixed</span>
-                <span class="fh-pop rounded-md bg-ember px-2.5 py-1 font-medium text-accent-foreground" style="--fh-delay: 1050ms">Create "checkout-flow"</span>
+                <span class="fh-pop rounded-full bg-ember px-2.5 py-1 font-medium text-(--color-cream-50)" style="--fh-delay: 1050ms">Create "checkout-flow"</span>
               </div>
             </HighlightPanel>
           )}
@@ -161,12 +161,12 @@ import HighlightPanel from "./_HighlightPanel.astro";
       class="reveal mt-16"
       style={`--reveal-delay: 260ms`}
     >
-      <div class="grid grid-cols-1 gap-8 rounded-xl border border-border bg-surface p-8 md:grid-cols-[1fr_1.4fr] md:items-center md:p-10">
+      <div class="grid grid-cols-1 gap-8 rounded-[20px] border border-border bg-surface p-8 md:grid-cols-[1fr_1.4fr] md:items-center md:p-10">
         <div>
-          <span class="font-mono text-[11px] tracking-[0.16em] text-ember uppercase">
+          <span class="font-label text-[13px] tracking-[0.05em] text-ember uppercase">
             The verdict
           </span>
-          <p class="mt-3 text-[15px] leading-relaxed text-ink-soft">
+          <p class="mt-3 text-[16px] leading-[1.6] text-ink-soft">
             Out of 200 real sessions, 196 came back unchanged. Now you only have four
             differences to review before deciding whether to ship.
           </p>
@@ -174,14 +174,14 @@ import HighlightPanel from "./_HighlightPanel.astro";
             Illustrative numbers from a sample run.
           </p>
         </div>
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
           {[
             { v: "196 / 200", k: "unchanged", tone: "" },
             { v: "4", k: "sessions need review", tone: "text-warn" },
             { v: "−61%", k: "median cost per session", tone: "text-success" },
           ].map((m) => (
             <div>
-              <div class={`font-mono text-2xl tracking-[-0.02em] md:text-3xl ${m.tone}`}>
+              <div class={`font-display text-[28px] leading-[32px] md:text-[32px] md:leading-[36px] ${m.tone}`}>
                 {m.v}
               </div>
               <div class="mt-1.5 text-[11.5px] text-muted-foreground">{m.k}</div>
