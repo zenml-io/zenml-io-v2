@@ -579,7 +579,7 @@ from it yet.
 **Routes** — `/styleguide` (one page, noindex, unlisted).
 **Layout** — `MinimalLayout`.
 **Surface** — `unified` (passed explicitly). Note the page's content renders
-under `data-app="zenml-next"` for the in-progress rebrand scope — that's the
+under `data-app="labs"` for the in-progress rebrand scope — that's the
 brand scope, which is a separate axis from the analytics surface.
 **Sequence** — generated sections: design tokens, type scale, spacing scale,
 a live-rendered stage for every built registry entry that doesn't opt out

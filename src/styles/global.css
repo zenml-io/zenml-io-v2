@@ -19,7 +19,7 @@ html { scroll-behavior: smooth; }
  *   - :root                 → Kitaru theme (warm orange primary, cream ground)
  *   - [data-app="kitaru"]   → same as :root (explicit override)
  *   - [data-app="zenml"]    → ZenML theme (purple primary, white ground — original brand)
- *   - [data-app="zenml-next"] → 2026 rebrand scope (type roles + palette; /styleguide mounts it)
+ *   - [data-app="labs"]       → 2026 rebrand scope (type roles + palette; /styleguide mounts it)
  *
  * BaseLayout.astro sets data-app="zenml" by default for the whole site.
  * Per-page overrides (e.g. /product/kitaru) set data-app="kitaru".
@@ -149,7 +149,7 @@ html { scroll-behavior: smooth; }
  * Components must reference the role and semantic tokens, never family names
  * or raw hexes, so a substitution stays a token edit.
  * Code blocks keep JetBrains Mono (--font-mono is deliberately not overridden). */
-[data-app="zenml-next"] {
+[data-app="labs"] {
   /* Borna is a geometric sans-serif (display role ≠ serif classification) */
   --font-display: "Borna", -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
@@ -185,7 +185,7 @@ html { scroll-behavior: smooth; }
    * surfaces or Kitaru-associated. Dark semantic set deferred to the tone work.
    * CAUTION: the orange/blue/purple ramps below shadow same-named tokens in
    * the site-wide @theme scale INSIDE this scope — a stock utility like
-   * `bg-orange-600` resolves to the rebrand value under [data-app="zenml-next"].
+   * `bg-orange-600` resolves to the rebrand value under [data-app="labs"].
    * Intended at cutover; until then, don't render old-scale components here. */
 
   /* Semantic (light) */
@@ -809,7 +809,7 @@ html { scroll-behavior: smooth; }
 }
 
 /* 2026 rebrand typefaces (issue #253). Consumed only inside the
- * `[data-app="zenml-next"]` scope above — today that is /styleguide alone;
+ * `[data-app="labs"]` scope above — today that is /styleguide alone;
  * every other page still downloads zero of these bytes. Foundry-supplied
  * woff2 files served as-is (full character set, hence no unicode-range).
  * No preloads yet on purpose — add them with the first MARKETING surface

@@ -87,28 +87,28 @@ export const CHROME_PAIRS: ReadonlyArray<{
   fg: string;
   bg: string;
 }> = [
-  { scope: '[data-app="zenml-next"]', fg: "--foreground", bg: "--background" },
+  { scope: '[data-app="labs"]', fg: "--foreground", bg: "--background" },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--muted-foreground",
     bg: "--background",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--secondary-foreground",
     bg: "--background",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--muted-foreground",
     bg: "--muted",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--secondary-foreground",
     bg: "--muted",
   },
-  { scope: '[data-app="zenml-next"]', fg: "--background", bg: "--foreground" },
+  { scope: '[data-app="labs"]', fg: "--background", bg: "--foreground" },
 ];
 
 /**
@@ -119,7 +119,7 @@ export const CHROME_PAIRS: ReadonlyArray<{
  * why a guessed pair is worse than none (DECISIONS #93, tracked as #247).
  *
  * Every pair below was verified by reading the `:root`, `[data-app="zenml"]`,
- * and `[data-app="zenml-next"]` blocks directly: both token names are declared
+ * and `[data-app="labs"]` blocks directly: both token names are declared
  * inside that one block, so the pairing is real usage, not an inference. Do not
  * add a pair here unless both tokens are declared together in the same scope
  * block — that is what keeps this list honest.
@@ -158,48 +158,48 @@ export const DECLARED_PAIRS: ReadonlyArray<{
   { scope: '[data-app="zenml"]', fg: "--muted-foreground", bg: "--muted" },
   { scope: '[data-app="zenml"]', fg: "--accent-foreground", bg: "--accent" },
 
-  // [data-app="zenml-next"] — the 2026 rebrand palette declares a full
+  // [data-app="labs"] — the 2026 rebrand palette declares a full
   // semantic light set in one block, so every pair below is declared together.
-  { scope: '[data-app="zenml-next"]', fg: "--foreground", bg: "--background" },
-  { scope: '[data-app="zenml-next"]', fg: "--card-foreground", bg: "--card" },
+  { scope: '[data-app="labs"]', fg: "--foreground", bg: "--background" },
+  { scope: '[data-app="labs"]', fg: "--card-foreground", bg: "--card" },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--popover-foreground",
     bg: "--popover",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--primary-foreground",
     bg: "--primary",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--secondary-foreground",
     bg: "--secondary",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--muted-foreground",
     bg: "--muted",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--accent-foreground",
     bg: "--accent",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--destructive-foreground",
     bg: "--destructive",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--brand-mark-fg",
     bg: "--brand-mark-bg",
   },
   // Ratified AA accent pair (declared together as aliases in the same block).
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--color-accent-blue-text",
     bg: "--color-accent-blue-tint",
   },
@@ -391,7 +391,7 @@ function extractDeclarations(blocks: RawBlock[]): RawDecl[] {
 const FALLBACK_CHAINS: Record<string, string[]> = {
   ":root": ["@theme", "@theme inline"],
   '[data-app="zenml"]': [":root", "@theme", "@theme inline"],
-  '[data-app="zenml-next"]': [":root", "@theme", "@theme inline"],
+  '[data-app="labs"]': [":root", "@theme", "@theme inline"],
   ".kitaru-brand-vars": ["@theme", "@theme inline"],
   "@theme": ["@theme inline"],
   "@theme inline": ["@theme"],
