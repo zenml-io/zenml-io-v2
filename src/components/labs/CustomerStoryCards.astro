@@ -3,25 +3,29 @@
  * CustomerStoryCards — Labs homepage "Customer stories" band: a headline +
  * "all case studies" link, then four case-study cards (radial-green media
  * panel with the company name, title, "read the story" label). Copy and
- * card data come from `LABS_STORIES` in `src/lib/labs-home.ts`.
+ * card data arrive through the `content` prop (`LABS_STORIES` on `/`).
  */
-import { LABS_STORIES } from "../../lib/labs-home";
+import type { StoryCardsContent } from "../../lib/labs-home";
 
-const cards = LABS_STORIES.cards.slice(0, 4);
+interface Props {
+  content: StoryCardsContent;
+}
+const { content } = Astro.props;
+const cards = content.cards.slice(0, 4);
 ---
 
 <section class="pt-8 pb-32">
-  <div class="mx-auto max-w-[1248px] px-6 md:px-12 xl:px-24">
+  <div class="mx-auto max-w-content px-gutter">
     <div class="flex items-end justify-between gap-6">
-      <h2 class="font-display text-[40px] leading-[46px] font-medium text-(--color-cream-900)">
-        {LABS_STORIES.headline}
+      <h2 class="font-display text-[40px] leading-[46px] text-(--color-cream-900)">
+        {content.headline}
       </h2>
       <a
-        href={LABS_STORIES.allLink.href}
-        data-analytics={LABS_STORIES.allLink.analytics}
+        href={content.allLink.href}
+        data-analytics={content.allLink.analytics}
         class="cursor-pointer whitespace-nowrap font-label text-[13px] uppercase tracking-[0.05em] underline underline-offset-4"
       >
-        {LABS_STORIES.allLink.label}
+        {content.allLink.label}
       </a>
     </div>
 
@@ -29,21 +33,21 @@ const cards = LABS_STORIES.cards.slice(0, 4);
       {cards.map((card) => (
         <a
           href={card.href}
-          class="group flex cursor-pointer flex-col overflow-hidden rounded-[20px] border border-border bg-card"
+          class="group flex cursor-pointer flex-col overflow-hidden rounded-[20px] border border-border bg-card transition-colors duration-200 ease-out hover:border-(--color-sage-400)"
         >
           <div
-            class="flex h-[200px] items-center justify-center bg-[radial-gradient(ellipse_70%_80%_at_50%_45%,#7A9268_0%,#4A5A44_100%)] px-6 text-center"
+            class="flex h-[200px] items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_70%_80%_at_50%_45%,#7A9268_0%,#4A5A44_100%)] px-6 text-center transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transition-none"
           >
             <span class="font-label text-[22px] uppercase tracking-[0.08em] text-(--color-sage-300)">
               {card.companyLogoAlt}
             </span>
           </div>
           <div class="flex flex-1 flex-col px-6 pt-6 pb-7">
-            <h3 class="font-sans text-[19px] leading-[26px] font-medium text-(--color-cream-900)">
+            <h3 class="font-display text-[22px] leading-[28px] text-(--color-cream-900)">
               {card.title}
             </h3>
             <p class="mt-auto pt-4 font-label text-[12px] uppercase tracking-[0.05em] text-(--color-cream-700)">
-              {LABS_STORIES.readLabel}
+              {content.readLabel}
             </p>
           </div>
         </a>

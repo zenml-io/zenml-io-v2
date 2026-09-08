@@ -1179,7 +1179,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: true,
     paperPage: 0,
     notes:
-      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, LABS_HERO two-line headline + deck + one signup pill. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component.",
+      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, `content: LabsBandContent` (LABS_HERO on `/`) gives the two-line headline + deck + one signup pill. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component.",
     stage: false,
     demoProps: {},
   },
@@ -1193,7 +1193,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Labs homepage section 02: two product cards (ZenML, Kitaru) reading from LABS_DOORS. Kitaru's card carries the page's one orange accent (an 8px dot beside its name). No props — reads labs-home.ts directly, mirroring the other Labs shell/section components.",
+      "Labs homepage section 03 (after the logo grid): two product cards (ZenML, Kitaru) from `content: ProductDoorsContent` (LABS_DOORS on `/`). Each card opens with its product wordmark; no install or licence chips.",
     stage: false,
     demoProps: {},
   },
@@ -1208,7 +1208,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Full-bleed row of four fixed panels reading LABS_FEATURE_PANELS (src/lib/labs-home.ts); tone (sage-tint/sage-deep/canvas/sage-light) picks the panel background and body-text colour. Icons are inline SVG markup from src/components/labs/icons.ts, keyed by panel.icon, rendered via set:html inside a currentColor <svg>. Reflows 4-up to 2x2 at <=1024 and 1-up at 390 (fixed 440px height only at lg and up; auto below).",
+      "Full-bleed row of four fixed panels from `content: readonly FeaturePanel[]` (LABS_FEATURE_PANELS on `/`); tone (sage-tint/sage-deep/canvas/sage-light) picks the panel background and body-text colour. Icons are inline SVG markup from src/components/labs/icons.ts, keyed by panel.icon, rendered via set:html inside a currentColor <svg>. Reflows 4-up to 2x2 at <=1024 and 1-up at 390 (fixed 440px height only at lg and up; auto below).",
     contentShape: {
       minItems: 4,
       maxItems: 4,
@@ -1225,9 +1225,9 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoProps: {},
   },
   {
-    id: "labs.logo-grid",
+    id: "labs.logo-marquee",
     kind: "template",
-    componentPath: "src/components/labs/LogoGrid.astro",
+    componentPath: "src/components/labs/LogoMarquee.astro",
     collectionBound: true,
     variantAxes: [],
     tones: ["default"],
@@ -1235,7 +1235,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Labs homepage logo wall. Reads LABS_LOGO_GRID from src/lib/labs-home.ts; pads the trailing row with empty bordered cells so the hairline grid closes at every column count.",
+      "Labs trust strip right after the hero: one line of logo cards sliding left (CSS loop, paused on hover and off-screen, static scrollable row under reduced motion) from `content: LogoGridContent` (LABS_LOGO_GRID on `/`). Counts as one motion moment.",
     contentShape: {
       minItems: 1,
       maxItems: 24,
@@ -1256,7 +1256,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      'ZenML Labs homepage section 05: headline + "all case studies" link, then four case-study cards (radial-green media panel with the company name, title, read-the-story label). Reads LABS_STORIES from src/lib/labs-home.ts (cards sourced from CASE_STUDY_CARDS, sliced to 4).',
+      'ZenML Labs homepage section 05: headline + "all case studies" link, then four case-study cards (radial-green media panel with the company name, title, read-the-story label). Content arrives through `content: StoryCardsContent` (LABS_STORIES on `/`, cards from CASE_STUDY_CARDS); the first four cards render.',
     contentShape: {
       minItems: 4,
       maxItems: 4,
@@ -1281,7 +1281,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: true,
     paperPage: 0,
     notes:
-      "Reads all copy from LABS_CLOSE in labs-home.ts; takes no props. Mounts GrainBackdrop client:idle deliberately - the hero shader is the page's one always-on ambient island, so this one hydrates once the browser is idle instead of competing with it.",
+      "Copy arrives through `content: LabsBandContent` (LABS_CLOSE on `/`). Mounts GrainBackdrop client:idle deliberately - the hero shader is the page's one always-on ambient island, so this one hydrates once the browser is idle instead of competing with it.",
     stage: false,
     demoProps: {},
   },

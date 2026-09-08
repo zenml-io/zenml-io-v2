@@ -149,7 +149,14 @@ html { scroll-behavior: smooth; }
  * Components must reference the role and semantic tokens, never family names
  * or raw hexes, so a substitution stays a token edit.
  * Code blocks keep JetBrains Mono (--font-mono is deliberately not overridden). */
-[data-app="labs"] {
+[data-app="labs"],
+[data-app="labs"] body {
+  /* Rethink Sans is set at 400 — the site-wide `body { font-weight: 500 }`
+   * (tuned for Inter) does not apply here; bold text is an explicit choice
+   * at the call site, never the default. The `body` selector covers the
+   * page-level mount (`<html data-app="labs">`), the bare one covers the
+   * styleguide's wrapper div. */
+  font-weight: 400;
   /* Borna is a geometric sans-serif (display role ≠ serif classification) */
   --font-display: "Borna", -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
@@ -158,21 +165,31 @@ html { scroll-behavior: smooth; }
   --font-label: "Nudica Mono", ui-monospace, monospace;
 
   /* Display tracking */
-  /* Borna headlines take negative tracking, scaled by size: −2% at medium
-   * headline sizes, tightening to −4% at the largest display sizes. */
+  /* Borna is always tracked at −2% (ruling 2026-09-08, supersedes the
+   * size-scaled −2%/−4% ladder and the −1.5% prose rung). The three tokens
+   * stay as bindings so consumers keep one name per role. */
   --tracking-heading: -0.02em;
-  --tracking-display: -0.04em;
-  /* Interior/prose headings (H2/H3) are ruled at −0.015em — a distinct rung,
-   * not a rounding of --tracking-heading (adjudicated with #248). */
-  --tracking-prose: -0.015em;
+  --tracking-display: -0.02em;
+  --tracking-prose: -0.02em;
 
   /* Rendering: match the site-wide body smoothing (so the scope is
-   * self-contained wherever it mounts), and refuse synthesized bold/italic —
+   * self-contained wherever it mounts), turn on kerning + ligatures for the
+   * variable faces, and refuse synthesized bold/italic —
    * a weight or style we don't ship must render in a real cut, visibly,
    * not as a browser-faked approximation of the brand faces. */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+
+  /* Display role defaults: every Borna headline is weight 500 with the −2%
+   * tracking, wherever it is set. Call sites pick size and colour only;
+   * they never restate weight or tracking. */
+  & .font-display {
+    font-weight: 500;
+    letter-spacing: var(--tracking-heading);
+  }
 
   /* --- 2026 rebrand palette (issue #266) -----------------------------------
    * Generated verbatim from the canonical brand token source — never edit a

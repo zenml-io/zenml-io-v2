@@ -1,0 +1,101 @@
+---
+/**
+ * LogoMarquee — the Labs trust strip: one line of customer logos sliding
+ * left under a label line. It is a compact band on its own tone (sage tint,
+ * hairline top and bottom) so it reads as a bridge between the hero and the
+ * first section rather than as a section of its own. Content arrives through the
+ * `content` prop (LABS_LOGO_GRID on `/`).
+ *
+ * The track is rendered twice so the CSS loop is seamless; the copy is
+ * aria-hidden so screen readers hear each logo once. The slide pauses on
+ * hover, while the strip is off-screen (IntersectionObserver below), and is
+ * replaced by a static, horizontally scrollable row under reduced motion.
+ * Motion moment: counts as one of the page's three.
+ */
+import type { LogoGridContent } from "../../lib/labs-home";
+
+interface Props {
+  content: LogoGridContent;
+}
+const { headline, logos } = Astro.props.content;
+const marks = logos.filter((logo) => !logo.placeholder);
+---
+
+<section class="border-y border-border bg-(--color-sage-100) py-10 md:py-12">
+  <div class="mx-auto max-w-content px-gutter">
+    <h2 class="font-label text-[13px] uppercase tracking-[0.05em] text-(--color-cream-700)">
+      {headline}
+    </h2>
+  </div>
+
+  <div
+    data-logo-marquee
+    class="group relative mt-6 overflow-hidden [-webkit-mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
+  >
+    <div class="logo-track flex w-max items-center gap-4 group-hover:[animation-play-state:paused]">
+      {
+        [0, 1].map((copy) => (
+          <ul
+            class="flex shrink-0 items-center gap-4"
+            aria-hidden={copy === 1 ? "true" : undefined}
+          >
+            {marks.map((logo) => (
+              <li class="flex h-[88px] w-[176px] shrink-0 items-center justify-center rounded-[16px] border border-border bg-card px-6 transition-colors duration-200 ease-out hover:border-(--color-sage-400)">
+                <img
+                  src={logo.src}
+                  alt={copy === 0 ? logo.name : ""}
+                  class="max-h-8 max-w-[112px] object-contain"
+                  style={logo.maxWidth ? `max-width:${logo.maxWidth}` : undefined}
+                  loading="lazy"
+                />
+              </li>
+            ))}
+          </ul>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes logo-slide {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-50% - 0.5rem)); /* one copy plus one gap */
+    }
+  }
+  .logo-track {
+    animation: logo-slide 70s linear infinite;
+  }
+  [data-logo-marquee][data-offscreen] .logo-track {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .logo-track {
+      animation: none;
+    }
+    [data-logo-marquee] {
+      overflow-x: auto;
+      -webkit-mask-image: none;
+      mask-image: none;
+      scrollbar-width: none;
+    }
+    /* One copy is enough when nothing loops. */
+    .logo-track > ul[aria-hidden] {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Pause the slide while the strip is off-screen so it costs nothing there.
+  const strip = document.querySelector("[data-logo-marquee]");
+  if (strip && "IntersectionObserver" in window) {
+    new IntersectionObserver(
+      ([entry]) => strip.toggleAttribute("data-offscreen", !entry.isIntersecting),
+      { threshold: 0 },
+    ).observe(strip);
+  }
+</script>

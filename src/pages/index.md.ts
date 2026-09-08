@@ -28,10 +28,6 @@ function renderDoor(door: (typeof LABS_DOORS.doors)[number]): string {
     `### ${door.name}`,
     door.leadLine,
     door.body,
-    markdownBulletList([
-      `Install: \`${door.installCmd}\``,
-      `License: ${door.license}`,
-    ]),
     `CTA: ${markdownLink(door.cta.label, door.cta.href)}`,
   );
 }
@@ -50,6 +46,10 @@ export function GET(): Response {
     ),
     joinMarkdownSections("## Main CTA", markdownCtaList([LABS_HERO.cta])),
     joinMarkdownSections(
+      `## ${LABS_LOGO_GRID.headline}`,
+      LABS_LOGO_GRID.logos.map((logo) => logo.name).join(", "),
+    ),
+    joinMarkdownSections(
       `## ${LABS_DOORS.headline}`,
       LABS_DOORS.doors.map(renderDoor).join("\n\n"),
     ),
@@ -58,10 +58,6 @@ export function GET(): Response {
       ...LABS_FEATURE_PANELS.map((panel) =>
         joinMarkdownSections(`### ${panel.title}`, panel.body),
       ),
-    ),
-    joinMarkdownSections(
-      `## ${LABS_LOGO_GRID.headline}`,
-      LABS_LOGO_GRID.logos.map((logo) => logo.name).join(", "),
     ),
     joinMarkdownSections(
       `## ${LABS_STORIES.headline}`,

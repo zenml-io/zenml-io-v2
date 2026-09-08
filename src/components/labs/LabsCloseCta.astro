@@ -1,12 +1,19 @@
 ---
 import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
-import { LABS_CLOSE } from "../../lib/labs-home";
+import type { LabsBandContent } from "../../lib/labs-home";
 // LabsCloseCta.astro — the page's closing band: dark sage panel, two-line
-// headline, deck, one signup pill. Copy comes from LABS_CLOSE (labs-home.ts).
+// headline, deck, one signup pill. Copy comes in through the `content` prop
+// (LABS_CLOSE on `/`).
 import { GrainBackdrop } from "../islands/GrainBackdrop";
+import LabsButton from "./LabsButton.astro";
+
+interface Props {
+  content: LabsBandContent;
+}
+const { content } = Astro.props;
 ---
 
-<section class="relative overflow-hidden bg-(--color-sage-900) px-6 pt-24 pb-20 text-(--color-cream-50) md:px-12 md:pt-44 md:pb-40 xl:px-24">
+<section class="relative overflow-hidden bg-(--color-sage-900) px-gutter pt-24 pb-20 text-(--color-cream-50) md:pt-44 md:pb-40">
   {
     /*
       client:idle on purpose: the hero shader (LabsHero) is the page's one
@@ -21,25 +28,19 @@ import { GrainBackdrop } from "../islands/GrainBackdrop";
     class="absolute inset-0 opacity-90"
   />
 
-  <div class="relative mx-auto max-w-[1248px]">
-    <h2 class="max-w-[1000px] font-display text-[44px] leading-[48px] font-medium tracking-[-0.02em] text-(--color-cream-50) md:text-[72px] md:leading-[78px]">
-      {LABS_CLOSE.headlineLines[0]}
+  <div class="relative mx-auto max-w-content">
+    <h2 class="font-display text-[44px] leading-[48px] text-(--color-cream-50) md:text-[72px] md:leading-[78px]">
+      {content.headlineLines[0]}
       <br />
-      {LABS_CLOSE.headlineLines[1]}
+      {content.headlineLines[1]}
     </h2>
 
     <p class="mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)">
-      {LABS_CLOSE.deck}
+      {content.deck}
     </p>
 
     <div class="mt-10 flex flex-wrap items-center gap-7">
-      <a
-        href={LABS_CLOSE.cta.href}
-        data-analytics={LABS_CLOSE.cta.analytics}
-        class="inline-flex h-12 cursor-pointer items-center justify-center rounded-full bg-(--color-sage-400) px-[26px] font-label text-[13px] uppercase tracking-[0.05em] text-(--color-cream-800)"
-      >
-        {LABS_CLOSE.cta.label}
-      </a>
+      <LabsButton cta={content.cta} tone="sage" />
     </div>
   </div>
 </section>

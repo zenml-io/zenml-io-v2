@@ -2,12 +2,14 @@
 import { LABS_NAV_LINKS, LABS_NAV_SIGNUP } from "../../lib/labs-home";
 /**
  * LabsNavigation — the ZenML Labs shell nav: a floating pill over the hero
- * that starts transparent (server-rendered solid, a tiny scroll listener
- * flips it once the page has moved past the top) and a hamburger panel on
+ * that starts transparent (server-rendered transparent so the first paint
+ * matches the at-rest state; a tiny scroll listener turns it solid once the
+ * page has moved past the top) and a hamburger panel on
  * narrow viewports. No dropdown menus in this step — `hasMenu` links just
  * go straight to their hub page.
  */
 import ZenmlLabsLogo from "../brand/ZenmlLabsLogo.astro";
+import LabsButton from "./LabsButton.astro";
 
 interface Props {
   currentPath?: string;
@@ -19,6 +21,7 @@ void currentPath;
 <header
   data-labs-nav-shell
   class="fixed inset-x-4 top-4 z-50 flex h-[76px] items-center justify-between rounded-[20px] border border-border bg-card pl-6 pr-4 lg:inset-x-16 lg:top-8"
+  data-at-top
 >
   <a href="/" aria-label="ZenML Labs" class="shrink-0 cursor-pointer text-foreground">
     <ZenmlLabsLogo class="h-8 w-auto" />
@@ -50,13 +53,11 @@ void currentPath;
     ))}
   </nav>
 
-  <a
-    href={LABS_NAV_SIGNUP.href}
-    data-analytics={LABS_NAV_SIGNUP.analytics}
-    class="hidden h-12 cursor-pointer items-center justify-center rounded-full bg-(--color-sage-400) px-[26px] font-label text-[13px] uppercase tracking-[0.05em] text-(--color-cream-800) transition-colors hover:bg-(--color-sage-500) lg:inline-flex"
-  >
-    {LABS_NAV_SIGNUP.label}
-  </a>
+  {/* `lg:contents` keeps the pill in the header's flex row without a display
+      utility fighting the button's own `inline-flex`. */}
+  <div class="hidden lg:contents">
+    <LabsButton cta={LABS_NAV_SIGNUP} tone="sage" />
+  </div>
 
   <button
     type="button"
@@ -92,22 +93,17 @@ void currentPath;
         </a>
       ))}
     </nav>
-    <a
-      href={LABS_NAV_SIGNUP.href}
-      data-analytics={LABS_NAV_SIGNUP.analytics}
-      class="mt-2 flex h-12 cursor-pointer items-center justify-center rounded-full bg-(--color-sage-400) px-[26px] font-label text-[13px] uppercase tracking-[0.05em] text-(--color-cream-800)"
-    >
-      {LABS_NAV_SIGNUP.label}
-    </a>
+    <LabsButton cta={LABS_NAV_SIGNUP} tone="sage" class="mt-2 w-full" />
   </div>
 </header>
 
 <style>
-  /* The one visual state this shell owns: solid pill at rest, transparent
-   * once the page has scrolled past the top. Server-rendered solid so
-   * there is no flash/layout shift; the script below only ever adds the
-   * attribute, never removes the base styling. */
-  [data-labs-nav-shell] {
+  /* The one visual state this shell owns: transparent over the hero at
+   * rest, solid pill once the page has scrolled past the top. The at-rest
+   * attribute is server-rendered so the first paint never flashes solid;
+   * the transition only arms after the script has synced once, so a
+   * mid-page reload paints solid instantly instead of fading in. */
+  [data-labs-nav-shell][data-scroll-ready] {
     transition:
       background-color 200ms ease,
       border-color 200ms ease;
@@ -130,6 +126,11 @@ void currentPath;
     shell?.toggleAttribute("data-at-top", window.scrollY < 24);
   };
   syncScrollState();
+  // Flush the un-transitioned first state before arming the transition.
+  if (shell) {
+    void getComputedStyle(shell).backgroundColor;
+    shell.setAttribute("data-scroll-ready", "");
+  }
   window.addEventListener("scroll", syncScrollState, { passive: true });
 
   // Mobile hamburger toggle.

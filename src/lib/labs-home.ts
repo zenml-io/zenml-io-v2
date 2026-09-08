@@ -17,15 +17,7 @@ import {
   LOGO_CLOUD,
   type LogoItem,
 } from "./homepage";
-import {
-  KITARU_INSTALL_CMD,
-  KITARU_LICENSE,
-  KITARU_LINKS,
-} from "./productKitaru";
-import { ZENML_INSTALL_CMD } from "./productZenml";
-
-/** ZenML is Apache 2.0 too; productZenml.ts has no licence constant yet. */
-const ZENML_LICENSE = KITARU_LICENSE;
+import { KITARU_LINKS } from "./productKitaru";
 
 export const LABS_HOME_SEO = {
   title: "ZenML Labs: The unified infrastructure layer for AI in production",
@@ -99,12 +91,19 @@ export const LABS_FOOTER = {
 /* Hero                                                                    */
 /* ---------------------------------------------------------------------- */
 
-export const LABS_HERO = {
+/** Shape of an opening or closing band: two headline lines, a deck, one pill. */
+export interface LabsBandContent {
   /** Two lines, break kept deliberate. */
-  headlineLines: ["AI in production,", "on infrastructure you own"] as const,
-  deck: "ZenML Labs builds two open-source products. ZenML orchestrates your pipelines and agents on the infra you choose. Kitaru replays your agents on production data, so a change is tested before it ships.",
+  headlineLines: readonly [string, string];
+  deck: string;
+  cta: LabsCta;
+}
+
+export const LABS_HERO: LabsBandContent = {
+  headlineLines: ["Ship AI to production,", "on infrastructure you own"],
+  deck: "ZenML orchestrates your pipelines and agents. Kitaru replays them on production data before a change ships. Both open source, always.",
   cta: LABS_HERO_SIGNUP,
-} as const;
+};
 
 /* ---------------------------------------------------------------------- */
 /* Product doors                                                           */
@@ -112,24 +111,26 @@ export const LABS_HERO = {
 
 export interface ProductDoor {
   name: "ZenML" | "Kitaru";
-  /** Kitaru carries the one orange detail on the page: a dot beside its name. */
-  accent?: "orange";
+  /** Corner wash behind the card: the product's lightest palette tint. */
+  tint: "sage" | "orange";
   leadLine: string;
   body: string;
-  installCmd: string;
-  license: string;
   cta: LabsCta;
 }
 
-export const LABS_DOORS = {
-  headline: "Two products, one foundation",
+export interface ProductDoorsContent {
+  headline: string;
+  doors: readonly ProductDoor[];
+}
+
+export const LABS_DOORS: ProductDoorsContent = {
+  headline: "Build it, then prove it",
   doors: [
     {
       name: "ZenML",
+      tint: "sage",
       leadLine: "AI orchestration, on the infra you choose",
       body: "Write pipelines and agents in Python and run them on the orchestrator and cloud you already have. Move between them without rewriting, from a laptop to Kubernetes.",
-      installCmd: ZENML_INSTALL_CMD,
-      license: ZENML_LICENSE,
       cta: {
         label: "Explore ZenML",
         href: "/product/zenml",
@@ -138,19 +139,17 @@ export const LABS_DOORS = {
     },
     {
       name: "Kitaru",
-      accent: "orange",
+      tint: "orange",
       leadLine: "Replay your agents on production data",
       body: "Import the sessions your agent has actually run, find what repeats, and replay a change against them. See what improved, what regressed, and what it costs before it ships.",
-      installCmd: KITARU_INSTALL_CMD,
-      license: KITARU_LICENSE,
       cta: {
         label: "Explore Kitaru",
         href: "/product/kitaru",
         analytics: "Door-Explore-Kitaru",
       },
     },
-  ] satisfies readonly ProductDoor[],
-} as const;
+  ],
+};
 
 /* ---------------------------------------------------------------------- */
 /* Feature grid — four panels                                              */
@@ -206,18 +205,24 @@ export const LABS_FEATURE_PANELS: readonly FeaturePanel[] = [
 /* Proof                                                                   */
 /* ---------------------------------------------------------------------- */
 
-export const LABS_LOGO_GRID: { headline: string; logos: readonly LogoItem[] } =
-  {
-    headline: "Teams running production AI on ZenML",
-    logos: LOGO_CLOUD.logos,
-  };
+export interface LogoGridContent {
+  headline: string;
+  logos: readonly LogoItem[];
+}
 
-export const LABS_STORIES: {
+export const LABS_LOGO_GRID: LogoGridContent = {
+  headline: "Running production AI today",
+  logos: LOGO_CLOUD.logos,
+};
+
+export interface StoryCardsContent {
   headline: string;
   allLink: LabsCta;
   readLabel: string;
   cards: readonly CaseStudyCard[];
-} = {
+}
+
+export const LABS_STORIES: StoryCardsContent = {
   headline: "Customer stories",
   allLink: {
     label: "All case studies",
@@ -232,9 +237,9 @@ export const LABS_STORIES: {
 /* Close                                                                   */
 /* ---------------------------------------------------------------------- */
 
-export const LABS_CLOSE = {
-  headlineLines: ["Start with your", "production data"] as const,
+export const LABS_CLOSE: LabsBandContent = {
+  headlineLines: ["Start with your", "production data"],
   /** The company value proposition, verbatim. */
   deck: "Own your infrastructure, build it the way you want, and keep pace as your organization evolves.",
   cta: LABS_FINAL_SIGNUP,
-} as const;
+};

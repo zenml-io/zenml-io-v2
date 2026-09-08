@@ -1,52 +1,100 @@
 ---
 /**
  * ProductDoors — Labs homepage section introducing the two products as a
- * pair of cards (ZenML, Kitaru). Copy, install commands, licences and CTAs
- * all come from `LABS_DOORS` (`src/lib/labs-home.ts`); nothing here is
- * retyped. Kitaru's small orange dot next to its name is the only orange
- * mark on the page (per the section spec).
+ * pair of cards (ZenML, Kitaru). Copy and CTAs arrive through the `content`
+ * prop (`LABS_DOORS` on `/`); nothing here is retyped. Each card opens with
+ * the product wordmark over a static grain wash that fades out from the
+ * top-left corner in the product's lightest tint (`door.tint`).
  */
-import { LABS_DOORS } from "../../lib/labs-home";
+import type { ProductDoor, ProductDoorsContent } from "../../lib/labs-home";
+import KitaruWordmark from "../brand/KitaruWordmark.astro";
+import ZenmlWordmark from "../brand/ZenmlWordmark.astro";
+import LabsButton from "./LabsButton.astro";
+
+interface Props {
+  content: ProductDoorsContent;
+}
+const { content } = Astro.props;
+
+const TINT_VARS: Record<ProductDoor["tint"], string> = {
+  sage: "var(--color-sage-100)",
+  orange: "var(--color-orange-100)",
+};
+
+/* Hover border follows the product: sage everywhere, orange on Kitaru. */
+const HOVER_BORDER: Record<ProductDoor["tint"], string> = {
+  sage: "hover:border-(--color-sage-400)",
+  orange: "hover:border-(--color-orange-300)",
+};
 ---
 
-<section class="px-6 pt-6 pb-6 md:px-12 md:pt-[128px] md:pb-[112px] xl:px-24">
-  <div class="mx-auto flex max-w-[1248px] flex-col gap-[56px]">
-    <h2 class="font-display text-[31px] leading-[33px] font-medium tracking-[-0.02em] text-(--color-cream-900) md:text-[56px] md:leading-[60px]">
-      {LABS_DOORS.headline}
+<section class="px-gutter pt-16 pb-6 md:pt-24 md:pb-[112px]">
+  <div class="mx-auto flex max-w-content flex-col gap-[56px]">
+    <h2 class="font-display text-[31px] leading-[33px] text-(--color-cream-900) md:text-[56px] md:leading-[60px]">
+      {content.headline}
     </h2>
 
     <div class="flex flex-col gap-6 lg:flex-row">
-      {LABS_DOORS.doors.map((door) => (
-        <div class="flex flex-1 flex-col rounded-[20px] border border-border bg-card p-10 min-w-0">
-          <div class="flex flex-col gap-7">
-            <div class="flex items-center gap-2">
-              {door.accent === "orange" && (
-                <span class="h-2 w-2 rounded-full bg-(--color-orange-500)" aria-hidden="true" />
+      {content.doors.map((door) => (
+        <div
+          class={`group relative flex flex-1 flex-col overflow-hidden rounded-[20px] border border-border bg-card p-10 min-w-0 transition-colors duration-200 ease-out ${HOVER_BORDER[door.tint]}`}
+          style={`--door-tint: ${TINT_VARS[door.tint]}`}
+        >
+          <div class="door-wash pointer-events-none absolute inset-0 origin-top-left transition-transform duration-500 ease-out group-hover:scale-[1.18]" aria-hidden="true"></div>
+          <div class="relative flex flex-col gap-7">
+            <span role="img" aria-label={door.name} class="mb-2 flex h-[22px] items-center text-(--color-cream-900)">
+              {door.name === "ZenML" ? (
+                <ZenmlWordmark class="h-[22px] w-auto" />
+              ) : (
+                <KitaruWordmark class="h-[22px] w-auto" />
               )}
-              <span class="font-label text-[13px] uppercase text-(--color-cream-700)">{door.name}</span>
-            </div>
-            <h3 class="font-display text-[19px] leading-[22px] font-medium tracking-[-0.01em] text-(--color-cream-900) md:text-[34px] md:leading-[40px]">
+            </span>
+            <h3 class="font-display text-[19px] leading-[22px] text-(--color-cream-900) md:text-[34px] md:leading-[40px]">
               {door.leadLine}
             </h3>
             <p class="font-sans text-[17px] leading-[26px] text-foreground">{door.body}</p>
-            <div class="flex flex-wrap gap-2">
-              <span class="inline-flex h-[34px] items-center whitespace-pre max-w-full overflow-x-auto [scrollbar-width:none] rounded-full border border-border px-[14px] font-mono text-[13px] text-foreground">
-                {door.installCmd}
-              </span>
-              <span class="inline-flex h-[34px] items-center rounded-full border border-border px-[14px] font-label text-xs uppercase text-(--color-cream-700)">
-                {door.license}
-              </span>
-            </div>
           </div>
-          <a
-            href={door.cta.href}
-            data-analytics={door.cta.analytics}
-            class="mt-4 inline-flex h-12 w-fit cursor-pointer items-center justify-center rounded-full bg-(--color-cream-900) px-[26px] font-label text-[13px] uppercase tracking-[0.05em] text-(--color-cream-50)"
-          >
-            {door.cta.label}
-          </a>
+          <LabsButton cta={door.cta} class="relative mt-4 w-fit" />
         </div>
       ))}
     </div>
   </div>
 </section>
+
+<style>
+  /* Corner wash: the product tint radiating from the top-left, with a static
+   * grain layer masked to the same falloff so the texture dies where the
+   * colour does. The grain is an inline SVG turbulence tile (no asset,
+   * no animation); multiply keeps it in the tint's family on every ground. */
+  .door-wash {
+    background: radial-gradient(
+      120% 100% at 0% 0%,
+      var(--door-tint) 0%,
+      transparent 62%
+    );
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .door-wash {
+      transition: none;
+    }
+  }
+  .door-wash::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.35 0 0 0 0 0.3 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+    mix-blend-mode: multiply;
+    opacity: 0.22;
+    -webkit-mask-image: radial-gradient(
+      120% 100% at 0% 0%,
+      black 0%,
+      transparent 62%
+    );
+    mask-image: radial-gradient(
+      120% 100% at 0% 0%,
+      black 0%,
+      transparent 62%
+    );
+  }
+</style>

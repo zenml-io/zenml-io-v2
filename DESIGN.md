@@ -37,11 +37,17 @@ The stack is three faces plus one carve-out, split strictly by role (#6):
 
 Additional rules:
 
-- Borna headlines take **negative tracking, scaled by size**: −2% (`-0.02em`,
-  token `--tracking-heading`) at medium headline sizes, tightening toward −4%
-  (`-0.04em`, token `--tracking-display`) at the largest display sizes. Body
-  and label faces keep their own ladder tracking — this rule is Borna-only.
-  (Supersedes the earlier "letter-spacing 0 on hero display" rule.)
+- Borna is **always tracked at −2%** (`-0.02em`; the `--tracking-heading`,
+  `--tracking-display` and `--tracking-prose` tokens all bind to it) at every
+  size. Body and label faces keep their own ladder tracking — this rule is
+  Borna-only. (Supersedes the size-scaled −2%/−4% ladder and the earlier
+  "letter-spacing 0 on hero display" rule.)
+- Every headline and card title renders in **Borna at weight 500** — the
+  `labs` scope applies weight and tracking to the display role itself, so a
+  call site sets size and colour only and never restates weight or tracking.
+  A title in the body face is a defect, not a variant.
+- **Rethink Sans body text is weight 400.** Bold is an explicit, local choice
+  (a `<strong>` or a stated utility), never the default weight of a block.
 - List/bullet marker slots are sized to optically center the marker on the
   first line of body text — whenever body size changes, the marker slot moves
   with it.
@@ -140,6 +146,13 @@ of options at build time:
   the smallest screens a code pane may go full-bleed while the surrounding
   prose stays centered.
 - **Heroes/headlines**: step down in size, never truncate.
+- **Cards and panels keep their air on small viewports.** Inner padding
+  never drops below 32px when columns stack, and a panel that loses its
+  fixed height gains an explicit gap between its icon row and its text
+  instead of collapsing onto it.
+- **Section width is the centered container** (`max-w-content` +
+  `px-gutter`), never a fixed pixel cap — a narrower cap must be named in
+  the design.
 
 The page body never scrolls horizontally; anything wider than its
 container scrolls inside its own region.
@@ -149,6 +162,18 @@ container scrolls inside its own region.
 - **Budget: at most 3 motion moments per page.** A moment is any animation
   a visitor would notice as animation. The house scroll-reveal on section
   entry is the baseline and does not count toward it.
+- **Every button and pill has a hover transition** — colour only,
+  200ms, ease-out, from the shared button component rather than restated at
+  the call site. Hover feedback is interaction, not a motion moment, and does
+  not count toward the budget.
+- **Every card has a hover state** — at minimum the border turns sage
+  (`--color-sage-400`, 200ms, ease-out) on every card; Kitaru cards, which
+  usually carry orange, turn orange (`--color-orange-300`) instead. Cards
+  with a background wash or an image also move it
+  (the wash grows from its origin, the image zooms a few percent, 500ms,
+  ease-out, compositor properties only, honouring reduced motion). A card
+  that does nothing on hover is a defect. Like buttons, this is interaction
+  feedback and does not count toward the motion budget.
 - **At most one ambient/atmospheric section per page** — shader backdrop,
   grain field, or glow wash. A second ambient section on the same page is a
   review blocker, not a taste call. Enforced by `pnpm check:motion` against

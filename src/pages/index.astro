@@ -3,8 +3,9 @@
  * Homepage — the main landing page for the ZenML Labs site.
  *
  * Composes the Labs section components into a single page. Each section
- * is a self-contained Astro component that pulls its data from
- * src/lib/labs-home.ts.
+ * takes its copy through a `content` prop; this page passes the LABS_*
+ * constants from src/lib/labs-home.ts, so another page can mount the same
+ * sections with different content.
  *
  * Route: / (homepage)
  */
@@ -12,12 +13,20 @@ import CustomerStoryCards from "../components/labs/CustomerStoryCards.astro";
 import FeatureGridPanels from "../components/labs/FeatureGridPanels.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
 import LabsHero from "../components/labs/LabsHero.astro";
-import LogoGrid from "../components/labs/LogoGrid.astro";
+import LogoMarquee from "../components/labs/LogoMarquee.astro";
 import ProductDoors from "../components/labs/ProductDoors.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { buildHomepageJsonLd } from "../lib/homepageJsonLd";
-import { LABS_HOME_SEO } from "../lib/labs-home";
+import {
+  LABS_CLOSE,
+  LABS_DOORS,
+  LABS_FEATURE_PANELS,
+  LABS_HERO,
+  LABS_HOME_SEO,
+  LABS_LOGO_GRID,
+  LABS_STORIES,
+} from "../lib/labs-home";
 
 const homepageJsonLd = buildHomepageJsonLd({
   organizationName: "ZenML Labs",
@@ -35,11 +44,11 @@ const homepageJsonLd = buildHomepageJsonLd({
   <JsonLd data={homepageJsonLd} slot="head" />
 
   <main>
-    <LabsHero />
-    <ProductDoors />
-    <FeatureGridPanels />
-    <LogoGrid />
-    <CustomerStoryCards />
-    <LabsCloseCta />
+    <LabsHero content={LABS_HERO} />
+    <LogoMarquee content={LABS_LOGO_GRID} />
+    <ProductDoors content={LABS_DOORS} />
+    <FeatureGridPanels content={LABS_FEATURE_PANELS} />
+    <CustomerStoryCards content={LABS_STORIES} />
+    <LabsCloseCta content={LABS_CLOSE} />
   </main>
 </BaseLayout>
