@@ -70,8 +70,8 @@
  * index; see their doc comments.
  * - Of the remaining /product/kitaru islands, TwoDoors covers the interactive
  *   contract that has regressed. The others have nothing better to assert on:
- *   Hero's sole interaction is a clipboard write (permission-gated in
- *   headless), KitaruGrain is a WebGL shader, and ScenarioStrip's only state
+ *   HeroVideo's sole interaction opens a third-party video iframe in a
+ *   dialog, KitaruGrain is a WebGL shader, and ScenarioStrip's only state
  *   is a decorative hover-linked highlight — a progressive enhancement we
  *   accept going untested rather than asserting on hover-driven class flips.
  *
