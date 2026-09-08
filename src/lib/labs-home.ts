@@ -22,7 +22,7 @@ import {
   KITARU_LICENSE,
   KITARU_LINKS,
 } from "./productKitaru";
-import { ZENML_INSTALL_CMD, ZENML_LINKS } from "./productZenml";
+import { ZENML_INSTALL_CMD } from "./productZenml";
 
 /** ZenML is Apache 2.0 too; productZenml.ts has no licence constant yet. */
 const ZENML_LICENSE = KITARU_LICENSE;
@@ -238,6 +238,3 @@ export const LABS_CLOSE = {
   deck: "Own your infrastructure, build it the way you want, and keep pace as your organization evolves.",
   cta: LABS_FINAL_SIGNUP,
 } as const;
-
-/** Kept for the deferred ZenML signup fallback (not rendered in v1). */
-export const LABS_ZENML_SIGNUP_HREF = ZENML_LINKS.signup.href;

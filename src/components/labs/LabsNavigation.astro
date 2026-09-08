@@ -1,9 +1,11 @@
 ---
 import { LABS_NAV_LINKS, LABS_NAV_SIGNUP } from "../../lib/labs-home";
 /**
- * LabsNavigation — the ZenML Labs shell nav (floating pill over the hero,
- * solid card pill once the page scrolls). STUB: the Labs homepage build fills
- * this in from `src/lib/labs-home.ts` (LABS_NAV_LINKS, LABS_NAV_SIGNUP).
+ * LabsNavigation — the ZenML Labs shell nav: a floating pill over the hero
+ * that starts transparent (server-rendered solid, a tiny scroll listener
+ * flips it once the page has moved past the top) and a hamburger panel on
+ * narrow viewports. No dropdown menus in this step — `hasMenu` links just
+ * go straight to their hub page.
  */
 import ZenmlLabsLogo from "../brand/ZenmlLabsLogo.astro";
 
@@ -14,10 +16,137 @@ const { currentPath = Astro.url.pathname } = Astro.props;
 void currentPath;
 ---
 
-<header class="w-full">
-  <a href="/" aria-label="ZenML Labs" class="text-foreground"><ZenmlLabsLogo class="h-8 w-auto" /></a>
-  <nav aria-label="Main navigation">
-    {LABS_NAV_LINKS.map((link) => <a href={link.href}>{link.label}</a>)}
+<header
+  data-labs-nav-shell
+  class="fixed inset-x-4 top-4 z-50 flex h-[76px] items-center justify-between rounded-[20px] border border-border bg-card pl-6 pr-4 lg:inset-x-16 lg:top-8"
+>
+  <a href="/" aria-label="ZenML Labs" class="shrink-0 cursor-pointer text-foreground">
+    <ZenmlLabsLogo class="h-8 w-auto" />
+  </a>
+
+  <nav aria-label="Main navigation" class="hidden items-center gap-1 lg:flex">
+    {LABS_NAV_LINKS.map((link) => (
+      <a
+        href={link.href}
+        class="inline-flex h-9 cursor-pointer items-center gap-1 rounded-full px-3.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors hover:bg-muted"
+      >
+        {link.label}
+        {link.hasMenu && (
+          <svg
+            aria-hidden="true"
+            focusable="false"
+            class="h-2.5 w-2.5 shrink-0 text-muted-foreground"
+            viewBox="0 0 10 10"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M2.25 3.75L5 6.5L7.75 3.75" />
+          </svg>
+        )}
+      </a>
+    ))}
   </nav>
-  <a href={LABS_NAV_SIGNUP.href} data-analytics={LABS_NAV_SIGNUP.analytics}>{LABS_NAV_SIGNUP.label}</a>
+
+  <a
+    href={LABS_NAV_SIGNUP.href}
+    data-analytics={LABS_NAV_SIGNUP.analytics}
+    class="hidden h-12 cursor-pointer items-center justify-center rounded-full bg-(--color-sage-400) px-[26px] font-label text-[13px] uppercase tracking-[0.05em] text-(--color-cream-800) transition-colors hover:bg-(--color-sage-500) lg:inline-flex"
+  >
+    {LABS_NAV_SIGNUP.label}
+  </a>
+
+  <button
+    type="button"
+    class="cursor-pointer rounded-full p-2 text-foreground lg:hidden"
+    aria-label="Open menu"
+    aria-controls="labs-nav-mobile-panel"
+    aria-expanded="false"
+    data-labs-nav-toggle
+  >
+    <svg class="h-6 w-6 block" data-icon="open" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
+    <svg class="h-6 w-6 hidden" data-icon="close" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18" />
+      <line x1="6" y1="6" x2="18" y2="18" />
+    </svg>
+  </button>
+
+  <div
+    id="labs-nav-mobile-panel"
+    class="absolute inset-x-0 top-full z-40 mt-2 hidden flex-col gap-1 rounded-[20px] border border-border bg-card p-4 lg:hidden"
+    data-labs-nav-panel
+  >
+    <nav aria-label="Mobile navigation" class="flex flex-col gap-1">
+      {LABS_NAV_LINKS.map((link) => (
+        <a
+          href={link.href}
+          class="cursor-pointer rounded-[12px] px-3 py-2.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors hover:bg-muted"
+        >
+          {link.label}
+        </a>
+      ))}
+    </nav>
+    <a
+      href={LABS_NAV_SIGNUP.href}
+      data-analytics={LABS_NAV_SIGNUP.analytics}
+      class="mt-2 flex h-12 cursor-pointer items-center justify-center rounded-full bg-(--color-sage-400) px-[26px] font-label text-[13px] uppercase tracking-[0.05em] text-(--color-cream-800)"
+    >
+      {LABS_NAV_SIGNUP.label}
+    </a>
+  </div>
 </header>
+
+<style>
+  /* The one visual state this shell owns: solid pill at rest, transparent
+   * once the page has scrolled past the top. Server-rendered solid so
+   * there is no flash/layout shift; the script below only ever adds the
+   * attribute, never removes the base styling. */
+  [data-labs-nav-shell] {
+    transition:
+      background-color 200ms ease,
+      border-color 200ms ease;
+  }
+  [data-labs-nav-shell][data-at-top] {
+    background-color: transparent;
+    border-color: transparent;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-labs-nav-shell] {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Scroll state: transparent only within the first 24px, else solid.
+  const shell = document.querySelector("[data-labs-nav-shell]");
+  const syncScrollState = () => {
+    shell?.toggleAttribute("data-at-top", window.scrollY < 24);
+  };
+  syncScrollState();
+  window.addEventListener("scroll", syncScrollState, { passive: true });
+
+  // Mobile hamburger toggle.
+  const toggle = document.querySelector("[data-labs-nav-toggle]");
+  const panel = document.querySelector("[data-labs-nav-panel]");
+  const openIcon = toggle?.querySelector('[data-icon="open"]');
+  const closeIcon = toggle?.querySelector('[data-icon="close"]');
+
+  toggle?.addEventListener("click", () => {
+    const willOpen = panel?.classList.contains("hidden") ?? false;
+    panel?.classList.toggle("hidden", !willOpen);
+    panel?.classList.toggle("flex", willOpen);
+    toggle.setAttribute("aria-expanded", String(willOpen));
+    toggle.setAttribute("aria-label", willOpen ? "Close menu" : "Open menu");
+    openIcon?.classList.toggle("hidden", willOpen);
+    openIcon?.classList.toggle("block", !willOpen);
+    closeIcon?.classList.toggle("hidden", !willOpen);
+    closeIcon?.classList.toggle("block", willOpen);
+  });
+</script>

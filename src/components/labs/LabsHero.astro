@@ -1,0 +1,55 @@
+---
+import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
+import { LABS_HERO } from "../../lib/labs-home";
+// LabsHero.astro — the page's opening band: sage grain shader over a cream
+// panel, two-line headline, deck, one signup pill. Copy comes from
+// LABS_HERO (labs-home.ts). The site nav renders as an absolutely
+// positioned overlay from BaseLayout/LabsNavigation, not from this
+// component — the top 120px stay free of copy.
+import { GrainBackdrop } from "../islands/GrainBackdrop";
+---
+
+<section class="relative min-h-[640px] overflow-hidden bg-(--color-sage-50) lg:min-h-[900px]">
+  {
+    /*
+      client:visible on purpose: this is the page's one always-on ambient
+      island (check:motion budget) — every other GrainBackdrop instance on
+      the page defers with client:idle or a hover-gated `active` prop.
+    */
+  }
+  <GrainBackdrop
+    client:visible
+    config={LABS_GRAIN.hero}
+    class="absolute inset-0"
+  />
+
+  <div
+    class="pointer-events-none absolute inset-x-0 bottom-0 h-[340px] bg-gradient-to-b from-transparent to-(--color-sage-50)"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative mx-auto max-w-[1248px] px-6 pt-[120px] pb-space-xxl md:px-12 xl:px-24">
+    <div class="max-w-[1000px] pt-space-xl lg:pt-[200px]">
+      <h1 class="font-display text-[44px] leading-[48px] font-medium tracking-[-0.02em] text-(--color-cream-900) md:text-[80px] md:leading-[86px]">
+        {LABS_HERO.headlineLines[0]}
+        <br />
+        {LABS_HERO.headlineLines[1]}
+      </h1>
+
+      <p class="mt-space-md max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
+        {LABS_HERO.deck}
+      </p>
+
+      <div class="mt-space-mlg flex flex-wrap items-center gap-space-md">
+        <a
+          href={LABS_HERO.cta.href}
+          data-analytics={LABS_HERO.cta.analytics}
+          class="inline-flex h-12 cursor-pointer items-center justify-center rounded-full bg-(--color-cream-900) px-[26px] font-label text-[13px] uppercase tracking-[0.05em] text-(--color-cream-50)"
+        >
+          {LABS_HERO.cta.label}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

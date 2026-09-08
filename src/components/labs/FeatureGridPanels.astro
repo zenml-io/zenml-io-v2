@@ -1,0 +1,52 @@
+---
+/**
+ * FeatureGridPanels — full-bleed row of four equal panels (03 Feature grid).
+ * Data-driven from `LABS_FEATURE_PANELS`; no props, no per-page variation.
+ */
+import {
+  type FeaturePanelTone,
+  LABS_FEATURE_PANELS,
+} from "../../lib/labs-home";
+import { FEATURE_ICONS } from "./icons";
+
+const TONE_CLASSES: Record<FeaturePanelTone, string> = {
+  "sage-tint": "bg-(--color-sage-300) text-(--color-cream-900)",
+  "sage-deep": "bg-(--color-sage-800) text-(--color-cream-50)",
+  canvas: "bg-(--color-sage-50) text-(--color-cream-900)",
+  "sage-light": "bg-(--color-sage-200) text-(--color-cream-900)",
+};
+
+const BODY_TONE_CLASSES: Record<FeaturePanelTone, string> = {
+  "sage-tint": "text-foreground",
+  "sage-deep": "text-(--color-sage-300)",
+  canvas: "text-foreground",
+  "sage-light": "text-foreground",
+};
+---
+
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+  {LABS_FEATURE_PANELS.map((panel) => (
+    <div
+      class={`flex h-auto flex-col justify-between p-6 lg:h-[440px] lg:p-10 ${TONE_CLASSES[panel.tone]}`}
+    >
+      <div class="flex items-start justify-between">
+        <svg
+          viewBox="0 0 114 114"
+          fill="currentColor"
+          class="h-16 w-16 lg:h-24 lg:w-24"
+          aria-hidden="true"
+          set:html={FEATURE_ICONS[panel.icon]}
+        />
+        <span class="font-label text-[15px] tracking-[0.05em]">{panel.index}</span>
+      </div>
+      <div class="flex flex-col gap-3">
+        <h3 class="font-display text-[28px] leading-[32px] tracking-[-0.01em]">
+          {panel.title}
+        </h3>
+        <p class={`text-[16px] leading-[24px] ${BODY_TONE_CLASSES[panel.tone]}`}>
+          {panel.body}
+        </p>
+      </div>
+    </div>
+  ))}
+</section>

@@ -305,7 +305,7 @@ never optional-prop bags hidden by as casts. Register new templates.
 - `src/components/islands/ContactForm.tsx` — Form submission → Astro API routes
 - `src/components/islands/DemoRequestForm.tsx` — Demo request form used by `/book-your-demo`
 - `src/components/islands/CookieConsent.tsx` — Cookie consent banner (4 categories)
-- `src/components/islands/FeatureTabsSlider.tsx` — Homepage auto-cycling feature tabs
+- `src/components/islands/FeatureTabsSlider.tsx` — Auto-cycling feature tabs on `/product/zenml` (formerly on the homepage)
 - `src/components/islands/ProTestimonialCarousel.tsx` — /pro page testimonial carousel
 - `src/components/islands/RoiCalculator.tsx` — ROI calculator interactive form
 
@@ -326,7 +326,7 @@ never optional-prop bags hidden by as casts. Register new templates.
 
 ### ZenML Labs shell + homepage (rebrand branch, 2026-09)
 - `src/pages/index.astro` — the ZenML Labs parent homepage (`app="labs"`, `surface="unified"`); copy, links and analytics event names live in `src/lib/labs-home.ts` (facts are imported from their canonical constants, never retyped)
-- `src/components/labs/*` — the Labs shell (`LabsNavigation`, `LabsFooter`) and the homepage sections; `src/components/brand/ZenmlLabsLogo.astro` is the inline company lockup (aria-hidden; the wrapping anchor names it), with a static copy at `public/images/zenml-labs-lockup.svg`
+- `src/components/labs/*` — the Labs shell (`LabsNavigation` floating pill nav with a scroll-state script, `LabsFooter` dark band with the huge wordmark) and the six homepage sections (`LabsHero`, `ProductDoors`, `FeatureGridPanels` + `icons.ts`, `LogoGrid`, `CustomerStoryCards`, `LabsCloseCta`), all registered as `labs.*` in the template registry with `stage: false` (the styleguide stage glob does not cover this folder). Brand marks: `src/components/brand/ZenmlLabsLogo.astro` (inline company lockup, aria-hidden; the wrapping anchor names it; static copy at `public/images/zenml-labs-lockup.svg`) and `ZenmlWordmark.astro` (the product wordmark, currentColor). `src/pages/index.md.ts` mirrors the same copy for agents; `scripts/check-island-hydration.ts` and `scripts/check-dist-smoke.ts` expect `FeatureTabsSlider` on `/product/zenml` (no longer on `/`) and `GrainBackdrop` on `/`
 - `src/components/islands/GrainBackdrop.tsx` — the generic GrainGradient shader backdrop (reveal gating, WebGL error boundary, SSR guard, reduced motion); `KitaruGrain` is a thin wrapper over it. Palettes: `src/lib/grainConfig.ts` (type), `src/lib/kitaru-grain-palettes.ts`, `src/lib/labs-grain-palettes.ts`. `pnpm check:motion` counts both as ambient islands
 
 ### Get Started routing

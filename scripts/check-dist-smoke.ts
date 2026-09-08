@@ -460,7 +460,13 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   },
   {
     island: "FeatureTabsSlider",
-    pages: ["index.html", "product/zenml.html"],
+    pages: ["product/zenml.html"],
+  },
+  {
+    // Labs homepage: the hero shader (client:visible) and the closing band
+    // shader (client:idle) both mount GrainBackdrop.
+    island: "GrainBackdrop",
+    pages: ["index.html"],
   },
   { island: "RoiCalculator", pages: ["roi-calculator.html"] },
   {

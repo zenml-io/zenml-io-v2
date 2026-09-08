@@ -6,98 +6,74 @@ import {
   markdownPreamble,
   markdownResponse,
 } from "../lib/agentMarkdown";
-import { FAQ } from "../lib/homepage";
 import {
-  HOMEPAGE_UNIFIED_FINAL_CTA,
-  HOMEPAGE_UNIFIED_HERO,
-  HOMEPAGE_UNIFIED_SEO,
-  HOMEPAGE_UNIFIED_VALUES,
-  HOMEPAGE_UNIFIED_WORKSPACES,
-} from "../lib/homepage-unified";
-import { htmlToPlainText } from "../lib/text";
+  LABS_CLOSE,
+  LABS_DOORS,
+  LABS_FEATURE_PANELS,
+  LABS_HERO,
+  LABS_HOME_SEO,
+  LABS_LOGO_GRID,
+  LABS_STORIES,
+} from "../lib/labs-home";
 
 export const prerender = true;
 
-function renderWorkspace(
-  workspace: (typeof HOMEPAGE_UNIFIED_WORKSPACES.items)[number],
-): string {
+/**
+ * Machine-readable mirror of the ZenML Labs homepage (`/index.md`). It
+ * renders the same copy `index.astro` shows, from the same module, so the
+ * two never drift.
+ */
+function renderDoor(door: (typeof LABS_DOORS.doors)[number]): string {
   return joinMarkdownSections(
-    `### ${workspace.name}`,
-    workspace.tagline,
-    workspace.body,
-    markdownBulletList(workspace.bullets),
-    `CTA: ${markdownLink(workspace.cta.label, workspace.cta.href)}`,
-  );
-}
-
-function renderValues(): string {
-  return joinMarkdownSections(
-    `## ${HOMEPAGE_UNIFIED_VALUES.headline}`,
-    ...HOMEPAGE_UNIFIED_VALUES.items.map((item) =>
-      joinMarkdownSections(`### ${item.name}`, item.body),
-    ),
-  );
-}
-
-function renderFaq(): string {
-  return joinMarkdownSections(
-    `## ${FAQ.headline}`,
-    FAQ.subheadline,
-    FAQ.items
-      .map((item) =>
-        joinMarkdownSections(
-          `### ${item.question}`,
-          htmlToPlainText(item.answer),
-        ),
-      )
-      .join("\n\n"),
-    `${markdownLink(FAQ.slackCta.label, FAQ.slackCta.href)}`,
+    `### ${door.name}`,
+    door.leadLine,
+    door.body,
+    markdownBulletList([
+      `Install: \`${door.installCmd}\``,
+      `License: ${door.license}`,
+    ]),
+    `CTA: ${markdownLink(door.cta.label, door.cta.href)}`,
   );
 }
 
 export function GET(): Response {
   const markdown = joinMarkdownSections(
     markdownPreamble({
-      title: HOMEPAGE_UNIFIED_SEO.title,
-      description: HOMEPAGE_UNIFIED_SEO.description,
+      title: LABS_HOME_SEO.title,
+      description: LABS_HOME_SEO.description,
       canonicalPath: "/",
     }),
     joinMarkdownSections(
       "## Summary",
-      `${HOMEPAGE_UNIFIED_HERO.subtitleLead} ${HOMEPAGE_UNIFIED_HERO.subtitle}`,
-      "ZenML presents one platform for two related workloads: AI workflow orchestration in the ZenML workspace, and agent replay and regression testing in the Kitaru workspace.",
+      LABS_HERO.headlineLines.join(" "),
+      LABS_HERO.deck,
+    ),
+    joinMarkdownSections("## Main CTA", markdownCtaList([LABS_HERO.cta])),
+    joinMarkdownSections(
+      `## ${LABS_DOORS.headline}`,
+      LABS_DOORS.doors.map(renderDoor).join("\n\n"),
     ),
     joinMarkdownSections(
-      "## Main CTAs",
-      markdownCtaList([
-        ...HOMEPAGE_UNIFIED_HERO.productCtas,
-        HOMEPAGE_UNIFIED_FINAL_CTA.primaryCta,
-        HOMEPAGE_UNIFIED_FINAL_CTA.secondaryCta,
-      ]),
+      "## What you get",
+      ...LABS_FEATURE_PANELS.map((panel) =>
+        joinMarkdownSections(`### ${panel.title}`, panel.body),
+      ),
     ),
     joinMarkdownSections(
-      `## ${HOMEPAGE_UNIFIED_WORKSPACES.headline}`,
-      HOMEPAGE_UNIFIED_WORKSPACES.note,
-      HOMEPAGE_UNIFIED_WORKSPACES.items.map(renderWorkspace).join("\n\n"),
+      `## ${LABS_LOGO_GRID.headline}`,
+      LABS_LOGO_GRID.logos.map((logo) => logo.name).join(", "),
     ),
-    renderValues(),
     joinMarkdownSections(
-      "## Key product links",
-      markdownBulletList([
-        `${markdownLink("ZenML product page", "/product/zenml")}: AI workflow orchestration, training, inference, evals, and agent pipelines on your own stack.`,
-        `${markdownLink("Kitaru product page", "/product/kitaru")}: replay your agents' real traces to diagnose failures and regression-test every change.`,
-        `${markdownLink("Pricing", "/pricing")}: unified plans for ML, agent, or both workloads.`,
-        `${markdownLink("Documentation", "/docs")}: product docs, tutorials, and setup guides.`,
-      ]),
+      `## ${LABS_STORIES.headline}`,
+      markdownBulletList(
+        LABS_STORIES.cards.map((card) => markdownLink(card.title, card.href)),
+      ),
+      markdownLink(LABS_STORIES.allLink.label, LABS_STORIES.allLink.href),
     ),
-    renderFaq(),
     joinMarkdownSections(
-      `## ${HOMEPAGE_UNIFIED_FINAL_CTA.headline}`,
-      HOMEPAGE_UNIFIED_FINAL_CTA.body,
-      markdownCtaList([
-        HOMEPAGE_UNIFIED_FINAL_CTA.primaryCta,
-        HOMEPAGE_UNIFIED_FINAL_CTA.secondaryCta,
-      ]),
+      `## ${LABS_CLOSE.headlineLines.join(" ")}`,
+      LABS_CLOSE.deck,
+      markdownCtaList([LABS_CLOSE.cta]),
     ),
   );
 

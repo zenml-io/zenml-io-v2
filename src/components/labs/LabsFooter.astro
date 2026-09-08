@@ -1,22 +1,82 @@
 ---
 /**
- * LabsFooter — the ZenML Labs shell footer (dark band, four link columns,
- * the ZenML wordmark set huge, legal row with compliance pills). STUB: the
- * Labs homepage build fills this in from `src/lib/footer.ts` + LABS_FOOTER.
+ * LabsFooter — the ZenML Labs shell footer: dark band, tagline + four link
+ * columns, a huge decorative wordmark, and a legal row with compliance
+ * pills. Copy and links come from `src/lib/footer.ts` + `LABS_FOOTER`
+ * (`src/lib/labs-home.ts`) — never retyped here.
+ *
+ * Social icons, member badges and link badges ("New") are deliberately not
+ * rendered in this footer: the design keeps the columns to plain links.
  */
 import { FOOTER_COLUMNS, FOOTER_LEGAL } from "../../lib/footer";
 import { LABS_FOOTER } from "../../lib/labs-home";
+import ZenmlWordmark from "../brand/ZenmlWordmark.astro";
 
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="bg-foreground text-background">
-  <p>{LABS_FOOTER.tagline}</p>
-  <nav aria-label="Footer">
-    {FOOTER_COLUMNS.map((col) => (
-      <ul>{col.links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}</ul>
-    ))}
-  </nav>
-  <p>&copy; {currentYear} {LABS_FOOTER.copyright}</p>
-  <ul>{FOOTER_LEGAL.map((link) => <li><a href={link.href}>{link.label}</a></li>)}</ul>
+<footer class="border-t border-[rgba(219,224,194,0.14)] bg-(--color-sage-900) text-(--color-cream-50)">
+  <div class="mx-auto max-w-[1248px] px-6 pt-12 pb-8 md:px-12 md:pt-16 md:pb-12 xl:px-24">
+    <div class="flex flex-col gap-8 md:flex-row md:justify-between md:gap-16">
+      <p class="max-w-[300px] text-[18px] leading-[26px] text-(--color-sage-300)">
+        {LABS_FOOTER.tagline}
+      </p>
+
+      <nav aria-label="Footer" class="grid grid-cols-2 gap-8 md:flex md:flex-row md:gap-16">
+        {FOOTER_COLUMNS.map((col) => (
+          <div class="md:w-[180px]">
+            <div class="font-label text-[13px] uppercase tracking-[0.05em] text-(--color-sage-400)">
+              {col.title}
+            </div>
+            <ul class="mt-4 flex flex-col gap-2.5">
+              {col.links.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class="cursor-pointer text-[16px] leading-[20px] text-(--color-cream-50) hover:text-(--color-cream-200)"
+                    target={link.external ? "_blank" : undefined}
+                    rel={link.external ? "noopener noreferrer" : undefined}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </nav>
+    </div>
+
+    <div class="mt-16 w-full">
+      <ZenmlWordmark class="h-auto w-full text-(--color-cream-50)" />
+    </div>
+
+    <div class="mt-12 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div class="flex flex-wrap items-center gap-3">
+        <p class="text-[16px] text-(--color-cream-50)">
+          &copy; {currentYear} {LABS_FOOTER.copyright}
+        </p>
+        {LABS_FOOTER.compliance.map((item) => (
+          <span class="flex h-7 items-center rounded-full border border-[rgba(219,224,194,0.3)] px-3 font-label text-[12px] uppercase tracking-[0.05em] text-(--color-cream-50)">
+            {item}
+          </span>
+        ))}
+      </div>
+
+      <ul class="flex flex-wrap items-center gap-6">
+        {FOOTER_LEGAL.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="cursor-pointer font-label text-[12px] uppercase tracking-[0.05em] text-(--color-cream-50) hover:text-(--color-cream-200)"
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noopener noreferrer" : undefined}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
 </footer>

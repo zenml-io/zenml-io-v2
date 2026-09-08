@@ -1168,6 +1168,151 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     notes:
       'Closing CTA with bullets and an image. `/compare` passes variant="gradient" and padded; `/vs` passes neither — the two call-sites are deliberately different and must stay so.',
   },
+  // ── labs homepage + shell (rebrand branch; design-catalog pages not assigned yet) ──
+  {
+    id: "labs.hero",
+    kind: "template",
+    componentPath: "src/components/labs/LabsHero.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: true,
+    paperPage: 0,
+    notes:
+      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, LABS_HERO two-line headline + deck + one signup pill. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.product-doors",
+    kind: "template",
+    componentPath: "src/components/labs/ProductDoors.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Labs homepage section 02: two product cards (ZenML, Kitaru) reading from LABS_DOORS. Kitaru's card carries the page's one orange accent (an 8px dot beside its name). No props — reads labs-home.ts directly, mirroring the other Labs shell/section components.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.feature-grid",
+    kind: "template",
+    componentPath: "src/components/labs/FeatureGridPanels.astro",
+    collectionBound: true,
+    variantAxes: ["panel tone"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Full-bleed row of four fixed panels reading LABS_FEATURE_PANELS (src/lib/labs-home.ts); tone (sage-tint/sage-deep/canvas/sage-light) picks the panel background and body-text colour. Icons are inline SVG markup from src/components/labs/icons.ts, keyed by panel.icon, rendered via set:html inside a currentColor <svg>. Reflows 4-up to 2x2 at <=1024 and 1-up at 390 (fixed 440px height only at lg and up; auto below).",
+    contentShape: {
+      minItems: 4,
+      maxItems: 4,
+      oddCount:
+        "Drawn for exactly 4 panels (one per grid column); the layout has no wrap/overflow behaviour for a different count.",
+      headingBudget:
+        'Titles drawn for 1 short word (e.g. "Orchestrate", "Replay"); longer titles wrap within the fixed-height panel at lg.',
+      itemBudget:
+        "Body copy drawn for 1-3 sentences; longer copy pushes the fixed-height lg panel taller than its 3 siblings since there is no internal scroll or truncation.",
+      overflow:
+        "None implemented — a 5th panel would just add a 5th grid cell rather than reflowing into the existing 4.",
+    },
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.logo-grid",
+    kind: "template",
+    componentPath: "src/components/labs/LogoGrid.astro",
+    collectionBound: true,
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Labs homepage logo wall. Reads LABS_LOGO_GRID from src/lib/labs-home.ts; pads the trailing row with empty bordered cells so the hairline grid closes at every column count.",
+    contentShape: {
+      minItems: 1,
+      maxItems: 24,
+      overflow:
+        "Drawn for a 6-column grid at the widest breakpoint; extra rows simply continue the pattern, and the last row is padded with empty cells so the border always closes.",
+    },
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.story-cards",
+    kind: "template",
+    componentPath: "src/components/labs/CustomerStoryCards.astro",
+    variantAxes: ["card count"],
+    tones: ["default"],
+    collectionBound: true,
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      'ZenML Labs homepage section 05: headline + "all case studies" link, then four case-study cards (radial-green media panel with the company name, title, read-the-story label). Reads LABS_STORIES from src/lib/labs-home.ts (cards sourced from CASE_STUDY_CARDS, sliced to 4).',
+    contentShape: {
+      minItems: 4,
+      maxItems: 4,
+      oddCount:
+        "Drawn for exactly four story cards in one row; fewer leaves an uneven row, more wraps.",
+      headingBudget:
+        "Titles drawn for two to four lines at 19/26; longer titles grow the card.",
+      itemBudget: "One title and one read link per card; no excerpt slot.",
+      overflow:
+        "None — the row wraps to two columns below lg and one column at 390.",
+    },
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.close-cta",
+    kind: "template",
+    componentPath: "src/components/labs/LabsCloseCta.astro",
+    variantAxes: ["headline copy"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: true,
+    paperPage: 0,
+    notes:
+      "Reads all copy from LABS_CLOSE in labs-home.ts; takes no props. Mounts GrainBackdrop client:idle deliberately - the hero shader is the page's one always-on ambient island, so this one hydrates once the browser is idle instead of competing with it.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.nav",
+    kind: "template",
+    componentPath: "src/components/labs/LabsNavigation.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reauthored",
+    island: false,
+    paperPage: 0,
+    notes:
+      "ZenML Labs shell nav: floating pill over the hero (transparent at scroll-top, solid card once scrolled) with a hamburger panel below `lg`. paperPage is a placeholder — no design-catalog page assigned yet; fill in the real handoff page number.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.footer",
+    kind: "template",
+    componentPath: "src/components/labs/LabsFooter.astro",
+    variantAxes: ["column count", "compliance pill count"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Dark shell footer for the Labs homepage: tagline + FOOTER_COLUMNS, a full-width ZenML wordmark (ZenmlWordmark, aria-hidden), and a legal row with LABS_FOOTER.compliance pills. Reads FOOTER_COLUMNS/FOOTER_LEGAL from src/lib/footer.ts and LABS_FOOTER from src/lib/labs-home.ts; no props.",
+    stage: false,
+    demoProps: {},
+  },
 ];
 
 /** Family prefix — the part of the id before the dot. Derived, never stored. */

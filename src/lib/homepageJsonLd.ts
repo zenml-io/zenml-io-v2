@@ -1,31 +1,44 @@
 import { COMPANY_ADDRESS, CONTACT_EMAIL, SITE_URL } from "./constants";
-import { FAQ } from "./homepage";
 import {
-  HOMEPAGE_UNIFIED_SEO,
-  HOMEPAGE_UNIFIED_VALUES,
-  HOMEPAGE_UNIFIED_WORKSPACES,
-} from "./homepage-unified";
+  LABS_CLOSE,
+  LABS_DOORS,
+  LABS_FEATURE_PANELS,
+  LABS_HOME_SEO,
+} from "./labs-home";
 import { absoluteUrl } from "./seo";
-import { htmlToPlainText } from "./text";
 
+/**
+ * JSON-LD for the ZenML Labs homepage (`/`). Every string comes from
+ * `labs-home.ts`, so the structured data describes what the page shows:
+ * the company, the page, and the two products as one software offering.
+ * There is no FAQ node (the page has no FAQ) and no demo action (the page
+ * has no demo button).
+ */
 function homepageFeatureList(): string[] {
   return [
-    ...HOMEPAGE_UNIFIED_WORKSPACES.items.flatMap((workspace) => [
-      `${workspace.name}: ${workspace.tagline}`,
-      ...workspace.bullets,
-    ]),
-    ...HOMEPAGE_UNIFIED_VALUES.items.map(
-      (item) => `${item.name}: ${item.body}`,
-    ),
+    ...LABS_DOORS.doors.map((door) => `${door.name}: ${door.leadLine}`),
+    ...LABS_FEATURE_PANELS.map((panel) => `${panel.title}: ${panel.body}`),
   ];
 }
 
-export function buildHomepageJsonLd(): Record<string, unknown> {
+export interface HomepageJsonLdOptions {
+  /** Organization + SoftwareApplication display name. Defaults to "ZenML Labs". */
+  organizationName?: string;
+  /** Organization logo path (root-relative). Defaults to the Labs lockup. */
+  logoPath?: string;
+}
+
+export function buildHomepageJsonLd(
+  options: HomepageJsonLdOptions = {},
+): Record<string, unknown> {
+  const {
+    organizationName = "ZenML Labs",
+    logoPath = "/images/zenml-labs-lockup.svg",
+  } = options;
   const organizationId = `${SITE_URL}/#organization`;
   const webPageId = `${SITE_URL}/#webpage`;
   const softwareId = `${SITE_URL}/#software`;
   const breadcrumbId = `${SITE_URL}/#breadcrumb`;
-  const faqId = `${SITE_URL}/#faq`;
 
   return {
     "@context": "https://schema.org",
@@ -33,12 +46,13 @@ export function buildHomepageJsonLd(): Record<string, unknown> {
       {
         "@type": "Organization",
         "@id": organizationId,
-        name: "ZenML",
+        name: organizationName,
         legalName: "ZenML GmbH",
         url: SITE_URL,
-        logo: absoluteUrl("/images/zenml-logo.svg"),
+        logo: absoluteUrl(logoPath),
         sameAs: [
           "https://github.com/zenml-io/zenml",
+          "https://github.com/zenml-io/kitaru",
           "https://twitter.com/zenml_io",
           "https://www.linkedin.com/company/zenml",
         ],
@@ -52,11 +66,6 @@ export function buildHomepageJsonLd(): Record<string, unknown> {
         contactPoint: [
           {
             "@type": "ContactPoint",
-            contactType: "sales",
-            url: absoluteUrl("/book-your-demo"),
-          },
-          {
-            "@type": "ContactPoint",
             contactType: "customer support",
             email: CONTACT_EMAIL,
             url: absoluteUrl("/contact"),
@@ -67,8 +76,8 @@ export function buildHomepageJsonLd(): Record<string, unknown> {
         "@type": "WebPage",
         "@id": webPageId,
         url: SITE_URL,
-        name: HOMEPAGE_UNIFIED_SEO.title,
-        description: HOMEPAGE_UNIFIED_SEO.description,
+        name: LABS_HOME_SEO.title,
+        description: LABS_HOME_SEO.description,
         publisher: { "@id": organizationId },
         mainEntity: { "@id": softwareId },
         breadcrumb: { "@id": breadcrumbId },
@@ -88,36 +97,24 @@ export function buildHomepageJsonLd(): Record<string, unknown> {
       {
         "@type": "SoftwareApplication",
         "@id": softwareId,
-        name: "ZenML",
+        name: organizationName,
         applicationCategory: "DeveloperApplication",
         url: SITE_URL,
-        description: HOMEPAGE_UNIFIED_SEO.description,
+        description: LABS_HOME_SEO.description,
         publisher: { "@id": organizationId },
         featureList: homepageFeatureList(),
         potentialAction: [
           {
-            "@type": "ContactAction",
-            name: "Book a demo",
-            target: absoluteUrl("/book-your-demo"),
+            "@type": "RegisterAction",
+            name: LABS_CLOSE.cta.label,
+            target: LABS_CLOSE.cta.href,
           },
-          {
-            "@type": "ReadAction",
-            name: "Read Docs",
-            target: absoluteUrl("/docs"),
-          },
+          ...LABS_DOORS.doors.map((door) => ({
+            "@type": "ViewAction",
+            name: door.cta.label,
+            target: absoluteUrl(door.cta.href),
+          })),
         ],
-      },
-      {
-        "@type": "FAQPage",
-        "@id": faqId,
-        mainEntity: FAQ.items.map((item) => ({
-          "@type": "Question",
-          name: item.question,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: htmlToPlainText(item.answer),
-          },
-        })),
       },
     ],
   };
