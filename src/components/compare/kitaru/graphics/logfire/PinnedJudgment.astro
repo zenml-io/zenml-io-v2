@@ -1,0 +1,122 @@
+---
+/**
+ * Feature 4 - Human judgment.
+ *
+ * The queue itself is conceded in the prose. The argument here is what the
+ * judgment is attached to and what it feeds, so the left column ends where it
+ * ends and the right column flows onward.
+ */
+---
+
+<figure class="fig">
+  <div class="col col--competitor">
+    <div class="col-head">
+      <span class="col-label">Logfire &middot; annotation</span>
+      <span class="col-sub">An engineer, under AI Evaluations</span>
+    </div>
+
+    <div class="card">
+      <span class="card-target mono">agent run</span>
+      <div class="field">
+        <span class="field-key">verdict</span>
+        <span class="field-val">Fail</span>
+      </div>
+      <div class="field">
+        <span class="field-key">category</span>
+        <span class="field-val">wrong tool</span>
+      </div>
+      <div class="field">
+        <span class="field-key">expected</span>
+        <span class="field-val">"Refund issued for #4821"</span>
+      </div>
+      <div class="tags">
+        <span class="tag">hallucination</span>
+        <span class="tag">tool-error</span>
+      </div>
+    </div>
+
+    <div class="terminus">
+      <span class="terminus-rule" aria-hidden="true"></span>
+      <span class="terminus-label">Exported, it seeds a Case</span>
+    </div>
+  </div>
+
+  <div class="col col--kitaru">
+    <div class="col-head">
+      <span class="col-label col-label--accent">Kitaru &middot; investigation</span>
+      <span class="col-sub">One question per session, authored by a coding agent</span>
+    </div>
+
+    <div class="card card--accent">
+      <span class="card-q">"Should this refund have been escalated?"</span>
+      <div class="pin">
+        <span class="pin-step mono">session #4862</span>
+        <span class="pin-arrow" aria-hidden="true">&rsaquo;</span>
+        <span class="pin-step mono">node 7</span>
+        <span class="pin-arrow" aria-hidden="true">&rsaquo;</span>
+        <span class="pin-step mono">$.output.reason</span>
+        <span class="pin-arrow" aria-hidden="true">&rsaquo;</span>
+        <span class="pin-step pin-step--tight mono">chars 40&ndash;71</span>
+      </div>
+      <div class="verdict">
+        <span class="verdict-key">verdict</span>
+        <span class="verdict-val">problematic</span>
+      </div>
+    </div>
+
+    <div class="feeds">
+      <div class="feed">
+        <span class="feed-arrow" aria-hidden="true">&rarr;</span>
+        <span class="feed-text">the evaluator is checked against it</span>
+      </div>
+      <div class="feed">
+        <span class="feed-arrow" aria-hidden="true">&rarr;</span>
+        <span class="feed-text">the cohort is justified by it</span>
+      </div>
+    </div>
+  </div>
+</figure>
+
+<style>
+  .fig { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 0; padding: 0; }
+  .col { border: 1px solid var(--color-border); border-radius: 12px; padding: 16px 16px 14px;
+    background: var(--color-surface); display: flex; flex-direction: column; }
+  .col--competitor { background: var(--color-surface-warm); }
+  .col--kitaru { border-color: var(--color-accent); }
+  .col-head { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--color-border-light); }
+  .col-label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--color-muted); margin-bottom: 4px; }
+  .col-label--accent { color: var(--color-accent); }
+  .col-sub { display: block; font-size: 12px; line-height: 1.4; color: var(--color-secondary); }
+  .card { border: 1px solid var(--color-border-light); border-radius: 8px; padding: 11px 12px;
+    background: var(--color-bg); display: flex; flex-direction: column; gap: 7px; }
+  .card--accent { border-color: var(--color-border-accent); background: var(--color-accent-light); }
+  .card-target { font-size: 10px; font-weight: 700; color: var(--color-muted); letter-spacing: 0.04em; }
+  .card-q { font-size: 11.5px; line-height: 1.45; font-weight: 700; color: var(--color-primary); }
+  .field { display: flex; align-items: baseline; gap: 8px; }
+  .field-key { flex: 0 0 66px; font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--color-muted); }
+  .field-val { font-size: 11px; line-height: 1.4; color: var(--color-secondary); }
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 1px; }
+  .tag { padding: 2px 7px; border: 1px solid var(--color-border-light); border-radius: 4px;
+    background: var(--color-surface-subtle); font-size: 9.5px; color: var(--color-secondary); }
+  .terminus { display: flex; align-items: center; gap: 9px; margin-top: auto; padding-top: 14px; }
+  .terminus-rule { flex: 1; height: 1px;
+    background: repeating-linear-gradient(to right, var(--color-border) 0 4px, transparent 4px 8px); }
+  .terminus-label { font-size: 10px; color: var(--color-muted); white-space: nowrap; }
+  .pin { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+  .pin-step { padding: 3px 7px; border: 1px solid var(--color-border-accent); border-radius: 5px;
+    background: var(--color-surface); font-size: 9.5px; color: var(--color-primary); }
+  .pin-step--tight { border-color: var(--color-accent); color: var(--color-accent-deep); font-weight: 700; }
+  .pin-arrow { font-size: 12px; color: var(--color-accent); }
+  .verdict { display: flex; align-items: baseline; gap: 8px; padding-top: 6px;
+    border-top: 1px dashed var(--color-border-accent); }
+  .verdict-key { flex: 0 0 66px; font-size: 9.5px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--color-accent); }
+  .verdict-val { font-size: 11px; font-weight: 700; color: var(--color-accent-deep); }
+  .feeds { display: flex; flex-direction: column; gap: 7px; margin-top: auto; padding-top: 14px; }
+  .feed { display: flex; align-items: center; gap: 8px; }
+  .feed-arrow { font-size: 13px; color: var(--color-accent); }
+  .feed-text { font-size: 10.5px; line-height: 1.4; color: var(--color-secondary); }
+  @media (max-width: 720px) { .fig { grid-template-columns: 1fr; } .terminus, .feeds { margin-top: 14px; } }
+</style>

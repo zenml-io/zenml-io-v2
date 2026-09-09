@@ -1,0 +1,190 @@
+---
+/**
+ * Feature 3 - Getting Raindrop's conversations into Kitaru.
+ *
+ * There is no built-in importer, so the graphic leads with that rather than
+ * hiding it, then shows the two routes and what each one buys. The accent
+ * marks the path that gets full replay.
+ */
+---
+
+<figure class="fig">
+  <div class="banner">
+    <span class="banner-key">No built-in Raindrop importer</span>
+    <span class="banner-val">Importers cover Langfuse, LangSmith, Braintrust, Logfire, and Arize Phoenix</span>
+  </div>
+
+  <div class="paths">
+    <div class="path path--accent">
+      <div class="path-head">
+        <span class="path-tag path-tag--accent">Path 1</span>
+        <span class="path-name">Record beside it</span>
+      </div>
+      <div class="flow">
+        <span class="node">your agent</span>
+        <span class="flow-arrow" aria-hidden="true">&rarr;</span>
+        <span class="node node--accent mono">kitaru adapter</span>
+        <span class="flow-arrow" aria-hidden="true">&rarr;</span>
+        <span class="node node--accent">session</span>
+      </div>
+      <div class="path-note">
+        Keep sending events to Raindrop. Adapters exist for PydanticAI,
+        LangGraph, OpenAI Agents SDK, Mastra, and Vercel AI SDK.
+      </div>
+      <div class="gets gets--accent">
+        <span class="gets-key">Buys you</span>
+        <span class="gets-val">full replay: overrides and tool policies, because the adapter is in the process</span>
+      </div>
+    </div>
+
+    <div class="path">
+      <div class="path-head">
+        <span class="path-tag">Path 2</span>
+        <span class="path-name">Import an export</span>
+      </div>
+      <div class="flow">
+        <span class="node">CSV or Query API</span>
+        <span class="flow-arrow" aria-hidden="true">&rarr;</span>
+        <span class="node mono">parse()</span>
+        <span class="flow-arrow" aria-hidden="true">&rarr;</span>
+        <span class="node">session</span>
+      </div>
+      <div class="path-note">
+        A custom importer is one function that yields sessions from a file.
+        Enterprise adds warehouse exports.
+      </div>
+      <div class="gets">
+        <span class="gets-key">Buys you</span>
+        <span class="gets-val">investigate, evaluate, and cohort. Replay still needs the agent's run command</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="carry">
+    <span class="carry-arrow" aria-hidden="true">&darr;</span>
+    <span class="carry-text">
+      Either way, a Raindrop issue points at events. You freeze the same
+      conversations, recorded as sessions, into a cohort.
+    </span>
+  </div>
+</figure>
+
+<style>
+  .fig {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .banner {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 10px 12px;
+    border: 1px dashed var(--color-border);
+    border-radius: 10px;
+    background: var(--color-surface-warm);
+  }
+  .banner-key {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .banner-val { font-size: 11px; line-height: 1.4; color: var(--color-secondary); }
+
+  .paths {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .path {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 14px;
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .path--accent { border-color: var(--color-accent); }
+
+  .path-head { display: flex; align-items: baseline; gap: 8px; }
+  .path-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .path-tag--accent { color: var(--color-accent); }
+  .path-name { font-size: 12px; font-weight: 700; color: var(--color-primary); }
+
+  .flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+  }
+  .node {
+    padding: 4px 8px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 6px;
+    background: var(--color-bg);
+    font-size: 10px;
+    color: var(--color-secondary);
+  }
+  .node--accent {
+    border-color: var(--color-accent);
+    background: var(--color-accent-light);
+    color: var(--color-accent-deep);
+    font-weight: 700;
+  }
+  .flow-arrow { font-size: 12px; color: var(--color-muted); }
+  .mono { font-family: var(--font-mono); font-size: 9.5px; }
+
+  .path-note {
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+
+  .gets {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: auto;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--color-surface-subtle);
+    border: 1px solid var(--color-border-light);
+  }
+  .gets--accent { background: var(--color-accent-light); border-color: var(--color-border-accent); }
+  .gets-key {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .gets--accent .gets-key { color: var(--color-accent); }
+  .gets-val { font-size: 10.5px; line-height: 1.4; color: var(--color-primary); }
+
+  .carry {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--color-border-light);
+  }
+  .carry-arrow { font-size: 13px; color: var(--color-accent); line-height: 1.3; }
+  .carry-text { font-size: 10.5px; line-height: 1.5; color: var(--color-secondary); }
+
+  @media (max-width: 720px) {
+    .paths { grid-template-columns: 1fr; }
+    .gets { margin-top: 0; }
+  }
+</style>

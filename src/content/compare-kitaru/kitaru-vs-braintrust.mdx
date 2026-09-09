@@ -1,0 +1,207 @@
+---
+competitor: "Braintrust"
+competitorLogo: "/compare/braintrust.svg"
+competitorTagline: "Eval and observability platform for LLM apps: logs, datasets, scorers, experiments, playground, human review."
+title: "Kitaru vs Braintrust: replay production sessions instead of scoring a dataset"
+shortTitle: "Replay production, not a dataset"
+description: "Braintrust scores your task over a dataset. Kitaru re-executes sessions you already served, tool calls answered from the recording. Built-in Braintrust importer."
+cardSubtitle: "Keep Braintrust as your system of record. Import its logs and replay them against your real code."
+ctaHeading: "Make your Braintrust logs runnable"
+order: 25
+---
+
+import WhenToUseEach from '../../components/compare/kitaru/WhenToUseEach.astro';
+import ComparisonTable from '../../components/compare/kitaru/ComparisonTable.astro';
+import CodeCompare from '../../components/compare/kitaru/CodeCompare.astro';
+import PullQuote from '../../components/compare/kitaru/PullQuote.astro';
+import ComparisonCta from '../../components/compare/kitaru/ComparisonCta.astro';
+import FeatureWithGraphic from '../../components/compare/kitaru/FeatureWithGraphic.astro';
+import ScoreVsRerun from '../../components/compare/kitaru/graphics/braintrust/ScoreVsRerun.astro';
+import ImportPath from '../../components/compare/kitaru/graphics/braintrust/ImportPath.astro';
+import CuratedVsProduction from '../../components/compare/kitaru/graphics/braintrust/CuratedVsProduction.astro';
+import PinnedJudgment from '../../components/compare/kitaru/graphics/braintrust/PinnedJudgment.astro';
+
+Braintrust is an eval and observability platform. It captures logs and traces, holds datasets and scorers, and runs experiments. You iterate on prompts in a playground, score production traffic online as it arrives, and queue outputs for human review. The task is your own function, so Braintrust runs your agent over a dataset and stores the result as an experiment you can compare with the last one.
+
+Kitaru answers a narrower question. When you change the model, a prompt, or a tool, what happens to the runs your agent already did in production? A session is a recorded run. Replay re-executes your agent's real code over that session. Under a history tool policy, the recording answers the tool calls, so `issue_refund()` returns what it returned the first time instead of touching a card twice. Fork the session with one override and you get the same run under the change, next to the faithful baseline: an unchanged replay that reproduces the original. And because `kitaru/braintrust` is a [built-in importer](https://docs.zenml.io/kitaru/import-your-traces/import-braintrust-traces), the logs you already send to Braintrust are the way in.
+
+<WhenToUseEach
+  competitorLabel="Braintrust"
+  kitaru={{
+    title: "Use Kitaru if you are",
+    items: [
+      "Shipping a model swap, a prompt edit, or a tool change to an agent that is already in production, and want to know what breaks on real traffic before users find it",
+      "Testing multi-turn agents where what regressed is the path the agent took, not the final string",
+      "Running tools that write to real systems (refunds, tickets, emails) and can't let a test call them a second time",
+      "Already logging to Braintrust and want those logs runnable, not just readable",
+      "Self-hosting the whole loop under Apache 2.0 without an Enterprise contract, so traces and provider keys stay in your own systems",
+    ],
+  }}
+  competitor={{
+    title: "Use Braintrust if you are",
+    items: [
+      "Iterating on prompts and want a playground, a dataset editor, and side-by-side output review",
+      "Scoring single-turn completions where the output text is what gets judged",
+      "Scoring production traffic online as it arrives, with dashboards and alerts on top",
+      "Running a review queue for a team of reviewers, with assignees and keyboard-driven batches",
+      "Writing in Go, Java, Ruby, or C#: Kitaru's SDKs are Python and TypeScript",
+    ],
+  }}
+/>
+
+<PullQuote
+  quote="Braintrust scores what your agent produced on a dataset. Kitaru re-runs what your agent did in production, with one thing changed."
+/>
+
+<FeatureWithGraphic title="Evals over a dataset vs replay of a recorded session">
+  <ScoreVsRerun slot="graphic" />
+
+  Both products run your code. The difference is what they run it on, and what the tools do while it runs.
+
+  A Braintrust Eval takes a dataset, calls your task on every row, scores what came back, and stores the run as an experiment. The rows can be curated by hand or built from logs. The task can be anything from one model call to a multi-step agent.
+
+  A Kitaru replay takes a session that already happened in production and re-executes your agent's code over it from the top. Under a history tool policy, the recording answers each tool call by name and arguments. You compare the replay against the faithful baseline of the same run, not two experiments over a dataset.
+
+  <Fragment slot="bullets">
+    - **Population:** Dataset rows you maintain or sessions your users generated.
+    - **Tools during the run:** Live or hand-stubbed, or governed by a tool policy: answered from the recording (history), canned (static), or live only for safe read-only calls (passthrough). `on_miss` decides what happens to an unrecorded call: `fail`, `error_result`, or `passthrough`.
+    - **What gets compared:** This experiment against the previous one, or the replay against the baseline of the same session.
+    - **What a change looks like:** A new prompt in the playground or new code in the task, or one override on the experiment with everything else held fixed.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Your Braintrust logs are the way in" reverse={true}>
+  <ImportPath slot="graphic" />
+
+  Braintrust stays your system of record. Kitaru takes a runnable copy of the runs you care about.
+
+  Export project logs as JSONL and import them with `kitaru/braintrust@latest`. Every event becomes a node, the span tree survives, and traces that share a `session_id` or `thread_id` group into one multi-turn session. The import runs on a worker in your environment.
+
+  Three limits:
+
+  - **Braintrust scores are dropped.** Kitaru evaluators rescore every imported session, so baseline and replay are judged by the same code.
+  - **Replay needs your code.** A trace export holds no code, so an imported session can be investigated, evaluated, and added to a cohort as it is. To fork it, register the agent's run command or wrap it with a native adapter.
+  - **Use the API export.** Flat UI exports lose the span tree, and one import is capped at 50 MiB.
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="A cohort is production, frozen">
+  <CuratedVsProduction slot="graphic" />
+
+  A dataset is a list of rows someone maintains. Braintrust makes that easy. You can build rows from logs, edit them in place, or let Loop propose new ones. The list is still yours to curate, and it drifts from real traffic the moment the product changes.
+
+  A cohort is a different kind of thing. It's a named set of sessions belonging to one agent. A cohort version's member list never changes after creation. An experiment run replays every session in one cohort version against one agent version and evaluates baseline and replay alike. So a result keeps meaning what it meant when you read it.
+
+  <Fragment slot="bullets">
+    - **Selection:** By tag, by filter, session id, or branching from an earlier version.
+    - **Incidents:** The conversation that went wrong last Tuesday is a session. Add it to the next cohort version and it is a permanent regression case, not a note in a retro.
+    - **Gating:** `kitaru experiment run start` with `--wait` exits nonzero when the run fails, so a pull request can block on it. Each evaluator writes its own pass or fail.
+    - **Drift:** A dataset ages quietly but a cohort version is pinned, and you cut the next one on purpose.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Human judgment that calibrates the evaluator" reverse={true}>
+  <PinnedJudgment slot="graphic" />
+
+  Braintrust's human review is good. Reviewers get structured scores, expected values, comments, and tags, in a kanban queue with assignees and keyboard navigation for big batches.
+
+  Kitaru asks a different question: what's the annotation for? A coding agent authors the investigation, not you. It picks the sessions and phrases one question per session. A human answers, and each answer is pinned to the evidence that supports it: a node, a JSON path, or a character range. Every session gets a verdict of acceptable, problematic, or uncertain. Then the answers do work. Evaluators are checked against them, cohorts are justified by them, and an evaluator that gates a deploy can show the human judgments it was calibrated on.
+</FeatureWithGraphic>
+
+## What makes Kitaru unique
+
+<ComparisonTable
+  competitorLabel="Braintrust"
+  rows={[
+    { feature: "Logging and trace capture for LLM apps", kitaru: "partial", competitor: true, note: "Kitaru records sessions through adapters and expects a trace store beside it." },
+    { feature: "Prompt playground and dataset editor", kitaru: false, competitor: true, note: "No Kitaru equivalent." },
+    { feature: "Online scoring of production traffic as it arrives", kitaru: false, competitor: true, note: "Kitaru evaluates sessions on demand, on import, or inside an experiment run." },
+    { feature: "Human review queue with assignees and keyboard navigation", kitaru: "partial", competitor: true, note: "Kitaru has an investigation review page with verdicts and pinned annotations; no assignees or shortcuts." },
+    { feature: "Runs your task over a dataset (Eval SDK, remote evals, sandboxes)", kitaru: false, competitor: true, note: "Kitaru has no dataset object. The population is sessions." },
+    { feature: "Re-executes a recorded production session with tool calls answered from the recording", kitaru: true, competitor: false, note: "The core difference. Needs the agent's code or a native adapter." },
+    { feature: "Tool policy on replay: history, static, passthrough, with on_miss set to fail", kitaru: true, competitor: false, note: "So a refund is not issued twice." },
+    { feature: "Fork one session with one override and diff it against the faithful baseline", kitaru: true, competitor: "partial", note: "Braintrust compares two experiments over a dataset and re-runs prompts in the playground. It doesn't replay a stored trace." },
+    { feature: "Cohorts: immutable versions of production sessions as the test population", kitaru: true, competitor: "partial", note: "Braintrust datasets can be built from logs, but they are curated rows." },
+    { feature: "Annotations pinned to a node, a JSON path, or a character range, used to calibrate evaluators", kitaru: true, competitor: "partial", note: "Braintrust scores, expected values, and comments attach to a span." },
+    { feature: "Imports Braintrust, Langfuse, LangSmith, Logfire, and Arize Phoenix traces", kitaru: true, competitor: false, note: "kitaru/braintrust is built in. No importer code to write." },
+    { feature: "Open source", kitaru: true, competitor: false, note: "Kitaru is Apache 2.0." },
+    { feature: "Self-hosting without an Enterprise tier", kitaru: true, competitor: false, note: "Braintrust self-hosts the data plane on Enterprise; the control plane stays hosted by Braintrust." },
+  ]}
+/>
+
+## How the two surfaces map
+
+| Concept | Braintrust | Kitaru |
+|---|---|---|
+| Layer | Eval and observability platform: log, curate, score | Replay-based eval layer: re-run what happened |
+| Core unit | A span in a log, and a row in a dataset | A session: a recorded run, re-executable |
+| Test population | Dataset you curate, or build from logs | Cohort version frozen from production sessions |
+| What an experiment does | Runs your task over the dataset and scores it | Re-executes your code over every session in a cohort version, one override applied |
+| Tool calls in a test | Live, or stubbed by you | Answered from the recording per tool policy |
+| Human review | Queue with scores, expected values, comments, tags, assignees | Agent-authored investigation; answers pinned to evidence; one verdict per session |
+| Getting data in | SDK logging, OpenTelemetry, or the API | Native adapter, or a built-in trace importer |
+| Relationship | System of record | Takes a runnable copy of it |
+| SDKs | TypeScript, Python, Go, Java, Ruby, C# | Python and TypeScript, plus the CLI and an MCP server |
+| Where it runs | Braintrust cloud; hybrid self-hosting on Enterprise (data plane in your cloud, control plane hosted) | Self-hosted under Apache 2.0 (Docker, Helm), or Kitaru Cloud |
+| Price of entry | Starter free (1 GB, 10k scores, 14-day retention); Pro $249 per month | Open source free; Cloud $39 per month, 14-day trial, no card |
+
+<CodeCompare
+  lang="bash"
+  competitorLang="python"
+  kitaruLabel="Braintrust + Kitaru"
+  competitorLabel="Braintrust alone"
+  kitaruCode={`# Braintrust keeps logging. Nothing changes in production.
+# Export the project logs, then import them once.
+kitaru session import braintrust-logs.jsonl \\
+  --importer kitaru/braintrust@latest \\
+  --agent support-agent@latest \\
+  --media-type application/x-ndjson \\
+  --tag imported-baseline --wait
+
+# Freeze the sessions that matter into the test population.
+kitaru cohort create refund-regression --agent support-agent \\
+  --tag imported-baseline --display-version week-32
+
+# Move one variable. Tool calls come from the recording, so
+# nothing external fires and no card is refunded twice.
+kitaru experiment create cheaper-model \\
+  --agent support-agent \\
+  --evaluator refund-check@latest \\
+  --override '{"model": {"openai:gpt-5.4": "openai:gpt-5-nano"}}' \\
+  --tool-policy '{"default": {"type": "history",
+                  "scope": "cohort_version", "on_miss": "fail"}}'
+
+# Re-execute the whole cohort against the change.
+# Exits nonzero on failure, so CI can gate on it.
+kitaru experiment run start cheaper-model \\
+  --cohort-version <cohort-version-id> \\
+  --agent support-agent@1 --evaluate-baselines --wait`}
+  competitorCode={`from braintrust import Eval
+from autoevals import Factuality
+
+# The dataset is the population. You write it, or build it from logs.
+def load_cases():
+    return [
+        {"input": "Refund order #4821", "expected": "Refund issued for order #4821"},
+        # ... and the rest, by hand
+    ]
+
+# task() is your code. Braintrust runs it on every row.
+# Tools inside it are live unless you stub them yourself.
+def task(input):
+    return support_agent(input)
+
+Eval(
+    "support-agent",
+    data=load_cases,
+    task=task,
+    scores=[Factuality],
+)
+
+# Scores this run and compares it with the last experiment.
+# It cannot replay a production conversation with the tool
+# results that conversation actually saw.`}
+/>
+
+<ComparisonCta headline={frontmatter.ctaHeading}>
+Keep Braintrust. It's the system of record, the playground, and the review queue. None of that has to move. Kitaru adds the step a dataset eval stops short of. It takes the runs you already served and re-executes your agent over them with one thing changed and the tool calls answered from the recording. Then it tells you what regressed before the change ships. One import, no instrumentation, and last Tuesday's incident becomes a test you can never accidentally drop.
+</ComparisonCta>

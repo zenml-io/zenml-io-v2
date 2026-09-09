@@ -1,0 +1,131 @@
+---
+/**
+ * Feature 1 - a LangSmith experiment vs a Kitaru replay
+ *
+ * Both sides run the reader's own code, so the panels are deliberately
+ * parallel: same three stages, and the difference lands on the population
+ * and the tool row. One accent moment: the recorded tool answer.
+ */
+---
+
+<figure class="fig">
+  <div class="panel panel--competitor">
+    <div class="panel-head">
+      <span class="panel-label">LangSmith &middot; evaluate()</span>
+      <span class="panel-sub">Your target, over a dataset</span>
+    </div>
+
+    <div class="stage">
+      <span class="stage-tag">Population</span>
+      <div class="rows">
+        <span class="row-chip">example 1</span>
+        <span class="row-chip">example 2</span>
+        <span class="row-chip">example 3</span>
+        <span class="row-chip row-chip--more">+ 47</span>
+      </div>
+      <span class="stage-note">Hand-written cases, runs you add, or a queue</span>
+    </div>
+
+    <div class="stage">
+      <span class="stage-tag">Runs</span>
+      <div class="cell">
+        <span class="cell-key mono">target(inputs)</span>
+        <span class="cell-val">your code, once per example</span>
+      </div>
+      <div class="cell cell--live">
+        <span class="cell-key mono">issue_refund()</span>
+        <span class="cell-val">live: model calls and tool calls both fire</span>
+      </div>
+    </div>
+
+    <div class="stage stage--last">
+      <span class="stage-tag">Compares</span>
+      <div class="verdict">
+        <span class="verdict-a">this experiment</span>
+        <span class="verdict-vs" aria-hidden="true">vs</span>
+        <span class="verdict-b">the last one</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel--kitaru">
+    <div class="panel-head">
+      <span class="panel-label panel-label--accent">Kitaru &middot; replay</span>
+      <span class="panel-sub">Your code, over a recorded session</span>
+    </div>
+
+    <div class="stage">
+      <span class="stage-tag">Population</span>
+      <div class="rows">
+        <span class="row-chip row-chip--session mono">#4821</span>
+        <span class="row-chip row-chip--session mono">#4822</span>
+        <span class="row-chip row-chip--session mono">#4830</span>
+        <span class="row-chip row-chip--more">+ 47</span>
+      </div>
+      <span class="stage-note">Sessions your users already generated</span>
+    </div>
+
+    <div class="stage">
+      <span class="stage-tag">Runs</span>
+      <div class="cell cell--run">
+        <span class="cell-key mono">support.py</span>
+        <span class="cell-val">re-executes from the top</span>
+      </div>
+      <div class="cell cell--recorded">
+        <span class="cell-key mono">issue_refund()</span>
+        <span class="cell-val">answered from the recording, by name and arguments</span>
+      </div>
+    </div>
+
+    <div class="stage stage--last">
+      <span class="stage-tag">Compares</span>
+      <div class="verdict verdict--accent">
+        <span class="verdict-a">the replay</span>
+        <span class="verdict-vs" aria-hidden="true">vs</span>
+        <span class="verdict-b">the baseline of the same run</span>
+      </div>
+    </div>
+  </div>
+</figure>
+
+<style>
+  .fig { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 0; padding: 0; }
+  .panel { border: 1px solid var(--color-border); border-radius: 12px; padding: 16px 16px 14px;
+    background: var(--color-surface); display: flex; flex-direction: column; }
+  .panel--competitor { background: var(--color-surface-warm); }
+  .panel--kitaru { border-color: var(--color-accent); }
+  .panel-head { margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--color-border-light); }
+  .panel-label { display: block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--color-muted); margin-bottom: 4px; }
+  .panel-label--accent { color: var(--color-accent); }
+  .panel-sub { display: block; font-size: 12px; color: var(--color-secondary); }
+  .stage { display: flex; flex-direction: column; gap: 6px; padding-bottom: 12px; margin-bottom: 12px;
+    border-bottom: 1px dashed var(--color-border-light); }
+  .stage--last { padding-bottom: 0; margin-bottom: 0; border-bottom: none; margin-top: auto; }
+  .stage-tag { font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--color-muted); }
+  .stage-note { font-size: 10.5px; color: var(--color-muted); }
+  .rows { display: flex; flex-wrap: wrap; gap: 5px; }
+  .row-chip { display: inline-block; padding: 3px 8px; border: 1px solid var(--color-border-light);
+    border-radius: 5px; background: var(--color-bg); font-size: 10px; color: var(--color-secondary); }
+  .row-chip--session { font-family: var(--font-mono); border-color: var(--color-border-accent);
+    color: var(--color-primary); }
+  .row-chip--more { border-style: dashed; color: var(--color-muted); }
+  .cell { border: 1px solid var(--color-border-light); border-radius: 8px; padding: 8px 10px;
+    background: var(--color-bg); }
+  .cell--run { border-color: var(--color-border-accent); }
+  .cell--live { border-style: dashed; }
+  .cell--recorded { border-color: var(--color-accent); background: var(--color-accent-light); }
+  .cell-key { display: block; font-size: 11px; font-weight: 700; color: var(--color-primary); margin-bottom: 2px; }
+  .cell--recorded .cell-key { color: var(--color-accent-deep); }
+  .cell-val { display: block; font-size: 11px; line-height: 1.45; color: var(--color-secondary); }
+  .mono { font-family: var(--font-mono); font-size: 10.5px; }
+  .verdict { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; padding: 8px 10px;
+    border-radius: 8px; background: var(--color-surface-subtle); border: 1px solid var(--color-border-light); }
+  .verdict--accent { background: var(--color-accent-light); border-color: var(--color-border-accent); }
+  .verdict-a, .verdict-b { font-size: 11px; color: var(--color-primary); }
+  .verdict-vs { font-size: 9.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--color-muted); }
+  .verdict--accent .verdict-vs { color: var(--color-accent); }
+  @media (max-width: 720px) { .fig { grid-template-columns: 1fr; } .stage--last { margin-top: 0; } }
+</style>

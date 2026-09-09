@@ -1,0 +1,207 @@
+---
+competitor: "LangSmith"
+competitorLogo: "/compare/langsmith.svg"
+competitorTagline: "LangChain's platform for tracing, evaluation, annotation queues, prompt engineering, and agent deployment."
+title: "Kitaru vs LangSmith: an experiment that re-runs the agent, not just the dataset"
+shortTitle: "Re-run production, not a dataset"
+description: "LangSmith runs your target over a dataset and scores it. Kitaru re-executes the sessions LangSmith already traced, with tool calls answered from the recording."
+cardSubtitle: "Keep LangSmith as your trace store. Import its runs into Kitaru and replay them against your real code."
+ctaHeading: "Replay your LangSmith traces"
+order: 35
+---
+
+import WhenToUseEach from '../../components/compare/kitaru/WhenToUseEach.astro';
+import ComparisonTable from '../../components/compare/kitaru/ComparisonTable.astro';
+import CodeCompare from '../../components/compare/kitaru/CodeCompare.astro';
+import PullQuote from '../../components/compare/kitaru/PullQuote.astro';
+import ComparisonCta from '../../components/compare/kitaru/ComparisonCta.astro';
+import FeatureWithGraphic from '../../components/compare/kitaru/FeatureWithGraphic.astro';
+import DatasetVsSession from '../../components/compare/kitaru/graphics/langsmith/DatasetVsSession.astro';
+import ImportPath from '../../components/compare/kitaru/graphics/langsmith/ImportPath.astro';
+import CuratedVsFrozen from '../../components/compare/kitaru/graphics/langsmith/CuratedVsFrozen.astro';
+import PinnedJudgment from '../../components/compare/kitaru/graphics/langsmith/PinnedJudgment.astro';
+
+LangSmith is LangChain's platform for tracing, evaluating, and deploying agents. It traces runs and groups them into threads. Online evaluators score those runs as they arrive, Insights clusters them into failure modes, and annotation queues put them in front of reviewers. LangSmith Deployment runs the agent itself.
+
+Kitaru answers a narrower question. When you change the model, a prompt, or a tool, what happens to the runs your agent already did in production? A session is a recorded run. Replay re-executes your agent's real code over that session. Under a history tool policy, the recording answers the tool calls, so `issue_refund()` returns what it returned the first time instead of touching a card twice. Fork the session with one override and you get the same run under the change, next to the faithful baseline: an unchanged replay that reproduces the original. And because `kitaru/langsmith` is a [built-in importer](https://docs.zenml.io/kitaru/import-your-traces/import-langsmith-traces), the runs LangSmith already traced are the way in.
+
+<WhenToUseEach
+  competitorLabel="LangSmith"
+  kitaru={{
+    title: "Use Kitaru if you are",
+    items: [
+      "Shipping a model swap, a prompt edit, or a tool change to an agent that is already in production, and want to know what breaks on real traffic before users find it",
+      "Testing multi-turn agents where what regressed is the path the agent took, not the final string",
+      "Running tools that write to real systems (refunds, tickets, emails) and can't let a test call them a second time",
+      "Already tracing to LangSmith and want those runs runnable, not just readable",
+      "Self-hosting the whole loop under Apache 2.0, without an Enterprise contract, so traces and provider keys stay in your own systems",
+    ],
+  }}
+  competitor={{
+    title: "Use LangSmith if you are",
+    items: [
+      "Building on LangChain or LangGraph and want tracing, evaluation, prompts, and deployment from one vendor",
+      "Scoring live traffic with online evaluators, with dashboards, alerts, and automation rules on top",
+      "Running annotation queues for a team of reviewers, with assignment, reservations, rubrics, and pairwise comparison",
+      "Letting Insights cluster thousands of traces into categories and surface failure modes without reading them",
+      "Deploying agents through LangSmith Deployment and Studio rather than your own infrastructure",
+    ],
+  }}
+/>
+
+<PullQuote
+  quote="LangSmith scores what your agent produced on a dataset. Kitaru re-runs what your agent did in production, with one thing changed."
+/>
+
+<FeatureWithGraphic title="evaluate() over a dataset vs a replay of a recorded session">
+  <DatasetVsSession slot="graphic" />
+
+  Both products run your code. The difference is what they run it on, and what the tools do while it runs.
+
+  A LangSmith experiment takes a dataset, calls your target on every example, scores the output with code, LLM-as-a-judge, or pairwise evaluators, and stores the run as an experiment. The target is your own application code and it runs in your process, so the model calls and tool calls inside it are live. Online evaluators do the same scoring on production runs as they arrive, without reference outputs.
+
+  A Kitaru replay takes a session that already happened in production and re-executes your agent's code over it from the top. Under a history tool policy, the recording answers each tool call by name and arguments. Set `on_miss` to `fail` and an unrecorded call stops the replay before it reaches a live system. Add one override and the same session runs under the change. The override can be a model map, a system prompt, a user prompt, or `model_params`. You compare the replay against the faithful baseline of the same run, not two experiments over a dataset.
+
+  <Fragment slot="bullets">
+    - **Population:** Dataset examples you curate, or sessions your users generated.
+    - **Tools during the run:** Live, or governed by a tool policy: answered from the recording (history), canned (static), or live only for safe read-only calls (passthrough).
+    - **What gets compared:** This experiment against the previous one, or the replay against the baseline of the same session.
+    - **What a change looks like:** A new prompt or new code in the target, or one override on the experiment with everything else held fixed.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Your LangSmith runs are the way in" reverse={true}>
+  <ImportPath slot="graphic" />
+
+  LangSmith stays your system of record. Kitaru takes a runnable copy of the runs you care about.
+
+  Export runs as JSONL from a bulk export, or let the worker fetch them from the API with `--since`, `--until`, or `--trace-id`. LLM and chat model runs become model calls and tool runs become tool calls. Everything else becomes a span. When runs share a thread id, they group into one multi-turn session. Each session is keyed on the source instance and thread, so re-importing an overlapping slice skips what already landed.
+
+  Three limits:
+
+  - **Replay needs your code.** A run export holds no code, so an imported session can be investigated, evaluated, and added to a cohort as it is. To fork it, register the agent's run command or wrap it with a native adapter. LangGraph agents have one.
+  - **What LangSmith did not record does not come back.** Intermediate state, code, and environment are not in the export. Partial graphs and missing parents are imported with a warning rather than dropped.
+  - **Slice large exports.** One import is capped at 50 MiB. The importer deduplicates, so overlaps between slices are safe.
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="A cohort is production, frozen">
+  <CuratedVsFrozen slot="graphic" />
+
+  LangSmith makes datasets easy to build. Examples come from hand-written cases, from runs you add, or from an annotation queue. Insights can point you at the traces worth adding by clustering them into categories. The dataset is still a list you curate, and it drifts from real traffic the moment the product changes.
+
+  A cohort is a different kind of thing. It's a named set of sessions belonging to one agent. A cohort version's member list never changes after creation. An experiment run replays every session in one cohort version against one agent version and evaluates baseline and replay alike. So a result keeps meaning what it meant when you read it.
+
+  <Fragment slot="bullets">
+    - **Selection:** By tag, by filter, by session id, or by branching from an earlier version.
+    - **Incidents:** The conversation that went wrong last Tuesday is a session. Add it to the next cohort version and it is a permanent regression case.
+    - **Gating:** `kitaru experiment run start` with `--wait` exits nonzero when the run fails, so a pull request can block on it. Each evaluator writes its own pass or fail.
+    - **Drift:** A dataset ages quietly but a cohort version is pinned, and you cut the next one on purpose.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Annotation queues vs investigations" reverse={true}>
+  <PinnedJudgment slot="graphic" />
+
+  LangSmith's annotation queues are the more complete review tool today. Runs enter a queue by hand, by automation rule, or in batches of up to 100. Reviewers are assigned, and an item is reserved while someone works on it. A queue stays open until every assigned reviewer marks it done. Rubrics sit in the sidebar. A pairwise queue shows two runs side by side for A or B.
+
+  Kitaru asks a different question: what's the annotation for? A coding agent authors the investigation, not you. It picks the sessions and phrases one question per session. A human answers, and each answer is pinned to the evidence that supports it: a node, a JSON path, or a character range. Every session gets a verdict of acceptable, problematic, or uncertain. Then the answers do work. Evaluators are checked against them, cohorts are justified by them, and an evaluator that gates a deploy can show the human judgments it was calibrated on.
+</FeatureWithGraphic>
+
+## What makes Kitaru unique
+
+<ComparisonTable
+  competitorLabel="LangSmith"
+  rows={[
+    { feature: "Tracing, threads, dashboards, alerts", kitaru: "partial", competitor: true, note: "Kitaru records sessions through adapters and expects a trace store beside it." },
+    { feature: "Prompt hub and playground", kitaru: false, competitor: true, note: "No Kitaru equivalent." },
+    { feature: "Online evaluators on production runs", kitaru: false, competitor: true, note: "Kitaru evaluates sessions on demand or inside an experiment run." },
+    { feature: "Insights: automatic clustering of traces into failure modes", kitaru: false, competitor: true, note: "Plus and Enterprise plans. Kitaru's investigation is authored by your coding agent, not discovered by the server." },
+    { feature: "Annotation queues with assignment, reservations, rubrics, pairwise", kitaru: "partial", competitor: true, note: "Kitaru has an investigation review page with verdicts and pinned annotations; no assignment or reservations." },
+    { feature: "Runs your target over a dataset (evaluate)", kitaru: false, competitor: true, note: "Kitaru has no dataset object. The population is sessions." },
+    { feature: "Re-executes a recorded production session with tool calls answered from the recording", kitaru: true, competitor: false, note: "The core difference. Needs the agent's code or a native adapter." },
+    { feature: "Tool policy on replay: history, static, passthrough, with on_miss set to fail", kitaru: true, competitor: false, note: "So a refund is not issued twice." },
+    { feature: "Fork one session with one override and diff it against the faithful baseline", kitaru: true, competitor: "partial", note: "LangSmith compares two experiments over a dataset and re-runs prompts in the playground." },
+    { feature: "Cohorts: immutable versions of production sessions as the test population", kitaru: true, competitor: "partial", note: "Dataset examples can be added from runs, but the dataset is curated and mutable." },
+    { feature: "Imports LangSmith runs from a bulk export or the API", kitaru: true, competitor: false, note: "kitaru/langsmith is built in. No importer code to write." },
+    { feature: "Agent deployment platform", kitaru: false, competitor: true, note: "LangSmith Deployment. Kitaru is not a deployment platform." },
+    { feature: "Open source", kitaru: true, competitor: false, note: "Kitaru is Apache 2.0. LangSmith is a hosted product; LangChain and LangGraph are the open-source parts." },
+    { feature: "Self-hosting without an Enterprise tier", kitaru: true, competitor: false, note: "Self-hosted LangSmith is an add-on to the Enterprise plan, deployed on Kubernetes with a license key from sales." },
+  ]}
+/>
+
+## How the two surfaces map
+
+| Concept | LangSmith | Kitaru |
+|---|---|---|
+| Layer | Tracing, evaluation, and deployment platform | Replay-based eval layer: re-run what happened |
+| Core unit | A run inside a trace inside a thread, and a dataset example | A session: a recorded run, re-executable |
+| Test population | Dataset you curate, with examples added from runs | Cohort version frozen from production sessions |
+| What an experiment does | Runs your target over the dataset and scores it | Re-executes your code over every session in a cohort version, one override applied |
+| Tool calls in a test | Live | Answered from the recording per tool policy |
+| Human review | Annotation queues with assignment, reservations, rubrics, pairwise | Agent-authored investigation; answers pinned to evidence; one verdict per session |
+| Finding failure modes | Insights clusters traces into categories | Your coding agent samples sessions and asks the questions |
+| Getting data in | Python and TypeScript SDKs, LangChain and LangGraph tracing | Native adapter (LangGraph included), or a built-in trace importer |
+| Relationship | System of record | Takes a runnable copy of it |
+| Where it runs | LangSmith cloud; self-hosted on Enterprise only | Self-hosted under Apache 2.0 (Docker, Helm), or Kitaru Cloud |
+| Price of entry | Developer free (5k base traces per month); Plus $39 per seat per month (10k base traces); Enterprise custom | Open source free; Cloud $39 per month, 14-day trial, no card |
+
+<CodeCompare
+  lang="bash"
+  competitorLang="python"
+  kitaruLabel="LangSmith + Kitaru"
+  competitorLabel="LangSmith alone"
+  kitaruCode={`# LangSmith keeps tracing. Nothing changes in production.
+# Pull last week's runs straight from the API.
+kitaru session import \\
+  --importer kitaru/langsmith@latest \\
+  --agent support-agent@latest \\
+  --since 7d --tag imported-baseline --wait
+
+# Freeze the sessions that matter into the test population.
+kitaru cohort create refund-regression --agent support-agent \\
+  --tag imported-baseline --display-version week-32
+
+# Move one variable. Tool calls come from the recording, so
+# nothing external fires and no card is refunded twice.
+kitaru experiment create cheaper-model \\
+  --agent support-agent \\
+  --evaluator refund-check@latest \\
+  --override '{"model": {"openai:gpt-5.4": "openai:gpt-5-nano"}}' \\
+  --tool-policy '{"default": {"type": "history",
+                  "scope": "cohort_version", "on_miss": "fail"}}'
+
+# Re-execute the whole cohort against the change.
+# Exits nonzero on failure, so CI can gate on it.
+kitaru experiment run start cheaper-model \\
+  --cohort-version <cohort-version-id> \\
+  --agent support-agent@1 --evaluate-baselines --wait`}
+  competitorCode={`from langsmith import Client
+
+ls_client = Client()
+
+# The dataset is the population. Examples are curated by hand
+# or added from runs.
+
+# target() is your code. It runs in your process, tools live.
+def support_target(inputs: dict) -> dict:
+    return {"answer": support_agent(inputs["question"])}
+
+def refund_check(outputs: dict, reference_outputs: dict) -> bool:
+    return reference_outputs["answer"] in outputs["answer"]
+
+results = ls_client.evaluate(
+    support_target,
+    data="refund-cases",
+    evaluators=[refund_check],
+    experiment_prefix="cheaper-model",
+    max_concurrency=4,
+)
+
+# Scores this run and compares it with the last experiment.
+# It cannot replay a production thread with the tool
+# results that thread actually saw.`}
+/>
+
+<ComparisonCta headline={frontmatter.ctaHeading}>
+Keep LangSmith. It's the trace store, the annotation queue, and the deployment platform. None of that has to move. Kitaru adds the step a dataset experiment stops short of. It takes the runs you already traced and re-executes your agent over them with one thing changed and the tool calls answered from the recording. Then it tells you what regressed before the change ships. One import, no instrumentation, and last Tuesday's incident becomes a test you can never accidentally drop.
+</ComparisonCta>
