@@ -12,13 +12,10 @@
  * on this page it leads to the ZenML cloud app; the hero's secondary is a
  * ghost pill to the docs; no "Book a demo".
  */
+
+import type { HighlightFigureId } from "../components/labs/highlights";
 import type { Surface } from "./analytics";
-import {
-  CASE_STUDY_CARDS,
-  FEATURE_TABS,
-  type FeatureTab,
-  LOGO_CLOUD,
-} from "./homepage";
+import { CASE_STUDY_CARDS, type FeatureTab, LOGO_CLOUD } from "./homepage";
 import type {
   LabsCta,
   LabsProductBandContent,
@@ -103,50 +100,66 @@ export const ZENML_LOGO_GRID: LogoGridContent = {
 /* 03 Feature tabs                                                         */
 /* ---------------------------------------------------------------------- */
 
+/** A feature tab either draws an inline highlight figure or falls back to a
+ * raster image — never both, and never neither, so a tab that names neither
+ * is a compile error rather than a silently blank pane. */
+export type LabsFeatureTab = Omit<FeatureTab, "image"> &
+  (
+    | { figure: HighlightFigureId; image?: never }
+    | { figure?: never; image: string }
+  );
+
 export interface FeatureTabsContent {
   headline: string;
   deck?: string;
-  /** Rendered by the FeatureTabsSlider island; screenshots come from FEATURE_TABS. */
-  tabs: readonly FeatureTab[];
+  /** Rendered by the FeatureTabsSlider island; a tab draws its `figure`, or
+   * its raster `image` when it has no figure. */
+  tabs: readonly LabsFeatureTab[];
 }
 
 /** Tab copy is ZenML's own (the shared homepage tabs carried cross-product
- * claims); the screenshots stay bound to FEATURE_TABS by position. */
-const ZENML_TABS: readonly FeatureTab[] = [
+ * claims). All five tabs now draw an inline highlight figure instead of a
+ * screenshot. */
+const ZENML_TABS: readonly LabsFeatureTab[] = [
   {
     title: "Unified workflow orchestration",
     description:
       "Orchestrate a scikit-learn training job and a LangGraph agent loop in the same execution model. State, data passing, and termination control work the same way across pipelines and agents.",
-    image: FEATURE_TABS[0].image,
-    imageAlt: FEATURE_TABS[0].imageAlt,
+    figure: "zenml/orchestration",
+    imageAlt:
+      "Run graph of research_pipeline: a train_model step and an agent_loop step, each fed by its own artifact, merge into a shared evaluate step",
   },
   {
     title: "Artifact versioning",
     description:
       "ZenML versions every step result: trained models, evaluation datasets, and the artifacts in between. When a library update or a prompt change breaks a run, compare it against the last good one and re-execute the pipeline from any step.",
-    image: FEATURE_TABS[1].image,
-    imageAlt: FEATURE_TABS[1].imageAlt,
+    figure: "zenml/versioning",
+    imageAlt:
+      "Artifacts table listing three model versions and three system_prompt versions with their data type and created-at time, one prompt version marked as the compare target",
   },
   {
     title: "Infrastructure abstraction",
     description:
       "Define your compute needs in Python. ZenML handles dockerization, GPU provisioning, and pod scaling, whether the run is a distributed training job or an autonomous agent on Kubernetes. Same code, any cloud.",
-    image: FEATURE_TABS[2].image,
-    imageAlt: FEATURE_TABS[2].imageAlt,
+    figure: "zenml/infrastructure",
+    imageAlt:
+      "The k8s-prod stack listing its orchestrator, artifact store, deployer, and sandbox components, with a completed training_pipeline run and an agent_pipeline run still in progress on the same stack",
   },
   {
     title: "Caching and deduplication",
     description:
       "Don't pay for the same compute twice. ZenML caches every step result and reuses it when the code and inputs haven't changed, so an iteration on the last step doesn't re-run the whole pipeline.",
-    image: FEATURE_TABS[3].image,
-    imageAlt: FEATURE_TABS[3].imageAlt,
+    figure: "zenml/caching",
+    imageAlt:
+      "Run graph of training_pipeline: train_model and agent_loop are cached, only publish_report re-ran and produced a new report artifact",
   },
   {
     title: "Governance and security",
     description:
       "Turn black-box runs into auditable ones. Centralize API keys and tool credentials instead of scattering them across notebooks and CI. Enforce RBAC, inspect execution traces, and audit the lineage of every run, from the input data to the final agent response.",
-    image: FEATURE_TABS[4].image,
-    imageAlt: FEATURE_TABS[4].imageAlt,
+    figure: "zenml/governance",
+    imageAlt:
+      "A Secrets panel listing cloud credentials and a model-provider API key beside an agent_pipeline execution trace: documents in, agent_loop completed, answer out",
   },
 ];
 
