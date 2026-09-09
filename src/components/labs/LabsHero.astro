@@ -1,69 +1,72 @@
 ---
-import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
-import type { LabsProductBandContent } from "../../lib/labs-home";
+import type {
+  LabsProductBandContent,
+  LabsShortBandContent,
+} from "../../lib/labs-home";
 // LabsHero.astro — the page's opening band: sage grain shader over a cream
-// panel, two-line headline, deck, one signup pill, the block vertically
-// centered in the band. Copy comes in through the `content` prop (LABS_HERO
-// on `/`, ZENML_HERO on `/product/zenml`). A product page's content adds an
-// optional ghost pill next to the signup and a copyable install command;
-// each is absent on the homepage and its slot collapses. The site nav
-// renders as an absolutely positioned overlay from BaseLayout/LabsNavigation,
-// not from this component — the top 120px stay free of copy.
-import { GrainBackdrop } from "../islands/GrainBackdrop";
+// panel, headline, deck, the block vertically centered in the band. The site
+// nav renders as an absolutely positioned overlay from BaseLayout/
+// LabsNavigation, not from this component — the top 120px stay free of copy.
+//
+// Two bands, chosen by the `band` discriminant (never a boolean):
+//   - "landing" (default): the full-height opener of `/` and the product
+//     pages — two-line headline, deck, one signup pill; a product page adds
+//     an optional ghost pill and a copyable install command, each collapsing
+//     when absent. Content is `LabsProductBandContent`.
+//   - "short": the interior-page opener (the blog index) at roughly 40% of
+//     the viewport — one headline line and an optional deck, no pill; the
+//     page's own controls follow the band. Content is `LabsShortBandContent`.
+//
+// The band chrome itself (shader, fade, sizing, nav clearance) lives in
+// LabsBand.astro, shared with the blog taxonomy hubs and the post masthead.
+import LabsBand from "./LabsBand.astro";
 import LabsButton from "./LabsButton.astro";
 import LabsInstallChip from "./LabsInstallChip.astro";
 
-interface Props {
-  /** Headline lines, deck and the pills — e.g. LABS_HERO for `/`. */
-  content: LabsProductBandContent;
-}
-const { content } = Astro.props;
+type Props =
+  | { band?: "landing"; content: LabsProductBandContent }
+  | { band: "short"; content: LabsShortBandContent };
+
+const props = Astro.props;
+const short = props.band === "short";
 ---
 
-<section class="relative flex min-h-[640px] flex-col overflow-hidden bg-(--color-sage-50) lg:min-h-[900px]">
-  {
-    /*
-      client:visible on purpose: this is the page's one always-on ambient
-      island (check:motion budget) — every other GrainBackdrop instance on
-      the page defers with client:idle or a hover-gated `active` prop.
-    */
-  }
-  <GrainBackdrop
-    client:visible
-    config={LABS_GRAIN.hero}
-    class="absolute inset-0"
-  />
-
-  <div
-    class="pointer-events-none absolute inset-x-0 bottom-0 h-[340px] bg-gradient-to-b from-transparent to-(--color-sage-50)"
-    aria-hidden="true"
-  >
-  </div>
-
-  <div class="relative mx-auto flex w-full max-w-content flex-1 flex-col justify-center px-gutter pt-[120px] pb-space-xxl">
+<LabsBand size={short ? "short" : "landing"}>
+  {props.band === "short" ? (
+    <div>
+      <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+        {props.content.headline}
+      </h1>
+      {props.content.deck && (
+        <p class="mt-space-sm max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
+          {props.content.deck}
+        </p>
+      )}
+    </div>
+  ) : (
     <div>
       <h1 class="font-display text-[44px] leading-[48px] text-(--color-cream-900) md:text-[80px] md:leading-[86px]">
-        {content.headlineLines[0]}
+        {props.content.headlineLines[0]}
         <br />
-        {content.headlineLines[1]}
+        {props.content.headlineLines[1]}
       </h1>
 
       <p class="mt-space-md max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
-        {content.deck}
+        {props.content.deck}
       </p>
 
       <div class="mt-space-mlg flex flex-wrap items-center gap-space-md">
-        <LabsButton cta={content.cta} />
-        {content.secondaryCta && (
-          <LabsButton cta={content.secondaryCta} tone="ghost" />
+        <LabsButton cta={props.content.cta} />
+        {props.content.secondaryCta && (
+          <LabsButton cta={props.content.secondaryCta} tone="ghost" />
         )}
       </div>
 
-      {content.install && (
+      {props.content.install && (
         <div class="mt-space-md flex max-w-full">
-          <LabsInstallChip content={content.install} />
+          <LabsInstallChip content={props.content.install} />
         </div>
       )}
     </div>
-  </div>
-</section>
+  )}
+</LabsBand>

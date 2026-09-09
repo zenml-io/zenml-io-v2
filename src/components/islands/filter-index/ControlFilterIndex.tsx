@@ -128,7 +128,7 @@ export function ControlFilterIndex<T>({
             state.handleQueryChange((e.target as HTMLInputElement).value)
           }
           placeholder={searchPlaceholder ?? "Search..."}
-          class="w-full rounded-lg border border-gray-300 py-2.5 pl-9 pr-4 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600"
+          class="w-full rounded-lg border border-gray-300 py-2.5 pl-9 pr-4 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-(--color-sage-400) focus:outline-none focus:ring-1 focus:ring-(--color-sage-400)"
         />
       </div>
     );
@@ -149,7 +149,7 @@ export function ControlFilterIndex<T>({
           <FilterIcon />
           Filters
           {state.selectedSingle && (
-            <span class="ml-1 rounded-full bg-primary-100 px-1.5 py-0.5 text-xs font-semibold text-primary-700">
+            <span class="ml-1 rounded-full bg-(--color-sage-100) px-1.5 py-0.5 text-xs font-semibold text-(--color-sage-900)">
               1
             </span>
           )}
@@ -209,7 +209,7 @@ export function ControlFilterIndex<T>({
             <button
               type="button"
               onClick={() => state.setMobileDrawerOpen(false)}
-              class={`w-full rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-primary-700 ${FOCUS_RING}`}
+              class={`w-full rounded-lg bg-(--color-sage-900) px-4 py-2.5 text-sm font-medium text-(--color-cream-50) hover:bg-(--color-sage-800) ${FOCUS_RING}`}
             >
               Show {state.filtered.length} results
             </button>

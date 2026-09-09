@@ -48,6 +48,33 @@ html { scroll-behavior: smooth; }
 
 /* ─── 1. Kitaru theme (default for :root) ──────────────────────────────────── */
 :root {
+  /* Brand-neutral colour ramps, available on every scope (hoisted from the
+   * labs block in the blog cutover so the shared filter islands can use
+   * tokens on the not-yet-cut-over routes too). */
+  /* Sage ramp */
+  --color-sage-50: #F6F9F1;
+  --color-sage-100: #EBF0D8;
+  --color-sage-200: #E3E8CD;
+  --color-sage-300: #DBE0C2;
+  --color-sage-400: #BECAA6;
+  --color-sage-500: #9AAD82;
+  --color-sage-600: #7A9268;
+  --color-sage-700: #63775E;
+  --color-sage-800: #3C4C38;
+  --color-sage-900: #151E19;
+
+  /* Cream ramp */
+  --color-cream-50: #F5F7F4;
+  --color-cream-100: #EEE8DC;
+  --color-cream-200: #E0CFB7;
+  --color-cream-300: #D5B595;
+  --color-cream-400: #C3A37C;
+  --color-cream-500: #AC947F;
+  --color-cream-600: #8C7D70;
+  --color-cream-700: #645D54;
+  --color-cream-800: #413D37;
+  --color-cream-900: #1C1E1A;
+
   /* Surfaces */
   --background: oklch(0.9796 0.0057 84.5661); /* warm cream */
   --foreground: oklch(0.2576 0.0281 56.6469); /* brown carbon */
@@ -229,29 +256,8 @@ html { scroll-behavior: smooth; }
   --brand-mark-bg: #F6F9F1;
   --brand-mark-fg: #3C4C38;
 
-  /* Sage ramp */
-  --color-sage-50: #F6F9F1;
-  --color-sage-100: #EBF0D8;
-  --color-sage-200: #E3E8CD;
-  --color-sage-300: #DBE0C2;
-  --color-sage-400: #BECAA6;
-  --color-sage-500: #9AAD82;
-  --color-sage-600: #7A9268;
-  --color-sage-700: #63775E;
-  --color-sage-800: #3C4C38;
-  --color-sage-900: #151E19;
-
-  /* Cream ramp */
-  --color-cream-50: #F5F7F4;
-  --color-cream-100: #EEE8DC;
-  --color-cream-200: #E0CFB7;
-  --color-cream-300: #D5B595;
-  --color-cream-400: #C3A37C;
-  --color-cream-500: #AC947F;
-  --color-cream-600: #8C7D70;
-  --color-cream-700: #645D54;
-  --color-cream-800: #413D37;
-  --color-cream-900: #1C1E1A;
+  /* Sage + cream ramps live on :root (section 1) since the blog cutover: the
+   * shared islands reach them from every scope. */
 
   /* Olive ramp */
   --color-olive-base: #9AAD82;
@@ -324,6 +330,21 @@ html { scroll-behavior: smooth; }
    * cream ground and the orange tint band. */
   --color-accent-orange-text: #995000;
 
+  /* Blog product accent (blog cutover — Kitaru post treatment). Sage by
+   * default; every blog component that colours itself for the current
+   * post's product reads one of these instead of a hardcoded sage step, so
+   * a ZenML post stays pixel-identical while a Kitaru post (marked with
+   * `data-product="kitaru"` on BlogLayout's page wrapper, or on a single
+   * BlogCard's own root when cards of both products share one grid)
+   * re-points the whole set to the orange ramp below. */
+  --blog-accent-50: var(--color-sage-50);
+  --blog-accent-100: var(--color-sage-100);
+  --blog-accent-400: var(--color-sage-400);
+  --blog-accent-600: var(--color-sage-600);
+  --blog-accent-700: var(--color-sage-700);
+  --blog-accent-800: var(--color-sage-800);
+  --blog-accent-900: var(--color-sage-900);
+
   /* Type scale (adjudicated with #248 — replaces the styleguide's provisional
    * Tailwind steps). Fluid rungs interpolate between the 375 artboard and the
    * 1620px box cap (the container ruling: 1524px content + fluid gutter), so
@@ -379,6 +400,22 @@ html { scroll-behavior: smooth; }
   --brand-accent-soft: var(--color-sage-100);
   --brand-accent-on: var(--primary-foreground);
   --brand-accent-invert: var(--color-sage-400);
+}
+
+/* Blog product accent override — Kitaru. Descendant selector, not a
+ * compound one: `data-product` lives on a page-level wrapper (BlogLayout)
+ * or a single card's own root (BlogCard, when ZenML and Kitaru posts share
+ * one grid), never on the `[data-app="labs"]` element itself, so every
+ * `--blog-accent-*` consumer nested inside either scope inherits the
+ * orange ramp in its place. */
+[data-app="labs"] [data-product="kitaru"] {
+  --blog-accent-50: var(--color-orange-50);
+  --blog-accent-100: var(--color-orange-100);
+  --blog-accent-400: var(--color-orange-400);
+  --blog-accent-600: var(--color-orange-600);
+  --blog-accent-700: var(--color-orange-700);
+  --blog-accent-800: var(--color-orange-800);
+  --blog-accent-900: var(--color-orange-900);
 }
 
 /* ─── 2c. Section tone layer (#248) ─────────────────────────────────────────
@@ -945,7 +982,6 @@ body {
 }
 
 .prose th {
-  background-color: var(--color-gray-100);
   font-weight: 600;
 }
 
@@ -1290,4 +1326,490 @@ body {
   aspect-ratio: 16 / 9;
   width: 100% !important;
   height: auto !important;
+}
+
+/* ============================================================================
+ * Blog cutover — [data-app="labs"] .prose (the approved blog design, DESIGN.md)
+ *
+ * A parallel ruleset, not an edit of the `.prose` rules above: those still
+ * serve every page that hasn't cut over to the Labs shell yet. Every
+ * selector here is scoped under `[data-app="labs"] .prose`, which out-
+ * specifies the unscoped rules above (two class/attribute selectors beat
+ * one) — nothing below needs `!important`.
+ * ============================================================================ */
+
+[data-app="labs"] .prose {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  line-height: 32px;
+  color: var(--color-cream-800);
+}
+
+[data-app="labs"] .prose > * + * {
+  margin-top: 12px;
+}
+
+/* Last block in an article never carries trailing space of its own — the
+ * page around .prose (tags row, footer) owns whatever comes after it. */
+[data-app="labs"] .prose > :last-child {
+  margin-bottom: 0;
+}
+
+[data-app="labs"] .prose h1,
+[data-app="labs"] .prose h2,
+[data-app="labs"] .prose h3,
+[data-app="labs"] .prose h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: var(--tracking-heading);
+  color: var(--color-cream-900);
+  margin-top: 2rem;
+}
+
+[data-app="labs"] .prose h2 {
+  font-size: var(--text-prose-h2);
+  line-height: var(--leading-prose-h2);
+  /* Board (27 - Prose, FK6-0): -0.015em, tighter than the shared
+   * --tracking-heading (-0.02em) this inherits from the h1-h4 rule above. */
+  letter-spacing: -0.015em;
+  padding-bottom: 4px;
+  /* Two body lines above (a section opener needs to read as a break), a
+   * true 16px gap below (4px margin + the following p's own 12px
+   * padding-top) — a heading always sits closer to what it introduces
+   * than to what precedes it. */
+  margin-top: 64px;
+  margin-bottom: 4px;
+}
+
+[data-app="labs"] .prose h3 {
+  font-size: var(--text-prose-h3);
+  line-height: var(--leading-prose-h3);
+  /* Board: -0.01em, same override reason as h2 above. */
+  letter-spacing: -0.01em;
+  /* Same "closer to what follows" logic as h2, tuned to h3's board values:
+   * true 12px below (0 margin + the following p's 12px padding-top). */
+  margin-top: 48px;
+  margin-bottom: 0;
+}
+
+[data-app="labs"] .prose h1 {
+  font-size: var(--text-prose-h1);
+  line-height: var(--leading-prose-h1);
+  margin-bottom: 0;
+}
+
+[data-app="labs"] .prose h4 {
+  font-size: 20px;
+  line-height: 28px;
+  margin-top: 48px;
+  margin-bottom: 0;
+}
+
+[data-app="labs"] .prose p {
+  padding-top: 12px;
+  margin-top: 0;
+  /* True 24px gap to the next block (12px margin + the next paragraph's
+   * own 12px padding-top) — the board's row-p value, not the stray 12px
+   * this rule used to net on its own. */
+  margin-bottom: 12px;
+  /* The unscoped legacy `.prose p` rule below (line-height: 1.75) is more
+   * specific than this scope's own ambient 32px line-height and was
+   * leaking through onto every paragraph — pin it explicitly. */
+  line-height: 32px;
+}
+
+[data-app="labs"] .prose a {
+  color: var(--blog-accent-800);
+  text-decoration: underline;
+  text-decoration-color: var(--blog-accent-400);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+[data-app="labs"] .prose a:hover {
+  color: var(--blog-accent-900);
+  text-decoration-color: var(--blog-accent-700);
+}
+[data-app="labs"] .prose a:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Lists: a 40x32 marker slot per item — a sage hexagon (ul, mask so the
+ * token drives the fill) or a Nudica numeral (ol, CSS counter). */
+[data-app="labs"] .prose ul,
+[data-app="labs"] .prose ol {
+  list-style: none;
+  padding-left: 0;
+  /* True 24px gap to the next block (12px margin + the next paragraph's
+   * own 12px padding-top) — the board's row-ul/row-ol value. */
+  margin-bottom: 12px;
+}
+[data-app="labs"] .prose ul > li,
+[data-app="labs"] .prose ol > li {
+  position: relative;
+  padding-left: 40px;
+  min-height: 32px;
+  /* Same measure as body copy (20/32), so the marker slot below — sized to
+   * one line box — centres on the first line of the item. */
+  line-height: 32px;
+  /* The unscoped legacy `.prose li` rule sets margin-bottom: 0.5rem; the
+   * li + li rule below already owns inter-item spacing at 12px, so this
+   * is killed explicitly rather than left to win a margin-collapse. */
+  margin-bottom: 0;
+}
+[data-app="labs"] .prose ul > li + li,
+[data-app="labs"] .prose ol > li + li {
+  margin-top: 12px;
+}
+[data-app="labs"] .prose ul > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 32px;
+  height: 1lh; /* one line box: the hexagon centres on the first line whatever the measure */
+  background-color: var(--color-sage-600);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 13.86'%3E%3Cpath d='M5 0.58 A2 2 0 0 1 7 0.58 L11 2.89 A2 2 0 0 1 12 4.62 L12 9.24 A2 2 0 0 1 11 10.97 L7 13.28 A2 2 0 0 1 5 13.28 L1 10.97 A2 2 0 0 1 0 9.24 L0 4.62 A2 2 0 0 1 1 2.89 Z'/%3E%3C/svg%3E")
+    no-repeat center / 12px 14px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 13.86'%3E%3Cpath d='M5 0.58 A2 2 0 0 1 7 0.58 L11 2.89 A2 2 0 0 1 12 4.62 L12 9.24 A2 2 0 0 1 11 10.97 L7 13.28 A2 2 0 0 1 5 13.28 L1 10.97 A2 2 0 0 1 0 9.24 L0 4.62 A2 2 0 0 1 1 2.89 Z'/%3E%3C/svg%3E")
+    no-repeat center / 12px 14px;
+}
+[data-app="labs"] .prose ol {
+  counter-reset: prose-ol;
+}
+[data-app="labs"] .prose ol > li {
+  counter-increment: prose-ol;
+}
+[data-app="labs"] .prose ol > li::before {
+  /* Board (row-ol): zero-padded, no trailing period — "01" not "1." */
+  content: counter(prose-ol, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 32px;
+  height: 1lh;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--color-sage-600); /* two steps lighter than the board's sage-800 (2026-09-09 ruling) */
+}
+
+/* Code pane (fenced blocks, see rehypeCodePane.ts + code-copy.ts). Heavy
+ * block: 40px true visual gap above and below (board row value) — 40px
+ * margin-top (the common predecessor, a paragraph, contributes no trailing
+ * space of its own) and 28px margin-bottom (the common successor, a
+ * paragraph, adds its own 12px padding-top on top: 28 + 12 = 40). */
+[data-app="labs"] .prose .code-pane {
+  margin-top: 40px;
+  margin-bottom: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border-radius: 16px;
+  background-color: var(--color-cream-800);
+}
+[data-app="labs"] .prose .code-pane__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-label);
+  font-size: 13px;
+  line-height: 16px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-cream-500);
+}
+[data-app="labs"] .prose .code-pane__copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+}
+[data-app="labs"] .prose .code-pane__scroll {
+  position: relative;
+  overflow-x: auto;
+}
+[data-app="labs"] .prose .code-pane__scroll::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 32px;
+  background: linear-gradient(to right, transparent, var(--color-cream-800));
+  pointer-events: none;
+}
+[data-app="labs"] .prose .code-pane__scroll pre {
+  margin: 0;
+  background: transparent !important;
+  white-space: pre;
+}
+[data-app="labs"] .prose .code-pane__scroll pre code {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 21px;
+}
+@media (max-width: 480px) {
+  [data-app="labs"] .prose .code-pane {
+    border-radius: 0;
+    margin-inline: calc(-1 * var(--spacing-gutter));
+  }
+}
+/* The unscoped legacy `.prose pre` rule (margin: 1.5rem 0) would otherwise
+ * leak onto any bare <pre>; `.code-pane__scroll pre` above already zeroes
+ * it inside the wrapper, this covers the element generally. */
+[data-app="labs"] .prose pre {
+  margin: 0;
+}
+
+/* Inline code — never Nudica, always JetBrains Mono (DESIGN.md rule). The
+ * board (row-inline-code) shows this face provisionally in Nudica Mono and
+ * flags it "FACE PENDING RULING" — DESIGN.md's face call is firm, so the
+ * font stays JetBrains Mono here; only the board's line-height is adopted. */
+[data-app="labs"] .prose :not(pre) > code {
+  padding: 0 7px;
+  border-radius: 4px;
+  background-color: var(--color-cream-100);
+  color: var(--color-cream-900);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  line-height: 28px;
+}
+
+/* Figure + caption. Heavy block: 40px true visual gap above and below —
+ * see the .code-pane comment above for the 40/28 math. */
+[data-app="labs"] .prose figure {
+  margin-top: 40px;
+  margin-bottom: 28px;
+}
+[data-app="labs"] .prose figure img {
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  /* The unscoped legacy `.prose img` rule (margin: 1.5rem 0) still matches
+   * the <img> nested inside this <figure>, stacking extra space inside the
+   * figure's own box on top of the figure's margin above. Killed here. */
+  margin: 0;
+}
+[data-app="labs"] .prose figcaption {
+  padding-top: 10px;
+  font-family: var(--font-label);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 20px;
+  letter-spacing: 0.02em;
+  color: var(--color-muted-foreground);
+}
+
+/* Callout / note — Webflow migrated content used a bare `.callout`/`aside`,
+ * not a Markdown admonition syntax. */
+[data-app="labs"] .prose .callout,
+[data-app="labs"] .prose aside {
+  /* Heavy block: 40px true visual gap above and below — see the
+   * .code-pane comment above for the 40/28 math. This is the outer
+   * margin, distinct from the asymmetric inner padding below. */
+  margin-top: 40px;
+  margin-bottom: 28px;
+  /* Board (block-callout): 24px top, 26px bottom — kept asymmetric. */
+  padding: 24px 28px 26px;
+  border-radius: 12px;
+  background-color: var(--color-blue-100);
+  border: 1px solid var(--color-blue-200);
+}
+[data-app="labs"] .prose .callout p,
+[data-app="labs"] .prose aside p {
+  font-size: 17px;
+  line-height: 28px;
+  color: var(--color-blue-800);
+  padding-top: 0;
+}
+
+/* Blockquote — hairline above/below, no coloured left bar. Heavy block:
+ * 40px true visual gap above and below — see the .code-pane comment
+ * above for the 40/28 math. */
+[data-app="labs"] .prose blockquote {
+  margin: 40px 0 28px;
+  border: none;
+  border-top: 1px solid var(--color-sage-300);
+  border-bottom: 1px solid var(--color-sage-300);
+  padding: 28px 0 28px 40px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  /* Board: -0.01em, same override reason as .prose h3. */
+  letter-spacing: -0.01em;
+  font-size: 27px;
+  line-height: 40px;
+  color: var(--color-cream-900);
+  font-style: normal;
+}
+
+/* Tables — the `.table-scroll-block` wrapper (added at build time by
+ * rehypeTableScroll) holds the `.table-scroll` frame plus the scroll hint
+ * below it; `.table-scroll` scrolls horizontally and the table keeps an
+ * explicit min-width and a sticky first column. The page body never scrolls
+ * sideways. Board (block-table, FS5-0/FS6-0): the frame itself carries no
+ * background of its own beyond the page — the `--color-card` fill this used
+ * to set is dropped. */
+[data-app="labs"] .prose .table-scroll-block {
+  /* Heavy block: 40px true visual gap above and below — see the
+   * .code-pane comment above for the 40/28 math. */
+  margin-top: 40px;
+  margin-bottom: 28px;
+  /* Lets the scroll-hint's @container query below read this block's own
+   * width rather than the viewport's. */
+  container-type: inline-size;
+}
+[data-app="labs"] .prose .table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+}
+[data-app="labs"] .prose .table-scroll table {
+  margin: 0;
+  width: 100%;
+  min-width: 600px;
+  border: none;
+  border-radius: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: auto;
+}
+[data-app="labs"] .prose thead {
+  background-color: var(--color-cream-100);
+}
+[data-app="labs"] .prose th {
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  padding: 14px 20px;
+  /* Explicit, not just inherited from .prose thead above: a `th` with no
+   * background of its own can still end up opaque from another cascade
+   * source, which would occlude the thead fill. Setting it directly here
+   * means the header cell's fill never depends on what paints behind it. */
+  background-color: var(--color-cream-100);
+  font-family: var(--font-label);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-cream-900);
+  text-align: left;
+}
+[data-app="labs"] .prose td {
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  padding: 16px 20px;
+  font-size: 17px;
+  line-height: 26px;
+  color: var(--color-cream-800);
+  /* Explicit, so no zebra-striping rule (this file's legacy unscoped
+   * `.prose tbody tr:nth-child(even)`, or any other) can bleed a fill onto
+   * body cells — the board has no zebra striping. */
+  background-color: transparent;
+}
+/* Explicit 700, not `bolder`: relative to this cell's own 400 body weight
+ * `bolder` also resolved to 700, but inconsistently against the sticky
+ * first-column cell's own 600 base — pinned so strong text in a table is
+ * always 700 regardless of which column it's in. */
+/* A list right after an h2 has no hidden padding-top (unlike a paragraph),
+ * so the heading's 16px trailing gap is set on the list itself here. */
+[data-app="labs"] .prose h2 + ul,
+[data-app="labs"] .prose h2 + ol {
+  margin-top: 16px;
+}
+
+[data-app="labs"] .prose table strong {
+  font-weight: 700;
+}
+[data-app="labs"] .prose tbody tr:last-child td {
+  border-bottom: none;
+}
+[data-app="labs"] .prose tbody tr td:first-child {
+  /* Explicit, even though .prose td above already sets 17px: the legacy
+   * unscoped `.prose tbody tr td:first-child` (font-size: 1.05rem) ties this
+   * selector's specificity on class/attribute count and wins the tie-break
+   * on type-selector count, so first-column cells rendered at 16.8px without
+   * this override. */
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-cream-900);
+  position: sticky;
+  left: 0;
+  background-color: var(--color-card);
+}
+[data-app="labs"] .prose tbody tr:nth-child(even) {
+  background-color: transparent;
+}
+
+/* Scroll hint — emitted by rehypeTableScroll as a sibling of `.table-scroll`
+ * inside `.table-scroll-block`. Shown only when the table is narrower than
+ * its container is not knowable in CSS (no `scrollWidth` query exists), so
+ * this approximates it with a container-width threshold instead: the table's
+ * `min-width: 600px` above plus this wrapper's padding is ~640px, so below
+ * that the table is presumed to overflow and scroll. */
+[data-app="labs"] .prose .table-scroll__hint {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-family: var(--font-label);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted-foreground);
+}
+[data-app="labs"] .prose .table-scroll__hint svg {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  stroke: var(--color-muted-foreground);
+}
+@container (max-width: 640px) {
+  [data-app="labs"] .prose .table-scroll__hint {
+    display: flex;
+  }
+}
+
+/* hr — board (row-hr): sage.300 hairline, 40px above and below. */
+[data-app="labs"] .prose hr {
+  margin: 40px 0;
+  border: none;
+  border-top: 1px solid var(--color-sage-300);
+}
+
+/* Anchor offset for in-page links, behind the floating Labs nav pill */
+[data-app="labs"] .prose [id] {
+  scroll-margin-top: 160px;
+}
+
+/* Legacy Webflow testimonial component — recoloured onto tokens rather than
+ * left on the site-wide purple literal. `.yes`/`.no` tooltip icon fills stay
+ * literal (no ramp token matches semantic red/green at their exact hue) —
+ * flagged, not silently ported. */
+[data-app="labs"] .prose .uui-testimonial04_component {
+  background-color: var(--color-sage-50);
+}
+[data-app="labs"] .prose .uui-testimonial04_component h3.uui-heading-small {
+  color: var(--color-cream-900);
+}
+[data-app="labs"] .prose .uui-testimonial04_client-info .uui-heading-tiny {
+  color: var(--color-cream-900);
+}
+[data-app="labs"] .prose .uui-testimonial04_client-info .uui-text-size-medium {
+  color: var(--color-cream-600);
 }

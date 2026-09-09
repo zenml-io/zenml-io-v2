@@ -25,8 +25,10 @@ import {
   EMPTY_STATE_INNER,
 } from "../../system/emptyStateStyles";
 
+// Sage/cream tokens resolve on every route: the ramps live on `:root` in
+// global.css (hoisted in the blog cutover), not only under `[data-app="labs"]`.
 const FOCUS_RING =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-1";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-sage-400) focus-visible:ring-offset-2 focus-visible:ring-offset-(--background)";
 
 export interface FilterEmptyStateProps {
   /** `selectedTags.length` from the caller's filter state. */
@@ -53,7 +55,24 @@ export interface FilterEmptyStateProps {
   onClearAll: () => void;
   /** Applies a suggested popular tag: clears all filters, then toggles the tag. */
   onSelectPopularTag: (slug: string) => void;
+  /** Class-only re-skin for the blog cutover. Default keeps every other
+   * consumer (LLMOps/MLOps/Integrations) byte-identical. */
+  skin?: "default" | "labs";
 }
+
+const LABS_CONTAINER =
+  "block rounded-[12px] border border-(--color-border) bg-(--color-card) py-16 text-center";
+const LABS_HEADING = "font-display text-[18px] text-(--color-cream-800)";
+const LABS_DESCRIPTION =
+  "mt-1.5 font-sans text-[14px] text-(--color-cream-700)";
+const LABS_ACTION =
+  "rounded-[6px] border border-(--color-border) px-3 py-1.5 font-sans text-[13px] font-medium text-(--color-cream-800) hover:border-(--color-sage-400)";
+const LABS_ACTION_QUIET =
+  "font-sans text-[13px] font-medium text-(--color-cream-700) underline hover:text-(--color-cream-900)";
+const LABS_POPULAR_HEADING =
+  "mb-2 font-label text-[11px] uppercase tracking-[0.06em] text-(--color-cream-600)";
+const LABS_POPULAR_CHIP =
+  "rounded-full border border-(--color-border) px-2.5 py-1 font-label text-[12px] text-(--color-cream-700) hover:border-(--color-sage-400)";
 
 export function FilterEmptyState({
   selectedTagsCount,
@@ -68,18 +87,26 @@ export function FilterEmptyState({
   onClearQuery,
   onClearAll,
   onSelectPopularTag,
+  skin = "default",
 }: FilterEmptyStateProps) {
   const hasTags = selectedTagsCount > 0;
   const hasQuery = !!query;
+  const labs = skin === "labs";
 
   return (
     <div
       role="status"
-      class="block rounded-lg border border-gray-200 bg-gray-50 py-16 text-center"
+      class={
+        labs
+          ? LABS_CONTAINER
+          : "block rounded-lg border border-gray-200 bg-gray-50 py-16 text-center"
+      }
     >
       <div class={EMPTY_STATE_INNER}>
-        <p class={EMPTY_STATE_HEADING}>No entries match your filters</p>
-        <p class={EMPTY_STATE_DESCRIPTION}>
+        <p class={labs ? LABS_HEADING : EMPTY_STATE_HEADING}>
+          No entries match your filters
+        </p>
+        <p class={labs ? LABS_DESCRIPTION : EMPTY_STATE_DESCRIPTION}>
           {hasTags && hasIndustry && hasQuery
             ? "Try removing some filters to broaden your search."
             : hasTags && isAndMode && selectedTagsCount > 1
@@ -93,7 +120,9 @@ export function FilterEmptyState({
             <button
               type="button"
               class={cn(
-                "rounded-md border border-primary-200 bg-primary-50 px-3 py-1.5 text-sm font-medium text-primary-700 hover:bg-primary-100",
+                labs
+                  ? LABS_ACTION
+                  : "rounded-md border border-(--color-sage-200) bg-(--color-sage-100) px-3 py-1.5 text-sm font-medium text-(--color-sage-900) hover:bg-(--color-sage-200)",
                 FOCUS_RING,
               )}
               onClick={onSwitchToOrMode}
@@ -105,7 +134,9 @@ export function FilterEmptyState({
             <button
               type="button"
               class={cn(
-                "rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100",
+                labs
+                  ? LABS_ACTION
+                  : "rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100",
                 FOCUS_RING,
               )}
               onClick={onClearTags}
@@ -117,7 +148,9 @@ export function FilterEmptyState({
             <button
               type="button"
               class={cn(
-                "rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100",
+                labs
+                  ? LABS_ACTION
+                  : "rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100",
                 FOCUS_RING,
               )}
               onClick={onClearIndustry}
@@ -129,7 +162,9 @@ export function FilterEmptyState({
             <button
               type="button"
               class={cn(
-                "rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100",
+                labs
+                  ? LABS_ACTION
+                  : "rounded-md border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 hover:bg-gray-100",
                 FOCUS_RING,
               )}
               onClick={onClearQuery}
@@ -140,7 +175,9 @@ export function FilterEmptyState({
           <button
             type="button"
             class={cn(
-              "text-sm font-medium text-gray-500 underline hover:text-gray-700",
+              labs
+                ? LABS_ACTION_QUIET
+                : "text-sm font-medium text-gray-500 underline hover:text-gray-700",
               FOCUS_RING,
             )}
             onClick={onClearAll}
@@ -152,7 +189,13 @@ export function FilterEmptyState({
         {/* Suggest popular tags */}
         {popularTags.length > 0 && (
           <div class="mt-6">
-            <p class="mb-2 text-xs font-medium text-gray-400">
+            <p
+              class={
+                labs
+                  ? LABS_POPULAR_HEADING
+                  : "mb-2 text-xs font-medium text-gray-400"
+              }
+            >
               Popular tags to explore:
             </p>
             <div class="flex flex-wrap justify-center gap-1.5">
@@ -162,7 +205,9 @@ export function FilterEmptyState({
                   type="button"
                   onClick={() => onSelectPopularTag(slug)}
                   class={cn(
-                    "rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100",
+                    labs
+                      ? LABS_POPULAR_CHIP
+                      : "rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100",
                     FOCUS_RING,
                   )}
                 >
