@@ -18,7 +18,9 @@ tags:
 date: "2020-12-26T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ed0c7c33/652fb380ba9db31f8a23767f_svg-image-1__2_.svg"
+  url: "https://assets.zenml.io/content/blog/a-most-unusual-year/5d23bd0c/a-most-unusual-year-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/a-most-unusual-year/3fa93f88/a-most-unusual-year-cover.jpg"
 ---
 
 **Last updated:** February 16, 2022.

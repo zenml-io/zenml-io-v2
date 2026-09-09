@@ -26,12 +26,12 @@ tags:
 date: "2024-11-26T00:00:00.000Z"
 readingTime: 9 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9d980b8b/67459043d448c0234ad77df8_Gemini_Generated_Image.jpeg"
+  url: "https://assets.zenml.io/content/blog/everything-you-ever-wanted-to-know-about-llmops-maturity-models/dce31030/everything-you-ever-wanted-to-know-about-llmops-maturity-models-cover.avif"
 seo:
   title: "Everything you ever wanted to know about LLMOps Maturity Models - ZenML Blog"
   description: "As organizations rush to adopt generative AI, several major tech companies have proposed maturity models to guide this journey. While these frameworks offer useful vocabulary for discussing organizational progress, they should be viewed as descriptive rather than prescriptive guides. Rather than rigidly following these models, organizations are better served by focusing on solving real problems while maintaining strong engineering practices, building on proven DevOps and MLOps principles while adapting to the unique challenges of GenAI implementation."
   canonical: "https://www.zenml.io/blog/everything-you-ever-wanted-to-know-about-llmops-maturity-models"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9d980b8b/67459043d448c0234ad77df8_Gemini_Generated_Image.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/everything-you-ever-wanted-to-know-about-llmops-maturity-models/27270a93/everything-you-ever-wanted-to-know-about-llmops-maturity-models-cover.jpg"
   ogTitle: "Everything you ever wanted to know about LLMOps Maturity Models - ZenML Blog"
   ogDescription: "As organizations rush to adopt generative AI, several major tech companies have proposed maturity models to guide this journey. While these frameworks offer useful vocabulary for discussing organizational progress, they should be viewed as descriptive rather than prescriptive guides. Rather than rigidly following these models, organizations are better served by focusing on solving real problems while maintaining strong engineering practices, building on proven DevOps and MLOps principles while adapting to the unique challenges of GenAI implementation."
 ---

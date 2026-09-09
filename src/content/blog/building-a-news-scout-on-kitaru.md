@@ -10,10 +10,14 @@ tags:
   - "open-source"
   - "python"
 date: "2026-04-20T00:00:00.000Z"
+mainImage:
+  url: "https://assets.zenml.io/content/blog/building-a-news-scout-on-kitaru/ad92fc05/building-a-news-scout-on-kitaru-cover.avif"
+  alt: "Kitaru blog cover for Building a News Scout on Kitaru"
 seo:
   title: "Building a News Scout on Kitaru - ZenML Blog"
   description: "I wanted an agent that reads the internet so I don't have to. Here's what I built, the four design choices that shaped it, and the things I'd change if I did it again."
   canonical: "https://www.zenml.io/blog/building-a-news-scout-on-kitaru"
+  ogImage: "https://assets.zenml.io/content/blog/building-a-news-scout-on-kitaru/619c56a3/building-a-news-scout-on-kitaru-cover.jpg"
 ---
 
 I have a Discord channel I check too often. It's the AI news firehose: model releases, harness papers, durable execution drama, the occasional Karpathy tweet. Most of it is noise. Some of it genuinely matters. The signal-to-noise is bad enough that I avoid the channel for a few days and then drown when I open it again.

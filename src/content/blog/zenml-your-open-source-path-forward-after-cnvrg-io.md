@@ -19,12 +19,12 @@ tags:
 date: "2025-02-18T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a836b243/67b49754f93ed8a37f2e8b88_Cnvrg_Positioning_Blog_Image__2_.png"
+  url: "https://assets.zenml.io/content/blog/zenml-your-open-source-path-forward-after-cnvrg-io/8e18374b/zenml-your-open-source-path-forward-after-cnvrg-io-cover.avif"
 seo:
   title: "ZenML: Your Open-Source Path Forward After cnvrg.io - ZenML Blog"
   description: "Learn how to migrate from cnvrg.io to ZenML's open-source MLOps framework. Discover a sustainable alternative before Intel Tiber AI Studio's 2025 end-of-life. Get started with your MLOps transition today."
   canonical: "https://www.zenml.io/blog/zenml-your-open-source-path-forward-after-cnvrg-io"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a836b243/67b49754f93ed8a37f2e8b88_Cnvrg_Positioning_Blog_Image__2_.png"
+  ogImage: "https://assets.zenml.io/content/blog/zenml-your-open-source-path-forward-after-cnvrg-io/6c12f90e/zenml-your-open-source-path-forward-after-cnvrg-io-cover.jpg"
   ogTitle: "ZenML: Your Open-Source Path Forward After cnvrg.io - ZenML Blog"
   ogDescription: "Learn how to migrate from cnvrg.io to ZenML's open-source MLOps framework. Discover a sustainable alternative before Intel Tiber AI Studio's 2025 end-of-life. Get started with your MLOps transition today."
 ---

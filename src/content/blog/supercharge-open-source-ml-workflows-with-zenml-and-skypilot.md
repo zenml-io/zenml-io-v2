@@ -19,12 +19,12 @@ tags:
 date: "2024-08-30T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5c4b3ab8/66d1eb64268497ccabeea28c_zenml-skypilot.png"
+  url: "https://assets.zenml.io/content/blog/supercharge-open-source-ml-workflows-with-zenml-and-skypilot/418e03e4/supercharge-open-source-ml-workflows-with-zenml-and-skypilot-cover.avif"
 seo:
   title: "Supercharge Open Source ML Workflows with ZenML And Skypilot - ZenML Blog"
   description: "The combination of ZenML and SkyPilot offers a robust solution for managing ML workflows."
   canonical: "https://www.zenml.io/blog/supercharge-open-source-ml-workflows-with-zenml-and-skypilot"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5c4b3ab8/66d1eb64268497ccabeea28c_zenml-skypilot.png"
+  ogImage: "https://assets.zenml.io/content/blog/supercharge-open-source-ml-workflows-with-zenml-and-skypilot/5ee31913/supercharge-open-source-ml-workflows-with-zenml-and-skypilot-cover.jpg"
   ogTitle: "Supercharge Open Source ML Workflows with ZenML And Skypilot - ZenML Blog"
   ogDescription: "The combination of ZenML and SkyPilot offers a robust solution for managing ML workflows."
 ---

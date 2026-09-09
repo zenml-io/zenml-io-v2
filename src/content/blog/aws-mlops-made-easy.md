@@ -21,12 +21,12 @@ tags:
 date: "2024-09-11T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6cde7c69/66e05de05064adddc53313ef_zenml-aws.png"
+  url: "https://assets.zenml.io/content/blog/aws-mlops-made-easy/5fa6ae23/aws-mlops-made-easy-cover.avif"
 seo:
   title: "AWS MLOps Made Easy: Integrating ZenML for Seamless Workflows - ZenML Blog"
   description: "Machine Learning Operations (MLOps) is crucial in today's tech landscape, even with the rise of Large Language Models (LLMs). Implementing MLOps on AWS, leveraging services like SageMaker, ECR, S3, EC2, and EKS, can enhance productivity and streamline workflows. ZenML, an open-source MLOps framework, simplifies the integration and management of these services, enabling seamless transitions between AWS components. MLOps pipelines consist of Orchestrators, Artifact Stores, Container Registry, Model Deployers, and Step Operators. AWS offers a suite of managed services, such as ECR, S3, and EC2, but careful planning and configuration are required for a cohesive MLOps workflow."
   canonical: "https://www.zenml.io/blog/aws-mlops-made-easy"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6cde7c69/66e05de05064adddc53313ef_zenml-aws.png"
+  ogImage: "https://assets.zenml.io/content/blog/aws-mlops-made-easy/ecf45dc5/aws-mlops-made-easy-cover.jpg"
   ogTitle: "AWS MLOps Made Easy: Integrating ZenML for Seamless Workflows - ZenML Blog"
   ogDescription: "Machine Learning Operations (MLOps) is crucial in today's tech landscape, even with the rise of Large Language Models (LLMs). Implementing MLOps on AWS, leveraging services like SageMaker, ECR, S3, EC2, and EKS, can enhance productivity and streamline workflows. ZenML, an open-source MLOps framework, simplifies the integration and management of these services, enabling seamless transitions between AWS components. MLOps pipelines consist of Orchestrators, Artifact Stores, Container Registry, Model Deployers, and Step Operators. AWS offers a suite of managed services, such as ECR, S3, and EC2, but careful planning and configuration are required for a cohesive MLOps workflow."
 ---

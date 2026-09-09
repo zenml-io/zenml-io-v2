@@ -21,12 +21,14 @@ tags:
 date: "2025-09-09T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ff1423e0/6981d37a71c3040935dbc362_6981d2acdf9b136c4ad7729a_llamaindex-vs-langchain.avif"
+  url: "https://assets.zenml.io/content/blog/llamaindex-vs-langchain/3e0555a0/llamaindex-vs-langchain-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/llamaindex-vs-langchain/3e0555a0/llamaindex-vs-langchain-cover.avif"
 seo:
   title: "LlamaIndex vs LangChain: Which Framework Is Best for Agentic AI Workflows? - ZenML Blog"
   description: "In this LlamaIndex vs LangChain, we explain the difference between the two and conclude which one is the best to build AI agents."
   canonical: "https://www.zenml.io/blog/llamaindex-vs-langchain"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ff1423e0/6981d37a71c3040935dbc362_6981d2acdf9b136c4ad7729a_llamaindex-vs-langchain.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/llamaindex-vs-langchain/ba1d5cf3/llamaindex-vs-langchain-cover.jpg"
   ogTitle: "LlamaIndex vs LangChain: Which Framework Is Best for Agentic AI Workflows? - ZenML Blog"
   ogDescription: "In this LlamaIndex vs LangChain, we explain the difference between the two and conclude which one is the best to build AI agents."
 ---

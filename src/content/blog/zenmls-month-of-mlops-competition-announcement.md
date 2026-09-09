@@ -18,7 +18,9 @@ tags:
 date: "2022-09-26T00:00:00.000Z"
 readingTime: 2 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a98f20c1/65315d129d75c08e4b37e428_Month_of_MLOps.png"
+  url: "https://assets.zenml.io/content/blog/zenmls-month-of-mlops-competition-announcement/bb0bd70d/zenmls-month-of-mlops-competition-announcement-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/zenmls-month-of-mlops-competition-announcement/4ff399f1/zenmls-month-of-mlops-competition-announcement-cover.jpg"
 ---
 
 **Last updated:** October 17, 2022.

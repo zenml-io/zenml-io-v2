@@ -17,7 +17,9 @@ tags:
 date: "2022-02-23T00:00:00.000Z"
 readingTime: 4 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/984d5d05/65316103f7e61ff7b181e04b_hybrid-uGP_6CAD-14-unsplash.jpg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-6-2-continuous-deployment-and-a-fresh-cli/b84ea409/whats-new-in-v0-6-2-continuous-deployment-and-a-fresh-cli-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-6-2-continuous-deployment-and-a-fresh-cli/d772ca31/whats-new-in-v0-6-2-continuous-deployment-and-a-fresh-cli-cover.jpg"
 ---
 
 **Last updated:** November 3, 2022.

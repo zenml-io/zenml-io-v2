@@ -20,12 +20,12 @@ tags:
 date: "2025-12-04T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9f20a9d7/6981cf64f4f7a9ede995c465_6981ce864626f810358db79d_zenml-neptune.avif"
+  url: "https://assets.zenml.io/content/blog/neptune-to-zenml/84b077aa/neptune-to-zenml-cover.avif"
 seo:
   title: "Leaving Neptune? Try ZenML for Experiment Tracking and More - ZenML Blog"
   description: "Neptune AI is terminating its standalone SaaS solution. Switch to ZenML to track ML experiments and do much more."
   canonical: "https://www.zenml.io/blog/neptune-to-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9f20a9d7/6981cf64f4f7a9ede995c465_6981ce864626f810358db79d_zenml-neptune.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/neptune-to-zenml/03c8cff0/neptune-to-zenml-cover.jpg"
   ogTitle: "Leaving Neptune? Try ZenML for Experiment Tracking and More - ZenML Blog"
   ogDescription: "Neptune AI is terminating its standalone SaaS solution. Switch to ZenML to track ML experiments and do much more."
 ---

@@ -21,12 +21,12 @@ tags:
 date: "2022-02-28T00:00:00.000Z"
 readingTime: 8 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/938e1cf9/6531e43968722354b8eedf27_rich-terminal.png"
+  url: "https://assets.zenml.io/content/blog/richify-that-cli/3dbcb882/richify-that-cli-cover.avif"
 seo:
   title: "Richify that CLI! - ZenML Blog"
   description: "We recently reworked a number of parts of our CLI interface. Here are some quick wins we implemented along the way that can help you improve how users interact with your CLI via the popular open-source library, rich."
   canonical: "https://www.zenml.io/blog/richify-that-cli"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ccaf9d1e/6531e43968722354b8eedf27_rich-terminal.png"
+  ogImage: "https://assets.zenml.io/content/blog/richify-that-cli/d4eee7c5/richify-that-cli-cover.jpg"
   ogTitle: "Richify that CLI! - ZenML Blog"
   ogDescription: "We recently reworked a number of parts of our CLI interface. Here are some quick wins we implemented along the way that can help you improve how users interact with your CLI via the popular open-source library, rich."
 ---

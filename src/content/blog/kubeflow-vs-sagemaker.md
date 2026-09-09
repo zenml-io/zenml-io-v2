@@ -21,12 +21,14 @@ tags:
 date: "2026-01-28T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a10c091c/6979925951b356c61c1a8ae2_kubeflow-vs-sagemaker.png"
+  url: "https://assets.zenml.io/content/blog/kubeflow-vs-sagemaker/6cde204a/kubeflow-vs-sagemaker-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/kubeflow-vs-sagemaker/6cde204a/kubeflow-vs-sagemaker-cover.avif"
 seo:
   title: "Kubeflow vs SageMaker vs ZenML: For Batch and Pipeline-Driven ML Systems - ZenML Blog"
   description: "This Kubeflow vs SageMaker vs ZenML article helps you choose the framework best for batch and pipeline-driven ML systems."
   canonical: "https://www.zenml.io/blog/kubeflow-vs-sagemaker"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a10c091c/6979925951b356c61c1a8ae2_kubeflow-vs-sagemaker.png"
+  ogImage: "https://assets.zenml.io/content/blog/kubeflow-vs-sagemaker/2c96e4b3/kubeflow-vs-sagemaker-cover.jpg"
   ogTitle: "Kubeflow vs SageMaker vs ZenML: For Batch and Pipeline-Driven ML Systems - ZenML Blog"
   ogDescription: "This Kubeflow vs SageMaker vs ZenML article helps you choose the framework best for batch and pipeline-driven ML systems."
 ---

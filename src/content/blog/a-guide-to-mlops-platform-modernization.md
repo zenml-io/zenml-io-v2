@@ -18,12 +18,12 @@ tags:
 date: "2024-11-27T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/75c7e207/6746cf0b47f72f4be4c79a9d_Gemini_Generated_Image__9_.jpeg"
+  url: "https://assets.zenml.io/content/blog/a-guide-to-mlops-platform-modernization/38307d8e/a-guide-to-mlops-platform-modernization-cover.avif"
 seo:
   title: "From Legacy to Leading Edge: A Guide to MLOps Platform Modernization - ZenML Blog"
   description: "Discover how leading organizations are successfully transitioning from legacy ML infrastructure to modern, scalable MLOps platforms. This comprehensive guide explores critical challenges in ML platform modernization, including migration strategies, security considerations, and the integration of emerging LLM capabilities. Learn proven best practices for evaluating modern platforms, managing complex transitions, and ensuring long-term success in your ML operations. Whether you're dealing with technical debt in custom solutions or looking to scale your ML capabilities, this article provides actionable insights for a smooth modernization journey."
   canonical: "https://www.zenml.io/blog/a-guide-to-mlops-platform-modernization"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/75c7e207/6746cf0b47f72f4be4c79a9d_Gemini_Generated_Image__9_.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/a-guide-to-mlops-platform-modernization/4a23fc36/a-guide-to-mlops-platform-modernization-cover.jpg"
   ogTitle: "From Legacy to Leading Edge: A Guide to MLOps Platform Modernization - ZenML Blog"
   ogDescription: "Discover how leading organizations are successfully transitioning from legacy ML infrastructure to modern, scalable MLOps platforms. This comprehensive guide explores critical challenges in ML platform modernization, including migration strategies, security considerations, and the integration of emerging LLM capabilities. Learn proven best practices for evaluating modern platforms, managing complex transitions, and ensuring long-term success in your ML operations. Whether you're dealing with technical debt in custom solutions or looking to scale your ML capabilities, this article provides actionable insights for a smooth modernization journey."
 ---

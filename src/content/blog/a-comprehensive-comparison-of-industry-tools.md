@@ -18,12 +18,14 @@ tags:
 date: "2024-11-18T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/571c8563/673b49ae1def5845bbc26a61_llmops_eval_tools.png"
+  url: "https://assets.zenml.io/content/blog/a-comprehensive-comparison-of-industry-tools/0fb62878/a-comprehensive-comparison-of-industry-tools-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/a-comprehensive-comparison-of-industry-tools/0fb62878/a-comprehensive-comparison-of-industry-tools-cover.avif"
 seo:
   title: "LLM Evaluation & Prompt Tracking Showdown: A Comprehensive Comparison of Industry Tools - ZenML Blog"
   description: "As Large Language Models (LLMs) revolutionize software development, the challenge of ensuring their reliable performance becomes increasingly crucial. This comprehensive guide explores the landscape of LLM evaluation, from specialized platforms like Langfuse and LangSmith to cloud provider solutions from AWS, Google Cloud, and Azure. Learn how to implement effective evaluation strategies, automate testing pipelines, and choose the right tools for your specific needs. Whether you're just starting with manual evaluations or ready to build sophisticated automated pipelines, discover how to gain confidence in your LLM applications through robust evaluation practices."
   canonical: "https://www.zenml.io/blog/a-comprehensive-comparison-of-industry-tools"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/571c8563/673b49ae1def5845bbc26a61_llmops_eval_tools.png"
+  ogImage: "https://assets.zenml.io/content/blog/a-comprehensive-comparison-of-industry-tools/f3982645/a-comprehensive-comparison-of-industry-tools-cover.jpg"
   ogTitle: "LLM Evaluation & Prompt Tracking Showdown: A Comprehensive Comparison of Industry Tools - ZenML Blog"
   ogDescription: "As Large Language Models (LLMs) revolutionize software development, the challenge of ensuring their reliable performance becomes increasingly crucial. This comprehensive guide explores the landscape of LLM evaluation, from specialized platforms like Langfuse and LangSmith to cloud provider solutions from AWS, Google Cloud, and Azure. Learn how to implement effective evaluation strategies, automate testing pipelines, and choose the right tools for your specific needs. Whether you're just starting with manual evaluations or ready to build sophisticated automated pipelines, discover how to gain confidence in your LLM applications through robust evaluation practices."
 ---

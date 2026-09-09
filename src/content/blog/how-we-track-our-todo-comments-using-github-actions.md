@@ -20,12 +20,12 @@ tags:
 date: "2021-12-01T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2af25be4/6530a78fe4deb66a7ae8fc1a_post_its.jpg"
+  url: "https://assets.zenml.io/content/blog/how-we-track-our-todo-comments-using-github-actions/bc8eb527/how-we-track-our-todo-comments-using-github-actions-cover.avif"
 seo:
   title: "How we track our todo comments using GitHub Actions - ZenML Blog"
   description: "A programmatic means of ensuring #TODO comments made in code also end up in our Jira ticketing system."
   canonical: "https://www.zenml.io/blog/how-we-track-our-todo-comments-using-github-actions"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/97edcf76/6530a78fe4deb66a7ae8fc1a_post_its.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/how-we-track-our-todo-comments-using-github-actions/9e7abf5c/how-we-track-our-todo-comments-using-github-actions-cover.jpg"
   ogTitle: "How we track our todo comments using GitHub Actions - ZenML Blog"
   ogDescription: "A programmatic means of ensuring #TODO comments made in code also end up in our Jira ticketing system."
 ---

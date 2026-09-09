@@ -21,12 +21,12 @@ tags:
 date: "2022-12-14T00:00:00.000Z"
 readingTime: 11 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f0717468/65300f5b14bb84cd42d75c12_zenml-bentoml.png"
+  url: "https://assets.zenml.io/content/blog/how-to-train-and-deploy-a-machine-learning-model-on-aws-sagemaker-with-zenml-and-bentoml/9cfdad95/how-to-train-and-deploy-a-machine-learning-model-on-aws-sagemaker-with-zenml-and-bentoml-cover.avif"
 seo:
   title: "How to train and deploy a machine learning model on AWS Sagemaker with ZenML and BentoML - ZenML Blog"
   description: "Learn how to use ZenML pipelines and BentoML to easily deploy machine learning models, be it on local or cloud environments. We will show you how to train a model using ZenML, package it with BentoML, and deploy it to a local machine or cloud provider. By the end of this post, you will have a better understanding of how to streamline the deployment of your machine learning models using ZenML and BentoML."
   canonical: "https://www.zenml.io/blog/how-to-train-and-deploy-a-machine-learning-model-on-aws-sagemaker-with-zenml-and-bentoml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c0418beb/65300f5b14bb84cd42d75c12_zenml-bentoml.png"
+  ogImage: "https://assets.zenml.io/content/blog/how-to-train-and-deploy-a-machine-learning-model-on-aws-sagemaker-with-zenml-and-bentoml/c6910a9b/how-to-train-and-deploy-a-machine-learning-model-on-aws-sagemaker-with-zenml-and-bentoml-cover.jpg"
   ogTitle: "How to train and deploy a machine learning model on AWS Sagemaker with ZenML and BentoML - ZenML Blog"
   ogDescription: "Learn how to use ZenML pipelines and BentoML to easily deploy machine learning models, be it on local or cloud environments. We will show you how to train a model using ZenML, package it with BentoML, and deploy it to a local machine or cloud provider. By the end of this post, you will have a better understanding of how to streamline the deployment of your machine learning models using ZenML and BentoML."
 ---

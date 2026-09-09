@@ -20,12 +20,12 @@ tags:
 date: "2025-05-15T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/765a1059/6825b8ee023348faad2f9286_Kai_Scheduler_Cover__1_.png"
+  url: "https://assets.zenml.io/content/blog/nvidia-kai-scheduler-optimize-gpu-usage-in-zenml-pipelines/28271d65/nvidia-kai-scheduler-optimize-gpu-usage-in-zenml-pipelines-cover.avif"
 seo:
   title: "NVIDIA KAI Scheduler: Optimize GPU Usage in ZenML Pipelines - ZenML Blog"
   description: "Discover how to optimize GPU utilization in Kubernetes environments by integrating NVIDIA's KAI Scheduler with ZenML pipelines, enabling fractional GPU allocation for improved resource efficiency and cost savings in machine learning workflows."
   canonical: "https://www.zenml.io/blog/nvidia-kai-scheduler-optimize-gpu-usage-in-zenml-pipelines"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/765a1059/6825b8ee023348faad2f9286_Kai_Scheduler_Cover__1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/nvidia-kai-scheduler-optimize-gpu-usage-in-zenml-pipelines/e131caf5/nvidia-kai-scheduler-optimize-gpu-usage-in-zenml-pipelines-cover.jpg"
   ogTitle: "NVIDIA KAI Scheduler: Optimize GPU Usage in ZenML Pipelines - ZenML Blog"
   ogDescription: "Discover how to optimize GPU utilization in Kubernetes environments by integrating NVIDIA's KAI Scheduler with ZenML pipelines, enabling fractional GPU allocation for improved resource efficiency and cost savings in machine learning workflows."
 ---

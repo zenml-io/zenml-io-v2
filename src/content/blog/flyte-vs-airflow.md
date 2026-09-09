@@ -21,12 +21,14 @@ tags:
 date: "2025-06-07T00:00:00.000Z"
 readingTime: 14 minutes
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1833048a/6843c4fd74d0c67269aac024_flyte-vs-airflow.png"
+  url: "https://assets.zenml.io/content/blog/flyte-vs-airflow/08ec8bb3/flyte-vs-airflow-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/flyte-vs-airflow/08ec8bb3/flyte-vs-airflow-cover.avif"
 seo:
   title: "Flyte vs Airflow vs ZenML: What’s the Difference? - ZenML Blog"
   description: "In this Flyte vs Airflow vs ZenML article, we explain the difference between the three platforms and educate you about using them in tandem."
   canonical: "https://www.zenml.io/blog/flyte-vs-airflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1833048a/6843c4fd74d0c67269aac024_flyte-vs-airflow.png"
+  ogImage: "https://assets.zenml.io/content/blog/flyte-vs-airflow/ad55ae8c/flyte-vs-airflow-cover.jpg"
   ogTitle: "Flyte vs Airflow vs ZenML: What’s the Difference? - ZenML Blog"
   ogDescription: "In this Flyte vs Airflow vs ZenML article, we explain the difference between the three platforms and educate you about using them in tandem."
 ---

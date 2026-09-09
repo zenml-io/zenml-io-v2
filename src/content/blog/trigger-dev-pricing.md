@@ -12,13 +12,13 @@ tags:
 date: "2026-07-02T10:24:53.180Z"
 readingTime: "10 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/trigger-dev-pricing/dd3295e6/trigger-dev-pricing.avif"
+  url: "https://assets.zenml.io/content/blog/trigger-dev-pricing/61ead973/trigger-dev-pricing-cover.avif"
   alt: "Trigger.dev pricing guide cover image"
 seo:
   title: "Trigger.dev Pricing Guide: How Much Do You Actually Pay? - ZenML Blog"
   description: "In this article, we learn about all the different pricing plans Trigger.dev offers."
   canonical: "https://www.zenml.io/blog/trigger-dev-pricing"
-  ogImage: "https://assets.zenml.io/content/blog/trigger-dev-pricing/2f111117/trigger-dev-pricing.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/trigger-dev-pricing/1d015868/trigger-dev-pricing-cover.jpg"
 ---
 
 Trigger.dev pricing looks simple on paper. There is a Free plan, two paid self-serve plans, and a Custom plan for larger teams. But it's easy to underestimate what you'll actually pay. For that, you need to separate plan fees from monthly usage.

@@ -73,57 +73,16 @@ const privacyClass = darkBg
   <p class={errorClass} data-brevo-error></p>
 
   {privacyHtml && <p class={privacyClass} set:html={privacyHtml} />}
-
-  <script is:inline>
-    (function () {
-      const script = document.currentScript;
-      if (!(script instanceof HTMLScriptElement)) return;
-
-      const root = script.parentElement;
-      if (!(root instanceof HTMLElement)) return;
-
-      const form = root.querySelector("[data-brevo-newsletter]");
-      if (!(form instanceof HTMLFormElement)) return;
-      if (form.dataset.brevoEnhanced === "true") return;
-      form.dataset.brevoEnhanced = "true";
-
-      const loadingLabel = root.dataset.loadingLabel || "Subscribing...";
-      const successMsg = root.querySelector("[data-brevo-success]");
-      const errorMsg = root.querySelector("[data-brevo-error]");
-
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const btn = form.querySelector("button[type=submit]");
-        const originalText = btn?.textContent;
-
-        if (btn instanceof HTMLButtonElement) {
-          btn.disabled = true;
-          btn.textContent = loadingLabel;
-        }
-
-        const formData = new FormData(form);
-
-        fetch(form.action, {
-          method: "POST",
-          body: formData,
-          mode: "no-cors",
-        })
-          .then(function () {
-            form.classList.add("hidden");
-            successMsg?.classList.remove("hidden");
-          })
-          .catch(function (err) {
-            console.error("Brevo submit error:", err);
-            if (errorMsg instanceof HTMLElement) {
-              errorMsg.textContent = "Subscription failed. Please try again.";
-              errorMsg.classList.remove("hidden");
-            }
-            if (btn instanceof HTMLButtonElement) {
-              btn.textContent = originalText;
-              btn.disabled = false;
-            }
-          });
-      });
-    })();
-  </script>
 </div>
+
+<script>
+  // Shared with BlogNewsletterCta.astro's newsletter card — see
+  // scripts/brevoNewsletterForm.ts for the submit behaviour.
+  import { initBrevoNewsletterForms } from "../../scripts/brevoNewsletterForm";
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initBrevoNewsletterForms);
+  } else {
+    initBrevoNewsletterForms();
+  }
+</script>

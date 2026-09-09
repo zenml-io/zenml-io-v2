@@ -13,13 +13,16 @@ tags:
 date: "2026-04-09T00:00:00.000Z"
 readingTime: "14 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/831cb657/kai-scheduler-vs-runai.avif"
+  url: "https://assets.zenml.io/content/blog/kai-scheduler-vs-runai/15c569a0/kai-scheduler-vs-runai-cover.avif"
+  alt: "KAI Scheduler vs Run:ai comparison - Which GPU Scheduling Tool Fits Your AI Infrastructure?"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/kai-scheduler-vs-runai/15c569a0/kai-scheduler-vs-runai-cover.avif"
   alt: "KAI Scheduler vs Run:ai comparison - Which GPU Scheduling Tool Fits Your AI Infrastructure?"
 seo:
   title: "KAI Scheduler vs Run:ai: Which GPU Scheduling Tool Fits Your AI Infrastructure?"
   description: "We break down GPU scheduling, fractional GPU allocation, gang scheduling, integrations, and pricing to help you pick the right tool for your AI infrastructure."
   canonical: "https://www.zenml.io/blog/kai-scheduler-vs-runai"
-  ogImage: "https://assets.zenml.io/content/blog/831cb657/kai-scheduler-vs-runai.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/kai-scheduler-vs-runai/e6053a91/kai-scheduler-vs-runai-cover.jpg"
 ---
 
 NVIDIA open-sourced the scheduling engine behind Run:ai. Now there are two tools from the same codebase, and teams I talk to are often confused which one to use.

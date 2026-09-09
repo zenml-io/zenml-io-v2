@@ -20,12 +20,12 @@ tags:
 date: "2021-03-31T00:00:00.000Z"
 readingTime: 7 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2e030dbd/6531e3a6bc0ec01d9690a008_pipeline-unsplash.jpeg"
+  url: "https://assets.zenml.io/content/blog/why-ml-should-be-written-as-pipelines-from-the-get-go/e5864f8e/why-ml-should-be-written-as-pipelines-from-the-get-go-cover.avif"
 seo:
   title: "Why ML should be written as pipelines from the get-go - ZenML Blog"
   description: "Eliminate technical debt with iterative, reproducible pipelines."
   canonical: "https://www.zenml.io/blog/why-ml-should-be-written-as-pipelines-from-the-get-go"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/15727df1/6531e3a6bc0ec01d9690a008_pipeline-unsplash.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/why-ml-should-be-written-as-pipelines-from-the-get-go/9b779a9a/why-ml-should-be-written-as-pipelines-from-the-get-go-cover.jpg"
   ogTitle: "Why ML should be written as pipelines from the get-go - ZenML Blog"
   ogDescription: "Eliminate technical debt with iterative, reproducible pipelines."
 ---

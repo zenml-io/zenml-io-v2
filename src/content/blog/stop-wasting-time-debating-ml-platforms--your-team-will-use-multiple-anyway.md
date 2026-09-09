@@ -20,12 +20,12 @@ tags:
 date: "2025-05-19T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9e3d0f95/682aef103777dd48ba17665c_Stop_Wasting_Time__1_.png"
+  url: "https://assets.zenml.io/content/blog/stop-wasting-time-debating-ml-platforms--your-team-will-use-multiple-anyway/e95c3216/stop-wasting-time-debating-ml-platforms-your-team-will-use-multiple-anyway-cover.avif"
 seo:
   title: "Stop Wasting Time Debating ML Platforms—Your Team Will Use Multiple Anyway - ZenML Blog"
   description: "Future-proof your ML operations by building portable pipelines that work across multiple platforms instead of forcing standardization on a single solution."
   canonical: "https://www.zenml.io/blog/stop-wasting-time-debating-ml-platforms--your-team-will-use-multiple-anyway"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9e3d0f95/682aef103777dd48ba17665c_Stop_Wasting_Time__1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/stop-wasting-time-debating-ml-platforms--your-team-will-use-multiple-anyway/ef476bc3/stop-wasting-time-debating-ml-platforms-your-team-will-use-multiple-anyway-cover.jpg"
   ogTitle: "Stop Wasting Time Debating ML Platforms—Your Team Will Use Multiple Anyway - ZenML Blog"
   ogDescription: "Future-proof your ML operations by building portable pipelines that work across multiple platforms instead of forcing standardization on a single solution."
 ---

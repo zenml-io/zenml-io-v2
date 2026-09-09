@@ -18,12 +18,12 @@ tags:
 date: "2021-12-06T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/28462a9f/65311c318d6ee23a889a8a5e_luca-upper-Z-4kOr93RCI-unsplash.jpg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-5-4/26ee3ed8/whats-new-in-v0-5-4-cover.avif"
 seo:
   title: "What's New in v0.5.4 - ZenML Blog"
   description: "Release notes for the new version of ZenML."
   canonical: "https://www.zenml.io/blog/whats-new-in-v0-5-4"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/72c2e367/65311c318d6ee23a889a8a5e_luca-upper-Z-4kOr93RCI-unsplash.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-5-4/ef9062f1/whats-new-in-v0-5-4-cover.jpg"
   ogTitle: "What's New in v0.5.4 - ZenML Blog"
   ogDescription: "Release notes for the new version of ZenML."
 ---

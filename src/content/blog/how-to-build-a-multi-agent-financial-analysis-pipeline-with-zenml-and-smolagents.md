@@ -21,12 +21,12 @@ tags:
 date: "2025-09-19T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dd796c84/6981d389ab6d2820d701bc0f_6981d2a915e5b1c9180d2898_multi-agent-financial-analysis-smolagents_1.avif"
+  url: "https://assets.zenml.io/content/blog/how-to-build-a-multi-agent-financial-analysis-pipeline-with-zenml-and-smolagents/505ce387/how-to-build-a-multi-agent-financial-analysis-pipeline-with-zenml-and-smolagents-cover.avif"
 seo:
   title: "How to Build a Multi-Agent Financial Analysis Pipeline with ZenML and SmolAgents - ZenML Blog"
   description: "How to build a production-ready financial report analysis pipeline using multiple specialized AI agents with ZenML for orchestration, SmolAgents for lightweight agent implementation, and LangFuse for observability and debugging."
   canonical: "https://www.zenml.io/blog/how-to-build-a-multi-agent-financial-analysis-pipeline-with-zenml-and-smolagents"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dd796c84/6981d389ab6d2820d701bc0f_6981d2a915e5b1c9180d2898_multi-agent-financial-analysis-smolagents_1.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/how-to-build-a-multi-agent-financial-analysis-pipeline-with-zenml-and-smolagents/2376fdb2/how-to-build-a-multi-agent-financial-analysis-pipeline-with-zenml-and-smolagents-cover.jpg"
   ogTitle: "How to Build a Multi-Agent Financial Analysis Pipeline with ZenML and SmolAgents - ZenML Blog"
   ogDescription: "How to build a production-ready financial report analysis pipeline using multiple specialized AI agents with ZenML for orchestration, SmolAgents for lightweight agent implementation, and LangFuse for observability and debugging."
 ---

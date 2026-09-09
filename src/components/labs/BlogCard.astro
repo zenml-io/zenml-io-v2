@@ -1,0 +1,141 @@
+---
+import type { BlogProduct } from "../../lib/blog";
+/**
+ * labs.blog-card — the blog cutover's card (the approved blog design, DESIGN.md): chrome-less,
+ * 16:9 media, hover per the Labs card rule. This is the Astro twin, used
+ * everywhere the card renders server-side (the `/blog` index grid via
+ * `BlogIndex.tsx`'s Preact port below, `RelatedRail`'s `blog-card` item
+ * kind, and — once build:taxonomy switches its import — `TermHubEditorial`).
+ * `BlogCard.tsx` is the Preact port for the filter island; both twins pull
+ * every class string from `blogCardStyles.ts` so they cannot drift.
+ *
+ * Every slot but `title` collapses when absent — no placeholder box, no
+ * empty row.
+ */
+import Image from "../Image.astro";
+import {
+  BLOG_CARD_ARTICLE,
+  BLOG_CARD_AUTHOR_NAME,
+  BLOG_CARD_AUTHOR_NAME_STATIC,
+  BLOG_CARD_AVATAR,
+  BLOG_CARD_AVATAR_PLACEHOLDER,
+  BLOG_CARD_BYLINE,
+  BLOG_CARD_CATEGORY,
+  BLOG_CARD_CATEGORY_STATIC,
+  BLOG_CARD_EXCERPT,
+  BLOG_CARD_MEDIA_IMAGE,
+  BLOG_CARD_MEDIA_LINK,
+  BLOG_CARD_META_ROW,
+  BLOG_CARD_PRODUCT_PILL,
+  BLOG_CARD_PRODUCT_PILL_LINK,
+  BLOG_CARD_READING_TIME,
+  BLOG_CARD_TITLE,
+} from "./blogCardStyles";
+
+interface Props {
+  href: string;
+  title: string;
+  excerpt?: string;
+  image?: { url: string; alt?: string; width?: number; height?: number };
+  authorName?: string;
+  authorSlug?: string;
+  authorAvatar?: { url: string; alt?: string };
+  readingTime?: string;
+  categoryName?: string;
+  categorySlug?: string;
+  /** Omit or "zenml" for the default (no pill, sage accent). "kitaru" adds the badge and scopes `--blog-accent-*` to orange for this card. */
+  product?: BlogProduct;
+}
+
+const {
+  href,
+  title,
+  excerpt,
+  image,
+  authorName,
+  authorSlug,
+  authorAvatar,
+  readingTime,
+  categoryName,
+  categorySlug,
+  product,
+} = Astro.props;
+
+const isKitaru = product === "kitaru";
+// When the card's own category IS "kitaru", the pill doubles as the
+// category link (dedupe: no separate "Kitaru" category token beside it).
+// The card's root is an <article>, not an <a> — the title link
+// (.stretched-link) is a sibling anchor, not a wrapper — so a pill-as-link
+// here never nests inside another anchor.
+const categoryIsKitaruPill = isKitaru && categorySlug === "kitaru";
+const showCategoryToken = !!categoryName && !categoryIsKitaruPill;
+---
+
+<article class={BLOG_CARD_ARTICLE} data-product={isKitaru ? "kitaru" : undefined}>
+  {image && (
+    <a href={href} class={BLOG_CARD_MEDIA_LINK}>
+      <Image image={image} alt={image.alt || title} class={BLOG_CARD_MEDIA_IMAGE} loading="lazy" />
+    </a>
+  )}
+
+  {(showCategoryToken || readingTime || isKitaru) && (
+    <div class={BLOG_CARD_META_ROW}>
+      <span class="inline-flex items-center gap-2">
+        {isKitaru &&
+          (categoryIsKitaruPill ? (
+            <a href="/category/kitaru" class={BLOG_CARD_PRODUCT_PILL_LINK}>
+              Kitaru
+            </a>
+          ) : (
+            <span class={BLOG_CARD_PRODUCT_PILL}>Kitaru</span>
+          ))}
+        {showCategoryToken && (
+          categorySlug ? (
+            <a href={`/category/${categorySlug}`} class={BLOG_CARD_CATEGORY}>{categoryName}</a>
+          ) : (
+            <span class={BLOG_CARD_CATEGORY_STATIC}>{categoryName}</span>
+          )
+        )}
+      </span>
+      {readingTime && <span class={BLOG_CARD_READING_TIME}>{readingTime}</span>}
+    </div>
+  )}
+
+  <h3 class={BLOG_CARD_TITLE}>
+    <a href={href} class="stretched-link">{title}</a>
+  </h3>
+
+  {excerpt && <p class={BLOG_CARD_EXCERPT}>{excerpt}</p>}
+
+  {(authorAvatar || authorName) && (
+    <div class={BLOG_CARD_BYLINE}>
+      {authorAvatar ? (
+        <img src={authorAvatar.url} alt={authorAvatar.alt || authorName || ""} class={BLOG_CARD_AVATAR} loading="lazy" />
+      ) : (
+        <span class={BLOG_CARD_AVATAR_PLACEHOLDER} aria-hidden="true"></span>
+      )}
+      {authorName && (
+        authorSlug ? (
+          <a href={`/author/${authorSlug}`} class={BLOG_CARD_AUTHOR_NAME}>{authorName}</a>
+        ) : (
+          <span class={BLOG_CARD_AUTHOR_NAME_STATIC}>{authorName}</span>
+        )
+      )}
+    </div>
+  )}
+</article>
+
+<style>
+  /* The title link is the card's one full-card link target (DESIGN.md
+   * §3: "the whole card is one link target for the title; category/author
+   * links stay separate"). category/author links sit above it in DOM order
+   * so their own `<a>` still wins the click. */
+  .stretched-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  article {
+    position: relative;
+  }
+</style>

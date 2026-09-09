@@ -12,13 +12,16 @@ tags:
 date: "2026-06-22T00:00:00.000Z"
 readingTime: "20 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/camunda-alternatives/39d363c0/camunda-alternatives-cover.avif"
+  url: "https://assets.zenml.io/content/blog/camunda-alternatives/2502f894/camunda-alternatives-cover.avif"
+  alt: "We tested 11 Camunda alternatives for agentic orchestration"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/camunda-alternatives/2502f894/camunda-alternatives-cover.avif"
   alt: "We tested 11 Camunda alternatives for agentic orchestration"
 seo:
   title: "11 Camunda Alternatives for Agentic Orchestration - ZenML Blog"
   description: "We tested 11 Camunda alternatives for agentic orchestration, from agent runtimes like Kitaru to durable execution tools like Temporal, Restate, DBOS, and Inngest."
   canonical: "https://www.zenml.io/blog/camunda-alternatives"
-  ogImage: "https://assets.zenml.io/content/blog/camunda-alternatives/ca89c293/camunda-alternatives-cover.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/camunda-alternatives/cfe53d8e/camunda-alternatives-cover.jpg"
 ---
 
 Camunda is a process orchestration and workflow automation platform for teams already thinking in terms of Business Process Model and Notation (BPMN). As in, map every code execution to visual BPMN tasks on a canvas.

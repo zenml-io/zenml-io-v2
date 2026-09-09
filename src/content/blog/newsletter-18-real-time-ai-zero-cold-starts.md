@@ -19,12 +19,12 @@ tags:
 date: "2025-10-27T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/63db1ca8/6981cf0ef4f7a9ede9959a00_6981ce8f1464b7d7f6edb031_zenml-newsletter-18-1.avif"
+  url: "https://assets.zenml.io/content/blog/newsletter-18-real-time-ai-zero-cold-starts/e2571537/newsletter-18-real-time-ai-zero-cold-starts-cover.avif"
 seo:
   title: "Newsletter 18: Real-Time AI, Zero Cold Starts - ZenML Blog"
   description: "ZenML launches Pipeline Deployments, a new feature that transforms any ML pipeline or AI agent into a persistent, high-performance HTTP service with no cold starts and full observability."
   canonical: "https://www.zenml.io/blog/newsletter-18-real-time-ai-zero-cold-starts"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/63db1ca8/6981cf0ef4f7a9ede9959a00_6981ce8f1464b7d7f6edb031_zenml-newsletter-18-1.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/newsletter-18-real-time-ai-zero-cold-starts/d568f6f3/newsletter-18-real-time-ai-zero-cold-starts-cover.jpg"
   ogTitle: "Newsletter 18: Real-Time AI, Zero Cold Starts - ZenML Blog"
   ogDescription: "ZenML launches Pipeline Deployments, a new feature that transforms any ML pipeline or AI agent into a persistent, high-performance HTTP service with no cold starts and full observability."
 ---

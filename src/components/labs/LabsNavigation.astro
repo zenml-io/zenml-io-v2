@@ -66,192 +66,196 @@ const navItemClass =
 const menuId = "labs-product-menu";
 ---
 
-<header
-  data-labs-nav-shell
-  class="fixed inset-x-4 top-4 z-50 flex h-[76px] items-center justify-between rounded-[20px] border border-border bg-card pl-5 pr-4 lg:inset-x-16 lg:top-8 lg:pl-6"
-  data-at-top
->
-  <a
-    href="/"
-    aria-label="ZenML Labs"
-    data-labs-brand={product}
-    class="group relative block h-8 shrink-0 cursor-pointer text-foreground"
-  >
-    {product === "kitaru" ? (
-      <span class="relative block h-full" style="aspect-ratio: 226.004 / 36.134">
-        <KitaruLockup class="absolute inset-y-0 left-0 h-full w-auto transition-opacity duration-200 ease-out group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none" />
-        <ZenmlLabsLogo class="absolute inset-y-0 left-0 h-full w-auto opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none" />
-      </span>
-    ) : (
-      <ZenmlLabsLogo class="h-full w-auto" />
-    )}
-  </a>
+<div class="pointer-events-none fixed inset-x-0 top-4 z-50 lg:top-8">
+  <div class="pointer-events-none mx-auto w-full max-w-content px-gutter">
+    <header
+      data-labs-nav-shell
+      class="pointer-events-auto relative flex h-[76px] items-center justify-between rounded-[20px] border border-border bg-card pl-5 pr-4 lg:-ml-6 lg:-mr-4 lg:pl-6"
+      data-at-top
+    >
+      <a
+        href="/"
+        aria-label="ZenML Labs"
+        data-labs-brand={product}
+        class="group relative block h-8 shrink-0 cursor-pointer text-foreground"
+      >
+        {product === "kitaru" ? (
+          <span class="relative block h-full" style="aspect-ratio: 226.004 / 36.134">
+            <KitaruLockup class="absolute inset-y-0 left-0 h-full w-auto transition-opacity duration-200 ease-out group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none" />
+            <ZenmlLabsLogo class="absolute inset-y-0 left-0 h-full w-auto opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none" />
+          </span>
+        ) : (
+          <ZenmlLabsLogo class="h-full w-auto" />
+        )}
+      </a>
 
-  <nav aria-label="Main navigation" class="hidden items-center gap-1 lg:flex">
-    {LABS_NAV_LINKS.map((link) =>
-      link.menu === "products" ? (
-        <div class="relative" data-labs-switcher>
-          <button
-            type="button"
-            class={navItemClass}
-            aria-haspopup="menu"
-            aria-expanded="false"
-            aria-controls={menuId}
-            data-labs-switcher-toggle
-          >
-            {link.label}
-            <svg
-              aria-hidden="true"
-              focusable="false"
-              class="h-2.5 w-2.5 shrink-0 text-muted-foreground"
-              viewBox="0 0 10 10"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M2.25 3.75L5 6.5L7.75 3.75" />
-            </svg>
-          </button>
-          <ul
-            id={menuId}
-            role="menu"
+      <nav aria-label="Main navigation" class="hidden items-center gap-1 lg:flex">
+        {LABS_NAV_LINKS.map((link) =>
+          link.menu === "products" ? (
+            <div class="relative" data-labs-switcher>
+              <button
+                type="button"
+                class={navItemClass}
+                aria-haspopup="menu"
+                aria-expanded="false"
+                aria-controls={menuId}
+                data-labs-switcher-toggle
+              >
+                {link.label}
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  class="h-2.5 w-2.5 shrink-0 text-muted-foreground"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M2.25 3.75L5 6.5L7.75 3.75" />
+                </svg>
+              </button>
+              <ul
+                id={menuId}
+                role="menu"
+                aria-label="Products"
+                hidden
+                class="absolute left-0 top-full mt-3 flex w-[400px] flex-col gap-1 rounded-[20px] border border-border bg-card p-2"
+                data-labs-switcher-menu
+              >
+                {switcherRows.map((row, index) => (
+                  <li role="none" style={`--row-i: ${index}`}>
+                    <a
+                      role="menuitem"
+                      href={row.href}
+                      aria-current={row.key === product ? "page" : undefined}
+                      class="flex cursor-pointer items-center gap-4 rounded-[14px] border border-transparent px-4 py-3.5 text-foreground transition-colors duration-200 ease-out hover:border-(--color-sage-400) aria-[current=page]:border-(--color-sage-600) aria-[current=page]:bg-(--color-sage-100)"
+                    >
+                      <span
+                        role="img"
+                        aria-label={row.name}
+                        class="flex h-4 w-[76px] shrink-0 items-center text-(--color-cream-900)"
+                      >
+                        {row.key === "kitaru" ? (
+                          <KitaruWordmark class="h-4 w-auto" />
+                        ) : (
+                          <ZenmlWordmark class="h-4 w-auto" />
+                        )}
+                      </span>
+                      <span class="flex-1 font-sans text-[15px] leading-[22px] text-muted-foreground">
+                        {row.leadLine}
+                      </span>
+                      {row.key === product && (
+                        <svg
+                          aria-hidden="true"
+                          focusable="false"
+                          class="h-4 w-4 shrink-0 text-primary"
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <path d="M3.5 9.5L7 13L14.5 5" />
+                        </svg>
+                      )}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <a href={link.href} class={navItemClass}>
+              {link.label}
+              {link.hasMenu && (
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  class="h-2.5 w-2.5 shrink-0 text-muted-foreground"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M2.25 3.75L5 6.5L7.75 3.75" />
+                </svg>
+              )}
+            </a>
+          ),
+        )}
+      </nav>
+
+      {/* `lg:contents` keeps the pill in the header's flex row without a display
+          utility fighting the button's own `inline-flex`. */}
+      <div class="hidden lg:contents">
+        <LabsButton cta={signup} tone={signupTone} />
+      </div>
+
+      <button
+        type="button"
+        class="cursor-pointer rounded-full p-2 text-foreground lg:hidden"
+        aria-label="Open menu"
+        aria-controls="labs-nav-mobile-panel"
+        aria-expanded="false"
+        data-labs-nav-toggle
+      >
+        <svg class="h-6 w-6 block" data-icon="open" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+        <svg class="h-6 w-6 hidden" data-icon="close" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+
+      <div
+        id="labs-nav-mobile-panel"
+        hidden
+        class="absolute inset-x-0 top-full z-40 mt-2 flex flex-col gap-1 rounded-[20px] border border-border bg-card p-4 lg:hidden"
+        data-labs-nav-panel
+      >
+        {product && (
+          <div
+            role="group"
             aria-label="Products"
-            hidden
-            class="absolute left-0 top-full mt-3 flex w-[400px] flex-col gap-1 rounded-[20px] border border-border bg-card p-2"
-            data-labs-switcher-menu
+            class="mb-2 inline-flex w-fit items-center gap-1 rounded-full bg-(--color-sage-100) p-1"
           >
             {switcherRows.map((row) => (
-              <li role="none">
-                <a
-                  role="menuitem"
-                  href={row.href}
-                  aria-current={row.key === product ? "page" : undefined}
-                  class="flex cursor-pointer items-center gap-4 rounded-[14px] border border-transparent px-4 py-3.5 text-foreground transition-colors duration-200 ease-out hover:border-(--color-sage-400) aria-[current=page]:border-(--color-sage-600) aria-[current=page]:bg-(--color-sage-100)"
-                >
-                  <span
-                    role="img"
-                    aria-label={row.name}
-                    class="flex h-4 w-[76px] shrink-0 items-center text-(--color-cream-900)"
-                  >
-                    {row.key === "kitaru" ? (
-                      <KitaruWordmark class="h-4 w-auto" />
-                    ) : (
-                      <ZenmlWordmark class="h-4 w-auto" />
-                    )}
-                  </span>
-                  <span class="flex-1 font-sans text-[15px] leading-[22px] text-muted-foreground">
-                    {row.leadLine}
-                  </span>
-                  {row.key === product && (
-                    <svg
-                      aria-hidden="true"
-                      focusable="false"
-                      class="h-4 w-4 shrink-0 text-primary"
-                      viewBox="0 0 18 18"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    >
-                      <path d="M3.5 9.5L7 13L14.5 5" />
-                    </svg>
-                  )}
-                </a>
-              </li>
+              <a
+                href={row.href}
+                aria-current={row.key === product ? "page" : undefined}
+                class="inline-flex h-10 cursor-pointer items-center gap-2 rounded-full border border-transparent px-4 font-label text-[13px] uppercase tracking-[0.05em] text-muted-foreground transition-colors duration-200 ease-out aria-[current=page]:border-(--color-sage-600) aria-[current=page]:bg-card aria-[current=page]:text-foreground"
+              >
+                <span
+                  class={`h-2 w-2 shrink-0 rounded-full ${row.tint === "orange" ? "bg-(--color-orange-600)" : "bg-primary"}`}
+                  aria-hidden="true"
+                ></span>
+                {row.name}
+              </a>
             ))}
-          </ul>
-        </div>
-      ) : (
-        <a href={link.href} class={navItemClass}>
-          {link.label}
-          {link.hasMenu && (
-            <svg
-              aria-hidden="true"
-              focusable="false"
-              class="h-2.5 w-2.5 shrink-0 text-muted-foreground"
-              viewBox="0 0 10 10"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+          </div>
+        )}
+        <nav aria-label="Mobile navigation" class="flex flex-col gap-1">
+          {panelLinks.map((link) => (
+            <a
+              href={link.href}
+              class="cursor-pointer rounded-[12px] px-3 py-2.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors hover:bg-muted"
             >
-              <path d="M2.25 3.75L5 6.5L7.75 3.75" />
-            </svg>
-          )}
-        </a>
-      ),
-    )}
-  </nav>
-
-  {/* `lg:contents` keeps the pill in the header's flex row without a display
-      utility fighting the button's own `inline-flex`. */}
-  <div class="hidden lg:contents">
-    <LabsButton cta={signup} tone={signupTone} />
-  </div>
-
-  <button
-    type="button"
-    class="cursor-pointer rounded-full p-2 text-foreground lg:hidden"
-    aria-label="Open menu"
-    aria-controls="labs-nav-mobile-panel"
-    aria-expanded="false"
-    data-labs-nav-toggle
-  >
-    <svg class="h-6 w-6 block" data-icon="open" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="3" y1="6" x2="21" y2="6" />
-      <line x1="3" y1="12" x2="21" y2="12" />
-      <line x1="3" y1="18" x2="21" y2="18" />
-    </svg>
-    <svg class="h-6 w-6 hidden" data-icon="close" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <line x1="18" y1="6" x2="6" y2="18" />
-      <line x1="6" y1="6" x2="18" y2="18" />
-    </svg>
-  </button>
-
-  <div
-    id="labs-nav-mobile-panel"
-    hidden
-    class="absolute inset-x-0 top-full z-40 mt-2 flex flex-col gap-1 rounded-[20px] border border-border bg-card p-4 lg:hidden"
-    data-labs-nav-panel
-  >
-    {product && (
-      <div
-        role="group"
-        aria-label="Products"
-        class="mb-2 inline-flex w-fit items-center gap-1 rounded-full bg-(--color-sage-100) p-1"
-      >
-        {switcherRows.map((row) => (
-          <a
-            href={row.href}
-            aria-current={row.key === product ? "page" : undefined}
-            class="inline-flex h-10 cursor-pointer items-center gap-2 rounded-full border border-transparent px-4 font-label text-[13px] uppercase tracking-[0.05em] text-muted-foreground transition-colors duration-200 ease-out aria-[current=page]:border-(--color-sage-600) aria-[current=page]:bg-card aria-[current=page]:text-foreground"
-          >
-            <span
-              class={`h-2 w-2 shrink-0 rounded-full ${row.tint === "orange" ? "bg-(--color-orange-600)" : "bg-primary"}`}
-              aria-hidden="true"
-            ></span>
-            {row.name}
-          </a>
-        ))}
+              {link.label}
+            </a>
+          ))}
+        </nav>
+        <LabsButton cta={signup} tone={signupTone} class="mt-2 w-full" />
       </div>
-    )}
-    <nav aria-label="Mobile navigation" class="flex flex-col gap-1">
-      {panelLinks.map((link) => (
-        <a
-          href={link.href}
-          class="cursor-pointer rounded-[12px] px-3 py-2.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors hover:bg-muted"
-        >
-          {link.label}
-        </a>
-      ))}
-    </nav>
-    <LabsButton cta={signup} tone={signupTone} class="mt-2 w-full" />
+    </header>
   </div>
-</header>
+</div>
 
 <style>
   /* The one visual state this shell owns: transparent over the hero at
@@ -292,6 +296,49 @@ const menuId = "labs-product-menu";
   @media (prefers-reduced-motion: reduce) {
     [data-labs-brand="zenml"] :global([data-part="labs"]) {
       transition: none;
+    }
+  }
+
+  /* Product switcher escalator: the panel itself fades/lifts in, then each
+   * row follows with a short per-row delay driven by the server-set
+   * `--row-i` custom property. Animations (unlike transitions) play even
+   * though the panel flips from `display: none` (via the `hidden`
+   * attribute) to visible in the same frame it opens, so this is a
+   * `@keyframes` animation rather than a transition. Closing removes the
+   * `hidden` attribute's opposite — display drops to none immediately, no
+   * stagger — which also satisfies "closed means truly hidden to
+   * assistive tech", not just opacity 0. */
+  [data-labs-switcher-menu]:not([hidden]) {
+    animation: labs-switcher-menu-in 180ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  [data-labs-switcher-menu]:not([hidden]) > li {
+    animation: labs-switcher-row-in 180ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(var(--row-i, 0) * 45ms);
+  }
+  @keyframes labs-switcher-menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes labs-switcher-row-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-labs-switcher-menu]:not([hidden]),
+    [data-labs-switcher-menu]:not([hidden]) > li {
+      animation: none;
     }
   }
 </style>
@@ -335,17 +382,69 @@ const menuId = "labs-product-menu";
   const menuItems = () =>
     Array.from(menu?.querySelectorAll<HTMLAnchorElement>('[role="menuitem"]') ?? []);
 
+  // Any pending hover-close (below) gets cancelled by every explicit
+  // open/close path — click, keyboard, outside-click, focusout — so a
+  // grace timer from a hover interaction can never fire after some other
+  // interaction has already changed the state.
+  let hoverCloseTimer: ReturnType<typeof setTimeout> | undefined;
+  let openedByHover = false;
+  const cancelHoverClose = () => {
+    if (hoverCloseTimer !== undefined) {
+      clearTimeout(hoverCloseTimer);
+      hoverCloseTimer = undefined;
+    }
+  };
+
   const setMenuOpen = (open: boolean) => {
+    if (!open) openedByHover = false;
     if (!menu || !switcherToggle) return;
+    cancelHoverClose();
     menu.hidden = !open;
     switcherToggle.setAttribute("aria-expanded", String(open));
   };
 
+  // On a mouse the pointer always enters the item before the click lands, so
+  // a hover-opened menu must survive that first click (it reads as "yes, this
+  // one") and move focus into it; only a click on a menu the visitor opened
+  // deliberately — or a second click — closes it.
   switcherToggle?.addEventListener("click", () => {
-    const willOpen = menu?.hidden === true;
+    const isOpen = menu?.hidden === false;
+    if (isOpen && openedByHover) {
+      openedByHover = false;
+      menuItems()[0]?.focus();
+      return;
+    }
+    const willOpen = !isOpen;
     setMenuOpen(willOpen);
     if (willOpen) menuItems()[0]?.focus();
   });
+
+  // Hover-open (desktop only): entering the item opens the menu without a
+  // click; leaving both the button and the panel closes it after a short
+  // grace delay so a diagonal move from the button into the panel — which
+  // crosses empty space outside the switcher's own layout box before
+  // landing on the absolutely-positioned menu — doesn't read as a close.
+  // Gated to `(hover: hover) and (pointer: fine)` so touch devices never
+  // get these listeners and keep click-to-open only. pointerenter/leave
+  // (unlike mouseenter/leave) fire again when re-entering the menu, which
+  // is a DOM descendant of `switcher` but sits outside its own layout
+  // box (absolutely positioned), so the grace delay — not the box shape —
+  // is what keeps a diagonal move into the panel from closing it.
+  const supportsHoverOpen = window.matchMedia(
+    "(hover: hover) and (pointer: fine)",
+  ).matches;
+
+  if (supportsHoverOpen && switcher) {
+    switcher.addEventListener("pointerenter", () => {
+      cancelHoverClose();
+      if (menu?.hidden !== false) openedByHover = true;
+      setMenuOpen(true);
+    });
+    switcher.addEventListener("pointerleave", () => {
+      cancelHoverClose();
+      hoverCloseTimer = setTimeout(() => setMenuOpen(false), 130);
+    });
+  }
 
   switcher?.addEventListener("keydown", (event) => {
     if (!menu || menu.hidden) return;

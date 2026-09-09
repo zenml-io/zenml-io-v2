@@ -464,9 +464,21 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   {
     // Labs shell pages: the hero shader (client:visible) and the closing band
     // shader (client:idle) both mount GrainBackdrop on the homepage and on
-    // the ZenML product landing.
+    // the ZenML product landing. Every blog surface's opening shader band
+    // (labs.band, shared by the blog index's LabsHero, the category/tags/
+    // author hubs, and the post masthead in BlogLayout.astro) mounts one
+    // more client:visible instance as that route's one ambient island —
+    // one representative post and one hub page cover that mount here, per
+    // the same "one representative page per family" contract HubPagination
+    // uses below.
     island: "GrainBackdrop",
-    pages: ["index.html", "product/zenml.html"],
+    pages: [
+      "index.html",
+      "product/zenml.html",
+      "blog.html",
+      "blog/agents-are-not-microservices.html",
+      "category/llmops.html",
+    ],
   },
   { island: "RoiCalculator", pages: ["roi-calculator.html"] },
   {
@@ -488,12 +500,21 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   { island: "IntegrationsIndex", pages: ["integrations.html"] },
   { island: "BlogIndex", pages: ["blog.html"] },
   { island: "ProTestimonialCarousel", pages: ["pro.html"] },
-  // BlogSearch lives inside CategoryBar's hub/back-link modes, not its
-  // breadcrumb mode — so it was never on blog.html specifically, but it WAS
-  // reachable via CategoryBar there before the blog index migrated onto
-  // FilterIndex and retired CategoryBar (#249). category/[slug].astro still
-  // renders CategoryBar in back-link mode, so it's still covered.
-  { island: "BlogSearch", pages: ["category/llmops.html"] },
+  // CategoryBar/TagCloud/BlogSearch retired with the taxonomy step of the
+  // blog cutover (D2d) — the term hubs (tags/category/author) now render
+  // through PageHeader + TermHubEditorial/TermHubEntryIndex instead, and
+  // nothing imports BlogSearch any more (its search box lives directly on
+  // /blog via BlogIndex's own labs-skinned search field).
+  {
+    // One representative page per hub family, per the blog cutover's build
+    // contract — a paginated tag/category/author detail page each.
+    island: "HubPagination",
+    pages: [
+      "tags/agents.html",
+      "category/llmops.html",
+      "author/hamza-tahir.html",
+    ],
+  },
   // The Kitaru landing sections (KitaruGrain doubles as a plain subcomponent
   // inside the other islands, but the static Hero.astro, Cta.astro and the
   // _HighlightPanel shells rendered by Features.astro also mount it as its

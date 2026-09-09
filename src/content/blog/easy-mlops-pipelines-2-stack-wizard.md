@@ -19,12 +19,12 @@ tags:
 date: "2024-07-30T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bf750f71/66a897670e183fb455727490_wizard-deployments-min.png"
+  url: "https://assets.zenml.io/content/blog/easy-mlops-pipelines-2-stack-wizard/40e2f385/easy-mlops-pipelines-2-stack-wizard-cover.avif"
 seo:
   title: "Easy ML infrastructure for cloud MLOps pipelines - ZenML Blog"
   description: "Now you can easily connect AWS, GCP, and Azure cloud providers with ZenML directly with an easy wizard in the dashboard."
   canonical: "https://www.zenml.io/blog/easy-mlops-pipelines-2-stack-wizard"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9cd53ee4/66a897670e183fb455727490_wizard-deployments-min.png"
+  ogImage: "https://assets.zenml.io/content/blog/easy-mlops-pipelines-2-stack-wizard/97e54470/easy-mlops-pipelines-2-stack-wizard-cover.jpg"
   ogTitle: "Easy ML infrastructure for cloud MLOps pipelines - ZenML Blog"
   ogDescription: "Now you can easily connect AWS, GCP, and Azure cloud providers with ZenML directly with an easy wizard in the dashboard."
 ---

@@ -13,13 +13,13 @@ tags:
 date: "2026-06-01T00:00:00.000Z"
 readingTime: "8 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/claude-agent-sdk-durable-runtime/bd454895/kit-claude.avif"
+  url: "https://assets.zenml.io/content/blog/claude-agent-sdk-durable-runtime/b03dbb03/claude-agent-sdk-durable-runtime-cover.avif"
   alt: "Kitaru durable runtime around a Claude Agent SDK invocation"
 seo:
   title: "Don't make Claude do the same work twice - ZenML Blog"
   description: "Claude Agent SDK runs the agent loop. Kitaru adds the durable runtime around a completed invocation — checkpointed results, artifacts, replay boundaries, and waits."
   canonical: "https://www.zenml.io/blog/claude-agent-sdk-durable-runtime"
-  ogImage: "https://assets.zenml.io/content/blog/claude-agent-sdk-durable-runtime/3d194f26/kit-claude.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/claude-agent-sdk-durable-runtime/6118cee3/claude-agent-sdk-durable-runtime-cover.jpg"
 ---
 
 Claude Agent SDK gives you Claude Code's agent loop as a library. Claude can read files, edit code, run commands, use MCP servers, follow permissions, keep sessions, and work through a real task inside your application.

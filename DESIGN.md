@@ -52,6 +52,15 @@ Additional rules:
   first line of body text — whenever body size changes, the marker slot moves
   with it.
 
+- **Blog routes set the UI-text direction** (blog cutover, 2026-09): on
+  `/blog`, posts and the category/tag/author hubs, every UI label — meta
+  rows, filter rail, chips, table-of-contents, code-pane bars, table heads,
+  pagination — renders in Rethink Sans, sentence case, no letter-spacing.
+  Nudica Mono uppercase survives there only in the shared shell chrome
+  (floating nav, `LabsButton` pills, footer) and as the numbered-list marker
+  inside prose, which is a design mark rather than UI text. Other surfaces
+  keep the label voice above until their own cutover.
+
 ## Color usage
 
 - **Eyebrow color splits by surface**: the dark sage eyebrow color on light
@@ -76,13 +85,23 @@ Additional rules:
 
 ## Layout and structure
 
-- **The hex corner is a treatment, not a card** (#91). It is a fixed 80px
-  hexagon anchored to the box corner; it does not scale with the card. Any
-  card may take it regardless of content, with a minimum host box of
-  240×140px.
+- **The hex corner is a treatment, not a card** (#91). It is a fixed-size
+  hexagon anchored to the box corner; it does not scale with the card. At
+  rest it is tucked into the corner as a wedge (the 80px hexagon rotated
+  30°, mostly clipped by the card's radius) with a reduced arrow centred in
+  the visible part; on hover it walks into the card at half size (~40px),
+  upright, the arrow full size at its centre, and the card flips to the
+  dark surface (blog cutover, 2026-09). Any card may take it regardless of
+  content, with a minimum host box of 240×140px.
 - **Footer**: the dark-band footer ships on every route. The giant-wordmark
-  footer is an opt-in variant for home/landing pages only (#57) — never the
-  site default.
+  band is retired (blog cutover D4) — there is no variant that renders it;
+  every route gets the tagline + link columns + legal row.
+- **The floating nav sits on the content column** (blog cutover): the pill
+  hangs off the same centered container as every section, so the logo's left
+  edge lines up with the page's headings and the signup pill's right edge
+  with the container's right edge; the pill's border and fill extend past
+  the column by exactly its own inner padding. Below the `lg` breakpoint the
+  pill stays flush inside the gutter.
 - **Input shells split by context**: labelled form fields are 10px-radius
   rectangles; inline single-field captures (newsletter, waitlist) are pills.
 - Interactive targets are at least 44px on mobile, using invisible hit-slop
@@ -93,6 +112,31 @@ Additional rules:
   smell caught in review.
 - Clickable elements always get `cursor-pointer` — browsers do not default
   `<button>` to it.
+
+- **Interior-page header band** (blog cutover): every blog route — the
+  index, each hub and the post masthead — opens on the short shader band
+  (`LabsBand` size `short`: the grain backdrop at roughly 40% of the
+  viewport, nav clearance built in). The band ends in a 1px `--color-border`
+  hairline and the first content element starts 64px below it on desktop,
+  40px on mobile; nothing overlaps the band. A Kitaru post's band, and the
+  Kitaru category and tag hubs, run a slower, quieter cut of the Kitaru product
+  page's grain palette instead of the Labs one (the band's `grain` axis); every other hub and the
+  index stay on the Labs grain. The landing
+  size stays the full-height opener of `/` and the product pages.
+- **Closing band on every blog route**: the index, every post and every hub
+  end on the dark sage close band (one headline, one pill, the newsletter
+  card) with the same `client:idle` grain backdrop as the homepage close —
+  the header band is the page's one always-on ambient island, the close
+  only needs to be present.
+- **Kitaru posts carry the Kitaru accent**: a post whose category or tags
+  include `kitaru` sets `data-product="kitaru"` and re-points the
+  `--blog-accent*` custom properties (default sage) to the orange ramp —
+  links, chips, the table-of-contents marker, card hover border — and shows
+  a "Kitaru" pill in its meta row and on its cards (the pill stands in for
+  the category link when the category is itself Kitaru). The accent
+  travels through those variables only; no component hard-codes orange for
+  a post. The "Continue reading" block is exempt: its band, halos and
+  hexagons stay sage on every post.
 
 ## Responsive contract
 
@@ -121,6 +165,22 @@ by wave, not in one sweep.
 **Artboard mapping**: design artboards are authored at 375 and 1440. A 1440
 artboard reflows into the wider built container — the layout grows, gutters
 and columns absorb the extra width — it is never scaled up.
+
+**Every cutover builds from the approved design as reusable, registered,
+content-prop components** — never a one-off page-local restyle. A cutover
+extends the shared template families (`page-header.*`, `term-hub.*`,
+`data-display.*`, …) with new arrangements/skins where the approved design
+calls for one, rather than hand-rolling page markup that duplicates what a
+registered component already owns.
+
+**Reading measure** (blog cutover): the article body is a 768px prose
+column, 20px/32px body copy, with a 224px sticky table-of-contents rail
+(40px gap between them) — this is the site's one long-form reading lane.
+Code panes are the one block allowed to run past the column edge, to the
+lane's outer boundary, per the code-pane rule above. Fenced code renders in
+the dark sage Shiki theme on every Markdown surface, not only the blog
+(2026-09-09 ruling); the code-pane chrome (language bar, copy button) is
+blog-only until the other surfaces are cut over.
 
 One named default per content shape, chosen so nobody has to invent a menu
 of options at build time:
@@ -194,6 +254,13 @@ container scrolls inside its own region.
   permitted and counts as a motion moment. Count-up numerals are permitted
   only where the final value is server-rendered, so the number is correct
   with JS off and under reduced motion.
+
+- **Nav dropdowns open on hover** (desktop pointers only, with a short
+  grace delay so a diagonal move into the panel does not close it); click
+  and keyboard open them too and `aria-expanded` always tells the truth.
+  Rows reveal as a short stagger — the panel fades and lifts in over
+  ~180ms, each row follows ~45ms after the previous — and close at once.
+  Under reduced motion the panel appears instantly.
 
 ## Content and data conventions
 

@@ -21,12 +21,14 @@ tags:
 date: "2025-12-10T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1b88c4de/6938f0a23e662c513aaf288d_neptune-ai-vs-mlflow.png"
+  url: "https://assets.zenml.io/content/blog/neptune-ai-vs-mlflow/bade935a/neptune-ai-vs-mlflow-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/neptune-ai-vs-mlflow/bade935a/neptune-ai-vs-mlflow-cover.avif"
 seo:
   title: "Neptune AI vs MLflow vs ZenML: Which ML Experiment Tracking Stack Should You Use? - ZenML Blog"
   description: "In this Neptune AI vs MLflow vs ZenML article, we explain the difference between the three platforms by comparing their features, integrations, and pricing."
   canonical: "https://www.zenml.io/blog/neptune-ai-vs-mlflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1b88c4de/6938f0a23e662c513aaf288d_neptune-ai-vs-mlflow.png"
+  ogImage: "https://assets.zenml.io/content/blog/neptune-ai-vs-mlflow/7d51e943/neptune-ai-vs-mlflow-cover.jpg"
   ogTitle: "Neptune AI vs MLflow vs ZenML: Which ML Experiment Tracking Stack Should You Use? - ZenML Blog"
   ogDescription: "In this Neptune AI vs MLflow vs ZenML article, we explain the difference between the three platforms by comparing their features, integrations, and pricing."
 ---

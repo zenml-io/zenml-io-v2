@@ -20,12 +20,12 @@ tags:
 date: "2020-06-26T00:00:00.000Z"
 readingTime: 5 Mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79950cfa/65316d2bc051413294285f1e_mlopsworldthumbnail.png"
+  url: "https://assets.zenml.io/content/blog/why-ml-in-production-is-still-broken-mlops2020/302b881d/why-ml-in-production-is-still-broken-mlops2020-cover.avif"
 seo:
   title: "Why ML in production is (still) broken - [#MLOps2020] - ZenML Blog"
   description: "The MLOps movement and associated new tooling is starting to help tackle the very real technical debt problems associated with machine learning in production."
   canonical: "https://www.zenml.io/blog/why-ml-in-production-is-still-broken-mlops2020"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79950cfa/65316d2bc051413294285f1e_mlopsworldthumbnail.png"
+  ogImage: "https://assets.zenml.io/content/blog/why-ml-in-production-is-still-broken-mlops2020/4ff8bb74/why-ml-in-production-is-still-broken-mlops2020-cover.jpg"
   ogTitle: "Why ML in production is (still) broken - [#MLOps2020] - ZenML Blog"
   ogDescription: "The MLOps movement and associated new tooling is starting to help tackle the very real technical debt problems associated with machine learning in production."
 ---

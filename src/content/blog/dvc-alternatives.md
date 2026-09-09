@@ -21,12 +21,14 @@ tags:
 date: "2026-01-30T00:00:00.000Z"
 readingTime: 18 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0deaa32a/697c44239bdfebc44043e6f7_dvc-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/dvc-alternatives/e73c7fd2/dvc-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/dvc-alternatives/e73c7fd2/dvc-alternatives-cover.avif"
 seo:
   title: "The Top 8 DVC Alternatives to Manage Large Datasets for Your ML Projects - ZenML Blog"
   description: "In this article, you learn about the best DVC alternatives that help you manage large datasets for your ML projects."
   canonical: "https://www.zenml.io/blog/dvc-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0deaa32a/697c44239bdfebc44043e6f7_dvc-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/dvc-alternatives/2a4318e2/dvc-alternatives-cover.jpg"
   ogTitle: "The Top 8 DVC Alternatives to Manage Large Datasets for Your ML Projects - ZenML Blog"
   ogDescription: "In this article, you learn about the best DVC alternatives that help you manage large datasets for your ML projects."
 ---

@@ -97,7 +97,7 @@ export default function LlmopsIndex({
         >
           <a
             href={`/llmops-database/${item.slug}`}
-            class={`font-semibold text-gray-900 group-hover:text-primary-600 line-clamp-2 ${FOCUS_RING}`}
+            class={`font-semibold text-gray-900 group-hover:text-(--color-sage-700) line-clamp-2 ${FOCUS_RING}`}
             onClick={(e: MouseEvent) => e.stopPropagation()}
           >
             {item.title}
@@ -118,7 +118,7 @@ export default function LlmopsIndex({
                 <span aria-hidden="true">&middot;</span>
                 <button
                   type="button"
-                  class={`rounded-full bg-zenml-50 px-2 py-0.5 text-zenml-700 transition-colors hover:bg-zenml-100 ${FOCUS_RING}`}
+                  class={`rounded-full bg-(--color-sage-100) px-2 py-0.5 text-(--color-sage-900) transition-colors hover:bg-(--color-sage-200) ${FOCUS_RING}`}
                   onClick={(e: MouseEvent) => {
                     e.stopPropagation();
                     ctx.selectSingle(item.industryTags as string);
@@ -158,7 +158,7 @@ export default function LlmopsIndex({
                     }}
                     class={`rounded-full px-2 py-0.5 text-xs transition-colors ${FOCUS_RING} ${
                       isSelected
-                        ? "bg-primary-600 text-white"
+                        ? "bg-(--color-sage-100) text-(--color-sage-900)"
                         : "bg-blue-50 text-blue-700 hover:bg-blue-100"
                     }`}
                   >

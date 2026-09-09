@@ -21,12 +21,14 @@ tags:
 date: "2025-12-08T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f381babd/69365b26c5058ddb8a004123_neptune-ai-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/neptune-ai-alternatives/a68dd62a/neptune-ai-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/neptune-ai-alternatives/a68dd62a/neptune-ai-alternatives-cover.avif"
 seo:
   title: "8 Best Neptune AI Alternatives to Track Your ML Experiments Better - ZenML Blog"
   description: "In this article, you will learn about the best Neptune AI alternatives to help you track your ML experiments better."
   canonical: "https://www.zenml.io/blog/neptune-ai-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f381babd/69365b26c5058ddb8a004123_neptune-ai-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/neptune-ai-alternatives/febfb47e/neptune-ai-alternatives-cover.jpg"
   ogTitle: "8 Best Neptune AI Alternatives to Track Your ML Experiments Better - ZenML Blog"
   ogDescription: "In this article, you will learn about the best Neptune AI alternatives to help you track your ML experiments better."
 ---

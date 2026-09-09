@@ -20,11 +20,11 @@ tags:
 date: "2024-07-12T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c1b1eb9/668ea9a1c8c67436ee659924_zenml-kubernetes-kubeflow-cover.webp"
+  url: "https://assets.zenml.io/content/blog/zenml-kubernetes-kubeflow/738212cb/zenml-kubernetes-kubeflow-cover.avif"
 seo:
   title: "ZenML + Kubernetes + Kubeflow: Leveraging your MLOps infrastructure - ZenML Blog"
   canonical: "https://www.zenml.io/blog/zenml-kubernetes-kubeflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/46c2a567/668ea9a1c8c67436ee659924_zenml-kubernetes-kubeflow-cover.webp"
+  ogImage: "https://assets.zenml.io/content/blog/zenml-kubernetes-kubeflow/4517e176/zenml-kubernetes-kubeflow-cover.jpg"
   ogTitle: "ZenML + Kubernetes + Kubeflow: Leveraging your MLOps infrastructure - ZenML Blog"
 ---
 

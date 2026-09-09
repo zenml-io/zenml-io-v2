@@ -20,12 +20,12 @@ tags:
 date: "2025-06-22T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3dece063/6981cf3948be69340f5c1484_6981ce8f98d163b6c78c0eaa_langgraph-pricing.avif"
+  url: "https://assets.zenml.io/content/blog/langgraph-pricing/0c9d9f2e/langgraph-pricing-cover.avif"
 seo:
   title: "LangGraph Pricing Guide: How Much Does It Cost? - ZenML Blog"
   description: "In this LangGraph pricing guide, we discuss the costs, features, and value LangGraph provides to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/langgraph-pricing"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3dece063/6981cf3948be69340f5c1484_6981ce8f98d163b6c78c0eaa_langgraph-pricing.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/langgraph-pricing/68368c28/langgraph-pricing-cover.jpg"
   ogTitle: "LangGraph Pricing Guide: How Much Does It Cost? - ZenML Blog"
   ogDescription: "In this LangGraph pricing guide, we discuss the costs, features, and value LangGraph provides to help you decide if it’s the right investment for your business."
 ---

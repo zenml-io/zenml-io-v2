@@ -15,7 +15,7 @@ interface Props {
 const { content } = Astro.props;
 ---
 
-<section class="relative overflow-hidden bg-(--color-sage-900) px-gutter pt-24 pb-20 text-(--color-cream-50) md:pt-44 md:pb-40">
+<section class="relative overflow-hidden bg-(--color-sage-900) pt-24 pb-20 text-(--color-cream-50) md:pt-44 md:pb-40">
   {
     /*
       client:idle on purpose: the hero shader (LabsHero) is the page's one
@@ -30,7 +30,7 @@ const { content } = Astro.props;
     class="absolute inset-0 opacity-90"
   />
 
-  <div class="relative mx-auto max-w-content">
+  <div class="relative mx-auto max-w-content px-gutter">
     <h2 class="font-display text-[44px] leading-[48px] text-(--color-cream-50) md:text-[72px] md:leading-[78px]">
       {content.headlineLines[0]}
       <br />

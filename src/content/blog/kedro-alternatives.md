@@ -21,12 +21,14 @@ tags:
 date: "2025-07-07T00:00:00.000Z"
 readingTime: 20 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/93977529/686b6bd7426b1f78f21bacf5_kedro-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/kedro-alternatives/da7e6c2a/kedro-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/kedro-alternatives/da7e6c2a/kedro-alternatives-cover.avif"
 seo:
   title: "9 Best Kedro Alternatives to Build Production-Ready Data Science Pipelines - ZenML Blog"
   description: "Discover the best Kedro alternatives to build production-grade data science pipelines."
   canonical: "https://www.zenml.io/blog/kedro-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/93977529/686b6bd7426b1f78f21bacf5_kedro-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/kedro-alternatives/e6467057/kedro-alternatives-cover.jpg"
   ogTitle: "9 Best Kedro Alternatives to Build Production-Ready Data Science Pipelines - ZenML Blog"
   ogDescription: "Discover the best Kedro alternatives to build production-grade data science pipelines."
 ---

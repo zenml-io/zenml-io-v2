@@ -119,39 +119,80 @@ for consolidation into the registry.
 
 ## Blog
 
+The whole blog surface (index, post, and the three taxonomy hubs below)
+renders in the ZenML Labs shell — `app="labs"`, `surface="ml"` — as of the
+2026-09 blog cutover. UI text on every blog route (breadcrumb, meta rows,
+chips, TOC, facet-rail headers/counts, results count, sort, pagination,
+code-pane bar, hub headers) is Rethink Sans in sentence case, not the
+Nudica-label convention the rest of the site uses.
+
 ### Blog index
 **Routes** — `/blog` (one page).
-**Layout** — `BaseLayout`.
-**Surface** — `ml`.
-**Sequence** — `PageHeader`, then the `BlogIndex` filterable-index island
-(facet rail for category + tags, search box, client-side pagination) with the
-first page of post cards server-rendered as real HTML for crawlers.
+**Layout** — `BaseLayout` (`app="labs"`, `surface="ml"`).
+**Sequence** — a page header (`h1` + exact main-feed post count + the page's
+own SEO description as its dek), then the `BlogIndex` filterable-index
+island (facet rail for category + tags, `⌘K` search, client-side
+pagination) with the first page of post cards — `labs.blog-card`
+(`BlogCard.astro`/`BlogCard.tsx`) — server-rendered as real HTML for
+crawlers.
 **Required data** — `blog` collection (`getMainFeedPosts` — excludes drafts and
 the "discovery" tag corpus); `categories` collection (`getCategoryCounts`);
 `tags` collection (`getTagCounts`); `lib/blog` (`buildBlogSearchIndex`,
 `PAGE_SIZE`).
-**Buildable today** — partial. `PageHeader` for the hero and the
-`filterable-index.shell` template (`DataFilterIndex`) for the whole
-filter/search/pagination body are both registered — this page is mostly
-composition. The only unregistered piece is the page's own copy and layout
-wrapper.
+**Buildable today** — yes. `PageHeader` for the hero and the
+`filterable-index.shell` template (`DataFilterIndex`, skinned `"labs"` —
+class strings only, see `src/components/islands/filter-index/labsSkin.ts`)
+for the whole filter/search/pagination body are both registered; the card
+grid renders `labs.blog-card`.
 
 ### Blog post detail
-**Routes** — `/blog/<slug>` — one per published post (318 non-draft entries in
-the `blog` collection).
-**Layout** — `BlogLayout` (delegates to `BaseLayout`, forwards an optional
-`surface` that defaults to `"ml"`; this page doesn't pass one explicitly).
-**Surface** — `ml` (via `BlogLayout` default).
-**Sequence** — `BlogLayout` renders the post body, a table of contents
-(`BlogTOC`), a category bar, prev/next navigation, a related-posts rail, a
-sidebar CTA, and a final CTA band (`FeaturesHubCTA`), then this page
-appends a tags section using `Badge`.
+**Routes** — `/blog/<slug>` — one per published post.
+**Layout** — `BlogLayout` (delegates to `BaseLayout`, `app="labs"`, forwards
+an optional `surface` that defaults to `"ml"`; this page doesn't pass one
+explicitly).
+**Sequence** — `BlogLayout` renders the masthead (breadcrumb + h1 + dek +
+meta row), an optional 16:9 hero, the article body (768px prose column +
+a sticky 224px table of contents, `BlogTOC`), a tag-chip row, an author
+card, prev/next navigation, and a "Continue reading" rail using the
+hex-corner card (`card.hex-corner`/`mark.hex-corner`, `RelatedRail`'s
+`hex-card` item kind) — the pre-cutover category bar, sidebar CTA, and
+final CTA band are gone.
 **Required data** — `blog` collection; `authors`, `categories`, `tags`
 collections (via `getEntry`); `lib/blog` (`getAllPublishedPosts`,
 `getPrevNext`, `getRelatedPosts`, `resolveAuthor`).
-**Buildable today** — partial. `BlogLayout` uses the registry's `RelatedRail`
-for the related-posts section; the table of contents, category bar, and
-sidebar CTA are blog-specific components with no registry equivalent.
+**Buildable today** — yes. `BlogLayout` uses the registry's `RelatedRail`
+for the related-posts section (`hex-card` kind) and the registered
+`Breadcrumb` primitive for the masthead crumb (its JSON-LD ships alongside
+the page's `Article` JSON-LD); the table of contents and tag/author blocks
+are blog-specific components with no registry equivalent.
+
+### Taxonomy hubs (tags, categories, authors)
+**Routes** — `/tags`, `/tags/<slug>`, `/category`, `/category/<slug>`,
+`/author`, `/author/<slug>`.
+**Layout** — `BaseLayout` (`app="labs"`, `surface="ml"`).
+**Sequence** — every route opens with `PageHeader`'s `with-breadcrumb`
+arrangement (`Blog › <family> [› term]`, `TERM_HUB_HEADER_INTRO` preset);
+the author *detail* page uses `split-masthead` instead (avatar/bio/links,
+with the same breadcrumb rendered above it). The three index hubs (`/tags`,
+`/category`, `/author`) then list every term as `data-display.stacked-list`
+rows (`skin="labs"`, name + post count). The detail pages split by family
+per Zuri's ruling: `/tags/<slug>` renders `term-hub.entry-index`'s `items`
+arrangement (`skin="labs"` stacked rows — title, excerpt, up to 3 sibling-
+tag chips, a fixed author/year lane) plus an "Other tags" strip;
+`/category/<slug>` and `/author/<slug>` render `term-hub.editorial`'s card
+grid (`labs.blog-card`) plus an "Other categories"/"Other authors" strip.
+Every detail page server-renders the full list of matching posts (SEO) and
+paginates 12/page client-side via the `HubPagination` island, which only
+toggles pre-rendered `hidden`/`data-page` markers — no fetch, no
+re-render.
+**Required data** — `blog`, `tags`, `categories`, `authors` collections;
+`lib/blog` (`PAGE_SIZE`, `getTagCounts`, `getCategoryCounts`,
+`resolveAuthor`); `lib/relatedIndex` (`filterUsedTerms` — a zero-count term
+never builds a detail page, so the index hubs never link to one).
+**Buildable today** — yes. `page-header.with-breadcrumb`/`split-masthead`,
+`term-hub.editorial`, `term-hub.entry-index`, and `data-display.stacked-list`
+are all registered; `HubPagination` is a small unregistered island (islands
+aren't template-registry entries).
 
 ---
 

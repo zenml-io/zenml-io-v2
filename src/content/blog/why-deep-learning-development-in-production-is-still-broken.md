@@ -22,12 +22,12 @@ tags:
 date: "2020-05-01T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/43905192/652eb07501bce8424444bd0e_dl_is_broken_01.png"
+  url: "https://assets.zenml.io/content/blog/why-deep-learning-development-in-production-is-still-broken/fe0e5afd/why-deep-learning-development-in-production-is-still-broken-cover.avif"
 seo:
   title: "Why deep learning development in production is (still) broken - ZenML Blog"
   description: "Software engineering best practices have not been brought into the machine learning space, with the side-effect that there is a great deal of technical debt in these code bases."
   canonical: "https://www.zenml.io/blog/why-deep-learning-development-in-production-is-still-broken"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ce09f798/652eb07501bce8424444bd0e_dl_is_broken_01.png"
+  ogImage: "https://assets.zenml.io/content/blog/why-deep-learning-development-in-production-is-still-broken/574ac5fc/why-deep-learning-development-in-production-is-still-broken-cover.jpg"
   ogTitle: "Why deep learning development in production is (still) broken - ZenML Blog"
   ogDescription: "Software engineering best practices have not been brought into the machine learning space, with the side-effect that there is a great deal of technical debt in these code bases."
 ---

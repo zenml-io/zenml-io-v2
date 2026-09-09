@@ -3,8 +3,10 @@
  * TermHubEntryIndex — the database-side term-page listing (issue #249).
  *
  * Covers `/llmops-tags/[slug]`, `/mlops-tags/[slug]`, and
- * `/industry-tags/[slug]`. Renders only the listing — the page keeps its
- * own container and header exactly as before.
+ * `/industry-tags/[slug]` (`cards` arrangement), plus `/tags/[slug]` (blog
+ * cutover, D2d ruling — `items` arrangement, `skin="labs"`). Renders only
+ * the listing — the page keeps its own container and header exactly as
+ * before.
  *
  * Two live pieces, both collapsing on absence:
  *   - `crossLinks` — the "Common industries" / "Common LLMOps tags" /
@@ -23,10 +25,11 @@
  *     lg:grid-cols-3`, title + company/meta line + summary + up to 4 tag
  *     badges + overflow badge) every live route renders today. This is the
  *     parity arrangement — byte-faithful to the pre-migration markup.
- *   - `items` — `data-display.stacked-list` rows (title/meta/count only,
- *     no summary, no per-row tag chips). This is the new-brand/demo
- *     arrangement; no live route uses it yet, so it only appears on
- *     `/styleguide` today.
+ *   - `items` — `data-display.stacked-list` rows. `/styleguide`'s demo
+ *     stays on `skin="default"` (title/meta/count only, no summary, no
+ *     per-row tag chips); `/tags/[slug]` is the first live caller, on
+ *     `skin="labs"` (excerpt + sibling-tag chips + a fixed author/year
+ *     lane — see `StackedList`'s own doc comment).
  *
  * `emptyHeading` renders only when every section is empty combined —
  * matches the live pages' single catch-all zero state.
@@ -97,9 +100,28 @@ interface Props {
   sections: readonly TermHubEntrySection[];
   /** e.g. "No LLMOps entries with this tag yet." — shown only when every section is empty. */
   emptyHeading: string;
+  /**
+   * Forwarded to `StackedList` for every `items` section (blog cutover,
+   * `/tags/[slug]`). Default keeps the pre-cutover `StackedList` look for
+   * the database term hubs' demo path untouched.
+   */
+  skin?: "default" | "labs";
+  /** Forwarded to `StackedList` — 12/page client-side pagination markers. */
+  paginate?: boolean;
+  pageSize?: number;
+  /** id for `HubPagination` to scope its `[data-page]` query to; forwarded to the single `items` section's `StackedList`. */
+  id?: string;
 }
 
-const { crossLinks = [], sections, emptyHeading } = Astro.props;
+const {
+  crossLinks = [],
+  sections,
+  emptyHeading,
+  skin = "default",
+  paginate = false,
+  pageSize,
+  id,
+} = Astro.props;
 
 function sectionCount(section: TermHubEntrySection): number {
   return section.cards?.length ?? section.items?.length ?? 0;
@@ -210,7 +232,13 @@ const totalEntries = sections.reduce((sum, s) => sum + sectionCount(s), 0);
             })}
           </div>
         ) : (
-          <StackedList items={section.items} />
+          <StackedList
+            items={section.items}
+            skin={skin}
+            paginate={paginate}
+            pageSize={pageSize}
+            id={id}
+          />
         )}
       </section>
     )

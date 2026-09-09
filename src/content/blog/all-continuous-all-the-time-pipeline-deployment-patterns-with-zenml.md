@@ -23,12 +23,12 @@ tags:
 date: "2022-05-11T00:00:00.000Z"
 readingTime: 12 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5e0bedf2/652fbc3bd0e8fecf25702048_ci-cd-zenml.png"
+  url: "https://assets.zenml.io/content/blog/all-continuous-all-the-time-pipeline-deployment-patterns-with-zenml/1d1ae5e2/all-continuous-all-the-time-pipeline-deployment-patterns-with-zenml-cover.avif"
 seo:
   title: "All Continuous, All The Time: Pipeline Deployment Patterns with ZenML - ZenML Blog"
   description: "Connecting model training pipelines to deploying models in production is seen as a difficult milestone on the way to achieving MLOps maturity for an organization. ZenML rises to the challenge and introduces a novel approach to continuous model deployment that renders a smooth transition from experimentation to production."
   canonical: "https://www.zenml.io/blog/all-continuous-all-the-time-pipeline-deployment-patterns-with-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c991e4c0/652fbc3bd0e8fecf25702048_ci-cd-zenml.png"
+  ogImage: "https://assets.zenml.io/content/blog/all-continuous-all-the-time-pipeline-deployment-patterns-with-zenml/15ec36a3/all-continuous-all-the-time-pipeline-deployment-patterns-with-zenml-cover.jpg"
   ogTitle: "All Continuous, All The Time: Pipeline Deployment Patterns with ZenML - ZenML Blog"
   ogDescription: "Connecting model training pipelines to deploying models in production is seen as a difficult milestone on the way to achieving MLOps maturity for an organization. ZenML rises to the challenge and introduces a novel approach to continuous model deployment that renders a smooth transition from experimentation to production."
 ---

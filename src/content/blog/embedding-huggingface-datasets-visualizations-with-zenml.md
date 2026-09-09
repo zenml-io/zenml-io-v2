@@ -19,12 +19,12 @@ tags:
 date: "2024-07-16T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f1cc8836/66962f27b0cc58597264ea77_hf-zenml.png"
+  url: "https://assets.zenml.io/content/blog/embedding-huggingface-datasets-visualizations-with-zenml/e8113723/embedding-huggingface-datasets-visualizations-with-zenml-cover.avif"
 seo:
   title: "🤗 Embedding HuggingFace datasets visualizations with ZenML - ZenML Blog"
   description: "Shipping 🤗 datasets visualization embedded in the ZenML dashboard in a few hours"
   canonical: "https://www.zenml.io/blog/embedding-huggingface-datasets-visualizations-with-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f1d102aa/66962f27b0cc58597264ea77_hf-zenml.png"
+  ogImage: "https://assets.zenml.io/content/blog/embedding-huggingface-datasets-visualizations-with-zenml/4df0ae20/embedding-huggingface-datasets-visualizations-with-zenml-cover.jpg"
   ogTitle: "🤗 Embedding HuggingFace datasets visualizations with ZenML - ZenML Blog"
   ogDescription: "Shipping 🤗 datasets visualization embedded in the ZenML dashboard in a few hours"
 ---

@@ -21,12 +21,12 @@ tags:
 date: "2022-02-09T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7eb0c0dd/653004a88d0bd6e9c80afd8d_mlflow-logo.jpeg"
+  url: "https://assets.zenml.io/content/blog/how-to-improve-your-experimentation-workflows-with-mlflow-tracking-and-zenml/1e59c532/how-to-improve-your-experimentation-workflows-with-mlflow-tracking-and-zenml-cover.avif"
 seo:
   title: "How to improve your experimentation workflows with MLflow Tracking and ZenML - ZenML Blog"
   description: "Use MLflow Tracking to automatically ensure that you're capturing data, metadata and hyperparameters that contribute to how you are training your models. Use the UI interface to compare experiments, and let ZenML handle the boring setup details."
   canonical: "https://www.zenml.io/blog/how-to-improve-your-experimentation-workflows-with-mlflow-tracking-and-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/180f7d83/653004a88d0bd6e9c80afd8d_mlflow-logo.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/how-to-improve-your-experimentation-workflows-with-mlflow-tracking-and-zenml/85a627cd/how-to-improve-your-experimentation-workflows-with-mlflow-tracking-and-zenml-cover.jpg"
   ogTitle: "How to improve your experimentation workflows with MLflow Tracking and ZenML - ZenML Blog"
   ogDescription: "Use MLflow Tracking to automatically ensure that you're capturing data, metadata and hyperparameters that contribute to how you are training your models. Use the UI interface to compare experiments, and let ZenML handle the boring setup details."
 ---

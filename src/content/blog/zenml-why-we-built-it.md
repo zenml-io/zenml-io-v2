@@ -19,12 +19,12 @@ tags:
 date: "2021-12-14T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d24b2809/653176b483442a634b088148_svg-image-1__8_.svg"
+  url: "https://assets.zenml.io/content/blog/zenml-why-we-built-it/03da87ba/zenml-why-we-built-it-cover.avif"
 seo:
   title: "ZenML - Why we built it - ZenML Blog"
   description: "All the advantages that ZenML will bring you if you choose to use it to productionize your model development workflows."
   canonical: "https://www.zenml.io/blog/zenml-why-we-built-it"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8bc84b20/653176b483442a634b088148_svg-image-1__8_.svg"
+  ogImage: "https://assets.zenml.io/content/blog/zenml-why-we-built-it/82d422ef/zenml-why-we-built-it-cover.jpg"
   ogTitle: "ZenML - Why we built it - ZenML Blog"
   ogDescription: "All the advantages that ZenML will bring you if you choose to use it to productionize your model development workflows."
 ---

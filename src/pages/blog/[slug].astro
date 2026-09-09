@@ -6,10 +6,10 @@
  * Resolves author, category, tags, and computes prev/next + related posts.
  */
 import { getEntry, render } from "astro:content";
-import Badge from "../../components/Badge.astro";
 import BlogLayout from "../../layouts/BlogLayout.astro";
 import {
   getAllPublishedPosts,
+  getBlogProduct,
   getMainFeedPosts,
   getPrevNext,
   getRelatedPosts,
@@ -84,12 +84,15 @@ const ogImage = post.data.seo?.ogImage || post.data.mainImage?.url;
   postTitle={post.data.title}
   dek={post.data.seo?.description}
   date={post.data.date}
+  product={getBlogProduct(post)}
   author={author}
   category={categoryEntry?.data.name}
   categorySlug={categoryEntry?.data.slug}
   readingTime={post.data.readingTime}
   mainImage={post.data.mainImage}
+  featuredImage={post.data.featuredImage}
   headings={headings}
+  tags={tags}
   prev={prev ? { title: prev.data.title, href: `/blog/${prev.data.slug}` } : undefined}
   next={next ? { title: next.data.title, href: `/blog/${next.data.slug}` } : undefined}
   relatedPosts={related.map((r) => {
@@ -105,21 +108,10 @@ const ogImage = post.data.seo?.ogImage || post.data.mainImage?.url;
       readingTime: r.data.readingTime,
       categoryName: rCat?.name,
       categorySlug: rCat?.slug,
+      date: r.data.date,
+      product: getBlogProduct(r),
     };
   })}
 >
   <Content />
-
-  {/* Tags section */}
-  {tags.length > 0 && (
-    <div class="mt-10 border-t border-gray-200 pt-6">
-      <div class="flex flex-wrap gap-2">
-        {tags.map((tag) => (
-          <Badge href={`/tags/${tag.slug}`} variant="gray">
-            {tag.name}
-          </Badge>
-        ))}
-      </div>
-    </div>
-  )}
 </BlogLayout>

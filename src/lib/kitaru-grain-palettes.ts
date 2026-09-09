@@ -40,10 +40,26 @@ const dark: KitaruGrainConfig = {
   blend: true,
 };
 
+// The blog's Kitaru bands (a Kitaru post's masthead, the Kitaru category and
+// tag hubs) run the light wash slower and quieter than the product landing:
+// text sits directly on it and the band is short, so the motion should read
+// as atmosphere, not as the hero moment. Same palette family, lower speed and
+// noise, softer blob alphas, and the orange-300 pop swapped for orange-100.
+const blog: KitaruGrainConfig = {
+  ...light,
+  shaderColors: ["#FAD3B8", "#FBE8DB", "#FAD3B8", "#FCF7F2"],
+  blobA: "#FBE8DBB3",
+  blobB: "#FAD3B899",
+  speed: 0.7,
+  scale: 1.4,
+  noise: 0.35,
+};
+
 export const KITARU_GRAIN = {
   hero: light,
   dark,
   card: light,
+  blog,
 } satisfies Record<string, KitaruGrainConfig>;
 
 export type KitaruGrainVariant = keyof typeof KITARU_GRAIN;

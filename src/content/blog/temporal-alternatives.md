@@ -21,13 +21,16 @@ tags:
 date: "2025-12-17T00:00:00.000Z"
 readingTime: 22 mins
 mainImage:
-  url: "https://assets.zenml.io/content/blog/31fffb10/temporal-alternatives-hero.avif"
+  url: "https://assets.zenml.io/content/blog/temporal-alternatives/cb5effc7/temporal-alternatives-cover.avif"
+  alt: "ZenML blog cover comparing Temporal with the 9 best alternatives for durable execution and AI agent workflows, including Kitaru, Restate, DBOS, Inngest, Hatchet, Argo Workflows, Azure Durable Functions, and Camunda"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/temporal-alternatives/cb5effc7/temporal-alternatives-cover.avif"
   alt: "ZenML blog cover comparing Temporal with the 9 best alternatives for durable execution and AI agent workflows, including Kitaru, Restate, DBOS, Inngest, Hatchet, Argo Workflows, Azure Durable Functions, and Camunda"
 seo:
   title: "Temporal Alternatives: 9 Best for Durable Execution - ZenML Blog"
   description: "Compare the 9 best Temporal alternatives for durable execution and AI agent workflows, from Kitaru and Restate to DBOS, Inngest, Hatchet, and more."
   canonical: "https://www.zenml.io/blog/temporal-alternatives"
-  ogImage: "https://assets.zenml.io/content/blog/1ad91e41/temporal-alternatives-hero.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/temporal-alternatives/012ad8e1/temporal-alternatives-cover.jpg"
   ogTitle: "I Tried and Tested the 9 Best Temporal Alternatives for Durable Execution and AI Agent Workflows"
   ogDescription: "Compare the 9 best Temporal alternatives for durable execution and AI agent workflows, from Kitaru and Restate to DBOS, Inngest, Hatchet, and more."
 ---

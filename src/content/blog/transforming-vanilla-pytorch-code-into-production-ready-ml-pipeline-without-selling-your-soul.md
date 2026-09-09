@@ -23,12 +23,12 @@ tags:
 date: "2022-10-27T00:00:00.000Z"
 readingTime: 24 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a0ba3c78/65316efcf9b3dff475f9db48_thumbnail__1_.gif"
+  url: "https://assets.zenml.io/content/blog/transforming-vanilla-pytorch-code-into-production-ready-ml-pipeline-without-selling-your-soul/6e93075b/transforming-vanilla-pytorch-code-into-production-ready-ml-pipeline-without-selling-your-soul-cover.avif"
 seo:
   title: "Transforming Vanilla PyTorch Code into Production Ready ML Pipeline - Without Selling Your Soul - ZenML Blog"
   description: "Transform quickstart PyTorch code as a ZenML pipeline and add experiment tracking and secrets manager component."
   canonical: "https://www.zenml.io/blog/transforming-vanilla-pytorch-code-into-production-ready-ml-pipeline-without-selling-your-soul"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2f1d63af/65316efcf9b3dff475f9db48_thumbnail__1_.gif"
+  ogImage: "https://assets.zenml.io/content/blog/transforming-vanilla-pytorch-code-into-production-ready-ml-pipeline-without-selling-your-soul/ef732182/transforming-vanilla-pytorch-code-into-production-ready-ml-pipeline-without-selling-your-soul-cover.jpg"
   ogTitle: "Transforming Vanilla PyTorch Code into Production Ready ML Pipeline - Without Selling Your Soul - ZenML Blog"
   ogDescription: "Transform quickstart PyTorch code as a ZenML pipeline and add experiment tracking and secrets manager component."
 ---

@@ -19,12 +19,12 @@ tags:
 date: "2024-07-23T00:00:00.000Z"
 readingTime: 10 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f53ec631/669fb2b6fad44465b4d445d3_iterate-fast.webp"
+  url: "https://assets.zenml.io/content/blog/iterate-fast/71b23587/iterate-fast-cover.avif"
 seo:
   title: "How to Iterate Fast with ZenML - ZenML Blog"
   description: "Learn how to leverage caching, parameterization, and smart infrastructure switching to iterate faster on machine learning projects while maintaining reproducibility."
   canonical: "https://www.zenml.io/blog/iterate-fast"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ce304f9/669fb2b6fad44465b4d445d3_iterate-fast.webp"
+  ogImage: "https://assets.zenml.io/content/blog/iterate-fast/6707393f/iterate-fast-cover.jpg"
   ogTitle: "How to Iterate Fast with ZenML - ZenML Blog"
   ogDescription: "Learn how to leverage caching, parameterization, and smart infrastructure switching to iterate faster on machine learning projects while maintaining reproducibility."
 ---

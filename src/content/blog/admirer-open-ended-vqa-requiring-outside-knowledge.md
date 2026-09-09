@@ -17,7 +17,9 @@ tags:
 date: "2022-12-23T00:00:00.000Z"
 readingTime: 4 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/44c2b325/652fb770a8476387ffe5715d_demo.png"
+  url: "https://assets.zenml.io/content/blog/admirer-open-ended-vqa-requiring-outside-knowledge/defdc582/admirer-open-ended-vqa-requiring-outside-knowledge-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/admirer-open-ended-vqa-requiring-outside-knowledge/c5c9c59c/admirer-open-ended-vqa-requiring-outside-knowledge-cover.jpg"
 ---
 
 **Last updated:** December 23, 2022.

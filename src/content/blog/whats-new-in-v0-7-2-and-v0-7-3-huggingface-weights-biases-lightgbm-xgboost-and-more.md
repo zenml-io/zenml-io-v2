@@ -17,7 +17,9 @@ tags:
 date: "2022-04-28T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/89107a6a/65316a8e2b6c16e639e3b1b4_balloons__2_.jpg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-7-2-and-v0-7-3-huggingface-weights-biases-lightgbm-xgboost-and-more/65527e4f/whats-new-in-v0-7-2-and-v0-7-3-huggingface-weights-biases-lightgbm-xgboost-and-more-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-7-2-and-v0-7-3-huggingface-weights-biases-lightgbm-xgboost-and-more/f5f7659e/whats-new-in-v0-7-2-and-v0-7-3-huggingface-weights-biases-lightgbm-xgboost-and-more-cover.jpg"
 ---
 
 **Last updated:** October 17, 2022.

@@ -21,12 +21,14 @@ tags:
 date: "2025-12-20T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/82c8458b/6946283cbcfc762a5032d252_airflow-vs-kubeflow.png"
+  url: "https://assets.zenml.io/content/blog/airflow-vs-kubeflow/7f8a36b4/airflow-vs-kubeflow-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/airflow-vs-kubeflow/7f8a36b4/airflow-vs-kubeflow-cover.avif"
 seo:
   title: "Airflow vs Kubeflow vs ZenML: Feature-by-Feature Comparison for Modern ML Teams - ZenML Blog"
   description: "An Airflow vs Kubeflow vs ZenML guide that does a feature-by-feature comparison."
   canonical: "https://www.zenml.io/blog/airflow-vs-kubeflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/82c8458b/6946283cbcfc762a5032d252_airflow-vs-kubeflow.png"
+  ogImage: "https://assets.zenml.io/content/blog/airflow-vs-kubeflow/0835e218/airflow-vs-kubeflow-cover.jpg"
   ogTitle: "Airflow vs Kubeflow vs ZenML: Feature-by-Feature Comparison for Modern ML Teams - ZenML Blog"
   ogDescription: "An Airflow vs Kubeflow vs ZenML guide that does a feature-by-feature comparison."
 ---

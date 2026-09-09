@@ -21,12 +21,14 @@ tags:
 date: "2025-09-19T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2440158f/6981d362e92aa039b696acfa_6981d2b52aa4c62721bf9950_google-adk-vs-langgraph.avif"
+  url: "https://assets.zenml.io/content/blog/google-adk-vs-langgraph/c3a656a7/google-adk-vs-langgraph-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/google-adk-vs-langgraph/c3a656a7/google-adk-vs-langgraph-cover.avif"
 seo:
   title: "Google ADK vs LangGraph: Which One Develops and Deploys AI Agents Better - ZenML Blog"
   description: "In this Google ADK vs LangGraph, we explain the difference between the two and conclude which one is the best to develop and deploy AI agents."
   canonical: "https://www.zenml.io/blog/google-adk-vs-langgraph"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2440158f/6981d362e92aa039b696acfa_6981d2b52aa4c62721bf9950_google-adk-vs-langgraph.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/google-adk-vs-langgraph/ce268dff/google-adk-vs-langgraph-cover.jpg"
   ogTitle: "Google ADK vs LangGraph: Which One Develops and Deploys AI Agents Better - ZenML Blog"
   ogDescription: "In this Google ADK vs LangGraph, we explain the difference between the two and conclude which one is the best to develop and deploy AI agents."
 ---

@@ -20,12 +20,14 @@ tags:
 date: "2025-12-23T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/365130de/694a32491795d50153d86a4f_clearml-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/clearml-alternatives/34183535/clearml-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/clearml-alternatives/34183535/clearml-alternatives-cover.avif"
 seo:
   title: "The Top 10 ClearML Alternatives for Experiment Tracking and Building ML Pipelines - ZenML Blog"
   description: "In this article, you will learn about the best ClearML alternatives for experiment tracking and building ML pipelines."
   canonical: "https://www.zenml.io/blog/clearml-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/365130de/694a32491795d50153d86a4f_clearml-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/clearml-alternatives/ba0125f7/clearml-alternatives-cover.jpg"
   ogTitle: "The Top 10 ClearML Alternatives for Experiment Tracking and Building ML Pipelines - ZenML Blog"
   ogDescription: "In this article, you will learn about the best ClearML alternatives for experiment tracking and building ML pipelines."
 ---

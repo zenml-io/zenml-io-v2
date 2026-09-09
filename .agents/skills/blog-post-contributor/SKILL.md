@@ -155,6 +155,8 @@ Continue content preparation and checks independent of the cover. Keep the post 
 
 `mainImage.url` is the AVIF, `seo.ogImage` is the JPEG sibling — never the same URL.
 
+`mainImage` is the cover only (cards, hubs, social, JSON-LD) and is never rendered inside the post. If the author wants the image shown in the post itself, add a `featuredImage:` block with the same shape (usually a copy of `mainImage`); comparison and "X vs Y" posts carry one by default, other posts do not.
+
 ### C3. Validate or create the author
 
 Check if the author exists in `src/content/authors/`:

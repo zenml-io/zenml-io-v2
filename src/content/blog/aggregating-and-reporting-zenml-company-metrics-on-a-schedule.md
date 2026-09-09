@@ -19,7 +19,9 @@ tags:
 date: "2022-02-15T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0e99d878/652fb7e6e34f977ffa6943ad_kpi.jpg"
+  url: "https://assets.zenml.io/content/blog/aggregating-and-reporting-zenml-company-metrics-on-a-schedule/903c7390/aggregating-and-reporting-zenml-company-metrics-on-a-schedule-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/aggregating-and-reporting-zenml-company-metrics-on-a-schedule/df17cca9/aggregating-and-reporting-zenml-company-metrics-on-a-schedule-cover.jpg"
 ---
 
 **Last updated:** October 17, 2022.

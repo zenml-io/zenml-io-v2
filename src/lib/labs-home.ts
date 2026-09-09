@@ -116,6 +116,13 @@ export const LABS_FOOTER = {
 /* Hero                                                                    */
 /* ---------------------------------------------------------------------- */
 
+/** Shape of the short opening band interior pages use (the blog index): one
+ * headline line, an optional deck, no pill — the page's own controls follow. */
+export interface LabsShortBandContent {
+  headline: string;
+  deck?: string;
+}
+
 /** Shape of an opening or closing band: two headline lines, a deck, one pill. */
 export interface LabsBandContent {
   /** Two lines, break kept deliberate. */

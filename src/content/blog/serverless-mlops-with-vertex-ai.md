@@ -20,12 +20,12 @@ tags:
 date: "2022-06-27T00:00:00.000Z"
 readingTime: 11 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3d53096b/653128dd93ba438c4d32e95b_VertexLogo.png"
+  url: "https://assets.zenml.io/content/blog/serverless-mlops-with-vertex-ai/e05e71cb/serverless-mlops-with-vertex-ai-cover.avif"
 seo:
   title: "Serverless MLOps with Vertex AI - ZenML Blog"
   description: "How ZenML lets you have the best of both worlds, serverless managed infrastructure without the vendor lock in."
   canonical: "https://www.zenml.io/blog/serverless-mlops-with-vertex-ai"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a281639e/653128dd93ba438c4d32e95b_VertexLogo.png"
+  ogImage: "https://assets.zenml.io/content/blog/serverless-mlops-with-vertex-ai/a5e5590b/serverless-mlops-with-vertex-ai-cover.jpg"
   ogTitle: "Serverless MLOps with Vertex AI - ZenML Blog"
   ogDescription: "How ZenML lets you have the best of both worlds, serverless managed infrastructure without the vendor lock in."
 ---

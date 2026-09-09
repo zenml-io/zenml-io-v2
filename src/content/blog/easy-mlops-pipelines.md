@@ -20,12 +20,12 @@ tags:
 date: "2024-07-10T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/45bdd3cd/668e3ebe04a81851b815076c_1-click-deployments.webp"
+  url: "https://assets.zenml.io/content/blog/easy-mlops-pipelines/9430cf83/easy-mlops-pipelines-cover.avif"
 seo:
   title: "Easy MLOps pipelines: 1-click deployments for AWS, GCP, and Azure - ZenML Blog"
   description: "Streamline your machine learning platform with ZenML. Learn how ZenML's 1-click cloud stack deployments simplify setting up MLOps pipelines on AWS, GCP, and Azure."
   canonical: "https://www.zenml.io/blog/easy-mlops-pipelines"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3a7188ef/668e3ebe04a81851b815076c_1-click-deployments.webp"
+  ogImage: "https://assets.zenml.io/content/blog/easy-mlops-pipelines/473f2f61/easy-mlops-pipelines-cover.jpg"
   ogTitle: "Easy MLOps pipelines: 1-click deployments for AWS, GCP, and Azure - ZenML Blog"
   ogDescription: "Streamline your machine learning platform with ZenML. Learn how ZenML's 1-click cloud stack deployments simplify setting up MLOps pipelines on AWS, GCP, and Azure."
 ---
