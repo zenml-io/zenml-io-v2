@@ -6,8 +6,9 @@
  * line ("AI orchestration, on the infra you choose"); registered company
  * assets are quoted verbatim or not at all; Kitaru is named as an entity
  * only; one headline, one deck, at most two pills per band, no helper lines.
- * Facts (install command, links, customer logos, case studies, feature-tab
- * screenshots) are imported from their canonical constants, never retyped.
+ * Facts (install command, links, customer logos, case studies) are imported
+ * from their canonical constants, never retyped; the feature tabs name their
+ * highlight figure by id and carry a descriptive alt for it.
  * CTA model (2026-09-08 rulings): "Start free" is the one signup label and
  * on this page it leads to the ZenML cloud app; the hero's secondary is a
  * ghost pill to the docs; no "Book a demo".

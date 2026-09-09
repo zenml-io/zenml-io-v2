@@ -104,7 +104,7 @@ const artifacts = [
     </g>
 
     {steps.map((s) => (
-      <g class="hl-in" style={`--hl-i: ${s.hlI}`} transform={`translate(${s.x} ${s.y})`}>
+      <g class={`hl-in${s.accent ? " hl-accent" : ""}`} style={`--hl-i: ${s.hlI}`} transform={`translate(${s.x} ${s.y})`}>
         <rect
           x="0.5"
           y="0.5"
