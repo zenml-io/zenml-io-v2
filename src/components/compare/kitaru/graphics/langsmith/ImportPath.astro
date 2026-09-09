@@ -1,0 +1,92 @@
+---
+/**
+ * Feature 2 - LangSmith stays the system of record; Kitaru takes a runnable copy.
+ *
+ * The bridge carries the importer id, which is the one thing the reader has to
+ * type. Accent belongs to the Kitaru column only.
+ */
+---
+
+<figure class="fig">
+  <div class="col col--source">
+    <span class="col-label">LangSmith</span>
+    <span class="col-sub">stays your system of record</span>
+    <div class="stack">
+      <div class="row">
+        <span class="mono">runs</span>
+        <span class="dim">LLM, tool, and chain runs</span>
+      </div>
+      <div class="row">
+        <span class="mono">threads</span>
+        <span class="dim">multi-turn conversations</span>
+      </div>
+      <div class="row row--ghost">
+        <span class="mono">experiments</span>
+        <span class="dim">target over a dataset</span>
+      </div>
+    </div>
+    <div class="worker">Nothing changes in production. Keep tracing as you do.</div>
+  </div>
+
+  <div class="bridge" aria-hidden="true">
+    <span class="bridge-cmd mono">kitaru/langsmith</span>
+    <svg viewBox="0 0 24 24" role="presentation">
+      <path d="M4 12 L20 12" />
+      <path d="M15 7 L20 12 L15 17" />
+    </svg>
+    <span class="bridge-note">built-in importer</span>
+  </div>
+
+  <div class="col col--kitaru">
+    <span class="col-label col-label--accent">Kitaru</span>
+    <span class="col-sub">takes a runnable copy</span>
+    <div class="stack">
+      <div class="row row--accent">
+        <span class="mono">sessions</span>
+        <span class="dim">runs grouped by thread id</span>
+      </div>
+      <div class="row row--accent">
+        <span class="mono">cohorts</span>
+        <span class="dim">the population, frozen</span>
+      </div>
+      <div class="row row--accent">
+        <span class="mono">experiments</span>
+        <span class="dim">code re-run, one thing changed</span>
+      </div>
+    </div>
+    <div class="worker">Bulk export, or --since, --until, and --trace-id against the API.</div>
+  </div>
+</figure>
+
+<style>
+  .fig { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; margin: 0; padding: 0; }
+  .col { border: 1px solid var(--color-border); border-radius: 12px; padding: 16px 16px 14px;
+    background: var(--color-surface); display: flex; flex-direction: column; align-self: stretch; }
+  .col--source { background: var(--color-surface-warm); }
+  .col--kitaru { border-color: var(--color-accent); }
+  .col-label { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--color-muted); }
+  .col-label--accent { color: var(--color-accent); }
+  .col-sub { font-size: 12px; color: var(--color-secondary); margin: 4px 0 14px; }
+  .stack { display: flex; flex-direction: column; gap: 8px; }
+  .row { display: flex; flex-direction: column; gap: 2px; padding: 9px 11px;
+    border: 1px solid var(--color-border-light); border-radius: 8px; background: var(--color-bg); }
+  .row--accent { border-color: var(--color-border-accent); }
+  .row--ghost { opacity: 0.55; }
+  .mono { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--color-primary); }
+  .row--accent .mono { color: var(--color-accent-deep); }
+  .dim { font-size: 10.5px; line-height: 1.45; color: var(--color-secondary); }
+  .bridge { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 128px; }
+  .bridge-cmd { font-size: 10px; font-weight: 700; color: var(--color-accent); text-align: center; }
+  .bridge svg { width: 40px; height: 24px; fill: none; stroke: var(--color-accent); stroke-width: 1.4;
+    stroke-linecap: round; stroke-linejoin: round; }
+  .bridge-note { font-size: 10px; color: var(--color-muted); text-align: center; }
+  .worker { margin-top: auto; padding-top: 12px; font-size: 10.5px; line-height: 1.45; color: var(--color-muted); }
+  .worker::before { content: ""; display: block; height: 1px; margin-bottom: 10px;
+    background: repeating-linear-gradient(to right, var(--color-border-light) 0 4px, transparent 4px 8px); }
+  @media (max-width: 720px) {
+    .fig { grid-template-columns: 1fr; }
+    .bridge { min-width: 0; }
+    .bridge svg { transform: rotate(90deg); height: 32px; }
+  }
+</style>

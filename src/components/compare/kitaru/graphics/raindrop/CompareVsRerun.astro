@@ -1,0 +1,228 @@
+---
+/**
+ * Feature 2 - Experiments that compare, and experiments that re-run.
+ *
+ * The distinction is tense. Raindrop reads two populations that already ran;
+ * Kitaru runs one population twice. The footers carry that, not adjectives.
+ */
+---
+
+<figure class="fig">
+  <div class="panel panel--competitor">
+    <div class="panel-head">
+      <span class="panel-label">Raindrop &middot; experiment</span>
+      <span class="panel-sub">Two cohorts of events you already logged</span>
+    </div>
+
+    <div class="cohorts">
+      <div class="cohort">
+        <span class="cohort-tag">baseline</span>
+        <span class="cohort-name">last week</span>
+      </div>
+      <div class="cohort">
+        <span class="cohort-tag">experiment</span>
+        <span class="cohort-name">this week</span>
+      </div>
+    </div>
+
+    <div class="deltas">
+      <div class="delta">
+        <span class="delta-key">frustration</span>
+        <span class="delta-val">8.1% &rarr; 5.4%</span>
+      </div>
+      <div class="delta">
+        <span class="delta-key">sample</span>
+        <span class="delta-val">12,400 vs 9,780</span>
+      </div>
+      <div class="delta">
+        <span class="delta-key">tools / response</span>
+        <span class="delta-val">2.4 &rarr; 2.1</span>
+      </div>
+    </div>
+
+    <div class="stamp">
+      <span class="stamp-key">Verdict</span>
+      <span class="stamp-val">Directional. Inconclusive when a cohort is too small.</span>
+    </div>
+
+    <div class="foot">Both populations already ran. The change has shipped.</div>
+  </div>
+
+  <div class="panel panel--kitaru">
+    <div class="panel-head">
+      <span class="panel-label panel-label--accent">Kitaru &middot; experiment</span>
+      <span class="panel-sub">One frozen cohort, run twice</span>
+    </div>
+
+    <div class="cohorts cohorts--single">
+      <div class="cohort cohort--accent">
+        <span class="cohort-tag cohort-tag--accent">cohort version</span>
+        <span class="cohort-name">week-32 &middot; 50 sessions</span>
+      </div>
+    </div>
+
+    <div class="arms">
+      <div class="arm">
+        <span class="arm-key mono">support-agent@1</span>
+        <span class="arm-val">baseline, unchanged</span>
+      </div>
+      <div class="arm arm--accent">
+        <span class="arm-key mono">support-agent@2</span>
+        <span class="arm-val">one override applied</span>
+      </div>
+    </div>
+
+    <div class="stamp stamp--accent">
+      <span class="stamp-key stamp-key--accent">Verdict</span>
+      <span class="stamp-val">Pass or fail, per evaluator, on both arms.</span>
+    </div>
+
+    <div class="foot foot--accent">Nothing has shipped yet when you read the result.</div>
+  </div>
+</figure>
+
+<style>
+  .fig {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .panel {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 16px 16px 14px;
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+  }
+  .panel--competitor { background: var(--color-surface-warm); }
+  .panel--kitaru { border-color: var(--color-accent); }
+
+  .panel-head {
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .panel-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 4px;
+  }
+  .panel-label--accent { color: var(--color-accent); }
+  .panel-sub { display: block; font-size: 12px; color: var(--color-secondary); }
+
+  .cohorts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+  .cohorts--single { grid-template-columns: 1fr; }
+  .cohort {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 8px;
+    background: var(--color-bg);
+  }
+  .cohort--accent { border-color: var(--color-accent); background: var(--color-accent-light); }
+  .cohort-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .cohort-tag--accent { color: var(--color-accent); }
+  .cohort-name { font-size: 11px; color: var(--color-primary); }
+
+  .deltas {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+  .delta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 10px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 6px;
+    background: var(--color-bg);
+  }
+  .delta-key {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .delta-val { font-size: 10.5px; color: var(--color-primary); }
+
+  .arms {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 10px;
+    flex: 1;
+  }
+  .arm {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 8px;
+    background: var(--color-bg);
+  }
+  .arm--accent { border-color: var(--color-border-accent); }
+  .arm-key { font-size: 10.5px; font-weight: 700; color: var(--color-primary); }
+  .arm--accent .arm-key { color: var(--color-accent-deep); }
+  .arm-val { font-size: 10.5px; color: var(--color-secondary); }
+  .mono { font-family: var(--font-mono); }
+
+  .stamp {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--color-surface-subtle);
+    border: 1px solid var(--color-border-light);
+    margin-top: auto;
+  }
+  .stamp--accent { background: var(--color-accent-light); border-color: var(--color-border-accent); }
+  .stamp-key {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .stamp-key--accent { color: var(--color-accent); }
+  .stamp-val { font-size: 10.5px; line-height: 1.4; color: var(--color-primary); }
+
+  .foot {
+    margin-top: 12px;
+    font-size: 10.5px;
+    color: var(--color-muted);
+  }
+  .foot--accent { color: var(--color-accent-deep); }
+
+  @media (max-width: 720px) {
+    .fig { grid-template-columns: 1fr; }
+    .arms { flex: none; }
+    .stamp { margin-top: 0; }
+  }
+</style>

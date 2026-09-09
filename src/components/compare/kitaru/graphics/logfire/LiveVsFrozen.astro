@@ -1,0 +1,206 @@
+---
+/**
+ * Feature 3 - Live evals watch traffic. A cohort freezes it.
+ *
+ * Logfire's loop is continuous and Kitaru's population is pinned, so the left
+ * column is a moving stream and the right is a fixed grid. Both are honest
+ * strengths; the contrast is time, not quality.
+ */
+---
+
+<figure class="fig">
+  <div class="side side--competitor">
+    <div class="side-head">
+      <span class="side-label">Logfire &middot; live evals</span>
+      <span class="side-sub">Scored as the traffic arrives</span>
+    </div>
+
+    <div class="stream">
+      <div class="tick">
+        <span class="tick-time mono">09:41:02</span>
+        <span class="tick-val">span scored &middot; pass</span>
+      </div>
+      <div class="tick">
+        <span class="tick-time mono">09:41:07</span>
+        <span class="tick-val">span scored &middot; pass</span>
+      </div>
+      <div class="tick tick--fail">
+        <span class="tick-time mono">09:41:11</span>
+        <span class="tick-val">span scored &middot; fail</span>
+      </div>
+      <div class="tick tick--next" aria-hidden="true">
+        <span class="tick-time mono">09:41:1</span>
+        <span class="tick-val">&hellip;</span>
+      </div>
+    </div>
+
+    <div class="chain">
+      <span class="chain-step mono">WHERE score &lt; 0.5</span>
+      <span class="chain-arrow" aria-hidden="true">&rarr;</span>
+      <span class="chain-step">alert to Slack</span>
+    </div>
+
+    <div class="note">
+      The regression shows up in the same trace that produced it. The window
+      keeps moving, so what you looked at yesterday is not what you query today.
+    </div>
+  </div>
+
+  <div class="side side--kitaru">
+    <div class="side-head">
+      <span class="side-label side-label--accent">Kitaru &middot; cohort version</span>
+      <span class="side-sub">Pinned, replayed on every change</span>
+    </div>
+
+    <div class="grid">
+      <span class="case case--real mono">#4821</span>
+      <span class="case case--real mono">#4822</span>
+      <span class="case case--real mono">#4830</span>
+      <span class="case case--real mono">#4844</span>
+      <span class="case case--real mono">#4851</span>
+      <span class="case case--flag mono">#4862 &#9873;</span>
+    </div>
+
+    <div class="chain chain--accent">
+      <span class="chain-step chain-step--accent mono">week-32</span>
+      <span class="chain-arrow chain-arrow--accent" aria-hidden="true">&rarr;</span>
+      <span class="chain-step chain-step--accent">replayed on every change</span>
+    </div>
+
+    <div class="note">
+      The member list never changes after creation, so a result keeps meaning
+      what it meant. The flagged one is the run a live eval failed on Tuesday.
+    </div>
+  </div>
+</figure>
+
+<style>
+  .fig {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .side {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 16px 16px 14px;
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+  }
+  .side--competitor { background: var(--color-surface-warm); }
+  .side--kitaru { border-color: var(--color-accent); }
+
+  .side-head { margin-bottom: 12px; }
+  .side-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 4px;
+  }
+  .side-label--accent { color: var(--color-accent); }
+  .side-sub {
+    display: block;
+    font-size: 12px;
+    color: var(--color-secondary);
+  }
+
+  .stream {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 14px;
+  }
+  .tick {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    padding: 6px 10px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 6px;
+    background: var(--color-bg);
+  }
+  .tick--fail {
+    border-color: var(--color-cost-up);
+    background: var(--color-cost-up-bg);
+  }
+  .tick--next {
+    border-style: dashed;
+    opacity: 0.45;
+  }
+  .tick-time {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--color-muted);
+  }
+  .tick-val {
+    font-size: 10.5px;
+    color: var(--color-secondary);
+  }
+  .tick--fail .tick-val { color: var(--color-cost-up); font-weight: 700; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .case {
+    padding: 6px 4px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 6px;
+    background: var(--color-bg);
+    font-size: 10px;
+    text-align: center;
+    color: var(--color-secondary);
+  }
+  .case--real { border-color: var(--color-border-accent); color: var(--color-primary); }
+  .case--flag {
+    border-color: var(--color-accent);
+    background: var(--color-accent-light);
+    color: var(--color-accent-deep);
+    font-weight: 700;
+  }
+  .mono { font-family: var(--font-mono); font-size: 9.5px; }
+
+  .chain {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--color-surface-subtle);
+    border: 1px solid var(--color-border-light);
+  }
+  .chain--accent {
+    background: var(--color-accent-light);
+    border-color: var(--color-border-accent);
+  }
+  .chain-step {
+    font-size: 10.5px;
+    color: var(--color-primary);
+  }
+  .chain-step--accent { color: var(--color-accent-deep); }
+  .chain-arrow { font-size: 12px; color: var(--color-muted); }
+  .chain-arrow--accent { color: var(--color-accent); }
+
+  .note {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--color-border-light);
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+
+  @media (max-width: 720px) {
+    .fig { grid-template-columns: 1fr; }
+  }
+</style>

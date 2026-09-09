@@ -1,0 +1,203 @@
+---
+competitor: "Logfire"
+competitorLogo: "/compare/logfire.svg"
+competitorTagline: "Pydantic's OpenTelemetry observability platform: SQL over every span, live evals, a prompt playground, and Pydantic Evals."
+title: "Kitaru vs Logfire: from a trace you can query to a session you can re-run"
+shortTitle: "Query it in Logfire, re-run it in Kitaru"
+description: "Logfire traces your whole app and lets you query it in SQL. Kitaru imports those spans and re-executes your agent over them, tool calls answered from the recording."
+cardSubtitle: "Keep Logfire as your observability layer. Import its spans into Kitaru and replay them against your real code."
+ctaHeading: "Make your Logfire traces runnable"
+order: 70
+---
+
+import WhenToUseEach from '../../components/compare/kitaru/WhenToUseEach.astro';
+import ComparisonTable from '../../components/compare/kitaru/ComparisonTable.astro';
+import CodeCompare from '../../components/compare/kitaru/CodeCompare.astro';
+import PullQuote from '../../components/compare/kitaru/PullQuote.astro';
+import ComparisonCta from '../../components/compare/kitaru/ComparisonCta.astro';
+import FeatureWithGraphic from '../../components/compare/kitaru/FeatureWithGraphic.astro';
+import DatasetVsSession from '../../components/compare/kitaru/graphics/logfire/DatasetVsSession.astro';
+import ImportPath from '../../components/compare/kitaru/graphics/logfire/ImportPath.astro';
+import LiveVsFrozen from '../../components/compare/kitaru/graphics/logfire/LiveVsFrozen.astro';
+import PinnedJudgment from '../../components/compare/kitaru/graphics/logfire/PinnedJudgment.astro';
+
+Logfire is Pydantic's observability platform, built on OpenTelemetry. It sees the whole app, so the model call, the tool call, the API hop, and the database query land in one timeline. You query every span with Postgres-flavored SQL. On the AI side it adds live evals that score production traffic as it arrives and a prompt playground that re-runs a captured model call with edits. Annotations on agent runs, an AI gateway, and an MCP server round it out. Pydantic Evals is the offline half. A dataset of cases, a task function, and evaluators run in your process, and the results report to Logfire.
+
+Kitaru answers a narrower question. When you change the model, a prompt, or a tool, what happens to the runs your agent already did in production? A session is a recorded run. Replay re-executes your agent's real code over that session. Under a history tool policy, the recording answers the tool calls, so `issue_refund()` returns what it returned the first time instead of touching a card twice. Fork the session with one override and you get the same run under the change, next to the faithful baseline: an unchanged replay that reproduces the original. And because `kitaru/logfire` is a [built-in importer](https://docs.zenml.io/kitaru/import-your-traces/import-logfire-traces), the spans you already send to Logfire are the way in.
+
+<WhenToUseEach
+  competitorLabel="Logfire"
+  kitaru={{
+    title: "Use Kitaru if you are",
+    items: [
+      "Shipping a model swap, a prompt edit, or a tool change to an agent that is already in production, and want to know what breaks on real traffic before users find it",
+      "Testing multi-turn agents where what regressed is the path the agent took, not the final string",
+      "Running tools that write to real systems (refunds, tickets, emails) and can't let a test call them a second time",
+      "Already tracing to Logfire and want those spans runnable, not just queryable",
+      "Building on Pydantic AI and want full replay through a native adapter while Logfire keeps the traces",
+    ],
+  }}
+  competitor={{
+    title: "Use Logfire if you are",
+    items: [
+      "Tracing the whole application, not only the agent, and want the database query next to the model call",
+      "Asking questions of your traces in SQL, with dashboards and Slack alerts on top",
+      "Scoring production traffic as it arrives with live evals, or running Pydantic Evals offline before a deploy",
+      "Editing a captured model call in the playground and re-running it on the spot",
+      "Writing in JavaScript, TypeScript, or Rust, or sending OpenTelemetry from anything else",
+    ],
+  }}
+/>
+
+<PullQuote
+  quote="Logfire lets you query what your agent did. Kitaru lets you re-run it against what it saw."
+/>
+
+<FeatureWithGraphic title="Pydantic Evals over a dataset vs a replay of a recorded session">
+  <DatasetVsSession slot="graphic" />
+
+  Both products run your code. The difference is what they run it on, and what the tools do while it runs.
+
+  Pydantic Evals takes a Dataset of Cases, calls your task on every case, and scores the result with evaluators that range from deterministic checks to LLM judges. Each Case holds inputs, an expected output, and metadata. The task is your own function and it runs in your process, so any tool it calls runs live. The report lands in Logfire for comparison across runs. Live evals do the same scoring on production traffic after each request, without a curated set. The playground goes one step further on a single captured run: edit the system prompt, the user messages, the tool calls, or the settings, and trigger another run of that model call.
+
+  A Kitaru replay takes a session that already happened in production and re-executes your agent's code over it from the top. Under a history tool policy, the recording answers each tool call by name and arguments. Set `on_miss` to `fail` and an unrecorded call stops the replay before it reaches a live system. Add one override and the same session runs under the change. The override can be a model map, a system prompt, a user prompt, or `model_params`. You compare the replay against the faithful baseline of the same run, not two reports over a dataset.
+
+  <Fragment slot="bullets">
+    - **Population:** Cases you curate, or sessions your users generated.
+    - **Tools during the run:** Live in Pydantic Evals, or governed by a tool policy: answered from the recording (history), canned (static), or live only for safe read-only calls (passthrough).
+    - **What gets compared:** This report against the previous one, or the replay against the baseline of the same session.
+    - **What a change looks like:** A new prompt or new code in the task, or one override on the experiment with everything else held fixed.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Your Logfire spans are the way in" reverse={true}>
+  <ImportPath slot="graphic" />
+
+  Logfire stays your system of record. Kitaru takes a runnable copy of the runs you care about.
+
+  Export records from the Logfire records table as JSON or NDJSON, or let the worker fetch them through the Query API with `--since`, `--until`, or `--trace-id`. The importer reads the GenAI semantic attributes. Spans whose operation is a tool call become tool calls and chat and completion spans become model calls. Everything else becomes a plain span. When spans share a `session.id`, `conversation_id`, or `thread_id`, they group into one multi-turn session. Each session is keyed on the source instance and session, so re-importing an overlapping slice skips what already landed.
+
+  Three limits:
+
+  - **Replay needs your code.** A span export holds no code, so an imported session can be investigated, evaluated, and added to a cohort as it is. To fork it, register the agent's run command or wrap it with a native adapter. Pydantic AI agents have one, and it records every model request and tool call in process.
+  - **Evaluations, alerts, and metrics stay in Logfire.** The importer takes spans. Kitaru evaluators score imported sessions from scratch.
+  - **Slice large exports.** One import is capped at 50 MiB. The importer deduplicates, so overlaps between slices are safe.
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Live evals watch traffic. A cohort freezes it.">
+  <LiveVsFrozen slot="graphic" />
+
+  Logfire's loop runs on live traffic. Live evals score an agent or function after it runs, so a regression shows up in the same trace that produced it. A SQL query finds every span that matches, and an alert reaches Slack. Annotations mark runs Pass, Neutral, or Fail. Exported annotations seed datasets for Pydantic Evals. It is a complete loop for noticing and for testing a curated set.
+
+  A cohort is a different kind of thing. It's a named set of sessions belonging to one agent. A cohort version's member list never changes after creation. An experiment run replays every session in one cohort version against one agent version and evaluates baseline and replay alike. So a result keeps meaning what it meant when you read it.
+
+  <Fragment slot="bullets">
+    - **Selection:** By tag, by filter, by session id, or by branching from an earlier version.
+    - **Incidents:** The conversation a live eval failed on Tuesday is a session. Add it to the next cohort version and it is a permanent regression case.
+    - **Gating:** `kitaru experiment run start` with `--wait` exits nonzero when the run fails, so a pull request can block on it. Each evaluator writes its own pass or fail.
+    - **Drift:** A dataset of cases ages quietly but a cohort version is pinned, and you cut the next one on purpose.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Annotating a run vs an investigation your coding agent writes" reverse={true}>
+  <PinnedJudgment slot="graphic" />
+
+  In Logfire an engineer opens an agent's runs under AI Evaluations and records a verdict of Pass, Neutral, or Fail, a comment with the evidence, and tags such as hallucination or tool-error. A Fail can carry a category and the expected output. Saving sends the annotation to the project. Exported annotations become repeatable test cases. Batch review through an annotation queue is available to design partners today.
+
+  Kitaru asks a different question: what's the annotation for? A coding agent authors the investigation, not you. It picks the sessions and phrases one question per session. A human answers, and each answer is pinned to the evidence that supports it: a node, a JSON path, or a character range. Every session gets a verdict of acceptable, problematic, or uncertain. Then the answers do work. Evaluators are checked against them, cohorts are justified by them, and an evaluator that gates a deploy can show the human judgments it was calibrated on.
+</FeatureWithGraphic>
+
+## What makes Kitaru unique
+
+<ComparisonTable
+  competitorLabel="Logfire"
+  rows={[
+    { feature: "Whole-app OpenTelemetry tracing", kitaru: false, competitor: true, note: "Kitaru records agent sessions through adapters and expects a trace store beside it." },
+    { feature: "SQL over every span, dashboards, alerts", kitaru: false, competitor: true, note: "No Kitaru equivalent." },
+    { feature: "Live evals on production traffic", kitaru: false, competitor: true, note: "Kitaru evaluates sessions on demand or inside an experiment run." },
+    { feature: "Prompt playground that re-runs a captured model call with edits", kitaru: false, competitor: true, note: "Kitaru overrides apply at the model boundary inside a full replay, not to one call in isolation." },
+    { feature: "Offline evals over a dataset (Pydantic Evals)", kitaru: false, competitor: true, note: "Kitaru has no dataset object. The population is sessions." },
+    { feature: "Annotations on agent runs", kitaru: true, competitor: true, note: "Logfire: verdict, comment, tags, per run. Kitaru: pinned to a node, JSON path, or character range, and checked against evaluators." },
+    { feature: "Re-executes a recorded production session with tool calls answered from the recording", kitaru: true, competitor: false, note: "The core difference. The playground re-runs one model call." },
+    { feature: "Tool policy on replay: history, static, passthrough, with on_miss set to fail", kitaru: true, competitor: false, note: "So a refund is not issued twice." },
+    { feature: "Cohorts: immutable versions of production sessions as the test population", kitaru: true, competitor: "partial", note: "Datasets can be seeded from exported annotations, but they are curated cases." },
+    { feature: "Imports Logfire spans from an export or the Query API", kitaru: true, competitor: false, note: "kitaru/logfire is built in. No importer code to write." },
+    { feature: "Open-source server", kitaru: true, competitor: false, note: "Kitaru is Apache 2.0. The Logfire SDKs are open; the platform is hosted." },
+    { feature: "Self-hosting without an Enterprise tier", kitaru: true, competitor: false, note: "Self-hosted Logfire is included in the Enterprise plan, via a Helm chart on Kubernetes." },
+    { feature: "SDKs beyond Python and TypeScript", kitaru: false, competitor: true, note: "Logfire adds Rust, and OpenTelemetry for Go, Java, .NET, Ruby, and the rest." },
+  ]}
+/>
+
+## How the two surfaces map
+
+| Concept | Logfire | Kitaru |
+|---|---|---|
+| Layer | Whole-app observability on OpenTelemetry: trace, query, score | Replay-based eval layer: re-run what happened |
+| Core unit | A span with GenAI attributes, and a Case in a Dataset | A session: a recorded run, re-executable |
+| Test population | Live traffic for live evals; a Dataset of Cases for Pydantic Evals | Cohort version frozen from production sessions |
+| What an experiment does | Runs your task over the Dataset and reports to Logfire | Re-executes your code over every session in a cohort version, one override applied |
+| Tool calls in a test | Live | Answered from the recording per tool policy |
+| Human review | Annotations with verdict, comment, tags; queue for design partners | Agent-authored investigation; answers pinned to evidence; one verdict per session |
+| Getting data in | Python, JavaScript and TypeScript, Rust SDKs; OpenTelemetry from anything | Native adapter (Pydantic AI included), or a built-in trace importer |
+| Relationship | System of record | Takes a runnable copy of it |
+| Where it runs | Logfire cloud in EU or US; self-hosted on Enterprise | Self-hosted under Apache 2.0 (Docker, Helm), or Kitaru Cloud |
+| Price of entry | Personal free (10M records per month, 30 days); Team $49 per month (5 seats, $2 per extra million); Growth $249 (90 days); Enterprise custom | Open source free; Cloud $39 per month, 14-day trial, no card |
+
+<CodeCompare
+  lang="bash"
+  competitorLang="python"
+  kitaruLabel="Logfire + Kitaru"
+  competitorLabel="Logfire alone"
+  kitaruCode={`# Logfire keeps tracing. Nothing changes in production.
+# Pull last week's spans through the Query API.
+kitaru session import \\
+  --importer kitaru/logfire@latest \\
+  --agent support-agent@latest \\
+  --since 7d --tag imported-baseline --wait
+
+# Freeze the sessions that matter into the test population.
+kitaru cohort create refund-regression --agent support-agent \\
+  --tag imported-baseline --display-version week-32
+
+# Move one variable. Tool calls come from the recording, so
+# nothing external fires and no card is refunded twice.
+kitaru experiment create cheaper-model \\
+  --agent support-agent \\
+  --evaluator refund-check@latest \\
+  --override '{"model": {"openai:gpt-5.4": "openai:gpt-5-nano"}}' \\
+  --tool-policy '{"default": {"type": "history",
+                  "scope": "cohort_version", "on_miss": "fail"}}'
+
+# Re-execute the whole cohort against the change.
+# Exits nonzero on failure, so CI can gate on it.
+kitaru experiment run start cheaper-model \\
+  --cohort-version <cohort-version-id> \\
+  --agent support-agent@1 --evaluate-baselines --wait`}
+  competitorCode={`from pydantic_evals import Case, Dataset
+from pydantic_evals.evaluators import Evaluator, EvaluatorContext
+
+# The dataset is the population. Cases are written by hand
+# or seeded from exported annotations.
+class RefundCheck(Evaluator):
+    def evaluate(self, ctx: EvaluatorContext) -> bool:
+        return ctx.expected_output in ctx.output
+
+dataset = Dataset(
+    name="refund-cases",
+    cases=[Case(name="order-4821", inputs="Refund order #4821",
+                expected_output="Refund issued for order #4821")],
+    evaluators=[RefundCheck()],
+)
+
+# The task is your code. It runs in your process, tools live.
+report = dataset.evaluate_sync(support_agent)
+report.print()
+
+# The report lands in Logfire next to the last one.
+# It cannot replay a production trace with the tool
+# results that trace actually saw.`}
+/>
+
+<ComparisonCta headline={frontmatter.ctaHeading}>
+Keep Logfire. It's the trace store, the SQL console, and the live eval. None of that has to move. Kitaru adds the step a dataset of cases stops short of. It takes the spans you already sent and re-executes your agent over them with one thing changed and the tool calls answered from the recording. Then it tells you what regressed before the change ships. One import, no instrumentation, and the run a live eval failed on Tuesday becomes a test you can never accidentally drop.
+</ComparisonCta>

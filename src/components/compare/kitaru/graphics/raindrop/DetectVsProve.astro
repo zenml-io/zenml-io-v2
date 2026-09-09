@@ -1,0 +1,235 @@
+---
+/**
+ * Feature 1 - Detect in production vs re-run before shipping.
+ *
+ * These are consecutive steps, not rivals, so the left column ends at the
+ * issue and the right picks it up. The accent lands on the replayed tool call.
+ */
+---
+
+<figure class="fig">
+  <div class="panel panel--competitor">
+    <div class="panel-head">
+      <span class="panel-label">Raindrop &middot; production</span>
+      <span class="panel-sub">Noticing, while it happens</span>
+    </div>
+
+    <div class="stage">
+      <span class="stage-tag">Watches</span>
+      <div class="rows">
+        <span class="row-chip">frustration</span>
+        <span class="row-chip">task failure</span>
+        <span class="row-chip">refusals</span>
+        <span class="row-chip row-chip--more">+ custom</span>
+      </div>
+      <span class="stage-note">Signals label every event as it arrives</span>
+    </div>
+
+    <div class="stage stage--grow">
+      <span class="stage-tag">Publishes</span>
+      <div class="issue">
+        <div class="issue-top">
+          <span class="issue-name">Refund loop on retries</span>
+          <span class="issue-sev">high</span>
+        </div>
+        <div class="issue-meta">
+          <span class="issue-stat"><b>1,240</b> users affected</span>
+          <span class="issue-stat"><b>3.2&times;</b> vs last week</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stage stage--last">
+      <span class="stage-tag">Touches your code</span>
+      <div class="verdict">
+        <span class="verdict-a">never</span>
+        <span class="verdict-vs" aria-hidden="true">&mdash;</span>
+        <span class="verdict-b">nothing re-runs</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel--kitaru">
+    <div class="panel-head">
+      <span class="panel-label panel-label--accent">Kitaru &middot; before shipping</span>
+      <span class="panel-sub">Proving the fix, on the same conversations</span>
+    </div>
+
+    <div class="stage">
+      <span class="stage-tag">Takes</span>
+      <div class="rows">
+        <span class="row-chip row-chip--session mono">#4821</span>
+        <span class="row-chip row-chip--session mono">#4844</span>
+        <span class="row-chip row-chip--session mono">#4862</span>
+        <span class="row-chip row-chip--more">+ 47</span>
+      </div>
+      <span class="stage-note">The conversations the issue points at, frozen</span>
+    </div>
+
+    <div class="stage stage--grow">
+      <span class="stage-tag">Re-runs</span>
+      <div class="cell cell--run">
+        <span class="cell-key mono">support.py</span>
+        <span class="cell-val">re-executes with the fix in place</span>
+      </div>
+      <div class="cell cell--recorded">
+        <span class="cell-key mono">issue_refund()</span>
+        <span class="cell-val">answered from the recording, not called again</span>
+      </div>
+    </div>
+
+    <div class="stage stage--last">
+      <span class="stage-tag">Returns</span>
+      <div class="verdict verdict--accent">
+        <span class="verdict-a">pass or fail</span>
+        <span class="verdict-vs" aria-hidden="true">&mdash;</span>
+        <span class="verdict-b">per evaluator, before you ship</span>
+      </div>
+    </div>
+  </div>
+</figure>
+
+<style>
+  .fig {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .panel {
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 16px 16px 14px;
+    background: var(--color-surface);
+    display: flex;
+    flex-direction: column;
+  }
+  .panel--competitor { background: var(--color-surface-warm); }
+  .panel--kitaru { border-color: var(--color-accent); }
+
+  .panel-head {
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .panel-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 4px;
+  }
+  .panel-label--accent { color: var(--color-accent); }
+  .panel-sub { display: block; font-size: 12px; color: var(--color-secondary); }
+
+  .stage {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    border-bottom: 1px dashed var(--color-border-light);
+  }
+  .stage--grow { flex: 1; }
+  .stage--last {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+  .stage-tag {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .stage-note { font-size: 10.5px; color: var(--color-muted); }
+
+  .rows { display: flex; flex-wrap: wrap; gap: 5px; }
+  .row-chip {
+    display: inline-block;
+    padding: 3px 8px;
+    border: 1px solid var(--color-border-light);
+    border-radius: 5px;
+    background: var(--color-bg);
+    font-size: 10px;
+    color: var(--color-secondary);
+  }
+  .row-chip--session {
+    font-family: var(--font-mono);
+    border-color: var(--color-border-accent);
+    color: var(--color-primary);
+  }
+  .row-chip--more { border-style: dashed; color: var(--color-muted); }
+
+  .issue {
+    border: 1px solid var(--color-cost-up);
+    border-radius: 8px;
+    padding: 9px 11px;
+    background: var(--color-cost-up-bg);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .issue-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .issue-name { font-size: 11.5px; font-weight: 700; color: var(--color-primary); }
+  .issue-sev {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-cost-up);
+  }
+  .issue-meta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .issue-stat { font-size: 10.5px; color: var(--color-secondary); }
+  .issue-stat b { color: var(--color-primary); }
+
+  .cell {
+    border: 1px solid var(--color-border-light);
+    border-radius: 8px;
+    padding: 8px 10px;
+    background: var(--color-bg);
+  }
+  .cell--run { border-color: var(--color-border-accent); }
+  .cell--recorded { border-color: var(--color-accent); background: var(--color-accent-light); }
+  .cell-key {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: 2px;
+  }
+  .cell--recorded .cell-key { color: var(--color-accent-deep); }
+  .cell-val { display: block; font-size: 11px; line-height: 1.45; color: var(--color-secondary); }
+  .mono { font-family: var(--font-mono); font-size: 10.5px; }
+
+  .verdict {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--color-surface-subtle);
+    border: 1px solid var(--color-border-light);
+  }
+  .verdict--accent { background: var(--color-accent-light); border-color: var(--color-border-accent); }
+  .verdict-a { font-size: 11px; font-weight: 700; color: var(--color-primary); }
+  .verdict--accent .verdict-a { color: var(--color-accent-deep); }
+  .verdict-b { font-size: 11px; color: var(--color-secondary); }
+  .verdict-vs { font-size: 11px; color: var(--color-muted); }
+
+  @media (max-width: 720px) {
+    .fig { grid-template-columns: 1fr; }
+    .stage--grow { flex: none; }
+  }
+</style>

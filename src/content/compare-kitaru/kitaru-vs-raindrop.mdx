@@ -1,0 +1,181 @@
+---
+competitor: "Raindrop"
+competitorLogo: "/compare/raindrop.svg"
+competitorTagline: "Production monitoring for AI agents: signals, issue detection, a triage agent, and retrospective experiments."
+title: "Kitaru vs Raindrop: detect the failure, then replay the fix"
+shortTitle: "Detect with Raindrop, replay with Kitaru"
+description: "Raindrop flags silent agent failures in production. Kitaru re-executes the sessions that failed, tool calls answered from the recording, before the fix ships."
+cardSubtitle: "Keep Raindrop watching production. Turn what it flags into cohorts Kitaru replays on every change."
+ctaHeading: "Turn a Raindrop issue into a replayable test"
+order: 65
+---
+
+import WhenToUseEach from '../../components/compare/kitaru/WhenToUseEach.astro';
+import ComparisonTable from '../../components/compare/kitaru/ComparisonTable.astro';
+import CodeCompare from '../../components/compare/kitaru/CodeCompare.astro';
+import PullQuote from '../../components/compare/kitaru/PullQuote.astro';
+import ComparisonCta from '../../components/compare/kitaru/ComparisonCta.astro';
+import FeatureWithGraphic from '../../components/compare/kitaru/FeatureWithGraphic.astro';
+import DetectVsProve from '../../components/compare/kitaru/graphics/raindrop/DetectVsProve.astro';
+import CompareVsRerun from '../../components/compare/kitaru/graphics/raindrop/CompareVsRerun.astro';
+import TwoPathsIn from '../../components/compare/kitaru/graphics/raindrop/TwoPathsIn.astro';
+import PinnedJudgment from '../../components/compare/kitaru/graphics/raindrop/PinnedJudgment.astro';
+
+Raindrop watches your agent in production. Every user turn, agent response, and tool call you send becomes an event. Signals label the ones that matter: user frustration, task failure, forgetting, refusals, jailbreaking, or any behavior you describe in a sentence. Raindrop drafts the classifier from that sentence. When a behavior spreads, Issue Detection publishes an issue with a severity, the affected users, and the traces behind it. The Triage Agent answers questions about it from Slack, the web, or MCP.
+
+Kitaru picks up where a detected issue leaves you. When you change the model, a prompt, or a tool to fix it, what happens to the runs your agent already did? A session is a recorded run. Replay re-executes your agent's real code over that session. Under a history tool policy, the recording answers the tool calls, so `issue_refund()` returns what it returned the first time instead of touching a card twice. Fork the session with one override and you get the same run under the change, next to the faithful baseline: an unchanged replay that reproduces the original. Raindrop's own docs draw the line: its experiments compare cohorts of data you've already logged, and they don't re-run or replay your agent.
+
+<WhenToUseEach
+  competitorLabel="Raindrop"
+  kitaru={{
+    title: "Use Kitaru if you are",
+    items: [
+      "Shipping a model swap, a prompt edit, or a tool change to an agent that is already in production, and want to know what breaks on real traffic before users find it",
+      "Testing multi-turn agents where what regressed is the path the agent took, not the final string",
+      "Running tools that write to real systems (refunds, tickets, emails) and can't let a test call them a second time",
+      "Turning the conversations Raindrop flagged into a regression suite that runs on every pull request",
+      "Self-hosting the whole loop under Apache 2.0, so traces and provider keys stay in your own systems",
+    ],
+  }}
+  competitor={{
+    title: "Use Raindrop if you are",
+    items: [
+      "Running an agent with real users and want to know, today, which silent failures are spreading and to whom",
+      "Describing a behavior in plain language and having a classifier label it across every event from then on",
+      "Triaging from Slack with an agent that already has the signals, events, and conversations in front of it",
+      "Comparing last week's traffic with this week's after a change, without setting up a test harness",
+      "Writing in TypeScript, Python, Go, Rust, or Java, or shipping through one of its framework integrations",
+    ],
+  }}
+/>
+
+<PullQuote
+  quote="Raindrop tells you a failure is spreading. Kitaru re-runs the sessions that failed with the fix in place, before you ship it."
+/>
+
+<FeatureWithGraphic title="Detect in production vs re-run before shipping">
+  <DetectVsProve slot="graphic" />
+
+  Raindrop's job is to notice. Signals run over every event as it arrives and Issue Detection watches the distribution for shifts. Stumbles catalog the single conversations that went wrong. When you ask what happened today, the Triage Agent answers with the traces behind the number. None of that touches your code.
+
+  Kitaru's job is to prove the fix. A replay takes a session that already happened in production and re-executes your agent's code over it from the top. Under a history tool policy, the recording answers each tool call by name and arguments. Set `on_miss` to `fail` and an unrecorded call stops the replay before it reaches a live system. Add one override and the same session runs under the change. The override can be a model map, a system prompt, a user prompt, or `model_params`. You compare the replay against the faithful baseline of the same run.
+
+  <Fragment slot="bullets">
+    - **When it runs:** On live traffic as it arrives, or on demand over sessions that already happened.
+    - **What it produces:** An issue with severity and affected users, or a pass or fail per evaluator on baseline and replay.
+    - **Tools during the run:** Not touched, because nothing re-runs, or answered from the recording under a tool policy.
+    - **The question answered:** Is something wrong right now, or does the change I am about to ship fix it without breaking anything else?
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Experiments that compare, and experiments that re-run" reverse={true}>
+  <CompareVsRerun slot="graphic" />
+
+  Raindrop's experiments are retrospective. You pick a baseline cohort and an experiment cohort from events you already logged, filtered any way you like. Raindrop reports the deltas: signal rates, sample size, conversation length, tools per response, and the model and property mix. Verdicts are directional, not statistical tests, and Raindrop says Inconclusive when a cohort is too small. It is a fast way to read a change you already shipped.
+
+  A Kitaru experiment is prospective. It holds the change as configuration: an override, a tool policy, and the evaluators. An experiment run applies it to one cohort version and one agent version, fans out one replay per session, and evaluates baseline and replay alike. Nothing has shipped yet when you read the result.
+
+  <Fragment slot="bullets">
+    - **Population:** Events already logged on both sides, or one frozen cohort version replayed under two agent versions.
+    - **What moved:** Whatever differed between the two cohorts, or exactly one override.
+    - **Verdict:** Directional, with Inconclusive when sizes differ, or pass or fail per evaluator with aggregates read afterwards.
+    - **Gating:** A dashboard you read, or `kitaru experiment run start` with `--wait`, which exits nonzero when the run fails.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Getting Raindrop's conversations into Kitaru">
+  <TwoPathsIn slot="graphic" />
+
+  There is no built-in Raindrop importer today. Kitaru's importers cover Langfuse, LangSmith, Braintrust, Logfire, and Arize Phoenix. Two paths work for Raindrop.
+
+  - **Record beside it.** Wrap the agent with a native Kitaru adapter and keep sending events to Raindrop. Adapters exist for PydanticAI, LangGraph, OpenAI Agents SDK, Mastra, and Vercel AI SDK. Every run lands as a session with its model calls and tool calls. The adapter is in the process, so replay works in full.
+  - **Import an export.** Raindrop datasets export to CSV and the Query API returns events as JSON. Enterprise adds warehouse exports. A custom Kitaru importer is one `parse()` function that yields sessions from a file, so any of those can become sessions to investigate and evaluate. Replay still needs the agent's run command registered.
+  - **What carries the incident across.** A Raindrop issue points at events. You freeze the same conversations, recorded as sessions, into a cohort.
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="The Triage Agent vs an investigation your coding agent writes" reverse={true}>
+  <PinnedJudgment slot="graphic" />
+
+  Raindrop's Triage Agent sits on top of the signals, events, and conversations. From Slack, the web, or MCP, you ask it questions like what issues happened today. Datasets let you save events and traces, tag them Good, Bad, Needs review, or Interesting, and ask the Triage Agent for analysis and recommendations. It is investigation as a conversation with the monitor.
+
+  Kitaru asks a different question: what's the annotation for? Your coding agent, not you, authors the investigation over Kitaru's MCP server. It picks the sessions and phrases one question per session. A human answers, and each answer is pinned to the evidence that supports it: a node, a JSON path, or a character range. Every session gets a verdict of acceptable, problematic, or uncertain. Then the answers do work. Evaluators are checked against them, cohorts are justified by them, and an evaluator that gates a deploy can show the human judgments it was calibrated on.
+</FeatureWithGraphic>
+
+## What makes Kitaru unique
+
+<ComparisonTable
+  competitorLabel="Raindrop"
+  rows={[
+    { feature: "Production monitoring with preset and custom signals", kitaru: false, competitor: true, note: "Kitaru is not a monitor. It evaluates sessions on demand or inside an experiment run." },
+    { feature: "Issue Detection and Stumbles", kitaru: false, competitor: true, note: "Pro plan. Kitaru's investigation is authored by your coding agent, not discovered by the server." },
+    { feature: "Triage Agent in Slack, web, and MCP", kitaru: "partial", competitor: true, note: "Kitaru exposes an MCP server to the coding agent you already use." },
+    { feature: "Retrospective experiments over logged cohorts", kitaru: false, competitor: true, note: "Raindrop compares what already ran. Kitaru compares a replay with its baseline." },
+    { feature: "Re-executes a recorded production session with tool calls answered from the recording", kitaru: true, competitor: false, note: "The core difference. Raindrop's docs: experiments don't re-run or replay your agent." },
+    { feature: "Tool policy on replay: history, static, passthrough, with on_miss set to fail", kitaru: true, competitor: false, note: "So a refund is not issued twice." },
+    { feature: "Fork one session with one override and diff it against the faithful baseline", kitaru: true, competitor: false, note: "No replay, so no fork." },
+    { feature: "Cohorts: immutable versions of production sessions as the test population", kitaru: true, competitor: "partial", note: "Raindrop datasets save events, traces, and uploaded rows, with tags and CSV export." },
+    { feature: "Built-in importer for the other's data", kitaru: false, competitor: false, note: "No Raindrop importer yet. A custom importer is one parse function, or record beside Raindrop with a native adapter." },
+    { feature: "Open-source server", kitaru: true, competitor: "partial", note: "Kitaru is Apache 2.0. Raindrop's Workshop local debugger is MIT; the hosted product is closed." },
+    { feature: "Self-hosting", kitaru: true, competitor: false, note: "Raindrop's docs describe AWS-hosted dedicated infrastructure and Enterprise warehouse exports; no self-hosting option is listed." },
+    { feature: "SDKs beyond Python and TypeScript", kitaru: false, competitor: true, note: "Raindrop adds Go, plus Rust and Java in beta, an HTTP API, OpenTelemetry, and a browser SDK." },
+  ]}
+/>
+
+## How the two surfaces map
+
+| Concept | Raindrop | Kitaru |
+|---|---|---|
+| Layer | Production monitoring: detect, triage, compare | Replay-based eval layer: re-run what happened |
+| Core unit | An event in a conversation, labeled by signals | A session: a recorded run, re-executable |
+| Test population | Two cohorts of logged events, filtered | Cohort version frozen from production sessions |
+| What an experiment does | Compares signal rates and stats between cohorts already logged | Re-executes your code over every session in a cohort version, one override applied |
+| Tool calls in a test | Not re-run | Answered from the recording per tool policy |
+| Finding failure modes | Signals, Issue Detection, Stumbles, Triage Agent | Your coding agent samples sessions and asks the questions |
+| Human review | Tags on dataset members: Good, Bad, Needs review, Interesting | Agent-authored investigation; answers pinned to evidence; one verdict per session |
+| Getting data in | TypeScript, Python, Go, Rust, Java SDKs, HTTP API, OpenTelemetry, framework integrations | Native adapter, or a trace importer (custom for Raindrop) |
+| Relationship | Monitor of record | Runnable copy of the runs the monitor flagged |
+| Where it runs | Raindrop cloud on AWS; Workshop runs locally | Self-hosted under Apache 2.0 (Docker, Helm), or Kitaru Cloud |
+| Price of entry | Hobby free (1,000 events per month, hard cap); Pro $299 per month plus $0.003 per event to 1M then $0.002, 14-day trial; Enterprise custom | Open source free; Cloud $39 per month, 14-day trial, no card |
+
+<CodeCompare
+  lang="bash"
+  competitorLang="typescript"
+  kitaruLabel="Raindrop + Kitaru"
+  competitorLabel="Raindrop alone"
+  kitaruCode={`# Raindrop keeps monitoring. Kitaru records the same runs beside it
+# through a native adapter, so every run is already a session.
+
+# Freeze the sessions Raindrop flagged into the test population.
+kitaru cohort create frustration-regression --agent support-agent \\
+  --tag raindrop-issue-412 --display-version week-32
+
+# Move one variable. Tool calls come from the recording, so
+# nothing external fires and no card is refunded twice.
+kitaru experiment create fix-refund-loop \\
+  --agent support-agent \\
+  --evaluator refund-check@latest \\
+  --override '{"system_prompt": "...the fix..."}' \\
+  --tool-policy '{"default": {"type": "history",
+                  "scope": "cohort_version", "on_miss": "fail"}}'
+
+# Re-execute the whole cohort against the change.
+# Exits nonzero on failure, so CI can gate on it.
+kitaru experiment run start fix-refund-loop \\
+  --cohort-version <cohort-version-id> \\
+  --agent support-agent@2 --evaluate-baselines --wait`}
+  competitorCode={`// The Query API reads what already happened. Nothing re-runs.
+const results = await client.events.search({
+  query: "frustration about load times",
+  mode: "semantic",
+  searchIn: "user_input,assistant_output",
+});
+
+// Save the matches to a dataset, tag them Bad or Needs review,
+// export the dataset as CSV, and ask the Triage Agent what changed.
+// An experiment then compares this week's cohort with last week's.
+// It cannot replay those conversations with the fix in place.`}
+/>
+
+<ComparisonCta headline={frontmatter.ctaHeading}>
+Keep Raindrop. It's the monitor, the triage channel, and the first place you learn something is wrong. None of that has to move. Kitaru adds the step a monitor stops short of. It takes the conversations Raindrop flagged and re-executes your agent over them with the fix in place and the tool calls answered from the recording. Then it tells you whether the fix holds before the change ships. The issue Raindrop raised on Tuesday becomes a test you can never accidentally drop.
+</ComparisonCta>
