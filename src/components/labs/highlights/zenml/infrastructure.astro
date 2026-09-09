@@ -94,6 +94,10 @@ const components = [
   { name: "deployer", flavor: "kubernetes", y: 178 },
   { name: "sandbox", flavor: "docker", y: 222 },
 ] as const;
+
+/** The narrow drawing lifts every component row 30px from its wide y; the
+ * row anatomy itself (28px chip, 44px pitch) is unchanged. */
+const NARROW_ROW_DY = 30;
 ---
 
 <HighlightFigure label={label} id={id}>
@@ -160,4 +164,74 @@ const components = [
       <text class="hl-body" x="468" y="370" fill="var(--color-sage-800)" style="font-size: 13px">2 min ago</text>
     </g>
   </g>
+
+  {/* Narrow (phone) drawing: same stack, one column — the four components
+      stacked over the two runs, with the `created at` column dropped. The
+      claim (one stack, an ML run and an agent run on it) survives. */}
+  <Fragment slot="narrow">
+    <defs>
+      <clipPath id={`${id}-n-card`}>
+        <rect x="12" y="12" width="336" height="436" rx="12" />
+      </clipPath>
+    </defs>
+
+    <rect x="12.5" y="12.5" width="335" height="435" rx="12" fill="var(--color-card)" stroke="var(--color-border)" />
+    <text class="hl-title" x="28" y="38" fill="var(--color-cream-900)">k8s-prod</text>
+    <text class="hl-label" x="332" y="37" text-anchor="end" fill="var(--color-cream-700)">4 components · 2 runs</text>
+    <line x1="13" y1="54.5" x2="347" y2="54.5" stroke="var(--color-border)" />
+
+    <g clip-path={`url(#${id}-n-card)`}>
+      {components.map((c, i) => {
+        const y = c.y - NARROW_ROW_DY;
+        return (
+          <g class="hl-in hl-row" style={`--hl-i: ${i}`}>
+            <rect x="28" y={y + 8} width="28" height="28" rx="8" fill="var(--color-sage-100)" />
+            {c.name === "orchestrator" && (
+              <path transform={`translate(33 ${y + 13}) scale(0.75)`} d={ICON_ORCHESTRATOR} fill="var(--color-sage-700)" fill-rule="evenodd" />
+            )}
+            {c.name === "artifact_store" &&
+              ICON_S3.map((p) => (
+                <path transform={`translate(33 ${y + 15}) scale(0.75)`} d={p.d} fill={p.fill} fill-rule="evenodd" />
+              ))}
+            {c.name === "deployer" && (
+              <path transform={`translate(33 ${y + 15}) scale(0.75)`} d={ICON_DEPLOYER} fill="var(--color-sage-700)" fill-rule="evenodd" />
+            )}
+            {c.name === "sandbox" &&
+              ICON_SANDBOX.map((d) => (
+                <path transform={`translate(31.5 ${y + 11.5}) scale(0.875)`} d={d} fill="var(--color-sage-700)" fill-rule="evenodd" />
+              ))}
+            <text class="hl-name" x="66" y={y + 26} fill="var(--color-cream-900)">{c.name}</text>
+            <text class="hl-body" x="204" y={y + 26} fill="var(--color-cream-700)" style="font-size: 13px">{c.flavor}</text>
+            {i < components.length - 1 && (
+              <line x1="24" y1={y + 44.5} x2="336" y2={y + 44.5} stroke="var(--color-border)" />
+            )}
+          </g>
+        );
+      })}
+
+      {/* Header row */}
+      <g class="hl-in hl-row" style="--hl-i: 4">
+        <text class="hl-label" x="28" y="296" fill="var(--color-cream-700)">run</text>
+        <text class="hl-label" x="204" y="296" fill="var(--color-cream-700)">status</text>
+        <line x1="24" y1="308.5" x2="336" y2="308.5" stroke="var(--color-border)" />
+      </g>
+
+      {/* Completed run: training_pipeline */}
+      <g class="hl-in hl-row" style="--hl-i: 5">
+        <text class="hl-name" x="28" y="332" fill="var(--color-cream-900)">training_pipeline</text>
+        <rect x="204" y="321" width="108" height="22" rx="4" fill="var(--color-sage-100)" />
+        <path transform="translate(212 327) scale(0.4242)" d={ICON_COMPLETED} fill="var(--color-sage-700)" fill-rule="evenodd" />
+        <text class="hl-mono" x="234" y="336" fill="var(--color-sage-800)" style="font-size: 13px">completed</text>
+      </g>
+
+      {/* Accent run: agent_pipeline, still running on the same stack */}
+      <g class="hl-in hl-row hl-accent" style="--hl-i: 6">
+        <rect x="24.5" y="352.5" width="311" height="47" rx="5" fill="var(--color-sage-100)" stroke="var(--color-sage-400)" />
+        <text class="hl-name" x="28" y="380" fill="var(--color-sage-900)">agent_pipeline</text>
+        <rect x="204" y="369" width="94" height="22" rx="4" fill="var(--color-sage-400)" />
+        <path transform="translate(212 375) scale(0.5833)" d={ICON_RUNNING} fill="var(--color-sage-900)" fill-rule="evenodd" />
+        <text class="hl-mono" x="234" y="384" fill="var(--color-sage-900)" style="font-size: 13px">running</text>
+      </g>
+    </g>
+  </Fragment>
 </HighlightFigure>

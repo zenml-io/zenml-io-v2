@@ -5,6 +5,13 @@
  * `<svg viewBox="0 0 720 460">` drawn from the site's colour tokens and role
  * fonts, so it scales to any pane width and repaints with the brand scope.
  *
+ * Narrow variant (DESIGN.md responsive contract, "Diagrams"): a figure may
+ * pass a second drawing in the `narrow` slot, authored on a portrait
+ * `viewBox="0 0 360 460"` with fewer nodes and shorter labels. Below the
+ * medium breakpoint the shell shows that one instead of shrinking the wide
+ * drawing; a figure without a `narrow` slot shows the wide drawing at every
+ * width. Both drawings share the animation contract below.
+ *
  * Animation contract: the pane that hosts a figure sets
  * `data-highlight-active` when its tab is current. Inside the figure,
  * groups marked `.hl-in` (staggered with `--hl-i`, inherited by children)
@@ -25,10 +32,12 @@ interface Props {
 }
 const { label, id } = Astro.props;
 const titleId = `${id}-title`;
+const narrowTitleId = `${id}-title-narrow`;
+const hasNarrow = Astro.slots.has("narrow");
 ---
 
 <svg
-  class="hl-figure"
+  class:list={["hl-figure", "hl-figure-wide", { "hl-has-narrow": hasNarrow }]}
   viewBox="0 0 720 460"
   role="img"
   aria-labelledby={titleId}
@@ -37,6 +46,20 @@ const titleId = `${id}-title`;
   <title id={titleId}>{label}</title>
   <slot />
 </svg>
+{
+  hasNarrow && (
+    <svg
+      class="hl-figure hl-figure-narrow"
+      viewBox="0 0 360 460"
+      role="img"
+      aria-labelledby={narrowTitleId}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <title id={narrowTitleId}>{label}</title>
+      <slot name="narrow" />
+    </svg>
+  )
+}
 
 <style is:global>
   .hl-figure {
@@ -45,6 +68,23 @@ const titleId = `${id}-title`;
     max-width: 720px;
     height: auto;
     /* No background of its own: the hosting panel supplies the cream. */
+  }
+
+  /* One drawing per width band: the narrow drawing below the medium
+     breakpoint (768px, Tailwind `md`), the wide one from there up. The
+     hidden drawing is display:none, so its reveal never runs unseen. */
+  .hl-figure-narrow {
+    max-width: 360px;
+  }
+  @media (max-width: 767px) {
+    .hl-figure-wide.hl-has-narrow {
+      display: none;
+    }
+  }
+  @media (min-width: 768px) {
+    .hl-figure-narrow {
+      display: none;
+    }
   }
 
   /* Type roles inside the figures: the same tokens the page binds. */

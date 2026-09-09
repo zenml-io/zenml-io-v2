@@ -125,4 +125,94 @@ const secrets = [
       </g>
     </g>
   </g>
+
+  <Fragment slot="narrow">
+    <defs>
+      <clipPath id={`${id}-n-card`}>
+        <rect x="12" y="12" width="336" height="436" rx="12" />
+      </clipPath>
+      {/* Step-card shape, in the card's own coordinates (same rect as wide). */}
+      <clipPath id={`${id}-n-step`}>
+        <rect x="0.5" y="0.5" width="159" height="61" rx="6" />
+      </clipPath>
+    </defs>
+
+    {/* One card: the secrets table and the run trace it feeds, stacked. */}
+    <rect x="12.5" y="12.5" width="335" height="435" rx="12" fill="var(--color-card)" stroke="var(--color-border)" />
+
+    <g class="hl-in" style="--hl-i: 0">
+      <text class="hl-title" x="28" y="38" fill="var(--color-cream-900)">Secrets</text>
+      <text class="hl-label" x="332" y="37" text-anchor="end" fill="var(--color-cream-700)">2 secrets</text>
+      <line x1="13" y1="54.5" x2="347" y2="54.5" stroke="var(--color-border)" />
+      <text class="hl-label" x="28" y="74" fill="var(--color-cream-700)">Secret</text>
+      <text class="hl-label" x="192" y="74" fill="var(--color-cream-700)">Key</text>
+      <line x1="24" y1="86.5" x2="348" y2="86.5" stroke="var(--color-border)" />
+    </g>
+
+    <g clip-path={`url(#${id}-n-card)`}>
+      {/* Cloud credential row */}
+      <g class="hl-in hl-row" style="--hl-i: 1">
+        <rect x="28" y="96" width="28" height="28" rx="8" fill="var(--color-sage-100)" />
+        <path transform="translate(33 101) scale(0.75)" d={ICON_LOCK} fill="var(--color-sage-700)" fill-rule="evenodd" />
+        <text class="hl-name" x="66" y="119" fill="var(--color-cream-900)" style="font-size: 13px">aws_credentials</text>
+        <text class="hl-body" x="192" y="119" fill="var(--color-cream-700)" style="font-size: 13px">aws_access_key_id</text>
+        <line x1="24" y1="134.5" x2="348" y2="134.5" stroke="var(--color-border)" />
+      </g>
+
+      {/* Accent row: openai — same accent subject as the wide drawing, and
+          the last thing to settle, so it carries the highest --hl-i. */}
+      <g class="hl-in hl-accent" style="--hl-i: 4">
+        <rect x="24.5" y="134.5" width="323" height="47" rx="5" fill="var(--color-sage-100)" stroke="var(--color-sage-400)" />
+        <rect x="28" y="144" width="28" height="28" rx="8" fill="var(--color-sage-400)" />
+        <path transform="translate(33 149) scale(0.75)" d={ICON_LOCK} fill="var(--color-sage-900)" fill-rule="evenodd" />
+        <text class="hl-name" x="66" y="163" fill="var(--color-sage-900)" style="font-size: 13px">openai</text>
+        <text class="hl-body" x="192" y="163" fill="var(--color-sage-800)" style="font-size: 13px">api_key</text>
+      </g>
+
+      {/* The run those secrets serve, as a second band in the same card */}
+      <g class="hl-in" style="--hl-i: 2">
+        <text class="hl-title" x="28" y="206" fill="var(--color-cream-900)">agent_pipeline</text>
+        <text class="hl-label" x="332" y="205" text-anchor="end" fill="var(--color-cream-700)">completed</text>
+        <line x1="13" y1="218.5" x2="347" y2="218.5" stroke="var(--color-border)" />
+      </g>
+
+      <g class="hl-in" style="--hl-i: 3">
+        {/* Lineage edges */}
+        <g class="hl-edge" fill="none" stroke="var(--color-sage-400)" stroke-width="1.5">
+          <path pathLength="1" d="M180 218 L180 238" />
+          <path pathLength="1" d="M180 286 L180 306" />
+          <path pathLength="1" d="M180 368 L180 388" />
+        </g>
+
+        {/* documents artifact pill */}
+        <g transform="translate(105 238)">
+          <rect x="0.5" y="0.5" width="149" height="47" rx="12" fill="var(--color-sage-50)" stroke="var(--color-sage-200)" />
+          <rect x="9" y="10" width="28" height="28" rx="8" fill="var(--color-sage-100)" />
+          <path transform="translate(14 15) scale(0.75)" d={ICON_DATABASE} fill="var(--color-sage-700)" fill-rule="evenodd" />
+          <text class="hl-name" x="45" y="21" fill="var(--color-sage-800)" style="font-size: 13px">documents</text>
+          <text class="hl-body" x="45" y="36" fill="var(--color-cream-700)">list</text>
+        </g>
+
+        {/* agent_loop step card (completed) */}
+        <g transform="translate(100 306)">
+          <rect x="0.5" y="0.5" width="159" height="61" rx="6" fill="var(--color-card)" stroke="var(--color-border)" />
+          <rect x="1" y="40" width="158" height="21" clip-path={`url(#${id}-n-step)`} fill="var(--color-background)" />
+          <line x1="1" y1="40.5" x2="159" y2="40.5" stroke="var(--color-border)" />
+          <rect x="6" y="6" width="28" height="28" rx="4" fill="var(--color-sage-100)" />
+          <path transform="translate(10 10) scale(0.606)" d={ICON_COMPLETED} fill="var(--color-sage-700)" fill-rule="evenodd" />
+          <text class="hl-name" x="42" y="25" fill="var(--color-cream-900)">agent_loop</text>
+          <text class="hl-mono" x="148" y="55" text-anchor="end" fill="var(--color-cream-700)">1:14min</text>
+        </g>
+
+        {/* answer artifact pill */}
+        <g transform="translate(105 388)">
+          <rect x="0.5" y="0.5" width="149" height="47" rx="12" fill="var(--color-sage-50)" stroke="var(--color-sage-200)" />
+          <rect x="9" y="10" width="28" height="28" rx="8" fill="var(--color-sage-100)" />
+          <path transform="translate(14 15) scale(0.75)" d={ICON_FILE} fill="var(--color-sage-700)" fill-rule="evenodd" />
+          <text class="hl-name" x="45" y="21" fill="var(--color-sage-800)" style="font-size: 13px">answer</text>
+          <text class="hl-body" x="45" y="36" fill="var(--color-cream-700)">str</text>
+        </g>
+      </g>
+    </g>
+  </Fragment>
 </HighlightFigure>

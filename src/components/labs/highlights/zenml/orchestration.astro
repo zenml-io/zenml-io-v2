@@ -65,6 +65,46 @@ const artifacts = [
   },
   { name: "answer", type: "str", icon: ICON_FILE, x: 397, y: 260, hlI: 3 },
 ] as const;
+
+/**
+ * Narrow (phone) drawing on the 360×460 canvas — a re-authored variant, not a
+ * scaled wide one. Two step cards do not fit side by side, so the graph runs as
+ * one vertical column: the classic-ML branch is reduced to `train_model` (fed by
+ * its `dataset` artifact) and the accent branch keeps `agent_loop`, entering
+ * from the card's top edge on its own rail. Both fold into `evaluate`, so the
+ * tab's claim — one pipeline, an ML step and an agent loop on one orchestrator —
+ * survives with half the nodes. Same anatomy and type sizes as the wide drawing.
+ */
+const narrowSteps = [
+  {
+    name: "train_model",
+    x: 100,
+    y: 146,
+    duration: "2:41min",
+    accent: false,
+    hlI: 2,
+  },
+  {
+    name: "agent_loop",
+    x: 100,
+    y: 252,
+    duration: "1:14min",
+    accent: true,
+    hlI: 5,
+  },
+  { name: "evaluate", x: 100, y: 364, duration: "9s", accent: false, hlI: 4 },
+] as const;
+
+const narrowArtifacts = [
+  {
+    name: "dataset",
+    type: "pd.DataFrame",
+    icon: ICON_DATABASE,
+    x: 105,
+    y: 72,
+    hlI: 1,
+  },
+] as const;
 ---
 
 <HighlightFigure label={label} id={id}>
@@ -133,4 +173,79 @@ const artifacts = [
       </g>
     ))}
   </g>
+
+  <Fragment slot="narrow">
+    <defs>
+      <clipPath id={`${id}-n-card`}>
+        <rect x="12" y="12" width="336" height="436" rx="12" />
+      </clipPath>
+      <clipPath id={`${id}-n-step`}>
+        <rect x="0.5" y="0.5" width="159" height="61" rx="6" />
+      </clipPath>
+    </defs>
+
+    {/* Run card */}
+    <rect x="12.5" y="12.5" width="335" height="435" rx="12" fill="var(--color-card)" stroke="var(--color-border)" />
+    <text class="hl-title" x="28" y="38" fill="var(--color-cream-900)">research_pipeline</text>
+    <text class="hl-label" x="332" y="37" text-anchor="end" fill="var(--color-cream-700)">3 completed</text>
+    <line x1="13" y1="54.5" x2="347" y2="54.5" stroke="var(--color-border)" />
+
+    <g clip-path={`url(#${id}-n-card)`}>
+      {/* Feed edges: the ML lane down the middle, the agent lane on its own rail */}
+      <g class="hl-in hl-edge" style="--hl-i: 0" fill="none" stroke="var(--color-sage-400)" stroke-width="1.5">
+        <path pathLength="1" d="M180 55 L180 72" />
+        <path pathLength="1" d="M180 120 L180 146" />
+      </g>
+      <g class="hl-in hl-edge" style="--hl-i: 0" fill="none" stroke="var(--color-sage-600)" stroke-width="1.5">
+        <path pathLength="1" d="M300 55 L300 227 Q300 232 295 232 L185 232 Q180 232 180 237 L180 252" />
+      </g>
+      {/* Merge edges: both lanes fold into evaluate */}
+      <g class="hl-in hl-edge" style="--hl-i: 3" fill="none" stroke="var(--color-sage-400)" stroke-width="1.5">
+        <path
+          pathLength="1"
+          d="M180 208 L180 213 Q180 218 175 218 L65 218 Q60 218 60 223 L60 349 Q60 354 65 354 L175 354 Q180 354 180 359 L180 364"
+        />
+        <path pathLength="1" d="M180 314 L180 364" />
+      </g>
+
+      {narrowSteps.map((s) => (
+        <g class={`hl-in${s.accent ? " hl-accent" : ""}`} style={`--hl-i: ${s.hlI}`} transform={`translate(${s.x} ${s.y})`}>
+          <rect
+            x="0.5"
+            y="0.5"
+            width="159"
+            height="61"
+            rx="6"
+            fill="var(--color-card)"
+            stroke={s.accent ? "var(--color-sage-600)" : "var(--color-border)"}
+          />
+          <rect
+            x="1"
+            y="40"
+            width="158"
+            height="21"
+            clip-path={`url(#${id}-n-step)`}
+            fill={s.accent ? "var(--color-sage-100)" : "var(--color-background)"}
+          />
+          <line x1="1" y1="40.5" x2="159" y2="40.5" stroke={s.accent ? "var(--color-sage-600)" : "var(--color-border)"} />
+          <rect x="6" y="6" width="28" height="28" rx="4" fill="var(--color-sage-100)" />
+          <path transform="translate(10 10) scale(0.606)" d={ICON_COMPLETED} fill="var(--color-sage-700)" fill-rule="evenodd" />
+          <text class="hl-name" x="42" y="25" fill="var(--color-cream-900)">{s.name}</text>
+          <text class="hl-mono" x="148" y="55" text-anchor="end" fill={s.accent ? "var(--color-sage-800)" : "var(--color-cream-700)"}>
+            {s.duration}
+          </text>
+        </g>
+      ))}
+
+      {narrowArtifacts.map((a) => (
+        <g class="hl-in" style={`--hl-i: ${a.hlI}`} transform={`translate(${a.x} ${a.y})`}>
+          <rect x="0.5" y="0.5" width="149" height="47" rx="12" fill="var(--color-sage-50)" stroke="var(--color-sage-200)" />
+          <rect x="9" y="10" width="28" height="28" rx="8" fill="var(--color-sage-100)" />
+          <path transform="translate(14 15) scale(0.75)" d={a.icon} fill="var(--color-sage-700)" fill-rule="evenodd" />
+          <text class="hl-name" x="45" y="21" fill="var(--color-sage-800)" style="font-size: 13px">{a.name}</text>
+          <text class="hl-body" x="45" y="36" fill="var(--color-cream-700)">{a.type}</text>
+        </g>
+      ))}
+    </g>
+  </Fragment>
 </HighlightFigure>

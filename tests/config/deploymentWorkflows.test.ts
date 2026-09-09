@@ -160,6 +160,20 @@ function workflowStep(steps: WorkflowStep[], name: string): WorkflowStep {
   return step as WorkflowStep;
 }
 
+let hostHasTimeout: boolean | undefined;
+
+function hostProvidesTimeout(): boolean {
+  if (hostHasTimeout === undefined) {
+    try {
+      execFileSync("sh", ["-c", "command -v timeout"], { stdio: "ignore" });
+      hostHasTimeout = true;
+    } catch {
+      hostHasTimeout = false;
+    }
+  }
+  return hostHasTimeout;
+}
+
 function withTemporaryHarness<T>(
   prefix: string,
   run: (directory: string, binDirectory: string) => T,
@@ -167,6 +181,16 @@ function withTemporaryHarness<T>(
   const directory = mkdtempSync(join(tmpdir(), prefix));
   const binDirectory = join(directory, "bin");
   mkdirSync(binDirectory);
+  if (!hostProvidesTimeout()) {
+    // GNU `timeout` (workflow snippets call `timeout <duration> <cmd...>`)
+    // has no macOS equivalent on PATH (no `timeout`, no `gtimeout` alias).
+    // CI (Ubuntu) always has it. Give the fake bin dir a shim that drops the
+    // duration and execs the rest, so the wrapped command still runs and the
+    // sequence/assertions these tests check are unchanged.
+    const timeoutShimPath = join(binDirectory, "timeout");
+    writeFileSync(timeoutShimPath, '#!/usr/bin/env bash\nshift\nexec "$@"\n');
+    chmodSync(timeoutShimPath, 0o755);
+  }
   try {
     return run(directory, binDirectory);
   } finally {

@@ -95,6 +95,28 @@ const headerLabels = [
   { label: "Data Type", x: COL_TYPE },
   { label: "Created", x: COL_CREATED },
 ] as const;
+
+/**
+ * Narrow (phone) drawing on the portrait 360x460 canvas: the same six
+ * versions of the same two artifacts, with the Data Type column dropped so
+ * Artifact / Version / Created still fit at full type size. Column x offsets
+ * inside the narrow content region (x 28...332).
+ */
+const COL_N_ARTIFACT = 28;
+const COL_N_VERSION = 186;
+const COL_N_CREATED = 254;
+
+const narrowHeaderY = 55;
+const narrowHeaderLabels = [
+  { label: "Artifact", x: COL_N_ARTIFACT },
+  { label: "Version", x: COL_N_VERSION },
+  { label: "Created", x: COL_N_CREATED },
+] as const;
+
+/** The plain rows in the same reading order; the accent keeps its slot between v7 and v5. */
+const NARROW_ROW_Y = [87, 135, 183, 231, 327] as const;
+const narrowRows = rows.map((r, k) => ({ ...r, y: NARROW_ROW_Y[k] }));
+const narrowAccentY = 279;
 ---
 
 <HighlightFigure label={label} id={id}>
@@ -142,4 +164,49 @@ const headerLabels = [
       <text class="hl-body" x={COL_CREATED} y={accent.y + 28} fill="var(--color-sage-800)">{accent.created}</text>
     </g>
   </g>
+
+  <Fragment slot="narrow">
+    <defs>
+      <clipPath id={`${id}-n-card`}>
+        <rect x="12" y="12" width="336" height="436" rx="12" />
+      </clipPath>
+    </defs>
+
+    {/* Run card */}
+    <rect x="12.5" y="12.5" width="335" height="435" rx="12" fill="var(--color-card)" stroke="var(--color-border)" />
+    <text class="hl-title" x="28" y="38" fill="var(--color-cream-900)">Artifacts</text>
+    <text class="hl-label" x="332" y="37" text-anchor="end" fill="var(--color-cream-700)">2 artifacts · 6 versions</text>
+    <line x1="13" y1="54.5" x2="347" y2="54.5" stroke="var(--color-border)" />
+
+    <g clip-path={`url(#${id}-n-card)`}>
+      {/* Header row */}
+      <g class="hl-in hl-row" style="--hl-i: 0">
+        {narrowHeaderLabels.map((h) => (
+          <text class="hl-label" x={h.x} y={narrowHeaderY + 20} fill="var(--color-cream-700)">{h.label}</text>
+        ))}
+        <line x1="24" y1={narrowHeaderY + headerHeight - 0.5} x2="336" y2={narrowHeaderY + headerHeight - 0.5} stroke="var(--color-border)" />
+      </g>
+
+      {narrowRows.map((r) => (
+        <g class="hl-in hl-row" style={`--hl-i: ${r.i}`}>
+          <path transform={`translate(${COL_N_ARTIFACT} ${r.y + 15}) scale(0.75)`} d={r.icon} fill="var(--color-sage-700)" fill-rule="evenodd" />
+          <text class="hl-name" x={COL_N_ARTIFACT + 28} y={r.y + 28} fill="var(--color-cream-900)" style="font-size: 13px">{r.name}</text>
+          <rect x={COL_N_VERSION} y={r.y + 14} width="32" height="20" rx="4" fill="var(--color-cream-100)" />
+          <text class="hl-mono" x={COL_N_VERSION + 16} y={r.y + 28} text-anchor="middle" fill="var(--color-cream-700)">{r.version}</text>
+          <text class="hl-body" x={COL_N_CREATED} y={r.y + 28} fill="var(--color-cream-700)">{r.created}</text>
+          {r.hairline && <line x1="24" y1={r.y + 47.5} x2="336" y2={r.y + 47.5} stroke="var(--color-border)" />}
+        </g>
+      ))}
+
+      {/* Accent row: the prompt version marked as the compare-with-last-good target */}
+      <g class="hl-in hl-accent" style="--hl-i: 6">
+        <rect x="24.5" y={narrowAccentY + 0.5} width="311" height="47" rx="5" fill="var(--color-sage-100)" stroke="var(--color-sage-400)" />
+        <path transform={`translate(${COL_N_ARTIFACT} ${narrowAccentY + 15}) scale(0.75)`} d={accent.icon} fill="var(--color-sage-800)" fill-rule="evenodd" />
+        <text class="hl-name" x={COL_N_ARTIFACT + 28} y={narrowAccentY + 28} fill="var(--color-sage-900)" style="font-size: 13px">{accent.name}</text>
+        <rect x={COL_N_VERSION} y={narrowAccentY + 14} width="32" height="20" rx="4" fill="var(--color-sage-400)" />
+        <text class="hl-mono" x={COL_N_VERSION + 16} y={narrowAccentY + 28} text-anchor="middle" fill="var(--color-sage-900)">{accent.version}</text>
+        <text class="hl-body" x={COL_N_CREATED} y={narrowAccentY + 28} fill="var(--color-sage-800)">{accent.created}</text>
+      </g>
+    </g>
+  </Fragment>
 </HighlightFigure>
