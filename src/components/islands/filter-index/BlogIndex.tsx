@@ -1,21 +1,20 @@
 /**
  * Blog index filter island — thin FilterIndex config on top of the shared
- * `DataFilterIndex` engine (#249). The page passes the built search-index
- * entries in as `items` (`buildBlogSearchIndex` in `src/lib/blog.ts` — the
- * same data `/blog/search-index.json` serves BlogSearch.tsx's Cmd+K), so
- * the first page of post cards and their `/blog/<slug>` links are in the
- * server-rendered HTML — /blog is a high-volume SEO surface and must not
- * depend on a client fetch for its crawlable content (guarded by a
- * `check-dist-smoke.ts` assertion). Renders the same card design
- * `BlogCard.astro`'s "grid" variant uses. `BlogCard` itself is an Astro
- * component and can't be rendered inside a Preact island (same constraint
- * as `IntegrationCard` — see `ControlFilterIndex`'s TSDoc), so this file
- * carries a Preact port of its "grid" variant markup; it has no scoped
- * `<style>` to lose (all utility classes), so the port is low-risk.
+ * `DataFilterIndex` engine (#249), skinned "labs" (blog cutover,
+ * the approved blog design (DESIGN.md)). The page passes the built search-index entries in as
+ * `items` (`buildBlogSearchIndex` in `src/lib/blog.ts` — the same data
+ * `/blog/search-index.json` serves), so the first page of post cards and
+ * their `/blog/<slug>` links are in the server-rendered HTML — /blog is a
+ * high-volume SEO surface and must not depend on a client fetch for its
+ * crawlable content (guarded by a `check-dist-smoke.ts` assertion). Renders
+ * `labs.blog-card`'s Preact twin (`BlogCard.tsx`) — an Astro component
+ * can't render inside a Preact island (same constraint as `IntegrationCard`
+ * — see `ControlFilterIndex`'s TSDoc), so `BlogCard.tsx` and `BlogCard.astro`
+ * share every class string via `blogCardStyles.ts` instead.
  */
+import type { BlogProduct } from "../../../lib/blog";
+import { BlogCard } from "../../labs/BlogCard";
 import { DataFilterIndex } from "./DataFilterIndex";
-import { formatUtcDate } from "./dates";
-import { FOCUS_RING } from "./icons";
 import type { FilterOption } from "./types";
 
 export interface BlogIndexItem {
@@ -26,6 +25,8 @@ export interface BlogIndexItem {
   category: string;
   categorySlug: string;
   tags: string[];
+  /** Drives the Kitaru pill + orange accent on this item's card — see `isKitaruPost` in lib/blog.ts. */
+  product: BlogProduct;
   readingTime?: string;
   image?: { url: string; alt?: string; width?: number; height?: number };
   authorName?: string;
@@ -72,10 +73,12 @@ export default function BlogIndex({
         getSearchText: (item) =>
           [item.title, item.excerpt].filter(Boolean).join(" "),
         scoreRelevance,
-        placeholder: "Search posts...",
+        placeholder: `Search ${items.length.toLocaleString("en-US")} posts`,
         ariaLabel: "Search",
       }}
       sort={{ compareNewest }}
+      skin="labs"
+      gridClassName="grid grid-cols-1 gap-12 sm:grid-cols-2"
       singleFacet={{
         label: "Category",
         urlParam: "category",
@@ -92,85 +95,20 @@ export default function BlogIndex({
         itemNounPlural: "tags",
       }}
       renderItem={(item) => (
-        <article
+        <BlogCard
           key={item.slug}
-          class="group flex flex-col overflow-hidden rounded-md border border-gray-200 bg-white transition-all hover:shadow-md hover:-translate-y-0.5"
-        >
-          {item.image && (
-            <a
-              href={`/blog/${item.slug}`}
-              class="block aspect-[3/2] overflow-hidden border-b border-gray-200"
-            >
-              <img
-                src={item.image.url}
-                alt={item.image.alt || item.title}
-                width={item.image.width}
-                height={item.image.height}
-                loading="lazy"
-                decoding="async"
-                class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-              />
-            </a>
-          )}
-          <div class="flex flex-1 flex-col p-6">
-            {item.category && (
-              <div class="mb-2">
-                <a
-                  href={`/category/${item.categorySlug}`}
-                  class={`inline-flex items-center rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-semibold text-primary-700 transition-colors hover:bg-primary-100 ${FOCUS_RING}`}
-                  style="mix-blend-mode:multiply"
-                >
-                  {item.category}
-                </a>
-              </div>
-            )}
-            <h2 class="mb-2 line-clamp-2 text-lg font-semibold leading-snug text-gray-900">
-              <a
-                href={`/blog/${item.slug}`}
-                class={`transition-colors hover:text-primary-600 ${FOCUS_RING}`}
-              >
-                {item.title}
-              </a>
-            </h2>
-            {item.excerpt && (
-              <p class="mb-3 line-clamp-2 text-sm leading-relaxed text-gray-600">
-                {item.excerpt}
-              </p>
-            )}
-            <div class="mt-auto pt-2">
-              {(item.authorAvatar || item.authorName) && (
-                <div class="flex items-center gap-2">
-                  {item.authorAvatar && (
-                    <img
-                      src={item.authorAvatar.url}
-                      alt={item.authorAvatar.alt || item.authorName || ""}
-                      class="h-6 w-6 rounded-full object-cover"
-                      loading="lazy"
-                    />
-                  )}
-                  {item.authorName &&
-                    (item.authorSlug ? (
-                      <a
-                        href={`/author/${item.authorSlug}`}
-                        class={`text-sm font-medium text-gray-700 hover:text-primary-600 ${FOCUS_RING}`}
-                      >
-                        {item.authorName}
-                      </a>
-                    ) : (
-                      <span class="text-sm font-medium text-gray-700">
-                        {item.authorName}
-                      </span>
-                    ))}
-                </div>
-              )}
-              <div class="mt-2 flex items-center gap-1.5 text-xs text-gray-400">
-                <span>{formatUtcDate(item.date)}</span>
-                {item.readingTime && <span aria-hidden="true">&middot;</span>}
-                {item.readingTime && <span>{item.readingTime}</span>}
-              </div>
-            </div>
-          </div>
-        </article>
+          href={`/blog/${item.slug}`}
+          title={item.title}
+          excerpt={item.excerpt}
+          image={item.image}
+          authorName={item.authorName}
+          authorSlug={item.authorSlug}
+          authorAvatar={item.authorAvatar}
+          readingTime={item.readingTime}
+          categoryName={item.category}
+          categorySlug={item.categorySlug}
+          product={item.product}
+        />
       )}
     />
   );

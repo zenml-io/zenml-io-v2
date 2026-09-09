@@ -14,11 +14,13 @@ import {
   type BlogPost,
   buildBlogSearchIndex,
   getAllPublishedPosts,
+  getBlogProduct,
   getCategoryCounts,
   getMainFeedPosts,
   getPrevNext,
   getRelatedPosts,
   getTagCounts,
+  isKitaruPost,
   resolveAuthor,
   sortByDateDesc,
 } from "../../src/lib/blog";
@@ -270,8 +272,36 @@ describe("blog helpers", () => {
         category: "Kitaru",
         categorySlug: "kitaru",
         tags: ["agents", "evaluation"],
+        product: "kitaru",
       },
     ]);
     expect(getCollectionMock).toHaveBeenCalledWith("categories");
+  });
+
+  it("derives the Kitaru product from category or tags, never a boolean", () => {
+    const byCategory = fakePost({
+      slug: "by-category",
+      date: "2025-01-01",
+      category: "kitaru",
+    });
+    const byTag = fakePost({
+      slug: "by-tag",
+      date: "2025-01-01",
+      tags: ["kitaru"],
+    });
+    const zenmlPost = fakePost({
+      slug: "zenml-post",
+      date: "2025-01-01",
+      category: "mlops",
+      tags: ["orchestration"],
+    });
+
+    expect(isKitaruPost(byCategory)).toBe(true);
+    expect(isKitaruPost(byTag)).toBe(true);
+    expect(isKitaruPost(zenmlPost)).toBe(false);
+
+    expect(getBlogProduct(byCategory)).toBe("kitaru");
+    expect(getBlogProduct(byTag)).toBe("kitaru");
+    expect(getBlogProduct(zenmlPost)).toBe("zenml");
   });
 });

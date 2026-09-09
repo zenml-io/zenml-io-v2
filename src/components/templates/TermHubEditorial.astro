@@ -2,20 +2,32 @@
 /**
  * TermHubEditorial — the blog-side term-page listing (issue #249).
  *
- * The card grid + zero-state that `/tags/[slug]`, `/category/[slug]`, and
- * `/author/[slug]` each rendered as an identical inline block before this
- * migration. Renders only the listing — the page keeps its own container,
- * `PageHeader`, `CategoryBar`, and `TagCloud` exactly as before (same
- * ownership split `PageHeader`'s `tone="default"` already establishes: a
- * component that sits between two page-owned siblings doesn't reach up for
- * a container of its own).
+ * The card grid + zero-state that `/category/[slug]` and `/author/[slug]`
+ * (categories and authors — D2d ruling; tags moved onto
+ * `term-hub.entry-index`'s stacked-row arrangement instead) render.
+ * Renders only the listing — the page keeps its own container and
+ * `PageHeader` exactly as before (same ownership split `PageHeader`'s
+ * `tone="default"` already establishes: a component that sits between two
+ * page-owned siblings doesn't reach up for a container of its own).
  *
- * `posts` is the exact shape `BlogCard`'s "grid" variant takes — this
- * component is a thin dedup of the post grid + `EmptyState` pairing, not a
- * new card. An absent `posts` array renders the empty state; there is no
- * `showEmpty` boolean.
+ * `posts` is the exact shape `labs.blog-card` (`BlogCard.astro`) takes —
+ * this component is a thin dedup of the post grid + `EmptyState` pairing,
+ * not a new card. An absent `posts` array renders the empty state; there
+ * is no `showEmpty` boolean.
+ *
+ * Additive (blog cutover, D2d/§6): `siblings` (up to N other terms in the
+ * same family — "Other categories" / "Other authors") and `pagination`.
+ * Both collapse on absence, independently — a caller with ≤12 posts and no
+ * sibling list gets neither strip.
  */
-import BlogCard from "../blog/BlogCard.astro";
+import type { BlogProduct } from "../../lib/blog";
+import { PAGE_SIZE } from "../../lib/blog";
+import {
+  TERM_CHIP,
+  TERM_CHIP_HEXAGON_PATH,
+  TERM_CHIP_HEXAGON_VIEWBOX,
+} from "../blog/termChipStyles";
+import BlogCard from "../labs/BlogCard.astro";
 import EmptyState from "../system/EmptyState.astro";
 import { EMPTY_STATE_PRESETS } from "../system/emptyStateStyles";
 
@@ -31,28 +43,83 @@ export interface TermHubEditorialPost {
   publishedDate?: Date;
   categoryName?: string;
   categorySlug?: string;
+  /** Forwarded to `BlogCard`'s `product` (`{...post}` spread below) — a Kitaru post's card shows the pill + orange accent on any hub, category/author/tag alike. */
+  product?: BlogProduct;
+}
+
+export interface TermHubSibling {
+  name: string;
+  href: string;
 }
 
 interface Props {
   posts: readonly TermHubEditorialPost[];
   /** e.g. "No posts with this tag yet." — names what's missing, never "No results". */
   emptyHeading: string;
+  /** "Other categories" / "Other authors" — omit the whole block by omitting `siblings`. */
+  siblingsHeading?: string;
+  siblings?: readonly TermHubSibling[];
+  /** Trailing "View all →" link under the sibling chips. */
+  viewAll?: { href: string; label: string };
+  /**
+   * Client-side pagination markers (12/page, D2d ruling): every post beyond
+   * the first `PAGE_SIZE` gets `hidden` + `data-page` so `HubPagination`
+   * can toggle it without a server round-trip. Harmless (all `data-page="1"`,
+   * nothing hidden) when `posts.length <= PAGE_SIZE`, which is also why this
+   * isn't a `paginated` boolean — the markers are free to emit unconditionally.
+   */
 }
 
-const { posts, emptyHeading } = Astro.props;
+const { posts, emptyHeading, siblingsHeading, siblings, viewAll } = Astro.props;
 ---
 
-<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-  {posts.map((post) => <BlogCard {...post} />)}
+<div id="term-hub-grid" class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+  {posts.map((post, i) => (
+    <div
+      data-page={Math.floor(i / PAGE_SIZE) + 1}
+      hidden={i >= PAGE_SIZE ? true : undefined}
+    >
+      <BlogCard {...post} />
+    </div>
+  ))}
 </div>
 
 {posts.length === 0 && (
   <EmptyState
     heading={emptyHeading}
     reserveHeight={false}
-    classOverrides={{
-      ...EMPTY_STATE_PRESETS.bareList,
-      heading: "text-center text-gray-500",
-    }}
+    classOverrides={EMPTY_STATE_PRESETS.bareListLabs}
   />
+)}
+
+{siblings && siblings.length > 0 && (
+  <div class="mt-14 flex flex-col gap-4 border-t border-(--color-border) pt-8">
+    {siblingsHeading && (
+      <p class="text-[12px] font-medium text-(--color-cream-800)">
+        {siblingsHeading}
+      </p>
+    )}
+    <div class="flex flex-wrap items-center gap-2">
+      {siblings.map((sibling) => (
+        <a href={sibling.href} class={TERM_CHIP}>
+          <svg
+            viewBox={TERM_CHIP_HEXAGON_VIEWBOX}
+            class="h-[14px] w-3 fill-(--color-sage-600)"
+            aria-hidden="true"
+          >
+            <path d={TERM_CHIP_HEXAGON_PATH} />
+          </svg>
+          {sibling.name}
+        </a>
+      ))}
+      {viewAll && (
+        <a
+          href={viewAll.href}
+          class="ml-1 text-[13px] font-medium text-(--color-sage-700) hover:text-(--color-sage-800)"
+        >
+          {viewAll.label} →
+        </a>
+      )}
+    </div>
+  </div>
 )}

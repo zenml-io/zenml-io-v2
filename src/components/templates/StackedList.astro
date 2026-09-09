@@ -2,8 +2,8 @@
 /**
  * StackedList — a vertical list of linked rows (issue #249).
  *
- * The row primitive behind `term-hub.entry-index` (not built this wave —
- * no live page consumes `StackedList` yet, so it ships as a standalone
+ * The row primitive behind `term-hub.entry-index` (default skin: no live
+ * page consumed it before the blog cutover, so it shipped as a standalone
  * primitive exercised only on `/styleguide`). Item shape is deliberately
  * generic (title, meta parts, href, trailing count) so that consumer can
  * pass rows without reshaping them: a row with no `meta` renders no meta
@@ -20,12 +20,39 @@
  * the hairline divider between rows, not a `gap` — a `<ul>` of `<li>` rows
  * isn't a flex/grid container, so there is nothing for a `SpaceStep` gap
  * token to apply to here.
+ *
+ * `skin="labs"` (blog cutover, the approved blog design (DESIGN.md)): the tokenised row this
+ * primitive's first live caller, `/tags/[slug]`, needs — hover fill instead
+ * of a hairline-only row, plus three additive item fields (`excerpt`,
+ * `chips`, `trailingLane`) that only render in this skin. `skin="default"`
+ * (unchanged) still renders the pre-cutover look for the database term
+ * hubs' demo path, so nothing regresses there.
  */
+import { PAGE_SIZE } from "../../lib/blog";
+import {
+  TERM_CHIP,
+  TERM_CHIP_HEXAGON_PATH,
+  TERM_CHIP_HEXAGON_VIEWBOX,
+  TERM_CHIP_OVERFLOW,
+} from "../blog/termChipStyles";
+
 export interface StackedListItem {
   title: string;
   href: string;
   meta?: readonly string[];
   trailingCount?: number;
+  /** `skin="labs"` only: 2-line excerpt under the title. */
+  excerpt?: string;
+  /** `skin="labs"` only: up to 3 sibling-term chip links under the excerpt. */
+  chips?: readonly { label: string; href: string }[];
+  /** `skin="labs"` only: "+N" overflow pill after `chips`. */
+  chipOverflowCount?: number;
+  /**
+   * `skin="labs"` only: the fixed-width right lane (author 224px slot +
+   * year 64px slot), replacing `trailingCount` for the tag rows. Either
+   * part collapses on its own when absent.
+   */
+  trailingLane?: { author?: string; year?: string };
 }
 
 interface Props {
@@ -33,6 +60,18 @@ interface Props {
   density?: "compact" | "comfortable";
   /** Set when this list renders inside `.prose` body copy, so it can drop the border rule it otherwise draws for itself. */
   inProse?: boolean;
+  /** Tokenised row + the additive item fields (blog cutover). Default keeps the pre-cutover look byte-for-byte. */
+  skin?: "default" | "labs";
+  /**
+   * Client-side pagination markers (D2d ruling, 12/page): every item beyond
+   * the first `pageSize` gets `hidden` + `data-page` for `HubPagination` to
+   * toggle. Off by default — only a caller that actually paginates opts in,
+   * so the database term hubs' unpaginated demo rows are untouched.
+   */
+  paginate?: boolean;
+  pageSize?: number;
+  /** id for `HubPagination` to scope its `[data-page]` query to. */
+  id?: string;
   class?: string;
 }
 
@@ -40,47 +79,113 @@ const {
   items,
   density = "comfortable",
   inProse = false,
+  skin = "default",
+  paginate = false,
+  pageSize = PAGE_SIZE,
+  id,
   class: className,
 } = Astro.props;
 
+const isLabs = skin === "labs";
 const rowPadding = density === "compact" ? "py-space-xxs" : "py-space-xs";
 ---
 
 <ul
+  id={id}
   class:list={[
     "list-none",
-    !inProse && "divide-y divide-gray-200 border-t border-b border-gray-200",
+    isLabs
+      ? "divide-y divide-(--color-border)"
+      : !inProse && "divide-y divide-gray-200 border-t border-b border-gray-200",
     className,
   ]}
 >
   {
-    items.map((item) => (
-      <li class={rowPadding}>
-        <a
-          href={item.href}
-          class="group flex items-center justify-between gap-space-xs"
-        >
-          <span class="min-w-0 flex-1">
-            <span class="block truncate text-sm font-medium text-gray-900 group-hover:text-primary-600">
-              {item.title}
+    items.map((item, i) => (
+      <li
+        data-page={paginate ? Math.floor(i / pageSize) + 1 : undefined}
+        hidden={paginate && i >= pageSize ? true : undefined}
+        class={isLabs ? undefined : rowPadding}
+      >
+        {isLabs ? (
+          <a
+            href={item.href}
+            class="group flex items-start gap-6 rounded-[6px] px-4 transition-colors duration-200 ease-out hover:bg-(--color-sage-50)"
+            style={`padding-top: ${density === "compact" ? "14px" : "20px"}; padding-bottom: ${density === "compact" ? "14px" : "20px"};`}
+          >
+            <span class="flex min-w-0 flex-1 flex-col gap-2">
+              <span class="block text-[16px] leading-[24px] font-semibold text-(--color-cream-900)">
+                {item.title}
+              </span>
+              {item.excerpt && (
+                <span class="line-clamp-2 text-[15px] leading-[23px] text-(--color-cream-700)">
+                  {item.excerpt}
+                </span>
+              )}
+              {item.chips && item.chips.length > 0 && (
+                <span class="mt-1 flex flex-wrap items-center gap-2">
+                  {item.chips.map((chip) => (
+                    <span class={TERM_CHIP}>
+                      <svg
+                        viewBox={TERM_CHIP_HEXAGON_VIEWBOX}
+                        class="h-[14px] w-3 fill-(--color-sage-600)"
+                        aria-hidden="true"
+                      >
+                        <path d={TERM_CHIP_HEXAGON_PATH} />
+                      </svg>
+                      {chip.label}
+                    </span>
+                  ))}
+                  {(item.chipOverflowCount ?? 0) > 0 && (
+                    <span class={TERM_CHIP_OVERFLOW}>
+                      +{item.chipOverflowCount}
+                    </span>
+                  )}
+                </span>
+              )}
             </span>
-            {item.meta && item.meta.length > 0 && (
-              <span class="mt-space-xxs flex flex-wrap items-center gap-1 text-xs text-gray-500">
-                {item.meta.map((part, i) => (
-                  <span>
-                    {i > 0 && <span aria-hidden="true">&middot; </span>}
-                    {part}
-                  </span>
-                ))}
+            {item.trailingLane ? (
+              <span class="flex w-[288px] shrink-0 items-center gap-0 self-center text-[14px] leading-[24px] text-(--color-cream-700)">
+                <span class="w-[224px] truncate">
+                  {item.trailingLane.author}
+                </span>
+                <span class="w-16 text-right">{item.trailingLane.year}</span>
+              </span>
+            ) : (
+              item.trailingCount !== undefined && (
+                <span class="w-11 shrink-0 self-center text-right text-[13px] tabular-nums text-(--color-cream-700)">
+                  {item.trailingCount.toLocaleString("en-US")}
+                </span>
+              )
+            )}
+          </a>
+        ) : (
+          <a
+            href={item.href}
+            class="group flex items-center justify-between gap-space-xs"
+          >
+            <span class="min-w-0 flex-1">
+              <span class="block truncate text-sm font-medium text-gray-900 group-hover:text-primary-600">
+                {item.title}
+              </span>
+              {item.meta && item.meta.length > 0 && (
+                <span class="mt-space-xxs flex flex-wrap items-center gap-1 text-xs text-gray-500">
+                  {item.meta.map((part, i) => (
+                    <span>
+                      {i > 0 && <span aria-hidden="true">&middot; </span>}
+                      {part}
+                    </span>
+                  ))}
+                </span>
+              )}
+            </span>
+            {item.trailingCount !== undefined && (
+              <span class="w-11 shrink-0 text-right text-sm text-gray-400 tabular-nums">
+                {item.trailingCount.toLocaleString("en-US")}
               </span>
             )}
-          </span>
-          {item.trailingCount !== undefined && (
-            <span class="w-11 shrink-0 text-right text-sm text-gray-400 tabular-nums">
-              {item.trailingCount.toLocaleString("en-US")}
-            </span>
-          )}
-        </a>
+          </a>
+        )}
       </li>
     ))
   }

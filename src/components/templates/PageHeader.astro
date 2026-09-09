@@ -35,6 +35,13 @@
  * the `masthead` branch ignores `headingLevel` — its one live shape (the
  * author page) is always the page `<h1>`, whose text is `heading` (pass the
  * same name there and in `masthead.name`, which labels the avatar).
+ *
+ * `masthead` also renders `breadcrumb` (blog cutover, D2d/§6) — the author
+ * hub needs both the shared `Blog › Authors › Name` crumb trail and the
+ * split identity layout, so the masthead branch is no longer breadcrumb-free.
+ * Its avatar/name/bio/meta/links repaint onto Labs tokens under
+ * `[data-app="labs"]` only — the un-scoped classes stay as the pre-cutover
+ * default for any future non-labs caller.
  */
 import type { BreadcrumbItem } from "../../lib/breadcrumb";
 import type { SectionIntroProps } from "../../lib/section";
@@ -110,32 +117,42 @@ const alignClass = isBrand && align === "center" ? "text-center" : undefined;
   {
     masthead ? (
       <div class:list={isBrand ? [containerClass, alignClass] : [alignClass]}>
+        {breadcrumb && (
+          <Breadcrumb items={breadcrumb} separator={breadcrumbSeparator} />
+        )}
         <div class="flex items-center gap-6">
           {masthead.avatar && (
             <Image
               image={masthead.avatar}
               alt={masthead.name}
-              class="h-20 w-20 rounded-full object-cover"
+              class="h-20 w-20 rounded-full object-cover [[data-app='labs']_&]:h-[72px] [[data-app='labs']_&]:w-[72px] [[data-app='labs']_&]:border [[data-app='labs']_&]:border-(--color-border)"
             />
           )}
           <div>
-            <h1 class="text-3xl font-bold tracking-tight text-gray-900">
+            {/* Labs-scope restyle (blog cutover, the approved blog design (DESIGN.md)): Borna
+                display, token colour, the fluid h1 rung shared with the
+                other blog h1s. Its only live consumer today is the author
+                hub, which is a labs-scope page — the un-scoped classes stay
+                as the pre-cutover default for any future non-labs caller. */}
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900 [[data-app='labs']_&]:font-display [[data-app='labs']_&]:text-[32px] [[data-app='labs']_&]:leading-[38px] [[data-app='labs']_&]:text-(--color-cream-800) [[data-app='labs']_&]:md:text-[56px] [[data-app='labs']_&]:md:leading-[62px]">
               {heading}
             </h1>
             {masthead.bio && (
-              <p class="mt-2 text-base leading-relaxed text-gray-600">
+              <p class="mt-2 text-base leading-relaxed text-gray-600 [[data-app='labs']_&]:mt-3 [[data-app='labs']_&]:text-[18px] [[data-app='labs']_&]:leading-[27px] [[data-app='labs']_&]:text-(--color-cream-700)">
                 {masthead.bio}
               </p>
             )}
             {(masthead.meta || masthead.links?.length) && (
-              <div class="mt-3 flex items-center gap-4">
+              <div class="mt-3 flex items-center gap-4 [[data-app='labs']_&]:text-[14px]">
                 {masthead.meta && (
-                  <span class="text-sm text-gray-500">{masthead.meta}</span>
+                  <span class="text-sm text-gray-500 [[data-app='labs']_&]:text-(--color-cream-700)">
+                    {masthead.meta}
+                  </span>
                 )}
                 {masthead.links?.map((link) => (
                   <a
                     href={link.href}
-                    class="text-sm font-medium text-primary-600 hover:text-primary-700"
+                    class="text-sm font-medium text-primary-600 hover:text-primary-700 [[data-app='labs']_&]:font-medium [[data-app='labs']_&]:text-(--color-sage-700) [[data-app='labs']_&]:hover:text-(--color-sage-800)"
                     target={link.external ? "_blank" : undefined}
                     rel={link.external ? "noopener noreferrer" : undefined}
                   >

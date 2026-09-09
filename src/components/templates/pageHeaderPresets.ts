@@ -9,22 +9,34 @@ import type { SectionIntroProps } from "../../lib/section";
 
 type IntroOverrides = NonNullable<SectionIntroProps["classOverrides"]>;
 
-/** The blog-taxonomy gradient band (tag/category/author detail pages). */
-export const TAXONOMY_BAND = {
-  bandClass: "bg-linear-to-t from-primary-50 to-white border-b border-gray-200",
-  containerClass: "mx-auto max-w-[1440px] px-4 py-10 sm:px-6 sm:py-14 lg:px-8",
-} as const;
-
-/** Intro type inside the taxonomy band (tag/category detail pages). */
-export const TAXONOMY_DETAIL_INTRO: IntroOverrides = {
-  heading: "text-3xl font-bold tracking-tight text-gray-900",
-  description: "text-base text-gray-600",
-  descriptionSpacing: "mt-2",
-};
-
-/** The plain hub-index header every taxonomy index page shares. */
+/**
+ * The plain hub-index header the llmops-tags/mlops-tags/industry-tags/
+ * integration-type index pages share (`tone="default"`, no band). Blog's
+ * own tags/category/author index pages moved onto `TERM_HUB_HEADER_INTRO`
+ * below in the blog cutover — this preset's remaining consumers are the
+ * database-side hubs, unchanged.
+ */
 export const TAXONOMY_INDEX_INTRO: IntroOverrides = {
   heading: "text-4xl font-bold tracking-tight text-gray-900",
   description: "text-lg text-gray-600",
   descriptionSpacing: "mt-3",
+};
+
+/**
+ * Blog term-hub header (blog cutover, the approved blog design (DESIGN.md)): the shared
+ * `page-header.with-breadcrumb` look for `/tags`, `/tags/[slug]`,
+ * `/category`, `/category/[slug]`, `/author` (the author *index*; the
+ * author *detail* page uses the `masthead` arrangement instead, restyled
+ * directly in `PageHeader.astro` since it has no `SectionIntro` to
+ * override). Tokens only, Borna display + Rethink dek — same fluid h1 rung
+ * as the blog's own h1s and the post masthead. `tone="default"`: the page
+ * keeps its own container (DESIGN.md `max-w-content` + `px-gutter`); this
+ * preset carries no `bandClass`/`containerClass`.
+ */
+export const TERM_HUB_HEADER_INTRO: IntroOverrides = {
+  heading:
+    "font-display max-w-[1000px] text-[32px] leading-[38px] text-(--color-cream-800) md:text-[56px] md:leading-[62px]",
+  description:
+    "max-w-[720px] text-[18px] leading-[27px] text-(--color-cream-700)",
+  descriptionSpacing: "mt-5",
 };

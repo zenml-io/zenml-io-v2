@@ -24,6 +24,7 @@ import { CHIP_VARIANT_CLASS } from "../../lib/chipStyles";
  * off.
  */
 import BlogCard from "../blog/BlogCard.astro";
+import HexCornerCard from "./HexCornerCard.astro";
 
 export interface RelatedRailMetaCardItem {
   kind: "meta-card";
@@ -73,17 +74,30 @@ export interface RelatedRailThumbnailItem {
   imageUrl?: string;
 }
 
+export interface RelatedRailHexCardItem {
+  kind: "hex-card";
+  href: string;
+  title: string;
+  /** Date or author-role line. */
+  meta?: string;
+  /** Category/kind label rendered in the bitten corner. */
+  kindLabel?: string;
+}
+
 export type RelatedRailItem =
   | RelatedRailMetaCardItem
   | RelatedRailLogoLockupItem
   | RelatedRailIconLinkItem
   | RelatedRailBlogCardItem
-  | RelatedRailThumbnailItem;
+  | RelatedRailThumbnailItem
+  | RelatedRailHexCardItem;
 
 export type RelatedRailGridVariant =
   | "gap-sm-2col-sm"
   | "gap-md-2col-sm"
-  | "gap-md-2col-md";
+  | "gap-md-2col-md"
+  /** Continue-reading rail (blog post, the approved blog design (DESIGN.md)): gap-6 (24px), explicit 1 → 2 → 3 steps. */
+  | "gap-lg-3col";
 
 interface Props {
   items: readonly RelatedRailItem[];
@@ -105,6 +119,7 @@ const GRID_VARIANT_CLASS: Record<RelatedRailGridVariant, string> = {
   "gap-sm-2col-sm": "grid gap-space-sm sm:grid-cols-2 lg:grid-cols-3",
   "gap-md-2col-sm": "grid gap-space-md sm:grid-cols-2 lg:grid-cols-3",
   "gap-md-2col-md": "grid gap-space-md md:grid-cols-2 lg:grid-cols-3",
+  "gap-lg-3col": "grid gap-6 sm:grid-cols-2 lg:grid-cols-3",
 };
 ---
 
@@ -239,6 +254,16 @@ const GRID_VARIANT_CLASS: Record<RelatedRailGridVariant, string> = {
                 />
               </svg>
             </a>
+          );
+        }
+        if (item.kind === "hex-card") {
+          return (
+            <HexCornerCard
+              href={item.href}
+              title={item.title}
+              meta={item.meta}
+              kind={item.kindLabel}
+            />
           );
         }
         if (item.kind === "blog-card") {

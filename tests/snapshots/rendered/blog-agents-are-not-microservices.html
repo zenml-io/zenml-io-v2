@@ -1,4 +1,4 @@
-<div class="prose prose-zoomable">
+<div class="prose prose-zoomable" data-astro-cid-[hash]="">
 <p>Temporal grew out of Uber’s Cadence project, which was built for durable workflow orchestration across Uber’s services. Public materials describe it as supporting long-running applications, millions of concurrent executions, and high-throughput task processing.
 </p>
 
@@ -111,6 +111,8 @@
 <p>This isn’t about which platform is “better.” It’s about fit:
 </p>
 
+<div class="table-scroll-block">
+<div class="table-scroll">
 
 
 
@@ -174,6 +176,14 @@
 </tr>
 </tbody>
 </table>
+</div>
+<p class="table-scroll__hint" aria-hidden="true">
+<svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
+<path d="M2 7h10M8 3l4 4-4 4" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+</path>
+</svg>Scrolls horizontally · the page body never does
+</p>
+</div>
 
 <p>Temporal is excellent at what it does. So is Restate. But using them for AI agents means accepting constraints that were designed for a different problem and working around them at every turn.
 </p>
@@ -187,84 +197,35 @@
 <p>This is “too simple” for payment processing, you’d need sub-millisecond resume and hundred-thousand concurrent workflows. But for 10 agents doing expensive LLM work with humans in the loop, simplicity is the feature.
 </p>
 
-<pre class="astro-code zenml-light" style="background-color:#f3f4f6;color:#1f0c47; overflow-x: auto;" tabindex="0" data-language="python">
+<figure class="code-pane" data-language="python">
+<div class="code-pane__bar">
+<span>python
+</span>
+<button type="button" class="code-pane__copy" aria-label="Copy code">Copy
+</button>
+</div>
+<div class="code-pane__scroll">
+<pre class="astro-code labs-light" style="background-color:#413D37;color:#F5F7F4; overflow-x: auto;" tabindex="0" data-language="python">
 <code>
 <span class="line">
-<span style="color:#228A8A">import
+<span style="color:#BECAA6">import
 </span>
-<span style="color:#1F0C47"> kitaru
-</span>
-</span>
-
-<span class="line">
-<span style="color:#228A8A">from
-</span>
-<span style="color:#1F0C47"> kitaru 
-</span>
-<span style="color:#228A8A">import
-</span>
-<span style="color:#1F0C47"> checkpoint
-</span>
-<span style="color:#F53D81">,
-</span>
-<span style="color:#1F0C47"> flow
+<span style="color:#F5F7F4"> kitaru
 </span>
 </span>
 
 <span class="line">
+<span style="color:#BECAA6">from
 </span>
-
-<span class="line">
-<span style="color:#F53D81">@checkpoint
+<span style="color:#F5F7F4"> kitaru 
 </span>
+<span style="color:#BECAA6">import
 </span>
-
-<span class="line">
-<span style="color:#228A8A">def
+<span style="color:#F5F7F4"> checkpoint
 </span>
-<span style="color:#7A3EF4"> deep_research
+<span style="color:#47BAD1">,
 </span>
-<span style="color:#1F0C47">(
-</span>
-<span style="color:#7641BB">topic
-</span>
-<span style="color:#F53D81">:
-</span>
-<span style="color:#7641BB"> str
-</span>
-<span style="color:#1F0C47">) 
-</span>
-<span style="color:#F53D81">-&gt;
-</span>
-<span style="color:#7641BB"> str
-</span>
-<span style="color:#1F0C47">:
-</span>
-</span>
-
-<span class="line">
-<span style="color:#676B79;font-style:italic">    # 30 seconds, $2 in tokens
-</span>
-</span>
-
-<span class="line">
-<span style="color:#228A8A">    return
-</span>
-<span style="color:#7A3EF4"> call_llm(
-</span>
-<span style="color:#228A8A">f
-</span>
-<span style="color:#4AA819">"Research 
-</span>
-<span style="color:#F53D81">{
-</span>
-<span style="color:#7A3EF4">topic
-</span>
-<span style="color:#F53D81">}
-</span>
-<span style="color:#4AA819"> thoroughly"
-</span>
-<span style="color:#7A3EF4">)
+<span style="color:#F5F7F4"> flow
 </span>
 </span>
 
@@ -272,78 +233,58 @@
 </span>
 
 <span class="line">
-<span style="color:#F53D81">@flow
+<span style="color:#47BAD1">@checkpoint
 </span>
 </span>
 
 <span class="line">
-<span style="color:#228A8A">def
+<span style="color:#BECAA6">def
 </span>
-<span style="color:#7A3EF4"> research_agent
+<span style="color:#47BAD1"> deep_research
 </span>
-<span style="color:#1F0C47">(
+<span style="color:#F5F7F4">(
 </span>
-<span style="color:#7641BB">topic
+<span style="color:#E0CFB7">topic
 </span>
-<span style="color:#F53D81">:
+<span style="color:#47BAD1">:
 </span>
-<span style="color:#7641BB"> str
+<span style="color:#E0CFB7"> str
 </span>
-<span style="color:#1F0C47">) 
+<span style="color:#F5F7F4">) 
 </span>
-<span style="color:#F53D81">-&gt;
+<span style="color:#47BAD1">-&gt;
 </span>
-<span style="color:#7641BB"> str
+<span style="color:#E0CFB7"> str
 </span>
-<span style="color:#1F0C47">:
-</span>
-</span>
-
-<span class="line">
-<span style="color:#1F0C47">    research 
-</span>
-<span style="color:#F53D81">=
-</span>
-<span style="color:#7A3EF4"> deep_research(topic)
+<span style="color:#F5F7F4">:
 </span>
 </span>
 
 <span class="line">
-</span>
-
-<span class="line">
-<span style="color:#1F0C47">    kitaru
-</span>
-<span style="color:#F53D81">.
-</span>
-<span style="color:#7A3EF4">wait(
+<span style="color:#AC947F;font-style:italic">    # 30 seconds, $2 in tokens
 </span>
 </span>
 
 <span class="line">
-<span style="color:#7641BB">        schema
+<span style="color:#BECAA6">    return
 </span>
-<span style="color:#F53D81">=
+<span style="color:#47BAD1"> call_llm
 </span>
-<span style="color:#7641BB">bool
+<span style="color:#F5F7F4">(
 </span>
-<span style="color:#F53D81">,
+<span style="color:#BECAA6">f
 </span>
+<span style="color:#DBE0C2">"Research 
 </span>
-
-<span class="line">
-<span style="color:#7641BB">        question
+<span style="color:#E0CFB7">{
 </span>
-<span style="color:#F53D81">=
+<span style="color:#47BAD1">topic
 </span>
-<span style="color:#4AA819">"Research complete. Proceed to analysis?"
+<span style="color:#E0CFB7">}
 </span>
-<span style="color:#F53D81">,
+<span style="color:#DBE0C2"> thoroughly"
 </span>
-</span>
-
-<span class="line">
-<span style="color:#7A3EF4">    )
+<span style="color:#F5F7F4">)
 </span>
 </span>
 
@@ -351,15 +292,108 @@
 </span>
 
 <span class="line">
-<span style="color:#228A8A">    return
+<span style="color:#47BAD1">@flow
 </span>
-<span style="color:#7A3EF4"> analyze(research)
 </span>
-<span style="color:#676B79;font-style:italic">  # research is cached, not re-computed
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> research_agent
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">topic
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> str
+</span>
+<span style="color:#F5F7F4">) 
+</span>
+<span style="color:#47BAD1">-&gt;
+</span>
+<span style="color:#E0CFB7"> str
+</span>
+<span style="color:#F5F7F4">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">    research 
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> deep_research
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">topic
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">    kitaru
+</span>
+<span style="color:#47BAD1">.wait
+</span>
+<span style="color:#F5F7F4">(
+</span>
+</span>
+
+<span class="line">
+<span style="color:#E0CFB7">        schema
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#E0CFB7">bool
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#E0CFB7">        question
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#DBE0C2">"Research complete. Proceed to analysis?"
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">    )
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">    return
+</span>
+<span style="color:#47BAD1"> analyze
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">research
+</span>
+<span style="color:#F5F7F4">)  
+</span>
+<span style="color:#AC947F;font-style:italic"># research is cached, not re-computed
 </span>
 </span>
 </code>
 </pre>
+</div>
+</figure>
 
 <p>Two decorators. 
 <code>pip install kitaru
@@ -390,16 +424,4 @@
 </li>
 
 </ul>
-<div class="mt-10 border-t border-gray-200 pt-6">
-<div class="flex flex-wrap gap-2">
-<a href="/tags/kitaru" class="inline-flex items-center rounded-pill px-2.5 py-0.5 text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200">kitaru
-</a>
-<a href="/tags/agents" class="inline-flex items-center rounded-pill px-2.5 py-0.5 text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200">agents
-</a>
-<a href="/tags/infrastructure" class="inline-flex items-center rounded-pill px-2.5 py-0.5 text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200">infrastructure
-</a>
-<a href="/tags/thought-leadership" class="inline-flex items-center rounded-pill px-2.5 py-0.5 text-xs font-medium transition-colors bg-gray-100 text-gray-700 hover:bg-gray-200">Thought Leadership
-</a>
-</div>
-</div>
 </div>

@@ -215,7 +215,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 22,
     notes:
-      "Consumes the breadcrumb primitive, which emits visual crumbs and BreadcrumbList JSON-LD together (#248).",
+      'Consumes the breadcrumb primitive, which emits visual crumbs and BreadcrumbList JSON-LD together (#248). Live consumers include the blog term hubs (/tags, /category, /author and their [slug] detail pages, blog cutover D2d) via the TERM_HUB_HEADER_INTRO preset — tone="default" so the page keeps its own container (DESIGN.md max-w-content + px-gutter); breadcrumbSeparator="chevron" repaints onto Labs tokens (sentence case, not Nudica/uppercase — 2026-09-09 typography ruling) only under [data-app="labs"].',
     demoProps: {
       breadcrumb: [
         { label: "Docs", href: "/docs" },
@@ -254,9 +254,15 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 22,
     notes:
-      "Drops below lg to a re-authored single-lane layout rather than squeezing the split.",
+      'Drops below lg to a re-authored single-lane layout rather than squeezing the split. Live consumer: /author/[slug] (blog cutover, D2d), which also passes breadcrumb — the masthead branch renders it above the avatar row (blog cutover addition; it used to be breadcrumb-free) so the author hub gets both the shared Blog › Authors › Name crumb and the split identity layout. Its avatar/name/bio/meta/links repaint onto Labs tokens under [data-app="labs"] only, direct in PageHeader.astro (not via classOverrides — the masthead branch has no SectionIntro to override).',
     demoProps: {
       heading: "Jane Doe",
+      breadcrumb: [
+        { label: "Blog", href: "/blog" },
+        { label: "Authors", href: "/author" },
+        { label: "Jane Doe" },
+      ],
+      breadcrumbSeparator: "chevron",
       masthead: {
         name: "Jane Doe",
         bio: "Writes about MLOps in production.",
@@ -469,10 +475,13 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     componentPath: "src/components/templates/StackedList.astro",
     collectionBound: true,
     variantAxes: [
+      "skin: default | labs",
       "density",
       "row count",
       "meta parts present",
       "trailing count present",
+      "excerpt/chips/trailing-lane present (labs skin)",
+      "paginated",
       "in-prose",
     ],
     tones: ["default"],
@@ -480,12 +489,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 23,
     notes:
-      "The row primitive behind term-hub.entry-index. Built standalone this wave — no live duplicate existed to migrate, so /styleguide is its only render until term-hub lands.",
+      'The row primitive behind term-hub.entry-index. skin="default" is the pre-cutover look (/styleguide only). skin="labs" (blog cutover, the approved blog design (DESIGN.md)) is its first live render, via /tags/[slug]: a token-hover row with three additive item fields — excerpt, up to 3 sibling-tag chips + an overflow pill, and a fixed 288px trailing lane (224px author + 64px year) that replaces trailingCount when present. paginate (default false) marks every item beyond pageSize with hidden + data-page for the HubPagination island to toggle — off by default so the database term hubs\' unpaginated demo rows are untouched.',
     contentShape: {
       minItems: 1,
       maxItems: 122,
       overflow:
-        "No built-in cap; term-hub.entry-index is expected to pass up to the tag facet's 122 rows.",
+        "No built-in cap; term-hub.entry-index is expected to pass up to the tag facet's 122 rows. The labs skin's live caller (/tags/[slug]) server-renders the full list and paginates 12/page client-side.",
     },
     demoProps: {
       items: [
@@ -512,16 +521,23 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 24,
     notes:
-      "Carries a 170px image slot and a category chip, so it keeps its own card rather than adopting card.hex-corner (#87). Terms render verbatim — no normalisation (one live tag name really ends in a space). The identity block (author avatar/bio) is the page-header split-masthead's job, not this component's — it renders only the post listing.",
+      "Renders the card grid via labs.blog-card (BlogCard.astro), not its own card — the blog cutover moved the identity block (author avatar/bio) to page-header.split-masthead and the term listing onto the shared blog card, so this component owns only the grid, the optional sibling-term strip (siblings/siblingsHeading/viewAll, absence collapses), and the empty state. Terms render verbatim — no normalisation (one live tag name really ends in a space). Live consumers: /category/[slug] and /author/[slug] (D2d ruling — tags use term-hub.entry-index's stacked-row arrangement instead). Every card carries data-page + hidden markers for HubPagination (12/page) — harmless no-ops under 13 items.",
     contentShape: {
       minItems: 1,
-      maxItems: 60,
+      maxItems: 100,
       itemBudget:
         "Title clamps at 2 lines, excerpt at 2; a missing image collapses the media slot.",
-      overflow: "The card grid wraps to further rows; nothing paginates yet.",
+      overflow:
+        "The full SSR list renders (SEO); HubPagination shows 12 at a time client-side. An author can have close to 100 posts.",
     },
     demoProps: {
       emptyHeading: "No posts with this tag yet.",
+      siblingsHeading: "Other categories",
+      siblings: [
+        { name: "MLOps", href: "#" },
+        { name: "LLMOps", href: "#" },
+      ],
+      viewAll: { href: "#", label: "View all" },
       posts: [
         {
           href: "/blog/zenmls-month-of-mlops-recap",
@@ -551,12 +567,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 24,
     notes:
-      "Two arrangements per section, never both: cards (live parity — the entry card grid every database term route renders today) and items (the drawn stacked list of data-display.stacked-list rows — new-brand/cutover, no live caller; the demo exercises it). A section without a heading renders no <h2> (single-collection page); the industry pages pass two headed sections (dual collection).",
+      'Two arrangements per section, never both: cards (live parity — the entry card grid every llmops-tags/mlops-tags/industry-tags term route renders today) and items (data-display.stacked-list rows). items has one live caller now: /tags/[slug] (blog cutover, D2d), on skin="labs" — StackedList\'s tokenised row with the excerpt/sibling-chip/author-year additions; skin/paginate/pageSize/id forward straight through to StackedList. A section without a heading renders no <h2> (single-collection page); the industry pages pass two headed sections (dual collection).',
     contentShape: {
       minItems: 0,
       maxItems: 200,
       overflow:
-        "The grid/list grows with the term's matching entries; a zero-entry term no longer builds a page, but the component still collapses to its empty state at 0.",
+        "The grid/list grows with the term's matching entries; a zero-entry term no longer builds a page, but the component still collapses to its empty state at 0. /tags/[slug] server-renders every matching post (SEO) and paginates 12/page client-side via HubPagination — a busy tag can carry well over 100.",
     },
     demoProps: {
       emptyHeading: "No LLMOps entries with this tag yet.",
@@ -690,7 +706,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     componentPath: "src/components/templates/RelatedRail.astro",
     collectionBound: true,
     variantAxes: [
-      "card shape (meta-card/logo-lockup/icon-link/blog-card/thumbnail)",
+      "card shape (meta-card/logo-lockup/icon-link/blog-card/hex-card/thumbnail)",
       "column count",
       "sidebar",
       "item count",
@@ -701,7 +717,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 26,
     notes:
-      "Image-free by ruling (#63). Renders only the items arrangement (grid or list) — the seven live surfaces keep their own heading treatments and section chrome, so 'More like this' as the one sitewide heading, card.hex-corner on grid cards, and the bind-separator-to-following-token meta form are the new-brand cutover states, not this parity build. The live parity build keeps per-surface headings, hex-corner-free cards, and free-standing meta separators (a wrap leaves the dot at the line end).",
+      "Image-free by ruling (#63). Renders only the items arrangement (grid or list) — the seven pre-cutover surfaces keep their own per-surface headings, hex-corner-free cards, and free-standing meta separators (a wrap leaves the dot at the line end), untouched. The blog cutover adds the `hex-card` item kind (card.hex-corner) for the post page's 'Continue reading' rail, additively — the other five kinds render exactly as before.",
     contentShape: {
       minItems: 1,
       maxItems: 4,
@@ -741,7 +757,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: true,
     paperPage: 29,
     notes:
-      "Rail everywhere; no horizontal facet bar exists and no prop reaches one (#64, #90). At 375 the rail becomes a drawer behind one Filters trigger. Count header is the aria-live region; counts are comma-formatted count-of-total in a 44px right-aligned lane. Two flavors share the rail/state/URL machinery: DataFilterIndex (LLMOps/MLOps/blog — the island renders the result cards) and ControlFilterIndex (integrations — the island toggles visibility of server-rendered cards passed as children). Live consumers wire domain accessors as function props, so there is no static demoProps demo — TemplateStage shows its unresolved-path notice for this entry until a fixture wrapper exists.",
+      'Rail everywhere; no horizontal facet bar exists and no prop reaches one (#64, #90). At 375 the rail becomes a drawer behind one Filters trigger. Count header is the aria-live region; counts are comma-formatted count-of-total in a 44px right-aligned lane. Two flavors share the rail/state/URL machinery: DataFilterIndex (LLMOps/MLOps/blog — the island renders the result cards) and ControlFilterIndex (integrations — the island toggles visibility of server-rendered cards passed as children). An optional `skin` prop (default keeps every class-string shape and behaviour; the site-wide purple→sage colour pass touched its colours too) lets one consumer re-skin classes only, never behaviour: the blog cutover\'s DataFilterIndex, FacetRail, Pagination and ResultsCount all take `skin="labs"` (class strings in labsSkin.ts) — LLMOps, MLOps and Integrations stay on the default skin (layout unchanged, colours now sage). Live consumers wire domain accessors as function props, so there is no static demoProps demo — TemplateStage shows its unresolved-path notice for this entry until a fixture wrapper exists.',
     contentShape: {
       minItems: 66,
       maxItems: 2100,
@@ -818,26 +834,32 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
   {
     id: "mark.hex-corner",
     kind: "primitive",
-    componentPath: null,
+    componentPath: "src/components/system/HexCornerMark.astro",
     variantAxes: [],
     tones: ["default"],
     responsive: "static",
     island: false,
     paperPage: 1,
     notes:
-      "A treatment applied to any clipped surface, not a card (#91). Size-independent: one 420x300 SVG anchored right -57 / bottom -40 docks correctly at any width and height. Host owes it overflow:clip, a radius, --card-halo, and no content in the bottom-right 90x80. Floor is 240x140 — the hexagon is a fixed 80px and does not scale.",
+      'A treatment applied to any clipped surface, not a card (#91): one 106px corner SVG (halo hexagon + sage-400 hexagon + arrow) anchored bottom-right, tucked into the corner as a rotated wedge at rest. Host owes it position:relative, overflow-clip, a `group` class for the hover read, and no content in the bottom-right corner. On hover the surface flips to --color-sage-900 and the mark walks into the card at half size, upright, the arrow keeping its rest size (geometry and timings in HexCornerMark.astro; the rule in DESIGN.md "The hex corner is a treatment"). prefers-reduced-motion keeps the colour flip and holds the geometry still.',
   },
   {
     id: "card.hex-corner",
     kind: "primitive",
-    componentPath: null,
+    componentPath: "src/components/templates/HexCornerCard.astro",
     variantAxes: ["meta parts present"],
     tones: ["default", "inverted"],
     responsive: "reflow",
     island: false,
     paperPage: 1,
     notes:
-      "One consumer of mark.hex-corner. Title-led, no excerpt slot (#83). 363x260 is this card's chosen size, not a constraint the corner imposes.",
+      "One consumer of mark.hex-corner. Title-led, no excerpt slot (#83). 363x260 is this card's chosen size, not a constraint the corner imposes. First live consumer: the blog post 'Continue reading' rail (RelatedRail's hex-card item kind) — a 12px-padded title/meta/kind-label stack over the mark, whole card as one link.",
+    demoProps: {
+      href: "/blog/agents-are-not-microservices",
+      title: "Your Agents Are Not Microservices",
+      meta: "August 18, 2026",
+      kind: "Agents",
+    },
   },
 
   // ── section primitives (Paper 1, Wave 1 substrate #248) ──────────────────
@@ -1179,9 +1201,27 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: true,
     paperPage: 0,
     notes:
-      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, `content: LabsProductBandContent` (LABS_HERO on `/`, ZENML_HERO on `/product/zenml`) gives the two-line headline + deck + one signup pill, vertically centered in the band; a product page's content adds a ghost secondary pill and a copyable install chip (LabsInstallChip), each collapsing when absent. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component.",
+      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, `content: LabsProductBandContent` (LABS_HERO on `/`, ZENML_HERO on `/product/zenml`) gives the two-line headline + deck + one signup pill, vertically centered in the band; a product page's content adds a ghost secondary pill and a copyable install chip (LabsInstallChip), each collapsing when absent. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component. Renders through `labs.band` for the shader/sizing chrome — see that entry.",
     stage: false,
     demoProps: {},
+  },
+  {
+    id: "labs.band",
+    kind: "template",
+    componentPath: "src/components/labs/LabsBand.astro",
+    variantAxes: ["size (landing | short)", "grain (labs | kitaru)"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: true,
+    paperPage: 0,
+    notes:
+      'The shared shader-band shell: GrainBackdrop (client:visible), bottom fade, and the `size` sizing/nav-clearance rules, with a default slot for the caller\'s own heading markup. `labs.hero` renders both its bands through this component; the blog surfaces (blog index via `labs.hero`, the category/tag/author hubs, and the post masthead in BlogLayout.astro) use it directly with their own breadcrumb/eyebrow/heading/deck markup in the slot, so the shader stays each blog route\'s one ambient island. `grain` (default "labs", the sage register every non-Kitaru band uses) switches to "kitaru" for a Kitaru post\'s masthead — the exact palette `KitaruGrain`\'s `hero` variant renders on `/product/kitaru` (kitaru-grain-palettes.ts), a plain hex-literal config independent of the `[data-app="kitaru"]` CSS bridge. Only the shader and the section\'s background/fade-to token (`--background` instead of `--color-sage-50`) switch with it; hairline, container, and sizing stay identical either way. Every other live consumer (blog index, hubs) stays on "labs".',
+    stage: false,
+    demoProps: { size: "short" },
+    demoSlots: {
+      default:
+        '<h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">Category</h1>',
+    },
   },
   {
     id: "labs.product-doors",
@@ -1360,6 +1400,40 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
       maxItems: 24,
       overflow: "the grid shows the first 24, the CTA leads to the full index",
     },
+  },
+  {
+    id: "labs.blog-card",
+    kind: "template",
+    componentPath: "src/components/labs/BlogCard.astro",
+    variantAxes: ["image present", "excerpt present", "byline present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Blog cutover card (the approved blog design, DESIGN.md): chrome-less, 16:9 media, hover border+zoom+title-colour. Preact twin at BlogCard.tsx (used by the `/blog` index's DataFilterIndex island — an Astro component can't render inside a Preact island) sharing every class string with the Astro twin via blogCardStyles.ts, so the two markups can't drift. Only slot that never collapses is the title; the whole card is one link target for it, category/author stay separate links. Live consumers: the `/blog` index grid and term-hub.editorial's grid (category/author hubs, blog cutover D2d) — each item there also carries data-page + hidden markers for HubPagination. (RelatedRail's own `blog-card` item kind still renders the pre-cutover `src/components/blog/BlogCard.astro`, a separate component — untouched by this cutover.)",
+    demoProps: {
+      href: "/blog/agents-are-not-microservices",
+      title: "Your Agents Are Not Microservices",
+      excerpt:
+        "Durable execution engines were built for payment flows and order processing. AI agents need something different. Here's why.",
+      authorName: "Hamza Tahir",
+      categoryName: "Kitaru",
+    },
+  },
+  {
+    id: "labs.blog-newsletter-cta",
+    kind: "template",
+    componentPath: "src/components/labs/BlogNewsletterCta.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: true,
+    paperPage: 0,
+    notes:
+      "Closing band shown at the bottom of every blog route (the index, a post via BlogLayout.astro, and the category/tag/author hub pages): dark sage panel, two-column (ZenML signup pill left, newsletter signup card right), one column below lg. Mounts GrainBackdrop client:idle, same treatment as labs.close-cta — deliberately not the page's always-on ambient island, so it hydrates once the browser is idle instead of competing with a hero shader for first paint. The newsletter form's markup is custom (a pill-shaped input row with an icon-only submit button) but shares the Brevo contract with BrevoNewsletterForm.astro: BREVO_MAIN_CONFIG, the same hidden honeypot/locale inputs and data-brevo-* attributes, and the same submit behaviour via the shared scripts/brevoNewsletterForm.ts (extracted from BrevoNewsletterForm.astro's former inline script so the two markups can't fork the fetch logic). Copy lives in src/lib/blog-cta.ts.",
+    stage: false,
+    demoProps: {},
   },
 ];
 

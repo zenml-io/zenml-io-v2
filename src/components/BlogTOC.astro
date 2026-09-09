@@ -1,6 +1,7 @@
 ---
 /**
- * BlogTOC — sticky table of contents for blog posts.
+ * BlogTOC — sticky table of contents for blog posts (Labs shell,
+ * the approved blog design (DESIGN.md): numbered rows, scroll-spy highlight).
  *
  * Renders heading links with scroll-spy highlighting via IntersectionObserver.
  * Only renders if there are ≥3 headings.
@@ -23,25 +24,29 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
 
 {tocHeadings.length >= 3 && (
   <nav class="text-sm" aria-label="Table of contents" data-toc>
-    <p class="mb-3 text-xs font-semibold uppercase tracking-wider text-gray-400">
+    <p class="pb-3 text-[12px] font-medium text-(--color-sage-700)">
       On this page
     </p>
-    <ul class="space-y-2 border-l border-gray-200">
-      {tocHeadings.map((heading) => (
-        <li>
-          <a
-            href={`#${heading.slug}`}
-            class:list={[
-              "block border-l-2 -ml-px pl-4 transition-colors duration-150",
-              "text-gray-500 hover:text-gray-900 border-transparent hover:border-gray-400",
-            ]}
-            data-toc-link={heading.slug}
-          >
-            {heading.text}
-          </a>
-        </li>
-      ))}
-    </ul>
+    <div class="border-t border-(--color-border) pt-2.5">
+      <ul class="flex flex-col gap-0.5">
+        {tocHeadings.map((heading, i) => (
+          <li>
+            <a
+              href={`#${heading.slug}`}
+              class="toc-item flex items-start gap-0 rounded-[6px] border border-transparent px-2.5 py-2 transition-colors duration-150"
+              data-toc-link={heading.slug}
+            >
+              <span class="toc-item-number w-[26px] shrink-0 pt-[3px] text-[12px] text-(--color-muted-foreground)">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span class="toc-item-label line-clamp-3 text-[14px] leading-[22px] text-(--color-muted-foreground)">
+                {heading.text}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
   </nav>
 )}
 
@@ -64,11 +69,7 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
       activeSlug = slug;
       tocLinks.forEach((link) => {
         const isActive = link.dataset.tocLink === slug;
-        link.classList.toggle("text-zenml-500", isActive);
-        link.classList.toggle("border-zenml-500", isActive);
-        link.classList.toggle("font-medium", isActive);
-        link.classList.toggle("text-gray-500", !isActive);
-        link.classList.toggle("border-transparent", !isActive);
+        link.classList.toggle("toc-item--active", isActive);
       });
     }
 
@@ -103,3 +104,22 @@ const tocHeadings = headings.filter((h) => h.depth === 2);
     initScrollSpy();
   }
 </script>
+
+<style>
+  /* Current item: sage-50 bg + 1px sage-400 border, no layout shift (the
+   * border is transparent at rest, same width, so nothing reflows). Reads
+   * the blog product accent vars (global.css) rather than the sage tokens
+   * directly, so a Kitaru post's TOC (nested under BlogLayout's
+   * `data-product="kitaru"` wrapper) marks the active item in orange. */
+  .toc-item--active {
+    background-color: var(--blog-accent-50);
+    border-color: var(--blog-accent-400);
+  }
+  .toc-item--active .toc-item-number {
+    color: var(--blog-accent-800);
+  }
+  .toc-item--active .toc-item-label {
+    color: var(--color-cream-900);
+    font-weight: 500;
+  }
+</style>

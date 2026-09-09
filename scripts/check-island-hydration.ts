@@ -50,11 +50,9 @@
  * ---------------------------------
  * - ProTestimonialCarousel: client:visible plus a 4s autoplay that mutates the very
  *   transform we would assert on. Gratuitously timing-sensitive.
- * - BlogSearch: client:media="(min-width: 640px)", so it does not hydrate at all
- *   below that viewport, plus a fetch-on-focus.
  * - RoiCalculator: its three range inputs have no id, name or aria-label, so a test
  *   would have to select them positionally — brittle, for a low-traffic page.
- * All three are still covered structurally by the island manifest in
+ * Both are still covered structurally by the island manifest in
  * check-dist-smoke.ts. Please do not "helpfully" add them back here.
  *
  * LlmopsIndex, MlopsIndex, IntegrationsIndex, and BlogIndex (#249) are four
@@ -63,11 +61,12 @@
  * the way the old LLMOpsFilter/MLOpsFilter pair was — each wires its own
  * data source, facet fields and (for Integrations) a DOM-visibility search
  * mode, so each gets its own real-interaction check below; a bug in one
- * page's wiring would not be caught by testing another. CategoryBar/TagCloud
- * (the blog index's former header/footer chrome) turned out to be shared
- * across the rest of the blog surface (post pages, plus the category/tag/
- * author hub pages) — they stay in place there, only retired from the
- * index; see their doc comments.
+ * page's wiring would not be caught by testing another. CategoryBar/TagCloud/
+ * BlogSearch (the blog index's former header/footer chrome) were retired
+ * outright in the blog cutover's taxonomy step (D2d) — the tag/category/
+ * author hub pages now render through PageHeader + TermHubEditorial/
+ * TermHubEntryIndex, whose own client-side piece is HubPagination (checked
+ * below), not a ported CategoryBar.
  * - Of the remaining /product/kitaru islands, TwoDoors covers the interactive
  *   contract that has regressed. The others have nothing better to assert on:
  *   HeroVideo's sole interaction opens a third-party video iframe in a
@@ -492,6 +491,47 @@ const CHECKS: IslandCheck[] = [
         },
         { selector: status, before: afterClear },
       );
+    },
+  },
+  {
+    name: "HubPagination reveals a hidden card on page 2",
+    // /tags/agents is one of ISLAND_MOUNTS' three representative hub
+    // routes (check-dist-smoke.ts) — a tag detail page paginated past 12.
+    route: "/tags/agents",
+    island: "HubPagination",
+    seedConsent: true,
+    async assert(page) {
+      // The SSR list holds every post of the term (SEO) with `hidden` +
+      // `data-page` on everything past page 1 — so a page-2 card exists in
+      // the DOM before hydration and only needs to be un-hidden, not fetched.
+      const pageTwoItem = page.locator('[data-page="2"]').first();
+      await pageTwoItem.waitFor({ state: "attached" });
+
+      const hiddenBefore = await pageTwoItem.evaluate(
+        (el) => (el as HTMLElement).hidden,
+      );
+      if (!hiddenBefore) {
+        throw new Error(
+          'expected a data-page="2" item to be hidden before pagination — either the term has ≤12 posts or the SSR markers are missing',
+        );
+      }
+
+      await page.getByRole("button", { name: "Page 2" }).click();
+
+      await page.waitForFunction(() => {
+        const el = document.querySelector('[data-page="2"]');
+        return el !== null && !(el as HTMLElement).hidden;
+      });
+
+      const pageOneItem = page.locator('[data-page="1"]').first();
+      const hiddenAfter = await pageOneItem.evaluate(
+        (el) => (el as HTMLElement).hidden,
+      );
+      if (!hiddenAfter) {
+        throw new Error(
+          'expected a data-page="1" item to hide once page 2 is active',
+        );
+      }
     },
   },
   {

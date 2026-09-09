@@ -1,0 +1,54 @@
+---
+/**
+ * HexCornerCard — the title-led related-content card carrying the
+ * hex-corner treatment (`HexCornerMark` / `mark.hex-corner`). One consumer
+ * today: the blog post "Continue reading" rail (`RelatedRail`'s `hex-card`
+ * item kind), where the cards are white on a sage-tint band. 24px radius on
+ * every corner; `overflow: clip` is what clips the docked hexagon at rest.
+ *
+ * `meta` and `kind` are independent optional slots (a date/role line, and a
+ * category/kind label bottom-left, clear of the hexagon) — either collapses
+ * on its own when absent, never a placeholder gap.
+ *
+ * UI text is Rethink Sans, sentence case (blog-surface ruling); the title is
+ * the display face.
+ */
+import HexCornerMark from "../system/HexCornerMark.astro";
+
+interface Props {
+  href: string;
+  title: string;
+  /** Date or author-role line, e.g. "August 18, 2026". */
+  meta?: string;
+  /** Category/kind label rendered bottom-left, clear of the hexagon. */
+  kind?: string;
+  /** Token of the surface behind the card; the corner halo matches it. */
+  haloVar?: string;
+}
+
+const { href, title, meta, kind, haloVar } = Astro.props;
+---
+
+<a
+  href={href}
+  class="hex-card group relative flex min-h-[260px] w-full cursor-pointer flex-col overflow-clip rounded-[24px] p-6 transition-shadow duration-500 ease-out"
+>
+  <HexCornerMark haloVar={haloVar} />
+  <div class="relative z-10 flex flex-1 flex-col justify-between gap-3">
+    <div class="flex flex-col gap-2.5">
+      <h3 class="font-display text-[20px] leading-[26px] text-(--color-sage-900) line-clamp-3 transition-colors duration-500 ease-out group-hover:text-(--color-sage-50)">
+        {title}
+      </h3>
+      {meta && (
+        <p class="text-[13px] leading-[16px] text-(--color-cream-600) transition-colors duration-500 ease-out group-hover:text-(--color-sage-300)">
+          {meta}
+        </p>
+      )}
+    </div>
+    {kind && (
+      <p class="max-w-[calc(100%-110px)] text-[13px] leading-[16px] font-medium text-(--color-cream-700) transition-colors duration-500 ease-out group-hover:text-(--color-sage-300)">
+        {kind}
+      </p>
+    )}
+  </div>
+</a>
