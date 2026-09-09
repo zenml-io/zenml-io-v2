@@ -132,7 +132,7 @@ const headerLabels = [
     ))}
 
     {/* Accent row: the prompt version marked as the compare-with-last-good target */}
-    <g class="hl-in" style="--hl-i: 6">
+    <g class="hl-in hl-accent" style="--hl-i: 6">
       <rect x="60.5" y={accent.y + 0.5} width="599" height="47" rx="5" fill="var(--color-sage-100)" stroke="var(--color-sage-400)" />
       <path transform={`translate(${COL_ARTIFACT} ${accent.y + 15}) scale(0.75)`} d={accent.icon} fill="var(--color-sage-800)" fill-rule="evenodd" />
       <text class="hl-name" x={COL_ARTIFACT + 28} y={accent.y + 28} fill="var(--color-sage-900)" style="font-size: 13px">{accent.name}</text>
