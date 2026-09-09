@@ -17,7 +17,9 @@ tags:
 date: "2022-02-07T00:00:00.000Z"
 readingTime: 2 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7589acf4/65315a4350c7d3830935e53a_ankush-minda-4Xy08NbMBLM-unsplash.jpg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-6-1-reach-for-the-aws-and-azure-cloud/748941c7/whats-new-in-v0-6-1-reach-for-the-aws-and-azure-cloud-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-6-1-reach-for-the-aws-and-azure-cloud/2bab53a4/whats-new-in-v0-6-1-reach-for-the-aws-and-azure-cloud-cover.jpg"
 ---
 
 **Last updated:** November 3, 2022.

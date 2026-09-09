@@ -19,12 +19,12 @@ tags:
 date: "2024-09-21T00:00:00.000Z"
 readingTime: 6 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/feece98a/6981d362e92aa039b696ad09_6981d2b20c8a808a04e6eef3_Blog_Post_-_with_image_-_Light.avif"
+  url: "https://assets.zenml.io/content/blog/zenml-meets-neptune-for-advanced-experiment-tracking/c6c3bee1/zenml-meets-neptune-for-advanced-experiment-tracking-cover.avif"
 seo:
   title: "Navigating the MLOps Galaxy: ZenML meets Neptune for advanced Experiment Tracking - ZenML Blog"
   description: "The combination of ZenML and Neptune can streamline machine learning workflows and provide unprecedented visibility into experiments. ZenML is an extensible framework for creating production-ready pipelines, while Neptune is a metadata store for MLOps. When combined, these tools offer a robust solution for managing the entire ML lifecycle, from experimentation to production. The combination of these tools can significantly accelerate the development process, especially when working with complex tasks like language model fine-tuning. This integration offers the ability to focus more on innovating and less on managing the intricacies of your ML pipelines."
   canonical: "https://www.zenml.io/blog/zenml-meets-neptune-for-advanced-experiment-tracking"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/feece98a/6981d362e92aa039b696ad09_6981d2b20c8a808a04e6eef3_Blog_Post_-_with_image_-_Light.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/zenml-meets-neptune-for-advanced-experiment-tracking/54f45962/zenml-meets-neptune-for-advanced-experiment-tracking-cover.jpg"
   ogTitle: "Navigating the MLOps Galaxy: ZenML meets Neptune for advanced Experiment Tracking - ZenML Blog"
   ogDescription: "The combination of ZenML and Neptune can streamline machine learning workflows and provide unprecedented visibility into experiments. ZenML is an extensible framework for creating production-ready pipelines, while Neptune is a metadata store for MLOps. When combined, these tools offer a robust solution for managing the entire ML lifecycle, from experimentation to production. The combination of these tools can significantly accelerate the development process, especially when working with complex tasks like language model fine-tuning. This integration offers the ability to focus more on innovating and less on managing the intricacies of your ML pipelines."
 ---

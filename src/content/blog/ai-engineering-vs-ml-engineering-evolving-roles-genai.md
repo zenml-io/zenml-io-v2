@@ -18,12 +18,14 @@ tags:
 date: "2025-01-21T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bd1a2de5/678fc6ec7a5f2e285369c245_imageai_vs_ml.jpg"
+  url: "https://assets.zenml.io/content/blog/ai-engineering-vs-ml-engineering-evolving-roles-genai/04e6185e/ai-engineering-vs-ml-engineering-evolving-roles-genai-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/ai-engineering-vs-ml-engineering-evolving-roles-genai/04e6185e/ai-engineering-vs-ml-engineering-evolving-roles-genai-cover.avif"
 seo:
   title: "AI Engineering vs ML Engineering: Evolving Roles in the GenAI Era - ZenML Blog"
   description: "The rise of Generative AI has shifted the roles of AI Engineering and ML Engineering, with AI Engineers integrating generative AI into software products. This shift requires clear ownership boundaries and specialized expertise. A proposed solution is layer separation, separating concerns into two distinct layers: Application (AI Engineers/Software Engineers), Frontend development, Backend APIs, Business logic, User experience, and ML (ML Engineers). This allows AI Engineers to focus on user experience while ML Engineers optimize AI systems."
   canonical: "https://www.zenml.io/blog/ai-engineering-vs-ml-engineering-evolving-roles-genai"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bd1a2de5/678fc6ec7a5f2e285369c245_imageai_vs_ml.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/ai-engineering-vs-ml-engineering-evolving-roles-genai/65e350a5/ai-engineering-vs-ml-engineering-evolving-roles-genai-cover.jpg"
   ogTitle: "AI Engineering vs ML Engineering: Evolving Roles in the GenAI Era - ZenML Blog"
   ogDescription: "The rise of Generative AI has shifted the roles of AI Engineering and ML Engineering, with AI Engineers integrating generative AI into software products. This shift requires clear ownership boundaries and specialized expertise. A proposed solution is layer separation, separating concerns into two distinct layers: Application (AI Engineers/Software Engineers), Frontend development, Backend APIs, Business logic, User experience, and ML (ML Engineers). This allows AI Engineers to focus on user experience while ML Engineers optimize AI systems."
 ---

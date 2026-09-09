@@ -20,12 +20,12 @@ tags:
 date: "2024-11-20T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/27717721/6746d1936e6b5ae9f0eafafc_Gemini_Generated_Image__11_.jpeg"
+  url: "https://assets.zenml.io/content/blog/break-free-from-mlops-orchestration-lock-in/cb0d27ac/break-free-from-mlops-orchestration-lock-in-cover.avif"
 seo:
   title: "How to Break Free from MLOps Orchestration Lock-in: A Technical Guide - ZenML Blog"
   description: "Unlock the potential of your ML infrastructure by breaking free from orchestration tool lock-in. This comprehensive guide explores proven strategies for building flexible MLOps architectures that adapt to your organization's evolving needs. Learn how to maintain operational efficiency while supporting multiple orchestrators, implement robust security measures, and create standardized pipeline definitions that work across different platforms. Perfect for ML engineers and architects looking to future-proof their MLOps infrastructure without sacrificing performance or compliance."
   canonical: "https://www.zenml.io/blog/break-free-from-mlops-orchestration-lock-in"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/27717721/6746d1936e6b5ae9f0eafafc_Gemini_Generated_Image__11_.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/break-free-from-mlops-orchestration-lock-in/30d9fa79/break-free-from-mlops-orchestration-lock-in-cover.jpg"
   ogTitle: "How to Break Free from MLOps Orchestration Lock-in: A Technical Guide - ZenML Blog"
   ogDescription: "Unlock the potential of your ML infrastructure by breaking free from orchestration tool lock-in. This comprehensive guide explores proven strategies for building flexible MLOps architectures that adapt to your organization's evolving needs. Learn how to maintain operational efficiency while supporting multiple orchestrators, implement robust security measures, and create standardized pipeline definitions that work across different platforms. Perfect for ML engineers and architects looking to future-proof their MLOps infrastructure without sacrificing performance or compliance."
 ---

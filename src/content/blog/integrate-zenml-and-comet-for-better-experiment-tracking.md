@@ -19,12 +19,12 @@ tags:
 date: "2024-09-19T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bd764d5e/66eb1ff816101b34cc1b42b4_zenml-comet__1___1_.png"
+  url: "https://assets.zenml.io/content/blog/integrate-zenml-and-comet-for-better-experiment-tracking/b3785388/integrate-zenml-and-comet-for-better-experiment-tracking-cover.avif"
 seo:
   title: "Boost Your MLOps Efficiency: Integrate ZenML and Comet for Better Experiment Tracking - ZenML Blog"
   description: "This blog post discusses the integration of ZenML and Comet, an open-source machine learning pipeline management platform, to enhance the experimentation process. ZenML is an extensible framework for creating portable, production-ready pipelines, while Comet is a platform for tracking, comparing, explaining, and optimizing experiments and models. The combination offers seamless experiment tracking, enhanced visibility, simplified workflow, improved collaboration, and flexible configuration. The process involves installing ZenML and enabling Comet integration, registering the Comet experiment tracker in the ZenML stack, and customizing experiment settings."
   canonical: "https://www.zenml.io/blog/integrate-zenml-and-comet-for-better-experiment-tracking"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bd764d5e/66eb1ff816101b34cc1b42b4_zenml-comet__1___1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/integrate-zenml-and-comet-for-better-experiment-tracking/ab65665f/integrate-zenml-and-comet-for-better-experiment-tracking-cover.jpg"
   ogTitle: "Boost Your MLOps Efficiency: Integrate ZenML and Comet for Better Experiment Tracking - ZenML Blog"
   ogDescription: "This blog post discusses the integration of ZenML and Comet, an open-source machine learning pipeline management platform, to enhance the experimentation process. ZenML is an extensible framework for creating portable, production-ready pipelines, while Comet is a platform for tracking, comparing, explaining, and optimizing experiments and models. The combination offers seamless experiment tracking, enhanced visibility, simplified workflow, improved collaboration, and flexible configuration. The process involves installing ZenML and enabling Comet integration, registering the Comet experiment tracker in the ZenML stack, and customizing experiment settings."
 ---

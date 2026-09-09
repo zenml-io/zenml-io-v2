@@ -17,7 +17,9 @@ tags:
 date: "2021-11-16T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1e89ed73/6530a848193a7bf8d25b226a_balloons.jpg"
+  url: "https://assets.zenml.io/content/blog/introducing-the-revamped-zenml-0-5-x/074d1628/introducing-the-revamped-zenml-0-5-x-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/introducing-the-revamped-zenml-0-5-x/63bbb96c/introducing-the-revamped-zenml-0-5-x-cover.jpg"
 ---
 
 **Last updated:** November 21, 2022.

@@ -23,12 +23,12 @@ tags:
 date: "2025-02-27T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/content/blog/db29714b/67c06200c71cb71e5d245e37_zenml-release-7.webp"
+  url: "https://assets.zenml.io/content/blog/new-features-dashboard-upgrades-various-bugfixes-and-improvements-documentation-updates-and-more/95545e06/new-features-dashboard-upgrades-various-bugfixes-and-improvements-documentation-updates-and-more-cover.avif"
 seo:
   title: "New Features: Dashboard Upgrades, Various Bugfixes and Improvements, Documentation Updates and More! - ZenML Blog"
   description: "ZenML 0.75.0 introduces dashboard enhancements that allow users to create and update stack components directly from the dashboard, along with improvements to service connectors, model artifact handling, and documentation. This release streamlines ML workflows with better component management capabilities, enhanced SageMaker integration, and critical fixes for custom flavor components and sorting logic."
   canonical: "https://www.zenml.io/blog/new-features-dashboard-upgrades-various-bugfixes-and-improvements-documentation-updates-and-more"
-  ogImage: "https://assets.zenml.io/content/blog/db29714b/67c06200c71cb71e5d245e37_zenml-release-7.webp"
+  ogImage: "https://assets.zenml.io/content/blog/new-features-dashboard-upgrades-various-bugfixes-and-improvements-documentation-updates-and-more/1882efb5/new-features-dashboard-upgrades-various-bugfixes-and-improvements-documentation-updates-and-more-cover.jpg"
   ogTitle: "New Features: Dashboard Upgrades, Various Bugfixes and Improvements, Documentation Updates and More! - ZenML Blog"
   ogDescription: "ZenML 0.75.0 introduces dashboard enhancements that allow users to create and update stack components directly from the dashboard, along with improvements to service connectors, model artifact handling, and documentation. This release streamlines ML workflows with better component management capabilities, enhanced SageMaker integration, and critical fixes for custom flavor components and sorting logic."
 ---

@@ -21,12 +21,12 @@ date: "2024-11-04T00:00:00.000Z"
 readingTime: 4 mins
 featured: true
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/995dddff/67288f8f1c16455593c10f45_CleanShot_2024-11-04_at_09.54.34__1_.png"
+  url: "https://assets.zenml.io/content/blog/state-of-llmops-why-everything-is-hard/60751580/state-of-llmops-why-everything-is-hard-cover.avif"
 seo:
   title: "The State of LLM Operations or LLMOps: Why Everything is Hard (And That's OK) - ZenML Blog"
   description: "Machine Learning (ML) adoption is gaining momentum, but challenges include robust pipelines, quality issues, and scale monitoring. Recognizing and overcoming these challenges is crucial."
   canonical: "https://www.zenml.io/blog/state-of-llmops-why-everything-is-hard"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/995dddff/67288f8f1c16455593c10f45_CleanShot_2024-11-04_at_09.54.34__1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/state-of-llmops-why-everything-is-hard/20657980/state-of-llmops-why-everything-is-hard-cover.jpg"
   ogTitle: "The State of LLM Operations or LLMOps: Why Everything is Hard (And That's OK) - ZenML Blog"
   ogDescription: "Machine Learning (ML) adoption is gaining momentum, but challenges include robust pipelines, quality issues, and scale monitoring. Recognizing and overcoming these challenges is crucial."
 ---

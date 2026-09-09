@@ -19,12 +19,12 @@ tags:
 date: "2025-04-18T00:00:00.000Z"
 readingTime: 9 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2199f7e4/680261e7e7580388a7260cf3_oncoclear-project-main-image.png"
+  url: "https://assets.zenml.io/content/blog/streamlined-ml-model-deployment-a-practical-approach/e5512b89/streamlined-ml-model-deployment-a-practical-approach-cover.avif"
 seo:
   title: "Streamlined ML Model Deployment: A Practical Approach - ZenML Blog"
   description: "OncoClear is an end-to-end MLOps solution that transforms raw diagnostic measurements into reliable cancer classification predictions. Built with ZenML's robust framework, it delivers enterprise-grade machine learning pipelines that can be deployed in both development and production environments."
   canonical: "https://www.zenml.io/blog/streamlined-ml-model-deployment-a-practical-approach"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2199f7e4/680261e7e7580388a7260cf3_oncoclear-project-main-image.png"
+  ogImage: "https://assets.zenml.io/content/blog/streamlined-ml-model-deployment-a-practical-approach/93f11fa3/streamlined-ml-model-deployment-a-practical-approach-cover.jpg"
   ogTitle: "Streamlined ML Model Deployment: A Practical Approach - ZenML Blog"
   ogDescription: "OncoClear is an end-to-end MLOps solution that transforms raw diagnostic measurements into reliable cancer classification predictions. Built with ZenML's robust framework, it delivers enterprise-grade machine learning pipelines that can be deployed in both development and production environments."
 ---

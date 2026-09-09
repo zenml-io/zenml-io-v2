@@ -21,12 +21,12 @@ tags:
 date: "2022-08-04T00:00:00.000Z"
 readingTime: 14 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9be8b31e/652fc9461f361b78b1fcb271_kserve-pipeline.jpg"
+  url: "https://assets.zenml.io/content/blog/deploy-your-ml-models-with-kserve-and-zenml/45e49fc1/deploy-your-ml-models-with-kserve-and-zenml-cover.avif"
 seo:
   title: "Deploy your ML models with KServe and ZenML - ZenML Blog"
   description: "How to use ZenML and KServe to deploy serverless ML models in just a few steps."
   canonical: "https://www.zenml.io/blog/deploy-your-ml-models-with-kserve-and-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3dffa3e9/652fc9461f361b78b1fcb271_kserve-pipeline.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/deploy-your-ml-models-with-kserve-and-zenml/f01e8dc0/deploy-your-ml-models-with-kserve-and-zenml-cover.jpg"
   ogTitle: "Deploy your ML models with KServe and ZenML - ZenML Blog"
   ogDescription: "How to use ZenML and KServe to deploy serverless ML models in just a few steps."
 ---

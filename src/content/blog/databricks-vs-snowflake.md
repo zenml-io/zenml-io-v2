@@ -20,12 +20,14 @@ tags:
 date: "2026-01-04T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1b6e469b/695a3fce2378acf2b5698d28_databricks-vs-snowflake.png"
+  url: "https://assets.zenml.io/content/blog/databricks-vs-snowflake/06be7413/databricks-vs-snowflake-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/databricks-vs-snowflake/06be7413/databricks-vs-snowflake-cover.avif"
 seo:
   title: "Databricks vs Snowflake: How to Choose the Right Data Intelligence Platform - ZenML Blog"
   description: "This Databricks vs Snowflake guide will compare both platforms, so you know which one fits your criteria as the right data intelligence platform."
   canonical: "https://www.zenml.io/blog/databricks-vs-snowflake"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1b6e469b/695a3fce2378acf2b5698d28_databricks-vs-snowflake.png"
+  ogImage: "https://assets.zenml.io/content/blog/databricks-vs-snowflake/baccc783/databricks-vs-snowflake-cover.jpg"
   ogTitle: "Databricks vs Snowflake: How to Choose the Right Data Intelligence Platform - ZenML Blog"
   ogDescription: "This Databricks vs Snowflake guide will compare both platforms, so you know which one fits your criteria as the right data intelligence platform."
 ---

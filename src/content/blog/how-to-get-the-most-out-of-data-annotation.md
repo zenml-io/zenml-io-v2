@@ -20,12 +20,12 @@ tags:
 date: "2022-06-02T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/432e954e/65300417ffaceec48f3cae5f_cover.jpg"
+  url: "https://assets.zenml.io/content/blog/how-to-get-the-most-out-of-data-annotation/de35186f/how-to-get-the-most-out-of-data-annotation-cover.avif"
 seo:
   title: "How to get the most out of data annotation - ZenML Blog"
   description: "I explain why data labeling and annotation should be seen as a key part of any machine learning workflow, and how you probably don't want to label data only at the beginning of your process."
   canonical: "https://www.zenml.io/blog/how-to-get-the-most-out-of-data-annotation"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ba7edb6d/65300417ffaceec48f3cae5f_cover.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/how-to-get-the-most-out-of-data-annotation/0e991319/how-to-get-the-most-out-of-data-annotation-cover.jpg"
   ogTitle: "How to get the most out of data annotation - ZenML Blog"
   ogDescription: "I explain why data labeling and annotation should be seen as a key part of any machine learning workflow, and how you probably don't want to label data only at the beginning of your process."
 ---

@@ -18,12 +18,12 @@ tags:
 date: "2025-05-16T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ec9b6bb0/6827039afd629c8a0a47b4b7_Retail_MLOps_Insights__1_.png"
+  url: "https://assets.zenml.io/content/blog/why-retail-mlops-is-harder-than-you-think/a5359365/why-retail-mlops-is-harder-than-you-think-cover.avif"
 seo:
   title: "Why Retail MLOps Is Harder Than You Think - ZenML Blog"
   description: "An in-depth analysis of retail MLOps challenges, covering data complexity, edge computing, seasonality, and multi-cloud deployment, with real-world examples from major retailers like Wayfair and Starbucks, and practical solutions including ZenML's impact in reducing deployment time from 8.5 to 2 weeks at Adeo Leroy Merlin."
   canonical: "https://www.zenml.io/blog/why-retail-mlops-is-harder-than-you-think"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ec9b6bb0/6827039afd629c8a0a47b4b7_Retail_MLOps_Insights__1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/why-retail-mlops-is-harder-than-you-think/f07b5efb/why-retail-mlops-is-harder-than-you-think-cover.jpg"
   ogTitle: "Why Retail MLOps Is Harder Than You Think - ZenML Blog"
   ogDescription: "An in-depth analysis of retail MLOps challenges, covering data complexity, edge computing, seasonality, and multi-cloud deployment, with real-world examples from major retailers like Wayfair and Starbucks, and practical solutions including ZenML's impact in reducing deployment time from 8.5 to 2 weeks at Adeo Leroy Merlin."
 ---

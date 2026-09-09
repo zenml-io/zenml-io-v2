@@ -23,12 +23,12 @@ tags:
 date: "2023-03-31T00:00:00.000Z"
 readingTime: 10 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9c990ced/6531260e8a46ccfa4b018510_slackbot-small.png"
+  url: "https://assets.zenml.io/content/blog/productionalizing-langchain-and-llamaindex-with-a-zenml-mlops-pipeline-to-help-community-slack-support/56faed99/productionalizing-langchain-and-llamaindex-with-a-zenml-mlops-pipeline-to-help-community-slack-support-cover.avif"
 seo:
   title: "Productionalizing LangChain and LlamaIndex with a ZenML MLOps Pipeline to Help Community Slack Support - ZenML Blog"
   description: "We decided to explore how the emerging technologies around Large Language Models (LLMs) could seamlessly fit into ZenML's MLOps workflows and standards. We created and deployed a Slack bot to provide community support."
   canonical: "https://www.zenml.io/blog/productionalizing-langchain-and-llamaindex-with-a-zenml-mlops-pipeline-to-help-community-slack-support"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/258b46e9/6531260e8a46ccfa4b018510_slackbot-small.png"
+  ogImage: "https://assets.zenml.io/content/blog/productionalizing-langchain-and-llamaindex-with-a-zenml-mlops-pipeline-to-help-community-slack-support/004bacd7/productionalizing-langchain-and-llamaindex-with-a-zenml-mlops-pipeline-to-help-community-slack-support-cover.jpg"
   ogTitle: "Productionalizing LangChain and LlamaIndex with a ZenML MLOps Pipeline to Help Community Slack Support - ZenML Blog"
   ogDescription: "We decided to explore how the emerging technologies around Large Language Models (LLMs) could seamlessly fit into ZenML's MLOps workflows and standards. We created and deployed a Slack bot to provide community support."
 ---

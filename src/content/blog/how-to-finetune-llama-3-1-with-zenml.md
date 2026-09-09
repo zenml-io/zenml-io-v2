@@ -24,12 +24,12 @@ tags:
 date: "2024-07-24T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c7c40c4/6981d352ce4b26d085d7040b_6981d2b442a9002981dd6ace_cover-blog.avif"
+  url: "https://assets.zenml.io/content/blog/how-to-finetune-llama-3-1-with-zenml/9ad684c0/how-to-finetune-llama-3-1-with-zenml-cover.avif"
 seo:
   title: "How to Finetune Llama 3.1 with ZenML - ZenML Blog"
   description: "Master cloud-based LLM finetuning: Set up infrastructure, run pipelines, and manage experiments with ZenML's Model Control Plane for Meta's latest Llama model."
   canonical: "https://www.zenml.io/blog/how-to-finetune-llama-3-1-with-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c7c40c4/6981d352ce4b26d085d7040b_6981d2b442a9002981dd6ace_cover-blog.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/how-to-finetune-llama-3-1-with-zenml/1e625bf7/how-to-finetune-llama-3-1-with-zenml-cover.jpg"
   ogTitle: "How to Finetune Llama 3.1 with ZenML - ZenML Blog"
   ogDescription: "Master cloud-based LLM finetuning: Set up infrastructure, run pipelines, and manage experiments with ZenML's Model Control Plane for Meta's latest Llama model."
 ---

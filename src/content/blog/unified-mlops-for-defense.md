@@ -19,12 +19,12 @@ tags:
 date: "2025-05-12T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/080586c0/6821ee2bd9c5e380fd3e708b_defense_mlops.png"
+  url: "https://assets.zenml.io/content/blog/unified-mlops-for-defense/c635fbfb/unified-mlops-for-defense-cover.avif"
 seo:
   title: "Unified MLOps for Defense: Bridging Cloud, On-Premises, and Tactical Edge AI - ZenML Blog"
   description: "Learn how ZenML unified MLOps across AWS, Azure, on-premises, and tactical edge environments for defense contractors like the German Bundeswehr and French aerospace manufacturers. Overcome hybrid infrastructure complexity, maintain security compliance, and accelerate AI deployment from development to battlefield. Essential guide for defense AI teams managing multi-classification environments and $1.5B+ military AI initiatives."
   canonical: "https://www.zenml.io/blog/unified-mlops-for-defense"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/080586c0/6821ee2bd9c5e380fd3e708b_defense_mlops.png"
+  ogImage: "https://assets.zenml.io/content/blog/unified-mlops-for-defense/4b6501cb/unified-mlops-for-defense-cover.jpg"
   ogTitle: "Unified MLOps for Defense: Bridging Cloud, On-Premises, and Tactical Edge AI - ZenML Blog"
   ogDescription: "Learn how ZenML unified MLOps across AWS, Azure, on-premises, and tactical edge environments for defense contractors like the German Bundeswehr and French aerospace manufacturers. Overcome hybrid infrastructure complexity, maintain security compliance, and accelerate AI deployment from development to battlefield. Essential guide for defense AI teams managing multi-classification environments and $1.5B+ military AI initiatives."
 ---

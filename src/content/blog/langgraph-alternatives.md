@@ -21,12 +21,14 @@ tags:
 date: "2025-06-21T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5914cdf6/6981d362e92aa039b696acf4_6981d2b42956b6fef73d8042_langgraph-alternatives.avif"
+  url: "https://assets.zenml.io/content/blog/langgraph-alternatives/78498af3/langgraph-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/langgraph-alternatives/78498af3/langgraph-alternatives-cover.avif"
 seo:
   title: "We Tested 8 LangGraph Alternatives for Scalable Agent Orchestration - ZenML Blog"
   description: "Discover the top 8 LangGraph alternatives for scalable agent orchestration."
   canonical: "https://www.zenml.io/blog/langgraph-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5914cdf6/6981d362e92aa039b696acf4_6981d2b42956b6fef73d8042_langgraph-alternatives.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/langgraph-alternatives/869ecb93/langgraph-alternatives-cover.jpg"
   ogTitle: "We Tested 8 LangGraph Alternatives for Scalable Agent Orchestration - ZenML Blog"
   ogDescription: "Discover the top 8 LangGraph alternatives for scalable agent orchestration."
 ---

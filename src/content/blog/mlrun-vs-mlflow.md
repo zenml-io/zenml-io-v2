@@ -21,7 +21,11 @@ tags:
 date: "2026-02-10T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/06e56673/698aadaae6c689521795e4f7_mlrun-vs-mlflow.png"
+  url: "https://assets.zenml.io/content/blog/mlrun-vs-mlflow/7e6b48a9/mlrun-vs-mlflow-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/mlrun-vs-mlflow/7e6b48a9/mlrun-vs-mlflow-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/mlrun-vs-mlflow/af4b0245/mlrun-vs-mlflow-cover.jpg"
 ---
 
 Today, MLOps teams are stuck in a tool sprawl nightmare. You have one tool for training, another for tracking experiments, and a dozen scripts often held together with a thin layer of duct tape.

@@ -17,6 +17,11 @@ tags:
   - "sagemaker"
 date: "2024-09-24T00:00:00.000Z"
 readingTime: 3 mins
+mainImage:
+  url: "https://assets.zenml.io/content/blog/orchestrate-production-zenml-pipelines-with-amazon-sagemaker/500397d5/orchestrate-production-zenml-pipelines-with-amazon-sagemaker-cover.avif"
+  alt: "ZenML blog cover for Orchestrate Production ZenML Pipelines with Amazon SageMaker"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/orchestrate-production-zenml-pipelines-with-amazon-sagemaker/d48db0f0/orchestrate-production-zenml-pipelines-with-amazon-sagemaker-cover.jpg"
 ---
 
 In the ever-evolving landscape of machine learning operations (MLOps), efficient pipeline management is crucial for successful ML projects. Today, we're excited to introduce a powerful integration that combines the flexibility of ZenML with the robustness of Amazon SageMaker Pipelines. This collaboration enables you to streamline your ML workflows by running ZenML pipelines as Amazon SageMaker Pipelines, a serverless ML orchestrator from AWS.

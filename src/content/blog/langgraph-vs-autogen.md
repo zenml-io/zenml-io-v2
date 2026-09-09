@@ -21,12 +21,14 @@ tags:
 date: "2025-07-20T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0c695a6d/687c77128ca7f3343767aba0_langgraph-vs-autogen.png"
+  url: "https://assets.zenml.io/content/blog/langgraph-vs-autogen/49e7fe37/langgraph-vs-autogen-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/langgraph-vs-autogen/49e7fe37/langgraph-vs-autogen-cover.avif"
 seo:
   title: "LangGraph vs AutoGen: How are These LLM Workflow Orchestration Platforms Different? - ZenML Blog"
   description: "In this LangGraph vs Autogen article, we explain the difference between these platforms and when to use which one for the best results."
   canonical: "https://www.zenml.io/blog/langgraph-vs-autogen"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0c695a6d/687c77128ca7f3343767aba0_langgraph-vs-autogen.png"
+  ogImage: "https://assets.zenml.io/content/blog/langgraph-vs-autogen/8e6ffb52/langgraph-vs-autogen-cover.jpg"
   ogTitle: "LangGraph vs AutoGen: How are These LLM Workflow Orchestration Platforms Different? - ZenML Blog"
   ogDescription: "In this LangGraph vs Autogen article, we explain the difference between these platforms and when to use which one for the best results."
 ---

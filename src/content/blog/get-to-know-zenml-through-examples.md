@@ -20,7 +20,9 @@ tags:
 date: "2022-01-06T00:00:00.000Z"
 readingTime: 2 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/72bbcb28/652fdaa72b544c2d44bc7263_cli.png"
+  url: "https://assets.zenml.io/content/blog/get-to-know-zenml-through-examples/35d1c586/get-to-know-zenml-through-examples-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/get-to-know-zenml-through-examples/d54a9785/get-to-know-zenml-through-examples-cover.jpg"
 ---
 
 **Last updated:** November 8, 2022.

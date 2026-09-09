@@ -21,12 +21,14 @@ tags:
 date: "2026-02-09T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d701752d/69896007a26bddc867039dd4_mlflow-vs-airflow.png"
+  url: "https://assets.zenml.io/content/blog/mlflow-vs-airflow/3c3cee82/mlflow-vs-airflow-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/mlflow-vs-airflow/3c3cee82/mlflow-vs-airflow-cover.avif"
 seo:
   title: "MLflow vs Airflow vs ZenML: Choosing the Right Tool for Modern ML Pipelines - ZenML Blog"
   description: "In this MLflow vs Airflow vs ZenML article, we determine which is the right tool for modern ML pipelines."
   canonical: "https://www.zenml.io/blog/mlflow-vs-airflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d701752d/69896007a26bddc867039dd4_mlflow-vs-airflow.png"
+  ogImage: "https://assets.zenml.io/content/blog/mlflow-vs-airflow/1698aff3/mlflow-vs-airflow-cover.jpg"
   ogTitle: "MLflow vs Airflow vs ZenML: Choosing the Right Tool for Modern ML Pipelines - ZenML Blog"
   ogDescription: "In this MLflow vs Airflow vs ZenML article, we determine which is the right tool for modern ML pipelines."
 ---

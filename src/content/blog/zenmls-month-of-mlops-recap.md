@@ -19,12 +19,12 @@ tags:
 date: "2022-11-22T00:00:00.000Z"
 readingTime: 7 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/552f8a20/6531e8803397a782a5943bc7_Recap.gif"
+  url: "https://assets.zenml.io/content/blog/zenmls-month-of-mlops-recap/61f0e0ee/zenmls-month-of-mlops-recap-cover.avif"
 seo:
   title: "ZenML's Month of MLOps Recap - ZenML Blog"
   description: "The ZenML MLOps Competition ran from October 10 to November 11, 2022, and was a wonderful expression of open-source MLOps problem-solving."
   canonical: "https://www.zenml.io/blog/zenmls-month-of-mlops-recap"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/56ab60a1/6531e8803397a782a5943bc7_Recap.gif"
+  ogImage: "https://assets.zenml.io/content/blog/zenmls-month-of-mlops-recap/5cf848f7/zenmls-month-of-mlops-recap-cover.jpg"
   ogTitle: "ZenML's Month of MLOps Recap - ZenML Blog"
   ogDescription: "The ZenML MLOps Competition ran from October 10 to November 11, 2022, and was a wonderful expression of open-source MLOps problem-solving."
 ---

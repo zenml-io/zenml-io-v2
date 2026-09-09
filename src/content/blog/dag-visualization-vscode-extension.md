@@ -17,12 +17,12 @@ tags:
 date: "2024-08-07T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dd028840/66b0f2033d1cd0682216a778_zenml-vscode-min.png"
+  url: "https://assets.zenml.io/content/blog/dag-visualization-vscode-extension/07d7aa6b/dag-visualization-vscode-extension-cover.avif"
 seo:
   title: "Implementing DAG Visualization and Stack Component Registration in the VS Code Extension - ZenML Blog"
   description: "Discover the technical challenges and solutions in developing DAG visualization and stack management for ZenML's VSCode extension."
   canonical: "https://www.zenml.io/blog/dag-visualization-vscode-extension"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a89693b3/66b0f2033d1cd0682216a778_zenml-vscode-min.png"
+  ogImage: "https://assets.zenml.io/content/blog/dag-visualization-vscode-extension/b6787a1f/dag-visualization-vscode-extension-cover.jpg"
   ogTitle: "Implementing DAG Visualization and Stack Component Registration in the VS Code Extension - ZenML Blog"
   ogDescription: "Discover the technical challenges and solutions in developing DAG visualization and stack management for ZenML's VSCode extension."
 ---

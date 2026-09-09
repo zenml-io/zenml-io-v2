@@ -21,12 +21,14 @@ tags:
 date: "2025-10-22T00:00:00.000Z"
 readingTime: 16 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e44ea873/68f85cf5a632f66b0886621a_autogpt-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/autogpt-alternatives/ac40d7db/autogpt-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/autogpt-alternatives/ac40d7db/autogpt-alternatives-cover.avif"
 seo:
   title: "We Tried and Tested 8 Best AutoGPT Alternatives to Run Your AI Assistants - ZenML Blog"
   description: "In this article, you will learn about the best AutoGPT alternatives to run your AI assistants flawlessly."
   canonical: "https://www.zenml.io/blog/autogpt-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e44ea873/68f85cf5a632f66b0886621a_autogpt-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/autogpt-alternatives/94090c58/autogpt-alternatives-cover.jpg"
   ogTitle: "We Tried and Tested 8 Best AutoGPT Alternatives to Run Your AI Assistants - ZenML Blog"
   ogDescription: "In this article, you will learn about the best AutoGPT alternatives to run your AI assistants flawlessly."
 ---

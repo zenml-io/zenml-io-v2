@@ -21,12 +21,14 @@ tags:
 date: "2025-06-29T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5fb612e6/6860bfb8ad89e99066d6749d_llamaindex-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/llamaindex-alternatives/175bd7e5/llamaindex-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/llamaindex-alternatives/175bd7e5/llamaindex-alternatives-cover.avif"
 seo:
   title: "Here are the Top 7 LlamaIndex Alternatives to Build AI Production Agents - ZenML Blog"
   description: "Discover the top 7 LlamaIndex alternatives to build AI production agents with ease."
   canonical: "https://www.zenml.io/blog/llamaindex-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5fb612e6/6860bfb8ad89e99066d6749d_llamaindex-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/llamaindex-alternatives/20e6b48d/llamaindex-alternatives-cover.jpg"
   ogTitle: "Here are the Top 7 LlamaIndex Alternatives to Build AI Production Agents - ZenML Blog"
   ogDescription: "Discover the top 7 LlamaIndex alternatives to build AI production agents with ease."
 ---

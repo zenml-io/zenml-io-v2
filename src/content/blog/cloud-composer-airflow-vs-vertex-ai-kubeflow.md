@@ -18,12 +18,14 @@ tags:
 date: "2024-08-09T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cb48f11f/66b231af4e5e9fcc902e48a7_zenml-airflow-kubeflow-vertex-cloudcomposer-min.png"
+  url: "https://assets.zenml.io/content/blog/cloud-composer-airflow-vs-vertex-ai-kubeflow/05e04cf7/cloud-composer-airflow-vs-vertex-ai-kubeflow-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/cloud-composer-airflow-vs-vertex-ai-kubeflow/05e04cf7/cloud-composer-airflow-vs-vertex-ai-kubeflow-cover.avif"
 seo:
   title: "MLOps on GCP: Cloud Composer (Airflow) vs Vertex AI (Kubeflow) - ZenML Blog"
   description: "Cloud Composer (Airflow) vs Vertex AI (Kubeflow): How to choose the right orchestration service on GCP based on your requirements and internal resources."
   canonical: "https://www.zenml.io/blog/cloud-composer-airflow-vs-vertex-ai-kubeflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/84525d93/66b231af4e5e9fcc902e48a7_zenml-airflow-kubeflow-vertex-cloudcomposer-min.png"
+  ogImage: "https://assets.zenml.io/content/blog/cloud-composer-airflow-vs-vertex-ai-kubeflow/6f8ee85a/cloud-composer-airflow-vs-vertex-ai-kubeflow-cover.jpg"
   ogTitle: "MLOps on GCP: Cloud Composer (Airflow) vs Vertex AI (Kubeflow) - ZenML Blog"
   ogDescription: "Cloud Composer (Airflow) vs Vertex AI (Kubeflow): How to choose the right orchestration service on GCP based on your requirements and internal resources."
 ---

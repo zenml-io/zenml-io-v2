@@ -20,12 +20,12 @@ tags:
 date: "2024-11-13T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ef8d14cc/67347efc66013134954b7b8e_zenml-release__1__2.png"
+  url: "https://assets.zenml.io/content/blog/improvements-enhanced-artifacts-versioning-scalability-and-metadata-management/7896f60e/improvements-enhanced-artifacts-versioning-scalability-and-metadata-management-cover.avif"
 seo:
   title: "Improvements: Enhanced Artifacts Versioning, Scalability and Metadata Management - ZenML Blog"
   description: "ZenML 0.70.0 has launched with major improvements but requires careful handling during upgrade due to significant database schema changes. Key highlights include enhanced artifact versioning with batch processing capabilities, improved scalability through reduced server requests, unified metadata management via the new log_metadata method, and flexible filtering with the new oneof operator. The release also features expanded documentation covering finetuning and LLM/ML engineering resources. Due to the database changes, users must back up their data and test the upgrade in a non-production environment before deploying to production systems."
   canonical: "https://www.zenml.io/blog/improvements-enhanced-artifacts-versioning-scalability-and-metadata-management"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ef8d14cc/67347efc66013134954b7b8e_zenml-release__1__2.png"
+  ogImage: "https://assets.zenml.io/content/blog/improvements-enhanced-artifacts-versioning-scalability-and-metadata-management/bd85c139/improvements-enhanced-artifacts-versioning-scalability-and-metadata-management-cover.jpg"
   ogTitle: "Improvements: Enhanced Artifacts Versioning, Scalability and Metadata Management - ZenML Blog"
   ogDescription: "ZenML 0.70.0 has launched with major improvements but requires careful handling during upgrade due to significant database schema changes. Key highlights include enhanced artifact versioning with batch processing capabilities, improved scalability through reduced server requests, unified metadata management via the new log_metadata method, and flexible filtering with the new oneof operator. The release also features expanded documentation covering finetuning and LLM/ML engineering resources. Due to the database changes, users must back up their data and test the upgrade in a non-production environment before deploying to production systems."
 ---

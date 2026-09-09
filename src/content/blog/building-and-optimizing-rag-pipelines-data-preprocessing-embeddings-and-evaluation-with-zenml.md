@@ -19,12 +19,12 @@ tags:
 date: "2024-06-14T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/51bc361c/666bf8ea042ed1fea2d09562_webinar_blog.png"
+  url: "https://assets.zenml.io/content/blog/building-and-optimizing-rag-pipelines-data-preprocessing-embeddings-and-evaluation-with-zenml/ff1879c7/building-and-optimizing-rag-pipelines-data-preprocessing-embeddings-and-evaluation-with-zenml-cover.avif"
 seo:
   title: "Building and Optimizing RAG Pipelines: Data Preprocessing, Embeddings, and Evaluation with ZenML - ZenML Blog"
   description: "We dive deep into the world of Retrieval-Augmented Generation (RAG) pipelines and how ZenML can streamline your RAG workflows."
   canonical: "https://www.zenml.io/blog/building-and-optimizing-rag-pipelines-data-preprocessing-embeddings-and-evaluation-with-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0a8ddcc3/666bf8ea042ed1fea2d09562_webinar_blog.png"
+  ogImage: "https://assets.zenml.io/content/blog/building-and-optimizing-rag-pipelines-data-preprocessing-embeddings-and-evaluation-with-zenml/d78c96aa/building-and-optimizing-rag-pipelines-data-preprocessing-embeddings-and-evaluation-with-zenml-cover.jpg"
   ogTitle: "Building and Optimizing RAG Pipelines: Data Preprocessing, Embeddings, and Evaluation with ZenML - ZenML Blog"
   ogDescription: "We dive deep into the world of Retrieval-Augmented Generation (RAG) pipelines and how ZenML can streamline your RAG workflows."
 ---

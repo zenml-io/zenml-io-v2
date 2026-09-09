@@ -21,12 +21,14 @@ tags:
 date: "2026-01-15T00:00:00.000Z"
 readingTime: 11 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2d153f1e/696872f04042c7904f5fc85c_prefect-vs-temporal.png"
+  url: "https://assets.zenml.io/content/blog/prefect-vs-temporal/3c9caceb/prefect-vs-temporal-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/prefect-vs-temporal/3c9caceb/prefect-vs-temporal-cover.avif"
 seo:
   title: "Prefect vs Temporal vs ZenML: A Practical Comparison for Data and ML Teams - ZenML Blog"
   description: "In this Prefect vs Temporal vs ZenML article, we compare the three to see which one is the best for data and ML teams."
   canonical: "https://www.zenml.io/blog/prefect-vs-temporal"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2d153f1e/696872f04042c7904f5fc85c_prefect-vs-temporal.png"
+  ogImage: "https://assets.zenml.io/content/blog/prefect-vs-temporal/78683f00/prefect-vs-temporal-cover.jpg"
   ogTitle: "Prefect vs Temporal vs ZenML: A Practical Comparison for Data and ML Teams - ZenML Blog"
   ogDescription: "In this Prefect vs Temporal vs ZenML article, we compare the three to see which one is the best for data and ML teams."
 ---

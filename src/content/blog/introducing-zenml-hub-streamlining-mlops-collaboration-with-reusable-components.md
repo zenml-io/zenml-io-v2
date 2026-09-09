@@ -21,7 +21,9 @@ tags:
 date: "2023-04-12T00:00:00.000Z"
 readingTime: 6 mins read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/958ab376/652cffb7ac2fb6a71a0a0994_hub.jpg"
+  url: "https://assets.zenml.io/content/blog/introducing-zenml-hub-streamlining-mlops-collaboration-with-reusable-components/8969879b/introducing-zenml-hub-streamlining-mlops-collaboration-with-reusable-components-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/introducing-zenml-hub-streamlining-mlops-collaboration-with-reusable-components/20e79f40/introducing-zenml-hub-streamlining-mlops-collaboration-with-reusable-components-cover.jpg"
 ---
 
 Today, we are excited to announce the launch of the ZenML Hub, a major game-changer for our open-source MLOps framework. This [novel plugin system](https://docs.zenml.io/user-guide/advanced-guide/environment-management/use-the-hub) allows users to contribute and consume [stack component flavors](https://docs.zenml.io/stacks-and-components/component-guide), [pipelines](https://docs.zenml.io/user-guide/starter-guide/create-an-ml-pipeline), [steps](https://docs.zenml.io/user-guide/starter-guide/create-an-ml-pipeline), [materializers](https://docs.zenml.io/user-guide/advanced-guide/artifact-management), and other pieces of code seamlessly in their ML pipelines.

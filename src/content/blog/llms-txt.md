@@ -19,12 +19,12 @@ tags:
 date: "2025-02-10T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ae684426/67a9c607b928c67f1a678408_Postimage_from_TinyPNG.png"
+  url: "https://assets.zenml.io/content/blog/llms-txt/ad59432a/llms-txt-cover.avif"
 seo:
   title: "Making ML Documentation AI-Friendly: ZenML's Implementation of llms.txt - ZenML Blog"
   description: "Discover how ZenML implements the llms.txt standard to make ML documentation more accessible to both AI assistants and humans. Learn about our modular approach using specialized documentation files, practical integration with AI development tools, and how this structured format enhances the developer experience across different context window sizes."
   canonical: "https://www.zenml.io/blog/llms-txt"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ae684426/67a9c607b928c67f1a678408_Postimage_from_TinyPNG.png"
+  ogImage: "https://assets.zenml.io/content/blog/llms-txt/4fd9b5fc/llms-txt-cover.jpg"
   ogTitle: "Making ML Documentation AI-Friendly: ZenML's Implementation of llms.txt - ZenML Blog"
   ogDescription: "Discover how ZenML implements the llms.txt standard to make ML documentation more accessible to both AI assistants and humans. Learn about our modular approach using specialized documentation files, practical integration with AI development tools, and how this structured format enhances the developer experience across different context window sizes."
 ---

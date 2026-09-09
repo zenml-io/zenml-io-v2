@@ -19,12 +19,12 @@ tags:
 date: "2021-11-19T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d7a9674c/653109c865f70889583d4817_download__12_.png"
+  url: "https://assets.zenml.io/content/blog/pipeline-conversations-our-new-podcast/f22a152e/pipeline-conversations-our-new-podcast-cover.avif"
 seo:
   title: "Pipeline Conversations: Our New Podcast - ZenML Blog"
   description: "We launched a podcast to have conversations with people working to productionize their machine learning models and to learn from their experience."
   canonical: "https://www.zenml.io/blog/pipeline-conversations-our-new-podcast"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/90424e0c/653109c865f70889583d4817_download__12_.png"
+  ogImage: "https://assets.zenml.io/content/blog/pipeline-conversations-our-new-podcast/d7d67bcc/pipeline-conversations-our-new-podcast-cover.jpg"
   ogTitle: "Pipeline Conversations: Our New Podcast - ZenML Blog"
   ogDescription: "We launched a podcast to have conversations with people working to productionize their machine learning models and to learn from their experience."
 ---

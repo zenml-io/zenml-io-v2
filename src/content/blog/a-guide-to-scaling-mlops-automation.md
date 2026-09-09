@@ -21,12 +21,12 @@ tags:
 date: "2024-11-18T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e43bc13d/6746e065f6415829871f1390_Gemini_Generated_Image__13_.jpeg"
+  url: "https://assets.zenml.io/content/blog/a-guide-to-scaling-mlops-automation/e08c539a/a-guide-to-scaling-mlops-automation-cover.avif"
 seo:
   title: "From Chaos to Control: A Guide to Scaling MLOps Automation - ZenML Blog"
   description: "Discover how organizations can transform their machine learning operations from manual, time-consuming processes into streamlined, automated workflows. This comprehensive guide explores common challenges in scaling MLOps, including infrastructure management, model deployment, and monitoring across different modalities. Learn practical strategies for implementing reproducible workflows, infrastructure abstraction, and comprehensive observability while maintaining security and compliance. Whether you're dealing with growing pains in ML operations or planning for future scale, this article provides actionable insights for building a robust, future-proof MLOps foundation."
   canonical: "https://www.zenml.io/blog/a-guide-to-scaling-mlops-automation"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e43bc13d/6746e065f6415829871f1390_Gemini_Generated_Image__13_.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/a-guide-to-scaling-mlops-automation/df44aff5/a-guide-to-scaling-mlops-automation-cover.jpg"
   ogTitle: "From Chaos to Control: A Guide to Scaling MLOps Automation - ZenML Blog"
   ogDescription: "Discover how organizations can transform their machine learning operations from manual, time-consuming processes into streamlined, automated workflows. This comprehensive guide explores common challenges in scaling MLOps, including infrastructure management, model deployment, and monitoring across different modalities. Learn practical strategies for implementing reproducible workflows, infrastructure abstraction, and comprehensive observability while maintaining security and compliance. Whether you're dealing with growing pains in ML operations or planning for future scale, this article provides actionable insights for building a robust, future-proof MLOps foundation."
 ---

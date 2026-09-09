@@ -17,7 +17,9 @@ tags:
 date: "2022-01-26T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b4ab48c6/65315f0d6116d9eb5fc2e60f_rusty-watson-4Kf97smL2eY-unsplash.jpg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-6-0-whylogs-integration-and-some-big-core-architecture-changes/7ba96d2b/whats-new-in-v0-6-0-whylogs-integration-and-some-big-core-architecture-changes-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-6-0-whylogs-integration-and-some-big-core-architecture-changes/f54168d8/whats-new-in-v0-6-0-whylogs-integration-and-some-big-core-architecture-changes-cover.jpg"
 ---
 
 **Last updated:** November 3, 2022.

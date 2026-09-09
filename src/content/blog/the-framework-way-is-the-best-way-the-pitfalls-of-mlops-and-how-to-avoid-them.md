@@ -22,12 +22,12 @@ tags:
 date: "2022-05-24T00:00:00.000Z"
 readingTime: 9 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e1fcec58/6531e7467a8b73a355f1083b_zenml-framework.gif"
+  url: "https://assets.zenml.io/content/blog/the-framework-way-is-the-best-way-the-pitfalls-of-mlops-and-how-to-avoid-them/f4707fb9/the-framework-way-is-the-best-way-the-pitfalls-of-mlops-and-how-to-avoid-them-cover.avif"
 seo:
   title: "The Framework Way is the Best Way: the pitfalls of MLOps and how to avoid them - ZenML Blog"
   description: "As our AI/ML projects evolve and mature, our processes and tooling also need to keep up with the growing demand for automation, quality and performance. But how can we possibly reconcile our need for flexibility with the overwhelming complexity of a continuously evolving ecosystem of tools and technologies? MLOps frameworks promise to deliver the ideal balance between flexibility, usability and maintainability, but not all MLOps frameworks are created equal. In this post, I take a critical look at what makes an MLOps framework worth using and what you should expect from one."
   canonical: "https://www.zenml.io/blog/the-framework-way-is-the-best-way-the-pitfalls-of-mlops-and-how-to-avoid-them"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/af89c4e3/6531e7467a8b73a355f1083b_zenml-framework.gif"
+  ogImage: "https://assets.zenml.io/content/blog/the-framework-way-is-the-best-way-the-pitfalls-of-mlops-and-how-to-avoid-them/f947ee88/the-framework-way-is-the-best-way-the-pitfalls-of-mlops-and-how-to-avoid-them-cover.jpg"
   ogTitle: "The Framework Way is the Best Way: the pitfalls of MLOps and how to avoid them - ZenML Blog"
   ogDescription: "As our AI/ML projects evolve and mature, our processes and tooling also need to keep up with the growing demand for automation, quality and performance. But how can we possibly reconcile our need for flexibility with the overwhelming complexity of a continuously evolving ecosystem of tools and technologies? MLOps frameworks promise to deliver the ideal balance between flexibility, usability and maintainability, but not all MLOps frameworks are created equal. In this post, I take a critical look at what makes an MLOps framework worth using and what you should expect from one."
 ---

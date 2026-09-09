@@ -18,12 +18,12 @@ tags:
 date: "2024-11-23T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf8b743a/6746d927a4a7d05c8f463072_Gemini_Generated_Image__7_.jpeg"
+  url: "https://assets.zenml.io/content/blog/manufacturing-success-blueprint-from-poc-to-production/a4f4cd5b/manufacturing-success-blueprint-from-poc-to-production-cover.avif"
 seo:
   title: "Streamlining MLOps: A Manufacturing Success Blueprint from PoC to Production - ZenML Blog"
   description: "Discover how manufacturing companies can successfully scale their machine learning operations from proof-of-concept to production. This comprehensive guide explores the three pillars of manufacturing AI, common MLOps challenges, and practical strategies for building a sustainable MLOps foundation. Learn how to overcome tool fragmentation, manage hybrid infrastructure, and implement effective collaboration practices across teams. Whether you're a data scientist, ML engineer, or manufacturing leader, this post provides actionable insights for creating a scalable, efficient MLOps practice that drives real business value."
   canonical: "https://www.zenml.io/blog/manufacturing-success-blueprint-from-poc-to-production"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf8b743a/6746d927a4a7d05c8f463072_Gemini_Generated_Image__7_.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/manufacturing-success-blueprint-from-poc-to-production/c04c3dd8/manufacturing-success-blueprint-from-poc-to-production-cover.jpg"
   ogTitle: "Streamlining MLOps: A Manufacturing Success Blueprint from PoC to Production - ZenML Blog"
   ogDescription: "Discover how manufacturing companies can successfully scale their machine learning operations from proof-of-concept to production. This comprehensive guide explores the three pillars of manufacturing AI, common MLOps challenges, and practical strategies for building a sustainable MLOps foundation. Learn how to overcome tool fragmentation, manage hybrid infrastructure, and implement effective collaboration practices across teams. Whether you're a data scientist, ML engineer, or manufacturing leader, this post provides actionable insights for creating a scalable, efficient MLOps practice that drives real business value."
 ---

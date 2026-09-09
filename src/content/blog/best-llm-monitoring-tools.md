@@ -21,12 +21,12 @@ tags:
 date: "2025-11-23T00:00:00.000Z"
 readingTime: 18 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e0c790c/6981d36ce92aa039b696b8a7_6981d2b078ca0eb6ae358d39_best-llm-monitoring-tools.avif"
+  url: "https://assets.zenml.io/content/blog/best-llm-monitoring-tools/007dd9d7/best-llm-monitoring-tools-cover.avif"
 seo:
   title: "10 Best LLM Monitoring Tools to Use in 2025 (Ranked & Reviewed) - ZenML Blog"
   description: "Discover the 10 best LLM monitoring tools you can use this year."
   canonical: "https://www.zenml.io/blog/best-llm-monitoring-tools"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e0c790c/6981d36ce92aa039b696b8a7_6981d2b078ca0eb6ae358d39_best-llm-monitoring-tools.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/best-llm-monitoring-tools/1e6ce49a/best-llm-monitoring-tools-cover.jpg"
   ogTitle: "10 Best LLM Monitoring Tools to Use in 2025 (Ranked & Reviewed) - ZenML Blog"
   ogDescription: "Discover the 10 best LLM monitoring tools you can use this year."
 ---

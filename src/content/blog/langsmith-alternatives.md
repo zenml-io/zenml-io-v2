@@ -20,12 +20,14 @@ tags:
 date: "2025-11-11T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/493fea70/6912c1f28f35f9900eb4a8a7_langsmith-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/langsmith-alternatives/a0db06da/langsmith-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/langsmith-alternatives/a0db06da/langsmith-alternatives-cover.avif"
 seo:
   title: "Here are the 9 Best LangSmith Alternatives for LLM Observability - ZenML Blog"
   description: "In this article, you learn about the best LangSmith alternatives you can use for full-stack observability."
   canonical: "https://www.zenml.io/blog/langsmith-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/493fea70/6912c1f28f35f9900eb4a8a7_langsmith-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/langsmith-alternatives/9f01248d/langsmith-alternatives-cover.jpg"
   ogTitle: "Here are the 9 Best LangSmith Alternatives for LLM Observability - ZenML Blog"
   ogDescription: "In this article, you learn about the best LangSmith alternatives you can use for full-stack observability."
 ---

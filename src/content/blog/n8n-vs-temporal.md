@@ -20,12 +20,14 @@ tags:
 date: "2026-01-28T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1ebb9aab/69798ab9780d095cc93a173c_n8n-vs-temporal.png"
+  url: "https://assets.zenml.io/content/blog/n8n-vs-temporal/a8e28568/n8n-vs-temporal-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/n8n-vs-temporal/a8e28568/n8n-vs-temporal-cover.avif"
 seo:
   title: "n8n vs Temporal vs ZenML: Choosing the Right Workflow Engine for AI Systems - ZenML Blog"
   description: "This n8n vs Temporal vs ZenML guide helps you identify the right workflow engine for your AI system, based on your use case."
   canonical: "https://www.zenml.io/blog/n8n-vs-temporal"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1ebb9aab/69798ab9780d095cc93a173c_n8n-vs-temporal.png"
+  ogImage: "https://assets.zenml.io/content/blog/n8n-vs-temporal/86997902/n8n-vs-temporal-cover.jpg"
   ogTitle: "n8n vs Temporal vs ZenML: Choosing the Right Workflow Engine for AI Systems - ZenML Blog"
   ogDescription: "This n8n vs Temporal vs ZenML guide helps you identify the right workflow engine for your AI system, based on your use case."
 ---

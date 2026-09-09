@@ -20,12 +20,12 @@ tags:
 date: "2024-07-31T00:00:00.000Z"
 readingTime: 6 min
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dc1bc81a/66a90449c8b4472cfb2383c6_zenml-terraform-min.png"
+  url: "https://assets.zenml.io/content/blog/mlops-terraform-zenml/afab93ec/mlops-terraform-zenml-cover.avif"
 seo:
   title: "Infrastructure as Code (IaC) for MLOps with Terraform & ZenML - ZenML Blog"
   description: "Infrastructure-as-code meets MLOps: Terraform modules for deploying ML infrastructure on AWS, GCP, and Azure on the Hashicorp registry."
   canonical: "https://www.zenml.io/blog/mlops-terraform-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a8f655df/66a90449c8b4472cfb2383c6_zenml-terraform-min.png"
+  ogImage: "https://assets.zenml.io/content/blog/mlops-terraform-zenml/cc2b4ce5/mlops-terraform-zenml-cover.jpg"
   ogTitle: "Infrastructure as Code (IaC) for MLOps with Terraform & ZenML - ZenML Blog"
   ogDescription: "Infrastructure-as-code meets MLOps: Terraform modules for deploying ML infrastructure on AWS, GCP, and Azure on the Hashicorp registry."
 ---

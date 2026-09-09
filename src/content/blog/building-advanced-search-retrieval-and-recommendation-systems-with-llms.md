@@ -22,12 +22,12 @@ tags:
 date: "2024-12-06T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/22722195/6751845a9f3d6eccaacd9b11_Midjourney_Split_Screen_Composition.png"
+  url: "https://assets.zenml.io/content/blog/building-advanced-search-retrieval-and-recommendation-systems-with-llms/2c12af12/building-advanced-search-retrieval-and-recommendation-systems-with-llms-cover.avif"
 seo:
   title: "Building Advanced Search, Retrieval, and Recommendation Systems with LLMs - ZenML Blog"
   description: "Discover how embeddings power modern search and recommendation systems with LLMs, using case studies from the LLMOps Database. From RAG systems to personalized recommendations, learn key strategies and best practices for building intelligent applications that truly understand user intent and deliver relevant results."
   canonical: "https://www.zenml.io/blog/building-advanced-search-retrieval-and-recommendation-systems-with-llms"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/22722195/6751845a9f3d6eccaacd9b11_Midjourney_Split_Screen_Composition.png"
+  ogImage: "https://assets.zenml.io/content/blog/building-advanced-search-retrieval-and-recommendation-systems-with-llms/b8fb2cb4/building-advanced-search-retrieval-and-recommendation-systems-with-llms-cover.jpg"
   ogTitle: "Building Advanced Search, Retrieval, and Recommendation Systems with LLMs - ZenML Blog"
   ogDescription: "Discover how embeddings power modern search and recommendation systems with LLMs, using case studies from the LLMOps Database. From RAG systems to personalized recommendations, learn key strategies and best practices for building intelligent applications that truly understand user intent and deliver relevant results."
 ---

@@ -19,11 +19,11 @@ tags:
 date: "2024-05-13T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5d7d5c42/66436e40d511269b872dcc76_newsletter03.webp"
+  url: "https://assets.zenml.io/content/blog/state-of-open-source/306a57cb/state-of-open-source-cover.avif"
 seo:
   title: "Newsletter Edition #3 - State of Open Source - ZenML Blog"
   canonical: "https://www.zenml.io/blog/state-of-open-source"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d4d85558/66436e40d511269b872dcc76_newsletter03.webp"
+  ogImage: "https://assets.zenml.io/content/blog/state-of-open-source/8f96ee92/state-of-open-source-cover.jpg"
   ogTitle: "Newsletter Edition #3 - State of Open Source - ZenML Blog"
 ---
 

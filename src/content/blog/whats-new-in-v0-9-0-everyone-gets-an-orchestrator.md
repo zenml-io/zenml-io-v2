@@ -17,7 +17,9 @@ tags:
 date: "2022-06-13T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fee05f70/65316c6ffcb70cbeed3f2f2e_allison-louise-xABgmlX4ABE-unsplash.jpg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-9-0-everyone-gets-an-orchestrator/0831112a/whats-new-in-v0-9-0-everyone-gets-an-orchestrator-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-9-0-everyone-gets-an-orchestrator/b06a997d/whats-new-in-v0-9-0-everyone-gets-an-orchestrator-cover.jpg"
 ---
 
 **Last updated:** October 17, 2022.

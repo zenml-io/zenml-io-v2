@@ -21,12 +21,14 @@ tags:
 date: "2025-08-29T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/95341d10/6981d362e92aa039b696ad06_6981d2b29b5bd50b8dcb1e3f_langflow-alternatives.avif"
+  url: "https://assets.zenml.io/content/blog/langflow-alternatives/98cddba7/langflow-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/langflow-alternatives/98cddba7/langflow-alternatives-cover.avif"
 seo:
   title: "We Tried and Tested 8 Langflow Alternatives for Production-Ready AI Workflows - ZenML Blog"
   description: "Discover the top 8 Langflow alternatives you can leverage to build and deploy AI agents."
   canonical: "https://www.zenml.io/blog/langflow-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/95341d10/6981d362e92aa039b696ad06_6981d2b29b5bd50b8dcb1e3f_langflow-alternatives.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/langflow-alternatives/01e6a4da/langflow-alternatives-cover.jpg"
   ogTitle: "We Tried and Tested 8 Langflow Alternatives for Production-Ready AI Workflows - ZenML Blog"
   ogDescription: "Discover the top 8 Langflow alternatives you can leverage to build and deploy AI agents."
 ---

@@ -23,12 +23,12 @@ date: "2025-08-20T00:00:00.000Z"
 readingTime: 5 mins
 featured: true
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/019c0e2f/68a5daefbf0e814612905036_forecasting-platform-min.png"
+  url: "https://assets.zenml.io/content/blog/floracast-forecasting-platform/04c0e90f/floracast-forecasting-platform-cover.avif"
 seo:
   title: "Building a Forecasting Platform, Not Just Models - ZenML Blog"
   description: "FloraCast is a production-ready template that shows how to build a forecasting platform—config-driven experiments, model versioning/staging, batch inference, and scheduled retrains—with ZenML and Darts."
   canonical: "https://www.zenml.io/blog/floracast-forecasting-platform"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/019c0e2f/68a5daefbf0e814612905036_forecasting-platform-min.png"
+  ogImage: "https://assets.zenml.io/content/blog/floracast-forecasting-platform/f5c4e6a8/floracast-forecasting-platform-cover.jpg"
   ogTitle: "Building a Forecasting Platform, Not Just Models - ZenML Blog"
   ogDescription: "FloraCast is a production-ready template that shows how to build a forecasting platform—config-driven experiments, model versioning/staging, batch inference, and scheduled retrains—with ZenML and Darts."
 ---

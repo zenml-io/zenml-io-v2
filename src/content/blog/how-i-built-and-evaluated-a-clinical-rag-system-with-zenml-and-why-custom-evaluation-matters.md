@@ -21,12 +21,12 @@ tags:
 date: "2025-09-15T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c0344366/68c7bb5782d0b9eb7457f574_Custom_Evals_in_ZenML.png"
+  url: "https://assets.zenml.io/content/blog/how-i-built-and-evaluated-a-clinical-rag-system-with-zenml-and-why-custom-evaluation-matters/df25f935/how-i-built-and-evaluated-a-clinical-rag-system-with-zenml-and-why-custom-evaluation-matters-cover.avif"
 seo:
   title: "How I Built and Evaluated a Clinical RAG System with ZenML (and Why Custom Evaluation Matters) - ZenML Blog"
   description: "On custom evaluation frameworks for clinical RAG systems, showing why domain-specific metrics matter more than plug-and-play solutions when trust and safety are non-negotiable."
   canonical: "https://www.zenml.io/blog/how-i-built-and-evaluated-a-clinical-rag-system-with-zenml-and-why-custom-evaluation-matters"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c0344366/68c7bb5782d0b9eb7457f574_Custom_Evals_in_ZenML.png"
+  ogImage: "https://assets.zenml.io/content/blog/how-i-built-and-evaluated-a-clinical-rag-system-with-zenml-and-why-custom-evaluation-matters/d017dfaf/how-i-built-and-evaluated-a-clinical-rag-system-with-zenml-and-why-custom-evaluation-matters-cover.jpg"
   ogTitle: "How I Built and Evaluated a Clinical RAG System with ZenML (and Why Custom Evaluation Matters) - ZenML Blog"
   ogDescription: "On custom evaluation frameworks for clinical RAG systems, showing why domain-specific metrics matter more than plug-and-play solutions when trust and safety are non-negotiable."
 ---

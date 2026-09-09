@@ -23,7 +23,9 @@ date: "2025-12-19T00:00:00.000Z"
 readingTime: 18 mins
 featured: true
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/25bb7ee8/695e3047a1771f3f63cd4d83_zenml-llms-long.jpg"
+  url: "https://assets.zenml.io/content/blog/what-1200-production-deployments-reveal-about-llmops-in-2025/0d9d6444/what-1200-production-deployments-reveal-about-llmops-in-2025-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/what-1200-production-deployments-reveal-about-llmops-in-2025/b603d3b7/what-1200-production-deployments-reveal-about-llmops-in-2025-cover.jpg"
 ---
 
 The LLMOps Database crossed 1,200 case studies this month. Since we last wrote one of these summaries, we've catalogued another 400 production deployments. These are real systems handling real traffic, built by teams navigating the gap between "it works in a notebook" and "it works at 2am when the on-call engineer is asleep."

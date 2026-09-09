@@ -331,7 +331,7 @@ const quoteSchema = z.object({
 /**
  * Blog Posts schema
  * Route: /blog/<slug>
- * Count: 317 items
+ * Count: 358 items
  * Fields: author, category, tags, date, readingTime, mainImage
  */
 const blogSchema = z.object({
@@ -350,8 +350,14 @@ const blogSchema = z.object({
   date: z.coerce.date(),
   readingTime: z.string().optional(),
 
-  // Media
+  // Media. `mainImage` is the post's cover: cards, hubs, Open Graph
+  // fallback and the Article JSON-LD image. It is NOT rendered inside the
+  // post. `featuredImage` is the opt-in in-page figure under the masthead —
+  // authors add it only when they want an image in the post itself
+  // (2026-09 blog cutover ruling). The comparison / "X vs Y" / alternatives
+  // posts carry one (a copy of their cover); other posts do not.
   mainImage: imageSchema.optional(),
+  featuredImage: imageSchema.optional(),
 
   // SEO & Webflow (webflow optional for new native posts)
   seo: seoSchema,

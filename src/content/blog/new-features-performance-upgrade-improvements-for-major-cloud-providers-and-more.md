@@ -23,12 +23,12 @@ tags:
   - "zenml"
 date: "2025-02-06T00:00:00.000Z"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/9cb87a3f/67a4df4fee38a9b994bc0d3d_zenml-release-6.webp"
+  url: "https://assets.zenml.io/content/blog/new-features-performance-upgrade-improvements-for-major-cloud-providers-and-more/fa843cda/new-features-performance-upgrade-improvements-for-major-cloud-providers-and-more-cover.avif"
 seo:
   title: "New Features: Performance Upgrade, Improvements for Major Cloud Providers, and More! - ZenML Blog"
   description: "ZenML 0.74.0 introduces key cloud provider features including SageMaker pipeline scheduling, Azure Container Registry implicit authentication, and Vertex AI persistent resource support. The release adds API Tokens for secure, time-boxed API authentication while delivering comprehensive improvements to timezone handling, database performance, and Helm chart deployments."
   canonical: "https://www.zenml.io/blog/new-features-performance-upgrade-improvements-for-major-cloud-providers-and-more"
-  ogImage: "https://assets.zenml.io/content/blog/9cb87a3f/67a4df4fee38a9b994bc0d3d_zenml-release-6.webp"
+  ogImage: "https://assets.zenml.io/content/blog/new-features-performance-upgrade-improvements-for-major-cloud-providers-and-more/c125f1e2/new-features-performance-upgrade-improvements-for-major-cloud-providers-and-more-cover.jpg"
   ogTitle: "New Features: Performance Upgrade, Improvements for Major Cloud Providers, and More! - ZenML Blog"
   ogDescription: "ZenML 0.74.0 introduces key cloud provider features including SageMaker pipeline scheduling, Azure Container Registry implicit authentication, and Vertex AI persistent resource support. The release adds API Tokens for secure, time-boxed API authentication while delivering comprehensive improvements to timezone handling, database performance, and Helm chart deployments."
 ---

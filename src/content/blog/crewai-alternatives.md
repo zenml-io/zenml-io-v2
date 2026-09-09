@@ -21,12 +21,14 @@ tags:
 date: "2025-08-20T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/31fdfde6/68a564f72c519b02fa18ec5a_crewai-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/crewai-alternatives/bb3c8884/crewai-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/crewai-alternatives/bb3c8884/crewai-alternatives-cover.avif"
 seo:
   title: "CrewAI Alternatives: 8 Agent Frameworks for Production Workflows - ZenML Blog"
   description: "Compare the best CrewAI alternatives for building production AI workflows, including LangGraph, AutoGen, Google ADK, OpenAI Agents SDK, Pydantic AI, Langflow, Flowise, and LlamaIndex."
   canonical: "https://www.zenml.io/blog/crewai-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/31fdfde6/68a564f72c519b02fa18ec5a_crewai-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/crewai-alternatives/d0dd5f85/crewai-alternatives-cover.jpg"
   ogTitle: "CrewAI Alternatives: 8 Agent Frameworks for Production Workflows - ZenML Blog"
   ogDescription: "Compare the best CrewAI alternatives for building production AI workflows, including LangGraph, AutoGen, Google ADK, OpenAI Agents SDK, Pydantic AI, Langflow, Flowise, and LlamaIndex."
 ---

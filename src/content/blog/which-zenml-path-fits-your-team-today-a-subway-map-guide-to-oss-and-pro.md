@@ -19,12 +19,12 @@ tags:
 date: "2025-04-23T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3bfad9b7/6809163ae54dc3aac273150d_image__1___1_.png"
+  url: "https://assets.zenml.io/content/blog/which-zenml-path-fits-your-team-today-a-subway-map-guide-to-oss-and-pro/06a511ff/which-zenml-path-fits-your-team-today-a-subway-map-guide-to-oss-and-pro-cover.avif"
 seo:
   title: "Which ZenML Path Fits Your Team Today? A Subway-Map Guide to OSS and Pro - ZenML Blog"
   description: "Learn when to upgrade from open-source ZenML to Pro features with our subway-map guide to scaling ML operations for growing teams, from solo experiments to enterprise collaboration."
   canonical: "https://www.zenml.io/blog/which-zenml-path-fits-your-team-today-a-subway-map-guide-to-oss-and-pro"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3bfad9b7/6809163ae54dc3aac273150d_image__1___1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/which-zenml-path-fits-your-team-today-a-subway-map-guide-to-oss-and-pro/55948b11/which-zenml-path-fits-your-team-today-a-subway-map-guide-to-oss-and-pro-cover.jpg"
   ogTitle: "Which ZenML Path Fits Your Team Today? A Subway-Map Guide to OSS and Pro - ZenML Blog"
   ogDescription: "Learn when to upgrade from open-source ZenML to Pro features with our subway-map guide to scaling ML operations for growing teams, from solo experiments to enterprise collaboration."
 ---
