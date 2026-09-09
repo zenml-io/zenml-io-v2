@@ -1,0 +1,206 @@
+---
+competitor: "Langfuse"
+competitorLogo: "/compare/langfuse.svg"
+competitorTagline: "Open-source LLM engineering platform: tracing, prompt management, datasets, experiments, evaluators, annotation queues."
+title: "Kitaru vs Langfuse: replay the traces you already store"
+shortTitle: "Make your Langfuse traces runnable"
+description: "Langfuse stores and scores your traces. Kitaru imports them and re-executes your agent over them, tool calls answered from the recording. Both are open source."
+cardSubtitle: "Keep Langfuse as your trace store. Import its traces into Kitaru and replay them against your real code."
+ctaHeading: "Make your Langfuse traces runnable"
+order: 30
+---
+
+import WhenToUseEach from '../../components/compare/kitaru/WhenToUseEach.astro';
+import ComparisonTable from '../../components/compare/kitaru/ComparisonTable.astro';
+import CodeCompare from '../../components/compare/kitaru/CodeCompare.astro';
+import PullQuote from '../../components/compare/kitaru/PullQuote.astro';
+import ComparisonCta from '../../components/compare/kitaru/ComparisonCta.astro';
+import FeatureWithGraphic from '../../components/compare/kitaru/FeatureWithGraphic.astro';
+import DatasetVsSession from '../../components/compare/kitaru/graphics/langfuse/DatasetVsSession.astro';
+import ImportPath from '../../components/compare/kitaru/graphics/langfuse/ImportPath.astro';
+import CuratedVsFrozen from '../../components/compare/kitaru/graphics/langfuse/CuratedVsFrozen.astro';
+import PinnedJudgment from '../../components/compare/kitaru/graphics/langfuse/PinnedJudgment.astro';
+
+Langfuse is an open-source AI engineering platform. It traces every LLM and non-LLM call and groups them into sessions. You manage prompts and try them in a playground, then build datasets and run experiments over them. The core is MIT-licensed and you can self-host it for free.
+
+Kitaru answers a narrower question. When you change the model, a prompt, or a tool, what happens to the runs your agent already did in production? A session is a recorded run. Replay re-executes your agent's real code over that session. Under a history tool policy, the recording answers the tool calls, so `issue_refund()` returns what it returned the first time instead of touching a card twice. Fork the session with one override and you get the same run under the change, next to the faithful baseline: an unchanged replay that reproduces the original. And because `kitaru/langfuse` is a [built-in importer](https://docs.zenml.io/kitaru/import-your-traces/import-langfuse-traces), the traces you already store in Langfuse are the way in.
+
+<WhenToUseEach
+  competitorLabel="Langfuse"
+  kitaru={{
+    title: "Use Kitaru if you are",
+    items: [
+      "Shipping a model swap, a prompt edit, or a tool change to an agent that is already in production, and want to know what breaks on real traffic before users find it",
+      "Testing multi-turn agents where what regressed is the path the agent took, not the final string",
+      "Running tools that write to real systems (refunds, tickets, emails) and can't let a test call them a second time",
+      "Already tracing to Langfuse and want those traces runnable, not just readable",
+      "Gating a pull request on a replay of last week's sessions rather than on a dataset someone maintains",
+    ],
+  }}
+  competitor={{
+    title: "Use Langfuse if you are",
+    items: [
+      "Looking for an open-source trace store you can self-host for free, with sessions, cost, and latency in one place",
+      "Managing and versioning prompts, and iterating on them in a playground",
+      "Scoring live traffic with LLM-as-a-judge evaluators, with dashboards and alerts on top",
+      "Running a keyboard-driven annotation queue for domain experts, or building a custom review UI on its queue API",
+      "Writing in JavaScript or TypeScript, or relying on one of its 100 plus framework integrations",
+    ],
+  }}
+/>
+
+<PullQuote
+  quote="Langfuse scores what your agent did. Kitaru re-runs it against what it saw."
+/>
+
+<FeatureWithGraphic title="An experiment over a dataset vs a replay of a recorded session">
+  <DatasetVsSession slot="graphic" />
+
+  Both products run your code. The difference is what they run it on, and what the tools do while it runs.
+
+  A Langfuse experiment takes a dataset, calls your task function on every item, scores the output with your evaluators, and stores the run so you can compare it with the last one. The task is your own application logic and it runs in your process, so any tool it calls runs live. In the UI, an experiment runs a prompt over a dataset one model call at a time. The docs point you to the SDK when you want to evaluate full agent logic. The playground re-runs a single generation with edits and answers its tool calls with responses you mock.
+
+  A Kitaru replay takes a session that already happened in production and re-executes your agent's code over it from the top. Under a history tool policy, the recording answers each tool call by name and arguments. Set `on_miss` to `fail` and an unrecorded call stops the replay before it reaches a live system. Add one override and the same session runs under the change. The override can be a model map, a system prompt, a user prompt, or `model_params`. You compare the replay against the faithful baseline of the same run, not two experiments over a dataset.
+
+  <Fragment slot="bullets">
+    - **Population:** Dataset items you curate, or sessions your users generated.
+    - **Tools during the run:** Live in the SDK and mocked in the playground, or governed by a tool policy: answered from the recording (history), canned (static), or live only for safe read-only calls (passthrough).
+    - **What gets compared:** This experiment against the previous one, or the replay against the baseline of the same session.
+    - **What a change looks like:** A new prompt version or new code in the task, or one override on the experiment with everything else held fixed.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Your Langfuse traces are the way in" reverse={true}>
+  <ImportPath slot="graphic" />
+
+  Langfuse stays your system of record. Kitaru takes a runnable copy of the runs you care about.
+
+  The importer reads three record shapes: traces, observations, and raw ingestion event lines. Upload a JSONL export, or omit the file and pass `--since` so the worker fetches from the Langfuse API directly. Traces become sessions and observations become nodes. Parents, timings, model names, token usage, and cost carry across. Every imported session records where it came from, so re-importing an overlapping slice skips what already landed.
+
+  Three limits:
+
+  - **Replay needs your code.** A trace export holds no code, so an imported session can be investigated, evaluated, and added to a cohort as it is. To fork it, register the agent's run command or wrap it with a native adapter.
+  - **Name the source.** Pass `--params` with a `source_instance` so sessions from two Langfuse projects never collide on the same trace ids.
+  - **Slice large exports.** One import is capped at 50 MiB. The importer deduplicates, so overlaps between slices are safe.
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="A cohort is production, frozen">
+  <CuratedVsFrozen slot="graphic" />
+
+  Langfuse makes datasets easy to build. Any observation becomes a dataset item with one click, and the item keeps a link back to its source trace. Its CI path runs through a GitHub Action. It posts a comment on the pull request and fails the job when your script raises a regression error against a threshold you compute yourself. It is a working gate that you wire.
+
+  A cohort is a different kind of thing. It's a named set of sessions belonging to one agent. A cohort version's member list never changes after creation. An experiment run replays every session in one cohort version against one agent version and evaluates baseline and replay alike. So a result keeps meaning what it meant when you read it.
+
+  <Fragment slot="bullets">
+    - **Selection:** By tag, by filter, by session id, or by branching from an earlier version.
+    - **Incidents:** The conversation that went wrong last Tuesday is a session. Add it to the next cohort version and it is a permanent regression case.
+    - **Gating:** `kitaru experiment run start` with `--wait` exits nonzero when the run fails, so a pull request can block on it. Each evaluator writes its own pass or fail.
+    - **Drift:** A dataset ages quietly but a cohort version is pinned, and you cut the next one on purpose.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Annotation queues vs investigations" reverse={true}>
+  <PinnedJudgment slot="graphic" />
+
+  Langfuse's annotation queues are built for domain experts to add scores and comments to traces, observations, or sessions. Each queue carries a score config and a set of assigned users. The review is fully keyboard-driven. Langfuse's own advice for subject matter experts is a custom review UI on top of the queue API, so reviewers never see trace structures at all.
+
+  Kitaru asks a different question: what's the annotation for? A coding agent authors the investigation, not you. It picks the sessions and phrases one question per session. A human answers, and each answer is pinned to the evidence that supports it: a node, a JSON path, or a character range. Every session gets a verdict of acceptable, problematic, or uncertain. Then the answers do work. Evaluators are checked against them, cohorts are justified by them, and an evaluator that gates a deploy can show the human judgments it was calibrated on.
+</FeatureWithGraphic>
+
+## What makes Kitaru unique
+
+<ComparisonTable
+  competitorLabel="Langfuse"
+  rows={[
+    { feature: "Tracing and session capture for LLM apps", kitaru: "partial", competitor: true, note: "Kitaru records sessions through adapters and expects a trace store beside it." },
+    { feature: "Prompt management and playground", kitaru: false, competitor: true, note: "No Kitaru equivalent." },
+    { feature: "LLM-as-a-judge on live traffic, dashboards, alerts", kitaru: false, competitor: true, note: "Kitaru evaluates sessions on demand or inside an experiment run." },
+    { feature: "Annotation queues with score configs, assignment, and keyboard navigation", kitaru: "partial", competitor: true, note: "Kitaru has an investigation review page with verdicts and pinned annotations; no assignment queues or shortcuts." },
+    { feature: "Runs your task over a dataset (run_experiment)", kitaru: false, competitor: true, note: "Kitaru has no dataset object. The population is sessions." },
+    { feature: "Re-executes a recorded production session with tool calls answered from the recording", kitaru: true, competitor: false, note: "The core difference. The Langfuse playground re-runs one model call with mocked tools." },
+    { feature: "Tool policy on replay: history, static, passthrough, with on_miss set to fail", kitaru: true, competitor: false, note: "So a refund is not issued twice." },
+    { feature: "Fork one session with one override and diff it against the faithful baseline", kitaru: true, competitor: "partial", note: "Langfuse compares two experiments over a dataset, or one edited generation in the playground." },
+    { feature: "Cohorts: immutable versions of production sessions as the test population", kitaru: true, competitor: "partial", note: "Dataset items can be created from traces, but the dataset is curated and mutable." },
+    { feature: "CI gate on a pull request", kitaru: true, competitor: true, note: "Langfuse: a GitHub Action that fails on a regression error you compute. Kitaru: the run exits nonzero and each evaluator carries pass or fail." },
+    { feature: "Imports Langfuse traces from JSONL or straight from the API", kitaru: true, competitor: false, note: "kitaru/langfuse is built in. No importer code to write." },
+    { feature: "Open source", kitaru: true, competitor: true, note: "Kitaru is Apache 2.0. Langfuse's core is MIT, with Enterprise Edition features licensed separately." },
+    { feature: "Self-hosting without an Enterprise tier", kitaru: true, competitor: true, note: "Both are free to self-host. Langfuse keeps project-level RBAC, retention policies, and audit logs on its self-hosted Enterprise tier." },
+  ]}
+/>
+
+## How the two surfaces map
+
+| Concept | Langfuse | Kitaru |
+|---|---|---|
+| Layer | Open-source trace store and eval platform: log, curate, score | Replay-based eval layer: re-run what happened |
+| Core unit | A trace of observations, and a dataset item | A session: a recorded run, re-executable |
+| Test population | Dataset you curate, with items added from traces | Cohort version frozen from production sessions |
+| What an experiment does | Runs your task over the dataset and scores it | Re-executes your code over every session in a cohort version, one override applied |
+| Tool calls in a test | Live in the SDK, mocked in the playground | Answered from the recording per tool policy |
+| Human review | Annotation queues with score configs, assignment, keyboard navigation | Agent-authored investigation; answers pinned to evidence; one verdict per session |
+| Getting data in | Python and JS SDKs, OpenTelemetry, 100 plus integrations | Native adapter, or a built-in trace importer |
+| Relationship | System of record | Takes a runnable copy of it |
+| License | MIT core, Enterprise Edition features licensed | Apache 2.0 |
+| Where it runs | Langfuse Cloud, or self-hosted for free (Docker Compose, Kubernetes) | Self-hosted under Apache 2.0 (Docker, Helm), or Kitaru Cloud |
+| Price of entry | Hobby free (50k units, 30 days); Core $29 per month (100k units, 90 days); Pro $199; Enterprise $2,499 | Open source free; Cloud $39 per month, 14-day trial, no card |
+
+<CodeCompare
+  lang="bash"
+  competitorLang="python"
+  kitaruLabel="Langfuse + Kitaru"
+  competitorLabel="Langfuse alone"
+  kitaruCode={`# Langfuse keeps tracing. Nothing changes in production.
+# Import last week's traces straight from the API.
+kitaru session import \\
+  --importer kitaru/langfuse@latest \\
+  --agent support-agent@latest \\
+  --params '{"source_instance": "support-prod"}' \\
+  --since 7d --tag imported-baseline --wait
+
+# Freeze the sessions that matter into the test population.
+kitaru cohort create refund-regression --agent support-agent \\
+  --tag imported-baseline --display-version week-32
+
+# Move one variable. Tool calls come from the recording, so
+# nothing external fires and no card is refunded twice.
+kitaru experiment create cheaper-model \\
+  --agent support-agent \\
+  --evaluator refund-check@latest \\
+  --override '{"model": {"openai:gpt-5.4": "openai:gpt-5-nano"}}' \\
+  --tool-policy '{"default": {"type": "history",
+                  "scope": "cohort_version", "on_miss": "fail"}}'
+
+# Re-execute the whole cohort against the change.
+# Exits nonzero on failure, so CI can gate on it.
+kitaru experiment run start cheaper-model \\
+  --cohort-version <cohort-version-id> \\
+  --agent support-agent@1 --evaluate-baselines --wait`}
+  competitorCode={`from langfuse import get_client
+
+langfuse = get_client()
+
+# The dataset is the population. Items are added from traces, by hand.
+dataset = langfuse.get_dataset("refund-cases")
+
+# task() is your code. It runs in your process, tools live.
+def task(item, **kwargs):
+    return support_agent(item.input)
+
+def refund_check(*, input, output, expected_output, **kwargs):
+    return {"name": "refund_check", "value": float(expected_output in output)}
+
+result = langfuse.run_experiment(
+    name="cheaper-model",
+    data=dataset.items,
+    task=task,
+    evaluators=[refund_check],
+)
+
+# Scores this run and compares it with the last experiment.
+# It cannot replay a production session with the tool
+# results that session actually saw.`}
+/>
+
+<ComparisonCta headline={frontmatter.ctaHeading}>
+Keep Langfuse. It's the trace store, the prompt manager, and the annotation queue. None of that has to move. Kitaru adds the step a dataset experiment stops short of. It takes the traces you already stored and re-executes your agent over them with one thing changed and the tool calls answered from the recording. Then it tells you what regressed before the change ships. One import, no instrumentation, and last Tuesday's incident becomes a test you can never accidentally drop.
+</ComparisonCta>

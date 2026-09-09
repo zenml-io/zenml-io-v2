@@ -19,6 +19,10 @@ interface Props {
   kitaruCode: string;
   competitorCode: string;
   lang?: KitaruLang;
+  /** Language for the competitor pane when it differs from the Kitaru pane
+   *  (e.g. a Kitaru CLI flow against a competitor's Python SDK). Defaults to
+   *  `lang`, so existing callers are unaffected. */
+  competitorLang?: KitaruLang;
 }
 const {
   title = "Code comparison",
@@ -28,11 +32,12 @@ const {
   kitaruCode,
   competitorCode,
   lang = "python",
+  competitorLang = lang,
 } = Astro.props;
 
 const [kitaruHtml, competitorHtml] = await Promise.all([
   renderKitaruCode(kitaruCode, lang),
-  renderKitaruCode(competitorCode, lang),
+  renderKitaruCode(competitorCode, competitorLang),
 ]);
 ---
 

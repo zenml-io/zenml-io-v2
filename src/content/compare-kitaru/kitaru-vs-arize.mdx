@@ -1,0 +1,206 @@
+---
+competitor: "Arize AI"
+competitorLogo: "/compare/arize.svg"
+competitorTagline: "Arize AX for managed tracing, evals, and issue detection; Phoenix for the source-available, local-first version."
+title: "Kitaru vs Arize AI: from detected issue to replayed fix"
+shortTitle: "Detect with Arize, replay with Kitaru"
+description: "Arize AX and Phoenix trace, score, and surface issues. Kitaru imports Phoenix traces and re-executes your agent over them, tool calls answered from the recording."
+cardSubtitle: "Keep Arize for tracing and issue detection. Import Phoenix traces into Kitaru and replay them against your real code."
+ctaHeading: "Make your Phoenix traces runnable"
+order: 60
+---
+
+import WhenToUseEach from '../../components/compare/kitaru/WhenToUseEach.astro';
+import ComparisonTable from '../../components/compare/kitaru/ComparisonTable.astro';
+import CodeCompare from '../../components/compare/kitaru/CodeCompare.astro';
+import PullQuote from '../../components/compare/kitaru/PullQuote.astro';
+import ComparisonCta from '../../components/compare/kitaru/ComparisonCta.astro';
+import FeatureWithGraphic from '../../components/compare/kitaru/FeatureWithGraphic.astro';
+import DatasetVsSession from '../../components/compare/kitaru/graphics/arize/DatasetVsSession.astro';
+import ImportPath from '../../components/compare/kitaru/graphics/arize/ImportPath.astro';
+import CuratedVsFrozen from '../../components/compare/kitaru/graphics/arize/CuratedVsFrozen.astro';
+import PinnedJudgment from '../../components/compare/kitaru/graphics/arize/PinnedJudgment.astro';
+
+Arize ships two products on the same open standards. Phoenix is the local-first one, source-available under the Elastic License 2.0. It starts with one command, traces through OpenInference and OpenTelemetry, and gives you evals, datasets, experiments, and a playground that replays a single LLM span. Arize AX is the managed platform on top. Signal groups recurring failures from production traces into ranked issues with evidence and proposed fixes. Alyx is an AI engineering agent you can ask about your data. Labeling queues put spans in front of subject matter experts, and Enterprise adds self-hosted deployment.
+
+Kitaru answers a narrower question. When you change the model, a prompt, or a tool, what happens to the runs your agent already did in production? A session is a recorded run. Replay re-executes your agent's real code over that session. Under a history tool policy, the recording answers the tool calls, so `issue_refund()` returns what it returned the first time instead of touching a card twice. Fork the session with one override and you get the same run under the change, next to the faithful baseline: an unchanged replay that reproduces the original. And because `kitaru/phoenix` is a [built-in importer](https://docs.zenml.io/kitaru/import-your-traces/import-phoenix-traces), the traces you already export from Phoenix are the way in.
+
+<WhenToUseEach
+  competitorLabel="Arize"
+  kitaru={{
+    title: "Use Kitaru if you are",
+    items: [
+      "Shipping a model swap, a prompt edit, or a tool change to an agent that is already in production, and want to know what breaks on real traffic before users find it",
+      "Testing multi-turn agents where what regressed is the path the agent took, not the final string",
+      "Running tools that write to real systems (refunds, tickets, emails) and can't let a test call them a second time",
+      "Already tracing to Phoenix and want those traces runnable, not just readable",
+      "Self-hosting the whole loop under an OSI-approved license (Apache 2.0) rather than a source-available one",
+    ],
+  }}
+  competitor={{
+    title: "Use Arize if you are",
+    items: [
+      "Looking for a free, local-first trace store you can start with one command and grow into a managed platform",
+      "Letting Signal surface recurring failures from production and rank them, without reading traces one by one",
+      "Asking questions about your traces and evals to a built-in AI agent, Alyx in AX or Phoenix Intelligence in Phoenix",
+      "Putting spans in front of subject matter experts in a labeling queue and turning their labels into datasets",
+      "Writing in TypeScript as well as Python, with 40 plus framework and provider integrations",
+    ],
+  }}
+/>
+
+<PullQuote
+  quote="Arize tells you which failure is spreading. Kitaru re-runs the sessions that failed, with the fix in place, before you ship it."
+/>
+
+<FeatureWithGraphic title="An experiment over a dataset vs a replay of a recorded session">
+  <DatasetVsSession slot="graphic" />
+
+  Both products run your code. The difference is what they run it on, and what the tools do while it runs.
+
+  An Arize experiment takes a dataset, calls your task on every row, applies the evaluators you name, and logs the scored outputs so two runs sit side by side in the UI. The task is your own Python and it runs in your process, so whatever it calls, it calls for real. Phoenix has the same loop plus span replay. Span replay re-runs one LLM call from a trace with different inputs.
+
+  A Kitaru replay takes a session that already happened in production and re-executes your agent's code over it from the top. Under a history tool policy, the recording answers each tool call by name and arguments. Set `on_miss` to `fail` and an unrecorded call stops the replay before it reaches a live system. Add one override and the same session runs under the change. The override can be a model map, a system prompt, a user prompt, or `model_params`. You compare the replay against the faithful baseline of the same run, not two experiments over a dataset.
+
+  <Fragment slot="bullets">
+    - **Population:** Dataset rows you curate from spans, or sessions your users generated.
+    - **Tools during the run:** Live, or governed by a tool policy: answered from the recording (history), canned (static), or live only for safe read-only calls (passthrough).
+    - **What gets compared:** This experiment against the previous one, or the replay against the baseline of the same session.
+    - **What a change looks like:** A new prompt or new code in the task, or one override on the experiment with everything else held fixed.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Your Phoenix traces are the way in" reverse={true}>
+  <ImportPath slot="graphic" />
+
+  Phoenix stays your system of record. Kitaru takes a runnable copy of the traces you care about.
+
+  Select traces in the Phoenix UI, download the selection as JSONL, and import it. Or export from the Phoenix CLI as JSON. OpenInference LLM spans become model calls and TOOL spans become tool calls. AGENT and CHAIN spans become plain spans. Inputs, outputs, token counts, cost, model parameters, and the framework identity come across. Phoenix annotations arrive as metadata. Each Phoenix trace id becomes the session's external id, so re-importing the same trace skips it.
+
+  Three limits:
+
+  - **Replay needs your code.** A trace export holds no code, so an imported session can be investigated, evaluated, and added to a cohort as it is. To fork it, register the agent's run command or wrap it with a native adapter.
+  - **One trace, one session.** Multi-turn grouping is not supported for Phoenix exports yet, so a conversation that spans several traces imports as several sessions.
+  - **Datasets and experiments stay in Phoenix.** The importer takes traces only. One import is capped at 50 MiB.
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="A cohort is production, frozen">
+  <CuratedVsFrozen slot="graphic" />
+
+  Arize makes datasets easy to build. Create one from spans of interest, append spans later, and let a labeling queue turn expert judgments into a curated set of examples. The dataset is still a list you curate, and it drifts from real traffic the moment the product changes.
+
+  A cohort is a different kind of thing. It's a named set of sessions belonging to one agent. A cohort version's member list never changes after creation. An experiment run replays every session in one cohort version against one agent version and evaluates baseline and replay alike. So a result keeps meaning what it meant when you read it.
+
+  <Fragment slot="bullets">
+    - **Selection:** By tag, by filter, by session id, or by branching from an earlier version.
+    - **Incidents:** The conversation Signal flagged on Tuesday is a session. Add it to the next cohort version and it is a permanent regression case.
+    - **Gating:** `kitaru experiment run start` with `--wait` exits nonzero when the run fails, so a pull request can block on it. Each evaluator writes its own pass or fail.
+    - **Drift:** A dataset ages quietly but a cohort version is pinned, and you cut the next one on purpose.
+  </Fragment>
+</FeatureWithGraphic>
+
+<FeatureWithGraphic title="Signal and Alyx vs an investigation your coding agent writes" reverse={true}>
+  <PinnedJudgment slot="graphic" />
+
+  Arize does the discovery for you. Signal watches production traces and groups recurring failures into ranked issues with evidence and a proposed fix. Alyx answers questions about your data in natural language. Labeling queues then put the spans in front of a subject matter expert with only what they need to see. Their categorical labels, numeric scores, and notes become ground truth datasets. It is a complete loop from detection to labeled examples.
+
+  Kitaru does not detect. Your own coding agent authors the investigation over the MCP server. It picks the sessions and phrases one question per session. A human answers, and each answer is pinned to the evidence that supports it: a node, a JSON path, or a character range. Every session gets a verdict of acceptable, problematic, or uncertain. Then the answers do work. Evaluators are checked against them, cohorts are justified by them, and an evaluator that gates a deploy can show the human judgments it was calibrated on.
+</FeatureWithGraphic>
+
+## What makes Kitaru unique
+
+<ComparisonTable
+  competitorLabel="Arize (AX and Phoenix)"
+  rows={[
+    { feature: "Tracing with 40 plus integrations, dashboards, monitors", kitaru: "partial", competitor: true, note: "Kitaru records sessions through adapters and expects a trace store beside it." },
+    { feature: "Signal: automatic issue detection from production traces", kitaru: false, competitor: true, note: "AX. Kitaru's investigation is authored by your coding agent, not discovered by the server." },
+    { feature: "Built-in AI agent over your data (Alyx, Phoenix Intelligence)", kitaru: "partial", competitor: true, note: "Kitaru exposes an MCP server to the coding agent you already use." },
+    { feature: "Labeling queues for subject matter experts", kitaru: "partial", competitor: true, note: "Kitaru has an investigation review page with verdicts and pinned annotations; no assignment queues." },
+    { feature: "Runs your task over a dataset (experiments)", kitaru: false, competitor: true, note: "Kitaru has no dataset object. The population is sessions." },
+    { feature: "Re-executes a recorded production session with tool calls answered from the recording", kitaru: true, competitor: false, note: "The core difference. Phoenix span replay re-runs one LLM call." },
+    { feature: "Tool policy on replay: history, static, passthrough, with on_miss set to fail", kitaru: true, competitor: false, note: "So a refund is not issued twice." },
+    { feature: "Fork one session with one override and diff it against the faithful baseline", kitaru: true, competitor: "partial", note: "Arize compares two experiments over a dataset, or one replayed span." },
+    { feature: "Cohorts: immutable versions of production sessions as the test population", kitaru: true, competitor: "partial", note: "Datasets are built from spans, but they are curated and mutable." },
+    { feature: "Imports Phoenix traces (UI JSONL or CLI JSON)", kitaru: true, competitor: false, note: "kitaru/phoenix is built in. No importer code to write." },
+    { feature: "OSI-approved open-source license", kitaru: true, competitor: false, note: "Kitaru is Apache 2.0. Phoenix is Elastic License 2.0, source-available. AX is closed." },
+    { feature: "Self-hosting without an Enterprise tier", kitaru: true, competitor: "partial", note: "Phoenix self-hosts for free. AX self-hosting is Enterprise only." },
+  ]}
+/>
+
+## How the two surfaces map
+
+| Concept | Arize | Kitaru |
+|---|---|---|
+| Layer | Tracing, evals, and issue detection; Phoenix source-available, AX managed | Replay-based eval layer: re-run what happened |
+| Core unit | An OpenInference span in a trace, and a dataset row | A session: a recorded run, re-executable |
+| Test population | Dataset built from spans and labeled in a queue | Cohort version frozen from production sessions |
+| What an experiment does | Runs your task over the dataset and scores it | Re-executes your code over every session in a cohort version, one override applied |
+| Tool calls in a test | Live | Answered from the recording per tool policy |
+| Finding failure modes | Signal ranks issues; Alyx answers questions | Your coding agent samples sessions and asks the questions |
+| Human review | Labeling queues with labels, scores, notes, and assignment | Agent-authored investigation; answers pinned to evidence; one verdict per session |
+| Getting data in | OpenInference and OpenTelemetry auto-instrumentation, Python and TypeScript | Native adapter, or a built-in trace importer |
+| License | Phoenix Elastic License 2.0; AX closed | Apache 2.0 |
+| Where it runs | Phoenix local, Docker, Kubernetes, or Phoenix Cloud; AX SaaS, self-hosted on Enterprise | Self-hosted under Apache 2.0 (Docker, Helm), or Kitaru Cloud |
+| Price of entry | Phoenix free; AX Free (25k spans, 1 GB, 15 days); AX Pro $50 per month (50k spans, 10 GB, 30 days); Enterprise custom | Open source free; Cloud $39 per month, 14-day trial, no card |
+
+<CodeCompare
+  lang="bash"
+  competitorLang="python"
+  kitaruLabel="Phoenix + Kitaru"
+  competitorLabel="Arize AX alone"
+  kitaruCode={`# Phoenix keeps tracing. Nothing changes in production.
+# Traces -> select -> Download selection -> JSONL, then import once.
+kitaru session import phoenix-traces.jsonl \\
+  --importer kitaru/phoenix@latest \\
+  --agent support-agent@latest \\
+  --media-type application/x-ndjson \\
+  --tag imported-baseline --wait
+
+# Freeze the sessions that matter into the test population.
+kitaru cohort create refund-regression --agent support-agent \\
+  --tag imported-baseline --display-version week-32
+
+# Move one variable. Tool calls come from the recording, so
+# nothing external fires and no card is refunded twice.
+kitaru experiment create cheaper-model \\
+  --agent support-agent \\
+  --evaluator refund-check@latest \\
+  --override '{"model": {"openai:gpt-5.4": "openai:gpt-5-nano"}}' \\
+  --tool-policy '{"default": {"type": "history",
+                  "scope": "cohort_version", "on_miss": "fail"}}'
+
+# Re-execute the whole cohort against the change.
+# Exits nonzero on failure, so CI can gate on it.
+kitaru experiment run start cheaper-model \\
+  --cohort-version <cohort-version-id> \\
+  --agent support-agent@1 --evaluate-baselines --wait`}
+  competitorCode={`from arize import ArizeClient
+from arize.experiments import EvaluationResult
+
+client = ArizeClient()
+
+# The dataset is the population: rows built from spans, labeled in a queue.
+
+# task() is your code. It runs in your process, tools live.
+def answer_question(row):
+    return support_agent(row["question"])
+
+def correctness(output, row):
+    return EvaluationResult(score=float(row["expected"] in output))
+
+experiment, experiment_df = client.experiments.run(
+    name="cheaper-model",
+    dataset="refund-cases",
+    task=answer_question,
+    evaluators=[correctness],
+    concurrency=10,
+)
+
+# Scores this run and compares it with the last one side by side.
+# It cannot replay a production trace with the tool results
+# that trace actually saw.`}
+/>
+
+<ComparisonCta headline={frontmatter.ctaHeading}>
+Keep Arize. Signal finds the failure, Alyx explains it, and the labeling queue turns it into examples. None of that has to move. Kitaru adds the step an experiment over a dataset stops short of. It takes the traces you already exported and re-executes your agent over them with one thing changed and the tool calls answered from the recording. Then it tells you what regressed before the fix ships. One import, no instrumentation, and the issue Signal raised on Tuesday becomes a test you can never accidentally drop.
+</ComparisonCta>
