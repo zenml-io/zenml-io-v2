@@ -3,22 +3,29 @@ import type { FeatureTabsContent } from "../../lib/labs-product-zenml";
 /**
  * LabsFeatureTabs — the ZenML product page's capability showcase: a
  * headline block over an auto-cycling tab slider (vertical menu at 40%,
- * screenshot panel at 60%). Replaces `src/components/sections/FeatureTabs.astro`
+ * figure panel at 60%). Replaces `src/components/sections/FeatureTabs.astro`
  * on `/product/zenml`; the old stats grid is not ported (no rounded figures).
  * Copy arrives through the `content` prop (`ZENML_FEATURE_TABS`); nothing
- * here is retyped. Styles the frozen `FeatureTabsSlider` island's class
- * hooks (.tab-slider*) from a scoped wrapper — the only global style block
- * in this build.
+ * here is retyped. The panes are server-rendered here and handed to the
+ * `FeatureTabsSlider` island as children: a tab with a `figure` id draws its
+ * inline SVG highlight (see `highlights/`), the rest keep their image. The
+ * island only toggles which pane is current. Styles the island's class hooks
+ * (.tab-slider*) from a scoped wrapper — the only global style block in this
+ * build.
  */
 import FeatureTabsSlider from "../islands/FeatureTabsSlider";
+import { HIGHLIGHT_FIGURES } from "./highlights";
 
 interface Props {
   content: FeatureTabsContent;
 }
 const { headline, deck, tabs } = Astro.props.content;
+
+/** The tab visitors see first; the island receives the same value. */
+const DEFAULT_INDEX = 3;
 ---
 
-<section class="labs-feature-tabs bg-background py-24 md:py-32">
+<section class="labs-feature-tabs bg-card py-24 md:py-32">
   <div class="mx-auto max-w-content px-gutter">
     <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) text-balance md:text-[44px] md:leading-[48px]">
       {headline}
@@ -32,7 +39,35 @@ const { headline, deck, tabs } = Astro.props.content;
     <div class="mt-space-xl">
       {/* This page's one non-ambient client:load island: the auto-cycle is
           user-pausable interaction (click resets), not a motion moment. */}
-      <FeatureTabsSlider client:load tabs={[...tabs]} defaultIndex={3} autoDurationMs={9000} />
+      <FeatureTabsSlider client:load tabs={[...tabs]} defaultIndex={DEFAULT_INDEX} autoDurationMs={9000}>
+        {tabs.map((tab, i) => {
+          const Figure = tab.figure ? HIGHLIGHT_FIGURES[tab.figure] : null;
+          const active = i === DEFAULT_INDEX;
+          return (
+            <div
+              role="tabpanel"
+              id={`adv-panel-${i}`}
+              aria-labelledby={`adv-tab-${i}`}
+              data-figure-index={i}
+              data-highlight-active={active ? "" : undefined}
+              class:list={["tab-slider-pane", { "w--tab-active": active }]}
+            >
+              {Figure ? (
+                <Figure label={tab.imageAlt} />
+              ) : (
+                <img
+                  src={tab.image}
+                  alt={tab.imageAlt}
+                  class="tab-slider-image"
+                  width={720}
+                  height={460}
+                  loading={active ? "eager" : "lazy"}
+                />
+              )}
+            </div>
+          );
+        })}
+      </FeatureTabsSlider>
     </div>
   </div>
 </section>
@@ -55,7 +90,9 @@ const { headline, deck, tabs } = Astro.props.content;
     min-height: 520px;
     border-radius: 20px;
     border: 1px solid var(--border);
-    background: var(--card);
+    /* The figures draw their own card on the page's cream, so the panel is
+       that cream edge to edge rather than a white card around a cream one. */
+    background: var(--background);
     padding: 24px;
     display: flex;
     align-items: center;
@@ -95,6 +132,7 @@ const { headline, deck, tabs } = Astro.props.content;
     font-size: 20px;
     line-height: 26px;
     color: var(--color-cream-700);
+    transition: color 200ms ease-out;
   }
 
   .labs-feature-tabs .tab-slider-tab.w--current .tab-slider-title {
@@ -138,17 +176,33 @@ const { headline, deck, tabs } = Astro.props.content;
     height: 100%;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 300ms ease;
+    transition: opacity 200ms ease, visibility 0s linear 200ms;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
+  /* Incoming pane: fades in and rises over ~480ms. Outgoing pane (losing
+     this class) is not covered by this animation, so it only fades via the
+     base rule's opacity transition above — fast, and without motion. */
   .labs-feature-tabs .tab-slider-pane.w--tab-active {
     position: relative;
     opacity: 1;
     visibility: visible;
     z-index: 2;
+    transition: opacity 200ms ease;
+    animation: labs-pane-in 480ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  @keyframes labs-pane-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px) scale(0.985);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
 
   .labs-feature-tabs .tab-slider-image {
@@ -196,6 +250,20 @@ const { headline, deck, tabs } = Astro.props.content;
 
     .labs-feature-tabs .tab-slider-tab {
       transition: none;
+    }
+
+    .labs-feature-tabs .tab-slider-title {
+      transition: none;
+    }
+
+    .labs-feature-tabs .tab-slider-pane {
+      transition: opacity 150ms linear, visibility 0s linear 150ms;
+    }
+
+    .labs-feature-tabs .tab-slider-pane.w--tab-active {
+      animation: none;
+      transition: opacity 150ms linear;
+      transform: none;
     }
   }
 </style>

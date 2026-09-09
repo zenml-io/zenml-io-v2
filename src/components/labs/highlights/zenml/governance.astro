@@ -1,0 +1,128 @@
+---
+/**
+ * highlight.zenml.governance — the "Secrets and access" figure: a secrets
+ * panel holding both cloud credentials and a model-provider API key, next to
+ * an execution trace of an agent run with its lineage.
+ * Drawn at 1× of the approved 1440×920 design; coordinates are exact halves.
+ */
+import HighlightFigure from "../HighlightFigure.astro";
+
+interface Props {
+  label: string;
+}
+const { label } = Astro.props;
+const id = "hl-zenml-governance";
+
+const ICON_LOCK =
+  "M6 8C6 4.686 8.686 2 12 2C15.314 2 18 4.686 18 8V9.15C18.283 9.212 18.554 9.302 18.816 9.436C19.569 9.819 20.18 10.431 20.564 11.184C20.811 11.669 20.91 12.186 20.956 12.748C21 13.289 21 13.954 21 14.759V16.241C21 17.046 21 17.711 20.956 18.252C20.91 18.814 20.811 19.331 20.564 19.816C20.18 20.569 19.569 21.18 18.816 21.564C18.331 21.811 17.814 21.91 17.252 21.956C16.711 22 16.046 22 15.241 22H8.759C7.954 22 7.289 22 6.748 21.956C6.186 21.91 5.669 21.811 5.184 21.564C4.431 21.18 3.819 20.569 3.436 19.816C3.189 19.331 3.09 18.814 3.044 18.252C3 17.711 3 17.046 3 16.241V14.759C3 13.954 3 13.289 3.044 12.748C3.09 12.186 3.189 11.669 3.436 11.184C3.819 10.431 4.431 9.819 5.184 9.436C5.446 9.302 5.717 9.212 6 9.15V8ZM8 9.002C8.238 9 8.49 9 8.759 9H15.241C15.51 9 15.762 9 16 9.002V8C16 5.791 14.209 4 12 4C9.791 4 8 5.791 8 8V9.002ZM6.911 11.038C6.473 11.073 6.248 11.138 6.092 11.218C5.716 11.41 5.41 11.716 5.218 12.092C5.138 12.248 5.073 12.473 5.038 12.911C5.001 13.361 5 13.943 5 14.8V16.2C5 17.057 5.001 17.639 5.038 18.089C5.073 18.527 5.138 18.752 5.218 18.908C5.41 19.284 5.716 19.59 6.092 19.782C6.248 19.862 6.473 19.927 6.911 19.962C7.361 19.999 7.943 20 8.8 20H15.2C16.057 20 16.639 19.999 17.089 19.962C17.527 19.927 17.752 19.862 17.908 19.782C18.284 19.59 18.59 19.284 18.782 18.908C18.862 18.752 18.927 18.527 18.962 18.089C18.999 17.639 19 17.057 19 16.2V14.8C19 13.943 18.999 13.361 18.962 12.911C18.927 12.473 18.862 12.248 18.782 12.092C18.59 11.716 18.284 11.41 17.908 11.218C17.752 11.138 17.527 11.073 17.089 11.038C16.639 11.001 16.057 11 15.2 11H8.8C7.943 11 7.361 11.001 6.911 11.038ZM12 13.5C12.552 13.5 13 13.948 13 14.5V16.5C13 17.052 12.552 17.5 12 17.5C11.448 17.5 11 17.052 11 16.5V14.5C11 13.948 11.448 13.5 12 13.5Z";
+const ICON_COMPLETED =
+  "M16.5 4.483C9.873 4.483 4.5 9.856 4.5 16.483C4.5 23.111 9.873 28.483 16.5 28.483C23.127 28.483 28.5 23.111 28.5 16.483C28.5 9.856 23.127 4.483 16.5 4.483ZM1.833 16.483C1.833 8.383 8.4 1.817 16.5 1.817C24.6 1.817 31.167 8.383 31.167 16.483C31.167 24.584 24.6 31.15 16.5 31.15C8.4 31.15 1.833 24.584 1.833 16.483ZM23.443 11.541C23.963 12.061 23.963 12.905 23.443 13.426L15.443 21.426C14.922 21.947 14.078 21.947 13.557 21.426L9.557 17.426C9.036 16.905 9.036 16.061 9.557 15.541C10.078 15.02 10.922 15.02 11.443 15.541L14.5 18.598L21.557 11.541C22.078 11.02 22.922 11.02 23.443 11.541Z";
+const ICON_DATABASE =
+  "M4 5C4 5.001 4 5.006 4.003 5.015C4.006 5.026 4.015 5.048 4.035 5.081C4.078 5.151 4.164 5.255 4.326 5.382C4.656 5.643 5.196 5.921 5.952 6.173C7.454 6.673 9.592 7 12 7C14.408 7 16.546 6.673 18.048 6.173C18.804 5.921 19.344 5.643 19.674 5.382C19.836 5.255 19.922 5.151 19.965 5.081C19.985 5.048 19.994 5.026 19.997 5.015C20 5.006 20 5.001 20 5C20 5 20 5 20 5C20 4.999 20 4.995 19.997 4.985C19.994 4.974 19.985 4.952 19.965 4.919C19.922 4.849 19.836 4.745 19.674 4.618C19.344 4.357 18.804 4.079 18.048 3.827C16.546 3.327 14.408 3 12 3C9.592 3 7.454 3.327 5.952 3.827C5.196 4.079 4.656 4.357 4.326 4.618C4.164 4.745 4.078 4.849 4.035 4.919C4.015 4.952 4.006 4.974 4.003 4.985C4 4.995 4 4.999 4 5ZM20 7.527C19.599 7.732 19.153 7.912 18.68 8.07C16.925 8.655 14.563 9 12 9C9.437 9 7.075 8.655 5.32 8.07C4.847 7.912 4.401 7.732 4 7.527V12C4 12.002 4 12.007 4.003 12.018C4.007 12.03 4.015 12.052 4.036 12.085C4.078 12.154 4.163 12.258 4.324 12.385C4.652 12.645 5.188 12.922 5.942 13.174C7.439 13.674 9.577 14 12 14C14.423 14 16.561 13.674 18.058 13.174C18.812 12.922 19.348 12.645 19.676 12.385C19.837 12.258 19.922 12.154 19.964 12.085C19.985 12.052 19.993 12.03 19.997 12.018C20 12.007 20 12.002 20 12V7.527ZM22 5C22 4.148 21.481 3.496 20.912 3.047C20.331 2.589 19.553 2.221 18.68 1.93C16.925 1.345 14.563 1 12 1C9.437 1 7.075 1.345 5.32 1.93C4.447 2.221 3.669 2.589 3.088 3.047C2.519 3.496 2 4.148 2 5V19C2 19.849 2.513 20.502 3.082 20.953C3.661 21.412 4.437 21.78 5.308 22.071C7.061 22.656 9.423 23 12 23C14.577 23 16.939 22.656 18.692 22.071C19.563 21.78 20.339 21.412 20.918 20.953C21.487 20.502 22 19.849 22 19V5ZM20 14.532C19.602 14.735 19.161 14.915 18.692 15.071C16.939 15.656 14.577 16 12 16C9.423 16 7.061 15.656 5.308 15.071C4.839 14.915 4.398 14.735 4 14.532V19C4 19.002 4 19.007 4.003 19.018C4.007 19.03 4.015 19.052 4.036 19.085C4.078 19.154 4.163 19.258 4.324 19.385C4.652 19.645 5.188 19.922 5.942 20.174C7.439 20.674 9.577 21 12 21C14.423 21 16.561 20.674 18.058 20.174C18.812 19.922 19.348 19.645 19.676 19.385C19.837 19.258 19.922 19.154 19.964 19.085C19.985 19.052 19.993 19.03 19.997 19.018C20 19.007 20 19.002 20 19V14.532Z";
+const ICON_FILE =
+  "M13 3.02C12.81 3 12.54 3 12.01 3H8.8C7.94 3 7.36 3 6.91 3.04C6.47 3.07 6.25 3.14 6.09 3.22C5.72 3.41 5.41 3.72 5.22 4.09C5.14 4.25 5.07 4.47 5.04 4.91C5 5.36 5 5.94 5 6.8V17.2C5 18.06 5 18.64 5.04 19.09C5.07 19.53 5.14 19.75 5.22 19.91C5.41 20.28 5.72 20.59 6.09 20.78C6.25 20.86 6.47 20.93 6.91 20.96C7.36 21 7.94 21 8.8 21H15.2C16.06 21 16.64 21 17.09 20.96C17.53 20.93 17.75 20.86 17.91 20.78C18.28 20.59 18.59 20.28 18.78 19.91C18.86 19.75 18.93 19.53 18.96 19.09C19 18.64 19 18.06 19 17.2V9.99C19 9.46 19 9.19 18.98 9H15.57C15.32 9 15.07 9 14.86 8.98C14.63 8.96 14.36 8.92 14.09 8.78C13.72 8.59 13.41 8.28 13.22 7.91C13.08 7.64 13.04 7.37 13.02 7.14C13 6.93 13 6.68 13 6.43V3.02ZM14.39 1.35C14.17 1.25 13.93 1.17 13.69 1.11C13.23 1 12.75 1 12.11 1H8.76C7.95 1 7.29 1 6.75 1.04C6.19 1.09 5.67 1.19 5.18 1.44C4.43 1.82 3.82 2.43 3.44 3.18C3.19 3.67 3.09 4.19 3.04 4.75C3 5.29 3 5.95 3 6.76V17.24C3 18.05 3 18.71 3.04 19.25C3.09 19.81 3.19 20.33 3.44 20.82C3.82 21.57 4.43 22.18 5.18 22.56C5.67 22.81 6.19 22.91 6.75 22.96C7.29 23 7.95 23 8.76 23H15.24C16.05 23 16.71 23 17.25 22.96C17.81 22.91 18.33 22.81 18.82 22.56C19.57 22.18 20.18 21.57 20.56 20.82C20.81 20.33 20.91 19.81 20.96 19.25C21 18.71 21 18.05 21 17.24V9.99C21 9.25 21 8.77 20.89 8.31C20.83 8.07 20.75 7.83 20.65 7.61C20.57 7.42 20.49 7.29 20.41 7.15C20.16 6.75 19.82 6.41 19.37 5.96L16.11 2.7C15.59 2.18 15.25 1.84 14.85 1.59C14.71 1.51 14.58 1.43 14.39 1.35ZM15 4.41V6.4C15 6.7 15 6.86 15.01 6.98C15.14 7 15.3 7 15.6 7H17.59L15 4.41Z";
+
+/** Secret rows (non-accent), 300×48 local width, at (x, y). */
+const secrets = [
+  { name: "aws_credentials", value: "aws_access_key_id, …", y: 122, i: 1 },
+  { name: "gcp_credentials", value: "service_account_json", y: 170, i: 2 },
+  { name: "anthropic", value: "api_key", y: 266, i: 3 },
+  { name: "github", value: "token", y: 314, i: 4 },
+  { name: "slack", value: "bot_token", y: 362, i: 4 },
+] as const;
+---
+
+<HighlightFigure label={label} id={id}>
+  <defs>
+    <clipPath id={`${id}-secrets`}>
+      <rect x="48" y="48" width="360" height="364" rx="16" />
+    </clipPath>
+    <clipPath id={`${id}-trace`}>
+      <rect x="428" y="48" width="244" height="364" rx="16" />
+    </clipPath>
+    {/* Step-card shape, in each card's own coordinates: clips the square
+        footer fill to the rounded corners. */}
+    <clipPath id={`${id}-step`}>
+      <rect x="0.5" y="0.5" width="159" height="61" rx="6" />
+    </clipPath>
+  </defs>
+
+  {/* Secrets card */}
+  <rect x="48.5" y="48.5" width="359" height="363" rx="16" fill="var(--color-card)" stroke="var(--color-border)" />
+  {/* agent_pipeline trace card */}
+  <rect x="428.5" y="48.5" width="243" height="363" rx="16" fill="var(--color-card)" stroke="var(--color-border)" />
+
+  <g class="hl-in" style="--hl-i: 0">
+    <text class="hl-title" x="68" y="74" fill="var(--color-cream-900)">Secrets</text>
+    <text class="hl-label" x="388" y="73" text-anchor="end" fill="var(--color-cream-700)">6 secrets</text>
+    <line x1="49" y1="90.5" x2="407" y2="90.5" stroke="var(--color-border)" />
+    <text class="hl-label" x="68" y="110" fill="var(--color-cream-700)">Secret</text>
+    <text class="hl-label" x="218" y="110" fill="var(--color-cream-700)">Key</text>
+    <line x1="60" y1="122.5" x2="408" y2="122.5" stroke="var(--color-border)" />
+
+    <text class="hl-title" x="448" y="74" fill="var(--color-cream-900)">agent_pipeline</text>
+    <text class="hl-label" x="652" y="73" text-anchor="end" fill="var(--color-cream-700)">completed</text>
+    <line x1="429" y1="90.5" x2="671" y2="90.5" stroke="var(--color-border)" />
+  </g>
+
+  <g clip-path={`url(#${id}-secrets)`}>
+    {secrets.map((s) => (
+      <g class="hl-in hl-row" style={`--hl-i: ${s.i}`}>
+        <rect x="68" y={s.y + 10} width="28" height="28" rx="8" fill="var(--color-sage-100)" />
+        <path transform={`translate(73 ${s.y + 15}) scale(0.75)`} d={ICON_LOCK} fill="var(--color-sage-700)" fill-rule="evenodd" />
+        <text class="hl-name" x="106" y={s.y + 33} fill="var(--color-cream-900)" style="font-size: 13px">{s.name}</text>
+        <text class="hl-body" x="218" y={s.y + 33} fill="var(--color-cream-700)" style="font-size: 13px">{s.value}</text>
+        <line x1="60" y1={s.y + 48.5} x2="408" y2={s.y + 48.5} stroke="var(--color-border)" />
+      </g>
+    ))}
+
+    {/* Accent row: openai */}
+    <g class="hl-in" style="--hl-i: 6">
+      <rect x="60.5" y="218.5" width="347" height="47" rx="5" fill="var(--color-sage-100)" stroke="var(--color-sage-400)" />
+      <rect x="67" y="228" width="28" height="28" rx="8" fill="var(--color-sage-400)" />
+      <path transform="translate(72 233) scale(0.75)" d={ICON_LOCK} fill="var(--color-sage-900)" fill-rule="evenodd" />
+      <text class="hl-name" x="105" y="247" fill="var(--color-sage-900)" style="font-size: 13px">openai</text>
+      <text class="hl-body" x="218" y="247" fill="var(--color-sage-800)" style="font-size: 13px">api_key</text>
+    </g>
+  </g>
+
+  <g clip-path={`url(#${id}-trace)`}>
+    <g class="hl-in" style="--hl-i: 5">
+      {/* Lineage edges */}
+      <g class="hl-edge" fill="none" stroke="var(--color-sage-400)" stroke-width="1.5">
+        <path pathLength="1" d="M549 90 L549 110" />
+        <path pathLength="1" d="M549 158 L549 219" />
+        <path pathLength="1" d="M549 281 L549 342" />
+      </g>
+
+      {/* documents artifact pill */}
+      <g transform="translate(474 110)">
+        <rect x="0.5" y="0.5" width="149" height="47" rx="12" fill="var(--color-sage-50)" stroke="var(--color-sage-200)" />
+        <rect x="9" y="10" width="28" height="28" rx="8" fill="var(--color-sage-100)" />
+        <path transform="translate(14 15) scale(0.75)" d={ICON_DATABASE} fill="var(--color-sage-700)" fill-rule="evenodd" />
+        <text class="hl-name" x="45" y="21" fill="var(--color-sage-800)" style="font-size: 13px">documents</text>
+        <text class="hl-body" x="45" y="36" fill="var(--color-cream-700)">list</text>
+      </g>
+
+      {/* agent_loop step card (completed) */}
+      <g transform="translate(469 219)">
+        <rect x="0.5" y="0.5" width="159" height="61" rx="6" fill="var(--color-card)" stroke="var(--color-border)" />
+        <rect x="1" y="40" width="158" height="21" clip-path={`url(#${id}-step)`} fill="var(--color-background)" />
+        <line x1="1" y1="40.5" x2="159" y2="40.5" stroke="var(--color-border)" />
+        <rect x="6" y="6" width="28" height="28" rx="4" fill="var(--color-sage-100)" />
+        <path transform="translate(10 10) scale(0.606)" d={ICON_COMPLETED} fill="var(--color-sage-700)" fill-rule="evenodd" />
+        <text class="hl-name" x="42" y="25" fill="var(--color-cream-900)">agent_loop</text>
+        <text class="hl-mono" x="148" y="55" text-anchor="end" fill="var(--color-cream-700)">1:14min</text>
+      </g>
+
+      {/* answer artifact pill */}
+      <g transform="translate(474 342)">
+        <rect x="0.5" y="0.5" width="149" height="47" rx="12" fill="var(--color-sage-50)" stroke="var(--color-sage-200)" />
+        <rect x="9" y="10" width="28" height="28" rx="8" fill="var(--color-sage-100)" />
+        <path transform="translate(14 15) scale(0.75)" d={ICON_FILE} fill="var(--color-sage-700)" fill-rule="evenodd" />
+        <text class="hl-name" x="45" y="21" fill="var(--color-sage-800)" style="font-size: 13px">answer</text>
+        <text class="hl-body" x="45" y="36" fill="var(--color-cream-700)">str</text>
+      </g>
+    </g>
+  </g>
+</HighlightFigure>
