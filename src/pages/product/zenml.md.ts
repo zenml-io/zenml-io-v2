@@ -60,11 +60,13 @@ export function GET(): Response {
       markdownCtaList([ZENML_INTEGRATIONS.cta]),
     ),
     joinMarkdownSections(
-      `## ${ZENML_STORIES.headline}`,
+      ZENML_STORIES.headline ? `## ${ZENML_STORIES.headline}` : "",
       markdownBulletList(
-        ZENML_STORIES.cards.map((card) => `[${card.title}](${card.href})`),
+        ZENML_STORIES.cards.map((card) =>
+          "href" in card ? `[${card.title}](${card.href})` : card.title,
+        ),
       ),
-      markdownCtaList([ZENML_STORIES.allLink]),
+      markdownCtaList(ZENML_STORIES.allLink ? [ZENML_STORIES.allLink] : []),
     ),
     joinMarkdownSections(
       `## ${ZENML_CLOSE.headlineLines.join(" ")}`,

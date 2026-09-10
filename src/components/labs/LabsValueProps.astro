@@ -4,7 +4,8 @@
  * props). Numbered labels stand in for the icon set that is still being
  * drawn; no icons, no coloured squares. Copy arrives through `content`
  * (`ZENML_VALUE_PROPS` in `src/lib/labs-product-zenml.ts`); nothing here is
- * retyped.
+ * retyped. `content.deck` is optional — absence collapses the line under
+ * the headline.
  */
 import type { ValuePropsContent } from "../../lib/labs-product-zenml";
 import LabsButton from "./LabsButton.astro";
@@ -20,6 +21,11 @@ const { content } = Astro.props;
     <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) text-balance md:text-[44px] md:leading-[48px]">
       {content.headline}
     </h2>
+    {content.deck && (
+      <p class="mt-6 max-w-[720px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
+        {content.deck}
+      </p>
+    )}
 
     <div class="mt-space-xl grid grid-cols-1 gap-6 md:grid-cols-3">
       {content.items.map((item) => (

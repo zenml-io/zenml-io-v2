@@ -1,0 +1,69 @@
+---
+/**
+ * LabsFaq — the Labs shell's FAQ band: one headline over a column of native
+ * `<details>` rows. Copy arrives through `content: FaqData`
+ * (`marketingPageTypes.ts`); eyebrow and subheadline are not rendered (one
+ * headline per band — the data keeps both fields because the Markdown
+ * mirror and JSON-LD read them). An optional `slackCta` renders a single
+ * text link after the list. Consumers: `/pricing` (one instance per
+ * workspace panel) and `/pro`.
+ */
+import { PROSE_COLUMN } from "../../lib/blogLayout";
+import type { FaqData } from "../../lib/marketingPageTypes";
+
+interface Props {
+  content: FaqData;
+  class?: string;
+}
+const { content, class: className } = Astro.props;
+---
+
+<section class:list={["py-24 md:py-32", className]}>
+  <div class="mx-auto max-w-content px-gutter">
+    <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
+      {content.headline}
+    </h2>
+
+    <div class="mt-space-xl mx-auto" style={`max-width: ${PROSE_COLUMN}px`}>
+      {
+        content.items.map((item) => (
+          <details class="group border-t border-(--color-border) last:border-b">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 font-sans text-[17px] leading-6 font-medium text-(--color-cream-900) transition-colors duration-200 ease-out hover:text-(--color-sage-800) [&::-webkit-details-marker]:hidden">
+              {item.question}
+              <svg
+                class="h-5 w-5 shrink-0 text-(--color-cream-500) transition-transform duration-200 ease-out group-open:rotate-180"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </summary>
+            <div
+              class="pb-6 font-sans text-[16px] leading-6 text-(--color-cream-700) [&_a]:text-(--color-sage-700) [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-(--color-sage-800)"
+              set:html={item.answer}
+            />
+          </details>
+        ))
+      }
+    </div>
+
+    {
+      content.slackCta && (
+        <a
+          href={content.slackCta.href}
+          data-analytics={content.slackCta.analytics}
+          target={content.slackCta.external ? "_blank" : undefined}
+          rel={content.slackCta.external ? "noopener noreferrer" : undefined}
+          class="mt-8 inline-flex font-sans text-[15px] leading-5 font-medium text-(--color-sage-700) hover:text-(--color-sage-800)"
+        >
+          {content.slackCta.label} →
+        </a>
+      )
+    }
+  </div>
+</section>

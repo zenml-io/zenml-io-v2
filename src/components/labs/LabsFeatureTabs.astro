@@ -21,15 +21,18 @@ interface Props {
 }
 const { headline, deck, tabs } = Astro.props.content;
 
-/** The tab visitors see first; the island receives the same value. */
-const DEFAULT_INDEX = 3;
+/** The tab visitors see first (the fourth where there are that many, else
+ *  the last); the island receives the same value. */
+const DEFAULT_INDEX = Math.min(3, tabs.length - 1);
 ---
 
 <section class="labs-feature-tabs bg-card py-24 md:py-32">
   <div class="mx-auto max-w-content px-gutter">
-    <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) text-balance md:text-[44px] md:leading-[48px]">
-      {headline}
-    </h2>
+    {headline && (
+      <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) text-balance md:text-[44px] md:leading-[48px]">
+        {headline}
+      </h2>
+    )}
     {deck && (
       <p class="mt-space-sm max-w-[640px] font-sans text-[17px] leading-[26px] text-foreground md:text-[18px] md:leading-[27px]">
         {deck}

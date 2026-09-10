@@ -111,7 +111,8 @@ export type LabsFeatureTab = Omit<FeatureTab, "image"> &
   );
 
 export interface FeatureTabsContent {
-  headline: string;
+  /** Absence collapses the whole headline block (the tabs start the section). */
+  headline?: string;
   deck?: string;
   /** Rendered by the FeatureTabsSlider island; a tab draws its `figure`, or
    * its raster `image` when it has no figure. */
@@ -182,6 +183,8 @@ export interface ValuePropItem {
 
 export interface ValuePropsContent {
   headline: string;
+  /** Absence collapses the deck line under the headline. */
+  deck?: string;
   items: readonly ValuePropItem[];
   cta: LabsCta;
 }

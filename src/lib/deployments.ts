@@ -4,6 +4,8 @@
  * Used by src/pages/deployments.astro.
  * Content extracted from Webflow HTML snapshot.
  */
+import type { LabsBandContent } from "./labs-home";
+import type { FeatureTabsContent } from "./labs-product-zenml";
 import type { CtaLink } from "./marketingPageTypes";
 
 // ---------------------------------------------------------------------------
@@ -258,3 +260,28 @@ export const DEPLOYMENTS_FINAL_CTA = {
     alt: "Dashboard displaying machine learning models, including versions, authors, and tags.",
   },
 } as const;
+
+/** Tabbed architecture diagrams, reshaped onto `LabsFeatureTabs`. The
+ * "OSS"/"PRO" badges and the eyebrow leave the page (CONVENTIONS liberty;
+ * the tab menu has no badge slot). */
+export const DEPLOYMENTS_FEATURE_TABS: FeatureTabsContent = {
+  headline: DEPLOYMENTS_TABS.headline,
+  deck: DEPLOYMENTS_TABS.body,
+  tabs: DEPLOYMENTS_TABS.tabs.map((t) => ({
+    title: t.label,
+    description: t.description,
+    image: t.image.url,
+    imageAlt: t.image.alt,
+  })),
+};
+
+/** Final CTA, reshaped onto `LabsCloseCta`. The image and "Read Docs"
+ * secondary leave the page (CONVENTIONS liberty; the band has one pill). */
+export const DEPLOYMENTS_CLOSE: LabsBandContent = {
+  headlineLines: ["Unify Your ML", "and LLM Workflows"],
+  deck: DEPLOYMENTS_FINAL_CTA.bullets.join(" · "),
+  cta: {
+    ...DEPLOYMENTS_FINAL_CTA.primaryCta,
+    analytics: "Deployments-Close-Book-Demo",
+  },
+};
