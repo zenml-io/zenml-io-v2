@@ -50,7 +50,7 @@ export const GET: APIRoute = async () => {
   <channel>
     <title>ZenML Labs Blog</title>
     <link>${SITE_URL}/blog</link>
-    <description>Blog posts written by the ZenML Team</description>
+    <description>Blog posts written by the ZenML Labs team</description>
     <language>en</language>
     <lastBuildDate>${now}</lastBuildDate>
     <pubDate>${newestDate}</pubDate>

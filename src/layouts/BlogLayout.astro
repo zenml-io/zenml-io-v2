@@ -16,7 +16,7 @@ import type { Surface } from "../lib/analytics";
 import type { BlogProduct } from "../lib/blog";
 import { ARTICLE_TITLE_CLASS, blogLaneStyle } from "../lib/blogLayout";
 import { SITE_URL } from "../lib/constants";
-import type { SEOProps } from "../lib/seo";
+import { ORGANIZATION_NAME, type SEOProps } from "../lib/seo";
 import "../styles/blog-image-lightbox.css";
 /**
  * BlogLayout — chrome for blog post detail pages, in the ZenML Labs shell
@@ -209,7 +209,11 @@ const articleJsonLd = {
   headline: displayTitle,
   datePublished: new Date(date).toISOString(),
   ...(author && { author: { "@type": "Person", name: author.name } }),
-  publisher: { "@type": "Organization", name: "ZenML Labs", url: SITE_URL },
+  publisher: {
+    "@type": "Organization",
+    name: ORGANIZATION_NAME,
+    url: SITE_URL,
+  },
   ...(mainImage && { image: mainImage.url }),
   ...(seoProps.description && { description: seoProps.description }),
 };

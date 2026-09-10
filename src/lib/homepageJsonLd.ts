@@ -5,7 +5,7 @@ import {
   LABS_FEATURE_PANELS,
   LABS_HOME_SEO,
 } from "./labs-home";
-import { absoluteUrl } from "./seo";
+import { absoluteUrl, ORGANIZATION_NAME } from "./seo";
 
 /**
  * JSON-LD for the ZenML Labs homepage (`/`). Every string comes from
@@ -32,7 +32,7 @@ export function buildHomepageJsonLd(
   options: HomepageJsonLdOptions = {},
 ): Record<string, unknown> {
   const {
-    organizationName = "ZenML Labs",
+    organizationName = ORGANIZATION_NAME,
     logoPath = "/images/zenml-labs-lockup.svg",
   } = options;
   const organizationId = `${SITE_URL}/#organization`;

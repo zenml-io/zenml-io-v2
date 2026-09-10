@@ -27,9 +27,10 @@ import {
   LABS_LOGO_GRID,
   LABS_STORIES,
 } from "../lib/labs-home";
+import { ORGANIZATION_NAME } from "../lib/seo";
 
 const homepageJsonLd = buildHomepageJsonLd({
-  organizationName: "ZenML Labs",
+  organizationName: ORGANIZATION_NAME,
   logoPath: "/images/zenml-labs-lockup.svg",
 });
 ---
