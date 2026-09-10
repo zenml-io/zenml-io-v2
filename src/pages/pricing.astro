@@ -1,33 +1,36 @@
 ---
-import Button from "../components/Button.astro";
-import FaqSection from "../components/sections/FaqSection.astro";
-import FeaturesHubCTA from "../components/sections/FeaturesHubCTA.astro";
-import PricingComparisonTable from "../components/sections/PricingComparisonTable.astro";
-import PricingPlanCards from "../components/sections/PricingPlanCards.astro";
-import PricingProInclusions from "../components/sections/PricingProInclusions.astro";
 /**
- * Pricing page.
+ * Pricing page, in the ZenML Labs shell (`app="labs"`, `surface="unified"`
+ * — no `product`, D3). Rebuilt for the product one-offs cutover (#317):
+ * the short shader band (eyebrow / h1 / deck), the two-workspace plan
+ * cards, a per-workspace comparison table and FAQ (all riding the same
+ * `[data-workspace-panel]` toggle the plan cards drive), the "What's
+ * included in Pro" doors, the startup/academic banner, the ZenML-only
+ * compliance section, stats + trust, and the closing band.
  *
  * Route: /pricing
- *
- * Unified single-page pricing: three plan cards (Open Source / Scale /
- * Enterprise — the Scale card carries an executions slider), one feature
- * comparison table, then a per-workspace FAQ and the "Two workspaces"
- * breakdown. Additional sections: startup/academic banner, compliance,
- * stats/trust, and final CTA.
  */
+import LabsBand from "../components/labs/LabsBand.astro";
+import LabsButton from "../components/labs/LabsButton.astro";
+import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
+import LabsFaq from "../components/labs/LabsFaq.astro";
+import LabsStoryCard from "../components/labs/LabsStoryCard.astro";
+import PricingPlanCards from "../components/labs/PricingPlanCards.astro";
+import PricingTable from "../components/labs/PricingTable.astro";
+import ProductDoors from "../components/labs/ProductDoors.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
-import SectionIntro from "../components/system/SectionIntro.astro";
-import { SECTION_INTRO_PRESETS } from "../components/system/sectionIntro.shared";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import type { LabsCta } from "../lib/labs-home";
 import {
+  PRICING_CLOSE,
   PRICING_COMPARE,
   PRICING_COMPARE_KITARU,
   PRICING_COMPLIANCE,
   PRICING_FAQ_KITARU,
   PRICING_FAQ_ZENML,
-  PRICING_FINAL_CTA,
   PRICING_HERO,
+  PRICING_PLAN_WORKSPACES,
+  PRICING_PRO_INCLUSIONS_DOORS,
   PRICING_SEO,
   PRICING_STARTUP_BANNER,
   PRICING_STATS,
@@ -44,216 +47,175 @@ const pricingJsonLd = buildPricingJsonLd();
   ogDescription={PRICING_SEO.ogDescription}
   ogImage={PRICING_SEO.ogImage}
   surface="unified"
+  app="labs"
 >
   <JsonLd data={pricingJsonLd} slot="head" />
 
-  <main>
-    {/*
-      No-JS fallback: the workspace toggle needs JS to flip `hidden` on the
-      [data-workspace-panel] wrappers, so without scripting the ZenML half
-      of the page (plans + table) would be unreachable. This unhides every
-      panel — both workspaces render stacked — whenever scripting is off.
-    */}
-    <noscript>
-      <style>
-        [data-workspace-panel][hidden] {
-          display: block;
-        }
-      </style>
-    </noscript>
+  {/*
+    No-JS fallback: the workspace toggle needs JS to flip `hidden` on the
+    [data-workspace-panel] wrappers, so without scripting the ZenML half
+    of the page (plans + table) would be unreachable. This unhides every
+    panel — both workspaces render stacked — whenever scripting is off.
+  */}
+  <noscript>
+    <style>
+      [data-workspace-panel][hidden] {
+        display: block;
+      }
+    </style>
+  </noscript>
 
-    {/* Hero */}
-    <section class="bg-linear-to-b from-zenml-50 to-white pt-8 pb-8 sm:pt-12 sm:pb-12">
-      <SectionIntro
-        align="center"
-        eyebrow={PRICING_HERO.eyebrow}
-        heading={PRICING_HERO.headline}
-        headingLevel={1}
-        description={PRICING_HERO.deck}
-        classOverrides={{
-          headingSpacing: "mt-3",
-          description: "text-lg text-gray-600",
-          ...SECTION_INTRO_PRESETS.pageHero,
-        }}
-      />
-    </section>
-
-    {/* Plan cards — Open Source / Scale / Enterprise */}
-    <PricingPlanCards />
-
-    {/* Comparison table — one per workspace; the plan-cards toggle flips
-        `hidden` on every [data-workspace-panel] on the page, so these swap
-        in sync with the cards above. */}
-    <section id="compare-table" class="scroll-mt-24 bg-white pb-16 sm:pb-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div data-workspace-panel="kitaru" class="kitaru-brand-vars">
-          <PricingComparisonTable data={PRICING_COMPARE_KITARU} />
-        </div>
-        <div data-workspace-panel="zenml" hidden>
-          <PricingComparisonTable data={PRICING_COMPARE} />
-        </div>
-      </div>
-    </section>
-
-    {/* FAQ — one per workspace, riding the same [data-workspace-panel]
-        toggle as the plan cards and comparison table above. */}
-    <div data-workspace-panel="kitaru" class="kitaru-brand-vars">
-      <FaqSection {...PRICING_FAQ_KITARU} />
+  <LabsBand size="short">
+    <div class="flex flex-col gap-4">
+      <p class="font-sans text-[15px] leading-5 text-(--color-cream-700)">
+        {PRICING_HERO.eyebrow}
+      </p>
+      <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+        {PRICING_HERO.headline}
+      </h1>
+      <p class="max-w-[720px] font-sans text-[18px] leading-7 text-(--color-cream-700)">
+        {PRICING_HERO.deck}
+      </p>
     </div>
-    <div data-workspace-panel="zenml" hidden>
-      <FaqSection {...PRICING_FAQ_ZENML} />
+  </LabsBand>
+
+  {/* Plan cards — two workspaces (Kitaru / ZenML), toggle-driven */}
+  <PricingPlanCards workspaces={PRICING_PLAN_WORKSPACES} />
+
+  {/* Comparison table — one per workspace; the plan-cards toggle flips
+      `hidden` on every [data-workspace-panel] on the page, so these swap
+      in sync with the cards above. */}
+  <section id="compare-table" class="scroll-mt-24 pb-24 md:pb-32">
+    <div class="mx-auto max-w-content px-gutter">
+      <div data-workspace-panel="kitaru" data-product="kitaru">
+        <PricingTable data={PRICING_COMPARE_KITARU} />
+      </div>
+      <div data-workspace-panel="zenml" hidden>
+        <PricingTable data={PRICING_COMPARE} />
+      </div>
     </div>
+  </section>
 
-    {/* What's included in Pro — two workspaces breakdown */}
-    <PricingProInclusions />
+  {/* FAQ — one per workspace, riding the same [data-workspace-panel]
+      toggle as the plan cards and comparison table above. */}
+  <div data-workspace-panel="kitaru" data-product="kitaru">
+    <LabsFaq content={PRICING_FAQ_KITARU} />
+  </div>
+  <div data-workspace-panel="zenml" hidden>
+    <LabsFaq content={PRICING_FAQ_ZENML} />
+  </div>
 
-    {/* Startup / Academic banner */}
-    <section class="bg-white py-12">
-      <div class="mx-auto max-w-[1280px] px-4 sm:px-6 lg:px-8">
-        <div class="rounded-2xl border border-zenml-25 bg-cover bg-center px-10 py-10 sm:px-14 sm:py-12" style="background-image: url('/images/zenml_light_bg-02.avif')">
-          <div class="flex flex-col items-center gap-6 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 class="text-2xl font-bold text-gray-900">{PRICING_STARTUP_BANNER.headline}</h2>
-              <p class="mt-2 text-sm text-gray-600 leading-relaxed">{PRICING_STARTUP_BANNER.body}</p>
-            </div>
-            <Button href={PRICING_STARTUP_BANNER.cta.href} class="flex-shrink-0">
-              {PRICING_STARTUP_BANNER.cta.label}
-            </Button>
-          </div>
-        </div>
-      </div>
-    </section>
+  {/* What's included in Pro — two workspaces breakdown */}
+  <section class="bg-(--color-sage-50)">
+    <ProductDoors content={PRICING_PRO_INCLUSIONS_DOORS} />
+  </section>
 
-    {/* Compliance: "Your VPC, your data" — ZenML-workspace only. The claim
-        (metadata-only control plane, ZenML SOC2 posture) is specific to the
-        ZenML side, so it rides the same [data-workspace-panel] toggle as the
-        plan cards and comparison table above. */}
-    <section data-workspace-panel="zenml" hidden class="bg-white py-16 sm:py-20">
-      <div class="mx-auto max-w-5xl px-4 text-center sm:px-6 lg:px-8">
-        <SectionIntro
-          eyebrow={PRICING_COMPLIANCE.eyebrow}
-          heading={PRICING_COMPLIANCE.headline}
-          description={PRICING_COMPLIANCE.body}
-          classOverrides={{
-            heading: SECTION_INTRO_PRESETS.sectionHeading2xl,
-            description: "text-lg text-gray-600",
-            descriptionSpacing: "mt-3",
-          }}
-        />
-        <div class="mt-8">
-          <picture>
-            <source media="(max-width: 767px)" srcset={PRICING_COMPLIANCE.image.mobile.url} />
-            <img
-              src={PRICING_COMPLIANCE.image.desktop.url}
-              alt={PRICING_COMPLIANCE.image.desktop.alt}
-              class="w-full rounded-md"
-              loading="lazy"
-            />
-          </picture>
-        </div>
-        {/* SOC2/ISO banner */}
-        <div class="mt-8 rounded-md border border-gray-200 bg-gray-50 p-6">
-          <div class="flex flex-col items-center gap-8 sm:flex-row">
-            <div class="flex shrink-0 gap-6">
-              {PRICING_COMPLIANCE.badges.map((badge) => (
-                <img
-                  src={badge.url}
-                  alt={badge.alt}
-                  class="h-28 w-auto object-contain"
-                  loading="lazy"
-                />
-              ))}
-            </div>
-            <SectionIntro
-              eyebrow={PRICING_COMPLIANCE.bannerEyebrow}
-              heading={PRICING_COMPLIANCE.bannerHeadline}
-              headingLevel={3}
-              description={PRICING_COMPLIANCE.bannerBody}
-              classOverrides={{
-                eyebrow: SECTION_INTRO_PRESETS.cardEyebrow,
-                heading: "text-lg font-semibold text-gray-900",
-                headingSpacing: "mt-1",
-                description: "text-sm text-gray-600",
-                descriptionSpacing: "mt-1",
-                wrap: "text-left sm:border-l sm:border-gray-200 sm:pl-8",
-              }}
-            />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    {/* Stats + Trust */}
-    <section class="border-t border-gray-200 bg-cover bg-center py-20 sm:py-28" style="background-image: url('/images/zenml_light_bg-02.avif')">
-      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div class="text-center">
-          <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
-            {PRICING_STATS.headline}
+  {/* Startup / Academic banner */}
+  <section class="py-24 md:py-32">
+    <div class="mx-auto max-w-content px-gutter">
+      <div class="flex flex-col gap-6 rounded-[20px] border border-(--color-border) bg-(--color-sage-50) p-8 md:flex-row md:items-center md:justify-between md:p-10">
+        <div>
+          <h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900)">
+            {PRICING_STARTUP_BANNER.headline}
           </h2>
-          <p class="mt-3 text-lg text-gray-600">{PRICING_STATS.deck}</p>
-        </div>
-
-        {/* Stats row — 4 across with dividers */}
-        <div class="mt-14 grid grid-cols-2 gap-y-10 sm:grid-cols-4">
-          {PRICING_STATS.items.map((stat, i) => (
-            <div class:list={[
-              "text-center px-6",
-              i > 0 && "sm:border-l sm:border-gray-200",
-            ]}>
-              <p class="text-3xl font-bold text-gray-900 sm:text-4xl">{stat.value}</p>
-              <p class="mt-2 text-sm text-gray-500">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Testimonial — centered, full-width */}
-        <div class="mx-auto mt-14 max-w-3xl rounded-xl border border-gray-200 bg-gray-50/50 p-8 sm:p-10">
-          <p class="text-center text-lg font-medium text-gray-900 leading-relaxed">
-            {PRICING_STATS.testimonial.quote}
+          <p class="mt-3 max-w-[640px] font-sans text-[16px] leading-6 text-(--color-cream-700)">
+            {PRICING_STARTUP_BANNER.body}
           </p>
-          <div class="mt-6 flex flex-col items-center gap-5 sm:flex-row sm:justify-center">
-            <div class="flex items-center gap-3">
-              <img
-                src={PRICING_STATS.testimonial.avatar}
-                alt={PRICING_STATS.testimonial.name}
-                class="h-12 w-12 rounded-full object-cover"
-                loading="lazy"
-              />
-              <div>
-                <p class="font-semibold text-gray-900">{PRICING_STATS.testimonial.name}</p>
-                <p class="text-sm text-gray-500">{PRICING_STATS.testimonial.title}</p>
-              </div>
-            </div>
-            <img
-              src={PRICING_STATS.testimonial.companyLogo}
-              alt="HashiCorp"
-              class="h-7 object-contain"
-              loading="lazy"
-            />
-          </div>
         </div>
+        <LabsButton cta={PRICING_STARTUP_BANNER.cta as LabsCta} class="shrink-0" />
+      </div>
+    </div>
+  </section>
 
-        {/* Logo grid — even distribution */}
-        <div class="mt-16 grid grid-cols-3 items-center justify-items-center gap-x-8 gap-y-8 sm:grid-cols-4 lg:grid-cols-6">
-          {PRICING_STATS.logos.map((logo) => (
-            <img
-              src={logo.src}
-              alt={logo.alt}
-              class="h-8 max-w-[120px] object-contain grayscale opacity-50 transition hover:grayscale-0 hover:opacity-100"
-              loading="lazy"
-            />
+  {/* Compliance: "Your VPC, your data" — ZenML-workspace only. The claim
+      (metadata-only control plane, ZenML SOC2 posture) is specific to the
+      ZenML side, so it rides the same [data-workspace-panel] toggle as the
+      plan cards and comparison table above. */}
+  <section data-workspace-panel="zenml" hidden class="pb-24 md:pb-32">
+    <div class="mx-auto max-w-content px-gutter">
+      <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
+        {PRICING_COMPLIANCE.headline}
+      </h2>
+      <p class="mt-6 max-w-[720px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
+        {PRICING_COMPLIANCE.body}
+      </p>
+      <picture>
+        <source media="(max-width: 767px)" srcset={PRICING_COMPLIANCE.image.mobile.url} />
+        <img
+          src={PRICING_COMPLIANCE.image.desktop.url}
+          alt={PRICING_COMPLIANCE.image.desktop.alt}
+          class="mt-10 w-full rounded-[20px] border border-(--color-border)"
+          loading="lazy"
+        />
+      </picture>
+      <div class="mt-8 flex flex-col items-center gap-8 rounded-[20px] border border-(--color-border) bg-card p-8 md:flex-row">
+        <div class="flex shrink-0 gap-6">
+          {PRICING_COMPLIANCE.badges.map((badge) => (
+            <img src={badge.url} alt={badge.alt} class="h-24 w-auto object-contain" loading="lazy" />
           ))}
+        </div>
+        <div class="md:border-l md:border-(--color-border) md:pl-8">
+          <p class="font-sans text-[13px] leading-4 font-medium text-(--color-cream-700)">
+            {PRICING_COMPLIANCE.bannerEyebrow}
+          </p>
+          <h3 class="mt-1 font-display text-[20px] leading-[26px] text-(--color-cream-900)">
+            {PRICING_COMPLIANCE.bannerHeadline}
+          </h3>
+          <p class="mt-2 font-sans text-[15px] leading-5 text-(--color-cream-700)">
+            {PRICING_COMPLIANCE.bannerBody}
+          </p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    {/* Final CTA */}
-    <FeaturesHubCTA
-      headline={PRICING_FINAL_CTA.headline}
-      body={PRICING_FINAL_CTA.body}
-      primaryCta={PRICING_FINAL_CTA.primaryCta}
-      secondaryCta={PRICING_FINAL_CTA.secondaryCta}
-    />
-  </main>
+  {/* Stats + Trust */}
+  <section class="border-t border-(--color-border) py-24 md:py-32">
+    <div class="mx-auto max-w-content px-gutter">
+      <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
+        {PRICING_STATS.headline}
+      </h2>
+      <p class="mt-4 font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
+        {PRICING_STATS.deck}
+      </p>
+
+      <dl class="mt-14 grid grid-cols-2 gap-y-10 md:grid-cols-4">
+        {PRICING_STATS.items.map((stat, i) => (
+          <div
+            class:list={[
+              "px-6 text-center",
+              i > 0 && "md:border-l md:border-(--color-border)",
+              i === 0 && "md:first:border-l-0",
+            ]}
+          >
+            <dd class="font-display text-[40px] leading-[44px] text-(--color-cream-900) tabular-nums">
+              {stat.value}
+            </dd>
+            <dt class="mt-2 font-sans text-[14px] leading-5 text-(--color-cream-700)">{stat.label}</dt>
+          </div>
+        ))}
+      </dl>
+
+      <div class="mx-auto mt-14 max-w-[768px]">
+        <LabsStoryCard
+          kind="quote"
+          quote={PRICING_STATS.testimonial.quote}
+          name={PRICING_STATS.testimonial.name}
+          title={PRICING_STATS.testimonial.title}
+          avatar={PRICING_STATS.testimonial.avatar}
+          logo={{ url: PRICING_STATS.testimonial.companyLogo, alt: "HashiCorp" }}
+        />
+      </div>
+
+      <ul class="mt-16 grid grid-cols-3 items-center justify-items-center gap-8 sm:grid-cols-4 lg:grid-cols-6">
+        {PRICING_STATS.logos.map((logo) => (
+          <li>
+            <img src={logo.src} alt={logo.alt} class="h-8 max-w-[120px] object-contain" loading="lazy" />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <LabsCloseCta content={PRICING_CLOSE} />
 </BaseLayout>

@@ -10,6 +10,17 @@
  */
 import { getCollection } from "astro:content";
 import { formatCategoryLabel } from "./compareDefaults";
+import { LABS_CLOSE } from "./labs-home";
+
+/**
+ * The Labs closing band for `/compare` — the shared `LABS_CLOSE` copy
+ * (the same band `/` ends on), with the page-specific analytics name
+ * (CONVENTIONS.md — this page has no final CTA of its own today).
+ */
+export const COMPARE_CLOSE = {
+  ...LABS_CLOSE,
+  cta: { ...LABS_CLOSE.cta, analytics: "Compare-Close-Signup" },
+};
 
 export interface CompareCard {
   href: string;
