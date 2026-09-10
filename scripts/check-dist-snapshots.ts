@@ -89,6 +89,28 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
     covers:
       "project details column where the stack section holds the body's only <ul> — the split leaves a details region with no list",
   },
+  {
+    page: "llmops-database/building-a-systematic-snap-benefits-llm-evaluation-framework.html",
+    selector: ".prose",
+    golden:
+      "llmops-building-a-systematic-snap-benefits-llm-evaluation-framework.html",
+    covers:
+      "LLMOps database entry body: plain Markdown with headings, bullet lists and a fenced code block, rendered by the database entry template",
+  },
+  {
+    page: "mlops-database/airbnb-chronon-internal-dataai-app-platform-conversational-ai-platform-sandcastle-internal-platform-for-rapidly-prototyp.html",
+    selector: "dl",
+    golden: "mlops-airbnb-chronon-sandcastle-record.html",
+    covers:
+      "MLOps database entry record (LabsMetadataBlock): the Industry link and the MLOps-topic chips as the entry layout renders them",
+  },
+  {
+    page: "mlops-database/airbnb-chronon-internal-dataai-app-platform-conversational-ai-platform-sandcastle-internal-platform-for-rapidly-prototyp.html",
+    selector: ".prose",
+    golden: "mlops-airbnb-chronon-sandcastle.html",
+    covers:
+      "MLOps database entry body: headings and paragraphs rendered through the shared prose rehype plugins (the second collection they cover)",
+  },
 ];
 
 /**

@@ -1,9 +1,10 @@
 /**
  * useFilterState — the shared state engine behind every FilterIndex
  * instance: fetch-or-provided items, a pluggable search adapter (Pagefind /
- * substring / none), single + multi facet counting, optional sort,
- * optional pagination, URL state sync, and the mobile-drawer a11y wiring
- * (escape-to-close, focus restore, inert background, scroll lock).
+ * substring / none), single + multi facet counting, any number of extra
+ * single-select facets, optional sort, optional pagination, URL state sync,
+ * the zero-results "drop one constraint" offers, and the mobile-drawer a11y
+ * wiring (escape-to-close, focus restore, inert background, scroll lock).
  *
  * This is the "12-hook state block" both legacy filter islands carried
  * near-identically — one home for it now, generic over the item shape `T`.
@@ -16,7 +17,12 @@ import {
   useState,
 } from "preact/hooks";
 import { createPagefindAdapter } from "./pagefind";
-import type { MultiFacetConfig, SingleFacetConfig, TagMode } from "./types";
+import type {
+  FilterOption,
+  MultiFacetConfig,
+  SingleFacetConfig,
+  TagMode,
+} from "./types";
 import {
   type FilterUrlKeys,
   parseFilterStateFromUrl,
@@ -52,14 +58,41 @@ export interface UseFilterStateOptions<T> {
   search: SearchConfig<T>;
   sort?: SortConfig<T>;
   singleFacet?: SingleFacetConfig<T>;
+  /**
+   * Additional single-select facets beyond `singleFacet`, each with its own
+   * URL param (the MLOps database's "Content type" → `?type=`). An instance
+   * that passes none behaves exactly as it did before this existed.
+   */
+  extraSingleFacets?: SingleFacetConfig<T>[];
   multiFacet?: MultiFacetConfig<T>;
   /** Noun for the result count / status line. Default "entries". */
   resultNounPlural?: string;
 }
 
+/** One active filter, named for the zero-results copy. */
+export interface FilterConstraint {
+  /** Display name — a facet value's own name, or the query in quotes. */
+  label: string;
+}
+
+/**
+ * One "drop this constraint and results come back" offer: the same query
+ * with exactly one constraint removed, and how many entries that returns.
+ */
+export interface DropOneSuggestion {
+  label: string;
+  count: number;
+  apply: () => void;
+}
+
 function matchesSubstring(searchText: string | undefined, q: string): boolean {
   if (!q) return true;
   return (searchText ?? "").includes(q.toLowerCase());
+}
+
+/** A facet value's display name, falling back to the slug. */
+function optionName(options: FilterOption[] | undefined, slug: string): string {
+  return options?.find((option) => option.slug === slug)?.name ?? slug;
 }
 
 export function useFilterState<T>(options: UseFilterStateOptions<T>) {
@@ -73,9 +106,13 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
     search,
     sort,
     singleFacet,
+    extraSingleFacets,
     multiFacet,
     resultNounPlural = "entries",
   } = options;
+
+  const extraFacets = extraSingleFacets ?? [];
+  const extraParams = extraFacets.map((facet) => facet.urlParam);
 
   const isFetchMode = dataUrl !== undefined;
 
@@ -106,8 +143,9 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
       tagMode: multiFacet ? "tagMode" : undefined,
       page: pageSize !== undefined ? "page" : undefined,
       sort: sort ? "sort" : undefined,
+      extras: extraParams.length ? extraParams : undefined,
     }),
-    [search.mode, singleFacet, multiFacet, pageSize, sort],
+    [search.mode, singleFacet, multiFacet, pageSize, sort, extraParams.join()],
   );
 
   const defaultSort: SortMode = sort?.defaultValue ?? "newest";
@@ -121,6 +159,9 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
   const [query, setQuery] = useState(initial.q);
   const [selectedMulti, setSelectedMulti] = useState<string[]>(initial.multi);
   const [selectedSingle, setSelectedSingle] = useState(initial.single);
+  const [selectedExtra, setSelectedExtra] = useState<Record<string, string>>(
+    initial.extras ?? {},
+  );
   const [page, setPage] = useState(initial.page);
   const [tagMode, setTagMode] = useState<TagMode>(initial.tagMode);
   const [sortMode, setSortMode] = useState<SortMode>(
@@ -264,6 +305,20 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
     [singleFacet, selectedSingle],
   );
 
+  const extraKey = extraParams.join();
+  const matchesExtras = useCallback(
+    (item: T, skipParam?: string) => {
+      for (const facet of extraFacets) {
+        if (facet.urlParam === skipParam) continue;
+        const selected = selectedExtra[facet.urlParam];
+        if (!selected) continue;
+        if (facet.getValue(item) !== selected) return false;
+      }
+      return true;
+    },
+    [extraKey, selectedExtra],
+  );
+
   const matchesMulti = useCallback(
     (item: T) => {
       if (!multiFacet || !selectedMulti.length) return true;
@@ -286,7 +341,7 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
       )
         return false;
       if (!usePagefindActive && !matchesQuery(item)) return false;
-      return matchesMulti(item);
+      return matchesMulti(item) && matchesExtras(item);
     });
     const counts = new Map<string, number>();
     for (const item of base) {
@@ -301,6 +356,7 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
     pagefindSlugSet,
     matchesQuery,
     matchesMulti,
+    matchesExtras,
     getSlug,
   ]);
 
@@ -314,7 +370,7 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
       )
         return false;
       if (!usePagefindActive && !matchesQuery(item)) return false;
-      return matchesSingle(item);
+      return matchesSingle(item) && matchesExtras(item);
     });
     const counts = new Map<string, number>();
     for (const item of base) {
@@ -330,6 +386,49 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
     pagefindSlugSet,
     matchesQuery,
     matchesSingle,
+    matchesExtras,
+    getSlug,
+  ]);
+
+  /**
+   * Contextual counts for each extra facet, keyed by its URL param: filtered
+   * by query + primary single + multi + every OTHER extra facet, exactly as
+   * the primary single facet's own counts are.
+   */
+  const extraCounts = useMemo(() => {
+    const result: Record<string, Map<string, number>> = {};
+    for (const facet of extraFacets) {
+      const base = items.filter((item) => {
+        if (
+          usePagefindActive &&
+          pagefindSlugSet &&
+          !pagefindSlugSet.has(getSlug(item))
+        )
+          return false;
+        if (!usePagefindActive && !matchesQuery(item)) return false;
+        return (
+          matchesSingle(item) &&
+          matchesMulti(item) &&
+          matchesExtras(item, facet.urlParam)
+        );
+      });
+      const counts = new Map<string, number>();
+      for (const item of base) {
+        const value = facet.getValue(item);
+        if (value) counts.set(value, (counts.get(value) || 0) + 1);
+      }
+      result[facet.urlParam] = counts;
+    }
+    return result;
+  }, [
+    items,
+    extraKey,
+    usePagefindActive,
+    pagefindSlugSet,
+    matchesQuery,
+    matchesSingle,
+    matchesMulti,
+    matchesExtras,
     getSlug,
   ]);
 
@@ -343,12 +442,16 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
         (item) =>
           pfSlugSet.has(getSlug(item)) &&
           matchesMulti(item) &&
-          matchesSingle(item),
+          matchesSingle(item) &&
+          matchesExtras(item),
       );
     } else {
       matched = items.filter(
         (item) =>
-          matchesQuery(item) && matchesMulti(item) && matchesSingle(item),
+          matchesQuery(item) &&
+          matchesMulti(item) &&
+          matchesSingle(item) &&
+          matchesExtras(item),
       );
     }
 
@@ -386,6 +489,7 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
     matchesQuery,
     matchesMulti,
     matchesSingle,
+    matchesExtras,
     getSlug,
     getTitle,
     sort,
@@ -438,12 +542,14 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
       page: safePage,
       tagMode,
       sort: sortMode,
+      extras: selectedExtra,
     });
   }, [
     urlKeys,
     defaultSort,
     query,
     selectedSingle,
+    selectedExtra,
     selectedMulti,
     safePage,
     tagMode,
@@ -483,6 +589,17 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
     [resetPage],
   );
 
+  const selectExtra = useCallback(
+    (urlParam: string, slug: string) => {
+      setSelectedExtra((prev) => ({
+        ...prev,
+        [urlParam]: prev[urlParam] === slug ? "" : slug,
+      }));
+      resetPage();
+    },
+    [resetPage],
+  );
+
   const clearMulti = useCallback(() => {
     setSelectedMulti([]);
     resetPage();
@@ -497,13 +614,164 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
     setQuery("");
     setSelectedMulti([]);
     setSelectedSingle("");
+    setSelectedExtra((prev) =>
+      Object.fromEntries(Object.keys(prev).map((key) => [key, ""])),
+    );
     setTagMode("and");
     setSortMode(defaultSort);
     setPage(1);
   }, [defaultSort]);
 
+  const activeExtraCount = extraParams.filter(
+    (param) => !!selectedExtra[param],
+  ).length;
+
   const hasActiveFilters =
-    !!query || selectedMulti.length > 0 || !!selectedSingle;
+    !!query ||
+    selectedMulti.length > 0 ||
+    !!selectedSingle ||
+    activeExtraCount > 0;
+
+  const applyTagMode = useCallback(
+    (mode: TagMode) => {
+      setTagMode(mode);
+      resetPage();
+    },
+    [resetPage],
+  );
+
+  /**
+   * Every active filter, named, in reading order: single facet, extra
+   * facets, tags, query. The zero-results copy lists these.
+   */
+  const activeConstraints: FilterConstraint[] = useMemo(() => {
+    const list: FilterConstraint[] = [];
+    if (singleFacet && selectedSingle)
+      list.push({ label: optionName(singleFacet.options, selectedSingle) });
+    for (const facet of extraFacets) {
+      const value = selectedExtra[facet.urlParam];
+      if (value) list.push({ label: optionName(facet.options, value) });
+    }
+    if (multiFacet)
+      for (const slug of selectedMulti)
+        list.push({ label: optionName(multiFacet.options, slug) });
+    if (query) list.push({ label: `"${query}"` });
+    return list;
+  }, [
+    singleFacet,
+    selectedSingle,
+    extraKey,
+    selectedExtra,
+    multiFacet,
+    selectedMulti,
+    query,
+  ]);
+
+  /**
+   * "Drop one and these come back": for each active constraint, how many
+   * entries the SAME query returns with just that constraint removed — plus
+   * a "Match any" offer when two or more tags are ANDed. Zero-count offers
+   * are omitted (an offer that also returns nothing is not a recovery), and
+   * nothing is computed while there are results to show.
+   */
+  const dropOneSuggestions: DropOneSuggestion[] = useMemo(() => {
+    if (filtered.length > 0 || !hasActiveFilters) return [];
+
+    // Same query semantics the result list uses: the Pagefind slug set when
+    // full-text search is live, plain substring otherwise.
+    const itemMatchesQuery = (item: T) =>
+      usePagefindActive && pagefindSlugSet
+        ? pagefindSlugSet.has(getSlug(item))
+        : matchesQuery(item);
+
+    const countWithout = (drop: {
+      query?: boolean;
+      single?: boolean;
+      extraParam?: string;
+      tag?: string;
+      tagModeOverride?: TagMode;
+    }): number => {
+      const tags = drop.tag
+        ? selectedMulti.filter((slug) => slug !== drop.tag)
+        : selectedMulti;
+      const mode = drop.tagModeOverride ?? tagMode;
+      return items.filter((item) => {
+        if (!drop.query && query && !itemMatchesQuery(item)) return false;
+        if (!drop.single && !matchesSingle(item)) return false;
+        if (!matchesExtras(item, drop.extraParam)) return false;
+        if (multiFacet && tags.length) {
+          const values = multiFacet.getValues(item);
+          const matched =
+            mode === "and"
+              ? tags.every((slug) => values.includes(slug))
+              : tags.some((slug) => values.includes(slug));
+          if (!matched) return false;
+        }
+        return true;
+      }).length;
+    };
+
+    const suggestions: DropOneSuggestion[] = [];
+    const offer = (label: string, count: number, apply: () => void) => {
+      if (count > 0) suggestions.push({ label, count, apply });
+    };
+
+    if (singleFacet && selectedSingle)
+      offer(
+        `without ${optionName(singleFacet.options, selectedSingle)}`,
+        countWithout({ single: true }),
+        clearSingle,
+      );
+    for (const facet of extraFacets) {
+      const value = selectedExtra[facet.urlParam];
+      if (!value) continue;
+      offer(
+        `without ${optionName(facet.options, value)}`,
+        countWithout({ extraParam: facet.urlParam }),
+        () => selectExtra(facet.urlParam, value),
+      );
+    }
+    if (multiFacet)
+      for (const slug of selectedMulti)
+        offer(
+          `without ${optionName(multiFacet.options, slug)}`,
+          countWithout({ tag: slug }),
+          () => toggleMulti(slug),
+        );
+    if (query)
+      offer(`without "${query}"`, countWithout({ query: true }), () =>
+        handleQueryChange(""),
+      );
+    if (tagMode === "and" && selectedMulti.length > 1)
+      offer("Match any", countWithout({ tagModeOverride: "or" }), () =>
+        applyTagMode("or"),
+      );
+
+    return suggestions;
+  }, [
+    items,
+    filtered.length,
+    hasActiveFilters,
+    query,
+    selectedSingle,
+    selectedExtra,
+    selectedMulti,
+    tagMode,
+    usePagefindActive,
+    pagefindSlugSet,
+    matchesQuery,
+    matchesSingle,
+    matchesExtras,
+    getSlug,
+    singleFacet,
+    multiFacet,
+    extraKey,
+    clearSingle,
+    toggleMulti,
+    handleQueryChange,
+    selectExtra,
+    applyTagMode,
+  ]);
 
   const visibleMultiOptions = useMemo(() => {
     if (!multiFacet) return [];
@@ -528,13 +796,14 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
     toggleMulti,
     selectedSingle,
     selectSingle,
+    selectedExtra,
+    selectExtra,
+    extraCounts,
+    activeExtraCount,
     clearMulti,
     clearSingle,
     tagMode,
-    setTagMode: (mode: TagMode) => {
-      setTagMode(mode);
-      resetPage();
-    },
+    setTagMode: applyTagMode,
     sortMode,
     setSortMode: (mode: SortMode) => {
       setSortMode(mode);
@@ -555,6 +824,8 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
     setMultiSearch,
     resultsStatusText,
     hasActiveFilters,
+    activeConstraints,
+    dropOneSuggestions,
     clearAll,
     mobileDrawerOpen,
     setMobileDrawerOpen,

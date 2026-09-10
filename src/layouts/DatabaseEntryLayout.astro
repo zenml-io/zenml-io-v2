@@ -1,0 +1,294 @@
+---
+/**
+ * DatabaseEntryLayout — the one entry template for both research databases
+ * (LLMOps and MLOps), in the ZenML Labs shell (`app="labs"`, `surface="ml"`).
+ * `database` discriminates the copy each route pulls from
+ * `src/lib/databases.ts` (name, tags label, index href) — everything else
+ * about the two entry kinds (company/platform/content-type/year, whether a
+ * tag chip points at `/llmops-tags` or `/mlops-tags`) is resolved by the
+ * calling route and handed in as plain props.
+ *
+ * Section order follows the blog post layout exactly (`BlogLayout.astro`):
+ * short band (eyebrow, h1, meta row + "View source") → sticky breadcrumb →
+ * article body (prose + TOC), whose prose column leads with the summary
+ * box and metadata record (Industry, Technologies/MLOps topics) via
+ * `LabsArticleBody`'s `lead` slot → related band ("More like this") →
+ * close band. The band, sticky breadcrumb, article body and related band
+ * are the shared primitives a blog post also mounts — this layout never
+ * re-implements them.
+ *
+ * The outer wrapper carries `data-pagefind-body` (spanning the band through
+ * the close band) so the h1 is indexed; the breadcrumb, related band and
+ * close band each opt back out with `data-pagefind-ignore`, same as the
+ * pre-cutover pages did.
+ *
+ * No Article JSON-LD here — only the Breadcrumb JSON-LD `StickyBreadcrumb`
+ * already emits via `Breadcrumb`. Adding Article structured data is an SEO
+ * change outside this cutover (CONVENTIONS.md #14).
+ */
+import BlogNewsletterCta from "../components/labs/BlogNewsletterCta.astro";
+import LabsArticleBody from "../components/labs/LabsArticleBody.astro";
+import LabsBand from "../components/labs/LabsBand.astro";
+import LabsButton from "../components/labs/LabsButton.astro";
+import LabsMetadataBlock, {
+  type LabsMetadataBlockItem,
+} from "../components/labs/LabsMetadataBlock.astro";
+import LabsRelatedBand from "../components/labs/LabsRelatedBand.astro";
+import StickyBreadcrumb from "../components/labs/StickyBreadcrumb.astro";
+import type { RelatedRailItem } from "../components/templates/RelatedRail.astro";
+import { blogLaneStyle } from "../lib/blogLayout";
+import {
+  capitalise,
+  DATABASE_CTA,
+  DATABASES,
+  type DatabaseKey,
+} from "../lib/databases";
+import { BREVO_LLMOPS_CONFIG } from "../lib/formConstants";
+import type { SEOProps } from "../lib/seo";
+import BaseLayout from "./BaseLayout.astro";
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props extends SEOProps {
+  database: DatabaseKey;
+  entryTitle: string;
+  /** LLMOps: optional. MLOps: always present. */
+  company?: string;
+  /** MLOps only; rendered only when it differs from `company`. */
+  platformName?: string;
+  /** MLOps only; rendered capitalised. */
+  contentType?: string;
+  year?: number;
+  /** "View source" pill target. Omitted when absent. */
+  sourceHref?: string;
+  summary?: string;
+  industry?: { name: string; href: string };
+  tags: { name: string; href: string }[];
+  headings: Heading[];
+  /** Built by the calling route (hex-card kind). */
+  related: RelatedRailItem[];
+  /** Hidden `data-pagefind-meta` spans, e.g. `{ slug: "…", company: "…" }`. */
+  pagefindMeta: Record<string, string>;
+  /** Hidden `data-pagefind-filter` spans, e.g. `[{ key: "tag", value: "rag" }]`. */
+  pagefindFilters: { key: string; value: string }[];
+}
+
+const {
+  database,
+  entryTitle,
+  company,
+  platformName,
+  contentType,
+  year,
+  sourceHref,
+  summary,
+  industry,
+  tags,
+  headings,
+  related,
+  pagefindMeta,
+  pagefindFilters,
+  ...seoProps
+} = Astro.props;
+
+const copy = DATABASES[database];
+
+const showPlatform = !!platformName && platformName !== company;
+const contentTypeLabel = contentType ? capitalise(contentType) : undefined;
+
+// Middot separators: a dot precedes every token after the first one
+// actually rendered — an absent token takes its own dot with it (same idea
+// as BlogLayout.astro's metaTokenIndex).
+const metaTokensPresent = [!!company, showPlatform, !!contentTypeLabel, !!year];
+const metaTokenIndex = (i: number) =>
+  metaTokensPresent.slice(0, i).filter(Boolean).length;
+
+const metadataItems: LabsMetadataBlockItem[] = [];
+if (industry) {
+  metadataItems.push({
+    label: "Industry",
+    value: { kind: "link", text: industry.name, href: industry.href },
+  });
+}
+if (tags.length > 0) {
+  metadataItems.push({
+    label: `${copy.tagsLabel} · ${tags.length}`,
+    value: {
+      kind: "chips",
+      chips: tags.map((tag) => ({ label: tag.name, href: tag.href })),
+    },
+  });
+}
+---
+
+<BaseLayout {...seoProps} surface="ml" app="labs">
+  <div style={blogLaneStyle()} data-pagefind-body>
+    {Object.entries(pagefindMeta).map(([key, value]) => (
+      <span data-pagefind-meta={`${key}:${value}`} class="hidden" />
+    ))}
+    {pagefindFilters.map((filter) => (
+      <span data-pagefind-filter={`${filter.key}:${filter.value}`} class="hidden" />
+    ))}
+
+    <LabsBand size="short">
+      <div class="scroll-reveal-section">
+        <div class="mx-auto flex max-w-(--article-lane) flex-col gap-4">
+          <p class="reveal-child font-sans text-[15px] leading-5 text-(--color-cream-700)">
+            {copy.eyebrow}
+          </p>
+
+          <h1
+            class="reveal-child stagger-1 font-display text-[28px] leading-[34px] text-(--color-cream-800) md:text-[36px] md:leading-[42px]"
+            data-pagefind-meta="title"
+          >
+            {entryTitle}
+          </h1>
+
+          <div class="reveal-child stagger-2 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div class="flex flex-wrap items-center gap-3">
+              {company && (
+                <span class="text-[15px] leading-5 font-medium text-(--color-cream-800)">
+                  {company}
+                </span>
+              )}
+              {showPlatform && (
+                <>
+                  {metaTokenIndex(1) > 0 && (
+                    <span class="text-(--color-cream-500)" aria-hidden="true">&middot;</span>
+                  )}
+                  <span class="text-[15px] leading-5 text-(--color-cream-700)">
+                    {platformName}
+                  </span>
+                </>
+              )}
+              {contentTypeLabel && (
+                <>
+                  {metaTokenIndex(2) > 0 && (
+                    <span class="text-(--color-cream-500)" aria-hidden="true">&middot;</span>
+                  )}
+                  <span class="text-[15px] leading-5 text-(--color-cream-700)">
+                    {contentTypeLabel}
+                  </span>
+                </>
+              )}
+              {year && (
+                <>
+                  {metaTokenIndex(3) > 0 && (
+                    <span class="text-(--color-cream-500)" aria-hidden="true">&middot;</span>
+                  )}
+                  <span class="text-[15px] leading-5 text-(--color-cream-700)">{year}</span>
+                </>
+              )}
+            </div>
+
+            {sourceHref && (
+              <LabsButton
+                tone="ghost"
+                target="_blank"
+                class="w-full sm:w-auto"
+                cta={{
+                  label: "View source",
+                  href: sourceHref,
+                  analytics: "Database-Entry-Source",
+                }}
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="ml-2 inline-block"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M6 3H3v10h10v-3M9 2h5v5M14 2L7 9" />
+                </svg>
+              </LabsButton>
+            )}
+          </div>
+        </div>
+      </div>
+    </LabsBand>
+
+    <div>
+      <StickyBreadcrumb
+        items={[{ label: copy.name, href: copy.indexHref }, { label: entryTitle }]}
+        pagefindIgnore
+      />
+
+      <LabsArticleBody headings={headings} proseClass="prose-zoomable">
+        {(summary || metadataItems.length > 0) && (
+          <div slot="lead" class="contents">
+            {summary && (
+              <div class="rounded-[12px] border border-(--color-border) bg-(--color-sage-50) px-8 py-7">
+                <p class="text-[13px] leading-4 font-medium text-(--color-cream-700)">Summary</p>
+                <p class="mt-3 text-[18px] leading-[30px] text-foreground">{summary}</p>
+              </div>
+            )}
+            {metadataItems.length > 0 && <LabsMetadataBlock items={metadataItems} />}
+          </div>
+        )}
+        <slot />
+      </LabsArticleBody>
+    </div>
+
+    <div data-pagefind-ignore>
+      <LabsRelatedBand heading="More like this" items={related} />
+    </div>
+
+    <div data-pagefind-ignore>
+      <BlogNewsletterCta content={DATABASE_CTA} brevo={BREVO_LLMOPS_CONFIG} />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* House scroll-reveal pattern (reference: FeatureTabs.astro), copied
+   * verbatim from BlogLayout.astro so this layout arms/reveals its own
+   * sections identically. */
+  .reveal-child {
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-1 { transition-delay: 60ms; }
+  .stagger-2 { transition-delay: 120ms; }
+  .stagger-3 { transition-delay: 180ms; }
+
+  .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-child,
+    .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initCodeCopy } from "../scripts/code-copy";
+  import { initScrollReveal } from "../scripts/labs-scroll-reveal";
+
+  // The mobile-TOC close handler lives in LabsArticleBody.astro, which wires
+  // itself — nothing to do for it here.
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      initCodeCopy();
+      initScrollReveal();
+    });
+  } else {
+    initCodeCopy();
+    initScrollReveal();
+  }
+</script>

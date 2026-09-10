@@ -13,10 +13,10 @@
  * block is too narrow for the table's min-width to fit — see the comment on
  * `.table-scroll__hint` there for why that's an approximation, not a real
  * overflow check. Styled under `[data-app="labs"] .prose` in `global.css`.
- * Runs on the blog collection only.
+ * Runs on every long-form prose collection (see isProseCollectionFile).
  */
 import { visit } from "unist-util-visit";
-import { isBlogMarkdownFile } from "./rehypeCodePane";
+import { isProseCollectionFile } from "./rehypeCodePane";
 
 interface HastNode {
   type: string;
@@ -67,8 +67,8 @@ export const TABLE_SCROLL_BLOCK_CLOSE =
 
 export function rehypeTableScroll() {
   return (tree: HastNode, file: { path?: string; history?: string[] }) => {
-    // Blog collection only (see isBlogMarkdownFile).
-    if (!isBlogMarkdownFile(file)) return;
+    // Every long-form prose collection (see isProseCollectionFile).
+    if (!isProseCollectionFile(file)) return;
     // Same untyped walk as rehypeCodePane (no hast types in the repo).
     // biome-ignore lint/suspicious/noExplicitAny: see rehypeCodePane
     visit(tree as any, "element", (nodeIn: unknown, index, parentIn) => {
