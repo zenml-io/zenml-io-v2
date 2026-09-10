@@ -283,6 +283,18 @@ async function runChecks(baseUrl: string): Promise<CheckResult[]> {
     );
   }
 
+  for (const pathname of ["/book-a-demo-success", "/book-a-demo-success/"]) {
+    const redirect = await request(baseUrl, pathname);
+    check(
+      results,
+      `${pathname} redirects permanently to the canonical calendar`,
+      redirect.status === 301 &&
+        new URL(redirect.headers.get("location") ?? "/", baseUrl).pathname ===
+          "/success-calendar",
+      `status ${redirect.status}, location ${redirect.headers.get("location")}`,
+    );
+  }
+
   for (const pathname of [
     "/team/adam-probst",
     "/team/adam-probst/",

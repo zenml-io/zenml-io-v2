@@ -26,6 +26,8 @@
 /book-a-demo/ /book-your-demo 301
 /signup-for-demo /book-your-demo 301
 /signup-for-demo/ /book-your-demo 301
+/book-a-demo-success /success-calendar 301
+/book-a-demo-success/ /success-calendar 301
 /live-demo / 301
 /live-demo/ / 301
 /interactive-demo-mcp / 301

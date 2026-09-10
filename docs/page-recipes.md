@@ -391,16 +391,17 @@ content with a markdown fallback" detail page.
 ## Conversion
 
 ### Cal-hero confirmation pages
-**Routes** — `/success-calendar`, `/book-a-demo-success`, `/schedule-a-demo`
-(3 pages, noindex except `/schedule-a-demo`).
+**Routes** — `/success-calendar`, `/schedule-a-demo` (2 pages, noindex except
+`/schedule-a-demo`). `/book-a-demo-success` permanently redirects to
+`/success-calendar`.
 **Layout** — `BaseLayout`.
 **Surface** — `unified`.
 **Sequence** — `ConversionShell` (`frame="calendar"`) wrapping `CalEmbed`.
 **Required data** — one dedicated `lib/*.ts` module per route
-(`successCalendar.ts`, `bookADemoSuccess.ts`, `scheduleADemo.ts`) — headline,
-deck, SEO, and Cal.com config.
-**Buildable today** — yes. The three pages are byte-identical modulo their
-per-route data module; a fourth would be a new data module plus this same
+(`successCalendar.ts`, `scheduleADemo.ts`) — headline, deck, SEO, and Cal.com
+config.
+**Buildable today** — yes. The two pages are byte-identical modulo their
+per-route data module; a third would be a new data module plus this same
 three-import page.
 
 ### Lead-capture form pages

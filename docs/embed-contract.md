@@ -19,9 +19,9 @@ via the same command-queue bootstrap:
 - **`src/components/sections/CalEmbed.astro`** — renders a `<div id={config.elementId}>`
   target and an inline `<script>` that loads the Cal.com embed script and calls
   `Cal("init", …)` / `Cal.ns[namespace]("inline", …)` immediately on page load. Used by
-  `src/pages/success-calendar.astro`, `src/pages/book-a-demo-success.astro`, and
-  `src/pages/schedule-a-demo.astro` — three "thank you, now book a time" pages reached
-  after a form or purchase flow.
+  `src/pages/success-calendar.astro` and `src/pages/schedule-a-demo.astro` — the
+  canonical post-form and rescheduling calendar pages. Retired calendar aliases
+  permanently redirect to the former before the embed runs.
 - **Deferred path** — `src/components/islands/DemoRequestForm.tsx` (a Preact island
   mounted via `src/components/BookingExperience.astro`, used by `/book-your-demo` and
   its Kitaru co-brand variant) renders a lead-capture form first. The same Cal.com
