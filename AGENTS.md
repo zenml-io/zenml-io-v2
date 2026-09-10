@@ -18,6 +18,7 @@ positioning; MERGE_PLAN.md records the merge history.
 - Template arrangement selectors and mutually exclusive fields require discriminated unions or `?: never` exclusions. Never hide invalid combinations in bags of optional props narrowed by `as` casts. Register templates in `src/lib/templates/registry.ts`.
 - The `[data-tone]` layer routes brand-owned `var()` values, never hex colors. Do not add a base `section[data-tone]` background rule; consumers set explicit background utilities. The styleguide derives values from global.css, the registry, and DESIGN.md; never hand-write design values into it.
 - The 2026 rebrand's visual work lands on the long-lived `rebrand/labs-site` branch (merged to `main` only at launch; see #246 for the order and one ticket per page family). DESIGN.md holds the binding design rules; build from the ZenML Labs components in `src/components/labs/` and the template registry rather than restyling pages in place. Every new Labs component is registered as `labs.*`.
+- `LabsNavigation`'s GitHub icon/count is a first-party edge-cached stars link, so it needs no consent gate; retain its exact-count, no-JS behavior when changing the Labs shell.
 - Preserve published URLs or add 301 redirects; verify canonicals and redirects for URL/SEO changes. Pass explicit analytics `surface=` to BaseLayout/MinimalLayout and use the taxonomy in `src/lib/analytics.ts`.
 
 ## Development Commands

@@ -10,9 +10,9 @@
  * — roughly two rows) before folding the rest into a native `<details>`
  * whose `<summary>` is itself a `TERM_CHIP` pill ("+N more" / "Show fewer",
  * toggled by this component's own scoped `<style>` rather than a script) so
- * every chip stays reachable without JS. The `<details>` is `display:
- * contents` so its own children — the overflow chips — flow into the same
- * flex-wrap row as the visible ones, instead of starting a new line.
+ * every chip stays reachable without JS. The disclosure remains an inline
+ * element rather than `display: contents`: Safari has historically dropped
+ * interactive descendants of `<details>` when it becomes a contents box.
  *
  * Sole consumer today: `src/layouts/DatabaseEntryLayout.astro`.
  */
@@ -87,7 +87,7 @@ const { items, class: className } = Astro.props;
                   </a>
                 ))}
                 {rest.length > 0 && (
-                  <details class="contents">
+                  <details class="inline">
                     <summary
                       class={`${TERM_CHIP} details-more-summary list-none [&::-webkit-details-marker]:hidden`}
                     >
