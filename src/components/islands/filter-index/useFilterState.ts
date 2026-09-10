@@ -151,9 +151,23 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
   const defaultSort: SortMode = sort?.defaultValue ?? "newest";
   const sortValues: SortMode[] = ["newest", "az", "relevance"];
 
+  // SSR can never read a visitor's query string. Seed the client with that
+  // exact empty state too, then apply URL filters in the mount effect below.
+  // Otherwise /blog?q=<no-match> hydrates directly onto an empty result
+  // region that did not exist in the server HTML.
   const initial = useMemo(
-    () => parseFilterStateFromUrl(urlKeys, sortValues, defaultSort),
-    [],
+    () => ({
+      q: "",
+      single: "",
+      multi: [],
+      page: 1,
+      tagMode: "and" as TagMode,
+      sort: defaultSort,
+      extras: extraParams.length
+        ? Object.fromEntries(extraParams.map((key) => [key, ""]))
+        : undefined,
+    }),
+    [defaultSort, extraParams.join()],
   );
 
   const [query, setQuery] = useState(initial.q);
@@ -167,6 +181,8 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
   const [sortMode, setSortMode] = useState<SortMode>(
     (initial.sort as SortMode) || defaultSort,
   );
+  const [urlStateReady, setUrlStateReady] = useState(false);
+  const urlStateHydratedRef = useRef(false);
 
   const [showAllMulti, setShowAllMulti] = useState(false);
   const [multiSearch, setMultiSearch] = useState("");
@@ -190,6 +206,23 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
         : null,
     [search.mode, search.pagefindBasePath, search.pagefindDebugLabel],
   );
+
+  // Correct deep links after the first client render so both sides of
+  // hydration begin on the page-1 SSR state. The URL sync waits for this
+  // effect; it must never erase a deep-linked query before reading it.
+  useEffect(() => {
+    if (urlStateHydratedRef.current) return;
+    urlStateHydratedRef.current = true;
+    const fromUrl = parseFilterStateFromUrl(urlKeys, sortValues, defaultSort);
+    setQuery(fromUrl.q);
+    setSelectedMulti(fromUrl.multi);
+    setSelectedSingle(fromUrl.single);
+    setSelectedExtra(fromUrl.extras ?? {});
+    setPage(fromUrl.page);
+    setTagMode(fromUrl.tagMode);
+    setSortMode((fromUrl.sort as SortMode) || defaultSort);
+    setUrlStateReady(true);
+  }, [urlKeys, defaultSort]);
 
   // Fetch data (fetch mode only)
   useEffect(() => {
@@ -535,6 +568,7 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
 
   // Sync URL
   useEffect(() => {
+    if (!urlStateReady) return;
     writeFilterStateToUrl(urlKeys, defaultSort, {
       q: query,
       single: selectedSingle,
@@ -554,6 +588,7 @@ export function useFilterState<T>(options: UseFilterStateOptions<T>) {
     safePage,
     tagMode,
     sortMode,
+    urlStateReady,
   ]);
 
   const resetPage = useCallback(() => setPage(1), []);
