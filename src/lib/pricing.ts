@@ -709,7 +709,7 @@ export const PRICING_STATS = {
       alt: "JetBrains",
     },
     {
-      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/52a636b6/66c74d825fbc26b4d09823d1_Brevo-Logo-transparent.webp`,
+      src: "/images/logos/brevo.svg",
       alt: "Brevo",
     },
     {
@@ -721,7 +721,7 @@ export const PRICING_STATS = {
       alt: "ADEO",
     },
     {
-      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/356e9829/65c49832a235dab4e3e0a3ce_leroy-merlin.svg`,
+      src: "/images/logos/leroy-merlin.svg",
       alt: "Leroy Merlin",
     },
     {

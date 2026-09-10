@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-06-18T14:14:32.204Z"
 description: "Interactive VS Code extension that provides hands-on ZenML pipeline tutorials directly in your development environment"
 githubUrl: "https://github.com/zenml-io/vscode-tutorial-extension"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/48.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/989d463d/zenml-codespace-tutorial-cover.avif"
 previewImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8ba50637/6852c9c8c44a472f186173dc_zenml-icon.png"
 tags:

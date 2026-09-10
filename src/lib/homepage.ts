@@ -55,9 +55,9 @@ export const LOGO_CLOUD: { label: string; logos: LogoItem[] } = {
     { name: "ADEO", src: "/images/logos/adeo.png" },
     {
       name: "Leroy Merlin",
-      src: `${R2}/d28fbdf4/670e2f23e2b3ba3756fae38e_leroy_merlin_logo-min.svg`,
+      src: "/images/logos/leroy-merlin.svg",
     },
-    { name: "Brevo", src: "/images/logos/brevo.webp", maxWidth: "80px" },
+    { name: "Brevo", src: "/images/logos/brevo.svg", maxWidth: "80px" },
     { name: "Safran", src: "/images/logos/safran.png" },
     { name: "AECOM", src: "/images/logos/aecom.svg" },
     {
@@ -274,14 +274,14 @@ export const CASE_STUDY_CARDS: CaseStudyCard[] = [
   {
     companyLogo: `${R2}/c110367c/65c498032806e2ff7daec2bf_ADEO.svg`,
     companyLogoAlt: "ADEO",
-    secondaryLogo: `${R2}/d28fbdf4/670e2f23e2b3ba3756fae38e_leroy_merlin_logo-min.svg`,
+    secondaryLogo: "/images/logos/leroy-merlin.svg",
     secondaryLogoAlt: "Leroy Merlin",
     title:
       "How ADEO Leroy Merlin decreased their time-to-market from 2 months to 2 weeks",
     href: "/case-study/adeo-leroy-merlin",
   },
   {
-    companyLogo: `${R2}/a0f2ee23/652d3e5d29d36f927c2bb623_brevo.webp`,
+    companyLogo: "/images/logos/brevo.svg",
     companyLogoAlt: "Brevo",
     title: "How Brevo accelerated model development by 80% using ZenML",
     href: "/case-study/brevo",

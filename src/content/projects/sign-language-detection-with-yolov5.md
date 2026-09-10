@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-03-24T05:33:03.915Z"
 description: "End-to-end computer vision pipeline that trains a YOLOv5 model to detect and recognize American Sign Language alphabet in real-time images, with deployment to Vertex AI."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/sign-language-detection-yolov5"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/7.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/9b697dcc/sign-language-detection-with-yolov5-cover.avif"
 tags:
   - "computer-vision"
   - "object-detection"

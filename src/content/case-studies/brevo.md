@@ -7,13 +7,13 @@ hub:
   cardTitle: "How Brevo accelerated model development by 80% using ZenML"
   order: 3
   logos:
-    - url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/52a636b6/66c74d825fbc26b4d09823d1_Brevo-Logo-transparent.webp"
-      alt: "Green \"Brevo\" logo on a transparent background."
+    - url: "/images/logos/brevo.svg"
+      alt: "Brevo"
 
 hero:
   logos:
-    - url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cb7581f5/652d3e5d29d36f927c2bb623_brevo.webp"
-      alt: "Logo of Brevo, previously known as Sendinblue, displayed in green and black text."
+    - url: "/images/logos/brevo.svg"
+      alt: "Brevo"
 
 sidebar:
   company: "Brevo"

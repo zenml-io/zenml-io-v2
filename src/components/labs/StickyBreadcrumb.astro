@@ -1,0 +1,74 @@
+---
+/**
+ * StickyBreadcrumb — the breadcrumb row that opens a long-form article body
+ * in the Labs shell (a blog post, a database entry). Extracted from
+ * BlogLayout.astro so both layouts render the one copy.
+ *
+ * It is the first element of the body, in the article lane so it lines up
+ * with the body text's left edge. Sticky from `lg` up only (mobile renders
+ * it as a plain static row — no room to spare for a floating crumb on a
+ * small screen). No bar treatment: it carries the page's own ground (white
+ * — the Labs shell leaves `body` on the browser default rather than painting
+ * `--background`) and no rule, so what stays on screen reads as the crumb
+ * trail holding its place, not a second chrome layer. The fade under it
+ * (desktop only, hidden below `lg`) is the same masking idea as LabsBand's
+ * bottom fade — body text dissolves into the page ground as it passes
+ * beneath instead of being cut by a hard edge — and it spans the prose
+ * column only, so the table-of-contents rail beside it (sticky in its own
+ * right) is never washed by it. `top` is the nav's bottom edge + 8px, flush,
+ * no sliver of page between them: 108px, from LabsNavigation's `lg:top-8` +
+ * 76px; `z-30` sits under the nav's `z-50`; the row is 44px tall and
+ * `[&>nav]:mb-0` drops the chevron variant's own bottom margin here rather
+ * than adding a prop to the shared primitive. Offsets that move together on
+ * desktop: nav 108px → this row adds 44px + 8px gap = 160px, which is the
+ * TOC's sticky offset and every heading's `scroll-margin-top` (`.prose [id]`
+ * in global.css, `lg` breakpoint). Below `lg` there's no crumb row to clear,
+ * so that same rule's base value only accounts for the nav. Server-rendered
+ * visible, never a `reveal-child`.
+ *
+ * Reads `--article-lane` and `--prose-column` from `blogLaneStyle()`
+ * (src/lib/blogLayout.ts), which the consuming layout sets on an ancestor
+ * element's `style` — this component does not declare them itself.
+ *
+ * The consuming layout owns the bounding wrapper that decides how far the
+ * sticky region reaches (see BlogLayout.astro's own comment on it); only
+ * this row lives here.
+ */
+import Breadcrumb, { type BreadcrumbItem } from "../system/Breadcrumb.astro";
+
+interface Props {
+  /** Last item is the current page. */
+  items: BreadcrumbItem[];
+  /** Excludes the crumb trail from the Pagefind index. */
+  pagefindIgnore?: boolean;
+}
+
+const { items, pagefindIgnore = false } = Astro.props;
+---
+
+<div class="lg:sticky lg:top-[108px] lg:z-30">
+  <div class="bg-white">
+    <div class="mx-auto max-w-content px-gutter">
+      <div class="relative mx-auto max-w-(--article-lane)">
+        <div class="flex h-11 items-center [&>nav]:mb-0">
+          <Breadcrumb
+            items={items}
+            separator="chevron"
+            pagefindIgnore={pagefindIgnore}
+          />
+        </div>
+        {/* The fade masks the body copy passing underneath, so it spans the
+            prose column only — the table-of-contents rail beside it is
+            sticky in its own right and must never be washed by it. Eased
+            (four stops) rather than a plain two-stop ramp so it dissolves
+            instead of reading as a hard-edged band; desktop-only since the
+            crumb above it isn't sticky below `lg`. */}
+        <div
+          class="pointer-events-none absolute top-full left-0 hidden h-10 w-full max-w-(--prose-column) bg-[linear-gradient(to_bottom,white_0%,rgb(255_255_255/0.85)_30%,rgb(255_255_255/0.45)_65%,transparent_100%)] lg:block"
+          aria-hidden="true"
+        >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

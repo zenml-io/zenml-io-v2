@@ -12,7 +12,7 @@ webflow:
   createdOn: "2023-10-18T07:59:17.118Z"
 position: "Founding Software Engineer"
 photo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a65e5649/652f904e44d8c087c2c22338_stefan_z.jpeg"
+  url: "https://assets.zenml.io/content/team/547a6e06/stefan-nica-cutout.avif"
 email: "stefan@zenml.io"
 linkedin: "https://www.linkedin.com/in/stefan-daniel-nica/"
 order: 7

@@ -1463,19 +1463,20 @@ body {
 [data-app="labs"] .prose ol > li + li {
   margin-top: 12px;
 }
-[data-app="labs"] .prose ul > li::before {
+[data-app="labs"] .prose ul > li::before,
+[data-app="labs"] .labs-hex-list ul > li::before {
   content: "";
   position: absolute;
   left: 0;
   top: 0;
-  width: 40px;
+  width: var(--list-marker-width, 40px);
   height: 32px;
   height: 1lh; /* one line box: the hexagon centres on the first line whatever the measure */
   background-color: var(--color-sage-600);
   -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 13.86'%3E%3Cpath d='M5 0.58 A2 2 0 0 1 7 0.58 L11 2.89 A2 2 0 0 1 12 4.62 L12 9.24 A2 2 0 0 1 11 10.97 L7 13.28 A2 2 0 0 1 5 13.28 L1 10.97 A2 2 0 0 1 0 9.24 L0 4.62 A2 2 0 0 1 1 2.89 Z'/%3E%3C/svg%3E")
-    no-repeat center / 12px 14px;
+    no-repeat center / var(--list-marker-size, 12px 14px);
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 13.86'%3E%3Cpath d='M5 0.58 A2 2 0 0 1 7 0.58 L11 2.89 A2 2 0 0 1 12 4.62 L12 9.24 A2 2 0 0 1 11 10.97 L7 13.28 A2 2 0 0 1 5 13.28 L1 10.97 A2 2 0 0 1 0 9.24 L0 4.62 A2 2 0 0 1 1 2.89 Z'/%3E%3C/svg%3E")
-    no-repeat center / 12px 14px;
+    no-repeat center / var(--list-marker-size, 12px 14px);
 }
 [data-app="labs"] .prose ol {
   counter-reset: prose-ol;

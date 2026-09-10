@@ -29,6 +29,10 @@ export const RAIL_GAP = 48;
  */
 export const BAND_CONTENT_GAP = "pt-10 md:pt-16";
 
+/** Shared article-title ladder for blog, project and case-study mastheads. */
+export const ARTICLE_TITLE_CLASS =
+  "font-display text-[32px] leading-[38px] text-(--color-cream-800) md:text-[56px] md:leading-[62px]";
+
 /** CSS custom-property names the constants above are exposed as. */
 export const BLOG_LANE_VARS = {
   articleLane: "--article-lane",

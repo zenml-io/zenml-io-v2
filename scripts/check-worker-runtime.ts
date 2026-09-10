@@ -264,6 +264,24 @@ async function runChecks(baseUrl: string): Promise<CheckResult[]> {
     );
   }
 
+  for (const pathname of [
+    "/team/adam-probst",
+    "/team/adam-probst/",
+    "/team/retired-member",
+  ]) {
+    const redirect = await request(baseUrl, pathname);
+    check(
+      results,
+      `${pathname} redirects permanently to the team roster`,
+      redirect.status === 301 &&
+        new URL(redirect.headers.get("location") ?? "/", baseUrl).pathname ===
+          "/team",
+      `status ${redirect.status}, location ${redirect.headers.get("location")}`,
+    );
+  }
+  const team = await request(baseUrl, "/team");
+  check(results, "Team roster remains available", team.status === 200);
+
   // The static /blog/page/N pagination route was retired for client-side
   // pagination (#249) — public/_redirects enumerates every page number that
   // was ever built (2 through the highest at retirement) rather than a

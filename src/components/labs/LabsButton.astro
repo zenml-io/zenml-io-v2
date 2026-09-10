@@ -15,9 +15,10 @@ interface Props {
   cta: LabsCta;
   tone?: Tone;
   class?: string;
+  external?: boolean;
 }
 
-const { cta, tone = "dark", class: className } = Astro.props;
+const { cta, tone = "dark", class: className, external = false } = Astro.props;
 
 const TONE_CLASSES: Record<Tone, string> = {
   dark: "bg-(--color-cream-900) text-(--color-cream-50) hover:bg-(--color-sage-800)",
@@ -37,4 +38,4 @@ const classes = [
   .join(" ");
 ---
 
-<a href={cta.href} data-analytics={cta.analytics} class={classes}>{cta.label}</a>
+<a href={cta.href} data-analytics={cta.analytics} class={classes} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>{cta.label}</a>

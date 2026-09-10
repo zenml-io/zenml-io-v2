@@ -589,7 +589,7 @@ const CHECKS: IslandCheck[] = [
     },
   },
   {
-    name: "CaseStudyCard's whole card is one link, arrow glyph included",
+    name: "Case-study logo, title, and read label share one clickable card",
     route: "/case-studies",
     // Static markup. Whether a click lands is decided by hit testing and paint
     // order, which no amount of reading the HTML settles.
@@ -598,70 +598,51 @@ const CHECKS: IslandCheck[] = [
     async assert(page) {
       const href = "/case-study/jetbrains";
 
-      // Settle the layout before measuring anything. The self-hosted webfont
-      // swaps in after domcontentloaded and reflows the hero, which moves this
-      // card down by about 24px. A coordinate read before the swap is stale by
-      // more than the glyph's own height, so the hit test below would probe a
-      // spot the glyph has already left.
+      // Font swaps can reflow the hero and invalidate click coordinates.
       await page.evaluate(() => document.fonts.ready.then(() => undefined));
 
-      // Scroll before measuring, and measure in the same call. Where this card
-      // lands on the page is not fixed: it sits near the fold of the default
-      // 1280x720 viewport with only ~23px to spare, so one extra wrapped line
-      // in the hero or in a sibling card title (mt-auto pins the glyph to the
-      // bottom of the grid row) puts it below the fold. elementFromPoint
-      // returns null for a point outside the viewport, and this check would
-      // then report a dead click zone that does not exist.
-      //
-      // block: "center" clears both viewport edges and the sticky header.
-      // The explicit instant behaviour is required: global.css sets
-      // scroll-behavior: smooth, so the default would animate and every
-      // measurement here would race the animation.
-      const arrow = await page.evaluate((target) => {
-        const link = document.querySelector(`a[href="${target}"]`);
-        const glyph = link?.closest(".group")?.querySelector("div.mt-auto svg");
-        if (!glyph) return null;
-        glyph.scrollIntoView({ block: "center", behavior: "instant" });
-        const box = glyph.getBoundingClientRect();
-        return {
-          x: box.x + box.width / 2,
-          y: box.y + box.height / 2,
-          viewportHeight: window.innerHeight,
-        };
-      }, href);
-
-      if (arrow === null) {
-        throw new Error("could not find the card's arrow glyph");
-      }
-
-      // Guard the precondition rather than let it masquerade as the failure
-      // this check is looking for.
-      if (arrow.y < 0 || arrow.y >= arrow.viewportHeight) {
-        throw new Error(
-          `the arrow glyph is at y=${arrow.y} in a ${arrow.viewportHeight}px viewport after scrolling it into view: the hit test below cannot reach it`,
+      for (const selector of [".story-media", "h3", "p"]) {
+        // Instant scrolling avoids racing global smooth scrolling; centering
+        // keeps each region clear of viewport edges and the sticky header.
+        const point = await page.evaluate(
+          ({ target, region }) => {
+            const element = document
+              .querySelector(`a[href="${target}"]`)
+              ?.querySelector(region);
+            if (!element) return null;
+            element.scrollIntoView({ block: "center", behavior: "instant" });
+            const box = element.getBoundingClientRect();
+            return {
+              x: box.x + box.width / 2,
+              y: box.y + box.height / 2,
+              viewportHeight: window.innerHeight,
+            };
+          },
+          { target: href, region: selector },
         );
-      }
 
-      // Hover first: the glyph only takes its transform on hover, and that
-      // transform is what once promoted it above the anchor's overlay and ate
-      // the click. Probing without hovering cannot see the failure.
-      await page.mouse.move(arrow.x, arrow.y);
-      const hit = await page.evaluate(
-        (point) =>
-          document
-            .elementFromPoint(point.x, point.y)
-            ?.closest("a")
-            ?.getAttribute("href") ?? null,
-        arrow,
-      );
+        if (!point || point.y < 0 || point.y >= point.viewportHeight) {
+          throw new Error(`could not measure visible card region ${selector}`);
+        }
 
-      if (hit !== href) {
-        throw new Error(
-          `hovering the arrow glyph hits ${hit ?? "no link"}, not ${href}: the card has a dead click zone`,
+        // Hover too: decorative layers must not intercept the card's link.
+        await page.mouse.move(point.x, point.y);
+        const hit = await page.evaluate(
+          (coordinates) =>
+            document
+              .elementFromPoint(coordinates.x, coordinates.y)
+              ?.closest("a")
+              ?.getAttribute("href") ?? null,
+          point,
         );
+        if (hit !== href) {
+          throw new Error(
+            `hovering ${selector} hits ${hit ?? "no link"}, not ${href}: the card has a dead click zone`,
+          );
+        }
       }
 
-      // One tab stop per card: the logos and the "Learn more" row must not
+      // One tab stop per card: the logos and the read label must not
       // repeat the same destination.
       const linkCount = await page.evaluate(
         (target) => document.querySelectorAll(`a[href="${target}"]`).length,

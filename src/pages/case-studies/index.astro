@@ -1,22 +1,13 @@
 ---
-/**
- * Case studies hub page — grid of all 5 case studies.
- *
- * Route: /case-studies
- *
- * Renders a hero section, a grid of case study cards,
- * a banner link to the LLMOps database, and a dark CTA band.
- */
 import { getCollection } from "astro:content";
-import Button from "../../components/Button.astro";
-import CaseStudyCard from "../../components/sections/CaseStudyCard.astro";
-import FeaturesHubCTA from "../../components/sections/FeaturesHubCTA.astro";
-import { SECTION_INTRO_PRESETS } from "../../components/system/sectionIntro.shared";
-import PageHeader from "../../components/templates/PageHeader.astro";
+import BlogNewsletterCta from "../../components/labs/BlogNewsletterCta.astro";
+import LabsButton from "../../components/labs/LabsButton.astro";
+import LabsPageHeader from "../../components/labs/LabsPageHeader.astro";
+import LabsStoryCard from "../../components/labs/LabsStoryCard.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
 import {
   CASE_STUDIES_HUB_BANNER,
-  CASE_STUDIES_HUB_CTA,
   CASE_STUDIES_HUB_HERO,
   orderCaseStudies,
   splitAtBanner,
@@ -29,6 +20,14 @@ const allCaseStudies = await getCollection(
 const caseStudies = orderCaseStudies(allCaseStudies);
 const { before: cardsBeforeBanner, after: cardsAfterBanner } =
   splitAtBanner(caseStudies);
+const heroPrimary = {
+  ...CASE_STUDIES_HUB_HERO.primaryCta,
+  analytics: "CaseStudies-Hero-BookDemo",
+} as const;
+const heroSecondary = {
+  ...CASE_STUDIES_HUB_HERO.secondaryCta,
+  analytics: "CaseStudies-Hero-ReadDocs",
+} as const;
 ---
 
 <BaseLayout
@@ -36,83 +35,69 @@ const { before: cardsBeforeBanner, after: cardsAfterBanner } =
   description="See how teams are using ZenML to unify their AI platforms—from batch evaluations to real-time serving, traditional ML to GenAI workflows."
   ogTitle="ZenML Case Studies"
   surface="ml"
+  app="labs"
+  product="zenml"
 >
   <main>
-    {/* Hero */}
-    <PageHeader
-      tone="brand"
-      align="center"
-      containerClass="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8"
-      eyebrow={CASE_STUDIES_HUB_HERO.eyebrow}
-      heading={CASE_STUDIES_HUB_HERO.headline}
-      description={CASE_STUDIES_HUB_HERO.body}
-      classOverrides={{
-        eyebrow: SECTION_INTRO_PRESETS.cardEyebrow,
-        heading: SECTION_INTRO_PRESETS.pageHero.heading,
-        headingSpacing: "mt-3",
-      }}
-    >
-      <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-        <Button href={CASE_STUDIES_HUB_HERO.primaryCta.href} size="lg">
-          {CASE_STUDIES_HUB_HERO.primaryCta.label}
-        </Button>
-        <Button href={CASE_STUDIES_HUB_HERO.secondaryCta.href} variant="secondary" size="lg">
-          {CASE_STUDIES_HUB_HERO.secondaryCta.label}
-        </Button>
-      </div>
-    </PageHeader>
+  <LabsPageHeader
+    eyebrow={CASE_STUDIES_HUB_HERO.eyebrow}
+    heading={CASE_STUDIES_HUB_HERO.headline}
+    description={CASE_STUDIES_HUB_HERO.body}
+    align="center"
+  >
+    <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+      <LabsButton cta={heroPrimary} tone="dark" />
+      <LabsButton cta={heroSecondary} tone="ghost" />
+    </div>
+  </LabsPageHeader>
 
-    {/* Case study cards, split by the LLMOps banner */}
-    <section class="bg-white py-16 sm:py-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* First row */}
-        <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-          {cardsBeforeBanner.map((cs) => (
-            <CaseStudyCard
-              href={`/case-study/${cs.data.slug}`}
+  <section class:list={["scroll-reveal-section pb-24", BAND_CONTENT_GAP]}>
+    <div class="mx-auto max-w-content px-gutter">
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {cardsBeforeBanner.map((cs) => (
+          <LabsStoryCard
+            href={"/case-study/" + cs.data.slug}
+            title={cs.data.hub.cardTitle}
+            company={cs.data.sidebar.company}
+            logos={cs.data.hub.logos}
+          />
+        ))}
+      </div>
+
+      <a
+        href={CASE_STUDIES_HUB_BANNER.href}
+        class="my-10 flex cursor-pointer items-center justify-between gap-6 rounded-[20px] border border-border bg-card px-6 py-5 transition-colors duration-200 ease-out hover:border-(--color-sage-400)"
+      >
+        <div>
+          <p class="font-sans text-[17px] leading-6 text-(--color-cream-900)">
+            {CASE_STUDIES_HUB_BANNER.text}
+          </p>
+          <p class="mt-1 font-sans text-[15px] leading-6 text-(--color-cream-700)">
+            {CASE_STUDIES_HUB_BANNER.supporting}
+          </p>
+        </div>
+        <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-border text-(--color-cream-800)" aria-hidden="true">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </span>
+      </a>
+
+      {cardsAfterBanner.length > 0 && (
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+          {cardsAfterBanner.map((cs) => (
+            <LabsStoryCard
+              href={"/case-study/" + cs.data.slug}
               title={cs.data.hub.cardTitle}
+              company={cs.data.sidebar.company}
               logos={cs.data.hub.logos}
             />
           ))}
         </div>
+      )}
+    </div>
+  </section>
 
-        {/* LLMOps banner — between card rows */}
-        <a
-          href={CASE_STUDIES_HUB_BANNER.href}
-          class="my-10 flex items-center justify-between rounded-md border border-gray-200 bg-gray-50 px-6 py-4 transition hover:border-zenml-300 hover:shadow-sm"
-        >
-          <div>
-            <p class="font-semibold text-gray-900">{CASE_STUDIES_HUB_BANNER.text}</p>
-            <p class="text-sm text-gray-500">{CASE_STUDIES_HUB_BANNER.supporting}</p>
-          </div>
-          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white">
-            <svg class="h-5 w-5 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14M19 12l-7-7M19 12l-7 7" />
-            </svg>
-          </div>
-        </a>
-
-        {/* Second row: remaining cards */}
-        {cardsAfterBanner.length > 0 && (
-          <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {cardsAfterBanner.map((cs) => (
-              <CaseStudyCard
-                href={`/case-study/${cs.data.slug}`}
-                title={cs.data.hub.cardTitle}
-                logos={cs.data.hub.logos}
-              />
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
-
-    {/* CTA band */}
-    <FeaturesHubCTA
-      headline={CASE_STUDIES_HUB_CTA.headline}
-      body={CASE_STUDIES_HUB_CTA.body}
-      primaryCta={CASE_STUDIES_HUB_CTA.primaryCta}
-      secondaryCta={CASE_STUDIES_HUB_CTA.secondaryCta}
-    />
+  <BlogNewsletterCta />
   </main>
 </BaseLayout>

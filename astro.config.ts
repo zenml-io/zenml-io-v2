@@ -77,7 +77,10 @@ export default defineConfig({
     sitemap({
       filter: (page) => {
         const url = new URL(page);
-        return !sitemapExcludePaths.has(url.pathname);
+        return (
+          !sitemapExcludePaths.has(url.pathname) &&
+          !url.pathname.startsWith("/team/")
+        );
       },
     }),
     mdx(),

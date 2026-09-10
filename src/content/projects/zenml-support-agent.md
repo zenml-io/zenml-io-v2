@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-03-24T05:33:02.199Z"
 description: "A production-ready agent that can help you with your ZenML questions."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/zenml-support-agent"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/8.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/c2fcae59/zenml-support-agent-cover.avif"
 previewImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f37c859f/67e242f59689b76ff161aaad_image.jpeg"
 tags:

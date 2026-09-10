@@ -1,11 +1,12 @@
 ---
 /**
  * CustomerStoryCards — Labs homepage "Customer stories" band: a headline +
- * "all case studies" link, then four case-study cards (radial-green media
- * panel with the company name, title, "read the story" label). Copy and
+ * "all case studies" link, then four case-study cards (light sage grain
+ * panel with customer logos, title, "read the story" label). Copy and
  * card data arrive through the `content` prop (`LABS_STORIES` on `/`).
  */
 import type { StoryCardsContent } from "../../lib/labs-home";
+import LabsStoryCard from "./LabsStoryCard.astro";
 
 interface Props {
   content: StoryCardsContent;
@@ -31,26 +32,16 @@ const cards = content.cards.slice(0, 4);
 
     <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
       {cards.map((card) => (
-        <a
+        <LabsStoryCard
           href={card.href}
-          class="group flex cursor-pointer flex-col overflow-hidden rounded-[20px] border border-border bg-card transition-colors duration-200 ease-out hover:border-(--color-sage-400)"
-        >
-          <div
-            class="flex h-[200px] items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_70%_80%_at_50%_45%,#7A9268_0%,#4A5A44_100%)] px-6 text-center transition-transform duration-500 ease-out group-hover:scale-[1.04] motion-reduce:transition-none"
-          >
-            <span class="font-label text-[22px] uppercase tracking-[0.08em] text-(--color-sage-300)">
-              {card.companyLogoAlt}
-            </span>
-          </div>
-          <div class="flex flex-1 flex-col px-6 pt-6 pb-7">
-            <h3 class="font-display text-[22px] leading-[28px] text-(--color-cream-900)">
-              {card.title}
-            </h3>
-            <p class="mt-auto pt-4 font-label text-[12px] uppercase tracking-[0.05em] text-(--color-cream-700)">
-              {content.readLabel}
-            </p>
-          </div>
-        </a>
+          title={card.title}
+          company={card.companyLogoAlt}
+          logos={[
+            { url: card.companyLogo, alt: card.companyLogoAlt },
+            ...(card.secondaryLogo ? [{ url: card.secondaryLogo, alt: card.secondaryLogoAlt }] : []),
+          ]}
+          readLabel={content.readLabel}
+        />
       ))}
     </div>
   </div>

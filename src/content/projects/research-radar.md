@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-03-24T05:33:06.800Z"
 description: "End-to-end pipeline that automates research paper discovery and classification for specialized research domains."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/research-radar"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/6.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/ca24ce88/research-radar-cover.avif"
 previewImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7ed9afac/67e0ee92f50db58a42ff5520_training_pipeline.png"
 tags:

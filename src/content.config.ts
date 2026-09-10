@@ -659,7 +659,7 @@ const compareSchema = z.object({
 
 /**
  * Team Members schema
- * Route: /team/<slug>
+ * Rosters: /company and /team (legacy /team/<slug> URLs redirect to /team)
  * Count: 22 items
  *
  * DISCREPANCY FROM PLAN:
@@ -833,10 +833,18 @@ const featurePageSchema = baseContentSchema.extend({
 // Case Studies Schema (Phase 3H-4)
 // ============================================================================
 
+// Customer logos are static UI assets; legacy R2 logos remain supported.
+const caseStudyLogoSchema = imageSchema.extend({
+  url: z.union([
+    z.url(),
+    z.string().regex(/^\/images\/logos\/[a-z0-9-]+\.svg$/),
+  ]),
+});
+
 const caseStudyHubSchema = z.object({
   cardTitle: z.string(),
   order: z.number().optional(),
-  logos: z.array(imageSchema).default([]),
+  logos: z.array(caseStudyLogoSchema).default([]),
 });
 
 const caseStudySidebarSchema = z.object({
@@ -870,7 +878,7 @@ const caseStudySidebarSchema = z.object({
 const caseStudySchema = baseContentSchema.extend({
   hub: caseStudyHubSchema,
   hero: z.object({
-    logos: z.array(imageSchema).default([]),
+    logos: z.array(caseStudyLogoSchema).default([]),
   }),
   sidebar: caseStudySidebarSchema,
 });

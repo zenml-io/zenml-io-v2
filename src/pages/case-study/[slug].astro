@@ -1,20 +1,8 @@
 ---
-/**
- * Case study detail page.
- *
- * Renders individual case study pages with hero logos, sidebar metadata,
- * and long-form narrative content (markdown body).
- *
- * Generates /case-study/<slug> for each of the 5 published case studies.
- */
 import { getCollection, render } from "astro:content";
-import CaseStudySidebar from "../../components/sections/CaseStudySidebar.astro";
-import FinalCTA from "../../components/sections/FinalCTA.astro";
-import Breadcrumb from "../../components/system/Breadcrumb.astro";
-import RelatedRail, {
-  type RelatedRailItem,
-} from "../../components/templates/RelatedRail.astro";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import LabsCaseStudySidebar from "../../components/labs/LabsCaseStudySidebar.astro";
+import LabsStoryCard from "../../components/labs/LabsStoryCard.astro";
+import LabsDetailLayout from "../../layouts/LabsDetailLayout.astro";
 import { orderCaseStudies, siblingCaseStudies } from "../../lib/case-studies";
 
 export async function getStaticPaths() {
@@ -26,17 +14,7 @@ export async function getStaticPaths() {
     params: { slug: cs.data.slug },
     props: {
       cs,
-      related: siblingCaseStudies(caseStudies, cs.data.slug).map((sibling) => ({
-        kind: "meta-card" as const,
-        href: `/case-study/${sibling.data.slug}`,
-        title: sibling.data.hub.cardTitle,
-        meta: [
-          { text: sibling.data.sidebar.company, emphasis: true },
-          ...(sibling.data.sidebar.industry
-            ? [{ text: sibling.data.sidebar.industry }]
-            : []),
-        ],
-      })) satisfies RelatedRailItem[],
+      related: siblingCaseStudies(caseStudies, cs.data.slug),
     },
   }));
 }
@@ -44,90 +22,53 @@ export async function getStaticPaths() {
 const { cs, related } = Astro.props;
 const { data } = cs;
 const { Content } = await render(cs);
-
-// SEO
 const seoTitle = data.seo?.title || `${data.title} - ZenML Case Study`;
 const seoDescription =
   data.seo?.description ||
-  `How ${data.sidebar.company} uses ZenML to build production AI workflows.`;
-const ogImage = data.seo?.ogImage;
+  "How " +
+    data.sidebar.company +
+    " uses ZenML to build production AI workflows.";
 ---
 
-<BaseLayout
+<LabsDetailLayout
   title={seoTitle}
   description={seoDescription}
-  ogImage={ogImage}
+  ogImage={data.seo?.ogImage}
   ogTitle={data.seo?.ogTitle}
   ogDescription={data.seo?.ogDescription}
   canonical={data.seo?.canonical}
+  heading={data.title}
+  eyebrow={data.sidebar.company}
+  breadcrumb={[
+    { label: "Case studies", href: "/case-studies" },
+    { label: data.sidebar.company },
+  ]}
   surface="ml"
+  product="zenml"
 >
-  <main>
-    {/* Breadcrumb */}
-    <div class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-      <Breadcrumb
-        items={[
-          { label: "Case Studies", href: "/case-studies" },
-          { label: data.sidebar.company },
-        ]}
-      />
+  <div slot="sidebar">
+    <LabsCaseStudySidebar content={data.sidebar} logos={data.hero.logos} />
+  </div>
+
+  <div class="prose prose-gray max-w-none">
+    <Content />
+  </div>
+
+  {related.length > 0 && <section slot="related" class="scroll-reveal-section mx-auto max-w-content px-gutter pb-24">
+    <div class="border-t border-border pt-10">
+      <h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-800)">
+        More case studies
+      </h2>
+      <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {related.map((sibling) => (
+          <LabsStoryCard
+            href={"/case-study/" + sibling.data.slug}
+            title={sibling.data.hub.cardTitle}
+            company={sibling.data.sidebar.company}
+            logos={sibling.data.hub.logos}
+          />
+        ))}
+      </div>
     </div>
-
-    {/* Hero: logos + title */}
-    <section class="bg-white py-space-lg sm:py-space-xl">
-      <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-        {data.hero.logos.length > 0 && (
-          <div class="mb-6 flex items-center justify-center gap-4">
-            {data.hero.logos.map((logo) => (
-              <img
-                src={logo.url}
-                alt={logo.alt || data.sidebar.company}
-                class="h-12 max-w-[120px] object-contain"
-                loading="eager"
-              />
-            ))}
-          </div>
-        )}
-        <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl lg:text-4xl leading-tight">
-          {data.title}
-        </h1>
-      </div>
-    </section>
-
-    {/* Main content: sidebar + body */}
-    <section class="bg-white pb-16 sm:pb-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="grid gap-10 lg:grid-cols-[280px_1fr] lg:items-start">
-          <div class="lg:sticky lg:top-20">
-            <CaseStudySidebar
-              company={data.sidebar.company}
-              website={data.sidebar.website}
-              mlTeamSize={data.sidebar.mlTeamSize}
-              cloudProvider={data.sidebar.cloudProvider}
-              industry={data.sidebar.industry}
-              useCases={data.sidebar.useCases}
-              pdfDownload={data.sidebar.pdfDownload}
-            />
-          </div>
-          <div class="prose prose-gray max-w-none">
-            <Content />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    {/* Sibling case studies */}
-    {related.length > 0 && (
-      <section class="bg-white pb-16 sm:pb-20">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div class="border-t border-gray-200 pt-10">
-            <h2 class="mb-6 text-xl font-bold text-gray-900">More case studies</h2>
-            <RelatedRail items={related} gridVariant="gap-sm-2col-sm" />
-          </div>
-        </div>
-      </section>
-    )}
-
-    <FinalCTA />
-  </main>
-</BaseLayout>
+  </section>}
+</LabsDetailLayout>

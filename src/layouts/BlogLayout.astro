@@ -7,16 +7,15 @@ import {
   BLOG_CARD_PRODUCT_PILL_LINK,
 } from "../components/labs/blogCardStyles";
 import LabsBand from "../components/labs/LabsBand.astro";
+import StickyBreadcrumb from "../components/labs/StickyBreadcrumb.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
-import Breadcrumb, {
-  type BreadcrumbItem,
-} from "../components/system/Breadcrumb.astro";
+import type { BreadcrumbItem } from "../components/system/Breadcrumb.astro";
 import RelatedRail, {
   type RelatedRailItem,
 } from "../components/templates/RelatedRail.astro";
 import type { Surface } from "../lib/analytics";
 import type { BlogProduct } from "../lib/blog";
-import { blogLaneStyle } from "../lib/blogLayout";
+import { ARTICLE_TITLE_CLASS, blogLaneStyle } from "../lib/blogLayout";
 import { SITE_URL } from "../lib/constants";
 import type { SEOProps } from "../lib/seo";
 import "../styles/blog-image-lightbox.css";
@@ -281,7 +280,7 @@ const articleJsonLd = {
           )}
         </div>
 
-        <h1 class="reveal-child stagger-1 font-display text-[32px] leading-[38px] text-(--color-cream-800) md:text-[56px] md:leading-[62px]">
+        <h1 class:list={["reveal-child stagger-1", ARTICLE_TITLE_CLASS]}>
           {displayTitle}
         </h1>
 
@@ -327,56 +326,7 @@ const articleJsonLd = {
       padding did. */}
   <div>
 
-  {/* Breadcrumb — the first element of the post body, in the article lane so
-      it lines up with the body text's left edge. Sticky from `lg` up only
-      (mobile renders it as a plain static row — no room to spare for a
-      floating crumb on a small screen, and see the wrapper comment above for
-      why the sticky region is bounded to the article). No bar treatment: it
-      carries the page's own ground (white — the Labs shell leaves `body` on
-      the browser default rather than painting `--background`) and no rule,
-      so what stays on screen reads as the crumb trail holding its place,
-      not a second chrome layer. The fade under it (desktop only, hidden
-      below `lg`) is the same masking idea as LabsBand's bottom fade — body
-      text dissolves into the page ground as it passes beneath instead of
-      being cut by a hard edge — and it spans the prose column only, so the
-      table-of-contents rail beside it (sticky in its own right) is never
-      washed by it. `top` is the nav's bottom edge + 8px, flush, no sliver of
-      page between them: 108px, from LabsNavigation's `lg:top-8` + 76px;
-      `z-30` sits under the nav's `z-50`; the row is 44px tall and
-      `[&>nav]:mb-0` drops the chevron variant's own bottom margin here
-      rather than adding a prop to the shared primitive. Offsets that move
-      together on desktop: nav 108px → this row adds 44px + 8px gap = 160px,
-      which is the TOC's sticky offset and every heading's
-      `scroll-margin-top` (`.prose [id]` in global.css, `lg` breakpoint).
-      Below `lg` there's no crumb row to clear, so that same rule's base
-      value only accounts for the nav. Server-rendered visible, never a
-      `reveal-child`. */}
-  <div class="lg:sticky lg:top-[108px] lg:z-30">
-    <div class="bg-white">
-      <div class="mx-auto max-w-content px-gutter">
-        <div class="relative mx-auto max-w-(--article-lane)">
-          <div class="flex h-11 items-center [&>nav]:mb-0">
-            <Breadcrumb
-              items={breadcrumbItems}
-              separator="chevron"
-              pagefindIgnore
-            />
-          </div>
-          {/* The fade masks the body copy passing underneath, so it spans the
-              prose column only — the table-of-contents rail beside it is
-              sticky in its own right and must never be washed by it. Eased
-              (four stops) rather than a plain two-stop ramp so it dissolves
-              instead of reading as a hard-edged band; desktop-only since the
-              crumb above it isn't sticky below `lg`. */}
-          <div
-            class="pointer-events-none absolute top-full left-0 hidden h-10 w-full max-w-(--prose-column) bg-[linear-gradient(to_bottom,white_0%,rgb(255_255_255/0.85)_30%,rgb(255_255_255/0.45)_65%,transparent_100%)] lg:block"
-            aria-hidden="true"
-          >
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <StickyBreadcrumb items={breadcrumbItems} pagefindIgnore />
 
   {/* Featured image — 16:9, opt-in via frontmatter `featuredImage` (the
       cover `mainImage` is never rendered here). It follows the breadcrumb

@@ -238,3 +238,7 @@
 /compare/kitaru-vs-inngest/ /compare/zenml-vs-inngest 301
 /compare/kitaru-vs-restate /compare/zenml-vs-restate 301
 /compare/kitaru-vs-restate/ /compare/zenml-vs-restate 301
+
+# Keep wildcard rules after static rules so they do not consume the dynamic-rule limit.
+# Individual team profiles are retired; the roster remains at /team.
+/team/* /team 301

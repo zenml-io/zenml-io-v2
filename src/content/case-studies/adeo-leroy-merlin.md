@@ -9,14 +9,14 @@ hub:
   logos:
     - url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg"
       alt: "Stylized teal brushstroke text logo saying \"adeo\" on a white background."
-    - url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/356e9829/65c49832a235dab4e3e0a3ce_leroy-merlin.svg"
+    - url: "/images/logos/leroy-merlin.svg"
       alt: "Green triangle logo with the words \"Leroy Merlin\" in black text."
 
 hero:
   logos:
     - url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg"
       alt: "Stylized teal brushstroke text logo saying \"adeo\" on a white background."
-    - url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/356e9829/65c49832a235dab4e3e0a3ce_leroy-merlin.svg"
+    - url: "/images/logos/leroy-merlin.svg"
       alt: "Green triangle logo with the words \"Leroy Merlin\" in black text."
 
 sidebar:

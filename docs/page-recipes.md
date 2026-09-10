@@ -241,36 +241,41 @@ registry component.
 
 ### Projects index
 **Routes** — `/projects` (one page).
-**Layout** — `BaseLayout`.
+**Layout** — `BaseLayout` with `app="labs"`, `surface="ml"`, and
+`product="zenml"`; `LabsPageHeader` and `BlogNewsletterCta`.
 **Surface** — `ml`.
-**Sequence** — `PageHeader` (centered hero with an eyebrow badge), a
-hand-rolled 3-column card grid with a hover-lift animation, then
-`ProjectsCTA`.
+**Sequence** — short Labs header (`LabsPageHeader`, eyebrow + heading + deck),
+then a centered `max-w-content` grid with explicit 1 → 2 → 3 columns of
+`labs.blog-card` entries (project image, title, description, license category,
+setup-time label), then the shared `BlogNewsletterCta` close band.
 **Required data** — `projects` collection (16 non-draft entries, sorted by
 title).
-**Buildable today** — partial. `PageHeader` covers the hero; the card grid
-and `ProjectsCTA` have no registry equivalent.
+**Buildable today** — yes for the Labs composition: `labs.page-header`,
+`labs.blog-card`, and `labs.blog-newsletter-cta` provide the shared pieces;
+the route supplies only collection sorting and card prop mapping.
 
 ### Project detail
 **Routes** — `/projects/<slug>` — one per published project (16 pages).
-**Layout** — `BaseLayout`.
+**Layout** — `labs.detail-layout` (`BaseLayout` with `app="labs"`,
+`surface="ml"`, `product="zenml"`).
 **Surface** — `ml`.
-**Sequence** — a hand-rolled header (back link, project image, title), then a
-two-column body: a sticky left sidebar built on `DescriptionList`
-(`frame="divided"`), and a right column with a details section (rendered
-through `lib/projectBody`'s minimal markdown-to-HTML converter) and an
-optional gallery image, then `ProjectsCTA`.
+**Sequence** — short Labs masthead with project title/description and a
+sticky breadcrumb, then the 768px prose lane plus 224px metadata rail. The
+named sidebar slot contains the project image and
+`DescriptionList(frame="divided")`; the default slot contains exactly one
+`.prose` details region from `lib/projectBody` followed by the optional
+gallery image. The layout closes with `BlogNewsletterCta`.
 **Required data** — `projects` collection; `lib/projectBody`
 (`markdownToHtml`).
-**Buildable today** — partial. The sidebar is a registry template
-(`DescriptionList`, divided frame — the frame used for fact-grid sidebars,
-distinct from the `spaced` frame case studies use). The header, details
-column, and gallery are hand-rolled. Note: `lib/projectBody`'s converter is
-deliberately minimal (headings and paragraphs only, no list handling) because
-it reproduces what these pages have always rendered — one project's body is a
-paragraph of literal `-` lines as a result. Two project pages are pinned as
-rendered-content goldens in `pnpm smoke:dist`, so this isn't a bug to fix in
-passing.
+**Buildable today** — yes for the shared Labs shell; the route owns only
+project data mapping and the gallery slot. The `DescriptionList` divided
+frame remains the fact-grid sidebar contract, distinct from the spaced frame
+used by case studies. `lib/projectBody`'s converter is deliberately minimal
+(headings and paragraphs only, no list handling) because it reproduces what
+these pages have always rendered — one project's body is a paragraph of
+literal `-` lines as a result. The FloraCast details `.prose`, FloraCast
+sidebar `<dl>`, and sign-language details `.prose` remain pinned rendered
+goldens in `pnpm smoke:dist`.
 
 ---
 
@@ -278,31 +283,36 @@ passing.
 
 ### Case studies hub
 **Routes** — `/case-studies` (one page).
-**Layout** — `BaseLayout`.
+**Layout** — `BaseLayout` with `app="labs"`, `surface="ml"`, and
+`product="zenml"`; `LabsPageHeader` and `BlogNewsletterCta`.
 **Surface** — `ml`.
-**Sequence** — `PageHeader` (tinted hero, centered), a card grid split into
-two rows by a banner link to the LLMOps database, then `FeaturesHubCTA`.
+**Sequence** — short centered Labs header with the existing hero CTAs, then
+an explicit 1 → 2 → 4 `LabsStoryCard` grid split around the existing LLMOps
+banner link, then the shared newsletter close band.
 **Required data** — `case-studies` collection (5 non-draft entries; `lib/case-studies`'s
-`orderCaseStudies`/`splitAtBanner`); `SECTION_INTRO_PRESETS`.
-**Buildable today** — partial. `PageHeader` covers the hero; the card grid,
-banner link, and `FeaturesHubCTA` are page-specific components (`FeaturesHubCTA`
-is reused elsewhere on the site — `/get-started`, `/pricing` — but isn't a
-registry template).
+`orderCaseStudies`/`splitAtBanner`).
+**Buildable today** — yes for the Labs composition: `labs.page-header`,
+`labs.story-card`, and `labs.blog-newsletter-cta` provide the shared pieces;
+the route owns ordering, banner copy, and CTA analytics mapping.
 
 ### Case study detail
 **Routes** — `/case-study/<slug>` — one per published case study (5 pages).
-**Layout** — `BaseLayout`.
+**Layout** — `labs.detail-layout` (`BaseLayout` with `app="labs"`,
+`surface="ml"`, `product="zenml"`).
 **Surface** — `ml`.
-**Sequence** — `Breadcrumb`, a hand-rolled hero (customer logos + title), a
-two-column main section (sticky `CaseStudySidebar` + prose body), a sibling
-case studies rail using `RelatedRail`, then `FinalCTA`.
+**Sequence** — short Labs masthead with company eyebrow, title, and description;
+a sticky shared breadcrumb; the 768px prose lane plus 224px metadata rail
+with customer logos above the facts; and a named
+related slot with an explicit 1 → 2 → 4 `LabsStoryCard` sibling grid. The
+layout closes with `BlogNewsletterCta`.
 **Required data** — `case-studies` collection; `lib/case-studies`
 (`orderCaseStudies`, `siblingCaseStudies`).
-**Buildable today** — partial. `CaseStudySidebar` is itself a thin wrapper
-around `DescriptionList` (the `spaced` frame), and the sibling rail is
-`RelatedRail` — both registry templates. The hero and the two-column shell
-around them are hand-rolled. The sibling rail is a deliberate recent addition
-to this page (case studies didn't always cross-link to each other).
+**Buildable today** — yes for the shared Labs shell: `labs.detail-layout`,
+`labs.sticky-breadcrumb`, `labs.case-study-sidebar`, and `labs.story-card`
+cover the page family. `LabsCaseStudySidebar` maps the collection sidebar
+through the shared `DescriptionList` spaced frame and optionally renders the
+PDF CTA; the route owns only content rendering, logo mapping, and sibling
+ordering.
 
 ---
 
@@ -570,15 +580,43 @@ but by import, not through the registry.
 
 ### Company
 **Routes** — `/company` (one page).
-**Layout** — `BaseLayout`.
+**Layout** — `BaseLayout` with `app="labs"`, `surface="unified"`,
+`LabsPageHeader`, and `BlogNewsletterCta`.
 **Surface** — `unified`.
-**Sequence** — `PageHeader` (tinted hero), an about section (photo + text),
-a 5-card values grid, a team grid (from the `team` collection, with each
-member's Markdown body rendered inline as "fun facts"), and an open-positions
-list.
+**Sequence** — short centered Labs header, `labs.editorial-section` about
+block, `labs.values-grid`, `labs.people-roster`, `labs.open-roles`, and the
+shared newsletter close band.
 **Required data** — `lib/company.ts`; `team` collection.
-**Buildable today** — partial. `PageHeader` covers the hero; the about
-section, values grid, team grid, and positions list are all page-specific.
+**Buildable today** — yes. The route composes the registered Labs family
+components and maps company/team data without page-specific section markup.
+
+### Team index
+**Routes** — `/team` (one page).
+**Layout** — `BaseLayout` with `app="labs"`, `surface="unified"`,
+`LabsPageHeader`, and `BlogNewsletterCta`.
+**Sequence** — short centered Labs header followed by `labs.people-roster`
+using the shared published-team reader, then the newsletter close band.
+**Required data** — `team` collection; `lib/team` (`getPublishedTeamMembers`).
+**Buildable today** — yes. A new people index is composition around the
+shared roster and Labs shell.
+
+Per the approved visual review, individual team-member pages are outside the
+company-family scope (an intentional exception to #321's original route list). Roster
+cards do not link to profiles; legacy `/team/<slug>` URLs redirect permanently
+to `/team` and are excluded from the sitemap. Team collection records remain
+the source for both the Company and Team rosters.
+
+### Careers
+**Routes** — `/careers` (one page).
+**Layout** — `BaseLayout` with `app="labs"`, `surface="unified"`,
+`LabsPageHeader`, and `BlogNewsletterCta`.
+**Sequence** — short centered Labs header with scoped CTA analytics,
+`labs.editorial-section` mission block, `labs.values-grid` benefits,
+`ProcessSteps(layout="compact-list", numeralStyle="zero-padded", skin="labs")`,
+`labs.open-roles`, then the newsletter close band.
+**Required data** — `lib/careers.ts`; `lib/company.ts` (`OPEN_POSITIONS`).
+**Buildable today** — yes. The page is composed from shared Labs components
+plus the registered `ProcessSteps` arrangement.
 
 ### Contact
 **Routes** — `/contact` (one page).

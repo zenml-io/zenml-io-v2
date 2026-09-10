@@ -55,7 +55,7 @@ export const BOOK_YOUR_DEMO_LOGOS = [
     name: "Airbus",
     src: `${R2}/6a2ae7e3/670e2f23d254a9be9e02e50f_airbus.svg`,
   },
-  { name: "Brevo", src: "/images/logos/brevo.webp" },
+  { name: "Brevo", src: "/images/logos/brevo.svg" },
   {
     name: "AXA",
     src: `${R2}/5f1b0e8a/670e2f23b0b89bea22ecee3c_axa-min.svg`,
@@ -66,7 +66,7 @@ export const BOOK_YOUR_DEMO_LOGOS = [
   },
   {
     name: "Leroy Merlin",
-    src: `${R2}/d28fbdf4/670e2f23e2b3ba3756fae38e_leroy_merlin_logo-min.svg`,
+    src: "/images/logos/leroy-merlin.svg",
   },
 ];
 
