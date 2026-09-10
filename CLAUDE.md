@@ -83,6 +83,7 @@ The Segment loader in `consentConfig.ts` runs a single ZenML write key; there is
 ## Development Conventions
 
 - **This is a public repository.** All commits, documentation, and code are visible to the public. Never commit secrets, API keys, infrastructure IDs, internal URLs, traffic numbers, or other sensitive information. Use `CLAUDE.private.md` (gitignored) for private details. The `design/` folder and `scripts/internal/` are also gitignored for internal-only artifacts
+- The 2026 rebrand's visual work lands on the long-lived `rebrand/labs-site` branch (merged to `main` only at launch; see #246 for the order and one ticket per page family). DESIGN.md holds the binding design rules; build from the ZenML Labs components in `src/components/labs/` and the template registry rather than restyling pages in place. Every new Labs component is registered as `labs.*`.
 - `design/` folder is for heavy artifacts (exports, screenshots, JSON dumps, internal docs) — **never commit to git**
 - Make targeted git commits (only relevant files)
 - **Do not commit intermediate planning/review artifacts by default.** Files under `docs/plans/`, `docs/reviews/`, `prompt-exports/`, or similar orchestration scratch locations are working notes for agents unless the user explicitly asks to keep them. Before staging, check `git status --short` and leave unrelated or intermediate plans/reviews unstaged. If a plan becomes a durable product/architecture document, confirm that intent before committing it
@@ -303,7 +304,7 @@ never optional-prop bags hidden by as casts. Register new templates.
 - `src/components/islands/filter-index/` — one filterable-index family: `LlmopsIndex.tsx` (LLMOps database), `MlopsIndex.tsx` (MLOps database), `IntegrationsIndex.tsx`, `BlogIndex.tsx`, built on `DataFilterIndex`/`ControlFilterIndex` with `FacetRail`, `Pagination`, `ResultsCount`
 - `src/components/islands/ContactForm.tsx` — Form submission → Astro API routes
 - `src/components/islands/DemoRequestForm.tsx` — Demo request form used by `/book-your-demo`
-- `src/components/islands/CookieConsent.tsx` — Cookie consent banner (4 categories)
+- `src/components/islands/CookieConsent.tsx` — Cookie consent banner (4 categories), on Labs tokens (`[data-app="labs"]` scoped override, sage/cream only); shares its pill button classes with `LabsButton` via `src/components/labs/labsButtonStyles.ts`
 - `src/components/islands/FeatureTabsSlider.tsx` — Auto-cycling feature tabs on `/product/zenml` (formerly on the homepage). Two pane modes: with no children it renders `<img>` panes from `tabs[].image`; when the host passes server-rendered panes as children (one `[data-figure-index]` per tab) it only toggles the current one (`w--tab-active` + `data-highlight-active`), which is how `LabsFeatureTabs` shows the inline SVG highlight figures
 - `src/components/islands/ProTestimonialCarousel.tsx` — /pro page testimonial carousel
 - `src/components/islands/RoiCalculator.tsx` — ROI calculator interactive form

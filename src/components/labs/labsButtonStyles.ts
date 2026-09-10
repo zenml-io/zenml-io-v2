@@ -2,9 +2,11 @@
  * labsButtonStyles — the one copy of `LabsButton.astro`'s class strings.
  *
  * Extracted so a Preact island can wear the same pill without duplicating
- * the strings (the labs empty state's "Clear all filters" button uses the
- * `ghost` tone). `LabsButton.astro` stays the only way an `.astro` call site
- * renders a pill; nothing else should hand-write these classes.
+ * the strings: the labs empty state's "Clear all filters" button (`ghost`),
+ * the filter drawer's "See N results" pill and the CookieConsent island's
+ * primary/secondary buttons (`dark` / `ghost`). `LabsButton.astro` stays the
+ * only way an `.astro` call site renders a pill; nothing else should
+ * hand-write these classes.
  */
 
 export type LabsButtonTone = "dark" | "sage" | "orange" | "ghost";

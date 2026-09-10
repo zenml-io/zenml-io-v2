@@ -2,8 +2,8 @@
 name: blog-post-contributor
 description: >-
   Add or import a blog post from Markdown or Notion; prepare content, metadata,
-  and assets, including the cover via the figma-blog-cover skill. Skip ordinary
-  edits to existing posts.
+  and assets, including the cover via the figma-blog-cover skill. External actions require task authorization. Skip ordinary edits
+  to existing posts.
 ---
 
 # Blog Post Contributor
