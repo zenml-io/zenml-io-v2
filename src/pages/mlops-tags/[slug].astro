@@ -1,20 +1,40 @@
 ---
 /**
- * MLOps tag taxonomy page.
+ * MLOps topic hub, in the ZenML Labs shell (databases cutover #256):
+ * every MLOps Database entry carrying this topic tag, `labs.entry-row`
+ * rows, 24/page (page 1 server-rendered, later pages fetched client-side by
+ * `HubEntryPagination`).
  *
- * Shows all MLOps database entries with this topic tag.
- * Generates /mlops-tags/<slug> for each tag in the collection.
+ * Generates /mlops-tags/<slug> for each topic the database actually uses.
  */
 import { getCollection } from "astro:content";
-import SectionIntro from "../../components/system/SectionIntro.astro";
+import { HubEntryPagination } from "../../components/islands/HubEntryPagination";
+import BlogNewsletterCta from "../../components/labs/BlogNewsletterCta.astro";
+import type { EntryRowItem } from "../../components/labs/entryRowStyles";
+import LabsBand from "../../components/labs/LabsBand.astro";
+import Breadcrumb from "../../components/system/Breadcrumb.astro";
 import TermHubEntryIndex from "../../components/templates/TermHubEntryIndex.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
+import {
+  capitalise,
+  DATABASE_CTA,
+  DATABASE_PAGE_SIZE,
+  DATABASE_ROW_CHIPS_VISIBLE,
+  DATABASES,
+  entryCountDeck,
+} from "../../lib/databases";
+import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
 import { getMLOpsIndustryTagCounts } from "../../lib/mlops";
 
 export async function getStaticPaths() {
   const mlopsTags = await getCollection("mlops-tags");
+  const industryTags = await getCollection("industry-tags");
   const tagMap = Object.fromEntries(
     mlopsTags.map((tag) => [tag.data.slug, tag.data.name]),
+  );
+  const industryMap = Object.fromEntries(
+    industryTags.map((tag) => [tag.data.slug, tag.data.name]),
   );
   const allEntries = await getCollection(
     "mlops-database",
@@ -25,11 +45,12 @@ export async function getStaticPaths() {
     .filter((tag) => usedSlugs.has(tag.data.slug))
     .map((tag) => ({
       params: { slug: tag.data.slug },
-      props: { tag, tagMap },
+      props: { tag, tagMap, industryMap },
     }));
 }
 
-const { tag, tagMap } = Astro.props;
+const { tag, tagMap, industryMap } = Astro.props;
+const copy = DATABASES.mlops;
 
 const allEntries = (
   await getCollection(
@@ -42,70 +63,140 @@ const commonIndustries = (await getMLOpsIndustryTagCounts(allEntries)).slice(
   0,
   8,
 );
+
+const entries: EntryRowItem[] = allEntries
+  .slice(0, DATABASE_PAGE_SIZE)
+  .map((entry) => {
+    const siblingTags = entry.data.mlopsTags.filter(
+      (slug) => slug !== tag.data.slug,
+    );
+    return {
+      href: `${copy.entryBase}/${entry.data.slug}`,
+      title: entry.data.title,
+      meta: {
+        company: entry.data.company,
+        platformName: entry.data.platformName,
+        contentType: entry.data.contentType,
+        year: entry.data.year,
+        industry: entry.data.industryTags
+          ? {
+              label:
+                industryMap[entry.data.industryTags] ?? entry.data.industryTags,
+            }
+          : undefined,
+      },
+      summary: entry.data.summary,
+      chips: siblingTags.slice(0, DATABASE_ROW_CHIPS_VISIBLE).map((slug) => ({
+        label: tagMap[slug] ?? slug,
+        href: `${copy.tagHubBase}/${slug}`,
+      })),
+      chipOverflowCount: Math.max(
+        0,
+        siblingTags.length - DATABASE_ROW_CHIPS_VISIBLE,
+      ),
+    };
+  });
 ---
 
 <BaseLayout
   title={`${tag.data.name} - MLOps Database`}
   description={`MLOps case studies and production ML systems tagged with "${tag.data.name}".`}
   surface="ml"
+  app="labs"
 >
-  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-12">
-      <SectionIntro
-        eyebrow="MLOps topic"
-        heading={`MLOps Tag: ${tag.data.name}`}
-        headingLevel={1}
-        description={`${allEntries.length} ${allEntries.length === 1 ? "entry" : "entries"} with this tag`}
-        classOverrides={{
-          eyebrow: "text-sm font-semibold uppercase tracking-wider text-success-700",
-          heading: "text-4xl font-bold tracking-tight text-gray-900",
-          headingSpacing: "mt-3",
-          description: "text-lg text-gray-600",
-        }}
+  <LabsBand size="short">
+    <div class="flex flex-col gap-4">
+      <Breadcrumb
+        items={[
+          { label: copy.name, href: copy.indexHref },
+          { label: copy.tagsLabel, href: copy.tagsHref },
+          { label: tag.data.name },
+        ]}
+        separator="chevron"
       />
-      <a href="/mlops-database" class="mt-2 inline-block text-sm text-primary-600 hover:text-primary-700">
-        &larr; Back to MLOps Database
-      </a>
-    </header>
+      <div>
+        <p class="font-sans text-[15px] leading-5 text-(--color-cream-700)">
+          {capitalise(copy.tagSingular)}
+        </p>
+        <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+          {tag.data.name}
+        </h1>
+        <p class="mt-space-sm max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
+          {entryCountDeck(allEntries.length, "entries")}
+        </p>
+      </div>
+    </div>
+  </LabsBand>
 
-    <TermHubEntryIndex
-      crossLinks={[
-        {
-          heading: "Common industries",
-          viewAllHref: "/industry-tags",
-          viewAllLabel: "View all industries",
-          badgeVariant: "primary",
-          items: commonIndustries.map((industry) => ({
-            name: industry.name,
-            slug: industry.slug,
-            count: industry.count,
-            href: `/industry-tags/${industry.slug}`,
-          })),
-        },
-      ]}
-      sections={[
-        {
-          cards: allEntries.map((entry) => ({
-            title: entry.data.title,
-            href: `/mlops-database/${entry.data.slug}`,
-            metaLine: [
-              entry.data.company,
-              ...(entry.data.platformName !== entry.data.company
-                ? [entry.data.platformName]
-                : []),
-              entry.data.contentType,
-            ],
-            summary: entry.data.summary,
-            tags: entry.data.mlopsTags.slice(0, 4).map((tagSlug: string) => ({
-              label: tagMap[tagSlug] || tagSlug,
-              href: `/mlops-tags/${tagSlug}`,
+  <section class:list={["scroll-reveal-section pb-24", BAND_CONTENT_GAP]}>
+    <div class="reveal-child stagger-1 mx-auto max-w-content px-gutter">
+      <TermHubEntryIndex
+        skin="labs"
+        id="tag-entry-list"
+        emptyHeading={`No MLOps entries with the "${tag.data.name}" tag yet.`}
+        sections={[{ entries }]}
+        crossLinks={[
+          {
+            heading: "Common industries",
+            viewAllHref: "/industry-tags",
+            viewAllLabel: "All industries",
+            items: commonIndustries.map((industry) => ({
+              name: industry.name,
+              slug: industry.slug,
+              count: industry.count,
+              href: `/industry-tags/${industry.slug}`,
             })),
-            extraTagCount: Math.max(0, entry.data.mlopsTags.length - 4),
-            tagVariant: "success" as const,
-          })),
-        },
-      ]}
-      emptyHeading="No MLOps entries with this tag yet."
-    />
-  </div>
+          },
+        ]}
+      />
+
+      {allEntries.length > DATABASE_PAGE_SIZE && (
+        <HubEntryPagination
+          client:idle
+          containerId="tag-entry-list"
+          totalItems={allEntries.length}
+          pageSize={DATABASE_PAGE_SIZE}
+          dataUrl="/mlops-index.json"
+          filter={{ field: "mlopsTags", value: tag.data.slug }}
+          database="mlops"
+          tagNames={tagMap}
+          industryNames={industryMap}
+        />
+      )}
+    </div>
+  </section>
+
+  <BlogNewsletterCta content={DATABASE_CTA} brevo={BREVO_LLMOPS_CONFIG} />
 </BaseLayout>
+
+<style>
+  /* House scroll-reveal pattern (reference: llmops-database/index.astro). */
+  .reveal-child {
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-1 { transition-delay: 60ms; }
+
+  .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-child,
+    .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initScrollReveal);
+  } else {
+    initScrollReveal();
+  }
+</script>
