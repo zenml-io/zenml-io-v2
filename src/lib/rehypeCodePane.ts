@@ -37,22 +37,28 @@ function getClassString(node: Element): string {
 }
 
 /**
- * Both blog rehype plugins run only on the blog collection: the code-pane
- * chrome and the table frame are styled under `[data-app="labs"] .prose` and
- * wired (copy button) by BlogLayout, so on any other Markdown collection they
- * would render as bare, unstyled markup and move the MDX compare goldens.
+ * These three rehype plugins now run for every long-form `.prose` collection
+ * rendered in the Labs shell — the blog, and the two research databases
+ * (LLMOps, MLOps) — since their entries share the same code-pane chrome and
+ * table frame, styled under `[data-app="labs"] .prose` and wired (copy
+ * button) by their layouts. The MDX compare collections stay excluded: they
+ * render through their own dispatcher and never mount this scope.
  */
-export function isBlogMarkdownFile(file: {
+export function isProseCollectionFile(file: {
   path?: string;
   history?: string[];
 }): boolean {
   const p = file.path ?? file.history?.[0] ?? "";
-  return p.includes("/src/content/blog/");
+  return (
+    p.includes("/src/content/blog/") ||
+    p.includes("/src/content/llmops-database/") ||
+    p.includes("/src/content/mlops-database/")
+  );
 }
 
 export function rehypeCodePane() {
   return (tree: Root, file: { path?: string; history?: string[] }) => {
-    if (!isBlogMarkdownFile(file)) return;
+    if (!isProseCollectionFile(file)) return;
     // unist-util-visit's generics are keyed to the real `hast`/`mdast` Node
     // unions; this plugin walks a deliberately minimal local shape instead
     // (see HastNode above), so the visitor callback's node/parent types are

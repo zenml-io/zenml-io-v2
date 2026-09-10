@@ -145,6 +145,11 @@ export function getRelatedFromIndex<TEntry>(
     }
   }
 
+  // Fewer candidates than `limit` never triggered the sort above (it runs only
+  // once the buffer is full, or on a replacement), so order the survivors here
+  // too — the contract is highest score first regardless of candidate count.
+  topK.sort((a, b) => b.score - a.score);
+
   return topK.flatMap(({ slug }) => {
     const entry = index.entryMap.get(slug);
     return entry ? [entry] : [];

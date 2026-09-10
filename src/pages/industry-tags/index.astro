@@ -1,14 +1,20 @@
 ---
 /**
- * Industry tags index page.
+ * Industries index, in the ZenML Labs shell (databases cutover #256):
+ * every industry either database uses, as a hexagon chip carrying its
+ * combined entry count (`labs.term-chip-index`), sorted by popularity.
  *
- * Lists all industries with combined LLMOps + MLOps entry counts, sorted by popularity.
  * Route: /industry-tags
  */
 import { getCollection } from "astro:content";
-import PageHeader from "../../components/templates/PageHeader.astro";
-import { TAXONOMY_INDEX_INTRO } from "../../components/templates/pageHeaderPresets";
+import BlogNewsletterCta from "../../components/labs/BlogNewsletterCta.astro";
+import LabsBand from "../../components/labs/LabsBand.astro";
+import TermChipIndex from "../../components/labs/TermChipIndex.astro";
+import Breadcrumb from "../../components/system/Breadcrumb.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
+import { DATABASE_CTA } from "../../lib/databases";
+import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
 import type { TaxonomyCount } from "../../lib/llmops";
 import { getAllPublishedEntries, getIndustryTagCounts } from "../../lib/llmops";
 import {
@@ -44,33 +50,72 @@ const industries = filterUsedTerms(merged).sort(
   title="Industries - ZenML Databases"
   description="Browse all industries represented in the ZenML LLMOps and MLOps databases."
   surface="ml"
+  app="labs"
 >
-  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-    <PageHeader
-      class="mb-10"
-      heading="Industries"
-      description={`${industries.length} ${industries.length === 1 ? "industry" : "industries"} across the LLMOps and MLOps databases`}
-      backLinks={[
-        { href: "/llmops-database", label: "LLMOps Database" },
-        { href: "/mlops-database", label: "MLOps Database" },
-      ]}
-      classOverrides={TAXONOMY_INDEX_INTRO}
-    />
+  <LabsBand size="short">
+    <div class="flex flex-col gap-4">
+      <Breadcrumb
+        items={[
+          { label: "LLMOps Database", href: "/llmops-database" },
+          { label: "Industries" },
+        ]}
+        separator="chevron"
+      />
+      <div>
+        <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+          Industries
+        </h1>
+        <p class="mt-space-sm max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
+          {industries.length} industries across the LLMOps and MLOps databases
+        </p>
+      </div>
+    </div>
+  </LabsBand>
 
-    <nav aria-label="All industries">
-      <ul class="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
-        {industries.map((t) => (
-          <li>
-            <a
-              href={`/industry-tags/${t.slug}`}
-              class="flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50"
-            >
-              <span class="font-medium text-gray-900">{t.name}</span>
-              <span class="text-xs tabular-nums text-gray-400">{t.count}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  </div>
+  <section class:list={["scroll-reveal-section pb-24", BAND_CONTENT_GAP]}>
+    <div class="reveal-child stagger-1 mx-auto max-w-content px-gutter">
+      <TermChipIndex
+        ariaLabel="All industries"
+        terms={industries.map((t) => ({
+          name: t.name,
+          href: `/industry-tags/${t.slug}`,
+          count: t.count,
+        }))}
+      />
+    </div>
+  </section>
+
+  <BlogNewsletterCta content={DATABASE_CTA} brevo={BREVO_LLMOPS_CONFIG} />
 </BaseLayout>
+
+<style>
+  /* House scroll-reveal pattern (reference: llmops-database/index.astro). */
+  .reveal-child {
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-1 { transition-delay: 60ms; }
+
+  .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-child,
+    .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initScrollReveal);
+  } else {
+    initScrollReveal();
+  }
+</script>

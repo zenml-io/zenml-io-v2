@@ -198,42 +198,74 @@ aren't template-registry entries).
 
 ## Databases
 
+All research-database routes render in the ZenML Labs shell (`app="labs"`,
+`surface="ml"`) and import `initScrollReveal` (`src/scripts/labs-scroll-
+reveal.ts`) to arm their own `.scroll-reveal-section` blocks (#256) — unlike
+the blog taxonomy hubs below, which carry the class without arming it.
+
 ### Database index pages
 **Routes** — `/llmops-database` and `/mlops-database` (one page each).
 **Layout** — `BaseLayout`.
-**Surface** — `ml`.
-**Sequence** — a hero (`PageHeader` on the LLMOps page, `SectionIntro` directly
-on the MLOps page — same visual shape, different component), then the
-matching filterable-index island (`LlmopsIndex` / `MlopsIndex`) fetching a
-JSON index client-side, a `<noscript>` category-browsing fallback, and a
-Brevo newsletter section.
+**Sequence** — `LabsHero band="short"` (name + deck from `lib/databases.ts`),
+the matching filterable-index island (`LlmopsIndex` / `MlopsIndex`, `skin=
+"labs"`) fetching a JSON index client-side, a `<noscript>` tag/industry
+chip fallback, and `BlogNewsletterCta` (`DATABASE_CTA` + `BREVO_LLMOPS_
+CONFIG`).
 **Required data** — `llmops-tags` / `mlops-tags` collections; `industry-tags`
-collection; entry counts from `lib/llmops` / the `mlops-database` collection
-directly; `lib/formConstants` (`BREVO_LLMOPS_CONFIG`).
-**Buildable today** — partial. Hero and the entire filter/search body are
-registry templates (`PageHeader`/`SectionIntro` + `filterable-index.shell`);
-the `<noscript>` fallback and the newsletter CTA band are hand-rolled and
-duplicated between the two pages rather than shared.
+collection; entry counts from `lib/llmops` / `lib/mlops`; `lib/databases.ts`
+(shared copy, page size, CTA content); `lib/formConstants`
+(`BREVO_LLMOPS_CONFIG`).
+**Buildable today** — yes. `LabsHero`, the filter islands, and
+`BlogNewsletterCta` are all registry components; only the `<noscript>`
+fallback is hand-rolled per page.
 
 ### Database detail pages
-**Routes** — `/llmops-database/<slug>` (2,080 non-draft entries) and
-`/mlops-database/<slug>` (186 non-draft entries, plus redirect stubs from
-`STALE_RAY_SUMMIT_REDIRECTS` for retired slugs).
-**Layout** — `BaseLayout`.
-**Surface** — `ml`.
-**Sequence** — Pagefind metadata spans, `Breadcrumb`, a hand-rolled header
-(title + company/platform/year line, MLOps also adds a content-type label),
-a tinted summary box, `MetadataBlock` (Industry + Technologies/MLOps Topics
-chips), the rendered body, and a `RelatedRail` "More Like This" section.
+**Routes** — `/llmops-database/<slug>` and `/mlops-database/<slug>` (plus
+redirect stubs from `STALE_RAY_SUMMIT_REDIRECTS` for retired MLOps slugs).
+**Layout** — `DatabaseEntryLayout` (one layout for both databases,
+discriminated by a `database` prop), inside `BaseLayout`.
+**Sequence** — `LabsBand` (eyebrow, h1, meta row + "View source"),
+`StickyBreadcrumb`, a tinted summary box, `LabsMetadataBlock` (Industry +
+Technologies/MLOps topics chips, clamped with a `<details>` overflow),
+`LabsArticleBody` (prose + TOC), `LabsRelatedBand` ("More like this"), and
+`BlogNewsletterCta`.
 **Required data** — `llmops-database` / `mlops-database` collections;
 `llmops-tags` / `mlops-tags` collections; `industry-tags` collection;
 `lib/relatedIndex`'s `buildRelatedIndex`/`getRelatedFromIndex` scorer, wrapped
 per-domain by `lib/llmops.ts` / `lib/mlops.ts`.
-**Buildable today** — partial. `Breadcrumb`, `MetadataBlock`, and
-`RelatedRail` cover most of the page and the two collections render from a
-byte-mirrored structure (same components, different label text and chip
-color). The header and summary box are hand-rolled and not shared with any
-registry component.
+**Buildable today** — yes. Every section is a registry component shared with
+the blog post layout (`StickyBreadcrumb`, `LabsArticleBody`, `LabsRelatedBand`)
+or built for this layout (`LabsMetadataBlock`); the two collections render
+from one template, differing only by the props the route resolves.
+
+### Database term hubs
+**Routes** — `/llmops-tags/<slug>`, `/mlops-tags/<slug>`,
+`/industry-tags/<slug>`.
+**Layout** — `BaseLayout`.
+**Sequence** — `LabsBand` (breadcrumb, eyebrow, h1, entry-count deck),
+`TermHubEntryIndex` (`skin="labs"`, `entries` arrangement — `labs.entry-row`
+rows, cross-links rendered as a sibling-chip strip below the list), and
+`BlogNewsletterCta`. A tag hub server-renders only its first
+`DATABASE_PAGE_SIZE` rows and mounts `HubEntryPagination` for later pages
+(fetched from `/llmops-index.json` / `/mlops-index.json` — #53); an industry
+hub renders two such sections (LLMOps entries, MLOps entries), each with an
+optional "See all N in the … Database →" link instead of pagination.
+**Required data** — the same collections as the detail pages, plus
+`lib/relatedIndex`'s `filterUsedTerms` and the taxonomy-count helpers in
+`lib/llmops.ts` / `lib/mlops.ts`.
+**Buildable today** — yes.
+
+### Database term hub indexes
+**Routes** — `/llmops-tags`, `/mlops-tags`, `/industry-tags`.
+**Layout** — `BaseLayout`.
+**Sequence** — `LabsBand` (breadcrumb, h1, term-count deck), `TermChipIndex`
+(every term as a hexagon chip carrying its entry count, sorted by the page),
+and `BlogNewsletterCta`.
+**Required data** — the `llmops-tags` / `mlops-tags` / `industry-tags`
+collections plus the same taxonomy-count helpers, filtered through
+`filterUsedTerms` so a zero-entry term never links to a page that doesn't
+build.
+**Buildable today** — yes.
 
 ---
 

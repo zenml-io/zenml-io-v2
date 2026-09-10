@@ -7,8 +7,12 @@
  * code rather than serialized JSON — the FilterIndex shell itself takes
  * only functions, never data that has to round-trip through props.astro.
  */
+import {
+  DATABASE_PAGE_SIZE,
+  DATABASE_ROW_CHIPS_VISIBLE,
+} from "../../../lib/databases";
+import { EntryRow } from "../../labs/EntryRow";
 import { DataFilterIndex } from "./DataFilterIndex";
-import { FOCUS_RING } from "./icons";
 import type { FilterOption } from "./types";
 
 export interface LLMOpsIndexItem {
@@ -26,6 +30,13 @@ export interface LLMOpsIndexItem {
 export interface LlmopsIndexProps {
   tags: FilterOption[];
   industries: FilterOption[];
+  /**
+   * Non-draft entries in the collection, counted at build time. The island
+   * only learns the real total once `/llmops-index.json` has been fetched,
+   * so the search box gets the number from the page instead of rendering a
+   * placeholder that changes under the reader.
+   */
+  entryCount: number;
   pageSize?: number;
 }
 
@@ -51,7 +62,8 @@ function scoreRelevance(item: LLMOpsIndexItem, q: string): number {
 export default function LlmopsIndex({
   tags,
   industries,
-  pageSize = 24,
+  entryCount,
+  pageSize = DATABASE_PAGE_SIZE,
 }: LlmopsIndexProps) {
   const tagMap = new Map(tags.map((t) => [t.slug, t.name]));
   const industryMap = new Map(industries.map((i) => [i.slug, i.name]));
@@ -64,6 +76,8 @@ export default function LlmopsIndex({
       getSlug={(item) => item.slug}
       getTitle={(item) => item.title}
       loadingLabel="Loading LLMOps database..."
+      skin="labs"
+      gridClassName="flex flex-col"
       search={{
         mode: "pagefind",
         pagefindBasePath: "/llmops-database/",
@@ -71,7 +85,7 @@ export default function LlmopsIndex({
         getSearchText: (item) =>
           [item.title, item.company, item.summary].filter(Boolean).join(" "),
         scoreRelevance,
-        placeholder: "Search by title, company, or summary...",
+        placeholder: `Search ${entryCount.toLocaleString("en-US")} entries`,
         ariaLabel: "Search",
       }}
       sort={{ compareNewest }}
@@ -90,91 +104,35 @@ export default function LlmopsIndex({
         searchAriaLabel: "Search technologies",
         itemNounPlural: "tags",
       }}
-      renderItem={(item, ctx) => (
-        <div
-          key={item.slug}
-          class="group flex flex-col rounded-lg border border-gray-200 bg-white p-5 transition-shadow hover:shadow-md"
-        >
-          <a
+      renderItem={(item, ctx) => {
+        const shownTags = item.llmopsTags.slice(0, DATABASE_ROW_CHIPS_VISIBLE);
+        const industrySlug = item.industryTags;
+        return (
+          <EntryRow
+            key={item.slug}
             href={`/llmops-database/${item.slug}`}
-            class={`font-semibold text-gray-900 group-hover:text-(--color-sage-700) line-clamp-2 ${FOCUS_RING}`}
-            onClick={(e: MouseEvent) => e.stopPropagation()}
-          >
-            {item.title}
-          </a>
-
-          <div class="mt-2 flex flex-wrap items-center gap-2 text-xs text-gray-500">
-            {item.company && (
-              <span class="font-medium text-gray-700">{item.company}</span>
-            )}
-            {item.year && (
-              <>
-                {item.company && <span aria-hidden="true">&middot;</span>}
-                <span>{item.year}</span>
-              </>
-            )}
-            {item.industryTags && (
-              <>
-                <span aria-hidden="true">&middot;</span>
-                <button
-                  type="button"
-                  class={`rounded-full bg-(--color-sage-100) px-2 py-0.5 text-(--color-sage-900) transition-colors hover:bg-(--color-sage-200) ${FOCUS_RING}`}
-                  onClick={(e: MouseEvent) => {
-                    e.stopPropagation();
-                    ctx.selectSingle(item.industryTags as string);
-                  }}
-                  aria-label={`Filter by ${industryMap.get(item.industryTags) || item.industryTags}`}
-                >
-                  {industryMap.get(item.industryTags) || item.industryTags}
-                </button>
-              </>
-            )}
-          </div>
-
-          {item.summary && (
-            <p class="mt-2 text-sm text-gray-600 line-clamp-2">
-              {item.summary}
-            </p>
-          )}
-
-          {item.llmopsTags.length > 0 && (
-            <div class="mt-auto flex flex-wrap gap-1 pt-3">
-              {item.llmopsTags.slice(0, 3).map((tagSlug) => {
-                const isSelected = ctx.isTagSelected(tagSlug);
-                return (
-                  <button
-                    key={tagSlug}
-                    type="button"
-                    data-tag-chip
-                    aria-pressed={isSelected}
-                    aria-label={
-                      isSelected
-                        ? `Remove filter ${tagMap.get(tagSlug) || tagSlug}`
-                        : `Filter by ${tagMap.get(tagSlug) || tagSlug}`
-                    }
-                    onClick={(e: MouseEvent) => {
-                      e.stopPropagation();
-                      ctx.toggleTag(tagSlug);
-                    }}
-                    class={`rounded-full px-2 py-0.5 text-xs transition-colors ${FOCUS_RING} ${
-                      isSelected
-                        ? "bg-(--color-sage-100) text-(--color-sage-900)"
-                        : "bg-blue-50 text-blue-700 hover:bg-blue-100"
-                    }`}
-                  >
-                    {tagMap.get(tagSlug) || tagSlug}
-                  </button>
-                );
-              })}
-              {item.llmopsTags.length > 3 && (
-                <span class="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-500">
-                  +{item.llmopsTags.length - 3}
-                </span>
-              )}
-            </div>
-          )}
-        </div>
-      )}
+            title={item.title}
+            meta={{
+              company: item.company,
+              year: item.year,
+              industry: industrySlug
+                ? { label: industryMap.get(industrySlug) ?? industrySlug }
+                : null,
+            }}
+            summary={item.summary}
+            chips={shownTags.map((slug) => ({
+              label: tagMap.get(slug) ?? slug,
+              slug,
+            }))}
+            chipOverflowCount={item.llmopsTags.length - shownTags.length}
+            chipPressed={ctx.isTagSelected}
+            onChipToggle={ctx.toggleTag}
+            onIndustrySelect={
+              industrySlug ? () => ctx.selectSingle(industrySlug) : undefined
+            }
+          />
+        );
+      }}
     />
   );
 }

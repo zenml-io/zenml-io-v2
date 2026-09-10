@@ -428,7 +428,7 @@ const integrationSchema = z.object({
 /**
  * LLMOps Database schema
  * Route: /llmops-database/<slug>
- * Count: 1,453 items
+ * Count: 2,092 files on disk as of 2026-09-10; grows with every native publish
  *
  * Supports both:
  * - historical Webflow-migrated entries (`webflow` provenance)

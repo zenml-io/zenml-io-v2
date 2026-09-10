@@ -1,13 +1,32 @@
 ---
 /**
- * Industry tag taxonomy page.
+ * Industry hub, in the ZenML Labs shell (databases cutover #256): every
+ * LLMOps and MLOps Database entry in this industry, `labs.entry-row` rows
+ * split into two sections. Each section shows its first
+ * `DATABASE_PAGE_SIZE` rows and, when the industry has more than that, a
+ * "See all" link into the matching database's filtered index — no
+ * client-side pagination island here (an industry rarely runs past a
+ * couple of pages, unlike a busy tag).
  *
- * Shows all LLMOps and MLOps database entries in this industry.
- * Generates /industry-tags/<slug> for each industry tag in the collection.
+ * Generates /industry-tags/<slug> for each industry either database uses.
  */
 import { getCollection } from "astro:content";
+import BlogNewsletterCta from "../../components/labs/BlogNewsletterCta.astro";
+import type { EntryRowItem } from "../../components/labs/entryRowStyles";
+import LabsBand from "../../components/labs/LabsBand.astro";
+import Breadcrumb from "../../components/system/Breadcrumb.astro";
 import TermHubEntryIndex from "../../components/templates/TermHubEntryIndex.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
+import {
+  DATABASE_CTA,
+  DATABASE_PAGE_SIZE,
+  DATABASE_ROW_CHIPS_VISIBLE,
+  DATABASES,
+  formatCount,
+  industryHubDeck,
+} from "../../lib/databases";
+import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
 import { getLLMOpsTagCounts } from "../../lib/llmops";
 import { getMLOpsTagCounts } from "../../lib/mlops";
 
@@ -58,102 +77,170 @@ const mlopsEntries = (
   )
 ).sort((a, b) => a.data.title.localeCompare(b.data.title));
 
-const totalEntries = llmopsEntries.length + mlopsEntries.length;
 const commonLLMOpsTags = (await getLLMOpsTagCounts(llmopsEntries)).slice(0, 8);
 const commonMLOpsTags = (await getMLOpsTagCounts(mlopsEntries)).slice(0, 8);
+
+const llmopsRows: EntryRowItem[] = llmopsEntries
+  .slice(0, DATABASE_PAGE_SIZE)
+  .map((entry) => ({
+    href: `${DATABASES.llmops.entryBase}/${entry.data.slug}`,
+    title: entry.data.title,
+    meta: { company: entry.data.company, year: entry.data.year },
+    summary: entry.data.summary,
+    chips: entry.data.llmopsTags
+      .slice(0, DATABASE_ROW_CHIPS_VISIBLE)
+      .map((slug) => ({
+        label: llmopsTagMap[slug] ?? slug,
+        href: `${DATABASES.llmops.tagHubBase}/${slug}`,
+      })),
+    chipOverflowCount: Math.max(
+      0,
+      entry.data.llmopsTags.length - DATABASE_ROW_CHIPS_VISIBLE,
+    ),
+  }));
+
+const mlopsRows: EntryRowItem[] = mlopsEntries
+  .slice(0, DATABASE_PAGE_SIZE)
+  .map((entry) => ({
+    href: `${DATABASES.mlops.entryBase}/${entry.data.slug}`,
+    title: entry.data.title,
+    meta: {
+      company: entry.data.company,
+      platformName: entry.data.platformName,
+      contentType: entry.data.contentType,
+      year: entry.data.year,
+    },
+    summary: entry.data.summary,
+    chips: entry.data.mlopsTags
+      .slice(0, DATABASE_ROW_CHIPS_VISIBLE)
+      .map((slug) => ({
+        label: mlopsTagMap[slug] ?? slug,
+        href: `${DATABASES.mlops.tagHubBase}/${slug}`,
+      })),
+    chipOverflowCount: Math.max(
+      0,
+      entry.data.mlopsTags.length - DATABASE_ROW_CHIPS_VISIBLE,
+    ),
+  }));
 ---
 
 <BaseLayout
   title={`${tag.data.name} Industry - ZenML Databases`}
   description={`LLMOps and MLOps entries in the ${tag.data.name} industry.`}
   surface="ml"
+  app="labs"
 >
-  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-12">
-      <h1 class="text-4xl font-bold tracking-tight text-gray-900">
-        Industry: {tag.data.name}
-      </h1>
-      <p class="mt-4 text-lg text-gray-600">
-        {totalEntries} {totalEntries === 1 ? "entry" : "entries"} in this industry
-      </p>
-      <div class="mt-2 flex flex-wrap gap-4 text-sm">
-        <a href="/llmops-database" class="text-primary-600 hover:text-primary-700">
-          &larr; LLMOps Database
-        </a>
-        <a href="/mlops-database" class="text-primary-600 hover:text-primary-700">
-          &larr; MLOps Database
-        </a>
+  <LabsBand size="short">
+    <div class="flex flex-col gap-4">
+      <Breadcrumb
+        items={[
+          { label: "Industries", href: "/industry-tags" },
+          { label: tag.data.name },
+        ]}
+        separator="chevron"
+      />
+      <div>
+        <p class="font-sans text-[15px] leading-5 text-(--color-cream-700)">
+          Industry
+        </p>
+        <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+          {tag.data.name}
+        </h1>
+        <p class="mt-space-sm max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
+          {industryHubDeck(llmopsEntries.length, mlopsEntries.length)}
+        </p>
       </div>
-    </header>
+    </div>
+  </LabsBand>
 
-    <TermHubEntryIndex
-      crossLinks={[
-        {
-          heading: "Common LLMOps tags",
-          viewAllHref: "/llmops-tags",
-          viewAllLabel: "View all",
-          badgeVariant: "blue",
-          items: commonLLMOpsTags.map((item) => ({
-            name: item.name,
-            slug: item.slug,
-            count: item.count,
-            href: `/llmops-tags/${item.slug}`,
-          })),
-        },
-        {
-          heading: "Common MLOps topics",
-          viewAllHref: "/mlops-tags",
-          viewAllLabel: "View all",
-          badgeVariant: "success",
-          items: commonMLOpsTags.map((item) => ({
-            name: item.name,
-            slug: item.slug,
-            count: item.count,
-            href: `/mlops-tags/${item.slug}`,
-          })),
-        },
-      ]}
-      sections={[
-        {
-          heading: "LLMOps entries",
-          cards: llmopsEntries.map((entry) => ({
-            title: entry.data.title,
-            href: `/llmops-database/${entry.data.slug}`,
-            headingLevel: 3 as const,
-            company: entry.data.company,
-            summary: entry.data.summary,
-            tags: entry.data.llmopsTags.slice(0, 4).map((tagSlug: string) => ({
-              label: llmopsTagMap[tagSlug] || tagSlug,
-              href: `/llmops-tags/${tagSlug}`,
+  <section class:list={["scroll-reveal-section pb-24", BAND_CONTENT_GAP]}>
+    <div class="reveal-child stagger-1 mx-auto max-w-content px-gutter">
+      <TermHubEntryIndex
+        skin="labs"
+        emptyHeading={`No LLMOps or MLOps entries in the ${tag.data.name} industry yet.`}
+        sections={[
+          {
+            heading: "LLMOps entries",
+            entries: llmopsRows,
+            seeAll:
+              llmopsEntries.length > DATABASE_PAGE_SIZE
+                ? {
+                    href: `/llmops-database?industry=${tag.data.slug}`,
+                    label: `See all ${formatCount(llmopsEntries.length)} in the LLMOps Database`,
+                  }
+                : undefined,
+          },
+          {
+            heading: "MLOps entries",
+            entries: mlopsRows,
+            seeAll:
+              mlopsEntries.length > DATABASE_PAGE_SIZE
+                ? {
+                    href: `/mlops-database?industry=${tag.data.slug}`,
+                    label: `See all ${formatCount(mlopsEntries.length)} in the MLOps Database`,
+                  }
+                : undefined,
+          },
+        ]}
+        crossLinks={[
+          {
+            heading: "Common technologies",
+            viewAllHref: "/llmops-tags",
+            viewAllLabel: "All technologies",
+            items: commonLLMOpsTags.map((item) => ({
+              name: item.name,
+              slug: item.slug,
+              count: item.count,
+              href: `/llmops-tags/${item.slug}`,
             })),
-            extraTagCount: Math.max(0, entry.data.llmopsTags.length - 4),
-            tagVariant: "blue" as const,
-          })),
-        },
-        {
-          heading: "MLOps entries",
-          cards: mlopsEntries.map((entry) => ({
-            title: entry.data.title,
-            href: `/mlops-database/${entry.data.slug}`,
-            headingLevel: 3 as const,
-            metaLine: [
-              entry.data.company,
-              ...(entry.data.platformName !== entry.data.company
-                ? [entry.data.platformName]
-                : []),
-              entry.data.contentType,
-            ],
-            summary: entry.data.summary,
-            tags: entry.data.mlopsTags.slice(0, 4).map((tagSlug: string) => ({
-              label: mlopsTagMap[tagSlug] || tagSlug,
-              href: `/mlops-tags/${tagSlug}`,
+          },
+          {
+            heading: "Common MLOps topics",
+            viewAllHref: "/mlops-tags",
+            viewAllLabel: "All MLOps topics",
+            items: commonMLOpsTags.map((item) => ({
+              name: item.name,
+              slug: item.slug,
+              count: item.count,
+              href: `/mlops-tags/${item.slug}`,
             })),
-            extraTagCount: Math.max(0, entry.data.mlopsTags.length - 4),
-            tagVariant: "success" as const,
-          })),
-        },
-      ]}
-      emptyHeading="No LLMOps or MLOps entries in this industry yet."
-    />
-  </div>
+          },
+        ]}
+      />
+    </div>
+  </section>
+
+  <BlogNewsletterCta content={DATABASE_CTA} brevo={BREVO_LLMOPS_CONFIG} />
 </BaseLayout>
+
+<style>
+  /* House scroll-reveal pattern (reference: llmops-database/index.astro). */
+  .reveal-child {
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-1 { transition-delay: 60ms; }
+
+  .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-child,
+    .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initScrollReveal);
+  } else {
+    initScrollReveal();
+  }
+</script>

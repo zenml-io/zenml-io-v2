@@ -51,7 +51,7 @@ const { headline, body, image, ctas = [] } = Astro.props;
             <LabsButton
               cta={{ label: cta.label, href: cta.href, analytics: cta.analytics || "Company-Editorial-Link" }}
               tone="ghost"
-              external={cta.external}
+              target={cta.external ? "_blank" : undefined}
             />
           ))}
         </div>

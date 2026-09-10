@@ -6,26 +6,35 @@
  * `ghost` (hairline outline, the secondary next to a filled pill). Every
  * instance carries the same hover transition; call sites only pick the tone.
  * Renders <a> when `href` is given, <button> otherwise.
+ *
+ * `target="_blank"` also emits `rel="noopener noreferrer"` — the two always
+ * travel together, so a call site can't ship one without the other. The
+ * default slot renders after the label inside the `<a>`, for an inline icon
+ * (e.g. the external-link arrow on a "View source" pill).
+ *
+ * Class strings live in `labsButtonStyles.ts` so a Preact island can wear
+ * the same pill (an island can't render an `.astro` component).
  */
 import type { LabsCta } from "../../lib/labs-home";
-import {
-  BASE_PILL_CLASSES,
-  type LabsButtonTone,
-  TONE_CLASSES,
-} from "./labsButtonStyles";
+import { type LabsButtonTone, labsButtonClasses } from "./labsButtonStyles";
 
 interface Props {
   cta: LabsCta;
   tone?: LabsButtonTone;
   class?: string;
-  external?: boolean;
+  /** External link: also emits rel="noopener noreferrer". */
+  target?: "_blank";
 }
 
-const { cta, tone = "dark", class: className, external = false } = Astro.props;
+const { cta, tone = "dark", class: className, target } = Astro.props;
 
-const classes = [BASE_PILL_CLASSES, TONE_CLASSES[tone], className]
-  .filter(Boolean)
-  .join(" ");
+const classes = labsButtonClasses(tone, className);
 ---
 
-<a href={cta.href} data-analytics={cta.analytics} class={classes} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>{cta.label}</a>
+<a
+  href={cta.href}
+  data-analytics={cta.analytics}
+  class={classes}
+  target={target}
+  rel={target === "_blank" ? "noopener noreferrer" : undefined}
+>{cta.label}<slot /></a>

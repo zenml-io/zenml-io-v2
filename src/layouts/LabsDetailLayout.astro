@@ -26,7 +26,7 @@ const hasSidebar = Astro.slots.has("sidebar");
       <slot name="header" />
     </LabsPageHeader>
     <div class={BAND_CONTENT_GAP}>
-      <StickyBreadcrumb items={breadcrumb} />
+      <StickyBreadcrumb items={breadcrumb} railBreakpoint="lg" />
       <div class="mx-auto max-w-content px-gutter">
         <div class="mx-auto mb-space-xxl grid max-w-(--article-lane) gap-space-mlg pt-space-sm lg:grid-cols-[minmax(0,var(--prose-column))_minmax(0,var(--toc-rail))]">
           <article class="min-w-0">

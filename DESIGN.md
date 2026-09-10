@@ -143,15 +143,42 @@ Additional rules:
   is static and there is no fade. The offsets move together: nav 108px,
   row 44px + 8px, so the table of contents and every heading's anchor
   offset sit at 160px on desktop and 108px (nav only) below `lg`. There is
-  one implementation of this row (today inside the post layout); the next
-  detail page that needs it — the database entry template — extracts it
-  into a registered component rather than copying the markup.
+  one implementation of this row, `labs.sticky-breadcrumb`, mounted by the
+  post layout and by the database entry template — never copied markup.
 - **Closing band on every blog route**: the index, every post and every hub
   end on the dark sage close band (one headline, one pill, the newsletter
   card) with the same `client:idle` grain backdrop as the homepage close —
   the header band is the page's one always-on ambient island, the close
   only needs to be present. Families that move to the Labs shell after the
-  blog end on this same close band by default.
+  blog end on this same close band by default (the research databases pass
+  their own newsletter-card copy and list; nothing else changes).
+- **Entry rows, not cards** (databases cutover, 2026-09): a research-database
+  entry has no image, so an index or hub result is a row — title, one meta
+  line (company · year · industry), a two-line summary and up to three
+  hexagon chips with a "+N" pill — separated from its neighbours by a
+  `--color-border` hairline. Hover and focus-within paint a very light
+  `--color-sage-50` wash across the row, reveal a chevron centered on the
+  row's right edge, and
+  draw a 1px underline under the title that sweeps each line left to right in
+  reading order; there are no borders that appear on hover and no coloured
+  strips. The row root is not a link: the title link is stretched over the
+  row and the chips stay real controls above it.
+- **Summary box**: an entry's abstract is a callout on `--color-sage-50`
+  with a `--color-border` hairline, 12px radius and body text in the
+  foreground colour, labelled "Summary" in sentence case. The databases
+  carry no third colour; sage and cream only.
+- **Tag chips on an entry**: the first nine render, the rest sit inside a
+  native `<details>` whose summary is the "+N more" chip, so every chip is
+  reachable without JavaScript.
+- **Hub pagination keeps pages small**: a term hub renders its first page
+  (24 rows) in HTML and loads later pages from the collection's JSON index
+  on demand, under one canonical URL with `?page=N`. No hub page may exceed
+  2 MB of HTML (`pnpm smoke:dist` enforces it for the two largest).
+- **Zero results name the constraints**: the labs empty state counts and
+  names every active filter and offers each one back as a chip carrying the
+  real number of entries that dropping it returns (plus "Match any" when two
+  or more tags are ANDed), on a block of reserved height so the results
+  column does not jump.
 - **Kitaru posts carry the Kitaru accent**: a post whose category or tags
   include `kitaru` sets `data-product="kitaru"` and re-points the
   `--blog-accent*` custom properties (default sage) to the orange ramp —

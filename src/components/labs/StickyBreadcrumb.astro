@@ -41,9 +41,11 @@ interface Props {
   items: BreadcrumbItem[];
   /** Excludes the crumb trail from the Pagefind index. */
   pagefindIgnore?: boolean;
+  /** Breakpoint where the sibling rail appears and the fade narrows to prose. */
+  railBreakpoint?: "lg" | "xl";
 }
 
-const { items, pagefindIgnore = false } = Astro.props;
+const { items, pagefindIgnore = false, railBreakpoint = "xl" } = Astro.props;
 ---
 
 <div class="lg:sticky lg:top-[108px] lg:z-30">
@@ -57,14 +59,19 @@ const { items, pagefindIgnore = false } = Astro.props;
             pagefindIgnore={pagefindIgnore}
           />
         </div>
-        {/* The fade masks the body copy passing underneath, so it spans the
-            prose column only — the table-of-contents rail beside it is
-            sticky in its own right and must never be washed by it. Eased
+        {/* The fade masks the body copy passing underneath. From the rail breakpoint up it
+            spans the prose column only — the table-of-contents rail beside
+            it is sticky in its own right and must never be washed by it;
+            below that breakpoint there is no rail and the article runs the full lane,
+            so the fade runs the full lane too. Eased
             (four stops) rather than a plain two-stop ramp so it dissolves
             instead of reading as a hard-edged band; desktop-only since the
             crumb above it isn't sticky below `lg`. */}
         <div
-          class="pointer-events-none absolute top-full left-0 hidden h-10 w-full max-w-(--prose-column) bg-[linear-gradient(to_bottom,white_0%,rgb(255_255_255/0.85)_30%,rgb(255_255_255/0.45)_65%,transparent_100%)] lg:block"
+          class:list={[
+            "pointer-events-none absolute top-full left-0 hidden h-10 w-full bg-[linear-gradient(to_bottom,white_0%,rgb(255_255_255/0.85)_30%,rgb(255_255_255/0.45)_65%,transparent_100%)] lg:block",
+            railBreakpoint === "lg" ? "lg:max-w-(--prose-column)" : "xl:max-w-(--prose-column)",
+          ]}
           aria-hidden="true"
         >
         </div>

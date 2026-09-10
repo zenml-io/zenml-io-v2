@@ -535,6 +535,37 @@ const CHECKS: IslandCheck[] = [
     },
   },
   {
+    name: "HubEntryPagination loads page 2 from the JSON index",
+    // /llmops-tags/prompt-engineering is one of ISLAND_MOUNTS' representative
+    // database tag hub routes (check-dist-smoke.ts) — a tag with far more
+    // than DATABASE_PAGE_SIZE entries, so only page 1 is server-rendered and
+    // page 2 has to come from /llmops-index.json.
+    route: "/llmops-tags/prompt-engineering",
+    island: "HubEntryPagination",
+    seedConsent: true,
+    async assert(page) {
+      await page.getByRole("button", { name: "Page 2" }).click();
+
+      await page.waitForFunction(
+        () => new URL(window.location.href).searchParams.get("page") === "2",
+      );
+
+      await page.waitForFunction(() => {
+        const list = document.getElementById("tag-entry-list-fetched");
+        return list !== null && list.querySelectorAll("article").length === 24;
+      });
+
+      const ssrHidden = await page
+        .locator("#tag-entry-list")
+        .evaluate((el) => (el as HTMLElement).hidden);
+      if (!ssrHidden) {
+        throw new Error(
+          "expected the page-1 SSR list to hide once page 2 loads",
+        );
+      }
+    },
+  },
+  {
     name: "ContactForm validates client-side instead of doing a native POST",
     route: "/signup-for-demo",
     island: "ContactForm",

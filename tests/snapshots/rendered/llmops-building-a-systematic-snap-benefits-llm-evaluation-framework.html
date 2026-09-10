@@ -1,0 +1,350 @@
+<div class="prose prose-zoomable">
+<h2 id="overview">Overview
+</h2>
+
+<p>Propel is a company that builds mobile applications and tools for participants in the SNAP (Supplemental Nutrition Assistance Program, commonly known as food stamps) program in the United States. Their Director of Emerging Technology, Dave Guarino, authored this detailed case study about building domain-specific LLM evaluations for assessing AI model performance on SNAP-related questions. This represents a thoughtful approach to LLMOps in a high-stakes domain where incorrect information could materially harm vulnerable users.
+</p>
+
+<p>The case study is notable for its transparency about methodology and its explicit goal of sharing knowledge to help others in similar domains (healthcare, disability benefits, housing, legal aid) build their own evaluations. It’s presented as Part 1 of a series, meaning this covers the foundational thinking and early-stage exploration rather than production deployment results.
+</p>
+
+<h2 id="the-problem-space">The Problem Space
+</h2>
+
+<p>Propel operates in the safety net benefits domain, specifically focused on SNAP. This presents unique LLMOps challenges that differ from typical enterprise AI deployments:
+</p>
+
+<ul>
+
+<li>
+
+<p>
+<strong>Niche Domain Coverage
+</strong>: Unlike general reasoning, math, or programming, SNAP is unlikely to have significant coverage in existing AI model evaluations. The domain experts (government workers, legal aid attorneys, policy analysts) rarely intersect with AI researchers.
+</p>
+
+</li>
+
+<li>
+
+<p>
+<strong>High Stakes for Users
+</strong>: SNAP participants are by definition lower-income Americans who depend on these benefits. Providing incorrect eligibility information, procedural guidance, or policy interpretation could lead to missed benefits, improper denials, or other material harms.
+</p>
+
+</li>
+
+<li>
+
+<p>
+<strong>Complex Nuance
+</strong>: The SNAP domain involves federal law, federal regulations, state-level policy variations, and practical navigation advice that differs from formal policy. A technically accurate answer may not be practically helpful.
+</p>
+
+</li>
+
+<li>
+
+<p>
+<strong>State Variability
+</strong>: With 50+ state-level implementations of federal SNAP policy, answers often depend on jurisdiction, creating a combinatorial challenge for evaluation.
+</p>
+
+</li>
+
+</ul>
+
+<h2 id="evaluation-philosophy-and-approach">Evaluation Philosophy and Approach
+</h2>
+
+<p>The case study articulates a clear philosophy: evaluations should be empirical tests of AI capabilities in specific domains, not vibe-based assessments. Guarino references Amanda Askell’s guidance on test-driven development for prompts: “You don’t write down a system prompt and find ways to test it. You write down tests and find a system prompt that passes them.”
+</p>
+
+<h3 id="dual-purpose-of-evaluations">Dual Purpose of Evaluations
+</h3>
+
+<p>Propel identifies two primary goals for their SNAP eval:
+</p>
+
+<p>
+<strong>Model Selection and Routing
+</strong>: The eval enables comparison of foundation models (OpenAI, Anthropic, Google, open-source alternatives like Llama and Deepseek) specifically for SNAP performance. This has practical implications:
+</p>
+
+<ul>
+
+<li>If a cheaper, faster model performs equally well on SNAP income eligibility questions, traffic can be routed to that model to optimize cost and latency
+</li>
+
+<li>Progress can be tracked over model versions (GPT-3 vs. 3.5 vs. 4 vs. o1-mini)
+</li>
+
+<li>Baseline performance can inform safety decisions about where additional guardrails are needed
+</li>
+
+</ul>
+
+<p>
+<strong>Product Development Through Test-Driven Iteration
+</strong>: With a defined eval, Propel can rapidly test different implementation approaches:
+</p>
+
+<ul>
+
+<li>Different foundation models
+</li>
+
+<li>Different system prompts (“Act like a SNAP policy analyst…” vs. “Act like a public benefits attorney…”)
+</li>
+
+<li>Different context/document retrieval strategies (state manuals, federal regulations, combinations thereof)
+</li>
+
+</ul>
+
+<p>The case study includes a compelling example: they hypothesize that providing both federal and state policy documents might actually confuse models and produce more errors than providing only state policy. An automated eval allows rapid testing of such hypotheses.
+</p>
+
+<h2 id="the-asset-limit-sniff-test">The Asset Limit “Sniff Test”
+</h2>
+
+<p>One of the most valuable parts of this case study is the detailed walkthrough of the SNAP asset limit question as an evaluation case. This exemplifies the kind of domain expertise that makes evaluations meaningful.
+</p>
+
+<p>The question “What is the SNAP asset limit?” or “I have $10,000 in the bank, can I get SNAP?” has a technically correct answer ($2,750, or $4,250 for elderly/disabled households) that is practically misleading. Due to Broad-Based Categorical Eligibility (BBCE) policy options, only 13 states still apply asset limits. For most applicants, assets are irrelevant to eligibility.
+</p>
+
+<p>Guarino argues that a good answer must include this nuance. This represents a higher-level evaluation principle: 
+<strong>strict accuracy must be balanced against providing information that actually helps people navigate SNAP
+</strong>. A response that recites the federal asset limit without mentioning that most people face no asset limit fails this standard.
+</p>
+
+<p>The case study includes screenshots comparing model outputs:
+</p>
+
+<ul>
+
+<li>Older models provided less nuanced responses focused on the strict federal limits
+</li>
+
+<li>Newer models (as of February 2025) include information about states eliminating asset limits
+</li>
+
+<li>Advanced reasoning models provide clear descriptions of the BBCE policy landscape
+</li>
+
+</ul>
+
+<h2 id="technical-implementation-details">Technical Implementation Details
+</h2>
+
+<h3 id="current-stage-expert-driven-exploration">Current Stage: Expert-Driven Exploration
+</h3>
+
+<p>The case study emphasizes starting with domain experts using models extensively before writing code. Guarino (self-described as a SNAP domain expert, though humble about the depth of his expertise) has been systematically querying multiple AI models and taking notes on output quality.
+</p>
+
+<p>The exploration categories include:
+</p>
+
+<ul>
+
+<li>Strict program accuracy questions (income limits, benefit amounts)
+</li>
+
+<li>Practical client navigation problems (missing deposits, renewal procedures)
+</li>
+
+<li>Questions involving state variability
+</li>
+
+<li>Questions where the “right” answer differs by perspective (state agency vs. legal aid attorney)
+</li>
+
+</ul>
+
+<h3 id="internal-tooling-hydra-slackbot">Internal Tooling: Hydra Slackbot
+</h3>
+
+<p>Propel built an internal tool called Hydra - a Slackbot that allows anyone in the organization to prompt multiple frontier language models simultaneously from within Slack. This lowers the barrier to model comparison and enables broader organizational participation in evaluation development.
+</p>
+
+<h3 id="planned-evaluation-mechanics">Planned Evaluation Mechanics
+</h3>
+
+<p>The case study previews upcoming technical content about:
+</p>
+
+<ul>
+
+<li>Automating eval cases with code
+</li>
+
+<li>Using language models as “judges” to evaluate other models’ outputs (LLM-as-judge pattern)
+</li>
+
+<li>Simple string matching vs. semantic evaluation approaches
+</li>
+
+</ul>
+
+<p>A simple code example is provided showing string-matching evaluation:
+</p>
+
+<figure class="code-pane" data-language="python">
+<div class="code-pane__bar">
+<span>python
+</span>
+<button type="button" class="code-pane__copy" aria-label="Copy code">Copy
+</button>
+</div>
+<div class="code-pane__scroll">
+<pre class="astro-code labs-light" style="background-color:#413D37;color:#F5F7F4; overflow-x: auto;" tabindex="0" data-language="python">
+<code>
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> test_snap_max_benefit_one_person
+</span>
+<span style="color:#F5F7F4">():
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">   test_prompt 
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#DBE0C2"> "What is the maximum SNAP benefit amount for 1 person?"
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">   llm_response 
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#F5F7F4"> llm
+</span>
+<span style="color:#47BAD1">.give_prompt
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">test_prompt
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">   if
+</span>
+<span style="color:#DBE0C2"> "$292"
+</span>
+<span style="color:#47BAD1"> in
+</span>
+<span style="color:#F5F7F4"> llm_response
+</span>
+<span style="color:#47BAD1">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">       print
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#DBE0C2">"Test passed"
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">   else
+</span>
+<span style="color:#47BAD1">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">       print
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#DBE0C2">"Test failed"
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+</code>
+</pre>
+</div>
+</figure>
+
+<p>However, Guarino acknowledges that more nuanced evaluations (like checking if a response substantively conveys that asset limits don’t apply in most states) require more sophisticated approaches, likely using LLMs as judges.
+</p>
+
+<h2 id="public-good-orientation">Public Good Orientation
+</h2>
+
+<p>A notable aspect of this case study is Propel’s commitment to publishing portions of their SNAP eval publicly. The rationale is that if all AI models improve at SNAP knowledge through better evaluation coverage, that benefits everyone building products on top of these models.
+</p>
+
+<p>This represents a collaborative approach to LLMOps in specialized domains: by making evaluation data public, domain experts can contribute to improving foundation models even without direct access to model training.
+</p>
+
+<h2 id="critical-assessment">Critical Assessment
+</h2>
+
+<p>This case study provides valuable methodological guidance for domain-specific LLM evaluation but has some limitations worth noting:
+</p>
+
+<p>
+<strong>Strengths
+</strong>:
+</p>
+
+<ul>
+
+<li>Transparent about methodology and reasoning
+</li>
+
+<li>Grounded in real domain expertise and practical use cases
+</li>
+
+<li>Acknowledges the complexity beyond simple accuracy metrics
+</li>
+
+<li>Includes concrete examples with screenshots
+</li>
+
+<li>Commits to sharing evaluation data publicly
+</li>
+
+</ul>
+
+<p>
+<strong>Limitations
+</strong>:
+</p>
+
+<ul>
+
+<li>This is Part 1 of a series, so production results and quantitative outcomes are not yet available
+</li>
+
+<li>The case study doesn’t address how they plan to handle temporal changes (benefit amounts, policy changes)
+</li>
+
+<li>The asset limit example, while instructive, represents one specific category of nuance - it’s unclear how comprehensively the full eval will cover SNAP complexity
+</li>
+
+<li>No discussion of how they’ll validate their own ground truth answers for the eval
+</li>
+
+</ul>
+
+<p>The case study represents a thoughtful, methodical approach to a challenging LLMOps problem in a high-stakes domain. It provides a useful template for other organizations working on domain-specific AI applications, particularly in areas affecting vulnerable populations where the cost of errors is significant.
+</p>
+</div>

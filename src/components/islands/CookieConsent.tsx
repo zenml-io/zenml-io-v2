@@ -13,12 +13,15 @@ import {
   TRACKING_SCRIPTS,
 } from "../../lib/consentConfig";
 import { isProdHostname } from "../../lib/constants";
-import { BASE_PILL_CLASSES, TONE_CLASSES } from "../labs/labsButtonStyles";
+import {
+  LABS_BUTTON_BASE,
+  LABS_BUTTON_TONE_CLASSES,
+} from "../labs/labsButtonStyles";
 
 /** Primary action (accept all / save preferences) — the LabsButton "dark" tone. */
-const PRIMARY_BUTTON = `${BASE_PILL_CLASSES} ${TONE_CLASSES.dark}`;
+const PRIMARY_BUTTON = `${LABS_BUTTON_BASE} ${LABS_BUTTON_TONE_CLASSES.dark}`;
 /** Secondary action (reject all / manage / cancel) — the LabsButton "ghost" tone. */
-const SECONDARY_BUTTON = `${BASE_PILL_CLASSES} ${TONE_CLASSES.ghost}`;
+const SECONDARY_BUTTON = `${LABS_BUTTON_BASE} ${LABS_BUTTON_TONE_CLASSES.ghost}`;
 
 const STORAGE_KEY = "cookie_consent";
 
