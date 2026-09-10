@@ -174,10 +174,10 @@ export default function ContactForm({
   // Success state
   if (state === "success") {
     return (
-      <div class="rounded-md border border-green-200 bg-green-50 p-6 text-center sm:p-8">
-        <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+      <div class="rounded-[10px] border border-(--color-sage-300) bg-(--color-sage-50) p-space-md text-center sm:p-space-lg">
+        <div class="mx-auto mb-space-sm flex h-12 w-12 items-center justify-center rounded-full bg-(--color-sage-200)">
           <svg
-            class="h-6 w-6 text-green-600"
+            class="h-6 w-6 text-(--color-sage-800)"
             aria-hidden="true"
             fill="none"
             viewBox="0 0 24 24"
@@ -191,9 +191,11 @@ export default function ContactForm({
             />
           </svg>
         </div>
-        <p class="text-lg font-semibold text-gray-900">{successMessage}</p>
+        <p class="text-lg font-semibold text-(--color-cream-900)">
+          {successMessage}
+        </p>
         {(successDownloadUrl || successCta) && (
-          <div class="mt-5 flex flex-wrap items-center justify-center gap-3">
+          <div class="mt-space-md flex flex-wrap items-center justify-center gap-space-xs">
             {successDownloadUrl && (
               <a
                 href={successDownloadUrl}
@@ -230,10 +232,10 @@ export default function ContactForm({
   }
 
   return (
-    <div class="rounded-md border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
+    <div class="rounded-[10px] border border-(--color-border) bg-(--color-card) p-space-md sm:p-space-lg">
       {/* Error banner */}
       {state === "error" && serverError && (
-        <div class="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
+        <div class="mb-space-sm rounded-[10px] border border-(--color-sage-500) bg-(--color-cream-100) px-space-sm py-space-xs text-sm text-(--color-cream-900)">
           {serverError}
         </div>
       )}
@@ -241,7 +243,7 @@ export default function ContactForm({
       <form
         method="POST"
         action={endpoint}
-        class="space-y-4"
+        class="space-y-space-sm"
         onSubmit={handleSubmit}
         noValidate
       >
@@ -249,10 +251,12 @@ export default function ContactForm({
           <div key={field.name}>
             <label
               for={field.name}
-              class="mb-1 block text-sm font-medium text-gray-700"
+              class="mb-1 block text-sm font-medium text-(--color-cream-900)"
             >
               {field.label}
-              {field.required && <span class="text-red-500"> *</span>}
+              {field.required && (
+                <span class="text-(--color-sage-800)"> *</span>
+              )}
             </label>
 
             {field.type === "select" && field.options ? (
@@ -262,8 +266,8 @@ export default function ContactForm({
                 required={field.required}
                 class={`w-full rounded-[10px] border px-4 py-2.5 font-sans text-sm focus:border-(--color-sage-700) focus:ring-1 focus:ring-(--color-sage-700) outline-none transition-colors ${
                   errors[field.name]
-                    ? "border-red-400 bg-red-50"
-                    : "border-gray-300 bg-white"
+                    ? "border-(--color-sage-700) bg-(--color-cream-100)"
+                    : "border-(--color-border) bg-(--color-cream-50)"
                 }`}
                 disabled={state === "submitting"}
               >
@@ -274,7 +278,7 @@ export default function ContactForm({
                 ))}
               </select>
             ) : field.type === "checkbox" ? (
-              <label class="flex items-start gap-2 text-sm text-gray-600">
+              <label class="flex items-start gap-2 text-sm text-(--color-cream-700)">
                 <input
                   id={field.name}
                   type="checkbox"
@@ -299,15 +303,17 @@ export default function ContactForm({
                 placeholder={field.placeholder}
                 class={`w-full rounded-[10px] border px-4 py-2.5 font-sans text-sm focus:border-(--color-sage-700) focus:ring-1 focus:ring-(--color-sage-700) outline-none transition-colors ${
                   errors[field.name]
-                    ? "border-red-400 bg-red-50"
-                    : "border-gray-300 bg-white"
+                    ? "border-(--color-sage-700) bg-(--color-cream-100)"
+                    : "border-(--color-border) bg-(--color-cream-50)"
                 }`}
                 disabled={state === "submitting"}
               />
             )}
 
             {errors[field.name] && (
-              <p class="mt-1 text-xs text-red-600">{errors[field.name]}</p>
+              <p class="mt-1 text-xs text-(--color-sage-800)">
+                {errors[field.name]}
+              </p>
             )}
           </div>
         ))}
@@ -356,7 +362,7 @@ export default function ContactForm({
       </form>
 
       <noscript>
-        <div class="mt-4 rounded-lg bg-yellow-50 border border-yellow-200 px-4 py-3 text-sm text-yellow-800">
+        <div class="mt-space-sm rounded-[10px] border border-(--color-sage-300) bg-(--color-cream-100) px-space-sm py-space-xs text-sm text-(--color-cream-900)">
           JavaScript is required to submit this form.{" "}
           <a href="/book-your-demo" class="text-(--color-sage-800) underline">
             Book a demo directly
