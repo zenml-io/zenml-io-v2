@@ -1,16 +1,16 @@
 <article class="compare-body-inner" data-astro-cid-[hash]="">
-<p>Pydantic AI and Kitaru solve different problems at different layers. Pydantic AI is an 
+<p>Pydantic AI and Kitaru solve different problems at different layers. Pydantic AI is an
 <strong>agent harness
-</strong>: the best-in-class Pythonic library for writing type-safe agent logic, with tool calling, structured outputs, dependency injection, and streaming. Kitaru is a 
+</strong>: the best-in-class Pythonic library for writing type-safe agent logic, with tool calling, structured outputs, dependency injection, and streaming. Kitaru is a
 <strong>replay-based eval layer
 </strong>: it records every run as a session, and a session re-executes. Unchanged, you get a faithful baseline. Forked with one thing changed, you get an answer.
 </p>
 
-<p>They don’t compete. They compose. Kitaru ships a 
+<p>They don’t compete. They compose. Kitaru ships a
 <a href="https://docs.zenml.io/kitaru/adapters/pydantic-ai">first-class Pydantic AI adapter
-</a>: wrap the agent once with 
+</a>: wrap the agent once with
 <code>KitaruAgent
-</code> and every run lands as a session with its model requests, tool calls, token usage, and cost. Running that same agent durably in production is ZenML’s job; Kitaru replays and improves it. See 
+</code> and every run lands as a session with its model requests, tool calls, token usage, and cost. Running that same agent durably in production is ZenML’s job; Kitaru replays and improves it. See
 <a href="/compare/zenml-vs-pydantic-ai">ZenML vs Pydantic AI
 </a>.
 </p>
@@ -200,27 +200,27 @@
 <h2 data-astro-cid-[hash]="">Compose, don’t replace
 </h2>
 <div class="feature-graphic-body" data-astro-cid-[hash]="">
-<p>Kitaru doesn’t ask you to give up the Pydantic AI agent you already wrote. Install it with 
+<p>Kitaru doesn’t ask you to give up the Pydantic AI agent you already wrote. Install it with
 <code>uv add kitaru-pydantic-ai
-</code>. 
+</code>.
 <code>KitaruAgent
-</code> is a transparent 
+</code> is a transparent
 <code>WrapperAgent
-</code>: 
+</code>:
 <code>run
-</code>, 
+</code>,
 <code>run_sync
-</code>, 
+</code>,
 <code>iter
 </code>, tools, output types, and capabilities behave exactly as on the wrapped agent.
 </p>
-<p>The adapter records every model request and tool call as a node on the session, and the same wrapper runs replays: model swaps and 
+<p>The adapter records every model request and tool call as a node on the session, and the same wrapper runs replays: model swaps and
 <code>model_params
-</code> apply at the model-request boundary, and tool calls get answered per policy. Under a 
+</code> apply at the model-request boundary, and tool calls get answered per policy. Under a
 <code>history
-</code> policy with 
+</code> policy with
 <code>on_miss="fail"
-</code>, anything unrecorded raises 
+</code>, anything unrecorded raises
 <code>ToolPolicyMissError
 </code> instead of touching a live system. If the process dies mid-run, the partial session is exactly the evidence you want.
 </p>
@@ -233,7 +233,7 @@
 <span class="line">
 <span style="color:#5A4A1E;--shiki-dark:#C89F70">from
 </span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> pydantic_ai 
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> pydantic_ai
 </span>
 <span style="color:#5A4A1E;--shiki-dark:#C89F70">import
 </span>
@@ -244,7 +244,7 @@
 <span class="line">
 <span style="color:#5A4A1E;--shiki-dark:#C89F70">from
 </span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> kitaru_pydantic_ai 
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> kitaru_pydantic_ai
 </span>
 <span style="color:#5A4A1E;--shiki-dark:#C89F70">import
 </span>
@@ -256,7 +256,7 @@
 </span>
 
 <span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">agent 
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">agent
 </span>
 <span style="color:#635951;--shiki-dark:#AEA298">=
 </span>
@@ -305,7 +305,7 @@
 </span>
 
 <span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">reviewer 
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">reviewer
 </span>
 <span style="color:#635951;--shiki-dark:#AEA298">=
 </span>
@@ -341,7 +341,7 @@
 </span>
 
 <span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">result 
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">result
 </span>
 <span style="color:#635951;--shiki-dark:#AEA298">=
 </span>
@@ -808,7 +808,7 @@
 </td>
 <td>Standalone Pythonic agent
 </td>
-<td>Same agent wrapped once by 
+<td>Same agent wrapped once by
 <code>KitaruAgent
 </code>
 </td>
@@ -869,7 +869,7 @@
 <span class="line">
 <span style="color:#5A4A1E;--shiki-dark:#C89F70">from
 </span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> pydantic_ai 
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> pydantic_ai
 </span>
 <span style="color:#5A4A1E;--shiki-dark:#C89F70">import
 </span>
@@ -880,7 +880,7 @@
 <span class="line">
 <span style="color:#5A4A1E;--shiki-dark:#C89F70">from
 </span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> kitaru_pydantic_ai 
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> kitaru_pydantic_ai
 </span>
 <span style="color:#5A4A1E;--shiki-dark:#C89F70">import
 </span>
@@ -892,7 +892,7 @@
 </span>
 
 <span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">reviewer 
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">reviewer
 </span>
 <span style="color:#635951;--shiki-dark:#AEA298">=
 </span>
@@ -954,7 +954,7 @@
 </span>
 
 <span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">result 
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">result
 </span>
 <span style="color:#635951;--shiki-dark:#AEA298">=
 </span>
@@ -1036,7 +1036,7 @@
 <span class="line">
 <span style="color:#5A4A1E;--shiki-dark:#C89F70">from
 </span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> pydantic_ai 
+<span style="color:#1A1310;--shiki-dark:#E9E4DE"> pydantic_ai
 </span>
 <span style="color:#5A4A1E;--shiki-dark:#C89F70">import
 </span>
@@ -1048,7 +1048,7 @@
 </span>
 
 <span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">reviewer 
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">reviewer
 </span>
 <span style="color:#635951;--shiki-dark:#AEA298">=
 </span>
@@ -1093,7 +1093,7 @@
 </span>
 
 <span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">result 
+<span style="color:#1A1310;--shiki-dark:#E9E4DE">result
 </span>
 <span style="color:#635951;--shiki-dark:#AEA298">=
 </span>

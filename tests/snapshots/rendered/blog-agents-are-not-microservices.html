@@ -63,7 +63,7 @@
 
 <p>
 <strong>Short-lived processes.
-</strong> An agent runs for 10 minutes, hits a 
+</strong> An agent runs for 10 minutes, hits a
 <code>wait()
 </code>, and the process should die. When the human responds hours later, a new process starts. There’s no reason to keep a worker alive.
 </p>
@@ -81,16 +81,16 @@
 
 <p>
 <strong>Human-in-the-loop as a first-class primitive.
-</strong> Not signals. Not callbacks. A real 
+</strong> Not signals. Not callbacks. A real
 <code>wait()
 </code> that suspends the execution, releases compute, and resumes when input arrives; minutes, hours, or days later.
 </p>
 
 <p>
 <strong>No determinism constraints.
-</strong> Agents call 
+</strong> Agents call
 <code>datetime.now()
-</code>, use 
+</code>, use
 <code>random()
 </code>, make HTTP requests in their main logic. A framework that bans these from workflow code is a non-starter.
 </p>
@@ -217,7 +217,7 @@
 <span class="line">
 <span style="color:#BECAA6">from
 </span>
-<span style="color:#F5F7F4"> kitaru 
+<span style="color:#F5F7F4"> kitaru
 </span>
 <span style="color:#BECAA6">import
 </span>
@@ -250,7 +250,7 @@
 </span>
 <span style="color:#E0CFB7"> str
 </span>
-<span style="color:#F5F7F4">) 
+<span style="color:#F5F7F4">)
 </span>
 <span style="color:#47BAD1">-&gt;
 </span>
@@ -274,7 +274,7 @@
 </span>
 <span style="color:#BECAA6">f
 </span>
-<span style="color:#DBE0C2">"Research 
+<span style="color:#DBE0C2">"Research
 </span>
 <span style="color:#E0CFB7">{
 </span>
@@ -309,7 +309,7 @@
 </span>
 <span style="color:#E0CFB7"> str
 </span>
-<span style="color:#F5F7F4">) 
+<span style="color:#F5F7F4">)
 </span>
 <span style="color:#47BAD1">-&gt;
 </span>
@@ -320,7 +320,7 @@
 </span>
 
 <span class="line">
-<span style="color:#F5F7F4">    research 
+<span style="color:#F5F7F4">    research
 </span>
 <span style="color:#47BAD1">=
 </span>
@@ -385,7 +385,7 @@
 </span>
 <span style="color:#47BAD1">research
 </span>
-<span style="color:#F5F7F4">)  
+<span style="color:#F5F7F4">)
 </span>
 <span style="color:#AC947F;font-style:italic"># research is cached, not re-computed
 </span>
@@ -395,7 +395,7 @@
 </div>
 </figure>
 
-<p>Two decorators. 
+<p>Two decorators.
 <code>pip install kitaru
 </code>. Your Python stays Python.
 </p>

@@ -32,7 +32,7 @@
 </strong> provides the runtime layer through dynamically scaled Kubernetes clusters. This infrastructure handles the actual deployment and scaling of Sandcastle applications, ensuring they can handle varying traffic patterns without manual intervention.
 </p>
 
-<p>The data flow follows a straightforward path. Developers write application code using frameworks like Streamlit or FastAPI and package it with an onebrain.yml file. They commit this code, which triggers CI/CD to create an immutable snapshot. They then check in a minimal container configuration file, which kube-gen expands into complete Kubernetes configuration. Within 10-15 minutes, the application is live at a URL following the pattern 
+<p>The data flow follows a straightforward path. Developers write application code using frameworks like Streamlit or FastAPI and package it with an onebrain.yml file. They commit this code, which triggers CI/CD to create an immutable snapshot. They then check in a minimal container configuration file, which kube-gen expands into complete Kubernetes configuration. Within 10-15 minutes, the application is live at a URL following the pattern
 <a href="https://appname.airbnb.proxy/">https://appname.airbnb.proxy/
 </a>, accessible to anyone at the company with corporate login credentials.
 </p>
@@ -43,11 +43,11 @@
 <h2 id="technical-implementation">Technical Implementation
 </h2>
 
-<p>The implementation leverages a carefully selected mix of open source frameworks and proprietary Airbnb infrastructure. For application development, Sandcastle primarily uses 
+<p>The implementation leverages a carefully selected mix of open source frameworks and proprietary Airbnb infrastructure. For application development, Sandcastle primarily uses
 <strong>Streamlit
-</strong> for data science prototyping, chosen for its ease of use for non-frontend developers. The platform also supports 
+</strong> for data science prototyping, chosen for its ease of use for non-frontend developers. The platform also supports
 <strong>FastAPI
-</strong> for more customized API-based applications and 
+</strong> for more customized API-based applications and
 <strong>React
 </strong> for developers who need fully bespoke prototypes. The framework selection prioritizes ease of development with hot reload capabilities, rich ecosystems of open source components, and performant UIs through caching mechanisms.
 </p>
@@ -261,7 +261,7 @@
 </span>
 <span style="color:#47BAD1">:
 </span>
-<span style="color:#F5F7F4"> {{ 
+<span style="color:#F5F7F4"> {{
 </span>
 <span style="color:#47BAD1">.
 </span>
@@ -319,7 +319,7 @@
 <span class="line">
 <span style="color:#47BAD1">  -
 </span>
-<span style="color:#F5F7F4"> {{ 
+<span style="color:#F5F7F4"> {{
 </span>
 <span style="color:#47BAD1">.
 </span>
@@ -340,7 +340,7 @@
 </span>
 <span style="color:#47BAD1">:
 </span>
-<span style="color:#F5F7F4"> {{ ToInlineYaml 
+<span style="color:#F5F7F4"> {{ ToInlineYaml
 </span>
 <span style="color:#47BAD1">.
 </span>
@@ -372,25 +372,25 @@
 <h2 id="scale--performance">Scale &amp; Performance
 </h2>
 
-<p>Sandcastle achieved significant adoption in its first year of operation. The platform powered 
+<p>Sandcastle achieved significant adoption in its first year of operation. The platform powered
 <strong>over 175 live prototypes
-</strong> developed by Airbnb’s data science, engineering, and product management community. These applications generated 
+</strong> developed by Airbnb’s data science, engineering, and product management community. These applications generated
 <strong>over 69,000 distinct active usage days
-</strong> from 
+</strong> from
 <strong>more than 3,500 unique internal visitors
-</strong>. The platform serves 
+</strong>. The platform serves
 <strong>hundreds of internal users per week
 </strong> who visit the various prototypes to interact with data and AI ideas.
 </p>
 
-<p>Of the 175 prototypes, 
+<p>Of the 175 prototypes,
 <strong>6 were used for high-impact use cases
 </strong>, demonstrating that the platform successfully bridges the gap between rapid prototyping and meaningful business impact. This conversion rate suggests that while many ideas are explored, Sandcastle effectively filters and validates concepts that warrant further investment.
 </p>
 
-<p>The deployment speed represents a dramatic improvement over traditional approaches. Applications go from code check-in to live production in 
+<p>The deployment speed represents a dramatic improvement over traditional approaches. Applications go from code check-in to live production in
 <strong>10-15 minutes
-</strong>, enabling true rapid iteration. Some team members have gone from initial idea to live internal application in 
+</strong>, enabling true rapid iteration. Some team members have gone from initial idea to live internal application in
 <strong>less than one hour
 </strong>, demonstrating the platform’s accessibility and low barrier to entry.
 </p>
@@ -401,18 +401,18 @@
 <h2 id="trade-offs--lessons">Trade-offs &amp; Lessons
 </h2>
 
-<p>Sandcastle’s success demonstrates several important architectural and organizational insights. The platform deliberately chose 
+<p>Sandcastle’s success demonstrates several important architectural and organizational insights. The platform deliberately chose
 <strong>not to be open sourced
-</strong> because the solutions for service-to-service communication, authentication, and networking are inherently specific to each company’s infrastructure. Instead, Airbnb offers it as a 
+</strong> because the solutions for service-to-service communication, authentication, and networking are inherently specific to each company’s infrastructure. Instead, Airbnb offers it as a
 <strong>recipe
 </strong> that other organizations can adapt: combining open source web application frameworks with a hosting platform that handles authentication, networking, and shareable links.
 </p>
 
-<p>The recipe approach requires organizations to think through three pillars of cloud computing tailored for prototyping. For 
+<p>The recipe approach requires organizations to think through three pillars of cloud computing tailored for prototyping. For
 <strong>compute
-</strong>, they need infrastructure that spins up remote hosting environments with minimal configuration. For 
+</strong>, they need infrastructure that spins up remote hosting environments with minimal configuration. For
 <strong>storage
-</strong>, prototypes need ephemeral caching plus access to the data warehouse for querying offline data. For 
+</strong>, prototypes need ephemeral caching plus access to the data warehouse for querying offline data. For
 <strong>networking
 </strong>, an authentication proxy must allow internal access via memorable domains while passing user credentials through to data warehouses and other services.
 </p>
@@ -423,12 +423,12 @@
 <p>The platform’s flexibility emerged as both a strength and a consideration. By supporting multiple frameworks (Streamlit, FastAPI, React) and languages (Python, TypeScript, R), Sandcastle accommodates diverse use cases and developer preferences. This flexibility contributed to broader adoption but requires maintaining compatibility across a wider technology surface area.
 </p>
 
-<p>The cultural impact exceeded the technical metrics. Sandcastle drove an 
+<p>The cultural impact exceeded the technical metrics. Sandcastle drove an
 <strong>ongoing cultural shift from using decks and documents to using live prototypes
 </strong> for communicating data and AI ideas. This shift fundamentally changed how data scientists engage with stakeholders, replacing static presentations with interactive experiences. The ability for data scientists and product managers to iterate directly without engineering intermediaries proved transformative.
 </p>
 
-<p>The platform reveals an important lesson about prototyping infrastructure: 
+<p>The platform reveals an important lesson about prototyping infrastructure:
 <strong>build with a view towards going viral
 </strong>. The easily memorable URLs (appname.airbnb.proxy) and zero-friction access for authenticated users enabled prototypes to spread organically through the organization. This viral quality amplified the platform’s impact beyond what top-down adoption would achieve.
 </p>
