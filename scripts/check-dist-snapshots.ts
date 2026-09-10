@@ -62,6 +62,13 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
       "canonical booking page: shared lead-capture grid, form-island mount, and calendar transition container",
   },
   {
+    page: "success-calendar.html",
+    selector: "main > section:last-child",
+    golden: "success-calendar.html",
+    covers:
+      "canonical calendar page: Labs interior band, Cal.com mount, and no-JavaScript booking fallback",
+  },
+  {
     page: "blog/agents-are-not-microservices.html",
     selector: ".prose",
     golden: "blog-agents-are-not-microservices.html",

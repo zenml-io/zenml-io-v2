@@ -9,9 +9,9 @@
  * separate component for two lines isn't worth it). Keep the two copies
  * in sync when editing the hero block.
  *
- * `calendar` renders two sections — a centered `max-w-3xl` hero band, then
- * a wider `max-w-5xl` band housing the widget — matching the Cal-hero
- * pair (`success-calendar`, `schedule-a-demo`).
+ * `calendar` renders the shared Labs interior band, then a cream section
+ * housing the widget — matching the two canonical calendar pages
+ * (`success-calendar`, `schedule-a-demo`).
  * `form` renders one `max-w-xl` section with the hero block sitting
  * directly above the widget, matching the short-form pages
  * (`book-a-demo`, `signup-for-demo`). The default slot is the widget
@@ -19,6 +19,8 @@
  *
  * Absence collapses: an omitted `deck` renders no `<p>`.
  */
+import LabsBand from "../labs/LabsBand.astro";
+
 interface ConversionShellBase {
   headline: string;
   deck?: string;
@@ -34,29 +36,37 @@ const { headline, deck, frame } = Astro.props;
 {
   frame === "calendar" ? (
     <>
-      <section class="bg-white pt-16 pb-4 sm:pt-24 sm:pb-8">
-        <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-          <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
+      <LabsBand size="short">
+        <div class="max-w-3xl">
+          <h1 class="font-display text-[44px] leading-[48px] text-foreground md:text-[72px] md:leading-[78px]">
             {headline}
           </h1>
-          {deck && <p class="mt-3 text-lg text-gray-600">{deck}</p>}
+          {deck && (
+            <p class="mt-6 max-w-2xl font-sans text-xl leading-[30px] text-(--color-cream-700)">
+              {deck}
+            </p>
+          )}
         </div>
-      </section>
+      </LabsBand>
 
-      <section class="bg-white pb-16 sm:pb-20">
-        <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <section class="bg-(--color-cream-50) py-space-xl md:py-space-xxl">
+        <div class="mx-auto max-w-content px-gutter">
           <slot />
         </div>
       </section>
     </>
   ) : (
-    <section class="bg-white py-16 sm:py-24">
-      <div class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8">
+    <section class="bg-(--color-cream-50) py-space-xl md:py-space-xxl">
+      <div class="mx-auto max-w-content px-gutter">
         <div class="mb-8 text-center">
-          <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
+          <h1 class="font-display text-[44px] leading-[48px] text-foreground md:text-[72px] md:leading-[78px]">
             {headline}
           </h1>
-          {deck && <p class="mt-3 text-lg text-gray-600">{deck}</p>}
+          {deck && (
+            <p class="mt-6 font-sans text-xl leading-[30px] text-(--color-cream-700)">
+              {deck}
+            </p>
+          )}
         </div>
         <slot />
       </div>

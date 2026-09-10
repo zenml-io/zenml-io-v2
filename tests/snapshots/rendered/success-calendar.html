@@ -1,38 +1,20 @@
----
-import { CAL_EMBED_SCRIPT, CAL_ORIGIN } from "../../lib/formConstants";
-/**
- * CalEmbed — Cal.com inline calendar widget.
- *
- * Loads the Cal.com embed.js script and initializes an inline calendar
- * in the target div. Includes a fallback link for ad-blocker users.
- */
-import type { CalEmbedConfig } from "../../lib/formTypes";
-
-interface Props {
-  config: CalEmbedConfig;
-}
-
-const { config } = Astro.props;
-const layout = config.layout ?? "month_view";
----
-
-<div id={config.elementId} class="min-h-[700px] w-full overflow-auto"></div>
-
-<p class="mt-space-sm text-center font-sans text-sm text-muted-foreground">
-  Can't see the calendar?{" "}
-  <a
-    href={`${CAL_ORIGIN}/${config.calLink}`}
-    target="_blank"
-    rel="noopener noreferrer"
-    class="text-(--color-sage-800) underline decoration-(--color-sage-500) underline-offset-4 transition-colors hover:text-foreground"
-  >
-    Open directly &rarr;
-  </a>
+<section class="bg-(--color-cream-50) py-space-xl md:py-space-xxl">
+<div class="mx-auto max-w-content px-gutter">
+<div class="mx-auto w-full max-w-content rounded-[12px] border border-border bg-card p-space-sm sm:p-space-md">
+<div id="my-cal-inline-success-calendar" class="min-h-[700px] w-full overflow-auto">
+</div>
+<p class="mt-4 text-center font-sans text-sm text-muted-foreground">Can't see the calendar?
+<a href="https://app.cal.com/zenml/discovery-call" target="_blank" rel="noopener noreferrer" class="text-(--color-sage-800) underline decoration-(--color-sage-500) underline-offset-4 transition-colors hover:text-foreground">Open directly →
+</a>
 </p>
+</div>
+<script>(function(){const namespace = "discovery-call";
+const elementId = "my-cal-inline-success-calendar";
+const calLink = "zenml/discovery-call";
+const layout = "month_view";
+const CAL_EMBED_SCRIPT = "https://app.cal.com/embed/embed.js";
+const CAL_ORIGIN = "https://app.cal.com";
 
-<script is:inline
-  define:vars={{ namespace: config.namespace, elementId: config.elementId, calLink: config.calLink, layout, CAL_EMBED_SCRIPT, CAL_ORIGIN }}
->
   // Cal.com embed IIFE — loads embed.js and registers the namespace
   (function (C, A, L) {
     let p = function (a, ar) { a.q.push(ar); };
@@ -99,4 +81,7 @@ const layout = config.layout ?? "month_view";
       if (window.plausible) window.plausible("Cal: Embed Failed");
     },
   });
+})();
 </script>
+</div>
+</section>
