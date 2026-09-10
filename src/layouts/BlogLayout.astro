@@ -202,15 +202,14 @@ const breadcrumbItems: BreadcrumbItem[] = [
   { label: displayTitle },
 ];
 
-// Article JSON-LD — shape unchanged from the pre-cutover layout (D10:
-// publisher stays "ZenML" until #322).
+// Article JSON-LD names the publisher organization, not the ZenML product.
 const articleJsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: displayTitle,
   datePublished: new Date(date).toISOString(),
   ...(author && { author: { "@type": "Person", name: author.name } }),
-  publisher: { "@type": "Organization", name: "ZenML", url: SITE_URL },
+  publisher: { "@type": "Organization", name: "ZenML Labs", url: SITE_URL },
   ...(mainImage && { image: mainImage.url }),
   ...(seoProps.description && { description: seoProps.description }),
 };

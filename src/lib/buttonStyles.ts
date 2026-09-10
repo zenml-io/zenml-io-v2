@@ -22,10 +22,11 @@ export const BUTTON_BASE_CLASSES =
 
 export const BUTTON_VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary:
-    "bg-zenml-500 text-white border border-zenml-600 shadow-button hover:bg-zenml-700 focus:shadow-focus-primary",
+    "bg-(--color-sage-700) text-(--color-cream-50) border border-(--color-sage-800) shadow-button hover:bg-(--color-sage-800) focus:shadow-focus-primary",
   secondary:
     "bg-white text-gray-700 border border-gray-300 shadow-button hover:bg-gray-50 focus:shadow-focus-gray",
-  ghost: "text-zenml-500 hover:text-zenml-600 hover:bg-zenml-25",
+  ghost:
+    "text-(--color-sage-800) hover:text-foreground hover:bg-(--color-sage-100)",
   overDark:
     "bg-gray-900 text-white border border-gray-700 shadow-button hover:bg-gray-800",
   secondaryGray:

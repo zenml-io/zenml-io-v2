@@ -1,4 +1,5 @@
 ---
+import { GITHUB_REPO_URL } from "../../lib/githubStars";
 import {
   LABS_DOORS,
   LABS_NAV_LINKS,
@@ -80,6 +81,8 @@ const navItemClass =
   "inline-flex h-9 cursor-pointer items-center gap-1 rounded-full px-3.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors hover:bg-(--color-sage-200) aria-[expanded=true]:bg-(--color-sage-200)";
 const menuRowClass =
   "flex cursor-pointer items-center gap-4 rounded-[14px] border border-transparent px-4 py-2.5 text-foreground transition-colors duration-200 ease-out hover:border-(--color-sage-400) hover:bg-(--color-sage-100)";
+const githubChipClass =
+  "inline-flex h-10 cursor-pointer items-center gap-2 rounded-full px-3 font-label text-[13px] tracking-[0.05em] text-foreground transition-colors duration-200 ease-out hover:bg-(--color-sage-100)";
 ---
 
 <div class="pointer-events-none fixed inset-x-0 top-4 z-50 lg:top-8">
@@ -105,7 +108,7 @@ const menuRowClass =
         )}
       </a>
 
-      <nav aria-label="Main navigation" class="hidden items-center gap-1 lg:flex">
+      <nav aria-label="Main navigation" class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex">
         {LABS_NAV_LINKS.map((link) => {
           const menuKey = link.menu;
           if (!menuKey) {
@@ -244,9 +247,21 @@ const menuRowClass =
         })}
       </nav>
 
-      {/* `lg:contents` keeps the pill in the header's flex row without a display
-          utility fighting the button's own `inline-flex`. */}
-      <div class="hidden lg:contents">
+      {/* Right-side actions stay grouped so the centered link row does not
+          drift when the live GitHub count changes. */}
+      <div class="hidden items-center gap-1 lg:flex">
+        {/* Counts use the first-party edge-cached /api/github-stars route; this
+            link needs no third-party widget or consent gate. */}
+        <a
+          href={GITHUB_REPO_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="ZenML on GitHub"
+          class={githubChipClass}
+        >
+          <svg aria-hidden="true" focusable="false" class="h-4 w-4 shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.49-2.7-.95-2.7-.95-.36-.93-.89-1.18-.89-1.18-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.87.87 2.33.67.07-.51.28-.87.51-1.07-1.78-.2-3.65-.88-3.65-3.94 0-.87.31-1.58.82-2.14-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.7 7.7 0 0 1 8 3.87c.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.14 0 3.07-1.87 3.74-3.66 3.94.29.25.54.73.54 1.48v2.2c0 .21.14.46.55.38A8 8 0 0 0 8 0Z" /></svg>
+          <span data-github-stars-count class="min-w-[5ch] tabular-nums"></span>
+        </a>
         <LabsButton cta={signup} tone={signupTone} />
       </div>
 
@@ -306,7 +321,12 @@ const menuRowClass =
             </a>
           ))}
         </nav>
-        <LabsButton cta={signup} tone={signupTone} class="mt-2 w-full" />
+        <div class="mt-2 flex items-center gap-2">
+          <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" aria-label="ZenML on GitHub" class={`${githubChipClass} flex-1 justify-center`}>
+            <svg aria-hidden="true" focusable="false" class="h-4 w-4 shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.49-2.7-.95-2.7-.95-.36-.93-.89-1.18-.89-1.18-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.87.87 2.33.67.07-.51.28-.87.51-1.07-1.78-.2-3.65-.88-3.65-3.94 0-.87.31-1.58.82-2.14-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.7 7.7 0 0 1 8 3.87c.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.14 0 3.07-1.87 3.74-3.66 3.94.29.25.54.73.54 1.48v2.2c0 .21.14.46.55.38A8 8 0 0 0 8 0Z" /></svg><span data-github-stars-count class="min-w-[5ch] tabular-nums"></span>
+          </a>
+          <LabsButton cta={signup} tone={signupTone} class="flex-1 px-3" />
+        </div>
       </div>
     </header>
   </div>

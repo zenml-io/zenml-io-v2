@@ -1153,19 +1153,19 @@ body {
 
 /* --- Rich-text links --- */
 .prose a {
-  color: var(--color-zenml-500);
+  color: var(--color-sage-800);
   text-decoration: underline;
   text-decoration-color: transparent;
   transition: text-decoration-color 0.2s;
 }
 
 .prose a:hover {
-  text-decoration-color: var(--color-zenml-500);
+  text-decoration-color: var(--color-sage-500);
 }
 
 /* --- Blockquotes --- */
 .prose blockquote {
-  border-left: 3px solid var(--color-zenml-500);
+  border-left: 3px solid var(--color-sage-600);
   padding-left: 1rem;
   margin: 1.5rem 0;
   color: var(--color-gray-600);

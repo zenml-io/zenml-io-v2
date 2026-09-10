@@ -15,6 +15,10 @@ import {
   SITE_URL,
 } from "./constants";
 
+/** Organization metadata uses the Labs parent; product/app names remain ZenML
+ * or Kitaru wherever structured data describes a product rather than its owner. */
+export const ORGANIZATION_NAME = "ZenML Labs";
+
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------

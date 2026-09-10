@@ -11,6 +11,7 @@ import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 import type { PlaceholderField } from "../../lib/formTypes";
 import { type FormType, validateForm } from "../../lib/formValidation";
 import type { CtaLink } from "../../lib/marketingPageTypes";
+import { labsButtonClasses } from "../labs/labsButtonStyles";
 
 interface Props {
   formType: FormType;
@@ -198,7 +199,7 @@ export default function ContactForm({
                 href={successDownloadUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 rounded-lg bg-zenml-500 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-zenml-600 transition-colors"
+                class={labsButtonClasses("dark", "gap-2")}
               >
                 <svg
                   class="h-4 w-4"
@@ -218,10 +219,7 @@ export default function ContactForm({
               </a>
             )}
             {successCta && (
-              <a
-                href={successCta.href}
-                class="inline-flex items-center rounded-lg border-2 border-zenml-500 px-6 py-3 text-sm font-semibold text-zenml-600 hover:bg-zenml-50 transition-colors"
-              >
+              <a href={successCta.href} class={labsButtonClasses("ghost")}>
                 {successCta.label}
               </a>
             )}
@@ -262,7 +260,7 @@ export default function ContactForm({
                 id={field.name}
                 name={field.name}
                 required={field.required}
-                class={`w-full rounded-md border px-4 py-2.5 text-sm focus:border-zenml-500 focus:ring-1 focus:ring-zenml-500 outline-none transition-colors ${
+                class={`w-full rounded-[10px] border px-4 py-2.5 font-sans text-sm focus:border-(--color-sage-700) focus:ring-1 focus:ring-(--color-sage-700) outline-none transition-colors ${
                   errors[field.name]
                     ? "border-red-400 bg-red-50"
                     : "border-gray-300 bg-white"
@@ -283,7 +281,7 @@ export default function ContactForm({
                   name={field.name}
                   value="on"
                   required={field.required}
-                  class="mt-0.5 rounded border-gray-300 text-zenml-500 focus:ring-zenml-500"
+                  class="mt-0.5 rounded border-border text-(--color-sage-700) focus:ring-(--color-sage-700)"
                   disabled={state === "submitting"}
                 />
                 <span
@@ -299,7 +297,7 @@ export default function ContactForm({
                 name={field.name}
                 required={field.required}
                 placeholder={field.placeholder}
-                class={`w-full rounded-md border px-4 py-2.5 text-sm focus:border-zenml-500 focus:ring-1 focus:ring-zenml-500 outline-none transition-colors ${
+                class={`w-full rounded-[10px] border px-4 py-2.5 font-sans text-sm focus:border-(--color-sage-700) focus:ring-1 focus:ring-(--color-sage-700) outline-none transition-colors ${
                   errors[field.name]
                     ? "border-red-400 bg-red-50"
                     : "border-gray-300 bg-white"
@@ -322,7 +320,10 @@ export default function ContactForm({
         <button
           type="submit"
           disabled={state === "submitting"}
-          class="w-full rounded-lg bg-zenml-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-zenml-600 focus:outline-none focus:ring-2 focus:ring-zenml-500 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed"
+          class={labsButtonClasses(
+            "dark",
+            "w-full disabled:cursor-not-allowed disabled:opacity-60",
+          )}
         >
           {state === "submitting" ? (
             <span class="inline-flex items-center gap-2">
@@ -357,7 +358,7 @@ export default function ContactForm({
       <noscript>
         <div class="mt-4 rounded-lg bg-yellow-50 border border-yellow-200 px-4 py-3 text-sm text-yellow-800">
           JavaScript is required to submit this form.{" "}
-          <a href="/book-your-demo" class="text-zenml-500 underline">
+          <a href="/book-your-demo" class="text-(--color-sage-800) underline">
             Book a demo directly
           </a>{" "}
           instead.

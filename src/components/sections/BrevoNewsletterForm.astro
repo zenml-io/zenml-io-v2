@@ -20,11 +20,11 @@ const { config, privacyHtml, darkBg = false } = Astro.props;
 
 const inputClass = darkBg
   ? "h-[60px] rounded-lg border-0 bg-white px-4 text-xl text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-white/50 sm:w-80"
-  : "rounded-md border border-gray-300 px-4 py-3 text-sm shadow-sm focus:border-zenml-500 focus:outline-none focus:ring-1 focus:ring-zenml-500 sm:w-72";
+  : "rounded-[10px] border border-border px-4 py-3 font-sans text-sm text-foreground focus:border-(--color-sage-700) focus:outline-none focus:ring-1 focus:ring-(--color-sage-700) sm:w-72";
 
 const buttonClass = darkBg
   ? "inline-flex h-[60px] items-center justify-center rounded-lg bg-[var(--color-primary-700)] px-6 text-base font-semibold text-white shadow-button hover:brightness-110 transition disabled:opacity-50 disabled:cursor-not-allowed"
-  : "inline-flex items-center justify-center rounded-md bg-zenml-500 px-5 py-3 text-sm font-semibold text-white shadow-button hover:bg-zenml-600 transition disabled:opacity-50 disabled:cursor-not-allowed";
+  : "inline-flex cursor-pointer items-center justify-center rounded-full bg-(--color-cream-900) px-5 py-3 font-label text-[13px] uppercase tracking-[0.05em] text-(--color-cream-50) transition-colors hover:bg-(--color-sage-800) disabled:cursor-not-allowed disabled:opacity-50";
 
 const successClass = darkBg
   ? "mt-3 hidden text-sm font-medium text-green-100"

@@ -14,7 +14,7 @@
  * blog term hubs get the exact same pill/numeral chrome as `/blog`'s own
  * pagination for free.
  */
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useRef, useState } from "preact/hooks";
 import { Pagination } from "./filter-index/Pagination";
 import { writeFilterStateToUrl } from "./filter-index/urlState";
 
@@ -39,9 +39,21 @@ export function HubPagination({
   pageSize = 12,
 }: HubPaginationProps) {
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
-  const [page, setPage] = useState(() => initialPage(totalPages));
+  // SSR can only render page 1. Seed the client with that same window, then
+  // correct a deep-linked ?page=N after hydration so Pagination never hydrates
+  // against controls that the server did not emit.
+  const [page, setPage] = useState(1);
+  const hydratedRef = useRef(false);
 
   useEffect(() => {
+    if (!hydratedRef.current) {
+      hydratedRef.current = true;
+      const urlPage = initialPage(totalPages);
+      if (urlPage !== page) {
+        setPage(urlPage);
+        return;
+      }
+    }
     const root = document.getElementById(containerId);
     if (!root) return;
     for (const el of root.querySelectorAll<HTMLElement>("[data-page]")) {

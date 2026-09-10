@@ -55,6 +55,13 @@ interface SnapshotTarget {
 
 const SNAPSHOT_TARGETS: SnapshotTarget[] = [
   {
+    page: "book-your-demo.html",
+    selector: "#demo-form-grid",
+    golden: "book-your-demo.html",
+    covers:
+      "canonical booking page: shared lead-capture grid, form-island mount, and calendar transition container",
+  },
+  {
     page: "blog/agents-are-not-microservices.html",
     selector: ".prose",
     golden: "blog-agents-are-not-microservices.html",
@@ -130,6 +137,9 @@ export function normaliseSnapshot(html: string): string {
     // nearly everywhere; a "<" inside an attribute value or inline <script>
     // would also get a newline, which is ugly but still deterministic.
     .replace(/</g, "\n<")
+    // Inline text immediately before an element has a meaningful space, but
+    // trailing whitespace in a line-oriented golden obscures diff checks.
+    .replace(/[ \t]+(?=\n)/g, "")
     .trim();
   return `${normalised}\n`;
 }

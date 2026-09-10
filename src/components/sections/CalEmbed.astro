@@ -16,19 +16,19 @@ const { config } = Astro.props;
 const layout = config.layout ?? "month_view";
 ---
 
-<div class="mx-auto w-full max-w-4xl">
+<div class="mx-auto w-full max-w-content rounded-[12px] border border-border bg-card p-space-sm sm:p-space-md">
   <div
     id={config.elementId}
     class="min-h-[700px] w-full overflow-auto"
   ></div>
 
-  <p class="mt-4 text-center text-sm text-gray-500">
+  <p class="mt-4 text-center font-sans text-sm text-muted-foreground">
     Can't see the calendar?{" "}
     <a
       href={`${CAL_ORIGIN}/${config.calLink}`}
       target="_blank"
       rel="noopener noreferrer"
-      class="text-zenml-500 underline"
+      class="text-(--color-sage-800) underline decoration-(--color-sage-500) underline-offset-4 transition-colors hover:text-foreground"
     >
       Open directly &rarr;
     </a>

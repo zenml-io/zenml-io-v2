@@ -17,6 +17,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   title="ZenML - ROI Calculator: Understand Buy vs Build"
   description="Assess the impact of ZenML's AI orchestration platform in your company"
   surface="ml"
+  app="labs"
 >
   {/* Hero / heading */}
   <section class="py-16 sm:py-20">
@@ -25,10 +26,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       eyebrow="ROI Calculator"
       heading="Assess the impact of ZenML's AI orchestration platform in your company"
       headingLevel={1}
-      classOverrides={{
-        eyebrow: "text-sm font-semibold uppercase tracking-wider text-primary-600",
-        ...SECTION_INTRO_PRESETS.pageHero,
-      }}
+      classOverrides={SECTION_INTRO_PRESETS.pageHero}
     />
   </section>
 

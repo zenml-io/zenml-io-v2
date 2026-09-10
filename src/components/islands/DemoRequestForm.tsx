@@ -14,6 +14,7 @@
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 import type { CalEmbedConfig, PlaceholderField } from "../../lib/formTypes";
 import { validateForm } from "../../lib/formValidation";
+import { labsButtonClasses } from "../labs/labsButtonStyles";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
@@ -40,6 +41,10 @@ interface Props {
   calOrigin: string;
   calEmbedScript: string;
   turnstileSiteKey?: string;
+  heading?: string;
+  deck?: string;
+  calendarHeading?: string;
+  calendarDeck?: string;
 }
 
 export default function DemoRequestForm({
@@ -51,6 +56,10 @@ export default function DemoRequestForm({
   calOrigin,
   calEmbedScript,
   turnstileSiteKey,
+  heading,
+  deck,
+  calendarHeading,
+  calendarDeck,
 }: Props) {
   const [state, setState] = useState<FormState>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -283,6 +292,16 @@ export default function DemoRequestForm({
         class="demo-form-calendar-transition"
         style={{ animation: "demoFormSlideUp 0.5s ease both" }}
       >
+        {calendarHeading && (
+          <h2 class="font-display text-3xl text-foreground sm:text-4xl">
+            {calendarHeading}
+          </h2>
+        )}
+        {calendarDeck && (
+          <p class="mt-3 font-sans text-sm text-muted-foreground">
+            {calendarDeck}
+          </p>
+        )}
         <div
           id={calConfig.elementId}
           class="min-h-[600px] w-full overflow-auto"
@@ -293,7 +312,7 @@ export default function DemoRequestForm({
             href={`${calOrigin}/${calConfig.calLink}`}
             target="_blank"
             rel="noopener noreferrer"
-            class="text-zenml-500 underline"
+            class="text-(--color-sage-800) underline"
           >
             Open directly &rarr;
           </a>
@@ -304,7 +323,15 @@ export default function DemoRequestForm({
 
   // ── Form state (idle / submitting / error) ──
   return (
-    <div class="rounded-md border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
+    <div class="rounded-[12px] border border-border bg-card p-6 sm:p-8">
+      {heading && (
+        <h2 class="font-display text-3xl text-foreground sm:text-4xl">
+          {heading}
+        </h2>
+      )}
+      {deck && (
+        <p class="mt-3 font-sans text-sm text-muted-foreground">{deck}</p>
+      )}
       {state === "error" && serverError && (
         <div class="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
           {serverError}
@@ -314,7 +341,7 @@ export default function DemoRequestForm({
       <form
         method="POST"
         action={endpoint}
-        class="space-y-4"
+        class="mt-6 space-y-4"
         onSubmit={handleSubmit}
         noValidate
       >
@@ -334,7 +361,10 @@ export default function DemoRequestForm({
         <button
           type="submit"
           disabled={state === "submitting"}
-          class="w-full rounded-lg bg-zenml-500 px-6 py-3 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-zenml-600 focus:outline-none focus:ring-2 focus:ring-zenml-500 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed"
+          class={labsButtonClasses(
+            "dark",
+            "w-full disabled:cursor-not-allowed disabled:opacity-60",
+          )}
         >
           {state === "submitting" ? (
             <span class="inline-flex items-center gap-2">
@@ -369,7 +399,7 @@ export default function DemoRequestForm({
       <noscript>
         <div class="mt-4 rounded-lg bg-yellow-50 border border-yellow-200 px-4 py-3 text-sm text-yellow-800">
           JavaScript is required to submit this form.{" "}
-          <a href="/book-your-demo" class="text-zenml-500 underline">
+          <a href="/book-your-demo" class="text-(--color-sage-800) underline">
             Book a demo directly
           </a>{" "}
           instead.
@@ -403,7 +433,7 @@ function FieldRenderer({
           id={field.name}
           name={field.name}
           required={field.required}
-          class={`w-full rounded-md border px-4 py-2.5 text-sm focus:border-zenml-500 focus:ring-1 focus:ring-zenml-500 outline-none transition-colors ${
+          class={`w-full rounded-[10px] border px-4 py-2.5 font-sans text-sm focus:border-(--color-sage-700) focus:ring-1 focus:ring-(--color-sage-700) outline-none transition-colors ${
             errors[field.name]
               ? "border-red-400 bg-red-50"
               : "border-gray-300 bg-white"
@@ -424,7 +454,7 @@ function FieldRenderer({
             name={field.name}
             value="on"
             required={field.required}
-            class="mt-0.5 rounded border-gray-300 text-zenml-500 focus:ring-zenml-500"
+            class="mt-0.5 rounded border-border text-(--color-sage-700) focus:ring-(--color-sage-700)"
             disabled={disabled}
           />
           <span
@@ -440,7 +470,7 @@ function FieldRenderer({
           name={field.name}
           required={field.required}
           placeholder={field.placeholder}
-          class={`w-full rounded-md border px-4 py-2.5 text-sm focus:border-zenml-500 focus:ring-1 focus:ring-zenml-500 outline-none transition-colors ${
+          class={`w-full rounded-[10px] border px-4 py-2.5 font-sans text-sm focus:border-(--color-sage-700) focus:ring-1 focus:ring-(--color-sage-700) outline-none transition-colors ${
             errors[field.name]
               ? "border-red-400 bg-red-50"
               : "border-gray-300 bg-white"
