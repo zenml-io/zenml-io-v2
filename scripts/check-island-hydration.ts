@@ -48,11 +48,9 @@
  *
  * What is intentionally NOT checked
  * ---------------------------------
- * - ProTestimonialCarousel: client:visible plus a 4s autoplay that mutates the very
- *   transform we would assert on. Gratuitously timing-sensitive.
  * - RoiCalculator: its three range inputs have no id, name or aria-label, so a test
  *   would have to select them positionally — brittle, for a low-traffic page.
- * Both are still covered structurally by the island manifest in
+ * It is still covered structurally by the island manifest in
  * check-dist-smoke.ts. Please do not "helpfully" add them back here.
  *
  * LlmopsIndex, MlopsIndex, IntegrationsIndex, and BlogIndex (#249) are four

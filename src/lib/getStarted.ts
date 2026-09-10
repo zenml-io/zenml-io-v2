@@ -8,6 +8,7 @@
  *
  * ZenML copy was extracted from the original Webflow snapshot + SEO baseline.
  */
+import type { LabsBandContent } from "./labs-home";
 import type { CtaLink } from "./marketingPageTypes";
 
 // ---------------------------------------------------------------------------
@@ -208,3 +209,14 @@ export const GET_STARTED_FINAL_CTA = {
     href: "/docs",
   } as CtaLink,
 } as const;
+
+/** `GET_STARTED_FINAL_CTA` reshaped onto `LabsCloseCta`. "Read Docs" leaves
+ * the page (CONVENTIONS liberty; the band has one pill). */
+export const GET_STARTED_CLOSE: LabsBandContent = {
+  headlineLines: ["Ready for", "the next level?"],
+  deck: GET_STARTED_FINAL_CTA.body,
+  cta: {
+    ...GET_STARTED_FINAL_CTA.primaryCta,
+    analytics: "GetStarted-Close-Compare-OSS",
+  },
+};

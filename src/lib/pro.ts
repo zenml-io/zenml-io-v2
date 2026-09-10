@@ -4,12 +4,18 @@
  * Used by src/pages/pro.astro.
  * Content extracted from Webflow HTML snapshot + SEO baseline.
  */
+import { LOGO_CLOUD } from "./homepage";
 import type {
-  CtaLink,
-  FaqData,
-  FeatureGridItem,
-  HeroData,
-} from "./marketingPageTypes";
+  LabsBandContent,
+  LabsProductBandContent,
+  LogoGridContent,
+  StoryCardsContent,
+} from "./labs-home";
+import type {
+  FeatureTabsContent,
+  ValuePropsContent,
+} from "./labs-product-zenml";
+import type { CtaLink, FaqData, FeatureGridItem } from "./marketingPageTypes";
 
 // ---------------------------------------------------------------------------
 // SEO
@@ -27,7 +33,13 @@ export const PRO_SEO = {
 // ---------------------------------------------------------------------------
 // Hero
 // ---------------------------------------------------------------------------
-export const PRO_HERO: HeroData = {
+/**
+ * Not typed `HeroData`: `deck` and `secondaryCta` are optional on that
+ * shared shape, but `PRO_HERO_BAND` below always reads them, so the plain
+ * literal (both fields present) lets the compiler prove that instead of
+ * widening them to `| undefined`.
+ */
+export const PRO_HERO = {
   headline: "A managed control plane for AI workflows and agents",
   deck: "ZenML Pro runs both workspaces under one paid product: ZenML for AI workflow orchestration, Kitaru for agent replay and regression testing. Single pane of glass, enterprise governance, no infrastructure setup.",
   primaryCta: {
@@ -393,3 +405,103 @@ export const PRO_FINAL_CTA = {
     alt: "Dashboard displaying machine learning models, including versions, authors, and tags.",
   },
 } as const;
+
+// ---------------------------------------------------------------------------
+// Labs shell shapes — reshaped onto the shared Labs components, derived from
+// the constants above; nothing here is retyped. Used by src/pages/pro.astro.
+// ---------------------------------------------------------------------------
+
+/** `PRO_HERO` reshaped onto `LabsHero`'s "landing" band. The hero image
+ * leaves the page (CONVENTIONS liberty; the band has no image slot). */
+export const PRO_HERO_BAND: LabsProductBandContent = {
+  headlineLines: ["A managed control plane", "for AI workflows and agents"],
+  deck: PRO_HERO.deck,
+  cta: { ...PRO_HERO.primaryCta, analytics: "Pro-Hero-Book-Demo" },
+  secondaryCta: {
+    ...PRO_HERO.secondaryCta,
+    analytics: "Pro-Hero-Compare-OSS",
+  },
+};
+
+/** Logo trust bar, reshaped onto `LogoMarquee`. */
+export const PRO_LOGO_GRID: LogoGridContent = {
+  headline: PRO_TRUST_HEADLINE,
+  logos: LOGO_CLOUD.logos,
+};
+
+/** The featured, HashiCorp and carousel testimonials, reshaped onto
+ * `CustomerStoryCards`' quote arrangement. No headline, no allLink (both
+ * collapse — CONVENTIONS liberty 3). */
+export const PRO_QUOTES: StoryCardsContent = {
+  cards: [
+    {
+      quote: PRO_FEATURED_TESTIMONIAL.quote,
+      name: PRO_FEATURED_TESTIMONIAL.name,
+      title: PRO_FEATURED_TESTIMONIAL.title,
+      avatar: PRO_FEATURED_TESTIMONIAL.avatar,
+      logo: { url: PRO_FEATURED_TESTIMONIAL.companyLogo, alt: "Hema.to" },
+      wide: true,
+    },
+    {
+      quote: PRO_HASHICORP_TESTIMONIAL.quote,
+      name: PRO_HASHICORP_TESTIMONIAL.name,
+      title: PRO_HASHICORP_TESTIMONIAL.title,
+      avatar: PRO_HASHICORP_TESTIMONIAL.avatar,
+      logo: { url: PRO_HASHICORP_TESTIMONIAL.companyLogo, alt: "HashiCorp" },
+      wide: true,
+    },
+    ...PRO_TESTIMONIALS.map((t) => ({
+      quote: t.quote,
+      name: t.name,
+      title: t.title,
+      avatar: t.avatar,
+      logo: { url: t.companyLogo, alt: t.title },
+    })),
+  ],
+};
+
+/** "Get set up in less than a day", reshaped onto `LabsValueProps`.
+ * "See Plans" leaves the page (CONVENTIONS liberty; one CTA per card). */
+export const PRO_ONBOARDING_PROPS: ValuePropsContent = {
+  headline: PRO_ONBOARDING.headline,
+  deck: PRO_ONBOARDING.body,
+  items: PRO_ONBOARDING.items.map((it, i) => ({
+    index: `0${i + 1}.`,
+    title: it.title,
+    body: it.body,
+  })),
+  cta: { ...PRO_ONBOARDING.primaryCta, analytics: "Pro-Onboarding-Book-Demo" },
+};
+
+/** Pro cloud features (alternating image/text blocks), reshaped onto
+ * `LabsFeatureTabs`. No headline; `learnMoreHref` leaves the page. */
+export const PRO_FEATURE_TABS: FeatureTabsContent = {
+  tabs: PRO_FEATURES.map((f) => ({
+    title: f.title,
+    description: f.body,
+    image: f.image.url,
+    imageAlt: f.image.alt,
+  })),
+};
+
+/** "ZenML Pro is Open Source and More" grid, reshaped onto `LabsValueProps`.
+ * The illustration image and "Compare OSS vs Pro" secondary leave the page
+ * (CONVENTIONS liberty; `LabsValueProps` has one CTA). */
+export const PRO_OSS_PROPS: ValuePropsContent = {
+  headline: PRO_OSS_GRID.headline,
+  deck: PRO_OSS_GRID.body,
+  items: PRO_OSS_GRID.items.map((item, i) => ({
+    index: `0${i + 1}.`,
+    title: item.title,
+    body: item.body,
+  })),
+  cta: { ...PRO_OSS_GRID.primaryCta, analytics: "Pro-OSS-Grid-Book-Demo" },
+};
+
+/** Final CTA, reshaped onto `LabsCloseCta`. The image and "Read Docs"
+ * secondary leave the page (CONVENTIONS liberty; the band has one pill). */
+export const PRO_CLOSE: LabsBandContent = {
+  headlineLines: ["Unify Your ML", "and LLM Workflows"],
+  deck: PRO_FINAL_CTA.bullets.join(" · "),
+  cta: { ...PRO_FINAL_CTA.primaryCta, analytics: "Pro-Close-Book-Demo" },
+};
