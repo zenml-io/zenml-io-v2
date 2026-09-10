@@ -75,34 +75,6 @@ server-side validation in `src/pages/api/forms/[formType].ts` is the enforcement
 control for the form the visitor is actively filling out, not a tracking/marketing
 script.
 
-## Storylane (interactive product demos)
-
-`src/components/sections/StorylaneEmbed.astro`, used by `src/pages/live-demo.astro` and
-`src/pages/interactive-demo-mcp.astro`.
-
-**Sizing:** a padding-bottom aspect-ratio wrapper (`padding-bottom:calc(65.94% + 27px)`)
-with an absolutely-positioned iframe filling it.
-
-**Loading behavior:** the iframe (`src/embed`) and the Storylane enhancement script
-(`https://js.storylane.io/js/v1/storylane.js`, deduped by element id `storylane-embed`)
-both load unconditionally as soon as the component renders — there is no runtime gate on
-either one.
-
-**No-JS behavior:** the iframe itself renders and loads independently of JavaScript; only
-the enhancement script (which adds Storylane's in-demo interaction layer) requires JS.
-
-**Consent relationship:** none. An earlier consent audit gated the enhancement
-script (not the iframe) behind marketing consent, but the gate was asymmetric and
-broken in practice: the iframe — the surface that actually sets third-party cookies —
-was never gated, and the script's consent check ran once at HTML parse time, so a
-first-time visitor who accepted marketing consent still didn't get the script until a
-full reload. The gate therefore delivered no privacy benefit while degrading the demo
-for consenting visitors, and it was removed in favor of loading script and iframe
-consistently. This leaves real privacy debt — the visitor has not explicitly opted
-into a third-party embed — and the remediation is a click-to-load pattern (render a
-static preview first; mount the iframe and script only after an explicit visitor
-click). That remediation is not implemented yet.
-
 ## Brevo (newsletter signup)
 
 `src/components/sections/BrevoNewsletterForm.astro`, used directly and via
@@ -218,7 +190,7 @@ gated behind cookie consent. It defines:
 injections, and reusing it on an unrelated script would let `CookieConsent.tsx` mistake
 that script for one it already injected (or vice versa). Any new third-party script that
 needs consent gating gets a `TRACKING_SCRIPTS` entry with its own `id`; any script that
-intentionally loads unconditionally (Cal.com, Storylane, Brevo, Turnstile, the
+intentionally loads unconditionally (Cal.com, Brevo, Turnstile, the
 YouTube-nocookie embed) uses its own distinct id, not the `cc-` prefix.
 
 Plausible analytics is a deliberate exception to the registry: it's cookieless and does

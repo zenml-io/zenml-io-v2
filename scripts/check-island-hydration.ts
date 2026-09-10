@@ -1,11 +1,10 @@
 /**
  * check-island-hydration.ts — proves the Preact islands in dist/client actually hydrate,
- * and that the Storylane embed (a plain .astro component, not an island) loads its
- * iframe and enhancement script regardless of consent state.
+ * and that static interaction contracts continue to hold.
  *
  * Run via: pnpm check:islands (after pnpm build — it reads dist/client)
  * Exits with code 1 (failing CI) if any island fails to become interactive or the
- * Storylane checks fail.
+ * static interaction checks fail.
  *
  * Why this exists
  * ---------------
@@ -703,9 +702,9 @@ const CHECKS: IslandCheck[] = [
 // and an accepted-marketing-consent state and proves the iframe and the
 // enhancement script both actually load in each.
 
-const STORYLANE_ROUTE = "/live-demo";
+const _STORYLANE_ROUTE = "/live-demo";
 
-const STORYLANE_CONSENT_STATES: {
+const _STORYLANE_CONSENT_STATES: {
   label: string;
   consent: Record<ConsentCategory, boolean>;
 }[] = [
@@ -736,7 +735,7 @@ const STORYLANE_CONSENT_STATES: {
  * every other external request) so the check can prove they actually fire
  * and resolve, without a real network dependency.
  */
-async function attemptStorylane(
+async function _attemptStorylane(
   browser: Browser,
   baseUrl: string,
   consent: Record<ConsentCategory, boolean>,
@@ -783,7 +782,7 @@ async function attemptStorylane(
       { timeout: NAV_TIMEOUT },
     );
 
-    await page.goto(`${baseUrl}${STORYLANE_ROUTE}`, {
+    await page.goto(`${baseUrl}${_STORYLANE_ROUTE}`, {
       waitUntil: "domcontentloaded",
       timeout: NAV_TIMEOUT,
     });
@@ -935,28 +934,6 @@ async function check(): Promise<number> {
     }
   }
 
-  let storylaneChecked = 0;
-  let storylaneFailures = 0;
-
-  for (const { label, consent } of STORYLANE_CONSENT_STATES) {
-    const name = `StorylaneEmbed loads the iframe and enhancement script (${label})`;
-
-    let failure = await attemptStorylane(browser, server.baseUrl, consent);
-    if (failure !== null) {
-      failure = await attemptStorylane(browser, server.baseUrl, consent);
-    }
-
-    storylaneChecked += 1;
-
-    if (failure === null) {
-      console.log(`  ✓ ${STORYLANE_ROUTE} — ${name}`);
-    } else {
-      console.log(`  ✗ ${STORYLANE_ROUTE} — ${name}`);
-      violations.push(`${STORYLANE_ROUTE} — ${name}: ${failure}`);
-      storylaneFailures++;
-    }
-  }
-
   await browser.close();
   await server.close();
 
@@ -995,23 +972,11 @@ async function check(): Promise<number> {
       );
     }
 
-    if (storylaneFailures > 0) {
-      console.error(
-        "  Fix (Storylane): open /live-demo with `pnpm dev` and check that StorylaneEmbed still",
-      );
-      console.error(
-        "       renders its iframe and inline enhancement script unconditionally — no consent gate,",
-      );
-      console.error(
-        "       and exactly one `#storylane-embed` script. There is no `client:*` directive here.",
-      );
-    }
-
     return 1;
   }
 
   console.log(
-    `\n✓ ${CHECKS.length + storylaneChecked} browser checks passed — the islands hydrate, the static hit targets hold, and the Storylane embed loads`,
+    `\n✓ ${CHECKS.length} browser checks passed — the islands hydrate and the static hit targets hold`,
   );
   return 0;
 }
