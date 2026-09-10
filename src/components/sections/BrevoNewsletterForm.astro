@@ -6,9 +6,10 @@
  * Progressive enhancement: without JS the form POSTs directly to Brevo.
  * Scoped DOM queries via data-brevo-form attribute — safe for multiple instances.
  *
- * Pass `darkBg` when used inside a dark/purple container (adjusts input/button colors).
+ * Pass `darkBg` when used inside a dark Labs band (adjusts input/button colors).
  */
 import type { BrevoFormConfig } from "../../lib/formTypes";
+import { labsButtonClasses } from "../labs/labsButtonStyles";
 
 interface Props {
   config: BrevoFormConfig;
@@ -19,24 +20,30 @@ interface Props {
 const { config, privacyHtml, darkBg = false } = Astro.props;
 
 const inputClass = darkBg
-  ? "h-[60px] rounded-lg border-0 bg-white px-4 text-xl text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-white/50 sm:w-80"
-  : "rounded-[10px] border border-border px-4 py-3 font-sans text-sm text-foreground focus:border-(--color-sage-700) focus:outline-none focus:ring-1 focus:ring-(--color-sage-700) sm:w-72";
+  ? "h-[60px] rounded-[10px] border border-(--color-sage-600) bg-(--color-cream-50) px-4 font-sans text-xl text-(--color-cream-900) focus:border-(--color-sage-300) focus:outline-none focus:ring-1 focus:ring-(--color-sage-300) sm:w-80"
+  : "rounded-[10px] border border-border bg-(--color-cream-50) px-4 py-3 font-sans text-sm text-foreground focus:border-(--color-sage-700) focus:outline-none focus:ring-1 focus:ring-(--color-sage-700) sm:w-72";
 
 const buttonClass = darkBg
-  ? "inline-flex h-[60px] items-center justify-center rounded-lg bg-[var(--color-primary-700)] px-6 text-base font-semibold text-white shadow-button hover:brightness-110 transition disabled:opacity-50 disabled:cursor-not-allowed"
-  : "inline-flex cursor-pointer items-center justify-center rounded-full bg-(--color-cream-900) px-5 py-3 font-label text-[13px] uppercase tracking-[0.05em] text-(--color-cream-50) transition-colors hover:bg-(--color-sage-800) disabled:cursor-not-allowed disabled:opacity-50";
+  ? labsButtonClasses(
+      "sage",
+      "h-[60px] px-6 text-base disabled:cursor-not-allowed disabled:opacity-50",
+    )
+  : labsButtonClasses(
+      "dark",
+      "px-5 py-3 disabled:cursor-not-allowed disabled:opacity-50",
+    );
 
 const successClass = darkBg
-  ? "mt-3 hidden text-sm font-medium text-green-100"
-  : "mt-3 hidden text-sm font-medium text-green-600";
+  ? "mt-3 hidden font-sans text-sm font-medium text-(--color-sage-200)"
+  : "mt-3 hidden font-sans text-sm font-medium text-(--color-sage-800)";
 
 const errorClass = darkBg
-  ? "mt-3 hidden text-sm font-medium text-red-100"
-  : "mt-3 hidden text-sm font-medium text-red-600";
+  ? "mt-3 hidden font-sans text-sm font-medium text-(--color-cream-100)"
+  : "mt-3 hidden font-sans text-sm font-medium text-(--color-sage-800)";
 
 const privacyClass = darkBg
-  ? "mt-4 text-xs text-white/70"
-  : "mt-4 text-xs text-gray-500";
+  ? "mt-4 font-sans text-xs text-(--color-sage-300)"
+  : "mt-4 font-sans text-xs text-(--color-cream-700)";
 ---
 
 <div data-brevo-form={config.formId} data-loading-label={config.loadingLabel}>

@@ -18,19 +18,19 @@ export type ButtonVariant =
 export type ButtonSize = "sm" | "md" | "lg";
 
 export const BUTTON_BASE_CLASSES =
-  "inline-flex items-center justify-center font-semibold rounded-md transition-all duration-300 cursor-pointer";
+  "inline-flex cursor-pointer items-center justify-center rounded-[10px] font-sans font-semibold transition-colors duration-200";
 
 export const BUTTON_VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary:
-    "bg-(--color-sage-700) text-(--color-cream-50) border border-(--color-sage-800) shadow-button hover:bg-(--color-sage-800) focus:shadow-focus-primary",
+    "border border-(--color-sage-800) bg-(--color-sage-700) text-(--color-cream-50) hover:bg-(--color-sage-800) focus:outline-none focus:ring-1 focus:ring-(--color-sage-700)",
   secondary:
-    "bg-white text-gray-700 border border-gray-300 shadow-button hover:bg-gray-50 focus:shadow-focus-gray",
+    "border border-(--color-border) bg-(--color-cream-50) text-(--color-cream-900) hover:border-(--color-sage-500) hover:bg-(--color-sage-100) focus:outline-none focus:ring-1 focus:ring-(--color-sage-700)",
   ghost:
     "text-(--color-sage-800) hover:text-foreground hover:bg-(--color-sage-100)",
   overDark:
-    "bg-gray-900 text-white border border-gray-700 shadow-button hover:bg-gray-800",
+    "border border-(--color-sage-700) bg-(--color-cream-900) text-(--color-cream-50) hover:bg-(--color-sage-800)",
   secondaryGray:
-    "bg-transparent text-white border border-white/30 shadow-button hover:bg-white/10",
+    "border border-(--color-sage-400) bg-transparent text-(--color-cream-50) hover:bg-(--color-sage-800)",
 };
 
 export const BUTTON_SIZE_CLASSES: Record<ButtonSize, string> = {

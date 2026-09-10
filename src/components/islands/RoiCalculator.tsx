@@ -160,7 +160,7 @@ function SliderInput({ config, value, onChange }: SliderInputProps) {
           }
           style={{
             ...styles.slider,
-            background: `linear-gradient(to right, var(--color-sage-700) ${pct}%, var(--color-border) ${pct}%)`,
+            accentColor: "var(--color-sage-700)",
           }}
         />
         <div style={styles.sliderLabels}>
@@ -198,13 +198,13 @@ function ResultRow({ label, value, isLast }: ResultRowProps) {
 
 const styles: Record<string, CSSProperties> = {
   container: {
-    maxWidth: "800px",
+    maxWidth: "100%",
     margin: "0 auto",
     fontFamily: "var(--font-sans)",
     display: "flex",
     flexDirection: "row",
     border: "1px solid var(--color-border)",
-    borderRadius: "12px",
+    borderRadius: "10px",
     flexWrap: "wrap",
   },
   inputs: {
@@ -221,7 +221,7 @@ const styles: Record<string, CSSProperties> = {
     borderLeft: "1px solid var(--color-border)",
     backgroundColor: "var(--color-sage-50)",
     padding: "2rem",
-    borderRadius: "0 8px 8px 0",
+    borderRadius: "0 10px 10px 0",
     width: "50%",
     minWidth: "300px",
     flex: "1 1 300px",
@@ -250,7 +250,7 @@ const styles: Record<string, CSSProperties> = {
     background: "var(--color-sage-100)",
     color: "var(--color-foreground)",
     padding: "4px 12px",
-    borderRadius: "4px",
+    borderRadius: "10px",
     fontSize: "14px",
     fontWeight: "500",
     pointerEvents: "none",
@@ -261,8 +261,8 @@ const styles: Record<string, CSSProperties> = {
     height: "4px",
     borderRadius: "2px",
     outline: "none",
-    WebkitAppearance: "none",
-    appearance: "none",
+    WebkitAppearance: "auto",
+    appearance: "auto",
     cursor: "pointer",
   },
   sliderLabels: {
@@ -284,7 +284,7 @@ const styles: Record<string, CSSProperties> = {
     border: "1px solid var(--color-sage-600)",
     padding: "1.5rem",
     marginTop: "1.5rem",
-    background: "var(--color-card)",
+    background: "var(--color-cream-50)",
   },
   roiRow: {
     display: "flex",
