@@ -28,7 +28,7 @@ via the same command-queue bootstrap:
   bootstrap IIFE only runs after the form submission succeeds, replacing the form with
   the inline calendar in place.
 
-**Sizing:** the calendar target div is `min-h-[700px] w-full overflow-auto` (CalEmbed)
+**Sizing:** the calendar target div is `h-[700px] w-full overflow-auto` (CalEmbed)
 or `min-h-[600px] w-full overflow-auto` (DemoRequestForm's post-submit state); Cal.com's
 embed script sizes its iframe to fill that container.
 
