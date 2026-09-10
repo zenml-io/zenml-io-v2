@@ -25,6 +25,14 @@
  * Labs tokens and card anatomy; the default skin remains the live legacy
  * markup. `CAREERS_HIRING_PROCESS` itself is never edited — its 4th step's
  * empty `duration` collapses here instead (no empty node).
+ *
+ * `skin="labs"` on `vertical-code` swaps the dark band for a light
+ * hairline-separated numbered list and wraps each step's code block in the
+ * exact `figure.code-pane` markup `rehypeCodePane.ts` emits, so the shared
+ * `[data-app="labs"] .prose .code-pane*` rules style it and the page's own
+ * `initCodeCopy()` call wires the copy button. `language` (per step)
+ * labels the pane's bar; it defaults to "text". The default skin is
+ * unchanged.
  */
 export interface ProcessStepsVerticalCodeStep {
   title: string;
@@ -32,6 +40,8 @@ export interface ProcessStepsVerticalCodeStep {
   body: string;
   /** Pre-rendered Shiki HTML for the step's code block. */
   highlightedHtml: string;
+  /** Labs skin only: the code-pane bar's language label. Defaults to "text". */
+  language?: string;
 }
 
 export interface ProcessStepsCompactListStep {
@@ -46,6 +56,8 @@ type Props =
   | {
       layout: "vertical-code";
       steps: readonly ProcessStepsVerticalCodeStep[];
+      /** Additive Labs skin; default preserves the legacy dark-band markup. */
+      skin?: "default" | "labs";
       class?: string;
     }
   | {
@@ -66,8 +78,7 @@ const verticalSteps = props.layout === "vertical-code" ? props.steps : [];
 const compactSteps = props.layout === "compact-list" ? props.steps : [];
 const numeralStyle =
   (props.layout === "compact-list" ? props.numeralStyle : undefined) ?? "raw";
-const skin =
-  props.layout === "compact-list" ? (props.skin ?? "default") : "default";
+const skin = props.skin ?? "default";
 
 function formatNumeral(n: number): string {
   return numeralStyle === "zero-padded"
@@ -77,7 +88,34 @@ function formatNumeral(n: number): string {
 ---
 
 {
-  isVerticalCode ? (
+  isVerticalCode && skin === "labs" ? (
+    <ol class:list={["flex flex-col", className]}>
+      {verticalSteps.map((step, i) => (
+        <li class="grid min-w-0 gap-4 border-t border-(--color-border) py-8 md:grid-cols-[64px_minmax(0,1fr)] md:gap-8 last:border-b">
+          <span class="font-display text-[20px] leading-[26px] text-(--color-sage-700)">
+            {String(i + 1).padStart(2, "0")}
+          </span>
+          <div class="min-w-0">
+            <h3 class="font-display text-[24px] leading-[30px] text-(--color-cream-900)">
+              {step.title}
+            </h3>
+            <p class="mt-3 font-sans text-[16px] leading-6 text-(--color-cream-700)" set:html={step.body} />
+            <div class="prose mt-6 max-w-none">
+              <figure class="code-pane" data-language={step.language ?? "text"}>
+                <div class="code-pane__bar">
+                  <span>{step.language ?? "text"}</span>
+                  <button type="button" class="code-pane__copy" aria-label="Copy code">
+                    Copy
+                  </button>
+                </div>
+                <div class="code-pane__scroll" set:html={step.highlightedHtml} />
+              </figure>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
+  ) : isVerticalCode ? (
     <ol class:list={["space-y-10", className]}>
       {verticalSteps.map((step) => (
         <li>

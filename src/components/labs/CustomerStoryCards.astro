@@ -1,48 +1,87 @@
 ---
 /**
- * CustomerStoryCards — Labs homepage "Customer stories" band: a headline +
- * "all case studies" link, then four case-study cards (light sage grain
- * panel with customer logos, title, "read the story" label). Copy and
- * card data arrive through the `content` prop (`LABS_STORIES` on `/`).
+ * CustomerStoryCards — Labs "Customer stories" band: an optional headline +
+ * "all case studies" link, then either case-study cards (light sage grain
+ * panel with customer logos, title, "read the story" label, four-up,
+ * `slice(0, 4)`) or quote cards (testimonial + attribution, three-up, no
+ * slice) — a card is a quote when `"quote" in card`. Copy and card data
+ * arrive through the `content` prop (`LABS_STORIES` on `/`, `PRO_QUOTES`
+ * on `/pro`).
  */
-import type { StoryCardsContent } from "../../lib/labs-home";
+import type {
+  CaseStudyCard,
+  QuoteCard,
+  StoryCardsContent,
+} from "../../lib/labs-home";
 import LabsStoryCard from "./LabsStoryCard.astro";
 
 interface Props {
   content: StoryCardsContent;
 }
 const { content } = Astro.props;
-const cards = content.cards.slice(0, 4);
+
+const isQuote = (card: CaseStudyCard | QuoteCard): card is QuoteCard =>
+  "quote" in card;
+
+const quoteCards = content.cards.filter(isQuote);
+const hasQuoteCards = quoteCards.length > 0;
+const storyCards = hasQuoteCards
+  ? []
+  : (content.cards as readonly CaseStudyCard[]).slice(0, 4);
 ---
 
 <section class="py-24 md:py-32">
   <div class="mx-auto max-w-content px-gutter">
-    <div class="flex items-end justify-between gap-6">
-      <h2 class="font-display text-[40px] leading-[46px] text-(--color-cream-900)">
-        {content.headline}
-      </h2>
-      <a
-        href={content.allLink.href}
-        data-analytics={content.allLink.analytics}
-        class="cursor-pointer whitespace-nowrap font-label text-[13px] uppercase tracking-[0.05em] underline underline-offset-4"
-      >
-        {content.allLink.label}
-      </a>
-    </div>
+    {(content.headline || content.allLink) && (
+      <div class="flex items-end justify-between gap-6">
+        {content.headline && (
+          <h2 class="font-display text-[40px] leading-[46px] text-(--color-cream-900)">
+            {content.headline}
+          </h2>
+        )}
+        {content.allLink && (
+          <a
+            href={content.allLink.href}
+            data-analytics={content.allLink.analytics}
+            class="cursor-pointer whitespace-nowrap font-label text-[13px] uppercase tracking-[0.05em] underline underline-offset-4"
+          >
+            {content.allLink.label}
+          </a>
+        )}
+      </div>
+    )}
 
-    <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-      {cards.map((card) => (
-        <LabsStoryCard
-          href={card.href}
-          title={card.title}
-          company={card.companyLogoAlt}
-          logos={[
-            { url: card.companyLogo, alt: card.companyLogoAlt },
-            ...(card.secondaryLogo ? [{ url: card.secondaryLogo, alt: card.secondaryLogoAlt }] : []),
-          ]}
-          readLabel={content.readLabel}
-        />
-      ))}
-    </div>
+    {hasQuoteCards ? (
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {quoteCards.map((card) => (
+          <div class:list={[card.wide && "lg:col-span-2"]}>
+            <LabsStoryCard
+              kind="quote"
+              quote={card.quote}
+              name={card.name}
+              title={card.title}
+              avatar={card.avatar}
+              logo={card.logo}
+              wide={card.wide}
+            />
+          </div>
+        ))}
+      </div>
+    ) : (
+      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {storyCards.map((card) => (
+          <LabsStoryCard
+            href={card.href}
+            title={card.title}
+            company={card.companyLogoAlt}
+            logos={[
+              { url: card.companyLogo, alt: card.companyLogoAlt },
+              ...(card.secondaryLogo ? [{ url: card.secondaryLogo, alt: card.secondaryLogoAlt }] : []),
+            ]}
+            readLabel={content.readLabel}
+          />
+        ))}
+      </div>
+    )}
   </div>
 </section>

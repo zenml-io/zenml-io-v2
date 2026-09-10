@@ -26,6 +26,7 @@ import {
   ENTRY_ROW_CHIP_OVERFLOW,
   ENTRY_ROW_CHIP_SELECTED,
   ENTRY_ROW_CHIPS,
+  ENTRY_ROW_MARK,
   ENTRY_ROW_META,
   ENTRY_ROW_META_ACTION,
   ENTRY_ROW_META_DOT,
@@ -33,6 +34,7 @@ import {
   ENTRY_ROW_SUMMARY,
   ENTRY_ROW_TITLE,
   ENTRY_ROW_TITLE_LINK,
+  ENTRY_ROW_TITLE_ROW,
   type EntryRowItem,
   entryRowMetaTokens,
 } from "./entryRowStyles";
@@ -60,6 +62,7 @@ function ChipHexagon() {
 export function EntryRow({
   href,
   title,
+  mark,
   meta,
   summary,
   chips,
@@ -71,14 +74,29 @@ export function EntryRow({
 }: EntryRowProps) {
   const Heading = headingLevel === 2 ? "h2" : "h3";
   const tokens = entryRowMetaTokens(meta);
+  const heading = (
+    <Heading class={ENTRY_ROW_TITLE}>
+      <a href={href} class={ENTRY_ROW_TITLE_LINK}>
+        {title}
+      </a>
+    </Heading>
+  );
 
   return (
     <article class={ENTRY_ROW}>
-      <Heading class={ENTRY_ROW_TITLE}>
-        <a href={href} class={ENTRY_ROW_TITLE_LINK}>
-          {title}
-        </a>
-      </Heading>
+      {mark ? (
+        <div class={ENTRY_ROW_TITLE_ROW}>
+          <img
+            class={ENTRY_ROW_MARK}
+            src={mark.url}
+            alt={mark.alt}
+            loading="lazy"
+          />
+          {heading}
+        </div>
+      ) : (
+        heading
+      )}
 
       {tokens.length > 0 && (
         <div class={ENTRY_ROW_META}>

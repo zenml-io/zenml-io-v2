@@ -26,19 +26,31 @@ const HOVER_BORDER: Record<ProductDoor["tint"], string> = {
   sage: "hover:border-(--color-sage-400)",
   orange: "hover:border-(--color-orange-300)",
 };
+
+/** Quick-link row hover wash/arrow colour, keyed by the door's tint. */
+const ROW_WASH: Record<ProductDoor["tint"], string> = {
+  sage: "var(--color-sage-50)",
+  orange: "var(--color-orange-50)",
+};
+const ROW_ARROW: Record<ProductDoor["tint"], string> = {
+  sage: "var(--color-sage-800)",
+  orange: "var(--color-orange-600)",
+};
 ---
 
 <section class="pt-16 pb-6 md:pt-24 md:pb-[112px]">
   <div class="mx-auto flex max-w-content flex-col gap-[56px] px-gutter">
-    <h2 class="font-display text-[31px] leading-[33px] text-(--color-cream-900) md:text-[56px] md:leading-[60px]">
-      {content.headline}
-    </h2>
+    {content.headline && (
+      <h2 class="font-display text-[31px] leading-[33px] text-(--color-cream-900) md:text-[56px] md:leading-[60px]">
+        {content.headline}
+      </h2>
+    )}
 
     <div class="flex flex-col gap-6 lg:flex-row">
       {content.doors.map((door) => (
         <div
           class={`group relative flex flex-1 flex-col overflow-hidden rounded-[20px] border border-border bg-card p-10 min-w-0 transition-colors duration-200 ease-out ${HOVER_BORDER[door.tint]}`}
-          style={`--door-tint: ${TINT_VARS[door.tint]}`}
+          style={`--door-tint: ${TINT_VARS[door.tint]}${(door.links?.length || door.details?.length) ? `; --door-row-wash: ${ROW_WASH[door.tint]}; --door-row-arrow: ${ROW_ARROW[door.tint]}` : ""}`}
         >
           <div class="door-wash pointer-events-none absolute inset-0 origin-top-left transition-transform duration-500 ease-out group-hover:scale-[1.18]" aria-hidden="true"></div>
           <div class="relative flex flex-col gap-7">
@@ -53,11 +65,66 @@ const HOVER_BORDER: Record<ProductDoor["tint"], string> = {
               {door.leadLine}
             </h3>
             <p class="font-sans text-[17px] leading-[26px] text-foreground">{door.body}</p>
+            {door.links && door.links.length > 0 && (
+              <ul class="mt-2 flex flex-col">
+                {door.links.map((link) => (
+                  <li class="border-t border-(--color-border)">
+                    <a
+                      href={link.href}
+                      target={link.external ? "_blank" : undefined}
+                      rel={link.external ? "noopener noreferrer" : undefined}
+                      class="group/row -mx-3 flex items-center justify-between gap-3 rounded-[8px] px-3 py-3 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900) transition-colors duration-200 ease-out hover:bg-(--door-row-wash)"
+                    >
+                      {link.label}
+                      {link.external && <span class="sr-only"> (opens in new tab)</span>}
+                      <svg
+                        class="h-4 w-4 shrink-0 text-(--color-cream-500) transition-colors duration-200 ease-out group-hover/row:text-(--door-row-arrow)"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M5 12h14M13 6l6 6-6 6" />
+                      </svg>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {door.details && door.details.length > 0 && (
+              <dl class="mt-2 flex flex-col">
+                {door.details.map((item) => (
+                  <div class="border-t border-(--color-border) py-3">
+                    <dt class="font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">
+                      {item.title}
+                    </dt>
+                    <dd class="mt-1 font-sans text-[14px] leading-5 text-(--color-cream-700)">
+                      {item.detail}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            )}
           </div>
-          <LabsButton cta={door.cta} class="relative mt-4 w-fit" />
+          <LabsButton
+            cta={door.cta}
+            target={door.cta.external ? "_blank" : undefined}
+            class="relative mt-4 w-fit"
+          >
+            {door.cta.external && <span class="sr-only"> (opens in new tab)</span>}
+          </LabsButton>
         </div>
       ))}
     </div>
+
+    {content.caption && (
+      <p class="text-center font-sans text-[14px] leading-5 text-(--color-cream-700)">
+        {content.caption}
+      </p>
+    )}
   </div>
 </section>
 
