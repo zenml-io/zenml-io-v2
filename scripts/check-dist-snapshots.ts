@@ -125,6 +125,41 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
     covers:
       "MLOps database entry body: headings and paragraphs rendered through the shared prose rehype plugins (the second collection they cover)",
   },
+  {
+    page: "pricing.html",
+    selector: "#pricing-ws-panel-zenml",
+    golden: "pricing-zenml-plan-cards.html",
+    covers:
+      "pricing plan cards, ZenML workspace panel: the three plans, the Scale card's executions slider stops and default readout, every plan CTA with its analytics name",
+  },
+  {
+    page: "pricing.html",
+    selector: "#compare-table",
+    golden: "pricing-compare-table.html",
+    covers:
+      "pricing comparison tables (both workspaces): section headings, feature rows, check/cross/text cells, the CTA row",
+  },
+  {
+    page: "open-source-vs-pro.html",
+    selector: "table",
+    golden: "open-source-vs-pro-table.html",
+    covers:
+      "Open Source vs Pro feature breakdown table: column headers and every feature row",
+  },
+  {
+    page: "get-started.html",
+    selector: "ol",
+    golden: "get-started-steps.html",
+    covers:
+      "get-started three-step walkthrough (ProcessSteps vertical-code): step titles, copy and the highlighted code blocks",
+  },
+  {
+    page: "docs.html",
+    selector: 'section[aria-label="Choose your documentation"]',
+    golden: "docs-diptych.html",
+    covers:
+      "docs hub diptych: the two product cards, their quick links and CTAs with the DocsHub analytics names",
+  },
 ];
 
 /**

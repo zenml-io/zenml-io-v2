@@ -1,22 +1,24 @@
 ---
 /**
- * PricingComparisonTable — sectioned feature comparison with ✓/✗ icons.
- *
- * Thin adapter from the pricing page's data shape onto `SpecTable`
- * (`data-display.spec-table`). Used on /pricing — one instance per
- * workspace, swapped by the plan-cards workspace toggle.
+ * labs.pricing-table — thin adapter from the pricing page's data shape onto
+ * `SpecTable`'s (`data-display.spec-table`) labs skin. Same mapping as the
+ * legacy `src/components/sections/PricingComparisonTable.astro`. Consumers:
+ * `/pricing` (both workspace panels), and the same mapping shape on
+ * `/open-source-vs-pro` and `/deployments`.
  */
 import type { PricingCompareTableData } from "../../lib/marketingPageTypes";
 import SpecTable from "../templates/SpecTable.astro";
 
 interface Props {
   data: PricingCompareTableData;
+  class?: string;
 }
 
-const { data } = Astro.props;
+const { data, class: className } = Astro.props;
 ---
 
 <SpecTable
+  skin="labs"
   heading={data.heading}
   subheading={data.subheading}
   rowHeaderLabel="Plans"
@@ -35,4 +37,5 @@ const { data } = Astro.props;
     variant: cta.variant ?? "primary",
     analytics: cta.analytics,
   }))}
+  class={className}
 />

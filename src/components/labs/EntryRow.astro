@@ -28,12 +28,14 @@ import {
   ENTRY_ROW_CHIP_HEXAGON,
   ENTRY_ROW_CHIP_OVERFLOW,
   ENTRY_ROW_CHIPS,
+  ENTRY_ROW_MARK,
   ENTRY_ROW_META,
   ENTRY_ROW_META_DOT,
   ENTRY_ROW_META_STRONG,
   ENTRY_ROW_SUMMARY,
   ENTRY_ROW_TITLE,
   ENTRY_ROW_TITLE_LINK,
+  ENTRY_ROW_TITLE_ROW,
   type EntryRowItem,
   entryRowMetaTokens,
 } from "./entryRowStyles";
@@ -45,6 +47,7 @@ type Props = EntryRowItem;
 const {
   href,
   title,
+  mark,
   meta,
   summary,
   chips,
@@ -57,9 +60,18 @@ const tokens = entryRowMetaTokens(meta);
 ---
 
 <article class={ENTRY_ROW}>
-  <Heading class={ENTRY_ROW_TITLE}>
-    <a href={href} class={ENTRY_ROW_TITLE_LINK}>{title}</a>
-  </Heading>
+  {mark ? (
+    <div class={ENTRY_ROW_TITLE_ROW}>
+      <img class={ENTRY_ROW_MARK} src={mark.url} alt={mark.alt} loading="lazy" />
+      <Heading class={ENTRY_ROW_TITLE}>
+        <a href={href} class={ENTRY_ROW_TITLE_LINK}>{title}</a>
+      </Heading>
+    </div>
+  ) : (
+    <Heading class={ENTRY_ROW_TITLE}>
+      <a href={href} class={ENTRY_ROW_TITLE_LINK}>{title}</a>
+    </Heading>
+  )}
 
   {tokens.length > 0 && (
     <div class={ENTRY_ROW_META}>

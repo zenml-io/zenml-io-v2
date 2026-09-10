@@ -70,16 +70,17 @@ the site's largest page family would make this ledger misleading.
 
 ### Comparison hub
 **Routes** — `/compare` (one page).
-**Layout** — `BaseLayout`.
+**Layout** — `BaseLayout` (`app="labs"`).
 **Surface** — `unified`.
-**Sequence** — `SectionIntro` header, then two tinted sections (Kitaru agent
-comparisons in orange, ZenML MLOps comparisons in sage) each with its own
-`SectionIntro` and a hand-rolled card grid linking into the family above.
+**Sequence** — `LabsBand` (short: eyebrow / h1 / deck), two `labs.entry-row`
+lists (Kitaru vs. agent frameworks and SDKs, wrapped in `data-product="kitaru"`;
+ZenML vs. orchestrators, durable execution engines & agent frameworks), then
+`LabsCloseCta`.
 **Required data** — `compare`, `compare-zenml` and `compare-kitaru`
 collections, normalised into one card shape by `src/lib/compareHub.ts`.
-**Buildable today** — partial. `SectionIntro` covers both headers; the two
-card grids (icon/logo tile, title, subtitle) are page-specific markup with no
-registry equivalent.
+**Buildable today** — mostly. `LabsBand`, `EntryRow` and `LabsCloseCta` are
+registry templates; the two section headings and lists are page-local
+markup.
 
 ### ZenML MDX comparison pages
 **Routes** — `/compare/zenml-vs-<slug>` (10 `.mdx` entries in
@@ -429,15 +430,14 @@ two frames, and there's no separate registry template for it.
 
 ### Startups & academics application
 **Routes** — `/startups-and-academics` (one page).
-**Layout** — `BaseLayout`.
+**Layout** — `BaseLayout` (`app="labs"`).
 **Surface** — `unified`.
-**Sequence** — `SectionIntro` (centered) directly above the `ContactForm`
-island in a single narrow column — no `ConversionShell`.
+**Sequence** — `LabsBand` (short: eyebrow / h1 / deck) directly above the
+`ContactForm` island in a single narrow column, then `LabsCloseCta`.
 **Required data** — `lib/startupsAndAcademics.ts`; `lib/formConstants`.
-**Buildable today** — partial. `SectionIntro` is a registry component; the
-narrow single-column shell around it is page-specific, and — like newsletter
-signup — this page's shape doesn't match either `ConversionShell` frame, so
-it wasn't folded in either.
+**Buildable today** — mostly. `LabsBand` and `LabsCloseCta` are registry
+templates; the narrow single-column shell around the `ContactForm` island
+stays page-specific.
 
 ### Newsletter success
 **Routes** — `/newsletter-success` (one page, noindex).
@@ -509,15 +509,19 @@ this is the site's largest concentration of one-off marketing components.
 
 ### Pricing
 **Routes** — `/pricing` (one page).
-**Layout** — `BaseLayout`.
+**Layout** — `BaseLayout` (`app="labs"`).
 **Surface** — `unified`.
-**Sequence** — `SectionIntro` (hero), then bespoke sections: plan cards (with
-a usage slider on the Scale card), a workspace-toggled comparison table, a
-workspace-toggled FAQ, Pro inclusions, a startup banner, a compliance section,
-a stats/trust section, then `FeaturesHubCTA`.
+**Sequence** — `LabsBand` (short: eyebrow / h1 / deck), `PricingPlanCards`
+(the two-workspace toggle driving every `[data-workspace-panel]` on the
+page; plan cards with a usage slider on the Scale card), a per-workspace
+`PricingTable`, a per-workspace `LabsFaq`, `ProductDoors` (Pro inclusions),
+a page-local startup banner, a page-local compliance section (ZenML
+workspace only), a page-local stats/trust section (a `LabsStoryCard` quote
+plus a static logo grid), then `LabsCloseCta`.
 **Required data** — `lib/pricing.ts`; `lib/pricingJsonLd.ts`.
-**Buildable today** — partial. `SectionIntro` covers the hero; every other
-section is pricing-specific with no registry equivalent.
+**Buildable today** — mostly. `LabsBand`, `PricingPlanCards`, `PricingTable`,
+`LabsFaq`, `ProductDoors` and `LabsCloseCta` are all registry templates; the
+startup banner, compliance section and stats/trust section stay page-specific.
 
 ### Features hub
 **Routes** — `/features` (one page).
@@ -570,42 +574,77 @@ hero) but it's a different, older kind of sharing than this ledger tracks.
 ### Get Started
 **Routes** — `/get-started` (one page; `/get-started/zenml` 301-redirects
 here).
-**Layout** — `BaseLayout`.
-**Surface** — `unified`.
-**Sequence** — `SectionIntro` (hero, with a pill tab switcher between ZenML
-and Kitaru panels), then per tab: `ProcessSteps` (the 3-step walkthrough,
-syntax-highlighted per brand), a `SectionIntro` architecture section, an
-image, buttons, a projects grid, and a resources grid — Kitaru's panel wraps
-in `data-app="kitaru"` for brand tokens — then a shared `FeaturesHubCTA`.
+**Layout** — `BaseLayout` (`app="labs"`, `product="zenml"`).
+**Surface** — `ml`.
+**Sequence** — `LabsBand` (short: eyebrow / h1 / deck, plus a pointer line
+to Kitaru's own start page), `ProcessSteps` (`skin="labs"`, the ZenML
+walkthrough on the `labs-light` Shiki theme, wrapped in the code-pane markup
+`initCodeCopy()` wires), a page-local architecture section, a page-local
+projects grid, a page-local resources grid, then `LabsCloseCta`. There is no
+ZenML/Kitaru chooser on this page any more — Kitaru's own onboarding lives
+on `/product/kitaru`.
 **Required data** — `lib/getStarted.ts`; `projects` collection (fallback
-data); Shiki highlighter config (`zenml-dark`/`kitaru-dark` themes).
-**Buildable today** — partial. `SectionIntro` and `ProcessSteps` are both
-registry templates; the tab switcher, architecture section, and resource
-grids are page-specific.
+data); Shiki highlighter config (`labs-light` theme).
+**Buildable today** — mostly. `LabsBand`, `ProcessSteps` and `LabsCloseCta`
+are registry templates; the architecture section, projects grid and
+resources grid stay page-specific.
 
 ### ZenML Pro
 **Routes** — `/pro` (one page).
-**Layout** — `BaseLayout`.
+**Layout** — `BaseLayout` (`app="labs"`).
 **Surface** — `unified`.
-**Sequence** — a hand-rolled hero, then a long sequence of bespoke sections:
-unified-pitch, `LogoCloud`, `ProFeaturedTestimonial09`, onboarding,
-`ProTestimonial02`, `FeatureValueSection`, compliance, `ProTestimonial15Section`,
-an OSS-vs-Pro grid, `FaqSection`, `VsCta02`.
+**Sequence** — `LabsHero` (landing band), `LogoMarquee`, a page-local
+unified-pitch grid, `CustomerStoryCards` (quote-card arrangement),
+`LabsValueProps` (onboarding), `LabsFeatureTabs` (cloud features), a
+page-local compliance section (shared markup with `/pricing`),
+`LabsValueProps` (OSS-vs-Pro), `LabsFaq`, then `LabsCloseCta`.
 **Required data** — `lib/pro.ts`.
-**Buildable today** — no. This is the second-largest concentration of
-one-off marketing sections on the site after the homepage; none of them are
-registry templates.
+**Buildable today** — mostly. `LabsHero`, `LogoMarquee`, `CustomerStoryCards`,
+`LabsValueProps`, `LabsFeatureTabs`, `LabsFaq` and `LabsCloseCta` are all
+registry templates; the unified-pitch grid and compliance section stay
+page-specific.
 
 ### Open Source vs Pro
 **Routes** — `/open-source-vs-pro` (one page).
-**Layout** — `BaseLayout`.
+**Layout** — `BaseLayout` (`app="labs"`).
 **Surface** — `unified`.
-**Sequence** — `VsHero`, a feature grid section, a "subway map" readiness
-section (hand-drawn SVG icons), `ComparisonTable`, `FeaturesCTA05`.
+**Sequence** — `LabsBand` (short: eyebrow / h1 / deck — the hero's CTAs
+moved into the grid section and the close band), `LabsValueProps` (the
+feature grid), a page-local "subway map" readiness section, `SpecTable`
+(`skin="labs"`), then `LabsCloseCta`.
 **Required data** — `lib/openSourceVsPro.ts`.
-**Buildable today** — no. All sections are page-specific; `VsHero` and
-`ComparisonTable` are reused elsewhere (the comparison family, respectively)
-but by import, not through the registry.
+**Buildable today** — mostly. `LabsBand`, `LabsValueProps`, `SpecTable` and
+`LabsCloseCta` are registry templates; the subway-map section stays
+page-specific.
+
+### Deployments
+**Routes** — `/deployments` (one page).
+**Layout** — `BaseLayout` (`app="labs"`, `product="zenml"`).
+**Surface** — `ml`.
+**Sequence** — `LabsBand` (short: h1 / deck — the hero's CTAs move into the
+close band), a page-local architecture `Split`, `SpecTable` (`skin="labs"`),
+three page-local scenario `Split`s (alternating media side), a page-local
+methods grid, `LabsFeatureTabs` (the deployment-architecture tabs) with a
+page-local feature grid beneath it, then `LabsCloseCta`.
+**Required data** — `lib/deployments.ts`.
+**Buildable today** — mostly. `LabsBand`, `Split`, `SpecTable`,
+`LabsFeatureTabs` and `LabsCloseCta` are all registry templates; the
+architecture/scenario copy blocks, the methods grid and the feature grid
+stay page-specific.
+
+### Cloud features
+**Routes** — `/cloud-features/ml-models-control-plane` (one page; a
+dedicated page, not a redirect into the `/features/<slug>` family).
+**Layout** — `BaseLayout` (`app="labs"`, `product="zenml"`).
+**Surface** — `ml`.
+**Sequence** — `LabsBand` (short, with the page's `Breadcrumb` as its first
+child, then eyebrow / h1 / deck), a page-local hero image, three page-local
+`Split` sections (alternating media side), then `LabsCloseCta`.
+**Required data** — inline constants in the page itself (no content
+collection).
+**Buildable today** — mostly. `LabsBand`, `Breadcrumb`, `Split` and
+`LabsCloseCta` are registry templates; the hero image block and the three
+feature sections stay page-specific.
 
 ---
 
@@ -664,16 +703,15 @@ grid.
 
 ### Docs hub
 **Routes** — `/docs` (one page).
-**Layout** — `BaseLayout`.
+**Layout** — `BaseLayout` (`app="labs"`).
 **Surface** — `unified`.
-**Sequence** — `PageHeader` (hero with a decorative dot-grid), a two-card
-product diptych (ZenML docs / Kitaru docs, each with its own quick-link list),
-using `SectionIntro` for each card's title block, then a resources strip.
+**Sequence** — `LabsBand` (short: eyebrow / h1 / deck), `ProductDoors` (the
+ZenML docs / Kitaru docs cards, each with its own quick-link rows), a
+page-local resources grid, then `LabsCloseCta`.
 **Required data** — inline constants in the page itself (`PRODUCTS`,
 `RESOURCES` — no content collection).
-**Buildable today** — partial. `PageHeader` and `SectionIntro` cover the
-hero and each card's title; the diptych card layout and resources strip are
-page-specific.
+**Buildable today** — mostly. `LabsBand`, `ProductDoors` and `LabsCloseCta`
+are registry templates; the resources grid stays page-specific.
 
 ### 404
 **Routes** — `/404.html`, served automatically by the host for unmatched

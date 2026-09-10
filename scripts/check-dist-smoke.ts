@@ -247,6 +247,47 @@ const HTML_SIZE_CEILINGS: { file: string; maxBytes: number }[] = [
   { file: "llmops-tags/monitoring.html", maxBytes: 2_000_000 },
 ];
 
+/**
+ * The two agent Markdown mirrors whose pages were restyled in the product
+ * one-offs cutover. Each mirror is rendered from the same `src/lib` module
+ * as its page, so a page restyle must leave it byte-identical; the fixtures
+ * under `tests/snapshots/mirrors/` were captured from a production build.
+ * `/pricing.md` is also asserted by `tests/lib/pricingMarkdownMirror.test.ts`
+ * (no content collections involved); `/compare.md` reads three collections,
+ * so the built file is the only place it can be checked. Regenerate a
+ * fixture only for a deliberate copy change:
+ *   pnpm build && cp dist/client/<name>.md tests/snapshots/mirrors/<name>.md
+ */
+const MARKDOWN_MIRROR_FIXTURES = ["pricing.md", "compare.md"];
+
+function checkMarkdownMirrors() {
+  let failures = 0;
+  for (const file of MARKDOWN_MIRROR_FIXTURES) {
+    const fixturePath = join("tests", "snapshots", "mirrors", file);
+    if (!fileExists(file)) {
+      logResult(false, `Missing mirror: ${distPath(file)}`);
+      failures += 1;
+      continue;
+    }
+    if (!existsSync(fixturePath)) {
+      logResult(false, `Missing mirror fixture: ${fixturePath}`);
+      failures += 1;
+      continue;
+    }
+    const built = readDistFile(file);
+    const fixture = readFileSync(fixturePath, "utf-8");
+    const ok = built === fixture;
+    logResult(
+      ok,
+      ok
+        ? `dist/${file} is byte-identical to ${fixturePath}`
+        : `dist/${file} differs from ${fixturePath} (${built.length} vs ${fixture.length} chars) — a page restyle must not change the mirror; regenerate the fixture only for a deliberate copy change`,
+    );
+    if (!ok) failures += 1;
+  }
+  return failures;
+}
+
 function checkHtmlSizeCeilings() {
   let failures = 0;
 
@@ -542,7 +583,6 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   { island: "MlopsIndex", pages: ["mlops-database.html"] },
   { island: "IntegrationsIndex", pages: ["integrations.html"] },
   { island: "BlogIndex", pages: ["blog.html"] },
-  { island: "ProTestimonialCarousel", pages: ["pro.html"] },
   // CategoryBar/TagCloud/BlogSearch retired with the taxonomy step of the
   // blog cutover (D2d) — the term hubs (tags/category/author) now render
   // through PageHeader + TermHubEditorial/TermHubEntryIndex instead, and
@@ -755,6 +795,9 @@ async function main() {
 
   console.log("\n10. Database tag hub HTML size ceilings (#53):");
   totalFailures += checkHtmlSizeCeilings();
+
+  console.log("\n11. Markdown mirror fixtures:");
+  totalFailures += checkMarkdownMirrors();
 
   console.log("\n========== DIST SMOKE REPORT ==========");
   console.log(`Failures: ${totalFailures}`);

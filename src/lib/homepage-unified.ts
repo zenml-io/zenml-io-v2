@@ -332,7 +332,7 @@ export const HOMEPAGE_UNIFIED_FINAL_CTA = {
 /*   7. Pricing teaser           (NEW)                                     */
 /*   8. ComplianceSection        (reused — SOC2/etc, enterprise signal)    */
 /*   9. NewsletterSignup         (reused — Brevo)                          */
-/*  10. FAQAccordion             (reused; some items need Kitaru variants) */
+/*  10. FAQ (labs.faq)           (some items need Kitaru variants) */
 /*  11. Final CTA                                                          */
 /*                                                                         */
 /* Removed vs current homepage:                                            */

@@ -20,13 +20,17 @@
  * string `"COMING SOON"` renders the pill used for a feature that isn't
  * live yet; any other string renders as plain text.
  */
+import type { LabsCta } from "../../lib/labs-home";
 import Button from "../Button.astro";
+import LabsButton from "../labs/LabsButton.astro";
 
 export type SpecTableCellValue = boolean | string;
 
 export interface SpecTableRow {
   label: string;
   href?: string;
+  /** Labs skin only: a second line under the label. */
+  description?: string;
   values: readonly SpecTableCellValue[];
 }
 
@@ -56,6 +60,8 @@ interface Props {
    * default is off.
    */
   stickyFirstColumn?: boolean;
+  /** Additive Labs skin (`labs.pricing-table`'s adapter); default preserves the legacy markup. */
+  skin?: "default" | "labs";
   class?: string;
 }
 
@@ -68,6 +74,7 @@ const {
   actions,
   class: className,
   stickyFirstColumn = false,
+  skin = "default",
 } = Astro.props;
 
 const colCount = columns.length;
@@ -77,123 +84,256 @@ const colCount = columns.length;
 // live transparent cells produce over the page tint. Off by default — the
 // live pricing table predates the pin and stays pixel-parity.
 const stickyCol = stickyFirstColumn ? "sticky left-0" : "";
+
+// The labs skin always pins the first column (DESIGN.md wide-table rule).
+const labsStickyCol = "sticky left-0 bg-card";
+
+function labsCta(action: SpecTableAction): LabsCta {
+  return {
+    label: action.label,
+    href: action.href,
+    analytics: action.analytics ?? "",
+  };
+}
 ---
 
 <div class:list={[className]}>
   {
-    (heading || subheading) && (
-      <div class="mb-8 text-center">
-        {heading && (
-          <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">{heading}</h2>
-        )}
-        {subheading && <p class="mt-2 text-gray-600">{subheading}</p>}
-      </div>
-    )
-  }
-  <div class="overflow-x-auto rounded-md border border-gray-200">
-    <table class="w-full min-w-[600px] border-collapse text-sm">
-      <thead>
-        <tr class="border-b border-gray-200">
-          <th class:list={[stickyCol, stickyFirstColumn && "bg-white", "px-4 py-3 text-left font-medium text-gray-500"]}>
-            {rowHeaderLabel}
-          </th>
-          {columns.map((column) => (
-            <th class="px-4 py-3 text-center font-bold text-gray-900">{column}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {sections.map((section) => (
-          <>
-            {section.heading && (
-              <tr>
-                <td
-                  colspan={colCount + 1}
-                  class="bg-gray-50 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gray-500"
-                >
-                  {section.heading}
-                </td>
-              </tr>
+    skin === "labs" ? (
+      <>
+        {(heading || subheading) && (
+          <div class="mb-10">
+            {heading && (
+              <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
+                {heading}
+              </h2>
             )}
-            {section.rows.map((row, rowIdx) => {
-              const isOddRow = rowIdx % 2 === 1;
-              const rowBg = stickyFirstColumn
-                ? isOddRow
-                  ? "bg-gray-50/50"
-                  : "bg-white"
-                : "";
-              return (
-                <tr class:list={["border-b border-gray-200", isOddRow && "bg-gray-50/50"]}>
-                  <td class:list={[stickyCol, rowBg, "px-4 py-3 font-medium text-gray-900"]}>
-                    {row.href ? (
-                      <a
-                        href={row.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="text-zenml-500 hover:text-zenml-600"
+            {subheading && (
+              <p class="mt-4 font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
+                {subheading}
+              </p>
+            )}
+          </div>
+        )}
+        <div class="overflow-x-auto rounded-[20px] border border-(--color-border)">
+          <table class="w-full min-w-[600px] border-collapse text-sm">
+            <thead>
+              <tr class="border-b border-(--color-border)">
+                <th class:list={[labsStickyCol, "px-6 py-4 text-left font-sans text-[15px] leading-5 font-medium text-(--color-cream-600)"]}>
+                  {rowHeaderLabel}
+                </th>
+                {columns.map((column) => (
+                  <th class="px-6 py-4 text-center font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">
+                    {column}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {sections.map((section) => (
+                <>
+                  {section.heading && (
+                    <tr>
+                      <td
+                        colspan={colCount + 1}
+                        class="bg-(--color-sage-50) px-6 py-2.5 font-sans text-[13px] leading-4 font-medium text-(--color-cream-700)"
                       >
-                        {row.label} &#8599;
-                      </a>
-                    ) : (
-                      row.label
-                    )}
-                  </td>
-                  {row.values.map((val) => (
-                    <td class="px-4 py-3 text-center">
-                      {val === true ? (
-                        <svg
-                          class="mx-auto h-5 w-5 text-zenml-500"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          aria-hidden="true"
-                        >
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5" />
-                        </svg>
-                      ) : val === false ? (
-                        <svg
-                          class="mx-auto h-5 w-5 text-gray-300"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          stroke-width="2"
-                          aria-hidden="true"
-                        >
-                          <path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10" />
-                        </svg>
-                      ) : val === "COMING SOON" ? (
-                        <span class="inline-block rounded bg-zenml-500 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-tight text-white">
-                          Coming Soon
-                        </span>
-                      ) : (
-                        <span class="text-gray-700">{val}</span>
-                      )}
+                        {section.heading}
+                      </td>
+                    </tr>
+                  )}
+                  {section.rows.map((row) => (
+                    <tr class="border-b border-(--color-border) last:border-b-0">
+                      <td class:list={[labsStickyCol, "px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)"]}>
+                        {row.href ? (
+                          <a
+                            href={row.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="text-(--color-sage-700) hover:text-(--color-sage-800)"
+                          >
+                            {row.label} &#8599;
+                          </a>
+                        ) : (
+                          row.label
+                        )}
+                        {row.description && (
+                          <p class="mt-1 font-sans text-[13px] leading-4 font-normal text-(--color-cream-700)">
+                            {row.description}
+                          </p>
+                        )}
+                      </td>
+                      {row.values.map((val) => (
+                        <td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+                          {val === true ? (
+                            <svg
+                              class="mx-auto h-5 w-5 text-(--color-sage-700)"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              aria-hidden="true"
+                            >
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5" />
+                            </svg>
+                          ) : val === false ? (
+                            <svg
+                              class="mx-auto h-5 w-5 text-(--color-cream-400)"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              aria-hidden="true"
+                            >
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10" />
+                            </svg>
+                          ) : val === "COMING SOON" ? (
+                            <span class="inline-block rounded-full bg-(--color-sage-100) px-2 py-0.5 font-sans text-[12px] leading-4 font-medium text-(--color-cream-800)">
+                              Coming soon
+                            </span>
+                          ) : (
+                            <span>{val}</span>
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </>
+              ))}
+              {actions && actions.length > 0 && (
+                <tr class="border-t border-(--color-border)">
+                  <td class={labsStickyCol} />
+                  {actions.map((action) => (
+                    <td class="px-6 pt-5 pb-4 text-center">
+                      <LabsButton
+                        cta={labsCta(action)}
+                        tone={action.variant === "secondary" ? "ghost" : "dark"}
+                      />
                     </td>
                   ))}
                 </tr>
-              );
-            })}
-          </>
-        ))}
-        {actions && actions.length > 0 && (
-          <tr class="border-t border-gray-200">
-            <td class:list={[stickyCol, stickyFirstColumn && "bg-white"]} />
-            {actions.map((action) => (
-              <td class="px-4 pt-5 pb-4 text-center">
-                <Button
-                  href={action.href}
-                  size="sm"
-                  variant={action.variant ?? "primary"}
-                  dataAnalytics={action.analytics}
-                >
-                  {action.label}
-                </Button>
-              </td>
-            ))}
-          </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </>
+    ) : (
+      <>
+        {(heading || subheading) && (
+          <div class="mb-8 text-center">
+            {heading && (
+              <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">{heading}</h2>
+            )}
+            {subheading && <p class="mt-2 text-gray-600">{subheading}</p>}
+          </div>
         )}
-      </tbody>
-    </table>
-  </div>
+        <div class="overflow-x-auto rounded-md border border-gray-200">
+          <table class="w-full min-w-[600px] border-collapse text-sm">
+            <thead>
+              <tr class="border-b border-gray-200">
+                <th class:list={[stickyCol, stickyFirstColumn && "bg-white", "px-4 py-3 text-left font-medium text-gray-500"]}>
+                  {rowHeaderLabel}
+                </th>
+                {columns.map((column) => (
+                  <th class="px-4 py-3 text-center font-bold text-gray-900">{column}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {sections.map((section) => (
+                <>
+                  {section.heading && (
+                    <tr>
+                      <td
+                        colspan={colCount + 1}
+                        class="bg-gray-50 px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-gray-500"
+                      >
+                        {section.heading}
+                      </td>
+                    </tr>
+                  )}
+                  {section.rows.map((row, rowIdx) => {
+                    const isOddRow = rowIdx % 2 === 1;
+                    const rowBg = stickyFirstColumn
+                      ? isOddRow
+                        ? "bg-gray-50/50"
+                        : "bg-white"
+                      : "";
+                    return (
+                      <tr class:list={["border-b border-gray-200", isOddRow && "bg-gray-50/50"]}>
+                        <td class:list={[stickyCol, rowBg, "px-4 py-3 font-medium text-gray-900"]}>
+                          {row.href ? (
+                            <a
+                              href={row.href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="text-zenml-500 hover:text-zenml-600"
+                            >
+                              {row.label} &#8599;
+                            </a>
+                          ) : (
+                            row.label
+                          )}
+                        </td>
+                        {row.values.map((val) => (
+                          <td class="px-4 py-3 text-center">
+                            {val === true ? (
+                              <svg
+                                class="mx-auto h-5 w-5 text-zenml-500"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                              >
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5" />
+                              </svg>
+                            ) : val === false ? (
+                              <svg
+                                class="mx-auto h-5 w-5 text-gray-300"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                aria-hidden="true"
+                              >
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10" />
+                              </svg>
+                            ) : val === "COMING SOON" ? (
+                              <span class="inline-block rounded bg-zenml-500 px-1.5 py-0.5 text-[10px] font-bold uppercase leading-tight text-white">
+                                Coming Soon
+                              </span>
+                            ) : (
+                              <span class="text-gray-700">{val}</span>
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    );
+                  })}
+                </>
+              ))}
+              {actions && actions.length > 0 && (
+                <tr class="border-t border-gray-200">
+                  <td class:list={[stickyCol, stickyFirstColumn && "bg-white"]} />
+                  {actions.map((action) => (
+                    <td class="px-4 pt-5 pb-4 text-center">
+                      <Button
+                        href={action.href}
+                        size="sm"
+                        variant={action.variant ?? "primary"}
+                        dataAnalytics={action.analytics}
+                      >
+                        {action.label}
+                      </Button>
+                    </td>
+                  ))}
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </>
+    )
+  }
 </div>

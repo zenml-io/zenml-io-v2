@@ -60,11 +60,15 @@ export function GET(): Response {
       ),
     ),
     joinMarkdownSections(
-      `## ${LABS_STORIES.headline}`,
+      LABS_STORIES.headline ? `## ${LABS_STORIES.headline}` : "",
       markdownBulletList(
-        LABS_STORIES.cards.map((card) => markdownLink(card.title, card.href)),
+        LABS_STORIES.cards.map((card) =>
+          "href" in card ? markdownLink(card.title, card.href) : card.title,
+        ),
       ),
-      markdownLink(LABS_STORIES.allLink.label, LABS_STORIES.allLink.href),
+      LABS_STORIES.allLink
+        ? markdownLink(LABS_STORIES.allLink.label, LABS_STORIES.allLink.href)
+        : "",
     ),
     joinMarkdownSections(
       `## ${LABS_CLOSE.headlineLines.join(" ")}`,

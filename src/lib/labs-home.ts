@@ -21,6 +21,8 @@ import { formatLlmopsDatabaseNavDescription } from "./navigation";
 import { KITARU_LINKS } from "./productKitaru";
 import { ZENML_LINKS } from "./productZenml";
 
+export type { CaseStudyCard };
+
 /** The two products the Labs shell can be "inside" (header wordmark, switcher, CTA target). */
 export type LabsProduct = "zenml" | "kitaru";
 
@@ -219,18 +221,38 @@ export const LABS_HERO: LabsBandContent = {
 /* Product doors                                                           */
 /* ---------------------------------------------------------------------- */
 
+/** One quick-link row under a door's body (e.g. a docs link). */
+export interface ProductDoorLink {
+  label: string;
+  href: string;
+  external?: true;
+}
+
+/** One title/detail pair under a door's body (e.g. a compliance bullet). */
+export interface ProductDoorDetail {
+  title: string;
+  detail: string;
+}
+
 export interface ProductDoor {
   name: "ZenML" | "Kitaru";
   /** Corner wash behind the card: the product's lightest palette tint. */
   tint: "sage" | "orange";
   leadLine: string;
   body: string;
-  cta: LabsCta;
+  /** Quick-link rows rendered after the body. Absence collapses. */
+  links?: readonly ProductDoorLink[];
+  /** Title/detail rows rendered after the body. Absence collapses. */
+  details?: readonly ProductDoorDetail[];
+  cta: LabsCta & { external?: true };
 }
 
 export interface ProductDoorsContent {
-  headline: string;
+  /** Absence collapses the heading row (the cards render alone). */
+  headline?: string;
   doors: readonly ProductDoor[];
+  /** Rendered after the cards. Absence collapses. */
+  caption?: string;
 }
 
 export const LABS_DOORS: ProductDoorsContent = {
@@ -325,11 +347,25 @@ export const LABS_LOGO_GRID: LogoGridContent = {
   logos: LOGO_CLOUD.logos,
 };
 
+/** A testimonial-style story card (quote + attribution) rather than a case-study link. */
+export interface QuoteCard {
+  quote: string;
+  name: string;
+  title: string;
+  avatar?: string;
+  logo?: { url: string; alt: string };
+  /** Spans two columns at lg. */
+  wide?: true;
+}
+
 export interface StoryCardsContent {
-  headline: string;
-  allLink: LabsCta;
-  readLabel: string;
-  cards: readonly CaseStudyCard[];
+  /** Absence collapses the heading row. */
+  headline?: string;
+  /** Absence collapses the "all case studies" link. */
+  allLink?: LabsCta;
+  /** Absence collapses the per-card read label (quote cards don't use one). */
+  readLabel?: string;
+  cards: readonly (CaseStudyCard | QuoteCard)[];
 }
 
 export const LABS_STORIES: StoryCardsContent = {

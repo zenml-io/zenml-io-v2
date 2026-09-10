@@ -23,6 +23,11 @@ import { capitalise } from "../../lib/databases";
 export const ENTRY_ROW =
   "group relative flex cursor-pointer flex-col gap-3 border-b border-(--color-border) px-4 py-6 pr-12 transition-colors duration-200 ease-out hover:bg-(--color-sage-50) focus-within:bg-(--color-sage-50)";
 
+/** A row's optional leading competitor/company mark (compare-hub rows). */
+export const ENTRY_ROW_MARK = "mt-0.5 h-6 w-6 shrink-0 object-contain";
+/** Wraps the mark + title heading when a mark is present. */
+export const ENTRY_ROW_TITLE_ROW = "flex items-start gap-2";
+
 /**
  * The heading element: the row's one text column, now that the chevron
  * lives outside the title row as an absolutely-positioned last child. Every
@@ -117,6 +122,8 @@ export interface EntryRowMeta {
 export interface EntryRowItem {
   href: string;
   title: string;
+  /** Optional leading mark (e.g. a compare-hub competitor logo). Absence collapses. */
+  mark?: { url: string; alt: string };
   meta: EntryRowMeta;
   summary?: string | null;
   /**
