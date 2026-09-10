@@ -83,6 +83,7 @@ The Segment loader in `consentConfig.ts` runs a single ZenML write key; there is
 ## Development Conventions
 
 - **This is a public repository.** All commits, documentation, and code are visible to the public. Never commit secrets, API keys, infrastructure IDs, internal URLs, traffic numbers, or other sensitive information. Use `CLAUDE.private.md` (gitignored) for private details. The `design/` folder and `scripts/internal/` are also gitignored for internal-only artifacts
+- The 2026 rebrand's visual work lands on the long-lived `rebrand/labs-site` branch (merged to `main` only at launch; see #246 for the order and one ticket per page family). DESIGN.md holds the binding design rules; build from the ZenML Labs components in `src/components/labs/` and the template registry rather than restyling pages in place. Every new Labs component is registered as `labs.*`.
 - `design/` folder is for heavy artifacts (exports, screenshots, JSON dumps, internal docs) — **never commit to git**
 - Make targeted git commits (only relevant files)
 - **Do not commit intermediate planning/review artifacts by default.** Files under `docs/plans/`, `docs/reviews/`, `prompt-exports/`, or similar orchestration scratch locations are working notes for agents unless the user explicitly asks to keep them. Before staging, check `git status --short` and leave unrelated or intermediate plans/reviews unstaged. If a plan becomes a durable product/architecture document, confirm that intent before committing it
