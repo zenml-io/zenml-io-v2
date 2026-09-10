@@ -22,6 +22,10 @@
 /cloud-terms-and-privacy/ /terms-of-service 301
 /newsletter /newsletter-signup 301
 /newsletter/ /newsletter-signup 301
+/book-a-demo /book-your-demo 301
+/book-a-demo/ /book-your-demo 301
+/signup-for-demo /book-your-demo 301
+/signup-for-demo/ /book-your-demo 301
 /live-demo / 301
 /live-demo/ / 301
 /interactive-demo-mcp / 301

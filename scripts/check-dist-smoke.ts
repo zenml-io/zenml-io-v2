@@ -529,8 +529,6 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   {
     island: "ContactForm",
     pages: [
-      "signup-for-demo.html",
-      "book-a-demo.html",
       "brick-manual.html",
       "startups-and-academics.html",
       "whitepaper-architecting-an-enterprise-grade-mlops-platform.html",

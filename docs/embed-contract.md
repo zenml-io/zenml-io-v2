@@ -54,10 +54,9 @@ Plausible note under Consent registry below).
 Used by `src/components/islands/ContactForm.tsx` and
 `src/components/islands/DemoRequestForm.tsx`, both gated behind an optional
 `turnstileSiteKey` prop sourced from `TURNSTILE_SITE_KEY` in `src/lib/formConstants.ts`.
-Pages currently passing a site key: `src/pages/signup-for-demo.astro`,
-`src/pages/whitepaper-architecting-an-enterprise-grade-mlops-platform.astro`,
-`src/pages/book-a-demo.astro`, `src/pages/startups-and-academics.astro`,
-`src/pages/brick-manual.astro`, and (via `BookingExperience.astro`) `/book-your-demo`.
+Pages currently passing a site key: `src/pages/whitepaper-architecting-an-enterprise-grade-mlops-platform.astro`,
+`src/pages/startups-and-academics.astro`, `src/pages/brick-manual.astro`, and
+(via `BookingExperience.astro`) `/book-your-demo`.
 
 **Sizing:** a `<div ref={turnstileRef} class="flex justify-center" />` placeholder;
 Turnstile renders its own widget into it (`size: "flexible"`, `theme: "light"`).
