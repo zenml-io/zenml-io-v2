@@ -17,6 +17,7 @@ import {
   LOGO_CLOUD,
   type LogoItem,
 } from "./homepage";
+import { formatLlmopsDatabaseNavDescription } from "./navigation";
 import { KITARU_LINKS } from "./productKitaru";
 import { ZENML_LINKS } from "./productZenml";
 
@@ -81,29 +82,92 @@ export const LABS_NAV_SIGNUP_BY_PRODUCT: Record<LabsProduct, LabsCta> = {
 export interface LabsNavLink {
   label: string;
   href: string;
-  /** Rendered with a chevron; Docs/Case studies menus land in a later step. */
-  hasMenu?: boolean;
-  /** The one menu that exists today: the product switcher (rows from LABS_DOORS). */
-  menu?: "products";
+  /** Present only on the three items with a hover menu (chevron follows the label). */
+  menu?: "products" | "docs" | "case-studies";
 }
 
 export const LABS_NAV_LINKS: readonly LabsNavLink[] = [
   {
     label: "Products",
     href: "/product/zenml",
-    hasMenu: true,
     menu: "products",
   },
   {
     label: "Docs",
     href: "https://docs.zenml.io/getting-started/introduction",
-    hasMenu: true,
+    menu: "docs",
   },
-  { label: "Case studies", href: "/case-studies", hasMenu: true },
+  { label: "Case studies", href: "/case-studies", menu: "case-studies" },
   { label: "Compare", href: "/compare" },
   { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
 ];
+
+/* ---------------------------------------------------------------------- */
+/* Docs / Case studies menus                                               */
+/* ---------------------------------------------------------------------- */
+
+/** One row of the Docs or Case studies menu: a label + a one-line description, no icon. */
+export interface LabsNavMenuRow {
+  label: string;
+  href: string;
+  description: string;
+  /** External rows get the small outbound-arrow glyph. */
+  external?: true;
+}
+
+export interface LabsNavMenu {
+  ariaLabel: string;
+  rows: readonly LabsNavMenuRow[];
+}
+
+/**
+ * Docs and Case studies menu content, reproduced from the pre-rebrand nav
+ * data (`createNavDropdowns` in `./navigation`), which remains the live
+ * site's source for these two menus. Only the LLMOps Database row's
+ * description is computed (the non-draft entry count), so this is a
+ * function rather than a constant: the caller (LabsNavigation) awaits
+ * `getNonDraftLlmopsDatabaseCount()` once and passes it in, the same way
+ * `Navigation.astro` feeds `createNavDropdowns`.
+ */
+export function labsNavMenus(
+  llmopsCaseStudyCount: number,
+): Record<"docs" | "case-studies", LabsNavMenu> {
+  return {
+    docs: {
+      ariaLabel: "Docs",
+      rows: [
+        {
+          label: "Kitaru docs",
+          href: "https://docs.zenml.io/kitaru",
+          description: "Record, replay, and evaluate agents",
+          external: true,
+        },
+        {
+          label: "ZenML docs",
+          href: "https://docs.zenml.io",
+          description: "Pipelines, components, integrations",
+          external: true,
+        },
+      ],
+    },
+    "case-studies": {
+      ariaLabel: "Case studies",
+      rows: [
+        {
+          label: "Customer stories",
+          href: "/case-studies",
+          description: "How teams ship AI workflows and agents with ZenML",
+        },
+        {
+          label: "LLMOps Database",
+          href: "/llmops-database",
+          description: formatLlmopsDatabaseNavDescription(llmopsCaseStudyCount),
+        },
+      ],
+    },
+  };
+}
 
 export const LABS_FOOTER = {
   /** Ruling 8 (2026-09-08): derived from the re-issued company USP. */

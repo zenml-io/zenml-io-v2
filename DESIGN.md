@@ -284,7 +284,11 @@ container scrolls inside its own region.
   and keyboard open them too and `aria-expanded` always tells the truth.
   Rows reveal as a short stagger — the panel fades and lifts in over
   ~180ms, each row follows ~45ms after the previous — and close at once.
-  Under reduced motion the panel appears instantly.
+  Under reduced motion the panel appears instantly. On the ZenML Labs nav
+  (`LabsNavigation`), Products, Docs, and Case studies all share this one
+  behaviour, and opening one closes any other that's open. Nav items hover
+  with a `sage-200` fill (also held while a menu is open); menu rows hover
+  with a `sage-100` fill plus the existing border/current-row treatment.
 
 ## Content and data conventions
 
