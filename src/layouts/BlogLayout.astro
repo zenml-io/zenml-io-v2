@@ -315,25 +315,43 @@ const articleJsonLd = {
     </div>
   </LabsBand>
 
+  {/* Sticky region for the breadcrumb: this classless wrapper's content box
+      is what the crumb's `lg:sticky` below measures against, so the crumb
+      releases as soon as the article body (the last child here) ends,
+      instead of dragging through tags/author/prev-next/related rail like it
+      did when it shared the page-wide wrapper above. The article section
+      uses `mb-24` rather than `pb-24` for the same reason: a margin isn't
+      part of this wrapper's content box, so the trailing space doesn't
+      extend the sticky region either — visually the gap before the tag
+      chips is unchanged, since margin still occupies layout the same way
+      padding did. */}
+  <div>
+
   {/* Breadcrumb — the first element of the post body, in the article lane so
-      it lines up with the body text's left edge, and sticky under the
-      floating nav as the reader scrolls. No bar treatment: it carries the
-      page's own ground (white — the Labs shell leaves `body` on the browser
-      default rather than painting `--background`) and no rule, so what stays
-      on screen reads as
-      the crumb trail holding its place, not a second chrome layer. The fade
-      under it is the same masking idea as LabsBand's bottom fade — body text
-      dissolves into the page ground as it passes beneath instead of being
-      cut by a hard edge. `top` is the nav's bottom edge + 8px (nav bottom
-      the nav's own bottom edge, flush, no sliver of page between them: 92px
-      mobile / 108px desktop, from LabsNavigation's `top-4 lg:top-8` + 76px);
+      it lines up with the body text's left edge. Sticky from `lg` up only
+      (mobile renders it as a plain static row — no room to spare for a
+      floating crumb on a small screen, and see the wrapper comment above for
+      why the sticky region is bounded to the article). No bar treatment: it
+      carries the page's own ground (white — the Labs shell leaves `body` on
+      the browser default rather than painting `--background`) and no rule,
+      so what stays on screen reads as the crumb trail holding its place,
+      not a second chrome layer. The fade under it (desktop only, hidden
+      below `lg`) is the same masking idea as LabsBand's bottom fade — body
+      text dissolves into the page ground as it passes beneath instead of
+      being cut by a hard edge — and it spans the prose column only, so the
+      table-of-contents rail beside it (sticky in its own right) is never
+      washed by it. `top` is the nav's bottom edge + 8px, flush, no sliver of
+      page between them: 108px, from LabsNavigation's `lg:top-8` + 76px;
       `z-30` sits under the nav's `z-50`; the row is 44px tall and
       `[&>nav]:mb-0` drops the chevron variant's own bottom margin here
-      rather than adding a prop to the shared primitive. The TOC's sticky
-      offset and every heading's `scroll-margin-top` (`.prose [id]` in
-      global.css) clear the nav *and* this row, so all three move together.
-      Server-rendered visible, never a `reveal-child`. */}
-  <div class="sticky top-[92px] z-30 lg:top-[108px]">
+      rather than adding a prop to the shared primitive. Offsets that move
+      together on desktop: nav 108px → this row adds 44px + 8px gap = 160px,
+      which is the TOC's sticky offset and every heading's
+      `scroll-margin-top` (`.prose [id]` in global.css, `lg` breakpoint).
+      Below `lg` there's no crumb row to clear, so that same rule's base
+      value only accounts for the nav. Server-rendered visible, never a
+      `reveal-child`. */}
+  <div class="lg:sticky lg:top-[108px] lg:z-30">
     <div class="bg-white">
       <div class="mx-auto max-w-content px-gutter">
         <div class="relative mx-auto max-w-(--article-lane)">
@@ -346,9 +364,12 @@ const articleJsonLd = {
           </div>
           {/* The fade masks the body copy passing underneath, so it spans the
               prose column only — the table-of-contents rail beside it is
-              sticky in its own right and must never be washed by it. */}
+              sticky in its own right and must never be washed by it. Eased
+              (four stops) rather than a plain two-stop ramp so it dissolves
+              instead of reading as a hard-edged band; desktop-only since the
+              crumb above it isn't sticky below `lg`. */}
           <div
-            class="pointer-events-none absolute top-full left-0 h-8 w-full max-w-(--prose-column) bg-gradient-to-b from-white to-transparent"
+            class="pointer-events-none absolute top-full left-0 hidden h-10 w-full max-w-(--prose-column) bg-[linear-gradient(to_bottom,white_0%,rgb(255_255_255/0.85)_30%,rgb(255_255_255/0.45)_65%,transparent_100%)] lg:block"
             aria-hidden="true"
           >
           </div>
@@ -359,7 +380,7 @@ const articleJsonLd = {
 
   {/* Featured image — 16:9, opt-in via frontmatter `featuredImage` (the
       cover `mainImage` is never rendered here). It follows the breadcrumb
-      (content, not the band directly), so it takes the same pt-14
+      (content, not the band directly), so it takes the same pt-6
       content-to-content rhythm the article body below it uses. */}
   {featuredImage && (
     <section class="scroll-reveal-section pt-6">
@@ -380,8 +401,11 @@ const articleJsonLd = {
 
   {/* Article body: prose column + sticky TOC rail. Always follows a
       content block now (the breadcrumb, or the featured image) rather than
-      the band directly, so it always takes the usual pt-14 rhythm. */}
-  <section class="scroll-reveal-section pt-6 pb-24">
+      the band directly, so it always takes the usual pt-6 rhythm. `mb-24`
+      (not `pb-24`) so this section's border box — and with it the sticky
+      wrapper's content box above — ends where the article does; see the
+      wrapper comment above. */}
+  <section class="scroll-reveal-section pt-6 mb-24">
     <div class="mx-auto max-w-content px-gutter">
       <div class="mx-auto flex max-w-(--article-lane) flex-col items-start gap-10 xl:flex-row xl:gap-(--prose-toc-gap)">
         <article class="w-full min-w-0 xl:w-(--prose-column) xl:flex-none">
@@ -423,8 +447,9 @@ const articleJsonLd = {
             to move within its own containing block, so it never clamps to
             top-[160px] — it just scrolls away with the page. Stretching the
             aside to the article's height gives the sticky div a box worth
-            sticking inside. 140px clears the floating nav — this value and
-            the `.prose [id]` scroll-margin-top in global.css must stay
+            sticking inside. 160px clears the floating nav plus the sticky
+            breadcrumb row above it — this value and the `.prose [id]`
+            scroll-margin-top in global.css (`lg` breakpoint) must stay
             equal and move together. */}
         {showTOC && (
           <aside class="hidden w-(--toc-rail) flex-none xl:block xl:self-stretch">
@@ -436,6 +461,8 @@ const articleJsonLd = {
       </div>
     </div>
   </section>
+
+  </div>
 
   {/* Tag chips (optional, collapses) */}
   {tags.length > 0 && (

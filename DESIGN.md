@@ -113,7 +113,8 @@ Additional rules:
 - Clickable elements always get `cursor-pointer` — browsers do not default
   `<button>` to it.
 
-- **Interior-page header band** (blog cutover): every blog route — the
+- **Interior-page header band** (blog cutover; the default for every
+  family that follows, ruled 2026-09-10): every blog route — the
   index, each hub and the post masthead — opens on the short shader band
   (`LabsBand` size `short`: the grain backdrop at roughly 40% of the
   viewport, nav clearance built in). The band ends in a 1px `--color-border`
@@ -122,12 +123,35 @@ Additional rules:
   Kitaru category and tag hubs, run a slower, quieter cut of the Kitaru product
   page's grain palette instead of the Labs one (the band's `grain` axis); every other hub and the
   index stay on the Labs grain. The landing
-  size stays the full-height opener of `/` and the product pages.
+  size stays the full-height opener of `/` and the product pages. As the
+  remaining families move onto the Labs shell (the research databases,
+  integrations and features, company pages, the product one-offs) their
+  index, detail and hub pages open on this same band by default — the
+  band's slot carries the page's breadcrumb, eyebrow, heading and deck,
+  exactly as the blog hubs do — and reuse the blog's components (the
+  accordion facet rail, the entry cards, the term-hub templates, the
+  sentence-case UI text) rather than restyling their own. A page departs
+  from this shape only by an explicit ruling.
+- **Sticky breadcrumb row on long-form detail pages** (blog cutover): the
+  breadcrumb is the first element under the band, in the article lane on
+  the page's own ground — no bar, no rule. From the `lg` breakpoint up it
+  sticks flush under the floating nav (nav bottom 108px) while the body is
+  on screen and releases when the body ends; it never rides through the
+  tags, author, prev/next or related blocks. A short eased fade under the
+  row, spanning the prose column only, dissolves copy passing beneath it;
+  the table-of-contents rail beside it is never washed. Below `lg` the row
+  is static and there is no fade. The offsets move together: nav 108px,
+  row 44px + 8px, so the table of contents and every heading's anchor
+  offset sit at 160px on desktop and 108px (nav only) below `lg`. There is
+  one implementation of this row (today inside the post layout); the next
+  detail page that needs it — the database entry template — extracts it
+  into a registered component rather than copying the markup.
 - **Closing band on every blog route**: the index, every post and every hub
   end on the dark sage close band (one headline, one pill, the newsletter
   card) with the same `client:idle` grain backdrop as the homepage close —
   the header band is the page's one always-on ambient island, the close
-  only needs to be present.
+  only needs to be present. Families that move to the Labs shell after the
+  blog end on this same close band by default.
 - **Kitaru posts carry the Kitaru accent**: a post whose category or tags
   include `kitaru` sets `data-product="kitaru"` and re-points the
   `--blog-accent*` custom properties (default sage) to the orange ramp —

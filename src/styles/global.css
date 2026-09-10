@@ -1792,9 +1792,19 @@ body {
   border-top: 1px solid var(--color-sage-300);
 }
 
-/* Anchor offset for in-page links, behind the floating Labs nav pill */
+/* Anchor offset for in-page links, behind the floating Labs nav pill. Below
+ * `lg` the blog breadcrumb isn't sticky (BlogLayout.astro), so the anchor
+ * only has to clear the nav itself. From `lg` up it also has to clear the
+ * sticky breadcrumb row that sits under the nav: nav 108px + row 44px +
+ * 8px gap = 160px, matching the breadcrumb's own `lg:top-[108px]` and the
+ * TOC's `top-[160px]` — all three move together. */
 [data-app="labs"] .prose [id] {
-  scroll-margin-top: 160px;
+  scroll-margin-top: 108px;
+}
+@media (min-width: 64rem) {
+  [data-app="labs"] .prose [id] {
+    scroll-margin-top: 160px;
+  }
 }
 
 /* Legacy Webflow testimonial component — recoloured onto tokens rather than
