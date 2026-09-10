@@ -4,7 +4,8 @@
  * Generates a thin JSON index at /llmops-index.json for client-side filtering.
  * Only includes structured metadata (no body content) to keep size reasonable.
  *
- * Target: <500KB for 1,453 entries (~300 bytes each).
+ * Target: ~300 bytes per entry (2,092 files on disk as of 2026-09-10; grows
+ * with every native publish).
  */
 
 import { getCollection } from "astro:content";

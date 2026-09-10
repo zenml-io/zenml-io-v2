@@ -9,7 +9,7 @@
  * needs to be present, not immediate, so it hydrates once the browser is
  * idle instead of competing with anything else for first paint.
  *
- * The newsletter form reuses the site's Brevo contract: BREVO_MAIN_CONFIG
+ * The newsletter form reuses the site's Brevo contract: a BrevoFormConfig
  * (action/formId/labels), the same hidden honeypot + locale inputs and
  * data-brevo-form/data-brevo-newsletter/data-brevo-success/data-brevo-error
  * attributes BrevoNewsletterForm.astro renders, and the same submit
@@ -17,14 +17,29 @@
  * is custom (a single rounded pill row with an icon-only submit button)
  * because BrevoNewsletterForm.astro's own layout can't produce that without
  * changing its default look — see scripts/brevoNewsletterForm.ts.
+ *
+ * Copy and list are both props with the blog's own values as defaults, so a
+ * non-blog surface can reuse the band without a second copy of the markup
+ * (the research databases pass DATABASE_CTA + BREVO_LLMOPS_CONFIG). Passing
+ * neither renders exactly what /blog rendered before they existed.
  */
+import type { BlogCtaContent } from "../../lib/blog-cta";
 import { BLOG_CTA } from "../../lib/blog-cta";
 import { BREVO_MAIN_CONFIG } from "../../lib/formConstants";
+import type { BrevoFormConfig } from "../../lib/formTypes";
 import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
 import { GrainBackdrop } from "../islands/GrainBackdrop";
 import LabsButton from "./LabsButton.astro";
 
-const { headlineLines, cta, newsletter } = BLOG_CTA;
+interface Props {
+  /** Headline, signup pill and newsletter-card copy. Default: the blog's. */
+  content?: BlogCtaContent;
+  /** Which Brevo list the card subscribes to. Default: the main list. */
+  brevo?: BrevoFormConfig;
+}
+
+const { content = BLOG_CTA, brevo = BREVO_MAIN_CONFIG } = Astro.props;
+const { headlineLines, cta, newsletter } = content;
 // One form per route today; the id still derives from the route so two
 // blog surfaces composed on one page can never collide.
 const emailId = `blog-cta-email-${Astro.url.pathname.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "") || "root"}`;
@@ -72,12 +87,12 @@ const emailId = `blog-cta-email-${Astro.url.pathname.replace(/[^a-z0-9]+/gi, "-"
 
       <div
         class="mt-8"
-        data-brevo-form={BREVO_MAIN_CONFIG.formId}
-        data-loading-label={BREVO_MAIN_CONFIG.loadingLabel}
+        data-brevo-form={brevo.formId}
+        data-loading-label={brevo.loadingLabel}
       >
         <form
           method="POST"
-          action={BREVO_MAIN_CONFIG.action}
+          action={brevo.action}
           class="flex items-center gap-2 rounded-full border border-(--color-sage-700) bg-(--color-sage-900) py-1.5 pr-1.5 pl-5"
           data-brevo-newsletter
         >

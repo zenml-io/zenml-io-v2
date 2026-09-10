@@ -18,6 +18,10 @@ const REQUIRED_FILES = [
   "blog.html",
   "llmops-database.html",
   "mlops-database.html",
+  "llmops-tags.html",
+  "llmops-tags/prompt-engineering.html",
+  "llmops-tags/monitoring.html",
+  "industry-tags/tech.html",
   "sitemap-index.xml",
   "sitemap-0.xml",
   "_headers",
@@ -224,6 +228,47 @@ function checkContentMarkers() {
     );
     if (!ok) {
       failures += missingMarkers.length;
+    }
+  }
+
+  return failures;
+}
+
+/**
+ * The #53 pages: research-database tag hubs whose pre-cutover cards
+ * arrangement server-rendered every matching entry, running one built page
+ * past 3.8 MB (`prompt-engineering`, the busiest LLMOps tag). The databases
+ * cutover (#256) moves these onto `labs.entry-row` rows with only the first
+ * `DATABASE_PAGE_SIZE` server-rendered and later pages fetched client-side
+ * by `HubEntryPagination` — this ceiling is the regression guard for that.
+ */
+const HTML_SIZE_CEILINGS: { file: string; maxBytes: number }[] = [
+  { file: "llmops-tags/prompt-engineering.html", maxBytes: 2_000_000 },
+  { file: "llmops-tags/monitoring.html", maxBytes: 2_000_000 },
+];
+
+function checkHtmlSizeCeilings() {
+  let failures = 0;
+
+  for (const { file, maxBytes } of HTML_SIZE_CEILINGS) {
+    const path = distPath(file);
+    if (!existsSync(path)) {
+      logResult(false, `Missing file for size ceiling check: ${path}`);
+      failures += 1;
+      continue;
+    }
+
+    const size = statSync(path).size;
+    const ok = size < maxBytes;
+    logResult(
+      ok,
+      `${file}: ${size.toLocaleString("en-US")} bytes` +
+        (ok
+          ? ""
+          : ` exceeds the ${maxBytes.toLocaleString("en-US")}-byte ceiling`),
+    );
+    if (!ok) {
+      failures += 1;
     }
   }
 
@@ -515,6 +560,13 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
       "author/hamza-tahir.html",
     ],
   },
+  {
+    // The research-database tag hubs (#256, #53): unlike HubPagination, page
+    // 1 alone is server-rendered — this island fetches every later page from
+    // the JSON index. One representative page per database.
+    island: "HubEntryPagination",
+    pages: ["llmops-tags/prompt-engineering.html", "mlops-tags/training.html"],
+  },
   // The Kitaru landing sections (KitaruGrain doubles as a plain subcomponent
   // inside the other islands, but the static Hero.astro, Cta.astro and the
   // _HighlightPanel shells rendered by Features.astro also mount it as its
@@ -702,6 +754,9 @@ async function main() {
 
   console.log("\n9. Open Graph card golden:");
   totalFailures += await checkOgGolden();
+
+  console.log("\n10. Database tag hub HTML size ceilings (#53):");
+  totalFailures += checkHtmlSizeCeilings();
 
   console.log("\n========== DIST SMOKE REPORT ==========");
   console.log(`Failures: ${totalFailures}`);

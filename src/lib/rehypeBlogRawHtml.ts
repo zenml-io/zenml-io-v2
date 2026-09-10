@@ -19,10 +19,10 @@
  *    `rehypeTableScroll` gives Markdown tables, so every table on the blog
  *    shares one frame (border, radius, header row, hint under wide tables).
  *
- * Runs on the blog collection only (see isBlogMarkdownFile).
+ * Runs on every long-form prose collection (see isProseCollectionFile).
  */
 import { visit } from "unist-util-visit";
-import { isBlogMarkdownFile } from "./rehypeCodePane";
+import { isProseCollectionFile } from "./rehypeCodePane";
 import {
   TABLE_SCROLL_BLOCK_CLOSE,
   TABLE_SCROLL_BLOCK_OPEN,
@@ -77,7 +77,7 @@ export function normalizeBlogRawHtml(html: string): string {
 
 export function rehypeBlogRawHtml() {
   return (tree: RawNode, file: { path?: string; history?: string[] }) => {
-    if (!isBlogMarkdownFile(file)) return;
+    if (!isProseCollectionFile(file)) return;
     // biome-ignore lint/suspicious/noExplicitAny: same untyped walk as the sibling plugins
     visit(tree as any, "raw", (nodeIn: unknown) => {
       const node = nodeIn as RawNode;

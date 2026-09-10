@@ -1,0 +1,144 @@
+---
+/**
+ * LabsMetadataBlock — the labelled record rows on a database entry (Industry,
+ * Technologies/MLOps topics): a `<dl>` of label/value pairs, one of three
+ * value shapes per row (`text`, `link`, `chips`). Absence of `items` renders
+ * nothing — the entry layout only builds an item for a field the entry
+ * actually has, never a placeholder row.
+ *
+ * `chips` rows clamp to `visible` chips (default `DATABASE_TAG_CHIPS_VISIBLE`
+ * — roughly two rows) before folding the rest into a native `<details>`
+ * whose `<summary>` is itself a `TERM_CHIP` pill ("+N more" / "Show fewer",
+ * toggled by this component's own scoped `<style>` rather than a script) so
+ * every chip stays reachable without JS. The `<details>` is `display:
+ * contents` so its own children — the overflow chips — flow into the same
+ * flex-wrap row as the visible ones, instead of starting a new line.
+ *
+ * Sole consumer today: `src/layouts/DatabaseEntryLayout.astro`.
+ */
+import { DATABASE_TAG_CHIPS_VISIBLE } from "../../lib/databases";
+import {
+  TERM_CHIP,
+  TERM_CHIP_HEXAGON_PATH,
+  TERM_CHIP_HEXAGON_VIEWBOX,
+} from "../blog/termChipStyles";
+
+export type LabsMetadataBlockValue =
+  | { kind: "text"; text: string }
+  | { kind: "link"; text: string; href: string }
+  | {
+      kind: "chips";
+      chips: readonly { label: string; href: string }[];
+      /** Chips shown before the "+N more" disclosure. Default `DATABASE_TAG_CHIPS_VISIBLE`. */
+      visible?: number;
+    };
+
+export interface LabsMetadataBlockItem {
+  label: string;
+  value: LabsMetadataBlockValue;
+}
+
+interface Props {
+  items: readonly LabsMetadataBlockItem[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+{items.length > 0 && (
+  <dl class:list={["flex flex-col gap-7", className]}>
+    {items.map((item) => (
+      <div class="flex flex-col gap-2">
+        <dt class="text-[13px] leading-4 font-medium text-(--color-cream-700)">
+          {item.label}
+        </dt>
+        <dd>
+          {item.value.kind === "text" && (
+            <span class="text-[17px] leading-6 text-(--color-cream-800)">
+              {item.value.text}
+            </span>
+          )}
+          {item.value.kind === "link" && (
+            <a
+              href={item.value.href}
+              class="text-[17px] leading-6 text-(--color-cream-800) transition-colors duration-200 ease-out hover:text-(--color-sage-800)"
+            >
+              {item.value.text}
+            </a>
+          )}
+          {item.value.kind === "chips" && (() => {
+            const visible = item.value.kind === "chips" ? (item.value.visible ?? DATABASE_TAG_CHIPS_VISIBLE) : 0;
+            const chips = item.value.kind === "chips" ? item.value.chips : [];
+            const shown = chips.slice(0, visible);
+            const rest = chips.slice(visible);
+            return (
+              <div class="flex flex-wrap gap-2">
+                {shown.map((chip) => (
+                  <a href={chip.href} class={TERM_CHIP}>
+                    <svg
+                      viewBox={TERM_CHIP_HEXAGON_VIEWBOX}
+                      class="h-[14px] w-3 fill-(--color-sage-600)"
+                      aria-hidden="true"
+                    >
+                      <path d={TERM_CHIP_HEXAGON_PATH} />
+                    </svg>
+                    {chip.label}
+                  </a>
+                ))}
+                {rest.length > 0 && (
+                  <details class="contents">
+                    <summary
+                      class={`${TERM_CHIP} details-more-summary list-none [&::-webkit-details-marker]:hidden`}
+                    >
+                      <svg
+                        viewBox="0 0 16 16"
+                        class="details-more-chevron h-3 w-3"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M4 6l4 4 4-4" />
+                      </svg>
+                      <span class="details-more-label">+{rest.length} more</span>
+                      <span class="details-fewer-label">Show fewer</span>
+                    </summary>
+                    {rest.map((chip) => (
+                      <a href={chip.href} class={TERM_CHIP}>
+                        <svg
+                          viewBox={TERM_CHIP_HEXAGON_VIEWBOX}
+                          class="h-[14px] w-3 fill-(--color-sage-600)"
+                          aria-hidden="true"
+                        >
+                          <path d={TERM_CHIP_HEXAGON_PATH} />
+                        </svg>
+                        {chip.label}
+                      </a>
+                    ))}
+                  </details>
+                )}
+              </div>
+            );
+          })()}
+        </dd>
+      </div>
+    ))}
+  </dl>
+)}
+
+<style>
+  /* The two labels are both always in the markup (no-JS safe); only one
+   * shows at a time, toggled by the details' own open state. */
+  details:not([open]) .details-fewer-label {
+    display: none;
+  }
+  details[open] .details-more-label {
+    display: none;
+  }
+  details[open] .details-more-chevron {
+    transform: rotate(180deg);
+  }
+</style>

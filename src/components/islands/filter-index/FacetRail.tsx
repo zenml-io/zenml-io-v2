@@ -16,8 +16,9 @@
  *
  * `skin="labs"` (blog cutover) renders a different shape entirely: an
  * accordion rail (`LabsFacetRail` below) — one hairline-separated disclosure
- * row per group (Sort by / Category / Tags), each opening a panel that holds
- * the same option lists. `skin="default"` (every other consumer) renders
+ * row per group (Sort by / Category / Tags, plus one group per extra
+ * single-select facet), each opening a panel that holds the same option
+ * lists. `skin="default"` (every other consumer) renders
  * `DefaultFacetRail`, a copy of the original always-expanded (colours now sage after the purple pass)
  * layout — the two are separate components so the default output can never
  * drift while the accordion evolves.
@@ -121,6 +122,13 @@ export interface FacetRailProps<T> {
   /** "labs" skin only — see `SortFacetState`. Ignored by the default skin,
    * which keeps its own toolbar `<select>` for sort. */
   sort?: SortFacetState;
+  /**
+   * "labs" skin only: additional single-select facets (the MLOps database's
+   * "Content type"), one accordion group each, after the primary single
+   * facet's group. The default skin ignores them — it has no consumer that
+   * declares any.
+   */
+  extraSingles?: SingleFacetState<T>[];
   /** Class-only re-skin for the blog cutover (labsSkin.ts). Default keeps
    * every other consumer's classes verbatim. */
   skin?: "default" | "labs";
@@ -133,6 +141,7 @@ export function FacetRail<T>(props: FacetRailProps<T>) {
         idPrefix={props.idPrefix}
         scope={props.scope}
         single={props.single}
+        extraSingles={props.extraSingles}
         multi={props.multi}
         sort={props.sort}
       />
@@ -304,12 +313,14 @@ function LabsFacetRail<T>({
   idPrefix,
   scope,
   single,
+  extraSingles,
   multi,
   sort,
 }: {
   idPrefix: string;
   scope: "desktop" | "mobile";
   single?: SingleFacetState<T>;
+  extraSingles?: SingleFacetState<T>[];
   multi?: MultiFacetState<T>;
   sort?: SortFacetState;
 }) {
@@ -451,6 +462,15 @@ function LabsFacetRail<T>({
         </div>
       )}
 
+      {extraSingles?.map((facet) => (
+        <LabsExtraSingleGroup
+          key={facet.config.urlParam}
+          idPrefix={idPrefix}
+          scope={scope}
+          facet={facet}
+        />
+      ))}
+
       {multi && (
         <div class={LABS_ACCORDION_GROUP}>
           <button
@@ -587,6 +607,81 @@ function LabsFacetRail<T>({
           </section>
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * "labs" skin only: one accordion group for an extra single-select facet.
+ * Its own component so each group owns its open/closed state (a group is
+ * collapsed by default and shows the selected value's name while closed) —
+ * the same shape the primary single facet's group has, minus that group's
+ * "open on desktop" exception, since these sit below it.
+ */
+function LabsExtraSingleGroup<T>({
+  idPrefix,
+  scope,
+  facet,
+}: {
+  idPrefix: string;
+  scope: "desktop" | "mobile";
+  facet: SingleFacetState<T>;
+}) {
+  const panelId = `${idPrefix}-facet-${facet.config.urlParam}-panel-${scope}`;
+  const [open, setOpen] = useState(() => !!facet.selected);
+
+  const selectedName = facet.config.options.find(
+    (opt) => opt.slug === facet.selected,
+  )?.name;
+
+  return (
+    <div class={LABS_ACCORDION_GROUP}>
+      <button
+        type="button"
+        aria-expanded={open}
+        id={`${panelId}-trigger`}
+        aria-controls={panelId}
+        onClick={() => setOpen((wasOpen) => !wasOpen)}
+        class={`${LABS_ACCORDION_TRIGGER} cursor-pointer ${FOCUS_RING}`}
+      >
+        <span class={LABS_ACCORDION_TRIGGER_LABEL}>{facet.config.label}</span>
+        {!open && selectedName && (
+          <span class={LABS_ACCORDION_TRIGGER_VALUE}>{selectedName}</span>
+        )}
+        <ChevronIcon class="h-4 w-4 text-(--color-cream-700)" open={open} />
+      </button>
+      <section
+        id={panelId}
+        aria-labelledby={`${panelId}-trigger`}
+        class={LABS_ACCORDION_PANEL}
+        hidden={!open}
+      >
+        {open && (
+          <ul class="flex flex-col gap-px" onKeyDown={handleFacetListKeyDown}>
+            {facet.config.options.map((opt) => {
+              const count = facet.counts.get(opt.slug) || 0;
+              const isSelected = facet.selected === opt.slug;
+              const isDisabled = count === 0 && !isSelected;
+              return (
+                <li key={opt.slug}>
+                  <button
+                    type="button"
+                    onClick={() => facet.onSelect(opt.slug)}
+                    aria-pressed={isSelected}
+                    disabled={isDisabled}
+                    class={`${labsFacetRowClass({ selected: isSelected, hasCount: count > 0 })} cursor-pointer disabled:cursor-default ${FOCUS_RING}`}
+                  >
+                    <span class="truncate">{opt.name}</span>
+                    <span class={LABS_FACET_ROW_COUNT_LANE}>
+                      {formatCount(count)}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
     </div>
   );
 }

@@ -557,7 +557,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     componentPath: "src/components/templates/TermHubEntryIndex.astro",
     collectionBound: true,
     variantAxes: [
-      "arrangement: cards | items",
+      "arrangement: cards | items | entries",
       "member count",
       "cross-link block",
       "dual collection",
@@ -567,12 +567,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 24,
     notes:
-      'Two arrangements per section, never both: cards (live parity — the entry card grid every llmops-tags/mlops-tags/industry-tags term route renders today) and items (data-display.stacked-list rows). items has one live caller now: /tags/[slug] (blog cutover, D2d), on skin="labs" — StackedList\'s tokenised row with the excerpt/sibling-chip/author-year additions; skin/paginate/pageSize/id forward straight through to StackedList. A section without a heading renders no <h2> (single-collection page); the industry pages pass two headed sections (dual collection).',
+      'Exactly one arrangement per section: cards (the pre-cutover parity grid — no live route sets it any more, kept for /styleguide), items (data-display.stacked-list rows, /tags/[slug], skin="labs" — StackedList\'s tokenised row with the excerpt/sibling-chip/author-year additions), or entries (labs.entry-row rows, #256 — /llmops-tags/[slug], /mlops-tags/[slug] and /industry-tags/[slug], always skin="labs", with an optional per-section seeAll link). skin/paginate/pageSize/id forward straight through to the items section\'s StackedList and to the entries section\'s row list. On skin="labs", crossLinks render as a sibling-chip strip AFTER the sections instead of the default skin\'s badge blocks above them. A section without a heading renders no <h2> (single-collection page); the industry pages pass two headed sections (dual collection).',
     contentShape: {
       minItems: 0,
       maxItems: 200,
       overflow:
-        "The grid/list grows with the term's matching entries; a zero-entry term no longer builds a page, but the component still collapses to its empty state at 0. /tags/[slug] server-renders every matching post (SEO) and paginates 12/page client-side via HubPagination — a busy tag can carry well over 100.",
+        "The grid/list grows with the term's matching entries; a zero-entry term no longer builds a page, but the component still collapses to its empty state at 0. /tags/[slug] server-renders every matching post (SEO) and paginates 12/page client-side via HubPagination — a busy tag can carry well over 100. The entries arrangement's live callers instead server-render only the first DATABASE_PAGE_SIZE rows and hand later pages to HubEntryPagination, which fetches the JSON index — a busy tag can carry well into the thousands.",
     },
     demoProps: {
       emptyHeading: "No LLMOps entries with this tag yet.",
@@ -1412,6 +1412,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 0,
     notes:
       "Blog cutover card (the approved blog design, DESIGN.md): chrome-less, 16:9 media, hover border+zoom+title-colour. Preact twin at BlogCard.tsx (used by the `/blog` index's DataFilterIndex island — an Astro component can't render inside a Preact island) sharing every class string with the Astro twin via blogCardStyles.ts, so the two markups can't drift. Only slot that never collapses is the title; the whole card is one link target for it, category/author stay separate links. Live consumers: the `/blog` index grid and term-hub.editorial's grid (category/author hubs, blog cutover D2d) — each item there also carries data-page + hidden markers for HubPagination. (RelatedRail's own `blog-card` item kind still renders the pre-cutover `src/components/blog/BlogCard.astro`, a separate component — untouched by this cutover.)",
+    stage: false,
     demoProps: {
       href: "/blog/agents-are-not-microservices",
       title: "Your Agents Are Not Microservices",
@@ -1431,9 +1432,183 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: true,
     paperPage: 0,
     notes:
-      "Closing band shown at the bottom of every blog route (the index, a post via BlogLayout.astro, and the category/tag/author hub pages): dark sage panel, two-column (ZenML signup pill left, newsletter signup card right), one column below lg. Mounts GrainBackdrop client:idle, same treatment as labs.close-cta — deliberately not the page's always-on ambient island, so it hydrates once the browser is idle instead of competing with a hero shader for first paint. The newsletter form's markup is custom (a pill-shaped input row with an icon-only submit button) but shares the Brevo contract with BrevoNewsletterForm.astro: BREVO_MAIN_CONFIG, the same hidden honeypot/locale inputs and data-brevo-* attributes, and the same submit behaviour via the shared scripts/brevoNewsletterForm.ts (extracted from BrevoNewsletterForm.astro's former inline script so the two markups can't fork the fetch logic). Copy lives in src/lib/blog-cta.ts.",
+      "Closing band shown at the bottom of every blog route (the index, a post via BlogLayout.astro, and the category/tag/author hub pages): dark sage panel, two-column (ZenML signup pill left, newsletter signup card right), one column below lg. Mounts GrainBackdrop client:idle, same treatment as labs.close-cta — deliberately not the page's always-on ambient island, so it hydrates once the browser is idle instead of competing with a hero shader for first paint. The newsletter form's markup is custom (a pill-shaped input row with an icon-only submit button) but shares the Brevo contract with BrevoNewsletterForm.astro: a BrevoFormConfig, the same hidden honeypot/locale inputs and data-brevo-* attributes, and the same submit behaviour via the shared scripts/brevoNewsletterForm.ts (extracted from BrevoNewsletterForm.astro's former inline script so the two markups can't fork the fetch logic). Copy and list are both props defaulting to the blog's own (BLOG_CTA in src/lib/blog-cta.ts + BREVO_MAIN_CONFIG), so a non-blog surface reuses the band rather than copying the markup — the research databases pass DATABASE_CTA + BREVO_LLMOPS_CONFIG.",
     stage: false,
     demoProps: {},
+  },
+  {
+    id: "labs.sticky-breadcrumb",
+    kind: "primitive",
+    componentPath: "src/components/labs/StickyBreadcrumb.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "DESIGN.md \"Sticky breadcrumb row\": the crumb trail that opens a long-form article body, in the article lane so it lines up with the body text's left edge, and sticky from lg up only (below that it is a plain static row — a small screen has no room for a floating crumb). It carries the page's own ground and no rule, so what stays on screen reads as the crumb holding its place rather than a second chrome layer; the desktop-only eased fade beneath it spans the prose column only, never the TOC rail. Offsets move together: the floating nav's bottom edge + 8px = top-[108px], the row is 44px tall, +8px gap = 160px, which is the TOC's sticky offset and the `.prose [id]` scroll-margin-top in global.css at lg. Reads --article-lane / --prose-column from blogLaneStyle() on an ancestor; the consuming layout owns the bounding wrapper that decides how far the sticky region reaches. Consumers: BlogLayout.astro and the database entry layout.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.article-body",
+    kind: "template",
+    componentPath: "src/components/labs/LabsArticleBody.astro",
+    variantAxes: ["TOC present"],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 0,
+    notes:
+      "The long-form body row of a Labs-shell article: the prose column plus its sticky table-of-contents rail (collapsing to a `<details>` above the copy below xl). The TOC is H2-only and appears only from three H2s up — fewer and a contents list is noise, not navigation — and that threshold lives here, not in each layout. `proseClass` appends to `prose` (BlogLayout passes prose-zoomable, which opts blog images into the lightbox). Ends in mb-24 rather than pb-24 so its border box, and with it the consuming layout's sticky-region wrapper, ends where the article does. Carries no reveal `<style>`: the body is deliberately never a reveal-child, because prose must not depend on an observer firing. An optional named `lead` slot renders above the mobile TOC and the prose, inside the article's own column — the database entry layout passes its summary box and metadata record through it, a blog post passes nothing. Consumers: BlogLayout.astro and the database entry layout.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.related-band",
+    kind: "template",
+    componentPath: "src/components/labs/LabsRelatedBand.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      'The closing related-content band of a Labs-shell article: one heading over related-content.rail\'s hex-corner cards (gridVariant gap-lg-3col) on a full-width sage-tint band, which is the coloured ground those white cards need to read. Collapses entirely at zero items, so the consuming layout passes items rather than guarding the section itself. Stays sage on every consumer, Kitaru posts included — no orange in this block. It carries its own copy of the house reveal rules because Astro scopes component styles and the consuming layout\'s `<style>` no longer reaches this markup. Consumers: BlogLayout.astro ("Continue reading") and the database entry layout ("More like this").',
+    stage: false,
+    demoProps: {},
+    collectionBound: true,
+    contentShape: {
+      minItems: 1,
+      maxItems: 3,
+      overflow:
+        "the rail is a three-column grid; a fourth item wraps to a second row",
+    },
+  },
+  {
+    id: "labs.metadata-block",
+    kind: "template",
+    componentPath: "src/components/labs/LabsMetadataBlock.astro",
+    variantAxes: ["value kind (text / link / chips)"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 23,
+    notes:
+      "The labelled record rows on a database entry (Industry, Technologies/MLOps topics): a `<dl>` of label/value pairs in one of three value shapes. Chips clamp to `visible` (default DATABASE_TAG_CHIPS_VISIBLE, roughly two rows) before folding the rest into a native `<details>` — its `<summary>` is itself a TERM_CHIP pill toggling '+N more' / 'Show fewer' via a scoped `<style>`, no script, so every chip stays reachable without JS; the `<details>` is `display: contents` so the overflow chips flow into the same wrap row as the visible ones. Empty `items` renders nothing. Sole consumer: src/layouts/DatabaseEntryLayout.astro.",
+    stage: false,
+    demoProps: {
+      items: [
+        {
+          label: "Industry",
+          value: {
+            kind: "link",
+            text: "Finance",
+            href: "/industry-tags/finance",
+          },
+        },
+        {
+          label: "Technologies · 12",
+          value: {
+            kind: "chips",
+            visible: 9,
+            chips: [
+              { label: "RAG", href: "/llmops-tags/rag" },
+              {
+                label: "Prompt engineering",
+                href: "/llmops-tags/prompt-engineering",
+              },
+              {
+                label: "Vector databases",
+                href: "/llmops-tags/vector-databases",
+              },
+              { label: "Fine-tuning", href: "/llmops-tags/fine-tuning" },
+              { label: "Evaluation", href: "/llmops-tags/evaluation" },
+              { label: "Monitoring", href: "/llmops-tags/monitoring" },
+              { label: "Guardrails", href: "/llmops-tags/guardrails" },
+              {
+                label: "Multi-agent systems",
+                href: "/llmops-tags/multi-agent-systems",
+              },
+              { label: "Caching", href: "/llmops-tags/caching" },
+              { label: "Chromadb", href: "/llmops-tags/chromadb" },
+              { label: "Pinecone", href: "/llmops-tags/pinecone" },
+              { label: "Observability", href: "/llmops-tags/observability" },
+            ],
+          },
+        },
+      ],
+    },
+  },
+  {
+    id: "labs.entry-row",
+    kind: "template",
+    componentPath: "src/components/labs/EntryRow.astro",
+    variantAxes: ["summary present", "chips present", "chips as filters"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 29,
+    notes:
+      "One research-database entry as a row: title (the chevron appears on hover, centered on the row's right edge), the record's meta line (company · platform · content type · year · industry, each token taking its middot with it when the entry has no such field), a two-line summary and the first DATABASE_ROW_CHIPS_VISIBLE tag chips plus a '+N' pill. The listing counterpart of labs.blog-card, and built on the same twin pattern: EntryRow.astro for server-rendered listings, EntryRow.tsx for the filter islands (an Astro component can't render inside a Preact island), both importing every class string and the row's data shape from entryRowStyles.ts so they can't drift. Server-side the chips are links to the tag hubs and the industry reads as text; inside the island both are filter controls (aria-pressed buttons) that sit above the stretched title link. Rows are separated by a --color-border hairline; hover and focus-within paint a light --color-sage-50 wash across the row, reveal a chevron centered on the row's right edge, and draw a 1px underline under the title that sweeps each wrapped line left to right in reading order (DESIGN.md \"Entry rows, not cards\"). Consumers: the /llmops-database and /mlops-database islands, and the tag and industry hubs.",
+    stage: false,
+    demoProps: {
+      href: "/llmops-database/building-a-systematic-snap-benefits-llm-evaluation-framework",
+      title: "Building a Systematic SNAP Benefits LLM Evaluation Framework",
+      meta: {
+        company: "Propel",
+        year: 2025,
+        industry: { label: "Government" },
+      },
+      summary:
+        "Propel is developing a comprehensive evaluation framework for testing how well different LLMs handle SNAP (food stamps) benefit-related queries. The project aims to assess model accuracy, safety, and appropriateness in handling complex policy questions while balancing strict accuracy with practical user needs.",
+      chips: [
+        {
+          label: "regulatory_compliance",
+          href: "/llmops-tags/regulatory-compliance",
+        },
+        {
+          label: "question_answering",
+          href: "/llmops-tags/question-answering",
+        },
+        {
+          label: "high_stakes_application",
+          href: "/llmops-tags/high-stakes-application",
+        },
+      ],
+      chipOverflowCount: 11,
+    },
+  },
+  {
+    id: "labs.term-chip-index",
+    kind: "template",
+    componentPath: "src/components/labs/TermChipIndex.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      'The "all terms" chip listing shared by /llmops-tags, /mlops-tags and /industry-tags (#256): a wrapping list of TERM_CHIP hexagon pills, each carrying its entry count. The caller sorts (count desc, name A-Z on ties, the same order filterUsedTerms\' callers already use) — this component only renders the given order.',
+    collectionBound: true,
+    contentShape: {
+      minItems: 0,
+      maxItems: 400,
+      overflow: "A flex-wrap chip list; grows with the taxonomy, no cap.",
+    },
+    stage: false,
+    demoProps: {
+      ariaLabel: "All LLMOps technologies",
+      terms: [
+        { name: "RAG", href: "/llmops-tags/rag", count: 412 },
+        {
+          name: "Prompt engineering",
+          href: "/llmops-tags/prompt-engineering",
+          count: 388,
+        },
+        { name: "Evaluation", href: "/llmops-tags/evaluation", count: 201 },
+      ],
+    },
   },
 ];
 

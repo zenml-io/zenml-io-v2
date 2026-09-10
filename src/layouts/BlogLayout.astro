@@ -1,19 +1,17 @@
 ---
-import BlogTOC from "../components/BlogTOC.astro";
 import Image from "../components/Image.astro";
 import BlogNewsletterCta from "../components/labs/BlogNewsletterCta.astro";
 import {
   BLOG_CARD_PRODUCT_PILL,
   BLOG_CARD_PRODUCT_PILL_LINK,
 } from "../components/labs/blogCardStyles";
+import LabsArticleBody from "../components/labs/LabsArticleBody.astro";
 import LabsBand from "../components/labs/LabsBand.astro";
+import LabsRelatedBand from "../components/labs/LabsRelatedBand.astro";
+import StickyBreadcrumb from "../components/labs/StickyBreadcrumb.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
-import Breadcrumb, {
-  type BreadcrumbItem,
-} from "../components/system/Breadcrumb.astro";
-import RelatedRail, {
-  type RelatedRailItem,
-} from "../components/templates/RelatedRail.astro";
+import type { BreadcrumbItem } from "../components/system/Breadcrumb.astro";
+import type { RelatedRailItem } from "../components/templates/RelatedRail.astro";
 import type { Surface } from "../lib/analytics";
 import type { BlogProduct } from "../lib/blog";
 import { blogLaneStyle } from "../lib/blogLayout";
@@ -174,10 +172,6 @@ const relatedRailItems: RelatedRailItem[] = relatedPosts.map((rp) => {
   };
 });
 
-// H2-only TOC — consistent with BlogTOC.astro desktop sidebar
-const tocHeadings = headings.filter((h) => h.depth === 2);
-const showTOC = tocHeadings.length >= 3;
-
 const formattedDate = new Date(date).toLocaleDateString("en-US", {
   year: "numeric",
   month: "long",
@@ -327,56 +321,11 @@ const articleJsonLd = {
       padding did. */}
   <div>
 
-  {/* Breadcrumb — the first element of the post body, in the article lane so
-      it lines up with the body text's left edge. Sticky from `lg` up only
-      (mobile renders it as a plain static row — no room to spare for a
-      floating crumb on a small screen, and see the wrapper comment above for
-      why the sticky region is bounded to the article). No bar treatment: it
-      carries the page's own ground (white — the Labs shell leaves `body` on
-      the browser default rather than painting `--background`) and no rule,
-      so what stays on screen reads as the crumb trail holding its place,
-      not a second chrome layer. The fade under it (desktop only, hidden
-      below `lg`) is the same masking idea as LabsBand's bottom fade — body
-      text dissolves into the page ground as it passes beneath instead of
-      being cut by a hard edge — and it spans the prose column only, so the
-      table-of-contents rail beside it (sticky in its own right) is never
-      washed by it. `top` is the nav's bottom edge + 8px, flush, no sliver of
-      page between them: 108px, from LabsNavigation's `lg:top-8` + 76px;
-      `z-30` sits under the nav's `z-50`; the row is 44px tall and
-      `[&>nav]:mb-0` drops the chevron variant's own bottom margin here
-      rather than adding a prop to the shared primitive. Offsets that move
-      together on desktop: nav 108px → this row adds 44px + 8px gap = 160px,
-      which is the TOC's sticky offset and every heading's
-      `scroll-margin-top` (`.prose [id]` in global.css, `lg` breakpoint).
-      Below `lg` there's no crumb row to clear, so that same rule's base
-      value only accounts for the nav. Server-rendered visible, never a
-      `reveal-child`. */}
-  <div class="lg:sticky lg:top-[108px] lg:z-30">
-    <div class="bg-white">
-      <div class="mx-auto max-w-content px-gutter">
-        <div class="relative mx-auto max-w-(--article-lane)">
-          <div class="flex h-11 items-center [&>nav]:mb-0">
-            <Breadcrumb
-              items={breadcrumbItems}
-              separator="chevron"
-              pagefindIgnore
-            />
-          </div>
-          {/* The fade masks the body copy passing underneath, so it spans the
-              prose column only — the table-of-contents rail beside it is
-              sticky in its own right and must never be washed by it. Eased
-              (four stops) rather than a plain two-stop ramp so it dissolves
-              instead of reading as a hard-edged band; desktop-only since the
-              crumb above it isn't sticky below `lg`. */}
-          <div
-            class="pointer-events-none absolute top-full left-0 hidden h-10 w-full max-w-(--prose-column) bg-[linear-gradient(to_bottom,white_0%,rgb(255_255_255/0.85)_30%,rgb(255_255_255/0.45)_65%,transparent_100%)] lg:block"
-            aria-hidden="true"
-          >
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  {/* Breadcrumb — the first element of the post body; the row itself, its
+      sticky offsets and its desktop fade live in StickyBreadcrumb.astro
+      (shared with the database entry layout). See the wrapper comment above
+      for why the sticky region is bounded to the article. */}
+  <StickyBreadcrumb items={breadcrumbItems} pagefindIgnore />
 
   {/* Featured image — 16:9, opt-in via frontmatter `featuredImage` (the
       cover `mainImage` is never rendered here). It follows the breadcrumb
@@ -399,68 +348,14 @@ const articleJsonLd = {
     </section>
   )}
 
-  {/* Article body: prose column + sticky TOC rail. Always follows a
-      content block now (the breadcrumb, or the featured image) rather than
-      the band directly, so it always takes the usual pt-6 rhythm. `mb-24`
-      (not `pb-24`) so this section's border box — and with it the sticky
-      wrapper's content box above — ends where the article does; see the
-      wrapper comment above. */}
-  <section class="scroll-reveal-section pt-6 mb-24">
-    <div class="mx-auto max-w-content px-gutter">
-      <div class="mx-auto flex max-w-(--article-lane) flex-col items-start gap-10 xl:flex-row xl:gap-(--prose-toc-gap)">
-        <article class="w-full min-w-0 xl:w-(--prose-column) xl:flex-none">
-          {/* Mobile inline TOC (below xl, collapsible) */}
-          {showTOC && (
-            <details class="mb-8 rounded-[6px] border border-(--color-border) bg-(--color-card) xl:hidden" id="mobile-toc">
-              <summary class="cursor-pointer px-5 py-3 text-[12px] font-medium text-(--color-sage-700)">
-                On this page
-              </summary>
-              <nav class="px-5 pb-4" aria-label="Table of contents">
-                <ul class="flex flex-col gap-1">
-                  {tocHeadings.map((heading) => (
-                    <li>
-                      <a
-                        href={`#${heading.slug}`}
-                        class="block py-1 text-[14px] leading-[22px] text-(--color-cream-700) hover:text-(--color-sage-800)"
-                        data-mobile-toc-link
-                      >
-                        {heading.text}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </details>
-          )}
-
-          {/* Post body — `prose-zoomable` opts blog images into the lightbox
-              (see src/scripts/image-lightbox.ts); other `.prose` content
-              site-wide stays non-zoomable */}
-          <div class="prose prose-zoomable">
-            <slot />
-          </div>
-        </article>
-
-        {/* Desktop TOC sidebar. `xl:self-stretch` overrides the row's
-            `items-start` for this one child: without it the aside's box is
-            only as tall as the TOC itself, leaving the sticky child no room
-            to move within its own containing block, so it never clamps to
-            top-[160px] — it just scrolls away with the page. Stretching the
-            aside to the article's height gives the sticky div a box worth
-            sticking inside. 160px clears the floating nav plus the sticky
-            breadcrumb row above it — this value and the `.prose [id]`
-            scroll-margin-top in global.css (`lg` breakpoint) must stay
-            equal and move together. */}
-        {showTOC && (
-          <aside class="hidden w-(--toc-rail) flex-none xl:block xl:self-stretch">
-            <div class="sticky top-[160px]">
-              <BlogTOC headings={tocHeadings} />
-            </div>
-          </aside>
-        )}
-      </div>
-    </div>
-  </section>
+  {/* Article body: prose column + sticky TOC rail, in
+      LabsArticleBody.astro (shared with the database entry layout). It ends
+      in `mb-24` rather than `pb-24` so its border box — and with it this
+      wrapper's content box — ends where the article does; see the wrapper
+      comment above. */}
+  <LabsArticleBody headings={headings} proseClass="prose-zoomable">
+    <slot />
+  </LabsArticleBody>
 
   </div>
 
@@ -559,19 +454,9 @@ const articleJsonLd = {
     </section>
   )}
 
-  {/* Continue reading — white hex-corner cards on a full-width sage-tint band (the cards need a coloured ground to read). Ruling: this block stays sage on every post, Kitaru included — no orange here. */}
-  {relatedRailItems.length > 0 && (
-    <section class="scroll-reveal-section mt-24 bg-(--color-sage-100) pt-20 pb-24">
-      <div class="mx-auto flex max-w-content flex-col gap-10 px-gutter">
-        <div class="reveal-child">
-          <h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-800)">Continue reading</h2>
-        </div>
-        <div class="reveal-child stagger-1">
-          <RelatedRail items={relatedRailItems} gridVariant="gap-lg-3col" />
-        </div>
-      </div>
-    </section>
-  )}
+  {/* Continue reading — the shared sage related band (LabsRelatedBand.astro);
+      it collapses when there is nothing to show. */}
+  <LabsRelatedBand heading="Continue reading" items={relatedRailItems} />
 
   <BlogNewsletterCta />
   </div>
@@ -610,50 +495,17 @@ const articleJsonLd = {
 <script>
   import { initCodeCopy } from "../scripts/code-copy";
   import { initImageLightbox } from "../scripts/image-lightbox";
+  import { initScrollReveal } from "../scripts/labs-scroll-reveal";
 
-  // Close mobile TOC when a link is clicked
-  function initMobileTOC() {
-    const details = document.getElementById('mobile-toc');
-    if (!details) return;
-
-    details.querySelectorAll('a[data-mobile-toc-link]').forEach((link) => {
-      link.addEventListener('click', () => {
-        (details as HTMLDetailsElement).open = false;
-      });
-    });
-  }
-
-  // Scroll-triggered reveal (one-shot IntersectionObserver, house pattern)
-  function initScrollReveal() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    document.querySelectorAll<HTMLElement>('.scroll-reveal-section').forEach((section) => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            section.classList.add('in-view');
-            observer.disconnect();
-          }
-        },
-        // Any visible pixel reveals: a tall section must never wait for a
-        // fraction of itself to scroll in.
-        { threshold: 0, rootMargin: '0px 0px -10% 0px' }
-      );
-      // Arm only once the observer exists, so a script failure leaves the
-      // server-rendered page visible.
-      section.classList.add('reveal-armed');
-      observer.observe(section);
-    });
-  }
-
+  // The mobile-TOC close handler lives in LabsArticleBody.astro, which wires
+  // itself — nothing to do for it here.
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-      initMobileTOC();
       initImageLightbox();
       initCodeCopy();
       initScrollReveal();
     });
   } else {
-    initMobileTOC();
     initImageLightbox();
     initCodeCopy();
     initScrollReveal();

@@ -102,22 +102,7 @@ const tagOptions = (await getTagCounts(mainFeedPosts))
 </style>
 
 <script>
-  function initScrollReveal() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    document.querySelectorAll<HTMLElement>('.scroll-reveal-section').forEach((section) => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            section.classList.add('in-view');
-            observer.disconnect();
-          }
-        },
-        { threshold: 0, rootMargin: '0px 0px -10% 0px' }
-      );
-      section.classList.add('reveal-armed');
-      observer.observe(section);
-    });
-  }
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initScrollReveal);
