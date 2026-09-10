@@ -37,6 +37,11 @@ tool the visitor navigated to a page specifically to use, not a tracking script.
 loads unconditionally when the calendar section renders (CalEmbed) or after a
 successful form submission (DemoRequestForm).
 
+`CalEmbed` also reveals Cal.com's already-inserted iframe on its load event, with an
+eight-second safety fallback if Cal.com's ready message is lost. This is limited to
+the iframe's visibility; the configured calendar URL, namespace, and booking-event
+listeners remain Cal.com-owned.
+
 **No-JS behavior:** both paths render a fallback link ("Can't see the calendar? Open
 directly →") pointing at `${CAL_ORIGIN}/${calLink}` so the calendar is still reachable
 without JavaScript. DemoRequestForm's underlying `<form>` also degrades to a plain

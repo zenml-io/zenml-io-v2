@@ -1,13 +1,11 @@
-<section class="bg-(--color-cream-50) py-space-xl md:py-space-xxl">
+<section class="bg-(--color-cream-50) pt-space-xs pb-space-xl md:pb-space-xxl">
 <div class="mx-auto max-w-content px-gutter">
-<div class="mx-auto w-full max-w-content rounded-[12px] border border-border bg-card p-space-sm sm:p-space-md">
-<div id="my-cal-inline-success-calendar" class="min-h-[700px] w-full overflow-auto">
+<div id="my-cal-inline-success-calendar" class="h-[700px] w-full overflow-auto">
 </div>
-<p class="mt-4 text-center font-sans text-sm text-muted-foreground">Can't see the calendar?
+<p class="mt-space-sm text-center font-sans text-sm text-muted-foreground">Can't see the calendar?
 <a href="https://app.cal.com/zenml/discovery-call" target="_blank" rel="noopener noreferrer" class="text-(--color-sage-800) underline decoration-(--color-sage-500) underline-offset-4 transition-colors hover:text-foreground">Open directly →
 </a>
 </p>
-</div>
 <script>(function(){const namespace = "discovery-call";
 const elementId = "my-cal-inline-success-calendar";
 const calLink = "zenml/discovery-call";
@@ -52,6 +50,42 @@ const CAL_ORIGIN = "https://app.cal.com";
     calLink: calLink,
   });
   Cal.ns[namespace]("ui", { hideEventTypeDetails: false, layout: layout });
+
+  // Cal.com initially hides its iframe until it receives its ready message.
+  // If that message is delayed or lost, preserve the working embedded calendar
+  // rather than leaving the page blank. This touches only the iframe's own
+  // visibility; its URL, namespace, and booking event listeners stay intact.
+  (function () {
+    const target = document.getElementById(elementId);
+    if (!target) return;
+
+    const reveal = () => {
+      const frame = target.querySelector("iframe.cal-embed");
+      if (!frame) return false;
+
+      frame.addEventListener(
+        "load",
+        () => {
+          frame.style.visibility = "visible";
+        },
+        { once: true },
+      );
+
+      return true;
+    };
+
+    if (!reveal()) {
+      const observer = new MutationObserver(() => {
+        if (reveal()) observer.disconnect();
+      });
+      observer.observe(target, { childList: true, subtree: true });
+    }
+
+    window.setTimeout(() => {
+      const frame = target.querySelector("iframe.cal-embed");
+      if (frame) frame.style.visibility = "visible";
+    }, 8000);
+  })();
 
   // Plausible tracking listeners (Webflow parity)
   Cal.ns[namespace]("on", {

@@ -71,6 +71,42 @@ const layout = config.layout ?? "month_view";
   });
   Cal.ns[namespace]("ui", { hideEventTypeDetails: false, layout: layout });
 
+  // Cal.com initially hides its iframe until it receives its ready message.
+  // If that message is delayed or lost, preserve the working embedded calendar
+  // rather than leaving the page blank. This touches only the iframe's own
+  // visibility; its URL, namespace, and booking event listeners stay intact.
+  (function () {
+    const target = document.getElementById(elementId);
+    if (!target) return;
+
+    const reveal = () => {
+      const frame = target.querySelector("iframe.cal-embed");
+      if (!frame) return false;
+
+      frame.addEventListener(
+        "load",
+        () => {
+          frame.style.visibility = "visible";
+        },
+        { once: true },
+      );
+
+      return true;
+    };
+
+    if (!reveal()) {
+      const observer = new MutationObserver(() => {
+        if (reveal()) observer.disconnect();
+      });
+      observer.observe(target, { childList: true, subtree: true });
+    }
+
+    window.setTimeout(() => {
+      const frame = target.querySelector("iframe.cal-embed");
+      if (frame) frame.style.visibility = "visible";
+    }, 8000);
+  })();
+
   // Plausible tracking listeners (Webflow parity)
   Cal.ns[namespace]("on", {
     action: "bookingSuccessful",
