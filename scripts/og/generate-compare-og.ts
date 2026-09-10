@@ -5,7 +5,7 @@
  * and decides the template palette and the R2 prefix.
  *
  * Pipeline: gray-matter (parse frontmatter) → satori (JSX → SVG)
- *           → @resvg/resvg-js (SVG → PNG @ 2x) → sharp (PNG → JPEG)
+ *           → @resvg/resvg-js (SVG → PNG @ 2400px) → sharp (PNG → JPEG)
  *           → optional R2 upload at a deterministic key.
  *
  * Dry-run by default (writes JPEGs to .cache/og/). Pass --write to upload
@@ -16,20 +16,26 @@
  *   pnpm og:compare --slug=kitaru-vs-pydantic-ai
  */
 
-import { readFile, writeFile, mkdir, readdir } from "node:fs/promises";
-import { existsSync } from "node:fs";
 import { execFile } from "node:child_process";
-import { promisify } from "node:util";
-import { resolve, join, dirname } from "node:path";
+import { existsSync } from "node:fs";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-
+import { promisify } from "node:util";
+import { Resvg } from "@resvg/resvg-js";
 import matter from "gray-matter";
 import satori from "satori";
-import { Resvg } from "@resvg/resvg-js";
 import sharp from "sharp";
-
-import { CompareOg, compareOgBackground } from "./template.js";
-import { COMPARE_OG_PREFIX, type CompareOgBrand } from "../../src/lib/constants.js";
+import {
+  COMPARE_OG_PREFIX,
+  type CompareOgBrand,
+} from "../../src/lib/constants.js";
+import {
+  CompareOg,
+  compareOgBackground,
+  OG_HEIGHT,
+  OG_WIDTH,
+} from "./template.js";
 
 const execFileP = promisify(execFile);
 
@@ -43,13 +49,13 @@ const BRANDS = Object.keys(COLLECTION_DIRS) as CompareOgBrand[];
 const CACHE_DIR = join(REPO_ROOT, ".cache/og");
 
 const FONT_SPECS = [
-  { family: "Plus Jakarta Sans", dir: "plus-jakarta-sans", weight: 500 },
-  { family: "Plus Jakarta Sans", dir: "plus-jakarta-sans", weight: 800 },
-  { family: "JetBrains Mono", dir: "jetbrains-mono", weight: 500 },
+  { family: "Borna", file: "borna-medium.woff", weight: 500 },
+  { family: "Rethink Sans", file: "rethink-sans-regular.woff", weight: 400 },
 ] as const;
 
 interface Frontmatter {
   competitor?: string;
+  competitorLogo?: string;
   cardSubtitle?: string;
 }
 
@@ -62,11 +68,11 @@ interface CompareEntry {
 export async function loadFonts() {
   return Promise.all(
     FONT_SPECS.map(async (spec) => {
-      const path = join(
-        REPO_ROOT,
-        `node_modules/@fontsource/${spec.dir}/files/${spec.dir}-latin-${spec.weight}-normal.woff`,
-      );
-      if (!existsSync(path)) throw new Error(`Missing font file: ${path}. Did pnpm install run?`);
+      const path = join(REPO_ROOT, `public/fonts/${spec.file}`);
+      if (!existsSync(path))
+        throw new Error(
+          `Missing font file: ${path}. The OG renderer uses WOFF siblings of the site fonts.`,
+        );
       return {
         name: spec.family,
         data: await readFile(path),
@@ -77,11 +83,15 @@ export async function loadFonts() {
   );
 }
 
-export async function loadEntries(filterSlugs: string[] | null): Promise<CompareEntry[]> {
+export async function loadEntries(
+  filterSlugs: string[] | null,
+): Promise<CompareEntry[]> {
   const perBrand = await Promise.all(
     BRANDS.map(async (brand) => {
       const dir = COLLECTION_DIRS[brand];
-      const files = (await readdir(dir)).filter((file) => file.endsWith(".mdx"));
+      const files = (await readdir(dir)).filter((file) =>
+        file.endsWith(".mdx"),
+      );
       return Promise.all(
         files
           .map((file) => ({ file, slug: file.replace(/\.mdx$/, "") }))
@@ -89,7 +99,8 @@ export async function loadEntries(filterSlugs: string[] | null): Promise<Compare
           .map(async ({ file, slug }) => ({
             slug,
             brand,
-            frontmatter: matter(await readFile(join(dir, file), "utf8")).data as Frontmatter,
+            frontmatter: matter(await readFile(join(dir, file), "utf8"))
+              .data as Frontmatter,
           })),
       );
     }),
@@ -99,22 +110,54 @@ export async function loadEntries(filterSlugs: string[] | null): Promise<Compare
 
 type Font = Awaited<ReturnType<typeof loadFonts>>[number];
 
-export async function renderJpeg(entry: CompareEntry, fonts: Font[]): Promise<Buffer> {
+export async function renderJpeg(
+  entry: CompareEntry,
+  fonts: Font[],
+): Promise<Buffer> {
   const { competitor, cardSubtitle } = entry.frontmatter;
-  if (!competitor) throw new Error(`${entry.slug}: missing frontmatter.competitor`);
-  if (!cardSubtitle) throw new Error(`${entry.slug}: missing frontmatter.cardSubtitle`);
+  if (!competitor)
+    throw new Error(`${entry.slug}: missing frontmatter.competitor`);
+  if (!cardSubtitle)
+    throw new Error(`${entry.slug}: missing frontmatter.cardSubtitle`);
 
-  const svg = await satori(CompareOg({ competitor, subtitle: cardSubtitle, brand: entry.brand }), {
-    width: 1200,
-    height: 627,
-    fonts,
-  });
+  const logoPath = entry.frontmatter.competitorLogo;
+  if (!logoPath)
+    throw new Error(`${entry.slug}: missing frontmatter.competitorLogo`);
+  let logo: Buffer;
+  if (logoPath.startsWith("https://")) {
+    const response = await fetch(logoPath);
+    if (!response.ok)
+      throw new Error(
+        `Cannot load competitor logo: ${response.status} ${logoPath}`,
+      );
+    logo = Buffer.from(await response.arrayBuffer());
+  } else {
+    const path = resolve(REPO_ROOT, "public", logoPath.replace(/^\//, ""));
+    if (!path.startsWith(`${join(REPO_ROOT, "public")}/`))
+      throw new Error("Logo must be a public asset");
+    logo = await readFile(path);
+  }
+  // Preserve the existing mark's colours and aspect ratio in a square logo slot.
+  const logoPng = await sharp(logo)
+    .resize(480, 480, { fit: "contain", background: "#00000000" })
+    .png()
+    .toBuffer();
+  const competitorLogo = `data:image/png;base64,${logoPng.toString("base64")}`;
+  const svg = await satori(
+    CompareOg({
+      competitor,
+      subtitle: cardSubtitle,
+      competitorLogo,
+      brand: entry.brand,
+    }),
+    {
+      width: OG_WIDTH,
+      height: OG_HEIGHT,
+      fonts,
+    },
+  );
 
-  // Render at native 2x (2400×1254). For text-only content, downscaling via
-  // lanczos softens edges; outputting at 2x keeps text pin-sharp on retina
-  // previewers and lets OG consumers downscale themselves. OG spec is
-  // 1.91:1 aspect ratio with a 1200×627 minimum — 2400×1254 hits the same
-  // ratio at higher density and is well within consumer limits.
+  // Keep the approved 16:9 composition, rendered at 2400px for social previews.
   const png = new Resvg(svg, {
     fitTo: { mode: "width", value: 2400 },
     background: compareOgBackground(entry.brand),
@@ -137,13 +180,24 @@ export async function renderJpeg(entry: CompareEntry, fonts: Font[]): Promise<Bu
     .toBuffer();
 }
 
-async function uploadToR2(brand: CompareOgBrand, filePaths: string[]): Promise<void> {
+async function uploadToR2(
+  brand: CompareOgBrand,
+  filePaths: string[],
+): Promise<void> {
   // --literal-key writes to `${prefix}/${filename}` (no sha8 segment) so the
   // URL is `compareOgUrl(brand, slug)` — deterministic, overwrites in place
   // on regen. One `uv run` per brand: the uploader takes many files at once.
   await execFileP(
     "uv",
-    ["run", "scripts/r2-upload.py", ...filePaths, "--prefix", COMPARE_OG_PREFIX[brand], "--literal-key", "--overwrite"],
+    [
+      "run",
+      "scripts/r2-upload.py",
+      ...filePaths,
+      "--prefix",
+      COMPARE_OG_PREFIX[brand],
+      "--literal-key",
+      "--overwrite",
+    ],
     { cwd: REPO_ROOT },
   );
 }
@@ -157,14 +211,18 @@ async function main(): Promise<void> {
 
   await mkdir(CACHE_DIR, { recursive: true });
 
-  const entries = await loadEntries(filterSlugs.length > 0 ? filterSlugs : null);
+  const entries = await loadEntries(
+    filterSlugs.length > 0 ? filterSlugs : null,
+  );
   if (entries.length === 0) {
     console.error("No entries matched.");
     process.exit(1);
   }
 
   const fonts = await loadFonts();
-  console.log(`Rendering ${entries.length} card(s) — mode: ${write ? "WRITE" : "DRY-RUN"}`);
+  console.log(
+    `Rendering ${entries.length} card(s) — mode: ${write ? "WRITE" : "DRY-RUN"}`,
+  );
 
   const rendered: Array<{ brand: CompareOgBrand; outPath: string }> = [];
   for (const entry of entries) {
@@ -172,15 +230,21 @@ async function main(): Promise<void> {
     const jpeg = await renderJpeg(entry, fonts);
     await writeFile(outPath, jpeg);
     rendered.push({ brand: entry.brand, outPath });
-    console.log(`  ✓ [${entry.brand}] ${entry.slug}.jpg (${(jpeg.byteLength / 1024).toFixed(1)} KB)`);
+    console.log(
+      `  ✓ [${entry.brand}] ${entry.slug}.jpg (${(jpeg.byteLength / 1024).toFixed(1)} KB)`,
+    );
   }
 
   if (write) {
     for (const brand of BRANDS) {
-      const paths = rendered.filter((r) => r.brand === brand).map((r) => r.outPath);
+      const paths = rendered
+        .filter((r) => r.brand === brand)
+        .map((r) => r.outPath);
       if (paths.length === 0) continue;
       await uploadToR2(brand, paths);
-      console.log(`  ↳ uploaded ${paths.length} ${brand} card(s) to ${COMPARE_OG_PREFIX[brand]}/`);
+      console.log(
+        `  ↳ uploaded ${paths.length} ${brand} card(s) to ${COMPARE_OG_PREFIX[brand]}/`,
+      );
     }
   }
 
@@ -191,7 +255,10 @@ async function main(): Promise<void> {
 
 // Only run when invoked directly (`pnpm og:compare`); `check-og-golden.ts`
 // imports the pipeline above without rendering every card.
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
   main().catch((err) => {
     console.error(err);
     process.exit(1);

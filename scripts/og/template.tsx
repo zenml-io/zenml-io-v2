@@ -1,245 +1,215 @@
-/**
- * Satori JSX template for the MDX compare OG cards, in two brand variants.
- *
- * Kitaru: specs come from Paper artboard "D - Custom" in the "Kitaru Landing
- * Page" file, Open Graph page. Palette + type ladder must stay in sync with
- * that artboard — Paper is the source of truth (per project memory).
- *
- * ZenML: the same layout with ZenML's purple (`--color-zenml-500` /
- * the wordmark's #431D93) in place of the orange, and the ZenML wordmark
- * (`public/images/zenml-logo.svg`, passed in as a data URI) in the eyebrow.
- */
-
+/** One-competitor cards with a title panel and paired product/logo tiles. */
 import { readFileSync } from "node:fs";
 import type { ReactElement } from "react";
 import type { CompareOgBrand } from "../../src/lib/constants.js";
 
 export type { CompareOgBrand };
+export const OG_WIDTH = 1920;
+export const OG_HEIGHT = 1080;
 
 export interface CompareOgProps {
-  /** Competitor display name, e.g. "Temporal". */
   competitor: string;
-  /** Body copy (cardSubtitle from frontmatter). */
   subtitle: string;
-  /** Which product the card is for; selects palette, wordmark and headline. */
+  competitorLogo: string;
   brand: CompareOgBrand;
 }
 
-/** The site's ZenML wordmark, inlined once so the template owns its assets. */
-const ZENML_LOGO_DATA_URI = `data:image/svg+xml;base64,${readFileSync(
-  new URL("../../public/images/zenml-logo.svg", import.meta.url),
-).toString("base64")}`;
-
-interface Palette {
-  ground: string;
-  ink: string;
-  wordmark: string;
-  muted: string;
-  eyebrow: string;
-  accent: string;
-  rule: string;
+// Satori needs resolved colours rather than CSS custom properties.
+const tokens = readFileSync(
+  new URL("../../src/styles/global.css", import.meta.url),
+  "utf8",
+);
+function token(name: string): string {
+  const value = tokens.match(
+    new RegExp(`--color-${name}:\\s*(#[\\da-fA-F]+);`),
+  )?.[1];
+  if (!value) throw new Error(`Missing OG colour token: ${name}`);
+  return value;
 }
-
-const PALETTES: Record<CompareOgBrand, Palette> = {
-  kitaru: {
-    ground: "#FAF8F4", // cream
-    ink: "#0C0603", // headline
-    wordmark: "#362F26", // Kitaru wordmark letters
-    muted: "#534B45", // subtitle
-    eyebrow: "#787069", // eyebrow + secondary marks
-    accent: "#F17829", // brand orange used by the ring glyph
-    rule: "#DC692E", // deeper orange used by the bottom rule
-  },
+const palettes = {
   zenml: {
-    ground: "#F8F6FC", // cool off-white, sibling of --color-zenml-25
-    ink: "#0B0620",
-    wordmark: "#431D93", // the wordmark's own purple
-    muted: "#4B4560",
-    eyebrow: "#6E6884",
-    accent: "#7A3EF4", // --color-zenml-500
-    rule: "#431D93",
+    ground: token("sage-100"),
+    panel: token("sage-50"),
+    border: token("sage-300"),
+    accent: token("sage-600"),
+    ink: token("sage-900"),
+  },
+  kitaru: {
+    ground: token("orange-100"),
+    panel: token("cream-50"),
+    border: token("orange-300"),
+    accent: token("orange-600"),
+    ink: token("cream-900"),
   },
 };
-
-/** Ground colour per brand, exported so the rasteriser can match it. */
-export function compareOgBackground(brand: CompareOgBrand): string {
-  return PALETTES[brand].ground;
+function artwork(filename: string): string {
+  return `data:image/svg+xml;base64,${readFileSync(new URL(`../../public/images/og/${filename}.svg`, import.meta.url)).toString("base64")}`;
+}
+const assets = {
+  zenml: {
+    lockup: artwork("zenml-lockup"),
+    hero: artwork("zenml-hexagon"),
+    backdrop: artwork("zenml-backdrop"),
+  },
+  kitaru: {
+    lockup: artwork("kitaru-lockup"),
+    hero: artwork("kitaru-hexagon"),
+    backdrop: artwork("kitaru-backdrop"),
+  },
+};
+const tileSvg = readFileSync(
+  new URL("../../public/images/og/competitor-hexagon.svg", import.meta.url),
+  "utf8",
+);
+function competitorTile(brand: CompareOgBrand): string {
+  const palette = palettes[brand];
+  return `data:image/svg+xml;base64,${Buffer.from(tileSvg.replace("#FAF8F4", palette.panel).replace("#9AAC82", brand === "zenml" ? token("sage-500") : palette.border)).toString("base64")}`;
 }
 
-export function CompareOg({ competitor, subtitle, brand }: CompareOgProps): ReactElement {
-  const PALETTE = PALETTES[brand];
-  const productName = brand === "zenml" ? "ZenML" : "Kitaru";
+export function compareOgBackground(brand: CompareOgBrand): string {
+  return palettes[brand].ground;
+}
+
+export function CompareOg({
+  competitor,
+  subtitle,
+  competitorLogo,
+  brand,
+}: CompareOgProps): ReactElement {
+  const palette = palettes[brand];
+  const art = assets[brand];
+  const product = brand === "zenml" ? "ZenML" : "Kitaru";
+  const title = `${product} vs ${competitor}`;
+  const backdropWidth = brand === "zenml" ? 1173.83 : 1285.83;
+  const backdropHeight = brand === "zenml" ? 1348 : 1460;
   return (
     <div
       style={{
-        width: 1200,
-        height: 627,
-        backgroundColor: PALETTE.ground,
-        borderBottom: `10px solid ${PALETTE.rule}`,
-        boxSizing: "border-box",
+        width: OG_WIDTH,
+        height: OG_HEIGHT,
+        backgroundColor: palette.ground,
         display: "flex",
-        flexDirection: "column",
-        // Generous bottom padding (vs. 72px top) keeps the subtitle off the
-        // orange rule. Replaces an earlier empty <div> spacer + space-between
-        // layout that was load-bearing in an inscrutable way.
-        padding: "72px 96px 144px",
-        fontFamily: "Plus Jakarta Sans",
-        gap: 48,
+        position: "relative",
+        overflow: "hidden",
+        fontFamily: "Borna",
+        fontWeight: 500,
       }}
     >
-      {/* Eyebrow row: Kitaru mark left, "/ COMPARE" right */}
+      <img
+        src={art.backdrop}
+        width={backdropWidth}
+        height={backdropHeight}
+        alt=""
+        style={{
+          position: "absolute",
+          left: (OG_WIDTH - backdropWidth) / 2,
+          top: (OG_HEIGHT - backdropHeight) / 2,
+        }}
+      />
       <div
         style={{
+          position: "absolute",
+          top: 80,
+          left: 80,
+          width: 1760,
+          height: 250,
+          border: `3px solid ${palette.border}`,
+          borderRadius: 28,
+          backgroundColor: palette.panel,
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          width: "100%",
+          padding: "36px 60px",
+          gap: 48,
         }}
       >
-        {brand === "zenml" ? <ZenmlMark /> : <KitaruMark />}
         <div
           style={{
-            fontFamily: "JetBrains Mono",
-            fontSize: 16,
-            fontWeight: 500,
-            color: PALETTE.eyebrow,
-            letterSpacing: "0.14em",
-            textTransform: "uppercase",
+            display: "flex",
+            flexDirection: "column",
+            width: 1220,
+            gap: 10,
           }}
         >
-          / compare
+          <div
+            style={{
+              fontSize: title.length > 32 ? 60 : 72,
+              letterSpacing: "-0.02em",
+              lineHeight: 1.12,
+              color: palette.ink,
+            }}
+          >
+            {title}
+          </div>
+          <div
+            style={{
+              fontSize: 38,
+              letterSpacing: "-0.02em",
+              lineHeight: 1.2,
+              color: palette.accent,
+            }}
+          >
+            {subtitle}
+          </div>
         </div>
+        <img
+          src={art.lockup}
+          width={brand === "zenml" ? 315 : 304}
+          height={68}
+          alt={product}
+        />
       </div>
-
-      {/* Headline: "Kitaru vs" / "<Competitor>" stacked. marginTop: auto pins
-          the headline + subtitle block to the bottom, against the orange rule.
-          Replaces an earlier empty <div> spacer + space-between layout. */}
       <div
         style={{
+          position: "absolute",
+          top: 422,
+          left: 84,
+          width: 1752,
           display: "flex",
-          flexDirection: "column",
-          marginTop: "auto",
-          paddingTop: 32,
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 20,
         }}
       >
+        <img src={art.hero} width={480} height={513} alt={product} />
         <div
           style={{
-            fontFamily: "Plus Jakarta Sans",
-            fontSize: 104,
-            fontWeight: 800,
-            lineHeight: "100px",
-            letterSpacing: "-0.04em",
-            color: PALETTE.ink,
+            width: 90,
+            height: 90,
+            borderRadius: 45,
+            border: `1.5px solid ${palette.accent}`,
+            backgroundColor: palette.panel,
+            color: palette.accent,
+            fontFamily: "Rethink Sans",
+            fontSize: 30,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginRight: 4,
           }}
         >
-          {`${productName} vs`}
+          VS
         </div>
         <div
           style={{
-            fontFamily: "Plus Jakarta Sans",
-            fontSize: 104,
-            fontWeight: 800,
-            lineHeight: "110px",
-            letterSpacing: "-0.04em",
-            color: PALETTE.ink,
+            width: 420,
+            height: 452.102,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            position: "relative",
           }}
         >
-          {competitor}
+          <img
+            src={competitorTile(brand)}
+            width={420}
+            height={452.102}
+            alt=""
+            style={{ position: "absolute", left: 0, top: 0 }}
+          />
+          <img src={competitorLogo} width={260} height={260} alt={competitor} />
         </div>
       </div>
-
-      {/* Subtitle: cardSubtitle */}
-      <div
-        style={{
-          fontFamily: "Plus Jakarta Sans",
-          fontSize: 36,
-          fontWeight: 500,
-          lineHeight: "40px",
-          letterSpacing: "-0.01em",
-          color: PALETTE.muted,
-          // Width here is the line-break target. Padded inner width is 1008px,
-          // but Satori's text measurement is slightly tighter than the browser
-          // — the extra room lets two-line subtitles break the way they do in
-          // the Paper artboard. Subtitles never visually reach this width.
-          width: 1100,
-          display: "flex",
-        }}
-      >
-        {subtitle}
-      </div>
-    </div>
-  );
-}
-
-/**
- * Kitaru wordmark — letters in warm dark ink, ring glyph in brand orange.
- * Geometry copied from src/components/brand/KitaruLogo.astro.
- */
-function KitaruMark(): ReactElement {
-  const PALETTE = PALETTES.kitaru;
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        height: 44,
-      }}
-    >
-      <svg
-        width={276}
-        height={44}
-        viewBox="0 0 513 82"
-        xmlns="http://www.w3.org/2000/svg"
-        style={{ display: "block" }}
-      >
-        {/* "Kitaru" letterforms */}
-        <path
-          d="M513 80.7128H502.015L501.207 69.2507C498.73 73.2837 495.391 76.4145 491.191 78.6433C486.991 80.7659 482.091 81.8272 476.491 81.8272C470.244 81.8272 464.805 80.5536 460.174 78.0065C455.543 75.4594 451.936 71.6386 449.351 66.5444C446.874 61.4501 445.635 55.0292 445.635 47.2816V1.11469H457.59V46.008C457.59 54.1801 459.367 60.3888 462.921 64.634C466.582 68.7731 471.806 70.8427 478.591 70.8427C485.483 70.8427 490.922 68.667 494.907 64.3156C498.999 59.8581 501.046 53.1719 501.046 44.2569V1.11469H513V80.7128Z"
-          fill={PALETTE.wordmark}
-        />
-        <path
-          d="M388.712 1.1147H399.859L400.505 12.736C402.659 9.87049 405.244 7.42948 408.259 5.41299C411.383 3.39651 414.775 2.01681 418.437 1.27389C422.206 0.424845 426.191 0.371779 430.391 1.1147V13.0544C425.868 12.2054 421.775 12.2054 418.114 13.0544C414.56 13.9035 411.49 15.4954 408.906 17.8303C406.321 20.1652 404.328 23.1369 402.928 26.7453C401.528 30.2476 400.828 34.3337 400.828 39.0034V80.7128H388.712V1.1147Z"
-          fill={PALETTE.wordmark}
-        />
-        <path
-          d="M353.928 80.7125L352.959 66.3849C350.697 71.2669 347.359 75.0876 342.943 77.847C338.527 80.5003 332.927 81.8269 326.142 81.8269C320.327 81.8269 315.372 80.9248 311.28 79.1206C307.187 77.3163 304.01 74.7692 301.749 71.4791C299.595 68.083 298.518 64.103 298.518 59.5394C298.518 52.8532 301.049 47.3874 306.11 43.1422C311.172 38.7908 318.496 36.1376 328.081 35.1824L352.959 32.476V26.1082C352.959 21.6507 351.29 18.0953 347.951 15.442C344.612 12.6826 340.089 11.3029 334.381 11.3029C328.781 11.3029 324.096 12.5765 320.327 15.1237C316.665 17.6708 314.134 21.3323 312.734 26.1082L301.749 22.2875C303.903 15.2829 307.834 9.81711 313.542 5.89026C319.357 1.96342 326.411 0 334.704 0C344.289 0 351.72 2.44101 356.997 7.32303C362.382 12.0989 365.075 18.626 365.075 26.9042V80.7125H353.928ZM352.959 42.6646L327.919 45.5302C322.534 46.1669 318.442 47.6528 315.642 49.9876C312.842 52.2164 311.441 55.1881 311.441 58.9026C311.441 62.6172 312.788 65.5889 315.48 67.8176C318.28 70.0464 322.265 71.1608 327.435 71.1608C333.358 71.1608 338.204 69.9933 341.974 67.6584C345.743 65.3236 348.489 62.1927 350.213 58.2659C352.043 54.2329 352.959 49.8815 352.959 45.2117V42.6646Z"
-          fill={PALETTE.wordmark}
-        />
-        <path
-          d="M251.742 1.11469L263.858 1.11464L292.344 1.11469V12.2584H263.858V55.0822C263.858 59.9643 264.881 63.5196 266.927 65.7484C269.081 67.9771 271.774 69.3038 275.005 69.7283C278.343 70.1528 281.79 70.1528 285.344 69.7283V80.076C281.143 81.0312 276.997 81.2966 272.905 80.872C268.92 80.4475 265.312 79.2801 262.081 77.3697C258.958 75.3532 256.427 72.5408 254.488 68.9323C252.657 65.3239 251.742 60.7072 251.742 55.0822V12.2584H231.626V1.11469H251.742Z"
-          fill={PALETTE.wordmark}
-        />
-        <path
-          d="M207.345 1.11469H219.3V80.7128H207.345V1.11469Z"
-          fill={PALETTE.wordmark}
-        />
-        <path
-          d="M133.116 1.91067H121V81.5088H133.116V1.91067Z"
-          fill={PALETTE.wordmark}
-        />
-        <path
-          d="M172.45 1.91067L140.625 36.4563V46.804L172.45 81.5088H189.735L151.449 41.7097L189.574 1.91067H172.45Z"
-          fill={PALETTE.wordmark}
-        />
-        {/* Ring glyph in brand orange */}
-        <path
-          d="M40.5 0.426758C18.1325 0.426758 0 18.5592 0 40.9268C0 63.2943 18.1325 81.4268 40.5 81.4268C62.8675 81.4268 81 63.2943 81 40.9268C81 18.5592 62.8675 0.426758 40.5 0.426758ZM40.5 11.998C56.4767 11.998 69.4285 24.9501 69.4287 40.9268C69.4287 56.9036 56.4768 69.8555 40.5 69.8555C24.5234 69.8552 11.5723 56.9034 11.5723 40.9268C11.5724 24.9503 24.5235 11.9983 40.5 11.998Z"
-          fill={PALETTE.accent}
-        />
-      </svg>
-    </div>
-  );
-}
-
-/**
- * ZenML wordmark — `public/images/zenml-logo.svg` (800×196), rendered through
- * an <img> so the SVG paths are not duplicated here. Height matches the
- * Kitaru mark's 44px row.
- */
-function ZenmlMark(): ReactElement {
-  return (
-    <div style={{ display: "flex", alignItems: "center", height: 44 }}>
-      <img src={ZENML_LOGO_DATA_URI} width={180} height={44} style={{ display: "block" }} />
     </div>
   );
 }
