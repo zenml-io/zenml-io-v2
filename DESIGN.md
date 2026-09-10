@@ -189,6 +189,11 @@ Additional rules:
   a post. The "Continue reading" block is exempt: its band, halos and
   hexagons stay sage on every post.
 
+- **FAQ rows**: a FAQ is a stack of native `<details>` rows on the prose column width, separated by `--color-border` hairlines — question in Rethink Sans sentence case, a chevron that turns when the row opens, the answer in body type. One heading per FAQ; eyebrows and sub-decks are not rendered. There is one implementation, `labs.faq`; the pricing page mounts one per workspace panel.
+- **The highlighted plan card**: the recommended pricing plan is marked by a 1px `--color-sage-400` border and a sentence-case "Recommended" pill on the card's top edge — never a shadow, never a coloured strip. On the Kitaru workspace panel the same card turns `--color-orange-300` with the pill on `--color-orange-600`; that pill and border are the panel's one bounded orange moment, every pill on the panel stays ink.
+- **Hub rows with marks**: a comparison-hub row is an entry row (see "Entry rows, not cards") with a 24px competitor mark leading the title; the mark is `object-contain` and takes no border or tile. The Kitaru block of the hub sits under `data-product="kitaru"` so the row's accent variables carry the orange ramp; there is no orange band behind it.
+- **Comparison tables on the Labs shell**: every pricing or feature comparison renders through `data-display.spec-table`'s labs skin — 20px radius frame, hairline rows, sticky first column, sage check / cream cross icons, `LabsButton` pills in the action row, section headers in sentence case on the light sage tint. No alternating row tint; the hairline carries the rhythm. (These four rules date from the product one-offs cutover, 2026-09.)
+
 ## Responsive contract
 
 Every section is one of two width modes — there is no third option:

@@ -1,13 +1,19 @@
 ---
-import ContactForm from "../components/islands/ContactForm.tsx";
-import SectionIntro from "../components/system/SectionIntro.astro";
 /**
- * Startups and Academics — application form for ZenML Pro program.
+ * Startups and Academics — application form for ZenML Pro program, in the
+ * ZenML Labs shell (`app="labs"`, `surface="unified"`). Rebuilt for the
+ * product one-offs cutover (#317): the short shader band (eyebrow / h1 /
+ * deck), the untouched `ContactForm` island, and the shared closing band.
  *
  * Route: /startups-and-academics
  */
+import ContactForm from "../components/islands/ContactForm.tsx";
+import LabsBand from "../components/labs/LabsBand.astro";
+import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { BAND_CONTENT_GAP } from "../lib/blogLayout";
 import { TURNSTILE_SITE_KEY } from "../lib/formConstants";
+import { LABS_CLOSE } from "../lib/labs-home";
 import {
   STARTUPS_FIELDS,
   STARTUPS_HERO,
@@ -21,23 +27,25 @@ import {
   ogTitle={STARTUPS_SEO.ogTitle}
   ogDescription={STARTUPS_SEO.ogDescription}
   surface="unified"
+  app="labs"
 >
-  <main>
-    <section class="bg-white py-16 sm:py-24">
-      <div class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8">
-        <SectionIntro
-          align="center"
-          eyebrow={STARTUPS_HERO.eyebrow}
-          heading={STARTUPS_HERO.headline}
-          headingLevel={1}
-          description={STARTUPS_HERO.deck}
-          classOverrides={{
-            description: "text-lg text-gray-600",
-            descriptionSpacing: "mt-3",
-            wrap: "mb-8 text-center",
-          }}
-        />
+  <LabsBand size="short">
+    <div class="flex flex-col gap-4">
+      <p class="font-sans text-[15px] leading-5 text-(--color-cream-700)">
+        {STARTUPS_HERO.eyebrow}
+      </p>
+      <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+        {STARTUPS_HERO.headline}
+      </h1>
+      <p class="max-w-[720px] font-sans text-[18px] leading-7 text-(--color-cream-700)">
+        {STARTUPS_HERO.deck}
+      </p>
+    </div>
+  </LabsBand>
 
+  <section class:list={["pb-24 md:pb-32", BAND_CONTENT_GAP]}>
+    <div class="mx-auto max-w-content px-gutter">
+      <div class="mx-auto max-w-[640px]">
         <ContactForm
           client:load
           formType="startup-academic"
@@ -49,6 +57,8 @@ import {
           turnstileSiteKey={TURNSTILE_SITE_KEY}
         />
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
+
+  <LabsCloseCta content={{ ...LABS_CLOSE, cta: { ...LABS_CLOSE.cta, analytics: "Startups-Close-Signup" } }} />
 </BaseLayout>
