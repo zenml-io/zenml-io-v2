@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:13.788Z"
 integrationType: "data-validator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4700d856/66d868f3b9571c825b718744_whylogs.png"
+  url: "https://assets.zenml.io/content/integrations/logos/whylogs.svg"
+  alt: "WhyLabs whylogs logo"
 shortDescription: "Maintain data quality and detect drift with WhyLabs whylogs in ZenML pipelines"
 docsUrl: "https://sdkdocs.zenml.io/0.65.0/integration_code_docs/integrations-whylogs/"
 mainImage:

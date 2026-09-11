@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-09-04T09:01:28.361Z"
 integrationType: "artifact-store"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b0286146/66d8216682bc260f3dcaa1b5_s3.png"
+  url: "https://assets.zenml.io/content/integrations/logos/amazon-s3.svg"
+  alt: "Amazon S3 logo"
 shortDescription: "Unleash Scalable Cloud Storage with Amazon S3 and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/artifact-stores/s3"
 mainImage:

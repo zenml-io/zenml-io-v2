@@ -12,7 +12,8 @@ webflow:
   createdOn: "2025-08-26T12:45:35.925Z"
 integrationType: "agents"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b4aa5fd6/68adac7ae1cc8ab4416a746d_haystack.png"
+  url: "https://assets.zenml.io/content/integrations/logos/haystack.svg"
+  alt: "Haystack logo"
 shortDescription: "Integrate your Haystack RAG pipelines with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/haystack"

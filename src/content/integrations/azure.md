@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:16.079Z"
 integrationType: "cloud-infrastructure"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0b467777/6527ce2024e7fba068681cae_azure.svg"
+  url: "https://assets.zenml.io/content/integrations/logos/azure.svg"
+  alt: "Microsoft Azure logo"
 shortDescription: "Seamlessly Orchestrate ML Pipelines on Azure with ZenML"
 docsUrl: "https://docs.zenml.io/how-to/popular-integrations/azure-guide"
 mainImage:

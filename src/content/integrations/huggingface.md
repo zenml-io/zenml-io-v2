@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-09-23T12:08:22.432Z"
 integrationType: "modeling"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4a909b44/66f15a47230d547766de53f9_66d86795fb809547dcae5c99_huggingface-p-130x130q80.png"
+  url: "https://assets.zenml.io/content/integrations/logos/huggingface.svg"
+  alt: "Hugging Face logo"
 shortDescription: "Accelerate NLP and Computer Vision with Hugging Face Models in ZenML Pipelines"
 docsUrl: "https://docs.zenml.io/how-to/pipeline-development/training-with-gpus/accelerate-distributed-training"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/llm_finetuning"

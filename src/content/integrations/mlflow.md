@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:13.001Z"
 integrationType: "experiment-tracker"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7e447a6a/66d8692949cd3b8bf2f4dcc6_mlflow.png"
+  url: "https://assets.zenml.io/content/integrations/logos/mlflow.svg"
+  alt: "MLflow logo"
 shortDescription: "Seamlessly track and visualize ZenML pipeline experiments with MLflow"
 docsUrl: "https://docs.zenml.io/stack-components/experiment-trackers/mlflow"
 githubUrl: "https://github.com/zenml-io/zenml/blob/main/tests/integration/examples/mlflow/run.py"

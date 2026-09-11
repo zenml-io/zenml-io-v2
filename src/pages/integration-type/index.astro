@@ -1,14 +1,24 @@
 ---
 /**
- * Integration types index page.
+ * Integration types index page, on the ZenML Labs shell (integrations
+ * cutover #318): a breadcrumb + short band, every integration type as a
+ * hexagon chip carrying its integration count (`labs.term-chip-index`),
+ * sorted by popularity — the same shape as `/llmops-tags`.
  *
- * Lists all integration types with integration counts, sorted by popularity.
  * Route: /integration-type
  */
 import { getCollection } from "astro:content";
-import PageHeader from "../../components/templates/PageHeader.astro";
-import { TAXONOMY_INDEX_INTRO } from "../../components/templates/pageHeaderPresets";
+import LabsBand from "../../components/labs/LabsBand.astro";
+import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
+import TermChipIndex from "../../components/labs/TermChipIndex.astro";
+import Breadcrumb from "../../components/system/Breadcrumb.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
+import {
+  INTEGRATION_TYPES_HERO,
+  integrationsClose,
+  integrationTypesDeck,
+} from "../../lib/integrations";
 import { filterUsedTerms } from "../../lib/relatedIndex";
 
 const allIntegrations = await getCollection(
@@ -38,30 +48,79 @@ const types = filterUsedTerms(merged).sort(
   title="Integration Types - ZenML"
   description="Browse all integration categories in the ZenML MLOps landscape."
   surface="ml"
+  app="labs"
+  product="zenml"
 >
-  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-    <PageHeader
-      class="mb-10"
-      heading="Integration Types"
-      description={`${types.length} ${types.length === 1 ? "type" : "types"} of integration`}
-      backLinks={[{ href: "/integrations", label: "Back to all integrations" }]}
-      classOverrides={TAXONOMY_INDEX_INTRO}
-    />
+  <LabsBand size="short">
+    <div class="scroll-reveal-section">
+      <div class="flex flex-col gap-4">
+        <Breadcrumb
+          class="reveal-child"
+          items={[
+            { label: "Integrations", href: "/integrations" },
+            { label: "Types" },
+          ]}
+          separator="chevron"
+        />
+        <div class="reveal-child stagger-1">
+          <p class="font-label text-[13px] leading-4 tracking-[0.05em] uppercase text-(--color-cream-700)">
+            {INTEGRATION_TYPES_HERO.eyebrow}
+          </p>
+          <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+            {INTEGRATION_TYPES_HERO.headline}
+          </h1>
+          <p class="mt-space-sm max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
+            {integrationTypesDeck(types.length)}
+          </p>
+        </div>
+      </div>
+    </div>
+  </LabsBand>
 
-    <nav aria-label="All integration types">
-      <ul class="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
-        {types.map((t) => (
-          <li>
-            <a
-              href={`/integration-type/${t.slug}`}
-              class="flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50"
-            >
-              <span class="font-medium text-gray-900">{t.name}</span>
-              <span class="text-xs tabular-nums text-gray-400">{t.count}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  </div>
+  <section class:list={["scroll-reveal-section pb-24", BAND_CONTENT_GAP]}>
+    <div class="reveal-child stagger-1 mx-auto max-w-content px-gutter">
+      <TermChipIndex
+        ariaLabel="All integration types"
+        terms={types.map((t) => ({
+          name: t.name,
+          href: `/integration-type/${t.slug}`,
+          count: t.count,
+        }))}
+      />
+    </div>
+  </section>
+
+  <LabsCloseCta content={integrationsClose("IntegrationTypes-Close-Book-Demo")} />
 </BaseLayout>
+
+<style>
+  /* House scroll-reveal pattern (reference: llmops-tags/index.astro). */
+  .reveal-child {
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-1 { transition-delay: 60ms; }
+
+  .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-child,
+    .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initScrollReveal);
+  } else {
+    initScrollReveal();
+  }
+</script>
