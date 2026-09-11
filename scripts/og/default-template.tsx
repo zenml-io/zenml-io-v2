@@ -181,7 +181,7 @@ export const LOGOS: Record<OgBrand, Logo> = {
   kitaru: { file: "kitaru-lockup.svg", width: 304, height: 68, rendered: 68 },
 };
 
-const BRANDS: Record<OgBrand, { palette: Palette; mesh: string }> = {
+const BRANDS: Record<OgBrand, { palette: Palette; mesh: string; hero: string }> = {
   labs: { palette: sage, mesh: "bg-mesh-zenml.jpg", hero: "bg-hero-zenml.jpg" },
   zenml: { palette: sage, mesh: "bg-mesh-zenml.jpg", hero: "bg-hero-zenml.jpg" },
   kitaru: { palette: kitaru, mesh: "bg-mesh-kitaru.jpg", hero: "bg-hero-zenml.jpg" },
