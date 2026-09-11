@@ -216,6 +216,7 @@ Important rules:
 - New native LLMOps entries may use a `notion:` provenance block instead of `webflow:`
 - Existing migrated entries still use `webflow:` provenance
 - RSS date derivation for LLMOps entries is source-agnostic (`webflow` first, then `notion`)
+- New entries missing a default OG card: run `pnpm og:default --family=llmops --missing` then commit `src/data/og-cards.json`
 - After new LLMOps entries land, validate with:
   - `pnpm validate:llmops`
   - `pnpm check`

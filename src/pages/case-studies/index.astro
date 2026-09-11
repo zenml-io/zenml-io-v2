@@ -6,6 +6,7 @@ import LabsPageHeader from "../../components/labs/LabsPageHeader.astro";
 import LabsStoryCard from "../../components/labs/LabsStoryCard.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 import {
   CASE_STUDIES_HUB_BANNER,
   CASE_STUDIES_HUB_HERO,
@@ -31,6 +32,7 @@ const heroSecondary = {
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "case-studies") ? defaultOgUrl("pages", "case-studies") : undefined}
   title="ZenML Case Studies - Real Teams, Real AI Workflows"
   description="See how teams are using ZenML to unify their AI platforms—from batch evaluations to real-time serving, traditional ML to GenAI workflows."
   ogTitle="ZenML Case Studies"

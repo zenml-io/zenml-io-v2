@@ -38,6 +38,7 @@ import {
   PAGE_SIZE,
 } from "../../lib/blog";
 import { BAND_CONTENT_GAP, blogLaneStyle } from "../../lib/blogLayout";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 const PAGE_DESCRIPTION =
   "Insights on MLOps, LLMOps, and production machine learning from the ZenML team.";
@@ -55,7 +56,13 @@ const tagOptions = (await getTagCounts(mainFeedPosts))
   .sort((a, b) => a.name.localeCompare(b.name));
 ---
 
-<BaseLayout title="Blog - ZenML" description={PAGE_DESCRIPTION} surface="ml" app="labs">
+<BaseLayout
+  ogImage={hasDefaultOgCard("pages", "blog") ? defaultOgUrl("pages", "blog") : undefined}
+  title="Blog - ZenML"
+  description={PAGE_DESCRIPTION}
+  surface="ml"
+  app="labs"
+>
   <div style={blogLaneStyle()}>
     {/* Opening band: the homepage hero's shader and type at ~40% of the viewport (short band), dek = the page's own SEO description. The exact post count lives in the results header below. */}
     <LabsHero band="short" content={{ headline: "Blog", deck: PAGE_DESCRIPTION }} />

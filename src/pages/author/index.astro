@@ -13,6 +13,7 @@ import StackedList from "../../components/templates/StackedList.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getAllPublishedPosts } from "../../lib/blog";
 import { filterUsedTerms } from "../../lib/relatedIndex";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 const allPosts = await getAllPublishedPosts();
 const countMap = new Map<string, number>();
@@ -36,6 +37,7 @@ const authors = filterUsedTerms(merged).sort(
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "author") ? defaultOgUrl("pages", "author") : undefined}
   title="Blog Authors - ZenML"
   description="Browse all authors who have written for the ZenML blog."
   surface="ml"

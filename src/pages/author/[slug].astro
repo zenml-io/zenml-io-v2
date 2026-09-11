@@ -23,6 +23,7 @@ import {
 } from "../../lib/blog";
 import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
 import { filterUsedTerms } from "../../lib/relatedIndex";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const authors = await getCollection("authors");
@@ -81,6 +82,7 @@ const siblingAuthors = filterUsedTerms(
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "author") ? defaultOgUrl("pages", "author") : undefined}
   title={`${author.data.name} - ZenML Blog`}
   description={author.data.bio || `Blog posts by ${author.data.name} on the ZenML blog.`}
   surface="ml"

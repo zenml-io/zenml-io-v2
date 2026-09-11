@@ -32,6 +32,7 @@ import {
   DATABASES,
 } from "../../lib/databases";
 import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 const copy = DATABASES.mlops;
 
@@ -55,6 +56,7 @@ const GROUP_LABEL = "text-[13px] font-medium text-(--color-cream-700)";
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "mlops-database") ? defaultOgUrl("pages", "mlops-database") : undefined}
   title={copy.seoTitle}
   description={copy.seoDescription(entryCount)}
   surface="ml"

@@ -12,6 +12,7 @@ import LabsBand from "../../components/labs/LabsBand.astro";
 import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 import {
   FEATURES_HUB_CLOSE,
   FEATURES_HUB_HERO,
@@ -20,6 +21,7 @@ import {
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "features") ? defaultOgUrl("pages", "features") : undefined}
   title="ZenML - AI Orchestration Features"
   description="Orchestrate AI workflows with ZenML: end manual deployments and non-reproducible experiments with production-ready pipelines on your own stack."
   ogTitle="ZenML - AI Orchestration Features"

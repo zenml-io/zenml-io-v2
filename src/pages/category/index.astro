@@ -14,6 +14,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import type { TaxonomyCount } from "../../lib/blog";
 import { getAllPublishedPosts, getCategoryCounts } from "../../lib/blog";
 import { filterUsedTerms } from "../../lib/relatedIndex";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 const allPosts = await getAllPublishedPosts();
 const usedCounts = await getCategoryCounts(allPosts);
@@ -33,6 +34,7 @@ const categories = filterUsedTerms(merged).sort(
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "category") ? defaultOgUrl("pages", "category") : undefined}
   title="Blog Categories - ZenML"
   description="Browse all categories used on the ZenML blog."
   surface="ml"

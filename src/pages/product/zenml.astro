@@ -17,6 +17,7 @@ import LabsIntegrationsGrid from "../../components/labs/LabsIntegrationsGrid.ast
 import LabsValueProps from "../../components/labs/LabsValueProps.astro";
 import LogoMarquee from "../../components/labs/LogoMarquee.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 import {
   LABS_PRODUCT_ZENML_SEO,
   ZENML_CLOSE,
@@ -30,6 +31,7 @@ import {
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "product-zenml") ? defaultOgUrl("pages", "product-zenml") : undefined}
   app="labs"
   product="zenml"
   surface={LABS_PRODUCT_ZENML_SEO.surface}

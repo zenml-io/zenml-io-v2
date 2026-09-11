@@ -15,6 +15,7 @@ import {
   getMLOpsRelatedFromIndex,
 } from "../../lib/mlops";
 import { STALE_RAY_SUMMIT_REDIRECTS } from "../../lib/mlopsRaySummitRedirects";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const allEntries = await getAllPublishedMLOpsEntries();
@@ -84,7 +85,11 @@ const relatedItems: RelatedRailItem[] = related.map((r) => ({
 const seoTitle =
   entry.data.seo?.title || `${entry.data.title} - ZenML MLOps Database`;
 const seoDescription = entry.data.seo?.description || entry.data.summary;
-const ogImage = entry.data.seo?.ogImage;
+const ogImage =
+  entry.data.seo?.ogImage ??
+  (hasDefaultOgCard("mlops", entry.data.slug)
+    ? defaultOgUrl("mlops", entry.data.slug)
+    : undefined);
 
 const pagefindMeta: Record<string, string> = {
   slug: entry.data.slug,
