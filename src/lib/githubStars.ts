@@ -12,6 +12,8 @@ export const GITHUB_REPO_URL =
   `https://github.com/${GITHUB_REPO_SLUG}` as const;
 export const GITHUB_REPO_API_URL =
   `https://api.github.com/repos/${GITHUB_REPO_SLUG}` as const;
+export const GITHUB_ORG_URL =
+  `https://github.com/${GITHUB_REPO.owner}` as const;
 
 /**
  * Stable fallback shown whenever live GitHub data is unavailable.

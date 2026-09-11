@@ -110,7 +110,10 @@ under the `personalization` category, loading `https://buttons.github.io/buttons
 Star counts on the site are currently rendered via `src/pages/api/github-stars.ts` (a
 server-side fetch with edge caching), read from `src/lib/githubStars.ts`, and displayed
 as plain text/numbers in `src/components/labs/LabsNavigation.astro` — not via a
-`github-button` widget element.
+`github-button` widget element. The nav's GitHub chip shows a count only on a product
+page (the live ZenML or Kitaru count, matching `product`); on a cross-product page
+(no `product`) it links to the `zenml-io` GitHub organisation instead and renders no
+count.
 The `github-buttons` consent entry stays registered for the `personalization` category
 description ("GitHub star count") even though no page currently renders the widget
 markup the script targets.
