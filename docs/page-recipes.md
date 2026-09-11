@@ -539,13 +539,11 @@ was kept out of that shape on purpose rather than forced to fit.
 **Routes** — `/` (one page).
 **Layout** — `BaseLayout`.
 **Surface** — `unified`.
-**Sequence** — 15 bespoke section components in order: announcement banner,
-hero, two-workspaces intro, logo cloud, two-products, feature tabs, value
-props, integrations marquee, whitepaper CTA, customer stories, news, compliance,
-newsletter signup, FAQ accordion, final CTA.
-**Required data** — `lib/homepage-unified.ts`; `lib/homepageJsonLd.ts`.
-**Buildable today** — no. None of the 15 sections come from the registry;
-this is the site's largest concentration of one-off marketing components.
+**Sequence** — six Labs sections in order: `LabsHero`, `LogoMarquee`,
+`ProductDoors`, `FeatureGridPanels`, `CustomerStoryCards`, `LabsCloseCta`.
+**Required data** — `lib/labs-home.ts`; `lib/homepageJsonLd.ts`.
+**Buildable today** — yes. Every section is a registered `labs.*` component
+(see `docs/agent-reference/labs-shell.md`).
 
 ### Pricing
 **Routes** — `/pricing` (one page).
@@ -778,9 +776,9 @@ from it yet.
 ### Styleguide
 **Routes** — `/styleguide` (one page, noindex, unlisted).
 **Layout** — `MinimalLayout`.
-**Surface** — `unified` (passed explicitly). Note the page's content renders
-under `data-app="labs"` for the in-progress rebrand scope — that's the
-brand scope, which is a separate axis from the analytics surface.
+**Surface** — `unified` (passed explicitly). The page renders under the
+root `data-app="labs"` scope like every other route — the brand scope is a
+separate axis from the analytics surface.
 **Sequence** — generated sections: design tokens, type scale, spacing scale,
 a live-rendered stage for every built registry entry that doesn't opt out
 via `stage: false` (via `TemplateStage`, using each entry's

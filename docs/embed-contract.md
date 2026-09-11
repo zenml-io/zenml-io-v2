@@ -109,8 +109,8 @@ Registered in the consent registry (`src/lib/consentConfig.ts`) as `github-butto
 under the `personalization` category, loading `https://buttons.github.io/buttons.js`.
 Star counts on the site are currently rendered via `src/pages/api/github-stars.ts` (a
 server-side fetch with edge caching), read from `src/lib/githubStars.ts`, and displayed
-as plain text/numbers in `src/components/Navigation.astro` and
-`src/components/sections/NewsSection.astro` — not via a `github-button` widget element.
+as plain text/numbers in `src/components/labs/LabsNavigation.astro` — not via a
+`github-button` widget element.
 The `github-buttons` consent entry stays registered for the `personalization` category
 description ("GitHub star count") even though no page currently renders the widget
 markup the script targets.
