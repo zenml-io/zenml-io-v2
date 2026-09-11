@@ -1944,7 +1944,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Full-width editorial comparison quote band with top and bottom hairlines, a centered Borna quote, controlled vertical padding and optional attribution. Reuses the Labs GrainBackdrop shader with the sage Labs palette on ZenML comparisons and the restrained orange Kitaru palette on Kitaru comparisons. Source quote, author, role, images and link are preserved; absent attribution collapses.",
+      "Full-width editorial comparison quote band with top and bottom hairlines, a centered Borna quote, controlled vertical padding and optional attribution. Reuses the Labs GrainBackdrop shader with the sage Labs palette on ZenML comparisons and the restrained orange Kitaru palette on Kitaru comparisons. Source quote, author, role, images and link are preserved; absent attribution collapses. The company logo renders centred above the quote in colour, resolved through the temporary `src/lib/quoteLogos.ts` bridge from the collection's white PNGs to local SVGs until the quotes collection points `companyLogo` at colour marks directly; an unresolved logo collapses.",
   },
   {
     id: "labs.comparison-blog-rail",
