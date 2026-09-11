@@ -1,0 +1,102 @@
+# Key files
+
+Per-file map of the site's core architecture, homepage, islands, API routes,
+Kitaru components, layouts, and the compare-page OG card generator. Shared
+policy lives in `CLAUDE.md` / `AGENTS.md`; the system primitives and template
+families are in [site-architecture.md](site-architecture.md); the 2026 rebrand
+cutovers are in [labs-shell.md](labs-shell.md).
+
+### Core Architecture
+
+Read [the detailed architecture map](site-architecture.md)
+for system primitives and template families. Contracts: use SpaceStep tokens
+(including mlg), absence instead of show* booleans, and paired Astro/TSX twins
+for island consumers. New code must not use ad-hoc classOverrides; use named
+family presets. Template alternatives require discriminated unions or ?: never,
+never optional-prop bags hidden by as casts. Register new templates.
+
+- `astro.config.ts` — Astro config (static output, Cloudflare, Preact, sitemap, Shiki)
+- `src/content.config.ts` — Content collection schemas (Zod). Reads `categories/`, `tags/`, etc. at config eval time to build slug-reference validation sets — adding a new category/tag file requires a dev-server restart.
+- `src/styles/global.css` — Tailwind v4 `@theme` block + design tokens; `:root` defaults are Kitaru, `[data-app="zenml"]` overrides flip to ZenML, `[data-app="labs"]` holds the 2026 rebrand type roles + palette + type-scale ladder (in progress, #246). Also home of the `[data-tone]` section-tone layer (#248): tone blocks route only `var()`s the brand scopes own — never a hex — and there is deliberately no `section[data-tone]` base rule (the background shorthand would reset bg-image utilities); tone consumers set explicit `bg-[var(--section-surface)]`-style utilities
+- `src/pages/styleguide.astro` — generated design-system reference (public-but-unlisted, noindex, no nav/sitemap links); renders tokens/type/scale/registry/rules derived at build time — never hand-write design values into it
+- `src/lib/styleguide.ts` — styleguide derivation layer: parses `global.css` tokens, computes WCAG contrast for declared pairs (`DECLARED_PAIRS`/`CHROME_PAIRS`)
+- `src/lib/designRules.ts` — parses DESIGN.md rule sections for the styleguide's Rules section
+- `src/components/styleguide/TemplateStage.astro` — live render stage for built registry entries on /styleguide that don't opt out via `stage: false` (the eight `comparison.*` entries opt out — they render through the shared comparison dispatcher, not as standalone templates, and are catalogued without a live stage); renders each staged entry with its registry `demoProps` (spread) and `demoSlots` (static demo HTML for slot-composed primitives); the glob covers `src/components/templates/**` and `src/components/system/**`
+- `src/styles/kitaru-compat.css` — Kitaru OKLch tokens scoped to `[data-app="kitaru"]`; its §6 bridge re-points every one of them at the rebrand tokens when the wrapper sits inside `[data-app="labs"]` (surfaces from the labs semantic set, ember → orange-600, night → cream-900, Borna/Rethink/Nudica type roles), which is how `/product/kitaru` renders in the Labs shell without a class rename
+- `src/lib/constants.ts` — `SITE_URL` and shared constants
+- `src/lib/seo.ts` — SEO contract (`SEOProps`, `resolveSeo()`, `buildCanonical()`)
+- `src/lib/analytics.ts` — Surface taxonomy type (`Surface`); the Segment loader lives in `src/lib/consentConfig.ts`
+- `src/lib/projectBody.ts` — the `/projects/<slug>` details-column converter. Deliberately minimal (headings and paragraphs; blocks already starting with `<` pass through untouched) because it reproduces what those pages have always rendered. It has no list handling, so one project publishes a paragraph of literal `-` lines — a real defect, kept because fixing it is a content change rather than a parity one. Two project detail pages are pinned as rendered-content goldens, so a "fix" here fails `pnpm smoke:dist`. The structured parts of a project (`pipelines`, `stackHtml`) live in frontmatter, not the body; `scripts/migrations/` holds the one-off script that put them there
+- `src/components/compare/_layouts/ComparisonPage.astro` — one blocks-driven template for all 28 ZenML comparison routes (25 `/compare/zenml-vs-*` + 3 `/vs/*`). Each entry carries an ordered `blocks[]` (`value`, `quote`, `featureTable`, `codeComparison`, `strategyCta`, `showdown`, `blogRail`, `cta02`, plus `intro`, `testimonial` and `relatedCompare` on the `/vs` side) and a `hero`; the template renders what the content says rather than resolving per-category fallbacks at build time, as its predecessor did. `item` and the render model are discriminated unions keyed on the content collection, so an entry from the wrong family is a compile error. Everything that differs between the families is derived from that discriminant rather than passed in as a prop — the hero component (`CompareHero` vs `VsHero`), the block-kind set, the `<main>` wrapper (`/vs` only), the closing CTA's look (gradient and padded on `/compare`, plain on `/vs`), and two different SEO fallback chains. Those differences are deliberate: do not unify them, and do not reintroduce props to configure them, since the collection already decides. **The 15 MDX comparison pages (10 in `compare-zenml`, 5 in `compare-kitaru`) come off the same dispatcher and share the same CSS bundle**, so a change here can regress them: `scripts/migrations/compare-blocks/parity.ts` captures all 15 of them, both MDX collections, as its guard set. That script also compares the referenced `/_astro/*.css` bundles, because component styles ship in a hashed chunk the HTML normaliser masks — an HTML-only compare would not see a restyle at all
+- `src/lib/compareDefaults.ts` — no page reads its copy any more; the conversion resolved every per-category fallback into the entries themselves. It survives for `ZENML_ICON_URL` and for the migration scripts' `getCategoryDefaults`. To change what a compare page says, edit that page's `blocks[]`
+- `scripts/migrations/compare-blocks/` — the one-off tools that moved those pages onto blocks: `audit.ts` + `AUDIT.md` (a historical record of what the old template scraped from each body — do not regenerate it, the bodies it measured are gone), `convert.ts` (materialise), `finalize.ts` (remove the flat fields and the bodies), and `parity.ts` (the byte-compare harness)
+- `src/lib/llmops.ts` — LLMOps domain layer (`getAllPublishedEntries()`, tag/industry counts). Related-entry scoring is shared: `src/lib/relatedIndex.ts` holds `TaxonomyCount` and the generic `buildRelatedIndex`/`getRelatedFromIndex` scorer that `llmops.ts`/`mlops.ts` wrap; blog keeps its own `getRelatedPosts` (`src/lib/blog.ts`); `relatedIndex.ts` also holds the `filterUsedTerms` zero-entry hub filter, and `src/lib/chipStyles.ts` the shared chip color variants Badge/RelatedRail consume
+- `src/lib/navigation.ts` — Nav data (typed, not hardcoded)
+- `src/lib/footer.ts` — Footer data (typed, not hardcoded)
+
+### Homepage
+- `src/pages/index.astro` — Homepage composition (imports its sections from `src/components/sections/`)
+- `src/lib/homepage.ts` — All homepage marketing copy, stats, URLs, FAQ
+- `src/components/sections/` — homepage and shared section components
+
+### Preact Islands (interactive client-side components)
+- `src/components/islands/filter-index/` — one filterable-index family: `LlmopsIndex.tsx` (LLMOps database), `MlopsIndex.tsx` (MLOps database), `IntegrationsIndex.tsx`, `BlogIndex.tsx`, built on `DataFilterIndex`/`ControlFilterIndex` with `FacetRail`, `Pagination`, `ResultsCount`
+- `src/components/islands/ContactForm.tsx` — Form submission → Astro API routes
+- `src/components/islands/DemoRequestForm.tsx` — Demo request form used by `/book-your-demo`
+- `src/components/islands/CookieConsent.tsx` — Cookie consent banner (4 categories), on Labs tokens (`[data-app="labs"]` scoped override, sage/cream only); shares its pill button classes with `LabsButton` via `src/components/labs/labsButtonStyles.ts`
+- `src/components/islands/FeatureTabsSlider.tsx` — Auto-cycling feature tabs on `/product/zenml` (formerly on the homepage). Two pane modes: with no children it renders `<img>` panes from `tabs[].image`; when the host passes server-rendered panes as children (one `[data-figure-index]` per tab) it only toggles the current one (`w--tab-active` + `data-highlight-active`), which is how `LabsFeatureTabs` shows the inline SVG highlight figures
+- `src/components/islands/RoiCalculator.tsx` — ROI calculator interactive form
+
+### Server-side API Routes (`prerender: false`)
+- `src/pages/api/forms/[formType].ts` — Unified form submission handler → Segment HTTP API (identify + track), using the site's Segment workspace
+- `src/pages/api/csp-report.ts` — CSP violation report sink (logs redacted summary, returns 204)
+- `src/pages/api/github-stars.ts` — GitHub star count fetcher with edge cache (`context.locals.cfContext.waitUntil`)
+
+### Kitaru content & components
+- `src/pages/product/kitaru.astro` — Kitaru landing (Aug 2026 redesign; copy lives in `src/lib/kitaru-landing.ts`, CTA links in `src/lib/productKitaru.ts`), rendered in the Labs shell (`app="labs" product="kitaru"`, orange-600 signup pill, `KitaruLockup` brand link). `<main>` carries `overflow-x-clip` as the DESIGN.md guard for the reveal-left/right slides
+- `src/components/kitaru/*` — landing section shells (Hero, FirstRun, Features, Faq, Cta, `_HighlightPanel`). Hero is a static full-viewport band (`min-h-svh`, content centered below the nav overlay) that renders the copy, `LabsInstallChip` and the ghost `LabsButton`; Cta uses the same two Labs primitives (orange pill). Hero and Cta mount `KitaruGrain` directly as a standalone island for their shader backdrops; Features gets the same via the `_HighlightPanel` shells it renders. Grain palettes come from `src/lib/kitaru-grain-palettes.ts` (rebrand orange ramp)
+- `src/components/kitaru/islands/*` — Preact landing islands (HeroVideo — the hero's poster card and video dialog, `client:idle` from Hero.astro — ScenarioStrip, TwoDoors, KitaruGrain WebGL shader) plus shared helper modules (the authoritative list is `KITARU_ISLAND_HELPERS` in `scripts/check-dist-smoke.ts`). TwoDoors merges the former OneImport (record) and Importers (import) sections into one two-column island. ScenarioStrip and TwoDoors mount `client:visible` from `product/kitaru.astro`; hydration is covered by `pnpm check:islands` (TwoDoors importer-tab check) and the `check-dist-smoke.ts` island manifest
+- `src/scripts/kitaru/*` — Kitaru-page client scripts (clipboard, reveal-static, scroll-reveal); `src/hooks/use-reveal.ts` is the Preact-island counterpart of reveal-static
+- `src/components/compare/_layouts/KitaruCompare.astro` — Kitaru-vs-X comparison page template
+- `src/components/compare/kitaru/*` — Kitaru compare components (ComparisonHero, ComparisonTable, CodePane, CodeCompare, FeatureWithGraphic, WhenToUseEach, ComparisonCta)
+- `src/content/compare-kitaru/*.mdx` — Kitaru-vs-X comparison pages
+- `src/content/compare-zenml/*.mdx` — ZenML-vs-X pages in the same MDX template (`ZenmlMdxCompare.astro`, components under `src/components/compare/zenml/`), covering durable execution engines (Temporal, DBOS, Hatchet, Inngest, Restate) and agent frameworks. Positioning: ZenML orchestrates and runs agents durably (dynamic pipelines, `wait()` approvals, sandboxes, deployments); the Kitaru-vs-X set is limited to frameworks Kitaru has adapters for. The old `kitaru-vs-{temporal,dbos,hatchet,inngest,restate}` pages 301 to their ZenML twins (`public/_redirects`)
+
+### Layouts
+- `src/layouts/BaseLayout.astro` — Main layout (nav, footer, head slots, analytics); optional `app?: "zenml" | "labs"` (default `zenml`) sets `<html data-app>` AND swaps the chrome to the Labs shell (`LabsNavigation` + `LabsFooter`) in one move — tokens and chrome always travel together. Optional `product?: "zenml" | "kitaru"` (Labs shell only) tells the nav which product the page is in: the brand link shows the product's mark at rest (ZenML: the lockup with its "labs" script hidden; Kitaru: `KitaruLockup`, the Z mark + Kitaru letterforms) and becomes the ZenML Labs lockup on hover/focus, always linking to `/`; the nav has three hover menus (`button[aria-expanded]` + `ul[role=menu]`, opening one closes any other): "Products" (`LABS_DOORS` rows, 1px all-around sage border on the current row, Esc/arrows/focus return) marks the current product, "Docs" and "Case studies" render label+description rows from `labsNavMenus()`, and the Case-studies menu reads the LLMOps non-draft count at build time; the mobile panel leads with a chip switcher, and the signup pill points at that product's app (`LABS_NAV_SIGNUP_BY_PRODUCT`). Omit on `/` and cross-product pages
+- `src/layouts/BlogLayout.astro` — Blog post layout, rebuilt onto the Labs shell in the blog cutover (`app="labs"`, `surface` optional, defaults `"ml"`): masthead on the short band, the shared `StickyBreadcrumb` (sticky under the nav from `lg` up and bounded to the article region, static below `lg`), the optional featured image, `LabsArticleBody` (prose body + sticky TOC), tag chips, author card, prev/next, and `LabsRelatedBand`'s hex-corner "Continue reading" rail — the three shared components are also what `DatabaseEntryLayout.astro` mounts; see "Blog (Labs shell, cutover 2026-09)" and "Research databases" below for the component-level breakdown
+- `src/layouts/MinimalLayout.astro` — Lightweight shell (no nav/footer) for embeds
+
+### Compare-page OG card generator
+
+The MDX comparison pages (`compare-kitaru` and `compare-zenml`) use
+programmatic OG cards rendered from each `.mdx`'s frontmatter
+(`competitor`, `cardSubtitle`). The template has two brand variants,
+picked by collection: Kitaru (orange, Paper artboard) and ZenML (purple,
+`public/images/zenml-logo.svg` wordmark). Pipeline:
+satori (JSX → SVG) → `@resvg/resvg-js` (SVG → PNG at 2× native) → sharp
+(PNG → JPEG, q85 mozjpeg 4:2:0) → R2 upload at a deterministic key.
+
+The OG URL is **derived at render time** from the entry slug via
+`compareOgUrl(brand, slug)` in `src/lib/seo.ts` — pointing at
+`${ASSET_BASE_URL}/${COMPARE_OG_PREFIX[brand]}/<slug>.jpg`; each compare
+layout passes its own brand. The script
+uploads there with `r2-upload.py --literal-key` so re-renders overwrite
+in place. No frontmatter mutation. A page can still override by setting
+its own `ogImage:` frontmatter line.
+
+- `scripts/og/template.tsx` — design template; matches the Paper artboard
+  "D - Custom" on the **Kitaru Landing Page** file (page: **Open Graph**).
+  Paper is the source of truth — if the brand evolves, edit the artboard
+  and re-pull computed styles via `mcp__paper__get_jsx`.
+- `scripts/og/generate-compare-og.ts` — orchestrator.
+- `pnpm og:compare` — dry-run, writes JPEGs to `.cache/og/` (gitignored).
+- `pnpm og:compare:write` — uploads to R2. Truly idempotent: same slug →
+  same R2 key → overwrite in place. No `.mdx` files are ever modified.
+- `pnpm og:compare --slug=kitaru-vs-foo` — limit to specific pages.
+
+**When adding a new kitaru-vs-X or zenml-vs-X MDX page:** create the `.mdx` with the
+`competitor` and `cardSubtitle` frontmatter fields, then run
+`pnpm og:compare:write --slug=<new-slug>`. No frontmatter change needed
+— the layout derives the OG URL automatically.
+
