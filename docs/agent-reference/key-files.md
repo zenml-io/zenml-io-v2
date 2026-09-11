@@ -117,7 +117,7 @@ listed in `FONT_SPECS` in `scripts/og/pipeline.ts`. Database cards use the
 entry title with `Company · Year` beneath and the database name in the chip.
 A card with `layout: "hero"` (the homepage) drops the panel and chip: the
 brand mesh runs edge to edge (`bg-hero-*.jpg`, full 1920×1080), the logo and
-`ZENML.IO` share the top row, the copy sits on the bottom margin, and title
+`ZENML.IO` share a row 120 px down, the copy starts on the midline, and title
 and subtitle are authored line by line with `\n` (title 96 px) and never
 re-wrapped: a line that does not fit fails the render.
 

@@ -62,8 +62,10 @@ const FOOTER = {
 
 const EYEBROW = { x: 80, y: 80 } as const;
 
-/** Hero layout: full-bleed artwork, larger authored title lines. */
+/** Hero layout: full-bleed artwork, larger authored title lines, copy
+ *  starting on the card's midline and an airier subtitle. */
 const HERO_TITLE_SIZE = 96;
+const HERO = { logoY: 120, copyY: OG_HEIGHT / 2, subtitleLineHeight: 1.4 } as const;
 
 /** Title steps, largest first. The fitter takes the first one that fits. */
 export const TITLE_SIZES = [80, 68, 56] as const;
@@ -680,10 +682,6 @@ function HeroOg({
   const titleLines = (fit?.title ?? title).split("\n");
   const subtitleLines = fit?.subtitle ?? subtitleLinesOf(subtitle);
   const titleSize = fit?.titleSize ?? HERO_TITLE_SIZE;
-  const height =
-    fit?.height ??
-    titleBlock(titleLines.length, titleSize) +
-      subtitleBlock(subtitleLines.length);
   return (
     <div
       style={{
@@ -706,7 +704,7 @@ function HeroOg({
         style={{
           position: "absolute",
           left: EYEBROW.x,
-          top: EYEBROW.y,
+          top: HERO.logoY,
           width: TEXT_FRAME.width,
           height: logo.rendered,
           display: "flex",
@@ -728,7 +726,7 @@ function HeroOg({
         style={{
           position: "absolute",
           left: TEXT_FRAME.x,
-          top: OG_HEIGHT - PANEL.padding - height,
+          top: HERO.copyY,
           width: TEXT_FRAME.width,
           display: "flex",
           flexDirection: "column",
@@ -762,6 +760,7 @@ function HeroOg({
                 key={line}
                 style={{
                   ...subtitleStyle,
+                  lineHeight: HERO.subtitleLineHeight,
                   display: "block",
                   width: TEXT_FRAME.width,
                 }}
