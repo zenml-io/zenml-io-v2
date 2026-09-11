@@ -150,7 +150,7 @@ Marketing page text is centralized in typed data files, not hardcoded in templat
 |------|-----------|
 | Homepage | `src/lib/homepage.ts` |
 | Company | `src/lib/company.ts` |
-| Navigation | `src/lib/navigation.ts` |
+| Navigation | `src/lib/labs-home.ts` |
 | Footer | `src/lib/footer.ts` |
 
 Edit the data file, not the `.astro` template. Components import from these files.
@@ -192,7 +192,7 @@ src/
 │   └── MinimalLayout.astro  # No nav/footer (for embeds, iframes)
 ├── lib/                 # Shared data + utilities
 │   ├── homepage.ts      # Homepage copy, stats, URLs, FAQ
-│   ├── navigation.ts    # Nav structure (typed)
+│   ├── labs-home.ts     # Nav structure (typed) + Labs homepage copy
 │   ├── footer.ts        # Footer structure (typed)
 │   ├── seo.ts           # SEO utilities (resolveSeo, buildCanonical)
 │   ├── llmops.ts        # LLMOps domain layer
