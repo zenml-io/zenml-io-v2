@@ -97,7 +97,10 @@ const subtitleBlock = (lines: number) =>
 // Brands: palette and logo
 // ---------------------------------------------------------------------------
 
-// Satori needs resolved colours rather than CSS custom properties.
+// Satori needs resolved colours rather than CSS custom properties. The first
+// definition of each token is the site scope's ramp, which is the one the
+// brand covers use; the Kitaru product's own orange ramp later in the file
+// belongs to its in-page components, not to the cards.
 const tokens = readFileSync(
   new URL("../../src/styles/global.css", import.meta.url),
   "utf8",
@@ -230,10 +233,8 @@ export interface DefaultOgFit {
   /** Title as rendered — ellipsized when it could not be made to fit. */
   title: string;
   titleSize: number;
-  titleLines: number;
   /** Subtitle as rendered, one entry per line. */
   subtitle: string[];
-  subtitleLines: number;
   /** Laid-out height of the copy frame, in authored px. */
   height: number;
 }
@@ -245,22 +246,23 @@ interface Measured {
 }
 
 type Role = "title" | "subtitle";
-type Measure = (text: string, fontSize: number, role: Role) => Measured;
-
-const measureKey = (text: string, fontSize: number, role: Role) =>
-  `${role}|${fontSize}|${text}`;
+type Measure = (
+  text: string,
+  fontSize: number,
+  role: Role,
+) => Promise<Measured>;
 
 const trimTail = (text: string) => text.replace(/[\s,;:.–—-]+$/u, "");
 
 /** Shorten `text` until it lays out in `maxLines` lines, then mark the cut. */
-function clampToLines(
+async function clampToLines(
   text: string,
   fontSize: number,
   role: Role,
   maxLines: number,
   measure: Measure,
-): string {
-  let measured = measure(text, fontSize, role);
+): Promise<string> {
+  let measured = await measure(text, fontSize, role);
   if (measured.lines <= maxLines && !measured.overflow) return text;
 
   let keep = text.length;
@@ -270,18 +272,18 @@ function clampToLines(
       : Math.min(0.92, maxLines / measured.lines);
     keep = Math.max(8, Math.floor(keep * ratio));
     const candidate = `${trimTail(text.slice(0, keep))}…`;
-    measured = measure(candidate, fontSize, role);
+    measured = await measure(candidate, fontSize, role);
     if (measured.lines <= maxLines && !measured.overflow) return candidate;
   }
   return `${trimTail(text.slice(0, 8))}…`;
 }
 
-/** Pure layout decision; every measurement comes from `measure`. */
-function resolveFit(
+/** Layout decision; every measurement comes from `measure`. */
+async function resolveFit(
   title: string,
   subtitle: string[],
   measure: Measure,
-): DefaultOgFit {
+): Promise<DefaultOgFit> {
   // The subtitle has a fixed size, so it is fitted first: what it leaves over
   // is the title's height budget.
   const lines: string[] = [];
@@ -289,7 +291,7 @@ function resolveFit(
   for (const raw of subtitle) {
     const text = raw.trim();
     if (!text || subtitleLines >= MAX_SUBTITLE_LINES) continue;
-    const clamped = clampToLines(
+    const clamped = await clampToLines(
       text,
       SUBTITLE_SIZE,
       "subtitle",
@@ -297,21 +299,19 @@ function resolveFit(
       measure,
     );
     lines.push(clamped);
-    subtitleLines += measure(clamped, SUBTITLE_SIZE, "subtitle").lines;
+    subtitleLines += (await measure(clamped, SUBTITLE_SIZE, "subtitle")).lines;
   }
 
   const budget = TEXT_FRAME.maxHeight - subtitleBlock(subtitleLines);
   for (const size of TITLE_SIZES) {
-    const measured = measure(title, size, "title");
+    const measured = await measure(title, size, "title");
     if (measured.overflow) continue;
     const height = titleBlock(measured.lines, size);
     if (height <= budget)
       return {
         title,
         titleSize: size,
-        titleLines: measured.lines,
         subtitle: lines,
-        subtitleLines,
         height: height + subtitleBlock(subtitleLines),
       };
   }
@@ -319,17 +319,15 @@ function resolveFit(
   // Nothing fit: take the smallest step and cut the title to the budget.
   const size = TITLE_SIZES[TITLE_SIZES.length - 1];
   const maxLines = Math.max(1, Math.floor(budget / (size * LINE_HEIGHT)));
-  const clamped = clampToLines(title, size, "title", maxLines, measure);
+  const clamped = await clampToLines(title, size, "title", maxLines, measure);
   const titleLines = Math.min(
     maxLines,
-    measure(clamped, size, "title").lines || 1,
+    (await measure(clamped, size, "title")).lines || 1,
   );
   return {
     title: clamped,
     titleSize: size,
-    titleLines,
     subtitle: lines,
-    subtitleLines,
     height: titleBlock(titleLines, size) + subtitleBlock(subtitleLines),
   };
 }
@@ -374,6 +372,10 @@ async function probe(
       /<text[^>]*\sx="([\d.-]+)"[^>]*\sy="([\d.-]+)"[^>]*\swidth="([\d.-]+)"[^>]*>([^<]*)<\/text>/g,
     ),
   ].filter((run) => run[4].trim() !== "");
+  if (runs.length === 0 && text.trim() !== "")
+    throw new Error(
+      `OG probe found no text runs for "${text}" — has satori's SVG output changed?`,
+    );
   return {
     lines: new Set(runs.map((run) => run[2])).size,
     overflow: runs.some(
@@ -382,44 +384,22 @@ async function probe(
   };
 }
 
-/** Thrown by the cache-backed measurer when satori has yet to answer. */
-class PendingMeasurement {
-  constructor(
-    readonly key: string,
-    readonly measured: Promise<Measured>,
-  ) {}
-}
-
-/**
- * Measure a card's copy against the real fonts.
- *
- * `resolveFit` is a synchronous decision tree so that the fallback path can
- * use it too; satori is asynchronous. The measurer therefore answers from a
- * cache and, on a miss, throws the pending probe — this wrapper awaits it,
- * fills the cache and re-runs the (pure, cheap) decision. Each pass resolves
- * one more measurement, and a card needs a handful.
- */
-export async function fitDefaultOg(
+/** Measure a card's copy against the real fonts and decide its layout. */
+export function fitDefaultOg(
   title: string,
   subtitle: string[],
   fonts: Font[],
 ): Promise<DefaultOgFit> {
-  const cache = new Map<string, Measured>();
-  const cached: Measure = (text, fontSize, role) => {
-    const key = measureKey(text, fontSize, role);
-    const hit = cache.get(key);
-    if (hit) return hit;
-    throw new PendingMeasurement(key, probe(text, fontSize, role, fonts));
-  };
-  for (let pass = 0; pass < 64; pass++) {
-    try {
-      return resolveFit(title, subtitle, cached);
-    } catch (error) {
-      if (!(error instanceof PendingMeasurement)) throw error;
-      cache.set(error.key, await error.measured);
+  const cache = new Map<string, Promise<Measured>>();
+  return resolveFit(title, subtitle, (text, fontSize, role) => {
+    const key = `${role}|${fontSize}|${text}`;
+    let pending = cache.get(key);
+    if (!pending) {
+      pending = probe(text, fontSize, role, fonts);
+      cache.set(key, pending);
     }
-  }
-  throw new Error(`OG fit did not settle for: ${title}`);
+    return pending;
+  });
 }
 
 /**
@@ -430,7 +410,7 @@ export async function fitDefaultOg(
  * one.
  */
 const FALLBACK_CHAR_EM = 0.62;
-const estimateMeasure: Measure = (text, fontSize) => {
+function estimateMeasure(text: string, fontSize: number): Measured {
   const perLine = Math.max(
     1,
     Math.floor(TEXT_FRAME.width / (fontSize * FALLBACK_CHAR_EM)),
@@ -448,7 +428,40 @@ const estimateMeasure: Measure = (text, fontSize) => {
     }
   }
   return { lines, overflow: words.some((word) => word.length > perLine) };
-};
+}
+
+/** Synchronous layout from the estimate, for renders with no measured fit. */
+function estimateFit(title: string, subtitle: string[]): DefaultOgFit {
+  // resolveFit only awaits `measure`; with a measurer that resolves
+  // synchronously the promise is already settled, but the value is still
+  // behind a Promise, so run the same decision inline instead.
+  const lines: string[] = [];
+  let subtitleLines = 0;
+  for (const raw of subtitle) {
+    const text = raw.trim();
+    if (!text || subtitleLines >= MAX_SUBTITLE_LINES) continue;
+    lines.push(text);
+    subtitleLines += estimateMeasure(text, SUBTITLE_SIZE).lines;
+  }
+  const budget = TEXT_FRAME.maxHeight - subtitleBlock(subtitleLines);
+  for (const size of TITLE_SIZES) {
+    const height = titleBlock(estimateMeasure(title, size).lines, size);
+    if (height <= budget)
+      return {
+        title,
+        titleSize: size,
+        subtitle: lines,
+        height: height + subtitleBlock(subtitleLines),
+      };
+  }
+  const size = TITLE_SIZES[TITLE_SIZES.length - 1];
+  return {
+    title,
+    titleSize: size,
+    subtitle: lines,
+    height: titleBlock(estimateMeasure(title, size).lines, size),
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Template
@@ -486,8 +499,7 @@ export function DefaultOg({
   subtitle,
   fit,
 }: DefaultOgProps): ReactElement {
-  const layout =
-    fit ?? resolveFit(title, subtitleLinesOf(subtitle), estimateMeasure);
+  const layout = fit ?? estimateFit(title, subtitleLinesOf(subtitle));
   const { palette } = BRANDS[brand];
   const logo = LOGOS[brand];
   const logoWidth = Math.round((logo.width * logo.rendered) / logo.height);

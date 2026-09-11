@@ -38,7 +38,6 @@ import {
   fitDefaultOg,
   pickDefaultOgBackground,
   subtitleLinesOf,
-  TEXT_FRAME,
 } from "./default-template.js";
 import {
   CACHE_DIR,
@@ -179,10 +178,6 @@ export async function renderDefaultJpeg(
     subtitleLinesOf(entry.subtitle),
     fonts,
   );
-  if (fit.height > TEXT_FRAME.maxHeight)
-    throw new Error(
-      `${entry.slug}: text frame is ${fit.height.toFixed(1)}px, over the ${TEXT_FRAME.maxHeight}px limit`,
-    );
   return renderOgJpeg(
     DefaultOg({
       brand: entry.brand,
