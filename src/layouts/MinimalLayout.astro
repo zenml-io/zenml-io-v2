@@ -17,8 +17,8 @@ import "../styles/global.css";
 
 interface Props extends SEOProps {
   bodyClass?: string;
-  /** Optional Labs token scope for chrome-free rebrand routes. */
-  app?: "zenml" | "labs";
+  /** Labs token scope for chrome-free routes. One scope: the Labs shell is the site. */
+  app?: "labs";
   /**
    * Analytics surface — drives Plausible `surface` prop + Segment page event.
    * Required: every page template must pass an explicit value.
@@ -27,7 +27,7 @@ interface Props extends SEOProps {
   surface: Surface;
 }
 
-const { bodyClass, surface, app = "zenml", ...seoProps } = Astro.props;
+const { bodyClass, surface, app = "labs", ...seoProps } = Astro.props;
 const seo = resolveSeo(seoProps, Astro.url.pathname);
 ---
 

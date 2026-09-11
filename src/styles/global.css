@@ -16,12 +16,11 @@ html { scroll-behavior: smooth; }
  * ╚════════════════════════════════════════════════════════════════════════╝
  *
  * Theme switching via [data-app] on <html>:
- *   - :root                 → Kitaru theme (warm orange primary, cream ground)
+ *   - :root                 → Kitaru base theme (warm orange primary, cream ground)
  *   - [data-app="kitaru"]   → same as :root (explicit override)
- *   - [data-app="zenml"]    → ZenML theme (purple primary, white ground — original brand)
- *   - [data-app="labs"]       → 2026 rebrand scope (type roles + palette; /styleguide mounts it)
+ *   - [data-app="labs"]     → the site: 2026 rebrand scope (type roles + full palette)
  *
- * BaseLayout.astro sets data-app="zenml" by default for the whole site.
+ * BaseLayout.astro sets data-app="labs" by default for the whole site.
  * Per-page overrides (e.g. /product/kitaru) set data-app="kitaru".
  *
  * VOCABULARY for component code (Tailwind utilities):
@@ -129,45 +128,6 @@ html { scroll-behavior: smooth; }
   --brand-accent-soft: var(--accent);
   --brand-accent-on: var(--primary-foreground);
   --brand-accent-invert: var(--primary);
-}
-
-/* ─── 2. ZenML theme (original purple) ─────────────────────────────────────── */
-[data-app="zenml"] {
-  /* Surfaces — original white ground */
-  --background: #ffffff;
-  --foreground: #111827;
-  --card: #ffffff;
-  --card-foreground: #111827;
-  --popover: #ffffff;
-  --popover-foreground: #111827;
-
-  /* Brand — original ZenML purple */
-  --primary: #7a3ef4;
-  --primary-foreground: #ffffff;
-  --ring: #7a3ef4;
-
-  --secondary: #f9fafb;
-  --secondary-foreground: #4b5563;
-  --muted: #f2f4f7;
-  --muted-foreground: #6b7280;
-  --accent: #f6f2ff;
-  --accent-foreground: #361776;
-
-  /* Chrome */
-  --border: #e5e7eb;
-  --input: #e5e7eb;
-
-  /* Typography — original ZenML font */
-  --font-sans: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
-
-  /* Brand accent layer (tone system, #248). `-invert` is the measured accent
-   * the existing dark bands already use for eyebrows/check glyphs
-   * (text-zenml-400), so tone adoption on those bands is pixel-identical. */
-  --brand-accent: var(--primary);
-  --brand-accent-soft: var(--accent);
-  --brand-accent-on: var(--primary-foreground);
-  --brand-accent-invert: var(--color-zenml-400);
 }
 
 /* ─── 2b. ZenML 2026 rebrand scope (in progress — issue #246) ───────────────
@@ -682,8 +642,8 @@ html { scroll-behavior: smooth; }
   --spacing-gutter: clamp(16px, 3vw, 48px); /* section lateral gutter: 16px on small screens, fluid, 48px from ~1600px; yields px-gutter etc. */
 
   /* === Chrome === */
-  /* Sticky navbar height — consumed by Navigation.astro (h-), the blog
-     CategoryBar (sticky top-), and the Kitaru hero (first-screen height). */
+  /* Sticky navbar height — consumed by the Labs shell nav offset and the
+     Kitaru hero (first-screen height). */
   --nav-h: 72px;
 
   /* === Border Radius === */

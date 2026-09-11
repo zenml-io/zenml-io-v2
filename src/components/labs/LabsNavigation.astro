@@ -34,8 +34,8 @@ import { getNonDraftLlmopsDatabaseCount } from "../../lib/llmops";
  * Esc/arrow keys, outside-click/focusout close, and opening one menu closes
  * any other that's open. Docs and Case studies render label+description rows
  * from `labsNavMenus(llmopsCaseStudyCount)` (the Case-studies "LLMOps
- * Database" row's count is fetched here, the same way `Navigation.astro`
- * feeds `createNavDropdowns`); Products keeps its own wordmark rows.
+ * Database" row's count is fetched here, below); Products keeps its own
+ * wordmark rows.
  */
 import KitaruLockup from "../brand/KitaruLockup.astro";
 import KitaruWordmark from "../brand/KitaruWordmark.astro";
@@ -72,8 +72,7 @@ const panelLinks = product
   ? LABS_NAV_LINKS.filter((link) => link.menu !== "products")
   : LABS_NAV_LINKS;
 
-/* Case studies' "LLMOps Database" row needs the live non-draft count, the
- * same way Navigation.astro feeds createNavDropdowns. */
+/* Case studies' "LLMOps Database" row needs the live non-draft count. */
 const llmopsCaseStudyCount = await getNonDraftLlmopsDatabaseCount();
 const menus = labsNavMenus(llmopsCaseStudyCount);
 

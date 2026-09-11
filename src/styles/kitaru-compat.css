@@ -11,7 +11,7 @@
  * This file should only need touching if Kitaru source changes upstream.
  */
 
-/* ─── 1. Kitaru token re-assert (overrides BaseLayout's data-app="zenml") ── */
+/* ─── 1. Kitaru token re-assert (overrides BaseLayout's data-app="labs") ── */
 [data-app="kitaru"] {
   /* Backgrounds */
   --color-bg: oklch(0.975 0.008 75);
@@ -157,7 +157,7 @@
 
   /* Fonts. Inter is the Kitaru body face (global.css already self-hosts it);
    * without this re-assert the wrapper inherits Plus Jakarta Sans from
-   * <html data-app="zenml">. Plus Jakarta Sans stays on headings. */
+   * <html data-app="labs">. Plus Jakarta Sans stays on headings. */
   --font-sans:    "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-heading: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 }
@@ -488,8 +488,8 @@
  * semantic set, the ember accent is orange-600 (the one orange on the page),
  * the dark band is cream-900, and type comes from the labs roles — Borna on
  * headings, Rethink Sans on body, Nudica Mono on labels; JetBrains Mono stays
- * on code. The compare pages import this sheet under `data-app="zenml"` and
- * never match these selectors. */
+ * on code. The ZenML-side compare pages don't import this sheet at all, so
+ * these selectors never match there. */
 [data-app="labs"] :is([data-app="kitaru"]) {
   /* Semantic set: take the labs values from the scope root. */
   --background: inherit;

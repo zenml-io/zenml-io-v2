@@ -17,7 +17,6 @@ import {
   LOGO_CLOUD,
   type LogoItem,
 } from "./homepage";
-import { formatLlmopsDatabaseNavDescription } from "./navigation";
 import { KITARU_LINKS } from "./productKitaru";
 import { ZENML_LINKS } from "./productZenml";
 
@@ -123,14 +122,18 @@ export interface LabsNavMenu {
   rows: readonly LabsNavMenuRow[];
 }
 
+const LLMOPS_DATABASE_NAV_COUNT_FORMATTER = new Intl.NumberFormat("en-US");
+
+export function formatLlmopsDatabaseNavDescription(count: number): string {
+  return `${LLMOPS_DATABASE_NAV_COUNT_FORMATTER.format(count)} LLMOps case studies, searchable`;
+}
+
 /**
- * Docs and Case studies menu content, reproduced from the pre-rebrand nav
- * data (`createNavDropdowns` in `./navigation`), which remains the live
- * site's source for these two menus. Only the LLMOps Database row's
- * description is computed (the non-draft entry count), so this is a
- * function rather than a constant: the caller (LabsNavigation) awaits
- * `getNonDraftLlmopsDatabaseCount()` once and passes it in, the same way
- * `Navigation.astro` feeds `createNavDropdowns`.
+ * Docs and Case studies menu content for the Labs shell's nav. Only the
+ * LLMOps Database row's description is computed (the non-draft entry
+ * count), so this is a function rather than a constant: the caller
+ * (LabsNavigation) awaits `getNonDraftLlmopsDatabaseCount()` once and
+ * passes it in.
  */
 export function labsNavMenus(
   llmopsCaseStudyCount: number,

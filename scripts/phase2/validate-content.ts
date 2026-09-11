@@ -34,7 +34,6 @@ const EXPECTED_COLLECTIONS = [
   "compare",
   "team",
   "projects",
-  "old-projects",
   // Phase 3 collections (block-driven content)
   "case-studies",
   "feature-pages",
@@ -64,7 +63,6 @@ const ROUTE_PATTERNS: Record<string, string> = {
   compare: "/compare",
   team: "/team",
   projects: "/projects",
-  // old-projects has no route (all drafts)
 };
 
 /**
@@ -265,7 +263,6 @@ class ContentValidator {
 
     // Group C: Draft/source consistency
     this.validateDraftSourceConsistency();
-    this.validateOldProjectsDrafts();
     this.validateLLMOpsProvenanceAndDates();
     this.validateMLOpsProvenanceAndDates();
 
@@ -439,24 +436,6 @@ class ContentValidator {
     }
   }
 
-  private validateOldProjectsDrafts(): void {
-    for (const entry of this.entries) {
-      if (entry.collection !== "old-projects") continue;
-
-      const isDraft = entry.data.draft === true;
-      if (!isDraft) {
-        this.addFinding({
-          severity: "error",
-          code: "OLD_PROJECTS_NOT_DRAFT",
-          collection: entry.collection,
-          slug: entry.fileSlug,
-          file: entry.filePath,
-          message: "old-projects entry must have draft: true",
-        });
-      }
-    }
-  }
-
   private deriveLLMOpsPubDate(data: Record<string, any>): Date | null {
     const candidates = [
       data.webflow?.lastPublished,
@@ -625,21 +604,20 @@ class ContentValidator {
     for (const entry of this.entries) {
       const { data, body, collection, fileSlug, filePath } = entry;
       const isDraft = data.draft === true;
-      const isOldProjects = collection === "old-projects";
 
       // Check frontmatter (JSON stringified)
       const frontmatterStr = JSON.stringify(data);
       for (const pattern of WEBFLOW_CDN_PATTERNS) {
         if (frontmatterStr.includes(pattern)) {
-          // Error for published content, warning for drafts/old-projects
-          const severity = !isDraft && !isOldProjects ? "error" : "warning";
+          // Error for published content, warning for drafts
+          const severity = !isDraft ? "error" : "warning";
           this.addFinding({
             severity,
             code: "WEBFLOW_CDN_URL_FRONTMATTER",
             collection,
             slug: fileSlug,
             file: filePath,
-            message: `Webflow CDN URL found in frontmatter: ${pattern}${isDraft ? " [DRAFT]" : ""}${isOldProjects ? " [OLD-PROJECTS]" : ""}`,
+            message: `Webflow CDN URL found in frontmatter: ${pattern}${isDraft ? " [DRAFT]" : ""}`,
           });
         }
       }
@@ -647,14 +625,14 @@ class ContentValidator {
       // Check body
       for (const pattern of WEBFLOW_CDN_PATTERNS) {
         if (body.includes(pattern)) {
-          const severity = !isDraft && !isOldProjects ? "error" : "warning";
+          const severity = !isDraft ? "error" : "warning";
           this.addFinding({
             severity,
             code: "WEBFLOW_CDN_URL_BODY",
             collection,
             slug: fileSlug,
             file: filePath,
-            message: `Webflow CDN URL found in body: ${pattern}${isDraft ? " [DRAFT]" : ""}${isOldProjects ? " [OLD-PROJECTS]" : ""}`,
+            message: `Webflow CDN URL found in body: ${pattern}${isDraft ? " [DRAFT]" : ""}`,
           });
         }
       }
@@ -721,18 +699,17 @@ class ContentValidator {
 
       const expectedCanonical = `${SITE_URL}${routePattern}/${fileSlug}`;
       const isDraft = data.draft === true;
-      const isOldProjects = collection === "old-projects";
 
       if (canonical !== expectedCanonical) {
-        // Error for published main collections, warning for drafts/old-projects
-        const severity = !isDraft && !isOldProjects ? "error" : "warning";
+        // Error for published main collections, warning for drafts
+        const severity = !isDraft ? "error" : "warning";
         this.addFinding({
           severity,
           code: "CANONICAL_ROUTE_MISMATCH",
           collection,
           slug: fileSlug,
           file: filePath,
-          message: `Canonical URL doesn't match expected route. Expected: ${expectedCanonical}, Got: ${canonical}${isDraft ? " [DRAFT]" : ""}${isOldProjects ? " [OLD-PROJECTS]" : ""}`,
+          message: `Canonical URL doesn't match expected route. Expected: ${expectedCanonical}, Got: ${canonical}${isDraft ? " [DRAFT]" : ""}`,
         });
       }
     }
