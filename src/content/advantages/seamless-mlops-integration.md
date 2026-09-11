@@ -1,6 +1,7 @@
 ---
 title: "Seamless MLOps Integration"
 slug: "seamless-mlops-integration"
+icon: "hub"
 content: "ZenML offers seamless integration with various MLOps tools and platforms, enabling you to automate and streamline your ML pipeline from experimentation to production."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdf3dfc5/667167751e34699260c6b227_img02.png"

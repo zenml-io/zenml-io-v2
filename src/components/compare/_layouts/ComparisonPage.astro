@@ -13,10 +13,15 @@ import {
   type CompareCard,
   getZenmlCompareCards,
 } from "../../../lib/compareHub";
-import type { LabsProductBandContent } from "../../../lib/labs-home";
 import type {
-  CompareSwitcherGroup,
-  LabsCompareLang,
+  FeaturePanel,
+  FeaturePanelTone,
+  LabsProductBandContent,
+} from "../../../lib/labs-home";
+import {
+  type CompareSwitcherGroup,
+  comparisonDisplayHeading,
+  type LabsCompareLang,
 } from "../../../lib/labsComparison";
 import FeatureSplit from "../../labs/FeatureSplit.astro";
 import LabsCloseCta from "../../labs/LabsCloseCta.astro";
@@ -47,11 +52,8 @@ interface ResolvedQuoteBlock {
 interface ResolvedStrategyCtaBlock {
   kind: "strategyCta";
   headline: string;
-  advantages: {
-    title: string;
-    content: string;
-    image?: { url: string; alt?: string };
-  }[];
+  /** Advantages resolved into feature panels; index and tone come from position. */
+  panels: FeaturePanel[];
 }
 interface ResolvedRailBlock {
   kind: "showdown" | "blogRail";
@@ -79,6 +81,17 @@ type Props =
       switcherGroups: readonly CompareSwitcherGroup[];
       related: RelatedRailItem[];
     };
+/**
+ * Panel tones cycle by position. `canvas` goes last: it matches the page
+ * ground, so with three advantages the third panel would have no edge.
+ */
+const STRATEGY_PANEL_TONES: readonly FeaturePanelTone[] = [
+  "sage-tint",
+  "sage-deep",
+  "sage-light",
+  "canvas",
+];
+
 const props = Astro.props;
 const hubCardsByHref = new Map(
   (await getZenmlCompareCards()).map((card) => [card.href, card]),
@@ -170,20 +183,17 @@ async function resolveBlock(
       const entries = await Promise.all(
         block.advantages.map((slug) => getEntry("advantages", slug)),
       );
+      const found = entries.filter((entry) => entry !== undefined);
       return {
         kind: "strategyCta",
         headline: block.headline,
-        advantages: entries.flatMap((entry) =>
-          entry
-            ? [
-                {
-                  title: entry.data.title,
-                  content: entry.data.content,
-                  image: entry.data.image,
-                },
-              ]
-            : [],
-        ),
+        panels: found.map((entry, index) => ({
+          index: `${String(index + 1).padStart(2, "0")}.`,
+          title: entry.data.title,
+          body: entry.data.content,
+          icon: entry.data.icon,
+          tone: STRATEGY_PANEL_TONES[index % STRATEGY_PANEL_TONES.length],
+        })),
       };
     }
     case "showdown":
@@ -282,7 +292,7 @@ if (isCompareProps(props)) {
               { label: item.data.title },
             ]}
             eyebrow={item.data.category || "Comparison"}
-            headline={item.data.hero.headline}
+            headline={comparisonDisplayHeading(item.data.hero.headline, "ZenML")}
             deck={item.data.hero.deck}
             product="zenml"
             competitor={toolName}
@@ -359,7 +369,7 @@ if (isCompareProps(props)) {
                     return (
                       <LabsComparisonStrategyCta
                         headline={block.headline}
-                        advantages={block.advantages}
+                        panels={block.panels}
                         cta={{
                           label: "Book a demo",
                           href: "/book-your-demo",
@@ -432,7 +442,7 @@ if (isCompareProps(props)) {
               { label: category },
             ]}
             eyebrow={item.data.hero.eyebrow || "Comparison"}
-            headline={item.data.hero.headline}
+            headline={comparisonDisplayHeading(item.data.hero.headline, "ZenML")}
             deck={item.data.hero.deck}
             product="zenml"
             competitor={category}

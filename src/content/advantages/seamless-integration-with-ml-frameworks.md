@@ -1,6 +1,7 @@
 ---
 title: "Seamless Integration with ML Frameworks"
 slug: "seamless-integration-with-ml-frameworks"
+icon: "hub"
 content: "ZenML offers built-in integrations with popular ML frameworks, such as scikit-learn, TensorFlow, and PyTorch, making it easier to incorporate ML tasks into your pipelines."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54938439/667167b34c4aaf843c0fac78_img03.png"

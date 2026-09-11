@@ -1,6 +1,7 @@
 ---
 title: "Built-in Experiment Tracking and Model Registry"
 slug: "built-in-experiment-tracking-and-model-registry"
+icon: "registry"
 content: "With ZenML, you can leverage built-in experiment tracking and model registry capabilities, streamlining the management of your ML experiments and model versions."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fec1dff1/667196405fbe25aecdd96da9_img04.png"

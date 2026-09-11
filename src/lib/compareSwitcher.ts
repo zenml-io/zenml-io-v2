@@ -8,15 +8,6 @@ export function buildZenmlComparisonGroups(
 ): CompareSwitcherGroup[] {
   return [
     {
-      label: "Categories",
-      options: categories
-        .map((entry) => ({
-          href: `/vs/${entry.data.slug}`,
-          label: entry.data.hero.compareCategory,
-        }))
-        .sort((a, b) => a.label.localeCompare(b.label)),
-    },
-    {
       label: "Competitors",
       options: [
         ...blocks.map((entry) => {
@@ -45,6 +36,15 @@ export function buildZenmlComparisonGroups(
             : undefined,
         })),
       ].sort((a, b) => a.label.localeCompare(b.label)),
+    },
+    {
+      label: "Categories",
+      options: categories
+        .map((entry) => ({
+          href: `/vs/${entry.data.slug}`,
+          label: entry.data.hero.compareCategory,
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label)),
     },
   ];
 }

@@ -1,12 +1,12 @@
 /**
- * Feature-grid icons — four isometric marks drawn as inline SVG markup on a
+ * Feature-grid icons — eight isometric marks drawn as inline SVG markup on a
  * 114×114 viewBox, fill/stroke `currentColor`. Rendered with `set:html`
  * inside an `<svg viewBox="0 0 114 114" fill="currentColor">` element.
  *
- * Geometry helpers build isometric cubes/slabs from a top-left origin so the
- * four marks share one construction and read as a family.
+ * Geometry helpers build isometric cubes/slabs from a top vertex so the
+ * marks share one construction and read as a family.
  */
-import type { FeaturePanel } from "../../lib/labs-home";
+import type { FeatureIconId } from "../../lib/featureIcons";
 
 /** Isometric cube: `x,y` is the top vertex; `s` the edge length. */
 function cube(x: number, y: number, s: number): string {
@@ -58,9 +58,40 @@ const shield =
   `<path d="M57 8 L96 22 v30 c0 26 -17 44 -39 54 C35 96 18 78 18 52 V22 Z"/>` +
   `<path d="M40 56 l12 12 l24 -26" fill="none" stroke="var(--color-sage-200)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>`;
 
-export const FEATURE_ICONS: Record<FeaturePanel["icon"], string> = {
+const code =
+  // one lightweight slab "sheet" with an isometric `>_` prompt cut into its face
+  slab(57, 30, 46, 8) +
+  `<path d="M43 43 l13 7.5 l-13 7.5" fill="none" stroke="var(--color-sage-200)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>` +
+  `<path d="M61 55 l15 8.7" fill="none" stroke="var(--color-sage-200)" stroke-width="5" stroke-linecap="round"/>`;
+
+const registry =
+  // two stacked slabs (the versions) under a small tag cube on a connector bar
+  cube(57, 6, 9) +
+  `<path d="M55 22 h4 v14 h-4 z" opacity="0.6"/>` +
+  slab(57, 44, 30, 7) +
+  slab(57, 74, 30, 7);
+
+const hub =
+  // a centre cube with three satellites, joined by connector bars
+  cube(57, 42, 15) +
+  cube(20, 20, 9) +
+  cube(94, 20, 9) +
+  cube(57, 92, 9) +
+  `<path d="M33 34 l14 10 l-3 3 l-14 -10 z" opacity="0.6"/>` +
+  `<path d="M81 34 l-14 10 l3 3 l14 -10 z" opacity="0.6"/>` +
+  `<path d="M55 76 h4 v12 h-4 z" opacity="0.6"/>`;
+
+const people =
+  // two cubes side by side, the near one stepped down and forward
+  cube(40, 26, 17) + cube(76, 48, 14);
+
+export const FEATURE_ICONS: Record<FeatureIconId, string> = {
   pipeline,
   layers,
   "open-box": openBox,
   shield,
+  code,
+  registry,
+  hub,
+  people,
 };

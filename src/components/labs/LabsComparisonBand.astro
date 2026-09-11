@@ -42,13 +42,15 @@ const eyebrowColor = {
     <p class:list={["reveal-child", LABS_INTERIOR_HEADER_INTRO.eyebrow]} style={{ color: eyebrowColor }}>{eyebrow}</p>
     <div class="reveal-child stagger-1 flex w-full flex-col items-center gap-5">
         <div class="flex w-full flex-wrap items-center justify-center gap-3 text-(--color-cream-900)" aria-label={`${product === "kitaru" ? "Kitaru" : "ZenML"} versus ${competitor}`}>
-          {product === "kitaru" ? (
-            <KitaruWordmark class="h-7 w-auto max-w-[150px]" />
-          ) : (
-            <ZenmlWordmark class="h-7 w-auto max-w-[150px]" />
-          )}
+          <span class="flex min-h-[50px] items-center rounded-[12px] border border-(--color-border) bg-card px-6 py-2">
+            {product === "kitaru" ? (
+              <KitaruWordmark class="h-6 w-auto max-w-[140px]" />
+            ) : (
+              <ZenmlWordmark class="h-6 w-auto max-w-[140px]" />
+            )}
+          </span>
           <span class="font-sans text-[15px] leading-5 text-(--color-cream-600)" aria-hidden="true">vs</span>
-          <LabsCompareSwitcher currentLabel={competitor} currentMark={competitorMark} groups={switcherGroups} />
+          <LabsCompareSwitcher currentLabel={competitor} currentMark={competitorMark} groups={switcherGroups} product={product} />
         </div>
         <h1 class:list={[ARTICLE_TITLE_CLASS, "mx-auto max-w-(--article-lane) first-letter:uppercase"]}>
           {headline}

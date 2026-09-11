@@ -1,5 +1,9 @@
 ---
-import { GITHUB_REPO_URL } from "../../lib/githubStars";
+import {
+  GITHUB_ORG_URL,
+  GITHUB_REPO_URL,
+  KITARU_GITHUB_REPO_URL,
+} from "../../lib/githubStars";
 import {
   LABS_DOORS,
   LABS_NAV_LINKS,
@@ -29,13 +33,26 @@ import { getNonDraftLlmopsDatabaseCount } from "../../lib/llmops";
  * The switcher rows are LABS_DOORS (name + lead line + product page), so
  * the nav never retypes product copy.
  *
+ * The GitHub chip (desktop and mobile-panel) also keys off `product`: with
+ * no product it links to the `zenml-io` GitHub organisation and shows no
+ * star count (icon-only pill); on a ZenML product page it links to the
+ * ZenML repo with the live ZenML star count; on a Kitaru product page it
+ * links to the Kitaru repo with the live Kitaru star count. `githubChip`
+ * below derives the href, aria-label and whether to render the count span
+ * once, for both chips to share.
+ *
+ * On a Kitaru product page, every navbar hover/open state (top-level nav
+ * pills, the mobile panel links, the GitHub chip) uses cream-100 instead
+ * of the sage green used everywhere else — `navHoverClass`/`chipHoverClass`
+ * hold the two literal variants so Tailwind's static class scan finds both.
+ *
  * Three items open a hover menu — Products, Docs, Case studies — sharing one
  * behaviour: hover-open with a 130ms close grace, click/keyboard open too,
  * Esc/arrow keys, outside-click/focusout close, and opening one menu closes
  * any other that's open. Docs and Case studies render label+description rows
  * from `labsNavMenus(llmopsCaseStudyCount)` (the Case-studies "LLMOps
- * Database" row's count is fetched here, the same way `Navigation.astro`
- * feeds `createNavDropdowns`); Products keeps its own wordmark rows.
+ * Database" row's count is fetched here, below); Products keeps its own
+ * wordmark rows.
  */
 import KitaruLockup from "../brand/KitaruLockup.astro";
 import KitaruWordmark from "../brand/KitaruWordmark.astro";
@@ -72,17 +89,68 @@ const panelLinks = product
   ? LABS_NAV_LINKS.filter((link) => link.menu !== "products")
   : LABS_NAV_LINKS;
 
-/* Case studies' "LLMOps Database" row needs the live non-draft count, the
- * same way Navigation.astro feeds createNavDropdowns. */
+/* GitHub chip: no product links to the org with no star count; a product
+ * page links to that product's repo, with its live star count (`repo` is
+ * the `data-github-stars-repo` value; omitted, the loader defaults to
+ * "zenml"). `countWidthClass` reserves just enough width for that repo's
+ * typical count so the pill doesn't jump once the client fetch lands, but
+ * doesn't reserve more than the number needs — ZenML's count runs to
+ * five characters ("5,556"), Kitaru's to three ("235") today. */
+interface GithubChipConfig {
+  href: string;
+  ariaLabel: string;
+  showCount: boolean;
+  repo?: "kitaru";
+  countWidthClass: string;
+}
+const GITHUB_CHIP_BY_PRODUCT: Record<LabsProduct, GithubChipConfig> = {
+  zenml: {
+    href: GITHUB_REPO_URL,
+    ariaLabel: "ZenML on GitHub",
+    showCount: true,
+    countWidthClass: "min-w-[5ch]",
+  },
+  kitaru: {
+    href: KITARU_GITHUB_REPO_URL,
+    ariaLabel: "Kitaru on GitHub",
+    showCount: true,
+    repo: "kitaru",
+    countWidthClass: "min-w-[3ch]",
+  },
+};
+const githubChip: GithubChipConfig = product
+  ? GITHUB_CHIP_BY_PRODUCT[product]
+  : {
+      href: GITHUB_ORG_URL,
+      ariaLabel: "ZenML on GitHub",
+      showCount: false,
+      countWidthClass: "",
+    };
+
+/* Case studies' "LLMOps Database" row needs the live non-draft count. */
 const llmopsCaseStudyCount = await getNonDraftLlmopsDatabaseCount();
 const menus = labsNavMenus(llmopsCaseStudyCount);
 
-const navItemClass =
-  "inline-flex h-9 cursor-pointer items-center gap-1 rounded-full px-3.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors hover:bg-(--color-sage-200) aria-[expanded=true]:bg-(--color-sage-200)";
+/* Kitaru pages hover cream, not sage — the top-level nav pills, the
+ * open-menu state and the GitHub chip all share this swap. Full literal
+ * class names are kept on both branches so Tailwind's static scan finds
+ * them (a template-interpolated color fragment would not). */
+const navHoverClass =
+  product === "kitaru"
+    ? "hover:bg-(--color-cream-100) aria-[expanded=true]:bg-(--color-cream-100)"
+    : "hover:bg-(--color-sage-200) aria-[expanded=true]:bg-(--color-sage-200)";
+const chipHoverClass =
+  product === "kitaru"
+    ? "hover:bg-(--color-cream-100)"
+    : "hover:bg-(--color-sage-100)";
+const navItemClass = `inline-flex h-9 cursor-pointer items-center gap-1 rounded-full px-3.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors ${navHoverClass}`;
 const menuRowClass =
   "flex cursor-pointer items-center gap-4 rounded-[14px] border border-transparent px-4 py-2.5 text-foreground transition-colors duration-200 ease-out hover:border-(--color-sage-400) hover:bg-(--color-sage-100)";
-const githubChipClass =
-  "inline-flex h-10 cursor-pointer items-center gap-2 rounded-full px-3 font-label text-[13px] tracking-[0.05em] text-foreground transition-colors duration-200 ease-out hover:bg-(--color-sage-100)";
+const githubChipClass = `inline-flex h-10 cursor-pointer items-center gap-2 rounded-full font-label text-[13px] tracking-[0.05em] text-foreground transition-colors duration-200 ease-out ${chipHoverClass}`;
+/* Icon-only (no product / no count) reads as a 40x40 circle with symmetric
+ * padding; the icon+count chip keeps the wider pill padding. */
+const githubChipPaddingClass = (showCount: boolean) =>
+  showCount ? "px-3" : "px-2.5";
 ---
 
 <div class="pointer-events-none fixed inset-x-0 top-4 z-50 lg:top-8">
@@ -253,14 +321,16 @@ const githubChipClass =
         {/* Counts use the first-party edge-cached /api/github-stars route; this
             link needs no third-party widget or consent gate. */}
         <a
-          href={GITHUB_REPO_URL}
+          href={githubChip.href}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="ZenML on GitHub"
-          class={githubChipClass}
+          aria-label={githubChip.ariaLabel}
+          class={`${githubChipClass} ${githubChipPaddingClass(githubChip.showCount)}`}
         >
           <svg aria-hidden="true" focusable="false" class="h-4 w-4 shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.49-2.7-.95-2.7-.95-.36-.93-.89-1.18-.89-1.18-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.87.87 2.33.67.07-.51.28-.87.51-1.07-1.78-.2-3.65-.88-3.65-3.94 0-.87.31-1.58.82-2.14-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.7 7.7 0 0 1 8 3.87c.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.14 0 3.07-1.87 3.74-3.66 3.94.29.25.54.73.54 1.48v2.2c0 .21.14.46.55.38A8 8 0 0 0 8 0Z" /></svg>
-          <span data-github-stars-count class="min-w-[5ch] tabular-nums"></span>
+          {githubChip.showCount && (
+            <span data-github-stars-count data-github-stars-repo={githubChip.repo} class={`${githubChip.countWidthClass} text-right tabular-nums`}></span>
+          )}
         </a>
         <LabsButton cta={signup} tone={signupTone} />
       </div>
@@ -315,15 +385,24 @@ const githubChipClass =
           {panelLinks.map((link) => (
             <a
               href={link.href}
-              class="cursor-pointer rounded-[12px] px-3 py-2.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors hover:bg-(--color-sage-200)"
+              class={`cursor-pointer rounded-[12px] px-3 py-2.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors ${navHoverClass}`}
             >
               {link.label}
             </a>
           ))}
         </nav>
         <div class="mt-2 flex items-center gap-2">
-          <a href={GITHUB_REPO_URL} target="_blank" rel="noopener noreferrer" aria-label="ZenML on GitHub" class={`${githubChipClass} flex-1 justify-center`}>
-            <svg aria-hidden="true" focusable="false" class="h-4 w-4 shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.49-2.7-.95-2.7-.95-.36-.93-.89-1.18-.89-1.18-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.87.87 2.33.67.07-.51.28-.87.51-1.07-1.78-.2-3.65-.88-3.65-3.94 0-.87.31-1.58.82-2.14-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.7 7.7 0 0 1 8 3.87c.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.14 0 3.07-1.87 3.74-3.66 3.94.29.25.54.73.54 1.48v2.2c0 .21.14.46.55.38A8 8 0 0 0 8 0Z" /></svg><span data-github-stars-count class="min-w-[5ch] tabular-nums"></span>
+          <a
+            href={githubChip.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={githubChip.ariaLabel}
+            class={`${githubChipClass} ${githubChipPaddingClass(githubChip.showCount)} flex-1 justify-center`}
+          >
+            <svg aria-hidden="true" focusable="false" class="h-4 w-4 shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.49-2.7-.95-2.7-.95-.36-.93-.89-1.18-.89-1.18-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.87.87 2.33.67.07-.51.28-.87.51-1.07-1.78-.2-3.65-.88-3.65-3.94 0-.87.31-1.58.82-2.14-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.7 7.7 0 0 1 8 3.87c.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.14 0 3.07-1.87 3.74-3.66 3.94.29.25.54.73.54 1.48v2.2c0 .21.14.46.55.38A8 8 0 0 0 8 0Z" /></svg>
+            {githubChip.showCount && (
+              <span data-github-stars-count data-github-stars-repo={githubChip.repo} class={`${githubChip.countWidthClass} text-right tabular-nums`}></span>
+            )}
           </a>
           <LabsButton cta={signup} tone={signupTone} class="flex-1 px-3" />
         </div>

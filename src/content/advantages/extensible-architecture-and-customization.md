@@ -1,6 +1,7 @@
 ---
 title: "Extensible Architecture and Customization"
 slug: "extensible-architecture-and-customization"
+icon: "layers"
 content: "ZenML's extensible architecture allows you to customize and extend its functionality to fit your specific ML workflow requirements, providing flexibility and adaptability as your needs evolve."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdf3dfc5/667167751e34699260c6b227_img02.png"

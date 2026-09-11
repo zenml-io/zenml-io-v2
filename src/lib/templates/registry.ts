@@ -813,32 +813,6 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
       "Replaces the result region only. Header, chip strip and facet rail all stay exactly in place.",
   },
 
-  // ── legal (Wave 3 PR1, #250) ──────────────────────────────────────────────
-  // Not part of the Rounds A+B design catalog (page-header/data-display/etc.
-  // above) — a Wave 3 addition for the two legal text pages. paperPage: 1
-  // follows the existing "unconfirmed against the real design catalog"
-  // convention used by the section primitives below, not a real citation.
-  {
-    id: "legal.article",
-    kind: "template",
-    componentPath: "src/components/templates/LegalArticle.astro",
-    variantAxes: ["lastUpdated present"],
-    tones: ["default"],
-    responsive: "static",
-    island: false,
-    paperPage: 1,
-    notes:
-      'h1 + optional "Last updated" line for the two legal content pages (privacy-policy, terms-of-service); the body is the page\'s own rendered Markdown passed through the default slot. lastUpdated absent collapses — no line, no gap (privacy-policy has none today).',
-    demoProps: {
-      title: "ZenML GmbH Terms of Service",
-      lastUpdated: "16.02.2024",
-    },
-    demoSlots: {
-      default:
-        "<p>Your data's security and privacy are ZenML's top priorities.</p>",
-    },
-  },
-
   // ── primitives (Paper 1) ─────────────────────────────────────────────────
   {
     id: "mark.hexagon",
@@ -1086,13 +1060,13 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "conversion.shell",
     kind: "template",
     componentPath: "src/components/templates/ConversionShell.astro",
-    variantAxes: ["frame: calendar | form"],
+    variantAxes: ["frame: calendar | form | success"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 1,
     notes:
-      "Two structurally different arrangements selected by `frame`: `calendar` is the two-section Cal-hero shape (success-calendar, schedule-a-demo); `form` is the historical single-section narrow shape above a lead-capture form. The default slot is the conversion widget (CalEmbed or ContactForm island).",
+      "Three structurally different arrangements selected by `frame`: `calendar` is the two-section Cal-hero shape (success-calendar, schedule-a-demo); `form` is the historical single-section narrow shape above a lead-capture form. The default slot is the conversion widget (CalEmbed or ContactForm island). `success` is the band-only thank-you shape (booked, book-success, newsletter-success): headline + HTML deck + up to two pills, no widget.",
     demoProps: {
       headline: "Thanks — pick a time that works for you",
       deck: "We'll be in touch shortly.",
@@ -1194,7 +1168,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Mid-page advantages and CTA. #319 retains this id but uses a sage-50 band, hover cards, one headline and one LabsButton; absent advantages collapse.",
+      "Mid-page advantages and CTA. #319 retains this id but renders one headline and one LabsButton in a grain-backed card on the page ground; absent advantages collapse. The advantages now render as a full-width labs.feature-grid row above that card (numbered, full-tone, isometric icon from the advantage's `icon` field) rather than hover cards with an illustration.",
   },
   {
     id: "comparison.testimonial",
@@ -1233,7 +1207,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "The one comparison-page switcher: hairline pill trigger, grouped menu, 24px row marks, current-page state, visible vertical scrollbar, and vanilla Escape/outside-click/arrow-key/focus-return handling.",
+      "The one comparison-page switcher: hairline 12px-radius trigger (32px mark, 17px label) beside the product wordmark in a card of the same height, grouped menu, 24px row marks, current-page state, visible vertical scrollbar, and vanilla Escape/outside-click/arrow-key/focus-return handling.",
     collectionBound: true,
     contentShape: {
       minItems: 5,
@@ -1330,7 +1304,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Comparison value block on the system Split primitive: prose-first DOM, hairline check rows, framed image media, and slotted diagrams without nested card framing. ZenML diagrams use a sage-300 presentation field and Figma-aligned panel headers with Rethink Sans titles plus Nudica Mono context: sage-100/sage-500 for emphasis and cream-50/cream-200 for neutral panels. Kitaru keeps its product-scoped field. The list arrangement keeps MDX-authored bullet groups.",
+      "Comparison value block on the system Split primitive: prose-first DOM, hairline check rows, framed image media, and slotted diagrams without nested card framing. ZenML diagrams use a sage-300 presentation field and Figma-aligned panel headers with Rethink Sans titles plus Nudica Mono context: sage-100/sage-500 for emphasis and cream-50/cream-200 for neutral panels. Kitaru diagrams sit on a cream-100 field so the well stays warm rather than sage. The list arrangement keeps MDX-authored bullet groups.",
   },
   {
     id: "labs.comparison-showdown",
@@ -1362,7 +1336,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Mid-page strategy section on the sage tint: optional hover-card advantages followed by one card with one heading, optional deck, and one LabsButton.",
+      "Mid-page strategy section: an optional full-width row of labs.feature-grid panels (one per advantage, index and tone by position), then one card on the page ground carrying a LABS_GRAIN.hero GrainBackdrop, one heading, an optional deck, and one LabsButton.",
   },
   // ── labs homepage + shell (rebrand branch; design-catalog pages not assigned yet) ──
   {
@@ -1416,24 +1390,24 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     kind: "template",
     componentPath: "src/components/labs/FeatureGridPanels.astro",
     collectionBound: true,
-    variantAxes: ["panel tone"],
+    variantAxes: ["panel tone", "column count"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 0,
     notes:
-      "Full-bleed row of four fixed panels from `content: readonly FeaturePanel[]` (LABS_FEATURE_PANELS on `/`); tone (sage-tint/sage-deep/canvas/sage-light) picks the panel background and body-text colour. Icons are inline SVG markup from src/components/labs/icons.ts, keyed by panel.icon, rendered via set:html inside a currentColor <svg>. Reflows 4-up to 2x2 at <=1024 and 1-up at 390 (fixed 440px height only at lg and up; auto below).",
+      "Full-bleed row of equal panels from `content: readonly FeaturePanel[]` (LABS_FEATURE_PANELS on `/`); tone (sage-tint/sage-deep/canvas/sage-light) picks the panel background and body-text colour. Icons are inline SVG markup from src/components/labs/icons.ts, keyed by panel.icon, rendered via set:html inside a currentColor <svg>. Reflows to two columns at <=1024 and 1-up at 390. Columns follow the item count: one to four across at lg, five and six wrapping at three columns (3+2, 3+3), so the three advantages of the comparison strategy block fill the width the same way the four homepage panels do. Panel height is a 380px floor, 440px at lg and up, never a cap, so long copy grows the row instead of spilling out.",
     contentShape: {
-      minItems: 4,
-      maxItems: 4,
+      minItems: 1,
+      maxItems: 6,
       oddCount:
-        "Drawn for exactly 4 panels (one per grid column); the layout has no wrap/overflow behaviour for a different count.",
+        "Drawn for 4 panels; 1-3 items narrow the lg column count to match, so the row still fills its width. 5 and 6 wrap at 3 columns, which leaves one empty cell at 5.",
       headingBudget:
-        'Titles drawn for 1 short word (e.g. "Orchestrate", "Replay"); longer titles wrap within the fixed-height panel at lg.',
+        'Titles drawn for 1 short word (e.g. "Orchestrate", "Replay"); longer titles wrap and grow the panel.',
       itemBudget:
-        "Body copy drawn for 1-3 sentences; longer copy pushes the fixed-height lg panel taller than its 3 siblings since there is no internal scroll or truncation.",
+        "Body copy drawn for 1-3 sentences; longer copy grows every panel in the row equally, since the lg height is a floor rather than a cap and there is no internal scroll or truncation.",
       overflow:
-        "None implemented — a 5th panel would just add a 5th grid cell rather than reflowing into the existing 4.",
+        "Panels grow instead of clipping. Past 6 items the column class falls back to 4 across and wraps onto further rows.",
     },
     stage: false,
     demoProps: {},
@@ -1970,7 +1944,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Full-width editorial comparison quote band with top and bottom hairlines, a centered Borna quote, controlled vertical padding and optional attribution. Reuses the Labs GrainBackdrop shader with the sage Labs palette on ZenML comparisons and the restrained orange Kitaru palette on Kitaru comparisons. Source quote, author, role, images and link are preserved; absent attribution collapses.",
+      "Full-width editorial comparison quote band with top and bottom hairlines, a centered Borna quote, controlled vertical padding and optional attribution. Reuses the Labs GrainBackdrop shader with the sage Labs palette on ZenML comparisons and the restrained orange Kitaru palette on Kitaru comparisons. Source quote, author, role, images and link are preserved; absent attribution collapses. The company logo renders centred above the quote in colour, resolved through the temporary `src/lib/quoteLogos.ts` bridge from the collection's white PNGs to local SVGs until the quotes collection points `companyLogo` at colour marks directly; an unresolved logo collapses.",
   },
   {
     id: "labs.comparison-blog-rail",

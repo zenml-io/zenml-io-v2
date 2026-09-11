@@ -41,7 +41,6 @@ const data = getStyleguideData();
  */
 const SCOPE_ORDER = [
   ":root",
-  '[data-app="zenml"]',
   '[data-app="labs"]',
   ".kitaru-brand-vars",
   "@theme",
@@ -92,7 +91,7 @@ const UNRESOLVED = "var(...)";
 
 // ---------------------------------------------------------------------------
 // Type — the four role stacks, resolved for the [data-app="labs"]
-// scope this page renders under, falling back to :root for a role
+// scope the root now carries by default, falling back to :root for a role
 // labs doesn't redeclare (font-mono: code keeps JetBrains Mono
 // everywhere, so labs never overrides it — see global.css's own
 // comment on that scope block).
@@ -319,7 +318,7 @@ const designMdSections = parseDesignRules(designMdRaw);
   noindex
   surface="unified"
 >
-  <div data-app="labs" class="overflow-x-clip bg-background font-sans text-foreground">
+  <div class="overflow-x-clip bg-background font-sans text-foreground">
     <main class="mx-auto max-w-content px-gutter py-space-xxl">
       <!-- ============================================================ -->
       <!-- Header                                                        -->

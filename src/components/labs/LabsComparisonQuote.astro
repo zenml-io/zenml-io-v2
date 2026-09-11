@@ -2,6 +2,7 @@
 import "../../styles/labs-scroll-reveal.css";
 import { KITARU_GRAIN } from "../../lib/kitaru-grain-palettes";
 import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
+import { resolveQuoteLogo } from "../../lib/quoteLogos";
 import { GrainBackdrop } from "../islands/GrainBackdrop";
 
 interface Props {
@@ -22,7 +23,8 @@ const {
   avatar,
   logo,
 } = Astro.props;
-const hasAttribution = Boolean(name || title || avatar || logo);
+const resolvedLogo = logo ? resolveQuoteLogo(logo.url) : undefined;
+const hasAttribution = Boolean(name || title || avatar);
 const kitaru = product === "kitaru";
 ---
 
@@ -34,6 +36,7 @@ const kitaru = product === "kitaru";
   />
 
   <figure class="reveal-child relative mx-auto max-w-content px-gutter text-center">
+    {resolvedLogo && <img src={resolvedLogo.src} alt={resolvedLogo.alt} class="mx-auto mb-6 h-8 w-auto max-w-[160px] object-contain md:mb-8 md:h-10" loading="lazy" />}
     <blockquote class="font-display text-[28px] leading-[36px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[46px]">
       {source ? <a href={source} class="decoration-(--color-sage-400) underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--color-sage-600)">{quote}</a> : quote}
     </blockquote>
@@ -43,7 +46,6 @@ const kitaru = product === "kitaru";
         {name && <p class="font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">{name}</p>}
         {title && <p class="mt-1 font-sans text-[14px] leading-5 text-(--color-cream-700)">{title}</p>}
       </div>}
-      {logo && <img src={logo.url} alt={logo.alt} class="h-6 w-auto max-w-[120px] object-contain" loading="lazy" />}
     </figcaption>}
   </figure>
 </section>

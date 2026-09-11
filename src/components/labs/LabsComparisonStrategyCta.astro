@@ -1,5 +1,14 @@
 ---
-import type { LabsCta } from "../../lib/labs-home";
+/**
+ * LabsComparisonStrategyCta — the closing strategy block of a comparison page.
+ * The advantages render as the homepage feature panels in their own full-width
+ * row; the headline, deck and CTA follow in a grain-backed card that sits
+ * straight on the page background, with no band colour behind it.
+ */
+import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
+import type { FeaturePanel, LabsCta } from "../../lib/labs-home";
+import { GrainBackdrop } from "../islands/GrainBackdrop";
+import FeatureGridPanels from "./FeatureGridPanels.astro";
 import LabsButton from "./LabsButton.astro";
 import "../../styles/labs-scroll-reveal.css";
 
@@ -7,32 +16,37 @@ interface Props {
   headline: string;
   deck?: string;
   cta: LabsCta;
-  advantages?: readonly {
-    title: string;
-    content: string;
-    image?: { url: string; alt?: string };
-  }[];
+  panels?: readonly FeaturePanel[];
 }
-const { headline, deck, cta, advantages = [] } = Astro.props;
+const { headline, deck, cta, panels = [] } = Astro.props;
 ---
 
-<section class="scroll-reveal-section bg-(--color-sage-50) py-8 md:py-10">
-  <div class="scroll-reveal-section mx-auto max-w-content px-gutter">
-    {advantages.length > 0 && (
-      <ul class="scroll-reveal-section mb-12 grid list-none grid-cols-1 gap-6 md:grid-cols-3">
-        {advantages.map((advantage, index) => (
-          <li class:list={["reveal-child rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400)", index === 1 && "stagger-1", index === 2 && "stagger-2", index === 3 && "stagger-3", index >= 4 && "stagger-4"]}>
-            {advantage.image && <img src={advantage.image.url} alt={advantage.image.alt || advantage.title} class="mb-5 h-16 w-16 object-contain" loading="lazy" />}
-            <h3 class="font-display text-[24px] leading-[30px] text-(--color-cream-900)">{advantage.title}</h3>
-            <p class="mt-3 font-sans text-[15px] leading-5 text-(--color-cream-700)">{advantage.content}</p>
-          </li>
-        ))}
-      </ul>
-    )}
-    <div class="reveal-child stagger-4 rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10">
-      <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">{headline}</h2>
-      {deck && <p class="mt-5 max-w-[720px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">{deck}</p>}
-      <div class="mt-8"><LabsButton cta={cta} /></div>
+<section class="scroll-reveal-section">
+  {panels.length > 0 && (
+    <div class="reveal-child">
+      <FeatureGridPanels content={panels} />
+    </div>
+  )}
+  <div class="py-16 md:py-24">
+    <div class="scroll-reveal-section mx-auto max-w-content px-gutter">
+      <div class="reveal-child stagger-4 relative overflow-hidden rounded-[20px] border border-(--color-border) bg-card p-10 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-16 lg:p-20">
+        {
+          /*
+            client:idle, like the other secondary grain panels: the card only
+            needs the shader present, not painted before first contentful paint.
+          */
+        }
+        <GrainBackdrop
+          client:idle
+          config={LABS_GRAIN.hero}
+          class="absolute inset-0 opacity-90"
+        />
+        <div class="relative max-w-[70%] max-lg:max-w-none">
+          <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">{headline}</h2>
+          {deck && <p class="mt-5 font-sans text-[17px] leading-[26px] text-(--color-cream-700)">{deck}</p>}
+          <div class="mt-8"><LabsButton cta={cta} /></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>

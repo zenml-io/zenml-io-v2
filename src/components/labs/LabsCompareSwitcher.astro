@@ -5,17 +5,18 @@ interface Props {
   currentLabel: string;
   currentMark?: { url: string; alt: string };
   groups: readonly CompareSwitcherGroup[];
+  product: "zenml" | "kitaru";
 }
 
-const { currentLabel, currentMark, groups } = Astro.props;
+const { currentLabel, currentMark, groups, product } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, "");
 ---
 
-<div class="relative z-20 min-w-0 max-w-full" data-compare-switcher>
+<div class="relative z-20 min-w-0 max-w-full" data-compare-switcher data-compare-switcher-product={product}>
   <button
     type="button"
     id="compare-switcher-trigger"
-    class="flex min-h-11 max-w-full cursor-pointer items-center gap-3 rounded-full border border-(--color-border) bg-card px-4 py-2 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900) transition-colors duration-200 ease-out hover:border-(--color-sage-400) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-sage-600)"
+    class="flex min-h-11 max-w-full cursor-pointer items-center gap-3 rounded-[12px] border border-(--color-border) bg-card px-4 py-2 font-sans text-[17px] leading-6 font-medium text-(--color-cream-900) transition-colors duration-200 ease-out hover:border-(--color-sage-400) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-sage-600)"
     aria-haspopup="menu"
     aria-expanded="false"
     aria-controls="compare-switcher-menu"
@@ -23,9 +24,9 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "");
     data-compare-switcher-trigger
   >
     {currentMark ? (
-      <img src={currentMark.url} alt="" aria-hidden="true" class="h-10 w-10 shrink-0 object-contain" />
+      <img src={currentMark.url} alt="" aria-hidden="true" class="h-8 w-8 shrink-0 object-contain" />
     ) : (
-      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-(--color-sage-100) font-sans text-[16px] text-(--color-sage-800)" aria-hidden="true">
+      <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-(--color-sage-100) font-sans text-[14px] text-(--color-sage-800)" aria-hidden="true">
         {currentLabel.charAt(0)}
       </span>
     )}
@@ -37,17 +38,14 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "");
 
   <div
     id="compare-switcher-menu"
-    class="compare-switcher-menu absolute top-[calc(100%+8px)] left-0 hidden w-[min(420px,calc(100vw-2*var(--spacing-gutter)))] overflow-hidden rounded-[20px] border border-(--color-border) bg-card"
+    class="compare-switcher-menu absolute top-[calc(100%+8px)] left-0 hidden w-[min(320px,calc(100vw-2*var(--spacing-gutter)))] overflow-hidden rounded-[12px] border border-(--color-border) bg-card text-left"
     role="menu"
     aria-labelledby="compare-switcher-trigger"
     data-compare-switcher-menu
   >
     <div class="compare-switcher-scroll max-h-[60vh] min-h-[min(24rem,60vh)] overflow-y-scroll overscroll-contain">
-      {groups.map((group) => (
-        <section aria-label={group.label}>
-          <h2 class="sticky top-0 z-10 border-b border-(--color-border) bg-(--color-sage-50) px-5 py-2 font-sans text-[13px] leading-4 font-medium text-(--color-cream-700)">
-            {group.label}
-          </h2>
+      {groups.map((group, groupIndex) => (
+        <section aria-label={group.label} class:list={[groupIndex > 0 && "border-t-2 border-(--color-border)"]}>
           <ul class="list-none">
             {group.options.map((option) => (
               <li class="border-b border-(--color-border) last:border-b-0" role="none">
@@ -55,7 +53,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "");
                   href={option.href}
                   role="menuitem"
                   aria-current={option.href.replace(/\/$/, "") === currentPath ? "page" : undefined}
-                  class="group flex min-h-12 items-center gap-3 px-5 py-3 font-sans text-[15px] leading-5 text-(--color-cream-800) transition-colors duration-200 ease-out hover:bg-(--color-sage-50) hover:text-(--color-cream-900) focus-visible:bg-(--color-sage-50) focus-visible:outline-none aria-[current=page]:bg-(--color-sage-100)"
+                  class="group flex min-h-12 items-center gap-3 px-5 py-3 font-sans text-[15px] leading-5 text-(--color-cream-800) transition-colors duration-200 ease-out hover:bg-(--switcher-hover) hover:text-(--color-cream-900) focus-visible:bg-(--switcher-hover) focus-visible:outline-none aria-[current=page]:bg-(--switcher-active)"
                 >
                   {option.mark ? (
                     <img src={option.mark.url} alt="" aria-hidden="true" class="h-6 w-6 shrink-0 object-contain" loading="lazy" />
@@ -64,7 +62,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "");
                       {option.label.charAt(0)}
                     </span>
                   )}
-                  <span class="min-w-0 flex-1 group-hover:underline group-hover:decoration-(--color-sage-400) group-hover:underline-offset-4 group-focus-visible:underline group-focus-visible:underline-offset-4">{option.label}</span>
+                  <span class="min-w-0 flex-1 text-left">{option.label}</span>
                   <svg class="h-4 w-4 shrink-0 text-(--color-cream-500) transition-colors duration-200 ease-out group-hover:text-(--color-sage-800)" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <path d="m7.5 5 5 5-5 5" />
                   </svg>
@@ -79,6 +77,14 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "");
 </div>
 
 <style>
+  [data-compare-switcher] {
+    --switcher-hover: var(--color-sage-50);
+    --switcher-active: var(--color-sage-100);
+  }
+  [data-compare-switcher][data-compare-switcher-product="kitaru"] {
+    --switcher-hover: var(--color-cream-50);
+    --switcher-active: var(--color-cream-100);
+  }
   @media (max-width: 639px) {
     .compare-switcher-menu { position: fixed; top: var(--compare-menu-top); left: var(--spacing-gutter); }
   }

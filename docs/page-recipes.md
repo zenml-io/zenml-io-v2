@@ -55,7 +55,10 @@ layout props.
 `codeComparison` → `LabsCodeCompare`; `strategyCta` →
 `LabsComparisonStrategyCta`; sibling comparisons → `LabsComparisonCard`
 grids; `blogRail` → `LabsComparisonBlogRail` with framed Labs blog cards;
-`cta02` → the full-width comparison arrangement of `LabsCloseCta`.
+`cta02` → the full-width comparison arrangement of `LabsCloseCta`. The
+`strategyCta` advantages render as a full-width `FeatureGridPanels` row, indexed
+and toned by position, each with the mark named by its `icon` field; the CTA
+card below the row sits on the page ground under a `LABS_GRAIN.hero` backdrop.
 **Required data** — `compare` collection; `vs-pages` collection; `advantages`
 collection (strategy-CTA block); `quotes` collection (the `/compare` quote
 block resolves a slug reference; `/vs` inlines its testimonial copy instead);
@@ -475,14 +478,17 @@ two frames, and there's no separate registry template for it.
 templates; the narrow single-column shell around the `ContactForm` island
 stays page-specific.
 
-### Newsletter success
-**Routes** — `/newsletter-success` (one page, noindex).
+### Success pages
+**Routes** — `/booked`, `/book-success`, `/newsletter-success` (3 pages, noindex).
 **Layout** — `BaseLayout`.
 **Surface** — `ml`.
-**Sequence** — `SuccessPanel` with page-specific copy.
-**Required data** — `lib/newsletterSuccess.ts`.
-**Buildable today** — no. `SuccessPanel` is a standalone section component,
-not a registry template, and this is its only consumer.
+**Sequence** — `ConversionShell` (`frame="success"`) with page-specific copy: a
+short band (headline + HTML deck, since these bodies carry `<br>`) and up to
+two `LabsCta` pills (`Success-Primary` on all three, `Success-Secondary` on
+`/newsletter-success` only).
+**Required data** — `lib/booked.ts`, `lib/bookSuccess.ts`, `lib/newsletterSuccess.ts`.
+**Buildable today** — yes. Same three-import shape as the calendar/form pages,
+selected by `ConversionShell`'s `frame` prop.
 
 ### Book Your Demo pages
 **Routes** — `/book-your-demo` (ZenML) and `/book-your-demo/kitaru` (Kitaru
@@ -506,11 +512,12 @@ structurally different conversion page would still start from scratch.
 
 ### Legal text pages
 **Routes** — `/privacy-policy`, `/terms-of-service` (2 pages).
-**Layout** — `ContentLayout`.
+**Layout** — `ContentLayout` (`heading={entry.data.title}`, `deck` set to
+`Last updated {lastUpdated}` when the frontmatter carries it — absent on
+privacy-policy, so the deck collapses rather than leaving a gap).
 **Surface** — `ml`.
-**Sequence** — `LegalArticle` (title + optional "Last updated" line, sourced
-from `lastUpdated` frontmatter — absent on privacy-policy, so that line
-collapses rather than leaving a gap) wrapping the entry's rendered body.
+**Sequence** — `ContentLayout`'s band carries the h1 and deck; the `.prose`
+column below renders the entry's body directly, no separate title component.
 **Required data** — `legal` content collection (raw HTML in Markdown, not
 re-authored markdown syntax).
 **Buildable today** — yes. A third legal page is a new `legal` collection
@@ -518,14 +525,14 @@ entry plus a three-line adapter page.
 
 ### Imprint
 **Routes** — `/imprint` (one page).
-**Layout** — `ContentLayout`.
+**Layout** — `ContentLayout` (`heading="Imprint"`).
 **Surface** — `ml`.
-**Sequence** — an `h1` plus a hand-rolled three-column fact grid (address,
-commercial register, representatives).
+**Sequence** — the band's h1, then a hand-rolled three-column fact grid
+(address, commercial register, representatives) in the `.prose` column.
 **Required data** — `lib/constants` (`COMPANY_ADDRESS`).
 **Buildable today** — no, deliberately. This page is a fact grid, not the
-long-form h1-plus-body shape `LegalArticle` owns, so it was kept out of that
-template on purpose rather than forced to fit.
+long-form legal-body shape the other `ContentLayout` consumers render, so it
+was kept out of that shape on purpose rather than forced to fit.
 
 ---
 
@@ -535,13 +542,11 @@ template on purpose rather than forced to fit.
 **Routes** — `/` (one page).
 **Layout** — `BaseLayout`.
 **Surface** — `unified`.
-**Sequence** — 15 bespoke section components in order: announcement banner,
-hero, two-workspaces intro, logo cloud, two-products, feature tabs, value
-props, integrations marquee, whitepaper CTA, customer stories, news, compliance,
-newsletter signup, FAQ accordion, final CTA.
-**Required data** — `lib/homepage-unified.ts`; `lib/homepageJsonLd.ts`.
-**Buildable today** — no. None of the 15 sections come from the registry;
-this is the site's largest concentration of one-off marketing components.
+**Sequence** — six Labs sections in order: `LabsHero`, `LogoMarquee`,
+`ProductDoors`, `FeatureGridPanels`, `CustomerStoryCards`, `LabsCloseCta`.
+**Required data** — `lib/labs-home.ts`; `lib/homepageJsonLd.ts`.
+**Buildable today** — yes. Every section is a registered `labs.*` component
+(see `docs/agent-reference/labs-shell.md`).
 
 ### Pricing
 **Routes** — `/pricing` (one page).
@@ -737,10 +742,11 @@ plus the registered `ProcessSteps` arrangement.
 
 ### Contact
 **Routes** — `/contact` (one page).
-**Layout** — `ContentLayout`.
+**Layout** — `ContentLayout` (`heading="Contact ZenML"`).
 **Surface** — `unified`.
-**Sequence** — an `h1` plus long-form prose (email, community Slack, sales/
-demos, office address) — no sections beyond the layout's prose wrapper.
+**Sequence** — the band's h1, then long-form prose (email, community Slack,
+sales/demos, office address) in the `.prose` column — no sections beyond the
+layout's prose wrapper.
 **Required data** — `lib/constants` (`COMPANY_ADDRESS`, `CONTACT_EMAIL`).
 **Buildable today** — no. Nothing here comes from the registry; it's plain
 prose in `ContentLayout`, same shape as `/imprint` but without even the fact
@@ -773,9 +779,9 @@ from it yet.
 ### Styleguide
 **Routes** — `/styleguide` (one page, noindex, unlisted).
 **Layout** — `MinimalLayout`.
-**Surface** — `unified` (passed explicitly). Note the page's content renders
-under `data-app="labs"` for the in-progress rebrand scope — that's the
-brand scope, which is a separate axis from the analytics surface.
+**Surface** — `unified` (passed explicitly). The page renders under the
+root `data-app="labs"` scope like every other route — the brand scope is a
+separate axis from the analytics surface.
 **Sequence** — generated sections: design tokens, type scale, spacing scale,
 a live-rendered stage for every built registry entry that doesn't opt out
 via `stage: false` (via `TemplateStage`, using each entry's
@@ -861,9 +867,9 @@ listed first within each verdict group.
 | Kitaru comparison pages (`/compare/kitaru-vs-*`) | partial | Labs shell and every visual section are registered; competitor-specific inline graphics remain authored in MDX |
 | ZenML MDX comparison pages (`/compare/zenml-vs-*` in `compare-zenml`) | partial | Labs shell and every visual section are registered; competitor-specific inline graphics remain authored in MDX |
 | Book Your Demo (`/book-your-demo`, `/book-your-demo/kitaru`) | no | `BookingExperience` covers the whole page and takes a brand, so another variant of this shape is cheap — but it sits outside the registry, and a differently-shaped conversion page gets nothing from it |
-| Newsletter signup (`/newsletter-signup`) | no | two-column, image-paired shape doesn't match either `ConversionShell` frame |
-| Newsletter success (`/newsletter-success`) | no | `SuccessPanel` is a standalone component with one consumer |
-| Imprint (`/imprint`) | no | deliberately a fact grid, not `LegalArticle`'s long-form shape |
+| Newsletter signup (`/newsletter-signup`) | yes | `ConversionShell` (`frame="form"`) wrapping `BrevoNewsletterForm`, single centred column |
+| Success pages (`/booked`, `/book-success`, `/newsletter-success`) | yes | `ConversionShell` (`frame="success"`), band-only thank-you shape |
+| Imprint (`/imprint`) | no | deliberately a fact grid inside `ContentLayout`, not the legal pages' long-form shape |
 | Contact (`/contact`) | no | plain prose in `ContentLayout`, nothing else |
 | 404 (`/404`) | no | small, fully bespoke; no second 404-shaped page to justify extracting from |
 | Styleguide (`/styleguide`) | no | is the registry-rendering tool itself, not a page family |

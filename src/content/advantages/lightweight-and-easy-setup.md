@@ -1,6 +1,7 @@
 ---
 title: "Lightweight and Easy Setup"
 slug: "lightweight-and-easy-setup"
+icon: "code"
 content: "ZenML provides a more lightweight solution with minimal infrastructure requirements, making it easier to set up and start using compared to Databricks' more complex environment."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54938439/667167b34c4aaf843c0fac78_img03.png"

@@ -1,7 +1,12 @@
 ---
 /**
- * FeatureGridPanels — full-bleed row of four equal panels (03 Feature grid).
+ * FeatureGridPanels — a row of equal full-tone panels (03 Feature grid).
  * Panels arrive through the `content` prop (`LABS_FEATURE_PANELS` on `/`).
+ * The row is always full-bleed; the column count follows the item count, so
+ * the comparison strategy block's three advantages fill the width too. Five
+ * and six items wrap at three columns (3+2, 3+3) rather than squeezing one
+ * row. The 440px panel height is a floor, never a cap, so long copy grows
+ * the row instead of spilling out of its panel.
  */
 import type { FeaturePanel, FeaturePanelTone } from "../../lib/labs-home";
 import { FEATURE_ICONS } from "./icons";
@@ -10,6 +15,19 @@ interface Props {
   content: readonly FeaturePanel[];
 }
 const { content } = Astro.props;
+
+/** Explicit class strings so Tailwind sees every column count it must emit. */
+const COLUMN_CLASSES: Record<number, string> = {
+  1: "grid-cols-1",
+  2: "grid-cols-1 sm:grid-cols-2",
+  3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+  4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
+  5: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+  6: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
+};
+const columnClass = COLUMN_CLASSES[content.length] ?? COLUMN_CLASSES[4];
+const PANEL_CLASS =
+  "flex min-h-[380px] flex-col justify-between gap-12 p-8 lg:min-h-[440px] lg:gap-10 lg:p-10";
 
 const TONE_CLASSES: Record<FeaturePanelTone, string> = {
   "sage-tint": "bg-(--color-sage-300) text-(--color-cream-900)",
@@ -26,10 +44,10 @@ const BODY_TONE_CLASSES: Record<FeaturePanelTone, string> = {
 };
 ---
 
-<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+<section class={`grid ${columnClass}`}>
   {content.map((panel) => (
     <div
-      class={`flex min-h-[380px] flex-col justify-between gap-12 p-8 lg:h-[440px] lg:gap-0 lg:p-10 ${TONE_CLASSES[panel.tone]}`}
+      class={`${PANEL_CLASS} ${TONE_CLASSES[panel.tone]}`}
     >
       <div class="flex items-start justify-between">
         <svg

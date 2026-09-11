@@ -1,6 +1,7 @@
 ---
 title: "Built-in Model Registry and Data Versioning"
 slug: "built-in-model-registry-and-data-versioning"
+icon: "registry"
 content: "ZenML offers a built-in model registry for versioning and serving models, as well as seamless integration with data versioning tools like DVC and Pachyderm, ensuring reproducibility and traceability of your ML workflows."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54938439/667167b34c4aaf843c0fac78_img03.png"

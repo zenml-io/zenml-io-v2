@@ -2,9 +2,10 @@
  * Shared types for form / conversion pages.
  *
  * Used by CalEmbed, BrevoNewsletterForm, FormPlaceholder,
- * SuccessPanel, and all data modules in src/lib/.
+ * ConversionShell's `success` frame, and all data modules in src/lib/.
  */
 
+import type { LabsCta } from "./labs-home";
 import type { CtaLink } from "./marketingPageTypes";
 
 /** Cal.com inline embed configuration. */
@@ -56,11 +57,10 @@ export interface ContactFormConfig {
   successDownloadLabel?: string;
 }
 
-/** Data for the SuccessPanel component. */
+/** Data for the ConversionShell `success` frame. */
 export interface SuccessPageData {
   headline: string;
   body?: string;
-  showCheckIcon?: boolean;
-  primaryCta?: CtaLink;
-  secondaryCta?: CtaLink;
+  primaryCta?: LabsCta;
+  secondaryCta?: LabsCta;
 }

@@ -21,6 +21,7 @@ import { basename, extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
+import { FEATURE_ICON_IDS } from "./lib/featureIcons";
 
 // ============================================================================
 // Reusable Schema Helpers
@@ -304,6 +305,12 @@ const advantageSchema = z.object({
   title: z.string(),
   slug: z.string(),
   content: z.string(),
+  /**
+   * The isometric mark the comparison strategy panels render. Required: every
+   * advantage is referenced by a comparison page, so none may fall back.
+   */
+  icon: z.enum(FEATURE_ICON_IDS),
+  /** Legacy illustration, still read by the reference/validation scripts. */
   image: imageSchema.optional(),
   webflow: webflowMetaSchema,
 });
@@ -738,38 +745,6 @@ const projectSchema = z.object({
   webflow: webflowMetaSchema,
 });
 
-/**
- * Old Projects schema
- * Route: N/A (all drafts, not published)
- * Count: 11 items (all draft: true)
- *
- * COMPLETELY DIFFERENT SCHEMA from projects:
- * - Different field set entirely
- * - All items are staged-only drafts in Webflow
- * - Won't generate routes in Phase 3
- */
-const oldProjectSchema = z.object({
-  title: z.string(),
-  slug: z.string(),
-  draft: z.boolean().default(true), // All old-projects are drafts
-
-  // Old project-specific fields
-  date: z.string().optional(),
-  originalDate: z.string().optional(),
-  category: z.string().optional(),
-  tags: z.array(z.string()).default([]),
-  image: imageSchema.optional(),
-  description: z.string().optional(),
-  seoTitle: z.string().optional(),
-  seoDescription: z.string().optional(),
-  readingTime: z.string().optional(),
-  isFeatured: z.boolean().optional(),
-
-  // SEO & Webflow
-  seo: seoSchema,
-  webflow: webflowMetaSchema,
-});
-
 // ============================================================================
 // Feature Pages Schema (Phase 3H-3)
 // ============================================================================
@@ -1101,10 +1076,6 @@ export const collections = {
   projects: defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
     schema: projectSchema,
-  }),
-  "old-projects": defineCollection({
-    loader: glob({ pattern: "**/*.md", base: "./src/content/old-projects" }),
-    schema: oldProjectSchema,
   }),
   "feature-pages": defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/content/feature-pages" }),

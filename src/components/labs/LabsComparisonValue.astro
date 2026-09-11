@@ -43,7 +43,7 @@ const hasBodySlot = Astro.slots.has("default");
             </ul>
           )}
         </div>
-        <div slot="media" class:list={["comparison-diagram-well min-w-0 overflow-hidden rounded-[20px] p-8 md:p-10", !image && `comparison-diagram-well--${product}`, image ? "border border-(--color-border) bg-card transition-colors duration-200 ease-out hover:border-(--color-sage-400)" : product === "zenml" ? "bg-(--color-sage-300)" : "bg-(--color-sage-50)"]}>
+        <div slot="media" class:list={["comparison-diagram-well min-w-0 overflow-hidden rounded-[20px] p-8 md:p-10", !image && `comparison-diagram-well--${product}`, image ? "border border-(--color-border) bg-card transition-colors duration-200 ease-out hover:border-(--color-sage-400)" : product === "zenml" ? "bg-(--color-sage-300)" : "bg-(--color-cream-100)"]}>
           {image ? <img src={image.url} alt={image.alt || title} class="h-auto w-full object-contain" loading="lazy" /> : <slot name="media" />}
         </div>
       </Split>
@@ -53,7 +53,7 @@ const hasBodySlot = Astro.slots.has("default");
         <h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[42px]">{title}</h2>
         {body && <p class="mt-6 max-w-[768px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">{body}</p>}
         {hasBodySlot && <div class="comparison-value-copy mt-6 max-w-[768px] font-sans text-[17px] leading-[26px] text-(--color-cream-800)"><slot /></div>}
-        {hasMedia && <div class:list={["comparison-diagram-well mt-10 min-w-0 overflow-hidden rounded-[20px] p-8 md:p-10", !image && `comparison-diagram-well--${product}`, image ? "border border-(--color-border) bg-card transition-colors duration-200 ease-out hover:border-(--color-sage-400)" : product === "zenml" ? "bg-(--color-sage-300)" : "bg-(--color-sage-50)"]}>{image ? <img src={image.url} alt={image.alt || title} class="mx-auto h-auto w-full object-contain" loading="lazy" /> : <slot name="media" />}</div>}
+        {hasMedia && <div class:list={["comparison-diagram-well mt-10 min-w-0 overflow-hidden rounded-[20px] p-8 md:p-10", !image && `comparison-diagram-well--${product}`, image ? "border border-(--color-border) bg-card transition-colors duration-200 ease-out hover:border-(--color-sage-400)" : product === "zenml" ? "bg-(--color-sage-300)" : "bg-(--color-cream-100)"]}>{image ? <img src={image.url} alt={image.alt || title} class="mx-auto h-auto w-full object-contain" loading="lazy" /> : <slot name="media" />}</div>}
         {hasBulletSlot && <div class="labs-hex-list mt-10"><slot name="bullets" /></div>}
       </div>
     )}
