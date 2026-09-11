@@ -18,9 +18,10 @@ import type {
   FeaturePanelTone,
   LabsProductBandContent,
 } from "../../../lib/labs-home";
-import type {
-  CompareSwitcherGroup,
-  LabsCompareLang,
+import {
+  comparisonDisplayHeading,
+  type CompareSwitcherGroup,
+  type LabsCompareLang,
 } from "../../../lib/labsComparison";
 import FeatureSplit from "../../labs/FeatureSplit.astro";
 import LabsCloseCta from "../../labs/LabsCloseCta.astro";
@@ -291,7 +292,7 @@ if (isCompareProps(props)) {
               { label: item.data.title },
             ]}
             eyebrow={item.data.category || "Comparison"}
-            headline={item.data.hero.headline}
+            headline={comparisonDisplayHeading(item.data.hero.headline, "ZenML")}
             deck={item.data.hero.deck}
             product="zenml"
             competitor={toolName}
@@ -441,7 +442,7 @@ if (isCompareProps(props)) {
               { label: category },
             ]}
             eyebrow={item.data.hero.eyebrow || "Comparison"}
-            headline={item.data.hero.headline}
+            headline={comparisonDisplayHeading(item.data.hero.headline, "ZenML")}
             deck={item.data.hero.deck}
             product="zenml"
             competitor={category}

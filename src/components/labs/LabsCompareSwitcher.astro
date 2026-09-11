@@ -16,7 +16,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "");
   <button
     type="button"
     id="compare-switcher-trigger"
-    class="flex min-h-11 max-w-full cursor-pointer items-center gap-3 rounded-[12px] border border-(--color-border) bg-card px-4 py-2 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900) transition-colors duration-200 ease-out hover:border-(--color-sage-400) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-sage-600)"
+    class="flex min-h-11 max-w-full cursor-pointer items-center gap-3 rounded-[12px] border border-(--color-border) bg-card px-4 py-2 font-sans text-[17px] leading-6 font-medium text-(--color-cream-900) transition-colors duration-200 ease-out hover:border-(--color-sage-400) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-sage-600)"
     aria-haspopup="menu"
     aria-expanded="false"
     aria-controls="compare-switcher-menu"
@@ -24,9 +24,9 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "");
     data-compare-switcher-trigger
   >
     {currentMark ? (
-      <img src={currentMark.url} alt="" aria-hidden="true" class="h-10 w-10 shrink-0 object-contain" />
+      <img src={currentMark.url} alt="" aria-hidden="true" class="h-8 w-8 shrink-0 object-contain" />
     ) : (
-      <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-(--color-sage-100) font-sans text-[16px] text-(--color-sage-800)" aria-hidden="true">
+      <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-(--color-sage-100) font-sans text-[14px] text-(--color-sage-800)" aria-hidden="true">
         {currentLabel.charAt(0)}
       </span>
     )}
