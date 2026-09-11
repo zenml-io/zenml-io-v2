@@ -16,6 +16,7 @@ import type {
   ValuePropsContent,
 } from "./labs-product-zenml";
 import type { CtaLink, FaqData, FeatureGridItem } from "./marketingPageTypes";
+import { defaultOgUrl } from "./seo";
 
 // ---------------------------------------------------------------------------
 // SEO
@@ -27,7 +28,7 @@ export const PRO_SEO = {
   ogTitle: "Managed AI orchestration for your cloud - ZenML Pro",
   ogDescription:
     "Run your AI workflows and agent replays on a fully-managed control plane.",
-  ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
+  ogImage: defaultOgUrl("pages", "pro"),
 } as const;
 
 // ---------------------------------------------------------------------------

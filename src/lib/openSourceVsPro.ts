@@ -13,6 +13,7 @@ import type {
   HeroData,
   SubwayMapCard,
 } from "./marketingPageTypes";
+import { defaultOgUrl } from "./seo";
 
 // ---------------------------------------------------------------------------
 // SEO
@@ -24,7 +25,7 @@ export const OSS_VS_PRO_SEO = {
   ogTitle: "ZenML Open Source vs Cloud",
   ogDescription:
     "Transform your AI workflows from single-player experiments to multiplayer production systems. Compare ZenML Open Source and ZenML Pro features.",
-  ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
+  ogImage: defaultOgUrl("pages", "open-source-vs-pro"),
 } as const;
 
 // ---------------------------------------------------------------------------

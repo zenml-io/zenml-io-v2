@@ -7,6 +7,7 @@
  * Open positions are imported from company.ts (single source of truth).
  */
 import type { CtaLink } from "./marketingPageTypes";
+import { defaultOgUrl } from "./seo";
 
 // ---------------------------------------------------------------------------
 // SEO
@@ -18,7 +19,7 @@ export const CAREERS_SEO = {
   ogTitle: "Careers - ZenML",
   ogDescription:
     "Join the ZenML team. We are quickly growing and looking for motivated team members.",
-  ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
+  ogImage: defaultOgUrl("pages", "careers"),
 } as const;
 
 // ---------------------------------------------------------------------------

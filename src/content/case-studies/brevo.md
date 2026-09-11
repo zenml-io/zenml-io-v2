@@ -32,6 +32,7 @@ seo:
   description: "Brevo, formerly known as Sendinblue, is at the forefront of utilizing machine learning to enhance its email marketing services and streamline operations."
   ogTitle: "Brevo (formerly Sendinblue) and ZenML: Redefining Machine Learning in Email Marketing"
   ogDescription: "Brevo, formerly known as Sendinblue, is at the forefront of utilizing machine learning to enhance its email marketing services and streamline operations."
+  ogImage: "https://assets.zenml.io/og/pages/case-study-brevo.jpg"
 
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
