@@ -28,7 +28,7 @@
 import { readFileSync } from "node:fs";
 import type { ReactElement } from "react";
 import satori from "satori";
-import type { OgBrand } from "../../src/lib/ogCards.js";
+import type { OgBrand, OgLayout } from "../../src/lib/ogCards.js";
 import { type Font, OG_HEIGHT, OG_WIDTH } from "./pipeline.js";
 
 // ---------------------------------------------------------------------------
@@ -61,6 +61,9 @@ const FOOTER = {
 } as const;
 
 const EYEBROW = { x: 80, y: 80 } as const;
+
+/** Hero layout: full-bleed artwork, larger authored title lines. */
+const HERO_TITLE_SIZE = 96;
 
 /** Title steps, largest first. The fitter takes the first one that fits. */
 export const TITLE_SIZES = [80, 68, 56] as const;
@@ -177,9 +180,9 @@ export const LOGOS: Record<OgBrand, Logo> = {
 };
 
 const BRANDS: Record<OgBrand, { palette: Palette; mesh: string }> = {
-  labs: { palette: sage, mesh: "bg-mesh-zenml.jpg" },
-  zenml: { palette: sage, mesh: "bg-mesh-zenml.jpg" },
-  kitaru: { palette: kitaru, mesh: "bg-mesh-kitaru.jpg" },
+  labs: { palette: sage, mesh: "bg-mesh-zenml.jpg", hero: "bg-hero-zenml.jpg" },
+  zenml: { palette: sage, mesh: "bg-mesh-zenml.jpg", hero: "bg-hero-zenml.jpg" },
+  kitaru: { palette: kitaru, mesh: "bg-mesh-kitaru.jpg", hero: "bg-hero-zenml.jpg" },
 };
 
 /** Card background colour: the panel, which is what shows through. */
@@ -389,9 +392,10 @@ export function fitDefaultOg(
   title: string,
   subtitle: string[],
   fonts: Font[],
+  layout: OgLayout = "panel",
 ): Promise<DefaultOgFit> {
   const cache = new Map<string, Promise<Measured>>();
-  return resolveFit(title, subtitle, (text, fontSize, role) => {
+  const measure: Measure = (text, fontSize, role) => {
     const key = `${role}|${fontSize}|${text}`;
     let pending = cache.get(key);
     if (!pending) {
@@ -399,7 +403,45 @@ export function fitDefaultOg(
       cache.set(key, pending);
     }
     return pending;
-  });
+  };
+  return layout === "hero"
+    ? resolveHeroFit(title, subtitle, measure)
+    : resolveFit(title, subtitle, measure);
+}
+
+/**
+ * Hero titles are authored line by line, so nothing is re-wrapped: a line
+ * that does not fit at the hero size is an authoring error, not a fit job.
+ */
+async function resolveHeroFit(
+  title: string,
+  subtitle: string[],
+  measure: Measure,
+): Promise<DefaultOgFit> {
+  const titleLines = title.split("\n").map((line) => line.trim());
+  for (const line of titleLines) {
+    const measured = await measure(line, HERO_TITLE_SIZE, "title");
+    if (measured.overflow || measured.lines !== 1)
+      throw new Error(
+        `Hero title line does not fit on one ${HERO_TITLE_SIZE}px line: "${line}"`,
+      );
+  }
+  const lines = subtitle.map((line) => line.trim()).filter(Boolean);
+  let subtitleLines = 0;
+  for (const line of lines) {
+    const measured = await measure(line, SUBTITLE_SIZE, "subtitle");
+    if (measured.overflow || measured.lines !== 1)
+      throw new Error(`Hero subtitle line does not fit on one line: "${line}"`);
+    subtitleLines += measured.lines;
+  }
+  return {
+    title: titleLines.join("\n"),
+    titleSize: HERO_TITLE_SIZE,
+    subtitle: lines,
+    height:
+      titleBlock(titleLines.length, HERO_TITLE_SIZE) +
+      subtitleBlock(subtitleLines),
+  };
 }
 
 /**
@@ -469,9 +511,13 @@ function estimateFit(title: string, subtitle: string[]): DefaultOgFit {
 
 export interface DefaultOgProps {
   brand: OgBrand;
-  /** Section label in the chip; rendered upper-case. */
+  /** Section label in the chip; rendered upper-case. Unused by `hero`. */
   eyebrow: string;
+  /** Panel-bottom cover, or the full-bleed hero (see `OgCard.layout`). */
+  layout?: OgLayout;
+  /** Ignored by `hero`, which always shows the brand's full-bleed mesh. */
   background: DefaultOgBackground;
+  /** One string; in the `hero` layout `\n` starts a hard second line. */
   title: string;
   /** One string; `\n` starts a hard second line. */
   subtitle: string;
@@ -498,11 +544,14 @@ export function DefaultOg({
   title,
   subtitle,
   fit,
+  layout = "panel",
 }: DefaultOgProps): ReactElement {
-  const layout = fit ?? estimateFit(title, subtitleLinesOf(subtitle));
   const { palette } = BRANDS[brand];
   const logo = LOGOS[brand];
   const logoWidth = Math.round((logo.width * logo.rendered) / logo.height);
+  if (layout === "hero")
+    return HeroOg({ brand, title, subtitle, fit, logoWidth });
+  const layoutFit = fit ?? estimateFit(title, subtitleLinesOf(subtitle));
   return (
     <div
       style={{
@@ -549,15 +598,15 @@ export function DefaultOg({
       >
         <div
           style={{
-            ...titleStyle(layout.titleSize),
+            ...titleStyle(layoutFit.titleSize),
             display: "block",
             width: TEXT_FRAME.width,
             color: palette.title,
           }}
         >
-          {layout.title}
+          {layoutFit.title}
         </div>
-        {layout.subtitle.length > 0 ? (
+        {layoutFit.subtitle.length > 0 ? (
           <div
             style={{
               display: "flex",
@@ -567,7 +616,7 @@ export function DefaultOg({
               color: palette.subtitle,
             }}
           >
-            {layout.subtitle.map((line) => (
+            {layoutFit.subtitle.map((line) => (
               <div
                 key={line}
                 style={{
@@ -600,6 +649,126 @@ export function DefaultOg({
           height={logo.rendered}
           alt=""
         />
+        <div style={{ ...monoStyle(400), color: palette.muted }}>
+          {SITE_LABEL}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Full-bleed variant: the brand mesh edge to edge, the logo where the chip
+ * sits on the panel layout, copy anchored above the footer, and the site
+ * label alone on the footer row.
+ */
+function HeroOg({
+  brand,
+  title,
+  subtitle,
+  fit,
+  logoWidth,
+}: {
+  brand: OgBrand;
+  title: string;
+  subtitle: string;
+  fit?: DefaultOgFit;
+  logoWidth: number;
+}): ReactElement {
+  const { palette } = BRANDS[brand];
+  const logo = LOGOS[brand];
+  const titleLines = (fit?.title ?? title).split("\n");
+  const subtitleLines = fit?.subtitle ?? subtitleLinesOf(subtitle);
+  const titleSize = fit?.titleSize ?? HERO_TITLE_SIZE;
+  const height =
+    fit?.height ??
+    titleBlock(titleLines.length, titleSize) +
+      subtitleBlock(subtitleLines.length);
+  return (
+    <div
+      style={{
+        width: OG_WIDTH,
+        height: OG_HEIGHT,
+        display: "flex",
+        position: "relative",
+        overflow: "hidden",
+        backgroundColor: palette.panel,
+      }}
+    >
+      <img
+        src={artwork(BRANDS[brand].hero)}
+        width={OG_WIDTH}
+        height={OG_HEIGHT}
+        alt=""
+        style={{ position: "absolute", left: 0, top: 0 }}
+      />
+      <img
+        src={artwork(logo.file)}
+        width={logoWidth}
+        height={logo.rendered}
+        alt=""
+        style={{ position: "absolute", left: EYEBROW.x, top: EYEBROW.y }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          left: TEXT_FRAME.x,
+          top: FOOTER.y - COPY_FOOTER_GAP - height,
+          width: TEXT_FRAME.width,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {titleLines.map((line) => (
+          <div
+            key={line}
+            style={{
+              ...titleStyle(titleSize),
+              display: "block",
+              width: TEXT_FRAME.width,
+              color: palette.title,
+            }}
+          >
+            {line}
+          </div>
+        ))}
+        {subtitleLines.length > 0 ? (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              marginTop: TITLE_SUBTITLE_GAP,
+              width: TEXT_FRAME.width,
+              color: palette.subtitle,
+            }}
+          >
+            {subtitleLines.map((line) => (
+              <div
+                key={line}
+                style={{
+                  ...subtitleStyle,
+                  display: "block",
+                  width: TEXT_FRAME.width,
+                }}
+              >
+                {line}
+              </div>
+            ))}
+          </div>
+        ) : null}
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: FOOTER.x,
+          top: FOOTER.y,
+          width: FOOTER.width,
+          height: FOOTER.height,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+        }}
+      >
         <div style={{ ...monoStyle(400), color: palette.muted }}>
           {SITE_LABEL}
         </div>

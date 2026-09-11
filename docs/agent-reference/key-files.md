@@ -115,6 +115,11 @@ Borna (title 80→68→56 px, subtitle 44 px, two lines max) and Nudica Mono
 (chip and site label); the WOFF siblings live in `public/fonts/` and are
 listed in `FONT_SPECS` in `scripts/og/pipeline.ts`. Database cards use the
 entry title with `Company · Year` beneath and the database name in the chip.
+A card with `layout: "hero"` (the homepage) drops the panel and chip: the
+brand mesh runs edge to edge (`bg-hero-*.jpg`, full 1920×1080), the logo sits
+where the chip would, the title is authored line by line with `\n` at 96 px
+and is not re-wrapped (a line that does not fit fails the render), and only
+`ZENML.IO` stays in the footer.
 
 Cards are keyed by `DefaultOgFamily` (`llmops` | `mlops` | `pages`) via
 `DEFAULT_OG_PREFIX` in `src/lib/constants.ts` and `defaultOgUrl(family, slug)`

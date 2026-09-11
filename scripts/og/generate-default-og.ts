@@ -30,7 +30,7 @@ import {
   DEFAULT_OG_PREFIX,
   type DefaultOgFamily,
 } from "../../src/lib/constants.js";
-import { OG_CARDS, type OgBrand } from "../../src/lib/ogCards.js";
+import { OG_CARDS, type OgBrand, type OgLayout } from "../../src/lib/ogCards.js";
 import {
   DefaultOg,
   type DefaultOgBackground,
@@ -72,6 +72,7 @@ export interface DefaultOgEntry {
   slug: string;
   brand: OgBrand;
   eyebrow: string;
+  layout: OgLayout;
   background: DefaultOgBackground;
   title: string;
   subtitle: string;
@@ -137,6 +138,7 @@ export async function loadDefaultEntries(
       slug: card.key,
       brand: card.brand ?? "labs",
       eyebrow: card.eyebrow,
+      layout: card.layout ?? "panel",
       background: pickDefaultOgBackground(`${family}/${card.key}`),
       title: card.title,
       subtitle: card.subtitle,
@@ -157,6 +159,7 @@ export async function loadDefaultEntries(
         slug,
         brand,
         eyebrow,
+        layout: "panel",
         background: pickDefaultOgBackground(`${family}/${slug}`),
         title: frontmatter.title,
         subtitle: databaseSubtitle(frontmatter, eyebrow),
@@ -177,11 +180,13 @@ export async function renderDefaultJpeg(
     entry.title,
     subtitleLinesOf(entry.subtitle),
     fonts,
+    entry.layout,
   );
   return renderOgJpeg(
     DefaultOg({
       brand: entry.brand,
       eyebrow: entry.eyebrow,
+      layout: entry.layout,
       background: entry.background,
       title: entry.title,
       subtitle: entry.subtitle,

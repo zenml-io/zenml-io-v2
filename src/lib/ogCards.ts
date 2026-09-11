@@ -15,6 +15,8 @@ import { DEFAULT_DESCRIPTION } from "./constants";
 /** Which logo and palette a card carries. */
 export type OgBrand = "labs" | "zenml" | "kitaru";
 
+export type OgLayout = "panel" | "hero";
+
 export type OgCard = {
   /** Route slug; also the R2 filename. */
   key: string;
@@ -22,6 +24,11 @@ export type OgCard = {
   eyebrow: string;
   /** Logo and palette; ZenML Labs unless the page belongs to one product. */
   brand?: OgBrand;
+  /**
+   * `hero`: full-bleed artwork, the logo where the chip would be, and a
+   * title whose lines are authored with `\n`. Panel-bottom otherwise.
+   */
+  layout?: OgLayout;
   /** Headline, fitted from 80px down to 56px by the generator. */
   title: string;
   /** Up to two lines at 44px; `\n` forces the break. */
@@ -46,7 +53,8 @@ export const OG_CARDS: readonly OgCard[] = [
   {
     key: "home",
     eyebrow: "ZenML Labs",
-    title: "Ship AI to production, on infrastructure you own",
+    layout: "hero",
+    title: "Ship AI to production,\non infrastructure you own",
     subtitle:
       "ZenML Labs is the unified infrastructure layer for AI in production",
   },
