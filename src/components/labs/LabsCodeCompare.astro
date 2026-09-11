@@ -1,0 +1,38 @@
+---
+import type { LabsCompareLang } from "../../lib/labsComparison";
+import LabsCodePane from "./LabsCodePane.astro";
+import "../../styles/labs-scroll-reveal.css";
+
+interface Props {
+  title?: string;
+  eyebrow?: string;
+  primaryLabel: string;
+  competitorLabel: string;
+  primaryCode: string;
+  competitorCode: string;
+  primaryLang?: LabsCompareLang;
+  competitorLang?: LabsCompareLang;
+}
+
+const {
+  title = "Code comparison",
+  eyebrow,
+  primaryLabel,
+  competitorLabel,
+  primaryCode,
+  competitorCode,
+  primaryLang = "python",
+  competitorLang = primaryLang,
+} = Astro.props;
+---
+
+<section class="scroll-reveal-section py-8 md:py-10">
+  <div class="reveal-child mx-auto max-w-content px-gutter">
+    {eyebrow && <p class="font-sans text-[15px] leading-5 text-(--color-cream-700)">{eyebrow}</p>}
+    {title && <h2 class:list={["font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]", eyebrow && "mt-3"]}>{title}</h2>}
+    <div class="mt-10 grid min-w-0 grid-cols-1 items-start gap-6 lg:grid-cols-2">
+      <LabsCodePane label={primaryLabel} code={primaryCode} lang={primaryLang} />
+      <LabsCodePane label={competitorLabel} code={competitorCode} lang={competitorLang} />
+    </div>
+  </div>
+</section>

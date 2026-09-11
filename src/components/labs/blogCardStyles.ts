@@ -13,6 +13,10 @@
  */
 
 export const BLOG_CARD_ARTICLE = "group flex cursor-pointer flex-col gap-4";
+export const BLOG_CARD_FRAMED_ARTICLE =
+  "group flex h-full cursor-pointer flex-col gap-3 overflow-hidden rounded-[20px] border border-(--color-border) bg-card pt-6 pb-6 transition-colors duration-200 ease-out hover:border-(--blog-accent-400) focus-within:border-(--blog-accent-400) has-[>a]:pt-0 [&>a+*]:mt-3 [&>h3]:mx-6 [&>p]:mx-6 [&>div]:mx-6";
+export const BLOG_CARD_FRAMED_MEDIA_LINK =
+  "block aspect-video shrink-0 overflow-hidden border-b border-(--color-border)";
 
 export const BLOG_CARD_MEDIA_LINK =
   "block aspect-video overflow-clip rounded-[6px] border border-(--color-border) transition-colors duration-200 ease-out group-hover:border-(--blog-accent-400)";

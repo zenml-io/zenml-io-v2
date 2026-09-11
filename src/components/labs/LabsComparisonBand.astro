@@ -1,0 +1,64 @@
+---
+import { ARTICLE_TITLE_CLASS, blogLaneStyle } from "../../lib/blogLayout";
+import { buildBreadcrumbJsonLd } from "../../lib/breadcrumb";
+import type { CompareSwitcherGroup } from "../../lib/labsComparison";
+import KitaruWordmark from "../brand/KitaruWordmark.astro";
+import ZenmlWordmark from "../brand/ZenmlWordmark.astro";
+import JsonLd from "../seo/JsonLd.astro";
+import { LABS_INTERIOR_HEADER_INTRO } from "../templates/pageHeaderPresets";
+import LabsBand from "./LabsBand.astro";
+import LabsCompareSwitcher from "./LabsCompareSwitcher.astro";
+import "../../styles/labs-scroll-reveal.css";
+
+interface Props {
+  breadcrumb: readonly [{ label: string; href: string }, { label: string }];
+  eyebrow: string;
+  headline: string;
+  deck?: string;
+  product: "zenml" | "kitaru";
+  competitor: string;
+  competitorMark?: { url: string; alt: string };
+  switcherGroups: readonly CompareSwitcherGroup[];
+}
+
+const {
+  breadcrumb,
+  eyebrow,
+  headline,
+  deck,
+  product,
+  competitor,
+  competitorMark,
+  switcherGroups,
+} = Astro.props;
+const eyebrowColor = {
+  zenml: "var(--color-sage-800)",
+  kitaru: "var(--color-orange-600)",
+}[product];
+---
+
+<LabsBand size="short" grain={product === "kitaru" ? "kitaru" : "labs"} class="comparison-header-band">
+  <div class="comparison-header-content scroll-reveal-section flex flex-col items-center gap-4 text-center" style={blogLaneStyle()}>
+    <p class:list={["reveal-child", LABS_INTERIOR_HEADER_INTRO.eyebrow]} style={{ color: eyebrowColor }}>{eyebrow}</p>
+    <div class="reveal-child stagger-1 flex w-full flex-col items-center gap-5">
+        <div class="flex w-full flex-wrap items-center justify-center gap-3 text-(--color-cream-900)" aria-label={`${product === "kitaru" ? "Kitaru" : "ZenML"} versus ${competitor}`}>
+          {product === "kitaru" ? (
+            <KitaruWordmark class="h-7 w-auto max-w-[150px]" />
+          ) : (
+            <ZenmlWordmark class="h-7 w-auto max-w-[150px]" />
+          )}
+          <span class="font-sans text-[15px] leading-5 text-(--color-cream-600)" aria-hidden="true">vs</span>
+          <LabsCompareSwitcher currentLabel={competitor} currentMark={competitorMark} groups={switcherGroups} />
+        </div>
+        <h1 class:list={[ARTICLE_TITLE_CLASS, "mx-auto max-w-(--article-lane)"]}>
+          {headline}
+        </h1>
+    </div>
+    {deck && <p class="reveal-child stagger-2 max-w-[768px] font-sans text-[18px] leading-7 text-(--color-cream-700)">{deck}</p>}
+  </div>
+</LabsBand>
+<JsonLd data={buildBreadcrumbJsonLd([...breadcrumb])} />
+
+<style>
+  :global(.comparison-header-band) { overflow: visible; isolation: isolate; z-index: 40; }
+</style>

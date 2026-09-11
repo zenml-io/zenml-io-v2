@@ -15,6 +15,8 @@ import {
   BLOG_CARD_CATEGORY,
   BLOG_CARD_CATEGORY_STATIC,
   BLOG_CARD_EXCERPT,
+  BLOG_CARD_FRAMED_ARTICLE,
+  BLOG_CARD_FRAMED_MEDIA_LINK,
   BLOG_CARD_MEDIA_IMAGE,
   BLOG_CARD_MEDIA_LINK,
   BLOG_CARD_META_ROW,
@@ -25,6 +27,7 @@ import {
 } from "./blogCardStyles";
 
 export interface BlogCardProps {
+  variant?: "default" | "framed";
   href: string;
   title: string;
   excerpt?: string;
@@ -40,6 +43,7 @@ export interface BlogCardProps {
 }
 
 export function BlogCard({
+  variant = "default",
   href,
   title,
   excerpt,
@@ -53,20 +57,28 @@ export function BlogCard({
   product,
 }: BlogCardProps) {
   const isKitaru = product === "kitaru";
+  const showProductPill = isKitaru && variant !== "framed";
   // When the card's own category IS "kitaru", the pill doubles as the
   // category link (dedupe: no separate "Kitaru" category token beside it).
   // The card's root is an <article>, not an <a> — the title link
   // (after:absolute after:inset-0) is a sibling anchor, not a wrapper — so
   // a pill-as-link here never nests inside another anchor.
-  const categoryIsKitaruPill = isKitaru && categorySlug === "kitaru";
+  const categoryIsKitaruPill = showProductPill && categorySlug === "kitaru";
   const showCategoryToken = !!categoryName && !categoryIsKitaruPill;
   return (
     <article
-      class={`${BLOG_CARD_ARTICLE} relative`}
+      class={`${variant === "framed" ? BLOG_CARD_FRAMED_ARTICLE : BLOG_CARD_ARTICLE} relative`}
       data-product={isKitaru ? "kitaru" : undefined}
     >
       {image && (
-        <a href={href} class={BLOG_CARD_MEDIA_LINK}>
+        <a
+          href={href}
+          class={
+            variant === "framed"
+              ? BLOG_CARD_FRAMED_MEDIA_LINK
+              : BLOG_CARD_MEDIA_LINK
+          }
+        >
           <img
             src={image.url}
             alt={image.alt || title}
@@ -79,10 +91,10 @@ export function BlogCard({
         </a>
       )}
 
-      {(showCategoryToken || readingTime || isKitaru) && (
+      {(showCategoryToken || readingTime || showProductPill) && (
         <div class={BLOG_CARD_META_ROW}>
           <span class="inline-flex items-center gap-2">
-            {isKitaru &&
+            {showProductPill &&
               (categoryIsKitaruPill ? (
                 <a href="/category/kitaru" class={BLOG_CARD_PRODUCT_PILL_LINK}>
                   Kitaru

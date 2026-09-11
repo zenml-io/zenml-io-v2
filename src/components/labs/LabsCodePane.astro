@@ -1,0 +1,26 @@
+---
+// biome-ignore lint/style/useImportType: Astro component import is used below.
+import { Code } from "astro:components";
+import type { LabsCompareLang } from "../../lib/labsComparison";
+import labsLight from "../../styles/labs-light.json";
+import "../../styles/labs-code-pane.css";
+
+interface Props {
+  label: string;
+  code: string;
+  lang?: LabsCompareLang;
+}
+const { label, code, lang = "python" } = Astro.props;
+type CodeLang = Parameters<typeof Code>[0]["lang"];
+const codeTheme = labsLight as unknown as Parameters<typeof Code>[0]["theme"];
+---
+
+<figure class="labs-code-pane code-pane" data-language={lang} aria-label={`${label} implementation`}>
+  <div class="code-pane__bar">
+    <span>{label}</span>
+    <button type="button" class="code-pane__copy" aria-label={`Copy ${label} code`}>Copy</button>
+  </div>
+  <div class="code-pane__scroll">
+    <Code code={code.trim()} lang={lang as CodeLang} theme={codeTheme} />
+  </div>
+</figure>

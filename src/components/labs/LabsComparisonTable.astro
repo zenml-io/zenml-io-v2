@@ -1,0 +1,116 @@
+---
+import "../../styles/labs-scroll-reveal.css";
+import { TABLE_SCROLL_HINT_TEXT } from "../../lib/rehypeTableScroll";
+import SpecTable from "../templates/SpecTable.astro";
+
+export type ComparisonStatus = boolean | "yes" | "partial" | "no";
+
+interface StructuredRow {
+  feature: string;
+  primary: ComparisonStatus;
+  competitor: ComparisonStatus;
+  note?: string;
+}
+
+type Props =
+  | {
+      mode: "structured";
+      primaryLabel: string;
+      competitorLabel: string;
+      rows: readonly StructuredRow[];
+      tableHtml?: never;
+      title?: string;
+    }
+  | {
+      mode: "html";
+      primaryLabel: string;
+      competitorLabel: string;
+      tableHtml: string;
+      rows?: never;
+      title?: string;
+    };
+
+const props = Astro.props;
+const normalise = (status: ComparisonStatus): "yes" | "partial" | "no" => {
+  if (status === true) return "yes";
+  if (status === false) return "no";
+  return status;
+};
+const cellValue = (status: ComparisonStatus) => {
+  const value = normalise(status);
+  return value === "partial" ? "Partial support" : value === "yes";
+};
+const hasNotes =
+  props.mode === "structured" && props.rows.some((row) => row.note);
+
+const escapeHtml = (value: string) =>
+  value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+
+const accessibleTableHtml =
+  props.mode === "html"
+    ? props.tableHtml
+        .replace(
+          "<table>",
+          `<table><thead><tr><th scope="col">Feature</th><th scope="col">${escapeHtml(props.primaryLabel)}</th><th scope="col">${escapeHtml(props.competitorLabel)}</th></tr></thead>`,
+        )
+        .replace(/(<tr>\s*)<td>([\s\S]*?)<\/td>/g, '$1<th scope="row">$2</th>')
+        .replace(
+          /<td class="tooltip">\s*<span class="icon (yes|no)"><\/span>\s*<span class="tooltiptext">([\s\S]*?)<\/span>\s*<\/td>/g,
+          (_match, status: "yes" | "no", detail: string) =>
+            `<td><div class="comparison-cell"><svg class="icon ${status}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="${status === "yes" ? "M20 6L9 17l-5-5" : "M17 7L7 17M7 7l10 10"}"/></svg><span class="sr-only">${status === "yes" ? "Yes" : "Not supported"}</span><p>${detail}</p></div></td>`,
+        )
+    : undefined;
+---
+
+<section class="scroll-reveal-section py-8 md:py-10">
+  <div class="reveal-child mx-auto max-w-content px-gutter">
+    {props.title && <h2 class="mb-10 font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">{props.title}</h2>}
+    <div class="comparison-table-ui">
+      {props.mode === "structured" ? (
+        <SpecTable
+          skin="labs"
+          rowHeaderLabel="Feature"
+          columns={[props.primaryLabel, props.competitorLabel, ...(hasNotes ? ["What that means"] : [])]}
+          sections={[{ rows: props.rows.map((row) => ({ label: row.feature, values: [cellValue(row.primary), cellValue(row.competitor), ...(hasNotes ? [row.note ?? ""] : [])] })) }]}
+          statusLabels={{ positive: "Yes", negative: "Not supported" }}
+          class={`comparison-spec-table${hasNotes ? " has-notes" : ""}`}
+        />
+      ) : (
+        <div class="comparison-table-frame relative overflow-x-auto rounded-[20px] border border-(--color-border) bg-card" tabindex="0" aria-label={`${props.primaryLabel} and ${props.competitorLabel} comparison table`}>
+          <div class="legacy-comparison-table" set:html={accessibleTableHtml} />
+        </div>
+      )}
+      <p class="table-scroll__hint" aria-hidden="true"><svg viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" /></svg>{TABLE_SCROLL_HINT_TEXT}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .comparison-table-frame { scrollbar-color: var(--color-sage-500) var(--color-sage-100); }
+  .comparison-table-frame:focus-visible { outline: 2px solid var(--color-sage-600); outline-offset: 4px; }
+  .legacy-comparison-table :global([data-rt-embed-type]) { display: contents; }
+  .legacy-comparison-table :global(table) { width: 100%; min-width: 720px; border-collapse: collapse; table-layout: fixed; }
+  .legacy-comparison-table :global(tr) { border-bottom: 1px solid var(--color-border); }
+  .legacy-comparison-table :global(tr:last-child) { border-bottom: 0; }
+  .legacy-comparison-table :global(th) { padding: 16px 24px; border-bottom: 1px solid var(--color-border); font-family: var(--font-sans); font-size: 15px; line-height: 20px; font-weight: 500; color: var(--color-cream-900); text-align: center; }
+  .legacy-comparison-table :global(th:first-child) { position: sticky; left: 0; z-index: 3; background: var(--color-card); text-align: left; color: var(--color-cream-600); }
+  .legacy-comparison-table :global(tbody th:first-child) { width: 34%; padding: 16px 24px; vertical-align: top; text-align: left; color: var(--color-cream-900); }
+  .legacy-comparison-table :global(td) { padding: 16px 24px; vertical-align: top; font-family: var(--font-sans); font-size: 15px; line-height: 20px; color: var(--color-cream-800); }
+  .legacy-comparison-table :global(td:first-child) { position: sticky; left: 0; z-index: 2; width: 34%; background: var(--color-card); font-weight: 500; color: var(--color-cream-900); }
+  .legacy-comparison-table :global(td:not(:first-child)) { width: 33%; text-align: center; }
+  .legacy-comparison-table :global(.comparison-cell) { position: relative; display: grid; grid-template-columns: 20px minmax(0, 1fr); align-items: start; gap: 12px; text-align: left; }
+  .legacy-comparison-table :global(.comparison-cell p) { margin: 0; font-family: var(--font-sans); font-size: 15px; line-height: 20px; color: var(--color-cream-800); }
+  .legacy-comparison-table :global(.icon) { display: inline-block; width: 20px; height: 20px; }
+  .legacy-comparison-table :global(.icon.yes) { color: var(--color-sage-700); }
+  .legacy-comparison-table :global(.icon.no) { color: var(--color-cream-400); }
+  .legacy-comparison-table :global(td[colspan]) { background: var(--color-sage-50); padding: 10px 24px; font-size: 13px; line-height: 16px; color: var(--color-cream-700); }
+  .comparison-table-ui { container-type: inline-size; }
+  .comparison-table-ui :global(.has-notes th:last-child), .comparison-table-ui :global(.has-notes td:last-child) { text-align: left; }
+  .table-scroll__hint { display: none; align-items: center; gap: 8px; margin-top: 10px; font-family: var(--font-sans); font-size: 12px; line-height: 16px; color: var(--color-cream-600); }
+  .table-scroll__hint svg { width: 14px; height: 14px; flex-shrink: 0; stroke: currentColor; }
+  @container (max-width: 720px) { .table-scroll__hint { display: flex; } }
+</style>

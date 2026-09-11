@@ -1126,12 +1126,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Renders an ordered blocks[] for both families off one discriminated union keyed on the content collection. `/compare` uses tool hero, nine block kinds, and a gradient padded closing CTA; `/vs` uses the category hero, five kinds, a `<main>` wrapper, and an unpadded CTA. Page-level, so it is never stage-rendered.",
+      "Renders an ordered blocks[] for both families off one discriminated union keyed on the content collection. Cut over for #319: both use the short Labs band, shared section primitives, the complete ZenML comparison switcher, scroll reveal, and LabsCloseCta. Page-level, so it is never stage-rendered.",
   },
   {
     id: "comparison.hero-tool",
     kind: "template",
-    componentPath: "src/components/sections/compare/CompareHero.astro",
+    componentPath: "src/components/labs/LabsComparisonBand.astro",
     variantAxes: ["tool icon present"],
     tones: ["default"],
     responsive: "reflow",
@@ -1139,12 +1139,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "ZenML-vs-one-tool hero: paired product marks, headline, deck, two CTAs. Selected by the `compare` collection.",
+      "Historical blocks hero id. #319 replaced its implementation with labs.comparison-band: eyebrow-first short shader band with breadcrumb JSON-LD but no visible breadcrumb, one headline and deck, and the complete switcher; both old hero CTAs collapse.",
   },
   {
     id: "comparison.hero-category",
     kind: "template",
-    componentPath: "src/components/sections/VsHero.astro",
+    componentPath: "src/components/labs/LabsComparisonBand.astro",
     variantAxes: ["eyebrow present"],
     tones: ["default"],
     responsive: "reflow",
@@ -1152,12 +1152,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "ZenML-vs-a-category hero for the 3 `/vs/*` routes. Carries an eyebrow the tool hero has no slot for.",
+      "Historical category-hero id. #319 replaced its implementation with labs.comparison-band and groups the three category routes at the top of the complete ZenML switcher; both old hero CTAs collapse.",
   },
   {
     id: "comparison.feature-table",
     kind: "template",
-    componentPath: "src/components/sections/compare/CompareFeatureHeader.astro",
+    componentPath: "src/components/labs/LabsComparisonTable.astro",
     variantAxes: ["row count"],
     tones: ["default"],
     responsive: "reflow",
@@ -1165,13 +1165,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Two-column yes/no scorecard. Known debt, tracked for the rebrand: no table semantics (the visible header row is a sibling div), yes/no carried only by a CSS background-image on an empty span served from a third-party legacy CDN, and the reasoning lives in a hover-only tooltip.",
+      "The blocks tableHtml scorecard. #319 retains this id but renders through labs.comparison-table: real table headings, sticky first column, sage checks and cream crosses, and always-visible supporting text instead of hover-only tooltips or disclosure controls.",
   },
   {
     id: "comparison.code-compare",
     kind: "template",
-    componentPath:
-      "src/components/sections/compare/CompareCodeComparison.astro",
+    componentPath: "src/components/labs/LabsCodeCompare.astro",
     variantAxes: ["language pair"],
     tones: ["default"],
     responsive: "collapse",
@@ -1179,12 +1178,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Side-by-side ZenML/competitor code panes, highlighted at build time. Both languages default to python when a fence carries no tag.",
+      "Side-by-side ZenML/competitor code panes. #319 retains this id but renders two labs.code-pane instances with the site code-pane markup and labs-light build highlighting.",
   },
   {
     id: "comparison.strategy-cta",
     kind: "template",
-    componentPath: "src/components/sections/compare/CompareStrategyCta.astro",
+    componentPath: "src/components/labs/LabsComparisonStrategyCta.astro",
     variantAxes: ["advantage count"],
     tones: ["brand"],
     responsive: "reflow",
@@ -1192,12 +1191,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Mid-page tinted band: a headline plus advantage cards resolved from the advantages collection. Renders a three-column grid, so it reads thin at one or two advantages.",
+      "Mid-page advantages and CTA. #319 retains this id but uses a sage-50 band, hover cards, one headline and one LabsButton; absent advantages collapse.",
   },
   {
     id: "comparison.testimonial",
     kind: "template",
-    componentPath: "src/components/sections/VsTestimonial.astro",
+    componentPath: "src/components/labs/LabsComparisonQuote.astro",
     variantAxes: ["avatar present", "company logo present"],
     tones: ["inverted"],
     responsive: "reflow",
@@ -1205,12 +1204,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Single dark-band quote. Fed by a slug reference on `/compare` and by inline block copy on `/vs`; 7 of the 25 compare entries have no quote and render no band at all.",
+      "Comparison quote id. #319 retains it while both slug-backed `quote` and inline `testimonial` render through labs.comparison-quote: a full-width editorial band, centered Borna quote, visible quote mark and optional attribution. This supersedes the initial story-card arrangement; absent quotes and attribution still collapse.",
   },
   {
     id: "comparison.final-cta",
     kind: "template",
-    componentPath: "src/components/sections/VsCta02.astro",
+    componentPath: "src/components/labs/LabsCloseCta.astro",
     variantAxes: ["variant (dark | gradient)", "padded"],
     tones: ["default", "brand"],
     responsive: "reflow",
@@ -1218,7 +1217,144 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      'Closing CTA with bullets and an image. `/compare` passes variant="gradient" and padded; `/vs` passes neither — the two call-sites are deliberately different and must stay so.',
+      "Historical closing CTA id. #319 removes the old family distinction: both close on the full-width comparison arrangement of LabsCloseCta with the source headline, deck and primary pill; the secondary CTA, install bar, link row and image collapse.",
+  },
+  {
+    id: "labs.compare-switcher",
+    kind: "template",
+    componentPath: "src/components/labs/LabsCompareSwitcher.astro",
+    variantAxes: ["group count", "option count", "current mark present"],
+    tones: ["default"],
+    responsive: "scroll",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "The one comparison-page switcher: hairline pill trigger, grouped menu, 24px row marks, current-page state, visible vertical scrollbar, and vanilla Escape/outside-click/arrow-key/focus-return handling.",
+    collectionBound: true,
+    contentShape: {
+      minItems: 5,
+      maxItems: 38,
+      overflow:
+        "The menu keeps a viewport-bounded height and vertical scrollbar; every option remains keyboard reachable.",
+    },
+  },
+  {
+    id: "labs.comparison-band",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonBand.astro",
+    variantAxes: ["product", "competitor mark present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Comparison-page short band composed from labs.band: eyebrow first, rebrand product wordmark, headline, deck and labs.compare-switcher. The shared product variant selects Kitaru grain and an orange-600 eyebrow for Kitaru, sage-800 for ZenML; both retain the established uppercase label typography. No visible breadcrumb is rendered; its BreadcrumbList JSON-LD is preserved. MDX layouts derive the visible headline without the duplicated product/competitor prefix while preserving source titles and SEO metadata.",
+  },
+  {
+    id: "labs.code-compare",
+    kind: "template",
+    componentPath: "src/components/labs/LabsCodeCompare.astro",
+    variantAxes: ["language pair", "eyebrow present"],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Two build-highlighted labs-light panes in the site's code-pane markup. Each pane scrolls independently and keeps its copy control outside the scroll region.",
+  },
+  {
+    id: "labs.comparison-prose",
+    kind: "template",
+    componentPath: "src/components/compare/ComparisonProse.tsx",
+    variantAxes: ["Markdown element"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Server-rendered MDX element adapters isolate prose typography from embedded Labs sections. Paragraphs and headings use the reading lane; narrative matrices scroll in a Labs frame; fenced code uses the shared code-pane markup and chrome. No hydration.",
+  },
+  {
+    id: "labs.code-pane",
+    kind: "template",
+    componentPath: "src/components/labs/LabsCodePane.astro",
+    variantAxes: ["language"],
+    tones: ["default"],
+    responsive: "scroll",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "One build-highlighted labs-light pane in the site's code-pane markup. Used directly by MDX feature graphics and twice by labs.code-compare.",
+  },
+  {
+    id: "labs.comparison-table",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonTable.astro",
+    variantAxes: ["structured rows | converted HTML", "notes column present"],
+    tones: ["default"],
+    responsive: "scroll",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "The Labs comparison matrix shared by blocks and MDX: 20px frame, hairline rows, sticky feature column, sage check and cream cross, sentence-case headers, and no alternating tint. Legacy tooltip cells become keyboard-reachable details rows.",
+    collectionBound: true,
+    contentShape: {
+      minItems: 1,
+      maxItems: 40,
+      overflow:
+        "Wide or long matrices scroll inside their framed region while the first column stays pinned.",
+    },
+  },
+  {
+    id: "labs.comparison-value",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonValue.astro",
+    variantAxes: ["split | list", "media side", "media present"],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Comparison value block on the system Split primitive: prose-first DOM, hairline check rows, and framed image or slotted media; the list arrangement keeps MDX-authored bullet groups.",
+  },
+  {
+    id: "labs.comparison-showdown",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonShowdown.astro",
+    variantAxes: ["item count per side"],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Even-handed two-card showdown for ZenML or Kitaru against another tool: shared card anatomy, hover border, sentence-case labels, and hairline bullet rows.",
+    collectionBound: true,
+    contentShape: {
+      minItems: 2,
+      maxItems: 14,
+      overflow: "Each side grows vertically with its authored list.",
+    },
+  },
+  {
+    id: "labs.comparison-strategy-cta",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonStrategyCta.astro",
+    variantAxes: ["advantage count", "deck present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Mid-page strategy section on the sage tint: optional hover-card advantages followed by one card with one heading, optional deck, and one LabsButton.",
   },
   // ── labs homepage + shell (rebrand branch; design-catalog pages not assigned yet) ──
   {
@@ -1345,13 +1481,13 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "labs.close-cta",
     kind: "template",
     componentPath: "src/components/labs/LabsCloseCta.astro",
-    variantAxes: ["headline copy"],
+    variantAxes: ["headline copy", "default | comparison preset"],
     tones: ["default"],
     responsive: "reflow",
     island: true,
     paperPage: 0,
     notes:
-      "Copy arrives through `content: LabsProductBandContent` (LABS_CLOSE on `/`, ZENML_CLOSE on `/product/zenml`; a product page adds the dark-tone install chip under the pill). Mounts GrainBackdrop client:idle deliberately - the hero shader is the page's one always-on ambient island, so this one hydrates once the browser is idle instead of competing with it.",
+      "Copy arrives through `content: LabsProductBandContent` (LABS_CLOSE on `/`, ZENML_CLOSE on `/product/zenml`; a product page adds the dark-tone install chip under the pill). Mounts GrainBackdrop client:idle deliberately - the hero shader is the page's one always-on ambient island, so this one hydrates once the browser is idle instead of competing with it. The comparison preset uses the section-heading scale and shorter padding for long comparison pages; the default homepage and product treatment is unchanged. Review refinement: comparison closes are full-width dark-sage bands with centered content, 32/38 mobile and 44/50 desktop Borna headings, 64/80px vertical padding, the supplied deck and exactly one pill.",
     stage: false,
     demoProps: {},
   },
@@ -1455,7 +1591,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Blog cutover card (the approved blog design, DESIGN.md): chrome-less, 16:9 media, hover border+zoom+title-colour. Preact twin at BlogCard.tsx (used by the `/blog` index's DataFilterIndex island — an Astro component can't render inside a Preact island) sharing every class string with the Astro twin via blogCardStyles.ts, so the two markups can't drift. Only slot that never collapses is the title; the whole card is one link target for it, category/author stay separate links. Live consumers: the `/blog` index grid and term-hub.editorial's grid (category/author hubs, blog cutover D2d) — each item there also carries data-page + hidden markers for HubPagination. (RelatedRail's own `blog-card` item kind still renders the pre-cutover `src/components/blog/BlogCard.astro`, a separate component — untouched by this cutover.)",
+      "Blog cutover card (the approved blog design, DESIGN.md): chrome-less, 16:9 media, hover border+zoom+title-colour. Preact twin at BlogCard.tsx (used by the `/blog` index's DataFilterIndex island — an Astro component can't render inside a Preact island) sharing every class string with the Astro twin via blogCardStyles.ts, so the two markups can't drift. Only slot that never collapses is the title; the whole card is one link target for it, category/author stay separate links. Live consumers: the `/blog` index grid and term-hub.editorial's grid (category/author hubs, blog cutover D2d) — each item there also carries data-page + hidden markers for HubPagination. (RelatedRail's own `blog-card` item kind still renders the pre-cutover `src/components/blog/BlogCard.astro`, a separate component — untouched by this cutover.) The named framed variant, shared by the Astro and Preact twins through blogCardStyles.ts, adds a white surface, 20px frame and product-accent border hover for comparison reading rails; the default blog output is unchanged.",
     stage: false,
     demoProps: {
       href: "/blog/agents-are-not-microservices",
@@ -1591,7 +1727,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 4,
     notes:
-      'Shared customer-logo card for homepage stories, case-study index and sibling rail. Light sage gradient with subtle static grain; title reuses the blog card typography. A discriminated `kind: "quote"` arrangement renders a testimonial instead: a blockquote over an attribution footer (avatar, name, title, optional trailing company logo) on the same card shell — used where the source data is quotes rather than case-study links (e.g. /pro).',
+      'Shared customer-logo card for homepage stories, case-study index and sibling rail. Light sage gradient with subtle static grain; title reuses the blog card typography. A discriminated `kind: "quote"` arrangement renders a testimonial instead: a blockquote over an attribution footer (avatar, name, title, optional trailing company logo) on the same card shell — used where the source data is quotes rather than case-study links (e.g. /pro). Attribution fields and the footer collapse when the source supplies none.',
     stage: false,
     demoProps: {},
   },
@@ -1742,7 +1878,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 29,
     notes:
-      "One research-database entry as a row: title (the chevron appears on hover, centered on the row's right edge), the record's meta line (company · platform · content type · year · industry, each token taking its middot with it when the entry has no such field), a two-line summary and the first DATABASE_ROW_CHIPS_VISIBLE tag chips plus a '+N' pill. The listing counterpart of labs.blog-card, and built on the same twin pattern: EntryRow.astro for server-rendered listings, EntryRow.tsx for the filter islands (an Astro component can't render inside a Preact island), both importing every class string and the row's data shape from entryRowStyles.ts so they can't drift. Server-side the chips are links to the tag hubs and the industry reads as text; inside the island both are filter controls (aria-pressed buttons) that sit above the stretched title link. Rows are separated by a --color-border hairline; hover and focus-within paint a light --color-sage-50 wash across the row, reveal a chevron centered on the row's right edge, and draw a 1px underline under the title that sweeps each wrapped line left to right in reading order (DESIGN.md \"Entry rows, not cards\"). An optional `mark` (24px logo, object-contain) renders left of the title when present — absence collapses to the plain heading; the compare hub is its first consumer. Consumers: the /llmops-database and /mlops-database islands, and the tag and industry hubs.",
+      "One research-database entry as a row: title (the chevron appears on hover, centered on the row's right edge), the record's meta line (company · platform · content type · year · industry, each token taking its middot with it when the entry has no such field), a two-line summary and the first DATABASE_ROW_CHIPS_VISIBLE tag chips plus a '+N' pill. The listing counterpart of labs.blog-card, and built on the same twin pattern: EntryRow.astro for server-rendered listings, EntryRow.tsx for the filter islands (an Astro component can't render inside a Preact island), both importing every class string and the row's data shape from entryRowStyles.ts so they can't drift. Server-side the chips are links to the tag hubs and the industry reads as text; inside the island both are filter controls (aria-pressed buttons) that sit above the stretched title link. Rows are separated by a --color-border hairline; hover and focus-within paint a light --color-sage-50 wash across the row, reveal a chevron centered on the row's right edge, and draw a 1px underline under the title that sweeps each wrapped line left to right in reading order (DESIGN.md \"Entry rows, not cards\"). An optional `mark` (24px logo, object-contain) renders left of the title when present — absence collapses to the plain heading. Comparison hubs and related comparison navigation instead use labs.comparison-card. Consumers: the /llmops-database and /mlops-database islands, and the tag and industry hubs.",
     stage: false,
     demoProps: {
       href: "/llmops-database/building-a-systematic-snap-benefits-llm-evaluation-framework",
@@ -1801,6 +1937,45 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
         { name: "Evaluation", href: "/llmops-tags/evaluation", count: 201 },
       ],
     },
+  },
+  {
+    id: "labs.comparison-card",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonCard.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    stage: false,
+    notes:
+      "Compact comparison catalogue card: 40px competitor mark beside one title and a two-line CSS-clamped description whose full text remains in the DOM. Neither product renders a per-card metadata or category row; source metadata remains available to other consumers. The /compare hub uses explicit one-, two- and three-column grids, preserving product grouping and source order. Sage hairline border, hover wash, the shared EntryRow per-line title underline sweep and keyboard focus; missing marks or copy collapse. This replaces the hub's entry rows under the comparison cutover review ruling. The same component also renders blocks showdown navigation and /vs related comparisons, taking existing hub descriptions by href while preserving each section's original links, marks, titles and order; decision-content showdown cards remain separate.",
+  },
+  {
+    id: "labs.comparison-quote",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonQuote.astro",
+    variantAxes: ["product", "attribution present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Full-width editorial comparison quote band with a centered Borna quote, oversized decorative quote mark, controlled vertical padding and optional attribution. Reuses the original comparison figure anatomy without the floating card frame. Sage/cream throughout; the Kitaru product variant colors only the quote mark orange-600. Source quote, author, role, images and link are preserved; absent attribution collapses.",
+  },
+  {
+    id: "labs.comparison-blog-rail",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonBlogRail.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Comparison related-reading band using the exact labs.blog-card Astro twin's named framed variant: white card surface, 1px hairline frame, 20px radius, canonical image/content typography and product-accent hover. Explicit one-to-two-to-three-column grid with three supplied articles in one desktop row. Keeps the supplied heading and article order, copies source image/title/excerpt unchanged, and derives product accent semantics from the shared blog domain helper. This replaces the comparison blogRail's legacy blog cards without changing the blog/database default related bands; zero items collapse. Framed covers meet the top and side borders and clip to the card radius; content alone is inset, cards stretch to equal grid-row heights, and the framed variant suppresses the Kitaru badge while retaining product-accent variables.",
   },
 ];
 

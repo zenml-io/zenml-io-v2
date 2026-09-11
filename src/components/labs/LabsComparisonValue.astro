@@ -1,0 +1,65 @@
+---
+import Split from "../system/layout/Split.astro";
+import "../../styles/labs-scroll-reveal.css";
+
+interface Props {
+  title: string;
+  body?: string;
+  bullets?: readonly string[];
+  image?: { url: string; alt?: string };
+  mediaSide?: "left" | "right";
+  number?: string;
+  layout?: "split" | "list";
+}
+
+const {
+  title,
+  body,
+  bullets = [],
+  image,
+  mediaSide = "right",
+  number,
+  layout = "split",
+} = Astro.props;
+const hasMedia = Boolean(image) || Astro.slots.has("media");
+const hasBulletSlot = Astro.slots.has("bullets");
+const hasBodySlot = Astro.slots.has("default");
+---
+
+<section class="scroll-reveal-section py-8 md:py-10">
+  <div class="reveal-child mx-auto max-w-content px-gutter">
+    {layout === "split" && hasMedia ? (
+      <Split mediaSide={mediaSide} space="mlg" alignY="center">
+        <div>
+          {number && <p class="font-sans text-[15px] leading-5 text-(--color-sage-700)">{number}</p>}
+          <h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[42px]">{title}</h2>
+          {body && <p class="mt-6 font-sans text-[17px] leading-[26px] text-(--color-cream-700)">{body}</p>}
+          {hasBodySlot && <div class="comparison-value-copy mt-6 font-sans text-[17px] leading-[26px] text-(--color-cream-800)"><slot /></div>}
+          {bullets.length > 0 && (
+            <ul class="mt-8 flex list-none flex-col">
+              {bullets.map((bullet) => <li class="flex items-start gap-3 border-t border-(--color-border) py-3 font-sans text-[16px] leading-6 text-(--color-cream-800) first:border-t-0"><svg class="mt-0.5 h-4 w-4 shrink-0 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5" /></svg><span>{bullet}</span></li>)}
+            </ul>
+          )}
+        </div>
+        <div slot="media" class="min-w-0 overflow-hidden rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10">
+          {image ? <img src={image.url} alt={image.alt || title} class="h-auto w-full object-contain" loading="lazy" /> : <slot name="media" />}
+        </div>
+      </Split>
+    ) : (
+      <div>
+        {number && <p class="font-sans text-[15px] leading-5 text-(--color-sage-700)">{number}</p>}
+        <h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[42px]">{title}</h2>
+        {body && <p class="mt-6 max-w-[768px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">{body}</p>}
+        {hasBodySlot && <div class="comparison-value-copy mt-6 max-w-[768px] font-sans text-[17px] leading-[26px] text-(--color-cream-800)"><slot /></div>}
+        {hasMedia && <div class="mt-10 min-w-0 overflow-hidden rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10">{image ? <img src={image.url} alt={image.alt || title} class="mx-auto h-auto w-full object-contain" loading="lazy" /> : <slot name="media" />}</div>}
+        {hasBulletSlot && <div class="labs-hex-list mt-10"><slot name="bullets" /></div>}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .comparison-value-copy { overflow-wrap: anywhere; }
+  .comparison-value-copy :global(.comparison-prose + .comparison-prose) { margin-top: 12px; }
+  .comparison-value-copy :global(.comparison-prose:first-child p) { padding-top: 0; }
+</style>

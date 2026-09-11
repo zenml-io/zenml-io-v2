@@ -11,11 +11,13 @@ import LabsInstallChip from "./LabsInstallChip.astro";
 
 interface Props {
   content: LabsProductBandContent;
+  preset?: "default" | "comparison";
 }
-const { content } = Astro.props;
+const { content, preset = "default" } = Astro.props;
+const comparison = preset === "comparison";
 ---
 
-<section class="relative overflow-hidden bg-(--color-sage-900) pt-24 pb-20 text-(--color-cream-50) md:pt-44 md:pb-40">
+<section class={comparison ? "relative overflow-hidden bg-(--color-sage-900) py-16 text-(--color-cream-50) md:py-20" : "relative overflow-hidden bg-(--color-sage-900) pt-24 pb-20 text-(--color-cream-50) md:pt-44 md:pb-40"}>
   {
     /*
       client:idle on purpose: the hero shader (LabsHero) is the page's one
@@ -30,16 +32,23 @@ const { content } = Astro.props;
     class="absolute inset-0 opacity-90"
   />
 
-  <div class="relative mx-auto max-w-content px-gutter">
-    <h2 class="font-display text-[44px] leading-[48px] text-(--color-cream-50) md:text-[72px] md:leading-[78px]">
+  <div class={comparison ? "relative mx-auto flex max-w-content flex-col items-center px-gutter text-center" : "relative mx-auto max-w-content px-gutter"}>
+    <h2 class={comparison ? "max-w-[768px] font-display text-[32px] leading-[38px] text-(--color-cream-50) md:text-[44px] md:leading-[50px]" : "font-display text-[44px] leading-[48px] text-(--color-cream-50) md:text-[72px] md:leading-[78px]"}>
       {content.headlineLines[0]}
+      {comparison && " "}
       <br />
       {content.headlineLines[1]}
     </h2>
 
-    <p class="mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)">
-      {content.deck}
-    </p>
+    {Astro.slots.has("deck") ? (
+      <div class="labs-close-deck mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)">
+        <slot name="deck" />
+      </div>
+    ) : content.deck && (
+      <p class="mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)">
+        {content.deck}
+      </p>
+    )}
 
     <div class="mt-10 flex flex-wrap items-center gap-7">
       <LabsButton cta={content.cta} tone="sage" />
@@ -52,3 +61,9 @@ const { content } = Astro.props;
     )}
   </div>
 </section>
+
+<style>
+  .labs-close-deck :global(.comparison-prose) { color: inherit; }
+  .labs-close-deck :global(.comparison-prose p) { padding-top: 0; }
+  .labs-close-deck :global(.comparison-prose a) { color: var(--color-cream-50); text-decoration-color: var(--color-sage-300); }
+</style>
