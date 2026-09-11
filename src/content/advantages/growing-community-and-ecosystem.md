@@ -1,6 +1,7 @@
 ---
 title: "Growing Community and Ecosystem"
 slug: "growing-community-and-ecosystem"
+icon: "people"
 content: "ZenML has a growing community and ecosystem, providing you with resources, support, and opportunities to collaborate with other ML practitioners."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54938439/667167b34c4aaf843c0fac78_img03.png"

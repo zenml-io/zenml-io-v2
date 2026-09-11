@@ -1,19 +1,40 @@
 ---
 /**
- * MLOps Database listing page.
+ * MLOps Database listing page, in the ZenML Labs shell (`app="labs"`,
+ * `surface="ml"`) — the same sequence as `/llmops-database` and `/blog`:
+ * short shader band, the shared `DataFilterIndex` island skinned "labs",
+ * closing CTA band. The one difference between the two databases is the
+ * rail's third group: MLOps entries carry a content type (`?type=`), an
+ * extra single-select facet the LLMOps side has no equivalent for.
  *
- * Server-side: resolves tag/industry display names, passes them to a Preact island.
- * Client-side: the MlopsIndex island fetches /mlops-index.json and handles filtering,
- * search, sorting, pagination, and URL state in the browser.
+ * Server-side: resolves tag/industry display names and the entry count, and
+ * renders the no-JS fallback. Client-side: the MlopsIndex island fetches
+ * /mlops-index.json and handles filtering, search, sorting, pagination and
+ * URL state in the browser.
  *
  * Route: /mlops-database
  */
 import { getCollection } from "astro:content";
+import {
+  TERM_CHIP,
+  TERM_CHIP_HEXAGON_PATH,
+  TERM_CHIP_HEXAGON_VIEWBOX,
+  TERM_CHIP_OVERFLOW,
+} from "../../components/blog/termChipStyles";
 import MlopsIndex from "../../components/islands/filter-index/MlopsIndex";
-import BrevoNewsletterForm from "../../components/sections/BrevoNewsletterForm.astro";
-import SectionIntro from "../../components/system/SectionIntro.astro";
+import BlogNewsletterCta from "../../components/labs/BlogNewsletterCta.astro";
+import LabsHero from "../../components/labs/LabsHero.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { BAND_CONTENT_GAP, blogLaneStyle } from "../../lib/blogLayout";
+import {
+  DATABASE_CTA,
+  DATABASE_PAGE_SIZE,
+  DATABASES,
+} from "../../lib/databases";
 import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
+
+const copy = DATABASES.mlops;
 
 const allTags = (await getCollection("mlops-tags"))
   .map((tag) => ({ slug: tag.data.slug, name: tag.data.name }))
@@ -26,83 +47,109 @@ const allIndustries = (await getCollection("industry-tags"))
 const entryCount = (
   await getCollection("mlops-database", ({ data }) => !data.draft)
 ).length;
+
+/** The no-JS fallback lists the first 20 topics, then says how many are left. */
+const NOSCRIPT_TAGS = 20;
+const noscriptTags = allTags.slice(0, NOSCRIPT_TAGS);
+const noscriptTagOverflow = allTags.length - noscriptTags.length;
+const GROUP_LABEL = "text-[13px] font-medium text-(--color-cream-700)";
 ---
 
 <BaseLayout
-  title="MLOps Database - ZenML"
-  description={`Explore ${entryCount} real-world MLOps case studies, platforms, and production machine learning implementations. Filter by topic, industry, content type, and more.`}
+  ogImage={hasDefaultOgCard("pages", "mlops-database") ? defaultOgUrl("pages", "mlops-database") : undefined}
+  title={copy.seoTitle}
+  description={copy.seoDescription(entryCount)}
   surface="ml"
+  app="labs"
 >
-  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <header class="mb-10">
-      <SectionIntro
-        eyebrow="Machine Learning Operations"
-        heading="MLOps Database"
-        headingLevel={1}
-        description={`Explore ${entryCount} real-world MLOps case studies, platforms, and production ML systems. Filter by topic, industry, or search for specific companies and platforms.`}
-        classOverrides={{
-          eyebrow: "text-sm font-semibold uppercase tracking-wider text-success-700",
-          heading: "text-4xl font-bold tracking-tight text-gray-900",
-          headingSpacing: "mt-3",
-          description: "max-w-2xl text-lg text-gray-600",
-        }}
-      />
-    </header>
+  <div style={blogLaneStyle()}>
+    <LabsHero band="short" content={{ headline: copy.name, deck: copy.description(entryCount) }} />
 
-    <MlopsIndex
-      client:load
-      tags={allTags}
-      industries={allIndustries}
-      pageSize={24}
-    />
+    <section class:list={["scroll-reveal-section pb-24", BAND_CONTENT_GAP]}>
+      <div class="reveal-child stagger-1 mx-auto max-w-content px-gutter">
+        <MlopsIndex
+          client:load
+          tags={allTags}
+          industries={allIndustries}
+          entryCount={entryCount}
+          pageSize={DATABASE_PAGE_SIZE}
+        />
 
-    <noscript>
-      <div class="mt-8 rounded-lg border border-gray-200 bg-gray-50 p-6">
-        <p class="mb-4 text-sm text-gray-700">
-          JavaScript is required for the interactive filter. Browse by category instead:
-        </p>
-        <div class="space-y-4">
-          <div>
-            <h2 class="mb-2 text-sm font-semibold text-gray-900">Browse by MLOps Topic</h2>
-            <div class="flex flex-wrap gap-2">
-              {allTags.slice(0, 20).map((tag) => (
-                <a
-                  href={`/mlops-tags/${tag.slug}`}
-                  class="rounded-full bg-success-50 px-3 py-1 text-xs font-medium text-success-700 hover:bg-success-100"
-                >
-                  {tag.name}
-                </a>
-              ))}
-              {allTags.length > 20 && (
-                <span class="text-xs text-gray-400">+{allTags.length - 20} more</span>
-              )}
+        <noscript>
+          <div class="flex flex-col gap-8">
+            <p class="text-[15px] leading-6 text-(--color-cream-700)">{copy.noscriptIntro}</p>
+            <div class="flex flex-col gap-3">
+              <h2 class={GROUP_LABEL}>Browse by MLOps topic</h2>
+              <div class="flex flex-wrap gap-2">
+                {noscriptTags.map((tag) => (
+                  <a href={`/mlops-tags/${tag.slug}`} class={TERM_CHIP}>
+                    <svg viewBox={TERM_CHIP_HEXAGON_VIEWBOX} class="h-[14px] w-3 fill-(--color-sage-600)" aria-hidden="true">
+                      <path d={TERM_CHIP_HEXAGON_PATH} />
+                    </svg>
+                    {tag.name}
+                  </a>
+                ))}
+                {noscriptTagOverflow > 0 && (
+                  <span class={TERM_CHIP_OVERFLOW}>+{noscriptTagOverflow} more</span>
+                )}
+              </div>
+            </div>
+            <div class="flex flex-col gap-3">
+              <h2 class={GROUP_LABEL}>Browse by industry</h2>
+              <div class="flex flex-wrap gap-2">
+                {allIndustries.map((industry) => (
+                  <a href={`/industry-tags/${industry.slug}`} class={TERM_CHIP}>
+                    <svg viewBox={TERM_CHIP_HEXAGON_VIEWBOX} class="h-[14px] w-3 fill-(--color-sage-600)" aria-hidden="true">
+                      <path d={TERM_CHIP_HEXAGON_PATH} />
+                    </svg>
+                    {industry.name}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
-          <div>
-            <h2 class="mb-2 text-sm font-semibold text-gray-900">Browse by Industry</h2>
-            <div class="flex flex-wrap gap-2">
-              {allIndustries.map((industry) => (
-                <a
-                  href={`/industry-tags/${industry.slug}`}
-                  class="rounded-full bg-zenml-50 px-3 py-1 text-xs font-medium text-zenml-700 hover:bg-zenml-100"
-                >
-                  {industry.name}
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
+        </noscript>
       </div>
-    </noscript>
+    </section>
 
-    <section class="mt-16 rounded-md border border-gray-200 bg-gray-50 px-8 py-10 sm:px-12">
-      <h2 class="text-xl font-semibold text-gray-900">Looking to Get Ahead in MLOps?</h2>
-      <p class="mt-2 max-w-xl text-sm text-gray-600">
-        Subscribe to the ZenML newsletter and receive regular product updates, tutorials, examples, and more.
-      </p>
-      <div class="mt-6">
-        <BrevoNewsletterForm config={BREVO_LLMOPS_CONFIG} />
+    <section class="scroll-reveal-section">
+      <div class="reveal-child stagger-1">
+        <BlogNewsletterCta content={DATABASE_CTA} brevo={BREVO_LLMOPS_CONFIG} />
       </div>
     </section>
   </div>
 </BaseLayout>
+
+<style>
+  /* House scroll-reveal pattern (reference: blog/index.astro). The hidden
+   * start state applies only once the script has armed the section, so the
+   * server-rendered page is fully visible without JS. */
+  .reveal-child {
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-1 { transition-delay: 60ms; }
+
+  .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-child,
+    .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollReveal);
+  } else {
+    initScrollReveal();
+  }
+</script>

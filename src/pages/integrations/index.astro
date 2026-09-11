@@ -1,20 +1,25 @@
 ---
 /**
- * Integrations hub page — matches Webflow layout.
+ * Integrations hub page, on the ZenML Labs shell (integrations cutover
+ * #318): short shader band (eyebrow + headline + deck), the labs skin of
+ * the `IntegrationsIndex` filter island (search + type facet + grid), then
+ * one closing CTA band.
  *
- * Hero section + 2-column layout: left facet rail (FilterIndex island),
- * right integrations list. The card grid stays server-rendered; the island
- * only owns the rail + search box and toggles card visibility by slug.
+ * The card grid stays server-rendered (`labs.integration-card`); the island
+ * only owns the rail + search box and toggles card visibility by
+ * `data-slug` — see `ControlFilterIndex`'s TSDoc for why.
+ *
  * Route: /integrations
  */
 import { getCollection } from "astro:content";
-import Button from "../../components/Button.astro";
-import IntegrationCard from "../../components/integrations/IntegrationCard.astro";
 import IntegrationsIndex from "../../components/islands/filter-index/IntegrationsIndex";
-import EmptyState from "../../components/system/EmptyState.astro";
-import PageHeader from "../../components/templates/PageHeader.astro";
+import IntegrationCard from "../../components/labs/IntegrationCard.astro";
+import LabsBand from "../../components/labs/LabsBand.astro";
+import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { R2_WEBFLOW_BASE } from "../../lib/constants";
+import { BAND_CONTENT_GAP, blogLaneStyle } from "../../lib/blogLayout";
+import { INTEGRATIONS_HERO, integrationsClose } from "../../lib/integrations";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 // Get all published integrations + types
 const allIntegrations = (
@@ -40,122 +45,81 @@ const filterTypes = allTypes.map((t) => ({
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "integrations") ? defaultOgUrl("pages", "integrations") : undefined}
   title="Integrations - ZenML"
   description="Explore the MLOps landscape with ZenML. Browse 60+ integrations for orchestrators, experiment trackers, artifact stores, and more."
   surface="ml"
+  app="labs"
+  product="zenml"
 >
-  {/* ── Hero ─────────────────────────────────────────────────── */}
-  <div class="bg-white">
-    <div class="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 sm:py-20 lg:px-8">
-      <PageHeader
-        eyebrow="Integrations"
-        heading="Explore the MLOps Landscape with ZenML"
-        description="ZenML integrates with many different third-party tools. Once code is organized into a ZenML pipeline, you can supercharge your ML workflows with the best-in-class solutions from various MLOps areas."
-        classOverrides={{
-          eyebrow: "text-sm font-semibold uppercase tracking-widest text-primary-600/40",
-          heading: "text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl",
-          headingSpacing: "mt-4",
-          description: "mx-auto max-w-2xl text-lg text-gray-600",
-        }}
-      >
-        <div class="mt-4" />
-        <a
-          href="https://docs.zenml.io/stacks-and-components/component-guide/integration-overview"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700"
-        >
-          Learn more about different categories of MLOps tools
-          <svg width="21" height="20" viewBox="0 0 21 20" fill="none" class="h-4 w-4">
-            <path d="M4.6665 9.99984H16.3332M16.3332 9.99984L10.4998 4.1665M16.3332 9.99984L10.4998 15.8332" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </a>
-      </PageHeader>
-      <img
-        src="/images/integrations-hero.svg"
-        alt="Flowchart of an ML workflow including components like Feature Store, Orchestrator, Code Repo, and Deployment Environment"
-        class="mt-8 w-full"
-        loading="eager"
-      />
+  <LabsBand size="short">
+    <div class="scroll-reveal-section">
+      <div class="flex flex-col gap-4">
+        <p class="reveal-child font-label text-[13px] leading-4 tracking-[0.05em] uppercase text-(--color-cream-700)">
+          {INTEGRATIONS_HERO.eyebrow}
+        </p>
+        <div class="reveal-child stagger-1">
+          <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+            {INTEGRATIONS_HERO.headline}
+          </h1>
+          <p class="mt-space-sm max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
+            {INTEGRATIONS_HERO.deck}
+          </p>
+        </div>
+      </div>
     </div>
-  </div>
+  </LabsBand>
 
-  {/* ── Main: filter + list ─────────────────────────────────── */}
-  <section class="bg-gray-50 py-16 sm:py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <IntegrationsIndex client:load items={filterItems} types={filterTypes}>
-        <div id="integrations-list" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  <section class:list={["scroll-reveal-section pb-24 md:pb-32", BAND_CONTENT_GAP]}>
+    <div class="reveal-child stagger-1 mx-auto max-w-content px-gutter" style={blogLaneStyle()}>
+      <IntegrationsIndex client:load skin="labs" items={filterItems} types={filterTypes}>
+        <div id="integrations-list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {allIntegrations.map((integration) => (
             <IntegrationCard
               href={`/integrations/${integration.data.slug}`}
               title={integration.data.title}
-              categoryLabel={typeMap.get(integration.data.integrationType) || integration.data.integrationType}
+              typeLabel={typeMap.get(integration.data.integrationType) || integration.data.integrationType}
               logo={integration.data.logo}
               dataType={integration.data.integrationType}
               slug={integration.data.slug}
             />
           ))}
         </div>
-
-        {/* Empty state (hidden by default, shown by the island) */}
-        <EmptyState
-          id="empty-state"
-          heading="No integrations found for this category."
-          reserveHeight={false}
-          classOverrides={{
-            container: "hidden py-12 text-center",
-            inner: "",
-            heading: "text-gray-500",
-          }}
-        />
       </IntegrationsIndex>
     </div>
   </section>
 
-  {/* ── CTA02: Unify Your ML and LLM Workflows ────────────── */}
-  <section class="bg-gray-900 py-16 sm:py-20">
-    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col items-center gap-10 lg:flex-row lg:gap-16">
-        <div class="flex-1 text-center lg:text-left">
-          <h2 class="text-2xl font-bold text-white sm:text-3xl">
-            Unify Your ML and LLM Workflows
-          </h2>
-          <ul class="mt-6 space-y-4">
-            <li class="flex items-start gap-3">
-              <svg class="mt-0.5 h-6 w-6 shrink-0 text-primary-400" viewBox="0 0 28 28" fill="none">
-                <path d="M8.75 14L12.25 17.5L19.25 10.5M25.667 14C25.667 20.443 20.443 25.667 14 25.667C7.557 25.667 2.333 20.443 2.333 14C2.333 7.557 7.557 2.333 14 2.333C20.443 2.333 25.667 7.557 25.667 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              <span class="text-lg text-white">Open-source foundation, no vendor lock-in</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <svg class="mt-0.5 h-6 w-6 shrink-0 text-primary-400" viewBox="0 0 28 28" fill="none">
-                <path d="M8.75 14L12.25 17.5L19.25 10.5M25.667 14C25.667 20.443 20.443 25.667 14 25.667C7.557 25.667 2.333 20.443 2.333 14C2.333 7.557 7.557 2.333 14 2.333C20.443 2.333 25.667 7.557 25.667 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              <span class="text-lg text-white">Works with any infrastructure</span>
-            </li>
-            <li class="flex items-start gap-3">
-              <svg class="mt-0.5 h-6 w-6 shrink-0 text-primary-400" viewBox="0 0 28 28" fill="none">
-                <path d="M8.75 14L12.25 17.5L19.25 10.5M25.667 14C25.667 20.443 20.443 25.667 14 25.667C7.557 25.667 2.333 20.443 2.333 14C2.333 7.557 7.557 2.333 14 2.333C20.443 2.333 25.667 7.557 25.667 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-              <span class="text-lg text-white">Upgrade to managed Pro features</span>
-            </li>
-          </ul>
-          <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start">
-            <Button href="/book-your-demo" size="lg">Book a demo</Button>
-            <Button href="/docs" variant="secondary" size="lg">Read Docs</Button>
-          </div>
-        </div>
-        <div class="hidden lg:block lg:flex-1">
-          <img
-            src={`${R2_WEBFLOW_BASE}/4ab5ef16/66e9556fd34d2791885b0c5f_model_control_plane_01.png`}
-            alt="Dashboard displaying machine learning models, including versions, authors, and tags"
-            class="rounded-md shadow-subtle"
-            loading="lazy"
-            width="1690"
-            height="960"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
+  <LabsCloseCta content={integrationsClose("Integrations-Close-Book-Demo")} />
 </BaseLayout>
+
+<style>
+  /* House scroll-reveal pattern (reference: llmops-database/index.astro). */
+  .reveal-child {
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-1 { transition-delay: 60ms; }
+
+  .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-child,
+    .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initScrollReveal);
+  } else {
+    initScrollReveal();
+  }
+</script>

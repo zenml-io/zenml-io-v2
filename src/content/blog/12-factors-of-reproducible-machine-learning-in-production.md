@@ -19,12 +19,12 @@ tags:
 date: "2020-09-28T00:00:00.000Z"
 readingTime: 10 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1f12f0cb/652fb18e289807adebfe6d70_svg-image-1.svg"
+  url: "https://assets.zenml.io/content/blog/12-factors-of-reproducible-machine-learning-in-production/ab7adeb7/12-factors-of-reproducible-machine-learning-in-production-cover.avif"
 seo:
   title: "12 Factors of Reproducible Machine Learning in Production - ZenML Blog"
   description: "A set of guiding principles to help you better productionize your machine learning models."
   canonical: "https://www.zenml.io/blog/12-factors-of-reproducible-machine-learning-in-production"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3b052e85/652fb18e289807adebfe6d70_svg-image-1.svg"
+  ogImage: "https://assets.zenml.io/content/blog/12-factors-of-reproducible-machine-learning-in-production/dc2ee804/12-factors-of-reproducible-machine-learning-in-production-cover.jpg"
   ogTitle: "12 Factors of Reproducible Machine Learning in Production - ZenML Blog"
   ogDescription: "A set of guiding principles to help you better productionize your machine learning models."
 ---

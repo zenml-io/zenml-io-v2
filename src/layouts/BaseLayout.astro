@@ -1,17 +1,19 @@
 ---
 import PlausibleBridge from "../components/analytics/PlausibleBridge.astro";
 import SiteHeaderScripts from "../components/analytics/SiteHeaderScripts.astro";
-import Footer from "../components/Footer.astro";
 import CookieConsent from "../components/islands/CookieConsent.tsx";
-import Navigation from "../components/Navigation.astro";
+import LabsFooter from "../components/labs/LabsFooter.astro";
+import LabsNavigation from "../components/labs/LabsNavigation.astro";
 /**
  * BaseLayout — the root HTML shell for every page.
- * Renders <head> with full SEO meta, plus Navigation and Footer chrome.
+ * Renders <head> with full SEO meta, plus the Labs shell chrome
+ * (LabsNavigation + LabsFooter).
  *
  * All page templates (ContentLayout, BlogLayout, etc.) wrap this layout
  * and pass SEOProps through to control their meta tags.
  */
 import type { Surface } from "../lib/analytics";
+import type { LabsProduct } from "../lib/labs-home";
 import { resolveSeo, type SEOProps } from "../lib/seo";
 import "../styles/global.css";
 
@@ -26,14 +28,28 @@ interface Props extends SEOProps {
    * Taxonomy: "ml" | "agent" | "unified" (see src/lib/analytics.ts).
    */
   surface: Surface;
+  /**
+   * Brand scope. One scope: the Labs shell is the site
+   * (`<html data-app="labs">`, tokens in global.css, LabsNavigation +
+   * LabsFooter chrome).
+   */
+  app?: "labs";
+  /**
+   * Which product a Labs-shell page belongs to. The Labs nav shows that
+   * product's wordmark after the company lockup, marks it current in the
+   * product switcher and points its signup pill at that product's app.
+   * Omit on the homepage and other cross-product pages. Only read when
+   * `app="labs"`.
+   */
+  product?: LabsProduct;
 }
 
-const { bodyClass, surface, ...seoProps } = Astro.props;
+const { bodyClass, surface, app = "labs", product, ...seoProps } = Astro.props;
 const seo = resolveSeo(seoProps, Astro.url.pathname);
 ---
 
 <!doctype html>
-<html lang="en" data-app="zenml" data-surface={surface}>
+<html lang="en" data-app={app} data-surface={surface}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -58,8 +74,11 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
     {seo.ogImage && <meta name="twitter:image" content={seo.ogImage} />}
 
     {/* Favicon & manifest */}
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
 
     {/* Structured data (JSON-LD) — injected by child layouts */}
@@ -69,9 +88,9 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
   </head>
   <body class:list={["min-h-screen bg-white text-gray-900 antialiased", bodyClass]}>
     <slot name="before-nav" />
-    <Navigation currentPath={Astro.url.pathname} surface={surface} />
+    <LabsNavigation currentPath={Astro.url.pathname} product={product} />
     <slot />
-    <Footer />
+    <LabsFooter />
 
     <script is:inline>
       (async () => {

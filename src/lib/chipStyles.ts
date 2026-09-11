@@ -12,7 +12,10 @@ export type ChipVariant = "gray" | "primary" | "success" | "warning" | "blue";
 
 export const CHIP_VARIANT_CLASS: Record<ChipVariant, string> = {
   gray: "bg-gray-100 text-gray-700 hover:bg-gray-200",
-  primary: "bg-zenml-50 text-zenml-700 hover:bg-zenml-100",
+  // Sage/cream tokens resolve on every route: the ramps live on `:root` in
+  // global.css (hoisted in the blog cutover), not only under `[data-app="labs"]`.
+  primary:
+    "bg-(--color-sage-100) text-(--color-sage-900) hover:bg-(--color-sage-200)",
   success: "bg-success-50 text-success-700",
   warning: "bg-orange-50 text-orange-700",
   blue: "bg-blue-50 text-blue-700",

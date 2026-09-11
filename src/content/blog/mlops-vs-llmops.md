@@ -19,12 +19,14 @@ tags:
 date: "2025-10-29T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e44dd935/6904958f51d7032a268c46da_mlops-vs-llmops.png"
+  url: "https://assets.zenml.io/content/blog/mlops-vs-llmops/6fc0364d/mlops-vs-llmops-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/mlops-vs-llmops/6fc0364d/mlops-vs-llmops-cover.avif"
 seo:
   title: "MLOps vs LLMOps: What’s the Difference? - ZenML Blog"
   description: "In this guide, we showcase the differences between MLOps and LLMOps and explain how to use them in tandem."
   canonical: "https://www.zenml.io/blog/mlops-vs-llmops"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e44dd935/6904958f51d7032a268c46da_mlops-vs-llmops.png"
+  ogImage: "https://assets.zenml.io/content/blog/mlops-vs-llmops/b2750ec4/mlops-vs-llmops-cover.jpg"
   ogTitle: "MLOps vs LLMOps: What’s the Difference? - ZenML Blog"
   ogDescription: "In this guide, we showcase the differences between MLOps and LLMOps and explain how to use them in tandem."
 ---

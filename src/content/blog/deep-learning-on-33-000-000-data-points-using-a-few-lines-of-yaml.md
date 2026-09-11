@@ -19,7 +19,9 @@ tags:
 date: "2020-05-04T00:00:00.000Z"
 readingTime: 11 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/206c6f6c/652f5478a3e04647d82c66a6_download__28_.png"
+  url: "https://assets.zenml.io/content/blog/deep-learning-on-33-000-000-data-points-using-a-few-lines-of-yaml/07acb172/deep-learning-on-33-000-000-data-points-using-a-few-lines-of-yaml-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/deep-learning-on-33-000-000-data-points-using-a-few-lines-of-yaml/124f644e/deep-learning-on-33-000-000-data-points-using-a-few-lines-of-yaml-cover.jpg"
 ---
 
 **Last updated:** November 3, 2022.

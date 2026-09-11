@@ -16,6 +16,11 @@ tags:
   - "zenml"
 date: "2024-10-08T00:00:00.000Z"
 readingTime: 6 mins
+mainImage:
+  url: "https://assets.zenml.io/content/blog/integrating-mlflow-and-zenml/e4bd23ec/integrating-mlflow-and-zenml-cover.avif"
+  alt: "ZenML blog cover for Completing the ML Platform: Integrating MLflow and ZenML"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/integrating-mlflow-and-zenml/84065565/integrating-mlflow-and-zenml-cover.jpg"
 ---
 
 In the world of machine learning, two critical challenges often arise: managing the end-to-end ML lifecycle and tracking experiments effectively. Enter ZenML and [MLflow](https://mlflow.org/) – two powerful tools that, when combined, create a robust ecosystem for developing, deploying, and maintaining ML projects. Let's explore why using these tools together can significantly enhance your ML workflows.

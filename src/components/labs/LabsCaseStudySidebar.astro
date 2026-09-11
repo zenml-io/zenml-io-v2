@@ -1,0 +1,54 @@
+---
+import type { CollectionEntry } from "astro:content";
+import DescriptionList, {
+  type SpacedDescriptionListItem,
+} from "../templates/DescriptionList.astro";
+import LabsButton from "./LabsButton.astro";
+
+interface Props {
+  content: CollectionEntry<"case-studies">["data"]["sidebar"];
+  logos?: CollectionEntry<"case-studies">["data"]["hero"]["logos"];
+}
+const { content, logos = [] } = Astro.props;
+const items: SpacedDescriptionListItem[] = [
+  { term: "Company", value: { kind: "text", text: content.company } },
+];
+if (content.website)
+  items.push({ term: "Website", value: { kind: "link", ...content.website } });
+if (content.mlTeamSize)
+  items.push({
+    term: "ML team size",
+    value: { kind: "text", text: content.mlTeamSize },
+  });
+if (content.cloudProvider)
+  items.push({
+    term: "Cloud provider",
+    value: { kind: "text", text: content.cloudProvider },
+  });
+if (content.industry)
+  items.push({
+    term: "Industry",
+    value: { kind: "text", text: content.industry },
+  });
+if (content.useCases.length)
+  items.push({
+    term: "Use cases",
+    value: { kind: "text", text: content.useCases.join(", ") },
+  });
+---
+
+<div>
+  {logos.length > 0 && (
+    <div class="case-study-logos grid gap-space-sm border-b border-border pb-space-md mb-space-xs">
+      {logos.map((logo) => (
+        <img src={logo.url} alt={logo.alt || content.company} class:list={["h-auto max-h-[120px] w-full object-contain object-left", logo.url === "/images/logos/brevo.svg" ? "max-w-[140px]" : "max-w-[200px]"]} loading="eager" />
+      ))}
+    </div>
+  )}
+  <DescriptionList items={items} space="xs" />
+  {content.pdfDownload && (
+    <div class="mt-space-sm">
+      <LabsButton cta={{ ...content.pdfDownload, analytics: "CaseStudy-Download-PDF" }} class="h-auto min-h-12 py-space-xxs text-center" />
+    </div>
+  )}
+</div>

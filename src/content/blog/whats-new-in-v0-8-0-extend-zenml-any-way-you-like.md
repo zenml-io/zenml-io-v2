@@ -17,7 +17,9 @@ tags:
 date: "2022-05-18T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0d4f0275/65316c1fb883ff6e88e6f882_audrey-martin-FJpHcqMud_Y-unsplash.jpg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-8-0-extend-zenml-any-way-you-like/3947a5ed/whats-new-in-v0-8-0-extend-zenml-any-way-you-like-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-8-0-extend-zenml-any-way-you-like/ff424165/whats-new-in-v0-8-0-extend-zenml-any-way-you-like-cover.jpg"
 ---
 
 **Last updated:** November 3, 2022.

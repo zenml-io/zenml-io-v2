@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:13.882Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f107978e/66d868dfc7c1543ce4559c9d_airflow.png"
+  url: "https://assets.zenml.io/content/integrations/logos/airflow.svg"
+  alt: "Apache Airflow logo"
 shortDescription: "Streamline ML Workflows with Apache Airflow Orchestration in ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/airflow"
 mainImage:

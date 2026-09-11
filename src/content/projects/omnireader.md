@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-04-09T13:00:06.106Z"
 description: "A scalable multi-model OCR workflow framework for batch document processing and model evaluation."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/omni-reader"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/9.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/2f69bc58/omnireader-cover.avif"
 previewImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/080f28b9/67f66f558c859106184bf49b_omni-reader-blog-cover.png"
 tags:

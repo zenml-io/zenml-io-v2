@@ -20,12 +20,14 @@ tags:
 date: "2026-02-02T00:00:00.000Z"
 readingTime: 18 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a501a545/6980326ae20be1c8eee62fd3_promplayer-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/promptlayer-alternatives/bfb28eab/promptlayer-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/promptlayer-alternatives/bfb28eab/promptlayer-alternatives-cover.avif"
 seo:
   title: "The Top 10 PromptLayer Alternatives to Version, Test, and Monitor Prompts in ML Workflows - ZenML Blog"
   description: "In this article, you learn about the best PromptLayer alternatives to version, test, and monitor prompts in ML workflows."
   canonical: "https://www.zenml.io/blog/promptlayer-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a501a545/6980326ae20be1c8eee62fd3_promplayer-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/promptlayer-alternatives/c4ae3eff/promptlayer-alternatives-cover.jpg"
   ogTitle: "The Top 10 PromptLayer Alternatives to Version, Test, and Monitor Prompts in ML Workflows - ZenML Blog"
   ogDescription: "In this article, you learn about the best PromptLayer alternatives to version, test, and monitor prompts in ML workflows."
 ---

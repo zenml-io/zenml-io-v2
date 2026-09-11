@@ -21,7 +21,9 @@ tags:
 date: "2022-06-20T00:00:00.000Z"
 readingTime: 15 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b05fafb4/6530b07c193a7bf8d265b8a1_roman-synkevych-wX2L8L-fGeA-unsplash.jpg"
+  url: "https://assets.zenml.io/content/blog/move-over-kubeflow-theres-a-new-sheriff-in-town-github-actions/6c64f3aa/move-over-kubeflow-theres-a-new-sheriff-in-town-github-actions-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/move-over-kubeflow-theres-a-new-sheriff-in-town-github-actions/2e11d7af/move-over-kubeflow-theres-a-new-sheriff-in-town-github-actions-cover.jpg"
 ---
 
 **Last updated:** April 3, 2023.

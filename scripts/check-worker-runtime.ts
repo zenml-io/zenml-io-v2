@@ -264,6 +264,55 @@ async function runChecks(baseUrl: string): Promise<CheckResult[]> {
     );
   }
 
+  // Retired forms must reach the maintained flow before a visitor can submit
+  // to stale markup. Exercise the generated Worker, not only _redirects.
+  for (const pathname of [
+    "/book-a-demo",
+    "/book-a-demo/",
+    "/signup-for-demo",
+    "/signup-for-demo/",
+  ]) {
+    const redirect = await request(baseUrl, pathname);
+    check(
+      results,
+      `${pathname} redirects permanently to the canonical demo form`,
+      redirect.status === 301 &&
+        new URL(redirect.headers.get("location") ?? "/", baseUrl).pathname ===
+          "/book-your-demo",
+      `status ${redirect.status}, location ${redirect.headers.get("location")}`,
+    );
+  }
+
+  for (const pathname of ["/book-a-demo-success", "/book-a-demo-success/"]) {
+    const redirect = await request(baseUrl, pathname);
+    check(
+      results,
+      `${pathname} redirects permanently to the canonical calendar`,
+      redirect.status === 301 &&
+        new URL(redirect.headers.get("location") ?? "/", baseUrl).pathname ===
+          "/success-calendar",
+      `status ${redirect.status}, location ${redirect.headers.get("location")}`,
+    );
+  }
+
+  for (const pathname of [
+    "/team/adam-probst",
+    "/team/adam-probst/",
+    "/team/retired-member",
+  ]) {
+    const redirect = await request(baseUrl, pathname);
+    check(
+      results,
+      `${pathname} redirects permanently to the team roster`,
+      redirect.status === 301 &&
+        new URL(redirect.headers.get("location") ?? "/", baseUrl).pathname ===
+          "/team",
+      `status ${redirect.status}, location ${redirect.headers.get("location")}`,
+    );
+  }
+  const team = await request(baseUrl, "/team");
+  check(results, "Team roster remains available", team.status === 200);
+
   // The static /blog/page/N pagination route was retired for client-side
   // pagination (#249) — public/_redirects enumerates every page number that
   // was ever built (2 through the highest at retirement) rather than a

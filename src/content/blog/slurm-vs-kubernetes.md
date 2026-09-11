@@ -20,12 +20,14 @@ tags:
 date: "2025-12-18T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7e680e89/694382991325243f00232064_slurm-vs-kubernetes.png"
+  url: "https://assets.zenml.io/content/blog/slurm-vs-kubernetes/219ddd15/slurm-vs-kubernetes-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/slurm-vs-kubernetes/219ddd15/slurm-vs-kubernetes-cover.avif"
 seo:
   title: "Slurm vs Kubernetes: How HPC and Cloud-Native Orchestration Compare for ML Teams - ZenML Blog"
   description: "In this Slurm vs Kubernetes comparison guide, we compare their primary workflows, control planes, resource models, and scheduling policies."
   canonical: "https://www.zenml.io/blog/slurm-vs-kubernetes"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7e680e89/694382991325243f00232064_slurm-vs-kubernetes.png"
+  ogImage: "https://assets.zenml.io/content/blog/slurm-vs-kubernetes/21f4396f/slurm-vs-kubernetes-cover.jpg"
   ogTitle: "Slurm vs Kubernetes: How HPC and Cloud-Native Orchestration Compare for ML Teams - ZenML Blog"
   ogDescription: "In this Slurm vs Kubernetes comparison guide, we compare their primary workflows, control planes, resource models, and scheduling policies."
 ---

@@ -11,7 +11,8 @@ webflow:
   createdOn: "2023-10-12T09:13:14.501Z"
 integrationType: "deployer"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e7d3340f/66d86879fd6ca3ef189058f5_kserve.png"
+  url: "https://assets.zenml.io/content/integrations/logos/kserve.svg"
+  alt: "KServe logo"
 shortDescription: "Deploy models in production-grade settings with KServe on Kubernetes."
 docsUrl: "https://docs.zenml.io/v/0.40.2/user-guide/component-guide/model-deployers/kserve"
 githubUrl: "https://docs.zenml.io/v/0.40.2/user-guide/component-guide/model-deployers/kserve"

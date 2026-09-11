@@ -28,6 +28,8 @@
  * @see scripts/check-registry.ts
  */
 
+import { PRICING_COMPLIANCE } from "../pricing";
+
 /** Tone is orthogonal to product brand (`data-app`). Do not conflate them. */
 export const TONES = ["default", "muted", "inverted", "brand"] as const;
 export type Tone = (typeof TONES)[number];
@@ -215,7 +217,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 22,
     notes:
-      "Consumes the breadcrumb primitive, which emits visual crumbs and BreadcrumbList JSON-LD together (#248).",
+      'Consumes the breadcrumb primitive, which emits visual crumbs and BreadcrumbList JSON-LD together (#248). Live consumers include the blog term hubs (/tags, /category, /author and their [slug] detail pages, blog cutover D2d) via the TERM_HUB_HEADER_INTRO preset — tone="default" so the page keeps its own container (DESIGN.md max-w-content + px-gutter); breadcrumbSeparator="chevron" repaints onto Labs tokens (sentence case, not Nudica/uppercase — 2026-09-09 typography ruling) only under [data-app="labs"].',
     demoProps: {
       breadcrumb: [
         { label: "Docs", href: "/docs" },
@@ -254,9 +256,15 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 22,
     notes:
-      "Drops below lg to a re-authored single-lane layout rather than squeezing the split.",
+      'Drops below lg to a re-authored single-lane layout rather than squeezing the split. Live consumer: /author/[slug] (blog cutover, D2d), which also passes breadcrumb — the masthead branch renders it above the avatar row (blog cutover addition; it used to be breadcrumb-free) so the author hub gets both the shared Blog › Authors › Name crumb and the split identity layout. Its avatar/name/bio/meta/links repaint onto Labs tokens under [data-app="labs"] only, direct in PageHeader.astro (not via classOverrides — the masthead branch has no SectionIntro to override).',
     demoProps: {
       heading: "Jane Doe",
+      breadcrumb: [
+        { label: "Blog", href: "/blog" },
+        { label: "Authors", href: "/author" },
+        { label: "Jane Doe" },
+      ],
+      breadcrumbSeparator: "chevron",
       masthead: {
         name: "Jane Doe",
         bio: "Writes about MLOps in production.",
@@ -289,7 +297,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 23,
     notes:
-      "Drawn at 1 item and at 93 chips. It is a cardinality-and-overflow component; the styling barely moves. Label color and heading level are hardcoded to the current single live usage (gray-400) — a second consumer needing another color gets a prop added, never a normalize. The sticky axis isn't exercised live: IntegrationDetailSidebar composes this under one page-owned sticky wrapper.",
+      "Drawn at 1 item and at 93 chips. It is a cardinality-and-overflow component; the styling barely moves. Label color and heading level are hardcoded to the current single live usage (gray-400) — a second consumer needing another color gets a prop added, never a normalize. No live consumer keeps it sticky since the integrations cutover; the sticky axis is unexercised.",
     contentShape: {
       minItems: 1,
       maxItems: 4,
@@ -329,13 +337,14 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
       "section count",
       "row wrap",
       "CTA row present",
+      "skin",
     ],
     tones: ["default"],
     responsive: "scroll",
     island: false,
     paperPage: 23,
     notes:
-      "Scrolls horizontally inside its own container; the page body never scrolls sideways. stickyFirstColumn pins the label column with position: sticky, each pinned cell repeating its row background so scrolled content can't show through — opt-in because the pinned cells' opaque backgrounds shift the live table's transparent-cell blend, and the live pricing route stays pixel-parity until cutover. The demo exercises the pin.",
+      "Scrolls horizontally inside its own container; the page body never scrolls sideways. stickyFirstColumn pins the label column with position: sticky, each pinned cell repeating its row background so scrolled content can't show through — opt-in because the pinned cells' opaque backgrounds shift the live table's transparent-cell blend, and the live pricing route stays pixel-parity until cutover. The demo exercises the pin. The additive `skin=\"labs\"` path (this IS `labs.pricing-table`'s underlying render) always pins the first column with a `bg-card` seam, moves the heading block left-aligned, and swaps every colour/type token onto the Labs scale; the row `label` cell also takes an optional `description` second line in this skin. The default skin is untouched.",
     contentShape: {
       minItems: 3,
       maxItems: 24,
@@ -358,6 +367,35 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
         },
       ],
     },
+  },
+  {
+    id: "labs.pricing-table",
+    kind: "template",
+    componentPath: "src/components/labs/PricingTable.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "scroll",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Thin adapter from `PricingCompareTableData` onto `data-display.spec-table`'s labs skin — the same mapping the legacy `PricingComparisonTable.astro` used. Consumers: /pricing (both workspace panels), and the same mapping shape on /open-source-vs-pro and /deployments.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.pricing-plan-cards",
+    kind: "template",
+    componentPath: "src/components/labs/PricingPlanCards.astro",
+    variantAxes: ["workspace count", "highlighted plan", "slider present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "The /pricing two-workspace plan cards: a segmented toggle above a Kitaru panel and a ZenML panel, both server-rendered, the toggle only flipping `hidden` (crawlers and no-JS visitors still see the default panel's numbers). The Recommended card = a 1px `--color-sage-400` border + a sentence-case pill (`--color-orange-300`/`--color-orange-600` on the Kitaru workspace — the panel's one bounded orange moment, from the workspace's `accent: \"sage\" | \"orange\"` discriminant in pricing.ts). The ZenML Scale card's executions slider view-model lives in `src/components/sections/pricingSlider.ts` (shared with the legacy card during the /pricing cutover); the workspace toggle, roving-tab-focus keyboard handling, the `Pricing: Workspace Switch` analytics call are carried over from the legacy `sections/PricingPlanCards.astro`; the reveal is the house `initScrollReveal()` (cards hide only once the section is armed, so no-JS stays visible). The selected toggle tab is the solid dark pill carrying the product wordmark; each panel opens with a heading naming its workspace.",
+
+    stage: false,
+    demoProps: {},
   },
   {
     id: "data-display.description-list",
@@ -469,10 +507,13 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     componentPath: "src/components/templates/StackedList.astro",
     collectionBound: true,
     variantAxes: [
+      "skin: default | labs",
       "density",
       "row count",
       "meta parts present",
       "trailing count present",
+      "excerpt/chips/trailing-lane present (labs skin)",
+      "paginated",
       "in-prose",
     ],
     tones: ["default"],
@@ -480,12 +521,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 23,
     notes:
-      "The row primitive behind term-hub.entry-index. Built standalone this wave — no live duplicate existed to migrate, so /styleguide is its only render until term-hub lands.",
+      'The row primitive behind term-hub.entry-index. skin="default" is the pre-cutover look (/styleguide only). skin="labs" (blog cutover, the approved blog design (DESIGN.md)) is its first live render, via /tags/[slug]: a token-hover row with three additive item fields — excerpt, up to 3 sibling-tag chips + an overflow pill, and a fixed 288px trailing lane (224px author + 64px year) that replaces trailingCount when present. paginate (default false) marks every item beyond pageSize with hidden + data-page for the HubPagination island to toggle — off by default so the database term hubs\' unpaginated demo rows are untouched.',
     contentShape: {
       minItems: 1,
       maxItems: 122,
       overflow:
-        "No built-in cap; term-hub.entry-index is expected to pass up to the tag facet's 122 rows.",
+        "No built-in cap; term-hub.entry-index is expected to pass up to the tag facet's 122 rows. The labs skin's live caller (/tags/[slug]) server-renders the full list and paginates 12/page client-side.",
     },
     demoProps: {
       items: [
@@ -512,16 +553,23 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 24,
     notes:
-      "Carries a 170px image slot and a category chip, so it keeps its own card rather than adopting card.hex-corner (#87). Terms render verbatim — no normalisation (one live tag name really ends in a space). The identity block (author avatar/bio) is the page-header split-masthead's job, not this component's — it renders only the post listing.",
+      "Renders the card grid via labs.blog-card (BlogCard.astro), not its own card — the blog cutover moved the identity block (author avatar/bio) to page-header.split-masthead and the term listing onto the shared blog card, so this component owns only the grid, the optional sibling-term strip (siblings/siblingsHeading/viewAll, absence collapses), and the empty state. Terms render verbatim — no normalisation (one live tag name really ends in a space). Live consumers: /category/[slug] and /author/[slug] (D2d ruling — tags use term-hub.entry-index's stacked-row arrangement instead). Every card carries data-page + hidden markers for HubPagination (12/page) — harmless no-ops under 13 items.",
     contentShape: {
       minItems: 1,
-      maxItems: 60,
+      maxItems: 100,
       itemBudget:
         "Title clamps at 2 lines, excerpt at 2; a missing image collapses the media slot.",
-      overflow: "The card grid wraps to further rows; nothing paginates yet.",
+      overflow:
+        "The full SSR list renders (SEO); HubPagination shows 12 at a time client-side. An author can have close to 100 posts.",
     },
     demoProps: {
       emptyHeading: "No posts with this tag yet.",
+      siblingsHeading: "Other categories",
+      siblings: [
+        { name: "MLOps", href: "#" },
+        { name: "LLMOps", href: "#" },
+      ],
+      viewAll: { href: "#", label: "View all" },
       posts: [
         {
           href: "/blog/zenmls-month-of-mlops-recap",
@@ -541,7 +589,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     componentPath: "src/components/templates/TermHubEntryIndex.astro",
     collectionBound: true,
     variantAxes: [
-      "arrangement: cards | items",
+      "arrangement: cards | items | entries",
       "member count",
       "cross-link block",
       "dual collection",
@@ -551,12 +599,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 24,
     notes:
-      "Two arrangements per section, never both: cards (live parity — the entry card grid every database term route renders today) and items (the drawn stacked list of data-display.stacked-list rows — new-brand/cutover, no live caller; the demo exercises it). A section without a heading renders no <h2> (single-collection page); the industry pages pass two headed sections (dual collection).",
+      'Exactly one arrangement per section: cards (the pre-cutover parity grid — no live route sets it any more, kept for /styleguide), items (data-display.stacked-list rows, /tags/[slug], skin="labs" — StackedList\'s tokenised row with the excerpt/sibling-chip/author-year additions), or entries (labs.entry-row rows, #256 — /llmops-tags/[slug], /mlops-tags/[slug] and /industry-tags/[slug], always skin="labs", with an optional per-section seeAll link). skin/paginate/pageSize/id forward straight through to the items section\'s StackedList and to the entries section\'s row list. On skin="labs", crossLinks render as a sibling-chip strip AFTER the sections instead of the default skin\'s badge blocks above them. A section without a heading renders no <h2> (single-collection page); the industry pages pass two headed sections (dual collection).',
     contentShape: {
       minItems: 0,
       maxItems: 200,
       overflow:
-        "The grid/list grows with the term's matching entries; a zero-entry term no longer builds a page, but the component still collapses to its empty state at 0.",
+        "The grid/list grows with the term's matching entries; a zero-entry term no longer builds a page, but the component still collapses to its empty state at 0. /tags/[slug] server-renders every matching post (SEO) and paginates 12/page client-side via HubPagination — a busy tag can carry well over 100. The entries arrangement's live callers instead server-render only the first DATABASE_PAGE_SIZE rows and hand later pages to HubEntryPagination, which fetches the JSON index — a busy tag can carry well into the thousands.",
     },
     demoProps: {
       emptyHeading: "No LLMOps entries with this tag yet.",
@@ -589,7 +637,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 24,
     notes:
-      "120x40 logo optical box. A row thinner than the 3-column breakpoint centres rather than left-aligning (leaving packed empty cells reads as broken). Reuses IntegrationCard for the tile itself.",
+      "A row thinner than the 3-column breakpoint centres rather than left-aligning (leaving packed empty cells reads as broken). Restyled onto labs.integration-card in the integrations cutover (the Labs card shell with the full-width logo band); the pre-cutover IntegrationCard tile and its 120x40 logo box are retired.",
     contentShape: {
       minItems: 1,
       maxItems: 20,
@@ -618,13 +666,13 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     kind: "template",
     componentPath: "src/components/templates/ProcessSteps.astro",
     collectionBound: true,
-    variantAxes: ["step count", "code present", "copied state"],
+    variantAxes: ["step count", "code present", "copied state", "skin"],
     tones: ["default"],
     responsive: "reauthored",
     island: false,
     paperPage: 25,
     notes:
-      "Copy-to-clipboard (the drawn copied state) is the new-brand affordance — the live get-started blocks it absorbs have no copy button, so the parity build is static HTML. Flips to an island when the copy affordance ships at cutover. highlightedHtml is Shiki output produced in the page's frontmatter; Shiki never runs in the component.",
+      "Copy-to-clipboard (the drawn copied state) is the new-brand affordance — the live get-started blocks it absorbs have no copy button, so the parity build is static HTML. Flips to an island when the copy affordance ships at cutover. highlightedHtml is Shiki output produced in the page's frontmatter; Shiki never runs in the component. The additive `skin=\"labs\"` path drops the dark band for a light hairline-numbered list and wraps each step's code in rehypeCodePane's own `figure.code-pane` markup (wired by the page's own `initCodeCopy()` call) — the copy affordance this note used to call unbuilt. `language` per step labels the pane bar (default \"text\"). The default skin is untouched.",
     contentShape: {
       minItems: 3,
       maxItems: 3,
@@ -649,13 +697,13 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     kind: "template",
     componentPath: "src/components/templates/ProcessSteps.astro",
     collectionBound: true,
-    variantAxes: ["step count", "trailing link", "ragged rows"],
+    variantAxes: ["step count", "trailing link", "ragged rows", "skin"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 25,
     notes:
-      "Numerals are zero-padded (01, never 1) per DECISIONS #76 — but only on the numeralStyle: 'zero-padded' new-brand/demo path. Live careers.astro renders raw 1–4 from CAREERS_HIRING_PROCESS via the default 'raw'; pad in the component, never edit the data. An empty duration collapses (the live 4th step has one).",
+      "Numerals are zero-padded (01, never 1) per DECISIONS #76. The additive skin: 'labs' path uses the Labs token card anatomy; the default skin preserves legacy live markup. Pad in the component, never edit the data. An empty duration collapses (the 4th step has one).",
     contentShape: {
       minItems: 2,
       maxItems: 6,
@@ -690,7 +738,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     componentPath: "src/components/templates/RelatedRail.astro",
     collectionBound: true,
     variantAxes: [
-      "card shape (meta-card/logo-lockup/icon-link/blog-card/thumbnail)",
+      "card shape (meta-card/logo-lockup/icon-link/blog-card/hex-card/thumbnail)",
       "column count",
       "sidebar",
       "item count",
@@ -701,7 +749,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 26,
     notes:
-      "Image-free by ruling (#63). Renders only the items arrangement (grid or list) — the seven live surfaces keep their own heading treatments and section chrome, so 'More like this' as the one sitewide heading, card.hex-corner on grid cards, and the bind-separator-to-following-token meta form are the new-brand cutover states, not this parity build. The live parity build keeps per-surface headings, hex-corner-free cards, and free-standing meta separators (a wrap leaves the dot at the line end).",
+      "Image-free by ruling (#63). Renders only the items arrangement (grid or list) — the seven pre-cutover surfaces keep their own per-surface headings, hex-corner-free cards, and free-standing meta separators (a wrap leaves the dot at the line end), untouched. The blog cutover adds the `hex-card` item kind (card.hex-corner) for the post page's 'Continue reading' rail, additively — the other five kinds render exactly as before.",
     contentShape: {
       minItems: 1,
       maxItems: 4,
@@ -735,13 +783,14 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
       "facet count",
       "facet select mode",
       "search engine (Pagefind | JSON substring)",
+      "skin",
     ],
     tones: ["default"],
     responsive: "reauthored",
     island: true,
     paperPage: 29,
     notes:
-      "Rail everywhere; no horizontal facet bar exists and no prop reaches one (#64, #90). At 375 the rail becomes a drawer behind one Filters trigger. Count header is the aria-live region; counts are comma-formatted count-of-total in a 44px right-aligned lane. Two flavors share the rail/state/URL machinery: DataFilterIndex (LLMOps/MLOps/blog — the island renders the result cards) and ControlFilterIndex (integrations — the island toggles visibility of server-rendered cards passed as children). Live consumers wire domain accessors as function props, so there is no static demoProps demo — TemplateStage shows its unresolved-path notice for this entry until a fixture wrapper exists.",
+      'Rail everywhere; no horizontal facet bar exists and no prop reaches one (#64, #90). At 375 the rail becomes a drawer behind one Filters trigger. Count header is the aria-live region; counts are comma-formatted count-of-total in a 44px right-aligned lane. Two flavors share the rail/state/URL machinery: DataFilterIndex (LLMOps/MLOps/blog — the island renders the result cards) and ControlFilterIndex (integrations — the island toggles visibility of server-rendered cards passed as children). An optional `skin` prop (default keeps every class-string shape and behaviour; the site-wide purple→sage colour pass touched its colours too) lets one consumer re-skin classes only, never behaviour: the blog cutover\'s DataFilterIndex, FacetRail, Pagination and ResultsCount all take `skin="labs"` (class strings in labsSkin.ts) — the databases cutover moved LLMOps and MLOps onto it too, so no live route is left on the default skin (it survives for the /styleguide demo, layout unchanged, colours now sage). The integrations cutover gave the control flavour the same `skin="labs"` branch: ControlFilterIndex mirrors the data flavour\'s labs shell class-for-class (rail, drawer, search, results count) but keeps its search box inside the desktop aside and takes an optional rail heading, and at zero results it renders the shared FilterEmptyState from the engine\'s constraint/drop-one analysis instead of toggling a page-owned element. Live consumers wire domain accessors as function props, so there is no static demoProps demo — TemplateStage shows its unresolved-path notice for this entry until a fixture wrapper exists.',
     contentShape: {
       minItems: 66,
       maxItems: 2100,
@@ -762,32 +811,6 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 28,
     notes:
       "Replaces the result region only. Header, chip strip and facet rail all stay exactly in place.",
-  },
-
-  // ── legal (Wave 3 PR1, #250) ──────────────────────────────────────────────
-  // Not part of the Rounds A+B design catalog (page-header/data-display/etc.
-  // above) — a Wave 3 addition for the two legal text pages. paperPage: 1
-  // follows the existing "unconfirmed against the real design catalog"
-  // convention used by the section primitives below, not a real citation.
-  {
-    id: "legal.article",
-    kind: "template",
-    componentPath: "src/components/templates/LegalArticle.astro",
-    variantAxes: ["lastUpdated present"],
-    tones: ["default"],
-    responsive: "static",
-    island: false,
-    paperPage: 1,
-    notes:
-      'h1 + optional "Last updated" line for the two legal content pages (privacy-policy, terms-of-service); the body is the page\'s own rendered Markdown passed through the default slot. lastUpdated absent collapses — no line, no gap (privacy-policy has none today).',
-    demoProps: {
-      title: "ZenML GmbH Terms of Service",
-      lastUpdated: "16.02.2024",
-    },
-    demoSlots: {
-      default:
-        "<p>Your data's security and privacy are ZenML's top priorities.</p>",
-    },
   },
 
   // ── primitives (Paper 1) ─────────────────────────────────────────────────
@@ -818,26 +841,32 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
   {
     id: "mark.hex-corner",
     kind: "primitive",
-    componentPath: null,
+    componentPath: "src/components/system/HexCornerMark.astro",
     variantAxes: [],
     tones: ["default"],
     responsive: "static",
     island: false,
     paperPage: 1,
     notes:
-      "A treatment applied to any clipped surface, not a card (#91). Size-independent: one 420x300 SVG anchored right -57 / bottom -40 docks correctly at any width and height. Host owes it overflow:clip, a radius, --card-halo, and no content in the bottom-right 90x80. Floor is 240x140 — the hexagon is a fixed 80px and does not scale.",
+      'A treatment applied to any clipped surface, not a card (#91): one 106px corner SVG (halo hexagon + sage-400 hexagon + arrow) anchored bottom-right, tucked into the corner as a rotated wedge at rest. Host owes it position:relative, overflow-clip, a `group` class for the hover read, and no content in the bottom-right corner. On hover the surface flips to --color-sage-900 and the mark walks into the card at half size, upright, the arrow keeping its rest size (geometry and timings in HexCornerMark.astro; the rule in DESIGN.md "The hex corner is a treatment"). prefers-reduced-motion keeps the colour flip and holds the geometry still.',
   },
   {
     id: "card.hex-corner",
     kind: "primitive",
-    componentPath: null,
+    componentPath: "src/components/templates/HexCornerCard.astro",
     variantAxes: ["meta parts present"],
     tones: ["default", "inverted"],
     responsive: "reflow",
     island: false,
     paperPage: 1,
     notes:
-      "One consumer of mark.hex-corner. Title-led, no excerpt slot (#83). 363x260 is this card's chosen size, not a constraint the corner imposes.",
+      "One consumer of mark.hex-corner. Title-led, no excerpt slot (#83). 363x260 is this card's chosen size, not a constraint the corner imposes. First live consumer: the blog post 'Continue reading' rail (RelatedRail's hex-card item kind) — a 12px-padded title/meta/kind-label stack over the mark, whole card as one link.",
+    demoProps: {
+      href: "/blog/agents-are-not-microservices",
+      title: "Your Agents Are Not Microservices",
+      meta: "August 18, 2026",
+      kind: "Agents",
+    },
   },
 
   // ── section primitives (Paper 1, Wave 1 substrate #248) ──────────────────
@@ -1031,13 +1060,13 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "conversion.shell",
     kind: "template",
     componentPath: "src/components/templates/ConversionShell.astro",
-    variantAxes: ["frame: calendar | form"],
+    variantAxes: ["frame: calendar | form | success"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 1,
     notes:
-      "Two structurally different arrangements selected by `frame`: `calendar` is the two-section Cal-hero shape (success-calendar, book-a-demo-success, schedule-a-demo); `form` is the single-section narrow shape above a lead-capture form (book-a-demo, signup-for-demo). The default slot is the conversion widget (CalEmbed or ContactForm island).",
+      "Three structurally different arrangements selected by `frame`: `calendar` is the two-section Cal-hero shape (success-calendar, schedule-a-demo); `form` is the historical single-section narrow shape above a lead-capture form. The default slot is the conversion widget (CalEmbed or ContactForm island). `success` is the band-only thank-you shape (booked, book-success, newsletter-success): headline + HTML deck + up to two pills, no widget.",
     demoProps: {
       headline: "Thanks — pick a time that works for you",
       deck: "We'll be in touch shortly.",
@@ -1074,12 +1103,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Renders an ordered blocks[] for both families off one discriminated union keyed on the content collection. `/compare` uses tool hero, nine block kinds, and a gradient padded closing CTA; `/vs` uses the category hero, five kinds, a `<main>` wrapper, and an unpadded CTA. Page-level, so it is never stage-rendered.",
+      "Renders an ordered blocks[] for both families off one discriminated union keyed on the content collection. Cut over for #319: both use the short Labs band, shared section primitives, the complete ZenML comparison switcher, scroll reveal, and LabsCloseCta. Page-level, so it is never stage-rendered.",
   },
   {
     id: "comparison.hero-tool",
     kind: "template",
-    componentPath: "src/components/sections/compare/CompareHero.astro",
+    componentPath: "src/components/labs/LabsComparisonBand.astro",
     variantAxes: ["tool icon present"],
     tones: ["default"],
     responsive: "reflow",
@@ -1087,12 +1116,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "ZenML-vs-one-tool hero: paired product marks, headline, deck, two CTAs. Selected by the `compare` collection.",
+      "Historical blocks hero id. #319 replaced its implementation with labs.comparison-band: eyebrow-first short shader band with breadcrumb JSON-LD but no visible breadcrumb, one headline and deck, and the complete switcher; both old hero CTAs collapse.",
   },
   {
     id: "comparison.hero-category",
     kind: "template",
-    componentPath: "src/components/sections/VsHero.astro",
+    componentPath: "src/components/labs/LabsComparisonBand.astro",
     variantAxes: ["eyebrow present"],
     tones: ["default"],
     responsive: "reflow",
@@ -1100,12 +1129,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "ZenML-vs-a-category hero for the 3 `/vs/*` routes. Carries an eyebrow the tool hero has no slot for.",
+      "Historical category-hero id. #319 replaced its implementation with labs.comparison-band and groups the three category routes at the top of the complete ZenML switcher; both old hero CTAs collapse.",
   },
   {
     id: "comparison.feature-table",
     kind: "template",
-    componentPath: "src/components/sections/compare/CompareFeatureHeader.astro",
+    componentPath: "src/components/labs/LabsComparisonTable.astro",
     variantAxes: ["row count"],
     tones: ["default"],
     responsive: "reflow",
@@ -1113,13 +1142,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Two-column yes/no scorecard. Known debt, tracked for the rebrand: no table semantics (the visible header row is a sibling div), yes/no carried only by a CSS background-image on an empty span served from a third-party legacy CDN, and the reasoning lives in a hover-only tooltip.",
+      "The blocks tableHtml scorecard. #319 retains this id but renders through labs.comparison-table: blog-matched cream-100 label headers, sticky first column, sage checks and cream crosses, and always-visible supporting text instead of hover-only tooltips or disclosure controls.",
   },
   {
     id: "comparison.code-compare",
     kind: "template",
-    componentPath:
-      "src/components/sections/compare/CompareCodeComparison.astro",
+    componentPath: "src/components/labs/LabsCodeCompare.astro",
     variantAxes: ["language pair"],
     tones: ["default"],
     responsive: "collapse",
@@ -1127,12 +1155,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Side-by-side ZenML/competitor code panes, highlighted at build time. Both languages default to python when a fence carries no tag.",
+      "Side-by-side ZenML/competitor code panes. #319 retains this id but renders two labs.code-pane instances with the site code-pane markup and labs-light build highlighting.",
   },
   {
     id: "comparison.strategy-cta",
     kind: "template",
-    componentPath: "src/components/sections/compare/CompareStrategyCta.astro",
+    componentPath: "src/components/labs/LabsComparisonStrategyCta.astro",
     variantAxes: ["advantage count"],
     tones: ["brand"],
     responsive: "reflow",
@@ -1140,12 +1168,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Mid-page tinted band: a headline plus advantage cards resolved from the advantages collection. Renders a three-column grid, so it reads thin at one or two advantages.",
+      "Mid-page advantages and CTA. #319 retains this id but renders one headline and one LabsButton in a grain-backed card on the page ground; absent advantages collapse. The advantages now render as a full-width labs.feature-grid row above that card (numbered, full-tone, isometric icon from the advantage's `icon` field) rather than hover cards with an illustration.",
   },
   {
     id: "comparison.testimonial",
     kind: "template",
-    componentPath: "src/components/sections/VsTestimonial.astro",
+    componentPath: "src/components/labs/LabsComparisonQuote.astro",
     variantAxes: ["avatar present", "company logo present"],
     tones: ["inverted"],
     responsive: "reflow",
@@ -1153,12 +1181,12 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Single dark-band quote. Fed by a slug reference on `/compare` and by inline block copy on `/vs`; 7 of the 25 compare entries have no quote and render no band at all.",
+      "Comparison quote id. #319 retains it while both slug-backed `quote` and inline `testimonial` render through labs.comparison-quote: a full-width shader band with top and bottom hairlines, centered Borna quote and optional attribution. This supersedes the initial story-card arrangement; absent quotes and attribution still collapse.",
   },
   {
     id: "comparison.final-cta",
     kind: "template",
-    componentPath: "src/components/sections/VsCta02.astro",
+    componentPath: "src/components/labs/LabsCloseCta.astro",
     variantAxes: ["variant (dark | gradient)", "padded"],
     tones: ["default", "brand"],
     responsive: "reflow",
@@ -1166,7 +1194,862 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      'Closing CTA with bullets and an image. `/compare` passes variant="gradient" and padded; `/vs` passes neither — the two call-sites are deliberately different and must stay so.',
+      "Historical closing CTA id. #319 removes the old family distinction: both close on the full-width comparison arrangement of LabsCloseCta with the source headline, deck and primary pill; the secondary CTA, install bar, link row and image collapse.",
+  },
+  {
+    id: "labs.compare-switcher",
+    kind: "template",
+    componentPath: "src/components/labs/LabsCompareSwitcher.astro",
+    variantAxes: ["group count", "option count", "current mark present"],
+    tones: ["default"],
+    responsive: "scroll",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "The one comparison-page switcher: hairline 12px-radius trigger (32px mark, 17px label) beside the product wordmark in a card of the same height, grouped menu, 24px row marks, current-page state, visible vertical scrollbar, and vanilla Escape/outside-click/arrow-key/focus-return handling.",
+    collectionBound: true,
+    contentShape: {
+      minItems: 5,
+      maxItems: 38,
+      overflow:
+        "The menu keeps a viewport-bounded height and vertical scrollbar; every option remains keyboard reachable.",
+    },
+  },
+  {
+    id: "labs.comparison-band",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonBand.astro",
+    variantAxes: ["product", "competitor mark present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Comparison-page short band composed from labs.band: eyebrow first, rebrand product wordmark, headline, deck and labs.compare-switcher. The shared product variant selects Kitaru grain and an orange-600 eyebrow for Kitaru, sage-800 for ZenML; both retain the established uppercase label typography. No visible breadcrumb is rendered; its BreadcrumbList JSON-LD is preserved. MDX layouts derive the visible headline without the duplicated product/competitor prefix while preserving source titles and SEO metadata.",
+  },
+  {
+    id: "labs.code-compare",
+    kind: "template",
+    componentPath: "src/components/labs/LabsCodeCompare.astro",
+    variantAxes: ["language pair", "eyebrow present"],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Two build-highlighted labs-light panes in the site's code-pane markup. Each pane scrolls independently and keeps its copy control outside the scroll region.",
+  },
+  {
+    id: "labs.comparison-prose",
+    kind: "template",
+    componentPath: "src/components/compare/ComparisonProse.tsx",
+    variantAxes: ["Markdown element"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Server-rendered MDX element adapters isolate prose typography from embedded Labs sections. Paragraphs and headings use the reading lane; narrative matrices scroll in a Labs frame; fenced code uses the shared code-pane markup and chrome. No hydration.",
+  },
+  {
+    id: "labs.code-pane",
+    kind: "template",
+    componentPath: "src/components/labs/LabsCodePane.astro",
+    variantAxes: ["language"],
+    tones: ["default"],
+    responsive: "scroll",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "One build-highlighted labs-light pane in the site's code-pane markup. Used directly by MDX feature graphics and twice by labs.code-compare.",
+  },
+  {
+    id: "labs.comparison-table",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonTable.astro",
+    variantAxes: ["structured rows | converted HTML", "notes column present"],
+    tones: ["default"],
+    responsive: "scroll",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "The Labs comparison matrix shared by blocks and MDX: 20px frame, hairline rows, sticky feature column, sage check and cream cross, blog-matched cream-100 headers in the compact label face, and no alternating tint. Legacy tooltip cells become always-visible supporting text.",
+    collectionBound: true,
+    contentShape: {
+      minItems: 1,
+      maxItems: 40,
+      overflow:
+        "Wide or long matrices scroll inside their framed region while the first column stays pinned.",
+    },
+  },
+  {
+    id: "labs.comparison-value",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonValue.astro",
+    variantAxes: [
+      "split | list",
+      "media side",
+      "media present",
+      "ZenML | Kitaru diagram tone",
+    ],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Comparison value block on the system Split primitive: prose-first DOM, hairline check rows, framed image media, and slotted diagrams without nested card framing. ZenML diagrams use a sage-300 presentation field and Figma-aligned panel headers with Rethink Sans titles plus Nudica Mono context: sage-100/sage-500 for emphasis and cream-50/cream-200 for neutral panels. Kitaru diagrams sit on a cream-100 field so the well stays warm rather than sage. The list arrangement keeps MDX-authored bullet groups.",
+  },
+  {
+    id: "labs.comparison-showdown",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonShowdown.astro",
+    variantAxes: ["item count per side"],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Even-handed two-card showdown for ZenML or Kitaru against another tool: shared card anatomy, hover border, sentence-case labels, and hairline bullet rows.",
+    collectionBound: true,
+    contentShape: {
+      minItems: 2,
+      maxItems: 14,
+      overflow: "Each side grows vertically with its authored list.",
+    },
+  },
+  {
+    id: "labs.comparison-strategy-cta",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonStrategyCta.astro",
+    variantAxes: ["advantage count", "deck present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Mid-page strategy section: an optional full-width row of labs.feature-grid panels (one per advantage, index and tone by position), then one card on the page ground carrying a LABS_GRAIN.hero GrainBackdrop, one heading, an optional deck, and one LabsButton.",
+  },
+  // ── labs homepage + shell (rebrand branch; design-catalog pages not assigned yet) ──
+  {
+    id: "labs.hero",
+    kind: "template",
+    componentPath: "src/components/labs/LabsHero.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: true,
+    paperPage: 0,
+    notes:
+      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, `content: LabsProductBandContent` (LABS_HERO on `/`, ZENML_HERO on `/product/zenml`) gives the two-line headline + deck + one signup pill, vertically centered in the band; a product page's content adds a ghost secondary pill and a copyable install chip (LabsInstallChip), each collapsing when absent. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component. Renders through `labs.band` for the shader/sizing chrome — see that entry.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.band",
+    kind: "template",
+    componentPath: "src/components/labs/LabsBand.astro",
+    variantAxes: ["size (landing | short)", "grain (labs | kitaru)"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: true,
+    paperPage: 0,
+    notes:
+      'The shared shader-band shell: GrainBackdrop (client:visible), bottom fade, and the `size` sizing/nav-clearance rules, with a default slot for the caller\'s own heading markup. `labs.hero` renders both its bands through this component; the blog surfaces (blog index via `labs.hero`, the category/tag/author hubs, and the post masthead in BlogLayout.astro) use it directly with their own breadcrumb/eyebrow/heading/deck markup in the slot, so the shader stays each blog route\'s one ambient island. `grain` (default "labs", the sage register every non-Kitaru band uses) switches to "kitaru" for a Kitaru post\'s masthead — the exact palette `KitaruGrain`\'s `hero` variant renders on `/product/kitaru` (kitaru-grain-palettes.ts), a plain hex-literal config independent of the `[data-app="kitaru"]` CSS bridge. Only the shader and the section\'s background/fade-to token (`--background` instead of `--color-sage-50`) switch with it; hairline, container, and sizing stay identical either way. Every other live consumer (blog index, hubs) stays on "labs".',
+    stage: false,
+    demoProps: { size: "short" },
+    demoSlots: {
+      default:
+        '<h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">Category</h1>',
+    },
+  },
+  {
+    id: "labs.product-doors",
+    kind: "template",
+    componentPath: "src/components/labs/ProductDoors.astro",
+    variantAxes: ["quick links", "detail rows"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Labs homepage section 03 (after the logo grid): two product cards (ZenML, Kitaru) from `content: ProductDoorsContent` (LABS_DOORS on `/`). Each card opens with its product wordmark; no install or licence chips. `headline` is optional (absence collapses the heading row). An optional `caption` renders one line after the cards. A door can add `links` (hairline quick-link rows with a hover wash/arrow in the door's tint) and/or `details` (hairline title/detail pairs) after its body; a door's `cta` can carry `external` to open the pill in a new tab.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.feature-grid",
+    kind: "template",
+    componentPath: "src/components/labs/FeatureGridPanels.astro",
+    collectionBound: true,
+    variantAxes: ["panel tone", "column count"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Full-bleed row of equal panels from `content: readonly FeaturePanel[]` (LABS_FEATURE_PANELS on `/`); tone (sage-tint/sage-deep/canvas/sage-light) picks the panel background and body-text colour. Icons are inline SVG markup from src/components/labs/icons.ts, keyed by panel.icon, rendered via set:html inside a currentColor <svg>. Reflows to two columns at <=1024 and 1-up at 390. Columns follow the item count: one to four across at lg, five and six wrapping at three columns (3+2, 3+3), so the three advantages of the comparison strategy block fill the width the same way the four homepage panels do. Panel height is a 380px floor, 440px at lg and up, never a cap, so long copy grows the row instead of spilling out.",
+    contentShape: {
+      minItems: 1,
+      maxItems: 6,
+      oddCount:
+        "Drawn for 4 panels; 1-3 items narrow the lg column count to match, so the row still fills its width. 5 and 6 wrap at 3 columns, which leaves one empty cell at 5.",
+      headingBudget:
+        'Titles drawn for 1 short word (e.g. "Orchestrate", "Replay"); longer titles wrap and grow the panel.',
+      itemBudget:
+        "Body copy drawn for 1-3 sentences; longer copy grows every panel in the row equally, since the lg height is a floor rather than a cap and there is no internal scroll or truncation.",
+      overflow:
+        "Panels grow instead of clipping. Past 6 items the column class falls back to 4 across and wraps onto further rows.",
+    },
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.logo-marquee",
+    kind: "template",
+    componentPath: "src/components/labs/LogoMarquee.astro",
+    collectionBound: true,
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Labs trust strip right after the hero: one line of logo cards sliding left (CSS loop, paused on hover and off-screen, static scrollable row under reduced motion) from `content: LogoGridContent` (LABS_LOGO_GRID on `/`). Counts as one motion moment.",
+    contentShape: {
+      minItems: 1,
+      maxItems: 24,
+      overflow:
+        "Drawn for a 6-column grid at the widest breakpoint; extra rows simply continue the pattern, and the last row is padded with empty cells so the border always closes.",
+    },
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.story-cards",
+    kind: "template",
+    componentPath: "src/components/labs/CustomerStoryCards.astro",
+    variantAxes: ["card count", "quote cards"],
+    tones: ["default"],
+    collectionBound: true,
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      'ZenML Labs homepage section 05: an optional headline + optional "all case studies" link, then either four shared LabsStoryCards (customer logos on light sage grain, title, read-the-story label) or, when `content.cards` are quote cards instead (`"quote" in card`), a three-up grid of LabsStoryCard\'s `kind="quote"` arrangement (a `wide` card spans two columns). Content arrives through `content: StoryCardsContent` (LABS_STORIES on `/`, cards from CASE_STUDY_CARDS; PRO_QUOTES on /pro renders the quote arrangement, no headline, no allLink).',
+    contentShape: {
+      minItems: 4,
+      maxItems: 4,
+      oddCount:
+        "Drawn for exactly four story cards in one row; fewer leaves an uneven row, more wraps.",
+      headingBudget:
+        "Titles drawn for two to four lines at 19/26; longer titles grow the card.",
+      itemBudget: "One title and one read link per card; no excerpt slot.",
+      overflow:
+        "None — the row wraps to two columns below lg and one column at 390.",
+    },
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.close-cta",
+    kind: "template",
+    componentPath: "src/components/labs/LabsCloseCta.astro",
+    variantAxes: ["headline copy", "default | comparison preset"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: true,
+    paperPage: 0,
+    notes:
+      "Copy arrives through `content: LabsProductBandContent` (LABS_CLOSE on `/`, ZENML_CLOSE on `/product/zenml`; a product page adds the dark-tone install chip under the pill). Mounts GrainBackdrop client:idle deliberately - the hero shader is the page's one always-on ambient island, so this one hydrates once the browser is idle instead of competing with it. The comparison preset uses the section-heading scale and shorter padding for long comparison pages; the default homepage and product treatment is unchanged. Review refinement: comparison closes are full-width dark-sage bands with centered content, 32/38 mobile and 44/50 desktop Borna headings, 64/80px vertical padding, the supplied deck and exactly one pill.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.nav",
+    kind: "template",
+    componentPath: "src/components/labs/LabsNavigation.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reauthored",
+    island: false,
+    paperPage: 0,
+    notes:
+      "ZenML Labs shell nav: floating pill over the hero (transparent at scroll-top, solid card once scrolled) with a hamburger panel below `lg`. `product` (from BaseLayout) shows the product's mark at rest in the brand link (ZenML: the lockup with its labs script hidden; Kitaru: KitaruLockup) and the ZenML Labs lockup on hover/focus, marks that product current in the product switcher (the Products item opens a role=menu list of LABS_DOORS rows, 1px sage border on the current row, Esc/arrow keys, focus return) and in the mobile chip switcher, and points the signup pill at that product's app (LABS_NAV_SIGNUP_BY_PRODUCT). Its icon-and-exact-count GitHub link uses the first-party edge-cached stars route, so it does not need a consent gate. Docs and Case studies share the same hover-menu behaviour (labsNavMenus() rows, Case studies reading the LLMOps non-draft count at build time), and opening one of the three menus closes any other that's open. paperPage is a placeholder — no design-catalog page assigned yet; fill in the real handoff page number.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.footer",
+    kind: "template",
+    componentPath: "src/components/labs/LabsFooter.astro",
+    variantAxes: ["column count", "compliance pill count"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Dark shell footer for the Labs homepage: tagline + FOOTER_COLUMNS, a full-width ZenML wordmark (ZenmlWordmark, aria-hidden), and a legal row with LABS_FOOTER.compliance pills. Reads FOOTER_COLUMNS/FOOTER_LEGAL from src/lib/footer.ts and LABS_FOOTER from src/lib/labs-home.ts; no props.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.feature-tabs",
+    kind: "template",
+    componentPath: "src/components/labs/LabsFeatureTabs.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: true,
+    paperPage: 0,
+    notes:
+      "Headline block (no eyebrow, headline and deck both optional — absence collapses each independently) over the auto-cycling FeatureTabsSlider island (vertical 40% tab menu + 60% figure panel, collapsing to a stacked column below 1024). The panes are server-rendered here as the island's children: each tab draws its inline SVG highlight figure (highlights/<product>/<slug>.astro) or, without a figure id, its image; the island only toggles the current pane. Below 768px each figure shows its narrow portrait drawing instead of the shrunk wide one. Tab switches get a pane rise/fade plus the figure's play-once staggered reveal (edges draw in), all under 1.2s and off under reduced motion. Mounts FeatureTabsSlider with client:load, defaultIndex min(3, tabs − 1) (the fourth tab where there are that many, else the last — /deployments ships three), autoDurationMs 9000 — the page's one non-ambient island; its auto-cycle is user-pausable interaction (click resets), not a motion moment. Content comes from ZENML_FEATURE_TABS (FeatureTabsContent: headline?, deck?, tabs). The old stats grid is not ported.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.value-props",
+    kind: "template",
+    componentPath: "src/components/labs/LabsValueProps.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      'Three-card value-prop grid for /product/zenml. Numbered labels (item.index, e.g. "01.") stand in for icons — no icons, no coloured squares. Section headline, optional deck (ValuePropsContent.deck — absence collapses). One LabsButton after the grid. No island.',
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.faq",
+    kind: "template",
+    componentPath: "src/components/labs/LabsFaq.astro",
+    variantAxes: ["item count", "closing link present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "One headline over a column of native <details> rows (`content: FaqData`). Eyebrow and subheadline are not rendered (one headline per band) — the data keeps both fields because the Markdown mirror and JSON-LD still read them. An optional `slackCta` renders one text link after the list. Sentence-case Rethink Sans throughout. Consumers: /pricing (one per workspace panel) and /pro; FaqSection/FAQAccordion retire when their last consumer moves. Update: both retired and deleted in #317 once /pro moved onto this entry.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.integrations-grid",
+    kind: "template",
+    componentPath: "src/components/labs/LabsIntegrationsGrid.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Static integrations wall on the sage tint band: hard-coded 'Integrations' eyebrow, headline/deck from content, then a 6x4-at-widest logo grid (grid-cols-3 sm:4 md:6) read live from the integrations collection (same read as IntegrationsMarquee.astro), sorted by title, first 24 shown, and a ghost-tone LabsButton CTA row. No marquee, no animation of any kind — this page's motion budget is spent on other sections.",
+    stage: false,
+    demoProps: {},
+    collectionBound: true,
+    contentShape: {
+      minItems: 12,
+      maxItems: 24,
+      overflow: "the grid shows the first 24, the CTA leads to the full index",
+    },
+  },
+  {
+    id: "labs.blog-card",
+    kind: "template",
+    componentPath: "src/components/labs/BlogCard.astro",
+    variantAxes: ["image present", "excerpt present", "byline present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Blog cutover card (the approved blog design, DESIGN.md): chrome-less, 16:9 media, hover border+zoom+title-colour. Preact twin at BlogCard.tsx (used by the `/blog` index's DataFilterIndex island — an Astro component can't render inside a Preact island) sharing every class string with the Astro twin via blogCardStyles.ts, so the two markups can't drift. Only slot that never collapses is the title; the whole card is one link target for it, category/author stay separate links. Live consumers: the `/blog` index grid and term-hub.editorial's grid (category/author hubs, blog cutover D2d) — each item there also carries data-page + hidden markers for HubPagination. (RelatedRail's own `blog-card` item kind still renders the pre-cutover `src/components/blog/BlogCard.astro`, a separate component — untouched by this cutover.) The named framed variant, shared by the Astro and Preact twins through blogCardStyles.ts, adds a white surface, 20px frame and product-accent border hover for comparison reading rails; the default blog output is unchanged.",
+    stage: false,
+    demoProps: {
+      href: "/blog/agents-are-not-microservices",
+      title: "Your Agents Are Not Microservices",
+      excerpt:
+        "Durable execution engines were built for payment flows and order processing. AI agents need something different. Here's why.",
+      authorName: "Hamza Tahir",
+      categoryName: "Kitaru",
+    },
+  },
+  {
+    id: "labs.blog-newsletter-cta",
+    kind: "template",
+    componentPath: "src/components/labs/BlogNewsletterCta.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: true,
+    paperPage: 0,
+    notes:
+      "Closing band shown at the bottom of every blog route (the index, a post via BlogLayout.astro, and the category/tag/author hub pages): dark sage panel, two-column (ZenML signup pill left, newsletter signup card right), one column below lg. Mounts GrainBackdrop client:idle, same treatment as labs.close-cta — deliberately not the page's always-on ambient island, so it hydrates once the browser is idle instead of competing with a hero shader for first paint. The newsletter form's markup is custom (a pill-shaped input row with an icon-only submit button) but shares the Brevo contract with BrevoNewsletterForm.astro: a BrevoFormConfig, the same hidden honeypot/locale inputs and data-brevo-* attributes, and the same submit behaviour via the shared scripts/brevoNewsletterForm.ts (extracted from BrevoNewsletterForm.astro's former inline script so the two markups can't fork the fetch logic). Copy and list are both props defaulting to the blog's own (BLOG_CTA in src/lib/blog-cta.ts + BREVO_MAIN_CONFIG), so a non-blog surface reuses the band rather than copying the markup — the research databases pass DATABASE_CTA + BREVO_LLMOPS_CONFIG.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.page-header",
+    kind: "template",
+    componentPath: "src/components/labs/LabsPageHeader.astro",
+    variantAxes: ["align"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 22,
+    notes:
+      "Short Labs band with the named interior-page header preset; shared by company-family indexes and detail mastheads.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.people-roster",
+    kind: "template",
+    componentPath: "src/components/labs/LabsPeopleRoster.astro",
+    variantAxes: ["heading present", "placement"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Published people grid, ordered by the shared team reader. One light-bordered card integrates the Figma portrait, CMS name, Nudica Mono role, compact facts with left-aligned hex bullets, and an optional LinkedIn/email contact strip; 1/2/4 columns. Missing contact fields collapse independently.",
+    stage: false,
+    demoProps: {},
+    collectionBound: true,
+    contentShape: {
+      minItems: 0,
+      maxItems: 100,
+      overflow: "Render all supplied items; rows grow vertically.",
+    },
+  },
+  {
+    id: "labs.team-portrait",
+    kind: "primitive",
+    componentPath: "src/components/labs/LabsTeamPortrait.astro",
+    variantAxes: ["frame"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Monochrome portrait cutouts with supplied Figma ribbons, composited normally to preserve natural faces. Three tightly cropped sources use generated clothing extensions behind their original head cutouts; framing is baked into the transparent AVIF assets hosted on R2. Original source images remain available. Integrated into a single people card or standalone on details. Photo zoom and rising ribbons share hover/focus, disabled for reduced motion.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.open-roles",
+    kind: "template",
+    componentPath: "src/components/labs/LabsOpenRoles.astro",
+    variantAxes: ["department present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Open positions with optional real department grouping and an explicit empty state. Never fabricates departments.",
+    stage: false,
+    demoProps: {},
+    collectionBound: true,
+    contentShape: {
+      minItems: 0,
+      maxItems: 100,
+      overflow: "Render all supplied items; rows grow vertically.",
+    },
+  },
+  {
+    id: "labs.editorial-section",
+    kind: "template",
+    componentPath: "src/components/labs/LabsEditorialSection.astro",
+    variantAxes: ["body kind", "ctas present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Two-column company/careers editorial section, collapsing on mobile; plain text or trusted HTML is discriminated.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.values-grid",
+    kind: "template",
+    componentPath: "src/components/labs/LabsValuesGrid.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes: "Company values and careers benefits using token-based 1/2/3 cards.",
+    stage: false,
+    demoProps: {},
+    collectionBound: true,
+    contentShape: {
+      minItems: 0,
+      maxItems: 100,
+      overflow: "Render all supplied items; rows grow vertically.",
+    },
+  },
+  {
+    id: "labs.story-card",
+    kind: "template",
+    componentPath: "src/components/labs/LabsStoryCard.astro",
+    variantAxes: ["quote arrangement"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 4,
+    notes:
+      'Shared customer-logo card for homepage stories, case-study index and sibling rail. Light sage gradient with subtle static grain; title reuses the blog card typography. A discriminated `kind: "quote"` arrangement renders a testimonial instead: a blockquote over an attribution footer (avatar, name, optional title, optional trailing company logo) on the same card shell — used where the source data is quotes rather than case-study links (e.g. /pro). Attribution fields and the footer collapse when the source supplies none.',
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.case-study-sidebar",
+    kind: "template",
+    componentPath: "src/components/labs/LabsCaseStudySidebar.astro",
+    variantAxes: ["logos present", "PDF present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 23,
+    notes:
+      "Larger customer logos above case-study facts through the shared DescriptionList renderer, with optional PDF CTA. Metadata labels use Nudica Mono uppercase in LabsDetailLayout.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.sticky-breadcrumb",
+    kind: "primitive",
+    componentPath: "src/components/labs/StickyBreadcrumb.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "DESIGN.md \"Sticky breadcrumb row\": the crumb trail that opens a long-form article body, in the article lane so it lines up with the body text's left edge, and sticky from lg up only (below that it is a plain static row — a small screen has no room for a floating crumb). It carries the page's own ground and no rule, so what stays on screen reads as the crumb holding its place rather than a second chrome layer; the desktop-only eased fade beneath it spans the prose column only, never the TOC rail. Offsets move together: the floating nav's bottom edge + 8px = top-[108px], the row is 44px tall, +8px gap = 160px, which is the TOC's sticky offset and the `.prose [id]` scroll-margin-top in global.css at lg. Reads --article-lane / --prose-column from blogLaneStyle() on an ancestor; the consuming layout owns the bounding wrapper that decides how far the sticky region reaches. Consumers: BlogLayout.astro, the database entry layout, and LabsDetailLayout.astro.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.detail-layout",
+    kind: "template",
+    componentPath: "src/layouts/LabsDetailLayout.astro",
+    variantAxes: ["sidebar present", "related present"],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Company-family reading layout: short masthead, 768px prose + 224px metadata rail with 40px gap, shared bounded breadcrumb, closing newsletter band.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.article-body",
+    kind: "template",
+    componentPath: "src/components/labs/LabsArticleBody.astro",
+    variantAxes: ["TOC present"],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 0,
+    notes:
+      "The long-form body row of a Labs-shell article: the prose column plus its sticky table-of-contents rail (collapsing to a `<details>` above the copy below xl). The TOC is H2-only and appears only from three H2s up — fewer and a contents list is noise, not navigation — and that threshold lives here, not in each layout. `proseClass` appends to `prose` (BlogLayout passes prose-zoomable, which opts blog images into the lightbox). Ends in mb-24 rather than pb-24 so its border box, and with it the consuming layout's sticky-region wrapper, ends where the article does. Carries no reveal `<style>`: the body is deliberately never a reveal-child, because prose must not depend on an observer firing. An optional named `lead` slot renders above the mobile TOC and the prose, inside the article's own column — the database entry layout passes its summary box and metadata record through it, a blog post passes nothing. Consumers: BlogLayout.astro and the database entry layout. An optional `rail` named slot (the integration detail's metadata record) renders twice, as the TOC does: above the prose below xl, and in the right rail above the sticky TOC (gap-10) from xl up — the aside then renders even when the page has fewer than three H2s. Consumers passing no `rail` render byte-identically.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.related-band",
+    kind: "template",
+    componentPath: "src/components/labs/LabsRelatedBand.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      'The closing related-content band of a Labs-shell article: one heading over related-content.rail\'s hex-corner cards (gridVariant gap-lg-3col) on a full-width sage-tint band, which is the coloured ground those white cards need to read. Collapses entirely at zero items, so the consuming layout passes items rather than guarding the section itself. Stays sage on every consumer, Kitaru posts included — no orange in this block. It carries its own copy of the house reveal rules because Astro scopes component styles and the consuming layout\'s `<style>` no longer reaches this markup. Consumers: BlogLayout.astro ("Continue reading") and the database entry layout ("More like this").',
+    stage: false,
+    demoProps: {},
+    collectionBound: true,
+    contentShape: {
+      minItems: 1,
+      maxItems: 3,
+      overflow:
+        "the rail is a three-column grid; a fourth item wraps to a second row",
+    },
+  },
+  {
+    id: "labs.metadata-block",
+    kind: "template",
+    componentPath: "src/components/labs/LabsMetadataBlock.astro",
+    variantAxes: ["value kind (text / link / chips)"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 23,
+    notes:
+      'The labelled record rows on a database entry (Industry, Technologies/MLOps topics): a `<dl>` of label/value pairs in one of three value shapes. Chips clamp to `visible` (default DATABASE_TAG_CHIPS_VISIBLE, roughly two rows) before folding the rest into a native `<details>` — its `<summary>` is itself a TERM_CHIP pill toggling \'+N more\' / \'Show fewer\' via a scoped `<style>`, no script, so every chip stays reachable without JS; the `<details>` stays an inline element (not `display: contents` — Safari has dropped interactive descendants of a contents-box `<details>`) so the overflow chips flow into the same wrap row as the visible ones. Empty `items` renders nothing. A `link` value may also carry `analytics` (the Plausible event name on the anchor) and `external` (new tab plus the rel guard); both absent leaves the anchor exactly as the database entries render it. Two further opt-ins for the integration detail\'s rail: `labels="mono"` (a block-wide discriminant, the `<dt>`s in Nudica Mono uppercase; the default `sentence` is what the database goldens pin) and a `link` value with `as: "pill"` + `icon: "github"` (a ghost pill from labsButtonStyles with the GitHub mark before the label — LabsButton puts its icon after). Consumers: src/layouts/DatabaseEntryLayout.astro and the integration detail page.',
+    stage: false,
+    demoProps: {
+      items: [
+        {
+          label: "Industry",
+          value: {
+            kind: "link",
+            text: "Finance",
+            href: "/industry-tags/finance",
+          },
+        },
+        {
+          label: "Technologies · 12",
+          value: {
+            kind: "chips",
+            visible: 9,
+            chips: [
+              { label: "RAG", href: "/llmops-tags/rag" },
+              {
+                label: "Prompt engineering",
+                href: "/llmops-tags/prompt-engineering",
+              },
+              {
+                label: "Vector databases",
+                href: "/llmops-tags/vector-databases",
+              },
+              { label: "Fine-tuning", href: "/llmops-tags/fine-tuning" },
+              { label: "Evaluation", href: "/llmops-tags/evaluation" },
+              { label: "Monitoring", href: "/llmops-tags/monitoring" },
+              { label: "Guardrails", href: "/llmops-tags/guardrails" },
+              {
+                label: "Multi-agent systems",
+                href: "/llmops-tags/multi-agent-systems",
+              },
+              { label: "Caching", href: "/llmops-tags/caching" },
+              { label: "Chromadb", href: "/llmops-tags/chromadb" },
+              { label: "Pinecone", href: "/llmops-tags/pinecone" },
+              { label: "Observability", href: "/llmops-tags/observability" },
+            ],
+          },
+        },
+      ],
+    },
+  },
+  {
+    id: "labs.entry-row",
+    kind: "template",
+    componentPath: "src/components/labs/EntryRow.astro",
+    variantAxes: [
+      "summary present",
+      "chips present",
+      "chips as filters",
+      "leading mark",
+    ],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 29,
+    notes:
+      "One research-database entry as a row: title (the chevron appears on hover, centered on the row's right edge), the record's meta line (company · platform · content type · year · industry, each token taking its middot with it when the entry has no such field), a two-line summary and the first DATABASE_ROW_CHIPS_VISIBLE tag chips plus a '+N' pill. The listing counterpart of labs.blog-card, and built on the same twin pattern: EntryRow.astro for server-rendered listings, EntryRow.tsx for the filter islands (an Astro component can't render inside a Preact island), both importing every class string and the row's data shape from entryRowStyles.ts so they can't drift. Server-side the chips are links to the tag hubs and the industry reads as text; inside the island both are filter controls (aria-pressed buttons) that sit above the stretched title link. Rows are separated by a --color-border hairline; hover and focus-within paint a light --color-sage-50 wash across the row, reveal a chevron centered on the row's right edge, and draw a 1px underline under the title that sweeps each wrapped line left to right in reading order (DESIGN.md \"Entry rows, not cards\"). An optional `mark` (24px logo, object-contain) renders left of the title when present — absence collapses to the plain heading. Comparison hubs and related comparison navigation instead use labs.comparison-card. Consumers: the /llmops-database and /mlops-database islands, and the tag and industry hubs.",
+    stage: false,
+    demoProps: {
+      href: "/llmops-database/building-a-systematic-snap-benefits-llm-evaluation-framework",
+      title: "Building a Systematic SNAP Benefits LLM Evaluation Framework",
+      meta: {
+        company: "Propel",
+        year: 2025,
+        industry: { label: "Government" },
+      },
+      summary:
+        "Propel is developing a comprehensive evaluation framework for testing how well different LLMs handle SNAP (food stamps) benefit-related queries. The project aims to assess model accuracy, safety, and appropriateness in handling complex policy questions while balancing strict accuracy with practical user needs.",
+      chips: [
+        {
+          label: "regulatory_compliance",
+          href: "/llmops-tags/regulatory-compliance",
+        },
+        {
+          label: "question_answering",
+          href: "/llmops-tags/question-answering",
+        },
+        {
+          label: "high_stakes_application",
+          href: "/llmops-tags/high-stakes-application",
+        },
+      ],
+      chipOverflowCount: 11,
+    },
+  },
+  {
+    id: "labs.term-chip-index",
+    kind: "template",
+    componentPath: "src/components/labs/TermChipIndex.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      'The "all terms" chip listing shared by /llmops-tags, /mlops-tags and /industry-tags (#256): a wrapping list of TERM_CHIP hexagon pills, each carrying its entry count. The caller sorts (count desc, name A-Z on ties, the same order filterUsedTerms\' callers already use) — this component only renders the given order.',
+    collectionBound: true,
+    contentShape: {
+      minItems: 0,
+      maxItems: 400,
+      overflow: "A flex-wrap chip list; grows with the taxonomy, no cap.",
+    },
+    stage: false,
+    demoProps: {
+      ariaLabel: "All LLMOps technologies",
+      terms: [
+        { name: "RAG", href: "/llmops-tags/rag", count: 412 },
+        {
+          name: "Prompt engineering",
+          href: "/llmops-tags/prompt-engineering",
+          count: 388,
+        },
+        { name: "Evaluation", href: "/llmops-tags/evaluation", count: 201 },
+      ],
+    },
+  },
+  {
+    id: "labs.comparison-card",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonCard.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    stage: false,
+    notes:
+      "Compact comparison catalogue card: 40px competitor mark beside one title and a two-line CSS-clamped description whose full text remains in the DOM. Neither product renders a per-card metadata or category row; source metadata remains available to other consumers. The /compare hub uses explicit one-, two- and three-column grids, preserving product grouping and source order. Sage hairline border, hover wash, the shared EntryRow per-line title underline sweep and keyboard focus; missing marks or copy collapse. This replaces the hub's entry rows under the comparison cutover review ruling. The same component also renders blocks showdown navigation and /vs related comparisons, taking existing hub descriptions by href while preserving each section's original links, marks, titles and order; decision-content showdown cards remain separate.",
+  },
+  {
+    id: "labs.comparison-quote",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonQuote.astro",
+    variantAxes: ["product", "attribution present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: true,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Full-width editorial comparison quote band with top and bottom hairlines, a centered Borna quote, controlled vertical padding and optional attribution. Reuses the Labs GrainBackdrop shader with the sage Labs palette on ZenML comparisons and the restrained orange Kitaru palette on Kitaru comparisons. Source quote, author, role, images and link are preserved; absent attribution collapses. The company logo renders centred above the quote in colour, resolved through the temporary `src/lib/quoteLogos.ts` bridge from the collection's white PNGs to local SVGs until the quotes collection points `companyLogo` at colour marks directly; an unresolved logo collapses.",
+  },
+  {
+    id: "labs.comparison-blog-rail",
+    kind: "template",
+    componentPath: "src/components/labs/LabsComparisonBlogRail.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 1,
+    stage: false,
+    notes:
+      "Comparison related-reading band using the exact labs.blog-card Astro twin's named framed variant: white card surface, 1px hairline frame, 20px radius, canonical image/content typography and product-accent hover. Explicit one-to-two-to-three-column grid with three supplied articles in one desktop row. Keeps the supplied heading and article order, copies source image/title/excerpt unchanged, and derives product accent semantics from the shared blog domain helper. This replaces the comparison blogRail's legacy blog cards without changing the blog/database default related bands; zero items collapse. Framed covers meet the top and side borders and clip to the card radius; content alone is inset, cards stretch to equal grid-row heights, and the framed variant suppresses the Kitaru badge while retaining product-accent variables.",
+  },
+  {
+    id: "labs.integration-card",
+    kind: "template",
+    componentPath: "src/components/labs/IntegrationCard.astro",
+    variantAxes: ["logo shape", "logo absent"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 24,
+    notes:
+      "The catalogue tile for one integration: a full-width 88px logo band on cream-100 flush with the card's top edge (clipped by the card's corners, a hairline under it, the mark centred at 40px and capped at 100px wide — the band, not the mark, sets the first lane so every name shares a baseline), a Borna title and the integration type as a Nudica Mono uppercase label beneath it. The whole card is the link and hovers: sage border, title colour, the mark scales up in the band and the title's underline sweeps in per line (nothing moves under reduced motion). No logo falls back to a two-letter monogram. `data-type` / `data-slug` are the hooks the /integrations filter island toggles visibility by. Consumers: the /integrations grid, term-hub.catalog (/integration-type/[slug]) and the integration detail's \"More integrations\" row.",
+    stage: false,
+    demoProps: {
+      href: "/integrations/kubernetes",
+      title: "Kubernetes",
+      typeLabel: "Orchestrator",
+      logo: {
+        url: "https://assets.zenml.io/content/integrations/logos/kubernetes.svg",
+        alt: "Kubernetes logo",
+      },
+    },
+  },
+  {
+    id: "labs.feature-card",
+    kind: "template",
+    componentPath: "src/components/labs/FeatureCard.astro",
+    variantAxes: ["summary length"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      'The features hub card: a category line (Nudica Mono uppercase, the label role the integration card wears), a Borna title and the summary. The whole card is the link and hovers (border plus title colour). No icon, no badge and no "Learn more" text link — the category names the card and the card itself is the affordance. Consumer: /features.',
+    stage: false,
+    demoProps: {
+      href: "/features/iterate-at-warp-speed",
+      category: "Speed",
+      title: "Iterate at warp speed",
+      summary:
+        "Accelerate your ML workflow with seamless local-to-cloud transitions and smart caching.",
+    },
+  },
+  {
+    id: "labs.feature-split",
+    kind: "template",
+    componentPath: "src/components/labs/FeatureSplit.astro",
+    variantAxes: [
+      "body present",
+      "bullets present",
+      "learn-more link",
+      "media side",
+    ],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 0,
+    notes:
+      "One alternating feature section: a heading, an optional body line, hairline check-bullet rows, an optional trailing link, and a framed image on the other lane of the shared Split primitive. Each optional part collapses when absent. Extracted verbatim from the sections /cloud-features and /deployments already shipped, so those pages render byte-identically through it. Consumers: /cloud-features/ml-models-control-plane, the /deployments scenarios, /features/[slug] and the blocks-driven comparison value sections.",
+    stage: false,
+    demoProps: {
+      title: "Beyond model registries",
+      imageSide: "right",
+      bullets: [
+        "One central glass plane view over all your models.",
+        "Understand where models originated.",
+        "Gather all trained and deployed models in one central place.",
+      ],
+      image: {
+        url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/234db398/65324a015f1eb2094d3e0954_27. Connect your infrastructure with ZenML Cloud.webp",
+        alt: "ZenML Cloud infrastructure dashboard",
+      },
+    },
+  },
+  {
+    id: "labs.compliance-card",
+    kind: "template",
+    componentPath: "src/components/labs/ComplianceCard.astro",
+    variantAxes: ["badge count"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "The SOC 2 / ISO 27001 badges beside an eyebrow, headline and body on the Labs card shell. The `mt-8` is part of the component because every consumer sits it directly under a block. Consumers: /pricing (the ZenML workspace panel), /pro and the /features/[slug] compliance blocks.",
+    stage: false,
+    demoProps: {
+      badges: PRICING_COMPLIANCE.badges,
+      eyebrow: PRICING_COMPLIANCE.bannerEyebrow,
+      headline: PRICING_COMPLIANCE.bannerHeadline,
+      body: PRICING_COMPLIANCE.bannerBody,
+    },
   },
 ];
 

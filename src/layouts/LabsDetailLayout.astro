@@ -1,0 +1,108 @@
+---
+import BlogNewsletterCta from "../components/labs/BlogNewsletterCta.astro";
+import LabsPageHeader from "../components/labs/LabsPageHeader.astro";
+import StickyBreadcrumb from "../components/labs/StickyBreadcrumb.astro";
+import type { Surface } from "../lib/analytics";
+import { BAND_CONTENT_GAP, blogLaneStyle } from "../lib/blogLayout";
+import type { BreadcrumbItem } from "../lib/breadcrumb";
+import type { LabsProduct } from "../lib/labs-home";
+import type { SEOProps } from "../lib/seo";
+import BaseLayout from "./BaseLayout.astro";
+
+interface Props extends SEOProps {
+  heading: string;
+  eyebrow?: string;
+  breadcrumb: BreadcrumbItem[];
+  surface: Surface;
+  product?: LabsProduct;
+}
+const { heading, eyebrow, breadcrumb, surface, product, ...seo } = Astro.props;
+const hasSidebar = Astro.slots.has("sidebar");
+---
+
+<BaseLayout {...seo} surface={surface} product={product} app="labs">
+  <main class="labs-detail" style={blogLaneStyle()}>
+    <LabsPageHeader heading={heading} eyebrow={eyebrow} description={seo.description}>
+      <slot name="header" />
+    </LabsPageHeader>
+    <div class={BAND_CONTENT_GAP}>
+      <StickyBreadcrumb items={breadcrumb} railBreakpoint="lg" />
+      <div class="mx-auto max-w-content px-gutter">
+        <div class="mx-auto mb-space-xxl grid max-w-(--article-lane) gap-space-mlg pt-space-sm lg:grid-cols-[minmax(0,var(--prose-column))_minmax(0,var(--toc-rail))]">
+          <article class="min-w-0">
+            <slot />
+          </article>
+          {hasSidebar && (
+            <aside class="labs-detail-metadata min-w-0 lg:self-stretch">
+              <div class="lg:sticky lg:top-[160px]">
+                <slot name="sidebar" />
+              </div>
+            </aside>
+          )}
+        </div>
+      </div>
+    </div>
+    <slot name="related" />
+    <BlogNewsletterCta />
+  </main>
+</BaseLayout>
+
+<style>
+  .labs-detail :global(.prose :is(h1, h2, h3, h4) :is(strong, b)) {
+    font-weight: inherit;
+  }
+  /* Keep the metadata renderer's content and DOM stable across page families. */
+  .labs-detail-metadata :global(dl > div) {
+    padding-block: var(--spacing-space-xs);
+    border-color: var(--color-border);
+  }
+  .labs-detail-metadata :global(dl.divide-y > div) {
+    padding-inline: var(--spacing-space-sm);
+  }
+  .labs-detail-metadata :global(dt) {
+    font-family: var(--font-label);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-sage-800);
+  }
+  .labs-detail-metadata :global(dd),
+  .labs-detail-metadata :global(dd [class*="text-"]) {
+    color: var(--color-cream-900);
+    font-weight: 400;
+    overflow-wrap: anywhere;
+  }
+  .labs-detail-metadata :global(dd a) {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    color: var(--color-sage-800);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+  .labs-detail-metadata :global(dd a:hover) {
+    text-decoration-thickness: 2px;
+  }
+  .labs-detail-metadata :global(dd .rounded-full) {
+    background: var(--color-sage-100);
+    color: var(--color-sage-900);
+  }
+  .labs-detail-metadata :global(svg) {
+    color: var(--color-sage-800);
+  }
+  /* Imported project lists wrap their text in paragraphs. Their first line
+   * must share the marker's line box, without prose paragraph top padding. */
+  .labs-detail :global(.prose li > p:first-child) {
+    padding-top: 0;
+  }
+  .labs-detail :global(.prose li > p:last-child) {
+    margin-bottom: 0;
+  }
+  @media (max-width: 1023px) {
+    .labs-detail-metadata :global(dl.divide-y > div) {
+      padding-inline: var(--spacing-space-md);
+    }
+  }
+</style>

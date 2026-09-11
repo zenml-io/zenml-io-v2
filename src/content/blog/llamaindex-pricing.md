@@ -21,12 +21,12 @@ tags:
 date: "2025-08-24T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0253b821/6981cf5010e873663bd75930_6981ce8b0baa2ab9e31a0d14_llamaindex-pricing.avif"
+  url: "https://assets.zenml.io/content/blog/llamaindex-pricing/abb32496/llamaindex-pricing-cover.avif"
 seo:
   title: "LlamaIndex Pricing Guide: Everything You Must Know Before Investing - ZenML Blog"
   description: "In this LlamaIndex pricing guide, we discuss the costs, features, and value LlamaIndex provides to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/llamaindex-pricing"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0253b821/6981cf5010e873663bd75930_6981ce8b0baa2ab9e31a0d14_llamaindex-pricing.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/llamaindex-pricing/89237d09/llamaindex-pricing-cover.jpg"
   ogTitle: "LlamaIndex Pricing Guide: Everything You Must Know Before Investing - ZenML Blog"
   ogDescription: "In this LlamaIndex pricing guide, we discuss the costs, features, and value LlamaIndex provides to help you decide if it’s the right investment for your business."
 ---

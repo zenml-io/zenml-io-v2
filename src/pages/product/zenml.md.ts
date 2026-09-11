@@ -6,64 +6,72 @@ import {
   markdownResponse,
 } from "../../lib/agentMarkdown";
 import {
-  PRODUCT_ZENML_BENEFITS,
-  PRODUCT_ZENML_FINAL_CTA,
-  PRODUCT_ZENML_HERO,
-  PRODUCT_ZENML_SEO,
-} from "../../lib/productZenml";
+  LABS_PRODUCT_ZENML_SEO,
+  ZENML_CLOSE,
+  ZENML_FEATURE_TABS,
+  ZENML_HERO,
+  ZENML_INTEGRATIONS,
+  ZENML_STORIES,
+  ZENML_VALUE_PROPS,
+} from "../../lib/labs-product-zenml";
 
 export const prerender = true;
 
+/**
+ * Machine-readable mirror of the ZenML product landing (`/product/zenml.md`).
+ * It renders the same copy `zenml.astro` shows, from the same module, so the
+ * two never drift.
+ */
 export function GET(): Response {
+  const heroCtas = [
+    ZENML_HERO.cta,
+    ...(ZENML_HERO.secondaryCta ? [ZENML_HERO.secondaryCta] : []),
+  ];
   const markdown = joinMarkdownSections(
     markdownPreamble({
-      title: `${PRODUCT_ZENML_HERO.headline.trimEnd()} ${PRODUCT_ZENML_HERO.headlineAccent}`,
-      description: PRODUCT_ZENML_SEO.description,
+      title: LABS_PRODUCT_ZENML_SEO.title,
+      description: LABS_PRODUCT_ZENML_SEO.description,
       canonicalPath: "/product/zenml",
     }),
     joinMarkdownSections(
       "## Summary",
-      `${PRODUCT_ZENML_HERO.subtitleLead} ${PRODUCT_ZENML_HERO.subtitle}`,
-      `Install: \`${PRODUCT_ZENML_HERO.installCmd}\``,
+      ZENML_HERO.headlineLines.join(" "),
+      ZENML_HERO.deck,
+      ...(ZENML_HERO.install ? [`Install: \`${ZENML_HERO.install.cmd}\``] : []),
     ),
+    joinMarkdownSections("## Main CTAs", markdownCtaList(heroCtas)),
     joinMarkdownSections(
-      "## Main CTAs",
-      markdownCtaList([
-        PRODUCT_ZENML_HERO.primaryCta,
-        PRODUCT_ZENML_HERO.secondaryCta,
-      ]),
-    ),
-    joinMarkdownSections(
-      `## ${PRODUCT_ZENML_BENEFITS.eyebrow}`,
-      ...PRODUCT_ZENML_BENEFITS.items.map((item) =>
-        joinMarkdownSections(`### ${item.name}`, item.body),
+      `## ${ZENML_FEATURE_TABS.headline}`,
+      ...(ZENML_FEATURE_TABS.deck ? [ZENML_FEATURE_TABS.deck] : []),
+      ...ZENML_FEATURE_TABS.tabs.map((tab) =>
+        joinMarkdownSections(`### ${tab.title}`, tab.description),
       ),
     ),
     joinMarkdownSections(
-      "## Infrastructure flexibility",
-      markdownBulletList([
-        "Write one pipeline and run it locally or on production orchestrators such as Kubernetes, Vertex AI, SageMaker, AzureML, and Airflow.",
-        "Keep your own artifact store, experiment tracker, model registry, and cloud provider instead of moving everything into a monolithic platform.",
-        "Use ZenML as the connective layer: the pipeline definition stays stable while the infrastructure underneath can change.",
-      ]),
+      `## ${ZENML_VALUE_PROPS.headline}`,
+      ...ZENML_VALUE_PROPS.items.map((item) =>
+        joinMarkdownSections(`### ${item.title}`, item.body),
+      ),
+      markdownCtaList([ZENML_VALUE_PROPS.cta]),
     ),
     joinMarkdownSections(
-      "## Reproducibility path",
-      markdownBulletList([
-        "Every pipeline run records steps, parameters, artifacts, metadata, and lineage.",
-        "Teams can inspect what happened after a run, compare runs, and re-execute historical pipelines from known states.",
-        "The open-source SDK is the starting point; managed Pro adds governance, collaboration, and a hosted control plane.",
-      ]),
+      `## ${ZENML_INTEGRATIONS.headline}`,
+      ...(ZENML_INTEGRATIONS.deck ? [ZENML_INTEGRATIONS.deck] : []),
+      markdownCtaList([ZENML_INTEGRATIONS.cta]),
     ),
     joinMarkdownSections(
-      `## ${PRODUCT_ZENML_FINAL_CTA.headline}`,
-      PRODUCT_ZENML_FINAL_CTA.body,
-      `Install: \`${PRODUCT_ZENML_FINAL_CTA.installCmd}\``,
-      "### CTAs",
-      markdownCtaList([
-        PRODUCT_ZENML_FINAL_CTA.primaryCta,
-        PRODUCT_ZENML_FINAL_CTA.secondaryCta,
-      ]),
+      ZENML_STORIES.headline ? `## ${ZENML_STORIES.headline}` : "",
+      markdownBulletList(
+        ZENML_STORIES.cards.map((card) =>
+          "href" in card ? `[${card.title}](${card.href})` : card.title,
+        ),
+      ),
+      markdownCtaList(ZENML_STORIES.allLink ? [ZENML_STORIES.allLink] : []),
+    ),
+    joinMarkdownSections(
+      `## ${ZENML_CLOSE.headlineLines.join(" ")}`,
+      ZENML_CLOSE.deck,
+      markdownCtaList([ZENML_CLOSE.cta]),
     ),
   );
 

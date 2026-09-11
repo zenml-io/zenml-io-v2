@@ -1,16 +1,19 @@
 ---
 /**
- * Blog authors index page.
+ * Blog authors index page (blog cutover, D2d/§6).
  *
- * Lists all blog authors with post counts, sorted by popularity.
- * Route: /author
+ * Lists all blog authors with post counts, sorted by popularity, as
+ * `data-display.stacked-list` rows (`skin="labs"`, name + count) under the
+ * shared `page-header.with-breadcrumb` term-hub header. Route: /author
  */
 import { getCollection } from "astro:content";
 import PageHeader from "../../components/templates/PageHeader.astro";
-import { TAXONOMY_INDEX_INTRO } from "../../components/templates/pageHeaderPresets";
+import { TERM_HUB_HEADER_INTRO } from "../../components/templates/pageHeaderPresets";
+import StackedList from "../../components/templates/StackedList.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getAllPublishedPosts } from "../../lib/blog";
 import { filterUsedTerms } from "../../lib/relatedIndex";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 const allPosts = await getAllPublishedPosts();
 const countMap = new Map<string, number>();
@@ -34,33 +37,35 @@ const authors = filterUsedTerms(merged).sort(
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "author") ? defaultOgUrl("pages", "author") : undefined}
   title="Blog Authors - ZenML"
   description="Browse all authors who have written for the ZenML blog."
   surface="ml"
+  app="labs"
 >
-  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-    <PageHeader
-      class="mb-10"
-      heading="Blog Authors"
-      description={`${authors.length} ${authors.length === 1 ? "author" : "authors"} on the blog`}
-      backLinks={[{ href: "/blog", label: "Back to the blog" }]}
-      classOverrides={TAXONOMY_INDEX_INTRO}
-    />
+  {/* pt-[148px] clears the floating Labs nav (bottom edge 92px mobile /
+      108px desktop) with margin to spare — matches LabsBand's "short"
+      clearance so every blog-surface breadcrumb starts at the same offset. */}
+  <section class="scroll-reveal-section px-gutter pt-[148px] pb-24">
+    <div class="mx-auto max-w-content">
+      <PageHeader
+        breadcrumb={[{ label: "Blog", href: "/blog" }, { label: "Authors" }]}
+        breadcrumbSeparator="chevron"
+        heading="Authors"
+        description={`${authors.length} ${authors.length === 1 ? "author" : "authors"} on the blog`}
+        classOverrides={TERM_HUB_HEADER_INTRO}
+      />
 
-    <nav aria-label="All blog authors">
-      <ul class="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
-        {authors.map((a) => (
-          <li>
-            <a
-              href={`/author/${a.slug}`}
-              class="flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50"
-            >
-              <span class="font-medium text-gray-900">{a.name}</span>
-              <span class="text-xs tabular-nums text-gray-400">{a.count}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  </div>
+      <div class="mt-10 border-t border-(--color-border)">
+        <StackedList
+          skin="labs"
+          items={authors.map((a) => ({
+            title: a.name,
+            href: `/author/${a.slug}`,
+            trailingCount: a.count,
+          }))}
+        />
+      </div>
+    </div>
+  </section>
 </BaseLayout>

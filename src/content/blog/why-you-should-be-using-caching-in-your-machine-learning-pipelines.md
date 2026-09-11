@@ -20,12 +20,12 @@ tags:
 date: "2021-12-07T00:00:00.000Z"
 readingTime: 4 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d81579c9/653166dabbf330ebefbc01fb_juliana-kozoski-X3-IypGOGSE-unsplash.jpg"
+  url: "https://assets.zenml.io/content/blog/why-you-should-be-using-caching-in-your-machine-learning-pipelines/53df59ca/why-you-should-be-using-caching-in-your-machine-learning-pipelines-cover.avif"
 seo:
   title: "Why you should be using caching in your machine learning pipelines - ZenML Blog"
   description: "Use caches to save time in your training cycles, and potentially to save some money as well!"
   canonical: "https://www.zenml.io/blog/why-you-should-be-using-caching-in-your-machine-learning-pipelines"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e56ae7e/653166dabbf330ebefbc01fb_juliana-kozoski-X3-IypGOGSE-unsplash.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/why-you-should-be-using-caching-in-your-machine-learning-pipelines/2609da87/why-you-should-be-using-caching-in-your-machine-learning-pipelines-cover.jpg"
   ogTitle: "Why you should be using caching in your machine learning pipelines - ZenML Blog"
   ogDescription: "Use caches to save time in your training cycles, and potentially to save some money as well!"
 ---

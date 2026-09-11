@@ -22,12 +22,12 @@ tags:
 date: "2022-05-27T00:00:00.000Z"
 readingTime: 14 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d971da38/65315636d60fba2556f0cc26_poster.jpg"
+  url: "https://assets.zenml.io/content/blog/will-they-stay-or-will-they-go-building-a-customer-loyalty-predictor/416232d1/will-they-stay-or-will-they-go-building-a-customer-loyalty-predictor-cover.avif"
 seo:
   title: "Will they stay or will they go? Building a Customer Loyalty Predictor - ZenML Blog"
   description: "We built an end-to-end production-grade pipeline using ZenML for a customer churn model that can predict whether a customer will remain engaged with the company or not."
   canonical: "https://www.zenml.io/blog/will-they-stay-or-will-they-go-building-a-customer-loyalty-predictor"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/62de717f/65315636d60fba2556f0cc26_poster.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/will-they-stay-or-will-they-go-building-a-customer-loyalty-predictor/9c59dbe0/will-they-stay-or-will-they-go-building-a-customer-loyalty-predictor-cover.jpg"
   ogTitle: "Will they stay or will they go? Building a Customer Loyalty Predictor - ZenML Blog"
   ogDescription: "We built an end-to-end production-grade pipeline using ZenML for a customer churn model that can predict whether a customer will remain engaged with the company or not."
 ---

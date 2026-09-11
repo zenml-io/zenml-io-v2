@@ -5,17 +5,26 @@ import {
   KITARU_LINKS,
   KITARU_TRIAL_NOTE,
 } from "../../lib/kitaru-landing";
-// Cta.astro — closing CTA band. Dark ember grain background (KitaruGrain
-// variant="dark"), headline, install command, signup button.
+import LabsButton from "../labs/LabsButton.astro";
+import LabsInstallChip from "../labs/LabsInstallChip.astro";
+// Cta.astro — closing CTA band. Dark grain background (KitaruGrain
+// variant="dark"), headline, install chip, orange signup pill.
 import { KitaruGrain } from "./islands/KitaruGrain";
+
+const signup = {
+  label: KITARU_LINKS.signup.label,
+  href: KITARU_LINKS.signup.href,
+  analytics: "Kitaru-CTA-Signup",
+};
+const install = { cmd: KITARU_INSTALL_CMD, analytics: "Kitaru-CTA-Install" };
 ---
 
 <section id="cta" class="relative overflow-hidden bg-night text-night-text">
   <KitaruGrain variant="dark" client:visible class="opacity-90" />
 
-  <div class="relative mx-auto w-full max-w-[1440px] px-6 py-24 text-center md:py-36">
+  <div class="relative mx-auto w-full max-w-content px-gutter py-24 text-center md:py-40">
     <h2
-      class="reveal text-balance text-3xl leading-[1.1] font-medium tracking-[-0.03em] md:text-[3.25rem]"
+      class="reveal font-display text-[44px] leading-[48px] text-balance text-(--color-cream-50) md:text-[72px] md:leading-[78px]"
     >
       What arrives as a complaint
       <br />
@@ -23,64 +32,18 @@ import { KitaruGrain } from "./islands/KitaruGrain";
     </h2>
 
     <div
-      class="reveal mt-12 flex flex-wrap items-center justify-center gap-3"
-      style={`--reveal-delay: 120ms`}
+      class="reveal mt-10 flex flex-wrap items-center justify-center gap-space-md"
+      style="--reveal-delay: 120ms"
     >
-      <div class="flex items-center gap-3 rounded-md border border-white/15 bg-white/5 px-4 py-3 font-mono text-sm text-night-text">
-        <span class="text-ember select-none">$</span>
-        <code class="tracking-tight">{KITARU_INSTALL_CMD}</code>
-        <button
-          type="button"
-          aria-label="Copy install command"
-          data-copy={KITARU_INSTALL_CMD}
-          class="cta-copy-btn ml-2 cursor-pointer rounded p-1.5 transition-colors hover:bg-white/10"
-        >
-          <svg class="copy-icon size-3.5 opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-          <svg class="check-icon hidden size-3.5 text-success" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
-        </button>
-      </div>
-      <a
-        href={KITARU_LINKS.signup.href}
-        data-analytics="Kitaru-CTA-Signup"
-        class="group inline-flex items-center gap-2 rounded-md bg-ember px-5 py-3 text-sm font-medium text-accent-foreground transition-colors hover:bg-ember-deep"
-      >
-        {KITARU_LINKS.signup.label}
-        <svg class="size-4 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-      </a>
+      <LabsInstallChip content={install} tone="dark" />
+      <LabsButton cta={signup} tone="orange" />
     </div>
 
-    <p class="reveal mt-6 text-[12.5px] text-night-text/50" style={`--reveal-delay: 200ms`}>
+    <p class="reveal mt-8 text-[13px] text-night-text/60" style="--reveal-delay: 200ms">
       {KITARU_TRIAL_NOTE} · Open source ({KITARU_LICENSE})
     </p>
-    <p class="reveal mt-1.5 text-[12.5px] text-night-text/60" style={`--reveal-delay: 240ms`}>
+    <p class="reveal mt-1.5 text-[13px] text-night-text/70" style="--reveal-delay: 240ms">
       Replays run from recordings — production never sees a test.
     </p>
   </div>
 </section>
-
-<script>
-  // Copy-to-clipboard for the CTA install command.
-  import { copyToClipboard } from "../../scripts/kitaru/clipboard";
-
-  document.querySelectorAll<HTMLButtonElement>("#cta .cta-copy-btn").forEach((btn) => {
-    const copyIcon = btn.querySelector<HTMLElement>(".copy-icon");
-    const checkIcon = btn.querySelector<HTMLElement>(".check-icon");
-
-    btn.addEventListener("click", () => {
-      const text = btn.dataset.copy ?? "";
-      copyToClipboard(text)
-        .then(() => {
-          copyIcon?.classList.add("hidden");
-          checkIcon?.classList.remove("hidden");
-          setTimeout(() => {
-            checkIcon?.classList.add("hidden");
-            copyIcon?.classList.remove("hidden");
-          }, 1500);
-        })
-        .catch(() => {
-          btn.setAttribute("aria-label", "Copy failed");
-          setTimeout(() => btn.setAttribute("aria-label", "Copy install command"), 2000);
-        });
-    });
-  });
-</script>

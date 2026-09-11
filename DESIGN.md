@@ -37,14 +37,29 @@ The stack is three faces plus one carve-out, split strictly by role (#6):
 
 Additional rules:
 
-- Borna headlines take **negative tracking, scaled by size**: −2% (`-0.02em`,
-  token `--tracking-heading`) at medium headline sizes, tightening toward −4%
-  (`-0.04em`, token `--tracking-display`) at the largest display sizes. Body
-  and label faces keep their own ladder tracking — this rule is Borna-only.
-  (Supersedes the earlier "letter-spacing 0 on hero display" rule.)
+- Borna is **always tracked at −2%** (`-0.02em`; the `--tracking-heading`,
+  `--tracking-display` and `--tracking-prose` tokens all bind to it) at every
+  size. Body and label faces keep their own ladder tracking — this rule is
+  Borna-only. (Supersedes the size-scaled −2%/−4% ladder and the earlier
+  "letter-spacing 0 on hero display" rule.)
+- Every headline and card title renders in **Borna at weight 500** — the
+  `labs` scope applies weight and tracking to the display role itself, so a
+  call site sets size and colour only and never restates weight or tracking.
+  A title in the body face is a defect, not a variant.
+- **Rethink Sans body text is weight 400.** Bold is an explicit, local choice
+  (a `<strong>` or a stated utility), never the default weight of a block.
 - List/bullet marker slots are sized to optically center the marker on the
   first line of body text — whenever body size changes, the marker slot moves
   with it.
+
+- **Blog routes set the UI-text direction** (blog cutover, 2026-09): on
+  `/blog`, posts and the category/tag/author hubs, every UI label — meta
+  rows, filter rail, chips, table-of-contents, code-pane bars, table heads,
+  pagination — renders in Rethink Sans, sentence case, no letter-spacing.
+  Nudica Mono uppercase survives there only in the shared shell chrome
+  (floating nav, `LabsButton` pills, footer) and as the numbered-list marker
+  inside prose, which is a design mark rather than UI text. Other surfaces
+  keep the label voice above until their own cutover.
 
 ## Color usage
 
@@ -70,13 +85,23 @@ Additional rules:
 
 ## Layout and structure
 
-- **The hex corner is a treatment, not a card** (#91). It is a fixed 80px
-  hexagon anchored to the box corner; it does not scale with the card. Any
-  card may take it regardless of content, with a minimum host box of
-  240×140px.
+- **The hex corner is a treatment, not a card** (#91). It is a fixed-size
+  hexagon anchored to the box corner; it does not scale with the card. At
+  rest it is tucked into the corner as a wedge (the 80px hexagon rotated
+  30°, mostly clipped by the card's radius) with a reduced arrow centred in
+  the visible part; on hover it walks into the card at half size (~40px),
+  upright, the arrow full size at its centre, and the card flips to the
+  dark surface (blog cutover, 2026-09). Any card may take it regardless of
+  content, with a minimum host box of 240×140px.
 - **Footer**: the dark-band footer ships on every route. The giant-wordmark
-  footer is an opt-in variant for home/landing pages only (#57) — never the
-  site default.
+  band is retired (blog cutover D4) — there is no variant that renders it;
+  every route gets the tagline + link columns + legal row.
+- **The floating nav sits on the content column** (blog cutover): the pill
+  hangs off the same centered container as every section, so the logo's left
+  edge lines up with the page's headings and the signup pill's right edge
+  with the container's right edge; the pill's border and fill extend past
+  the column by exactly its own inner padding. Below the `lg` breakpoint the
+  pill stays flush inside the gutter.
 - **Input shells split by context**: labelled form fields are 10px-radius
   rectangles; inline single-field captures (newsletter, waitlist) are pills.
 - Interactive targets are at least 44px on mobile, using invisible hit-slop
@@ -87,6 +112,87 @@ Additional rules:
   smell caught in review.
 - Clickable elements always get `cursor-pointer` — browsers do not default
   `<button>` to it.
+
+- **Interior-page header band** (blog cutover; the default for every
+  family that follows, ruled 2026-09-10): every blog route — the
+  index, each hub and the post masthead — opens on the short shader band
+  (`LabsBand` size `short`: the grain backdrop at roughly 40% of the
+  viewport, nav clearance built in). The band ends in a 1px `--color-border`
+  hairline and the first content element starts 64px below it on desktop,
+  40px on mobile; nothing overlaps the band. A Kitaru post's band, and the
+  Kitaru category and tag hubs, run a slower, quieter cut of the Kitaru product
+  page's grain palette instead of the Labs one (the band's `grain` axis); every other hub and the
+  index stay on the Labs grain. The landing
+  size stays the full-height opener of `/` and the product pages. As the
+  remaining families move onto the Labs shell (the research databases,
+  integrations and features, company pages, the product one-offs) their
+  index, detail and hub pages open on this same band by default — the
+  band's slot carries the page's breadcrumb, eyebrow, heading and deck,
+  exactly as the blog hubs do — and reuse the blog's components (the
+  accordion facet rail, the entry cards, the term-hub templates, the
+  sentence-case UI text) rather than restyling their own. A page departs
+  from this shape only by an explicit ruling.
+- **Sticky breadcrumb row on long-form detail pages** (blog cutover): the
+  breadcrumb is the first element under the band, in the article lane on
+  the page's own ground — no bar, no rule. From the `lg` breakpoint up it
+  sticks flush under the floating nav (nav bottom 108px) while the body is
+  on screen and releases when the body ends; it never rides through the
+  tags, author, prev/next or related blocks. A short eased fade under the
+  row, spanning the prose column only, dissolves copy passing beneath it;
+  the table-of-contents rail beside it is never washed. Below `lg` the row
+  is static and there is no fade. The offsets move together: nav 108px,
+  row 44px + 8px, so the table of contents and every heading's anchor
+  offset sit at 160px on desktop and 108px (nav only) below `lg`. There is
+  one implementation of this row, `labs.sticky-breadcrumb`, mounted by the
+  post layout and by the database entry template — never copied markup.
+- **Closing band on every blog route**: the index, every post and every hub
+  end on the dark sage close band (one headline, one pill, the newsletter
+  card) with the same `client:idle` grain backdrop as the homepage close —
+  the header band is the page's one always-on ambient island, the close
+  only needs to be present. Families that move to the Labs shell after the
+  blog end on this same close band by default (the research databases pass
+  their own newsletter-card copy and list; nothing else changes).
+- **Entry rows, not cards** (databases cutover, 2026-09): a research-database
+  entry has no image, so an index or hub result is a row — title, one meta
+  line (company · year · industry), a two-line summary and up to three
+  hexagon chips with a "+N" pill — separated from its neighbours by a
+  `--color-border` hairline. Hover and focus-within paint a very light
+  `--color-sage-50` wash across the row, reveal a chevron centered on the
+  row's right edge, and
+  draw a 1px underline under the title that sweeps each line left to right in
+  reading order; there are no borders that appear on hover and no coloured
+  strips. The row root is not a link: the title link is stretched over the
+  row and the chips stay real controls above it.
+- **Summary box**: an entry's abstract is a callout on `--color-sage-50`
+  with a `--color-border` hairline, 12px radius and body text in the
+  foreground colour, labelled "Summary" in sentence case. The databases
+  carry no third colour; sage and cream only.
+- **Tag chips on an entry**: the first nine render, the rest sit inside a
+  native `<details>` whose summary is the "+N more" chip, so every chip is
+  reachable without JavaScript.
+- **Hub pagination keeps pages small**: a term hub renders its first page
+  (24 rows) in HTML and loads later pages from the collection's JSON index
+  on demand, under one canonical URL with `?page=N`. No hub page may exceed
+  2 MB of HTML (`pnpm smoke:dist` enforces it for the two largest).
+- **Zero results name the constraints**: the labs empty state counts and
+  names every active filter and offers each one back as a chip carrying the
+  real number of entries that dropping it returns (plus "Match any" when two
+  or more tags are ANDed), on a block of reserved height so the results
+  column does not jump.
+- **Kitaru posts carry the Kitaru accent**: a post whose category or tags
+  include `kitaru` sets `data-product="kitaru"` and re-points the
+  `--blog-accent*` custom properties (default sage) to the orange ramp —
+  links, chips, the table-of-contents marker, card hover border — and shows
+  a "Kitaru" pill in its meta row and on its cards (the pill stands in for
+  the category link when the category is itself Kitaru). The accent
+  travels through those variables only; no component hard-codes orange for
+  a post. The "Continue reading" block is exempt: its band, halos and
+  hexagons stay sage on every post.
+
+- **FAQ rows**: a FAQ is a stack of native `<details>` rows on the prose column width, separated by `--color-border` hairlines — question in Rethink Sans sentence case, a chevron that turns when the row opens, the answer in body type. One heading per FAQ; eyebrows and sub-decks are not rendered. There is one implementation, `labs.faq`; the pricing page mounts one per workspace panel.
+- **The highlighted plan card**: the recommended pricing plan is marked by a 1px `--color-sage-400` border and a sentence-case "Recommended" pill on the card's top edge — never a shadow, never a coloured strip. On the Kitaru workspace panel the same card turns `--color-orange-300` with the pill on `--color-orange-600`; that pill and border are the panel's one bounded orange moment, every pill on the panel stays ink.
+- **Comparison cards with marks**: the comparison hub and related-comparison navigation use the same compact card — a 40px `object-contain` competitor mark beside one title and a description clamped to two visible lines, with no repeated metadata/type row. Cards render in an explicit one/two/three-column grid and reuse the entry-row per-line title underline sweep on hover and focus. The Kitaru block stays under `data-product="kitaru"` so its accent variables carry the orange ramp; there is no orange band behind it.
+- **Comparison tables on the Labs shell**: every pricing or feature comparison renders through `data-display.spec-table`'s labs skin — 20px radius frame, hairline rows, sticky first column, sage check / cream cross icons, `LabsButton` pills in the action row, section headers in sentence case on the light sage tint. No alternating row tint; the hairline carries the rhythm. (These four rules date from the product one-offs cutover, 2026-09.)
 
 ## Responsive contract
 
@@ -116,6 +222,22 @@ by wave, not in one sweep.
 artboard reflows into the wider built container — the layout grows, gutters
 and columns absorb the extra width — it is never scaled up.
 
+**Every cutover builds from the approved design as reusable, registered,
+content-prop components** — never a one-off page-local restyle. A cutover
+extends the shared template families (`page-header.*`, `term-hub.*`,
+`data-display.*`, …) with new arrangements/skins where the approved design
+calls for one, rather than hand-rolling page markup that duplicates what a
+registered component already owns.
+
+**Reading measure** (blog cutover): the article body is a 768px prose
+column, 20px/32px body copy, with a 224px sticky table-of-contents rail
+(40px gap between them) — this is the site's one long-form reading lane.
+Code panes are the one block allowed to run past the column edge, to the
+lane's outer boundary, per the code-pane rule above. Fenced code renders in
+the dark sage Shiki theme on every Markdown surface, not only the blog
+(2026-09-09 ruling); the code-pane chrome (language bar, copy button) is
+blog-only until the other surfaces are cut over.
+
 One named default per content shape, chosen so nobody has to invent a menu
 of options at build time:
 
@@ -140,6 +262,13 @@ of options at build time:
   the smallest screens a code pane may go full-bleed while the surrounding
   prose stays centered.
 - **Heroes/headlines**: step down in size, never truncate.
+- **Cards and panels keep their air on small viewports.** Inner padding
+  never drops below 32px when columns stack, and a panel that loses its
+  fixed height gains an explicit gap between its icon row and its text
+  instead of collapsing onto it.
+- **Section width is the centered container** (`max-w-content` +
+  `px-gutter`), never a fixed pixel cap — a narrower cap must be named in
+  the design.
 
 The page body never scrolls horizontally; anything wider than its
 container scrolls inside its own region.
@@ -149,6 +278,18 @@ container scrolls inside its own region.
 - **Budget: at most 3 motion moments per page.** A moment is any animation
   a visitor would notice as animation. The house scroll-reveal on section
   entry is the baseline and does not count toward it.
+- **Every button and pill has a hover transition** — colour only,
+  200ms, ease-out, from the shared button component rather than restated at
+  the call site. Hover feedback is interaction, not a motion moment, and does
+  not count toward the budget.
+- **Every card has a hover state** — at minimum the border turns sage
+  (`--color-sage-400`, 200ms, ease-out) on every card; Kitaru cards, which
+  usually carry orange, turn orange (`--color-orange-300`) instead. Cards
+  with a background wash or an image also move it
+  (the wash grows from its origin, the image zooms a few percent, 500ms,
+  ease-out, compositor properties only, honouring reduced motion). A card
+  that does nothing on hover is a defect. Like buttons, this is interaction
+  feedback and does not count toward the motion budget.
 - **At most one ambient/atmospheric section per page** — shader backdrop,
   grain field, or glow wash. A second ambient section on the same page is a
   review blocker, not a taste call. Enforced by `pnpm check:motion` against
@@ -160,6 +301,22 @@ container scrolls inside its own region.
   the built output.
 - Every new section adopts the site scroll-reveal pattern: revealed section,
   staggered children.
+- **Every section reveals on scroll.** On every Labs route, every content
+  section is a `.scroll-reveal-section` whose blocks are `.reveal-child`
+  (staggered where they are siblings), armed by the one shared
+  `initScrollReveal()`; the hidden start state applies only once the section
+  is `.reveal-armed`, so the server-rendered page is fully visible without
+  JS; nothing moves under reduced motion. Translate and opacity only, 1.2s at
+  most, no new keyframes, no motion library. Sections that do not reveal are
+  a defect, not a stylistic choice.
+- **Integration cards keep their marks.** A third-party integration or
+  service renders its own full-colour brand mark, the design-system SVG
+  (the Hashi `service-logos` set, 24×24, 20px ink centred), sourced and
+  normalised through the monorepo's `add-service-logo` skill when the set
+  lacks one — never a raster with a baked-in background, a screenshot, a
+  wordmark lockup, or a monochrome recolour. The mark sits on the card's
+  cream band or in the masthead's white tile; the tile is the site's, the
+  mark is the brand's.
 - **Reduced motion must reveal, never hide.** The server-rendered state is
   visible; scripts add animation on top, they never gate visibility —
   content that needs JS to become visible is a defect. Ambient/WebGL
@@ -169,6 +326,17 @@ container scrolls inside its own region.
   permitted and counts as a motion moment. Count-up numerals are permitted
   only where the final value is server-rendered, so the number is correct
   with JS off and under reduced motion.
+
+- **Nav dropdowns open on hover** (desktop pointers only, with a short
+  grace delay so a diagonal move into the panel does not close it); click
+  and keyboard open them too and `aria-expanded` always tells the truth.
+  Rows reveal as a short stagger — the panel fades and lifts in over
+  ~180ms, each row follows ~45ms after the previous — and close at once.
+  Under reduced motion the panel appears instantly. On the ZenML Labs nav
+  (`LabsNavigation`), Products, Docs, and Case studies all share this one
+  behaviour, and opening one closes any other that's open. Nav items hover
+  with a `sage-200` fill (also held while a menu is open); menu rows hover
+  with a `sage-100` fill plus the existing border/current-row treatment.
 
 ## Content and data conventions
 
@@ -200,3 +368,23 @@ container scrolls inside its own region.
   the component files — never hand-authored (#93).
 - It is **public but unlisted** (#95): a static route with `noindex`, linked
   from no nav, footer, or sitemap. No auth gating.
+
+## Comparison pages
+
+- **Comparison headers are eyebrow-first.** They render no visible breadcrumb; breadcrumb data remains in JSON-LD. The Nudica uppercase eyebrow leads, using sage on ZenML routes and orange-600 on Kitaru routes, followed by the product/competitor switcher, headline and deck. When an MDX headline repeats the product/competitor pair already shown by the switcher, only that exact prefix is omitted from the display heading; metadata remains authored.
+- **Every comparison section reveals on scroll.** The opening band content,
+  switcher, every body section, row/card group and closing band use the shared
+  `scroll-reveal-section` / `reveal-child` pattern and
+  `initScrollReveal()`. The hidden state applies only after
+  `.reveal-armed`; no-JavaScript and reduced-motion rendering stays fully
+  visible.
+- **Comparison showdown cards are even-handed.** Two decision cards sit side
+  by side from `lg`, share the ProductDoors hover-card anatomy, use sage and
+  cream only, and render hairline-separated check rows.
+- **Code compare panes use the site code-pane.** One or two `labs-light`
+  panes keep the sentence-case label and copy control outside the horizontally
+  scrolling code region. They do not introduce a dark band.
+- **Comparison quotes are shader bands, not cards.** They span the viewport between top and bottom hairlines, center the Borna quote and optional attribution, and carry the product's light grain palette: sage for ZenML, restrained orange for Kitaru. They have no decorative quote mark; missing attribution collapses.
+- **ZenML comparison diagrams use the light stack palette.** The whole diagram sits on a borderless rounded sage-300 presentation field, never inside a second card frame. Neutral panels use cream-50 fills and headers inside a cream-200 hairline; ZenML-emphasis panels use a sage-500 hairline over sage-50, with nested chips and states on sage-200. Panel headers follow the board anatomy: a light full-width strip and bottom hairline, a sentence-case Rethink Sans title on the left, and compact uppercase Nudica Mono context on the right. The emphasis header uses sage-100/sage-500; the neutral header uses cream-50/cream-200. Labels use cream-700 or sage-800/900 rather than turning borders or solid elements dark.
+- **Comparison related reading uses framed Labs blog cards.** The named comparison variant is white with a hairline frame, edge-to-edge 16:9 cover, equal-height content and no Kitaru badge. It renders one/two/three columns so three supplied articles share one desktop row; the default blog card is unchanged.
+- **Comparison closes are full-width and restrained.** The dark sage close uses a centered headline, existing deck and exactly one `LabsButton`; there is no gradient, shadow, install bar or secondary link row.

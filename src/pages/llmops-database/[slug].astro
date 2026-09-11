@@ -2,24 +2,19 @@
 /**
  * LLMOps Database detail page.
  *
- * Renders individual LLMOps entries with company info, tags, summary, body,
- * and related entries ("More Like This").
+ * Renders individual LLMOps entries in DatabaseEntryLayout.astro: company
+ * info, tags, summary, body, and related entries ("More like this").
  * Generates /llmops-database/<slug> for each published entry.
  */
 import { getEntry, render } from "astro:content";
-import Breadcrumb from "../../components/system/Breadcrumb.astro";
-import MetadataBlock, {
-  type MetadataBlockItem,
-} from "../../components/templates/MetadataBlock.astro";
-import RelatedRail, {
-  type RelatedRailItem,
-} from "../../components/templates/RelatedRail.astro";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import type { RelatedRailItem } from "../../components/templates/RelatedRail.astro";
+import DatabaseEntryLayout from "../../layouts/DatabaseEntryLayout.astro";
 import {
   buildRelatedIndex,
   getAllPublishedEntries,
   getRelatedFromIndex,
 } from "../../lib/llmops";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const allEntries = await getAllPublishedEntries();
@@ -35,191 +30,83 @@ export async function getStaticPaths() {
 }
 
 const { entry, related } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 
 // Resolve llmops tags for display names
 const tagEntries = await Promise.all(
   entry.data.llmopsTags.map((slug: string) => getEntry("llmops-tags", slug)),
 );
-const tags = tagEntries.flatMap((t) =>
+const resolvedTags = tagEntries.flatMap((t) =>
   t ? [{ name: t.data.name, slug: t.data.slug }] : [],
 );
+const tags = resolvedTags.map((tag) => ({
+  name: tag.name,
+  href: `/llmops-tags/${tag.slug}`,
+}));
 
 // Resolve industry tag
 const industryEntry = entry.data.industryTags
   ? await getEntry("industry-tags", entry.data.industryTags)
   : undefined;
 
-// Resolve related entry tags for display
-const relatedWithTags = await Promise.all(
-  related.map(async (r) => {
-    const rTags = await Promise.all(
-      r.data.llmopsTags
-        .slice(0, 3)
-        .map((s: string) => getEntry("llmops-tags", s)),
-    );
-    return {
-      slug: r.data.slug,
-      title: r.data.title,
-      company: r.data.company,
-      year: r.data.year,
-      summary: r.data.summary,
-      tags: rTags.flatMap((t) =>
-        t ? [{ name: t.data.name, slug: t.data.slug }] : [],
-      ),
-      extraTagCount: Math.max(0, r.data.llmopsTags.length - 3),
-    };
-  }),
-);
-
-// Industry + Technologies meta blocks (mirrored byte-for-byte on the MLOps
-// twin page). Trailing spacing after the block is data-dependent: whichever
-// item renders last owns the gap before the body content.
-const metadataItems: MetadataBlockItem[] = [];
-if (industryEntry) {
-  metadataItems.push({
-    label: "Industry",
-    value: {
-      kind: "chips",
-      chips: [
-        {
-          label: industryEntry.data.name,
-          href: `/industry-tags/${industryEntry.data.slug}`,
-          variant: "primary",
-        },
-      ],
-    },
-  });
-}
-if (tags.length > 0) {
-  metadataItems.push({
-    label: "Technologies",
-    value: {
-      kind: "chips",
-      chips: tags.map((tag) => ({
-        label: tag.name,
-        href: `/llmops-tags/${tag.slug}`,
-        variant: "blue",
-      })),
-    },
-  });
-}
-const metadataTrailingClass =
-  tags.length > 0 ? "mb-space-md" : industryEntry ? "mb-space-sm" : "";
-
-const relatedItems: RelatedRailItem[] = relatedWithTags.map((r) => ({
-  kind: "meta-card",
-  href: `/llmops-database/${r.slug}`,
-  title: r.title,
-  meta: [
-    ...(r.company ? [{ text: r.company, emphasis: true }] : []),
-    ...(r.year ? [{ text: String(r.year) }] : []),
-  ],
-  summary: r.summary,
-  tags: r.tags.map((tag) => tag.name),
-  extraTagCount: r.extraTagCount,
-  tagVariant: "blue",
+// Resolve related entries' display data
+const relatedItems: RelatedRailItem[] = related.map((r) => ({
+  kind: "hex-card" as const,
+  href: `/llmops-database/${r.data.slug}`,
+  title: r.data.title,
+  kindLabel: [r.data.company, r.data.year ? String(r.data.year) : undefined]
+    .filter(Boolean)
+    .join(" · "),
 }));
 
 // SEO
 const seoTitle =
   entry.data.seo?.title || `${entry.data.title} - ZenML LLMOps Database`;
 const seoDescription = entry.data.seo?.description || entry.data.summary;
-const ogImage = entry.data.seo?.ogImage;
+const ogImage =
+  entry.data.seo?.ogImage ??
+  (hasDefaultOgCard("llmops", entry.data.slug)
+    ? defaultOgUrl("llmops", entry.data.slug)
+    : undefined);
+
+const pagefindMeta: Record<string, string> = { slug: entry.data.slug };
+if (entry.data.company) pagefindMeta.company = entry.data.company;
+if (entry.data.year) pagefindMeta.year = String(entry.data.year);
+
+const pagefindFilters = [
+  ...resolvedTags.map((tag) => ({ key: "tag", value: tag.slug })),
+  ...(industryEntry
+    ? [{ key: "industry", value: industryEntry.data.slug }]
+    : []),
+];
 ---
 
-<BaseLayout
+<DatabaseEntryLayout
+  database="llmops"
+  entryTitle={entry.data.title}
+  company={entry.data.company}
+  year={entry.data.year}
+  sourceHref={entry.data.link}
+  summary={entry.data.summary}
+  industry={
+    industryEntry
+      ? {
+          name: industryEntry.data.name,
+          href: `/industry-tags/${industryEntry.data.slug}`,
+        }
+      : undefined
+  }
+  tags={tags}
+  headings={headings}
+  related={relatedItems}
+  pagefindMeta={pagefindMeta}
+  pagefindFilters={pagefindFilters}
   title={seoTitle}
   description={seoDescription}
   ogImage={ogImage}
   ogTitle={entry.data.seo?.ogTitle}
   ogDescription={entry.data.seo?.ogDescription}
   canonical={entry.data.seo?.canonical}
-  surface="ml"
 >
-  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8" data-pagefind-body>
-    {/* Pagefind metadata — slug for result→item mapping, year for sort */}
-    <span data-pagefind-meta={`slug:${entry.data.slug}`} class="hidden" />
-    {entry.data.company && <span data-pagefind-meta={`company:${entry.data.company}`} class="hidden" />}
-    {entry.data.year && <span data-pagefind-meta={`year:${entry.data.year}`} class="hidden" />}
-
-    {/* Pagefind filters — for native filtering (tags + industry) */}
-    {tags.map((tag) => (
-      <span data-pagefind-filter={`tag:${tag.slug}`} class="hidden" />
-    ))}
-    {industryEntry && (
-      <span data-pagefind-filter={`industry:${industryEntry.data.slug}`} class="hidden" />
-    )}
-
-    {/* Breadcrumb */}
-    <Breadcrumb
-      separator="chevron"
-      pagefindIgnore
-      items={[
-        { label: "LLMOps Database", href: "/llmops-database" },
-        { label: entry.data.title },
-      ]}
-    />
-
-    {/* Header */}
-    <header class="mb-8">
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900" data-pagefind-meta="title">{entry.data.title}</h1>
-
-      <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-gray-500">
-        {entry.data.company && (
-          <span class="font-medium text-gray-700">{entry.data.company}</span>
-        )}
-        {entry.data.year && (
-          <>
-            <span aria-hidden="true">&middot;</span>
-            <span>{entry.data.year}</span>
-          </>
-        )}
-      </div>
-
-      {entry.data.link && (
-        <a
-          href={entry.data.link}
-          class="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          View original source
-          <svg class="h-4 w-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6 3H3v10h10v-3M9 2h5v5M14 2L7 9" />
-          </svg>
-        </a>
-      )}
-    </header>
-
-    {/* Summary */}
-    {entry.data.summary && (
-      <div class="mb-8 rounded-lg border border-gray-200 bg-gray-50 p-6">
-        <p class="text-gray-700">{entry.data.summary}</p>
-      </div>
-    )}
-
-    {/* Industry + Technologies */}
-    {metadataItems.length > 0 && (
-      <MetadataBlock
-        items={metadataItems}
-        labelTag="h2"
-        space="sm"
-        class={metadataTrailingClass}
-      />
-    )}
-
-    {/* Body content */}
-    <div class="prose prose-gray max-w-none">
-      <Content />
-    </div>
-
-    {/* More Like This */}
-    {relatedItems.length > 0 && (
-      <section class="mt-16 border-t border-gray-200 pt-10" data-pagefind-ignore>
-        <h2 class="mb-6 text-xl font-bold text-gray-900">More Like This</h2>
-        <RelatedRail items={relatedItems} gridVariant="gap-sm-2col-sm" />
-      </section>
-    )}
-  </div>
-</BaseLayout>
+  <Content />
+</DatabaseEntryLayout>

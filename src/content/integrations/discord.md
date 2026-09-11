@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-05-29T11:35:11.444Z"
 integrationType: "alerter"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/65d6b0d7/66d867a04ca00e02f4e6542d_discord.png"
+  url: "https://assets.zenml.io/content/integrations/logos/discord.svg"
+  alt: "Discord logo"
 shortDescription: "Seamlessly Integrate Automated Alerts and Human Interaction into Your ML Pipelines with ZenML's Discord Integration"
 docsUrl: "https://docs.zenml.io/integrations/discord"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/integration_discord"

@@ -1,6 +1,7 @@
 ---
 title: "Strong Focus on MLOps and Reproducibility"
 slug: "strong-focus-on-mlops-and-reproducibility"
+icon: "shield"
 content: "ZenML places a strong emphasis on MLOps best practices, ensuring your ML workflows are reproducible, traceable, and compliant with governance requirements."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdf3dfc5/667167751e34699260c6b227_img02.png"

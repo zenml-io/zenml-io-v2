@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-03-24T05:32:58.938Z"
 description: "Turn European Central Bank data into actionable interest rate forecasts with this comprehensive MLOps solution."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/eurorate-predictor"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/2.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/a58ce1c0/eurorate-predictor-cover.avif"
 previewImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cadf5fdb/67e242f1a208f582c1a63b7b_zenml_airflow_vertex_gcp_mlops.png"
 tags:

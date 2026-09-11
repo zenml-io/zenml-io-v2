@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:11.985Z"
 integrationType: "modeling"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/91adb6a0/66d8697044edeccaa59362aa_pytorch.png"
+  url: "https://assets.zenml.io/content/integrations/logos/pytorch.svg"
+  alt: "PyTorch logo"
 shortDescription: "Accelerate your PyTorch model development with ZenML"
 docsUrl: "https://sdkdocs.zenml.io/0.41.0/integration_code_docs/integrations-pytorch/"
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/llm-litgpt-finetuning"

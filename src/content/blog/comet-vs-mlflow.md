@@ -21,7 +21,11 @@ tags:
 date: "2026-02-20T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d9f7559b/6997da59d8b5dc1499472102_comet-vs-mlflow.png"
+  url: "https://assets.zenml.io/content/blog/comet-vs-mlflow/998182b2/comet-vs-mlflow-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/comet-vs-mlflow/998182b2/comet-vs-mlflow-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/comet-vs-mlflow/0dd27c2c/comet-vs-mlflow-cover.jpg"
 ---
 
 The real struggle for ML teams isn’t coming up with modeling ideas. It’s producing evidence you can trust.

@@ -20,12 +20,14 @@ tags:
 date: "2025-06-14T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f8c3a6fa/684d0ca405f48f13be248063_prefect-vs-airflow.png"
+  url: "https://assets.zenml.io/content/blog/prefect-vs-airflow/08738cdf/prefect-vs-airflow-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/prefect-vs-airflow/08738cdf/prefect-vs-airflow-cover.avif"
 seo:
   title: "Prefect vs Airflow vs ZenML: Best Platform to Run ML Pipelines - ZenML Blog"
   description: "In this Prefect vs Airflow vs ZenML article, we explain the difference between the three platforms and educate you about using them in tandem."
   canonical: "https://www.zenml.io/blog/prefect-vs-airflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f8c3a6fa/684d0ca405f48f13be248063_prefect-vs-airflow.png"
+  ogImage: "https://assets.zenml.io/content/blog/prefect-vs-airflow/83e026dc/prefect-vs-airflow-cover.jpg"
   ogTitle: "Prefect vs Airflow vs ZenML: Best Platform to Run ML Pipelines - ZenML Blog"
   ogDescription: "In this Prefect vs Airflow vs ZenML article, we explain the difference between the three platforms and educate you about using them in tandem."
 ---

@@ -22,12 +22,12 @@ tags:
 date: "2023-09-01T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/37243c82/65294ca22f17b3dbe1f52300_mlstacks_blog.jpg"
+  url: "https://assets.zenml.io/content/blog/introducing-mlstacks-a-refreshed-way-to-deploy-mlops-infrastructure/03e30676/introducing-mlstacks-a-refreshed-way-to-deploy-mlops-infrastructure-cover.avif"
 seo:
   title: "Introducing mlstacks: a refreshed way to deploy MLOps infrastructure - ZenML Blog"
   description: "We released an updated way to deploy MLOps infrastructure, building on the success of the `mlops-stack` repo and its stack recipes. All the new goodies are available via the `mlstacks` Python package."
   canonical: "https://www.zenml.io/blog/introducing-mlstacks-a-refreshed-way-to-deploy-mlops-infrastructure"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c5585946/65294ca22f17b3dbe1f52300_mlstacks_blog.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/introducing-mlstacks-a-refreshed-way-to-deploy-mlops-infrastructure/07cc7bad/introducing-mlstacks-a-refreshed-way-to-deploy-mlops-infrastructure-cover.jpg"
   ogTitle: "Introducing mlstacks: a refreshed way to deploy MLOps infrastructure - ZenML Blog"
   ogDescription: "We released an updated way to deploy MLOps infrastructure, building on the success of the `mlops-stack` repo and its stack recipes. All the new goodies are available via the `mlstacks` Python package."
 ---

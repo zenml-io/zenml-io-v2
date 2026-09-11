@@ -21,12 +21,12 @@ tags:
 date: "2025-03-10T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6b48c576/67ce93b1e21d3fd4c6f08672_CleanShot_Mar_10_2025.png"
+  url: "https://assets.zenml.io/content/blog/chat-with-your-ml-pipelines-introducing-the-zenml-mcp-server/5e263c10/chat-with-your-ml-pipelines-introducing-the-zenml-mcp-server-cover.avif"
 seo:
   title: "Chat With Your ML Pipelines: Introducing the ZenML MCP Server - ZenML Blog"
   description: "Discover the new ZenML MCP Server that brings conversational AI to ML pipelines. Learn how this implementation of the Model Context Protocol allows natural language interaction with your infrastructure, enabling query capabilities, pipeline analytics, and run management through simple conversation. Explore current features, engineering decisions, and future roadmap for this timely addition to the rapidly evolving MCP ecosystem."
   canonical: "https://www.zenml.io/blog/chat-with-your-ml-pipelines-introducing-the-zenml-mcp-server"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6b48c576/67ce93b1e21d3fd4c6f08672_CleanShot_Mar_10_2025.png"
+  ogImage: "https://assets.zenml.io/content/blog/chat-with-your-ml-pipelines-introducing-the-zenml-mcp-server/b28bb384/chat-with-your-ml-pipelines-introducing-the-zenml-mcp-server-cover.jpg"
   ogTitle: "Chat With Your ML Pipelines: Introducing the ZenML MCP Server - ZenML Blog"
   ogDescription: "Discover the new ZenML MCP Server that brings conversational AI to ML pipelines. Learn how this implementation of the Model Context Protocol allows natural language interaction with your infrastructure, enabling query capabilities, pipeline analytics, and run management through simple conversation. Explore current features, engineering decisions, and future roadmap for this timely addition to the rapidly evolving MCP ecosystem."
 ---

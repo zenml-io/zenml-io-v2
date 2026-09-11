@@ -7,7 +7,10 @@ import mdx from "@astrojs/mdx";
 import tailwindcss from "@tailwindcss/vite";
 import { STALE_RAY_SUMMIT_REDIRECT_PATHS } from "./src/lib/mlopsRaySummitRedirects";
 import { remarkDefaultLang } from "./src/lib/remark-default-lang";
-import zenmlLight from "./src/styles/zenml-light.json";
+import { rehypeBlogRawHtml } from "./src/lib/rehypeBlogRawHtml";
+import { rehypeCodePane } from "./src/lib/rehypeCodePane";
+import { rehypeTableScroll } from "./src/lib/rehypeTableScroll";
+import labsLight from "./src/styles/labs-light.json";
 
 const sitemapExcludePaths = new Set([
   "/llmops-index.json",
@@ -57,9 +60,13 @@ export default defineConfig({
   markdown: {
     processor: unified({
       remarkPlugins: [remarkDefaultLang()],
+      rehypePlugins: [rehypeBlogRawHtml, rehypeCodePane, rehypeTableScroll],
     }),
     shikiConfig: {
-      theme: zenmlLight as any,
+      // One theme for every Markdown collection: the blog's dark sage pane
+      // (`labs-light.json`, a dark theme by contents) is the site's code look
+      // since the blog cutover (2026-09-09 ruling), not a blog-only skin.
+      theme: labsLight as any,
     },
   },
   integrations: [
@@ -70,7 +77,10 @@ export default defineConfig({
     sitemap({
       filter: (page) => {
         const url = new URL(page);
-        return !sitemapExcludePaths.has(url.pathname);
+        return (
+          !sitemapExcludePaths.has(url.pathname) &&
+          !url.pathname.startsWith("/team/")
+        );
       },
     }),
     mdx(),

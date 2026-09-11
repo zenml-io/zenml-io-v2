@@ -18,12 +18,12 @@ tags:
 date: "2024-03-21T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dbf8d0cb/65fbf4b2d292e9741e3d0da4_LLMs-min.png"
+  url: "https://assets.zenml.io/content/blog/from-rag-to-riches-the-llmops-pipelines-you-didnt-know-you-needed/2d0ce5bf/from-rag-to-riches-the-llmops-pipelines-you-didnt-know-you-needed-cover.avif"
 seo:
   title: "From RAGs to riches - The LLMOps pipelines you didn’t know you needed - ZenML Blog"
   description: "Taking large language models (LLMs) into production is no small task. It's a complex process, often misunderstood, and something we’d like to delve into today."
   canonical: "https://www.zenml.io/blog/from-rag-to-riches-the-llmops-pipelines-you-didnt-know-you-needed"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/95efd684/65fbf4b2d292e9741e3d0da4_LLMs-min.png"
+  ogImage: "https://assets.zenml.io/content/blog/from-rag-to-riches-the-llmops-pipelines-you-didnt-know-you-needed/6db3f707/from-rag-to-riches-the-llmops-pipelines-you-didnt-know-you-needed-cover.jpg"
   ogTitle: "From RAGs to riches - The LLMOps pipelines you didn’t know you needed  - ZenML Blog"
   ogDescription: "Taking large language models (LLMs) into production is no small task. It's a complex process, often misunderstood, and something we’d like to delve into today."
 ---

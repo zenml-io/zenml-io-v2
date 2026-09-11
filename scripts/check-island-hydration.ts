@@ -1,11 +1,10 @@
 /**
  * check-island-hydration.ts — proves the Preact islands in dist/client actually hydrate,
- * and that the Storylane embed (a plain .astro component, not an island) loads its
- * iframe and enhancement script regardless of consent state.
+ * and that static interaction contracts continue to hold.
  *
  * Run via: pnpm check:islands (after pnpm build — it reads dist/client)
  * Exits with code 1 (failing CI) if any island fails to become interactive or the
- * Storylane checks fail.
+ * static interaction checks fail.
  *
  * Why this exists
  * ---------------
@@ -48,13 +47,9 @@
  *
  * What is intentionally NOT checked
  * ---------------------------------
- * - ProTestimonialCarousel: client:visible plus a 4s autoplay that mutates the very
- *   transform we would assert on. Gratuitously timing-sensitive.
- * - BlogSearch: client:media="(min-width: 640px)", so it does not hydrate at all
- *   below that viewport, plus a fetch-on-focus.
  * - RoiCalculator: its three range inputs have no id, name or aria-label, so a test
  *   would have to select them positionally — brittle, for a low-traffic page.
- * All three are still covered structurally by the island manifest in
+ * It is still covered structurally by the island manifest in
  * check-dist-smoke.ts. Please do not "helpfully" add them back here.
  *
  * LlmopsIndex, MlopsIndex, IntegrationsIndex, and BlogIndex (#249) are four
@@ -63,15 +58,16 @@
  * the way the old LLMOpsFilter/MLOpsFilter pair was — each wires its own
  * data source, facet fields and (for Integrations) a DOM-visibility search
  * mode, so each gets its own real-interaction check below; a bug in one
- * page's wiring would not be caught by testing another. CategoryBar/TagCloud
- * (the blog index's former header/footer chrome) turned out to be shared
- * across the rest of the blog surface (post pages, plus the category/tag/
- * author hub pages) — they stay in place there, only retired from the
- * index; see their doc comments.
+ * page's wiring would not be caught by testing another. CategoryBar/TagCloud/
+ * BlogSearch (the blog index's former header/footer chrome) were retired
+ * outright in the blog cutover's taxonomy step (D2d) — the tag/category/
+ * author hub pages now render through PageHeader + TermHubEditorial/
+ * TermHubEntryIndex, whose own client-side piece is HubPagination (checked
+ * below), not a ported CategoryBar.
  * - Of the remaining /product/kitaru islands, TwoDoors covers the interactive
  *   contract that has regressed. The others have nothing better to assert on:
- *   Hero's sole interaction is a clipboard write (permission-gated in
- *   headless), KitaruGrain is a WebGL shader, and ScenarioStrip's only state
+ *   HeroVideo's sole interaction opens a third-party video iframe in a
+ *   dialog, KitaruGrain is a WebGL shader, and ScenarioStrip's only state
  *   is a decorative hover-linked highlight — a progressive enhancement we
  *   accept going untested rather than asserting on hover-driven class flips.
  *
@@ -87,7 +83,6 @@ import type { AddressInfo } from "node:net";
 import { extname, resolve, sep } from "node:path";
 import type { Browser, Page } from "playwright";
 import { chromium } from "playwright";
-import type { ConsentCategory } from "../src/lib/consentConfig.ts";
 
 const DIST = resolve("dist/client");
 const NAV_TIMEOUT = 20_000;
@@ -282,7 +277,9 @@ const CHECKS: IslandCheck[] = [
   },
   {
     name: "FeatureTabsSlider switches tab on click",
-    route: "/",
+    // The Labs homepage (/) no longer carries feature tabs; the ZenML product
+    // landing still does, so the interaction check moved with it.
+    route: "/product/zenml",
     island: "FeatureTabsSlider",
     seedConsent: true,
     async assert(page) {
@@ -493,26 +490,73 @@ const CHECKS: IslandCheck[] = [
     },
   },
   {
-    name: "ContactForm validates client-side instead of doing a native POST",
-    route: "/signup-for-demo",
-    island: "ContactForm",
+    name: "HubPagination reveals a hidden card on page 2",
+    // /tags/agents is one of ISLAND_MOUNTS' three representative hub
+    // routes (check-dist-smoke.ts) — a tag detail page paginated past 12.
+    route: "/tags/agents",
+    island: "HubPagination",
     seedConsent: true,
-    async assert(page, root) {
-      // The form is <form noValidate method="POST" action="/api/forms/...">.
-      // Un-hydrated, this submit does a native POST and navigates away. Hydrated,
-      // handleSubmit calls preventDefault() and renders inline errors. Two outcomes
-      // that cannot be confused for one another.
-      await page.locator(`${root} button[type="submit"]`).click();
+    async assert(page) {
+      // The SSR list holds every post of the term (SEO) with `hidden` +
+      // `data-page` on everything past page 1 — so a page-2 card exists in
+      // the DOM before hydration and only needs to be un-hidden, not fetched.
+      const pageTwoItem = page.locator('[data-page="2"]').first();
+      await pageTwoItem.waitFor({ state: "attached" });
 
-      await page
-        .getByText("Full name is required", { exact: true })
-        .waitFor({ state: "visible" });
-
-      const { pathname } = new URL(page.url());
-
-      if (pathname !== "/signup-for-demo") {
+      const hiddenBefore = await pageTwoItem.evaluate(
+        (el) => (el as HTMLElement).hidden,
+      );
+      if (!hiddenBefore) {
         throw new Error(
-          `the form did a native POST navigation (now at ${pathname}) — preventDefault() never ran`,
+          'expected a data-page="2" item to be hidden before pagination — either the term has ≤12 posts or the SSR markers are missing',
+        );
+      }
+
+      await page.getByRole("button", { name: "Page 2" }).click();
+
+      await page.waitForFunction(() => {
+        const el = document.querySelector('[data-page="2"]');
+        return el !== null && !(el as HTMLElement).hidden;
+      });
+
+      const pageOneItem = page.locator('[data-page="1"]').first();
+      const hiddenAfter = await pageOneItem.evaluate(
+        (el) => (el as HTMLElement).hidden,
+      );
+      if (!hiddenAfter) {
+        throw new Error(
+          'expected a data-page="1" item to hide once page 2 is active',
+        );
+      }
+    },
+  },
+  {
+    name: "HubEntryPagination loads page 2 from the JSON index",
+    // /llmops-tags/prompt-engineering is one of ISLAND_MOUNTS' representative
+    // database tag hub routes (check-dist-smoke.ts) — a tag with far more
+    // than DATABASE_PAGE_SIZE entries, so only page 1 is server-rendered and
+    // page 2 has to come from /llmops-index.json.
+    route: "/llmops-tags/prompt-engineering",
+    island: "HubEntryPagination",
+    seedConsent: true,
+    async assert(page) {
+      await page.getByRole("button", { name: "Page 2" }).click();
+
+      await page.waitForFunction(
+        () => new URL(window.location.href).searchParams.get("page") === "2",
+      );
+
+      await page.waitForFunction(() => {
+        const list = document.getElementById("tag-entry-list-fetched");
+        return list !== null && list.querySelectorAll("article").length === 24;
+      });
+
+      const ssrHidden = await page
+        .locator("#tag-entry-list")
+        .evaluate((el) => (el as HTMLElement).hidden);
+      if (!ssrHidden) {
+        throw new Error(
+          "expected the page-1 SSR list to hide once page 2 loads",
         );
       }
     },
@@ -547,7 +591,7 @@ const CHECKS: IslandCheck[] = [
     },
   },
   {
-    name: "CaseStudyCard's whole card is one link, arrow glyph included",
+    name: "Case-study logo, title, and read label share one clickable card",
     route: "/case-studies",
     // Static markup. Whether a click lands is decided by hit testing and paint
     // order, which no amount of reading the HTML settles.
@@ -556,70 +600,51 @@ const CHECKS: IslandCheck[] = [
     async assert(page) {
       const href = "/case-study/jetbrains";
 
-      // Settle the layout before measuring anything. The self-hosted webfont
-      // swaps in after domcontentloaded and reflows the hero, which moves this
-      // card down by about 24px. A coordinate read before the swap is stale by
-      // more than the glyph's own height, so the hit test below would probe a
-      // spot the glyph has already left.
+      // Font swaps can reflow the hero and invalidate click coordinates.
       await page.evaluate(() => document.fonts.ready.then(() => undefined));
 
-      // Scroll before measuring, and measure in the same call. Where this card
-      // lands on the page is not fixed: it sits near the fold of the default
-      // 1280x720 viewport with only ~23px to spare, so one extra wrapped line
-      // in the hero or in a sibling card title (mt-auto pins the glyph to the
-      // bottom of the grid row) puts it below the fold. elementFromPoint
-      // returns null for a point outside the viewport, and this check would
-      // then report a dead click zone that does not exist.
-      //
-      // block: "center" clears both viewport edges and the sticky header.
-      // The explicit instant behaviour is required: global.css sets
-      // scroll-behavior: smooth, so the default would animate and every
-      // measurement here would race the animation.
-      const arrow = await page.evaluate((target) => {
-        const link = document.querySelector(`a[href="${target}"]`);
-        const glyph = link?.closest(".group")?.querySelector("div.mt-auto svg");
-        if (!glyph) return null;
-        glyph.scrollIntoView({ block: "center", behavior: "instant" });
-        const box = glyph.getBoundingClientRect();
-        return {
-          x: box.x + box.width / 2,
-          y: box.y + box.height / 2,
-          viewportHeight: window.innerHeight,
-        };
-      }, href);
-
-      if (arrow === null) {
-        throw new Error("could not find the card's arrow glyph");
-      }
-
-      // Guard the precondition rather than let it masquerade as the failure
-      // this check is looking for.
-      if (arrow.y < 0 || arrow.y >= arrow.viewportHeight) {
-        throw new Error(
-          `the arrow glyph is at y=${arrow.y} in a ${arrow.viewportHeight}px viewport after scrolling it into view: the hit test below cannot reach it`,
+      for (const selector of [".story-media", "h3", "p"]) {
+        // Instant scrolling avoids racing global smooth scrolling; centering
+        // keeps each region clear of viewport edges and the sticky header.
+        const point = await page.evaluate(
+          ({ target, region }) => {
+            const element = document
+              .querySelector(`a[href="${target}"]`)
+              ?.querySelector(region);
+            if (!element) return null;
+            element.scrollIntoView({ block: "center", behavior: "instant" });
+            const box = element.getBoundingClientRect();
+            return {
+              x: box.x + box.width / 2,
+              y: box.y + box.height / 2,
+              viewportHeight: window.innerHeight,
+            };
+          },
+          { target: href, region: selector },
         );
-      }
 
-      // Hover first: the glyph only takes its transform on hover, and that
-      // transform is what once promoted it above the anchor's overlay and ate
-      // the click. Probing without hovering cannot see the failure.
-      await page.mouse.move(arrow.x, arrow.y);
-      const hit = await page.evaluate(
-        (point) =>
-          document
-            .elementFromPoint(point.x, point.y)
-            ?.closest("a")
-            ?.getAttribute("href") ?? null,
-        arrow,
-      );
+        if (!point || point.y < 0 || point.y >= point.viewportHeight) {
+          throw new Error(`could not measure visible card region ${selector}`);
+        }
 
-      if (hit !== href) {
-        throw new Error(
-          `hovering the arrow glyph hits ${hit ?? "no link"}, not ${href}: the card has a dead click zone`,
+        // Hover too: decorative layers must not intercept the card's link.
+        await page.mouse.move(point.x, point.y);
+        const hit = await page.evaluate(
+          (coordinates) =>
+            document
+              .elementFromPoint(coordinates.x, coordinates.y)
+              ?.closest("a")
+              ?.getAttribute("href") ?? null,
+          point,
         );
+        if (hit !== href) {
+          throw new Error(
+            `hovering ${selector} hits ${hit ?? "no link"}, not ${href}: the card has a dead click zone`,
+          );
+        }
       }
 
-      // One tab stop per card: the logos and the "Learn more" row must not
+      // One tab stop per card: the logos and the read label must not
       // repeat the same destination.
       const linkCount = await page.evaluate(
         (target) => document.querySelectorAll(`a[href="${target}"]`).length,
@@ -634,137 +659,6 @@ const CHECKS: IslandCheck[] = [
     },
   },
 ];
-
-// ── Storylane embed (not a Preact island) ─────────────────────────
-//
-// StorylaneEmbed has no `client:*` directive — it's a plain `.astro`
-// component with an unconditional `<script is:inline>` — so there is no
-// `astro-island` to wait on and it cannot be expressed as an IslandCheck.
-// The script used to gate its enhancement script behind marketing consent,
-// checked once at parse time; that broke first-visit hydration and was
-// removed, moving the embed's dedup id off the `cc-` prefix in the process
-// (see the component's history). Nothing else exercises this component, so
-// a later consent cleanup could reintroduce the gate, or break dedup, while
-// every other check still passes. This runs the embed in both a rejected-
-// and an accepted-marketing-consent state and proves the iframe and the
-// enhancement script both actually load in each.
-
-const STORYLANE_ROUTE = "/live-demo";
-
-const STORYLANE_CONSENT_STATES: {
-  label: string;
-  consent: Record<ConsentCategory, boolean>;
-}[] = [
-  {
-    label: "rejected consent",
-    consent: {
-      essential: true,
-      analytics: false,
-      marketing: false,
-      personalization: false,
-    },
-  },
-  {
-    label: "accepted consent",
-    consent: {
-      essential: true,
-      analytics: true,
-      marketing: true,
-      personalization: true,
-    },
-  },
-];
-
-/**
- * One attempt in a fresh, hermetic context, mirroring `attempt()` above but
- * for a non-island component: no hydration gate to wait on, and the
- * Storylane iframe/script requests are stubbed (rather than aborted like
- * every other external request) so the check can prove they actually fire
- * and resolve, without a real network dependency.
- */
-async function attemptStorylane(
-  browser: Browser,
-  baseUrl: string,
-  consent: Record<ConsentCategory, boolean>,
-): Promise<string | null> {
-  const context = await browser.newContext();
-
-  await context.addInitScript(
-    (c) => localStorage.setItem("cookie_consent", JSON.stringify(c)),
-    consent,
-  );
-
-  await context.route("**/*", (route) => {
-    const url = route.request().url();
-
-    if (url.startsWith(baseUrl)) {
-      return route.continue();
-    }
-
-    if (url.includes("storylane.io")) {
-      return route.fulfill({
-        status: 200,
-        contentType: url.endsWith(".js") ? "text/javascript" : "text/html",
-        body: url.endsWith(".js") ? "" : "<!doctype html><title>stub</title>",
-      });
-    }
-
-    return route.abort();
-  });
-
-  const page = await context.newPage();
-  page.setDefaultTimeout(ACTION_TIMEOUT);
-
-  const pageErrors: string[] = [];
-  page.on("pageerror", (error) => pageErrors.push(error.message));
-
-  try {
-    const iframeLoaded = page.waitForResponse(
-      (response) => response.url().startsWith("https://app.storylane.io/demo/"),
-      { timeout: NAV_TIMEOUT },
-    );
-    const scriptLoaded = page.waitForResponse(
-      (response) =>
-        response.url() === "https://js.storylane.io/js/v1/storylane.js",
-      { timeout: NAV_TIMEOUT },
-    );
-
-    await page.goto(`${baseUrl}${STORYLANE_ROUTE}`, {
-      waitUntil: "domcontentloaded",
-      timeout: NAV_TIMEOUT,
-    });
-
-    const iframeResponse = await iframeLoaded;
-    if (!iframeResponse.ok()) {
-      throw new Error(
-        `the Storylane iframe request resolved with status ${iframeResponse.status()}`,
-      );
-    }
-
-    const scriptResponse = await scriptLoaded;
-    if (!scriptResponse.ok()) {
-      throw new Error(
-        `the storylane.js enhancement script request resolved with status ${scriptResponse.status()}`,
-      );
-    }
-
-    const scriptCount = await page.locator("script#storylane-embed").count();
-    if (scriptCount !== 1) {
-      throw new Error(
-        `expected exactly one #storylane-embed script, found ${scriptCount}`,
-      );
-    }
-
-    return null;
-  } catch (error) {
-    const message = (error as Error).message.split("\n")[0];
-    return pageErrors.length > 0
-      ? `${message} [page error: ${pageErrors[0]}]`
-      : message;
-  } finally {
-    await context.close();
-  }
-}
 
 // ── Runner ─────────────────────────────────────────────────────────
 
@@ -881,28 +775,6 @@ async function check(): Promise<number> {
     }
   }
 
-  let storylaneChecked = 0;
-  let storylaneFailures = 0;
-
-  for (const { label, consent } of STORYLANE_CONSENT_STATES) {
-    const name = `StorylaneEmbed loads the iframe and enhancement script (${label})`;
-
-    let failure = await attemptStorylane(browser, server.baseUrl, consent);
-    if (failure !== null) {
-      failure = await attemptStorylane(browser, server.baseUrl, consent);
-    }
-
-    storylaneChecked += 1;
-
-    if (failure === null) {
-      console.log(`  ✓ ${STORYLANE_ROUTE} — ${name}`);
-    } else {
-      console.log(`  ✗ ${STORYLANE_ROUTE} — ${name}`);
-      violations.push(`${STORYLANE_ROUTE} — ${name}: ${failure}`);
-      storylaneFailures++;
-    }
-  }
-
   await browser.close();
   await server.close();
 
@@ -941,23 +813,11 @@ async function check(): Promise<number> {
       );
     }
 
-    if (storylaneFailures > 0) {
-      console.error(
-        "  Fix (Storylane): open /live-demo with `pnpm dev` and check that StorylaneEmbed still",
-      );
-      console.error(
-        "       renders its iframe and inline enhancement script unconditionally — no consent gate,",
-      );
-      console.error(
-        "       and exactly one `#storylane-embed` script. There is no `client:*` directive here.",
-      );
-    }
-
     return 1;
   }
 
   console.log(
-    `\n✓ ${CHECKS.length + storylaneChecked} browser checks passed — the islands hydrate, the static hit targets hold, and the Storylane embed loads`,
+    `\n✓ ${CHECKS.length} browser checks passed — the islands hydrate and the static hit targets hold`,
   );
   return 0;
 }

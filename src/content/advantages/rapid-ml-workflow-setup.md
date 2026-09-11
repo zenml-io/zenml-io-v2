@@ -1,6 +1,7 @@
 ---
 title: "Rapid ML Workflow Setup"
 slug: "rapid-ml-workflow-setup"
+icon: "pipeline"
 content: "ZenML ensures a faster setup, outpacing orchestrators for quick, efficient ML workflows."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b3d35d94/667031351fd1b7332bb478d0_img01.png"

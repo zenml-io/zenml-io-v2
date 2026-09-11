@@ -22,12 +22,12 @@ tags:
 date: "2023-10-23T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/afaee684/65361fa35730bf8ef40ff6cb_cloud_launch.png"
+  url: "https://assets.zenml.io/content/blog/were-revving-up-zenml-exciting-news-and-what-it-means-for-you/001e421c/were-revving-up-zenml-exciting-news-and-what-it-means-for-you-cover.avif"
 seo:
   title: "We're Revving Up ZenML: Exciting News and What It Means for You - ZenML Blog"
   description: "ZenML secures an additional $3.7M in funding led by Point Nine, bringing its total Seed Round to $6.4M, to further its mission of simplifying MLOps. The startup is set to launch ZenML Cloud, a managed service with advanced features, while continuing to expand its open-source framework."
   canonical: "https://www.zenml.io/blog/were-revving-up-zenml-exciting-news-and-what-it-means-for-you"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b1c9d0f2/65361fa35730bf8ef40ff6cb_cloud_launch.png"
+  ogImage: "https://assets.zenml.io/content/blog/were-revving-up-zenml-exciting-news-and-what-it-means-for-you/132c3ff6/were-revving-up-zenml-exciting-news-and-what-it-means-for-you-cover.jpg"
   ogTitle: "We're Revving Up ZenML: Exciting News and What It Means for You - ZenML Blog"
   ogDescription: "ZenML secures an additional $3.7M in funding led by Point Nine, bringing its total Seed Round to $6.4M, to further its mission of simplifying MLOps. The startup is set to launch ZenML Cloud, a managed service with advanced features, while continuing to expand its open-source framework."
 ---

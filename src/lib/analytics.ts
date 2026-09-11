@@ -16,3 +16,13 @@
  */
 
 export type Surface = "ml" | "agent" | "unified";
+
+/**
+ * Stable Plausible goals used by the research-database surfaces. Keep this
+ * small catalog beside the shared analytics taxonomy so maintainers do not
+ * have to discover tracked conversion events by searching rendered markup.
+ */
+export const DATABASE_PLAUSIBLE_GOALS = {
+  closeSignupZenml: "Database-Close-Signup-ZenML",
+  entrySource: "Database-Entry-Source",
+} as const;

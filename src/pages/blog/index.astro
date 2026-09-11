@@ -1,6 +1,12 @@
 ---
 /**
- * Blog listing page.
+ * Blog listing page, in the ZenML Labs shell (`app="labs"`, `surface="ml"`
+ * — D3). Rebuilt for the blog cutover (DESIGN.md): the short shader band
+ * (h1 + the page's own SEO description as its dek, no copy change; the exact
+ * post count sits in the results header below), then the shared
+ * `DataFilterIndex` island skinned
+ * "labs" (search/sort/facet-rail/pagination classes only — behaviour,
+ * data semantics and PAGE_SIZE are unchanged; see BlogIndex.tsx/labsSkin.ts).
  *
  * Migrated onto the shared FilterIndex island (#249), matching the
  * LLMOps/MLOps database pages: a facet rail (Category single-select, Tags
@@ -8,10 +14,7 @@
  * search-index entries as props (not via fetch) so the first page of post
  * cards is real server-rendered HTML — /blog is a high-volume SEO surface
  * and must keep crawlable post links when JavaScript fails (guarded by
- * check-dist-smoke.ts). The featured-post hero and the static
- * /blog/page/N pagination route are retired (BlogHero and the shared
- * Pagination component went with them) — see CategoryBar.astro's doc
- * comment and public/_redirects for the ?page=N-preserving 301s.
+ * check-dist-smoke.ts).
  *
  * Only main-feed posts (getMainFeedPosts — excludes drafts and the
  * "discovery" tag corpus) ever reach the rail's facets or results.
@@ -24,7 +27,8 @@
  * deliberately is not.
  */
 import BlogIndex from "../../components/islands/filter-index/BlogIndex";
-import PageHeader from "../../components/templates/PageHeader.astro";
+import BlogNewsletterCta from "../../components/labs/BlogNewsletterCta.astro";
+import LabsHero from "../../components/labs/LabsHero.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   buildBlogSearchIndex,
@@ -33,6 +37,11 @@ import {
   getTagCounts,
   PAGE_SIZE,
 } from "../../lib/blog";
+import { BAND_CONTENT_GAP, blogLaneStyle } from "../../lib/blogLayout";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
+
+const PAGE_DESCRIPTION =
+  "Insights on MLOps, LLMOps, and production machine learning from the ZenML team.";
 
 const mainFeedPosts = await getMainFeedPosts();
 const searchEntries = await buildBlogSearchIndex(mainFeedPosts);
@@ -48,21 +57,63 @@ const tagOptions = (await getTagCounts(mainFeedPosts))
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "blog") ? defaultOgUrl("pages", "blog") : undefined}
   title="Blog - ZenML"
-  description="Insights on MLOps, LLMOps, and production machine learning from the ZenML team."
+  description={PAGE_DESCRIPTION}
   surface="ml"
+  app="labs"
 >
-  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <PageHeader
-      class="mb-10"
-      heading="Blog"
-      description="Insights on MLOps, LLMOps, and production machine learning from the ZenML team."
-      classOverrides={{
-        heading: "text-4xl font-bold tracking-tight text-gray-900",
-        description: "max-w-2xl text-lg text-gray-600",
-      }}
-    />
+  <div style={blogLaneStyle()}>
+    {/* Opening band: the homepage hero's shader and type at ~40% of the viewport (short band), dek = the page's own SEO description. The exact post count lives in the results header below. */}
+    <LabsHero band="short" content={{ headline: "Blog", deck: PAGE_DESCRIPTION }} />
 
-    <BlogIndex client:load items={searchEntries} categories={categoryOptions} tags={tagOptions} pageSize={PAGE_SIZE} />
+    {/* Controls + facet rail + results — DataFilterIndex island owns this
+        whole region (search/sort sit above the results column, not the
+        page); see BlogIndex.tsx (skin="labs") and labsSkin.ts. */}
+    <section class:list={["scroll-reveal-section pb-24", BAND_CONTENT_GAP]}>
+      <div class="reveal-child stagger-1 mx-auto max-w-content px-gutter">
+        <BlogIndex client:load items={searchEntries} categories={categoryOptions} tags={tagOptions} pageSize={PAGE_SIZE} />
+      </div>
+    </section>
+
+    <section class="scroll-reveal-section">
+      <div class="reveal-child stagger-1">
+        <BlogNewsletterCta />
+      </div>
+    </section>
   </div>
 </BaseLayout>
+
+<style>
+  /* House scroll-reveal pattern (reference: BlogLayout.astro). The hidden
+   * start state applies only once the script has armed the section, so the
+   * server-rendered page is fully visible without JS. */
+  .reveal-child {
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-1 { transition-delay: 60ms; }
+
+  .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-child,
+    .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScrollReveal);
+  } else {
+    initScrollReveal();
+  }
+</script>

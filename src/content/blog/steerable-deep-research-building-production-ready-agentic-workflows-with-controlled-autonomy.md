@@ -20,12 +20,12 @@ tags:
 date: "2025-06-17T00:00:00.000Z"
 readingTime: 11 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79fa389e/685109fa5cb09a438b2fbd8d_Deep_Research_ZenML__1_.png"
+  url: "https://assets.zenml.io/content/blog/steerable-deep-research-building-production-ready-agentic-workflows-with-controlled-autonomy/888f3d6e/steerable-deep-research-building-production-ready-agentic-workflows-with-controlled-autonomy-cover.avif"
 seo:
   title: "Steerable Deep Research: Building Production-Ready Agentic Workflows with Controlled Autonomy - ZenML Blog"
   description: "Learn how to build production-ready agentic AI workflows that combine powerful research capabilities with enterprise-grade observability, reproducibility, and cost control using ZenML's structured approach to controlled autonomy."
   canonical: "https://www.zenml.io/blog/steerable-deep-research-building-production-ready-agentic-workflows-with-controlled-autonomy"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79fa389e/685109fa5cb09a438b2fbd8d_Deep_Research_ZenML__1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/steerable-deep-research-building-production-ready-agentic-workflows-with-controlled-autonomy/218a331c/steerable-deep-research-building-production-ready-agentic-workflows-with-controlled-autonomy-cover.jpg"
   ogTitle: "Steerable Deep Research: Building Production-Ready Agentic Workflows with Controlled Autonomy - ZenML Blog"
   ogDescription: "Learn how to build production-ready agentic AI workflows that combine powerful research capabilities with enterprise-grade observability, reproducibility, and cost control using ZenML's structured approach to controlled autonomy."
 ---

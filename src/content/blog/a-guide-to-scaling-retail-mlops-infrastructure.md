@@ -18,12 +18,12 @@ tags:
 date: "2024-11-13T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/93be6863/6746e1d8de773b6aac688246_Gemini_Generated_Image__3_.jpeg"
+  url: "https://assets.zenml.io/content/blog/a-guide-to-scaling-retail-mlops-infrastructure/20a7e0af/a-guide-to-scaling-retail-mlops-infrastructure-cover.avif"
 seo:
   title: "From POC to Production: A Guide to Scaling Retail MLOps Infrastructure - ZenML Blog"
   description: "Discover how successful retail organizations navigate the complex journey from proof-of-concept to production-ready MLOps infrastructure. This comprehensive guide explores essential strategies for scaling machine learning operations, covering everything from standardized pipeline architecture to advanced model management. Learn practical solutions for handling model proliferation, managing multiple environments, and implementing robust governance frameworks. Whether you're dealing with a growing model fleet or planning for future scaling challenges, this post provides actionable insights for building sustainable, enterprise-grade MLOps systems in retail."
   canonical: "https://www.zenml.io/blog/a-guide-to-scaling-retail-mlops-infrastructure"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/93be6863/6746e1d8de773b6aac688246_Gemini_Generated_Image__3_.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/a-guide-to-scaling-retail-mlops-infrastructure/894588ca/a-guide-to-scaling-retail-mlops-infrastructure-cover.jpg"
   ogTitle: "From POC to Production: A Guide to Scaling Retail MLOps Infrastructure - ZenML Blog"
   ogDescription: "Discover how successful retail organizations navigate the complex journey from proof-of-concept to production-ready MLOps infrastructure. This comprehensive guide explores essential strategies for scaling machine learning operations, covering everything from standardized pipeline architecture to advanced model management. Learn practical solutions for handling model proliferation, managing multiple environments, and implementing robust governance frameworks. Whether you're dealing with a growing model fleet or planning for future scaling challenges, this post provides actionable insights for building sustainable, enterprise-grade MLOps systems in retail."
 ---

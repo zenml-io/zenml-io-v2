@@ -21,12 +21,14 @@ tags:
 date: "2025-12-14T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ab1e16b1/693eb679333785d118425a99_neptune-ai-vs-wandb.png"
+  url: "https://assets.zenml.io/content/blog/neptune-ai-vs-wandb/00eadbe8/neptune-ai-vs-wandb-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/neptune-ai-vs-wandb/00eadbe8/neptune-ai-vs-wandb-cover.avif"
 seo:
   title: "Neptune AI vs WandB vs ZenML: Experiment Tracking, Integration, and Pricing Compared - ZenML Blog"
   description: "In this Neptune AI vs WandB vs ZenML, we compare these platforms’ features, integrations, and pricing."
   canonical: "https://www.zenml.io/blog/neptune-ai-vs-wandb"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ab1e16b1/693eb679333785d118425a99_neptune-ai-vs-wandb.png"
+  ogImage: "https://assets.zenml.io/content/blog/neptune-ai-vs-wandb/7d7d4fe2/neptune-ai-vs-wandb-cover.jpg"
   ogTitle: "Neptune AI vs WandB vs ZenML: Experiment Tracking, Integration, and Pricing Compared - ZenML Blog"
   ogDescription: "In this Neptune AI vs WandB vs ZenML, we compare these platforms’ features, integrations, and pricing."
 ---

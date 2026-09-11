@@ -22,12 +22,12 @@ tags:
 date: "2024-10-18T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/535ce35c/67123de17c5633dce46e6fbd_zenml-cloud-ops.png"
+  url: "https://assets.zenml.io/content/blog/why-zenml-with-aws-gcp-azure/06b90307/why-zenml-with-aws-gcp-azure-cover.avif"
 seo:
   title: "Elevate Your Cloud MLOps with ZenML - ZenML Blog"
   description: "Why use ZenML alongside AWS / GCP / Azure MLOps platforms? Let's dive into why ZenML complements and enhance existing cloud MLOps infrastructure."
   canonical: "https://www.zenml.io/blog/why-zenml-with-aws-gcp-azure"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/535ce35c/67123de17c5633dce46e6fbd_zenml-cloud-ops.png"
+  ogImage: "https://assets.zenml.io/content/blog/why-zenml-with-aws-gcp-azure/2809b80d/why-zenml-with-aws-gcp-azure-cover.jpg"
   ogTitle: "Elevate Your Cloud MLOps with ZenML - ZenML Blog"
   ogDescription: "Why use ZenML alongside AWS / GCP / Azure MLOps platforms? Let's dive into why ZenML complements and enhance existing cloud MLOps infrastructure."
 ---

@@ -1,6 +1,7 @@
 ---
 title: "Deep Integration with ML Frameworks and Tools"
 slug: "deep-integration-with-ml-frameworks-and-tools"
+icon: "hub"
 content: "ZenML offers deep integration with popular ML frameworks like scikit-learn, TensorFlow, and PyTorch, as well as seamless integration with other MLOps tools, enabling end-to-end orchestration of ML workflows."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fec1dff1/667196405fbe25aecdd96da9_img04.png"

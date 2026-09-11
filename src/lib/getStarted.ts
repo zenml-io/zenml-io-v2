@@ -8,7 +8,9 @@
  *
  * ZenML copy was extracted from the original Webflow snapshot + SEO baseline.
  */
+import type { LabsBandContent } from "./labs-home";
 import type { CtaLink } from "./marketingPageTypes";
+import { defaultOgUrl } from "./seo";
 
 // ---------------------------------------------------------------------------
 // SEO (one page, one URL)
@@ -20,7 +22,7 @@ export const GET_STARTED_SEO = {
   ogTitle: "Get Started with ZenML",
   ogDescription:
     "Install ZenML, run your first pipeline locally, and orchestrate AI workflows and agents on the infrastructure you already use.",
-  ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
+  ogImage: defaultOgUrl("pages", "get-started"),
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -208,3 +210,14 @@ export const GET_STARTED_FINAL_CTA = {
     href: "/docs",
   } as CtaLink,
 } as const;
+
+/** `GET_STARTED_FINAL_CTA` reshaped onto `LabsCloseCta`. "Read Docs" leaves
+ * the page (CONVENTIONS liberty; the band has one pill). */
+export const GET_STARTED_CLOSE: LabsBandContent = {
+  headlineLines: ["Ready for", "the next level?"],
+  deck: GET_STARTED_FINAL_CTA.body,
+  cta: {
+    ...GET_STARTED_FINAL_CTA.primaryCta,
+    analytics: "GetStarted-Close-Compare-OSS",
+  },
+};

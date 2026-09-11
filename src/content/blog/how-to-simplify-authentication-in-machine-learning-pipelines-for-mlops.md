@@ -22,12 +22,12 @@ tags:
 date: "2025-04-11T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/513e616b/67f8ec431e4c9d319dae8ed0_ZenML_Service_Connectors__1___1_.png"
+  url: "https://assets.zenml.io/content/blog/how-to-simplify-authentication-in-machine-learning-pipelines-for-mlops/65a50f17/how-to-simplify-authentication-in-machine-learning-pipelines-for-mlops-cover.avif"
 seo:
   title: "How to Simplify Authentication in Machine Learning Pipelines (Without Compromising Security) - ZenML Blog"
   description: "Discover how ZenML's Service Connectors solve one of MLOps' most frustrating challenges: credential management. This deep dive explores how Service Connectors eliminate security risks and save engineer time by providing a unified authentication layer across cloud providers (AWS, GCP, Azure). Learn how this approach improves developer experience with reduced boilerplate, enforces security best practices with short-lived tokens, and enables true multi-cloud ML workflows without credential headaches. Compare ZenML's solution with alternatives from Kubeflow, Airflow, and cloud-native platforms to understand why proper credential abstraction is the unsung hero of efficient MLOps."
   canonical: "https://www.zenml.io/blog/how-to-simplify-authentication-in-machine-learning-pipelines-for-mlops"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/513e616b/67f8ec431e4c9d319dae8ed0_ZenML_Service_Connectors__1___1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/how-to-simplify-authentication-in-machine-learning-pipelines-for-mlops/1c8afc1e/how-to-simplify-authentication-in-machine-learning-pipelines-for-mlops-cover.jpg"
   ogTitle: "How to Simplify Authentication in Machine Learning Pipelines (Without Compromising Security) - ZenML Blog"
   ogDescription: "Discover how ZenML's Service Connectors solve one of MLOps' most frustrating challenges: credential management. This deep dive explores how Service Connectors eliminate security risks and save engineer time by providing a unified authentication layer across cloud providers (AWS, GCP, Azure). Learn how this approach improves developer experience with reduced boilerplate, enforces security best practices with short-lived tokens, and enables true multi-cloud ML workflows without credential headaches. Compare ZenML's solution with alternatives from Kubeflow, Airflow, and cloud-native platforms to understand why proper credential abstraction is the unsung hero of efficient MLOps."
 ---

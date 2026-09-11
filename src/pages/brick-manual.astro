@@ -1,5 +1,6 @@
 ---
 import ContactForm from "../components/islands/ContactForm.tsx";
+import LabsPageHeader from "../components/labs/LabsPageHeader.astro";
 /**
  * Brick Manual — email-gated PDF download for conference brick sets.
  *
@@ -22,38 +23,40 @@ import { TURNSTILE_SITE_KEY } from "../lib/formConstants";
   ogTitle={BRICK_MANUAL_SEO.ogTitle}
   ogDescription={BRICK_MANUAL_SEO.ogDescription}
   surface="ml"
+  app="labs"
+  product="zenml"
 >
   <main>
-    <section class="bg-white py-16 sm:py-24">
-      <div class="mx-auto max-w-xl px-4 sm:px-6 lg:px-8">
+    <LabsPageHeader
+      heading={BRICK_MANUAL_HERO.headline}
+      description={BRICK_MANUAL_HERO.deck}
+      align="center"
+    />
+    <section class="bg-(--color-cream-50) py-space-xl md:py-space-xxl">
+      <div class="mx-auto max-w-content px-gutter">
         {/* Decorative brick row */}
-        <div class="mb-6 flex justify-center gap-1.5" aria-hidden="true">
-          <span class="brick bg-[#7A3EF8]"></span>
-          <span class="brick bg-[#e84393]"></span>
-          <span class="brick bg-[#0984e3]"></span>
-          <span class="brick bg-[#f39c12]"></span>
-          <span class="brick bg-[#00b894]"></span>
+        <div class="mb-space-lg flex justify-center gap-1.5" aria-hidden="true">
+          <span class="brick bg-(--color-sage-300)"></span>
+          <span class="brick bg-(--color-sage-400)"></span>
+          <span class="brick bg-(--color-sage-500)"></span>
+          <span class="brick bg-(--color-sage-600)"></span>
+          <span class="brick bg-(--color-sage-700)"></span>
         </div>
 
-        <div class="mb-8 text-center">
-          <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
-            {BRICK_MANUAL_HERO.headline}
-          </h1>
-          <p class="mt-3 text-lg text-gray-600">{BRICK_MANUAL_HERO.deck}</p>
+        <div class="mx-auto max-w-prose">
+          <ContactForm
+            client:load
+            formType="brick-manual"
+            endpoint="/api/forms/brick-manual"
+            fields={BRICK_MANUAL_FIELDS}
+            submitLabel="Unlock Instructions"
+            loadingLabel="Unlocking…"
+            successMessage="You're all set!"
+            successDownloadUrl={BRICK_MANUAL_DOWNLOAD_URL}
+            successDownloadLabel="Download Build Instructions"
+            turnstileSiteKey={TURNSTILE_SITE_KEY}
+          />
         </div>
-
-        <ContactForm
-          client:load
-          formType="brick-manual"
-          endpoint="/api/forms/brick-manual"
-          fields={BRICK_MANUAL_FIELDS}
-          submitLabel="Unlock Instructions"
-          loadingLabel="Unlocking…"
-          successMessage="You're all set!"
-          successDownloadUrl={BRICK_MANUAL_DOWNLOAD_URL}
-          successDownloadLabel="Download Build Instructions"
-          turnstileSiteKey={TURNSTILE_SITE_KEY}
-        />
       </div>
     </section>
   </main>

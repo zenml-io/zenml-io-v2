@@ -89,14 +89,14 @@
     padding: 14px 16px;
     border-radius: 12px;
     border: 1px solid var(--color-border);
-    background: var(--color-surface);
+    background: var(--color-card);
   }
   .row--competitor {
-    background: var(--color-surface-warm);
+    background: var(--color-cream-50);
     border-style: dashed;
   }
   .row--zenml {
-    border-color: var(--color-accent);
+    border-color: var(--color-sage-500);
   }
   .row-head {
     display: flex;
@@ -107,24 +107,24 @@
   }
   .row-sub {
     font-size: 11.5px;
-    color: var(--color-secondary);
+    color: var(--color-cream-700);
   }
   .tag {
     display: inline-block;
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: 0;
+    text-transform: none;
     padding: 3px 8px;
     border-radius: 4px;
   }
   .tag--muted {
-    background: var(--color-border-light);
-    color: var(--color-muted);
+    background: var(--color-border);
+    color: var(--color-cream-700);
   }
   .tag--accent {
-    background: var(--color-accent-light);
-    color: var(--color-accent-deep);
+    background: var(--color-sage-200);
+    color: var(--color-sage-800);
   }
 
   .timeline {
@@ -140,35 +140,35 @@
     padding: 8px 10px;
     border: 1px solid var(--color-border);
     border-radius: 8px;
-    background: var(--color-surface);
+    background: var(--color-card);
     min-width: 0;
   }
   .step--rerun {
-    background: var(--color-bg);
+    background: var(--color-cream-50);
   }
   .step--fail {
-    border-color: var(--color-cost-up);
-    background: var(--color-cost-up-bg);
+    border-color: var(--color-cream-700);
+    background: var(--color-cream-100);
   }
   .step--cached {
-    border-color: var(--color-border-light);
-    background: var(--color-surface-warm);
+    border-color: var(--color-border);
+    background: var(--color-cream-50);
   }
   .step--replay {
-    border-color: var(--color-accent);
-    background: var(--color-accent-light);
+    border-color: var(--color-sage-500);
+    background: var(--color-sage-200);
   }
   .step-key {
     font-size: 9.5px;
     font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-muted);
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-cream-700);
   }
   .step-val {
     font-family: var(--font-mono);
     font-size: 11.5px;
-    color: var(--color-primary);
+    color: var(--color-cream-900);
     font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -179,22 +179,22 @@
     margin-top: 2px;
     font-family: var(--font-mono);
     font-size: 10px;
-    color: var(--color-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
+    color: var(--color-cream-700);
+    text-transform: none;
+    letter-spacing: 0;
   }
-  .step-cost--fail { color: var(--color-cost-up); font-weight: 700; }
-  .step-cost--cached { color: var(--color-secondary); }
-  .step-cost--replay { color: var(--color-accent); font-weight: 700; }
+  .step-cost--fail { color: var(--color-cream-700); font-weight: 700; }
+  .step-cost--cached { color: var(--color-cream-700); }
+  .step-cost--replay { color: var(--color-sage-800); font-weight: 700; }
 
   .conn {
     font-size: 14px;
-    color: var(--color-muted);
+    color: var(--color-cream-700);
     font-weight: 700;
     text-align: center;
   }
   .conn--accent {
-    color: var(--color-accent);
+    color: var(--color-sage-800);
   }
 
   .row-foot {
@@ -203,18 +203,18 @@
     gap: 10px;
     margin-top: 12px;
     padding-top: 10px;
-    border-top: 1px solid var(--color-border-light);
+    border-top: 1px solid var(--color-border);
     font-size: 11.5px;
-    color: var(--color-secondary);
+    color: var(--color-cream-700);
   }
   .row-foot--accent {
-    color: var(--color-primary);
+    color: var(--color-cream-900);
   }
   .row-foot svg {
     width: 14px;
     height: 14px;
     fill: none;
-    stroke: var(--color-accent);
+    stroke: var(--color-sage-600);
     stroke-width: 1.6;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -223,20 +223,20 @@
   .row-foot code {
     font-family: var(--font-mono);
     font-size: 10.5px;
-    color: var(--color-primary);
-    background: var(--color-surface);
+    color: var(--color-cream-900);
+    background: var(--color-card);
     padding: 1px 5px;
-    border: 1px solid var(--color-border-light);
+    border: 1px solid var(--color-border);
     border-radius: 3px;
   }
   .rerun-tag {
     font-size: 9.5px;
     font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-cost-up);
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-cream-700);
     padding: 2px 7px;
-    background: var(--color-cost-up-bg);
+    background: var(--color-cream-100);
     border-radius: 4px;
   }
 

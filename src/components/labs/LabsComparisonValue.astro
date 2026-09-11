@@ -1,0 +1,141 @@
+---
+import Split from "../system/layout/Split.astro";
+import "../../styles/labs-scroll-reveal.css";
+
+interface Props {
+  title: string;
+  body?: string;
+  bullets?: readonly string[];
+  image?: { url: string; alt?: string };
+  mediaSide?: "left" | "right";
+  number?: string;
+  layout?: "split" | "list";
+  product?: "zenml" | "kitaru";
+}
+
+const {
+  title,
+  body,
+  bullets = [],
+  image,
+  mediaSide = "right",
+  number,
+  layout = "split",
+  product = "zenml",
+} = Astro.props;
+const hasMedia = Boolean(image) || Astro.slots.has("media");
+const hasBulletSlot = Astro.slots.has("bullets");
+const hasBodySlot = Astro.slots.has("default");
+---
+
+<section class="scroll-reveal-section py-8 md:py-10">
+  <div class="reveal-child mx-auto max-w-content px-gutter">
+    {layout === "split" && hasMedia ? (
+      <Split mediaSide={mediaSide} space="mlg" alignY="center">
+        <div>
+          {number && <p class="font-sans text-[15px] leading-5 text-(--color-sage-700)">{number}</p>}
+          <h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[42px]">{title}</h2>
+          {body && <p class="mt-6 font-sans text-[17px] leading-[26px] text-(--color-cream-700)">{body}</p>}
+          {hasBodySlot && <div class="comparison-value-copy mt-6 font-sans text-[17px] leading-[26px] text-(--color-cream-800)"><slot /></div>}
+          {bullets.length > 0 && (
+            <ul class="mt-8 flex list-none flex-col">
+              {bullets.map((bullet) => <li class="flex items-start gap-3 border-t border-(--color-border) py-3 font-sans text-[16px] leading-6 text-(--color-cream-800) first:border-t-0"><svg class="mt-0.5 h-4 w-4 shrink-0 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5" /></svg><span>{bullet}</span></li>)}
+            </ul>
+          )}
+        </div>
+        <div slot="media" class:list={["comparison-diagram-well min-w-0 overflow-hidden rounded-[20px] p-8 md:p-10", !image && `comparison-diagram-well--${product}`, image ? "border border-(--color-border) bg-card transition-colors duration-200 ease-out hover:border-(--color-sage-400)" : product === "zenml" ? "bg-(--color-sage-300)" : "bg-(--color-cream-100)"]}>
+          {image ? <img src={image.url} alt={image.alt || title} class="h-auto w-full object-contain" loading="lazy" /> : <slot name="media" />}
+        </div>
+      </Split>
+    ) : (
+      <div>
+        {number && <p class="font-sans text-[15px] leading-5 text-(--color-sage-700)">{number}</p>}
+        <h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[42px]">{title}</h2>
+        {body && <p class="mt-6 max-w-[768px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">{body}</p>}
+        {hasBodySlot && <div class="comparison-value-copy mt-6 max-w-[768px] font-sans text-[17px] leading-[26px] text-(--color-cream-800)"><slot /></div>}
+        {hasMedia && <div class:list={["comparison-diagram-well mt-10 min-w-0 overflow-hidden rounded-[20px] p-8 md:p-10", !image && `comparison-diagram-well--${product}`, image ? "border border-(--color-border) bg-card transition-colors duration-200 ease-out hover:border-(--color-sage-400)" : product === "zenml" ? "bg-(--color-sage-300)" : "bg-(--color-cream-100)"]}>{image ? <img src={image.url} alt={image.alt || title} class="mx-auto h-auto w-full object-contain" loading="lazy" /> : <slot name="media" />}</div>}
+        {hasBulletSlot && <div class="labs-hex-list mt-10"><slot name="bullets" /></div>}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .comparison-value-copy { overflow-wrap: anywhere; }
+  .comparison-value-copy :global(.comparison-prose + .comparison-prose) { margin-top: 12px; }
+  .comparison-value-copy :global(.comparison-prose:first-child p) { padding-top: 0; }
+
+  .comparison-diagram-well--zenml :global(.fig > :is(.panel, .card, .layer)) {
+    overflow: hidden;
+  }
+
+  .comparison-diagram-well--zenml :global(.fig > :is(.panel--competitor, .card--competitor, .layer--competitor)) {
+    border-color: var(--color-cream-200);
+  }
+
+  .comparison-diagram-well--zenml :global(.fig > :is(.panel--zenml, .card--zenml, .layer--zenml)) {
+    border-color: var(--color-sage-500);
+  }
+
+  .comparison-diagram-well--zenml :global(.fig > :is(.panel, .card, .layer) > :is(.panel-head, .card-head, .layer-head)) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: -16px -16px 14px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--color-cream-200);
+    background: var(--color-cream-50);
+  }
+
+  .comparison-diagram-well--zenml :global(.fig > :is(.panel--zenml, .card--zenml, .layer--zenml) > :is(.panel-head, .card-head, .layer-head)) {
+    border-bottom-color: var(--color-sage-500);
+    background: var(--color-sage-100);
+  }
+
+  .comparison-diagram-well--zenml :global(.fig > :is(.panel, .card, .layer) > :is(.panel-head, .card-head, .layer-head) > :is(.panel-label, .card-label, .layer-label)) {
+    display: block;
+    margin: 0;
+    color: var(--color-cream-900);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .comparison-diagram-well--zenml :global(.fig > :is(.panel--zenml, .card--zenml, .layer--zenml) > :is(.panel-head, .card-head, .layer-head) > :is(.panel-label, .card-label, .layer-label)) {
+    color: var(--color-sage-900);
+  }
+
+  .comparison-diagram-well--zenml :global(.fig > :is(.panel, .card, .layer) > :is(.panel-head, .card-head, .layer-head) > :is(.panel-sub, .card-sub, .layer-sub)) {
+    display: block;
+    max-width: 58%;
+    color: var(--color-cream-700);
+    font-family: var(--font-label);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 14px;
+    letter-spacing: 0.04em;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .comparison-diagram-well--zenml :global(.fig > :is(.panel--zenml, .card--zenml, .layer--zenml) > :is(.panel-head, .card-head, .layer-head) > :is(.panel-sub, .card-sub, .layer-sub)) {
+    color: var(--color-sage-800);
+  }
+
+  @media (max-width: 560px) {
+    .comparison-diagram-well--zenml :global(.fig > :is(.panel, .card, .layer) > :is(.panel-head, .card-head, .layer-head)) {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .comparison-diagram-well--zenml :global(.fig > :is(.panel, .card, .layer) > :is(.panel-head, .card-head, .layer-head) > :is(.panel-sub, .card-sub, .layer-sub)) {
+      max-width: none;
+      text-align: left;
+    }
+  }
+</style>

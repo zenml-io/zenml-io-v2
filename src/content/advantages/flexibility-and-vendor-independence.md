@@ -1,6 +1,7 @@
 ---
 title: "Flexibility and Vendor Independence"
 slug: "flexibility-and-vendor-independence"
+icon: "open-box"
 content: "ZenML offers a vendor-neutral approach, allowing you to integrate with various tools and cloud providers, while Databricks is primarily focused on its own ecosystem."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdf3dfc5/667167751e34699260c6b227_img02.png"

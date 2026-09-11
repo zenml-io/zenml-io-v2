@@ -21,12 +21,12 @@ tags:
 date: "2024-12-03T00:00:00.000Z"
 readingTime: 9 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/34dde5e8/67531d909d62d8d590eeae16_MJ3_Image.png"
+  url: "https://assets.zenml.io/content/blog/building-llm-applications-that-know-what-theyre-talking-about/37a9affe/building-llm-applications-that-know-what-theyre-talking-about-cover.avif"
 seo:
   title: "Building LLM Applications that Know What They're Talking About 🔓🧠 - ZenML Blog"
   description: "Explore real-world applications of Retrieval Augmented Generation (RAG) through case studies from leading companies in the ZenML LLMOps Database. Learn how RAG enhances LLM applications with external knowledge sources, examining implementation strategies, challenges, and best practices for building more accurate and informed AI systems."
   canonical: "https://www.zenml.io/blog/building-llm-applications-that-know-what-theyre-talking-about"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/34dde5e8/67531d909d62d8d590eeae16_MJ3_Image.png"
+  ogImage: "https://assets.zenml.io/content/blog/building-llm-applications-that-know-what-theyre-talking-about/7a224cd3/building-llm-applications-that-know-what-theyre-talking-about-cover.jpg"
   ogTitle: "Building LLM Applications that Know What They're Talking About 🔓🧠 - ZenML Blog"
   ogDescription: "Explore real-world applications of Retrieval Augmented Generation (RAG) through case studies from leading companies in the ZenML LLMOps Database. Learn how RAG enhances LLM applications with external knowledge sources, examining implementation strategies, challenges, and best practices for building more accurate and informed AI systems."
 ---

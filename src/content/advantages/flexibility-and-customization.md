@@ -1,6 +1,7 @@
 ---
 title: "Flexibility and Customization"
 slug: "flexibility-and-customization"
+icon: "layers"
 content: "ZenML offers a highly flexible and customizable MLOps framework, allowing you to tailor your workflow to your specific requirements and integrate with various tools and platforms."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdf3dfc5/667167751e34699260c6b227_img02.png"

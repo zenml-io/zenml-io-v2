@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:14.382Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3621e87c/66d86886a6dc58ed59b15d41_vertex.png"
+  url: "https://assets.zenml.io/content/integrations/logos/gcp-vertexai.svg"
+  alt: "Google Cloud Vertex AI logo"
 shortDescription: "Streamline your MLOps workflows on GCP with ZenML and Vertex AI Pipelines"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/vertex"
 mainImage:

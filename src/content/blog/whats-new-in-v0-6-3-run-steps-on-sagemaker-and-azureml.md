@@ -17,7 +17,9 @@ tags:
 date: "2022-03-14T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/10740b17/65315f817f8d0747f91705b3_eyestetix-studio-l8qIZmNuD1E-unsplash.jpg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-6-3-run-steps-on-sagemaker-and-azureml/68d59445/whats-new-in-v0-6-3-run-steps-on-sagemaker-and-azureml-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-6-3-run-steps-on-sagemaker-and-azureml/c3640def/whats-new-in-v0-6-3-run-steps-on-sagemaker-and-azureml-cover.jpg"
 ---
 
 **Last updated:** November 3, 2022.

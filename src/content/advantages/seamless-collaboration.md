@@ -1,6 +1,7 @@
 ---
 title: "Seamless Collaboration"
 slug: "seamless-collaboration"
+icon: "people"
 content: "ZenML enables collaboration among team members through shared pipelines, version control, and experiment tracking, while Metaflow lacks built-in collaboration features and relies on external tools."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fec1dff1/667196405fbe25aecdd96da9_img04.png"

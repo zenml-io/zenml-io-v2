@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-09-11T07:15:44.277Z"
 integrationType: "container-registry"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c63dd028/672b2d75af6d63a749c8fac0_elastic_container_registry.png"
+  url: "https://assets.zenml.io/content/integrations/logos/elastic-container-registry.svg"
+  alt: "AWS Elastic Container Registry logo"
 shortDescription: "Streamline container image management with AWS ECR and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/container-registries/aws"
 mainImage:

@@ -20,12 +20,12 @@ tags:
 date: "2025-01-13T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2dba7ec3/678524f9be42385bc570eedf_Metadata_Comparison_Tool_Jan_13_2025.png"
+  url: "https://assets.zenml.io/content/blog/new-dashboard-feature-compare-your-experiments/40dc0904/new-dashboard-feature-compare-your-experiments-cover.avif"
 seo:
   title: "New Dashboard Feature: Compare Your Experiments - ZenML Blog"
   description: "ZenML's new Experiment Comparison Tool brings powerful experiment tracking capabilities to your ML pipelines. Compare up to 20 pipeline runs simultaneously through intuitive tabular and parallel coordinates visualizations, helping teams derive actionable insights from their pipeline metadata. Now available in the Pro tier dashboard."
   canonical: "https://www.zenml.io/blog/new-dashboard-feature-compare-your-experiments"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2dba7ec3/678524f9be42385bc570eedf_Metadata_Comparison_Tool_Jan_13_2025.png"
+  ogImage: "https://assets.zenml.io/content/blog/new-dashboard-feature-compare-your-experiments/41c74937/new-dashboard-feature-compare-your-experiments-cover.jpg"
   ogTitle: "New Dashboard Feature: Compare Your Experiments - ZenML Blog"
   ogDescription: "ZenML's new Experiment Comparison Tool brings powerful experiment tracking capabilities to your ML pipelines. Compare up to 20 pipeline runs simultaneously through intuitive tabular and parallel coordinates visualizations, helping teams derive actionable insights from their pipeline metadata. Now available in the Pro tier dashboard."
 ---

@@ -20,12 +20,14 @@ tags:
 date: "2025-10-31T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6832970e/69043d7716c54752d58a0368_datatdog-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/datadog-alternatives/68fb2e2b/datadog-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/datadog-alternatives/68fb2e2b/datadog-alternatives-cover.avif"
 seo:
   title: "We Tried and Tested 7 Best Datadog Alternatives for Full-Stack Observability - ZenML Blog"
   description: "In this article, you learn about the best Datadog alternatives you can use for full-stack observability."
   canonical: "https://www.zenml.io/blog/datadog-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6832970e/69043d7716c54752d58a0368_datatdog-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/datadog-alternatives/a8c7671d/datadog-alternatives-cover.jpg"
   ogTitle: "We Tried and Tested 7 Best Datadog Alternatives for Full-Stack Observability - ZenML Blog"
   ogDescription: "In this article, you learn about the best Datadog alternatives you can use for full-stack observability."
 ---

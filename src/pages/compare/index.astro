@@ -1,24 +1,33 @@
 ---
 /**
- * Compare hub page — Phase 3.
+ * Compare hub page, in the ZenML Labs shell (`app="labs"`, `surface="unified"`
+ * — no `product`). Rebuilt for the product one-offs cutover (#317): the
+ * short shader band, then two compact `labs.comparison-card` catalogues — Kitaru vs. agent
+ * frameworks and SDKs, then ZenML vs. orchestrators, durable execution
+ * engines & agent frameworks — and the shared closing band.
  *
- * Two visually-distinct sections, one per product:
- *   - Agent comparisons (Kitaru vs X) — warm-orange tinted
- *   - ZenML comparisons — sage-green tinted
- *
- * Clicking an Agent card → /compare/kitaru-vs-X (Kitaru template,
- * theme flipped to data-app="kitaru").
- * Clicking a ZenML card → /compare/zenml-vs-X. The ZenML section merges
- * two collections into one grid; src/lib/compareHub.ts normalises both
- * sections' cards so the grid does not care which collection a row came
- * from (the Markdown mirror at /compare.md reads the same lists).
+ * Clicking a card goes to `/compare/<slug>` (Kitaru template, theme flipped
+ * to `data-app="kitaru"`, or the ZenML template). `src/lib/compareHub.ts`
+ * normalises both sections' cards so a row does not care which content
+ * collection it came from (the Markdown mirror at /compare.md reads the
+ * same lists).
  */
-import SectionIntro from "../../components/system/SectionIntro.astro";
+import LabsBand from "../../components/labs/LabsBand.astro";
+import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
+import LabsComparisonCard from "../../components/labs/LabsComparisonCard.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
 import {
+  COMPARE_CLOSE,
   getKitaruCompareCards,
   getZenmlCompareCards,
 } from "../../lib/compareHub";
+import "../../styles/labs-scroll-reveal.css";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
+
+const TITLE = "Compare: ZenML and Kitaru vs. alternatives";
+const DESCRIPTION =
+  "Side-by-side comparisons of ZenML (AI orchestration) and Kitaru (agent replay) against other tools and platforms.";
 
 const [kitaruCards, zenmlCards] = await Promise.all([
   getKitaruCompareCards(),
@@ -27,142 +36,59 @@ const [kitaruCards, zenmlCards] = await Promise.all([
 ---
 
 <BaseLayout
-  title="Compare: ZenML and Kitaru vs. alternatives"
-  description="Side-by-side comparisons of ZenML (AI orchestration) and Kitaru (agent replay) against other tools and platforms."
+  ogImage={hasDefaultOgCard("pages", "compare") ? defaultOgUrl("pages", "compare") : undefined}
+  title={TITLE}
+  description={DESCRIPTION}
   surface="unified"
+  app="labs"
 >
-  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-    <header class="mb-12 max-w-3xl">
-      <SectionIntro
-        eyebrow="Compare"
-        heading="Pick the right tool for the job."
-        headingLevel={1}
-        description="Kitaru for agent replay, ZenML for AI workflow orchestration. See how each holds up against the other tools you might be considering."
-        classOverrides={{
-          eyebrow: "text-sm font-semibold uppercase tracking-wider text-zenml-600",
-          heading: "text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl",
-          description: "text-lg text-gray-600",
-        }}
-      />
-    </header>
+  <LabsBand size="short">
+    <div class="scroll-reveal-section flex flex-col gap-4">
+      <p class="reveal-child font-sans text-[15px] leading-5 text-(--color-cream-700)">Compare</p>
+      <h1 class="reveal-child stagger-1 font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+        Pick the right tool for the job.
+      </h1>
+      <p class="reveal-child stagger-2 max-w-[720px] font-sans text-[18px] leading-7 text-(--color-cream-700)">
+        {DESCRIPTION}
+      </p>
+    </div>
+  </LabsBand>
+
+  <section class:list={["pb-24 md:pb-32", BAND_CONTENT_GAP]}>
+    <div class="mx-auto flex max-w-content flex-col gap-20 px-gutter">
+      <div data-product="kitaru" class="scroll-reveal-section">
+        <h2 class="reveal-child mb-6 font-display text-[28px] leading-[34px] text-(--color-cream-800)">
+          Kitaru vs. agent frameworks and SDKs
+        </h2>
+        <ul class="scroll-reveal-section grid list-none grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {kitaruCards.map((card, index) => (
+            <li class:list={["reveal-child min-w-0", index % 3 === 1 && "stagger-1", index % 3 === 2 && "stagger-2"]}>
+              <LabsComparisonCard card={card} />
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="scroll-reveal-section">
+        <h2 class="reveal-child mb-6 font-display text-[28px] leading-[34px] text-(--color-cream-800)">
+          ZenML vs. orchestrators, durable execution engines & agent frameworks
+        </h2>
+        <ul class="scroll-reveal-section grid list-none grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {zenmlCards.map((card, index) => (
+            <li class:list={["reveal-child min-w-0", index % 3 === 1 && "stagger-1", index % 3 === 2 && "stagger-2"]}>
+              <LabsComparisonCard card={card} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="scroll-reveal-section">
+    <div class="reveal-child"><LabsCloseCta content={COMPARE_CLOSE} preset="comparison" /></div>
   </div>
-
-  {/* ════════════════════════════════════════════════════════════════════
-       Agents — Kitaru comparisons (warm orange tint), listed first
-       ════════════════════════════════════════════════════════════════════ */}
-  <section class="border-y border-orange-200/60 bg-orange-50/50">
-    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-      <div class="mb-10 flex items-center gap-4">
-        <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-orange-400/15 text-orange-700">
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 6v6l4 2"/>
-          </svg>
-        </span>
-        <SectionIntro
-          eyebrow="Agents · Kitaru"
-          heading="Kitaru vs. agent frameworks and SDKs"
-          classOverrides={{
-            eyebrow: "text-xs font-semibold uppercase tracking-[0.15em] text-orange-700",
-            heading: "text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl",
-            headingSpacing: "",
-          }}
-        />
-      </div>
-
-      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {kitaruCards.map((card) => (
-          <a
-            href={card.href}
-            class="group flex items-center gap-4 rounded-lg border border-orange-200/60 bg-white p-5 transition-all hover:border-orange-400/60 hover:shadow-md"
-          >
-            {card.logo ? (
-              <img
-                src={card.logo}
-                alt={card.name}
-                class="h-10 w-10 shrink-0 rounded-md object-contain"
-              />
-            ) : (
-              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-orange-100 text-base font-bold text-orange-600">
-                {card.name[0]}
-              </div>
-            )}
-            <div class="min-w-0">
-              <h3 class="truncate font-semibold text-gray-900 group-hover:text-orange-700">
-                {card.title}
-              </h3>
-              {card.sub && (
-                <p class="mt-0.5 text-xs leading-snug text-gray-500 line-clamp-2">
-                  {card.sub.text}
-                </p>
-              )}
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  {/* ════════════════════════════════════════════════════════════════════
-       AI orchestration — ZenML comparisons (sage green tint)
-       ════════════════════════════════════════════════════════════════════ */}
-  <section class="border-y border-zenml-100 bg-zenml-25/50">
-    <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-      <div class="mb-10 flex items-center gap-4">
-        <span class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-zenml-500/15 text-zenml-700">
-          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 2 2 7l10 5 10-5-10-5Z"/>
-            <path d="m2 17 10 5 10-5"/>
-            <path d="m2 12 10 5 10-5"/>
-          </svg>
-        </span>
-        <SectionIntro
-          eyebrow="AI orchestration · ZenML"
-          heading="ZenML vs. orchestrators, durable execution engines & agent frameworks"
-          classOverrides={{
-            eyebrow: "text-xs font-semibold uppercase tracking-[0.15em] text-zenml-700",
-            heading: "text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl",
-            headingSpacing: "",
-          }}
-        />
-      </div>
-
-      <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {zenmlCards.map((card) => (
-          <a
-            href={card.href}
-            class="group flex items-center gap-4 rounded-lg border border-zenml-100 bg-white p-5 transition-all hover:border-zenml-300 hover:shadow-md"
-          >
-            {card.logo ? (
-              <img
-                src={card.logo}
-                alt={card.name}
-                class="h-10 w-10 shrink-0 rounded-md object-contain"
-              />
-            ) : (
-              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-zenml-50 text-base font-bold text-zenml-600">
-                {card.name[0]}
-              </div>
-            )}
-            <div class="min-w-0">
-              <h3 class="truncate font-semibold text-gray-900 group-hover:text-zenml-700">
-                {card.title}
-              </h3>
-              {card.sub && (
-                <p
-                  class={
-                    card.sub.kind === "category"
-                      ? "mt-0.5 text-xs uppercase tracking-wider text-gray-500"
-                      : "mt-0.5 text-xs leading-snug text-gray-500 line-clamp-2"
-                  }
-                >
-                  {card.sub.text}
-                </p>
-              )}
-            </div>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
+  <script>
+    import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+    initScrollReveal();
+  </script>
 </BaseLayout>

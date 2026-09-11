@@ -11,9 +11,20 @@
  * REGION only — header, chip strip, and facet rail stay in place.
  */
 import type { ComponentChildren } from "preact";
+import { useEffect, useRef } from "preact/hooks";
+import { LABS_BUTTON_BASE } from "../../labs/labsButtonStyles";
 import { FilterEmptyState } from "../shared/FilterEmptyState";
 import { FacetRail } from "./FacetRail";
 import { CloseIcon, FilterIcon, FOCUS_RING, SearchIcon } from "./icons";
+import {
+  LABS_MOBILE_FILTERS_COUNT,
+  LABS_MOBILE_FILTERS_TRIGGER,
+  LABS_RAIL_STICKY,
+  LABS_SEARCH_ICON,
+  LABS_SEARCH_INPUT,
+  LABS_SEARCH_KBD,
+  LABS_SEARCH_WRAP,
+} from "./labsSkin";
 import { Pagination } from "./Pagination";
 import { ResultsCount } from "./ResultsCount";
 import type { MultiFacetConfig, SingleFacetConfig } from "./types";
@@ -22,6 +33,15 @@ import {
   type SortConfig,
   useFilterState,
 } from "./useFilterState";
+
+// "labs" skin only: the accordion rail's Sort by panel replaces the
+// toolbar <select> (FacetRail's SortFacetState). `short` is the quiet
+// collapsed-row summary text; the panel itself still shows the full label.
+const LABS_SORT_OPTIONS: { value: string; label: string; short: string }[] = [
+  { value: "newest", label: "Newest first", short: "Newest" },
+  { value: "az", label: "A – Z", short: "A – Z" },
+  { value: "relevance", label: "Relevance", short: "Relevance" },
+];
 
 export interface DataFilterIndexProps<T> {
   idPrefix: string;
@@ -33,6 +53,13 @@ export interface DataFilterIndexProps<T> {
   search: SearchConfig<T>;
   sort?: SortConfig<T>;
   singleFacet?: SingleFacetConfig<T>;
+  /**
+   * Additional single-select facets, each with its own URL param and its own
+   * accordion group after the primary one (the MLOps database's "Content
+   * type" → `?type=`). Rendered by the "labs" skin only; a consumer that
+   * passes none is untouched.
+   */
+  extraSingleFacets?: SingleFacetConfig<T>[];
   multiFacet?: MultiFacetConfig<T>;
   /** Noun for the result count / status line. Default "entries". */
   resultNounPlural?: string;
@@ -46,6 +73,13 @@ export interface DataFilterIndexProps<T> {
     },
   ) => ComponentChildren;
   gridClassName?: string;
+  /** Class-only re-skin for the blog cutover (labsSkin.ts). Default keeps
+   * /llmops-database, /mlops-database and /integrations on their existing
+   * layout; only the site-wide purple→sage colour pass touched their colours.
+   * "labs" also adds the Cmd/Ctrl+K shortcut that focuses the search input
+   * (blog only — the approved blog design (DESIGN.md)) and moves the tag match-mode toggle
+   * into the Tag facet block instead of the top controls row. */
+  skin?: "default" | "labs";
 }
 
 export function DataFilterIndex<T>({
@@ -58,12 +92,15 @@ export function DataFilterIndex<T>({
   search,
   sort,
   singleFacet,
+  extraSingleFacets,
   multiFacet,
   resultNounPlural = "entries",
   loadingLabel,
   renderItem,
   gridClassName = "grid gap-4 sm:grid-cols-2 xl:grid-cols-3",
+  skin = "default",
 }: DataFilterIndexProps<T>) {
+  const labs = skin === "labs";
   const state = useFilterState<T>({
     idPrefix,
     pageSize,
@@ -74,6 +111,7 @@ export function DataFilterIndex<T>({
     search,
     sort,
     singleFacet,
+    extraSingleFacets,
     multiFacet,
     resultNounPlural,
   });
@@ -93,6 +131,7 @@ export function DataFilterIndex<T>({
     <FacetRail
       idPrefix={idPrefix}
       scope={scope}
+      skin={skin}
       single={
         singleFacet && {
           config: singleFacet,
@@ -101,6 +140,12 @@ export function DataFilterIndex<T>({
           onSelect: state.selectSingle,
         }
       }
+      extraSingles={extraSingleFacets?.map((config) => ({
+        config,
+        counts: state.extraCounts[config.urlParam] ?? new Map<string, number>(),
+        selected: state.selectedExtra[config.urlParam] ?? "",
+        onSelect: (slug: string) => state.selectExtra(config.urlParam, slug),
+      }))}
       multi={
         multiFacet && {
           config: multiFacet,
@@ -116,7 +161,21 @@ export function DataFilterIndex<T>({
             state.setMultiSearch(value);
             state.setShowAllMulti(true);
           },
+          ...(labs && {
+            tagMode: state.tagMode,
+            onSetTagMode: state.setTagMode,
+          }),
         }
+      }
+      sort={
+        labs && sort
+          ? {
+              options: LABS_SORT_OPTIONS,
+              selected: state.sortMode,
+              onSelect: (value: string) =>
+                state.setSortMode(value as typeof state.sortMode),
+            }
+          : undefined
       }
     />
   );
@@ -131,13 +190,60 @@ export function DataFilterIndex<T>({
   const singleMap = new Map(
     (singleFacet?.options ?? []).map((i) => [i.slug, i.name]),
   );
+  /** Active extra-facet selections, resolved to display names for the chips. */
+  const activeExtras = (extraSingleFacets ?? []).flatMap((config) => {
+    const slug = state.selectedExtra[config.urlParam];
+    if (!slug) return [];
+    const name = config.options.find((opt) => opt.slug === slug)?.name ?? slug;
+    return [{ config, slug, name }];
+  });
+
+  // One class string per active-filter chip kind, so the three chip rows
+  // below (tags, the primary single facet, the extra single facets) can't
+  // drift. The labs skin is one hairline pill; the default skin keeps the
+  // tag pill's own blue and the single facet's sage.
+  const activeChipClass = (kind: "multi" | "single") =>
+    labs
+      ? `inline-flex items-center gap-1 rounded-full border border-(--color-sage-400) bg-(--color-sage-50) px-2.5 py-1 text-[12px] text-(--color-sage-800) transition-colors hover:bg-(--color-sage-100) ${FOCUS_RING}`
+      : kind === "multi"
+        ? `inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 transition-colors hover:bg-blue-100 ${FOCUS_RING}`
+        : `inline-flex items-center gap-1 rounded-full bg-(--color-sage-100) px-2.5 py-1 text-xs font-medium text-(--color-sage-900) transition-colors hover:bg-(--color-sage-200) ${FOCUS_RING}`;
+
+  // "labs" skin only: Cmd/Ctrl+K focuses the search input (DESIGN.md
+  // §2 — the blog page's own search box, not a separate dropdown island).
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    if (!labs || search.mode === "none") return;
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, [labs, search.mode]);
 
   if (state.loading) {
     return (
       <output class="flex items-center justify-center py-20">
         <div class="text-center">
-          <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-primary-600" />
-          <p class="mt-4 text-sm text-gray-500">{loadingLabel}</p>
+          <div
+            class={
+              labs
+                ? "mx-auto h-8 w-8 animate-spin rounded-full border-2 border-(--color-border) border-t-(--color-sage-600)"
+                : "mx-auto h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-(--color-sage-600)"
+            }
+          />
+          <p
+            class={
+              labs
+                ? "mt-4 text-[14px] text-(--color-cream-700)"
+                : "mt-4 text-sm text-gray-500"
+            }
+          >
+            {loadingLabel}
+          </p>
         </div>
       </output>
     );
@@ -146,13 +252,29 @@ export function DataFilterIndex<T>({
   if (state.error) {
     return (
       <div
-        class="rounded-lg border border-red-200 bg-red-50 p-6 text-center"
+        class={
+          labs
+            ? "rounded-[10px] border border-(--color-border) bg-(--color-cream-100) p-6 text-center"
+            : "rounded-lg border border-red-200 bg-red-50 p-6 text-center"
+        }
         role="alert"
       >
-        <p class="text-sm text-red-700">Failed to load data: {state.error}</p>
+        <p
+          class={
+            labs
+              ? "text-[14px] text-(--color-cream-800)"
+              : "text-sm text-red-700"
+          }
+        >
+          Failed to load data: {state.error}
+        </p>
         <button
           type="button"
-          class={`mt-3 text-sm font-medium text-red-600 underline hover:text-red-700 ${FOCUS_RING}`}
+          class={
+            labs
+              ? `mt-3 text-[14px] font-medium text-(--color-sage-700) underline hover:text-(--color-sage-800) ${FOCUS_RING}`
+              : `mt-3 text-sm font-medium text-red-600 underline hover:text-red-700 ${FOCUS_RING}`
+          }
           onClick={() => window.location.reload()}
         >
           Retry
@@ -162,10 +284,28 @@ export function DataFilterIndex<T>({
   }
 
   return (
-    <div class="flex flex-col gap-8 lg:flex-row">
+    <div
+      class={
+        labs
+          ? "flex flex-col gap-(--rail-gap) lg:flex-row"
+          : "flex flex-col gap-8 lg:flex-row"
+      }
+    >
       {/* Desktop sidebar */}
-      <aside class="hidden lg:block lg:w-64 lg:shrink-0">
-        <div class="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2">
+      <aside
+        class={
+          labs
+            ? "hidden lg:block lg:w-(--rail-width) lg:shrink-0"
+            : "hidden lg:block lg:w-64 lg:shrink-0"
+        }
+      >
+        <div
+          class={
+            labs
+              ? LABS_RAIL_STICKY
+              : "sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto pr-2"
+          }
+        >
           {renderFacets("desktop")}
         </div>
       </aside>
@@ -188,20 +328,37 @@ export function DataFilterIndex<T>({
         aria-modal="true"
         aria-labelledby={drawerTitleId}
         aria-hidden={!state.mobileDrawerOpen}
-        class={`fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] transform bg-white shadow-xl transition-transform duration-200 lg:hidden ${
-          state.mobileDrawerOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        class={`fixed inset-y-0 left-0 z-50 w-80 max-w-[85vw] transform transition-transform duration-200 lg:hidden ${
+          labs ? "bg-(--color-card)" : "bg-white shadow-xl"
+        } ${state.mobileDrawerOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div class="flex h-full flex-col">
-          <div class="flex items-center justify-between border-b border-gray-200 px-4 py-3">
-            <h2 id={drawerTitleId} class="font-semibold text-gray-900">
+          <div
+            class={
+              labs
+                ? "flex items-center justify-between border-b border-(--color-border) px-4 py-3"
+                : "flex items-center justify-between border-b border-gray-200 px-4 py-3"
+            }
+          >
+            <h2
+              id={drawerTitleId}
+              class={
+                labs
+                  ? "font-display text-[19px] text-(--color-cream-900)"
+                  : "font-semibold text-gray-900"
+              }
+            >
               Filters
             </h2>
             <button
               ref={state.drawerCloseRef}
               type="button"
               onClick={() => state.setMobileDrawerOpen(false)}
-              class={`rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 ${FOCUS_RING}`}
+              class={
+                labs
+                  ? `rounded-full border border-(--color-border) p-1.5 text-(--color-cream-700) transition-colors hover:border-(--color-sage-400) ${FOCUS_RING}`
+                  : `rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 ${FOCUS_RING}`
+              }
               aria-label="Close filters"
             >
               <CloseIcon />
@@ -210,13 +367,25 @@ export function DataFilterIndex<T>({
           <div class="flex-1 overflow-y-auto px-4 py-4">
             {renderFacets("mobile")}
           </div>
-          <div class="border-t border-gray-200 px-4 py-3">
+          <div
+            class={
+              labs
+                ? "border-t border-(--color-border) px-4 py-3"
+                : "border-t border-gray-200 px-4 py-3"
+            }
+          >
             <button
               type="button"
               onClick={() => state.setMobileDrawerOpen(false)}
-              class={`w-full rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-primary-700 ${FOCUS_RING}`}
+              class={
+                labs
+                  ? `${LABS_BUTTON_BASE} w-full bg-(--color-sage-800) text-(--color-sage-50) hover:bg-(--color-sage-900) ${FOCUS_RING}`
+                  : `w-full rounded-lg bg-(--color-sage-900) px-4 py-2.5 text-sm font-medium text-(--color-cream-50) hover:bg-(--color-sage-800) ${FOCUS_RING}`
+              }
             >
-              Show {state.filtered.length} results
+              {labs
+                ? `See ${state.filtered.length.toLocaleString("en-US")} results`
+                : `Show ${state.filtered.length} results`}
             </button>
           </div>
         </div>
@@ -232,26 +401,45 @@ export function DataFilterIndex<T>({
             aria-expanded={state.mobileDrawerOpen}
             aria-controls={drawerId}
             onClick={() => state.setMobileDrawerOpen(true)}
-            class={`inline-flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 lg:hidden ${FOCUS_RING}`}
+            class={
+              labs
+                ? `${LABS_MOBILE_FILTERS_TRIGGER} ${FOCUS_RING}`
+                : `inline-flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 lg:hidden ${FOCUS_RING}`
+            }
           >
             <FilterIcon />
             Filters
-            {(state.selectedMulti.length > 0 || state.selectedSingle) && (
-              <span class="ml-1 rounded-full bg-primary-100 px-1.5 py-0.5 text-xs font-semibold text-primary-700">
-                {state.selectedMulti.length + (state.selectedSingle ? 1 : 0)}
+            {(state.selectedMulti.length > 0 ||
+              state.selectedSingle ||
+              state.activeExtraCount > 0) && (
+              <span
+                class={
+                  labs
+                    ? LABS_MOBILE_FILTERS_COUNT
+                    : "ml-1 rounded-full bg-(--color-sage-100) px-1.5 py-0.5 text-xs font-semibold text-(--color-sage-900)"
+                }
+              >
+                {state.selectedMulti.length +
+                  (state.selectedSingle ? 1 : 0) +
+                  state.activeExtraCount}
               </span>
             )}
           </button>
 
           {search.mode !== "none" && (
-            <div class="relative flex-1">
+            <div class={labs ? LABS_SEARCH_WRAP : "relative flex-1"}>
               <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                <SearchIcon />
+                {labs ? (
+                  <SearchIcon class={LABS_SEARCH_ICON} />
+                ) : (
+                  <SearchIcon />
+                )}
               </div>
               <label for={searchId} class="sr-only">
                 {search.ariaLabel ?? "Search"}
               </label>
               <input
+                ref={labs ? searchInputRef : undefined}
                 id={searchId}
                 type="search"
                 value={state.query}
@@ -259,19 +447,28 @@ export function DataFilterIndex<T>({
                   state.handleQueryChange((e.target as HTMLInputElement).value)
                 }
                 placeholder={search.placeholder ?? "Search..."}
-                class="w-full rounded-lg border border-gray-300 py-2.5 pl-9 pr-4 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600"
+                class={
+                  labs
+                    ? LABS_SEARCH_INPUT
+                    : "w-full rounded-lg border border-gray-300 py-2.5 pl-9 pr-4 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-(--color-sage-400) focus:outline-none focus:ring-1 focus:ring-(--color-sage-400)"
+                }
               />
+              {labs && (
+                <span class={LABS_SEARCH_KBD} aria-hidden="true">
+                  ⌘K
+                </span>
+              )}
             </div>
           )}
 
-          {multiFacet && (
+          {multiFacet && !labs && (
             <fieldset
               class="flex items-center gap-1 rounded-lg border border-gray-300 p-1"
               aria-label="Tag match mode"
             >
               <legend class="sr-only">Tag match mode</legend>
               <label
-                class={`cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors has-[:focus-visible]:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary-600 ${
+                class={`cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors has-[:focus-visible]:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-(--color-sage-400) ${
                   state.tagMode === "and"
                     ? "bg-gray-900 text-white"
                     : "text-gray-600 hover:bg-gray-100"
@@ -288,7 +485,7 @@ export function DataFilterIndex<T>({
                 Match All
               </label>
               <label
-                class={`cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors has-[:focus-visible]:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-primary-600 ${
+                class={`cursor-pointer rounded-md px-3 py-1.5 text-xs font-medium transition-colors has-[:focus-visible]:outline-none has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-(--color-sage-400) ${
                   state.tagMode === "or"
                     ? "bg-gray-900 text-white"
                     : "text-gray-600 hover:bg-gray-100"
@@ -307,7 +504,10 @@ export function DataFilterIndex<T>({
             </fieldset>
           )}
 
-          {sort && (
+          {/* "labs" skin: sort moved into the accordion rail's "Sort by"
+              group (FacetRail) — the toolbar keeps only search + filters
+              trigger here. */}
+          {sort && !labs && (
             <div class="sm:w-40">
               <label for={sortId} class="sr-only">
                 Sort
@@ -321,7 +521,7 @@ export function DataFilterIndex<T>({
                       .value as typeof state.sortMode,
                   )
                 }
-                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm text-gray-700 transition-colors focus:border-primary-600 focus:outline-none focus:ring-1 focus:ring-primary-600"
+                class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm text-gray-700 transition-colors focus:border-(--color-sage-400) focus:outline-none focus:ring-1 focus:ring-(--color-sage-400)"
               >
                 <option value="newest">Newest first</option>
                 <option value="az">A &ndash; Z</option>
@@ -338,7 +538,7 @@ export function DataFilterIndex<T>({
               <button
                 key={slug}
                 type="button"
-                class={`inline-flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 transition-colors hover:bg-blue-100 ${FOCUS_RING}`}
+                class={activeChipClass("multi")}
                 onClick={() => state.toggleMulti(slug)}
                 aria-label={`Remove tag ${tagMap.get(slug) || slug}`}
               >
@@ -349,7 +549,7 @@ export function DataFilterIndex<T>({
             {state.selectedSingle && (
               <button
                 type="button"
-                class={`inline-flex items-center gap-1 rounded-full bg-zenml-50 px-2.5 py-1 text-xs font-medium text-zenml-700 transition-colors hover:bg-zenml-100 ${FOCUS_RING}`}
+                class={activeChipClass("single")}
                 onClick={() => state.selectSingle(state.selectedSingle)}
                 aria-label={`Remove ${(singleFacet?.label ?? "filter").toLowerCase()} ${singleMap.get(state.selectedSingle) || state.selectedSingle}`}
               >
@@ -357,9 +557,25 @@ export function DataFilterIndex<T>({
                 <CloseIcon />
               </button>
             )}
+            {activeExtras.map(({ config, slug, name }) => (
+              <button
+                key={config.urlParam}
+                type="button"
+                class={activeChipClass("single")}
+                onClick={() => state.selectExtra(config.urlParam, slug)}
+                aria-label={`Remove ${config.label.toLowerCase()} ${name}`}
+              >
+                {name}
+                <CloseIcon />
+              </button>
+            ))}
             <button
               type="button"
-              class={`text-xs font-medium text-gray-500 underline hover:text-gray-700 ${FOCUS_RING}`}
+              class={
+                labs
+                  ? `text-[12px] text-(--color-cream-700) underline hover:text-(--color-cream-900) ${FOCUS_RING}`
+                  : `text-xs font-medium text-gray-500 underline hover:text-gray-700 ${FOCUS_RING}`
+              }
               onClick={state.clearAll}
             >
               Clear all
@@ -370,13 +586,25 @@ export function DataFilterIndex<T>({
         {/* Popular tags strip */}
         {!state.hasActiveFilters && state.popularMulti.length > 0 && (
           <div class="mb-4 flex flex-wrap items-center gap-2">
-            <span class="text-xs font-medium text-gray-400">Popular:</span>
+            <span
+              class={
+                labs
+                  ? "text-[11px] text-(--color-cream-600)"
+                  : "text-xs font-medium text-gray-400"
+              }
+            >
+              Popular:
+            </span>
             {state.popularMulti.map((slug) => (
               <button
                 key={slug}
                 type="button"
                 onClick={() => state.toggleMulti(slug)}
-                class={`rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-200 ${FOCUS_RING}`}
+                class={
+                  labs
+                    ? `rounded-full border border-(--color-border) px-2.5 py-1 text-[12px] text-(--color-cream-700) transition-colors hover:border-(--color-sage-400) ${FOCUS_RING}`
+                    : `rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-200 ${FOCUS_RING}`
+                }
               >
                 {tagMap.get(slug) || slug}
               </button>
@@ -390,6 +618,14 @@ export function DataFilterIndex<T>({
           total={state.items.length}
           noun={resultNounPlural}
           statusText={state.resultsStatusText}
+          skin={skin}
+          filtersState={
+            labs
+              ? state.hasActiveFilters
+                ? `${state.activeConstraints.length} filters`
+                : "no filters applied"
+              : undefined
+          }
         />
 
         {/* Results grid */}
@@ -410,6 +646,13 @@ export function DataFilterIndex<T>({
               state.clearAll();
               state.toggleMulti(slug);
             }}
+            constraints={state.activeConstraints}
+            suggestions={state.dropOneSuggestions.map((suggestion) => ({
+              label: suggestion.label,
+              count: suggestion.count,
+              onApply: suggestion.apply,
+            }))}
+            skin={skin}
           />
         ) : (
           <div class={gridClassName}>
@@ -421,6 +664,7 @@ export function DataFilterIndex<T>({
           page={state.page}
           totalPages={state.totalPages}
           onChange={state.setPage}
+          skin={skin}
         />
       </div>
     </div>

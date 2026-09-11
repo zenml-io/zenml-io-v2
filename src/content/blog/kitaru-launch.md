@@ -14,13 +14,13 @@ tags:
 date: "2026-04-01T00:00:00.000Z"
 readingTime: "8 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/ef9b36de/image-1.avif"
+  url: "https://assets.zenml.io/content/blog/kitaru-launch/6c6c77f6/kitaru-launch-cover.avif"
   alt: "Kitaru dashboard showing flow executions and checkpoints"
 seo:
   title: "Introducing Kitaru: Open Source Infrastructure For Asynchronous Agents - ZenML Blog"
   description: "Meet Kitaru — open source durable execution for Python agents, built by the ZenML team. Crash recovery, human-in-the-loop, and replay from any checkpoint."
   canonical: "https://www.zenml.io/blog/kitaru-launch"
-  ogImage: "https://assets.zenml.io/content/blog/ef9b36de/image-1.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/kitaru-launch/f1cf907f/kitaru-launch-cover.jpg"
 ---
 
 Over the past year, something unexpected started happening in our ZenML community — teams were hacking ZenML's pipeline DAG to run agents. They'd wire up dynamic steps with conditional branching, pass state through artifact store workarounds, and stretch the step abstraction well past its comfort zone.

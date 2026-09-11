@@ -1,20 +1,29 @@
 ---
 /**
- * MLOps tags index page.
+ * MLOps topics index, in the ZenML Labs shell (databases cutover #256):
+ * every topic tag the database uses, as a hexagon chip carrying its entry
+ * count (`labs.term-chip-index`), sorted by popularity.
  *
- * Lists all MLOps topic tags with entry counts, sorted by popularity.
  * Route: /mlops-tags
  */
 import { getCollection } from "astro:content";
-import PageHeader from "../../components/templates/PageHeader.astro";
-import { TAXONOMY_INDEX_INTRO } from "../../components/templates/pageHeaderPresets";
+import BlogNewsletterCta from "../../components/labs/BlogNewsletterCta.astro";
+import LabsBand from "../../components/labs/LabsBand.astro";
+import TermChipIndex from "../../components/labs/TermChipIndex.astro";
+import Breadcrumb from "../../components/system/Breadcrumb.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
+import { DATABASE_CTA, DATABASES } from "../../lib/databases";
+import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
 import type { TaxonomyCount } from "../../lib/mlops";
 import {
   getAllPublishedMLOpsEntries,
   getMLOpsTagCounts,
 } from "../../lib/mlops";
 import { filterUsedTerms } from "../../lib/relatedIndex";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
+
+const copy = DATABASES.mlops;
 
 const entries = await getAllPublishedMLOpsEntries();
 const usedCounts = await getMLOpsTagCounts(entries);
@@ -34,38 +43,76 @@ const tags = filterUsedTerms(merged).sort(
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "mlops-tags") ? defaultOgUrl("pages", "mlops-tags") : undefined}
   title="MLOps Tags - ZenML"
   description="Browse all MLOps topic tags used in the ZenML MLOps Database."
   surface="ml"
+  app="labs"
 >
-  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-    <PageHeader
-      class="mb-10"
-      eyebrow="Machine Learning Operations"
-      heading="MLOps Tags"
-      description={`${tags.length} ${tags.length === 1 ? "tag" : "tags"} in the database`}
-      backLinks={[{ href: "/mlops-database", label: "Back to MLOps Database" }]}
-      classOverrides={{
-        ...TAXONOMY_INDEX_INTRO,
-        eyebrow: "text-sm font-semibold uppercase tracking-wider text-success-700",
-        headingSpacing: "mt-3",
-      }}
-    />
+  <LabsBand size="short">
+    <div class="flex flex-col gap-4">
+      <Breadcrumb
+        items={[
+          { label: copy.name, href: copy.indexHref },
+          { label: copy.tagsLabel },
+        ]}
+        separator="chevron"
+      />
+      <div>
+        <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+          {copy.tagsLabel}
+        </h1>
+        <p class="mt-space-sm max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
+          {tags.length} MLOps topics across the MLOps Database
+        </p>
+      </div>
+    </div>
+  </LabsBand>
 
-    <nav aria-label="All MLOps tags">
-      <ul class="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
-        {tags.map((tag) => (
-          <li>
-            <a
-              href={`/mlops-tags/${tag.slug}`}
-              class="flex items-center justify-between px-4 py-3 text-sm hover:bg-gray-50"
-            >
-              <span class="font-medium text-gray-900">{tag.name}</span>
-              <span class="text-xs tabular-nums text-gray-400">{tag.count}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  </div>
+  <section class:list={["scroll-reveal-section pb-24", BAND_CONTENT_GAP]}>
+    <div class="reveal-child stagger-1 mx-auto max-w-content px-gutter">
+      <TermChipIndex
+        ariaLabel="All MLOps topics"
+        terms={tags.map((tag) => ({
+          name: tag.name,
+          href: `${copy.tagHubBase}/${tag.slug}`,
+          count: tag.count,
+        }))}
+      />
+    </div>
+  </section>
+
+  <BlogNewsletterCta content={DATABASE_CTA} brevo={BREVO_LLMOPS_CONFIG} />
 </BaseLayout>
+
+<style>
+  /* House scroll-reveal pattern (reference: llmops-database/index.astro). */
+  .reveal-child {
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-1 { transition-delay: 60ms; }
+
+  .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-child,
+    .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initScrollReveal);
+  } else {
+    initScrollReveal();
+  }
+</script>

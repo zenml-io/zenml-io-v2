@@ -1,0 +1,62 @@
+---
+import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
+import LabsButton from "./LabsButton.astro";
+
+interface EditorialBodyText {
+  kind: "text";
+  value: string;
+}
+
+interface EditorialBodyHtml {
+  kind: "html";
+  value: string;
+}
+
+export interface EditorialCta {
+  label: string;
+  href: string;
+  analytics?: string;
+  external?: boolean;
+}
+
+interface Props {
+  headline: string;
+  body: EditorialBodyText | EditorialBodyHtml;
+  image: { url: string; alt: string };
+  ctas?: readonly EditorialCta[];
+}
+
+const { headline, body, image, ctas = [] } = Astro.props;
+---
+
+<section class:list={["scroll-reveal-section pb-space-xl md:pb-space-xxl", BAND_CONTENT_GAP]}>
+  <div class="mx-auto grid max-w-content gap-space-mlg px-gutter lg:grid-cols-2 lg:items-center">
+    <div>
+      <h2 class="font-display text-[32px] leading-[38px] text-(--color-cream-900) md:text-[40px] md:leading-[46px]">
+        {headline}
+      </h2>
+      {body.kind === "text" ? (
+        <p class="mt-space-md max-w-[620px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
+          {body.value}
+        </p>
+      ) : (
+        <div
+          class="prose mt-space-md max-w-[620px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)"
+          set:html={body.value}
+        />
+      )}
+      {ctas.length > 0 && (
+        <div class="mt-space-lg flex flex-wrap items-center gap-space-sm">
+          {ctas.map((cta) => (
+            <LabsButton
+              cta={{ label: cta.label, href: cta.href, analytics: cta.analytics || "Company-Editorial-Link" }}
+              tone="ghost"
+              target={cta.external ? "_blank" : undefined}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+    <img src={image.url} alt={image.alt} class="w-full rounded-[20px]" loading="lazy" />
+  </div>
+</section>

@@ -20,12 +20,14 @@ tags:
 date: "2025-07-06T00:00:00.000Z"
 readingTime: 21 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/75fb5601/6869faf9ebcc49cbcf22b3ef_prefect-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/prefect-alternatives/9ae911e6/prefect-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/prefect-alternatives/9ae911e6/prefect-alternatives-cover.avif"
 seo:
   title: "We Reviewed 8 Best Prefect Alternatives for Machine Learning Teams - ZenML Blog"
   description: "Discover the top 8 Prefect alternatives for machine learning teams."
   canonical: "https://www.zenml.io/blog/prefect-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/75fb5601/6869faf9ebcc49cbcf22b3ef_prefect-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/prefect-alternatives/22d4eccf/prefect-alternatives-cover.jpg"
   ogTitle: "We Reviewed 8 Best Prefect Alternatives for Machine Learning Teams - ZenML Blog"
   ogDescription: "Discover the top 8 Prefect alternatives for machine learning teams."
 ---

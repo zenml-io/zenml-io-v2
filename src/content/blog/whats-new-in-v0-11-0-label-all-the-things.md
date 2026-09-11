@@ -17,7 +17,9 @@ tags:
 date: "2022-07-19T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fec83eea/6531dbdbbecfc0b0c523780a_gaelle-marcel-vrkSVpOwchk-unsplash.jpg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-11-0-label-all-the-things/96c9e223/whats-new-in-v0-11-0-label-all-the-things-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-11-0-label-all-the-things/c66c487d/whats-new-in-v0-11-0-label-all-the-things-cover.jpg"
 ---
 
 **Last updated:** November 3, 2022.

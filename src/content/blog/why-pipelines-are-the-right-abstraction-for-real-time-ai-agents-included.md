@@ -23,12 +23,12 @@ tags:
 date: "2025-10-24T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/419a2c7d/6981cf0ef4f7a9ede9959a03_6981ce8f2956b6fef73c54de_image-1.avif"
+  url: "https://assets.zenml.io/content/blog/why-pipelines-are-the-right-abstraction-for-real-time-ai-agents-included/fe616cbd/why-pipelines-are-the-right-abstraction-for-real-time-ai-agents-included-cover.avif"
 seo:
   title: "Why Pipelines Are the Right Abstraction for Real-Time AI (Agents Included) - ZenML Blog"
   description: "ZenML's Pipeline Deployments transform pipelines into persistent HTTP services with warm state, instant rollbacks, and full observability—unifying real-time AI agents and classical ML models under one production-ready abstraction."
   canonical: "https://www.zenml.io/blog/why-pipelines-are-the-right-abstraction-for-real-time-ai-agents-included"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/419a2c7d/6981cf0ef4f7a9ede9959a03_6981ce8f2956b6fef73c54de_image-1.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/why-pipelines-are-the-right-abstraction-for-real-time-ai-agents-included/89fbc967/why-pipelines-are-the-right-abstraction-for-real-time-ai-agents-included-cover.jpg"
   ogTitle: "Why Pipelines Are the Right Abstraction for Real-Time AI (Agents Included) - ZenML Blog"
   ogDescription: "ZenML's Pipeline Deployments transform pipelines into persistent HTTP services with warm state, instant rollbacks, and full observability—unifying real-time AI agents and classical ML models under one production-ready abstraction."
 ---

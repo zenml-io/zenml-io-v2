@@ -8,7 +8,7 @@
  * of lockstep — each of them only wires these values into JSX/Astro syntax.
  *
  * Classes below reproduce the current ZenML house idiom (copied from real
- * call sites — see e.g. FeatureHero.astro, VsHero.astro,
+ * call sites — see e.g. the retired feature-hero section, VsHero.astro,
  * ComplianceSection.astro, BookingExperience.astro's emphasis span) so that
  * migrating a call site to `<SectionIntro>` is pixel-identical (spacing via
  * the equivalent named tokens). Do not tune these values for taste; that's a

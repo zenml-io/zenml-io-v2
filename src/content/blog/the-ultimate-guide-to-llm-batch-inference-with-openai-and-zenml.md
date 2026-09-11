@@ -19,12 +19,12 @@ tags:
 date: "2024-07-04T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e3e03ba/6981d37a71c3040935dbc350_6981d2adf36d74a0feed3d9f_llm-001.avif"
+  url: "https://assets.zenml.io/content/blog/the-ultimate-guide-to-llm-batch-inference-with-openai-and-zenml/b56e9049/the-ultimate-guide-to-llm-batch-inference-with-openai-and-zenml-cover.avif"
 seo:
   title: "The Ultimate Guide to LLM Batch Inference with OpenAI and ZenML - ZenML Blog"
   description: "OpenAI's Batch API allows you to submit queries for 50% of what you'd normally pay. Not all their models work with the service, but in many use cases this will save you lots of money on your LLM inference, just so long as you're not building a chatbot!"
   canonical: "https://www.zenml.io/blog/the-ultimate-guide-to-llm-batch-inference-with-openai-and-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e3e03ba/6981d37a71c3040935dbc350_6981d2adf36d74a0feed3d9f_llm-001.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/the-ultimate-guide-to-llm-batch-inference-with-openai-and-zenml/f0898a69/the-ultimate-guide-to-llm-batch-inference-with-openai-and-zenml-cover.jpg"
   ogTitle: "The Ultimate Guide to LLM Batch Inference with OpenAI and ZenML - ZenML Blog"
   ogDescription: "OpenAI's Batch API allows you to submit queries for 50% of what you'd normally pay. Not all their models work with the service, but in many use cases this will save you lots of money on your LLM inference, just so long as you're not building a chatbot!"
 ---

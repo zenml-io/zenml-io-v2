@@ -19,12 +19,12 @@ tags:
 date: "2024-06-06T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/83bd6b16/6661693afbb7372212514c71_Context_window_lengths.png"
+  url: "https://assets.zenml.io/content/blog/bigger-isnt-always-better-the-case-for-rag-in-the-age-of-infinite-context/a6c4895b/bigger-isnt-always-better-the-case-for-rag-in-the-age-of-infinite-context-cover.avif"
 seo:
   title: "Bigger Isn't Always Better: The Case for RAG in the Age of Infinite Context - ZenML Blog"
   description: "Context windows in large language models are getting super big, which makes you wonder if Retrieval-Augmented Generation (RAG) systems will still be useful. But even with unlimited context windows, RAG systems are likely here to stay because they're simple, efficient, flexible, and easy to understand."
   canonical: "https://www.zenml.io/blog/bigger-isnt-always-better-the-case-for-rag-in-the-age-of-infinite-context"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/29f5b8c6/6661693afbb7372212514c71_Context_window_lengths.png"
+  ogImage: "https://assets.zenml.io/content/blog/bigger-isnt-always-better-the-case-for-rag-in-the-age-of-infinite-context/51e21e6a/bigger-isnt-always-better-the-case-for-rag-in-the-age-of-infinite-context-cover.jpg"
   ogTitle: "Bigger Isn't Always Better: The Case for RAG in the Age of Infinite Context - ZenML Blog"
   ogDescription: "Context windows in large language models are getting super big, which makes you wonder if Retrieval-Augmented Generation (RAG) systems will still be useful. But even with unlimited context windows, RAG systems are likely here to stay because they're simple, efficient, flexible, and easy to understand."
 ---

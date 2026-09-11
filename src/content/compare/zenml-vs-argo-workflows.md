@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2026-02-19T09:38:59.349Z"
   createdOn: "2026-02-12T18:44:18.018Z"
 toolName: "Argo Workflows"
+cardSubtitle: "An ML-native layer over your workflow engine"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/10f300b4/6996da292c9dea137bf8cc68_Argo_Workflows_icon.avif"
 category: "orchestrators"

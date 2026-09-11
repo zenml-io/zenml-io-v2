@@ -6,6 +6,11 @@
  * (Open Source / Scale / Enterprise) and a single comparison table.
  */
 import type {
+  LabsBandContent,
+  LabsCta,
+  ProductDoorsContent,
+} from "./labs-home";
+import type {
   CtaLink,
   FaqData,
   PricingCompareTableData,
@@ -19,6 +24,7 @@ import {
   KITARU_VS_OBSERVABILITY_ANSWER,
 } from "./productKitaru";
 import { ZENML_LINKS } from "./productZenml";
+import { defaultOgUrl } from "./seo";
 
 // ---------------------------------------------------------------------------
 // SEO
@@ -30,7 +36,7 @@ export const PRICING_SEO = {
   ogTitle: "Pricing - ZenML",
   ogDescription:
     "Orchestrate AI workflows and ship agents with confidence. Predictable, transparent pricing that scales with value.",
-  ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
+  ogImage: defaultOgUrl("pages", "pricing"),
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -115,6 +121,25 @@ export const PRICING_PRO_INCLUSIONS = {
   ],
   caption: "Same control plane. Same governance. One bill covers both.",
 } as const;
+
+/**
+ * `PRICING_PRO_INCLUSIONS` reshaped onto `ProductDoorsContent` for the Labs
+ * `ProductDoors` card — derived, never retyped. `eyebrow`/`deck`/`learn` are
+ * dropped (one headline per band; the `learn` links leave the page per
+ * CONVENTIONS liberty 8 — the nav's Products menu already carries them).
+ */
+export const PRICING_PRO_INCLUSIONS_DOORS: ProductDoorsContent = {
+  headline: PRICING_PRO_INCLUSIONS.headline,
+  caption: PRICING_PRO_INCLUSIONS.caption,
+  doors: PRICING_PRO_INCLUSIONS.cards.map((card) => ({
+    name: card.side === "zenml" ? "ZenML" : "Kitaru",
+    tint: card.side === "zenml" ? "sage" : "orange",
+    leadLine: card.title,
+    body: card.body,
+    details: card.bullets.map((b) => ({ title: b.title, detail: b.detail })),
+    cta: card.cta as LabsCta,
+  })),
+};
 
 // ---------------------------------------------------------------------------
 // Plan cards — Open Source / Scale / Enterprise
@@ -297,15 +322,8 @@ export const PRICING_PLAN_WORKSPACES = [
     note: `One flat plan while we launch: ${KITARU_CLOUD_PRICE} a month, every feature, no meters to read. The trial starts with full access and needs no credit card.`,
     learn: { label: "Learn about Kitaru", href: "/product/kitaru" },
     plans: PRICING_PLANS_KITARU,
-    accent: {
-      text: "text-orange-600",
-      border: "border-orange-500",
-      bg: "bg-orange-500",
-    },
-    /* Recolors this panel's zenml-* Tailwind utilities (Button's primary
-     * variant, comparison-table checkmarks) to Kitaru orange — see
-     * .kitaru-brand-vars in global.css for why data-app can't do this. */
-    brandClass: "kitaru-brand-vars",
+    /** Drives the Labs plan cards' highlighted-card border/pill and check icons. */
+    accent: "orange",
   },
   {
     id: "zenml",
@@ -314,14 +332,12 @@ export const PRICING_PLAN_WORKSPACES = [
     note: "Executions are ZenML pipeline runs. Kitaru is priced separately as a flat monthly plan. One subscription covers both workspaces.",
     learn: { label: "Learn about ZenML", href: "/product/zenml" },
     plans: PRICING_PLANS,
-    accent: {
-      text: "text-zenml-500",
-      border: "border-zenml-500",
-      bg: "bg-zenml-500",
-    },
-    brandClass: undefined,
+    accent: "sage",
   },
 ] as const;
+
+/** One `/pricing` workspace panel (Kitaru or ZenML). */
+export type PricingWorkspace = (typeof PRICING_PLAN_WORKSPACES)[number];
 
 // ---------------------------------------------------------------------------
 // Comparison tables — one per workspace, swapped by the plan-cards toggle
@@ -709,7 +725,7 @@ export const PRICING_STATS = {
       alt: "JetBrains",
     },
     {
-      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/52a636b6/66c74d825fbc26b4d09823d1_Brevo-Logo-transparent.webp`,
+      src: "/images/logos/brevo.svg",
       alt: "Brevo",
     },
     {
@@ -721,7 +737,7 @@ export const PRICING_STATS = {
       alt: "ADEO",
     },
     {
-      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/356e9829/65c49832a235dab4e3e0a3ce_leroy-merlin.svg`,
+      src: "/images/logos/leroy-merlin.svg",
       alt: "Leroy Merlin",
     },
     {
@@ -752,3 +768,15 @@ export const PRICING_FINAL_CTA = {
     analytics: "Pricing-CTA-Read-Docs",
   } as CtaLink,
 } as const;
+
+/**
+ * The Labs closing band for `/pricing` — `PRICING_FINAL_CTA`'s words, split
+ * into the two-line shape `LabsCloseCta` takes. `secondaryCta`
+ * ("Read Docs") leaves the page (CONVENTIONS.md liberty 17) — the nav's
+ * Docs menu already carries it.
+ */
+export const PRICING_CLOSE: LabsBandContent = {
+  headlineLines: ["Start deploying reproducible", "AI workflows today"],
+  deck: PRICING_FINAL_CTA.body,
+  cta: PRICING_FINAL_CTA.primaryCta as LabsCta,
+};

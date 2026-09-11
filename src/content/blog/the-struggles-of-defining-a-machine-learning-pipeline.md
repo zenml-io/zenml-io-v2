@@ -19,12 +19,12 @@ tags:
 date: "2024-06-27T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f1883fa8/667d2f3d608e1ff6938f0e9e_struggles-ml.webp"
+  url: "https://assets.zenml.io/content/blog/the-struggles-of-defining-a-machine-learning-pipeline/9bf9c66b/the-struggles-of-defining-a-machine-learning-pipeline-cover.avif"
 seo:
   title: "The struggles of defining a Machine Learning Pipeline - ZenML Blog"
   description: "On the difficulties in precisely defining a machine learning pipeline, exploring how code changes, versioning, and naming conventions complicate the concept in MLOps frameworks like ZenML."
   canonical: "https://www.zenml.io/blog/the-struggles-of-defining-a-machine-learning-pipeline"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b5a5360/667d2f3d608e1ff6938f0e9e_struggles-ml.webp"
+  ogImage: "https://assets.zenml.io/content/blog/the-struggles-of-defining-a-machine-learning-pipeline/b19d8deb/the-struggles-of-defining-a-machine-learning-pipeline-cover.jpg"
   ogTitle: "The struggles of defining a Machine Learning Pipeline - ZenML Blog"
   ogDescription: "On the difficulties in precisely defining a machine learning pipeline, exploring how code changes, versioning, and naming conventions complicate the concept in MLOps frameworks like ZenML."
 ---

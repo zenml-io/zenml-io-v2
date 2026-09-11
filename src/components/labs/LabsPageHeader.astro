@@ -1,0 +1,47 @@
+---
+import type { BreadcrumbItem } from "../../lib/breadcrumb";
+import PageHeader from "../templates/PageHeader.astro";
+import {
+  LABS_CENTERED_INTERIOR_HEADER_INTRO,
+  LABS_INTERIOR_HEADER_INTRO,
+} from "../templates/pageHeaderPresets";
+import LabsBand from "./LabsBand.astro";
+import "../../styles/labs-scroll-reveal.css";
+
+interface Props {
+  heading: string;
+  eyebrow?: string;
+  description?: string;
+  breadcrumb?: BreadcrumbItem[];
+  align?: "start" | "center";
+}
+const {
+  heading,
+  eyebrow,
+  description,
+  breadcrumb,
+  align = "start",
+} = Astro.props;
+---
+
+<LabsBand size="short">
+  <div class="scroll-reveal-section">
+  <PageHeader
+    class="reveal-child"
+    heading={heading}
+    eyebrow={eyebrow}
+    description={description}
+    breadcrumb={breadcrumb}
+    breadcrumbSeparator="chevron"
+    align={align}
+    classOverrides={align === "center" ? LABS_CENTERED_INTERIOR_HEADER_INTRO : LABS_INTERIOR_HEADER_INTRO}
+  >
+    <slot />
+  </PageHeader>
+  </div>
+</LabsBand>
+
+<script>
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+  initScrollReveal();
+</script>

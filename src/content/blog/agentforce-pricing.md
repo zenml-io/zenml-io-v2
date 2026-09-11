@@ -21,12 +21,12 @@ tags:
 date: "2025-08-06T00:00:00.000Z"
 readingTime: 16 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e5b36420/6981cf3948be69340f5c1481_6981ce8ba084d07347c1f772_agentforce-pricing.avif"
+  url: "https://assets.zenml.io/content/blog/agentforce-pricing/116ee2e6/agentforce-pricing-cover.avif"
 seo:
   title: "Salesforce Agentforce Pricing Guide: How Much Does It Cost? - ZenML Blog"
   description: "In this Agentforce pricing guide, we discuss the costs, features, and value Agentforce provides to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/agentforce-pricing"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e5b36420/6981cf3948be69340f5c1481_6981ce8ba084d07347c1f772_agentforce-pricing.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/agentforce-pricing/32c02f90/agentforce-pricing-cover.jpg"
   ogTitle: "Salesforce Agentforce Pricing Guide: How Much Does It Cost? - ZenML Blog"
   ogDescription: "In this Agentforce pricing guide, we discuss the costs, features, and value Agentforce provides to help you decide if it’s the right investment for your business."
 ---

@@ -20,12 +20,12 @@ tags:
 date: "2026-01-04T00:00:00.000Z"
 readingTime: 18 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fd0ab5a3/6981cf3948be69340f5c147e_6981ce8b757e7659154a56a1_llmops-platforms.avif"
+  url: "https://assets.zenml.io/content/blog/llmops-platforms/0fb99bc5/llmops-platforms-cover.avif"
 seo:
   title: "11 Best LLMOps Platforms for Building Efficient AI Agents and Workflows - ZenML Blog"
   description: "Discover the 11 best LLMOps platforms to build AI agents and workflows."
   canonical: "https://www.zenml.io/blog/llmops-platforms"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fd0ab5a3/6981cf3948be69340f5c147e_6981ce8b757e7659154a56a1_llmops-platforms.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/llmops-platforms/862766a7/llmops-platforms-cover.jpg"
   ogTitle: "11 Best LLMOps Platforms for Building Efficient AI Agents and Workflows - ZenML Blog"
   ogDescription: "Discover the 11 best LLMOps platforms to build AI agents and workflows."
 ---

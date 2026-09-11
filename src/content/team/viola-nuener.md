@@ -12,11 +12,10 @@ webflow:
   createdOn: "2025-03-18T09:18:47.980Z"
 position: "Chief of Staff"
 photo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7c36e9e6/67d93a585bca5da2c282f411_viola.jpg"
+  url: "https://assets.zenml.io/content/team/de073c68/viola-nuener-cutout.avif"
 email: "viola@zenml.io"
 linkedin: "https://www.linkedin.com/in/viola-nuener"
 order: 3
 ---
 
 <ul><li>Grows vegetables but still hasn't figured out how to debug them</li><li>Loves structure so much that even her chaos is organized</li><li>Will explain anything in one minute - or 20, if you let her</li></ul>
-

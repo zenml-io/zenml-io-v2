@@ -2,24 +2,20 @@
 /**
  * MLOps Database detail page.
  *
- * Renders individual MLOps entries with company/platform metadata, tags,
- * summary, source link, body, and related entries.
+ * Renders individual MLOps entries in DatabaseEntryLayout.astro:
+ * company/platform metadata, tags, summary, source link, body, and related
+ * entries ("More like this").
  */
 import { getEntry, render } from "astro:content";
-import Breadcrumb from "../../components/system/Breadcrumb.astro";
-import MetadataBlock, {
-  type MetadataBlockItem,
-} from "../../components/templates/MetadataBlock.astro";
-import RelatedRail, {
-  type RelatedRailItem,
-} from "../../components/templates/RelatedRail.astro";
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import type { RelatedRailItem } from "../../components/templates/RelatedRail.astro";
+import DatabaseEntryLayout from "../../layouts/DatabaseEntryLayout.astro";
 import {
   buildMLOpsRelatedIndex,
   getAllPublishedMLOpsEntries,
   getMLOpsRelatedFromIndex,
 } from "../../lib/mlops";
 import { STALE_RAY_SUMMIT_REDIRECTS } from "../../lib/mlopsRaySummitRedirects";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const allEntries = await getAllPublishedMLOpsEntries();
@@ -54,188 +50,85 @@ if (!entry || !related) {
   throw new Error(`Missing MLOps entry props for ${Astro.url.pathname}`);
 }
 
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 
 const tagEntries = await Promise.all(
   entry.data.mlopsTags.map((slug: string) => getEntry("mlops-tags", slug)),
 );
-const tags = tagEntries.flatMap((tag) =>
+const resolvedTags = tagEntries.flatMap((tag) =>
   tag ? [{ name: tag.data.name, slug: tag.data.slug }] : [],
 );
+const tags = resolvedTags.map((tag) => ({
+  name: tag.name,
+  href: `/mlops-tags/${tag.slug}`,
+}));
 
 const industryEntry = await getEntry("industry-tags", entry.data.industryTags);
-
-const relatedWithTags = await Promise.all(
-  related.map(async (relatedEntry) => {
-    const relatedTags = await Promise.all(
-      relatedEntry.data.mlopsTags
-        .slice(0, 3)
-        .map((slug: string) => getEntry("mlops-tags", slug)),
-    );
-    return {
-      slug: relatedEntry.data.slug,
-      title: relatedEntry.data.title,
-      company: relatedEntry.data.company,
-      platformName: relatedEntry.data.platformName,
-      contentType: relatedEntry.data.contentType,
-      year: relatedEntry.data.year,
-      summary: relatedEntry.data.summary,
-      tags: relatedTags.flatMap((tag) =>
-        tag ? [{ name: tag.data.name, slug: tag.data.slug }] : [],
-      ),
-      extraTagCount: Math.max(0, relatedEntry.data.mlopsTags.length - 3),
-    };
-  }),
-);
-
-// Industry + MLOps Topics meta blocks (mirrored byte-for-byte on the LLMOps
-// twin page). Trailing spacing after the block is data-dependent: whichever
-// item renders last owns the gap before the body content.
-const metadataItems: MetadataBlockItem[] = [];
-if (industryEntry) {
-  metadataItems.push({
-    label: "Industry",
-    value: {
-      kind: "chips",
-      chips: [
-        {
-          label: industryEntry.data.name,
-          href: `/industry-tags/${industryEntry.data.slug}`,
-          variant: "primary",
-        },
-      ],
-    },
-  });
+// The schema requires industryTags on every MLOps entry (unlike LLMOps,
+// where it is optional) — a missing reference is a content integrity bug,
+// not a page state to render around.
+if (!industryEntry) {
+  throw new Error(
+    `MLOps entry "${entry.data.slug}" references a missing industry tag: ${entry.data.industryTags}`,
+  );
 }
-if (tags.length > 0) {
-  metadataItems.push({
-    label: "MLOps Topics",
-    value: {
-      kind: "chips",
-      chips: tags.map((tag) => ({
-        label: tag.name,
-        href: `/mlops-tags/${tag.slug}`,
-        variant: "success",
-      })),
-    },
-  });
-}
-const metadataTrailingClass =
-  tags.length > 0 ? "mb-space-md" : industryEntry ? "mb-space-sm" : "";
 
-const relatedItems: RelatedRailItem[] = relatedWithTags.map((r) => ({
-  kind: "meta-card",
-  href: `/mlops-database/${r.slug}`,
-  title: r.title,
-  meta: [
-    { text: r.company, emphasis: true },
-    ...(r.platformName !== r.company ? [{ text: r.platformName }] : []),
-    { text: r.contentType, capitalize: true },
-    ...(r.year ? [{ text: String(r.year) }] : []),
-  ],
-  summary: r.summary,
-  tags: r.tags.map((tag) => tag.name),
-  extraTagCount: r.extraTagCount,
-  tagVariant: "success",
+const relatedItems: RelatedRailItem[] = related.map((r) => ({
+  kind: "hex-card" as const,
+  href: `/mlops-database/${r.data.slug}`,
+  title: r.data.title,
+  kindLabel: [r.data.company, r.data.year ? String(r.data.year) : undefined]
+    .filter(Boolean)
+    .join(" · "),
 }));
 
 const seoTitle =
   entry.data.seo?.title || `${entry.data.title} - ZenML MLOps Database`;
 const seoDescription = entry.data.seo?.description || entry.data.summary;
-const ogImage = entry.data.seo?.ogImage;
+const ogImage =
+  entry.data.seo?.ogImage ??
+  (hasDefaultOgCard("mlops", entry.data.slug)
+    ? defaultOgUrl("mlops", entry.data.slug)
+    : undefined);
+
+const pagefindMeta: Record<string, string> = {
+  slug: entry.data.slug,
+  company: entry.data.company,
+  platform: entry.data.platformName,
+  contentType: entry.data.contentType,
+};
+if (entry.data.year) pagefindMeta.year = String(entry.data.year);
+
+const pagefindFilters = [
+  ...resolvedTags.map((tag) => ({ key: "tag", value: tag.slug })),
+  { key: "industry", value: industryEntry.data.slug },
+];
 ---
 
-<BaseLayout
+<DatabaseEntryLayout
+  database="mlops"
+  entryTitle={entry.data.title}
+  company={entry.data.company}
+  platformName={entry.data.platformName}
+  contentType={entry.data.contentType}
+  year={entry.data.year}
+  sourceHref={entry.data.link}
+  summary={entry.data.summary}
+  industry={{
+    name: industryEntry.data.name,
+    href: `/industry-tags/${industryEntry.data.slug}`,
+  }}
+  tags={tags}
+  headings={headings}
+  related={relatedItems}
+  pagefindMeta={pagefindMeta}
+  pagefindFilters={pagefindFilters}
   title={seoTitle}
   description={seoDescription}
   ogImage={ogImage}
   ogTitle={entry.data.seo?.ogTitle}
   ogDescription={entry.data.seo?.ogDescription}
   canonical={entry.data.seo?.canonical}
-  surface="ml"
 >
-  <div class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8" data-pagefind-body>
-    <span data-pagefind-meta={`slug:${entry.data.slug}`} class="hidden" />
-    <span data-pagefind-meta={`company:${entry.data.company}`} class="hidden" />
-    <span data-pagefind-meta={`platform:${entry.data.platformName}`} class="hidden" />
-    <span data-pagefind-meta={`contentType:${entry.data.contentType}`} class="hidden" />
-    {entry.data.year && <span data-pagefind-meta={`year:${entry.data.year}`} class="hidden" />}
-
-    {tags.map((tag) => (
-      <span data-pagefind-filter={`tag:${tag.slug}`} class="hidden" />
-    ))}
-    {industryEntry && (
-      <span data-pagefind-filter={`industry:${industryEntry.data.slug}`} class="hidden" />
-    )}
-
-    <Breadcrumb
-      separator="chevron"
-      pagefindIgnore
-      items={[
-        { label: "MLOps Database", href: "/mlops-database" },
-        { label: entry.data.title },
-      ]}
-    />
-
-    <header class="mb-8">
-      <p class="mb-3 text-sm font-semibold uppercase tracking-wider text-success-700">MLOps case study</p>
-      <h1 class="text-3xl font-bold tracking-tight text-gray-900" data-pagefind-meta="title">{entry.data.title}</h1>
-
-      <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-gray-500">
-        <span class="font-medium text-gray-700">{entry.data.company}</span>
-        {entry.data.platformName !== entry.data.company && (
-          <>
-            <span aria-hidden="true">&middot;</span>
-            <span>{entry.data.platformName}</span>
-          </>
-        )}
-        <>
-          <span aria-hidden="true">&middot;</span>
-          <span class="capitalize">{entry.data.contentType}</span>
-        </>
-        {entry.data.year && (
-          <>
-            <span aria-hidden="true">&middot;</span>
-            <span>{entry.data.year}</span>
-          </>
-        )}
-      </div>
-
-      <a
-        href={entry.data.link}
-        class="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-primary-700"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        View original source
-        <svg class="h-4 w-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M6 3H3v10h10v-3M9 2h5v5M14 2L7 9" />
-        </svg>
-      </a>
-    </header>
-
-    <div class="mb-8 rounded-lg border border-success-500/20 bg-success-50 p-6">
-      <p class="text-gray-700">{entry.data.summary}</p>
-    </div>
-
-    {metadataItems.length > 0 && (
-      <MetadataBlock
-        items={metadataItems}
-        labelTag="h2"
-        space="sm"
-        class={metadataTrailingClass}
-      />
-    )}
-
-    <div class="prose prose-gray max-w-none">
-      <Content />
-    </div>
-
-    {relatedItems.length > 0 && (
-      <section class="mt-16 border-t border-gray-200 pt-10" data-pagefind-ignore>
-        <h2 class="mb-6 text-xl font-bold text-gray-900">More Like This</h2>
-        <RelatedRail items={relatedItems} gridVariant="gap-sm-2col-sm" />
-      </section>
-    )}
-  </div>
-</BaseLayout>
+  <Content />
+</DatabaseEntryLayout>

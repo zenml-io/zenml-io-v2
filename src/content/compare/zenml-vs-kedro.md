@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2024-08-21T14:43:58.191Z"
   createdOn: "2024-06-17T13:13:53.153Z"
 toolName: "Kedro"
+cardSubtitle: "Scale ML projects without the setup hassle"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7adeb0e5/66703557eff22173d1f08be7_kedro.png"
 category: "orchestrators"

@@ -18,11 +18,11 @@ tags:
 date: "2024-03-26T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dbf8d0cb/65fbf4b2d292e9741e3d0da4_LLMs-min.png"
+  url: "https://assets.zenml.io/content/blog/welcome-to-the-zenml-newsletter/2bd30540/welcome-to-the-zenml-newsletter-cover.avif"
 seo:
   title: "Newsletter Edition #1 - Welcome to the ZenML newsletter! - ZenML Blog"
   canonical: "https://www.zenml.io/blog/welcome-to-the-zenml-newsletter"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/95efd684/65fbf4b2d292e9741e3d0da4_LLMs-min.png"
+  ogImage: "https://assets.zenml.io/content/blog/welcome-to-the-zenml-newsletter/f0d13861/welcome-to-the-zenml-newsletter-cover.jpg"
   ogTitle: "Newsletter Edition #1 - Welcome to the ZenML newsletter! - ZenML Blog"
 ---
 

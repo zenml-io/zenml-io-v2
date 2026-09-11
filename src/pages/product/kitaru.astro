@@ -3,18 +3,23 @@ import Cta from "../../components/kitaru/Cta.astro";
 import Faq from "../../components/kitaru/Faq.astro";
 import Features from "../../components/kitaru/Features.astro";
 import FirstRun from "../../components/kitaru/FirstRun.astro";
-import { Hero } from "../../components/kitaru/islands/Hero";
+import Hero from "../../components/kitaru/Hero.astro";
 import { ScenarioStrip } from "../../components/kitaru/islands/ScenarioStrip";
 import { TwoDoors } from "../../components/kitaru/islands/TwoDoors";
 /**
  * /product/kitaru — landing page introducing Kitaru as a sub-product
- * under the unified ZenML umbrella.
+ * under the unified ZenML umbrella, rendered in the Labs shell
+ * (`app="labs" product="kitaru"`: rebrand type roles + palette, the Kitaru
+ * wordmark in the nav, the orange signup pill). The sections keep their
+ * Kitaru markup; src/styles/kitaru-compat.css §6 re-points their tokens at
+ * the rebrand set inside the labs scope.
  *
  * Ported from the 2026 Kitaru landing redesign (design/kitaru-redesign-src).
- * Hero, ScenarioStrip, and TwoDoors are Preact islands
- * (interactive: copy buttons, hover state, in-component scroll reveal).
- * Features, Faq and Cta are static — their scroll-reveal is driven by the
- * page-level `reveal-static` script below.
+ * ScenarioStrip and TwoDoors are Preact islands (interactive: copy buttons,
+ * hover state, in-component scroll reveal); the hero's video card is the
+ * HeroVideo island. Hero, FirstRun, Features, Faq and Cta are static —
+ * their scroll-reveal is driven by the page-level `reveal-static` script
+ * below.
  *
  * Aimed at the bullseye ICP: teams whose agent turns unstructured inbound into
  * structured writes in a system of record (logistics, fintech, insurance,
@@ -58,11 +63,15 @@ const faqJsonLd = {
 };
 ---
 
-<BaseLayout {...PRODUCT_KITARU_SEO} surface="agent">
+<BaseLayout {...PRODUCT_KITARU_SEO} surface="agent" app="labs" product="kitaru">
   <JsonLd data={faqJsonLd} slot="head" />
   <div data-app="kitaru" class="bg-background text-foreground">
-    <main id="kitaru-main">
-      <Hero client:visible />
+    {/* overflow-x-clip is the DESIGN.md guard: the reveal-left/right slides
+        translate cards 22px past the gutter before they show, which would
+        otherwise widen the page on narrow viewports. `clip` is not a scroll
+        container, so the FAQ's sticky column is unaffected. */}
+    <main id="kitaru-main" class="overflow-x-clip">
+      <Hero />
       <FirstRun />
       <TwoDoors client:visible />
       <ScenarioStrip client:visible />
@@ -73,7 +82,7 @@ const faqJsonLd = {
   </div>
 </BaseLayout>
 
-{/* Scroll-reveal observer for the static sections (Features, Faq, Cta) —
+{/* Scroll-reveal observer for the static sections (Hero, FirstRun, Features, Faq, Cta) —
     sets data-shown="true" on .reveal/.reveal-left/.reveal-right elements.
     The hydrated islands drive their own reveal via the useReveal hook, so
     this only needs to cover the static markup. */}

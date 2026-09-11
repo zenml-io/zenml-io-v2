@@ -20,12 +20,12 @@ tags:
 date: "2025-10-30T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6cd28c91/6981cf64f4f7a9ede995c462_6981ce86395d516b0bf8fd89_webinar-blog-1.avif"
+  url: "https://assets.zenml.io/content/blog/from-batch-to-agents-your-top-questions-on-zenml-new-pipeline-deployments/97e1abad/from-batch-to-agents-your-top-questions-on-zenml-new-pipeline-deployments-cover.avif"
 seo:
   title: "From Batch to Agents: Your Top Questions on ZenML's New Pipeline Deployments - ZenML Blog"
   description: "ZenML's new pipeline deployments feature lets you use the same pipeline syntax to run both batch ML training jobs and deploy real-time AI agents or inference APIs, with seamless local-to-cloud deployment via a unified deployer stack component."
   canonical: "https://www.zenml.io/blog/from-batch-to-agents-your-top-questions-on-zenml-new-pipeline-deployments"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6cd28c91/6981cf64f4f7a9ede995c462_6981ce86395d516b0bf8fd89_webinar-blog-1.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/from-batch-to-agents-your-top-questions-on-zenml-new-pipeline-deployments/44041a5d/from-batch-to-agents-your-top-questions-on-zenml-new-pipeline-deployments-cover.jpg"
   ogTitle: "From Batch to Agents: Your Top Questions on ZenML's New Pipeline Deployments - ZenML Blog"
   ogDescription: "ZenML's new pipeline deployments feature lets you use the same pipeline syntax to run both batch ML training jobs and deploy real-time AI agents or inference APIs, with seamless local-to-cloud deployment via a unified deployer stack component."
 ---

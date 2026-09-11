@@ -104,7 +104,7 @@ Clean the Notion-specific formatting:
 
 ### B4. Download images from Notion
 
-**IMPORTANT**: Notion's image URLs are **temporary pre-signed S3 URLs** that expire within ~1 hour. Download them immediately after fetching the page.
+Notion's image URLs are temporary pre-signed S3 URLs that expire within about an hour, so download them right after fetching the page.
 
 1. Create a temp directory: `mkdir -p /tmp/<slug>-images`
 2. Download each image with `curl -sL -o <descriptive-name>.png "<notion-url>"`
@@ -155,6 +155,8 @@ Continue content preparation and checks independent of the cover. Keep the post 
 
 `mainImage.url` is the AVIF, `seo.ogImage` is the JPEG sibling — never the same URL.
 
+`mainImage` is the cover only (cards, hubs, social, JSON-LD) and is never rendered inside the post. If the author wants the image shown in the post itself, add a `featuredImage:` block with the same shape (usually a copy of `mainImage`); comparison and "X vs Y" posts carry one by default, other posts do not.
+
 ### C3. Validate or create the author
 
 Check if the author exists in `src/content/authors/`:
@@ -192,7 +194,7 @@ slug: "tag-slug"
 ---
 ```
 
-Existing tags (118+) cover most topics. Common tags: `mlops`, `llmops`, `zenml`, `genai`, `agents`, `tutorials`, `best-practices`, `cloud`, `open-source`, `pipelines`, `infrastructure`, `kubernetes`.
+Existing tags cover most topics. Common tags: `mlops`, `llmops`, `zenml`, `genai`, `agents`, `tutorials`, `best-practices`, `cloud`, `open-source`, `pipelines`, `infrastructure`, `kubernetes`.
 
 #### SEO / Discovery Tag Rule
 

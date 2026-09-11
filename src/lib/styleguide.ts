@@ -87,28 +87,28 @@ export const CHROME_PAIRS: ReadonlyArray<{
   fg: string;
   bg: string;
 }> = [
-  { scope: '[data-app="zenml-next"]', fg: "--foreground", bg: "--background" },
+  { scope: '[data-app="labs"]', fg: "--foreground", bg: "--background" },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--muted-foreground",
     bg: "--background",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--secondary-foreground",
     bg: "--background",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--muted-foreground",
     bg: "--muted",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--secondary-foreground",
     bg: "--muted",
   },
-  { scope: '[data-app="zenml-next"]', fg: "--background", bg: "--foreground" },
+  { scope: '[data-app="labs"]', fg: "--background", bg: "--foreground" },
 ];
 
 /**
@@ -118,8 +118,8 @@ export const CHROME_PAIRS: ReadonlyArray<{
  * see scripts/check-registry.ts's "NOT YET IMPLEMENTED — contrast" note for
  * why a guessed pair is worse than none (DECISIONS #93, tracked as #247).
  *
- * Every pair below was verified by reading the `:root`, `[data-app="zenml"]`,
- * and `[data-app="zenml-next"]` blocks directly: both token names are declared
+ * Every pair below was verified by reading the `:root` and
+ * `[data-app="labs"]` blocks directly: both token names are declared
  * inside that one block, so the pairing is real usage, not an inference. Do not
  * add a pair here unless both tokens are declared together in the same scope
  * block — that is what keeps this list honest.
@@ -142,64 +142,48 @@ export const DECLARED_PAIRS: ReadonlyArray<{
   { scope: ":root", fg: "--warning-foreground", bg: "--warning" },
   { scope: ":root", fg: "--info-foreground", bg: "--info" },
 
-  // [data-app="zenml"] — only the pairs this scope itself redeclares.
-  // (destructive/success/warning/info are not redeclared here, so pairing them
-  // would mean assuming :root's values carry over — true at runtime via CSS
-  // cascade, but not something this scope's own block "declares"; left out.)
-  { scope: '[data-app="zenml"]', fg: "--foreground", bg: "--background" },
-  { scope: '[data-app="zenml"]', fg: "--card-foreground", bg: "--card" },
-  { scope: '[data-app="zenml"]', fg: "--popover-foreground", bg: "--popover" },
-  { scope: '[data-app="zenml"]', fg: "--primary-foreground", bg: "--primary" },
-  {
-    scope: '[data-app="zenml"]',
-    fg: "--secondary-foreground",
-    bg: "--secondary",
-  },
-  { scope: '[data-app="zenml"]', fg: "--muted-foreground", bg: "--muted" },
-  { scope: '[data-app="zenml"]', fg: "--accent-foreground", bg: "--accent" },
-
-  // [data-app="zenml-next"] — the 2026 rebrand palette declares a full
+  // [data-app="labs"] — the 2026 rebrand palette declares a full
   // semantic light set in one block, so every pair below is declared together.
-  { scope: '[data-app="zenml-next"]', fg: "--foreground", bg: "--background" },
-  { scope: '[data-app="zenml-next"]', fg: "--card-foreground", bg: "--card" },
+  { scope: '[data-app="labs"]', fg: "--foreground", bg: "--background" },
+  { scope: '[data-app="labs"]', fg: "--card-foreground", bg: "--card" },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--popover-foreground",
     bg: "--popover",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--primary-foreground",
     bg: "--primary",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--secondary-foreground",
     bg: "--secondary",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--muted-foreground",
     bg: "--muted",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--accent-foreground",
     bg: "--accent",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--destructive-foreground",
     bg: "--destructive",
   },
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--brand-mark-fg",
     bg: "--brand-mark-bg",
   },
   // Ratified AA accent pair (declared together as aliases in the same block).
   {
-    scope: '[data-app="zenml-next"]',
+    scope: '[data-app="labs"]',
     fg: "--color-accent-blue-text",
     bg: "--color-accent-blue-tint",
   },
@@ -390,8 +374,7 @@ function extractDeclarations(blocks: RawBlock[]): RawDecl[] {
 
 const FALLBACK_CHAINS: Record<string, string[]> = {
   ":root": ["@theme", "@theme inline"],
-  '[data-app="zenml"]': [":root", "@theme", "@theme inline"],
-  '[data-app="zenml-next"]': [":root", "@theme", "@theme inline"],
+  '[data-app="labs"]': [":root", "@theme", "@theme inline"],
   ".kitaru-brand-vars": ["@theme", "@theme inline"],
   "@theme": ["@theme inline"],
   "@theme inline": ["@theme"],
@@ -500,7 +483,7 @@ function classify(
  * WCAG 2.1 contrast ratio. A pair is silently skipped — not an error — when
  * either token isn't declared in that scope, resolves to UNRESOLVED, or
  * isn't a parseable color; that's the normal case for a token the current
- * scope doesn't redeclare (see DECLARED_PAIRS' own comment on `[data-app="zenml"]`).
+ * scope doesn't redeclare (see DECLARED_PAIRS' own comment above).
  */
 function computeContrastRows(
   pairs: ReadonlyArray<{ scope: string; fg: string; bg: string }>,

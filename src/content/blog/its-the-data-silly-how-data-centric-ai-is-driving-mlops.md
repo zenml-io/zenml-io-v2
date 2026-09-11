@@ -22,12 +22,12 @@ tags:
 date: "2022-04-07T00:00:00.000Z"
 readingTime: 9 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5d798921/6530aa4537a36ef8301da0ef_data-centric.png"
+  url: "https://assets.zenml.io/content/blog/its-the-data-silly-how-data-centric-ai-is-driving-mlops/9d053fb8/its-the-data-silly-how-data-centric-ai-is-driving-mlops-cover.avif"
 seo:
   title: "It's the data, silly!' How data-centric AI is driving MLOps - ZenML Blog"
   description: "ML practitioners today are embracing data-centric machine learning, because of its substantive effect on MLOps practices. In this article, we take a brief excursion into how data-centric machine learning is fuelling MLOps best practices, and why you should care about this change."
   canonical: "https://www.zenml.io/blog/its-the-data-silly-how-data-centric-ai-is-driving-mlops"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/172a94ce/6530aa4537a36ef8301da0ef_data-centric.png"
+  ogImage: "https://assets.zenml.io/content/blog/its-the-data-silly-how-data-centric-ai-is-driving-mlops/fa6f8861/its-the-data-silly-how-data-centric-ai-is-driving-mlops-cover.jpg"
   ogTitle: "It's the data, silly!' How data-centric AI is driving MLOps - ZenML Blog"
   ogDescription: "ML practitioners today are embracing data-centric machine learning, because of its substantive effect on MLOps practices. In this article, we take a brief excursion into how data-centric machine learning is fuelling MLOps best practices, and why you should care about this change."
 ---

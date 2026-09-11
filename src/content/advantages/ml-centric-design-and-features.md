@@ -1,6 +1,7 @@
 ---
 title: "ML-Centric Design and Features"
 slug: "ml-centric-design-and-features"
+icon: "pipeline"
 content: "ZenML is purpose-built for machine learning workflows, offering a range of ML-specific features such as experiment tracking, model registry, and hyperparameter tuning, which are not natively available in Prefect."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdf3dfc5/667167751e34699260c6b227_img02.png"

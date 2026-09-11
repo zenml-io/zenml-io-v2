@@ -1,0 +1,83 @@
+---
+import { KITARU_INSTALL_CMD, KITARU_LINKS } from "../../lib/kitaru-landing";
+import LabsButton from "../labs/LabsButton.astro";
+import LabsInstallChip from "../labs/LabsInstallChip.astro";
+// Hero.astro — the Kitaru landing's opening band in the Labs shell. Fills
+// the first viewport (the Labs nav overlays the top 120px) and centers its
+// content in the remaining height: launch-post pill, headline, deck, the
+// install command as the primary door with the hosted signup as a ghost
+// pill beside it, and the video poster card. Everything here is static; the
+// poster card is the one island (HeroVideo) because it opens a dialog.
+import { HeroVideo } from "./islands/HeroVideo";
+import { KitaruGrain } from "./islands/KitaruGrain";
+
+const hostedSignup = {
+  label: "Or try the hosted version free",
+  href: KITARU_LINKS.signup.href,
+  analytics: "Kitaru-Hero-Signup",
+};
+const install = { cmd: KITARU_INSTALL_CMD, analytics: "Kitaru-Hero-Install" };
+---
+
+<section id="hero" class="relative flex min-h-svh flex-col overflow-hidden">
+  <div class="absolute inset-0" aria-hidden="true">
+    {/* The page's hero shader — always on, like LabsHero's on the other Labs pages. */}
+    <KitaruGrain variant="hero" client:visible />
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background"></div>
+  </div>
+
+  <div
+    class="relative mx-auto flex w-full max-w-content flex-1 flex-col items-center justify-center px-gutter pt-[120px] pb-space-xl text-center lg:flex-row lg:items-center lg:gap-16 lg:text-left"
+  >
+    <div class="flex w-full min-w-0 flex-col items-center lg:flex-1 lg:items-start">
+      <a
+        href="/blog/introducing-the-new-kitaru"
+        data-analytics="Kitaru-Hero-Launch-Post"
+        class="reveal group inline-flex max-w-full cursor-pointer items-center gap-2 rounded-full border border-ember/40 bg-ember-light/60 py-1.5 pr-4 pl-2 font-label text-[13px] uppercase tracking-[0.05em] text-ink transition-colors duration-200 ease-out hover:border-ember"
+      >
+        <span class="rounded-full bg-ember px-2 py-0.5 text-[11px] text-(--color-cream-50)">New</span>
+        Introducing the new Kitaru: read the launch post
+        <svg class="size-3.5 text-ember transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+
+      <h1
+        class="reveal mt-7 max-w-[920px] font-display text-[44px] leading-[48px] text-balance text-(--color-cream-900) md:text-[64px] md:leading-[70px]"
+        style="--reveal-delay: 80ms"
+      >
+        Better, faster, cheaper agents, tested on production data
+      </h1>
+
+      <p
+        class="reveal mt-space-md max-w-[600px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]"
+        style="--reveal-delay: 160ms"
+      >
+        Your coding agent investigates real sessions, finds what repeats,
+        and replays the fix, so you know what improved, what regressed,
+        and what it costs before it ships.
+      </p>
+
+      <div
+        class="reveal mt-space-mlg flex w-full min-w-0 flex-col items-center gap-2 lg:items-start"
+        style="--reveal-delay: 240ms"
+      >
+        {/* The command is the primary CTA: one line installs the CLI,
+            MCP server and coding-agent skills locally. Cloud signup is
+            the second door. */}
+        <div class="flex w-full max-w-full justify-center lg:justify-start">
+          <LabsInstallChip content={install} class="max-w-full" />
+        </div>
+        <p class="text-[14px] text-muted-foreground">Free, local, open source.</p>
+        <div class="mt-3 flex flex-wrap items-center justify-center gap-space-md">
+          <LabsButton cta={hostedSignup} tone="ghost" />
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal mt-10 w-full lg:mt-0 lg:flex-1" style="--reveal-delay: 320ms">
+      {/* client:idle on purpose: the card renders server-side and only needs
+          JS for the play button's dialog, so it hydrates after first paint
+          instead of adding a fourth client:visible island to the page. */}
+      <HeroVideo client:idle />
+    </div>
+  </div>
+</section>

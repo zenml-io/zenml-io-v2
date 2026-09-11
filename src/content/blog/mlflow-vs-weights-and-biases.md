@@ -21,12 +21,14 @@ tags:
 date: "2025-05-18T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/33f2ba36/6981d362e92aa039b696acf7_6981d2b4cfebcbbff9868dc8_mlflow_vs_w_26b_vs_zenml.avif"
+  url: "https://assets.zenml.io/content/blog/mlflow-vs-weights-and-biases/1f4304a2/mlflow-vs-weights-and-biases-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/mlflow-vs-weights-and-biases/1f4304a2/mlflow-vs-weights-and-biases-cover.avif"
 seo:
   title: "MLflow vs Weights & Biases vs ZenML: What’s the Difference? - ZenML Blog"
   description: "In this MLflow vs Weights & Biases vs ZenML article, we explain the difference between the three platforms and educate you about using them in tandem too."
   canonical: "https://www.zenml.io/blog/mlflow-vs-weights-and-biases"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/33f2ba36/6981d362e92aa039b696acf7_6981d2b4cfebcbbff9868dc8_mlflow_vs_w_26b_vs_zenml.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/mlflow-vs-weights-and-biases/e5ca0375/mlflow-vs-weights-and-biases-cover.jpg"
   ogTitle: "MLflow vs Weights & Biases vs ZenML: What’s the Difference? - ZenML Blog"
   ogDescription: "In this MLflow vs Weights & Biases vs ZenML article, we explain the difference between the three platforms and educate you about using them in tandem too."
 ---

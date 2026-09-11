@@ -21,12 +21,12 @@ tags:
 date: "2025-08-12T00:00:00.000Z"
 readingTime: 16 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/266addf5/6981d389ab6d2820d701bbfa_6981d2a9e1cf93ee0b74e7a6_RAG-tools.avif"
+  url: "https://assets.zenml.io/content/blog/rag-tools/1361974b/rag-tools-cover.avif"
 seo:
   title: "8 Best RAG Tools for Agentic AI to Test this Year - ZenML Blog"
   description: "Discover the top 8 RAG tools for agentic AI you should try this year."
   canonical: "https://www.zenml.io/blog/rag-tools"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/266addf5/6981d389ab6d2820d701bbfa_6981d2a9e1cf93ee0b74e7a6_RAG-tools.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/rag-tools/ea08c3d9/rag-tools-cover.jpg"
   ogTitle: "8 Best RAG Tools for Agentic AI to Test this Year - ZenML Blog"
   ogDescription: "Discover the top 8 RAG tools for agentic AI you should try this year."
 ---

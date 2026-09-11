@@ -22,16 +22,26 @@
 /cloud-terms-and-privacy/ /terms-of-service 301
 /newsletter /newsletter-signup 301
 /newsletter/ /newsletter-signup 301
-/live-demo-cloud /interactive-demo-mcp 301
-/live-demo-cloud/ /interactive-demo-mcp 301
+/book-a-demo /book-your-demo 301
+/book-a-demo/ /book-your-demo 301
+/signup-for-demo /book-your-demo 301
+/signup-for-demo/ /book-your-demo 301
+/book-a-demo-success /success-calendar 301
+/book-a-demo-success/ /success-calendar 301
+/live-demo / 301
+/live-demo/ / 301
+/interactive-demo-mcp / 301
+/interactive-demo-mcp/ / 301
+/live-demo-cloud / 301
+/live-demo-cloud/ / 301
 /features/symple-syntax /features 301
 /features/symple-syntax/ /features 301
 /vs/zenml-vs-cloud-platforms /vs/zenml-vs-e2e-platforms 301
 /vs/zenml-vs-cloud-platforms/ /vs/zenml-vs-e2e-platforms 301
 /home / 301
 /home/ / 301
-/live-demo-mcp /interactive-demo-mcp 301
-/live-demo-mcp/ /interactive-demo-mcp 301
+/live-demo-mcp / 301
+/live-demo-mcp/ / 301
 /features/no-vendor-lock-in /features 301
 /features/no-vendor-lock-in/ /features 301
 /features/accelerate-your-workflow /features 301
@@ -238,3 +248,7 @@
 /compare/kitaru-vs-inngest/ /compare/zenml-vs-inngest 301
 /compare/kitaru-vs-restate /compare/zenml-vs-restate 301
 /compare/kitaru-vs-restate/ /compare/zenml-vs-restate 301
+
+# Keep wildcard rules after static rules so they do not consume the dynamic-rule limit.
+# Individual team profiles are retired; the roster remains at /team.
+/team/* /team 301

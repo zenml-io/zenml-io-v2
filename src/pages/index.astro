@@ -1,59 +1,56 @@
 ---
-import ComplianceSection from "../components/sections/ComplianceSection.astro";
-import CustomerStories from "../components/sections/CustomerStories.astro";
-import FAQAccordion from "../components/sections/FAQAccordion.astro";
-import FeatureTabs from "../components/sections/FeatureTabs.astro";
-import FinalCTA from "../components/sections/FinalCTA.astro";
-import IntegrationsMarquee from "../components/sections/IntegrationsMarquee.astro";
-import LogoCloud from "../components/sections/LogoCloud.astro";
-import NewsletterSignup from "../components/sections/NewsletterSignup.astro";
-import NewsSection from "../components/sections/NewsSection.astro";
-import TwoProducts from "../components/sections/TwoProducts.astro";
-import TwoWorkspaces from "../components/sections/TwoWorkspaces.astro";
-import UnifiedAnnouncementBanner from "../components/sections/UnifiedAnnouncementBanner.astro";
-import UnifiedHero from "../components/sections/UnifiedHero.astro";
-import ValueProps from "../components/sections/ValueProps.astro";
-import WhitepaperCTA from "../components/sections/WhitepaperCTA.astro";
-import JsonLd from "../components/seo/JsonLd.astro";
 /**
- * Homepage — the main landing page for zenml.io.
+ * Homepage — the main landing page for the ZenML Labs site.
  *
- * Composes all section components into a single page. Each section
- * is a self-contained Astro component that pulls its data from
- * src/lib/homepage.ts or from Content Collections at build time.
+ * Composes the Labs section components into a single page. Each section
+ * takes its copy through a `content` prop; this page passes the LABS_*
+ * constants from src/lib/labs-home.ts, so another page can mount the same
+ * sections with different content.
  *
  * Route: / (homepage)
  */
+import CustomerStoryCards from "../components/labs/CustomerStoryCards.astro";
+import FeatureGridPanels from "../components/labs/FeatureGridPanels.astro";
+import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
+import LabsHero from "../components/labs/LabsHero.astro";
+import LogoMarquee from "../components/labs/LogoMarquee.astro";
+import ProductDoors from "../components/labs/ProductDoors.astro";
+import JsonLd from "../components/seo/JsonLd.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { HOMEPAGE_UNIFIED_SEO } from "../lib/homepage-unified";
 import { buildHomepageJsonLd } from "../lib/homepageJsonLd";
+import {
+  LABS_CLOSE,
+  LABS_DOORS,
+  LABS_FEATURE_PANELS,
+  LABS_HERO,
+  LABS_HOME_SEO,
+  LABS_LOGO_GRID,
+  LABS_STORIES,
+} from "../lib/labs-home";
+import { defaultOgUrl, hasDefaultOgCard, ORGANIZATION_NAME } from "../lib/seo";
 
-const homepageJsonLd = buildHomepageJsonLd();
+const homepageJsonLd = buildHomepageJsonLd({
+  organizationName: ORGANIZATION_NAME,
+  logoPath: "/images/zenml-labs-lockup.svg",
+});
 ---
 
 <BaseLayout
-  title={HOMEPAGE_UNIFIED_SEO.title}
-  description={HOMEPAGE_UNIFIED_SEO.description}
-  ogTitle={HOMEPAGE_UNIFIED_SEO.title}
-  surface={HOMEPAGE_UNIFIED_SEO.surface}
+  ogImage={hasDefaultOgCard("pages", "home") ? defaultOgUrl("pages", "home") : undefined}
+  app="labs"
+  title={LABS_HOME_SEO.title}
+  description={LABS_HOME_SEO.description}
+  ogTitle={LABS_HOME_SEO.title}
+  surface={LABS_HOME_SEO.surface}
 >
   <JsonLd data={homepageJsonLd} slot="head" />
-  <UnifiedAnnouncementBanner slot="before-nav" />
 
   <main>
-    <UnifiedHero />
-    <TwoWorkspaces />
-    <LogoCloud />
-    <TwoProducts />
-    <FeatureTabs />
-    <ValueProps />
-    <IntegrationsMarquee />
-    <WhitepaperCTA />
-    <CustomerStories />
-    <NewsSection />
-    <ComplianceSection />
-    <NewsletterSignup />
-    <FAQAccordion />
-    <FinalCTA />
+    <LabsHero content={LABS_HERO} />
+    <LogoMarquee content={LABS_LOGO_GRID} />
+    <ProductDoors content={LABS_DOORS} />
+    <FeatureGridPanels content={LABS_FEATURE_PANELS} />
+    <CustomerStoryCards content={LABS_STORIES} />
+    <LabsCloseCta content={LABS_CLOSE} />
   </main>
 </BaseLayout>

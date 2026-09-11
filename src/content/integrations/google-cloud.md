@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-11T08:38:03.999Z"
 integrationType: "cloud-infrastructure"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cd11eb0d/66d8699796b1ab68e9913d06_cloud.png"
+  url: "https://assets.zenml.io/content/integrations/logos/google-cloud.svg"
+  alt: "Google Cloud logo"
 shortDescription: "Streamline ML Operations with Google Cloud and ZenML"
 docsUrl: "https://docs.zenml.io/how-to/popular-integrations/gcp-guide"
 mainImage:

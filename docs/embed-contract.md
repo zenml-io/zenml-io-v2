@@ -19,16 +19,16 @@ via the same command-queue bootstrap:
 - **`src/components/sections/CalEmbed.astro`** — renders a `<div id={config.elementId}>`
   target and an inline `<script>` that loads the Cal.com embed script and calls
   `Cal("init", …)` / `Cal.ns[namespace]("inline", …)` immediately on page load. Used by
-  `src/pages/success-calendar.astro`, `src/pages/book-a-demo-success.astro`, and
-  `src/pages/schedule-a-demo.astro` — three "thank you, now book a time" pages reached
-  after a form or purchase flow.
+  `src/pages/success-calendar.astro` and `src/pages/schedule-a-demo.astro` — the
+  canonical post-form and rescheduling calendar pages. Retired calendar aliases
+  permanently redirect to the former before the embed runs.
 - **Deferred path** — `src/components/islands/DemoRequestForm.tsx` (a Preact island
   mounted via `src/components/BookingExperience.astro`, used by `/book-your-demo` and
   its Kitaru co-brand variant) renders a lead-capture form first. The same Cal.com
   bootstrap IIFE only runs after the form submission succeeds, replacing the form with
   the inline calendar in place.
 
-**Sizing:** the calendar target div is `min-h-[700px] w-full overflow-auto` (CalEmbed)
+**Sizing:** the calendar target div is `h-[700px] w-full overflow-auto` (CalEmbed)
 or `min-h-[600px] w-full overflow-auto` (DemoRequestForm's post-submit state); Cal.com's
 embed script sizes its iframe to fill that container.
 
@@ -36,6 +36,11 @@ embed script sizes its iframe to fill that container.
 tool the visitor navigated to a page specifically to use, not a tracking script. It
 loads unconditionally when the calendar section renders (CalEmbed) or after a
 successful form submission (DemoRequestForm).
+
+`CalEmbed` also reveals Cal.com's already-inserted iframe on its load event, with an
+eight-second safety fallback if Cal.com's ready message is lost. This is limited to
+the iframe's visibility; the configured calendar URL, namespace, and booking-event
+listeners remain Cal.com-owned.
 
 **No-JS behavior:** both paths render a fallback link ("Can't see the calendar? Open
 directly →") pointing at `${CAL_ORIGIN}/${calLink}` so the calendar is still reachable
@@ -54,10 +59,9 @@ Plausible note under Consent registry below).
 Used by `src/components/islands/ContactForm.tsx` and
 `src/components/islands/DemoRequestForm.tsx`, both gated behind an optional
 `turnstileSiteKey` prop sourced from `TURNSTILE_SITE_KEY` in `src/lib/formConstants.ts`.
-Pages currently passing a site key: `src/pages/signup-for-demo.astro`,
-`src/pages/whitepaper-architecting-an-enterprise-grade-mlops-platform.astro`,
-`src/pages/book-a-demo.astro`, `src/pages/startups-and-academics.astro`,
-`src/pages/brick-manual.astro`, and (via `BookingExperience.astro`) `/book-your-demo`.
+Pages currently passing a site key: `src/pages/whitepaper-architecting-an-enterprise-grade-mlops-platform.astro`,
+`src/pages/startups-and-academics.astro`, `src/pages/brick-manual.astro`, and
+(via `BookingExperience.astro`) `/book-your-demo`.
 
 **Sizing:** a `<div ref={turnstileRef} class="flex justify-center" />` placeholder;
 Turnstile renders its own widget into it (`size: "flexible"`, `theme: "light"`).
@@ -74,34 +78,6 @@ server-side validation in `src/pages/api/forms/[formType].ts` is the enforcement
 **Consent relationship:** not gated by the cookie consent registry — it's a security
 control for the form the visitor is actively filling out, not a tracking/marketing
 script.
-
-## Storylane (interactive product demos)
-
-`src/components/sections/StorylaneEmbed.astro`, used by `src/pages/live-demo.astro` and
-`src/pages/interactive-demo-mcp.astro`.
-
-**Sizing:** a padding-bottom aspect-ratio wrapper (`padding-bottom:calc(65.94% + 27px)`)
-with an absolutely-positioned iframe filling it.
-
-**Loading behavior:** the iframe (`src/embed`) and the Storylane enhancement script
-(`https://js.storylane.io/js/v1/storylane.js`, deduped by element id `storylane-embed`)
-both load unconditionally as soon as the component renders — there is no runtime gate on
-either one.
-
-**No-JS behavior:** the iframe itself renders and loads independently of JavaScript; only
-the enhancement script (which adds Storylane's in-demo interaction layer) requires JS.
-
-**Consent relationship:** none. An earlier consent audit gated the enhancement
-script (not the iframe) behind marketing consent, but the gate was asymmetric and
-broken in practice: the iframe — the surface that actually sets third-party cookies —
-was never gated, and the script's consent check ran once at HTML parse time, so a
-first-time visitor who accepted marketing consent still didn't get the script until a
-full reload. The gate therefore delivered no privacy benefit while degrading the demo
-for consenting visitors, and it was removed in favor of loading script and iframe
-consistently. This leaves real privacy debt — the visitor has not explicitly opted
-into a third-party embed — and the remediation is a click-to-load pattern (render a
-static preview first; mount the iframe and script only after an explicit visitor
-click). That remediation is not implemented yet.
 
 ## Brevo (newsletter signup)
 
@@ -133,8 +109,11 @@ Registered in the consent registry (`src/lib/consentConfig.ts`) as `github-butto
 under the `personalization` category, loading `https://buttons.github.io/buttons.js`.
 Star counts on the site are currently rendered via `src/pages/api/github-stars.ts` (a
 server-side fetch with edge caching), read from `src/lib/githubStars.ts`, and displayed
-as plain text/numbers in `src/components/Navigation.astro` and
-`src/components/sections/NewsSection.astro` — not via a `github-button` widget element.
+as plain text/numbers in `src/components/labs/LabsNavigation.astro` — not via a
+`github-button` widget element. The nav's GitHub chip shows a count only on a product
+page (the live ZenML or Kitaru count, matching `product`); on a cross-product page
+(no `product`) it links to the `zenml-io` GitHub organisation instead and renders no
+count.
 The `github-buttons` consent entry stays registered for the `personalization` category
 description ("GitHub star count") even though no page currently renders the widget
 markup the script targets.
@@ -218,7 +197,7 @@ gated behind cookie consent. It defines:
 injections, and reusing it on an unrelated script would let `CookieConsent.tsx` mistake
 that script for one it already injected (or vice versa). Any new third-party script that
 needs consent gating gets a `TRACKING_SCRIPTS` entry with its own `id`; any script that
-intentionally loads unconditionally (Cal.com, Storylane, Brevo, Turnstile, the
+intentionally loads unconditionally (Cal.com, Brevo, Turnstile, the
 YouTube-nocookie embed) uses its own distinct id, not the `cc-` prefix.
 
 Plausible analytics is a deliberate exception to the registry: it's cookieless and does

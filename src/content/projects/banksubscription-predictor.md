@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-06-18T14:14:21.453Z"
 description: "Predict bank clients most likely to subscribe to term deposits using machine learning."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/bank_subscription_prediction"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/46.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/e779ed9c/banksubscription-predictor-cover.avif"
 tags:
   - "classification"
   - "banking"
@@ -40,6 +40,7 @@ seo:
   canonical: "https://www.zenml.io/projects/banksubscription-predictor"
   ogTitle: "BankSubscription Predictor"
   ogDescription: "Predict bank clients most likely to subscribe to term deposits using machine learning."
+  ogImage: "https://assets.zenml.io/og/pages/project-banksubscription-predictor.jpg"
 ---
 
 A comprehensive MLOps solution for predicting which bank clients are most likely to subscribe to term deposits, enabling more effective marketing campaigns.

@@ -21,12 +21,14 @@ tags:
 date: "2025-10-15T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1b9ea914/68ef9206ae41bcbd09159129_autogen-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/autogen-alternatives/5d8b2983/autogen-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/autogen-alternatives/5d8b2983/autogen-alternatives-cover.avif"
 seo:
   title: "We Tried and Tested 8 Best AutoGen Alternatives to Build AI Agents and Applications - ZenML Blog"
   description: "In this article, you learn about the best AutoGen alternatives to build AI agents and applications."
   canonical: "https://www.zenml.io/blog/autogen-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1b9ea914/68ef9206ae41bcbd09159129_autogen-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/autogen-alternatives/cdc6a2bd/autogen-alternatives-cover.jpg"
   ogTitle: "We Tried and Tested 8 Best AutoGen Alternatives to Build AI Agents and Applications - ZenML Blog"
   ogDescription: "In this article, you learn about the best AutoGen alternatives to build AI agents and applications."
 ---

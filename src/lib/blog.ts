@@ -7,9 +7,31 @@
  */
 import type { CollectionEntry } from "astro:content";
 import { getCollection, getEntry } from "astro:content";
-import type { CtaLink } from "./marketingPageTypes";
 
 export type BlogPost = CollectionEntry<"blog">;
+
+// ---------------------------------------------------------------------------
+// Product (ZenML / Kitaru)
+// ---------------------------------------------------------------------------
+
+export type BlogProduct = "zenml" | "kitaru";
+
+/**
+ * True when a post belongs to the Kitaru product line — its category is
+ * "kitaru" or any of its tags is "kitaru" (both are separate content
+ * entries, `src/content/categories/kitaru.md` and
+ * `src/content/tags/kitaru.md`). Every Kitaru-aware consumer (post page,
+ * cards, related rail) derives from this one predicate instead of
+ * re-checking category/tags itself.
+ */
+export function isKitaruPost(post: BlogPost): boolean {
+  return post.data.category === "kitaru" || post.data.tags.includes("kitaru");
+}
+
+/** Discriminated product value derived from {@link isKitaruPost} — pass this, never a boolean, across components. */
+export function getBlogProduct(post: BlogPost): BlogProduct {
+  return isKitaruPost(post) ? "kitaru" : "zenml";
+}
 
 // ---------------------------------------------------------------------------
 // Filtering & sorting
@@ -185,6 +207,8 @@ export interface BlogSearchEntry {
   categorySlug: string;
   /** Tag slugs — added for the blog index's FilterIndex multi facet (#249). */
   tags: string[];
+  /** Derived from {@link isKitaruPost} — drives the Kitaru pill + orange card treatment. */
+  product: BlogProduct;
   readingTime?: string;
   image?: { url: string; alt?: string; width?: number; height?: number };
   authorName?: string;
@@ -223,6 +247,7 @@ export async function buildBlogSearchIndex(
         category: catMap.get(p.data.category || "") || "",
         categorySlug: p.data.category || "",
         tags: p.data.tags,
+        product: getBlogProduct(p),
         readingTime: p.data.readingTime,
         image: p.data.mainImage,
         authorName: author?.name,
@@ -232,36 +257,3 @@ export async function buildBlogSearchIndex(
     }),
   );
 }
-
-// ---------------------------------------------------------------------------
-// Blog CTAs — sidebar + bottom banner
-// ---------------------------------------------------------------------------
-
-export const BLOG_SIDEBAR_CTA = {
-  headline: "See ZenML in action",
-  bullets: [
-    "Open-source foundation, no vendor lock-in",
-    "Works with any infrastructure",
-    "Secure, metadata-only tracking",
-  ],
-  cta: {
-    label: "Book a demo",
-    href: "/book-your-demo",
-    analytics: "Blog-Sidebar-Book-Demo",
-  } as CtaLink,
-} as const;
-
-export const BLOG_FINAL_CTA = {
-  headline: "Start deploying AI workflows in production today",
-  body: "Enterprise-grade AI platform trusted by thousands of companies in production",
-  primaryCta: {
-    label: "Book a demo",
-    href: "/book-your-demo",
-    analytics: "Blog-CTA-Book-Demo",
-  } as CtaLink,
-  secondaryCta: {
-    label: "Read Docs",
-    href: "/docs",
-    analytics: "Blog-CTA-Read-Docs",
-  } as CtaLink,
-} as const;

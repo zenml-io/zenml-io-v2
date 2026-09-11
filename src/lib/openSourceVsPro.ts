@@ -4,6 +4,8 @@
  * Used by src/pages/open-source-vs-pro.astro.
  * Content extracted from Webflow HTML snapshot + SEO baseline.
  */
+import type { LabsBandContent } from "./labs-home";
+import type { ValuePropsContent } from "./labs-product-zenml";
 import type {
   ComparisonTableData,
   CtaLink,
@@ -11,6 +13,7 @@ import type {
   HeroData,
   SubwayMapCard,
 } from "./marketingPageTypes";
+import { defaultOgUrl } from "./seo";
 
 // ---------------------------------------------------------------------------
 // SEO
@@ -22,7 +25,7 @@ export const OSS_VS_PRO_SEO = {
   ogTitle: "ZenML Open Source vs Cloud",
   ogDescription:
     "Transform your AI workflows from single-player experiments to multiplayer production systems. Compare ZenML Open Source and ZenML Pro features.",
-  ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
+  ogImage: defaultOgUrl("pages", "open-source-vs-pro"),
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -71,6 +74,25 @@ export const OSS_VS_PRO_FEATURE_GRID = {
     alt: "ZenML Cloud toolbox emerging from a box, representing MLOps solutions and model deployment.",
   },
 } as const;
+
+/**
+ * `OSS_VS_PRO_FEATURE_GRID` reshaped onto `LabsValueProps` — derived, never
+ * retyped. The illustration image and "Compare Plans" secondary leave the
+ * page (CONVENTIONS liberty; `LabsValueProps` has one CTA).
+ */
+export const OSS_VS_PRO_VALUE_PROPS: ValuePropsContent = {
+  headline: OSS_VS_PRO_FEATURE_GRID.headline,
+  deck: OSS_VS_PRO_FEATURE_GRID.body,
+  items: OSS_VS_PRO_FEATURE_GRID.items.map((item, i) => ({
+    index: `0${i + 1}.`,
+    title: item.title,
+    body: item.body,
+  })),
+  cta: {
+    ...OSS_VS_PRO_FEATURE_GRID.primaryCta,
+    analytics: "OSSvsPro-Grid-Book-Demo",
+  },
+};
 
 // ---------------------------------------------------------------------------
 // Subway map section: "Is Your ML Team Ready for the Next Station?"
@@ -241,3 +263,16 @@ export const OSS_VS_PRO_FINAL_CTA = {
   },
   secondaryCta: { label: "Read Docs", href: "/docs" },
 } as const;
+
+/**
+ * The Labs closing band for `/open-source-vs-pro` — same words as
+ * `/pricing`'s close, split the same way; "Read Docs" leaves the page.
+ */
+export const OSS_VS_PRO_CLOSE: LabsBandContent = {
+  headlineLines: ["Start deploying reproducible", "AI workflows today"],
+  deck: OSS_VS_PRO_FINAL_CTA.body,
+  cta: {
+    ...OSS_VS_PRO_FINAL_CTA.primaryCta,
+    analytics: "OSSvsPro-Close-Book-Demo",
+  },
+};

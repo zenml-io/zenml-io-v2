@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2024-08-21T14:43:35.609Z"
   createdOn: "2024-06-18T14:14:42.073Z"
 toolName: "MLflow"
+cardSubtitle: "Beyond experiment tracking to end-to-end MLOps"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a1b4e2d9/667194e2cb9c515b07633d21_mlflow.png"
 category: "experiment-trackers"

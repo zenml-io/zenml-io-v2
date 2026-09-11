@@ -21,12 +21,12 @@ tags:
 date: "2025-10-01T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/37fc36b3/6981cf0ef4f7a9ede9959a0a_6981ce8f313683e025df656f_best-llm-embedding-models.avif"
+  url: "https://assets.zenml.io/content/blog/best-embedding-models-for-rag/fa9c2088/best-embedding-models-for-rag-cover.avif"
 seo:
   title: "9 Best Embedding Models for RAG to Try This Year - ZenML Blog"
   description: "Discover the 9 best data embedding models for RAG pipelines you build this year."
   canonical: "https://www.zenml.io/blog/best-embedding-models-for-rag"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/37fc36b3/6981cf0ef4f7a9ede9959a0a_6981ce8f313683e025df656f_best-llm-embedding-models.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/best-embedding-models-for-rag/b1cfe5ce/best-embedding-models-for-rag-cover.jpg"
   ogTitle: "9 Best Embedding Models for RAG to Try This Year - ZenML Blog"
   ogDescription: "Discover the 9 best data embedding models for RAG pipelines you build this year."
 ---

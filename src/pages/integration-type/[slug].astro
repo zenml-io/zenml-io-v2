@@ -1,16 +1,24 @@
 ---
 /**
- * Integration type taxonomy page.
- *
- * Renders a filtered view of integrations for this type, with a link back to
- * the hub pre-filtered. Matches the hub card style for consistency.
+ * Integration type hub, on the ZenML Labs shell (integrations cutover
+ * #318): a breadcrumb + short band, then every integration of this type on
+ * `TermHubCatalog` (`labs.integration-card`).
  *
  * Generates /integration-type/<slug> for each integration type.
  */
 import { getCollection } from "astro:content";
-import PageHeader from "../../components/templates/PageHeader.astro";
+import LabsBand from "../../components/labs/LabsBand.astro";
+import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
+import Breadcrumb from "../../components/system/Breadcrumb.astro";
 import TermHubCatalog from "../../components/templates/TermHubCatalog.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
+import {
+  INTEGRATION_TYPE_EYEBROW,
+  integrationsClose,
+  integrationTypeDeck,
+} from "../../lib/integrations";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const integrationTypes = await getCollection("integration-types");
@@ -40,36 +48,87 @@ const allIntegrations = (
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "integration-type") ? defaultOgUrl("pages", "integration-type") : undefined}
   title={`${integrationType.data.name} Integrations - ZenML`}
   description={`ZenML integrations in the ${integrationType.data.name} category. Browse ${allIntegrations.length} integrations.`}
   surface="ml"
+  app="labs"
+  product="zenml"
 >
-  <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-    <PageHeader
-      class="mb-10"
-      leadingLink={{
-        href: `/integrations?type=${integrationType.data.slug}`,
-        label: "All integrations",
-      }}
-      heading={integrationType.data.name}
-      description={`${allIntegrations.length} ${allIntegrations.length === 1 ? "integration" : "integrations"} in this category`}
-      classOverrides={{
-        heading: "text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl",
-        headingSpacing: "mt-2",
-        description: "text-lg text-gray-600",
-        descriptionSpacing: "mt-2",
-      }}
-    />
+  <LabsBand size="short">
+    <div class="scroll-reveal-section">
+      <div class="flex flex-col gap-4">
+        <Breadcrumb
+          class="reveal-child"
+          items={[
+            { label: "Integrations", href: "/integrations" },
+            { label: "Types", href: "/integration-type" },
+            { label: integrationType.data.name },
+          ]}
+          separator="chevron"
+        />
+        <div class="reveal-child stagger-1">
+          <p class="font-label text-[13px] leading-4 tracking-[0.05em] uppercase text-(--color-cream-700)">
+            {INTEGRATION_TYPE_EYEBROW}
+          </p>
+          <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+            {integrationType.data.name}
+          </h1>
+          <p class="mt-space-sm max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
+            {integrationTypeDeck(allIntegrations.length)}
+          </p>
+        </div>
+      </div>
+    </div>
+  </LabsBand>
 
-    {/* Integration grid — same card style as hub */}
-    <TermHubCatalog
-      items={allIntegrations.map((integration) => ({
-        href: `/integrations/${integration.data.slug}`,
-        title: integration.data.title,
-        categoryLabel: integrationType.data.name,
-        logo: integration.data.logo,
-      }))}
-      emptyHeading="No integrations of this type yet."
-    />
-  </div>
+  <section class:list={["scroll-reveal-section pb-24", BAND_CONTENT_GAP]}>
+    <div class="reveal-child stagger-1 mx-auto max-w-content px-gutter">
+      <TermHubCatalog
+        id="type-catalog"
+        centerThin
+        items={allIntegrations.map((integration) => ({
+          href: `/integrations/${integration.data.slug}`,
+          title: integration.data.title,
+          categoryLabel: integrationType.data.name,
+          logo: integration.data.logo,
+        }))}
+        emptyHeading="No integrations of this type yet."
+      />
+    </div>
+  </section>
+
+  <LabsCloseCta content={integrationsClose("IntegrationType-Close-Book-Demo")} />
 </BaseLayout>
+
+<style>
+  /* House scroll-reveal pattern (reference: llmops-tags/[slug].astro). */
+  .reveal-child {
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-1 { transition-delay: 60ms; }
+
+  .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-child,
+    .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initScrollReveal);
+  } else {
+    initScrollReveal();
+  }
+</script>

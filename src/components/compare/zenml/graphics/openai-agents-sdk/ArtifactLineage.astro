@@ -80,28 +80,28 @@
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 16px 16px 14px;
-    background: var(--color-surface);
+    background: var(--color-card);
     display: flex;
     flex-direction: column;
   }
-  .card--competitor { background: var(--color-surface-warm); }
-  .card--zenml { border-color: var(--color-accent); }
+  .card--competitor { background: var(--color-cream-50); }
+  .card--zenml { border-color: var(--color-sage-500); background: var(--color-sage-50); }
 
   .card-head { margin-bottom: 14px; }
   .card-label {
     display: block;
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-muted);
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-cream-700);
     margin-bottom: 4px;
   }
-  .card-label--accent { color: var(--color-accent); }
+  .card-label--accent { color: var(--color-sage-800); }
   .card-sub {
     display: block;
     font-size: 12px;
-    color: var(--color-secondary);
+    color: var(--color-cream-700);
   }
 
   .spans {
@@ -116,7 +116,7 @@
     align-items: center;
     gap: 8px;
     padding: 5px 8px;
-    background: var(--color-surface);
+    background: var(--color-card);
     border-radius: 4px;
   }
   .span--child { margin-left: 14px; }
@@ -124,24 +124,24 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--color-muted);
+    background: var(--color-cream-600);
   }
   .span-text code {
     font-family: var(--font-mono);
     font-size: 10.5px;
-    color: var(--color-primary);
+    color: var(--color-cream-900);
   }
   .span-meta {
     font-family: var(--font-mono);
     font-size: 9.5px;
-    color: var(--color-muted);
+    color: var(--color-cream-700);
   }
   .card-foot {
     margin-top: 12px;
     padding-top: 10px;
-    border-top: 1px dashed var(--color-border-light);
+    border-top: 1px dashed var(--color-border);
     font-size: 10.5px;
-    color: var(--color-muted);
+    color: var(--color-cream-700);
     font-style: italic;
     text-align: center;
   }
@@ -157,7 +157,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 6px 10px;
-    background: var(--color-accent-light);
+    background: var(--color-sage-200);
     border-radius: 6px;
     margin-bottom: 4px;
   }
@@ -165,12 +165,12 @@
     font-family: var(--font-mono);
     font-size: 11.5px;
     font-weight: 700;
-    color: var(--color-accent-deep);
+    color: var(--color-sage-800);
   }
   .exec-id-meta {
     font-family: var(--font-mono);
     font-size: 10px;
-    color: var(--color-accent-deep);
+    color: var(--color-sage-800);
   }
   .cp {
     display: grid;
@@ -178,22 +178,22 @@
     align-items: center;
     gap: 8px;
     padding: 7px 10px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border-light);
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
     border-radius: 6px;
   }
   .cp-name code {
     font-family: var(--font-mono);
     font-size: 10.5px;
-    color: var(--color-primary);
+    color: var(--color-cream-900);
     font-weight: 600;
   }
   .artifact {
     font-family: var(--font-mono);
     font-size: 10px;
     padding: 2px 7px;
-    background: var(--color-accent-light);
-    color: var(--color-accent-deep);
+    background: var(--color-sage-200);
+    color: var(--color-sage-800);
     border-radius: 3px;
     font-weight: 600;
   }
@@ -202,22 +202,22 @@
     display: flex;
     gap: 6px;
     padding-top: 10px;
-    border-top: 1px solid var(--color-border-light);
+    border-top: 1px solid var(--color-border);
     flex-wrap: wrap;
   }
   .action {
     font-size: 10.5px;
-    color: var(--color-accent-deep);
+    color: var(--color-sage-800);
     padding: 2px 7px;
-    border: 1px solid var(--color-accent);
+    border: 1px solid var(--color-sage-500);
     border-radius: 3px;
-    background: var(--color-surface);
+    background: var(--color-card);
     font-weight: 600;
   }
   .action code {
     font-family: var(--font-mono);
     font-size: 10px;
-    color: var(--color-accent-deep);
+    color: var(--color-sage-800);
   }
 
   @media (max-width: 520px) {

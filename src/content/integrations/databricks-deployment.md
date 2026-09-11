@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-07-16T09:26:57.975Z"
 integrationType: "deployer"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5439fa99/6696392a47017a8a18c7fb7e_Databricks_logo.png"
+  url: "https://assets.zenml.io/content/integrations/logos/databricks-deployment.svg"
+  alt: "Databricks logo"
 shortDescription: "Deploy Scalable, Production-Ready ML Models with Databricks and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/model-deployers/databricks"
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/databricks-demo"

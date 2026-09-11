@@ -20,12 +20,12 @@ tags:
 date: "2024-08-19T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5a7b5a8c/6981d389ab6d2820d701bc00_6981d2aba626881724d7d4df_CleanShot_2024-08-19_at_11.49.00_402x.avif"
+  url: "https://assets.zenml.io/content/blog/ai-generated-storytelling-genai-comic-zenml/2471bce8/ai-generated-storytelling-genai-comic-zenml-cover.avif"
 seo:
   title: "AI-Generated Storytelling: A GenAI Comic About ZenML - ZenML Blog"
   description: "Playing around with some genAI services and tools to create a story and comic that showcases the journey of MLOps adoption for a small team."
   canonical: "https://www.zenml.io/blog/ai-generated-storytelling-genai-comic-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5a7b5a8c/6981d389ab6d2820d701bc00_6981d2aba626881724d7d4df_CleanShot_2024-08-19_at_11.49.00_402x.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/ai-generated-storytelling-genai-comic-zenml/5bf27241/ai-generated-storytelling-genai-comic-zenml-cover.jpg"
   ogTitle: "AI-Generated Storytelling: A GenAI Comic About ZenML - ZenML Blog"
   ogDescription: "Playing around with some genAI services and tools to create a story and comic that showcases the journey of MLOps adoption for a small team."
 ---

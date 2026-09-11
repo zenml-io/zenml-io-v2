@@ -55,6 +55,20 @@ interface SnapshotTarget {
 
 const SNAPSHOT_TARGETS: SnapshotTarget[] = [
   {
+    page: "book-your-demo.html",
+    selector: "#demo-form-grid",
+    golden: "book-your-demo.html",
+    covers:
+      "canonical booking page: shared lead-capture grid, form-island mount, and calendar transition container",
+  },
+  {
+    page: "success-calendar.html",
+    selector: "main > section:last-child",
+    golden: "success-calendar.html",
+    covers:
+      "canonical calendar page: Labs interior band, Cal.com mount, and no-JavaScript booking fallback",
+  },
+  {
     page: "blog/agents-are-not-microservices.html",
     selector: ".prose",
     golden: "blog-agents-are-not-microservices.html",
@@ -67,6 +81,27 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
     golden: "compare-kitaru-vs-pydantic-ai.html",
     covers:
       "MDX compare-page body: component imports, ComparisonTable, CodeCompare panes (Shiki)",
+  },
+  {
+    page: "compare/zenml-vs-argo-workflows.html",
+    selector: "#feature-comparison",
+    golden: "compare-zenml-vs-argo-workflows.html",
+    covers:
+      "blocks-driven comparison body: the richest feature scorecard, including every label, tooltip, and competitor value",
+  },
+  {
+    page: "vs/zenml-vs-orchestrators.html",
+    selector: "main > section:nth-of-type(2)",
+    golden: "vs-zenml-vs-orchestrators.html",
+    covers:
+      "category comparison body below the hero: the introductory prose that leads into the value sections",
+  },
+  {
+    page: "compare/zenml-vs-crewai.html",
+    selector: ".compare-body-inner",
+    golden: "compare-zenml-vs-crewai.html",
+    covers:
+      "ZenML MDX comparison body: the richest MDX entry with tables, code panes, graphics, quote, and closing comparison content",
   },
   {
     page: "projects/floracast.html",
@@ -89,6 +124,119 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
     covers:
       "project details column where the stack section holds the body's only <ul> — the split leaves a details region with no list",
   },
+  {
+    page: "llmops-database/building-a-systematic-snap-benefits-llm-evaluation-framework.html",
+    selector: ".prose",
+    golden:
+      "llmops-building-a-systematic-snap-benefits-llm-evaluation-framework.html",
+    covers:
+      "LLMOps database entry body: plain Markdown with headings, bullet lists and a fenced code block, rendered by the database entry template",
+  },
+  {
+    page: "mlops-database/airbnb-chronon-internal-dataai-app-platform-conversational-ai-platform-sandcastle-internal-platform-for-rapidly-prototyp.html",
+    selector: "dl",
+    golden: "mlops-airbnb-chronon-sandcastle-record.html",
+    covers:
+      "MLOps database entry record (LabsMetadataBlock): the Industry link and the MLOps-topic chips as the entry layout renders them",
+  },
+  {
+    page: "mlops-database/airbnb-chronon-internal-dataai-app-platform-conversational-ai-platform-sandcastle-internal-platform-for-rapidly-prototyp.html",
+    selector: ".prose",
+    golden: "mlops-airbnb-chronon-sandcastle.html",
+    covers:
+      "MLOps database entry body: headings and paragraphs rendered through the shared prose rehype plugins (the second collection they cover)",
+  },
+  {
+    page: "pricing.html",
+    selector: "#pricing-ws-panel-zenml",
+    golden: "pricing-zenml-plan-cards.html",
+    covers:
+      "pricing plan cards, ZenML workspace panel: the three plans, the Scale card's executions slider stops and default readout, every plan CTA with its analytics name",
+  },
+  {
+    page: "pricing.html",
+    selector: "#compare-table",
+    golden: "pricing-compare-table.html",
+    covers:
+      "pricing comparison tables (both workspaces): section headings, feature rows, check/cross/text cells, the CTA row",
+  },
+  {
+    page: "open-source-vs-pro.html",
+    selector: "table",
+    golden: "open-source-vs-pro-table.html",
+    covers:
+      "Open Source vs Pro feature breakdown table: column headers and every feature row",
+  },
+  {
+    page: "get-started.html",
+    selector: "ol",
+    golden: "get-started-steps.html",
+    covers:
+      "get-started three-step walkthrough (ProcessSteps vertical-code): step titles, copy and the highlighted code blocks",
+  },
+  {
+    page: "docs.html",
+    selector: 'section[aria-label="Choose your documentation"]',
+    golden: "docs-diptych.html",
+    covers:
+      "docs hub diptych: the two product cards, their quick links and CTAs with the DocsHub analytics names",
+  },
+  {
+    page: "integrations/kubernetes.html",
+    selector: ".prose",
+    golden: "integration-kubernetes-body.html",
+    covers:
+      "integration detail body: the overview, the two feature lists, the code example and the additional resources as the integration template renders them",
+  },
+  {
+    page: "integration-type/orchestrator.html",
+    selector: "#type-catalog",
+    golden: "integration-type-orchestrator-grid.html",
+    covers:
+      "integration-type hub grid: every integration card of the type (mark, title, type label, href)",
+  },
+  {
+    page: "features.html",
+    selector: "#features-grid",
+    golden: "features-grid.html",
+    covers:
+      "features hub grid: the seven category cards (category, title, summary, href)",
+  },
+  {
+    page: "features/auto-track-everything.html",
+    selector: "#feature-blocks",
+    golden: "feature-auto-track-everything.html",
+    covers:
+      "feature detail page: the value and compliance blocks (title, body, bullets, image; badges, eyebrow, headline) as the feature template renders them",
+  },
+  {
+    page: "cloud-features/ml-models-control-plane.html",
+    selector: "section:has(> div.gap-20)",
+    golden: "cloud-features-splits.html",
+    covers:
+      "cloud-features alternating feature sections (the labs.feature-split pattern): heading, check-bullet rows and media per section — a guard that the shared component re-point does not move this page",
+  },
+  {
+    page: "deployments.html",
+    selector: "section:has(> div.gap-20)",
+    golden: "deployments-scenarios.html",
+    covers:
+      "deployment scenarios (the labs.feature-split pattern with a Learn More link): a guard that the shared component re-point does not move this page",
+  },
+  {
+    page: "pricing.html",
+    selector: "section[data-workspace-panel='zenml'] div.bg-card",
+    golden: "pricing-compliance-card.html",
+    covers:
+      "pricing compliance card (labs.compliance-card): badges, eyebrow, headline, body — a guard that the shared component re-point does not move this page",
+  },
+  {
+    page: "pro.html",
+    selector: "section div.md\\:flex-row",
+    golden: "pro-compliance-card.html",
+    covers:
+      "pro compliance card (labs.compliance-card): the same card as /pricing's — a guard that the shared component re-point does not move this page",
+  },
 ];
 
 /**
@@ -98,16 +246,23 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
  */
 const ASSET_HASH_RE = /(\/_astro\/[^"'\s]+?)\.[A-Za-z0-9_-]{8}\.(\w+)/g;
 const SCOPED_STYLE_ID_RE = /data-astro-cid-[a-z0-9]+/g;
+// An <astro-island>'s uid is a per-render id, not content: it changes from
+// one build to the next even when nothing about the page did.
+const ISLAND_UID_RE = /\buid="[A-Za-z0-9_-]+"/g;
 
 export function normaliseSnapshot(html: string): string {
   const normalised = html
     .replace(ASSET_HASH_RE, "$1.[hash].$2")
     .replace(SCOPED_STYLE_ID_RE, "data-astro-cid-[hash]")
+    .replace(ISLAND_UID_RE, 'uid="[hash]"')
     // One tag per line so a golden diff reads like a document, not one 30 KB
     // line. Cheerio escapes "<" in text nodes, so this is a tag boundary
     // nearly everywhere; a "<" inside an attribute value or inline <script>
     // would also get a newline, which is ugly but still deterministic.
     .replace(/</g, "\n<")
+    // Inline text immediately before an element has a meaningful space, but
+    // trailing whitespace in a line-oriented golden obscures diff checks.
+    .replace(/[ \t]+(?=\n)/g, "")
     .trim();
   return `${normalised}\n`;
 }

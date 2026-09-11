@@ -2,8 +2,8 @@
 name: blog-post-contributor
 description: >-
   Add or import a blog post from Markdown or Notion; prepare content, metadata,
-  and assets, including the cover via the figma-blog-cover skill. Skip ordinary
-  edits to existing posts.
+  and assets, including the cover via the figma-blog-cover skill. External actions require task authorization. Skip ordinary edits
+  to existing posts.
 ---
 
 # Blog Post Contributor
@@ -154,6 +154,8 @@ Check if the content has a dedicated cover/hero image:
 Continue content preparation and checks independent of the cover. Keep the post draft while assets are incomplete; do not invent image URLs.
 
 `mainImage.url` is the AVIF, `seo.ogImage` is the JPEG sibling — never the same URL.
+
+`mainImage` is the cover only (cards, hubs, social, JSON-LD) and is never rendered inside the post. If the author wants the image shown in the post itself, add a `featuredImage:` block with the same shape (usually a copy of `mainImage`); comparison and "X vs Y" posts carry one by default, other posts do not.
 
 ### C3. Validate or create the author
 

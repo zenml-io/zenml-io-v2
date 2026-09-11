@@ -20,7 +20,9 @@ tags:
 date: "2023-05-31T00:00:00.000Z"
 readingTime: 4 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/09e3e5c8/653267fe56e423c5b451b1fb_Group_9309.png"
+  url: "https://assets.zenml.io/content/blog/launching-mlops-platform-sandbox-a-production-ready-mlops-platform-in-an-ephemeral-environment/3c1dfc2b/launching-mlops-platform-sandbox-a-production-ready-mlops-platform-in-an-ephemeral-environment-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/launching-mlops-platform-sandbox-a-production-ready-mlops-platform-in-an-ephemeral-environment/42e3f4a6/launching-mlops-platform-sandbox-a-production-ready-mlops-platform-in-an-ephemeral-environment-cover.jpg"
 ---
 
 **Last updated:** June 1st, 2023

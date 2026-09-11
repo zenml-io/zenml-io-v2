@@ -63,18 +63,18 @@
     display: inline-block;
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    letter-spacing: 0;
+    text-transform: none;
     padding: 3px 8px;
     border-radius: 4px;
   }
   .tag--muted {
-    background: var(--color-border-light);
-    color: var(--color-muted);
+    background: var(--color-border);
+    color: var(--color-cream-700);
   }
   .tag--accent {
-    background: var(--color-accent-light);
-    color: var(--color-accent-deep);
+    background: var(--color-sage-200);
+    color: var(--color-sage-800);
   }
 
   .dbos-row {
@@ -84,7 +84,7 @@
     padding: 12px 14px;
     border: 1px dashed var(--color-border);
     border-radius: 10px;
-    background: var(--color-surface-warm);
+    background: var(--color-cream-50);
   }
   .opaque {
     display: flex;
@@ -96,20 +96,20 @@
   .opaque code {
     font-family: var(--font-mono);
     font-size: 12px;
-    color: var(--color-secondary);
+    color: var(--color-cream-700);
   }
   .opaque .dim {
     font-size: 11px;
-    color: var(--color-muted);
+    color: var(--color-cream-700);
     font-style: italic;
   }
 
   .record {
     padding: 16px 18px 18px;
-    border: 1px solid var(--color-accent);
+    border: 1px solid var(--color-sage-500);
     border-radius: 12px;
-    background: var(--color-surface);
-    box-shadow: 0 1px 0 var(--color-border);
+    background: var(--color-card);
+
   }
   .record-head {
     display: flex;
@@ -120,37 +120,37 @@
   .exec {
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--color-muted);
+    color: var(--color-cream-700);
   }
   .mono-call {
     font-family: var(--font-mono);
     font-size: 12.5px;
-    color: var(--color-primary);
+    color: var(--color-cream-900);
     padding: 10px 12px;
     border-radius: 6px;
-    background: var(--color-bg);
+    background: var(--color-cream-50);
     margin-bottom: 12px;
   }
-  .fn { color: var(--color-accent); font-weight: 600; }
-  .str { color: var(--color-secondary); }
-  .val { color: var(--color-accent-deep); }
+  .fn { color: var(--color-sage-800); font-weight: 600; }
+  .str { color: var(--color-cream-700); }
+  .val { color: var(--color-sage-800); }
 
   .fields { margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
   .fields > div { display: grid; grid-template-columns: 70px 1fr; gap: 10px; align-items: center; }
   .fields dt {
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--color-muted);
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-cream-700);
     margin: 0;
   }
   .fields dd {
     margin: 0;
     font-size: 12.5px;
-    color: var(--color-primary);
+    color: var(--color-cream-900);
     padding: 6px 10px;
-    background: var(--color-accent-light);
+    background: var(--color-sage-200);
     border-radius: 4px;
   }
   .fields .mono {
@@ -169,13 +169,13 @@
     padding: 5px 10px;
     border: 1px solid var(--color-border);
     border-radius: 999px;
-    background: var(--color-surface);
+    background: var(--color-card);
     font-size: 11px;
   }
-  .chip-k { color: var(--color-muted); font-weight: 600; text-transform: uppercase; font-size: 9.5px; letter-spacing: 0.05em; }
+  .chip-k { color: var(--color-cream-700); font-weight: 600; text-transform: none; font-size: 9.5px; letter-spacing: 0; }
   .chip-v {
     font-family: var(--font-mono);
-    color: var(--color-primary);
+    color: var(--color-cream-900);
     font-weight: 600;
   }
 
@@ -185,15 +185,15 @@
     gap: 10px;
     margin-top: 14px;
     padding-top: 12px;
-    border-top: 1px solid var(--color-border-light);
+    border-top: 1px solid var(--color-border);
     font-size: 11.5px;
-    color: var(--color-secondary);
+    color: var(--color-cream-700);
   }
   .replay svg {
     width: 14px;
     height: 14px;
     fill: none;
-    stroke: var(--color-accent);
+    stroke: var(--color-sage-600);
     stroke-width: 1.6;
     stroke-linecap: round;
     stroke-linejoin: round;

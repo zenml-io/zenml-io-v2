@@ -21,12 +21,12 @@ tags:
 date: "2025-10-09T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2b9bab8d/6981d36ce92aa039b696b89b_6981d2afc033922ef315cd28_best-llm-evaluation-tools.avif"
+  url: "https://assets.zenml.io/content/blog/best-llm-evaluation-tools/74663791/best-llm-evaluation-tools-cover.avif"
 seo:
   title: "Best LLM Evaluation Tools: Top 9 Frameworks for Testing AI Models - ZenML Blog"
   description: "Discover the 9 best LLM evaluation tools to test your AI models before going live."
   canonical: "https://www.zenml.io/blog/best-llm-evaluation-tools"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2b9bab8d/6981d36ce92aa039b696b89b_6981d2afc033922ef315cd28_best-llm-evaluation-tools.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/best-llm-evaluation-tools/a6e36388/best-llm-evaluation-tools-cover.jpg"
   ogTitle: "Best LLM Evaluation Tools: Top 9 Frameworks for Testing AI Models - ZenML Blog"
   ogDescription: "Discover the 9 best LLM evaluation tools to test your AI models before going live."
 ---

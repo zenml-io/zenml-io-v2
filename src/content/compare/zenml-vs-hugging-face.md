@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2024-08-21T14:43:01.318Z"
   createdOn: "2024-07-12T09:53:13.208Z"
 toolName: "Hugging Face"
+cardSubtitle: "End-to-end MLOps around your Hugging Face models"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/22a0f7f8/6690fbe8b54ad26f1ebd383f_huggingface_icon.png"
 category: "modeling"
