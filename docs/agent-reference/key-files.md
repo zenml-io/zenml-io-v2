@@ -67,35 +67,66 @@ never optional-prop bags hidden by as casts. Register new templates.
 - `src/layouts/ContentLayout.astro` — The Labs prose layout for the legal pages, `/imprint` and `/contact`: a short `LabsBand` carries the h1 (+ optional `deck`), and a `max-w-3xl` `.prose` column (the blog reading measure) renders the slotted body. No close CTA
 - `src/layouts/MinimalLayout.astro` — Lightweight shell (no nav/footer) for embeds
 
-### Compare-page OG card generator
+### OG card generators
 
-The MDX comparison pages (`compare-kitaru` and `compare-zenml`) use
-programmatic OG cards rendered from each `.mdx`'s frontmatter
-(`competitor`, `cardSubtitle`). The template has two brand variants,
-picked by collection: Kitaru (orange, Paper artboard) and ZenML (purple,
-`public/images/zenml-logo.svg` wordmark). Pipeline:
-satori (JSX → SVG) → `@resvg/resvg-js` (SVG → PNG at 2× native) → sharp
-(PNG → JPEG, q85 mozjpeg 4:2:0) → R2 upload at a deterministic key.
+Every route gets a programmatic OG card from one of two generators, both
+built on shared machinery in `scripts/og/pipeline.ts` (`loadFonts`, the
+satori → `@resvg/resvg-js` → sharp render pass at 2400px, JPEG q85 mozjpeg
+4:2:0, and `uploadToR2`). Neither generator mutates content frontmatter —
+the OG URL is always derived at render time from a brand/family + slug, so
+a re-render overwrites the same R2 key in place.
 
-The OG URL is **derived at render time** from the entry slug via
-`compareOgUrl(brand, slug)` in `src/lib/seo.ts` — pointing at
-`${ASSET_BASE_URL}/${COMPARE_OG_PREFIX[brand]}/<slug>.jpg`; each compare
-layout passes its own brand. The script
-uploads there with `r2-upload.py --literal-key` so re-renders overwrite
-in place. No frontmatter mutation. A page can still override by setting
-its own `ogImage:` frontmatter line.
+**VS cards** (`scripts/og/generate-compare-og.ts`, `scripts/og/template.tsx`)
+cover the comparison pages, from three sources: the `compare-kitaru` and
+`compare-zenml` MDX collections (frontmatter `competitor`, `competitorLogo`,
+`cardSubtitle`, ZenML- or Kitaru-brand template), and the legacy
+Webflow-migrated `compare` collection (`.md`, always ZenML brand) — its
+`toolName`, `toolIcon.url` and `cardSubtitle` frontmatter map onto the same
+shape before rendering; draft entries are skipped. `compareOgUrl(brand, slug)`
+in `src/lib/seo.ts` derives the URL (`${ASSET_BASE_URL}/${COMPARE_OG_PREFIX[brand]}/<slug>.jpg`);
+each compare layout passes its own brand and reads
+`seo?.ogImage || compareOgUrl(brand, slug)` as its `og:image` fallback.
+Known deviation from the design file: the "VS" badge renders Rethink Sans
+400 — the design specifies 500, but there is no static Medium woff for that
+face and the difference is invisible at the badge's 30px size.
 
-- `scripts/og/template.tsx` — design template; matches the Paper artboard
-  "D - Custom" on the **Kitaru Landing Page** file (page: **Open Graph**).
-  Paper is the source of truth — if the brand evolves, edit the artboard
-  and re-pull computed styles via `mcp__paper__get_jsx`.
-- `scripts/og/generate-compare-og.ts` — orchestrator.
 - `pnpm og:compare` — dry-run, writes JPEGs to `.cache/og/` (gitignored).
-- `pnpm og:compare:write` — uploads to R2. Truly idempotent: same slug →
-  same R2 key → overwrite in place. No `.mdx` files are ever modified.
-- `pnpm og:compare --slug=kitaru-vs-foo` — limit to specific pages.
+- `pnpm og:compare:write` — uploads to R2.
+- `pnpm og:compare --slug=kitaru-vs-foo` — limit to specific pages (repeatable).
 
-**When adding a new kitaru-vs-X or zenml-vs-X MDX page:** create the `.mdx` with the
-`competitor` and `cardSubtitle` frontmatter fields, then run
-`pnpm og:compare:write --slug=<new-slug>`. No frontmatter change needed
-— the layout derives the OG URL automatically.
+**When adding a new kitaru-vs-X or zenml-vs-X MDX page:** set `competitor`
+and `cardSubtitle` in frontmatter, then run
+`pnpm og:compare:write --slug=<new-slug>`. No frontmatter change needed —
+the layout derives the OG URL automatically.
+
+**Default cards** (`scripts/og/generate-default-og.ts`,
+`scripts/og/default-template.tsx`) cover everything else: the LLMOps and
+MLOps research databases and the hub/index/standalone pages listed in
+`src/lib/ogCards.ts` (`OG_CARDS`, `ogCard(key)`). The template composes a
+baked ground image (`public/images/og/labs-ground.jpg` — the tinted field,
+light diffusion and blurred product mark, since satori can neither blend
+nor blur) with a live lockup (`public/images/og/labs-lockup.svg`) and two
+lines of type (title, subtitle) that auto-fit the text frame.
+
+Cards are keyed by `DefaultOgFamily` (`llmops` | `mlops` | `pages`) via
+`DEFAULT_OG_PREFIX` in `src/lib/constants.ts` and `defaultOgUrl(family, slug)`
+in `src/lib/seo.ts`. Not every database entry or hub has a card yet, so
+layouts must check first: `hasDefaultOgCard(family, slug)` reads the
+manifest `src/data/og-cards.json` (`{ llmops: string[], mlops: string[],
+pages: string[] }`, each array sorted) and only then does the layout call
+`defaultOgUrl(...)` — a slug missing from the manifest falls through to
+`DEFAULT_OG_IMAGE` in `resolveSeo`.
+
+- `pnpm og:default` / `pnpm og:default --family=mlops` — dry-run, writes to
+  `.cache/og/<family>/`.
+- `pnpm og:default:write` — uploads to R2 and rewrites `og-cards.json`.
+- `pnpm og:default --missing` — only slugs not yet in the manifest.
+
+**Goldens:** `pnpm check:og` (`scripts/check-og-golden.ts`, also step 9 of
+`pnpm smoke:dist`) renders one VS card per `.mdx` brand variant
+(`kitaru-vs-pydantic-ai`, `zenml-vs-pydantic-ai`) through the real pipeline
+and pixel-diffs it against a committed JPEG in `tests/snapshots/rendered/`
+(delta 24, 0.5% max changed). A golden covering the `.md`-sourced VS path
+and one covering a default card are planned but not yet pinned. Regenerate
+with `pnpm og:golden:update` and look at the new image before committing —
+the diff IS the review.

@@ -1,8 +1,12 @@
 /**
- * Generate Open Graph JPEG cards for every MDX compare page: the
- * `compare-kitaru` collection (Kitaru brand) and the `compare-zenml`
- * collection (ZenML brand). The brand is picked by collection directory
- * and decides the template palette and the R2 prefix.
+ * Generate Open Graph JPEG cards for every VS compare page, from three
+ * sources: the `compare-kitaru` collection (Kitaru brand, .mdx), the
+ * `compare-zenml` collection (ZenML brand, .mdx), and the legacy
+ * `compare` collection (ZenML brand, .md, Webflow-migrated — competitor
+ * name from `toolName`, logo from `toolIcon.url`, subtitle from
+ * `cardSubtitle`; draft entries are skipped). All three render through the
+ * same ZenML-brand template path; the .md source just maps its differently
+ * named frontmatter onto the same shape the .mdx sources already use.
  *
  * Pipeline: gray-matter (parse frontmatter) → satori (JSX → SVG)
  *           → @resvg/resvg-js (SVG → PNG @ 2400px) → sharp (PNG → JPEG)
@@ -45,6 +49,10 @@ const COLLECTION_DIRS: Record<CompareOgBrand, string> = {
 };
 const BRANDS = Object.keys(COLLECTION_DIRS) as CompareOgBrand[];
 
+/** Legacy Webflow-migrated ZenML compare pages — differently shaped
+ *  frontmatter, mapped onto `Frontmatter` below before rendering. */
+const COMPARE_MD_DIR = join(REPO_ROOT, "src/content/compare");
+
 interface Frontmatter {
   competitor?: string;
   competitorLogo?: string;
@@ -55,6 +63,41 @@ interface CompareEntry {
   slug: string;
   brand: CompareOgBrand;
   frontmatter: Frontmatter;
+}
+
+interface CompareMdFrontmatter {
+  slug: string;
+  draft?: boolean;
+  toolName?: string;
+  toolIcon?: { url?: string };
+  cardSubtitle?: string;
+}
+
+async function loadCompareMdEntries(
+  filterSlugs: string[] | null,
+): Promise<CompareEntry[]> {
+  const files = (await readdir(COMPARE_MD_DIR)).filter((file) =>
+    file.endsWith(".md"),
+  );
+  const parsed = await Promise.all(
+    files.map(
+      async (file) =>
+        matter(await readFile(join(COMPARE_MD_DIR, file), "utf8"))
+          .data as CompareMdFrontmatter,
+    ),
+  );
+  return parsed
+    .filter((data) => !data.draft)
+    .filter((data) => !filterSlugs || filterSlugs.includes(data.slug))
+    .map((data) => ({
+      slug: data.slug,
+      brand: "zenml" as CompareOgBrand,
+      frontmatter: {
+        competitor: data.toolName,
+        competitorLogo: data.toolIcon?.url,
+        cardSubtitle: data.cardSubtitle,
+      },
+    }));
 }
 
 export async function loadEntries(
@@ -79,7 +122,10 @@ export async function loadEntries(
       );
     }),
   );
-  return perBrand.flat().sort((a, b) => a.slug.localeCompare(b.slug));
+  const mdEntries = await loadCompareMdEntries(filterSlugs);
+  return [...perBrand.flat(), ...mdEntries].sort((a, b) =>
+    a.slug.localeCompare(b.slug),
+  );
 }
 
 export async function renderJpeg(

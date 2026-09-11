@@ -172,7 +172,7 @@ const url = `${ASSET_BASE_URL}/content/uploads/1a2b3c4d/hero.webp`;
 
 ### Compare-page OG card generator
 
-The MDX comparison pages get programmatic OG cards derived at render time from the entry slug (`compareOgUrl(brand, slug)` in `src/lib/seo.ts`). When adding a `kitaru-vs-X` or `zenml-vs-X` MDX page, set `competitor` and `cardSubtitle` in its frontmatter and run `pnpm og:compare:write --slug=<new-slug>`. Pipeline, template source of truth and script details: [key-files.md](docs/agent-reference/key-files.md).
+Comparison pages — MDX and the legacy `.md` compare entries — get programmatic OG cards derived at render time from the entry slug (`compareOgUrl(brand, slug)` in `src/lib/seo.ts`). When adding a `kitaru-vs-X` or `zenml-vs-X` MDX page, set `competitor` and `cardSubtitle` in its frontmatter and run `pnpm og:compare:write --slug=<new-slug>`. Details: [key-files.md](docs/agent-reference/key-files.md).
 
 ### Lessons Learned
 
