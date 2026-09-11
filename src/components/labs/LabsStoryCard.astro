@@ -39,16 +39,14 @@ const props = Astro.props;
       <blockquote class="font-sans text-[18px] leading-7 text-(--color-cream-900)">
         {props.quote}
       </blockquote>
-      <footer class="mt-auto flex items-center gap-3 pt-8">
+      {(props.name || props.title || props.avatar || props.logo) && <footer class="mt-auto flex items-center gap-3 pt-8">
         {props.avatar && (
           <img src={props.avatar} alt={props.name} class="h-10 w-10 rounded-full object-cover" loading="lazy" />
         )}
-        <div>
-          <p class="font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">{props.name}</p>
-          {props.title && (
-            <p class="font-sans text-[14px] leading-5 text-(--color-cream-700)">{props.title}</p>
-          )}
-        </div>
+        {(props.name || props.title) && <div>
+          {props.name && <p class="font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">{props.name}</p>}
+          {props.title && <p class="font-sans text-[14px] leading-5 text-(--color-cream-700)">{props.title}</p>}
+        </div>}
         {props.logo && (
           <img
             src={props.logo.url}
@@ -57,7 +55,7 @@ const props = Astro.props;
             loading="lazy"
           />
         )}
-      </footer>
+      </footer>}
     </article>
   ) : (
     <a href={props.href} class="group flex h-full cursor-pointer flex-col overflow-hidden rounded-[20px] border border-border bg-card transition-colors duration-200 ease-out hover:border-(--color-sage-400)">

@@ -63,6 +63,8 @@ interface Props {
   /** Additive Labs skin (`labs.pricing-table`'s adapter); default preserves the legacy markup. */
   skin?: "default" | "labs";
   class?: string;
+  /** Optional accessible copy for status icons, supplied by comparison adapters. */
+  statusLabels?: { positive: string; negative: string };
 }
 
 const {
@@ -75,6 +77,7 @@ const {
   class: className,
   stickyFirstColumn = false,
   skin = "default",
+  statusLabels,
 } = Astro.props;
 
 const colCount = columns.length;
@@ -115,7 +118,7 @@ function labsCta(action: SpecTableAction): LabsCta {
             )}
           </div>
         )}
-        <div class="overflow-x-auto rounded-[20px] border border-(--color-border)">
+        <div class:list={["overflow-x-auto rounded-[20px] border border-(--color-border)", statusLabels && "relative"]}>
           <table class="w-full min-w-[600px] border-collapse text-sm">
             <thead>
               <tr class="border-b border-(--color-border)">
@@ -144,7 +147,7 @@ function labsCta(action: SpecTableAction): LabsCta {
                   )}
                   {section.rows.map((row) => (
                     <tr class="border-b border-(--color-border) last:border-b-0">
-                      <td class:list={[labsStickyCol, "px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)"]}>
+                      <td role={statusLabels ? "rowheader" : undefined} class:list={[labsStickyCol, "px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)"]}>
                         {row.href ? (
                           <a
                             href={row.href}
@@ -166,7 +169,7 @@ function labsCta(action: SpecTableAction): LabsCta {
                       {row.values.map((val) => (
                         <td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
                           {val === true ? (
-                            <svg
+                            <><svg
                               class="mx-auto h-5 w-5 text-(--color-sage-700)"
                               fill="none"
                               viewBox="0 0 24 24"
@@ -175,9 +178,9 @@ function labsCta(action: SpecTableAction): LabsCta {
                               aria-hidden="true"
                             >
                               <path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5" />
-                            </svg>
+                            </svg>{statusLabels && <span class="sr-only">{statusLabels.positive}</span>}</>
                           ) : val === false ? (
-                            <svg
+                            <><svg
                               class="mx-auto h-5 w-5 text-(--color-cream-400)"
                               fill="none"
                               viewBox="0 0 24 24"
@@ -186,7 +189,7 @@ function labsCta(action: SpecTableAction): LabsCta {
                               aria-hidden="true"
                             >
                               <path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10" />
-                            </svg>
+                            </svg>{statusLabels && <span class="sr-only">{statusLabels.negative}</span>}</>
                           ) : val === "COMING SOON" ? (
                             <span class="inline-block rounded-full bg-(--color-sage-100) px-2 py-0.5 font-sans text-[12px] leading-4 font-medium text-(--color-cream-800)">
                               Coming soon

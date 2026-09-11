@@ -1,0 +1,21 @@
+---
+import type { BlogProduct } from "../../lib/blog";
+import type { RelatedRailBlogCardItem } from "../templates/RelatedRail.astro";
+import BlogCard from "./BlogCard.astro";
+import "../../styles/labs-scroll-reveal.css";
+
+interface Props {
+  heading: string;
+  items: readonly (RelatedRailBlogCardItem & { product?: BlogProduct })[];
+}
+const { heading, items } = Astro.props;
+---
+
+{items.length > 0 && <section class="comparison-blog-rail scroll-reveal-section bg-(--color-sage-100) py-12 md:py-16">
+  <div class="mx-auto max-w-content px-gutter">
+    <h2 class="reveal-child mb-10 font-display text-[28px] leading-[34px] text-(--color-cream-800)">{heading}</h2>
+    <div class="scroll-reveal-section grid auto-rows-fr grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {items.map((item, index) => <div class:list={["reveal-child min-w-0", index % 3 === 1 && "stagger-1", index % 3 === 2 && "stagger-2"]}><BlogCard {...item} variant="framed" /></div>)}
+    </div>
+  </div>
+</section>}

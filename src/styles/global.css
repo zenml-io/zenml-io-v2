@@ -1508,7 +1508,8 @@ body {
  * margin-top (the common predecessor, a paragraph, contributes no trailing
  * space of its own) and 28px margin-bottom (the common successor, a
  * paragraph, adds its own 12px padding-top on top: 28 + 12 = 40). */
-[data-app="labs"] .prose .code-pane {
+[data-app="labs"] .prose .code-pane,
+[data-app="labs"] .labs-code-pane {
   margin-top: 40px;
   margin-bottom: 28px;
   display: flex;
@@ -1518,18 +1519,20 @@ body {
   border-radius: 16px;
   background-color: var(--color-cream-800);
 }
-[data-app="labs"] .prose .code-pane__bar {
+[data-app="labs"] .prose .code-pane__bar,
+[data-app="labs"] .labs-code-pane .code-pane__bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: var(--font-label);
+  font-family: var(--code-pane-ui-font, var(--font-label));
   font-size: 13px;
   line-height: 16px;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--color-cream-500);
+  letter-spacing: var(--code-pane-ui-tracking, 0.05em);
+  text-transform: var(--code-pane-ui-case, uppercase);
+  color: var(--code-pane-ui-color, var(--color-cream-500));
 }
-[data-app="labs"] .prose .code-pane__copy {
+[data-app="labs"] .prose .code-pane__copy,
+[data-app="labs"] .labs-code-pane .code-pane__copy {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -1540,11 +1543,13 @@ body {
   font: inherit;
   color: inherit;
 }
-[data-app="labs"] .prose .code-pane__scroll {
+[data-app="labs"] .prose .code-pane__scroll,
+[data-app="labs"] .labs-code-pane .code-pane__scroll {
   position: relative;
   overflow-x: auto;
 }
-[data-app="labs"] .prose .code-pane__scroll::after {
+[data-app="labs"] .prose .code-pane__scroll::after,
+[data-app="labs"] .labs-code-pane .code-pane__scroll::after {
   content: "";
   position: absolute;
   top: 0;
@@ -1554,18 +1559,21 @@ body {
   background: linear-gradient(to right, transparent, var(--color-cream-800));
   pointer-events: none;
 }
-[data-app="labs"] .prose .code-pane__scroll pre {
+[data-app="labs"] .prose .code-pane__scroll pre,
+[data-app="labs"] .labs-code-pane .code-pane__scroll pre {
   margin: 0;
   background: transparent !important;
   white-space: pre;
 }
-[data-app="labs"] .prose .code-pane__scroll pre code {
+[data-app="labs"] .prose .code-pane__scroll pre code,
+[data-app="labs"] .labs-code-pane .code-pane__scroll pre code {
   font-family: var(--font-mono);
   font-size: 14px;
   line-height: 21px;
 }
 @media (max-width: 480px) {
-  [data-app="labs"] .prose .code-pane {
+  [data-app="labs"] .prose .code-pane,
+  [data-app="labs"] .labs-code-pane {
     border-radius: 0;
     margin-inline: calc(-1 * var(--spacing-gutter));
   }

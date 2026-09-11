@@ -1,12 +1,15 @@
-<article class="compare-body-inner" data-astro-cid-[hash]="">
-<p>Pydantic AI and Kitaru solve different problems at different layers. Pydantic AI is an
+<article class="compare-body-inner">
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">Pydantic AI and Kitaru solve different problems at different layers. Pydantic AI is an
 <strong>agent harness
 </strong>: the best-in-class Pythonic library for writing type-safe agent logic, with tool calling, structured outputs, dependency injection, and streaming. Kitaru is a
 <strong>replay-based eval layer
 </strong>: it records every run as a session, and a session re-executes. Unchanged, you get a faithful baseline. Forked with one thing changed, you get an answer.
 </p>
+</div>
 
-<p>They don’t compete. They compose. Kitaru ships a
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">They don’t compete. They compose. Kitaru ships a
 <a href="https://docs.zenml.io/kitaru/adapters/pydantic-ai">first-class Pydantic AI adapter
 </a>: wrap the agent once with
 <code>KitaruAgent
@@ -14,97 +17,76 @@
 <a href="/compare/zenml-vs-pydantic-ai">ZenML vs Pydantic AI
 </a>.
 </p>
-
-<section class="when" data-reveal="" data-astro-cid-[hash]="">
-<div class="when-grid" data-astro-cid-[hash]="">
-<article class="when-card when-card--kitaru" data-astro-cid-[hash]="">
-<div class="when-card-head" data-astro-cid-[hash]="">
-<span class="when-tag when-tag--kitaru" data-astro-cid-[hash]="">Kitaru
-</span>
-<h2 data-astro-cid-[hash]="">Use Kitaru if you are
-</h2>
 </div>
-<ul data-astro-cid-[hash]="">
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Running Pydantic AI agents in production and can't test against real systems: a history tool policy answers tool calls from the recording
+
+<section class="scroll-reveal-section py-8 md:py-10">
+<div class="scroll-reveal-section mx-auto grid max-w-content grid-cols-1 gap-6 px-gutter lg:grid-cols-2">
+<article class="reveal-child flex h-full flex-col rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10">
+<p class="font-sans text-[14px] leading-5 font-medium text-(--color-sage-700)">Kitaru
+</p>
+<h2 class="mt-3 font-display text-[28px] leading-[34px] text-(--color-cream-900)">Use Kitaru if you are
+</h2>
+<ul class="mt-6 flex list-none flex-col">
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Running Pydantic AI agents in production and can't test against real systems: a history tool policy answers tool calls from the recording
 </span>
 </li>
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Deciding a model or prompt swap and want a like-for-like comparison instead of a vibe check
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Deciding a model or prompt swap and want a like-for-like comparison instead of a vibe check
 </span>
 </li>
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Turning the sessions that caught a failure into a regression suite that runs on every change
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Turning the sessions that caught a failure into a regression suite that runs on every change
 </span>
 </li>
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Already tracing to Langfuse, LangSmith, Braintrust, Logfire, or Arize Phoenix and want those traces runnable, not just readable
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Already tracing to Langfuse, LangSmith, Braintrust, Logfire, or Arize Phoenix and want those traces runnable, not just readable
 </span>
 </li>
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Self-hosting eval infrastructure so traces and credentials stay in your own systems
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Self-hosting eval infrastructure so traces and credentials stay in your own systems
 </span>
 </li>
 </ul>
 </article>
-<article class="when-card when-card--competitor" data-astro-cid-[hash]="">
-<div class="when-card-head" data-astro-cid-[hash]="">
-<span class="when-tag when-tag--competitor" data-astro-cid-[hash]="">Pydantic AI
-</span>
-<h2 data-astro-cid-[hash]="">Use Pydantic AI if you are
+<article class="reveal-child flex h-full flex-col rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10 stagger-1">
+<p class="font-sans text-[14px] leading-5 font-medium text-(--color-sage-700)">Pydantic AI
+</p>
+<h2 class="mt-3 font-display text-[28px] leading-[34px] text-(--color-cream-900)">Use Pydantic AI if you are
 </h2>
-</div>
-<ul data-astro-cid-[hash]="">
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Writing agent logic in Python and want type-safe inputs, outputs, and tools
+<ul class="mt-6 flex list-none flex-col">
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Writing agent logic in Python and want type-safe inputs, outputs, and tools
 </span>
 </li>
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Building short-lived or interactive agents, or using Pydantic AI's own Temporal, DBOS, Prefect, and Restate integrations where they fit
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Building short-lived or interactive agents, or using Pydantic AI's own Temporal, DBOS, Prefect, and Restate integrations where they fit
 </span>
 </li>
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Prototyping an agent before deciding whether it needs an eval loop around it
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Prototyping an agent before deciding whether it needs an eval loop around it
 </span>
 </li>
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Happy with your existing observability and only need better agent ergonomics
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Happy with your existing observability and only need better agent ergonomics
 </span>
 </li>
 </ul>
@@ -112,28 +94,41 @@
 </div>
 </section>
 
-<figure class="pullquote" data-reveal="" data-astro-cid-[hash]="">
-<div class="pullquote-inner" data-astro-cid-[hash]="">
-<span class="pullquote-mark" aria-hidden="true" data-astro-cid-[hash]="">“
-</span>
-<blockquote data-astro-cid-[hash]="">Pydantic AI gives you a great way to write an agent. Kitaru gives you a great way to prove a change to it.
+<section class="comparison-quote scroll-reveal-section relative overflow-hidden border-y border-(--color-border) py-12 md:py-20 bg-(--color-orange-50)">
+<script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();
+</script>
+<astro-island uid="[hash]" data-preact-island-id="6" component-url="/_astro/GrainBackdrop.[hash].js" component-export="GrainBackdrop" renderer-url="/_astro/client.[hash].js" props="{&quot;config&quot;:[0,{&quot;shaderColors&quot;:[1,[[0,&quot;#FAD3B8&quot;],[0,&quot;#FBE8DB&quot;],[0,&quot;#FAD3B8&quot;],[0,&quot;#FCF7F2&quot;]]],&quot;panel&quot;:[0,&quot;#FAF8F4&quot;],&quot;blobA&quot;:[0,&quot;#FBE8DBB3&quot;],&quot;blobB&quot;:[0,&quot;#FAD3B899&quot;],&quot;speed&quot;:[0,0.7],&quot;scale&quot;:[0,1.4],&quot;rotation&quot;:[0,30],&quot;noise&quot;:[0,0.35],&quot;blend&quot;:[0,false]}],&quot;class&quot;:[0,&quot;absolute inset-0 opacity-90&quot;]}" ssr="" client="idle" opts="{&quot;name&quot;:&quot;GrainBackdrop&quot;,&quot;value&quot;:true}" await-children="">
+<div aria-hidden="true" style="background-color:#FAF8F4;background-image:radial-gradient(circle farthest-corner at 20% 15%, #FBE8DBB3 0%, transparent 60%), radial-gradient(circle farthest-corner at 85% 85%, #FAD3B899 0%, transparent 60%);" class="pointer-events-none absolute inset-0 absolute inset-0 opacity-90">
+</div>
+<!--astro:end-->
+</astro-island>
+<figure class="reveal-child relative mx-auto max-w-content px-gutter text-center">
+<blockquote class="font-display text-[28px] leading-[36px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[46px]">Pydantic AI gives you a great way to write an agent. Kitaru gives you a great way to prove a change to it.
 </blockquote>
-</div>
 </figure>
+</section>
 
-<section class="feature-graphic" data-reveal="" data-astro-cid-[hash]="">
-<div class="feature-graphic-grid" data-astro-cid-[hash]="">
-<div class="feature-graphic-copy" data-astro-cid-[hash]="">
-<h2 data-astro-cid-[hash]="">Different questions
+<section class="scroll-reveal-section py-8 md:py-10" data-astro-cid-[hash]="">
+<div class="reveal-child mx-auto max-w-content px-gutter" data-astro-cid-[hash]="">
+<div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-space-mlg items-center">
+<div class="lg:order-1">
+<div data-astro-cid-[hash]="">
+<h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[42px]" data-astro-cid-[hash]="">Different questions
 </h2>
-<div class="feature-graphic-body" data-astro-cid-[hash]="">
-<p>Pydantic AI is asking: how do I write a typed, ergonomic agent loop with first-class tools and structured outputs? Kitaru is asking: once this agent ships, which of its runs can I re-run? Did the model swap actually help, and what regressed?
+<div class="comparison-value-copy mt-6 font-sans text-[17px] leading-[26px] text-(--color-cream-800)" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">Pydantic AI is asking: how do I write a typed, ergonomic agent loop with first-class tools and structured outputs? Kitaru is asking: once this agent ships, which of its runs can I re-run? Did the model swap actually help, and what regressed?
 </p>
-<p>In practice that means Pydantic AI keeps running your agent exactly as before. Kitaru sits beside it, recording each run and re-running the ones that matter.
+</div>
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">In practice that means Pydantic AI keeps running your agent exactly as before. Kitaru sits beside it, recording each run and re-running the ones that matter.
 </p>
 </div>
 </div>
-<div class="feature-graphic-media" data-astro-cid-[hash]="">
+</div>
+</div>
+<div class="lg:order-2">
+<div class="comparison-diagram-well min-w-0 overflow-hidden rounded-[20px] p-8 md:p-10 comparison-diagram-well--kitaru bg-(--color-sage-50)" data-astro-cid-[hash]="">
 <figure class="fig" data-astro-cid-[hash]="">
 <div class="panel panel--competitor" data-astro-cid-[hash]="">
 <div class="panel-head" data-astro-cid-[hash]="">
@@ -192,15 +187,20 @@
 </figure>
 </div>
 </div>
+</div>
+</div>
 </section>
 
-<section class="feature-graphic feature-graphic--reverse" data-reveal="" data-astro-cid-[hash]="">
-<div class="feature-graphic-grid" data-astro-cid-[hash]="">
-<div class="feature-graphic-copy" data-astro-cid-[hash]="">
-<h2 data-astro-cid-[hash]="">Compose, don’t replace
+<section class="scroll-reveal-section py-8 md:py-10" data-astro-cid-[hash]="">
+<div class="reveal-child mx-auto max-w-content px-gutter" data-astro-cid-[hash]="">
+<div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] gap-space-mlg items-center">
+<div class="lg:order-2">
+<div data-astro-cid-[hash]="">
+<h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[42px]" data-astro-cid-[hash]="">Compose, don’t replace
 </h2>
-<div class="feature-graphic-body" data-astro-cid-[hash]="">
-<p>Kitaru doesn’t ask you to give up the Pydantic AI agent you already wrote. Install it with
+<div class="comparison-value-copy mt-6 font-sans text-[17px] leading-[26px] text-(--color-cream-800)" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">Kitaru doesn’t ask you to give up the Pydantic AI agent you already wrote. Install it with
 <code>uv add kitaru-pydantic-ai
 </code>.
 <code>KitaruAgent
@@ -214,7 +214,9 @@
 <code>iter
 </code>, tools, output types, and capabilities behave exactly as on the wrapped agent.
 </p>
-<p>The adapter records every model request and tool call as a node on the session, and the same wrapper runs replays: model swaps and
+</div>
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">The adapter records every model request and tool call as a node on the session, and the same wrapper runs replays: model swaps and
 <code>model_params
 </code> apply at the model-request boundary, and tool calls get answered per policy. Under a
 <code>history
@@ -226,78 +228,39 @@
 </p>
 </div>
 </div>
-<div class="feature-graphic-media" data-astro-cid-[hash]="">
-<article class="codepane" data-astro-cid-[hash]="">
-<pre class="shiki shiki-themes kitaru-light kitaru-dark" style="background-color:#FAF6EF;--shiki-dark-bg:#1E1B16;color:#1A1310;--shiki-dark:#E9E4DE" tabindex="0">
+</div>
+</div>
+<div class="lg:order-1">
+<div class="comparison-diagram-well min-w-0 overflow-hidden rounded-[20px] p-8 md:p-10 comparison-diagram-well--kitaru bg-(--color-sage-50)" data-astro-cid-[hash]="">
+<figure class="labs-code-pane code-pane" data-language="python" aria-label="python implementation">
+<div class="code-pane__bar">
+<span>python
+</span>
+<button type="button" class="code-pane__copy" aria-label="Copy python code">Copy
+</button>
+</div>
+<div class="code-pane__scroll">
+<pre class="astro-code labs-light" style="background-color:#413D37;color:#F5F7F4; overflow-x: auto;" tabindex="0" data-language="python">
 <code>
 <span class="line">
-<span style="color:#5A4A1E;--shiki-dark:#C89F70">from
+<span style="color:#BECAA6">from
 </span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> pydantic_ai
+<span style="color:#F5F7F4"> pydantic_ai
 </span>
-<span style="color:#5A4A1E;--shiki-dark:#C89F70">import
+<span style="color:#BECAA6">import
 </span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> Agent
-</span>
-</span>
-
-<span class="line">
-<span style="color:#5A4A1E;--shiki-dark:#C89F70">from
-</span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> kitaru_pydantic_ai
-</span>
-<span style="color:#5A4A1E;--shiki-dark:#C89F70">import
-</span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> KitaruAgent
+<span style="color:#F5F7F4"> Agent
 </span>
 </span>
 
 <span class="line">
+<span style="color:#BECAA6">from
 </span>
-
-<span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">agent
+<span style="color:#F5F7F4"> kitaru_pydantic_ai
 </span>
-<span style="color:#635951;--shiki-dark:#AEA298">=
+<span style="color:#BECAA6">import
 </span>
-<span style="color:#9A3F10;--shiki-dark:#D38151"> Agent
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">(
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">"
-</span>
-<span style="color:#1F5A33;--shiki-dark:#6FB789">openai:gpt-5.4
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">"
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">,
-</span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> name
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">=
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">"
-</span>
-<span style="color:#1F5A33;--shiki-dark:#6FB789">reviewer
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">"
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">,
-</span>
-</span>
-
-<span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">            system_prompt
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">=
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">"
-</span>
-<span style="color:#1F5A33;--shiki-dark:#6FB789">You're a compliance reviewer.
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">"
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">)
+<span style="color:#F5F7F4"> KitaruAgent
 </span>
 </span>
 
@@ -305,25 +268,36 @@
 </span>
 
 <span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">reviewer
+<span style="color:#F5F7F4">agent
 </span>
-<span style="color:#635951;--shiki-dark:#AEA298">=
+<span style="color:#47BAD1">=
 </span>
-<span style="color:#9A3F10;--shiki-dark:#D38151"> KitaruAgent
+<span style="color:#47BAD1"> Agent
 </span>
-<span style="color:#635951;--shiki-dark:#AEA298">(
+<span style="color:#F5F7F4">(
 </span>
-<span style="color:#9A3F10;--shiki-dark:#D38151">agent
+<span style="color:#DBE0C2">"openai:gpt-5.4"
 </span>
-<span style="color:#635951;--shiki-dark:#AEA298">,
+<span style="color:#47BAD1">,
 </span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> agent_id
+<span style="color:#E0CFB7">name
 </span>
-<span style="color:#635951;--shiki-dark:#AEA298">=
+<span style="color:#47BAD1">=
 </span>
-<span style="color:#9A3F10;--shiki-dark:#D38151">AGENT_ID
+<span style="color:#DBE0C2">"reviewer"
 </span>
-<span style="color:#635951;--shiki-dark:#AEA298">)
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#E0CFB7">            system_prompt
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#DBE0C2">"You're a compliance reviewer."
+</span>
+<span style="color:#F5F7F4">)
 </span>
 </span>
 
@@ -331,51 +305,77 @@
 </span>
 
 <span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic"># Runs exactly as before, and lands as a session:
+<span style="color:#F5F7F4">reviewer
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> KitaruAgent
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">agent,
+</span>
+<span style="color:#E0CFB7">agent_id
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#E0CFB7">AGENT_ID
+</span>
+<span style="color:#F5F7F4">)
 </span>
 </span>
 
 <span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic"># every model request, tool call, tokens, cost.
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># Runs exactly as before, and lands as a session:
 </span>
 </span>
 
 <span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">result
+<span style="color:#AC947F;font-style:italic"># every model request, tool call, tokens, cost.
 </span>
-<span style="color:#635951;--shiki-dark:#AEA298">=
 </span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> reviewer
+
+<span class="line">
+<span style="color:#F5F7F4">result
 </span>
-<span style="color:#635951;--shiki-dark:#AEA298">.
+<span style="color:#47BAD1">=
 </span>
-<span style="color:#9A3F10;--shiki-dark:#D38151">run_sync
+<span style="color:#F5F7F4"> reviewer
 </span>
-<span style="color:#635951;--shiki-dark:#AEA298">(
+<span style="color:#47BAD1">.run_sync
 </span>
-<span style="color:#9A3F10;--shiki-dark:#D38151">case
+<span style="color:#F5F7F4">(
 </span>
-<span style="color:#635951;--shiki-dark:#AEA298">)
+<span style="color:#47BAD1">case
+</span>
+<span style="color:#F5F7F4">)
 </span>
 </span>
 </code>
 </pre>
-</article>
+</div>
+</figure>
+</div>
+</div>
 </div>
 </div>
 </section>
 
-<section class="feature-graphic feature-graphic--list" data-reveal="" data-astro-cid-[hash]="">
-<div class="feature-graphic-grid" data-astro-cid-[hash]="">
-<div class="feature-graphic-copy" data-astro-cid-[hash]="">
-<h2 data-astro-cid-[hash]="">What Kitaru adds on top
+<section class="scroll-reveal-section py-8 md:py-10" data-astro-cid-[hash]="">
+<div class="reveal-child mx-auto max-w-content px-gutter" data-astro-cid-[hash]="">
+<div data-astro-cid-[hash]="">
+<h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[42px]" data-astro-cid-[hash]="">What Kitaru adds on top
 </h2>
-<div class="feature-graphic-body" data-astro-cid-[hash]="">
-<p>Pydantic AI is an agent harness, and its own docs cover the Temporal, DBOS, Prefect, and Restate integrations for running it. What Kitaru adds is the eval loop on top of your recorded runs:
+<div class="comparison-value-copy mt-6 max-w-[768px] font-sans text-[17px] leading-[26px] text-(--color-cream-800)" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">Pydantic AI is an agent harness, and its own docs cover the Temporal, DBOS, Prefect, and Restate integrations for running it. What Kitaru adds is the eval loop on top of your recorded runs:
 </p>
 </div>
 </div>
-<div class="feature-graphic-media" data-astro-cid-[hash]="">
+<div class="comparison-diagram-well mt-10 min-w-0 overflow-hidden rounded-[20px] p-8 md:p-10 comparison-diagram-well--kitaru bg-(--color-sage-50)" data-astro-cid-[hash]="">
 <figure class="fig" data-astro-cid-[hash]="">
 <div class="layer layer--kitaru" data-astro-cid-[hash]="">
 <div class="layer-head" data-astro-cid-[hash]="">
@@ -447,8 +447,9 @@
 </div>
 </figure>
 </div>
-<div class="feature-graphic-bullets" data-astro-cid-[hash]="">
-<ul>
+<div class="labs-hex-list mt-10" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<ul class="reveal-child">
 
 <li>
 <strong>Sessions, recorded.
@@ -483,252 +484,292 @@
 </ul>
 </div>
 </div>
+</div>
+</div>
 </section>
 
-<h2 id="what-makes-kitaru-unique">What makes Kitaru unique
+<div class="comparison-prose prose scroll-reveal-section">
+<h2 id="what-makes-kitaru-unique" class="reveal-child">What makes Kitaru unique
 </h2>
+</div>
 
-<div class="ctable-wrap" data-reveal="" data-astro-cid-[hash]="">
-<table class="ctable has-notes" data-astro-cid-[hash]="">
-<thead data-astro-cid-[hash]="">
-<tr data-astro-cid-[hash]="">
-<th class="col-feature" data-astro-cid-[hash]="">Feature
+<section class="scroll-reveal-section py-8 md:py-10" data-astro-cid-[hash]="">
+<div class="reveal-child mx-auto max-w-content px-gutter" data-astro-cid-[hash]="">
+<div class="comparison-table-ui" data-astro-cid-[hash]="">
+<div class="comparison-spec-table has-notes">
+<div class="overflow-x-auto rounded-[20px] border border-(--color-border) relative">
+<table class="w-full min-w-[600px] border-collapse text-sm">
+<thead>
+<tr class="border-b border-(--color-border)">
+<th class="sticky left-0 bg-card px-6 py-4 text-left font-sans text-[15px] leading-5 font-medium text-(--color-cream-600)">Feature
 </th>
-<th class="col-kitaru" data-astro-cid-[hash]="">Kitaru
+<th class="px-6 py-4 text-center font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Kitaru
 </th>
-<th class="col-competitor" data-astro-cid-[hash]="">Pydantic AI
+<th class="px-6 py-4 text-center font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Pydantic AI
 </th>
-<th class="col-note" data-astro-cid-[hash]="">What that means
+<th class="px-6 py-4 text-center font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">What that means
 </th>
 </tr>
 </thead>
-<tbody data-astro-cid-[hash]="">
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Typed agent inputs, outputs, tools
+<tbody>
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Typed agent inputs, outputs, tools
 </td>
-<td class="col-kitaru" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-competitor" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Structured model outputs
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Structured model outputs
 </td>
-<td class="col-kitaru" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-competitor" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Dependency injection for tools
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Dependency injection for tools
 </td>
-<td class="col-kitaru" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-competitor" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Every run recorded as a replayable session
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Every run recorded as a replayable session
 </td>
-<td class="col-kitaru" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Replay with tool calls answered from the recording (history, static, passthrough)
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Replay with tool calls answered from the recording (history, static, passthrough)
 </td>
-<td class="col-kitaru" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">The API accepts an llm tool policy; this adapter doesn't support it.
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>The API accepts an llm tool policy; this adapter doesn't support it.
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Cohorts: frozen session sets as regression suites
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Cohorts: frozen session sets as regression suites
 </td>
-<td class="col-kitaru" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Experiments: same cohort, one variable moved
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Experiments: same cohort, one variable moved
 </td>
-<td class="col-kitaru" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Import Langfuse / LangSmith / Braintrust / Logfire / Phoenix traces
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Import Langfuse / LangSmith / Braintrust / Logfire / Phoenix traces
 </td>
-<td class="col-kitaru" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Self-hosted server and workers (Apache 2.0)
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Self-hosted server and workers (Apache 2.0)
 </td>
-<td class="col-kitaru" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">First-class adapter for the other
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">First-class adapter for the other
 </td>
-<td class="col-kitaru" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>
+</span>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
+</div>
+<p class="table-scroll__hint" aria-hidden="true" data-astro-cid-[hash]="">
+<svg viewBox="0 0 14 14" fill="none" aria-hidden="true" data-astro-cid-[hash]="">
+<path d="M2 7h10M8 3l4 4-4 4" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-[hash]="">
+</path>
+</svg>Scrolls horizontally · the page body never does
+</p>
+</div>
+</div>
+</section>
 
-<h2 id="how-the-two-surfaces-map">How the two surfaces map
+<div class="comparison-prose prose scroll-reveal-section">
+<h2 id="how-the-two-surfaces-map" class="reveal-child">How the two surfaces map
 </h2>
+</div>
 
 
 
@@ -775,6 +816,8 @@
 
 
 
+<div class="comparison-markdown-table scroll-reveal-section">
+<section aria-label="Comparison details" tabindex="0" class="comparison-markdown-table__frame reveal-child">
 <table>
 <thead>
 <tr>
@@ -847,369 +890,303 @@
 </tr>
 </tbody>
 </table>
-
-<section class="codecompare" data-reveal="" data-astro-cid-[hash]="">
-<div class="codecompare-inner" data-astro-cid-[hash]="">
-<h2 class="codecompare-title" data-astro-cid-[hash]="">Code comparison
-</h2>
-</div>
-<div class="codecompare-grid" data-astro-cid-[hash]="">
-<article class="codecompare-pane codecompare-pane--kitaru" aria-label="Recommended — Kitaru implementation" data-astro-cid-[hash]="">
-<header data-astro-cid-[hash]="">
-<span class="codecompare-dot codecompare-dot--kitaru" aria-hidden="true" data-astro-cid-[hash]="">
-</span>
-<span class="codecompare-label" data-astro-cid-[hash]="">Pydantic AI + Kitaru
-</span>
-<span class="codecompare-pill" data-astro-cid-[hash]="">Recommended
-</span>
-</header>
-<div class="codecompare-code" data-astro-cid-[hash]="">
-<pre class="shiki shiki-themes kitaru-light kitaru-dark" style="background-color:#FAF6EF;--shiki-dark-bg:#1E1B16;color:#1A1310;--shiki-dark:#E9E4DE" tabindex="0">
-<code>
-<span class="line">
-<span style="color:#5A4A1E;--shiki-dark:#C89F70">from
-</span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> pydantic_ai
-</span>
-<span style="color:#5A4A1E;--shiki-dark:#C89F70">import
-</span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> Agent
-</span>
-</span>
-
-<span class="line">
-<span style="color:#5A4A1E;--shiki-dark:#C89F70">from
-</span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> kitaru_pydantic_ai
-</span>
-<span style="color:#5A4A1E;--shiki-dark:#C89F70">import
-</span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> KitaruAgent
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">reviewer
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">=
-</span>
-<span style="color:#9A3F10;--shiki-dark:#D38151"> KitaruAgent
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">(
-</span>
-</span>
-
-<span class="line">
-<span style="color:#9A3F10;--shiki-dark:#D38151">  Agent
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">(
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">"
-</span>
-<span style="color:#1F5A33;--shiki-dark:#6FB789">openai:gpt-5.4
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">"
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">,
-</span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> system_prompt
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">=
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">"
-</span>
-<span style="color:#1F5A33;--shiki-dark:#6FB789">You're a compliance reviewer.
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">"
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">),
-</span>
-</span>
-
-<span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">  agent_id
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">=
-</span>
-<span style="color:#9A3F10;--shiki-dark:#D38151">AGENT_ID
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">,
-</span>
-</span>
-
-<span class="line">
-<span style="color:#635951;--shiki-dark:#AEA298">)
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic"># Production runs: each one lands as a session.
-</span>
-</span>
-
-<span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">result
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">=
-</span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> reviewer
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">.
-</span>
-<span style="color:#9A3F10;--shiki-dark:#D38151">run_sync
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">(
-</span>
-<span style="color:#9A3F10;--shiki-dark:#D38151">case
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">)
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic"># Later: freeze the sessions that matter, test a change.
-</span>
-</span>
-
-<span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#   kitaru cohort create hard-cases --agent reviewer --tag needs-review
-</span>
-</span>
-
-<span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#   kitaru experiment create cheaper-model --agent reviewer \
-</span>
-</span>
-
-<span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#     --evaluator compliance-check@latest \
-</span>
-</span>
-
-<span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#     --override '{"model": {"openai:gpt-5.4": "openai:gpt-5-mini"}}' \
-</span>
-</span>
-
-<span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#     --tool-policy '{"default": {"type": "history",
-</span>
-</span>
-
-<span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#       "scope": "cohort_version", "on_miss": "fail"}}'
-</span>
-</span>
-
-<span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#   kitaru experiment run start cheaper-model \
-</span>
-</span>
-
-<span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic">#     --cohort-version &lt;id&gt; --agent reviewer@2 --evaluate-baselines --wait
-</span>
-</span>
-</code>
-</pre>
-</div>
-</article>
-<article class="codecompare-pane" data-astro-cid-[hash]="">
-<header data-astro-cid-[hash]="">
-<span class="codecompare-dot codecompare-dot--competitor" aria-hidden="true" data-astro-cid-[hash]="">
-</span>
-<span class="codecompare-label" data-astro-cid-[hash]="">Pydantic AI alone
-</span>
-</header>
-<div class="codecompare-code" data-astro-cid-[hash]="">
-<pre class="shiki shiki-themes kitaru-light kitaru-dark" style="background-color:#FAF6EF;--shiki-dark-bg:#1E1B16;color:#1A1310;--shiki-dark:#E9E4DE" tabindex="0">
-<code>
-<span class="line">
-<span style="color:#5A4A1E;--shiki-dark:#C89F70">from
-</span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> pydantic_ai
-</span>
-<span style="color:#5A4A1E;--shiki-dark:#C89F70">import
-</span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> Agent
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">reviewer
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">=
-</span>
-<span style="color:#9A3F10;--shiki-dark:#D38151"> Agent
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">(
-</span>
-</span>
-
-<span class="line">
-<span style="color:#635951;--shiki-dark:#AEA298">  "
-</span>
-<span style="color:#1F5A33;--shiki-dark:#6FB789">openai:gpt-5.4
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">"
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">,
-</span>
-</span>
-
-<span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">  system_prompt
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">=
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">"
-</span>
-<span style="color:#1F5A33;--shiki-dark:#6FB789">You're a compliance reviewer.
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">"
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">,
-</span>
-</span>
-
-<span class="line">
-<span style="color:#635951;--shiki-dark:#AEA298">)
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#1A1310;--shiki-dark:#E9E4DE">result
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">=
-</span>
-<span style="color:#1A1310;--shiki-dark:#E9E4DE"> reviewer
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">.
-</span>
-<span style="color:#9A3F10;--shiki-dark:#D38151">run_sync
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">(
-</span>
-<span style="color:#9A3F10;--shiki-dark:#D38151">case
-</span>
-<span style="color:#635951;--shiki-dark:#AEA298">)
-</span>
-</span>
-
-<span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic"># One log line per run. The run that caught the bug
-</span>
-</span>
-
-<span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic"># is a transcript you can read, not a test you can
-</span>
-</span>
-
-<span class="line">
-<span style="color:#8C8278;--shiki-light-font-style:italic;--shiki-dark:#9C938C;--shiki-dark-font-style:italic"># run again with the model swapped.
-</span>
-</span>
-</code>
-</pre>
-</div>
-</article>
-</div>
 </section>
-
-<section class="ccta-section" id="cta" data-astro-cid-[hash]="">
-<div class="ccta-card" data-reveal="" data-astro-cid-[hash]="">
-<div class="ccta-eyebrow" aria-hidden="true" data-astro-cid-[hash]="">
-<span class="ccta-eyebrow-dot" data-astro-cid-[hash]="">
-</span>
-<span class="ccta-eyebrow-text" data-astro-cid-[hash]="">The lifecycle layer underneath
-</span>
-</div>
-<h2 class="ccta-headline" data-astro-cid-[hash]="">Put replay-based evals under your Pydantic AI agents
-</h2>
-<div class="ccta-body" data-astro-cid-[hash]="">
-<p>If the Pydantic AI agent you wrote is still a notebook script or a short-lived interactive tool, Pydantic AI on its own is the right answer. If it’s shipping, writing to real systems and generating traffic you wish you could test against, Kitaru makes those runs runnable: record them as sessions, replay them as evals, and gate regressions with the cohort that caught the failure.
+<p aria-hidden="true" class="table-scroll__hint">
+<svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
+<path d="M2 7h10M8 3l4 4-4 4" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+</path>
+</svg>Scrolls horizontally · the page body never does
 </p>
 </div>
-<div class="ccta-shelf" data-astro-cid-[hash]="">
-<div class="ccta-install" data-astro-cid-[hash]="">
-<span class="ccta-install-prompt" aria-hidden="true" data-astro-cid-[hash]="">$
+
+<section class="scroll-reveal-section py-8 md:py-10">
+<div class="reveal-child mx-auto max-w-content px-gutter">
+<h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">Code comparison
+</h2>
+<div class="mt-10 grid min-w-0 grid-cols-1 items-start gap-6 lg:grid-cols-2">
+<figure class="labs-code-pane code-pane" data-language="python" aria-label="Pydantic AI + Kitaru implementation">
+<div class="code-pane__bar">
+<span>Pydantic AI + Kitaru
 </span>
-<code class="ccta-install-cmd" data-astro-cid-[hash]="">curl -fsSL https://kitaru.ai/install | bash
-</code>
-<button class="ccta-copy-btn" aria-label="Copy install command" data-copy="curl -fsSL https://kitaru.ai/install | bash" data-astro-cid-[hash]="">
-<svg class="ccta-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
-<rect x="9" y="9" width="13" height="13" rx="2" data-astro-cid-[hash]="">
-</rect>
-<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" data-astro-cid-[hash]="">
-</path>
-</svg>
-<svg class="ccta-check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
-<polyline points="20 6 9 17 4 12" data-astro-cid-[hash]="">
-</polyline>
-</svg>
+<button type="button" class="code-pane__copy" aria-label="Copy Pydantic AI + Kitaru code">Copy
 </button>
 </div>
-<a href="https://cloud.kitaru.ai" data-analytics="Kitaru-Compare-CTA-Signup" class="ccta-primary" data-astro-cid-[hash]="">
-<span data-astro-cid-[hash]="">Sign up free
+<div class="code-pane__scroll">
+<pre class="astro-code labs-light" style="background-color:#413D37;color:#F5F7F4; overflow-x: auto;" tabindex="0" data-language="python">
+<code>
+<span class="line">
+<span style="color:#BECAA6">from
 </span>
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
-<path d="M5 12h14" data-astro-cid-[hash]="">
-</path>
-<path d="m13 5 7 7-7 7" data-astro-cid-[hash]="">
-</path>
-</svg>
-</a>
+<span style="color:#F5F7F4"> pydantic_ai
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> Agent
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> kitaru_pydantic_ai
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> KitaruAgent
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">reviewer
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> KitaruAgent
+</span>
+<span style="color:#F5F7F4">(
+</span>
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">  Agent
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#DBE0C2">"openai:gpt-5.4"
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#E0CFB7">system_prompt
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#DBE0C2">"You're a compliance reviewer."
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#E0CFB7">  agent_id
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#E0CFB7">AGENT_ID
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># Production runs: each one lands as a session.
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">result
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#F5F7F4"> reviewer
+</span>
+<span style="color:#47BAD1">.run_sync
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">case
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># Later: freeze the sessions that matter, test a change.
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">#   kitaru cohort create hard-cases --agent reviewer --tag needs-review
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">#   kitaru experiment create cheaper-model --agent reviewer \
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">#     --evaluator compliance-check@latest \
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">#     --override '{"model": {"openai:gpt-5.4": "openai:gpt-5-mini"}}' \
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">#     --tool-policy '{"default": {"type": "history",
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">#       "scope": "cohort_version", "on_miss": "fail"}}'
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">#   kitaru experiment run start cheaper-model \
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">#     --cohort-version &lt;id&gt; --agent reviewer@2 --evaluate-baselines --wait
+</span>
+</span>
+</code>
+</pre>
 </div>
-<div class="ccta-footer" data-astro-cid-[hash]="">
-<a href="https://docs.zenml.io/kitaru" target="_blank" rel="noopener noreferrer" class="ccta-link" data-astro-cid-[hash]="">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
-<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" data-astro-cid-[hash]="">
-</path>
-<path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Read the docs
+</figure>
+<figure class="labs-code-pane code-pane" data-language="python" aria-label="Pydantic AI alone implementation">
+<div class="code-pane__bar">
+<span>Pydantic AI alone
 </span>
-</a>
-<span class="ccta-dot" aria-hidden="true" data-astro-cid-[hash]="">
+<button type="button" class="code-pane__copy" aria-label="Copy Pydantic AI alone code">Copy
+</button>
+</div>
+<div class="code-pane__scroll">
+<pre class="astro-code labs-light" style="background-color:#413D37;color:#F5F7F4; overflow-x: auto;" tabindex="0" data-language="python">
+<code>
+<span class="line">
+<span style="color:#BECAA6">from
 </span>
-<a href="/book-your-demo/kitaru" class="ccta-link" data-astro-cid-[hash]="">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
-<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Talk to the team
+<span style="color:#F5F7F4"> pydantic_ai
 </span>
-</a>
-<span class="ccta-dot" aria-hidden="true" data-astro-cid-[hash]="">
+<span style="color:#BECAA6">import
 </span>
-<a href="https://github.com/zenml-io/kitaru" target="_blank" rel="noopener noreferrer" class="ccta-link" data-astro-cid-[hash]="">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
-<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Star on GitHub
+<span style="color:#F5F7F4"> Agent
 </span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">reviewer
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> Agent
+</span>
+<span style="color:#F5F7F4">(
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2">  "openai:gpt-5.4"
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#E0CFB7">  system_prompt
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#DBE0C2">"You're a compliance reviewer."
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">result
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#F5F7F4"> reviewer
+</span>
+<span style="color:#47BAD1">.run_sync
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">case
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># One log line per run. The run that caught the bug
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># is a transcript you can read, not a test you can
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># run again with the model swapped.
+</span>
+</span>
+</code>
+</pre>
+</div>
+</figure>
+</div>
+</div>
+</section>
+
+<div class="scroll-reveal-section">
+<div class="reveal-child">
+<section class="relative overflow-hidden bg-(--color-sage-900) py-16 text-(--color-cream-50) md:py-20" data-astro-cid-[hash]="">
+<astro-island uid="[hash]" data-preact-island-id="7" component-url="/_astro/GrainBackdrop.[hash].js" component-export="GrainBackdrop" renderer-url="/_astro/client.[hash].js" props="{&quot;config&quot;:[0,{&quot;shaderColors&quot;:[1,[[0,&quot;#151E19&quot;],[0,&quot;#3C4C38&quot;],[0,&quot;#63775E&quot;],[0,&quot;#151E19&quot;]]],&quot;panel&quot;:[0,&quot;#151E19&quot;],&quot;blobA&quot;:[0,&quot;#3C4C38E6&quot;],&quot;blobB&quot;:[0,&quot;#63775ECC&quot;],&quot;speed&quot;:[0,1.8],&quot;scale&quot;:[0,1.6],&quot;rotation&quot;:[0,-20],&quot;noise&quot;:[0,0.9],&quot;blend&quot;:[0,true]}],&quot;class&quot;:[0,&quot;absolute inset-0 opacity-90&quot;],&quot;data-astro-cid-[hash]&quot;:[0,true]}" ssr="" client="idle" opts="{&quot;name&quot;:&quot;GrainBackdrop&quot;,&quot;value&quot;:true}" await-children="">
+<div aria-hidden="true" style="background-color:#151E19;background-image:radial-gradient(circle farthest-corner at 20% 15%, #3C4C38E6 0%, transparent 60%), radial-gradient(circle farthest-corner at 85% 85%, #63775ECC 0%, transparent 60%);" class="pointer-events-none absolute inset-0 absolute inset-0 opacity-90">
+</div>
+<!--astro:end-->
+</astro-island>
+<div class="relative mx-auto flex max-w-content flex-col items-center px-gutter text-center" data-astro-cid-[hash]="">
+<h2 class="max-w-[768px] font-display text-[32px] leading-[38px] text-(--color-cream-50) md:text-[44px] md:leading-[50px]" data-astro-cid-[hash]="">Put replay-based evals under
+<br data-astro-cid-[hash]="">your Pydantic AI agents
+</h2>
+<div class="labs-close-deck mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">If the Pydantic AI agent you wrote is still a notebook script or a short-lived interactive tool, Pydantic AI on its own is the right answer. If it’s shipping, writing to real systems and generating traffic you wish you could test against, Kitaru makes those runs runnable: record them as sessions, replay them as evals, and gate regressions with the cohort that caught the failure.
+</p>
+</div>
+</div>
+<div class="mt-10 flex flex-wrap items-center gap-7" data-astro-cid-[hash]="">
+<a href="https://cloud.kitaru.ai" data-analytics="Kitaru-Compare-CTA-Signup" class="inline-flex h-12 cursor-pointer items-center justify-center rounded-full px-[26px] font-label text-[13px] uppercase tracking-[0.05em] transition-colors duration-200 ease-out bg-(--color-sage-400) text-(--color-cream-800) hover:bg-(--color-sage-500)">Sign up free
 </a>
 </div>
 </div>
 </section>
-<script type="module" src="/_astro/ComparisonCta.astro_astro_type_script_index_0_lang.[hash].js">
-</script>
+</div>
+</div>
 </article>

@@ -16,4 +16,3 @@ This site was migrated from Webflow in Feb 2026 and unified with kitaru.ai in Ma
 - **v1 Kitaru surfaces are gone** — the `Architecture.astro` flows/checkpoints diagram, the `/get-started` ML/Agent chooser (`GET_STARTED_TABS`, `GET_STARTED_KITARU`) and the `@flow`/`@checkpoint` walkthrough. Do not recreate them; `/product/kitaru` is the entry point.
 - **`compare-kitaru` and `compare-zenml` collections** use `.mdx` (vs project default `.md`) — the ported Kitaru-vs-X pages and their ZenML twins use inline component imports.
 - **`MERGE_PLAN.md`** — the merge's running plan + progress log; not current architecture authority (CLAUDE.md is).
-

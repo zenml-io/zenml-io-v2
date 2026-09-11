@@ -1,0 +1,11 @@
+/* Comparison adapters use the canonical Labs prose code-pane shell in global.css. */
+[data-app="labs"] .labs-code-pane { --code-pane-ui-font: var(--font-sans); --code-pane-ui-tracking: 0; --code-pane-ui-case: none; --code-pane-ui-color: var(--color-cream-300); min-width: 0; margin-block: 0; outline: 1px solid transparent; outline-offset: -1px; transition: outline-color 200ms ease-out; }
+[data-app="labs"] .labs-code-pane:hover { outline-color: var(--color-sage-400); }
+.labs-code-pane .code-pane__bar { gap: 16px; }
+.labs-code-pane .code-pane__copy { position: relative; flex-shrink: 0; }
+.labs-code-pane .code-pane__copy::before { position: absolute; content: ""; inset: -14px -8px; }
+.labs-code-pane .code-pane__copy:focus-visible { outline: 2px solid var(--color-sage-300); outline-offset: 4px; }
+.labs-code-pane .code-pane__scroll { min-width: 0; scrollbar-color: var(--color-sage-400) var(--color-cream-700); scrollbar-width: auto; }
+.labs-code-pane .code-pane__scroll pre { padding: 0; overflow: visible !important; }
+.labs-code-pane .code-pane__scroll pre code { display: block; min-width: max-content; padding: 0; }
+@media (prefers-reduced-motion: reduce) { [data-app="labs"] .labs-code-pane { transition: none; } }

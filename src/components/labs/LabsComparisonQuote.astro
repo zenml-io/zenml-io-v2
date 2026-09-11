@@ -1,0 +1,49 @@
+---
+import "../../styles/labs-scroll-reveal.css";
+import { KITARU_GRAIN } from "../../lib/kitaru-grain-palettes";
+import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
+import { GrainBackdrop } from "../islands/GrainBackdrop";
+
+interface Props {
+  quote: string;
+  product?: "zenml" | "kitaru";
+  name?: string;
+  title?: string;
+  source?: string;
+  avatar?: string;
+  logo?: { url: string; alt: string };
+}
+const {
+  quote,
+  product = "zenml",
+  name,
+  title,
+  source,
+  avatar,
+  logo,
+} = Astro.props;
+const hasAttribution = Boolean(name || title || avatar || logo);
+const kitaru = product === "kitaru";
+---
+
+<section class:list={["comparison-quote scroll-reveal-section relative overflow-hidden border-y border-(--color-border) py-12 md:py-20", kitaru ? "bg-(--color-orange-50)" : "bg-(--color-sage-50)"]}>
+  <GrainBackdrop
+    client:idle
+    config={kitaru ? KITARU_GRAIN.blog : LABS_GRAIN.hero}
+    class="absolute inset-0 opacity-90"
+  />
+
+  <figure class="reveal-child relative mx-auto max-w-content px-gutter text-center">
+    <blockquote class="font-display text-[28px] leading-[36px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[46px]">
+      {source ? <a href={source} class="decoration-(--color-sage-400) underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--color-sage-600)">{quote}</a> : quote}
+    </blockquote>
+    {hasAttribution && <figcaption class="mt-6 flex flex-wrap items-center justify-center gap-4">
+      {avatar && <img src={avatar} alt={name || ""} class="h-10 w-10 rounded-full object-cover" loading="lazy" />}
+      {(name || title) && <div>
+        {name && <p class="font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">{name}</p>}
+        {title && <p class="mt-1 font-sans text-[14px] leading-5 text-(--color-cream-700)">{title}</p>}
+      </div>}
+      {logo && <img src={logo.url} alt={logo.alt} class="h-6 w-auto max-w-[120px] object-contain" loading="lazy" />}
+    </figcaption>}
+  </figure>
+</section>

@@ -83,6 +83,27 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
       "MDX compare-page body: component imports, ComparisonTable, CodeCompare panes (Shiki)",
   },
   {
+    page: "compare/zenml-vs-argo-workflows.html",
+    selector: "#feature-comparison",
+    golden: "compare-zenml-vs-argo-workflows.html",
+    covers:
+      "blocks-driven comparison body: the richest feature scorecard, including every label, tooltip, and competitor value",
+  },
+  {
+    page: "vs/zenml-vs-orchestrators.html",
+    selector: "main > section:nth-of-type(2)",
+    golden: "vs-zenml-vs-orchestrators.html",
+    covers:
+      "category comparison body below the hero: the introductory prose that leads into the value sections",
+  },
+  {
+    page: "compare/zenml-vs-crewai.html",
+    selector: ".compare-body-inner",
+    golden: "compare-zenml-vs-crewai.html",
+    covers:
+      "ZenML MDX comparison body: the richest MDX entry with tables, code panes, graphics, quote, and closing comparison content",
+  },
+  {
     page: "projects/floracast.html",
     selector: ".prose",
     golden: "project-floracast.html",
