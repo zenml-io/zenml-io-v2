@@ -1207,7 +1207,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "The one comparison-page switcher: hairline pill trigger, grouped menu, 24px row marks, current-page state, visible vertical scrollbar, and vanilla Escape/outside-click/arrow-key/focus-return handling.",
+      "The one comparison-page switcher: hairline 12px-radius trigger beside the product wordmark in a matching card, grouped menu, 24px row marks, current-page state, visible vertical scrollbar, and vanilla Escape/outside-click/arrow-key/focus-return handling.",
     collectionBound: true,
     contentShape: {
       minItems: 5,

@@ -27,9 +27,9 @@ const { headline, deck, cta, panels = [] } = Astro.props;
       <FeatureGridPanels content={panels} />
     </div>
   )}
-  <div class="py-8 md:py-10">
+  <div class="py-16 md:py-24">
     <div class="scroll-reveal-section mx-auto max-w-content px-gutter">
-      <div class="reveal-child stagger-4 relative overflow-hidden rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10">
+      <div class="reveal-child stagger-4 relative overflow-hidden rounded-[20px] border border-(--color-border) bg-card p-10 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-16 lg:p-20">
         {
           /*
             client:idle, like the other secondary grain panels: the card only
@@ -41,9 +41,9 @@ const { headline, deck, cta, panels = [] } = Astro.props;
           config={LABS_GRAIN.hero}
           class="absolute inset-0 opacity-90"
         />
-        <div class="relative">
+        <div class="relative max-w-[70%] max-lg:max-w-none">
           <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">{headline}</h2>
-          {deck && <p class="mt-5 max-w-[720px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">{deck}</p>}
+          {deck && <p class="mt-5 font-sans text-[17px] leading-[26px] text-(--color-cream-700)">{deck}</p>}
           <div class="mt-8"><LabsButton cta={cta} /></div>
         </div>
       </div>
