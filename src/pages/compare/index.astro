@@ -2,19 +2,19 @@
 /**
  * Compare hub page, in the ZenML Labs shell (`app="labs"`, `surface="unified"`
  * — no `product`). Rebuilt for the product one-offs cutover (#317): the
- * short shader band, then two `labs.entry-row` lists — Kitaru vs. agent
+ * short shader band, then two compact `labs.comparison-card` catalogues — Kitaru vs. agent
  * frameworks and SDKs, then ZenML vs. orchestrators, durable execution
  * engines & agent frameworks — and the shared closing band.
  *
- * Clicking a row goes to `/compare/<slug>` (Kitaru template, theme flipped
+ * Clicking a card goes to `/compare/<slug>` (Kitaru template, theme flipped
  * to `data-app="kitaru"`, or the ZenML template). `src/lib/compareHub.ts`
  * normalises both sections' cards so a row does not care which content
  * collection it came from (the Markdown mirror at /compare.md reads the
  * same lists).
  */
-import EntryRow from "../../components/labs/EntryRow.astro";
 import LabsBand from "../../components/labs/LabsBand.astro";
 import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
+import LabsComparisonCard from "../../components/labs/LabsComparisonCard.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
 import {
@@ -22,6 +22,7 @@ import {
   getKitaruCompareCards,
   getZenmlCompareCards,
 } from "../../lib/compareHub";
+import "../../styles/labs-scroll-reveal.css";
 
 const TITLE = "Compare: ZenML and Kitaru vs. alternatives";
 const DESCRIPTION =
@@ -35,12 +36,12 @@ const [kitaruCards, zenmlCards] = await Promise.all([
 
 <BaseLayout title={TITLE} description={DESCRIPTION} surface="unified" app="labs">
   <LabsBand size="short">
-    <div class="flex flex-col gap-4">
-      <p class="font-sans text-[15px] leading-5 text-(--color-cream-700)">Compare</p>
-      <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+    <div class="scroll-reveal-section flex flex-col gap-4">
+      <p class="reveal-child font-sans text-[15px] leading-5 text-(--color-cream-700)">Compare</p>
+      <h1 class="reveal-child stagger-1 font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
         Pick the right tool for the job.
       </h1>
-      <p class="max-w-[720px] font-sans text-[18px] leading-7 text-(--color-cream-700)">
+      <p class="reveal-child stagger-2 max-w-[720px] font-sans text-[18px] leading-7 text-(--color-cream-700)">
         {DESCRIPTION}
       </p>
     </div>
@@ -48,43 +49,27 @@ const [kitaruCards, zenmlCards] = await Promise.all([
 
   <section class:list={["pb-24 md:pb-32", BAND_CONTENT_GAP]}>
     <div class="mx-auto flex max-w-content flex-col gap-20 px-gutter">
-      <div data-product="kitaru">
-        <h2 class="mb-6 font-display text-[28px] leading-[34px] text-(--color-cream-800)">
+      <div data-product="kitaru" class="scroll-reveal-section">
+        <h2 class="reveal-child mb-6 font-display text-[28px] leading-[34px] text-(--color-cream-800)">
           Kitaru vs. agent frameworks and SDKs
         </h2>
-        <ul class="flex list-none flex-col">
-          {kitaruCards.map((card) => (
-            <li>
-              <EntryRow
-                href={card.href}
-                title={card.title}
-                mark={card.logo ? { url: card.logo, alt: card.name } : undefined}
-                meta={{ company: card.meta }}
-                summary={card.blurb}
-                chips={[]}
-                headingLevel={3}
-              />
+        <ul class="scroll-reveal-section grid list-none grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {kitaruCards.map((card, index) => (
+            <li class:list={["reveal-child min-w-0", index % 3 === 1 && "stagger-1", index % 3 === 2 && "stagger-2"]}>
+              <LabsComparisonCard card={card} />
             </li>
           ))}
         </ul>
       </div>
 
-      <div>
-        <h2 class="mb-6 font-display text-[28px] leading-[34px] text-(--color-cream-800)">
+      <div class="scroll-reveal-section">
+        <h2 class="reveal-child mb-6 font-display text-[28px] leading-[34px] text-(--color-cream-800)">
           ZenML vs. orchestrators, durable execution engines & agent frameworks
         </h2>
-        <ul class="flex list-none flex-col">
-          {zenmlCards.map((card) => (
-            <li>
-              <EntryRow
-                href={card.href}
-                title={card.title}
-                mark={card.logo ? { url: card.logo, alt: card.name } : undefined}
-                meta={{ company: card.meta }}
-                summary={card.blurb}
-                chips={[]}
-                headingLevel={3}
-              />
+        <ul class="scroll-reveal-section grid list-none grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {zenmlCards.map((card, index) => (
+            <li class:list={["reveal-child min-w-0", index % 3 === 1 && "stagger-1", index % 3 === 2 && "stagger-2"]}>
+              <LabsComparisonCard card={card} />
             </li>
           ))}
         </ul>
@@ -92,5 +77,11 @@ const [kitaruCards, zenmlCards] = await Promise.all([
     </div>
   </section>
 
-  <LabsCloseCta content={COMPARE_CLOSE} />
+  <div class="scroll-reveal-section">
+    <div class="reveal-child"><LabsCloseCta content={COMPARE_CLOSE} preset="comparison" /></div>
+  </div>
+  <script>
+    import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+    initScrollReveal();
+  </script>
 </BaseLayout>
