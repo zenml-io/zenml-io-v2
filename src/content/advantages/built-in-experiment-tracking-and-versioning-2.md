@@ -1,6 +1,7 @@
 ---
 title: "Built-in Experiment Tracking and Versioning"
 slug: "built-in-experiment-tracking-and-versioning-2"
+icon: "registry"
 content: "With ZenML's built-in experiment tracking, model versioning, and data versioning capabilities, you can easily monitor and compare model performance, ensure reproducibility, and collaborate effectively across teams."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fec1dff1/667196405fbe25aecdd96da9_img04.png"

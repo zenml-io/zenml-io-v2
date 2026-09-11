@@ -55,7 +55,9 @@ layout props.
 `codeComparison` → `LabsCodeCompare`; `strategyCta` →
 `LabsComparisonStrategyCta`; sibling comparisons → `LabsComparisonCard`
 grids; `blogRail` → `LabsComparisonBlogRail` with framed Labs blog cards;
-`cta02` → the full-width comparison arrangement of `LabsCloseCta`.
+`cta02` → the full-width comparison arrangement of `LabsCloseCta`. The
+`strategyCta` advantages render as a full-width `FeatureGridPanels` row, indexed
+and toned by position, each with the mark named by its `icon` field.
 **Required data** — `compare` collection; `vs-pages` collection; `advantages`
 collection (strategy-CTA block); `quotes` collection (the `/compare` quote
 block resolves a slug reference; `/vs` inlines its testimonial copy instead);

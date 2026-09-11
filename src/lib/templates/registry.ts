@@ -1168,7 +1168,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Mid-page advantages and CTA. #319 retains this id but uses a sage-50 band, hover cards, one headline and one LabsButton; absent advantages collapse.",
+      "Mid-page advantages and CTA. #319 retains this id but uses a sage-50 band, one headline and one LabsButton; absent advantages collapse. The advantages now render as a full-width labs.feature-grid row above the band (numbered, full-tone, isometric icon from the advantage's `icon` field) rather than hover cards with an illustration.",
   },
   {
     id: "comparison.testimonial",
@@ -1336,7 +1336,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Mid-page strategy section on the sage tint: optional hover-card advantages followed by one card with one heading, optional deck, and one LabsButton.",
+      "Mid-page strategy section: an optional full-width row of labs.feature-grid panels (one per advantage, index and tone by position), then a sage-tint band holding one card with one heading, optional deck, and one LabsButton.",
   },
   // ── labs homepage + shell (rebrand branch; design-catalog pages not assigned yet) ──
   {
@@ -1390,24 +1390,24 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     kind: "template",
     componentPath: "src/components/labs/FeatureGridPanels.astro",
     collectionBound: true,
-    variantAxes: ["panel tone"],
+    variantAxes: ["panel tone", "column count"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 0,
     notes:
-      "Full-bleed row of four fixed panels from `content: readonly FeaturePanel[]` (LABS_FEATURE_PANELS on `/`); tone (sage-tint/sage-deep/canvas/sage-light) picks the panel background and body-text colour. Icons are inline SVG markup from src/components/labs/icons.ts, keyed by panel.icon, rendered via set:html inside a currentColor <svg>. Reflows 4-up to 2x2 at <=1024 and 1-up at 390 (fixed 440px height only at lg and up; auto below).",
+      "Full-bleed row of four fixed panels from `content: readonly FeaturePanel[]` (LABS_FEATURE_PANELS on `/`); tone (sage-tint/sage-deep/canvas/sage-light) picks the panel background and body-text colour. Icons are inline SVG markup from src/components/labs/icons.ts, keyed by panel.icon, rendered via set:html inside a currentColor <svg>. Reflows to 2x2 at <=1024 and 1-up at 390 (fixed 440px height only at lg and up; auto below). Columns follow the item count (1-4), so the three advantages of the comparison strategy block fill the width the same way the four homepage panels do.",
     contentShape: {
-      minItems: 4,
+      minItems: 1,
       maxItems: 4,
       oddCount:
-        "Drawn for exactly 4 panels (one per grid column); the layout has no wrap/overflow behaviour for a different count.",
+        "Drawn for 4 panels; 1-3 items narrow the lg column count to match, so the row still fills its width.",
       headingBudget:
         'Titles drawn for 1 short word (e.g. "Orchestrate", "Replay"); longer titles wrap within the fixed-height panel at lg.',
       itemBudget:
         "Body copy drawn for 1-3 sentences; longer copy pushes the fixed-height lg panel taller than its 3 siblings since there is no internal scroll or truncation.",
       overflow:
-        "None implemented — a 5th panel would just add a 5th grid cell rather than reflowing into the existing 4.",
+        "None implemented — a 5th panel falls back to the 4-column class and wraps onto a second row.",
     },
     stage: false,
     demoProps: {},

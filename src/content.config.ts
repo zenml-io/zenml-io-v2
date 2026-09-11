@@ -21,6 +21,7 @@ import { basename, extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
+import { FEATURE_ICON_IDS } from "./lib/featureIcons";
 
 // ============================================================================
 // Reusable Schema Helpers
@@ -304,6 +305,12 @@ const advantageSchema = z.object({
   title: z.string(),
   slug: z.string(),
   content: z.string(),
+  /**
+   * The isometric mark the comparison strategy panels render. Required: every
+   * advantage is referenced by a comparison page, so none may fall back.
+   */
+  icon: z.enum(FEATURE_ICON_IDS),
+  /** Legacy illustration, still read by the reference/validation scripts. */
   image: imageSchema.optional(),
   webflow: webflowMetaSchema,
 });

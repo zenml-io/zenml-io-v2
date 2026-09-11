@@ -11,6 +11,7 @@
  * never retyped here.
  */
 import type { Surface } from "./analytics";
+import type { FeatureIconId } from "./featureIcons";
 import {
   CASE_STUDY_CARDS,
   type CaseStudyCard,
@@ -300,8 +301,8 @@ export interface FeaturePanel {
   index: string;
   title: string;
   body: string;
-  /** Icon id resolved by the component (icons live beside it). */
-  icon: "pipeline" | "layers" | "open-box" | "shield";
+  /** Icon id resolved by the component (the markup lives beside it). */
+  icon: FeatureIconId;
   tone: FeaturePanelTone;
 }
 
