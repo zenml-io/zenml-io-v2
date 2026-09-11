@@ -474,7 +474,8 @@ html { scroll-behavior: smooth; }
 /* Deliberately NO `section[data-tone] { background: ... }` base rule: the
  * `background` shorthand at (0,1,1) specificity would reset the
  * background-size/position utilities (.bg-cover/.bg-center) of any toned
- * band that layers an image — verified live on FeaturesHubCTA. Tone
+ * band that layers an image — verified live on a toned band with a
+ * background image. Tone
  * consumers set their own `bg-[var(--section-surface)]` /
  * `text-[var(--section-text)]` utilities instead. */
 

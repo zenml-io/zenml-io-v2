@@ -14,7 +14,25 @@
  * element rather than `display: contents`: Safari has historically dropped
  * interactive descendants of `<details>` when it becomes a contents box.
  *
- * Sole consumer today: `src/layouts/DatabaseEntryLayout.astro`.
+ * `labels` picks the `<dt>` treatment: `"sentence"` (default, unchanged —
+ * the database entry pages are byte-pinned goldens) or `"mono"`, which
+ * switches the label to uppercase Nudica Mono for the integration detail
+ * page's rail. It is a block-wide discriminant, not a per-row option,
+ * because a given page's record is either all-sentence or all-mono.
+ *
+ * A `link` row can also render `as: "pill"` — a ghost pill instead of a
+ * plain text link, with an optional leading `icon` (currently only
+ * `"github"`, one inline mark). This is a plain prop rather than a slot:
+ * `item.value` is built once per row inside `items.map()`, and Astro named
+ * slots don't have a per-iteration variant, so a slot here would need one
+ * slot name per row index. A prop keeps every row's shape uniform and
+ * leaves the database entry rendering (which never sets `as`) untouched.
+ * The pill borrows its classes from `labsButtonStyles.ts` rather than
+ * `LabsButton.astro`, because that component always renders its default
+ * slot after the label — this pill needs the icon before it.
+ *
+ * Sole consumer of the `"sentence"` default: `src/layouts/DatabaseEntryLayout.astro`.
+ * Sole consumer of `labels="mono"` and `as: "pill"`: `src/pages/integrations/[slug].astro`.
  */
 import { DATABASE_TAG_CHIPS_VISIBLE } from "../../lib/databases";
 import {
@@ -22,10 +40,23 @@ import {
   TERM_CHIP_HEXAGON_PATH,
   TERM_CHIP_HEXAGON_VIEWBOX,
 } from "../blog/termChipStyles";
+import { LABS_BUTTON_BASE, LABS_BUTTON_TONE_CLASSES } from "./labsButtonStyles";
 
 export type LabsMetadataBlockValue =
   | { kind: "text"; text: string }
-  | { kind: "link"; text: string; href: string }
+  | {
+      kind: "link";
+      text: string;
+      href: string;
+      /** Plausible event name — `data-analytics` IS the event name. */
+      analytics?: string;
+      /** Opens in a new tab with the usual rel guard. */
+      external?: true;
+      /** Renders as a ghost pill (labsButtonStyles) instead of a plain text link. */
+      as?: "pill";
+      /** Icon shown before the label when `as: "pill"`. */
+      icon?: "github";
+    }
   | {
       kind: "chips";
       chips: readonly { label: string; href: string }[];
@@ -41,16 +72,25 @@ export interface LabsMetadataBlockItem {
 interface Props {
   items: readonly LabsMetadataBlockItem[];
   class?: string;
+  /** `<dt>` label treatment. Default `"sentence"` — existing classes untouched. */
+  labels?: "sentence" | "mono";
 }
 
-const { items, class: className } = Astro.props;
+const { items, class: className, labels = "sentence" } = Astro.props;
+
+const dtClass =
+  labels === "mono"
+    ? "font-label text-[13px] leading-4 tracking-[0.05em] uppercase text-(--color-cream-700)"
+    : "text-[13px] leading-4 font-medium text-(--color-cream-700)";
+
+const pillClass = `${LABS_BUTTON_BASE} ${LABS_BUTTON_TONE_CLASSES.ghost}`;
 ---
 
 {items.length > 0 && (
   <dl class:list={["flex flex-col gap-7", className]}>
     {items.map((item) => (
       <div class="flex flex-col gap-2">
-        <dt class="text-[13px] leading-4 font-medium text-(--color-cream-700)">
+        <dt class={dtClass}>
           {item.label}
         </dt>
         <dd>
@@ -59,10 +99,43 @@ const { items, class: className } = Astro.props;
               {item.value.text}
             </span>
           )}
-          {item.value.kind === "link" && (
+          {item.value.kind === "link" && item.value.as === "pill" && (
+            <a
+              href={item.value.href}
+              class={pillClass}
+              {...item.value.analytics ? { "data-analytics": item.value.analytics } : {}}
+              {...item.value.external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {}}
+            >
+              {item.value.icon === "github" && (
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  viewBox="0 0 16 16"
+                  width="16"
+                  height="16"
+                  fill="currentColor"
+                  class="mr-2 inline-block h-4 w-4"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+                  />
+                </svg>
+              )}
+              {item.value.text}
+            </a>
+          )}
+          {item.value.kind === "link" && item.value.as !== "pill" && (
             <a
               href={item.value.href}
               class="text-[17px] leading-6 text-(--color-cream-800) transition-colors duration-200 ease-out hover:text-(--color-sage-800)"
+              {...item.value.analytics ? { "data-analytics": item.value.analytics } : {}}
+              {...item.value.external
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {}}
             >
               {item.value.text}
             </a>

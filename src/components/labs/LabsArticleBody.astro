@@ -30,6 +30,17 @@
  * Optional named `lead` slot renders inside the article, above the mobile
  * TOC and the prose: a database entry passes its summary box and metadata
  * record through it, a blog post passes nothing.
+ *
+ * Optional named `rail` slot renders twice, mirroring how the TOC itself
+ * has a mobile and a desktop rendering: below `xl` it renders in the same
+ * position as `lead` (above the mobile TOC, above the prose); from `xl` up
+ * it renders in the right rail, stacked above the sticky TOC with a
+ * `gap-10` between them, inside the same sticky wrapper. The right-rail
+ * `<aside>` renders whenever the TOC shows OR this slot is filled, so a
+ * page with fewer than three H2s but a filled `rail` still gets the aside.
+ * The integration detail page is the only current consumer (its metadata
+ * record); blog posts and database entries pass neither `lead` nor `rail`
+ * changes here, so their markup is untouched.
  */
 import BlogTOC from "../BlogTOC.astro";
 
@@ -59,6 +70,14 @@ const showTOC = tocHeadings.length >= 3;
         {Astro.slots.has("lead") && (
           <div class="mb-10 flex flex-col gap-8">
             <slot name="lead" />
+          </div>
+        )}
+
+        {/* `rail` slot, mobile position: same spot `lead` renders in above,
+            hidden from `xl` up where the slot moves into the right rail. */}
+        {Astro.slots.has("rail") && (
+          <div class="mb-10 flex flex-col gap-8 xl:hidden">
+            <slot name="rail" />
           </div>
         )}
 
@@ -104,10 +123,16 @@ const showTOC = tocHeadings.length >= 3;
           breadcrumb row above it — this value and the `.prose [id]`
           scroll-margin-top in global.css (`lg` breakpoint) must stay
           equal and move together. */}
-      {showTOC && (
+      {(showTOC || Astro.slots.has("rail")) && (
         <aside class="hidden w-(--toc-rail) flex-none xl:block xl:self-stretch">
-          <div class="sticky top-[160px]">
-            <BlogTOC headings={tocHeadings} />
+          <div
+            class:list={[
+              "sticky top-[160px]",
+              Astro.slots.has("rail") && "flex flex-col gap-10",
+            ]}
+          >
+            {Astro.slots.has("rail") && <slot name="rail" />}
+            {showTOC && <BlogTOC headings={tocHeadings} />}
           </div>
         </aside>
       )}

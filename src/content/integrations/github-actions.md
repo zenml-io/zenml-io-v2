@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:12.071Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/32b2176b/66d86964333d11e0a1f1da9e_github_actions.png"
+  url: "https://assets.zenml.io/content/integrations/logos/github-actions.svg"
+  alt: "GitHub Actions logo"
 shortDescription: "Run your ML workflows in the cloud for free using GitHub Actions."
 docsUrl: "https://docs.zenml.io/component-gallery/orchestrators/github-actions"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/github_actions_orchestration"

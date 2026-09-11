@@ -9,10 +9,10 @@
  * Dedicated page (NOT a redirect to /features/centralized-model-control-plane
  * — the content is distinct). Content extracted from the Webflow snapshot.
  */
+import FeatureSplit from "../../components/labs/FeatureSplit.astro";
 import LabsBand from "../../components/labs/LabsBand.astro";
 import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
 import Breadcrumb from "../../components/system/Breadcrumb.astro";
-import Split from "../../components/system/layout/Split.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
 
@@ -123,37 +123,12 @@ const sections = [
     <div class="mx-auto flex max-w-content flex-col gap-20 px-gutter">
       {
         sections.map((section) => (
-          <Split mediaSide={section.imageSide} space="mlg" alignY="center">
-            <div>
-              <h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900) md:text-[36px] md:leading-[42px]">
-                {section.title}
-              </h2>
-              <ul class="mt-6 flex flex-col">
-                {section.bullets.map((bullet) => (
-                  <li class="flex items-start gap-3 border-t border-(--color-border) py-3 font-sans text-[16px] leading-6 text-(--color-cream-800) first:border-t-0">
-                    <svg
-                      class="mt-0.5 h-4 w-4 shrink-0 text-(--color-sage-700)"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      aria-hidden="true"
-                    >
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5" />
-                    </svg>
-                    {bullet}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <img
-              slot="media"
-              src={section.image.url}
-              alt={section.image.alt}
-              class="w-full rounded-[20px] border border-(--color-border) bg-card p-6"
-              loading="lazy"
-            />
-          </Split>
+          <FeatureSplit
+            title={section.title}
+            bullets={section.bullets}
+            image={section.image}
+            imageSide={section.imageSide}
+          />
         ))
       }
     </div>

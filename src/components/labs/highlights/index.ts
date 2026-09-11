@@ -2,9 +2,12 @@
  * Highlight figures for the feature-tabs block, keyed by `<product>/<slug>`.
  * A tab that names a `figure` renders the matching inline SVG instead of an
  * `<img>`; tabs without one keep their raster image. Add a figure here and
- * reference its id from the product's tab content.
+ * reference its id from the product's tab content. The id union itself lives
+ * in `ids.ts` (no `.astro` import) so content modules and tests can type
+ * against it without resolving Astro components.
  */
 import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+import type { HighlightFigureId } from "./ids";
 import ZenmlCaching from "./zenml/caching.astro";
 import ZenmlGovernance from "./zenml/governance.astro";
 import ZenmlInfrastructure from "./zenml/infrastructure.astro";
@@ -17,6 +20,6 @@ export const HIGHLIGHT_FIGURES = {
   "zenml/infrastructure": ZenmlInfrastructure,
   "zenml/caching": ZenmlCaching,
   "zenml/governance": ZenmlGovernance,
-} satisfies Record<string, AstroComponentFactory>;
+} satisfies Record<HighlightFigureId, AstroComponentFactory>;
 
-export type HighlightFigureId = keyof typeof HIGHLIGHT_FIGURES;
+export type { HighlightFigureId } from "./ids";

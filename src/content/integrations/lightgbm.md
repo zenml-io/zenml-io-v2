@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:12.246Z"
 integrationType: "modeling"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a87bf467/66d869586acd2fac3976e2b4_lightgbm.png"
+  url: "https://assets.zenml.io/content/integrations/logos/lightgbm.svg"
+  alt: "LightGBM logo"
 shortDescription: "Supercharge your ZenML pipelines with LightGBM's fast and efficient gradient boosting"
 docsUrl: "https://docs.zenml.io/stacks-and-components/component-guide/model-trainers/lightgbm"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/lightgbm"

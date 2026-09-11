@@ -301,6 +301,22 @@ container scrolls inside its own region.
   the built output.
 - Every new section adopts the site scroll-reveal pattern: revealed section,
   staggered children.
+- **Every section reveals on scroll.** On every Labs route, every content
+  section is a `.scroll-reveal-section` whose blocks are `.reveal-child`
+  (staggered where they are siblings), armed by the one shared
+  `initScrollReveal()`; the hidden start state applies only once the section
+  is `.reveal-armed`, so the server-rendered page is fully visible without
+  JS; nothing moves under reduced motion. Translate and opacity only, 1.2s at
+  most, no new keyframes, no motion library. Sections that do not reveal are
+  a defect, not a stylistic choice.
+- **Integration cards keep their marks.** A third-party integration or
+  service renders its own full-colour brand mark, the design-system SVG
+  (the Hashi `service-logos` set, 24×24, 20px ink centred), sourced and
+  normalised through the monorepo's `add-service-logo` skill when the set
+  lacks one — never a raster with a baked-in background, a screenshot, a
+  wordmark lockup, or a monochrome recolour. The mark sits on the card's
+  cream band or in the masthead's white tile; the tile is the site's, the
+  mark is the brand's.
 - **Reduced motion must reveal, never hide.** The server-rendered state is
   visible; scripts add animation on top, they never gate visibility —
   content that needs JS to become visible is a defect. Ambient/WebGL

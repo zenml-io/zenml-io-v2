@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-05-29T11:47:16.835Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/086f51c7/66d8677d9b340eb855a7ebd8_hyperai.png"
+  url: "https://assets.zenml.io/content/integrations/logos/hyperai.svg"
+  alt: "HyperAI logo"
 shortDescription: "Effortlessly orchestrate your ZenML pipelines on HyperAI's cloud compute platform"
 docsUrl: "https://docs.zenml.io/how-to/training-with-gpus/training-with-gpus"
 githubUrl: "https://docs.zenml.io/stack-components/orchestrators/hyperai"

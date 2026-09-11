@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-09-15T20:24:55.178Z"
 integrationType: "container-registry"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8badb0ed/66e7427b73f65bd26a9715f2_unnamed.png"
+  url: "https://assets.zenml.io/content/integrations/logos/google-artifact-registry.svg"
+  alt: "Google Artifact Registry logo"
 shortDescription: "Leverage Google’s Container Registry in ZenML Pipelines with Google Artifact Registry Integration"
 docsUrl: "https://docs.zenml.io/stack-components/container-registries/gcp"
 mainImage:
