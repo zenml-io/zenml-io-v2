@@ -11,6 +11,7 @@
 .compare-body-inner > .comparison-prose + .comparison-prose { margin-top: 12px; }
 .compare-body-inner > .comparison-prose:first-child p { padding-top: 0; }
 .compare-body-inner > .comparison-prose:has(+ .scroll-reveal-section:not(.comparison-prose)) { margin-bottom: 0; }
+.compare-body-inner > .comparison-prose:has(> :is(h2, h3)):has(+ .comparison-markdown-table) { max-width: var(--container-content); }
 .compare-body-inner > .comparison-prose:has(> h2) + section { padding-top: 32px; }
 .compare-body-inner > section + .comparison-prose > h2 { margin-top: 32px; }
 .comparison-markdown-table { width: 100%; max-width: var(--container-content); margin: 32px auto; padding-inline: var(--spacing-gutter); container-type: inline-size; }
@@ -18,10 +19,14 @@
 .comparison-markdown-table__frame:focus-visible { outline: 2px solid var(--color-sage-600); outline-offset: 4px; }
 .comparison-markdown-table table { width: 100%; min-width: 720px; border-collapse: collapse; table-layout: fixed; font-family: var(--font-sans); font-size: 15px; line-height: 20px; color: var(--color-cream-800); }
 .comparison-markdown-table th, .comparison-markdown-table td { padding: 16px 24px; border-bottom: 1px solid var(--color-border); text-align: left; vertical-align: top; }
-.comparison-markdown-table th { background: var(--color-card); color: var(--color-cream-900); font-weight: 500; }
+.comparison-markdown-table thead th { background: var(--color-cream-100); color: var(--color-cream-900); font-family: var(--font-label); font-size: 12px; line-height: 16px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
+.comparison-markdown-table tbody tr { transition: background-color 200ms ease-out; }
+.comparison-markdown-table tbody tr:hover, .comparison-markdown-table tbody tr:focus-within { background-color: color-mix(in srgb, var(--color-cream-100) 40%, var(--color-card)); }
 .comparison-markdown-table tbody tr:last-child td { border-bottom: 0; }
-.comparison-markdown-table :is(th, td):first-child { position: sticky; left: 0; z-index: 1; width: 25%; background: var(--color-card); font-weight: 500; }
-.comparison-markdown-table th:first-child { color: var(--color-cream-600); }
+.comparison-markdown-table :is(th, td):first-child { position: sticky; left: 0; z-index: 1; width: 25%; font-weight: 500; }
+.comparison-markdown-table thead th:first-child { background: var(--color-cream-100); }
+.comparison-markdown-table tbody td:first-child { background: var(--color-card); transition: background-color 200ms ease-out; }
+.comparison-markdown-table tbody tr:hover td:first-child, .comparison-markdown-table tbody tr:focus-within td:first-child { background-color: color-mix(in srgb, var(--color-cream-100) 40%, var(--color-card)); }
 .comparison-markdown-table td[colspan] { background: var(--color-sage-50); padding: 10px 24px; font-size: 13px; line-height: 16px; color: var(--color-cream-700); }
 .comparison-markdown-table :is(th, td) :is(a, code) { overflow-wrap: anywhere; }
 .comparison-markdown-table a { color: var(--color-sage-800); text-decoration: underline; text-underline-offset: 3px; }

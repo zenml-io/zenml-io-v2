@@ -1,5 +1,8 @@
 ---
 import "../../styles/labs-scroll-reveal.css";
+import { KITARU_GRAIN } from "../../lib/kitaru-grain-palettes";
+import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
+import { GrainBackdrop } from "../islands/GrainBackdrop";
 
 interface Props {
   quote: string;
@@ -20,11 +23,17 @@ const {
   logo,
 } = Astro.props;
 const hasAttribution = Boolean(name || title || avatar || logo);
+const kitaru = product === "kitaru";
 ---
 
-<section class="comparison-quote scroll-reveal-section bg-(--color-sage-50) py-10 md:py-14">
-  <figure class="reveal-child mx-auto max-w-content px-gutter text-center">
-    <span class:list={["mb-4 block font-display text-[72px] leading-[0.7] select-none md:text-[96px]", product === "kitaru" ? "text-(--color-orange-600)" : "text-(--color-sage-600)"]} aria-hidden="true">&ldquo;</span>
+<section class:list={["comparison-quote scroll-reveal-section relative overflow-hidden border-y border-(--color-border) py-12 md:py-20", kitaru ? "bg-(--color-orange-50)" : "bg-(--color-sage-50)"]}>
+  <GrainBackdrop
+    client:idle
+    config={kitaru ? KITARU_GRAIN.blog : LABS_GRAIN.hero}
+    class="absolute inset-0 opacity-90"
+  />
+
+  <figure class="reveal-child relative mx-auto max-w-content px-gutter text-center">
     <blockquote class="font-display text-[28px] leading-[36px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[46px]">
       {source ? <a href={source} class="decoration-(--color-sage-400) underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--color-sage-600)">{quote}</a> : quote}
     </blockquote>

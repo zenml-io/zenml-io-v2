@@ -95,10 +95,19 @@ const accessibleTableHtml =
   .legacy-comparison-table :global([data-rt-embed-type]) { display: contents; }
   .legacy-comparison-table :global(table) { width: 100%; min-width: 720px; border-collapse: collapse; table-layout: fixed; }
   .legacy-comparison-table :global(tr) { border-bottom: 1px solid var(--color-border); }
+  .legacy-comparison-table :global(tbody tr:has(> th)) { transition: background-color 200ms ease-out; }
+  .legacy-comparison-table :global(tbody tr:has(> th):hover), .legacy-comparison-table :global(tbody tr:has(> th):focus-within) { background-color: color-mix(in srgb, var(--color-cream-100) 40%, var(--color-card)); }
   .legacy-comparison-table :global(tr:last-child) { border-bottom: 0; }
   .legacy-comparison-table :global(th) { padding: 16px 24px; border-bottom: 1px solid var(--color-border); font-family: var(--font-sans); font-size: 15px; line-height: 20px; font-weight: 500; color: var(--color-cream-900); text-align: center; }
-  .legacy-comparison-table :global(th:first-child) { position: sticky; left: 0; z-index: 3; background: var(--color-card); text-align: left; color: var(--color-cream-600); }
-  .legacy-comparison-table :global(tbody th:first-child) { width: 34%; padding: 16px 24px; vertical-align: top; text-align: left; color: var(--color-cream-900); }
+  .legacy-comparison-table :global(thead th) { background-color: var(--color-cream-100); font-family: var(--font-label); font-size: 12px; line-height: 16px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .legacy-comparison-table :global(thead th:first-child) { position: sticky; left: 0; z-index: 3; text-align: left; }
+  .legacy-comparison-table :global(tbody th:first-child) { width: 34%; padding: 16px 24px; vertical-align: top; background-color: var(--color-card); text-align: left; color: var(--color-cream-900); transition: background-color 200ms ease-out; }
+  .legacy-comparison-table :global(tbody tr:has(> th):hover th:first-child), .legacy-comparison-table :global(tbody tr:has(> th):focus-within th:first-child) { background-color: color-mix(in srgb, var(--color-cream-100) 40%, var(--color-card)); }
+  .comparison-table-ui :global(.comparison-spec-table thead th) { background-color: var(--color-cream-100); font-family: var(--font-label); font-size: 12px; line-height: 16px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-cream-900); }
+  .comparison-table-ui :global(.comparison-spec-table tbody tr:not(:has(> td[colspan]))) { transition: background-color 200ms ease-out; }
+  .comparison-table-ui :global(.comparison-spec-table tbody tr:not(:has(> td[colspan])):hover), .comparison-table-ui :global(.comparison-spec-table tbody tr:not(:has(> td[colspan])):focus-within) { background-color: color-mix(in srgb, var(--color-cream-100) 40%, var(--color-card)); }
+  .comparison-table-ui :global(.comparison-spec-table tbody tr:not(:has(> td[colspan])) > td:first-child) { transition: background-color 200ms ease-out; }
+  .comparison-table-ui :global(.comparison-spec-table tbody tr:not(:has(> td[colspan])):hover > td:first-child), .comparison-table-ui :global(.comparison-spec-table tbody tr:not(:has(> td[colspan])):focus-within > td:first-child) { background-color: color-mix(in srgb, var(--color-cream-100) 40%, var(--color-card)); }
   .legacy-comparison-table :global(td) { padding: 16px 24px; vertical-align: top; font-family: var(--font-sans); font-size: 15px; line-height: 20px; color: var(--color-cream-800); }
   .legacy-comparison-table :global(td:first-child) { position: sticky; left: 0; z-index: 2; width: 34%; background: var(--color-card); font-weight: 500; color: var(--color-cream-900); }
   .legacy-comparison-table :global(td:not(:first-child)) { width: 33%; text-align: center; }

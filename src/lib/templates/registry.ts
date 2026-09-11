@@ -1168,7 +1168,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "The blocks tableHtml scorecard. #319 retains this id but renders through labs.comparison-table: real table headings, sticky first column, sage checks and cream crosses, and always-visible supporting text instead of hover-only tooltips or disclosure controls.",
+      "The blocks tableHtml scorecard. #319 retains this id but renders through labs.comparison-table: blog-matched cream-100 label headers, sticky first column, sage checks and cream crosses, and always-visible supporting text instead of hover-only tooltips or disclosure controls.",
   },
   {
     id: "comparison.code-compare",
@@ -1207,7 +1207,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Comparison quote id. #319 retains it while both slug-backed `quote` and inline `testimonial` render through labs.comparison-quote: a full-width editorial band, centered Borna quote, visible quote mark and optional attribution. This supersedes the initial story-card arrangement; absent quotes and attribution still collapse.",
+      "Comparison quote id. #319 retains it while both slug-backed `quote` and inline `testimonial` render through labs.comparison-quote: a full-width shader band with top and bottom hairlines, centered Borna quote and optional attribution. This supersedes the initial story-card arrangement; absent quotes and attribution still collapse.",
   },
   {
     id: "comparison.final-cta",
@@ -1305,7 +1305,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "The Labs comparison matrix shared by blocks and MDX: 20px frame, hairline rows, sticky feature column, sage check and cream cross, sentence-case headers, and no alternating tint. Legacy tooltip cells become keyboard-reachable details rows.",
+      "The Labs comparison matrix shared by blocks and MDX: 20px frame, hairline rows, sticky feature column, sage check and cream cross, blog-matched cream-100 headers in the compact label face, and no alternating tint. Legacy tooltip cells become always-visible supporting text.",
     collectionBound: true,
     contentShape: {
       minItems: 1,
@@ -1318,14 +1318,19 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "labs.comparison-value",
     kind: "template",
     componentPath: "src/components/labs/LabsComparisonValue.astro",
-    variantAxes: ["split | list", "media side", "media present"],
+    variantAxes: [
+      "split | list",
+      "media side",
+      "media present",
+      "ZenML | Kitaru diagram tone",
+    ],
     tones: ["default"],
     responsive: "collapse",
     island: false,
     paperPage: 1,
     stage: false,
     notes:
-      "Comparison value block on the system Split primitive: prose-first DOM, hairline check rows, and framed image or slotted media; the list arrangement keeps MDX-authored bullet groups.",
+      "Comparison value block on the system Split primitive: prose-first DOM, hairline check rows, framed image media, and slotted diagrams without nested card framing. ZenML diagrams use a sage-300 presentation field and Figma-aligned panel headers with Rethink Sans titles plus Nudica Mono context: sage-100/sage-500 for emphasis and cream-50/cream-200 for neutral panels. Kitaru keeps its product-scoped field. The list arrangement keeps MDX-authored bullet groups.",
   },
   {
     id: "labs.comparison-showdown",
@@ -1961,11 +1966,11 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     variantAxes: ["product", "attribution present"],
     tones: ["default"],
     responsive: "reflow",
-    island: false,
+    island: true,
     paperPage: 1,
     stage: false,
     notes:
-      "Full-width editorial comparison quote band with a centered Borna quote, oversized decorative quote mark, controlled vertical padding and optional attribution. Reuses the original comparison figure anatomy without the floating card frame. Sage/cream throughout; the Kitaru product variant colors only the quote mark orange-600. Source quote, author, role, images and link are preserved; absent attribution collapses.",
+      "Full-width editorial comparison quote band with top and bottom hairlines, a centered Borna quote, controlled vertical padding and optional attribution. Reuses the Labs GrainBackdrop shader with the sage Labs palette on ZenML comparisons and the restrained orange Kitaru palette on Kitaru comparisons. Source quote, author, role, images and link are preserved; absent attribution collapses.",
   },
   {
     id: "labs.comparison-blog-rail",
