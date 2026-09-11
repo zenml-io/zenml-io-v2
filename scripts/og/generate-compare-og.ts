@@ -7,6 +7,8 @@
  * Pipeline: gray-matter (parse frontmatter) → satori (JSX → SVG)
  *           → @resvg/resvg-js (SVG → PNG @ 2400px) → sharp (PNG → JPEG)
  *           → optional R2 upload at a deterministic key.
+ * The render, the fonts and the uploader live in `pipeline.ts`, shared with
+ * the default-card generator.
  *
  * Dry-run by default (writes JPEGs to .cache/og/). Pass --write to upload
  * to R2. URLs are derived from slug via `compareOgUrl()` in src/lib/seo.ts;
@@ -16,42 +18,32 @@
  *   pnpm og:compare --slug=kitaru-vs-pydantic-ai
  */
 
-import { execFile } from "node:child_process";
-import { existsSync } from "node:fs";
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
-import { promisify } from "node:util";
-import { Resvg } from "@resvg/resvg-js";
+import { join, resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 import matter from "gray-matter";
-import satori from "satori";
 import sharp from "sharp";
 import {
   COMPARE_OG_PREFIX,
   type CompareOgBrand,
 } from "../../src/lib/constants.js";
 import {
-  CompareOg,
-  compareOgBackground,
-  OG_HEIGHT,
-  OG_WIDTH,
-} from "./template.js";
+  CACHE_DIR,
+  type Font,
+  loadFonts,
+  REPO_ROOT,
+  renderOgJpeg,
+  uploadToR2,
+} from "./pipeline.js";
+import { CompareOg, compareOgBackground } from "./template.js";
 
-const execFileP = promisify(execFile);
+export { loadFonts };
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const REPO_ROOT = resolve(__dirname, "..", "..");
 const COLLECTION_DIRS: Record<CompareOgBrand, string> = {
   kitaru: join(REPO_ROOT, "src/content/compare-kitaru"),
   zenml: join(REPO_ROOT, "src/content/compare-zenml"),
 };
 const BRANDS = Object.keys(COLLECTION_DIRS) as CompareOgBrand[];
-const CACHE_DIR = join(REPO_ROOT, ".cache/og");
-
-const FONT_SPECS = [
-  { family: "Borna", file: "borna-medium.woff", weight: 500 },
-  { family: "Rethink Sans", file: "rethink-sans-regular.woff", weight: 400 },
-] as const;
 
 interface Frontmatter {
   competitor?: string;
@@ -63,24 +55,6 @@ interface CompareEntry {
   slug: string;
   brand: CompareOgBrand;
   frontmatter: Frontmatter;
-}
-
-export async function loadFonts() {
-  return Promise.all(
-    FONT_SPECS.map(async (spec) => {
-      const path = join(REPO_ROOT, `public/fonts/${spec.file}`);
-      if (!existsSync(path))
-        throw new Error(
-          `Missing font file: ${path}. The OG renderer uses WOFF siblings of the site fonts.`,
-        );
-      return {
-        name: spec.family,
-        data: await readFile(path),
-        weight: spec.weight,
-        style: "normal" as const,
-      };
-    }),
-  );
 }
 
 export async function loadEntries(
@@ -107,8 +81,6 @@ export async function loadEntries(
   );
   return perBrand.flat().sort((a, b) => a.slug.localeCompare(b.slug));
 }
-
-type Font = Awaited<ReturnType<typeof loadFonts>>[number];
 
 export async function renderJpeg(
   entry: CompareEntry,
@@ -143,62 +115,17 @@ export async function renderJpeg(
     .png()
     .toBuffer();
   const competitorLogo = `data:image/png;base64,${logoPng.toString("base64")}`;
-  const svg = await satori(
+
+  // Keep the approved 16:9 composition, rendered at 2400px for social previews.
+  return renderOgJpeg(
     CompareOg({
       competitor,
       subtitle: cardSubtitle,
       competitorLogo,
       brand: entry.brand,
     }),
-    {
-      width: OG_WIDTH,
-      height: OG_HEIGHT,
-      fonts,
-    },
-  );
-
-  // Keep the approved 16:9 composition, rendered at 2400px for social previews.
-  const png = new Resvg(svg, {
-    fitTo: { mode: "width", value: 2400 },
-    background: compareOgBackground(entry.brand),
-  })
-    .render()
-    .asPng();
-
-  // quality 85 + mozjpeg + 4:2:0 is the sweet spot for text-heavy cards.
-  // Luma stays full-resolution (sharp text edges); chroma is halved on both
-  // axes (invisible against the near-monochrome content). ~70–100 KB output.
-  return sharp(png)
-    .jpeg({
-      quality: 85,
-      mozjpeg: true,
-      chromaSubsampling: "4:2:0",
-      trellisQuantisation: true,
-      overshootDeringing: true,
-      optimiseScans: true,
-    })
-    .toBuffer();
-}
-
-async function uploadToR2(
-  brand: CompareOgBrand,
-  filePaths: string[],
-): Promise<void> {
-  // --literal-key writes to `${prefix}/${filename}` (no sha8 segment) so the
-  // URL is `compareOgUrl(brand, slug)` — deterministic, overwrites in place
-  // on regen. One `uv run` per brand: the uploader takes many files at once.
-  await execFileP(
-    "uv",
-    [
-      "run",
-      "scripts/r2-upload.py",
-      ...filePaths,
-      "--prefix",
-      COMPARE_OG_PREFIX[brand],
-      "--literal-key",
-      "--overwrite",
-    ],
-    { cwd: REPO_ROOT },
+    fonts,
+    compareOgBackground(entry.brand),
   );
 }
 
@@ -241,7 +168,7 @@ async function main(): Promise<void> {
         .filter((r) => r.brand === brand)
         .map((r) => r.outPath);
       if (paths.length === 0) continue;
-      await uploadToR2(brand, paths);
+      await uploadToR2(COMPARE_OG_PREFIX[brand], paths);
       console.log(
         `  ↳ uploaded ${paths.length} ${brand} card(s) to ${COMPARE_OG_PREFIX[brand]}/`,
       );
