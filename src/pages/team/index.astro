@@ -3,8 +3,8 @@ import BlogNewsletterCta from "../../components/labs/BlogNewsletterCta.astro";
 import LabsPageHeader from "../../components/labs/LabsPageHeader.astro";
 import LabsPeopleRoster from "../../components/labs/LabsPeopleRoster.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { getPublishedTeamMembers } from "../../lib/team";
 import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
+import { getPublishedTeamMembers } from "../../lib/team";
 
 const members = await getPublishedTeamMembers();
 ---

@@ -135,7 +135,7 @@ export async function loadDefaultEntries(
   const { dir, label } = DATABASES[family];
   const files = (await readdir(dir)).filter((file) => file.endsWith(".md"));
   const entries = await Promise.all(
-    files.map(async (file) => {
+    files.map(async (file): Promise<DefaultOgEntry | null> => {
       const frontmatter = matter(await readFile(join(dir, file), "utf8"))
         .data as DatabaseFrontmatter;
       const slug = frontmatter.slug ?? file.replace(/\.md$/, "");

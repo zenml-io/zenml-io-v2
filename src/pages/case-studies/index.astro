@@ -6,13 +6,13 @@ import LabsPageHeader from "../../components/labs/LabsPageHeader.astro";
 import LabsStoryCard from "../../components/labs/LabsStoryCard.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
-import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 import {
   CASE_STUDIES_HUB_BANNER,
   CASE_STUDIES_HUB_HERO,
   orderCaseStudies,
   splitAtBanner,
 } from "../../lib/case-studies";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 const allCaseStudies = await getCollection(
   "case-studies",

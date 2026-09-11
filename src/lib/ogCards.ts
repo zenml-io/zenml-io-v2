@@ -35,29 +35,34 @@ export const OG_CARDS: readonly OgCard[] = [
   {
     key: "home",
     title: "Ship AI to production, on infrastructure you own",
-    subtitle: "ZenML Labs is the unified infrastructure layer for AI in production",
+    subtitle:
+      "ZenML Labs is the unified infrastructure layer for AI in production",
   },
   {
     key: "product-zenml",
     title: "AI orchestration, on the infra you choose",
-    subtitle: "Open-source AI orchestration: run training, inference, evals, and agents as reproducible pipelines",
+    subtitle:
+      "Open-source AI orchestration: run training, inference, evals, and agents as reproducible pipelines",
   },
 
   // Hubs and indexes
   {
     key: "blog",
     title: "Blog",
-    subtitle: "Insights on MLOps, LLMOps, and production machine learning from the ZenML team",
+    subtitle:
+      "Insights on MLOps, LLMOps, and production machine learning from the ZenML team",
   },
   {
     key: "features",
     title: "ZenML Features: Your MLOps Framework Solution",
-    subtitle: "Orchestrate AI workflows with ZenML: end manual deployments and non-reproducible experiments",
+    subtitle:
+      "Orchestrate AI workflows with ZenML: end manual deployments and non-reproducible experiments",
   },
   {
     key: "integrations",
     title: "Explore the MLOps Landscape with ZenML",
-    subtitle: "Browse 60+ integrations for orchestrators, experiment trackers, artifact stores, and more",
+    subtitle:
+      "Browse 60+ integrations for orchestrators, experiment trackers, artifact stores, and more",
   },
   {
     key: "integration-type",
@@ -67,7 +72,8 @@ export const OG_CARDS: readonly OgCard[] = [
   {
     key: "compare",
     title: "Pick the right tool for the job.",
-    subtitle: "Side-by-side comparisons of ZenML (AI orchestration) and Kitaru (agent replay) against other tools",
+    subtitle:
+      "Side-by-side comparisons of ZenML (AI orchestration) and Kitaru (agent replay) against other tools",
   },
   {
     key: "team",
@@ -77,22 +83,27 @@ export const OG_CARDS: readonly OgCard[] = [
   {
     key: "case-studies",
     title: "Real Teams. Real AI Workflows",
-    subtitle: "See how teams are using ZenML to unify their AI platforms, from batch evaluations to real-time serving",
+    subtitle:
+      "See how teams are using ZenML to unify their AI platforms, from batch evaluations to real-time serving",
   },
   {
     key: "projects",
-    title: "A home for machine learning projects built using ZenML and various integrations",
-    subtitle: "A home for machine learning projects built using ZenML and various integrations",
+    title:
+      "A home for machine learning projects built using ZenML and various integrations",
+    subtitle:
+      "A home for machine learning projects built using ZenML and various integrations",
   },
   {
     key: "llmops-database",
     title: "LLMOps Database",
-    subtitle: "Explore real-world LLMOps use cases, tools, and implementations, filterable by technology and industry",
+    subtitle:
+      "Explore real-world LLMOps use cases, tools, and implementations, filterable by technology and industry",
   },
   {
     key: "mlops-database",
     title: "MLOps Database",
-    subtitle: "Explore real-world MLOps case studies, platforms, and production ML systems, filterable by topic and industry",
+    subtitle:
+      "Explore real-world MLOps case studies, platforms, and production ML systems, filterable by topic and industry",
   },
 
   // Taxonomy hubs, one card per family
@@ -114,7 +125,8 @@ export const OG_CARDS: readonly OgCard[] = [
   {
     key: "industry-tags",
     title: "Industries",
-    subtitle: "Browse all industries represented in the ZenML LLMOps and MLOps databases",
+    subtitle:
+      "Browse all industries represented in the ZenML LLMOps and MLOps databases",
   },
   {
     key: "category",
@@ -136,27 +148,32 @@ export const OG_CARDS: readonly OgCard[] = [
   {
     key: "pro",
     title: "A managed control plane for AI workflows and agents",
-    subtitle: "Run your AI workflows and agent replays on a fully-managed control plane",
+    subtitle:
+      "Run your AI workflows and agent replays on a fully-managed control plane",
   },
   {
     key: "careers",
     title: "Join our team",
-    subtitle: "We are quickly growing and looking for motivated team members to grow our open-source base",
+    subtitle:
+      "We are quickly growing and looking for motivated team members to grow our open-source base",
   },
   {
     key: "company",
     title: "Nothing Beats an Unbeatable Team",
-    subtitle: "Meet the team behind ZenML, the open-source AI orchestration framework trusted by engineers worldwide",
+    subtitle:
+      "Meet the team behind ZenML, the open-source AI orchestration framework trusted by engineers worldwide",
   },
   {
     key: "get-started",
     title: "Get started.",
-    subtitle: "Install ZenML, run your first pipeline locally, then orchestrate on infrastructure you already use",
+    subtitle:
+      "Install ZenML, run your first pipeline locally, then orchestrate on infrastructure you already use",
   },
   {
     key: "open-source-vs-pro",
     title: "ZenML Open Source vs Pro",
-    subtitle: "Transform your AI workflows from single-player experiments to multiplayer production systems",
+    subtitle:
+      "Transform your AI workflows from single-player experiments to multiplayer production systems",
   },
   {
     key: "deployments",

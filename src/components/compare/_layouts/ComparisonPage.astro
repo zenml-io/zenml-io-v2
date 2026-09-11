@@ -255,7 +255,8 @@ if (isCompareProps(props)) {
     props.item.data.hero.deck;
   ogTitle = props.item.data.seo?.ogTitle;
   ogDescription = props.item.data.seo?.ogDescription;
-  ogImage = props.item.data.seo?.ogImage || compareOgUrl("zenml", props.item.data.slug);
+  ogImage =
+    props.item.data.seo?.ogImage || compareOgUrl("zenml", props.item.data.slug);
   canonical = props.item.data.seo?.canonical;
 } else {
   seoTitle =
