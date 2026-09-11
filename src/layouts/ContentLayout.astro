@@ -1,5 +1,7 @@
 ---
+import LabsBand from "../components/labs/LabsBand.astro";
 import type { Surface } from "../lib/analytics";
+import { BAND_CONTENT_GAP } from "../lib/blogLayout";
 import type { LabsProduct } from "../lib/labs-home";
 import type { SEOProps } from "../lib/seo";
 /**
@@ -13,8 +15,6 @@ import type { SEOProps } from "../lib/seo";
  * slot.
  */
 import BaseLayout from "./BaseLayout.astro";
-import LabsBand from "../components/labs/LabsBand.astro";
-import { BAND_CONTENT_GAP } from "../lib/blogLayout";
 
 interface Props extends SEOProps {
   heading: string;

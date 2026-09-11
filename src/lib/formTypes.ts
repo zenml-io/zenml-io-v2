@@ -5,8 +5,8 @@
  * ConversionShell's `success` frame, and all data modules in src/lib/.
  */
 
-import type { CtaLink } from "./marketingPageTypes";
 import type { LabsCta } from "./labs-home";
+import type { CtaLink } from "./marketingPageTypes";
 
 /** Cal.com inline embed configuration. */
 export interface CalEmbedConfig {

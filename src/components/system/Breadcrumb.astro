@@ -63,17 +63,16 @@ const {
 
 const isChevron = separator === "chevron";
 
-// Labs-scope colour + typography overrides (blog cutover, the approved blog design (DESIGN.md);
+// Labs-scope colour + typography (blog cutover, the approved blog design (DESIGN.md);
 // typography per the 2026-09-09 mid-run ruling in CONVENTIONS.md, which
 // names the breadcrumb explicitly and supersedes the approved blog design (DESIGN.md)' drawn
 // Nudica/uppercase treatment): the chevron variant's structure and spacing
-// are unchanged for its existing zenml-scope consumers (llmops/mlops detail
-// pages) — only colour + case repoint under `[data-app="labs"]`, via the
-// ancestor-scoped arbitrary variant, since this primitive is shared and its
-// other consumers never mount that scope. Sentence case, Rethink (the scope
-// default font — no `font-label` override), same 13px drawn size.
+// are unchanged for its existing consumers (llmops/mlops detail pages).
+// Sentence case, Rethink (the scope default font — no `font-label`
+// override), same 13px drawn size. Labs is the root scope now, so these
+// are plain classes rather than a scoped variant.
 const navClass = isChevron
-  ? "mb-space-md flex items-center gap-space-xxs text-sm text-gray-500 [[data-app='labs']_&]:text-[13px] [[data-app='labs']_&]:text-(--color-cream-700)"
+  ? "mb-space-md flex items-center gap-space-xxs text-[13px] text-(--color-cream-700)"
   : "text-sm text-gray-500";
 const olClass = isChevron ? "flex items-center gap-space-xxs" : "";
 // Chevron's ol-level gap-space-xxs only ever separates li's from one another. Once the
@@ -83,13 +82,13 @@ const olClass = isChevron ? "flex items-center gap-space-xxs" : "";
 // just supplied one level down so the ol's own gap doesn't have to double up.
 const liClass = isChevron ? "flex items-center gap-space-xxs" : "inline";
 const linkClass = isChevron
-  ? "hover:text-primary-600 [[data-app='labs']_&]:hover:text-(--color-cream-900)"
+  ? "hover:text-(--color-cream-900)"
   : "hover:text-zenml-500";
 const currentClass = isChevron
-  ? "text-gray-900 line-clamp-1 [[data-app='labs']_&]:text-(--color-cream-800)"
+  ? "text-(--color-cream-800) line-clamp-1"
   : "text-gray-900";
 const chevronIconClass = isChevron
-  ? "h-4 w-4 text-gray-400 [[data-app='labs']_&]:text-(--color-cream-500)"
+  ? "h-4 w-4 text-(--color-cream-500)"
   : "h-4 w-4 text-gray-400";
 ---
 

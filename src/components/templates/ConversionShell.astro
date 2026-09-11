@@ -1,4 +1,5 @@
 ---
+import type { LabsCta } from "../../lib/labs-home";
 /**
  * ConversionShell — hero + widget shell for conversion-utility pages
  * (Cal.com scheduling embeds, short lead-capture forms, and the
@@ -29,7 +30,6 @@
  */
 import LabsBand from "../labs/LabsBand.astro";
 import LabsButton from "../labs/LabsButton.astro";
-import type { LabsCta } from "../../lib/labs-home";
 
 interface ConversionShellBase {
   headline: string;
@@ -47,7 +47,9 @@ type Props =
 
 const { headline, deck, frame } = Astro.props;
 const { primaryCta, secondaryCta } =
-  frame === "success" ? Astro.props : { primaryCta: undefined, secondaryCta: undefined };
+  frame === "success"
+    ? Astro.props
+    : { primaryCta: undefined, secondaryCta: undefined };
 ---
 
 {

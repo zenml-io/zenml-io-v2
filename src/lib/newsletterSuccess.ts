@@ -17,6 +17,14 @@ export const NEWSLETTER_SUCCESS_SEO: SEOProps = {
 export const NEWSLETTER_SUCCESS_DATA: SuccessPageData = {
   headline: "You're subscribed!",
   body: "Your subscription is confirmed.<br>Expect updates on releases, platform improvements, and practical insights from real production systems.",
-  primaryCta: { label: "Back to Home", href: "/", analytics: "Success-Primary" },
-  secondaryCta: { label: "Read the Blog", href: "/blog", analytics: "Success-Secondary" },
+  primaryCta: {
+    label: "Back to Home",
+    href: "/",
+    analytics: "Success-Primary",
+  },
+  secondaryCta: {
+    label: "Read the Blog",
+    href: "/blog",
+    analytics: "Success-Secondary",
+  },
 };
