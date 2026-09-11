@@ -36,9 +36,10 @@ import type { DefaultOgFamily } from "../src/lib/constants";
 /**
  * One card per pipeline variant that satori/resvg/sharp actually touch. The
  * Kitaru VS slug is the same page the MDX rendered-content golden uses; the
- * ZenML VS slugs exercise the template's <img> data-URI path (one from the
- * MDX collection, one from the Markdown `compare` collection) which the
+ * ZenML VS slug exercises the template's <img> data-URI path, which the
  * Kitaru card never hits; the default card exercises the second generator.
+ * Every golden must render offline: the Markdown `compare` entries load their
+ * logo from R2, so none of them can be a golden (CI has no network here).
  */
 export interface OgGolden {
   generator: "compare" | "default";
@@ -48,7 +49,6 @@ export interface OgGolden {
 export const OG_GOLDENS: readonly OgGolden[] = [
   { generator: "compare", slug: "kitaru-vs-pydantic-ai" },
   { generator: "compare", slug: "zenml-vs-pydantic-ai" },
-  { generator: "compare", slug: "zenml-vs-argo-workflows" },
   { generator: "default", slug: "pages/home" },
 ];
 

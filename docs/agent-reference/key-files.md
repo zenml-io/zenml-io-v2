@@ -139,8 +139,8 @@ pages: string[] }`, each array sorted) and only then does the layout call
 `pnpm smoke:dist`) renders one VS card per `.mdx` brand variant
 (`kitaru-vs-pydantic-ai`, `zenml-vs-pydantic-ai`) through the real pipeline
 and pixel-diffs it against a committed JPEG in `tests/snapshots/rendered/`
-(delta 24, 0.5% max changed), plus one `.md`-sourced VS card
-(`zenml-vs-argo-workflows`) and one default card (`pages/home`, exercising
-the fitter, chip and artwork pick). Regenerate with `pnpm og:golden:update`
+(delta 24, 0.5% max changed), plus one default card (`pages/home`,
+exercising the fitter, chip and artwork pick). Goldens must render offline;
+the `.md` compare entries fetch their logo from R2, so none can be a golden. Regenerate with `pnpm og:golden:update`
 and look at the new image before committing —
 the diff IS the review.
