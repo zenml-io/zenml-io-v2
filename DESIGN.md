@@ -191,7 +191,7 @@ Additional rules:
 
 - **FAQ rows**: a FAQ is a stack of native `<details>` rows on the prose column width, separated by `--color-border` hairlines — question in Rethink Sans sentence case, a chevron that turns when the row opens, the answer in body type. One heading per FAQ; eyebrows and sub-decks are not rendered. There is one implementation, `labs.faq`; the pricing page mounts one per workspace panel.
 - **The highlighted plan card**: the recommended pricing plan is marked by a 1px `--color-sage-400` border and a sentence-case "Recommended" pill on the card's top edge — never a shadow, never a coloured strip. On the Kitaru workspace panel the same card turns `--color-orange-300` with the pill on `--color-orange-600`; that pill and border are the panel's one bounded orange moment, every pill on the panel stays ink.
-- **Hub rows with marks**: a comparison-hub row is an entry row (see "Entry rows, not cards") with a 24px competitor mark leading the title; the mark is `object-contain` and takes no border or tile. The Kitaru block of the hub sits under `data-product="kitaru"` so the row's accent variables carry the orange ramp; there is no orange band behind it.
+- **Comparison cards with marks**: the comparison hub and related-comparison navigation use the same compact card — a 40px `object-contain` competitor mark beside one title and a description clamped to two visible lines, with no repeated metadata/type row. Cards render in an explicit one/two/three-column grid and reuse the entry-row per-line title underline sweep on hover and focus. The Kitaru block stays under `data-product="kitaru"` so its accent variables carry the orange ramp; there is no orange band behind it.
 - **Comparison tables on the Labs shell**: every pricing or feature comparison renders through `data-display.spec-table`'s labs skin — 20px radius frame, hairline rows, sticky first column, sage check / cream cross icons, `LabsButton` pills in the action row, section headers in sentence case on the light sage tint. No alternating row tint; the hairline carries the rhythm. (These four rules date from the product one-offs cutover, 2026-09.)
 
 ## Responsive contract
@@ -352,3 +352,22 @@ container scrolls inside its own region.
   the component files — never hand-authored (#93).
 - It is **public but unlisted** (#95): a static route with `noindex`, linked
   from no nav, footer, or sitemap. No auth gating.
+
+## Comparison pages
+
+- **Comparison headers are eyebrow-first.** They render no visible breadcrumb; breadcrumb data remains in JSON-LD. The Nudica uppercase eyebrow leads, using sage on ZenML routes and orange-600 on Kitaru routes, followed by the product/competitor switcher, headline and deck. When an MDX headline repeats the product/competitor pair already shown by the switcher, only that exact prefix is omitted from the display heading; metadata remains authored.
+- **Every comparison section reveals on scroll.** The opening band content,
+  switcher, every body section, row/card group and closing band use the shared
+  `scroll-reveal-section` / `reveal-child` pattern and
+  `initScrollReveal()`. The hidden state applies only after
+  `.reveal-armed`; no-JavaScript and reduced-motion rendering stays fully
+  visible.
+- **Comparison showdown cards are even-handed.** Two decision cards sit side
+  by side from `lg`, share the ProductDoors hover-card anatomy, use sage and
+  cream only, and render hairline-separated check rows.
+- **Code compare panes use the site code-pane.** One or two `labs-light`
+  panes keep the sentence-case label and copy control outside the horizontally
+  scrolling code region. They do not introduce a dark band.
+- **Comparison quotes are editorial bands, not cards.** They span the viewport, center the Borna quote and optional attribution, and use one decorative quote mark; Kitaru colors only that mark orange-600. Missing attribution collapses.
+- **Comparison related reading uses framed Labs blog cards.** The named comparison variant is white with a hairline frame, edge-to-edge 16:9 cover, equal-height content and no Kitaru badge. It renders one/two/three columns so three supplied articles share one desktop row; the default blog card is unchanged.
+- **Comparison closes are full-width and restrained.** The dark sage close uses a centered headline, existing deck and exactly one `LabsButton`; there is no gradient, shadow, install bar or secondary link row.

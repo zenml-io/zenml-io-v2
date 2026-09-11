@@ -44,77 +44,75 @@ can be assembled from.
 ### ZenML comparison pages
 **Routes** — `/compare/zenml-vs-<slug>` (25 pages) and `/vs/<slug>` (3 category
 pages), all published entries in the `compare` and `vs-pages` collections.
-**Layout** — no page-level layout wrapper; `ComparisonPage` renders its own
-document (the `/vs` family wraps its section stack in a `<main>`; `/compare`
-never has one — derived from the `item.collection` discriminant, not a prop).
-**Surface** — `ml` for all 28 routes; `ComparisonPage` sets it once and neither
-family overrides it (verified against the rendered `data-surface` attribute).
-**Sequence** — one ordered `blocks[]` array per entry, rendered through a
-discriminated union keyed by collection: hero (tool hero for `/compare`,
-category hero for `/vs`), up to nine block kinds (feature table, code
-compare, strategy CTA, testimonial, final CTA), assembled by
-`src/components/compare/_layouts/ComparisonPage.astro`.
+**Layout** — `ComparisonPage` renders `BaseLayout app="labs" product="zenml"`
+and discriminates the blocks and category collections without configurable
+layout props.
+**Surface** — `ml` for all 28 routes.
+**Sequence** — eyebrow-first `LabsComparisonBand` (eyebrow, headline, deck,
+38-option grouped switcher), then the ordered `blocks[]`: `value` →
+`LabsComparisonValue`; `quote` / `testimonial` → full-width
+`LabsComparisonQuote`; `featureTable` → `LabsComparisonTable`;
+`codeComparison` → `LabsCodeCompare`; `strategyCta` →
+`LabsComparisonStrategyCta`; sibling comparisons → `LabsComparisonCard`
+grids; `blogRail` → `LabsComparisonBlogRail` with framed Labs blog cards;
+`cta02` → the full-width comparison arrangement of `LabsCloseCta`.
 **Required data** — `compare` collection; `vs-pages` collection; `advantages`
 collection (strategy-CTA block); `quotes` collection (the `/compare` quote
 block resolves a slug reference; `/vs` inlines its testimonial copy instead);
-`lib/blog` for the related-posts rail; block components under
-`src/components/sections/compare/` and `src/components/sections/VsHero.astro`
-/ `VsTestimonial.astro` / `VsCta02.astro`.
-**Buildable today** — yes. Both families are one template driven entirely by
-frontmatter blocks; a new entry is a new content file, not new markup. These
-components live outside `src/components/templates/` (they were extracted from
-live pages in parity mode, not designed from scratch), so `pnpm check:registry`
-doesn't require entries for them, but they're catalogued in
-`src/lib/templates/registry.ts` under the `comparison.*` ids since leaving out
-the site's largest page family would make this ledger misleading.
+`lib/blog` for the related-posts rail; `compare-zenml` for the complete
+switcher.
+**Buildable today** — yes. A new entry is a content file; the shared Labs
+components are registered under `labs.*`, and the retained `comparison.*`
+ids document how each historical block maps onto them.
 
 ### Comparison hub
 **Routes** — `/compare` (one page).
 **Layout** — `BaseLayout` (`app="labs"`).
 **Surface** — `unified`.
-**Sequence** — `LabsBand` (short: eyebrow / h1 / deck), two `labs.entry-row`
-lists (Kitaru vs. agent frameworks and SDKs, wrapped in `data-product="kitaru"`;
+**Sequence** — `LabsBand` (short: eyebrow / h1 / deck), two compact
+`labs.comparison-card` grids (Kitaru vs. agent frameworks and SDKs, wrapped in `data-product="kitaru"`;
 ZenML vs. orchestrators, durable execution engines & agent frameworks), then
 `LabsCloseCta`.
 **Required data** — `compare`, `compare-zenml` and `compare-kitaru`
 collections, normalised into one card shape by `src/lib/compareHub.ts`.
-**Buildable today** — mostly. `LabsBand`, `EntryRow` and `LabsCloseCta` are
-registry templates; the two section headings and lists are page-local
-markup.
+**Buildable today** — yes. `LabsBand`, `LabsComparisonCard` and
+`LabsCloseCta` are registry templates; the two section headings and grids are
+page-local arrangement markup.
 
 ### ZenML MDX comparison pages
 **Routes** — `/compare/zenml-vs-<slug>` (10 `.mdx` entries in
 `compare-zenml`), served by `src/pages/compare/[slug].astro`, the same
 dispatcher that routes the other two compare collections.
-**Layout** — `ZenmlMdxCompare`
-(`src/components/compare/_layouts/ZenmlMdxCompare.astro`), MDX-driven, ZenML
-chrome via `data-app="zenml-compare"`.
+**Layout** — `ZenmlMdxCompare` renders `BaseLayout app="labs"
+product="zenml"`; there is no comparison-specific token scope.
 **Surface** — `ml`.
-**Sequence** — hero with a competitor dropdown, then MDX body content via
-inline component imports (`ComparisonHero`, `ComparisonTable`, `CodeCompare`,
-`FeatureWithGraphic`, `WhenToUseEach`, `ComparisonCta`, `PullQuote` under
-`src/components/compare/zenml/`).
+**Sequence** — eyebrow-first `LabsComparisonBand` with the complete 38-option
+switcher and no visible breadcrumb, then the MDX body. Its existing inline imports are thin
+wrappers over `LabsComparisonTable`, `LabsCodeCompare`,
+`LabsComparisonValue`, `LabsComparisonShowdown`, `LabsComparisonQuote`, and
+the full-width comparison arrangement of `LabsCloseCta`.
 **Required data** — `compare-zenml` collection (`.mdx`, not `.md`, for the
 inline component imports); the per-competitor graphics under
 `src/components/compare/zenml/graphics/`.
-**Buildable today** — no. The ZenML-themed twin of the Kitaru template, with
-the same MDX-plus-inline-components shape and no registry equivalent.
+**Buildable today** — yes. Shared behavior is registered under `labs.*`; the
+MDX wrappers preserve the authored component API without duplicating the
+visual implementation.
 
 ### Kitaru comparison pages
-**Routes** — `/compare/kitaru-vs-<slug>` (5 `.mdx` entries in
+**Routes** — `/compare/kitaru-vs-<slug>` (11 `.mdx` entries in
 `compare-kitaru`).
 **Layout** — `KitaruCompare` (`src/components/compare/_layouts/KitaruCompare.astro`),
-MDX-driven, orange chrome via `data-app="kitaru"`.
+on `BaseLayout app="labs" product="kitaru"`; the MDX content retains an inner
+`data-app="kitaru"` for the established token bridge used by its graphics.
 **Surface** — `agent`.
-**Sequence** — hero with a competitor dropdown, then MDX body content via
-inline component imports (`ComparisonHero`, `ComparisonTable`, `CodePane`,
-`CodeCompare`, `FeatureWithGraphic`, `WhenToUseEach`, `ComparisonCta`,
-`PullQuote` — `src/components/compare/kitaru/`).
+**Sequence** — Kitaru-grain, orange-eyebrow `LabsComparisonBand` with the complete
+11-option switcher and no visible breadcrumb, then the MDX body. The inline components are
+thin wrappers over the same Labs table, code-pane, value, showdown, quote and
+closing-band components as the ZenML MDX family.
 **Required data** — `compare-kitaru` collection (`.mdx`, not `.md` — the ported
 pages rely on inline component imports).
-**Buildable today** — no. Frozen pending the evals-positioning pivot —
-catalogued here so the family isn't invisible to future audits, not scheduled
-for consolidation into the registry.
+**Buildable today** — yes. New competitors are content entries and appear
+alphabetically in the shared Kitaru switcher.
 
 ---
 
@@ -812,9 +810,9 @@ listed first within each verdict group.
 | Integration detail (`/integrations/[slug]`) | no | no shared template for a "structured content with markdown fallback" detail page |
 | Kitaru product landing (`/product/kitaru`) | no | fully bespoke Kitaru-only islands and sections |
 | ZenML product landing (`/product/zenml`) | no | reuses homepage sections by import, not through the registry |
-| Open Source vs Pro (`/open-source-vs-pro`) | no | `VsHero`/`ComparisonTable` reused by import only; grid and subway-map sections are one-off |
-| Kitaru comparison pages (`/compare/kitaru-vs-*`) | no | frozen pending the evals-positioning pivot; catalogued, not scheduled |
-| ZenML MDX comparison pages (`/compare/zenml-vs-*` in `compare-zenml`) | no | MDX body with inline component imports; no registry equivalent |
+| Open Source vs Pro (`/open-source-vs-pro`) | no | the comparison table is reused by import only; grid and subway-map sections are one-off |
+| Kitaru comparison pages (`/compare/kitaru-vs-*`) | partial | Labs shell and every visual section are registered; competitor-specific inline graphics remain authored in MDX |
+| ZenML MDX comparison pages (`/compare/zenml-vs-*` in `compare-zenml`) | partial | Labs shell and every visual section are registered; competitor-specific inline graphics remain authored in MDX |
 | Book Your Demo (`/book-your-demo`, `/book-your-demo/kitaru`) | no | `BookingExperience` covers the whole page and takes a brand, so another variant of this shape is cheap — but it sits outside the registry, and a differently-shaped conversion page gets nothing from it |
 | Newsletter signup (`/newsletter-signup`) | no | two-column, image-paired shape doesn't match either `ConversionShell` frame |
 | Newsletter success (`/newsletter-success`) | no | `SuccessPanel` is a standalone component with one consumer |

@@ -66,3 +66,10 @@ positioning; MERGE_PLAN.md records the merge history.
 ## Security & Configuration
 - Treat this repo as public. Never commit secrets, API keys, infrastructure IDs, internal URLs, traffic numbers, or private notes.
 - Use credentials only for the authorized task. Do not automatically persist supplied credentials. When persistence is requested or required for an authorized local setup, use gitignored .env and only the necessary keys; never print their values. See .env.example for variable names.
+
+## Comparison Pages
+- All public comparison routes use the Labs shell and shared comparison primitives. ZenML routes use `product="zenml" surface="ml"`; Kitaru routes use `product="kitaru" surface="agent"` with an inner `data-app="kitaru"` bridge only for Kitaru-origin graphics.
+- Every comparison opens on the eyebrow-first `LabsComparisonBand` with no visible breadcrumb, carries the complete product-specific `labs.compare-switcher`, reveals every content section through `initScrollReveal()`, and closes on the full-width comparison arrangement of `LabsCloseCta`. Kitaru eyebrows use orange-600; redundant product-versus-competitor prefixes are omitted from MDX display headings without changing metadata. Hero CTAs and images do not render inside the band.
+- Comparison code uses the canonical blog code-pane chrome with `labs-light`. Comparison tables use the Labs frame, hairline rows, sticky first column, sentence-case headers, sage checks and cream crosses, and no alternating tint; supporting scorecard text is always visible.
+- Comparison quotes are full-width editorial bands. The `/compare` hub and related comparison navigation use `labs.comparison-card` (40px mark, one title, two-line description, one/two/three-column grid). Related articles use the framed white Labs blog-card variant and render three-up on desktop.
+- Rendered goldens plus the all-route text, href, and analytics audit are the regression gate. `scripts/migrations/compare-blocks/parity.ts` is historical and is not a check.
