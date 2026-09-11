@@ -1,78 +1,100 @@
 /**
- * The default Open Graph card: the Labs ground, the lockup and two lines of
- * type. Every route that is not a VS comparison uses it — both research
- * databases, the hubs and index pages, the standalone pages.
+ * The default Open Graph card: the brand's "panel bottom" cover. A piece of
+ * brand artwork fills the top half, a flat panel carries the copy across the
+ * bottom half, and an eyebrow chip names the section. Every route that is
+ * not a VS comparison uses it — both research databases, the hubs and index
+ * pages, the standalone pages.
  *
- * The ground (the tinted field, the light diffusion and the blurred product
- * mark) is baked into `public/images/og/labs-ground.jpg`: satori can neither
- * blend nor blur, and baking keeps the render to one flat image plus text.
- * Copy stays live, so changing a title never touches the artwork.
+ * Three brands share the layout and differ in palette and logo:
+ *   labs    the ZenML Labs lockup on the sage palette (site-wide default)
+ *   zenml   the ZenML logo on the sage palette (product, MLOps content)
+ *   kitaru  the Kitaru logo on the orange/sand palette
+ *
+ * The artwork is one of nine shared photos or a per-brand mesh, pre-cropped
+ * to the visible top half (`public/images/og/bg-*.jpg`) and picked by a
+ * stable hash of the card's key, so a slug always gets the same art and the
+ * set as a whole varies.
  *
  * Composition (authored at 1920×1080):
- *   lockup      (120, 160) at native size
- *   text frame  (120, 620), 1680 wide, 300 tall at most
- *   title       Borna 500, 114 → 84 → 64 px, tracking -0.02em, sage-900
- *   subtitle    Rethink Sans 400, 58 px, sage-800, two lines at most
+ *   artwork     (0, 0) 1920×540
+ *   eyebrow     chip at (80, 80): Nudica Mono 500, 32 px, tracking 0.06em
+ *   panel       (0, 540) 1920×540, padding 80
+ *   copy        (80, 620), 1760 wide, 276 tall at most
+ *   title       Borna 500, 80 → 68 → 56 px, line-height 1.12, tracking -0.02em
+ *   subtitle    Borna 500, 44 px, two lines at most
+ *   footer      (80, 920), 80 tall: logo left, "ZENML.IO" right
  */
 
 import { readFileSync } from "node:fs";
 import type { ReactElement } from "react";
 import satori from "satori";
+import type { OgBrand } from "../../src/lib/ogCards.js";
 import { type Font, OG_HEIGHT, OG_WIDTH } from "./pipeline.js";
 
 // ---------------------------------------------------------------------------
 // Geometry and type scale
 // ---------------------------------------------------------------------------
 
-/** Text frame: where the copy sits and how much room it may take. */
+const PANEL = { top: 540, padding: 80 } as const;
+const FOOTER_HEIGHT = 80;
+const COPY_FOOTER_GAP = 24;
+
+/** Copy frame: where the title and subtitle sit and how much room they get. */
 export const TEXT_FRAME = {
-  x: 120,
-  y: 620,
-  width: 1680,
-  /** A card whose laid-out text exceeds this is a failed card. */
-  maxHeight: 300,
+  x: PANEL.padding,
+  y: PANEL.top + PANEL.padding,
+  width: OG_WIDTH - 2 * PANEL.padding,
+  /** A card whose laid-out copy exceeds this is a failed card. */
+  maxHeight:
+    OG_HEIGHT -
+    PANEL.top -
+    2 * PANEL.padding -
+    FOOTER_HEIGHT -
+    COPY_FOOTER_GAP,
 } as const;
 
-export const LOCKUP = { x: 120, y: 160, width: 766, height: 123 } as const;
+const FOOTER = {
+  x: PANEL.padding,
+  y: OG_HEIGHT - PANEL.padding - FOOTER_HEIGHT,
+  width: TEXT_FRAME.width,
+  height: FOOTER_HEIGHT,
+} as const;
+
+const EYEBROW = { x: 80, y: 80 } as const;
 
 /** Title steps, largest first. The fitter takes the first one that fits. */
-export const TITLE_SIZES = [114, 84, 64] as const;
-const TITLE_LINE_HEIGHT = 1.1;
-const TITLE_TRACKING = "-0.02em";
-const SUBTITLE_SIZE = 58;
-const SUBTITLE_LINE_HEIGHT = 1.2;
+export const TITLE_SIZES = [80, 68, 56] as const;
+const LINE_HEIGHT = 1.12;
+const TRACKING = "-0.02em";
+const SUBTITLE_SIZE = 44;
 const MAX_SUBTITLE_LINES = 2;
-const TITLE_SUBTITLE_GAP = 16;
+const TITLE_SUBTITLE_GAP = 24;
+
+const MONO_SIZE = 32;
+const MONO_TRACKING = "0.06em";
+const SITE_LABEL = "ZENML.IO";
 
 const titleStyle = (fontSize: number) =>
   ({
     fontFamily: "Borna",
     fontWeight: 500,
     fontSize,
-    lineHeight: TITLE_LINE_HEIGHT,
-    letterSpacing: TITLE_TRACKING,
+    lineHeight: LINE_HEIGHT,
+    letterSpacing: TRACKING,
   }) as const;
 
-const subtitleStyle = {
-  fontFamily: "Rethink Sans",
-  fontWeight: 400,
-  fontSize: SUBTITLE_SIZE,
-  lineHeight: SUBTITLE_LINE_HEIGHT,
-} as const;
+const subtitleStyle = titleStyle(SUBTITLE_SIZE);
 
-const titleBlock = (lines: number, size: number) =>
-  lines * size * TITLE_LINE_HEIGHT;
+const titleBlock = (lines: number, size: number) => lines * size * LINE_HEIGHT;
 const subtitleBlock = (lines: number) =>
-  lines === 0
-    ? 0
-    : TITLE_SUBTITLE_GAP + lines * SUBTITLE_SIZE * SUBTITLE_LINE_HEIGHT;
+  lines === 0 ? 0 : TITLE_SUBTITLE_GAP + lines * SUBTITLE_SIZE * LINE_HEIGHT;
 
-// The budget works out at: one 114px line (125.4) + gap (16) + two 58px
-// lines (139.2) = 280.6, and at the bottom of the ladder two 64px lines
-// (140.8) + 16 + 139.2 = 296. Both sit inside the 300px frame.
+// The budget is 276px: two 80px title lines (179.2) + gap (24) + one 44px
+// line (49.3) = 252.5; two 68px lines (152.3) + two subtitle lines (122.6)
+// = 274.9; three 56px lines (188.2) + one subtitle line = 261.5. All fit.
 
 // ---------------------------------------------------------------------------
-// Colours and artwork
+// Brands: palette and logo
 // ---------------------------------------------------------------------------
 
 // Satori needs resolved colours rather than CSS custom properties.
@@ -102,14 +124,102 @@ function artwork(filename: string): string {
   return `data:${mime};base64,${bytes.toString("base64")}`;
 }
 
-const assets = {
-  ground: artwork("labs-ground.jpg"),
-  lockup: artwork("labs-lockup.svg"),
+interface Palette {
+  panel: string;
+  title: string;
+  subtitle: string;
+  /** The site label and, on the sage brands, the eyebrow text. */
+  muted: string;
+  chipFill: string;
+  chipBorder: string;
+  chipText: string;
+}
+
+const sage: Palette = {
+  panel: token("sage-200"),
+  title: token("sage-900"),
+  subtitle: token("sage-700"),
+  muted: token("sage-700"),
+  chipFill: token("sage-200"),
+  chipBorder: token("sage-600"),
+  chipText: token("sage-700"),
 };
 
-/** Fallback colour behind the SVG; the baked ground covers every pixel. */
-export function defaultOgBackground(): string {
-  return token("sage-400");
+// The Kitaru cover sits on the design's sand ramp, which global.css only
+// carries in part (sand-100/200); the three missing stops are inlined.
+const kitaru: Palette = {
+  panel: "#FAF6EF",
+  title: "#1C1E19",
+  subtitle: token("orange-700"),
+  muted: "#645D53",
+  chipFill: token("orange-500"),
+  chipBorder: token("orange-600"),
+  chipText: token("orange-50"),
+};
+
+interface Logo {
+  file: string;
+  /** Native SVG size, used to keep the aspect at the rendered height. */
+  width: number;
+  height: number;
+  /** Rendered height inside the 80px footer. */
+  rendered: number;
+}
+
+/** Logos per brand; the Labs lockup renders taller than the product marks. */
+export const LOGOS: Record<OgBrand, Logo> = {
+  labs: { file: "labs-lockup.svg", width: 766, height: 123, rendered: 80 },
+  zenml: { file: "zenml-lockup.svg", width: 315, height: 68, rendered: 68 },
+  kitaru: { file: "kitaru-lockup.svg", width: 304, height: 68, rendered: 68 },
+};
+
+const BRANDS: Record<OgBrand, { palette: Palette; mesh: string }> = {
+  labs: { palette: sage, mesh: "bg-mesh-zenml.jpg" },
+  zenml: { palette: sage, mesh: "bg-mesh-zenml.jpg" },
+  kitaru: { palette: kitaru, mesh: "bg-mesh-kitaru.jpg" },
+};
+
+/** Card background colour: the panel, which is what shows through. */
+export function defaultOgBackground(brand: OgBrand): string {
+  return BRANDS[brand].palette.panel;
+}
+
+// ---------------------------------------------------------------------------
+// Artwork selection
+// ---------------------------------------------------------------------------
+
+/** The shared photo set plus the brand mesh, one slot each. */
+const PHOTO_COUNT = 9;
+export type DefaultOgBackground =
+  | `photo-0${1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9}`
+  | "mesh";
+
+/** FNV-1a over the seed, so a slug always lands on the same artwork. */
+function hash(seed: string): number {
+  let value = 0x811c9dc5;
+  for (const char of seed) {
+    value ^= char.codePointAt(0) ?? 0;
+    value = Math.imul(value, 0x01000193) >>> 0;
+  }
+  return value;
+}
+
+/** Pick a card's artwork from its key: one of nine photos or, one time in
+ *  ten, the brand mesh. */
+export function pickDefaultOgBackground(seed: string): DefaultOgBackground {
+  const slot = hash(seed) % (PHOTO_COUNT + 1);
+  return slot === PHOTO_COUNT
+    ? "mesh"
+    : (`photo-0${slot + 1}` as DefaultOgBackground);
+}
+
+function backgroundArtwork(
+  brand: OgBrand,
+  background: DefaultOgBackground,
+): string {
+  return artwork(
+    background === "mesh" ? BRANDS[brand].mesh : `bg-${background}.jpg`,
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -124,7 +234,7 @@ export interface DefaultOgFit {
   /** Subtitle as rendered, one entry per line. */
   subtitle: string[];
   subtitleLines: number;
-  /** Laid-out height of the text frame, in authored px. */
+  /** Laid-out height of the copy frame, in authored px. */
   height: number;
 }
 
@@ -208,7 +318,7 @@ function resolveFit(
 
   // Nothing fit: take the smallest step and cut the title to the budget.
   const size = TITLE_SIZES[TITLE_SIZES.length - 1];
-  const maxLines = Math.max(1, Math.floor(budget / (size * TITLE_LINE_HEIGHT)));
+  const maxLines = Math.max(1, Math.floor(budget / (size * LINE_HEIGHT)));
   const clamped = clampToLines(title, size, "title", maxLines, measure);
   const titleLines = Math.min(
     maxLines,
@@ -257,11 +367,13 @@ async function probe(
     },
     { width: TEXT_FRAME.width, height: 4000, fonts, embedFont: false },
   );
+  // A line's trailing space is laid out past the frame edge, so only runs
+  // with visible glyphs count towards overflow.
   const runs = [
     ...svg.matchAll(
-      /<text[^>]*\sx="([\d.-]+)"[^>]*\sy="([\d.-]+)"[^>]*\swidth="([\d.-]+)"/g,
+      /<text[^>]*\sx="([\d.-]+)"[^>]*\sy="([\d.-]+)"[^>]*\swidth="([\d.-]+)"[^>]*>([^<]*)<\/text>/g,
     ),
-  ];
+  ].filter((run) => run[4].trim() !== "");
   return {
     lines: new Set(runs.map((run) => run[2])).size,
     overflow: runs.some(
@@ -312,10 +424,10 @@ export async function fitDefaultOg(
 
 /**
  * Font-free fallback measurement: greedy word wrap at a deliberately wide
- * 0.62em per character (both site fonts average nearer 0.54em), so it
- * over-counts lines rather than under-counting and the frame cannot
- * overflow. Only used when a caller renders without a measured fit; both
- * generators always pass one.
+ * 0.62em per character (Borna averages nearer 0.54em), so it over-counts
+ * lines rather than under-counting and the frame cannot overflow. Only used
+ * when a caller renders without a measured fit; the generator always passes
+ * one.
  */
 const FALLBACK_CHAR_EM = 0.62;
 const estimateMeasure: Measure = (text, fontSize) => {
@@ -343,8 +455,12 @@ const estimateMeasure: Measure = (text, fontSize) => {
 // ---------------------------------------------------------------------------
 
 export interface DefaultOgProps {
+  brand: OgBrand;
+  /** Section label in the chip; rendered upper-case. */
+  eyebrow: string;
+  background: DefaultOgBackground;
   title: string;
-  /** One string; `\n` starts a hard second line (the databases use both). */
+  /** One string; `\n` starts a hard second line. */
   subtitle: string;
   /** Measured layout from `fitDefaultOg`; estimated when absent. */
   fit?: DefaultOgFit;
@@ -353,13 +469,28 @@ export interface DefaultOgProps {
 export const subtitleLinesOf = (subtitle: string): string[] =>
   subtitle.split("\n");
 
+const monoStyle = (weight: 400 | 500) =>
+  ({
+    fontFamily: "Nudica Mono",
+    fontWeight: weight,
+    fontSize: MONO_SIZE,
+    lineHeight: 1.25,
+    letterSpacing: MONO_TRACKING,
+  }) as const;
+
 export function DefaultOg({
+  brand,
+  eyebrow,
+  background,
   title,
   subtitle,
   fit,
 }: DefaultOgProps): ReactElement {
   const layout =
     fit ?? resolveFit(title, subtitleLinesOf(subtitle), estimateMeasure);
+  const { palette } = BRANDS[brand];
+  const logo = LOGOS[brand];
+  const logoWidth = Math.round((logo.width * logo.rendered) / logo.height);
   return (
     <div
       style={{
@@ -368,23 +499,32 @@ export function DefaultOg({
         display: "flex",
         position: "relative",
         overflow: "hidden",
-        backgroundColor: defaultOgBackground(),
+        backgroundColor: palette.panel,
       }}
     >
       <img
-        src={assets.ground}
+        src={backgroundArtwork(brand, background)}
         width={OG_WIDTH}
-        height={OG_HEIGHT}
+        height={PANEL.top}
         alt=""
         style={{ position: "absolute", left: 0, top: 0 }}
       />
-      <img
-        src={assets.lockup}
-        width={LOCKUP.width}
-        height={LOCKUP.height}
-        alt="ZenML Labs"
-        style={{ position: "absolute", left: LOCKUP.x, top: LOCKUP.y }}
-      />
+      <div
+        style={{
+          position: "absolute",
+          left: EYEBROW.x,
+          top: EYEBROW.y,
+          display: "flex",
+          padding: "20px 40px",
+          borderRadius: 100,
+          border: `1px solid ${palette.chipBorder}`,
+          backgroundColor: palette.chipFill,
+          color: palette.chipText,
+          ...monoStyle(500),
+        }}
+      >
+        {eyebrow.toUpperCase()}
+      </div>
       <div
         style={{
           position: "absolute",
@@ -400,7 +540,7 @@ export function DefaultOg({
             ...titleStyle(layout.titleSize),
             display: "block",
             width: TEXT_FRAME.width,
-            color: token("sage-900"),
+            color: palette.title,
           }}
         >
           {layout.title}
@@ -412,7 +552,7 @@ export function DefaultOg({
               flexDirection: "column",
               marginTop: TITLE_SUBTITLE_GAP,
               width: TEXT_FRAME.width,
-              color: token("sage-800"),
+              color: palette.subtitle,
             }}
           >
             {layout.subtitle.map((line) => (
@@ -429,6 +569,28 @@ export function DefaultOg({
             ))}
           </div>
         ) : null}
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: FOOTER.x,
+          top: FOOTER.y,
+          width: FOOTER.width,
+          height: FOOTER.height,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <img
+          src={artwork(logo.file)}
+          width={logoWidth}
+          height={logo.rendered}
+          alt=""
+        />
+        <div style={{ ...monoStyle(400), color: palette.muted }}>
+          {SITE_LABEL}
+        </div>
       </div>
     </div>
   );

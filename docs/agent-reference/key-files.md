@@ -102,11 +102,19 @@ the layout derives the OG URL automatically.
 **Default cards** (`scripts/og/generate-default-og.ts`,
 `scripts/og/default-template.tsx`) cover everything else: the LLMOps and
 MLOps research databases and the hub/index/standalone pages listed in
-`src/lib/ogCards.ts` (`OG_CARDS`, `ogCard(key)`). The template composes a
-baked ground image (`public/images/og/labs-ground.jpg` — the tinted field,
-light diffusion and blurred product mark, since satori can neither blend
-nor blur) with a live lockup (`public/images/og/labs-lockup.svg`) and two
-lines of type (title, subtitle) that auto-fit the text frame.
+`src/lib/ogCards.ts` (`OG_CARDS`, `ogCard(key)`). The template is the
+brand's panel-bottom cover: artwork across the top half, a flat panel with
+the title and subtitle across the bottom, an eyebrow chip naming the section,
+and a footer with the logo and `ZENML.IO`. Each card carries a brand
+(`OgBrand`: `labs` default, `zenml`, `kitaru`) that picks the logo and
+palette, and an `eyebrow`. The artwork is one of nine shared photos or the
+brand mesh (`public/images/og/bg-*.jpg`, pre-cropped to the visible
+1920×540), chosen by a stable hash of `<family>/<slug>` in
+`pickDefaultOgBackground`, so a slug always renders the same art. Type is
+Borna (title 80→68→56 px, subtitle 44 px, two lines max) and Nudica Mono
+(chip and site label); the WOFF siblings live in `public/fonts/` and are
+listed in `FONT_SPECS` in `scripts/og/pipeline.ts`. Database cards use the
+entry title with `Company · Year` beneath and the database name in the chip.
 
 Cards are keyed by `DefaultOgFamily` (`llmops` | `mlops` | `pages`) via
 `DEFAULT_OG_PREFIX` in `src/lib/constants.ts` and `defaultOgUrl(family, slug)`
@@ -126,7 +134,8 @@ pages: string[] }`, each array sorted) and only then does the layout call
 `pnpm smoke:dist`) renders one VS card per `.mdx` brand variant
 (`kitaru-vs-pydantic-ai`, `zenml-vs-pydantic-ai`) through the real pipeline
 and pixel-diffs it against a committed JPEG in `tests/snapshots/rendered/`
-(delta 24, 0.5% max changed). A golden covering the `.md`-sourced VS path
-and one covering a default card are planned but not yet pinned. Regenerate
-with `pnpm og:golden:update` and look at the new image before committing —
+(delta 24, 0.5% max changed), plus one `.md`-sourced VS card
+(`zenml-vs-argo-workflows`) and one default card (`pages/home`, exercising
+the fitter, chip and artwork pick). Regenerate with `pnpm og:golden:update`
+and look at the new image before committing —
 the diff IS the review.

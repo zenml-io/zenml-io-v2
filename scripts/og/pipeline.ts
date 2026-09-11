@@ -38,6 +38,8 @@ export const CACHE_DIR = join(REPO_ROOT, ".cache/og");
 export const FONT_SPECS = [
   { family: "Borna", file: "borna-medium.woff", weight: 500 },
   { family: "Rethink Sans", file: "rethink-sans-regular.woff", weight: 400 },
+  { family: "Nudica Mono", file: "nudica-mono-regular.woff", weight: 400 },
+  { family: "Nudica Mono", file: "nudica-mono-medium.woff", weight: 500 },
 ] as const;
 
 export async function loadFonts() {

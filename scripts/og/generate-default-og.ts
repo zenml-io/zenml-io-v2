@@ -30,11 +30,13 @@ import {
   DEFAULT_OG_PREFIX,
   type DefaultOgFamily,
 } from "../../src/lib/constants.js";
-import { OG_CARDS } from "../../src/lib/ogCards.js";
+import { OG_CARDS, type OgBrand } from "../../src/lib/ogCards.js";
 import {
   DefaultOg,
+  type DefaultOgBackground,
   defaultOgBackground,
   fitDefaultOg,
+  pickDefaultOgBackground,
   subtitleLinesOf,
   TEXT_FRAME,
 } from "./default-template.js";
@@ -53,13 +55,15 @@ const FAMILIES = Object.keys(DEFAULT_OG_PREFIX) as DefaultOgFamily[];
 const DATABASES = {
   llmops: {
     dir: join(REPO_ROOT, "src/content/llmops-database"),
-    label: "ZenML LLMOps Database",
+    eyebrow: "LLMOps Database",
+    brand: "zenml",
   },
   mlops: {
     dir: join(REPO_ROOT, "src/content/mlops-database"),
-    label: "ZenML MLOps Database",
+    eyebrow: "MLOps Database",
+    brand: "zenml",
   },
-} as const;
+} as const satisfies Record<string, { dir: string; eyebrow: string; brand: OgBrand }>;
 
 const MANIFEST_PATH = join(REPO_ROOT, "src/data/og-cards.json");
 
@@ -67,6 +71,9 @@ export interface DefaultOgEntry {
   family: DefaultOgFamily;
   /** R2 filename and, for the databases, the route slug. */
   slug: string;
+  brand: OgBrand;
+  eyebrow: string;
+  background: DefaultOgBackground;
   title: string;
   subtitle: string;
 }
@@ -104,17 +111,18 @@ interface DatabaseFrontmatter {
 }
 
 /**
- * Database copy (D4): the entry title, then the company and year, then the
- * database it belongs to. Two subtitle lines, both short by construction.
+ * Database copy (D4): the entry title, with the company and year beneath.
+ * The eyebrow chip names the database, so the subtitle falls back to it
+ * only when an entry has neither.
  */
 function databaseSubtitle(
   frontmatter: DatabaseFrontmatter,
-  label: string,
+  eyebrow: string,
 ): string {
   const attribution = [frontmatter.company, frontmatter.year]
     .filter(Boolean)
     .join(" · ");
-  return attribution ? `${attribution}\n${label}` : label;
+  return attribution || `ZenML ${eyebrow}`;
 }
 
 /** Every card in a family, optionally narrowed to a list of slugs. */
@@ -128,11 +136,14 @@ export async function loadDefaultEntries(
     return OG_CARDS.filter((card) => wanted(card.key)).map((card) => ({
       family,
       slug: card.key,
+      brand: card.brand ?? "labs",
+      eyebrow: card.eyebrow,
+      background: pickDefaultOgBackground(`${family}/${card.key}`),
       title: card.title,
       subtitle: card.subtitle,
     }));
 
-  const { dir, label } = DATABASES[family];
+  const { dir, eyebrow, brand } = DATABASES[family];
   const files = (await readdir(dir)).filter((file) => file.endsWith(".md"));
   const entries = await Promise.all(
     files.map(async (file): Promise<DefaultOgEntry | null> => {
@@ -145,8 +156,11 @@ export async function loadDefaultEntries(
       return {
         family,
         slug,
+        brand,
+        eyebrow,
+        background: pickDefaultOgBackground(`${family}/${slug}`),
         title: frontmatter.title,
-        subtitle: databaseSubtitle(frontmatter, label),
+        subtitle: databaseSubtitle(frontmatter, eyebrow),
       };
     }),
   );
@@ -170,9 +184,16 @@ export async function renderDefaultJpeg(
       `${entry.slug}: text frame is ${fit.height.toFixed(1)}px, over the ${TEXT_FRAME.maxHeight}px limit`,
     );
   return renderOgJpeg(
-    DefaultOg({ title: entry.title, subtitle: entry.subtitle, fit }),
+    DefaultOg({
+      brand: entry.brand,
+      eyebrow: entry.eyebrow,
+      background: entry.background,
+      title: entry.title,
+      subtitle: entry.subtitle,
+      fit,
+    }),
     fonts,
-    defaultOgBackground(),
+    defaultOgBackground(entry.brand),
   );
 }
 
