@@ -2,9 +2,12 @@
 /**
  * LabsComparisonStrategyCta — the closing strategy block of a comparison page.
  * The advantages render as the homepage feature panels in their own full-width
- * row; the headline, deck and CTA follow in a card on the sage band.
+ * row; the headline, deck and CTA follow in a grain-backed card that sits
+ * straight on the page background, with no band colour behind it.
  */
+import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
 import type { FeaturePanel, LabsCta } from "../../lib/labs-home";
+import { GrainBackdrop } from "../islands/GrainBackdrop";
 import FeatureGridPanels from "./FeatureGridPanels.astro";
 import LabsButton from "./LabsButton.astro";
 import "../../styles/labs-scroll-reveal.css";
@@ -24,12 +27,25 @@ const { headline, deck, cta, panels = [] } = Astro.props;
       <FeatureGridPanels content={panels} />
     </div>
   )}
-  <div class="bg-(--color-sage-50) py-8 md:py-10">
+  <div class="py-8 md:py-10">
     <div class="scroll-reveal-section mx-auto max-w-content px-gutter">
-      <div class="reveal-child stagger-4 rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10">
-        <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">{headline}</h2>
-        {deck && <p class="mt-5 max-w-[720px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">{deck}</p>}
-        <div class="mt-8"><LabsButton cta={cta} /></div>
+      <div class="reveal-child stagger-4 relative overflow-hidden rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10">
+        {
+          /*
+            client:idle, like the other secondary grain panels: the card only
+            needs the shader present, not painted before first contentful paint.
+          */
+        }
+        <GrainBackdrop
+          client:idle
+          config={LABS_GRAIN.hero}
+          class="absolute inset-0 opacity-90"
+        />
+        <div class="relative">
+          <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">{headline}</h2>
+          {deck && <p class="mt-5 max-w-[720px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">{deck}</p>}
+          <div class="mt-8"><LabsButton cta={cta} /></div>
+        </div>
       </div>
     </div>
   </div>

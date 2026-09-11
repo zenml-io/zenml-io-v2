@@ -1168,7 +1168,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Mid-page advantages and CTA. #319 retains this id but uses a sage-50 band, one headline and one LabsButton; absent advantages collapse. The advantages now render as a full-width labs.feature-grid row above the band (numbered, full-tone, isometric icon from the advantage's `icon` field) rather than hover cards with an illustration.",
+      "Mid-page advantages and CTA. #319 retains this id but renders one headline and one LabsButton in a grain-backed card on the page ground; absent advantages collapse. The advantages now render as a full-width labs.feature-grid row above that card (numbered, full-tone, isometric icon from the advantage's `icon` field) rather than hover cards with an illustration.",
   },
   {
     id: "comparison.testimonial",
@@ -1336,7 +1336,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Mid-page strategy section: an optional full-width row of labs.feature-grid panels (one per advantage, index and tone by position), then a sage-tint band holding one card with one heading, optional deck, and one LabsButton.",
+      "Mid-page strategy section: an optional full-width row of labs.feature-grid panels (one per advantage, index and tone by position), then one card on the page ground carrying a LABS_GRAIN.hero GrainBackdrop, one heading, an optional deck, and one LabsButton.",
   },
   // ── labs homepage + shell (rebrand branch; design-catalog pages not assigned yet) ──
   {
@@ -1396,18 +1396,18 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Full-bleed row of four fixed panels from `content: readonly FeaturePanel[]` (LABS_FEATURE_PANELS on `/`); tone (sage-tint/sage-deep/canvas/sage-light) picks the panel background and body-text colour. Icons are inline SVG markup from src/components/labs/icons.ts, keyed by panel.icon, rendered via set:html inside a currentColor <svg>. Reflows to 2x2 at <=1024 and 1-up at 390 (fixed 440px height only at lg and up; auto below). Columns follow the item count (1-4), so the three advantages of the comparison strategy block fill the width the same way the four homepage panels do.",
+      "Full-bleed row of equal panels from `content: readonly FeaturePanel[]` (LABS_FEATURE_PANELS on `/`); tone (sage-tint/sage-deep/canvas/sage-light) picks the panel background and body-text colour. Icons are inline SVG markup from src/components/labs/icons.ts, keyed by panel.icon, rendered via set:html inside a currentColor <svg>. Reflows to two columns at <=1024 and 1-up at 390. Columns follow the item count: one to four across at lg, five and six wrapping at three columns (3+2, 3+3), so the three advantages of the comparison strategy block fill the width the same way the four homepage panels do. Panel height is a 380px floor, 440px at lg and up, never a cap, so long copy grows the row instead of spilling out.",
     contentShape: {
       minItems: 1,
-      maxItems: 4,
+      maxItems: 6,
       oddCount:
-        "Drawn for 4 panels; 1-3 items narrow the lg column count to match, so the row still fills its width.",
+        "Drawn for 4 panels; 1-3 items narrow the lg column count to match, so the row still fills its width. 5 and 6 wrap at 3 columns, which leaves one empty cell at 5.",
       headingBudget:
-        'Titles drawn for 1 short word (e.g. "Orchestrate", "Replay"); longer titles wrap within the fixed-height panel at lg.',
+        'Titles drawn for 1 short word (e.g. "Orchestrate", "Replay"); longer titles wrap and grow the panel.',
       itemBudget:
-        "Body copy drawn for 1-3 sentences; longer copy pushes the fixed-height lg panel taller than its 3 siblings since there is no internal scroll or truncation.",
+        "Body copy drawn for 1-3 sentences; longer copy grows every panel in the row equally, since the lg height is a floor rather than a cap and there is no internal scroll or truncation.",
       overflow:
-        "None implemented — a 5th panel falls back to the 4-column class and wraps onto a second row.",
+        "Panels grow instead of clipping. Past 6 items the column class falls back to 4 across and wraps onto further rows.",
     },
     stage: false,
     demoProps: {},
