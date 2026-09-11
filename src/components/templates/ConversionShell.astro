@@ -14,10 +14,10 @@ import type { LabsCta } from "../../lib/labs-home";
  * `calendar` renders the shared Labs interior band, then a cream section
  * housing the widget — matching the two canonical calendar pages
  * (`success-calendar`, `schedule-a-demo`).
- * `form` renders one `max-w-xl` section with the hero block sitting
- * directly above the widget, matching the short-form pages
- * (`book-a-demo`, `signup-for-demo`). The default slot is the widget
- * itself (a `CalEmbed` or a `ContactForm` island) in both arrangements.
+ * `form` renders one `max-w-3xl` centered column — hero block and widget
+ * share it, matching the short-form pages (`book-a-demo`,
+ * `signup-for-demo`). The default slot is the widget itself (a
+ * `CalEmbed` or a `ContactForm` island) in both arrangements.
  * The `form` section has no band, so it carries the same `pt-[148px]`
  * nav clearance `LabsBand size="short"` uses.
  * `success` is the band-only thank-you shape (`booked`, `book-success`,
@@ -94,19 +94,21 @@ const { primaryCta, secondaryCta } =
       </div>
     </LabsBand>
   ) : (
-    <section class="bg-(--color-cream-50) pt-[148px] pb-space-xl md:pb-space-xxl">
-      <div class="mx-auto max-w-content px-gutter">
-        <div class="mb-8 text-center">
+    <section class="bg-(--color-cream-50) pt-[148px] pb-space-xxl">
+      <div class="mx-auto max-w-3xl px-gutter text-center">
+        <div class="mb-12 md:mb-16">
           <h1 class="font-display text-[44px] leading-[48px] text-foreground md:text-[72px] md:leading-[78px]">
             {headline}
           </h1>
           {deck && (
-            <p class="mt-6 font-sans text-xl leading-[30px] text-(--color-cream-700)">
+            <p class="mx-auto mt-6 max-w-2xl font-sans text-xl leading-[30px] text-(--color-cream-700)">
               {deck}
             </p>
           )}
         </div>
-        <slot />
+        <div class="flex flex-col items-center">
+          <slot />
+        </div>
       </div>
     </section>
   )
