@@ -659,8 +659,8 @@ export function DefaultOg({
 
 /**
  * Full-bleed variant: the brand mesh edge to edge, the logo where the chip
- * sits on the panel layout, copy anchored above the footer, and the site
- * label alone on the footer row.
+ * sits on the panel layout with the site label on the same row, and the
+ * copy anchored to the bottom padding.
  */
 function HeroOg({
   brand,
@@ -702,18 +702,33 @@ function HeroOg({
         alt=""
         style={{ position: "absolute", left: 0, top: 0 }}
       />
-      <img
-        src={artwork(logo.file)}
-        width={logoWidth}
-        height={logo.rendered}
-        alt=""
-        style={{ position: "absolute", left: EYEBROW.x, top: EYEBROW.y }}
-      />
+      <div
+        style={{
+          position: "absolute",
+          left: EYEBROW.x,
+          top: EYEBROW.y,
+          width: TEXT_FRAME.width,
+          height: logo.rendered,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <img
+          src={artwork(logo.file)}
+          width={logoWidth}
+          height={logo.rendered}
+          alt=""
+        />
+        <div style={{ ...monoStyle(400), color: palette.muted }}>
+          {SITE_LABEL}
+        </div>
+      </div>
       <div
         style={{
           position: "absolute",
           left: TEXT_FRAME.x,
-          top: FOOTER.y - COPY_FOOTER_GAP - height,
+          top: OG_HEIGHT - PANEL.padding - height,
           width: TEXT_FRAME.width,
           display: "flex",
           flexDirection: "column",
@@ -756,22 +771,6 @@ function HeroOg({
             ))}
           </div>
         ) : null}
-      </div>
-      <div
-        style={{
-          position: "absolute",
-          left: FOOTER.x,
-          top: FOOTER.y,
-          width: FOOTER.width,
-          height: FOOTER.height,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-        }}
-      >
-        <div style={{ ...monoStyle(400), color: palette.muted }}>
-          {SITE_LABEL}
-        </div>
       </div>
     </div>
   );
