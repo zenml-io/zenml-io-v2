@@ -41,6 +41,11 @@ import { getNonDraftLlmopsDatabaseCount } from "../../lib/llmops";
  * below derives the href, aria-label and whether to render the count span
  * once, for both chips to share.
  *
+ * On a Kitaru product page, every navbar hover/open state (top-level nav
+ * pills, the mobile panel links, the GitHub chip) uses cream-100 instead
+ * of the sage green used everywhere else — `navHoverClass`/`chipHoverClass`
+ * hold the two literal variants so Tailwind's static class scan finds both.
+ *
  * Three items open a hover menu — Products, Docs, Case studies — sharing one
  * behaviour: hover-open with a 130ms close grace, click/keyboard open too,
  * Esc/arrow keys, outside-click/focusout close, and opening one menu closes
@@ -115,12 +120,22 @@ const githubChip: GithubChipConfig = product
 const llmopsCaseStudyCount = await getNonDraftLlmopsDatabaseCount();
 const menus = labsNavMenus(llmopsCaseStudyCount);
 
-const navItemClass =
-  "inline-flex h-9 cursor-pointer items-center gap-1 rounded-full px-3.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors hover:bg-(--color-sage-200) aria-[expanded=true]:bg-(--color-sage-200)";
+/* Kitaru pages hover cream, not sage — the top-level nav pills, the
+ * open-menu state and the GitHub chip all share this swap. Full literal
+ * class names are kept on both branches so Tailwind's static scan finds
+ * them (a template-interpolated color fragment would not). */
+const navHoverClass =
+  product === "kitaru"
+    ? "hover:bg-(--color-cream-100) aria-[expanded=true]:bg-(--color-cream-100)"
+    : "hover:bg-(--color-sage-200) aria-[expanded=true]:bg-(--color-sage-200)";
+const chipHoverClass =
+  product === "kitaru"
+    ? "hover:bg-(--color-cream-100)"
+    : "hover:bg-(--color-sage-100)";
+const navItemClass = `inline-flex h-9 cursor-pointer items-center gap-1 rounded-full px-3.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors ${navHoverClass}`;
 const menuRowClass =
   "flex cursor-pointer items-center gap-4 rounded-[14px] border border-transparent px-4 py-2.5 text-foreground transition-colors duration-200 ease-out hover:border-(--color-sage-400) hover:bg-(--color-sage-100)";
-const githubChipClass =
-  "inline-flex h-10 cursor-pointer items-center gap-2 rounded-full font-label text-[13px] tracking-[0.05em] text-foreground transition-colors duration-200 ease-out hover:bg-(--color-sage-100)";
+const githubChipClass = `inline-flex h-10 cursor-pointer items-center gap-2 rounded-full font-label text-[13px] tracking-[0.05em] text-foreground transition-colors duration-200 ease-out ${chipHoverClass}`;
 /* Icon-only (no product / no count) reads as a 40x40 circle with symmetric
  * padding; the icon+count chip keeps the wider pill padding. */
 const githubChipPaddingClass = (showCount: boolean) =>
@@ -303,7 +318,7 @@ const githubChipPaddingClass = (showCount: boolean) =>
         >
           <svg aria-hidden="true" focusable="false" class="h-4 w-4 shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.49-2.7-.95-2.7-.95-.36-.93-.89-1.18-.89-1.18-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.87.87 2.33.67.07-.51.28-.87.51-1.07-1.78-.2-3.65-.88-3.65-3.94 0-.87.31-1.58.82-2.14-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.7 7.7 0 0 1 8 3.87c.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.14 0 3.07-1.87 3.74-3.66 3.94.29.25.54.73.54 1.48v2.2c0 .21.14.46.55.38A8 8 0 0 0 8 0Z" /></svg>
           {githubChip.showCount && (
-            <span data-github-stars-count data-github-stars-repo={githubChip.repo} class="min-w-[5ch] tabular-nums"></span>
+            <span data-github-stars-count data-github-stars-repo={githubChip.repo} class="min-w-[5ch] text-right tabular-nums"></span>
           )}
         </a>
         <LabsButton cta={signup} tone={signupTone} />
@@ -359,7 +374,7 @@ const githubChipPaddingClass = (showCount: boolean) =>
           {panelLinks.map((link) => (
             <a
               href={link.href}
-              class="cursor-pointer rounded-[12px] px-3 py-2.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors hover:bg-(--color-sage-200)"
+              class={`cursor-pointer rounded-[12px] px-3 py-2.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors ${navHoverClass}`}
             >
               {link.label}
             </a>
@@ -375,7 +390,7 @@ const githubChipPaddingClass = (showCount: boolean) =>
           >
             <svg aria-hidden="true" focusable="false" class="h-4 w-4 shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.49-2.7-.95-2.7-.95-.36-.93-.89-1.18-.89-1.18-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.87.87 2.33.67.07-.51.28-.87.51-1.07-1.78-.2-3.65-.88-3.65-3.94 0-.87.31-1.58.82-2.14-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.7 7.7 0 0 1 8 3.87c.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.14 0 3.07-1.87 3.74-3.66 3.94.29.25.54.73.54 1.48v2.2c0 .21.14.46.55.38A8 8 0 0 0 8 0Z" /></svg>
             {githubChip.showCount && (
-              <span data-github-stars-count data-github-stars-repo={githubChip.repo} class="min-w-[5ch] tabular-nums"></span>
+              <span data-github-stars-count data-github-stars-repo={githubChip.repo} class="min-w-[5ch] text-right tabular-nums"></span>
             )}
           </a>
           <LabsButton cta={signup} tone={signupTone} class="flex-1 px-3" />
