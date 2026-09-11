@@ -70,27 +70,27 @@
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 16px 16px 18px;
-    background: var(--color-surface);
+    background: var(--color-card);
     display: flex;
     flex-direction: column;
   }
-  .panel--competitor { background: var(--color-surface-warm); }
-  .panel--zenml { border-color: var(--color-accent); }
+  .panel--competitor { background: var(--color-cream-50); }
+  .panel--zenml { border-color: var(--color-sage-700); }
 
   .panel-head { margin-bottom: 14px; }
   .panel-label {
     display: block;
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-muted);
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-cream-600);
     margin-bottom: 4px;
   }
-  .panel-label--accent { color: var(--color-accent); }
+  .panel-label--accent { color: var(--color-sage-700); }
   .panel-sub {
     font-size: 12px;
-    color: var(--color-secondary);
+    color: var(--color-cream-700);
   }
 
   .primitives {
@@ -103,27 +103,27 @@
     flex-direction: column;
     gap: 3px;
     padding: 10px 12px;
-    border: 1px solid var(--color-border-light);
+    border: 1px solid var(--color-border);
     border-radius: 8px;
-    background: var(--color-surface);
+    background: var(--color-card);
   }
   .prim--muted { opacity: 0.85; border-style: dashed; }
   .prim-key {
     font-family: var(--font-mono);
     font-size: 11.5px;
     font-weight: 600;
-    color: var(--color-primary);
+    color: var(--color-cream-900);
   }
   .prim-val {
     font-size: 11px;
-    color: var(--color-secondary);
+    color: var(--color-cream-700);
   }
 
   .deployment {
     padding: 12px 14px;
-    border: 1px solid var(--color-accent);
+    border: 1px solid var(--color-sage-700);
     border-radius: 10px;
-    background: var(--color-surface);
+    background: var(--color-card);
     margin-bottom: 12px;
   }
   .dep-head {
@@ -138,12 +138,12 @@
   .name {
     font-size: 14px;
     font-weight: 700;
-    color: var(--color-primary);
+    color: var(--color-cream-900);
   }
   .version {
     font-size: 12px;
     font-weight: 600;
-    color: var(--color-accent);
+    color: var(--color-sage-700);
   }
 
   .tags {
@@ -158,17 +158,17 @@
     padding: 3px 9px;
     border-radius: 999px;
     border: 1px solid var(--color-border);
-    background: var(--color-surface);
-    color: var(--color-primary);
+    background: var(--color-card);
+    color: var(--color-cream-900);
   }
   .tag--default {
-    background: var(--color-accent);
-    color: var(--color-surface);
-    border-color: var(--color-accent);
+    background: var(--color-sage-700);
+    color: var(--color-card);
+    border-color: var(--color-sage-700);
   }
   .tag--muted {
-    color: var(--color-muted);
-    background: var(--color-surface-warm);
+    color: var(--color-cream-600);
+    background: var(--color-cream-50);
   }
 
   .invokes {
@@ -177,9 +177,9 @@
   .invoke-label {
     font-size: 10.5px;
     font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-muted);
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-cream-600);
     margin-bottom: 6px;
   }
   .invoke-chips {
@@ -193,9 +193,9 @@
     font-weight: 600;
     padding: 5px 10px;
     border-radius: 6px;
-    background: var(--color-accent-light);
-    color: var(--color-accent-deep);
-    border: 1px solid var(--color-border-light);
+    background: var(--color-sage-50);
+    color: var(--color-sage-800);
+    border: 1px solid var(--color-border);
   }
 
   .auth {
@@ -204,16 +204,16 @@
     gap: 8px;
     margin-top: auto;
     padding-top: 10px;
-    border-top: 1px solid var(--color-border-light);
+    border-top: 1px solid var(--color-border);
     font-size: 11.5px;
-    color: var(--color-secondary);
+    color: var(--color-cream-700);
   }
   .auth svg {
     flex-shrink: 0;
     width: 14px;
     height: 14px;
     fill: none;
-    stroke: var(--color-accent);
+    stroke: var(--color-sage-700);
     stroke-width: 1.5;
     stroke-linecap: round;
     stroke-linejoin: round;

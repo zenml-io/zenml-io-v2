@@ -72,24 +72,24 @@
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 16px 16px 18px;
-    background: var(--color-surface);
+    background: var(--color-card);
     display: flex;
     flex-direction: column;
   }
-  .panel--competitor { background: var(--color-surface-warm); }
-  .panel--zenml { border-color: var(--color-accent); }
+  .panel--competitor { background: var(--color-cream-50); }
+  .panel--zenml { border-color: var(--color-sage-700); }
 
   .panel-label {
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-muted);
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-cream-600);
   }
-  .panel--zenml .panel-label { color: var(--color-accent); }
+  .panel--zenml .panel-label { color: var(--color-sage-700); }
   .panel-sub {
     font-size: 12px;
-    color: var(--color-secondary);
+    color: var(--color-cream-700);
     margin-bottom: 14px;
   }
 
@@ -104,58 +104,58 @@
     align-items: center;
     gap: 10px;
     padding: 8px 10px;
-    border: 1px solid var(--color-border-light);
+    border: 1px solid var(--color-border);
     border-radius: 6px;
-    background: var(--color-surface);
+    background: var(--color-card);
   }
   .step--fail {
-    border-color: var(--color-cost-up);
-    background: var(--color-cost-up-bg);
+    border-color: var(--color-cream-700);
+    background: var(--color-cream-100);
   }
   .step--cached {
     border-color: var(--color-border);
-    background: var(--color-bg);
+    background: var(--color-cream-50);
     opacity: 0.78;
   }
   .step--retry {
-    border-color: var(--color-accent);
-    background: var(--color-accent-light);
+    border-color: var(--color-sage-700);
+    background: var(--color-sage-50);
   }
   .step-num {
     font-family: var(--font-mono);
     font-size: 10px;
     font-weight: 700;
-    color: var(--color-muted);
+    color: var(--color-cream-600);
     text-align: center;
     padding: 2px 0;
-    background: var(--color-bg);
-    border: 1px solid var(--color-border-light);
+    background: var(--color-cream-50);
+    border: 1px solid var(--color-border);
     border-radius: 3px;
   }
   .step-mono {
     font-family: var(--font-mono);
     font-size: 11.5px;
-    color: var(--color-primary);
+    color: var(--color-cream-900);
     font-weight: 600;
   }
   .step-cost {
     font-family: var(--font-mono);
     font-size: 10.5px;
-    color: var(--color-muted);
+    color: var(--color-cream-600);
   }
   .step--fail .step-cost {
-    color: var(--color-cost-up);
+    color: var(--color-cream-700);
     font-weight: 700;
   }
   .badge-cached {
     font-family: var(--font-mono);
     font-size: 9.5px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--color-muted);
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--color-cream-600);
     padding: 2px 6px;
-    background: var(--color-surface);
+    background: var(--color-card);
     border: 1px dashed var(--color-border);
     border-radius: 3px;
   }
@@ -163,12 +163,12 @@
     font-family: var(--font-mono);
     font-size: 9.5px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--color-accent-deep);
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--color-sage-800);
     padding: 2px 6px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-accent);
+    background: var(--color-card);
+    border: 1px solid var(--color-sage-700);
     border-radius: 3px;
   }
 
@@ -178,15 +178,15 @@
     align-items: center;
     gap: 8px;
     padding: 8px 10px;
-    border: 1px dashed var(--color-cost-up);
+    border: 1px dashed var(--color-cream-700);
     border-radius: 6px;
-    background: var(--color-surface);
+    background: var(--color-card);
   }
   .redo svg {
     width: 16px;
     height: 16px;
     fill: none;
-    stroke: var(--color-cost-up);
+    stroke: var(--color-cream-700);
     stroke-width: 1.5;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -195,7 +195,7 @@
   .redo-label {
     font-size: 11px;
     font-weight: 600;
-    color: var(--color-cost-up);
+    color: var(--color-cream-700);
   }
 
   .cmd {
@@ -206,18 +206,18 @@
     padding: 8px 10px;
     border: 1px solid var(--color-border);
     border-radius: 6px;
-    background: var(--color-bg);
+    background: var(--color-cream-50);
   }
   .cmd-prompt {
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--color-accent);
+    color: var(--color-sage-700);
     font-weight: 700;
   }
   .cmd-text {
     font-family: var(--font-mono);
     font-size: 10.5px;
-    color: var(--color-primary);
+    color: var(--color-cream-900);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -227,11 +227,11 @@
     margin-top: 10px;
     font-size: 11px;
     font-style: italic;
-    color: var(--color-cost-up);
+    color: var(--color-cream-700);
     font-weight: 600;
   }
   .repay--ok {
-    color: var(--color-accent-deep);
+    color: var(--color-sage-800);
   }
 
   @media (max-width: 520px) {
