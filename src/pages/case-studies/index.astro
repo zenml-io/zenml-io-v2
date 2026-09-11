@@ -12,6 +12,7 @@ import {
   orderCaseStudies,
   splitAtBanner,
 } from "../../lib/case-studies";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 const allCaseStudies = await getCollection(
   "case-studies",
@@ -31,6 +32,7 @@ const heroSecondary = {
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "case-studies") ? defaultOgUrl("pages", "case-studies") : undefined}
   title="ZenML Case Studies - Real Teams, Real AI Workflows"
   description="See how teams are using ZenML to unify their AI platforms—from batch evaluations to real-time serving, traditional ML to GenAI workflows."
   ogTitle="ZenML Case Studies"

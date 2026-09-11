@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2024-08-21T14:42:41.864Z"
   createdOn: "2024-07-12T10:24:45.903Z"
 toolName: "Label Studio"
+cardSubtitle: "From data annotation to model deployment"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6545aaf7/669102fb7b644680e41c8244_label-studio_icon.png"
 category: "data-annotators"

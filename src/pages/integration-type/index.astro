@@ -20,6 +20,7 @@ import {
   integrationTypesDeck,
 } from "../../lib/integrations";
 import { filterUsedTerms } from "../../lib/relatedIndex";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 const allIntegrations = await getCollection(
   "integrations",
@@ -45,6 +46,7 @@ const types = filterUsedTerms(merged).sort(
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "integration-type") ? defaultOgUrl("pages", "integration-type") : undefined}
   title="Integration Types - ZenML"
   description="Browse all integration categories in the ZenML MLOps landscape."
   surface="ml"

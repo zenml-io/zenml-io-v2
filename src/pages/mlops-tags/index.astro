@@ -21,6 +21,7 @@ import {
   getMLOpsTagCounts,
 } from "../../lib/mlops";
 import { filterUsedTerms } from "../../lib/relatedIndex";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 const copy = DATABASES.mlops;
 
@@ -42,6 +43,7 @@ const tags = filterUsedTerms(merged).sort(
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "mlops-tags") ? defaultOgUrl("pages", "mlops-tags") : undefined}
   title="MLOps Tags - ZenML"
   description="Browse all MLOps topic tags used in the ZenML MLOps Database."
   surface="ml"

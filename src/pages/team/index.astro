@@ -3,12 +3,19 @@ import BlogNewsletterCta from "../../components/labs/BlogNewsletterCta.astro";
 import LabsPageHeader from "../../components/labs/LabsPageHeader.astro";
 import LabsPeopleRoster from "../../components/labs/LabsPeopleRoster.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 import { getPublishedTeamMembers } from "../../lib/team";
 
 const members = await getPublishedTeamMembers();
 ---
 
-<BaseLayout title="Team - ZenML" description="Meet the people behind ZenML." surface="unified" app="labs">
+<BaseLayout
+  ogImage={hasDefaultOgCard("pages", "team") ? defaultOgUrl("pages", "team") : undefined}
+  title="Team - ZenML"
+  description="Meet the people behind ZenML."
+  surface="unified"
+  app="labs"
+>
   <main>
     <LabsPageHeader heading="Our team" description="Meet the people building the future of AI orchestration." align="center" />
     <LabsPeopleRoster members={members} placement="after-band" />

@@ -29,6 +29,7 @@ import {
 import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
 import { getLLMOpsTagCounts } from "../../lib/llmops";
 import { getMLOpsTagCounts } from "../../lib/mlops";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const industryTags = await getCollection("industry-tags");
@@ -125,6 +126,7 @@ const mlopsRows: EntryRowItem[] = mlopsEntries
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "industry-tags") ? defaultOgUrl("pages", "industry-tags") : undefined}
   title={`${tag.data.name} Industry - ZenML Databases`}
   description={`LLMOps and MLOps entries in the ${tag.data.name} industry.`}
   surface="ml"

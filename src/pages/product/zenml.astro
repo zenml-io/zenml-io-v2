@@ -27,9 +27,11 @@ import {
   ZENML_STORIES,
   ZENML_VALUE_PROPS,
 } from "../../lib/labs-product-zenml";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "product-zenml") ? defaultOgUrl("pages", "product-zenml") : undefined}
   app="labs"
   product="zenml"
   surface={LABS_PRODUCT_ZENML_SEO.surface}

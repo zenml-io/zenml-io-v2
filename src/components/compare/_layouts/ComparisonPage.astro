@@ -23,6 +23,7 @@ import {
   comparisonDisplayHeading,
   type LabsCompareLang,
 } from "../../../lib/labsComparison";
+import { compareOgUrl } from "../../../lib/seo";
 import FeatureSplit from "../../labs/FeatureSplit.astro";
 import LabsCloseCta from "../../labs/LabsCloseCta.astro";
 import LabsCodeCompare from "../../labs/LabsCodeCompare.astro";
@@ -254,7 +255,8 @@ if (isCompareProps(props)) {
     props.item.data.hero.deck;
   ogTitle = props.item.data.seo?.ogTitle;
   ogDescription = props.item.data.seo?.ogDescription;
-  ogImage = props.item.data.seo?.ogImage || props.item.data.openGraphImage?.url;
+  ogImage =
+    props.item.data.seo?.ogImage || compareOgUrl("zenml", props.item.data.slug);
   canonical = props.item.data.seo?.canonical;
 } else {
   seoTitle =

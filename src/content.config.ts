@@ -644,6 +644,7 @@ const compareSchema = z.object({
    * without rendering the page.
    */
   toolName: z.string().optional(),
+  cardSubtitle: z.string(),
   toolIcon: imageSchema.optional(),
   category: z.string().optional(),
   integrationType: slugReference(

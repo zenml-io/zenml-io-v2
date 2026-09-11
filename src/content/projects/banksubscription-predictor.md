@@ -40,6 +40,7 @@ seo:
   canonical: "https://www.zenml.io/projects/banksubscription-predictor"
   ogTitle: "BankSubscription Predictor"
   ogDescription: "Predict bank clients most likely to subscribe to term deposits using machine learning."
+  ogImage: "https://assets.zenml.io/og/pages/project-banksubscription-predictor.jpg"
 ---
 
 A comprehensive MLOps solution for predicting which bank clients are most likely to subscribe to term deposits, enabling more effective marketing campaigns.

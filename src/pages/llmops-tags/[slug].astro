@@ -26,6 +26,7 @@ import {
 } from "../../lib/databases";
 import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
 import { getIndustryTagCounts } from "../../lib/llmops";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const llmopsTags = await getCollection("llmops-tags");
@@ -94,6 +95,7 @@ const entries: EntryRowItem[] = allEntries
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "llmops-tags") ? defaultOgUrl("pages", "llmops-tags") : undefined}
   title={`${tag.data.name} - LLMOps Database`}
   description={`LLMOps tools and platforms tagged with "${tag.data.name}".`}
   surface="ml"

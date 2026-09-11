@@ -10,6 +10,7 @@
  */
 import type { LabsBandContent } from "./labs-home";
 import type { CtaLink } from "./marketingPageTypes";
+import { defaultOgUrl } from "./seo";
 
 // ---------------------------------------------------------------------------
 // SEO (one page, one URL)
@@ -21,7 +22,7 @@ export const GET_STARTED_SEO = {
   ogTitle: "Get Started with ZenML",
   ogDescription:
     "Install ZenML, run your first pipeline locally, and orchestrate AI workflows and agents on the infrastructure you already use.",
-  ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
+  ogImage: defaultOgUrl("pages", "get-started"),
 } as const;
 
 // ---------------------------------------------------------------------------

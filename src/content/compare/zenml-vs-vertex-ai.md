@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2026-02-19T09:38:08.055Z"
   createdOn: "2026-02-12T18:40:43.706Z"
 toolName: "Vertex AI"
+cardSubtitle: "Portable ML pipelines without GCP lock-in"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/806d00f0/6996d9ed231345fcc1aa03b2_Vertex_AI_icon.avif"
 category: "e2e-platforms"

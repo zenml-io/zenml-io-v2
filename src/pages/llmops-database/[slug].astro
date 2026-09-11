@@ -14,6 +14,7 @@ import {
   getAllPublishedEntries,
   getRelatedFromIndex,
 } from "../../lib/llmops";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const allEntries = await getAllPublishedEntries();
@@ -62,7 +63,11 @@ const relatedItems: RelatedRailItem[] = related.map((r) => ({
 const seoTitle =
   entry.data.seo?.title || `${entry.data.title} - ZenML LLMOps Database`;
 const seoDescription = entry.data.seo?.description || entry.data.summary;
-const ogImage = entry.data.seo?.ogImage;
+const ogImage =
+  entry.data.seo?.ogImage ??
+  (hasDefaultOgCard("llmops", entry.data.slug)
+    ? defaultOgUrl("llmops", entry.data.slug)
+    : undefined);
 
 const pagefindMeta: Record<string, string> = { slug: entry.data.slug };
 if (entry.data.company) pagefindMeta.company = entry.data.company;

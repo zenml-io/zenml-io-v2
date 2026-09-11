@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2026-02-09T09:29:23.299Z"
   createdOn: "2024-07-12T13:12:20.181Z"
 toolName: "Databricks"
+cardSubtitle: "Lightweight ML workflows without vendor lock-in"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/254dd3bb/66912a73d5e4735da2796a42_databricks-icon.png"
 category: "orchestrators"

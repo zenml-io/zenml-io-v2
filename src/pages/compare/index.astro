@@ -23,6 +23,7 @@ import {
   getZenmlCompareCards,
 } from "../../lib/compareHub";
 import "../../styles/labs-scroll-reveal.css";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 const TITLE = "Compare: ZenML and Kitaru vs. alternatives";
 const DESCRIPTION =
@@ -34,7 +35,13 @@ const [kitaruCards, zenmlCards] = await Promise.all([
 ]);
 ---
 
-<BaseLayout title={TITLE} description={DESCRIPTION} surface="unified" app="labs">
+<BaseLayout
+  ogImage={hasDefaultOgCard("pages", "compare") ? defaultOgUrl("pages", "compare") : undefined}
+  title={TITLE}
+  description={DESCRIPTION}
+  surface="unified"
+  app="labs"
+>
   <LabsBand size="short">
     <div class="scroll-reveal-section flex flex-col gap-4">
       <p class="reveal-child font-sans text-[15px] leading-5 text-(--color-cream-700)">Compare</p>

@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2026-02-19T09:41:26.436Z"
   createdOn: "2026-02-12T18:52:45.568Z"
 toolName: "LangGraph"
+cardSubtitle: "From agent graphs to governed AI pipelines"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ba688cf2/6996dabbaed2c6e3a275e641_LangGraph_icon.avif"
 category: "genai-frameworks"

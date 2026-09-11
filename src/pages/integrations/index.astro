@@ -19,6 +19,7 @@ import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP, blogLaneStyle } from "../../lib/blogLayout";
 import { INTEGRATIONS_HERO, integrationsClose } from "../../lib/integrations";
+import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
 
 // Get all published integrations + types
 const allIntegrations = (
@@ -44,6 +45,7 @@ const filterTypes = allTypes.map((t) => ({
 ---
 
 <BaseLayout
+  ogImage={hasDefaultOgCard("pages", "integrations") ? defaultOgUrl("pages", "integrations") : undefined}
   title="Integrations - ZenML"
   description="Explore the MLOps landscape with ZenML. Browse 60+ integrations for orchestrators, experiment trackers, artifact stores, and more."
   surface="ml"
