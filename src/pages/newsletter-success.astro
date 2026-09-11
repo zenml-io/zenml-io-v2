@@ -1,5 +1,5 @@
 ---
-import SuccessPanel from "../components/sections/SuccessPanel.astro";
+import ConversionShell from "../components/templates/ConversionShell.astro";
 /**
  * Newsletter Success — subscription confirmed.
  *
@@ -17,8 +17,15 @@ import {
   description={NEWSLETTER_SUCCESS_SEO.description}
   noindex={NEWSLETTER_SUCCESS_SEO.noindex}
   surface="ml"
+  app="labs"
 >
   <main>
-    <SuccessPanel data={NEWSLETTER_SUCCESS_DATA} />
+    <ConversionShell
+      frame="success"
+      headline={NEWSLETTER_SUCCESS_DATA.headline}
+      deck={NEWSLETTER_SUCCESS_DATA.body}
+      primaryCta={NEWSLETTER_SUCCESS_DATA.primaryCta}
+      secondaryCta={NEWSLETTER_SUCCESS_DATA.secondaryCta}
+    />
   </main>
 </BaseLayout>

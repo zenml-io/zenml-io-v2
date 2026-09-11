@@ -1,5 +1,5 @@
 ---
-import SuccessPanel from "../components/sections/SuccessPanel.astro";
+import ConversionShell from "../components/templates/ConversionShell.astro";
 /**
  * Booked — thank-you page after Cal.com booking.
  *
@@ -14,8 +14,15 @@ import { BOOKED_DATA, BOOKED_SEO } from "../lib/booked";
   description={BOOKED_SEO.description}
   noindex={BOOKED_SEO.noindex}
   surface="unified"
+  app="labs"
 >
   <main>
-    <SuccessPanel data={BOOKED_DATA} />
+    <ConversionShell
+      frame="success"
+      headline={BOOKED_DATA.headline}
+      deck={BOOKED_DATA.body}
+      primaryCta={BOOKED_DATA.primaryCta}
+      secondaryCta={BOOKED_DATA.secondaryCta}
+    />
   </main>
 </BaseLayout>

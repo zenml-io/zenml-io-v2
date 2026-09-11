@@ -1,13 +1,14 @@
 ---
 /**
  * ConversionShell — hero + widget shell for conversion-utility pages
- * (Cal.com scheduling embeds and short lead-capture forms).
+ * (Cal.com scheduling embeds, short lead-capture forms, and the
+ * band-only thank-you pages that follow them).
  *
- * Two arrangements selected by `frame`. Their section/wrapper structures
- * are unrelated, but the inner h1 + deck block is the same markup in both
- * branches — duplicated deliberately (Astro has no local partials; a
- * separate component for two lines isn't worth it). Keep the two copies
- * in sync when editing the hero block.
+ * Three arrangements selected by `frame`. Their section/wrapper structures
+ * are unrelated, but the inner h1 + deck block is the same markup in all
+ * three branches — duplicated deliberately (Astro has no local partials; a
+ * separate component for two lines isn't worth it). Keep the calendar and
+ * form copies in sync when editing the hero block.
  *
  * `calendar` renders the shared Labs interior band, then a cream section
  * housing the widget — matching the two canonical calendar pages
@@ -16,10 +17,19 @@
  * directly above the widget, matching the short-form pages
  * (`book-a-demo`, `signup-for-demo`). The default slot is the widget
  * itself (a `CalEmbed` or a `ContactForm` island) in both arrangements.
+ * `success` is the band-only thank-you shape (`booked`, `book-success`,
+ * `newsletter-success`): the same heading block as `calendar`, but `deck`
+ * renders with `set:html` because the success bodies carry a `<br>`
+ * (`calendar`/`form` keep rendering `deck` as text) — followed by up to
+ * two `LabsButton` pills when a CTA is given. There is no widget and no
+ * second section for this frame.
  *
- * Absence collapses: an omitted `deck` renders no `<p>`.
+ * Absence collapses: an omitted `deck` renders no `<p>`; omitted CTAs
+ * render no pill row.
  */
 import LabsBand from "../labs/LabsBand.astro";
+import LabsButton from "../labs/LabsButton.astro";
+import type { LabsCta } from "../../lib/labs-home";
 
 interface ConversionShellBase {
   headline: string;
@@ -28,9 +38,16 @@ interface ConversionShellBase {
 
 type Props =
   | (ConversionShellBase & { frame: "calendar" })
-  | (ConversionShellBase & { frame: "form" });
+  | (ConversionShellBase & { frame: "form" })
+  | (ConversionShellBase & {
+      frame: "success";
+      primaryCta?: LabsCta;
+      secondaryCta?: LabsCta;
+    });
 
 const { headline, deck, frame } = Astro.props;
+const { primaryCta, secondaryCta } =
+  frame === "success" ? Astro.props : { primaryCta: undefined, secondaryCta: undefined };
 ---
 
 {
@@ -55,6 +72,23 @@ const { headline, deck, frame } = Astro.props;
         </div>
       </section>
     </>
+  ) : frame === "success" ? (
+    <LabsBand size="short">
+      <div class="max-w-3xl">
+        <h1 class="font-display text-[44px] leading-[48px] text-foreground md:text-[72px] md:leading-[78px]">
+          {headline}
+        </h1>
+        {deck && (
+          <p class="mt-6 max-w-2xl font-sans text-xl leading-[30px] text-(--color-cream-700)" set:html={deck} />
+        )}
+        {(primaryCta || secondaryCta) && (
+          <div class="mt-10 flex flex-wrap gap-4">
+            {primaryCta && <LabsButton cta={primaryCta} />}
+            {secondaryCta && <LabsButton cta={secondaryCta} tone="ghost" />}
+          </div>
+        )}
+      </div>
+    </LabsBand>
   ) : (
     <section class="bg-(--color-cream-50) py-space-xl md:py-space-xxl">
       <div class="mx-auto max-w-content px-gutter">

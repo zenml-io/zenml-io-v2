@@ -17,6 +17,5 @@ export const BOOK_SUCCESS_SEO: SEOProps = {
 export const BOOK_SUCCESS_DATA: SuccessPageData = {
   headline: "Your demo is booked!",
   body: "We look forward to speaking with you soon. You'll receive a calendar invite with meeting details shortly.",
-  showCheckIcon: true,
-  primaryCta: { label: "Back to Home", href: "/" },
+  primaryCta: { label: "Back to Home", href: "/", analytics: "Success-Primary" },
 };

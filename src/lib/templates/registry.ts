@@ -813,32 +813,6 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
       "Replaces the result region only. Header, chip strip and facet rail all stay exactly in place.",
   },
 
-  // ── legal (Wave 3 PR1, #250) ──────────────────────────────────────────────
-  // Not part of the Rounds A+B design catalog (page-header/data-display/etc.
-  // above) — a Wave 3 addition for the two legal text pages. paperPage: 1
-  // follows the existing "unconfirmed against the real design catalog"
-  // convention used by the section primitives below, not a real citation.
-  {
-    id: "legal.article",
-    kind: "template",
-    componentPath: "src/components/templates/LegalArticle.astro",
-    variantAxes: ["lastUpdated present"],
-    tones: ["default"],
-    responsive: "static",
-    island: false,
-    paperPage: 1,
-    notes:
-      'h1 + optional "Last updated" line for the two legal content pages (privacy-policy, terms-of-service); the body is the page\'s own rendered Markdown passed through the default slot. lastUpdated absent collapses — no line, no gap (privacy-policy has none today).',
-    demoProps: {
-      title: "ZenML GmbH Terms of Service",
-      lastUpdated: "16.02.2024",
-    },
-    demoSlots: {
-      default:
-        "<p>Your data's security and privacy are ZenML's top priorities.</p>",
-    },
-  },
-
   // ── primitives (Paper 1) ─────────────────────────────────────────────────
   {
     id: "mark.hexagon",
@@ -1086,13 +1060,13 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "conversion.shell",
     kind: "template",
     componentPath: "src/components/templates/ConversionShell.astro",
-    variantAxes: ["frame: calendar | form"],
+    variantAxes: ["frame: calendar | form | success"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 1,
     notes:
-      "Two structurally different arrangements selected by `frame`: `calendar` is the two-section Cal-hero shape (success-calendar, schedule-a-demo); `form` is the historical single-section narrow shape above a lead-capture form. The default slot is the conversion widget (CalEmbed or ContactForm island).",
+      "Three structurally different arrangements selected by `frame`: `calendar` is the two-section Cal-hero shape (success-calendar, schedule-a-demo); `form` is the historical single-section narrow shape above a lead-capture form. The default slot is the conversion widget (CalEmbed or ContactForm island). `success` is the band-only thank-you shape (booked, book-success, newsletter-success): headline + HTML deck + up to two pills, no widget.",
     demoProps: {
       headline: "Thanks — pick a time that works for you",
       deck: "We'll be in touch shortly.",
