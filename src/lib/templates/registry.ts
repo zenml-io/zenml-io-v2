@@ -1304,7 +1304,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 1,
     stage: false,
     notes:
-      "Comparison value block on the system Split primitive: prose-first DOM, hairline check rows, framed image media, and slotted diagrams without nested card framing. ZenML diagrams use a sage-300 presentation field and Figma-aligned panel headers with Rethink Sans titles plus Nudica Mono context: sage-100/sage-500 for emphasis and cream-50/cream-200 for neutral panels. Kitaru keeps its product-scoped field. The list arrangement keeps MDX-authored bullet groups.",
+      "Comparison value block on the system Split primitive: prose-first DOM, hairline check rows, framed image media, and slotted diagrams without nested card framing. ZenML diagrams use a sage-300 presentation field and Figma-aligned panel headers with Rethink Sans titles plus Nudica Mono context: sage-100/sage-500 for emphasis and cream-50/cream-200 for neutral panels. Kitaru diagrams sit on a cream-100 field so the well stays warm rather than sage. The list arrangement keeps MDX-authored bullet groups.",
   },
   {
     id: "labs.comparison-showdown",
