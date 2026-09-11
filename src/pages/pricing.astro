@@ -10,6 +10,7 @@
  *
  * Route: /pricing
  */
+import ComplianceCard from "../components/labs/ComplianceCard.astro";
 import LabsBand from "../components/labs/LabsBand.astro";
 import LabsButton from "../components/labs/LabsButton.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
@@ -148,24 +149,12 @@ const pricingJsonLd = buildPricingJsonLd();
           loading="lazy"
         />
       </picture>
-      <div class="mt-8 flex flex-col items-center gap-8 rounded-[20px] border border-(--color-border) bg-card p-8 md:flex-row">
-        <div class="flex shrink-0 gap-6">
-          {PRICING_COMPLIANCE.badges.map((badge) => (
-            <img src={badge.url} alt={badge.alt} class="h-24 w-auto object-contain" loading="lazy" />
-          ))}
-        </div>
-        <div class="md:border-l md:border-(--color-border) md:pl-8">
-          <p class="font-sans text-[13px] leading-4 font-medium text-(--color-cream-700)">
-            {PRICING_COMPLIANCE.bannerEyebrow}
-          </p>
-          <h3 class="mt-1 font-display text-[20px] leading-[26px] text-(--color-cream-900)">
-            {PRICING_COMPLIANCE.bannerHeadline}
-          </h3>
-          <p class="mt-2 font-sans text-[15px] leading-5 text-(--color-cream-700)">
-            {PRICING_COMPLIANCE.bannerBody}
-          </p>
-        </div>
-      </div>
+      <ComplianceCard
+        badges={PRICING_COMPLIANCE.badges}
+        eyebrow={PRICING_COMPLIANCE.bannerEyebrow}
+        headline={PRICING_COMPLIANCE.bannerHeadline}
+        body={PRICING_COMPLIANCE.bannerBody}
+      />
     </div>
   </section>
 

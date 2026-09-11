@@ -12,7 +12,8 @@ webflow:
   createdOn: "2025-08-26T14:20:30.481Z"
 integrationType: "agents"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dc393543/68adc2b39206458c0cbe525e_llamaindex.png"
+  url: "https://assets.zenml.io/content/integrations/logos/llamaindex.svg"
+  alt: "LlamaIndex logo"
 shortDescription: "LlamaIndex Function Agent integrated with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/langgraph"

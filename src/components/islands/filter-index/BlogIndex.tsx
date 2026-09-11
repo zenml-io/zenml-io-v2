@@ -8,9 +8,10 @@
  * high-volume SEO surface and must not depend on a client fetch for its
  * crawlable content (guarded by a `check-dist-smoke.ts` assertion). Renders
  * `labs.blog-card`'s Preact twin (`BlogCard.tsx`) — an Astro component
- * can't render inside a Preact island (same constraint as `IntegrationCard`
- * — see `ControlFilterIndex`'s TSDoc), so `BlogCard.tsx` and `BlogCard.astro`
- * share every class string via `blogCardStyles.ts` instead.
+ * can't render inside a Preact island (same constraint as
+ * `src/components/labs/IntegrationCard.astro` — see `ControlFilterIndex`'s
+ * TSDoc), so `BlogCard.tsx` and `BlogCard.astro` share every class string
+ * via `blogCardStyles.ts` instead.
  */
 import type { BlogProduct } from "../../../lib/blog";
 import { BlogCard } from "../../labs/BlogCard";

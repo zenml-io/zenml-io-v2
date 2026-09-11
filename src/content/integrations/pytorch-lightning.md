@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:11.915Z"
 integrationType: "modeling"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/722d116d/66d8698e9b17225aee5d3628_pytorch-light.png"
+  url: "https://assets.zenml.io/content/integrations/logos/pytorch-lightning.svg"
+  alt: "PyTorch Lightning logo"
 shortDescription: "Train deep learning models with PyTorch Lightning."
 docsUrl: "https://github.com/zenml-io/zenml/tree/main"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main"

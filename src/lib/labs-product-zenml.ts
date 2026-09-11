@@ -14,7 +14,7 @@
  * ghost pill to the docs; no "Book a demo".
  */
 
-import type { HighlightFigureId } from "../components/labs/highlights";
+import type { HighlightFigureId } from "../components/labs/highlights/ids";
 import type { Surface } from "./analytics";
 import { CASE_STUDY_CARDS, type FeatureTab, LOGO_CLOUD } from "./homepage";
 import type {

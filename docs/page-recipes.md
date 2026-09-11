@@ -50,7 +50,7 @@ layout props.
 **Surface** — `ml` for all 28 routes.
 **Sequence** — eyebrow-first `LabsComparisonBand` (eyebrow, headline, deck,
 38-option grouped switcher), then the ordered `blocks[]`: `value` →
-`LabsComparisonValue`; `quote` / `testimonial` → full-width
+`FeatureSplit`; `quote` / `testimonial` → full-width
 `LabsComparisonQuote`; `featureTable` → `LabsComparisonTable`;
 `codeComparison` → `LabsCodeCompare`; `strategyCta` →
 `LabsComparisonStrategyCta`; sibling comparisons → `LabsComparisonCard`
@@ -349,41 +349,79 @@ ordering.
 
 ## Integrations
 
+All integration routes render in the ZenML Labs shell (`app="labs"
+product="zenml"`, `surface="ml"`) and share `labs.integration-card` (the
+full-width-logo-band card) through `TermHubCatalog` — the same tile
+renders the `/integrations` grid, a type hub's list and a detail page's
+"More integrations" row.
+
 ### Integrations index
 **Routes** — `/integrations` (one page).
 **Layout** — `BaseLayout`.
-**Surface** — `ml`.
-**Sequence** — `PageHeader` plus a hand-rolled architecture diagram image,
-then the `IntegrationsIndex` filterable-index island (control flavor — the
-island owns the facet rail and search box, and toggles visibility of
-server-rendered `IntegrationCard`s passed as children) with an `EmptyState`
-fallback, then a dark CTA band.
+**Sequence** — `LabsBand size="short"` (eyebrow, headline, deck from
+`INTEGRATIONS_HERO`), the `IntegrationsIndex` filterable-index island
+(`skin="labs"` — the island owns the facet rail and search box, toggling
+visibility of server-rendered `labs.integration-card` tiles passed as
+children; a zero-result query renders the labs `FilterEmptyState`), then
+`LabsCloseCta` (`integrationsClose`).
 **Required data** — `integrations` collection (68 total, 66 non-draft);
-`integration-types` collection; `lib/constants` (`R2_WEBFLOW_BASE`).
-**Buildable today** — partial. Hero and the filter body both come from the
-registry (`PageHeader` + `filterable-index.shell`, the same control-flavor
-pattern also used nowhere else on the site today). The diagram image and the
-bottom CTA band are hand-rolled.
+`integration-types` collection; `lib/integrations.ts` (hero + close copy).
+**Buildable today** — yes. `LabsBand`, `labs.integration-card`, the labs
+skin of `ControlFilterIndex`/`IntegrationsIndex`, and `LabsCloseCta` are all
+registry templates; the page supplies the collection query and the card
+props.
+
+### Integration types index
+**Routes** — `/integration-type` (one page).
+**Layout** — `BaseLayout`.
+**Sequence** — a breadcrumb + `LabsBand size="short"` (eyebrow, headline,
+`integrationTypesDeck` count line), `TermChipIndex` (every integration type
+as a hexagon chip carrying its integration count, sorted by popularity —
+zero-count types dropped by `filterUsedTerms`), then `LabsCloseCta`.
+**Required data** — `integrations` and `integration-types` collections;
+`lib/integrations.ts`; `lib/relatedIndex.ts` (`filterUsedTerms`).
+**Buildable today** — yes.
+
+### Integration type hub
+**Routes** — `/integration-type/<slug>` — one per used integration type.
+**Layout** — `BaseLayout`.
+**Sequence** — a breadcrumb + `LabsBand size="short"` (eyebrow, the type
+name as h1, `integrationTypeDeck` count line), `TermHubCatalog` (every
+integration of this type as a `labs.integration-card`, centred when there
+are fewer than three), then `LabsCloseCta`.
+**Required data** — `integrations` and `integration-types` collections;
+`lib/integrations.ts`.
+**Buildable today** — yes.
 
 ### Integration detail
 **Routes** — `/integrations/<slug>` — one per published integration (66
 pages).
-**Layout** — `BaseLayout`.
-**Surface** — `ml`.
-**Sequence** — a hand-rolled header row (logo, back link, title, "Add to
-ZenML" button), a two-column body with `IntegrationDetailSidebar` and either
-a structured content path (overview, features checklists, screenshot, code
-example, resources — driven by which optional fields the entry has) or a
-markdown fallback, then a bottom CTA with `IntegrationsLogoRail`.
-**Required data** — `integrations` collection; `integration-types` collection;
-`blog` collection (resolving `relatedBlogPosts`); `compare` collection
-(resolving a `compareSlug` to a display name).
-**Buildable today** — no. `IntegrationDetailSidebar` and `IntegrationsLogoRail`
-are integration-specific components under `src/components/integrations/`, not
-registry templates. Nothing on this page — sidebar, structured/fallback
-split, or the bottom CTA — comes from `src/components/templates/` or
-`src/components/system/`. The gap: no shared template for a "structured
-content with a markdown fallback" detail page.
+**Layout** — page-local composition of the research-database entry
+anatomy (not a shared layout — this is the only route it applies to): a
+short `LabsBand` (eyebrow "Integration", the mark in a white tile beside
+the h1, deck with an optional "View docs" ghost pill at the row's right
+end), `StickyBreadcrumb`, `LabsArticleBody` with the `LabsMetadataBlock`
+record in its `rail` slot (Type / GitHub / Compare rows, each present only
+when the entry has the field; mono labels, the GitHub row a ghost pill with
+the GitHub mark — right rail above the TOC from `xl`, above the prose
+below), `LabsRelatedBand` ("Related reading"),
+a "More integrations" `TermHubCatalog` row, and `LabsCloseCta`
+(`integrationDetailClose`, carrying the build-time published count).
+**Sequence detail** — the structured content branch renders the entry's
+`<ul>` feature lists straight into `.prose`, and highlights
+`codeExampleHtml`'s `<pre><code>` blocks at build time with Shiki
+(`labs-light.json`) through `src/lib/integrationCode.ts`, wrapped in the
+same code-pane markup every other prose surface uses; an entry with no
+structured field falls back to its Markdown body.
+**Required data** — `integrations` collection; `integration-types`
+collection; `blog` collection (resolving `relatedBlogPosts`); `categories`
+collection (a related post's chip label); `compare` collection (resolving a
+`compareSlug` to a display name); `src/lib/integrations.ts`;
+`src/lib/integrationCode.ts`.
+**Buildable today** — yes. Every block is a registry component
+(`LabsBand`, `StickyBreadcrumb`, `LabsArticleBody`, `LabsMetadataBlock`,
+`LabsRelatedBand`, `TermHubCatalog`, `LabsCloseCta`); only the frontmatter
+resolution and the code-block highlighting are page-specific.
 
 ---
 
@@ -523,27 +561,36 @@ startup banner, compliance section and stats/trust section stay page-specific.
 
 ### Features hub
 **Routes** — `/features` (one page).
-**Layout** — `BaseLayout`.
+**Layout** — `BaseLayout` (`app="labs" product="zenml"`).
 **Surface** — `ml`.
-**Sequence** — `PageHeader` (gradient hero), a hand-rolled grid of 7 feature
-cards (`FeatureCard`, from a hardcoded `HUB_CARDS` list, not a collection),
-then `FeaturesCTA05`.
-**Required data** — `lib/features.ts` (`HUB_CARDS`, hero/CTA copy).
-**Buildable today** — partial. `PageHeader` covers the hero; the card grid
-and CTA band are page-specific.
+**Sequence** — `LabsBand size="short"` (eyebrow "Features", headline and
+deck from `FEATURES_HUB_HERO`), a grid of the 7 `labs.feature-card` tiles
+(from the hardcoded `HUB_CARDS` list, not a collection — the whole card is
+the link, no icon), then `LabsCloseCta` (`FEATURES_HUB_CLOSE`).
+**Required data** — `lib/features.ts` (`HUB_CARDS`, hero/close copy).
+**Buildable today** — yes. `LabsBand`, `labs.feature-card` and
+`LabsCloseCta` are all registry templates; the page supplies the card list.
 
 ### Feature detail
 **Routes** — `/features/<slug>` — one per published feature page (12 pages).
-**Layout** — `BaseLayout`.
+**Layout** — `BaseLayout` (`app="labs" product="zenml"`).
 **Surface** — `ml`.
-**Sequence** — `Breadcrumb`, `FeatureHero`, then a content-driven sequence of
-blocks (`FeatureValueSection` or `FeatureComplianceBanner`, picked per block
-by a `kind` discriminant in frontmatter), an optional `FeatureTestimonial`,
-and an optional `FinalCTA`.
-**Required data** — `feature-pages` collection.
-**Buildable today** — partial. `Breadcrumb` is the only registry piece; the
-hero and all block types are feature-specific section components with no
-registry equivalent.
+**Sequence** — a breadcrumb + `LabsBand size="short"` (category eyebrow,
+title, deck), an optional framed figure (a drawn `labs.highlights` figure on
+the five slugs `FEATURE_HIGHLIGHT_FIGURES` maps, else the entry's own
+`hero.image`), a content-driven sequence of blocks (`labs.feature-split` for
+a `kind: "value"` block, `labs.compliance-card` for a `kind:
+"complianceBanner"` block — a block that omits a field falls back to
+`FEATURE_COMPLIANCE_DEFAULTS`), an optional `LabsStoryCard kind="quote"`
+testimonial, and an optional `LabsCloseCta` (`FEATURE_DETAIL_CLOSE`, gated
+on the entry's `showFinalCta`).
+**Required data** — `feature-pages` collection; `src/lib/features.ts`
+(highlight-figure map, compliance defaults, close copy);
+`src/components/labs/highlights` (the five drawn figures).
+**Buildable today** — yes. Every block is a registry component (`LabsBand`,
+`labs.feature-split`, `labs.compliance-card`, `LabsStoryCard`,
+`LabsCloseCta`, the `labs.highlights` figures); the page supplies the
+frontmatter and picks which template a block renders through.
 
 ### Kitaru product landing
 **Routes** — `/product/kitaru` (one page).

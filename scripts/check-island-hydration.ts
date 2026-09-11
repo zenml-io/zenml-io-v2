@@ -277,7 +277,7 @@ const CHECKS: IslandCheck[] = [
   },
   {
     name: "FeatureTabsSlider switches tab on click",
-    // The Labs homepage (/) no longer carries FeatureTabs; the ZenML product
+    // The Labs homepage (/) no longer carries feature tabs; the ZenML product
     // landing still does, so the interaction check moved with it.
     route: "/product/zenml",
     island: "FeatureTabsSlider",

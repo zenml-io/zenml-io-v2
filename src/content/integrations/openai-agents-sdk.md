@@ -12,7 +12,8 @@ webflow:
   createdOn: "2025-08-26T14:27:00.325Z"
 integrationType: "agents"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f221e966/68adc43932c9097522a666d3_openai.png"
+  url: "https://assets.zenml.io/content/integrations/logos/openai-agents-sdk.svg"
+  alt: "OpenAI logo"
 shortDescription: "OpenAI Agents SDK integrated with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/openai_agents_sdk"

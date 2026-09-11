@@ -181,6 +181,62 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
     covers:
       "docs hub diptych: the two product cards, their quick links and CTAs with the DocsHub analytics names",
   },
+  {
+    page: "integrations/kubernetes.html",
+    selector: ".prose",
+    golden: "integration-kubernetes-body.html",
+    covers:
+      "integration detail body: the overview, the two feature lists, the code example and the additional resources as the integration template renders them",
+  },
+  {
+    page: "integration-type/orchestrator.html",
+    selector: "#type-catalog",
+    golden: "integration-type-orchestrator-grid.html",
+    covers:
+      "integration-type hub grid: every integration card of the type (mark, title, type label, href)",
+  },
+  {
+    page: "features.html",
+    selector: "#features-grid",
+    golden: "features-grid.html",
+    covers:
+      "features hub grid: the seven category cards (category, title, summary, href)",
+  },
+  {
+    page: "features/auto-track-everything.html",
+    selector: "#feature-blocks",
+    golden: "feature-auto-track-everything.html",
+    covers:
+      "feature detail page: the value and compliance blocks (title, body, bullets, image; badges, eyebrow, headline) as the feature template renders them",
+  },
+  {
+    page: "cloud-features/ml-models-control-plane.html",
+    selector: "section:has(> div.gap-20)",
+    golden: "cloud-features-splits.html",
+    covers:
+      "cloud-features alternating feature sections (the labs.feature-split pattern): heading, check-bullet rows and media per section — a guard that the shared component re-point does not move this page",
+  },
+  {
+    page: "deployments.html",
+    selector: "section:has(> div.gap-20)",
+    golden: "deployments-scenarios.html",
+    covers:
+      "deployment scenarios (the labs.feature-split pattern with a Learn More link): a guard that the shared component re-point does not move this page",
+  },
+  {
+    page: "pricing.html",
+    selector: "section[data-workspace-panel='zenml'] div.bg-card",
+    golden: "pricing-compliance-card.html",
+    covers:
+      "pricing compliance card (labs.compliance-card): badges, eyebrow, headline, body — a guard that the shared component re-point does not move this page",
+  },
+  {
+    page: "pro.html",
+    selector: "section div.md\\:flex-row",
+    golden: "pro-compliance-card.html",
+    covers:
+      "pro compliance card (labs.compliance-card): the same card as /pricing's — a guard that the shared component re-point does not move this page",
+  },
 ];
 
 /**
@@ -190,11 +246,15 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
  */
 const ASSET_HASH_RE = /(\/_astro\/[^"'\s]+?)\.[A-Za-z0-9_-]{8}\.(\w+)/g;
 const SCOPED_STYLE_ID_RE = /data-astro-cid-[a-z0-9]+/g;
+// An <astro-island>'s uid is a per-render id, not content: it changes from
+// one build to the next even when nothing about the page did.
+const ISLAND_UID_RE = /\buid="[A-Za-z0-9_-]+"/g;
 
 export function normaliseSnapshot(html: string): string {
   const normalised = html
     .replace(ASSET_HASH_RE, "$1.[hash].$2")
     .replace(SCOPED_STYLE_ID_RE, "data-astro-cid-[hash]")
+    .replace(ISLAND_UID_RE, 'uid="[hash]"')
     // One tag per line so a golden diff reads like a document, not one 30 KB
     // line. Cheerio escapes "<" in text nodes, so this is a tag boundary
     // nearly everywhere; a "<" inside an attribute value or inline <script>

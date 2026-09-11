@@ -1,55 +1,153 @@
 ---
 /**
- * Integration detail page — matches Webflow layout.
+ * Integration detail page, on the ZenML Labs shell (integrations cutover
+ * #318). Short band (eyebrow, mark + h1, deck, one ghost "View docs" pill)
+ * → sticky breadcrumb → article body → related reading → "More
+ * integrations" → closing band — but composed here in the page rather than
+ * extracted into a layout: this is the only route that renders it, and
+ * every block is already a shared primitive.
  *
- * Hero with logo lockup → header row → 2-column layout with sticky sidebar + structured body.
- * Falls back to markdown Content when structured fields are missing.
+ * Unlike a database entry (whose metadata record leads the prose via
+ * `LabsArticleBody`'s `lead` slot), this page's record — Type, GitHub,
+ * Compare — renders through the `rail` slot instead: from `xl` up it sits
+ * in the right rail above the sticky "On this page" TOC, and below `xl` it
+ * falls back to the same above-the-prose position `lead` uses. Its labels
+ * render in mono (`labels="mono"` on `LabsMetadataBlock`) and its GitHub
+ * row renders as a pill (`as: "pill"`, `icon: "github"`) rather than a
+ * plain link — both are opt-in per this page, the database entry rendering
+ * is untouched.
+ *
+ * The structured frontmatter fields are CMS-exported HTML: the two feature
+ * fields are `<ul>` strings that go straight into `.prose`, and
+ * `codeExampleHtml` holds plain (un-highlighted) `<pre><code>` blocks that
+ * are highlighted here at build time on the site's Shiki theme and wrapped
+ * in the code-pane chrome every other prose surface uses. See
+ * `src/lib/integrationCode.ts`. The entry's `mainImage` (a Webflow-era
+ * screenshot on a coloured card) is not rendered in the page any more; it
+ * survives only as the Open Graph fallback. Entries with no structured field at all fall
+ * back to the Markdown body.
  *
  * Generates /integrations/<slug> for each published integration.
  */
 import { getCollection, getEntry, render } from "astro:content";
-import Button from "../../components/Button.astro";
-import IntegrationDetailSidebar from "../../components/integrations/IntegrationDetailSidebar.astro";
-import IntegrationsLogoRail from "../../components/integrations/IntegrationsLogoRail.astro";
+import { createHighlighter } from "shiki";
+import LabsArticleBody from "../../components/labs/LabsArticleBody.astro";
+import LabsBand from "../../components/labs/LabsBand.astro";
+import LabsButton from "../../components/labs/LabsButton.astro";
+import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
+import LabsMetadataBlock, {
+  type LabsMetadataBlockItem,
+} from "../../components/labs/LabsMetadataBlock.astro";
+import LabsRelatedBand from "../../components/labs/LabsRelatedBand.astro";
+import StickyBreadcrumb from "../../components/labs/StickyBreadcrumb.astro";
+import type { RelatedRailItem } from "../../components/templates/RelatedRail.astro";
+import TermHubCatalog, {
+  type TermHubCatalogItem,
+} from "../../components/templates/TermHubCatalog.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { blogLaneStyle } from "../../lib/blogLayout";
+import {
+  codePaneHtml,
+  extractCodeBlocks,
+  replaceCodeBlocks,
+  stripEmptyParagraphs,
+} from "../../lib/integrationCode";
+import {
+  integrationDetailClose,
+  MORE_INTEGRATIONS_COUNT,
+  MORE_INTEGRATIONS_HEADING,
+} from "../../lib/integrations";
+import labsLight from "../../styles/labs-light.json";
+
+type HighlighterTheme = NonNullable<
+  Parameters<typeof createHighlighter>[0]["themes"]
+>[number];
+
+// Astro evaluates this module once per build, so the highlighter is built
+// once for all 66 pages rather than per page.
+const highlighter = await createHighlighter({
+  themes: [labsLight as HighlighterTheme],
+  langs: ["python", "bash"],
+});
 
 export async function getStaticPaths() {
   const integrations = await getCollection(
     "integrations",
     ({ data }) => !data.draft,
   );
-  return integrations.map((integration) => ({
-    params: { slug: integration.data.slug },
-    props: { integration },
-  }));
+  const types = await getCollection("integration-types");
+  const typeNames = new Map(types.map((t) => [t.data.slug, t.data.name]));
+
+  const allBlog = await getCollection("blog");
+  const blogBySlug = new Map(allBlog.map((b) => [b.data.slug, b]));
+  const categories = await getCollection("categories");
+  const categoryNames = new Map(
+    categories.map((c) => [c.data.slug, c.data.name]),
+  );
+
+  const byTitle = [...integrations].sort((a, b) =>
+    a.data.title.localeCompare(b.data.title),
+  );
+
+  return integrations.map((integration) => {
+    // Related blog posts, in the order the entry lists them.
+    const relatedPosts = (integration.data.relatedBlogPosts ?? []).flatMap(
+      (slug: string) => {
+        const post = blogBySlug.get(slug);
+        if (!post) return [];
+        return [
+          {
+            href: `/blog/${post.data.slug}`,
+            title: post.data.title,
+            categoryName: post.data.category
+              ? categoryNames.get(post.data.category)
+              : undefined,
+            date: post.data.date,
+          },
+        ];
+      },
+    );
+
+    // Same type first (alphabetical), then everything else (alphabetical),
+    // this integration excluded — a deterministic ranking, not a score.
+    const others = byTitle.filter((i) => i.data.slug !== integration.data.slug);
+    const sameType = others.filter(
+      (i) => i.data.integrationType === integration.data.integrationType,
+    );
+    const rest = others.filter(
+      (i) => i.data.integrationType !== integration.data.integrationType,
+    );
+    const moreIntegrations: TermHubCatalogItem[] = [...sameType, ...rest]
+      .slice(0, MORE_INTEGRATIONS_COUNT)
+      .map((i) => ({
+        href: `/integrations/${i.data.slug}`,
+        title: i.data.title,
+        categoryLabel:
+          typeNames.get(i.data.integrationType) ?? i.data.integrationType,
+        logo: i.data.logo,
+      }));
+
+    return {
+      params: { slug: integration.data.slug },
+      props: {
+        integration,
+        relatedPosts,
+        moreIntegrations,
+        publishedCount: integrations.length,
+      },
+    };
+  });
 }
 
-const { integration } = Astro.props;
-const { Content } = await render(integration);
+const { integration, relatedPosts, moreIntegrations, publishedCount } =
+  Astro.props;
+const { Content, headings } = await render(integration);
 const d = integration.data;
 
 // Resolve integration type
 const typeEntry = d.integrationType
   ? await getEntry("integration-types", d.integrationType)
   : undefined;
-
-// Resolve related blog posts
-const relatedPosts: Array<{ href: string; title: string; imageUrl?: string }> =
-  [];
-if (d.relatedBlogPosts && d.relatedBlogPosts.length > 0) {
-  const allBlog = await getCollection("blog");
-  const blogBySlug = new Map(allBlog.map((b) => [b.data.slug, b]));
-  for (const slug of d.relatedBlogPosts) {
-    const post = blogBySlug.get(slug);
-    if (post) {
-      relatedPosts.push({
-        href: `/blog/${post.data.slug}`,
-        title: post.data.title,
-        imageUrl: post.data.mainImage?.url,
-      });
-    }
-  }
-}
 
 // Resolve compare page name
 let compareName: string | undefined;
@@ -68,8 +166,6 @@ if (d.compareSlug) {
 }
 
 // Determine structured rendering/fallback strategy
-const introH2 = d.shortDescription?.trim();
-
 const hasStructuredSections = !!(
   d.overviewDescription?.trim() ||
   d.featuresWithZenmlHtml ||
@@ -79,6 +175,118 @@ const hasStructuredSections = !!(
 );
 
 const renderStructured = hasStructuredSections;
+
+// Code example: highlight each block at build time, then put the finished
+// panes back where they came from so the sentences a few entries use to
+// introduce a block keep their place.
+const codeBlocks = extractCodeBlocks(d.codeExampleHtml ?? "");
+const codeExampleHtml =
+  codeBlocks.length > 0
+    ? stripEmptyParagraphs(
+        replaceCodeBlocks(
+          d.codeExampleHtml ?? "",
+          codeBlocks.map((block) =>
+            codePaneHtml(
+              highlighter.codeToHtml(block.code, {
+                lang: block.language === "text" ? "bash" : block.language,
+                theme: labsLight.name,
+              }),
+              block.language,
+            ),
+          ),
+        ),
+      )
+    : "";
+
+// The record beside the body: the type, and the two outbound links the
+// retired sidebar carried. A field the entry doesn't have takes its row
+// with it.
+const metadataItems: LabsMetadataBlockItem[] = [];
+if (typeEntry) {
+  metadataItems.push({
+    label: "Type",
+    value: {
+      kind: "link",
+      text: typeEntry.data.name,
+      href: `/integration-type/${typeEntry.data.slug}`,
+    },
+  });
+}
+if (d.githubUrl) {
+  metadataItems.push({
+    label: "GitHub",
+    value: {
+      kind: "link",
+      text: d.githubLinkText || "Get Started",
+      href: d.githubUrl,
+      external: true,
+      analytics: "Integration-GitHub",
+      as: "pill",
+      icon: "github",
+    },
+  });
+}
+if (d.compareSlug) {
+  metadataItems.push({
+    label: "Compare",
+    value: {
+      kind: "link",
+      text: compareName || d.compareSlug.replace("zenml-vs-", "ZenML vs "),
+      href: `/compare/${d.compareSlug}`,
+      analytics: "Integration-Compare",
+    },
+  });
+}
+
+// TOC headings: the sections this page actually renders. The fallback
+// branch has no sections of its own, so it keeps the Markdown body's.
+const structuredHeadings: { depth: number; slug: string; text: string }[] = [];
+if (d.featuresWithZenmlHtml) {
+  structuredHeadings.push({
+    depth: 2,
+    slug: "features-with-zenml",
+    text: "Features with ZenML",
+  });
+}
+if (d.toolFeaturesHtml) {
+  structuredHeadings.push({
+    depth: 2,
+    slug: "main-features",
+    text: "Main Features",
+  });
+}
+if (codeBlocks.length > 0) {
+  structuredHeadings.push({
+    depth: 2,
+    slug: "how-to-use",
+    text: `How to use ZenML with ${d.title}`,
+  });
+}
+if ((d.additionalResources?.length ?? 0) > 0) {
+  structuredHeadings.push({
+    depth: 2,
+    slug: "additional-resources",
+    text: "Additional Resources",
+  });
+}
+
+const bodyHeadings = renderStructured ? structuredHeadings : headings;
+
+// The house related-card shape (BlogLayout): the category is the card's
+// kind label, the post date its meta line.
+const relatedItems: RelatedRailItem[] = relatedPosts.map((post) => ({
+  kind: "hex-card" as const,
+  href: post.href,
+  title: post.title,
+  kindLabel: post.categoryName,
+  meta: post.date
+    ? new Date(post.date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : undefined,
+}));
 
 // SEO
 const seoTitle = d.seo?.title || `${d.title} Integration - ZenML`;
@@ -94,214 +302,205 @@ const ogImage = d.seo?.ogImage || d.mainImage?.url;
   ogDescription={d.seo?.ogDescription}
   canonical={d.seo?.canonical}
   surface="ml"
+  app="labs"
+  product="zenml"
 >
-  {/* ── Header row: back link + title + Add to ZenML ───────── */}
-  <div class="border-b border-gray-200 bg-white">
-    <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-      <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div class="flex items-center gap-4">
-          {d.logo && (
-            <div class="flex h-16 w-16 shrink-0 items-center justify-center rounded-md bg-gray-50 p-2">
-              <img
-                src={d.logo.url}
-                alt={d.logo.alt || d.title}
-                class="h-12 w-12 object-contain"
-              />
+  <div style={blogLaneStyle()}>
+    <LabsBand size="short">
+      <div class="scroll-reveal-section">
+        <div class="mx-auto flex max-w-(--article-lane) flex-col gap-4">
+          <p class="reveal-child font-label text-[13px] leading-4 tracking-[0.05em] uppercase text-(--color-cream-700)">
+            Integration
+          </p>
+
+          <div class="reveal-child stagger-1 flex items-center gap-5">
+            {d.logo && (
+              <span class="flex h-20 w-20 shrink-0 items-center justify-center rounded-[12px] border border-(--color-border) bg-white/90">
+                <img
+                  src={d.logo.url}
+                  alt={d.logo.alt || d.title}
+                  class="h-12 w-12 object-contain"
+                  loading="eager"
+                />
+              </span>
+            )}
+            <h1 class="font-display text-[28px] leading-[34px] text-(--color-cream-800) md:text-[36px] md:leading-[42px]">
+              {d.title}
+            </h1>
+          </div>
+
+          {/* Deck on the left, the docs pill at the row's right end from md up. */}
+          <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            {d.shortDescription && (
+              <p class="reveal-child stagger-2 max-w-[690px] font-sans text-[18px] leading-7 text-(--color-cream-700)">
+                {d.shortDescription}
+              </p>
+            )}
+
+            {d.docsUrl && (
+              <div class="reveal-child stagger-3 md:ml-auto md:shrink-0">
+              <LabsButton
+                tone="ghost"
+                target="_blank"
+                cta={{
+                  label: "View docs",
+                  href: d.docsUrl,
+                  analytics: "Integration-Docs",
+                }}
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="ml-2 inline-block"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M6 3H3v10h10v-3M9 2h5v5M14 2L7 9" />
+                </svg>
+              </LabsButton>
             </div>
           )}
-          <div>
-            <a
-              href="/integrations"
-              class="inline-flex items-center gap-1 text-sm font-medium text-primary-600 hover:text-primary-700"
-            >
-              <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 12H4M4 12L10 18M4 12L10 6" />
-              </svg>
-              All integrations
-            </a>
-            <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">{d.title}</h1>
-            {d.shortDescription && (
-              <p class="mt-1 text-gray-600">{d.shortDescription}</p>
-            )}
           </div>
         </div>
-        {d.docsUrl && (
-          <a
-            href={d.docsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center justify-center rounded-lg border border-primary-600 bg-white px-5 py-2.5 text-sm font-medium text-primary-600 transition-colors hover:bg-primary-50"
-          >
-            Add to ZenML
-          </a>
-        )}
       </div>
-    </div>
-  </div>
+    </LabsBand>
 
-  {/* ── Main: sidebar + content ────────────────────────────── */}
-  <div class="bg-gray-50">
-    <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-      <div class="flex flex-col gap-10 lg:flex-row lg:gap-16">
-        {/* Sidebar */}
-        <IntegrationDetailSidebar
-          type={typeEntry ? { slug: typeEntry.data.slug, name: typeEntry.data.name } : undefined}
-          docsUrl={d.docsUrl}
-          documentationLinkText={d.documentationLinkText}
-          githubUrl={d.githubUrl}
-          githubLinkText={d.githubLinkText}
-          compareSlug={d.compareSlug}
-          compareName={compareName}
-          integrationLogo={d.logo}
-          relatedPosts={relatedPosts}
-        />
+    <div>
+      <StickyBreadcrumb
+        items={[
+          { label: "Integrations", href: "/integrations" },
+          ...(typeEntry
+            ? [
+                {
+                  label: typeEntry.data.name,
+                  href: `/integration-type/${typeEntry.data.slug}`,
+                },
+              ]
+            : []),
+          { label: d.title },
+        ]}
+      />
 
-        {/* Content */}
-        <div class="min-w-0 flex-1">
-          {renderStructured ? (
-            <div class="space-y-10">
-              {/* Lead heading */}
-              {introH2 && (
-                <h2 class="text-xl font-bold text-gray-900 sm:text-2xl">{introH2}</h2>
-              )}
+      <LabsArticleBody headings={bodyHeadings}>
+        {metadataItems.length > 0 && (
+          <div slot="rail" class="contents">
+            <LabsMetadataBlock items={metadataItems} labels="mono" />
+          </div>
+        )}
 
-              {/* Tool Overview */}
-              {d.overviewDescription && (
-                <p class="text-lg text-gray-600 leading-relaxed">{d.overviewDescription}</p>
-              )}
+        {renderStructured ? (
+          <>
+            {d.overviewDescription && <p>{d.overviewDescription}</p>}
 
-              {/* Features with ZenML — purple checkmark list */}
-              {d.featuresWithZenmlHtml && (
-                <section>
-                  <h3 class="text-lg font-semibold text-gray-900">Features with ZenML</h3>
-                  <div class="checklist mt-3 max-w-none" set:html={d.featuresWithZenmlHtml} />
-                </section>
-              )}
+            {d.featuresWithZenmlHtml && (
+              <>
+                <h2 id="features-with-zenml">Features with ZenML</h2>
+                <Fragment set:html={stripEmptyParagraphs(d.featuresWithZenmlHtml)} />
+              </>
+            )}
 
-              {/* Screenshot */}
-              {d.mainImage && (
-                <div class="overflow-hidden rounded-md border border-gray-200">
-                  <img
-                    src={d.mainImage.url}
-                    alt={d.mainImage.alt || `${d.title} integration screenshot`}
-                    class="w-full object-cover"
-                    loading="lazy"
-                  />
-                </div>
-              )}
+            {d.toolFeaturesHtml && (
+              <>
+                <h2 id="main-features">Main Features</h2>
+                <Fragment set:html={stripEmptyParagraphs(d.toolFeaturesHtml)} />
+              </>
+            )}
 
-              {/* Main Features — purple checkmark list */}
-              {d.toolFeaturesHtml && (
-                <section>
-                  <h3 class="text-lg font-semibold text-gray-900">Main Features</h3>
-                  <div class="checklist mt-3 max-w-none" set:html={d.toolFeaturesHtml} />
-                </section>
-              )}
+            {codeBlocks.length > 0 && (
+              <>
+                <h2 id="how-to-use">How to use ZenML with {d.title}</h2>
+                <Fragment set:html={codeExampleHtml} />
+              </>
+            )}
 
-              {/* How to use */}
-              {d.codeExampleHtml && (
-                <section>
-                  <h3 class="text-lg font-semibold text-gray-900">
-                    How to use ZenML with {d.title}
-                  </h3>
-                  <div class="prose prose-gray mt-3 max-w-none" set:html={d.codeExampleHtml} />
-                </section>
-              )}
-
-              {/* Additional Resources */}
-              {d.additionalResources && d.additionalResources.length > 0 && (
-                <section>
-                  <h3 class="text-lg font-semibold text-gray-900">Additional Resources</h3>
-                  <div class="mt-3 space-y-2">
-                    {d.additionalResources.map((resource) => (
+            {(d.additionalResources?.length ?? 0) > 0 && (
+              <>
+                <h2 id="additional-resources">Additional Resources</h2>
+                <ul>
+                  {d.additionalResources.map((resource) => (
+                    <li>
                       <a
                         href={resource.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="inline-flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700"
                       >
                         {resource.label}
-                        <svg width="21" height="20" viewBox="0 0 21 20" fill="none" class="h-4 w-4">
-                          <path d="M4.6665 9.99984H16.3332M16.3332 9.99984L10.4998 4.1665M16.3332 9.99984L10.4998 15.8332" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
                       </a>
-                    ))}
-                  </div>
-                </section>
-              )}
-            </div>
-          ) : (
-            /* Fallback: render full markdown body when structured fields missing */
-            <div class="prose prose-gray max-w-none">
-              <Content />
-            </div>
-          )}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </>
+        ) : (
+          <Content />
+        )}
+      </LabsArticleBody>
+    </div>
+
+    <LabsRelatedBand heading="Related reading" items={relatedItems} />
+
+    {/* The row sits on the light sage wash so it reads as its own band between
+        the related-reading band and the close. */}
+    <section class="scroll-reveal-section bg-(--color-sage-50) py-24 md:py-32">
+      <div class="mx-auto max-w-content px-gutter">
+        <h2 class="reveal-child font-display text-[28px] leading-[34px] text-(--color-cream-800)">
+          {MORE_INTEGRATIONS_HEADING}
+        </h2>
+        <div class="reveal-child stagger-1 mt-10">
+          <TermHubCatalog
+            items={moreIntegrations}
+            emptyHeading="No other integrations."
+          />
         </div>
       </div>
-    </div>
-  </div>
+    </section>
 
-  {/* ── Bottom CTA ─────────────────────────────────────────── */}
-  <section class="bg-gray-50 py-16 sm:py-20">
-    <div class="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8">
-      <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">
-        Connect Your AI Workflows to a World of Tools
-      </h2>
-      <p class="mt-3 text-lg text-gray-600">
-        Expand your AI workflows with more than 50 ZenML Integrations
-      </p>
-      <IntegrationsLogoRail
-        excludeSlug={d.slug}
-        limit={11}
-        variant="ctaCentered"
-      />
-      <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-        <Button href="/book-your-demo" size="lg">Book a demo</Button>
-        <a
-          href="/integrations"
-          class="inline-flex items-center gap-1.5 text-sm font-medium text-primary-600 hover:text-primary-700"
-        >
-          See All Integrations
-          <svg width="21" height="20" viewBox="0 0 21 20" fill="none" class="h-4 w-4">
-            <path d="M4.6665 9.99984H16.3332M16.3332 9.99984L10.4998 4.1665M16.3332 9.99984L10.4998 15.8332" stroke="currentColor" stroke-width="1.67" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </a>
-      </div>
-    </div>
-  </section>
+    <LabsCloseCta content={integrationDetailClose(publishedCount)} />
+  </div>
 </BaseLayout>
 
 <style>
-  /* Purple circle checkmark list — matches Webflow integration detail pages.
-     Uses absolute positioning (not flexbox) so inline text + <strong> flow naturally. */
-  .checklist :global(ul) {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
+  /* House scroll-reveal pattern (reference: DatabaseEntryLayout.astro). */
+  .reveal-child {
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-1 { transition-delay: 60ms; }
+  .stagger-2 { transition-delay: 120ms; }
+  .stagger-3 { transition-delay: 180ms; }
+
+  .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+    opacity: 0;
+    transform: translateY(12px);
   }
 
-  .checklist :global(li) {
-    position: relative;
-    padding-left: 2.5rem;
-    color: var(--color-gray-700);
-    font-size: 1.0625rem;
-    line-height: 1.7;
-  }
-
-  .checklist :global(li)::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.1rem;
-    width: 1.75rem;
-    height: 1.75rem;
-    /* Exact Webflow SVG: single path draws both circle + checkmark as strokes */
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28' fill='none'%3E%3Cpath d='M8.75 14L12.25 17.5L19.25 10.5M25.667 14C25.667 20.443 20.443 25.667 14 25.667C7.557 25.667 2.333 20.443 2.333 14C2.333 7.557 7.557 2.333 14 2.333C20.443 2.333 25.667 7.557 25.667 14Z' stroke='%237A3EF4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-child,
+    .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
   }
 </style>
+
+<script>
+  import { initCodeCopy } from "../../scripts/code-copy";
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      initCodeCopy();
+      initScrollReveal();
+    });
+  } else {
+    initCodeCopy();
+    initScrollReveal();
+  }
+</script>

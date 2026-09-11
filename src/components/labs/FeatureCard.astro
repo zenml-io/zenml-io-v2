@@ -1,0 +1,35 @@
+---
+/**
+ * FeatureCard (`labs.feature-card`) — the features hub card on the Labs
+ * shell: the category line (Nudica Mono uppercase, the same label role the
+ * integration card wears), a Borna title and the summary. The whole card
+ * is the link and hovers (border + title colour). No icon, no badge and no
+ * "Learn more" text link — the category names the card and the card itself
+ * is the affordance.
+ *
+ * Consumer: /features.
+ */
+interface Props {
+  href: string;
+  category: string;
+  title: string;
+  summary: string;
+}
+
+const { href, category, title, summary } = Astro.props;
+---
+
+<a
+  href={href}
+  class="group flex h-full flex-col gap-3 rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400)"
+>
+  <p class="font-label text-[13px] leading-4 tracking-[0.05em] uppercase text-(--color-cream-700)">
+    {category}
+  </p>
+  <h2 class="font-display text-[24px] leading-[30px] text-(--color-cream-900) transition-colors duration-200 ease-out group-hover:text-(--color-sage-800)">
+    {title}
+  </h2>
+  <p class="font-sans text-[16px] leading-6 text-(--color-cream-700)">
+    {summary}
+  </p>
+</a>

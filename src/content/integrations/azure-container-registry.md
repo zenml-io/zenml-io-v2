@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-09-11T06:35:27.978Z"
 integrationType: "container-registry"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/17995d8c/66e13a26e684bf295214fe94_images.png"
+  url: "https://assets.zenml.io/content/integrations/logos/azure-container-registry.svg"
+  alt: "Azure Container Registry logo"
 shortDescription: "Seamlessly Store and Manage Container Images with Azure Container Registry Integration in ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/container-registries/azure"
 githubUrl: "https://docs.zenml.io/how-to/popular-integrations/azure-guide"

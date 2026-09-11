@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-09-20T11:00:03.121Z"
 integrationType: "container-registry"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/155b2955/66ed55a89d83ced32b398f65_6160c8171ad47563a5a862ae_github_packages.png"
+  url: "https://assets.zenml.io/content/integrations/logos/github-container-registry.svg"
+  alt: "GitHub logo"
 shortDescription: "Streamline Container Image Management with GitHub Container Registry and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/container-registries/github"
 githubUrl: "https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry"

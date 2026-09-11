@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:12.477Z"
 integrationType: "experiment-tracker"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b3b611ec/672b2f55134b0393a0529d82_tensorboard_logo.png"
+  url: "https://assets.zenml.io/content/integrations/logos/tensorboard.svg"
+  alt: "TensorFlow logo"
 shortDescription: "Effortlessly Track and Visualize ML Experiments with TensorBoard and ZenML"
 docsUrl: "https://docs.zenml.io/integrations/visualizers/tensorboard"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/tensorboard_integration"

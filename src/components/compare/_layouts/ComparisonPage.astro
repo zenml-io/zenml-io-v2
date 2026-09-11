@@ -18,6 +18,7 @@ import type {
   CompareSwitcherGroup,
   LabsCompareLang,
 } from "../../../lib/labsComparison";
+import FeatureSplit from "../../labs/FeatureSplit.astro";
 import LabsCloseCta from "../../labs/LabsCloseCta.astro";
 import LabsCodeCompare from "../../labs/LabsCodeCompare.astro";
 import LabsComparisonBand from "../../labs/LabsComparisonBand.astro";
@@ -26,7 +27,6 @@ import LabsComparisonCard from "../../labs/LabsComparisonCard.astro";
 import LabsComparisonQuote from "../../labs/LabsComparisonQuote.astro";
 import LabsComparisonStrategyCta from "../../labs/LabsComparisonStrategyCta.astro";
 import LabsComparisonTable from "../../labs/LabsComparisonTable.astro";
-import LabsComparisonValue from "../../labs/LabsComparisonValue.astro";
 import type { RelatedRailItem } from "../../templates/RelatedRail.astro";
 
 type CompareBlock = CollectionEntry<"compare">["data"]["blocks"][number];
@@ -301,12 +301,16 @@ if (isCompareProps(props)) {
                 switch (block.kind) {
                   case "value":
                     return (
-                      <LabsComparisonValue
-                        title={block.title}
-                        bullets={block.bullets}
-                        image={block.image}
-                        mediaSide={block.imageSide}
-                      />
+                      <section class="scroll-reveal-section py-8 md:py-10">
+                        <div class="reveal-child mx-auto max-w-content px-gutter">
+                          <FeatureSplit
+                            title={block.title}
+                            bullets={block.bullets}
+                            image={block.image}
+                            imageSide={block.imageSide || "right"}
+                          />
+                        </div>
+                      </section>
                     );
                   case "quote":
                     return (
@@ -447,13 +451,17 @@ if (isCompareProps(props)) {
                   );
                 case "value":
                   return (
-                    <LabsComparisonValue
-                      title={block.title}
-                      body={block.body}
-                      bullets={block.bullets}
-                      image={block.image}
-                      mediaSide={block.imageSide}
-                    />
+                    <section class="scroll-reveal-section py-8 md:py-10">
+                      <div class="reveal-child mx-auto max-w-content px-gutter">
+                        <FeatureSplit
+                          title={block.title}
+                          body={block.body}
+                          bullets={block.bullets}
+                          image={block.image}
+                          imageSide={block.imageSide || "right"}
+                        />
+                      </div>
+                    </section>
                   );
                 case "testimonial":
                   return (

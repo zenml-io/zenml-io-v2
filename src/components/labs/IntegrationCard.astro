@@ -1,0 +1,98 @@
+---
+/**
+ * IntegrationCard (`labs.integration-card`) — the catalogue tile for one
+ * integration on the Labs shell.
+ *
+ * The logo sits in a full-width band across the TOP of the card: flush
+ * against the card's top edge (no margin/padding above it), fixed at 88px
+ * tall on cream-100, with the mark centered both horizontally and
+ * vertically. The card clips its own overflow, so the outer `rounded-[20px]`
+ * corners cut the band's top corners; the band's bottom corners stay square
+ * and it carries a 1px hairline border along its bottom edge. The BAND, not
+ * the mark, sets the card's first lane, so every name below shares one
+ * baseline no matter how the marks differ. No mark at all falls back to a
+ * two-letter monogram (every published integration ships a logo today, so
+ * this is the no-data case only).
+ *
+ * Borna title over the type label; the label is Nudica Mono uppercase
+ * (`font-label`), the same label role the monogram fallback already uses.
+ * The whole card is the link and hovers: border + title colour, the mark
+ * scales up inside the band, and the title's underline sweeps each wrapped
+ * line left to right (the `labs.entry-row` sweep — an inline span inside
+ * the heading carries the gradient background, so `box-decoration-break:
+ * slice` draws it per line fragment; the card anchor is not `relative`, so
+ * no stretched-overlay pseudo is needed or wanted). Nothing moves under
+ * reduced motion.
+ * `data-type` / `data-slug` are the hooks the /integrations filter island
+ * toggles visibility by.
+ *
+ * Consumers: the /integrations grid, `term-hub.catalog`
+ * (/integration-type/[slug]), and the integration detail's "More
+ * integrations" row.
+ */
+interface Props {
+  href: string;
+  title: string;
+  /** The integration type's display name, e.g. "Orchestrator". */
+  typeLabel: string;
+  logo?: { url: string; alt?: string };
+  /** data-type attribute for the /integrations filter island. */
+  dataType?: string;
+  /** data-slug attribute — matches this card to its filter-index entry. */
+  slug?: string;
+  class?: string;
+}
+
+const {
+  href,
+  title,
+  typeLabel,
+  logo,
+  dataType,
+  slug,
+  class: className,
+} = Astro.props;
+
+/** First letter of the first two words; a single word gives its first two. */
+const words = title.trim().split(/\s+/).filter(Boolean);
+const monogram = (
+  words.length > 1
+    ? `${words[0][0] ?? ""}${words[1][0] ?? ""}`
+    : (words[0] ?? "").slice(0, 2)
+).toUpperCase();
+---
+
+<a
+  href={href}
+  class:list={[
+    "group flex h-full flex-col overflow-hidden rounded-[20px] border border-(--color-border) bg-card transition-colors duration-200 ease-out hover:border-(--color-sage-400)",
+    className,
+  ]}
+  {...(dataType ? { "data-type": dataType } : {})}
+  {...(slug ? { "data-slug": slug } : {})}
+>
+  <div class="flex h-[88px] w-full shrink-0 items-center justify-center border-b border-(--color-border) bg-(--color-cream-100)">
+    {logo ? (
+      <img
+        src={logo.url}
+        alt={logo.alt || title}
+        class="h-10 w-auto max-w-[100px] object-contain transition-transform duration-500 ease-out group-hover:scale-[1.12] group-focus-visible:scale-[1.12] motion-reduce:transition-none motion-reduce:group-hover:scale-100 motion-reduce:group-focus-visible:scale-100"
+        loading="lazy"
+      />
+    ) : (
+      <span class="font-label text-[13px] leading-4 tracking-[0.05em] uppercase text-(--color-cream-700) transition-transform duration-500 ease-out group-hover:scale-[1.12] group-focus-visible:scale-[1.12] motion-reduce:transition-none motion-reduce:group-hover:scale-100 motion-reduce:group-focus-visible:scale-100">
+        {monogram}
+      </span>
+    )}
+  </div>
+  <div class="flex flex-col gap-2 px-6 pt-[18px] pb-6">
+    <h2 class="font-display text-[20px] leading-[26px] text-(--color-cream-900) transition-colors duration-200 ease-out group-hover:text-(--color-sage-800)">
+      <span class="bg-[linear-gradient(currentColor,currentColor)] bg-no-repeat bg-position-[0_100%] bg-size-[0%_1px] [transition:background-size_500ms_cubic-bezier(0,0,0.2,1)] group-hover:bg-size-[100%_1px] group-focus-visible:bg-size-[100%_1px] motion-reduce:transition-none">
+        {title}
+      </span>
+    </h2>
+    <p class="font-label text-[13px] leading-4 tracking-[0.05em] uppercase text-(--color-cream-700)">
+      {typeLabel}
+    </p>
+  </div>
+</a>

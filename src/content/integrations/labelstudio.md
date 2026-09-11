@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T13:09:15.899Z"
 integrationType: "data-annotator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a3a3cd0e/66d867d15dd7dff0bd9fbe50_label-studio.png"
+  url: "https://assets.zenml.io/content/integrations/logos/labelstudio.svg"
+  alt: "Label Studio logo"
 shortDescription: "Streamline Data Annotation in ZenML Pipelines with Label Studio"
 docsUrl: "https://docs.zenml.io/stack-components/annotators/label-studio"
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/end-to-end-computer-vision"

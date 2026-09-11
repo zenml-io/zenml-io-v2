@@ -1,20 +1,30 @@
 ---
 /**
- * Feature detail page.
- *
- * Renders individual feature pages with hero, value blocks,
- * optional compliance banner, testimonial, and final CTA.
+ * Feature detail page, on the ZenML Labs shell (integrations + features
+ * cutover #318): short shader band (breadcrumb, category eyebrow, title,
+ * deck) → an optional framed figure (a drawn highlight figure on the five
+ * `FEATURE_HIGHLIGHT_FIGURES` slugs, else the entry's own `hero.image`) →
+ * the content-driven block sequence (`labs.feature-split` value blocks and
+ * `labs.compliance-card` compliance blocks) → an optional testimonial quote
+ * → an optional closing band.
  *
  * Generates /features/<slug> for each of the 12 published feature pages.
  */
 import { getCollection } from "astro:content";
-import FeatureComplianceBanner from "../../components/sections/FeatureComplianceBanner.astro";
-import FeatureHero from "../../components/sections/FeatureHero.astro";
-import FeatureTestimonial from "../../components/sections/FeatureTestimonial.astro";
-import FeatureValueSection from "../../components/sections/FeatureValueSection.astro";
-import FinalCTA from "../../components/sections/FinalCTA.astro";
+import ComplianceCard from "../../components/labs/ComplianceCard.astro";
+import FeatureSplit from "../../components/labs/FeatureSplit.astro";
+import { HIGHLIGHT_FIGURES } from "../../components/labs/highlights";
+import LabsBand from "../../components/labs/LabsBand.astro";
+import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
+import LabsStoryCard from "../../components/labs/LabsStoryCard.astro";
 import Breadcrumb from "../../components/system/Breadcrumb.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
+import {
+  FEATURE_COMPLIANCE_DEFAULTS,
+  FEATURE_DETAIL_CLOSE,
+  FEATURE_HIGHLIGHT_FIGURES,
+} from "../../lib/features";
 
 export async function getStaticPaths() {
   const features = await getCollection(
@@ -30,6 +40,16 @@ export async function getStaticPaths() {
 const { feature } = Astro.props;
 const { data } = feature;
 
+const highlightId = FEATURE_HIGHLIGHT_FIGURES[data.slug];
+const HighlightFigure = highlightId
+  ? HIGHLIGHT_FIGURES[highlightId]
+  : undefined;
+
+// The reveal's stagger classes only go up to 3 (the copied style block
+// below); a page with more than 3 blocks cycles back through them rather
+// than growing new delay tiers.
+const staggerClass = (i: number) => `stagger-${(i % 3) + 1}`;
+
 // SEO
 const seoTitle = data.seo?.title || `${data.hub.title} - ZenML Features`;
 const seoDescription = data.seo?.description || data.hero.deck;
@@ -44,61 +64,146 @@ const ogImage = data.seo?.ogImage || data.hero.image?.url;
   ogDescription={data.seo?.ogDescription}
   canonical={data.seo?.canonical}
   surface="ml"
+  app="labs"
+  product="zenml"
 >
-  <main>
-    {/* Breadcrumb */}
-    <div class="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
-      <Breadcrumb
-        items={[
-          { label: "Features", href: "/features" },
-          { label: data.hub.title },
-        ]}
-      />
+  <LabsBand size="short">
+    <div class="scroll-reveal-section">
+      <div class="flex flex-col gap-4">
+        <Breadcrumb
+          class="reveal-child"
+          items={[
+            { label: "Features", href: "/features" },
+            { label: data.hub.title },
+          ]}
+          separator="chevron"
+        />
+        <div class="reveal-child stagger-1">
+          <p class="font-label text-[13px] leading-4 tracking-[0.05em] uppercase text-(--color-cream-700)">
+            {data.hub.category}
+          </p>
+          <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+            {data.title}
+          </h1>
+          <p class="mt-space-sm max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
+            {data.hero.deck}
+          </p>
+        </div>
+      </div>
     </div>
+  </LabsBand>
 
-    <FeatureHero
-      title={data.title}
-      category={data.hub.category}
-      deck={data.hero.deck}
-      image={data.hero.image}
-      primaryCta={data.hero.primaryCta}
-      secondaryCta={data.hero.secondaryCta}
-    />
+  {(HighlightFigure || data.hero.image) && (
+    <section class:list={["scroll-reveal-section pb-24 md:pb-32", BAND_CONTENT_GAP]}>
+      <div class="reveal-child mx-auto max-w-content px-gutter">
+        {HighlightFigure ? (
+          <div
+            class="flex justify-center rounded-[20px] border border-(--color-border) bg-(--background) p-6 md:p-10"
+            data-highlight-active
+          >
+            <HighlightFigure label={data.hero.image?.alt ?? data.title} />
+          </div>
+        ) : (
+          data.hero.image && (
+            <img
+              class="w-full rounded-[20px] border border-(--color-border) bg-card p-6"
+              src={data.hero.image.url}
+              alt={data.hero.image.alt || data.title}
+              loading="eager"
+            />
+          )
+        )}
+      </div>
+    </section>
+  )}
 
-    {data.blocks.map((block) => {
-      if (block.kind === "value") {
-        return (
-          <FeatureValueSection
-            title={block.title}
-            body={block.body}
-            bullets={block.bullets}
-            image={block.image}
-            imageSide={block.imageSide}
+  <section id="feature-blocks" class="scroll-reveal-section pb-24 md:pb-32">
+    <div class="mx-auto flex max-w-content flex-col gap-20 px-gutter">
+      {data.blocks.map((block, i) =>
+        block.kind === "value" ? (
+          <div class:list={["reveal-child", staggerClass(i)]}>
+            <FeatureSplit
+              title={block.title}
+              body={block.body}
+              bullets={block.bullets}
+              image={block.image}
+              imageSide={block.imageSide ?? "right"}
+            />
+          </div>
+        ) : (
+          <div class:list={["reveal-child", staggerClass(i)]}>
+            <ComplianceCard
+              badges={(block.badges ?? []).map((b) => ({
+                url: b.url,
+                alt: b.alt ?? "Compliance badge",
+              }))}
+              eyebrow={block.eyebrow ?? FEATURE_COMPLIANCE_DEFAULTS.eyebrow}
+              headline={block.headline ?? FEATURE_COMPLIANCE_DEFAULTS.headline}
+              body={block.body ?? FEATURE_COMPLIANCE_DEFAULTS.body}
+            />
+          </div>
+        ),
+      )}
+    </div>
+  </section>
+
+  {data.testimonial && (
+    <section class="scroll-reveal-section pb-24 md:pb-32">
+      <div class="mx-auto max-w-content px-gutter">
+        <div class="reveal-child mx-auto max-w-[768px]">
+          <LabsStoryCard
+            kind="quote"
+            quote={data.testimonial.quote}
+            name={data.testimonial.name}
+            title={data.testimonial.title}
+            avatar={data.testimonial.avatar?.url}
+            logo={
+              data.testimonial.companyLogo
+                ? {
+                    url: data.testimonial.companyLogo.url,
+                    alt: data.testimonial.companyLogo.alt ?? data.testimonial.name,
+                  }
+                : undefined
+            }
           />
-        );
-      }
-      if (block.kind === "complianceBanner") {
-        return (
-          <FeatureComplianceBanner
-            eyebrow={block.eyebrow}
-            headline={block.headline}
-            body={block.body}
-            badges={block.badges}
-          />
-        );
-      }
-    })}
+        </div>
+      </div>
+    </section>
+  )}
 
-    {data.testimonial && (
-      <FeatureTestimonial
-        quote={data.testimonial.quote}
-        name={data.testimonial.name}
-        title={data.testimonial.title}
-        avatar={data.testimonial.avatar}
-        companyLogo={data.testimonial.companyLogo}
-      />
-    )}
-
-    {data.showFinalCta && <FinalCTA />}
-  </main>
+  {data.showFinalCta && <LabsCloseCta content={FEATURE_DETAIL_CLOSE} />}
 </BaseLayout>
+
+<style>
+  /* House scroll-reveal pattern (reference: LabsRelatedBand.astro). */
+  .reveal-child {
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-1 { transition-delay: 60ms; }
+  .stagger-2 { transition-delay: 120ms; }
+  .stagger-3 { transition-delay: 180ms; }
+
+  .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-child,
+    .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initScrollReveal);
+  } else {
+    initScrollReveal();
+  }
+</script>

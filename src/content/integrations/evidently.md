@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:13.481Z"
 integrationType: "data-validator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/30001cf5/66d868feae26c1d6b7e42f24_evidently.png"
+  url: "https://assets.zenml.io/content/integrations/logos/evidently.svg"
+  alt: "Evidently logo"
 shortDescription: "Ensure data quality and guard against drift with Evidently profiling in ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/data-validators/evidently"
 mainImage:

@@ -23,7 +23,8 @@ type Props =
       kind: "quote";
       quote: string;
       name: string;
-      title: string;
+      /** Absence collapses the attribution's second line. */
+      title?: string;
       avatar?: string;
       logo?: { url: string; alt: string };
       wide?: true;
