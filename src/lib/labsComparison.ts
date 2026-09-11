@@ -11,7 +11,9 @@ export function comparisonDisplayHeading(
   heading: string,
   product: "ZenML" | "Kitaru",
 ): string {
-  const remainder = heading.replace(new RegExp(`^${product} vs [^:]+:\\s*`), "").trim();
+  const remainder = heading
+    .replace(new RegExp(`^${product} vs [^:]+:\\s*`), "")
+    .trim();
   return remainder || heading;
 }
 

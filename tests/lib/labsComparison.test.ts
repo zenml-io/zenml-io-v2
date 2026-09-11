@@ -14,17 +14,26 @@ describe("comparisonDisplayHeading", () => {
     "removes the duplicated %s versus %s label",
     (product, competitor, headline) => {
       expect(
-        comparisonDisplayHeading(`${product} vs ${competitor}: ${headline}`, product),
+        comparisonDisplayHeading(
+          `${product} vs ${competitor}: ${headline}`,
+          product,
+        ),
       ).toBe(headline);
     },
   );
 
   it("removes the label whatever spelling the competitor uses", () => {
     expect(
-      comparisonDisplayHeading("ZenML vs Airflow: Effortlessly Expand Your ML Initiatives", "ZenML"),
+      comparisonDisplayHeading(
+        "ZenML vs Airflow: Effortlessly Expand Your ML Initiatives",
+        "ZenML",
+      ),
     ).toBe("Effortlessly Expand Your ML Initiatives");
     expect(
-      comparisonDisplayHeading("ZenML vs AWS SageMaker: Supercharge Your ML Workflows", "ZenML"),
+      comparisonDisplayHeading(
+        "ZenML vs AWS SageMaker: Supercharge Your ML Workflows",
+        "ZenML",
+      ),
     ).toBe("Supercharge Your ML Workflows");
   });
 
@@ -39,11 +48,14 @@ describe("comparisonDisplayHeading", () => {
   it("keeps a heading that does not open on this product's label", () => {
     const heading = "Stop Building MLOps on Top of a Workflow Engine";
     expect(comparisonDisplayHeading(heading, "ZenML")).toBe(heading);
-    expect(comparisonDisplayHeading("Kitaru vs Langfuse: replay", "ZenML")).toBe(
-      "Kitaru vs Langfuse: replay",
-    );
     expect(
-      comparisonDisplayHeading("DVC versions your data. ZenML runs your pipelines anywhere.", "ZenML"),
+      comparisonDisplayHeading("Kitaru vs Langfuse: replay", "ZenML"),
+    ).toBe("Kitaru vs Langfuse: replay");
+    expect(
+      comparisonDisplayHeading(
+        "DVC versions your data. ZenML runs your pipelines anywhere.",
+        "ZenML",
+      ),
     ).toBe("DVC versions your data. ZenML runs your pipelines anywhere.");
   });
 });
