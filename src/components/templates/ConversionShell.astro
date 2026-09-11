@@ -18,6 +18,8 @@ import type { LabsCta } from "../../lib/labs-home";
  * directly above the widget, matching the short-form pages
  * (`book-a-demo`, `signup-for-demo`). The default slot is the widget
  * itself (a `CalEmbed` or a `ContactForm` island) in both arrangements.
+ * The `form` section has no band, so it carries the same `pt-[148px]`
+ * nav clearance `LabsBand size="short"` uses.
  * `success` is the band-only thank-you shape (`booked`, `book-success`,
  * `newsletter-success`): the same heading block as `calendar`, but `deck`
  * renders with `set:html` because the success bodies carry a `<br>`
@@ -92,7 +94,7 @@ const { primaryCta, secondaryCta } =
       </div>
     </LabsBand>
   ) : (
-    <section class="bg-(--color-cream-50) py-space-xl md:py-space-xxl">
+    <section class="bg-(--color-cream-50) pt-[148px] pb-space-xl md:pb-space-xxl">
       <div class="mx-auto max-w-content px-gutter">
         <div class="mb-8 text-center">
           <h1 class="font-display text-[44px] leading-[48px] text-foreground md:text-[72px] md:leading-[78px]">
