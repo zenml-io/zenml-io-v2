@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2026-02-09T14:57:22.602Z"
   createdOn: "2026-02-09T13:16:31.676Z"
 toolName: "Dataiku"
+cardSubtitle: "Portable, Python-native pipelines you control"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c0b8ecbb/6989e6b3a441a3ea41679d22_dataiku.avif"
 category: "e2e-platforms"

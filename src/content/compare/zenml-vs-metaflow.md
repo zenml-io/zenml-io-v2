@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2024-08-21T14:41:33.862Z"
   createdOn: "2024-07-12T13:21:00.830Z"
 toolName: "Metaflow"
+cardSubtitle: "More than pipelines: a full MLOps framework"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cba0b631/66912c659100581b94360eea_metaflow-icon.png"
 category: "e2e-platforms"

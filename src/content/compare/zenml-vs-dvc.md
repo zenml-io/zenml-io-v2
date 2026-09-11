@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2026-02-19T09:40:43.219Z"
   createdOn: "2026-02-12T18:51:21.425Z"
 toolName: "DVC"
+cardSubtitle: "Production orchestration on top of versioning"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/62bdeef6/6996da8348bc6d36ff3a15fa_DVC_icon.avif"
 category: "data-model-versioning"

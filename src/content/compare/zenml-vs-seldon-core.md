@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2026-02-19T09:40:11.783Z"
   createdOn: "2026-02-12T18:49:52.932Z"
 toolName: "Seldon Core"
+cardSubtitle: "Build and promote the models Seldon serves"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c44808e0/6996da60aab58b97b9f4bba8_Seldon_Core_icon.avif"
 category: "model-serving"

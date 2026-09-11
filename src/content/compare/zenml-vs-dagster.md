@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2024-08-21T14:41:18.322Z"
   createdOn: "2024-07-12T13:27:35.501Z"
 toolName: "Dagster"
+cardSubtitle: "Pipeline orchestration built for ML workflows"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0f610654/66912e16664b84d65aa114e7_dagster-icon.png"
 category: "orchestrators"
