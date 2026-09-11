@@ -327,7 +327,7 @@ export const HOMEPAGE_UNIFIED_FINAL_CTA = {
 /*   3. LogoCloud                (reused from current homepage)            */
 /*   4. Why this approach        (3 value cards, Focus Lab USP)            */
 /*   5. CustomerStories          (reused from current homepage)            */
-/*   6. FeatureTabs OR a new     (reused; pivots tabs to ML + Agent        */
+/*   6. Feature-tabs OR a new    (reused; pivots tabs to ML + Agent        */
 /*      "what you can build"      examples instead of pure ML examples)     */
 /*   7. Pricing teaser           (NEW)                                     */
 /*   8. ComplianceSection        (reused — SOC2/etc, enterprise signal)    */

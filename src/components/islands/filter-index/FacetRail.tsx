@@ -132,6 +132,12 @@ export interface FacetRailProps<T> {
   /** Class-only re-skin for the blog cutover (labsSkin.ts). Default keeps
    * every other consumer's classes verbatim. */
   skin?: "default" | "labs";
+  /**
+   * "labs" skin only: the rail's own heading. Defaults to "Filter and sort",
+   * which is what the blog and the research databases render; a rail with no
+   * sort group (the integrations catalogue) passes "Filter" instead.
+   */
+  heading?: string;
 }
 
 export function FacetRail<T>(props: FacetRailProps<T>) {
@@ -144,6 +150,7 @@ export function FacetRail<T>(props: FacetRailProps<T>) {
         extraSingles={props.extraSingles}
         multi={props.multi}
         sort={props.sort}
+        heading={props.heading}
       />
     );
   }
@@ -300,8 +307,10 @@ function DefaultFacetRail<T>({
 }
 
 /**
- * Labs skin — /blog. A quiet accordion: a "Filter and sort" heading, then
- * one hairline-separated disclosure row per group. A group with an active
+ * Labs skin — /blog, the research databases, /integrations. A quiet
+ * accordion: the rail heading ("Filter and sort" by default; a rail with no
+ * sort group passes its own), then one hairline-separated disclosure row
+ * per group. A group with an active
  * selection opens itself on first render; otherwise every group starts
  * collapsed except Category on the desktop rail, which opens by default so
  * the sidebar isn't empty on first paint (the mobile drawer only appears
@@ -316,6 +325,7 @@ function LabsFacetRail<T>({
   extraSingles,
   multi,
   sort,
+  heading = "Filter and sort",
 }: {
   idPrefix: string;
   scope: "desktop" | "mobile";
@@ -323,6 +333,7 @@ function LabsFacetRail<T>({
   extraSingles?: SingleFacetState<T>[];
   multi?: MultiFacetState<T>;
   sort?: SortFacetState;
+  heading?: string;
 }) {
   const tagSearchId = `${idPrefix}-tag-search-${scope}`;
   const sortPanelId = `${idPrefix}-facet-sort-panel-${scope}`;
@@ -346,7 +357,7 @@ function LabsFacetRail<T>({
 
   return (
     <div>
-      <h2 class={LABS_RAIL_HEADING}>Filter and sort</h2>
+      <h2 class={LABS_RAIL_HEADING}>{heading}</h2>
 
       {sort && (
         <div class={LABS_ACCORDION_GROUP}>

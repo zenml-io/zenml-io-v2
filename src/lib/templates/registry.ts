@@ -28,6 +28,8 @@
  * @see scripts/check-registry.ts
  */
 
+import { PRICING_COMPLIANCE } from "../pricing";
+
 /** Tone is orthogonal to product brand (`data-app`). Do not conflate them. */
 export const TONES = ["default", "muted", "inverted", "brand"] as const;
 export type Tone = (typeof TONES)[number];
@@ -295,7 +297,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 23,
     notes:
-      "Drawn at 1 item and at 93 chips. It is a cardinality-and-overflow component; the styling barely moves. Label color and heading level are hardcoded to the current single live usage (gray-400) — a second consumer needing another color gets a prop added, never a normalize. The sticky axis isn't exercised live: IntegrationDetailSidebar composes this under one page-owned sticky wrapper.",
+      "Drawn at 1 item and at 93 chips. It is a cardinality-and-overflow component; the styling barely moves. Label color and heading level are hardcoded to the current single live usage (gray-400) — a second consumer needing another color gets a prop added, never a normalize. No live consumer keeps it sticky since the integrations cutover; the sticky axis is unexercised.",
     contentShape: {
       minItems: 1,
       maxItems: 4,
@@ -635,7 +637,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 24,
     notes:
-      "120x40 logo optical box. A row thinner than the 3-column breakpoint centres rather than left-aligning (leaving packed empty cells reads as broken). Reuses IntegrationCard for the tile itself.",
+      "A row thinner than the 3-column breakpoint centres rather than left-aligning (leaving packed empty cells reads as broken). Restyled onto labs.integration-card in the integrations cutover (the Labs card shell with the full-width logo band); the pre-cutover IntegrationCard tile and its 120x40 logo box are retired.",
     contentShape: {
       minItems: 1,
       maxItems: 20,
@@ -781,13 +783,14 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
       "facet count",
       "facet select mode",
       "search engine (Pagefind | JSON substring)",
+      "skin",
     ],
     tones: ["default"],
     responsive: "reauthored",
     island: true,
     paperPage: 29,
     notes:
-      'Rail everywhere; no horizontal facet bar exists and no prop reaches one (#64, #90). At 375 the rail becomes a drawer behind one Filters trigger. Count header is the aria-live region; counts are comma-formatted count-of-total in a 44px right-aligned lane. Two flavors share the rail/state/URL machinery: DataFilterIndex (LLMOps/MLOps/blog — the island renders the result cards) and ControlFilterIndex (integrations — the island toggles visibility of server-rendered cards passed as children). An optional `skin` prop (default keeps every class-string shape and behaviour; the site-wide purple→sage colour pass touched its colours too) lets one consumer re-skin classes only, never behaviour: the blog cutover\'s DataFilterIndex, FacetRail, Pagination and ResultsCount all take `skin="labs"` (class strings in labsSkin.ts) — LLMOps, MLOps and Integrations stay on the default skin (layout unchanged, colours now sage). Live consumers wire domain accessors as function props, so there is no static demoProps demo — TemplateStage shows its unresolved-path notice for this entry until a fixture wrapper exists.',
+      'Rail everywhere; no horizontal facet bar exists and no prop reaches one (#64, #90). At 375 the rail becomes a drawer behind one Filters trigger. Count header is the aria-live region; counts are comma-formatted count-of-total in a 44px right-aligned lane. Two flavors share the rail/state/URL machinery: DataFilterIndex (LLMOps/MLOps/blog — the island renders the result cards) and ControlFilterIndex (integrations — the island toggles visibility of server-rendered cards passed as children). An optional `skin` prop (default keeps every class-string shape and behaviour; the site-wide purple→sage colour pass touched its colours too) lets one consumer re-skin classes only, never behaviour: the blog cutover\'s DataFilterIndex, FacetRail, Pagination and ResultsCount all take `skin="labs"` (class strings in labsSkin.ts) — the databases cutover moved LLMOps and MLOps onto it too, so no live route is left on the default skin (it survives for the /styleguide demo, layout unchanged, colours now sage). The integrations cutover gave the control flavour the same `skin="labs"` branch: ControlFilterIndex mirrors the data flavour\'s labs shell class-for-class (rail, drawer, search, results count) but keeps its search box inside the desktop aside and takes an optional rail heading, and at zero results it renders the shared FilterEmptyState from the engine\'s constraint/drop-one analysis instead of toggling a page-owned element. Live consumers wire domain accessors as function props, so there is no static demoProps demo — TemplateStage shows its unresolved-path notice for this entry until a fixture wrapper exists.',
     contentShape: {
       minItems: 66,
       maxItems: 2100,
@@ -1591,7 +1594,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 4,
     notes:
-      'Shared customer-logo card for homepage stories, case-study index and sibling rail. Light sage gradient with subtle static grain; title reuses the blog card typography. A discriminated `kind: "quote"` arrangement renders a testimonial instead: a blockquote over an attribution footer (avatar, name, title, optional trailing company logo) on the same card shell — used where the source data is quotes rather than case-study links (e.g. /pro).',
+      'Shared customer-logo card for homepage stories, case-study index and sibling rail. Light sage gradient with subtle static grain; title reuses the blog card typography. A discriminated `kind: "quote"` arrangement renders a testimonial instead: a blockquote over an attribution footer (avatar, name, title, optional trailing company logo) on the same card shell — used where the source data is quotes rather than case-study links (e.g. /pro); on that arrangement `title` is optional, and its absence collapses the attribution\'s second line.',
     stage: false,
     demoProps: {},
   },
@@ -1647,7 +1650,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "The long-form body row of a Labs-shell article: the prose column plus its sticky table-of-contents rail (collapsing to a `<details>` above the copy below xl). The TOC is H2-only and appears only from three H2s up — fewer and a contents list is noise, not navigation — and that threshold lives here, not in each layout. `proseClass` appends to `prose` (BlogLayout passes prose-zoomable, which opts blog images into the lightbox). Ends in mb-24 rather than pb-24 so its border box, and with it the consuming layout's sticky-region wrapper, ends where the article does. Carries no reveal `<style>`: the body is deliberately never a reveal-child, because prose must not depend on an observer firing. An optional named `lead` slot renders above the mobile TOC and the prose, inside the article's own column — the database entry layout passes its summary box and metadata record through it, a blog post passes nothing. Consumers: BlogLayout.astro and the database entry layout.",
+      "The long-form body row of a Labs-shell article: the prose column plus its sticky table-of-contents rail (collapsing to a `<details>` above the copy below xl). The TOC is H2-only and appears only from three H2s up — fewer and a contents list is noise, not navigation — and that threshold lives here, not in each layout. `proseClass` appends to `prose` (BlogLayout passes prose-zoomable, which opts blog images into the lightbox). Ends in mb-24 rather than pb-24 so its border box, and with it the consuming layout's sticky-region wrapper, ends where the article does. Carries no reveal `<style>`: the body is deliberately never a reveal-child, because prose must not depend on an observer firing. An optional named `lead` slot renders above the mobile TOC and the prose, inside the article's own column — the database entry layout passes its summary box and metadata record through it, a blog post passes nothing. Consumers: BlogLayout.astro and the database entry layout. An optional `rail` named slot (the integration detail's metadata record) renders twice, as the TOC does: above the prose below xl, and in the right rail above the sticky TOC (gap-10) from xl up — the aside then renders even when the page has fewer than three H2s. Consumers passing no `rail` render byte-identically.",
     stage: false,
     demoProps: {},
   },
@@ -1682,7 +1685,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 23,
     notes:
-      "The labelled record rows on a database entry (Industry, Technologies/MLOps topics): a `<dl>` of label/value pairs in one of three value shapes. Chips clamp to `visible` (default DATABASE_TAG_CHIPS_VISIBLE, roughly two rows) before folding the rest into a native `<details>` — its `<summary>` is itself a TERM_CHIP pill toggling '+N more' / 'Show fewer' via a scoped `<style>`, no script, so every chip stays reachable without JS; the `<details>` is `display: contents` so the overflow chips flow into the same wrap row as the visible ones. Empty `items` renders nothing. Sole consumer: src/layouts/DatabaseEntryLayout.astro.",
+      'The labelled record rows on a database entry (Industry, Technologies/MLOps topics): a `<dl>` of label/value pairs in one of three value shapes. Chips clamp to `visible` (default DATABASE_TAG_CHIPS_VISIBLE, roughly two rows) before folding the rest into a native `<details>` — its `<summary>` is itself a TERM_CHIP pill toggling \'+N more\' / \'Show fewer\' via a scoped `<style>`, no script, so every chip stays reachable without JS; the `<details>` stays an inline element (not `display: contents` — Safari has dropped interactive descendants of a contents-box `<details>`) so the overflow chips flow into the same wrap row as the visible ones. Empty `items` renders nothing. A `link` value may also carry `analytics` (the Plausible event name on the anchor) and `external` (new tab plus the rel guard); both absent leaves the anchor exactly as the database entries render it. Two further opt-ins for the integration detail\'s rail: `labels="mono"` (a block-wide discriminant, the `<dt>`s in Nudica Mono uppercase; the default `sentence` is what the database goldens pin) and a `link` value with `as: "pill"` + `icon: "github"` (a ghost pill from labsButtonStyles with the GitHub mark before the label — LabsButton puts its icon after). Consumers: src/layouts/DatabaseEntryLayout.astro and the integration detail page.',
     stage: false,
     demoProps: {
       items: [
@@ -1800,6 +1803,98 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
         },
         { name: "Evaluation", href: "/llmops-tags/evaluation", count: 201 },
       ],
+    },
+  },
+  {
+    id: "labs.integration-card",
+    kind: "template",
+    componentPath: "src/components/labs/IntegrationCard.astro",
+    variantAxes: ["logo shape", "logo absent"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 24,
+    notes:
+      "The catalogue tile for one integration: a full-width 88px logo band on cream-100 flush with the card's top edge (clipped by the card's corners, a hairline under it, the mark centred at 40px and capped at 100px wide — the band, not the mark, sets the first lane so every name shares a baseline), a Borna title and the integration type as a Nudica Mono uppercase label beneath it. The whole card is the link and hovers: sage border, title colour, the mark scales up in the band and the title's underline sweeps in per line (nothing moves under reduced motion). No logo falls back to a two-letter monogram. `data-type` / `data-slug` are the hooks the /integrations filter island toggles visibility by. Consumers: the /integrations grid, term-hub.catalog (/integration-type/[slug]) and the integration detail's \"More integrations\" row.",
+    stage: false,
+    demoProps: {
+      href: "/integrations/kubernetes",
+      title: "Kubernetes",
+      typeLabel: "Orchestrator",
+      logo: {
+        url: "https://assets.zenml.io/content/integrations/logos/kubernetes.svg",
+        alt: "Kubernetes logo",
+      },
+    },
+  },
+  {
+    id: "labs.feature-card",
+    kind: "template",
+    componentPath: "src/components/labs/FeatureCard.astro",
+    variantAxes: ["summary length"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      'The features hub card: a category line (Nudica Mono uppercase, the label role the integration card wears), a Borna title and the summary. The whole card is the link and hovers (border plus title colour). No icon, no badge and no "Learn more" text link — the category names the card and the card itself is the affordance. Consumer: /features.',
+    stage: false,
+    demoProps: {
+      href: "/features/iterate-at-warp-speed",
+      category: "Speed",
+      title: "Iterate at warp speed",
+      summary:
+        "Accelerate your ML workflow with seamless local-to-cloud transitions and smart caching.",
+    },
+  },
+  {
+    id: "labs.feature-split",
+    kind: "template",
+    componentPath: "src/components/labs/FeatureSplit.astro",
+    variantAxes: [
+      "body present",
+      "bullets present",
+      "learn-more link",
+      "media side",
+    ],
+    tones: ["default"],
+    responsive: "collapse",
+    island: false,
+    paperPage: 0,
+    notes:
+      "One alternating feature section: a heading, an optional body line, hairline check-bullet rows, an optional trailing link, and a framed image on the other lane of the shared Split primitive. Each optional part collapses when absent. Extracted verbatim from the sections /cloud-features and /deployments already shipped, so those pages render byte-identically through it. Consumers: /cloud-features/ml-models-control-plane, the /deployments scenarios and the /features/[slug] value blocks.",
+    stage: false,
+    demoProps: {
+      title: "Beyond model registries",
+      imageSide: "right",
+      bullets: [
+        "One central glass plane view over all your models.",
+        "Understand where models originated.",
+        "Gather all trained and deployed models in one central place.",
+      ],
+      image: {
+        url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/234db398/65324a015f1eb2094d3e0954_27. Connect your infrastructure with ZenML Cloud.webp",
+        alt: "ZenML Cloud infrastructure dashboard",
+      },
+    },
+  },
+  {
+    id: "labs.compliance-card",
+    kind: "template",
+    componentPath: "src/components/labs/ComplianceCard.astro",
+    variantAxes: ["badge count"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "The SOC 2 / ISO 27001 badges beside an eyebrow, headline and body on the Labs card shell. The `mt-8` is part of the component because every consumer sits it directly under a block. Consumers: /pricing (the ZenML workspace panel), /pro and the /features/[slug] compliance blocks.",
+    stage: false,
+    demoProps: {
+      badges: PRICING_COMPLIANCE.badges,
+      eyebrow: PRICING_COMPLIANCE.bannerEyebrow,
+      headline: PRICING_COMPLIANCE.bannerHeadline,
+      body: PRICING_COMPLIANCE.bannerBody,
     },
   },
 ];

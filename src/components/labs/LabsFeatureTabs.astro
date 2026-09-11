@@ -3,8 +3,9 @@ import type { FeatureTabsContent } from "../../lib/labs-product-zenml";
 /**
  * LabsFeatureTabs — the ZenML product page's capability showcase: a
  * headline block over an auto-cycling tab slider (vertical menu at 40%,
- * figure panel at 60%). Replaces `src/components/sections/FeatureTabs.astro`
- * on `/product/zenml`; the old stats grid is not ported (no rounded figures).
+ * figure panel at 60%). Replaces the retired sections-family tabbed
+ * showcase on `/product/zenml`; the old stats grid is not ported (no
+ * rounded figures).
  * Copy arrives through the `content` prop (`ZENML_FEATURE_TABS`); nothing
  * here is retyped. The panes are server-rendered here and handed to the
  * `FeatureTabsSlider` island as children: a tab with a `figure` id draws its

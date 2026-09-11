@@ -564,6 +564,8 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
       "blog.html",
       "blog/agents-are-not-microservices.html",
       "category/llmops.html",
+      "integrations.html",
+      "features.html",
     ],
   },
   { island: "RoiCalculator", pages: ["roi-calculator.html"] },
