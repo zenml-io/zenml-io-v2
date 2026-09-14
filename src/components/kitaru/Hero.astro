@@ -1,20 +1,30 @@
 ---
-import { KITARU_INSTALL_CMD, KITARU_LINKS } from "../../lib/kitaru-landing";
+import {
+  KITARU_DOCS_URL,
+  KITARU_INSTALL_CMD,
+  KITARU_LINKS,
+} from "../../lib/kitaru-landing";
+import { LABS_SIGNUP } from "../../lib/labs-home";
 import LabsButton from "../labs/LabsButton.astro";
 import LabsInstallChip from "../labs/LabsInstallChip.astro";
 // Hero.astro — the Kitaru landing's opening band in the Labs shell. Fills
 // the first viewport (the Labs nav overlays the top 120px) and centers its
 // content in the remaining height: launch-post pill, headline, deck, the
-// install command as the primary door with the hosted signup as a ghost
-// pill beside it, and the video poster card. Everything here is static; the
-// poster card is the one island (HeroVideo) because it opens a dialog.
+// signup pill with a ghost docs pill beside it, and the install command
+// beneath on its own row. Everything here is static; the video poster card
+// is the one island (HeroVideo) because it opens a dialog.
 import { HeroVideo } from "./islands/HeroVideo";
 import { KitaruGrain } from "./islands/KitaruGrain";
 
-const hostedSignup = {
-  label: "Or try the hosted version free",
+const signup = {
+  label: LABS_SIGNUP.label,
   href: KITARU_LINKS.signup.href,
   analytics: "Kitaru-Hero-Signup",
+};
+const docs = {
+  label: "Read the docs",
+  href: KITARU_DOCS_URL,
+  analytics: "Kitaru-Hero-Docs",
 };
 const install = { cmd: KITARU_INSTALL_CMD, analytics: "Kitaru-Hero-Install" };
 ---
@@ -57,19 +67,18 @@ const install = { cmd: KITARU_INSTALL_CMD, analytics: "Kitaru-Hero-Install" };
       </p>
 
       <div
-        class="reveal mt-space-mlg flex w-full min-w-0 flex-col items-center gap-2 lg:items-start"
+        class="reveal mt-space-mlg flex flex-wrap items-center justify-center gap-space-md lg:justify-start"
         style="--reveal-delay: 240ms"
       >
-        {/* The command is the primary CTA: one line installs the CLI,
-            MCP server and coding-agent skills locally. Cloud signup is
-            the second door. */}
-        <div class="flex w-full max-w-full justify-center lg:justify-start">
-          <LabsInstallChip content={install} class="max-w-full" />
-        </div>
-        <p class="text-[14px] text-muted-foreground">Free, local, open source.</p>
-        <div class="mt-3 flex flex-wrap items-center justify-center gap-space-md">
-          <LabsButton cta={hostedSignup} tone="ghost" />
-        </div>
+        <LabsButton cta={signup} tone="orange" />
+        <LabsButton cta={docs} tone="ghost" />
+      </div>
+
+      <div
+        class="reveal mt-space-md flex max-w-full justify-center lg:justify-start"
+        style="--reveal-delay: 320ms"
+      >
+        <LabsInstallChip content={install} />
       </div>
     </div>
 

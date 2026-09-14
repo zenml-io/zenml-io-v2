@@ -22,6 +22,7 @@ import ProductDoors from "../components/labs/ProductDoors.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../lib/blogLayout";
 import { LABS_CLOSE } from "../lib/labs-home";
+import { KITARU_DOCS_URL } from "../lib/productKitaru";
 
 const SEO = {
   title: "ZenML Documentation Hub: AI Orchestration and Agent Replay",
@@ -66,7 +67,7 @@ const PRODUCTS = [
     title: "Kitaru docs",
     description:
       "Record or import agent traces, replay them against your next change, and keep what caught the failure as a regression test.",
-    href: "https://docs.zenml.io/kitaru",
+    href: KITARU_DOCS_URL,
     cta: "Open Kitaru docs",
     analytics: "DocsHub:Kitaru",
     links: [

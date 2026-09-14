@@ -152,6 +152,13 @@ Additional rules:
   only needs to be present. Families that move to the Labs shell after the
   blog end on this same close band by default (the research databases pass
   their own newsletter-card copy and list; nothing else changes).
+- **CTA rows and the install chip** (#327, 2026-09): a band's CTA row holds
+  one primary pill, with an optional ghost pill beside it on a product hero.
+  On the two product pages the copyable install chip (`LabsInstallChip`)
+  sits on its own row under the pills as the sanctioned secondary action,
+  light tone in the hero and dark tone in the close. Every other family's
+  close band stays one pill; comparison closes keep their own rule below.
+  The homepage joins once a unified install command exists.
 - **Entry rows, not cards** (databases cutover, 2026-09): a research-database
   entry has no image, so an index or hub result is a row — title, one meta
   line (company · year · industry), a two-line summary and up to three

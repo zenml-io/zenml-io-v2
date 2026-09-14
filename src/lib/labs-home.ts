@@ -18,7 +18,7 @@ import {
   LOGO_CLOUD,
   type LogoItem,
 } from "./homepage";
-import { KITARU_LINKS } from "./productKitaru";
+import { KITARU_DOCS_URL, KITARU_LINKS } from "./productKitaru";
 import { ZENML_LINKS } from "./productZenml";
 
 export type { CaseStudyCard };
@@ -145,7 +145,7 @@ export function labsNavMenus(
       rows: [
         {
           label: "Kitaru docs",
-          href: "https://docs.zenml.io/kitaru",
+          href: KITARU_DOCS_URL,
           description: "Record, replay, and evaluate agents",
           external: true,
         },
