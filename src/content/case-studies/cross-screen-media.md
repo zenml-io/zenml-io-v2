@@ -33,7 +33,7 @@ seo:
   description: "How Cross Screen Media Trains Models for 210 Markets in Hours, Not Weeks, with ZenML"
   ogTitle: "Cross Screen Media and ZenML - Case Study"
   ogDescription: "How Cross Screen Media Trains Models for 210 Markets in Hours, Not Weeks, with ZenML"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/748836a4/68d6ad1ae7536c8616ebff0e_cross-screen-media-case-study.png"
+  ogImage: "https://assets.zenml.io/og/pages/case-study-cross-screen-media.jpg"
 
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"

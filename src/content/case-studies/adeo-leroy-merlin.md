@@ -36,7 +36,7 @@ seo:
   description: "How ADEO Leroy Merlin Leverages Machine Learning Pipelines for Enhanced Productivity"
   ogTitle: "How ADEO Leroy Merlin is Scaling Data Science with ZenML - Case Study"
   ogDescription: "How ADEO Leroy Merlin Leverages Machine Learning Pipelines for Enhanced Productivity"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/61db3199/65e9c7cebbb561c57e1a6f23_case_study_adeo.png"
+  ogImage: "https://assets.zenml.io/og/pages/case-study-adeo-leroy-merlin.jpg"
 
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"

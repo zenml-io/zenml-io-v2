@@ -247,6 +247,36 @@ export const OG_CARDS: readonly OgCard[] = [
     subtitle: "ZenML case study",
   },
   {
+    key: "case-study-adeo-leroy-merlin",
+    eyebrow: "Case study",
+    brand: "zenml",
+    title:
+      "How ADEO Leroy Merlin decreased their time-to-market from 2 months to 2 weeks",
+    subtitle: "ZenML case study",
+  },
+  {
+    key: "case-study-cross-screen-media",
+    eyebrow: "Case study",
+    brand: "zenml",
+    title:
+      "How Cross Screen Media trains models for 210 markets in hours, not weeks",
+    subtitle: "ZenML case study",
+  },
+  {
+    key: "case-study-jetbrains",
+    eyebrow: "Case study",
+    brand: "zenml",
+    title: "How JetBrains centralizes ML on Kubernetes with ZenML",
+    subtitle: "ZenML case study",
+  },
+  {
+    key: "case-study-zuiver",
+    eyebrow: "Case study",
+    brand: "zenml",
+    title: "How Zuiver.ai built a streamlined AI detection pipeline",
+    subtitle: "ZenML case study",
+  },
+  {
     key: "project-banksubscription-predictor",
     eyebrow: "Project",
     brand: "zenml",
