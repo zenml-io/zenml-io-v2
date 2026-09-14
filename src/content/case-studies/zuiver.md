@@ -33,7 +33,7 @@ seo:
   description: "How Zuiver.ai transformed their ML operations from distributed research infrastructure to unified production pipelines"
   ogTitle: "Zuiver and ZenML: How Zuiver.ai Built a Streamlined AI Detection Pipeline"
   ogDescription: "How Zuiver.ai transformed their ML operations from distributed research infrastructure to unified production pipelines"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/315871c0/686646b670b9174c522ecd19_zuiver-case-study.png"
+  ogImage: "https://assets.zenml.io/og/pages/case-study-zuiver.jpg"
 
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"
