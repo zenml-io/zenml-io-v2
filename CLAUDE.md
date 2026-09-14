@@ -91,8 +91,8 @@ The Segment loader in `consentConfig.ts` runs a single ZenML write key; there is
 - During implementation, run checks that exercise the changed behavior. Before pushing code or opening a code PR, run the full gate below once on the final relevant state. Mixed code/content changes use the full gate, plus content validation when applicable.
 - Pure instruction or documentation changes that do not alter generated content, executable scripts, or site behavior need diff, reference, and instruction-consistency checks; no application build or test suite is required. Rendered content-only changes require `pnpm validate:content`, `pnpm check`, `pnpm build`, and `pnpm smoke:dist`, plus browser inspection of changed pages and redirect/canonical checks when relevant. CI remains unchanged and may run broader checks.
 - After later edits, rerun affected checks. Once required checks pass, broaden testing only for a new change, failure, or unresolved concern. Test observable behavior; do not add tests that merely repeat the implementation. Report passed, failed, and blocked checks separately; establish current baseline evidence before calling a failure pre-existing.
-- Full code gate: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm check:registry && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:worker && pnpm check:islands`.
-- `pnpm check:registry` is required locally but not yet in the required CI `Repo checks` job. Adding it there changes the trusted workflow mirror and blob-SHA pin and needs a reviewed release change. Preview upload is not the merge gate.
+- Full code gate: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm check:blog-covers && pnpm check:registry && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:worker && pnpm check:islands`.
+- `pnpm check:registry` and `pnpm check:blog-covers` are required locally but not yet in the required CI `Repo checks` job. Adding them there changes the trusted workflow mirror and blob-SHA pin and needs a reviewed release change. Preview upload is not the merge gate.
 - Review intended rendered-content and OG golden changes before committing them; investigate unexpected differences rather than accepting new snapshots. Hydration requires `pnpm check:islands`; build and smoke markup checks alone do not prove interactivity.
 - Worker changes follow [the release runbook](docs/worker-release-runbook.md). CI, preview upload, candidate upload, activation, and route attachment are separate actions. Never add Cloudflare credentials to the branch-controlled build job. Production release consumes the exact validated main artifact through separate upload/activation jobs with provenance, binding, topology, and baseline checks.
 - Read [validation details](docs/agent-reference/validation.md) for command coverage, browser setup, snapshots, and release checks. Capture long build output in a log and check the actual process exit status; foreground or background execution is fine.
@@ -129,6 +129,8 @@ Do not hard-wrap PR descriptions at a fixed column width. Keep each paragraph an
 ### Adding new images
 
 - **Third-party service logos:** locate the `zenml-frontend-monorepo` checkout, then read `.claude/skills/add-service-logo/SKILL.md` there before sourcing or integrating a logo. Try the sibling checkout first; if absent, use available project discovery. If unavailable, report the missing skill and continue unrelated work. Preserve full-color marks, normalize to 24x24, and obtain user approval of the rendered result before integration; do not bypass that review.
+- **Blog covers:** every new or imported post, including posts merged in from `main`, gets its cover from the `figma-blog-cover` skill on the new-brand templates (Blog Cover 16:9, or the VS card for alternatives/versus posts); the skill owns the export contract. A post that arrives with a purple-era or non-16:9 cover is regenerated before it ships; `pnpm check:blog-covers` enforces the `content/blog/<slug>/` AVIF + JPEG pair but cannot see the brand, so that part stays a review item.
+- **Default OG cards** for database entries and top-level pages: `pnpm og:default:write --family=<llmops|mlops|pages> --missing` renders the cards, uploads them to R2 (needs R2 credentials in `.env`) and rewrites `src/data/og-cards.json`; commit the manifest with the entry.
 
 Use `.claude/skills/r2-image-upload/SKILL.md` for authorized uploads and
 `.claude/skills/blog-post-contributor/SKILL.md` for blog imports.
@@ -138,20 +140,17 @@ Use `.claude/skills/r2-image-upload/SKILL.md` for authorized uploads and
 **Tier B (R2):** After upload authorization, prefer AVIF for in-page images and a separate JPEG for Open Graph:
 
 ```bash
-# Step 1: Convert to AVIF (repo-local script, no external dependency)
-# For photos (team, blog heroes, screenshots): --preset inline (max 800px, AVIF only)
+# 1. Convert: --preset inline (max 800px, AVIF) for photos/screenshots,
+#    --preset cover (max 1200px, AVIF + JPEG sibling) for hero/banner images
 pnpm images:convert input.png --preset inline
-# For larger hero/banner images: --preset cover (max 1200px, AVIF + a JPEG sibling for seo.ogImage)
-pnpm images:convert input.png --preset cover
-
-# Step 2: Upload the AVIF to R2
+# 2. Upload the AVIF to R2
 uv run scripts/r2-upload.py output.avif --prefix content/blog       # custom prefix
 uv run scripts/r2-upload.py output.avif --frontmatter                # print YAML snippet
 ```
 
 **Default to AVIF for R2 uploads** — typically 50-250× smaller than the source.
 
-**Exception — Open Graph card images need JPEG.** Social platforms (LinkedIn, Twitter/X, Slack, Facebook, Discord) don't support AVIF in OG cards; an AVIF `ogImage` renders with no preview card at all. For any image referenced by `seo.ogImage` in content frontmatter, upload a JPEG sibling at the same R2 prefix and reference the `.jpg` from `ogImage` while keeping the `.avif` for `mainImage.url`.
+**Exception — Open Graph card images need JPEG.** Social platforms don't render AVIF previews, so `seo.ogImage` always points at a JPEG sibling at the same R2 prefix while `mainImage.url` keeps the `.avif`.
 
 Requires R2 credentials in `.env` — see `.env.example`.
 
@@ -168,7 +167,7 @@ const url = `${ASSET_BASE_URL}/content/uploads/1a2b3c4d/hero.webp`;
 **Claude Code skills:**
 - `r2-image-upload` (`.claude/skills/r2-image-upload/SKILL.md`) — upload images to R2. Triggers: "upload image", "add image to R2", "new blog image".
 - `blog-post-contributor` (`.claude/skills/blog-post-contributor/SKILL.md`) — full blog post workflow from markdown or Notion. Triggers: "new blog post", "add blog", "blog from Notion".
-- `figma-blog-cover` (`.claude/skills/figma-blog-cover/SKILL.md`) — create a post's cover from the Figma Blog Cover component on the Blog Covers page, export, convert to AVIF + JPEG, upload to R2, print frontmatter. Also adds missing competitor marks to the Hashi Design System library: source the icon from public sources, normalize it to contract, create the component in Figma, then a human republishes the library. Triggers: "blog cover", "figma cover", "cover image for post", "add logo", "missing mark", "new service logo".
+- `figma-blog-cover` (`.claude/skills/figma-blog-cover/SKILL.md`) — a post's cover or VS card from the new-brand Figma templates: place, export, convert, upload to R2, print frontmatter. Also adds missing competitor marks to the Hashi library (a human republishes). Triggers: "blog cover", "figma cover", "cover image for post", "add logo", "missing mark", "new service logo".
 
 ### Compare-page OG card generator
 
@@ -176,17 +175,8 @@ Comparison pages — MDX and the legacy `.md` compare entries — get programmat
 
 ### Lessons Learned
 
-### Always verify uploads via the public URL
-
-URL rewriting source code is not enough. After uploading images to R2, **test
-the public URL** to confirm the file is actually accessible. The boto3 API can
-succeed but the public domain may point to a different account/bucket.
-
-### `public/` assets must be explicitly placed
-
-Astro doesn't error when a component references `/images/logo.svg` but
-`public/images/logo.svg` doesn't exist — it just silently 404s at runtime.
-After adding `/images/*` references, verify the files exist in `public/images/`.
+- **Always verify uploads via the public URL.** The boto3 API can succeed while the public domain points at a different account/bucket; test the URL after every R2 upload.
+- **`public/` assets must be explicitly placed.** Astro doesn't error on a missing `/images/*` file, it silently 404s at runtime; verify the file exists in `public/images/`.
 
 ## Cloudflare Pages Functions vs Astro API Routes
 
@@ -216,7 +206,7 @@ Important rules:
 - New native LLMOps entries may use a `notion:` provenance block instead of `webflow:`
 - Existing migrated entries still use `webflow:` provenance
 - RSS date derivation for LLMOps entries is source-agnostic (`webflow` first, then `notion`)
-- New entries missing a default OG card: run `pnpm og:default:write --family=llmops --missing` (uploads and rewrites `src/data/og-cards.json`), then commit the manifest
+- New entries missing a default OG card: the `og:default:write --family=llmops` step under Images & Assets
 - After new LLMOps entries land, validate with:
   - `pnpm validate:llmops`
   - `pnpm check`

@@ -29,6 +29,7 @@ pnpm check              # Astro + TypeScript checks for site source
 pnpm check:tests        # Type-check tests, Vitest config, and dist smoke script
 pnpm check:surface      # Verify pages/components declare their analytics surface
 pnpm check:alt          # Verify image alt-text coverage
+pnpm check:blog-covers  # Verify every blog post points at its content/blog/<slug>/ AVIF + JPEG cover
 pnpm lint               # Biome linter
 pnpm test               # Run Vitest once
 pnpm build              # Production build (~2,200 pages)
@@ -158,7 +159,7 @@ Edit the data file, not the `.astro` template. Components import from these file
 ### Making Code Changes
 
 1. Run `pnpm dev` for hot-reload development
-2. Before opening a PR, run: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:worker && pnpm check:islands`
+2. Before opening a PR, run: `pnpm check && pnpm check:tests && pnpm check:surface && pnpm check:alt && pnpm check:blog-covers && pnpm lint && pnpm test && pnpm build && pnpm smoke:dist && pnpm check:worker && pnpm check:islands`
 3. Open a PR. Eligible same-repository PRs get an isolated, inactive Worker
    preview after the required checks pass; forks run checks without credentials.
 

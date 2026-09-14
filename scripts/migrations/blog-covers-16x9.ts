@@ -1,10 +1,13 @@
 /**
  * blog-covers-16x9.ts — point every blog post at its 16:9 cover.
  *
- * One-off migration for the blog cutover: the blog cards and the post hero
- * moved from 3:2 to 16:9, and every post got a new cover rendered at that
- * ratio and uploaded to R2 (AVIF for the page, JPEG for the Open Graph card,
- * because social platforms do not render AVIF previews).
+ * Written as the migration for the blog cutover (the blog cards and the post
+ * hero moved from 3:2 to 16:9, and every post got a new cover rendered at that
+ * ratio and uploaded to R2: AVIF for the page, JPEG for the Open Graph card,
+ * because social platforms do not render AVIF previews). The --results mode is
+ * that one-off. The --check mode is a standing gate, wired as
+ * `pnpm check:blog-covers` in package.json; do not archive or delete this file
+ * without moving check() first.
  *
  * Input: a JSON-lines file, one object per post —
  *   { "slug": "<post slug>", "ok": true, "urls": { "avif": "https://…avif", "jpg": "https://…jpg" } }

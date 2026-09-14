@@ -15,6 +15,7 @@ unconditional gates. Paths below are relative to the repository root.
 - `pnpm check:tests` type-checks tests, Vitest config, and the dist smoke script.
 - `pnpm check:surface` verifies pages/components declare their analytics surface.
 - `pnpm check:alt` verifies image alt-text coverage.
+- `pnpm check:blog-covers` verifies every blog post points at a `content/blog/<slug>/` AVIF cover with a JPEG `ogImage` sibling (path and extension only; it cannot tell a purple-era cover from a new-brand one).
 - `pnpm check:registry` validates the rebrand template registry (`src/lib/templates/registry.ts`) against the files on disk — every registered `componentPath` resolves, no orphan components under `src/components/templates/` or `src/components/system/` (a `.tsx` twin beside a same-name `.astro` is exempt), no duplicate ids, and `contentShape` bounds are sane.
 - `pnpm lint` runs Biome checks on configured source, test, config, and smoke-script files.
 - `pnpm test` runs the Vitest suite once.

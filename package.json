@@ -15,6 +15,7 @@
     "check:tests": "astro sync && tsc --noEmit -p tsconfig.tests.json",
     "check:surface": "tsx scripts/check-surface-coverage.ts",
     "check:alt": "tsx scripts/check-alt-coverage.ts",
+    "check:blog-covers": "tsx scripts/migrations/blog-covers-16x9.ts --check",
     "check:registry": "tsx scripts/check-registry.ts",
     "check:lockfile": "tsx scripts/check-lockfile.ts",
     "smoke:dist": "tsx scripts/check-dist-smoke.ts",
