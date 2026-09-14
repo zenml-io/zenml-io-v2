@@ -11,8 +11,8 @@ import { TwoDoors } from "../../components/kitaru/islands/TwoDoors";
  * under the unified ZenML umbrella, rendered in the Labs shell
  * (`app="labs" product="kitaru"`: rebrand type roles + palette, the Kitaru
  * wordmark in the nav, the orange signup pill). The sections keep their
- * Kitaru markup; src/styles/kitaru-compat.css §6 re-points their tokens at
- * the rebrand set inside the labs scope.
+ * Kitaru markup; the `[data-app="kitaru"]` scope in src/styles/global.css
+ * points their tokens at the rebrand set.
  *
  * Ported from the 2026 Kitaru landing redesign (design/kitaru-redesign-src).
  * ScenarioStrip and TwoDoors are Preact islands (interactive: copy buttons,
@@ -48,7 +48,6 @@ import { FAQ_ITEMS } from "../../lib/kitaru-landing";
 import { PRODUCT_KITARU_SEO } from "../../lib/productKitaru";
 import { absoluteUrl } from "../../lib/seo";
 import { htmlToPlainText } from "../../lib/text";
-import "../../styles/kitaru-compat.css";
 
 const pageUrl = absoluteUrl("/product/kitaru");
 const faqJsonLd = {

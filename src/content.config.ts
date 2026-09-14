@@ -156,8 +156,6 @@ const referenceSlugSets = {
   "llmops-tags": loadSlugSetFromCollectionDir("llmops-tags"),
   "mlops-tags": loadSlugSetFromCollectionDir("mlops-tags"),
   "industry-tags": loadSlugSetFromCollectionDir("industry-tags"),
-  "project-tags": loadSlugSetFromCollectionDir("project-tags"),
-  "product-categories": loadSlugSetFromCollectionDir("product-categories"),
   "integration-types": loadSlugSetFromCollectionDir("integration-types"),
   advantages: loadSlugSetFromCollectionDir("advantages"),
   quotes: loadSlugSetFromCollectionDir("quotes"),
@@ -271,18 +269,6 @@ const mlopsTagSchema = z.object({
  * Used by: llmops database items
  */
 const industryTagSchema = simpleTagSchema;
-
-/**
- * Project Tags schema
- * Used by: projects collection
- */
-const projectTagSchema = simpleTagSchema;
-
-/**
- * Product Categories schema
- * Used by: product/feature pages
- */
-const productCategorySchema = simpleTagSchema;
 
 /**
  * Integration Types schema
@@ -698,7 +684,7 @@ const teamSchema = z.object({
  * DISCREPANCIES FROM PLAN:
  * - Field is "mainImageLink" (not "coverImage")
  * - Additional fields: tools, createdAt, updatedAt, projectId
- * - tags references project-tags (confirmed correct)
+ * - tags is a plain string array (project-tags collection removed)
  */
 const projectSchema = z.object({
   title: z.string(),
@@ -707,7 +693,7 @@ const projectSchema = z.object({
 
   // Project-specific fields
   description: z.string().optional(),
-  tags: slugReferenceArray("project-tags", referenceSlugSets["project-tags"]),
+  tags: z.array(z.string()).default([]),
   mainImageLink: z.url().optional(), // Note: NOT "coverImage"
   previewImage: imageSchema.optional(), // Larger preview image for detail page header
   githubUrl: z.url().optional(),
@@ -967,17 +953,6 @@ export const collections = {
   "industry-tags": defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/content/industry-tags" }),
     schema: industryTagSchema,
-  }),
-  "project-tags": defineCollection({
-    loader: glob({ pattern: "**/*.md", base: "./src/content/project-tags" }),
-    schema: projectTagSchema,
-  }),
-  "product-categories": defineCollection({
-    loader: glob({
-      pattern: "**/*.md",
-      base: "./src/content/product-categories",
-    }),
-    schema: productCategorySchema,
   }),
   "integration-types": defineCollection({
     loader: glob({

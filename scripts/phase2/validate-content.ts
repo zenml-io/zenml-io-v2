@@ -48,8 +48,6 @@ const EXPECTED_COLLECTIONS = [
   "integration-types",
   "advantages",
   "quotes",
-  "product-categories",
-  "project-tags",
 ] as const;
 
 /**

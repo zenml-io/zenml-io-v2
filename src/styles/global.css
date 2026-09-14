@@ -15,13 +15,17 @@ html { scroll-behavior: smooth; }
  * ║  Every page picks up the change automatically. No source edits needed. ║
  * ╚════════════════════════════════════════════════════════════════════════╝
  *
- * Theme switching via [data-app] on <html>:
- *   - :root                 → Kitaru base theme (warm orange primary, cream ground)
- *   - [data-app="kitaru"]   → same as :root (explicit override)
+ * Token scopes:
+ *   - :root                 → shared colour ramps + fallback defaults. Its brand
+ *                             and surface values are shadowed on every page by
+ *                             the two scopes below; nothing renders on them.
  *   - [data-app="labs"]     → the site: 2026 rebrand scope (type roles + full palette)
+ *   - [data-app="kitaru"]   → wrapper scope for Kitaru-origin markup nested
+ *                             inside the Labs shell (section 2b-ii)
  *
- * BaseLayout.astro sets data-app="labs" by default for the whole site.
- * Per-page overrides (e.g. /product/kitaru) set data-app="kitaru".
+ * BaseLayout.astro sets data-app="labs" on <html> for the whole site.
+ * Kitaru pages (/product/kitaru, the Kitaru compare pages) wrap their content
+ * in a <div data-app="kitaru"> inside it.
  *
  * VOCABULARY for component code (Tailwind utilities):
  *   Semantic (preferred — auto-themes by data-app):
@@ -378,6 +382,130 @@ html { scroll-behavior: smooth; }
   --blog-accent-900: var(--color-orange-900);
 }
 
+/* ─── 2b-ii. Kitaru wrapper scope ───────────────────────────────────────────
+ * Kitaru-origin markup — /product/kitaru and the Kitaru MDX comparison
+ * pages — is wrapped in `<div data-app="kitaru">` and renders inside the
+ * Labs shell (`<html data-app="labs">`). This block is the bridge between
+ * the two: the token names those components read, pointed at Labs values.
+ *
+ * It lives here, next to the other brand scopes, because the values are
+ * Labs values — surfaces and text come from the Labs semantic set, the
+ * ember accent is orange-600, the dark band is cream-900, and type comes
+ * from the Labs roles (Borna on headings, Rethink Sans on body). Tokens not
+ * listed here (--background, --foreground, --card, --border, --muted…) are
+ * inherited from the Labs scope unchanged.
+ *
+ * These rules were previously in src/styles/kitaru-compat.css, which has
+ * been removed along with the selectors that had no consumer left. The bare
+ * oklch() literals below (`--success`, the two surfaces, `--color-accent-deep`,
+ * `--color-cost-up*`, `--color-border-accent`) are carried over unchanged so
+ * the retirement is render-neutral; mapping them onto site tokens is a
+ * separate palette decision.
+ */
+[data-app="kitaru"] {
+  /* Landing primitives — the backing vars for the Kitaru `@theme inline`
+   * registrations further down (bg-cream, text-ink-soft, bg-ember,
+   * bg-night-surface, border-hairline, …). */
+  --cream: var(--background);
+  --surface: var(--card);
+  --surface-warm: var(--secondary);
+  --ink: var(--color-cream-900);
+  --ink-soft: var(--color-cream-700);
+  --ember: var(--color-orange-600);
+  --ember-deep: var(--color-orange-700);
+  --ember-light: var(--color-orange-100);
+  --warn: var(--color-orange-600);
+  --night: var(--color-cream-900);
+  --night-surface: color-mix(in oklab, var(--color-cream-900) 75%, var(--color-cream-800));
+  --night-text: var(--color-cream-50);
+  --hairline: var(--border);
+
+  /* `--color-ink` and `--success` exist site-wide; re-point them inside the
+   * wrapper so `text-ink` / `text-success` mean the Kitaru value here and
+   * are untouched outside it. */
+  --color-ink: var(--ink);
+  --success: oklch(0.55 0.1 155);
+
+  /* Brand semantics: orange is the one accent on a Kitaru surface. */
+  --primary: var(--color-orange-600);
+  --primary-foreground: var(--color-cream-50);
+  --accent: var(--color-orange-600);
+  --accent-foreground: var(--color-cream-50);
+  --ring: var(--color-orange-600);
+
+  /* `--color-*` names read directly by the Kitaru components. */
+  --color-bg: var(--background);
+  --color-surface: var(--card);
+  --color-surface-warm: oklch(0.99 0.003 90);
+  --color-surface-subtle: oklch(0.985 0.005 75);
+  --color-primary: var(--foreground);
+  --color-secondary: var(--color-cream-700);
+  --color-muted: var(--muted-foreground);
+  --color-accent: var(--color-orange-600);
+  --color-accent-deep: oklch(0.57 0.09 65);
+  --color-accent-light: var(--color-orange-100);
+  --color-cost-up: oklch(0.55 0.18 25);
+  --color-cost-up-bg: oklch(0.93 0.03 350);
+  --color-border: var(--border);
+  --color-border-light: var(--border);
+  --color-border-accent: oklch(0.85 0.08 60);
+
+  /* Radius scale — the Kitaru landing design system derives every step from
+   * --radius, which lands 2–4px tighter than the site defaults. Scoped so
+   * `rounded-md` / `rounded-lg` / `rounded-xl` match the design inside the
+   * wrapper and keep their site values everywhere else. */
+  --radius:     0.5rem;
+  --radius-sm:  calc(var(--radius) - 4px);
+  --radius-md:  calc(var(--radius) - 2px);
+  --radius-lg:  var(--radius);
+  --radius-xl:  calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
+  /* Type role for the `font-heading` utility. */
+  --font-heading: var(--font-display);
+
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+[data-app="kitaru"] :is(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: var(--tracking-heading);
+}
+
+[data-app="kitaru"] ::selection {
+  background: color-mix(in oklab, var(--color-orange-600) 18%, transparent);
+}
+[data-app="kitaru"] :focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+[data-app="kitaru"] :focus:not(:focus-visible) { outline: none; }
+
+/* Syntax highlighting for the hand-tokenized code panes
+ * (src/components/kitaru/islands/code-tokens.tsx). `.code-syntax` is the
+ * dark pane; `.code-syntax-light` the paper-colored one in TwoDoors. */
+[data-app="kitaru"] .code-syntax .kw  { color: oklch(0.73 0.08 70); }
+[data-app="kitaru"] .code-syntax .fn  { color: oklch(0.68 0.12 50); }
+[data-app="kitaru"] .code-syntax .str { color: oklch(0.72 0.1 155); }
+[data-app="kitaru"] .code-syntax .var { color: var(--color-cream-50); }
+[data-app="kitaru"] .code-syntax .op  { color: oklch(0.72 0.02 65); }
+[data-app="kitaru"] .code-syntax .dec { color: oklch(0.68 0.12 50); font-style: italic; }
+[data-app="kitaru"] .code-syntax .cmt { color: oklch(0.67 0.015 60); font-style: italic; }
+
+[data-app="kitaru"] .code-syntax-light .kw,
+[data-app="kitaru"] .code-syntax-light .fn  { color: var(--ember-deep); }
+[data-app="kitaru"] .code-syntax-light .str { color: oklch(0.42 0.09 155); }
+[data-app="kitaru"] .code-syntax-light .var { color: var(--ink); }
+[data-app="kitaru"] .code-syntax-light .op  { color: oklch(0.58 0.02 60); }
+[data-app="kitaru"] .code-syntax-light .dec { color: var(--ember-deep); font-style: italic; }
+[data-app="kitaru"] .code-syntax-light .cmt { color: oklch(0.58 0.02 60); font-style: italic; }
+
 /* ─── 2c. Section tone layer (#248) ─────────────────────────────────────────
  * One ground-band modifier for every section: data-tone="default|muted|
  * inverted|brand" on the section root. Two-layer contract: the brand scopes
@@ -670,11 +798,9 @@ html { scroll-behavior: smooth; }
 /* ╔════════════════════════════════════════════════════════════════════════╗
  * ║           KITARU LANDING TOKENS + UTILITIES (registration only)        ║
  * ║                                                                        ║
- * ║  The *values* live in src/styles/kitaru-compat.css, scoped to          ║
- * ║  [data-app="kitaru"]. Only the registration has to sit here: Tailwind  ║
- * ║  v4 generates utilities from the stylesheet that imports tailwindcss,  ║
- * ║  and kitaru-compat.css is a plain stylesheet imported by three page    ║
- * ║  templates — @theme/@utility there compile to nothing.                 ║
+ * ║  The *values* live in the `[data-app="kitaru"]` wrapper scope in       ║
+ * ║  section 2b-ii above. Only the registration has to sit here, next to   ║
+ * ║  the other @theme blocks.                                              ║
  * ║                                                                        ║
  * ║  Every token below is `inline`, so the utility compiles to the         ║
  * ║  underlying var — `.bg-ember { background-color: var(--ember) }`.      ║
@@ -695,16 +821,14 @@ html { scroll-behavior: smooth; }
   --color-night-text: var(--night-text);
   --color-hairline: var(--hairline);
 
-  /* `font-heading` — Plus Jakarta Sans on Kitaru surfaces.
+  /* `font-heading` — the display face on Kitaru surfaces.
    * NOT registered as --color-ink / --color-success: both already exist
-   * site-wide, so kitaru-compat.css re-points them inside its own scope. */
+   * site-wide, so the Kitaru wrapper scope re-points them instead. */
   --font-heading: var(--font-heading);
 }
 
 /* Kitaru scroll-reveal + decorative utilities.
- * Ported from the Kitaru landing design system. The `kitaru-pulse` and
- * `kitaru-draw` keyframes they animate live in kitaru-compat.css alongside
- * the other kitaru-* keyframes. */
+ * Ported from the Kitaru landing design system. */
 @utility reveal {
   opacity: 0;
   transform: translateY(18px);
@@ -752,18 +876,6 @@ html { scroll-behavior: smooth; }
     linear-gradient(to right, var(--hairline) 1px, transparent 1px),
     linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
   background-size: 96px 96px;
-}
-
-@utility pulse-dot {
-  &::before {
-    content: "";
-    display: block;
-    width: 100%;
-    height: 100%;
-    border-radius: 9999px;
-    background: var(--ember);
-    animation: kitaru-pulse 2.4s ease-in-out infinite;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

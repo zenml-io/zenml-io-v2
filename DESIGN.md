@@ -20,7 +20,7 @@ not a pointer anyone needs to follow.
 - The ZenML wordmark is custom slab/stencil-serif artwork. **Never typeset it
   in any font** — not the display face, not anything (#10). Always inline the
   checked-in SVG assets (mark, wordmark, horizontal lockup).
-- The same rule applies to the Kitaru wordmark: SVG artwork only.
+- Kitaru wordmark: see Kitaru section.
 - Never "fix", restyle, or re-draw logo artwork to resolve a review finding.
   If a logo looks wrong, escalate to a human instead.
 
@@ -75,19 +75,50 @@ Additional rules:
 - **On tint bands** (sections washed with the light sage tint), text and
   border colors step to their darkened on-tint overrides. The base palette
   text/border colors do not pass on the tint; do not use them there.
-- **Kitaru orange** has exactly three sanctioned forms: text is always
-  `#995000` (passes AA on both cream and the orange tint); the bright
-  `#EB7119` is icon- and logo-only, never text; the tint `#FBE8DB` is the
-  background wash. Orange never appears as a generic accent on ZenML or
-  unified surfaces, and a Kitaru surface gets **at most one** bounded orange
-  accent moment per page — restraint equal to ZenML surfaces, not a louder
-  sibling.
+- Kitaru orange: see Kitaru section.
 - **Purple/magenta is tertiary only**: sparing, never on large surfaces,
   never part of brand identity, and never adjacent to Kitaru surfaces.
 - **No cross-brand gradients or palette mixing** — the ZenML and Kitaru
   palettes never blend in one surface.
 - **Blue accent** uses the ramp values only: tint `#E1F1F4`, text `#157A8E`.
   Off-ramp custom blues were measured and fail AA.
+
+## Kitaru
+
+`<html>` carries `data-app="labs"` by default (set by `BaseLayout`/
+`MinimalLayout`); a Kitaru page wraps its content in `<div
+data-app="kitaru">` to scope the override. The Kitaru bridge tokens (the
+`ember`/`night`/`ink-soft` family) live in `src/styles/global.css` under
+`[data-app="kitaru"]`; the Tailwind utilities built on them (`bg-ember`,
+`text-ink-soft`, `bg-night`, …) resolve to the orange/cream ramps only
+inside that scope. Kitaru surfaces: `/product/kitaru`,
+`/compare/kitaru-vs-*`.
+
+- Kitaru wordmark: SVG artwork only, never typeset — same as ZenML's.
+- **Orange** has exactly three sanctioned forms: text is always `#995000`
+  (passes AA on both cream and the orange tint); the bright `#EB7119` is
+  icon- and logo-only, never text; the tint `#FBE8DB` is the background
+  wash. Orange never appears as a generic accent on ZenML or unified
+  surfaces; a Kitaru surface gets **at most one** bounded orange accent
+  moment per page — restraint equal to ZenML surfaces, not a louder
+  sibling.
+- A Kitaru post's band, and the Kitaru category and tag hubs, run a
+  slower, quieter cut of the Kitaru product page's grain palette instead
+  of the Labs one (the band's `grain` axis).
+- A post whose category or tags include `kitaru` sets
+  `data-product="kitaru"` and re-points `--blog-accent*` (default sage) to
+  the orange ramp — links, chips, the table-of-contents marker, card hover
+  border, never hard-coded — and shows a "Kitaru" pill in its meta row and
+  on its cards (standing in for the category link when the category is
+  itself Kitaru). The "Continue reading" block is exempt: sage on every
+  post.
+- The Kitaru workspace panel's highlighted plan card turns
+  `--color-orange-300` with the "Recommended" pill on `--color-orange-600`
+  — the panel's one bounded orange moment; every other pill stays ink.
+- Comparison cards in a Kitaru block stay under `data-product="kitaru"`
+  for the orange accent ramp; no orange band behind the block.
+- Kitaru cards turn their hover border orange (`--color-orange-300`)
+  instead of sage.
 
 ## Layout and structure
 
@@ -125,10 +156,8 @@ Additional rules:
   (`LabsBand` size `short`: the grain backdrop at roughly 40% of the
   viewport, nav clearance built in). The band ends in a 1px `--color-border`
   hairline and the first content element starts 64px below it on desktop,
-  40px on mobile; nothing overlaps the band. A Kitaru post's band, and the
-  Kitaru category and tag hubs, run a slower, quieter cut of the Kitaru product
-  page's grain palette instead of the Labs one (the band's `grain` axis); every other hub and the
-  index stay on the Labs grain. The landing
+  40px on mobile; nothing overlaps the band. Kitaru band grain: see Kitaru
+  section. The landing
   size stays the full-height opener of `/` and the product pages. As the
   remaining families move onto the Labs shell (the research databases,
   integrations and features, company pages, the product one-offs) their
@@ -192,19 +221,11 @@ Additional rules:
   real number of entries that dropping it returns (plus "Match any" when two
   or more tags are ANDed), on a block of reserved height so the results
   column does not jump.
-- **Kitaru posts carry the Kitaru accent**: a post whose category or tags
-  include `kitaru` sets `data-product="kitaru"` and re-points the
-  `--blog-accent*` custom properties (default sage) to the orange ramp —
-  links, chips, the table-of-contents marker, card hover border — and shows
-  a "Kitaru" pill in its meta row and on its cards (the pill stands in for
-  the category link when the category is itself Kitaru). The accent
-  travels through those variables only; no component hard-codes orange for
-  a post. The "Continue reading" block is exempt: its band, halos and
-  hexagons stay sage on every post.
+- Kitaru accent: see Kitaru section.
 
 - **FAQ rows**: a FAQ is a stack of native `<details>` rows on the prose column width, separated by `--color-border` hairlines — question in Rethink Sans sentence case, a chevron that turns when the row opens, the answer in body type. One heading per FAQ; eyebrows and sub-decks are not rendered. There is one implementation, `labs.faq`; the pricing page mounts one per workspace panel.
-- **The highlighted plan card**: the recommended pricing plan is marked by a 1px `--color-sage-400` border and a sentence-case "Recommended" pill on the card's top edge — never a shadow, never a coloured strip. On the Kitaru workspace panel the same card turns `--color-orange-300` with the pill on `--color-orange-600`; that pill and border are the panel's one bounded orange moment, every pill on the panel stays ink.
-- **Comparison cards with marks**: the comparison hub and related-comparison navigation use the same compact card — a 40px `object-contain` competitor mark beside one title and a description clamped to two visible lines, with no repeated metadata/type row. Cards render in an explicit one/two/three-column grid and reuse the entry-row per-line title underline sweep on hover and focus. The Kitaru block stays under `data-product="kitaru"` so its accent variables carry the orange ramp; there is no orange band behind it.
+- **The highlighted plan card**: the recommended pricing plan is marked by a 1px `--color-sage-400` border and a sentence-case "Recommended" pill on the card's top edge — never a shadow, never a coloured strip. Kitaru workspace panel: see Kitaru section.
+- **Comparison cards with marks**: the comparison hub and related-comparison navigation use the same compact card — a 40px `object-contain` competitor mark beside one title and a description clamped to two visible lines, with no repeated metadata/type row. Cards render in an explicit one/two/three-column grid and reuse the entry-row per-line title underline sweep on hover and focus. Kitaru comparison cards: see Kitaru section.
 - **Comparison tables on the Labs shell**: every pricing or feature comparison renders through `data-display.spec-table`'s labs skin — 20px radius frame, hairline rows, sticky first column, sage check / cream cross icons, `LabsButton` pills in the action row, section headers in sentence case on the light sage tint. No alternating row tint; the hairline carries the rhythm. (These four rules date from the product one-offs cutover, 2026-09.)
 
 ## Responsive contract
@@ -296,8 +317,8 @@ container scrolls inside its own region.
   the call site. Hover feedback is interaction, not a motion moment, and does
   not count toward the budget.
 - **Every card has a hover state** — at minimum the border turns sage
-  (`--color-sage-400`, 200ms, ease-out) on every card; Kitaru cards, which
-  usually carry orange, turn orange (`--color-orange-300`) instead. Cards
+  (`--color-sage-400`, 200ms, ease-out) on every card. Kitaru cards: see
+  Kitaru section. Cards
   with a background wash or an image also move it
   (the wash grows from its origin, the image zooms a few percent, 500ms,
   ease-out, compositor properties only, honouring reduced motion). A card

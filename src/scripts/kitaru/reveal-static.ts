@@ -5,8 +5,8 @@
 // `Reveal` component (src/components/kitaru/islands/Reveal.tsx) so both
 // the static and hydrated sections animate the same way.
 //
-// `export {}` makes this an isolated module so its top-level `const`s don't
-// collide with scroll-reveal.ts's identically named globals under `astro check`.
+// `export {}` keeps this an isolated module so its top-level `const`s stay
+// file-scoped under `astro check`.
 export {};
 
 const revealElements = document.querySelectorAll<HTMLElement>(
