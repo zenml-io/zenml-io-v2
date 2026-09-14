@@ -33,6 +33,7 @@ import LabsComparisonCard from "../../labs/LabsComparisonCard.astro";
 import LabsComparisonQuote from "../../labs/LabsComparisonQuote.astro";
 import LabsComparisonStrategyCta from "../../labs/LabsComparisonStrategyCta.astro";
 import LabsComparisonTable from "../../labs/LabsComparisonTable.astro";
+import { LABS_EYEBROW_CLASS } from "../../templates/pageHeaderPresets";
 import type { RelatedRailItem } from "../../templates/RelatedRail.astro";
 
 type CompareBlock = CollectionEntry<"compare">["data"]["blocks"][number];
@@ -383,7 +384,7 @@ if (isCompareProps(props)) {
                     return (
                       <section class="scroll-reveal-section py-8 md:py-10">
                         <div class="mx-auto max-w-content px-gutter">
-                          <p class="reveal-child font-sans text-[15px] leading-5 text-(--color-cream-700)">
+                          <p class={`reveal-child ${LABS_EYEBROW_CLASS}`}>
                             {block.eyebrow}
                           </p>
                           <h2 class="reveal-child stagger-1 mt-3 mb-8 font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
@@ -499,7 +500,7 @@ if (isCompareProps(props)) {
                       <section class="scroll-reveal-section py-8 md:py-10">
                         <div class="mx-auto max-w-content px-gutter">
                           {block.eyebrow && (
-                            <p class="reveal-child font-sans text-[15px] leading-5 text-(--color-cream-700)">
+                            <p class={`reveal-child ${LABS_EYEBROW_CLASS}`}>
                               {block.eyebrow}
                             </p>
                           )}

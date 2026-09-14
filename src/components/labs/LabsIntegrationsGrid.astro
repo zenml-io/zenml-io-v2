@@ -9,6 +9,7 @@
  */
 import { getCollection } from "astro:content";
 import type { IntegrationsContent } from "../../lib/labs-product-zenml";
+import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
 import LabsButton from "./LabsButton.astro";
 
 interface Props {
@@ -49,7 +50,7 @@ const gridLogos = logos.slice(0, 24);
 
 <section class="bg-(--color-sage-300) py-24 md:py-32">
   <div class="mx-auto max-w-content px-gutter text-center">
-    <p class="font-label text-[13px] uppercase tracking-[0.05em] text-(--color-sage-800)">
+    <p class={LABS_EYEBROW_CLASS}>
       Integrations
     </p>
     <h2 class="mt-space-sm font-display text-[32px] leading-[36px] text-(--color-cream-900) text-balance md:text-[44px] md:leading-[48px]">

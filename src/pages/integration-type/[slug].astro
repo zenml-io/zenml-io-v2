@@ -10,6 +10,7 @@ import { getCollection } from "astro:content";
 import LabsBand from "../../components/labs/LabsBand.astro";
 import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
 import Breadcrumb from "../../components/system/Breadcrumb.astro";
+import { LABS_EYEBROW_CLASS } from "../../components/templates/pageHeaderPresets";
 import TermHubCatalog from "../../components/templates/TermHubCatalog.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
@@ -68,7 +69,7 @@ const allIntegrations = (
           separator="chevron"
         />
         <div class="reveal-child stagger-1">
-          <p class="font-label text-[13px] leading-4 tracking-[0.05em] uppercase text-(--color-cream-700)">
+          <p class={LABS_EYEBROW_CLASS}>
             {INTEGRATION_TYPE_EYEBROW}
           </p>
           <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">

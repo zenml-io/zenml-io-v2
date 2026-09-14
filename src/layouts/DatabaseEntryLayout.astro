@@ -35,6 +35,7 @@ import LabsMetadataBlock, {
 } from "../components/labs/LabsMetadataBlock.astro";
 import LabsRelatedBand from "../components/labs/LabsRelatedBand.astro";
 import StickyBreadcrumb from "../components/labs/StickyBreadcrumb.astro";
+import { LABS_EYEBROW_CLASS } from "../components/templates/pageHeaderPresets";
 import type { RelatedRailItem } from "../components/templates/RelatedRail.astro";
 import { blogLaneStyle } from "../lib/blogLayout";
 import {
@@ -137,7 +138,7 @@ if (tags.length > 0) {
     <LabsBand size="short">
       <div class="scroll-reveal-section">
         <div class="mx-auto flex max-w-(--article-lane) flex-col gap-4">
-          <p class="reveal-child font-sans text-[15px] leading-5 text-(--color-cream-700)">
+          <p class={`reveal-child ${LABS_EYEBROW_CLASS}`}>
             {copy.eyebrow}
           </p>
 

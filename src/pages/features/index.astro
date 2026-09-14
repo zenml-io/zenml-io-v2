@@ -10,6 +10,7 @@
 import FeatureCard from "../../components/labs/FeatureCard.astro";
 import LabsBand from "../../components/labs/LabsBand.astro";
 import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
+import { LABS_EYEBROW_CLASS } from "../../components/templates/pageHeaderPresets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
 import {
@@ -32,7 +33,7 @@ import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
   <LabsBand size="short">
     <div class="scroll-reveal-section">
       <div class="flex flex-col gap-4">
-        <p class="reveal-child font-label text-[13px] leading-4 tracking-[0.05em] uppercase text-(--color-cream-700)">
+        <p class={`reveal-child ${LABS_EYEBROW_CLASS}`}>
           Features
         </p>
         <div class="reveal-child stagger-1">
