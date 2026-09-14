@@ -5,14 +5,16 @@ import {
   KITARU_LINKS,
   KITARU_TRIAL_NOTE,
 } from "../../lib/kitaru-landing";
+import { LABS_SIGNUP } from "../../lib/labs-home";
 import LabsButton from "../labs/LabsButton.astro";
 import LabsInstallChip from "../labs/LabsInstallChip.astro";
 // Cta.astro — closing CTA band. Dark grain background (KitaruGrain
-// variant="dark"), headline, install chip, orange signup pill.
+// variant="dark"), headline, orange signup pill, then the install chip
+// beneath.
 import { KitaruGrain } from "./islands/KitaruGrain";
 
 const signup = {
-  label: KITARU_LINKS.signup.label,
+  label: LABS_SIGNUP.label,
   href: KITARU_LINKS.signup.href,
   analytics: "Kitaru-CTA-Signup",
 };
@@ -35,8 +37,14 @@ const install = { cmd: KITARU_INSTALL_CMD, analytics: "Kitaru-CTA-Install" };
       class="reveal mt-10 flex flex-wrap items-center justify-center gap-space-md"
       style="--reveal-delay: 120ms"
     >
-      <LabsInstallChip content={install} tone="dark" />
       <LabsButton cta={signup} tone="orange" />
+    </div>
+
+    <div
+      class="reveal mt-space-md flex max-w-full justify-center"
+      style="--reveal-delay: 160ms"
+    >
+      <LabsInstallChip content={install} tone="dark" />
     </div>
 
     <p class="reveal mt-8 text-[13px] text-night-text/60" style="--reveal-delay: 200ms">

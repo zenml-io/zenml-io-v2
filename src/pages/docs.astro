@@ -4,7 +4,7 @@
  * (`app="labs"`, `surface="unified"`). Rebuilt for the product one-offs
  * cutover (#317): the short shader band (eyebrow / h1 / deck), the two
  * product doors (ZenML docs / Kitaru docs, each with its own quick-link
- * rows), the resources grid, and the shared closing band.
+ * rows), the feature-grid resources panels, and the shared closing band.
  *
  * Direction A — "Editorial Diptych": a two-product chooser that routes
  * visitors to the right documentation:
@@ -15,13 +15,22 @@
  *
  * Every external URL below is one the site already links to elsewhere
  * (footer.ts / nav / content) — no invented deep links.
+ *
+ * Below the two product doors, a `labs.feature-grid` row (the same
+ * full-tone panel block as the homepage) carries the four universal
+ * resource links (GitHub, Community, Changelog, Blog) as linked panels.
+ * It sits directly after `<ProductDoors>` with no extra wrapper padding,
+ * following the homepage's own sequencing.
  */
+import FeatureGridPanels from "../components/labs/FeatureGridPanels.astro";
 import LabsBand from "../components/labs/LabsBand.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
 import ProductDoors from "../components/labs/ProductDoors.astro";
+import { LABS_EYEBROW_CLASS } from "../components/templates/pageHeaderPresets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../lib/blogLayout";
-import { LABS_CLOSE } from "../lib/labs-home";
+import { type FeaturePanel, LABS_CLOSE } from "../lib/labs-home";
+import { KITARU_DOCS_URL } from "../lib/productKitaru";
 
 const SEO = {
   title: "ZenML Documentation Hub: AI Orchestration and Agent Replay",
@@ -66,7 +75,7 @@ const PRODUCTS = [
     title: "Kitaru docs",
     description:
       "Record or import agent traces, replay them against your next change, and keep what caught the failure as a regression test.",
-    href: "https://docs.zenml.io/kitaru",
+    href: KITARU_DOCS_URL,
     cta: "Open Kitaru docs",
     analytics: "DocsHub:Kitaru",
     links: [
@@ -87,47 +96,55 @@ const PRODUCTS = [
   },
 ] as const;
 
-/** Universal resources strip. `/slack` is a 301 redirect (public/_redirects);
- *  `/blog` is an internal route; GitHub and the changelog are external. */
-const RESOURCES = [
+/** Universal resources strip, rendered as `labs.feature-grid` linked panels
+ *  (the homepage's four tones in order, no index counters, the line icons the old cards carried). `/slack` is a 301
+ *  redirect (public/_redirects); `/blog` is an internal route; GitHub and
+ *  the changelog are external. */
+const RESOURCES: readonly FeaturePanel[] = [
   {
-    label: "GitHub",
-    description: "Source, issues, and releases",
+    title: "GitHub",
+    body: "Source, issues, and releases",
+    lineIcon:
+      "M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22",
+    tone: "sage-tint",
     href: "https://github.com/zenml-io",
     external: true,
-    iconPath:
-      "M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22",
+    analytics: "DocsHub:GitHub",
   },
   {
-    label: "Community",
-    description: "Get help on Slack",
-    href: "/slack",
-    external: false,
-    iconPath:
+    title: "Community",
+    body: "Get help on Slack",
+    lineIcon:
       "M21 11.5a8.38 8.38 0 0 1-8.5 8.5 8.5 8.5 0 0 1-3.8-.9L3 21l1.9-5.7a8.5 8.5 0 0 1-.9-3.8 8.38 8.38 0 0 1 8.5-8.5 8.5 8.5 0 0 1 8.5 8.5z",
+    tone: "sage-deep",
+    href: "/slack",
+    analytics: "DocsHub:Community",
   },
   {
-    label: "Changelog",
-    description: "What shipped recently",
+    title: "Changelog",
+    body: "What shipped recently",
+    lineIcon: "M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01",
+    tone: "canvas",
     href: "https://docs.zenml.io/changelog",
     external: true,
-    iconPath: "M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01",
+    analytics: "DocsHub:Changelog",
   },
   {
-    label: "Blog",
-    description: "Engineering deep dives",
-    href: "/blog",
-    external: false,
-    iconPath:
+    title: "Blog",
+    body: "Engineering deep dives",
+    lineIcon:
       "M4 19.5A2.5 2.5 0 0 1 6.5 17H20M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z",
+    tone: "sage-light",
+    href: "/blog",
+    analytics: "DocsHub:Blog",
   },
-] as const;
+];
 ---
 
 <BaseLayout title={SEO.title} description={SEO.description} surface="unified" app="labs">
   <LabsBand size="short">
     <div class="flex flex-col gap-4">
-      <p class="font-sans text-[15px] leading-5 text-(--color-cream-700)">Documentation</p>
+      <p class={LABS_EYEBROW_CLASS}>Documentation</p>
       <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
         Documentation for ZenML and Kitaru
       </h1>
@@ -158,45 +175,12 @@ const RESOURCES = [
     />
   </section>
 
-  {/* Resources strip */}
-  <section class="py-24 md:py-32">
-    <div class="mx-auto max-w-content px-gutter">
-      <h2 class="sr-only">More resources</h2>
-      <ul class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {
-          RESOURCES.map((resource) => (
-            <li>
-              <a
-                href={resource.href}
-                target={resource.external ? "_blank" : undefined}
-                rel={resource.external ? "noopener noreferrer" : undefined}
-                class="group flex h-full flex-col gap-3 rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400)"
-              >
-                <svg
-                  class="h-5 w-5 text-(--color-sage-700)"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d={resource.iconPath} />
-                </svg>
-                <h3 class="font-display text-[20px] leading-[26px] text-(--color-cream-900)">
-                  {resource.label}
-                </h3>
-                <p class="font-sans text-[14px] leading-5 text-(--color-cream-700)">
-                  {resource.description}
-                </p>
-                {resource.external && <span class="sr-only"> (opens in new tab)</span>}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
+  {/* Resources strip — labs.feature-grid linked panels, no wrapper padding
+      of its own (matches the homepage's ProductDoors -> FeatureGridPanels
+      sequencing) */}
+  <section aria-labelledby="docs-resources-heading">
+    <h2 id="docs-resources-heading" class="sr-only">More resources</h2>
+    <FeatureGridPanels content={RESOURCES} />
   </section>
 
   <LabsCloseCta content={{ ...LABS_CLOSE, cta: { ...LABS_CLOSE.cta, analytics: "Docs-Close-Signup" } }} />

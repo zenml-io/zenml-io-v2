@@ -16,6 +16,7 @@ import { HubPagination } from "../../components/islands/HubPagination";
 import BlogNewsletterCta from "../../components/labs/BlogNewsletterCta.astro";
 import LabsBand from "../../components/labs/LabsBand.astro";
 import Breadcrumb from "../../components/system/Breadcrumb.astro";
+import { LABS_EYEBROW_CLASS } from "../../components/templates/pageHeaderPresets";
 import TermHubEntryIndex from "../../components/templates/TermHubEntryIndex.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
@@ -96,7 +97,7 @@ const siblingTags = popularTags
         separator="chevron"
       />
       <div>
-        <p class="font-sans text-[15px] leading-5 text-(--color-cream-700)">
+        <p class={LABS_EYEBROW_CLASS}>
           Tag
         </p>
         <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">

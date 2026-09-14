@@ -14,6 +14,7 @@ import { HubPagination } from "../../components/islands/HubPagination";
 import BlogNewsletterCta from "../../components/labs/BlogNewsletterCta.astro";
 import LabsBand from "../../components/labs/LabsBand.astro";
 import Breadcrumb from "../../components/system/Breadcrumb.astro";
+import { LABS_EYEBROW_CLASS } from "../../components/templates/pageHeaderPresets";
 import TermHubEditorial from "../../components/templates/TermHubEditorial.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
@@ -99,7 +100,7 @@ const siblingAuthors = filterUsedTerms(
         separator="chevron"
       />
       <div>
-        <p class="mb-3 font-sans text-[15px] leading-5 text-(--color-cream-700)">
+        <p class:list={["mb-3", LABS_EYEBROW_CLASS]}>
           Author
         </p>
         <div class="flex items-center gap-6">

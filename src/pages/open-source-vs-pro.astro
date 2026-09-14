@@ -13,6 +13,7 @@ import LabsBand from "../components/labs/LabsBand.astro";
 import LabsButton from "../components/labs/LabsButton.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
 import LabsValueProps from "../components/labs/LabsValueProps.astro";
+import { LABS_EYEBROW_CLASS } from "../components/templates/pageHeaderPresets";
 import SpecTable from "../components/templates/SpecTable.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../lib/blogLayout";
@@ -37,7 +38,7 @@ import {
 >
   <LabsBand size="short">
     <div class="flex flex-col gap-4">
-      <p class="font-sans text-[15px] leading-5 text-(--color-cream-700)">
+      <p class={LABS_EYEBROW_CLASS}>
         {OSS_VS_PRO_HERO.eyebrow}
       </p>
       <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">

@@ -42,14 +42,17 @@ export const TERM_HUB_HEADER_INTRO: IntroOverrides = {
   descriptionSpacing: "mt-5",
 };
 
+/** The one pretitle/eyebrow style: Nudica Mono uppercase, dark sage on light surfaces. */
+export const LABS_EYEBROW_CLASS =
+  "font-label text-[15px] leading-5 uppercase tracking-[0.05em] text-(--color-sage-800)";
+
 /** Interior families use the blog heading ladder with Nudica uppercase pretitles. */
 export const LABS_INTERIOR_HEADER_INTRO: IntroOverrides = {
   ...TERM_HUB_HEADER_INTRO,
   wrap: "flex flex-col gap-4",
   headingSpacing: "",
   descriptionSpacing: "",
-  eyebrow:
-    "font-label text-[15px] leading-5 uppercase tracking-[0.05em] text-(--color-sage-800)",
+  eyebrow: LABS_EYEBROW_CLASS,
 };
 
 /** Center constrained title and subtitle boxes as well as their text. */

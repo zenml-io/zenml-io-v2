@@ -9,6 +9,8 @@ export const KITARU_INSTALL_CMD = "curl -fsSL https://kitaru.ai/install | bash";
 export const KITARU_SDK_ADD_CMD =
   'uv add "kitaru[cli,worker]" kitaru-pydantic-ai';
 export const KITARU_LICENSE = "Apache 2.0";
+/** Canonical Kitaru docs entry on the site's docs host. */
+export const KITARU_DOCS_URL = "https://docs.zenml.io/kitaru";
 
 /**
  * Pricing facts. Every surface that quotes the price, trial terms, or

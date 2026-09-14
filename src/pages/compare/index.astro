@@ -15,6 +15,7 @@
 import LabsBand from "../../components/labs/LabsBand.astro";
 import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
 import LabsComparisonCard from "../../components/labs/LabsComparisonCard.astro";
+import { LABS_EYEBROW_CLASS } from "../../components/templates/pageHeaderPresets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
 import {
@@ -44,7 +45,7 @@ const [kitaruCards, zenmlCards] = await Promise.all([
 >
   <LabsBand size="short">
     <div class="scroll-reveal-section flex flex-col gap-4">
-      <p class="reveal-child font-sans text-[15px] leading-5 text-(--color-cream-700)">Compare</p>
+      <p class={`reveal-child ${LABS_EYEBROW_CLASS}`}>Compare</p>
       <h1 class="reveal-child stagger-1 font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
         Pick the right tool for the job.
       </h1>

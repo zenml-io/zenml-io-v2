@@ -66,6 +66,12 @@ Additional rules:
 - **Eyebrow color splits by surface**: the dark sage eyebrow color on light
   surfaces, the cream eyebrow color on dark surfaces. The mid sage `#5D7545`
   is never used as text — it fails contrast everywhere it was tried.
+- **One pretitle style.** Every page-hero and section eyebrow renders through
+  `LABS_EYEBROW_CLASS` (`src/components/templates/pageHeaderPresets.ts`):
+  Nudica Mono 15px/20px, uppercase, 0.05em tracking, dark sage on light
+  surfaces. Rethink Sans sentence case is never a pretitle. Card labels
+  (feature, integration and metadata cards) keep their 13px Nudica label
+  style.
 - **On tint bands** (sections washed with the light sage tint), text and
   border colors step to their darkened on-tint overrides. The base palette
   text/border colors do not pass on the tint; do not use them there.
@@ -152,6 +158,13 @@ Additional rules:
   only needs to be present. Families that move to the Labs shell after the
   blog end on this same close band by default (the research databases pass
   their own newsletter-card copy and list; nothing else changes).
+- **CTA rows and the install chip** (#327, 2026-09): a band's CTA row holds
+  one primary pill, with an optional ghost pill beside it on a product hero.
+  On the two product pages the copyable install chip (`LabsInstallChip`)
+  sits on its own row under the pills as the sanctioned secondary action,
+  light tone in the hero and dark tone in the close. Every other family's
+  close band stays one pill; comparison closes keep their own rule below.
+  The homepage joins once a unified install command exists.
 - **Entry rows, not cards** (databases cutover, 2026-09): a research-database
   entry has no image, so an index or hub result is a row — title, one meta
   line (company · year · industry), a two-line summary and up to three
