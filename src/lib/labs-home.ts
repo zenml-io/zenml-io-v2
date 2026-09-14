@@ -297,14 +297,25 @@ export type FeaturePanelTone =
   | "canvas"
   | "sage-light";
 
-export interface FeaturePanel {
-  index: string;
+/** Either an isometric mark from `FEATURE_ICONS` or a 24px stroke path
+ *  (a line icon, as on the `/docs` resources panels). Never both. */
+export type FeaturePanelIcon =
+  | { icon: FeatureIconId; lineIcon?: never }
+  | { lineIcon: string; icon?: never };
+
+export type FeaturePanel = FeaturePanelIcon & {
+  /** "01." style counter in the top-right corner; absent on /docs. */
+  index?: string;
   title: string;
   body: string;
-  /** Icon id resolved by the component (the markup lives beside it). */
-  icon: FeatureIconId;
   tone: FeaturePanelTone;
-}
+  /** Optional link (the /docs resources panels). Absence renders a plain,
+   *  non-interactive panel — the homepage and comparison usages. */
+  href?: string;
+  external?: true;
+  /** Plausible event name — `data-analytics` IS the event name. */
+  analytics?: string;
+};
 
 export const LABS_FEATURE_PANELS: readonly FeaturePanel[] = [
   {

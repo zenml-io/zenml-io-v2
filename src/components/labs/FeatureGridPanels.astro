@@ -7,6 +7,13 @@
  * and six items wrap at three columns (3+2, 3+3) rather than squeezing one
  * row. The 440px panel height is a floor, never a cap, so long copy grows
  * the row instead of spilling out of its panel.
+ *
+ * A panel with `href` renders as a linked `<a>` (cursor-pointer, a subtle
+ * hover, `data-analytics` when set, external target/rel plus an sr-only
+ * "(opens in new tab)") — the `/docs` resources block. Without `href` it is
+ * the plain `<div>` the homepage and comparison usages render. The icon is
+ * either an isometric `FEATURE_ICONS` mark or a 24px stroke `lineIcon`, and
+ * the "01." index only renders when the panel carries one.
  */
 import type { FeaturePanel, FeaturePanelTone } from "../../lib/labs-home";
 import { FEATURE_ICONS } from "./icons";
@@ -28,6 +35,8 @@ const COLUMN_CLASSES: Record<number, string> = {
 const columnClass = COLUMN_CLASSES[content.length] ?? COLUMN_CLASSES[4];
 const PANEL_CLASS =
   "flex min-h-[380px] flex-col justify-between gap-12 p-8 lg:min-h-[440px] lg:gap-10 lg:p-10";
+const LINK_PANEL_CLASS =
+  "cursor-pointer transition-opacity duration-200 ease-out hover:opacity-90";
 
 const TONE_CLASSES: Record<FeaturePanelTone, string> = {
   "sage-tint": "bg-(--color-sage-300) text-(--color-cream-900)",
@@ -45,28 +54,54 @@ const BODY_TONE_CLASSES: Record<FeaturePanelTone, string> = {
 ---
 
 <section class={`grid ${columnClass}`}>
-  {content.map((panel) => (
-    <div
-      class={`${PANEL_CLASS} ${TONE_CLASSES[panel.tone]}`}
-    >
-      <div class="flex items-start justify-between">
-        <svg
-          viewBox="0 0 114 114"
-          fill="currentColor"
-          class="h-16 w-16 lg:h-24 lg:w-24"
-          aria-hidden="true"
-          set:html={FEATURE_ICONS[panel.icon]}
-        />
-        <span class="font-label text-[15px] tracking-[0.05em]">{panel.index}</span>
-      </div>
-      <div class="flex flex-col gap-3">
-        <h3 class="font-display text-[28px] leading-[32px] text-balance">
-          {panel.title}
-        </h3>
-        <p class={`text-[16px] leading-[24px] ${BODY_TONE_CLASSES[panel.tone]}`}>
-          {panel.body}
-        </p>
-      </div>
-    </div>
-  ))}
+  {content.map((panel) => {
+    const Panel = panel.href ? "a" : "div";
+    const mark = panel.icon ? FEATURE_ICONS[panel.icon] : undefined;
+    return (
+      <Panel
+        href={panel.href}
+        target={panel.external ? "_blank" : undefined}
+        rel={panel.external ? "noopener noreferrer" : undefined}
+        data-analytics={panel.analytics}
+        class={`${PANEL_CLASS} ${TONE_CLASSES[panel.tone]}${panel.href ? ` ${LINK_PANEL_CLASS}` : ""}`}
+      >
+        <div class="flex items-start justify-between">
+          {mark ? (
+            <svg
+              viewBox="0 0 114 114"
+              fill="currentColor"
+              class="h-16 w-16 lg:h-24 lg:w-24"
+              aria-hidden="true"
+              set:html={mark}
+            />
+          ) : (
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="h-8 w-8 lg:h-10 lg:w-10"
+              aria-hidden="true"
+            >
+              <path d={panel.lineIcon} />
+            </svg>
+          )}
+          {panel.index && (
+            <span class="font-label text-[15px] tracking-[0.05em]">{panel.index}</span>
+          )}
+        </div>
+        <div class="flex flex-col gap-3">
+          <h3 class="font-display text-[28px] leading-[32px] text-balance">
+            {panel.title}
+            {panel.external && <span class="sr-only"> (opens in new tab)</span>}
+          </h3>
+          <p class={`text-[16px] leading-[24px] ${BODY_TONE_CLASSES[panel.tone]}`}>
+            {panel.body}
+          </p>
+        </div>
+      </Panel>
+    );
+  })}
 </section>

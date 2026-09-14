@@ -1390,13 +1390,13 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     kind: "template",
     componentPath: "src/components/labs/FeatureGridPanels.astro",
     collectionBound: true,
-    variantAxes: ["panel tone", "column count"],
+    variantAxes: ["panel tone", "column count", "link", "index", "icon kind"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 0,
     notes:
-      "Full-bleed row of equal panels from `content: readonly FeaturePanel[]` (LABS_FEATURE_PANELS on `/`); tone (sage-tint/sage-deep/canvas/sage-light) picks the panel background and body-text colour. Icons are inline SVG markup from src/components/labs/icons.ts, keyed by panel.icon, rendered via set:html inside a currentColor <svg>. Reflows to two columns at <=1024 and 1-up at 390. Columns follow the item count: one to four across at lg, five and six wrapping at three columns (3+2, 3+3), so the three advantages of the comparison strategy block fill the width the same way the four homepage panels do. Panel height is a 380px floor, 440px at lg and up, never a cap, so long copy grows the row instead of spilling out.",
+      "Full-bleed row of equal panels from `content: readonly FeaturePanel[]` (LABS_FEATURE_PANELS on `/`); tone (sage-tint/sage-deep/canvas/sage-light) picks the panel background and body-text colour. Icons are inline SVG markup from src/components/labs/icons.ts, keyed by panel.icon, rendered via set:html inside a currentColor <svg>; a panel may carry a 24px stroke `lineIcon` path instead (the /docs resources panels), never both. The `index` counter is optional and its slot collapses when absent. Reflows to two columns at <=1024 and 1-up at 390. Columns follow the item count: one to four across at lg, five and six wrapping at three columns (3+2, 3+3), so the three advantages of the comparison strategy block fill the width the same way the four homepage panels do. Panel height is a 380px floor, 440px at lg and up, never a cap, so long copy grows the row instead of spilling out. A panel with `href` set renders as a linked `<a>` panel instead of the plain `<div>` (cursor-pointer, a subtle hover, optional `external`/`analytics`) — the /docs resources block's four links; panels without `href` render exactly as before.",
     contentShape: {
       minItems: 1,
       maxItems: 6,
