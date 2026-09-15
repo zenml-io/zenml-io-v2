@@ -73,6 +73,33 @@ jobs:
         id: source
         shell: bash
         env:
+          FALLBACK_PR_NUMBER_SELECTOR: |
+            [
+              .[]
+              | select(
+                  .head.repo.full_name == $repository and
+                  .head.ref == $branch
+                )
+            ] as $branch_pulls |
+            [
+              $branch_pulls[]
+              | select(
+                  .state == "open" and
+                  .draft == false and
+                  .user.login != "dependabot[bot]" and
+                  .head.sha == $commit
+                )
+              | .number
+            ] as $publishable |
+            if ($publishable | length) == 1 then
+              $publishable[0]
+            elif ($publishable | length) > 1 then
+              error("fallback lookup must identify exactly one matching pull request")
+            elif ($branch_pulls | length) == 0 then
+              error("fallback lookup found no pull request for this source branch")
+            else
+              ""
+            end
           GH_TOKEN: ${{ github.token }}
           INPUT_PR_NUMBER: ${{ inputs.pr_number }}
           INPUT_SOURCE_BRANCH: ${{ inputs.source_branch }}
@@ -135,34 +162,34 @@ jobs:
               gh api \
                 --method GET \
                 "repos/$GITHUB_REPOSITORY/pulls" \
-                -f state=open \
+                -f state=all \
                 -f head="$repo_owner:$source_branch" \
                 -f per_page=100 > "$RUNNER_TEMP/source-pr-candidates.json"
               pr_number="$(
                 jq -er \
                   --arg branch "$source_branch" \
                   --arg commit "$source_commit" \
-                  --arg repository "$GITHUB_REPOSITORY" '
-                    [
-                      .[]
-                      | select(
-                          .state == "open" and
-                          .draft == false and
-                          .head.repo.full_name == $repository and
-                          .user.login != "dependabot[bot]" and
-                          .head.ref == $branch and
-                          .head.sha == $commit
-                        )
-                      | .number
-                    ]
-                    | if length == 1 then
-                        .[0]
-                      else
-                        error("fallback lookup must identify exactly one matching pull request")
-                      end
-                  ' "$RUNNER_TEMP/source-pr-candidates.json"
+                  --arg repository "$GITHUB_REPOSITORY" \
+                  "$FALLBACK_PR_NUMBER_SELECTOR" \
+                  "$RUNNER_TEMP/source-pr-candidates.json"
               )"
             fi
+          fi
+          if [ -z "$pr_number" ]; then
+            {
+              echo "## No PR preview to publish"
+              echo
+              printf -- "- Source branch: \`%s\`\n" "$source_branch"
+              printf -- "- Source commit: \`%s\`\n" "$source_commit"
+              printf -- "- CI run: \`%s\`\n" "$SOURCE_RUN_ID"
+              echo
+              echo "No open, non-draft, non-Dependabot pull request stands at that exact commit, so this CI run has no preview to publish. A pull request in that state is merged, closed, superseded by a newer commit, still a draft, or owned by Dependabot."
+              echo
+              echo "No artifact was downloaded and no Cloudflare state was inspected or changed."
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "No eligible pull request stands at $source_branch@$source_commit; there is no preview to publish." >&2
+            echo "publishable=false" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
           if [ -n "$INPUT_PR_NUMBER" ] && [ "$INPUT_PR_NUMBER" != "$pr_number" ]; then
             echo "The supplied PR number does not own this exact CI run." >&2
@@ -186,6 +213,7 @@ jobs:
           [[ "$build_commit" =~ ^[0-9a-f]{40}$ ]]
 
           {
+            echo "publishable=true"
             echo "source_run_id=$SOURCE_RUN_ID"
             echo "source_branch=$source_branch"
             echo "source_commit=$source_commit"
@@ -194,6 +222,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Download the exact validated Worker artifact
+        if: steps.source.outputs.publishable == 'true'
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: worker-dist
@@ -202,6 +231,7 @@ jobs:
           github-token: ${{ github.token }}
 
       - name: Verify artifact provenance and checksum
+        if: steps.source.outputs.publishable == 'true'
         shell: bash
         env:
           BUILD_COMMIT: ${{ steps.source.outputs.build_commit }}
@@ -248,6 +278,7 @@ jobs:
           fi
 
       - name: Reject unsafe Worker artifact
+        if: steps.source.outputs.publishable == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -272,6 +303,7 @@ jobs:
           grep -Fx ".wrangler/deploy/config.json" "$RUNNER_TEMP/archive-paths.txt"
 
       - name: Prepare trusted PR-preview configuration
+        if: steps.source.outputs.publishable == 'true'
         shell: bash
         run: |
           set -euo pipefail
@@ -323,9 +355,11 @@ jobs:
           }' dist/server/wrangler.json > dist/server/upload-wrangler.json
 
       - name: Install pinned Wrangler
+        if: steps.source.outputs.publishable == 'true'
         run: npm install --global wrangler@4.110.0
 
       - name: Verify dedicated Worker baseline
+        if: steps.source.outputs.publishable == 'true'
         shell: bash
         env:
           ALLOW_BOOTSTRAP: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_bootstrap || false }}
@@ -432,6 +466,7 @@ jobs:
           ' "$RUNNER_TEMP/worker-domains-before-upload.json" > /dev/null
 
       - name: Record preview retirement marker
+        if: steps.source.outputs.publishable == 'true'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -468,6 +503,7 @@ jobs:
 
       - name: Upload exact version with stable PR alias
         id: upload
+        if: steps.source.outputs.publishable == 'true'
         shell: bash
         env:
           BUILD_COMMIT: ${{ steps.source.outputs.build_commit }}
@@ -706,6 +742,7 @@ jobs:
           echo "preview_url=$preview_url" >> "$GITHUB_OUTPUT"
 
       - name: Post sticky preview URL
+        if: steps.source.outputs.publishable == 'true'
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -747,7 +784,7 @@ jobs:
           fi
 
       - name: Preserve preview evidence
-        if: always()
+        if: always() && steps.source.outputs.publishable == 'true'
         continue-on-error: true
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
@@ -773,6 +810,7 @@ jobs:
           retention-days: 30
 
       - name: Record preview metadata
+        if: steps.source.outputs.publishable == 'true'
         shell: bash
         env:
           ARTIFACT_SHA256: ${{ steps.upload.outputs.artifact_sha256 }}
