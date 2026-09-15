@@ -25,7 +25,7 @@ const noInlineClassOverrides = [
   "error",
   {
     selector:
-      "JSXAttribute[name.name='classOverrides'][value.type='JSXExpressionContainer'][value.expression.type='ObjectExpression']",
+      "JSXAttribute[name.name='classOverrides'] ObjectExpression",
     message: "Pass a named family preset instead of an inline classOverrides object.",
   },
 ];
