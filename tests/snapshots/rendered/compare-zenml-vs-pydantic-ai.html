@@ -1,0 +1,1628 @@
+<article class="compare-body-inner" data-astro-cid-[hash]="">
+<p>Pydantic AI brings the Pydantic team’s approach to agents: typed dependencies, validated structured outputs, and a model-agnostic API that still reads like Python. If you want an agent whose output you can trust to match a schema, it’s a very good choice.
+</p>
+
+<p>ZenML isn’t a competing harness. It’s the orchestration layer around the agent: your 
+<code>Agent
+</code> runs unchanged inside a 
+<code>@step
+</code>, and ZenML supplies the pipeline, the versioned artifacts, the cache, a 
+<code>wait()
+</code> that pauses the run for a human, a sandbox for the code the agent’s tools execute, and the stack that puts it on Kubernetes, Vertex AI, SageMaker, AzureML and more.
+</p>
+
+<p>Both are ordinary Python, so they compose cleanly. Pydantic AI validates what comes out of the model. ZenML stores what comes out of the step, remembers which run produced it, and decides what happens next.
+</p>
+
+<section class="when" data-reveal="" data-astro-cid-[hash]="">
+<div class="when-grid" data-astro-cid-[hash]="">
+<article class="when-card when-card--zenml" data-astro-cid-[hash]="">
+<div class="when-card-head" data-astro-cid-[hash]="">
+<span class="when-tag when-tag--zenml" data-astro-cid-[hash]="">ZenML
+</span>
+<h2 data-astro-cid-[hash]="">Use ZenML if you are
+</h2>
+</div>
+<ul data-astro-cid-[hash]="">
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Running agent work on a schedule or behind an endpoint, not from a terminal by hand
+</span>
+</li>
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Asked, weeks later, which output came from which run and which inputs
+</span>
+</li>
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Pausing for a human to approve what the agent produced before the next step acts on it
+</span>
+</li>
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Re-running often enough that skipping unchanged steps saves real money
+</span>
+</li>
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Deploying into your own cloud for security or compliance, with the outputs in your own bucket
+</span>
+</li>
+</ul>
+</article>
+<article class="when-card when-card--competitor" data-astro-cid-[hash]="">
+<div class="when-card-head" data-astro-cid-[hash]="">
+<span class="when-tag when-tag--competitor" data-astro-cid-[hash]="">Pydantic AI
+</span>
+<h2 data-astro-cid-[hash]="">Use Pydantic AI if you are
+</h2>
+</div>
+<ul data-astro-cid-[hash]="">
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Building the agent itself, and want typed dependencies and validated structured outputs
+</span>
+</li>
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Switching between model providers behind one API
+</span>
+</li>
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Wanting a framework that reads like ordinary, type-checked Python
+</span>
+</li>
+<li data-astro-cid-[hash]="">
+<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Using Logfire for tracing individual agent runs
+</span>
+</li>
+</ul>
+</article>
+</div>
+</section>
+
+<figure class="pullquote" data-reveal="" data-astro-cid-[hash]="">
+<div class="pullquote-inner" data-astro-cid-[hash]="">
+<span class="pullquote-mark" aria-hidden="true" data-astro-cid-[hash]="">“
+</span>
+<blockquote data-astro-cid-[hash]="">Pydantic AI guarantees the shape of what the model returned. ZenML guarantees you can find it again, tells you which run it came from, and holds the run until someone approves it.
+</blockquote>
+</div>
+</figure>
+
+<section class="feature-graphic feature-graphic--list" data-reveal="" data-astro-cid-[hash]="">
+<div class="feature-graphic-grid" data-astro-cid-[hash]="">
+<div class="feature-graphic-copy" data-astro-cid-[hash]="">
+<h2 data-astro-cid-[hash]="">Different questions
+</h2>
+<div class="feature-graphic-body" data-astro-cid-[hash]="">
+<p>“Agent framework” and “orchestrator” get used loosely enough that they sound like alternatives. They aren’t. Here’s the split:
+</p>
+</div>
+</div>
+<div class="feature-graphic-media" data-astro-cid-[hash]="">
+<figure class="fig" data-astro-cid-[hash]="">
+<div class="panel panel--competitor" data-astro-cid-[hash]="">
+<div class="panel-head" data-astro-cid-[hash]="">
+<span class="panel-label" data-astro-cid-[hash]="">Pydantic AI · harness
+</span>
+<span class="panel-sub" data-astro-cid-[hash]="">How the agent thinks
+</span>
+</div>
+<div class="quote" data-astro-cid-[hash]="">
+<div class="quote-mark" aria-hidden="true" data-astro-cid-[hash]="">?
+</div>
+<div class="quote-text" data-astro-cid-[hash]="">How do I write a typed, ergonomic agent loop with first-class tools and structured outputs?
+</div>
+</div>
+<div class="concerns" data-astro-cid-[hash]="">
+<span class="chip" data-astro-cid-[hash]="">typed I/O
+</span>
+<span class="chip" data-astro-cid-[hash]="">tool calls
+</span>
+<span class="chip" data-astro-cid-[hash]="">structured outputs
+</span>
+<span class="chip" data-astro-cid-[hash]="">streaming
+</span>
+</div>
+<div class="foot" data-astro-cid-[hash]="">Scope: a single agent invocation.
+</div>
+</div>
+<div class="panel panel--zenml" data-astro-cid-[hash]="">
+<div class="panel-head" data-astro-cid-[hash]="">
+<span class="panel-label panel-label--accent" data-astro-cid-[hash]="">ZenML · orchestration
+</span>
+<span class="panel-sub" data-astro-cid-[hash]="">How the agent runs as a workload
+</span>
+</div>
+<div class="quote quote--accent" data-astro-cid-[hash]="">
+<div class="quote-mark quote-mark--accent" aria-hidden="true" data-astro-cid-[hash]="">?
+</div>
+<div class="quote-text" data-astro-cid-[hash]="">Once this agent exists, how does it run as a pipeline, pause for a human to approve, execute code in isolation, retry without re-paying, and get deployed on my infra?
+</div>
+</div>
+<div class="concerns" data-astro-cid-[hash]="">
+<span class="chip chip--accent" data-astro-cid-[hash]="">caching
+</span>
+<span class="chip chip--accent" data-astro-cid-[hash]="">sandboxes
+</span>
+<span class="chip chip--accent" data-astro-cid-[hash]="">wait / resume
+</span>
+<span class="chip chip--accent" data-astro-cid-[hash]="">artifacts
+</span>
+<span class="chip chip--accent" data-astro-cid-[hash]="">deployments
+</span>
+</div>
+<div class="foot foot--accent" data-astro-cid-[hash]="">Scope: a long-lived production workload.
+</div>
+</div>
+</figure>
+</div>
+<div class="feature-graphic-bullets" data-astro-cid-[hash]="">
+<ul>
+
+<li>
+<strong>Pydantic AI asks:
+</strong> How do I define this agent, give it typed dependencies, call a model, and validate what comes back against a schema?
+</li>
+
+<li>
+<strong>ZenML asks:
+</strong> This ran. What did it produce, where is that stored, which inputs made it, does a human need to approve it, and do I have to compute it again?
+</li>
+
+<li>
+<strong>Little overlap:
+</strong> ZenML doesn’t define agents, it runs them. The agent loop, the tools and the output schema are Pydantic AI’s. ZenML owns the run around them, the approval gate, the sandbox the tools execute in, and the deployment.
+</li>
+
+</ul>
+</div>
+</div>
+</section>
+
+<section class="feature-graphic feature-graphic--list" data-reveal="" data-astro-cid-[hash]="">
+<div class="feature-graphic-grid" data-astro-cid-[hash]="">
+<div class="feature-graphic-copy" data-astro-cid-[hash]="">
+<h2 data-astro-cid-[hash]="">What a pipeline adds on top
+</h2>
+<div class="feature-graphic-body" data-astro-cid-[hash]="">
+<p>The agent code doesn’t change. What changes is what exists around it once it’s run.
+</p>
+</div>
+</div>
+<div class="feature-graphic-media" data-astro-cid-[hash]="">
+<figure class="fig" data-astro-cid-[hash]="">
+<div class="layer layer--zenml" data-astro-cid-[hash]="">
+<div class="layer-head" data-astro-cid-[hash]="">
+<span class="layer-label" data-astro-cid-[hash]="">ZenML · orchestration
+</span>
+<span class="layer-sub" data-astro-cid-[hash]="">Adds on top, no agent rewrite
+</span>
+</div>
+<div class="caps" data-astro-cid-[hash]="">
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">@pipeline
+</span>
+<span class="cval" data-astro-cid-[hash]="">wraps the agent in a run you can inspect
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">enable_cache
+</span>
+<span class="cval" data-astro-cid-[hash]="">unchanged steps served from cache, keyed on step, params, inputs
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">zenml pipeline deploy
+</span>
+<span class="cval" data-astro-cid-[hash]="">serve it; every request is a run with lineage
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">wait()
+</span>
+<span class="cval" data-astro-cid-[hash]="">pause for a human, resume the run later
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">zenml stack set
+</span>
+<span class="cval" data-astro-cid-[hash]="">same code on K8s, Vertex, SageMaker, AzureML
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">sandbox
+</span>
+<span class="cval" data-astro-cid-[hash]="">isolated exec() for the agent's tools
+</span>
+</div>
+</div>
+</div>
+<div class="connector" aria-hidden="true" data-astro-cid-[hash]="">
+<div class="connector-pill" data-astro-cid-[hash]="">
+<span class="connector-arrow" data-astro-cid-[hash]="">↓
+</span>
+<span class="connector-label" data-astro-cid-[hash]="">wraps
+</span>
+</div>
+</div>
+<div class="layer layer--competitor" data-astro-cid-[hash]="">
+<div class="layer-head" data-astro-cid-[hash]="">
+<span class="layer-label layer-label--muted" data-astro-cid-[hash]="">Pydantic AI · harness
+</span>
+<span class="layer-sub" data-astro-cid-[hash]="">Your existing agent, unchanged
+</span>
+</div>
+<div class="adapter" data-astro-cid-[hash]="">
+<span class="mono adapter-key" data-astro-cid-[hash]="">agent.run_sync(...) inside a @step
+</span>
+<span class="adapter-sub" data-astro-cid-[hash]="">no adapter, no rewrite · the validated output becomes a versioned artifact
+</span>
+</div>
+</div>
+</figure>
+</div>
+<div class="feature-graphic-bullets" data-astro-cid-[hash]="">
+<ul>
+
+<li>
+<strong>
+<code>@pipeline
+</code>:
+</strong> Wraps the agent in a run with a status, a history, and steps you can inspect in the dashboard. With 
+<code>dynamic=True
+</code>, loops and branches in the pipeline body decide at run time which steps exist, and 
+<code>.map()
+</code> fans an agent step out over a list another step returned.
+</li>
+
+<li>
+<strong>Versioned artifacts:
+</strong> Return 
+<code>Annotated[Brief, "brief"]
+</code> and the validated Pydantic model is stored, versioned, and loadable by name across runs. The type survives the round trip.
+</li>
+
+<li>
+<strong>
+<code>enable_cache
+</code>:
+</strong> The cache is keyed on the step, its parameters and its inputs. Unchanged steps are served from cache on every run, so tuning the step after the agent doesn’t re-invoke the agent, and 
+<code>zenml pipeline runs retry
+</code> after a failed dynamic pipeline run re-runs only what didn’t complete.
+</li>
+
+<li>
+<strong>
+<code>wait()
+</code>:
+</strong> In a dynamic pipeline, pauses the run until a human resolves it from the dashboard, the API, or the CLI. The orchestration process can be torn down while it waits, and 
+<code>zenml pipeline runs resume
+</code> picks the run up again, or ZenML Pro resumes it automatically.
+</li>
+
+<li>
+<strong>Sandboxes:
+</strong> A stack component (local, Docker, Kubernetes, Modal) whose sessions the agent’s tools call 
+<code>exec()
+</code> on. The 
+<code>sandbox_pydantic_ai
+</code> example in the ZenML repo does exactly this: a Pydantic AI agent with 
+<code>run_python
+</code> and 
+<code>run_shell
+</code> tools backed by one session per subagent.
+</li>
+
+<li>
+<strong>
+<code>zenml stack set
+</code>:
+</strong> The same pipeline runs on Kubernetes, Vertex AI, SageMaker, or AzureML with no code change, and artifacts land in your own bucket. Self-host the server with Helm, or use ZenML Pro for the managed control plane.
+</li>
+
+</ul>
+</div>
+</div>
+</section>
+
+<h2 id="where-they-overlap-and-where-they-dont">Where they overlap, and where they don’t
+</h2>
+
+<p>Both projects touch observability, and it’s the one place you might expect a fight. There isn’t one.
+</p>
+
+<ul>
+
+<li>
+<strong>Logfire
+</strong> traces what happened 
+<em>inside
+</em> an agent run: the model calls, the tool calls, the timings. That’s a level of detail ZenML doesn’t capture and doesn’t try to.
+</li>
+
+<li>
+<strong>ZenML
+</strong> records what happened 
+<em>around
+</em> the step: which run, which inputs, which artifact version, which approval, on which stack. That’s a level Logfire isn’t aiming at.
+</li>
+
+<li>Teams run both, and during an incident they answer different questions.
+</li>
+
+</ul>
+
+<p>Neither one lets you take a recorded run and re-run it against a prompt or model change. That’s Kitaru, which has a first-class Pydantic AI adapter: see 
+<a href="/compare/kitaru-vs-pydantic-ai">Kitaru vs Pydantic AI
+</a>.
+</p>
+
+<h2 id="what-makes-zenml-different">What makes ZenML different
+</h2>
+
+<div class="ctable-wrap" data-reveal="" data-astro-cid-[hash]="">
+<table class="ctable has-notes" data-astro-cid-[hash]="">
+<thead data-astro-cid-[hash]="">
+<tr data-astro-cid-[hash]="">
+<th class="col-feature" data-astro-cid-[hash]="">Feature
+</th>
+<th class="col-zenml" data-astro-cid-[hash]="">ZenML
+</th>
+<th class="col-competitor" data-astro-cid-[hash]="">Pydantic AI
+</th>
+<th class="col-note" data-astro-cid-[hash]="">What that means
+</th>
+</tr>
+</thead>
+<tbody data-astro-cid-[hash]="">
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Versioned artifacts and lineage across runs
+</td>
+<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">Step outputs are stored and loadable by name, including validated Pydantic models.
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Caching that skips unchanged steps on a re-run
+</td>
+<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">Keyed on the step, its parameters and its inputs; an agent re-run starts fresh.
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Pause the run for human approval, resume later
+</td>
+<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="partial" data-astro-cid-[hash]="">
+<span class="pill-partial" aria-label="Partial" data-astro-cid-[hash]="">Partial
+</span>
+<span class="sr-only" data-astro-cid-[hash]="">Partial support
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">`wait()` in a dynamic pipeline pauses the whole run. Pydantic AI can defer a tool call for approval, but you own the storage and the process between turns.
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Isolated code execution for tool loops
+</td>
+<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="partial" data-astro-cid-[hash]="">
+<span class="pill-partial" aria-label="Partial" data-astro-cid-[hash]="">Partial
+</span>
+<span class="sr-only" data-astro-cid-[hash]="">Partial support
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">ZenML's sandbox is a stack component with local, Docker, Kubernetes and Modal flavors. Pydantic's Code Mode (in pydantic-ai-harness) runs the model's tool-calling code inside the Monty sandbox, a Python subset interpreter.
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML and more
+</td>
+<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">Configure once, every pipeline uses it.
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Serve it and get lineage per request
+</td>
+<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">`zenml pipeline deploy` makes every request a tracked run.
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Works with any agent framework, not just one
+</td>
+<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">A step is ordinary Python.
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Typed dependencies and validated structured outputs
+</td>
+<td class="col-zenml" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-competitor" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">Pydantic AI's whole point. Use it inside the step.
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Model-provider abstraction
+</td>
+<td class="col-zenml" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-competitor" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">ZenML has no LLM primitive; call whichever SDK you like from a step.
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Tracing inside an agent run (model and tool calls)
+</td>
+<td class="col-zenml" data-value="no" data-astro-cid-[hash]="">
+<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
+<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Not supported
+</span>
+</td>
+<td class="col-competitor" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">Logfire's level of detail. ZenML records the step, not the calls within it.
+</td>
+</tr>
+<tr data-astro-cid-[hash]="">
+<td class="col-feature" data-astro-cid-[hash]="">Open source, self-hostable
+</td>
+<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-competitor" data-value="yes" data-astro-cid-[hash]="">
+<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
+<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span class="sr-only" data-astro-cid-[hash]="">Yes
+</span>
+</td>
+<td class="col-note" data-astro-cid-[hash]="">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<h2 id="how-the-two-surfaces-map">How the two surfaces map
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table>
+<thead>
+<tr>
+<th>Concept
+</th>
+<th>Pydantic AI
+</th>
+<th>ZenML
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unit of work
+</td>
+<td>
+<code>Agent.run()
+</code>
+</td>
+<td>
+<code>@step
+</code> (the agent runs inside it)
+</td>
+</tr>
+<tr>
+<td>Boundary
+</td>
+<td>The agent and its dependencies
+</td>
+<td>
+<code>@pipeline
+</code>
+</td>
+</tr>
+<tr>
+<td>Control flow
+</td>
+<td>The agent loop
+</td>
+<td>The pipeline graph, or Python control flow with 
+<code>dynamic=True
+</code>
+</td>
+</tr>
+<tr>
+<td>Typing
+</td>
+<td>Validated structured output
+</td>
+<td>
+<code>Annotated[T, "name"]
+</code> on the artifact
+</td>
+</tr>
+<tr>
+<td>Human approval
+</td>
+<td>Deferred tool calls, your own persistence
+</td>
+<td>
+<code>wait()
+</code> in a dynamic pipeline, resolved from CLI, dashboard or API
+</td>
+</tr>
+<tr>
+<td>Code execution
+</td>
+<td>Code Mode in the Monty sandbox
+</td>
+<td>Sandbox stack component (local, Docker, Kubernetes, Modal)
+</td>
+</tr>
+<tr>
+<td>Outputs
+</td>
+<td>
+<code>AgentRunResult
+</code> in memory
+</td>
+<td>Versioned artifacts in your bucket
+</td>
+</tr>
+<tr>
+<td>Avoiding repeat work
+</td>
+<td>Not applicable
+</td>
+<td>
+<code>enable_cache
+</code> across runs, 
+<code>zenml pipeline runs retry
+</code> after a failed dynamic run
+</td>
+</tr>
+<tr>
+<td>Observability
+</td>
+<td>Logfire traces inside the run
+</td>
+<td>Runs, steps, and artifacts around it
+</td>
+</tr>
+<tr>
+<td>Where it runs
+</td>
+<td>Your process
+</td>
+<td>Stack orchestrator (
+<code>zenml stack set
+</code>)
+</td>
+</tr>
+<tr>
+<td>Serving
+</td>
+<td>Your own wrapper
+</td>
+<td>
+<code>zenml pipeline deploy --name ...
+</code>
+</td>
+</tr>
+</tbody>
+</table>
+
+<section class="codecompare" data-reveal="" data-astro-cid-[hash]="">
+<div class="codecompare-inner" data-astro-cid-[hash]="">
+<h2 class="codecompare-title" data-astro-cid-[hash]="">Code comparison
+</h2>
+</div>
+<div class="codecompare-grid" data-astro-cid-[hash]="">
+<article class="codecompare-pane codecompare-pane--zenml" aria-label="Recommended: ZenML implementation" data-astro-cid-[hash]="">
+<header data-astro-cid-[hash]="">
+<span class="codecompare-dot codecompare-dot--zenml" aria-hidden="true" data-astro-cid-[hash]="">
+</span>
+<span class="codecompare-label" data-astro-cid-[hash]="">ZenML (wrapping the agent)
+</span>
+<span class="codecompare-pill" data-astro-cid-[hash]="">Recommended
+</span>
+</header>
+<div class="codecompare-code" data-astro-cid-[hash]="">
+<pre class="shiki shiki-themes zenml-light zenml-dark" style="background-color:#f3f4f6;--shiki-dark-bg:#1a1a2e;color:#1f0c47;--shiki-dark:#e2e8f0" tabindex="0">
+<code>
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">from
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> typing 
+</span>
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">import
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> Annotated
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">from
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> pydantic 
+</span>
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">import
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> BaseModel
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">from
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> pydantic_ai 
+</span>
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">import
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> Agent
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">from
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> zenml 
+</span>
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">import
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> pipeline
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">,
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> step
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">,
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> wait
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">from
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> zenml
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">.
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">client 
+</span>
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">import
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> Client
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">class
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD"> Brief
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD">BaseModel
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">):
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">  summary
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">:
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD"> str
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">  sources
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">:
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> list[
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD">str
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">]
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">agent 
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> Agent(
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC">"anthropic:claude-sonnet-4-6"
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">,
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD"> output_type
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">Brief)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F53D81;--shiki-dark:#FB7185">@step
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">def
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> gather_context
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD">topic
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">:
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD"> str
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">) 
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">-&gt;
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> Annotated[
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD">str
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">,
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC"> "context"
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">]:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">  return
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> retrieve_documents(topic)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F53D81;--shiki-dark:#FB7185">@step
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD">enable_cache
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">False
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">def
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> run_agent
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD">context
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">:
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD"> str
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">,
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD"> topic
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">:
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD"> str
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">) 
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">-&gt;
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> Annotated[Brief
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">,
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC"> "brief"
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">]:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic">  # The validated Pydantic model is stored as the artifact,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic">  # so the type survives the round trip.
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">  return
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> agent
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">.
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">run_sync(
+</span>
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">f
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC">"
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">{
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">context
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">}\n\n
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC">Brief on: 
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">{
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">topic
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">}
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC">"
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">)
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">.
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">output
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F53D81;--shiki-dark:#FB7185">@step
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">def
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> publish
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD">brief
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">:
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> Brief) 
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">-&gt;
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> None:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">  post_to_cms(brief
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">.
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">summary)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F53D81;--shiki-dark:#FB7185">@pipeline
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD">dynamic
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">True
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">def
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> brief_pipeline
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD">topic
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">:
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD"> str
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">):
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">  brief 
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> run_agent(gather_context(topic)
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">,
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> topic)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic">  # Pauses the run until someone answers from the
+</span>
+</span>
+
+<span class="line">
+<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic">  # dashboard, the API, or the CLI.
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">  approved 
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> wait(
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD">schema
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD">bool
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">,
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD"> question
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC">"Publish this brief?"
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">  if
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> approved
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">      publish(brief)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">brief_pipeline(
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC">"AI orchestration"
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># Comes back typed, from any past run:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">brief 
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> Client()
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">.
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">get_artifact_version(
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC">"brief"
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">)
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">.
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">load()
+</span>
+</span>
+</code>
+</pre>
+</div>
+</article>
+<article class="codecompare-pane" data-astro-cid-[hash]="">
+<header data-astro-cid-[hash]="">
+<span class="codecompare-dot codecompare-dot--competitor" aria-hidden="true" data-astro-cid-[hash]="">
+</span>
+<span class="codecompare-label" data-astro-cid-[hash]="">Pydantic AI alone
+</span>
+</header>
+<div class="codecompare-code" data-astro-cid-[hash]="">
+<pre class="shiki shiki-themes zenml-light zenml-dark" style="background-color:#f3f4f6;--shiki-dark-bg:#1a1a2e;color:#1f0c47;--shiki-dark:#e2e8f0" tabindex="0">
+<code>
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">from
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> pydantic 
+</span>
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">import
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> BaseModel
+</span>
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">from
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> pydantic_ai 
+</span>
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">import
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> Agent
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">class
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD"> Brief
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD">BaseModel
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">):
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">  summary
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">:
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD"> str
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">  sources
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">:
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> list[
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD">str
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">]
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">agent 
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> Agent(
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC">"anthropic:claude-sonnet-4-6"
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">,
+</span>
+<span style="color:#7641BB;--shiki-dark:#C4B5FD"> output_type
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">Brief)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">topic 
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC"> "AI orchestration"
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">context 
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> retrieve_documents(topic)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">result 
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> agent
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">.
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">run_sync(
+</span>
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">f
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC">"
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">{
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">context
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">}\n\n
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC">Brief on: 
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">{
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">topic
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">}
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC">"
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">brief 
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">=
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> result
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">.
+</span>
+<span style="color:#1F0C47;--shiki-dark:#E2E8F0">output          
+</span>
+<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># validated Brief
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#228A8A;--shiki-dark:#5EEAD4">if
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> input(
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC">"Publish this brief? "
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">)
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185"> ==
+</span>
+<span style="color:#4AA819;--shiki-dark:#86EFAC"> "y"
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">  post_to_cms(brief
+</span>
+<span style="color:#F53D81;--shiki-dark:#FB7185">.
+</span>
+<span style="color:#7A3EF4;--shiki-dark:#A78BFA">summary)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># The output is type-safe and Logfire can trace the model and
+</span>
+</span>
+
+<span class="line">
+<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># tool calls inside this run. What there isn't: a run record
+</span>
+</span>
+
+<span class="line">
+<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># across runs, a versioned artifact you can load back by name
+</span>
+</span>
+
+<span class="line">
+<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># next month, a cache that skips retrieval on the next run,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># an approval that survives the process being torn down, or
+</span>
+</span>
+
+<span class="line">
+<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># a way to put this on Vertex AI without writing it.
+</span>
+</span>
+</code>
+</pre>
+</div>
+</article>
+</div>
+</section>
+
+<section class="ccta-section" id="cta" data-astro-cid-[hash]="">
+<div class="ccta-card" data-reveal="" data-astro-cid-[hash]="">
+<div class="ccta-eyebrow" aria-hidden="true" data-astro-cid-[hash]="">
+<span class="ccta-eyebrow-dot" data-astro-cid-[hash]="">
+</span>
+<span class="ccta-eyebrow-text" data-astro-cid-[hash]="">The orchestration layer underneath
+</span>
+</div>
+<h2 class="ccta-headline" data-astro-cid-[hash]="">Put a pipeline around your Pydantic AI agents
+</h2>
+<div class="ccta-body" data-astro-cid-[hash]="">
+<p>These aren’t alternatives, and picking one doesn’t rule out the other. Build the agent with Pydantic AI, keep its typing and its tracing, and add ZenML when the agent becomes a workload: the outputs need versioning, a human has to sign off before the next step, re-running everything gets expensive, and it has to run on your own infrastructure.
+</p>
+</div>
+<div class="ccta-shelf" data-astro-cid-[hash]="">
+<div class="ccta-install" data-astro-cid-[hash]="">
+<span class="ccta-install-prompt" aria-hidden="true" data-astro-cid-[hash]="">$
+</span>
+<code class="ccta-install-cmd" data-astro-cid-[hash]="">uv add zenml
+</code>
+<button class="ccta-copy-btn" aria-label="Copy install command" data-copy="uv add zenml" data-astro-cid-[hash]="">
+<svg class="ccta-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
+<rect x="9" y="9" width="13" height="13" rx="2" data-astro-cid-[hash]="">
+</rect>
+<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" data-astro-cid-[hash]="">
+</path>
+</svg>
+<svg class="ccta-check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
+<polyline points="20 6 9 17 4 12" data-astro-cid-[hash]="">
+</polyline>
+</svg>
+</button>
+</div>
+<a href="https://cloud.zenml.io" data-analytics="ZenML-Compare-CTA-Signup" class="ccta-primary" data-astro-cid-[hash]="">
+<span data-astro-cid-[hash]="">Sign up free
+</span>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
+<path d="M5 12h14" data-astro-cid-[hash]="">
+</path>
+<path d="m13 5 7 7-7 7" data-astro-cid-[hash]="">
+</path>
+</svg>
+</a>
+</div>
+<div class="ccta-footer" data-astro-cid-[hash]="">
+<a href="https://docs.zenml.io" target="_blank" rel="noopener noreferrer" class="ccta-link" data-astro-cid-[hash]="">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
+<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" data-astro-cid-[hash]="">
+</path>
+<path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Read the docs
+</span>
+</a>
+<span class="ccta-dot" aria-hidden="true" data-astro-cid-[hash]="">
+</span>
+<a href="/book-your-demo" class="ccta-link" data-astro-cid-[hash]="">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
+<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Talk to the team
+</span>
+</a>
+<span class="ccta-dot" aria-hidden="true" data-astro-cid-[hash]="">
+</span>
+<a href="https://github.com/zenml-io/zenml" target="_blank" rel="noopener noreferrer" class="ccta-link" data-astro-cid-[hash]="">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
+<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" data-astro-cid-[hash]="">
+</path>
+</svg>
+<span data-astro-cid-[hash]="">Star on GitHub
+</span>
+</a>
+</div>
+</div>
+</section>
+<script type="module" src="/_astro/ComparisonCta.astro_astro_type_script_index_0_lang.[hash].js">
+</script>
+</article>
