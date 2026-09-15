@@ -14,7 +14,11 @@ tags:
   - "evergreen"
 date: "2026-09-15T00:00:00.000Z"
 readingTime: "7 mins"
+mainImage:
+  url: "https://assets.zenml.io/content/blog/choosing-a-sandbox-runtime-for-long-lived-coding-agents/890175c1/choosing-a-sandbox-runtime-for-long-lived-coding-agents-cover.avif"
+  alt: "Kitaru blog cover: Choosing a sandbox runtime for long-lived coding agents"
 seo:
+  ogImage: "https://assets.zenml.io/content/blog/choosing-a-sandbox-runtime-for-long-lived-coding-agents/4569fb69/choosing-a-sandbox-runtime-for-long-lived-coding-agents-cover.jpg"
   title: "Choosing a sandbox runtime for long-lived coding agents - ZenML Blog"
   description: "How we evaluated sandbox providers for coding agents, what we chose for now, and the trade-offs behind that decision."
   canonical: "https://www.zenml.io/blog/choosing-a-sandbox-runtime-for-long-lived-coding-agents"
