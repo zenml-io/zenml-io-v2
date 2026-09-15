@@ -12,9 +12,11 @@
  * except "did the build exit 0". The Astro 7.2.4 bump (#268) silently changed
  * smart-quote direction on 11 pages; a worse change — dropped code blocks,
  * un-escaped HTML, a broken table — would have shipped green too. A golden
- * copy of one blog post (plain Markdown) and one Kitaru-vs-X page (MDX with
- * component imports) turns "the build succeeded" into "the build produced
- * the same content it produced last time".
+ * copy of one blog post (plain Markdown) and one page from each MDX compare
+ * template — Kitaru-vs-X (KitaruCompare.astro) and ZenML-vs-X
+ * (ZenmlMdxCompare.astro), separate component sets under
+ * src/components/compare/{kitaru,zenml}/ — turns "the build succeeded" into
+ * "the build produced the same content it produced last time".
  *
  * Only the content region of each page is snapshotted (not <head>, nav,
  * footer, related posts), so routine site-furniture changes don't churn the
@@ -102,6 +104,13 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
     golden: "compare-zenml-vs-crewai.html",
     covers:
       "ZenML MDX comparison body: the richest MDX entry with tables, code panes, graphics, quote, and closing comparison content",
+  },
+  {
+    page: "compare/zenml-vs-pydantic-ai.html",
+    selector: ".compare-body-inner",
+    golden: "compare-zenml-vs-pydantic-ai.html",
+    covers:
+      "compare-zenml MDX template (ZenmlMdxCompare.astro): WhenToUseEach, PullQuote, FeatureWithGraphic (incl. reverse layout + custom graphic components), a Markdown pipe-table, ComparisonTable, CodeCompare panes (Shiki), ComparisonCta",
   },
   {
     page: "projects/floracast.html",

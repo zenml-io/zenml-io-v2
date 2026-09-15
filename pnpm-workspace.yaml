@@ -12,3 +12,18 @@ overrides:
   'miniflare@<4.20260721.0>ws': 8.21.0
   '@cloudflare/vite-plugin@1.39.0>ws': 8.21.0
   'miniflare@<=4.20260721.0>sharp': 0.35.4
+  # Build-time-only advisories. All three parents resolve a vulnerable child
+  # that a plain `pnpm update` cannot reach cheaply: it re-resolves the whole
+  # graph (~50 lockfile entries, a second rolldown copy) for two patch bumps.
+  # Parent-scoped so each override expires visibly when its parent moves.
+  # None is attacker-reachable — every input is our own repo content:
+  #   fast-uri  4 advisories, all <3.1.6 (GHSA-5jgf-p345-68v8,
+  #             GHSA-f65p-4m7j-42xc, GHSA-fph4-wmhf-6fwf, GHSA-jqff-g426-hqxp)
+  #             via ajv, in @astrojs/check's YAML language server; reads only
+  #             our own YAML during `pnpm check`
+  #   js-yaml   GHSA-2883-xcg3-v3hh via gray-matter, parsing our own frontmatter
+  #   fflate    GHSA-px8p-9vwx-vf98 via satori, decompressing our own fonts
+  #             when rendering compare-page OG cards
+  'ajv>fast-uri': 3.1.8
+  'gray-matter>js-yaml': 3.15.2
+  'satori>fflate': 0.7.5

@@ -1,0 +1,172 @@
+{
+  "src/components/blog/BlogCard.astro": {
+    "shadcn/no-restyle": {
+      "count": 6
+    }
+  },
+  "src/components/islands/DemoRequestForm.tsx": {
+    "shadcn/no-raw-colors": {
+      "count": 12
+    }
+  },
+  "src/components/islands/filter-index/BlogIndex.tsx": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/components/islands/filter-index/DataFilterIndex.tsx": {
+    "shadcn/no-raw-colors": {
+      "count": 5
+    }
+  },
+  "src/components/islands/filter-index/FacetRail.tsx": {
+    "shadcn/no-restyle": {
+      "count": 4
+    }
+  },
+  "src/components/islands/shared/FilterEmptyState.tsx": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/components/kitaru/Cta.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/components/kitaru/Features.astro": {
+    "no-restricted-syntax": {
+      "count": 1
+    }
+  },
+  "src/components/kitaru/islands/HeroVideo.tsx": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/components/kitaru/islands/TwoDoors.tsx": {
+    "no-restricted-syntax": {
+      "count": 3
+    }
+  },
+  "src/components/labs/BlogNewsletterCta.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/components/labs/LabsCaseStudySidebar.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/components/labs/LabsCloseCta.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/components/labs/LabsComparisonBand.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/components/labs/LabsComparisonQuote.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/components/labs/LabsComparisonStrategyCta.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/components/labs/LabsNavigation.astro": {
+    "shadcn/no-restyle": {
+      "count": 14
+    }
+  },
+  "src/components/labs/LabsPageHeader.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/components/sections/FinalCTA.astro": {
+    "shadcn/no-restyle": {
+      "count": 4
+    }
+  },
+  "src/components/sections/FormPlaceholder.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/components/sections/ProjectsCTA.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 3
+    }
+  },
+  "src/components/templates/PageHeader.astro": {
+    "shadcn/no-restyle": {
+      "count": 3
+    }
+  },
+  "src/components/templates/TermHubEntryIndex.astro": {
+    "no-restricted-syntax": {
+      "count": 1
+    }
+  },
+  "src/layouts/BlogLayout.astro": {
+    "shadcn/no-restyle": {
+      "count": 6
+    }
+  },
+  "src/layouts/DatabaseEntryLayout.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/lib/pricing.ts": {
+    "shadcn/no-raw-colors": {
+      "count": 18
+    }
+  },
+  "src/lib/rehypeTableScroll.ts": {
+    "shadcn/no-raw-colors": {
+      "count": 6
+    }
+  },
+  "src/lib/templates/registry.ts": {
+    "shadcn/no-raw-colors": {
+      "count": 12
+    }
+  },
+  "src/pages/author/[slug].astro": {
+    "shadcn/no-restyle": {
+      "count": 3
+    }
+  },
+  "src/pages/careers.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/pages/features/[slug].astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/pages/integration-type/[slug].astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/pages/integration-type/index.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/scripts/image-lightbox.ts": {
+    "shadcn/no-raw-colors": {
+      "count": 2
+    }
+  }
+}

@@ -1,0 +1,1663 @@
+<article class="compare-body-inner">
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">Pydantic AI brings the Pydantic team’s approach to agents: typed dependencies, validated structured outputs, and a model-agnostic API that still reads like Python. If you want an agent whose output you can trust to match a schema, it’s a very good choice.
+</p>
+</div>
+
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">ZenML isn’t a competing harness. It’s the orchestration layer around the agent: your
+<code>Agent
+</code> runs unchanged inside a
+<code>@step
+</code>, and ZenML supplies the pipeline, the versioned artifacts, the cache, a
+<code>wait()
+</code> that pauses the run for a human, a sandbox for the code the agent’s tools execute, and the stack that puts it on Kubernetes, Vertex AI, SageMaker, AzureML and more.
+</p>
+</div>
+
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">Both are ordinary Python, so they compose cleanly. Pydantic AI validates what comes out of the model. ZenML stores what comes out of the step, remembers which run produced it, and decides what happens next.
+</p>
+</div>
+
+<section class="scroll-reveal-section py-8 md:py-10">
+<div class="scroll-reveal-section mx-auto grid max-w-content grid-cols-1 gap-6 px-gutter lg:grid-cols-2">
+<article class="reveal-child flex h-full flex-col rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10">
+<p class="font-sans text-[14px] leading-5 font-medium text-(--color-sage-700)">ZenML
+</p>
+<h2 class="mt-3 font-display text-[28px] leading-[34px] text-(--color-cream-900)">Use ZenML if you are
+</h2>
+<ul class="mt-6 flex list-none flex-col">
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Running agent work on a schedule or behind an endpoint, not from a terminal by hand
+</span>
+</li>
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Asked, weeks later, which output came from which run and which inputs
+</span>
+</li>
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Pausing for a human to approve what the agent produced before the next step acts on it
+</span>
+</li>
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Re-running often enough that skipping unchanged steps saves real money
+</span>
+</li>
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Deploying into your own cloud for security or compliance, with the outputs in your own bucket
+</span>
+</li>
+</ul>
+</article>
+<article class="reveal-child flex h-full flex-col rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10 stagger-1">
+<p class="font-sans text-[14px] leading-5 font-medium text-(--color-sage-700)">Pydantic AI
+</p>
+<h2 class="mt-3 font-display text-[28px] leading-[34px] text-(--color-cream-900)">Use Pydantic AI if you are
+</h2>
+<ul class="mt-6 flex list-none flex-col">
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Building the agent itself, and want typed dependencies and validated structured outputs
+</span>
+</li>
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Switching between model providers behind one API
+</span>
+</li>
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Wanting a framework that reads like ordinary, type-checked Python
+</span>
+</li>
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Using Logfire for tracing individual agent runs
+</span>
+</li>
+</ul>
+</article>
+</div>
+</section>
+
+<section class="comparison-quote scroll-reveal-section relative overflow-hidden border-y border-(--color-border) py-12 md:py-20 bg-(--color-sage-50)">
+<script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();
+</script>
+<astro-island uid="[hash]" data-preact-island-id="6" component-url="/_astro/GrainBackdrop.[hash].js" component-export="GrainBackdrop" renderer-url="/_astro/client.[hash].js" props="{&quot;config&quot;:[0,{&quot;shaderColors&quot;:[1,[[0,&quot;#DBE0C2&quot;],[0,&quot;#C9D3B4&quot;],[0,&quot;#BECAA6&quot;],[0,&quot;#E3E8CD&quot;]]],&quot;panel&quot;:[0,&quot;#F4F3EC&quot;],&quot;blobA&quot;:[0,&quot;#C9D3B4E6&quot;],&quot;blobB&quot;:[0,&quot;#9AAD82B3&quot;],&quot;speed&quot;:[0,1.4],&quot;scale&quot;:[0,1.35],&quot;rotation&quot;:[0,24],&quot;noise&quot;:[0,0.5],&quot;blend&quot;:[0,false]}],&quot;class&quot;:[0,&quot;absolute inset-0 opacity-90&quot;]}" ssr="" client="idle" opts="{&quot;name&quot;:&quot;GrainBackdrop&quot;,&quot;value&quot;:true}" await-children="">
+<div aria-hidden="true" style="background-color:#F4F3EC;background-image:radial-gradient(circle farthest-corner at 20% 15%, #C9D3B4E6 0%, transparent 60%), radial-gradient(circle farthest-corner at 85% 85%, #9AAD82B3 0%, transparent 60%);" class="pointer-events-none absolute inset-0 absolute inset-0 opacity-90">
+</div>
+<!--astro:end-->
+</astro-island>
+<figure class="reveal-child relative mx-auto max-w-content px-gutter text-center">
+<blockquote class="font-display text-[28px] leading-[36px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[46px]">Pydantic AI guarantees the shape of what the model returned. ZenML guarantees you can find it again, tells you which run it came from, and holds the run until someone approves it.
+</blockquote>
+</figure>
+</section>
+
+<section class="scroll-reveal-section py-8 md:py-10" data-astro-cid-[hash]="">
+<div class="reveal-child mx-auto max-w-content px-gutter" data-astro-cid-[hash]="">
+<div data-astro-cid-[hash]="">
+<h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[42px]" data-astro-cid-[hash]="">Different questions
+</h2>
+<div class="comparison-value-copy mt-6 max-w-[768px] font-sans text-[17px] leading-[26px] text-(--color-cream-800)" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">“Agent framework” and “orchestrator” get used loosely enough that they sound like alternatives. They aren’t. Here’s the split:
+</p>
+</div>
+</div>
+<div class="comparison-diagram-well mt-10 min-w-0 overflow-hidden rounded-[20px] p-8 md:p-10 comparison-diagram-well--zenml bg-(--color-sage-300)" data-astro-cid-[hash]="">
+<figure class="fig" data-astro-cid-[hash]="">
+<div class="panel panel--competitor" data-astro-cid-[hash]="">
+<div class="panel-head" data-astro-cid-[hash]="">
+<span class="panel-label" data-astro-cid-[hash]="">Pydantic AI · harness
+</span>
+<span class="panel-sub" data-astro-cid-[hash]="">How the agent thinks
+</span>
+</div>
+<div class="quote" data-astro-cid-[hash]="">
+<div class="quote-mark" aria-hidden="true" data-astro-cid-[hash]="">?
+</div>
+<div class="quote-text" data-astro-cid-[hash]="">How do I write a typed, ergonomic agent loop with first-class tools and structured outputs?
+</div>
+</div>
+<div class="concerns" data-astro-cid-[hash]="">
+<span class="chip" data-astro-cid-[hash]="">typed I/O
+</span>
+<span class="chip" data-astro-cid-[hash]="">tool calls
+</span>
+<span class="chip" data-astro-cid-[hash]="">structured outputs
+</span>
+<span class="chip" data-astro-cid-[hash]="">streaming
+</span>
+</div>
+<div class="foot" data-astro-cid-[hash]="">Scope: a single agent invocation.
+</div>
+</div>
+<div class="panel panel--zenml" data-astro-cid-[hash]="">
+<div class="panel-head" data-astro-cid-[hash]="">
+<span class="panel-label panel-label--accent" data-astro-cid-[hash]="">ZenML · orchestration
+</span>
+<span class="panel-sub" data-astro-cid-[hash]="">How the agent runs as a workload
+</span>
+</div>
+<div class="quote quote--accent" data-astro-cid-[hash]="">
+<div class="quote-mark quote-mark--accent" aria-hidden="true" data-astro-cid-[hash]="">?
+</div>
+<div class="quote-text" data-astro-cid-[hash]="">Once this agent exists, how does it run as a pipeline, pause for a human to approve, execute code in isolation, retry without re-paying, and get deployed on my infra?
+</div>
+</div>
+<div class="concerns" data-astro-cid-[hash]="">
+<span class="chip chip--accent" data-astro-cid-[hash]="">caching
+</span>
+<span class="chip chip--accent" data-astro-cid-[hash]="">sandboxes
+</span>
+<span class="chip chip--accent" data-astro-cid-[hash]="">wait / resume
+</span>
+<span class="chip chip--accent" data-astro-cid-[hash]="">artifacts
+</span>
+<span class="chip chip--accent" data-astro-cid-[hash]="">deployments
+</span>
+</div>
+<div class="foot foot--accent" data-astro-cid-[hash]="">Scope: a long-lived production workload.
+</div>
+</div>
+</figure>
+</div>
+<div class="labs-hex-list mt-10" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<ul class="reveal-child">
+
+<li>
+<strong>Pydantic AI asks:
+</strong> How do I define this agent, give it typed dependencies, call a model, and validate what comes back against a schema?
+</li>
+
+<li>
+<strong>ZenML asks:
+</strong> This ran. What did it produce, where is that stored, which inputs made it, does a human need to approve it, and do I have to compute it again?
+</li>
+
+<li>
+<strong>Little overlap:
+</strong> ZenML doesn’t define agents, it runs them. The agent loop, the tools and the output schema are Pydantic AI’s. ZenML owns the run around them, the approval gate, the sandbox the tools execute in, and the deployment.
+</li>
+
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="scroll-reveal-section py-8 md:py-10" data-astro-cid-[hash]="">
+<div class="reveal-child mx-auto max-w-content px-gutter" data-astro-cid-[hash]="">
+<div data-astro-cid-[hash]="">
+<h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[42px]" data-astro-cid-[hash]="">What a pipeline adds on top
+</h2>
+<div class="comparison-value-copy mt-6 max-w-[768px] font-sans text-[17px] leading-[26px] text-(--color-cream-800)" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">The agent code doesn’t change. What changes is what exists around it once it’s run.
+</p>
+</div>
+</div>
+<div class="comparison-diagram-well mt-10 min-w-0 overflow-hidden rounded-[20px] p-8 md:p-10 comparison-diagram-well--zenml bg-(--color-sage-300)" data-astro-cid-[hash]="">
+<figure class="fig" data-astro-cid-[hash]="">
+<div class="layer layer--zenml" data-astro-cid-[hash]="">
+<div class="layer-head" data-astro-cid-[hash]="">
+<span class="layer-label" data-astro-cid-[hash]="">ZenML · orchestration
+</span>
+<span class="layer-sub" data-astro-cid-[hash]="">Adds on top, no agent rewrite
+</span>
+</div>
+<div class="caps" data-astro-cid-[hash]="">
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">@pipeline
+</span>
+<span class="cval" data-astro-cid-[hash]="">wraps the agent in a run you can inspect
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">enable_cache
+</span>
+<span class="cval" data-astro-cid-[hash]="">unchanged steps served from cache, keyed on step, params, inputs
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">zenml pipeline deploy
+</span>
+<span class="cval" data-astro-cid-[hash]="">serve it; every request is a run with lineage
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">wait()
+</span>
+<span class="cval" data-astro-cid-[hash]="">pause for a human, resume the run later
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">zenml stack set
+</span>
+<span class="cval" data-astro-cid-[hash]="">same code on K8s, Vertex, SageMaker, AzureML
+</span>
+</div>
+<div class="cap" data-astro-cid-[hash]="">
+<span class="mono ckey" data-astro-cid-[hash]="">sandbox
+</span>
+<span class="cval" data-astro-cid-[hash]="">isolated exec() for the agent's tools
+</span>
+</div>
+</div>
+</div>
+<div class="connector" aria-hidden="true" data-astro-cid-[hash]="">
+<div class="connector-pill" data-astro-cid-[hash]="">
+<span class="connector-arrow" data-astro-cid-[hash]="">↓
+</span>
+<span class="connector-label" data-astro-cid-[hash]="">wraps
+</span>
+</div>
+</div>
+<div class="layer layer--competitor" data-astro-cid-[hash]="">
+<div class="layer-head" data-astro-cid-[hash]="">
+<span class="layer-label layer-label--muted" data-astro-cid-[hash]="">Pydantic AI · harness
+</span>
+<span class="layer-sub" data-astro-cid-[hash]="">Your existing agent, unchanged
+</span>
+</div>
+<div class="adapter" data-astro-cid-[hash]="">
+<span class="mono adapter-key" data-astro-cid-[hash]="">agent.run_sync(...) inside a @step
+</span>
+<span class="adapter-sub" data-astro-cid-[hash]="">no adapter, no rewrite · the validated output becomes a versioned artifact
+</span>
+</div>
+</div>
+</figure>
+</div>
+<div class="labs-hex-list mt-10" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<ul class="reveal-child">
+
+<li>
+<strong>
+<code>@pipeline
+</code>:
+</strong> Wraps the agent in a run with a status, a history, and steps you can inspect in the dashboard. With
+<code>dynamic=True
+</code>, loops and branches in the pipeline body decide at run time which steps exist, and
+<code>.map()
+</code> fans an agent step out over a list another step returned.
+</li>
+
+<li>
+<strong>Versioned artifacts:
+</strong> Return
+<code>Annotated[Brief, "brief"]
+</code> and the validated Pydantic model is stored, versioned, and loadable by name across runs. The type survives the round trip.
+</li>
+
+<li>
+<strong>
+<code>enable_cache
+</code>:
+</strong> The cache is keyed on the step, its parameters and its inputs. Unchanged steps are served from cache on every run, so tuning the step after the agent doesn’t re-invoke the agent, and
+<code>zenml pipeline runs retry
+</code> after a failed dynamic pipeline run re-runs only what didn’t complete.
+</li>
+
+<li>
+<strong>
+<code>wait()
+</code>:
+</strong> In a dynamic pipeline, pauses the run until a human resolves it from the dashboard, the API, or the CLI. The orchestration process can be torn down while it waits, and
+<code>zenml pipeline runs resume
+</code> picks the run up again, or ZenML Pro resumes it automatically.
+</li>
+
+<li>
+<strong>Sandboxes:
+</strong> A stack component (local, Docker, Kubernetes, Modal) whose sessions the agent’s tools call
+<code>exec()
+</code> on. The
+<code>sandbox_pydantic_ai
+</code> example in the ZenML repo does exactly this: a Pydantic AI agent with
+<code>run_python
+</code> and
+<code>run_shell
+</code> tools backed by one session per subagent.
+</li>
+
+<li>
+<strong>
+<code>zenml stack set
+</code>:
+</strong> The same pipeline runs on Kubernetes, Vertex AI, SageMaker, or AzureML with no code change, and artifacts land in your own bucket. Self-host the server with Helm, or use ZenML Pro for the managed control plane.
+</li>
+
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<div class="comparison-prose prose scroll-reveal-section">
+<h2 id="where-they-overlap-and-where-they-dont" class="reveal-child">Where they overlap, and where they don’t
+</h2>
+</div>
+
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">Both projects touch observability, and it’s the one place you might expect a fight. There isn’t one.
+</p>
+</div>
+
+<div class="comparison-prose prose scroll-reveal-section">
+<ul class="reveal-child">
+
+<li>
+<strong>Logfire
+</strong> traces what happened
+<em>inside
+</em> an agent run: the model calls, the tool calls, the timings. That’s a level of detail ZenML doesn’t capture and doesn’t try to.
+</li>
+
+<li>
+<strong>ZenML
+</strong> records what happened
+<em>around
+</em> the step: which run, which inputs, which artifact version, which approval, on which stack. That’s a level Logfire isn’t aiming at.
+</li>
+
+<li>Teams run both, and during an incident they answer different questions.
+</li>
+
+</ul>
+</div>
+
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">Neither one lets you take a recorded run and re-run it against a prompt or model change. That’s Kitaru, which has a first-class Pydantic AI adapter: see
+<a href="/compare/kitaru-vs-pydantic-ai">Kitaru vs Pydantic AI
+</a>.
+</p>
+</div>
+
+<div class="comparison-prose prose scroll-reveal-section">
+<h2 id="what-makes-zenml-different" class="reveal-child">What makes ZenML different
+</h2>
+</div>
+
+<section class="scroll-reveal-section py-8 md:py-10" data-astro-cid-[hash]="">
+<div class="reveal-child mx-auto max-w-content px-gutter" data-astro-cid-[hash]="">
+<div class="comparison-table-ui" data-astro-cid-[hash]="">
+<div class="comparison-spec-table has-notes">
+<div class="overflow-x-auto rounded-[20px] border border-(--color-border) relative">
+<table class="w-full min-w-[600px] border-collapse text-sm">
+<thead>
+<tr class="border-b border-(--color-border)">
+<th class="sticky left-0 bg-card px-6 py-4 text-left font-sans text-[15px] leading-5 font-medium text-(--color-cream-600)">Feature
+</th>
+<th class="px-6 py-4 text-center font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">ZenML
+</th>
+<th class="px-6 py-4 text-center font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Pydantic AI
+</th>
+<th class="px-6 py-4 text-center font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">What that means
+</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Versioned artifacts and lineage across runs
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
+</path>
+</svg>
+<span class="sr-only">Yes
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
+</path>
+</svg>
+<span class="sr-only">Not supported
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>Step outputs are stored and loadable by name, including validated Pydantic models.
+</span>
+</td>
+</tr>
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Caching that skips unchanged steps on a re-run
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
+</path>
+</svg>
+<span class="sr-only">Yes
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
+</path>
+</svg>
+<span class="sr-only">Not supported
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>Keyed on the step, its parameters and its inputs; an agent re-run starts fresh.
+</span>
+</td>
+</tr>
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Pause the run for human approval, resume later
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
+</path>
+</svg>
+<span class="sr-only">Yes
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>Partial support
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>`wait()` in a dynamic pipeline pauses the whole run. Pydantic AI can defer a tool call for approval, but you own the storage and the process between turns.
+</span>
+</td>
+</tr>
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Isolated code execution for tool loops
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
+</path>
+</svg>
+<span class="sr-only">Yes
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>Partial support
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>ZenML's sandbox is a stack component with local, Docker, Kubernetes and Modal flavors. Pydantic's Code Mode (in pydantic-ai-harness) runs the model's tool-calling code inside the Monty sandbox, a Python subset interpreter.
+</span>
+</td>
+</tr>
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML and more
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
+</path>
+</svg>
+<span class="sr-only">Yes
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
+</path>
+</svg>
+<span class="sr-only">Not supported
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>Configure once, every pipeline uses it.
+</span>
+</td>
+</tr>
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Serve it and get lineage per request
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
+</path>
+</svg>
+<span class="sr-only">Yes
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
+</path>
+</svg>
+<span class="sr-only">Not supported
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>`zenml pipeline deploy` makes every request a tracked run.
+</span>
+</td>
+</tr>
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Works with any agent framework, not just one
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
+</path>
+</svg>
+<span class="sr-only">Yes
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
+</path>
+</svg>
+<span class="sr-only">Not supported
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>A step is ordinary Python.
+</span>
+</td>
+</tr>
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Typed dependencies and validated structured outputs
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
+</path>
+</svg>
+<span class="sr-only">Not supported
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
+</path>
+</svg>
+<span class="sr-only">Yes
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>Pydantic AI's whole point. Use it inside the step.
+</span>
+</td>
+</tr>
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Model-provider abstraction
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
+</path>
+</svg>
+<span class="sr-only">Not supported
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
+</path>
+</svg>
+<span class="sr-only">Yes
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>ZenML has no LLM primitive; call whichever SDK you like from a step.
+</span>
+</td>
+</tr>
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Tracing inside an agent run (model and tool calls)
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
+</path>
+</svg>
+<span class="sr-only">Not supported
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
+</path>
+</svg>
+<span class="sr-only">Yes
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>Logfire's level of detail. ZenML records the step, not the calls within it.
+</span>
+</td>
+</tr>
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Open source, self-hostable
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
+</path>
+</svg>
+<span class="sr-only">Yes
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
+</path>
+</svg>
+<span class="sr-only">Yes
+</span>
+</td>
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>
+</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p class="table-scroll__hint" aria-hidden="true" data-astro-cid-[hash]="">
+<svg viewBox="0 0 14 14" fill="none" aria-hidden="true" data-astro-cid-[hash]="">
+<path d="M2 7h10M8 3l4 4-4 4" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-[hash]="">
+</path>
+</svg>Scrolls horizontally · the page body never does
+</p>
+</div>
+</div>
+</section>
+
+<div class="comparison-prose prose scroll-reveal-section">
+<h2 id="how-the-two-surfaces-map" class="reveal-child">How the two surfaces map
+</h2>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="comparison-markdown-table scroll-reveal-section">
+<section aria-label="Comparison details" tabindex="0" class="comparison-markdown-table__frame reveal-child">
+<table>
+<thead>
+<tr>
+<th>Concept
+</th>
+<th>Pydantic AI
+</th>
+<th>ZenML
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Unit of work
+</td>
+<td>
+<code>Agent.run()
+</code>
+</td>
+<td>
+<code>@step
+</code> (the agent runs inside it)
+</td>
+</tr>
+<tr>
+<td>Boundary
+</td>
+<td>The agent and its dependencies
+</td>
+<td>
+<code>@pipeline
+</code>
+</td>
+</tr>
+<tr>
+<td>Control flow
+</td>
+<td>The agent loop
+</td>
+<td>The pipeline graph, or Python control flow with
+<code>dynamic=True
+</code>
+</td>
+</tr>
+<tr>
+<td>Typing
+</td>
+<td>Validated structured output
+</td>
+<td>
+<code>Annotated[T, "name"]
+</code> on the artifact
+</td>
+</tr>
+<tr>
+<td>Human approval
+</td>
+<td>Deferred tool calls, your own persistence
+</td>
+<td>
+<code>wait()
+</code> in a dynamic pipeline, resolved from CLI, dashboard or API
+</td>
+</tr>
+<tr>
+<td>Code execution
+</td>
+<td>Code Mode in the Monty sandbox
+</td>
+<td>Sandbox stack component (local, Docker, Kubernetes, Modal)
+</td>
+</tr>
+<tr>
+<td>Outputs
+</td>
+<td>
+<code>AgentRunResult
+</code> in memory
+</td>
+<td>Versioned artifacts in your bucket
+</td>
+</tr>
+<tr>
+<td>Avoiding repeat work
+</td>
+<td>Not applicable
+</td>
+<td>
+<code>enable_cache
+</code> across runs,
+<code>zenml pipeline runs retry
+</code> after a failed dynamic run
+</td>
+</tr>
+<tr>
+<td>Observability
+</td>
+<td>Logfire traces inside the run
+</td>
+<td>Runs, steps, and artifacts around it
+</td>
+</tr>
+<tr>
+<td>Where it runs
+</td>
+<td>Your process
+</td>
+<td>Stack orchestrator (
+<code>zenml stack set
+</code>)
+</td>
+</tr>
+<tr>
+<td>Serving
+</td>
+<td>Your own wrapper
+</td>
+<td>
+<code>zenml pipeline deploy --name ...
+</code>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+<p aria-hidden="true" class="table-scroll__hint">
+<svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
+<path d="M2 7h10M8 3l4 4-4 4" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+</path>
+</svg>Scrolls horizontally · the page body never does
+</p>
+</div>
+
+<section class="scroll-reveal-section py-8 md:py-10">
+<div class="reveal-child mx-auto max-w-content px-gutter">
+<h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">Code comparison
+</h2>
+<div class="mt-10 grid min-w-0 grid-cols-1 items-start gap-6 lg:grid-cols-2">
+<figure class="labs-code-pane code-pane" data-language="python" aria-label="ZenML (wrapping the agent) implementation">
+<div class="code-pane__bar">
+<span>ZenML (wrapping the agent)
+</span>
+<button type="button" class="code-pane__copy" aria-label="Copy ZenML (wrapping the agent) code">Copy
+</button>
+</div>
+<div class="code-pane__scroll">
+<pre class="astro-code labs-light" style="background-color:#413D37;color:#F5F7F4; overflow-x: auto;" tabindex="0" data-language="python">
+<code>
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> typing
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> Annotated
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> pydantic
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> BaseModel
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> pydantic_ai
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> Agent
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> zenml
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> pipeline
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#F5F7F4"> step
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#F5F7F4"> wait
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> zenml
+</span>
+<span style="color:#47BAD1">.
+</span>
+<span style="color:#F5F7F4">client
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> Client
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">class
+</span>
+<span style="color:#E0CFB7"> Brief
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">BaseModel
+</span>
+<span style="color:#F5F7F4">):
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">  summary
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> str
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">  sources
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4"> list[
+</span>
+<span style="color:#E0CFB7">str
+</span>
+<span style="color:#F5F7F4">]
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">agent
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> Agent
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#DBE0C2">"anthropic:claude-sonnet-4-6"
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#E0CFB7">output_type
+</span>
+<span style="color:#47BAD1">=Brief
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">@step
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> gather_context
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">topic
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> str
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">-&gt;
+</span>
+<span style="color:#F5F7F4"> Annotated[
+</span>
+<span style="color:#E0CFB7">str
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#DBE0C2"> "context"
+</span>
+<span style="color:#F5F7F4">]:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">  return
+</span>
+<span style="color:#47BAD1"> retrieve_documents
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">topic
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">@step
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">enable_cache
+</span>
+<span style="color:#47BAD1">=False
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> run_agent
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">context
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> str
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#E0CFB7"> topic
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> str
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">-&gt;
+</span>
+<span style="color:#F5F7F4"> Annotated[Brief
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#DBE0C2"> "brief"
+</span>
+<span style="color:#F5F7F4">]:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">  # The validated Pydantic model is stored as the artifact,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">  # so the type survives the round trip.
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">  return
+</span>
+<span style="color:#F5F7F4"> agent
+</span>
+<span style="color:#47BAD1">.run_sync
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#BECAA6">f
+</span>
+<span style="color:#DBE0C2">"
+</span>
+<span style="color:#E0CFB7">{
+</span>
+<span style="color:#47BAD1">context
+</span>
+<span style="color:#E0CFB7">}\n\n
+</span>
+<span style="color:#DBE0C2">Brief on:
+</span>
+<span style="color:#E0CFB7">{
+</span>
+<span style="color:#47BAD1">topic
+</span>
+<span style="color:#E0CFB7">}
+</span>
+<span style="color:#DBE0C2">"
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">.
+</span>
+<span style="color:#F5F7F4">output
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">@step
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> publish
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">brief
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4"> Brief)
+</span>
+<span style="color:#47BAD1">-&gt;
+</span>
+<span style="color:#F5F7F4"> None:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">  post_to_cms
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">brief.summary
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">@pipeline
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">dynamic
+</span>
+<span style="color:#47BAD1">=True
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> brief_pipeline
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">topic
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> str
+</span>
+<span style="color:#F5F7F4">):
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">  brief
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> run_agent
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">gather_context
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">topic
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">, topic
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">  # Pauses the run until someone answers from the
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">  # dashboard, the API, or the CLI.
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">  approved
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> wait
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">schema
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#E0CFB7">bool
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#E0CFB7">question
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#DBE0C2">"Publish this brief?"
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">  if
+</span>
+<span style="color:#F5F7F4"> approved
+</span>
+<span style="color:#47BAD1">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">      publish
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">brief
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">brief_pipeline
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#DBE0C2">"AI orchestration"
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># Comes back typed, from any past run:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">brief
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> Client
+</span>
+<span style="color:#F5F7F4">()
+</span>
+<span style="color:#47BAD1">.get_artifact_version
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#DBE0C2">"brief"
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">.load
+</span>
+<span style="color:#F5F7F4">()
+</span>
+</span>
+</code>
+</pre>
+</div>
+</figure>
+<figure class="labs-code-pane code-pane" data-language="python" aria-label="Pydantic AI alone implementation">
+<div class="code-pane__bar">
+<span>Pydantic AI alone
+</span>
+<button type="button" class="code-pane__copy" aria-label="Copy Pydantic AI alone code">Copy
+</button>
+</div>
+<div class="code-pane__scroll">
+<pre class="astro-code labs-light" style="background-color:#413D37;color:#F5F7F4; overflow-x: auto;" tabindex="0" data-language="python">
+<code>
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> pydantic
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> BaseModel
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> pydantic_ai
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> Agent
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">class
+</span>
+<span style="color:#E0CFB7"> Brief
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">BaseModel
+</span>
+<span style="color:#F5F7F4">):
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">  summary
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> str
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">  sources
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4"> list[
+</span>
+<span style="color:#E0CFB7">str
+</span>
+<span style="color:#F5F7F4">]
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">agent
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> Agent
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#DBE0C2">"anthropic:claude-sonnet-4-6"
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#E0CFB7">output_type
+</span>
+<span style="color:#47BAD1">=Brief
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">topic
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#DBE0C2"> "AI orchestration"
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">context
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> retrieve_documents
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">topic
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">result
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#F5F7F4"> agent
+</span>
+<span style="color:#47BAD1">.run_sync
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#BECAA6">f
+</span>
+<span style="color:#DBE0C2">"
+</span>
+<span style="color:#E0CFB7">{
+</span>
+<span style="color:#47BAD1">context
+</span>
+<span style="color:#E0CFB7">}\n\n
+</span>
+<span style="color:#DBE0C2">Brief on:
+</span>
+<span style="color:#E0CFB7">{
+</span>
+<span style="color:#47BAD1">topic
+</span>
+<span style="color:#E0CFB7">}
+</span>
+<span style="color:#DBE0C2">"
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">brief
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#F5F7F4"> result
+</span>
+<span style="color:#47BAD1">.
+</span>
+<span style="color:#F5F7F4">output
+</span>
+<span style="color:#AC947F;font-style:italic"># validated Brief
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">if
+</span>
+<span style="color:#47BAD1"> input
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#DBE0C2">"Publish this brief? "
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">==
+</span>
+<span style="color:#DBE0C2"> "y"
+</span>
+<span style="color:#47BAD1">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">  post_to_cms
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">brief.summary
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># The output is type-safe and Logfire can trace the model and
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># tool calls inside this run. What there isn't: a run record
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># across runs, a versioned artifact you can load back by name
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># next month, a cache that skips retrieval on the next run,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># an approval that survives the process being torn down, or
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># a way to put this on Vertex AI without writing it.
+</span>
+</span>
+</code>
+</pre>
+</div>
+</figure>
+</div>
+</div>
+</section>
+
+<div class="scroll-reveal-section">
+<div class="reveal-child">
+<section class="relative overflow-hidden bg-(--color-sage-900) py-16 text-(--color-cream-50) md:py-20" data-astro-cid-[hash]="">
+<astro-island uid="[hash]" data-preact-island-id="7" component-url="/_astro/GrainBackdrop.[hash].js" component-export="GrainBackdrop" renderer-url="/_astro/client.[hash].js" props="{&quot;config&quot;:[0,{&quot;shaderColors&quot;:[1,[[0,&quot;#151E19&quot;],[0,&quot;#3C4C38&quot;],[0,&quot;#63775E&quot;],[0,&quot;#151E19&quot;]]],&quot;panel&quot;:[0,&quot;#151E19&quot;],&quot;blobA&quot;:[0,&quot;#3C4C38E6&quot;],&quot;blobB&quot;:[0,&quot;#63775ECC&quot;],&quot;speed&quot;:[0,1.8],&quot;scale&quot;:[0,1.6],&quot;rotation&quot;:[0,-20],&quot;noise&quot;:[0,0.9],&quot;blend&quot;:[0,true]}],&quot;class&quot;:[0,&quot;absolute inset-0 opacity-90&quot;],&quot;data-astro-cid-[hash]&quot;:[0,true]}" ssr="" client="idle" opts="{&quot;name&quot;:&quot;GrainBackdrop&quot;,&quot;value&quot;:true}" await-children="">
+<div aria-hidden="true" style="background-color:#151E19;background-image:radial-gradient(circle farthest-corner at 20% 15%, #3C4C38E6 0%, transparent 60%), radial-gradient(circle farthest-corner at 85% 85%, #63775ECC 0%, transparent 60%);" class="pointer-events-none absolute inset-0 absolute inset-0 opacity-90">
+</div>
+<!--astro:end-->
+</astro-island>
+<div class="relative mx-auto flex max-w-content flex-col items-center px-gutter text-center" data-astro-cid-[hash]="">
+<h2 class="max-w-[768px] font-display text-[32px] leading-[38px] text-(--color-cream-50) md:text-[44px] md:leading-[50px]" data-astro-cid-[hash]="">Put a pipeline around
+<br data-astro-cid-[hash]="">your Pydantic AI agents
+</h2>
+<div class="labs-close-deck mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">These aren’t alternatives, and picking one doesn’t rule out the other. Build the agent with Pydantic AI, keep its typing and its tracing, and add ZenML when the agent becomes a workload: the outputs need versioning, a human has to sign off before the next step, re-running everything gets expensive, and it has to run on your own infrastructure.
+</p>
+</div>
+</div>
+<div class="mt-10 flex flex-wrap items-center gap-7" data-astro-cid-[hash]="">
+<a href="https://cloud.zenml.io" data-analytics="ZenML-Compare-CTA-Signup" class="inline-flex h-12 cursor-pointer items-center justify-center rounded-full px-[26px] font-label text-[13px] uppercase tracking-[0.05em] transition-colors duration-200 ease-out bg-(--color-sage-400) text-(--color-cream-800) hover:bg-(--color-sage-500)">Sign up free
+</a>
+</div>
+</div>
+</section>
+</div>
+</div>
+</article>

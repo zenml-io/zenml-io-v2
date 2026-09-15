@@ -424,15 +424,49 @@ const CHECKS: IslandCheck[] = [
         .locator(`${root} #integrations-search-desktop`)
         .fill("kubernetes");
 
-      await page.waitForFunction(() => {
-        const card = document.querySelector('[data-slug="kubernetes"]');
-        return card !== null && getComputedStyle(card).display !== "none";
-      });
+      // Wait for the grid to hold exactly the one match and nothing else.
+      //
+      // The predicate has to be this specific. ControlFilterIndex flips
+      // `card.style.display` from a useEffect, and Preact defers effects to
+      // after paint (requestAnimationFrame, with a 100ms setTimeout
+      // fallback) — one frame LATER than the render that updated the
+      // aria-live count. There is a real window in which the live region
+      // already reads "1 of 66" while all 66 cards are still on screen, and
+      // any weaker predicate lands inside it:
+      //   - "the kubernetes card is visible" is already true before the
+      //     query is typed, because the facet was just cleared and every
+      //     card is showing. It returns on its first evaluation and gates
+      //     nothing at all.
+      //   - "the visible count changed" is satisfied by the stale
+      //     post-facet DOM, which is still showing that facet's subset.
+      // Only "exactly the kubernetes card" is unreachable from every
+      // intermediate state. Locally the two round trips of a fill-then-count
+      // beat the frame every single time, so a weaker wait failed here
+      // deterministically (66 cards) and passed in CI, where the same round
+      // trips are ~5ms slower. Do not loosen this back.
+      const onlyKubernetesVisible = await page
+        .waitForFunction(() => {
+          const visible = [
+            ...document.querySelectorAll<HTMLElement>("[data-slug]"),
+          ].filter((card) => getComputedStyle(card).display !== "none");
+          return (
+            visible.length === 1 &&
+            visible[0].getAttribute("data-slug") === "kubernetes"
+          );
+        })
+        .then(
+          () => true,
+          () => false,
+        );
 
-      const searchVisibleCount = await cardCount();
-      if (searchVisibleCount !== 1) {
+      if (!onlyKubernetesVisible) {
+        const survivors = await page.$$eval("[data-slug]", (cards) =>
+          cards
+            .filter((card) => getComputedStyle(card).display !== "none")
+            .map((card) => card.getAttribute("data-slug")),
+        );
         throw new Error(
-          `expected exactly 1 visible card for the "kubernetes" query, got ${searchVisibleCount}`,
+          `expected only the "kubernetes" card to survive the "kubernetes" query, got ${survivors.length}: ${survivors.slice(0, 6).join(", ")}`,
         );
       }
     },
