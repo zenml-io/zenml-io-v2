@@ -10,7 +10,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { afterAll, describe, expect, it } from "vitest";
 import { parse } from "yaml";
 import { REQUIRED_WORKER_SECRETS } from "../../scripts/check-worker-bindings";
 
@@ -160,14 +160,48 @@ function workflowStep(steps: WorkflowStep[], name: string): WorkflowStep {
   return step as WorkflowStep;
 }
 
+// Each harness below fakes out `wrangler`/`curl`/`sleep` with a small bash
+// script whose *content* is identical on every call for a given `binKey` --
+// only the env vars (failure counts, calls files, RUNNER_TEMP, ...) vary per
+// call, and those already flow through the environment rather than the
+// script text. Writing a fresh copy of that identical script to a brand-new
+// temp path on every call (the previous behaviour, one `mkdtemp` per call)
+// made this file slow and flaky on macOS: each *first* execution of a
+// never-before-seen executable path pays for Gatekeeper/AMFI's launch
+// check, measured locally at roughly 0.3-1.1s per fresh path even when the
+// bytes are byte-identical to a script just deleted (Linux CI runners don't
+// do this check, which is why CI stayed green while local runs timed out).
+// Populating each stub set once per `binKey` and reusing that directory
+// across every call -- while still giving each call its own fresh state
+// directory for calls-files/active-version-files/RUNNER_TEMP output --
+// pays that tax at most once per binKey per test run instead of once per
+// call. Measured effect on "executes rollback after a post-activation
+// failure and not after success" (6 sequential `executeReleaseTrap` calls):
+// before, 6.2s-20.7s per run (vitest's 5000ms default timeout, so it failed
+// on 3/3 local runs); after, consistently under 200ms.
+const sharedBinRoot = mkdtempSync(
+  join(tmpdir(), "deployment-workflow-shared-bin-"),
+);
+afterAll(() => {
+  rmSync(sharedBinRoot, { force: true, recursive: true });
+});
+const sharedBinDirectories = new Map<string, string>();
+
 function withTemporaryHarness<T>(
   prefix: string,
+  binKey: string,
+  populateBinDirectory: (binDirectory: string) => void,
   run: (directory: string, binDirectory: string) => T,
 ): T {
   const directory = mkdtempSync(join(tmpdir(), prefix));
-  const binDirectory = join(directory, "bin");
-  mkdirSync(binDirectory);
   try {
+    let binDirectory = sharedBinDirectories.get(binKey);
+    if (binDirectory === undefined) {
+      binDirectory = join(sharedBinRoot, binKey);
+      mkdirSync(binDirectory);
+      populateBinDirectory(binDirectory);
+      sharedBinDirectories.set(binKey, binDirectory);
+    }
     return run(directory, binDirectory);
   } finally {
     rmSync(directory, { force: true, recursive: true });
@@ -199,11 +233,8 @@ function executeReleaseTrap(
 
   return withTemporaryHarness(
     "worker-release-rollback-",
-    (harnessDirectory, binDirectory) => {
-      const activeVersionFile = join(harnessDirectory, "active-version.txt");
-      const callsFile = join(harnessDirectory, "wrangler-calls.txt");
-      writeFileSync(activeVersionFile, `${activeVersion}\n`);
-      writeFileSync(callsFile, "");
+    "release-trap",
+    (binDirectory) => {
       writeFileSync(
         join(binDirectory, "wrangler"),
         `#!/usr/bin/env bash
@@ -252,6 +283,12 @@ exit 2
         "#!/usr/bin/env bash\nexit 0\n",
       );
       chmodSync(join(binDirectory, "sleep"), 0o755);
+    },
+    (harnessDirectory, binDirectory) => {
+      const activeVersionFile = join(harnessDirectory, "active-version.txt");
+      const callsFile = join(harnessDirectory, "wrangler-calls.txt");
+      writeFileSync(activeVersionFile, `${activeVersion}\n`);
+      writeFileSync(callsFile, "");
 
       const script = `
 set -Eeuo pipefail
@@ -315,11 +352,8 @@ function executeStatusRetry(): {
 
   return withTemporaryHarness(
     "worker-release-smoke-",
-    (harnessDirectory, binDirectory) => {
-      const callsFile = join(harnessDirectory, "curl-calls.txt");
-      const argsFile = join(harnessDirectory, "curl-args.txt");
-      writeFileSync(callsFile, "0\n");
-      writeFileSync(argsFile, "");
+    "status-retry",
+    (binDirectory) => {
       writeFileSync(
         join(binDirectory, "curl"),
         `#!/usr/bin/env bash
@@ -335,6 +369,12 @@ printf '200\\n'
 `,
       );
       chmodSync(join(binDirectory, "curl"), 0o755);
+    },
+    (harnessDirectory, binDirectory) => {
+      const callsFile = join(harnessDirectory, "curl-calls.txt");
+      const argsFile = join(harnessDirectory, "curl-args.txt");
+      writeFileSync(callsFile, "0\n");
+      writeFileSync(argsFile, "");
 
       let error: unknown;
       try {
@@ -387,9 +427,8 @@ function executeCandidateHomeCheck(markerAfterCall: number): {
 
   return withTemporaryHarness(
     "worker-release-candidate-home-",
-    (harnessDirectory, binDirectory) => {
-      const callsFile = join(harnessDirectory, "curl-calls.txt");
-      writeFileSync(callsFile, "0\n");
+    "candidate-home",
+    (binDirectory) => {
       writeFileSync(
         join(binDirectory, "curl"),
         `#!/usr/bin/env bash
@@ -424,6 +463,10 @@ printf '200\\n'
       );
       chmodSync(join(binDirectory, "curl"), 0o755);
       chmodSync(join(binDirectory, "sleep"), 0o755);
+    },
+    (harnessDirectory, binDirectory) => {
+      const callsFile = join(harnessDirectory, "curl-calls.txt");
+      writeFileSync(callsFile, "0\n");
 
       let error: unknown;
       try {
@@ -483,11 +526,8 @@ function executeCandidateAssetCheck(
 
   return withTemporaryHarness(
     "worker-release-candidate-asset-",
-    (harnessDirectory, binDirectory) => {
-      const callsFile = join(harnessDirectory, "curl-calls.txt");
-      const argsFile = join(harnessDirectory, "curl-args.txt");
-      writeFileSync(callsFile, "0\n");
-      writeFileSync(argsFile, "");
+    "candidate-asset",
+    (binDirectory) => {
       writeFileSync(
         join(binDirectory, "curl"),
         `#!/usr/bin/env bash
@@ -509,6 +549,12 @@ fi
       );
       chmodSync(join(binDirectory, "curl"), 0o755);
       chmodSync(join(binDirectory, "sleep"), 0o755);
+    },
+    (harnessDirectory, binDirectory) => {
+      const callsFile = join(harnessDirectory, "curl-calls.txt");
+      const argsFile = join(harnessDirectory, "curl-args.txt");
+      writeFileSync(callsFile, "0\n");
+      writeFileSync(argsFile, "");
 
       let error: unknown;
       try {
@@ -573,20 +619,8 @@ function executeRecovery(
   const run = recoveryStep.run ?? "";
   return withTemporaryHarness(
     "worker-recovery-",
-    (harnessDirectory, binDirectory) => {
-      const activeVersionFile = join(harnessDirectory, "active-version.txt");
-      const deployCallsFile = join(harnessDirectory, "deploy-calls.txt");
-      const deploymentReadCallsFile = join(
-        harnessDirectory,
-        "deployment-read-calls.txt",
-      );
-      const failDeploymentReadsFile = join(
-        harnessDirectory,
-        "fail-deployment-reads",
-      );
-      writeFileSync(activeVersionFile, `${initialVersion}\n`);
-      writeFileSync(deployCallsFile, "0\n");
-      writeFileSync(deploymentReadCallsFile, "0\n");
+    "recovery",
+    (binDirectory) => {
       writeFileSync(
         join(binDirectory, "wrangler"),
         `#!/usr/bin/env bash
@@ -650,6 +684,21 @@ printf '%s\\n' "$RECOVERY_HOME_STATUS"
         "#!/usr/bin/env bash\nexit 0\n",
       );
       chmodSync(join(binDirectory, "sleep"), 0o755);
+    },
+    (harnessDirectory, binDirectory) => {
+      const activeVersionFile = join(harnessDirectory, "active-version.txt");
+      const deployCallsFile = join(harnessDirectory, "deploy-calls.txt");
+      const deploymentReadCallsFile = join(
+        harnessDirectory,
+        "deployment-read-calls.txt",
+      );
+      const failDeploymentReadsFile = join(
+        harnessDirectory,
+        "fail-deployment-reads",
+      );
+      writeFileSync(activeVersionFile, `${initialVersion}\n`);
+      writeFileSync(deployCallsFile, "0\n");
+      writeFileSync(deploymentReadCallsFile, "0\n");
 
       let error: unknown;
       let stderr = "";
@@ -2473,6 +2522,165 @@ describe("automatic pull-request Worker previews", () => {
     );
     expect(resolutionRun).toContain('"repos/$GITHUB_REPOSITORY/pulls"');
     expect(resolutionRun).toContain("source-pr-candidates.json");
+  });
+
+  it("skips cleanly when no pull request is publishable and fails when resolution breaks", () => {
+    const resolutionStep = workflowStep(
+      prPreviewPublishSteps,
+      "Resolve one current eligible pull request",
+    );
+    const selector = resolutionStep.env?.FALLBACK_PR_NUMBER_SELECTOR ?? "";
+    const resolutionRun = resolutionStep.run ?? "";
+    const branch = "feat/kitaru-landing-terminal";
+    const commit = "a".repeat(40);
+    const newerCommit = "b".repeat(40);
+    const repository = "zenml-io/zenml-io-v2";
+    const selectorArgs = [
+      "--arg",
+      "branch",
+      branch,
+      "--arg",
+      "commit",
+      commit,
+      "--arg",
+      "repository",
+      repository,
+    ];
+    const candidate = (overrides: Record<string, unknown> = {}) => ({
+      draft: false,
+      head: { ref: branch, repo: { full_name: repository }, sha: commit },
+      number: 296,
+      state: "open",
+      user: { login: "strickvl" },
+      ...overrides,
+    });
+    const resolve = (candidates: unknown[]): string =>
+      execFileSync("jq", ["-er", ...selectorArgs, selector], {
+        input: JSON.stringify(candidates),
+        stdio: ["pipe", "pipe", "pipe"],
+      })
+        .toString()
+        .trim();
+
+    expect(selector).not.toBe("");
+
+    // The one publishable state still resolves to that exact PR number.
+    expect(resolve([candidate()])).toBe("296");
+
+    // Every state that is ineligible on purpose resolves to "nothing to do".
+    expect(resolve([candidate({ state: "closed" })])).toBe("");
+    expect(resolve([candidate({ user: { login: "dependabot[bot]" } })])).toBe(
+      "",
+    );
+    expect(resolve([candidate({ draft: true })])).toBe("");
+    expect(
+      resolve([
+        candidate({
+          head: {
+            ref: branch,
+            repo: { full_name: repository },
+            sha: newerCommit,
+          },
+        }),
+      ]),
+    ).toBe("");
+    expect(
+      resolve([
+        candidate({ state: "closed" }),
+        candidate({
+          head: {
+            ref: branch,
+            repo: { full_name: repository },
+            sha: newerCommit,
+          },
+          number: 300,
+        }),
+      ]),
+    ).toBe("");
+
+    // A source run that cannot be traced back to any pull request stays a failure.
+    expectJqResult(selector, [], false, selectorArgs);
+    expectJqResult(
+      selector,
+      [
+        candidate({
+          head: {
+            ref: branch,
+            repo: { full_name: "someone-else/zenml-io-v2" },
+            sha: commit,
+          },
+        }),
+      ],
+      false,
+      selectorArgs,
+    );
+    expectJqResult(
+      selector,
+      [
+        candidate({
+          head: {
+            ref: "other-branch",
+            repo: { full_name: repository },
+            sha: commit,
+          },
+        }),
+      ],
+      false,
+      selectorArgs,
+    );
+
+    // More than one publishable pull request stays a failure.
+    expectJqResult(
+      selector,
+      [candidate(), candidate({ number: 297 })],
+      false,
+      selectorArgs,
+    );
+
+    // The lookup must see closed pull requests to tell "merged" from "broken".
+    expect(resolutionRun).toContain("-f state=all");
+    expect(resolutionRun).not.toContain("-f state=open");
+
+    // Nothing to do exits the step successfully and records why.
+    expect(resolutionRun).toContain(
+      'echo "publishable=false" >> "$GITHUB_OUTPUT"',
+    );
+    expect(resolutionRun).toContain('echo "publishable=true"');
+    expect(resolutionRun).toContain("## No PR preview to publish");
+    expect(resolutionRun).toMatch(
+      /echo "publishable=false" >> "\$GITHUB_OUTPUT"\n\s*exit 0/,
+    );
+
+    // Every privileged step runs only for a resolved publishable pull request.
+    const gate = "steps.source.outputs.publishable == 'true'";
+    for (const name of [
+      "Download the exact validated Worker artifact",
+      "Verify artifact provenance and checksum",
+      "Reject unsafe Worker artifact",
+      "Prepare trusted PR-preview configuration",
+      "Install pinned Wrangler",
+      "Verify dedicated Worker baseline",
+      "Record preview retirement marker",
+      "Upload exact version with stable PR alias",
+      "Post sticky preview URL",
+      "Record preview metadata",
+    ]) {
+      expect(workflowStep(prPreviewPublishSteps, name).if, name).toBe(gate);
+    }
+    expect(
+      workflowStep(prPreviewPublishSteps, "Preserve preview evidence").if,
+    ).toBe(`always() && ${gate}`);
+
+    // The close-during-upload and verification guards stay keyed to the upload itself.
+    expect(
+      workflowStep(
+        prPreviewPublishSteps,
+        "Retire alias if the PR closed during upload",
+      ).if,
+    ).toBe("always() && steps.upload.outputs.upload_attempted == 'true'");
+    expect(
+      workflowStep(prPreviewPublishSteps, "Verify isolated public preview").if,
+    ).toBe("steps.upload.outcome == 'success'");
   });
 
   it("uploads the exact validated artifact to one route-less dedicated Worker with a stable per-PR alias", () => {
