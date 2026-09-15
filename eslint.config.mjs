@@ -21,6 +21,15 @@ const rawColorAllow = [
   "shadow-subtle",
 ];
 
+const noInlineClassOverrides = [
+  "error",
+  {
+    selector:
+      "JSXAttribute[name.name='classOverrides'][value.type='JSXExpressionContainer'][value.expression.type='ObjectExpression']",
+    message: "Pass a named family preset instead of an inline classOverrides object.",
+  },
+];
+
 export default defineConfig([
   ...astro.configs["flat/base"],
   {
@@ -49,6 +58,7 @@ export default defineConfig([
     plugins: { ...mdx.flat.plugins, shadcn },
     settings: designSystemSettings,
     rules: {
+      "no-restricted-syntax": noInlineClassOverrides,
       "shadcn/no-restyle": ["error", { allow: ["layout"] }],
       "shadcn/no-raw-colors": [
         "error",
@@ -66,6 +76,7 @@ export default defineConfig([
     rules: {
       // Existing findings are tracked in eslint-suppressions.json. An increase
       // to any file/rule count fails without flooding routine lint output.
+      "no-restricted-syntax": noInlineClassOverrides,
       "shadcn/no-restyle": ["error", { allow: ["layout"] }],
       "shadcn/no-raw-colors": [
         "error",
