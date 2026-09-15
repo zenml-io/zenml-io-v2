@@ -2,6 +2,7 @@ import { plugin as shadcn } from "@shadcn/lint";
 import tsParser from "@typescript-eslint/parser";
 import { defineConfig } from "eslint/config";
 import astro from "eslint-plugin-astro";
+import * as mdx from "eslint-plugin-mdx";
 
 const designSystemSettings = {
   shadcn: {
@@ -39,6 +40,22 @@ export default defineConfig([
       parserOptions: {
         ecmaFeatures: { jsx: true },
       },
+    },
+  },
+  {
+    ...mdx.flat,
+    name: "zenml/design-lint-comparison-mdx",
+    files: ["src/content/{compare-kitaru,compare-zenml}/**/*.mdx"],
+    plugins: { ...mdx.flat.plugins, shadcn },
+    settings: designSystemSettings,
+    rules: {
+      "shadcn/no-restyle": ["error", { allow: ["layout"] }],
+      "shadcn/no-raw-colors": [
+        "error",
+        {
+          allow: rawColorAllow,
+        },
+      ],
     },
   },
   {
