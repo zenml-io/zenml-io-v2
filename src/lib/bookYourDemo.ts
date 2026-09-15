@@ -28,8 +28,8 @@ export const BOOK_YOUR_DEMO_SEO: SEOProps = {
 // ---------------------------------------------------------------------------
 
 export const BOOK_YOUR_DEMO_HERO = {
-  headlinePrefix: "See the ",
-  headlineHighlight: "AI Control Plane",
+  headlinePrefix: "See ",
+  headlineHighlight: "ZenML",
   headlineSuffix: " in action",
   deck: "Get a personalized walkthrough of ZenML: from pipelines to agents, local to Kubernetes. 30 minutes with our team.",
 };

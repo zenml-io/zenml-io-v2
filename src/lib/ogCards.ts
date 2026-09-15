@@ -54,7 +54,7 @@ export const OG_CARDS: readonly OgCard[] = [
     key: "home",
     eyebrow: "ZenML Labs",
     layout: "hero",
-    title: "Ship AI to production,\non infrastructure you own",
+    title: "Ship AI you can trust",
     subtitle:
       "ZenML orchestrates your pipelines and agents.\nKitaru replays them on production data before a change ships.\nBoth open source, always.",
   },

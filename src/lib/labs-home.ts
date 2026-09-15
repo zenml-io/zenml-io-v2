@@ -27,7 +27,7 @@ export type { CaseStudyCard };
 export type LabsProduct = "zenml" | "kitaru";
 
 export const LABS_HOME_SEO = {
-  title: "ZenML Labs: The unified infrastructure layer for AI in production",
+  title: "ZenML Labs: Ship AI you can trust",
   description:
     "ZenML Labs is the unified infrastructure layer for AI in production: ZenML orchestrates your pipelines and agents on the infra you choose, and Kitaru replays them on production data.",
   surface: "unified" satisfies Surface,
@@ -216,7 +216,7 @@ export interface LabsInstallChip {
 }
 
 export const LABS_HERO: LabsBandContent = {
-  headlineLines: ["Ship AI to production,", "on infrastructure you own"],
+  headlineLines: ["Ship AI", "you can trust"],
   deck: "ZenML orchestrates your pipelines and agents. Kitaru replays them on production data before a change ships. Both open source, always.",
   cta: LABS_HERO_SIGNUP,
 };
