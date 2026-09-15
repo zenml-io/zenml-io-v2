@@ -1,0 +1,202 @@
+{
+  "src/components/InstallCommand.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/components/compare/kitaru/ComparisonHero.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/components/compare/zenml/ComparisonHero.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 2
+    }
+  },
+  "src/components/integrations/IntegrationsLogoRail.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 2
+    }
+  },
+  "src/components/islands/ContactForm.tsx": {
+    "shadcn/no-raw-colors": {
+      "count": 16
+    }
+  },
+  "src/components/islands/DemoRequestForm.tsx": {
+    "shadcn/no-raw-colors": {
+      "count": 12
+    }
+  },
+  "src/components/islands/filter-index/DataFilterIndex.tsx": {
+    "shadcn/no-raw-colors": {
+      "count": 6
+    }
+  },
+  "src/components/islands/filter-index/LlmopsIndex.tsx": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/components/islands/filter-index/MlopsIndex.tsx": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/components/islands/shared/FilterEmptyState.tsx": {
+    "shadcn/no-raw-colors": {
+      "count": 2
+    }
+  },
+  "src/components/kitaru/islands/Hero.tsx": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/components/sections/BrevoNewsletterForm.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 4
+    }
+  },
+  "src/components/sections/FeatureValueSection.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/components/sections/FormPlaceholder.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/components/sections/NewsSection.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 4
+    }
+  },
+  "src/components/sections/ProjectsCTA.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 3
+    }
+  },
+  "src/components/sections/SuccessPanel.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 2
+    }
+  },
+  "src/components/sections/two-workspaces/ArtifactsModelsLayout.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 19
+    }
+  },
+  "src/components/sections/two-workspaces/FrameworksAgentsLayout.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 2
+    }
+  },
+  "src/components/sections/two-workspaces/FrameworksMLLayout.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 2
+    }
+  },
+  "src/components/sections/two-workspaces/PipelinesLayout.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 9
+    }
+  },
+  "src/components/sections/two-workspaces/ResourcesLayout.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 5
+    }
+  },
+  "src/components/sections/two-workspaces/SessionsLayout.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/components/sections/two-workspaces/_ArtifactPill.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/layouts/BlogLayout.astro": {
+    "shadcn/no-restyle": {
+      "count": 4
+    }
+  },
+  "src/lib/pricing.ts": {
+    "shadcn/no-raw-colors": {
+      "count": 18
+    }
+  },
+  "src/lib/templates/registry.ts": {
+    "shadcn/no-raw-colors": {
+      "count": 12
+    }
+  },
+  "src/lib/two-workspaces/artifacts-models-data.ts": {
+    "shadcn/no-raw-colors": {
+      "count": 2
+    }
+  },
+  "src/pages/case-studies/index.astro": {
+    "shadcn/no-restyle": {
+      "count": 3
+    }
+  },
+  "src/pages/deployments.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/pages/integrations/index.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 3
+    }
+  },
+  "src/pages/llmops-database/[slug].astro": {
+    "shadcn/no-restyle": {
+      "count": 2
+    }
+  },
+  "src/pages/llmops-database/index.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/pages/mlops-database/[slug].astro": {
+    "shadcn/no-restyle": {
+      "count": 2
+    }
+  },
+  "src/pages/mlops-database/index.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/pages/pricing.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
+  "src/pages/pro.astro": {
+    "shadcn/no-restyle": {
+      "count": 2
+    }
+  },
+  "src/pages/product/zenml.astro": {
+    "shadcn/no-restyle": {
+      "count": 2
+    }
+  },
+  "src/pages/projects/index.astro": {
+    "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/scripts/image-lightbox.ts": {
+    "shadcn/no-raw-colors": {
+      "count": 2
+    }
+  }
+}
