@@ -5,7 +5,7 @@ import astro from "eslint-plugin-astro";
 
 const designSystemSettings = {
   shadcn: {
-    componentImports: ["^\\.\\.?/.*components/"],
+    componentImports: ["^\\.{1,2}/"],
     mergeFunctions: ["cn"],
     note: "See DESIGN.md and src/pages/styleguide.astro for this project's design rules.",
   },

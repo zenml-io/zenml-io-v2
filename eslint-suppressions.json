@@ -4,6 +4,16 @@
       "count": 1
     }
   },
+  "src/components/blog/BlogCard.astro": {
+    "shadcn/no-restyle": {
+      "count": 6
+    }
+  },
+  "src/components/compare/_layouts/ComparisonPage.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
   "src/components/compare/kitaru/ComparisonHero.astro": {
     "shadcn/no-raw-colors": {
       "count": 1
@@ -12,6 +22,11 @@
   "src/components/compare/zenml/ComparisonHero.astro": {
     "shadcn/no-raw-colors": {
       "count": 2
+    }
+  },
+  "src/components/integrations/IntegrationDetailSidebar.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
     }
   },
   "src/components/integrations/IntegrationsLogoRail.astro": {
@@ -49,9 +64,22 @@
       "count": 2
     }
   },
+  "src/components/kitaru/Cta.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
+    }
+  },
   "src/components/kitaru/islands/Hero.tsx": {
     "shadcn/no-raw-colors": {
       "count": 1
+    },
+    "shadcn/no-restyle": {
+      "count": 5
+    }
+  },
+  "src/components/kitaru/islands/primitives.tsx": {
+    "shadcn/no-restyle": {
+      "count": 2
     }
   },
   "src/components/sections/BrevoNewsletterForm.astro": {
@@ -64,6 +92,16 @@
       "count": 1
     }
   },
+  "src/components/sections/FeaturesHubCTA.astro": {
+    "shadcn/no-restyle": {
+      "count": 3
+    }
+  },
+  "src/components/sections/FinalCTA.astro": {
+    "shadcn/no-restyle": {
+      "count": 4
+    }
+  },
   "src/components/sections/FormPlaceholder.astro": {
     "shadcn/no-raw-colors": {
       "count": 1
@@ -72,6 +110,11 @@
   "src/components/sections/NewsSection.astro": {
     "shadcn/no-raw-colors": {
       "count": 4
+    }
+  },
+  "src/components/sections/PricingPlanCards.astro": {
+    "shadcn/no-restyle": {
+      "count": 1
     }
   },
   "src/components/sections/ProjectsCTA.astro": {
@@ -116,6 +159,11 @@
   },
   "src/components/sections/two-workspaces/_ArtifactPill.astro": {
     "shadcn/no-raw-colors": {
+      "count": 1
+    }
+  },
+  "src/components/templates/PageHeader.astro": {
+    "shadcn/no-restyle": {
       "count": 1
     }
   },
