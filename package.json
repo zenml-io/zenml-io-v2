@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "private": true,
   "engines": {
-    "node": ">=22.12.0 <23"
+    "node": ">=22.23.1 <23"
   },
   "scripts": {
     "dev": "astro dev",
@@ -26,6 +26,7 @@
     "check:worker-bindings": "tsx scripts/check-worker-bindings.ts",
     "check:islands": "tsx scripts/check-island-hydration.ts",
     "check:motion": "tsx scripts/check-motion.ts",
+    "lint:design": "eslint \"src/**/*.{astro,ts,tsx}\" \"src/content/{compare-kitaru,compare-zenml}/**/*.mdx\"",
     "test": "vitest run",
     "test:watch": "vitest",
     "validate:content": "tsx scripts/phase2/validate-content.ts",
@@ -34,7 +35,7 @@
     "og:compare": "tsx scripts/og/generate-compare-og.ts",
     "og:compare:write": "tsx scripts/og/generate-compare-og.ts --write",
     "images:convert": "tsx scripts/convert-images.ts",
-    "lint": "biome check src/ tests/ vitest.config.ts scripts/check-dist-smoke.ts scripts/check-dist-snapshots.ts scripts/check-og-golden.ts scripts/og/ scripts/check-lockfile.ts scripts/check-island-hydration.ts scripts/check-motion.ts scripts/check-worker-bindings.ts scripts/check-worker-runtime.ts scripts/convert-images.ts",
+    "lint": "biome check src/ tests/ vitest.config.ts scripts/check-dist-smoke.ts scripts/check-dist-snapshots.ts scripts/check-og-golden.ts scripts/og/ scripts/check-lockfile.ts scripts/check-island-hydration.ts scripts/check-motion.ts scripts/check-worker-bindings.ts scripts/check-worker-runtime.ts scripts/convert-images.ts && pnpm lint:design",
     "lint:fix": "biome check --fix src/ tests/ vitest.config.ts scripts/check-dist-smoke.ts scripts/check-dist-snapshots.ts scripts/check-og-golden.ts scripts/og/ scripts/check-lockfile.ts scripts/check-island-hydration.ts scripts/check-motion.ts scripts/check-worker-bindings.ts scripts/check-worker-runtime.ts scripts/convert-images.ts",
     "format": "biome format --write src/",
     "astro": "astro"
@@ -61,12 +62,17 @@
     "@fontsource/jetbrains-mono": "^5.3.0",
     "@fontsource/plus-jakarta-sans": "^5.3.0",
     "@resvg/resvg-js": "^2.6.2",
+    "@shadcn/lint": "0.1.0",
     "@types/culori": "^4.0.1",
     "@types/mdast": "^4.0.4",
     "@types/node": "22.20.2",
+    "@typescript-eslint/parser": "8.70.0",
     "cheerio": "^1.2.0",
     "culori": "^4.0.2",
     "domhandler": "^6.0.1",
+    "eslint": "10.10.0",
+    "eslint-plugin-astro": "3.1.0",
+    "eslint-plugin-mdx": "3.8.1",
     "gray-matter": "^4.0.3",
     "pagefind": "^1.5.2",
     "playwright": "^1.63.0",
