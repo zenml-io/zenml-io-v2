@@ -2475,6 +2475,165 @@ describe("automatic pull-request Worker previews", () => {
     expect(resolutionRun).toContain("source-pr-candidates.json");
   });
 
+  it("skips cleanly when no pull request is publishable and fails when resolution breaks", () => {
+    const resolutionStep = workflowStep(
+      prPreviewPublishSteps,
+      "Resolve one current eligible pull request",
+    );
+    const selector = resolutionStep.env?.FALLBACK_PR_NUMBER_SELECTOR ?? "";
+    const resolutionRun = resolutionStep.run ?? "";
+    const branch = "feat/kitaru-landing-terminal";
+    const commit = "a".repeat(40);
+    const newerCommit = "b".repeat(40);
+    const repository = "zenml-io/zenml-io-v2";
+    const selectorArgs = [
+      "--arg",
+      "branch",
+      branch,
+      "--arg",
+      "commit",
+      commit,
+      "--arg",
+      "repository",
+      repository,
+    ];
+    const candidate = (overrides: Record<string, unknown> = {}) => ({
+      draft: false,
+      head: { ref: branch, repo: { full_name: repository }, sha: commit },
+      number: 296,
+      state: "open",
+      user: { login: "strickvl" },
+      ...overrides,
+    });
+    const resolve = (candidates: unknown[]): string =>
+      execFileSync("jq", ["-er", ...selectorArgs, selector], {
+        input: JSON.stringify(candidates),
+        stdio: ["pipe", "pipe", "pipe"],
+      })
+        .toString()
+        .trim();
+
+    expect(selector).not.toBe("");
+
+    // The one publishable state still resolves to that exact PR number.
+    expect(resolve([candidate()])).toBe("296");
+
+    // Every state that is ineligible on purpose resolves to "nothing to do".
+    expect(resolve([candidate({ state: "closed" })])).toBe("");
+    expect(resolve([candidate({ user: { login: "dependabot[bot]" } })])).toBe(
+      "",
+    );
+    expect(resolve([candidate({ draft: true })])).toBe("");
+    expect(
+      resolve([
+        candidate({
+          head: {
+            ref: branch,
+            repo: { full_name: repository },
+            sha: newerCommit,
+          },
+        }),
+      ]),
+    ).toBe("");
+    expect(
+      resolve([
+        candidate({ state: "closed" }),
+        candidate({
+          head: {
+            ref: branch,
+            repo: { full_name: repository },
+            sha: newerCommit,
+          },
+          number: 300,
+        }),
+      ]),
+    ).toBe("");
+
+    // A source run that cannot be traced back to any pull request stays a failure.
+    expectJqResult(selector, [], false, selectorArgs);
+    expectJqResult(
+      selector,
+      [
+        candidate({
+          head: {
+            ref: branch,
+            repo: { full_name: "someone-else/zenml-io-v2" },
+            sha: commit,
+          },
+        }),
+      ],
+      false,
+      selectorArgs,
+    );
+    expectJqResult(
+      selector,
+      [
+        candidate({
+          head: {
+            ref: "other-branch",
+            repo: { full_name: repository },
+            sha: commit,
+          },
+        }),
+      ],
+      false,
+      selectorArgs,
+    );
+
+    // More than one publishable pull request stays a failure.
+    expectJqResult(
+      selector,
+      [candidate(), candidate({ number: 297 })],
+      false,
+      selectorArgs,
+    );
+
+    // The lookup must see closed pull requests to tell "merged" from "broken".
+    expect(resolutionRun).toContain("-f state=all");
+    expect(resolutionRun).not.toContain("-f state=open");
+
+    // Nothing to do exits the step successfully and records why.
+    expect(resolutionRun).toContain(
+      'echo "publishable=false" >> "$GITHUB_OUTPUT"',
+    );
+    expect(resolutionRun).toContain('echo "publishable=true"');
+    expect(resolutionRun).toContain("## No PR preview to publish");
+    expect(resolutionRun).toMatch(
+      /echo "publishable=false" >> "\$GITHUB_OUTPUT"\n\s*exit 0/,
+    );
+
+    // Every privileged step runs only for a resolved publishable pull request.
+    const gate = "steps.source.outputs.publishable == 'true'";
+    for (const name of [
+      "Download the exact validated Worker artifact",
+      "Verify artifact provenance and checksum",
+      "Reject unsafe Worker artifact",
+      "Prepare trusted PR-preview configuration",
+      "Install pinned Wrangler",
+      "Verify dedicated Worker baseline",
+      "Record preview retirement marker",
+      "Upload exact version with stable PR alias",
+      "Post sticky preview URL",
+      "Record preview metadata",
+    ]) {
+      expect(workflowStep(prPreviewPublishSteps, name).if, name).toBe(gate);
+    }
+    expect(
+      workflowStep(prPreviewPublishSteps, "Preserve preview evidence").if,
+    ).toBe(`always() && ${gate}`);
+
+    // The close-during-upload and verification guards stay keyed to the upload itself.
+    expect(
+      workflowStep(
+        prPreviewPublishSteps,
+        "Retire alias if the PR closed during upload",
+      ).if,
+    ).toBe("always() && steps.upload.outputs.upload_attempted == 'true'");
+    expect(
+      workflowStep(prPreviewPublishSteps, "Verify isolated public preview").if,
+    ).toBe("steps.upload.outcome == 'success'");
+  });
+
   it("uploads the exact validated artifact to one route-less dedicated Worker with a stable per-PR alias", () => {
     expect(prPreviewWorkflow).toContain("WORKER_NAME: zenml-io-v2-pr-preview");
     expect(prPreviewWorkflow).toContain("actions/download-artifact@");
