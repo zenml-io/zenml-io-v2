@@ -8,6 +8,10 @@ tags:
   - "kitaru"
   - "sandbox"
   - "agents"
+  - "tooling"
+  - "bigger-picture"
+  - "thought-leadership"
+  - "evergreen"
 date: "2026-09-15T00:00:00.000Z"
 readingTime: "7 mins"
 seo:
