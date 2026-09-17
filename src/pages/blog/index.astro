@@ -38,7 +38,7 @@ import {
   PAGE_SIZE,
 } from "../../lib/blog";
 import { BAND_CONTENT_GAP, blogLaneStyle } from "../../lib/blogLayout";
-import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
+import { defaultOgImage } from "../../lib/seo";
 
 const PAGE_DESCRIPTION =
   "Insights on MLOps, LLMOps, and production machine learning from the ZenML team.";
@@ -57,7 +57,7 @@ const tagOptions = (await getTagCounts(mainFeedPosts))
 ---
 
 <BaseLayout
-  ogImage={hasDefaultOgCard("pages", "blog") ? defaultOgUrl("pages", "blog") : undefined}
+  ogImage={defaultOgImage("pages", "blog")}
   title="Blog - ZenML"
   description={PAGE_DESCRIPTION}
   surface="ml"

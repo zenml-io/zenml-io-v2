@@ -22,7 +22,7 @@ import {
   getMLOpsIndustryTagCounts,
 } from "../../lib/mlops";
 import { filterUsedTerms } from "../../lib/relatedIndex";
-import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
+import { defaultOgImage } from "../../lib/seo";
 
 const llmopsEntries = await getAllPublishedEntries();
 const mlopsEntries = await getAllPublishedMLOpsEntries();
@@ -48,7 +48,7 @@ const industries = filterUsedTerms(merged).sort(
 ---
 
 <BaseLayout
-  ogImage={hasDefaultOgCard("pages", "industry-tags") ? defaultOgUrl("pages", "industry-tags") : undefined}
+  ogImage={defaultOgImage("pages", "industry-tags")}
   title="Industries - ZenML Databases"
   description="Browse all industries represented in the ZenML LLMOps and MLOps databases."
   surface="ml"

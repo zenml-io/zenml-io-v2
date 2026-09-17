@@ -30,7 +30,11 @@ import {
   DEFAULT_OG_PREFIX,
   type DefaultOgFamily,
 } from "../../src/lib/constants.js";
-import { OG_CARDS, type OgBrand, type OgLayout } from "../../src/lib/ogCards.js";
+import {
+  OG_CARDS,
+  type OgBrand,
+  type OgLayout,
+} from "../../src/lib/ogCards.js";
 import {
   DefaultOg,
   type DefaultOgBackground,
@@ -48,21 +52,19 @@ import {
   uploadToR2,
 } from "./pipeline.js";
 
-const FAMILIES = Object.keys(DEFAULT_OG_PREFIX) as DefaultOgFamily[];
+export const FAMILIES = Object.keys(DEFAULT_OG_PREFIX) as DefaultOgFamily[];
 
 /** Where each database family's entries live, and how its cards read. */
 const DATABASES = {
   llmops: {
-    dir: join(REPO_ROOT, "src/content/llmops-database"),
     eyebrow: "LLMOps Database",
     brand: "zenml",
   },
   mlops: {
-    dir: join(REPO_ROOT, "src/content/mlops-database"),
     eyebrow: "MLOps Database",
     brand: "zenml",
   },
-} as const satisfies Record<string, { dir: string; eyebrow: string; brand: OgBrand }>;
+} as const satisfies Record<string, { eyebrow: string; brand: OgBrand }>;
 
 const MANIFEST_PATH = join(REPO_ROOT, "src/data/og-cards.json");
 
@@ -78,12 +80,12 @@ export interface DefaultOgEntry {
   subtitle: string;
 }
 
-type Manifest = Record<DefaultOgFamily, string[]>;
+export type Manifest = Record<DefaultOgFamily, string[]>;
 
-async function readManifest(): Promise<Manifest> {
-  const raw = JSON.parse(await readFile(MANIFEST_PATH, "utf8")) as Partial<
-    Record<DefaultOgFamily, string[]>
-  >;
+export async function readManifest(root = REPO_ROOT): Promise<Manifest> {
+  const raw = JSON.parse(
+    await readFile(join(root, "src/data/og-cards.json"), "utf8"),
+  ) as Partial<Record<DefaultOgFamily, string[]>>;
   return Object.fromEntries(
     FAMILIES.map((family) => [family, raw[family] ?? []]),
   ) as Manifest;
@@ -129,6 +131,7 @@ function databaseSubtitle(
 export async function loadDefaultEntries(
   family: DefaultOgFamily,
   filterSlugs?: string[] | null,
+  root = REPO_ROOT,
 ): Promise<DefaultOgEntry[]> {
   const wanted = (slug: string) => !filterSlugs || filterSlugs.includes(slug);
 
@@ -144,7 +147,8 @@ export async function loadDefaultEntries(
       subtitle: card.subtitle,
     }));
 
-  const { dir, eyebrow, brand } = DATABASES[family];
+  const { eyebrow, brand } = DATABASES[family];
+  const dir = join(root, `src/content/${family}-database`);
   const files = (await readdir(dir)).filter((file) => file.endsWith(".md"));
   const entries = await Promise.all(
     files.map(async (file): Promise<DefaultOgEntry | null> => {
@@ -209,8 +213,7 @@ function parseFamilies(args: string[]): DefaultOgFamily[] {
   return requested.length > 0 ? (requested as DefaultOgFamily[]) : FAMILIES;
 }
 
-async function main(): Promise<void> {
-  const args = process.argv.slice(2);
+export async function generateDefaultOg(args: string[]): Promise<void> {
   const write = args.includes("--write");
   const onlyMissing = args.includes("--missing");
   const families = parseFamilies(args);
@@ -291,7 +294,7 @@ if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(process.argv[1]).href
 ) {
-  main().catch((err) => {
+  generateDefaultOg(process.argv.slice(2)).catch((err) => {
     console.error(err);
     process.exit(1);
   });

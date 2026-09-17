@@ -27,7 +27,7 @@ import {
   LABS_LOGO_GRID,
   LABS_STORIES,
 } from "../lib/labs-home";
-import { defaultOgUrl, hasDefaultOgCard, ORGANIZATION_NAME } from "../lib/seo";
+import { defaultOgImage, ORGANIZATION_NAME } from "../lib/seo";
 
 const homepageJsonLd = buildHomepageJsonLd({
   organizationName: ORGANIZATION_NAME,
@@ -36,7 +36,7 @@ const homepageJsonLd = buildHomepageJsonLd({
 ---
 
 <BaseLayout
-  ogImage={hasDefaultOgCard("pages", "home") ? defaultOgUrl("pages", "home") : undefined}
+  ogImage={defaultOgImage("pages", "home")}
   app="labs"
   title={LABS_HOME_SEO.title}
   description={LABS_HOME_SEO.description}

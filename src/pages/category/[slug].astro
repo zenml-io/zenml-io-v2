@@ -21,7 +21,7 @@ import {
 } from "../../lib/blog";
 import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
 import { filterUsedTerms } from "../../lib/relatedIndex";
-import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
+import { defaultOgImage } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const categories = await getCollection("categories");
@@ -71,7 +71,7 @@ const siblingCategories = filterUsedTerms(
 ---
 
 <BaseLayout
-  ogImage={hasDefaultOgCard("pages", "category") ? defaultOgUrl("pages", "category") : undefined}
+  ogImage={defaultOgImage("pages", "category")}
   title={`${category.data.name} - ZenML Blog`}
   description={`Blog posts about ${category.data.name} from the ZenML team.`}
   surface="ml"

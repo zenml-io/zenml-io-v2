@@ -18,7 +18,7 @@ import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
 import type { TaxonomyCount } from "../../lib/llmops";
 import { getAllPublishedEntries, getLLMOpsTagCounts } from "../../lib/llmops";
 import { filterUsedTerms } from "../../lib/relatedIndex";
-import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
+import { defaultOgImage } from "../../lib/seo";
 
 const copy = DATABASES.llmops;
 
@@ -40,7 +40,7 @@ const tags = filterUsedTerms(merged).sort(
 ---
 
 <BaseLayout
-  ogImage={hasDefaultOgCard("pages", "llmops-tags") ? defaultOgUrl("pages", "llmops-tags") : undefined}
+  ogImage={defaultOgImage("pages", "llmops-tags")}
   title="LLMOps Tags - ZenML"
   description="Browse all LLMOps tags used in the ZenML LLMOps Database."
   surface="ml"

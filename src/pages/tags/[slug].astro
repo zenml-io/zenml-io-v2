@@ -26,7 +26,7 @@ import {
   resolveAuthor,
 } from "../../lib/blog";
 import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
-import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
+import { defaultOgImage } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const tags = await getCollection("tags");
@@ -80,7 +80,7 @@ const siblingTags = popularTags
 ---
 
 <BaseLayout
-  ogImage={hasDefaultOgCard("pages", "tags") ? defaultOgUrl("pages", "tags") : undefined}
+  ogImage={defaultOgImage("pages", "tags")}
   title={`Posts tagged "${tag.data.name}" - ZenML Blog`}
   description={`Blog posts tagged with "${tag.data.name}" from the ZenML team.`}
   surface="ml"

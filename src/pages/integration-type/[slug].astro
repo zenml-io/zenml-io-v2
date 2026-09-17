@@ -19,7 +19,7 @@ import {
   integrationsClose,
   integrationTypeDeck,
 } from "../../lib/integrations";
-import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
+import { defaultOgImage } from "../../lib/seo";
 
 export async function getStaticPaths() {
   const integrationTypes = await getCollection("integration-types");
@@ -49,7 +49,7 @@ const allIntegrations = (
 ---
 
 <BaseLayout
-  ogImage={hasDefaultOgCard("pages", "integration-type") ? defaultOgUrl("pages", "integration-type") : undefined}
+  ogImage={defaultOgImage("pages", "integration-type")}
   title={`${integrationType.data.name} Integrations - ZenML`}
   description={`ZenML integrations in the ${integrationType.data.name} category. Browse ${allIntegrations.length} integrations.`}
   surface="ml"
