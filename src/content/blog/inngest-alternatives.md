@@ -1,5 +1,5 @@
 ---
-title: "We Tested the 8 Inngest Alternatives for Durable AI Agents"
+title: "We Tested the 8 Inngest Alternatives for Replay and Durable AI Agents"
 slug: "inngest-alternatives"
 draft: false
 author: "hamza-tahir"
@@ -19,7 +19,7 @@ seo:
   description: "We reviewed eight Inngest alternatives for durable AI agents. Compare run search and workload isolation, plus duplicate prevention and price."
   canonical: "https://www.zenml.io/blog/inngest-alternatives"
   ogImage: "https://assets.zenml.io/content/blog/inngest-alternatives/3ac81e9f/inngest-alternatives-cover.jpg"
-  ogTitle: "We Tested the 8 Inngest Alternatives for Durable AI Agents"
+  ogTitle: "We Tested the 8 Inngest Alternatives for Replay and Durable AI Agents"
   ogDescription: "We reviewed eight Inngest alternatives for durable AI agents. Compare run search and workload isolation, plus duplicate prevention and price."
 ---
 
@@ -27,15 +27,15 @@ Inngest makes background work easy to start. You write a function, pick what tri
 
 That model came from the world of background jobs and product events, and so for that shape of work, Inngest fits well. Agent loops, however, can be a different story.
 
-In Inngest, an agent that reasons for twenty turns is not one execution. There are dozens. Every model call, tool call, retry, and wait becomes a line item. Your step boundaries set the cost curve of your agent.
+In Inngest, an agent that reasons for twenty turns is not one execution but a dozen. Every model call, tool call, retry, and wait becomes a line item. Your step boundaries set the cost curve of your agent.
 
-So we went looking so you don't have to. We reviewed 8 Inngest alternatives for long-lived agents. We break each one down by run search, workload isolation, and duplicate prevention. We also looked at features, pricing, pros, and cons.
+So we went looking so you don’t have to. We reviewed 8 Inngest alternatives for long-lived agents. We break each one down by run search, workload isolation, and duplicate prevention. We also looked at features, pricing, pros, and cons.
 
 ## A Quick Overview of the Best Inngest Alternatives
 
 - **Why look for alternatives:** Inngest charges for the function run and each step. Agent loops with many model and tool calls can burn through execution quotas faster than ordinary background jobs.
 - **Who should care:** AI platform and backend teams that need better search or tenant isolation. Replay and cost control matter too.
-- **What to expect:** Eight alternatives to Inngest, from agent runtimes like Kitaru to durable execution platforms like Temporal and Restate. We also cover DBOS, Hatchet, and Trigger.dev.
+- **What to expect:** Eight alternatives to Inngest, from agent replay and evaluation tools.
 
 ## The Need for an Inngest Alternative?
 
@@ -43,15 +43,15 @@ Inngest works well when a function has a small number of durable steps. The fit 
 
 ### 1. Cost Increases With Every Agent Step
 
-Inngest's pricing is built around per-step economics. It counts the function run and every durable step as separate executions, so model calls, tool calls, and waits all add to the total when you place them in their own steps.
+Inngest’s pricing is built around per-step economics. It counts the function run and every durable step as separate executions, so model calls, tool calls, and waits all add to the total when you place them in their own steps.
 
 Take a 20-turn agent, for example, with one model call and one tool call per turn. That equals 40 step executions plus the function run itself, so roughly 41 executions for a single agent run. That’s before you add retries, sub-agents, or follow-up jobs.
 
-More steps improve recovery but at the cost of execution volume and a bigger bill. Before long, you're choosing step boundaries based on cost as much as failure recovery.
+More steps improve recovery but at the cost of execution volume and a bigger bill. Before long, you’re choosing step boundaries based on cost as much as failure recovery.
 
 The Pro plan, at $99 per month, includes 1 million executions and 100 concurrent steps. On the surface, these numbers look generous, until a highly autonomous agent enters the chat and makes a dozen tool calls for a simple request.
 
-### 2. Agent Loops Must Fit Inngest's Step-Based Execution Model
+### 2. Agent Loops Must Fit Inngest’s Step-Based Execution Model
 
 External API calls, database work, and other non-deterministic operations belong inside ``step.run()`` for Inngest to persist and memoize them. That is a reasonable contract, and it is the same contract that makes the retries work.
 
@@ -93,7 +93,7 @@ We evaluated each Inngest alternative against three areas that decide whether a 
 
 | **Inngest alternative** | **Best for** | **Key features** | **Pricing** |
 |---|---|---|---|
-| **[Kitaru by ZenML](https://www.zenml.io/product/kitaru)** | Long-running Python agents | - Checkpoints and replay<br>- Pause and resume<br>- Agent SDK adapters | - Free open-source edition<br>- Paid plans start at $399 per month |
+| **[Kitaru by ZenML](https://www.zenml.io/product/kitaru)** | Replay and regression testing for AI agents | - Full-session replay<br>- Controlled tool history<br>- Immutable cohorts and evaluations<br>- Agent framework adapters | - Free open-source edition<br>- Paid plans start at $39 per month |
 | **[Temporal](https://temporal.io/)** | Backend workflows | - Search Attributes<br>- Namespaces, Workflow ID, and policies<br>- Event history replay | - Self-host free<br>- Paid plans start at $100 per month |
 | **[Trigger.dev](https://trigger.dev/)** | TypeScript-first background jobs and agents | - Idempotency scopes<br>- Per-tenant queues and tags<br>- Checkpoint and resume primitives | - Free tier<br>- Paid plans start at $10 per month |
 | **[Restate](https://www.restate.dev/)** | Durable services and keyed agent sessions | - Idempotency keys<br>- Virtual Objects<br>- Durable calls and timers | - Free tier<br>- Paid plans start at $75 per month |
@@ -104,68 +104,70 @@ We evaluated each Inngest alternative against three areas that decide whether a 
 
 ### 1. Kitaru by ZenML
 
-![Kitaru by ZenML homepage with the headline 'Traces you can run, not just read' beside a replay code example](https://assets.zenml.io/content/blog/inngest-alternatives/79cf8c76/kitaru-homepage.avif)
+![Kitaru by ZenML homepage with the headline “Your agent’s best eval data is already in production” beside a replay code example](https://assets.zenml.io/content/blog/inngest-alternatives/4ce6a2bf/kitaru-homepage.avif)
 
-[Kitaru](https://www.zenml.io/product/kitaru), from ZenML, is an open-source runtime for durable Python agents. It is the best Inngest alternative if your unit of work is an agent run rather than an application event.
+[Kitaru](https://www.zenml.io/product/kitaru), from ZenML, is a replay and evaluation test bench for AI agents. It’s the best Inngest alternative if you need a layer to run different agent sessions and compare them against version, prompt, or code changes before it reaches the end user.
 
-Kitaru sits underneath your existing orchestrator, wraps ordinary Python, and records the run as a series of checkpoints. You keep the loop in Python and add durable boundaries where they matter.
+You do not need to turn every model call and tool call into another ``step.run()`` just to make a past case testable. Kitaru records or imports the complete session, then re-executes the agent’s real code against that recorded case.
 
-Where this pays off against Inngest is billing and shape. You are not charged per step by an external platform when you self-host, and you do not have to translate an emergent agent loop into named steps that a memoizer can understand.
+Here are some features that make Kitaru a good Inngest alternative for that use case:
 
-Here are some features that made Kitaru a good Inngest alternative:
+#### Feature 1. Replay Real Agent Sessions Instead of Rebuilding Them as Steps
 
-#### Feature 1. Checkpointing and Replay
+![Kitaru sessions list for a returns-resolver agent, showing replayed and imported sessions scored by a refund-policy evaluator](https://assets.zenml.io/content/blog/inngest-alternatives/8551d495/kitaru-replay-session.avif)
 
-![Diagram showing a Kitaru run failing at checkpoint c4, then a replay where checkpoints c1 to c3 return cached outputs and only c4 re-executes](https://assets.zenml.io/content/blog/inngest-alternatives/5ccd213e/kitaru-checkpoint-replay-diagram.avif)
+Kitaru treats one complete agent run as a session. You can record that session through an agent adapter or import existing traces from Langfuse, LangSmith, Braintrust, Logfire, or Kitaru JSONL.
 
-Kitaru marks durable boundaries with a ``@checkpoint`` decorator inside a ``@flow``. Every checkpoint is a durable unit of work whose output is persisted automatically, and every model and tool call is recorded.
+When you replay it, Kitaru uses that original session as a reference while allowing the model, prompt, parameters, or application code to change. And since the agent’s replay starts from the beginning with the original input, your agent can take a new path through the same customer scenario every time you make a change. That’s a wholesome experience of how a small change would reflect to the end user.
 
-If a run fails halfway through, Kitaru can replay from a chosen checkpoint and read from earlier saved outputs instead of re-burning every model call before it. You can also swap the model, change a prompt, substitute a tool result, and compare the new path against the original.
+#### Feature 2. Test Tool Changes Without Repeating Real Side Effects
 
-The recorded run becomes a test case you can rerun rather than a read-only log. For anyone who has tried to reproduce a bad agent decision from last Tuesday, that difference is what separates guessing from testing.
+![Kitaru session timeline showing an issue_refund tool call annotated by a reviewer during replay](https://assets.zenml.io/content/blog/inngest-alternatives/8fa3ce21/kitaru-tool-policy.avif)
 
-#### Feature 2. Pause Without Holding Compute
+Agent replay becomes risky when tools take actions, like send emails, modify databases, or issue refunds. Taking those actions again just to test a new prompt is one way to make Tuesday more exciting than anyone asked for.
 
-![Diagram of kitaru.wait() releasing compute while a run waits for human, agent, webhook, CLI, or MCP input before resuming at the next checkpoint](https://assets.zenml.io/content/blog/inngest-alternatives/71d73ac1/kitaru-wait-pause-diagram.avif)
+Kitaru lets you control tool behavior during replay. A tool can return a matching result from recorded history, use a fixed response, make a permitted live call, or use a supported model-generated result.
 
-Kitaru provides a ``kitaru.wait()`` primitive so you can pause a flow until a human or another system provides input. Kitaru releases compute while waiting and restores the same execution later. This fits approval gates, delayed callbacks, and agent tasks that extend hours or days.
+For side-effecting tools, recorded history with ``on_miss="fail"`` is the safer setup. If the changed agent asks for a tool result that never appeared in the original case, the replay stops instead of quietly performing a new production action.
 
-Inngest solves the same problem with ``step.waitForEvent()`` and sleeps, and both approaches avoid holding a process open.
+#### Feature 3. Test One Change Across a Cohort of Production Cases
 
-The difference is where the pause lives. In Inngest, you resume through an event. In Kitaru, the pause stays within the agent’s control flow, so a three-day approval gate reads like the agent logic and not a separate event re-entry point.
+![Kitaru experiment run comparing a candidate against a baseline cohort, with three of three sessions passing the refund-policy evaluator](https://assets.zenml.io/content/blog/inngest-alternatives/cb64f179/kitaru-cohort-experiment.avif)
 
-#### Feature 3. Run Under the Agent Framework You Already Use
+A fix that works on one bad run can still break ten good ones. Kitaru lets you collect selected sessions into immutable cohort versions, so the same production cases can be reused whenever the agent changes.
 
-![Diagram showing a LangGraph ticket review graph nested inside a Kitaru flow, with Kitaru checkpoints wrapping the graph state](https://assets.zenml.io/content/blog/inngest-alternatives/8e1680cc/kitaru-langgraph-adapter-diagram.avif)
+You can then test a new model, prompt, model parameter, input, or code version across the cohort. Kitaru creates one replay per session and evaluates the baseline and candidate with the same evaluator versions.
 
-Kitaru ships adapters for common Python agent SDKs like PydanticAI, the OpenAI Agents SDK, the Claude Agent SDK, and Gemini. Google ADK, LangGraph, and raw Python are supported too.
+That gives you a useful answer beyond "the demo looked better." You can see which cases improved, which regressed, where the change introduced a trade-off, and which runs did not contain enough evidence to judge.
 
-That matters for adoption costs. Most of you evaluating an Inngest alternative already have working agent code, the question is: *how much of the existing agent has to be rewritten before it can survive a crash?*
+#### Feature 4. Keep Your Existing Agent Framework and Trace Store
 
-Kitaru keeps those changes small. You add an adapter or checkpoint boundaries while retaining your SDK, prompts, tools, and core business logic.
+![Two Kitaru setup panels: importing traces from Langfuse, LangSmith, Braintrust, Logfire, Arize Phoenix or Kitaru JSONL, and wrapping an existing PydanticAI agent with a recording adapter](https://assets.zenml.io/content/blog/inngest-alternatives/7720f558/kitaru-adapters.avif)
 
-#### Feature 4. Self-Hosted State, Artifacts, and Isolation
+Kitaru does not replace the framework that controls the agent. Current adapters cover PydanticAI, LangGraph, OpenAI Agents SDK, Mastra, and Vercel AI SDK, so the agent loop can stay where your team already wrote it.
 
-Kitaru is self-host-first. The open-source edition can run in your own VPC. You can point it at S3, GCS, or Azure Blob storage. No mandatory SaaS control plane between you and your agent's data.
+Your observability setup can stay too. Kitaru can import selected traces from Langfuse, LangSmith, Braintrust, and Logfire rather than asking you to move your whole trace history into another system.
 
-On the isolation criterion, Kitaru runs on infrastructure stacks that include Kubernetes, Vertex AI, SageMaker, and AzureML, so you separate workloads with the primitives your platform team already operates. Checkpoint outputs persist as typed, versioned artifacts with lineage. The observability story therefore covers both the execution and the data it produced.
+Workers in your environment execute replays and evaluators with your code and model keys. That gives teams a smaller migration when the real problem is testing agent changes rather than replacing the production runtime.
 
 #### Pricing
 
-Kitaru is free and open-source under Apache 2.0. If you want the managed control plane on top, ZenML offers three plans that cover both ZenML for ML pipelines and Kitaru for durable agents:
+Kitaru is free and open source under Apache 2.0 if you self-host it. The open-source plan includes recording and imports without usage caps, cohorts, evaluators, experiment runs, and replay on your own workers.
 
-- **$399 per month** for 500 monthly executions, with 1 project and 1 snapshot
-- **$999 per month** for 2,000 monthly executions, with 3 projects and 5 snapshots
-- **$2,499 per month** for 5,000 monthly executions, with 10 projects and 20 snapshots
-Beyond that, an Enterprise plan lifts the caps on executions and projects. You can [talk to an engineer on our team](https://www.zenml.io/book-your-demo) if that is the tier you are sizing for.
+Other than that, we provide two cloud hosted plans:
 
-![ZenML pricing page showing the free open source tier, the Scale plan at $999 per month for 2,000 monthly executions, and a custom Enterprise tier](https://assets.zenml.io/content/blog/inngest-alternatives/5ce6c9be/zenml-kitaru-pricing.avif)
+- **Cloud (SaaS):** $39 per month
+- **Enterprise:** Custom pricing
+
+You can [talk to an engineer on our team](https://www.zenml.io/book-your-demo) if that is the tier you are sizing for.
+
+![Kitaru pricing plans: free open source, $39 per month Cloud with a 14-day trial, and a custom Enterprise tier](https://assets.zenml.io/content/blog/inngest-alternatives/fd84fc27/kitaru-pricing.avif)
 
 #### Pros and Cons
 
-Kitaru is at its best when the work is a long-running Python agent. It gives you checkpoints, replay with overrides, ``wait()``, artifact lineage, and a dashboard for inspecting runs. You get all of that without a deterministic replay contract and without a per-step meter shaping your architecture.
+Kitaru is strongest when you need to know whether a change fixed the issue without breaking behavior that already worked. It gives you full-run replay, controlled tool history, production-derived cohorts, and versioned evaluations without forcing the agent into Inngest’s step model.
 
-The honest tradeoffs are maturity and scope. Kitaru is younger than Inngest, Temporal, or Camunda. It is also Python-only and focused on agents, not for every background job in your product. If you need a polyglot backend platform or a formal business process may be better served by another tool on this list.
+The honest tradeoffs are maturity and scope. Kitaru is younger than Inngest, Temporal, or Camunda. Plus, it does not replace Inngest’s durable function execution. It is also Python-only and focused on agents, not for every background job in your product. If you still need a production runtime, Kitaru can sit beside Inngest, Restate, Temporal, or another execution layer rather than replace it.
 
 **Read more on:** [Kitaru vs Inngest](https://www.zenml.io/compare/kitaru-vs-inngest)
 
@@ -210,7 +212,7 @@ The cost is its programming model. Workflow code must remain deterministic durin
 
 #### Features
 
-- Prevent duplicate runs with idempotency keys that use run, attempt, and global scope. When the same key is repeated, Trigger.dev returns the existing run rather than starting another. By default, the key retention window is 30 days, though there's an option to set different TTLs for each trigger.
+- Prevent duplicate runs with idempotency keys that use run, attempt, and global scope. When the same key is repeated, Trigger.dev returns the existing run rather than starting another. By default, the key retention window is 30 days, though there’s an option to set different TTLs for each trigger.
 - Create separate tenant queues with ``concurrencyKey``. Use a user ID or organization ID so each tenant has its own concurrency limit and a single busy customer does not consume all available slots.
 - Attach business context to runs with tags like customer IDs, project IDs, or environment names. You can filter those tags in the dashboard or through the SDK when tracing a specific customer or job.
 - Pause and restore long-running tasks with built-in waitpoints and long waits. While a task waits for input, it releases its concurrency slot and does not incur compute charges for the idle period.
@@ -258,7 +260,7 @@ Restate is open source and self-hostable. Restate Cloud is a fully managed serve
 
 Restate is strong when your durable work lives close to backend services. Virtual Objects give Restate a clean answer to per-session state and concurrency, and the single binary is also easier to run than a large cluster. Restate also turns idempotency on by default, which most platforms leave to the developer.
 
-The trade-off is the service model. Your team must adopt Restate's service and virtual object model, and that is a real shift if your agents are plain Python loops. Idempotency keys work, but it does not deduplicate across separate requests.
+The trade-off is the service model. Your team must adopt Restate’s service and virtual object model, and that is a real shift if your agents are plain Python loops. Idempotency keys work, but it does not deduplicate across separate requests.
 
 **You may want to read next:** [Kitaru vs Restate](https://www.zenml.io/compare/kitaru-vs-restate)
 
@@ -331,7 +333,7 @@ If your agent produces large artifacts, model outputs, and sandboxed execution r
 #### Features
 
 - Save thread state after each step with checkpointers that record the graph’s current state. Those snapshots let you resume after an interruption, recover from a failure, and run human-in-the-loop approval flows.
-- Use time travel to inspect previous state snapshots and restart from an earlier checkpoint. You can replay the saved state as is or change selected values before continuing. This is the closest thing to Kitaru's replay, though it operates on graph state and not on recorded model and tool calls with overrides.
+- Use time travel to inspect previous state snapshots and restart from an earlier checkpoint. You can replay the saved state as is or change selected values before continuing. This is the closest thing to Kitaru’s replay, though it operates on graph state and not on recorded model and tool calls with overrides.
 - Organize agent execution through assistants, threads, and runs. Assistants store the agent’s configuration, threads keep the conversation and state, and the run executes work against that thread. Together, they separate setup, memory, and execution into clear parts.
 
 #### Pricing
@@ -376,24 +378,24 @@ On SaaS, you get a 30-day trial of the full platform, after which you can keep a
 
 #### Pros and Cons
 
-Camunda is strongest when engineers, operations teams, and business owners must read the same process. Approvals, audit trails, compliance review, and stakeholder visibility are all first-class here. Besides, Operate's incident handling and batch operations are good operational tooling.
+Camunda is strongest when engineers, operations teams, and business owners must read the same process. Approvals, audit trails, compliance review, and stakeholder visibility are all first-class here. Besides, Operate’s incident handling and batch operations are good operational tooling.
 
 The mismatch is the modeling layer. If the real work is a Python loop with frequent tool calls, it won’t map neatly to BPMN. Camunda’s free tier also does not cover production orchestration. Camunda can model an approval that lasts three weeks. It does not give you agent replay with changed prompts or model outputs.
 
 **Also read:** Our [Camunda alternatives](https://www.zenml.io/blog/camunda-alternatives) breakdown.
 
-## The best Inngest alternatives for durable execution and AI agents
+## The best Inngest alternatives for replays and durable execution
 
 The right Inngest alternative depends on the shape of the work and the reason you are leaving.
 
-- **Choose Kitaru** for long-lived Python agents. It adds checkpoints and replay, plus waits and self-hosted state without changing the agent framework.
+- **Choose Kitaru** when you want to replay real agent sessions, test prompt, model, or code changes against them, and keep confirmed cases as regression tests.
 - **Choose Temporal** when workflow search, isolation, and identity controls matter more than a light programming model.
 - **Choose Trigger.dev** when your team writes TypeScript and wants a close replacement with clear idempotency and queue controls.
 
-The case for switching gets stronger when the agent loop becomes the product. At that point, you need to find one failed run among millions.
+The case for Kitaru gets stronger when debugging a trace is no longer enough. Once agents are serving real users, you need to know whether the change that fixes one failure will create another somewhere else.
 
-Kitaru makes that easy by keeping the agent loop in Python while adding the runtime pieces production agents need. You can save progress, recover failed runs, pause for input, inspect each checkpoint, and replay a run with changes.
+Kitaru turns those production sessions into replayable regression cases. You can rerun the agent against controlled tool history, compare the candidate with the original, and test the same change across a cohort before it ships.
 
-Even better, you can host our open-source edition for free, and then move to the paid control plane when the team needs shared operations and governance.
+You can self-host the open-source version for free or start a 14-day trial of Kitaru Cloud today.
 
-[Book a demo with one of our engineers](https://www.zenml.io/book-your-demo) to see how Kitaru fits your agent stack.
+[Book a demo](https://cal.com/zenml/kitaru-product-demo) with one of our engineers to see how Kitaru fits your agent stack.
