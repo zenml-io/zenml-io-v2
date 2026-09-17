@@ -209,7 +209,7 @@
           {
             "@type": "Offer",
             "name": "Cloud",
-            "url": "https://cloud.kitaru.ai",
+            "url": "https://cloud.zenml.io/signup?product=kitaru",
             "price": 39,
             "priceCurrency": "USD",
             "priceSpecification": {
