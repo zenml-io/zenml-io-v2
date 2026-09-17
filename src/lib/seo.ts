@@ -97,8 +97,8 @@ export function compareOgUrl(brand: CompareOgBrand, slug: string): string {
  *
  * Same contract as `compareOgUrl`: a deterministic R2 key per family and
  * slug, written by `scripts/og/generate-default-og.ts` and overwritten in
- * place on regen. Ask `hasDefaultOgCard` first — a slug with no card yet
- * must fall through to `DEFAULT_OG_IMAGE` rather than 404.
+ * place on regen. Use `defaultOgImage` when the card may not exist — a
+ * missing slug must fall through to `DEFAULT_OG_IMAGE` rather than 404.
  */
 export function defaultOgUrl(family: DefaultOgFamily, slug: string): string {
   return `${ASSET_BASE_URL}/${DEFAULT_OG_PREFIX[family]}/${slug}.jpg`;
@@ -113,6 +113,16 @@ export function hasDefaultOgCard(
   slug: string,
 ): boolean {
   return ogCards[family].includes(slug);
+}
+
+/** URL of an uploaded default OG card, or undefined when none is recorded. */
+export function defaultOgImage(
+  family: DefaultOgFamily,
+  slug: string,
+): string | undefined {
+  return hasDefaultOgCard(family, slug)
+    ? defaultOgUrl(family, slug)
+    : undefined;
 }
 
 /**

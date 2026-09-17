@@ -130,7 +130,7 @@ Do not hard-wrap PR descriptions at a fixed column width. Keep each paragraph an
 
 - **Third-party service logos:** locate the `zenml-frontend-monorepo` checkout, then read `.claude/skills/add-service-logo/SKILL.md` there before sourcing or integrating a logo. Try the sibling checkout first; if absent, use available project discovery. If unavailable, report the missing skill and continue unrelated work. Preserve full-color marks, normalize to 24x24, and obtain user approval of the rendered result before integration; do not bypass that review.
 - **Blog covers:** every new or imported post, including posts merged in from `main`, gets its cover from the `figma-blog-cover` skill on the new-brand templates (Blog Cover 16:9, or the VS card for alternatives/versus posts); the skill owns the export contract. A post that arrives with a purple-era or non-16:9 cover is regenerated before it ships; `pnpm check:blog-covers` enforces the `content/blog/<slug>/` AVIF + JPEG pair but cannot see the brand, so that part stays a review item.
-- **Default OG cards** for database entries and top-level pages: `pnpm og:default:write --family=<llmops|mlops|pages> --missing` renders the cards, uploads them to R2 (needs R2 credentials in `.env`) and rewrites `src/data/og-cards.json`; commit the manifest with the entry.
+- **Default OG cards** for database entries and top-level pages: run `pnpm og:sync` to report every missing `llmops`, `mlops`, and `pages` card without changing files. Run `pnpm og:sync --write` locally to render missing cards, upload them to R2 using credentials from `.env`, and rewrite `src/data/og-cards.json`; commit the manifest with the content. Pages that opt into generated cards without an `OG_CARDS` title are reported by key and block the write rather than receiving an invented title. `pnpm validate:content` warns when an LLMOps or MLOps database entry is missing from the manifest and names the sync command.
 
 Use `.claude/skills/r2-image-upload/SKILL.md` for authorized uploads and
 `.claude/skills/blog-post-contributor/SKILL.md` for blog imports.
@@ -206,7 +206,8 @@ Important rules:
 - New native LLMOps entries may use a `notion:` provenance block instead of `webflow:`
 - Existing migrated entries still use `webflow:` provenance
 - RSS date derivation for LLMOps entries is source-agnostic (`webflow` first, then `notion`)
-- New entries missing a default OG card: the `og:default:write --family=llmops` step under Images & Assets
+- Run `pnpm og:sync` to check for missing default cards. `pnpm validate:content` also warns for each LLMOps entry absent from the manifest and points to this command.
+- To generate missing cards, run `pnpm og:sync --write` locally with R2 credentials in `.env`, then commit the updated `src/data/og-cards.json`. A missing `OG_CARDS` title for an opted-in static page, case study, or project blocks generation and prints the missing key.
 - After new LLMOps entries land, validate with:
   - `pnpm validate:llmops`
   - `pnpm check`

@@ -35,6 +35,7 @@
     "validate:mlops": "tsx scripts/phase2/validate-content.ts --collection=mlops-database",
     "og:compare": "tsx scripts/og/generate-compare-og.ts",
     "og:compare:write": "tsx scripts/og/generate-compare-og.ts --write",
+    "og:sync": "tsx scripts/og/sync-default-og.ts",
     "og:default": "tsx scripts/og/generate-default-og.ts",
     "og:default:write": "tsx scripts/og/generate-default-og.ts --write",
     "images:convert": "tsx scripts/convert-images.ts",

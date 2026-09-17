@@ -56,13 +56,22 @@ positioning; MERGE_PLAN.md records the merge history.
 - New uploads default to `content/uploads/{sha8}/{filename}`; task-specific `--prefix` values such as `content/blog/<slug>` are supported. Legacy webflow/ assets remain served; do not move them. Verify every uploaded URL returns HTTP 200 before committing references.
 - Use [r2-image-upload](.agents/skills/r2-image-upload/SKILL.md) for upload steps after authorization.
 - Blog covers come from [figma-blog-cover](.agents/skills/figma-blog-cover/SKILL.md) on the new-brand templates (Blog Cover 16:9, or the VS card for alternatives/versus posts), never from hand-made files; the skill owns the export contract. `pnpm check:blog-covers` enforces the content/blog/<slug>/ AVIF + JPEG pair but cannot see the brand, so the regeneration rule below stays a review item. It can also add a missing competitor mark to the Hashi library (source, normalize, create the component, then a human republish).
-- Default OG cards for database entries and top-level pages: `pnpm og:default:write --family=<llmops|mlops|pages> --missing` renders the cards, uploads them to R2 (needs R2 credentials in .env) and rewrites src/data/og-cards.json; commit the manifest with the entry.
+- Default OG cards for database entries and top-level pages: run `pnpm og:sync` to report every missing `llmops`, `mlops`, and `pages` card without changing files. Run `pnpm og:sync --write` locally to render missing cards, upload them to R2 using credentials from `.env`, and rewrite `src/data/og-cards.json`; commit the manifest with the content. Pages that opt into generated cards without an `OG_CARDS` title are reported by key and block the write rather than receiving an invented title. `pnpm validate:content` warns when an LLMOps or MLOps database entry is missing from the manifest and names the sync command.
 
 ## Contributing Blog Posts
 - Use [blog-post-contributor](.agents/skills/blog-post-contributor/SKILL.md) to import Markdown or Notion content into src/content/blog/<slug>.md on a blog/<slug> branch. Reuse an explicitly authorized feature branch rather than switching a user's active checkout.
 - Use [figma-blog-cover](.agents/skills/figma-blog-cover/SKILL.md) to generate the post's cover from the Figma template; it places the cover on the Blog Covers page, exports it, and uploads AVIF + JPEG to R2. This applies to every new or imported post, including posts merged in from main; a post that arrives with a purple-era or non-16:9 cover is regenerated before it ships.
 - Match blogSchema in src/content.config.ts; webflow metadata is unnecessary for native posts. Resolve author/category/tag slugs against their collections; create missing authors/tags from supplied facts. Restart pnpm dev after adding categories/tags because referenceSlugSets loads at config evaluation.
 - For Kitaru posts, use category: "kitaru" and make "kitaru" the first tag. Preserve source authorship and intended publication state. Missing cover art blocks readiness to publish, not independent content preparation; do not invent image URLs.
+
+## LLMOpsDB Native Publish Workflow
+
+LLMOps database entries have two sources: entries migrated from Webflow, and entries published natively from the sibling `llmops-db-notion` repo into `src/content/llmops-database/*.md`.
+
+- New native LLMOps entries may use a `notion:` provenance block instead of `webflow:`; migrated entries keep `webflow:` provenance, and RSS date derivation remains source-agnostic (`webflow` first, then `notion`).
+- Run `pnpm og:sync` to check for missing default cards. `pnpm validate:content` also warns for each LLMOps entry absent from the manifest and points to this command.
+- To generate missing cards, run `pnpm og:sync --write` locally with R2 credentials in `.env`, then commit the updated `src/data/og-cards.json`. A missing `OG_CARDS` title for an opted-in static page, case study, or project blocks generation and prints the missing key.
+- After new LLMOps entries land, run `pnpm validate:llmops`, `pnpm check`, and `pnpm build`.
 
 ## Security & Configuration
 - Treat this repo as public. Never commit secrets, API keys, infrastructure IDs, internal URLs, traffic numbers, or private notes.

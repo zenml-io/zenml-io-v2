@@ -14,6 +14,8 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import matter from "gray-matter";
+import ogCardManifest from "../../src/data/og-cards.json";
+import { missingDatabaseOgWarning } from "./default-og-warning.js";
 
 // ============================================================================
 // Configuration
@@ -160,7 +162,10 @@ class ContentValidator {
 
       // Step 4: Exit with appropriate code
       const errorCount = this.findings.filter((f) => f.severity === "error").length;
-      const warningCount = this.findings.filter((f) => f.severity === "warning").length;
+      // Missing OG cards remain advisory even in strict mode: pages have a fallback.
+      const warningCount = this.findings.filter(
+        (f) => f.severity === "warning" && f.code !== "MISSING_DEFAULT_OG_CARD"
+      ).length;
 
       if (errorCount > 0) {
         console.log(`\n❌ Validation FAILED: ${errorCount} error(s)\n`);
@@ -263,6 +268,23 @@ class ContentValidator {
     this.validateDraftSourceConsistency();
     this.validateLLMOpsProvenanceAndDates();
     this.validateMLOpsProvenanceAndDates();
+
+    for (const entry of this.entries) {
+      const slug = entry.data.slug ?? entry.fileSlug;
+      const message = missingDatabaseOgWarning(
+        entry.collection, slug, entry.data.draft === true, ogCardManifest
+      );
+      if (message) {
+        this.addFinding({
+          severity: "warning",
+          code: "MISSING_DEFAULT_OG_CARD",
+          collection: entry.collection,
+          slug,
+          file: entry.filePath,
+          message,
+        });
+      }
+    }
 
     // Group D: Webflow CDN leakage
     this.validateWebflowCDNUrls();

@@ -5,7 +5,7 @@ import BlogNewsletterCta from "../../components/labs/BlogNewsletterCta.astro";
 import LabsPageHeader from "../../components/labs/LabsPageHeader.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
-import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
+import { defaultOgImage } from "../../lib/seo";
 
 const allProjects = (
   await getCollection("projects", ({ data }) => !data.draft)
@@ -13,7 +13,7 @@ const allProjects = (
 ---
 
 <BaseLayout
-  ogImage={hasDefaultOgCard("pages", "projects") ? defaultOgUrl("pages", "projects") : undefined}
+  ogImage={defaultOgImage("pages", "projects")}
   title="Projects - ZenML"
   description="A home for machine learning projects built using ZenML and various integrations"
   surface="ml"

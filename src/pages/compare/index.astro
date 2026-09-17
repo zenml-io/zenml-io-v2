@@ -24,7 +24,7 @@ import {
   getZenmlCompareCards,
 } from "../../lib/compareHub";
 import "../../styles/labs-scroll-reveal.css";
-import { defaultOgUrl, hasDefaultOgCard } from "../../lib/seo";
+import { defaultOgImage } from "../../lib/seo";
 
 const TITLE = "Compare: ZenML and Kitaru vs. alternatives";
 const DESCRIPTION =
@@ -37,7 +37,7 @@ const [kitaruCards, zenmlCards] = await Promise.all([
 ---
 
 <BaseLayout
-  ogImage={hasDefaultOgCard("pages", "compare") ? defaultOgUrl("pages", "compare") : undefined}
+  ogImage={defaultOgImage("pages", "compare")}
   title={TITLE}
   description={DESCRIPTION}
   surface="unified"
