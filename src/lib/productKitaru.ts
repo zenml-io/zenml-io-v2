@@ -51,10 +51,10 @@ export const KITARU_VIDEO = {
 
 export const KITARU_LINKS = {
   signup: {
-    // Kitaru signup lives on its own cloud app (Aug 2026 decision),
-    // superseding the earlier cloud.zenml.io?product=kitaru placeholder.
+    // Unified signup on cloud.zenml.io (Sept 2026); `product=kitaru`
+    // preselects the Kitaru workspace. Replaces the separate cloud.kitaru.ai app.
     label: "Sign up free",
-    href: "https://cloud.kitaru.ai",
+    href: "https://cloud.zenml.io/signup?product=kitaru",
   },
   demo: { label: "Book a demo", href: "/book-your-demo/kitaru" },
   github: {

@@ -196,7 +196,7 @@ Training, batch inference, evals, agent workflows. One DAG, versioned artifacts,
 
 - Learn more: [Learn about ZenML](https://www.zenml.io/product/zenml)
 
-- CTA: [Sign up free](https://cloud.zenml.io)
+- CTA: [Sign up free](https://cloud.zenml.io/signup?product=zenml)
 
 ### Replay-based evals
 
@@ -208,7 +208,7 @@ Import your whole trace history, replay it against your next change, and keep ev
 
 - Learn more: [Learn about Kitaru](https://www.zenml.io/product/kitaru)
 
-- CTA: [Sign up free](https://cloud.kitaru.ai)
+- CTA: [Sign up free](https://cloud.zenml.io/signup?product=kitaru)
 
 Same control plane. Same governance. One bill covers both.
 

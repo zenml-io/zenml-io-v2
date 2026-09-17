@@ -3,7 +3,8 @@
  * ZenML Labs parent homepage (`/`), in one place.
  *
  * Copy rules (2026-09-08 rulings): "Start free" is the only signup action
- * and it leads to the Kitaru cloud app; "Explore ZenML / Explore Kitaru"
+ * and it leads to the unified cloud.zenml.io signup with no product
+ * preselected (Sept 2026; the product pages pass their own `product`); "Explore ZenML / Explore Kitaru"
  * live only in the blocks that explain each product and link to the
  * product pages; no "Book a demo"; no helper lines under CTAs. Facts
  * (install commands, licences, compliance strings, case-study titles and
@@ -44,23 +45,27 @@ export interface LabsCta {
   analytics: string;
 }
 
-/** The single signup action. Same label everywhere; the event names differ by placement. */
+/**
+ * The single signup action. Same label everywhere; the event names differ by
+ * placement. The href is the unified signup with no `product` — the page
+ * defaults to ZenML and offers the Kitaru toggle.
+ */
 export const LABS_SIGNUP = {
   label: "Start free",
-  href: KITARU_LINKS.signup.href,
+  href: "https://cloud.zenml.io/signup",
 } as const;
 
 export const LABS_NAV_SIGNUP: LabsCta = {
   ...LABS_SIGNUP,
-  analytics: "Nav-Signup-Kitaru",
+  analytics: "Nav-Signup",
 };
 export const LABS_HERO_SIGNUP: LabsCta = {
   ...LABS_SIGNUP,
-  analytics: "Hero-Signup-Kitaru",
+  analytics: "Hero-Signup",
 };
 export const LABS_FINAL_SIGNUP: LabsCta = {
   ...LABS_SIGNUP,
-  analytics: "Final-Signup-Kitaru",
+  analytics: "Final-Signup",
 };
 
 /**
@@ -69,7 +74,11 @@ export const LABS_FINAL_SIGNUP: LabsCta = {
  * LABS_NAV_SIGNUP.
  */
 export const LABS_NAV_SIGNUP_BY_PRODUCT: Record<LabsProduct, LabsCta> = {
-  kitaru: LABS_NAV_SIGNUP,
+  kitaru: {
+    label: LABS_SIGNUP.label,
+    href: KITARU_LINKS.signup.href,
+    analytics: "Nav-Signup-Kitaru",
+  },
   zenml: {
     label: LABS_SIGNUP.label,
     href: ZENML_LINKS.signup.href,
