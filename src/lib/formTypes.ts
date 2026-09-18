@@ -24,12 +24,10 @@ export interface CalEmbedConfig {
 export interface BrevoFormConfig {
   /** sibforms.com POST URL */
   action: string;
-  /** Brevo form ID (used for scoped DOM queries) */
+  /** Brevo form ID (used to create unique input IDs) */
   formId: string;
   /** Submit button label */
   submitLabel: string;
-  /** Loading-state button label */
-  loadingLabel: string;
 }
 
 /** A field definition for placeholder (disabled) forms. */

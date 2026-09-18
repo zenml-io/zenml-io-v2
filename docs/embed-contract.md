@@ -90,14 +90,12 @@ LLMOps/MLOps database index pages (`src/pages/llmops-database/index.astro`,
 **Sizing:** a plain HTML `<form>` with an email input and submit button — no iframe, no
 external script load.
 
-**Loading behavior:** no third-party script is loaded. An inline `<script>` progressively
-enhances the form to submit via `fetch(… { mode: "no-cors" })` against the Brevo
-(Sendinblue) form action URL and show an inline success/error message instead of
-navigating away.
+**Loading behavior:** no third-party script is loaded. The form posts directly to the
+Brevo (Sendinblue) action URL so Brevo can report validation failures and show the
+correct confirmation page.
 
-**No-JS behavior:** the `<form method="POST" action={config.action}>` posts directly to
-Brevo's hosted endpoint and the visitor is redirected to Brevo's own confirmation page —
-full functionality without JavaScript.
+**No-JS behavior:** identical to the normal behavior; newsletter submission does not
+depend on JavaScript.
 
 **Consent relationship:** not gated by the cookie consent registry — it's a first-party
 form submission triggered by explicit visitor action (clicking Subscribe), not a

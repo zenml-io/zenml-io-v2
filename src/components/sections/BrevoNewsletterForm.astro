@@ -2,9 +2,8 @@
 /**
  * BrevoNewsletterForm — email signup form that POSTs to Brevo (Sendinblue).
  *
- * Uses fetch with mode: 'no-cors' to submit the form data.
- * Progressive enhancement: without JS the form POSTs directly to Brevo.
- * Scoped DOM queries via data-brevo-form attribute — safe for multiple instances.
+ * Uses a native form submission so Brevo can report validation failures and
+ * show the correct confirmation page.
  *
  * Pass `darkBg` when used inside a dark Labs band (adjusts input/button colors).
  */
@@ -33,25 +32,16 @@ const buttonClass = darkBg
       "px-5 py-3 disabled:cursor-not-allowed disabled:opacity-50",
     );
 
-const successClass = darkBg
-  ? "mt-3 hidden font-sans text-sm font-medium text-(--color-sage-200)"
-  : "mt-3 hidden font-sans text-sm font-medium text-(--color-sage-800)";
-
-const errorClass = darkBg
-  ? "mt-3 hidden font-sans text-sm font-medium text-(--color-cream-100)"
-  : "mt-3 hidden font-sans text-sm font-medium text-(--color-sage-800)";
-
 const privacyClass = darkBg
   ? "mt-4 font-sans text-xs text-(--color-sage-300)"
   : "mt-4 font-sans text-xs text-(--color-cream-700)";
 ---
 
-<div data-brevo-form={config.formId} data-loading-label={config.loadingLabel}>
+<div>
   <form
     method="POST"
     action={config.action}
     class="flex flex-col gap-3 sm:flex-row"
-    data-brevo-newsletter
   >
     <label for={`brevo-email-${config.formId}`} class="sr-only">Email address</label>
     <input
@@ -74,22 +64,5 @@ const privacyClass = darkBg
     <input type="hidden" name="locale" value="en" />
   </form>
 
-  <p class={successClass} data-brevo-success>
-    Thanks for subscribing! Check your inbox to confirm.
-  </p>
-  <p class={errorClass} data-brevo-error></p>
-
   {privacyHtml && <p class={privacyClass} set:html={privacyHtml} />}
 </div>
-
-<script>
-  // Shared with BlogNewsletterCta.astro's newsletter card — see
-  // scripts/brevoNewsletterForm.ts for the submit behaviour.
-  import { initBrevoNewsletterForms } from "../../scripts/brevoNewsletterForm";
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initBrevoNewsletterForms);
-  } else {
-    initBrevoNewsletterForms();
-  }
-</script>

@@ -35,7 +35,6 @@ export const BREVO_MAIN_CONFIG: BrevoFormConfig = {
     "https://63e37fdf.sibforms.com/serve/MUIFAMvaYti4TAClgi0Pk5WouDUpgolccC7_T_KiE_vICE_qZHKI9bAryb89OZDj-UVTi8li8XCdpENY1IbHpro-OdH97V-eFffsW_rLz3yt0XPsbrPT2xh7JRlslMwMEtabMpmfA4yC3N75Ovd5Cviia74yCU7lP7sC0S5ryQ1rR-mP-YnsAG9j_PFcrMy-LrTHHOUXmlOPlb5-",
   formId: "65fd9132331e6d39b81aef11",
   submitLabel: "Subscribe",
-  loadingLabel: "Subscribing…",
 };
 
 export const BREVO_LLMOPS_CONFIG: BrevoFormConfig = {
@@ -43,7 +42,6 @@ export const BREVO_LLMOPS_CONFIG: BrevoFormConfig = {
     "https://63e37fdf.sibforms.com/serve/MUIFADp-QsUQiD_xU8LpiHLJbTYlft-cMexirrAGZcNpN0DO0ZD55q962wJtVFjY9U3tL7bPacsTeeOibcQGOn7rlRmvIY1bc9GVmz8L7uMgYKSparFWsRTiF2pTgCYL04uIjOyKf95rFjpHuTLcLz3vO5oQS1EVeWmaZH4EtsgucWfQSErJ28bTppqWlcUB203d9zn7dPO512Tw",
   formId: "67d01f2bed4adbf1ecf4e6cc",
   submitLabel: "Subscribe",
-  loadingLabel: "Subscribing…",
 };
 
 // ---------------------------------------------------------------------------
