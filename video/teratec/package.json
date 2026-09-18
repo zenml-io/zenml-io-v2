@@ -1,0 +1,38 @@
+{
+  "name": "zenml-teratec-film",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "remotion studio src/index.ts --port=3333",
+    "check": "tsc --noEmit && tsx scripts/verify.ts",
+    "render": "node scripts/render.mjs",
+    "stills": "tsx scripts/stills.ts",
+    "review:opening": "remotion render src/index.ts TeratecInstitutional out/review-opening-v15.mp4 --frames=0-509 --codec=h264 --crf=10 --concurrency=4",
+    "review:workflow": "remotion render src/index.ts TeratecInstitutional out/review-workflow-v15.mp4 --frames=870-1499 --codec=h264 --crf=10 --concurrency=4",
+    "verify:media": "node scripts/verify-media.mjs",
+    "review:logo": "remotion render src/index.ts TeratecInstitutional out/review-logo-v15.mp4 --frames=0-179 --codec=h264 --crf=10 --concurrency=4",
+    "review:outro": "remotion render src/index.ts TeratecInstitutional out/review-outro-v15.mp4 --frames=4140-4499 --codec=h264 --crf=10 --concurrency=4",
+    "review:munich": "remotion render src/index.ts TeratecInstitutional out/review-munich-v15.mp4 --frames=510-869 --codec=h264 --crf=10 --concurrency=4",
+    "share:discord": "node scripts/discord.mjs",
+    "review:hook": "remotion render src/index.ts TeratecInstitutional out/review-hook-v15.mp4 --frames=180-509 --codec=h264 --crf=10 --concurrency=4",
+    "review:customers": "remotion render src/index.ts TeratecInstitutional out/review-customers-v15.mp4 --frames=2490-2969 --codec=h264 --crf=10 --concurrency=4"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.526",
+    "@remotion/cli": "4.0.526",
+    "@remotion/fonts": "4.0.526",
+    "@remotion/renderer": "4.0.526",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "remotion": "4.0.526",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "tsx": "^4.23.13",
+    "typescript": "6.0.3"
+  }
+}
