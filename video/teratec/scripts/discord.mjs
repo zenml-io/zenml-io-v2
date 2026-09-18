@@ -2,8 +2,8 @@ import { spawnSync } from 'node:child_process';
 import { mkdtempSync, rmSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-const input = process.argv[2] ?? 'out/ZenML_Teratec2026_Institutional_EN_v15.mp4';
-const output = process.argv[3] ?? 'out/ZenML_Labs_v15_Discord.mp4';
+const input = process.argv[2] ?? 'out/ZenML_Teratec2026_Institutional_EN_v16.mp4';
+const output = process.argv[3] ?? 'out/ZenML_Labs_v16_Discord.mp4';
 const temp = mkdtempSync(join(tmpdir(), 'zenml-discord-'));
 try {
   for (const pass of [1, 2]) {

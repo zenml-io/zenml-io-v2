@@ -2,7 +2,7 @@
 
 **Editing-only branch: `codex/zenml-teratec-video`. Do not merge this branch into the website branches or open a PR for it.** The team can commit and push video iterations here. Publication, deployment, and merging are separate actions.
 
-The active cut is **v15**: 150 seconds, 1920×1080, 30 fps. `TeratecInstitutional` is the main Remotion composition. `TeratecExperimentalV9` is an earlier rejected direction retained only for reference.
+The active cut is **v16**: 150 seconds, 1920×1080, 30 fps. `TeratecInstitutional` is the main Remotion composition. `TeratecExperimentalV9` is an earlier rejected direction retained only for reference.
 
 ## Start editing
 
@@ -40,7 +40,7 @@ pnpm verify:media
 pnpm share:discord
 ```
 
-`pnpm render` creates `out/ZenML_Teratec2026_Institutional_EN_v15.mp4`: H.264 High, yuv420p, Rec.709, 16 Mbps CBR, silent stereo AAC. The event film has no audible narration. `pnpm share:discord` creates `out/ZenML_Labs_v15_Discord.mp4`: 720p, no audio, under 10 MB.
+`pnpm render` creates `out/ZenML_Teratec2026_Institutional_EN_v16.mp4`: H.264 High, yuv420p, Rec.709, 16 Mbps CBR, silent stereo AAC. The event film has no audible narration. `pnpm share:discord` creates `out/ZenML_Labs_v16_Discord.mp4`: 720p, no audio, under 10 MB.
 
 Render outputs, dependencies and caches are ignored by Git. Teammates regenerate MP4s locally; the branch contains the source, scripts, lockfile and required artwork/fonts. When incrementing the export version, update the default filenames in `scripts/render.mjs`, `scripts/verify-media.mjs`, `scripts/discord.mjs` and the review scripts in `package.json` together.
 

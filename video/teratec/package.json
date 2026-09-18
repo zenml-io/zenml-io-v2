@@ -8,15 +8,15 @@
     "check": "tsc --noEmit && tsx scripts/verify.ts",
     "render": "node scripts/render.mjs",
     "stills": "tsx scripts/stills.ts",
-    "review:opening": "remotion render src/index.ts TeratecInstitutional out/review-opening-v15.mp4 --frames=0-509 --codec=h264 --crf=10 --concurrency=4",
-    "review:workflow": "remotion render src/index.ts TeratecInstitutional out/review-workflow-v15.mp4 --frames=870-1499 --codec=h264 --crf=10 --concurrency=4",
+    "review:opening": "remotion render src/index.ts TeratecInstitutional out/review-opening-v16.mp4 --frames=0-509 --codec=h264 --crf=10 --concurrency=4",
+    "review:workflow": "remotion render src/index.ts TeratecInstitutional out/review-workflow-v16.mp4 --frames=870-1499 --codec=h264 --crf=10 --concurrency=4",
     "verify:media": "node scripts/verify-media.mjs",
-    "review:logo": "remotion render src/index.ts TeratecInstitutional out/review-logo-v15.mp4 --frames=0-179 --codec=h264 --crf=10 --concurrency=4",
-    "review:outro": "remotion render src/index.ts TeratecInstitutional out/review-outro-v15.mp4 --frames=4140-4499 --codec=h264 --crf=10 --concurrency=4",
-    "review:munich": "remotion render src/index.ts TeratecInstitutional out/review-munich-v15.mp4 --frames=510-869 --codec=h264 --crf=10 --concurrency=4",
+    "review:logo": "remotion render src/index.ts TeratecInstitutional out/review-logo-v16.mp4 --frames=0-179 --codec=h264 --crf=10 --concurrency=4",
+    "review:outro": "remotion render src/index.ts TeratecInstitutional out/review-outro-v16.mp4 --frames=4140-4499 --codec=h264 --crf=10 --concurrency=4",
+    "review:munich": "remotion render src/index.ts TeratecInstitutional out/review-munich-v16.mp4 --frames=510-869 --codec=h264 --crf=10 --concurrency=4",
     "share:discord": "node scripts/discord.mjs",
-    "review:hook": "remotion render src/index.ts TeratecInstitutional out/review-hook-v15.mp4 --frames=180-509 --codec=h264 --crf=10 --concurrency=4",
-    "review:customers": "remotion render src/index.ts TeratecInstitutional out/review-customers-v15.mp4 --frames=2490-2969 --codec=h264 --crf=10 --concurrency=4"
+    "review:hook": "remotion render src/index.ts TeratecInstitutional out/review-hook-v16.mp4 --frames=180-509 --codec=h264 --crf=10 --concurrency=4",
+    "review:customers": "remotion render src/index.ts TeratecInstitutional out/review-customers-v16.mp4 --frames=2490-2969 --codec=h264 --crf=10 --concurrency=4"
   },
   "dependencies": {
     "@remotion/bundler": "4.0.526",

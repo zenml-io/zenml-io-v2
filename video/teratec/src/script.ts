@@ -293,7 +293,7 @@ const suppliedScript: VideoScript = {
       },
       rows: [
         {
-          metric: "Platform engineers",
+          metric: "Active users",
           before: "8",
           after: "44",
           atFrame: 110,

@@ -88,7 +88,7 @@ function Results() {
   const f = useCurrentFrame();
   const beat = Math.min(2, Math.floor(f / 180));
   const local = f - beat * 180;
-  const data = [{ label: 'Platform engineers', before: 8, after: 44 }, { label: 'Production pipelines', before: 3, after: 49 }, { label: 'Monthly pipeline runs', before: 150, after: 2765 }][beat];
+  const data = [{ label: 'Active users', before: 8, after: 44 }, { label: 'Production pipelines', before: 3, after: 49 }, { label: 'Monthly pipeline runs', before: 150, after: 2765 }][beat];
   const grow = p(local, 28, 48);
   return <Page dark>
     <Product name="ZENML / JETBRAINS" dark />
