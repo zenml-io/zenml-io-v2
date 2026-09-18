@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-09-11T06:47:24.368Z"
 integrationType: "artifact-store"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/79d78fd5/66e13cf5daf0568ff1fd3d5e_download__1_.png"
+  url: "https://assets.zenml.io/content/integrations/logos/azure-blob-storage.svg"
+  alt: "Azure Blob Storage logo"
 shortDescription: "Efficiently Store and Share ZenML Artifacts with Azure Blob Storage"
 docsUrl: "https://docs.zenml.io/stack-components/artifact-stores/azure"
 githubUrl: "https://docs.zenml.io/how-to/popular-integrations/azure-guide"

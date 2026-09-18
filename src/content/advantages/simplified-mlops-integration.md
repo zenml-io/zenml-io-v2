@@ -1,6 +1,7 @@
 ---
 title: "Simplified MLOps Integration"
 slug: "simplified-mlops-integration"
+icon: "hub"
 content: "With ZenML's out-of-the-box integrations and pre-built extensions, you can easily connect your ML workflows with popular MLOps tools and platforms, streamlining your end-to-end MLOps processes."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/144fb23d/669101d14ec4c8275fab7aa3_img05.png"

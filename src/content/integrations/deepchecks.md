@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:16.443Z"
 integrationType: "data-validator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/544fdc24/66d867e77279ed98da4c637f_deepchecks.png"
+  url: "https://assets.zenml.io/content/integrations/logos/deepchecks.svg"
+  alt: "Deepchecks logo"
 shortDescription: "Automate robust data and model validation in your ML pipelines with Deepchecks and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/data-validators/deepchecks"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/deepchecks"

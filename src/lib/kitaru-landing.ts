@@ -1,8 +1,12 @@
 import type { FaqItem } from "./marketingPageTypes";
-import { KITARU_VS_OBSERVABILITY_ANSWER } from "./productKitaru";
+import {
+  KITARU_DOCS_URL,
+  KITARU_VS_OBSERVABILITY_ANSWER,
+} from "./productKitaru";
 
 // Re-export shared constants from productKitaru to avoid duplication
 export {
+  KITARU_DOCS_URL,
   KITARU_INSTALL_CMD,
   KITARU_LICENSE,
   KITARU_LINKS,
@@ -15,8 +19,8 @@ export {
 /**
  * FAQ help rail — one home for these destinations so the help links, the FAQ
  * answers that mention them, and any derived surfaces can't drift apart.
- * "Kitaru Docs" uses the site chrome's canonical docs URL (see
- * src/lib/navigation.ts), not the kitaru.ai/docs legacy host.
+ * "Kitaru Docs" uses the site's canonical docs URL (KITARU_DOCS_URL in
+ * src/lib/productKitaru.ts), not the kitaru.ai/docs legacy host.
  */
 export const FAQ_HELP_LINKS = [
   {
@@ -26,7 +30,7 @@ export const FAQ_HELP_LINKS = [
   },
   {
     label: "Kitaru Docs",
-    href: "https://docs.zenml.io/kitaru",
+    href: KITARU_DOCS_URL,
     analytics: "Kitaru-FAQ-Help-Docs",
   },
   {

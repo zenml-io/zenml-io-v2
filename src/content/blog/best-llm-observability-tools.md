@@ -21,12 +21,12 @@ tags:
 date: "2025-09-11T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/095cf242/6981d352ce4b26d085d70411_6981d2b4097bef43faa44900_best-llm-observability-tools.avif"
+  url: "https://assets.zenml.io/content/blog/best-llm-observability-tools/cbd69b63/best-llm-observability-tools-cover.avif"
 seo:
   title: "What are the 9 Best LLM Observability Tools Currently on the Market? - ZenML Blog"
   description: "Discover the best LLM observability tools currently on the market to build agentic AI workflows."
   canonical: "https://www.zenml.io/blog/best-llm-observability-tools"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/095cf242/6981d352ce4b26d085d70411_6981d2b4097bef43faa44900_best-llm-observability-tools.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/best-llm-observability-tools/f783d61a/best-llm-observability-tools-cover.jpg"
   ogTitle: "What are the 9 Best LLM Observability Tools Currently on the Market? - ZenML Blog"
   ogDescription: "Discover the best LLM observability tools currently on the market to build agentic AI workflows."
 ---

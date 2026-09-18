@@ -21,12 +21,12 @@ tags:
 date: "2024-11-18T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/890d1c2d/66b235b48ac4f8603cee12bb_pipes03-min.png"
+  url: "https://assets.zenml.io/content/blog/why-your-data-scientists-need-infrastructure-abstraction/dd7bd277/why-your-data-scientists-need-infrastructure-abstraction-cover.avif"
 seo:
   title: "Cognitive Load in MLOps: Why Your Data Scientists Need Infrastructure Abstraction - ZenML Blog"
   description: "Discover why cognitive load is the hidden barrier to ML success and how infrastructure abstraction can revolutionize your data science team's productivity. This comprehensive guide explores the real costs of infrastructure complexity in MLOps, from security challenges to the pitfalls of home-grown solutions. Learn practical strategies for creating effective abstractions that let data scientists focus on what they do best – building better models – while maintaining robust security and control. Perfect for ML leaders and architects looking to scale their machine learning initiatives efficiently."
   canonical: "https://www.zenml.io/blog/why-your-data-scientists-need-infrastructure-abstraction"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/890d1c2d/66b235b48ac4f8603cee12bb_pipes03-min.png"
+  ogImage: "https://assets.zenml.io/content/blog/why-your-data-scientists-need-infrastructure-abstraction/c48e6dc0/why-your-data-scientists-need-infrastructure-abstraction-cover.jpg"
   ogTitle: "Cognitive Load in MLOps: Why Your Data Scientists Need Infrastructure Abstraction - ZenML Blog"
   ogDescription: "Discover why cognitive load is the hidden barrier to ML success and how infrastructure abstraction can revolutionize your data science team's productivity. This comprehensive guide explores the real costs of infrastructure complexity in MLOps, from security challenges to the pitfalls of home-grown solutions. Learn practical strategies for creating effective abstractions that let data scientists focus on what they do best – building better models – while maintaining robust security and control. Perfect for ML leaders and architects looking to scale their machine learning initiatives efficiently."
 ---

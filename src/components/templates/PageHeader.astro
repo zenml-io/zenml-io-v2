@@ -35,6 +35,12 @@
  * the `masthead` branch ignores `headingLevel` — its one live shape (the
  * author page) is always the page `<h1>`, whose text is `heading` (pass the
  * same name there and in `masthead.name`, which labels the avatar).
+ *
+ * `masthead` also renders `breadcrumb` (blog cutover, D2d/§6) — the author
+ * hub needs both the shared `Blog › Authors › Name` crumb trail and the
+ * split identity layout, so the masthead branch is no longer breadcrumb-free.
+ * Its avatar/name/bio/meta/links use Labs tokens directly, now that Labs is
+ * the root scope.
  */
 import type { BreadcrumbItem } from "../../lib/breadcrumb";
 import type { SectionIntroProps } from "../../lib/section";
@@ -110,32 +116,41 @@ const alignClass = isBrand && align === "center" ? "text-center" : undefined;
   {
     masthead ? (
       <div class:list={isBrand ? [containerClass, alignClass] : [alignClass]}>
+        {breadcrumb && (
+          <Breadcrumb items={breadcrumb} separator={breadcrumbSeparator} />
+        )}
         <div class="flex items-center gap-6">
           {masthead.avatar && (
             <Image
               image={masthead.avatar}
               alt={masthead.name}
-              class="h-20 w-20 rounded-full object-cover"
+              class="h-[72px] w-[72px] rounded-full border border-(--color-border) object-cover"
             />
           )}
           <div>
-            <h1 class="text-3xl font-bold tracking-tight text-gray-900">
+            {/* Labs-scope restyle (blog cutover, the approved blog design (DESIGN.md)): Borna
+                display, token colour, the fluid h1 rung shared with the
+                other blog h1s. Its only live consumer today is the author
+                hub. */}
+            <h1 class="font-display text-[32px] leading-[38px] font-bold tracking-tight text-(--color-cream-800) md:text-[56px] md:leading-[62px]">
               {heading}
             </h1>
             {masthead.bio && (
-              <p class="mt-2 text-base leading-relaxed text-gray-600">
+              <p class="mt-3 text-[18px] leading-[27px] text-(--color-cream-700)">
                 {masthead.bio}
               </p>
             )}
             {(masthead.meta || masthead.links?.length) && (
-              <div class="mt-3 flex items-center gap-4">
+              <div class="mt-3 flex items-center gap-4 text-[14px]">
                 {masthead.meta && (
-                  <span class="text-sm text-gray-500">{masthead.meta}</span>
+                  <span class="text-(--color-cream-700)">
+                    {masthead.meta}
+                  </span>
                 )}
                 {masthead.links?.map((link) => (
                   <a
                     href={link.href}
-                    class="text-sm font-medium text-primary-600 hover:text-primary-700"
+                    class="font-medium text-(--color-sage-700) hover:text-(--color-sage-800)"
                     target={link.external ? "_blank" : undefined}
                     rel={link.external ? "noopener noreferrer" : undefined}
                   >

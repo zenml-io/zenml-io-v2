@@ -19,12 +19,14 @@ tags:
 date: "2024-08-30T00:00:00.000Z"
 readingTime: 10 min
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d3b7eb4f/66d1dbf5fa2e7cdd71eaea6e_orchestration_showdown_min.png"
+  url: "https://assets.zenml.io/content/blog/orchestration-showdown-dagster-vs-prefect-vs-airflow/4e2456de/orchestration-showdown-dagster-vs-prefect-vs-airflow-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/orchestration-showdown-dagster-vs-prefect-vs-airflow/4e2456de/orchestration-showdown-dagster-vs-prefect-vs-airflow-cover.avif"
 seo:
   title: "Orchestration Showdown: Dagster vs Prefect vs Airflow - ZenML Blog"
   description: "Comparing Airflow, Dagster, and Prefect: Choosing the right orchestration tool for your data workflows."
   canonical: "https://www.zenml.io/blog/orchestration-showdown-dagster-vs-prefect-vs-airflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d3b7eb4f/66d1dbf5fa2e7cdd71eaea6e_orchestration_showdown_min.png"
+  ogImage: "https://assets.zenml.io/content/blog/orchestration-showdown-dagster-vs-prefect-vs-airflow/ecbb3f67/orchestration-showdown-dagster-vs-prefect-vs-airflow-cover.jpg"
   ogTitle: "Orchestration Showdown: Dagster vs Prefect vs Airflow - ZenML Blog"
   ogDescription: "Comparing Airflow, Dagster, and Prefect: Choosing the right orchestration tool for your data workflows."
 ---

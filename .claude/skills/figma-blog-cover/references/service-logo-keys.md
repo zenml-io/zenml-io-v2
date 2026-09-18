@@ -6,6 +6,7 @@ Recorded 2026-08-27 (build plan) and 2026-09-07 (read live off instance 232:3744
 |---|---|
 | argo-workflows | d719d5be59d2300eff176fc1f91d015a1467af48 |
 | arize | 0d991893fa9fbcff47ad85280572121ab803c285 |
+| braintrust | bea128ca0ee74c924ea9c7bb5b9e8a774c58254b |
 | cadence | 113bd1dc0f38d480fbe798480490221f23a24948 |
 | camunda | 3e1eeedd1aea95b0e6bd045a50d90223c3b85aa0 |
 | cloudflare-workflows | 87b22226b372fa5b0fd3537167bc8ff1e09537e3 |
@@ -14,6 +15,7 @@ Recorded 2026-08-27 (build plan) and 2026-09-07 (read live off instance 232:3744
 | dataiku | 51c7d3d5fd79e2624994ebd7a78ec43869923dde |
 | dbos | a625a7b3d362412225ac0cb7e74bd465ee6e157d |
 | flyte | 7999b98d1d571661f92c4ca86e0c2b8dde1f4fd3 |
+| galileo | 675ac0210fb8264278c1972a361bd73326dc0a1b |
 | google-adk | b2a8f773e20b8df82c004f0cee542b57d0c5b2c0 |
 | hatchet | 1cb7fd4dab26c53363aa840f4c194bec98eede48 |
 | inngest | 83be363bf939528b5da394879187b455b855b82d |
@@ -23,6 +25,7 @@ Recorded 2026-08-27 (build plan) and 2026-09-07 (read live off instance 232:3744
 | langgraph | d159b86dabd9a4547c785586507b6e23f2a95b4b |
 | langsmith | 1b6f73dd8237e0c13b0cf1a52f394757aac9ad58 |
 | mage-ai | d8833f0c33856426fc08f25432a9188b0a4c1b0d |
+| maxim-ai | b86893aacab5179aa3460b09b5a53069c437f47e |
 | metaflow | b5d08505b082207d566c89e8491be69441d95fe9 |
 | microsoft-agent-framework | 5546bdf0e6f2fc92ab3936466edcca52058c0f92 |
 | mlflow | 21124d1faea494c6da660c7233e02a80c4cb0947 |

@@ -19,12 +19,12 @@ tags:
 date: "2024-05-02T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6919b3f8/6630eab71c438233644ca654_old-new-v1-small.jpg"
+  url: "https://assets.zenml.io/content/blog/oss-dashboard-release/d1be7f3c/oss-dashboard-release-cover.avif"
 seo:
   title: "Embracing Open Source at ZenML - ZenML Blog"
   description: "We've open-sourced our new dashboard to unify the experience for OSS and cloud users, although some features are initially CLI-only. This launch enhances onboarding and simplifies maintenance. Cloud users will see no change, while OSS users can enjoy a new interface and DAG visualizer. We encourage community contributions to help us expand and refine this dashboard further, looking forward to integrating more features soon."
   canonical: "https://www.zenml.io/blog/oss-dashboard-release"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e2c2b074/6630eab71c438233644ca654_old-new-v1-small.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/oss-dashboard-release/569d9de8/oss-dashboard-release-cover.jpg"
   ogTitle: "Embracing Open Source at ZenML - ZenML Blog"
   ogDescription: "We've open-sourced our new dashboard to unify the experience for OSS and cloud users, although some features are initially CLI-only. This launch enhances onboarding and simplifies maintenance. Cloud users will see no change, while OSS users can enjoy a new interface and DAG visualizer. We encourage community contributions to help us expand and refine this dashboard further, looking forward to integrating more features soon."
 ---

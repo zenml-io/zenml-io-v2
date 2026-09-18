@@ -20,12 +20,12 @@ tags:
 date: "2022-01-31T00:00:00.000Z"
 readingTime: 7 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/177dcf81/6531dff0a79c7763af0e1032_mypy-logo.png"
+  url: "https://assets.zenml.io/content/blog/type-hints-are-good-for-the-soul-or-how-we-use-mypy-at-zenml/5a13861f/type-hints-are-good-for-the-soul-or-how-we-use-mypy-at-zenml-cover.avif"
 seo:
   title: "Type hints are good for the soul, or how we use mypy at ZenML - ZenML Blog"
   description: "A dive into Python type hinting, how implementing them makes your codebase more robust, and some suggestions on how you might approach adding them into a large legacy codebase."
   canonical: "https://www.zenml.io/blog/type-hints-are-good-for-the-soul-or-how-we-use-mypy-at-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/48a30cc0/6531dff0a79c7763af0e1032_mypy-logo.png"
+  ogImage: "https://assets.zenml.io/content/blog/type-hints-are-good-for-the-soul-or-how-we-use-mypy-at-zenml/5f364d60/type-hints-are-good-for-the-soul-or-how-we-use-mypy-at-zenml-cover.jpg"
   ogTitle: "Type hints are good for the soul, or how we use mypy at ZenML - ZenML Blog"
   ogDescription: "A dive into Python type hinting, how implementing them makes your codebase more robust, and some suggestions on how you might approach adding them into a large legacy codebase."
 ---

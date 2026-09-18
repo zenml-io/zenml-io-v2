@@ -12,13 +12,13 @@ tags:
 date: "2026-03-03T00:00:00.000Z"
 readingTime: "16 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/80e812b0/zenml-io-claude-code.avif"
+  url: "https://assets.zenml.io/content/blog/how-i-rebuilt-zenml-io-in-a-week-with-claude-code/ddec5e16/how-i-rebuilt-zenml-io-in-a-week-with-claude-code-cover.avif"
   alt: "How I Rebuilt zenml.io in a Week with Claude Code"
 seo:
   title: "How I Rebuilt zenml.io in a Week with Claude Code - ZenML Blog"
   description: "I rebuilt zenml.io — 2,224 pages, 20 CMS collections — from Webflow to Astro in a week using Claude Code and a multi-model AI workflow. Here's how."
   canonical: "https://www.zenml.io/blog/how-i-rebuilt-zenml-io-in-a-week-with-claude-code"
-  ogImage: "https://assets.zenml.io/content/blog/c26a9572/zenml-io-claude-code-og.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/how-i-rebuilt-zenml-io-in-a-week-with-claude-code/b55260af/how-i-rebuilt-zenml-io-in-a-week-with-claude-code-cover.jpg"
 ---
 
 I rebuilt the entire zenml.io website — migrating it from Webflow to Astro — in about a week. The blog, the LLMOps database, integrations, comparison pages, case studies — all of it. No phased rollout, no "let's start with a landing page." The site you're reading right now is the result.

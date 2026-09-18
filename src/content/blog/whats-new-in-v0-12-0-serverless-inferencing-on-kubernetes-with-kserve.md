@@ -17,7 +17,9 @@ tags:
 date: "2022-08-02T00:00:00.000Z"
 readingTime: 4 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e4bf995c/6531607cdf2ffe3e385a287d_zero-twelve-zero-release.jpg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-12-0-serverless-inferencing-on-kubernetes-with-kserve/d0a3aa93/whats-new-in-v0-12-0-serverless-inferencing-on-kubernetes-with-kserve-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-12-0-serverless-inferencing-on-kubernetes-with-kserve/0ed841da/whats-new-in-v0-12-0-serverless-inferencing-on-kubernetes-with-kserve-cover.jpg"
 ---
 
 **Last updated:** October 17, 2022.

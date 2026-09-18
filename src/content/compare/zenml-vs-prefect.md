@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2024-08-21T14:42:12.496Z"
   createdOn: "2024-07-12T10:59:48.389Z"
 toolName: "Prefect"
+cardSubtitle: "Workflow orchestration tailored to ML pipelines"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3def6ec1/66910ace86fdea23dc97b888_prefect_icon.png"
 category: "orchestrators"

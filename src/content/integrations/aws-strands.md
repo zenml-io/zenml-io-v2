@@ -12,7 +12,8 @@ webflow:
   createdOn: "2025-08-26T11:01:00.201Z"
 integrationType: "agents"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7035354b/68ad93f3f7b83030996de1af_aws-strands.png"
+  url: "https://assets.zenml.io/content/integrations/logos/aws-strands.svg"
+  alt: "AWS Strands Agents logo"
 shortDescription: "Build and orchestrate Strands agents with reproducible ZenML pipelines."
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/autogen"

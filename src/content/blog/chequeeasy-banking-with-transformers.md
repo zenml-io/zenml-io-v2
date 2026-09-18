@@ -18,12 +18,12 @@ tags:
 date: "2022-12-19T00:00:00.000Z"
 readingTime: 10 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e780e3f7/652fc1c99d3835dc15d8c494_cover-shivalika.jpg"
+  url: "https://assets.zenml.io/content/blog/chequeeasy-banking-with-transformers/4242975c/chequeeasy-banking-with-transformers-cover.avif"
 seo:
   title: "ChequeEasy: Banking with Transformers - ZenML Blog"
   description: "A winning entry - 3rd prize winner at Month of MLOps 2022 competition. Extraction of metadata from cheques using Transformers and ZenML."
   canonical: "https://www.zenml.io/blog/chequeeasy-banking-with-transformers"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e202dfa3/652fc1c99d3835dc15d8c494_cover-shivalika.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/chequeeasy-banking-with-transformers/1a1c301c/chequeeasy-banking-with-transformers-cover.jpg"
   ogTitle: "ChequeEasy: Banking with Transformers - ZenML Blog"
   ogDescription: "A winning entry - 3rd prize winner at Month of MLOps 2022 competition. Extraction of metadata from cheques using Transformers and ZenML."
 ---

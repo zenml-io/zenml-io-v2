@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-09-16T08:47:27.653Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4a361b85/66e7e9e24447135c7c269f29_Lightning_AI_Logo.jpeg"
+  url: "https://assets.zenml.io/content/integrations/logos/lightning-ai.svg"
+  alt: "Lightning AI logo"
 shortDescription: "Accelerate and simplify model training with Lightning AI Studio and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/lightning"
 githubUrl: "https://lightning.ai/docs/"

@@ -21,12 +21,14 @@ tags:
 date: "2025-11-18T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c2eaf892/6981d389ab6d2820d701bc12_6981d2a9e49416b2dbcf00c4_langfuse-vs-phoenix.avif"
+  url: "https://assets.zenml.io/content/blog/langfuse-vs-phoenix/f025d348/langfuse-vs-phoenix-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/langfuse-vs-phoenix/f025d348/langfuse-vs-phoenix-cover.avif"
 seo:
   title: "Langfuse vs Phoenix: Which One’s the Better Open-Source Framework (Compared) - ZenML Blog"
   description: "In this Langfuse vs Phoenix guide, we conclude which open-source framework fits your LLMs stack by comparing features, integration, and pricing."
   canonical: "https://www.zenml.io/blog/langfuse-vs-phoenix"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c2eaf892/6981d389ab6d2820d701bc12_6981d2a9e49416b2dbcf00c4_langfuse-vs-phoenix.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/langfuse-vs-phoenix/eedc76d8/langfuse-vs-phoenix-cover.jpg"
   ogTitle: "Langfuse vs Phoenix: Which One’s the Better Open-Source Framework (Compared) - ZenML Blog"
   ogDescription: "In this Langfuse vs Phoenix guide, we conclude which open-source framework fits your LLMs stack by comparing features, integration, and pricing."
 ---

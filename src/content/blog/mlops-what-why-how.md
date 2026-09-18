@@ -20,12 +20,12 @@ tags:
 date: "2024-08-05T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5a429257/66b0e77bcd476bf0864db24f_zenml-mlops-min.png"
+  url: "https://assets.zenml.io/content/blog/mlops-what-why-how/944e4e2b/mlops-what-why-how-cover.avif"
 seo:
   title: "MLOps: What It Is, Why It Matters, and How to Implement It - ZenML Blog"
   description: "An overview of MLOps principles, implementation strategies, best practices, and tools for managing machine learning lifecycles."
   canonical: "https://www.zenml.io/blog/mlops-what-why-how"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f44c13b2/66b0e77bcd476bf0864db24f_zenml-mlops-min.png"
+  ogImage: "https://assets.zenml.io/content/blog/mlops-what-why-how/0115b72c/mlops-what-why-how-cover.jpg"
   ogTitle: "MLOps: What It Is, Why It Matters, and How to Implement It - ZenML Blog"
   ogDescription: "An overview of MLOps principles, implementation strategies, best practices, and tools for managing machine learning lifecycles."
 ---

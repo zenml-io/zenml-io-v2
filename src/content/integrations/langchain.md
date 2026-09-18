@@ -12,7 +12,8 @@ webflow:
   createdOn: "2025-08-26T12:59:18.197Z"
 integrationType: "agents"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/986b08b5/68adafb26944ec2a46778809_langchain.png"
+  url: "https://assets.zenml.io/content/integrations/logos/langchain.svg"
+  alt: "LangChain logo"
 shortDescription: "LangChain agent chains integrated with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/langchain"

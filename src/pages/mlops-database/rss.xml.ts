@@ -80,11 +80,11 @@ export const GET: APIRoute = async () => {
   <channel>
     <title>MLOps Database RSS Feed</title>
     <link>${SITE_URL}/mlops-database</link>
-    <description>New entries in the ZenML MLOps Database</description>
+    <description>New entries in the ZenML Labs MLOps Database</description>
     <language>en</language>
     <lastBuildDate>${nowStr}</lastBuildDate>
     <pubDate>${newestDate.toUTCString()}</pubDate>
-    <generator>ZenML Astro Site</generator>
+    <generator>ZenML Labs Astro Site</generator>
     <atom:link href="${feedUrl}" rel="self" type="application/rss+xml"/>
 ${items}
   </channel>

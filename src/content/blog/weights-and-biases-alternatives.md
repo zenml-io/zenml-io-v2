@@ -21,12 +21,14 @@ tags:
 date: "2025-07-14T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5193b9ae/6874a1b75517f5ba5893a2e0_wandb-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/weights-and-biases-alternatives/4f13574c/weights-and-biases-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/weights-and-biases-alternatives/4f13574c/weights-and-biases-alternatives-cover.avif"
 seo:
   title: "Here are the 7 Best Weights & Biases Alternatives for Better Experiment Tracking - ZenML Blog"
   description: "Discover the top 7 Weights & Biases alternatives for better experiment tracking."
   canonical: "https://www.zenml.io/blog/weights-and-biases-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5193b9ae/6874a1b75517f5ba5893a2e0_wandb-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/weights-and-biases-alternatives/268d3909/weights-and-biases-alternatives-cover.jpg"
   ogTitle: "Here are the 7 Best Weights & Biases Alternatives for Better Experiment Tracking - ZenML Blog"
   ogDescription: "Discover the top 7 Weights & Biases alternatives for better experiment tracking."
 ---

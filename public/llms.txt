@@ -1,4 +1,4 @@
-# ZenML: The Unified AI Platform for Pipelines and Agents
+# ZenML Labs: The Unified AI Platform for Pipelines and Agents
 
 > ZenML is the open-source AI platform for standardizing, deploying, and governing every AI workflow.
 > It provides a unified MLOps and LLMOps layer to build reproducible pipelines for your entire AI stack — from classical machine learning models to the most advanced Generative AI agents.
@@ -18,7 +18,7 @@ To request a managed ZenML Pro instance, send an email to `agents@zenml.io` with
 
 ---
 
-ZenML's site is organized into product pages (features, pricing, Pro offering and deployments), solution guides for MLOps and LLMOps, comparison articles against other tools, a portfolio of integration categories and projects, case studies, company culture pages, community resources like the blog and newsletter, and legal/administrative pages. Only high-level pages are listed below — individual blog articles and the 1,400+ entries under `/llmops-database/` are intentionally omitted.
+ZenML Labs' site is organized into product pages (features, pricing, Pro offering and deployments), solution guides for MLOps and LLMOps, comparison articles against other tools, a portfolio of integration categories and projects, case studies, company culture pages, community resources like the blog and newsletter, and legal/administrative pages. Only high-level pages are listed below — individual blog articles and the 1,400+ entries under `/llmops-database/` are intentionally omitted.
 
 ## Markdown Mirrors
 

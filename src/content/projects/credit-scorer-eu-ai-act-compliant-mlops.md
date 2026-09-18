@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-05-23T14:36:40.771Z"
 description: "An end-to-end credit scoring workflow that automatically generates the technical evidence required by the EU AI Act."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/credit-scorer"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/11.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/c58852b1/credit-scorer-eu-ai-act-compliant-mlops-cover.avif"
 previewImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0a28edcf/683087f7d0f8fa28cf89b6f1_compliance-dashboard.png"
 tags:

@@ -21,12 +21,14 @@ tags:
 date: "2025-09-18T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ac8447a4/6981d36ce92aa039b696b8a4_6981d2af7d412bd6382f5ba0_agno-vs-langgraph.avif"
+  url: "https://assets.zenml.io/content/blog/agno-vs-langgraph/ef948850/agno-vs-langgraph-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/agno-vs-langgraph/ef948850/agno-vs-langgraph-cover.avif"
 seo:
   title: "Agno vs LangGraph: Best Framework to Build Multi-Agent Systems - ZenML Blog"
   description: "In this Agno vs LangGraph, we explain the difference between the two and conclude which one is the best to build multi-agent systems."
   canonical: "https://www.zenml.io/blog/agno-vs-langgraph"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ac8447a4/6981d36ce92aa039b696b8a4_6981d2af7d412bd6382f5ba0_agno-vs-langgraph.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/agno-vs-langgraph/b21f48a9/agno-vs-langgraph-cover.jpg"
   ogTitle: "Agno vs LangGraph: Best Framework to Build Multi-Agent Systems - ZenML Blog"
   ogDescription: "In this Agno vs LangGraph, we explain the difference between the two and conclude which one is the best to build multi-agent systems."
 ---

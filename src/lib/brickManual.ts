@@ -43,7 +43,7 @@ export const BRICK_MANUAL_FIELDS: PlaceholderField[] = [
     type: "checkbox",
     required: true,
     placeholder:
-      'I agree to the <a href="/privacy-policy" class="text-zenml-500 underline">privacy policy</a>.',
+      'I agree to the <a href="/privacy-policy" class="text-(--color-sage-800) underline">privacy policy</a>.',
   },
 ];
 

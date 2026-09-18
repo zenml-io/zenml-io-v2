@@ -1,5 +1,6 @@
 ---
 import ContactForm from "../components/islands/ContactForm.tsx";
+import LabsPageHeader from "../components/labs/LabsPageHeader.astro";
 /**
  * Whitepaper Landing Page — gated content with form.
  *
@@ -22,41 +23,39 @@ import {
   ogTitle={WHITEPAPER_SEO.ogTitle}
   ogDescription={WHITEPAPER_SEO.ogDescription}
   surface="ml"
+  app="labs"
+  product="zenml"
 >
   <main>
-    {/* Heading */}
-    <section class="bg-white pt-16 pb-4 sm:pt-24 sm:pb-8">
-      <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
-          {WHITEPAPER_CONTENT.headline}
-        </h1>
-      </div>
-    </section>
+    <LabsPageHeader
+      heading={WHITEPAPER_CONTENT.headline}
+      align="center"
+    />
 
     {/* Two-column: copy + form */}
-    <section class="bg-white pb-16 sm:pb-24">
-      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div class="grid items-start gap-12 lg:grid-cols-2">
+    <section class="bg-(--color-cream-50) py-space-xl md:py-space-xxl">
+      <div class="mx-auto max-w-content px-gutter">
+        <div class="grid items-start gap-space-xl lg:grid-cols-2">
           {/* Left: marketing copy + preview image */}
           <div>
-            <h2 class="text-xl font-bold text-gray-900 sm:text-2xl">
+            <h2 class="text-xl font-semibold text-(--color-cream-900) sm:text-2xl">
               {WHITEPAPER_CONTENT.subheadline}
             </h2>
             <div
-              class="mt-4 text-gray-600 leading-relaxed prose prose-sm"
+              class="prose prose-sm mt-space-sm leading-relaxed text-(--color-cream-700)"
               set:html={WHITEPAPER_CONTENT.body}
             />
             <img
               src={WHITEPAPER_CONTENT.image.previewUrl}
               alt={WHITEPAPER_CONTENT.image.alt}
-              class="mt-8 w-full max-w-md rounded-lg"
+              class="mt-space-lg w-full rounded-[10px] border border-(--color-border)"
               loading="lazy"
             />
           </div>
 
           {/* Right: form */}
           <div>
-            <h3 class="mb-4 text-lg font-bold text-gray-900">
+            <h3 class="mb-space-sm text-lg font-semibold text-(--color-cream-900)">
               {WHITEPAPER_CONTENT.formHeadline}
             </h3>
             <ContactForm

@@ -16,12 +16,22 @@
 import { getCollection } from "astro:content";
 import ComparisonPage from "../../components/compare/_layouts/ComparisonPage.astro";
 import type { RelatedRailItem } from "../../components/templates/RelatedRail.astro";
+import { buildZenmlComparisonGroups } from "../../lib/compareSwitcher";
 
 export async function getStaticPaths() {
   const vsPages = await getCollection("vs-pages", ({ data }) => !data.draft);
   const compareEntries = await getCollection(
     "compare",
     ({ data }) => !data.draft,
+  );
+  const zenmlEntries = await getCollection(
+    "compare-zenml",
+    ({ data }) => !data.draft,
+  );
+  const switcherGroups = buildZenmlComparisonGroups(
+    vsPages,
+    compareEntries,
+    zenmlEntries,
   );
 
   return vsPages.map((page) => {
@@ -39,12 +49,16 @@ export async function getStaticPaths() {
 
     return {
       params: { slug: page.data.slug },
-      props: { page, related },
+      props: { page, related, switcherGroups },
     };
   });
 }
 
-const { page, related } = Astro.props;
+const { page, related, switcherGroups } = Astro.props;
 ---
 
-<ComparisonPage item={page} related={related} />
+<ComparisonPage
+  item={page}
+  related={related}
+  switcherGroups={switcherGroups}
+/>

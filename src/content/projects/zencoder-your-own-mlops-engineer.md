@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-03-24T05:33:09.214Z"
 description: "Transform your ML workflow with an AI assistant that actually understands ZenML. This project fine-tunes open-source LLMs to generate production-ready MLOps pipelines."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/zencoder"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/1.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/ec96ed54/zencoder-your-own-mlops-engineer-cover.avif"
 previewImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f9950d9f/67e244ba166bd7cc15142de1_zencoder_header.png"
 tags:

@@ -14,6 +14,8 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import matter from "gray-matter";
+import ogCardManifest from "../../src/data/og-cards.json";
+import { missingDatabaseOgWarning } from "./default-og-warning.js";
 
 // ============================================================================
 // Configuration
@@ -34,7 +36,6 @@ const EXPECTED_COLLECTIONS = [
   "compare",
   "team",
   "projects",
-  "old-projects",
   // Phase 3 collections (block-driven content)
   "case-studies",
   "feature-pages",
@@ -49,8 +50,6 @@ const EXPECTED_COLLECTIONS = [
   "integration-types",
   "advantages",
   "quotes",
-  "product-categories",
-  "project-tags",
 ] as const;
 
 /**
@@ -64,7 +63,6 @@ const ROUTE_PATTERNS: Record<string, string> = {
   compare: "/compare",
   team: "/team",
   projects: "/projects",
-  // old-projects has no route (all drafts)
 };
 
 /**
@@ -164,7 +162,10 @@ class ContentValidator {
 
       // Step 4: Exit with appropriate code
       const errorCount = this.findings.filter((f) => f.severity === "error").length;
-      const warningCount = this.findings.filter((f) => f.severity === "warning").length;
+      // Missing OG cards remain advisory even in strict mode: pages have a fallback.
+      const warningCount = this.findings.filter(
+        (f) => f.severity === "warning" && f.code !== "MISSING_DEFAULT_OG_CARD"
+      ).length;
 
       if (errorCount > 0) {
         console.log(`\n❌ Validation FAILED: ${errorCount} error(s)\n`);
@@ -265,9 +266,25 @@ class ContentValidator {
 
     // Group C: Draft/source consistency
     this.validateDraftSourceConsistency();
-    this.validateOldProjectsDrafts();
     this.validateLLMOpsProvenanceAndDates();
     this.validateMLOpsProvenanceAndDates();
+
+    for (const entry of this.entries) {
+      const slug = entry.data.slug ?? entry.fileSlug;
+      const message = missingDatabaseOgWarning(
+        entry.collection, slug, entry.data.draft === true, ogCardManifest
+      );
+      if (message) {
+        this.addFinding({
+          severity: "warning",
+          code: "MISSING_DEFAULT_OG_CARD",
+          collection: entry.collection,
+          slug,
+          file: entry.filePath,
+          message,
+        });
+      }
+    }
 
     // Group D: Webflow CDN leakage
     this.validateWebflowCDNUrls();
@@ -434,24 +451,6 @@ class ContentValidator {
           slug: fileSlug,
           file: filePath,
           message: `Draft status (${isDraft}) doesn't match source (${source}). Expected: ${expectedSource}`,
-        });
-      }
-    }
-  }
-
-  private validateOldProjectsDrafts(): void {
-    for (const entry of this.entries) {
-      if (entry.collection !== "old-projects") continue;
-
-      const isDraft = entry.data.draft === true;
-      if (!isDraft) {
-        this.addFinding({
-          severity: "error",
-          code: "OLD_PROJECTS_NOT_DRAFT",
-          collection: entry.collection,
-          slug: entry.fileSlug,
-          file: entry.filePath,
-          message: "old-projects entry must have draft: true",
         });
       }
     }
@@ -625,21 +624,20 @@ class ContentValidator {
     for (const entry of this.entries) {
       const { data, body, collection, fileSlug, filePath } = entry;
       const isDraft = data.draft === true;
-      const isOldProjects = collection === "old-projects";
 
       // Check frontmatter (JSON stringified)
       const frontmatterStr = JSON.stringify(data);
       for (const pattern of WEBFLOW_CDN_PATTERNS) {
         if (frontmatterStr.includes(pattern)) {
-          // Error for published content, warning for drafts/old-projects
-          const severity = !isDraft && !isOldProjects ? "error" : "warning";
+          // Error for published content, warning for drafts
+          const severity = !isDraft ? "error" : "warning";
           this.addFinding({
             severity,
             code: "WEBFLOW_CDN_URL_FRONTMATTER",
             collection,
             slug: fileSlug,
             file: filePath,
-            message: `Webflow CDN URL found in frontmatter: ${pattern}${isDraft ? " [DRAFT]" : ""}${isOldProjects ? " [OLD-PROJECTS]" : ""}`,
+            message: `Webflow CDN URL found in frontmatter: ${pattern}${isDraft ? " [DRAFT]" : ""}`,
           });
         }
       }
@@ -647,14 +645,14 @@ class ContentValidator {
       // Check body
       for (const pattern of WEBFLOW_CDN_PATTERNS) {
         if (body.includes(pattern)) {
-          const severity = !isDraft && !isOldProjects ? "error" : "warning";
+          const severity = !isDraft ? "error" : "warning";
           this.addFinding({
             severity,
             code: "WEBFLOW_CDN_URL_BODY",
             collection,
             slug: fileSlug,
             file: filePath,
-            message: `Webflow CDN URL found in body: ${pattern}${isDraft ? " [DRAFT]" : ""}${isOldProjects ? " [OLD-PROJECTS]" : ""}`,
+            message: `Webflow CDN URL found in body: ${pattern}${isDraft ? " [DRAFT]" : ""}`,
           });
         }
       }
@@ -721,18 +719,17 @@ class ContentValidator {
 
       const expectedCanonical = `${SITE_URL}${routePattern}/${fileSlug}`;
       const isDraft = data.draft === true;
-      const isOldProjects = collection === "old-projects";
 
       if (canonical !== expectedCanonical) {
-        // Error for published main collections, warning for drafts/old-projects
-        const severity = !isDraft && !isOldProjects ? "error" : "warning";
+        // Error for published main collections, warning for drafts
+        const severity = !isDraft ? "error" : "warning";
         this.addFinding({
           severity,
           code: "CANONICAL_ROUTE_MISMATCH",
           collection,
           slug: fileSlug,
           file: filePath,
-          message: `Canonical URL doesn't match expected route. Expected: ${expectedCanonical}, Got: ${canonical}${isDraft ? " [DRAFT]" : ""}${isOldProjects ? " [OLD-PROJECTS]" : ""}`,
+          message: `Canonical URL doesn't match expected route. Expected: ${expectedCanonical}, Got: ${canonical}${isDraft ? " [DRAFT]" : ""}`,
         });
       }
     }

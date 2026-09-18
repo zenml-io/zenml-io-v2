@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:15.951Z"
 integrationType: "data-visualization"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f1ca9fb0/672b2bb16b8654046d2414e9_facets.png"
+  url: "https://assets.zenml.io/content/integrations/logos/facets.svg"
+  alt: "Facets logo"
 shortDescription: "Visualize differences between data distributions in your browser. Spot data skew at a glance."
 docsUrl: "https://docs.zenml.io/how-to/visualize-artifacts/creating-custom-visualizations#example-facets-data-skew-visualization"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main"

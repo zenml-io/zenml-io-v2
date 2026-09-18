@@ -1,3 +1,9 @@
+import {
+  LABS_RESULTS_COUNT_MAIN,
+  LABS_RESULTS_COUNT_STATE,
+  LABS_RESULTS_COUNT_WRAP,
+} from "./labsSkin";
+
 /**
  * ResultsCount — the visible result count + polite live region every
  * FilterIndex instance renders above its results (#249 contract). Shared
@@ -11,6 +17,11 @@ export interface ResultsCountProps {
   noun: string;
   /** Full sentence for screen readers (`resultsStatusText` from useFilterState). */
   statusText: string;
+  /** Class-only re-skin for the blog cutover (labsSkin.ts). */
+  skin?: "default" | "labs";
+  /** "labs" skin only: the visible "no filters applied" / "N filters" state
+   * label (the approved blog design, DESIGN.md). */
+  filtersState?: string;
 }
 
 export function ResultsCount({
@@ -18,7 +29,29 @@ export function ResultsCount({
   total,
   noun,
   statusText,
+  skin = "default",
+  filtersState,
 }: ResultsCountProps) {
+  if (skin === "labs") {
+    return (
+      <output
+        class={LABS_RESULTS_COUNT_WRAP}
+        aria-live="polite"
+        aria-atomic="true"
+      >
+        <span class={LABS_RESULTS_COUNT_MAIN} aria-hidden="true">
+          {`${shown.toLocaleString("en-US")} of ${total.toLocaleString("en-US")} ${noun}`}
+        </span>
+        {filtersState && (
+          <span class={LABS_RESULTS_COUNT_STATE} aria-hidden="true">
+            {filtersState}
+          </span>
+        )}
+        <span class="sr-only">{statusText}</span>
+      </output>
+    );
+  }
+
   return (
     <output
       class="mb-4 block text-sm text-gray-500"

@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-09-11T06:28:19.692Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ed101323/66e1387810bf16edba7b800d_azure-machine-learning-service-logo-445C459FD8-seeklogo.com.png"
+  url: "https://assets.zenml.io/content/integrations/logos/azureml-pipelines.svg"
+  alt: "Azure Machine Learning logo"
 shortDescription: "Effortlessly Orchestrate Your ZenML Pipelines with the Power of AzureML"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/azureml"
 mainImage:

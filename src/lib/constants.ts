@@ -44,6 +44,18 @@ export const COMPARE_OG_PREFIX: Record<CompareOgBrand, string> = {
   zenml: "compare/zenml-og",
 };
 
+/** R2 prefixes for the generated default cards, one per content family.
+ *  Shared by `scripts/og/generate-default-og.ts` (upload key) and
+ *  `src/lib/seo.ts` (URL derivation) — the same contract as COMPARE_OG_PREFIX. */
+export const DEFAULT_OG_PREFIX = {
+  llmops: "og/llmops",
+  mlops: "og/mlops",
+  pages: "og/pages",
+} as const;
+
+/** The content families that get a generated default card. */
+export type DefaultOgFamily = keyof typeof DEFAULT_OG_PREFIX;
+
 /** Webflow site ID used in R2 asset paths */
 const WEBFLOW_SITE_ID = "64a817a2e7e2208272d1ce30";
 

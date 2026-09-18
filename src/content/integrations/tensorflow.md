@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:12.540Z"
 integrationType: "modeling"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/38c14d54/66d86940d75a1237ceb976ac_tensorflow.png"
+  url: "https://assets.zenml.io/content/integrations/logos/tensorflow.svg"
+  alt: "TensorFlow logo"
 shortDescription: "Accelerate TensorFlow Model Development with ZenML"
 docsUrl: "https://www.fuzzylabs.ai/blog-post/the-road-to-zen-part-1-getting-started-pipelines"
 mainImage:

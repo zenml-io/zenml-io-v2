@@ -1,0 +1,81 @@
+---
+/**
+ * FeatureSplit (`labs.feature-split`) — one alternating feature section on
+ * the Labs shell: a heading, an optional body line, hairline check-bullet
+ * rows, an optional trailing link, and a framed image on the other lane.
+ *
+ * Extracted verbatim from the markup /cloud-features/* and the /deployments
+ * scenarios already shipped, so those pages render byte-identically through
+ * it. Absence collapses: no body, no bullets, no link and no image each
+ * leave nothing behind (an empty media slot collapses `Split` to one
+ * centred column on its own).
+ *
+ * Consumers: /cloud-features/ml-models-control-plane, the /deployments
+ * scenarios, and the /features/[slug] value blocks.
+ */
+import Split from "../system/layout/Split.astro";
+
+interface Props {
+  title: string;
+  body?: string;
+  bullets?: readonly string[];
+  image?: { url: string; alt?: string };
+  imageSide: "left" | "right";
+  learnMore?: { href: string; label: string };
+}
+
+const { title, body, bullets, image, imageSide, learnMore } = Astro.props;
+
+const learnMoreExternal = learnMore?.href.startsWith("http") ?? false;
+---
+
+<Split mediaSide={imageSide} space="mlg" alignY="center">
+  <div>
+    <h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900) md:text-[36px] md:leading-[42px]">
+      {title}
+    </h2>
+    {body && (
+      <p class="mt-6 font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
+        {body}
+      </p>
+    )}
+    {bullets && bullets.length > 0 && (
+      <ul class="mt-6 flex flex-col">
+        {bullets.map((bullet) => (
+          <li class="flex items-start gap-3 border-t border-(--color-border) py-3 font-sans text-[16px] leading-6 text-(--color-cream-800) first:border-t-0">
+            <svg
+              class="mt-0.5 h-4 w-4 shrink-0 text-(--color-sage-700)"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5" />
+            </svg>
+            {bullet}
+          </li>
+        ))}
+      </ul>
+    )}
+    {learnMore && (
+      <a
+        href={learnMore.href}
+        target={learnMoreExternal ? "_blank" : undefined}
+        rel={learnMoreExternal ? "noopener noreferrer" : undefined}
+        class="mt-6 inline-flex font-sans text-[15px] leading-5 font-medium text-(--color-sage-700) hover:text-(--color-sage-800)"
+      >
+        {learnMore.label}
+      </a>
+    )}
+  </div>
+  {image && (
+    <img
+      slot="media"
+      src={image.url}
+      alt={image.alt || title}
+      class="w-full rounded-[20px] border border-(--color-border) bg-card p-6"
+      loading="lazy"
+    />
+  )}
+</Split>

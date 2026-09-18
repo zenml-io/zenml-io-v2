@@ -21,12 +21,12 @@ tags:
 date: "2022-01-21T00:00:00.000Z"
 readingTime: 7 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d125adf5/652fad0c38f5ae7fc88c9eea_evidently_ai_logo.png"
+  url: "https://assets.zenml.io/content/blog/10-reasons-zenml-evidently-ais-monitoring-tool/ac6240c6/10-reasons-zenml-evidently-ais-monitoring-tool-cover.avif"
 seo:
   title: "10 Reasons ZenML ❤️ Evidently AI's Monitoring Tool - ZenML Blog"
   description: "ZenML recently added an integration with Evidently, an open-source tool that allows you to monitor your data for drift (among other things). This post showcases the integration alongside some of the other parts of Evidently that we like."
   canonical: "https://www.zenml.io/blog/10-reasons-zenml-evidently-ais-monitoring-tool"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8fdec906/652fad0c38f5ae7fc88c9eea_evidently_ai_logo.png"
+  ogImage: "https://assets.zenml.io/content/blog/10-reasons-zenml-evidently-ais-monitoring-tool/8bf4eeea/10-reasons-zenml-evidently-ais-monitoring-tool-cover.jpg"
   ogTitle: "10 Reasons ZenML ❤️ Evidently AI's Monitoring Tool - ZenML Blog"
   ogDescription: "ZenML recently added an integration with Evidently, an open-source tool that allows you to monitor your data for drift (among other things). This post showcases the integration alongside some of the other parts of Evidently that we like."
 ---

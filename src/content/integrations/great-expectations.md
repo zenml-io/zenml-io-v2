@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:13.923Z"
 integrationType: "data-validator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/88d6b213/672b2bda616f148555a240b5_great-expectations.png"
+  url: "https://assets.zenml.io/content/integrations/logos/great-expectations.svg"
+  alt: "Great Expectations logo"
 shortDescription: "Ensure Data Quality and Consistency in Your ML Pipelines with Great Expectations and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/data-validators/great-expectations"
 mainImage:

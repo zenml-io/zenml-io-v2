@@ -21,12 +21,14 @@ tags:
 date: "2025-09-05T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/acb5377c/68ba6677950819ef6cbf61e3_botpress-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/botpress-alternatives/db9f1f08/botpress-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/botpress-alternatives/db9f1f08/botpress-alternatives-cover.avif"
 seo:
   title: "Here are the Top 8 Botpress Alternatives to Build Complete AI Agent Platforms - ZenML Blog"
   description: "Discover the top 8 Botpress alternatives - code and no-code that you can leverage as a complete AI agent platform."
   canonical: "https://www.zenml.io/blog/botpress-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/acb5377c/68ba6677950819ef6cbf61e3_botpress-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/botpress-alternatives/1c491d86/botpress-alternatives-cover.jpg"
   ogTitle: "Here are the Top 8 Botpress Alternatives to Build Complete AI Agent Platforms - ZenML Blog"
   ogDescription: "Discover the top 8 Botpress alternatives - code and no-code that you can leverage as a complete AI agent platform."
 ---

@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:15.552Z"
 integrationType: "modeling"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/57ed57da/66d86825158860fcb2891449_neural-prophet.png"
+  url: "https://assets.zenml.io/content/integrations/logos/neuralprophet.svg"
+  alt: "NeuralProphet logo"
 shortDescription: "Enhance Time Series Forecasting with NeuralProphet and ZenML"
 docsUrl: "https://github.com/zenml-io/zenml/tree/main/src/zenml/integrations/neural_prophet"
 githubUrl: "https://github.com/ourownstory/neural_prophet"

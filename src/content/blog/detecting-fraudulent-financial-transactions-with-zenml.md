@@ -19,12 +19,12 @@ tags:
 date: "2022-12-16T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/66807f4a/652fd704aa179f0bc991537d_thumbnail.gif"
+  url: "https://assets.zenml.io/content/blog/detecting-fraudulent-financial-transactions-with-zenml/30f53e43/detecting-fraudulent-financial-transactions-with-zenml-cover.avif"
 seo:
   title: "Detecting Fraudulent Financial Transactions with ZenML - ZenML Blog"
   description: "A winning entry - 2nd prize winner at Month of MLOps 2022 competition."
   canonical: "https://www.zenml.io/blog/detecting-fraudulent-financial-transactions-with-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1a8e4caa/652fd704aa179f0bc991537d_thumbnail.gif"
+  ogImage: "https://assets.zenml.io/content/blog/detecting-fraudulent-financial-transactions-with-zenml/05ed375a/detecting-fraudulent-financial-transactions-with-zenml-cover.jpg"
   ogTitle: "Detecting Fraudulent Financial Transactions with ZenML - ZenML Blog"
   ogDescription: "A winning entry - 2nd prize winner at Month of MLOps 2022 competition."
 ---

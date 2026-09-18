@@ -1,0 +1,246 @@
+---
+/**
+ * labs.pricing-plan-cards — the `/pricing` two-workspace plan-card panels
+ * (Open Source / Scale / Enterprise for ZenML, Open Source / Cloud /
+ * Enterprise for Kitaru). Both workspace panels are server-rendered; a
+ * toggle above them flips which one is visible, so the numbers are in the
+ * HTML for crawlers and for anyone without JS. Toggle markup, ids,
+ * `data-workspace-*` attributes and the whole script (workspace toggle,
+ * roving-tab-focus keyboard handling, the `Pricing: Workspace Switch`
+ * analytics call and the executions-slider handler) are carried over from
+ * the legacy `sections/PricingPlanCards.astro` this replaces; the reveal is
+ * the house `initScrollReveal()` and the markup's classes move onto the Labs
+ * tokens. Each panel opens with a heading naming its workspace.
+ */
+import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
+import type { PricingWorkspace } from "../../lib/pricing";
+import KitaruWordmark from "../brand/KitaruWordmark.astro";
+import ZenmlWordmark from "../brand/ZenmlWordmark.astro";
+import PricingPlanCard from "./PricingPlanCard.astro";
+
+interface Props {
+  workspaces: readonly PricingWorkspace[];
+}
+const { workspaces } = Astro.props;
+---
+
+<section class:list={["scroll-reveal-section pb-24 md:pb-32", BAND_CONTENT_GAP]}>
+  <div class="mx-auto max-w-content px-gutter">
+    {/* Workspace toggle: the selected tab is the solid dark pill, the other
+        is plain text. Each tab carries the product wordmark so the visitor
+        reads WHICH pricing they are looking at, not just that a toggle exists. */}
+    <div class="mb-10 flex justify-center">
+      <div
+        class="inline-flex gap-1 rounded-full border border-(--color-border) bg-card p-1"
+        role="tablist"
+        aria-label="Choose a workspace type"
+      >
+        {
+          workspaces.map((ws, wsIdx) => (
+            <button
+              type="button"
+              role="tab"
+              id={`pricing-ws-tab-${ws.id}`}
+              aria-controls={`pricing-ws-panel-${ws.id}`}
+              aria-selected={wsIdx === 0 ? "true" : "false"}
+              tabindex={wsIdx === 0 ? 0 : -1}
+              data-workspace-tab={ws.id}
+              class="inline-flex h-11 cursor-pointer items-center gap-2.5 rounded-full px-5 font-sans text-[14px] leading-5 font-medium text-(--color-cream-700) transition-colors duration-200 ease-out hover:bg-(--color-sage-50) hover:text-(--color-cream-900) aria-selected:bg-(--color-cream-900) aria-selected:text-(--color-cream-50) aria-selected:hover:bg-(--color-sage-800) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--color-sage-400)"
+            >
+              {ws.accent === "orange" ? (
+                <KitaruWordmark class="h-[14px] w-auto" />
+              ) : (
+                <ZenmlWordmark class="h-[14px] w-auto" />
+              )}
+              <span class="sr-only">{ws.label}</span>
+              <span class="hidden font-normal opacity-80 sm:inline">{ws.sublabel}</span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    {
+      workspaces.map((ws, wsIdx) => (
+        <div
+          id={`pricing-ws-panel-${ws.id}`}
+          role="tabpanel"
+          aria-labelledby={`pricing-ws-tab-${ws.id}`}
+          data-workspace-panel={ws.id}
+          data-product={ws.accent === "orange" ? "kitaru" : undefined}
+          hidden={wsIdx !== 0}
+        >
+          <h2 class="text-center font-display text-[28px] leading-[34px] text-(--color-cream-900)">
+            {ws.label}
+          </h2>
+          <p class="mx-auto mt-3 mb-10 max-w-[720px] text-center font-sans text-[14px] leading-5 text-(--color-cream-700)">
+            {ws.note}{" "}
+            <a
+              href={ws.learn.href}
+              class="whitespace-nowrap font-medium text-(--color-sage-700) hover:text-(--color-sage-800)"
+            >
+              {ws.learn.label} →
+            </a>
+          </p>
+
+          <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start">
+            {ws.plans.map((plan, planIdx) => (
+              <PricingPlanCard plan={plan} accent={ws.accent} planIdx={planIdx} />
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style is:global>
+  /* Workspace panel crossfade — see the `select()` handler below, which
+     drives this by toggling `.is-fading` before flipping `hidden`, then
+     waits for `transitionend` on this rule (no duplicated duration). */
+  [data-workspace-panel] {
+    transition: opacity 220ms ease;
+  }
+  [data-workspace-panel].is-fading {
+    opacity: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-workspace-panel] {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+  import type { SliderTierView } from "../sections/pricingSlider";
+
+  const track = (name: string, props?: Record<string, string>) => {
+    (window as any).__zenmlPlausibleTrack?.(name, props);
+  };
+
+  // Workspace toggle: flips which plan panel is visible. Both panels are in
+  // the HTML already, so this is show/hide only — no re-render, no fetch.
+  const tabs = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("[data-workspace-tab]"),
+  );
+  const panels = Array.from(
+    document.querySelectorAll<HTMLElement>("[data-workspace-panel]"),
+  );
+  // Reduced-motion users get an instant swap: with `transition: none` (see
+  // the <style> block), `transitionend` never fires, so the fade-driven
+  // hand-off below must be skipped rather than left waiting on it.
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  const select = (id: string) => {
+    const prev = tabs.find(
+      (tab) => tab.getAttribute("aria-selected") === "true",
+    )?.dataset.workspaceTab;
+    for (const tab of tabs) {
+      const on = tab.dataset.workspaceTab === id;
+      tab.setAttribute("aria-selected", on ? "true" : "false");
+      tab.tabIndex = on ? 0 : -1;
+    }
+
+    if (prev !== id) {
+      for (const panel of panels) {
+        const isTarget = panel.dataset.workspacePanel === id;
+        if (isTarget) {
+          panel.hidden = false;
+          if (!prefersReducedMotion) {
+            // Reveal, but start transparent so it can fade in alongside
+            // the outgoing panel's fade-out.
+            panel.classList.add("is-fading");
+            void panel.offsetWidth; // force a reflow before un-fading
+            requestAnimationFrame(() => panel.classList.remove("is-fading"));
+          }
+        } else if (!panel.hidden) {
+          if (prefersReducedMotion) {
+            panel.hidden = true;
+          } else {
+            panel.classList.add("is-fading");
+            panel.addEventListener(
+              "transitionend",
+              () => {
+                panel.hidden = true;
+                panel.classList.remove("is-fading");
+              },
+              { once: true },
+            );
+          }
+        }
+      }
+    }
+
+    if (prev && prev !== id) {
+      track("Pricing: Workspace Switch", { from: prev, to: id });
+    }
+  };
+
+  for (const [i, tab] of tabs.entries()) {
+    tab.addEventListener("click", () => {
+      const id = tab.dataset.workspaceTab;
+      if (id) select(id);
+    });
+
+    // Roving focus, per the WAI-ARIA tabs pattern.
+    tab.addEventListener("keydown", (event) => {
+      let nextIdx: number | null = null;
+      if (event.key === "ArrowRight") nextIdx = (i + 1) % tabs.length;
+      else if (event.key === "ArrowLeft")
+        nextIdx = (i - 1 + tabs.length) % tabs.length;
+      else if (event.key === "Home") nextIdx = 0;
+      else if (event.key === "End") nextIdx = tabs.length - 1;
+      if (nextIdx === null) return;
+      event.preventDefault();
+      const next = tabs[nextIdx];
+      const id = next?.dataset.workspaceTab;
+      if (id) {
+        select(id);
+        next.focus();
+      }
+    });
+  }
+
+  // Executions slider. Display strings are precomputed at build time
+  // (pricingSlider.ts) and shipped via data-tiers, so this handler is a
+  // pure index-and-assign — no formatting or math.
+  document
+    .querySelectorAll<HTMLElement>("[data-pricing-slider]")
+    .forEach((slider) => {
+      const input = slider.querySelector<HTMLInputElement>(
+        "[data-slider-input]",
+      );
+      const readout = slider.querySelector<HTMLElement>("[data-slider-readout]");
+      const stops = slider.querySelectorAll<HTMLElement>("[data-slider-stop]");
+      const price = slider
+        .closest("article")
+        ?.querySelector<HTMLElement>("[data-slider-price]");
+      const tiers: SliderTierView[] = JSON.parse(slider.dataset.tiers ?? "[]");
+      if (!input || tiers.length === 0) return;
+
+      const apply = () => {
+        const idx = Number(input.value);
+        const tier = tiers[idx];
+        if (!tier) return;
+        input.style.setProperty("--range-fill", tier.fill);
+        input.setAttribute("aria-valuetext", tier.valueText);
+        if (price) price.textContent = tier.price;
+        if (readout) readout.textContent = tier.readout;
+        stops.forEach((stop, stopIdx) => {
+          const active = stopIdx === idx;
+          stop.classList.toggle("font-medium", active);
+          stop.classList.toggle("text-(--color-cream-900)", active);
+          stop.classList.toggle("text-(--color-cream-600)", !active);
+        });
+      };
+
+      input.addEventListener("input", apply);
+      apply();
+    });
+
+  // Scroll-reveal — the house observer (arms `.reveal-armed`, then `.in-view`).
+  initScrollReveal();
+</script>

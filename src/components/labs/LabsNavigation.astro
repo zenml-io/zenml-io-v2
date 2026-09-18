@@ -1,0 +1,645 @@
+---
+import {
+  GITHUB_ORG_URL,
+  GITHUB_REPO_URL,
+  KITARU_GITHUB_REPO_URL,
+} from "../../lib/githubStars";
+import {
+  LABS_DOORS,
+  LABS_NAV_LINKS,
+  LABS_NAV_SIGNUP,
+  LABS_NAV_SIGNUP_BY_PRODUCT,
+  type LabsProduct,
+  labsNavMenus,
+} from "../../lib/labs-home";
+import { getNonDraftLlmopsDatabaseCount } from "../../lib/llmops";
+/**
+ * LabsNavigation — the ZenML Labs shell nav: a floating pill over the hero
+ * that starts transparent (server-rendered transparent so the first paint
+ * matches the at-rest state; a tiny scroll listener turns it solid once the
+ * page has moved past the top) and a hamburger panel on narrow viewports.
+ *
+ * Product context (`product` prop, set by product pages through BaseLayout):
+ * the brand link shows the product's mark at rest (ZenML: the company lockup
+ * with its "labs" script hidden; Kitaru: the Z mark + Kitaru lockup) and
+ * turns into the ZenML Labs lockup on hover/focus — "labs" fades in beside
+ * "ZenML", or the Kitaru letterforms crossfade to "ZenML labs" while the
+ * shared Z mark stays put — and always links to `/`. The "Products" item
+ * opens the product switcher with that product marked current (1px
+ * all-around sage border, never a left rail), the mobile panel leads with a
+ * chip switcher, and the signup pill points at that product's app. Without
+ * a product (homepage, cross-product pages) the full lockup shows at rest,
+ * the switcher marks nothing and the pill keeps LABS_NAV_SIGNUP.
+ * The switcher rows are LABS_DOORS (name + lead line + product page), so
+ * the nav never retypes product copy.
+ *
+ * The GitHub chip (desktop and mobile-panel) also keys off `product`: with
+ * no product it links to the `zenml-io` GitHub organisation and shows no
+ * star count (icon-only pill); on a ZenML product page it links to the
+ * ZenML repo with the live ZenML star count; on a Kitaru product page it
+ * links to the Kitaru repo with the live Kitaru star count. `githubChip`
+ * below derives the href, aria-label and whether to render the count span
+ * once, for both chips to share.
+ *
+ * On a Kitaru product page, every navbar hover/open state (top-level nav
+ * pills, the mobile panel links, the GitHub chip) uses cream-100 instead
+ * of the sage green used everywhere else — `navHoverClass`/`chipHoverClass`
+ * hold the two literal variants so Tailwind's static class scan finds both.
+ *
+ * Three items open a hover menu — Products, Docs, Case studies — sharing one
+ * behaviour: hover-open with a 130ms close grace, click/keyboard open too,
+ * Esc/arrow keys, outside-click/focusout close, and opening one menu closes
+ * any other that's open. Docs and Case studies render label+description rows
+ * from `labsNavMenus(llmopsCaseStudyCount)` (the Case-studies "LLMOps
+ * Database" row's count is fetched here, below); Products keeps its own
+ * wordmark rows.
+ */
+import KitaruLockup from "../brand/KitaruLockup.astro";
+import KitaruWordmark from "../brand/KitaruWordmark.astro";
+import ZenmlLabsLogo from "../brand/ZenmlLabsLogo.astro";
+import ZenmlWordmark from "../brand/ZenmlWordmark.astro";
+import LabsButton from "./LabsButton.astro";
+
+interface Props {
+  currentPath?: string;
+  product?: LabsProduct;
+}
+const { currentPath = Astro.url.pathname, product } = Astro.props;
+void currentPath;
+
+const PRODUCT_KEY: Record<
+  (typeof LABS_DOORS.doors)[number]["name"],
+  LabsProduct
+> = {
+  ZenML: "zenml",
+  Kitaru: "kitaru",
+};
+const switcherRows = LABS_DOORS.doors.map((door) => ({
+  key: PRODUCT_KEY[door.name],
+  name: door.name,
+  leadLine: door.leadLine,
+  href: door.cta.href,
+  tint: door.tint,
+}));
+const signup = product ? LABS_NAV_SIGNUP_BY_PRODUCT[product] : LABS_NAV_SIGNUP;
+/* Kitaru pages carry the orange pill; everything else the sage one. */
+const signupTone = product === "kitaru" ? "orange" : "sage";
+/* On a product page the chip switcher replaces the "Products" entry in the panel. */
+const panelLinks = product
+  ? LABS_NAV_LINKS.filter((link) => link.menu !== "products")
+  : LABS_NAV_LINKS;
+
+/* GitHub chip: no product links to the org with no star count; a product
+ * page links to that product's repo, with its live star count (`repo` is
+ * the `data-github-stars-repo` value; omitted, the loader defaults to
+ * "zenml"). `countWidthClass` reserves just enough width for that repo's
+ * typical count so the pill doesn't jump once the client fetch lands, but
+ * doesn't reserve more than the number needs — ZenML's count runs to
+ * five characters ("5,556"), Kitaru's to three ("235") today. */
+interface GithubChipConfig {
+  href: string;
+  ariaLabel: string;
+  showCount: boolean;
+  repo?: "kitaru";
+  countWidthClass: string;
+}
+const GITHUB_CHIP_BY_PRODUCT: Record<LabsProduct, GithubChipConfig> = {
+  zenml: {
+    href: GITHUB_REPO_URL,
+    ariaLabel: "ZenML on GitHub",
+    showCount: true,
+    countWidthClass: "min-w-[5ch]",
+  },
+  kitaru: {
+    href: KITARU_GITHUB_REPO_URL,
+    ariaLabel: "Kitaru on GitHub",
+    showCount: true,
+    repo: "kitaru",
+    countWidthClass: "min-w-[3ch]",
+  },
+};
+const githubChip: GithubChipConfig = product
+  ? GITHUB_CHIP_BY_PRODUCT[product]
+  : {
+      href: GITHUB_ORG_URL,
+      ariaLabel: "ZenML on GitHub",
+      showCount: false,
+      countWidthClass: "",
+    };
+
+/* Case studies' "LLMOps Database" row needs the live non-draft count. */
+const llmopsCaseStudyCount = await getNonDraftLlmopsDatabaseCount();
+const menus = labsNavMenus(llmopsCaseStudyCount);
+
+/* Kitaru pages hover cream, not sage — the top-level nav pills, the
+ * open-menu state and the GitHub chip all share this swap. Full literal
+ * class names are kept on both branches so Tailwind's static scan finds
+ * them (a template-interpolated color fragment would not). */
+const navHoverClass =
+  product === "kitaru"
+    ? "hover:bg-(--color-cream-100) aria-[expanded=true]:bg-(--color-cream-100)"
+    : "hover:bg-(--color-sage-200) aria-[expanded=true]:bg-(--color-sage-200)";
+const chipHoverClass =
+  product === "kitaru"
+    ? "hover:bg-(--color-cream-100)"
+    : "hover:bg-(--color-sage-100)";
+const navItemClass = `inline-flex h-9 cursor-pointer items-center gap-1 rounded-full px-3.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors ${navHoverClass}`;
+const menuRowClass =
+  "flex cursor-pointer items-center gap-4 rounded-[14px] border border-transparent px-4 py-2.5 text-foreground transition-colors duration-200 ease-out hover:border-(--color-sage-400) hover:bg-(--color-sage-100)";
+const githubChipClass = `inline-flex h-10 cursor-pointer items-center gap-2 rounded-full font-label text-[13px] tracking-[0.05em] text-foreground transition-colors duration-200 ease-out ${chipHoverClass}`;
+/* Icon-only (no product / no count) reads as a 40x40 circle with symmetric
+ * padding; the icon+count chip keeps the wider pill padding. */
+const githubChipPaddingClass = (showCount: boolean) =>
+  showCount ? "px-3" : "px-2.5";
+---
+
+<div class="pointer-events-none fixed inset-x-0 top-4 z-50 lg:top-8">
+  <div class="pointer-events-none mx-auto w-full max-w-content px-gutter">
+    <header
+      data-labs-nav-shell
+      class="pointer-events-auto relative flex h-[76px] items-center justify-between rounded-[20px] border border-border bg-card pl-5 pr-4 lg:-ml-6 lg:-mr-4 lg:pl-6"
+      data-at-top
+    >
+      <a
+        href="/"
+        aria-label="ZenML Labs"
+        data-labs-brand={product}
+        class="group relative block h-8 shrink-0 cursor-pointer text-foreground"
+      >
+        {product === "kitaru" ? (
+          <span class="relative block h-full" style="aspect-ratio: 226.004 / 36.134">
+            <KitaruLockup class="absolute inset-y-0 left-0 h-full w-auto transition-opacity duration-200 ease-out group-hover:opacity-0 group-focus-visible:opacity-0 motion-reduce:transition-none" />
+            <ZenmlLabsLogo class="absolute inset-y-0 left-0 h-full w-auto opacity-0 transition-opacity duration-200 ease-out group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none" />
+          </span>
+        ) : (
+          <ZenmlLabsLogo class="h-full w-auto" />
+        )}
+      </a>
+
+      <nav aria-label="Main navigation" class="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex">
+        {LABS_NAV_LINKS.map((link) => {
+          const menuKey = link.menu;
+          if (!menuKey) {
+            return (
+              <a href={link.href} class={navItemClass}>
+                {link.label}
+              </a>
+            );
+          }
+          const menuId = `labs-${menuKey}-menu`;
+          return (
+            <div class="relative" data-labs-menu>
+              <button
+                type="button"
+                class={navItemClass}
+                aria-haspopup="menu"
+                aria-expanded="false"
+                aria-controls={menuId}
+                data-labs-menu-toggle
+              >
+                {link.label}
+                <svg
+                  aria-hidden="true"
+                  focusable="false"
+                  class="h-2.5 w-2.5 shrink-0 text-muted-foreground"
+                  viewBox="0 0 10 10"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M2.25 3.75L5 6.5L7.75 3.75" />
+                </svg>
+              </button>
+              {menuKey === "products" ? (
+                <ul
+                  id={menuId}
+                  role="menu"
+                  aria-label="Products"
+                  hidden
+                  class="absolute left-0 top-full mt-3 flex w-[340px] flex-col gap-0.5 rounded-[20px] border border-border bg-card p-2"
+                  data-labs-menu-panel
+                >
+                  {switcherRows.map((row, index) => (
+                    <li role="none" style={`--row-i: ${index}`}>
+                      <a
+                        role="menuitem"
+                        href={row.href}
+                        aria-current={row.key === product ? "page" : undefined}
+                        class={`${menuRowClass} aria-[current=page]:border-(--color-sage-600) aria-[current=page]:bg-(--color-sage-100)`}
+                      >
+                        <span
+                          role="img"
+                          aria-label={row.name}
+                          class="flex h-4 w-[76px] shrink-0 items-center text-(--color-cream-900)"
+                        >
+                          {row.key === "kitaru" ? (
+                            <KitaruWordmark class="h-4 w-auto" />
+                          ) : (
+                            <ZenmlWordmark class="h-4 w-auto" />
+                          )}
+                        </span>
+                        <span class="flex-1 font-sans text-[13px] leading-[18px] text-muted-foreground">
+                          {row.leadLine}
+                        </span>
+                        {row.key === product && (
+                          <svg
+                            aria-hidden="true"
+                            focusable="false"
+                            class="h-4 w-4 shrink-0 text-primary"
+                            viewBox="0 0 18 18"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <path d="M3.5 9.5L7 13L14.5 5" />
+                          </svg>
+                        )}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <ul
+                  id={menuId}
+                  role="menu"
+                  aria-label={menus[menuKey].ariaLabel}
+                  hidden
+                  class="absolute left-0 top-full mt-3 flex w-max min-w-[240px] max-w-[420px] flex-col gap-0.5 rounded-[20px] border border-border bg-card p-2"
+                  data-labs-menu-panel
+                >
+                  {menus[menuKey].rows.map((row, index) => (
+                    <li role="none" style={`--row-i: ${index}`}>
+                      <a
+                        role="menuitem"
+                        href={row.href}
+                        target={row.external ? "_blank" : undefined}
+                        rel={row.external ? "noopener noreferrer" : undefined}
+                        class={menuRowClass}
+                      >
+                        <span class="flex flex-col gap-0.5">
+                          {/* External rows: the outbound arrow sits right after the
+                              title, inline, not parked at the row's far edge. */}
+                          <span class="inline-flex items-center gap-1.5 font-sans text-[14px] font-semibold leading-[20px] text-foreground">
+                            {row.label}
+                            {row.external && (
+                              <svg
+                                aria-hidden="true"
+                                focusable="false"
+                                class="h-3 w-3 shrink-0 text-muted-foreground"
+                                viewBox="0 0 12 12"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.3"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              >
+                                <path d="M4 8L8 4M5 4H8V7" />
+                              </svg>
+                            )}
+                          </span>
+                          <span class="font-sans text-[13px] leading-[18px] text-muted-foreground">
+                            {row.description}
+                          </span>
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          );
+        })}
+      </nav>
+
+      {/* Right-side actions stay grouped so the centered link row does not
+          drift when the live GitHub count changes. */}
+      <div class="hidden items-center gap-1 lg:flex">
+        {/* Counts use the first-party edge-cached /api/github-stars route; this
+            link needs no third-party widget or consent gate. */}
+        <a
+          href={githubChip.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={githubChip.ariaLabel}
+          class={`${githubChipClass} ${githubChipPaddingClass(githubChip.showCount)}`}
+        >
+          <svg aria-hidden="true" focusable="false" class="h-4 w-4 shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.49-2.7-.95-2.7-.95-.36-.93-.89-1.18-.89-1.18-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.87.87 2.33.67.07-.51.28-.87.51-1.07-1.78-.2-3.65-.88-3.65-3.94 0-.87.31-1.58.82-2.14-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.7 7.7 0 0 1 8 3.87c.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.14 0 3.07-1.87 3.74-3.66 3.94.29.25.54.73.54 1.48v2.2c0 .21.14.46.55.38A8 8 0 0 0 8 0Z" /></svg>
+          {githubChip.showCount && (
+            <span data-github-stars-count data-github-stars-repo={githubChip.repo} class={`${githubChip.countWidthClass} text-right tabular-nums`}></span>
+          )}
+        </a>
+        <LabsButton cta={signup} tone={signupTone} />
+      </div>
+
+      <button
+        type="button"
+        class="cursor-pointer rounded-full p-2 text-foreground lg:hidden"
+        aria-label="Open menu"
+        aria-controls="labs-nav-mobile-panel"
+        aria-expanded="false"
+        data-labs-nav-toggle
+      >
+        <svg class="h-6 w-6 block" data-icon="open" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+        <svg class="h-6 w-6 hidden" data-icon="close" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+
+      <div
+        id="labs-nav-mobile-panel"
+        hidden
+        class="absolute inset-x-0 top-full z-40 mt-2 flex flex-col gap-1 rounded-[20px] border border-border bg-card p-4 lg:hidden"
+        data-labs-nav-panel
+      >
+        {product && (
+          <div
+            role="group"
+            aria-label="Products"
+            class="mb-2 inline-flex w-fit items-center gap-1 rounded-full bg-(--color-sage-100) p-1"
+          >
+            {switcherRows.map((row) => (
+              <a
+                href={row.href}
+                aria-current={row.key === product ? "page" : undefined}
+                class="inline-flex h-10 cursor-pointer items-center gap-2 rounded-full border border-transparent px-4 font-label text-[13px] uppercase tracking-[0.05em] text-muted-foreground transition-colors duration-200 ease-out aria-[current=page]:border-(--color-sage-600) aria-[current=page]:bg-card aria-[current=page]:text-foreground"
+              >
+                <span
+                  class={`h-2 w-2 shrink-0 rounded-full ${row.tint === "orange" ? "bg-(--color-orange-600)" : "bg-primary"}`}
+                  aria-hidden="true"
+                ></span>
+                {row.name}
+              </a>
+            ))}
+          </div>
+        )}
+        <nav aria-label="Mobile navigation" class="flex flex-col gap-1">
+          {panelLinks.map((link) => (
+            <a
+              href={link.href}
+              class={`cursor-pointer rounded-[12px] px-3 py-2.5 font-label text-[13px] uppercase tracking-[0.05em] text-foreground transition-colors ${navHoverClass}`}
+            >
+              {link.label}
+            </a>
+          ))}
+        </nav>
+        <div class="mt-2 flex items-center gap-2">
+          <a
+            href={githubChip.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={githubChip.ariaLabel}
+            class={`${githubChipClass} ${githubChipPaddingClass(githubChip.showCount)} flex-1 justify-center`}
+          >
+            <svg aria-hidden="true" focusable="false" class="h-4 w-4 shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.49-2.7-.95-2.7-.95-.36-.93-.89-1.18-.89-1.18-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.87.87 2.33.67.07-.51.28-.87.51-1.07-1.78-.2-3.65-.88-3.65-3.94 0-.87.31-1.58.82-2.14-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.7 7.7 0 0 1 8 3.87c.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.14 0 3.07-1.87 3.74-3.66 3.94.29.25.54.73.54 1.48v2.2c0 .21.14.46.55.38A8 8 0 0 0 8 0Z" /></svg>
+            {githubChip.showCount && (
+              <span data-github-stars-count data-github-stars-repo={githubChip.repo} class={`${githubChip.countWidthClass} text-right tabular-nums`}></span>
+            )}
+          </a>
+          <LabsButton cta={signup} tone={signupTone} class="flex-1 px-3" />
+        </div>
+      </div>
+    </header>
+  </div>
+</div>
+
+<style>
+  /* The one visual state this shell owns: transparent over the hero at
+   * rest, solid pill once the page has scrolled past the top. The at-rest
+   * attribute is server-rendered so the first paint never flashes solid;
+   * the transition only arms after the script has synced once, so a
+   * mid-page reload paints solid instantly instead of fading in. */
+  [data-labs-nav-shell][data-scroll-ready] {
+    transition:
+      background-color 200ms ease,
+      border-color 200ms ease;
+  }
+  [data-labs-nav-shell][data-at-top] {
+    background-color: transparent;
+    border-color: transparent;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-labs-nav-shell] {
+      transition: none;
+    }
+  }
+
+  /* ZenML product pages: the lockup's "labs" script is hidden at rest and
+   * fades in beside "ZenML" on hover/focus (opacity back to the artwork's
+   * own 0.5). The slot keeps the full lockup width, so nothing shifts. */
+  /* :global — the script group lives inside ZenmlLabsLogo, outside this
+   * component's style scope. */
+  /* Opacity only: a CSS transform would replace the group's own SVG
+   * transform attribute and move the script off the canvas. */
+  [data-labs-brand="zenml"] :global([data-part="labs"]) {
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+  }
+  [data-labs-brand="zenml"]:hover :global([data-part="labs"]),
+  [data-labs-brand="zenml"]:focus-visible :global([data-part="labs"]) {
+    opacity: 0.5;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-labs-brand="zenml"] :global([data-part="labs"]) {
+      transition: none;
+    }
+  }
+
+  /* Nav menu escalator (Products, Docs, Case studies): the panel itself
+   * fades/lifts in, then each row follows with a short per-row delay driven
+   * by the server-set `--row-i` custom property. Animations (unlike
+   * transitions) play even though the panel flips from `display: none` (via
+   * the `hidden` attribute) to visible in the same frame it opens, so this
+   * is a `@keyframes` animation rather than a transition. Closing removes
+   * the `hidden` attribute's opposite — display drops to none immediately,
+   * no stagger — which also satisfies "closed means truly hidden to
+   * assistive tech", not just opacity 0. */
+  [data-labs-menu-panel]:not([hidden]) {
+    animation: labs-switcher-menu-in 180ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  [data-labs-menu-panel]:not([hidden]) > li {
+    animation: labs-switcher-row-in 180ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(var(--row-i, 0) * 45ms);
+  }
+  @keyframes labs-switcher-menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes labs-switcher-row-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-labs-menu-panel]:not([hidden]),
+    [data-labs-menu-panel]:not([hidden]) > li {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  // Scroll state: transparent only within the first 24px, else solid.
+  const shell = document.querySelector("[data-labs-nav-shell]");
+  const syncScrollState = () => {
+    shell?.toggleAttribute("data-at-top", window.scrollY < 24);
+  };
+  syncScrollState();
+  // Flush the un-transitioned first state before arming the transition.
+  if (shell) {
+    void getComputedStyle(shell).backgroundColor;
+    shell.setAttribute("data-scroll-ready", "");
+  }
+  window.addEventListener("scroll", syncScrollState, { passive: true });
+
+  // Mobile hamburger toggle.
+  const toggle = document.querySelector<HTMLButtonElement>("[data-labs-nav-toggle]");
+  const panel = document.querySelector<HTMLElement>("[data-labs-nav-panel]");
+  const openIcon = toggle?.querySelector('[data-icon="open"]');
+  const closeIcon = toggle?.querySelector('[data-icon="close"]');
+
+  toggle?.addEventListener("click", () => {
+    const willOpen = panel?.hidden === true;
+    if (panel) panel.hidden = !willOpen;
+    toggle.setAttribute("aria-expanded", String(willOpen));
+    toggle.setAttribute("aria-label", willOpen ? "Close menu" : "Open menu");
+    openIcon?.classList.toggle("hidden", willOpen);
+    openIcon?.classList.toggle("block", !willOpen);
+    closeIcon?.classList.toggle("hidden", !willOpen);
+    closeIcon?.classList.toggle("block", willOpen);
+  });
+
+  // Nav menus (Products, Docs, Case studies): each is a real button +
+  // role=menu list sharing one behaviour — hover-open with a grace delay,
+  // click and keyboard support, Esc/arrows, outside-click/focusout close,
+  // and opening one closes any other that's open (a pointer move from Docs
+  // to Case studies swaps panels without a gap).
+  const supportsHoverOpen = window.matchMedia(
+    "(hover: hover) and (pointer: fine)",
+  ).matches;
+
+  interface MenuController {
+    root: HTMLElement;
+    setOpen: (open: boolean) => void;
+  }
+  const controllers: MenuController[] = [];
+
+  for (const root of document.querySelectorAll<HTMLElement>("[data-labs-menu]")) {
+    const toggle = root.querySelector<HTMLButtonElement>("[data-labs-menu-toggle]");
+    const menu = root.querySelector<HTMLElement>("[data-labs-menu-panel]");
+    if (!toggle || !menu) continue;
+    const menuItems = () =>
+      Array.from(menu.querySelectorAll<HTMLAnchorElement>('[role="menuitem"]'));
+
+    // Any pending hover-close (below) gets cancelled by every explicit
+    // open/close path — click, keyboard, outside-click, focusout — so a
+    // grace timer from a hover interaction can never fire after some other
+    // interaction has already changed the state.
+    let hoverCloseTimer: ReturnType<typeof setTimeout> | undefined;
+    let openedByHover = false;
+    const cancelHoverClose = () => {
+      if (hoverCloseTimer !== undefined) {
+        clearTimeout(hoverCloseTimer);
+        hoverCloseTimer = undefined;
+      }
+    };
+
+    const setOpen = (open: boolean) => {
+      if (!open) openedByHover = false;
+      cancelHoverClose();
+      menu.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+      // Opening this menu closes every other open menu.
+      if (open) {
+        for (const other of controllers) {
+          if (other.root !== root) other.setOpen(false);
+        }
+      }
+    };
+    controllers.push({ root, setOpen });
+
+    // On a mouse the pointer always enters the item before the click lands, so
+    // a hover-opened menu must survive that first click (it reads as "yes, this
+    // one") and move focus into it; only a click on a menu the visitor opened
+    // deliberately — or a second click — closes it.
+    toggle.addEventListener("click", () => {
+      const isOpen = menu.hidden === false;
+      if (isOpen && openedByHover) {
+        openedByHover = false;
+        menuItems()[0]?.focus();
+        return;
+      }
+      const willOpen = !isOpen;
+      setOpen(willOpen);
+      if (willOpen) menuItems()[0]?.focus();
+    });
+
+    // Hover-open (desktop only): entering the item opens the menu without a
+    // click; leaving both the button and the panel closes it after a short
+    // grace delay so a diagonal move from the button into the panel — which
+    // crosses empty space outside the root's own layout box before landing
+    // on the absolutely-positioned menu — doesn't read as a close. Gated to
+    // `(hover: hover) and (pointer: fine)` so touch devices never get these
+    // listeners and keep click-to-open only. pointerenter/leave (unlike
+    // mouseenter/leave) fire again when re-entering the menu, which is a DOM
+    // descendant of `root` but sits outside its own layout box (absolutely
+    // positioned), so the grace delay — not the box shape — is what keeps a
+    // diagonal move into the panel from closing it.
+    if (supportsHoverOpen) {
+      root.addEventListener("pointerenter", () => {
+        cancelHoverClose();
+        if (menu.hidden !== false) openedByHover = true;
+        setOpen(true);
+      });
+      root.addEventListener("pointerleave", () => {
+        cancelHoverClose();
+        hoverCloseTimer = setTimeout(() => setOpen(false), 130);
+      });
+    }
+
+    root.addEventListener("keydown", (event) => {
+      if (menu.hidden) return;
+      const items = menuItems();
+      const index = items.indexOf(document.activeElement as HTMLAnchorElement);
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpen(false);
+        toggle.focus();
+      } else if (event.key === "ArrowDown") {
+        event.preventDefault();
+        items[(index + 1) % items.length]?.focus();
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        items[(index - 1 + items.length) % items.length]?.focus();
+      }
+    });
+
+    document.addEventListener("click", (event) => {
+      if (menu.hidden) return;
+      if (!root.contains(event.target as Node)) setOpen(false);
+    });
+    root.addEventListener("focusout", (event) => {
+      if (menu.hidden) return;
+      if (!root.contains(event.relatedTarget as Node | null)) setOpen(false);
+    });
+  }
+</script>

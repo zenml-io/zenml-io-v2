@@ -1,6 +1,7 @@
 ---
 title: "Robust Monitoring and Alerting"
 slug: "robust-monitoring-and-alerting"
+icon: "shield"
 content: "ZenML provides comprehensive monitoring, logging, and alerting features for production pipelines, ensuring their reliability and performance, while Metaflow offers basic monitoring capabilities and requires external tools for advanced monitoring."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdf3dfc5/667167751e34699260c6b227_img02.png"

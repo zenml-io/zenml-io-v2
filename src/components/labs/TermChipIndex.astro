@@ -1,0 +1,48 @@
+---
+/**
+ * labs.term-chip-index — the "all terms" chip listing shared by
+ * `/llmops-tags`, `/mlops-tags` and `/industry-tags`: every term in a
+ * taxonomy as a hexagon chip carrying its entry count. One shape for all
+ * three routes; only the page's own band copy and the `terms` order
+ * (the caller sorts — count desc, name A-Z on ties, same as
+ * `filterUsedTerms`'s callers) differ per route.
+ */
+import {
+  TERM_CHIP,
+  TERM_CHIP_HEXAGON_PATH,
+  TERM_CHIP_HEXAGON_VIEWBOX,
+} from "../blog/termChipStyles";
+
+export interface TermChipIndexTerm {
+  name: string;
+  href: string;
+  count: number;
+}
+
+interface Props {
+  terms: readonly TermChipIndexTerm[];
+  ariaLabel: string;
+}
+
+const { terms, ariaLabel } = Astro.props;
+---
+
+<nav aria-label={ariaLabel}>
+  <ul class="flex flex-wrap gap-2 list-none">
+    {terms.map((term) => (
+      <li>
+        <a href={term.href} class={TERM_CHIP}>
+          <svg
+            viewBox={TERM_CHIP_HEXAGON_VIEWBOX}
+            class="h-[14px] w-3 fill-(--color-sage-600)"
+            aria-hidden="true"
+          >
+            <path d={TERM_CHIP_HEXAGON_PATH} />
+          </svg>
+          {term.name}
+          <span class="text-(--color-cream-600) tabular-nums">{term.count}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>

@@ -21,12 +21,14 @@ tags:
 date: "2025-09-06T00:00:00.000Z"
 readingTime: 16 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/aeca855d/68bbbf620a8f3484e0fdde6d_flowise-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/flowise-alternatives/7c0d4051/flowise-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/flowise-alternatives/7c0d4051/flowise-alternatives-cover.avif"
 seo:
   title: "7 Best Flowise Alternatives to Build AI Agents that Deliver Efficient Results - ZenML Blog"
   description: "Discover the top 7 Flowise alternatives - code and no-code that you can leverage to build and deploy efficient AI agents."
   canonical: "https://www.zenml.io/blog/flowise-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/aeca855d/68bbbf620a8f3484e0fdde6d_flowise-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/flowise-alternatives/51bbb88d/flowise-alternatives-cover.jpg"
   ogTitle: "7 Best Flowise Alternatives to Build AI Agents that Deliver Efficient Results - ZenML Blog"
   ogDescription: "Discover the top 7 Flowise alternatives - code and no-code that you can leverage to build and deploy efficient AI agents."
 ---

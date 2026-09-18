@@ -3,6 +3,7 @@ import {
   absoluteUrl,
   buildCanonical,
   compareOgUrl,
+  defaultOgImage,
   resolveSeo,
 } from "../../src/lib/seo";
 
@@ -47,6 +48,11 @@ describe("seo helpers", () => {
     expect(compareOgUrl("zenml", "zenml-vs-temporal")).toMatch(
       /compare\/zenml-og\/zenml-vs-temporal\.jpg$/,
     );
+  });
+
+  it("returns default OG URLs only for cards recorded in the manifest", () => {
+    expect(defaultOgImage("pages", "home")).toMatch(/og\/pages\/home\.jpg$/);
+    expect(defaultOgImage("pages", "not-in-the-manifest")).toBeUndefined();
   });
 
   it("fills default SEO values", () => {

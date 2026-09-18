@@ -12,11 +12,10 @@ webflow:
   createdOn: "2026-01-28T12:53:47.449Z"
 position: "Solution Engineer"
 photo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9d1cc153/697a069ac29241fd0f7eee24_amit-vikram-raj-bw.jpg_50.jpeg"
+  url: "https://assets.zenml.io/content/team/cfdd64fd/amit-vikram-raj-cutout.avif"
 email: "amit.ext@zenml.io"
 linkedin: "https://www.linkedin.com/in/avr27/"
 order: 6
 ---
 
 <ul><li>Lives life in dark mode</li><li>Loves coffee and long walks</li><li>Cleans his desk every day</li></ul>
-

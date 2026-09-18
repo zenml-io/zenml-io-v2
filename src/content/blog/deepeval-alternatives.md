@@ -21,12 +21,14 @@ tags:
 date: "2025-11-20T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0eb4814c/6981d389ab6d2820d701bc15_6981d2a9cac03d50ba86910f_deepeval-alternatives.avif"
+  url: "https://assets.zenml.io/content/blog/deepeval-alternatives/d9f4c835/deepeval-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/deepeval-alternatives/d9f4c835/deepeval-alternatives-cover.avif"
 seo:
   title: "8 Best DeepEval Alternatives: Which LLM Evaluation Framework is Better? - ZenML Blog"
   description: "In this article, you will learn about the best DeepEval alternatives that you can use for LLM evaluation."
   canonical: "https://www.zenml.io/blog/deepeval-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0eb4814c/6981d389ab6d2820d701bc15_6981d2a9cac03d50ba86910f_deepeval-alternatives.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/deepeval-alternatives/34618f6c/deepeval-alternatives-cover.jpg"
   ogTitle: "8 Best DeepEval Alternatives: Which LLM Evaluation Framework is Better? - ZenML Blog"
   ogDescription: "In this article, you will learn about the best DeepEval alternatives that you can use for LLM evaluation."
 ---

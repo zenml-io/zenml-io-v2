@@ -20,12 +20,12 @@ tags:
 date: "2025-03-27T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0365e48f/67e5a7eaac078ed541114b34_Image_from_Notion__2_.png"
+  url: "https://assets.zenml.io/content/blog/newsletter-edition-13-zenml-0-80-0-just-dropped-big-changes-to-your-workflows/5a5f5a4c/newsletter-edition-13-zenml-0-80-0-just-dropped-big-changes-to-your-workflows-cover.avif"
 seo:
   title: "Newsletter Edition #13 - ZenML 0.80.0 just dropped - ZenML Blog"
   description: "Our monthly roundup: new features with 0.80.0 release, more new models, and an MCP server for ZenML"
   canonical: "https://www.zenml.io/blog/newsletter-edition-13-zenml-0-80-0-just-dropped-big-changes-to-your-workflows"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0365e48f/67e5a7eaac078ed541114b34_Image_from_Notion__2_.png"
+  ogImage: "https://assets.zenml.io/content/blog/newsletter-edition-13-zenml-0-80-0-just-dropped-big-changes-to-your-workflows/3951088e/newsletter-edition-13-zenml-0-80-0-just-dropped-big-changes-to-your-workflows-cover.jpg"
   ogTitle: "Newsletter Edition #13 - ZenML 0.80.0 just dropped - ZenML Blog"
   ogDescription: "Our monthly roundup: new features with 0.80.0 release, more new models, and an MCP server for ZenML"
 ---

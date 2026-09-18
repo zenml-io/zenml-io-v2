@@ -19,12 +19,12 @@ tags:
 date: "2024-06-25T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/52f2fd9a/667a832446fc9fa35895a2f7_post250624.png"
+  url: "https://assets.zenml.io/content/blog/reflections-on-working-with-100s-of-ml-platform-teams/8bee663c/reflections-on-working-with-100s-of-ml-platform-teams-cover.avif"
 seo:
   title: "Reflections on working with 100s of ML Platform teams - ZenML Blog"
   description: "Exploring the evolution of MLOps practices in organizations, from manual processes to automated systems, covering aspects like data science workflows, experiment tracking, code management, and model monitoring."
   canonical: "https://www.zenml.io/blog/reflections-on-working-with-100s-of-ml-platform-teams"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f94f4063/667a832446fc9fa35895a2f7_post250624.png"
+  ogImage: "https://assets.zenml.io/content/blog/reflections-on-working-with-100s-of-ml-platform-teams/3a094d5a/reflections-on-working-with-100s-of-ml-platform-teams-cover.jpg"
   ogTitle: "Reflections on working with 100s of ML Platform teams - ZenML Blog"
   ogDescription: "Exploring the evolution of MLOps practices in organizations, from manual processes to automated systems, covering aspects like data science workflows, experiment tracking, code management, and model monitoring."
 ---

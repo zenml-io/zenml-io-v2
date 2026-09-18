@@ -1,0 +1,351 @@
+<ol class="flex flex-col mt-12">
+<li class="grid min-w-0 gap-4 border-t border-(--color-border) py-8 md:grid-cols-[64px_minmax(0,1fr)] md:gap-8 last:border-b">
+<span class="font-display text-[20px] leading-[26px] text-(--color-sage-700)">01
+</span>
+<div class="min-w-0">
+<h3 class="font-display text-[24px] leading-[30px] text-(--color-cream-900)">Install ZenML
+</h3>
+<p class="mt-3 font-sans text-[16px] leading-6 text-(--color-cream-700)">Get ZenML up and running in minutes. You just need to install it
+</p>
+<div class="prose mt-6 max-w-none">
+<figure class="code-pane" data-language="bash">
+<div class="code-pane__bar">
+<span>bash
+</span>
+<button type="button" class="code-pane__copy" aria-label="Copy code">Copy
+</button>
+</div>
+<div class="code-pane__scroll">
+<pre class="shiki labs-light" style="background-color:#413D37;color:#F5F7F4" tabindex="0">
+<code>
+<span class="line">
+<span style="color:#47BAD1">pip
+</span>
+<span style="color:#DBE0C2"> install
+</span>
+<span style="color:#DBE0C2"> 'zenml[local]'
+</span>
+</span>
+</code>
+</pre>
+</div>
+</figure>
+</div>
+</div>
+</li>
+<li class="grid min-w-0 gap-4 border-t border-(--color-border) py-8 md:grid-cols-[64px_minmax(0,1fr)] md:gap-8 last:border-b">
+<span class="font-display text-[20px] leading-[26px] text-(--color-sage-700)">02
+</span>
+<div class="min-w-0">
+<h3 class="font-display text-[24px] leading-[30px] text-(--color-cream-900)">Track inputs and outputs
+</h3>
+<p class="mt-3 font-sans text-[16px] leading-6 text-(--color-cream-700)">Wire two steps into a training pipeline. ZenML tracks every input and output as a versioned artifact:
+</p>
+<div class="prose mt-6 max-w-none">
+<figure class="code-pane" data-language="python">
+<div class="code-pane__bar">
+<span>python
+</span>
+<button type="button" class="code-pane__copy" aria-label="Copy code">Copy
+</button>
+</div>
+<div class="code-pane__scroll">
+<pre class="shiki labs-light" style="background-color:#413D37;color:#F5F7F4" tabindex="0">
+<code>
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> sklearn
+</span>
+<span style="color:#47BAD1">.
+</span>
+<span style="color:#F5F7F4">base
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> ClassifierMixin
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> sklearn
+</span>
+<span style="color:#47BAD1">.
+</span>
+<span style="color:#F5F7F4">datasets
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> load_iris
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> sklearn
+</span>
+<span style="color:#47BAD1">.
+</span>
+<span style="color:#F5F7F4">svm
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#E0CFB7"> SVC
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> zenml
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> step
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#F5F7F4"> pipeline
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">@step
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> load_data
+</span>
+<span style="color:#F5F7F4">()
+</span>
+<span style="color:#47BAD1">-&gt;
+</span>
+<span style="color:#F5F7F4"> tuple[
+</span>
+<span style="color:#E0CFB7">list
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#E0CFB7"> list
+</span>
+<span style="color:#F5F7F4">]:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">    X
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#F5F7F4"> y
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> load_iris
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">return_X_y
+</span>
+<span style="color:#47BAD1">=True
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">    return
+</span>
+<span style="color:#F5F7F4"> X
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#F5F7F4"> y
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">@step
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> train_model
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">X
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> list
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#E0CFB7"> y
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> list
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">-&gt;
+</span>
+<span style="color:#F5F7F4"> ClassifierMixin:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">    # The returned model is versioned + tracked as an artifact automatically.
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">    return
+</span>
+<span style="color:#47BAD1"> SVC
+</span>
+<span style="color:#F5F7F4">()
+</span>
+<span style="color:#47BAD1">.fit
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">X, y
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">@pipeline
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> training_pipeline
+</span>
+<span style="color:#F5F7F4">():
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">    X
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#F5F7F4"> y
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> load_data
+</span>
+<span style="color:#F5F7F4">()
+</span>
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">    train_model
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">X, y
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">if
+</span>
+<span style="color:#F5F7F4"> __name__
+</span>
+<span style="color:#47BAD1">==
+</span>
+<span style="color:#DBE0C2"> "__main__"
+</span>
+<span style="color:#47BAD1">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">    training_pipeline
+</span>
+<span style="color:#F5F7F4">()
+</span>
+</span>
+</code>
+</pre>
+</div>
+</figure>
+</div>
+</div>
+</li>
+<li class="grid min-w-0 gap-4 border-t border-(--color-border) py-8 md:grid-cols-[64px_minmax(0,1fr)] md:gap-8 last:border-b">
+<span class="font-display text-[20px] leading-[26px] text-(--color-sage-700)">03
+</span>
+<div class="min-w-0">
+<h3 class="font-display text-[24px] leading-[30px] text-(--color-cream-900)">Run your pipeline locally
+</h3>
+<p class="mt-3 font-sans text-[16px] leading-6 text-(--color-cream-700)">Run it locally. The pipeline executes, artifacts are versioned, and the run shows up in your dashboard.
+</p>
+<div class="prose mt-6 max-w-none">
+<figure class="code-pane" data-language="bash">
+<div class="code-pane__bar">
+<span>bash
+</span>
+<button type="button" class="code-pane__copy" aria-label="Copy code">Copy
+</button>
+</div>
+<div class="code-pane__scroll">
+<pre class="shiki labs-light" style="background-color:#413D37;color:#F5F7F4" tabindex="0">
+<code>
+<span class="line">
+<span style="color:#47BAD1">python
+</span>
+<span style="color:#DBE0C2"> run.py
+</span>
+</span>
+</code>
+</pre>
+</div>
+</figure>
+</div>
+</div>
+</li>
+</ol>

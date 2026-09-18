@@ -1,11 +1,16 @@
 ---
+import { FOOTER_LEGAL } from "../lib/footer";
 import {
   CAL_EMBED_SCRIPT,
   CAL_ORIGIN,
   TURNSTILE_SITE_KEY,
 } from "../lib/formConstants";
 import type { CalEmbedConfig, PlaceholderField } from "../lib/formTypes";
-import KitaruLogo from "./brand/KitaruLogo.astro";
+import { KITARU_GRAIN } from "../lib/kitaru-grain-palettes";
+import { LABS_GRAIN } from "../lib/labs-grain-palettes";
+import { LABS_FOOTER } from "../lib/labs-home";
+import KitaruLockup from "./brand/KitaruLockup.astro";
+import ZenmlLabsLogo from "./brand/ZenmlLabsLogo.astro";
 /**
  * BookingExperience — shared two-column demo-booking body.
  *
@@ -29,6 +34,7 @@ import KitaruLogo from "./brand/KitaruLogo.astro";
  * `data-app="kitaru"`, remember this page brands itself a different way.
  */
 import DemoRequestForm from "./islands/DemoRequestForm.tsx";
+import { GrainBackdrop } from "./islands/GrainBackdrop";
 
 interface Props {
   /** Drives the header logo and the orange brand-token override. */
@@ -54,74 +60,55 @@ interface Props {
   };
   fields: PlaceholderField[];
   cal: CalEmbedConfig;
-  testimonial: {
-    quote: string;
-    name: string;
-    position: string;
-    avatar: string;
-  };
 }
 
-const {
-  brand,
-  homeHref,
-  hero,
-  proofLabel,
-  stats,
-  logos,
-  form,
-  fields,
-  cal,
-  testimonial,
-} = Astro.props;
+const { brand, homeHref, hero, proofLabel, stats, logos, form, fields, cal } =
+  Astro.props;
 const isKitaru = brand === "kitaru";
+const grain = isKitaru ? KITARU_GRAIN.hero : LABS_GRAIN.hero;
 ---
 
-<div class:list={["booking-root", isKitaru && "kitaru-brand-vars"]}>
+<div class:list={["booking-root relative min-h-screen overflow-hidden bg-(--color-sage-50)", isKitaru && "kitaru-brand-vars"]}>
+  <GrainBackdrop client:visible config={grain} class="absolute inset-0" />
   {/* Logo header */}
-  <header class="border-b border-gray-100 bg-white">
-    <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+  <header class="relative bg-transparent">
+    <div class="mx-auto max-w-content px-gutter py-5">
       {isKitaru ? (
-        <a href={homeHref} aria-label="Kitaru home" class="inline-flex text-gray-900">
-          <KitaruLogo class="h-7 w-auto" />
+        <a href={homeHref} aria-label="Kitaru home" class="inline-flex h-8 text-foreground">
+          <KitaruLockup class="h-full w-auto" />
         </a>
       ) : (
-        <a href={homeHref} aria-label="ZenML home">
-          <img
-            src="/images/zenml-logo.svg"
-            alt="ZenML"
-            width="115"
-            height="28"
-            class="h-7 w-auto"
-          />
+        <a href={homeHref} aria-label="ZenML Labs home" class="inline-flex h-8 text-foreground">
+          <ZenmlLabsLogo class="h-full w-auto" />
         </a>
       )}
     </div>
   </header>
 
-  <main class="bg-white">
+  <main class="relative">
     {/* Two-column section */}
-    <section class="py-space-lg sm:py-space-xl lg:py-20">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div id="demo-form-grid" class="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
+    <section class="py-space-xl sm:py-space-xxl">
+      <div class="mx-auto max-w-content px-gutter">
+        <div id="demo-form-grid" class="grid items-start gap-space-xl lg:grid-cols-2 lg:gap-space-xxl">
           {/* ── Left column: marketing copy ── */}
           <div id="demo-form-marketing">
-            <h1 class="text-3xl font-bold text-gray-900 sm:text-4xl">
-              {hero.headlinePrefix}<span class="text-zenml-500">{hero.headlineHighlight}</span>{hero.headlineSuffix}
+            <p class="font-sans text-sm text-(--color-sage-800)">Personalized product walkthrough</p>
+            <h1 class="mt-4 font-display text-5xl text-foreground sm:text-6xl">
+              {hero.headlinePrefix}<span class={isKitaru ? "text-(--color-orange-700)" : "text-(--color-sage-800)"}>{hero.headlineHighlight}</span>{hero.headlineSuffix}
             </h1>
-            <p class="mt-4 text-base leading-relaxed text-gray-600 sm:text-lg">
+            <p class="mt-5 max-w-xl font-sans text-lg leading-relaxed text-muted-foreground">
               {hero.deck}
             </p>
 
             {/* Stats 2×2 grid */}
             {stats && stats.length > 0 && (
-              <div class="mt-10 grid grid-cols-2 gap-4">
+              <div class="mt-space-lg grid grid-cols-2 gap-3">
                 {stats.map((stat) => (
-                  <div class="rounded-lg border border-gray-200 px-4 py-5">
-                    <p class="text-2xl font-bold text-gray-900 sm:text-3xl">
+                  <div class="rounded-[12px] border border-border bg-card px-4 py-5">
+                    <p class="font-display text-3xl text-foreground">
                       {stat.value}
                     </p>
-                    <p class="mt-1 text-xs leading-snug text-gray-500 sm:text-sm">
+                    <p class="mt-2 font-sans text-sm leading-snug text-muted-foreground">
                       {stat.label}
                     </p>
                   </div>
@@ -131,13 +118,13 @@ const isKitaru = brand === "kitaru";
 
             {/* Co-brand credibility line */}
             {proofLabel && (
-              <p class="mt-10 text-sm font-medium leading-relaxed text-gray-600">
+              <p class="mt-space-lg font-sans text-sm leading-relaxed text-muted-foreground">
                 {proofLabel}
               </p>
             )}
 
             {/* Customer logos */}
-            <div class:list={["flex flex-wrap items-center gap-6 sm:gap-8", proofLabel ? "mt-6" : "mt-10"]}>
+            <div class:list={["flex flex-wrap items-center gap-6 sm:gap-8", proofLabel ? "mt-6" : "mt-space-lg"]}>
               {logos.map((logo) => (
                 <img
                   src={logo.src}
@@ -150,14 +137,7 @@ const isKitaru = brand === "kitaru";
           </div>
 
           {/* ── Right column: form → calendar ── */}
-          <div id="demo-form-col" data-cal-headline={form.calHeadline} data-cal-deck={form.calDeck}>
-            <h2 id="demo-form-heading" class="text-2xl font-bold text-gray-900 sm:text-3xl">
-              {form.headline}
-            </h2>
-            <p id="demo-form-deck" class="mt-2 text-sm text-gray-500">
-              {form.deck}
-            </p>
-
+          <div id="demo-form-col">
             <div class="mt-6">
               <DemoRequestForm
                 client:load
@@ -169,13 +149,17 @@ const isKitaru = brand === "kitaru";
                 calOrigin={CAL_ORIGIN}
                 calEmbedScript={CAL_EMBED_SCRIPT}
                 turnstileSiteKey={TURNSTILE_SITE_KEY}
+                heading={form.headline}
+                deck={form.deck}
+                calendarHeading={form.calHeadline}
+                calendarDeck={form.calDeck}
               />
             </div>
 
             {/* Privacy note */}
-            <p id="demo-form-privacy" class="mt-3 text-center text-xs text-gray-400">
+            <p id="demo-form-privacy" class="mt-3 text-center font-sans text-xs text-muted-foreground">
               By continuing, you agree to our{" "}
-              <a href="/privacy-policy" class="text-zenml-500 underline hover:text-zenml-600">
+              <a href="/privacy-policy" class="text-(--color-sage-800) underline decoration-(--color-sage-500) underline-offset-4 hover:text-foreground">
                 privacy policy
               </a>.
             </p>
@@ -184,37 +168,15 @@ const isKitaru = brand === "kitaru";
       </div>
     </section>
 
-    {/* Testimonial */}
-    <section class="border-t border-gray-100 bg-gray-50 py-10 sm:py-14">
-      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <div class="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-8">
-          <img
-            src={testimonial.avatar}
-            alt={testimonial.name}
-            class="h-16 w-16 flex-shrink-0 rounded-full object-cover"
-            loading="lazy"
-          />
-          <div>
-            <blockquote class="text-base leading-relaxed text-gray-700 sm:text-lg">
-              {testimonial.quote}
-            </blockquote>
-            <p class="mt-3 text-sm font-semibold text-gray-900">
-              {testimonial.name}<span class="font-normal text-gray-500">, {testimonial.position}</span>
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
 
-  {/* Minimal footer */}
-  <footer class="border-t border-gray-100 bg-white py-6">
-    <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 text-sm text-gray-400 sm:flex-row sm:px-6 lg:px-8">
-      <p>&copy; {new Date().getFullYear()} ZenML. All rights reserved.</p>
-      <nav class="flex gap-6">
-        <a href="/imprint" class="hover:text-gray-600">Imprint</a>
-        <a href="/privacy-policy" class="hover:text-gray-600">Privacy Policy</a>
-        <a href="/terms-of-service" class="hover:text-gray-600">Terms of Service</a>
+  <footer class="relative mt-space-xl border-t border-border/70 bg-transparent">
+    <div class="mx-auto flex max-w-content flex-col gap-4 px-gutter py-8 md:flex-row md:items-center md:justify-between">
+      <p class="font-sans text-[16px] text-foreground">&copy; {new Date().getFullYear()} {LABS_FOOTER.copyright}</p>
+      <nav aria-label="Legal" class="flex flex-wrap items-center gap-6">
+        {FOOTER_LEGAL.map((link) => (
+          <a href={link.href} target={link.external ? "_blank" : undefined} rel={link.external ? "noopener noreferrer" : undefined} class="cursor-pointer font-label text-[12px] uppercase tracking-[0.05em] text-foreground hover:text-(--color-sage-700)">{link.label}</a>
+        ))}
       </nav>
     </div>
   </footer>
@@ -236,36 +198,3 @@ const isKitaru = brand === "kitaru";
     display: none;
   }
 </style>
-
-{/* Transition: update heading & hide privacy note when calendar appears */}
-<script is:inline>
-  (function () {
-    var target = document.getElementById("demo-form-col");
-    if (!target) return;
-    var calHeadline = target.getAttribute("data-cal-headline") || "";
-    var calDeck = target.getAttribute("data-cal-deck") || "";
-    var observer = new MutationObserver(function () {
-      if (target.querySelector(".demo-form-calendar-transition")) {
-        var heading = document.getElementById("demo-form-heading");
-        var deck = document.getElementById("demo-form-deck");
-        var privacy = document.getElementById("demo-form-privacy");
-        var grid = document.getElementById("demo-form-grid");
-        var marketing = document.getElementById("demo-form-marketing");
-        if (heading) { heading.style.transition = "opacity 0.3s"; heading.style.opacity = "0"; }
-        if (deck) { deck.style.transition = "opacity 0.3s"; deck.style.opacity = "0"; }
-        if (privacy) { privacy.style.transition = "opacity 0.3s"; privacy.style.opacity = "0"; }
-        if (marketing) { marketing.style.transition = "opacity 0.3s"; marketing.style.opacity = "0"; }
-        // Timeout matches the 0.3s CSS transition so layout changes after fade-out completes
-        setTimeout(function () {
-          if (heading) { heading.textContent = calHeadline; heading.style.opacity = "1"; }
-          if (deck) { deck.textContent = calDeck; deck.style.opacity = "1"; }
-          if (privacy) privacy.style.display = "none";
-          if (marketing) { marketing.style.opacity = ""; marketing.style.transition = ""; marketing.classList.add("demo-cal-hidden"); }
-          if (grid) grid.classList.add("demo-cal-active");
-        }, 300);
-        observer.disconnect();
-      }
-    });
-    observer.observe(target, { childList: true, subtree: true });
-  })();
-</script>

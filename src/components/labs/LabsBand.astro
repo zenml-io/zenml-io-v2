@@ -1,0 +1,90 @@
+---
+import { KITARU_GRAIN } from "../../lib/kitaru-grain-palettes";
+import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
+// LabsBand.astro — the shared shader-band shell every blog surface opens
+// with: the blog index (via LabsHero), the category/tag/author hubs, and
+// each post's masthead. Owns only the chrome — grain shader, bottom fade,
+// sizing, and the nav clearance padding — a caller supplies its own heading
+// markup through the default slot. Extracted from LabsHero so the blog
+// surfaces can reuse the exact band without duplicating the shader setup or
+// the `size` sizing rules.
+//
+// Two sizes, chosen by the `size` discriminant (never a boolean):
+//   - "landing": the full-height opener of `/` and the product pages.
+//   - "short": the interior-page opener — the blog index, taxonomy hubs,
+//     and the post masthead — at roughly 40% of the viewport.
+//
+// `grain` picks the shader palette (`config`, a plain hex-literal object —
+// it does not depend on `[data-app="kitaru"]`'s CSS-variable bridge, so it
+// works here without that wrapper scope): "labs" (default) is the sage
+// register every other Labs band uses; "kitaru" runs the `blog` cut of the
+// Kitaru palette (`kitaru-grain-palettes.ts`): the same wash as
+// `/product/kitaru`'s hero, slower and quieter because copy sits directly on
+// this short band. Used by a Kitaru post's masthead (BlogLayout.astro) and
+// the Kitaru category/tag hubs. Only the shader and its fade-to/background
+// tokens switch with it — size, hairline, and container stay identical.
+import { GrainBackdrop } from "../islands/GrainBackdrop";
+
+interface Props {
+  size: "landing" | "short";
+  grain?: "labs" | "kitaru";
+  class?: string;
+}
+
+const { size, grain = "labs", class: className } = Astro.props;
+const short = size === "short";
+const kitaruGrain = grain === "kitaru";
+---
+
+{
+  /*
+    The "short" band's bottom hairline is deliberately a `border-b` on this
+    outer section, not a rule inside the container — full-bleed, drawn over
+    the fade, so it reads as the band's own edge rather than a content-lane
+    divider. The "landing" band gets none: `/` and `/product/zenml` flow
+    straight into the next section, unchanged. The gap this hairline sits
+    above (band → first content element) is each consumer's own concern —
+    see BAND_CONTENT_GAP in lib/blogLayout.ts.
+  */
+}
+<section
+  class:list={[
+    "relative flex flex-col overflow-hidden",
+    kitaruGrain ? "bg-(--background)" : "bg-(--color-sage-50)",
+    short ? "min-h-[360px] lg:min-h-[40svh]" : "min-h-[640px] lg:min-h-[900px]",
+    short && "border-b border-(--color-border)",
+    className,
+  ]}
+>
+  {
+    /*
+      client:visible on purpose: this is the page's one always-on ambient
+      island (check:motion budget) — every other GrainBackdrop instance on
+      the page defers with client:idle or a hover-gated `active` prop.
+    */
+  }
+  <GrainBackdrop
+    client:visible
+    config={kitaruGrain ? KITARU_GRAIN.blog : LABS_GRAIN.hero}
+    class="absolute inset-0"
+  />
+
+  <div
+    class:list={[
+      "pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-b from-transparent",
+      kitaruGrain ? "to-(--background)" : "to-(--color-sage-50)",
+      short ? "h-[160px]" : "h-[340px]",
+    ]}
+    aria-hidden="true"
+  >
+  </div>
+
+  <div
+    class:list={[
+      "relative mx-auto flex w-full max-w-content flex-1 flex-col justify-center px-gutter",
+      short ? "pt-[148px] pb-space-xl" : "pt-[120px] pb-space-xxl",
+    ]}
+  >
+    <slot />
+  </div>
+</section>

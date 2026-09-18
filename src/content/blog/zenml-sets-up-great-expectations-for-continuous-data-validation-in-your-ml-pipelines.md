@@ -22,12 +22,12 @@ tags:
 date: "2022-07-07T00:00:00.000Z"
 readingTime: 18 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b4253d43/653173fbd3f284555af57536_continuous-data-validation.png"
+  url: "https://assets.zenml.io/content/blog/zenml-sets-up-great-expectations-for-continuous-data-validation-in-your-ml-pipelines/a8117b80/zenml-sets-up-great-expectations-for-continuous-data-validation-in-your-ml-pipelines-cover.avif"
 seo:
   title: "ZenML sets up Great Expectations for continuous data validation in your ML pipelines - ZenML Blog"
   description: "ZenML combines forces with Great Expectations to add data validation to the list of continuous processes automated with MLOps. Discover why data validation is an important part of MLOps and try the new integration with a hands-on tutorial."
   canonical: "https://www.zenml.io/blog/zenml-sets-up-great-expectations-for-continuous-data-validation-in-your-ml-pipelines"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b9f3df1f/653173fbd3f284555af57536_continuous-data-validation.png"
+  ogImage: "https://assets.zenml.io/content/blog/zenml-sets-up-great-expectations-for-continuous-data-validation-in-your-ml-pipelines/73d81014/zenml-sets-up-great-expectations-for-continuous-data-validation-in-your-ml-pipelines-cover.jpg"
   ogTitle: "ZenML sets up Great Expectations for continuous data validation in your ML pipelines - ZenML Blog"
   ogDescription: "ZenML combines forces with Great Expectations to add data validation to the list of continuous processes automated with MLOps. Discover why data validation is an important part of MLOps and try the new integration with a hands-on tutorial."
 ---

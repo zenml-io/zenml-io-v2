@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-05-29T11:41:20.431Z"
 integrationType: "deployer"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f6bd0bf5/66d86795fb809547dcae5c99_huggingface.png"
+  url: "https://assets.zenml.io/content/integrations/logos/huggingface-inference-endpoints.svg"
+  alt: "Hugging Face logo"
 shortDescription: "Effortlessly deploy Hugging Face models to production with ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/model-deployers/huggingface"
 githubUrl: "https://github.com/zenml-io/zenml/blob/main/tests/integration/examples/huggingface/run.py"

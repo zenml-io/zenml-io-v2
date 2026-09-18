@@ -160,7 +160,7 @@ function SliderInput({ config, value, onChange }: SliderInputProps) {
           }
           style={{
             ...styles.slider,
-            background: `linear-gradient(to right, #7A3EF4 ${pct}%, #E5E7EB ${pct}%)`,
+            accentColor: "var(--color-sage-700)",
           }}
         />
         <div style={styles.sliderLabels}>
@@ -198,13 +198,13 @@ function ResultRow({ label, value, isLast }: ResultRowProps) {
 
 const styles: Record<string, CSSProperties> = {
   container: {
-    maxWidth: "800px",
+    maxWidth: "100%",
     margin: "0 auto",
-    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    fontFamily: "var(--font-sans)",
     display: "flex",
     flexDirection: "row",
-    border: "1px solid #E5E7EB",
-    borderRadius: "8px",
+    border: "1px solid var(--color-border)",
+    borderRadius: "10px",
     flexWrap: "wrap",
   },
   inputs: {
@@ -218,10 +218,10 @@ const styles: Record<string, CSSProperties> = {
     flex: "1 1 300px",
   },
   results: {
-    borderLeft: "1px solid #E5E7EB",
-    backgroundColor: "#F9FAFB",
+    borderLeft: "1px solid var(--color-border)",
+    backgroundColor: "var(--color-sage-50)",
     padding: "2rem",
-    borderRadius: "0 8px 8px 0",
+    borderRadius: "0 10px 10px 0",
     width: "50%",
     minWidth: "300px",
     flex: "1 1 300px",
@@ -247,10 +247,10 @@ const styles: Record<string, CSSProperties> = {
     position: "absolute",
     top: "0",
     transform: "translateX(-50%)",
-    background: "#F3F4F6",
-    color: "#111827",
+    background: "var(--color-sage-100)",
+    color: "var(--color-foreground)",
     padding: "4px 12px",
-    borderRadius: "4px",
+    borderRadius: "10px",
     fontSize: "14px",
     fontWeight: "500",
     pointerEvents: "none",
@@ -261,15 +261,15 @@ const styles: Record<string, CSSProperties> = {
     height: "4px",
     borderRadius: "2px",
     outline: "none",
-    WebkitAppearance: "none",
-    appearance: "none",
+    WebkitAppearance: "auto",
+    appearance: "auto",
     cursor: "pointer",
   },
   sliderLabels: {
     display: "flex",
     justifyContent: "space-between",
     marginTop: "8px",
-    color: "#6B7280",
+    color: "var(--color-muted-foreground)",
     fontSize: "12px",
   },
   breakdownRow: {
@@ -277,14 +277,14 @@ const styles: Record<string, CSSProperties> = {
     justifyContent: "space-between",
     alignItems: "center",
     padding: "12px 0",
-    borderBottom: "1px solid #E5E7EB",
+    borderBottom: "1px solid var(--color-border)",
   },
   roiBox: {
     borderRadius: "8px",
-    border: "1px solid #22c55e",
+    border: "1px solid var(--color-sage-600)",
     padding: "1.5rem",
     marginTop: "1.5rem",
-    background: "#fff",
+    background: "var(--color-cream-50)",
   },
   roiRow: {
     display: "flex",
@@ -294,12 +294,12 @@ const styles: Record<string, CSSProperties> = {
   roiValue: {
     fontWeight: "600",
     fontSize: "20px",
-    color: "#22c55e",
+    color: "var(--color-sage-800)",
   },
   disclaimer: {
     marginTop: "16px",
     fontSize: "12px",
-    color: "#6B7280",
+    color: "var(--color-muted-foreground)",
     textAlign: "center",
   },
 };

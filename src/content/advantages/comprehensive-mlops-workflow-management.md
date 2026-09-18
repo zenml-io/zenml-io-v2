@@ -1,6 +1,7 @@
 ---
 title: "Comprehensive MLOps Workflow Management"
 slug: "comprehensive-mlops-workflow-management"
+icon: "pipeline"
 content: "ZenML provides an end-to-end MLOps framework for managing the entire machine learning workflow, while Hugging Face primarily focuses on model sharing and collaboration."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdf3dfc5/667167751e34699260c6b227_img02.png"

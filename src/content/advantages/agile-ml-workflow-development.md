@@ -1,6 +1,7 @@
 ---
 title: "Agile ML Workflow Development"
 slug: "agile-ml-workflow-development"
+icon: "pipeline"
 content: "ZenML's lightweight and flexible pipeline definition enables rapid iteration and experimentation, allowing data scientists and ML engineers to quickly prototype and refine ML workflows using a familiar Python-based syntax."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdf3dfc5/667167751e34699260c6b227_img02.png"

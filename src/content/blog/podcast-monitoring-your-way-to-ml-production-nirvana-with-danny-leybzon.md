@@ -21,12 +21,12 @@ tags:
 date: "2021-12-16T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6e1f712b/6531158321297cf889795b5c_danny-photo.png"
+  url: "https://assets.zenml.io/content/blog/podcast-monitoring-your-way-to-ml-production-nirvana-with-danny-leybzon/097a97d9/podcast-monitoring-your-way-to-ml-production-nirvana-with-danny-leybzon-cover.avif"
 seo:
   title: "Podcast: Monitoring Your Way to ML Production Nirvana with Danny Leybzon - ZenML Blog"
   description: "We discuss how to monitor models in production, and how it helps you in the long-run."
   canonical: "https://www.zenml.io/blog/podcast-monitoring-your-way-to-ml-production-nirvana-with-danny-leybzon"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3c12eef6/6531158321297cf889795b5c_danny-photo.png"
+  ogImage: "https://assets.zenml.io/content/blog/podcast-monitoring-your-way-to-ml-production-nirvana-with-danny-leybzon/a0587786/podcast-monitoring-your-way-to-ml-production-nirvana-with-danny-leybzon-cover.jpg"
   ogTitle: "Podcast: Monitoring Your Way to ML Production Nirvana with Danny Leybzon - ZenML Blog"
   ogDescription: "We discuss how to monitor models in production, and how it helps you in the long-run."
 ---

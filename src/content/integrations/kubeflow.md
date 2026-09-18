@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:13.928Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/876dd488/66d868ca669d963bc98b84b5_kubeflow.png"
+  url: "https://assets.zenml.io/content/integrations/logos/kubeflow.svg"
+  alt: "Kubeflow logo"
 shortDescription: "Orchestrate your ML pipelines on Kubeflow. Works on any infrastructure of your choice - local, on-premises, or in the cloud."
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/kubeflow"
 githubUrl: "https://docs.zenml.io/stack-components/orchestrators/kubeflow"

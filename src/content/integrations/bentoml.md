@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:15.091Z"
 integrationType: "deployer"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6cfafd53/66d86853b0842f70eedf9d56_bentoml.png"
+  url: "https://assets.zenml.io/content/integrations/logos/bentoml.svg"
+  alt: "BentoML logo"
 shortDescription: "Seamlessly Deploy Models to Production with ZenML and BentoML"
 docsUrl: "https://docs.zenml.io/stack-components/model-deployers/bentoml"
 mainImage:

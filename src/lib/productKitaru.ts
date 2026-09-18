@@ -9,6 +9,8 @@ export const KITARU_INSTALL_CMD = "curl -fsSL https://kitaru.ai/install | bash";
 export const KITARU_SDK_ADD_CMD =
   'uv add "kitaru[cli,worker]" kitaru-pydantic-ai';
 export const KITARU_LICENSE = "Apache 2.0";
+/** Canonical Kitaru docs entry on the site's docs host. */
+export const KITARU_DOCS_URL = "https://docs.zenml.io/kitaru";
 
 /**
  * Pricing facts. Every surface that quotes the price, trial terms, or
@@ -49,10 +51,10 @@ export const KITARU_VIDEO = {
 
 export const KITARU_LINKS = {
   signup: {
-    // Kitaru signup lives on its own cloud app (Aug 2026 decision),
-    // superseding the earlier cloud.zenml.io?product=kitaru placeholder.
+    // Unified signup on cloud.zenml.io (Sept 2026); `product=kitaru`
+    // preselects the Kitaru workspace. Replaces the separate cloud.kitaru.ai app.
     label: "Sign up free",
-    href: "https://cloud.kitaru.ai",
+    href: "https://cloud.zenml.io/signup?product=kitaru",
   },
   demo: { label: "Book a demo", href: "/book-your-demo/kitaru" },
   github: {

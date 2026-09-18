@@ -24,12 +24,12 @@ tags:
 date: "2024-08-28T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b17656ee/66d06268f0a162b990a94132_zenml-release_2.png"
+  url: "https://assets.zenml.io/content/blog/new-features-enhanced-step-execution-azureml-integration-and-more/418f6932/new-features-enhanced-step-execution-azureml-integration-and-more-cover.avif"
 seo:
   title: "New Features: Enhanced Step Execution, AzureML Integration and More! - ZenML Blog"
   description: "ZenML's latest release 0.65.0 enhances MLOps workflows with single-step pipeline execution, AzureML SDK v2 integration, and dynamic model versioning. The update also introduces a new quickstart experience, improved logging, and better artifact handling. These features aim to streamline ML development, improve cloud integration, and boost efficiency for data science teams across local and cloud environments."
   canonical: "https://www.zenml.io/blog/new-features-enhanced-step-execution-azureml-integration-and-more"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b17656ee/66d06268f0a162b990a94132_zenml-release_2.png"
+  ogImage: "https://assets.zenml.io/content/blog/new-features-enhanced-step-execution-azureml-integration-and-more/aea95d1c/new-features-enhanced-step-execution-azureml-integration-and-more-cover.jpg"
   ogTitle: "New Features: Enhanced Step Execution, AzureML Integration and More! - ZenML Blog"
   ogDescription: "ZenML's latest release 0.65.0 enhances MLOps workflows with single-step pipeline execution, AzureML SDK v2 integration, and dynamic model versioning. The update also introduces a new quickstart experience, improved logging, and better artifact handling. These features aim to streamline ML development, improve cloud integration, and boost efficiency for data science teams across local and cloud environments."
 ---

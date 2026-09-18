@@ -12,13 +12,16 @@ tags:
 date: "2026-07-07T10:17:43.582Z"
 readingTime: "18 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/inngest-vs-temporal/7a568628/inngest-vs-temporal.avif"
+  url: "https://assets.zenml.io/content/blog/inngest-vs-temporal/c8b9c8ac/inngest-vs-temporal-cover.avif"
+  alt: "Inngest vs Temporal vs Kitaru comparison for long-running AI agents"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/inngest-vs-temporal/c8b9c8ac/inngest-vs-temporal-cover.avif"
   alt: "Inngest vs Temporal vs Kitaru comparison for long-running AI agents"
 seo:
   title: "Inngest vs Temporal vs Kitaru: Runtime for Long-Running AI Agents - ZenML Blog"
   description: "A practical comparison of Inngest, Temporal, and Kitaru for long-running AI agents, covering recovery, self-hosting, HITL waits, and what each one really costs."
   canonical: "https://www.zenml.io/blog/inngest-vs-temporal"
-  ogImage: "https://assets.zenml.io/content/blog/inngest-vs-temporal/427b19a6/inngest-vs-temporal.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/inngest-vs-temporal/0a4d264b/inngest-vs-temporal-cover.jpg"
 ---
 
 In a 40-minute run, your AI agent can make a dozen API calls, search across tools, wait for your approval, write files, and still somehow manage to fail on the final step. Restart from zero, and you pay for every one of those calls again. Inngest, Temporal, and Kitaru exist so you never have to.

@@ -104,6 +104,56 @@ describe("writeFilterStateToUrl", () => {
     expect(currentUrl.search).toBe("?ref=partner");
   });
 
+  it("writes and parses extra single-select facet params", () => {
+    stubWindow("https://www.zenml.io/mlops-database");
+    const keys: FilterUrlKeys = { ...KEYS, extras: ["type"] };
+
+    const written = {
+      q: "",
+      single: "finance",
+      multi: [],
+      page: 1,
+      tagMode: "and" as const,
+      sort: "newest",
+      extras: { type: "video" },
+    };
+    writeFilterStateToUrl(keys, "newest", written);
+
+    expect(currentUrl.searchParams.get("type")).toBe("video");
+    expect(parseFilterStateFromUrl(keys, ["newest", "az"], "newest")).toEqual(
+      written,
+    );
+  });
+
+  it("removes an extra facet param once its value is cleared", () => {
+    stubWindow("https://www.zenml.io/mlops-database?type=video&ref=partner");
+    const keys: FilterUrlKeys = { ...KEYS, extras: ["type"] };
+
+    writeFilterStateToUrl(keys, "newest", {
+      q: "",
+      single: "",
+      multi: [],
+      page: 1,
+      tagMode: "and",
+      sort: "newest",
+      extras: { type: "" },
+    });
+
+    expect(currentUrl.search).toBe("?ref=partner");
+  });
+
+  it("reports no extras for an instance that declares none", () => {
+    stubWindow("https://www.zenml.io/mlops-database?type=video");
+
+    // `type` is not one of KEYS' params, so it is neither parsed nor
+    // touched — an unowned param survives exactly like utm_source does.
+    const parsed = parseFilterStateFromUrl(KEYS, ["newest"], "newest");
+    expect(parsed.extras).toBeUndefined();
+
+    writeFilterStateToUrl(KEYS, "newest", { ...parsed, multi: [] });
+    expect(currentUrl.searchParams.get("type")).toBe("video");
+  });
+
   it("drops the query entirely when nothing remains, keeping the path and hash", () => {
     stubWindow("https://www.zenml.io/integrations?type=orchestrator#catalog");
 

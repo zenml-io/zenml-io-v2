@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-09-10T11:29:58.289Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6d22d316/672b2c89a8055420705702e2_docker.png"
+  url: "https://assets.zenml.io/content/integrations/logos/docker.svg"
+  alt: "Docker logo"
 shortDescription: "Effortlessly Run ZenML Pipelines in Isolated Docker Containers"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/local-docker"
 mainImage:

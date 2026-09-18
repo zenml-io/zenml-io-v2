@@ -21,12 +21,14 @@ tags:
 date: "2025-09-28T00:00:00.000Z"
 readingTime: 11 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/effa7917/68d8d72916786469feb0bb79_smolagents-vs-langgraph.png"
+  url: "https://assets.zenml.io/content/blog/smolagents-vs-langgraph/4867ead8/smolagents-vs-langgraph-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/smolagents-vs-langgraph/4867ead8/smolagents-vs-langgraph-cover.avif"
 seo:
   title: "Smolagents vs LangGraph: Which One’s Easier to Build and Run AI Agents - ZenML Blog"
   description: "In this Smolagents vs LangGraph, we explain the difference between the two and conclude which one is the best to build AI agents."
   canonical: "https://www.zenml.io/blog/smolagents-vs-langgraph"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/effa7917/68d8d72916786469feb0bb79_smolagents-vs-langgraph.png"
+  ogImage: "https://assets.zenml.io/content/blog/smolagents-vs-langgraph/cd54f169/smolagents-vs-langgraph-cover.jpg"
   ogTitle: "Smolagents vs LangGraph: Which One’s Easier to Build and Run AI Agents - ZenML Blog"
   ogDescription: "In this Smolagents vs LangGraph, we explain the difference between the two and conclude which one is the best to build AI agents."
 ---

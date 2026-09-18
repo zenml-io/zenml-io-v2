@@ -2,13 +2,12 @@
 /**
  * Privacy Policy — legal text page.
  *
- * Thin adapter over the `legal` content collection: fetches the entry,
- * wraps its rendered body in LegalArticle + ContentLayout.
+ * Thin adapter over the `legal` content collection: fetches the entry and
+ * renders its body through ContentLayout, the Labs prose layout.
  *
  * Route: /privacy-policy (linked from footer via FOOTER_LEGAL)
  */
 import { getEntry, render } from "astro:content";
-import LegalArticle from "../components/templates/LegalArticle.astro";
 import ContentLayout from "../layouts/ContentLayout.astro";
 
 const entry = await getEntry("legal", "privacy-policy");
@@ -20,8 +19,8 @@ const { Content } = await render(entry);
   title={entry.data.seo?.title ?? entry.data.title}
   description={entry.data.seo?.description}
   surface="ml"
+  heading={entry.data.title}
+  deck={entry.data.lastUpdated ? `Last updated ${entry.data.lastUpdated}` : undefined}
 >
-  <LegalArticle title={entry.data.title} lastUpdated={entry.data.lastUpdated}>
-    <Content />
-  </LegalArticle>
+  <Content />
 </ContentLayout>

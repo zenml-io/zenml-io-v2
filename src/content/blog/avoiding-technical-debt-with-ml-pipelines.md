@@ -20,12 +20,12 @@ tags:
 date: "2020-06-06T00:00:00.000Z"
 readingTime: 10 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/26414364/652fbe00eaacc8b0ccfb07a7_technical_debt.jpg"
+  url: "https://assets.zenml.io/content/blog/avoiding-technical-debt-with-ml-pipelines/b9453348/avoiding-technical-debt-with-ml-pipelines-cover.avif"
 seo:
   title: "Avoiding technical debt with ML pipelines - ZenML Blog"
   description: "Pipelines help you think and act better when it comes to how you execute your machine learning training workflows."
   canonical: "https://www.zenml.io/blog/avoiding-technical-debt-with-ml-pipelines"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/41329675/652fbe00eaacc8b0ccfb07a7_technical_debt.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/avoiding-technical-debt-with-ml-pipelines/739280f7/avoiding-technical-debt-with-ml-pipelines-cover.jpg"
   ogTitle: "Avoiding technical debt with ML pipelines - ZenML Blog"
   ogDescription: "Pipelines help you think and act better when it comes to how you execute your machine learning training workflows."
 ---

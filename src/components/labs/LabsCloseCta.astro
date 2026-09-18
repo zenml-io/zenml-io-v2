@@ -1,0 +1,69 @@
+---
+import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
+import type { LabsProductBandContent } from "../../lib/labs-home";
+// LabsCloseCta.astro — the page's closing band: dark sage panel, two-line
+// headline, deck, one signup pill. Copy comes in through the `content` prop
+// (LABS_CLOSE on `/`, ZENML_CLOSE on `/product/zenml`); a product page may
+// add a copyable install command under the pill, absent on the homepage.
+import { GrainBackdrop } from "../islands/GrainBackdrop";
+import LabsButton from "./LabsButton.astro";
+import LabsInstallChip from "./LabsInstallChip.astro";
+
+interface Props {
+  content: LabsProductBandContent;
+  preset?: "default" | "comparison";
+}
+const { content, preset = "default" } = Astro.props;
+const comparison = preset === "comparison";
+---
+
+<section class={comparison ? "relative overflow-hidden bg-(--color-sage-900) py-16 text-(--color-cream-50) md:py-20" : "relative overflow-hidden bg-(--color-sage-900) pt-24 pb-20 text-(--color-cream-50) md:pt-44 md:pb-40"}>
+  {
+    /*
+      client:idle on purpose: the hero shader (LabsHero) is the page's one
+      always-on ambient island (check:motion budget); this one only needs to
+      be present, not immediate, so it hydrates once the browser is idle
+      instead of competing with the hero for the first paint.
+    */
+  }
+  <GrainBackdrop
+    client:idle
+    config={LABS_GRAIN.dark}
+    class="absolute inset-0 opacity-90"
+  />
+
+  <div class={comparison ? "relative mx-auto flex max-w-content flex-col items-center px-gutter text-center" : "relative mx-auto max-w-content px-gutter"}>
+    <h2 class={comparison ? "max-w-[768px] font-display text-[32px] leading-[38px] text-(--color-cream-50) md:text-[44px] md:leading-[50px]" : "font-display text-[44px] leading-[48px] text-(--color-cream-50) md:text-[72px] md:leading-[78px]"}>
+      {content.headlineLines[0]}
+      {comparison && " "}
+      <br />
+      {content.headlineLines[1]}
+    </h2>
+
+    {Astro.slots.has("deck") ? (
+      <div class="labs-close-deck mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)">
+        <slot name="deck" />
+      </div>
+    ) : content.deck && (
+      <p class="mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)">
+        {content.deck}
+      </p>
+    )}
+
+    <div class="mt-10 flex flex-wrap items-center gap-7">
+      <LabsButton cta={content.cta} tone="sage" />
+    </div>
+
+    {content.install && (
+      <div class="mt-space-md flex max-w-full">
+        <LabsInstallChip content={content.install} tone="dark" />
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .labs-close-deck :global(.comparison-prose) { color: inherit; }
+  .labs-close-deck :global(.comparison-prose p) { padding-top: 0; }
+  .labs-close-deck :global(.comparison-prose a) { color: var(--color-cream-50); text-decoration-color: var(--color-sage-300); }
+</style>

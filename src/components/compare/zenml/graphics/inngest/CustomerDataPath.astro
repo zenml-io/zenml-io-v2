@@ -103,27 +103,27 @@
     border: 1px solid var(--color-border);
     border-radius: 12px;
     padding: 16px 16px 14px;
-    background: var(--color-surface);
+    background: var(--color-card);
     display: flex;
     flex-direction: column;
   }
-  .panel--competitor { background: var(--color-surface-warm); }
-  .panel--zenml { border-color: var(--color-accent); }
+  .panel--competitor { background: var(--color-cream-50); }
+  .panel--zenml { border-color: var(--color-sage-500); background: var(--color-sage-50); }
 
   .panel-head { margin-bottom: 12px; }
   .panel-label {
     display: block;
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-muted);
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-cream-700);
     margin-bottom: 4px;
   }
-  .panel-label--accent { color: var(--color-accent); }
+  .panel-label--accent { color: var(--color-sage-800); }
   .panel-sub {
     font-size: 12px;
-    color: var(--color-secondary);
+    color: var(--color-cream-700);
   }
 
   .row {
@@ -136,21 +136,21 @@
     padding: 6px 14px;
     border: 1px solid var(--color-border);
     border-radius: 999px;
-    background: var(--color-surface);
+    background: var(--color-card);
     font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--color-primary);
+    color: var(--color-cream-900);
   }
   .node--accent {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-    background: var(--color-accent-light);
+    border-color: var(--color-sage-500);
+    color: var(--color-sage-800);
+    background: var(--color-sage-200);
   }
   .node--accent code {
     font-family: var(--font-mono);
-    color: var(--color-accent);
+    color: var(--color-sage-800);
   }
-  .node--app { color: var(--color-primary); }
+  .node--app { color: var(--color-cream-900); }
 
   .conn {
     display: block;
@@ -165,10 +165,10 @@
   .conn path { vector-effect: non-scaling-stroke; }
 
   .cloud {
-    border: 1px solid var(--color-muted);
+    border: 1px solid var(--color-cream-600);
     border-radius: 8px;
     padding: 10px 12px;
-    background: var(--color-surface);
+    background: var(--color-card);
     margin-bottom: 8px;
   }
   .cloud-head {
@@ -182,16 +182,16 @@
     font-family: var(--font-mono);
     font-size: 12px;
     font-weight: 700;
-    color: var(--color-primary);
+    color: var(--color-cream-900);
   }
   .cloud-tag {
     font-size: 9px;
     font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--color-muted);
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-cream-700);
     padding: 2px 6px;
-    background: var(--color-border-light);
+    background: var(--color-border);
     border-radius: 3px;
   }
   .cloud-body {
@@ -203,20 +203,20 @@
   .cloud-row {
     font-family: var(--font-mono);
     font-size: 10px;
-    color: var(--color-secondary);
+    color: var(--color-cream-700);
     padding: 2px 6px;
-    background: var(--color-bg);
+    background: var(--color-cream-50);
     border-radius: 3px;
   }
   .cloud-foot {
     font-size: 10px;
-    color: var(--color-muted);
+    color: var(--color-cream-700);
     font-style: italic;
   }
 
   .alt {
     font-size: 10.5px;
-    color: var(--color-muted);
+    color: var(--color-cream-700);
     font-style: italic;
     text-align: center;
     margin-bottom: 10px;
@@ -226,7 +226,7 @@
     border: 1px dashed var(--color-border);
     border-radius: 8px;
     padding: 8px 12px;
-    background: var(--color-surface);
+    background: var(--color-card);
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
@@ -238,11 +238,11 @@
     font-family: var(--font-mono);
     font-size: 11px;
     font-weight: 700;
-    color: var(--color-primary);
+    color: var(--color-cream-900);
   }
   .server-sub {
     font-size: 10px;
-    color: var(--color-muted);
+    color: var(--color-cream-700);
   }
 
   .targets {
@@ -257,26 +257,26 @@
     font-family: var(--font-mono);
     font-size: 10px;
     font-weight: 700;
-    color: var(--color-primary);
+    color: var(--color-cream-900);
     padding: 4px 8px;
-    border: 1px solid var(--color-accent);
+    border: 1px solid var(--color-sage-500);
     border-radius: 4px;
-    background: var(--color-accent-light);
+    background: var(--color-sage-200);
   }
   .t--ghost {
-    color: var(--color-muted);
+    color: var(--color-cream-700);
     border: 1px dashed var(--color-border);
-    background: var(--color-surface);
+    background: var(--color-card);
   }
 
   .foot {
     margin-top: auto;
     font-size: 11px;
-    color: var(--color-muted);
+    color: var(--color-cream-700);
     font-style: italic;
   }
   .foot--accent {
-    color: var(--color-accent-deep);
+    color: var(--color-sage-800);
     font-style: normal;
     font-weight: 500;
   }

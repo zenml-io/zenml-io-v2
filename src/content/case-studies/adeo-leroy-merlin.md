@@ -9,14 +9,14 @@ hub:
   logos:
     - url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg"
       alt: "Stylized teal brushstroke text logo saying \"adeo\" on a white background."
-    - url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/356e9829/65c49832a235dab4e3e0a3ce_leroy-merlin.svg"
+    - url: "/images/logos/leroy-merlin.svg"
       alt: "Green triangle logo with the words \"Leroy Merlin\" in black text."
 
 hero:
   logos:
     - url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg"
       alt: "Stylized teal brushstroke text logo saying \"adeo\" on a white background."
-    - url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/356e9829/65c49832a235dab4e3e0a3ce_leroy-merlin.svg"
+    - url: "/images/logos/leroy-merlin.svg"
       alt: "Green triangle logo with the words \"Leroy Merlin\" in black text."
 
 sidebar:
@@ -36,7 +36,7 @@ seo:
   description: "How ADEO Leroy Merlin Leverages Machine Learning Pipelines for Enhanced Productivity"
   ogTitle: "How ADEO Leroy Merlin is Scaling Data Science with ZenML - Case Study"
   ogDescription: "How ADEO Leroy Merlin Leverages Machine Learning Pipelines for Enhanced Productivity"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/61db3199/65e9c7cebbb561c57e1a6f23_case_study_adeo.png"
+  ogImage: "https://assets.zenml.io/og/pages/case-study-adeo-leroy-merlin.jpg"
 
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"

@@ -19,12 +19,12 @@ tags:
 date: "2024-06-07T00:00:00.000Z"
 readingTime: 5 min
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fcd9fb01/6667fc0970502b90364b350f_llm_newsletter.webp"
+  url: "https://assets.zenml.io/content/blog/learnings-from-building-with-llms/7eadedea/learnings-from-building-with-llms-cover.avif"
 seo:
   title: "Newsletter Edition #4 - Learnings from Building with LLMs - ZenML Blog"
   description: "Today, we're back to LLM land (Not too far from Lalaland). Not only do we have a new LoRA + Accelerate-powered finetuning pipeline for you, we're also hosting a RAG themed webinar."
   canonical: "https://www.zenml.io/blog/learnings-from-building-with-llms"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c5820888/6667fc0970502b90364b350f_llm_newsletter.webp"
+  ogImage: "https://assets.zenml.io/content/blog/learnings-from-building-with-llms/e78d25ed/learnings-from-building-with-llms-cover.jpg"
   ogTitle: "Newsletter Edition #4 - Learnings from Building with LLMs - ZenML Blog"
   ogDescription: "Today, we're back to LLM land (Not too far from Lalaland). Not only do we have a new LoRA + Accelerate-powered finetuning pipeline for you, we're also hosting a RAG themed webinar."
 ---

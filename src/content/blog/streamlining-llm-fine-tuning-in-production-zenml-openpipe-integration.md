@@ -19,12 +19,12 @@ tags:
 date: "2025-03-18T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f1486825/67d936cdc068694152598a38_zenml-openpipe.png"
+  url: "https://assets.zenml.io/content/blog/streamlining-llm-fine-tuning-in-production-zenml-openpipe-integration/776b3b70/streamlining-llm-fine-tuning-in-production-zenml-openpipe-integration-cover.avif"
 seo:
   title: "Streamlining LLM Fine-Tuning in Production: ZenML + OpenPipe Integration - ZenML Blog"
   description: "The OpenPipe integration in ZenML bridges the complexity of large language model fine-tuning, enabling enterprises to create tailored AI solutions with unprecedented ease and reproducibility."
   canonical: "https://www.zenml.io/blog/streamlining-llm-fine-tuning-in-production-zenml-openpipe-integration"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f1486825/67d936cdc068694152598a38_zenml-openpipe.png"
+  ogImage: "https://assets.zenml.io/content/blog/streamlining-llm-fine-tuning-in-production-zenml-openpipe-integration/b03a62a2/streamlining-llm-fine-tuning-in-production-zenml-openpipe-integration-cover.jpg"
   ogTitle: "Streamlining LLM Fine-Tuning in Production: ZenML + OpenPipe Integration - ZenML Blog"
   ogDescription: "The OpenPipe integration in ZenML bridges the complexity of large language model fine-tuning, enabling enterprises to create tailored AI solutions with unprecedented ease and reproducibility."
 ---

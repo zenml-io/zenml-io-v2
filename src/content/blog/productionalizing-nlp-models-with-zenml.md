@@ -21,12 +21,12 @@ tags:
 date: "2023-11-29T00:00:00.000Z"
 readingTime: 6 min
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/600be2e9/6981d37a71c3040935dbc359_6981d2ae306b2c3cff9abbb7_hfs01.avif"
+  url: "https://assets.zenml.io/content/blog/productionalizing-nlp-models-with-zenml/59029b56/productionalizing-nlp-models-with-zenml-cover.avif"
 seo:
   title: "Productionalizing NLP models with ZenML - ZenML Blog"
   description: "Seamlessly automating the journey from training to production, ZenML's new NLP project template offers a comprehensive MLOps solution for teams deploying Huggingface models to AWS Sagemaker endpoints. With its focus on reproducibility, scalability, and best practices, the template simplifies the integration of NLP models into workflows, complete with lineage tracking and various deployment options."
   canonical: "https://www.zenml.io/blog/productionalizing-nlp-models-with-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/600be2e9/6981d37a71c3040935dbc359_6981d2ae306b2c3cff9abbb7_hfs01.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/productionalizing-nlp-models-with-zenml/221e1c43/productionalizing-nlp-models-with-zenml-cover.jpg"
   ogTitle: "Productionalizing NLP models with ZenML - ZenML Blog"
   ogDescription: "Seamlessly automating the journey from training to production, ZenML's new NLP project template offers a comprehensive MLOps solution for teams deploying Huggingface models to AWS Sagemaker endpoints. With its focus on reproducibility, scalability, and best practices, the template simplifies the integration of NLP models into workflows, complete with lineage tracking and various deployment options."
 ---

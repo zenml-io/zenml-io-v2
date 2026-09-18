@@ -1,6 +1,7 @@
 ---
 title: "Unrivaled User Assistance"
 slug: "unrivaled-user-assistance"
+icon: "people"
 content: "ZenML excels with dedicated support, offering personalized assistance beyond standard orchestrators."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54938439/667167b34c4aaf843c0fac78_img03.png"

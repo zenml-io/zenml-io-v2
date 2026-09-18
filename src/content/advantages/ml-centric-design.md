@@ -1,6 +1,7 @@
 ---
 title: "ML-Centric Design"
 slug: "ml-centric-design"
+icon: "pipeline"
 content: "ZenML is purpose-built for machine learning workflows, providing a more specialized and optimized experience compared to Dagster's general-purpose pipeline orchestration."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdf3dfc5/667167751e34699260c6b227_img02.png"

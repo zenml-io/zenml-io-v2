@@ -1,0 +1,72 @@
+---
+import type {
+  LabsProductBandContent,
+  LabsShortBandContent,
+} from "../../lib/labs-home";
+// LabsHero.astro — the page's opening band: sage grain shader over a cream
+// panel, headline, deck, the block vertically centered in the band. The site
+// nav renders as an absolutely positioned overlay from BaseLayout/
+// LabsNavigation, not from this component — the top 120px stay free of copy.
+//
+// Two bands, chosen by the `band` discriminant (never a boolean):
+//   - "landing" (default): the full-height opener of `/` and the product
+//     pages — two-line headline, deck, one signup pill; a product page adds
+//     an optional ghost pill and a copyable install command, each collapsing
+//     when absent. Content is `LabsProductBandContent`.
+//   - "short": the interior-page opener (the blog index) at roughly 40% of
+//     the viewport — one headline line and an optional deck, no pill; the
+//     page's own controls follow the band. Content is `LabsShortBandContent`.
+//
+// The band chrome itself (shader, fade, sizing, nav clearance) lives in
+// LabsBand.astro, shared with the blog taxonomy hubs and the post masthead.
+import LabsBand from "./LabsBand.astro";
+import LabsButton from "./LabsButton.astro";
+import LabsInstallChip from "./LabsInstallChip.astro";
+
+type Props =
+  | { band?: "landing"; content: LabsProductBandContent }
+  | { band: "short"; content: LabsShortBandContent };
+
+const props = Astro.props;
+const short = props.band === "short";
+---
+
+<LabsBand size={short ? "short" : "landing"}>
+  {props.band === "short" ? (
+    <div>
+      <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+        {props.content.headline}
+      </h1>
+      {props.content.deck && (
+        <p class="mt-space-sm max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
+          {props.content.deck}
+        </p>
+      )}
+    </div>
+  ) : (
+    <div>
+      <h1 class="font-display text-[44px] leading-[48px] text-(--color-cream-900) md:text-[80px] md:leading-[86px]">
+        {props.content.headlineLines[0]}
+        <br />
+        {props.content.headlineLines[1]}
+      </h1>
+
+      <p class="mt-space-md max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
+        {props.content.deck}
+      </p>
+
+      <div class="mt-space-mlg flex flex-wrap items-center gap-space-md">
+        <LabsButton cta={props.content.cta} />
+        {props.content.secondaryCta && (
+          <LabsButton cta={props.content.secondaryCta} tone="ghost" />
+        )}
+      </div>
+
+      {props.content.install && (
+        <div class="mt-space-md flex max-w-full">
+          <LabsInstallChip content={props.content.install} />
+        </div>
+      )}
+    </div>
+  )}
+</LabsBand>

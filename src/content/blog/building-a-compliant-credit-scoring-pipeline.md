@@ -20,12 +20,12 @@ tags:
 date: "2025-05-23T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0e082bd0/68307ed1fc375b559622d05b_credit-scoring-eu-ai-act-compliance__1_.png"
+  url: "https://assets.zenml.io/content/blog/building-a-compliant-credit-scoring-pipeline/6ef9cd7d/building-a-compliant-credit-scoring-pipeline-cover.avif"
 seo:
   title: "What I Learned Building a Compliant Credit Scoring Pipeline (and how ZenML made it simple) - ZenML Blog"
   description: "Manual EU AI Act compliance is unmanageable. This credit scoring pipeline shows how ZenML transforms regulatory requirements into automated workflows—from bias detection and risk assessment to human oversight gates and Annex IV documentation."
   canonical: "https://www.zenml.io/blog/building-a-compliant-credit-scoring-pipeline"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0e082bd0/68307ed1fc375b559622d05b_credit-scoring-eu-ai-act-compliance__1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/building-a-compliant-credit-scoring-pipeline/9fb9873d/building-a-compliant-credit-scoring-pipeline-cover.jpg"
   ogTitle: "What I Learned Building a Compliant Credit Scoring Pipeline (and how ZenML made it simple) - ZenML Blog"
   ogDescription: "Manual EU AI Act compliance is unmanageable. This credit scoring pipeline shows how ZenML transforms regulatory requirements into automated workflows—from bias detection and risk assessment to human oversight gates and Annex IV documentation."
 ---

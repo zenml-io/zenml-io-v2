@@ -21,12 +21,14 @@ tags:
 date: "2025-08-30T00:00:00.000Z"
 readingTime: 18 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d84921f1/68b29865bab5327078f35bd3_crewai-vs-n8n.png"
+  url: "https://assets.zenml.io/content/blog/crewai-vs-n8n/026cd070/crewai-vs-n8n-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/crewai-vs-n8n/026cd070/crewai-vs-n8n-cover.avif"
 seo:
   title: "CrewAI vs n8n: Key Differences and Which Platform Wins for AI Agents - ZenML Blog"
   description: "In this CrewAI vs n8n, we explain the difference between the two and conclude which one is the best to build AI agents."
   canonical: "https://www.zenml.io/blog/crewai-vs-n8n"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d84921f1/68b29865bab5327078f35bd3_crewai-vs-n8n.png"
+  ogImage: "https://assets.zenml.io/content/blog/crewai-vs-n8n/47ec86c5/crewai-vs-n8n-cover.jpg"
   ogTitle: "CrewAI vs n8n: Key Differences and Which Platform Wins for AI Agents - ZenML Blog"
   ogDescription: "In this CrewAI vs n8n, we explain the difference between the two and conclude which one is the best to build AI agents."
 ---

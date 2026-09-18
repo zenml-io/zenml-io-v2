@@ -18,12 +18,12 @@ tags:
 date: "2024-11-26T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9e01791e/674704b6b6b459f6b1c3d5ef_Gemini_Generated_Image__2_.jpeg"
+  url: "https://assets.zenml.io/content/blog/how-modern-mlops-platforms-serve-both-citizen-data-scientists-and-ml-engineers/15975742/how-modern-mlops-platforms-serve-both-citizen-data-scientists-and-ml-engineers-cover.avif"
 seo:
   title: "Bridging the Gap: How Modern MLOps Platforms Serve Both Citizen Data Scientists and ML Engineers - ZenML Blog"
   description: "Discover how modern MLOps platforms are evolving to bridge the gap between citizen data scientists and ML engineers, tackling the complex challenge of serving both technical and non-technical users. This analysis explores the hidden costs of DIY platform building, infrastructure abstraction challenges, and the emerging solutions that enable seamless collaboration while maintaining governance and efficiency. Learn why the future of MLOps lies not in one-size-fits-all approaches, but in flexible, modular architectures that empower both personas to excel in their roles."
   canonical: "https://www.zenml.io/blog/how-modern-mlops-platforms-serve-both-citizen-data-scientists-and-ml-engineers"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9e01791e/674704b6b6b459f6b1c3d5ef_Gemini_Generated_Image__2_.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/how-modern-mlops-platforms-serve-both-citizen-data-scientists-and-ml-engineers/7e217573/how-modern-mlops-platforms-serve-both-citizen-data-scientists-and-ml-engineers-cover.jpg"
   ogTitle: "Bridging the Gap: How Modern MLOps Platforms Serve Both Citizen Data Scientists and ML Engineers - ZenML Blog"
   ogDescription: "Discover how modern MLOps platforms are evolving to bridge the gap between citizen data scientists and ML engineers, tackling the complex challenge of serving both technical and non-technical users. This analysis explores the hidden costs of DIY platform building, infrastructure abstraction challenges, and the emerging solutions that enable seamless collaboration while maintaining governance and efficiency. Learn why the future of MLOps lies not in one-size-fits-all approaches, but in flexible, modular architectures that empower both personas to excel in their roles."
 ---

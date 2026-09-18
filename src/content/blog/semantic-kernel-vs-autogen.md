@@ -21,12 +21,14 @@ tags:
 date: "2025-08-28T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f36b2bbc/68afdda94c1f8d947a72a556_semantic-kernel-vs-autogen.png"
+  url: "https://assets.zenml.io/content/blog/semantic-kernel-vs-autogen/adc0397b/semantic-kernel-vs-autogen-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/semantic-kernel-vs-autogen/adc0397b/semantic-kernel-vs-autogen-cover.avif"
 seo:
   title: "Semantic Kernel vs AutoGen: Which Microsoft Framework Builds Better AI Agents - ZenML Blog"
   description: "In this Semantic Kernel vs Autogen article, we explain the differences between the two frameworks and conclude which one is best suited for building AI agents."
   canonical: "https://www.zenml.io/blog/semantic-kernel-vs-autogen"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f36b2bbc/68afdda94c1f8d947a72a556_semantic-kernel-vs-autogen.png"
+  ogImage: "https://assets.zenml.io/content/blog/semantic-kernel-vs-autogen/7c543d8e/semantic-kernel-vs-autogen-cover.jpg"
   ogTitle: "Semantic Kernel vs AutoGen: Which Microsoft Framework Builds Better AI Agents - ZenML Blog"
   ogDescription: "In this Semantic Kernel vs Autogen article, we explain the differences between the two frameworks and conclude which one is best suited for building AI agents."
 ---

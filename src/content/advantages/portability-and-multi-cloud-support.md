@@ -1,6 +1,7 @@
 ---
 title: "Portability and Multi-Cloud Support"
 slug: "portability-and-multi-cloud-support"
+icon: "open-box"
 content: "ZenML ensures workflow portability across different environments and supports easy migration between cloud providers. Databricks is available on AWS, Azure, and GCP, but workflows remain deeply tied to Databricks-specific constructs (workspaces, clusters, jobs, Unity Catalog), reducing portability compared to a tool-agnostic pipeline layer like ZenML."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e11d319e/667167751e34699260c6b227_img02.png"

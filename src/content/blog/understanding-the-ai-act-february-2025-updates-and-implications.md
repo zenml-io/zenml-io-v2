@@ -22,12 +22,12 @@ tags:
 date: "2025-02-18T00:00:00.000Z"
 readingTime: 6 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0337f43b/67b448c8e4e0b333d8c2f64b_CleanShot_Feb_17_EU_AI_Act__1_.png"
+  url: "https://assets.zenml.io/content/blog/understanding-the-ai-act-february-2025-updates-and-implications/5f3978ae/understanding-the-ai-act-february-2025-updates-and-implications-cover.avif"
 seo:
   title: "Understanding the AI Act: February 2025 Updates and Implications - ZenML Blog"
   description: "The EU AI Act, now partially in effect as of February 2025, introduces comprehensive regulations for artificial intelligence systems with significant implications for global AI development. This landmark legislation categorizes AI systems based on risk levels - from prohibited applications to high-risk and limited-risk systems - establishing strict requirements for transparency, accountability, and compliance. The Act imposes substantial penalties for violations, up to €35 million or 7% of global turnover, and provides a clear timeline for implementation through 2027. Organizations must take immediate action to audit their AI systems, implement robust governance infrastructure, and enhance development practices to ensure compliance, with tools like ZenML offering technical solutions for meeting these regulatory requirements."
   canonical: "https://www.zenml.io/blog/understanding-the-ai-act-february-2025-updates-and-implications"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0337f43b/67b448c8e4e0b333d8c2f64b_CleanShot_Feb_17_EU_AI_Act__1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/understanding-the-ai-act-february-2025-updates-and-implications/a206d9f0/understanding-the-ai-act-february-2025-updates-and-implications-cover.jpg"
   ogTitle: "Understanding the AI Act: February 2025 Updates and Implications - ZenML Blog"
   ogDescription: "The EU AI Act, now partially in effect as of February 2025, introduces comprehensive regulations for artificial intelligence systems with significant implications for global AI development. This landmark legislation categorizes AI systems based on risk levels - from prohibited applications to high-risk and limited-risk systems - establishing strict requirements for transparency, accountability, and compliance. The Act imposes substantial penalties for violations, up to €35 million or 7% of global turnover, and provides a clear timeline for implementation through 2027. Organizations must take immediate action to audit their AI systems, implement robust governance infrastructure, and enhance development practices to ensure compliance, with tools like ZenML offering technical solutions for meeting these regulatory requirements."
 ---

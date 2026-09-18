@@ -22,12 +22,12 @@ tags:
 date: "2022-09-06T00:00:00.000Z"
 readingTime: 17 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d66364c8/6530ab9c90a280ae8c33aa7f_zenml-deepchecks.gif"
+  url: "https://assets.zenml.io/content/blog/keep-the-lint-out-of-your-ml-pipelines-use-deepchecks-to-build-and-maintain-better-models-with-zenml/22c7fcbc/keep-the-lint-out-of-your-ml-pipelines-use-deepchecks-to-build-and-maintain-better-models-with-zenml-cover.avif"
 seo:
   title: "Keep the lint out of your ML pipelines! Use Deepchecks to build and maintain better models with ZenML! - ZenML Blog"
   description: "Test automation is tedious enough with traditional software engineering, but machine learning complexities can make it even less appealing. Using Deepchecks with ZenML pipelines can get you started as quickly as it takes you to read this article."
   canonical: "https://www.zenml.io/blog/keep-the-lint-out-of-your-ml-pipelines-use-deepchecks-to-build-and-maintain-better-models-with-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c2a78a4c/6530ab9c90a280ae8c33aa7f_zenml-deepchecks.gif"
+  ogImage: "https://assets.zenml.io/content/blog/keep-the-lint-out-of-your-ml-pipelines-use-deepchecks-to-build-and-maintain-better-models-with-zenml/82479370/keep-the-lint-out-of-your-ml-pipelines-use-deepchecks-to-build-and-maintain-better-models-with-zenml-cover.jpg"
   ogTitle: "Keep the lint out of your ML pipelines! Use Deepchecks to build and maintain better models with ZenML! - ZenML Blog"
   ogDescription: "Test automation is tedious enough with traditional software engineering, but machine learning complexities can make it even less appealing. Using Deepchecks with ZenML pipelines can get you started as quickly as it takes you to read this article."
 ---

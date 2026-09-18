@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-03-24T05:33:00.539Z"
 description: "Elevate your gaming platform with an AI that translates player language into actionable data. A model that understands gaming terminology, extracts key attributes, and structures conversations for intelligent recommendations and support."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/gamesense"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/3.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/295623e3/gamesense-the-llm-that-understands-gamers-cover.avif"
 previewImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/249a7e5f/67e242f37f2c523b208b5046_pipeline.png"
 tags:

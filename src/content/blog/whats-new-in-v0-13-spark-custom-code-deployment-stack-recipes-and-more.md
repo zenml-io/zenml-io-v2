@@ -17,7 +17,9 @@ tags:
 date: "2022-09-21T00:00:00.000Z"
 readingTime: 7 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/37a5b4aa/6531e22d154860d79271cd5c_6531e0c4c11bd41473fcd108_combined_zero_thirteen.jpeg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-13-spark-custom-code-deployment-stack-recipes-and-more/c6169c4b/whats-new-in-v0-13-spark-custom-code-deployment-stack-recipes-and-more-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-13-spark-custom-code-deployment-stack-recipes-and-more/72645933/whats-new-in-v0-13-spark-custom-code-deployment-stack-recipes-and-more-cover.jpg"
 ---
 
 **Last updated:** November 3, 2022.

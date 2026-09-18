@@ -18,12 +18,12 @@ tags:
 date: "2024-08-28T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b8186894/66cedb6c1322da49f5c24b1e_mlops-zenml-gcp.png"
+  url: "https://assets.zenml.io/content/blog/building-scalable-forecasting-solutions/00f6f93e/building-scalable-forecasting-solutions-cover.avif"
 seo:
   title: "Building Scalable Forecasting Solutions: A Comprehensive MLOps Workflow on Google Cloud Platform - ZenML Blog"
   description: "MLOps on Google Cloud Platform streamlines machine learning workflows using Vertex AI and ZenML."
   canonical: "https://www.zenml.io/blog/building-scalable-forecasting-solutions"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b8186894/66cedb6c1322da49f5c24b1e_mlops-zenml-gcp.png"
+  ogImage: "https://assets.zenml.io/content/blog/building-scalable-forecasting-solutions/2a0a0de4/building-scalable-forecasting-solutions-cover.jpg"
   ogTitle: "Building Scalable Forecasting Solutions: A Comprehensive MLOps Workflow on Google Cloud Platform - ZenML Blog"
   ogDescription: "MLOps on Google Cloud Platform streamlines machine learning workflows using Vertex AI and ZenML."
 ---

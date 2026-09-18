@@ -15,6 +15,7 @@ unconditional gates. Paths below are relative to the repository root.
 - `pnpm check:tests` type-checks tests, Vitest config, and the dist smoke script.
 - `pnpm check:surface` verifies pages/components declare their analytics surface.
 - `pnpm check:alt` verifies image alt-text coverage.
+- `pnpm check:blog-covers` verifies every blog post points at a `content/blog/<slug>/` AVIF cover with a JPEG `ogImage` sibling (path and extension only; it cannot tell a purple-era cover from a new-brand one).
 - `pnpm check:registry` validates the rebrand template registry (`src/lib/templates/registry.ts`) against the files on disk — every registered `componentPath` resolves, no orphan components under `src/components/templates/` or `src/components/system/` (a `.tsx` twin beside a same-name `.astro` is exempt), no duplicate ids, and `contentShape` bounds are sane.
 - `pnpm lint` runs Biome checks on configured source, test, config, and smoke-script files, then runs the shadcn design-system rules on Astro, TS, TSX, and comparison MDX files. It also rejects inline `classOverrides` objects on components so new code uses named family presets. Existing design findings are recorded as file-and-rule counts in `eslint-suppressions.json`; increasing a count fails the command, and fixed findings require pruning the stale suppression with `pnpm exec eslint "src/**/*.{astro,ts,tsx}" "src/content/{compare-kitaru,compare-zenml}/**/*.mdx" --prune-suppressions`.
 - `pnpm test` runs the Vitest suite once.

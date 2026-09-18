@@ -7,7 +7,7 @@ import {
 import { KITARU_INSTALL_CMD } from "../../lib/productKitaru";
 // FirstRun.astro — the first five minutes: terminal transcript (progressive
 // reveal, respects reduced motion) with a quiet outcomes strip beneath it.
-import InstallCommand from "../InstallCommand.astro";
+import LabsInstallChip from "../labs/LabsInstallChip.astro";
 
 const lineClass: Record<string, string> = {
   cmd: "text-night-text",
@@ -20,17 +20,17 @@ const lineClass: Record<string, string> = {
 ---
 
 <section id="first-run" class="relative w-full bg-surface text-foreground">
-  <div class="mx-auto w-full max-w-[1440px] px-6 py-20 md:py-28">
+  <div class="mx-auto w-full max-w-content px-gutter py-20 md:py-28">
     <div class="reveal mx-auto max-w-3xl text-center">
-      <span class="inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase">{FIRST_RUN.eyebrow}</span>
-      <h2 class="mt-5 text-balance text-3xl leading-[1.12] font-medium tracking-[-0.02em] md:text-[2.75rem]">{FIRST_RUN.headline}</h2>
-      <p class="mx-auto mt-5 max-w-[640px] text-[17px] leading-relaxed text-ink-soft">{FIRST_RUN.lede}</p>
+      <span class="inline-block font-label text-[13px] tracking-[0.05em] text-ember uppercase">{FIRST_RUN.eyebrow}</span>
+      <h2 class="mt-space-sm font-display text-[32px] leading-[36px] text-balance text-(--color-cream-900) md:text-[44px] md:leading-[48px]">{FIRST_RUN.headline}</h2>
+      <p class="mx-auto mt-space-sm max-w-[640px] font-sans text-[17px] leading-[26px] text-foreground md:text-[18px] md:leading-[27px]">{FIRST_RUN.lede}</p>
     </div>
 
     <div class="mx-auto mt-12 max-w-[880px]">
       {/* Terminal */}
       <div class="reveal" style="--reveal-delay: 80ms">
-        <div id="first-run-terminal" class="overflow-hidden rounded-md border border-white/10 bg-night shadow-[0_40px_120px_-50px_oklch(0.13_0.015_60/0.8)]">
+        <div id="first-run-terminal" class="overflow-hidden rounded-[20px] border border-white/10 bg-night">
           <div class="flex items-center gap-1.5 border-b border-white/10 px-4 py-2.5">
             <span class="size-2.5 rounded-full bg-white/15"></span><span class="size-2.5 rounded-full bg-white/15"></span><span class="size-2.5 rounded-full bg-white/15"></span>
             <span class="ml-3 font-mono text-[11px] text-night-text/40">~/returns-agent</span>
@@ -40,11 +40,8 @@ const lineClass: Record<string, string> = {
           ))}</code></pre>
         </div>
         <div class="mt-5 flex flex-col items-center gap-3 text-center">
-          <InstallCommand
-            cmd={KITARU_INSTALL_CMD}
-            label="Kitaru"
-            brand="kitaru"
-            analytics="Kitaru-FirstRun-Install"
+          <LabsInstallChip
+            content={{ cmd: KITARU_INSTALL_CMD, analytics: "Kitaru-FirstRun-Install" }}
           />
           <p class="text-[14px] leading-relaxed text-ink-soft">
             Then, in your agent's repo, tell your coding agent:
@@ -54,11 +51,11 @@ const lineClass: Record<string, string> = {
       </div>
 
       {/* Outcomes: a quiet strip, the transcript stays the story */}
-      <ol class="reveal mt-8 flex flex-wrap justify-center gap-x-8 gap-y-2 border-t border-border pt-5 font-mono text-[12px] text-ink-soft" style="--reveal-delay: 200ms">
+      <ol class="reveal mt-8 flex flex-wrap justify-center gap-x-8 gap-y-2 border-t border-border pt-5 font-label text-[12px] text-ink-soft" style="--reveal-delay: 200ms">
         {FIRST_RUN_OUTCOMES.map((o) => (
           <li class="flex items-baseline gap-2">
-            <span class="text-[15px] font-medium text-ember">{o.stat}</span>
-            <span class="tracking-[0.1em] uppercase">{o.label}</span>
+            <span class="font-display text-[18px] text-ember">{o.stat}</span>
+            <span class="tracking-[0.05em] uppercase">{o.label}</span>
           </li>
         ))}
       </ol>

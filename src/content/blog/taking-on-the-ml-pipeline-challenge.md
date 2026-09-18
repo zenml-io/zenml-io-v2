@@ -19,12 +19,12 @@ tags:
 date: "2021-10-27T00:00:00.000Z"
 readingTime: 7 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5a238312/6531df65bcc4954986ff9cb4_pipes.jpg"
+  url: "https://assets.zenml.io/content/blog/taking-on-the-ml-pipeline-challenge/2b7c2386/taking-on-the-ml-pipeline-challenge-cover.avif"
 seo:
   title: "Taking on the ML pipeline challenge - ZenML Blog"
   description: "Why data scientists need to own their ML workflows in production."
   canonical: "https://www.zenml.io/blog/taking-on-the-ml-pipeline-challenge"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7fe2f3ba/6531df65bcc4954986ff9cb4_pipes.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/taking-on-the-ml-pipeline-challenge/4c64f1d5/taking-on-the-ml-pipeline-challenge-cover.jpg"
   ogTitle: "Taking on the ML pipeline challenge - ZenML Blog"
   ogDescription: "Why data scientists need to own their ML workflows in production."
 ---

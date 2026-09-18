@@ -20,7 +20,9 @@ tags:
 date: "2022-02-02T00:00:00.000Z"
 readingTime: 10 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ab6db543/652fdbb1b36e74e7cab4a037_hoop.jpg"
+  url: "https://assets.zenml.io/content/blog/how-to-build-a-three-pointer-prediction-pipeline/8e53c676/how-to-build-a-three-pointer-prediction-pipeline-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/how-to-build-a-three-pointer-prediction-pipeline/dea2c1ed/how-to-build-a-three-pointer-prediction-pipeline-cover.jpg"
 ---
 
 **Last updated:** November 14, 2022.

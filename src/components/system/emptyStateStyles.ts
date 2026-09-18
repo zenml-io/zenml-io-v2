@@ -101,6 +101,12 @@ export const EMPTY_STATE_PRESETS = {
     container: "block",
     inner: "",
   },
+  /** Blog cutover term hubs (tokens only, Rethink sentence case). */
+  bareListLabs: {
+    container: "block",
+    inner: "",
+    heading: "text-center text-[15px] text-(--color-cream-700)",
+  },
 } as const;
 
 export function emptyStateContainerClasses(

@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2026-02-19T09:39:32.460Z"
   createdOn: "2026-02-12T18:45:56.359Z"
 toolName: "KServe"
+cardSubtitle: "Use KServe for the endpoint, ZenML for the lifecycle"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/40096634/6996da3f8bb56970592768e6_KServe_icon.avif"
 category: "model-serving"

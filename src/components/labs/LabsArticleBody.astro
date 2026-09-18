@@ -1,0 +1,161 @@
+---
+/**
+ * LabsArticleBody — the long-form body row of a Labs-shell article: the
+ * prose column plus its sticky table-of-contents rail, with the collapsible
+ * mobile TOC above the copy below `xl`. Extracted from BlogLayout.astro so
+ * a blog post and a database entry render the one copy.
+ *
+ * The TOC is H2-only and appears only from three H2s up — fewer than that
+ * and a contents list is noise rather than navigation. Both the mobile
+ * `<details>` and the desktop rail read the same filtered list.
+ *
+ * The body row always follows a content block (the breadcrumb, or a featured
+ * image) rather than a band directly, so it takes the usual `pt-6` rhythm.
+ * `mb-24` (not `pb-24`) so this section's border box — and with it the
+ * consuming layout's sticky-region wrapper content box — ends where the
+ * article does; see BlogLayout.astro's wrapper comment.
+ *
+ * Reads `--article-lane`, `--prose-column`, `--prose-toc-gap` and
+ * `--toc-rail` from `blogLaneStyle()` (src/lib/blogLayout.ts), which the
+ * consuming layout sets on an ancestor element's `style`.
+ *
+ * The article body is deliberately never a `reveal-child`: prose must not
+ * depend on an observer firing, which is why this component carries no
+ * reveal `<style>` of its own.
+ *
+ * Owns the mobile-TOC close handler (closes `#mobile-toc` when a link
+ * inside it is clicked) so a blog post and a database entry share the one
+ * copy rather than each layout re-wiring it.
+ *
+ * Optional named `lead` slot renders inside the article, above the mobile
+ * TOC and the prose: a database entry passes its summary box and metadata
+ * record through it, a blog post passes nothing.
+ *
+ * Optional named `rail` slot renders twice, mirroring how the TOC itself
+ * has a mobile and a desktop rendering: below `xl` it renders in the same
+ * position as `lead` (above the mobile TOC, above the prose); from `xl` up
+ * it renders in the right rail, stacked above the sticky TOC with a
+ * `gap-10` between them, inside the same sticky wrapper. The right-rail
+ * `<aside>` renders whenever the TOC shows OR this slot is filled, so a
+ * page with fewer than three H2s but a filled `rail` still gets the aside.
+ * The integration detail page is the only current consumer (its metadata
+ * record); blog posts and database entries pass neither `lead` nor `rail`
+ * changes here, so their markup is untouched.
+ */
+import BlogTOC from "../BlogTOC.astro";
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  headings: Heading[];
+  /** Extra classes appended to `prose` (BlogLayout passes "prose-zoomable"). */
+  proseClass?: string;
+}
+
+const { headings, proseClass } = Astro.props;
+
+// H2-only TOC — consistent with BlogTOC.astro desktop sidebar
+const tocHeadings = headings.filter((h) => h.depth === 2);
+const showTOC = tocHeadings.length >= 3;
+---
+
+<section class="scroll-reveal-section pt-6 mb-24">
+  <div class="mx-auto max-w-content px-gutter">
+    <div class="mx-auto flex max-w-(--article-lane) flex-col items-start gap-10 xl:flex-row xl:gap-(--prose-toc-gap)">
+      <article class="w-full min-w-0 xl:w-(--prose-column) xl:flex-none">
+        {Astro.slots.has("lead") && (
+          <div class="mb-10 flex flex-col gap-8">
+            <slot name="lead" />
+          </div>
+        )}
+
+        {/* `rail` slot, mobile position: same spot `lead` renders in above,
+            hidden from `xl` up where the slot moves into the right rail. */}
+        {Astro.slots.has("rail") && (
+          <div class="mb-10 flex flex-col gap-8 xl:hidden">
+            <slot name="rail" />
+          </div>
+        )}
+
+        {/* Mobile inline TOC (below xl, collapsible) */}
+        {showTOC && (
+          <details class="mb-8 rounded-[6px] border border-(--color-border) bg-(--color-card) xl:hidden" id="mobile-toc">
+            <summary class="cursor-pointer px-5 py-3 text-[12px] font-medium text-(--color-sage-700)">
+              On this page
+            </summary>
+            <nav class="px-5 pb-4" aria-label="Table of contents">
+              <ul class="flex flex-col gap-1">
+                {tocHeadings.map((heading) => (
+                  <li>
+                    <a
+                      href={`#${heading.slug}`}
+                      class="block py-1 text-[14px] leading-[22px] text-(--color-cream-700) hover:text-(--color-sage-800)"
+                      data-mobile-toc-link
+                    >
+                      {heading.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </details>
+        )}
+
+        {/* Post body — `prose-zoomable` opts blog images into the lightbox
+            (see src/scripts/image-lightbox.ts); other `.prose` content
+            site-wide stays non-zoomable */}
+        <div class:list={["prose", proseClass]}>
+          <slot />
+        </div>
+      </article>
+
+      {/* Desktop TOC sidebar. `xl:self-stretch` overrides the row's
+          `items-start` for this one child: without it the aside's box is
+          only as tall as the TOC itself, leaving the sticky child no room
+          to move within its own containing block, so it never clamps to
+          top-[160px] — it just scrolls away with the page. Stretching the
+          aside to the article's height gives the sticky div a box worth
+          sticking inside. 160px clears the floating nav plus the sticky
+          breadcrumb row above it — this value and the `.prose [id]`
+          scroll-margin-top in global.css (`lg` breakpoint) must stay
+          equal and move together. */}
+      {(showTOC || Astro.slots.has("rail")) && (
+        <aside class="hidden w-(--toc-rail) flex-none xl:block xl:self-stretch">
+          <div
+            class:list={[
+              "sticky top-[160px]",
+              Astro.slots.has("rail") && "flex flex-col gap-10",
+            ]}
+          >
+            {Astro.slots.has("rail") && <slot name="rail" />}
+            {showTOC && <BlogTOC headings={tocHeadings} />}
+          </div>
+        </aside>
+      )}
+    </div>
+  </div>
+</section>
+
+<script>
+  // Close the mobile inline TOC when a link inside it is clicked.
+  function initMobileTOC() {
+    const details = document.getElementById("mobile-toc");
+    if (!details) return;
+
+    details.querySelectorAll("a[data-mobile-toc-link]").forEach((link) => {
+      link.addEventListener("click", () => {
+        (details as HTMLDetailsElement).open = false;
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initMobileTOC);
+  } else {
+    initMobileTOC();
+  }
+</script>

@@ -21,12 +21,12 @@ tags:
 date: "2025-01-15T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/28b53919/67879253bfe3db4b8d33b6f9_Securing_LLM_Frontier_Lessons.png"
+  url: "https://assets.zenml.io/content/blog/production-llm-security-real-world-strategies-from-industry-leaders/86e517d3/production-llm-security-real-world-strategies-from-industry-leaders-cover.avif"
 seo:
   title: "Production LLM Security: Real-world Strategies from Industry Leaders 🔐 - ZenML Blog"
   description: "Learn how leading companies like Dropbox, NVIDIA, and Slack tackle LLM security in production. This comprehensive guide covers practical strategies for preventing prompt injection, securing RAG systems, and implementing multi-layered defenses, based on real-world case studies from the LLMOps database. Discover battle-tested approaches to input validation, data privacy, and monitoring for building secure AI applications."
   canonical: "https://www.zenml.io/blog/production-llm-security-real-world-strategies-from-industry-leaders"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/28b53919/67879253bfe3db4b8d33b6f9_Securing_LLM_Frontier_Lessons.png"
+  ogImage: "https://assets.zenml.io/content/blog/production-llm-security-real-world-strategies-from-industry-leaders/6414fc80/production-llm-security-real-world-strategies-from-industry-leaders-cover.jpg"
   ogTitle: "Production LLM Security: Real-world Strategies from Industry Leaders 🔐 - ZenML Blog"
   ogDescription: "Learn how leading companies like Dropbox, NVIDIA, and Slack tackle LLM security in production. This comprehensive guide covers practical strategies for preventing prompt injection, securing RAG systems, and implementing multi-layered defenses, based on real-world case studies from the LLMOps database. Discover battle-tested approaches to input validation, data privacy, and monitoring for building secure AI applications."
 ---

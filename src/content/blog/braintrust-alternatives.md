@@ -13,13 +13,16 @@ tags:
 date: "2026-08-31T11:42:19.503Z"
 readingTime: "23 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/braintrust-alternatives/0ee03691/braintrust-alternatives-cover.avif"
+  url: "https://assets.zenml.io/content/blog/braintrust-alternatives/d7f52cf9/braintrust-alternatives-cover.avif"
+  alt: "ZenML blog cover for 8 Best Braintrust Alternatives for AI Agent Observability, showing the logos of Kitaru, Langfuse, LangSmith, Arize Phoenix, Opik by Comet, MLflow, Weights & Biases, and Confident AI"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/braintrust-alternatives/d7f52cf9/braintrust-alternatives-cover.avif"
   alt: "ZenML blog cover for 8 Best Braintrust Alternatives for AI Agent Observability, showing the logos of Kitaru, Langfuse, LangSmith, Arize Phoenix, Opik by Comet, MLflow, Weights & Biases, and Confident AI"
 seo:
   title: "8 Best Braintrust Alternatives for AI Agent Observability - ZenML Blog"
   description: "Explore 8 Braintrust alternatives for AI agent observability, tracing, evals, replay, self-hosting, pricing, and data control."
   canonical: "https://www.zenml.io/blog/braintrust-alternatives"
-  ogImage: "https://assets.zenml.io/content/blog/braintrust-alternatives/9daee946/braintrust-alternatives-cover.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/braintrust-alternatives/f5d8f3fc/braintrust-alternatives-cover.jpg"
 ---
 
 Braintrust is an evaluation and observability platform for LLM apps. You define an eval as data, a task, and scorers, run experiments against it, and score what your application produced.

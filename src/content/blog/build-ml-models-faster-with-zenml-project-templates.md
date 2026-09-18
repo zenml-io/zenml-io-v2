@@ -19,12 +19,12 @@ tags:
 date: "2023-02-10T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e6e6b205/652fbf1265e3a9973fd2e0b0_project-thumb.png"
+  url: "https://assets.zenml.io/content/blog/build-ml-models-faster-with-zenml-project-templates/ad5121e8/build-ml-models-faster-with-zenml-project-templates-cover.avif"
 seo:
   title: "Build ML Models Faster with ZenML Project Templates - ZenML Blog"
   description: "Getting started with your ML project work is easier than ever with Project Templates, a new way to generate scaffolding and a skeleton project structure based on best practices."
   canonical: "https://www.zenml.io/blog/build-ml-models-faster-with-zenml-project-templates"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ab284649/652fbf1265e3a9973fd2e0b0_project-thumb.png"
+  ogImage: "https://assets.zenml.io/content/blog/build-ml-models-faster-with-zenml-project-templates/f2808554/build-ml-models-faster-with-zenml-project-templates-cover.jpg"
   ogTitle: "Build ML Models Faster with ZenML Project Templates - ZenML Blog"
   ogDescription: "Getting started with your ML project work is easier than ever with Project Templates, a new way to generate scaffolding and a skeleton project structure based on best practices."
 ---

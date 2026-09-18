@@ -8,30 +8,56 @@
  * - Click on a tab resets the timer and progress animation
  * - Respects prefers-reduced-motion
  */
+import type { ComponentChildren } from "preact";
 import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 
 export interface FeatureTab {
   title: string;
   description: string;
-  image: string;
-  imageAlt: string;
+  /** Only read on the no-children path (see `children` below) — a tab whose
+   * pane is a slotted figure carries no raster image at all. */
+  image?: string;
+  imageAlt?: string;
 }
 
 export interface FeatureTabsSliderProps {
   tabs: FeatureTab[];
   defaultIndex?: number;
   autoDurationMs?: number;
+  /**
+   * Server-rendered panes (one `[data-figure-index]` element per tab, in
+   * tab order). When present the island shows them by index instead of
+   * rendering `<img>` panes, so figures can be inline SVG drawn by the page.
+   */
+  children?: ComponentChildren;
 }
 
 export default function FeatureTabsSlider({
   tabs,
   defaultIndex = 3,
   autoDurationMs = 9000,
+  children,
 }: FeatureTabsSliderProps) {
   const [activeIndex, setActiveIndex] = useState(defaultIndex);
   const timeoutRef = useRef<number | null>(null);
   const barRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const contentRef = useRef<HTMLDivElement | null>(null);
   const prefersReducedMotion = useRef(false);
+  const hasFigurePanes = children != null;
+
+  // Slotted panes are static HTML the island never re-renders, so the active
+  // one is toggled in place. `data-highlight-active` restarts the figure's
+  // play-once animation each time its tab becomes current.
+  useEffect(() => {
+    if (!hasFigurePanes || !contentRef.current) return;
+    contentRef.current
+      .querySelectorAll<HTMLElement>("[data-figure-index]")
+      .forEach((pane) => {
+        const active = Number(pane.dataset.figureIndex) === activeIndex;
+        pane.classList.toggle("w--tab-active", active);
+        pane.toggleAttribute("data-highlight-active", active);
+      });
+  }, [activeIndex, hasFigurePanes]);
 
   // Check reduced-motion preference once on mount
   useEffect(() => {
@@ -126,26 +152,28 @@ export default function FeatureTabsSlider({
         ))}
       </div>
 
-      {/* Right: image panel with gradient background */}
-      <div class="tab-slider-content">
-        {tabs.map((tab, i) => (
-          <div
-            key={i}
-            role="tabpanel"
-            id={`adv-panel-${i}`}
-            aria-labelledby={`adv-tab-${i}`}
-            class={`tab-slider-pane${i === activeIndex ? " w--tab-active" : ""}`}
-          >
-            <img
-              src={tab.image}
-              alt={tab.imageAlt}
-              class="tab-slider-image"
-              width={720}
-              height={460}
-              loading={i === defaultIndex ? "eager" : "lazy"}
-            />
-          </div>
-        ))}
+      {/* Right: figure or image panel */}
+      <div class="tab-slider-content" ref={contentRef}>
+        {hasFigurePanes
+          ? children
+          : tabs.map((tab, i) => (
+              <div
+                key={i}
+                role="tabpanel"
+                id={`adv-panel-${i}`}
+                aria-labelledby={`adv-tab-${i}`}
+                class={`tab-slider-pane${i === activeIndex ? " w--tab-active" : ""}`}
+              >
+                <img
+                  src={tab.image}
+                  alt={tab.imageAlt}
+                  class="tab-slider-image"
+                  width={720}
+                  height={460}
+                  loading={i === defaultIndex ? "eager" : "lazy"}
+                />
+              </div>
+            ))}
       </div>
     </div>
   );

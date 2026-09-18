@@ -19,12 +19,12 @@ tags:
 date: "2025-04-28T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7f1fd203/680fb894b45fc2e8a9f2f112_streamlining-model-promotion-blog-cover-vf.png"
+  url: "https://assets.zenml.io/content/blog/scaling-ml-workflows-across-multiple-aws-accounts-and-beyond-best-practices-for-enterprise-mlops/fad3cc63/scaling-ml-workflows-across-multiple-aws-accounts-and-beyond-best-practices-for-enterprise-mlops-cover.avif"
 seo:
   title: "Scaling ML Workflows Across Multiple AWS Accounts (and Beyond): Best Practices for Enterprise MLOps - ZenML Blog"
   description: "Enterprises struggle with ML model management across multiple AWS accounts (development, staging, and production), which creates operational bottlenecks despite providing security benefits. This post dives into ten critical MLOps challenges in multi-account AWS environments, including complex pipeline languages, lack of centralized visibility, and configuration management issues. Learn how organizations can leverage ZenML's solutions to achieve faster, more reliable model deployment across Dev, QA, and Prod environments while maintaining security and compliance requirements."
   canonical: "https://www.zenml.io/blog/scaling-ml-workflows-across-multiple-aws-accounts-and-beyond-best-practices-for-enterprise-mlops"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7f1fd203/680fb894b45fc2e8a9f2f112_streamlining-model-promotion-blog-cover-vf.png"
+  ogImage: "https://assets.zenml.io/content/blog/scaling-ml-workflows-across-multiple-aws-accounts-and-beyond-best-practices-for-enterprise-mlops/fe8e963d/scaling-ml-workflows-across-multiple-aws-accounts-and-beyond-best-practices-for-enterprise-mlops-cover.jpg"
   ogTitle: "Scaling ML Workflows Across Multiple AWS Accounts (and Beyond): Best Practices for Enterprise MLOps - ZenML Blog"
   ogDescription: "Enterprises struggle with ML model management across multiple AWS accounts (development, staging, and production), which creates operational bottlenecks despite providing security benefits. This post dives into ten critical MLOps challenges in multi-account AWS environments, including complex pipeline languages, lack of centralized visibility, and configuration management issues. Learn how organizations can leverage ZenML's solutions to achieve faster, more reliable model deployment across Dev, QA, and Prod environments while maintaining security and compliance requirements."
 ---

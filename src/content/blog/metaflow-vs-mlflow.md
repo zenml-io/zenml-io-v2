@@ -22,12 +22,14 @@ tags:
 date: "2025-06-01T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/92d73265/683a99a29ae23a57b587f9de_metaflow-vs-mlflow.png"
+  url: "https://assets.zenml.io/content/blog/metaflow-vs-mlflow/c48dd2c4/metaflow-vs-mlflow-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/metaflow-vs-mlflow/c48dd2c4/metaflow-vs-mlflow-cover.avif"
 seo:
   title: "Metaflow vs MLflow vs ZenML: What’s the Difference? - ZenML Blog"
   description: "In this Metaflow vs MLflow vs ZenML article, we explain the difference between the three platforms and educate you about using them in tandem."
   canonical: "https://www.zenml.io/blog/metaflow-vs-mlflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/92d73265/683a99a29ae23a57b587f9de_metaflow-vs-mlflow.png"
+  ogImage: "https://assets.zenml.io/content/blog/metaflow-vs-mlflow/e8d88224/metaflow-vs-mlflow-cover.jpg"
   ogTitle: "Metaflow vs MLflow vs ZenML: What’s the Difference? - ZenML Blog"
   ogDescription: "In this Metaflow vs MLflow vs ZenML article, we explain the difference between the three platforms and educate you about using them in tandem."
 ---

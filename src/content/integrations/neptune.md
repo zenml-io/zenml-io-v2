@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:15.155Z"
 integrationType: "experiment-tracker"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ede5306/66d868461faf236b9f779ba8_neptune.png"
+  url: "https://assets.zenml.io/content/integrations/logos/neptune.svg"
+  alt: "Neptune logo"
 shortDescription: "Supercharge your ZenML pipelines with Neptune's powerful experiment tracking capabilities"
 docsUrl: "https://docs.zenml.io/stack-components/experiment-trackers/neptune#full-code-example"
 githubUrl: "https://docs.zenml.io/stack-components/experiment-trackers/neptune"

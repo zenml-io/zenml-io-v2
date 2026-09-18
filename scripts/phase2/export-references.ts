@@ -101,22 +101,6 @@ const REFERENCE_COLLECTIONS = [
       companyLogo: fd["company-logo"] || fd["company-logo-color"],
     }),
   },
-  {
-    webflowName: "product-categories",
-    astroDir: "product-categories",
-    extractFields: (fd: any) => ({
-      name: fd.name,
-      slug: fd.slug,
-    }),
-  },
-  {
-    webflowName: "project-tags",
-    astroDir: "project-tags",
-    extractFields: (fd: any) => ({
-      name: fd.name,
-      slug: fd.slug,
-    }),
-  },
 ];
 
 // ============================================================================

@@ -21,12 +21,14 @@ tags:
 date: "2025-08-09T00:00:00.000Z"
 readingTime: 16 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0dc8837c/6896df17b7c50904d1a75760_crewai-vs-autogen.png"
+  url: "https://assets.zenml.io/content/blog/crewai-vs-autogen/0fc6c05d/crewai-vs-autogen-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/crewai-vs-autogen/0fc6c05d/crewai-vs-autogen-cover.avif"
 seo:
   title: "CrewAI vs AutoGen: Which One Is the Best Framework to Build AI Agents and Applications - ZenML Blog"
   description: "In this Crewai vs Autogen article, we explain the difference between the two and conclude which one is the best to build AI agents and applications."
   canonical: "https://www.zenml.io/blog/crewai-vs-autogen"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0dc8837c/6896df17b7c50904d1a75760_crewai-vs-autogen.png"
+  ogImage: "https://assets.zenml.io/content/blog/crewai-vs-autogen/cc81bd0a/crewai-vs-autogen-cover.jpg"
   ogTitle: "CrewAI vs AutoGen: Which One Is the Best Framework to Build AI Agents and Applications - ZenML Blog"
   ogDescription: "In this Crewai vs Autogen article, we explain the difference between the two and conclude which one is the best to build AI agents and applications."
 ---

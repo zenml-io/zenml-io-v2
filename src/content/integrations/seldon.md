@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:16.100Z"
 integrationType: "deployer"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/61cf63b9/66d867fc21b538fc589f4961_seldon.png"
+  url: "https://assets.zenml.io/content/integrations/logos/seldon.svg"
+  alt: "Seldon logo"
 shortDescription: "Deploy production-grade ML models on Kubernetes with Seldon Core and ZenML"
 docsUrl: "https://docs.zenml.io/stacks-and-components/component-guide/model-deployers/seldon"
 githubUrl: "https://github.com/SeldonIO/seldon-core"

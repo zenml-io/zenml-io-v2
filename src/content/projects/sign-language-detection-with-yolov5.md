@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-03-24T05:33:03.915Z"
 description: "End-to-end computer vision pipeline that trains a YOLOv5 model to detect and recognize American Sign Language alphabet in real-time images, with deployment to Vertex AI."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/sign-language-detection-yolov5"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/7.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/9b697dcc/sign-language-detection-with-yolov5-cover.avif"
 tags:
   - "computer-vision"
   - "object-detection"
@@ -42,6 +42,7 @@ seo:
   canonical: "https://www.zenml.io/projects/sign-language-detection-with-yolov5"
   ogTitle: "Sign Language Detection with YOLOv5"
   ogDescription: "End-to-end computer vision pipeline that trains a YOLOv5 model to detect and recognize American Sign Language alphabet in real-time images, with deployment to Vertex AI."
+  ogImage: "https://assets.zenml.io/og/pages/project-sign-language-detection-with-yolov5.jpg"
 ---
 
 This project demonstrates how AI can bridge communication gaps for the deaf community by automatically recognizing American Sign Language (ASL) alphabet signs in real-time images. Using computer vision and modern MLOps practices, I've built an end-to-end pipeline that can detect and interpret ASL signs with high accuracy.

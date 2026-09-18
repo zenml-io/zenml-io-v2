@@ -20,7 +20,9 @@ tags:
 date: "2020-02-27T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d957264c/652e86a7d6e7c242bfcb3d5f_download__24_.png"
+  url: "https://assets.zenml.io/content/blog/distributed-pca-using-tfx/00a6b1f4/distributed-pca-using-tfx-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/distributed-pca-using-tfx/000b2510/distributed-pca-using-tfx-cover.jpg"
 ---
 
 **Last updated:** November 3, 2022.

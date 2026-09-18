@@ -19,11 +19,11 @@ tags:
 date: "2024-04-17T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e70ac5de/6630a6056237778d2ef91a66_2024.webp"
+  url: "https://assets.zenml.io/content/blog/2024-the-most-exciting-year-for-mlops-yet/4c050db4/2024-the-most-exciting-year-for-mlops-yet-cover.avif"
 seo:
   title: "Newsletter Edition #2 - 2024: The most exciting year for MLOps yet - ZenML Blog"
   canonical: "https://www.zenml.io/blog/2024-the-most-exciting-year-for-mlops-yet"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a5a506c7/6630a6056237778d2ef91a66_2024.webp"
+  ogImage: "https://assets.zenml.io/content/blog/2024-the-most-exciting-year-for-mlops-yet/1df0eb56/2024-the-most-exciting-year-for-mlops-yet-cover.jpg"
   ogTitle: "Newsletter Edition #2 - 2024: The most exciting year for MLOps yet - ZenML Blog"
 ---
 

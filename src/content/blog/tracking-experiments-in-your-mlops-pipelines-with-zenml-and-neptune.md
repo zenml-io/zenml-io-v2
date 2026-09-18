@@ -21,12 +21,12 @@ tags:
 date: "2022-12-05T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6e961f6/65316936c4ba9e47da61db1a_Release_0.23.0.gif"
+  url: "https://assets.zenml.io/content/blog/tracking-experiments-in-your-mlops-pipelines-with-zenml-and-neptune/ecf24540/tracking-experiments-in-your-mlops-pipelines-with-zenml-and-neptune-cover.avif"
 seo:
   title: "Tracking experiments in your MLOps pipelines with ZenML and Neptune - ZenML Blog"
   description: "ZenML 0.23.0 comes with a brand-new experiment tracker flavor - Neptune.ai! We dive deeper in this blog post."
   canonical: "https://www.zenml.io/blog/tracking-experiments-in-your-mlops-pipelines-with-zenml-and-neptune"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2d8d7e57/65316936c4ba9e47da61db1a_Release_0.23.0.gif"
+  ogImage: "https://assets.zenml.io/content/blog/tracking-experiments-in-your-mlops-pipelines-with-zenml-and-neptune/c912924c/tracking-experiments-in-your-mlops-pipelines-with-zenml-and-neptune-cover.jpg"
   ogTitle: "Tracking experiments in your MLOps pipelines with ZenML and Neptune - ZenML Blog"
   ogDescription: "ZenML 0.23.0 comes with a brand-new experiment tracker flavor - Neptune.ai! We dive deeper in this blog post."
 ---

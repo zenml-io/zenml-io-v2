@@ -13,13 +13,16 @@ tags:
 date: "2026-07-22T13:47:29.284Z"
 readingTime: "17 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/dagster-vs-prefect/75e19e0a/cover.avif"
+  url: "https://assets.zenml.io/content/blog/dagster-vs-prefect/0f0e6cb0/dagster-vs-prefect-cover.avif"
+  alt: "Dagster vs Prefect vs ZenML: choosing an ML platform after the acquisition"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/dagster-vs-prefect/0f0e6cb0/dagster-vs-prefect-cover.avif"
   alt: "Dagster vs Prefect vs ZenML: choosing an ML platform after the acquisition"
 seo:
   title: "Dagster vs Prefect vs ZenML: Choosing an ML Platform - ZenML Blog"
   description: "This Dagster vs Prefect vs ZenML guide compares them across outputs and assets, lineage and reproducibility, infrastructure portability, and failure recovery."
   canonical: "https://www.zenml.io/blog/dagster-vs-prefect"
-  ogImage: "https://assets.zenml.io/content/blog/dagster-vs-prefect/4f88ed59/cover.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/dagster-vs-prefect/a3b0944f/dagster-vs-prefect-cover.jpg"
 ---
 
 On July 13, 2026, [Prefect announced it had agreed to acquire Dagster Labs](https://www.prefect.io/prefect-acquires-dagster).

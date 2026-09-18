@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:16.105Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c62112d9/66d867f173c4a5c0d77847e5_kubernetes.png"
+  url: "https://assets.zenml.io/content/integrations/logos/kubernetes.svg"
+  alt: "Kubernetes logo"
 shortDescription: "Seamlessly Orchestrate ML Pipelines on Kubernetes with ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/kubernetes"
 mainImage:

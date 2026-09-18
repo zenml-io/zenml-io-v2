@@ -21,12 +21,12 @@ tags:
 date: "2025-05-31T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c046f6a/683a8a9acc75e24bfeaf6726_outerbounds-pricing.png"
+  url: "https://assets.zenml.io/content/blog/outerbounds-pricing/d85008ea/outerbounds-pricing-cover.avif"
 seo:
   title: "Outerbounds Pricing Guide: How Much Does It Cost? - ZenML Blog"
   description: "In this Outerbounds pricing guide, we break down the costs, features, and value to help you decide if it’s the right investment for your business."
   canonical: "https://www.zenml.io/blog/outerbounds-pricing"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c046f6a/683a8a9acc75e24bfeaf6726_outerbounds-pricing.png"
+  ogImage: "https://assets.zenml.io/content/blog/outerbounds-pricing/5e409770/outerbounds-pricing-cover.jpg"
   ogTitle: "Outerbounds Pricing Guide: How Much Does It Cost? - ZenML Blog"
   ogDescription: "In this Outerbounds pricing guide, we break down the costs, features, and value to help you decide if it’s the right investment for your business."
 ---

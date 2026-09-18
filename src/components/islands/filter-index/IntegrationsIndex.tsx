@@ -19,12 +19,15 @@ export interface IntegrationIndexItem {
 export interface IntegrationsIndexProps {
   items: IntegrationIndexItem[];
   types: FilterOption[];
+  /** Class-only re-skin (labsSkin.ts); default keeps today's classes. */
+  skin?: "default" | "labs";
   children?: ComponentChildren;
 }
 
 export default function IntegrationsIndex({
   items,
   types,
+  skin = "default",
   children,
 }: IntegrationsIndexProps) {
   return (
@@ -43,6 +46,8 @@ export default function IntegrationsIndex({
       resultNounPlural="integrations"
       searchPlaceholder="Search integrations..."
       searchAriaLabel="Search integrations"
+      railHeading="Filter"
+      skin={skin}
     >
       {children}
     </ControlFilterIndex>

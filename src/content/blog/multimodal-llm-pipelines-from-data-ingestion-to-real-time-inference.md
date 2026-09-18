@@ -21,12 +21,12 @@ tags:
 date: "2025-02-14T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b82bb143/6981d352ce4b26d085d703fe_6981d2b60a1b82880fc2f4f7_1.avif"
+  url: "https://assets.zenml.io/content/blog/multimodal-llm-pipelines-from-data-ingestion-to-real-time-inference/85849c6f/multimodal-llm-pipelines-from-data-ingestion-to-real-time-inference-cover.avif"
 seo:
   title: "Multimodal LLM Pipelines: From Data Ingestion to Real-Time Inference - ZenML Blog"
   description: "Learn how to build, fine-tune, and deploy multimodal LLMs using ZenML. Explore LLMOps best practices for deployment, real-time inference and model management."
   canonical: "https://www.zenml.io/blog/multimodal-llm-pipelines-from-data-ingestion-to-real-time-inference"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b82bb143/6981d352ce4b26d085d703fe_6981d2b60a1b82880fc2f4f7_1.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/multimodal-llm-pipelines-from-data-ingestion-to-real-time-inference/0eccd8b7/multimodal-llm-pipelines-from-data-ingestion-to-real-time-inference-cover.jpg"
   ogTitle: "Multimodal LLM Pipelines: From Data Ingestion to Real-Time Inference - ZenML Blog"
   ogDescription: "Learn how to build, fine-tune, and deploy multimodal LLMs using ZenML. Explore LLMOps best practices for deployment, real-time inference and model management."
 ---

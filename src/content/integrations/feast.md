@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:13.459Z"
 integrationType: "feature-store"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3a941d62/66d86908b9571c825b71a1fc_feast.png"
+  url: "https://assets.zenml.io/content/integrations/logos/feast.svg"
+  alt: "Feast logo"
 shortDescription: "Seamlessly Integrate Feature Stores into ML Pipelines with Feast and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/feature-stores/feast"
 mainImage:

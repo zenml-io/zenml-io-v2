@@ -21,6 +21,7 @@ import { basename, extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { glob } from "astro/loaders";
 import { z } from "astro/zod";
+import { FEATURE_ICON_IDS } from "./lib/featureIcons";
 
 // ============================================================================
 // Reusable Schema Helpers
@@ -155,8 +156,6 @@ const referenceSlugSets = {
   "llmops-tags": loadSlugSetFromCollectionDir("llmops-tags"),
   "mlops-tags": loadSlugSetFromCollectionDir("mlops-tags"),
   "industry-tags": loadSlugSetFromCollectionDir("industry-tags"),
-  "project-tags": loadSlugSetFromCollectionDir("project-tags"),
-  "product-categories": loadSlugSetFromCollectionDir("product-categories"),
   "integration-types": loadSlugSetFromCollectionDir("integration-types"),
   advantages: loadSlugSetFromCollectionDir("advantages"),
   quotes: loadSlugSetFromCollectionDir("quotes"),
@@ -272,18 +271,6 @@ const mlopsTagSchema = z.object({
 const industryTagSchema = simpleTagSchema;
 
 /**
- * Project Tags schema
- * Used by: projects collection
- */
-const projectTagSchema = simpleTagSchema;
-
-/**
- * Product Categories schema
- * Used by: product/feature pages
- */
-const productCategorySchema = simpleTagSchema;
-
-/**
  * Integration Types schema
  * Used by: integrations collection
  * Fields: name, slug, icon (optional - extraction logic exists but no data)
@@ -304,6 +291,12 @@ const advantageSchema = z.object({
   title: z.string(),
   slug: z.string(),
   content: z.string(),
+  /**
+   * The isometric mark the comparison strategy panels render. Required: every
+   * advantage is referenced by a comparison page, so none may fall back.
+   */
+  icon: z.enum(FEATURE_ICON_IDS),
+  /** Legacy illustration, still read by the reference/validation scripts. */
   image: imageSchema.optional(),
   webflow: webflowMetaSchema,
 });
@@ -331,7 +324,7 @@ const quoteSchema = z.object({
 /**
  * Blog Posts schema
  * Route: /blog/<slug>
- * Count: 317 items
+ * Count: 358 items
  * Fields: author, category, tags, date, readingTime, mainImage
  */
 const blogSchema = z.object({
@@ -350,8 +343,14 @@ const blogSchema = z.object({
   date: z.coerce.date(),
   readingTime: z.string().optional(),
 
-  // Media
+  // Media. `mainImage` is the post's cover: cards, hubs, Open Graph
+  // fallback and the Article JSON-LD image. It is NOT rendered inside the
+  // post. `featuredImage` is the opt-in in-page figure under the masthead —
+  // authors add it only when they want an image in the post itself
+  // (2026-09 blog cutover ruling). The comparison / "X vs Y" / alternatives
+  // posts carry one (a copy of their cover); other posts do not.
   mainImage: imageSchema.optional(),
+  featuredImage: imageSchema.optional(),
 
   // SEO & Webflow (webflow optional for new native posts)
   seo: seoSchema,
@@ -422,7 +421,7 @@ const integrationSchema = z.object({
 /**
  * LLMOps Database schema
  * Route: /llmops-database/<slug>
- * Count: 1,453 items
+ * Count: 2,092 files on disk as of 2026-09-10; grows with every native publish
  *
  * Supports both:
  * - historical Webflow-migrated entries (`webflow` provenance)
@@ -631,6 +630,7 @@ const compareSchema = z.object({
    * without rendering the page.
    */
   toolName: z.string().optional(),
+  cardSubtitle: z.string(),
   toolIcon: imageSchema.optional(),
   category: z.string().optional(),
   integrationType: slugReference(
@@ -653,7 +653,7 @@ const compareSchema = z.object({
 
 /**
  * Team Members schema
- * Route: /team/<slug>
+ * Rosters: /company and /team (legacy /team/<slug> URLs redirect to /team)
  * Count: 22 items
  *
  * DISCREPANCY FROM PLAN:
@@ -684,7 +684,7 @@ const teamSchema = z.object({
  * DISCREPANCIES FROM PLAN:
  * - Field is "mainImageLink" (not "coverImage")
  * - Additional fields: tools, createdAt, updatedAt, projectId
- * - tags references project-tags (confirmed correct)
+ * - tags is a plain string array (project-tags collection removed)
  */
 const projectSchema = z.object({
   title: z.string(),
@@ -693,7 +693,7 @@ const projectSchema = z.object({
 
   // Project-specific fields
   description: z.string().optional(),
-  tags: slugReferenceArray("project-tags", referenceSlugSets["project-tags"]),
+  tags: z.array(z.string()).default([]),
   mainImageLink: z.url().optional(), // Note: NOT "coverImage"
   previewImage: imageSchema.optional(), // Larger preview image for detail page header
   githubUrl: z.url().optional(),
@@ -726,38 +726,6 @@ const projectSchema = z.object({
    */
   license: z.string().default("Apache - 2.0 License"),
   setupTime: z.string().default("5-10 mins"),
-
-  // SEO & Webflow
-  seo: seoSchema,
-  webflow: webflowMetaSchema,
-});
-
-/**
- * Old Projects schema
- * Route: N/A (all drafts, not published)
- * Count: 11 items (all draft: true)
- *
- * COMPLETELY DIFFERENT SCHEMA from projects:
- * - Different field set entirely
- * - All items are staged-only drafts in Webflow
- * - Won't generate routes in Phase 3
- */
-const oldProjectSchema = z.object({
-  title: z.string(),
-  slug: z.string(),
-  draft: z.boolean().default(true), // All old-projects are drafts
-
-  // Old project-specific fields
-  date: z.string().optional(),
-  originalDate: z.string().optional(),
-  category: z.string().optional(),
-  tags: z.array(z.string()).default([]),
-  image: imageSchema.optional(),
-  description: z.string().optional(),
-  seoTitle: z.string().optional(),
-  seoDescription: z.string().optional(),
-  readingTime: z.string().optional(),
-  isFeatured: z.boolean().optional(),
 
   // SEO & Webflow
   seo: seoSchema,
@@ -827,10 +795,18 @@ const featurePageSchema = baseContentSchema.extend({
 // Case Studies Schema (Phase 3H-4)
 // ============================================================================
 
+// Customer logos are static UI assets; legacy R2 logos remain supported.
+const caseStudyLogoSchema = imageSchema.extend({
+  url: z.union([
+    z.url(),
+    z.string().regex(/^\/images\/logos\/[a-z0-9-]+\.svg$/),
+  ]),
+});
+
 const caseStudyHubSchema = z.object({
   cardTitle: z.string(),
   order: z.number().optional(),
-  logos: z.array(imageSchema).default([]),
+  logos: z.array(caseStudyLogoSchema).default([]),
 });
 
 const caseStudySidebarSchema = z.object({
@@ -864,7 +840,7 @@ const caseStudySidebarSchema = z.object({
 const caseStudySchema = baseContentSchema.extend({
   hub: caseStudyHubSchema,
   hero: z.object({
-    logos: z.array(imageSchema).default([]),
+    logos: z.array(caseStudyLogoSchema).default([]),
   }),
   sidebar: caseStudySidebarSchema,
 });
@@ -978,17 +954,6 @@ export const collections = {
     loader: glob({ pattern: "**/*.md", base: "./src/content/industry-tags" }),
     schema: industryTagSchema,
   }),
-  "project-tags": defineCollection({
-    loader: glob({ pattern: "**/*.md", base: "./src/content/project-tags" }),
-    schema: projectTagSchema,
-  }),
-  "product-categories": defineCollection({
-    loader: glob({
-      pattern: "**/*.md",
-      base: "./src/content/product-categories",
-    }),
-    schema: productCategorySchema,
-  }),
   "integration-types": defineCollection({
     loader: glob({
       pattern: "**/*.md",
@@ -1087,10 +1052,6 @@ export const collections = {
   projects: defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/content/projects" }),
     schema: projectSchema,
-  }),
-  "old-projects": defineCollection({
-    loader: glob({ pattern: "**/*.md", base: "./src/content/old-projects" }),
-    schema: oldProjectSchema,
   }),
   "feature-pages": defineCollection({
     loader: glob({ pattern: "**/*.md", base: "./src/content/feature-pages" }),

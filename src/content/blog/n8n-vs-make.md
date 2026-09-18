@@ -22,12 +22,14 @@ tags:
 date: "2026-01-23T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/64c14779/6972f3adae42cd70c7c4efb0_n8n-vs-make.png"
+  url: "https://assets.zenml.io/content/blog/n8n-vs-make/8ffef9eb/n8n-vs-make-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/n8n-vs-make/8ffef9eb/n8n-vs-make-cover.avif"
 seo:
   title: "n8n vs Make: Are No-Code Workflow Automations as Efficient as Code-Based Frameworks? - ZenML Blog"
   description: "In this article, we compare n8n vs Make and understand if no-code workflow automations are as efficient as code-based frameworks or not."
   canonical: "https://www.zenml.io/blog/n8n-vs-make"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/64c14779/6972f3adae42cd70c7c4efb0_n8n-vs-make.png"
+  ogImage: "https://assets.zenml.io/content/blog/n8n-vs-make/232ca5f0/n8n-vs-make-cover.jpg"
   ogTitle: "n8n vs Make: Are No-Code Workflow Automations as Efficient as Code-Based Frameworks?  - ZenML Blog"
   ogDescription: "In this article, we compare n8n vs Make and understand if no-code workflow automations are as efficient as code-based frameworks or not."
 ---

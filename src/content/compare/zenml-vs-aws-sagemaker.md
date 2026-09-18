@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2024-08-21T14:43:13.126Z"
   createdOn: "2024-06-25T16:05:29.139Z"
 toolName: "AWS Sagemaker"
+cardSubtitle: "Vendor-neutral ML workflows beyond one cloud"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e825c0c/667ae939e27de6a8c2010f2d_sagemaker_logo.png"
 category: "e2e-platforms"

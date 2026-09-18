@@ -1,0 +1,22 @@
+---
+import type { CompareCard } from "../../lib/compareHub";
+import { ENTRY_ROW_TITLE_LINK } from "./entryRowStyles";
+
+interface Props {
+  card: CompareCard;
+}
+const { card } = Astro.props;
+---
+
+<a
+  href={card.href}
+  class="group relative flex h-full items-start gap-4 rounded-[20px] border border-(--color-border) bg-card p-5 transition-colors duration-200 ease-out hover:border-(--color-sage-400) hover:bg-(--color-sage-50) focus-visible:border-(--color-sage-400) focus-visible:bg-(--color-sage-50) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--color-sage-600)"
+>
+  {card.logo && <img src={card.logo} alt={card.name} loading="lazy" class="mt-0.5 h-10 w-10 shrink-0 object-contain" />}
+  <div class="min-w-0 flex-1">
+    <h3 class="font-sans text-[18px] leading-6 font-medium text-(--color-cream-900) transition-colors duration-200 ease-out group-hover:text-(--color-sage-800) group-focus-within:text-(--color-sage-800)">
+      <span class={ENTRY_ROW_TITLE_LINK}>{card.title}</span>
+    </h3>
+    {card.blurb && <p class="mt-2 line-clamp-2 font-sans text-[14px] leading-5 text-(--color-cream-700)">{card.blurb}</p>}
+  </div>
+</a>

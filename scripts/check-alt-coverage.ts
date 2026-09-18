@@ -28,8 +28,7 @@
  *   - <img> with no src (or empty src) — a srcless placeholder is dead markup,
  *     not an image to describe (Webflow export left many of these in tables).
  *   - <img> inside fenced code blocks (```...```) — those are code examples.
- *   - content marked `draft: true`, and the `old-projects/` collection, which
- *     has no public route — neither ships to a crawlable page.
+ *   - content marked `draft: true` — it never ships to a crawlable page.
  *
  * Known limitations:
  *   - Expression alts with an empty fallback, e.g. `alt={name || ""}`, pass
@@ -142,10 +141,8 @@ function check(): void {
     const isContent = file.includes(`${join("src", "content")}`);
 
     if (isContent) {
-      // Skip drafts and the route-less old-projects collection — they never
-      // render to a public, crawlable page.
+      // Skip drafts — they never render to a public, crawlable page.
       if (isDraftContent(src)) continue;
-      if (file.includes(`${join("content", "old-projects")}`)) continue;
     }
 
     const lines = src.split("\n");

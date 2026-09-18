@@ -20,12 +20,14 @@ tags:
 date: "2026-01-15T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/367ce5f5/6968670a7ed8f107ea46d14c_clearml-vs-mlflow.png"
+  url: "https://assets.zenml.io/content/blog/clearml-vs-mlflow/90712777/clearml-vs-mlflow-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/clearml-vs-mlflow/90712777/clearml-vs-mlflow-cover.avif"
 seo:
   title: "ClearML vs MLflow vs ZenML: A Practical MLOps Comparison for Production Teams - ZenML Blog"
   description: "In this ClearML vs MLflow vs ZenML article, we compare the three MLOps frameworks and conclude which one is best suited for you."
   canonical: "https://www.zenml.io/blog/clearml-vs-mlflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/367ce5f5/6968670a7ed8f107ea46d14c_clearml-vs-mlflow.png"
+  ogImage: "https://assets.zenml.io/content/blog/clearml-vs-mlflow/0e4c5db1/clearml-vs-mlflow-cover.jpg"
   ogTitle: "ClearML vs MLflow vs ZenML: A Practical MLOps Comparison for Production Teams - ZenML Blog"
   ogDescription: "In this ClearML vs MLflow vs ZenML article, we compare the three MLOps frameworks and conclude which one is best suited for you."
 ---

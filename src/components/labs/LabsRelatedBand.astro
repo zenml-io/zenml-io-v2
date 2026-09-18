@@ -1,0 +1,70 @@
+---
+/**
+ * LabsRelatedBand — the closing related-content band of a Labs-shell
+ * article: white hex-corner cards on a full-width sage-tint band (the cards
+ * need a coloured ground to read), one heading above them. Extracted from
+ * BlogLayout.astro's "Continue reading" section so a blog post and a
+ * database entry render the one copy.
+ *
+ * Ruling: this block stays sage on every consumer, Kitaru posts included —
+ * no orange here.
+ *
+ * Collapses entirely when `items` is empty.
+ *
+ * The reveal rules below are this component's own copy of the house pattern:
+ * Astro scopes component styles, so the consuming layout's `<style>` no
+ * longer reaches this markup once it moved out of it. Same rule text as
+ * BlogLayout.astro's block.
+ */
+import RelatedRail, {
+  type RelatedRailItem,
+} from "../templates/RelatedRail.astro";
+
+interface Props {
+  heading: string;
+  items: RelatedRailItem[];
+}
+
+const { heading, items } = Astro.props;
+---
+
+{items.length > 0 && (
+  <section class="scroll-reveal-section mt-24 bg-(--color-sage-100) pt-20 pb-24">
+    <div class="mx-auto flex max-w-content flex-col gap-10 px-gutter">
+      <div class="reveal-child">
+        <h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-800)">{heading}</h2>
+      </div>
+      <div class="reveal-child stagger-1">
+        <RelatedRail items={items} gridVariant="gap-lg-3col" />
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  /* House scroll-reveal pattern (the shared reveal contract copied across
+   * every Labs surface): a `.scroll-reveal-section` is observed once; its
+   * `.reveal-child`
+   * elements slide 12px + fade with a 60ms stagger. The hidden start state
+   * applies only once the script has armed the section (`reveal-armed`), so
+   * the server-rendered page is fully visible without JS, and reduced
+   * motion never hides anything. */
+  .reveal-child {
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-1 { transition-delay: 60ms; }
+
+  .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-child,
+    .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>

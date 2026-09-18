@@ -1,6 +1,7 @@
 ---
 title: "Intuitive Pipeline Definition and Reusability"
 slug: "intuitive-pipeline-definition-and-reusability"
+icon: "pipeline"
 content: "ZenML provides a clean and intuitive way to define ML pipelines using Python decorators, making it easy to encapsulate and reuse pipeline components across different projects and experiments."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54938439/667167b34c4aaf843c0fac78_img03.png"

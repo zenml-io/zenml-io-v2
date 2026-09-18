@@ -20,12 +20,12 @@ tags:
 date: "2024-08-26T00:00:00.000Z"
 readingTime: 6 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/96c42cea/66cc3dc0f8af09132b4444ea_Onboarding_Experience_Aug_5_Screenshot_copy.png"
+  url: "https://assets.zenml.io/content/blog/dev-containers-vscode-extension-a-new-onboarding-experience-for-zenml/45ebcba2/dev-containers-vscode-extension-a-new-onboarding-experience-for-zenml-cover.avif"
 seo:
   title: "Dev Containers + a VSCode Extension = A New Onboarding Experience for ZenML - ZenML Blog"
   description: "Two open-source contributors describe how they built a new onboarding experience for the ZenML Quickstart native to VS Code."
   canonical: "https://www.zenml.io/blog/dev-containers-vscode-extension-a-new-onboarding-experience-for-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/96c42cea/66cc3dc0f8af09132b4444ea_Onboarding_Experience_Aug_5_Screenshot_copy.png"
+  ogImage: "https://assets.zenml.io/content/blog/dev-containers-vscode-extension-a-new-onboarding-experience-for-zenml/239c717c/dev-containers-vscode-extension-a-new-onboarding-experience-for-zenml-cover.jpg"
   ogTitle: "Dev Containers + a VSCode Extension = A New Onboarding Experience for ZenML - ZenML Blog"
   ogDescription: "Two open-source contributors describe how they built a new onboarding experience for the ZenML Quickstart native to VS Code."
 ---

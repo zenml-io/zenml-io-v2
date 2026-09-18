@@ -18,6 +18,10 @@ const REQUIRED_FILES = [
   "blog.html",
   "llmops-database.html",
   "mlops-database.html",
+  "llmops-tags.html",
+  "llmops-tags/prompt-engineering.html",
+  "llmops-tags/monitoring.html",
+  "industry-tags/tech.html",
   "sitemap-index.xml",
   "sitemap-0.xml",
   "_headers",
@@ -224,6 +228,88 @@ function checkContentMarkers() {
     );
     if (!ok) {
       failures += missingMarkers.length;
+    }
+  }
+
+  return failures;
+}
+
+/**
+ * The #53 pages: research-database tag hubs whose pre-cutover cards
+ * arrangement server-rendered every matching entry, running one built page
+ * past 3.8 MB (`prompt-engineering`, the busiest LLMOps tag). The databases
+ * cutover (#256) moves these onto `labs.entry-row` rows with only the first
+ * `DATABASE_PAGE_SIZE` server-rendered and later pages fetched client-side
+ * by `HubEntryPagination` — this ceiling is the regression guard for that.
+ */
+const HTML_SIZE_CEILINGS: { file: string; maxBytes: number }[] = [
+  { file: "llmops-tags/prompt-engineering.html", maxBytes: 2_000_000 },
+  { file: "llmops-tags/monitoring.html", maxBytes: 2_000_000 },
+];
+
+/**
+ * The two agent Markdown mirrors whose pages were restyled in the product
+ * one-offs cutover. Each mirror is rendered from the same `src/lib` module
+ * as its page, so a page restyle must leave it byte-identical; the fixtures
+ * under `tests/snapshots/mirrors/` were captured from a production build.
+ * `/pricing.md` is also asserted by `tests/lib/pricingMarkdownMirror.test.ts`
+ * (no content collections involved); `/compare.md` reads three collections,
+ * so the built file is the only place it can be checked. Regenerate a
+ * fixture only for a deliberate copy change:
+ *   pnpm build && cp dist/client/<name>.md tests/snapshots/mirrors/<name>.md
+ */
+const MARKDOWN_MIRROR_FIXTURES = ["pricing.md", "compare.md"];
+
+function checkMarkdownMirrors() {
+  let failures = 0;
+  for (const file of MARKDOWN_MIRROR_FIXTURES) {
+    const fixturePath = join("tests", "snapshots", "mirrors", file);
+    if (!fileExists(file)) {
+      logResult(false, `Missing mirror: ${distPath(file)}`);
+      failures += 1;
+      continue;
+    }
+    if (!existsSync(fixturePath)) {
+      logResult(false, `Missing mirror fixture: ${fixturePath}`);
+      failures += 1;
+      continue;
+    }
+    const built = readDistFile(file);
+    const fixture = readFileSync(fixturePath, "utf-8");
+    const ok = built === fixture;
+    logResult(
+      ok,
+      ok
+        ? `dist/${file} is byte-identical to ${fixturePath}`
+        : `dist/${file} differs from ${fixturePath} (${built.length} vs ${fixture.length} chars) — a page restyle must not change the mirror; regenerate the fixture only for a deliberate copy change`,
+    );
+    if (!ok) failures += 1;
+  }
+  return failures;
+}
+
+function checkHtmlSizeCeilings() {
+  let failures = 0;
+
+  for (const { file, maxBytes } of HTML_SIZE_CEILINGS) {
+    const path = distPath(file);
+    if (!existsSync(path)) {
+      logResult(false, `Missing file for size ceiling check: ${path}`);
+      failures += 1;
+      continue;
+    }
+
+    const size = statSync(path).size;
+    const ok = size < maxBytes;
+    logResult(
+      ok,
+      `${file}: ${size.toLocaleString("en-US")} bytes` +
+        (ok
+          ? ""
+          : ` exceeds the ${maxBytes.toLocaleString("en-US")}-byte ceiling`),
+    );
+    if (!ok) {
+      failures += 1;
     }
   }
 
@@ -449,7 +535,6 @@ const KITARU_ISLAND_HELPERS = new Set([
   "Reveal",
   "brand-icons",
   "code-tokens",
-  "icons",
   "primitives",
 ]);
 
@@ -460,14 +545,33 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   },
   {
     island: "FeatureTabsSlider",
-    pages: ["index.html", "product/zenml.html"],
+    pages: ["product/zenml.html"],
+  },
+  {
+    // Labs shell pages: the hero shader (client:visible) and the closing band
+    // shader (client:idle) both mount GrainBackdrop on the homepage and on
+    // the ZenML product landing. Every blog surface's opening shader band
+    // (labs.band, shared by the blog index's LabsHero, the category/tags/
+    // author hubs, and the post masthead in BlogLayout.astro) mounts one
+    // more client:visible instance as that route's one ambient island —
+    // one representative post and one hub page cover that mount here, per
+    // the same "one representative page per family" contract HubPagination
+    // uses below.
+    island: "GrainBackdrop",
+    pages: [
+      "index.html",
+      "product/zenml.html",
+      "blog.html",
+      "blog/agents-are-not-microservices.html",
+      "category/llmops.html",
+      "integrations.html",
+      "features.html",
+    ],
   },
   { island: "RoiCalculator", pages: ["roi-calculator.html"] },
   {
     island: "ContactForm",
     pages: [
-      "signup-for-demo.html",
-      "book-a-demo.html",
       "brick-manual.html",
       "startups-and-academics.html",
       "whitepaper-architecting-an-enterprise-grade-mlops-platform.html",
@@ -481,18 +585,33 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   { island: "MlopsIndex", pages: ["mlops-database.html"] },
   { island: "IntegrationsIndex", pages: ["integrations.html"] },
   { island: "BlogIndex", pages: ["blog.html"] },
-  { island: "ProTestimonialCarousel", pages: ["pro.html"] },
-  // BlogSearch lives inside CategoryBar's hub/back-link modes, not its
-  // breadcrumb mode — so it was never on blog.html specifically, but it WAS
-  // reachable via CategoryBar there before the blog index migrated onto
-  // FilterIndex and retired CategoryBar (#249). category/[slug].astro still
-  // renders CategoryBar in back-link mode, so it's still covered.
-  { island: "BlogSearch", pages: ["category/llmops.html"] },
+  // CategoryBar/TagCloud/BlogSearch retired with the taxonomy step of the
+  // blog cutover (D2d) — the term hubs (tags/category/author) now render
+  // through PageHeader + TermHubEditorial/TermHubEntryIndex instead, and
+  // nothing imports BlogSearch any more (its search box lives directly on
+  // /blog via BlogIndex's own labs-skinned search field).
+  {
+    // One representative page per hub family, per the blog cutover's build
+    // contract — a paginated tag/category/author detail page each.
+    island: "HubPagination",
+    pages: [
+      "tags/agents.html",
+      "category/llmops.html",
+      "author/hamza-tahir.html",
+    ],
+  },
+  {
+    // The research-database tag hubs (#256, #53): unlike HubPagination, page
+    // 1 alone is server-rendered — this island fetches every later page from
+    // the JSON index. One representative page per database.
+    island: "HubEntryPagination",
+    pages: ["llmops-tags/prompt-engineering.html", "mlops-tags/training.html"],
+  },
   // The Kitaru landing sections (KitaruGrain doubles as a plain subcomponent
-  // inside the other islands, but the static Cta.astro and the _HighlightPanel
-  // shells rendered by Features.astro also mount it as its own island for
-  // their shader backdrops).
-  { island: "Hero", pages: ["product/kitaru.html"] },
+  // inside the other islands, but the static Hero.astro, Cta.astro and the
+  // _HighlightPanel shells rendered by Features.astro also mount it as its
+  // own island for their shader backdrops).
+  { island: "HeroVideo", pages: ["product/kitaru.html"] },
   { island: "ScenarioStrip", pages: ["product/kitaru.html"] },
   { island: "TwoDoors", pages: ["product/kitaru.html"] },
   { island: "KitaruGrain", pages: ["product/kitaru.html"] },
@@ -525,7 +644,7 @@ function findClientMountedHelpers(): string[] {
 
   for (const helper of KITARU_ISLAND_HELPERS) {
     // A helper module usually exports components under names unrelated to its
-    // filename (primitives.tsx → CopyCommand, brand-icons.tsx → PydanticIcon,
+    // filename (primitives.tsx → Section, brand-icons.tsx → PydanticIcon,
     // …), so the guard must match on the export names, not the filename.
     const helperSource = readFileSync(
       join(KITARU_ISLANDS_DIR, `${helper}.tsx`),
@@ -675,6 +794,12 @@ async function main() {
 
   console.log("\n9. Open Graph card golden:");
   totalFailures += await checkOgGolden();
+
+  console.log("\n10. Database tag hub HTML size ceilings (#53):");
+  totalFailures += checkHtmlSizeCeilings();
+
+  console.log("\n11. Markdown mirror fixtures:");
+  totalFailures += checkMarkdownMirrors();
 
   console.log("\n========== DIST SMOKE REPORT ==========");
   console.log(`Failures: ${totalFailures}`);

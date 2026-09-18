@@ -12,13 +12,13 @@ tags:
 date: "2026-09-04T11:38:52.417Z"
 readingTime: "13 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/braintrust-pricing/e4f4791b/braintrust-pricing-cover.avif"
+  url: "https://assets.zenml.io/content/blog/braintrust-pricing/ebf85682/braintrust-pricing-cover.avif"
   alt: "Braintrust Pricing Guide cover with the Braintrust and Kitaru logos, subtitled How Much Does It Actually Cost"
 seo:
   title: "Braintrust Pricing Guide: How Much Does It Actually Cost? - ZenML Blog"
   description: "Braintrust pricing explained: the free Starter plan, Pro at $249 per month, and the processed-data and score meters that decide your real monthly bill."
   canonical: "https://www.zenml.io/blog/braintrust-pricing"
-  ogImage: "https://assets.zenml.io/content/blog/braintrust-pricing/0844f3b9/braintrust-pricing-cover.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/braintrust-pricing/cb3b3dd7/braintrust-pricing-cover.jpg"
 ---
 
 Braintrust combines tracing, evaluations, experiments, and production monitoring for AI applications and agents. Its pricing looks simple and tiered, but that's only the platform fee. Committing without understanding the usage and overage charges might soon stress you with a huge bill.

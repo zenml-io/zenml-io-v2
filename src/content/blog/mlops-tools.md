@@ -21,12 +21,12 @@ tags:
 date: "2026-02-18T00:00:00.000Z"
 readingTime: 19 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/35a286eb/699539db1b21ae07a158cd15_mlops-tools.png"
+  url: "https://assets.zenml.io/content/blog/mlops-tools/dd322ed0/mlops-tools-cover.avif"
 seo:
   title: "12 Best MLOps Tools to Build and Scale Your Agentic AI Systems - ZenML Blog"
   description: "Explore the 12 best MLOps tools for building and scaling your agentic AI systems."
   canonical: "https://www.zenml.io/blog/mlops-tools"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/35a286eb/699539db1b21ae07a158cd15_mlops-tools.png"
+  ogImage: "https://assets.zenml.io/content/blog/mlops-tools/8830bb15/mlops-tools-cover.jpg"
   ogTitle: "12 Best MLOps Tools to Build and Scale Your Agentic AI Systems - ZenML Blog"
   ogDescription: "Explore the 12 best MLOps tools for building and scaling your agentic AI systems."
 ---

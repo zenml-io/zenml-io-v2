@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:13.415Z"
 integrationType: "experiment-tracker"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d15ff444/66d869126dc9da65a47f4a58_wandb.png"
+  url: "https://assets.zenml.io/content/integrations/logos/wandb.svg"
+  alt: "Weights & Biases logo"
 shortDescription: "Supercharge your ZenML pipelines with seamless Weights & Biases experiment tracking and visualization"
 docsUrl: "https://docs.zenml.io/stack-components/experiment-trackers/wandb"
 githubUrl: "https://docs.zenml.io/stack-components/experiment-trackers/wandb"

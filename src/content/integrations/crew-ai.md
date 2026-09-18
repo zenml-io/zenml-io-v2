@@ -12,7 +12,8 @@ webflow:
   createdOn: "2025-08-26T12:16:46.341Z"
 integrationType: "agents"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2fce639d/68ada5b4b2a1841dcdba89e4_crew-ai.png"
+  url: "https://assets.zenml.io/content/integrations/logos/crew-ai.svg"
+  alt: "CrewAI logo"
 shortDescription: "CrewAI multi-agent crew framework integrated with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/crewai"

@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-07-16T09:06:37.633Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5439fa99/6696392a47017a8a18c7fb7e_Databricks_logo.png"
+  url: "https://assets.zenml.io/content/integrations/logos/databricks.svg"
+  alt: "Databricks logo"
 shortDescription: "Harness the Power of Databricks for Scalable ML Pipelines with ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/databricks"
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/databricks-demo"

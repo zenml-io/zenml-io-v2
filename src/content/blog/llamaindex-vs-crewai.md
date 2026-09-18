@@ -21,12 +21,14 @@ tags:
 date: "2025-09-01T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/acee7673/68b58b94e45bf5c218787312_llamaindex-vs-crewai.png"
+  url: "https://assets.zenml.io/content/blog/llamaindex-vs-crewai/112d3d9d/llamaindex-vs-crewai-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/llamaindex-vs-crewai/112d3d9d/llamaindex-vs-crewai-cover.avif"
 seo:
   title: "LlamaIndex vs CrewAI: Which Agentic AI Fits Your Python Agent Stack Better? - ZenML Blog"
   description: "In this LlamaIndex vs CrewAI, we explain the difference between the two and conclude which one is the best to build AI agents."
   canonical: "https://www.zenml.io/blog/llamaindex-vs-crewai"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/acee7673/68b58b94e45bf5c218787312_llamaindex-vs-crewai.png"
+  ogImage: "https://assets.zenml.io/content/blog/llamaindex-vs-crewai/844632ca/llamaindex-vs-crewai-cover.jpg"
   ogTitle: "LlamaIndex vs CrewAI: Which Agentic AI Fits Your Python Agent Stack Better? - ZenML Blog"
   ogDescription: "In this LlamaIndex vs CrewAI, we explain the difference between the two and conclude which one is the best to build AI agents."
 ---

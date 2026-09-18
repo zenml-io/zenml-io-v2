@@ -21,12 +21,14 @@ tags:
 date: "2025-09-24T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3c1b9864/68d370cb82a051d8a75e5ec1_haystack-vs-llamaindex.png"
+  url: "https://assets.zenml.io/content/blog/haystack-vs-llamaindex/f2e6176d/haystack-vs-llamaindex-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/haystack-vs-llamaindex/f2e6176d/haystack-vs-llamaindex-cover.avif"
 seo:
   title: "Haystack vs LlamaIndex: Which One’s Better at Building Agentic AI Workflows - ZenML Blog"
   description: "In this Haystack vs LlamaIndex, we explain the difference between the two and conclude which one is the best to build AI agents."
   canonical: "https://www.zenml.io/blog/haystack-vs-llamaindex"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3c1b9864/68d370cb82a051d8a75e5ec1_haystack-vs-llamaindex.png"
+  ogImage: "https://assets.zenml.io/content/blog/haystack-vs-llamaindex/d3c35213/haystack-vs-llamaindex-cover.jpg"
   ogTitle: "Haystack vs LlamaIndex: Which One’s Better at Building Agentic AI Workflows - ZenML Blog"
   ogDescription: "In this Haystack vs LlamaIndex, we explain the difference between the two and conclude which one is the best to build AI agents."
 ---

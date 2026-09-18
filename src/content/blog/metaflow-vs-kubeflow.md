@@ -21,12 +21,14 @@ tags:
 date: "2025-07-14T00:00:00.000Z"
 readingTime: 16 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e99248ea/68748ec8089332e17f2b9aaf_kubeflow-vs-metaflow.png"
+  url: "https://assets.zenml.io/content/blog/metaflow-vs-kubeflow/352b109a/metaflow-vs-kubeflow-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/metaflow-vs-kubeflow/352b109a/metaflow-vs-kubeflow-cover.avif"
 seo:
   title: "Metaflow vs Kubeflow vs ZenML: Which ML Pipeline Tool Is Right for You? - ZenML Blog"
   description: "In this Metaflow vs Kubeflow vs ZenML article, we explain the difference between these platforms and which one is the right ML pipeline tool for you."
   canonical: "https://www.zenml.io/blog/metaflow-vs-kubeflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e99248ea/68748ec8089332e17f2b9aaf_kubeflow-vs-metaflow.png"
+  ogImage: "https://assets.zenml.io/content/blog/metaflow-vs-kubeflow/372b9853/metaflow-vs-kubeflow-cover.jpg"
   ogTitle: "Metaflow vs Kubeflow vs ZenML: Which ML Pipeline Tool Is Right for You? - ZenML Blog"
   ogDescription: "In this Metaflow vs Kubeflow vs ZenML article, we explain the difference between these platforms and which one is the right ML pipeline tool for you."
 ---

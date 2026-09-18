@@ -17,7 +17,9 @@ tags:
 date: "2022-04-11T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a928b6ad/65315fdb7f8d0747f9174c5d_ian-dooley-DuBNA1QMpPA-unsplash.jpg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-7-1-fetch-data-from-your-feature-store-and-deploy-models-on-kubernetes/ba2c4ec9/whats-new-in-v0-7-1-fetch-data-from-your-feature-store-and-deploy-models-on-kubernetes-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-7-1-fetch-data-from-your-feature-store-and-deploy-models-on-kubernetes/75180a1f/whats-new-in-v0-7-1-fetch-data-from-your-feature-store-and-deploy-models-on-kubernetes-cover.jpg"
 ---
 
 **Last updated:** November 3, 2022.

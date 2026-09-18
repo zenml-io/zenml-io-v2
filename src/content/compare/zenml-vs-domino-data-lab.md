@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2026-02-09T14:57:29.505Z"
   createdOn: "2026-02-09T13:09:11.933Z"
 toolName: "Domino Data Lab"
+cardSubtitle: "Open-source MLOps without platform lock-in"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d4e00986/6989e686e9230ece008feb8b_domino-data-labs.avif"
 category: "e2e-platforms"

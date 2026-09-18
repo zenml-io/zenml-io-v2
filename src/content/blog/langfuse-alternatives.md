@@ -20,12 +20,14 @@ tags:
 date: "2025-11-14T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1972edbc/6916b42dfd3cc25c91252f9a_langfuse-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/langfuse-alternatives/bc5aa160/langfuse-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/langfuse-alternatives/bc5aa160/langfuse-alternatives-cover.avif"
 seo:
   title: "8 Best Langfuse Alternatives to Trace, Evaluate, and Manage Prompts for Your LLM Application - ZenML Blog"
   description: "In this article, you learn about the best Langfuse alternatives for tracing, eval, prompt management, and metrics for LLM apps."
   canonical: "https://www.zenml.io/blog/langfuse-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1972edbc/6916b42dfd3cc25c91252f9a_langfuse-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/langfuse-alternatives/7bb27a08/langfuse-alternatives-cover.jpg"
   ogTitle: "8 Best Langfuse Alternatives to Trace, Evaluate, and Manage Prompts for Your LLM Application - ZenML Blog"
   ogDescription: "In this article, you learn about the best Langfuse alternatives for tracing, eval, prompt management, and metrics for LLM apps."
 ---

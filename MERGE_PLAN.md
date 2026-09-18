@@ -103,7 +103,7 @@ Several follow-up commits chased remaining purple bleed-through after the initia
 - **`src/pages/product/kitaru.astro`** — new page composed from 9 ported sections: Hero, Features, PlatformBuilder, CodeShowcase, Architecture, Deploy, OneImport, Cta, SocialProof. Wrapped in `<div data-app="kitaru">` so Kitaru's warm-cream/orange tokens activate without bleeding into ZenML chrome (Nav, Footer render outside the wrapper).
 - **`src/components/kitaru/*`** — direct ports from `kitaru/site/src/components/`. Card-glow hover, WebGL2 dot-grid hero animation (with mesh-gradient blob fallback), clipboard copy buttons.
 - **`src/scripts/kitaru/*`** — supporting client scripts (canvas-utils, card-glow, clipboard, hero-gl, scroll-reveal).
-- **`src/styles/kitaru-compat.css`** — Kitaru OKLch tokens scoped to `[data-app="kitaru"]`.
+- **`src/styles/kitaru-compat.css`** — Kitaru OKLch tokens scoped to `[data-app="kitaru"]`. Retired in #333: the wrapper scope now lives in `src/styles/global.css` §2b-ii.
 - **Footer Kitaru link flipped** — `src/lib/footer.ts:36` now points to `/product/kitaru` (was external `https://kitaru.ai`).
 - **Phase 2b fixes** (4 follow-ups): scroll-reveal observer load on detail pages (`03a5825`), Shiki theme readability swap (`6d829d9`, `910aab6`), compare-kitaru code-pane polish (`a4e652f`).
 

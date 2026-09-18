@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-05-29T11:19:28.557Z"
 integrationType: "data-annotator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/28d36c77/66d867c72a6cc880ff3bea62_explosion.png"
+  url: "https://assets.zenml.io/content/integrations/logos/prodigy.svg"
+  alt: "Prodigy (Explosion) logo"
 shortDescription: "Streamline Data Annotation with Prodigy and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/annotators/prodigy"
 mainImage:

@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:14.316Z"
 integrationType: "alerter"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/99c12230/66d86892964104ce1a20cdf4_slack.png"
+  url: "https://assets.zenml.io/content/integrations/logos/slack.svg"
+  alt: "Slack logo"
 shortDescription: "Streamline ML Monitoring and Human-in-the-Loop Interactions with ZenML's Slack Integration"
 docsUrl: "https://docs.zenml.io/stack-components/alerters/slack"
 mainImage:

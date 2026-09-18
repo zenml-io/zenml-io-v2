@@ -1,6 +1,7 @@
 ---
 title: "Gentle Learning Curve"
 slug: "gentle-learning-curve"
+icon: "code"
 content: "Compared to Flyte, ZenML has a gentler learning curve and is more beginner-friendly, enabling faster onboarding and adoption within your organization."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdf3dfc5/667167751e34699260c6b227_img02.png"

@@ -1,0 +1,33 @@
+---
+import "../../styles/labs-scroll-reveal.css";
+
+interface Side {
+  title: string;
+  items: readonly string[];
+}
+interface Props {
+  primaryLabel: string;
+  competitorLabel: string;
+  primary: Side;
+  competitor: Side;
+}
+const { primaryLabel, competitorLabel, primary, competitor } = Astro.props;
+const cards = [
+  { label: primaryLabel, side: primary },
+  { label: competitorLabel, side: competitor },
+];
+---
+
+<section class="scroll-reveal-section py-8 md:py-10">
+  <div class="scroll-reveal-section mx-auto grid max-w-content grid-cols-1 gap-6 px-gutter lg:grid-cols-2">
+    {cards.map((card, index) => (
+      <article class:list={["reveal-child flex h-full flex-col rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10", index === 1 && "stagger-1"]}>
+        <p class="font-sans text-[14px] leading-5 font-medium text-(--color-sage-700)">{card.label}</p>
+        <h2 class="mt-3 font-display text-[28px] leading-[34px] text-(--color-cream-900)">{card.side.title}</h2>
+        <ul class="mt-6 flex list-none flex-col">
+          {card.side.items.map((item) => <li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)"><span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true"></span><span>{item}</span></li>)}
+        </ul>
+      </article>
+    ))}
+  </div>
+</section>
