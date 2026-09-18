@@ -20,12 +20,14 @@ tags:
 date: "2026-01-04T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b58c911b/695a4b8e72303659b0de3fc2_n8n-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/n8n-alternatives/d9fa378f/n8n-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/n8n-alternatives/d9fa378f/n8n-alternatives-cover.avif"
 seo:
   title: "The Top 10 n8n Alternatives to Try for Workflow Automation - ZenML Blog"
   description: "In this article, you learn about the best n8n alternatives for workflow automation."
   canonical: "https://www.zenml.io/blog/n8n-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b58c911b/695a4b8e72303659b0de3fc2_n8n-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/n8n-alternatives/61fbaea8/n8n-alternatives-cover.jpg"
   ogTitle: "The Top 10 n8n Alternatives to Try for Workflow Automation - ZenML Blog"
   ogDescription: "In this article, you learn about the best n8n alternatives for workflow automation."
 ---

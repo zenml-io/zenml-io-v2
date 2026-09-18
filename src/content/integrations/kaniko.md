@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:15.398Z"
 integrationType: "image-builder"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/56435a28/66d8683157d8287eda0bbc84_kaniko.png"
+  url: "https://assets.zenml.io/content/integrations/logos/kaniko.svg"
+  alt: "Kaniko logo"
 shortDescription: "Build Container Images Effortlessly with Kaniko and ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/image-builders/kaniko"
 githubUrl: "https://github.com/GoogleContainerTools/kaniko"

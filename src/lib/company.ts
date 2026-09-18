@@ -4,6 +4,8 @@
  * Used by src/pages/company.astro.
  * Content extracted from Webflow HTML snapshot.
  */
+import { defaultOgUrl } from "./seo";
+
 // ---------------------------------------------------------------------------
 // SEO
 // ---------------------------------------------------------------------------
@@ -14,7 +16,7 @@ export const COMPANY_SEO = {
   ogTitle: "Company - ZenML",
   ogDescription:
     "Meet the team behind ZenML. We're a young, dynamic team building the open-source AI orchestration framework.",
-  ogImage: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ae53e01/64b9920cd04b7c4c0340ce50_og-img-0625.jpg`,
+  ogImage: defaultOgUrl("pages", "company"),
 } as const;
 
 // ---------------------------------------------------------------------------

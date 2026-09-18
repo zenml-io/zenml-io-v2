@@ -15,12 +15,12 @@ category: "mlops"
 date: "2026-02-03T00:00:00.000Z"
 readingTime: 6 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a4f6a45a/6981c01f0258a329385d038c_dynamic-pipelines-skeptics-guide.avif"
+  url: "https://assets.zenml.io/content/blog/dynamic-pipelines-a-skeptics-guide/79ddd6a8/dynamic-pipelines-a-skeptics-guide-cover.avif"
 seo:
   title: "Dynamic Pipelines: A Skeptic's Guide - ZenML Blog"
   description: "Agentic RAG without guardrails spirals out of control. Here's how ZenML's dynamic pipelines give you fan-out, budget limits, and lineage without limiting the LLMs."
   canonical: "https://www.zenml.io/blog/dynamic-pipelines-a-skeptics-guide"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a4f6a45a/6981c01f0258a329385d038c_dynamic-pipelines-skeptics-guide.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/dynamic-pipelines-a-skeptics-guide/f6763490/dynamic-pipelines-a-skeptics-guide-cover.jpg"
   ogTitle: "Dynamic Pipelines: A Skeptic's Guide - ZenML Blog"
   ogDescription: "Agentic RAG without guardrails spirals out of control. Here's how ZenML's dynamic pipelines give you fan-out, budget limits, and lineage without limiting the LLMs."
 ---

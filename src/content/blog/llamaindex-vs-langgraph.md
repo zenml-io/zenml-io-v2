@@ -21,12 +21,14 @@ tags:
 date: "2025-07-19T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5b8eb393/687b1da4be80e32be6456e99_llamaindex-vs-langgraph.png"
+  url: "https://assets.zenml.io/content/blog/llamaindex-vs-langgraph/29b6ca4b/llamaindex-vs-langgraph-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/llamaindex-vs-langgraph/29b6ca4b/llamaindex-vs-langgraph-cover.avif"
 seo:
   title: "LlamaIndex vs LangGraph: How are They Different? - ZenML Blog"
   description: "In this LlamaIndex vs LangGraph article, we explain the differences between these platforms and when to use each one for optimal results."
   canonical: "https://www.zenml.io/blog/llamaindex-vs-langgraph"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5b8eb393/687b1da4be80e32be6456e99_llamaindex-vs-langgraph.png"
+  ogImage: "https://assets.zenml.io/content/blog/llamaindex-vs-langgraph/42854c23/llamaindex-vs-langgraph-cover.jpg"
   ogTitle: "LlamaIndex vs LangGraph: How are They Different? - ZenML Blog"
   ogDescription: "In this LlamaIndex vs LangGraph article, we explain the differences between these platforms and when to use each one for optimal results."
 ---

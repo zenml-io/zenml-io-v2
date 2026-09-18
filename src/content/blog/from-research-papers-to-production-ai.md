@@ -18,12 +18,12 @@ tags:
 date: "2024-11-30T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d0f222f7/6746c6ffd5d31e928641ab0d_Gemini_Generated_Image__8_.jpeg"
+  url: "https://assets.zenml.io/content/blog/from-research-papers-to-production-ai/cc434023/from-research-papers-to-production-ai-cover.avif"
 seo:
   title: "Bridging the MLOps Divide: From Research Papers to Production Ai - ZenML Blog"
   description: "Discover how organizations can successfully bridge the gap between academic machine learning research and production-ready AI systems. This comprehensive guide explores the cultural and technical challenges of transitioning from research-focused ML to robust production environments, offering practical strategies for implementing effective MLOps practices from day one. Learn how to avoid common pitfalls, manage technical debt, and build a sustainable ML engineering culture that combines academic innovation with production reliability."
   canonical: "https://www.zenml.io/blog/from-research-papers-to-production-ai"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d0f222f7/6746c6ffd5d31e928641ab0d_Gemini_Generated_Image__8_.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/from-research-papers-to-production-ai/dfd45dde/from-research-papers-to-production-ai-cover.jpg"
   ogTitle: "Bridging the MLOps Divide: From Research Papers to Production Ai - ZenML Blog"
   ogDescription: "Discover how organizations can successfully bridge the gap between academic machine learning research and production-ready AI systems. This comprehensive guide explores the cultural and technical challenges of transitioning from research-focused ML to robust production environments, offering practical strategies for implementing effective MLOps practices from day one. Learn how to avoid common pitfalls, manage technical debt, and build a sustainable ML engineering culture that combines academic innovation with production reliability."
 ---

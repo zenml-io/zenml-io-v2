@@ -22,12 +22,12 @@ tags:
 date: "2022-02-10T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f1d28177/6531194566d1972f2dbdbde6_tristan.jpeg"
+  url: "https://assets.zenml.io/content/blog/podcast-the-modern-data-stack-with-tristan-zajonc/679732d1/podcast-the-modern-data-stack-with-tristan-zajonc-cover.avif"
 seo:
   title: "Podcast: The Modern Data Stack with Tristan Zajonc - ZenML Blog"
   description: "Tristan and Alex discuss where machine learning and AI are headed in terms of the tooling landscape. Tristan outlined a vision of a higher abstraction level, something he's working on making a reality as CEO at Continual."
   canonical: "https://www.zenml.io/blog/podcast-the-modern-data-stack-with-tristan-zajonc"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e77e4d50/6531194566d1972f2dbdbde6_tristan.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/podcast-the-modern-data-stack-with-tristan-zajonc/741cd74a/podcast-the-modern-data-stack-with-tristan-zajonc-cover.jpg"
   ogTitle: "Podcast: The Modern Data Stack with Tristan Zajonc - ZenML Blog"
   ogDescription: "Tristan and Alex discuss where machine learning and AI are headed in terms of the tooling landscape. Tristan outlined a vision of a higher abstraction level, something he's working on making a reality as CEO at Continual."
 ---

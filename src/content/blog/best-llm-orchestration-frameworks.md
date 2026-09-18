@@ -21,12 +21,12 @@ tags:
 date: "2025-10-15T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/31d89e2e/6981d352ce4b26d085d7040e_6981d2b4aed180881e426c5a_best-llm-orchestration-frameworks.avif"
+  url: "https://assets.zenml.io/content/blog/best-llm-orchestration-frameworks/23dcf13a/best-llm-orchestration-frameworks-cover.avif"
 seo:
   title: "9 Best LLM Orchestration Frameworks for Agents and RAG - ZenML Blog"
   description: "Discover the 9 best LLM orchestration frameworks for agents and RAG."
   canonical: "https://www.zenml.io/blog/best-llm-orchestration-frameworks"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/31d89e2e/6981d352ce4b26d085d7040e_6981d2b4aed180881e426c5a_best-llm-orchestration-frameworks.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/best-llm-orchestration-frameworks/7f91b7c6/best-llm-orchestration-frameworks-cover.jpg"
   ogTitle: "9 Best LLM Orchestration Frameworks for Agents and RAG - ZenML Blog"
   ogDescription: "Discover the 9 best LLM orchestration frameworks for agents and RAG."
 ---

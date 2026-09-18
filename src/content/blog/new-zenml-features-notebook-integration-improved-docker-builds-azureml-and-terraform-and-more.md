@@ -20,12 +20,12 @@ tags:
 date: "2024-08-09T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6b5845df/66b60f9cbf5d65778d831660_image-2.png"
+  url: "https://assets.zenml.io/content/blog/new-zenml-features-notebook-integration-improved-docker-builds-azureml-and-terraform-and-more/90ec7586/new-zenml-features-notebook-integration-improved-docker-builds-azureml-and-terraform-and-more-cover.avif"
 seo:
   title: "New Features: Notebook Integration, Improved Docker builds, AzureML and Terraform and More! - ZenML Blog"
   description: "ZenML's latest release 0.64.0 streamlines MLOps workflows with notebook integration for remote pipelines, optimized Docker builds, AzureML orchestrator support, and Terraform modules for cloud stack provisioning. These updates aim to speed up development, ease cloud deployments, and improve efficiency for data science teams."
   canonical: "https://www.zenml.io/blog/new-zenml-features-notebook-integration-improved-docker-builds-azureml-and-terraform-and-more"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7518aed8/66b60f9cbf5d65778d831660_image-2.png"
+  ogImage: "https://assets.zenml.io/content/blog/new-zenml-features-notebook-integration-improved-docker-builds-azureml-and-terraform-and-more/24b3c778/new-zenml-features-notebook-integration-improved-docker-builds-azureml-and-terraform-and-more-cover.jpg"
   ogTitle: "New Features: Notebook Integration, Improved Docker builds, AzureML and Terraform and More! - ZenML Blog"
   ogDescription: "ZenML's latest release 0.64.0 streamlines MLOps workflows with notebook integration for remote pipelines, optimized Docker builds, AzureML orchestrator support, and Terraform modules for cloud stack provisioning. These updates aim to speed up development, ease cloud deployments, and improve efficiency for data science teams."
 ---

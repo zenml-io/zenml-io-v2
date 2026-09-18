@@ -12,13 +12,13 @@ tags:
 date: "2026-05-27T00:00:00.000Z"
 readingTime: "11 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/temporal-pricing/4511e269/temporal-pricing-featured-image.avif"
+  url: "https://assets.zenml.io/content/blog/temporal-pricing/f9dbeec4/temporal-pricing-cover.avif"
   alt: "Temporal pricing guide cover"
 seo:
   title: "Temporal Pricing Guide: Is the Platform Worth Investing? - ZenML Blog"
   description: "In this Temporal pricing guide, we'll break down the platform's pricing plans and tell you whether the investment makes sense for your team."
   canonical: "https://www.zenml.io/blog/temporal-pricing"
-  ogImage: "https://assets.zenml.io/content/blog/temporal-pricing/4511e269/temporal-pricing-featured-image.avif"
+  ogImage: "https://assets.zenml.io/content/blog/temporal-pricing/5381728d/temporal-pricing-cover.jpg"
 ---
 
 Temporal is a durable execution platform for applications that need to keep running correctly when services crash, APIs fail, networks time out, or workflows wait for hours, days, or months. The pitch is simple. Write your business logic as code, and Temporal makes sure the workflow can recover, replay, pause, and continue without losing state.

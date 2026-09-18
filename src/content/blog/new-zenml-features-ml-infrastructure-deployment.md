@@ -18,12 +18,12 @@ tags:
 date: "2024-08-01T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bffeeb48/66ab987f4189493be8bc0881_zenml-release-0-63-min.png"
+  url: "https://assets.zenml.io/content/blog/new-zenml-features-ml-infrastructure-deployment/13f64f0b/new-zenml-features-ml-infrastructure-deployment-cover.avif"
 seo:
   title: "New Features: Easy ML Infrastructure Deployment and More! - ZenML Blog"
   description: "Recent releases of ZenML’s Python package have included a better way to deploy machine learning infrastructure or stacks, new annotation tool integrations, an upgrade of our Pydantic dependency and lots of documentation improvements."
   canonical: "https://www.zenml.io/blog/new-zenml-features-ml-infrastructure-deployment"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2185183d/66ab987f4189493be8bc0881_zenml-release-0-63-min.png"
+  ogImage: "https://assets.zenml.io/content/blog/new-zenml-features-ml-infrastructure-deployment/6aa1478b/new-zenml-features-ml-infrastructure-deployment-cover.jpg"
   ogTitle: "New Features: Easy ML Infrastructure Deployment and More! - ZenML Blog"
   ogDescription: "Recent releases of ZenML’s Python package have included a better way to deploy machine learning infrastructure or stacks, new annotation tool integrations, an upgrade of our Pydantic dependency and lots of documentation improvements."
 ---

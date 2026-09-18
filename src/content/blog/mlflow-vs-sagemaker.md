@@ -21,12 +21,14 @@ tags:
 date: "2026-01-19T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a5854559/696db1ae4b2feecaa16c3343_mlflow-vs-sagemaker.png"
+  url: "https://assets.zenml.io/content/blog/mlflow-vs-sagemaker/80bd9e6d/mlflow-vs-sagemaker-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/mlflow-vs-sagemaker/80bd9e6d/mlflow-vs-sagemaker-cover.avif"
 seo:
   title: "MLflow vs SageMaker vs ZenML: A Side-by-Side Features Comparison - ZenML Blog"
   description: "In this MLflow vs SageMaker vs ZenML article, we compare their experiment tracking, model registry, evaluation, integration, and more such capabilities."
   canonical: "https://www.zenml.io/blog/mlflow-vs-sagemaker"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a5854559/696db1ae4b2feecaa16c3343_mlflow-vs-sagemaker.png"
+  ogImage: "https://assets.zenml.io/content/blog/mlflow-vs-sagemaker/1305fbc4/mlflow-vs-sagemaker-cover.jpg"
   ogTitle: "MLflow vs SageMaker vs ZenML: A Side-by-Side Features Comparison - ZenML Blog"
   ogDescription: "In this MLflow vs SageMaker vs ZenML article, we compare their experiment tracking, model registry, evaluation, integration, and more such capabilities."
 ---

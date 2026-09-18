@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-03-24T05:33:08.061Z"
 description: "Wake up to AI-generated insights from your Supabase database every morning. This ZenML pipeline uses OpenAI's GPT-4 to analyze yesterday's database activity, compare it to historical trends, and deliver concise summaries directly to your Slack channels."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/nightwatch-ai"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/5.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/a4f8bf07/nightwatch-ai-database-summaries-while-you-sleep-cover.avif"
 previewImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/89de9e78/67e244b850bf8684881fde53_youtldr_summarizer_slack.png"
 tags:

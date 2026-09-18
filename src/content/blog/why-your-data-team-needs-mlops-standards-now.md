@@ -18,12 +18,12 @@ tags:
 date: "2024-11-15T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/07f426d4/67470139b1f1d42101d94a98_Gemini_Generated_Image__4_.jpeg"
+  url: "https://assets.zenml.io/content/blog/why-your-data-team-needs-mlops-standards-now/46ec6195/why-your-data-team-needs-mlops-standards-now-cover.avif"
 seo:
   title: "The Hidden Cost of ML Chaos: Why Your Data Team Needs MLOps Standards Now - ZenML Blog"
   description: "Discover why the lack of standardized MLOps practices is silently draining your data team's productivity and resources. This eye-opening analysis reveals how seemingly harmless differences in ML development approaches can cascade into significant organizational challenges, from knowledge transfer barriers to mounting technical debt. Learn practical strategies for implementing MLOps standards that boost efficiency without stifling innovation, and understand why addressing these hidden costs now is crucial for scaling your ML operations successfully. Perfect for data leaders and ML practitioners looking to optimize their team's workflow and maximize ROI on ML initiatives."
   canonical: "https://www.zenml.io/blog/why-your-data-team-needs-mlops-standards-now"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/07f426d4/67470139b1f1d42101d94a98_Gemini_Generated_Image__4_.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/why-your-data-team-needs-mlops-standards-now/45ae07eb/why-your-data-team-needs-mlops-standards-now-cover.jpg"
   ogTitle: "The Hidden Cost of ML Chaos: Why Your Data Team Needs MLOps Standards Now - ZenML Blog"
   ogDescription: "Discover why the lack of standardized MLOps practices is silently draining your data team's productivity and resources. This eye-opening analysis reveals how seemingly harmless differences in ML development approaches can cascade into significant organizational challenges, from knowledge transfer barriers to mounting technical debt. Learn practical strategies for implementing MLOps standards that boost efficiency without stifling innovation, and understand why addressing these hidden costs now is crucial for scaling your ML operations successfully. Perfect for data leaders and ML practitioners looking to optimize their team's workflow and maximize ROI on ML initiatives."
 ---

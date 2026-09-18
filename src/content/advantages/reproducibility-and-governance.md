@@ -1,6 +1,7 @@
 ---
 title: "Reproducibility and Governance"
 slug: "reproducibility-and-governance"
+icon: "shield"
 content: "With built-in support for data versioning and lineage tracking, ZenML ensures reproducibility, traceability, and governance of your ML pipelines, facilitating compliance and collaboration."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/144fb23d/669101d14ec4c8275fab7aa3_img05.png"

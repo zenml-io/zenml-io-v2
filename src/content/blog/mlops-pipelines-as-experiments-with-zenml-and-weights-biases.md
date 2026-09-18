@@ -16,7 +16,9 @@ tags:
 date: "2024-09-24T00:00:00.000Z"
 readingTime: 4 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6582c74b/66f16127938dfd2080b6afa2_hf-zenml.png"
+  url: "https://assets.zenml.io/content/blog/mlops-pipelines-as-experiments-with-zenml-and-weights-biases/18685dd9/mlops-pipelines-as-experiments-with-zenml-and-weights-biases-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/mlops-pipelines-as-experiments-with-zenml-and-weights-biases/21199a2c/mlops-pipelines-as-experiments-with-zenml-and-weights-biases-cover.jpg"
 ---
 
 Machine learning projects often require robust pipeline management and comprehensive experiment tracking. By combining ZenML and Weights & Biases (W&B), data scientists and ML engineers can streamline their workflows and gain valuable insights into their experiments. This post explores the benefits of this integration and provides a practical example.

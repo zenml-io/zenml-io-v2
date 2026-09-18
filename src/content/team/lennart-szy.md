@@ -4,7 +4,7 @@ slug: "lennart-szy"
 draft: false
 position: "Founder's Associate"
 photo:
-  url: "https://assets.zenml.io/content/team/c14bab2d/lennart.avif"
+  url: "https://assets.zenml.io/content/team/c8303968/lennart-szy-cutout.avif"
 email: "lennart@zenml.io"
 linkedin: "https://www.linkedin.com/in/lennart-szy/"
 order: 3.5

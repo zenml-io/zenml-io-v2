@@ -4,10 +4,7 @@ import ContentLayout from "../layouts/ContentLayout.astro";
  * Imprint — legal company information page (required by German law).
  *
  * Uses ContentLayout for the prose wrapper, but the content is a simple
- * three-column grid rather than long-form text. Deliberately NOT built on
- * LegalArticle — it's a not-prose fact grid, not the long-form h1 + body
- * shape LegalArticle owns, and a different page type than privacy-policy /
- * terms-of-service.
+ * three-column fact grid inside the Labs prose layout, not long-form text.
  *
  * Route: /imprint
  */
@@ -18,27 +15,26 @@ import { COMPANY_ADDRESS } from "../lib/constants";
   title="Imprint - ZenML"
   description="Legal company information for ZenML GmbH, Munich, Germany."
   surface="ml"
+  heading="Imprint"
 >
-  <h1>Imprint</h1>
-
-  <div class="not-prose mt-8 grid grid-cols-1 gap-8 sm:grid-cols-3">
+  <div class="not-prose grid grid-cols-1 gap-8 sm:grid-cols-3">
     <div>
-      <p class="text-sm text-gray-700">
-        <strong>ZenML GmbH</strong><br /><br />
+      <p class="text-base leading-[24px] text-(--color-cream-700)">
+        <strong class="text-foreground">ZenML GmbH</strong><br /><br />
         {COMPANY_ADDRESS.street}<br />
         {COMPANY_ADDRESS.postalCode} {COMPANY_ADDRESS.city}, {COMPANY_ADDRESS.countryName}
       </p>
     </div>
     <div>
-      <p class="text-sm text-gray-700">
-        <strong>Commercial Register:</strong><br /><br />
+      <p class="text-base leading-[24px] text-(--color-cream-700)">
+        <strong class="text-foreground">Commercial Register:</strong><br /><br />
         Munich HRB 268487<br />
         VAT-ID: DE347731347
       </p>
     </div>
     <div>
-      <p class="text-sm text-gray-700">
-        <strong>Represented by:</strong><br /><br />
+      <p class="text-base leading-[24px] text-(--color-cream-700)">
+        <strong class="text-foreground">Represented by:</strong><br /><br />
         Adam Probst<br />
         Hamza Tahir
       </p>

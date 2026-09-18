@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-04-17T14:52:01.445Z"
 description: "A production-ready MLOps pipeline for accurate breast cancer classification using machine learning."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/oncoclear"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/10.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/6b5f53d6/oncoclear-cover.avif"
 previewImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e6ac1bed/68011591ffd74fdbbe5de06b_pipeline_overview.png"
 tags:

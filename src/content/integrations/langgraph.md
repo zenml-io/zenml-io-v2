@@ -12,7 +12,8 @@ webflow:
   createdOn: "2025-08-26T13:27:30.675Z"
 integrationType: "agents"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/caf5a2cc/68adb6487c9c6ad23ac9e67d_langgraph.png"
+  url: "https://assets.zenml.io/content/integrations/logos/langgraph.svg"
+  alt: "LangGraph logo"
 shortDescription: "LangGraph ReAct agent integrated with ZenML."
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/langgraph"

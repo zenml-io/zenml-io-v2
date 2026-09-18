@@ -3,35 +3,59 @@
  * TermHubEntryIndex — the database-side term-page listing (issue #249).
  *
  * Covers `/llmops-tags/[slug]`, `/mlops-tags/[slug]`, and
- * `/industry-tags/[slug]`. Renders only the listing — the page keeps its
- * own container and header exactly as before.
+ * `/industry-tags/[slug]` (`entries` arrangement, `skin="labs"`, databases
+ * cutover #256), plus `/tags/[slug]` (blog cutover, D2d ruling — `items`
+ * arrangement, `skin="labs"`). Renders only the listing — the page keeps
+ * its own container and header exactly as before.
  *
  * Two live pieces, both collapsing on absence:
- *   - `crossLinks` — the "Common industries" / "Common LLMOps tags" /
- *     "Common MLOps topics" badge blocks. One group renders as a single
+ *   - `crossLinks` — the "Common industries" / "Common technologies" /
+ *     "Common MLOps topics" cross-link blocks (badges on `skin="default"`,
+ *     a sibling-chip strip on `skin="labs"`). One group renders as a single
  *     block; two groups (industry-tags' dual collection) render side by
- *     side. A group with no items renders nothing; the wrapper itself
- *     renders nothing when every group is empty.
+ *     side on `skin="default"`, stacked on `skin="labs"`. A group with no
+ *     items renders nothing; the wrapper itself renders nothing when every
+ *     group is empty.
  *   - `sections` — the entry rows themselves. One section (llmops-tags,
  *     mlops-tags) renders with no heading; two sections (industry-tags'
  *     "LLMOps entries" / "MLOps entries" split) each get their own `<h2>`
  *     (or `<h3>` via `headingLevel` when nested under a section heading).
  *
- * A section carries EITHER `cards` OR `items`, never both — enforced by
- * the `TermHubEntrySection` union, not just documented:
+ * A section carries EXACTLY ONE of `cards`, `items` or `entries` — enforced
+ * by the `TermHubEntrySection` union, not just documented:
  *   - `cards` — the entry card grid (`grid gap-6 md:grid-cols-2
  *     lg:grid-cols-3`, title + company/meta line + summary + up to 4 tag
- *     badges + overflow badge) every live route renders today. This is the
- *     parity arrangement — byte-faithful to the pre-migration markup.
- *   - `items` — `data-display.stacked-list` rows (title/meta/count only,
- *     no summary, no per-row tag chips). This is the new-brand/demo
- *     arrangement; no live route uses it yet, so it only appears on
- *     `/styleguide` today.
+ *     badges + overflow badge). This was the parity arrangement every
+ *     llmops-tags/mlops-tags/industry-tags term route rendered before the
+ *     databases cutover (#256); no live route sets it any more, kept for
+ *     `/styleguide`.
+ *   - `items` — `data-display.stacked-list` rows. `/styleguide`'s demo
+ *     stays on `skin="default"` (title/meta/count only, no summary, no
+ *     per-row tag chips); `/tags/[slug]` is the first live caller, on
+ *     `skin="labs"` (excerpt + sibling-tag chips + a fixed author/year
+ *     lane — see `StackedList`'s own doc comment).
+ *   - `entries` — `labs.entry-row` rows (#256). The research-database term
+ *     hubs' live arrangement: `/llmops-tags/[slug]`, `/mlops-tags/[slug]`
+ *     and `/industry-tags/[slug]`, always on `skin="labs"`. An optional
+ *     `seeAll` link (industry-tags' "See all N in the … Database →") renders
+ *     after the row list.
+ *
+ * `crossLinks` render above the sections on `skin="default"` (the pre-
+ * cutover badge blocks). On `skin="labs"` they render AFTER the sections
+ * instead, as the blog's sibling-chip strip (`/tags/[slug]`'s "Other tags"
+ * treatment, with a count appended to each chip) — one bordered block per
+ * group, stacked.
  *
  * `emptyHeading` renders only when every section is empty combined —
  * matches the live pages' single catch-all zero state.
  */
 import Badge from "../Badge.astro";
+import {
+  TERM_CHIP,
+  TERM_CHIP_HEXAGON_PATH,
+  TERM_CHIP_HEXAGON_VIEWBOX,
+} from "../blog/termChipStyles";
+import EntryRow, { type EntryRowItem } from "../labs/EntryRow.astro";
 import EmptyState from "../system/EmptyState.astro";
 import { EMPTY_STATE_PRESETS } from "../system/emptyStateStyles";
 import StackedList, { type StackedListItem } from "./StackedList.astro";
@@ -76,40 +100,87 @@ interface TermHubEntrySectionBase {
   heading?: string;
 }
 
-/** The live parity arrangement — every live route sets `cards` today. */
+/** The pre-cutover parity arrangement — no live route sets `cards` any more; kept for `/styleguide`. */
 export interface TermHubEntryCardsSection extends TermHubEntrySectionBase {
   cards: readonly TermHubEntryCardItem[];
   items?: never;
+  entries?: never;
 }
 
-/** The new-brand/demo arrangement — no live route sets `items` yet. */
+/** The stacked-row arrangement — `/tags/[slug]` (blog cutover, D2d). */
 export interface TermHubEntryStackedSection extends TermHubEntrySectionBase {
   items: readonly StackedListItem[];
   cards?: never;
+  entries?: never;
+}
+
+/**
+ * The research-database term hubs' live arrangement (#256):
+ * `/llmops-tags/[slug]`, `/mlops-tags/[slug]`, `/industry-tags/[slug]`.
+ * `seeAll` renders a link after the row list — industry-tags' "See all N in
+ * the … Database →" into the filtered index, omitted otherwise.
+ */
+export interface TermHubEntryRowsSection extends TermHubEntrySectionBase {
+  entries: readonly EntryRowItem[];
+  cards?: never;
+  items?: never;
+  seeAll?: { href: string; label: string };
 }
 
 export type TermHubEntrySection =
   | TermHubEntryCardsSection
-  | TermHubEntryStackedSection;
+  | TermHubEntryStackedSection
+  | TermHubEntryRowsSection;
 
 interface Props {
   crossLinks?: readonly TermHubCrossLinkGroup[];
   sections: readonly TermHubEntrySection[];
   /** e.g. "No LLMOps entries with this tag yet." — shown only when every section is empty. */
   emptyHeading: string;
+  /**
+   * Forwarded to `StackedList` for every `items` section (blog cutover,
+   * `/tags/[slug]`). Also chooses the `entries` arrangement's row heading
+   * style and the `crossLinks` placement (below sections, sibling-chip
+   * strip) for the research-database term hubs (#256). Default keeps the
+   * pre-cutover `StackedList`/badge look for the database term hubs' demo
+   * path untouched.
+   */
+  skin?: "default" | "labs";
+  /** Forwarded to `StackedList`/`entries` rows — 12 or 24/page client-side pagination markers. */
+  paginate?: boolean;
+  pageSize?: number;
+  /** id for `HubPagination`/`HubEntryPagination` to scope its `[data-page]` query to; forwarded to the single `items`/`entries` section's list. */
+  id?: string;
 }
 
-const { crossLinks = [], sections, emptyHeading } = Astro.props;
+const {
+  crossLinks = [],
+  sections,
+  emptyHeading,
+  skin = "default",
+  paginate = false,
+  pageSize,
+  id,
+} = Astro.props;
 
 function sectionCount(section: TermHubEntrySection): number {
-  return section.cards?.length ?? section.items?.length ?? 0;
+  return (
+    section.cards?.length ??
+    section.items?.length ??
+    section.entries?.length ??
+    0
+  );
 }
 
+const isLabs = skin === "labs";
 const hasCrossLinks = crossLinks.some((group) => group.items.length > 0);
 const totalEntries = sections.reduce((sum, s) => sum + sectionCount(s), 0);
+const sectionHeadingClass = isLabs
+  ? "mb-6 font-display text-[28px] leading-[34px] text-(--color-cream-800)"
+  : "mb-6 text-2xl font-bold tracking-tight text-gray-900";
 ---
 
-{hasCrossLinks && (
+{!isLabs && hasCrossLinks && (
   <section
     class:list={[
       "mb-10",
@@ -156,9 +227,7 @@ const totalEntries = sections.reduce((sum, s) => sum + sectionCount(s), 0);
         }
       >
         {section.heading && (
-          <h2 class="mb-6 text-2xl font-bold tracking-tight text-gray-900">
-            {section.heading}
-          </h2>
+          <h2 class={sectionHeadingClass}>{section.heading}</h2>
         )}
         {section.cards ? (
           <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -209,13 +278,85 @@ const totalEntries = sections.reduce((sum, s) => sum + sectionCount(s), 0);
               );
             })}
           </div>
+        ) : section.items ? (
+          <StackedList
+            items={section.items}
+            skin={skin}
+            paginate={paginate}
+            pageSize={pageSize}
+            id={id}
+          />
         ) : (
-          <StackedList items={section.items} />
+          <>
+            <ul id={id} class="flex flex-col list-none">
+              {section.entries.map((entry, entryIndex) => {
+                const rowPageSize = pageSize ?? section.entries.length;
+                return (
+                  <li
+                    data-page={
+                      paginate
+                        ? Math.floor(entryIndex / rowPageSize) + 1
+                        : undefined
+                    }
+                    hidden={paginate && entryIndex >= rowPageSize ? true : undefined}
+                  >
+                    <EntryRow {...entry} headingLevel={3} />
+                  </li>
+                );
+              })}
+            </ul>
+            {section.seeAll && (
+              <a
+                href={section.seeAll.href}
+                class="mt-6 inline-flex text-[14px] font-medium text-(--color-sage-700) hover:text-(--color-sage-800)"
+              >
+                {section.seeAll.label} &rarr;
+              </a>
+            )}
+          </>
         )}
       </section>
     )
   );
 })}
+
+{isLabs && hasCrossLinks && (
+  <div class="mt-14 flex flex-col gap-10">
+    {crossLinks.map(
+      (group) =>
+        group.items.length > 0 && (
+          <div class="flex flex-col gap-4 border-t border-(--color-border) pt-8">
+            <p class="text-[12px] font-medium text-(--color-cream-800)">
+              {group.heading}
+            </p>
+            <div class="flex flex-wrap items-center gap-2">
+              {group.items.map((item) => (
+                <a href={item.href} class={TERM_CHIP}>
+                  <svg
+                    viewBox={TERM_CHIP_HEXAGON_VIEWBOX}
+                    class="h-[14px] w-3 fill-(--color-sage-600)"
+                    aria-hidden="true"
+                  >
+                    <path d={TERM_CHIP_HEXAGON_PATH} />
+                  </svg>
+                  {item.name}
+                  <span class="text-(--color-cream-600) tabular-nums">
+                    {item.count}
+                  </span>
+                </a>
+              ))}
+              <a
+                href={group.viewAllHref}
+                class="ml-1 text-[13px] font-medium text-(--color-sage-700) hover:text-(--color-sage-800)"
+              >
+                {group.viewAllLabel} &rarr;
+              </a>
+            </div>
+          </div>
+        ),
+    )}
+  </div>
+)}
 
 {totalEntries === 0 && (
   <EmptyState

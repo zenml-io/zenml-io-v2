@@ -1,6 +1,7 @@
 ---
 title: "Open-Source and Vendor-Neutral"
 slug: "open-source-and-vendor-neutral"
+icon: "open-box"
 content: "ZenML is fully open-source and vendor-neutral, letting you avoid the significant licensing costs and platform lock-in of proprietary enterprise platforms. Your pipelines remain portable across any infrastructure, from local development to multi-cloud production."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/74fa7cca/6989dc01cf93c92d35afc76c_667167751e34699260c6b227_img02.png"

@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:16.620Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3b75b2be/66d867dd11cc5bf2b439aa93_skypilot.png"
+  url: "https://assets.zenml.io/content/integrations/logos/skypilot.svg"
+  alt: "SkyPilot logo"
 shortDescription: "Streamline ML Workloads on any cloud with SkyPilot VM Orchestration in ZenML"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/skypilot-vm"
 mainImage:

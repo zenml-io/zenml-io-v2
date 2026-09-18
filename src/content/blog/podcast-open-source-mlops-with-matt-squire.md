@@ -23,12 +23,12 @@ tags:
 date: "2022-03-31T00:00:00.000Z"
 readingTime: 2 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d264f6f7/653127504e74889dfd6afcfb_matt-squire-profile.jpeg"
+  url: "https://assets.zenml.io/content/blog/podcast-open-source-mlops-with-matt-squire/fa1e03b1/podcast-open-source-mlops-with-matt-squire-cover.avif"
 seo:
   title: "Podcast: Open-Source MLOps with Matt Squire - ZenML Blog"
   description: "This week I spoke with Matt Squire, the CTO and co-founder of Fuzzy Labs, where they help partner organizations think through how best to productionise their machine learning workflows."
   canonical: "https://www.zenml.io/blog/podcast-open-source-mlops-with-matt-squire"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4af5c9e0/653127504e74889dfd6afcfb_matt-squire-profile.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/podcast-open-source-mlops-with-matt-squire/d44cab53/podcast-open-source-mlops-with-matt-squire-cover.jpg"
   ogTitle: "Podcast: Open-Source MLOps with Matt Squire - ZenML Blog"
   ogDescription: "This week I spoke with Matt Squire, the CTO and co-founder of Fuzzy Labs, where they help partner organizations think through how best to productionise their machine learning workflows."
 ---

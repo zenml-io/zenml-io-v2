@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-08-26T08:27:42.215Z"
 description: "AI-powered automated test generation and coverage analysis pipeline built with ZenML and LLMs."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/qualityflow"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/43.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/3bfb4f9a/qualityflow-cover.avif"
 previewImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/097cf562/68ad717012deed5e31c07a97_architecture.png"
 tags:

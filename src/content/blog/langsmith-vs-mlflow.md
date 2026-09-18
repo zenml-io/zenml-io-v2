@@ -21,12 +21,14 @@ tags:
 date: "2026-02-12T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0d03958f/698d56aba367420b0e2fa322_langsmith-vs-mlflow.png"
+  url: "https://assets.zenml.io/content/blog/langsmith-vs-mlflow/c0c8c46e/langsmith-vs-mlflow-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/langsmith-vs-mlflow/c0c8c46e/langsmith-vs-mlflow-cover.avif"
 seo:
   title: "LangSmith vs MLflow vs ZenML: Choosing the Right Tool for Production AI - ZenML Blog"
   description: "Compare LangSmith, MLflow, and ZenML across pipeline orchestration, reproducibility, deployment, and pricing to choose the right production AI tool."
   canonical: "https://www.zenml.io/blog/langsmith-vs-mlflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0d03958f/698d56aba367420b0e2fa322_langsmith-vs-mlflow.png"
+  ogImage: "https://assets.zenml.io/content/blog/langsmith-vs-mlflow/fe7b4163/langsmith-vs-mlflow-cover.jpg"
   ogTitle: "LangSmith vs MLflow vs ZenML: Choosing the Right Tool for Production AI - ZenML Blog"
   ogDescription: "Compare LangSmith, MLflow, and ZenML across pipeline orchestration, reproducibility, deployment, and pricing to choose the right production AI tool."
 ---

@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2024-09-04T10:35:46.104Z"
   createdOn: "2024-06-18T10:56:12.599Z"
 toolName: "Apache Airflow"
+cardSubtitle: "Start locally, then scale your ML workflows"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf84c32d/66716650d5754c23eb1df5ca_apache-airflow.png"
 category: "orchestrators"

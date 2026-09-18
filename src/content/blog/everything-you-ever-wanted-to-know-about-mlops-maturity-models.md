@@ -21,12 +21,12 @@ tags:
 date: "2022-03-07T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/db5fdfb0/652fd8a1efff158cb6a96a5e_maturitymodels-tbx.png"
+  url: "https://assets.zenml.io/content/blog/everything-you-ever-wanted-to-know-about-mlops-maturity-models/39661c7f/everything-you-ever-wanted-to-know-about-mlops-maturity-models-cover.avif"
 seo:
   title: "Everything you ever wanted to know about MLOps maturity models - ZenML Blog"
   description: "An exploration of some frameworks created by Google and Microsoft that can help think through improvements to how machine learning models get developed and deployed in production."
   canonical: "https://www.zenml.io/blog/everything-you-ever-wanted-to-know-about-mlops-maturity-models"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4e909055/652fd8a1efff158cb6a96a5e_maturitymodels-tbx.png"
+  ogImage: "https://assets.zenml.io/content/blog/everything-you-ever-wanted-to-know-about-mlops-maturity-models/77d920a1/everything-you-ever-wanted-to-know-about-mlops-maturity-models-cover.jpg"
   ogTitle: "Everything you ever wanted to know about MLOps maturity models - ZenML Blog"
   ogDescription: "An exploration of some frameworks created by Google and Microsoft that can help think through improvements to how machine learning models get developed and deployed in production."
 ---

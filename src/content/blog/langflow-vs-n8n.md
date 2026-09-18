@@ -21,12 +21,14 @@ tags:
 date: "2025-10-08T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/217af2e1/6981d389ab6d2820d701bc18_6981d2a925b9bedbff8b5317_langflow-vs-n8n.avif"
+  url: "https://assets.zenml.io/content/blog/langflow-vs-n8n/849b020c/langflow-vs-n8n-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/langflow-vs-n8n/849b020c/langflow-vs-n8n-cover.avif"
 seo:
   title: "Langflow vs n8n: Features, Pricing, and Integrations Compared - ZenML Blog"
   description: "In this Langflow vs n8n, we compare both platforms’ features, pricing, and integrations."
   canonical: "https://www.zenml.io/blog/langflow-vs-n8n"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/217af2e1/6981d389ab6d2820d701bc18_6981d2a925b9bedbff8b5317_langflow-vs-n8n.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/langflow-vs-n8n/768d7c9f/langflow-vs-n8n-cover.jpg"
   ogTitle: "Langflow vs n8n: Features, Pricing, and Integrations Compared - ZenML Blog"
   ogDescription: "In this Langflow vs n8n, we compare both platforms’ features, pricing, and integrations."
 ---

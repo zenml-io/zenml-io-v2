@@ -1,13 +1,19 @@
 /** Inline SVG icons + focus-ring class shared across the FilterIndex family. */
 
+// Sage/cream tokens resolve on every route: the ramps live on `:root` in
+// global.css (hoisted in the blog cutover), not only under `[data-app="labs"]`.
 export const FOCUS_RING =
-  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-1";
+  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--color-sage-400) focus-visible:ring-offset-2 focus-visible:ring-offset-(--background)";
 
-export function SearchIcon() {
+export function SearchIcon({
+  class: className = "h-4 w-4 text-gray-400",
+}: {
+  class?: string;
+} = {}) {
   return (
     <svg
       aria-hidden="true"
-      class="h-4 w-4 text-gray-400"
+      class={className}
       viewBox="0 0 20 20"
       fill="none"
       stroke="currentColor"
@@ -30,6 +36,27 @@ export function CloseIcon() {
       stroke-width="2"
     >
       <path d="M3 9L9 3M3 3l6 6" />
+    </svg>
+  );
+}
+
+export function ChevronIcon({
+  class: className = "h-4 w-4",
+  open = false,
+}: {
+  class?: string;
+  open?: boolean;
+} = {}) {
+  return (
+    <svg
+      aria-hidden="true"
+      class={`${className} shrink-0 transition-transform duration-200 motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+    >
+      <path d="M4 6l4 4 4-4" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   );
 }

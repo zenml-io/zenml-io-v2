@@ -20,12 +20,12 @@ tags:
 date: "2023-11-16T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/01c3fb83/6556276e837f48a1862d831f_training_pipeline_overview.png"
+  url: "https://assets.zenml.io/content/blog/huggingface-to-sagemaker/814bbb0d/huggingface-to-sagemaker-cover.avif"
 seo:
   title: "Huggingface Model to Sagemaker Endpoint: Automating MLOps with ZenML - ZenML Blog"
   description: "Deploying Huggingface models to AWS Sagemaker endpoints typically only requires a few lines of code. However, there's a growing demand to not just deploy, but to seamlessly automate the entire flow from training to production with comprehensive lineage tracking. ZenML adeptly fills this niche, providing an end-to-end MLOps solution for Huggingface users wishing to deploy to Sagemaker."
   canonical: "https://www.zenml.io/blog/huggingface-to-sagemaker"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/81c84e3e/6556276e837f48a1862d831f_training_pipeline_overview.png"
+  ogImage: "https://assets.zenml.io/content/blog/huggingface-to-sagemaker/a482b6e3/huggingface-to-sagemaker-cover.jpg"
   ogTitle: "Huggingface Model to Sagemaker Endpoint: Automating MLOps with ZenML - ZenML Blog"
   ogDescription: "Deploying Huggingface models to AWS Sagemaker endpoints typically only requires a few lines of code. However, there's a growing demand to not just deploy, but to seamlessly automate the entire flow from training to production with comprehensive lineage tracking. ZenML adeptly fills this niche, providing an end-to-end MLOps solution for Huggingface users wishing to deploy to Sagemaker."
 ---

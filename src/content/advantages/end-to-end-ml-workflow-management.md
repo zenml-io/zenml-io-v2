@@ -1,6 +1,7 @@
 ---
 title: "End-to-End ML Workflow Management"
 slug: "end-to-end-ml-workflow-management"
+icon: "pipeline"
 content: "ZenML provides a comprehensive solution for managing the entire ML workflow, from data annotation to model deployment, while Label Studio focuses primarily on data annotation."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54938439/667167b34c4aaf843c0fac78_img03.png"

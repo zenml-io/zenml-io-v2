@@ -17,7 +17,9 @@ tags:
 date: "2022-06-28T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/936fceb2/65315e3776349a66e3b6a406_release-zero-ten-balloon.jpg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-10-0-a-kubernetes-native-orchestrator/bc369ca4/whats-new-in-v0-10-0-a-kubernetes-native-orchestrator-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-10-0-a-kubernetes-native-orchestrator/323f2f91/whats-new-in-v0-10-0-a-kubernetes-native-orchestrator-cover.jpg"
 ---
 
 **Last updated:** October 17, 2022.

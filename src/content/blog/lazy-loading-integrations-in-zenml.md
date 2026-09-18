@@ -19,7 +19,9 @@ tags:
 date: "2021-11-26T00:00:00.000Z"
 readingTime: 5 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e6f47b99/6530af83193a7bf8d264920e_sam_zen_mode.jpg"
+  url: "https://assets.zenml.io/content/blog/lazy-loading-integrations-in-zenml/9893abbc/lazy-loading-integrations-in-zenml-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/lazy-loading-integrations-in-zenml/eb6450b0/lazy-loading-integrations-in-zenml-cover.jpg"
 ---
 
 **Last updated:** October 17, 2022.

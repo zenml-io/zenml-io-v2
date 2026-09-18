@@ -24,12 +24,12 @@ tags:
 date: "2024-08-21T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/843bfd9e/66c5c504b278bfd1685524dd_image.png"
+  url: "https://assets.zenml.io/content/blog/how-to-finetune-phi-3-5-with-zenml/8afc6e9b/how-to-finetune-phi-3-5-with-zenml-cover.avif"
 seo:
   title: "How to Finetune Phi 3.5 with ZenML - ZenML Blog"
   description: "Master cloud-based LLM finetuning: Set up infrastructure, run pipelines, and manage experiments with ZenML's Model Control Plane for Microsoft's latest Phi model."
   canonical: "https://www.zenml.io/blog/how-to-finetune-phi-3-5-with-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/843bfd9e/66c5c504b278bfd1685524dd_image.png"
+  ogImage: "https://assets.zenml.io/content/blog/how-to-finetune-phi-3-5-with-zenml/ce18d271/how-to-finetune-phi-3-5-with-zenml-cover.jpg"
   ogTitle: "How to Finetune Phi 3.5 with ZenML - ZenML Blog"
   ogDescription: "Master cloud-based LLM finetuning: Set up infrastructure, run pipelines, and manage experiments with ZenML's Model Control Plane for Microsoft's latest Phi model."
 ---

@@ -17,7 +17,9 @@ tags:
 date: "2022-10-05T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ff2ed8d6/6531dc5b1a87b0b4bf7f9be6_Release_0.20.0.jpg"
+  url: "https://assets.zenml.io/content/blog/zenml-0-20-0-our-biggest-release-yet/13929118/zenml-0-20-0-our-biggest-release-yet-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/zenml-0-20-0-our-biggest-release-yet/a425ec07/zenml-0-20-0-our-biggest-release-yet-cover.jpg"
 ---
 
 **Last updated:** October 17, 2022.

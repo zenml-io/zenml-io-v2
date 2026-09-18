@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2024-08-21T14:43:24.886Z"
   createdOn: "2024-06-25T14:59:48.842Z"
 toolName: "Kubeflow"
+cardSubtitle: "MLOps across any environment, not just Kubernetes"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e39ef501/667ae534d2e5382e86fcc99d_kubeflow_logo.png"
 category: "orchestrators"

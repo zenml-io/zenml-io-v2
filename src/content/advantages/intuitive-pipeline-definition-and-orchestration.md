@@ -1,6 +1,7 @@
 ---
 title: "Intuitive Pipeline Definition and Orchestration"
 slug: "intuitive-pipeline-definition-and-orchestration"
+icon: "pipeline"
 content: "With ZenML's intuitive Python-based syntax, you can easily define and orchestrate complex ML pipelines, while Hugging Face lacks built-in pipeline orchestration capabilities."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fec1dff1/667196405fbe25aecdd96da9_img04.png"

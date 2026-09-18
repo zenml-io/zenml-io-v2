@@ -21,12 +21,14 @@ tags:
 date: "2025-08-31T00:00:00.000Z"
 readingTime: 17 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/184fd82b/68b3d2f000aeee64428db6cb_semantic-kernel-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/semantic-kernel-alternatives/ab38f2d4/semantic-kernel-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/semantic-kernel-alternatives/ab38f2d4/semantic-kernel-alternatives-cover.avif"
 seo:
   title: "We Tried and Tested 8 Best Semantic Kernel Alternatives to Build AI Agents - ZenML Blog"
   description: "Discover the top 8 Semantic Kernel alternatives that will help you build efficient AI agents."
   canonical: "https://www.zenml.io/blog/semantic-kernel-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/184fd82b/68b3d2f000aeee64428db6cb_semantic-kernel-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/semantic-kernel-alternatives/faef59fb/semantic-kernel-alternatives-cover.jpg"
   ogTitle: "We Tried and Tested 8 Best Semantic Kernel Alternatives to Build AI Agents - ZenML Blog"
   ogDescription: "Discover the top 8 Semantic Kernel alternatives that will help you build efficient AI agents."
 ---

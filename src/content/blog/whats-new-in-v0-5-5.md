@@ -17,7 +17,9 @@ tags:
 date: "2021-12-13T00:00:00.000Z"
 readingTime: 2 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/efc0b231/653127f345bd911f23c96907_balloons-pixabay_0_5_5.jpg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-5-5/6e3458b4/whats-new-in-v0-5-5-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-5-5/523a3f5a/whats-new-in-v0-5-5-cover.jpg"
 ---
 
 **Last updated:** November 3, 2022.

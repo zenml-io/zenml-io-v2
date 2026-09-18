@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-05-29T11:24:13.856Z"
 integrationType: "data-annotator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/38135087/66d867abbb012c9b857c9b33_argilla.png"
+  url: "https://assets.zenml.io/content/integrations/logos/argilla.svg"
+  alt: "Argilla logo"
 shortDescription: "Streamline Data Annotation in ZenML Pipelines with Argilla"
 docsUrl: "https://docs.zenml.io/stack-components/annotators/argilla"
 githubUrl: "https://github.com/argilla-io/argilla"

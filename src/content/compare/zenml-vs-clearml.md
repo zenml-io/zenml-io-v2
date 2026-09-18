@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2024-09-19T09:32:20.241Z"
   createdOn: "2024-09-19T09:13:54.786Z"
 toolName: "ClearML"
+cardSubtitle: "A flexible, integration-rich MLOps framework"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/58411f92/66ebeb4882fa97b89b23d082_clearml.png"
 category: "e2e-platforms"

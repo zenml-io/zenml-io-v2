@@ -19,12 +19,12 @@ tags:
 date: "2024-10-10T00:00:00.000Z"
 readingTime: 5 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf015114/670928e0f450ab54a976946c_bento_cover_image.png"
+  url: "https://assets.zenml.io/content/blog/streamlining-model-deployment-with-zenml-and-bentoml/6f6a626b/streamlining-model-deployment-with-zenml-and-bentoml-cover.avif"
 seo:
   title: "Streamlining Model Deployment with ZenML and BentoML - ZenML Blog"
   description: "This blog post discusses the integration of ZenML and BentoML in machine learning workflows, highlighting their synergy that simplifies and streamlines model deployment. ZenML is an open-source MLOps framework designed to create portable, production-ready pipelines, while BentoML is an open-source framework for machine learning model serving. When combined, these tools allow data scientists and ML engineers to streamline their workflows, focusing on building better models rather than managing deployment infrastructure. The combination offers several advantages, including simplified model packaging, local and container-based deployment, automatic versioning and tracking, cloud readiness, standardized deployment workflow, and framework-agnostic serving."
   canonical: "https://www.zenml.io/blog/streamlining-model-deployment-with-zenml-and-bentoml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cf015114/670928e0f450ab54a976946c_bento_cover_image.png"
+  ogImage: "https://assets.zenml.io/content/blog/streamlining-model-deployment-with-zenml-and-bentoml/d6c38df9/streamlining-model-deployment-with-zenml-and-bentoml-cover.jpg"
   ogTitle: "Streamlining Model Deployment with ZenML and BentoML - ZenML Blog"
   ogDescription: "This blog post discusses the integration of ZenML and BentoML in machine learning workflows, highlighting their synergy that simplifies and streamlines model deployment. ZenML is an open-source MLOps framework designed to create portable, production-ready pipelines, while BentoML is an open-source framework for machine learning model serving. When combined, these tools allow data scientists and ML engineers to streamline their workflows, focusing on building better models rather than managing deployment infrastructure. The combination offers several advantages, including simplified model packaging, local and container-based deployment, automatic versioning and tracking, cloud readiness, standardized deployment workflow, and framework-agnostic serving."
 ---

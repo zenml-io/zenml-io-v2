@@ -20,12 +20,14 @@ tags:
 date: "2025-12-04T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/74aea145/69310b80cb8d2532f36704df_promptfoo-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/promptfoo-alternatives/7b9a87ef/promptfoo-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/promptfoo-alternatives/7b9a87ef/promptfoo-alternatives-cover.avif"
 seo:
   title: "9 Best Promptfoo Alternatives: Which Frameworks are Better to Ship AI Agents - ZenML Blog"
   description: "In this article, you learn about the best Promptfoo alternatives that help you ship better AI agents."
   canonical: "https://www.zenml.io/blog/promptfoo-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/74aea145/69310b80cb8d2532f36704df_promptfoo-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/promptfoo-alternatives/76a5e11e/promptfoo-alternatives-cover.jpg"
   ogTitle: "9 Best Promptfoo Alternatives: Which Frameworks are Better to Ship AI Agents - ZenML Blog"
   ogDescription: "In this article, you learn about the best Promptfoo alternatives that help you ship better AI agents."
 ---

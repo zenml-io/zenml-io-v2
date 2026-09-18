@@ -19,12 +19,12 @@ tags:
 date: "2025-03-21T00:00:00.000Z"
 readingTime: 9 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d771078e/67dd5360c8261853d109ead7_LLMOps_People__1___1_.png"
+  url: "https://assets.zenml.io/content/blog/llmops-is-about-people-too-the-human-element-in-ai-engineering/b80f7b1d/llmops-is-about-people-too-the-human-element-in-ai-engineering-cover.avif"
 seo:
   title: "LLMOps Is About People Too: The Human Element in AI Engineering - ZenML Blog"
   description: "We explore how successful LLMOps implementation depends on human factors beyond just technical solutions. It addresses common challenges like misaligned executive expectations, siloed teams, and subject-matter expert resistance that often derail AI initiatives. The piece offers practical strategies for creating effective team structures (hub-and-spoke, horizontal teams, cross-functional squads), improving communication, and integrating domain experts early. With actionable insights from companies like TomTom, Uber, and Zalando, readers will learn how to balance technical excellence with organizational change management to unlock the full potential of generative AI deployments."
   canonical: "https://www.zenml.io/blog/llmops-is-about-people-too-the-human-element-in-ai-engineering"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/d771078e/67dd5360c8261853d109ead7_LLMOps_People__1___1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/llmops-is-about-people-too-the-human-element-in-ai-engineering/58d6e689/llmops-is-about-people-too-the-human-element-in-ai-engineering-cover.jpg"
   ogTitle: "LLMOps Is About People Too: The Human Element in AI Engineering - ZenML Blog"
   ogDescription: "We explore how successful LLMOps implementation depends on human factors beyond just technical solutions. It addresses common challenges like misaligned executive expectations, siloed teams, and subject-matter expert resistance that often derail AI initiatives. The piece offers practical strategies for creating effective team structures (hub-and-spoke, horizontal teams, cross-functional squads), improving communication, and integrating domain experts early. With actionable insights from companies like TomTom, Uber, and Zalando, readers will learn how to balance technical excellence with organizational change management to unlock the full potential of generative AI deployments."
 ---

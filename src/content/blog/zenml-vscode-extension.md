@@ -22,12 +22,12 @@ tags:
 date: "2024-04-01T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/96619f85/660ac3dc8cf57b508528727a_High_Level_Overview.png"
+  url: "https://assets.zenml.io/content/blog/zenml-vscode-extension/e767691f/zenml-vscode-extension-cover.avif"
 seo:
   title: "The ZenML VSCode Extension: Bridging Python and TypeScript - ZenML Blog"
   description: "Community member Marwan Zaarab explains how and why he built a VS Code Extension for ZenML."
   canonical: "https://www.zenml.io/blog/zenml-vscode-extension"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7c576569/660ac3dc8cf57b508528727a_High_Level_Overview.png"
+  ogImage: "https://assets.zenml.io/content/blog/zenml-vscode-extension/1f08ca6d/zenml-vscode-extension-cover.jpg"
   ogTitle: "The ZenML VSCode Extension: Bridging Python and TypeScript - ZenML Blog"
   ogDescription: "Community member Marwan Zaarab explains how and why he built a VS Code Extension for ZenML."
 ---

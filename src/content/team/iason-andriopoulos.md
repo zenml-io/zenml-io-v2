@@ -12,11 +12,10 @@ webflow:
   createdOn: "2025-08-18T10:57:45.270Z"
 position: "Senior Software Engineer"
 photo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ff591870/68a3072b384de77e2c6b0723_iason.jpg"
+  url: "https://assets.zenml.io/content/team/74a95332/iason-andriopoulos-cutout.avif"
 email: "iason@zenml.io"
 linkedin: "https://www.linkedin.com/in/iasonandriopoulos"
 order: 8
 ---
 
 <ul><li>Senior engineer, rookie dad</li><li>Scales systems, not himself</li><li>Fuel him with coffee or beer to pause the design pattern monologues</li></ul>
-

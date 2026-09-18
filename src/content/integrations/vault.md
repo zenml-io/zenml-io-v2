@@ -11,7 +11,8 @@ webflow:
   createdOn: "2023-10-12T09:13:14.174Z"
 integrationType: "secrets-manager"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/262fe1e1/66d868b0d6aa10eca87e65d4_hashicorp.png"
+  url: "https://assets.zenml.io/content/integrations/logos/vault.svg"
+  alt: "HashiCorp Vault logo"
 shortDescription: "Manage your secrets with Vault Key/Value secrets engine."
 docsUrl: "https://docs.zenml.io/stacks-and-components/component-guide/secrets-managers/vault"
 githubUrl: "https://docs.zenml.io/stacks-and-components/component-guide/secrets-managers/vault"

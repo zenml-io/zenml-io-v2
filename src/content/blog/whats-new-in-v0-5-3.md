@@ -17,7 +17,9 @@ tags:
 date: "2021-11-24T00:00:00.000Z"
 readingTime: 1 Min Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/602a645a/65311bcf9cf864e3ba6a9cd6_download__13_.png"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-5-3/6bc49875/whats-new-in-v0-5-3-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-5-3/405c8f73/whats-new-in-v0-5-3-cover.jpg"
 ---
 
 **Last updated:** November 3, 2022.

@@ -18,12 +18,12 @@ tags:
 date: "2024-11-26T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5992e30f/6746d46c07aeedde155bb8d1_Gemini_Generated_Image__10_.jpeg"
+  url: "https://assets.zenml.io/content/blog/mlops-in-finance-a-strategic-guide-to-scaling-ml-from-experiments-to-production/1806041b/mlops-in-finance-a-strategic-guide-to-scaling-ml-from-experiments-to-production-cover.avif"
 seo:
   title: "MLOps in Finance: A Strategic Guide to Scaling ML from Experiments to Production\" - ZenML Blog"
   description: "Discover how financial institutions can successfully transition their machine learning projects from experimental phases to robust production environments. This comprehensive guide explores critical challenges and strategic solutions in MLOps implementation, including regulatory compliance, team scaling, and infrastructure decisions. Learn practical approaches to building scalable ML systems while maintaining security and efficiency, with special focus on emerging technologies like RAG and their role in enterprise AI adoption. Perfect for ML practitioners, technical leaders, and decision-makers in the financial sector looking to scale their ML operations effectively."
   canonical: "https://www.zenml.io/blog/mlops-in-finance-a-strategic-guide-to-scaling-ml-from-experiments-to-production"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5992e30f/6746d46c07aeedde155bb8d1_Gemini_Generated_Image__10_.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/mlops-in-finance-a-strategic-guide-to-scaling-ml-from-experiments-to-production/307bf666/mlops-in-finance-a-strategic-guide-to-scaling-ml-from-experiments-to-production-cover.jpg"
   ogTitle: "MLOps in Finance: A Strategic Guide to Scaling ML from Experiments to Production\" - ZenML Blog"
   ogDescription: "Discover how financial institutions can successfully transition their machine learning projects from experimental phases to robust production environments. This comprehensive guide explores critical challenges and strategic solutions in MLOps implementation, including regulatory compliance, team scaling, and infrastructure decisions. Learn practical approaches to building scalable ML systems while maintaining security and efficiency, with special focus on emerging technologies like RAG and their role in enterprise AI adoption. Perfect for ML practitioners, technical leaders, and decision-makers in the financial sector looking to scale their ML operations effectively."
 ---

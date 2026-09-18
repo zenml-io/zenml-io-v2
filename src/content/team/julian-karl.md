@@ -12,7 +12,7 @@ webflow:
   createdOn: "2023-10-18T08:05:09.327Z"
 position: "Founding Frontend Engineer"
 photo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/959e9ffd/652f9195e717b53676297b1e_julian.jpeg"
+  url: "https://assets.zenml.io/content/team/b6914ca8/julian-karl-cutout.avif"
 email: "julian@zenml.io"
 linkedin: "https://www.linkedin.com/in/julian-k-8501681a3/"
 order: 11

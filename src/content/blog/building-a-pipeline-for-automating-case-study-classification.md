@@ -20,12 +20,12 @@ tags:
 date: "2025-03-13T00:00:00.000Z"
 readingTime: 6 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bf4da687/67d2c92e0d7f0444d4e2d950_Automating_Case_Study_Classification__1_.png"
+  url: "https://assets.zenml.io/content/blog/building-a-pipeline-for-automating-case-study-classification/23429bb6/building-a-pipeline-for-automating-case-study-classification-cover.avif"
 seo:
   title: "Building a Pipeline for Automating Case Study Classification - ZenML Blog"
   description: "Can automated classification effectively distinguish real-world, production-grade LLM implementations from theoretical discussions? Follow my journey building a reliable LLMOps classification pipeline—moving from manual reviews, through prompt-engineered approaches, to fine-tuning ModernBERT. Discover practical insights, unexpected findings, and why a smaller fine-tuned model proved superior for fast, accurate, and scalable classification."
   canonical: "https://www.zenml.io/blog/building-a-pipeline-for-automating-case-study-classification"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/bf4da687/67d2c92e0d7f0444d4e2d950_Automating_Case_Study_Classification__1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/building-a-pipeline-for-automating-case-study-classification/29d217fd/building-a-pipeline-for-automating-case-study-classification-cover.jpg"
   ogTitle: "Building a Pipeline for Automating Case Study Classification - ZenML Blog"
   ogDescription: "Can automated classification effectively distinguish real-world, production-grade LLM implementations from theoretical discussions? Follow my journey building a reliable LLMOps classification pipeline—moving from manual reviews, through prompt-engineered approaches, to fine-tuning ModernBERT. Discover practical insights, unexpected findings, and why a smaller fine-tuned model proved superior for fast, accurate, and scalable classification."
 ---

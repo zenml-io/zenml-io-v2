@@ -32,7 +32,7 @@ seo:
   description: "Creating a Unified AI Platform: How JetBrains Centralizes ML on Kubernetes with ZenML"
   ogTitle: "JetBrains and ZenML - Case Study"
   ogDescription: "Creating a Unified AI Platform: How JetBrains Centralizes ML on Kubernetes with ZenML"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a55cb241/691d99c3c52d7a40b4a25ed8_jetbrains-case-study.png"
+  ogImage: "https://assets.zenml.io/og/pages/case-study-jetbrains.jpg"
 
 webflow:
   siteId: "64a817a2e7e2208272d1ce30"

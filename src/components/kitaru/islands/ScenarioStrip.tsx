@@ -23,12 +23,12 @@ export function ScenarioStrip() {
     <Section id="scenario-strip" tone="surface">
       <Reveal className="max-w-3xl">
         <Eyebrow>Stop guessing</Eyebrow>
-        <h2 className="mt-5 text-balance text-3xl leading-[1.1] font-medium tracking-[-0.025em] md:text-[2.75rem]">
+        <h2 className="mt-space-sm font-display text-[32px] leading-[36px] text-balance text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
           You already suspect what's wrong.
           <br />
           <span className="text-ember">Now you can check.</span>
         </h2>
-        <p className="mt-5 max-w-2xl text-base leading-relaxed text-ink-soft md:text-lg">
+        <p className="mt-space-sm max-w-2xl font-sans text-[17px] leading-[26px] text-foreground md:text-[18px] md:leading-[27px]">
           Every trace you import becomes a session, a replayable record of one
           real agent run. Take the ones that went sideways, change the one thing
           you suspect, and run them again. Two runs, side by side, and you know.
@@ -37,7 +37,7 @@ export function ScenarioStrip() {
 
       {/* recorded session spine */}
       <Reveal delay={100} className="mt-16">
-        <div className="mb-3 font-mono text-[11px] tracking-[0.14em] text-muted-foreground uppercase">
+        <div className="mb-3 font-label text-[13px] tracking-[0.05em] text-muted-foreground uppercase">
           session ses_8f3a91c2 · recorded
         </div>
         <div className="relative flex items-center justify-between border-t border-dashed border-border pt-0">
@@ -77,7 +77,7 @@ export function ScenarioStrip() {
         </div>
       </Reveal>
 
-      <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 grid grid-cols-1 gap-px overflow-hidden rounded-[20px] border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
         {SCENARIOS.map((s, i) => (
           <Reveal key={s.tag} delay={120 + i * 90} className="flex">
             {/* biome-ignore lint/a11y/noStaticElementInteractions: decorative hover link, not a keyboard control */}
@@ -91,21 +91,21 @@ export function ScenarioStrip() {
             >
               <KitaruGrain variant="card" active={hot === i} className="z-0" />
               <div className="relative z-10">
-                <span className="font-mono text-[11px] tracking-[0.16em] text-ember uppercase">
+                <span className="font-label text-[13px] tracking-[0.05em] text-ember uppercase">
                   {s.tag}
                 </span>
-                <p className="mt-5 text-[17px] leading-snug font-medium tracking-[-0.01em]">
+                <p className="mt-5 font-display text-[22px] leading-[28px] text-(--color-cream-900)">
                   {s.q}
                 </p>
-                <p className="mt-3 text-[13.5px] leading-relaxed text-ink-soft">
+                <p className="mt-3 text-[14px] leading-[1.45] text-ink-soft">
                   {s.outcome}
                 </p>
               </div>
               <div className="relative z-10 mt-10 border-t border-border pt-4">
-                <div className="font-mono text-2xl tracking-[-0.02em]">
+                <div className="font-display text-[28px] leading-[32px] text-(--color-cream-900)">
                   {s.stat}
                 </div>
-                <div className="mt-1 text-[11.5px] text-muted-foreground">
+                <div className="mt-1 font-label text-[12px] uppercase tracking-[0.05em] text-muted-foreground">
                   {s.statLabel}
                 </div>
               </div>

@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:12.551Z"
 integrationType: "modeling"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1d35570b/66d86935aaeb8c0b9fa1bde7_scikit-learn.png"
+  url: "https://assets.zenml.io/content/integrations/logos/sklearn.svg"
+  alt: "scikit-learn logo"
 shortDescription: "Train standard ML models with scikit-learn."
 docsUrl: "https://github.com/zenml-io/zenml/tree/main/examples/quickstart"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/quickstart"

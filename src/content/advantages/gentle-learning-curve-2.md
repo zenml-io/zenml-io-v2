@@ -1,6 +1,7 @@
 ---
 title: "Gentle Learning Curve"
 slug: "gentle-learning-curve-2"
+icon: "code"
 content: "ZenML's familiar Python-based pipeline definitions and consistent interface across platforms make it easier to learn and use, especially for teams without Spark expertise, compared to Databricks' steeper learning curve."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/144fb23d/669101d14ec4c8275fab7aa3_img05.png"

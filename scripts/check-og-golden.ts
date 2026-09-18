@@ -1,14 +1,15 @@
 /**
  * check-og-golden.ts
  *
- * Renders one Kitaru-vs-X Open Graph card through the real pipeline
- * (satori → resvg → sharp, see scripts/og/generate-compare-og.ts) and
- * compares the decoded pixels against a committed golden JPEG in
- * tests/snapshots/rendered/. Runs as step 9 of `pnpm smoke:dist` and
- * standalone via `pnpm check:og`. Regenerate with `pnpm og:golden:update`
- * and look at the new image before committing it — the diff IS the review.
+ * Renders a handful of Open Graph cards through the real pipelines (satori →
+ * resvg → sharp, see scripts/og/generate-compare-og.ts and
+ * scripts/og/generate-default-og.ts) and compares the decoded pixels against
+ * committed golden JPEGs in tests/snapshots/rendered/. Runs as step 9 of
+ * `pnpm smoke:dist` and standalone via `pnpm check:og`. Regenerate with
+ * `pnpm og:golden:update` and look at the new images before committing them
+ * — the diff IS the review.
  *
- * Why this exists: the OG generator is a hand-run script, so nothing else in
+ * Why this exists: the OG generators are hand-run scripts, so nothing else in
  * CI executes satori, @resvg/resvg-js or sharp. A Dependabot bump of any of
  * them passes fully green even if the cards it would produce are broken.
  * satori 0.29 → 0.33 (#290) swapped in a new text-shaping engine and moved
@@ -29,14 +30,30 @@ import { pathToFileURL } from "node:url";
 import sharp from "sharp";
 import { ACTUAL_DIR, logResult, SNAPSHOT_DIR } from "./check-dist-snapshots";
 import { loadEntries, loadFonts, renderJpeg } from "./og/generate-compare-og";
+import { loadDefaultEntries, renderDefaultJpeg } from "./og/generate-default-og";
+import type { DefaultOgFamily } from "../src/lib/constants";
 
 /**
- * One card per brand variant. The Kitaru slug is the same page the MDX
- * rendered-content golden uses; the ZenML slug exercises the template's
- * <img> data-URI path through satori/resvg, which the Kitaru card never hits.
+ * One card per pipeline variant that satori/resvg/sharp actually touch. The
+ * Kitaru VS slug is the same page the MDX rendered-content golden uses; the
+ * ZenML VS slug exercises the template's <img> data-URI path, which the
+ * Kitaru card never hits; the default card exercises the second generator.
+ * Every golden must render offline: the Markdown `compare` entries load their
+ * logo from R2, so none of them can be a golden (CI has no network here).
  */
-export const OG_GOLDEN_SLUGS = ["kitaru-vs-pydantic-ai", "zenml-vs-pydantic-ai"] as const;
-const goldenPath = (slug: string) => join(SNAPSHOT_DIR, `og-${slug}.jpg`);
+export interface OgGolden {
+  generator: "compare" | "default";
+  slug: string;
+}
+
+export const OG_GOLDENS: readonly OgGolden[] = [
+  { generator: "compare", slug: "kitaru-vs-pydantic-ai" },
+  { generator: "compare", slug: "zenml-vs-pydantic-ai" },
+  { generator: "default", slug: "pages/home" },
+];
+
+const goldenFileSlug = (slug: string) => slug.replace(/\//g, "-");
+const goldenPath = (slug: string) => join(SNAPSHOT_DIR, `og-${goldenFileSlug(slug)}.jpg`);
 
 /** Per-channel difference (0–255) at or below which a pixel counts as unchanged. */
 export const CHANNEL_DELTA = 24;
@@ -72,12 +89,24 @@ export function changedPixelPct(a: RawImage, b: RawImage): number {
 }
 
 async function renderGoldenCards(): Promise<Array<{ slug: string; jpeg: Buffer }>> {
-  const [entries, fonts] = await Promise.all([loadEntries([...OG_GOLDEN_SLUGS]), loadFonts()]);
+  const compareSlugs = OG_GOLDENS.filter((g) => g.generator === "compare").map((g) => g.slug);
+  const [compareEntries, fonts] = await Promise.all([
+    loadEntries(compareSlugs),
+    loadFonts(),
+  ]);
+
   return Promise.all(
-    OG_GOLDEN_SLUGS.map(async (slug) => {
-      const entry = entries.find((e) => e.slug === slug);
-      if (!entry) throw new Error(`No compare entry named ${slug}`);
-      return { slug, jpeg: await renderJpeg(entry, fonts) };
+    OG_GOLDENS.map(async ({ generator, slug }) => {
+      if (generator === "compare") {
+        const entry = compareEntries.find((e) => e.slug === slug);
+        if (!entry) throw new Error(`No compare entry named ${slug}`);
+        return { slug, jpeg: await renderJpeg(entry, fonts) };
+      }
+      const [family, entrySlug] = slug.split("/") as [DefaultOgFamily, string];
+      const entries = await loadDefaultEntries(family, [entrySlug]);
+      const entry = entries.find((e) => e.slug === entrySlug);
+      if (!entry) throw new Error(`No default OG entry named ${slug}`);
+      return { slug, jpeg: await renderDefaultJpeg(entry, fonts) };
     }),
   );
 }
@@ -87,7 +116,7 @@ export async function checkOgGolden(): Promise<number> {
   mkdirSync(ACTUAL_DIR, { recursive: true });
   let failures = 0;
   for (const { slug, jpeg: actual } of await renderGoldenCards()) {
-    const actualPath = join(ACTUAL_DIR, `og-${slug}.jpg`);
+    const actualPath = join(ACTUAL_DIR, `og-${goldenFileSlug(slug)}.jpg`);
     writeFileSync(actualPath, actual);
     const golden = goldenPath(slug);
 

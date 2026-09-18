@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2024-08-21T14:42:26.303Z"
   createdOn: "2024-07-12T10:47:19.642Z"
 toolName: "Flyte"
+cardSubtitle: "An agile, lightweight ML workflow orchestrator"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/999164c8/6691071cb742ce72f8dbf8d5_flyte_icon.png"
 category: "orchestrators"

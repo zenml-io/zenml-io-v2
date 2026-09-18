@@ -20,12 +20,12 @@ tags:
 date: "2022-06-29T00:00:00.000Z"
 readingTime: 13 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/91f2d879/6530073689bbc099990dd786_zenml_kubernetes_orchestrator_teaser.png"
+  url: "https://assets.zenml.io/content/blog/how-to-run-production-ml-workflows-natively-on-kubernetes/26cdd724/how-to-run-production-ml-workflows-natively-on-kubernetes-cover.avif"
 seo:
   title: "How to run production ML workflows natively on Kubernetes - ZenML Blog"
   description: "Getting started with distributed ML in the cloud: How to orchestrate ML workflows natively on Amazon Elastic Kubernetes Service (EKS)."
   canonical: "https://www.zenml.io/blog/how-to-run-production-ml-workflows-natively-on-kubernetes"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c38c0cc9/6530073689bbc099990dd786_zenml_kubernetes_orchestrator_teaser.png"
+  ogImage: "https://assets.zenml.io/content/blog/how-to-run-production-ml-workflows-natively-on-kubernetes/3c7221f9/how-to-run-production-ml-workflows-natively-on-kubernetes-cover.jpg"
   ogTitle: "How to run production ML workflows natively on Kubernetes - ZenML Blog"
   ogDescription: "Getting started with distributed ML in the cloud: How to orchestrate ML workflows natively on Amazon Elastic Kubernetes Service (EKS)."
 ---

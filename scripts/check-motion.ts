@@ -69,7 +69,7 @@ const HYDRATION_BUDGET = 3;
 const AMBIENT_BUDGET = 1;
 
 /** Ambient/atmospheric components: shader backdrops, grain fields, glow washes. */
-const AMBIENT_COMPONENTS = ["KitaruGrain"];
+const AMBIENT_COMPONENTS = ["KitaruGrain", "GrainBackdrop"];
 
 /** Site-wide chrome exempt from the hydration budget. */
 const EXEMPT_COMPONENTS = ["CookieConsent"];

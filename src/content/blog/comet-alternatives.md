@@ -21,12 +21,14 @@ tags:
 date: "2026-02-19T00:00:00.000Z"
 readingTime: 14 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3326221d/69968e99493bb5e28b737c63_comet-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/comet-alternatives/24afc7e2/comet-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/comet-alternatives/24afc7e2/comet-alternatives-cover.avif"
 seo:
   title: "We Tried and Tested the 9 Best Comet Alternatives for Model Evaluation - ZenML Blog"
   description: "In this article, you will learn about the best Comet alternatives for model evaluation."
   canonical: "https://www.zenml.io/blog/comet-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3326221d/69968e99493bb5e28b737c63_comet-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/comet-alternatives/39ab8712/comet-alternatives-cover.jpg"
   ogTitle: "We Tried and Tested the 9 Best Comet Alternatives for Model Evaluation - ZenML Blog"
   ogDescription: "In this article, you will learn about the best Comet alternatives for model evaluation."
 ---

@@ -12,13 +12,16 @@ tags:
 date: "2026-07-20T07:53:33.913Z"
 readingTime: "20 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/dagster-vs-airflow/c7ef0cbb/dagster-vs-airflow-cover.avif"
+  url: "https://assets.zenml.io/content/blog/dagster-vs-airflow/5ef2ac81/dagster-vs-airflow-cover.avif"
+  alt: "Dagster vs Airflow vs ZenML: three approaches to ML orchestration, with the Dagster, Airflow, and ZenML logos"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/dagster-vs-airflow/5ef2ac81/dagster-vs-airflow-cover.avif"
   alt: "Dagster vs Airflow vs ZenML: three approaches to ML orchestration, with the Dagster, Airflow, and ZenML logos"
 seo:
   title: "Dagster vs Airflow vs ZenML: Three Approaches to ML Orchestration - ZenML Blog"
   description: "This article compares Dagster vs Airflow vs ZenML on features, integrations, pricing, and most importantly, where each tool fits."
   canonical: "https://www.zenml.io/blog/dagster-vs-airflow"
-  ogImage: "https://assets.zenml.io/content/blog/dagster-vs-airflow/60b993ff/dagster-vs-airflow-cover.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/dagster-vs-airflow/fd8e315e/dagster-vs-airflow-cover.jpg"
 ---
 
 On July 13, 2026, Prefect announced an agreement to acquire Dagster Labs. The companies expect the transaction to close in the coming weeks and the combined company to operate under the Prefect name beginning in August 2026. Dagster OSS and Dagster+ remain supported under the Dagster name, with existing deployments, contracts, pricing, and support unchanged.

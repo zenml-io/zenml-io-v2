@@ -13,13 +13,13 @@ tags:
 date: "2026-05-29T00:00:00.000Z"
 readingTime: "9 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/langgraph-durable-runtime/34f20d10/kit-langgraph.avif"
+  url: "https://assets.zenml.io/content/blog/langgraph-durable-runtime/d48798c1/langgraph-durable-runtime-cover.avif"
   alt: "Kitaru durable runtime around a LangGraph agent"
 seo:
   title: "Your LangGraph agent works. Now make the workflow durable. - ZenML Blog"
   description: "LangGraph keeps graph state, threads, and interrupts. Kitaru adds the durable workflow around the graph call — replay boundaries, durable waits, and inspectable runs."
   canonical: "https://www.zenml.io/blog/langgraph-durable-runtime"
-  ogImage: "https://assets.zenml.io/content/blog/langgraph-durable-runtime/56558d48/kit-langgraph.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/langgraph-durable-runtime/5c0d1d1d/langgraph-durable-runtime-cover.jpg"
 ---
 
 You already have a LangGraph graph.

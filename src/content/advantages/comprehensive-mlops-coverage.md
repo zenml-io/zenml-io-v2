@@ -1,6 +1,7 @@
 ---
 title: "Comprehensive MLOps Coverage"
 slug: "comprehensive-mlops-coverage"
+icon: "pipeline"
 content: "ZenML provides an end-to-end MLOps solution, covering the entire lifecycle from data versioning to model monitoring, while MLflow focuses primarily on experiment tracking, model registry, and deployment."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/54938439/667167b34c4aaf843c0fac78_img03.png"

@@ -21,12 +21,14 @@ tags:
 date: "2025-05-08T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7ce7b037/681c90c4cd7d5959657eceed_kubeflow-vs-mlflow.png"
+  url: "https://assets.zenml.io/content/blog/kubeflow-vs-mlflow/9e34d023/kubeflow-vs-mlflow-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/kubeflow-vs-mlflow/9e34d023/kubeflow-vs-mlflow-cover.avif"
 seo:
   title: "Kubeflow vs MLflow vs ZenML: Which MLOps Platform Is the Best? - ZenML Blog"
   description: "In this Kubeflow vs MLflow vs ZenML article, we explain the difference between the three platforms by comparing their features, integrations, and pricing."
   canonical: "https://www.zenml.io/blog/kubeflow-vs-mlflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7ce7b037/681c90c4cd7d5959657eceed_kubeflow-vs-mlflow.png"
+  ogImage: "https://assets.zenml.io/content/blog/kubeflow-vs-mlflow/9eba5dbf/kubeflow-vs-mlflow-cover.jpg"
   ogTitle: "Kubeflow vs MLflow vs ZenML: Which MLOps Platform Is the Best? - ZenML Blog"
   ogDescription: "In this Kubeflow vs MLflow vs ZenML article, we explain the difference between the three platforms by comparing their features, integrations, and pricing."
 ---

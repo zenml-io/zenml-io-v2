@@ -12,13 +12,16 @@ tags:
 date: "2026-07-16T11:42:19.483Z"
 readingTime: "20 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/cadence-vs-temporal/e2c03c41/cadence-vs-temporal.avif"
+  url: "https://assets.zenml.io/content/blog/cadence-vs-temporal/84507c07/cadence-vs-temporal-cover.avif"
+  alt: "Cadence vs Temporal vs Kitaru comparison for long-running workflows"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/cadence-vs-temporal/84507c07/cadence-vs-temporal-cover.avif"
   alt: "Cadence vs Temporal vs Kitaru comparison for long-running workflows"
 seo:
   title: "Cadence vs Temporal vs Kitaru: Runtimes for Long-Running Workflows - ZenML Blog"
   description: "This Cadence vs Temporal vs Kitaru guide will walk you through what each one solves and how the architectures actually differ."
   canonical: "https://www.zenml.io/blog/cadence-vs-temporal"
-  ogImage: "https://assets.zenml.io/content/blog/cadence-vs-temporal/6e9f1880/cadence-vs-temporal.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/cadence-vs-temporal/fb4784f2/cadence-vs-temporal-cover.jpg"
 ---
 
 Picture an AI agent working through a support backlog. The AI workflow runs for 45 minutes and calls a dozen APIs. Right before it finishes, the model provider returns a timeout, and the agent crashes. Nothing was saved, so you restart from zero and pay for every one of those calls again.

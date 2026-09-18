@@ -12,13 +12,16 @@ tags:
 date: "2026-09-10T11:34:52.617Z"
 readingTime: "20 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/arize-ai-alternatives/478c4031/arize-ai-alternatives-cover.avif"
-  alt: "We tested the 8 best Arize AI alternatives for agent observability and replay"
+  url: "https://assets.zenml.io/content/blog/arize-ai-alternatives/ba7d81f5/arize-ai-alternatives-cover.avif"
+  alt: "Kitaru comparison card for 8 Arize AI Alternatives for Agent Observability and Replay, showing the logos of Kitaru, Braintrust, LangSmith, Langfuse, Maxim AI, Galileo, Opik and W&B Weave"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/arize-ai-alternatives/ba7d81f5/arize-ai-alternatives-cover.avif"
+  alt: "Kitaru comparison card for 8 Arize AI Alternatives for Agent Observability and Replay, showing the logos of Kitaru, Braintrust, LangSmith, Langfuse, Maxim AI, Galileo, Opik and W&B Weave"
 seo:
   title: "8 Best Arize AI Alternatives for Agent Observability - ZenML Blog"
   description: "We reviewed the 8 best Arize AI alternatives for agent observability, evaluation, and replay, from Kitaru and Braintrust to Langfuse, Opik, and W&B Weave."
   canonical: "https://www.zenml.io/blog/arize-ai-alternatives"
-  ogImage: "https://assets.zenml.io/content/blog/arize-ai-alternatives/f67b2bb5/arize-ai-alternatives-cover.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/arize-ai-alternatives/2440c9b7/arize-ai-alternatives-cover.jpg"
 ---
 
 Arize AI is one of the most established names in ML and LLM observability, and on August 13, 2026, Dynatrace agreed to acquire it in a $915 million cash-and-stock deal. The deal has not closed as of September 2026. If your agents run on Arize today, that makes this a sensible moment to check what else the market offers.

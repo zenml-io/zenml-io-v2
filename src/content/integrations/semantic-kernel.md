@@ -12,7 +12,8 @@ webflow:
   createdOn: "2025-08-26T14:45:01.429Z"
 integrationType: "agents"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cc4daf0e/68adc8724b8c436be609f693_semantic-kernel.png"
+  url: "https://assets.zenml.io/content/integrations/logos/semantic-kernel.svg"
+  alt: "Semantic Kernel logo"
 shortDescription: "Microsoft Semantic Kernel integrated with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/semantic-kernel"

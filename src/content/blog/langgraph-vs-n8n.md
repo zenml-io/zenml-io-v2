@@ -21,12 +21,14 @@ tags:
 date: "2025-08-01T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9fa6efee/6981d362e92aa039b696acfd_6981d2b20208c93ce57308f8_langgraph-vs-n8n.avif"
+  url: "https://assets.zenml.io/content/blog/langgraph-vs-n8n/9690f46e/langgraph-vs-n8n-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/langgraph-vs-n8n/9690f46e/langgraph-vs-n8n-cover.avif"
 seo:
   title: "LangGraph vs n8n: Choosing the Right Framework for Agentic AI - ZenML Blog"
   description: "Compare LangGraph vs n8n for building AI agents in 2025. Updated with LangGraph 1.0 stable release and n8n's new unlimited workflow pricing. Discover which framework fits your production AI stack."
   canonical: "https://www.zenml.io/blog/langgraph-vs-n8n"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9fa6efee/6981d362e92aa039b696acfd_6981d2b20208c93ce57308f8_langgraph-vs-n8n.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/langgraph-vs-n8n/f141e713/langgraph-vs-n8n-cover.jpg"
   ogTitle: "LangGraph vs n8n: Choosing the Right Framework for Agentic AI - ZenML Blog"
   ogDescription: "Compare LangGraph vs n8n for building AI agents in 2025. Updated with LangGraph 1.0 stable release and n8n's new unlimited workflow pricing. Discover which framework fits your production AI stack."
 ---

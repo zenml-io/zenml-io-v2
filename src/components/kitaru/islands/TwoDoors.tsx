@@ -88,7 +88,7 @@ function InstallCommand({ command }: { command: string }) {
       data-copy={command}
       title={command}
       aria-label={copied ? "Copied" : `Copy install command: ${command}`}
-      className="flex min-w-0 cursor-pointer items-center gap-1.5 rounded-md border border-border bg-warm-taupe-track py-1 pr-2 pl-2.5 font-mono text-[11px] text-ink-soft transition-colors hover:text-ink"
+      className="flex min-w-0 cursor-pointer items-center gap-1.5 rounded-full border border-border bg-warm-taupe-track py-1 pr-2.5 pl-3 font-mono text-[11px] text-ink-soft transition-colors duration-200 ease-out hover:text-ink"
     >
       <span className="text-ember select-none" aria-hidden="true">
         $
@@ -944,7 +944,7 @@ function DoorTabs({
               tabIndex={t.id === activeId ? 0 : -1}
               onClick={() => onSelect(t.id)}
               className={cn(
-                "flex items-center gap-2 rounded-[9px] border px-3 py-2 font-mono text-[12px] cursor-pointer",
+                "flex items-center gap-2 rounded-full border px-3.5 py-2 font-label text-[12px] uppercase tracking-[0.05em] cursor-pointer transition-colors duration-200 ease-out",
                 t.id === activeId
                   ? "border-ink bg-ink text-background"
                   : "border-border bg-surface text-ink-soft hover:border-ember/50 hover:text-ink",
@@ -998,14 +998,14 @@ export function TwoDoors() {
           description="Import what your current tools already collected, or wrap your agent in one line and record new runs. Both roads end at the same thing: sessions you can replay."
           classOverrides={{
             eyebrow:
-              "inline-block font-mono text-[11px] tracking-[0.22em] text-ember uppercase",
+              "inline-block font-label text-[13px] tracking-[0.05em] text-ember uppercase",
             heading:
-              "text-balance text-3xl leading-[1.1] font-medium tracking-[-0.02em] md:text-[2.75rem]",
-            headingSpacing: "mt-5",
+              "font-display text-[32px] leading-[36px] text-balance text-(--color-cream-900) md:text-[44px] md:leading-[48px]",
+            headingSpacing: "mt-space-sm",
             emphasis: "text-ember",
             description:
-              "max-w-2xl text-base leading-relaxed text-ink-soft md:text-lg",
-            descriptionSpacing: "mt-5",
+              "max-w-2xl font-sans text-[17px] leading-[26px] text-foreground md:text-[18px] md:leading-[27px]",
+            descriptionSpacing: "mt-space-sm",
           }}
         />
       </Reveal>
@@ -1013,20 +1013,17 @@ export function TwoDoors() {
       <div className="mt-12 grid grid-cols-1 gap-7 lg:grid-cols-2">
         {/* Door 01 — import */}
         <Reveal delay={80} variant="left" className="h-full">
-          <div className="flex h-full flex-col rounded-[14px] border border-border bg-surface p-7">
-            <div className="flex items-baseline justify-between gap-4">
-              <span className="font-mono text-[11px] tracking-[0.14em] text-ember uppercase">
-                01 · import
-              </span>
-              <span className="font-mono text-[11.5px] text-ink-soft">
-                no code changes
-              </span>
+          <div className="flex h-full flex-col rounded-[20px] border border-border bg-surface p-8 transition-colors duration-200 ease-out hover:border-(--color-orange-300)">
+            <div className="flex items-baseline justify-between gap-4 font-label text-[13px] tracking-[0.05em]">
+              <span className="text-ember uppercase">01 · import</span>
+              <span className="text-ink-soft">no code changes</span>
             </div>
             <SectionIntro
               heading="Have traces? Import them."
               headingLevel={3}
               classOverrides={{
-                heading: "font-heading text-[21px] font-semibold text-ink",
+                heading:
+                  "font-display text-[24px] leading-[30px] text-(--color-cream-900)",
                 headingSpacing: "mt-2",
               }}
             />
@@ -1046,13 +1043,13 @@ export function TwoDoors() {
               role="tabpanel"
               id="two-doors-import-panel"
               aria-labelledby={`two-doors-import-tab-${importTab.id}`}
-              className="mt-5 flex flex-1 flex-col overflow-hidden rounded-[10px] bg-night"
+              className="mt-5 flex flex-1 flex-col overflow-hidden rounded-[12px] bg-night"
             >
               <div className="flex items-center gap-3 border-b border-white/10 px-5 py-3">
                 <span className="size-2 rounded-full bg-white/15" />
                 <span className="size-2 rounded-full bg-white/15" />
                 <span className="size-2 rounded-full bg-white/15" />
-                <span className="font-mono text-[11px] tracking-[0.08em] text-night-text/45">
+                <span className="font-label text-[12px] tracking-[0.05em] text-night-text/45">
                   session import
                 </span>
                 <span className="ml-auto truncate font-mono text-[11px] text-ember">
@@ -1130,9 +1127,9 @@ export function TwoDoors() {
 
         {/* Door 02 — record */}
         <Reveal delay={140} variant="right" className="h-full">
-          <div className="flex h-full flex-col rounded-[14px] border border-border bg-surface p-7">
+          <div className="flex h-full flex-col rounded-[20px] border border-border bg-surface p-8 transition-colors duration-200 ease-out hover:border-(--color-orange-300)">
             <div className="flex items-center justify-between gap-4">
-              <span className="shrink-0 font-mono text-[11px] tracking-[0.14em] text-ink-soft uppercase">
+              <span className="shrink-0 font-label text-[13px] tracking-[0.05em] text-ink-soft uppercase">
                 02 · record
               </span>
               {/* key resets the "copied" check when the tab (and command) changes */}
@@ -1142,7 +1139,8 @@ export function TwoDoors() {
               heading="Have an agent? Wrap it."
               headingLevel={3}
               classOverrides={{
-                heading: "font-heading text-[21px] font-semibold text-ink",
+                heading:
+                  "font-display text-[24px] leading-[30px] text-(--color-cream-900)",
                 headingSpacing: "mt-2",
               }}
             />
@@ -1163,13 +1161,13 @@ export function TwoDoors() {
               role="tabpanel"
               id="two-doors-record-panel"
               aria-labelledby={`two-doors-record-tab-${framework.id}`}
-              className="mt-5 flex flex-1 flex-col overflow-hidden rounded-[10px] border border-border bg-warm-taupe-track"
+              className="mt-5 flex flex-1 flex-col overflow-hidden rounded-[12px] border border-border bg-warm-taupe-track"
             >
               <div className="flex items-center gap-3 border-b border-border bg-black/[0.04] px-5 py-3">
                 <span className="size-2 rounded-full bg-ink/15" />
                 <span className="size-2 rounded-full bg-ink/15" />
                 <span className="size-2 rounded-full bg-ink/15" />
-                <span className="font-mono text-[11px] tracking-[0.08em] text-ink-soft">
+                <span className="font-label text-[12px] tracking-[0.05em] text-ink-soft">
                   recording adapter
                 </span>
                 <div className="ml-auto flex items-center gap-3">
@@ -1181,7 +1179,7 @@ export function TwoDoors() {
                         aria-pressed={recordView === v}
                         onClick={() => setRecordView(v)}
                         className={cn(
-                          "rounded-full px-2 py-0.5 font-mono text-[10.5px] whitespace-nowrap cursor-pointer transition-colors",
+                          "rounded-full px-2.5 py-0.5 font-label text-[11px] whitespace-nowrap cursor-pointer transition-colors duration-200 ease-out",
                           recordView === v
                             ? "bg-ink text-background"
                             : "text-ink-soft hover:text-ink",
@@ -1245,7 +1243,7 @@ export function TwoDoors() {
                 )}
               </div>
             </div>
-            <p className="mt-4 text-[12.5px] leading-relaxed text-ink-soft">
+            <p className="mt-4 text-[14px] leading-[1.45] text-ink-soft">
               Agent running on Claude Code, Codex, or the Gemini CLI? Import its
               session logs today, no adapter needed. For replay, the
               adapter-builder skill wraps the harness call the same way.

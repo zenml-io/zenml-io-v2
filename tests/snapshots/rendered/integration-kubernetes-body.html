@@ -1,0 +1,805 @@
+<div class="prose">
+<p data-astro-cid-[hash]="">Leverage the power of Kubernetes to orchestrate and scale your machine learning workflows using ZenML's Kubernetes integration. This lightweight, minimalist orchestrator enables you to run ML pipelines on Kubernetes clusters without the complexity of managing additional frameworks like Kubeflow.
+</p>
+<h2 id="features-with-zenml" data-astro-cid-[hash]="">Features with ZenML
+</h2>
+<ul>
+<li>Orchestrate ZenML pipelines on Kubernetes with minimal configuration
+</li>
+<li>Scale ML workloads seamlessly across Kubernetes clusters
+</li>
+<li>Easily transition from local to distributed orchestration
+</li>
+<li>Ideal for teams new to distributed ML looking for a lightweight solution
+</li>
+</ul>
+<h2 id="main-features" data-astro-cid-[hash]="">Main Features
+</h2>
+<ul>
+<li>Automated container orchestration and scaling
+</li>
+<li>Declarative configuration using YAML files
+</li>
+<li>Support for GPU-accelerated workloads
+</li>
+<li>Rich ecosystem of tools and extensions
+</li>
+<li>Industry standard for managing containerized applications
+</li>
+</ul>
+<h2 id="how-to-use" data-astro-cid-[hash]="">How to use ZenML with Kubernetes
+</h2>
+<div data-rt-embed-type="true">
+<figure class="code-pane" data-language="bash">
+<div class="code-pane__bar">
+<span>bash
+</span>
+<button type="button" class="code-pane__copy" aria-label="Copy code">Copy
+</button>
+</div>
+<div class="code-pane__scroll">
+<pre class="shiki labs-light" style="background-color:#413D37;color:#F5F7F4" tabindex="0">
+<code>
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># Step 1: Register a new Kubrnetes orchestrator
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">&gt;&gt;&gt;
+</span>
+<span style="color:#47BAD1">zenml
+</span>
+<span style="color:#DBE0C2"> orchestrator
+</span>
+<span style="color:#DBE0C2"> register
+</span>
+<span style="color:#47BAD1"> &lt;
+</span>
+<span style="color:#DBE0C2">ORCHESTRATOR_NAM
+</span>
+<span style="color:#F5F7F4">E
+</span>
+<span style="color:#47BAD1">&gt;
+</span>
+<span style="color:#E0CFB7"> \
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp;--flavor=kubernetes
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp;
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># Step 2: Authernticate Sagemaker orchestrator
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># Option 1 (recomended): Service Connector
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">&gt;&gt;&gt;
+</span>
+<span style="color:#47BAD1">zenml
+</span>
+<span style="color:#DBE0C2"> orchestrator
+</span>
+<span style="color:#DBE0C2"> connect
+</span>
+<span style="color:#47BAD1"> &lt;
+</span>
+<span style="color:#DBE0C2">ORCHESTRATOR_NAM
+</span>
+<span style="color:#F5F7F4">E
+</span>
+<span style="color:#47BAD1">&gt;
+</span>
+<span style="color:#E0CFB7"> --connector
+</span>
+<span style="color:#47BAD1"> &lt;
+</span>
+<span style="color:#DBE0C2">CONNECTOR_NAM
+</span>
+<span style="color:#F5F7F4">E
+</span>
+<span style="color:#47BAD1">&gt;
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># Option 2 (not recommended): Explicit authentication
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">&gt;&gt;&gt;
+</span>
+<span style="color:#47BAD1">zenml
+</span>
+<span style="color:#DBE0C2"> orchestrator
+</span>
+<span style="color:#DBE0C2"> register
+</span>
+<span style="color:#47BAD1"> &lt;
+</span>
+<span style="color:#DBE0C2">ORCHESTRATOR_NAM
+</span>
+<span style="color:#F5F7F4">E
+</span>
+<span style="color:#47BAD1">&gt;
+</span>
+<span style="color:#E0CFB7"> \
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp;--flavor=kubernetes
+</span>
+<span style="color:#E0CFB7"> \
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp;--kubernetes_context=
+</span>
+<span style="color:#47BAD1">&lt;
+</span>
+<span style="color:#DBE0C2">KUBERNETES_CONTEX
+</span>
+<span style="color:#F5F7F4">T
+</span>
+<span style="color:#47BAD1">&gt;
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># Step 3: Update your stack to use the Sagemaker orchestrator
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">&gt;&gt;&gt;
+</span>
+<span style="color:#47BAD1">zenml
+</span>
+<span style="color:#DBE0C2"> stack
+</span>
+<span style="color:#DBE0C2"> update
+</span>
+<span style="color:#E0CFB7"> -o
+</span>
+<span style="color:#47BAD1"> &lt;
+</span>
+<span style="color:#DBE0C2">ORCHESTRATOR_NAM
+</span>
+<span style="color:#F5F7F4">E
+</span>
+<span style="color:#47BAD1">&gt;
+</span>
+</span>
+</code>
+</pre>
+</div>
+</figure>
+</div>
+<div data-rt-embed-type="true">
+<figure class="code-pane" data-language="python">
+<div class="code-pane__bar">
+<span>python
+</span>
+<button type="button" class="code-pane__copy" aria-label="Copy code">Copy
+</button>
+</div>
+<div class="code-pane__scroll">
+<pre class="shiki labs-light" style="background-color:#413D37;color:#F5F7F4" tabindex="0">
+<code>
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> zenml
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> step
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#F5F7F4"> pipeline
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> zenml
+</span>
+<span style="color:#47BAD1">.
+</span>
+<span style="color:#F5F7F4">integrations
+</span>
+<span style="color:#47BAD1">.
+</span>
+<span style="color:#F5F7F4">kubernetes
+</span>
+<span style="color:#47BAD1">.
+</span>
+<span style="color:#F5F7F4">flavors
+</span>
+<span style="color:#47BAD1">.
+</span>
+<span style="color:#F5F7F4">kubernetes_orchestrator_flavor
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> (
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4"> &nbsp; &nbsp;KubernetesOrchestratorSettings
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">kubernetes_settings
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> KubernetesOrchestratorSettings
+</span>
+<span style="color:#F5F7F4">(
+</span>
+</span>
+
+<span class="line">
+<span style="color:#E0CFB7"> &nbsp; &nbsp;pod_settings
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#F5F7F4">{
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp;"resources"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4">{
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"requests"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4">{
+</span>
+<span style="color:#DBE0C2">"cpu"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#DBE0C2">"1"
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#DBE0C2">"memory"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#DBE0C2">"1Gi"
+</span>
+<span style="color:#F5F7F4">}
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"limits"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4">{
+</span>
+<span style="color:#DBE0C2">"cpu"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#DBE0C2">"2"
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#DBE0C2">"memory"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#DBE0C2">"2Gi"
+</span>
+<span style="color:#F5F7F4">}
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4"> &nbsp; &nbsp; &nbsp; &nbsp;}
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp;"labels"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4">{
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"app"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#DBE0C2">"ml-pipeline"
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"environment"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#DBE0C2">"production"
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"team"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#DBE0C2">"mlops"
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4"> &nbsp; &nbsp; &nbsp; &nbsp;}
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4"> &nbsp; &nbsp;}
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#E0CFB7"> &nbsp; &nbsp;orchestrator_pod_settings
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#F5F7F4">{
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp;"resources"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4">{
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"requests"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4">{
+</span>
+<span style="color:#DBE0C2">"cpu"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#DBE0C2">"1"
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#DBE0C2">"memory"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#DBE0C2">"1Gi"
+</span>
+<span style="color:#F5F7F4">}
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"limits"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4">{
+</span>
+<span style="color:#DBE0C2">"cpu"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#DBE0C2">"2"
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#DBE0C2">"memory"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#DBE0C2">"2Gi"
+</span>
+<span style="color:#F5F7F4">}
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4"> &nbsp; &nbsp; &nbsp; &nbsp;}
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp;"labels"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4">{
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"app"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#DBE0C2">"zenml-orchestrator"
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"component"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#DBE0C2">"pipeline-runner"
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;"team"
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#DBE0C2">"mlops"
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4"> &nbsp; &nbsp; &nbsp; &nbsp;}
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4"> &nbsp; &nbsp;}
+</span>
+<span style="color:#47BAD1">,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">@step
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> load_data
+</span>
+<span style="color:#F5F7F4">()
+</span>
+<span style="color:#47BAD1">-&gt;
+</span>
+<span style="color:#E0CFB7"> dict
+</span>
+<span style="color:#F5F7F4">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"> &nbsp; &nbsp;# Load data here
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6"> &nbsp; &nbsp;return
+</span>
+<span style="color:#F5F7F4"> {
+</span>
+<span style="color:#E0CFB7">1
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4"> [
+</span>
+<span style="color:#E0CFB7">1
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#E0CFB7"> 2
+</span>
+<span style="color:#F5F7F4">]
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#E0CFB7"> 2
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4"> [
+</span>
+<span style="color:#E0CFB7">3
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#E0CFB7"> 4
+</span>
+<span style="color:#F5F7F4">]}
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">@step
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> preprocess_data
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">raw_data
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> dict
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">-&gt;
+</span>
+<span style="color:#E0CFB7"> dict
+</span>
+<span style="color:#F5F7F4">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"> &nbsp; &nbsp;# Preprocess data here
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6"> &nbsp; &nbsp;return
+</span>
+<span style="color:#F5F7F4"> {k
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4"> v
+</span>
+<span style="color:#47BAD1">*
+</span>
+<span style="color:#E0CFB7"> 2
+</span>
+<span style="color:#BECAA6"> for
+</span>
+<span style="color:#F5F7F4"> k
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#F5F7F4"> v
+</span>
+<span style="color:#BECAA6">in
+</span>
+<span style="color:#F5F7F4"> raw_data
+</span>
+<span style="color:#47BAD1">.items
+</span>
+<span style="color:#F5F7F4">()}
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">@pipeline
+</span>
+<span style="color:#F5F7F4">(
+</span>
+</span>
+
+<span class="line">
+<span style="color:#E0CFB7"> &nbsp; &nbsp;settings
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#F5F7F4">{
+</span>
+</span>
+
+<span class="line">
+<span style="color:#DBE0C2"> &nbsp; &nbsp; &nbsp; &nbsp;"orchestrator.kubernetes"
+</span>
+<span style="color:#47BAD1">: kubernetes_settings,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4"> &nbsp; &nbsp;}
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> my_kubernetes_pipeline
+</span>
+<span style="color:#F5F7F4">():
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"> &nbsp; &nbsp;# Pipeline steps here
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4"> &nbsp; &nbsp;raw_data
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> load_data
+</span>
+<span style="color:#F5F7F4">()
+</span>
+</span>
+
+<span class="line">
+<span style="color:#47BAD1"> &nbsp; &nbsp;preprocess_data
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">raw_data
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">if
+</span>
+<span style="color:#F5F7F4"> __name__
+</span>
+<span style="color:#47BAD1">==
+</span>
+<span style="color:#DBE0C2"> "__main__"
+</span>
+<span style="color:#47BAD1">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#47BAD1"> &nbsp; &nbsp;my_kubernetes_pipeline
+</span>
+<span style="color:#F5F7F4">()
+</span>
+</span>
+</code>
+</pre>
+</div>
+</figure>
+</div>
+<h2 id="additional-resources" data-astro-cid-[hash]="">Additional Resources
+</h2>
+<ul data-astro-cid-[hash]="">
+<li data-astro-cid-[hash]="">
+<a href="https://kubernetes.io/docs/home/" target="_blank" rel="noopener noreferrer" data-astro-cid-[hash]="">Kubernetes Documentation
+</a>
+</li>
+</ul>
+</div>

@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2024-10-08T12:03:48.840Z"
   createdOn: "2024-10-08T12:00:42.267Z"
 toolName: "Valohai"
+cardSubtitle: "Open-source MLOps that fits your existing stack"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8e3306a1/67051ee41295ebfd0139bf81_valohai.png"
 category: "e2e-platforms"

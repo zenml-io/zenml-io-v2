@@ -21,12 +21,12 @@ tags:
 date: "2022-03-02T00:00:00.000Z"
 readingTime: 11 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/49d3413c/653005518a8d62272d184427_continuous.gif"
+  url: "https://assets.zenml.io/content/blog/how-to-painlessly-deploy-your-ml-models-with-zenml/c00cb2ce/how-to-painlessly-deploy-your-ml-models-with-zenml-cover.avif"
 seo:
   title: "How to painlessly deploy your ML models with ZenML - ZenML Blog"
   description: "Connecting model training pipelines to deploying models in production is regarded as a difficult milestone on the way to achieving Machine Learning operations maturity for an organization. ZenML rises to the challenge and introduces a novel approach to continuous model deployment that renders a smooth transition from experimentation to production."
   canonical: "https://www.zenml.io/blog/how-to-painlessly-deploy-your-ml-models-with-zenml"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6494e611/653005518a8d62272d184427_continuous.gif"
+  ogImage: "https://assets.zenml.io/content/blog/how-to-painlessly-deploy-your-ml-models-with-zenml/39614373/how-to-painlessly-deploy-your-ml-models-with-zenml-cover.jpg"
   ogTitle: "How to painlessly deploy your ML models with ZenML - ZenML Blog"
   ogDescription: "Connecting model training pipelines to deploying models in production is regarded as a difficult milestone on the way to achieving Machine Learning operations maturity for an organization. ZenML rises to the challenge and introduces a novel approach to continuous model deployment that renders a smooth transition from experimentation to production."
 ---

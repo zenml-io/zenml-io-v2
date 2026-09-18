@@ -12,13 +12,16 @@ tags:
 date: "2026-08-04T11:42:17.394Z"
 readingTime: "21 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/inngest-alternatives/e65a5b20/inngest-alternatives-cover.avif"
+  url: "https://assets.zenml.io/content/blog/inngest-alternatives/67f228d1/inngest-alternatives-cover.avif"
+  alt: "ZenML blog cover titled We Tested the 8 Inngest Alternatives for Durable AI Agents, showing the logos of Kitaru, Temporal, Trigger.dev, Restate, Hatchet, DBOS, LangGraph, and Camunda"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/inngest-alternatives/67f228d1/inngest-alternatives-cover.avif"
   alt: "ZenML blog cover titled We Tested the 8 Inngest Alternatives for Durable AI Agents, showing the logos of Kitaru, Temporal, Trigger.dev, Restate, Hatchet, DBOS, LangGraph, and Camunda"
 seo:
   title: "8 Inngest Alternatives for Durable AI Agents - ZenML Blog"
   description: "We reviewed eight Inngest alternatives for durable AI agents. Compare run search and workload isolation, plus duplicate prevention and price."
   canonical: "https://www.zenml.io/blog/inngest-alternatives"
-  ogImage: "https://assets.zenml.io/content/blog/inngest-alternatives/3ac81e9f/inngest-alternatives-cover.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/inngest-alternatives/ef243083/inngest-alternatives-cover.jpg"
   ogTitle: "We Tested the 8 Inngest Alternatives for Durable AI Agents"
   ogDescription: "We reviewed eight Inngest alternatives for durable AI agents. Compare run search and workload isolation, plus duplicate prevention and price."
 ---

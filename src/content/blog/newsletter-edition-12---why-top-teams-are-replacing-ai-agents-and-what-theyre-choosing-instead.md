@@ -20,12 +20,12 @@ tags:
 date: "2025-03-07T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b3fcf3b/67caa04e963f2a8f9892eee4_Hackathon_Winners_Newsletter__1_.jpeg"
+  url: "https://assets.zenml.io/content/blog/newsletter-edition-12---why-top-teams-are-replacing-ai-agents-and-what-theyre-choosing-instead/6fb8cd89/newsletter-edition-12-why-top-teams-are-replacing-ai-agents-and-what-theyre-choosing-instead-cover.avif"
 seo:
   title: "Newsletter Edition #12 - Why Top Teams Are Replacing AI Agents (and What They're Choosing Instead) - ZenML Blog"
   description: "Our monthly roundup: Hamza visits the US, a new course built on ZenML and why workflows are better than autonomous agents!"
   canonical: "https://www.zenml.io/blog/newsletter-edition-12---why-top-teams-are-replacing-ai-agents-and-what-theyre-choosing-instead"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9b3fcf3b/67caa04e963f2a8f9892eee4_Hackathon_Winners_Newsletter__1_.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/newsletter-edition-12---why-top-teams-are-replacing-ai-agents-and-what-theyre-choosing-instead/51241c19/newsletter-edition-12-why-top-teams-are-replacing-ai-agents-and-what-theyre-choosing-instead-cover.jpg"
   ogTitle: "Newsletter Edition #12 - Why Top Teams Are Replacing AI Agents (and What They're Choosing Instead) - ZenML Blog"
   ogDescription: "Our monthly roundup: Hamza visits the US, a new course built on ZenML and why workflows are better than autonomous agents!"
 ---

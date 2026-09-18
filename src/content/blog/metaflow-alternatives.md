@@ -21,12 +21,14 @@ tags:
 date: "2025-05-25T00:00:00.000Z"
 readingTime: 18 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/755daafe/6832aace9707ff17f4ffcf01_metaflow-alternatives.png"
+  url: "https://assets.zenml.io/content/blog/metaflow-alternatives/faa65996/metaflow-alternatives-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/metaflow-alternatives/faa65996/metaflow-alternatives-cover.avif"
 seo:
   title: "8 Metaflow Alternatives to Streamline Your ML Workflows - ZenML Blog"
   description: "Discover the top 8 Metaflow alternatives to streamline your ML workflows."
   canonical: "https://www.zenml.io/blog/metaflow-alternatives"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/755daafe/6832aace9707ff17f4ffcf01_metaflow-alternatives.png"
+  ogImage: "https://assets.zenml.io/content/blog/metaflow-alternatives/5a28fb08/metaflow-alternatives-cover.jpg"
   ogTitle: "8 Metaflow Alternatives to Streamline Your ML Workflows - ZenML Blog"
   ogDescription: "Discover the top 8 Metaflow alternatives to streamline your ML workflows."
 ---

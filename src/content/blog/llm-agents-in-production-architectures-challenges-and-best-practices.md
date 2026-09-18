@@ -20,12 +20,12 @@ tags:
 date: "2024-12-09T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/191eb5e1/6981d352ce4b26d085d70417_6981d2b73a23ce7eab81296a_Surreal_Double_Exposure_Image_1.avif"
+  url: "https://assets.zenml.io/content/blog/llm-agents-in-production-architectures-challenges-and-best-practices/8f3f4d5a/llm-agents-in-production-architectures-challenges-and-best-practices-cover.avif"
 seo:
   title: "LLM Agents in Production: Architectures, Challenges, and Best Practices - ZenML Blog"
   description: "An in-depth exploration of LLM agents in production environments, covering key architectures, practical challenges, and best practices. Drawing from real-world case studies in the LLMOps Database, this article examines the current state of AI agent deployment, infrastructure requirements, and critical considerations for organizations looking to implement these systems safely and effectively."
   canonical: "https://www.zenml.io/blog/llm-agents-in-production-architectures-challenges-and-best-practices"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/191eb5e1/6981d352ce4b26d085d70417_6981d2b73a23ce7eab81296a_Surreal_Double_Exposure_Image_1.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/llm-agents-in-production-architectures-challenges-and-best-practices/d0690673/llm-agents-in-production-architectures-challenges-and-best-practices-cover.jpg"
   ogTitle: "LLM Agents in Production: Architectures, Challenges, and Best Practices - ZenML Blog"
   ogDescription: "An in-depth exploration of LLM agents in production environments, covering key architectures, practical challenges, and best practices. Drawing from real-world case studies in the LLMOps Database, this article examines the current state of AI agent deployment, infrastructure requirements, and critical considerations for organizations looking to implement these systems safely and effectively."
 ---

@@ -1,6 +1,7 @@
 ---
 title: "Focus on Usability and Adoption"
 slug: "focus-on-usability-and-adoption"
+icon: "people"
 content: "ZenML prioritizes simplicity and ease of use, providing comprehensive documentation, tutorials, and community support to facilitate faster adoption and productivity for teams of all skill levels."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fec1dff1/667196405fbe25aecdd96da9_img04.png"

@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:14.945Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/09eb0c5e/66d868607279ed98da4ce394_tekton.png"
+  url: "https://assets.zenml.io/content/integrations/logos/tekton.svg"
+  alt: "Tekton logo"
 shortDescription: "Orchestrate your ML pipelines with the Tekton orchestrator."
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/tekton"
 githubUrl: "https://docs.zenml.io/stack-components/orchestrators/tekton"

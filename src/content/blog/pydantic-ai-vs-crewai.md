@@ -21,12 +21,14 @@ tags:
 date: "2025-10-26T00:00:00.000Z"
 readingTime: 12 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b5913251/68fd9b97a47c3cdf1b83de16_pydantic_ai_vs_crewai.png"
+  url: "https://assets.zenml.io/content/blog/pydantic-ai-vs-crewai/26f4fb42/pydantic-ai-vs-crewai-cover.avif"
+featuredImage:
+  url: "https://assets.zenml.io/content/blog/pydantic-ai-vs-crewai/26f4fb42/pydantic-ai-vs-crewai-cover.avif"
 seo:
   title: "Pydantic AI vs CrewAI: Which One’s Better to Build Production-Grade Workflows with Gen AI - ZenML Blog"
   description: "In this Pydantic AI vs CrewAI, we discuss which one is better at building production-grade workflows with generative AI."
   canonical: "https://www.zenml.io/blog/pydantic-ai-vs-crewai"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b5913251/68fd9b97a47c3cdf1b83de16_pydantic_ai_vs_crewai.png"
+  ogImage: "https://assets.zenml.io/content/blog/pydantic-ai-vs-crewai/b2f9869e/pydantic-ai-vs-crewai-cover.jpg"
   ogTitle: "Pydantic AI vs CrewAI: Which One’s Better to Build Production-Grade Workflows with Gen AI - ZenML Blog"
   ogDescription: "In this Pydantic AI vs CrewAI, we discuss which one is better at building production-grade workflows with generative AI."
 ---

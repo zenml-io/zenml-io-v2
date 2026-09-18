@@ -1,6 +1,7 @@
 ---
 title: "Supporting All Your Tools"
 slug: "supporting-all-your-tools"
+icon: "hub"
 content: "ZenML is a native interface to the whole end-to-end machine learning lifecycle, taking you beyond just orchestration."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/fdf3dfc5/667167751e34699260c6b227_img02.png"

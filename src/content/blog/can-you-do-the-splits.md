@@ -19,7 +19,9 @@ tags:
 date: "2020-06-11T00:00:00.000Z"
 readingTime: 6 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/804febe4/652fbfbc63c2335d9d9892fb_0_splits.jpg"
+  url: "https://assets.zenml.io/content/blog/can-you-do-the-splits/4bac2faf/can-you-do-the-splits-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/can-you-do-the-splits/a86c2218/can-you-do-the-splits-cover.jpg"
 ---
 
 **Last updated:** November 21, 2022.

@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-11T07:47:02.481Z"
 integrationType: "cloud-infrastructure"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/53b7f1a7/66d869a2f43502df5f9278d8_aws.png"
+  url: "https://assets.zenml.io/content/integrations/logos/aws.svg"
+  alt: "AWS logo"
 shortDescription: "Effortlessly orchestrate your ML pipelines on AWS with ZenML"
 docsUrl: "https://docs.zenml.io/how-to/auth-management/aws-service-connector"
 githubUrl: "https://github.com/zenml-io/mlstacks/tree/main/aws-minimal"

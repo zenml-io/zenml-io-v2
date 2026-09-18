@@ -1,6 +1,7 @@
 ---
 title: "Built-in Experiment Tracking and Versioning"
 slug: "built-in-experiment-tracking-and-versioning"
+icon: "registry"
 content: "ZenML provides built-in experiment tracking, model versioning, and data versioning features, ensuring reproducibility and facilitating collaboration throughout the ML workflow."
 image:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/144fb23d/669101d14ec4c8275fab7aa3_img05.png"

@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-05-29T11:44:01.112Z"
 integrationType: "experiment-tracker"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7195594b/66d8678adb416cf13838baeb_comet.png"
+  url: "https://assets.zenml.io/content/integrations/logos/comet.svg"
+  alt: "Comet logo"
 shortDescription: "Effortlessly track and visualize Comet experiments with ZenML pipelines"
 docsUrl: "https://docs.zenml.io/stack-components/experiment-trackers/comet"
 mainImage:

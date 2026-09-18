@@ -20,12 +20,12 @@ tags:
 date: "2025-11-30T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2e7492a4/692bdf0f9e5df6fe6c9f07f7_best-prompt-management-tools.png"
+  url: "https://assets.zenml.io/content/blog/best-prompt-management-tools/9aa68d2c/best-prompt-management-tools-cover.avif"
 seo:
   title: "9 Best Prompt Management Tools for ML and AI Engineering Teams - ZenML Blog"
   description: "Discover the 9 best prompt monitoring tools for ML and AI engineering teams."
   canonical: "https://www.zenml.io/blog/best-prompt-management-tools"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2e7492a4/692bdf0f9e5df6fe6c9f07f7_best-prompt-management-tools.png"
+  ogImage: "https://assets.zenml.io/content/blog/best-prompt-management-tools/8ba564f7/best-prompt-management-tools-cover.jpg"
   ogTitle: "9 Best Prompt Management Tools for ML and AI Engineering Teams - ZenML Blog"
   ogDescription: "Discover the 9 best prompt monitoring tools for ML and AI engineering teams."
 ---

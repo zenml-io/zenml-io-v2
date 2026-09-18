@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2026-02-19T09:41:53.559Z"
   createdOn: "2026-02-12T18:54:15.136Z"
 toolName: "Langfuse"
+cardSubtitle: "ZenML ships the pipelines behind your LLM app"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/2367bb34/6996dad3a587ec2f2ab52438_Langfuse_icon.avif"
 category: "llm-observability"

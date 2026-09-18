@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-09-11T07:00:23.495Z"
 integrationType: "orchestrator"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3ed92cba/672b2b8734919e10dda03f5f_sagemaker_pipelines.png"
+  url: "https://assets.zenml.io/content/integrations/logos/sagemaker-pipelines.svg"
+  alt: "Amazon SageMaker logo"
 shortDescription: "Orchestrate production ZenML pipelines with Amazon SageMaker"
 docsUrl: "https://docs.zenml.io/stack-components/orchestrators/sagemaker"
 mainImage:

@@ -1,0 +1,41 @@
+---
+/**
+ * labs.pricing-table — thin adapter from the pricing page's data shape onto
+ * `SpecTable`'s (`data-display.spec-table`) labs skin. Same mapping as the
+ * legacy `src/components/sections/PricingComparisonTable.astro`. Consumers:
+ * `/pricing` (both workspace panels), and the same mapping shape on
+ * `/open-source-vs-pro` and `/deployments`.
+ */
+import type { PricingCompareTableData } from "../../lib/marketingPageTypes";
+import SpecTable from "../templates/SpecTable.astro";
+
+interface Props {
+  data: PricingCompareTableData;
+  class?: string;
+}
+
+const { data, class: className } = Astro.props;
+---
+
+<SpecTable
+  skin="labs"
+  heading={data.heading}
+  subheading={data.subheading}
+  rowHeaderLabel="Plans"
+  columns={data.columnHeaders}
+  sections={data.sections.map((section) => ({
+    heading: section.heading,
+    rows: section.rows.map((row) => ({
+      label: row.feature,
+      href: row.link,
+      values: row.values,
+    })),
+  }))}
+  actions={data.ctaButtons.map((cta) => ({
+    label: cta.label,
+    href: cta.href,
+    variant: cta.variant ?? "primary",
+    analytics: cta.analytics,
+  }))}
+  class={className}
+/>

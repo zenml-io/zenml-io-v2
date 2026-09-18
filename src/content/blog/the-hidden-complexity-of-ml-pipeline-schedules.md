@@ -20,12 +20,12 @@ tags:
 date: "2026-01-23T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3acbb256/6973741fbe3a0dc0476f034f_schedules-complexity-small.png"
+  url: "https://assets.zenml.io/content/blog/the-hidden-complexity-of-ml-pipeline-schedules/2e89f4db/the-hidden-complexity-of-ml-pipeline-schedules-cover.avif"
 seo:
   title: "The Hidden Complexity of ML Pipeline Schedules - ZenML Blog"
   description: "ML pipeline scheduling hides complexity beneath simple cron syntax—lessons on freshness, monitoring gaps, and overrun policies from Twitter, LinkedIn, and Shopify."
   canonical: "https://www.zenml.io/blog/the-hidden-complexity-of-ml-pipeline-schedules"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/3acbb256/6973741fbe3a0dc0476f034f_schedules-complexity-small.png"
+  ogImage: "https://assets.zenml.io/content/blog/the-hidden-complexity-of-ml-pipeline-schedules/3c51dee2/the-hidden-complexity-of-ml-pipeline-schedules-cover.jpg"
   ogTitle: "The Hidden Complexity of ML Pipeline Schedules - ZenML Blog"
   ogDescription: "ML pipeline scheduling hides complexity beneath simple cron syntax—lessons on freshness, monitoring gaps, and overrun policies from Twitter, LinkedIn, and Shopify."
 ---

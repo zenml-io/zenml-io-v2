@@ -17,7 +17,9 @@ tags:
 date: "2022-03-28T00:00:00.000Z"
 readingTime: 4 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/249ec10c/6531618ac31a6fa3503f4a1b_balloons__1_.jpg"
+  url: "https://assets.zenml.io/content/blog/whats-new-in-v0-7-0-user-profiles-and-secret-storage/4d79e0b1/whats-new-in-v0-7-0-user-profiles-and-secret-storage-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/whats-new-in-v0-7-0-user-profiles-and-secret-storage/ce05626a/whats-new-in-v0-7-0-user-profiles-and-secret-storage-cover.jpg"
 ---
 
 **Last updated:** November 3, 2022.

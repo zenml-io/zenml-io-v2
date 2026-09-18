@@ -12,7 +12,8 @@ webflow:
   createdOn: "2024-09-04T14:42:09.657Z"
 integrationType: "artifact-store"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8c3c56cb/66d870a806cf369e1b62ffe4_google_cloud_storage.png"
+  url: "https://assets.zenml.io/content/integrations/logos/google-cloud-storage.svg"
+  alt: "Google Cloud Storage logo"
 shortDescription: "Seamlessly Store your pipeline step outputs with Google Cloud Storage (GCS)"
 docsUrl: "https://docs.zenml.io/stack-components/artifact-stores/gcp"
 mainImage:

@@ -20,12 +20,12 @@ tags:
 date: "2025-06-02T00:00:00.000Z"
 readingTime: 15 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9c390371/683dbd8bf0ccd4062e136ba1_200x-performance-zenml-release-0.83.0__1_.png"
+  url: "https://assets.zenml.io/content/blog/scaling-zenml-200x-performance-fastapi-database-v0830/4c28b256/scaling-zenml-200x-performance-fastapi-database-v0830-cover.avif"
 seo:
   title: "Scaling ZenML: 200x Performance Improvement Through Database and FastAPI Optimizations in v0.83.0 - ZenML Blog"
   description: "A technical deep dive into the performance optimizations that improved ZenML's throughput by 200x"
   canonical: "https://www.zenml.io/blog/scaling-zenml-200x-performance-fastapi-database-v0830"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/9c390371/683dbd8bf0ccd4062e136ba1_200x-performance-zenml-release-0.83.0__1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/scaling-zenml-200x-performance-fastapi-database-v0830/dea58ca4/scaling-zenml-200x-performance-fastapi-database-v0830-cover.jpg"
   ogTitle: "Scaling ZenML: 200x Performance Improvement Through Database and FastAPI Optimizations in v0.83.0 - ZenML Blog"
   ogDescription: "A technical deep dive into the performance optimizations that improved ZenML's throughput by 200x"
 ---

@@ -1,30 +1,36 @@
 ---
-import BlogTOC from "../components/BlogTOC.astro";
-import Button from "../components/Button.astro";
-import CategoryBar from "../components/blog/CategoryBar.astro";
 import Image from "../components/Image.astro";
-import FeaturesHubCTA from "../components/sections/FeaturesHubCTA.astro";
+import BlogNewsletterCta from "../components/labs/BlogNewsletterCta.astro";
+import {
+  BLOG_CARD_PRODUCT_PILL,
+  BLOG_CARD_PRODUCT_PILL_LINK,
+} from "../components/labs/blogCardStyles";
+import LabsArticleBody from "../components/labs/LabsArticleBody.astro";
+import LabsBand from "../components/labs/LabsBand.astro";
+import LabsRelatedBand from "../components/labs/LabsRelatedBand.astro";
+import StickyBreadcrumb from "../components/labs/StickyBreadcrumb.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
-import RelatedRail, {
-  type RelatedRailItem,
-} from "../components/templates/RelatedRail.astro";
+import type { BreadcrumbItem } from "../components/system/Breadcrumb.astro";
+import type { RelatedRailItem } from "../components/templates/RelatedRail.astro";
 import type { Surface } from "../lib/analytics";
-import { BLOG_FINAL_CTA, BLOG_SIDEBAR_CTA } from "../lib/blog";
+import type { BlogProduct } from "../lib/blog";
+import { ARTICLE_TITLE_CLASS, blogLaneStyle } from "../lib/blogLayout";
 import { SITE_URL } from "../lib/constants";
-import type { SEOProps } from "../lib/seo";
+import { ORGANIZATION_NAME, type SEOProps } from "../lib/seo";
 import "../styles/blog-image-lightbox.css";
 /**
- * BlogLayout — chrome for blog post detail pages.
+ * BlogLayout — chrome for blog post detail pages, in the ZenML Labs shell
+ * (`app="labs"`, `surface="ml"` — D3). Never passes BaseLayout's own
+ * `product` (the Labs nav product switcher) — blog posts aren't a
+ * `/product/*` page. This layout's own `product` prop (below) is a
+ * different thing: the post's ZenML/Kitaru product line, which colours the
+ * masthead pill, category link, tag chips, TOC, prose links, and the
+ * Continue-reading band.
  *
- * "Clean & Structured" design with:
- * - Reading progress bar
- * - Back to Blog link
- * - Display title (separate from SEO title) + optional dek
- * - Author byline + avatar
- * - Desktop sidebar TOC + mobile inline collapsible TOC
- * - Author bio card after content
- * - Prev/Next navigation cards
- * - Related posts ("Continue Reading") section
+ * Section order (the approved blog design, DESIGN.md): masthead → hero → article body
+ * (prose + TOC rail) → tags → author card → prev/next → Continue reading.
+ * No reading-progress bar, sidebar CTA, full-width CTA band or sticky
+ * category bar — the approved design carries none of them.
  */
 import BaseLayout from "./BaseLayout.astro";
 
@@ -56,6 +62,14 @@ interface RelatedPost {
   readingTime?: string;
   categoryName?: string;
   categorySlug?: string;
+  date?: Date;
+  /** When "kitaru", the Continue-reading card badges itself orange + "Kitaru" regardless of this page's own product. */
+  product?: BlogProduct;
+}
+
+interface Tag {
+  name: string;
+  slug: string;
 }
 
 interface Props extends SEOProps {
@@ -78,16 +92,34 @@ interface Props extends SEOProps {
   categorySlug?: string;
   /** Reading time string (e.g. "5 min read") */
   readingTime?: string;
-  /** Featured image */
+  /** Cover image — Article JSON-LD only; never rendered in the post. */
   mainImage?: { url: string; alt?: string; width?: number; height?: number };
+  /** Opt-in in-page figure under the masthead (frontmatter `featuredImage`). */
+  featuredImage?: {
+    url: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+  };
   /** Headings extracted from markdown for TOC */
   headings?: Heading[];
+  /** Tags (resolved from collection) — rendered as the hexagon chip row */
+  tags?: Tag[];
   /** Previous post link */
   prev?: PrevNextLink;
   /** Next post link */
   next?: PrevNextLink;
   /** Related posts for "Continue Reading" */
   relatedPosts?: RelatedPost[];
+  /**
+   * The post's own product (`getBlogProduct` in lib/blog.ts). Sets
+   * `data-product="kitaru"` on the page wrapper, which re-points every
+   * `--blog-accent-*` consumer nested inside it (category link, tag chips,
+   * TOC active marker, prose links, the Continue-reading band + its cards'
+   * default halo) to the orange ramp, and shows the "Kitaru" pill in the
+   * meta row. Omit or "zenml" for the default (sage, no pill).
+   */
+  product?: BlogProduct;
 }
 
 const {
@@ -99,33 +131,46 @@ const {
   categorySlug,
   readingTime,
   mainImage,
+  featuredImage,
   headings = [],
+  tags = [],
   prev,
   next,
   relatedPosts = [],
   surface = "ml",
+  product = "zenml",
   ...seoProps
 } = Astro.props;
 
 // Display title: prefer postTitle (the actual post title), fall back to SEO title
 const displayTitle = postTitle || seoProps.title;
+const isKitaru = product === "kitaru";
+// When the post's category IS "kitaru", the pill and the category token
+// would both read "Kitaru" — the pill doubles as the category link instead
+// (dedupe) and the separate category token is omitted.
+const categoryIsKitaruPill = isKitaru && categorySlug === "kitaru";
+const showCategoryToken = !!category && !categoryIsKitaruPill;
 
-const relatedRailItems: RelatedRailItem[] = relatedPosts.map((rp) => ({
-  kind: "blog-card",
-  href: rp.href,
-  title: rp.title,
-  excerpt: rp.excerpt,
-  image: rp.image,
-  authorName: rp.authorName,
-  authorSlug: rp.authorSlug,
-  readingTime: rp.readingTime,
-  categoryName: rp.categoryName,
-  categorySlug: rp.categorySlug,
-}));
-
-// H2-only TOC — consistent with BlogTOC.astro desktop sidebar
-const tocHeadings = headings.filter((h) => h.depth === 2);
-const showTOC = tocHeadings.length >= 3;
+const relatedRailItems: RelatedRailItem[] = relatedPosts.map((rp) => {
+  const rpIsKitaru = rp.product === "kitaru";
+  return {
+    kind: "hex-card",
+    href: rp.href,
+    title: rp.title,
+    meta: rp.date
+      ? new Date(rp.date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+      : undefined,
+    // Kind label only — the Continue-reading band stays sage everywhere
+    // (ruling: no orange in this block), so a Kitaru related post is
+    // still labelled "Kitaru" but its card renders identically to any
+    // other card here.
+    kindLabel: rpIsKitaru ? "Kitaru" : rp.categoryName,
+  };
+});
 
 const formattedDate = new Date(date).toLocaleDateString("en-US", {
   year: "numeric",
@@ -133,319 +178,339 @@ const formattedDate = new Date(date).toLocaleDateString("en-US", {
   day: "numeric",
 });
 
-// Structured data (JSON-LD)
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Blog",
-      item: `${SITE_URL}/blog`,
-    },
-    { "@type": "ListItem", position: 2, name: displayTitle },
-  ],
-};
+// Meta-row tokens in display order (date, reading time, category) — the
+// band moved the author byline into its own row below the h1, so it is no
+// longer one of these tokens. A leading dot precedes every token after the
+// first one actually rendered (absent tokens collapse along with their own
+// dot, never leaving an orphaned separator).
+const metaTokensPresent = [true, !!readingTime, showCategoryToken];
+const metaTokenIndex = (i: number) =>
+  metaTokensPresent.slice(0, i).filter(Boolean).length;
 
+// Breadcrumb — one prop list drives both the visible crumb trail and its
+// BreadcrumbList JSON-LD (#248).
+const breadcrumbItems: BreadcrumbItem[] = [
+  { label: "Blog", href: "/blog" },
+  ...(category
+    ? [
+        {
+          label: category,
+          href: categorySlug ? `/category/${categorySlug}` : undefined,
+        },
+      ]
+    : []),
+  { label: displayTitle },
+];
+
+// Article JSON-LD names the publisher organization, not the ZenML product.
 const articleJsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: displayTitle,
   datePublished: new Date(date).toISOString(),
   ...(author && { author: { "@type": "Person", name: author.name } }),
-  publisher: { "@type": "Organization", name: "ZenML", url: SITE_URL },
+  publisher: {
+    "@type": "Organization",
+    name: ORGANIZATION_NAME,
+    url: SITE_URL,
+  },
   ...(mainImage && { image: mainImage.url }),
   ...(seoProps.description && { description: seoProps.description }),
 };
 ---
 
-<BaseLayout {...seoProps} surface={surface}>
+<BaseLayout {...seoProps} surface={surface} app="labs">
   <JsonLd data={articleJsonLd} slot="head" />
-  <JsonLd data={breadcrumbJsonLd} slot="head" />
 
-  {/* Sticky breadcrumb bar: Blog / Post Title */}
-  <CategoryBar breadcrumbTitle={displayTitle} />
+  <div style={blogLaneStyle()} data-product={isKitaru ? "kitaru" : undefined}>
 
-  {/* Reading progress bar */}
-  <div class="sticky top-[116px] z-30 h-0.5" id="progress-container">
-    <div class="h-full w-0 bg-primary-600 transition-[width] duration-150" id="progress-bar"></div>
-  </div>
+  {/* Masthead: shader band, meta row → h1 → dek → author row. The
+      breadcrumb used to open this band; it now lives in plain flow at the
+      start of the post body (see below), lined up with the article's own
+      left edge rather than the band's copy. */}
+  <LabsBand size="short" grain={isKitaru ? "kitaru" : "labs"}>
+    <div class="scroll-reveal-section">
+      <div class="mx-auto flex max-w-(--article-lane) flex-col gap-4">
+        <div class="reveal-child flex flex-wrap items-center gap-x-3 gap-y-1">
+          {isKitaru &&
+            (categoryIsKitaruPill ? (
+              <a href="/category/kitaru" class={BLOG_CARD_PRODUCT_PILL_LINK}>
+                Kitaru
+              </a>
+            ) : (
+              <span class={BLOG_CARD_PRODUCT_PILL}>Kitaru</span>
+            ))}
 
-  {/* Editorial post header — full-width, separated from content */}
-  <section class="bg-linear-to-t from-primary-50 to-white border-b border-gray-200">
-    <div class="mx-auto max-w-[1440px] px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-      <div class:list={[
-        "grid items-center gap-8",
-        mainImage ? "lg:grid-cols-2 lg:gap-12" : "mx-auto max-w-3xl",
-      ]}>
-        {/* Left: text content */}
-        <div>
-          {/* Meta line: category · date · reading time */}
-          <div class="mb-4 flex flex-wrap items-center gap-2 text-sm text-gray-500">
-            {category && (
-              <>
-                {categorySlug ? (
-                  <a
-                    href={`/category/${categorySlug}`}
-                    class="inline-flex items-center rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-semibold text-primary-700 transition-colors hover:bg-primary-100"
-                    style="mix-blend-mode:multiply"
-                  >
-                    {category}
-                  </a>
-                ) : (
-                  <span class="inline-flex items-center rounded-full bg-primary-50 px-2.5 py-0.5 text-xs font-semibold text-primary-700" style="mix-blend-mode:multiply">
-                    {category}
-                  </span>
-                )}
-                {(formattedDate || readingTime) && (
-                  <span class="text-gray-300" aria-hidden="true">&middot;</span>
-                )}
-              </>
-            )}
-            <time datetime={new Date(date).toISOString()}>{formattedDate}</time>
-            {readingTime && (
-              <>
-                <span class="text-gray-300" aria-hidden="true">&middot;</span>
-                <span>{readingTime}</span>
-              </>
-            )}
-          </div>
+          <time
+            datetime={new Date(date).toISOString()}
+            class="text-[14px] text-(--color-cream-700)"
+          >
+            {formattedDate}
+          </time>
 
-          {/* Title */}
-          <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            {displayTitle}
-          </h1>
-
-          {/* Dek / subtitle */}
-          {dek && (
-            <p class="mt-4 text-base leading-relaxed text-gray-600 line-clamp-3">
-              {dek}
-            </p>
+          {readingTime && (
+            <span class="flex items-center gap-3">
+              {metaTokenIndex(1) > 0 && (
+                <span class="text-[14px] text-(--color-cream-500)" aria-hidden="true">&middot;</span>
+              )}
+              <span class="text-[14px] text-(--color-cream-700)">{readingTime}</span>
+            </span>
           )}
 
-          {/* Author byline */}
-          <div class="mt-6 flex items-center gap-3 text-sm text-gray-500">
-            {author && (
-              <>
-                {author.avatar && (
-                  <Image
-                    image={author.avatar}
-                    alt={author.name}
-                    class="h-8 w-8 rounded-full object-cover"
-                    loading="eager"
-                  />
-                )}
+          {showCategoryToken && (
+            <span class="flex items-center gap-3">
+              {metaTokenIndex(2) > 0 && (
+                <span class="text-[14px] text-(--color-cream-500)" aria-hidden="true">&middot;</span>
+              )}
+              {categorySlug ? (
                 <a
-                  href={`/author/${author.slug}`}
-                  class="font-medium text-gray-700 hover:text-primary-600"
+                  href={`/category/${categorySlug}`}
+                  class="text-[13px] font-medium text-(--blog-accent-700) hover:text-(--blog-accent-800)"
                 >
-                  {author.name}
+                  {category}
                 </a>
-              </>
-            )}
-          </div>
+              ) : (
+                <span class="text-[13px] font-medium text-(--blog-accent-700)">
+                  {category}
+                </span>
+              )}
+            </span>
+          )}
         </div>
 
-        {/* Right: featured image */}
-        {mainImage && (
-          <div class="overflow-hidden rounded-md">
-            <Image
-              image={mainImage}
-              alt={mainImage.alt || displayTitle}
-              class="blog-hero-zoomable aspect-[3/2] w-full rounded-md object-cover"
-              loading="eager"
-            />
+        <h1 class:list={["reveal-child stagger-1", ARTICLE_TITLE_CLASS]}>
+          {displayTitle}
+        </h1>
+
+        {dek && (
+          <p class="reveal-child stagger-2 line-clamp-2 max-w-[720px] text-[18px] leading-[27px] text-(--color-cream-700)">
+            {dek}
+          </p>
+        )}
+
+        {author && (
+          <div class="reveal-child stagger-2 pt-2">
+            <span class="flex items-center gap-2">
+              {author.avatar && (
+                <Image
+                  image={author.avatar}
+                  alt={author.name}
+                  class="h-7 w-7 rounded-full border border-(--color-border) object-cover"
+                  loading="eager"
+                />
+              )}
+              <a
+                href={`/author/${author.slug}`}
+                class="font-sans text-[14px] leading-4 font-medium text-(--color-cream-800) hover:text-(--color-sage-800)"
+              >
+                {author.name}
+              </a>
+            </span>
           </div>
         )}
       </div>
     </div>
-  </section>
+  </LabsBand>
 
-  {/* Content area */}
-  <div class:list={[
-    "mx-auto px-4 py-8 sm:px-6 lg:py-12",
-    showTOC ? "max-w-5xl xl:grid xl:grid-cols-[minmax(0,48rem)_14rem] xl:gap-10" : "max-w-3xl",
-  ]}>
-    <article>
+  {/* Sticky region for the breadcrumb: this classless wrapper's content box
+      is what the crumb's `lg:sticky` below measures against, so the crumb
+      releases as soon as the article body (the last child here) ends,
+      instead of dragging through tags/author/prev-next/related rail like it
+      did when it shared the page-wide wrapper above. The article section
+      uses `mb-24` rather than `pb-24` for the same reason: a margin isn't
+      part of this wrapper's content box, so the trailing space doesn't
+      extend the sticky region either — visually the gap before the tag
+      chips is unchanged, since margin still occupies layout the same way
+      padding did. */}
+  <div>
 
-      {/* Mobile inline TOC (visible below xl, collapsible) */}
-      {showTOC && (
-        <details class="mb-8 rounded-md border border-gray-200 bg-gray-50 xl:hidden" id="mobile-toc">
-          <summary class="cursor-pointer select-none px-5 py-3 text-sm font-semibold text-gray-700">
-            On this page
-          </summary>
-          <nav class="px-5 pb-4" aria-label="Table of contents">
-            <ul class="space-y-1.5">
-              {tocHeadings.map((heading) => (
-                <li>
-                  <a
-                    href={`#${heading.slug}`}
-                    class="block text-sm text-gray-600 transition-colors hover:text-primary-600"
-                    data-mobile-toc-link
-                  >
-                    {heading.text}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </details>
-      )}
+  {/* Breadcrumb — the first element of the post body; the row itself, its
+      sticky offsets and its desktop fade live in StickyBreadcrumb.astro
+      (shared with the database entry layout). See the wrapper comment above
+      for why the sticky region is bounded to the article. */}
+  <StickyBreadcrumb items={breadcrumbItems} pagefindIgnore />
 
-      {/* Post body — `prose-zoomable` opts blog images into the lightbox
-          (see src/scripts/image-lightbox.ts); other `.prose` content site-wide
-          stays non-zoomable */}
-      <div class="prose prose-zoomable">
-        <slot />
+  {/* Featured image — 16:9, opt-in via frontmatter `featuredImage` (the
+      cover `mainImage` is never rendered here). It follows the breadcrumb
+      (content, not the band directly), so it takes the same pt-6
+      content-to-content rhythm the article body below it uses. */}
+  {featuredImage && (
+    <section class="scroll-reveal-section pt-6">
+      <div class="mx-auto max-w-content px-gutter">
+        <div class="mx-auto max-w-(--article-lane)">
+          <div class="reveal-child overflow-hidden rounded-[6px] border border-(--color-border)">
+            <Image
+              image={featuredImage}
+              alt={featuredImage.alt || displayTitle}
+              class="blog-hero-zoomable aspect-video w-full object-cover"
+              loading="eager"
+            />
+          </div>
+        </div>
       </div>
+    </section>
+  )}
 
-      {/* Author bio card */}
-      {author && (
-        <div class="mt-10 flex items-center gap-4 rounded-md border border-gray-200 bg-gray-50 p-5">
-          {author.avatar && (
-            <a href={`/author/${author.slug}`} class="shrink-0">
+  {/* Article body: prose column + sticky TOC rail, in
+      LabsArticleBody.astro (shared with the database entry layout). It ends
+      in `mb-24` rather than `pb-24` so its border box — and with it this
+      wrapper's content box — ends where the article does; see the wrapper
+      comment above. */}
+  <LabsArticleBody headings={headings} proseClass="prose-zoomable">
+    <slot />
+  </LabsArticleBody>
+
+  </div>
+
+  {/* Tag chips (optional, collapses) */}
+  {tags.length > 0 && (
+    <section class="scroll-reveal-section">
+      <div class="mx-auto max-w-content px-gutter">
+        <div class="mx-auto flex max-w-(--article-lane) flex-col gap-4 border-t border-(--color-border) pt-8 pb-8">
+          <p class="reveal-child text-[13px] text-(--color-cream-700)">Tags</p>
+          <div class="reveal-child stagger-1 flex flex-wrap gap-2">
+            {tags.map((tag) => (
+              <a
+                href={`/tags/${tag.slug}`}
+                class="tag-chip inline-flex h-9 cursor-pointer items-center gap-2 rounded-full border border-(--color-border) px-3.5 transition-colors duration-200 ease-out hover:border-(--blog-accent-400)"
+              >
+                <svg viewBox="0 0 12 13.86" class="h-[14px] w-3 fill-(--color-sage-600)" aria-hidden="true">
+                  <path d="M5 0.58 A2 2 0 0 1 7 0.58 L11 2.89 A2 2 0 0 1 12 4.62 L12 9.24 A2 2 0 0 1 11 10.97 L7 13.28 A2 2 0 0 1 5 13.28 L1 10.97 A2 2 0 0 1 0 9.24 L0 4.62 A2 2 0 0 1 1 2.89 Z"></path>
+                </svg>
+                <span class="text-[13px] font-medium text-(--color-cream-700)">
+                  {tag.name}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* Author card (optional, collapses) */}
+  {author && (
+    <section class="scroll-reveal-section">
+      <div class="mx-auto max-w-content px-gutter">
+        <div class="mx-auto max-w-(--article-lane) pt-10 pb-4">
+          <a
+            href={`/author/${author.slug}`}
+            class="reveal-child group flex cursor-pointer items-center gap-5 rounded-[6px] border border-(--color-border) bg-(--color-card) p-6 transition-colors duration-200 ease-out hover:border-(--color-sage-400)"
+          >
+            {author.avatar ? (
               <Image
                 image={author.avatar}
                 alt={author.name}
-                class="h-14 w-14 rounded-full object-cover"
+                class="h-14 w-14 shrink-0 rounded-full object-cover"
               />
-            </a>
-          )}
-          <div>
-            <a
-              href={`/author/${author.slug}`}
-              class="font-semibold text-gray-900 hover:text-primary-600"
-            >
-              {author.name}
-            </a>
-            {author.bio ? (
-              <p class="mt-1 text-sm leading-relaxed text-gray-600">{author.bio}</p>
             ) : (
-              <p class="mt-1 text-sm text-gray-500">
-                <a href={`/author/${author.slug}`} class="text-primary-600 hover:text-primary-700">
-                  View all posts &rarr;
-                </a>
-              </p>
+              <span class="h-14 w-14 shrink-0 rounded-full bg-(--color-cream-200)" aria-hidden="true"></span>
             )}
-          </div>
+            <div>
+              <p class="font-display text-[18px] leading-6 text-(--color-cream-800)">{author.name}</p>
+              {author.bio ? (
+                <p class="mt-0.5 font-sans text-[14px] leading-[22px] font-medium text-(--color-sage-700)">
+                  {author.bio}
+                </p>
+              ) : (
+                <p class="mt-0.5 font-sans text-[14px] leading-[22px] font-medium text-(--color-sage-700)">
+                  View all posts &rarr;
+                </p>
+              )}
+            </div>
+          </a>
         </div>
-      )}
+      </div>
+    </section>
+  )}
 
-      {/* Prev/Next navigation */}
-      {(prev || next) && (
-        <div class="mt-10 grid gap-6 sm:grid-cols-2">
-          {prev ? (
+  {/* Prev / Next — either side may be absent; a single side renders one full-width card */}
+  {(prev || next) && (
+    <section class="scroll-reveal-section">
+      <div class="mx-auto max-w-content px-gutter">
+        <div
+          class:list={[
+            "mx-auto grid max-w-(--article-lane) gap-6 pt-6 pb-4",
+            prev && next ? "sm:grid-cols-2" : "grid-cols-1",
+          ]}
+        >
+          {prev && (
             <a
               href={prev.href}
-              class="group flex flex-col rounded-md border border-gray-200 p-5 transition-all hover:border-gray-300 hover:shadow-sm"
+              class="reveal-child group flex cursor-pointer flex-col gap-2.5 rounded-[6px] border border-(--color-border) py-5 px-[22px] transition-colors duration-200 ease-out hover:border-(--color-sage-400)"
             >
-              <span class="text-xs font-medium text-gray-500 group-hover:text-primary-600">&larr; Previous</span>
-              <span class="mt-2 line-clamp-2 text-sm font-semibold text-gray-900 group-hover:text-primary-600">{prev.title}</span>
+              <span class="text-[12px] font-medium text-(--color-cream-700)">&larr; Previous</span>
+              <span class="font-display line-clamp-2 text-[17px] leading-6 text-(--color-cream-800)">{prev.title}</span>
             </a>
-          ) : <div />}
-          {next ? (
+          )}
+          {next && (
             <a
               href={next.href}
-              class="group flex flex-col rounded-md border border-gray-200 p-5 text-right transition-all hover:border-gray-300 hover:shadow-sm"
+              class="reveal-child stagger-1 group flex cursor-pointer flex-col gap-2.5 rounded-[6px] border border-(--color-border) py-5 px-[22px] transition-colors duration-200 ease-out hover:border-(--color-sage-400)"
             >
-              <span class="text-xs font-medium text-gray-500 group-hover:text-primary-600">Next &rarr;</span>
-              <span class="mt-2 line-clamp-2 text-sm font-semibold text-gray-900 group-hover:text-primary-600">{next.title}</span>
+              <span class="text-[12px] font-medium text-(--color-cream-700)">Next &rarr;</span>
+              <span class="font-display line-clamp-2 text-[17px] leading-6 text-(--color-cream-800)">{next.title}</span>
             </a>
-          ) : <div />}
+          )}
         </div>
-      )}
-    </article>
-
-    {/* Desktop Table of contents sidebar */}
-    {showTOC && (
-      <aside class="hidden xl:block">
-        <div class="sticky top-32 max-h-[calc(100vh-9rem)] overflow-y-auto">
-          <BlogTOC headings={tocHeadings} />
-
-          {/* Sidebar CTA */}
-          <div class="mt-8 rounded-lg border border-gray-200 bg-gray-50 p-4">
-            <p class="text-sm font-semibold text-gray-900">{BLOG_SIDEBAR_CTA.headline}</p>
-            <ul class="mt-3 space-y-2">
-              {BLOG_SIDEBAR_CTA.bullets.map((text) => (
-                <li class="flex items-start gap-2 text-xs text-gray-600">
-                  <svg class="mt-0.5 h-4 w-4 flex-shrink-0 text-zenml-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" />
-                  </svg>
-                  <span>{text}</span>
-                </li>
-              ))}
-            </ul>
-            <Button
-              href={BLOG_SIDEBAR_CTA.cta.href}
-              size="sm"
-              class="mt-4 w-full"
-              dataAnalytics={BLOG_SIDEBAR_CTA.cta.analytics}
-            >
-              {BLOG_SIDEBAR_CTA.cta.label}
-            </Button>
-          </div>
-        </div>
-      </aside>
-    )}
-  </div>
-
-  {/* Blog CTA — full-width banner */}
-  <FeaturesHubCTA
-    headline={BLOG_FINAL_CTA.headline}
-    body={BLOG_FINAL_CTA.body}
-    primaryCta={BLOG_FINAL_CTA.primaryCta}
-    secondaryCta={BLOG_FINAL_CTA.secondaryCta}
-  />
-
-  {/* Continue Reading — related posts (full width, outside the article grid) */}
-  {relatedRailItems.length > 0 && (
-    <div class="border-t border-gray-200 bg-gray-50">
-      <div class="mx-auto max-w-[1440px] px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <h2 class="mb-8 text-2xl font-bold text-gray-900">Continue Reading</h2>
-        <RelatedRail items={relatedRailItems} gridVariant="gap-md-2col-md" />
       </div>
-    </div>
+    </section>
   )}
+
+  {/* Continue reading — the shared sage related band (LabsRelatedBand.astro);
+      it collapses when there is nothing to show. */}
+  <LabsRelatedBand heading="Continue reading" items={relatedRailItems} />
+
+  <BlogNewsletterCta />
+  </div>
 </BaseLayout>
 
-<script>
-  import { initImageLightbox } from "../scripts/image-lightbox";
+<style>
+  /* House scroll-reveal pattern (reference: LabsRelatedBand.astro): a
+   * `.scroll-reveal-section` is observed once; its `.reveal-child`
+   * elements slide 12px + fade with a 60ms stagger. The hidden start state
+   * applies only once the script has armed the section (`reveal-armed`), so
+   * the server-rendered page is fully visible without JS, and reduced
+   * motion never hides anything. The article body itself is never a
+   * reveal child — prose must not depend on an observer firing. */
+  .reveal-child {
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .stagger-1 { transition-delay: 60ms; }
+  .stagger-2 { transition-delay: 120ms; }
+  .stagger-3 { transition-delay: 180ms; }
 
-  // Reading progress bar
-  function initProgress() {
-    const bar = document.getElementById('progress-bar');
-    if (!bar) return;
-    const barEl = bar;
+  .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+    opacity: 0;
+    transform: translateY(12px);
+  }
 
-    function updateProgress() {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? Math.min((scrollTop / docHeight) * 100, 100) : 0;
-      barEl.style.width = progress + '%';
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-child,
+    .scroll-reveal-section.reveal-armed:not(.in-view) .reveal-child {
+      opacity: 1;
+      transform: none;
+      transition: none;
     }
-
-    window.addEventListener('scroll', updateProgress, { passive: true });
-    updateProgress();
   }
+</style>
 
-  // Close mobile TOC when a link is clicked
-  function initMobileTOC() {
-    const details = document.getElementById('mobile-toc');
-    if (!details) return;
+<script>
+  import { initCodeCopy } from "../scripts/code-copy";
+  import { initImageLightbox } from "../scripts/image-lightbox";
+  import { initScrollReveal } from "../scripts/labs-scroll-reveal";
 
-    details.querySelectorAll('a[data-mobile-toc-link]').forEach((link) => {
-      link.addEventListener('click', () => {
-        (details as HTMLDetailsElement).open = false;
-      });
-    });
-  }
-
+  // The mobile-TOC close handler lives in LabsArticleBody.astro, which wires
+  // itself — nothing to do for it here.
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => { initProgress(); initMobileTOC(); initImageLightbox(); });
+    document.addEventListener('DOMContentLoaded', () => {
+      initImageLightbox();
+      initCodeCopy();
+      initScrollReveal();
+    });
   } else {
-    initProgress();
-    initMobileTOC();
     initImageLightbox();
+    initCodeCopy();
+    initScrollReveal();
   }
 </script>

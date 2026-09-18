@@ -20,12 +20,12 @@ tags:
 date: "2025-06-12T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0a940963/684aa09f9617a3807e2cc228_Photo_from_Google_Photos__1_.jpg"
+  url: "https://assets.zenml.io/content/blog/newsletter-edition-15---why-you-dont-need-an-agent-but-you-might-need-a-workflow/38c2c5d2/newsletter-edition-15-why-you-dont-need-an-agent-but-you-might-need-a-workflow-cover.avif"
 seo:
   title: "Newsletter Edition #15 - Why you don't need an agent (but you might need a workflow) - ZenML Blog"
   description: "Discover why production teams are treating agentic workflows as MLOps evolution, not revolution—plus how ZenML achieved 200x performance improvements for enterprise ML operations. Real insights from 130+ MLOps engineers on building reliable AI systems."
   canonical: "https://www.zenml.io/blog/newsletter-edition-15---why-you-dont-need-an-agent-but-you-might-need-a-workflow"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/0a940963/684aa09f9617a3807e2cc228_Photo_from_Google_Photos__1_.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/newsletter-edition-15---why-you-dont-need-an-agent-but-you-might-need-a-workflow/9fd25f74/newsletter-edition-15-why-you-dont-need-an-agent-but-you-might-need-a-workflow-cover.jpg"
   ogTitle: "Newsletter Edition #15 - Why you don't need an agent (but you might need a workflow) - ZenML Blog"
   ogDescription: "Discover why production teams are treating agentic workflows as MLOps evolution, not revolution—plus how ZenML achieved 200x performance improvements for enterprise ML operations. Real insights from 130+ MLOps engineers on building reliable AI systems."
 ---

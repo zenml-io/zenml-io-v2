@@ -1,5 +1,9 @@
 /**
- * parity.ts — PR3 comparison-consolidation parity instrument.
+ * parity.ts — historical byte-compare tool for the #250 conversion.
+ *
+ * This is no longer a check or release gate. The Labs visual cutover in #319
+ * intentionally changes comparison markup and styles; rendered goldens plus
+ * the all-route text, href, and analytics audit now guard those pages.
  *
  * The 28 ZenML comparison routes (25 `/compare/zenml-vs-*` + 3 `/vs/*`) must
  * render byte-identical after the templates behind them are consolidated.

@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-03-24T05:33:05.112Z"
 description: "A personalized AI image generation product that can create your avatars from a selfie."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/magic-photobooth"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/4.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/ce925f63/magic-photobooth-cover.avif"
 previewImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e3859126/67e242f8a2222c5e150495f1_batch-dreambooth.png"
 tags:

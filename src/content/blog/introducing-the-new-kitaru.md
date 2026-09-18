@@ -14,13 +14,13 @@ tags:
 date: "2026-08-18T09:34:52.617Z"
 readingTime: "10 mins"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/introducing-the-new-kitaru/3af3b81f/introducing-the-new-kitaru-hero.avif"
+  url: "https://assets.zenml.io/content/blog/introducing-the-new-kitaru/9fcd9bd2/introducing-the-new-kitaru-cover.avif"
   alt: "Introducing the all new Kitaru: turn real traces into replayable evals and test changes against what your agent has actually seen"
 seo:
   title: "Introducing the New Kitaru: Production Traces to Repeatable Evals - ZenML Blog"
   description: "The new Kitaru turns production traces you already collect into replayable test scenarios, expert-reviewed cohorts, and evaluators you can run on every change."
   canonical: "https://www.zenml.io/blog/introducing-the-new-kitaru"
-  ogImage: "https://assets.zenml.io/content/blog/introducing-the-new-kitaru/7f4e66c3/introducing-the-new-kitaru-cover.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/introducing-the-new-kitaru/f3c1c7a5/introducing-the-new-kitaru-cover.jpg"
 ---
 
 If you run agents in production, you probably already have some kind of eval process.

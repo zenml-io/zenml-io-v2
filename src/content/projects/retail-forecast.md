@@ -12,7 +12,7 @@ webflow:
   createdOn: "2025-06-18T14:14:38.098Z"
 description: "A robust MLOps pipeline for retail sales forecasting designed for retail data scientists and ML engineers."
 githubUrl: "https://github.com/zenml-io/zenml-projects/tree/main/retail-forecast"
-mainImageLink: "https://public-flavor-logos.s3.eu-central-1.amazonaws.com/projects/47.jpg"
+mainImageLink: "https://assets.zenml.io/content/projects/45f5bf57/retail-forecast-cover.avif"
 previewImage:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c44391c3/6852c9cd34af1ec86decfc4f_forecast_dashboard.png"
 tags:

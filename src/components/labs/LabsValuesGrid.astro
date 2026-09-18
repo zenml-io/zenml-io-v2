@@ -1,0 +1,50 @@
+---
+interface Value {
+  title: string;
+  subtitle?: string;
+  body?: string;
+  bullets?: readonly string[];
+}
+
+interface Props {
+  values: readonly Value[];
+  heading?: string;
+  id?: string;
+}
+
+const { values, heading, id } = Astro.props;
+---
+
+<section id={id} class="scroll-reveal-section">
+  <div class="mx-auto max-w-content px-gutter">
+    {heading && (
+      <h2 class="mb-space-lg font-display text-[32px] leading-[38px] text-(--color-cream-900) md:text-[40px] md:leading-[46px]">
+        {heading}
+      </h2>
+    )}
+    <div class="grid gap-space-md sm:grid-cols-2 lg:grid-cols-3">
+      {values.map((value) => (
+        <article class="labs-hex-list flex flex-col rounded-[20px] border border-border bg-card p-8 transition-colors duration-200 ease-out [--list-marker-width:28px] hover:border-(--color-sage-400) md:p-10">
+          <h3 class="font-display text-[24px] leading-[30px] text-(--color-cream-900)">
+            {value.title}
+          </h3>
+          {value.subtitle && (
+            <p class="mt-space-xs font-sans text-[20px] leading-[28px] text-(--color-sage-800)">
+              {value.subtitle}
+            </p>
+          )}
+          {value.body && (
+            <p class="mt-space-sm font-sans text-[16px] leading-[24px] text-(--color-cream-700)">
+              {value.body}
+            </p>
+          )}
+          {value.bullets && value.bullets.length > 0 && (
+            <ul class="mt-space-md space-y-space-xs font-sans text-[15px] leading-[23px] text-(--color-cream-700)">
+              {value.bullets.map((bullet) => <li class="relative pl-[28px]">{bullet}</li>)}
+            </ul>
+          )}
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

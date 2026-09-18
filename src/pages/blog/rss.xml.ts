@@ -48,13 +48,13 @@ export const GET: APIRoute = async () => {
   const xml = `<?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>ZenML Blog</title>
+    <title>ZenML Labs Blog</title>
     <link>${SITE_URL}/blog</link>
-    <description>Blog posts written by the ZenML Team</description>
+    <description>Blog posts written by the ZenML Labs team</description>
     <language>en</language>
     <lastBuildDate>${now}</lastBuildDate>
     <pubDate>${newestDate}</pubDate>
-    <generator>ZenML Astro Site</generator>
+    <generator>ZenML Labs Astro Site</generator>
     <atom:link href="${feedUrl}" rel="self" type="application/rss+xml"/>
 ${items}
   </channel>

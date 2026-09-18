@@ -18,12 +18,12 @@ tags:
 date: "2024-11-17T00:00:00.000Z"
 readingTime: 2 min
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dbc0f181/674701e8c50d46849320e4e3_Gemini_Generated_Image__5_.jpeg"
+  url: "https://assets.zenml.io/content/blog/a-consulting-firms-standardization-playbook/bbedc38b/a-consulting-firms-standardization-playbook-cover.avif"
 seo:
   title: "How to Scale MLOps Across Multiple Clients: A Consulting Firm's Standardization Playbook - ZenML Blog"
   description: "Discover how leading ML consulting firms are mastering the art of standardizing MLOps practices across diverse client environments while maintaining flexibility and efficiency. This comprehensive guide explores practical strategies for building reusable assets, managing multi-cloud deployments, and establishing robust MLOps frameworks that adapt to various enterprise requirements. Learn how to balance standardization with client-specific needs, implement effective knowledge transfer processes, and scale your ML consulting practice without compromising on quality or security."
   canonical: "https://www.zenml.io/blog/a-consulting-firms-standardization-playbook"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/dbc0f181/674701e8c50d46849320e4e3_Gemini_Generated_Image__5_.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/a-consulting-firms-standardization-playbook/b8eadca1/a-consulting-firms-standardization-playbook-cover.jpg"
   ogTitle: "How to Scale MLOps Across Multiple Clients: A Consulting Firm's Standardization Playbook - ZenML Blog"
   ogDescription: "Discover how leading ML consulting firms are mastering the art of standardizing MLOps practices across diverse client environments while maintaining flexibility and efficiency. This comprehensive guide explores practical strategies for building reusable assets, managing multi-cloud deployments, and establishing robust MLOps frameworks that adapt to various enterprise requirements. Learn how to balance standardization with client-specific needs, implement effective knowledge transfer processes, and scale your ML consulting practice without compromising on quality or security."
 ---

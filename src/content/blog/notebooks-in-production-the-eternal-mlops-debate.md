@@ -19,12 +19,12 @@ tags:
 date: "2024-08-30T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7db419ad/66d5c0a9cf6d8e57c18e905f_zenml_news07.png"
+  url: "https://assets.zenml.io/content/blog/notebooks-in-production-the-eternal-mlops-debate/ec022b24/notebooks-in-production-the-eternal-mlops-debate-cover.avif"
 seo:
   title: "Newsletter Edition #7 - Notebooks in Production: The eternal MLOps debate - ZenML Blog"
   description: "A new ZenML newsletter featuring Istanbul cooking adventures, faster docker builds, and more"
   canonical: "https://www.zenml.io/blog/notebooks-in-production-the-eternal-mlops-debate"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7db419ad/66d5c0a9cf6d8e57c18e905f_zenml_news07.png"
+  ogImage: "https://assets.zenml.io/content/blog/notebooks-in-production-the-eternal-mlops-debate/c81d7f1b/notebooks-in-production-the-eternal-mlops-debate-cover.jpg"
   ogTitle: "Newsletter Edition #7 - Notebooks in Production: The eternal MLOps debate - ZenML Blog"
   ogDescription: "A new ZenML newsletter featuring Istanbul cooking adventures, faster docker builds, and more"
 ---

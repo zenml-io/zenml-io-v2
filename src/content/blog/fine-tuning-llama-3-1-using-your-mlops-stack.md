@@ -19,12 +19,12 @@ tags:
 date: "2024-08-02T00:00:00.000Z"
 readingTime: 3 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ecef8dc/66ab43bc2c619fe0ce280d5d_newsletter06.png"
+  url: "https://assets.zenml.io/content/blog/fine-tuning-llama-3-1-using-your-mlops-stack/940d5552/fine-tuning-llama-3-1-using-your-mlops-stack-cover.avif"
 seo:
   title: "Newsletter Edition #6 - Fine-tuning LLama 3.1 using your MLOps stack - ZenML Blog"
   description: "ZenML's new direction: Simplifying infrastructure connections for enhanced MLOps."
   canonical: "https://www.zenml.io/blog/fine-tuning-llama-3-1-using-your-mlops-stack"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/353df47e/66ab43bc2c619fe0ce280d5d_newsletter06.png"
+  ogImage: "https://assets.zenml.io/content/blog/fine-tuning-llama-3-1-using-your-mlops-stack/be4411b2/fine-tuning-llama-3-1-using-your-mlops-stack-cover.jpg"
   ogTitle: "Newsletter Edition #6 - Fine-tuning LLama 3.1 using your MLOps stack - ZenML Blog"
   ogDescription: "ZenML's new direction: Simplifying infrastructure connections for enhanced MLOps."
 ---

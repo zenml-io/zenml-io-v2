@@ -18,12 +18,12 @@ tags:
 date: "2024-09-20T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ad90bdb9/66ed4494805650c66f282313_databricks_blog_cover.png"
+  url: "https://assets.zenml.io/content/blog/using-zenml-databricks-to-supercharge-llm-development/5123c820/using-zenml-databricks-to-supercharge-llm-development-cover.avif"
 seo:
   title: "Using ZenML+ Databricks to Supercharge LLM Development - ZenML Blog"
   description: "The integration of ZenML and Databricks streamlines LLM development and deployment processes, offering scalability, reproducibility, efficiency, collaboration, and monitoring capabilities. This approach enables data scientists and ML engineers to focus on innovation."
   canonical: "https://www.zenml.io/blog/using-zenml-databricks-to-supercharge-llm-development"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ad90bdb9/66ed4494805650c66f282313_databricks_blog_cover.png"
+  ogImage: "https://assets.zenml.io/content/blog/using-zenml-databricks-to-supercharge-llm-development/50f70f4b/using-zenml-databricks-to-supercharge-llm-development-cover.jpg"
   ogTitle: "Using ZenML+ Databricks to Supercharge LLM Development - ZenML Blog"
   ogDescription: "The integration of ZenML and Databricks streamlines LLM development and deployment processes, offering scalability, reproducibility, efficiency, collaboration, and monitoring capabilities. This approach enables data scientists and ML engineers to focus on innovation."
 ---

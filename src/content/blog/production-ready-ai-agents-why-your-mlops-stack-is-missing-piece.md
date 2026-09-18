@@ -21,11 +21,11 @@ tags:
 date: "2025-08-25T00:00:00.000Z"
 readingTime: 9 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a2227a5c/6981cf64f4f7a9ede995c45f_6981ce85f4094e16a9d13538_zenpulse-part-1.avif"
+  url: "https://assets.zenml.io/content/blog/production-ready-ai-agents-why-your-mlops-stack-is-missing-piece/8e91069b/production-ready-ai-agents-why-your-mlops-stack-is-missing-piece-cover.avif"
 seo:
   title: "Production-Ready AI Agents: Why Your MLOps Stack is the Missing Piece - ZenML Blog"
   canonical: "https://www.zenml.io/blog/production-ready-ai-agents-why-your-mlops-stack-is-missing-piece"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a2227a5c/6981cf64f4f7a9ede995c45f_6981ce85f4094e16a9d13538_zenpulse-part-1.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/production-ready-ai-agents-why-your-mlops-stack-is-missing-piece/7b5e3fb6/production-ready-ai-agents-why-your-mlops-stack-is-missing-piece-cover.jpg"
   ogTitle: "Production-Ready AI Agents: Why Your MLOps Stack is the Missing Piece - ZenML Blog"
 ---
 

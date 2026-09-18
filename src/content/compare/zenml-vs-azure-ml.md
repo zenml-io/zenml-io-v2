@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2026-02-19T09:38:36.227Z"
   createdOn: "2026-02-12T18:42:29.640Z"
 toolName: "Azure ML"
+cardSubtitle: "Keep your pipelines portable across clouds"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/acdcb8cd/6996da0b8c7ae17899741092_Azure_ML_icon.avif"
 category: "e2e-platforms"

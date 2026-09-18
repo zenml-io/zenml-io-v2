@@ -1,109 +1,93 @@
-<article class="compare-body-inner" data-astro-cid-[hash]="">
-<p>Pydantic AI brings the Pydantic team’s approach to agents: typed dependencies, validated structured outputs, and a model-agnostic API that still reads like Python. If you want an agent whose output you can trust to match a schema, it’s a very good choice.
+<article class="compare-body-inner">
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">Pydantic AI brings the Pydantic team’s approach to agents: typed dependencies, validated structured outputs, and a model-agnostic API that still reads like Python. If you want an agent whose output you can trust to match a schema, it’s a very good choice.
 </p>
+</div>
 
-<p>ZenML isn’t a competing harness. It’s the orchestration layer around the agent: your 
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">ZenML isn’t a competing harness. It’s the orchestration layer around the agent: your
 <code>Agent
-</code> runs unchanged inside a 
+</code> runs unchanged inside a
 <code>@step
-</code>, and ZenML supplies the pipeline, the versioned artifacts, the cache, a 
+</code>, and ZenML supplies the pipeline, the versioned artifacts, the cache, a
 <code>wait()
 </code> that pauses the run for a human, a sandbox for the code the agent’s tools execute, and the stack that puts it on Kubernetes, Vertex AI, SageMaker, AzureML and more.
 </p>
-
-<p>Both are ordinary Python, so they compose cleanly. Pydantic AI validates what comes out of the model. ZenML stores what comes out of the step, remembers which run produced it, and decides what happens next.
-</p>
-
-<section class="when" data-reveal="" data-astro-cid-[hash]="">
-<div class="when-grid" data-astro-cid-[hash]="">
-<article class="when-card when-card--zenml" data-astro-cid-[hash]="">
-<div class="when-card-head" data-astro-cid-[hash]="">
-<span class="when-tag when-tag--zenml" data-astro-cid-[hash]="">ZenML
-</span>
-<h2 data-astro-cid-[hash]="">Use ZenML if you are
-</h2>
 </div>
-<ul data-astro-cid-[hash]="">
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Running agent work on a schedule or behind an endpoint, not from a terminal by hand
+
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">Both are ordinary Python, so they compose cleanly. Pydantic AI validates what comes out of the model. ZenML stores what comes out of the step, remembers which run produced it, and decides what happens next.
+</p>
+</div>
+
+<section class="scroll-reveal-section py-8 md:py-10">
+<div class="scroll-reveal-section mx-auto grid max-w-content grid-cols-1 gap-6 px-gutter lg:grid-cols-2">
+<article class="reveal-child flex h-full flex-col rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10">
+<p class="font-sans text-[14px] leading-5 font-medium text-(--color-sage-700)">ZenML
+</p>
+<h2 class="mt-3 font-display text-[28px] leading-[34px] text-(--color-cream-900)">Use ZenML if you are
+</h2>
+<ul class="mt-6 flex list-none flex-col">
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Running agent work on a schedule or behind an endpoint, not from a terminal by hand
 </span>
 </li>
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Asked, weeks later, which output came from which run and which inputs
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Asked, weeks later, which output came from which run and which inputs
 </span>
 </li>
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Pausing for a human to approve what the agent produced before the next step acts on it
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Pausing for a human to approve what the agent produced before the next step acts on it
 </span>
 </li>
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Re-running often enough that skipping unchanged steps saves real money
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Re-running often enough that skipping unchanged steps saves real money
 </span>
 </li>
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Deploying into your own cloud for security or compliance, with the outputs in your own bucket
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Deploying into your own cloud for security or compliance, with the outputs in your own bucket
 </span>
 </li>
 </ul>
 </article>
-<article class="when-card when-card--competitor" data-astro-cid-[hash]="">
-<div class="when-card-head" data-astro-cid-[hash]="">
-<span class="when-tag when-tag--competitor" data-astro-cid-[hash]="">Pydantic AI
-</span>
-<h2 data-astro-cid-[hash]="">Use Pydantic AI if you are
+<article class="reveal-child flex h-full flex-col rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10 stagger-1">
+<p class="font-sans text-[14px] leading-5 font-medium text-(--color-sage-700)">Pydantic AI
+</p>
+<h2 class="mt-3 font-display text-[28px] leading-[34px] text-(--color-cream-900)">Use Pydantic AI if you are
 </h2>
-</div>
-<ul data-astro-cid-[hash]="">
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Building the agent itself, and want typed dependencies and validated structured outputs
+<ul class="mt-6 flex list-none flex-col">
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Building the agent itself, and want typed dependencies and validated structured outputs
 </span>
 </li>
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Switching between model providers behind one API
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Switching between model providers behind one API
 </span>
 </li>
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Wanting a framework that reads like ordinary, type-checked Python
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Wanting a framework that reads like ordinary, type-checked Python
 </span>
 </li>
-<li data-astro-cid-[hash]="">
-<svg class="check" viewBox="0 0 20 20" aria-hidden="true" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M7.5 13.5 4 10l-1.5 1.5L7.5 16.5 17.5 6.5 16 5z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Using Logfire for tracing individual agent runs
+<li class="flex gap-3 border-t border-(--color-border) py-4 font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span class="mt-1 h-3 w-3 shrink-0 rounded-full bg-(--color-sage-600)" aria-hidden="true">
+</span>
+<span>Using Logfire for tracing individual agent runs
 </span>
 </li>
 </ul>
@@ -111,26 +95,32 @@
 </div>
 </section>
 
-<figure class="pullquote" data-reveal="" data-astro-cid-[hash]="">
-<div class="pullquote-inner" data-astro-cid-[hash]="">
-<span class="pullquote-mark" aria-hidden="true" data-astro-cid-[hash]="">“
-</span>
-<blockquote data-astro-cid-[hash]="">Pydantic AI guarantees the shape of what the model returned. ZenML guarantees you can find it again, tells you which run it came from, and holds the run until someone approves it.
-</blockquote>
+<section class="comparison-quote scroll-reveal-section relative overflow-hidden border-y border-(--color-border) py-12 md:py-20 bg-(--color-sage-50)">
+<script>(()=>{var l=(n,t)=>{let i=async()=>{await(await n())()},e=typeof t.value=="object"?t.value:void 0,s={timeout:e==null?void 0:e.timeout};"requestIdleCallback"in window?window.requestIdleCallback(i,s):setTimeout(i,s.timeout||200)};(self.Astro||(self.Astro={})).idle=l;window.dispatchEvent(new Event("astro:idle"));})();
+</script>
+<astro-island uid="[hash]" data-preact-island-id="6" component-url="/_astro/GrainBackdrop.[hash].js" component-export="GrainBackdrop" renderer-url="/_astro/client.[hash].js" props="{&quot;config&quot;:[0,{&quot;shaderColors&quot;:[1,[[0,&quot;#DBE0C2&quot;],[0,&quot;#C9D3B4&quot;],[0,&quot;#BECAA6&quot;],[0,&quot;#E3E8CD&quot;]]],&quot;panel&quot;:[0,&quot;#F4F3EC&quot;],&quot;blobA&quot;:[0,&quot;#C9D3B4E6&quot;],&quot;blobB&quot;:[0,&quot;#9AAD82B3&quot;],&quot;speed&quot;:[0,1.4],&quot;scale&quot;:[0,1.35],&quot;rotation&quot;:[0,24],&quot;noise&quot;:[0,0.5],&quot;blend&quot;:[0,false]}],&quot;class&quot;:[0,&quot;absolute inset-0 opacity-90&quot;]}" ssr="" client="idle" opts="{&quot;name&quot;:&quot;GrainBackdrop&quot;,&quot;value&quot;:true}" await-children="">
+<div aria-hidden="true" style="background-color:#F4F3EC;background-image:radial-gradient(circle farthest-corner at 20% 15%, #C9D3B4E6 0%, transparent 60%), radial-gradient(circle farthest-corner at 85% 85%, #9AAD82B3 0%, transparent 60%);" class="pointer-events-none absolute inset-0 absolute inset-0 opacity-90">
 </div>
+<!--astro:end-->
+</astro-island>
+<figure class="reveal-child relative mx-auto max-w-content px-gutter text-center">
+<blockquote class="font-display text-[28px] leading-[36px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[46px]">Pydantic AI guarantees the shape of what the model returned. ZenML guarantees you can find it again, tells you which run it came from, and holds the run until someone approves it.
+</blockquote>
 </figure>
+</section>
 
-<section class="feature-graphic feature-graphic--list" data-reveal="" data-astro-cid-[hash]="">
-<div class="feature-graphic-grid" data-astro-cid-[hash]="">
-<div class="feature-graphic-copy" data-astro-cid-[hash]="">
-<h2 data-astro-cid-[hash]="">Different questions
+<section class="scroll-reveal-section py-8 md:py-10" data-astro-cid-[hash]="">
+<div class="reveal-child mx-auto max-w-content px-gutter" data-astro-cid-[hash]="">
+<div data-astro-cid-[hash]="">
+<h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[42px]" data-astro-cid-[hash]="">Different questions
 </h2>
-<div class="feature-graphic-body" data-astro-cid-[hash]="">
-<p>“Agent framework” and “orchestrator” get used loosely enough that they sound like alternatives. They aren’t. Here’s the split:
+<div class="comparison-value-copy mt-6 max-w-[768px] font-sans text-[17px] leading-[26px] text-(--color-cream-800)" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">“Agent framework” and “orchestrator” get used loosely enough that they sound like alternatives. They aren’t. Here’s the split:
 </p>
 </div>
 </div>
-<div class="feature-graphic-media" data-astro-cid-[hash]="">
+<div class="comparison-diagram-well mt-10 min-w-0 overflow-hidden rounded-[20px] p-8 md:p-10 comparison-diagram-well--zenml bg-(--color-sage-300)" data-astro-cid-[hash]="">
 <figure class="fig" data-astro-cid-[hash]="">
 <div class="panel panel--competitor" data-astro-cid-[hash]="">
 <div class="panel-head" data-astro-cid-[hash]="">
@@ -188,8 +178,9 @@
 </div>
 </figure>
 </div>
-<div class="feature-graphic-bullets" data-astro-cid-[hash]="">
-<ul>
+<div class="labs-hex-list mt-10" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<ul class="reveal-child">
 
 <li>
 <strong>Pydantic AI asks:
@@ -209,19 +200,22 @@
 </ul>
 </div>
 </div>
+</div>
+</div>
 </section>
 
-<section class="feature-graphic feature-graphic--list" data-reveal="" data-astro-cid-[hash]="">
-<div class="feature-graphic-grid" data-astro-cid-[hash]="">
-<div class="feature-graphic-copy" data-astro-cid-[hash]="">
-<h2 data-astro-cid-[hash]="">What a pipeline adds on top
+<section class="scroll-reveal-section py-8 md:py-10" data-astro-cid-[hash]="">
+<div class="reveal-child mx-auto max-w-content px-gutter" data-astro-cid-[hash]="">
+<div data-astro-cid-[hash]="">
+<h2 class="font-display text-[28px] leading-[34px] text-(--color-cream-900) text-balance md:text-[36px] md:leading-[42px]" data-astro-cid-[hash]="">What a pipeline adds on top
 </h2>
-<div class="feature-graphic-body" data-astro-cid-[hash]="">
-<p>The agent code doesn’t change. What changes is what exists around it once it’s run.
+<div class="comparison-value-copy mt-6 max-w-[768px] font-sans text-[17px] leading-[26px] text-(--color-cream-800)" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">The agent code doesn’t change. What changes is what exists around it once it’s run.
 </p>
 </div>
 </div>
-<div class="feature-graphic-media" data-astro-cid-[hash]="">
+<div class="comparison-diagram-well mt-10 min-w-0 overflow-hidden rounded-[20px] p-8 md:p-10 comparison-diagram-well--zenml bg-(--color-sage-300)" data-astro-cid-[hash]="">
 <figure class="fig" data-astro-cid-[hash]="">
 <div class="layer layer--zenml" data-astro-cid-[hash]="">
 <div class="layer-head" data-astro-cid-[hash]="">
@@ -293,23 +287,24 @@
 </div>
 </figure>
 </div>
-<div class="feature-graphic-bullets" data-astro-cid-[hash]="">
-<ul>
+<div class="labs-hex-list mt-10" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<ul class="reveal-child">
 
 <li>
 <strong>
 <code>@pipeline
 </code>:
-</strong> Wraps the agent in a run with a status, a history, and steps you can inspect in the dashboard. With 
+</strong> Wraps the agent in a run with a status, a history, and steps you can inspect in the dashboard. With
 <code>dynamic=True
-</code>, loops and branches in the pipeline body decide at run time which steps exist, and 
+</code>, loops and branches in the pipeline body decide at run time which steps exist, and
 <code>.map()
 </code> fans an agent step out over a list another step returned.
 </li>
 
 <li>
 <strong>Versioned artifacts:
-</strong> Return 
+</strong> Return
 <code>Annotated[Brief, "brief"]
 </code> and the validated Pydantic model is stored, versioned, and loadable by name across runs. The type survives the round trip.
 </li>
@@ -318,7 +313,7 @@
 <strong>
 <code>enable_cache
 </code>:
-</strong> The cache is keyed on the step, its parameters and its inputs. Unchanged steps are served from cache on every run, so tuning the step after the agent doesn’t re-invoke the agent, and 
+</strong> The cache is keyed on the step, its parameters and its inputs. Unchanged steps are served from cache on every run, so tuning the step after the agent doesn’t re-invoke the agent, and
 <code>zenml pipeline runs retry
 </code> after a failed dynamic pipeline run re-runs only what didn’t complete.
 </li>
@@ -327,20 +322,20 @@
 <strong>
 <code>wait()
 </code>:
-</strong> In a dynamic pipeline, pauses the run until a human resolves it from the dashboard, the API, or the CLI. The orchestration process can be torn down while it waits, and 
+</strong> In a dynamic pipeline, pauses the run until a human resolves it from the dashboard, the API, or the CLI. The orchestration process can be torn down while it waits, and
 <code>zenml pipeline runs resume
 </code> picks the run up again, or ZenML Pro resumes it automatically.
 </li>
 
 <li>
 <strong>Sandboxes:
-</strong> A stack component (local, Docker, Kubernetes, Modal) whose sessions the agent’s tools call 
+</strong> A stack component (local, Docker, Kubernetes, Modal) whose sessions the agent’s tools call
 <code>exec()
-</code> on. The 
+</code> on. The
 <code>sandbox_pydantic_ai
-</code> example in the ZenML repo does exactly this: a Pydantic AI agent with 
+</code> example in the ZenML repo does exactly this: a Pydantic AI agent with
 <code>run_python
-</code> and 
+</code> and
 <code>run_shell
 </code> tools backed by one session per subagent.
 </li>
@@ -355,26 +350,33 @@
 </ul>
 </div>
 </div>
+</div>
+</div>
 </section>
 
-<h2 id="where-they-overlap-and-where-they-dont">Where they overlap, and where they don’t
+<div class="comparison-prose prose scroll-reveal-section">
+<h2 id="where-they-overlap-and-where-they-dont" class="reveal-child">Where they overlap, and where they don’t
 </h2>
+</div>
 
-<p>Both projects touch observability, and it’s the one place you might expect a fight. There isn’t one.
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">Both projects touch observability, and it’s the one place you might expect a fight. There isn’t one.
 </p>
+</div>
 
-<ul>
+<div class="comparison-prose prose scroll-reveal-section">
+<ul class="reveal-child">
 
 <li>
 <strong>Logfire
-</strong> traces what happened 
+</strong> traces what happened
 <em>inside
 </em> an agent run: the model calls, the tool calls, the timings. That’s a level of detail ZenML doesn’t capture and doesn’t try to.
 </li>
 
 <li>
 <strong>ZenML
-</strong> records what happened 
+</strong> records what happened
 <em>around
 </em> the step: which run, which inputs, which artifact version, which approval, on which stack. That’s a level Logfire isn’t aiming at.
 </li>
@@ -383,274 +385,313 @@
 </li>
 
 </ul>
+</div>
 
-<p>Neither one lets you take a recorded run and re-run it against a prompt or model change. That’s Kitaru, which has a first-class Pydantic AI adapter: see 
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">Neither one lets you take a recorded run and re-run it against a prompt or model change. That’s Kitaru, which has a first-class Pydantic AI adapter: see
 <a href="/compare/kitaru-vs-pydantic-ai">Kitaru vs Pydantic AI
 </a>.
 </p>
+</div>
 
-<h2 id="what-makes-zenml-different">What makes ZenML different
+<div class="comparison-prose prose scroll-reveal-section">
+<h2 id="what-makes-zenml-different" class="reveal-child">What makes ZenML different
 </h2>
+</div>
 
-<div class="ctable-wrap" data-reveal="" data-astro-cid-[hash]="">
-<table class="ctable has-notes" data-astro-cid-[hash]="">
-<thead data-astro-cid-[hash]="">
-<tr data-astro-cid-[hash]="">
-<th class="col-feature" data-astro-cid-[hash]="">Feature
+<section class="scroll-reveal-section py-8 md:py-10" data-astro-cid-[hash]="">
+<div class="reveal-child mx-auto max-w-content px-gutter" data-astro-cid-[hash]="">
+<div class="comparison-table-ui" data-astro-cid-[hash]="">
+<div class="comparison-spec-table has-notes">
+<div class="overflow-x-auto rounded-[20px] border border-(--color-border) relative">
+<table class="w-full min-w-[600px] border-collapse text-sm">
+<thead>
+<tr class="border-b border-(--color-border)">
+<th class="sticky left-0 bg-card px-6 py-4 text-left font-sans text-[15px] leading-5 font-medium text-(--color-cream-600)">Feature
 </th>
-<th class="col-zenml" data-astro-cid-[hash]="">ZenML
+<th class="px-6 py-4 text-center font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">ZenML
 </th>
-<th class="col-competitor" data-astro-cid-[hash]="">Pydantic AI
+<th class="px-6 py-4 text-center font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Pydantic AI
 </th>
-<th class="col-note" data-astro-cid-[hash]="">What that means
+<th class="px-6 py-4 text-center font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">What that means
 </th>
 </tr>
 </thead>
-<tbody data-astro-cid-[hash]="">
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Versioned artifacts and lineage across runs
+<tbody>
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Versioned artifacts and lineage across runs
 </td>
-<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">Step outputs are stored and loadable by name, including validated Pydantic models.
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>Step outputs are stored and loadable by name, including validated Pydantic models.
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Caching that skips unchanged steps on a re-run
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Caching that skips unchanged steps on a re-run
 </td>
-<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">Keyed on the step, its parameters and its inputs; an agent re-run starts fresh.
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>Keyed on the step, its parameters and its inputs; an agent re-run starts fresh.
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Pause the run for human approval, resume later
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Pause the run for human approval, resume later
 </td>
-<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="partial" data-astro-cid-[hash]="">
-<span class="pill-partial" aria-label="Partial" data-astro-cid-[hash]="">Partial
-</span>
-<span class="sr-only" data-astro-cid-[hash]="">Partial support
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>Partial support
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">`wait()` in a dynamic pipeline pauses the whole run. Pydantic AI can defer a tool call for approval, but you own the storage and the process between turns.
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>`wait()` in a dynamic pipeline pauses the whole run. Pydantic AI can defer a tool call for approval, but you own the storage and the process between turns.
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Isolated code execution for tool loops
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Isolated code execution for tool loops
 </td>
-<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="partial" data-astro-cid-[hash]="">
-<span class="pill-partial" aria-label="Partial" data-astro-cid-[hash]="">Partial
-</span>
-<span class="sr-only" data-astro-cid-[hash]="">Partial support
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>Partial support
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">ZenML's sandbox is a stack component with local, Docker, Kubernetes and Modal flavors. Pydantic's Code Mode (in pydantic-ai-harness) runs the model's tool-calling code inside the Monty sandbox, a Python subset interpreter.
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>ZenML's sandbox is a stack component with local, Docker, Kubernetes and Modal flavors. Pydantic's Code Mode (in pydantic-ai-harness) runs the model's tool-calling code inside the Monty sandbox, a Python subset interpreter.
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML and more
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">One stack abstraction for Kubernetes, Vertex AI, SageMaker, AzureML and more
 </td>
-<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">Configure once, every pipeline uses it.
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>Configure once, every pipeline uses it.
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Serve it and get lineage per request
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Serve it and get lineage per request
 </td>
-<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">`zenml pipeline deploy` makes every request a tracked run.
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>`zenml pipeline deploy` makes every request a tracked run.
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Works with any agent framework, not just one
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Works with any agent framework, not just one
 </td>
-<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">A step is ordinary Python.
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>A step is ordinary Python.
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Typed dependencies and validated structured outputs
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Typed dependencies and validated structured outputs
 </td>
-<td class="col-zenml" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-competitor" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">Pydantic AI's whole point. Use it inside the step.
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>Pydantic AI's whole point. Use it inside the step.
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Model-provider abstraction
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Model-provider abstraction
 </td>
-<td class="col-zenml" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-competitor" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">ZenML has no LLM primitive; call whichever SDK you like from a step.
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>ZenML has no LLM primitive; call whichever SDK you like from a step.
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Tracing inside an agent run (model and tool calls)
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Tracing inside an agent run (model and tool calls)
 </td>
-<td class="col-zenml" data-value="no" data-astro-cid-[hash]="">
-<svg class="icon icon-no" viewBox="0 0 20 20" aria-label="Not supported" data-astro-cid-[hash]="">
-<path fill="currentColor" d="M3 9h14v2H3z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-cream-400)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M17 7L7 17M7 7l10 10">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Not supported
+<span class="sr-only">Not supported
 </span>
 </td>
-<td class="col-competitor" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">Logfire's level of detail. ZenML records the step, not the calls within it.
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>Logfire's level of detail. ZenML records the step, not the calls within it.
+</span>
 </td>
 </tr>
-<tr data-astro-cid-[hash]="">
-<td class="col-feature" data-astro-cid-[hash]="">Open source, self-hostable
+<tr class="border-b border-(--color-border) last:border-b-0">
+<td role="rowheader" class="sticky left-0 bg-card px-6 py-4 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">Open source, self-hostable
 </td>
-<td class="col-zenml" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-competitor" data-value="yes" data-astro-cid-[hash]="">
-<svg class="icon icon-yes" viewBox="0 0 24 24" aria-label="Yes" data-astro-cid-[hash]="">
-<path fill="currentColor" d="m9 16.17-4.17-4.17L3.41 13.41 9 19l12-12-1.41-1.41z" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<svg class="mx-auto h-5 w-5 text-(--color-sage-700)" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+<path stroke-linecap="round" stroke-linejoin="round" d="M20 6L9 17l-5-5">
 </path>
 </svg>
-<span class="sr-only" data-astro-cid-[hash]="">Yes
+<span class="sr-only">Yes
 </span>
 </td>
-<td class="col-note" data-astro-cid-[hash]="">
+<td class="px-6 py-4 text-center font-sans text-[15px] leading-5 text-(--color-cream-800)">
+<span>
+</span>
 </td>
 </tr>
 </tbody>
 </table>
 </div>
+</div>
+<p class="table-scroll__hint" aria-hidden="true" data-astro-cid-[hash]="">
+<svg viewBox="0 0 14 14" fill="none" aria-hidden="true" data-astro-cid-[hash]="">
+<path d="M2 7h10M8 3l4 4-4 4" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-[hash]="">
+</path>
+</svg>Scrolls horizontally · the page body never does
+</p>
+</div>
+</div>
+</section>
 
-<h2 id="how-the-two-surfaces-map">How the two surfaces map
+<div class="comparison-prose prose scroll-reveal-section">
+<h2 id="how-the-two-surfaces-map" class="reveal-child">How the two surfaces map
 </h2>
+</div>
 
 
 
@@ -717,6 +758,8 @@
 
 
 
+<div class="comparison-markdown-table scroll-reveal-section">
+<section aria-label="Comparison details" tabindex="0" class="comparison-markdown-table__frame reveal-child">
 <table>
 <thead>
 <tr>
@@ -756,7 +799,7 @@
 </td>
 <td>The agent loop
 </td>
-<td>The pipeline graph, or Python control flow with 
+<td>The pipeline graph, or Python control flow with
 <code>dynamic=True
 </code>
 </td>
@@ -806,7 +849,7 @@
 </td>
 <td>
 <code>enable_cache
-</code> across runs, 
+</code> across runs,
 <code>zenml pipeline runs retry
 </code> after a failed dynamic run
 </td>
@@ -841,788 +884,780 @@
 </tr>
 </tbody>
 </table>
-
-<section class="codecompare" data-reveal="" data-astro-cid-[hash]="">
-<div class="codecompare-inner" data-astro-cid-[hash]="">
-<h2 class="codecompare-title" data-astro-cid-[hash]="">Code comparison
-</h2>
-</div>
-<div class="codecompare-grid" data-astro-cid-[hash]="">
-<article class="codecompare-pane codecompare-pane--zenml" aria-label="Recommended: ZenML implementation" data-astro-cid-[hash]="">
-<header data-astro-cid-[hash]="">
-<span class="codecompare-dot codecompare-dot--zenml" aria-hidden="true" data-astro-cid-[hash]="">
-</span>
-<span class="codecompare-label" data-astro-cid-[hash]="">ZenML (wrapping the agent)
-</span>
-<span class="codecompare-pill" data-astro-cid-[hash]="">Recommended
-</span>
-</header>
-<div class="codecompare-code" data-astro-cid-[hash]="">
-<pre class="shiki shiki-themes zenml-light zenml-dark" style="background-color:#f3f4f6;--shiki-dark-bg:#1a1a2e;color:#1f0c47;--shiki-dark:#e2e8f0" tabindex="0">
-<code>
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">from
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> typing 
-</span>
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">import
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> Annotated
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">from
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> pydantic 
-</span>
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">import
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> BaseModel
-</span>
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">from
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> pydantic_ai 
-</span>
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">import
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> Agent
-</span>
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">from
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> zenml 
-</span>
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">import
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> pipeline
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">,
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> step
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">,
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> wait
-</span>
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">from
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> zenml
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">.
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">client 
-</span>
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">import
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> Client
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">class
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD"> Brief
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD">BaseModel
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">):
-</span>
-</span>
-
-<span class="line">
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">  summary
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">:
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD"> str
-</span>
-</span>
-
-<span class="line">
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">  sources
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">:
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> list[
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD">str
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">]
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">agent 
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> Agent(
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC">"anthropic:claude-sonnet-4-6"
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">,
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD"> output_type
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">Brief)
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#F53D81;--shiki-dark:#FB7185">@step
-</span>
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">def
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> gather_context
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD">topic
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">:
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD"> str
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">) 
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">-&gt;
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> Annotated[
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD">str
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">,
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC"> "context"
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">]:
-</span>
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">  return
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> retrieve_documents(topic)
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#F53D81;--shiki-dark:#FB7185">@step
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD">enable_cache
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">False
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">)
-</span>
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">def
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> run_agent
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD">context
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">:
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD"> str
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">,
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD"> topic
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">:
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD"> str
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">) 
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">-&gt;
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> Annotated[Brief
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">,
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC"> "brief"
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">]:
-</span>
-</span>
-
-<span class="line">
-<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic">  # The validated Pydantic model is stored as the artifact,
-</span>
-</span>
-
-<span class="line">
-<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic">  # so the type survives the round trip.
-</span>
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">  return
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> agent
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">.
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">run_sync(
-</span>
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">f
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC">"
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">{
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">context
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">}\n\n
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC">Brief on: 
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">{
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">topic
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">}
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC">"
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">)
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">.
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">output
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#F53D81;--shiki-dark:#FB7185">@step
-</span>
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">def
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> publish
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD">brief
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">:
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> Brief) 
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">-&gt;
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> None:
-</span>
-</span>
-
-<span class="line">
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">  post_to_cms(brief
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">.
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">summary)
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#F53D81;--shiki-dark:#FB7185">@pipeline
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD">dynamic
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">True
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">)
-</span>
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">def
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> brief_pipeline
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD">topic
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">:
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD"> str
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">):
-</span>
-</span>
-
-<span class="line">
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">  brief 
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> run_agent(gather_context(topic)
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">,
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> topic)
-</span>
-</span>
-
-<span class="line">
-<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic">  # Pauses the run until someone answers from the
-</span>
-</span>
-
-<span class="line">
-<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic">  # dashboard, the API, or the CLI.
-</span>
-</span>
-
-<span class="line">
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">  approved 
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> wait(
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD">schema
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD">bool
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">,
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD"> question
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC">"Publish this brief?"
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">)
-</span>
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">  if
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> approved
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">:
-</span>
-</span>
-
-<span class="line">
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">      publish(brief)
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">brief_pipeline(
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC">"AI orchestration"
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">)
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># Comes back typed, from any past run:
-</span>
-</span>
-
-<span class="line">
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">brief 
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> Client()
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">.
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">get_artifact_version(
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC">"brief"
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">)
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">.
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">load()
-</span>
-</span>
-</code>
-</pre>
-</div>
-</article>
-<article class="codecompare-pane" data-astro-cid-[hash]="">
-<header data-astro-cid-[hash]="">
-<span class="codecompare-dot codecompare-dot--competitor" aria-hidden="true" data-astro-cid-[hash]="">
-</span>
-<span class="codecompare-label" data-astro-cid-[hash]="">Pydantic AI alone
-</span>
-</header>
-<div class="codecompare-code" data-astro-cid-[hash]="">
-<pre class="shiki shiki-themes zenml-light zenml-dark" style="background-color:#f3f4f6;--shiki-dark-bg:#1a1a2e;color:#1f0c47;--shiki-dark:#e2e8f0" tabindex="0">
-<code>
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">from
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> pydantic 
-</span>
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">import
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> BaseModel
-</span>
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">from
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> pydantic_ai 
-</span>
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">import
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> Agent
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">class
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD"> Brief
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">(
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD">BaseModel
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">):
-</span>
-</span>
-
-<span class="line">
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">  summary
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">:
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD"> str
-</span>
-</span>
-
-<span class="line">
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">  sources
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">:
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> list[
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD">str
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">]
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">agent 
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> Agent(
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC">"anthropic:claude-sonnet-4-6"
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">,
-</span>
-<span style="color:#7641BB;--shiki-dark:#C4B5FD"> output_type
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">Brief)
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">topic 
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC"> "AI orchestration"
-</span>
-</span>
-
-<span class="line">
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">context 
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> retrieve_documents(topic)
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">result 
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> agent
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">.
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">run_sync(
-</span>
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">f
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC">"
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">{
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">context
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">}\n\n
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC">Brief on: 
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">{
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">topic
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">}
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC">"
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">)
-</span>
-</span>
-
-<span class="line">
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">brief 
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">=
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0"> result
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">.
-</span>
-<span style="color:#1F0C47;--shiki-dark:#E2E8F0">output          
-</span>
-<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># validated Brief
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#228A8A;--shiki-dark:#5EEAD4">if
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA"> input(
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC">"Publish this brief? "
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">)
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185"> ==
-</span>
-<span style="color:#4AA819;--shiki-dark:#86EFAC"> "y"
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">:
-</span>
-</span>
-
-<span class="line">
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">  post_to_cms(brief
-</span>
-<span style="color:#F53D81;--shiki-dark:#FB7185">.
-</span>
-<span style="color:#7A3EF4;--shiki-dark:#A78BFA">summary)
-</span>
-</span>
-
-<span class="line">
-</span>
-
-<span class="line">
-<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># The output is type-safe and Logfire can trace the model and
-</span>
-</span>
-
-<span class="line">
-<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># tool calls inside this run. What there isn't: a run record
-</span>
-</span>
-
-<span class="line">
-<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># across runs, a versioned artifact you can load back by name
-</span>
-</span>
-
-<span class="line">
-<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># next month, a cache that skips retrieval on the next run,
-</span>
-</span>
-
-<span class="line">
-<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># an approval that survives the process being torn down, or
-</span>
-</span>
-
-<span class="line">
-<span style="color:#676B79;--shiki-light-font-style:italic;--shiki-dark:#64748B;--shiki-dark-font-style:italic"># a way to put this on Vertex AI without writing it.
-</span>
-</span>
-</code>
-</pre>
-</div>
-</article>
-</div>
 </section>
-
-<section class="ccta-section" id="cta" data-astro-cid-[hash]="">
-<div class="ccta-card" data-reveal="" data-astro-cid-[hash]="">
-<div class="ccta-eyebrow" aria-hidden="true" data-astro-cid-[hash]="">
-<span class="ccta-eyebrow-dot" data-astro-cid-[hash]="">
-</span>
-<span class="ccta-eyebrow-text" data-astro-cid-[hash]="">The orchestration layer underneath
-</span>
-</div>
-<h2 class="ccta-headline" data-astro-cid-[hash]="">Put a pipeline around your Pydantic AI agents
-</h2>
-<div class="ccta-body" data-astro-cid-[hash]="">
-<p>These aren’t alternatives, and picking one doesn’t rule out the other. Build the agent with Pydantic AI, keep its typing and its tracing, and add ZenML when the agent becomes a workload: the outputs need versioning, a human has to sign off before the next step, re-running everything gets expensive, and it has to run on your own infrastructure.
+<p aria-hidden="true" class="table-scroll__hint">
+<svg viewBox="0 0 14 14" fill="none" aria-hidden="true">
+<path d="M2 7h10M8 3l4 4-4 4" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+</path>
+</svg>Scrolls horizontally · the page body never does
 </p>
 </div>
-<div class="ccta-shelf" data-astro-cid-[hash]="">
-<div class="ccta-install" data-astro-cid-[hash]="">
-<span class="ccta-install-prompt" aria-hidden="true" data-astro-cid-[hash]="">$
+
+<section class="scroll-reveal-section py-8 md:py-10">
+<div class="reveal-child mx-auto max-w-content px-gutter">
+<h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">Code comparison
+</h2>
+<div class="mt-10 grid min-w-0 grid-cols-1 items-start gap-6 lg:grid-cols-2">
+<figure class="labs-code-pane code-pane" data-language="python" aria-label="ZenML (wrapping the agent) implementation">
+<div class="code-pane__bar">
+<span>ZenML (wrapping the agent)
 </span>
-<code class="ccta-install-cmd" data-astro-cid-[hash]="">uv add zenml
-</code>
-<button class="ccta-copy-btn" aria-label="Copy install command" data-copy="uv add zenml" data-astro-cid-[hash]="">
-<svg class="ccta-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
-<rect x="9" y="9" width="13" height="13" rx="2" data-astro-cid-[hash]="">
-</rect>
-<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" data-astro-cid-[hash]="">
-</path>
-</svg>
-<svg class="ccta-check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
-<polyline points="20 6 9 17 4 12" data-astro-cid-[hash]="">
-</polyline>
-</svg>
+<button type="button" class="code-pane__copy" aria-label="Copy ZenML (wrapping the agent) code">Copy
 </button>
 </div>
-<a href="https://cloud.zenml.io" data-analytics="ZenML-Compare-CTA-Signup" class="ccta-primary" data-astro-cid-[hash]="">
-<span data-astro-cid-[hash]="">Sign up free
+<div class="code-pane__scroll">
+<pre class="astro-code labs-light" style="background-color:#413D37;color:#F5F7F4; overflow-x: auto;" tabindex="0" data-language="python">
+<code>
+<span class="line">
+<span style="color:#BECAA6">from
 </span>
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
-<path d="M5 12h14" data-astro-cid-[hash]="">
-</path>
-<path d="m13 5 7 7-7 7" data-astro-cid-[hash]="">
-</path>
-</svg>
-</a>
+<span style="color:#F5F7F4"> typing
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> Annotated
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> pydantic
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> BaseModel
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> pydantic_ai
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> Agent
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> zenml
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> pipeline
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#F5F7F4"> step
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#F5F7F4"> wait
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> zenml
+</span>
+<span style="color:#47BAD1">.
+</span>
+<span style="color:#F5F7F4">client
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> Client
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">class
+</span>
+<span style="color:#E0CFB7"> Brief
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">BaseModel
+</span>
+<span style="color:#F5F7F4">):
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">  summary
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> str
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">  sources
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4"> list[
+</span>
+<span style="color:#E0CFB7">str
+</span>
+<span style="color:#F5F7F4">]
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">agent
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> Agent
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#DBE0C2">"anthropic:claude-sonnet-4-6"
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#E0CFB7">output_type
+</span>
+<span style="color:#47BAD1">=Brief
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">@step
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> gather_context
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">topic
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> str
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">-&gt;
+</span>
+<span style="color:#F5F7F4"> Annotated[
+</span>
+<span style="color:#E0CFB7">str
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#DBE0C2"> "context"
+</span>
+<span style="color:#F5F7F4">]:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">  return
+</span>
+<span style="color:#47BAD1"> retrieve_documents
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">topic
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">@step
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">enable_cache
+</span>
+<span style="color:#47BAD1">=False
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> run_agent
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">context
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> str
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#E0CFB7"> topic
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> str
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">-&gt;
+</span>
+<span style="color:#F5F7F4"> Annotated[Brief
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#DBE0C2"> "brief"
+</span>
+<span style="color:#F5F7F4">]:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">  # The validated Pydantic model is stored as the artifact,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">  # so the type survives the round trip.
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">  return
+</span>
+<span style="color:#F5F7F4"> agent
+</span>
+<span style="color:#47BAD1">.run_sync
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#BECAA6">f
+</span>
+<span style="color:#DBE0C2">"
+</span>
+<span style="color:#E0CFB7">{
+</span>
+<span style="color:#47BAD1">context
+</span>
+<span style="color:#E0CFB7">}\n\n
+</span>
+<span style="color:#DBE0C2">Brief on:
+</span>
+<span style="color:#E0CFB7">{
+</span>
+<span style="color:#47BAD1">topic
+</span>
+<span style="color:#E0CFB7">}
+</span>
+<span style="color:#DBE0C2">"
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">.
+</span>
+<span style="color:#F5F7F4">output
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">@step
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> publish
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">brief
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4"> Brief)
+</span>
+<span style="color:#47BAD1">-&gt;
+</span>
+<span style="color:#F5F7F4"> None:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">  post_to_cms
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">brief.summary
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">@pipeline
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">dynamic
+</span>
+<span style="color:#47BAD1">=True
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">def
+</span>
+<span style="color:#47BAD1"> brief_pipeline
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">topic
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> str
+</span>
+<span style="color:#F5F7F4">):
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">  brief
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> run_agent
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">gather_context
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">topic
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">, topic
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">  # Pauses the run until someone answers from the
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic">  # dashboard, the API, or the CLI.
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">  approved
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> wait
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">schema
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#E0CFB7">bool
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#E0CFB7">question
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#DBE0C2">"Publish this brief?"
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">  if
+</span>
+<span style="color:#F5F7F4"> approved
+</span>
+<span style="color:#47BAD1">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">      publish
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">brief
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">brief_pipeline
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#DBE0C2">"AI orchestration"
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># Comes back typed, from any past run:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">brief
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> Client
+</span>
+<span style="color:#F5F7F4">()
+</span>
+<span style="color:#47BAD1">.get_artifact_version
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#DBE0C2">"brief"
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">.load
+</span>
+<span style="color:#F5F7F4">()
+</span>
+</span>
+</code>
+</pre>
 </div>
-<div class="ccta-footer" data-astro-cid-[hash]="">
-<a href="https://docs.zenml.io" target="_blank" rel="noopener noreferrer" class="ccta-link" data-astro-cid-[hash]="">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
-<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" data-astro-cid-[hash]="">
-</path>
-<path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Read the docs
+</figure>
+<figure class="labs-code-pane code-pane" data-language="python" aria-label="Pydantic AI alone implementation">
+<div class="code-pane__bar">
+<span>Pydantic AI alone
 </span>
-</a>
-<span class="ccta-dot" aria-hidden="true" data-astro-cid-[hash]="">
+<button type="button" class="code-pane__copy" aria-label="Copy Pydantic AI alone code">Copy
+</button>
+</div>
+<div class="code-pane__scroll">
+<pre class="astro-code labs-light" style="background-color:#413D37;color:#F5F7F4; overflow-x: auto;" tabindex="0" data-language="python">
+<code>
+<span class="line">
+<span style="color:#BECAA6">from
 </span>
-<a href="/book-your-demo" class="ccta-link" data-astro-cid-[hash]="">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
-<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Talk to the team
+<span style="color:#F5F7F4"> pydantic
 </span>
-</a>
-<span class="ccta-dot" aria-hidden="true" data-astro-cid-[hash]="">
+<span style="color:#BECAA6">import
 </span>
-<a href="https://github.com/zenml-io/zenml" target="_blank" rel="noopener noreferrer" class="ccta-link" data-astro-cid-[hash]="">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-[hash]="">
-<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" data-astro-cid-[hash]="">
-</path>
-</svg>
-<span data-astro-cid-[hash]="">Star on GitHub
+<span style="color:#F5F7F4"> BaseModel
 </span>
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">from
+</span>
+<span style="color:#F5F7F4"> pydantic_ai
+</span>
+<span style="color:#BECAA6">import
+</span>
+<span style="color:#F5F7F4"> Agent
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">class
+</span>
+<span style="color:#E0CFB7"> Brief
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#E0CFB7">BaseModel
+</span>
+<span style="color:#F5F7F4">):
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">  summary
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#E0CFB7"> str
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">  sources
+</span>
+<span style="color:#47BAD1">:
+</span>
+<span style="color:#F5F7F4"> list[
+</span>
+<span style="color:#E0CFB7">str
+</span>
+<span style="color:#F5F7F4">]
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">agent
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> Agent
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#DBE0C2">"anthropic:claude-sonnet-4-6"
+</span>
+<span style="color:#47BAD1">,
+</span>
+<span style="color:#E0CFB7">output_type
+</span>
+<span style="color:#47BAD1">=Brief
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">topic
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#DBE0C2"> "AI orchestration"
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">context
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#47BAD1"> retrieve_documents
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">topic
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">result
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#F5F7F4"> agent
+</span>
+<span style="color:#47BAD1">.run_sync
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#BECAA6">f
+</span>
+<span style="color:#DBE0C2">"
+</span>
+<span style="color:#E0CFB7">{
+</span>
+<span style="color:#47BAD1">context
+</span>
+<span style="color:#E0CFB7">}\n\n
+</span>
+<span style="color:#DBE0C2">Brief on:
+</span>
+<span style="color:#E0CFB7">{
+</span>
+<span style="color:#47BAD1">topic
+</span>
+<span style="color:#E0CFB7">}
+</span>
+<span style="color:#DBE0C2">"
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+<span style="color:#F5F7F4">brief
+</span>
+<span style="color:#47BAD1">=
+</span>
+<span style="color:#F5F7F4"> result
+</span>
+<span style="color:#47BAD1">.
+</span>
+<span style="color:#F5F7F4">output
+</span>
+<span style="color:#AC947F;font-style:italic"># validated Brief
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#BECAA6">if
+</span>
+<span style="color:#47BAD1"> input
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#DBE0C2">"Publish this brief? "
+</span>
+<span style="color:#F5F7F4">)
+</span>
+<span style="color:#47BAD1">==
+</span>
+<span style="color:#DBE0C2"> "y"
+</span>
+<span style="color:#47BAD1">:
+</span>
+</span>
+
+<span class="line">
+<span style="color:#47BAD1">  post_to_cms
+</span>
+<span style="color:#F5F7F4">(
+</span>
+<span style="color:#47BAD1">brief.summary
+</span>
+<span style="color:#F5F7F4">)
+</span>
+</span>
+
+<span class="line">
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># The output is type-safe and Logfire can trace the model and
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># tool calls inside this run. What there isn't: a run record
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># across runs, a versioned artifact you can load back by name
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># next month, a cache that skips retrieval on the next run,
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># an approval that survives the process being torn down, or
+</span>
+</span>
+
+<span class="line">
+<span style="color:#AC947F;font-style:italic"># a way to put this on Vertex AI without writing it.
+</span>
+</span>
+</code>
+</pre>
+</div>
+</figure>
+</div>
+</div>
+</section>
+
+<div class="scroll-reveal-section">
+<div class="reveal-child">
+<section class="relative overflow-hidden bg-(--color-sage-900) py-16 text-(--color-cream-50) md:py-20" data-astro-cid-[hash]="">
+<astro-island uid="[hash]" data-preact-island-id="7" component-url="/_astro/GrainBackdrop.[hash].js" component-export="GrainBackdrop" renderer-url="/_astro/client.[hash].js" props="{&quot;config&quot;:[0,{&quot;shaderColors&quot;:[1,[[0,&quot;#151E19&quot;],[0,&quot;#3C4C38&quot;],[0,&quot;#63775E&quot;],[0,&quot;#151E19&quot;]]],&quot;panel&quot;:[0,&quot;#151E19&quot;],&quot;blobA&quot;:[0,&quot;#3C4C38E6&quot;],&quot;blobB&quot;:[0,&quot;#63775ECC&quot;],&quot;speed&quot;:[0,1.8],&quot;scale&quot;:[0,1.6],&quot;rotation&quot;:[0,-20],&quot;noise&quot;:[0,0.9],&quot;blend&quot;:[0,true]}],&quot;class&quot;:[0,&quot;absolute inset-0 opacity-90&quot;],&quot;data-astro-cid-[hash]&quot;:[0,true]}" ssr="" client="idle" opts="{&quot;name&quot;:&quot;GrainBackdrop&quot;,&quot;value&quot;:true}" await-children="">
+<div aria-hidden="true" style="background-color:#151E19;background-image:radial-gradient(circle farthest-corner at 20% 15%, #3C4C38E6 0%, transparent 60%), radial-gradient(circle farthest-corner at 85% 85%, #63775ECC 0%, transparent 60%);" class="pointer-events-none absolute inset-0 absolute inset-0 opacity-90">
+</div>
+<!--astro:end-->
+</astro-island>
+<div class="relative mx-auto flex max-w-content flex-col items-center px-gutter text-center" data-astro-cid-[hash]="">
+<h2 class="max-w-[768px] font-display text-[32px] leading-[38px] text-(--color-cream-50) md:text-[44px] md:leading-[50px]" data-astro-cid-[hash]="">Put a pipeline around
+<br data-astro-cid-[hash]="">your Pydantic AI agents
+</h2>
+<div class="labs-close-deck mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)" data-astro-cid-[hash]="">
+<div class="comparison-prose prose scroll-reveal-section">
+<p class="reveal-child">These aren’t alternatives, and picking one doesn’t rule out the other. Build the agent with Pydantic AI, keep its typing and its tracing, and add ZenML when the agent becomes a workload: the outputs need versioning, a human has to sign off before the next step, re-running everything gets expensive, and it has to run on your own infrastructure.
+</p>
+</div>
+</div>
+<div class="mt-10 flex flex-wrap items-center gap-7" data-astro-cid-[hash]="">
+<a href="https://cloud.zenml.io/signup?product=zenml" data-analytics="ZenML-Compare-CTA-Signup" class="inline-flex h-12 cursor-pointer items-center justify-center rounded-full px-[26px] font-label text-[13px] uppercase tracking-[0.05em] transition-colors duration-200 ease-out bg-(--color-sage-400) text-(--color-cream-800) hover:bg-(--color-sage-500)">Sign up free
 </a>
 </div>
 </div>
 </section>
-<script type="module" src="/_astro/ComparisonCta.astro_astro_type_script_index_0_lang.[hash].js">
-</script>
+</div>
+</div>
 </article>

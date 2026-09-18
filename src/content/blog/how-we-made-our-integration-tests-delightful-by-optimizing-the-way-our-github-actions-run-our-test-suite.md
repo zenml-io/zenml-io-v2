@@ -20,12 +20,12 @@ tags:
 date: "2022-03-09T00:00:00.000Z"
 readingTime: 16 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/6ad52faa/6530131b35b49e6493e2dc08_gh_actions.png"
+  url: "https://assets.zenml.io/content/blog/how-we-made-our-integration-tests-delightful-by-optimizing-the-way-our-github-actions-run-our-test-suite/f2d7ee5e/how-we-made-our-integration-tests-delightful-by-optimizing-the-way-our-github-actions-run-our-test-suite-cover.avif"
 seo:
   title: "How we made our integration tests delightful by optimizing the way our GitHub Actions run our test suite - ZenML Blog"
   description: "As we outgrew our initial template Github Action workflow, here's the five things we added to our Github Action arsenal to fit our growing needs: Caching, Reusable Workflows, Composite Actions, Comment Triggers and Concurrency Management."
   canonical: "https://www.zenml.io/blog/how-we-made-our-integration-tests-delightful-by-optimizing-the-way-our-github-actions-run-our-test-suite"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e1e03683/6530131b35b49e6493e2dc08_gh_actions.png"
+  ogImage: "https://assets.zenml.io/content/blog/how-we-made-our-integration-tests-delightful-by-optimizing-the-way-our-github-actions-run-our-test-suite/61f23964/how-we-made-our-integration-tests-delightful-by-optimizing-the-way-our-github-actions-run-our-test-suite-cover.jpg"
   ogTitle: "How we made our integration tests delightful by optimizing the way our GitHub Actions run our test suite - ZenML Blog"
   ogDescription: "As we outgrew our initial template Github Action workflow, here's the five things we added to our Github Action arsenal to fit our growing needs: Caching, Reusable Workflows, Composite Actions, Comment Triggers and Concurrency Management."
 ---

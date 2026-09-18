@@ -11,13 +11,13 @@ tags:
   - "open-source"
 date: "2026-05-11T00:00:00.000Z"
 mainImage:
-  url: "https://assets.zenml.io/content/blog/where-durable-execution-is-headed/7d7b380e/where-durable-execution-is-headed-cover.avif"
+  url: "https://assets.zenml.io/content/blog/where-durable-execution-is-headed/9ec10401/where-durable-execution-is-headed-cover.avif"
   alt: "Where durable execution is going"
 seo:
   title: "Checkpoint Replay, Worker Shape, and Where Durable Execution Is Going - ZenML Blog"
   description: "Armin Ronacher's Absurd and Kitaru arrived at the same answers on replay semantics, ephemeral compute, and an agent-legible runtime. Here's why that matters."
   canonical: "https://www.zenml.io/blog/where-durable-execution-is-headed"
-  ogImage: "https://assets.zenml.io/content/blog/where-durable-execution-is-headed/7d7b380e/where-durable-execution-is-headed-cover.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/where-durable-execution-is-headed/bf4236df/where-durable-execution-is-headed-cover.jpg"
 ---
 
 

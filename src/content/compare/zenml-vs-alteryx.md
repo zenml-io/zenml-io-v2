@@ -11,6 +11,7 @@ webflow:
   lastUpdated: "2026-02-09T14:59:58.885Z"
   createdOn: "2026-02-09T13:22:15.853Z"
 toolName: "Alteryx"
+cardSubtitle: "Code-first ML pipelines beyond visual analytics"
 toolIcon:
   url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/62547489/6989e7b258a6f0a81748dac6_alteryx.avif"
 category: "e2e-platforms"

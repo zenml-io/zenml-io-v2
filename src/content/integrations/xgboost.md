@@ -12,7 +12,8 @@ webflow:
   createdOn: "2023-10-12T09:13:13.041Z"
 integrationType: "modeling"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/1736887d/66d8691e2943609aef09f8ee_xgboost.png"
+  url: "https://assets.zenml.io/content/integrations/logos/xgboost.svg"
+  alt: "XGBoost logo"
 shortDescription: "Supercharge your ML pipelines with XGBoost and ZenML"
 docsUrl: "https://sdkdocs.zenml.io/latest/integration_code_docs/integrations-xgboost/"
 githubUrl: "https://github.com/dmlc/xgboost"

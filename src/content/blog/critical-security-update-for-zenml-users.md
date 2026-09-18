@@ -19,12 +19,12 @@ tags:
 date: "2024-02-01T00:00:00.000Z"
 readingTime: 1 min
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5eb6bca2/65c9f71ef81c034b070e8b97_02_-_Logo__2___1_.png"
+  url: "https://assets.zenml.io/content/blog/critical-security-update-for-zenml-users/1150f21f/critical-security-update-for-zenml-users-cover.avif"
 seo:
   title: "CVE-2024-25723: Critical Security Update for ZenML users - ZenML Blog"
   description: "A critical security vulnerability has been identified in ZenML versions prior to 0.46.7. This vulnerability potentially allows unauthorized users to take ownership of ZenML accounts through the user activation feature."
   canonical: "https://www.zenml.io/blog/critical-security-update-for-zenml-users"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/aecb7ae5/65c9f71ef81c034b070e8b97_02_-_Logo__2___1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/critical-security-update-for-zenml-users/bb4031c0/critical-security-update-for-zenml-users-cover.jpg"
   ogTitle: "CVE-2024-25723: Critical Security Update for ZenML users - ZenML Blog"
   ogDescription: "A critical security vulnerability has been identified in ZenML versions prior to 0.46.7. This vulnerability potentially allows unauthorized users to take ownership of ZenML accounts through the user activation feature."
 ---

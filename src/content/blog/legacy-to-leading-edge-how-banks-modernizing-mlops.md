@@ -18,12 +18,12 @@ tags:
 date: "2024-11-26T00:00:00.000Z"
 readingTime: 2 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c2c192e6/6746d601bbd823d4a8c13872_Gemini_Generated_Image__1_.jpeg"
+  url: "https://assets.zenml.io/content/blog/legacy-to-leading-edge-how-banks-modernizing-mlops/f02b14a7/legacy-to-leading-edge-how-banks-modernizing-mlops-cover.avif"
 seo:
   title: "From Legacy to Leading Edge: How Traditional Banks Are Modernizing Their MLOps - ZenML Blog"
   description: "Discover how traditional banking institutions are revolutionizing their machine learning operations while navigating complex regulatory requirements and legacy systems. This insightful analysis explores the critical challenges and strategic solutions in modernizing MLOps within the financial sector, from managing cultural resistance to implementing cloud-native architectures. Learn practical approaches to building scalable ML platforms that balance innovation with compliance, and understand key considerations for successful MLOps transformation in highly regulated environments. Perfect for technical leaders and ML practitioners in financial services seeking to modernize their ML infrastructure while maintaining operational stability and regulatory compliance."
   canonical: "https://www.zenml.io/blog/legacy-to-leading-edge-how-banks-modernizing-mlops"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c2c192e6/6746d601bbd823d4a8c13872_Gemini_Generated_Image__1_.jpeg"
+  ogImage: "https://assets.zenml.io/content/blog/legacy-to-leading-edge-how-banks-modernizing-mlops/a22db33b/legacy-to-leading-edge-how-banks-modernizing-mlops-cover.jpg"
   ogTitle: "From Legacy to Leading Edge: How Traditional Banks Are Modernizing Their MLOps - ZenML Blog"
   ogDescription: "Discover how traditional banking institutions are revolutionizing their machine learning operations while navigating complex regulatory requirements and legacy systems. This insightful analysis explores the critical challenges and strategic solutions in modernizing MLOps within the financial sector, from managing cultural resistance to implementing cloud-native architectures. Learn practical approaches to building scalable ML platforms that balance innovation with compliance, and understand key considerations for successful MLOps transformation in highly regulated environments. Perfect for technical leaders and ML practitioners in financial services seeking to modernize their ML infrastructure while maintaining operational stability and regulatory compliance."
 ---

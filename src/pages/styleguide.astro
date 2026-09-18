@@ -10,7 +10,7 @@
  * Per DESIGN.md's "The styleguide" rule, this route is public but unlisted:
  * noindex, and linked from no nav, footer, or sitemap (see the sitemap
  * exclusion list in astro.config.ts). This is the first page to render
- * under [data-app="zenml-next"], the 2026 rebrand's type system.
+ * under [data-app="labs"], the 2026 rebrand's type system.
  *
  * Fully static: no <script>, no client: directives, no islands beyond what
  * MinimalLayout itself always mounts (cookie consent).
@@ -41,8 +41,7 @@ const data = getStyleguideData();
  */
 const SCOPE_ORDER = [
   ":root",
-  '[data-app="zenml"]',
-  '[data-app="zenml-next"]',
+  '[data-app="labs"]',
   ".kitaru-brand-vars",
   "@theme",
   "@theme inline",
@@ -91,20 +90,19 @@ const orderedContrastScopes = [...contrastGroups.keys()].sort(
 const UNRESOLVED = "var(...)";
 
 // ---------------------------------------------------------------------------
-// Type — the four role stacks, resolved for the [data-app="zenml-next"]
-// scope this page renders under, falling back to :root for a role
-// zenml-next doesn't redeclare (font-mono: code keeps JetBrains Mono
-// everywhere, so zenml-next never overrides it — see global.css's own
+// Type — the four role stacks, resolved for the [data-app="labs"]
+// scope the root now carries by default, falling back to :root for a role
+// labs doesn't redeclare (font-mono: code keeps JetBrains Mono
+// everywhere, so labs never overrides it — see global.css's own
 // comment on that scope block).
 // ---------------------------------------------------------------------------
 
-const ZENML_NEXT_SCOPE = '[data-app="zenml-next"]';
+const LABS_SCOPE = '[data-app="labs"]';
 
 function fontRowFor(name: string): TokenRow | undefined {
   return (
-    data.fonts.find(
-      (row) => row.scope === ZENML_NEXT_SCOPE && row.name === name,
-    ) ?? data.fonts.find((row) => row.scope === ":root" && row.name === name)
+    data.fonts.find((row) => row.scope === LABS_SCOPE && row.name === name) ??
+    data.fonts.find((row) => row.scope === ":root" && row.name === name)
   );
 }
 
@@ -165,7 +163,7 @@ const SPECIMEN_TEXT = "The quick brown fox jumps over the lazy dog";
 
 function typeScaleValue(name: string): TokenRow | undefined {
   return data.typeScale.find(
-    (row) => row.scope === ZENML_NEXT_SCOPE && row.name === name,
+    (row) => row.scope === LABS_SCOPE && row.name === name,
   );
 }
 
@@ -230,9 +228,7 @@ function humanizeRungName(name: string): string {
  * which rungs EXIST and what to call them.
  */
 const TYPE_SCALE_RUNGS = data.typeScale
-  .filter(
-    (row) => row.scope === ZENML_NEXT_SCOPE && row.name.startsWith("--text-"),
-  )
+  .filter((row) => row.scope === LABS_SCOPE && row.name.startsWith("--text-"))
   .map((row) => {
     const name = row.name.slice("--text-".length);
     const fontToken = RUNG_FONT_TOKEN[name];
@@ -322,7 +318,7 @@ const designMdSections = parseDesignRules(designMdRaw);
   noindex
   surface="unified"
 >
-  <div data-app="zenml-next" class="overflow-x-clip bg-background font-sans text-foreground">
+  <div class="overflow-x-clip bg-background font-sans text-foreground">
     <main class="mx-auto max-w-content px-gutter py-space-xxl">
       <!-- ============================================================ -->
       <!-- Header                                                        -->
@@ -507,7 +503,7 @@ const designMdSections = parseDesignRules(designMdRaw);
         <p class="font-label text-[13px] uppercase text-muted-foreground">02</p>
         <h2 class="mt-space-xxs text-balance font-display text-3xl tracking-[var(--tracking-heading)] text-foreground">Type</h2>
         <p class="mt-space-xs max-w-2xl text-pretty text-secondary-foreground">
-          The four type roles, rendered live under <code class="font-mono text-sm">[data-app="zenml-next"]</code> —
+          The four type roles, rendered live under <code class="font-mono text-sm">[data-app="labs"]</code> —
           the same scope this page itself renders under. Each specimen is
           rendered at its real <code class="font-mono text-sm">--text-*</code>/<code class="font-mono text-sm">--leading-*</code>/<code class="font-mono text-sm">--tracking-*</code>
           value from <code class="font-mono text-sm">global.css</code>, not a Tailwind scale step.

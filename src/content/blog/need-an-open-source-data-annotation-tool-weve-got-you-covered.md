@@ -21,12 +21,12 @@ tags:
 date: "2022-06-10T00:00:00.000Z"
 readingTime: 3 Mins Read
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4f6f4811/653108b2609f2772118ea081_os-cover.jpg"
+  url: "https://assets.zenml.io/content/blog/need-an-open-source-data-annotation-tool-weve-got-you-covered/5d494685/need-an-open-source-data-annotation-tool-weve-got-you-covered-cover.avif"
 seo:
   title: "Need an open-source data annotation tool? We've got you covered! - ZenML Blog"
   description: "We put together a list of 48 open-source annotation and labeling tools to support different kinds of machine-learning projects."
   canonical: "https://www.zenml.io/blog/need-an-open-source-data-annotation-tool-weve-got-you-covered"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/f19d9181/653108b2609f2772118ea081_os-cover.jpg"
+  ogImage: "https://assets.zenml.io/content/blog/need-an-open-source-data-annotation-tool-weve-got-you-covered/b1ed7a08/need-an-open-source-data-annotation-tool-weve-got-you-covered-cover.jpg"
   ogTitle: "Need an open-source data annotation tool? We've got you covered! - ZenML Blog"
   ogDescription: "We put together a list of 48 open-source annotation and labeling tools to support different kinds of machine-learning projects."
 ---

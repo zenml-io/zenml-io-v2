@@ -160,6 +160,20 @@ function workflowStep(steps: WorkflowStep[], name: string): WorkflowStep {
   return step as WorkflowStep;
 }
 
+let hostHasTimeout: boolean | undefined;
+
+function hostProvidesTimeout(): boolean {
+  if (hostHasTimeout === undefined) {
+    try {
+      execFileSync("sh", ["-c", "command -v timeout"], { stdio: "ignore" });
+      hostHasTimeout = true;
+    } catch {
+      hostHasTimeout = false;
+    }
+  }
+  return hostHasTimeout;
+}
+
 // Each harness below fakes out `wrangler`/`curl`/`sleep` with a small bash
 // script whose *content* is identical on every call for a given `binKey` --
 // only the env vars (failure counts, calls files, RUNNER_TEMP, ...) vary per
@@ -200,6 +214,21 @@ function withTemporaryHarness<T>(
       binDirectory = join(sharedBinRoot, binKey);
       mkdirSync(binDirectory);
       populateBinDirectory(binDirectory);
+      if (!hostProvidesTimeout()) {
+        // GNU `timeout` (workflow snippets call `timeout <duration> <cmd...>`)
+        // has no macOS equivalent on PATH (no `timeout`, no `gtimeout` alias).
+        // CI (Ubuntu) always has it. Give the fake bin dir a shim that drops
+        // the duration and execs the rest, so the wrapped command still runs
+        // and the sequence/assertions these tests check are unchanged. Done
+        // once per binKey (not per call) since the bin directory is now
+        // shared across calls for the same binKey.
+        const timeoutShimPath = join(binDirectory, "timeout");
+        writeFileSync(
+          timeoutShimPath,
+          '#!/usr/bin/env bash\nshift\nexec "$@"\n',
+        );
+        chmodSync(timeoutShimPath, 0o755);
+      }
       sharedBinDirectories.set(binKey, binDirectory);
     }
     return run(directory, binDirectory);

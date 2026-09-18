@@ -18,12 +18,12 @@ tags:
 date: "2025-05-12T00:00:00.000Z"
 readingTime: 13 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/934b840e/6821cb9dda018894c099cbd1_managing_kubernetes_cover.png"
+  url: "https://assets.zenml.io/content/blog/managing-mlops-at-scale-on-kubernetes-when-your-8xh100-server-needs-to-serve-everyone/d6163e80/managing-mlops-at-scale-on-kubernetes-when-your-8xh100-server-needs-to-serve-everyone-cover.avif"
 seo:
   title: "Managing MLOps at Scale on Kubernetes: When Your 8×H100 Server Needs to Serve Everyone - ZenML Blog"
   description: "Kubernetes powers 96% of enterprise ML workloads but often creates more friction than function—forcing data scientists to wrestle with infrastructure instead of building models while wasting expensive GPU resources. Our latest post shows how ZenML combined with NVIDIA's KAI Scheduler enables financial institutions to implement fractional GPU sharing, create team-specific ML stacks, and streamline compliance—accelerating innovation while cutting costs through intelligent resource orchestration."
   canonical: "https://www.zenml.io/blog/managing-mlops-at-scale-on-kubernetes-when-your-8xh100-server-needs-to-serve-everyone"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/934b840e/6821cb9dda018894c099cbd1_managing_kubernetes_cover.png"
+  ogImage: "https://assets.zenml.io/content/blog/managing-mlops-at-scale-on-kubernetes-when-your-8xh100-server-needs-to-serve-everyone/25a20253/managing-mlops-at-scale-on-kubernetes-when-your-8xh100-server-needs-to-serve-everyone-cover.jpg"
   ogTitle: "Managing MLOps at Scale on Kubernetes: When Your 8×H100 Server Needs to Serve Everyone - ZenML Blog"
   ogDescription: "Kubernetes powers 96% of enterprise ML workloads but often creates more friction than function—forcing data scientists to wrestle with infrastructure instead of building models while wasting expensive GPU resources. Our latest post shows how ZenML combined with NVIDIA's KAI Scheduler enables financial institutions to implement fractional GPU sharing, create team-specific ML stacks, and streamline compliance—accelerating innovation while cutting costs through intelligent resource orchestration."
 ---

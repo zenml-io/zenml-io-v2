@@ -1,0 +1,211 @@
+---
+/**
+ * HighlightFigure — the shared shell for the feature-tabs highlight figures
+ * (`highlights/<product>/<slug>.astro`). Each figure is one inline
+ * `<svg viewBox="0 0 720 460">` drawn from the site's colour tokens and role
+ * fonts, so it scales to any pane width and repaints with the brand scope.
+ *
+ * Narrow variant (DESIGN.md responsive contract, "Diagrams"): a figure may
+ * pass a second drawing in the `narrow` slot, authored on a portrait
+ * `viewBox="0 0 360 460"` with fewer nodes and shorter labels. Below the
+ * medium breakpoint the shell shows that one instead of shrinking the wide
+ * drawing; a figure without a `narrow` slot shows the wide drawing at every
+ * width. Both drawings share the animation contract below.
+ *
+ * Animation contract: the pane that hosts a figure sets
+ * `data-highlight-active` when its tab is current. Inside the figure,
+ * groups marked `.hl-in` (staggered with `--hl-i`, inherited by children)
+ * play one short rise-and-fade; `.hl-edge` paths (with `pathLength="1"`)
+ * draw in alongside their group via stroke-dashoffset; `.hl-row` groups use
+ * a tighter stagger so tables ripple; the highest-`--hl-i` element may also
+ * carry `.hl-accent` for a soft opacity settle after its own rise. The full
+ * sequence lands within ~1.1s of the pane going active; nothing plays under
+ * `prefers-reduced-motion`, and the server-rendered state is the final
+ * frame, so the figure is complete with JS off. Opacity/transform/
+ * stroke-dashoffset only — compositor-friendly, no layout properties.
+ */
+interface Props {
+  /** Accessible name of the figure (the tab's imageAlt). */
+  label: string;
+  /** Namespace for the SVG ids (clip paths, symbols) — unique per figure. */
+  id: string;
+}
+const { label, id } = Astro.props;
+const titleId = `${id}-title`;
+const narrowTitleId = `${id}-title-narrow`;
+const hasNarrow = Astro.slots.has("narrow");
+---
+
+<svg
+  class:list={["hl-figure", "hl-figure-wide", { "hl-has-narrow": hasNarrow }]}
+  viewBox="0 0 720 460"
+  role="img"
+  aria-labelledby={titleId}
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <title id={titleId}>{label}</title>
+  <slot />
+</svg>
+{
+  hasNarrow && (
+    <svg
+      class="hl-figure hl-figure-narrow"
+      viewBox="0 0 360 460"
+      role="img"
+      aria-labelledby={narrowTitleId}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <title id={narrowTitleId}>{label}</title>
+      <slot name="narrow" />
+    </svg>
+  )
+}
+
+<style is:global>
+  .hl-figure {
+    display: block;
+    width: 100%;
+    max-width: 720px;
+    height: auto;
+    /* No background of its own: the hosting panel supplies the cream. */
+  }
+
+  /* One drawing per width band: the narrow drawing below the medium
+     breakpoint (768px, Tailwind `md`), the wide one from there up. The
+     hidden drawing is display:none, so its reveal never runs unseen. */
+  .hl-figure-narrow {
+    max-width: 360px;
+  }
+  @media (max-width: 767px) {
+    .hl-figure-wide.hl-has-narrow {
+      display: none;
+    }
+  }
+  @media (min-width: 768px) {
+    .hl-figure-narrow {
+      display: none;
+    }
+  }
+
+  /* Type roles inside the figures: the same tokens the page binds. */
+  .hl-figure .hl-name {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .hl-figure .hl-title {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 14px;
+  }
+  .hl-figure .hl-body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 11px;
+  }
+  .hl-figure .hl-label {
+    font-family: var(--font-label);
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .hl-figure .hl-mono {
+    font-family: var(--font-label);
+    font-weight: 400;
+    font-size: 11px;
+  }
+
+  /* Hairlines survive scaling: the figure shrinks below 720px on narrow
+     panels and sits on fractional offsets, so strokes keep one CSS pixel
+     and straight rules snap to the pixel grid instead of fading. */
+  .hl-figure rect,
+  .hl-figure line,
+  .hl-figure path {
+    vector-effect: non-scaling-stroke;
+  }
+  .hl-figure line {
+    shape-rendering: crispEdges;
+  }
+  /* Card borders and table rules are the light hairline token; at 1× on a
+     fractional offset a 1px stroke fades to half strength, so they get a
+     quarter pixel more (edges keep their authored stroke-width). */
+  .hl-figure rect[stroke],
+  .hl-figure line {
+    stroke-width: 1.25;
+  }
+
+  .hl-figure .hl-in {
+    opacity: 1;
+  }
+
+  /* Whole-figure reveal: groups rise in top-to-bottom / neutral-before-accent
+     order via --hl-i. Tuned so the full sequence (start offset + stagger +
+     one item's duration) lands inside 1.1s of the pane becoming active. */
+  [data-highlight-active] .hl-figure .hl-in {
+    animation: hl-rise 520ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(100ms + var(--hl-i, 0) * 80ms);
+  }
+
+  /* Table/list rows ripple faster than the figure-wide stagger. */
+  [data-highlight-active] .hl-figure .hl-in.hl-row {
+    animation-delay: calc(100ms + var(--hl-i, 0) * 55ms);
+  }
+
+  /* The rise uses the individual `translate` property, never `transform`:
+     a CSS `transform` would replace each group's SVG transform attribute
+     (the node positions) and collapse the figure onto its origin. */
+  @keyframes hl-rise {
+    from {
+      opacity: 0;
+      translate: 0 6px;
+    }
+    to {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  /* DAG edges draw from start to end alongside the group that hosts them
+     (pathLength="1" on the path makes stroke-dash* fractions of its length).
+     The draw targets the paths, not the `.hl-edge` group, so a group that is
+     also `.hl-in` keeps its rise: two rules setting the `animation`
+     shorthand on one element would not merge, the later one would win. */
+  .hl-figure .hl-edge path,
+  .hl-figure path.hl-edge {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  [data-highlight-active] .hl-figure .hl-edge path,
+  [data-highlight-active] .hl-figure path.hl-edge {
+    animation: hl-draw 560ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: calc(100ms + var(--hl-i, 0) * 80ms);
+  }
+
+  @keyframes hl-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* Accent emphasis: the story's final (highest --hl-i) element rises a
+     little longer than the rest, so it is the last thing to settle and the
+     whole sequence still ends by 1.2s (100 + 6 × 80 + 620). */
+  [data-highlight-active] .hl-figure .hl-accent {
+    animation-duration: 620ms;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-highlight-active] .hl-figure .hl-in,
+    [data-highlight-active] .hl-figure .hl-edge path,
+    [data-highlight-active] .hl-figure path.hl-edge {
+      animation: none;
+    }
+    .hl-figure .hl-edge path,
+    .hl-figure path.hl-edge {
+      stroke-dasharray: none;
+      stroke-dashoffset: 0;
+    }
+  }
+</style>

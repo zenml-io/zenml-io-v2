@@ -12,7 +12,8 @@ webflow:
   createdOn: "2025-08-26T14:37:02.480Z"
 integrationType: "agents"
 logo:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ac3aac54/68adc6964e4ca90c41950ffa_pydantic.png"
+  url: "https://assets.zenml.io/content/integrations/logos/pydanticai.svg"
+  alt: "Pydantic logo"
 shortDescription: "PydanticAI type-safe agents integrated with ZenML"
 docsUrl: "https://docs.zenml.io"
 githubUrl: "https://github.com/zenml-io/zenml/tree/main/examples/agent_framework_integrations/pydanticai"

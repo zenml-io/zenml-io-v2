@@ -6,14 +6,21 @@
  * meta resolution with sensible fallbacks.
  */
 
+import ogCardManifest from "../data/og-cards.json";
 import {
   ASSET_BASE_URL,
   COMPARE_OG_PREFIX,
   type CompareOgBrand,
   DEFAULT_DESCRIPTION,
   DEFAULT_OG_IMAGE,
+  DEFAULT_OG_PREFIX,
+  type DefaultOgFamily,
   SITE_URL,
 } from "./constants";
+
+/** Organization metadata uses the Labs parent; product/app names remain ZenML
+ * or Kitaru wherever structured data describes a product rather than its owner. */
+export const ORGANIZATION_NAME = "ZenML Labs";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -83,6 +90,39 @@ export function buildCanonical(pathname: string, override?: string): string {
  */
 export function compareOgUrl(brand: CompareOgBrand, slug: string): string {
   return `${ASSET_BASE_URL}/${COMPARE_OG_PREFIX[brand]}/${slug}.jpg`;
+}
+
+/**
+ * URL of the generated default OG card for a database entry or a page.
+ *
+ * Same contract as `compareOgUrl`: a deterministic R2 key per family and
+ * slug, written by `scripts/og/generate-default-og.ts` and overwritten in
+ * place on regen. Use `defaultOgImage` when the card may not exist — a
+ * missing slug must fall through to `DEFAULT_OG_IMAGE` rather than 404.
+ */
+export function defaultOgUrl(family: DefaultOgFamily, slug: string): string {
+  return `${ASSET_BASE_URL}/${DEFAULT_OG_PREFIX[family]}/${slug}.jpg`;
+}
+
+/** Slugs with a card on R2, written by `pnpm og:default:write`. */
+const ogCards = ogCardManifest as Record<DefaultOgFamily, string[]>;
+
+/** Whether `defaultOgUrl(family, slug)` resolves to an uploaded card. */
+export function hasDefaultOgCard(
+  family: DefaultOgFamily,
+  slug: string,
+): boolean {
+  return ogCards[family].includes(slug);
+}
+
+/** URL of an uploaded default OG card, or undefined when none is recorded. */
+export function defaultOgImage(
+  family: DefaultOgFamily,
+  slug: string,
+): string | undefined {
+  return hasDefaultOgCard(family, slug)
+    ? defaultOgUrl(family, slug)
+    : undefined;
 }
 
 /**

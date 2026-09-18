@@ -66,7 +66,7 @@ export const WHITEPAPER_FIELDS: PlaceholderField[] = [
     type: "checkbox",
     required: true,
     placeholder:
-      'You agree to our <a href="/privacy-policy" class="text-zenml-500 underline">privacy policy</a>.',
+      'You agree to our <a href="/privacy-policy" class="text-(--color-sage-800) underline">privacy policy</a>.',
   },
 ];
 

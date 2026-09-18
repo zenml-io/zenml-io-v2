@@ -19,12 +19,12 @@ tags:
 date: "2025-04-28T00:00:00.000Z"
 readingTime: 8 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8d095a25/680fade5cf953c514827cc90_Ofgem_Compliance__1_.png"
+  url: "https://assets.zenml.io/content/blog/navigating-ofgem-compliance-for-ml-systems-in-energy-a-practical-guide/93dc5bd1/navigating-ofgem-compliance-for-ml-systems-in-energy-a-practical-guide-cover.avif"
 seo:
   title: "Navigating Ofgem Compliance for ML Systems in Energy: A Practical Guide - ZenML Blog"
   description: "Explores how energy companies can leverage ZenML's MLOps framework to meet Ofgem's regulatory requirements for AI systems, ensuring fairness, transparency, accountability, and security while maintaining innovation in the rapidly evolving energy sector."
   canonical: "https://www.zenml.io/blog/navigating-ofgem-compliance-for-ml-systems-in-energy-a-practical-guide"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/8d095a25/680fade5cf953c514827cc90_Ofgem_Compliance__1_.png"
+  ogImage: "https://assets.zenml.io/content/blog/navigating-ofgem-compliance-for-ml-systems-in-energy-a-practical-guide/a1a9c4bd/navigating-ofgem-compliance-for-ml-systems-in-energy-a-practical-guide-cover.jpg"
   ogTitle: "Navigating Ofgem Compliance for ML Systems in Energy: A Practical Guide - ZenML Blog"
   ogDescription: "Explores how energy companies can leverage ZenML's MLOps framework to meet Ofgem's regulatory requirements for AI systems, ensuring fairness, transparency, accountability, and security while maintaining innovation in the rapidly evolving energy sector."
 ---

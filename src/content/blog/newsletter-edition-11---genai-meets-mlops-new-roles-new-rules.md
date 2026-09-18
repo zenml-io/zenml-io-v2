@@ -20,12 +20,12 @@ tags:
 date: "2025-01-22T00:00:00.000Z"
 readingTime: 6 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/efd3d7a9/6790e2de9fe4afcb90333e4c_New_Newsletter_Design.png"
+  url: "https://assets.zenml.io/content/blog/newsletter-edition-11---genai-meets-mlops-new-roles-new-rules/f52bfc0e/newsletter-edition-11-genai-meets-mlops-new-roles-new-rules-cover.avif"
 seo:
   title: "Newsletter Edition #11 - GenAI Meets MLOps: New Roles, New Rules - ZenML Blog"
   description: "Our monthly roundup: AI Infrastructure Summit insights, new experiment comparison tools, and a deep dive into AI Engineering roles"
   canonical: "https://www.zenml.io/blog/newsletter-edition-11---genai-meets-mlops-new-roles-new-rules"
-  ogImage: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/efd3d7a9/6790e2de9fe4afcb90333e4c_New_Newsletter_Design.png"
+  ogImage: "https://assets.zenml.io/content/blog/newsletter-edition-11---genai-meets-mlops-new-roles-new-rules/6503a111/newsletter-edition-11-genai-meets-mlops-new-roles-new-rules-cover.jpg"
   ogTitle: "Newsletter Edition #11 - GenAI Meets MLOps: New Roles, New Rules - ZenML Blog"
   ogDescription: "Our monthly roundup: AI Infrastructure Summit insights, new experiment comparison tools, and a deep dive into AI Engineering roles"
 ---

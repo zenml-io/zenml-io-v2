@@ -20,7 +20,9 @@ tags:
 date: "2026-02-20T00:00:00.000Z"
 readingTime: 7 mins
 mainImage:
-  url: "https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/96774f67/69989a5d85555f7a204d0e68_rlm-pipelines__1_.png"
+  url: "https://assets.zenml.io/content/blog/rlms-in-production-what-happens-after-the-notebook/6cbcb2ed/rlms-in-production-what-happens-after-the-notebook-cover.avif"
+seo:
+  ogImage: "https://assets.zenml.io/content/blog/rlms-in-production-what-happens-after-the-notebook/eb335954/rlms-in-production-what-happens-after-the-notebook-cover.jpg"
 ---
 
 Recursive Language Models are having a moment. The [original paper by Zhang, Kraska, and Khattab](https://arxiv.org/abs/2512.24601) showed that instead of cramming documents into ever-longer context windows, you can let an LLM *programmatically explore* its data, calling tools, delegating sub-tasks, and iterating until it finds what it needs. DSPy's [experimental dspy.RLM module](https://dspy.ai/api/modules/RLM/) brought the pattern to a broader audience. Viral posts about [auditing codebases for 87 cents](https://kmad.ai/Recursive-Language-Models-Security-Audit) caught everyone's attention (worth noting: even that experiment frames itself as a demo, not a replacement for a real security audit, and reruns catch different issues). Prime Intellect called RLMs ["the paradigm of 2026."](https://www.primeintellect.ai/blog/rlm)
