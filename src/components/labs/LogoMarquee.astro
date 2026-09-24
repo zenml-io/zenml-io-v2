@@ -7,7 +7,10 @@
  * `content` prop (LABS_LOGO_GRID on `/`).
  *
  * The track is rendered twice so the CSS loop is seamless; the copy is
- * aria-hidden so screen readers hear each logo once. The slide pauses on
+ * aria-hidden so screen readers hear each logo once. The edge fade is a pair
+ * of gradient overlays rather than a mask so the moving track stays a plain
+ * composited layer, and the logos load eagerly so cards do not pop in (and
+ * force a re-raster) mid-slide. The slide pauses on
  * hover, while the strip is off-screen (IntersectionObserver below), and is
  * replaced by a static, horizontally scrollable row under reduced motion.
  * Motion moment: counts as one of the page's three.
@@ -30,8 +33,16 @@ const marks = logos.filter((logo) => !logo.placeholder);
 
   <div
     data-logo-marquee
-    class="group relative mt-6 overflow-hidden [-webkit-mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
+    class="group relative mt-6 overflow-hidden"
   >
+    <div
+      aria-hidden="true"
+      class="logo-fade pointer-events-none absolute inset-y-0 left-0 z-10 w-[8%] bg-linear-to-r from-(--color-sage-100) to-transparent"
+    ></div>
+    <div
+      aria-hidden="true"
+      class="logo-fade pointer-events-none absolute inset-y-0 right-0 z-10 w-[8%] bg-linear-to-l from-(--color-sage-100) to-transparent"
+    ></div>
     <div class="logo-track flex w-max items-center gap-4 group-hover:[animation-play-state:paused]">
       {
         [0, 1].map((copy) => (
@@ -46,7 +57,7 @@ const marks = logos.filter((logo) => !logo.placeholder);
                   alt={copy === 0 ? logo.name : ""}
                   class="max-h-8 max-w-[112px] object-contain"
                   style={logo.maxWidth ? `max-width:${logo.maxWidth}` : undefined}
-                  loading="lazy"
+                  decoding="async"
                 />
               </li>
             ))}
@@ -68,6 +79,8 @@ const marks = logos.filter((logo) => !logo.placeholder);
   }
   .logo-track {
     animation: logo-slide 70s linear infinite;
+    will-change: transform;
+    backface-visibility: hidden;
   }
   [data-logo-marquee][data-offscreen] .logo-track {
     animation-play-state: paused;
@@ -78,9 +91,13 @@ const marks = logos.filter((logo) => !logo.placeholder);
     }
     [data-logo-marquee] {
       overflow-x: auto;
-      -webkit-mask-image: none;
-      mask-image: none;
       scrollbar-width: none;
+    }
+    .logo-fade {
+      display: none;
+    }
+    .logo-track {
+      will-change: auto;
     }
     /* One copy is enough when nothing loops. */
     .logo-track > ul[aria-hidden] {
