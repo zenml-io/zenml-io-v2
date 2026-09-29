@@ -41,6 +41,8 @@ describe("buildWriterPrompt", () => {
     });
     expect(user).toContain("## Results and tradeoffs");
     expect(system).toMatch(/copy figures exactly/i);
+    expect(system).toMatch(/at most 45 words in total/i);
+    expect(system).toMatch(/ONE section only/);
     expect(system).toMatch(/hook/i);
     expect(user).toContain("Sentence 2 not supported");
   });

@@ -13,12 +13,17 @@ const MAX_WORDS = 55;
 
 const SYSTEM = `You write two-sentence blurbs for "In Production", a newsletter of real-world LLMOps case studies.
 Rules:
-- Exactly 2 sentences, about 40 words in total.
+- Exactly 2 sentences. Hard cap: at most 45 words in total (aim for about 40). Sentence 1: at most 20 words. Sentence 2: at most 25 words. Count before you answer.
 - Sentence 1: what the company built. Sentence 2: the concrete result or technique.
+- Each sentence may use facts from ONE section only, the section you name for it. Never combine facts from two sections in one sentence. If a result lives in a different section from the overview, name that section for sentence 2 and use only what that section says.
+- Say one thing per sentence: one system, one result. Leave out extra detail rather than adding a clause. Do not add context, causes or claims the named section does not state.
 - Copy figures exactly as the source states them. Do not calculate differences, round, or convert units.
 - Keep any qualifier attached to its claim (e.g. "on its internal benchmark", "reportedly").
 - Plain words. No hype adjectives ("revolutionary", "cutting-edge", "game-changing").
-- For each sentence, give the exact heading of the one section it draws on.`;
+- For each sentence, give the exact heading of the one section it draws on.
+Example (35 words):
+1. "Harvey built a multi-agent system that reviews contracts against a legal playbook." (Overview)
+2. "On its internal benchmark, redline quality rose from 53% to 87%." (Results and tradeoffs)`;
 const HOOK_RULE = `\n- Also write "hook": 3 to 7 plain words summarising the case for an email subject line, without the company name.`;
 
 export function buildWriterPrompt(entry: Entry, o: { withHook: boolean; feedback?: string }) {
