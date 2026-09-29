@@ -34,6 +34,7 @@ const EXAMPLE = (withHook: boolean) => `\n\nIllustrative only, about a made-up c
 const HOOK_MIN_WORDS = 3;
 const HOOK_MAX_WORDS = 8;
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const NAME_STOPWORDS = new Set(["the", "a", "an", "of", "and", "inc", "ltd", "llc", "gmbh", "co", "corp", "global", "group"]);
 const hasWord = (text: string, term: string) => new RegExp(`(^|[^a-z0-9])${escapeRe(term)}([^a-z0-9]|$)`).test(text);
 
 /** The subject hook if it is 3-8 words, has no digits and does not name the company; otherwise null (use the title subject). */
@@ -44,7 +45,10 @@ export function usableHook(hook: string | null | undefined, entry: Pick<Entry, "
   if (count < HOOK_MIN_WORDS || count > HOOK_MAX_WORDS || /\d/.test(h)) return null;
   const lower = h.toLowerCase();
   const parts = (entry.company ?? "").toLowerCase().split(/[/,]/).map((p) => p.trim()).filter(Boolean);
-  const terms = parts.flatMap((p) => [p, ...p.split(/\s+/).filter((w) => w.length >= 3)]);
+  const terms = parts.flatMap((p) => {
+    const first = p.split(/\s+/)[0];
+    return p.includes(" ") && !NAME_STOPWORDS.has(first) ? [p, first] : [p];
+  });
   return terms.some((t) => hasWord(lower, t)) ? null : h;
 }
 

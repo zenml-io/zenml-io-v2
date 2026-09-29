@@ -148,9 +148,9 @@ async function main() {
   if (!["schedule", "test-only", "dry-run"].includes(mode)) throw new Error(`unknown mode ${mode}`);
   const brevoKey = process.env.BREVO_API_KEY;
   if (mode !== "dry-run" && !brevoKey) throw new Error("BREVO_API_KEY is required");
-  if (mode !== "dry-run") parseListId(process.env);
   // Dry-run only lists campaigns when a key exists; every write method is a no-op in dry-run mode.
-  const brevo = brevoKey ? createBrevoApi(brevoKey, mode === "dry-run" ? 0 : parseListId(process.env)) : DRY_BREVO;
+  const listId = mode === "dry-run" ? 0 : parseListId(process.env);
+  const brevo = brevoKey ? createBrevoApi(brevoKey, listId) : DRY_BREVO;
   const { outcome, html } = await runNewsletter({
     now: new Date(), mode, entries: loadEntries(), brevo,
     writer: createOpenAIWriter(new OpenAI()), jev: new TypeSafeClient() as unknown as JevLike,

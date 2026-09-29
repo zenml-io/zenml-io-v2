@@ -262,6 +262,25 @@ describe("usableHook", () => {
   ])("rejects a hook that is %s", (_n, hook) => {
     expect(usableHook(hook, e)).toBeNull();
   });
+  it("does not reject common words of a company name", () => {
+    expect(
+      usableHook("Global retrieval with fallback", { company: "Hertz Global" }),
+    ).not.toBeNull();
+    expect(
+      usableHook("Home grown routing layer", { company: "The Home Depot" }),
+    ).not.toBeNull();
+    expect(
+      usableHook("America scale routing layer", { company: "Bank of America" }),
+    ).not.toBeNull();
+    expect(
+      usableHook("Bank grade retrieval pipeline", {
+        company: "Bank of America",
+      }),
+    ).toBeNull();
+    expect(
+      usableHook("The Home Depot style routing", { company: "The Home Depot" }),
+    ).toBeNull();
+  });
   it("falls back to the title subject in a run", async () => {
     const f = fakes();
     const deps = f.deps();
