@@ -67,7 +67,7 @@ const GROUP_LABEL = "text-[13px] font-medium text-(--color-cream-700)";
   <div style={blogLaneStyle()}>
     <LabsHero band="short" content={{ headline: copy.name, deck: copy.description(entryCount) }} />
 
-    <div class="mx-auto max-w-content px-gutter">
+    <div class:list={["mx-auto max-w-content px-gutter", BAND_CONTENT_GAP]}>
       <NewsletterStrip
         brevo={BREVO_LLMOPS_CONFIG}
         label={IN_PRODUCTION.stripLabel}

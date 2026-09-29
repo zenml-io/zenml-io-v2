@@ -31,8 +31,8 @@ const sample = (await getAllPublishedEntries())
     <ConversionShell frame="form" headline={IN_PRODUCTION.page.headline} deck={IN_PRODUCTION.page.deck}>
       <BrevoNewsletterForm config={BREVO_LLMOPS_CONFIG} />
     </ConversionShell>
-    <section class="mx-auto max-w-content px-gutter pb-24">
-      <p class="font-label text-[13px] tracking-[0.05em] text-(--color-sage-800) uppercase">What an issue looks like</p>
+    <section aria-labelledby="in-production-sample" class="mx-auto max-w-content px-gutter pt-16 pb-24">
+      <h2 id="in-production-sample" class="font-label text-[13px] tracking-[0.05em] text-(--color-sage-800) uppercase">What an issue looks like</h2>
       <ol class="mt-6 divide-y divide-(--color-border) border-y border-(--color-border)">
         {sample.map((e) => (
           <li class="py-6">
