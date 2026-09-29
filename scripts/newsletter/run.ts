@@ -1,0 +1,150 @@
+import { writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { TypeSafeClient } from "@typesafe-ai/sdk";
+import OpenAI from "openai";
+import { type BrevoApi, createBrevoApi, PREVIEW_RECIPIENTS } from "./brevo";
+import { type Entry, loadEntries } from "./entries";
+import { campaignForSlot, nextIssueNumber, sentSlugs } from "./history";
+import { type BlurbVerdict, fallbackBlurb, type JevLike, judgeBlurb, judgeWorth, type WorthVerdict } from "./quality";
+import { entryUrl, type IssueItem, PREHEADER, renderEmail } from "./render";
+import { type ReportItem, type RunOutcome, renderReport } from "./report";
+import { formatIssueDate, nextSendSlot } from "./schedule";
+import { buildPool, pickIssue } from "./select";
+import { blurbText, createOpenAIWriter, type Writer, writtenProblems } from "./write";
+
+export type Mode = "schedule" | "test-only" | "dry-run";
+export interface RunDeps {
+  now: Date;
+  mode: Mode;
+  entries: Entry[];
+  brevo: BrevoApi;
+  writer: Writer;
+  jev: JevLike;
+  isLive(url: string): Promise<boolean>;
+  log(msg: string): void;
+}
+
+const ISSUE_SIZE = 4;
+const WINDOWS = [30, 60];
+const JEV_CONCURRENCY = 8;
+const WRITE_ATTEMPTS = 2;
+
+async function mapLimit<T, R>(items: readonly T[], limit: number, fn: (t: T) => Promise<R>): Promise<R[]> {
+  const out: R[] = [];
+  for (let i = 0; i < items.length; i += limit) out.push(...(await Promise.all(items.slice(i, i + limit).map(fn))));
+  return out;
+}
+
+async function pickLive(pool: Entry[], isLive: RunDeps["isLive"]): Promise<Entry[]> {
+  let candidates = pool;
+  for (;;) {
+    const picks = pickIssue(candidates, ISSUE_SIZE);
+    const checked = await Promise.all(picks.map(async (e) => ((await isLive(entryUrl(e.slug))) ? null : e.slug)));
+    const dead = new Set(checked.filter((s): s is string => s !== null));
+    if (dead.size === 0) return picks;
+    candidates = candidates.filter((e) => !dead.has(e.slug));
+  }
+}
+
+interface WrittenItem { blurb: string; hook: string | null; verdict: BlurbVerdict | null; fallback: boolean }
+
+async function writeItem(d: RunDeps, e: Entry, withHook: boolean): Promise<WrittenItem> {
+  let feedback: string | undefined;
+  for (let attempt = 1; attempt <= WRITE_ATTEMPTS; attempt++) {
+    try {
+      const w = await d.writer.write(e, { withHook, feedback });
+      const problems = writtenProblems(e, w);
+      const verdict = problems.length === 0 ? await judgeBlurb(d.jev, e, w) : null;
+      if (verdict?.pass) {
+        const hook = w.hook?.trim();
+        return { blurb: blurbText(w), hook: hook ? hook : null, verdict, fallback: false };
+      }
+      feedback = [...problems, ...(verdict?.reasons ?? [])].join("; ");
+    } catch (err) {
+      feedback = `the writer failed: ${err instanceof Error ? err.message : String(err)}`;
+    }
+    d.log(`${e.slug}: attempt ${attempt} rejected (${feedback})`);
+  }
+  return { blurb: fallbackBlurb(e), hook: null, verdict: null, fallback: true };
+}
+
+async function sendReport(brevo: BrevoApi, outcome: RunOutcome) {
+  const r = renderReport(outcome);
+  if (r) await brevo.sendReport(r.subject, r.html, PREVIEW_RECIPIENTS);
+}
+
+export async function runNewsletter(d: RunDeps): Promise<{ outcome: RunOutcome; html: string | null }> {
+  const sendAt = nextSendSlot(d.now);
+  const campaigns = await d.brevo.listCampaigns();
+  const existing = campaignForSlot(campaigns, sendAt);
+  if (existing && d.mode === "schedule") return { outcome: { kind: "already-scheduled", campaignId: existing.id }, html: null };
+
+  const exclude = sentSlugs(campaigns);
+  const verdicts = new Map<string, WorthVerdict>();
+  let picks: Entry[] = [];
+  for (const windowDays of WINDOWS) {
+    const pool = buildPool(d.entries, { now: d.now, windowDays, exclude });
+    const fresh = pool.filter((e) => !verdicts.has(e.slug));
+    for (const v of await mapLimit(fresh, JEV_CONCURRENCY, (e) => judgeWorth(d.jev, e))) verdicts.set(v.slug, v);
+    picks = await pickLive(pool.filter((e) => verdicts.get(e.slug)?.keep), d.isLive);
+    if (picks.length === ISSUE_SIZE) break;
+  }
+  const removed = [...verdicts.values()].filter((v) => !v.keep);
+  if (picks.length < ISSUE_SIZE) {
+    const outcome: RunOutcome = { kind: "skipped", reason: `only ${picks.length} eligible entries in the last ${WINDOWS.at(-1)} days`, removed };
+    if (d.mode !== "dry-run") await sendReport(d.brevo, outcome);
+    return { outcome, html: null };
+  }
+
+  const written = await Promise.all(picks.map((e, i) => writeItem(d, e, i === 0)));
+  const number = nextIssueNumber(campaigns);
+  const lead = picks[0];
+  const hook = written[0].hook;
+  const subject = hook ? `In Production #${number}: ${lead.company ?? lead.title}'s ${hook}` : `In Production #${number}: ${lead.title}`;
+  const items: IssueItem[] = picks.map((e, i) => ({
+    slug: e.slug, title: e.title, company: e.company, industry: e.industry, addedOn: e.publishedAt,
+    blurb: written[i].blurb, sourceUrl: e.link, fallback: written[i].fallback,
+  }));
+  const html = renderEmail({ number, sendAt, subject, items });
+  const reportItems: ReportItem[] = picks.map((e, i) => ({
+    slug: e.slug, title: e.title, worth: verdicts.get(e.slug) as WorthVerdict, blurb: written[i].verdict, fallback: written[i].fallback,
+  }));
+
+  let campaignId: number | null = null;
+  if (d.mode !== "dry-run") {
+    campaignId = await d.brevo.createCampaign({
+      name: `In Production #${number} — ${formatIssueDate(sendAt)}`, subject, previewText: PREHEADER, htmlContent: html,
+      scheduledAt: d.mode === "schedule" ? sendAt : null,
+    });
+    await d.brevo.sendTest(campaignId, PREVIEW_RECIPIENTS);
+  }
+  const outcome: RunOutcome = { kind: d.mode === "schedule" ? "scheduled" : d.mode, issueNumber: number, sendAt, campaignId, items: reportItems, removed };
+  if (d.mode !== "dry-run") await sendReport(d.brevo, outcome);
+  return { outcome, html };
+}
+
+const DRY_BREVO: BrevoApi = { listCampaigns: async () => [], createCampaign: async () => 0, sendTest: async () => {}, sendReport: async () => {} };
+
+async function main() {
+  const mode = (process.argv.find((a) => a.startsWith("--mode="))?.split("=")[1] ?? "dry-run") as Mode;
+  if (!["schedule", "test-only", "dry-run"].includes(mode)) throw new Error(`unknown mode ${mode}`);
+  const brevoKey = process.env.BREVO_API_KEY;
+  if (mode !== "dry-run" && !brevoKey) throw new Error("BREVO_API_KEY is required");
+  // Dry-run only lists campaigns when a key exists; every write method is a no-op in dry-run mode.
+  const brevo = brevoKey ? createBrevoApi(brevoKey) : DRY_BREVO;
+  const { outcome, html } = await runNewsletter({
+    now: new Date(), mode, entries: loadEntries(), brevo,
+    writer: createOpenAIWriter(new OpenAI()), jev: new TypeSafeClient() as unknown as JevLike,
+    isLive: async (url) => (await fetch(url, { method: "HEAD", redirect: "manual" })).status === 200,
+    log: (m) => console.log(m),
+  });
+  console.log(JSON.stringify(outcome, null, 2));
+  if (html) {
+    const file = join(tmpdir(), `in-production-${Date.now()}.html`);
+    writeFileSync(file, html);
+    console.log(`Rendered issue: ${file}`);
+  }
+}
+
+if (process.argv[1]?.endsWith("newsletter/run.ts")) main().catch((e) => { console.error(e); process.exit(1); });
