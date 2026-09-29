@@ -26,7 +26,12 @@ const entries = ["a", "b", "c", "d", "e"].map((s, i) =>
 
 function fakes(
   campaigns: CampaignSummary[] = [],
-  opts: { thin?: string[]; unsupported?: string[]; throwFor?: string } = {},
+  opts: {
+    thin?: string[];
+    unsupported?: string[];
+    throwFor?: string;
+    jevDownAfterWorth?: boolean;
+  } = {},
 ) {
   const created: NewCampaign[] = [];
   const tests: number[] = [];
@@ -69,6 +74,8 @@ function fakes(
           },
         };
       }
+      if (opts.jevDownAfterWorth && ("sentence" in st || "blurb" in st))
+        throw new Error("jev down");
       if ("sentence" in st) {
         const bad = opts.unsupported?.some((s) => st.sentence.startsWith(s));
         return {
@@ -161,5 +168,29 @@ describe("runNewsletter", () => {
         : undefined;
     expect(a?.fallback).toBe(true);
     expect(f.created[0].subject).toBe("In Production #1: T a");
+  });
+  it("fails before touching Brevo when Jev goes down after the worth gate", async () => {
+    const f = fakes([], { jevDownAfterWorth: true });
+    await expect(runNewsletter(f.deps())).rejects.toThrow("jev down");
+    expect(f.created).toHaveLength(0);
+    expect(f.tests).toHaveLength(0);
+    expect(f.reports).toHaveLength(0);
+  });
+  it("test-only also stops when the slot is already scheduled", async () => {
+    const f = fakes([
+      {
+        id: 7,
+        name: "In Production #1 — x",
+        status: "queued",
+        scheduledAt: "2026-10-06T07:00:00Z",
+        htmlContent: "",
+      },
+    ]);
+    expect((await runNewsletter(f.deps("test-only"))).outcome.kind).toBe(
+      "already-scheduled",
+    );
+    expect(f.created).toHaveLength(0);
+    expect(f.tests).toHaveLength(0);
+    expect(f.reports).toHaveLength(0);
   });
 });

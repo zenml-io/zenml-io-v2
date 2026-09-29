@@ -11,7 +11,7 @@ import { entryUrl, type IssueItem, PREHEADER, renderEmail } from "./render";
 import { type ReportItem, type RunOutcome, renderReport } from "./report";
 import { formatIssueDate, nextSendSlot } from "./schedule";
 import { buildPool, pickIssue } from "./select";
-import { blurbText, createOpenAIWriter, type Writer, writtenProblems } from "./write";
+import { blurbText, createOpenAIWriter, type Writer, type Written, writtenProblems } from "./write";
 
 export type Mode = "schedule" | "test-only" | "dry-run";
 export interface RunDeps {
@@ -52,17 +52,21 @@ interface WrittenItem { blurb: string; hook: string | null; verdict: BlurbVerdic
 async function writeItem(d: RunDeps, e: Entry, withHook: boolean): Promise<WrittenItem> {
   let feedback: string | undefined;
   for (let attempt = 1; attempt <= WRITE_ATTEMPTS; attempt++) {
+    let w: Written | null = null;
     try {
-      const w = await d.writer.write(e, { withHook, feedback });
+      w = await d.writer.write(e, { withHook, feedback });
+    } catch (err) {
+      feedback = `the writer failed: ${err instanceof Error ? err.message : String(err)}`;
+    }
+    if (w) {
       const problems = writtenProblems(e, w);
+      // A Jev outage must reject here (not be swallowed) so the run fails before touching Brevo.
       const verdict = problems.length === 0 ? await judgeBlurb(d.jev, e, w) : null;
       if (verdict?.pass) {
         const hook = w.hook?.trim();
         return { blurb: blurbText(w), hook: hook ? hook : null, verdict, fallback: false };
       }
       feedback = [...problems, ...(verdict?.reasons ?? [])].join("; ");
-    } catch (err) {
-      feedback = `the writer failed: ${err instanceof Error ? err.message : String(err)}`;
     }
     d.log(`${e.slug}: attempt ${attempt} rejected (${feedback})`);
   }
@@ -78,7 +82,7 @@ export async function runNewsletter(d: RunDeps): Promise<{ outcome: RunOutcome; 
   const sendAt = nextSendSlot(d.now);
   const campaigns = await d.brevo.listCampaigns();
   const existing = campaignForSlot(campaigns, sendAt);
-  if (existing && d.mode === "schedule") return { outcome: { kind: "already-scheduled", campaignId: existing.id }, html: null };
+  if (existing && d.mode !== "dry-run") return { outcome: { kind: "already-scheduled", campaignId: existing.id }, html: null };
 
   const exclude = sentSlugs(campaigns);
   const verdicts = new Map<string, WorthVerdict>();
