@@ -134,6 +134,22 @@ describe("runNewsletter", () => {
     expect(f.tests).toEqual([101]);
     expect(f.reports).toHaveLength(1);
   });
+  it("lowers the hook's first character unless it is an acronym in the subject", async () => {
+    const f = fakes();
+    const deps = f.deps();
+    const base = deps.writer.write;
+    deps.writer = {
+      write: async (en, o) => ({
+        ...(await base(en, o)),
+        hook: "Code-defined agent factory",
+      }),
+    };
+    const { outcome } = await runNewsletter(deps);
+    expect(outcome.kind).toBe("scheduled");
+    expect(f.created[0].subject).toBe(
+      "In Production #1: a's code-defined agent factory",
+    );
+  });
   it("does nothing when an issue is already scheduled for the slot (double run)", async () => {
     const f = fakes([
       {

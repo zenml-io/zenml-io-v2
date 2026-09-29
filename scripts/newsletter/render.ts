@@ -148,7 +148,7 @@ function renderItem(it: IssueItem, i: number, last: boolean): string {
 export function renderEmail(issue: Issue): string {
   const intro =
     issue.number === 1
-      ? `<tr><td class="pad" style="${S.cardCell("24px 36px 8px")};font-family:${SANS};font-size:15px;line-height:23px;color:${C.inkSoft};">You signed up for new case studies from the ZenML LLMOps Database. This is the first issue: four fresh entries, twice a week. Each links to our full write-up, with the original source one click further.</td></tr>`
+      ? `<tr><td class="pad" style="${S.cardCell("24px 36px 8px")};font-family:${SANS};font-size:15px;line-height:23px;color:${C.inkSoft};">You're getting this because you signed up for LLMOps Database updates on zenml.io. Welcome to the first issue of In Production: every Tuesday and Thursday, four real-world case studies on what teams built and what they learned. Each links to our full write-up, with the original source one click further.</td></tr>`
       : "";
   const items = issue.items
     .map((it, i) => renderItem(it, i, i === issue.items.length - 1))

@@ -6,6 +6,7 @@ import {
   PREHEADER,
   renderEmail,
 } from "../../scripts/newsletter/render";
+import { lowerCaseHookUnlessAcronym } from "../../scripts/newsletter/write";
 
 const item = (slug: string, extra: Partial<IssueItem> = {}): IssueItem => ({
   slug,
@@ -30,8 +31,12 @@ const issue = (
 
 describe("renderEmail", () => {
   it("shows the intro on issue #1 only", () => {
-    expect(renderEmail(issue(1))).toContain("You signed up");
-    expect(renderEmail(issue(2))).not.toContain("You signed up");
+    expect(renderEmail(issue(1))).toContain(
+      "Welcome to the first issue of In Production",
+    );
+    expect(renderEmail(issue(2))).not.toContain(
+      "Welcome to the first issue of In Production",
+    );
   });
   it("links every title and CTA to our database page, and carries the preheader and date", () => {
     const html = renderEmail(issue(7));
@@ -112,6 +117,30 @@ describe("renderEmail", () => {
   it("prints the postal address in the legal footer", () => {
     expect(renderEmail(issue(1))).toContain(
       "ZenML GmbH · Schellingstrasse 36, 80799 Munich, Germany",
+    );
+  });
+});
+
+describe("lowerCaseHookUnlessAcronym", () => {
+  it("lowers the first character when the first word is a single letter", () => {
+    expect(lowerCaseHookUnlessAcronym("A strategy for recovery")).toBe(
+      "a strategy for recovery",
+    );
+  });
+  it("lowers the first character when the first word has a lower-case second character", () => {
+    expect(lowerCaseHookUnlessAcronym("Code-defined agent factory")).toBe(
+      "code-defined agent factory",
+    );
+  });
+  it("preserves acronyms and proper-casing tokens", () => {
+    expect(lowerCaseHookUnlessAcronym("MCP playbooks for coding agents")).toBe(
+      "MCP playbooks for coding agents",
+    );
+    expect(lowerCaseHookUnlessAcronym("RAG over vectors")).toBe(
+      "RAG over vectors",
+    );
+    expect(lowerCaseHookUnlessAcronym("LLM routing layer")).toBe(
+      "LLM routing layer",
     );
   });
 });
