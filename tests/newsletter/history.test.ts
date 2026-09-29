@@ -54,6 +54,18 @@ describe("history", () => {
   });
 });
 
+describe("campaignForSlot name match", () => {
+  const slot = new Date("2026-10-06T07:00:00Z");
+  it("detects a queued campaign by its issue-date name when scheduledAt is missing", () => {
+    const cs = [c(6, "queued", "", null, "In Production #6 — Tue 6 Oct 2026")];
+    expect(campaignForSlot(cs, slot)?.id).toBe(6);
+  });
+  it("ignores a queued campaign whose name has another date", () => {
+    const cs = [c(6, "queued", "", null, "In Production #6 — Thu 8 Oct 2026")];
+    expect(campaignForSlot(cs, slot)).toBeUndefined();
+  });
+});
+
 describe("in_review campaigns", () => {
   const cs = [c(5, "in_review", link("r"), "2026-10-08T07:00:00Z")];
   it("counts as sent", () => {

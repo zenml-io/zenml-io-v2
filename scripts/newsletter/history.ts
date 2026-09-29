@@ -1,3 +1,5 @@
+import { formatIssueDate } from "./schedule";
+
 export interface CampaignSummary { id: number; name: string; status: string; scheduledAt: string | null; htmlContent: string }
 export const CAMPAIGN_PREFIX = "In Production #";
 /** Brevo statuses that mean "went out or will go out". Checked against Brevo's API docs (not the live API). */
@@ -20,6 +22,12 @@ export function nextIssueNumber(cs: readonly CampaignSummary[]): number {
   return Math.max(0, ...numbers) + 1;
 }
 
-export const campaignForSlot = (cs: readonly CampaignSummary[], slot: Date) =>
-  cs.find((c) => c.name.startsWith(CAMPAIGN_PREFIX) && SCHEDULED_STATUSES.has(c.status) && c.scheduledAt !== null
-    && Math.abs(new Date(c.scheduledAt).getTime() - slot.getTime()) < 60_000);
+const nearSlot = (scheduledAt: string | null, slot: Date) =>
+  scheduledAt !== null && Math.abs(new Date(scheduledAt).getTime() - slot.getTime()) < 60_000;
+
+/** Also matches on the issue date in the name, in case Brevo returns no (or a zone-less) scheduledAt. */
+export function campaignForSlot(cs: readonly CampaignSummary[], slot: Date) {
+  const nameSuffix = ` — ${formatIssueDate(slot)}`;
+  return cs.find((c) => c.name.startsWith(CAMPAIGN_PREFIX) && SCHEDULED_STATUSES.has(c.status)
+    && (nearSlot(c.scheduledAt, slot) || c.name.endsWith(nameSuffix)));
+}
