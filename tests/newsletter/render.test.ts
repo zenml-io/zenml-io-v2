@@ -109,4 +109,9 @@ describe("renderEmail", () => {
     expect(html).toContain('href="https://www.zenml.io/product/kitaru"');
     expect(html).toContain('href="https://www.zenml.io"');
   });
+  it("prints the postal address in the legal footer", () => {
+    expect(renderEmail(issue(1))).toContain(
+      "ZenML GmbH · Schellingstrasse 36, 80799 Munich, Germany",
+    );
+  });
 });

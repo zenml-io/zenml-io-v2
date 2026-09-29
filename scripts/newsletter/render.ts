@@ -24,8 +24,6 @@ export const entryUrl = (slug: string) => `https://www.zenml.io/llmops-database/
 /** Brevo merge tags. */
 // Confirmed from Brevo docs/community pages, not the live API (help.brevo.com/hc/en-us/articles/209553645, community.brevo.com/t/4592): `{{ unsubscribe }}` is the
 // Liquid tag for API/HTML campaigns (`[UNSUBSCRIBE]` is the legacy editor). Brevo blocks saving a campaign without it.
-// Postal address: not confirmed by the API docs. It appears to depend on Brevo account settings (Account Settings >
-// My Company Info); this footer has no address line, so check that setting is filled in.
 export const BREVO_UNSUBSCRIBE = "{{ unsubscribe }}";
 
 const C = {
@@ -182,6 +180,7 @@ ${items}
 </td></tr>
 <tr><td style="padding:18px 36px 22px;text-align:center;font-family:${SANS};font-size:12px;line-height:19px;color:${C.muted};">
   In Production is sent by ZenML every Tuesday and Thursday.<br>
+  ZenML GmbH · Schellingstrasse 36, 80799 Munich, Germany<br>
   You're getting this because you subscribed on zenml.io. <a href="${BREVO_UNSUBSCRIBE}" style="color:${C.muted};text-decoration:underline;">Unsubscribe</a>
 </td></tr>
 </table></td></tr></table></body></html>`;
