@@ -213,6 +213,14 @@ Important rules:
   - `pnpm check`
   - `pnpm build`
 
+## In Production newsletter
+
+- `pnpm newsletter:run` builds and schedules the twice-weekly In Production email (four LLMOps Database case studies, Tue and Thu 09:00 Europe/Amsterdam). Operator guide: [docs/in-production-newsletter.md](docs/in-production-newsletter.md).
+- Code lives in `scripts/newsletter/` (tests in `tests/newsletter/`); the workflow is `.github/workflows/newsletter.yml`.
+- Timer runs do nothing until the repository variable `NEWSLETTER_LIVE` is `true`; manual dispatch defaults to `test-only`.
+- Preview locally with `pnpm newsletter:preview` (a dry run: no Brevo writes; needs the keys in `.env`).
+- Never trigger schedule mode or send anything to the list without explicit authorization. Do not print or copy secret values.
+
 ## Key Files
 
 Read [the architecture map](docs/agent-reference/site-architecture.md) for system primitives and template families, [key-files.md](docs/agent-reference/key-files.md) for the per-file map (core architecture, homepage, islands, API routes, Kitaru components, layouts, compare pages), and [labs-shell.md](docs/agent-reference/labs-shell.md) for every 2026 rebrand cutover (Labs shell + homepage, blog, research databases, product one-offs, comparison pages, integrations + features, get-started). Contracts: use SpaceStep tokens (including mlg), absence instead of show* booleans, and paired Astro/TSX twins for island consumers. New code must not use ad-hoc classOverrides; use named family presets. Template alternatives require discriminated unions or `?: never`, never optional-prop bags hidden by `as` casts. Register new templates.
