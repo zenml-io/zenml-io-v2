@@ -28,9 +28,9 @@ export type { CaseStudyCard };
 export type LabsProduct = "zenml" | "kitaru";
 
 export const LABS_HOME_SEO = {
-  title: "ZenML Labs: Ship AI you can trust",
+  title: "ZenML Labs: Keep your AI getting better in production",
   description:
-    "ZenML Labs is the unified infrastructure layer for AI in production: ZenML orchestrates your pipelines and agents on the infra you choose, and Kitaru replays them on production data.",
+    "Models drift, agents regress and costs creep up. ZenML Labs gives your team AI engineers that find and fix problems in your ML pipelines and agents, working from your runs and traces on your own infrastructure. Built on ZenML and Kitaru, both open source.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -225,8 +225,8 @@ export interface LabsInstallChip {
 }
 
 export const LABS_HERO: LabsBandContent = {
-  headlineLines: ["Ship AI", "you can trust"],
-  deck: "ZenML orchestrates your pipelines and agents. Kitaru replays them on production data before a change ships. Both open source, always.",
+  headlineLines: ["Keep your AI", "getting better"],
+  deck: "Models drift, agents regress, costs creep up, and every fix waits for someone to have time. ZenML Labs gives your team AI engineers that find the problem in your runs and traces, fix it, and prove the change on production data. You approve what ships.",
   cta: LABS_HERO_SIGNUP,
 };
 
@@ -269,13 +269,13 @@ export interface ProductDoorsContent {
 }
 
 export const LABS_DOORS: ProductDoorsContent = {
-  headline: "Build it, then prove it",
+  headline: "Built on the record of how your AI runs",
   doors: [
     {
       name: "ZenML",
       tint: "sage",
-      leadLine: "AI orchestration, on the infra you choose",
-      body: "Write pipelines and agents in Python and run them on the orchestrator and cloud you already have. Move between them without rewriting, from a laptop to Kubernetes.",
+      leadLine: "Where your pipelines and agents run",
+      body: "Pipelines and agents in Python, on the orchestrator and cloud you already have, with every run, artifact and model version tracked. That record is what the work starts from: what actually happened, not a guess.",
       cta: {
         label: "Explore ZenML",
         href: "/product/zenml",
@@ -285,8 +285,8 @@ export const LABS_DOORS: ProductDoorsContent = {
     {
       name: "Kitaru",
       tint: "orange",
-      leadLine: "Replay your agents on production data",
-      body: "Import the sessions your agent has actually run, find what repeats, and replay a change against them. See what improved, what regressed, and what it costs before it ships.",
+      leadLine: "Where every change gets proven",
+      body: "The sessions your agents have actually run become the test set. A change is replayed against them first, so you see what improved, what regressed and what it costs before you approve it.",
       cta: {
         label: "Explore Kitaru",
         href: "/product/kitaru",
@@ -294,6 +294,8 @@ export const LABS_DOORS: ProductDoorsContent = {
       },
     },
   ],
+  caption:
+    "ZenML and Kitaru are open source under Apache 2.0. Self-host them, read the code, and keep your data where it is.",
 };
 
 /* ---------------------------------------------------------------------- */
@@ -329,29 +331,29 @@ export type FeaturePanel = FeaturePanelIcon & {
 export const LABS_FEATURE_PANELS: readonly FeaturePanel[] = [
   {
     index: "01.",
-    title: "Orchestrate",
-    body: "Pipelines and agents in Python, on the orchestrator and cloud you already run.",
+    title: "Find what's wrong",
+    body: "Failed runs, regressions, drift and runaway costs, traced to the step that caused them, from your runs and traces.",
     icon: "pipeline",
     tone: "sage-tint",
   },
   {
     index: "02.",
-    title: "Replay",
-    body: "Real production sessions become the test set. Replay a change and see what improved, what regressed, and what it costs.",
-    icon: "layers",
+    title: "Fix it",
+    body: "A change and the evidence behind it, ready for review. Not another ticket waiting in someone's backlog.",
+    icon: "code",
     tone: "sage-deep",
   },
   {
     index: "03.",
-    title: "Open source",
-    body: "ZenML and Kitaru are Apache 2.0. Self-host, read the code, keep your data where it is.",
-    icon: "open-box",
+    title: "Prove it",
+    body: "Every change is replayed on production data first: what improved, what regressed, and what it costs.",
+    icon: "layers",
     tone: "canvas",
   },
   {
     index: "04.",
-    title: "Ready for enterprise",
-    body: "SOC 2 Type II and ISO 27001, on infrastructure you own.",
+    title: "Stay in control",
+    body: "You decide what runs on its own and what needs a person. Budgets, a record of every action, your infrastructure. SOC 2 Type II and ISO 27001.",
     icon: "shield",
     tone: "sage-light",
   },
