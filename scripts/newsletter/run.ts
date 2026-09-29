@@ -6,11 +6,11 @@ import OpenAI from "openai";
 import { type BrevoApi, createBrevoApi, PREVIEW_RECIPIENTS } from "./brevo";
 import { type Entry, loadEntries } from "./entries";
 import { campaignForSlot, nextIssueNumber, sentSlugs } from "./history";
-import { type BlurbVerdict, fallbackBlurb, type JevLike, judgeBlurb, judgeWorth, type WorthVerdict } from "./quality";
+import { ARCHIVE_WORTH_FLOOR, type BlurbVerdict, fallbackBlurb, type JevLike, judgeBlurb, judgeWorth, type WorthVerdict } from "./quality";
 import { entryUrl, type IssueItem, PREHEADER, renderEmail } from "./render";
 import { type ReportItem, type RunOutcome, renderReport } from "./report";
-import { formatIssueDate, nextSendSlot } from "./schedule";
-import { buildPool, pickIssue } from "./select";
+import { formatIssueDate, isArchiveSlot, nextSendSlot } from "./schedule";
+import { archiveOrder, buildArchivePool, buildPool, clashes, type DatedEntry, pickIssue } from "./select";
 import { blurbText, createOpenAIWriter, lowerCaseHookUnlessAcronym, usableHook, type Writer, type Written, WriterOutputError, writtenProblems } from "./write";
 
 export type Mode = "schedule" | "test-only" | "dry-run";
@@ -26,7 +26,10 @@ export interface RunDeps {
 }
 
 const ISSUE_SIZE = 4;
-const WINDOWS = [30, 60];
+// Prefer recent entries; widen step by step before skipping an issue.
+const WINDOWS = [30, 60, 90];
+// Archive candidates judged per archive issue, at most. Caps the Jev calls when many candidates fall short.
+const ARCHIVE_MAX_JUDGED = 24;
 const JEV_CONCURRENCY = 8;
 const WRITE_ATTEMPTS = 2;
 
@@ -36,7 +39,7 @@ async function mapLimit<T, R>(items: readonly T[], limit: number, fn: (t: T) => 
   return out;
 }
 
-async function pickLive(pool: Entry[], isLive: RunDeps["isLive"]): Promise<Entry[]> {
+async function pickLive(pool: DatedEntry[], isLive: RunDeps["isLive"]): Promise<DatedEntry[]> {
   let candidates = pool;
   for (;;) {
     const picks = pickIssue(candidates, ISSUE_SIZE);
@@ -76,6 +79,28 @@ async function writeItem(d: RunDeps, e: Entry, withHook: boolean): Promise<Writt
   return { blurb: fallbackBlurb(e), hook: null, verdict: null, fallback: true };
 }
 
+interface ArchivePick { entry: Entry; verdict: WorthVerdict; note: string }
+
+/**
+ * Walk this slot's seeded archive order, skipping entries that share a company or industry with the recent picks.
+ * Judge the rest in batches and take the first, in order, that clears ARCHIVE_WORTH_FLOOR and whose page is live.
+ */
+async function pickArchive(d: RunDeps, sendAt: Date, exclude: ReadonlySet<string>, recent: readonly Entry[]): Promise<ArchivePick | null> {
+  const seed = sendAt.toISOString().slice(0, 10);
+  const pool = buildArchivePool(d.entries, { now: d.now, recentWindowDays: WINDOWS.at(-1) as number, exclude });
+  const ordered = archiveOrder(pool, seed).filter((e) => !clashes(e, recent)).slice(0, ARCHIVE_MAX_JUDGED);
+  for (let i = 0; i < ordered.length; i += JEV_CONCURRENCY) {
+    const batch = ordered.slice(i, i + JEV_CONCURRENCY);
+    const verdicts = await Promise.all(batch.map((e) => judgeWorth(d.jev, e)));
+    for (const [j, e] of batch.entries()) {
+      if (verdicts[j].worth < ARCHIVE_WORTH_FLOOR || !(await d.isLive(entryUrl(e.slug)))) continue;
+      const rank = i + j + 1;
+      return { entry: e, verdict: verdicts[j], note: `From the archive: ${e.slug}, candidate ${rank} in the seeded order for ${seed} (${rank - 1} earlier candidates were below the archive floor of ${ARCHIVE_WORTH_FLOOR} or not live).` };
+    }
+  }
+  return null;
+}
+
 async function sendReport(brevo: BrevoApi, outcome: RunOutcome) {
   const r = renderReport(outcome);
   if (r) await brevo.sendReport(r.subject, r.html, PREVIEW_RECIPIENTS);
@@ -89,15 +114,23 @@ export async function runNewsletter(d: RunDeps): Promise<{ outcome: RunOutcome; 
 
   const exclude = sentSlugs(campaigns);
   const verdicts = new Map<string, WorthVerdict>();
-  let picks: Entry[] = [];
+  let recent: DatedEntry[] = [];
   for (const windowDays of WINDOWS) {
     const pool = buildPool(d.entries, { now: d.now, windowDays, exclude });
     const fresh = pool.filter((e) => !verdicts.has(e.slug));
     for (const v of await mapLimit(fresh, JEV_CONCURRENCY, (e) => judgeWorth(d.jev, e))) verdicts.set(v.slug, v);
-    picks = await pickLive(pool.filter((e) => verdicts.get(e.slug)?.keep), d.isLive);
-    if (picks.length === ISSUE_SIZE) break;
+    recent = await pickLive(pool.filter((e) => verdicts.get(e.slug)?.keep), d.isLive);
+    if (recent.length === ISSUE_SIZE) break;
   }
   const removed = [...verdicts.values()].filter((v) => !v.keep);
+  // On the archive day the last slot goes to an archive entry; with no archive pick the issue stays all-recent.
+  // pickIssue's first n picks equal pickIssue(pool, n), so dropping the fourth recent pick keeps the newest three.
+  const archiveDay = isArchiveSlot(sendAt);
+  const archive = archiveDay && recent.length >= ISSUE_SIZE - 1
+    ? await pickArchive(d, sendAt, exclude, recent.slice(0, ISSUE_SIZE - 1)) : null;
+  const notes = archive ? [archive.note] : archiveDay ? ["No archive entry qualified for this issue, so it carries four recent entries."] : [];
+  if (archive) verdicts.set(archive.entry.slug, archive.verdict);
+  const picks: Entry[] = archive ? [...recent.slice(0, ISSUE_SIZE - 1), archive.entry] : recent;
   if (picks.length < ISSUE_SIZE) {
     const outcome: RunOutcome = { kind: "skipped", reason: `only ${picks.length} eligible entries in the last ${WINDOWS.at(-1)} days`, removed };
     if (d.mode !== "dry-run") await sendReport(d.brevo, outcome);
@@ -110,12 +143,14 @@ export async function runNewsletter(d: RunDeps): Promise<{ outcome: RunOutcome; 
   const hook = usableHook(written[0].hook, lead);
   const subject = hook ? `In Production #${number}: ${lead.company ?? lead.title}'s ${lowerCaseHookUnlessAcronym(hook)}` : `In Production #${number}: ${lead.title}`;
   const items: IssueItem[] = picks.map((e, i) => ({
-    slug: e.slug, title: e.title, company: e.company, industry: e.industry, addedOn: e.publishedAt,
+    slug: e.slug, title: e.title, company: e.company, industry: e.industry,
+    origin: e === archive?.entry ? { kind: "archive", year: e.year } : { kind: "recent", addedOn: e.publishedAt as Date },
     blurb: written[i].blurb, sourceUrl: e.link, fallback: written[i].fallback,
   }));
   const html = renderEmail({ number, sendAt, subject, items });
   const reportItems: ReportItem[] = picks.map((e, i) => ({
     slug: e.slug, title: e.title, worth: verdicts.get(e.slug) as WorthVerdict, blurb: written[i].verdict, fallback: written[i].fallback,
+    archive: e === archive?.entry,
   }));
 
   let campaignId: number | null = null;
@@ -128,7 +163,7 @@ export async function runNewsletter(d: RunDeps): Promise<{ outcome: RunOutcome; 
     await d.brevo.sendTest(campaignId, PREVIEW_RECIPIENTS);
     if (d.mode === "schedule") await d.brevo.scheduleCampaign(campaignId, sendAt);
   }
-  const outcome: RunOutcome = { kind: d.mode === "schedule" ? "scheduled" : d.mode, issueNumber: number, sendAt, campaignId, items: reportItems, removed };
+  const outcome: RunOutcome = { kind: d.mode === "schedule" ? "scheduled" : d.mode, issueNumber: number, sendAt, campaignId, items: reportItems, removed, notes };
   if (d.mode !== "dry-run") await sendReport(d.brevo, outcome);
   return { outcome, html };
 }

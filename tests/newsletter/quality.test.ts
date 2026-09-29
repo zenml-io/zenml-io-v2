@@ -18,6 +18,7 @@ const entry = (summary: string): Entry => ({
   summary,
   link: null,
   publishedAt: new Date(),
+  year: null,
   sections: [
     { heading: "Overview", text: "O" },
     { heading: "Results", text: "R" },

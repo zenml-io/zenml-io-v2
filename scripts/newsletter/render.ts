@@ -6,7 +6,8 @@ export interface IssueItem {
   title: string;
   company: string | null;
   industry: string | null;
-  addedOn: Date;
+  /** Recent items show "Added <date>"; the weekly archive item shows a label and its original year instead. */
+  origin: { kind: "recent"; addedOn: Date } | { kind: "archive"; year: number | null };
   blurb: string;
   sourceUrl: string | null;
   fallback: boolean;
@@ -127,11 +128,15 @@ function sourceLabel(parsed: URL): string {
   return `Original ${kind} (${host})`;
 }
 
+export const ARCHIVE_LABEL = "From the archive";
+
 function renderItem(it: IssueItem, i: number, last: boolean): string {
-  const eyebrow = [it.industry, it.company, `Added ${formatAddedDate(it.addedOn)}`]
+  const archive = it.origin.kind === "archive";
+  const when = it.origin.kind === "recent" ? `Added ${formatAddedDate(it.origin.addedOn)}` : it.origin.year?.toString();
+  const facts = [it.industry, it.company, when]
     .filter(Boolean)
-    .map((s) => escapeHtml(s as string))
-    .join(" · ");
+    .map((s) => escapeHtml(s as string));
+  const eyebrow = [...(archive ? [`<strong style="color:${C.night};">${ARCHIVE_LABEL}</strong>`] : []), ...facts].join(" · ");
   const url = entryUrl(it.slug);
   const src = safeSourceUrl(it.sourceUrl);
   const source = src

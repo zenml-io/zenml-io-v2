@@ -5,7 +5,9 @@ import matter from "gray-matter";
 export interface Section { heading: string; text: string }
 export interface Entry {
   slug: string; title: string; company: string | null; industry: string | null;
-  summary: string; link: string | null; publishedAt: Date; sections: Section[];
+  summary: string; link: string | null; sections: Section[];
+  /** `notion.publishedAt`; null for entries migrated from Webflow, which only carry `year`. */
+  publishedAt: Date | null; year: number | null;
 }
 
 const HEADING = /^##\s+(.+?)\s*$/;
@@ -23,14 +25,15 @@ export function splitSections(body: string): Section[] {
 export function parseEntry(slug: string, raw: string, industryNames: ReadonlyMap<string, string>): Entry | null {
   const { data, content } = matter(raw);
   const publishedAt = data.notion?.publishedAt ? new Date(data.notion.publishedAt) : null;
-  if (data.draft === true || !publishedAt || Number.isNaN(publishedAt.getTime())) return null;
+  if (data.draft === true || (publishedAt && Number.isNaN(publishedAt.getTime()))) return null;
   const sections = splitSections(content);
   if (sections.length === 0) return null;
   const industrySlug: string | null = data.industryTags ?? null;
   return {
     slug, title: data.title, company: data.company ?? null,
     industry: industrySlug ? (industryNames.get(industrySlug) ?? industrySlug) : null,
-    summary: data.summary ?? "", link: data.link ?? null, publishedAt, sections,
+    summary: data.summary ?? "", link: data.link ?? null, publishedAt,
+    year: typeof data.year === "number" ? data.year : null, sections,
   };
 }
 

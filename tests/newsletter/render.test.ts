@@ -13,7 +13,7 @@ const item = (slug: string, extra: Partial<IssueItem> = {}): IssueItem => ({
   title: `Title ${slug}`,
   company: "Harvey",
   industry: "Legal",
-  addedOn: new Date("2026-09-28T08:00:00Z"),
+  origin: { kind: "recent", addedOn: new Date("2026-09-28T08:00:00Z") },
   blurb: "Harvey did a thing. It went well.",
   sourceUrl: "https://www.harvey.ai/blog/x",
   fallback: false,
@@ -53,6 +53,23 @@ describe("renderEmail", () => {
     expect(html).toContain(PREHEADER);
     expect(html).toContain("#7 · Tue 6 Oct 2026");
     expect(html).toContain("Added 28 Sep");
+  });
+  it("labels the archive item and shows its year instead of an added date", () => {
+    const html = renderEmail(
+      issue(2, [
+        item("a"),
+        item("old", { origin: { kind: "archive", year: 2023 } }),
+      ]),
+    );
+    const eyebrows = [
+      ...html.matchAll(
+        /<div style="border-top:1px solid #E9E4DC[^"]*">(.*?)<\/div>/g,
+      ),
+    ].map((m) => m[1].replace(/<[^>]+>/g, ""));
+    expect(eyebrows).toEqual([
+      "Legal · Harvey · Added 28 Sep",
+      "From the archive · Legal · Harvey · 2023",
+    ]);
   });
   it("escapes HTML-special characters and handles a missing source link", () => {
     const html = renderEmail(
