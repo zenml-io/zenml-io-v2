@@ -52,6 +52,18 @@ export function usableHook(hook: string | null | undefined, entry: Pick<Entry, "
   return terms.some((t) => hasWord(lower, t)) ? null : h;
 }
 
+/** Lower-case the hook's first character unless the first word is an acronym/proper-casing token.
+ * Lower-case if: the first word is a single letter, OR the second character of the first word is lower-case.
+ * Examples: "Code-defined agent factory" → "code-defined agent factory", "MCP playbooks" → "MCP playbooks" */
+export function lowerCaseHookUnlessAcronym(hook: string): string {
+  const firstWord = hook.split(/\s+/)[0];
+  if (!firstWord) return hook;
+  if (firstWord.length === 1 || (firstWord.length >= 2 && /[a-z]/.test(firstWord[1]))) {
+    return hook[0]!.toLowerCase() + hook.slice(1);
+  }
+  return hook;
+}
+
 export function buildWriterPrompt(entry: Entry, o: { withHook: boolean; feedback?: string }) {
   const body = entry.sections.map((s) => `## ${s.heading}\n\n${s.text}`).join("\n\n");
   const feedback = o.feedback ? `\n\nA previous attempt was rejected: ${o.feedback}\nFix that problem.` : "";

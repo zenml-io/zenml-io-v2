@@ -11,7 +11,7 @@ import { entryUrl, type IssueItem, PREHEADER, renderEmail } from "./render";
 import { type ReportItem, type RunOutcome, renderReport } from "./report";
 import { formatIssueDate, nextSendSlot } from "./schedule";
 import { buildPool, pickIssue } from "./select";
-import { blurbText, createOpenAIWriter, usableHook, type Writer, type Written, WriterOutputError, writtenProblems } from "./write";
+import { blurbText, createOpenAIWriter, lowerCaseHookUnlessAcronym, usableHook, type Writer, type Written, WriterOutputError, writtenProblems } from "./write";
 
 export type Mode = "schedule" | "test-only" | "dry-run";
 export interface RunDeps {
@@ -108,7 +108,7 @@ export async function runNewsletter(d: RunDeps): Promise<{ outcome: RunOutcome; 
   const number = nextIssueNumber(campaigns);
   const lead = picks[0];
   const hook = usableHook(written[0].hook, lead);
-  const subject = hook ? `In Production #${number}: ${lead.company ?? lead.title}'s ${hook}` : `In Production #${number}: ${lead.title}`;
+  const subject = hook ? `In Production #${number}: ${lead.company ?? lead.title}'s ${lowerCaseHookUnlessAcronym(hook)}` : `In Production #${number}: ${lead.title}`;
   const items: IssueItem[] = picks.map((e, i) => ({
     slug: e.slug, title: e.title, company: e.company, industry: e.industry, addedOn: e.publishedAt,
     blurb: written[i].blurb, sourceUrl: e.link, fallback: written[i].fallback,
