@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   type Issue,
   type IssueItem,
+  LOGO_URL,
   PREHEADER,
   renderEmail,
 } from "../../scripts/newsletter/render";
@@ -87,5 +88,25 @@ describe("renderEmail", () => {
   });
   it("never uses the mid sage as a colour", () => {
     expect(renderEmail(issue(1)).toUpperCase()).not.toContain("#5D7545");
+  });
+  it("never uses orange", () => {
+    const html = renderEmail(issue(1)).toUpperCase();
+    for (const c of ["#EB7119", "#B65916", "#995000"])
+      expect(html).not.toContain(c);
+  });
+  it("uses the uploaded logo", () => {
+    expect(LOGO_URL).toMatch(
+      /\/content\/newsletter\/91369c28\/zenml-labs-lockup-cream-2x\.png$/,
+    );
+    expect(renderEmail(issue(1))).toContain(`<img src="${LOGO_URL}"`);
+  });
+  it("credits ZenML Labs and links both products in the footer", () => {
+    const html = renderEmail(issue(1));
+    const text = html.replace(/<[^>]+>/g, "").replace(/\s+/g, " ");
+    expect(text).toContain(
+      "In Production is made by ZenML Labs. We build ZenML for ML workflows and Kitaru for replay-based evals of AI agents.",
+    );
+    expect(html).toContain('href="https://www.zenml.io/product/kitaru"');
+    expect(html).toContain('href="https://www.zenml.io"');
   });
 });

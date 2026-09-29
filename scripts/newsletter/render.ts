@@ -19,7 +19,7 @@ export interface Issue {
 }
 
 export const PREHEADER = "Four real-world LLMOps case studies, every Tuesday and Thursday.";
-export const LOGO_URL = `${ASSET_BASE_URL}/content/newsletter/zenml-labs-lockup-cream@2x.png`;
+export const LOGO_URL = `${ASSET_BASE_URL}/content/newsletter/91369c28/zenml-labs-lockup-cream-2x.png`;
 export const entryUrl = (slug: string) => `https://www.zenml.io/llmops-database/${slug}`;
 /** Brevo merge tags. */
 // Confirmed from Brevo docs/community pages, not the live API (help.brevo.com/hc/en-us/articles/209553645, community.brevo.com/t/4592): `{{ unsubscribe }}` is the
@@ -49,6 +49,16 @@ const css = (o: Record<string, string>) =>
     .map(([k, v]) => `${k}:${v}`)
     .join(";");
 const S = {
+  about: css({
+    padding: "22px 36px 0",
+    "text-align": "center",
+    "font-family": SANS,
+    "font-size": "14px",
+    "line-height": "22px",
+    color: C.inkSoft,
+  }),
+  aboutLink: (weight?: string) =>
+    css({ color: C.sage800, ...(weight ? { "font-weight": weight } : {}) }),
   label: (color: string) =>
     css({
       "font-family": MONO,
@@ -167,7 +177,10 @@ ${items}
   Want more? The database holds 2,100+ case studies, searchable by industry and technique.
   <div style="padding-top:14px;"><a href="https://www.zenml.io/llmops-database" style="display:inline-block;background:${C.night};color:${C.cream50};font-family:${MONO};font-size:12px;letter-spacing:0.12em;text-transform:uppercase;padding:11px 18px;border-radius:999px;">Browse the database</a></div>
 </td></tr>
-<tr><td style="padding:22px 36px;text-align:center;font-family:${SANS};font-size:12px;line-height:19px;color:${C.muted};">
+<tr><td style="${S.about}">
+  In Production is made by <a href="https://www.zenml.io" style="${S.aboutLink("600")}">ZenML Labs</a>. We build <a href="https://www.zenml.io" style="${S.aboutLink()}">ZenML</a> for ML workflows and <a href="https://www.zenml.io/product/kitaru" style="${S.aboutLink()}">Kitaru</a> for replay-based evals of AI agents.
+</td></tr>
+<tr><td style="padding:18px 36px 22px;text-align:center;font-family:${SANS};font-size:12px;line-height:19px;color:${C.muted};">
   In Production is sent by ZenML every Tuesday and Thursday.<br>
   You're getting this because you subscribed on zenml.io. <a href="${BREVO_UNSUBSCRIBE}" style="color:${C.muted};text-decoration:underline;">Unsubscribe</a>
 </td></tr>
