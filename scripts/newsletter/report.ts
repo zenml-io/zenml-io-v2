@@ -10,7 +10,7 @@ export type RunOutcome =
   | { kind: "already-scheduled"; campaignId: number };
 
 const pct = (n: number) => n.toFixed(2);
-const worthLine = (w: WorthVerdict) => `production ${pct(w.production)} · specificity ${pct(w.specificity)} · vendor pitch ${pct(w.vendorPitch)} → worth ${pct(w.worth)}`;
+const worthLine = (w: WorthVerdict) => `production ${pct(w.production)} · specificity ${pct(w.specificity)} → worth ${pct(w.worth)}`;
 const removedList = (removed: WorthVerdict[]) => removed.length === 0 ? "" :
   `<h3>Removed by the quality gate (${removed.length})</h3><ul>${removed.map((w) => `<li>${escapeHtml(w.slug)}: ${worthLine(w)}</li>`).join("")}</ul>`;
 

@@ -5,7 +5,6 @@ const worth = (slug: string, keep = true) => ({
   slug,
   production: 1,
   specificity: 1,
-  vendorPitch: 0,
   worth: keep ? 1 : 0.2,
   keep,
 });

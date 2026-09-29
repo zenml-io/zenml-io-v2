@@ -6,6 +6,7 @@ import {
   fallbackBlurb,
   type JevLike,
   judgeBlurb,
+  judgeWorth,
   normaliseScore,
 } from "../../scripts/newsletter/quality";
 
@@ -24,22 +25,32 @@ const entry = (summary: string): Entry => ({
 });
 
 describe("decideWorth", () => {
-  it("keeps substantive entries and drops thin ones or vendor pitches", () => {
-    expect(
-      decideWorth("a", { production: 1, specificity: 0.66, vendorPitch: 0.1 })
-        .keep,
-    ).toBe(true);
-    expect(
-      decideWorth("b", {
-        production: 0.33,
-        specificity: 0.33,
-        vendorPitch: 0.1,
-      }).keep,
-    ).toBe(false);
-    expect(
-      decideWorth("c", { production: 1, specificity: 1, vendorPitch: 0.9 })
-        .keep,
-    ).toBe(false);
+  it("keeps substantive entries and drops thin ones", () => {
+    expect(decideWorth("a", { production: 1, specificity: 0.66 }).keep).toBe(
+      true,
+    );
+    expect(decideWorth("b", { production: 0.33, specificity: 0.33 }).keep).toBe(
+      false,
+    );
+  });
+  it("keeps an entry with high production and specificity", () => {
+    const v = decideWorth("c", { production: 1, specificity: 1 });
+    expect(v.keep).toBe(true);
+    expect(v.worth).toBe(1);
+  });
+  it("asks Jev only the production and specificity questions", async () => {
+    const asked: string[][] = [];
+    const jev: JevLike = {
+      async systemOne(req) {
+        asked.push(Object.keys(req.questions));
+        return {
+          answers: { production: { score: 3 }, specificity: { score: 3 } },
+        };
+      },
+    };
+    const v = await judgeWorth(jev, entry("s"));
+    expect(asked).toEqual([["production", "specificity"]]);
+    expect(v.keep).toBe(true);
   });
   it("normalises 0-indexed scores", () => expect(normaliseScore(3, 4)).toBe(1));
 });

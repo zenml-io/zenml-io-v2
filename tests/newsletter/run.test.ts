@@ -78,7 +78,6 @@ function fakes(
           answers: {
             production: { score: thin ? 0 : 3 },
             specificity: { score: thin ? 0 : 3 },
-            vendorPitch: { noul: 0 },
           },
         };
       }

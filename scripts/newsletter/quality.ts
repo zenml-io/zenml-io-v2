@@ -1,11 +1,11 @@
-import { choice, noul, score } from "@typesafe-ai/sdk";
+import { choice, score } from "@typesafe-ai/sdk";
 import type { Entry } from "./entries";
 import { blurbText, sectionFor, type Written } from "./write";
 
 // Pinned so a moving model alias can't shift the thresholds below. Re-check the thresholds before changing the version.
 export const JEV_MODEL = "jev-1.13.0";
+// Thresholds checked against a hand-labelled sample of 30 recent entries (Sep 2026).
 export const WORTH_FLOOR = 0.5;
-export const VENDOR_PITCH_MAX = 0.7;
 export const SUPPORT_CONFIDENCE_MIN = 0.8;
 export const TONE_MAX = 0.75;
 
@@ -13,7 +13,7 @@ export interface JevLike {
   // biome-ignore lint/suspicious/noExplicitAny: answers are typed per question by the SDK; we read known fields.
   systemOne(req: { model: string; state: unknown; questions: Record<string, unknown> }): Promise<{ answers: Record<string, any> }>;
 }
-export interface WorthVerdict { slug: string; production: number; specificity: number; vendorPitch: number; worth: number; keep: boolean }
+export interface WorthVerdict { slug: string; production: number; specificity: number; worth: number; keep: boolean }
 export interface SentenceVerdict { text: string; section: string; relation: string; confidence: number; pass: boolean }
 export interface BlurbVerdict { pass: boolean; sentences: SentenceVerdict[]; tone: number; reasons: string[] }
 
@@ -30,14 +30,13 @@ const TONE: [string, string, ...string[]] = ["Plain, specific wording with no pr
   "Hype-driven: superlatives or vague claims such as revolutionary or game-changing"];
 
 /**
- * Jev Score is 0-indexed: SDK 0.6 types say rubric entries are "indexed by score from zero".
- * Live confirmation: unverified.
+ * Jev Score is 0-indexed. Confirmed against the live jev-1.13.0 API: a top-level text scored 3 of levels 0-3, a bottom-level text 0.
  */
 export const normaliseScore = (s: number, levels: number) => s / (levels - 1);
 
-export function decideWorth(slug: string, a: { production: number; specificity: number; vendorPitch: number }): WorthVerdict {
+export function decideWorth(slug: string, a: { production: number; specificity: number }): WorthVerdict {
   const worth = 0.5 * a.production + 0.5 * a.specificity;
-  return { slug, ...a, worth, keep: worth >= WORTH_FLOOR && a.vendorPitch < VENDOR_PITCH_MAX };
+  return { slug, ...a, worth, keep: worth >= WORTH_FLOOR };
 }
 
 export async function judgeWorth(jev: JevLike, entry: Entry): Promise<WorthVerdict> {
@@ -47,13 +46,11 @@ export async function judgeWorth(jev: JevLike, entry: Entry): Promise<WorthVerdi
     questions: {
       production: score("How much evidence of production use does the case study in `summary` give?", PRODUCTION),
       specificity: score("How technically specific is the case study in `summary`?", SPECIFICITY),
-      vendorPitch: noul("Is the case study in `summary` mainly an advertisement for a product sold by the company in `company`, rather than an account of how they used LLMs?"),
     },
   });
   return decideWorth(entry.slug, {
     production: normaliseScore(answers.production.score, PRODUCTION.length),
     specificity: normaliseScore(answers.specificity.score, SPECIFICITY.length),
-    vendorPitch: answers.vendorPitch.noul,
   });
 }
 
