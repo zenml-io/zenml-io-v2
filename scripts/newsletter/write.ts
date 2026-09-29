@@ -20,17 +20,17 @@ Rules:
 - Copy figures exactly as the source states them. Do not calculate differences, round, or convert units.
 - Keep any qualifier attached to its claim (e.g. "on its internal benchmark", "reportedly").
 - Plain words. No hype adjectives ("revolutionary", "cutting-edge", "game-changing").
-- For each sentence, give the exact heading of the one section it draws on.
-Example (35 words):
-1. "Harvey built a multi-agent system that reviews contracts against a legal playbook." (Overview)
-2. "On its internal benchmark, redline quality rose from 53% to 87%." (Results and tradeoffs)`;
+- For each sentence, give the exact heading of the one section it draws on.`;
 const HOOK_RULE = `\n- Also write "hook": 3 to 7 plain words summarising the case for an email subject line, without the company name.`;
+const EXAMPLE = (withHook: boolean) => `\n\nIllustrative only, about a made-up company: never reuse its words, names or numbers.
+1. "Acme Kettle Co. built a robot that sorts teapots by colour." (section: Overview)
+2. "It reported sorting errors fell from 9 in 100 to 2 in 100." (section: Results)${withHook ? '\nhook: "Robot sorts teapots by colour"' : ""}`;
 
 export function buildWriterPrompt(entry: Entry, o: { withHook: boolean; feedback?: string }) {
   const body = entry.sections.map((s) => `## ${s.heading}\n\n${s.text}`).join("\n\n");
   const feedback = o.feedback ? `\n\nA previous attempt was rejected: ${o.feedback}\nFix that problem.` : "";
   return {
-    system: SYSTEM + (o.withHook ? HOOK_RULE : ""),
+    system: SYSTEM + (o.withHook ? HOOK_RULE : "") + EXAMPLE(o.withHook),
     user: `Company: ${entry.company ?? "unknown"}\nTitle: ${entry.title}\n\n${body}${feedback}`,
   };
 }

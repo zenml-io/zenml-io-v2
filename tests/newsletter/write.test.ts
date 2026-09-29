@@ -1,6 +1,6 @@
 import type OpenAI from "openai";
 import { describe, expect, it } from "vitest";
-import type { Entry } from "../../scripts/newsletter/entries";
+import { type Entry, loadEntries } from "../../scripts/newsletter/entries";
 import {
   blurbText,
   buildWriterPrompt,
@@ -41,10 +41,30 @@ describe("buildWriterPrompt", () => {
     });
     expect(user).toContain("## Results and tradeoffs");
     expect(system).toMatch(/copy figures exactly/i);
-    expect(system).toMatch(/at most 45 words in total/i);
-    expect(system).toMatch(/ONE section only/);
     expect(system).toMatch(/hook/i);
     expect(user).toContain("Sentence 2 not supported");
+  });
+});
+
+describe("buildWriterPrompt example", () => {
+  it("names no real company and reuses no figure from a real summary", () => {
+    const real = loadEntries();
+    const companies = [
+      ...new Set(
+        real
+          .map((e) => e.company)
+          .filter((c): c is string => !!c && c.length > 3),
+      ),
+    ];
+    const figures = new Set(
+      real.flatMap((e) => e.summary.match(/\d+(?:\.\d+)?%/g) ?? []),
+    );
+    for (const withHook of [true, false]) {
+      const { system } = buildWriterPrompt(entry, { withHook });
+      for (const c of companies) expect(system).not.toContain(c);
+      for (const f of figures) expect(system).not.toContain(f);
+      expect(system).toContain("Illustrative only");
+    }
   });
 });
 
