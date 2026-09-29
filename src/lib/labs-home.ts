@@ -226,7 +226,7 @@ export interface LabsInstallChip {
 }
 
 export const LABS_HERO: LabsBandContent = {
-  headlineLines: ["The world's first", "autonomous AI engineer"],
+  headlineLines: ["Meet your autonomous", "AI engineer"],
   deck: "Think Devin, but it takes care of your AI agents and models.",
   cta: LABS_HERO_SIGNUP,
 };

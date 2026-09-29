@@ -7,9 +7,8 @@ website. The accepted Astro 7 Cloudflare Worker serves production through the
 guarded current-main release path. The site is generated from the Astro content
 collections defined in `src/content.config.ts`.
 
-**ZenML Labs** is the company. Its positioning (Vision 2026+): **the world's
-first autonomous AI engineer. Think Devin, but it takes care of your AI agents
-and models**: it works from real runs and traces on the customer's own
+**ZenML Labs** is the company. Its positioning (Vision 2026+): **an autonomous AI
+engineer. Think Devin, but it takes care of your AI agents and models**: it works from real runs and traces on the customer's own
 infrastructure, and people approve what ships. Site copy leads with that
 problem and outcome. Do not name internal product concepts (for example
 "Bots" or the "Kaizen" codename), and do not give the paid offering its own
