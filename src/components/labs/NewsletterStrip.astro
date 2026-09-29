@@ -35,11 +35,11 @@ const emailId = `strip-email-${Astro.url.pathname.replace(/[^a-z0-9]+/gi, "-").r
       required
       autocomplete="email"
       placeholder="you@company.com"
-      class="h-11 min-w-0 flex-1 rounded-full border border-(--color-border) bg-card px-[18px] font-sans text-[15px] text-foreground placeholder:text-(--color-cream-700) focus:border-(--color-sage-400) focus:outline-none"
+      class="h-11 min-w-0 flex-1 rounded-full border border-(--color-border) bg-card px-[18px] font-sans text-[15px] text-foreground placeholder:text-(--color-cream-700) focus-visible:border-(--color-sage-800) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:outline-none"
     />
     <button
       type="submit"
-      class="h-11 cursor-pointer rounded-full bg-(--color-sage-900) px-5 font-label text-[13px] tracking-[0.05em] text-(--color-cream-50) uppercase transition-colors duration-200 ease-out hover:bg-(--color-sage-800)"
+      class="h-11 cursor-pointer rounded-full bg-(--color-sage-900) px-5 font-label text-[13px] tracking-[0.05em] text-(--color-cream-50) uppercase transition-colors duration-200 ease-out hover:bg-(--color-sage-800) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:ring-offset-2 focus-visible:ring-offset-(--color-cream-50) focus-visible:outline-none"
     >
       {brevo.submitLabel}
     </button>
