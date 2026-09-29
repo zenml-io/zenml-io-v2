@@ -568,6 +568,9 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
       "features.html",
     ],
   },
+  // The homepage hero's job box, mounted into LabsHero's `action` slot on
+  // `/` only (client:load).
+  { island: "HeroJob", pages: ["index.html"] },
   { island: "RoiCalculator", pages: ["roi-calculator.html"] },
   {
     island: "ContactForm",

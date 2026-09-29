@@ -232,6 +232,621 @@ export const LABS_HERO: LabsBandContent = {
 };
 
 /* ---------------------------------------------------------------------- */
+/* Hero job box ("Give it a job") — HeroJob island, homepage hero only     */
+/* ---------------------------------------------------------------------- */
+
+/**
+ * The five conversations; which one a job gets is decided by heroJobPlan.ts
+ * from keywords in the job.
+ */
+export type HeroJobIntent =
+  | "agents"
+  | "ml"
+  | "reliability"
+  | "cost"
+  | "general";
+
+/**
+ * One tappable answer. `value` is the compact id carried to the signup in
+ * `answers=` (and, for the use-case question, the key of the case-study
+ * proof built from the research databases in heroJobProof.ts). `vars` fill
+ * the `{name}` placeholders of the flow's plan and week templates.
+ */
+export interface HeroJobOption {
+  label: string;
+  value: string;
+  vars?: Readonly<Record<string, string>>;
+}
+
+export interface HeroJobQuestion {
+  /** Compact id carried to the signup in `answers=`. */
+  id: string;
+  prompt: string;
+  options: readonly HeroJobOption[];
+}
+
+export interface HeroJobDay {
+  day: string;
+  /** Template: `{name}` placeholders are filled from the answers. */
+  text: string;
+}
+
+/**
+ * One intent's conversation: the use-case question first (its answer picks
+ * the case studies), then at most two more; then the plan and the first
+ * week, both templates filled from the answers. A skipped question leaves
+ * the flow's default `vars` in place. `needs` is a var too, so an answer
+ * can narrow it.
+ */
+export interface HeroJobFlow {
+  questions: readonly [HeroJobQuestion, ...HeroJobQuestion[]];
+  vars: Readonly<Record<string, string>> & { needs: string };
+  plan: readonly [string, string, string];
+  /** Which plan bullet names a team from the case studies, when there are any. */
+  peerStep: 0 | 1 | 2;
+  week: readonly [HeroJobDay, HeroJobDay, HeroJobDay];
+}
+
+export interface HeroJobContent {
+  /** Accessible name of the composer input. */
+  label: string;
+  /** Composer placeholder before the first message. */
+  placeholder: string;
+  /** Composer placeholder once the conversation runs on quick replies. */
+  replyPlaceholder: string;
+  /** Accessible name of the arrow submit button. */
+  submitLabel: string;
+  /** Quick replies before the first message: tapping one sends it as the job. */
+  examples: readonly string[];
+  /** The chat window's header. */
+  window: {
+    name: string;
+    status: string;
+    /** Accessible name of the chat window. */
+    label: string;
+  };
+  reply: {
+    /** The engineer's opening message, shown before anything is sent. */
+    greeting: string;
+    /** "On it: “<job>”." — the job sits in curly quotes after this. */
+    acceptedPrefix: string;
+    /** Quick reply that skips a question; also echoed as the visitor's bubble. */
+    skipLabel: string;
+    /** Screen-reader prefixes of the two sides' bubbles. */
+    engineerPrefix: string;
+    visitorPrefix: string;
+    /** Screen-reader text of the typing indicator. */
+    typingLabel: string;
+    proofHeading: string;
+    /** Source label on a case-study card, by database. */
+    sourceLabels: { llmops: string; mlops: string };
+    /** Wraps the plan's peer bullet: "{peer}" is a company, "{step}" the bullet. */
+    peerTemplate: string;
+    planHeading: string;
+    weekHeading: string;
+    /** "{needs}" is the flow's needs var. */
+    ready: string;
+    /** Used as `needs` when a job names both agents and models. */
+    needsBoth: string;
+  };
+  flows: Record<HeroJobIntent, HeroJobFlow>;
+  /** Primary pill: the unified signup with `?job=` and `&answers=`. */
+  connect: LabsCta;
+  /** The unchanged hero signup, shown as the small secondary text link. */
+  signup: LabsCta;
+  changeJobLabel: string;
+  /** Plausible events the island fires itself (link clicks use data-analytics). */
+  analytics: {
+    submit: string;
+    example: string;
+    answer: string;
+    skip: string;
+    caseStudy: string;
+  };
+}
+
+export const LABS_HERO_JOB: HeroJobContent = {
+  label: "What should it take care of?",
+  placeholder: "Give it a job…",
+  replyPlaceholder: "Reply…",
+  submitLabel: "Give it the job",
+  examples: [
+    "Keep our support agent cheap and accurate",
+    "Retrain the fraud model when data drifts",
+    "Fix failed pipelines before standup",
+  ],
+  window: {
+    name: "Your AI engineer",
+    status: "online",
+    label: "Chat with your AI engineer",
+  },
+  reply: {
+    greeting: "Hi. What should I take care of?",
+    acceptedPrefix: "On it:",
+    skipLabel: "Skip",
+    engineerPrefix: "AI engineer:",
+    visitorPrefix: "You:",
+    typingLabel: "Your AI engineer is typing",
+    proofHeading: "Teams doing this in production:",
+    sourceLabels: { llmops: "LLMOps database", mlops: "MLOps database" },
+    peerTemplate: "Like {peer}, {step}",
+    planHeading: "Here's my plan",
+    weekHeading: "Your first week with me",
+    ready: "Ready to start tonight. I just need read access to your {needs}.",
+    needsBoth: "traces and runs",
+  },
+  flows: {
+    agents: {
+      questions: [
+        {
+          id: "use_case",
+          prompt: "What's the agent for?",
+          options: [
+            {
+              label: "Customer support",
+              value: "support",
+              vars: { sessions: "support conversations" },
+            },
+            {
+              label: "Search / RAG",
+              value: "rag",
+              vars: { sessions: "search answers" },
+            },
+            {
+              label: "Coding assistant",
+              value: "coding",
+              vars: { sessions: "coding sessions" },
+            },
+            {
+              label: "Document processing",
+              value: "docs",
+              vars: { sessions: "document runs" },
+            },
+            { label: "Other", value: "other" },
+          ],
+        },
+        {
+          id: "model",
+          prompt: "What does it run on?",
+          options: [
+            { label: "GPT-4o", value: "gpt", vars: { cheaper: "GPT-4o mini" } },
+            {
+              label: "Claude",
+              value: "claude",
+              vars: { cheaper: "Claude Haiku" },
+            },
+            {
+              label: "Open-source model",
+              value: "oss",
+              vars: { cheaper: "a smaller open-source model" },
+            },
+            { label: "Not sure", value: "unsure" },
+          ],
+        },
+        {
+          id: "focus",
+          prompt: "What matters more right now?",
+          options: [
+            {
+              label: "Cost",
+              value: "cost",
+              vars: {
+                focusStep: "test {cheaper} on your most expensive {sessions}.",
+                wedStep:
+                  "Replay the most expensive ones on {cheaper} and score both.",
+                outcome: "typically about −35% cost at the same quality",
+              },
+            },
+            {
+              label: "Quality",
+              value: "quality",
+              vars: {
+                focusStep:
+                  "find the {sessions} that go wrong and fix the prompts behind them.",
+                wedStep:
+                  "Replay the weakest ones with a prompt fix and score both.",
+                outcome:
+                  "a prompt fix for your weakest {sessions}, with the eval",
+              },
+            },
+            { label: "Both", value: "both" },
+          ],
+        },
+      ],
+      vars: {
+        needs: "traces",
+        sessions: "conversations",
+        cheaper: "cheaper models",
+        focusStep:
+          "test {cheaper} and prompt fixes on your most expensive and weakest {sessions}.",
+        wedStep:
+          "Replay expensive and weak ones on {cheaper} with a prompt fix.",
+        outcome:
+          "typically about −30% cost and fewer bad answers, with the eval",
+      },
+      plan: [
+        "Watch all your {sessions} and flag quality drops within a day.",
+        "{focusStep}",
+        "Nothing ships without an eval on your production sessions. You approve every change.",
+      ],
+      peerStep: 1,
+      week: [
+        {
+          day: "Mon",
+          text: "Read the last two weeks of {sessions} and sort them by cost and quality.",
+        },
+        { day: "Wed", text: "{wedStep}" },
+        { day: "Fri", text: "PR ready: {outcome}. You approve." },
+      ],
+    },
+    ml: {
+      questions: [
+        {
+          id: "use_case",
+          prompt: "What's the model for?",
+          options: [
+            {
+              label: "Fraud & risk",
+              value: "fraud",
+              vars: { model: "risk model" },
+            },
+            {
+              label: "Recommendations",
+              value: "recs",
+              vars: { model: "recommender" },
+            },
+            {
+              label: "Forecasting",
+              value: "forecasting",
+              vars: { model: "forecasting model" },
+            },
+            {
+              label: "Computer vision",
+              value: "vision",
+              vars: { model: "vision model" },
+            },
+            { label: "Other", value: "other" },
+          ],
+        },
+        {
+          id: "cadence",
+          prompt: "How often does the data change?",
+          options: [
+            { label: "Daily", value: "daily", vars: { batch: "day's data" } },
+            {
+              label: "Weekly",
+              value: "weekly",
+              vars: { batch: "week's data" },
+            },
+            {
+              label: "Monthly",
+              value: "monthly",
+              vars: { batch: "month's data" },
+            },
+          ],
+        },
+        {
+          id: "today",
+          prompt: "What happens today when it drifts?",
+          options: [
+            {
+              label: "We notice late",
+              value: "late",
+              vars: {
+                todayStep: "Alert you the day drift starts, not weeks later.",
+              },
+            },
+            {
+              label: "Manual retrain",
+              value: "manual",
+              vars: {
+                todayStep:
+                  "Take over the retrain: run it, compare against the current {model}, write it up.",
+              },
+            },
+            {
+              label: "Nothing yet",
+              value: "nothing",
+              vars: {
+                todayStep:
+                  "Set up drift checks on your {model} from the runs you already have.",
+              },
+            },
+          ],
+        },
+      ],
+      vars: {
+        needs: "runs",
+        model: "model",
+        batch: "new batch of data",
+        todayStep:
+          "Retrain when it drifts and compare against the current {model}.",
+      },
+      plan: [
+        "check inputs and predictions for drift as each {batch} lands.",
+        "{todayStep}",
+        "Promote a retrained {model} only if it beats the champion. You approve.",
+      ],
+      peerStep: 0,
+      week: [
+        {
+          day: "Mon",
+          text: "Map your {model}'s training runs, data and current metrics.",
+        },
+        {
+          day: "Wed",
+          text: "Retrain on recent data and compare against the champion.",
+        },
+        {
+          day: "Fri",
+          text: "Retrained {model} ready if it beats the champion, with the comparison. You approve.",
+        },
+      ],
+    },
+    reliability: {
+      questions: [
+        {
+          id: "use_case",
+          prompt: "What do the pipelines do?",
+          options: [
+            {
+              label: "Training",
+              value: "training",
+              vars: { pipes: "training pipelines" },
+            },
+            {
+              label: "Feature / data prep",
+              value: "data",
+              vars: { pipes: "data pipelines" },
+            },
+            {
+              label: "Batch inference",
+              value: "inference",
+              vars: { pipes: "batch inference jobs" },
+            },
+            { label: "Other", value: "other" },
+          ],
+        },
+        {
+          id: "platform",
+          prompt: "Where do pipelines run?",
+          options: [
+            {
+              label: "Kubernetes",
+              value: "k8s",
+              vars: { where: "Kubernetes" },
+            },
+            {
+              label: "Cloud (SageMaker/Vertex/…)",
+              value: "cloud",
+              vars: { where: "your cloud platform" },
+            },
+            { label: "Airflow", value: "airflow", vars: { where: "Airflow" } },
+            { label: "Other", value: "other" },
+          ],
+        },
+        {
+          id: "owner",
+          prompt: "Who fixes them?",
+          options: [
+            {
+              label: "Whoever's on call",
+              value: "oncall",
+              vars: {
+                ownerStep:
+                  "Hand whoever is on call a diagnosis and a fix, not a stack trace.",
+              },
+            },
+            {
+              label: "One person",
+              value: "one",
+              vars: {
+                ownerStep:
+                  "Take the first pass off that one person: cause, fix and evidence, ready to review.",
+              },
+            },
+            {
+              label: "Nobody, it waits",
+              value: "nobody",
+              vars: {
+                ownerStep:
+                  "Pick up failures the moment they happen, so nothing waits for a free afternoon.",
+              },
+            },
+          ],
+        },
+      ],
+      vars: {
+        needs: "pipelines",
+        pipes: "pipelines",
+        where: "your orchestrator",
+        ownerStep: "Open a fix with the evidence and re-run it on the branch.",
+      },
+      plan: [
+        "catch failed {pipes} on {where} as they happen and find the cause from logs and lineage.",
+        "{ownerStep}",
+        "Post a summary before standup. You approve merges.",
+      ],
+      peerStep: 0,
+      week: [
+        {
+          day: "Mon",
+          text: "Read every failed run on {where} from the last month and group them by cause.",
+        },
+        {
+          day: "Wed",
+          text: "Open fixes for the top causes and re-run them on a branch.",
+        },
+        {
+          day: "Fri",
+          text: "Fixes ready for the most common failures, with the evidence. You approve merges.",
+        },
+      ],
+    },
+    cost: {
+      questions: [
+        {
+          id: "use_case",
+          prompt: "What's getting expensive?",
+          options: [
+            {
+              label: "LLM calls",
+              value: "llm",
+              vars: {
+                spend: "LLM calls",
+                swap: "cheaper models and shorter prompts",
+              },
+            },
+            {
+              label: "Model training",
+              value: "train",
+              vars: {
+                spend: "training runs",
+                swap: "right-sized GPUs and spot capacity",
+              },
+            },
+            {
+              label: "Inference",
+              value: "serve",
+              vars: {
+                spend: "inference",
+                swap: "smaller models and right-sized instances",
+              },
+            },
+            { label: "Not sure", value: "unsure" },
+          ],
+        },
+        {
+          id: "margin",
+          prompt: "How much quality can you trade?",
+          options: [
+            {
+              label: "None",
+              value: "none",
+              vars: { guard: "Ship only what holds quality exactly." },
+            },
+            {
+              label: "A little",
+              value: "little",
+              vars: {
+                guard:
+                  "Ship only what stays inside the quality margin you set.",
+              },
+            },
+            {
+              label: "Not sure",
+              value: "unsure",
+              vars: {
+                guard:
+                  "Show you the cost and quality of each change side by side.",
+              },
+            },
+          ],
+        },
+      ],
+      vars: {
+        needs: "runs",
+        spend: "agents and pipelines",
+        swap: "cheaper models and right-sized GPUs",
+        guard: "Ship only what holds quality.",
+      },
+      plan: [
+        "Find the most expensive steps in your {spend}.",
+        "test {swap} on real data.",
+        "{guard} You approve.",
+      ],
+      peerStep: 1,
+      week: [
+        {
+          day: "Mon",
+          text: "Rank your {spend} by cost over the last 30 days.",
+        },
+        { day: "Wed", text: "Test {swap} on the top three." },
+        {
+          day: "Fri",
+          text: "PR ready: typically about −30% on those steps. You approve.",
+        },
+      ],
+    },
+    general: {
+      questions: [
+        {
+          id: "use_case",
+          prompt: "What do you run in production?",
+          options: [
+            {
+              label: "Agents / LLM apps",
+              value: "agents",
+              vars: { what: "agents", needs: "traces" },
+            },
+            {
+              label: "ML models",
+              value: "models",
+              vars: { what: "models", needs: "runs" },
+            },
+            { label: "Both", value: "both" },
+          ],
+        },
+        {
+          id: "worry",
+          prompt: "What worries you most?",
+          options: [
+            {
+              label: "Quality",
+              value: "quality",
+              vars: { worry: "getting worse" },
+            },
+            {
+              label: "Cost",
+              value: "cost",
+              vars: { worry: "costing too much" },
+            },
+            {
+              label: "Failures",
+              value: "failures",
+              vars: { worry: "failing" },
+            },
+          ],
+        },
+      ],
+      vars: {
+        needs: "runs and traces",
+        what: "agents and models",
+        worry: "getting worse or costing too much",
+      },
+      plan: [
+        "learn how your {what} run in production.",
+        "Find what's {worry} and why.",
+        "Fix it and prove it before anything ships. You approve.",
+      ],
+      peerStep: 0,
+      week: [
+        { day: "Mon", text: "Map your {what} from their runs and traces." },
+        { day: "Wed", text: "Rank what's {worry}, with the evidence." },
+        {
+          day: "Fri",
+          text: "First fix ready, proven on production data. You approve.",
+        },
+      ],
+    },
+  },
+  connect: {
+    label: "Connect and start",
+    href: LABS_SIGNUP.href,
+    analytics: "Hero-Job-Connect",
+  },
+  signup: LABS_HERO_SIGNUP,
+  changeJobLabel: "Change job",
+  analytics: {
+    submit: "Hero-Job-Submit",
+    example: "Hero-Job-Example",
+    answer: "Hero-Job-Answer",
+    skip: "Hero-Job-Skip",
+    caseStudy: "Hero-Job-CaseStudy",
+  },
+};
+
+/* ---------------------------------------------------------------------- */
 /* Problem + contrast (LabsValueProps, no button)                          */
 /* ---------------------------------------------------------------------- */
 

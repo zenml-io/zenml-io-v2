@@ -276,6 +276,33 @@ const CHECKS: IslandCheck[] = [
     },
   },
   {
+    name: "HeroJob holds the conversation and carries the job to the signup",
+    route: "/",
+    island: "HeroJob",
+    seedConsent: true,
+    async assert(page, root) {
+      // The thread only exists after an onClick; SSR ships the chips alone.
+      // The context forces reduced motion, so each message appears at once.
+      await page
+        .locator(`${root} [data-hero-job-example]`)
+        .filter({ hasText: "Retrain the fraud model" })
+        .click();
+      await page.waitForSelector(`${root} [data-hero-job-reply="ml"]`);
+      await page.locator(`${root} [data-hero-job-answer="fraud"]`).click();
+      await page.locator(`${root} [data-hero-job-answer="daily"]`).click();
+      await page.locator(`${root} [data-hero-job-skip]`).click();
+      const href = await page
+        .locator(`${root} a[data-analytics="Hero-Job-Connect"]`)
+        .getAttribute("href");
+      if (
+        !href?.includes("?job=Retrain%20the%20fraud%20model") ||
+        !href.includes("&answers=use_case%3Afraud%2Ccadence%3Adaily")
+      ) {
+        throw new Error(`Connect link does not carry the job: ${href}`);
+      }
+    },
+  },
+  {
     name: "FeatureTabsSlider switches tab on click",
     // The Labs homepage (/) no longer carries feature tabs; the ZenML product
     // landing still does, so the interaction check moved with it.
