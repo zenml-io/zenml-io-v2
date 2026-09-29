@@ -1,0 +1,48 @@
+name: In Production newsletter
+
+on:
+  schedule:
+    - cron: "0 16 * * 1,3" # Mon + Wed 16:00 UTC → Tue/Thu 09:00 Amsterdam issue
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "test-only: draft + test email. schedule: schedule the real issue. dry-run: no Brevo writes."
+        type: choice
+        options: [test-only, schedule, dry-run]
+        default: test-only
+
+concurrency:
+  group: in-production-newsletter
+  cancel-in-progress: false
+
+jobs:
+  issue:
+    name: Build and schedule issue
+    # Timer runs do nothing until the repo variable NEWSLETTER_LIVE is "true" (launch switch).
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || vars.NEWSLETTER_LIVE == 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+      - name: Set up pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: 10
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22.23.1
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run newsletter
+        env:
+          MODE: ${{ inputs.mode || 'schedule' }}
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+          NEWSLETTER_LIST_ID: ${{ vars.NEWSLETTER_LIST_ID }}
+        run: pnpm newsletter:run --mode="$MODE"

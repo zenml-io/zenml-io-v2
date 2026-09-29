@@ -23,6 +23,7 @@ import {
 import LlmopsIndex from "../../components/islands/filter-index/LlmopsIndex";
 import BlogNewsletterCta from "../../components/labs/BlogNewsletterCta.astro";
 import LabsHero from "../../components/labs/LabsHero.astro";
+import NewsletterStrip from "../../components/labs/NewsletterStrip.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP, blogLaneStyle } from "../../lib/blogLayout";
 import {
@@ -31,6 +32,7 @@ import {
   DATABASES,
 } from "../../lib/databases";
 import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
+import { IN_PRODUCTION } from "../../lib/inProduction";
 import { getNonDraftLlmopsDatabaseCount } from "../../lib/llmops";
 import { defaultOgImage } from "../../lib/seo";
 
@@ -64,6 +66,14 @@ const GROUP_LABEL = "text-[13px] font-medium text-(--color-cream-700)";
 >
   <div style={blogLaneStyle()}>
     <LabsHero band="short" content={{ headline: copy.name, deck: copy.description(entryCount) }} />
+
+    <div class:list={["mx-auto max-w-content px-gutter", BAND_CONTENT_GAP]}>
+      <NewsletterStrip
+        brevo={BREVO_LLMOPS_CONFIG}
+        label={IN_PRODUCTION.stripLabel}
+        deck="Four case studies from this database in your inbox, every Tuesday and Thursday."
+      />
+    </div>
 
     <section class:list={["scroll-reveal-section pb-24", BAND_CONTENT_GAP]}>
       <div class="reveal-child stagger-1 mx-auto max-w-content px-gutter">

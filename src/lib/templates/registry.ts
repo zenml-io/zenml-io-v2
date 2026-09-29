@@ -1594,7 +1594,21 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: true,
     paperPage: 0,
     notes:
-      "Closing band shown at the bottom of every blog route (the index, a post via BlogLayout.astro, and the category/tag/author hub pages): dark sage panel, two-column (ZenML signup pill left, newsletter signup card right), one column below lg. Mounts GrainBackdrop client:idle, same treatment as labs.close-cta — deliberately not the page's always-on ambient island, so it hydrates once the browser is idle instead of competing with a hero shader for first paint. The newsletter form's markup is custom (a pill-shaped input row with an icon-only submit button) but shares the Brevo contract with BrevoNewsletterForm.astro: a BrevoFormConfig, native POST submission, and the same hidden honeypot/locale inputs. Copy and list are both props defaulting to the blog's own (BLOG_CTA in src/lib/blog-cta.ts + BREVO_MAIN_CONFIG), so a non-blog surface reuses the band rather than copying the markup — the research databases pass DATABASE_CTA + BREVO_LLMOPS_CONFIG.",
+      "Closing band shown at the bottom of every blog route (the index, a post via BlogLayout.astro, and the category/tag/author hub pages): dark sage panel, two-column (ZenML signup pill left, newsletter signup card right), one column below lg. Mounts GrainBackdrop client:idle, same treatment as labs.close-cta — deliberately not the page's always-on ambient island, so it hydrates once the browser is idle instead of competing with a hero shader for first paint. The newsletter form's markup is custom (a pill-shaped input row with an icon-only submit button) but shares the Brevo contract with BrevoNewsletterForm.astro: a BrevoFormConfig, native POST submission, and the same hidden honeypot/locale inputs. Copy and list are both props defaulting to the blog's own (BLOG_CTA in src/lib/blog-cta.ts + BREVO_MAIN_CONFIG), so a non-blog surface reuses the band rather than copying the markup — the research databases pass DATABASE_CTA + BREVO_LLMOPS_CONFIG, and MLOps-only routes pass MLOPS_DATABASE_CTA instead.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.newsletter-strip",
+    kind: "template",
+    componentPath: "src/components/labs/NewsletterStrip.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "One-row In Production signup: Nudica label + one-line deck left, pill email field + Subscribe right, wraps below ~640px. Cream-50 surface with a hairline and 12px radius so it sits inside an article lead (under the LLMOps entry Summary box) or under a short hero (/llmops-database). Native POST to a BrevoFormConfig with the same honeypot/locale inputs as labs.blog-newsletter-cta. Copy from src/lib/inProduction.ts.",
     stage: false,
     demoProps: {},
   },

@@ -1,0 +1,47 @@
+---
+/**
+ * /in-production — landing page for the In Production newsletter: what it
+ * is, cadence, a sample (the four newest LLMOps entries in the email's item
+ * shape), and the LLMOps-list signup form.
+ */
+import BrevoNewsletterForm from "../components/sections/BrevoNewsletterForm.astro";
+import ConversionShell from "../components/templates/ConversionShell.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { BREVO_LLMOPS_CONFIG } from "../lib/formConstants";
+import { IN_PRODUCTION } from "../lib/inProduction";
+import { deriveAddedDate, getAllPublishedEntries } from "../lib/llmops";
+import { defaultOgImage } from "../lib/seo";
+
+const sample = (await getAllPublishedEntries())
+  .map((e) => ({ e, added: deriveAddedDate(e.data) }))
+  .filter((x) => x.added !== null)
+  .sort((a, b) => (b.added as Date).getTime() - (a.added as Date).getTime())
+  .slice(0, 4)
+  .map(({ e }) => e);
+---
+
+<BaseLayout
+  title={IN_PRODUCTION.seo.title}
+  description={IN_PRODUCTION.seo.description}
+  ogImage={defaultOgImage("pages", "in-production")}
+  surface="ml"
+  app="labs"
+>
+  <main>
+    <ConversionShell frame="form" headline={IN_PRODUCTION.page.headline} deck={IN_PRODUCTION.page.deck}>
+      <BrevoNewsletterForm config={BREVO_LLMOPS_CONFIG} />
+    </ConversionShell>
+    <section aria-labelledby="in-production-sample" class="mx-auto max-w-content px-gutter pt-16 pb-24">
+      <h2 id="in-production-sample" class="font-label text-[13px] tracking-[0.05em] text-(--color-sage-800) uppercase">What an issue looks like</h2>
+      <ol class="mt-6 divide-y divide-(--color-border) border-y border-(--color-border)">
+        {sample.map((e) => (
+          <li class="py-6">
+            <a href={`/llmops-database/${e.data.slug}`} class="font-display text-[22px] leading-7 text-foreground hover:text-(--color-sage-800)">{e.data.title}</a>
+            {e.data.company && <p class="mt-1 font-sans text-[14px] text-(--color-cream-700)">{e.data.company}</p>}
+            {e.data.summary && <p class="mt-3 line-clamp-2 font-sans text-[16px] leading-6 text-foreground">{e.data.summary}</p>}
+          </li>
+        ))}
+      </ol>
+    </section>
+  </main>
+</BaseLayout>

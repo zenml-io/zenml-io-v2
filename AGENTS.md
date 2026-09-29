@@ -73,6 +73,15 @@ LLMOps database entries have two sources: entries migrated from Webflow, and ent
 - To generate missing cards, run `pnpm og:sync --write` locally with R2 credentials in `.env`, then commit the updated `src/data/og-cards.json`. A missing `OG_CARDS` title for an opted-in static page, case study, or project blocks generation and prints the missing key.
 - After new LLMOps entries land, run `pnpm validate:llmops`, `pnpm check`, and `pnpm build`.
 
+## In Production newsletter
+
+- `pnpm newsletter:run` builds and schedules the twice-weekly In Production email (four LLMOps Database case studies, Tue and Thu 09:00 Europe/Amsterdam). Operator guide: [docs/in-production-newsletter.md](docs/in-production-newsletter.md).
+- Code lives in `scripts/newsletter/` (tests in `tests/newsletter/`); the workflow is `.github/workflows/newsletter.yml`.
+- Timer runs do nothing until the repository variable `NEWSLETTER_LIVE` is `true`; manual dispatch defaults to `test-only`.
+- The repository variable `NEWSLETTER_LIST_ID` holds the Brevo id of the LLMOps signup list; `test-only` and `schedule` runs fail without it (dry-run does not need it).
+- Preview locally with `pnpm newsletter:preview` (a dry run: no Brevo writes; needs the keys in `.env`).
+- Never trigger schedule mode or send anything to the list without explicit authorization. Do not print or copy secret values.
+
 ## Security & Configuration
 - Treat this repo as public. Never commit secrets, API keys, infrastructure IDs, internal URLs, traffic numbers, or private notes.
 - Use credentials only for the authorized task. Do not automatically persist supplied credentials. When persistence is requested or required for an authorized local setup, use gitignored .env and only the necessary keys; never print their values. See .env.example for variable names.

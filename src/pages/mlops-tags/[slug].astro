@@ -19,11 +19,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
 import {
   capitalise,
-  DATABASE_CTA,
   DATABASE_PAGE_SIZE,
   DATABASE_ROW_CHIPS_VISIBLE,
   DATABASES,
   entryCountDeck,
+  MLOPS_DATABASE_CTA,
 } from "../../lib/databases";
 import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
 import { getMLOpsIndustryTagCounts } from "../../lib/mlops";
@@ -169,7 +169,7 @@ const entries: EntryRowItem[] = allEntries
     </div>
   </section>
 
-  <BlogNewsletterCta content={DATABASE_CTA} brevo={BREVO_LLMOPS_CONFIG} />
+  <BlogNewsletterCta content={MLOPS_DATABASE_CTA} brevo={BREVO_LLMOPS_CONFIG} />
 </BaseLayout>
 
 <style>

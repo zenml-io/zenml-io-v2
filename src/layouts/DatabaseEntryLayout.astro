@@ -34,17 +34,19 @@ import LabsMetadataBlock, {
   type LabsMetadataBlockItem,
 } from "../components/labs/LabsMetadataBlock.astro";
 import LabsRelatedBand from "../components/labs/LabsRelatedBand.astro";
+import NewsletterStrip from "../components/labs/NewsletterStrip.astro";
 import StickyBreadcrumb from "../components/labs/StickyBreadcrumb.astro";
 import { LABS_EYEBROW_CLASS } from "../components/templates/pageHeaderPresets";
 import type { RelatedRailItem } from "../components/templates/RelatedRail.astro";
 import { blogLaneStyle } from "../lib/blogLayout";
 import {
   capitalise,
-  DATABASE_CTA,
+  DATABASE_CLOSE_CTA,
   DATABASES,
   type DatabaseKey,
 } from "../lib/databases";
 import { BREVO_LLMOPS_CONFIG } from "../lib/formConstants";
+import { IN_PRODUCTION } from "../lib/inProduction";
 import type { SEOProps } from "../lib/seo";
 import BaseLayout from "./BaseLayout.astro";
 
@@ -234,6 +236,13 @@ if (tags.length > 0) {
                 <p class="mt-3 text-[18px] leading-[30px] text-foreground">{summary}</p>
               </div>
             )}
+            {database === "llmops" && (
+              <NewsletterStrip
+                brevo={BREVO_LLMOPS_CONFIG}
+                label={IN_PRODUCTION.stripLabel}
+                deck={IN_PRODUCTION.stripDeck}
+              />
+            )}
             {metadataItems.length > 0 && <LabsMetadataBlock items={metadataItems} />}
           </div>
         )}
@@ -246,7 +255,7 @@ if (tags.length > 0) {
     </div>
 
     <div data-pagefind-ignore>
-      <BlogNewsletterCta content={DATABASE_CTA} brevo={BREVO_LLMOPS_CONFIG} />
+      <BlogNewsletterCta content={DATABASE_CLOSE_CTA[database]} brevo={BREVO_LLMOPS_CONFIG} />
     </div>
   </div>
 </BaseLayout>

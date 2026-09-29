@@ -10,6 +10,7 @@
  */
 
 import { BLOG_CTA, type BlogCtaContent } from "./blog-cta";
+import { IN_PRODUCTION } from "./inProduction";
 
 export type DatabaseKey = "llmops" | "mlops";
 
@@ -91,22 +92,32 @@ export const DATABASE_TAG_CHIPS_VISIBLE = 9;
 export const DATABASE_ROW_CHIPS_VISIBLE = 3;
 
 /**
- * The closing band's copy on every database route. Headline and signup pill
- * are the blog's — same offer, same event — and only the newsletter card's
- * own two lines change.
- *
- * The card posts to BREVO_LLMOPS_CONFIG: there is no separate MLOps list in
- * this repo, so both databases subscribe to the LLMOps one. The visible copy
- * promises "both databases", which is what that list sends.
+ * The closing band's copy on every database route. Every form posts to
+ * BREVO_LLMOPS_CONFIG (the LLMOps signup list), which now receives In Production.
+ * MLOps-only routes get their own deck so nobody signs up there expecting
+ * MLOps case studies.
  */
 export const DATABASE_CTA: BlogCtaContent = {
   headlineLines: BLOG_CTA.headlineLines,
   cta: { ...BLOG_CTA.cta, analytics: "Database-Close-Signup-ZenML" },
   newsletter: {
     ...BLOG_CTA.newsletter,
-    title: "Get new entries in your inbox",
-    deck: "New case studies from both databases, sent when we publish. No spam.",
+    title: `Get ${IN_PRODUCTION.name}`,
+    deck: "Four LLMOps case studies in your inbox, every Tuesday and Thursday. No spam.",
   },
+};
+
+export const MLOPS_DATABASE_CTA: BlogCtaContent = {
+  ...DATABASE_CTA,
+  newsletter: {
+    ...DATABASE_CTA.newsletter,
+    deck: `${IN_PRODUCTION.name} sends four LLMOps case studies from our sister database, every Tuesday and Thursday. No spam.`,
+  },
+};
+
+export const DATABASE_CLOSE_CTA: Record<DatabaseKey, BlogCtaContent> = {
+  llmops: DATABASE_CTA,
+  mlops: MLOPS_DATABASE_CTA,
 };
 
 /** Comma-formatted, en-US — the one number format these routes use. */

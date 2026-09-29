@@ -13,7 +13,7 @@ import TermChipIndex from "../../components/labs/TermChipIndex.astro";
 import Breadcrumb from "../../components/system/Breadcrumb.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
-import { DATABASE_CTA, DATABASES } from "../../lib/databases";
+import { DATABASES, MLOPS_DATABASE_CTA } from "../../lib/databases";
 import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
 import type { TaxonomyCount } from "../../lib/mlops";
 import {
@@ -82,7 +82,7 @@ const tags = filterUsedTerms(merged).sort(
     </div>
   </section>
 
-  <BlogNewsletterCta content={DATABASE_CTA} brevo={BREVO_LLMOPS_CONFIG} />
+  <BlogNewsletterCta content={MLOPS_DATABASE_CTA} brevo={BREVO_LLMOPS_CONFIG} />
 </BaseLayout>
 
 <style>
