@@ -61,9 +61,11 @@ describe("renderEmail", () => {
         item("old", { origin: { kind: "archive", year: 2023 } }),
       ]),
     );
-    const eyebrows = [...html.matchAll(/<div style="border-top:1px solid #E9E4DC[^"]*">(.*?)<\/div>/g)].map((m) =>
-      m[1].replace(/<[^>]+>/g, ""),
-    );
+    const eyebrows = [
+      ...html.matchAll(
+        /<div style="border-top:1px solid #E9E4DC[^"]*">(.*?)<\/div>/g,
+      ),
+    ].map((m) => m[1].replace(/<[^>]+>/g, ""));
     expect(eyebrows).toEqual([
       "Legal · Harvey · Added 28 Sep",
       "From the archive · Legal · Harvey · 2023",

@@ -51,7 +51,11 @@ describe("parseEntry", () => {
   it("skips drafts, unreadable publishedAt dates, and entries without sections", () => {
     expect(parseEntry("x", raw(`${base}\ndraft: true`), industries)).toBeNull();
     expect(
-      parseEntry("x", raw(base.replace("2026-09-28T08:25:58Z", "soon")), industries),
+      parseEntry(
+        "x",
+        raw(base.replace("2026-09-28T08:25:58Z", "soon")),
+        industries,
+      ),
     ).toBeNull();
     expect(
       parseEntry("x", raw(base, "No headings at all."), industries),

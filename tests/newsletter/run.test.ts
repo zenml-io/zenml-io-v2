@@ -262,39 +262,70 @@ describe("widening and the archive item", () => {
   it("widens to 90 days before skipping", async () => {
     const f = fakes();
     // Three entries in the last 30 days, a fourth 80 days back (Jul 17).
-    const far = { ...entry("far", 1, "ind-far"), publishedAt: new Date(Date.UTC(2026, 6, 17)) };
-    const { outcome } = await runNewsletter(f.deps("dry-run", [...entries.slice(0, 3), far]));
+    const far = {
+      ...entry("far", 1, "ind-far"),
+      publishedAt: new Date(Date.UTC(2026, 6, 17)),
+    };
+    const { outcome } = await runNewsletter(
+      f.deps("dry-run", [...entries.slice(0, 3), far]),
+    );
     expect(outcome.kind).toBe("dry-run");
-    expect(outcome.kind === "dry-run" && outcome.items.map((i) => i.slug)).toEqual(["a", "b", "c", "far"]);
+    expect(
+      outcome.kind === "dry-run" && outcome.items.map((i) => i.slug),
+    ).toEqual(["a", "b", "c", "far"]);
     const tooFar = { ...far, publishedAt: new Date(Date.UTC(2026, 5, 30)) }; // 97 days back
-    const skipped = await runNewsletter(fakes().deps("dry-run", [...entries.slice(0, 3), tooFar]));
-    expect(skipped.outcome).toMatchObject({ kind: "skipped", reason: "only 3 eligible entries in the last 90 days" });
+    const skipped = await runNewsletter(
+      fakes().deps("dry-run", [...entries.slice(0, 3), tooFar]),
+    );
+    expect(skipped.outcome).toMatchObject({
+      kind: "skipped",
+      reason: "only 3 eligible entries in the last 90 days",
+    });
   });
   it("never adds an archive item on Tuesday", async () => {
     const f = fakes();
-    const { outcome } = await runNewsletter(f.deps("dry-run", [...entries, ...archive]));
-    expect(outcome.kind === "dry-run" && outcome.items.map((i) => i.slug)).toEqual(["a", "b", "c", "d"]);
+    const { outcome } = await runNewsletter(
+      f.deps("dry-run", [...entries, ...archive]),
+    );
+    expect(
+      outcome.kind === "dry-run" && outcome.items.map((i) => i.slug),
+    ).toEqual(["a", "b", "c", "d"]);
   });
   it("on Thursday, fills the last slot from the archive and renders it as such", async () => {
     const f = fakes();
-    const { outcome, html } = await runNewsletter({ ...f.deps("dry-run", [...entries, ...archive]), now: thursdayRun });
+    const { outcome, html } = await runNewsletter({
+      ...f.deps("dry-run", [...entries, ...archive]),
+      now: thursdayRun,
+    });
     if (outcome.kind !== "dry-run") throw new Error(outcome.kind);
-    expect(outcome.items.slice(0, 3).map((i) => i.slug)).toEqual(["a", "b", "c"]);
+    expect(outcome.items.slice(0, 3).map((i) => i.slug)).toEqual([
+      "a",
+      "b",
+      "c",
+    ]);
     expect(outcome.items[3]).toMatchObject({ archive: true });
     expect(["old1", "old2", "old3"]).toContain(outcome.items[3].slug);
-    expect(outcome.notes[0]).toMatch(/^From the archive: old\d, candidate 1 in the seeded order for 2026-10-08/);
+    expect(outcome.notes[0]).toMatch(
+      /^From the archive: old\d, candidate 1 in the seeded order for 2026-10-08/,
+    );
     expect(html).toContain("From the archive");
     expect(html).toContain("2023");
   });
   it("picks the same archive entry on a re-run, and never one already sent", async () => {
     const run = async (campaigns: CampaignSummary[] = []) => {
-      const { outcome } = await runNewsletter({ ...fakes(campaigns).deps("dry-run", [...entries, ...archive]), now: thursdayRun });
+      const { outcome } = await runNewsletter({
+        ...fakes(campaigns).deps("dry-run", [...entries, ...archive]),
+        now: thursdayRun,
+      });
       return outcome.kind === "dry-run" ? outcome.items[3].slug : null;
     };
     const first = await run();
     expect(await run()).toBe(first);
     const sent: CampaignSummary = {
-      id: 1, name: "In Production #1 — Tue 6 Oct 2026", status: "sent", scheduledAt: null,
+      id: 1,
+      name: "In Production #1 — Tue 6 Oct 2026",
+      status: "sent",
+      scheduledAt: null,
       htmlContent: `<a href="https://www.zenml.io/llmops-database/${first}">x</a>`,
     };
     const second = await run([sent]);
@@ -304,14 +335,22 @@ describe("widening and the archive item", () => {
   it("skips archive entries below the archive floor or sharing an industry with the recent picks", async () => {
     const f = fakes([], { thin: ["old1"] });
     const pool = [...entries, archived("old1"), archived("old2", "ind-a")];
-    const { outcome } = await runNewsletter({ ...f.deps("dry-run", pool), now: thursdayRun });
+    const { outcome } = await runNewsletter({
+      ...f.deps("dry-run", pool),
+      now: thursdayRun,
+    });
     if (outcome.kind !== "dry-run") throw new Error(outcome.kind);
     expect(outcome.items.map((i) => i.slug)).toEqual(["a", "b", "c", "d"]);
-    expect(outcome.notes).toEqual(["No archive entry qualified for this issue, so it carries four recent entries."]);
+    expect(outcome.notes).toEqual([
+      "No archive entry qualified for this issue, so it carries four recent entries.",
+    ]);
   });
   it("ships a Thursday issue from three recent entries plus the archive", async () => {
     const f = fakes();
-    const { outcome } = await runNewsletter({ ...f.deps("dry-run", [...entries.slice(0, 3), ...archive]), now: thursdayRun });
+    const { outcome } = await runNewsletter({
+      ...f.deps("dry-run", [...entries.slice(0, 3), ...archive]),
+      now: thursdayRun,
+    });
     expect(outcome.kind === "dry-run" && outcome.items.length).toBe(4);
   });
 });
