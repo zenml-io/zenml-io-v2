@@ -13,7 +13,7 @@ const MAX_WORDS = 55;
 
 const SYSTEM = `You write two-sentence blurbs for "In Production", a newsletter of real-world LLMOps case studies. Readers are engineers who want to know what a team built and what they learned, so they can borrow the idea.
 Rules:
-- Exactly 2 sentences. Hard cap: at most 45 words in total (aim for about 40). Sentence 1: at most 20 words. Sentence 2: at most 25 words. Count before you answer.
+- Exactly 2 sentences. Aim for at most 45 words in total (about 40 is ideal). Sentence 1: at most 20 words. Sentence 2: at most 25 words. Count before you answer.
 - Sentence 1: what was built, technically. Name the architecture, technique or concrete moving parts (e.g. which components call which, what is retrieved, what is checked, where it runs). Take it from the section that describes the system or architecture, not the overview, when there is one.
 - Technical sentences are easy to get wrong. Name at most three components, and describe how they connect (order, routing, data flow) only as the named section states it. Do not infer a step or a link the section does not spell out.
 - Sentence 2: the most interesting technical detail, design trade-off, failure mode or lesson: something another engineering team could learn or reuse. Only state a trade-off, cause or lesson if the named section says so; otherwise use its most concrete stated technical detail.
@@ -30,6 +30,23 @@ const HOOK_RULE = `\n- Also write "hook": 3 to 7 plain words naming the technica
 const EXAMPLE = (withHook: boolean) => `\n\nIllustrative only, about a made-up company: never reuse its words, names or numbers.
 1. "A camera feeds each teapot to a small vision model, then Acme Kettle Co.'s rules engine picks its bin." (section: Sorting architecture)
 2. "Glossy glaze fooled the model under workshop lights, so the team added a polarising filter instead of retraining." (section: Lessons learned)${withHook ? '\nhook: "Vision model plus rules sorts teapots"' : ""}`;
+
+const HOOK_MIN_WORDS = 3;
+const HOOK_MAX_WORDS = 8;
+const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const hasWord = (text: string, term: string) => new RegExp(`(^|[^a-z0-9])${escapeRe(term)}([^a-z0-9]|$)`).test(text);
+
+/** The subject hook if it is 3-8 words, has no digits and does not name the company; otherwise null (use the title subject). */
+export function usableHook(hook: string | null | undefined, entry: Pick<Entry, "company">): string | null {
+  const h = hook?.trim();
+  if (!h) return null;
+  const count = h.split(/\s+/).length;
+  if (count < HOOK_MIN_WORDS || count > HOOK_MAX_WORDS || /\d/.test(h)) return null;
+  const lower = h.toLowerCase();
+  const parts = (entry.company ?? "").toLowerCase().split(/[/,]/).map((p) => p.trim()).filter(Boolean);
+  const terms = parts.flatMap((p) => [p, ...p.split(/\s+/).filter((w) => w.length >= 3)]);
+  return terms.some((t) => hasWord(lower, t)) ? null : h;
+}
 
 export function buildWriterPrompt(entry: Entry, o: { withHook: boolean; feedback?: string }) {
   const body = entry.sections.map((s) => `## ${s.heading}\n\n${s.text}`).join("\n\n");

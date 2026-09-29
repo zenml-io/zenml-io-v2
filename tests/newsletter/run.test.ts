@@ -3,8 +3,16 @@ import type { BrevoApi, NewCampaign } from "../../scripts/newsletter/brevo";
 import type { Entry } from "../../scripts/newsletter/entries";
 import type { CampaignSummary } from "../../scripts/newsletter/history";
 import type { JevLike } from "../../scripts/newsletter/quality";
-import { type RunDeps, runNewsletter } from "../../scripts/newsletter/run";
-import { type Writer, WriterOutputError } from "../../scripts/newsletter/write";
+import {
+  parseListId,
+  type RunDeps,
+  runNewsletter,
+} from "../../scripts/newsletter/run";
+import {
+  usableHook,
+  type Writer,
+  WriterOutputError,
+} from "../../scripts/newsletter/write";
 
 const now = new Date("2026-10-05T16:00:00Z"); // Monday → Tue 6 Oct 07:00Z
 const entry = (slug: string, day: number, industry: string): Entry => ({
@@ -61,7 +69,7 @@ function fakes(
       if (opts.writerDown) throw new Error("401 invalid api key");
       if (e.slug === opts.throwFor) throw new WriterOutputError("bad JSON");
       return {
-        hook: "a hook",
+        hook: "routes queries through cache",
         sentences: [
           { text: `${e.slug} built it.`, section: "Overview" },
           { text: "It worked.", section: "Results" },
@@ -120,7 +128,9 @@ describe("runNewsletter", () => {
       { id: 101, at: new Date("2026-10-06T07:00:00.000Z") },
     ]);
     expect(f.created[0].name).toBe("In Production #1 — Tue 6 Oct 2026");
-    expect(f.created[0].subject).toBe("In Production #1: a's a hook");
+    expect(f.created[0].subject).toBe(
+      "In Production #1: a's routes queries through cache",
+    );
     expect(f.tests).toEqual([101]);
     expect(f.reports).toHaveLength(1);
   });
@@ -221,5 +231,45 @@ describe("runNewsletter", () => {
     expect(f.created).toHaveLength(0);
     expect(f.tests).toHaveLength(0);
     expect(f.reports).toHaveLength(0);
+  });
+});
+
+describe("parseListId", () => {
+  it("returns a positive integer", () => {
+    expect(parseListId({ NEWSLETTER_LIST_ID: " 12 " })).toBe(12);
+  });
+  it.each([undefined, "", "0", "-3", "abc", "1.5"])("rejects %j", (v) => {
+    expect(() => parseListId({ NEWSLETTER_LIST_ID: v })).toThrow(
+      "NEWSLETTER_LIST_ID must be set to the Brevo list id",
+    );
+  });
+});
+
+describe("usableHook", () => {
+  const e = { company: "OpenAI / Hertz Global / Databricks" };
+  it("keeps a good hook", () => {
+    expect(usableHook("  Vision model plus rules  ", e)).toBe(
+      "Vision model plus rules",
+    );
+  });
+  it.each([
+    ["too long", "one two three four five six seven eight nine"],
+    ["too short", "two words"],
+    ["has digits", "Routing across 3 models"],
+    ["names the company", "Databricks routes queries smartly"],
+    ["names one word of a multi-part company", "How hertz caches results"],
+    ["empty", "   "],
+  ])("rejects a hook that is %s", (_n, hook) => {
+    expect(usableHook(hook, e)).toBeNull();
+  });
+  it("falls back to the title subject in a run", async () => {
+    const f = fakes();
+    const deps = f.deps();
+    const base = deps.writer.write;
+    deps.writer = {
+      write: async (en, o) => ({ ...(await base(en, o)), hook: "a 1 b c" }),
+    };
+    await runNewsletter(deps);
+    expect(f.created[0].subject).toBe("In Production #1: T a");
   });
 });

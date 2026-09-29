@@ -11,7 +11,7 @@ import { entryUrl, type IssueItem, PREHEADER, renderEmail } from "./render";
 import { type ReportItem, type RunOutcome, renderReport } from "./report";
 import { formatIssueDate, nextSendSlot } from "./schedule";
 import { buildPool, pickIssue } from "./select";
-import { blurbText, createOpenAIWriter, type Writer, type Written, WriterOutputError, writtenProblems } from "./write";
+import { blurbText, createOpenAIWriter, usableHook, type Writer, type Written, WriterOutputError, writtenProblems } from "./write";
 
 export type Mode = "schedule" | "test-only" | "dry-run";
 export interface RunDeps {
@@ -107,7 +107,7 @@ export async function runNewsletter(d: RunDeps): Promise<{ outcome: RunOutcome; 
   const written = await Promise.all(picks.map((e, i) => writeItem(d, e, i === 0)));
   const number = nextIssueNumber(campaigns);
   const lead = picks[0];
-  const hook = written[0].hook;
+  const hook = usableHook(written[0].hook, lead);
   const subject = hook ? `In Production #${number}: ${lead.company ?? lead.title}'s ${hook}` : `In Production #${number}: ${lead.title}`;
   const items: IssueItem[] = picks.map((e, i) => ({
     slug: e.slug, title: e.title, company: e.company, industry: e.industry, addedOn: e.publishedAt,
@@ -135,13 +135,22 @@ export async function runNewsletter(d: RunDeps): Promise<{ outcome: RunOutcome; 
 
 const DRY_BREVO: BrevoApi = { listCampaigns: async () => [], createCampaign: async () => 0, sendTest: async () => {}, scheduleCampaign: async () => {}, sendReport: async () => {} };
 
+/** The Brevo list id comes from the NEWSLETTER_LIST_ID repository variable, so no list id lives in source. */
+export function parseListId(env: Record<string, string | undefined>): number {
+  const raw = env.NEWSLETTER_LIST_ID?.trim() ?? "";
+  const id = /^\d+$/.test(raw) ? Number(raw) : 0;
+  if (!Number.isSafeInteger(id) || id <= 0) throw new Error("NEWSLETTER_LIST_ID must be set to the Brevo list id");
+  return id;
+}
+
 async function main() {
   const mode = (process.argv.find((a) => a.startsWith("--mode="))?.split("=")[1] ?? "dry-run") as Mode;
   if (!["schedule", "test-only", "dry-run"].includes(mode)) throw new Error(`unknown mode ${mode}`);
   const brevoKey = process.env.BREVO_API_KEY;
   if (mode !== "dry-run" && !brevoKey) throw new Error("BREVO_API_KEY is required");
+  if (mode !== "dry-run") parseListId(process.env);
   // Dry-run only lists campaigns when a key exists; every write method is a no-op in dry-run mode.
-  const brevo = brevoKey ? createBrevoApi(brevoKey) : DRY_BREVO;
+  const brevo = brevoKey ? createBrevoApi(brevoKey, mode === "dry-run" ? 0 : parseListId(process.env)) : DRY_BREVO;
   const { outcome, html } = await runNewsletter({
     now: new Date(), mode, entries: loadEntries(), brevo,
     writer: createOpenAIWriter(new OpenAI()), jev: new TypeSafeClient() as unknown as JevLike,

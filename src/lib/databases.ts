@@ -93,7 +93,7 @@ export const DATABASE_ROW_CHIPS_VISIBLE = 3;
 
 /**
  * The closing band's copy on every database route. Every form posts to
- * BREVO_LLMOPS_CONFIG (Brevo list #9), which now receives In Production.
+ * BREVO_LLMOPS_CONFIG (the LLMOps signup list), which now receives In Production.
  * MLOps-only routes get their own deck so nobody signs up there expecting
  * MLOps case studies.
  */

@@ -218,6 +218,7 @@ Important rules:
 - `pnpm newsletter:run` builds and schedules the twice-weekly In Production email (four LLMOps Database case studies, Tue and Thu 09:00 Europe/Amsterdam). Operator guide: [docs/in-production-newsletter.md](docs/in-production-newsletter.md).
 - Code lives in `scripts/newsletter/` (tests in `tests/newsletter/`); the workflow is `.github/workflows/newsletter.yml`.
 - Timer runs do nothing until the repository variable `NEWSLETTER_LIVE` is `true`; manual dispatch defaults to `test-only`.
+- The repository variable `NEWSLETTER_LIST_ID` holds the Brevo id of the LLMOps signup list; `test-only` and `schedule` runs fail without it (dry-run does not need it).
 - Preview locally with `pnpm newsletter:preview` (a dry run: no Brevo writes; needs the keys in `.env`).
 - Never trigger schedule mode or send anything to the list without explicit authorization. Do not print or copy secret values.
 

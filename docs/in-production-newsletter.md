@@ -53,6 +53,8 @@ The workflow is `.github/workflows/newsletter.yml`.
 
 Secrets the workflow reads (names only): `BREVO_API_KEY`, `OPENAI_API_KEY`, `TYPESAFE_API_KEY`.
 
+The Brevo list to send to is the repository variable `NEWSLETTER_LIST_ID`, the id of the LLMOps signup list. It lives in repository settings, not in source. `test-only` and `schedule` runs stop with an error if it is missing or not a positive integer; `dry-run` does not need it.
+
 ## Local preview
 
 Put the three keys in the repo's `.env`, then run `pnpm newsletter:preview`. It runs a dry run: it reads Brevo campaigns if a Brevo key exists, calls OpenAI and Jev, writes nothing to Brevo, and prints where it saved the rendered HTML. Open that file in a browser.

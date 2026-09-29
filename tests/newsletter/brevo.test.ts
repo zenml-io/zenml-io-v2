@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createBrevoApi, LIST_ID } from "../../scripts/newsletter/brevo";
+import { createBrevoApi } from "../../scripts/newsletter/brevo";
 
 function fakeFetch(responses: unknown[]) {
   const calls: { url: string; init: RequestInit }[] = [];
@@ -15,7 +15,7 @@ function fakeFetch(responses: unknown[]) {
 describe("createBrevoApi", () => {
   it("creates a draft campaign for the LLMOps list with the ZenML sender", async () => {
     const { f, calls } = fakeFetch([{ id: 42 }]);
-    const id = await createBrevoApi("k", f).createCampaign({
+    const id = await createBrevoApi("k", 777, f).createCampaign({
       name: "In Production #1 — x",
       subject: "s",
       previewText: "p",
@@ -30,13 +30,13 @@ describe("createBrevoApi", () => {
     expect(body).toMatchObject({
       sender: { name: "ZenML", email: "hello@zenml.io" },
       replyTo: "hello@zenml.io",
-      recipients: { listIds: [LIST_ID] },
+      recipients: { listIds: [777] },
     });
     expect(body).not.toHaveProperty("scheduledAt");
   });
   it("schedules an existing campaign with a PUT carrying scheduledAt", async () => {
     const { f, calls } = fakeFetch([]);
-    await createBrevoApi("k", f).scheduleCampaign(
+    await createBrevoApi("k", 777, f).scheduleCampaign(
       42,
       new Date("2026-10-06T07:00:00Z"),
     );
@@ -49,9 +49,9 @@ describe("createBrevoApi", () => {
   it("throws with the response body on a non-2xx", async () => {
     const f = (async () =>
       new Response("bad key", { status: 401 })) as unknown as typeof fetch;
-    await expect(createBrevoApi("k", f).sendTest(1, ["a@b.c"])).rejects.toThrow(
-      /401.*bad key/,
-    );
+    await expect(
+      createBrevoApi("k", 777, f).sendTest(1, ["a@b.c"]),
+    ).rejects.toThrow(/401.*bad key/);
   });
   it("pages through campaigns and keeps htmlContent from the list response", async () => {
     const full = Array.from({ length: 100 }, (_, i) => ({
@@ -74,7 +74,7 @@ describe("createBrevoApi", () => {
         ],
       },
     ]);
-    const out = await createBrevoApi("k", f).listCampaigns();
+    const out = await createBrevoApi("k", 777, f).listCampaigns();
     expect(out).toHaveLength(101);
     expect(out[100]).toMatchObject({
       id: 200,
@@ -99,7 +99,7 @@ describe("createBrevoApi", () => {
       page(50),
       { count: 120, campaigns: page(100).campaigns.slice(0, 20) },
     ]);
-    const out = await createBrevoApi("k", f).listCampaigns();
+    const out = await createBrevoApi("k", 777, f).listCampaigns();
     expect(out).toHaveLength(120);
     expect(calls.map((x) => x.url.match(/offset=(\d+)/)?.[1])).toEqual([
       "0",

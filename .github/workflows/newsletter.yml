@@ -44,4 +44,5 @@ jobs:
           BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+          NEWSLETTER_LIST_ID: ${{ vars.NEWSLETTER_LIST_ID }}
         run: pnpm newsletter:run --mode="$MODE"
