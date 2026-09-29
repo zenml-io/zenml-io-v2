@@ -1,7 +1,11 @@
 export interface CampaignSummary { id: number; name: string; status: string; scheduledAt: string | null; htmlContent: string }
 export const CAMPAIGN_PREFIX = "In Production #";
 /** Brevo statuses that mean "went out or will go out". Verified against the live API in Task 8 step 1. */
-export const COUNTED_STATUSES: ReadonlySet<string> = new Set(["sent", "queued", "in_process", "inProcess", "archive"]);
+// Verified against https://developers.brevo.com/reference/getemailcampaigns-1: the status enum is
+// draft, sent, archive, queued, suspended, in_process, in_review, cancelling, cancelled.
+// A scheduled campaign is `queued`; cancelled/suspended/draft ones are deliberately not counted.
+// The docs never list a camelCase `inProcess`, so it is not accepted.
+export const COUNTED_STATUSES: ReadonlySet<string> = new Set(["sent", "queued", "in_process", "archive"]);
 const SCHEDULED_STATUSES = new Set(["queued"]);
 const SLUG = /https:\/\/www\.zenml\.io\/llmops-database\/([a-z0-9-]+)/g;
 

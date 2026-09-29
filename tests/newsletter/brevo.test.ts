@@ -1,0 +1,89 @@
+import { describe, expect, it } from "vitest";
+import { createBrevoApi, LIST_ID } from "../../scripts/newsletter/brevo";
+
+function fakeFetch(responses: unknown[]) {
+  const calls: { url: string; init: RequestInit }[] = [];
+  const f = (async (url: string, init: RequestInit) => {
+    calls.push({ url, init });
+    return new Response(JSON.stringify(responses.shift() ?? {}), {
+      status: 201,
+    });
+  }) as unknown as typeof fetch;
+  return { f, calls };
+}
+
+describe("createBrevoApi", () => {
+  it("creates a scheduled campaign for the LLMOps list with the ZenML sender", async () => {
+    const { f, calls } = fakeFetch([{ id: 42 }]);
+    const id = await createBrevoApi("k", f).createCampaign({
+      name: "In Production #1 — x",
+      subject: "s",
+      previewText: "p",
+      htmlContent: "<p>",
+      scheduledAt: new Date("2026-10-06T07:00:00Z"),
+    });
+    expect(id).toBe(42);
+    const body = JSON.parse(String(calls[0].init.body));
+    expect(calls[0].url).toBe("https://api.brevo.com/v3/emailCampaigns");
+    expect((calls[0].init.headers as Record<string, string>)["api-key"]).toBe(
+      "k",
+    );
+    expect(body).toMatchObject({
+      sender: { name: "ZenML", email: "hello@zenml.io" },
+      replyTo: "hello@zenml.io",
+      recipients: { listIds: [LIST_ID] },
+      scheduledAt: "2026-10-06T07:00:00.000Z",
+    });
+  });
+  it("omits scheduledAt for a draft", async () => {
+    const { f, calls } = fakeFetch([{ id: 1 }]);
+    await createBrevoApi("k", f).createCampaign({
+      name: "n",
+      subject: "s",
+      previewText: "p",
+      htmlContent: "h",
+      scheduledAt: null,
+    });
+    expect(JSON.parse(String(calls[0].init.body))).not.toHaveProperty(
+      "scheduledAt",
+    );
+  });
+  it("throws with the response body on a non-2xx", async () => {
+    const f = (async () =>
+      new Response("bad key", { status: 401 })) as unknown as typeof fetch;
+    await expect(createBrevoApi("k", f).sendTest(1, ["a@b.c"])).rejects.toThrow(
+      /401.*bad key/,
+    );
+  });
+  it("pages through campaigns and keeps htmlContent from the list response", async () => {
+    const full = Array.from({ length: 100 }, (_, i) => ({
+      id: i,
+      name: `c${i}`,
+      status: "sent",
+      htmlContent: "<p>x</p>",
+    }));
+    const { f, calls } = fakeFetch([
+      { campaigns: full },
+      {
+        campaigns: [
+          {
+            id: 200,
+            name: "last",
+            status: "queued",
+            scheduledAt: "2026-10-06T07:00:00Z",
+            htmlContent: "<p>y</p>",
+          },
+        ],
+      },
+    ]);
+    const out = await createBrevoApi("k", f).listCampaigns();
+    expect(out).toHaveLength(101);
+    expect(out[100]).toMatchObject({
+      id: 200,
+      scheduledAt: "2026-10-06T07:00:00Z",
+      htmlContent: "<p>y</p>",
+    });
+    expect(calls[1].url).toContain("offset=100");
+    expect(calls).toHaveLength(2);
+  });
+});
