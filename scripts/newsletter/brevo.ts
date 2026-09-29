@@ -34,12 +34,15 @@ export function createBrevoApi(apiKey: string, fetchImpl: typeof fetch = fetch):
   }
   return {
     async listCampaigns() {
+      // Brevo may cap `limit` below PAGE_SIZE, so a short page does not mean the last page. Advance by what
+      // actually arrived; stop on an empty page or once the response's `count` total is reached.
       const out: CampaignSummary[] = [];
-      for (let offset = 0; ; offset += PAGE_SIZE) {
-        const page = await call<{ campaigns?: CampaignSummary[] }>(`/emailCampaigns?type=classic&limit=${PAGE_SIZE}&offset=${offset}`);
+      for (;;) {
+        const page = await call<{ campaigns?: CampaignSummary[]; count?: number }>(`/emailCampaigns?type=classic&limit=${PAGE_SIZE}&offset=${out.length}`);
         const campaigns = page.campaigns ?? [];
+        if (campaigns.length === 0) return out;
         out.push(...campaigns.map((c) => ({ id: c.id, name: c.name, status: c.status, scheduledAt: c.scheduledAt ?? null, htmlContent: c.htmlContent ?? "" })));
-        if (campaigns.length < PAGE_SIZE) return out;
+        if (typeof page.count === "number" && out.length >= page.count) return out;
       }
     },
     async createCampaign(c) {

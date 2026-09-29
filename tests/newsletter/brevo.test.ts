@@ -84,6 +84,29 @@ describe("createBrevoApi", () => {
       htmlContent: "<p>y</p>",
     });
     expect(calls[1].url).toContain("offset=100");
-    expect(calls).toHaveLength(2);
+    expect(calls).toHaveLength(3);
+  });
+  it("keeps paging when the server caps pages below the limit, using count", async () => {
+    const page = (from: number) => ({
+      count: 120,
+      campaigns: Array.from({ length: 50 }, (_, i) => ({
+        id: from + i,
+        name: `c${from + i}`,
+        status: "sent",
+        htmlContent: "h",
+      })),
+    });
+    const { f, calls } = fakeFetch([
+      page(0),
+      page(50),
+      { count: 120, campaigns: page(100).campaigns.slice(0, 20) },
+    ]);
+    const out = await createBrevoApi("k", f).listCampaigns();
+    expect(out).toHaveLength(120);
+    expect(calls.map((x) => x.url.match(/offset=(\d+)/)?.[1])).toEqual([
+      "0",
+      "50",
+      "100",
+    ]);
   });
 });

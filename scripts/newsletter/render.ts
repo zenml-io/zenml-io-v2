@@ -22,10 +22,10 @@ export const PREHEADER = "Four real-world LLMOps case studies, every Tuesday and
 export const LOGO_URL = `${ASSET_BASE_URL}/content/newsletter/zenml-labs-lockup-cream@2x.png`;
 export const entryUrl = (slug: string) => `https://www.zenml.io/llmops-database/${slug}`;
 /** Brevo merge tags; confirmed against Brevo docs in Task 8 step 1. */
-// Verified (help.brevo.com/hc/en-us/articles/209553645, community.brevo.com/t/4592): `{{ unsubscribe }}` is the
+// Confirmed from Brevo docs/community pages, not the live API (help.brevo.com/hc/en-us/articles/209553645, community.brevo.com/t/4592): `{{ unsubscribe }}` is the
 // Liquid tag for API/HTML campaigns (`[UNSUBSCRIBE]` is the legacy editor). Brevo blocks saving a campaign without it.
-// Postal address: Brevo's footer address comes from Account Settings > My Company Info (search result, not an API doc);
-// this footer has no address line, so confirm that setting is filled in.
+// Postal address: not confirmed by the API docs. It appears to depend on Brevo account settings (Account Settings >
+// My Company Info); this footer has no address line, so check that setting is filled in.
 export const BREVO_UNSUBSCRIBE = "{{ unsubscribe }}";
 
 const C = {

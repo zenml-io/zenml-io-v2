@@ -53,3 +53,14 @@ describe("history", () => {
     ).toBeUndefined();
   });
 });
+
+describe("in_review campaigns", () => {
+  const cs = [c(5, "in_review", link("r"), "2026-10-08T07:00:00Z")];
+  it("counts as sent", () => {
+    expect([...sentSlugs(cs)]).toEqual(["r"]);
+    expect(nextIssueNumber(cs)).toBe(6);
+  });
+  it("occupies its slot", () => {
+    expect(campaignForSlot(cs, new Date("2026-10-08T07:00:00Z"))?.id).toBe(5);
+  });
+});
