@@ -17,6 +17,7 @@ const entry: Entry = {
   summary: "s",
   link: null,
   publishedAt: new Date(),
+  year: null,
   sections: [
     { heading: "Overview", text: "Harvey built X." },
     { heading: "Results and tradeoffs", text: "53% to 87%." },

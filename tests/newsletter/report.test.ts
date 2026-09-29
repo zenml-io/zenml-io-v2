@@ -23,9 +23,11 @@ describe("renderReport", () => {
           worth: worth("a"),
           blurb: null,
           fallback: true,
+          archive: false,
         },
       ],
       removed: [worth("thin", false)],
+      notes: [],
     });
     expect(r?.subject).toBe(
       "In Production #7 scheduled for Tue 6 Oct 2026 09:00",

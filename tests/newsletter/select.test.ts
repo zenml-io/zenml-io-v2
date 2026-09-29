@@ -1,13 +1,19 @@
 import { describe, expect, it } from "vitest";
 import type { Entry } from "../../scripts/newsletter/entries";
-import { buildPool, pickIssue } from "../../scripts/newsletter/select";
+import {
+  archiveOrder,
+  buildArchivePool,
+  buildPool,
+  type DatedEntry,
+  pickIssue,
+} from "../../scripts/newsletter/select";
 
 const e = (
   slug: string,
   day: number,
   industry: string | null,
   company: string | null,
-): Entry => ({
+): DatedEntry => ({
   slug,
   title: slug,
   company,
@@ -15,6 +21,7 @@ const e = (
   summary: "",
   link: null,
   publishedAt: new Date(Date.UTC(2026, 8, day, 8)),
+  year: null,
   sections: [{ heading: "Overview", text: "x" }],
 });
 const now = new Date("2026-09-29T16:00:00Z");
@@ -79,5 +86,36 @@ describe("pickIssue", () => {
         (x) => x.slug,
       ),
     ).toEqual(["a"]);
+  });
+});
+
+describe("buildArchivePool", () => {
+  const migrated: Entry = { ...e("m", 1, "Tech", "M"), publishedAt: null, year: 2023 };
+  it("keeps unsent migrated entries and native entries older than the recent window", () => {
+    const entries = [
+      migrated,
+      { ...migrated, slug: "m-sent" },
+      e("recent", 28, "Tech", "R"),
+      { ...e("aged", 1, "Tech", "A"), publishedAt: new Date("2026-05-01T08:00:00Z") },
+    ];
+    expect(
+      buildArchivePool(entries, {
+        now,
+        recentWindowDays: 90,
+        exclude: new Set(["m-sent"]),
+      }).map((x) => x.slug),
+    ).toEqual(["m", "aged"]);
+  });
+});
+
+describe("archiveOrder", () => {
+  const pool = ["a", "b", "c", "d", "e", "f"].map((s) => e(s, 1, null, s));
+  const slugs = (seed: string) => archiveOrder(pool, seed).map((x) => x.slug);
+  it("is the same for the same seed, whatever the input order", () => {
+    expect(archiveOrder([...pool].reverse(), "2026-10-08").map((x) => x.slug)).toEqual(slugs("2026-10-08"));
+    expect([...slugs("2026-10-08")].sort()).toEqual(["a", "b", "c", "d", "e", "f"]);
+  });
+  it("changes with the seed", () => {
+    expect(slugs("2026-10-08")).not.toEqual(slugs("2026-10-15"));
   });
 });

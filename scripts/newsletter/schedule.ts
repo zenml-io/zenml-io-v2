@@ -1,5 +1,6 @@
 export const TIME_ZONE = "Europe/Amsterdam";
 const SEND_WEEKDAYS = new Set([2, 4]); // Tue, Thu
+const ARCHIVE_WEEKDAY = 4; // Thu: this issue carries one "From the archive" item
 const SEND_HOUR = 9;
 
 const partsFmt = new Intl.DateTimeFormat("en-US", {
@@ -28,6 +29,12 @@ export function nextSendSlot(now: Date, minLeadHours = 12): Date {
     if (candidate.getTime() - now.getTime() >= minLeadHours * 3_600_000) return candidate;
   }
   throw new Error("no send slot within 14 days");
+}
+
+/** Whether the issue sent at `slot` carries the weekly archive item (weekday taken in Amsterdam time). */
+export function isArchiveSlot(slot: Date): boolean {
+  const z = zoned(slot);
+  return new Date(Date.UTC(z.y, z.m - 1, z.d)).getUTCDay() === ARCHIVE_WEEKDAY;
 }
 
 const fmt = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat("en-US", { timeZone: TIME_ZONE, ...o });

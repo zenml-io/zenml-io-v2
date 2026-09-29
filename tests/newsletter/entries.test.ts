@@ -42,20 +42,28 @@ describe("parseEntry", () => {
       industry: "Legal",
       link: "https://www.harvey.ai/blog/x",
     });
-    expect(e?.publishedAt.toISOString()).toBe("2026-09-28T08:25:58.000Z");
+    expect(e?.publishedAt?.toISOString()).toBe("2026-09-28T08:25:58.000Z");
     expect(e?.sections.map((s) => s.heading)).toEqual([
       "Overview",
       "Results and tradeoffs",
     ]);
   });
-  it("skips drafts, entries without publishedAt, and entries without sections", () => {
+  it("skips drafts, unreadable publishedAt dates, and entries without sections", () => {
     expect(parseEntry("x", raw(`${base}\ndraft: true`), industries)).toBeNull();
     expect(
-      parseEntry("x", raw(base.replace(/notion:[\s\S]*/, "")), industries),
+      parseEntry("x", raw(base.replace("2026-09-28T08:25:58Z", "soon")), industries),
     ).toBeNull();
     expect(
       parseEntry("x", raw(base, "No headings at all."), industries),
     ).toBeNull();
+  });
+  it("keeps a migrated entry without publishedAt, with its year", () => {
+    const e = parseEntry(
+      "x",
+      raw(`${base.replace(/notion:[\s\S]*/, "")}year: 2023`),
+      industries,
+    );
+    expect(e).toMatchObject({ publishedAt: null, year: 2023 });
   });
   it("tolerates a missing link and unknown industry", () => {
     const e = parseEntry(

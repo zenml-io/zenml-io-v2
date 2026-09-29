@@ -3,9 +3,9 @@ import type { BlurbVerdict, WorthVerdict } from "./quality";
 import { escapeHtml } from "./render";
 import { formatIssueDate } from "./schedule";
 
-export interface ReportItem { slug: string; title: string; worth: WorthVerdict; blurb: BlurbVerdict | null; fallback: boolean }
+export interface ReportItem { slug: string; title: string; worth: WorthVerdict; blurb: BlurbVerdict | null; fallback: boolean; archive: boolean }
 export type RunOutcome =
-  | { kind: "scheduled" | "test-only" | "dry-run"; issueNumber: number; sendAt: Date; campaignId: number | null; items: ReportItem[]; removed: WorthVerdict[] }
+  | { kind: "scheduled" | "test-only" | "dry-run"; issueNumber: number; sendAt: Date; campaignId: number | null; items: ReportItem[]; removed: WorthVerdict[]; notes: string[] }
   | { kind: "skipped"; reason: string; removed: WorthVerdict[] }
   | { kind: "already-scheduled"; campaignId: number };
 
@@ -22,7 +22,7 @@ export function renderReport(o: RunOutcome): { subject: string; html: string } |
   const when = `${formatIssueDate(o.sendAt)} 09:00`;
   const verb = { scheduled: "scheduled for", "test-only": "drafted (not scheduled) for", "dry-run": "dry run for" }[o.kind];
   const link = o.campaignId === null ? "" : `<p><a href="${campaignUrl(o.campaignId)}">Open in Brevo to cancel or edit</a> before ${when} Amsterdam time.</p>`;
-  const items = o.items.map((it) => `<li><strong>${escapeHtml(it.title)}</strong>${it.fallback ? " — ⚠ fallback summary" : ""}<br>${worthLine(it.worth)}${
+  const items = o.items.map((it) => `<li><strong>${escapeHtml(it.title)}</strong>${it.archive ? " (from the archive)" : ""}${it.fallback ? " — ⚠ fallback summary" : ""}<br>${worthLine(it.worth)}${
     it.blurb ? `<br>faithfulness: ${it.blurb.sentences.map((s) => `${s.relation} ${pct(s.confidence)}`).join(", ")} · tone ${pct(it.blurb.tone)}` : ""}</li>`).join("");
-  return { subject: `In Production #${o.issueNumber} ${verb} ${when}`, html: `${link}<ol>${items}</ol>${removedList(o.removed)}` };
+  return { subject: `In Production #${o.issueNumber} ${verb} ${when}`, html: `${link}${o.notes.map((n) => `<p>${escapeHtml(n)}</p>`).join("")}<ol>${items}</ol>${removedList(o.removed)}` };
 }

@@ -6,6 +6,10 @@ import { blurbText, sectionFor, type Written } from "./write";
 export const JEV_MODEL = "jev-1.13.0";
 // Thresholds checked against a hand-labelled sample of 30 recent entries (Sep 2026).
 export const WORTH_FLOOR = 0.5;
+// Stricter bar for the weekly archive item: older migrated entries vary more. 0.65 needs both answers at level 2 of
+// 0-3 or better on average (e.g. deployed with qualitative outcomes, and describes the approach). Not yet checked
+// against a labelled sample of archive entries.
+export const ARCHIVE_WORTH_FLOOR = 0.65;
 export const SUPPORT_CONFIDENCE_MIN = 0.8;
 export const TONE_MAX = 0.75;
 
