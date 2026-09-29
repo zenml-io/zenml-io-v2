@@ -31,7 +31,7 @@ export type LabsProduct = "zenml" | "kitaru";
 export const LABS_HOME_SEO = {
   title: "ZenML Labs: The autonomous AI engineer for your agents and models",
   description:
-    "The world's first autonomous AI engineer for AI in production. Think Devin, but it takes care of your agents and models: it finds what's wrong in your runs and traces, fixes it and proves the change, on your own infrastructure. Built on ZenML and Kitaru, both open source.",
+    "An autonomous AI engineer for AI in production. Think Devin, but it takes care of your agents and models: it finds what's wrong in your runs and traces, fixes it and proves the change, on your own infrastructure. Built on ZenML and Kitaru, both open source.",
   surface: "unified" satisfies Surface,
 } as const;
 
