@@ -30,8 +30,12 @@ const issue = (
 
 describe("renderEmail", () => {
   it("shows the intro on issue #1 only", () => {
-    expect(renderEmail(issue(1))).toContain("You signed up");
-    expect(renderEmail(issue(2))).not.toContain("You signed up");
+    expect(renderEmail(issue(1))).toContain(
+      "Welcome to the first issue of In Production",
+    );
+    expect(renderEmail(issue(2))).not.toContain(
+      "Welcome to the first issue of In Production",
+    );
   });
   it("links every title and CTA to our database page, and carries the preheader and date", () => {
     const html = renderEmail(issue(7));
