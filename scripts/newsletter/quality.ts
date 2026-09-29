@@ -2,7 +2,7 @@ import { choice, noul, score } from "@typesafe-ai/sdk";
 import type { Entry } from "./entries";
 import { blurbText, sectionFor, type Written } from "./write";
 
-// Pinned: thresholds below were calibrated against this version (spec §5.3). Re-calibrate before changing it.
+// Pinned so a moving model alias can't shift the thresholds below. Re-check the thresholds before changing the version.
 export const JEV_MODEL = "jev-1.13.0";
 export const WORTH_FLOOR = 0.5;
 export const VENDOR_PITCH_MAX = 0.7;
@@ -31,7 +31,7 @@ const TONE: [string, string, ...string[]] = ["Plain, specific wording with no pr
 
 /**
  * Jev Score is 0-indexed: SDK 0.6 types say rubric entries are "indexed by score from zero".
- * Live confirmation: unverified — pending live check (TYPESAFE_API_KEY was unavailable in Task 7).
+ * Live confirmation: unverified.
  */
 export const normaliseScore = (s: number, levels: number) => s / (levels - 1);
 

@@ -1,4 +1,4 @@
-/** Site copy for the In Production newsletter (spec: docs/superpowers/specs/2026-09-29-in-production-newsletter-design.md). */
+/** Site copy for the In Production newsletter (pages, strips and database CTAs). */
 export const IN_PRODUCTION = {
   name: "In Production",
   cadence: "every Tuesday and Thursday",

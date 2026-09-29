@@ -18,7 +18,7 @@ concurrency:
 jobs:
   issue:
     name: Build and schedule issue
-    # Timer runs do nothing until the repo variable NEWSLETTER_LIVE is "true" (launch switch, Task 15).
+    # Timer runs do nothing until the repo variable NEWSLETTER_LIVE is "true" (launch switch).
     if: github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || vars.NEWSLETTER_LIVE == 'true')
     runs-on: ubuntu-latest
     timeout-minutes: 15

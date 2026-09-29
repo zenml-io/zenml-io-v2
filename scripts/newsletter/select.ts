@@ -8,7 +8,7 @@ export function buildPool(entries: readonly Entry[], o: { now: Date; windowDays:
   return entries.filter((e) => e.publishedAt.getTime() >= from && e.publishedAt <= o.now && !o.exclude.has(e.slug));
 }
 
-/** Newest first; no repeated company; no repeated industry unless the strict pass can't fill `count` (spec 3.4). */
+/** Newest first; no repeated company; no repeated industry unless the strict pass can't fill `count`. */
 export function pickIssue(pool: readonly Entry[], count: number): Entry[] {
   const sorted = [...pool].sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime() || a.slug.localeCompare(b.slug));
   const picks: Entry[] = [];

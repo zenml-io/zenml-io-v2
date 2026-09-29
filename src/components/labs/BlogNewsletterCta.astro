@@ -19,7 +19,8 @@
  *
  * Copy and list are both props with the blog's own values as defaults, so a
  * non-blog surface can reuse the band without a second copy of the markup
- * (the research databases pass DATABASE_CTA + BREVO_LLMOPS_CONFIG). Passing
+ * (the research databases pass DATABASE_CTA + BREVO_LLMOPS_CONFIG; MLOps-only
+ * routes pass MLOPS_DATABASE_CTA instead). Passing
  * neither renders exactly what /blog rendered before they existed.
  */
 import type { BlogCtaContent } from "../../lib/blog-cta";
