@@ -137,6 +137,13 @@ export const OG_CARDS: readonly OgCard[] = [
       "Explore real-world LLMOps use cases, tools, and implementations, filterable by technology and industry",
   },
   {
+    key: "in-production",
+    eyebrow: "Newsletter",
+    brand: "zenml",
+    title: "In Production",
+    subtitle: "Four real-world LLMOps case studies, every Tuesday and Thursday",
+  },
+  {
     key: "mlops-database",
     eyebrow: "MLOps Database",
     brand: "zenml",

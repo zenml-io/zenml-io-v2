@@ -61,6 +61,7 @@ These repo-owned Markdown mirrors are alternate, cleaner representations of high
 ## Solutions & Guides
 
 - [LLMOps Database](https://www.zenml.io/llmops-database): curated knowledge base of real-world LLMOps implementations (contains 1,400+ pages; not listed individually).
+- [In Production newsletter](https://www.zenml.io/in-production): twice-weekly email with four LLMOps Database case studies, every Tuesday and Thursday.
 - [Whitepaper: Architecting an Enterprise MLOps Platform](https://www.zenml.io/whitepaper-architecting-an-enterprise-grade-mlops-platform): blueprint for enterprise-grade MLOps platforms.
 - [Startups & Academics](https://www.zenml.io/startups-and-academics): startup and academic programs for AI companies.
 
