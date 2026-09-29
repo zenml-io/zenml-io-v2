@@ -11,7 +11,7 @@ import { entryUrl, type IssueItem, PREHEADER, renderEmail } from "./render";
 import { type ReportItem, type RunOutcome, renderReport } from "./report";
 import { formatIssueDate, nextSendSlot } from "./schedule";
 import { buildPool, pickIssue } from "./select";
-import { blurbText, createOpenAIWriter, type Writer, type Written, writtenProblems } from "./write";
+import { blurbText, createOpenAIWriter, type Writer, type Written, WriterOutputError, writtenProblems } from "./write";
 
 export type Mode = "schedule" | "test-only" | "dry-run";
 export interface RunDeps {
@@ -56,7 +56,10 @@ async function writeItem(d: RunDeps, e: Entry, withHook: boolean): Promise<Writt
     try {
       w = await d.writer.write(e, { withHook, feedback });
     } catch (err) {
-      feedback = `the writer failed: ${err instanceof Error ? err.message : String(err)}`;
+      // Only a bad answer earns a retry and the fallback. An OpenAI outage (bad key, 5xx, 429, network) rejects the run
+      // before Brevo, so a broken key can't quietly produce all-fallback issues.
+      if (!(err instanceof WriterOutputError)) throw err;
+      feedback = `the writer failed: ${err.message}`;
     }
     if (w) {
       const problems = writtenProblems(e, w);
@@ -119,16 +122,18 @@ export async function runNewsletter(d: RunDeps): Promise<{ outcome: RunOutcome; 
   if (d.mode !== "dry-run") {
     campaignId = await d.brevo.createCampaign({
       name: `In Production #${number} — ${formatIssueDate(sendAt)}`, subject, previewText: PREHEADER, htmlContent: html,
-      scheduledAt: d.mode === "schedule" ? sendAt : null,
     });
+    // The campaign stays a draft until the preview has gone out. If sendTest fails, nothing is queued, the draft is not
+    // counted, and a re-run tries again.
     await d.brevo.sendTest(campaignId, PREVIEW_RECIPIENTS);
+    if (d.mode === "schedule") await d.brevo.scheduleCampaign(campaignId, sendAt);
   }
   const outcome: RunOutcome = { kind: d.mode === "schedule" ? "scheduled" : d.mode, issueNumber: number, sendAt, campaignId, items: reportItems, removed };
   if (d.mode !== "dry-run") await sendReport(d.brevo, outcome);
   return { outcome, html };
 }
 
-const DRY_BREVO: BrevoApi = { listCampaigns: async () => [], createCampaign: async () => 0, sendTest: async () => {}, sendReport: async () => {} };
+const DRY_BREVO: BrevoApi = { listCampaigns: async () => [], createCampaign: async () => 0, sendTest: async () => {}, scheduleCampaign: async () => {}, sendReport: async () => {} };
 
 async function main() {
   const mode = (process.argv.find((a) => a.startsWith("--mode="))?.split("=")[1] ?? "dry-run") as Mode;

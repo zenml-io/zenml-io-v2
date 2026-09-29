@@ -5,6 +5,9 @@ export interface BlurbSentence { text: string; section: string }
 export interface Written { sentences: BlurbSentence[]; hook: string | null }
 export interface Writer { write(entry: Entry, o: { withHook: boolean; feedback?: string }): Promise<Written> }
 
+/** The model answered, but not with usable JSON. API and network errors are not wrapped in this. */
+export class WriterOutputError extends Error {}
+
 export const WRITER_MODEL = "gpt-6-luna";
 const MAX_WORDS = 55;
 
@@ -62,7 +65,12 @@ export function createOpenAIWriter(client: OpenAI): Writer {
         input: [{ role: "system", content: system }, { role: "user", content: user }],
         text: { format: { type: "json_schema", name: "blurb", schema: SCHEMA, strict: true } },
       });
-      return JSON.parse(res.output_text) as Written;
+      if (!res.output_text) throw new WriterOutputError("the writer returned no output");
+      try {
+        return JSON.parse(res.output_text) as Written;
+      } catch (err) {
+        throw new WriterOutputError(`the writer returned invalid JSON: ${err instanceof Error ? err.message : String(err)}`);
+      }
     },
   };
 }

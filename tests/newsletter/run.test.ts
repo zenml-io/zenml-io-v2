@@ -4,7 +4,7 @@ import type { Entry } from "../../scripts/newsletter/entries";
 import type { CampaignSummary } from "../../scripts/newsletter/history";
 import type { JevLike } from "../../scripts/newsletter/quality";
 import { type RunDeps, runNewsletter } from "../../scripts/newsletter/run";
-import type { Writer } from "../../scripts/newsletter/write";
+import { type Writer, WriterOutputError } from "../../scripts/newsletter/write";
 
 const now = new Date("2026-10-05T16:00:00Z"); // Monday → Tue 6 Oct 07:00Z
 const entry = (slug: string, day: number, industry: string): Entry => ({
@@ -30,12 +30,15 @@ function fakes(
     thin?: string[];
     unsupported?: string[];
     throwFor?: string;
+    writerDown?: boolean;
+    sendTestFails?: boolean;
     jevDownAfterWorth?: boolean;
   } = {},
 ) {
   const created: NewCampaign[] = [];
   const tests: number[] = [];
   const reports: string[] = [];
+  const scheduled: { id: number; at: Date }[] = [];
   const brevo: BrevoApi = {
     listCampaigns: async () => campaigns,
     createCampaign: async (c) => {
@@ -43,7 +46,11 @@ function fakes(
       return 100 + created.length;
     },
     sendTest: async (id) => {
+      if (opts.sendTestFails) throw new Error("sendTest failed");
       tests.push(id);
+    },
+    scheduleCampaign: async (id, at) => {
+      scheduled.push({ id, at });
     },
     sendReport: async (subject) => {
       reports.push(subject);
@@ -51,7 +58,8 @@ function fakes(
   };
   const writer: Writer = {
     write: async (e) => {
-      if (e.slug === opts.throwFor) throw new Error("bad JSON");
+      if (opts.writerDown) throw new Error("401 invalid api key");
+      if (e.slug === opts.throwFor) throw new WriterOutputError("bad JSON");
       return {
         hook: "a hook",
         sentences: [
@@ -100,7 +108,7 @@ function fakes(
     isLive: async () => true,
     log: () => {},
   });
-  return { deps, created, tests, reports };
+  return { deps, created, tests, reports, scheduled };
 }
 
 describe("runNewsletter", () => {
@@ -108,9 +116,10 @@ describe("runNewsletter", () => {
     const f = fakes();
     const { outcome } = await runNewsletter(f.deps());
     expect(outcome.kind).toBe("scheduled");
-    expect(f.created[0].scheduledAt?.toISOString()).toBe(
-      "2026-10-06T07:00:00.000Z",
-    );
+    expect(f.created[0]).not.toHaveProperty("scheduledAt");
+    expect(f.scheduled).toEqual([
+      { id: 101, at: new Date("2026-10-06T07:00:00.000Z") },
+    ]);
     expect(f.created[0].name).toBe("In Production #1 — Tue 6 Oct 2026");
     expect(f.created[0].subject).toBe("In Production #1: a's a hook");
     expect(f.tests).toEqual([101]);
@@ -135,12 +144,15 @@ describe("runNewsletter", () => {
   it("test-only leaves a draft; dry-run touches no Brevo writes", async () => {
     const t = fakes();
     await runNewsletter(t.deps("test-only"));
-    expect(t.created[0].scheduledAt).toBeNull();
+    expect(t.created).toHaveLength(1);
+    expect(t.tests).toEqual([101]);
+    expect(t.scheduled).toHaveLength(0);
     const d = fakes();
     const { html } = await runNewsletter(d.deps("dry-run"));
     expect(d.created).toHaveLength(0);
     expect(d.tests).toHaveLength(0);
     expect(d.reports).toHaveLength(0);
+    expect(d.scheduled).toHaveLength(0);
     expect(html).toContain("In Production");
   });
   it("drops thin entries and skips the issue when fewer than 4 remain", async () => {
@@ -168,6 +180,22 @@ describe("runNewsletter", () => {
         : undefined;
     expect(a?.fallback).toBe(true);
     expect(f.created[0].subject).toBe("In Production #1: T a");
+  });
+  it("never schedules when the preview send fails, so a re-run can retry", async () => {
+    const f = fakes([], { sendTestFails: true });
+    await expect(runNewsletter(f.deps())).rejects.toThrow("sendTest failed");
+    expect(f.created).toHaveLength(1);
+    expect(f.created[0]).not.toHaveProperty("scheduledAt");
+    expect(f.scheduled).toHaveLength(0);
+    expect(f.reports).toHaveLength(0);
+  });
+  it("fails before touching Brevo when the writer API is down", async () => {
+    const f = fakes([], { writerDown: true });
+    await expect(runNewsletter(f.deps())).rejects.toThrow("401 invalid api key");
+    expect(f.created).toHaveLength(0);
+    expect(f.tests).toHaveLength(0);
+    expect(f.scheduled).toHaveLength(0);
+    expect(f.reports).toHaveLength(0);
   });
   it("fails before touching Brevo when Jev goes down after the worth gate", async () => {
     const f = fakes([], { jevDownAfterWorth: true });

@@ -13,14 +13,13 @@ function fakeFetch(responses: unknown[]) {
 }
 
 describe("createBrevoApi", () => {
-  it("creates a scheduled campaign for the LLMOps list with the ZenML sender", async () => {
+  it("creates a draft campaign for the LLMOps list with the ZenML sender", async () => {
     const { f, calls } = fakeFetch([{ id: 42 }]);
     const id = await createBrevoApi("k", f).createCampaign({
       name: "In Production #1 — x",
       subject: "s",
       previewText: "p",
       htmlContent: "<p>",
-      scheduledAt: new Date("2026-10-06T07:00:00Z"),
     });
     expect(id).toBe(42);
     const body = JSON.parse(String(calls[0].init.body));
@@ -32,21 +31,17 @@ describe("createBrevoApi", () => {
       sender: { name: "ZenML", email: "hello@zenml.io" },
       replyTo: "hello@zenml.io",
       recipients: { listIds: [LIST_ID] },
+    });
+    expect(body).not.toHaveProperty("scheduledAt");
+  });
+  it("schedules an existing campaign with a PUT carrying scheduledAt", async () => {
+    const { f, calls } = fakeFetch([]);
+    await createBrevoApi("k", f).scheduleCampaign(42, new Date("2026-10-06T07:00:00Z"));
+    expect(calls[0].url).toBe("https://api.brevo.com/v3/emailCampaigns/42");
+    expect(calls[0].init.method).toBe("PUT");
+    expect(JSON.parse(String(calls[0].init.body))).toEqual({
       scheduledAt: "2026-10-06T07:00:00.000Z",
     });
-  });
-  it("omits scheduledAt for a draft", async () => {
-    const { f, calls } = fakeFetch([{ id: 1 }]);
-    await createBrevoApi("k", f).createCampaign({
-      name: "n",
-      subject: "s",
-      previewText: "p",
-      htmlContent: "h",
-      scheduledAt: null,
-    });
-    expect(JSON.parse(String(calls[0].init.body))).not.toHaveProperty(
-      "scheduledAt",
-    );
   });
   it("throws with the response body on a non-2xx", async () => {
     const f = (async () =>

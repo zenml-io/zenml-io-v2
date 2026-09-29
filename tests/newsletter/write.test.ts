@@ -1,8 +1,11 @@
+import type OpenAI from "openai";
 import { describe, expect, it } from "vitest";
 import type { Entry } from "../../scripts/newsletter/entries";
 import {
   blurbText,
   buildWriterPrompt,
+  createOpenAIWriter,
+  WriterOutputError,
   writtenProblems,
 } from "../../scripts/newsletter/write";
 
@@ -73,4 +76,25 @@ describe("writtenProblems", () => {
     expect(blurbText(ok)).toBe(
       `${ok.sentences[0].text} ${ok.sentences[1].text}`,
     ));
+});
+
+describe("createOpenAIWriter", () => {
+  const writerFor = (create: () => Promise<unknown>) =>
+    createOpenAIWriter({ responses: { create } } as unknown as OpenAI);
+  it("marks empty or non-JSON output as a WriterOutputError", async () => {
+    for (const output_text of ["", "not json"])
+      await expect(
+        writerFor(async () => ({ output_text })).write(entry, { withHook: false }),
+      ).rejects.toBeInstanceOf(WriterOutputError);
+  });
+  it("lets API errors through unwrapped", async () => {
+    const apiError = new Error("429 rate limited");
+    const err = await writerFor(async () => {
+      throw apiError;
+    })
+      .write(entry, { withHook: false })
+      .catch((e: unknown) => e);
+    expect(err).toBe(apiError);
+    expect(err).not.toBeInstanceOf(WriterOutputError);
+  });
 });

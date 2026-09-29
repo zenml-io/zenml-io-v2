@@ -8,17 +8,18 @@ const SENDER = { name: "ZenML", email: "hello@zenml.io" };
 const BASE = "https://api.brevo.com/v3";
 // GET /emailCampaigns (https://developers.brevo.com/reference/getemailcampaigns-1): default limit 50, `offset`
 // paging, and the response includes htmlContent unless `excludeHtmlContent=true`, so no per-campaign fetch is needed.
-// The docs state no maximum limit; 100 is kept from the plan (unverified).
+// The docs state no maximum limit; 100 is our own choice (unverified).
 const PAGE_SIZE = 100;
 
-export interface NewCampaign { name: string; subject: string; previewText: string; htmlContent: string; scheduledAt: Date | null }
+export interface NewCampaign { name: string; subject: string; previewText: string; htmlContent: string }
 export interface BrevoApi {
   listCampaigns(): Promise<CampaignSummary[]>;
   createCampaign(c: NewCampaign): Promise<number>;
   sendTest(id: number, emails: readonly string[]): Promise<void>;
+  scheduleCampaign(id: number, at: Date): Promise<void>;
   sendReport(subject: string, html: string, to: readonly string[]): Promise<void>;
 }
-// UNVERIFIED: the docs do not state the dashboard edit URL; kept from the plan. Check it opens the campaign.
+// UNVERIFIED: the docs don't state the dashboard edit URL; check it opens the campaign.
 export const campaignUrl = (id: number) => `https://app.brevo.com/email/template/edit/${id}`;
 
 export function createBrevoApi(apiKey: string, fetchImpl: typeof fetch = fetch): BrevoApi {
@@ -46,13 +47,17 @@ export function createBrevoApi(apiKey: string, fetchImpl: typeof fetch = fetch):
       }
     },
     async createCampaign(c) {
-      // Docs: scheduledAt is UTC ISO (YYYY-MM-DDTHH:mm:ss.SSSZ) and requires recipients.listIds; created as draft otherwise.
+      // Without scheduledAt, Brevo creates the campaign as a draft; scheduleCampaign queues it later.
       const body = { name: c.name, subject: c.subject, previewText: c.previewText, htmlContent: c.htmlContent,
-        sender: SENDER, replyTo: SENDER.email, recipients: { listIds: [LIST_ID] },
-        ...(c.scheduledAt ? { scheduledAt: c.scheduledAt.toISOString() } : {}) };
+        sender: SENDER, replyTo: SENDER.email, recipients: { listIds: [LIST_ID] } };
       return (await call<{ id: number }>("/emailCampaigns", { method: "POST", body })).id;
     },
     async sendTest(id, emails) { await call(`/emailCampaigns/${id}/sendTest`, { method: "POST", body: { emailTo: emails } }); },
+    async scheduleCampaign(id, at) {
+      // Update an email campaign (https://developers.brevo.com/reference/updateemailcampaign): PUT with scheduledAt as
+      // UTC ISO (YYYY-MM-DDTHH:mm:ss.SSSZ), 204 on success. Checked against the docs, not the live API.
+      await call(`/emailCampaigns/${id}`, { method: "PUT", body: { scheduledAt: at.toISOString() } });
+    },
     async sendReport(subject, html, to) {
       await call("/smtp/email", { method: "POST", body: { sender: SENDER, to: to.map((email) => ({ email })), subject, htmlContent: html } });
     },
