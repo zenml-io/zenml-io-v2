@@ -1599,6 +1599,20 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoProps: {},
   },
   {
+    id: "labs.newsletter-strip",
+    kind: "template",
+    componentPath: "src/components/labs/NewsletterStrip.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "One-row In Production signup: Nudica label + one-line deck left, pill email field + Subscribe right, wraps below ~640px. Cream-50 surface with a hairline and 12px radius so it sits inside an article lead (under the LLMOps entry Summary box) or under a short hero (/llmops-database). Native POST to a BrevoFormConfig with the same honeypot/locale inputs as labs.blog-newsletter-cta. Copy from src/lib/inProduction.ts.",
+    stage: false,
+    demoProps: {},
+  },
+  {
     id: "labs.page-header",
     kind: "template",
     componentPath: "src/components/labs/LabsPageHeader.astro",

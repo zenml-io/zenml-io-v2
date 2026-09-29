@@ -1,0 +1,49 @@
+---
+/**
+ * NewsletterStrip — a one-row signup strip for In Production: label + deck on
+ * the left, a pill email form on the right; wraps below ~640px. Light cream
+ * surface with a hairline, so it sits inside article leads and under heroes
+ * without competing with the dark close band. Posts natively to Brevo with
+ * the same honeypot/locale contract as BlogNewsletterCta.
+ */
+import type { BrevoFormConfig } from "../../lib/formTypes";
+
+interface Props {
+  brevo: BrevoFormConfig;
+  label: string;
+  deck: string;
+}
+
+const { brevo, label, deck } = Astro.props;
+const emailId = `strip-email-${Astro.url.pathname.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "") || "root"}`;
+---
+
+<div
+  class="flex flex-wrap items-center justify-between gap-4 rounded-[12px] border border-(--color-border) bg-(--color-cream-50) px-6 py-5"
+  data-pagefind-ignore
+>
+  <div class="min-w-0 flex-[1_1_280px]">
+    <p class="font-label text-[13px] leading-4 tracking-[0.05em] text-(--color-sage-800) uppercase">{label}</p>
+    <p class="mt-1.5 font-sans text-[16px] leading-6 text-foreground">{deck}</p>
+  </div>
+  <form method="POST" action={brevo.action} class="flex min-w-[260px] flex-[0_1_360px] gap-2">
+    <label for={emailId} class="sr-only">Email address</label>
+    <input
+      id={emailId}
+      type="email"
+      name="EMAIL"
+      required
+      autocomplete="email"
+      placeholder="you@company.com"
+      class="h-11 min-w-0 flex-1 rounded-full border border-(--color-border) bg-card px-[18px] font-sans text-[15px] text-foreground placeholder:text-(--color-cream-700) focus:border-(--color-sage-400) focus:outline-none"
+    />
+    <button
+      type="submit"
+      class="h-11 cursor-pointer rounded-full bg-(--color-sage-900) px-5 font-label text-[13px] tracking-[0.05em] text-(--color-cream-50) uppercase transition-colors duration-200 ease-out hover:bg-(--color-sage-800)"
+    >
+      {brevo.submitLabel}
+    </button>
+    <input type="text" name="email_address_check" value="" class="hidden" tabindex="-1" aria-hidden="true" />
+    <input type="hidden" name="locale" value="en" />
+  </form>
+</div>
