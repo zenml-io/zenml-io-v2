@@ -11,20 +11,25 @@ export class WriterOutputError extends Error {}
 export const WRITER_MODEL = "gpt-6-luna";
 const MAX_WORDS = 55;
 
-const SYSTEM = `You write two-sentence blurbs for "In Production", a newsletter of real-world LLMOps case studies.
+const SYSTEM = `You write two-sentence blurbs for "In Production", a newsletter of real-world LLMOps case studies. Readers are engineers who want to know what a team built and what they learned, so they can borrow the idea.
 Rules:
 - Exactly 2 sentences. Hard cap: at most 45 words in total (aim for about 40). Sentence 1: at most 20 words. Sentence 2: at most 25 words. Count before you answer.
-- Sentence 1: what the company built. Sentence 2: the concrete result or technique.
-- Each sentence may use facts from ONE section only, the section you name for it. Never combine facts from two sections in one sentence. If a result lives in a different section from the overview, name that section for sentence 2 and use only what that section says.
-- Say one thing per sentence: one system, one result. Leave out extra detail rather than adding a clause. Do not add context, causes or claims the named section does not state.
+- Sentence 1: what was built, technically. Name the architecture, technique or concrete moving parts (e.g. which components call which, what is retrieved, what is checked, where it runs). Take it from the section that describes the system or architecture, not the overview, when there is one.
+- Technical sentences are easy to get wrong. Name at most three components, and describe how they connect (order, routing, data flow) only as the named section states it. Do not infer a step or a link the section does not spell out.
+- Sentence 2: the most interesting technical detail, design trade-off, failure mode or lesson: something another engineering team could learn or reuse.
+- Mention the company at most once in the whole blurb, and never as the first words of a sentence (that includes the possessive, e.g. "Acme's agents ..."). Start with the system or technique instead. Spend the words on the system, not on who built it.
+- Leave out user or customer counts, employee numbers, adoption figures, business outcomes, revenue or cost savings, and benchmark or evaluation scores. Only include a number when the number itself is the technical point (e.g. a threshold, a timeout, a tier count).
+- Be specific: use the actual technique and component names the section gives. Avoid vague platform words ("platform", "governed", "enterprise-grade", "at scale", "end-to-end", "seamless", "leverages AI", "AI-powered") unless the same sentence says concretely what they mean.
+- Each sentence may use facts from ONE section only, the section you name for it. Never combine facts from two sections in one sentence.
+- Say one thing per sentence. Leave out extra detail rather than adding a clause. Do not add context, causes or claims the named section does not state.
 - Copy figures exactly as the source states them. Do not calculate differences, round, or convert units.
 - Keep any qualifier attached to its claim (e.g. "on its internal benchmark", "reportedly").
 - Plain words. No hype adjectives ("revolutionary", "cutting-edge", "game-changing").
 - For each sentence, give the exact heading of the one section it draws on.`;
-const HOOK_RULE = `\n- Also write "hook": 3 to 7 plain words summarising the case for an email subject line, without the company name.`;
+const HOOK_RULE = `\n- Also write "hook": 3 to 7 plain words naming the technical idea, for an email subject line. No company name and no metric.`;
 const EXAMPLE = (withHook: boolean) => `\n\nIllustrative only, about a made-up company: never reuse its words, names or numbers.
-1. "Acme Kettle Co. built a robot that sorts teapots by colour." (section: Overview)
-2. "It reported sorting errors fell from 9 in 100 to 2 in 100." (section: Results)${withHook ? '\nhook: "Robot sorts teapots by colour"' : ""}`;
+1. "A camera feeds each teapot to a small vision model, then Acme Kettle Co.'s rules engine picks its bin." (section: Sorting architecture)
+2. "Glossy glaze fooled the model under workshop lights, so the team added a polarising filter instead of retraining." (section: Lessons learned)${withHook ? '\nhook: "Vision model plus rules sorts teapots"' : ""}`;
 
 export function buildWriterPrompt(entry: Entry, o: { withHook: boolean; feedback?: string }) {
   const body = entry.sections.map((s) => `## ${s.heading}\n\n${s.text}`).join("\n\n");
