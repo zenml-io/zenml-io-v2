@@ -99,8 +99,18 @@ export function escapeHtml(s: string): string {
     .replace(/"/g, "&quot;");
 }
 
-function sourceLabel(url: string): string {
-  const host = new URL(url).hostname.replace(/^www\./, "");
+function safeSourceUrl(url: string | null): URL | null {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url);
+    return parsed.protocol === "http:" || parsed.protocol === "https:" ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function sourceLabel(parsed: URL): string {
+  const host = parsed.hostname.replace(/^www\./, "");
   const kind = /(^|\.)(youtube\.com|youtu\.be|vimeo\.com)$/.test(host) ? "talk" : "post";
   return `Original ${kind} (${host})`;
 }
@@ -111,8 +121,9 @@ function renderItem(it: IssueItem, i: number, last: boolean): string {
     .map((s) => escapeHtml(s as string))
     .join(" · ");
   const url = entryUrl(it.slug);
-  const source = it.sourceUrl
-    ? `<span style="color:${C.sage400};">&nbsp;·&nbsp;</span><a href="${escapeHtml(it.sourceUrl)}" style="${S.secondary}">${escapeHtml(sourceLabel(it.sourceUrl))}</a>`
+  const src = safeSourceUrl(it.sourceUrl);
+  const source = src
+    ? `<span style="color:${C.sage400};">&nbsp;·&nbsp;</span><a href="${escapeHtml(src.href)}" style="${S.secondary}">${escapeHtml(sourceLabel(src))}</a>`
     : "";
   return `<tr><td class="pad" style="${S.cardCell(i === 0 ? "24px 36px" : last ? "0 36px 28px" : "0 36px 24px")}">
   <div style="${S.eyebrow}">${eyebrow}</div>

@@ -72,6 +72,19 @@ describe("renderEmail", () => {
     expect(html).toContain("Original talk (youtube.com)");
     expect(html).toContain("Original post (harvey.ai)");
   });
+  it("drops malformed or non-http source links instead of throwing or linking them", () => {
+    for (const bad of [
+      "n/a",
+      "",
+      "harvey.ai/x",
+      "javascript:alert(1)",
+      "data:text/html,x",
+    ]) {
+      const html = renderEmail(issue(2, [item("a", { sourceUrl: bad })]));
+      expect(html).not.toContain("Original");
+      expect(html).not.toContain("javascript:");
+    }
+  });
   it("never uses the mid sage as a colour", () => {
     expect(renderEmail(issue(1)).toUpperCase()).not.toContain("#5D7545");
   });
