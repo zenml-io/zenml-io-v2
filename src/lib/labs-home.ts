@@ -19,6 +19,7 @@ import {
   LOGO_CLOUD,
   type LogoItem,
 } from "./homepage";
+import type { ValuePropsSectionContent } from "./labs-product-zenml";
 import { KITARU_DOCS_URL, KITARU_LINKS } from "./productKitaru";
 import { ZENML_LINKS } from "./productZenml";
 
@@ -28,9 +29,9 @@ export type { CaseStudyCard };
 export type LabsProduct = "zenml" | "kitaru";
 
 export const LABS_HOME_SEO = {
-  title: "ZenML Labs: Keep your AI getting better in production",
+  title: "ZenML Labs: The autonomous AI engineer for your agents and models",
   description:
-    "Models drift, agents regress and costs creep up. ZenML Labs gives your team AI engineers that find and fix problems in your ML pipelines and agents, working from your runs and traces on your own infrastructure. Built on ZenML and Kitaru, both open source.",
+    "The world's first autonomous AI engineer for AI in production. Think Devin, but it takes care of your agents and models: it finds what's wrong in your runs and traces, fixes it and proves the change, on your own infrastructure. Built on ZenML and Kitaru, both open source.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -225,9 +226,35 @@ export interface LabsInstallChip {
 }
 
 export const LABS_HERO: LabsBandContent = {
-  headlineLines: ["Keep your AI", "getting better"],
-  deck: "Models drift, agents regress, costs creep up, and every fix waits for someone to have time. ZenML Labs gives your team AI engineers that find the problem in your runs and traces, fix it, and prove the change on production data. You approve what ships.",
+  headlineLines: ["The world's first", "autonomous AI engineer"],
+  deck: "Think Devin, but it takes care of your AI agents and models.",
   cta: LABS_HERO_SIGNUP,
+};
+
+/* ---------------------------------------------------------------------- */
+/* Problem + contrast (LabsValueProps, no button)                          */
+/* ---------------------------------------------------------------------- */
+
+/** Why this isn't another coding agent or dashboard, before the stories. */
+export const LABS_CONTRAST: ValuePropsSectionContent = {
+  headline: "Not another coding agent. Not another dashboard.",
+  items: [
+    {
+      index: "Coding agents",
+      title: "See your repo",
+      body: "They write good code, but they can't see the runs, traces, data and costs where AI actually breaks.",
+    },
+    {
+      index: "Monitoring and MLOps tools",
+      title: "Show you the problem",
+      body: "They tell you something is wrong. A person still has to find the cause, fix it and prove the fix.",
+    },
+    {
+      index: "ZenML Labs",
+      title: "Does the work, you decide",
+      body: "Works from the record of how your AI runs, makes the change, proves it on production data, and hands it to you to approve.",
+    },
+  ],
 };
 
 /* ---------------------------------------------------------------------- */

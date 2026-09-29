@@ -1525,7 +1525,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      'Three-card value-prop grid for /product/zenml. Numbered labels (item.index, e.g. "01.") stand in for icons — no icons, no coloured squares. Section headline, optional deck (ValuePropsContent.deck — absence collapses). One LabsButton after the grid. No island.',
+      'Three-card value-prop grid for /product/zenml and the homepage problem and contrast sections. Numbered labels (item.index, e.g. "01.") stand in for icons — no icons, no coloured squares. Section headline, optional deck (ValuePropsContent.deck — absence collapses). Optional LabsButton after the grid (ValuePropsContent.cta — absence collapses; the homepage passes none). No island.',
     stage: false,
     demoProps: {},
   },
