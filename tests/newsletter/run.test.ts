@@ -191,7 +191,9 @@ describe("runNewsletter", () => {
   });
   it("fails before touching Brevo when the writer API is down", async () => {
     const f = fakes([], { writerDown: true });
-    await expect(runNewsletter(f.deps())).rejects.toThrow("401 invalid api key");
+    await expect(runNewsletter(f.deps())).rejects.toThrow(
+      "401 invalid api key",
+    );
     expect(f.created).toHaveLength(0);
     expect(f.tests).toHaveLength(0);
     expect(f.scheduled).toHaveLength(0);

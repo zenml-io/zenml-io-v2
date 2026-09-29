@@ -84,7 +84,9 @@ describe("createOpenAIWriter", () => {
   it("marks empty or non-JSON output as a WriterOutputError", async () => {
     for (const output_text of ["", "not json"])
       await expect(
-        writerFor(async () => ({ output_text })).write(entry, { withHook: false }),
+        writerFor(async () => ({ output_text })).write(entry, {
+          withHook: false,
+        }),
       ).rejects.toBeInstanceOf(WriterOutputError);
   });
   it("lets API errors through unwrapped", async () => {

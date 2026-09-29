@@ -36,7 +36,10 @@ describe("createBrevoApi", () => {
   });
   it("schedules an existing campaign with a PUT carrying scheduledAt", async () => {
     const { f, calls } = fakeFetch([]);
-    await createBrevoApi("k", f).scheduleCampaign(42, new Date("2026-10-06T07:00:00Z"));
+    await createBrevoApi("k", f).scheduleCampaign(
+      42,
+      new Date("2026-10-06T07:00:00Z"),
+    );
     expect(calls[0].url).toBe("https://api.brevo.com/v3/emailCampaigns/42");
     expect(calls[0].init.method).toBe("PUT");
     expect(JSON.parse(String(calls[0].init.body))).toEqual({
