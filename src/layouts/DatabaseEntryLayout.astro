@@ -40,7 +40,7 @@ import type { RelatedRailItem } from "../components/templates/RelatedRail.astro"
 import { blogLaneStyle } from "../lib/blogLayout";
 import {
   capitalise,
-  DATABASE_CTA,
+  DATABASE_CLOSE_CTA,
   DATABASES,
   type DatabaseKey,
 } from "../lib/databases";
@@ -246,7 +246,7 @@ if (tags.length > 0) {
     </div>
 
     <div data-pagefind-ignore>
-      <BlogNewsletterCta content={DATABASE_CTA} brevo={BREVO_LLMOPS_CONFIG} />
+      <BlogNewsletterCta content={DATABASE_CLOSE_CTA[database]} brevo={BREVO_LLMOPS_CONFIG} />
     </div>
   </div>
 </BaseLayout>

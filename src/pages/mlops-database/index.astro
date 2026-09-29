@@ -27,9 +27,9 @@ import LabsHero from "../../components/labs/LabsHero.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP, blogLaneStyle } from "../../lib/blogLayout";
 import {
-  DATABASE_CTA,
   DATABASE_PAGE_SIZE,
   DATABASES,
+  MLOPS_DATABASE_CTA,
 } from "../../lib/databases";
 import { BREVO_LLMOPS_CONFIG } from "../../lib/formConstants";
 import { defaultOgImage } from "../../lib/seo";
@@ -114,7 +114,7 @@ const GROUP_LABEL = "text-[13px] font-medium text-(--color-cream-700)";
 
     <section class="scroll-reveal-section">
       <div class="reveal-child stagger-1">
-        <BlogNewsletterCta content={DATABASE_CTA} brevo={BREVO_LLMOPS_CONFIG} />
+        <BlogNewsletterCta content={MLOPS_DATABASE_CTA} brevo={BREVO_LLMOPS_CONFIG} />
       </div>
     </section>
   </div>
