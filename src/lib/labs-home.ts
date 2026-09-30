@@ -752,7 +752,7 @@ export const LABS_HERO_JOB: HeroJobContent = {
                 focusStep: "test {cheaper} on your most expensive {sessions}.",
                 wedStep:
                   "Replay the most expensive ones on {cheaper} and score both.",
-                outcome: "typically about −35% cost at the same quality",
+                outcome: "the cost saving, measured on your traffic, at the same quality",
               },
             },
             {
@@ -781,7 +781,7 @@ export const LABS_HERO_JOB: HeroJobContent = {
         wedStep:
           "Replay expensive and weak ones on {cheaper} with a prompt fix.",
         outcome:
-          "typically about −30% cost and fewer bad answers, with the eval",
+          "lower cost and fewer bad answers, with the eval that proves both",
       },
       plan: [
         "Watch all your {sessions} and flag quality drops within a day.",
@@ -1097,7 +1097,7 @@ export const LABS_HERO_JOB: HeroJobContent = {
         { day: "Wed", text: "Test {swap} on the top three." },
         {
           day: "Fri",
-          text: "PR ready: typically about −30% on those steps. You approve.",
+          text: "PR ready with the savings measured on those steps. You approve.",
         },
       ],
       stack: {
