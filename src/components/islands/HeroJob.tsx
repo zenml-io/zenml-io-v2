@@ -96,6 +96,7 @@ const TYPING_MS = 800;
 const TYPING_LEAD_MS = 250;
 const MAX_JOB_LENGTH = 200;
 const TURNSTILE_SCRIPT_ID = "cf-turnstile-script";
+const TURNSTILE_FLEXIBLE_MIN = 300;
 
 /** The ZenML mark, verbatim from ZenmlLabsLogo.astro's lockup — never redraw it. */
 const ZENML_MARK_PATH =
@@ -113,7 +114,8 @@ const SECTION_LABEL =
   "font-label text-[13px] uppercase tracking-[0.05em] text-(--color-sage-800)";
 const SMALL_LABEL =
   "font-label text-[11px] uppercase tracking-[0.05em] text-(--color-sage-800)";
-const REPORT_SECTION = "border-t border-(--color-border) px-4 py-5 md:px-6";
+const REPORT_SECTION =
+  "border-t border-(--color-border) px-3 py-5 sm:px-4 md:px-6";
 const REPORT_HEADING =
   "font-sans text-[18px] leading-[24px] font-semibold text-(--color-cream-900)";
 const BODY_MUTED =
@@ -256,7 +258,7 @@ function CaseCard({
         rel="noopener noreferrer"
         data-analytics={content.analytics.caseStudy}
         data-hero-job-case
-        class="group flex h-full flex-col rounded-[16px] border border-(--color-border) bg-card px-4 py-3 transition-colors duration-200 ease-out hover:border-(--color-sage-400)"
+        class="group flex flex-col rounded-[16px] border border-(--color-border) bg-card px-4 py-3 transition-colors duration-200 ease-out hover:border-(--color-sage-400)"
       >
         <span class={SMALL_LABEL}>
           {content.report.sourceLabels[row.source]}
@@ -264,7 +266,7 @@ function CaseCard({
         <strong class="mt-1 block font-sans text-[15px] leading-[22px] font-semibold text-(--color-cream-900)">
           {row.company}
         </strong>
-        <span class="line-clamp-2 font-sans text-[14px] leading-[20px] text-(--color-cream-800) group-hover:text-(--color-sage-800)">
+        <span class="line-clamp-3 font-sans text-[14px] leading-[20px] text-(--color-cream-800) group-hover:text-(--color-sage-800)">
           {row.title}
         </span>
         {row.ranInto && (
@@ -354,7 +356,8 @@ function useTurnstile(el: HTMLDivElement | null) {
       w.turnstile.render(el, {
         sitekey: TURNSTILE_SITE_KEY,
         theme: "light",
-        size: "flexible",
+        // Flexible needs TURNSTILE_FLEXIBLE_MIN px; narrower gates get compact.
+        size: el.clientWidth >= TURNSTILE_FLEXIBLE_MIN ? "flexible" : "compact",
       });
     };
     if (w.turnstile) {
@@ -401,7 +404,7 @@ function Gate({
         e.preventDefault();
         onSubmit(e.currentTarget);
       }}
-      class="rounded-[20px] bg-(--color-cream-100) px-4 py-5 md:px-6"
+      class="rounded-[20px] bg-(--color-cream-100) px-3 py-5 sm:px-4 md:px-6"
     >
       <p class="flex items-center gap-2 font-sans text-[17px] leading-[24px] font-semibold text-(--color-cream-900)">
         <Icon d={LOCK_PATH} class="size-4 text-(--color-sage-800)" />
@@ -458,7 +461,6 @@ function Gate({
           .
         </span>
       </label>
-      <div ref={setWidget} class="mt-2 empty:hidden" />
       {state.error && (
         <p
           id="hero-job-gate-error"
@@ -468,10 +470,11 @@ function Gate({
           {state.error}
         </p>
       )}
+      <div ref={setWidget} class="mt-3 empty:hidden" />
       <a
         href={skipHref}
         data-analytics={content.analytics.skipGate}
-        class={`${TEXT_LINK} mt-1`}
+        class={`${TEXT_LINK} mt-2`}
       >
         {g.skipLabel}
       </a>
@@ -526,7 +529,7 @@ function Report({
       aria-live="off"
       class="w-full overflow-hidden rounded-[20px] border border-(--color-border) bg-card"
     >
-      <header class="px-4 py-5 md:px-6">
+      <header class="px-3 py-5 sm:px-4 md:px-6">
         <p class={SECTION_LABEL}>
           {fillTemplate(r.basis, { count: caseCount })}
         </p>
@@ -545,7 +548,7 @@ function Report({
         <section class={REPORT_SECTION} data-hero-job-similar>
           <h4 class={REPORT_HEADING}>{r.similarHeading}</h4>
           {pool.status === "ready" ? (
-            <ul class="mt-3 grid grid-cols-1 gap-2 md:grid-cols-3">
+            <ul class="mt-3 grid grid-cols-1 items-start gap-2 md:grid-cols-3">
               {similar.map((row) => (
                 <CaseCard key={row.href} row={row} content={content} />
               ))}
@@ -655,7 +658,7 @@ function Report({
         {unlocked ? (
           <div
             data-hero-job-next
-            class="rounded-[20px] bg-(--color-sage-100) px-4 py-5 md:px-6"
+            class="rounded-[20px] bg-(--color-sage-100) px-3 py-5 sm:px-4 md:px-6"
           >
             <p
               role="status"
