@@ -11,7 +11,8 @@ export type FormType =
   | "demo-request"
   | "whitepaper"
   | "brick-manual"
-  | "startup-academic";
+  | "startup-academic"
+  | "eval-report";
 
 interface FieldRule {
   required?: boolean;
@@ -27,6 +28,10 @@ interface FieldRule {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 // biome-ignore lint/suspicious/noControlCharactersInRegex: Plain-text CRM fields must reject ASCII control characters.
 const UNSAFE_PLAIN_TEXT_RE = /[<>\u0000-\u001f\u007f]/;
+/** `id:value` pairs joined by commas, as the hero eval plan serialises answers. */
+const HERO_ANSWERS_RE = /^[a-z_]+:[a-z_]+(?:,[a-z_]+:[a-z_]+)*$/;
+/** Failure-mode ids joined by commas: the hero eval plan's report digest. */
+const HERO_REPORT_RE = /^[a-z_]+(?:,[a-z_]+)*$/;
 const JOB_TITLE_VALUES = JOB_TITLE_OPTIONS.map(({ value }) => value);
 const STARTUP_ROLE_VALUES = STARTUP_ROLE_OPTIONS.map(({ value }) => value);
 
@@ -132,6 +137,37 @@ export const FORM_RULES: Record<FormType, Record<string, FieldRule>> = {
       allowedValues: STARTUP_ROLE_VALUES,
       message: "Please select a role",
       invalidMessage: "Please select a valid role",
+    },
+  },
+  "eval-report": {
+    email: {
+      required: true,
+      pattern: EMAIL_RE,
+      message: "Valid email is required",
+    },
+    path: {
+      required: true,
+      allowedValues: ["agent", "finetune"],
+      message: "Report path is required",
+      invalidMessage: "Report path is invalid",
+    },
+    answers: {
+      maxLength: 300,
+      pattern: HERO_ANSWERS_RE,
+      message: "Report answers are invalid",
+    },
+    job: {
+      maxLength: 200,
+      disallowedPattern: UNSAFE_PLAIN_TEXT_RE,
+      message: "System description is invalid",
+      invalidMessage:
+        "System description must be 200 characters or fewer and cannot contain HTML or line breaks",
+    },
+    report: {
+      required: true,
+      maxLength: 300,
+      pattern: HERO_REPORT_RE,
+      message: "Report contents are invalid",
     },
   },
 };

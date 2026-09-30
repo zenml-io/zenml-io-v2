@@ -276,45 +276,81 @@ const CHECKS: IslandCheck[] = [
     },
   },
   {
-    name: "HeroJob holds the conversation and carries the job to the signup",
+    name: "HeroJob composes an agent eval plan from a description and unlocks it",
     route: "/",
     island: "HeroJob",
     seedConsent: true,
     async assert(page, root) {
-      // The thread only exists after an onClick; SSR ships the chips alone.
-      // The context forces reduced motion, so each message appears at once.
-      // Pick Nova from the composer's engineer menu first (only an onClick
-      // opens it), so the link must also carry engineer=nova, and stack=
-      // for the tool picked below.
-      await page.locator(`${root} [data-hero-job-engineer-button]`).click();
-      await page.locator(`${root} [data-hero-job-engineer="nova"]`).click();
-      // And add SageMaker from the "@ add your stack" picker (filter + Enter).
-      await page.locator(`${root} [data-hero-job-stack-hint]`).click();
+      // The thread only exists after an interaction; SSR ships the greeting,
+      // the path chips and the composer. The context forces reduced motion,
+      // so each message appears at once. "voice", "agent" and "books" imply
+      // modality, interaction and output, so only the risk is asked.
       await page
-        .locator(`${root} [data-hero-job-stack-picker] input`)
-        .fill("sagemaker");
+        .locator(`${root} #hero-job-input`)
+        .fill("A voice agent that books appointments");
       await page.keyboard.press("Enter");
+      await page.waitForSelector(`${root} [data-hero-job-reply="agent"]`);
+      await page.locator(`${root} [data-hero-job-answer="act"]`).click();
+      const report = `${root} [data-hero-job-report="agent"]`;
+      await page.waitForSelector(report);
+      // Real database entries, fetched from the build-time case pool.
       await page.waitForSelector(
-        `${root} [data-hero-job-stack-chip="sagemaker"]`,
+        `${report} [data-hero-job-case][href^="/llmops-database/"]`,
       );
-      await page
-        .locator(`${root} [data-hero-job-example]`)
-        .filter({ hasText: "Retrain fraud model" })
-        .click();
-      await page.waitForSelector(`${root} [data-hero-job-reply="ml"]`);
-      await page.locator(`${root} [data-hero-job-answer="fraud"]`).click();
-      await page.locator(`${root} [data-hero-job-answer="daily"]`).click();
-      await page.locator(`${root} [data-hero-job-skip]`).click();
+      // A free slice is open, the rest shows as locked rows.
+      await page.waitForSelector(
+        `${report} [data-hero-job-eval]:not([data-locked])`,
+      );
+      await page.waitForSelector(`${report} [data-hero-job-eval][data-locked]`);
+      // Unlock: the static server has no /api/forms, so the lead is not
+      // saved, and the report must unlock on the page anyway.
+      await page.locator(`${report} #hero-job-email`).fill("ada@example.com");
+      await page.locator(`${report} input[name="privacy"]`).check();
+      await page.locator(`${report} [data-hero-job-unlock]`).click();
+      await page.waitForSelector(`${report}[data-unlocked]`);
+      if ((await page.locator(`${report} [data-locked]`).count()) > 0) {
+        throw new Error("the unlocked report still has locked rows");
+      }
       const href = await page
-        .locator(`${root} a[data-analytics="Hero-Job-Connect"]`)
+        .locator(`${report} a[data-analytics="Hero-Job-Connect-Traces"]`)
         .getAttribute("href");
       if (
-        !href?.includes("?job=Retrain%20fraud%20model%20on%20drift") ||
-        !href.includes("&answers=use_case%3Afraud%2Ccadence%3Adaily") ||
-        !href.includes("&engineer=nova") ||
-        !href.includes("&stack=sagemaker")
+        !href?.includes("?path=agent") ||
+        !href.includes(
+          "&answers=modality%3Avoice%2Cinteraction%3Atools%2Coutput%3Aactions%2Crisk%3Aact",
+        ) ||
+        !href.includes("&job=A%20voice%20agent%20that%20books%20appointments")
       ) {
-        throw new Error(`Connect link does not carry the job: ${href}`);
+        throw new Error(`Connect link does not carry the report: ${href}`);
+      }
+    },
+  },
+  {
+    name: "HeroJob composes a fine-tune plan from the path chip",
+    route: "/",
+    island: "HeroJob",
+    seedConsent: true,
+    async assert(page, root) {
+      await page.locator(`${root} [data-hero-job-path="finetune"]`).click();
+      await page.waitForSelector(`${root} [data-hero-job-reply="finetune"]`);
+      await page.locator(`${root} [data-hero-job-answer="cost"]`).click();
+      await page.locator(`${root} [data-hero-job-skip]`).click();
+      await page.locator(`${root} [data-hero-job-answer="lora"]`).click();
+      const report = `${root} [data-hero-job-report="finetune"]`;
+      await page.waitForSelector(report);
+      await page.waitForSelector(
+        `${report} [data-hero-job-failure="baseline"], ${report} [data-hero-job-failure="cheap"]`,
+      );
+      await page.waitForSelector(`${report} [data-hero-job-gate]`);
+      const href = await page
+        .locator(`${report} [data-hero-job-gate] a`)
+        .last()
+        .getAttribute("href");
+      if (
+        !href?.includes("?path=finetune") ||
+        !href.includes("&answers=goal%3Acost%2Ctraining%3Alora")
+      ) {
+        throw new Error(`Skip link does not carry the report: ${href}`);
       }
     },
   },

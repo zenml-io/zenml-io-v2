@@ -234,112 +234,67 @@ export interface LabsInstallChip {
   analytics: string;
 }
 
-/** The headline, a one-line deck and the job box (HeroJob). */
+/** The headline, a one-line deck and the eval-plan chat (HeroJob). */
 export const LABS_HERO: LabsHeroContent = {
   headlineLines: ["Meet your", "AI engineer"],
-  deck: "It works on the agents and models you already run. It finds what's wrong, fixes it and proves the fix. You approve what ships.",
+  deck: "It keeps your agents and models improving in production, on your own infrastructure. Your team approves what ships.",
   cta: LABS_HERO_SIGNUP,
 };
 
 /* ---------------------------------------------------------------------- */
-/* Hero job box ("Give it a job") — HeroJob island, homepage hero only     */
+/* Hero eval report — HeroJob island, homepage hero only                   */
 /* ---------------------------------------------------------------------- */
 
 /**
- * The five conversations; which one a job gets is decided by heroJobPlan.ts
- * from keywords in the job.
+ * The two conversations: an agent or AI app, or a model being fine-tuned.
+ * The failure modes, evals and advice each path's report is composed from
+ * live in heroJobAdvice.ts; the case studies are matched at build time from
+ * the LLMOps/MLOps databases (heroJobProof.ts).
  */
-export type HeroJobIntent =
-  | "agents"
-  | "ml"
-  | "reliability"
-  | "cost"
-  | "general";
+export type HeroJobPath = "agent" | "finetune";
 
 /**
- * One choice in the composer's engineer menu. `value` is carried to the
- * signup as `&engineer=` (left out for Auto). `intent` biases the
- * conversation when the typed job is ambiguous (no keyword, or keywords
- * of several intents including this one); Auto has none.
- */
-export interface HeroJobEngineer {
-  value: string;
-  name: string;
-  line: string;
-  intent?: Exclude<HeroJobIntent, "general">;
-}
-
-/**
- * One tappable answer. `value` is the compact id carried to the signup in
- * `answers=` (and, for the use-case question, the key of the case-study
- * proof built from the research databases in heroJobProof.ts). `vars` fill
- * the `{name}` placeholders of the flow's plan and week templates.
+ * One tappable answer. `value` is the compact id carried to the signup and
+ * the email capture in `answers=`. `keywords` let a typed description answer
+ * the question before it is asked (matched at word starts, case-insensitive).
  */
 export interface HeroJobOption {
   label: string;
   value: string;
-  vars?: Readonly<Record<string, string>>;
-  /**
-   * When a picked stack tool implies this answer (see HeroJobTool.answers),
-   * these vars override `vars`; `{tool}` is that tool's name.
-   */
-  stackVars?: Readonly<Record<string, string>>;
-}
-
-/** The "@ add your stack" picker's groups, in display order. */
-export type HeroJobToolGroup = "models" | "frameworks" | "ml" | "infra";
-
-/**
- * One tool in the stack picker. Which tools show, and in what order, is
- * decided at build time from how many LLMOps/MLOps database entries carry
- * the tool's `tags` (buildHeroJobStack in heroJobProof.ts); a tool without
- * tags is a hand-written fallback that always shows, after the ranked ones.
- * `value` is carried to the signup in `&stack=`.
- */
-export interface HeroJobTool {
-  value: string;
-  name: string;
-  group: HeroJobToolGroup;
-  /** Tag slugs (llmops-tags / mlops-tags) that mean this tool in the databases. */
-  tags?: readonly string[];
-  /** Answers this tool implies, question id → option value: that question is skipped. */
-  answers?: Readonly<Record<string, string>>;
+  keywords?: readonly string[];
 }
 
 export interface HeroJobQuestion {
-  /** Compact id carried to the signup in `answers=`. */
+  /** Compact id carried in `answers=`. */
   id: string;
   prompt: string;
-  options: readonly HeroJobOption[];
+  /** How much this answer counts when ranking similar case studies. */
+  weight: number;
+  options: readonly [HeroJobOption, ...HeroJobOption[]];
 }
 
-export interface HeroJobDay {
-  day: string;
-  /** Template: `{name}` placeholders are filled from the answers. */
-  text: string;
-}
-
-/**
- * One intent's conversation: the use-case question first (its answer picks
- * the case studies), then at most two more; then the plan and the first
- * week, both templates filled from the answers. A skipped question leaves
- * the flow's default `vars` in place. `needs` is a var too, so an answer
- * can narrow it.
- */
-export interface HeroJobFlow {
+export interface HeroJobPathContent {
+  /** The start chip. */
+  label: string;
+  /** The engineer's reply once the path is known, before the first question. */
+  intro: string;
+  /** Words in a typed description that pick this path. */
+  keywords?: readonly string[];
   questions: readonly [HeroJobQuestion, ...HeroJobQuestion[]];
-  vars: Readonly<Record<string, string>> & { needs: string };
-  plan: readonly [string, string, string];
-  week: readonly [HeroJobDay, HeroJobDay, HeroJobDay];
-  /**
-   * When the visitor picked stack tools in `groups`, these vars override the
-   * flow's (after the answers); `{tool}` is those tools' names, joined.
-   */
-  stack?: {
-    groups: readonly HeroJobToolGroup[];
-    vars: Readonly<Record<string, string>>;
+  reportTitle: string;
+  adviceHeading: string;
+  /** Mentioned in the gate's body, so the visitor knows what's locked. */
+  lockedSummary: string;
+  /** The last card, once the report is unlocked. */
+  next: {
+    heading: string;
+    body: string;
+    label: string;
+    analytics: string;
   };
 }
+
+export type HeroJobGrade = "code" | "judge" | "human";
 
 export interface HeroJobContent {
   /** Accessible name of the composer input. */
@@ -350,841 +305,380 @@ export interface HeroJobContent {
   replyPlaceholder: string;
   /** Accessible name of the arrow submit button. */
   submitLabel: string;
-  /** Quick replies before the first message: tapping one sends it as the job. */
-  examples: readonly string[];
+  sendKey: string;
+  sendHint: string;
   /** The chat window's header. */
   window: {
     name: string;
-    /** Muted subtitle under the name. */
     status: string;
     /** Accessible name of the chat window. */
     label: string;
   };
-  /**
-   * The composer's bottom row: the engineer menu on the left (first option
-   * is the default, Auto), the "@ add your stack" button, and the
-   * "↵ to send" hint beside the send button.
-   */
-  composer: {
-    /** Accessible name of the engineer menu button, "{name}" is the choice. */
-    engineerButtonLabel: string;
-    /** Accessible name of the open menu. */
-    engineerMenuLabel: string;
-    engineers: readonly [HeroJobEngineer, ...HeroJobEngineer[]];
-    sendKey: string;
-    sendHint: string;
-  };
-  /**
-   * "@ add your stack": typing "@" in the composer or pressing the hint opens
-   * a picker of tools, grouped; picked tools show as removable "@Name" chips
-   * in the composer, skip questions they answer, fill the plan and ride
-   * along to the signup as `&stack=`.
-   */
-  stack: {
-    hint: string;
-    /** Accessible name of the picker and its filter field. */
-    pickerLabel: string;
-    filterPlaceholder: string;
-    empty: string;
-    /** Chip prefix, as in "@Claude". */
-    chipPrefix: string;
-    /** Accessible name of a chip's remove button, "{name}" is the tool. */
-    removeLabel: string;
-    groups: Readonly<Record<HeroJobToolGroup, string>>;
-    tools: readonly HeroJobTool[];
-  };
+  /** Start chips, in display order. */
+  pathOrder: readonly [HeroJobPath, HeroJobPath];
+  paths: Record<HeroJobPath, HeroJobPathContent>;
   reply: {
-    /** The engineer's opening message, shown before anything is sent. */
+    /** "{count}" is the number of published database entries, at build time. */
     greeting: string;
-    /** "On it: “<job>”." — the job sits in curly quotes after this. */
+    /** "Got it: “<description>”." — the text sits in curly quotes after this. */
     acceptedPrefix: string;
     /** Quick reply that skips a question; also echoed as the visitor's bubble. */
     skipLabel: string;
-    /** Screen-reader prefixes of the two sides' bubbles. */
+    /** The engineer's line before the report. */
+    reportLead: string;
     engineerPrefix: string;
     visitorPrefix: string;
-    /** Screen-reader text of the typing indicator. */
     typingLabel: string;
-    proofHeading: string;
-    /** Source label on a case-study card, by database. */
-    sourceLabels: { llmops: string; mlops: string };
-    planHeading: string;
-    weekHeading: string;
-    /** "{needs}" is the flow's needs var. */
-    ready: string;
-    /** Used as `needs` when a job names both agents and models. */
-    needsBoth: string;
   };
-  flows: Record<HeroJobIntent, HeroJobFlow>;
-  /** Primary pill: the unified signup with `?job=` and `&answers=`. */
-  connect: LabsCta;
-  changeJobLabel: string;
+  report: {
+    /** "{count}" as in the greeting. */
+    basis: string;
+    similarHeading: string;
+    ranIntoLabel: string;
+    sourceLabels: { llmops: string; mlops: string };
+    failuresHeading: string;
+    seenAtLabel: string;
+    evalsHeading: string;
+    checksLabel: string;
+    exampleLabel: string;
+    inputLabel: string;
+    expectLabel: string;
+    gradeLabel: string;
+    grades: Record<HeroJobGrade, string>;
+    /** Screen-reader text on a locked item. */
+    lockedLabel: string;
+  };
+  /** The email gate; posts to the site's existing /api/forms route. */
+  gate: {
+    endpoint: string;
+    heading: string;
+    /** "{locked}" is the path's lockedSummary. */
+    body: string;
+    emailLabel: string;
+    emailPlaceholder: string;
+    privacyPrefix: string;
+    privacyLink: { label: string; href: string };
+    submitLabel: string;
+    submittingLabel: string;
+    invalidEmail: string;
+    privacyRequired: string;
+    /** "{email}" is the submitted address. */
+    unlocked: string;
+    /** Shown when the lead could not be saved; the report unlocks anyway. */
+    unsaved: string;
+    skipLabel: string;
+  };
+  /** The signup every CTA points at, with `path=` and `answers=`. */
+  signupHref: string;
+  startOverLabel: string;
   /** Plausible events the island fires itself (link clicks use data-analytics). */
   analytics: {
+    path: string;
     submit: string;
-    example: string;
     answer: string;
     skip: string;
     caseStudy: string;
-    engineer: string;
-    stack: string;
+    unlock: string;
+    skipGate: string;
   };
 }
 
 export const LABS_HERO_JOB: HeroJobContent = {
-  label: "What should it take care of?",
-  placeholder: "Give it a job…",
-  replyPlaceholder: "Reply…",
-  submitLabel: "Give it the job",
-  examples: [
-    "Keep our support agent cheap",
-    "Retrain fraud model on drift",
-    "Fix failed pipelines by standup",
-  ],
+  label: "Describe your AI system",
+  placeholder:
+    "Or describe it: a support agent that answers from our help center…",
+  replyPlaceholder: "Tap an answer above…",
+  submitLabel: "Send",
+  sendKey: "↵",
+  sendHint: "to send",
   window: {
-    name: "Start here, no sign-up",
-    status: "Answers in seconds",
+    name: "Your AI engineer",
+    status: "Free eval plan, no sign-up",
     label: "Chat with your AI engineer",
   },
-  composer: {
-    engineerButtonLabel: "AI engineer: {name}. Choose who takes the job",
-    engineerMenuLabel: "Choose who takes the job",
-    engineers: [
-      { value: "auto", name: "Auto", line: "picks the right one for the job" },
-      {
-        value: "sage",
-        name: "Sage",
-        line: "makes your agents better and cheaper",
-        intent: "agents",
+  pathOrder: ["agent", "finetune"],
+  paths: {
+    agent: {
+      label: "An agent or AI app",
+      intro: "Four quick taps. Each answer changes the advice.",
+      questions: [
+        {
+          id: "modality",
+          prompt: "What does it work with?",
+          weight: 2,
+          options: [
+            {
+              label: "Text",
+              value: "text",
+              keywords: ["chat", "text", "email", "support", "assistant"],
+            },
+            {
+              label: "Voice",
+              value: "voice",
+              keywords: ["voice", "call", "phone", "speech", "audio"],
+            },
+            {
+              label: "Documents",
+              value: "documents",
+              keywords: [
+                "document",
+                "pdf",
+                "contract",
+                "invoice",
+                "claim",
+                "forms",
+              ],
+            },
+            {
+              label: "Code",
+              value: "code",
+              keywords: ["code", "coding", "repo", "pull request"],
+            },
+          ],
+        },
+        {
+          id: "interaction",
+          prompt: "How does it interact?",
+          weight: 1.5,
+          options: [
+            {
+              label: "One request, one answer",
+              value: "single",
+              keywords: ["classif", "extract", "summar", "tag"],
+            },
+            {
+              label: "Back-and-forth conversation",
+              value: "multi",
+              keywords: ["chatbot", "conversation", "chat"],
+            },
+            {
+              label: "Multi-step, with tools",
+              value: "tools",
+              keywords: ["agent", "tool", "workflow", "mcp"],
+            },
+          ],
+        },
+        {
+          id: "output",
+          prompt: "What does it produce?",
+          weight: 1,
+          options: [
+            { label: "Text for people", value: "text" },
+            {
+              label: "Structured data",
+              value: "structured",
+              keywords: ["json", "structured", "extract"],
+            },
+            {
+              label: "Actions in other systems",
+              value: "actions",
+              keywords: ["refund", "book", "update", "action"],
+            },
+          ],
+        },
+        {
+          id: "risk",
+          prompt: "What would hurt most if it went wrong?",
+          weight: 1,
+          options: [
+            { label: "Confident wrong answers", value: "facts" },
+            { label: "Unsafe or off-brand replies", value: "unsafe" },
+            { label: "A wrong action", value: "act" },
+            { label: "Leaking private data", value: "privacy" },
+            { label: "Getting worse after a change", value: "regress" },
+            { label: "Runaway cost or latency", value: "cost" },
+          ],
+        },
+      ],
+      reportTitle: "Your eval plan",
+      adviceHeading: "How to write evals that hold up",
+      lockedSummary:
+        "the rest of the failure modes, every eval with a test case and how to grade it, and how to write evals that hold up",
+      next: {
+        heading: "Run these evals on your real traffic",
+        body: "Connect your traces. Your AI engineer runs these evals on real sessions, finds what's failing and fixes it. Your team approves what ships.",
+        label: "Connect your traces",
+        analytics: "Hero-Job-Connect-Traces",
       },
-      {
-        value: "atlas",
-        name: "Atlas",
-        line: "keeps your pipelines running",
-        intent: "reliability",
-      },
-      {
-        value: "nova",
-        name: "Nova",
-        line: "keeps your models fresh",
-        intent: "ml",
-      },
-      {
-        value: "vega",
-        name: "Vega",
-        line: "watches what you spend",
-        intent: "cost",
-      },
-    ],
-    sendKey: "↵",
-    sendHint: "to send",
-  },
-  stack: {
-    hint: "@ add your stack",
-    pickerLabel: "Add your stack",
-    filterPlaceholder: "Filter tools…",
-    empty: "No tool matches that.",
-    chipPrefix: "@",
-    removeLabel: "Remove {name}",
-    groups: {
-      models: "Models",
-      frameworks: "Agent frameworks",
-      ml: "ML & orchestration",
-      infra: "Infra",
     },
-    tools: [
-      // Models
-      {
-        value: "openai",
-        name: "OpenAI",
-        group: "models",
-        tags: ["openai"],
-        answers: { model: "gpt" },
+    finetune: {
+      label: "A model we're fine-tuning",
+      intro: "Three quick taps about the fine-tune.",
+      keywords: [
+        "fine-tun",
+        "finetun",
+        "fine tun",
+        "lora",
+        "distill",
+        "sft",
+        "dpo",
+        "rlhf",
+        "train",
+        "adapter",
+      ],
+      questions: [
+        {
+          id: "goal",
+          prompt: "Why are you fine-tuning?",
+          weight: 2,
+          options: [
+            {
+              label: "Cheaper or faster than a big model",
+              value: "cost",
+              keywords: [
+                "cheap",
+                "cost",
+                "latency",
+                "fast",
+                "distill",
+                "small",
+              ],
+            },
+            {
+              label: "Better quality on our domain",
+              value: "quality",
+              keywords: ["domain", "quality", "accura"],
+            },
+            {
+              label: "A consistent format or style",
+              value: "format",
+              keywords: ["format", "style", "tone", "json"],
+            },
+            {
+              label: "Keep data and weights in-house",
+              value: "private",
+              keywords: [
+                "private",
+                "privacy",
+                "on-prem",
+                "self-host",
+                "open-weight",
+                "open source",
+              ],
+            },
+          ],
+        },
+        {
+          id: "data",
+          prompt: "Where does the training data come from?",
+          weight: 1.5,
+          options: [
+            {
+              label: "Production logs",
+              value: "logs",
+              keywords: ["log", "trace", "production"],
+            },
+            {
+              label: "Human-labelled examples",
+              value: "labels",
+              keywords: ["label", "annotat"],
+            },
+            {
+              label: "Generated by a bigger model",
+              value: "synthetic",
+              keywords: ["synthetic", "generated", "teacher", "distill"],
+            },
+            {
+              label: "Our documents",
+              value: "docs",
+              keywords: ["document", "docs", "manual", "wiki"],
+            },
+          ],
+        },
+        {
+          id: "training",
+          prompt: "How are you training?",
+          weight: 1,
+          options: [
+            {
+              label: "LoRA or adapters",
+              value: "lora",
+              keywords: ["lora", "qlora", "adapter", "peft"],
+            },
+            {
+              label: "Full fine-tune",
+              value: "full",
+              keywords: ["full fine", "pretrain", "pre-train"],
+            },
+            {
+              label: "A provider's fine-tuning API",
+              value: "api",
+              keywords: ["api"],
+            },
+            {
+              label: "Preference tuning (DPO, RL)",
+              value: "pref",
+              keywords: ["dpo", "rlhf", "preference", "reward"],
+            },
+          ],
+        },
+      ],
+      reportTitle: "Your fine-tune eval plan",
+      adviceHeading: "How to prove the fine-tune beats the base model",
+      lockedSummary:
+        "the rest of the failure modes, every eval with a test case and how to grade it, and how to prove the fine-tune beats the base model",
+      next: {
+        heading: "Prove it on your own data",
+        body: "Connect your data. Your AI engineer builds the dataset, runs the fine-tune on your infrastructure and shows whether it beats the base model. Your team approves what ships.",
+        label: "Connect your data",
+        analytics: "Hero-Job-Connect-Data",
       },
-      {
-        value: "claude",
-        name: "Claude",
-        group: "models",
-        tags: ["anthropic"],
-        answers: { model: "claude" },
-      },
-      {
-        value: "llama",
-        name: "Llama",
-        group: "models",
-        tags: ["meta"],
-        answers: { model: "oss" },
-      },
-      {
-        value: "hugging-face",
-        name: "Hugging Face",
-        group: "models",
-        tags: ["hugging-face"],
-        answers: { model: "oss" },
-      },
-      {
-        value: "mistral",
-        name: "Mistral",
-        group: "models",
-        tags: ["mistral"],
-        answers: { model: "oss" },
-      },
-      { value: "cohere", name: "Cohere", group: "models", tags: ["cohere"] },
-      { value: "gemini", name: "Gemini", group: "models" },
-      {
-        value: "open-source",
-        name: "Open-source models",
-        group: "models",
-        answers: { model: "oss" },
-      },
-      // Agent frameworks
-      {
-        value: "langchain",
-        name: "LangChain",
-        group: "frameworks",
-        tags: ["langchain"],
-      },
-      {
-        value: "llamaindex",
-        name: "LlamaIndex",
-        group: "frameworks",
-        tags: ["llama-index"],
-      },
-      {
-        value: "crewai",
-        name: "CrewAI",
-        group: "frameworks",
-        tags: ["crewai"],
-      },
-      {
-        value: "haystack",
-        name: "Haystack",
-        group: "frameworks",
-        tags: ["haystack"],
-      },
-      { value: "langgraph", name: "LangGraph", group: "frameworks" },
-      {
-        value: "openai-agents",
-        name: "OpenAI Agents SDK",
-        group: "frameworks",
-      },
-      { value: "pydantic-ai", name: "Pydantic AI", group: "frameworks" },
-      // ML & orchestration
-      {
-        value: "spark",
-        name: "Spark",
-        group: "ml",
-        tags: ["spark"],
-      },
-      {
-        value: "databricks",
-        name: "Databricks",
-        group: "ml",
-        tags: ["databricks"],
-        answers: { platform: "cloud" },
-      },
-      {
-        value: "wandb",
-        name: "Weights & Biases",
-        group: "ml",
-        tags: ["wandb"],
-      },
-      { value: "ray", name: "Ray", group: "ml", tags: ["ray"] },
-      { value: "mlflow", name: "MLflow", group: "ml", tags: ["mlflow"] },
-      {
-        value: "airflow",
-        name: "Airflow",
-        group: "ml",
-        tags: ["airflow"],
-        answers: { platform: "airflow" },
-      },
-      {
-        value: "kubeflow",
-        name: "Kubeflow",
-        group: "ml",
-        tags: ["kubeflow"],
-        answers: { platform: "k8s" },
-      },
-      {
-        value: "sagemaker",
-        name: "SageMaker",
-        group: "ml",
-        tags: ["sagemaker"],
-        answers: { platform: "cloud" },
-      },
-      {
-        value: "vertex-ai",
-        name: "Vertex AI",
-        group: "ml",
-        tags: ["vertex-ai"],
-        answers: { platform: "cloud" },
-      },
-      { value: "metaflow", name: "Metaflow", group: "ml", tags: ["metaflow"] },
-      { value: "flyte", name: "Flyte", group: "ml", tags: ["flyte"] },
-      { value: "dagster", name: "Dagster", group: "ml", tags: ["dagster"] },
-      { value: "zenml", name: "ZenML", group: "ml" },
-      // Infra
-      {
-        value: "kubernetes",
-        name: "Kubernetes",
-        group: "infra",
-        tags: ["kubernetes"],
-        answers: { platform: "k8s" },
-      },
-      {
-        value: "aws",
-        name: "AWS",
-        group: "infra",
-        tags: ["amazon-aws", "aws"],
-        answers: { platform: "cloud" },
-      },
-      {
-        value: "gcp",
-        name: "GCP",
-        group: "infra",
-        tags: ["google-gcp"],
-        answers: { platform: "cloud" },
-      },
-      {
-        value: "azure",
-        name: "Azure",
-        group: "infra",
-        tags: ["microsoft-azure", "azure-ml"],
-        answers: { platform: "cloud" },
-      },
-      { value: "docker", name: "Docker", group: "infra", tags: ["docker"] },
-      {
-        value: "postgres",
-        name: "Postgres",
-        group: "infra",
-        tags: ["postgresql"],
-      },
-      {
-        value: "terraform",
-        name: "Terraform",
-        group: "infra",
-        tags: ["terraform"],
-      },
-      {
-        value: "pinecone",
-        name: "Pinecone",
-        group: "infra",
-        tags: ["pinecone"],
-      },
-      { value: "vllm", name: "vLLM", group: "infra", tags: ["vllm"] },
-      { value: "triton", name: "Triton", group: "infra", tags: ["triton"] },
-    ],
+    },
   },
   reply: {
-    greeting: "Hi. What should I take care of?",
-    acceptedPrefix: "On it:",
+    greeting:
+      "I've read {count} production case studies of AI systems. Tell me what you're building, and I'll show you what tends to break and which evals to write first.",
+    acceptedPrefix: "Got it:",
     skipLabel: "Skip",
+    reportLead:
+      "Here's your plan, drawn from the case studies closest to your system.",
     engineerPrefix: "AI engineer:",
     visitorPrefix: "You:",
     typingLabel: "Your AI engineer is typing",
-    proofHeading: "Related case studies:",
-    sourceLabels: { llmops: "LLMOps database", mlops: "MLOps database" },
-    planHeading: "Here's my plan",
-    weekHeading: "Your first week with me",
-    ready: "Ready to start tonight. I just need read access to your {needs}.",
-    needsBoth: "traces and runs",
   },
-  flows: {
-    agents: {
-      questions: [
-        {
-          id: "use_case",
-          prompt: "What's the agent for?",
-          options: [
-            {
-              label: "Customer support",
-              value: "support",
-              vars: { sessions: "support conversations" },
-            },
-            {
-              label: "Search / RAG",
-              value: "rag",
-              vars: { sessions: "search answers" },
-            },
-            {
-              label: "Coding assistant",
-              value: "coding",
-              vars: { sessions: "coding sessions" },
-            },
-            {
-              label: "Document processing",
-              value: "docs",
-              vars: { sessions: "document runs" },
-            },
-            { label: "Other", value: "other" },
-          ],
-        },
-        {
-          id: "model",
-          prompt: "What does it run on?",
-          options: [
-            {
-              label: "GPT-6",
-              value: "gpt",
-              vars: { cheaper: "a smaller GPT-6 model" },
-            },
-            {
-              label: "Claude",
-              value: "claude",
-              vars: { cheaper: "Claude Haiku 4.5" },
-            },
-            {
-              label: "Open-source model",
-              value: "oss",
-              vars: { cheaper: "a smaller open-source model" },
-            },
-            { label: "Not sure", value: "unsure" },
-          ],
-        },
-        {
-          id: "focus",
-          prompt: "What matters more right now?",
-          options: [
-            {
-              label: "Cost",
-              value: "cost",
-              vars: {
-                focusStep: "test {cheaper} on your most expensive {sessions}.",
-                wedStep:
-                  "Replay the most expensive ones on {cheaper} and score both.",
-                outcome:
-                  "the cost saving, measured on your traffic, at the same quality",
-              },
-            },
-            {
-              label: "Quality",
-              value: "quality",
-              vars: {
-                focusStep:
-                  "find the {sessions} that go wrong and fix the prompts behind them.",
-                wedStep:
-                  "Replay the weakest ones with a prompt fix and score both.",
-                outcome:
-                  "a prompt fix for your weakest {sessions}, with the eval",
-              },
-            },
-            { label: "Both", value: "both" },
-          ],
-        },
-      ],
-      vars: {
-        needs: "traces",
-        sessions: "conversations",
-        source: "",
-        cheaper: "cheaper models",
-        focusStep:
-          "test {cheaper} and prompt fixes on your most expensive and weakest {sessions}.",
-        wedStep:
-          "Replay expensive and weak ones on {cheaper} with a prompt fix.",
-        outcome:
-          "lower cost and fewer bad answers, with the eval that proves both",
-      },
-      plan: [
-        "Watch all your {sessions} and flag quality drops within a day.",
-        "{focusStep}",
-        "Nothing ships without an eval on your production sessions. You approve every change.",
-      ],
-      week: [
-        {
-          day: "Mon",
-          text: "Read the last two weeks of {sessions}{source} and sort them by cost and quality.",
-        },
-        { day: "Wed", text: "{wedStep}" },
-        { day: "Fri", text: "PR ready: {outcome}. You approve." },
-      ],
-      stack: {
-        groups: ["frameworks"],
-        vars: { source: " in your {tool} traces" },
-      },
-    },
-    ml: {
-      questions: [
-        {
-          id: "use_case",
-          prompt: "What's the model for?",
-          options: [
-            {
-              label: "Fraud & risk",
-              value: "fraud",
-              vars: { model: "risk model" },
-            },
-            {
-              label: "Recommendations",
-              value: "recs",
-              vars: { model: "recommender" },
-            },
-            {
-              label: "Forecasting",
-              value: "forecasting",
-              vars: { model: "forecasting model" },
-            },
-            {
-              label: "Computer vision",
-              value: "vision",
-              vars: { model: "vision model" },
-            },
-            { label: "Other", value: "other" },
-          ],
-        },
-        {
-          id: "cadence",
-          prompt: "How often does the data change?",
-          options: [
-            { label: "Daily", value: "daily", vars: { batch: "day's data" } },
-            {
-              label: "Weekly",
-              value: "weekly",
-              vars: { batch: "week's data" },
-            },
-            {
-              label: "Monthly",
-              value: "monthly",
-              vars: { batch: "month's data" },
-            },
-          ],
-        },
-        {
-          id: "today",
-          prompt: "What happens today when it drifts?",
-          options: [
-            {
-              label: "We notice late",
-              value: "late",
-              vars: {
-                todayStep: "Alert you the day drift starts, not weeks later.",
-              },
-            },
-            {
-              label: "Manual retrain",
-              value: "manual",
-              vars: {
-                todayStep:
-                  "Take over the retrain: run it, compare against the current {model}, write it up.",
-              },
-            },
-            {
-              label: "Nothing yet",
-              value: "nothing",
-              vars: {
-                todayStep:
-                  "Set up drift checks on your {model} from the runs you already have.",
-              },
-            },
-          ],
-        },
-      ],
-      vars: {
-        needs: "runs",
-        model: "model",
-        batch: "new batch of data",
-        source: "",
-        todayStep:
-          "Retrain when it drifts and compare against the current {model}.",
-      },
-      plan: [
-        "check inputs and predictions{source} for drift as each {batch} lands.",
-        "{todayStep}",
-        "Promote a retrained {model} only if it beats the champion. You approve.",
-      ],
-      week: [
-        {
-          day: "Mon",
-          text: "Map your {model}'s training runs, data and current metrics.",
-        },
-        {
-          day: "Wed",
-          text: "Retrain on recent data and compare against the champion.",
-        },
-        {
-          day: "Fri",
-          text: "Retrained {model} ready if it beats the champion, with the comparison. You approve.",
-        },
-      ],
-      stack: { groups: ["ml", "infra"], vars: { source: " from {tool}" } },
-    },
-    reliability: {
-      questions: [
-        {
-          id: "use_case",
-          prompt: "What do the pipelines do?",
-          options: [
-            {
-              label: "Training",
-              value: "training",
-              vars: { pipes: "training pipelines" },
-            },
-            {
-              label: "Feature / data prep",
-              value: "data",
-              vars: { pipes: "data pipelines" },
-            },
-            {
-              label: "Batch inference",
-              value: "inference",
-              vars: { pipes: "batch inference jobs" },
-            },
-            { label: "Other", value: "other" },
-          ],
-        },
-        {
-          id: "platform",
-          prompt: "Where do pipelines run?",
-          options: [
-            {
-              label: "Kubernetes",
-              value: "k8s",
-              vars: { where: "Kubernetes" },
-              stackVars: { where: "{tool}" },
-            },
-            {
-              label: "Cloud (SageMaker/Vertex/…)",
-              value: "cloud",
-              vars: { where: "your cloud platform" },
-              stackVars: { where: "{tool}" },
-            },
-            {
-              label: "Airflow",
-              value: "airflow",
-              vars: { where: "Airflow" },
-              stackVars: { where: "{tool}" },
-            },
-            { label: "Other", value: "other" },
-          ],
-        },
-        {
-          id: "owner",
-          prompt: "Who fixes them?",
-          options: [
-            {
-              label: "Whoever's on call",
-              value: "oncall",
-              vars: {
-                ownerStep:
-                  "Hand whoever is on call a diagnosis and a fix, not a stack trace.",
-              },
-            },
-            {
-              label: "One person",
-              value: "one",
-              vars: {
-                ownerStep:
-                  "Take the first pass off that one person: cause, fix and evidence, ready to review.",
-              },
-            },
-            {
-              label: "Nobody, it waits",
-              value: "nobody",
-              vars: {
-                ownerStep:
-                  "Pick up failures the moment they happen, so nothing waits for a free afternoon.",
-              },
-            },
-          ],
-        },
-      ],
-      vars: {
-        needs: "pipelines",
-        pipes: "pipelines",
-        where: "your orchestrator",
-        ownerStep: "Open a fix with the evidence and re-run it on the branch.",
-      },
-      plan: [
-        "catch failed {pipes} on {where} as they happen and find the cause from logs and lineage.",
-        "{ownerStep}",
-        "Post a summary before standup. You approve merges.",
-      ],
-      week: [
-        {
-          day: "Mon",
-          text: "Read every failed run on {where} from the last month and group them by cause.",
-        },
-        {
-          day: "Wed",
-          text: "Open fixes for the top causes and re-run them on a branch.",
-        },
-        {
-          day: "Fri",
-          text: "Fixes ready for the most common failures, with the evidence. You approve merges.",
-        },
-      ],
-    },
-    cost: {
-      questions: [
-        {
-          id: "use_case",
-          prompt: "What's getting expensive?",
-          options: [
-            {
-              label: "LLM calls",
-              value: "llm",
-              vars: {
-                spend: "LLM calls",
-                swap: "cheaper models and shorter prompts",
-              },
-            },
-            {
-              label: "Model training",
-              value: "train",
-              vars: {
-                spend: "training runs",
-                swap: "right-sized GPUs and spot capacity",
-              },
-            },
-            {
-              label: "Inference",
-              value: "serve",
-              vars: {
-                spend: "inference",
-                swap: "smaller models and right-sized instances",
-              },
-            },
-            { label: "Not sure", value: "unsure" },
-          ],
-        },
-        {
-          id: "margin",
-          prompt: "How much quality can you trade?",
-          options: [
-            {
-              label: "None",
-              value: "none",
-              vars: { guard: "Ship only what holds quality exactly." },
-            },
-            {
-              label: "A little",
-              value: "little",
-              vars: {
-                guard:
-                  "Ship only what stays inside the quality margin you set.",
-              },
-            },
-            {
-              label: "Not sure",
-              value: "unsure",
-              vars: {
-                guard:
-                  "Show you the cost and quality of each change side by side.",
-              },
-            },
-          ],
-        },
-      ],
-      vars: {
-        needs: "runs",
-        spend: "agents and pipelines",
-        swap: "cheaper models and right-sized GPUs",
-        guard: "Ship only what holds quality.",
-        source: "",
-      },
-      plan: [
-        "Find the most expensive steps in your {spend}{source}.",
-        "test {swap} on real data.",
-        "{guard} You approve.",
-      ],
-      week: [
-        {
-          day: "Mon",
-          text: "Rank your {spend}{source} by cost over the last 30 days.",
-        },
-        { day: "Wed", text: "Test {swap} on the top three." },
-        {
-          day: "Fri",
-          text: "PR ready with the savings measured on those steps. You approve.",
-        },
-      ],
-      stack: {
-        groups: ["models", "frameworks", "ml", "infra"],
-        vars: { source: " on {tool}" },
-      },
-    },
-    general: {
-      questions: [
-        {
-          id: "use_case",
-          prompt: "What do you run in production?",
-          options: [
-            {
-              label: "Agents / LLM apps",
-              value: "agents",
-              vars: { what: "agents", needs: "traces" },
-            },
-            {
-              label: "ML models",
-              value: "models",
-              vars: { what: "models", needs: "runs" },
-            },
-            { label: "Both", value: "both" },
-          ],
-        },
-        {
-          id: "worry",
-          prompt: "What worries you most?",
-          options: [
-            {
-              label: "Quality",
-              value: "quality",
-              vars: { worry: "getting worse" },
-            },
-            {
-              label: "Cost",
-              value: "cost",
-              vars: { worry: "costing too much" },
-            },
-            {
-              label: "Failures",
-              value: "failures",
-              vars: { worry: "failing" },
-            },
-          ],
-        },
-      ],
-      vars: {
-        needs: "runs and traces",
-        what: "agents and models",
-        worry: "getting worse or costing too much",
-        source: "",
-      },
-      plan: [
-        "learn how your {what} run in production.",
-        "Find what's {worry} and why.",
-        "Fix it and prove it before anything ships. You approve.",
-      ],
-      week: [
-        {
-          day: "Mon",
-          text: "Map your {what} from their runs and traces{source}.",
-        },
-        { day: "Wed", text: "Rank what's {worry}, with the evidence." },
-        {
-          day: "Fri",
-          text: "First fix ready, proven on production data. You approve.",
-        },
-      ],
-      stack: {
-        groups: ["models", "frameworks", "ml", "infra"],
-        vars: { source: " in {tool}" },
-      },
-    },
+  report: {
+    basis: "Matched against {count} production case studies",
+    similarHeading: "Systems like yours",
+    ranIntoLabel: "What they ran into",
+    sourceLabels: { llmops: "LLMOps Database", mlops: "MLOps Database" },
+    failuresHeading: "What breaks first",
+    seenAtLabel: "Seen at",
+    evalsHeading: "Evals to write first",
+    checksLabel: "Checks",
+    exampleLabel: "Example test case",
+    inputLabel: "Input",
+    expectLabel: "Pass if",
+    gradeLabel: "How to grade",
+    grades: { code: "Code check", judge: "LLM judge", human: "Human review" },
+    lockedLabel: "Locked. Unlock the full report below.",
   },
-  connect: {
-    label: "Connect and start",
-    href: LABS_SIGNUP.href,
-    analytics: "Hero-Job-Connect",
+  gate: {
+    endpoint: "/api/forms/eval-report",
+    heading: "Unlock the full report",
+    body: "Get {locked}. It unlocks here right away.",
+    emailLabel: "Work email",
+    emailPlaceholder: "you@company.com",
+    privacyPrefix: "I agree to the",
+    privacyLink: { label: "privacy policy", href: "/privacy-policy" },
+    submitLabel: "Unlock",
+    submittingLabel: "Unlocking…",
+    invalidEmail: "Enter a valid email address.",
+    privacyRequired: "Please agree to the privacy policy.",
+    unlocked: "Thanks, {email}. Here's the full report.",
+    unsaved:
+      "We couldn't save your email just now. Here's the full report anyway.",
+    skipLabel: "Skip, start free",
   },
-  changeJobLabel: "Change job",
+  signupHref: LABS_SIGNUP.href,
+  startOverLabel: "Start over",
   analytics: {
+    path: "Hero-Job-Path",
     submit: "Hero-Job-Submit",
-    example: "Hero-Job-Example",
     answer: "Hero-Job-Answer",
     skip: "Hero-Job-Skip",
     caseStudy: "Hero-Job-CaseStudy",
-    engineer: "Hero-Job-Engineer",
-    stack: "Hero-Job-Stack",
+    unlock: "Hero-Job-Unlock",
+    skipGate: "Hero-Job-Skip-Gate",
   },
 };
 

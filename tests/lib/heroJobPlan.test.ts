@@ -1,476 +1,454 @@
 import { describe, expect, it } from "vitest";
 import {
-  answerImplied,
-  classifyHeroJob,
-  displayJob,
-  fillTemplate,
-  heroJobOutcome,
+  HERO_JOB_ADVICE,
+  HERO_JOB_FAILURES,
+  type HeroJobFailure,
+} from "../../src/lib/heroJobAdvice";
+import {
+  answerLabels,
+  classifyHeroJobPath,
+  heroJobAdvice,
+  heroJobExample,
+  heroJobFailures,
   heroJobSignupHref,
-  impliedAnswer,
-  joinNames,
-  preferCases,
+  holds,
+  impliedAnswers,
+  pickSimilar,
+  REPORT_FAILURES,
+  REPORT_SIMILAR,
+  seenAt,
+  serializeAnswers,
 } from "../../src/lib/heroJobPlan";
 import {
-  buildHeroJobProof,
-  buildHeroJobStack,
-  HERO_JOB_PROOF_MATCHERS,
+  buildHeroJobCasePool,
+  HERO_JOB_ANSWER_MATCHERS,
+  HERO_JOB_FAILURE_MATCHERS,
   type HeroJobProofEntry,
+  ranIntoFrom,
 } from "../../src/lib/heroJobProof";
-import {
-  type HeroJobIntent,
-  type HeroJobTool,
-  LABS_HERO_JOB,
-} from "../../src/lib/labs-home";
+import { LABS_HERO_JOB } from "../../src/lib/labs-home";
 
-const INTENTS = Object.keys(LABS_HERO_JOB.flows) as HeroJobIntent[];
+const content = LABS_HERO_JOB;
+const agentQuestions = content.paths.agent.questions;
+const finetuneQuestions = content.paths.finetune.questions;
+const answerKeys = {
+  agent: agentQuestions.flatMap((q) =>
+    q.options.map((o) => `${q.id}:${o.value}`),
+  ),
+  finetune: finetuneQuestions.flatMap((q) =>
+    q.options.map((o) => `${q.id}:${o.value}`),
+  ),
+};
 
-function tool(value: string): HeroJobTool {
-  const found = LABS_HERO_JOB.stack.tools.find((t) => t.value === value);
-  if (!found) throw new Error(`no tool ${value}`);
-  return found;
+function entry(overrides: Partial<HeroJobProofEntry>): HeroJobProofEntry {
+  return {
+    source: "llmops",
+    slug: overrides.slug ?? "entry",
+    title: "An LLM assistant in production",
+    company: "Acme",
+    summary: "Acme runs an LLM assistant for its customers.",
+    year: 2024,
+    tags: [],
+    ...overrides,
+  };
 }
 
-describe("classifyHeroJob", () => {
-  it("routes each example chip to its own conversation", () => {
-    expect(LABS_HERO_JOB.examples.map((job) => classifyHeroJob(job))).toEqual([
-      "agents",
-      "ml",
-      "reliability",
-    ]);
+describe("hero eval plan content", () => {
+  it("every answer option has a case matcher", () => {
+    for (const key of [...answerKeys.agent, ...answerKeys.finetune])
+      expect(HERO_JOB_ANSWER_MATCHERS[key], key).toBeDefined();
   });
 
-  it.each([
-    ["Make our RAG assistant answer better", "agents"],
-    ["Keep the churn classifier fresh", "ml"],
-    ["Our Airflow DAGs keep breaking at night, broken again", "reliability"],
-    ["Cut our GPU bill", "cost"],
-    ["Keep an eye on things", "general"],
-  ])("%s → %s", (job, intent) => {
-    expect(classifyHeroJob(job)).toBe(intent);
+  it("every failure mode has a case matcher and a unique id", () => {
+    const ids = HERO_JOB_FAILURES.map((f) => f.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const id of ids)
+      expect(HERO_JOB_FAILURE_MATCHERS[id], id).toBeDefined();
   });
 
-  it("matches case-insensitively at word starts only", () => {
-    expect(classifyHeroJob("LLM evals")).toBe("agents");
-    expect(classifyHeroJob("Failed runs")).toBe("reliability");
-    // "rag" inside "storage" is not the RAG keyword.
-    expect(classifyHeroJob("Tidy up storage")).toBe("general");
+  it("conditions only name real questions and options", () => {
+    const valid = new Set([...answerKeys.agent, ...answerKeys.finetune]);
+    const conditions = [
+      ...HERO_JOB_FAILURES.flatMap((f) => [
+        f.when,
+        ...(f.boosts ?? []).map((b) => b.when),
+        ...(f.eval.examples ?? []).map((e) => e.when),
+      ]),
+      ...HERO_JOB_ADVICE.map((a) => a.when),
+    ];
+    for (const condition of conditions)
+      for (const [id, values] of Object.entries(condition ?? {}))
+        for (const value of values)
+          expect(valid.has(`${id}:${value}`), `${id}:${value}`).toBe(true);
   });
 
-  it("prefers agents, then ML, then reliability, then cost", () => {
-    expect(classifyHeroJob("cheaper prompts")).toBe("agents");
-    expect(classifyHeroJob("retrain when pipelines fail")).toBe("ml");
-    expect(classifyHeroJob("fix failed jobs that cost too much")).toBe(
-      "reliability",
-    );
-  });
-});
-
-describe("engineer bias", () => {
-  const byName = (name: string) => {
-    const engineer = LABS_HERO_JOB.composer.engineers.find(
-      (e) => e.value === name,
-    );
-    if (!engineer) throw new Error(`no engineer ${name}`);
-    return engineer;
-  };
-
-  it("offers Auto first, then one named engineer per matched intent", () => {
-    const [auto, ...named] = LABS_HERO_JOB.composer.engineers;
-    expect(auto.value).toBe("auto");
-    expect(auto.intent).toBeUndefined();
-    expect(named.map((e) => [e.value, e.intent])).toEqual([
-      ["sage", "agents"],
-      ["atlas", "reliability"],
-      ["nova", "ml"],
-      ["vega", "cost"],
-    ]);
-    for (const e of LABS_HERO_JOB.composer.engineers) {
-      expect(e.value).toBe(e.name.toLowerCase());
-      expect(`${e.name} ${e.line}`).not.toMatch(/\bbots?\b/i);
-    }
+  it("carries no figures: no digits in failure modes, evals or advice", () => {
+    const strings = [
+      ...HERO_JOB_FAILURES.flatMap((f) => [
+        f.title,
+        f.why,
+        f.eval.name,
+        f.eval.checks,
+        f.eval.how,
+        f.eval.example.input,
+        f.eval.example.expect,
+        ...(f.eval.examples ?? []).flatMap((e) => [e.input, e.expect]),
+      ]),
+      ...HERO_JOB_ADVICE.flatMap((a) => [a.title, a.body]),
+    ];
+    for (const s of strings) expect(s, s).not.toMatch(/\d|%/);
   });
 
-  it("gives a job with no keyword the engineer's intent", () => {
-    expect(classifyHeroJob("Keep an eye on things", "reliability")).toBe(
-      "reliability",
-    );
-    expect(
-      classifyHeroJob("Keep an eye on things", byName("vega").intent),
-    ).toBe("cost");
-    expect(classifyHeroJob("Keep an eye on things")).toBe("general");
-  });
-
-  it("picks the engineer's intent among several matches", () => {
-    // Matches ML and reliability; ML wins on its own, Atlas tips it.
-    expect(classifyHeroJob("retrain when pipelines fail")).toBe("ml");
-    expect(classifyHeroJob("retrain when pipelines fail", "reliability")).toBe(
-      "reliability",
-    );
-  });
-
-  it("leaves a clear job its own intent", () => {
-    expect(classifyHeroJob("Cut our GPU bill", "agents")).toBe("cost");
+  it("keeps the homepage copy free of competitor and 'autonomous' claims", () => {
+    const copy = JSON.stringify(content);
+    expect(copy).not.toMatch(/devin|autonomous/i);
   });
 });
 
-describe("conversation flows", () => {
-  it.each(INTENTS)(
-    "%s: use case first, at most three questions, every template filled",
-    (intent) => {
-      const flow = LABS_HERO_JOB.flows[intent];
-      expect(flow.questions[0].id).toBe("use_case");
-      expect(flow.questions.length).toBeLessThanOrEqual(3);
-      // Every combination of first options, and all skipped, leaves no placeholder.
-      const runs = [
-        flow.questions.map(() => null),
-        ...flow.questions[0].options.map((first) => [
-          first,
-          ...flow.questions.slice(1).map((q) => q.options[0]),
-        ]),
-        flow.questions.map((q) => q.options[q.options.length - 1]),
-      ];
-      for (const answers of runs) {
-        const outcome = heroJobOutcome("a job", intent, answers, LABS_HERO_JOB);
-        expect(outcome.needs).not.toMatch(/[{}]/);
-        for (const line of [
-          ...outcome.plan,
-          ...outcome.week.map((d) => d.text),
-        ]) {
-          expect(line).not.toMatch(/[{}]/);
-          expect(line.charAt(0)).toBe(line.charAt(0).toUpperCase());
-        }
-      }
-    },
-  );
-
-  it("fills the plan from the answers", () => {
-    const [useCase, model, focus] = LABS_HERO_JOB.flows.agents.questions;
-    const outcome = heroJobOutcome(
-      "Keep our support agent cheap",
-      "agents",
-      [useCase.options[0], model.options[1], focus.options[0]],
-      LABS_HERO_JOB,
+describe("classifyHeroJobPath", () => {
+  it("routes fine-tuning descriptions to the fine-tune path", () => {
+    expect(classifyHeroJobPath("We fine-tune Llama with LoRA", content)).toBe(
+      "finetune",
     );
-    expect(outcome.plan[1]).toBe(
-      "Test Claude Haiku 4.5 on your most expensive support conversations.",
-    );
-    expect(outcome.week.map((d) => d.day)).toEqual(["Mon", "Wed", "Fri"]);
-    expect(outcome.needs).toBe("traces");
-  });
-
-  it("asks for what the conversation needs", () => {
-    const needs = (job: string, intent: HeroJobIntent, answers = []) =>
-      heroJobOutcome(job, intent, answers, LABS_HERO_JOB).needs;
-    expect(needs("Fix failed pipelines", "reliability")).toBe("pipelines");
-    expect(needs("Keep an eye on things", "general")).toBe("runs and traces");
     expect(
-      heroJobOutcome(
-        "x",
-        "general",
-        [LABS_HERO_JOB.flows.general.questions[0].options[1]],
-        LABS_HERO_JOB,
-      ).needs,
-    ).toBe("runs");
-    // A job naming agents and models asks for both.
-    expect(needs("Pick the model for our agent", "agents")).toBe(
-      "traces and runs",
-    );
+      classifyHeroJobPath("Distilling GPT into a small model", content),
+    ).toBe("finetune");
   });
 
-  it("fills nested placeholders", () => {
-    expect(fillTemplate("{a}!", { a: "hi {b}", b: "there" })).toBe("hi there!");
-  });
-});
-
-describe("job formatting", () => {
-  it("drops trailing punctuation when quoting the job back", () => {
-    expect(displayJob("  Fix it now!  ")).toBe("Fix it now");
-  });
-
-  it("carries the job and answers to the signup url-encoded", () => {
-    const flow = LABS_HERO_JOB.flows.ml;
+  it("defaults everything else to the agent path", () => {
     expect(
-      heroJobSignupHref("https://cloud.zenml.io/signup", " Fix & ship "),
-    ).toBe("https://cloud.zenml.io/signup?job=Fix%20%26%20ship");
-    expect(
-      heroJobSignupHref("https://cloud.zenml.io/signup", "Retrain", {
-        flow,
-        answers: [
-          flow.questions[0].options[0],
-          null,
-          flow.questions[2].options[1],
-        ],
-      }),
-    ).toBe(
-      "https://cloud.zenml.io/signup?job=Retrain&answers=use_case%3Afraud%2Ctoday%3Amanual",
-    );
-  });
-
-  it("carries a named engineer as engineer=, never Auto", () => {
-    const [auto, sage] = LABS_HERO_JOB.composer.engineers;
-    const base = "https://cloud.zenml.io/signup";
-    expect(heroJobSignupHref(base, "Fix it", { engineer: sage })).toBe(
-      `${base}?job=Fix%20it&engineer=sage`,
-    );
-    expect(heroJobSignupHref(base, "Fix it", { engineer: auto })).toBe(
-      `${base}?job=Fix%20it`,
-    );
-  });
-
-  it("carries the stack as stack=, values joined by commas", () => {
-    const base = "https://cloud.zenml.io/signup";
-    expect(
-      heroJobSignupHref(base, "Fix it", {
-        stack: [tool("langgraph"), tool("claude")],
-      }),
-    ).toBe(`${base}?job=Fix%20it&stack=langgraph,claude`);
-    expect(heroJobSignupHref(base, "Fix it", { stack: [] })).toBe(
-      `${base}?job=Fix%20it`,
-    );
-  });
-});
-
-describe("stack", () => {
-  it("names every tool once, in a known group, without the word Bot", () => {
-    const values = LABS_HERO_JOB.stack.tools.map((t) => t.value);
-    expect(new Set(values).size).toBe(values.length);
-    for (const t of LABS_HERO_JOB.stack.tools) {
-      expect(Object.keys(LABS_HERO_JOB.stack.groups)).toContain(t.group);
-      expect(t.value).toMatch(/^[a-z0-9-]+$/);
-      expect(t.name).not.toMatch(/\bbots?\b/i);
-    }
-  });
-
-  it("only implies answers that exist", () => {
-    const questions = new Map(
-      INTENTS.flatMap((i) =>
-        LABS_HERO_JOB.flows[i].questions.map((q) => [q.id, q] as const),
+      classifyHeroJobPath(
+        "A support agent that answers from our docs",
+        content,
       ),
+    ).toBe("agent");
+    expect(classifyHeroJobPath("what is the weather in berlin", content)).toBe(
+      "agent",
     );
-    for (const t of LABS_HERO_JOB.stack.tools) {
-      for (const [id, value] of Object.entries(t.answers ?? {})) {
-        expect(
-          questions.get(id)?.options.map((o) => o.value),
-          `${t.value} → ${id}`,
-        ).toContain(value);
-      }
+  });
+});
+
+describe("impliedAnswers", () => {
+  it("answers questions a description settles", () => {
+    expect(
+      impliedAnswers("A voice agent that books appointments", agentQuestions),
+    ).toMatchObject({ modality: "voice", interaction: "tools" });
+  });
+
+  it("leaves a question open when several options match", () => {
+    // "chat" (text) and "call" (voice) both match modality.
+    expect(
+      impliedAnswers("chat and phone call assistant", agentQuestions).modality,
+    ).toBeUndefined();
+  });
+
+  it("matches at word starts only", () => {
+    // "storage" must not read as a tool-using agent via "rag"-style substrings.
+    expect(impliedAnswers("storage", agentQuestions)).toEqual({});
+  });
+});
+
+describe("holds", () => {
+  it("needs every key to hold and treats a skipped question as unmet", () => {
+    expect(holds(undefined, {})).toBe(true);
+    expect(holds({ modality: ["text"] }, { modality: "text" })).toBe(true);
+    expect(holds({ modality: ["text"] }, {})).toBe(false);
+    expect(
+      holds({ modality: ["text"], risk: ["facts"] }, { modality: "text" }),
+    ).toBe(false);
+  });
+});
+
+describe("heroJobFailures", () => {
+  const ids = (failures: HeroJobFailure[]) => failures.map((f) => f.id);
+
+  it("leads a tool-using agent that acts with trajectory and action evals", () => {
+    const failures = heroJobFailures(
+      "agent",
+      {
+        modality: "text",
+        interaction: "tools",
+        output: "actions",
+        risk: "act",
+      },
+      HERO_JOB_FAILURES,
+    );
+    expect(ids(failures).slice(0, 2)).toEqual(
+      expect.arrayContaining(["actions", "trajectory"]),
+    );
+    expect(failures.length).toBeLessThanOrEqual(REPORT_FAILURES);
+    expect(failures.every((f) => f.path === "agent")).toBe(true);
+  });
+
+  it("puts groundedness first when wrong answers hurt most", () => {
+    const failures = heroJobFailures(
+      "agent",
+      {
+        modality: "documents",
+        interaction: "single",
+        output: "text",
+        risk: "facts",
+      },
+      HERO_JOB_FAILURES,
+    );
+    expect(failures[0]?.id).toBe("ungrounded");
+  });
+
+  it("only includes voice transcription for voice systems", () => {
+    expect(
+      ids(heroJobFailures("agent", { modality: "voice" }, HERO_JOB_FAILURES)),
+    ).toContain("asr");
+    expect(
+      ids(heroJobFailures("agent", { modality: "text" }, HERO_JOB_FAILURES)),
+    ).not.toContain("asr");
+  });
+
+  it("always tells a fine-tune to beat the base model", () => {
+    for (const goal of ["cost", "quality", "format", "private"]) {
+      const failures = heroJobFailures("finetune", { goal }, HERO_JOB_FAILURES);
+      expect(ids(failures)).toContain("baseline");
+      expect(failures.every((f) => f.path === "finetune")).toBe(true);
     }
   });
 
-  it("skips the question a picked tool answers", () => {
-    const flow = LABS_HERO_JOB.flows.agents;
-    const support = flow.questions[0].options[0];
-    const { answers, implied } = answerImplied(
-      flow,
-      [support],
-      [tool("claude")],
-    );
-    expect(implied).toEqual([1]);
-    expect(answers[1]?.value).toBe("claude");
-    // Nothing implied for the focus question, so it stops there.
-    expect(answers).toHaveLength(2);
-    expect(answerImplied(flow, [support], [tool("langgraph")]).implied).toEqual(
-      [],
-    );
-  });
-
-  it("puts the tool's name into an implied platform", () => {
-    const platform = LABS_HERO_JOB.flows.reliability.questions[1];
-    expect(impliedAnswer(platform, [tool("sagemaker")])?.vars?.where).toBe(
-      "SageMaker",
-    );
-    expect(impliedAnswer(platform, [tool("mlflow")])).toBeNull();
-  });
-
-  it("weaves the stack into the plan and first week", () => {
-    const agents = LABS_HERO_JOB.flows.agents;
-    const stack = [tool("langgraph"), tool("claude")];
-    const { answers } = answerImplied(
-      agents,
-      [agents.questions[0].options[0]],
-      stack,
-    );
-    const outcome = heroJobOutcome(
-      "Keep our support agent cheap",
-      "agents",
-      [...answers, agents.questions[2].options[0]],
-      LABS_HERO_JOB,
-      stack,
-    );
-    expect(outcome.week[0].text).toBe(
-      "Read the last two weeks of support conversations in your LangGraph traces and sort them by cost and quality.",
-    );
-    expect(outcome.week[1].text).toBe(
-      "Replay the most expensive ones on Claude Haiku 4.5 and score both.",
-    );
-
-    const ml = heroJobOutcome("Retrain", "ml", [], LABS_HERO_JOB, [
-      tool("sagemaker"),
-    ]);
-    expect(ml.plan[0]).toBe(
-      "Check inputs and predictions from SageMaker for drift as each new batch of data lands.",
-    );
-    // A tool outside the flow's stack groups changes nothing.
+  it("flags teacher mistakes for synthetic data and reward gaming for preference tuning", () => {
     expect(
-      heroJobOutcome("Retrain", "ml", [], LABS_HERO_JOB, [tool("claude")])
-        .plan[0],
-    ).toBe(
-      "Check inputs and predictions for drift as each new batch of data lands.",
+      ids(
+        heroJobFailures("finetune", { data: "synthetic" }, HERO_JOB_FAILURES),
+      ),
+    ).toContain("teacher");
+    expect(
+      ids(heroJobFailures("finetune", { training: "pref" }, HERO_JOB_FAILURES)),
+    ).toContain("reward");
+  });
+
+  it("still composes a full report with every question skipped", () => {
+    expect(heroJobFailures("agent", {}, HERO_JOB_FAILURES)).toHaveLength(
+      REPORT_FAILURES,
+    );
+    expect(heroJobFailures("finetune", {}, HERO_JOB_FAILURES)).toHaveLength(
+      REPORT_FAILURES,
     );
   });
+});
 
-  it("joins names", () => {
-    expect(joinNames(["A"])).toBe("A");
-    expect(joinNames(["A", "B"])).toBe("A and B");
-    expect(joinNames(["A", "B", "C"])).toBe("A, B and C");
-  });
-
-  it("puts case studies that used the stack first", () => {
-    const row = (company: string, tools?: string[]) => ({
-      source: "llmops" as const,
-      company,
-      takeaway: "t",
-      href: `/llmops-database/${company}`,
-      ...(tools ? { tools } : {}),
+describe("heroJobExample and heroJobAdvice", () => {
+  it("picks the example closest to the answers, else the default", () => {
+    const withExamples = HERO_JOB_FAILURES.find((f) => f.eval.examples?.length);
+    expect(withExamples).toBeDefined();
+    if (!withExamples?.eval.examples?.[0]) return;
+    const first = withExamples.eval.examples[0];
+    const answers = Object.fromEntries(
+      Object.entries(first.when).map(([id, values]) => [id, values[0] ?? ""]),
+    );
+    expect(heroJobExample(withExamples, answers)).toEqual({
+      input: first.input,
+      expect: first.expect,
     });
-    const rows = [
-      row("A"),
-      row("B"),
-      row("C", ["openai"]),
-      row("D", ["langchain"]),
-      row("E", ["langchain", "claude"]),
-    ];
-    expect(preferCases(rows, []).map((r) => r.company)).toEqual([
-      "A",
-      "B",
-      "C",
-    ]);
+    expect(heroJobExample(withExamples, {})).toEqual(withExamples.eval.example);
+  });
+
+  it("gives path-specific advice and adds conditional advice only when it applies", () => {
+    const tools = heroJobAdvice(
+      "agent",
+      { interaction: "tools" },
+      HERO_JOB_ADVICE,
+    );
+    const single = heroJobAdvice(
+      "agent",
+      { interaction: "single" },
+      HERO_JOB_ADVICE,
+    );
+    expect(tools.map((a) => a.title)).toContain(
+      "Grade the path, not just the answer",
+    );
+    expect(single.map((a) => a.title)).not.toContain(
+      "Grade the path, not just the answer",
+    );
     expect(
-      preferCases(rows, [tool("langchain"), tool("claude")]).map(
-        (r) => r.company,
+      heroJobAdvice("finetune", {}, HERO_JOB_ADVICE).every(
+        (a) => a.path === "finetune",
       ),
-    ).toEqual(["E", "D", "A"]);
+    ).toBe(true);
   });
 });
 
-describe("buildHeroJobProof", () => {
-  const entry = (over: Partial<HeroJobProofEntry>): HeroJobProofEntry => ({
-    source: "llmops",
-    slug: "s",
-    title: "Customer support agent in production",
-    company: "Acme",
-    summary: "Acme runs a support agent.",
-    year: 2025,
-    tags: ["customer-support"],
-    ...over,
-  });
-
-  it("keys every matcher by a real use-case option", () => {
-    const values = new Set(
-      INTENTS.flatMap((i) =>
-        LABS_HERO_JOB.flows[i].questions[0].options.map((o) => o.value),
+describe("ranIntoFrom", () => {
+  it("quotes the first challenge sentence without figures", () => {
+    expect(
+      ranIntoFrom(
+        "Acme built a bot. They faced a 40% error rate at launch. The team struggled with hallucinated refund policies. It worked.",
       ),
-    );
-    for (const key of Object.keys(HERO_JOB_PROOF_MATCHERS)) {
-      expect(values).toContain(key);
-    }
+    ).toBe("The team struggled with hallucinated refund policies.");
+    expect(ranIntoFrom("Acme built a bot. It works well.")).toBeUndefined();
+    expect(
+      ranIntoFrom("This case study explores the challenges of chatbots."),
+    ).toBeUndefined();
+  });
+});
+
+describe("buildHeroJobCasePool and pickSimilar", () => {
+  const entries: HeroJobProofEntry[] = [
+    entry({
+      slug: "voice-bot",
+      company: "CallCo",
+      title: "Voice agent for call center automation",
+      summary:
+        "CallCo built a voice agent with tool calling. They faced problems with speech recognition on names.",
+      tags: ["agent-based", "speech-recognition"],
+    }),
+    entry({
+      slug: "docs-rag",
+      company: "DocsInc",
+      title: "RAG assistant over contracts",
+      summary:
+        "DocsInc answers questions over legal documents with an LLM assistant.",
+      tags: ["rag", "document-processing"],
+    }),
+    entry({
+      slug: "docs-rag-2",
+      company: "DocsInc",
+      title: "Second RAG assistant over invoices",
+      summary: "DocsInc extracts invoices with an LLM assistant.",
+      tags: ["rag"],
+    }),
+    entry({
+      slug: "anon",
+      company: "Various",
+      title: "Panel on LLM agents",
+      summary: "Several companies discuss LLM agents.",
+    }),
+    entry({
+      slug: "empty",
+      company: "Blank",
+      title: "LLM chatbot",
+      summary: "Unfortunately the source had no content.",
+    }),
+    entry({
+      slug: "lora",
+      source: "mlops",
+      company: "TuneCo",
+      title: "Fine-tuning Llama with LoRA for support",
+      summary:
+        "TuneCo fine-tuned an open-weight model with LoRA adapters and compared it against the base model.",
+      tags: ["training"],
+    }),
+    entry({
+      slug: "competitor",
+      company: "Devin",
+      title: "An AI software engineer agent",
+      summary: "A coding agent with tool calling.",
+      tags: ["agent-based"],
+    }),
+    entry({
+      slug: "mention",
+      source: "mlops",
+      company: "MentionCo",
+      title: "Recommendation platform",
+      summary: "MentionCo might fine-tune a model one day.",
+    }),
+    entry({
+      slug: "forecast",
+      source: "mlops",
+      company: "ForecastCo",
+      title: "Demand forecasting platform",
+      summary: "ForecastCo retrains gradient-boosted models nightly.",
+      tags: ["training"],
+    }),
+  ];
+  const pool = buildHeroJobCasePool(entries, answerKeys, HERO_JOB_FAILURES);
+
+  it("links only real entries and drops anonymous or empty ones", () => {
+    const hrefs = pool.cases.map((c) => c.href);
+    expect(hrefs).toContain("/llmops-database/voice-bot");
+    expect(hrefs).toContain("/mlops-database/lora");
+    expect(hrefs).not.toContain("/llmops-database/anon");
+    expect(hrefs).not.toContain("/llmops-database/empty");
+    expect(hrefs).not.toContain("/mlops-database/forecast");
+    expect(hrefs).not.toContain("/llmops-database/competitor");
+    expect(hrefs).not.toContain("/mlops-database/mention");
+    for (const c of pool.cases)
+      expect(
+        entries.some((e) => `/${e.source}-database/${e.slug}` === c.href),
+      ).toBe(true);
   });
 
-  it("picks matching entries newest first, one per company, links to the database", () => {
-    const proof = buildHeroJobProof([
-      entry({ slug: "old", company: "Old Co", year: 2021 }),
-      entry({ slug: "new", company: "New Co", year: 2026 }),
-      entry({ slug: "dupe", company: "New  co", year: 2024 }),
-      entry({ slug: "no-company", company: undefined }),
-      entry({
-        slug: "other",
-        title: "Invoice extraction",
-        tags: ["document-processing"],
+  it("ranks the case that matches the answers first", () => {
+    const voice = pickSimilar(
+      pool,
+      "agent",
+      { modality: "voice" },
+      agentQuestions,
+    );
+    expect(voice[0]?.company).toBe("CallCo");
+    const docs = pickSimilar(
+      pool,
+      "agent",
+      { modality: "documents" },
+      agentQuestions,
+    );
+    expect(docs[0]?.company).toBe("DocsInc");
+  });
+
+  it("shows one case per company, at most REPORT_SIMILAR", () => {
+    const similar = pickSimilar(pool, "agent", {}, agentQuestions);
+    const companies = similar.map((c) => c.company);
+    expect(new Set(companies).size).toBe(companies.length);
+    expect(similar.length).toBeLessThanOrEqual(REPORT_SIMILAR);
+  });
+
+  it("keeps fine-tune cases to entries about fine-tuning", () => {
+    const similar = pickSimilar(
+      pool,
+      "finetune",
+      { training: "lora" },
+      finetuneQuestions,
+    );
+    expect(similar.map((c) => c.company)).toEqual(["TuneCo"]);
+  });
+
+  it("cites where a failure mode was seen from the entry text", () => {
+    expect(seenAt(pool, "asr").map((c) => c.company)).toEqual(["CallCo"]);
+    expect(seenAt(pool, "not-a-failure")).toEqual([]);
+  });
+
+  it("quotes what a team ran into from its own summary", () => {
+    const voice = pool.cases.find((c) => c.company === "CallCo");
+    expect(voice?.ranInto).toBe(
+      "They faced problems with speech recognition on names.",
+    );
+  });
+});
+
+describe("heroJobSignupHref and answers", () => {
+  it("carries the path, answers in question order and the description", () => {
+    expect(
+      heroJobSignupHref("https://cloud.zenml.io/signup", "agent", {
+        questions: agentQuestions,
+        answers: { risk: "facts", modality: "text" },
+        job: " A support bot ",
       }),
-    ]);
-    expect(proof.support.map((r) => r.href)).toEqual([
-      "/llmops-database/new",
-      "/llmops-database/old",
-    ]);
-    expect(proof.support[0].takeaway).toBe(
-      "Customer support agent in production",
+    ).toBe(
+      "https://cloud.zenml.io/signup?path=agent&answers=modality%3Atext%2Crisk%3Afacts&job=A%20support%20bot",
     );
   });
 
-  it("leaves a use case out when nothing matches", () => {
-    expect(buildHeroJobProof([entry({ tags: [] })]).support).toBeUndefined();
+  it("appends to a base that already has a query", () => {
+    expect(
+      heroJobSignupHref("https://x.test/signup?ref=hero", "finetune", {
+        questions: finetuneQuestions,
+      }),
+    ).toBe("https://x.test/signup?ref=hero&path=finetune");
   });
 
-  it("tags rows with the tools they used and keeps extra rows for new tools", () => {
-    const tools = [tool("langchain"), tool("claude"), tool("openai")];
-    const proof = buildHeroJobProof(
-      [
-        entry({ slug: "a", company: "A", year: 2026 }),
-        entry({ slug: "b", company: "B", year: 2025 }),
-        entry({
-          slug: "c",
-          company: "C",
-          year: 2024,
-          tags: ["customer-support", "openai"],
-        }),
-        entry({ slug: "d", company: "D", year: 2023 }),
-        entry({
-          slug: "e",
-          company: "E",
-          year: 2022,
-          tags: ["customer-support", "langchain"],
-        }),
-        entry({
-          slug: "f",
-          company: "F",
-          year: 2021,
-          tags: ["customer-support", "openai"],
-        }),
-      ],
-      tools,
+  it("serializes and labels only the answered questions", () => {
+    const answers = { goal: "cost", training: "lora" };
+    expect(serializeAnswers(finetuneQuestions, answers)).toBe(
+      "goal:cost,training:lora",
     );
-    expect(proof.support.map((r) => [r.company, r.tools])).toEqual([
-      ["A", undefined],
-      ["B", undefined],
-      ["C", ["openai"]],
-      // D adds no tool and F repeats OpenAI; E adds LangChain.
-      ["E", ["langchain"]],
+    expect(answerLabels(finetuneQuestions, answers)).toEqual([
+      "Cheaper or faster than a big model",
+      "LoRA or adapters",
     ]);
-  });
-});
-
-describe("buildHeroJobStack", () => {
-  const entry = (tags: string[]): HeroJobProofEntry => ({
-    source: "llmops",
-    slug: "s",
-    title: "t",
-    tags,
-  });
-
-  it("ranks tagged tools by use, drops unused ones, keeps hand-written ones last", () => {
-    const tools = [
-      tool("openai"),
-      tool("claude"),
-      tool("cohere"),
-      tool("gemini"),
-      tool("kubernetes"),
-    ];
-    expect(
-      buildHeroJobStack(
-        [
-          entry(["anthropic"]),
-          entry(["anthropic", "openai"]),
-          entry(["anthropic"]),
-          entry(["kubernetes"]),
-        ],
-        tools,
-      ),
-    ).toEqual(["claude", "openai", "gemini", "kubernetes"]);
-  });
-
-  it("falls back to hand-written tools where the data has none", () => {
-    expect(
-      buildHeroJobStack([], [tool("langgraph"), tool("langchain")]),
-    ).toEqual(["langgraph"]);
   });
 });

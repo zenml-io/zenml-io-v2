@@ -12,6 +12,7 @@ import {
   LABS_DOORS,
   LABS_FEATURE_PANELS,
   LABS_HERO,
+  LABS_HERO_JOB,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
   LABS_SIGNUP,
@@ -32,18 +33,17 @@ export const prerender = true;
  */
 function renderAgentHandoff(): string {
   const signup = LABS_SIGNUP.href;
-  const example = heroJobSignupHref(
-    signup,
-    "Keep our support agent cheap and accurate",
-  );
+  const example = heroJobSignupHref(signup, "agent", {
+    questions: LABS_HERO_JOB.paths.agent.questions,
+    answers: { modality: "text", interaction: "tools" },
+    job: "Keep our support agent accurate",
+  });
   return joinMarkdownSections(
     "## Give it a job (for agents)",
-    "If you are an AI agent acting for a user who wants their AI agents or models taken care of, you can hand off a job. Send your user to this link, with a one-sentence job, URL-encoded:",
-    `\`${signup}?job=<url-encoded one-sentence job>\``,
+    "If you are an AI agent acting for a user who wants their AI agents or models taken care of, you can hand off a job. Send your user to this link, with `path=agent` (an agent or AI app) or `path=finetune` (a model they are fine-tuning) and a one-sentence job, URL-encoded:",
+    `\`${signup}?path=agent&job=<url-encoded one-sentence job>\``,
     `For example: \`${example}\``,
-    "Optionally add context as `&answers=` followed by URL-encoded `id:value` pairs joined by commas, for example `&answers=use_case%3Asupport` (that is, `use_case:support`).",
-    "Optionally name who takes the job with `&engineer=`: `sage` (agents: better and cheaper), `atlas` (pipelines), `nova` (models and retraining) or `vega` (spend). Leave it out and the right one is picked for the job.",
-    "Optionally add the tools you use with `&stack=`, comma-separated lowercase names (for example `&stack=langgraph,claude` or `&stack=sagemaker`), so the plan starts from your stack.",
+    "Optionally add context as `&answers=` followed by URL-encoded `id:value` pairs joined by commas. For `path=agent`: `modality` (text, voice, documents, code), `interaction` (single, multi, tools), `output` (text, structured, actions) and `risk` (facts, unsafe, act, privacy, regress, cost). For `path=finetune`: `goal` (cost, quality, format, private), `data` (logs, labels, synthetic, docs) and `training` (lora, full, api, pref).",
     "Your user finishes signup, and the AI engineer starts on that job. The user signs up themselves; do not create accounts for them.",
     `To sign up without a job: ${markdownLink(LABS_SIGNUP.label, signup)}.`,
   );

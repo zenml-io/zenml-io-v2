@@ -19,7 +19,7 @@ import LogoMarquee from "../components/labs/LogoMarquee.astro";
 import ProductDoors from "../components/labs/ProductDoors.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { buildHeroJobProof, buildHeroJobStack } from "../lib/heroJobProof";
+import { loadHeroJobEntries } from "../lib/heroJobEntries";
 import { buildHomepageJsonLd } from "../lib/homepageJsonLd";
 import {
   LABS_CLOSE,
@@ -32,41 +32,11 @@ import {
   LABS_LOGO_GRID,
   LABS_STORIES,
 } from "../lib/labs-home";
-import { getAllPublishedEntries } from "../lib/llmops";
-import { getAllPublishedMLOpsEntries } from "../lib/mlops";
 import { defaultOgImage, ORGANIZATION_NAME } from "../lib/seo";
 
-// The hero job box's case studies and its "@ add your stack" tools, picked
-// here at build time so the island gets a few rows per use case and a ranked
-// list of tool ids rather than the research databases.
-const heroJobEntries = [
-  ...(await getAllPublishedEntries()).map(({ data }) => ({
-    source: "llmops" as const,
-    slug: data.slug,
-    title: data.title,
-    company: data.company,
-    summary: data.summary,
-    year: data.year,
-    tags: data.llmopsTags,
-  })),
-  ...(await getAllPublishedMLOpsEntries()).map(({ data }) => ({
-    source: "mlops" as const,
-    slug: data.slug,
-    title: data.title,
-    company: data.company,
-    summary: data.summary,
-    year: data.year,
-    tags: data.mlopsTags,
-  })),
-];
-const heroJobProof = buildHeroJobProof(
-  heroJobEntries,
-  LABS_HERO_JOB.stack.tools,
-);
-const heroJobStack = buildHeroJobStack(
-  heroJobEntries,
-  LABS_HERO_JOB.stack.tools,
-);
+// The greeting's case-study count, from both research databases at build
+// time; the island fetches the matched pool itself (/hero-job-cases.json).
+const heroJobCaseCount = (await loadHeroJobEntries()).length;
 
 const homepageJsonLd = buildHomepageJsonLd({
   organizationName: ORGANIZATION_NAME,
@@ -91,8 +61,8 @@ const homepageJsonLd = buildHomepageJsonLd({
       <HeroJob
         client:load
         content={LABS_HERO_JOB}
-        proof={heroJobProof}
-        stack={heroJobStack}
+        caseCount={heroJobCaseCount}
+        casesHref="/hero-job-cases.json"
         slot="action"
       />
     </LabsHero>

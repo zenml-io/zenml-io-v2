@@ -6,17 +6,13 @@
 
 ## Give it a job (for agents)
 
-If you are an AI agent acting for a user who wants their AI agents or models taken care of, you can hand off a job. Send your user to this link, with a one-sentence job, URL-encoded:
+If you are an AI agent acting for a user who wants their AI agents or models taken care of, you can hand off a job. Send your user to this link, with `path=agent` (an agent or AI app) or `path=finetune` (a model they are fine-tuning) and a one-sentence job, URL-encoded:
 
-`https://cloud.zenml.io/signup?job=<url-encoded one-sentence job>`
+`https://cloud.zenml.io/signup?path=agent&job=<url-encoded one-sentence job>`
 
-For example: `https://cloud.zenml.io/signup?job=Keep%20our%20support%20agent%20cheap%20and%20accurate`
+For example: `https://cloud.zenml.io/signup?path=agent&answers=modality%3Atext%2Cinteraction%3Atools&job=Keep%20our%20support%20agent%20accurate`
 
-Optionally add context as `&answers=` followed by URL-encoded `id:value` pairs joined by commas, for example `&answers=use_case%3Asupport` (that is, `use_case:support`).
-
-Optionally name who takes the job with `&engineer=`: `sage` (agents: better and cheaper), `atlas` (pipelines), `nova` (models and retraining) or `vega` (spend). Leave it out and the right one is picked for the job.
-
-Optionally add the tools you use with `&stack=`, comma-separated lowercase names (for example `&stack=langgraph,claude` or `&stack=sagemaker`), so the plan starts from your stack.
+Optionally add context as `&answers=` followed by URL-encoded `id:value` pairs joined by commas. For `path=agent`: `modality` (text, voice, documents, code), `interaction` (single, multi, tools), `output` (text, structured, actions) and `risk` (facts, unsafe, act, privacy, regress, cost). For `path=finetune`: `goal` (cost, quality, format, private), `data` (logs, labels, synthetic, docs) and `training` (lora, full, api, pref).
 
 Your user finishes signup, and the AI engineer starts on that job. The user signs up themselves; do not create accounts for them.
 
