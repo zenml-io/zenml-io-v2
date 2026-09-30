@@ -219,15 +219,24 @@ export interface LabsProductBandContent extends LabsBandContent {
   install?: LabsInstallChip;
 }
 
+/**
+ * What LabsHero's landing band takes: a product band whose deck may be
+ * absent (it collapses). The homepage hero is the headline and the job box
+ * only; every other consumer passes a full LabsProductBandContent.
+ */
+export type LabsHeroContent = Omit<LabsProductBandContent, "deck"> & {
+  deck?: string;
+};
+
 export interface LabsInstallChip {
   cmd: string;
   /** Plausible event for the copy button. */
   analytics: string;
 }
 
-export const LABS_HERO: LabsBandContent = {
+/** No deck: the hero is the headline and the job box (HeroJob) only. */
+export const LABS_HERO: LabsHeroContent = {
   headlineLines: ["Meet your autonomous", "AI engineer"],
-  deck: "Think Devin, but it takes care of your AI agents and models.",
   cta: LABS_HERO_SIGNUP,
 };
 
@@ -247,6 +256,19 @@ export type HeroJobIntent =
   | "general";
 
 /**
+ * One choice in the composer's engineer menu. `value` is carried to the
+ * signup as `&engineer=` (left out for Auto). `intent` biases the
+ * conversation when the typed job is ambiguous (no keyword, or keywords
+ * of several intents including this one); Auto has none.
+ */
+export interface HeroJobEngineer {
+  value: string;
+  name: string;
+  line: string;
+  intent?: Exclude<HeroJobIntent, "general">;
+}
+
+/**
  * One tappable answer. `value` is the compact id carried to the signup in
  * `answers=` (and, for the use-case question, the key of the case-study
  * proof built from the research databases in heroJobProof.ts). `vars` fill
@@ -256,6 +278,31 @@ export interface HeroJobOption {
   label: string;
   value: string;
   vars?: Readonly<Record<string, string>>;
+  /**
+   * When a picked stack tool implies this answer (see HeroJobTool.answers),
+   * these vars override `vars`; `{tool}` is that tool's name.
+   */
+  stackVars?: Readonly<Record<string, string>>;
+}
+
+/** The "@ add your stack" picker's groups, in display order. */
+export type HeroJobToolGroup = "models" | "frameworks" | "ml" | "infra";
+
+/**
+ * One tool in the stack picker. Which tools show, and in what order, is
+ * decided at build time from how many LLMOps/MLOps database entries carry
+ * the tool's `tags` (buildHeroJobStack in heroJobProof.ts); a tool without
+ * tags is a hand-written fallback that always shows, after the ranked ones.
+ * `value` is carried to the signup in `&stack=`.
+ */
+export interface HeroJobTool {
+  value: string;
+  name: string;
+  group: HeroJobToolGroup;
+  /** Tag slugs (llmops-tags / mlops-tags) that mean this tool in the databases. */
+  tags?: readonly string[];
+  /** Answers this tool implies, question id → option value: that question is skipped. */
+  answers?: Readonly<Record<string, string>>;
 }
 
 export interface HeroJobQuestion {
@@ -285,6 +332,14 @@ export interface HeroJobFlow {
   /** Which plan bullet names a team from the case studies, when there are any. */
   peerStep: 0 | 1 | 2;
   week: readonly [HeroJobDay, HeroJobDay, HeroJobDay];
+  /**
+   * When the visitor picked stack tools in `groups`, these vars override the
+   * flow's (after the answers); `{tool}` is those tools' names, joined.
+   */
+  stack?: {
+    groups: readonly HeroJobToolGroup[];
+    vars: Readonly<Record<string, string>>;
+  };
 }
 
 export interface HeroJobContent {
@@ -301,9 +356,43 @@ export interface HeroJobContent {
   /** The chat window's header. */
   window: {
     name: string;
+    /** Muted subtitle under the name. */
     status: string;
     /** Accessible name of the chat window. */
     label: string;
+  };
+  /**
+   * The composer's bottom row: the engineer menu on the left (first option
+   * is the default, Auto), the "@ add your stack" button, and the
+   * "↵ to send" hint beside the send button.
+   */
+  composer: {
+    /** Accessible name of the engineer menu button, "{name}" is the choice. */
+    engineerButtonLabel: string;
+    /** Accessible name of the open menu. */
+    engineerMenuLabel: string;
+    engineers: readonly [HeroJobEngineer, ...HeroJobEngineer[]];
+    sendKey: string;
+    sendHint: string;
+  };
+  /**
+   * "@ add your stack": typing "@" in the composer or pressing the hint opens
+   * a picker of tools, grouped; picked tools show as removable "@Name" chips
+   * in the composer, skip questions they answer, fill the plan and ride
+   * along to the signup as `&stack=`.
+   */
+  stack: {
+    hint: string;
+    /** Accessible name of the picker and its filter field. */
+    pickerLabel: string;
+    filterPlaceholder: string;
+    empty: string;
+    /** Chip prefix, as in "@Claude". */
+    chipPrefix: string;
+    /** Accessible name of a chip's remove button, "{name}" is the tool. */
+    removeLabel: string;
+    groups: Readonly<Record<HeroJobToolGroup, string>>;
+    tools: readonly HeroJobTool[];
   };
   reply: {
     /** The engineer's opening message, shown before anything is sent. */
@@ -332,8 +421,6 @@ export interface HeroJobContent {
   flows: Record<HeroJobIntent, HeroJobFlow>;
   /** Primary pill: the unified signup with `?job=` and `&answers=`. */
   connect: LabsCta;
-  /** The unchanged hero signup, shown as the small secondary text link. */
-  signup: LabsCta;
   changeJobLabel: string;
   /** Plausible events the island fires itself (link clicks use data-analytics). */
   analytics: {
@@ -342,6 +429,8 @@ export interface HeroJobContent {
     answer: string;
     skip: string;
     caseStudy: string;
+    engineer: string;
+    stack: string;
   };
 }
 
@@ -351,14 +440,243 @@ export const LABS_HERO_JOB: HeroJobContent = {
   replyPlaceholder: "Reply…",
   submitLabel: "Give it the job",
   examples: [
-    "Keep our support agent cheap and accurate",
-    "Retrain the fraud model when data drifts",
-    "Fix failed pipelines before standup",
+    "Keep our support agent cheap",
+    "Retrain fraud model on drift",
+    "Fix failed pipelines by standup",
   ],
   window: {
-    name: "Your AI engineer",
-    status: "online",
+    name: "Start here, no sign-up",
+    status: "Answers in seconds",
     label: "Chat with your AI engineer",
+  },
+  composer: {
+    engineerButtonLabel: "AI engineer: {name}. Choose who takes the job",
+    engineerMenuLabel: "Choose who takes the job",
+    engineers: [
+      { value: "auto", name: "Auto", line: "picks the right one for the job" },
+      {
+        value: "sage",
+        name: "Sage",
+        line: "makes your agents better and cheaper",
+        intent: "agents",
+      },
+      {
+        value: "atlas",
+        name: "Atlas",
+        line: "keeps your pipelines running",
+        intent: "reliability",
+      },
+      {
+        value: "nova",
+        name: "Nova",
+        line: "keeps your models fresh",
+        intent: "ml",
+      },
+      {
+        value: "vega",
+        name: "Vega",
+        line: "watches what you spend",
+        intent: "cost",
+      },
+    ],
+    sendKey: "↵",
+    sendHint: "to send",
+  },
+  stack: {
+    hint: "@ add your stack",
+    pickerLabel: "Add your stack",
+    filterPlaceholder: "Filter tools…",
+    empty: "No tool matches that.",
+    chipPrefix: "@",
+    removeLabel: "Remove {name}",
+    groups: {
+      models: "Models",
+      frameworks: "Agent frameworks",
+      ml: "ML & orchestration",
+      infra: "Infra",
+    },
+    tools: [
+      // Models
+      {
+        value: "openai",
+        name: "OpenAI",
+        group: "models",
+        tags: ["openai"],
+        answers: { model: "gpt" },
+      },
+      {
+        value: "claude",
+        name: "Claude",
+        group: "models",
+        tags: ["anthropic"],
+        answers: { model: "claude" },
+      },
+      {
+        value: "llama",
+        name: "Llama",
+        group: "models",
+        tags: ["meta"],
+        answers: { model: "oss" },
+      },
+      {
+        value: "hugging-face",
+        name: "Hugging Face",
+        group: "models",
+        tags: ["hugging-face"],
+        answers: { model: "oss" },
+      },
+      {
+        value: "mistral",
+        name: "Mistral",
+        group: "models",
+        tags: ["mistral"],
+        answers: { model: "oss" },
+      },
+      { value: "cohere", name: "Cohere", group: "models", tags: ["cohere"] },
+      { value: "gemini", name: "Gemini", group: "models" },
+      {
+        value: "open-source",
+        name: "Open-source models",
+        group: "models",
+        answers: { model: "oss" },
+      },
+      // Agent frameworks
+      {
+        value: "langchain",
+        name: "LangChain",
+        group: "frameworks",
+        tags: ["langchain"],
+      },
+      {
+        value: "llamaindex",
+        name: "LlamaIndex",
+        group: "frameworks",
+        tags: ["llama-index"],
+      },
+      {
+        value: "crewai",
+        name: "CrewAI",
+        group: "frameworks",
+        tags: ["crewai"],
+      },
+      {
+        value: "haystack",
+        name: "Haystack",
+        group: "frameworks",
+        tags: ["haystack"],
+      },
+      { value: "langgraph", name: "LangGraph", group: "frameworks" },
+      {
+        value: "openai-agents",
+        name: "OpenAI Agents SDK",
+        group: "frameworks",
+      },
+      { value: "pydantic-ai", name: "Pydantic AI", group: "frameworks" },
+      // ML & orchestration
+      {
+        value: "spark",
+        name: "Spark",
+        group: "ml",
+        tags: ["spark"],
+      },
+      {
+        value: "databricks",
+        name: "Databricks",
+        group: "ml",
+        tags: ["databricks"],
+        answers: { platform: "cloud" },
+      },
+      {
+        value: "wandb",
+        name: "Weights & Biases",
+        group: "ml",
+        tags: ["wandb"],
+      },
+      { value: "ray", name: "Ray", group: "ml", tags: ["ray"] },
+      { value: "mlflow", name: "MLflow", group: "ml", tags: ["mlflow"] },
+      {
+        value: "airflow",
+        name: "Airflow",
+        group: "ml",
+        tags: ["airflow"],
+        answers: { platform: "airflow" },
+      },
+      {
+        value: "kubeflow",
+        name: "Kubeflow",
+        group: "ml",
+        tags: ["kubeflow"],
+        answers: { platform: "k8s" },
+      },
+      {
+        value: "sagemaker",
+        name: "SageMaker",
+        group: "ml",
+        tags: ["sagemaker"],
+        answers: { platform: "cloud" },
+      },
+      {
+        value: "vertex-ai",
+        name: "Vertex AI",
+        group: "ml",
+        tags: ["vertex-ai"],
+        answers: { platform: "cloud" },
+      },
+      { value: "metaflow", name: "Metaflow", group: "ml", tags: ["metaflow"] },
+      { value: "flyte", name: "Flyte", group: "ml", tags: ["flyte"] },
+      { value: "dagster", name: "Dagster", group: "ml", tags: ["dagster"] },
+      { value: "zenml", name: "ZenML", group: "ml" },
+      // Infra
+      {
+        value: "kubernetes",
+        name: "Kubernetes",
+        group: "infra",
+        tags: ["kubernetes"],
+        answers: { platform: "k8s" },
+      },
+      {
+        value: "aws",
+        name: "AWS",
+        group: "infra",
+        tags: ["amazon-aws", "aws"],
+        answers: { platform: "cloud" },
+      },
+      {
+        value: "gcp",
+        name: "GCP",
+        group: "infra",
+        tags: ["google-gcp"],
+        answers: { platform: "cloud" },
+      },
+      {
+        value: "azure",
+        name: "Azure",
+        group: "infra",
+        tags: ["microsoft-azure", "azure-ml"],
+        answers: { platform: "cloud" },
+      },
+      { value: "docker", name: "Docker", group: "infra", tags: ["docker"] },
+      {
+        value: "postgres",
+        name: "Postgres",
+        group: "infra",
+        tags: ["postgresql"],
+      },
+      {
+        value: "terraform",
+        name: "Terraform",
+        group: "infra",
+        tags: ["terraform"],
+      },
+      {
+        value: "pinecone",
+        name: "Pinecone",
+        group: "infra",
+        tags: ["pinecone"],
+      },
+      { value: "vllm", name: "vLLM", group: "infra", tags: ["vllm"] },
+      { value: "triton", name: "Triton", group: "infra", tags: ["triton"] },
+    ],
   },
   reply: {
     greeting: "Hi. What should I take care of?",
@@ -456,6 +774,7 @@ export const LABS_HERO_JOB: HeroJobContent = {
       vars: {
         needs: "traces",
         sessions: "conversations",
+        source: "",
         cheaper: "cheaper models",
         focusStep:
           "test {cheaper} and prompt fixes on your most expensive and weakest {sessions}.",
@@ -473,11 +792,15 @@ export const LABS_HERO_JOB: HeroJobContent = {
       week: [
         {
           day: "Mon",
-          text: "Read the last two weeks of {sessions} and sort them by cost and quality.",
+          text: "Read the last two weeks of {sessions}{source} and sort them by cost and quality.",
         },
         { day: "Wed", text: "{wedStep}" },
         { day: "Fri", text: "PR ready: {outcome}. You approve." },
       ],
+      stack: {
+        groups: ["frameworks"],
+        vars: { source: " in your {tool} traces" },
+      },
     },
     ml: {
       questions: [
@@ -559,11 +882,12 @@ export const LABS_HERO_JOB: HeroJobContent = {
         needs: "runs",
         model: "model",
         batch: "new batch of data",
+        source: "",
         todayStep:
           "Retrain when it drifts and compare against the current {model}.",
       },
       plan: [
-        "check inputs and predictions for drift as each {batch} lands.",
+        "check inputs and predictions{source} for drift as each {batch} lands.",
         "{todayStep}",
         "Promote a retrained {model} only if it beats the champion. You approve.",
       ],
@@ -582,6 +906,7 @@ export const LABS_HERO_JOB: HeroJobContent = {
           text: "Retrained {model} ready if it beats the champion, with the comparison. You approve.",
         },
       ],
+      stack: { groups: ["ml", "infra"], vars: { source: " from {tool}" } },
     },
     reliability: {
       questions: [
@@ -615,13 +940,20 @@ export const LABS_HERO_JOB: HeroJobContent = {
               label: "Kubernetes",
               value: "k8s",
               vars: { where: "Kubernetes" },
+              stackVars: { where: "{tool}" },
             },
             {
               label: "Cloud (SageMaker/Vertex/…)",
               value: "cloud",
               vars: { where: "your cloud platform" },
+              stackVars: { where: "{tool}" },
             },
-            { label: "Airflow", value: "airflow", vars: { where: "Airflow" } },
+            {
+              label: "Airflow",
+              value: "airflow",
+              vars: { where: "Airflow" },
+              stackVars: { where: "{tool}" },
+            },
             { label: "Other", value: "other" },
           ],
         },
@@ -749,9 +1081,10 @@ export const LABS_HERO_JOB: HeroJobContent = {
         spend: "agents and pipelines",
         swap: "cheaper models and right-sized GPUs",
         guard: "Ship only what holds quality.",
+        source: "",
       },
       plan: [
-        "Find the most expensive steps in your {spend}.",
+        "Find the most expensive steps in your {spend}{source}.",
         "test {swap} on real data.",
         "{guard} You approve.",
       ],
@@ -759,7 +1092,7 @@ export const LABS_HERO_JOB: HeroJobContent = {
       week: [
         {
           day: "Mon",
-          text: "Rank your {spend} by cost over the last 30 days.",
+          text: "Rank your {spend}{source} by cost over the last 30 days.",
         },
         { day: "Wed", text: "Test {swap} on the top three." },
         {
@@ -767,6 +1100,10 @@ export const LABS_HERO_JOB: HeroJobContent = {
           text: "PR ready: typically about −30% on those steps. You approve.",
         },
       ],
+      stack: {
+        groups: ["models", "frameworks", "ml", "infra"],
+        vars: { source: " on {tool}" },
+      },
     },
     general: {
       questions: [
@@ -813,6 +1150,7 @@ export const LABS_HERO_JOB: HeroJobContent = {
         needs: "runs and traces",
         what: "agents and models",
         worry: "getting worse or costing too much",
+        source: "",
       },
       plan: [
         "learn how your {what} run in production.",
@@ -821,13 +1159,20 @@ export const LABS_HERO_JOB: HeroJobContent = {
       ],
       peerStep: 0,
       week: [
-        { day: "Mon", text: "Map your {what} from their runs and traces." },
+        {
+          day: "Mon",
+          text: "Map your {what} from their runs and traces{source}.",
+        },
         { day: "Wed", text: "Rank what's {worry}, with the evidence." },
         {
           day: "Fri",
           text: "First fix ready, proven on production data. You approve.",
         },
       ],
+      stack: {
+        groups: ["models", "frameworks", "ml", "infra"],
+        vars: { source: " in {tool}" },
+      },
     },
   },
   connect: {
@@ -835,7 +1180,6 @@ export const LABS_HERO_JOB: HeroJobContent = {
     href: LABS_SIGNUP.href,
     analytics: "Hero-Job-Connect",
   },
-  signup: LABS_HERO_SIGNUP,
   changeJobLabel: "Change job",
   analytics: {
     submit: "Hero-Job-Submit",
@@ -843,6 +1187,8 @@ export const LABS_HERO_JOB: HeroJobContent = {
     answer: "Hero-Job-Answer",
     skip: "Hero-Job-Skip",
     caseStudy: "Hero-Job-CaseStudy",
+    engineer: "Hero-Job-Engineer",
+    stack: "Hero-Job-Stack",
   },
 };
 

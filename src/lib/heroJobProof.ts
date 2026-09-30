@@ -11,13 +11,22 @@
  * first sentence of the summary is searched too. Newest first, one row per
  * company, only entries that name a company. No match, no proof line: the
  * island simply skips it. Nothing is ever made up.
+ *
+ * Given the stack picker's tools, each row also lists the tools its entry is
+ * tagged with, and up to MAX_EXTRA further rows that add a tool the first
+ * three lack are kept, so the island can put teams that used the visitor's
+ * stack first (preferCases in heroJobPlan.ts). buildHeroJobStack ranks the
+ * picker's tools by how many entries carry their tags.
  */
+import type { HeroJobTool, HeroJobToolGroup } from "./labs-home";
 
 export interface HeroJobCaseStudy {
   source: "llmops" | "mlops";
   company: string;
   takeaway: string;
   href: string;
+  /** Stack-picker tool values this entry is tagged with; omitted when none. */
+  tools?: readonly string[];
 }
 
 /** The fields the picker reads from either database's entries. */
@@ -115,6 +124,7 @@ export const HERO_JOB_PROOF_MATCHERS: Readonly<Record<string, ProofMatcher>> = {
 };
 
 const MAX_ROWS = 3;
+const MAX_EXTRA = 2;
 const MIN_ROWS = 2;
 const TAKEAWAY_MAX = 100;
 
@@ -143,9 +153,20 @@ function companyKey(company: string): string {
 /** Some summaries only say the source had nothing to summarise. */
 const EMPTY_SUMMARY = /^(?:unfortunately|the provided source)/i;
 
+/** The tool values whose tags an entry carries. */
+function toolsOf(
+  entry: HeroJobProofEntry,
+  tools: readonly HeroJobTool[],
+): string[] {
+  return tools
+    .filter((tool) => tool.tags?.some((tag) => entry.tags.includes(tag)))
+    .map((tool) => tool.value);
+}
+
 function pick(
   entries: readonly HeroJobProofEntry[],
   matcher: ProofMatcher,
+  tools: readonly HeroJobTool[],
 ): HeroJobCaseStudy[] {
   const candidates = entries
     .filter(
@@ -172,18 +193,29 @@ function pick(
         ];
 
   const seen = new Set<string>();
+  const covered = new Set<string>();
   const rows: HeroJobCaseStudy[] = [];
+  let extra = 0;
   for (const e of pool) {
     const company = e.company as string;
     if (seen.has(companyKey(company))) continue;
+    const used = toolsOf(e, tools);
+    // Past the first three, keep a row only for a tool not yet covered.
+    if (rows.length >= MAX_ROWS) {
+      if (!used.some((t) => !covered.has(t))) continue;
+      extra += 1;
+    }
     seen.add(companyKey(company));
+    for (const t of used) covered.add(t);
     rows.push({
       source: e.source,
       company,
       takeaway: takeawayFrom(e.title),
       href: `/${e.source}-database/${e.slug}`,
+      ...(used.length ? { tools: used } : {}),
     });
-    if (rows.length === MAX_ROWS) break;
+    if (extra === MAX_EXTRA || (!tools.length && rows.length === MAX_ROWS))
+      break;
   }
   return rows;
 }
@@ -191,11 +223,42 @@ function pick(
 /** `{ useCaseValue: rows }` for every matcher with at least one real match. */
 export function buildHeroJobProof(
   entries: readonly HeroJobProofEntry[],
+  tools: readonly HeroJobTool[] = [],
 ): Record<string, HeroJobCaseStudy[]> {
   const proof: Record<string, HeroJobCaseStudy[]> = {};
   for (const [key, matcher] of Object.entries(HERO_JOB_PROOF_MATCHERS)) {
-    const rows = pick(entries, matcher);
+    const rows = pick(entries, matcher, tools);
     if (rows.length) proof[key] = rows;
   }
   return proof;
+}
+
+const STACK_PER_GROUP = 10;
+
+/**
+ * The stack picker's tools to show, as values in display order: per group
+ * (in the order the groups first appear in `tools`), the tagged tools that
+ * at least one entry carries, most used first, then the hand-written ones
+ * (no tags), at most STACK_PER_GROUP per group. A group the data does not
+ * cover falls back to its hand-written tools alone.
+ */
+export function buildHeroJobStack(
+  entries: readonly HeroJobProofEntry[],
+  tools: readonly HeroJobTool[],
+): string[] {
+  const uses = new Map<string, number>();
+  for (const e of entries)
+    for (const value of toolsOf(e, tools))
+      uses.set(value, (uses.get(value) ?? 0) + 1);
+
+  const groups = [...new Set(tools.map((t) => t.group))] as HeroJobToolGroup[];
+  return groups.flatMap((group) => {
+    const inGroup = tools.filter((t) => t.group === group);
+    const handWritten = inGroup.filter((t) => !t.tags?.length);
+    const ranked = inGroup
+      .filter((t) => (uses.get(t.value) ?? 0) > 0)
+      .sort((a, b) => (uses.get(b.value) ?? 0) - (uses.get(a.value) ?? 0))
+      .slice(0, Math.max(0, STACK_PER_GROUP - handWritten.length));
+    return [...ranked, ...handWritten].map((t) => t.value);
+  });
 }

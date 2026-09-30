@@ -7,14 +7,24 @@
  * case-insensitively at the start of a word ("fail" matches "failed", "rag"
  * does not match "storage"); when several intents match, the first in
  * INTENT_ORDER wins. A job that names both agents and models gets the agents
- * conversation but asks for both traces and runs. Every string lives in
+ * conversation but asks for both traces and runs. The engineer picked in
+ * the composer's menu biases an ambiguous job: one with no keyword gets the
+ * engineer's intent, and one matching several intents gets the engineer's
+ * when it is among them; a clear job keeps its own intent. The stack
+ * tools picked with "@" skip the questions they answer (a tool's
+ * `answers`), fill the flow's `stack` vars into the plan and week, and
+ * put case studies that used them first. Every string lives in
  * LABS_HERO_JOB (labs-home.ts); this module only picks and fills.
  */
+import type { HeroJobCaseStudy } from "./heroJobProof";
 import type {
   HeroJobContent,
+  HeroJobEngineer,
   HeroJobFlow,
   HeroJobIntent,
   HeroJobOption,
+  HeroJobQuestion,
+  HeroJobTool,
 } from "./labs-home";
 
 type MatchedIntent = Exclude<HeroJobIntent, "general">;
@@ -61,8 +71,13 @@ function matchesIntent(job: string, intent: MatchedIntent): boolean {
   return INTENT_PATTERNS[intent].test(job);
 }
 
-export function classifyHeroJob(job: string): HeroJobIntent {
-  return INTENT_ORDER.find((intent) => matchesIntent(job, intent)) ?? "general";
+export function classifyHeroJob(
+  job: string,
+  bias?: MatchedIntent,
+): HeroJobIntent {
+  const matched = INTENT_ORDER.filter((intent) => matchesIntent(job, intent));
+  if (bias && (matched.length === 0 || matched.includes(bias))) return bias;
+  return matched[0] ?? "general";
 }
 
 /** One slot per question answered so far; `null` means skipped. */
@@ -87,6 +102,77 @@ function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+/** "A", "A and B", "A, B and C". */
+export function joinNames(names: readonly string[]): string {
+  if (names.length < 2) return names[0] ?? "";
+  return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+}
+
+/**
+ * The option a picked tool implies for `question` (the first tool that
+ * answers it), with the option's `stackVars` filled with the tool's name.
+ */
+export function impliedAnswer(
+  question: HeroJobQuestion,
+  stack: readonly HeroJobTool[],
+): HeroJobOption | null {
+  for (const tool of stack) {
+    const value = tool.answers?.[question.id];
+    const option = value && question.options.find((o) => o.value === value);
+    if (!option) continue;
+    if (!option.stackVars) return option;
+    const extra = Object.fromEntries(
+      Object.entries(option.stackVars).map(([k, v]) => [
+        k,
+        fillTemplate(v, { tool: tool.name }),
+      ]),
+    );
+    return { ...option, vars: { ...option.vars, ...extra } };
+  }
+  return null;
+}
+
+/**
+ * Answer every next question the stack already answers, so the engineer
+ * never asks it. Returns the longer answers and the indexes filled this way
+ * (the island shows neither the question nor the answer for those).
+ */
+export function answerImplied(
+  flow: HeroJobFlow,
+  answers: HeroJobAnswers,
+  stack: readonly HeroJobTool[],
+): { answers: HeroJobAnswers; implied: number[] } {
+  const out = [...answers];
+  const implied: number[] = [];
+  while (out.length < flow.questions.length) {
+    const option = impliedAnswer(flow.questions[out.length], stack);
+    if (!option) break;
+    implied.push(out.length);
+    out.push(option);
+  }
+  return { answers: out, implied };
+}
+
+/**
+ * The case studies to show: with no stack, the first three as built; with
+ * one, those whose tools overlap it first (most overlap first, build order
+ * kept otherwise), then the rest.
+ */
+export function preferCases(
+  rows: readonly HeroJobCaseStudy[],
+  stack: readonly HeroJobTool[],
+  count = 3,
+): HeroJobCaseStudy[] {
+  const picked = new Set(stack.map((t) => t.value));
+  const overlap = (row: HeroJobCaseStudy) =>
+    row.tools?.filter((t) => picked.has(t)).length ?? 0;
+  return rows
+    .map((row, i) => ({ row, i, score: overlap(row) }))
+    .sort((a, b) => b.score - a.score || a.i - b.i)
+    .slice(0, count)
+    .map(({ row }) => row);
+}
+
 export interface HeroJobOutcome {
   plan: readonly string[];
   week: readonly { day: string; text: string }[];
@@ -97,6 +183,8 @@ export interface HeroJobOutcome {
  * The plan, first week and "needs" line for a finished conversation. `peer`
  * is a company from the case studies shown for the visitor's use case; when
  * present, the flow's `peerStep` bullet is phrased as following that team.
+ * `stack` is the tools picked with "@": when any is in the flow's `stack`
+ * groups, its vars apply with `{tool}` as their names.
  */
 export function heroJobOutcome(
   job: string,
@@ -104,10 +192,19 @@ export function heroJobOutcome(
   answers: HeroJobAnswers,
   content: HeroJobContent,
   peer?: string,
+  stack: readonly HeroJobTool[] = [],
 ): HeroJobOutcome {
   const flow = content.flows[intent];
   const vars: Record<string, string> = { ...flow.vars };
   for (const answer of answers) Object.assign(vars, answer?.vars);
+  const tools = flow.stack
+    ? stack.filter((t) => flow.stack?.groups.includes(t.group))
+    : [];
+  if (flow.stack && tools.length) {
+    const tool = joinNames(tools.map((t) => t.name));
+    for (const [name, template] of Object.entries(flow.stack.vars))
+      vars[name] = fillTemplate(template, { tool });
+  }
 
   const plan = flow.plan.map((template, i) => {
     const step = fillTemplate(template, vars);
@@ -137,13 +234,24 @@ export function displayJob(job: string): string {
 /**
  * The signup URL with the job carried along for the product to pick up,
  * plus the answers as `id:value` pairs joined by commas (skipped questions
- * left out, the parameter omitted when there are none).
+ * left out, the parameter omitted when there are none), the engineer picked
+ * in the composer as `engineer` (omitted for Auto or none) and the stack
+ * tools as `stack`, values joined by commas (omitted when none).
  */
 export function heroJobSignupHref(
   baseHref: string,
   job: string,
-  flow?: HeroJobFlow,
-  answers: HeroJobAnswers = [],
+  {
+    flow,
+    answers = [],
+    engineer,
+    stack = [],
+  }: {
+    flow?: HeroJobFlow;
+    answers?: HeroJobAnswers;
+    engineer?: HeroJobEngineer;
+    stack?: readonly HeroJobTool[];
+  } = {},
 ): string {
   const pairs = answers.flatMap((answer, i) => {
     const question = flow?.questions[i];
@@ -152,5 +260,11 @@ export function heroJobSignupHref(
   const query = [`job=${encodeURIComponent(job.trim())}`];
   if (pairs.length)
     query.push(`answers=${encodeURIComponent(pairs.join(","))}`);
+  if (engineer?.intent)
+    query.push(`engineer=${encodeURIComponent(engineer.value)}`);
+  if (stack.length)
+    query.push(
+      `stack=${stack.map((t) => encodeURIComponent(t.value)).join(",")}`,
+    );
   return `${baseHref}?${query.join("&")}`;
 }

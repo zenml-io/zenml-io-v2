@@ -283,9 +283,23 @@ const CHECKS: IslandCheck[] = [
     async assert(page, root) {
       // The thread only exists after an onClick; SSR ships the chips alone.
       // The context forces reduced motion, so each message appears at once.
+      // Pick Nova from the composer's engineer menu first (only an onClick
+      // opens it), so the link must also carry engineer=nova, and stack=
+      // for the tool picked below.
+      await page.locator(`${root} [data-hero-job-engineer-button]`).click();
+      await page.locator(`${root} [data-hero-job-engineer="nova"]`).click();
+      // And add SageMaker from the "@ add your stack" picker (filter + Enter).
+      await page.locator(`${root} [data-hero-job-stack-hint]`).click();
+      await page
+        .locator(`${root} [data-hero-job-stack-picker] input`)
+        .fill("sagemaker");
+      await page.keyboard.press("Enter");
+      await page.waitForSelector(
+        `${root} [data-hero-job-stack-chip="sagemaker"]`,
+      );
       await page
         .locator(`${root} [data-hero-job-example]`)
-        .filter({ hasText: "Retrain the fraud model" })
+        .filter({ hasText: "Retrain fraud model" })
         .click();
       await page.waitForSelector(`${root} [data-hero-job-reply="ml"]`);
       await page.locator(`${root} [data-hero-job-answer="fraud"]`).click();
@@ -295,8 +309,10 @@ const CHECKS: IslandCheck[] = [
         .locator(`${root} a[data-analytics="Hero-Job-Connect"]`)
         .getAttribute("href");
       if (
-        !href?.includes("?job=Retrain%20the%20fraud%20model") ||
-        !href.includes("&answers=use_case%3Afraud%2Ccadence%3Adaily")
+        !href?.includes("?job=Retrain%20fraud%20model%20on%20drift") ||
+        !href.includes("&answers=use_case%3Afraud%2Ccadence%3Adaily") ||
+        !href.includes("&engineer=nova") ||
+        !href.includes("&stack=sagemaker")
       ) {
         throw new Error(`Connect link does not carry the job: ${href}`);
       }

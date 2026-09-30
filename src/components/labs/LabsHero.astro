@@ -1,6 +1,6 @@
 ---
 import type {
-  LabsProductBandContent,
+  LabsHeroContent,
   LabsShortBandContent,
 } from "../../lib/labs-home";
 // LabsHero.astro — the page's opening band: sage grain shader over a cream
@@ -12,12 +12,15 @@ import type {
 //   - "landing" (default): the full-height opener of `/` and the product
 //     pages — two-line headline, deck, one signup pill; a product page adds
 //     an optional ghost pill and a copyable install command, each collapsing
-//     when absent. Content is `LabsProductBandContent`. A page can fill
+//     when absent. Content is `LabsHeroContent` (a `LabsProductBandContent`
+//     whose deck may be absent). A page can fill
 //     the optional `action` slot to replace that CTA row (pills + install
 //     chip) with its own control: the homepage mounts the HeroJob island
 //     there. Without the slot the band renders exactly as before.
 //     `align` sets the column: "start" (default, left-aligned) or "center"
-//     (headline, deck and action centered — the homepage).
+//     (headline, deck and action centered — the homepage). The deck is
+//     optional: absent (the homepage), it collapses and the action sits a
+//     step closer to the headline.
 //   - "short": the interior-page opener (the blog index) at roughly 40% of
 //     the viewport — one headline line and an optional deck, no pill; the
 //     page's own controls follow the band. Content is `LabsShortBandContent`.
@@ -32,7 +35,7 @@ type Props =
   | {
       band?: "landing";
       align?: "start" | "center";
-      content: LabsProductBandContent;
+      content: LabsHeroContent;
     }
   | { band: "short"; align?: never; content: LabsShortBandContent };
 
@@ -62,17 +65,23 @@ const centered = props.align === "center";
         {props.content.headlineLines[1]}
       </h1>
 
-      <p
-        class:list={[
-          "mt-space-md max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]",
-          centered && "mx-auto",
-        ]}
-      >
-        {props.content.deck}
-      </p>
+      {props.content.deck && (
+        <p
+          class:list={[
+            "mt-space-md max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]",
+            centered && "mx-auto",
+          ]}
+        >
+          {props.content.deck}
+        </p>
+      )}
 
       {hasAction ? (
-        <div class="mt-space-mlg">
+        <div
+          class:list={[
+            props.content.deck ? "mt-space-mlg" : "mt-space-md",
+          ]}
+        >
           <slot name="action" />
         </div>
       ) : (

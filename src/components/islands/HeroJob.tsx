@@ -2,10 +2,13 @@
  * HeroJob — the homepage hero's job box ("Give it a job"): a messenger-style
  * chat window with the AI engineer, centered under the headline and deck.
  *
- * The window has a fixed height and its thread scrolls inside it, so the
- * hero never grows. The height follows the viewport (clamped) so the whole
- * window fits under the headline without scrolling the page into the nav. A visitor gives a job (types it in the composer at the
- * bottom, or taps an example quick reply above it); the engineer takes it
+ * Before the first message the window is compact: header, greeting, example
+ * chips and composer, no empty thread. Once the conversation starts it grows
+ * once to a fixed height and its thread scrolls inside it, so the hero never
+ * grows again. That height follows the viewport (clamped) so the whole
+ * window fits under the headline without scrolling the page into the nav.
+ * A visitor gives a job (types it in the composer at the bottom, or taps
+ * one of three example chips above it); the engineer takes it
  * ("On it: …"), asks the use case and at most two more questions, one at a
  * time, answered by quick-reply chips above the composer (or "Skip"). After
  * the use case it shows real case studies from the LLMOps/MLOps databases
@@ -13,6 +16,19 @@
  * a plan and a first-week preview filled from the answers. Only then does it
  * ask for access: "Connect and start" goes to the signup with `?job=` and
  * `&answers=`.
+ *
+ * The composer is a roomy box like the product's: the textarea on top
+ * (Enter sends, Shift+Enter breaks the line) and a bottom row with the
+ * engineer menu ("Auto ▾": Auto or a named engineer, each biasing an
+ * ambiguous job toward its intent and carried as `&engineer=`), a
+ * "@ add your stack" button, "↵ to send" and the send button. Typing "@"
+ * or pressing that button opens the stack picker (tools ranked at build
+ * time from the research databases' tags, see buildHeroJobStack); picked
+ * tools show as removable "@Name" chips, before or during the chat, skip
+ * the questions they answer, fill the plan and put case studies that used
+ * them first, and ride along as `&stack=`. Once the job is taken, the
+ * engineer's first reply carries its name (the chosen one, or the one Auto
+ * picked for the intent).
  *
  * Mounted from `/` only, into LabsHero's `action` slot (client:load: the
  * hero's one control, above the fold). With JS off the composer still
@@ -23,24 +39,30 @@
  * typing indicator (~800ms), and messages enter ~150ms per line apart with
  * a short fade (CSS @starting-style, no keyframes); under reduced motion
  * there is no indicator and every message appears at once. Analytics:
- * submit/example/answer/skip fire here through PlausibleBridge's
+ * submit/example/answer/skip/engineer/stack fire here through PlausibleBridge's
  * `__zenmlPlausibleTrack`; the links carry `data-analytics` like every CTA.
  */
 import type { ComponentChildren } from "preact";
-import { useEffect, useRef, useState } from "preact/hooks";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 import {
+  answerImplied,
   classifyHeroJob,
   displayJob,
   fillTemplate,
   type HeroJobAnswers,
   heroJobOutcome,
   heroJobSignupHref,
+  impliedAnswer,
+  preferCases,
 } from "../../lib/heroJobPlan";
 import type { HeroJobCaseStudy } from "../../lib/heroJobProof";
 import type {
   HeroJobContent,
+  HeroJobEngineer,
   HeroJobIntent,
   HeroJobOption,
+  HeroJobTool,
+  HeroJobToolGroup,
 } from "../../lib/labs-home";
 import {
   LABS_BUTTON_BASE,
@@ -67,6 +89,9 @@ const ZENML_MARK_PATH =
 const PRIMARY_PILL = `${LABS_BUTTON_BASE} ${LABS_BUTTON_TONE_CLASSES.dark}`;
 const TEXT_LINK =
   "inline-flex min-h-11 cursor-pointer items-center font-sans text-[14px] text-(--color-cream-800) underline decoration-(--color-cream-600) underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-sage-800) hover:decoration-(--color-sage-800) md:min-h-9";
+/** The three example chips before the first message: an even row, one per line on mobile. */
+const EXAMPLE_CHIP =
+  "inline-flex min-h-10 w-full cursor-pointer items-center justify-center rounded-full border border-(--color-sage-500) bg-card px-3 py-1.5 text-center font-sans text-[14px] leading-[20px] text-(--color-sage-800) transition-colors duration-200 ease-out hover:bg-(--color-sage-100) md:min-h-9";
 const QUICK_REPLY =
   "inline-flex min-h-11 shrink-0 cursor-pointer items-center whitespace-nowrap rounded-full border border-(--color-sage-500) bg-card px-4 font-sans text-[14px] leading-[20px] text-(--color-sage-800) transition-colors duration-200 ease-out hover:bg-(--color-sage-100) md:min-h-9";
 const SECTION_LABEL =
@@ -74,6 +99,24 @@ const SECTION_LABEL =
 /** Entry fade for a message or a line inside one; nothing under reduced motion. */
 const ENTER =
   "transition-[opacity,translate] duration-300 ease-out starting:translate-y-1 starting:opacity-0 motion-reduce:transition-none";
+
+/**
+ * Window height: compact (header, greeting, example chips, composer) until
+ * the first message, then the fixed, viewport-clamped height the thread
+ * scrolls inside. The one growth eases from the compact height, pinned in
+ * pixels for a frame (see `growFrom`); under reduced motion it is instant.
+ */
+const WINDOW_GROWTH =
+  "transition-[height] duration-300 ease-out motion-reduce:transition-none";
+const WINDOW_COMPACT = "h-auto";
+/**
+ * Open height. From md up the window starts ~324px down the viewport (nav
+ * and headline above it, pinned under the nav once the band is full), so
+ * 100dvh minus ~354px leaves a 30px margin under it on laptops
+ * (1440×900 → 546px, 1512×982 → 628px, 1728×1117 → 640px, the cap).
+ */
+const WINDOW_OPEN =
+  "h-[clamp(360px,calc(100svh-480px),640px)] md:h-[clamp(400px,calc(100dvh-354px),640px)]";
 
 const BUBBLE_TONE = {
   engineer: "bg-(--color-cream-100) text-(--color-cream-900)",
@@ -92,6 +135,8 @@ interface Message {
   side: Side;
   lines: number;
   bare?: boolean;
+  /** A small name above the bubble (the engineer who took the job). */
+  label?: string;
   body: ComponentChildren;
 }
 
@@ -99,12 +144,20 @@ interface Props {
   content: HeroJobContent;
   /** Case studies per use-case option value, precomputed at build time. */
   proof: Readonly<Record<string, readonly HeroJobCaseStudy[]>>;
+  /** The stack picker's tool values in display order, ranked at build time. */
+  stack: readonly string[];
 }
 
 interface Conversation {
   job: string;
   intent: HeroJobIntent;
   answers: HeroJobAnswers;
+  /** Who took the job: the chosen engineer, or the one Auto picked (none for a general job). */
+  taker?: HeroJobEngineer;
+  /** Indexes of questions the stack answered: neither asked nor echoed. */
+  implied: readonly number[];
+  /** The case studies, fixed when the use case is answered. */
+  cases: readonly HeroJobCaseStudy[];
 }
 
 function track(name: string, props?: Record<string, string>) {
@@ -131,15 +184,340 @@ function Tail({ side }: { side: Side }) {
   );
 }
 
-export function HeroJob({ content, proof }: Props) {
+const SPARKLE_PATH =
+  "M12 3l1.8 4.9a2 2 0 0 0 1.3 1.3L20 11l-4.9 1.8a2 2 0 0 0-1.3 1.3L12 19l-1.8-4.9a2 2 0 0 0-1.3-1.3L4 11l4.9-1.8a2 2 0 0 0 1.3-1.3z";
+
+function Icon({ d, class: cls }: { d: string; class: string }) {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class={cls}
+    >
+      <path d={d} />
+    </svg>
+  );
+}
+
+/**
+ * "Auto ▾": who takes the job. A menu button; the menu opens above the
+ * composer with the choice focused, arrow keys/Home/End move, Enter or
+ * click picks, Escape or Tab or a click outside closes.
+ */
+function EngineerMenu({
+  content,
+  selected,
+  disabled,
+  onSelect,
+}: {
+  content: HeroJobContent["composer"];
+  selected: number;
+  disabled: boolean;
+  onSelect: (index: number) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const itemsRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const focusIndex = useRef(selected);
+  const current = content.engineers[selected] ?? content.engineers[0];
+
+  const close = (refocus: boolean) => {
+    setOpen(false);
+    if (refocus) buttonRef.current?.focus();
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    itemsRef.current[focusIndex.current]?.focus();
+    const onPointer = (e: PointerEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointer);
+    return () => document.removeEventListener("pointerdown", onPointer);
+  }, [open]);
+
+  const openAt = (index: number) => {
+    focusIndex.current = index;
+    setOpen(true);
+  };
+
+  const onMenuKey = (e: KeyboardEvent) => {
+    const count = content.engineers.length;
+    const at = itemsRef.current.indexOf(
+      document.activeElement as HTMLButtonElement,
+    );
+    const move = (to: number) => {
+      e.preventDefault();
+      itemsRef.current[(to + count) % count]?.focus();
+    };
+    if (e.key === "ArrowDown") move(at + 1);
+    else if (e.key === "ArrowUp") move(at - 1);
+    else if (e.key === "Home") move(0);
+    else if (e.key === "End") move(count - 1);
+    else if (e.key === "Escape") {
+      e.preventDefault();
+      close(true);
+    } else if (e.key === "Tab") setOpen(false);
+  };
+
+  return (
+    <div ref={rootRef} class="relative">
+      <button
+        ref={buttonRef}
+        type="button"
+        data-hero-job-engineer-button
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label={fillTemplate(content.engineerButtonLabel, {
+          name: current.name,
+        })}
+        disabled={disabled}
+        onClick={() => (open ? close(false) : openAt(selected))}
+        onKeyDown={(e) => {
+          if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+            e.preventDefault();
+            openAt(selected);
+          }
+        }}
+        class="inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full border border-(--color-border) bg-card pr-2.5 pl-3 font-sans text-[14px] leading-[20px] text-(--color-cream-900) transition-colors duration-200 ease-out hover:border-(--color-sage-500) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        <Icon d={SPARKLE_PATH} class="size-4 text-(--color-sage-800)" />
+        {current.name}
+        <Icon d="M6 9l6 6 6-6" class="size-3.5 text-(--color-cream-700)" />
+      </button>
+      {open && (
+        <div
+          role="menu"
+          aria-label={content.engineerMenuLabel}
+          data-hero-job-engineer-menu
+          onKeyDown={onMenuKey}
+          class="absolute bottom-full left-0 z-20 mb-2 flex w-[min(320px,calc(100vw-56px))] flex-col rounded-[16px] border border-(--color-border) bg-card p-1.5 text-left"
+        >
+          {content.engineers.map((engineer, i) => (
+            <button
+              key={engineer.value}
+              ref={(el) => {
+                itemsRef.current[i] = el;
+              }}
+              type="button"
+              role="menuitemradio"
+              aria-checked={i === selected}
+              data-hero-job-engineer={engineer.value}
+              tabIndex={-1}
+              onClick={() => {
+                onSelect(i);
+                close(true);
+              }}
+              class="flex cursor-pointer items-start gap-2.5 rounded-[12px] px-3 py-2 text-left transition-colors duration-200 ease-out hover:bg-(--color-cream-100) focus-visible:bg-(--color-cream-100) focus-visible:outline-none"
+            >
+              <span class="flex min-w-0 flex-1 flex-col">
+                <span class="font-sans text-[14px] leading-[20px] font-semibold text-(--color-cream-900)">
+                  {engineer.name}
+                </span>
+                <span class="font-sans text-[13px] leading-[18px] text-(--color-cream-700)">
+                  {engineer.line}
+                </span>
+              </span>
+              {i === selected && (
+                <Icon
+                  d="M5 12l5 5L20 7"
+                  class="mt-0.5 size-4 shrink-0 text-(--color-sage-800)"
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * The "@ add your stack" picker: a filter field (combobox) over a grouped
+ * listbox, opening above the composer. Typing filters, arrow keys move,
+ * Enter picks, Escape or a click outside closes; the mouse works too.
+ */
+function StackPicker({
+  content,
+  tools,
+  onPick,
+  onClose,
+}: {
+  content: HeroJobContent["stack"];
+  tools: readonly HeroJobTool[];
+  onPick: (tool: HeroJobTool) => void;
+  onClose: (refocus: boolean) => void;
+}) {
+  const [query, setQuery] = useState("");
+  const [active, setActive] = useState(0);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+
+  const needle = query.trim().toLowerCase();
+  const shown = needle
+    ? tools.filter((t) => t.name.toLowerCase().includes(needle))
+    : tools;
+  const groups = (Object.keys(content.groups) as HeroJobToolGroup[])
+    .map((group) => ({ group, items: shown.filter((t) => t.group === group) }))
+    .filter((g) => g.items.length);
+  // Keyboard order follows the grouped display order.
+  const ordered = groups.flatMap((g) => g.items);
+  const at = Math.min(active, Math.max(ordered.length - 1, 0));
+  const optionId = (tool: HeroJobTool) => `hero-job-stack-${tool.value}`;
+
+  useEffect(() => {
+    inputRef.current?.focus({ preventScroll: true });
+    const onPointer = (e: PointerEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) onClose(false);
+    };
+    document.addEventListener("pointerdown", onPointer);
+    return () => document.removeEventListener("pointerdown", onPointer);
+  }, [onClose]);
+
+  useEffect(() => {
+    const tool = ordered[at];
+    if (!tool) return;
+    listRef.current
+      ?.querySelector(`#${optionId(tool)}`)
+      ?.scrollIntoView({ block: "nearest" });
+  });
+
+  const onKey = (e: KeyboardEvent) => {
+    const count = ordered.length;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      if (count)
+        setActive((at + (e.key === "ArrowDown" ? 1 : -1) + count) % count);
+    } else if (e.key === "Home" || e.key === "End") {
+      e.preventDefault();
+      setActive(e.key === "Home" ? 0 : count - 1);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const tool = ordered[at];
+      if (tool) onPick(tool);
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      onClose(true);
+    } else if (e.key === "Tab") onClose(false);
+  };
+
+  return (
+    <div
+      ref={rootRef}
+      data-hero-job-stack-picker
+      class="absolute bottom-full left-0 z-20 mb-2 flex w-[min(340px,100%)] flex-col rounded-[16px] border border-(--color-border) bg-card text-left"
+    >
+      <div class="border-b border-(--color-border) p-2">
+        <input
+          ref={inputRef}
+          type="text"
+          role="combobox"
+          aria-expanded="true"
+          aria-controls="hero-job-stack-list"
+          aria-activedescendant={
+            ordered[at] ? optionId(ordered[at]) : undefined
+          }
+          aria-autocomplete="list"
+          aria-label={content.pickerLabel}
+          autoComplete="off"
+          placeholder={content.filterPlaceholder}
+          value={query}
+          onInput={(e) => {
+            setQuery((e.target as HTMLInputElement).value.replace(/^@/, ""));
+            setActive(0);
+          }}
+          onKeyDown={onKey}
+          class="h-9 w-full rounded-[10px] bg-(--color-cream-50) px-3 font-sans text-[16px] text-foreground placeholder:text-(--color-cream-700) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:outline-none md:text-[14px]"
+        />
+      </div>
+      <div
+        ref={listRef}
+        id="hero-job-stack-list"
+        role="listbox"
+        aria-label={content.pickerLabel}
+        class="max-h-[240px] overflow-y-auto overscroll-contain p-1.5"
+      >
+        {groups.length === 0 && (
+          <p class="px-3 py-2 font-sans text-[13px] leading-[18px] text-(--color-cream-700)">
+            {content.empty}
+          </p>
+        )}
+        {groups.map(({ group, items }) => (
+          // biome-ignore lint/a11y/useSemanticElements: an ARIA listbox groups its options with role="group", not a fieldset.
+          <div
+            key={group}
+            role="group"
+            aria-labelledby={`hero-job-stack-group-${group}`}
+          >
+            <p
+              id={`hero-job-stack-group-${group}`}
+              class="px-3 pt-2 pb-1 font-sans text-[12px] leading-[16px] font-semibold text-(--color-cream-700)"
+            >
+              {content.groups[group]}
+            </p>
+            {items.map((tool) => {
+              const isActive = ordered[at] === tool;
+              return (
+                // biome-ignore lint/a11y/useKeyWithClickEvents: keys go through the combobox (aria-activedescendant).
+                <div
+                  key={tool.value}
+                  id={optionId(tool)}
+                  role="option"
+                  tabIndex={-1}
+                  aria-selected={isActive}
+                  data-hero-job-stack-option={tool.value}
+                  onMouseDown={(e) => e.preventDefault()}
+                  onMouseEnter={() => setActive(ordered.indexOf(tool))}
+                  onClick={() => onPick(tool)}
+                  class={`cursor-pointer rounded-[10px] px-3 py-1.5 font-sans text-[14px] leading-[20px] text-(--color-cream-900) ${isActive ? "bg-(--color-cream-100)" : ""}`}
+                >
+                  {tool.name}
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function HeroJob({ content, proof, stack }: Props) {
   const [value, setValue] = useState("");
+  const [engineerIndex, setEngineerIndex] = useState(0);
+  const [picked, setPicked] = useState<readonly string[]>([]);
+  const [pickerOpen, setPickerOpen] = useState(false);
   const [talk, setTalk] = useState<Conversation | null>(null);
   // The greeting (message 0) is visible from the server render on.
   const [shown, setShown] = useState(1);
   const [typing, setTyping] = useState(false);
   const [reduced, setReduced] = useState(false);
+  // The compact height in px, held for one frame when the chat starts so the
+  // window eases from it (the example chips leave at the same moment, so an
+  // `auto` start height would first shrink the window).
+  const [growFrom, setGrowFrom] = useState<number | null>(null);
+  const windowRef = useRef<HTMLElement>(null);
   const threadRef = useRef<HTMLDivElement>(null);
   const repliesRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const hintRef = useRef<HTMLButtonElement>(null);
+
+  // The picker's tools in their build-time order, and the picked ones.
+  const offered = stack
+    .map((value) => content.stack.tools.find((t) => t.value === value))
+    .filter((t): t is HeroJobTool => !!t);
+  const pickedTools = picked
+    .map((value) => content.stack.tools.find((t) => t.value === value))
+    .filter((t): t is HeroJobTool => !!t);
   const focusNext = useRef(false);
 
   useEffect(() => {
@@ -148,20 +526,26 @@ export function HeroJob({ content, proof }: Props) {
 
   const flow = talk ? content.flows[talk.intent] : null;
   const step = talk?.answers.length ?? 0;
-  const useCase = talk?.answers[0]?.value;
-  const cases = useCase ? (proof[useCase] ?? []) : [];
+  const cases = talk?.cases ?? [];
   const done = !!flow && step >= flow.questions.length;
 
   const start = (raw: string, event: string) => {
     const job = raw.trim();
     if (!job || talk) return;
-    const intent = classifyHeroJob(job);
+    const chosen = content.composer.engineers[engineerIndex];
+    const intent = classifyHeroJob(job, chosen?.intent);
     track(event, { intent });
     setValue("");
-    setTalk({ job, intent, answers: [] });
+    if (!reduced && windowRef.current)
+      setGrowFrom(windowRef.current.offsetHeight);
+    const taker = chosen?.intent
+      ? chosen
+      : content.composer.engineers.find((e) => e.intent === intent);
+    const filled = answerImplied(content.flows[intent], [], pickedTools);
+    setTalk({ job, intent, taker, cases: [], ...filled });
   };
 
-  const answer = (option: HeroJobOption | null) => {
+  const answer = (option: HeroJobOption | null, tools = pickedTools) => {
     if (!talk || !flow || done) return;
     const question = flow.questions[step];
     track(option ? content.analytics.answer : content.analytics.skip, {
@@ -170,11 +554,54 @@ export function HeroJob({ content, proof }: Props) {
       ...(option ? { answer: option.value } : {}),
     });
     focusNext.current = true;
-    setTalk({ ...talk, answers: [...talk.answers, option] });
+    const filled = answerImplied(flow, [...talk.answers, option], tools);
+    const useCase = step === 0 ? option?.value : undefined;
+    setTalk({
+      ...talk,
+      answers: filled.answers,
+      implied: [...talk.implied, ...filled.implied],
+      cases:
+        step === 0 && useCase
+          ? preferCases(proof[useCase] ?? [], tools)
+          : talk.cases,
+    });
+  };
+
+  const closePicker = useCallback((refocus: boolean) => {
+    setPickerOpen(false);
+    if (!refocus) return;
+    const input = inputRef.current;
+    (input && !input.disabled ? input : hintRef.current)?.focus();
+  }, []);
+
+  // Picking a tool mid-chat answers the open question when the tool implies it.
+  const addTool = (tool: HeroJobTool) => {
+    closePicker(true);
+    if (picked.includes(tool.value)) return;
+    track(content.analytics.stack, { tool: tool.value });
+    const tools = [...pickedTools, tool];
+    setPicked(tools.map((t) => t.value));
+    if (!talk || !flow || done) return;
+    const implied = impliedAnswer(flow.questions[step], tools);
+    if (implied) answer(implied, tools);
+  };
+
+  const removeTool = (tool: HeroJobTool) => {
+    setPicked(picked.filter((v) => v !== tool.value));
+    inputRef.current?.focus();
+  };
+
+  const selectEngineer = (index: number) => {
+    const engineer = content.composer.engineers[index];
+    if (!engineer) return;
+    if (index !== engineerIndex)
+      track(content.analytics.engineer, { engineer: engineer.value });
+    setEngineerIndex(index);
   };
 
   const reset = () => {
     setTalk(null);
+    setPickerOpen(false);
     setShown(1);
     setTyping(false);
     setValue("");
@@ -198,6 +625,7 @@ export function HeroJob({ content, proof }: Props) {
       key: "accepted",
       side: "engineer",
       lines: 1,
+      label: talk.taker?.name,
       body: (
         <>
           {content.reply.acceptedPrefix} “{displayJob(talk.job)}”.
@@ -206,6 +634,7 @@ export function HeroJob({ content, proof }: Props) {
     });
 
     flow.questions.slice(0, step + 1).forEach((question, i) => {
+      if (talk.implied.includes(i)) return;
       messages.push({
         key: `q-${question.id}`,
         side: "engineer",
@@ -259,6 +688,7 @@ export function HeroJob({ content, proof }: Props) {
         talk.answers,
         content,
         cases[0]?.company,
+        pickedTools,
       );
       messages.push({
         key: "plan",
@@ -314,25 +744,19 @@ export function HeroJob({ content, proof }: Props) {
         body: (
           <div data-hero-job-ready={outcome.needs}>
             <p>{fillTemplate(content.reply.ready, { needs: outcome.needs })}</p>
-            <div class="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1">
+            <div class="mt-3">
               <a
-                href={heroJobSignupHref(
-                  content.connect.href,
-                  talk.job,
+                href={heroJobSignupHref(content.connect.href, talk.job, {
                   flow,
-                  talk.answers,
-                )}
+                  answers: talk.answers,
+                  // The menu is locked while the chat runs, so this is the pick.
+                  engineer: content.composer.engineers[engineerIndex],
+                  stack: pickedTools,
+                })}
                 data-analytics={content.connect.analytics}
                 class={PRIMARY_PILL}
               >
                 {content.connect.label}
-              </a>
-              <a
-                href={content.signup.href}
-                data-analytics={content.signup.analytics}
-                class={TEXT_LINK}
-              >
-                {content.signup.label}
               </a>
             </div>
           </div>
@@ -348,6 +772,14 @@ export function HeroJob({ content, proof }: Props) {
     next?.side === "engineer" && messages[shown - 1]?.side !== "engineer";
   const prevLines = messages[shown - 1]?.lines ?? 0;
   const settled = visibleCount >= total && !typing;
+
+  // Release the pinned compact height once it is committed, so the window
+  // transitions from it to its open height.
+  useEffect(() => {
+    if (growFrom === null) return;
+    void windowRef.current?.offsetHeight;
+    setGrowFrom(null);
+  }, [growFrom]);
 
   // Pace the thread: the visitor's own bubbles appear at once; an engineer
   // group opens with the typing indicator; later messages follow by lines.
@@ -396,12 +828,17 @@ export function HeroJob({ content, proof }: Props) {
 
   return (
     <section
+      ref={windowRef}
       aria-label={content.window.label}
+      style={growFrom === null ? undefined : { height: `${growFrom}px` }}
       data-hero-job-reply={talk?.intent}
-      class="mx-auto flex h-[clamp(420px,calc(100svh-400px),640px)] w-full max-w-[760px] flex-col overflow-hidden rounded-[24px] border border-(--color-border) bg-card text-left md:h-[clamp(360px,calc(100svh-440px),520px)]"
+      class={`mx-auto flex w-full max-w-[760px] flex-col rounded-[24px] border border-(--color-border) bg-card text-left ${WINDOW_GROWTH} ${talk ? WINDOW_OPEN : WINDOW_COMPACT}`}
     >
       <header class="flex items-center gap-3 border-b border-(--color-border) px-4 py-3 md:px-5">
-        <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-(--color-sage-800) text-(--color-cream-50)">
+        <span
+          title={talk?.taker?.name}
+          class="flex size-9 shrink-0 items-center justify-center rounded-full bg-(--color-sage-800) text-(--color-cream-50)"
+        >
           <svg
             aria-hidden="true"
             focusable="false"
@@ -416,11 +853,7 @@ export function HeroJob({ content, proof }: Props) {
           <span class="font-sans text-[15px] leading-[20px] font-semibold text-(--color-cream-900)">
             {content.window.name}
           </span>
-          <span class="flex items-center gap-1.5 font-sans text-[13px] leading-[18px] text-(--color-cream-700)">
-            <span
-              aria-hidden="true"
-              class="size-2 rounded-full bg-(--color-success-500)"
-            />
+          <span class="font-sans text-[13px] leading-[18px] text-(--color-cream-700)">
             {content.window.status}
           </span>
         </span>
@@ -452,8 +885,16 @@ export function HeroJob({ content, proof }: Props) {
             return (
               <li
                 key={m.key}
-                class={`${ENTER} flex ${mine ? "justify-end" : "justify-start"} ${gap}`}
+                class={`${ENTER} flex ${m.label ? "flex-col items-start" : mine ? "justify-end" : "justify-start"} ${gap}`}
               >
+                {m.label && (
+                  <span
+                    data-hero-job-taker
+                    class="mb-1 pl-3.5 font-sans text-[12px] leading-[16px] font-semibold text-(--color-sage-800) md:pl-4"
+                  >
+                    {m.label}
+                  </span>
+                )}
                 <span class="sr-only">
                   {mine
                     ? content.reply.visitorPrefix
@@ -495,60 +936,98 @@ export function HeroJob({ content, proof }: Props) {
       </div>
 
       <div class="border-t border-(--color-border) p-3 md:px-4">
-        {(!talk || (question && settled)) && (
+        {!talk && (
+          <div
+            data-hero-job-options="examples"
+            class="mb-3 grid grid-cols-1 gap-2 md:grid-cols-3"
+          >
+            {content.examples.map((example) => (
+              <button
+                key={example}
+                type="button"
+                data-hero-job-example
+                onClick={() => start(example, content.analytics.example)}
+                class={EXAMPLE_CHIP}
+              >
+                {example}
+              </button>
+            ))}
+          </div>
+        )}
+        {question && settled && (
           <div
             ref={repliesRef}
-            data-hero-job-options={question?.id ?? "examples"}
+            data-hero-job-options={question.id}
             class="-mx-3 mb-3 flex gap-2 overflow-x-auto px-3 pb-0.5 [scrollbar-width:none] md:mx-0 md:flex-wrap md:overflow-visible md:px-0"
           >
-            {!talk
-              ? content.examples.map((example) => (
-                  <button
-                    key={example}
-                    type="button"
-                    data-hero-job-example
-                    onClick={() => start(example, content.analytics.example)}
-                    class={QUICK_REPLY}
-                  >
-                    {example}
-                  </button>
-                ))
-              : question?.options.map((option) => (
-                  <button
-                    key={option.value}
-                    type="button"
-                    data-hero-job-answer={option.value}
-                    onClick={() => answer(option)}
-                    class={QUICK_REPLY}
-                  >
-                    {option.label}
-                  </button>
-                ))}
-            {talk && (
+            {question.options.map((option) => (
               <button
+                key={option.value}
                 type="button"
-                data-hero-job-skip
-                onClick={() => answer(null)}
-                class={`${TEXT_LINK} shrink-0 px-2`}
+                data-hero-job-answer={option.value}
+                onClick={() => answer(option)}
+                class={QUICK_REPLY}
               >
-                {content.reply.skipLabel}
+                {option.label}
               </button>
-            )}
+            ))}
+            <button
+              type="button"
+              data-hero-job-skip
+              onClick={() => answer(null)}
+              class={`${TEXT_LINK} shrink-0 px-2`}
+            >
+              {content.reply.skipLabel}
+            </button>
           </div>
         )}
         <form
+          ref={formRef}
           method="get"
           action={content.connect.href}
-          class="flex items-center gap-2"
+          class="relative rounded-[20px] border border-(--color-border) bg-(--color-cream-50) transition-colors duration-200 ease-out has-[textarea:focus-visible]:border-(--color-sage-800) has-[textarea:focus-visible]:ring-2 has-[textarea:focus-visible]:ring-(--color-sage-800)"
           onSubmit={(e) => {
             e.preventDefault();
             start(value, content.analytics.submit);
           }}
         >
-          <input
+          {pickerOpen && (
+            <StackPicker
+              content={content.stack}
+              tools={offered.filter((t) => !picked.includes(t.value))}
+              onPick={addTool}
+              onClose={closePicker}
+            />
+          )}
+          {pickedTools.length > 0 && (
+            <ul data-hero-job-stack class="flex flex-wrap gap-1.5 px-3 pt-3">
+              {pickedTools.map((tool) => (
+                <li
+                  key={tool.value}
+                  data-hero-job-stack-chip={tool.value}
+                  class="inline-flex h-7 items-center gap-0.5 rounded-full bg-(--color-sage-100) pr-1 pl-2.5 font-sans text-[13px] leading-[18px] text-(--color-sage-800)"
+                >
+                  {content.stack.chipPrefix}
+                  {tool.name}
+                  <button
+                    type="button"
+                    aria-label={fillTemplate(content.stack.removeLabel, {
+                      name: tool.name,
+                    })}
+                    onClick={() => removeTool(tool)}
+                    class="inline-flex size-6 cursor-pointer items-center justify-center rounded-full transition-colors duration-200 ease-out hover:bg-(--color-sage-400) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:outline-none"
+                  >
+                    <Icon d="M7 7l10 10M17 7L7 17" class="size-3" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+          <textarea
+            ref={inputRef}
             id="hero-job-input"
-            type="text"
             name="job"
+            rows={talk ? 1 : 2}
             required
             maxLength={MAX_JOB_LENGTH}
             autoComplete="off"
@@ -556,30 +1035,57 @@ export function HeroJob({ content, proof }: Props) {
             disabled={!!talk}
             placeholder={talk ? content.replyPlaceholder : content.placeholder}
             value={value}
-            onInput={(e) => setValue((e.target as HTMLInputElement).value)}
-            class="h-11 min-w-0 flex-1 rounded-full border border-(--color-border) bg-(--color-cream-50) px-4 font-sans text-[16px] text-foreground transition-colors duration-200 ease-out placeholder:text-(--color-cream-700) focus-visible:border-(--color-sage-800) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+            onInput={(e) => {
+              const el = e.target as HTMLTextAreaElement;
+              // "@" opens the stack picker instead of landing in the job.
+              if ((e as InputEvent).data === "@") {
+                const at = el.selectionStart - 1;
+                if (el.value[at] === "@") {
+                  el.value = el.value.slice(0, at) + el.value.slice(at + 1);
+                  el.setSelectionRange(at, at);
+                  setPickerOpen(true);
+                }
+              }
+              setValue(el.value);
+            }}
+            onKeyDown={(e) => {
+              if (e.key !== "Enter" || e.shiftKey || e.isComposing) return;
+              e.preventDefault();
+              formRef.current?.requestSubmit();
+            }}
+            class="block w-full resize-none bg-transparent px-4 pt-3 pb-1 font-sans text-[16px] leading-[24px] text-foreground placeholder:text-(--color-cream-700) focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
           />
-          <button
-            type="submit"
-            aria-label={content.submitLabel}
-            disabled={!!talk}
-            class="inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full bg-(--color-cream-900) text-(--color-cream-50) transition-colors duration-200 ease-out hover:bg-(--color-sage-800) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-              focusable="false"
+          <div class="flex items-center gap-3 px-2 pb-2">
+            <EngineerMenu
+              content={content.composer}
+              selected={engineerIndex}
+              disabled={!!talk}
+              onSelect={selectEngineer}
+            />
+            <button
+              ref={hintRef}
+              type="button"
+              data-hero-job-stack-hint
+              aria-haspopup="listbox"
+              aria-expanded={pickerOpen}
+              onClick={() => setPickerOpen(!pickerOpen)}
+              class="inline-flex h-9 cursor-pointer items-center rounded-full px-2 font-sans text-[13px] leading-[18px] text-(--color-cream-700) transition-colors duration-200 ease-out hover:text-(--color-sage-800) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:outline-none"
             >
-              <path d="M5 12h14M13 6l6 6-6 6" />
-            </svg>
-          </button>
+              {content.stack.hint}
+            </button>
+            <span class="ml-auto hidden items-center gap-1 font-sans text-[13px] leading-[18px] text-(--color-cream-700) sm:inline-flex">
+              <kbd class="font-sans">{content.composer.sendKey}</kbd>
+              {content.composer.sendHint}
+            </span>
+            <button
+              type="submit"
+              aria-label={content.submitLabel}
+              disabled={!!talk}
+              class="ml-auto inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full bg-(--color-cream-900) text-(--color-cream-50) transition-colors duration-200 ease-out hover:bg-(--color-sage-800) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40 sm:ml-0"
+            >
+              <Icon d="M12 19V5M6 11l6-6 6 6" class="size-[18px]" />
+            </button>
+          </div>
         </form>
       </div>
     </section>

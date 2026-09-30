@@ -19,7 +19,7 @@ import LogoMarquee from "../components/labs/LogoMarquee.astro";
 import ProductDoors from "../components/labs/ProductDoors.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { buildHeroJobProof } from "../lib/heroJobProof";
+import { buildHeroJobProof, buildHeroJobStack } from "../lib/heroJobProof";
 import { buildHomepageJsonLd } from "../lib/homepageJsonLd";
 import {
   LABS_CLOSE,
@@ -36,9 +36,10 @@ import { getAllPublishedEntries } from "../lib/llmops";
 import { getAllPublishedMLOpsEntries } from "../lib/mlops";
 import { defaultOgImage, ORGANIZATION_NAME } from "../lib/seo";
 
-// The hero job box's case studies, picked here at build time so the island
-// gets a few rows per use case rather than the research databases.
-const heroJobProof = buildHeroJobProof([
+// The hero job box's case studies and its "@ add your stack" tools, picked
+// here at build time so the island gets a few rows per use case and a ranked
+// list of tool ids rather than the research databases.
+const heroJobEntries = [
   ...(await getAllPublishedEntries()).map(({ data }) => ({
     source: "llmops" as const,
     slug: data.slug,
@@ -57,7 +58,15 @@ const heroJobProof = buildHeroJobProof([
     year: data.year,
     tags: data.mlopsTags,
   })),
-]);
+];
+const heroJobProof = buildHeroJobProof(
+  heroJobEntries,
+  LABS_HERO_JOB.stack.tools,
+);
+const heroJobStack = buildHeroJobStack(
+  heroJobEntries,
+  LABS_HERO_JOB.stack.tools,
+);
 
 const homepageJsonLd = buildHomepageJsonLd({
   organizationName: ORGANIZATION_NAME,
@@ -83,6 +92,7 @@ const homepageJsonLd = buildHomepageJsonLd({
         client:load
         content={LABS_HERO_JOB}
         proof={heroJobProof}
+        stack={heroJobStack}
         slot="action"
       />
     </LabsHero>
