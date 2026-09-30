@@ -1,6 +1,6 @@
-# ZenML Labs: An Autonomous AI Engineer for AI in Production
+# ZenML Labs: An AI Engineer for the AI You Run in Production
 
-> ZenML Labs builds an autonomous AI engineer. Think Devin, but it takes care of your AI agents and models.
+> ZenML Labs builds an AI engineer for the AI agents and models you already run. Unlike coding agents, it works from your production runs and traces, not just your repo.
 > It works from the real runs and traces of your agents and models, on your own infrastructure: it finds what's wrong, fixes it and proves the change, and people approve what ships.
 > ZenML (orchestration for ML pipelines and agents, and the record of every run, artifact and model version) and Kitaru (replay-based evals for AI agents) are its open-source foundations.
 

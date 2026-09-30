@@ -29,9 +29,9 @@ export type { CaseStudyCard };
 export type LabsProduct = "zenml" | "kitaru";
 
 export const LABS_HOME_SEO = {
-  title: "ZenML Labs: The autonomous AI engineer for your agents and models",
+  title: "ZenML Labs: An AI engineer for the AI you run in production",
   description:
-    "An autonomous AI engineer for AI in production. Think Devin, but it takes care of your agents and models: it finds what's wrong in your runs and traces, fixes it and proves the change, on your own infrastructure. Built on ZenML and Kitaru, both open source.",
+    "An AI engineer for the agents and models you run in production. Unlike coding agents, it works from your real runs and traces: it finds what's wrong, fixes it and proves the change on production data, on your own infrastructure. You approve what ships. Built on ZenML and Kitaru, both open source.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -234,9 +234,10 @@ export interface LabsInstallChip {
   analytics: string;
 }
 
-/** No deck: the hero is the headline and the job box (HeroJob) only. */
+/** The headline, a one-line deck and the job box (HeroJob). */
 export const LABS_HERO: LabsHeroContent = {
-  headlineLines: ["Meet your autonomous", "AI engineer"],
+  headlineLines: ["Meet your", "AI engineer"],
+  deck: "It works on the agents and models you already run. It finds what's wrong, fixes it and proves the fix. You approve what ships.",
   cta: LABS_HERO_SIGNUP,
 };
 
@@ -329,8 +330,6 @@ export interface HeroJobFlow {
   questions: readonly [HeroJobQuestion, ...HeroJobQuestion[]];
   vars: Readonly<Record<string, string>> & { needs: string };
   plan: readonly [string, string, string];
-  /** Which plan bullet names a team from the case studies, when there are any. */
-  peerStep: 0 | 1 | 2;
   week: readonly [HeroJobDay, HeroJobDay, HeroJobDay];
   /**
    * When the visitor picked stack tools in `groups`, these vars override the
@@ -409,8 +408,6 @@ export interface HeroJobContent {
     proofHeading: string;
     /** Source label on a case-study card, by database. */
     sourceLabels: { llmops: string; mlops: string };
-    /** Wraps the plan's peer bullet: "{peer}" is a company, "{step}" the bullet. */
-    peerTemplate: string;
     planHeading: string;
     weekHeading: string;
     /** "{needs}" is the flow's needs var. */
@@ -685,9 +682,8 @@ export const LABS_HERO_JOB: HeroJobContent = {
     engineerPrefix: "AI engineer:",
     visitorPrefix: "You:",
     typingLabel: "Your AI engineer is typing",
-    proofHeading: "Teams doing this in production:",
+    proofHeading: "Related case studies:",
     sourceLabels: { llmops: "LLMOps database", mlops: "MLOps database" },
-    peerTemplate: "Like {peer}, {step}",
     planHeading: "Here's my plan",
     weekHeading: "Your first week with me",
     ready: "Ready to start tonight. I just need read access to your {needs}.",
@@ -793,7 +789,6 @@ export const LABS_HERO_JOB: HeroJobContent = {
         "{focusStep}",
         "Nothing ships without an eval on your production sessions. You approve every change.",
       ],
-      peerStep: 1,
       week: [
         {
           day: "Mon",
@@ -896,7 +891,6 @@ export const LABS_HERO_JOB: HeroJobContent = {
         "{todayStep}",
         "Promote a retrained {model} only if it beats the champion. You approve.",
       ],
-      peerStep: 0,
       week: [
         {
           day: "Mon",
@@ -1004,7 +998,6 @@ export const LABS_HERO_JOB: HeroJobContent = {
         "{ownerStep}",
         "Post a summary before standup. You approve merges.",
       ],
-      peerStep: 0,
       week: [
         {
           day: "Mon",
@@ -1093,7 +1086,6 @@ export const LABS_HERO_JOB: HeroJobContent = {
         "test {swap} on real data.",
         "{guard} You approve.",
       ],
-      peerStep: 1,
       week: [
         {
           day: "Mon",
@@ -1162,7 +1154,6 @@ export const LABS_HERO_JOB: HeroJobContent = {
         "Find what's {worry} and why.",
         "Fix it and prove it before anything ships. You approve.",
       ],
-      peerStep: 0,
       week: [
         {
           day: "Mon",

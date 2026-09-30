@@ -180,9 +180,7 @@ export interface HeroJobOutcome {
 }
 
 /**
- * The plan, first week and "needs" line for a finished conversation. `peer`
- * is a company from the case studies shown for the visitor's use case; when
- * present, the flow's `peerStep` bullet is phrased as following that team.
+ * The plan, first week and "needs" line for a finished conversation.
  * `stack` is the tools picked with "@": when any is in the flow's `stack`
  * groups, its vars apply with `{tool}` as their names.
  */
@@ -191,7 +189,6 @@ export function heroJobOutcome(
   intent: HeroJobIntent,
   answers: HeroJobAnswers,
   content: HeroJobContent,
-  peer?: string,
   stack: readonly HeroJobTool[] = [],
 ): HeroJobOutcome {
   const flow = content.flows[intent];
@@ -206,12 +203,9 @@ export function heroJobOutcome(
       vars[name] = fillTemplate(template, { tool });
   }
 
-  const plan = flow.plan.map((template, i) => {
-    const step = fillTemplate(template, vars);
-    return peer && i === flow.peerStep
-      ? fillTemplate(content.reply.peerTemplate, { peer, step })
-      : capitalize(step);
-  });
+  const plan = flow.plan.map((template) =>
+    capitalize(fillTemplate(template, vars)),
+  );
 
   const week = flow.week.map(({ day, text }) => ({
     day,

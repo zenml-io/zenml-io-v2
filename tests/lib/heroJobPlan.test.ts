@@ -130,13 +130,7 @@ describe("conversation flows", () => {
         flow.questions.map((q) => q.options[q.options.length - 1]),
       ];
       for (const answers of runs) {
-        const outcome = heroJobOutcome(
-          "a job",
-          intent,
-          answers,
-          LABS_HERO_JOB,
-          "Acme",
-        );
+        const outcome = heroJobOutcome("a job", intent, answers, LABS_HERO_JOB);
         expect(outcome.needs).not.toMatch(/[{}]/);
         for (const line of [
           ...outcome.plan,
@@ -145,7 +139,6 @@ describe("conversation flows", () => {
           expect(line).not.toMatch(/[{}]/);
           expect(line.charAt(0)).toBe(line.charAt(0).toUpperCase());
         }
-        expect(outcome.plan[flow.peerStep]).toMatch(/^Like Acme, /);
       }
     },
   );
@@ -302,7 +295,6 @@ describe("stack", () => {
       "agents",
       [...answers, agents.questions[2].options[0]],
       LABS_HERO_JOB,
-      undefined,
       stack,
     );
     expect(outcome.week[0].text).toBe(
@@ -312,7 +304,7 @@ describe("stack", () => {
       "Replay the most expensive ones on Claude Haiku 4.5 and score both.",
     );
 
-    const ml = heroJobOutcome("Retrain", "ml", [], LABS_HERO_JOB, undefined, [
+    const ml = heroJobOutcome("Retrain", "ml", [], LABS_HERO_JOB, [
       tool("sagemaker"),
     ]);
     expect(ml.plan[0]).toBe(
@@ -320,9 +312,8 @@ describe("stack", () => {
     );
     // A tool outside the flow's stack groups changes nothing.
     expect(
-      heroJobOutcome("Retrain", "ml", [], LABS_HERO_JOB, undefined, [
-        tool("claude"),
-      ]).plan[0],
+      heroJobOutcome("Retrain", "ml", [], LABS_HERO_JOB, [tool("claude")])
+        .plan[0],
     ).toBe(
       "Check inputs and predictions for drift as each new batch of data lands.",
     );

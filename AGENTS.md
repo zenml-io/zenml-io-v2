@@ -1,9 +1,10 @@
 # Repository Guidelines
 
 This is the ZenML Labs marketing site (ZenML × Kitaru), built with Astro and
-Preact. ZenML Labs is the company: an autonomous AI engineer ("think Devin, but it
-takes care of your AI agents and models"), with ZenML and Kitaru
-as the open-source foundations. Copy leads with that problem and outcome; do not name
+Preact. ZenML Labs is the company: an AI engineer for the agents and models
+customers already run, with ZenML and Kitaru as the open-source foundations.
+Do not name third-party agents (for example Devin) in site copy, and keep
+"autonomous" out of it; people approve what ships. Copy leads with that problem and outcome; do not name
 internal product concepts ("Bots", "Kaizen") or give the paid offering its own
 product name. ZenML pages are the default; Kitaru lives under /product/kitaru,
 /compare/kitaru-vs-*, and Kitaru-origin blog posts. See CLAUDE.md for brand

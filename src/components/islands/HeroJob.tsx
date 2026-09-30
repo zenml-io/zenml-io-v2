@@ -689,7 +689,6 @@ export function HeroJob({ content, proof, stack }: Props) {
         talk.intent,
         talk.answers,
         content,
-        cases[0]?.company,
         pickedTools,
       );
       messages.push({
