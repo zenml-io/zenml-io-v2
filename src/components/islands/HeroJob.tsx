@@ -110,12 +110,13 @@ const WINDOW_GROWTH =
   "transition-[height] duration-300 ease-out motion-reduce:transition-none";
 const WINDOW_COMPACT = "h-auto";
 /**
- * Open height: nearly the whole viewport under the nav, so a conversation
- * reads without scrolling inside the window. When the chat starts the page
- * scrolls the window up to just under the nav (see the effect in HeroJob).
+ * Open height: grows with the conversation up to a cap (the viewport minus
+ * room for the nav and a peek of the headline); past that the thread scrolls
+ * inside. The page only scrolls as far as needed to keep the newest message
+ * in view, never past the nav.
  */
 const WINDOW_OPEN =
-  "h-[clamp(380px,calc(100svh-104px),760px)] md:h-[clamp(440px,calc(100dvh-136px),860px)]";
+  "h-auto max-h-[clamp(380px,calc(100svh-120px),640px)] md:max-h-[clamp(440px,calc(100dvh-220px),720px)]";
 
 const BUBBLE_TONE = {
   engineer: "bg-(--color-cream-100) text-(--color-cream-900)",
@@ -661,6 +662,8 @@ export function HeroJob({ content, proof, stack }: Props) {
           body: (
             <a
               href={row.href}
+              target="_blank"
+              rel="noopener noreferrer"
               data-analytics={content.analytics.caseStudy}
               data-hero-job-case
               class="group block rounded-[16px] border border-(--color-border) bg-card px-4 py-3 transition-colors duration-200 ease-out hover:border-(--color-sage-400)"
@@ -822,23 +825,23 @@ export function HeroJob({ content, proof, stack }: Props) {
       ?.focus({ preventScroll: true });
   }, [settled]);
 
-  // When the conversation starts, bring the window up to just under the
-  // fixed nav so the whole thread can be read without scrolling inside it.
-  const started = !!talk;
+  // Keep the newest message in view: scroll the page only by as much as the
+  // window's bottom sits below the fold, never lifting its top under the nav.
   useEffect(() => {
-    if (!started) return;
+    if (!talk) return;
     const el = windowRef.current;
     if (!el) return;
-    const reduce = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const r = el.getBoundingClientRect();
     const navClearance = window.matchMedia("(min-width: 768px)").matches
       ? 120
       : 88;
-    const delta = el.getBoundingClientRect().top - navClearance;
-    if (Math.abs(delta) > 8)
-      window.scrollBy({ top: delta, behavior: reduce ? "auto" : "smooth" });
-  }, [started]);
+    const by = Math.min(
+      r.bottom - (window.innerHeight - 24),
+      r.top - navClearance,
+    );
+    if (by > 8)
+      window.scrollBy({ top: by, behavior: reduced ? "auto" : "smooth" });
+  }, [visibleCount, talk, reduced]);
 
   const visible = messages.slice(0, visibleCount);
   const question = flow && !done ? flow.questions[step] : null;

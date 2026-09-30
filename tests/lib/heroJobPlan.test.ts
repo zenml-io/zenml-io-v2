@@ -159,7 +159,7 @@ describe("conversation flows", () => {
       LABS_HERO_JOB,
     );
     expect(outcome.plan[1]).toBe(
-      "Test Claude Haiku on your most expensive support conversations.",
+      "Test Claude Haiku 4.5 on your most expensive support conversations.",
     );
     expect(outcome.week.map((d) => d.day)).toEqual(["Mon", "Wed", "Fri"]);
     expect(outcome.needs).toBe("traces");
@@ -309,7 +309,7 @@ describe("stack", () => {
       "Read the last two weeks of support conversations in your LangGraph traces and sort them by cost and quality.",
     );
     expect(outcome.week[1].text).toBe(
-      "Replay the most expensive ones on Claude Haiku and score both.",
+      "Replay the most expensive ones on Claude Haiku 4.5 and score both.",
     );
 
     const ml = heroJobOutcome("Retrain", "ml", [], LABS_HERO_JOB, undefined, [

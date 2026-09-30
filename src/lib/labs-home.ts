@@ -727,11 +727,15 @@ export const LABS_HERO_JOB: HeroJobContent = {
           id: "model",
           prompt: "What does it run on?",
           options: [
-            { label: "GPT-4o", value: "gpt", vars: { cheaper: "GPT-4o mini" } },
+            {
+              label: "GPT-6",
+              value: "gpt",
+              vars: { cheaper: "a smaller GPT-6 model" },
+            },
             {
               label: "Claude",
               value: "claude",
-              vars: { cheaper: "Claude Haiku" },
+              vars: { cheaper: "Claude Haiku 4.5" },
             },
             {
               label: "Open-source model",
@@ -752,7 +756,8 @@ export const LABS_HERO_JOB: HeroJobContent = {
                 focusStep: "test {cheaper} on your most expensive {sessions}.",
                 wedStep:
                   "Replay the most expensive ones on {cheaper} and score both.",
-                outcome: "the cost saving, measured on your traffic, at the same quality",
+                outcome:
+                  "the cost saving, measured on your traffic, at the same quality",
               },
             },
             {
