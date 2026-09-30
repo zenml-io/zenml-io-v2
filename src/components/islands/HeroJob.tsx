@@ -8,7 +8,7 @@
  * grows again. That height follows the viewport (clamped) so the whole
  * window fits under the headline without scrolling the page into the nav.
  * A visitor gives a job (types it in the composer at the bottom, or taps
- * one of three example chips above it); the engineer takes it
+ * one of three example chips under the composer); the engineer takes it
  * ("On it: …"), asks the use case and at most two more questions, one at a
  * time, answered by quick-reply chips above the composer (or "Skip"). After
  * the use case it shows real case studies from the LLMOps/MLOps databases
@@ -110,13 +110,12 @@ const WINDOW_GROWTH =
   "transition-[height] duration-300 ease-out motion-reduce:transition-none";
 const WINDOW_COMPACT = "h-auto";
 /**
- * Open height. From md up the window starts ~324px down the viewport (nav
- * and headline above it, pinned under the nav once the band is full), so
- * 100dvh minus ~354px leaves a 30px margin under it on laptops
- * (1440×900 → 546px, 1512×982 → 628px, 1728×1117 → 640px, the cap).
+ * Open height: nearly the whole viewport under the nav, so a conversation
+ * reads without scrolling inside the window. When the chat starts the page
+ * scrolls the window up to just under the nav (see the effect in HeroJob).
  */
 const WINDOW_OPEN =
-  "h-[clamp(360px,calc(100svh-480px),640px)] md:h-[clamp(400px,calc(100dvh-354px),640px)]";
+  "h-[clamp(380px,calc(100svh-104px),760px)] md:h-[clamp(440px,calc(100dvh-136px),860px)]";
 
 const BUBBLE_TONE = {
   engineer: "bg-(--color-cream-100) text-(--color-cream-900)",
@@ -823,271 +822,295 @@ export function HeroJob({ content, proof, stack }: Props) {
       ?.focus({ preventScroll: true });
   }, [settled]);
 
+  // When the conversation starts, bring the window up to just under the
+  // fixed nav so the whole thread can be read without scrolling inside it.
+  const started = !!talk;
+  useEffect(() => {
+    if (!started) return;
+    const el = windowRef.current;
+    if (!el) return;
+    const reduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const navClearance = window.matchMedia("(min-width: 768px)").matches
+      ? 120
+      : 88;
+    const delta = el.getBoundingClientRect().top - navClearance;
+    if (Math.abs(delta) > 8)
+      window.scrollBy({ top: delta, behavior: reduce ? "auto" : "smooth" });
+  }, [started]);
+
   const visible = messages.slice(0, visibleCount);
   const question = flow && !done ? flow.questions[step] : null;
 
   return (
-    <section
-      ref={windowRef}
-      aria-label={content.window.label}
-      style={growFrom === null ? undefined : { height: `${growFrom}px` }}
-      data-hero-job-reply={talk?.intent}
-      class={`mx-auto flex w-full max-w-[760px] flex-col rounded-[24px] border border-(--color-border) bg-card text-left ${WINDOW_GROWTH} ${talk ? WINDOW_OPEN : WINDOW_COMPACT}`}
-    >
-      <header class="flex items-center gap-3 border-b border-(--color-border) px-4 py-3 md:px-5">
-        <span
-          title={talk?.taker?.name}
-          class="flex size-9 shrink-0 items-center justify-center rounded-full bg-(--color-sage-800) text-(--color-cream-50)"
-        >
-          <svg
-            aria-hidden="true"
-            focusable="false"
-            viewBox="0 43.133 37.6 35.9"
-            class="size-[18px]"
-            fill="currentColor"
-          >
-            <path d={ZENML_MARK_PATH} />
-          </svg>
-        </span>
-        <span class="flex min-w-0 flex-1 flex-col">
-          <span class="font-sans text-[15px] leading-[20px] font-semibold text-(--color-cream-900)">
-            {content.window.name}
-          </span>
-          <span class="font-sans text-[13px] leading-[18px] text-(--color-cream-700)">
-            {content.window.status}
-          </span>
-        </span>
-        {talk && (
-          <button type="button" onClick={reset} class={TEXT_LINK}>
-            {content.changeJobLabel}
-          </button>
-        )}
-      </header>
-
-      <div
-        ref={threadRef}
-        class="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-4 py-4 md:px-5"
+    <>
+      <section
+        ref={windowRef}
+        aria-label={content.window.label}
+        style={growFrom === null ? undefined : { height: `${growFrom}px` }}
+        data-hero-job-reply={talk?.intent}
+        class={`mx-auto flex w-full max-w-[760px] flex-col rounded-[24px] border border-(--color-border) bg-card text-left ${WINDOW_GROWTH} ${talk ? WINDOW_OPEN : WINDOW_COMPACT}`}
       >
-        <ol
-          aria-live="polite"
-          class="mt-auto flex flex-col font-sans text-[15px] leading-[22px] md:text-[16px] md:leading-[24px]"
-        >
-          {visible.map((m, i) => {
-            const grouped = visible[i - 1]?.side === m.side;
-            const lastOfGroup = visible[i + 1]?.side !== m.side;
-            const mine = m.side === "visitor";
-            const gap = grouped ? "mt-[3px]" : i ? "mt-3" : "";
-            const corner = lastOfGroup
-              ? mine
-                ? "rounded-br-[4px]"
-                : "rounded-bl-[4px]"
-              : "";
-            return (
-              <li
-                key={m.key}
-                class={`${ENTER} flex ${m.label ? "flex-col items-start" : mine ? "justify-end" : "justify-start"} ${gap}`}
-              >
-                {m.label && (
-                  <span
-                    data-hero-job-taker
-                    class="mb-1 pl-3.5 font-sans text-[12px] leading-[16px] font-semibold text-(--color-sage-800) md:pl-4"
-                  >
-                    {m.label}
-                  </span>
-                )}
-                <span class="sr-only">
-                  {mine
-                    ? content.reply.visitorPrefix
-                    : content.reply.engineerPrefix}{" "}
-                </span>
-                {m.bare ? (
-                  <div class="w-full max-w-[85%] md:max-w-[75%]">{m.body}</div>
-                ) : (
-                  <div
-                    class={`relative max-w-[85%] break-words rounded-[18px] px-3.5 py-2 md:max-w-[75%] md:px-4 ${BUBBLE_TONE[m.side]} ${corner}`}
-                  >
-                    {m.body}
-                    {lastOfGroup && <Tail side={m.side} />}
-                  </div>
-                )}
-              </li>
-            );
-          })}
-          {typing && (
-            <li aria-hidden="true" class={`${ENTER} mt-3 flex justify-start`}>
-              <div
-                class={`relative flex h-9 items-center gap-1 rounded-[18px] rounded-bl-[4px] px-4 ${BUBBLE_TONE.engineer}`}
-              >
-                {[0, 1, 2].map((d) => (
-                  <span
-                    key={d}
-                    class="size-1.5 animate-bounce rounded-full bg-(--color-cream-600) motion-reduce:animate-none"
-                    style={{ animationDelay: `${d * 150}ms` }}
-                  />
-                ))}
-                <Tail side="engineer" />
-              </div>
-            </li>
-          )}
-        </ol>
-        <span class="sr-only" aria-live="polite">
-          {typing ? content.reply.typingLabel : ""}
-        </span>
-      </div>
-
-      <div class="border-t border-(--color-border) p-3 md:px-4">
-        {!talk && (
-          <div
-            data-hero-job-options="examples"
-            class="mb-3 grid grid-cols-1 gap-2 md:grid-cols-3"
+        <header class="flex items-center gap-3 border-b border-(--color-border) px-4 py-3 md:px-5">
+          <span
+            title={talk?.taker?.name}
+            class="flex size-9 shrink-0 items-center justify-center rounded-full bg-(--color-sage-800) text-(--color-cream-50)"
           >
-            {content.examples.map((example) => (
-              <button
-                key={example}
-                type="button"
-                data-hero-job-example
-                onClick={() => start(example, content.analytics.example)}
-                class={EXAMPLE_CHIP}
-              >
-                {example}
-              </button>
-            ))}
-          </div>
-        )}
-        {question && settled && (
-          <div
-            ref={repliesRef}
-            data-hero-job-options={question.id}
-            class="-mx-3 mb-3 flex gap-2 overflow-x-auto px-3 pb-0.5 [scrollbar-width:none] md:mx-0 md:flex-wrap md:overflow-visible md:px-0"
-          >
-            {question.options.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                data-hero-job-answer={option.value}
-                onClick={() => answer(option)}
-                class={QUICK_REPLY}
-              >
-                {option.label}
-              </button>
-            ))}
-            <button
-              type="button"
-              data-hero-job-skip
-              onClick={() => answer(null)}
-              class={`${TEXT_LINK} shrink-0 px-2`}
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              viewBox="0 43.133 37.6 35.9"
+              class="size-[18px]"
+              fill="currentColor"
             >
-              {content.reply.skipLabel}
-            </button>
-          </div>
-        )}
-        <form
-          ref={formRef}
-          method="get"
-          action={content.connect.href}
-          class="relative rounded-[20px] border border-(--color-border) bg-(--color-cream-50) transition-colors duration-200 ease-out has-[textarea:focus-visible]:border-(--color-sage-800) has-[textarea:focus-visible]:ring-2 has-[textarea:focus-visible]:ring-(--color-sage-800)"
-          onSubmit={(e) => {
-            e.preventDefault();
-            start(value, content.analytics.submit);
-          }}
-        >
-          {pickerOpen && (
-            <StackPicker
-              content={content.stack}
-              tools={offered.filter((t) => !picked.includes(t.value))}
-              onPick={addTool}
-              onClose={closePicker}
-            />
-          )}
-          {pickedTools.length > 0 && (
-            <ul data-hero-job-stack class="flex flex-wrap gap-1.5 px-3 pt-3">
-              {pickedTools.map((tool) => (
-                <li
-                  key={tool.value}
-                  data-hero-job-stack-chip={tool.value}
-                  class="inline-flex h-7 items-center gap-0.5 rounded-full bg-(--color-sage-100) pr-1 pl-2.5 font-sans text-[13px] leading-[18px] text-(--color-sage-800)"
-                >
-                  {content.stack.chipPrefix}
-                  {tool.name}
-                  <button
-                    type="button"
-                    aria-label={fillTemplate(content.stack.removeLabel, {
-                      name: tool.name,
-                    })}
-                    onClick={() => removeTool(tool)}
-                    class="inline-flex size-6 cursor-pointer items-center justify-center rounded-full transition-colors duration-200 ease-out hover:bg-(--color-sage-400) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:outline-none"
-                  >
-                    <Icon d="M7 7l10 10M17 7L7 17" class="size-3" />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-          <textarea
-            ref={inputRef}
-            id="hero-job-input"
-            name="job"
-            rows={talk ? 1 : 2}
-            required
-            maxLength={MAX_JOB_LENGTH}
-            autoComplete="off"
-            aria-label={content.label}
-            disabled={!!talk}
-            placeholder={talk ? content.replyPlaceholder : content.placeholder}
-            value={value}
-            onInput={(e) => {
-              const el = e.target as HTMLTextAreaElement;
-              // "@" opens the stack picker instead of landing in the job.
-              if ((e as InputEvent).data === "@") {
-                const at = el.selectionStart - 1;
-                if (el.value[at] === "@") {
-                  el.value = el.value.slice(0, at) + el.value.slice(at + 1);
-                  el.setSelectionRange(at, at);
-                  setPickerOpen(true);
-                }
-              }
-              setValue(el.value);
-            }}
-            onKeyDown={(e) => {
-              if (e.key !== "Enter" || e.shiftKey || e.isComposing) return;
-              e.preventDefault();
-              formRef.current?.requestSubmit();
-            }}
-            class="block w-full resize-none bg-transparent px-4 pt-3 pb-1 font-sans text-[16px] leading-[24px] text-foreground placeholder:text-(--color-cream-700) focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
-          />
-          <div class="flex items-center gap-3 px-2 pb-2">
-            <EngineerMenu
-              content={content.composer}
-              selected={engineerIndex}
-              disabled={!!talk}
-              onSelect={selectEngineer}
-            />
-            <button
-              ref={hintRef}
-              type="button"
-              data-hero-job-stack-hint
-              aria-haspopup="listbox"
-              aria-expanded={pickerOpen}
-              onClick={() => setPickerOpen(!pickerOpen)}
-              class="inline-flex h-9 cursor-pointer items-center rounded-full px-2 font-sans text-[13px] leading-[18px] text-(--color-cream-700) transition-colors duration-200 ease-out hover:text-(--color-sage-800) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:outline-none"
-            >
-              {content.stack.hint}
-            </button>
-            <span class="ml-auto hidden items-center gap-1 font-sans text-[13px] leading-[18px] text-(--color-cream-700) sm:inline-flex">
-              <kbd class="font-sans">{content.composer.sendKey}</kbd>
-              {content.composer.sendHint}
+              <path d={ZENML_MARK_PATH} />
+            </svg>
+          </span>
+          <span class="flex min-w-0 flex-1 flex-col">
+            <span class="font-sans text-[15px] leading-[20px] font-semibold text-(--color-cream-900)">
+              {content.window.name}
             </span>
-            <button
-              type="submit"
-              aria-label={content.submitLabel}
-              disabled={!!talk}
-              class="ml-auto inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full bg-(--color-cream-900) text-(--color-cream-50) transition-colors duration-200 ease-out hover:bg-(--color-sage-800) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40 sm:ml-0"
-            >
-              <Icon d="M12 19V5M6 11l6-6 6 6" class="size-[18px]" />
+            <span class="font-sans text-[13px] leading-[18px] text-(--color-cream-700)">
+              {content.window.status}
+            </span>
+          </span>
+          {talk && (
+            <button type="button" onClick={reset} class={TEXT_LINK}>
+              {content.changeJobLabel}
             </button>
-          </div>
-        </form>
-      </div>
-    </section>
+          )}
+        </header>
+
+        <div
+          ref={threadRef}
+          class="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-4 py-4 md:px-5"
+        >
+          <ol
+            aria-live="polite"
+            class="mt-auto flex flex-col font-sans text-[15px] leading-[22px] md:text-[16px] md:leading-[24px]"
+          >
+            {visible.map((m, i) => {
+              const grouped = visible[i - 1]?.side === m.side;
+              const lastOfGroup = visible[i + 1]?.side !== m.side;
+              const mine = m.side === "visitor";
+              const gap = grouped ? "mt-[3px]" : i ? "mt-3" : "";
+              const corner = lastOfGroup
+                ? mine
+                  ? "rounded-br-[4px]"
+                  : "rounded-bl-[4px]"
+                : "";
+              return (
+                <li
+                  key={m.key}
+                  class={`${ENTER} flex ${m.label ? "flex-col items-start" : mine ? "justify-end" : "justify-start"} ${gap}`}
+                >
+                  {m.label && (
+                    <span
+                      data-hero-job-taker
+                      class="mb-1 pl-3.5 font-sans text-[12px] leading-[16px] font-semibold text-(--color-sage-800) md:pl-4"
+                    >
+                      {m.label}
+                    </span>
+                  )}
+                  <span class="sr-only">
+                    {mine
+                      ? content.reply.visitorPrefix
+                      : content.reply.engineerPrefix}{" "}
+                  </span>
+                  {m.bare ? (
+                    <div class="w-full max-w-[85%] md:max-w-[75%]">
+                      {m.body}
+                    </div>
+                  ) : (
+                    <div
+                      class={`relative max-w-[85%] break-words rounded-[18px] px-3.5 py-2 md:max-w-[75%] md:px-4 ${BUBBLE_TONE[m.side]} ${corner}`}
+                    >
+                      {m.body}
+                      {lastOfGroup && <Tail side={m.side} />}
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+            {typing && (
+              <li aria-hidden="true" class={`${ENTER} mt-3 flex justify-start`}>
+                <div
+                  class={`relative flex h-9 items-center gap-1 rounded-[18px] rounded-bl-[4px] px-4 ${BUBBLE_TONE.engineer}`}
+                >
+                  {[0, 1, 2].map((d) => (
+                    <span
+                      key={d}
+                      class="size-1.5 animate-bounce rounded-full bg-(--color-cream-600) motion-reduce:animate-none"
+                      style={{ animationDelay: `${d * 150}ms` }}
+                    />
+                  ))}
+                  <Tail side="engineer" />
+                </div>
+              </li>
+            )}
+          </ol>
+          <span class="sr-only" aria-live="polite">
+            {typing ? content.reply.typingLabel : ""}
+          </span>
+        </div>
+
+        <div class="border-t border-(--color-border) p-3 md:px-4">
+          {question && settled && (
+            <div
+              ref={repliesRef}
+              data-hero-job-options={question.id}
+              class="-mx-3 mb-3 flex gap-2 overflow-x-auto px-3 pb-0.5 [scrollbar-width:none] md:mx-0 md:flex-wrap md:overflow-visible md:px-0"
+            >
+              {question.options.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  data-hero-job-answer={option.value}
+                  onClick={() => answer(option)}
+                  class={QUICK_REPLY}
+                >
+                  {option.label}
+                </button>
+              ))}
+              <button
+                type="button"
+                data-hero-job-skip
+                onClick={() => answer(null)}
+                class={`${TEXT_LINK} shrink-0 px-2`}
+              >
+                {content.reply.skipLabel}
+              </button>
+            </div>
+          )}
+          <form
+            ref={formRef}
+            method="get"
+            action={content.connect.href}
+            class="relative rounded-[20px] border border-(--color-border) bg-(--color-cream-50) transition-colors duration-200 ease-out has-[textarea:focus-visible]:border-(--color-sage-800) has-[textarea:focus-visible]:ring-2 has-[textarea:focus-visible]:ring-(--color-sage-800)"
+            onSubmit={(e) => {
+              e.preventDefault();
+              start(value, content.analytics.submit);
+            }}
+          >
+            {pickerOpen && (
+              <StackPicker
+                content={content.stack}
+                tools={offered.filter((t) => !picked.includes(t.value))}
+                onPick={addTool}
+                onClose={closePicker}
+              />
+            )}
+            {pickedTools.length > 0 && (
+              <ul data-hero-job-stack class="flex flex-wrap gap-1.5 px-3 pt-3">
+                {pickedTools.map((tool) => (
+                  <li
+                    key={tool.value}
+                    data-hero-job-stack-chip={tool.value}
+                    class="inline-flex h-7 items-center gap-0.5 rounded-full bg-(--color-sage-100) pr-1 pl-2.5 font-sans text-[13px] leading-[18px] text-(--color-sage-800)"
+                  >
+                    {content.stack.chipPrefix}
+                    {tool.name}
+                    <button
+                      type="button"
+                      aria-label={fillTemplate(content.stack.removeLabel, {
+                        name: tool.name,
+                      })}
+                      onClick={() => removeTool(tool)}
+                      class="inline-flex size-6 cursor-pointer items-center justify-center rounded-full transition-colors duration-200 ease-out hover:bg-(--color-sage-400) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:outline-none"
+                    >
+                      <Icon d="M7 7l10 10M17 7L7 17" class="size-3" />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <textarea
+              ref={inputRef}
+              id="hero-job-input"
+              name="job"
+              rows={talk ? 1 : 2}
+              required
+              maxLength={MAX_JOB_LENGTH}
+              autoComplete="off"
+              aria-label={content.label}
+              disabled={!!talk}
+              placeholder={
+                talk ? content.replyPlaceholder : content.placeholder
+              }
+              value={value}
+              onInput={(e) => {
+                const el = e.target as HTMLTextAreaElement;
+                // "@" opens the stack picker instead of landing in the job.
+                if ((e as InputEvent).data === "@") {
+                  const at = el.selectionStart - 1;
+                  if (el.value[at] === "@") {
+                    el.value = el.value.slice(0, at) + el.value.slice(at + 1);
+                    el.setSelectionRange(at, at);
+                    setPickerOpen(true);
+                  }
+                }
+                setValue(el.value);
+              }}
+              onKeyDown={(e) => {
+                if (e.key !== "Enter" || e.shiftKey || e.isComposing) return;
+                e.preventDefault();
+                formRef.current?.requestSubmit();
+              }}
+              class="block w-full resize-none bg-transparent px-4 pt-3 pb-1 font-sans text-[16px] leading-[24px] text-foreground placeholder:text-(--color-cream-700) focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+            />
+            <div class="flex items-center gap-3 px-2 pb-2">
+              <EngineerMenu
+                content={content.composer}
+                selected={engineerIndex}
+                disabled={!!talk}
+                onSelect={selectEngineer}
+              />
+              <button
+                ref={hintRef}
+                type="button"
+                data-hero-job-stack-hint
+                aria-haspopup="listbox"
+                aria-expanded={pickerOpen}
+                onClick={() => setPickerOpen(!pickerOpen)}
+                class="inline-flex h-9 cursor-pointer items-center rounded-full px-2 font-sans text-[13px] leading-[18px] text-(--color-cream-700) transition-colors duration-200 ease-out hover:text-(--color-sage-800) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:outline-none"
+              >
+                {content.stack.hint}
+              </button>
+              <span class="ml-auto hidden items-center gap-1 font-sans text-[13px] leading-[18px] text-(--color-cream-700) sm:inline-flex">
+                <kbd class="font-sans">{content.composer.sendKey}</kbd>
+                {content.composer.sendHint}
+              </span>
+              <button
+                type="submit"
+                aria-label={content.submitLabel}
+                disabled={!!talk}
+                class="ml-auto inline-flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-full bg-(--color-cream-900) text-(--color-cream-50) transition-colors duration-200 ease-out hover:bg-(--color-sage-800) focus-visible:ring-2 focus-visible:ring-(--color-sage-800) focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40 sm:ml-0"
+              >
+                <Icon d="M12 19V5M6 11l6-6 6 6" class="size-[18px]" />
+              </button>
+            </div>
+          </form>
+          {!talk && (
+            <div
+              data-hero-job-options="examples"
+              class="mt-3 grid grid-cols-1 gap-2 md:grid-cols-3"
+            >
+              {content.examples.map((example) => (
+                <button
+                  key={example}
+                  type="button"
+                  data-hero-job-example
+                  onClick={() => start(example, content.analytics.example)}
+                  class={EXAMPLE_CHIP}
+                >
+                  {example}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    </>
   );
 }
