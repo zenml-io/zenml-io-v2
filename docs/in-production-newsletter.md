@@ -83,6 +83,7 @@ Put the three keys in the repo's `.env`, then run `pnpm newsletter:preview`. It 
 - `scripts/newsletter/quality.ts` holds the Jev model version and the thresholds: `WORTH_FLOOR` (entry filter), `ARCHIVE_WORTH_FLOOR` (stricter filter for the archive item; not yet checked against a labelled sample), `SUPPORT_CONFIDENCE_MIN` (a sentence must be supported by its section at this confidence), and `TONE_MAX` (promotional tone ceiling).
 - Jev is pinned to one version on purpose, never `jev-latest`. The thresholds were set against that version's scores. Before changing the version, re-check the thresholds on a labelled sample of recent entries.
 - `scripts/newsletter/write.ts` holds the writer model and its editorial rules.
+- Blurbs aim for 50 to 55 words across two sentences, with a hard 55-word limit. They start with the concrete problem or design detail that best explains the case, rather than always describing the architecture first. The extra space is for context, with active verbs and natural phrasing; each sentence still cites one source section.
 - The brief is about what teams built and what they learned. Blurbs leave out user counts, benchmark scores and business outcomes, unless the number is itself the technical point (a threshold, a timeout, a tier count).
 - Window lengths (`WINDOWS`), the issue size and the archive scoring cap live in `scripts/newsletter/run.ts`. Send days, hour and the archive weekday live in `schedule.ts`. The archive pool and its seeded order live in `select.ts`.
 - Tests are in `tests/newsletter/`.

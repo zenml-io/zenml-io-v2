@@ -62,9 +62,10 @@ describe("buildWriterPrompt example", () => {
     );
     for (const withHook of [true, false]) {
       const { system } = buildWriterPrompt(entry, { withHook });
-      for (const c of companies) expect(system).not.toContain(c);
-      for (const f of figures) expect(system).not.toContain(f);
       expect(system).toContain("Illustrative only");
+      const example = system.slice(system.indexOf("Illustrative only"));
+      for (const c of companies) expect(example).not.toContain(c);
+      for (const f of figures) expect(example).not.toContain(f);
     }
   });
 });
@@ -72,6 +73,28 @@ describe("buildWriterPrompt example", () => {
 describe("writtenProblems", () => {
   it("accepts a well-formed blurb", () =>
     expect(writtenProblems(entry, ok)).toEqual([]));
+  it("allows 55 words but rejects 56", () => {
+    const sentences = [
+      {
+        text: "The reviewer checks each rule against a separate copy of the contract, giving workers room to propose edits without overwriting changes another worker is preparing.",
+        section: "Overview",
+      },
+      {
+        text: "A lead agent then merges changes that fit together and resolves conflicts where two rules affect the same sentence, before checking the full review and returning it to a lawyer.",
+        section: "Overview",
+      },
+    ];
+    expect(writtenProblems(entry, { sentences, hook: null })).toEqual([]);
+    expect(
+      writtenProblems(entry, {
+        sentences: [
+          sentences[0],
+          { ...sentences[1], text: `${sentences[1].text} Finally.` },
+        ],
+        hook: null,
+      }),
+    ).toContain("blurb is 56 words; limit is 55");
+  });
   it("rejects unknown sections, wrong sentence counts, and long blurbs", () => {
     expect(
       writtenProblems(entry, {

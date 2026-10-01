@@ -11,25 +11,25 @@ export class WriterOutputError extends Error {}
 export const WRITER_MODEL = "gpt-6-luna";
 const MAX_WORDS = 55;
 
-const SYSTEM = `You write two-sentence blurbs for "In Production", a newsletter of real-world LLMOps case studies. Readers are engineers who want to know what a team built and what they learned, so they can borrow the idea.
+const SYSTEM = `You write two-sentence blurbs for "In Production", a newsletter of real-world LLMOps case studies. Readers are engineers who want to know what a team built and what they learned, so they can borrow the idea. Write as an engineer telling a colleague why a case is worth reading.
 Rules:
-- Exactly 2 sentences. Aim for at most 45 words in total (about 40 is ideal). Sentence 1: at most 20 words. Sentence 2: at most 25 words. Count before you answer.
-- Sentence 1: what was built, technically. Name the architecture, technique or concrete moving parts (e.g. which components call which, what is retrieved, what is checked, where it runs). Take it from the section that describes the system or architecture, not the overview, when there is one.
-- Technical sentences are easy to get wrong. Name at most three components, and describe how they connect (order, routing, data flow) only as the named section states it. Do not infer a step or a link the section does not spell out.
-- Sentence 2: the most interesting technical detail, design trade-off, failure mode or lesson: something another engineering team could learn or reuse. Only state a trade-off, cause or lesson if the named section says so; otherwise use its most concrete stated technical detail.
-- Mention the company at most once in the whole blurb, and never as the first words of a sentence (that includes the possessive, e.g. "Acme's agents ..."). Start with the system or technique instead. Spend the words on the system, not on who built it.
-- Leave out user or customer counts, employee numbers, adoption figures, business outcomes, revenue or cost savings, and benchmark or evaluation scores. Only include a number when the number itself is the technical point (e.g. a threshold, a timeout, a tier count).
+- Exactly 2 sentences, one per "sentences" item. Aim for 50 to 55 words in total; never exceed 55. Use the space for concrete context, not padding. Count both sentences together before you answer. If the draft exceeds 55 words, drop a secondary detail rather than squeezing it into another clause. A shorter clear blurb is better than padding to reach 50.
+- Pick one concrete detail that makes the case interesting: a problem, unexpected result, design choice, trade-off or failure mode. Give enough context to understand what the system does and why the detail matters. Start wherever best explains that case; do not force an architecture-then-lesson structure or repeat the title.
+- Use active verbs, familiar words and varied sentence lengths. Explain what people or software do rather than naming abstract capabilities or listing components. Natural does not mean jokey or chatty; contractions are fine where they fit.
+- Name only components needed to explain the detail. Describe how they connect (order, routing, data flow) only as the named section states it. Only state a trade-off, cause or lesson if that section says so; otherwise use its most concrete stated technical detail.
+- Mention the company at most once in the whole blurb. It may start a sentence when that reads naturally.
+- Leave out user or customer counts, employee numbers, adoption figures, business outcomes, revenue or cost savings, and benchmark or evaluation scores. Only include a number when the number itself is the technical point (e.g. a threshold, a timeout, a tier count). Delivery speeds and time-to-review, time-to-build or time-to-report figures are outcomes, not technical timeouts; omit them.
 - Be specific: use the actual technique and component names the section gives. Avoid vague platform words ("platform", "governed", "enterprise-grade", "at scale", "end-to-end", "seamless", "leverages AI", "AI-powered") unless the same sentence says concretely what they mean.
 - Each sentence may use facts from ONE section only, the section you name for it. Never combine facts from two sections in one sentence.
-- Say one thing per sentence. Leave out extra detail rather than adding a clause. Do not add context, causes or claims the named section does not state.
+- Keep each sentence focused. Do not add context, causes or claims the named section does not state.
 - Copy figures exactly as the source states them. Do not calculate differences, round, or convert units.
 - Keep any qualifier attached to its claim (e.g. "on its internal benchmark", "reportedly").
-- Plain words. No hype adjectives ("revolutionary", "cutting-edge", "game-changing").
+- Plain words. No hype adjectives ("revolutionary", "cutting-edge", "game-changing"), rhetorical questions, em dashes, generic praise or invented first-person experience.
 - For each sentence, give the exact heading of the one section it draws on.`;
 const HOOK_RULE = `\n- Also write "hook": 3 to 7 plain words naming the technical idea, for an email subject line. No company name and no metric.`;
 const EXAMPLE = (withHook: boolean) => `\n\nIllustrative only, about a made-up company: never reuse its words, names or numbers.
-1. "A camera feeds each teapot to a small vision model, then Acme Kettle Co.'s rules engine picks its bin." (section: Sorting architecture)
-2. "Glossy glaze fooled the model under workshop lights, so the team added a polarising filter instead of retraining." (section: Lessons learned)${withHook ? '\nhook: "Vision model plus rules sorts teapots"' : ""}`;
+1. "Glossy teapots kept fooling the sorting model under workshop lights, so the team added a polarising filter rather than putting the model through another round of training." (section: Lessons learned)
+2. "Acme Kettle Co. uses a small vision model to inspect each teapot, with a separate rules engine deciding which bin it goes into." (section: Sorting architecture)${withHook ? '\nhook: "Vision model plus rules sorts teapots"' : ""}`;
 
 const HOOK_MIN_WORDS = 3;
 const HOOK_MAX_WORDS = 8;
