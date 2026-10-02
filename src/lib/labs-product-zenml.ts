@@ -189,6 +189,12 @@ export interface ValuePropsContent {
   cta: LabsCta;
 }
 
+/** The same grid without its button (the homepage sections carry none). */
+export type ValuePropsSectionContent = Omit<ValuePropsContent, "cta"> & {
+  /** Absence collapses the button row. */
+  cta?: LabsCta;
+};
+
 export const ZENML_VALUE_PROPS: ValuePropsContent = {
   headline: "Own every layer, swap any of them",
   items: [

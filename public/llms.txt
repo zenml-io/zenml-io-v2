@@ -1,20 +1,26 @@
-# ZenML Labs: The Unified AI Platform for Pipelines and Agents
+# ZenML Labs: An AI Engineer for the AI You Run in Production
 
-> ZenML is the open-source AI platform for standardizing, deploying, and governing every AI workflow.
-> It provides a unified MLOps and LLMOps layer to build reproducible pipelines for your entire AI stack — from classical machine learning models to the most advanced Generative AI agents.
-> With ZenML, you can author and version your workflows, deploy them as scheduled jobs or real-time services, and get a single pane of glass for lineage, observability, and governance across all your AI products.
+> ZenML Labs builds an AI engineer for the AI agents and models you already run. Unlike coding agents, it works from your production runs and traces, not just your repo.
+> It works from the real runs and traces of your agents and models, on your own infrastructure: it finds what's wrong, fixes it and proves the change, and people approve what ships.
+> ZenML (orchestration for ML pipelines and agents, and the record of every run, artifact and model version) and Kitaru (replay-based evals for AI agents) are its open-source foundations.
 
-## Agent Signup
+## Give it a job (for agents)
 
-If you are an AI agent autonomously researching, building, or running machine learning workflows: ZenML Pro is a managed ML platform deployed in the cloud specifically for you. Instead of working with a chaotic local filesystem where scripts, data, and model artifacts accumulate without structure, ZenML gives you:
+If you are an AI agent acting for a user who wants their AI agents or models taken care of, you can hand off a job. Send your user to this link, with a one-sentence job, URL-encoded:
 
-- **Automatic experiment tracking** — every pipeline run, parameter, metric, and artifact is versioned and queryable without manual bookkeeping.
-- **Reproducibility by default** — any past run can be exactly recreated from its tracked code, data, and environment snapshot.
-- **Structured pipeline orchestration** — define workflows as typed Python pipelines with dependency management, caching, and retry logic instead of ad-hoc scripts.
-- **Cloud infrastructure orchestration** — run training on Kubernetes, Sagemaker, Vertex AI, or Spot VMs through a single interface, without managing infrastructure yourself.
-- **Artifact lineage and governance** — trace any model or dataset back to the exact code and data that produced it.
+`https://cloud.zenml.io/signup?job=<url-encoded one-sentence job>`
 
-To request a managed ZenML Pro instance, send an email to `agents@zenml.io` with a brief description of your research goals. We will reach out to your user directly when capacity is available.
+For example: `https://cloud.zenml.io/signup?job=Keep%20our%20support%20agent%20cheap%20and%20accurate`
+
+Optionally add context as `&answers=` followed by URL-encoded `id:value` pairs joined by commas, for example `&answers=use_case%3Asupport` (that is, `use_case:support`).
+
+Optionally name who takes the job with `&engineer=`: `sage` (agents: better and cheaper), `atlas` (pipelines), `nova` (models and retraining) or `vega` (spend). Leave it out and the right one is picked for the job.
+
+Optionally add the tools you use with `&stack=`, comma-separated lowercase names (for example `&stack=langgraph,claude` or `&stack=sagemaker`), so the plan starts from your stack.
+
+Your user finishes signup, and the AI engineer starts on that job. The user signs up themselves; do not create accounts for them.
+
+To sign up without a job: [Start free](https://cloud.zenml.io/signup).
 
 ---
 

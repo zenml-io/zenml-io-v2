@@ -7,8 +7,17 @@ website. The accepted Astro 7 Cloudflare Worker serves production through the
 guarded current-main release path. The site is generated from the Astro content
 collections defined in `src/content.config.ts`.
 
-The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
-- **ZenML** — ML workflow orchestration (the original product)
+**ZenML Labs** is the company. Its positioning (Vision 2026+): **an AI engineer
+for the AI agents and models customers already run**: unlike coding agents, it works from real runs and traces on the customer's own
+infrastructure, and people approve what ships. Site copy leads with that
+problem and outcome. Do not name internal product concepts (for example
+"Bots" or the "Kaizen" codename), and do not give the paid offering its own
+product name. Do not name third-party agents (for example Devin) in site
+copy, and keep "autonomous" out of it: the trust story is scoped access and
+human approval.
+
+Two open-source foundations sit underneath:
+- **ZenML** — orchestration for ML pipelines and agents, and the record of every run, artifact and model version (the original product)
 - **Kitaru** — replay-based evals for AI agents (folded in from `kitaru.ai`; pivoted from the earlier durable-runtime positioning in Aug 2026)
 
 - **Production URL**: https://www.zenml.io
