@@ -31,6 +31,7 @@ const IDENTIFY_TRAITS: Record<FormType, string[]> = {
   whitepaper: ["fullName", "email"],
   "brick-manual": ["fullName", "email"],
   "startup-academic": ["fullName", "email", "company"],
+  "eval-report": ["email"],
 };
 
 /** Per-form fields allowed in the Segment track payload. */
@@ -39,6 +40,7 @@ const TRACK_PROPERTIES: Record<FormType, string[]> = {
   whitepaper: ["fullName", "email", "company", "jobTitle"],
   "brick-manual": ["fullName", "email"],
   "startup-academic": ["fullName", "email", "linkedin", "company", "role"],
+  "eval-report": ["email", "path", "answers", "job", "report"],
 };
 
 function jsonResponse(data: unknown, status = 200): Response {

@@ -73,6 +73,27 @@ const formValidationCases = {
       role: "Please select a role",
     },
   },
+  "eval-report": {
+    validData: {
+      email: "katherine@example.com",
+      path: "agent",
+      answers: "modality:text,interaction:tools",
+      job: "A support agent that answers from our help center",
+      report: "ungrounded,trajectory",
+    },
+    invalidData: {
+      email: "not-an-email",
+      path: "other",
+      answers: "modality=text",
+      report: "<script>",
+    },
+    expectedErrors: {
+      email: "Valid email is required",
+      path: "Report path is invalid",
+      answers: "Report answers are invalid",
+      report: "Report contents are invalid",
+    },
+  },
 } satisfies Record<FormType, FormValidationCase>;
 
 const configuredFormTypes = Object.keys(FORM_RULES) as FormType[];
@@ -117,7 +138,7 @@ describe("validateForm", () => {
     ).toEqual({ valid: true, errors: {} });
   });
 
-  it.each(configuredFormTypes)(
+  it.each(configuredFormTypes.filter((type) => "fullName" in FORM_RULES[type]))(
     "rejects HTML, line breaks, control characters, and oversized full names for %s",
     (formType) => {
       const validData = formValidationCases[formType].validData;

@@ -367,4 +367,64 @@ describe("form API route", () => {
     expect(trackBody.properties).not.toHaveProperty("cf-turnstile-response");
     expect(trackBody.properties).not.toHaveProperty("unexpected");
   });
+  it("tracks an eval-report lead with its path, answers and report ids", async () => {
+    const waitUntilPromises: Promise<unknown>[] = [];
+    const waitUntil = vi.fn((promise: Promise<unknown>) => {
+      waitUntilPromises.push(promise);
+    });
+    const fetchMock = vi.fn<typeof fetch>(
+      async () => new Response("{}", { status: 200 }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    const response = await POST(
+      makeContext({
+        formType: "eval-report",
+        request: formRequest({
+          email: "ada@example.com",
+          path: "agent",
+          answers: "modality:text,interaction:tools",
+          job: "A support agent",
+          report: "trajectory,actions",
+          unexpected: "must not reach Segment",
+          privacy: "on",
+        }),
+        env: { SEGMENT_FORMS_WRITE_KEY: "segment-key" },
+        waitUntil,
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    await Promise.all(waitUntilPromises);
+    const trackCall = fetchMock.mock.calls.find(
+      ([url]) => url === "https://api.segment.io/v1/track",
+    );
+    const trackBody = JSON.parse(String(fetchRequestInit(trackCall)?.body)) as {
+      properties: Record<string, unknown>;
+    };
+    expect(trackBody.properties).toMatchObject({
+      formType: "eval-report",
+      email: "ada@example.com",
+      path: "agent",
+      answers: "modality:text,interaction:tools",
+      job: "A support agent",
+      report: "trajectory,actions",
+    });
+    expect(trackBody.properties).not.toHaveProperty("unexpected");
+  });
+
+  it("rejects an eval-report lead with a forged report", async () => {
+    const response = await POST(
+      makeContext({
+        formType: "eval-report",
+        request: formRequest({
+          email: "ada@example.com",
+          path: "agent",
+          report: "<script>",
+          privacy: "on",
+        }),
+      }),
+    );
+    expect(response.status).toBe(422);
+  });
 });

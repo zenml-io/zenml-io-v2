@@ -6,13 +6,16 @@ import {
   markdownPreamble,
   markdownResponse,
 } from "../lib/agentMarkdown";
+import { heroJobSignupHref } from "../lib/heroJobPlan";
 import {
   LABS_CLOSE,
   LABS_DOORS,
   LABS_FEATURE_PANELS,
   LABS_HERO,
+  LABS_HERO_JOB,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
+  LABS_SIGNUP,
   LABS_STORIES,
 } from "../lib/labs-home";
 
@@ -23,6 +26,29 @@ export const prerender = true;
  * renders the same copy `index.astro` shows, from the same module, so the
  * two never drift.
  */
+/**
+ * "Give it a job (for agents)": how an agent acting for its user hands off a
+ * job. The same section heads `public/llms.txt`; keep the two in step. The
+ * example link comes from the hero's own signup-href builder.
+ */
+function renderAgentHandoff(): string {
+  const signup = LABS_SIGNUP.href;
+  const example = heroJobSignupHref(signup, "agent", {
+    questions: LABS_HERO_JOB.paths.agent.questions,
+    answers: { modality: "text", interaction: "tools" },
+    job: "Keep our support agent accurate",
+  });
+  return joinMarkdownSections(
+    "## Give it a job (for agents)",
+    "If you are an AI agent acting for a user who wants their AI agents or models taken care of, you can hand off a job. Send your user to this link, with `path=agent` (an agent or AI app) or `path=finetune` (a model they are fine-tuning) and a one-sentence job, URL-encoded:",
+    `\`${signup}?path=agent&job=<url-encoded one-sentence job>\``,
+    `For example: \`${example}\``,
+    "Optionally add context as `&answers=` followed by URL-encoded `id:value` pairs joined by commas. For `path=agent`: `modality` (text, voice, documents, code), `interaction` (single, multi, tools), `output` (text, structured, actions) and `risk` (facts, unsafe, act, privacy, regress, cost). For `path=finetune`: `goal` (cost, quality, format, private), `data` (logs, labels, synthetic, docs) and `training` (lora, full, api, pref).",
+    "Your user finishes signup, and the AI engineer starts on that job. The user signs up themselves; do not create accounts for them.",
+    `To sign up without a job: ${markdownLink(LABS_SIGNUP.label, signup)}.`,
+  );
+}
+
 function renderDoor(door: (typeof LABS_DOORS.doors)[number]): string {
   return joinMarkdownSections(
     `### ${door.name}`,
@@ -42,9 +68,10 @@ export function GET(): Response {
     joinMarkdownSections(
       "## Summary",
       LABS_HERO.headlineLines.join(" "),
-      LABS_HERO.deck,
+      LABS_HERO.deck ?? "",
     ),
     joinMarkdownSections("## Main CTA", markdownCtaList([LABS_HERO.cta])),
+    renderAgentHandoff(),
     joinMarkdownSections(
       `## ${LABS_LOGO_GRID.headline}`,
       LABS_LOGO_GRID.logos.map((logo) => logo.name).join(", "),
