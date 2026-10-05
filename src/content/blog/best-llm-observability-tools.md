@@ -8,7 +8,7 @@ webflow:
   exportedAt: "2026-02-11T13:30:32.135Z"
   source: "live"
   lastPublished: "2026-02-03T15:19:04.226Z"
-  lastUpdated: "2026-10-01T10:19:37.482Z"
+  lastUpdated: "2026-10-05T05:08:06.731Z"
   createdOn: "2025-09-11T11:12:32.260Z"
 author: "hamza-tahir"
 category: "llmops"
@@ -24,26 +24,26 @@ mainImage:
   url: "https://assets.zenml.io/content/blog/best-llm-observability-tools/cbd69b63/best-llm-observability-tools-cover.avif"
 seo:
   title: "What are the 9 Best LLM Observability Tools Currently on the Market? - ZenML Blog"
-  description: "Compare the 9 best LLM observability tools, including ZenML and Logfire, for agent tracing, evaluation, cost tracking, and production debugging."
+  description: "Compare the 9 best LLM observability tools for agent tracing, evaluation, cost tracking, and production debugging."
   canonical: "https://www.zenml.io/blog/best-llm-observability-tools"
   ogImage: "https://assets.zenml.io/content/blog/best-llm-observability-tools/f783d61a/best-llm-observability-tools-cover.jpg"
   ogTitle: "What are the 9 Best LLM Observability Tools Currently on the Market? - ZenML Blog"
-  ogDescription: "Compare the 9 best LLM observability tools, including ZenML and Logfire, for agent tracing, evaluation, cost tracking, and production debugging."
+  ogDescription: "Compare the 9 best LLM observability tools for agent tracing, evaluation, cost tracking, and production debugging."
 ---
 
 LLM-powered applications are notoriously difficult to debug and manage in production. Unlike traditional software, their unpredictable nature means failures are often silent.
 
-LLM observability adds prompts, model outputs, token usage, and quality evaluations to application monitoring. Some tools focus on the LLM layer; others, such as [Logfire](https://pydantic.dev/docs/logfire/get-started/), connect model calls with application requests, database queries, and infrastructure telemetry. That context helps you determine whether a failed agent run came from the model, a tool, or the services behind it.
+LLM observability adds prompts, model outputs, token usage, and quality evaluations to application monitoring. Some tools focus on the LLM layer; others connect model calls with application requests, database queries, and infrastructure telemetry. That context helps you determine whether a failed agent run came from the model, a tool, or the services behind it.
 
 This best LLM observability tools guide cuts through the marketing noise to provide a clear, engineer-focused breakdown of the 9 best tools on the market. We cover what each tool does, its unique strengths, pros & cons, and its pricing.
 
-**Recently Updated (October 2026)**: Added Logfire to the roundup in place of Vellum, added full-stack visibility and open standards to the evaluation criteria, and refreshed the tracing and agent introspection guidance, comparison table, and recommendations.
+**Recently Updated (October 2026)**: Added Pydantic Logfire to the roundup in place of Vellum, added full-stack visibility and open standards to the evaluation criteria, and refreshed the tracing and agent introspection guidance, comparison table, and recommendations.
 
 ## TL;DR
 
 The best LLM observability tools currently on the market are:
 
-<ul><li><a href="https://www.zenml.io/"><strong>ZenML</strong></a>: Pipeline-centric platform unifying MLOps and LLMOps with observability</li><li><a href="https://pydantic.dev/logfire"><strong>Logfire</strong></a>: OpenTelemetry-based observability connecting LLM and agent traces with application telemetry and evaluations</li><li><strong>LangSmith</strong>: Purpose-built debugging and monitoring for LangChain applications</li><li><strong>Langfuse</strong>: Open-source tracing and analytics with collaborative debugging features</li><li><strong>Arize Phoenix</strong>: Notebook-first observability with embedded visualizations</li><li><strong>Datadog LLM Observability</strong>: Enterprise APM extended for LLM workloads</li><li><strong>Helicone</strong>: Proxy-based monitoring with minimal code changes</li><li><strong>Traceloop OpenLLMetry</strong>: OpenTelemetry-native instrumentation for LLMs</li><li><strong>Portkey</strong>: AI gateway with built-in observability and reliability features</li></ul>
+<ul><li><a href="https://www.zenml.io/"><strong>ZenML</strong></a>: Pipeline-centric platform unifying MLOps and LLMOps with observability</li><li><a href="https://pydantic.dev/logfire?utm_source=zenml&amp;utm_medium=referral&amp;utm_campaign=partner-zenml"><strong>Pydantic Logfire</strong></a>: OpenTelemetry-based observability connecting LLM and agent traces with application telemetry and evaluations</li><li><strong>LangSmith</strong>: Purpose-built debugging and monitoring for LangChain applications</li><li><strong>Langfuse</strong>: Open-source tracing and analytics with collaborative debugging features</li><li><strong>Arize Phoenix</strong>: Notebook-first observability with embedded visualizations</li><li><strong>Datadog LLM Observability</strong>: Enterprise APM extended for LLM workloads</li><li><strong>Helicone</strong>: Proxy-based monitoring with minimal code changes</li><li><strong>Traceloop OpenLLMetry</strong>: OpenTelemetry-native instrumentation for LLMs</li><li><strong>Portkey</strong>: AI gateway with built-in observability and reliability features</li></ul>
 
 ## What to Look for In an LLM Observability Tool?
 
@@ -76,7 +76,7 @@ Observability is incomplete without evaluation. Look for tools that support both
 
 ### 4. Full-Stack Visibility and Open Standards
 
-An agent can fail because a database query is slow, an API times out, or a tool returns bad data. Look for distributed traces that connect LLM spans with those dependencies, plus logs and metrics to investigate the surrounding application. Logfire covers this broader stack, while an instrumentation SDK such as OpenLLMetry sends telemetry to a backend you choose.
+An agent can fail because a database query is slow, an API times out, or a tool returns bad data. Look for distributed traces that connect LLM spans with those dependencies, plus logs and metrics to investigate the surrounding application. Pydantic Logfire covers this broader stack, while an instrumentation SDK such as OpenTelemetry sends telemetry to a backend you choose.
 
 OpenTelemetry support helps you reuse instrumentation across services and backends. Also check retention, sampling, sensitive-data controls, and whether self-hosting is included in your chosen plan.
 
@@ -84,7 +84,7 @@ OpenTelemetry support helps you reuse instrumentation across services and backen
 
 In this section, we go all-in with our detailed breakdown of the best LLM observability tools. But before that, here’s a quick summary:
 
-<table> <thead> <tr> <th>Tool</th> <th>Best for</th> <th>Key features</th> <th>Pricing</th> </tr> </thead> <tbody> <tr> <td>ZenML</td> <td>Teams needing pipeline-centric MLOps + LLMOps</td> <td>DAGs, run history, artifact lineage, step logs, experiment tracking</td> <td>OSS free<br />Pro managed (custom)</td> </tr> <tr> <td>Logfire</td> <td>Teams debugging AI agents and the application services behind them</td> <td>OTel traces, logs and metrics, Pydantic AI integration, SQL queries, evaluations</td> <td>Personal free (10M records/mo)<br />Team $49/mo<br />Growth $249/mo<br />Additional records $2/M on Team/Growth<br />Enterprise custom</td> </tr> <tr> <td>LangSmith</td> <td>LangChain devs who need deep tracing and evals</td> <td>End-to-end traces, LLM-as-judge, Prompt Playground, dashboards</td> <td>Free<br />Plus $39/user/mo<br />Enterprise custom</td> </tr> <tr> <td>Langfuse</td> <td>Open-source tracing with cost analytics</td> <td>Tree/graph traces, prompt mgmt, session replay, cost tracking</td> <td>Free Hobby<br />Core $59/mo<br />Pro $199/mo<br />Enterprise custom</td> </tr> <tr> <td>Arize Phoenix</td> <td>Local/debug-first RAG apps</td> <td>Notebook UI, OTel support, RAG evals, clustering</td> <td>Free OSS<br />AX Pro $50/mo<br />Enterprise custom</td> </tr> <tr> <td>Datadog LLM Obs.</td> <td>Enterprises already on Datadog</td> <td>Correlates LLM + infra, dashboards, safety checks</td> <td>Usage-based; contact sales</td> </tr> <tr> <td>Helicone</td> <td>Startups needing quick proxy-based logs</td> <td>Proxy logs, dashboards, caching, sessions, metadata</td> <td>Free tier<br />Pro $20/seat/mo<br />Team $200/mo<br />Enterprise custom</td> </tr> <tr> <td>Traceloop OpenLLMetry</td> <td>Teams standardizing on OpenTelemetry</td> <td>OTel SDK, auto-instrumentation, vendor-agnostic</td> <td>Free (50k spans/mo)<br />Enterprise custom</td> </tr> <tr> <td>Portkey</td> <td>Teams needing AI gateway + observability</td> <td>API gateway, 40+ trace details, cost controls, OTel export</td> <td>Free<br />Production $49/mo<br />Enterprise custom</td> </tr> </tbody></table>
+<table> <thead> <tr> <th>Tool</th> <th>Best for</th> <th>Key features</th> <th>Pricing</th> </tr> </thead> <tbody> <tr> <td>ZenML</td> <td>Teams needing pipeline-centric MLOps + LLMOps</td> <td>DAGs, run history, artifact lineage, step logs, experiment tracking</td> <td>OSS free<br />Pro managed (custom)</td> </tr> <tr> <td>Pydantic Logfire</td> <td>Teams debugging AI agents and the application services behind them</td> <td>OTel traces, logs and metrics, Pydantic AI integration, SQL queries, evaluations</td> <td>Personal free (10M records/mo)<br />Team $49/mo<br />Growth $249/mo<br />Additional records $2/M on Team/Growth<br />Enterprise custom</td> </tr> <tr> <td>LangSmith</td> <td>LangChain devs who need deep tracing and evals</td> <td>End-to-end traces, LLM-as-judge, Prompt Playground, dashboards</td> <td>Free<br />Plus $39/user/mo<br />Enterprise custom</td> </tr> <tr> <td>Langfuse</td> <td>Open-source tracing with cost analytics</td> <td>Tree/graph traces, prompt mgmt, session replay, cost tracking</td> <td>Free Hobby<br />Core $59/mo<br />Pro $199/mo<br />Enterprise custom</td> </tr> <tr> <td>Arize Phoenix</td> <td>Local/debug-first RAG apps</td> <td>Notebook UI, OTel support, RAG evals, clustering</td> <td>Free OSS<br />AX Pro $50/mo<br />Enterprise custom</td> </tr> <tr> <td>Datadog LLM Obs.</td> <td>Enterprises already on Datadog</td> <td>Correlates LLM + infra, dashboards, safety checks</td> <td>Usage-based; contact sales</td> </tr> <tr> <td>Helicone</td> <td>Startups needing quick proxy-based logs</td> <td>Proxy logs, dashboards, caching, sessions, metadata</td> <td>Free tier<br />Pro $20/seat/mo<br />Team $200/mo<br />Enterprise custom</td> </tr> <tr> <td>Traceloop OpenLLMetry</td> <td>Teams standardizing on OpenTelemetry</td> <td>OTel SDK, auto-instrumentation, vendor-agnostic</td> <td>Free (50k spans/mo)<br />Enterprise custom</td> </tr> <tr> <td>Portkey</td> <td>Teams needing AI gateway + observability</td> <td>API gateway, 40+ trace details, cost controls, OTel export</td> <td>Free<br />Production $49/mo<br />Enterprise custom</td> </tr> </tbody></table>
 
 ## 1. ZenML
 
@@ -114,13 +114,13 @@ ZenML offers pipeline-first visibility with an interactive DAG, run history, art
 
 But remember, ZenML is not a specialized LLM observability or a one-click QA solution – it’s a framework.
 
-## 2. Logfire
+## 2. Pydantic Logfire
 
 <figure>
   <img src="https://assets.zenml.io/content/blog/best-llm-observability-tools/cd8740d4/logfire-homepage.avif" alt="Screenshot of the Pydantic Logfire homepage promoting full-stack observability and evaluation for AI apps" />
 </figure>
 
-[Logfire](https://pydantic.dev/logfire) is an observability and evaluation platform from the team behind Pydantic. Built on OpenTelemetry, it connects LLM and agent activity with the API requests, database queries, logs, and metrics around it. This makes it useful when you need to debug the whole application serving an agent.
+[Pydantic Logfire](https://pydantic.dev/logfire?utm_source=zenml&utm_medium=referral&utm_campaign=partner-zenml) is an observability and evaluation platform from the team behind Pydantic. Built on OpenTelemetry, it connects LLM and agent activity with the API requests, database queries, logs, and metrics around it. This makes it useful when you need to debug the whole application serving an agent.
 
 ### Features
 
@@ -338,7 +338,7 @@ The flip side is complexity and commitment. Adopting Portkey means routing throu
 
 ZenML is a pipeline-centric choice for teams that want unified MLOps + [LLMOps with observability](https://docs.zenml.io/user-guides/llmops-guide). This section shows how ZenML closes the agentic-AI ‘outer loop’ around whatever framework you use.
 
-ZenML handles workflow orchestration and artifact lineage; a dedicated observability platform such as Logfire helps inspect model calls and application dependencies within those workflows. The two cover different parts of the stack, so choosing pipeline orchestration does not remove the need for detailed runtime tracing.
+ZenML handles workflow orchestration and artifact lineage; a dedicated observability platform such as Pydantic Logfire helps inspect model calls and application dependencies within those workflows. The two cover different parts of the stack, so choosing pipeline orchestration does not remove the need for detailed runtime tracing.
 
 ### Orchestrate the Full Agentic Flow
 
@@ -383,6 +383,6 @@ Ship an evaluation loop alongside your agent. ZenML provides practical patterns 
 
 Choosing the best observability tool depends on your specific needs and context. As we’ve seen, these tools are not one-size-fits-all – each has its sweet spot:
 
-<ul><li><strong>For teams needing MLOps and LLMOps orchestration: ZenML</strong> brings pipeline execution, reproducibility, and artifact lineage into one workflow.</li><li><strong>For teams debugging agents and the services behind them:</strong> <a href="https://pydantic.dev/logfire"><strong>Logfire</strong></a> connects LLM traces with application telemetry. It is particularly convenient for Pydantic AI projects and suits teams that want OpenTelemetry instrumentation, SQL analysis, and evaluations in one platform.</li><li><strong>For the LangChain Developer:</strong> <strong>LangSmith</strong> is the most natural and powerful choice. Its deep, seamless integration provides unparalleled visibility into chains and agents that other tools cannot easily replicate.</li><li><strong>For the Open-Source Advocate:</strong> <strong>Arize Phoenix</strong> and <strong>Traceloop OpenLLMetry</strong> are top-tier options.</li><li><strong>For the Enterprise using Datadog:</strong> Extending it with the Datadog observability suite is the simplest option. It adds the benefit of correlating your AI's performance with the health of your technology stack.</li><li><strong>For the Fast-Moving Startup:</strong> <strong>Helicone</strong>'s proxy-based approach is best. It quickly gets a handle on costs and basic performance with minimal engineering overhead.</li></ul>
+<ul><li><strong>For teams needing MLOps and LLMOps orchestration:</strong> <a href="https://www.zenml.io/"><strong>ZenML</strong></a> brings pipeline execution, reproducibility, and artifact lineage into one workflow.</li><li><strong>For teams debugging agents and the services behind them:</strong> <a href="https://pydantic.dev/logfire?utm_source=zenml&amp;utm_medium=referral&amp;utm_campaign=partner-zenml"><strong>Pydantic Logfire</strong></a> connects LLM traces with application telemetry. It is particularly convenient for Pydantic AI projects and suits teams that want OpenTelemetry instrumentation, SQL analysis, and evaluations in one platform.</li><li><strong>For the LangChain Developer:</strong> <strong>LangSmith</strong> is the most natural and powerful choice. Its deep, seamless integration provides unparalleled visibility into chains and agents that other tools cannot easily replicate.</li><li><strong>For the Open-Source Advocate:</strong> <strong>Arize Phoenix</strong> and <strong>Traceloop OpenLLMetry</strong> are top-tier options.</li><li><strong>For the Enterprise using Datadog:</strong> Extending it with the Datadog observability suite is the simplest option. It adds the benefit of correlating your AI's performance with the health of your technology stack.</li><li><strong>For the Fast-Moving Startup:</strong> <strong>Helicone</strong>'s proxy-based approach is best. It quickly gets a handle on costs and basic performance with minimal engineering overhead.</li></ul>
 
 *If you’re interested in taking your AI agent projects to the next level, consider joining the ZenML waitlist. We’re building out first-class support for agentic frameworks (like LangGraph, CrewAI, and more) inside ZenML, and we’d love early feedback from users pushing the boundaries of what AI agents can do. With ZenML, you can seamlessly integrate whichever agent framework you choose into robust, production-grade workflows. Join our waitlist to get started.👇*
