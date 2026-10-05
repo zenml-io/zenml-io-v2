@@ -1,6 +1,6 @@
 ---
 import type {
-  LabsProductBandContent,
+  LabsHeroContent,
   LabsShortBandContent,
 } from "../../lib/labs-home";
 // LabsHero.astro — the page's opening band: sage grain shader over a cream
@@ -12,7 +12,15 @@ import type {
 //   - "landing" (default): the full-height opener of `/` and the product
 //     pages — two-line headline, deck, one signup pill; a product page adds
 //     an optional ghost pill and a copyable install command, each collapsing
-//     when absent. Content is `LabsProductBandContent`.
+//     when absent. Content is `LabsHeroContent` (a `LabsProductBandContent`
+//     whose deck may be absent). A page can fill
+//     the optional `action` slot to replace that CTA row (pills + install
+//     chip) with its own control: the homepage mounts the HeroJob island
+//     there. Without the slot the band renders exactly as before.
+//     `align` sets the column: "start" (default, left-aligned) or "center"
+//     (headline, deck and action centered — the homepage). The deck is
+//     optional: absent (the homepage), it collapses and the action sits a
+//     step closer to the headline.
 //   - "short": the interior-page opener (the blog index) at roughly 40% of
 //     the viewport — one headline line and an optional deck, no pill; the
 //     page's own controls follow the band. Content is `LabsShortBandContent`.
@@ -24,11 +32,17 @@ import LabsButton from "./LabsButton.astro";
 import LabsInstallChip from "./LabsInstallChip.astro";
 
 type Props =
-  | { band?: "landing"; content: LabsProductBandContent }
-  | { band: "short"; content: LabsShortBandContent };
+  | {
+      band?: "landing";
+      align?: "start" | "center";
+      content: LabsHeroContent;
+    }
+  | { band: "short"; align?: never; content: LabsShortBandContent };
 
 const props = Astro.props;
 const short = props.band === "short";
+const hasAction = Astro.slots.has("action");
+const centered = props.align === "center";
 ---
 
 <LabsBand size={short ? "short" : "landing"}>
@@ -44,28 +58,52 @@ const short = props.band === "short";
       )}
     </div>
   ) : (
-    <div>
+    <div class:list={[centered && "text-center"]}>
       <h1 class="font-display text-[44px] leading-[48px] text-(--color-cream-900) md:text-[80px] md:leading-[86px]">
         {props.content.headlineLines[0]}
         <br />
         {props.content.headlineLines[1]}
       </h1>
 
-      <p class="mt-space-md max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
-        {props.content.deck}
-      </p>
+      {props.content.deck && (
+        <p
+          class:list={[
+            "mt-space-md max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]",
+            centered && "mx-auto",
+          ]}
+        >
+          {props.content.deck}
+        </p>
+      )}
 
-      <div class="mt-space-mlg flex flex-wrap items-center gap-space-md">
-        <LabsButton cta={props.content.cta} />
-        {props.content.secondaryCta && (
-          <LabsButton cta={props.content.secondaryCta} tone="ghost" />
-        )}
-      </div>
-
-      {props.content.install && (
-        <div class="mt-space-md flex max-w-full">
-          <LabsInstallChip content={props.content.install} />
+      {hasAction ? (
+        <div
+          class:list={[
+            props.content.deck ? "mt-space-mlg" : "mt-space-md",
+          ]}
+        >
+          <slot name="action" />
         </div>
+      ) : (
+        <>
+          <div
+            class:list={[
+              "mt-space-mlg flex flex-wrap items-center gap-space-md",
+              centered && "justify-center",
+            ]}
+          >
+            <LabsButton cta={props.content.cta} />
+            {props.content.secondaryCta && (
+              <LabsButton cta={props.content.secondaryCta} tone="ghost" />
+            )}
+          </div>
+
+          {props.content.install && (
+            <div class="mt-space-md flex max-w-full">
+              <LabsInstallChip content={props.content.install} />
+            </div>
+          )}
+        </>
       )}
     </div>
   )}
