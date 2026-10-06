@@ -2666,6 +2666,30 @@ describe("automatic pull-request Worker previews", () => {
       selectorArgs,
     );
 
+    // A pull request named by the source run itself gets the same verdicts:
+    // same-repository Dependabot PRs arrive this way, not through the lookup.
+    const eligibility = resolutionStep.env?.PR_ELIGIBILITY_SELECTOR ?? "";
+    const eligibilityArgs = ["--arg", "commit", commit];
+    expect(eligibility).not.toBe("");
+    expectJqResult(eligibility, candidate(), true, eligibilityArgs);
+    for (const ineligible of [
+      candidate({ user: { login: "dependabot[bot]" } }),
+      candidate({ state: "closed" }),
+      candidate({ draft: true }),
+      candidate({
+        head: {
+          ref: branch,
+          repo: { full_name: repository },
+          sha: newerCommit,
+        },
+      }),
+    ]) {
+      expectJqResult(eligibility, ineligible, false, eligibilityArgs);
+    }
+    expect(resolutionRun).toMatch(
+      /if ! jq -e [^;]*"\$PR_ELIGIBILITY_SELECTOR"[^;]*; then\n\s*if \[ -n "\$INPUT_PR_NUMBER" \]; then\n[^\n]*\n\s*exit 1\n\s*fi\n\s*pr_number=""/,
+    );
+
     // The lookup must see closed pull requests to tell "merged" from "broken".
     expect(resolutionRun).toContain("-f state=all");
     expect(resolutionRun).not.toContain("-f state=open");
