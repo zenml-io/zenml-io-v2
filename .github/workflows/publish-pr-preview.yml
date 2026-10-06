@@ -103,6 +103,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           INPUT_PR_NUMBER: ${{ inputs.pr_number }}
           INPUT_SOURCE_BRANCH: ${{ inputs.source_branch }}
+          PR_ELIGIBILITY_SELECTOR: |
+            .state == "open" and
+            .draft == false and
+            .user.login != "dependabot[bot]" and
+            .head.sha == $commit
           SOURCE_PR_NUMBER_SELECTOR: |
             [
               .pull_requests[]?
@@ -175,6 +180,31 @@ jobs:
               )"
             fi
           fi
+          if [ -n "$pr_number" ]; then
+            if [ -n "$INPUT_PR_NUMBER" ] && [ "$INPUT_PR_NUMBER" != "$pr_number" ]; then
+              echo "The supplied PR number does not own this exact CI run." >&2
+              exit 1
+            fi
+            gh api \
+              "repos/$GITHUB_REPOSITORY/pulls/$pr_number" \
+              > "$RUNNER_TEMP/source-pr.json"
+            jq -e \
+              --arg branch "$source_branch" \
+              --arg repository "$GITHUB_REPOSITORY" '
+                .head.repo.full_name == $repository and
+                .head.ref == $branch
+              ' "$RUNNER_TEMP/source-pr.json" > /dev/null
+            if ! jq -e \
+              --arg commit "$source_commit" \
+              "$PR_ELIGIBILITY_SELECTOR" \
+              "$RUNNER_TEMP/source-pr.json" > /dev/null; then
+              if [ -n "$INPUT_PR_NUMBER" ]; then
+                echo "Pull request $pr_number is not open, non-draft, non-Dependabot, and at this exact commit." >&2
+                exit 1
+              fi
+              pr_number=""
+            fi
+          fi
           if [ -z "$pr_number" ]; then
             {
               echo "## No PR preview to publish"
@@ -191,24 +221,6 @@ jobs:
             echo "publishable=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          if [ -n "$INPUT_PR_NUMBER" ] && [ "$INPUT_PR_NUMBER" != "$pr_number" ]; then
-            echo "The supplied PR number does not own this exact CI run." >&2
-            exit 1
-          fi
-          gh api \
-            "repos/$GITHUB_REPOSITORY/pulls/$pr_number" \
-            > "$RUNNER_TEMP/source-pr.json"
-          jq -e \
-            --arg branch "$source_branch" \
-            --arg commit "$source_commit" \
-            --arg repository "$GITHUB_REPOSITORY" '
-              .state == "open" and
-              .draft == false and
-              .head.repo.full_name == $repository and
-              .user.login != "dependabot[bot]" and
-              .head.ref == $branch and
-              .head.sha == $commit
-            ' "$RUNNER_TEMP/source-pr.json" > /dev/null
           build_commit="$(jq -er .merge_commit_sha "$RUNNER_TEMP/source-pr.json")"
           [[ "$build_commit" =~ ^[0-9a-f]{40}$ ]]
 

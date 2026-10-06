@@ -11,7 +11,7 @@ overrides:
   'miniflare@<=4.20260721.0>undici': 7.29.1
   'miniflare@<4.20260721.0>ws': 8.21.0
   '@cloudflare/vite-plugin@1.39.0>ws': 8.21.0
-  'miniflare@<=4.20260721.0>sharp': 0.35.4
+  'miniflare@<=4.20260721.0>sharp': 0.35.5
   # Build-time-only advisories. All three parents resolve a vulnerable child
   # that a plain `pnpm update` cannot reach cheaply: it re-resolves the whole
   # graph (~50 lockfile entries, a second rolldown copy) for two patch bumps.
