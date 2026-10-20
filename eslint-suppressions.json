@@ -6,7 +6,7 @@
   },
   "src/components/islands/DemoRequestForm.tsx": {
     "shadcn/no-raw-colors": {
-      "count": 12
+      "count": 9
     }
   },
   "src/components/islands/filter-index/BlogIndex.tsx": {

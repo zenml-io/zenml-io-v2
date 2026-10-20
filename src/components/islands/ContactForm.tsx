@@ -7,7 +7,7 @@
  * Supports optional Cloudflare Turnstile bot protection — pass `turnstileSiteKey`
  * to enable the invisible challenge widget.
  */
-import { useCallback, useEffect, useRef, useState } from "preact/hooks";
+import { useCallback, useEffect, useId, useRef, useState } from "preact/hooks";
 import type { PlaceholderField } from "../../lib/formTypes";
 import { type FormType, validateForm } from "../../lib/formValidation";
 import type { CtaLink } from "../../lib/marketingPageTypes";
@@ -43,8 +43,21 @@ export default function ContactForm({
   const [state, setState] = useState<FormState>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState("");
+  const [errorAttempt, setErrorAttempt] = useState(0);
+  const errorSummaryRef = useRef<HTMLElement>(null);
+  const formId = `contact-${formType}-${useId()}`;
   const turnstileRef = useRef<HTMLDivElement>(null);
   const turnstileWidgetId = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (errorAttempt > 0 && errorSummaryRef.current) {
+      errorSummaryRef.current.focus({ preventScroll: true });
+      errorSummaryRef.current.scrollIntoView({
+        block: "center",
+        behavior: "instant",
+      });
+    }
+  }, [errorAttempt]);
 
   // Load the Turnstile script once and render the widget
   useEffect(() => {
@@ -127,6 +140,9 @@ export default function ContactForm({
 
       if (!result.valid) {
         setErrors(result.errors);
+        setServerError("");
+        setState("idle");
+        setErrorAttempt((attempt) => attempt + 1);
         return;
       }
 
@@ -150,12 +166,14 @@ export default function ContactForm({
             setErrors(body.errors);
             resetTurnstile();
             setState("idle");
+            setErrorAttempt((attempt) => attempt + 1);
             return;
           }
           const msg = body.error || "Something went wrong. Please try again.";
           setServerError(msg);
           resetTurnstile();
           setState("error");
+          setErrorAttempt((attempt) => attempt + 1);
           return;
         }
 
@@ -166,6 +184,7 @@ export default function ContactForm({
         );
         resetTurnstile();
         setState("error");
+        setErrorAttempt((attempt) => attempt + 1);
       }
     },
     [formType, endpoint, fields, resetTurnstile],
@@ -233,13 +252,6 @@ export default function ContactForm({
 
   return (
     <div class="rounded-[10px] border border-(--color-border) bg-(--color-card) p-space-md sm:p-space-lg">
-      {/* Error banner */}
-      {state === "error" && serverError && (
-        <div class="mb-space-sm rounded-[10px] border border-(--color-sage-500) bg-(--color-cream-100) px-space-sm py-space-xs text-sm text-(--color-cream-900)">
-          {serverError}
-        </div>
-      )}
-
       <form
         method="POST"
         action={endpoint}
@@ -247,10 +259,44 @@ export default function ContactForm({
         onSubmit={handleSubmit}
         noValidate
       >
+        {(Object.keys(errors).length > 0 || serverError) && (
+          <section
+            ref={errorSummaryRef}
+            tabIndex={-1}
+            aria-labelledby={`${formId}-error-heading`}
+            aria-describedby={`${formId}-error-details`}
+            class="rounded-[10px] border border-(--color-sage-500) bg-(--color-cream-100) px-space-sm py-space-xs text-sm text-(--color-cream-900)"
+          >
+            <p id={`${formId}-error-heading`} class="font-semibold">
+              Please check the form
+            </p>
+            <div id={`${formId}-error-details`}>
+              {serverError && <p>{serverError}</p>}
+              {Object.keys(errors).length > 0 && (
+                <ul class="mt-1 list-disc pl-5">
+                  {Object.entries(errors).map(([name, message]) => {
+                    const field = fields.find((field) => field.name === name);
+                    return (
+                      <li key={name}>
+                        {field ? (
+                          <a href={`#${formId}-${name}`} class="underline">
+                            {field.label}: {message}
+                          </a>
+                        ) : (
+                          message
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+          </section>
+        )}
         {fields.map((field) => (
           <div key={field.name}>
             <label
-              for={field.name}
+              for={`${formId}-${field.name}`}
               class="mb-1 block text-sm font-medium text-(--color-cream-900)"
             >
               {field.label}
@@ -261,9 +307,15 @@ export default function ContactForm({
 
             {field.type === "select" && field.options ? (
               <select
-                id={field.name}
+                id={`${formId}-${field.name}`}
                 name={field.name}
                 required={field.required}
+                aria-invalid={errors[field.name] ? true : undefined}
+                aria-describedby={
+                  errors[field.name]
+                    ? `${formId}-${field.name}-error`
+                    : undefined
+                }
                 class={`w-full rounded-[10px] border px-4 py-2.5 font-sans text-sm focus:border-(--color-sage-700) focus:ring-1 focus:ring-(--color-sage-700) outline-none transition-colors ${
                   errors[field.name]
                     ? "border-(--color-sage-700) bg-(--color-cream-100)"
@@ -280,11 +332,17 @@ export default function ContactForm({
             ) : field.type === "checkbox" ? (
               <label class="flex items-start gap-2 text-sm text-(--color-cream-700)">
                 <input
-                  id={field.name}
+                  id={`${formId}-${field.name}`}
                   type="checkbox"
                   name={field.name}
                   value="on"
                   required={field.required}
+                  aria-invalid={errors[field.name] ? true : undefined}
+                  aria-describedby={
+                    errors[field.name]
+                      ? `${formId}-${field.name}-error`
+                      : undefined
+                  }
                   class="mt-0.5 rounded border-border text-(--color-sage-700) focus:ring-(--color-sage-700)"
                   disabled={state === "submitting"}
                 />
@@ -296,10 +354,16 @@ export default function ContactForm({
               </label>
             ) : (
               <input
-                id={field.name}
+                id={`${formId}-${field.name}`}
                 type={field.type}
                 name={field.name}
                 required={field.required}
+                aria-invalid={errors[field.name] ? true : undefined}
+                aria-describedby={
+                  errors[field.name]
+                    ? `${formId}-${field.name}-error`
+                    : undefined
+                }
                 placeholder={field.placeholder}
                 class={`w-full rounded-[10px] border px-4 py-2.5 font-sans text-sm focus:border-(--color-sage-700) focus:ring-1 focus:ring-(--color-sage-700) outline-none transition-colors ${
                   errors[field.name]
@@ -311,7 +375,10 @@ export default function ContactForm({
             )}
 
             {errors[field.name] && (
-              <p class="mt-1 text-xs text-(--color-sage-800)">
+              <p
+                id={`${formId}-${field.name}-error`}
+                class="mt-1 text-xs text-(--color-sage-800)"
+              >
                 {errors[field.name]}
               </p>
             )}
