@@ -1,5 +1,5 @@
 ---
-title: "You can't pick your agent's next model from a diff"
+title: "Swapping your agent's model? Test whole tasks, not steps"
 slug: "you-cant-pick-your-agents-next-model-from-a-diff"
 draft: true
 author: "hamza-tahir"
@@ -12,18 +12,18 @@ tags:
 date: "2026-10-21T00:00:00.000Z"
 readingTime: "6 mins"
 seo:
-  title: "You can't pick your agent's next model from a diff - ZenML Blog"
-  description: "We replayed recorded agent traffic against 11 models. Step agreement narrowed the field well but picked badly. Only full replays found the best swap."
+  title: "Swapping your agent's model? Test whole tasks, not steps - ZenML Blog"
+  description: "We tested 11 models on recorded agent traffic. Checking single steps made a good shortlist, but in 3 of 4 agents it missed the cheapest model that held quality."
   canonical: "https://www.zenml.io/blog/you-cant-pick-your-agents-next-model-from-a-diff"
 ---
 
 Sooner or later, someone asks whether your agent could run on a cheaper model.
 
-The cheapest way to answer is a diff. Take calls your agent already made, send the same inputs to a candidate model, and count how often it does what your current model did. Same tool? Same arguments? It's cheap and fast, because nothing runs end to end.
+The cheapest way to answer is a step check. Take calls your agent already made, send the same inputs to a candidate model, and count how often it does what your current model did. Same tool? Same arguments? It's cheap and fast, because nothing runs end to end.
 
 We wanted to know how far that gets you. So we recorded four finance and insurance agents running on Claude Sonnet 5.5, replayed their calls against 11 other models, and then checked every answer the hard way: each model running the whole tasks itself.
 
-The short version: **a step-level diff is a good filter and a bad picker.** It reliably narrows the field to a shortlist that contains a good swap. It does not reliably tell you which one that is, and it hides the cheapest model that actually holds quality.
+The short version: **a step check is a good filter and a bad picker.** It reliably narrows the field to a shortlist that contains a good swap. It does not reliably tell you which one that is, and it hides the cheapest model that actually holds quality.
 
 ## What we tested
 
@@ -44,7 +44,7 @@ Ground truth came from full runs. Every candidate ran the same tasks end to end 
 
 Rank the candidates by how often they pick the same tool as Sonnet, keep the top three, and you always keep a good option. In every use case, at least two of the top three held task success in full runs. In three of the four, all three did.
 
-That's the part of the diff you can rely on. It's cheap, and it throws out models that are clearly wrong for the job. On invoice extraction, gpt-oss-120b picked Sonnet's tool on only 32% of calls and finished 33 points below it in full runs.
+That's the part of a step check you can rely on. It's cheap, and it throws out models that are clearly wrong for the job. On invoice extraction, gpt-oss-120b picked Sonnet's tool on only 32% of calls and finished 33 points below it in full runs.
 
 <figure>
   <img src="https://assets.zenml.io/content/blog/you-cant-pick-your-agents-next-model-from-a-diff/c44ecb9d/invoice-step-agreement-vs-outcome.avif" alt="Scatter plot for invoice extraction with one dot per candidate model, step agreement with Claude Sonnet 5.5 on the horizontal axis and full-run task success relative to Sonnet on the vertical axis. gpt-oss-120b sits far left at 32% agreement and 33 points below Sonnet. The three models with the highest step agreement, Opus 5.5, GPT-6.1 Sol and Haiku 5.5, all hold quality, and GPT-6 Luna, ranked 10th by agreement, also holds and is the cheapest model that does." />
@@ -53,7 +53,7 @@ That's the part of the diff you can rely on. It's cheap, and it throws out model
 
 ## Picking doesn't
 
-The natural next step is to let the diff make the call: "any model within 10 points of the closest match on tool choice is comparable, now take the cheapest." We checked that rule against the full runs for all 44 candidate–use case pairs.
+The natural next step is to let the step check make the call: "any model within 10 points of the closest match on tool choice is comparable, now take the cheapest." We checked that rule against the full runs for all 44 candidate–use case pairs.
 
 It was right 35 times out of 44. Of the nine misses, four were models it called comparable that lose in full runs, including Qwen3.8 27B on bank support (11 points below Sonnet) and Haiku 5.5 on KYC checks (8 points below). The other five were models it ruled out that actually hold.
 
@@ -65,7 +65,7 @@ Across use cases, step metrics track task success only moderately. The rank corr
 
 Bank support makes the gap obvious. Every model picks the same tool as Sonnet 85% to 99% of the time. Full-run success ranges from 51% to 64%.
 
-In a conversation, the tool is often the easy part. The difference is in what the agent says, what it asks for, and when it decides to act. A per-step diff scores each turn in isolation, against inputs the candidate never produced itself, so it can't see any of that.
+In a conversation, the tool is often the easy part. The difference is in what the agent says, what it asks for, and when it decides to act. A step check scores each turn in isolation, against inputs the candidate never produced itself, so it can't see any of that.
 
 In conversations, exact agreement doesn't rescue it either. Replayed against its own recorded support traffic, Sonnet 5.5 produced exactly the same step only 48% of the time. If the current model matches itself half the time, a mismatch doesn't mean much.
 
@@ -82,7 +82,7 @@ GPT-6 Luna was the cheapest model that held quality in three of the four use cas
 
 By tool choice, it ranked 6th, 10th, and 7th. It would never have made a top-three shortlist. The cheapest-pick rule above did land on it for bank support and KYC; on invoices, it stuck with Sonnet.
 
-Luna gets to the right outcome by different steps. It asks in a different order, words things differently, and calls tools at different points. A diff counts every one of those as a disagreement. Only running the whole task shows that the end state is still correct.
+Luna gets to the right outcome by different steps. It asks in a different order, words things differently, and calls tools at different points. A step check counts every one of those as a disagreement. Only running the whole task shows that the end state is still correct.
 
 <figure>
   <img src="https://assets.zenml.io/content/blog/you-cant-pick-your-agents-next-model-from-a-diff/19a78229/cheapest-holder-rank.avif" alt="Chart with one row per use case ranking 11 candidate models by tool-choice agreement with Claude Sonnet 5.5, with the top three shaded as the shortlist. The cheapest model that holds quality ranks 6th on bank support, 10th on invoice extraction and 7th on KYC checks, each time GPT-6 Luna, and 3rd on claims triage, Haiku 5.5. GPT-6 Luna costs $0.0017 per successful task on bank support against $0.17 for Sonnet, $0.00059 against $0.022 on invoices, and $0.00057 against $0.019 on KYC checks." />
