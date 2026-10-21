@@ -34,7 +34,9 @@ The four agents:
 - **Insurance claims triage**
 - **KYC document checks**
 
-For each one, we sampled 250 recorded model calls and replayed them against 12 models: Claude Opus 5.5, Sonnet 5.5, and Haiku 5.5, GPT-6 Luna, GPT-6.1 Sol, DeepSeek V4.1 Flash, DeepSeek V4 Pro, GLM 5.3, GLM 5.3 Flash, gpt-oss-120b, Qwen3.8 27B, and MiniMax-M3.
+For each one, we sampled 250 recorded model calls and replayed them against 11 candidates: Claude Opus 5.5 and Haiku 5.5, GPT-6 Luna, GPT-6.1 Sol, DeepSeek V4.1 Flash, DeepSeek V4 Pro, GLM 5.3, GLM 5.3 Flash, gpt-oss-120b, Qwen3.8 27B, and MiniMax-M3. Sonnet 5.5 replayed its own calls as a reference.
+
+We scored each step two ways: **tool choice** (same tool as Sonnet) and **exact agreement** (same tool and arguments, or the same text answer).
 
 Ground truth came from full runs. Every candidate ran the same tasks end to end (100, 91, 74, and 86 tasks per use case), graded deterministically, and paired against Sonnet on the same tasks with a bootstrap 95% interval. We say a model **holds** if its task success is at most 5 points below Sonnet's.
 
@@ -51,7 +53,7 @@ That's the part of the diff you can rely on. It's cheap, and it throws out model
 
 ## Picking doesn't
 
-The natural next step is to let the diff make the call: "any model within 10 points of the closest match is comparable, now take the cheapest." We checked that rule against the full runs for all 44 candidate–use case pairs.
+The natural next step is to let the diff make the call: "any model within 10 points of the closest match on tool choice is comparable, now take the cheapest." We checked that rule against the full runs for all 44 candidate–use case pairs.
 
 It was right 35 times out of 44. Of the nine misses, four were models it called comparable that lose in full runs, including Qwen3.8 27B on bank support (11 points below Sonnet) and Haiku 5.5 on KYC checks (8 points below). The other five were models it ruled out that actually hold.
 
@@ -65,7 +67,7 @@ Bank support makes the gap obvious. Every model picks the same tool as Sonnet 85
 
 In a conversation, the tool is often the easy part. The difference is in what the agent says, what it asks for, and when it decides to act. A per-step diff scores each turn in isolation, against inputs the candidate never produced itself, so it can't see any of that.
 
-Exact agreement doesn't rescue it either. Replayed against its own recorded support traffic, Sonnet 5.5 produced exactly the same step only 48% of the time.
+In conversations, exact agreement doesn't rescue it either. Replayed against its own recorded support traffic, Sonnet 5.5 produced exactly the same step only 48% of the time. If the current model matches itself half the time, a mismatch doesn't mean much.
 
 <figure>
   <img src="https://assets.zenml.io/content/blog/you-cant-pick-your-agents-next-model-from-a-diff/88121123/support-tool-choice-vs-success.avif" alt="Two dot strips for bank support with one dot per candidate model. On the first, how often each model picks the same tool as Claude Sonnet 5.5, all 11 models fall between 85% and 99%. On the second, full-run task success, they spread from 51% to 64%, around Sonnet's own 62%." />
@@ -78,7 +80,7 @@ This was the finding that changed how we think about model swaps.
 
 GPT-6 Luna was the cheapest model that held quality in three of the four use cases: bank support, invoice extraction, and KYC checks. Per successful task, it cost about $0.002 on bank support against Sonnet's $0.17, and under a tenth of a cent on invoices and KYC against Sonnet's roughly two cents.
 
-By step agreement, it ranked 6th, 10th, and 7th. It would never have made a top-three shortlist.
+By tool choice, it ranked 6th, 10th, and 7th. It would never have made a top-three shortlist. The cheapest-pick rule above did land on it for bank support and KYC; on invoices, it stuck with Sonnet.
 
 Luna gets to the right outcome by different steps. It asks in a different order, words things differently, and calls tools at different points. A diff counts every one of those as a disagreement. Only running the whole task shows that the end state is still correct.
 
