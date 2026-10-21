@@ -10,7 +10,7 @@ tags:
   - "evaluation"
   - "llm"
 date: "2026-10-21T00:00:00.000Z"
-readingTime: "8 mins"
+readingTime: "10 mins"
 seo:
   title: "The Cost of a Correct Underwriting Decision - ZenML Blog"
   description: "We ran 12 models as an underwriting copilot on 252 commercial insurance cases. An open-weight model tied the top model for a third less, and cost per correct decision varied 40x."
@@ -27,6 +27,7 @@ The short version:
 - **Price is not quality.** The most expensive model per correct decision ranked third. A mid-priced model was clearly worse than the top, not "almost as good."
 - **Cost per correct decision varied about 40x**, from 0.19¢ to 8.25¢.
 - **Models fail on specific kinds of questions**, and some failures come from how a model drives the conversation, not from what it knows.
+- **Then we tuned each model's prompt, and most of the gaps closed.** On cases held out from tuning, six models landed within about two points of each other at 97.6–99.4%. Sonnet 5.5 gained ten points and got a third cheaper per correct decision; Claude Haiku 5.5 reached 97.6% at 0.38¢. Fix the harness before you switch models.
 
 ## The task
 
@@ -89,6 +90,32 @@ Three models lost points for reasons that have little to do with underwriting kn
 
 Each would look different with a different prompt or harness. That is part of the result, not noise to be removed: in production you deploy the model together with the loop around it, and a model that doesn't fit your loop fails your cases.
 
+## Then we tuned the prompt
+
+Every model above ran with the same system prompt, written once. That is how many teams compare models, and it is also a weak spot: a prompt that works for one model can trip up another. So we gave each model its own prompt.
+
+We split the 252 cases into 84 for learning and 168 held out, stratified by question type. For each model, Claude Opus 5.5 read that model's failures on the learning cases and rewrote its system prompt with general instructions. A rewrite was kept only if it scored better on the learning cases, and any rewrite that copied facts from the cases (codes, numbers, company names) was rejected. The best prompt then ran once on the 168 held-out cases, which the tuning never saw. To know how much a score moves on its own, we also ran Sonnet 5.5 again with the original prompt.
+
+| Model | Original | Tuned prompt | Change (points, 95% CI) | Cost per correct decision |
+|---|---|---|---|---|
+| Claude Sonnet 5.5 | 89.3% | 99.4% | +10.1 [+5.4, +15.5] | 4.11¢ → 2.73¢ |
+| DeepSeek V4 Pro (open) | 97.0% | 98.2% | +1.2 [−1.8, +4.2] | 3.56¢ → 3.12¢ |
+| Claude Opus 5.5 | 97.0% | 98.2% | +1.2 [−1.2, +3.6] | 5.26¢ → 4.31¢ |
+| GPT-6.1 Sol | 82.1% | 97.6% | +15.5 [+9.5, +21.4] | 2.01¢ → 1.11¢ |
+| Claude Haiku 5.5 | 85.7% | 97.6% | +12.0 [+6.6, +18.0] | 0.52¢ → 0.38¢ |
+| GLM 5.3 Flash (open) | 91.7% | 97.6% | +6.0 [+1.8, +10.8] | 0.98¢ → 0.72¢ |
+| gpt-oss-120b (open) | 56.0% | 76.2% | +20.2 [+10.1, +29.8] | 0.98¢ → 1.48¢ |
+
+Held-out cases only. Sonnet 5.5 run again with the original prompt moved +2.4 points [−3.6, +8.3], so differences of a few points are noise. GPT-6 Luna was not tuned, because no rewrite improved on its 78 of 84 learning cases.
+
+Three things stand out:
+
+- **Most of the first ranking was about the prompt.** Tuned, six models sit within about two points of each other, inside the noise. A model that struggled with our original prompt was often a model that needed different instructions, not a weaker model.
+- **The cheapest model that reaches the top tier is Claude Haiku 5.5**, at 0.38¢ per correct decision: about eleven times cheaper than tuned Opus 5.5 and seven times cheaper than tuned Sonnet 5.5.
+- **For the model you already run, tuning beats switching.** Sonnet 5.5 gained ten points and became a third cheaper per correct decision, more than any model swap in the first run. Changing effort settings moved less: high reasoning effort helped GPT-6.1 Sol by about nine points, and lowering Sonnet 5.5's effort cost it seventeen.
+
+The rewrites did not teach the models underwriting. They fixed how the copilot runs the conversation: ask which line of business the application is for before recommending others, classify the business from the database when there is no code and treat it as settled, commit to one answer instead of hedging, never end the case on a question, and answer only what was asked. The two judges agreed more often on tuned answers, so the answers became clearer, not easier to grade.
+
 ## Did the models just memorize the answers?
 
 The datasets are public, so a model trained on them could know the answers. We checked by asking every model 24 cases with no tools and no data: just the company profile and the question. These were cases where the answer can't be reasoned out, because it depends on the insurer's synthetic appetite table.
@@ -120,15 +147,16 @@ For about $10, that gives a decision: DeepSeek V4 Pro is better and cheaper, and
 - The insurer's environment is a reconstruction from the published traces. We kept the 252 of 380 cases where a rule-based check re-derives the reference answer from that environment, so every scored case is answerable from data the copilot can see.
 - The underwriter is simulated, and grading is done by two LLM judges with a third breaking ties. On Snorkel's own labeled traces, the judges agree with the human labels 87–90% of the time.
 - Three of the judges (GPT-6 Luna, Claude Haiku 5.5, and GPT-6.1 Sol) are also among the models tested. Re-grading their answers with judges other than themselves moved their scores by less than 2 points, in both directions, so we see no sign of a model favoring its own answers.
-- Every model ran with the same system prompt. A prompt tuned per model would likely fix Sol's habit of ending on a question and may help gpt-oss-120b with its tool calls, so those two rows likely understate what the models can do in a tuned harness.
+- The first table uses one shared prompt for every model; the tuning section shows how much that matters. Tuning was one run per model, at most two rounds, with one optimizer and 84 learning cases; four models from the first table (GLM 5.3, DeepSeek V4.1 Flash, MiniMax-M3, Qwen3.8 27B) were not tuned.
 - Prices are list prices. Open-weight models ran on one commercial inference provider; prices and latency vary across providers.
 
 ## What to take from this
 
-If you run an underwriting copilot, or any agent whose output is a decision, three things carry over:
+If you run an underwriting copilot, or any agent whose output is a decision, four things carry over:
 
 1. **Measure cost per correct decision, not cost per call.** Steps and errors move the number more than token prices do.
-2. **Read results per question type.** The model that wins overall can lose on the questions your team actually asks.
-3. **Screen cheaply, then decide with full runs.** Step-level replays are a good way to cut 11 candidates to 3. Only end-to-end replays, graded on outcomes, tell you which one to ship.
+2. **Fix the harness before you switch models.** Tune the prompt for the model you run, on cases you then hold out, and compare models only after each has had that chance.
+3. **Read results per question type.** The model that wins overall can lose on the questions your team actually asks.
+4. **Screen cheaply, then decide with full runs.** Step-level replays are a good way to cut 11 candidates to 3. Only end-to-end replays, graded on outcomes, tell you which one to ship.
 
 If you want to run this against your own agent, [Kitaru](/product/kitaru) records your agent's runs, screens candidate models on them, and replays the finalists end to end with your evaluators.
