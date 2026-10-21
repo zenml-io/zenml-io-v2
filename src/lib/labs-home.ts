@@ -385,8 +385,8 @@ export const LABS_HOW_IT_WORKS: HowItWorksContent = {
       detail: { kind: "sources" },
     },
     {
-      title: "Ask your coding agent",
-      body: "It prices a dry run, then tries the models you pick on your real calls.",
+      title: "Ask an agent",
+      body: "Your coding agent, or ours in the background. It tries the update on your real calls.",
       detail: {
         kind: "prompt",
         text: "Use kitaru-model-swap to find a better model for this agent.",
