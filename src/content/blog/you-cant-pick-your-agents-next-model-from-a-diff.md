@@ -1,5 +1,5 @@
 ---
-title: "You Can't Pick Your Agent's Next Model From a Diff"
+title: "You can't pick your agent's next model from a diff"
 slug: "you-cant-pick-your-agents-next-model-from-a-diff"
 draft: true
 author: "hamza-tahir"
@@ -12,7 +12,7 @@ tags:
 date: "2026-10-21T00:00:00.000Z"
 readingTime: "6 mins"
 seo:
-  title: "You Can't Pick Your Agent's Next Model From a Diff - ZenML Blog"
+  title: "You can't pick your agent's next model from a diff - ZenML Blog"
   description: "We replayed recorded agent traffic against 11 models. Step agreement narrowed the field well but picked badly. Only full replays found the best swap."
   canonical: "https://www.zenml.io/blog/you-cant-pick-your-agents-next-model-from-a-diff"
 ---
@@ -44,13 +44,10 @@ Rank the candidates by how often they pick the same tool as Sonnet, keep the top
 
 That's the part of the diff you can rely on. It's cheap, and it throws out models that are clearly wrong for the job. On invoice extraction, gpt-oss-120b picked Sonnet's tool on only 32% of calls and finished 33 points below it in full runs.
 
-<!-- CHART 1: "Step agreement vs. what actually happened"
-Small multiples, one panel per use case (use_cases.<uc>, label from .label).
-x: rows[].tool_choice (as %), for every row where reference == false.
-y: rows[].full.delta (as percentage points vs Sonnet 5.5), with vertical error bars from rows[].full.lo to rows[].full.hi.
-Color: "holds" if full.delta >= -0.05, "loses" otherwise. Horizontal dashed line at -5 points.
-Label the top 3 by tool_choice (finalists.top3) and annotate gpt-6-luna.
-Strip the "@<host>" suffix from model names in labels. Caption: "Each dot is one candidate model. Left to right: step agreement with Sonnet 5.5. Bottom to top: task success vs Sonnet in full runs." -->
+<figure>
+  <img src="https://assets.zenml.io/content/blog/you-cant-pick-your-agents-next-model-from-a-diff/c44ecb9d/invoice-step-agreement-vs-outcome.avif" alt="Scatter plot for invoice extraction with one dot per candidate model, step agreement with Claude Sonnet 5.5 on the horizontal axis and full-run task success relative to Sonnet on the vertical axis. gpt-oss-120b sits far left at 32% agreement and 33 points below Sonnet. The three models with the highest step agreement, Opus 5.5, GPT-6.1 Sol and Haiku 5.5, all hold quality, and GPT-6 Luna, ranked 10th by agreement, also holds and is the cheapest model that does." />
+  <figcaption>Invoice extraction, one dot per candidate model. Left to right: how often it picks the same tool as Sonnet 5.5 on recorded calls. Bottom to top: task success against Sonnet 5.5 in full runs.</figcaption>
+</figure>
 
 ## Picking doesn't
 
@@ -70,12 +67,10 @@ In a conversation, the tool is often the easy part. The difference is in what th
 
 Exact agreement doesn't rescue it either. Replayed against its own recorded support traffic, Sonnet 5.5 produced exactly the same step only 48% of the time.
 
-<!-- CHART 2: "Bank support: tool choice is saturated, outcomes are not"
-Two horizontal dot strips on a shared 0-100% axis, one row each, one dot per model in use_cases.support.rows (reference == false):
-row 1 "Same tool as Sonnet": rows[].tool_choice (range 85% to 99%);
-row 2 "Task success, full run": rows[].full.success (range 51% to 64%).
-Add a marker for Sonnet's own full-run success: use_cases.support.incumbent.success (62%).
-Optionally connect each model's two dots with a faint line to show ranks reshuffling. -->
+<figure>
+  <img src="https://assets.zenml.io/content/blog/you-cant-pick-your-agents-next-model-from-a-diff/88121123/support-tool-choice-vs-success.avif" alt="Two dot strips for bank support with one dot per candidate model. On the first, how often each model picks the same tool as Claude Sonnet 5.5, all 11 models fall between 85% and 99%. On the second, full-run task success, they spread from 51% to 64%, around Sonnet's own 62%." />
+  <figcaption>Bank support: every candidate picks Sonnet 5.5's tool almost every time, but full-run task success varies from 51% to 64%.</figcaption>
+</figure>
 
 ## The cheapest model that holds takes a different path
 
@@ -87,11 +82,10 @@ By step agreement, it ranked 6th, 10th, and 7th. It would never have made a top-
 
 Luna gets to the right outcome by different steps. It asks in a different order, words things differently, and calls tools at different points. A diff counts every one of those as a disagreement. Only running the whole task shows that the end state is still correct.
 
-<!-- CHART 3: "Where the cheapest model that holds ranks by step agreement"
-One row per use case. Plot the 11 candidates as a ranked strip ordered by rows[].tool_choice (rank 1 = left).
-Shade ranks 1-3 as "shortlist" (finalists.top3). Highlight finalists.cheapest_holder at finalists.cheapest_holder_rank
-(support: gpt-6-luna, 6; invoice_extraction: gpt-6-luna, 10; claims_triage: haiku-5.5, 3; kyc_checks: gpt-6-luna, 7).
-Tooltip / annotation: cheapest holder's full.cost_per_success vs incumbent.cost_per_success. -->
+<figure>
+  <img src="https://assets.zenml.io/content/blog/you-cant-pick-your-agents-next-model-from-a-diff/19a78229/cheapest-holder-rank.avif" alt="Chart with one row per use case ranking 11 candidate models by tool-choice agreement with Claude Sonnet 5.5, with the top three shaded as the shortlist. The cheapest model that holds quality ranks 6th on bank support, 10th on invoice extraction and 7th on KYC checks, each time GPT-6 Luna, and 3rd on claims triage, Haiku 5.5. GPT-6 Luna costs $0.0017 per successful task on bank support against $0.17 for Sonnet, $0.00059 against $0.022 on invoices, and $0.00057 against $0.019 on KYC checks." />
+  <figcaption>Each row ranks the 11 candidates by how often they pick the same tool as Sonnet 5.5. The dark dot is the cheapest model that holds quality in full runs, with its cost per successful task.</figcaption>
+</figure>
 
 ## How we're building this into Kitaru
 
@@ -113,8 +107,8 @@ The third step is the one that decides. The first two make it affordable.
 
 ## Try it
 
-<!-- TODO: confirm how full replay handles tool calls that leave the recorded path (simulated tools vs. recorded history). TODO: confirm availability wording, docs link, and CLI for the model-swap workflow before publishing. Do not describe it as generally available until it ships. -->
+The model-swap workflow is in review for an upcoming Kitaru release. The last step works today: [replay your agent with a model override](https://docs.zenml.io/kitaru/guides/replay-and-overrides), and use [tool policies](https://docs.zenml.io/kitaru/guides/tool-policies) to decide whether each tool call gets the recorded result, a fixed result, or the live tool. That matters when a finalist takes a path the recording never saw.
 
-The model-swap workflow is coming to Kitaru. Kitaru is open source: the docs are at [docs.zenml.io/kitaru](https://docs.zenml.io/kitaru) and the code is on [GitHub](https://github.com/zenml-io/kitaru).
+Kitaru is open source: the docs are at [docs.zenml.io/kitaru](https://docs.zenml.io/kitaru) and the code is on [GitHub](https://github.com/zenml-io/kitaru).
 
 If you're already weighing a cheaper model for an agent in production, we'd like to hear how you're making the call today.
