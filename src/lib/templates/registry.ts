@@ -1395,7 +1395,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "The homepage hero's animated explainer, mounted in LabsHero's `visual` slot on `/`. Four beats in pure SVG and CSS: trace rows slide in, wires draw to four model pills (today's dashed as the reference) with pulses travelling along them, each model's row of match/differs marks fills in, then five goal chips cycle every 2s (10s loop) and the winning model pills fill sage-800 in sync. Winners follow the comparison's rules on the drawn pattern (closest and fastest: cheaper; cheapest and open: open; best mix: both; local never wins). No figures. A wide drawing from lg and a re-authored compact one below it. Under reduced motion everything is drawn and the highlight rests on Best mix. The page's one hero motion moment; the `label` prop is the figure's accessible description.",
+      "The homepage hero's animated explainer, mounted in LabsHero's `visual` slot on `/`. Four beats in pure SVG and CSS: trace rows slide in under the trace tools' marks, wires draw to four named model pills (today's dashed as the reference) with pulses travelling along them, each model's row of match/differs marks fills in, then five goal chips cycle every 2s (10s loop) and the winning model pills fill sage-800 in sync. Winners follow the comparison's rules on the drawn pattern (closest and fastest: cheaper; cheapest and open: open; best mix: both; local never wins). No figures. A wide drawing from lg and a re-authored compact one below it. Under reduced motion everything is drawn and the highlight rests on Best mix. The page's one hero motion moment; the `label` prop is the figure's accessible description.",
     stage: false,
     demoProps: {},
   },

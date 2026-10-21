@@ -5,8 +5,7 @@
  * their calls to four candidate models, each model's row of marks fills in
  * (match or differs, per call), then the goals cycle and the highlight moves
  * to the model that wins each one. The trace tools and models are named
- * with their marks so the picture reads as the visitor's own stack, and a
- * caption says the pattern is an illustration, not a benchmark.
+ * with their marks so the picture reads as the visitor's own stack.
  *
  * Pure SVG and CSS, no island. Two drawings share the markup recipe: a wide
  * one from `lg` and a compact one below it, re-authored rather than scaled
@@ -382,9 +381,6 @@ const drawings = [
       </svg>
     );
   })}
-  <figcaption class="mt-3 font-sans text-[13px] leading-5 text-(--color-cream-700)">
-    Illustration, not a benchmark.
-  </figcaption>
 </figure>
 
 <style>
