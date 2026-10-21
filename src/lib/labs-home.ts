@@ -19,7 +19,11 @@ import {
   LOGO_CLOUD,
   type LogoItem,
 } from "./homepage";
-import { KITARU_DOCS_URL, KITARU_LINKS } from "./productKitaru";
+import {
+  KITARU_DOCS_URL,
+  KITARU_INSTALL_CMD,
+  KITARU_LINKS,
+} from "./productKitaru";
 import { ZENML_LINKS } from "./productZenml";
 
 export type { CaseStudyCard };
@@ -252,9 +256,14 @@ export interface HeroVisualContent {
 
 export const LABS_HERO_VISUAL: HeroVisualContent = {
   label:
-    "An example: four recorded support sessions are replayed under one proposed update at a time. Swapping GPT-6 for DeepSeek changes one answer, a new prompt version changes one, lowering the temperature changes none, and turning on retries changes one. Each changed session goes to you to review.",
+    "An example: four recorded sessions from an insurance and banking agent (a water damage claim, a policy coverage question, a card dispute and a KYC document check) are replayed under one proposed update at a time. Swapping GPT-6 for DeepSeek changes one answer, a new prompt version changes one, lowering the temperature changes none, and turning on retries changes one. Each changed session goes to you to review.",
   updateLabel: "Proposed update",
-  sessions: ["Refund request", "Damaged kettle", "Wrong size", "Late delivery"],
+  sessions: [
+    "Water damage claim",
+    "Policy coverage question",
+    "Card dispute",
+    "KYC document check",
+  ],
   updates: [
     {
       kind: "Model",
@@ -272,10 +281,11 @@ export const LABS_HERO_VISUAL: HeroVisualContent = {
   differsLabel: "differs · review",
 };
 
-export const LABS_HERO: LabsBandContent = {
+export const LABS_HERO: LabsProductBandContent = {
   headlineLines: ["Ship agent updates", "without guessing"],
   deck: "Swap the model, rewrite the prompt, tweak the harness. Kitaru tests it on the traces you already have and shows exactly what would change.",
   cta: LABS_HERO_SIGNUP,
+  install: { cmd: KITARU_INSTALL_CMD, analytics: "Home-Hero-Install" },
 };
 
 /* ---------------------------------------------------------------------- */
@@ -317,13 +327,13 @@ export interface ProductDoorsContent {
 }
 
 export const LABS_DOORS: ProductDoorsContent = {
-  headline: "Build it, then prove it",
+  headline: "Two open-source products",
   doors: [
     {
       name: "ZenML",
       tint: "sage",
-      leadLine: "AI orchestration, on the infra you choose",
-      body: "Write pipelines and agents in Python and run them on the orchestrator and cloud you already have. Move between them without rewriting, from a laptop to Kubernetes.",
+      leadLine: "Orchestrate AI on the infra you choose",
+      body: "Run ML pipelines and agents in Python on the orchestrator and cloud you already have, with every run, artifact, and model version recorded.",
       cta: {
         label: "Explore ZenML",
         href: "/product/zenml",
@@ -333,8 +343,8 @@ export const LABS_DOORS: ProductDoorsContent = {
     {
       name: "Kitaru",
       tint: "orange",
-      leadLine: "Pick your model on real traffic",
-      body: "Resend the calls your agent really made to open, local, and cheaper models, and see which is closest, cheapest, fastest, or the best mix. Then replay the winner on whole sessions before it ships.",
+      leadLine: "Test every agent update on real traces",
+      body: "Import the traces you already have, try a new model, prompt, or harness on them, and see exactly what would change before it ships.",
       cta: {
         label: "Explore Kitaru",
         href: "/product/kitaru",
@@ -460,7 +470,7 @@ export interface LogoGridContent {
 }
 
 export const LABS_LOGO_GRID: LogoGridContent = {
-  headline: "Running production AI today",
+  headline: "ZenML runs production AI at",
   logos: LOGO_CLOUD.logos,
 };
 

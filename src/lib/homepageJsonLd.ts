@@ -16,6 +16,7 @@ import { absoluteUrl, ORGANIZATION_NAME } from "./seo";
  */
 function homepageFeatureList(): string[] {
   return [
+    ...LABS_DOORS.doors.map((door) => `${door.name}: ${door.leadLine}`),
     ...LABS_FEATURE_PANELS.map((panel) => `${panel.title}: ${panel.body}`),
   ];
 }

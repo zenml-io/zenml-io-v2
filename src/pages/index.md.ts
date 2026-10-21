@@ -8,6 +8,7 @@ import {
 } from "../lib/agentMarkdown";
 import {
   LABS_CLOSE,
+  LABS_DOORS,
   LABS_FEATURE_PANELS,
   LABS_HERO,
   LABS_HERO_VISUAL,
@@ -38,7 +39,11 @@ export function GET(): Response {
       LABS_HERO.deck,
       LABS_HERO_VISUAL.label,
     ),
-    joinMarkdownSections("## Main CTA", markdownCtaList([LABS_HERO.cta])),
+    joinMarkdownSections(
+      "## Main CTA",
+      markdownCtaList([LABS_HERO.cta]),
+      LABS_HERO.install ? `Install Kitaru: \`${LABS_HERO.install.cmd}\`` : "",
+    ),
     joinMarkdownSections(
       `## ${LABS_HOW_IT_WORKS.headline}`,
       ...LABS_HOW_IT_WORKS.steps.map((step, i) =>
@@ -49,6 +54,17 @@ export function GET(): Response {
         ),
       ),
       markdownLink(LABS_HOW_IT_WORKS.link.label, LABS_HOW_IT_WORKS.link.href),
+    ),
+    joinMarkdownSections(
+      `## ${LABS_DOORS.headline}`,
+      ...LABS_DOORS.doors.map((door) =>
+        joinMarkdownSections(
+          `### ${door.name}`,
+          door.leadLine,
+          door.body,
+          `CTA: ${markdownLink(door.cta.label, door.cta.href)}`,
+        ),
+      ),
     ),
     joinMarkdownSections(
       `## ${LABS_LOGO_GRID.headline}`,

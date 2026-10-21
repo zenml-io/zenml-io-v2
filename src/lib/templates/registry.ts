@@ -1381,7 +1381,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Two product cards (ZenML, Kitaru) from `content: ProductDoorsContent` (PRICING_PRO_INCLUSIONS_DOORS on `/pricing`, the docs product cards on `/docs`; LABS_DOORS feeds the nav product switcher). Each card opens with its product wordmark; no install or licence chips. `headline` is optional (absence collapses the heading row). An optional `caption` renders one line after the cards. A door can add `links` (hairline quick-link rows with a hover wash/arrow in the door's tint) and/or `details` (hairline title/detail pairs) after its body; a door's `cta` can carry `external` to open the pill in a new tab.",
+      "Two product cards (ZenML, Kitaru) from `content: ProductDoorsContent` (LABS_DOORS on `/` after the how-it-works section, which also feeds the nav product switcher; PRICING_PRO_INCLUSIONS_DOORS on `/pricing`; the docs product cards on `/docs`). Each card opens with its product wordmark; no install or licence chips. `headline` is optional (absence collapses the heading row). An optional `caption` renders one line after the cards. A door can add `links` (hairline quick-link rows with a hover wash/arrow in the door's tint) and/or `details` (hairline title/detail pairs) after its body; a door's `cta` can carry `external` to open the pill in a new tab.",
     stage: false,
     demoProps: {},
   },
