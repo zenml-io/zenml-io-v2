@@ -119,6 +119,8 @@ For about $10, that gives a decision: DeepSeek V4 Pro is better and cheaper, and
 - One run per case per model. Differences under about 3 points are inside the noise.
 - The insurer's environment is a reconstruction from the published traces. We kept the 252 of 380 cases where a rule-based check re-derives the reference answer from that environment, so every scored case is answerable from data the copilot can see.
 - The underwriter is simulated, and grading is done by two LLM judges with a third breaking ties. On Snorkel's own labeled traces, the judges agree with the human labels 87–90% of the time.
+- Three of the judges (GPT-6 Luna, Claude Haiku 5.5, and GPT-6.1 Sol) are also among the models tested. Re-grading their answers with judges other than themselves moved their scores by less than 2 points, in both directions, so we see no sign of a model favoring its own answers.
+- Every model ran with the same system prompt. A prompt tuned per model would likely fix Sol's habit of ending on a question and may help gpt-oss-120b with its tool calls, so those two rows likely understate what the models can do in a tuned harness.
 - Prices are list prices. Open-weight models ran on one commercial inference provider; prices and latency vary across providers.
 
 ## What to take from this
