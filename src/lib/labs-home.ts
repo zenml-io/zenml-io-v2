@@ -224,6 +224,10 @@ export interface LabsInstallChip {
   analytics: string;
 }
 
+/** What the hero's animated explainer shows, for screen readers and `/index.md`. */
+export const LABS_HERO_VISUAL_LABEL =
+  "How it works: the traces your agent already produced are sent to today's model, a cheaper model, an open model and a local model. Each model's answers are marked as matching or differing, call by call. Then the best model is picked for each goal: closest, cheapest, fastest, open, or a best mix of two.";
+
 export const LABS_HERO: LabsBandContent = {
   headlineLines: ["Ship AI you can trust,", "on any model"],
   deck: "Kitaru tests your agent's real traffic on open, local, and cheaper models, so you choose on quality, cost, and speed. ZenML runs it all on the infra you already have. Both open source, always.",
@@ -294,113 +298,6 @@ export const LABS_DOORS: ProductDoorsContent = {
       },
     },
   ],
-};
-
-/* ---------------------------------------------------------------------- */
-/* Reasons — why a team looks at other models, and what switching changes */
-/* ---------------------------------------------------------------------- */
-
-/** A model an agent step can run on, in the reason switcher's picture. */
-export type RouteModel =
-  | "today"
-  | "replacement"
-  | "cheaper"
-  | "faster"
-  | "open"
-  | "local"
-  | "stronger";
-
-export const ROUTE_MODEL_LABELS: Record<RouteModel, string> = {
-  today: "Today's model",
-  replacement: "Closest replacement",
-  cheaper: "Cheaper model",
-  faster: "Faster model",
-  open: "Open model",
-  local: "Local model",
-  stronger: "Stronger model",
-};
-
-/** One reason to revisit the model, and how it re-routes the agent's steps. */
-export interface SwitchReason {
-  id: string;
-  /** The tab label, in the visitor's own words. */
-  label: string;
-  /** One model per step, in step order. */
-  routes: readonly RouteModel[];
-  /** Index of a step whose answer differs and goes to the user to review. */
-  reviewStep?: number;
-  /** A candidate compared but never recommended (e.g. an excluded lab). */
-  excluded?: string;
-  /** One sentence: what changes, and why. */
-  outcome: string;
-  /** What the comparison report names for this reason. */
-  reportLabel: string;
-}
-
-export interface ReasonSwitchContent {
-  headline: string;
-  deck: string;
-  /** The agent run's steps, in order. */
-  steps: readonly string[];
-  reasons: readonly SwitchReason[];
-  /** Index of the reason rendered before JS (and with JS off). */
-  defaultReason: number;
-}
-
-export const LABS_REASONS: ReasonSwitchContent = {
-  headline: "Why are you looking at other models?",
-  deck: "Whatever the reason, the question is the same: what would switching change? Kitaru answers it on your agent's real traffic.",
-  steps: [
-    "Read the ticket",
-    "Look up the order",
-    "Check the policy",
-    "Draft the reply",
-  ],
-  reasons: [
-    {
-      id: "retired",
-      label: "My model is being retired",
-      routes: ["replacement", "replacement", "replacement", "replacement"],
-      reviewStep: 3,
-      outcome:
-        "Every step moves to the closest replacement. The one step that answers differently comes to you before anything ships.",
-      reportLabel: "Closest to today",
-    },
-    {
-      id: "cost",
-      label: "Costs went up",
-      routes: ["cheaper", "cheaper", "cheaper", "today"],
-      outcome:
-        "The routine steps move to a cheaper model. The reply stays where quality matters.",
-      reportLabel: "Cheapest · Best mix",
-    },
-    {
-      id: "control",
-      label: "I want more control",
-      routes: ["open", "local", "open", "open"],
-      excluded: "A model from a lab you've ruled out",
-      outcome:
-        "Steps move to models you can host yourself. Labs you rule out are compared, never recommended.",
-      reportLabel: "Best open model · Origin rules",
-    },
-    {
-      id: "quality",
-      label: "I need better answers",
-      routes: ["today", "today", "today", "stronger"],
-      outcome:
-        "Only the step that needs it moves up to a stronger model. You judge the difference, then replay it on whole sessions.",
-      reportLabel: "Your verdicts on the differences",
-    },
-    {
-      id: "speed",
-      label: "It's too slow",
-      routes: ["faster", "faster", "faster", "today"],
-      outcome:
-        "The steps where waiting hurts move to the fastest model that still answers like today.",
-      reportLabel: "Fastest",
-    },
-  ],
-  defaultReason: 1,
 };
 
 /* ---------------------------------------------------------------------- */

@@ -10,9 +10,9 @@ import {
   LABS_CLOSE,
   LABS_FEATURE_PANELS,
   LABS_HERO,
+  LABS_HERO_VISUAL_LABEL,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
-  LABS_REASONS,
   LABS_STORIES,
 } from "../lib/labs-home";
 
@@ -35,22 +35,12 @@ export function GET(): Response {
       "## Summary",
       LABS_HERO.headlineLines.join(" "),
       LABS_HERO.deck,
+      LABS_HERO_VISUAL_LABEL,
     ),
     joinMarkdownSections("## Main CTA", markdownCtaList([LABS_HERO.cta])),
     joinMarkdownSections(
       `## ${LABS_LOGO_GRID.headline}`,
       LABS_LOGO_GRID.logos.map((logo) => logo.name).join(", "),
-    ),
-    joinMarkdownSections(
-      `## ${LABS_REASONS.headline}`,
-      LABS_REASONS.deck,
-      `The example agent run: ${LABS_REASONS.steps.join(" → ")}.`,
-      markdownBulletList(
-        LABS_REASONS.reasons.map(
-          (reason) =>
-            `${reason.label}: ${reason.outcome} (In the report: ${reason.reportLabel})`,
-        ),
-      ),
     ),
     joinMarkdownSections(
       "## What you get",
