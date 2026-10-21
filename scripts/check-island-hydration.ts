@@ -709,8 +709,11 @@ const CHECKS: IslandCheck[] = [
       await page.waitForSelector(
         `${root} [role="tab"][aria-selected="true"]:has-text("I need better answers")`,
       );
+      // The text routing is the map's accessible description (sr-only from
+      // lg), so wait for it to be attached rather than visible.
       await page.waitForSelector(
-        `${root} [role="tabpanel"] li:last-child:has-text("Stronger model")`,
+        `${root} [role="tabpanel"] ol > li:last-child:has-text("Stronger model")`,
+        { state: "attached" },
       );
     },
   },
