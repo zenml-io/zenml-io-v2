@@ -30,7 +30,7 @@ export type LabsProduct = "zenml" | "kitaru";
 export const LABS_HOME_SEO = {
   title: "ZenML Labs: Ship AI you can trust",
   description:
-    "ZenML Labs is the unified infrastructure layer for AI in production: ZenML orchestrates your pipelines and agents on the infra you choose, and Kitaru replays them on production data.",
+    "ZenML Labs is the unified infrastructure layer for AI in production: Kitaru tests your agent's real traffic on open, local, and cheaper models so you choose on quality, cost, and speed, and ZenML orchestrates your pipelines and agents on the infra you choose.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -225,8 +225,8 @@ export interface LabsInstallChip {
 }
 
 export const LABS_HERO: LabsBandContent = {
-  headlineLines: ["Ship AI", "you can trust"],
-  deck: "ZenML orchestrates your pipelines and agents. Kitaru replays them on production data before a change ships. Both open source, always.",
+  headlineLines: ["Ship AI you can trust,", "on any model"],
+  deck: "Kitaru tests your agent's real traffic on open, local, and cheaper models, so you choose on quality, cost, and speed. ZenML runs it all on the infra you already have. Both open source, always.",
   cta: LABS_HERO_SIGNUP,
 };
 
@@ -285,8 +285,8 @@ export const LABS_DOORS: ProductDoorsContent = {
     {
       name: "Kitaru",
       tint: "orange",
-      leadLine: "Replay your agents on production data",
-      body: "Import the sessions your agent has actually run, find what repeats, and replay a change against them. See what improved, what regressed, and what it costs before it ships.",
+      leadLine: "Pick your model on real traffic",
+      body: "Resend the calls your agent really made to open, local, and cheaper models, and see which is closest, cheapest, fastest, or the best mix. Then replay the winner on whole sessions before it ships.",
       cta: {
         label: "Explore Kitaru",
         href: "/product/kitaru",
@@ -336,8 +336,8 @@ export const LABS_FEATURE_PANELS: readonly FeaturePanel[] = [
   },
   {
     index: "02.",
-    title: "Replay",
-    body: "Real production sessions become the test set. Replay a change and see what improved, what regressed, and what it costs.",
+    title: "Choose your model",
+    body: "Your agent's real calls, resent to the models you're weighing. Pick on quality, cost, speed, or openness, then replay the winner.",
     icon: "layers",
     tone: "sage-deep",
   },
