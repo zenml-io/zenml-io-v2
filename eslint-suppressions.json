@@ -39,11 +39,6 @@
       "count": 1
     }
   },
-  "src/components/kitaru/islands/HeroVideo.tsx": {
-    "shadcn/no-raw-colors": {
-      "count": 1
-    }
-  },
   "src/components/kitaru/islands/TwoDoors.tsx": {
     "no-restricted-syntax": {
       "count": 3
