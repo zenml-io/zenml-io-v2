@@ -226,11 +226,11 @@ export interface LabsInstallChip {
 
 /** What the hero's animated explainer shows, for screen readers and `/index.md`. */
 export const LABS_HERO_VISUAL_LABEL =
-  "How it works: the traces your agent already produced are sent to today's model, a cheaper model, an open model and a local model. Each model's answers are marked as matching or differing, call by call. Then the best model is picked for each goal: closest, cheapest, fastest, open, or a best mix of two.";
+  "How it works, as an illustration: traces from tools like Langfuse, LangSmith, Logfire and Braintrust are sent to GPT-6 (today's model), Claude Haiku 5.5, DeepSeek and GLM running locally. Each model's answers are marked as matching today's or differing, call by call. Then a model is picked for each goal: closest, cheapest, fastest, open, or a best mix of two.";
 
 export const LABS_HERO: LabsBandContent = {
   headlineLines: ["Ship AI you can trust,", "on any model"],
-  deck: "Kitaru tests your agent's real traffic on open, local, and cheaper models, so you choose on quality, cost, and speed. ZenML runs it all on the infra you already have. Both open source, always.",
+  deck: "Test your agent's real traffic on any model. Pick on quality, cost, and speed.",
   cta: LABS_HERO_SIGNUP,
 };
 
