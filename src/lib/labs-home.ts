@@ -224,13 +224,50 @@ export interface LabsInstallChip {
   analytics: string;
 }
 
-/** What the hero's animated explainer shows, for screen readers and `/index.md`. */
-export const LABS_HERO_VISUAL_LABEL =
-  "How it works, as an illustration: traces from tools like Langfuse, LangSmith, Logfire and Braintrust are sent to GPT-6 (today's model), Claude Haiku 5.5, DeepSeek and GLM running locally. Each model's answers are marked as matching today's or differing, call by call. Then a model is picked for each goal: closest, cheapest, fastest, open, or a best mix of two.";
+/** A model in the hero explainer: its name and which mark represents it. */
+export interface HeroVisualModel {
+  name: string;
+  /** `open` and `chip` are neutral glyphs for models without an approved
+   *  service-logo mark yet. */
+  mark: "openai" | "anthropic" | "open" | "chip";
+}
+
+export interface HeroVisualContent {
+  /** Accessible description of the whole explainer. */
+  label: string;
+  agent: string;
+  models: Record<string, HeroVisualModel>;
+  /** Key of today's model in `models`. */
+  today: string;
+  rows: readonly { call: string; model: string }[];
+  staysLabel: string;
+  outcome: string;
+}
+
+export const LABS_HERO_VISUAL: HeroVisualContent = {
+  label:
+    "An example: a support agent's calls, from traces in tools like Langfuse, LangSmith, Logfire and Braintrust, all run on GPT-6 today. Reading the ticket and looking up the order move to DeepSeek, checking the policy moves to Claude Haiku 5.5, and drafting the reply stays on GPT-6.",
+  agent: "Your support agent",
+  models: {
+    gpt6: { name: "GPT-6", mark: "openai" },
+    deepseek: { name: "DeepSeek", mark: "open" },
+    haiku: { name: "Claude Haiku 5.5", mark: "anthropic" },
+  },
+  today: "gpt6",
+  rows: [
+    { call: "Read the ticket", model: "deepseek" },
+    { call: "Look up the order", model: "deepseek" },
+    { call: "Check the policy", model: "haiku" },
+    { call: "Draft the reply", model: "gpt6" },
+  ],
+  staysLabel: "stays",
+  outcome:
+    "Best mix: routine calls move, the reply stays where quality matters.",
+};
 
 export const LABS_HERO: LabsBandContent = {
-  headlineLines: ["Ship AI you can trust,", "on any model"],
-  deck: "Test your agent's real traffic on any model. Pick on quality, cost, and speed.",
+  headlineLines: ["Find the right model", "for your agent"],
+  deck: "Kitaru tests the traces you already have on any model and shows exactly what would change.",
   cta: LABS_HERO_SIGNUP,
 };
 
@@ -298,6 +335,51 @@ export const LABS_DOORS: ProductDoorsContent = {
       },
     },
   ],
+};
+
+/* ---------------------------------------------------------------------- */
+/* How it works — three steps from traces to a recommendation             */
+/* ---------------------------------------------------------------------- */
+
+export interface HowItWorksStep {
+  title: string;
+  body: string;
+  /** What renders under the body: the trace tools' marks, or a prompt. */
+  detail?: { kind: "sources" } | { kind: "prompt"; text: string };
+}
+
+export interface HowItWorksContent {
+  headline: string;
+  steps: readonly HowItWorksStep[];
+  link: LabsCta;
+}
+
+export const LABS_HOW_IT_WORKS: HowItWorksContent = {
+  headline: "How it works",
+  steps: [
+    {
+      title: "Bring the traces you have",
+      body: "Import from the tool your agent already reports to. No code changes.",
+      detail: { kind: "sources" },
+    },
+    {
+      title: "Ask your coding agent",
+      body: "It prices a dry run, then tries the models you pick on your real calls.",
+      detail: {
+        kind: "prompt",
+        text: "Use kitaru-model-swap to find a better model for this agent.",
+      },
+    },
+    {
+      title: "Switch what's better",
+      body: "See which calls can move, review every difference, then replay the winner on whole sessions.",
+    },
+  ],
+  link: {
+    label: "See the full walkthrough",
+    href: "/product/kitaru",
+    analytics: "Home-HowItWorks-Kitaru",
+  },
 };
 
 /* ---------------------------------------------------------------------- */

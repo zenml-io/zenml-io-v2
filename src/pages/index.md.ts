@@ -10,8 +10,9 @@ import {
   LABS_CLOSE,
   LABS_FEATURE_PANELS,
   LABS_HERO,
-  LABS_HERO_VISUAL_LABEL,
+  LABS_HERO_VISUAL,
   LABS_HOME_SEO,
+  LABS_HOW_IT_WORKS,
   LABS_LOGO_GRID,
   LABS_STORIES,
 } from "../lib/labs-home";
@@ -35,9 +36,20 @@ export function GET(): Response {
       "## Summary",
       LABS_HERO.headlineLines.join(" "),
       LABS_HERO.deck,
-      LABS_HERO_VISUAL_LABEL,
+      LABS_HERO_VISUAL.label,
     ),
     joinMarkdownSections("## Main CTA", markdownCtaList([LABS_HERO.cta])),
+    joinMarkdownSections(
+      `## ${LABS_HOW_IT_WORKS.headline}`,
+      ...LABS_HOW_IT_WORKS.steps.map((step, i) =>
+        joinMarkdownSections(
+          `### ${i + 1}. ${step.title}`,
+          step.body,
+          step.detail?.kind === "prompt" ? `\`${step.detail.text}\`` : "",
+        ),
+      ),
+      markdownLink(LABS_HOW_IT_WORKS.link.label, LABS_HOW_IT_WORKS.link.href),
+    ),
     joinMarkdownSections(
       `## ${LABS_LOGO_GRID.headline}`,
       LABS_LOGO_GRID.logos.map((logo) => logo.name).join(", "),

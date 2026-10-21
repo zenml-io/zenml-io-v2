@@ -13,6 +13,7 @@ import CustomerStoryCards from "../components/labs/CustomerStoryCards.astro";
 import FeatureGridPanels from "../components/labs/FeatureGridPanels.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
 import LabsHero from "../components/labs/LabsHero.astro";
+import LabsHowItWorks from "../components/labs/LabsHowItWorks.astro";
 import LabsModelChoiceVisual from "../components/labs/LabsModelChoiceVisual.astro";
 import LogoMarquee from "../components/labs/LogoMarquee.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
@@ -22,8 +23,9 @@ import {
   LABS_CLOSE,
   LABS_FEATURE_PANELS,
   LABS_HERO,
-  LABS_HERO_VISUAL_LABEL,
+  LABS_HERO_VISUAL,
   LABS_HOME_SEO,
+  LABS_HOW_IT_WORKS,
   LABS_LOGO_GRID,
   LABS_STORIES,
 } from "../lib/labs-home";
@@ -47,8 +49,9 @@ const homepageJsonLd = buildHomepageJsonLd({
 
   <main>
     <LabsHero content={LABS_HERO}>
-      <LabsModelChoiceVisual slot="visual" label={LABS_HERO_VISUAL_LABEL} />
+      <LabsModelChoiceVisual slot="visual" content={LABS_HERO_VISUAL} />
     </LabsHero>
+    <LabsHowItWorks content={LABS_HOW_IT_WORKS} />
     <LogoMarquee content={LABS_LOGO_GRID} />
     <FeatureGridPanels content={LABS_FEATURE_PANELS} />
     <CustomerStoryCards content={LABS_STORIES} />
