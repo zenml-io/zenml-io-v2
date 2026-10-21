@@ -34,7 +34,7 @@ export type LabsProduct = "zenml" | "kitaru";
 export const LABS_HOME_SEO = {
   title: "ZenML Labs: Ship AI you can trust",
   description:
-    "ZenML Labs is the unified infrastructure layer for AI in production: Kitaru tests your agent's real traffic on open, local, and cheaper models so you choose on quality, cost, and speed, and ZenML orchestrates your pipelines and agents on the infra you choose.",
+    "ZenML Labs builds two open-source products for teams running AI in production. Kitaru tests updates to AI agents, such as a new model, prompt, or framework, on the traces you already collect and shows exactly which sessions would change. ZenML orchestrates ML pipelines and agents on your own infrastructure.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -371,13 +371,18 @@ export interface HowItWorksStep {
 }
 
 export interface HowItWorksContent {
+  /** The reader's question, in their words. */
   headline: string;
+  /** One plain-language definition answering it. */
+  intro: string;
   steps: readonly HowItWorksStep[];
   link: LabsCta;
 }
 
 export const LABS_HOW_IT_WORKS: HowItWorksContent = {
-  headline: "How it works",
+  headline: "How do you test an agent update before it ships?",
+  intro:
+    "Kitaru is an open-source tool that replays the traces your agent already produced under a proposed update and shows which sessions would change, so you review only those.",
   steps: [
     {
       title: "Bring the traces you have",

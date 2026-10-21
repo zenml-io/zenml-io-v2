@@ -11,6 +11,7 @@
  * Every update's chip, marks and outcome are rendered and stacked in the
  * same grid cell, and CSS crossfades between them, so it needs no island
  * and runs with JS off. Under reduced motion it rests on the first update.
+ * A visually hidden caption carries the example as text.
  */
 import type { HeroVisualContent } from "../../lib/labs-home";
 import {
@@ -42,9 +43,11 @@ const outcome = (differs: number) => {
 
 <figure
   class="hv rounded-[24px] border border-(--color-border) bg-card p-6 md:p-8"
-  aria-label={content.label}
   style={`--states: ${count}`}
 >
+  {/* The animated states are aria-hidden; this caption carries the whole
+      example as plain text for screen readers and crawlers. */}
+  <figcaption class="sr-only">{content.label}</figcaption>
   <div class="flex flex-wrap items-center justify-between gap-3">
     <p class="font-label text-[13px] leading-5 uppercase tracking-[0.05em] text-(--color-sage-800)">
       {content.updateLabel}

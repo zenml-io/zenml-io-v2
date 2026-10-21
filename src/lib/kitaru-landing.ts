@@ -104,6 +104,16 @@ export const STEPS = [
  */
 export const FAQ_ITEMS: readonly FaqItem[] = [
   {
+    question: "What is Kitaru?",
+    answer:
+      "Kitaru is an open-source tool for teams running AI agents in production. It replays the traces your agent already produced under a proposed update, such as a new model, prompt, or framework, and shows which sessions would change, so you review only those before the update ships. It runs on your own machine or in a managed workspace.",
+  },
+  {
+    question: "Which model should my agent use?",
+    answer:
+      "It depends on what you optimise for, and on your agent's own traffic, not a leaderboard. If cost matters most, routine steps such as lookups and classification often move to a cheaper or open model while the final reply stays on a stronger one. If you need control over where data goes, an open model you host yourself is the closest fit. If quality matters most, only the hardest step may need a stronger model. Kitaru compares the candidates on your recorded calls and names the best for each goal, including a best mix.",
+  },
+  {
     question: "How is this different from Langfuse, Braintrust or LangSmith?",
     answer: KITARU_VS_OBSERVABILITY_ANSWER,
   },

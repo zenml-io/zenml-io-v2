@@ -46,6 +46,7 @@ export function GET(): Response {
     ),
     joinMarkdownSections(
       `## ${LABS_HOW_IT_WORKS.headline}`,
+      LABS_HOW_IT_WORKS.intro,
       ...LABS_HOW_IT_WORKS.steps.map((step, i) =>
         joinMarkdownSections(
           `### ${i + 1}. ${step.title}`,

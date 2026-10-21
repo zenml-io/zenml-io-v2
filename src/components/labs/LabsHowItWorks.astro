@@ -29,9 +29,14 @@ const SOURCES = [
 
 <section class="pt-16 pb-16 md:pt-[112px] md:pb-[112px]">
   <div class="scroll-reveal-section mx-auto flex max-w-content flex-col gap-12 px-gutter md:gap-16">
-    <h2 class="reveal-child font-display text-[34px] leading-[38px] text-(--color-cream-900) md:text-[56px] md:leading-[60px]">
-      {content.headline}
-    </h2>
+    <div class="reveal-child flex max-w-[900px] flex-col gap-5">
+      <h2 class="font-display text-[34px] leading-[38px] text-(--color-cream-900) md:text-[56px] md:leading-[60px]">
+        {content.headline}
+      </h2>
+      <p class="max-w-[680px] font-sans text-[17px] leading-[26px] text-foreground md:text-[18px] md:leading-[28px]">
+        {content.intro}
+      </p>
+    </div>
 
     <ol class="reveal-child stagger-1 grid grid-cols-1 gap-12 lg:grid-cols-3 lg:gap-10">
       {content.steps.map((step, i) => (
