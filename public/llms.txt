@@ -1,8 +1,8 @@
-# ZenML Labs: The Unified AI Platform for Pipelines and Agents
+# ZenML Labs: Open-Source Tools for Running AI in Production
 
-> ZenML is the open-source AI platform for standardizing, deploying, and governing every AI workflow.
-> It provides a unified MLOps and LLMOps layer to build reproducible pipelines for your entire AI stack — from classical machine learning models to the most advanced Generative AI agents.
-> With ZenML, you can author and version your workflows, deploy them as scheduled jobs or real-time services, and get a single pane of glass for lineage, observability, and governance across all your AI products.
+> ZenML Labs builds two open-source products for teams running AI in production.
+> Kitaru tests updates to AI agents, such as a new model, prompt, or framework, on the traces you already collect and shows exactly which sessions would change before the update ships. It also compares open, local, and cheaper models on an agent's recorded calls to find the best model, or best mix of models, for each goal.
+> ZenML orchestrates ML pipelines and agents on your own infrastructure, with every run, artifact, and model version recorded, so workflows are reproducible and governed from a laptop to Kubernetes.
 
 ## Agent Signup
 
@@ -24,17 +24,17 @@ ZenML Labs' site is organized into product pages (features, pricing, Pro offerin
 
 These repo-owned Markdown mirrors are alternate, cleaner representations of high-value marketing pages for agents and readers. They omit decorative UI, navigation, analytics snippets, and other browser chrome.
 
-- [Homepage Markdown](https://www.zenml.io/index.md): plain Markdown mirror of the homepage positioning, ZenML and Kitaru workspaces, platform value points, FAQs, and CTAs.
+- [Homepage Markdown](https://www.zenml.io/index.md): plain Markdown mirror of the homepage: testing agent updates on real traces, how it works, the two products (ZenML and Kitaru), platform value points, customer stories, and CTAs.
 - [Pricing Markdown](https://www.zenml.io/pricing.md): plain Markdown mirror of pricing plans, Pro inclusions, comparison tables, compliance notes, FAQs, and CTAs.
 - [ZenML Product Markdown](https://www.zenml.io/product/zenml.md): plain Markdown mirror of the ZenML product page for ML pipelines and MLOps orchestration.
-- [Kitaru Product Markdown](https://www.zenml.io/product/kitaru.md): plain Markdown mirror of the Kitaru product page for replay-based agent evals.
+- [Kitaru Product Markdown](https://www.zenml.io/product/kitaru.md): plain Markdown mirror of the Kitaru product page: testing agent updates on real traces, comparing models, and replay-based evals.
 - [Compare Hub Markdown](https://www.zenml.io/compare.md): plain Markdown mirror of the ZenML/Kitaru comparison hub.
 
 ## Product & Features
 
 - [Features](https://www.zenml.io/features): overview page describing ZenML's capabilities.
 - [ZenML Product](https://www.zenml.io/product/zenml): product page for ZenML's ML pipeline and MLOps workspace.
-- [Kitaru Product](https://www.zenml.io/product/kitaru): product page for Kitaru's replay-based evals for AI agents — import your production traces and re-run them against your next model, prompt, or code change.
+- [Kitaru Product](https://www.zenml.io/product/kitaru): product page for Kitaru, which tests every AI agent update on real traces: import your production traces, replay them against your next model, prompt, or framework change, and compare models call by call to find the best model or best mix.
 - [Iterate at warp speed](https://www.zenml.io/features/iterate-at-warp-speed): accelerate experiments with seamless local-to-cloud transitions, caching and containerization.
 - [Auto-track everything](https://www.zenml.io/features/auto-track-everything): automatic logging and versioning for full pipeline observability and reproducibility.
 - [Shared ML building blocks](https://www.zenml.io/features/shared-ml-building-blocks): reusable components to boost team productivity.

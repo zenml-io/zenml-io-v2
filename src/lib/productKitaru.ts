@@ -67,7 +67,7 @@ export const KITARU_LINKS = {
 } as const;
 
 export const PRODUCT_KITARU_SEO = {
-  title: "Kitaru: replay-based evals for AI agents | ZenML",
+  title: "Kitaru: test every AI agent update on real traces | ZenML",
   description:
     "Test every update to your AI agent on the traces you already have: a new model, prompt, or framework. Kitaru replays your recorded sessions and shows exactly what would change before it ships, and compares open, local, and cheaper models call by call to find the best mix. Works on traces imported from Langfuse, Logfire or Phoenix, runs on your machine with your keys, and turns what your team notices into evaluators. Open source, self-hosted, built by the ZenML team.",
   // OG cards need JPEG, not AVIF — social platforms don't render AVIF (PR #73).
@@ -84,12 +84,12 @@ export const PRODUCT_KITARU_SEO = {
  * page's load-bearing pitch changes.
  */
 export const PRODUCT_KITARU_MARKDOWN = {
-  title: "Kitaru: replay-based evals for AI agents",
+  title: "Kitaru: test every AI agent update on real traces",
   installCmd: KITARU_INSTALL_CMD,
   license: KITARU_LICENSE,
   summary: [
     "Kitaru turns your agent's production history into its test suite. Import the traces you already have, and each execution becomes a session: the top-level replayable object, with its tool calls, model calls and subagent calls as nodes underneath. A single LLM call inside a workflow, say an address extracted from a PDF, is a session too; tools and multi-step agents are not a requirement.",
-    "The quickest question it answers is which model your agent should run on. Kitaru resends the model calls in your imported traces to the candidates you're weighing (open models on any OpenAI-compatible provider, local Ollama models, a cheaper tier) with your current model alongside as the noise floor. The report names the best candidate for each goal: closest to today, cheapest, fastest, best open model, and a best mix that moves each kind of call to the cheapest model that handles it. Candidates can declare where they come from, and an origin rule keeps them out of every recommendation. Agreement measures closeness to today's answers, not quality; you review the differences, then replay the winner over a cohort so cost per task comes from complete runs. It runs on your worker, with keys kept in a connection you create.",
+    "The quickest question it answers is which model your agent should run on. Kitaru resends the model calls in your imported traces to the candidates you're weighing (open models on any OpenAI-compatible provider, local Ollama models, a cheaper tier) with your current model alongside as the noise floor. The report names the best candidate for each goal: closest to today, cheapest, fastest, best open model, and a best mix that moves each step of the agent to the cheapest model that handles it, once enough calls back it. Candidates can declare where they come from, and an origin rule keeps them out of every recommendation. Agreement measures closeness to today's answers, not quality, and each rate carries its interval: treat the picks as a shortlist, review the differences, then replay the finalists over a cohort so task success and cost per task come from complete runs. It runs on your worker, with keys kept in a connection you create.",
     "It is built first for agents that turn unstructured inbound into structured writes in a system of record — emails and PDFs into a freight booking, documents into filings, claims into claim records. Those teams cannot test in production, because a live re-run would create a phantom booking or a duplicate claim. They are also the teams for whom evaluation is cheapest: a structured write can be compared field by field against what production actually did, so most of the surface needs no model-graded judge at all.",
     "And the labels already exist. When an ops person corrects the agent's write by hand, that corrected record is ground truth stated by a domain expert in the team's own schema. It accumulates daily in the system of record and no eval tool has ever asked for it. Import the traces, join them against the corrected records, and the eval set comes out of work somebody did anyway.",
     "The centre of the product is an interview, not a form. You read roughly twenty sessions out of thousands and write plain observations — no labels, no dropdowns, no schema. The agent organizes what you noticed into cohorts and drafts a criterion; you confirm the exact wording, and that confirmation is what makes it real. An agent cannot agree with itself on your behalf.",

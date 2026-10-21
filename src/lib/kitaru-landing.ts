@@ -87,7 +87,7 @@ export const STEPS = [
     n: "02",
     tag: "Choose",
     title: "Pick with the trade-offs in view",
-    body: "Closest to today, cheapest, fastest, best open model, or a best mix that moves each kind of call to the cheapest model that handles it. Rule out labs or regions your customers won't accept.",
+    body: "Closest to today, cheapest, fastest, best open model, or a best mix that moves each step of your agent to the cheapest model that handles it. Rule out labs or regions your customers won't accept.",
   },
   {
     n: "03",
@@ -111,7 +111,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "Which model should my agent use?",
     answer:
-      "It depends on what you optimise for, and on your agent's own traffic, not a leaderboard. If cost matters most, routine steps such as lookups and classification often move to a cheaper or open model while the final reply stays on a stronger one. If you need control over where data goes, an open model you host yourself is the closest fit. If quality matters most, only the hardest step may need a stronger model. Kitaru compares the candidates on your recorded calls and names the best for each goal, including a best mix.",
+      "It depends on what you optimise for, and on your agent's own traffic, not a leaderboard. If cost matters most, routine steps such as lookups and classification often move to a cheaper or open model while the final reply stays on a stronger one. If you need control over your data, an open model you host yourself fits best. If quality matters most, only the hardest step may need a stronger model. Kitaru compares the candidates on your recorded calls and narrows each goal to a shortlist, including a best mix, to confirm with a replay before switching.",
   },
   {
     question: "How is this different from Langfuse, Braintrust or LangSmith?",
