@@ -64,13 +64,13 @@ const outcome = (differs: number) => {
         <span class="font-display text-[26px] leading-[32px] text-(--color-cream-900) md:text-[30px] md:leading-[36px]">
           {update.kind}
         </span>
-        <span class="flex items-center gap-2 font-sans text-[16px] leading-6">
-          <span class="inline-flex items-center gap-1.5 text-(--color-cream-700) line-through decoration-(--color-cream-500)">
+        <span class="flex flex-wrap items-center gap-2 font-sans text-[16px] leading-6">
+          <span class="inline-flex items-center gap-1.5 whitespace-nowrap text-(--color-cream-700) line-through decoration-(--color-cream-500)">
             {update.fromMark && <LabsModelMark mark={update.fromMark} />}
             {update.from}
           </span>
           <svg class="size-4 text-(--color-sage-800)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
-          <span class="inline-flex items-center gap-1.5 rounded-full bg-(--color-sage-800) px-3 py-1 font-medium text-(--color-cream-50)">
+          <span class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-(--color-sage-800) px-3 py-1 font-medium text-(--color-cream-50)">
             {update.toMark && <LabsModelMark mark={update.toMark} />}
             {update.to}
           </span>

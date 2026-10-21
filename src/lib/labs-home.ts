@@ -256,7 +256,7 @@ export interface HeroVisualContent {
 
 export const LABS_HERO_VISUAL: HeroVisualContent = {
   label:
-    "An example: four recorded sessions from an insurance and banking agent (a water damage claim, a policy coverage question, a card dispute and a KYC document check) are replayed under one proposed update at a time. Swapping GPT-6 for DeepSeek changes one answer, a new prompt version changes one, lowering the temperature changes none, and turning on retries changes one. Each changed session goes to you to review.",
+    "An example: four recorded sessions from an insurance and banking agent (a water damage claim, a policy coverage question, a card dispute and a KYC document check) are replayed under one proposed update at a time. Swapping GPT-6 for DeepSeek changes one answer, a prompt with new claims rules changes one, moving from LangGraph to the Claude Agent SDK changes two, and turning on PII redaction changes none. Each changed session goes to you to review.",
   updateLabel: "Proposed update",
   sessions: [
     "Water damage claim",
@@ -273,9 +273,14 @@ export const LABS_HERO_VISUAL: HeroVisualContent = {
       toMark: "open",
       differs: [2],
     },
-    { kind: "Prompt", from: "v12", to: "v13", differs: [3] },
-    { kind: "Temperature", from: "0.7", to: "0.2", differs: [] },
-    { kind: "Retries", from: "off", to: "on", differs: [1] },
+    { kind: "Prompt", from: "v12", to: "new claims rules", differs: [0] },
+    {
+      kind: "Framework",
+      from: "LangGraph",
+      to: "Claude Agent SDK",
+      differs: [1, 3],
+    },
+    { kind: "PII redaction", from: "off", to: "on", differs: [] },
   ],
   sameLabel: "same",
   differsLabel: "differs · review",
@@ -470,7 +475,7 @@ export interface LogoGridContent {
 }
 
 export const LABS_LOGO_GRID: LogoGridContent = {
-  headline: "ZenML runs production AI at",
+  headline: "ZenML Labs is trusted to run production AI at",
   logos: LOGO_CLOUD.logos,
 };
 
