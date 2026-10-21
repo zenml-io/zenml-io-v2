@@ -9,7 +9,7 @@ import { BOOK_A_DEMO_FALLBACK_CTA, BOOK_A_DEMO_FIELDS } from "./bookADemo";
 import type { SEOProps } from "./seo";
 
 export const SIGNUP_FOR_DEMO_SEO: SEOProps = {
-  title: "Signup for Demo | ZenML",
+  title: "Signup for Demo | ZenML Labs",
   description:
     "Schedule a live demo and see how ZenML orchestrates your AI workflows and Kitaru diagnoses your agents.",
   ogTitle: "Signup for Demo",

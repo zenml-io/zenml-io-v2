@@ -9,7 +9,7 @@ import type { PlaceholderField } from "./formTypes";
 import type { SEOProps } from "./seo";
 
 export const BRICK_MANUAL_SEO: SEOProps = {
-  title: "Get Your Build Instructions | ZenML",
+  title: "Get Your Build Instructions | ZenML Labs",
   description:
     "Unlock the ZenML brick set build instructions — enter your email and download the PDF instantly.",
   ogTitle: "ZenML Brick Build Instructions",
