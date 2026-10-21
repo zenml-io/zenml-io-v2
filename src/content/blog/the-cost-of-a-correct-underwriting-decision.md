@@ -13,13 +13,13 @@ date: "2026-10-21T00:00:00.000Z"
 readingTime: "8 mins"
 seo:
   title: "The Cost of a Correct Underwriting Decision - ZenML Blog"
-  description: "We ran 12 models as an underwriting copilot on 252 commercial insurance cases. An open-weight model tied the top model for a third less, and cost per correct decision varied 40x."
+  description: "We ran 12 models as an underwriting agent on 252 commercial insurance cases. An open-weight model tied the top model for a third less, and cost per correct decision varied 40x."
   canonical: "https://www.zenml.io/blog/the-cost-of-a-correct-underwriting-decision"
 ---
 
-An underwriting copilot is judged on one thing: did it reach the right decision? Is this bakery in appetite for workers' comp? Does this contractor qualify as a small business? Which other lines should we offer this landlord? The price that matters is not tokens per second or cost per call. It is what you pay for each decision that comes out right.
+An underwriting agent is judged on one thing: did it reach the right decision? Is this bakery in appetite for workers' comp? Does this contractor qualify as a small business? Which other lines should we offer this landlord? The price that matters is not tokens per second or cost per call. It is what you pay for each decision that comes out right.
 
-So we measured that. We ran 12 models as the same underwriting copilot on 252 commercial insurance cases and counted correct decisions and dollars.
+So we measured that. We ran 12 models as the same underwriting agent on 252 commercial insurance cases and counted correct decisions and dollars.
 
 The short version:
 
@@ -30,7 +30,7 @@ The short version:
 
 ## The task
 
-We used Snorkel AI's public multi-turn insurance underwriting datasets (Apache-2.0). An underwriter at a fictional insurer asks a copilot about a small business applying for a policy, and the copilot has to work it out with the insurer's own data:
+We used Snorkel AI's public multi-turn insurance underwriting datasets (Apache-2.0). An underwriter at a fictional insurer asks an agent about a small business applying for a policy, and the agent has to work it out with the insurer's own data:
 
 - **Appetite checks:** is this business in appetite for a given line of business?
 - **Product recommendations:** which of our other lines should we offer?
@@ -38,7 +38,7 @@ We used Snorkel AI's public multi-turn insurance underwriting datasets (Apache-2
 - **Policy limits** and **deductibles:** what do the guidelines say for this business?
 - **Business classification:** which NAICS code applies?
 
-The copilot gets six tools: list the tables, describe them, read their schemas and data dictionaries, run read-only SQL against the insurer's database, and read the underwriting guidelines. The database holds 2022 NAICS codes and Census concordances, the SBA size standards, and the insurer's appetite guide. The underwriter is simulated by a separate model that knows the company's application details but not the answer. The copilot has to ask for what it needs.
+The agent gets six tools: list the tables, describe them, read their schemas and data dictionaries, run read-only SQL against the insurer's database, and read the underwriting guidelines. The database holds 2022 NAICS codes and Census concordances, the SBA size standards, and the insurer's appetite guide. The underwriter is simulated by a separate model that knows the company's application details but not the answer. The agent has to ask for what it needs.
 
 Every model got the same system prompt, tools, and limits (30 model calls, 12 underwriter turns), and every case ran once per model.
 
@@ -59,7 +59,7 @@ Every model got the same system prompt, tools, and limits (30 model calls, 12 un
 | GPT-6.1 Sol | 83.7% | −13.5 | 2.01¢ | $168 | 1,627 |
 | gpt-oss-120b (open) | 59.5% | −37.7 | 0.99¢ | $59 | 4,048 |
 
-Cost covers every model call the copilot made on a case, at list prices. "Wrong" includes cases that ran out of steps or turns. Differences against Opus are paired: same 252 cases, bootstrap 95% interval.
+Cost covers every model call the agent made on a case, at list prices. "Wrong" includes cases that ran out of steps or turns. Differences against Opus are paired: same 252 cases, bootstrap 95% interval.
 
 The last two columns are the ones to bring to a budget meeting. At 10,000 decisions, Opus costs about $511 and gets 278 wrong. DeepSeek V4 Pro costs about $347 and gets 238 wrong. GLM 5.3 Flash costs about $90 and gets 754 wrong. GPT-6 Luna costs $17 and gets 1,349 wrong. Which row is right for you depends on what a wrong decision costs downstream, and in underwriting that is rarely zero.
 
@@ -77,7 +77,7 @@ Averages hide a lot. By question type:
 - **Product recommendations** (which other lines are in appetite) are where Sonnet 5.5 (78%), MiniMax-M3 (75%), and Qwen3.8 27B (67%) lost most of their points.
 - **Appetite checks and classification** are close to solved for the top models.
 
-If your copilot mostly answers one kind of question, the overall ranking is the wrong one to read. Read the row for your question type.
+If your agent mostly answers one kind of question, the overall ranking is the wrong one to read. Read the row for your question type.
 
 ## Some failures are about the agent loop
 
@@ -117,13 +117,13 @@ For about $10, that gives a decision: DeepSeek V4 Pro is better and cheaper, and
 ## Caveats
 
 - One run per case per model. Differences under about 3 points are inside the noise.
-- The insurer's environment is a reconstruction from the published traces. We kept the 252 of 380 cases where a rule-based check re-derives the reference answer from that environment, so every scored case is answerable from data the copilot can see.
+- The insurer's environment is a reconstruction from the published traces. We kept the 252 of 380 cases where a rule-based check re-derives the reference answer from that environment, so every scored case is answerable from data the agent can see.
 - The underwriter is simulated, and grading is done by two LLM judges with a third breaking ties. On Snorkel's own labeled traces, the judges agree with the human labels 87–90% of the time.
 - Prices are list prices. Open-weight models ran on one commercial inference provider; prices and latency vary across providers.
 
 ## What to take from this
 
-If you run an underwriting copilot, or any agent whose output is a decision, three things carry over:
+If you run an underwriting agent, or any other agent whose output is a decision, three things carry over:
 
 1. **Measure cost per correct decision, not cost per call.** Steps and errors move the number more than token prices do.
 2. **Read results per question type.** The model that wins overall can lose on the questions your team actually asks.
