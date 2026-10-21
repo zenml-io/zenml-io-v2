@@ -19,8 +19,8 @@ export type TerminalLine = {
 
 export const FIRST_RUN = {
   eyebrow: "The first five minutes",
-  headline: "Install, then ask your coding agent which model to run.",
-  lede: "One command on your laptop. One sentence to Claude Code, Codex, or Cursor. The skill imports your traces, prices a dry run, resends your real calls to the models you pick, and walks you through what changed.",
+  headline: "Install, then let an agent do the testing.",
+  lede: "One command, then one sentence to Claude Code, Codex, or Cursor, or let ours run it in the background. It imports your traces, tries the update on your real calls, and walks you through what changed.",
   prompt: "Use kitaru-model-swap to find a better model for this agent.",
 } as const;
 

@@ -2,12 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 import { KITARU_VIDEO } from "../../../lib/productKitaru";
 
 /**
- * HeroVideo — the hero's code card and the launch-video dialog. The card is
- * an illustration of the model-choice flow, not a video poster: the caption
- * beneath it is the control that opens the launch video, so the card never
- * implies the video shows those commands. The hero copy, pills and install
- * chip render statically from Hero.astro; this island only owns the one
- * interaction on the band (open / close the video).
+ * HeroVideo — the hero's poster card and the video dialog it opens. The
+ * hero copy, pills and install chip render statically from Hero.astro; this
+ * island only owns the one interaction on the band (open / close the video).
  */
 
 /**
@@ -116,38 +113,49 @@ export function HeroVideo() {
 
   return (
     <>
-      <div
-        className="relative mx-auto block w-full max-w-[680px] overflow-hidden rounded-[20px] border border-white/10 text-left sm:aspect-video"
+      <button
+        type="button"
+        ref={playRef}
+        onClick={() => setVideoOpen(true)}
+        aria-haspopup="dialog"
+        aria-label={`Play: ${KITARU_VIDEO.caption}`}
+        data-analytics="Kitaru-Hero-Video-Play"
+        className="group relative mx-auto block w-full max-w-[680px] cursor-pointer overflow-hidden rounded-[20px] border border-white/10 text-left sm:aspect-video"
         style={NIGHT_PANEL_BG}
       >
         {/* Below sm the card takes its intrinsic height (a 16:9 box is
-            too short for the block on narrow phones, and justify-center
-            would clip lines off both ends); from sm up the block fits and
-            the card locks to 16:9. */}
+            too short for the 13-line block on narrow phones, and
+            justify-center would clip the payoff line off both ends);
+            from sm up the block fits and the card locks to 16:9. */}
         <pre className="flex flex-col justify-center gap-px overflow-hidden px-5 py-4 font-mono text-[10px] leading-[1.45] sm:absolute sm:inset-0 sm:px-10 sm:py-8 sm:text-[12.5px] sm:leading-[20px]">
           {HERO_CODE_LINES.map((line, i) => (
             <PosterLine key={i} text={line.text} kind={line.kind} />
           ))}
         </pre>
-      </div>
-      <p className="mt-[18px] text-center">
-        <button
-          type="button"
-          ref={playRef}
-          onClick={() => setVideoOpen(true)}
-          aria-haspopup="dialog"
-          data-analytics="Kitaru-Hero-Video-Play"
-          className="inline-flex cursor-pointer items-center gap-2 text-[14px] text-ink-soft underline decoration-ink-soft/40 underline-offset-4 transition-colors duration-200 ease-out hover:text-ink hover:decoration-ink"
-        >
-          <svg
-            viewBox="0 0 22 26"
-            className="h-3 w-2.5 text-ember"
-            aria-hidden="true"
-          >
-            <path d="M0 0 L22 13 L0 26 Z" fill="currentColor" />
-          </svg>
-          {KITARU_VIDEO.caption}
-        </button>
+        {/* Soft vignette — just enough to seat the play button without
+            dimming the readable code underneath. */}
+        <span
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse 60% 55% at 50% 50%, color-mix(in oklab, var(--night) 40%, transparent) 0%, transparent 70%)",
+          }}
+        />
+        <span className="absolute inset-0 flex items-center justify-center">
+          <span className="flex size-14 items-center justify-center rounded-full bg-ember transition-transform group-hover:scale-105 sm:size-[72px]">
+            <svg
+              viewBox="0 0 22 26"
+              className="ml-0.5 h-5 w-4 sm:h-[26px] sm:w-[22px]"
+              aria-hidden="true"
+            >
+              <path d="M0 0 L22 13 L0 26 Z" fill="#FFFFFF" />
+            </svg>
+          </span>
+        </span>
+      </button>
+      <p className="mt-[18px] text-center text-[14px] text-ink-soft">
+        {KITARU_VIDEO.caption}
       </p>
 
       {videoOpen && (
