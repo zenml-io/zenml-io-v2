@@ -1,0 +1,66 @@
+---
+/**
+ * LabsChoiceBoard — the goals a choice can optimise for, one card per goal
+ * with the rule behind it, then a hairline row of principles. A `featured`
+ * card spans two columns from `sm` up and renders on the deep sage tone; the
+ * grid steps 1 → 2 → 3 columns, so five cards with the featured one last
+ * fill two full rows at `lg` (three, then one plus the featured pair).
+ */
+import type { ChoiceBoardContent } from "../../lib/labs-home";
+import "../../styles/labs-scroll-reveal.css";
+
+interface Props {
+  content: ChoiceBoardContent;
+}
+const { content } = Astro.props;
+
+const CARD_CLASS =
+  "flex flex-col justify-between gap-10 rounded-[20px] border p-8 transition-colors duration-200 ease-out md:min-h-[200px] md:p-10";
+const PLAIN_CARD =
+  "border-(--color-border) bg-card hover:border-(--color-sage-400)";
+const FEATURED_CARD =
+  "border-(--color-sage-800) bg-(--color-sage-800) hover:border-(--color-sage-400) sm:col-span-2";
+---
+
+<section class="pt-16 pb-16 md:pt-[112px] md:pb-[112px]">
+  <div class="scroll-reveal-section mx-auto flex max-w-content flex-col gap-12 px-gutter md:gap-16">
+    <div class="reveal-child flex max-w-[880px] flex-col gap-5">
+      <h2 class="font-display text-[31px] leading-[33px] text-(--color-cream-900) md:text-[56px] md:leading-[60px]">
+        {content.headline}
+      </h2>
+      <p class="font-sans text-[17px] leading-[26px] text-foreground md:text-[18px] md:leading-[28px]">
+        {content.deck}
+      </p>
+    </div>
+
+    <ul class="reveal-child stagger-1 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+      {content.cards.map((card) => (
+        <li class={`${CARD_CLASS} ${card.featured ? FEATURED_CARD : PLAIN_CARD}`}>
+          <h3
+            class={`font-display text-[26px] leading-[30px] md:text-[34px] md:leading-[40px] ${card.featured ? "text-(--color-cream-50)" : "text-(--color-cream-900)"}`}
+          >
+            {card.goal}
+          </h3>
+          <p
+            class={`max-w-[560px] font-sans text-[16px] leading-[24px] ${card.featured ? "text-(--color-sage-300)" : "text-(--color-cream-700)"}`}
+          >
+            {card.rule}
+          </p>
+        </li>
+      ))}
+    </ul>
+
+    <dl class="reveal-child stagger-2 grid grid-cols-1 gap-x-8 md:grid-cols-3">
+      {content.principles.map((item) => (
+        <div class="border-t border-(--color-border) py-5">
+          <dt class="font-sans text-[16px] leading-6 font-medium text-(--color-cream-900)">
+            {item.title}
+          </dt>
+          <dd class="mt-1 font-sans text-[15px] leading-[22px] text-(--color-cream-700)">
+            {item.detail}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>

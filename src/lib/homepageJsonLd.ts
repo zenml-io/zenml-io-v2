@@ -1,5 +1,6 @@
 import { COMPANY_ADDRESS, CONTACT_EMAIL, SITE_URL } from "./constants";
 import {
+  LABS_CHOICES,
   LABS_CLOSE,
   LABS_DOORS,
   LABS_FEATURE_PANELS,
@@ -16,7 +17,7 @@ import { absoluteUrl, ORGANIZATION_NAME } from "./seo";
  */
 function homepageFeatureList(): string[] {
   return [
-    ...LABS_DOORS.doors.map((door) => `${door.name}: ${door.leadLine}`),
+    ...LABS_CHOICES.cards.map((card) => `${card.goal}: ${card.rule}`),
     ...LABS_FEATURE_PANELS.map((panel) => `${panel.title}: ${panel.body}`),
   ];
 }

@@ -7,12 +7,14 @@ import {
   markdownResponse,
 } from "../lib/agentMarkdown";
 import {
+  LABS_CHOICES,
   LABS_CLOSE,
-  LABS_DOORS,
+  LABS_FANOUT,
   LABS_FEATURE_PANELS,
   LABS_HERO,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
+  LABS_STANCE,
   LABS_STORIES,
 } from "../lib/labs-home";
 
@@ -23,14 +25,6 @@ export const prerender = true;
  * renders the same copy `index.astro` shows, from the same module, so the
  * two never drift.
  */
-function renderDoor(door: (typeof LABS_DOORS.doors)[number]): string {
-  return joinMarkdownSections(
-    `### ${door.name}`,
-    door.leadLine,
-    door.body,
-    `CTA: ${markdownLink(door.cta.label, door.cta.href)}`,
-  );
-}
 
 export function GET(): Response {
   const markdown = joinMarkdownSections(
@@ -50,8 +44,32 @@ export function GET(): Response {
       LABS_LOGO_GRID.logos.map((logo) => logo.name).join(", "),
     ),
     joinMarkdownSections(
-      `## ${LABS_DOORS.headline}`,
-      LABS_DOORS.doors.map(renderDoor).join("\n\n"),
+      `## ${LABS_STANCE.headlineLines.join(" ")}`,
+      markdownBulletList(
+        LABS_STANCE.rows.map((row) => `${row.source} ${row.verdict}`),
+      ),
+      LABS_STANCE.deck,
+    ),
+    joinMarkdownSections(
+      `## ${LABS_FANOUT.headline}`,
+      LABS_FANOUT.deck,
+      `${LABS_FANOUT.call.label}: ${LABS_FANOUT.call.input} ${LABS_FANOUT.call.recordedLabel} \`${LABS_FANOUT.call.recorded}\`.`,
+      markdownBulletList(
+        LABS_FANOUT.lanes.map(
+          (lane) => `${lane.model} (${lane.detail}): ${lane.outcome}`,
+        ),
+      ),
+      LABS_FANOUT.caption,
+    ),
+    joinMarkdownSections(
+      `## ${LABS_CHOICES.headline}`,
+      LABS_CHOICES.deck,
+      markdownBulletList(
+        LABS_CHOICES.cards.map((card) => `${card.goal}: ${card.rule}`),
+      ),
+      markdownBulletList(
+        LABS_CHOICES.principles.map((item) => `${item.title}: ${item.detail}`),
+      ),
     ),
     joinMarkdownSections(
       "## What you get",

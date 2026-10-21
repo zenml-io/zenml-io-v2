@@ -1,0 +1,51 @@
+---
+/**
+ * LabsStance — a typographic position statement: a two-line headline beside
+ * hairline rows that each name a way of judging something and what it
+ * measures. The last row is the page's own answer and renders emphasised on
+ * a light sage wash; the rows before it stay muted so the contrast carries
+ * the argument. A deck closes the section under the rows.
+ */
+import type { StanceContent } from "../../lib/labs-home";
+import "../../styles/labs-scroll-reveal.css";
+
+interface Props {
+  content: StanceContent;
+}
+const { content } = Astro.props;
+const lastIndex = content.rows.length - 1;
+---
+
+<section class="pt-16 pb-16 md:pt-24 md:pb-[112px]">
+  <div class="scroll-reveal-section mx-auto grid max-w-content grid-cols-1 gap-10 px-gutter lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+    <h2 class="reveal-child font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[72px] md:leading-[76px]">
+      {content.headlineLines[0]}
+      <br />
+      {content.headlineLines[1]}
+    </h2>
+
+    <div class="reveal-child stagger-1 flex min-w-0 flex-col">
+      <ul class="flex flex-col">
+        {content.rows.map((row, i) => (
+          <li
+            class={i === lastIndex
+              ? "stance-answer flex flex-col gap-2 rounded-[12px] bg-(--color-sage-100) px-5 py-5 md:flex-row md:items-baseline md:gap-8 md:px-6"
+              : "flex flex-col gap-2 border-t border-(--color-border) py-5 md:flex-row md:items-baseline md:gap-8"}
+          >
+            <span class="w-[150px] shrink-0 font-label text-[13px] leading-5 uppercase tracking-[0.05em] text-(--color-sage-800)">
+              {row.source}
+            </span>
+            <span
+              class={`font-display text-[22px] leading-[28px] md:text-[30px] md:leading-[36px] ${i === lastIndex ? "text-(--color-cream-900)" : "text-(--color-cream-700)"}`}
+            >
+              {row.verdict}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-8 max-w-[640px] font-sans text-[17px] leading-[26px] text-foreground md:text-[18px] md:leading-[28px]">
+        {content.deck}
+      </p>
+    </div>
+  </div>
+</section>

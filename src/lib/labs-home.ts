@@ -297,6 +297,174 @@ export const LABS_DOORS: ProductDoorsContent = {
 };
 
 /* ---------------------------------------------------------------------- */
+/* Stance — what the company believes about choosing models                */
+/* ---------------------------------------------------------------------- */
+
+/** One way of judging a model: who does the judging, and what it measures. */
+export interface StanceRow {
+  source: string;
+  verdict: string;
+}
+
+export interface StanceContent {
+  /** Two lines, break kept deliberate. */
+  headlineLines: readonly [string, string];
+  /** The last row is the page's own answer and renders emphasised. */
+  rows: readonly StanceRow[];
+  deck: string;
+}
+
+export const LABS_STANCE: StanceContent = {
+  headlineLines: ["Your traffic", "is the benchmark"],
+  rows: [
+    {
+      source: "Leaderboards",
+      verdict: "score models on someone else's tasks.",
+    },
+    {
+      source: "A demo",
+      verdict: "scores the one conversation you picked.",
+    },
+    {
+      source: "Your traffic",
+      verdict: "scores every call your agent really makes.",
+    },
+  ],
+  deck: "The model you chose last year is rarely the one you'd choose today. Asking again should take an afternoon, not a migration.",
+};
+
+/* ---------------------------------------------------------------------- */
+/* Fan-out — one recorded call, sent to every candidate                    */
+/* ---------------------------------------------------------------------- */
+
+/** One candidate model's lane and how its answer compares with the recording. */
+export interface FanoutLane {
+  model: string;
+  detail: string;
+  outcome: string;
+  /** Whether the candidate answered like the recording. */
+  outcomeKind: "match" | "review";
+}
+
+export interface FanoutContent {
+  headline: string;
+  deck: string;
+  call: {
+    label: string;
+    input: string;
+    recordedLabel: string;
+    recorded: string;
+  };
+  lanes: readonly FanoutLane[];
+  caption: string;
+}
+
+export const LABS_FANOUT: FanoutContent = {
+  headline: "One recorded call. Every model you're weighing.",
+  deck: "Kitaru resends the calls in your traces to every candidate, with the same messages and tools, and shows what each would have done.",
+  call: {
+    label: "A recorded call",
+    input: "\u201cMy kettle arrived cracked. Order 48213.\u201d",
+    recordedLabel: "Your model answered",
+    recorded: 'lookup_order("48213")',
+  },
+  lanes: [
+    {
+      model: "Today's model",
+      detail: "Reruns as the baseline",
+      outcome: "Same tool",
+      outcomeKind: "match",
+    },
+    {
+      model: "A cheaper tier",
+      detail: "Same provider, smaller",
+      outcome: "Same tool",
+      outcomeKind: "match",
+    },
+    {
+      model: "An open model",
+      detail: "Any OpenAI-compatible host",
+      outcome: "Same tool",
+      outcomeKind: "match",
+    },
+    {
+      model: "A local model",
+      detail: "Your own hardware",
+      outcome: "Escalates instead",
+      outcomeKind: "review",
+    },
+  ],
+  caption:
+    "An illustration. Your report does this for every call you sample, and you judge each difference.",
+};
+
+/* ---------------------------------------------------------------------- */
+/* Choices — the goals a model choice can optimise for                     */
+/* ---------------------------------------------------------------------- */
+
+/** One goal the comparison names a best candidate for, and the rule it uses. */
+export interface ChoiceCard {
+  goal: string;
+  rule: string;
+  /** Spans two columns from `sm` up and renders on the deep tone. */
+  featured?: true;
+}
+
+export interface ChoicePrinciple {
+  title: string;
+  detail: string;
+}
+
+export interface ChoiceBoardContent {
+  headline: string;
+  deck: string;
+  cards: readonly ChoiceCard[];
+  principles: readonly ChoicePrinciple[];
+}
+
+export const LABS_CHOICES: ChoiceBoardContent = {
+  headline: "Choose on what matters to you",
+  deck: "No single winner: the best candidate for each goal, by a rule you can read.",
+  cards: [
+    {
+      goal: "Closest to today",
+      rule: "Answers like your current model most often.",
+    },
+    {
+      goal: "Cheapest",
+      rule: "Lowest cost per call, within 10 points of the closest.",
+    },
+    {
+      goal: "Fastest",
+      rule: "Lowest latency, within the same 10 points.",
+    },
+    {
+      goal: "Best open model",
+      rule: "The closest match you can run anywhere.",
+    },
+    {
+      goal: "Best mix",
+      rule: "Each kind of call on the cheapest model that handles it. Everything else stays on today's model.",
+      featured: true,
+    },
+  ],
+  principles: [
+    {
+      title: "Your keys, your infrastructure",
+      detail: "Calls go from your worker straight to your providers.",
+    },
+    {
+      title: "Rules you set",
+      detail: "Rule out a lab or region and it's never recommended.",
+    },
+    {
+      title: "Agreement isn't the verdict",
+      detail: "You judge the differences, then replay the winner.",
+    },
+  ],
+};
+
+/* ---------------------------------------------------------------------- */
 /* Feature grid — four panels                                              */
 /* ---------------------------------------------------------------------- */
 
@@ -336,8 +504,8 @@ export const LABS_FEATURE_PANELS: readonly FeaturePanel[] = [
   },
   {
     index: "02.",
-    title: "Choose your model",
-    body: "Your agent's real calls, resent to the models you're weighing. Pick on quality, cost, speed, or openness, then replay the winner.",
+    title: "Replay",
+    body: "Prove a change on whole production sessions before it ships: a new model, a new prompt, or a fix.",
     icon: "layers",
     tone: "sage-deep",
   },
