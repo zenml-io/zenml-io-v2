@@ -24,9 +24,9 @@ export function ScenarioStrip() {
       <Reveal className="max-w-3xl">
         <Eyebrow>Stop guessing</Eyebrow>
         <h2 className="mt-space-sm font-display text-[32px] leading-[36px] text-balance text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
-          Four questions, one set of real sessions.
+          Ask your sessions,
           <br />
-          <span className="text-ember">Ask them instead of guessing.</span>
+          <span className="text-ember">not the room.</span>
         </h2>
         <p className="mt-space-sm max-w-2xl font-sans text-[17px] leading-[26px] text-foreground md:text-[18px] md:leading-[27px]">
           Every trace you import becomes a session, a record of one real agent

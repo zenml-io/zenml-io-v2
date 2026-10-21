@@ -38,15 +38,15 @@ export const TERMINAL: readonly TerminalLine[] = [
   { kind: "blank", text: "" },
   {
     kind: "agent",
-    text: "Imported 1,824 sessions from Langfuse. Sampled 412 model calls, tool definitions included.",
+    text: "Imported 1,824 sessions from Langfuse. Sampled 412 model calls.",
   },
   {
     kind: "agent",
-    text: "Comparing gpt-5-mini, an open model on your provider, and a local Ollama model. Today's gpt-5 runs too, as the noise floor.",
+    text: "Candidates: gpt-5-mini, an open model, a local Ollama model. gpt-5 reruns as the baseline.",
   },
   {
     kind: "agent",
-    text: "Dry run: 1,648 calls, about $2.10. Cap spend at $5 and go?",
+    text: "Dry run: about $2.10. Cap at $5 and go?",
   },
   { kind: "cmd", text: "> yes" },
   { kind: "blank", text: "" },
@@ -58,7 +58,7 @@ export const TERMINAL: readonly TerminalLine[] = [
   { kind: "blank", text: "" },
   {
     kind: "agent",
-    text: "Best mix: final answers on the open model, lookups on gpt-5-mini, escalations stay on gpt-5.",
+    text: "Best mix: answers on the open model, lookups on gpt-5-mini, escalations stay on gpt-5.",
   },
   {
     kind: "win",

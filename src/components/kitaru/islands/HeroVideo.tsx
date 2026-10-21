@@ -9,26 +9,24 @@ import { KITARU_VIDEO } from "../../../lib/productKitaru";
 
 /**
  * The simplified 4-step poster shown on the hero's video card: one comment
- * plus one line per step, ending on the payoff comparison. Rendered inside a
+ * plus the command for each step of choosing a model. Rendered inside a
  * `<pre>`, so the multi-space run in the payoff line survives.
  */
 export const HERO_CODE_LINES: Array<{
   text: string;
   kind?: "cmt" | "hl" | "out";
 }> = [
-  { text: "# 1 · wrap the agent you already have", kind: "cmt" },
-  { text: "agent = KitaruAgent(intake_agent, agent_id=AGENT_ID)", kind: "hl" },
-  { text: "" },
-  { text: "# 2 · the runs it already made, imported", kind: "cmt" },
+  { text: "# 1 · the runs your agent already made", kind: "cmt" },
   { text: "kitaru session import ./traces.jsonl" },
   { text: "" },
-  { text: "# 3 · get interviewed, in your coding agent", kind: "cmt" },
-  { text: "walk me through 20 of these", kind: "hl" },
-  { text: '→ cohort "dropped the hazmat flag" · 9', kind: "out" },
+  { text: "# 2 · resend them to the models you're weighing", kind: "cmt" },
+  { text: "> use kitaru-model-swap on this agent", kind: "hl" },
   { text: "" },
-  { text: "# 4 · change the agent, compare the runs", kind: "cmt" },
-  { text: "kitaru experiment run start fix-validation" },
-  { text: "v1 → 90 / 90 fail      pr-311 → 4 / 90 fail", kind: "out" },
+  { text: "# 3 · read the report", kind: "cmt" },
+  { text: "best mix · 3 models      −68% per call", kind: "out" },
+  { text: "" },
+  { text: "# 4 · prove the winner on whole sessions", kind: "cmt" },
+  { text: "kitaru experiment run start best-mix" },
 ];
 
 /* A readable ember tint for the highlighted poster lines — the accent itself

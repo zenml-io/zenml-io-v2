@@ -76,19 +76,17 @@ describe("Kitaru product-page snippets", () => {
     const hero = HERO_CODE_LINES.map((line) => line.text).join("\n");
 
     expect(hero).toMatchInlineSnapshot(`
-      "# 1 · wrap the agent you already have
-      agent = KitaruAgent(intake_agent, agent_id=AGENT_ID)
-
-      # 2 · the runs it already made, imported
+      "# 1 · the runs your agent already made
       kitaru session import ./traces.jsonl
 
-      # 3 · get interviewed, in your coding agent
-      walk me through 20 of these
-      → cohort "dropped the hazmat flag" · 9
+      # 2 · resend them to the models you're weighing
+      > use kitaru-model-swap on this agent
 
-      # 4 · change the agent, compare the runs
-      kitaru experiment run start fix-validation
-      v1 → 90 / 90 fail      pr-311 → 4 / 90 fail"
+      # 3 · read the report
+      best mix · 3 models      −68% per call
+
+      # 4 · prove the winner on whole sessions
+      kitaru experiment run start best-mix"
     `);
   });
 

@@ -47,8 +47,8 @@ export const SCENARIOS = [
     q: "Which model should it run on?",
     outcome:
       "Every recorded call, resent to each model you're weighing. Pick on quality, cost, speed, openness, or a mix.",
-    stat: "−68%",
-    statLabel: "per call · best mix",
+    stat: "3 models",
+    statLabel: "one best mix",
   },
   {
     tag: "understand",
@@ -80,8 +80,8 @@ export const STEPS = [
   {
     n: "01",
     tag: "Compare",
-    title: "Resend the calls your agent really made",
-    body: "Each model call in your imported traces goes to every candidate: an open model on any OpenAI-compatible provider, a local Ollama model, or a cheaper tier. Works on Langfuse, Logfire and Phoenix imports, with no change to your code.",
+    title: "Resend the real calls",
+    body: "Every model call in your imported traces goes to each candidate: an open model on any OpenAI-compatible provider, a local Ollama model, or a cheaper tier. No change to your code.",
   },
   {
     n: "02",
@@ -92,7 +92,7 @@ export const STEPS = [
   {
     n: "03",
     tag: "Confirm",
-    title: "Prove the winner on whole sessions",
+    title: "Prove it on whole sessions",
     body: "Replay the winner over a frozen cohort with your evaluators, so cost per task and quality come from complete runs, not single steps.",
   },
 ] as const;
