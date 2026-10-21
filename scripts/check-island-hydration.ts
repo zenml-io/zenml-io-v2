@@ -693,6 +693,28 @@ const CHECKS: IslandCheck[] = [
     },
   },
   {
+    name: "ReasonSwitch re-routes the agent run when a reason is picked",
+    // client:visible below the fold: the hash lands the section in the
+    // viewport on load, which is what arms the runner's hydration gate.
+    route: "/#why-switch",
+    island: "ReasonSwitch",
+    seedConsent: true,
+    async assert(page, root) {
+      // SSR selects "Costs went up", where the reply step stays on today's
+      // model. Only the island's click handler can move it to a stronger one.
+      const tab = page.locator(`${root} [role="tab"]`, {
+        hasText: "I need better answers",
+      });
+      await tab.click();
+      await page.waitForSelector(
+        `${root} [role="tab"][aria-selected="true"]:has-text("I need better answers")`,
+      );
+      await page.waitForSelector(
+        `${root} [role="tabpanel"] li:last-child:has-text("Stronger model")`,
+      );
+    },
+  },
+  {
     name: "The homepage never scrolls sideways at 320px",
     route: "/",
     // Static markup. Whether anything outgrows the narrowest supported

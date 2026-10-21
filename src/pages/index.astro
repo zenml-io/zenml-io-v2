@@ -11,24 +11,20 @@
  */
 import CustomerStoryCards from "../components/labs/CustomerStoryCards.astro";
 import FeatureGridPanels from "../components/labs/FeatureGridPanels.astro";
-import LabsChoiceBoard from "../components/labs/LabsChoiceBoard.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
 import LabsHero from "../components/labs/LabsHero.astro";
-import LabsModelFanout from "../components/labs/LabsModelFanout.astro";
-import LabsStance from "../components/labs/LabsStance.astro";
+import LabsReasonSwitch from "../components/labs/LabsReasonSwitch.astro";
 import LogoMarquee from "../components/labs/LogoMarquee.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { buildHomepageJsonLd } from "../lib/homepageJsonLd";
 import {
-  LABS_CHOICES,
   LABS_CLOSE,
-  LABS_FANOUT,
   LABS_FEATURE_PANELS,
   LABS_HERO,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
-  LABS_STANCE,
+  LABS_REASONS,
   LABS_STORIES,
 } from "../lib/labs-home";
 import { defaultOgImage, ORGANIZATION_NAME } from "../lib/seo";
@@ -52,9 +48,7 @@ const homepageJsonLd = buildHomepageJsonLd({
   <main>
     <LabsHero content={LABS_HERO} />
     <LogoMarquee content={LABS_LOGO_GRID} />
-    <LabsStance content={LABS_STANCE} />
-    <LabsModelFanout content={LABS_FANOUT} />
-    <LabsChoiceBoard content={LABS_CHOICES} />
+    <LabsReasonSwitch content={LABS_REASONS} />
     <FeatureGridPanels content={LABS_FEATURE_PANELS} />
     <CustomerStoryCards content={LABS_STORIES} />
     <LabsCloseCta content={LABS_CLOSE} />

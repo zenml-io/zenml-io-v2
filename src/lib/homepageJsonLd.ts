@@ -1,10 +1,10 @@
 import { COMPANY_ADDRESS, CONTACT_EMAIL, SITE_URL } from "./constants";
 import {
-  LABS_CHOICES,
   LABS_CLOSE,
   LABS_DOORS,
   LABS_FEATURE_PANELS,
   LABS_HOME_SEO,
+  LABS_REASONS,
 } from "./labs-home";
 import { absoluteUrl, ORGANIZATION_NAME } from "./seo";
 
@@ -17,7 +17,9 @@ import { absoluteUrl, ORGANIZATION_NAME } from "./seo";
  */
 function homepageFeatureList(): string[] {
   return [
-    ...LABS_CHOICES.cards.map((card) => `${card.goal}: ${card.rule}`),
+    ...LABS_REASONS.reasons.map(
+      (reason) => `${reason.reportLabel}: ${reason.outcome}`,
+    ),
     ...LABS_FEATURE_PANELS.map((panel) => `${panel.title}: ${panel.body}`),
   ];
 }

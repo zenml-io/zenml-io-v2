@@ -547,6 +547,7 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
     island: "FeatureTabsSlider",
     pages: ["product/zenml.html"],
   },
+  { island: "ReasonSwitch", pages: ["index.html"] },
   {
     // Labs shell pages: the hero shader (client:visible) and the closing band
     // shader (client:idle) both mount GrainBackdrop on the homepage and on

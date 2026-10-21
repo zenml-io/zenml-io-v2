@@ -297,171 +297,110 @@ export const LABS_DOORS: ProductDoorsContent = {
 };
 
 /* ---------------------------------------------------------------------- */
-/* Stance — what the company believes about choosing models                */
+/* Reasons — why a team looks at other models, and what switching changes */
 /* ---------------------------------------------------------------------- */
 
-/** One way of judging a model: who does the judging, and what it measures. */
-export interface StanceRow {
-  source: string;
-  verdict: string;
-}
+/** A model an agent step can run on, in the reason switcher's picture. */
+export type RouteModel =
+  | "today"
+  | "replacement"
+  | "cheaper"
+  | "faster"
+  | "open"
+  | "local"
+  | "stronger";
 
-export interface StanceContent {
-  /** Two lines, break kept deliberate. */
-  headlineLines: readonly [string, string];
-  /** The last row is the page's own answer and renders emphasised. */
-  rows: readonly StanceRow[];
-  deck: string;
-}
-
-export const LABS_STANCE: StanceContent = {
-  headlineLines: ["Your traffic", "is the benchmark"],
-  rows: [
-    {
-      source: "Leaderboards",
-      verdict: "score models on someone else's tasks.",
-    },
-    {
-      source: "A demo",
-      verdict: "scores the one conversation you picked.",
-    },
-    {
-      source: "Your traffic",
-      verdict: "scores every call your agent really makes.",
-    },
-  ],
-  deck: "The model you chose last year is rarely the one you'd choose today. Asking again should take an afternoon, not a migration.",
+export const ROUTE_MODEL_LABELS: Record<RouteModel, string> = {
+  today: "Today's model",
+  replacement: "Closest replacement",
+  cheaper: "Cheaper model",
+  faster: "Faster model",
+  open: "Open model",
+  local: "Local model",
+  stronger: "Stronger model",
 };
 
-/* ---------------------------------------------------------------------- */
-/* Fan-out — one recorded call, sent to every candidate                    */
-/* ---------------------------------------------------------------------- */
-
-/** One candidate model's lane and how its answer compares with the recording. */
-export interface FanoutLane {
-  model: string;
-  detail: string;
+/** One reason to revisit the model, and how it re-routes the agent's steps. */
+export interface SwitchReason {
+  id: string;
+  /** The tab label, in the visitor's own words. */
+  label: string;
+  /** One model per step, in step order. */
+  routes: readonly RouteModel[];
+  /** Index of a step whose answer differs and goes to the user to review. */
+  reviewStep?: number;
+  /** A candidate compared but never recommended (e.g. an excluded lab). */
+  excluded?: string;
+  /** One sentence: what changes, and why. */
   outcome: string;
-  /** Whether the candidate answered like the recording. */
-  outcomeKind: "match" | "review";
+  /** What the comparison report names for this reason. */
+  reportLabel: string;
 }
 
-export interface FanoutContent {
+export interface ReasonSwitchContent {
   headline: string;
   deck: string;
-  call: {
-    label: string;
-    input: string;
-    recordedLabel: string;
-    recorded: string;
-  };
-  lanes: readonly FanoutLane[];
-  caption: string;
+  /** The agent run's steps, in order. */
+  steps: readonly string[];
+  reasons: readonly SwitchReason[];
+  /** Index of the reason rendered before JS (and with JS off). */
+  defaultReason: number;
 }
 
-export const LABS_FANOUT: FanoutContent = {
-  headline: "One recorded call. Every model you're weighing.",
-  deck: "Kitaru resends the calls in your traces to every candidate, with the same messages and tools, and shows what each would have done.",
-  call: {
-    label: "A recorded call",
-    input: "\u201cMy kettle arrived cracked. Order 48213.\u201d",
-    recordedLabel: "Your model answered",
-    recorded: 'lookup_order("48213")',
-  },
-  lanes: [
+export const LABS_REASONS: ReasonSwitchContent = {
+  headline: "Why are you looking at other models?",
+  deck: "Whatever the reason, the question is the same: what would switching change? Kitaru answers it on your agent's real traffic.",
+  steps: [
+    "Read the ticket",
+    "Look up the order",
+    "Check the policy",
+    "Draft the reply",
+  ],
+  reasons: [
     {
-      model: "Today's model",
-      detail: "Reruns as the baseline",
-      outcome: "Same tool",
-      outcomeKind: "match",
+      id: "retired",
+      label: "My model is being retired",
+      routes: ["replacement", "replacement", "replacement", "replacement"],
+      reviewStep: 3,
+      outcome:
+        "Every step moves to the closest replacement. The one step that answers differently comes to you before anything ships.",
+      reportLabel: "Closest to today",
     },
     {
-      model: "A cheaper tier",
-      detail: "Same provider, smaller",
-      outcome: "Same tool",
-      outcomeKind: "match",
+      id: "cost",
+      label: "Costs went up",
+      routes: ["cheaper", "cheaper", "cheaper", "today"],
+      outcome:
+        "The routine steps move to a cheaper model. The reply stays where quality matters.",
+      reportLabel: "Cheapest · Best mix",
     },
     {
-      model: "An open model",
-      detail: "Any OpenAI-compatible host",
-      outcome: "Same tool",
-      outcomeKind: "match",
+      id: "control",
+      label: "I want more control",
+      routes: ["open", "local", "open", "open"],
+      excluded: "A model from a lab you've ruled out",
+      outcome:
+        "Steps move to models you can host yourself. Labs you rule out are compared, never recommended.",
+      reportLabel: "Best open model · Origin rules",
     },
     {
-      model: "A local model",
-      detail: "Your own hardware",
-      outcome: "Escalates instead",
-      outcomeKind: "review",
+      id: "quality",
+      label: "I need better answers",
+      routes: ["today", "today", "today", "stronger"],
+      outcome:
+        "Only the step that needs it moves up to a stronger model. You judge the difference, then replay it on whole sessions.",
+      reportLabel: "Your verdicts on the differences",
+    },
+    {
+      id: "speed",
+      label: "It's too slow",
+      routes: ["faster", "faster", "faster", "today"],
+      outcome:
+        "The steps where waiting hurts move to the fastest model that still answers like today.",
+      reportLabel: "Fastest",
     },
   ],
-  caption:
-    "An illustration. Your report does this for every call you sample, and you judge each difference.",
-};
-
-/* ---------------------------------------------------------------------- */
-/* Choices — the goals a model choice can optimise for                     */
-/* ---------------------------------------------------------------------- */
-
-/** One goal the comparison names a best candidate for, and the rule it uses. */
-export interface ChoiceCard {
-  goal: string;
-  rule: string;
-  /** Spans two columns from `sm` up and renders on the deep tone. */
-  featured?: true;
-}
-
-export interface ChoicePrinciple {
-  title: string;
-  detail: string;
-}
-
-export interface ChoiceBoardContent {
-  headline: string;
-  deck: string;
-  cards: readonly ChoiceCard[];
-  principles: readonly ChoicePrinciple[];
-}
-
-export const LABS_CHOICES: ChoiceBoardContent = {
-  headline: "Choose on what matters to you",
-  deck: "No single winner: the best candidate for each goal, by a rule you can read.",
-  cards: [
-    {
-      goal: "Closest to today",
-      rule: "Answers like your current model most often.",
-    },
-    {
-      goal: "Cheapest",
-      rule: "Lowest cost per call, within 10 points of the closest.",
-    },
-    {
-      goal: "Fastest",
-      rule: "Lowest latency, within the same 10 points.",
-    },
-    {
-      goal: "Best open model",
-      rule: "The closest match you can run anywhere.",
-    },
-    {
-      goal: "Best mix",
-      rule: "Each kind of call on the cheapest model that handles it. Everything else stays on today's model.",
-      featured: true,
-    },
-  ],
-  principles: [
-    {
-      title: "Your keys, your infrastructure",
-      detail: "Calls go from your worker straight to your providers.",
-    },
-    {
-      title: "Rules you set",
-      detail: "Rule out a lab or region and it's never recommended.",
-    },
-    {
-      title: "Agreement isn't the verdict",
-      detail: "You judge the differences, then replay the winner.",
-    },
-  ],
+  defaultReason: 1,
 };
 
 /* ---------------------------------------------------------------------- */

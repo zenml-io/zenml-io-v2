@@ -7,14 +7,12 @@ import {
   markdownResponse,
 } from "../lib/agentMarkdown";
 import {
-  LABS_CHOICES,
   LABS_CLOSE,
-  LABS_FANOUT,
   LABS_FEATURE_PANELS,
   LABS_HERO,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
-  LABS_STANCE,
+  LABS_REASONS,
   LABS_STORIES,
 } from "../lib/labs-home";
 
@@ -44,31 +42,14 @@ export function GET(): Response {
       LABS_LOGO_GRID.logos.map((logo) => logo.name).join(", "),
     ),
     joinMarkdownSections(
-      `## ${LABS_STANCE.headlineLines.join(" ")}`,
+      `## ${LABS_REASONS.headline}`,
+      LABS_REASONS.deck,
+      `The example agent run: ${LABS_REASONS.steps.join(" → ")}.`,
       markdownBulletList(
-        LABS_STANCE.rows.map((row) => `${row.source} ${row.verdict}`),
-      ),
-      LABS_STANCE.deck,
-    ),
-    joinMarkdownSections(
-      `## ${LABS_FANOUT.headline}`,
-      LABS_FANOUT.deck,
-      `${LABS_FANOUT.call.label}: ${LABS_FANOUT.call.input} ${LABS_FANOUT.call.recordedLabel} \`${LABS_FANOUT.call.recorded}\`.`,
-      markdownBulletList(
-        LABS_FANOUT.lanes.map(
-          (lane) => `${lane.model} (${lane.detail}): ${lane.outcome}`,
+        LABS_REASONS.reasons.map(
+          (reason) =>
+            `${reason.label}: ${reason.outcome} (In the report: ${reason.reportLabel})`,
         ),
-      ),
-      LABS_FANOUT.caption,
-    ),
-    joinMarkdownSections(
-      `## ${LABS_CHOICES.headline}`,
-      LABS_CHOICES.deck,
-      markdownBulletList(
-        LABS_CHOICES.cards.map((card) => `${card.goal}: ${card.rule}`),
-      ),
-      markdownBulletList(
-        LABS_CHOICES.principles.map((item) => `${item.title}: ${item.detail}`),
       ),
     ),
     joinMarkdownSections(

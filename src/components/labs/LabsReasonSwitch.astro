@@ -1,0 +1,66 @@
+---
+/**
+ * LabsReasonSwitch — the homepage section that asks why the visitor is
+ * looking at other models and shows what switching would change. The
+ * headline and deck render statically; the reason tabs and the re-routed
+ * agent run are the ReasonSwitch island, server-rendered on the default
+ * reason so the section is complete without JS. Copy arrives through the
+ * `content` prop (`LABS_REASONS` on `/`).
+ */
+import type { ReasonSwitchContent } from "../../lib/labs-home";
+import "../../styles/labs-scroll-reveal.css";
+import ReasonSwitch from "../islands/ReasonSwitch";
+
+interface Props {
+  content: ReasonSwitchContent;
+}
+const { content } = Astro.props;
+---
+
+<section id="why-switch" class="pt-16 pb-16 md:pt-[112px] md:pb-[112px]">
+  <div class="scroll-reveal-section mx-auto flex max-w-content flex-col gap-10 px-gutter md:gap-14">
+    <div class="reveal-child flex max-w-[900px] flex-col gap-5">
+      <h2 class="font-display text-[34px] leading-[38px] text-(--color-cream-900) md:text-[64px] md:leading-[68px]">
+        {content.headline}
+      </h2>
+      <p class="max-w-[640px] font-sans text-[17px] leading-[26px] text-foreground md:text-[18px] md:leading-[28px]">
+        {content.deck}
+      </p>
+    </div>
+    <div class="reveal-child stagger-1">
+      {/* client:visible: the section sits below the fold, so it hydrates
+          when it scrolls in. The page's other eager island is the hero
+          shader, which keeps `/` within the three-island budget. */}
+      <ReasonSwitch content={content} client:visible />
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  /* A switched reason's steps settle in one after another, so the change
+     reads as the run being re-routed rather than the panel being swapped. */
+  @media (prefers-reduced-motion: no-preference) {
+    .reason-step {
+      animation: reason-step-in 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation-delay: var(--step-delay, 0ms);
+    }
+  }
+  /* Below md the reason tabs are one scrolling row; hide the bar but keep
+     the row swipeable and keyboard-reachable. */
+  .reason-tabs {
+    scrollbar-width: none;
+  }
+  .reason-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  @keyframes reason-step-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
