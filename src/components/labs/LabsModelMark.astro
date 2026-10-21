@@ -4,11 +4,11 @@
  * service-logo set has one, otherwise a neutral glyph (an open-weights
  * circle or a local-hardware chip). Inherits `currentColor`.
  */
-import type { HeroVisualModel } from "../../lib/labs-home";
+import type { ModelMark } from "../../lib/labs-home";
 import { AnthropicIcon, OpenAIIcon } from "../kitaru/islands/brand-icons";
 
 interface Props {
-  mark: HeroVisualModel["mark"];
+  mark: ModelMark;
 }
 const { mark } = Astro.props;
 const size = "size-3.5 shrink-0";

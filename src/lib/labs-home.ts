@@ -224,50 +224,57 @@ export interface LabsInstallChip {
   analytics: string;
 }
 
-/** A model in the hero explainer: its name and which mark represents it. */
-export interface HeroVisualModel {
-  name: string;
-  /** `open` and `chip` are neutral glyphs for models without an approved
-   *  service-logo mark yet. */
-  mark: "openai" | "anthropic" | "open" | "chip";
+/** A model's mark: a brand icon where the service-logo set has one, or a
+ *  neutral glyph (`open`, `chip`) for models without an approved mark yet. */
+export type ModelMark = "openai" | "anthropic" | "open" | "chip";
+
+/** One proposed update in the hero explainer, and which sessions it changes. */
+export interface HeroUpdate {
+  kind: string;
+  from: string;
+  to: string;
+  /** Marks for `from` and `to`, when the update swaps models. */
+  fromMark?: ModelMark;
+  toMark?: ModelMark;
+  /** Indexes into `sessions` whose answers differ under this update. */
+  differs: readonly number[];
 }
 
 export interface HeroVisualContent {
   /** Accessible description of the whole explainer. */
   label: string;
-  agent: string;
-  models: Record<string, HeroVisualModel>;
-  /** Key of today's model in `models`. */
-  today: string;
-  rows: readonly { call: string; model: string }[];
-  staysLabel: string;
-  outcome: string;
+  updateLabel: string;
+  sessions: readonly string[];
+  updates: readonly HeroUpdate[];
+  sameLabel: string;
+  differsLabel: string;
 }
 
 export const LABS_HERO_VISUAL: HeroVisualContent = {
   label:
-    "An example: a support agent's calls, from traces in tools like Langfuse, LangSmith, Logfire and Braintrust, all run on GPT-6 today. Reading the ticket and looking up the order move to DeepSeek, checking the policy moves to Claude Haiku 5.5, and drafting the reply stays on GPT-6.",
-  agent: "Your support agent",
-  models: {
-    gpt6: { name: "GPT-6", mark: "openai" },
-    deepseek: { name: "DeepSeek", mark: "open" },
-    haiku: { name: "Claude Haiku 5.5", mark: "anthropic" },
-  },
-  today: "gpt6",
-  rows: [
-    { call: "Read the ticket", model: "deepseek" },
-    { call: "Look up the order", model: "deepseek" },
-    { call: "Check the policy", model: "haiku" },
-    { call: "Draft the reply", model: "gpt6" },
+    "An example: four recorded support sessions are replayed under one proposed update at a time. Swapping GPT-6 for DeepSeek changes one answer, a new prompt version changes one, lowering the temperature changes none, and turning on retries changes one. Each changed session goes to you to review.",
+  updateLabel: "Proposed update",
+  sessions: ["Refund request", "Damaged kettle", "Wrong size", "Late delivery"],
+  updates: [
+    {
+      kind: "Model",
+      from: "GPT-6",
+      to: "DeepSeek",
+      fromMark: "openai",
+      toMark: "open",
+      differs: [2],
+    },
+    { kind: "Prompt", from: "v12", to: "v13", differs: [3] },
+    { kind: "Temperature", from: "0.7", to: "0.2", differs: [] },
+    { kind: "Retries", from: "off", to: "on", differs: [1] },
   ],
-  staysLabel: "stays",
-  outcome:
-    "Best mix: routine calls move, the reply stays where quality matters.",
+  sameLabel: "same",
+  differsLabel: "differs · review",
 };
 
 export const LABS_HERO: LabsBandContent = {
-  headlineLines: ["Find the right model", "for your agent"],
-  deck: "Kitaru tests the traces you already have on any model and shows exactly what would change.",
+  headlineLines: ["Ship agent updates", "without guessing"],
+  deck: "Swap the model, rewrite the prompt, tweak the harness. Kitaru tests it on the traces you already have and shows exactly what would change.",
   cta: LABS_HERO_SIGNUP,
 };
 

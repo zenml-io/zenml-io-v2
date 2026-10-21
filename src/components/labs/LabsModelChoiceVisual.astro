@@ -1,14 +1,16 @@
 ---
 /**
- * LabsModelChoiceVisual — the homepage hero's explainer of model choice, as
- * an outcome you can read: an agent's kinds of calls as rows, every one on
- * today's model, then the rows switch one by one to the model each would
- * move to, ending on a best mix where one row stays put. It plays once and
- * stops on that result. Copy and models arrive through `content`.
+ * LabsModelChoiceVisual — the homepage hero's explainer: one proposed update
+ * to an agent at a time (a model swap, a prompt version, a config value, a
+ * harness setting), replayed on the same recorded sessions. Each session
+ * settles into "same" or "differs · review", and a closing line counts what
+ * is safe and what needs a human. The updates cycle every few seconds;
+ * which sessions differ depends on the update. Copy arrives through
+ * `content`.
  *
- * Plain HTML and CSS, no island. The rows reflow at every width, so phones
- * get the same picture. The finished result is the resting state, so
- * reduced-motion and no-JS visitors see it at once.
+ * Every update's chip, marks and outcome are rendered and stacked in the
+ * same grid cell, and CSS crossfades between them, so it needs no island
+ * and runs with JS off. Under reduced motion it rests on the first update.
  */
 import type { HeroVisualContent } from "../../lib/labs-home";
 import {
@@ -24,20 +26,28 @@ interface Props {
 }
 const { content } = Astro.props;
 const SOURCES = [LangfuseIcon, LangChainIcon, LogfireIcon, BraintrustIcon];
-const today = content.models[content.today];
-/** When the first row switches, and the gap between rows. */
-const FIRST_MS = 1100;
-const STEP_MS = 650;
-const endMs = FIRST_MS + content.rows.length * STEP_MS;
+const count = content.updates.length;
+/** Seconds each update stays on screen. */
+const HOLD_S = 3.2;
+const cycleS = HOLD_S * count;
+const stateStyle = (i: number) =>
+  `--state-delay: ${i * HOLD_S - cycleS}s; --cycle: ${cycleS}s`;
+const outcome = (differs: number) => {
+  const same = content.sessions.length - differs;
+  return differs === 0
+    ? `${same} unchanged · nothing to review`
+    : `${same} unchanged · ${differs} for you to review`;
+};
 ---
 
 <figure
   class="hv rounded-[24px] border border-(--color-border) bg-card p-6 md:p-8"
   aria-label={content.label}
+  style={`--states: ${count}`}
 >
   <div class="flex flex-wrap items-center justify-between gap-3">
-    <p class="font-display text-[20px] leading-[26px] text-(--color-cream-900)">
-      {content.agent}
+    <p class="font-label text-[13px] leading-5 uppercase tracking-[0.05em] text-(--color-sage-800)">
+      {content.updateLabel}
     </p>
     <span class="flex items-center gap-1.5" aria-hidden="true">
       {SOURCES.map((Icon) => (
@@ -48,112 +58,96 @@ const endMs = FIRST_MS + content.rows.length * STEP_MS;
     </span>
   </div>
 
-  <ol class="mt-5 flex flex-col">
-    {content.rows.map((row, i) => {
-      const target = content.models[row.model];
-      const moves = row.model !== content.today;
-      return (
-        <li
-          class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-t border-(--color-border) py-3.5"
-          style={`--at: ${FIRST_MS + i * STEP_MS}ms`}
-        >
-          <span class="font-sans text-[16px] leading-6 text-(--color-cream-900)">
-            {row.call}
+  <div class="hv-stack mt-3" aria-hidden="true">
+    {content.updates.map((update, i) => (
+      <p class="hv-state flex flex-wrap items-center gap-x-3 gap-y-1" style={stateStyle(i)}>
+        <span class="font-display text-[26px] leading-[32px] text-(--color-cream-900) md:text-[30px] md:leading-[36px]">
+          {update.kind}
+        </span>
+        <span class="flex items-center gap-2 font-sans text-[16px] leading-6">
+          <span class="inline-flex items-center gap-1.5 text-(--color-cream-700) line-through decoration-(--color-cream-500)">
+            {update.fromMark && <LabsModelMark mark={update.fromMark} />}
+            {update.from}
           </span>
-          <span class="flex items-center gap-2">
-            {moves ? (
-              <>
-                <span class="hv-was font-sans text-[14px] leading-5 text-(--color-cream-700)">
-                  {today.name}
-                </span>
-                <svg
-                  class="hv-arrow size-3.5 text-(--color-sage-800)"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-label="moves to"
-                  role="img"
-                >
-                  <path d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
-                <span class="hv-new inline-flex items-center gap-1.5 rounded-full bg-(--color-sage-800) px-3 py-1 font-sans text-[14px] leading-5 font-medium text-(--color-cream-50)">
-                  <LabsModelMark mark={target.mark} />
-                  {target.name}
-                </span>
-              </>
-            ) : (
-              <>
-                <span class="inline-flex items-center gap-1.5 rounded-full border border-(--color-border) bg-(--color-cream-50) px-3 py-1 font-sans text-[14px] leading-5 font-medium text-(--color-cream-900)">
-                  <LabsModelMark mark={target.mark} />
-                  {target.name}
-                </span>
-                <span class="hv-stays font-sans text-[14px] leading-5 text-(--color-cream-700)">
-                  {content.staysLabel}
-                </span>
-              </>
-            )}
+          <svg class="size-4 text-(--color-sage-800)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-(--color-sage-800) px-3 py-1 font-medium text-(--color-cream-50)">
+            {update.toMark && <LabsModelMark mark={update.toMark} />}
+            {update.to}
           </span>
-        </li>
-      );
-    })}
+        </span>
+      </p>
+    ))}
+  </div>
+
+  <ol class="mt-5 flex flex-col" aria-hidden="true">
+    {content.sessions.map((session, row) => (
+      <li class="flex items-center justify-between gap-4 border-t border-(--color-border) py-3.5">
+        <span class="font-sans text-[16px] leading-6 text-(--color-cream-900)">
+          {session}
+        </span>
+        <span class="hv-stack justify-items-end">
+          {content.updates.map((update, i) => {
+            const differs = update.differs.includes(row);
+            return (
+              <span
+                class={`hv-state inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 font-sans text-[14px] leading-5 ${differs ? "border border-(--color-cream-400) bg-(--color-cream-50) text-(--color-cream-900)" : "text-(--color-sage-800)"}`}
+                style={stateStyle(i)}
+              >
+                {differs ? (
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16.5v.5" /></svg>
+                ) : (
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7" /></svg>
+                )}
+                {differs ? content.differsLabel : content.sameLabel}
+              </span>
+            );
+          })}
+        </span>
+      </li>
+    ))}
   </ol>
 
-  <p
-    class="hv-outcome border-t border-(--color-border) pt-4 font-sans text-[15px] leading-[22px] text-(--color-cream-900)"
-    style={`--at: ${endMs}ms`}
-  >
-    {content.outcome}
-  </p>
+  <div class="hv-stack border-t border-(--color-border) pt-4" aria-hidden="true">
+    {content.updates.map((update, i) => (
+      <p class="hv-state font-sans text-[15px] leading-[22px] font-medium text-(--color-cream-900)" style={stateStyle(i)}>
+        {outcome(update.differs.length)}
+      </p>
+    ))}
+  </div>
 </figure>
 
 <style>
-  /* Each switching row: today's model is struck through, then the arrow
-     and the new model arrive. The row that stays gets its note, and the
-     outcome line lands last. Plays once and rests on the result. */
-  .hv :global(.hv-was) {
-    text-decoration: line-through;
-    text-decoration-color: var(--color-cream-500);
+  /* All states share one grid cell; each is visible for its slice of the
+     cycle. A negative delay starts the loop already running, so the first
+     update shows at once instead of after a blank pause. */
+  .hv :global(.hv-stack) {
+    display: grid;
+  }
+  .hv :global(.hv-stack > .hv-state) {
+    grid-area: 1 / 1;
+    opacity: 0;
+  }
+  .hv :global(.hv-stack > .hv-state:first-child) {
+    opacity: 1;
   }
   @media (prefers-reduced-motion: no-preference) {
-    .hv :global(.hv-was) {
-      animation: hv-strike 300ms ease-out var(--at) both;
-    }
-    .hv :global(.hv-arrow),
-    .hv :global(.hv-new) {
-      animation: hv-in 420ms cubic-bezier(0.16, 1, 0.3, 1) var(--at) both;
-    }
-    .hv :global(.hv-stays),
-    .hv :global(.hv-outcome) {
-      animation: hv-fade 420ms ease-out var(--at) both;
+    .hv :global(.hv-stack > .hv-state) {
+      animation: hv-slot var(--cycle) linear var(--state-delay) infinite both;
     }
   }
-  @keyframes hv-strike {
-    from {
-      text-decoration-color: transparent;
-    }
-    to {
-      text-decoration-color: var(--color-cream-500);
-    }
-  }
-  @keyframes hv-in {
-    from {
-      opacity: 0;
-      transform: translateX(-6px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
-  }
-  @keyframes hv-fade {
-    from {
+  /* One update's window is 1/states of the cycle (25% for four), with a
+     short crossfade at each edge. */
+  @keyframes hv-slot {
+    0% {
       opacity: 0;
     }
-    to {
+    2%,
+    23% {
       opacity: 1;
+    }
+    25%,
+    100% {
+      opacity: 0;
     }
   }
 </style>
