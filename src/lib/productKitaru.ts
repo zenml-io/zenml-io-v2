@@ -67,7 +67,7 @@ export const KITARU_LINKS = {
 } as const;
 
 export const PRODUCT_KITARU_SEO = {
-  title: "Kitaru: test every AI agent update on real traces | ZenML",
+  title: "Kitaru: test every AI agent update on real traces | ZenML Labs",
   description:
     "Test every update to your AI agent on the traces you already have: a new model, prompt, or framework. Kitaru replays your recorded sessions and shows exactly what would change before it ships, and compares open, local, and cheaper models call by call to find the best mix. Works on traces imported from Langfuse, Logfire or Phoenix, runs on your machine with your keys, and turns what your team notices into evaluators. Open source, self-hosted, built by the ZenML team.",
   // OG cards need JPEG, not AVIF — social platforms don't render AVIF (PR #73).
