@@ -692,6 +692,27 @@ const CHECKS: IslandCheck[] = [
       }
     },
   },
+  {
+    name: "The homepage never scrolls sideways at 320px",
+    route: "/",
+    // Static markup. Whether anything outgrows the narrowest supported
+    // viewport depends on real font metrics and layout, not on the HTML.
+    island: null,
+    seedConsent: true,
+    async assert(page) {
+      await page.setViewportSize({ width: 320, height: 700 });
+      await page.evaluate(() => document.fonts.ready.then(() => undefined));
+
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth - window.innerWidth,
+      );
+      if (overflow > 0) {
+        throw new Error(
+          `the page is ${overflow}px wider than a 320px viewport and scrolls sideways`,
+        );
+      }
+    },
+  },
 ];
 
 // ── Runner ─────────────────────────────────────────────────────────
