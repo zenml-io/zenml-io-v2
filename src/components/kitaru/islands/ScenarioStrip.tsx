@@ -24,14 +24,15 @@ export function ScenarioStrip() {
       <Reveal className="max-w-3xl">
         <Eyebrow>Stop guessing</Eyebrow>
         <h2 className="mt-space-sm font-display text-[32px] leading-[36px] text-balance text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
-          You already suspect what's wrong.
+          Four questions, one set of real sessions.
           <br />
-          <span className="text-ember">Now you can check.</span>
+          <span className="text-ember">Ask them instead of guessing.</span>
         </h2>
         <p className="mt-space-sm max-w-2xl font-sans text-[17px] leading-[26px] text-foreground md:text-[18px] md:leading-[27px]">
-          Every trace you import becomes a session, a replayable record of one
-          real agent run. Take the ones that went sideways, change the one thing
-          you suspect, and run them again. Two runs, side by side, and you know.
+          Every trace you import becomes a session, a record of one real agent
+          run. Resend its calls to another model, or change the one thing you
+          suspect and run it again. Either way, you see the difference side by
+          side.
         </p>
       </Reveal>
 

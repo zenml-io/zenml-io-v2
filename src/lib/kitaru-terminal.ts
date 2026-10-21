@@ -3,10 +3,10 @@
  * (Workshop-shaped landing, Sep 2026 exploration).
  *
  *   FirstRun      → what the first five minutes look like, as a terminal
- *                   transcript plus three outcome blocks
+ *                   transcript plus a strip of outcomes
  *
  * Numbers reuse the landing's canonical example (the returns agent: 1,824
- * sessions imported, the "dropped the hazmat flag" cohort, 90 → 4 failing).
+ * sessions imported, 412 model calls compared across four models).
  */
 
 import { KITARU_INSTALL_CMD } from "./productKitaru";
@@ -19,9 +19,9 @@ export type TerminalLine = {
 
 export const FIRST_RUN = {
   eyebrow: "The first five minutes",
-  headline: "Install, then let your coding agent do the investigation.",
-  lede: "One command on your laptop. One sentence to Claude Code, Codex, or Cursor. The skill finds what repeats in your real runs, fixes it, and shows where you can save cost without losing quality.",
-  prompt: "Use kitaru-investigation to investigate this agent.",
+  headline: "Install, then ask your coding agent which model to run.",
+  lede: "One command on your laptop. One sentence to Claude Code, Codex, or Cursor. The skill imports your traces, prices a dry run, resends your real calls to the models you pick, and walks you through what changed.",
+  prompt: "Use kitaru-model-swap to find a better model for this agent.",
 } as const;
 
 export const TERMINAL: readonly TerminalLine[] = [
@@ -38,53 +38,49 @@ export const TERMINAL: readonly TerminalLine[] = [
   { kind: "blank", text: "" },
   {
     kind: "agent",
-    text: "Imported 1,824 sessions from Langfuse. 1,791 ready to replay.",
+    text: "Imported 1,824 sessions from Langfuse. Sampled 412 model calls, tool definitions included.",
   },
-  { kind: "blank", text: "" },
   {
     kind: "agent",
-    text: "Read 20. One pattern repeats: the hazmat flag is dropped when the customer mentions batteries. 90 of 1,824.",
+    text: "Comparing gpt-5-mini, an open model on your provider, and a local Ollama model. Today's gpt-5 runs too, as the noise floor.",
   },
   {
-    kind: "out",
-    text: 'cohort "dropped-hazmat-flag" · 90 sessions · frozen v1',
+    kind: "agent",
+    text: "Dry run: 1,648 calls, about $2.10. Cap spend at $5 and go?",
   },
-  { kind: "blank", text: "" },
-  { kind: "agent", text: "Three opened in the UI. Real bug?" },
   { kind: "cmd", text: "> yes" },
   { kind: "blank", text: "" },
+  { kind: "out", text: "               same tool  per call" },
+  { kind: "out", text: "gpt-5 (today)     94%     $0.031" },
+  { kind: "out", text: "gpt-5-mini        91%     $0.008" },
+  { kind: "out", text: "open model        89%     $0.004" },
+  { kind: "out", text: "local (Ollama)    71%     $0" },
+  { kind: "blank", text: "" },
   {
     kind: "agent",
-    text: "Evaluator drafted. Replaying the 90 against your branch pr-311.",
+    text: "Best mix: final answers on the open model, lookups on gpt-5-mini, escalations stay on gpt-5.",
   },
-  { kind: "out", text: "v1       90 / 90 fail" },
-  { kind: "out", text: "pr-311    4 / 90 fail" },
-  { kind: "blank", text: "" },
-  { kind: "agent", text: "Suggested improvement: same cohort, cheaper model." },
-  { kind: "out", text: "gpt-5        4 / 90 fail    $0.31 per session" },
-  { kind: "out", text: "gpt-5-mini   4 / 90 fail    $0.09 per session" },
-  { kind: "win", text: "same quality, a third of the cost" },
+  {
+    kind: "win",
+    text: "68% cheaper per call · 23 differences for you to review",
+  },
 ];
 
 export const FIRST_RUN_OUTCOMES = [
   {
     stat: "1,824",
     label: "sessions imported",
-    body: "Your production history, from Langfuse or a one-line wrapper, becomes the test suite.",
   },
   {
-    stat: "20 read",
-    label: "not 1,824",
-    body: "The skill reads a handful, says what repeats, and pins it to the trace. You judge.",
+    stat: "412",
+    label: "real calls, resent",
   },
   {
-    stat: "90 → 4",
-    label: "failing after the fix",
-    body: "Your real code runs again against the recorded world with one thing changed.",
+    stat: "4",
+    label: "models compared",
   },
   {
-    stat: "3×",
-    label: "cheaper, same quality",
-    body: "Swap the model on the same cohort. The saving is proven before it ships.",
+    stat: "23",
+    label: "differences to review",
   },
 ] as const;
