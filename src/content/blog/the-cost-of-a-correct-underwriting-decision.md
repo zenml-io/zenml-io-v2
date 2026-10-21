@@ -157,6 +157,6 @@ If you run an underwriting copilot, or any agent whose output is a decision, fou
 1. **Measure cost per correct decision, not cost per call.** Steps and errors move the number more than token prices do.
 2. **Fix the harness before you switch models.** Tune the prompt for the model you run, on cases you then hold out, and compare models only after each has had that chance.
 3. **Read results per question type.** The model that wins overall can lose on the questions your team actually asks.
-4. **Screen cheaply, then decide with full runs.** Step-level replays are a good way to cut 11 candidates to 3. Only end-to-end replays, graded on outcomes, tell you which one to ship.
+4. **Screen cheaply, then decide with full runs.** Step-level replays are good at ruling out models that clearly fail, but they rank a cheap model that reaches the right answer by another route too low to trust as a cut-off. Only end-to-end replays, graded on outcomes, tell you which one to ship.
 
 If you want to run this against your own agent, [Kitaru](/product/kitaru) records your agent's runs, screens candidate models on them, and replays the finalists end to end with your evaluators.
