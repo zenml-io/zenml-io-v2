@@ -30,7 +30,6 @@
  * Generates /integrations/<slug> for each published integration.
  */
 import { getCollection, getEntry, render } from "astro:content";
-import { createHighlighter } from "shiki";
 import LabsArticleBody from "../../components/labs/LabsArticleBody.astro";
 import LabsBand from "../../components/labs/LabsBand.astro";
 import LabsButton from "../../components/labs/LabsButton.astro";
@@ -58,18 +57,7 @@ import {
   MORE_INTEGRATIONS_COUNT,
   MORE_INTEGRATIONS_HEADING,
 } from "../../lib/integrations";
-import labsLight from "../../styles/labs-light.json";
-
-type HighlighterTheme = NonNullable<
-  Parameters<typeof createHighlighter>[0]["themes"]
->[number];
-
-// Astro evaluates this module once per build, so the highlighter is built
-// once for all 66 pages rather than per page.
-const highlighter = await createHighlighter({
-  themes: [labsLight as HighlighterTheme],
-  langs: ["python", "bash"],
-});
+import { LABS_CODE_THEME, labsHighlighter } from "../../lib/labsHighlighter";
 
 export async function getStaticPaths() {
   const integrations = await getCollection(
@@ -188,9 +176,9 @@ const codeExampleHtml =
           d.codeExampleHtml ?? "",
           codeBlocks.map((block) =>
             codePaneHtml(
-              highlighter.codeToHtml(block.code, {
+              labsHighlighter.codeToHtml(block.code, {
                 lang: block.language === "text" ? "bash" : block.language,
-                theme: labsLight.name,
+                theme: LABS_CODE_THEME,
               }),
               block.language,
             ),

@@ -34,7 +34,7 @@ const { fields, fallbackCta, privacyHtml } = Astro.props;
           {field.required && <span class="text-red-500">*</span>}
         </label>
 
-        {field.type === "select" && field.options ? (
+        {field.type === "select" ? (
           <select
             disabled
             class="w-full rounded-md border border-gray-300 bg-gray-50 px-4 py-2.5 text-sm text-gray-500"
