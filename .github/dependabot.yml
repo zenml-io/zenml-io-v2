@@ -91,6 +91,15 @@ updates:
       # Node 24 LTS runtime upgrade: issue #221.
       - dependency-name: '@types/node'
         versions: ['>=23.0.0']
+      # satori >=0.52 breaks the compare-page OG cards: the competitor logo
+      # renders as an empty hexagon and the header box overflows the right
+      # edge (~12% pixel drift on the `smoke:dist` OG golden). Held at
+      # ^0.33.5 in #388. This ignore drops satori out of the minor-and-patch
+      # group PR so the rest of the group keeps flowing; 0.33.x patches still
+      # arrive. Lift it in the PR that adapts the OG card template
+      # (scripts/og/) to the new satori layout.
+      - dependency-name: 'satori'
+        versions: ['>=0.34.0']
     cooldown:
       default-days: 7
       semver-major-days: 14
