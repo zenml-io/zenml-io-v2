@@ -382,6 +382,10 @@ export function buildDecisionAgents(): BenchmarkReport {
     group: "agents",
     date: d.meta.end,
     card: {
+      headline: {
+        value: `${pct(Math.min(...rerunRates))}–${pct(Math.max(...rerunRates))}`,
+        label: "of decisions flipped on a rerun",
+      },
       domain: "Appeals and benefits decisions",
       data: "Public decisions · 3 domains",
       finding: `Against real outcomes, accuracy ran from ${pct(Math.min(...DOMAINS.flatMap((dom) => base(dom).map((r) => r.accuracy))))} to ${pct(Math.max(...DOMAINS.flatMap((dom) => base(dom).map((r) => r.accuracy))))}. Run again with nothing changed, the agents flipped ${pct(Math.min(...rerunRates))} to ${pct(Math.max(...rerunRates))} of their decisions.`,

@@ -47,6 +47,8 @@ export interface BenchmarkCardContent {
   /** The headline result in one or two sentences. */
   finding: string;
   stats: readonly [BenchmarkStat, BenchmarkStat, BenchmarkStat];
+  /** The one number the hub row leads with; the third stat when absent. */
+  headline?: BenchmarkStat;
 }
 
 /** A dataset a benchmark ran on, linked at its source. */

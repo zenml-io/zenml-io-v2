@@ -112,8 +112,8 @@ export const LABS_NAV_LINKS: readonly LabsNavLink[] = [
     href: "https://docs.zenml.io/getting-started/introduction",
     menu: "docs",
   },
-  { label: "Case studies", href: "/case-studies", menu: "case-studies" },
   { label: "Benchmarks", href: "/benchmarks" },
+  { label: "Case studies", href: "/case-studies", menu: "case-studies" },
   { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
 ];

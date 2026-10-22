@@ -1,45 +1,65 @@
 ---
 import type { BenchmarkReport } from "../../lib/benchmarkReports";
 import { longDate } from "../../lib/benchmarkReports/format";
-import { ENTRY_ROW_TITLE_LINK } from "./entryRowStyles";
+import {
+  ENTRY_ROW,
+  ENTRY_ROW_CHEVRON,
+  ENTRY_ROW_CHEVRON_PATH,
+  ENTRY_ROW_CHEVRON_VIEWBOX,
+  ENTRY_ROW_META,
+  ENTRY_ROW_META_DOT,
+  ENTRY_ROW_META_STRONG,
+  ENTRY_ROW_SUMMARY,
+  ENTRY_ROW_TITLE,
+  ENTRY_ROW_TITLE_LINK,
+} from "./entryRowStyles";
 
 /**
- * labs.benchmark-card — one experiment on /benchmarks: domain and data
- * source as card labels, the question as the title, the headline finding,
- * three stats and the run date. The whole card links to the report page.
+ * labs.benchmark-card — one experiment on /benchmarks, laid out as an entry
+ * row (DESIGN.md "Entry rows, not cards"; the class strings are
+ * labs.entry-row's own): the question as the title, a meta line (domain ·
+ * data · run date), the headline finding clamped to two lines, and the one
+ * number the benchmark leads with in a right-hand lane. The title link is
+ * stretched over the row to the report; a published companion post adds a
+ * "Read the story" link above it.
  */
 interface Props {
   report: BenchmarkReport;
+  /** The companion post, when it is published. */
+  postHref?: string;
 }
-const { report } = Astro.props;
+const { report, postHref } = Astro.props;
 const { card } = report;
+const headline = card.headline ?? card.stats[2];
 ---
 
-<a
-  href={`/benchmarks/${report.slug}`}
-  class="group flex h-full cursor-pointer flex-col rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) hover:bg-(--color-sage-50) focus-visible:border-(--color-sage-400) focus-visible:bg-(--color-sage-50) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--color-sage-600) md:p-10"
->
-  <p class="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[13px] leading-5 uppercase tracking-[0.05em] text-(--color-sage-800)">
-    <span>{card.domain}</span>
-    <span aria-hidden="true">·</span>
-    <span>{card.data}</span>
-  </p>
-  <h3 class="mt-space-sm font-display text-[26px] leading-[32px] text-(--color-cream-900) transition-colors duration-200 ease-out group-hover:text-(--color-sage-800) group-focus-visible:text-(--color-sage-800) md:text-[30px] md:leading-[36px]">
-    <span class={ENTRY_ROW_TITLE_LINK}>{report.title}</span>
-  </h3>
-  <p class="mt-space-sm font-sans text-[16px] leading-[25px] text-(--color-cream-700)">
-    {card.finding}
-  </p>
-  <dl class="mt-space-md grid grid-cols-3 gap-4 border-t border-(--color-border) pt-space-sm">
-    {card.stats.map((stat) => (
-      <div class="flex flex-col-reverse gap-1">
-        <dt class="font-sans text-[13px] leading-[18px] text-(--color-cream-700)">{stat.label}</dt>
-        <dd class="font-display text-[24px] leading-[30px] text-(--color-cream-900) md:text-[28px] md:leading-[34px]">{stat.value}</dd>
-      </div>
-    ))}
-  </dl>
-  <p class="mt-auto flex items-center justify-between gap-4 pt-space-md font-sans text-[14px] leading-5 text-(--color-cream-700)">
-    <time datetime={report.date}>{longDate(report.date)}</time>
-    <span class="text-(--color-sage-800)">View the results <span aria-hidden="true">→</span></span>
-  </p>
-</a>
+<article class:list={[ENTRY_ROW, "md:grid md:grid-cols-[minmax(0,1fr)_220px] md:items-center md:gap-x-10"]}>
+  <div class="flex min-w-0 flex-col gap-2">
+    <h3 class={ENTRY_ROW_TITLE}>
+      <a href={`/benchmarks/${report.slug}`} class={ENTRY_ROW_TITLE_LINK}>{report.title}</a>
+    </h3>
+    <div class={ENTRY_ROW_META}>
+      <span class={ENTRY_ROW_META_STRONG}>{card.domain}</span>
+      <span class={ENTRY_ROW_META_DOT} aria-hidden="true">&middot;</span>
+      <span>{card.data}</span>
+      <span class={ENTRY_ROW_META_DOT} aria-hidden="true">&middot;</span>
+      <time datetime={report.date}>{longDate(report.date)}</time>
+    </div>
+    <p class={ENTRY_ROW_SUMMARY}>{card.finding}</p>
+    {postHref && (
+      <a
+        href={postHref}
+        class="relative z-10 w-fit font-sans text-[14px] leading-5 text-(--color-sage-800) underline decoration-(--color-sage-400) underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-sage-900)"
+      >
+        Read the story
+      </a>
+    )}
+  </div>
+  <div class="mt-1 flex items-baseline gap-2 md:mt-0 md:flex-col md:items-end md:gap-1 md:text-right">
+    <span class="font-display text-[26px] leading-[30px] text-(--color-cream-900) md:text-[30px] md:leading-[34px]">{headline.value}</span>
+    <span class="font-sans text-[13px] leading-[18px] text-(--color-cream-700)">{headline.label}</span>
+  </div>
+  <svg class={ENTRY_ROW_CHEVRON} viewBox={ENTRY_ROW_CHEVRON_VIEWBOX} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d={ENTRY_ROW_CHEVRON_PATH} />
+  </svg>
+</article>

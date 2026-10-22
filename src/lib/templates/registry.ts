@@ -1986,7 +1986,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 0,
     stage: false,
     notes:
-      "One experiment on /benchmarks: domain and data source in the 13px Nudica card-label voice, the question as a Borna title with the shared EntryRow per-line underline sweep, the headline finding, a three-stat row over a hairline and the write-up date. The whole card links to the post. Sage border and wash on hover and focus. Data and copy live in src/lib/benchmarks.ts, whose figures are copied verbatim from each post; an entry without a published post does not render. The hub uses an explicit 1 → 2 column grid.",
+      'One experiment on /benchmarks as an entry row, built from labs.entry-row\'s own class strings (DESIGN.md "Entry rows, not cards"): the question as the title with the stretched per-line underline link to /benchmarks/<slug>, a meta line (domain · data · run date), the headline finding clamped to two lines, an optional "Read the story" link (only when the companion post is published) above the stretched link, and the benchmark\'s one headline number in a 220px right lane from md. Rows sit in a hairline-separated list per hub group; hover paints the sage-50 wash and reveals the chevron. Copy and numbers come from each report module in src/lib/benchmarkReports/.',
   },
   {
     id: "labs.results-table",

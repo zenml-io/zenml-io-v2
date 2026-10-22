@@ -153,6 +153,10 @@ export function buildSglangVsVllm(): BenchmarkReport {
     group: "infrastructure",
     date: data.meta.runDate,
     card: {
+      headline: {
+        value: `${num(vllm.requests_completed)} vs ${num(sglang.requests_completed)}`,
+        label: "requests completed, vLLM vs SGLang",
+      },
       domain: "LLM serving",
       data: "Replayed coding-agent traffic",
       finding: `On one ${limits.gpu} replaying the same coding-agent traffic, stock SGLang completed ${num(sglang.requests_completed)} requests to stock vLLM's ${num(vllm.requests_completed)}. It ran at most ${num(sglang.running_requests_peak)} requests at once for this hybrid-attention model, so the rest queued.`,

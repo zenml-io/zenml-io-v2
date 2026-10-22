@@ -288,6 +288,10 @@ export function buildMlTrainingOps(): BenchmarkReport {
     group: "infrastructure",
     date: m.meta.runEnd,
     card: {
+      headline: {
+        value: `${points(h200("terminus-2")?.deltaPoints ?? 0)} pts`,
+        label: "solve rate from an H200 (terminus-2)",
+      },
       domain: "ML training operations",
       data: "Own tasks · stopped study",
       finding: `On a self-hosted 27B model, an H200 instead of an H100 raised the solve rate by ${points(h200("terminus-2")?.deltaPoints ?? 0)} points with terminus-2. We stopped the study because frontier agents solved nearly every task.`,
