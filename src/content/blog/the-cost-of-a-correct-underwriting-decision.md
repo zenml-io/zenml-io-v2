@@ -10,7 +10,7 @@ tags:
   - "evaluation"
   - "llm"
 date: "2026-10-21T00:00:00.000Z"
-readingTime: "10 mins"
+readingTime: "11 mins"
 seo:
   title: "The Cost of a Correct Underwriting Decision - ZenML Blog"
   description: "We ran 12 models as an underwriting copilot on 252 commercial insurance cases. An open-weight model tied the top model for a third less, and cost per correct decision varied 40x."
@@ -27,7 +27,7 @@ The short version:
 - **Price is not quality.** The most expensive model per correct decision ranked third. A mid-priced model was clearly worse than the top, not "almost as good."
 - **Cost per correct decision varied about 40x**, from 0.19¢ to 8.25¢.
 - **Models fail on specific kinds of questions**, and some failures come from how a model drives the conversation, not from what it knows.
-- **Then we tuned each model's prompt, and most of the gaps closed.** On cases held out from tuning, six models landed within about two points of each other at 97.6–99.4%. Sonnet 5.5 gained ten points and got a third cheaper per correct decision; Claude Haiku 5.5 reached 97.6% at 0.38¢. Fix the harness before you switch models.
+- **Then we fixed the prompt, and most of the gaps closed.** On cases held out from tuning, one prompt tuned for Sonnet 5.5 lifted ten of eleven other models; nine landed within about two points of each other at 97.6–99.4%. Claude Haiku 5.5 reached 98.8% at 0.38¢ per correct decision, about thirteen times cheaper than Opus 5.5. Fix the harness before you switch models.
 
 ## The task
 
@@ -116,6 +116,29 @@ Three things stand out:
 
 The rewrites did not teach the models underwriting. They fixed how the copilot runs the conversation: ask which line of business the application is for before recommending others, classify the business from the database when there is no code and treat it as settled, commit to one answer instead of hedging, never end the case on a question, and answer only what was asked. The two judges agreed more often on tuned answers, so the answers became clearer, not easier to grade.
 
+## One prompt for everyone
+
+Does each model need its own prompt? We took the prompt tuned for Sonnet 5.5, unchanged, and ran it on the other eleven models' held-out cases.
+
+| Model | Original | Shared prompt | Change (points, 95% CI) | Cost per correct decision |
+|---|---|---|---|---|
+| GLM 5.3 Flash (open) | 91.7% | 99.4% | +7.7 [+3.6, +12.5] | 0.92¢ |
+| Claude Sonnet 5.5 | 89.3% | 99.4% | +10.1 [+5.4, +14.9] | 2.73¢ |
+| Claude Haiku 5.5 | 85.7% | 98.8% | +13.1 [+8.3, +18.5] | 0.38¢ |
+| DeepSeek V4 Pro (open) | 97.0% | 98.8% | +1.8 [−0.6, +4.8] | 3.27¢ |
+| GPT-6.1 Sol | 82.1% | 98.2% | +16.1 [+10.1, +22.0] | 1.78¢ |
+| DeepSeek V4.1 Flash (open) | 91.7% | 98.2% | +6.5 [+2.4, +11.3] | 1.81¢ |
+| GLM 5.3 (open) | 94.6% | 98.2% | +3.6 [+0.6, +6.5] | 7.37¢ |
+| Claude Opus 5.5 | 97.0% | 97.6% | +0.6 [−3.0, +4.2] | 5.12¢ |
+| MiniMax-M3 (open) | 84.5% | 96.4% | +11.9 [+6.5, +17.3] | 1.82¢ |
+| GPT-6 Luna | 83.9% | 90.5% | +6.5 [+0.6, +12.5] | 0.19¢ |
+| gpt-oss-120b (open) | 56.0% | 86.9% | +31.0 [+22.0, +39.9] | 1.15¢ |
+| Qwen3.8 27B (open) | 83.3% | 82.7% | −0.6 [−7.7, +6.5] | 5.33¢ |
+
+One good prompt lifted nearly everyone. Ten of the eleven other models gained, and nine now sit between 97.6% and 99.4%, within noise of each other. Giving each model its own tuned prompt added nothing measurable on top; for gpt-oss-120b, a prompt tuned on its own failures did worse than the shared one.
+
+With accuracy a near tie, the decision becomes cost and constraints. Claude Haiku 5.5 (98.8% at 0.38¢) and GLM 5.3 Flash (99.4% at 0.92¢, open weights) lead; Opus 5.5 costs about thirteen times as much as Haiku per correct decision for no measurable gain. Two models did not catch up: GPT-6 Luna and Qwen3.8 27B.
+
 ## Did the models just memorize the answers?
 
 The datasets are public, so a model trained on them could know the answers. We checked by asking every model 24 cases with no tools and no data: just the company profile and the question. These were cases where the answer can't be reasoned out, because it depends on the insurer's synthetic appetite table.
@@ -155,7 +178,7 @@ For about $10, that gives a decision: DeepSeek V4 Pro is better and cheaper, and
 If you run an underwriting copilot, or any agent whose output is a decision, four things carry over:
 
 1. **Measure cost per correct decision, not cost per call.** Steps and errors move the number more than token prices do.
-2. **Fix the harness before you switch models.** Tune the prompt for the model you run, on cases you then hold out, and compare models only after each has had that chance.
+2. **Fix the harness before you switch models.** Tune the prompt on cases you then hold out, and compare models only under that prompt. Here one good prompt did as much for every model as tuning each one separately.
 3. **Read results per question type.** The model that wins overall can lose on the questions your team actually asks.
 4. **Screen cheaply, then decide with full runs.** Step-level replays are good at ruling out models that clearly fail, but they rank a cheap model that reaches the right answer by another route too low to trust as a cut-off. Only end-to-end replays, graded on outcomes, tell you which one to ship.
 
