@@ -56,6 +56,8 @@ export interface BenchmarkPreview {
   /** What the bars measure, in a few words. */
   metric: string;
   better: "higher" | "lower";
+  /** The setup behind the bars, shown under the chart on the report only. */
+  context?: string;
   /** The value a full-width bar stands for; the largest row's value when absent. */
   max?: number;
   rows: {

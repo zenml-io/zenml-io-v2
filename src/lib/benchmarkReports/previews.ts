@@ -21,9 +21,11 @@ function underwritingPreview(): BenchmarkPreview {
     .sort((a, b) => a.costPerCorrectCents - b.costPerCorrectCents);
   const name = (key: string) =>
     underwriting.models.find((m) => m.key === key)?.name ?? key;
-  const shown = [...tied.slice(0, 3), tied[tied.length - 1]];
+  // The two cheapest of the tied models against the priciest one.
+  const shown = [...tied.slice(0, 2), tied[tied.length - 1]];
   return {
-    metric: `Cost per correct decision, the ${tied.length} models tied at the top`,
+    metric: `Cost per correct decision, models tied at the top`,
+    context: `One shared prompt, ${underwriting.dataset.heldOut} held-out cases. The two cheapest and the priciest of the ${tied.length} models within noise of the top score.`,
     better: "lower",
     rows: shown.map((r, i) => ({
       label: name(r.model),
@@ -42,7 +44,7 @@ function swapbenchPreview(): BenchmarkPreview {
   };
   const decidable = swapbench.verifierTally[0].decidable;
   return {
-    metric: `Right verdicts out of ${decidable} decidable swaps`,
+    metric: `Right verdicts out of ${decidable} swaps`,
     better: "higher",
     max: decidable,
     rows: swapbench.verifierTally.map((t) => ({
@@ -63,17 +65,20 @@ function decisionAgentsPreview(): BenchmarkPreview {
     ["bva:base", "Veterans' appeals"],
     ["de_kr:base", "German health suits"],
   ] as const;
-  const short = (key: string) => (key === "moe" ? "MoE" : "dense");
+  // One model across the three domains; the report has both models.
+  const model = decisionAgents.models[0];
   return {
-    metric: "Accuracy against real outcomes, two open models",
+    metric: `Accuracy against real outcomes, ${model.name}`,
     better: "higher",
     max: 1,
     rows: domains.flatMap(([key, domain]) =>
-      decisionAgents.results[key].map((r) => ({
-        label: `${domain}, ${short(r.model)}`,
-        value: r.accuracy,
-        display: pct(r.accuracy),
-      })),
+      decisionAgents.results[key]
+        .filter((r) => r.model === model.key)
+        .map((r) => ({
+          label: domain,
+          value: r.accuracy,
+          display: pct(r.accuracy),
+        })),
     ),
   };
 }
@@ -98,7 +103,8 @@ function servingInfraPreview(): BenchmarkPreview {
       : [];
   });
   return {
-    metric: "Terminal-Bench solve rate by GPU, mini-swe-agent at 32 agents",
+    metric: "Terminal-Bench solve rate by GPU",
+    context: "mini-swe-agent with 32 agents on one GPU, same model and tasks.",
     better: "higher",
     max: 1,
     rows: rows.map((r) => ({ ...r, emphasis: r.label === "B200" })),
@@ -108,9 +114,19 @@ function servingInfraPreview(): BenchmarkPreview {
 function sglangPreview(): BenchmarkPreview {
   const top = Math.max(...sglang.settings.map((s) => s.requests_completed));
   return {
-    metric: "Requests completed on the same replayed traffic, one H100",
+    metric: "Requests completed on the same traffic, one H100",
+    context:
+      "Replayed coding-agent traffic. The third bar is SGLang's best setting.",
     better: "higher",
-    rows: sglang.settings.map((s) => ({
+    // Stock vLLM, stock SGLang, and SGLang's best setting.
+    rows: [
+      ...sglang.settings.filter((s) => s.name.startsWith("stock ")),
+      sglang.settings
+        .filter((s) => !s.name.startsWith("stock "))
+        .reduce((best, s) =>
+          s.requests_completed > best.requests_completed ? s : best,
+        ),
+    ].map((s) => ({
       label: s.name.replace(/^stock /, "Stock "),
       value: s.requests_completed,
       display: String(s.requests_completed),
@@ -127,7 +143,8 @@ function mlTrainingOpsPreview(): BenchmarkPreview {
       (r.config === "defaults" || r.config === "h200"),
   );
   return {
-    metric: "Hard-set solve rate, terminus-2 at 24 agents",
+    metric: "Hard-set solve rate",
+    context: "terminus-2 with 24 agents on one GPU, 8 tasks.",
     better: "higher",
     max: 1,
     rows: rows.map((r) => ({

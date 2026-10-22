@@ -1986,7 +1986,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 0,
     stage: false,
     notes:
-      'One experiment on /benchmarks, led by its result (Scale Labs-style catalogue card): domain · run date, the question as a Borna title with the shared per-line underline link stretched over the card to /benchmarks/<slug>, then a small single-hue sage bar chart of the headline metric with direct labels, values and a higher/lower-is-better note (DESIGN.md "Data visualization"), and "View the results" plus an optional "Read the story" link (only when the companion post is published). Chart data comes from src/lib/benchmarkReports/previews.ts, read straight from each benchmark\'s public data file. The hub grid steps 1 → 2 → 3 columns.',
+      "One experiment on /benchmarks, kept light: the benchmark's name as a Borna title with the shared per-line underline link stretched over the card to /benchmarks/<slug>, its question in up to two lines, a compact labs.bar-chart (at most three bars) of the headline metric, and the topic tags as one quiet line beside an arrow. The date, companion post and everything else live on the report. Sage border and wash on hover. The hub grid steps 1 → 2 → 3 columns.",
   },
   {
     id: "labs.bar-chart",

@@ -43,4 +43,7 @@ const text = report ? "text-[15px] leading-[22px]" : "text-[13px] leading-5";
       </div>
     ))}
   </dl>
+  {report && preview.context && (
+    <p class="mt-4 font-sans text-[13px] leading-5 text-(--color-cream-700)">{preview.context}</p>
+  )}
 </figure>
