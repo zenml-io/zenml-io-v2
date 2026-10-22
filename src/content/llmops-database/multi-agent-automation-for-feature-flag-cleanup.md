@@ -42,6 +42,8 @@ notion:
   publishedAt: "2026-08-25T08:56:09Z"
 ---
 
+*Authors: Atharv Chandratre and Jai Datar (DoorDash). Sources: the [DoorDash Engineering blog post](https://careersatdoordash.com/blog/automating-feature-flag-cleanup-at-scale-with-a-multi-agent-llm-system/) and the ICSME 2026 Industry Track paper "[Automating Feature Flag Cleanup at Scale with Multi-Agent LLM Systems: An Industrial Experience at DoorDash](https://conf.researchr.org/details/icsme-2026/icsme-2026-industry-track/8/Automating-Feature-Flag-Cleanup-at-Scale-with-Multi-Agent-LLM-Systems-An-Industrial-)".*
+
 ## Overview
 
 DoorDash applied LLMs to a large, repetitive software-maintenance problem: removing stale feature flags from production code. Its experimentation platform manages more than 60,000 dynamic values across approximately 623 repositories, while the company reported more than 1,000 stale flags and about 2,300 new flags being created each month. A manual cleanup can take an engineer one to two hours because the flag definition, dependency-injected wrapper, call sites, and tests may span many files. DoorDash therefore built a multi-agent system that starts from a Jira ticket and ends with a proposed pull request, while preserving a human checkpoint for confirming the flag's target value.

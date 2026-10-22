@@ -12,7 +12,6 @@
  * onboarding lives on /product/kitaru.
  */
 import { getCollection } from "astro:content";
-import { createHighlighter } from "shiki";
 import LabsBand from "../components/labs/LabsBand.astro";
 import LabsButton from "../components/labs/LabsButton.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
@@ -27,16 +26,7 @@ import {
   GET_STARTED_ZENML,
   type GetStartedStep,
 } from "../lib/getStarted";
-import labsLight from "../styles/labs-light.json";
-
-type HighlighterTheme = NonNullable<
-  Parameters<typeof createHighlighter>[0]["themes"]
->[number];
-
-const highlighter = await createHighlighter({
-  themes: [labsLight as HighlighterTheme],
-  langs: ["python", "bash"],
-});
+import { LABS_CODE_THEME, labsHighlighter } from "../lib/labsHighlighter";
 
 const highlightSteps = (items: readonly GetStartedStep[]) =>
   items.map((step) => {
@@ -44,9 +34,9 @@ const highlightSteps = (items: readonly GetStartedStep[]) =>
     return {
       ...step,
       language: lang,
-      highlightedHtml: highlighter.codeToHtml(step.code, {
+      highlightedHtml: labsHighlighter.codeToHtml(step.code, {
         lang,
-        theme: labsLight.name,
+        theme: LABS_CODE_THEME,
       }),
     };
   });
