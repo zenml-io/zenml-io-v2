@@ -116,6 +116,8 @@ export function CompareOg({
           border: `3px solid ${palette.border}`,
           borderRadius: 28,
           backgroundColor: palette.panel,
+          // Newer satori defaults to content-box like browsers; this box is authored at its outer size.
+          boxSizing: "border-box",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -178,6 +180,7 @@ export function CompareOg({
             height: 90,
             borderRadius: 45,
             border: `1.5px solid ${palette.accent}`,
+            boxSizing: "border-box",
             backgroundColor: palette.panel,
             color: palette.accent,
             fontFamily: "Rethink Sans",
@@ -207,7 +210,14 @@ export function CompareOg({
             alt=""
             style={{ position: "absolute", left: 0, top: 0 }}
           />
-          <img src={competitorLogo} width={260} height={260} alt={competitor} />
+          {/* Positioned, so CSS stacking paints it above the absolute tile. */}
+          <img
+            src={competitorLogo}
+            width={260}
+            height={260}
+            alt={competitor}
+            style={{ position: "relative" }}
+          />
         </div>
       </div>
     </div>

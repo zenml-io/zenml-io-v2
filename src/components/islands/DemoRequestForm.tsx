@@ -479,7 +479,7 @@ function FieldRenderer({
         {field.label}
         {field.required && <span class="text-red-500"> *</span>}
       </label>
-      {field.type === "select" && field.options ? (
+      {field.type === "select" ? (
         <select
           id={`${formId}-${field.name}`}
           name={field.name}
@@ -525,7 +525,10 @@ function FieldRenderer({
       ) : (
         <input
           id={`${formId}-${field.name}`}
-          type={field.type}
+          // Preact 11 types each input type's attributes separately and TS
+          // cannot match a union `type` against them; the value is still
+          // "text" | "email" | "url" at runtime.
+          type={field.type as "text"}
           name={field.name}
           required={field.required}
           aria-invalid={errors[field.name] ? true : undefined}
