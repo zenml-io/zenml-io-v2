@@ -155,6 +155,7 @@ const LINK =
       </ul>
     </section>
 
+    {(post || report.sources.length > 0) && (
     <section class="scroll-reveal-section" aria-labelledby="sources">
       <h2 id="sources" class:list={["reveal-child", SECTION_HEADING]}>Further reading</h2>
       <ul class="reveal-child stagger-1 mt-space-lg grid max-w-[960px] gap-3">
@@ -166,6 +167,7 @@ const LINK =
         ))}
       </ul>
     </section>
+    )}
   </div>
 
   <div class="scroll-reveal-section">

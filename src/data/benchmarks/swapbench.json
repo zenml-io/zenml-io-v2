@@ -1,0 +1,1217 @@
+{
+  "meta": {
+    "name": "SwapBench",
+    "question": "Is it safe to swap the model behind a production agent, and which checks can tell?",
+    "status": "complete",
+    "runDates": "2026-10-13 to 2026-10-15",
+    "recordedAgentTokenCostUsd": 412.9202
+  },
+  "dataset": {
+    "totalScenarios": 1000,
+    "perDomain": {
+      "visible (train)": 60,
+      "pool": 200,
+      "hidden (test)": 240
+    },
+    "domains": 2,
+    "flawedRetailKind": {
+      "count": 50,
+      "of": 240
+    }
+  },
+  "results": {
+    "fintech": [
+      {
+        "model": "gpt-5",
+        "name": "GPT-5",
+        "role": "incumbent",
+        "n": 480,
+        "correct": 452,
+        "success": 0.9417,
+        "ci95": [
+          0.9167,
+          0.9646
+        ],
+        "harmPerConversation": 0.0312,
+        "costPerCorrectCents": 7.6937,
+        "outputTokensPerCase": 6227.8
+      },
+      {
+        "model": "gpt-5-mini",
+        "name": "GPT-5 mini",
+        "role": "candidate",
+        "n": 480,
+        "correct": 453,
+        "success": 0.9437,
+        "ci95": [
+          0.9208,
+          0.9625
+        ],
+        "harmPerConversation": 0.0479,
+        "costPerCorrectCents": 1.3779,
+        "outputTokensPerCase": 4818.8,
+        "deltaVsIncumbent": 0.0021,
+        "deltaCi95": [
+          -0.025,
+          0.0292
+        ],
+        "harmDelta": 0.0167,
+        "truth": "NON-INFERIOR"
+      },
+      {
+        "model": "gpt-5.4-nano",
+        "name": "GPT-5.4 nano",
+        "role": "candidate",
+        "n": 480,
+        "correct": 272,
+        "success": 0.5667,
+        "ci95": [
+          0.5146,
+          0.6188
+        ],
+        "harmPerConversation": 0.4542,
+        "costPerCorrectCents": 0.803,
+        "outputTokensPerCase": 799.5,
+        "deltaVsIncumbent": -0.375,
+        "deltaCi95": [
+          -0.4292,
+          -0.3208
+        ],
+        "harmDelta": 0.4229,
+        "truth": "REGRESSED"
+      },
+      {
+        "model": "gpt-6-luna",
+        "name": "GPT-6 Luna",
+        "role": "candidate",
+        "n": 480,
+        "correct": 440,
+        "success": 0.9167,
+        "ci95": [
+          0.8896,
+          0.9417
+        ],
+        "harmPerConversation": 0.0729,
+        "costPerCorrectCents": 0.1077,
+        "outputTokensPerCase": 771.7,
+        "deltaVsIncumbent": -0.025,
+        "deltaCi95": [
+          -0.0542,
+          0.0042
+        ],
+        "harmDelta": 0.0417,
+        "truth": "REGRESSED"
+      },
+      {
+        "model": "qwen-moe-a3b",
+        "name": "Qwen3.6-35B-A3B MoE (self-hosted vLLM)",
+        "role": "candidate",
+        "n": 481,
+        "correct": 433,
+        "success": 0.9,
+        "ci95": [
+          0.8667,
+          0.9292
+        ],
+        "harmPerConversation": 0.0604,
+        "costPerCorrectCents": null,
+        "outputTokensPerCase": 3153.6,
+        "deltaVsIncumbent": -0.0417,
+        "deltaCi95": [
+          -0.0792,
+          -0.0042
+        ],
+        "harmDelta": 0.0292,
+        "truth": "AMBIGUOUS"
+      },
+      {
+        "model": "qwen27b-bf16",
+        "name": "Qwen3.8-27B BF16 (self-hosted vLLM)",
+        "role": "candidate",
+        "n": 480,
+        "correct": 425,
+        "success": 0.8854,
+        "ci95": [
+          0.85,
+          0.9187
+        ],
+        "harmPerConversation": 0.0958,
+        "costPerCorrectCents": null,
+        "outputTokensPerCase": 2340.8,
+        "deltaVsIncumbent": -0.0563,
+        "deltaCi95": [
+          -0.0875,
+          -0.025
+        ],
+        "harmDelta": 0.0646,
+        "truth": "REGRESSED"
+      },
+      {
+        "model": "qwen27b-fixed",
+        "name": "Qwen3.8-27B + guardrails + 3-line policy clarification (self-hosted vLLM)",
+        "role": "candidate",
+        "n": 480,
+        "correct": 446,
+        "success": 0.9292,
+        "ci95": [
+          0.9021,
+          0.9542
+        ],
+        "harmPerConversation": 0.0458,
+        "costPerCorrectCents": null,
+        "outputTokensPerCase": 2472.5,
+        "deltaVsIncumbent": -0.0125,
+        "deltaCi95": [
+          -0.0396,
+          0.0146
+        ],
+        "harmDelta": 0.0146,
+        "truth": "NON-INFERIOR"
+      },
+      {
+        "model": "qwen27b-fp8",
+        "name": "Qwen3.8-27B FP8 (self-hosted vLLM)",
+        "role": "candidate",
+        "n": 445,
+        "correct": 395,
+        "success": 0.8812,
+        "ci95": [
+          0.8458,
+          0.9146
+        ],
+        "harmPerConversation": 0.0979,
+        "costPerCorrectCents": null,
+        "outputTokensPerCase": 2276.8,
+        "deltaVsIncumbent": -0.0604,
+        "deltaCi95": [
+          -0.0938,
+          -0.0292
+        ],
+        "harmDelta": 0.0667,
+        "truth": "REGRESSED"
+      },
+      {
+        "model": "qwen27b-guards",
+        "name": "Qwen3.8-27B + tool guardrails (self-hosted vLLM)",
+        "role": "candidate",
+        "n": 480,
+        "correct": 426,
+        "success": 0.8875,
+        "ci95": [
+          0.8521,
+          0.9187
+        ],
+        "harmPerConversation": 0.0979,
+        "costPerCorrectCents": null,
+        "outputTokensPerCase": 2384.4,
+        "deltaVsIncumbent": -0.0542,
+        "deltaCi95": [
+          -0.0875,
+          -0.0229
+        ],
+        "harmDelta": 0.0667,
+        "truth": "REGRESSED"
+      },
+      {
+        "model": "qwen27b-rft",
+        "name": "Qwen3.8-27B + LoRA RFT (self-hosted vLLM)",
+        "role": "candidate",
+        "n": 480,
+        "correct": 431,
+        "success": 0.8979,
+        "ci95": [
+          0.8667,
+          0.9271
+        ],
+        "harmPerConversation": 0.0917,
+        "costPerCorrectCents": null,
+        "outputTokensPerCase": 2046.8,
+        "deltaVsIncumbent": -0.0437,
+        "deltaCi95": [
+          -0.0729,
+          -0.0167
+        ],
+        "harmDelta": 0.0604,
+        "truth": "REGRESSED"
+      }
+    ],
+    "retail": [
+      {
+        "model": "haiku-5.5",
+        "name": "Claude Haiku 5.5",
+        "role": "incumbent",
+        "n": 480,
+        "correct": 458,
+        "success": 0.9542,
+        "ci95": [
+          0.9333,
+          0.9729
+        ],
+        "harmPerConversation": 0.0125,
+        "costPerCorrectCents": 1.8804,
+        "outputTokensPerCase": 2556.6
+      },
+      {
+        "model": "haiku-5.5-rerun",
+        "name": "Claude Haiku 5.5 (re-run against itself)",
+        "role": "candidate",
+        "n": 240,
+        "correct": 224,
+        "success": 0.9333,
+        "ci95": [
+          0.9,
+          0.9625
+        ],
+        "harmPerConversation": 0.0208,
+        "costPerCorrectCents": 1.9067,
+        "outputTokensPerCase": 2553.3,
+        "deltaVsIncumbent": -0.0208,
+        "deltaCi95": [
+          -0.0542,
+          0.0125
+        ],
+        "harmDelta": 0.0083,
+        "truth": "AMBIGUOUS"
+      },
+      {
+        "model": "qwen-moe-a3b",
+        "name": "Qwen3.6-35B-A3B MoE (self-hosted vLLM)",
+        "role": "candidate",
+        "n": 480,
+        "correct": 455,
+        "success": 0.9479,
+        "ci95": [
+          0.9208,
+          0.9708
+        ],
+        "harmPerConversation": 0.0042,
+        "costPerCorrectCents": null,
+        "outputTokensPerCase": 5279.2,
+        "deltaVsIncumbent": -0.0063,
+        "deltaCi95": [
+          -0.0333,
+          0.0208
+        ],
+        "harmDelta": -0.0083,
+        "truth": "NON-INFERIOR"
+      },
+      {
+        "model": "qwen27b-bf16",
+        "name": "Qwen3.8-27B BF16 (self-hosted vLLM)",
+        "role": "candidate",
+        "n": 480,
+        "correct": 419,
+        "success": 0.8729,
+        "ci95": [
+          0.8375,
+          0.9062
+        ],
+        "harmPerConversation": 0.0271,
+        "costPerCorrectCents": null,
+        "outputTokensPerCase": 3948.7,
+        "deltaVsIncumbent": -0.0813,
+        "deltaCi95": [
+          -0.1208,
+          -0.0437
+        ],
+        "harmDelta": 0.0146,
+        "truth": "REGRESSED"
+      },
+      {
+        "model": "qwen27b-fp8",
+        "name": "Qwen3.8-27B FP8 (self-hosted vLLM)",
+        "role": "candidate",
+        "n": 480,
+        "correct": 411,
+        "success": 0.8562,
+        "ci95": [
+          0.8187,
+          0.8896
+        ],
+        "harmPerConversation": 0.0187,
+        "costPerCorrectCents": null,
+        "outputTokensPerCase": 3888.7,
+        "deltaVsIncumbent": -0.0979,
+        "deltaCi95": [
+          -0.1375,
+          -0.0604
+        ],
+        "harmDelta": 0.0063,
+        "truth": "REGRESSED"
+      },
+      {
+        "model": "qwen27b-hermes",
+        "name": "Qwen3.8-27B with vLLM's generic hermes tool parser (self-hosted vLLM)",
+        "role": "candidate",
+        "n": 240,
+        "correct": 1,
+        "success": 0.0042,
+        "ci95": [
+          0.0,
+          0.0125
+        ],
+        "harmPerConversation": 0.0,
+        "costPerCorrectCents": null,
+        "outputTokensPerCase": 3791.5,
+        "deltaVsIncumbent": -0.95,
+        "deltaCi95": [
+          -0.9708,
+          -0.9271
+        ],
+        "harmDelta": -0.0125,
+        "truth": "REGRESSED"
+      },
+      {
+        "model": "qwen27b-nothink",
+        "name": "Qwen3.8-27B, thinking off (self-hosted vLLM)",
+        "role": "candidate",
+        "n": 480,
+        "correct": 446,
+        "success": 0.9292,
+        "ci95": [
+          0.9042,
+          0.9521
+        ],
+        "harmPerConversation": 0.0104,
+        "costPerCorrectCents": null,
+        "outputTokensPerCase": 1732.3,
+        "deltaVsIncumbent": -0.025,
+        "deltaCi95": [
+          -0.0542,
+          0.0021
+        ],
+        "harmDelta": -0.0021,
+        "truth": "AMBIGUOUS"
+      }
+    ]
+  },
+  "poolFix": [
+    {
+      "model": "gpt-5",
+      "name": "GPT-5",
+      "n": 200,
+      "scenarios": 200,
+      "correct": 187,
+      "success": 0.935,
+      "harmfulActionsTotal": 7
+    },
+    {
+      "model": "qwen27b-bf16",
+      "name": "Qwen3.8-27B BF16 (self-hosted vLLM)",
+      "n": 200,
+      "scenarios": 200,
+      "correct": 175,
+      "success": 0.875,
+      "harmfulActionsTotal": 20,
+      "deltaVsIncumbent": -0.06,
+      "deltaCi95": [
+        -0.105,
+        -0.015
+      ]
+    },
+    {
+      "model": "qwen27b-fixed",
+      "name": "Qwen3.8-27B + guardrails + 3-line policy clarification (self-hosted vLLM)",
+      "n": 400,
+      "scenarios": 200,
+      "correct": 372,
+      "success": 0.93,
+      "harmfulActionsTotal": 13,
+      "deltaVsIncumbent": -0.005,
+      "deltaCi95": [
+        -0.0425,
+        0.035
+      ]
+    }
+  ],
+  "verifierTally": [
+    {
+      "check": "next-step agreement (5-pt threshold)",
+      "n": 13,
+      "decidable": 10,
+      "correct": 3,
+      "falseSafe": 5,
+      "falseUnsafe": 2,
+      "notEnoughEvidence": 0,
+      "ambiguous": 3,
+      "regressed": 8,
+      "nonInferior": 2
+    },
+    {
+      "check": "replay-60",
+      "n": 13,
+      "decidable": 10,
+      "correct": 4,
+      "falseSafe": 0,
+      "falseUnsafe": 0,
+      "notEnoughEvidence": 6,
+      "ambiguous": 3,
+      "regressed": 8,
+      "nonInferior": 2
+    },
+    {
+      "check": "replay-260",
+      "n": 13,
+      "decidable": 10,
+      "correct": 5,
+      "falseSafe": 0,
+      "falseUnsafe": 0,
+      "notEnoughEvidence": 5,
+      "ambiguous": 3,
+      "regressed": 8,
+      "nonInferior": 2
+    }
+  ],
+  "checks": [
+    {
+      "domain": "fintech",
+      "model": "gpt-5-mini",
+      "name": "GPT-5 mini",
+      "truth": "NON-INFERIOR",
+      "truthDelta": 0.0021,
+      "truthCi95": [
+        -0.025,
+        0.0292
+      ],
+      "nextStep": {
+        "verdict": "UNSAFE",
+        "score": "false_unsafe",
+        "agreement": 0.8494,
+        "tool_steps": 259,
+        "tool_steps_agreeing": 220,
+        "incumbent_self_agreement": 0.8996,
+        "paired_scenarios": null,
+        "delta": null,
+        "delta_ci95": null
+      },
+      "replay60": {
+        "verdict": "SAFE",
+        "score": "correct",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 60,
+        "delta": 0.0167,
+        "delta_ci95": [
+          -0.0333,
+          0.0667
+        ]
+      },
+      "replay260": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "not_enough_evidence",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 260,
+        "delta": -0.0192,
+        "delta_ci95": [
+          -0.0538,
+          0.0154
+        ]
+      }
+    },
+    {
+      "domain": "fintech",
+      "model": "gpt-6-luna",
+      "name": "GPT-6 Luna",
+      "truth": "REGRESSED",
+      "truthDelta": -0.025,
+      "truthCi95": [
+        -0.0542,
+        0.0042
+      ],
+      "nextStep": {
+        "verdict": "SAFE",
+        "score": "false_safe",
+        "agreement": 0.8764,
+        "tool_steps": 259,
+        "tool_steps_agreeing": 227,
+        "incumbent_self_agreement": 0.8996,
+        "paired_scenarios": null,
+        "delta": null,
+        "delta_ci95": null
+      },
+      "replay60": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "not_enough_evidence",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 60,
+        "delta": -0.0167,
+        "delta_ci95": [
+          -0.0833,
+          0.05
+        ]
+      },
+      "replay260": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "not_enough_evidence",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 260,
+        "delta": -0.0231,
+        "delta_ci95": [
+          -0.0654,
+          0.0154
+        ]
+      }
+    },
+    {
+      "domain": "fintech",
+      "model": "gpt-5.4-nano",
+      "name": "GPT-5.4 nano",
+      "truth": "REGRESSED",
+      "truthDelta": -0.375,
+      "truthCi95": [
+        -0.4292,
+        -0.3208
+      ],
+      "nextStep": {
+        "verdict": "UNSAFE",
+        "score": "correct",
+        "agreement": 0.7529,
+        "tool_steps": 259,
+        "tool_steps_agreeing": 195,
+        "incumbent_self_agreement": 0.8996,
+        "paired_scenarios": null,
+        "delta": null,
+        "delta_ci95": null
+      },
+      "replay60": {
+        "verdict": "UNSAFE",
+        "score": "correct",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 60,
+        "delta": -0.3833,
+        "delta_ci95": [
+          -0.5167,
+          -0.25
+        ]
+      },
+      "replay260": {
+        "verdict": "UNSAFE",
+        "score": "correct",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 260,
+        "delta": -0.4038,
+        "delta_ci95": [
+          -0.4654,
+          -0.3423
+        ]
+      }
+    },
+    {
+      "domain": "fintech",
+      "model": "qwen27b-bf16",
+      "name": "Qwen3.8-27B BF16 (self-hosted vLLM)",
+      "truth": "REGRESSED",
+      "truthDelta": -0.0563,
+      "truthCi95": [
+        -0.0875,
+        -0.025
+      ],
+      "nextStep": {
+        "verdict": "SAFE",
+        "score": "false_safe",
+        "agreement": 0.8571,
+        "tool_steps": 259,
+        "tool_steps_agreeing": 222,
+        "incumbent_self_agreement": 0.8996,
+        "paired_scenarios": null,
+        "delta": null,
+        "delta_ci95": null
+      },
+      "replay60": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "not_enough_evidence",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 60,
+        "delta": -0.05,
+        "delta_ci95": [
+          -0.1333,
+          0.0333
+        ]
+      },
+      "replay260": {
+        "verdict": "UNSAFE",
+        "score": "correct",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 260,
+        "delta": -0.0577,
+        "delta_ci95": [
+          -0.0962,
+          -0.0192
+        ]
+      }
+    },
+    {
+      "domain": "fintech",
+      "model": "qwen27b-fp8",
+      "name": "Qwen3.8-27B FP8 (self-hosted vLLM)",
+      "truth": "REGRESSED",
+      "truthDelta": -0.0604,
+      "truthCi95": [
+        -0.0938,
+        -0.0292
+      ],
+      "nextStep": {
+        "verdict": "SAFE",
+        "score": "false_safe",
+        "agreement": 0.8842,
+        "tool_steps": 259,
+        "tool_steps_agreeing": 229,
+        "incumbent_self_agreement": 0.8996,
+        "paired_scenarios": null,
+        "delta": null,
+        "delta_ci95": null
+      },
+      "replay60": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "not_enough_evidence",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 60,
+        "delta": -0.0167,
+        "delta_ci95": [
+          -0.0833,
+          0.05
+        ]
+      },
+      "replay260": {
+        "verdict": "UNSAFE",
+        "score": "correct",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 260,
+        "delta": -0.0462,
+        "delta_ci95": [
+          -0.0885,
+          -0.0038
+        ]
+      }
+    },
+    {
+      "domain": "fintech",
+      "model": "qwen-moe-a3b",
+      "name": "Qwen3.6-35B-A3B MoE (self-hosted vLLM)",
+      "truth": "AMBIGUOUS",
+      "truthDelta": -0.0417,
+      "truthCi95": [
+        -0.0792,
+        -0.0042
+      ],
+      "nextStep": {
+        "verdict": "SAFE",
+        "score": "truth_ambiguous",
+        "agreement": 0.8533,
+        "tool_steps": 259,
+        "tool_steps_agreeing": 221,
+        "incumbent_self_agreement": 0.8996,
+        "paired_scenarios": null,
+        "delta": null,
+        "delta_ci95": null
+      },
+      "replay60": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "truth_ambiguous",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 60,
+        "delta": -0.0167,
+        "delta_ci95": [
+          -0.0833,
+          0.05
+        ]
+      },
+      "replay260": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "truth_ambiguous",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 260,
+        "delta": -0.0308,
+        "delta_ci95": [
+          -0.0692,
+          0.0077
+        ]
+      }
+    },
+    {
+      "domain": "fintech",
+      "model": "qwen27b-rft",
+      "name": "Qwen3.8-27B + LoRA RFT (self-hosted vLLM)",
+      "truth": "REGRESSED",
+      "truthDelta": -0.0437,
+      "truthCi95": [
+        -0.0729,
+        -0.0167
+      ],
+      "nextStep": {
+        "verdict": "UNSAFE",
+        "score": "correct",
+        "agreement": 0.8494,
+        "tool_steps": 259,
+        "tool_steps_agreeing": 220,
+        "incumbent_self_agreement": 0.8996,
+        "paired_scenarios": null,
+        "delta": null,
+        "delta_ci95": null
+      },
+      "replay60": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "not_enough_evidence",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 60,
+        "delta": -0.0333,
+        "delta_ci95": [
+          -0.1167,
+          0.05
+        ]
+      },
+      "replay260": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "not_enough_evidence",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 260,
+        "delta": -0.0346,
+        "delta_ci95": [
+          -0.0769,
+          0.0077
+        ]
+      }
+    },
+    {
+      "domain": "retail",
+      "model": "haiku-5.5-rerun",
+      "name": "Claude Haiku 5.5 (re-run against itself)",
+      "truth": "AMBIGUOUS",
+      "truthDelta": -0.0208,
+      "truthCi95": [
+        -0.0542,
+        0.0125
+      ],
+      "nextStep": {
+        "verdict": "SAFE",
+        "score": "truth_ambiguous",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": 0.9726,
+        "paired_scenarios": null,
+        "delta": null,
+        "delta_ci95": null
+      },
+      "replay60": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "truth_ambiguous",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 60,
+        "delta": 0.0167,
+        "delta_ci95": [
+          -0.05,
+          0.0833
+        ]
+      },
+      "replay260": {
+        "verdict": "SAFE",
+        "score": "truth_ambiguous",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 260,
+        "delta": 0.0,
+        "delta_ci95": [
+          -0.0269,
+          0.0269
+        ]
+      }
+    },
+    {
+      "domain": "retail",
+      "model": "qwen27b-fp8",
+      "name": "Qwen3.8-27B FP8 (self-hosted vLLM)",
+      "truth": "REGRESSED",
+      "truthDelta": -0.0979,
+      "truthCi95": [
+        -0.1375,
+        -0.0604
+      ],
+      "nextStep": {
+        "verdict": "SAFE",
+        "score": "false_safe",
+        "agreement": 0.9263,
+        "tool_steps": 475,
+        "tool_steps_agreeing": 440,
+        "incumbent_self_agreement": 0.9726,
+        "paired_scenarios": null,
+        "delta": null,
+        "delta_ci95": null
+      },
+      "replay60": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "not_enough_evidence",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 60,
+        "delta": -0.05,
+        "delta_ci95": [
+          -0.15,
+          0.05
+        ]
+      },
+      "replay260": {
+        "verdict": "UNSAFE",
+        "score": "correct",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 260,
+        "delta": -0.1115,
+        "delta_ci95": [
+          -0.1577,
+          -0.0654
+        ]
+      }
+    },
+    {
+      "domain": "retail",
+      "model": "qwen-moe-a3b",
+      "name": "Qwen3.6-35B-A3B MoE (self-hosted vLLM)",
+      "truth": "NON-INFERIOR",
+      "truthDelta": -0.0063,
+      "truthCi95": [
+        -0.0333,
+        0.0208
+      ],
+      "nextStep": {
+        "verdict": "UNSAFE",
+        "score": "false_unsafe",
+        "agreement": 0.9179,
+        "tool_steps": 475,
+        "tool_steps_agreeing": 436,
+        "incumbent_self_agreement": 0.9726,
+        "paired_scenarios": null,
+        "delta": null,
+        "delta_ci95": null
+      },
+      "replay60": {
+        "verdict": "SAFE",
+        "score": "correct",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 60,
+        "delta": 0.0333,
+        "delta_ci95": [
+          -0.0333,
+          0.1
+        ]
+      },
+      "replay260": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "not_enough_evidence",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 260,
+        "delta": -0.0231,
+        "delta_ci95": [
+          -0.0577,
+          0.0077
+        ]
+      }
+    },
+    {
+      "domain": "retail",
+      "model": "qwen27b-nothink",
+      "name": "Qwen3.8-27B, thinking off (self-hosted vLLM)",
+      "truth": "AMBIGUOUS",
+      "truthDelta": -0.025,
+      "truthCi95": [
+        -0.0542,
+        0.0021
+      ],
+      "nextStep": {
+        "verdict": "UNSAFE",
+        "score": "truth_ambiguous",
+        "agreement": 0.8779,
+        "tool_steps": 475,
+        "tool_steps_agreeing": 417,
+        "incumbent_self_agreement": 0.9726,
+        "paired_scenarios": null,
+        "delta": null,
+        "delta_ci95": null
+      },
+      "replay60": {
+        "verdict": "SAFE",
+        "score": "truth_ambiguous",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 60,
+        "delta": 0.05,
+        "delta_ci95": [
+          -0.0167,
+          0.1333
+        ]
+      },
+      "replay260": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "truth_ambiguous",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 260,
+        "delta": -0.0346,
+        "delta_ci95": [
+          -0.0692,
+          0.0
+        ]
+      }
+    },
+    {
+      "domain": "retail",
+      "model": "qwen27b-hermes",
+      "name": "Qwen3.8-27B with vLLM's generic hermes tool parser (self-hosted vLLM)",
+      "truth": "REGRESSED",
+      "truthDelta": -0.95,
+      "truthCi95": [
+        -0.9708,
+        -0.9271
+      ],
+      "nextStep": {
+        "verdict": "UNSAFE",
+        "score": "correct",
+        "agreement": 0.0,
+        "tool_steps": 475,
+        "tool_steps_agreeing": 0,
+        "incumbent_self_agreement": 0.9726,
+        "paired_scenarios": null,
+        "delta": null,
+        "delta_ci95": null
+      },
+      "replay60": {
+        "verdict": "UNSAFE",
+        "score": "correct",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 60,
+        "delta": -0.9333,
+        "delta_ci95": [
+          -0.9833,
+          -0.8667
+        ]
+      },
+      "replay260": {
+        "verdict": "UNSAFE",
+        "score": "correct",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 260,
+        "delta": -0.9654,
+        "delta_ci95": [
+          -0.9846,
+          -0.9423
+        ]
+      }
+    },
+    {
+      "domain": "retail",
+      "model": "qwen27b-bf16",
+      "name": "Qwen3.8-27B BF16 (self-hosted vLLM)",
+      "truth": "REGRESSED",
+      "truthDelta": -0.0813,
+      "truthCi95": [
+        -0.1208,
+        -0.0437
+      ],
+      "nextStep": {
+        "verdict": "SAFE",
+        "score": "false_safe",
+        "agreement": 0.9242,
+        "tool_steps": 475,
+        "tool_steps_agreeing": 439,
+        "incumbent_self_agreement": 0.9726,
+        "paired_scenarios": null,
+        "delta": null,
+        "delta_ci95": null
+      },
+      "replay60": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "not_enough_evidence",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 60,
+        "delta": -0.05,
+        "delta_ci95": [
+          -0.1333,
+          0.0333
+        ]
+      },
+      "replay260": {
+        "verdict": "NOT ENOUGH EVIDENCE",
+        "score": "not_enough_evidence",
+        "agreement": null,
+        "tool_steps": null,
+        "tool_steps_agreeing": null,
+        "incumbent_self_agreement": null,
+        "paired_scenarios": 260,
+        "delta": -0.0808,
+        "delta_ci95": [
+          -0.1269,
+          -0.0385
+        ]
+      }
+    }
+  ],
+  "failures": [
+    {
+      "category": "needless handoff",
+      "definition": "The agent handed the customer to a human (escalate_to_human) where the gold resolution has no handoff; usually after offering a transfer the customer accepted.",
+      "counts": {
+        "gpt-6-luna": 22,
+        "qwen27b-bf16": 25,
+        "qwen27b-fp8": 21
+      }
+    },
+    {
+      "category": "wrong refund arguments",
+      "definition": "issue_refund called with arguments that differ from the gold (amount, transaction or reason).",
+      "counts": {
+        "gpt-6-luna": 1,
+        "qwen27b-bf16": 9,
+        "qwen27b-fp8": 10
+      }
+    },
+    {
+      "category": "identity never verified",
+      "definition": "A required verify_identity call was never made before or instead of acting.",
+      "counts": {
+        "gpt-6-luna": 5,
+        "qwen27b-bf16": 4,
+        "qwen27b-fp8": 4
+      }
+    },
+    {
+      "category": "wrong escalation arguments",
+      "definition": "escalate_to_human called with a reason that differs from the gold.",
+      "counts": {
+        "gpt-6-luna": 0,
+        "qwen27b-bf16": 2,
+        "qwen27b-fp8": 5
+      }
+    },
+    {
+      "category": "wrong dispute arguments",
+      "definition": "open_dispute called with arguments that differ from the gold.",
+      "counts": {
+        "gpt-6-luna": 1,
+        "qwen27b-bf16": 1,
+        "qwen27b-fp8": 2
+      }
+    },
+    {
+      "category": "action not in the gold",
+      "definition": "A write the gold does not contain at all (other than handoffs).",
+      "counts": {
+        "gpt-6-luna": 2,
+        "qwen27b-bf16": 0,
+        "qwen27b-fp8": 0
+      }
+    },
+    {
+      "category": "wrong card freeze arguments",
+      "definition": "freeze_card called with arguments that differ from the gold.",
+      "counts": {
+        "gpt-6-luna": 0,
+        "qwen27b-bf16": 1,
+        "qwen27b-fp8": 0
+      }
+    },
+    {
+      "category": "tool calls never parsed (serving configuration)",
+      "definition": "The endpoint's tool parser does not recognise the model's tool-call format, so no tool runs; conversations end normally with no errors.",
+      "counts": {
+        "qwen27b-hermes": 239
+      }
+    }
+  ],
+  "noise": {
+    "rerunDelta": -0.0208,
+    "rerunCi95": [
+      -0.0542,
+      0.0125
+    ],
+    "nScenarios": 240,
+    "resamples": 10000
+  },
+  "reviewer": {
+    "reviewed": 50,
+    "pass": 39,
+    "minor": 7,
+    "fail": 4
+  },
+  "limitations": [
+    "Simulated customers only: Claude Haiku 5.5 plays every customer, and a different simulator can shift success rates and verdicts. Verdicts were never compared with real customers.",
+    "Ground truth by construction assumes a faithful customer; script breaks by the simulator corrupt the truth itself.",
+    "Scenario quality was checked by a Claude reviewer on 50 hidden scenarios, not by a human. One retail kind (cancel an already-delivered order, 50 of 240 hidden retail scenarios) penalizes helpful agents; it was kept in the released numbers.",
+    "Scale: two domains, one incumbent per domain, 13 scored candidate swaps (10 with decidable truth: 8 regressed, 2 non-inferior). Error rates of the checks have wide uncertainty (e.g. 0 of 8 vs 5 of 8 false safes); the planned exact intervals and paired tests were not run.",
+    "Truth is itself estimated from 240 scenarios x 2; three candidates have AMBIGUOUS truth and are not scored. Pooled over 500 scenarios, GPT-5 mini also raises harmful actions (+0.026 per conversation), so its NON-INFERIOR label holds for hidden-set success only.",
+    "The replay checks and the truth use the same simulator, harness and grader (not independent); an independent-simulator truth was planned but not run.",
+    "The v1 hidden sets were generated from seeds in the repository history, so they guard against agents peeking during a run, not against deliberate gaming.",
+    "Costs: API costs use list prices pinned on 2026-10-13/15, not invoices; the simulated customer is excluded; self-hosted costs are GPU time at one concurrency level, without engineering or operations.",
+    "Self-hosted FP8 and MoE fintech runs combine one full trial with a partial second trial cut short by a restart (445 and 481 conversations).",
+    "Next-step agreement verdicts depend on a threshold; one 'correct' verdict (qwen27b-rft, 84.9% vs an 85.0% cut-off) rests on a 0.1-point margin.",
+    "Prior work already establishes the mechanisms (compounding per-step errors, simulator effects, provider variance); the contribution is measuring swap checks against ground-truth outcomes."
+  ]
+}

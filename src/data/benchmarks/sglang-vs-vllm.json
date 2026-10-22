@@ -1,0 +1,167 @@
+{
+  "meta": {
+    "name": "SGLang vs vLLM on replayed agent traffic",
+    "question": "At equal hardware and identical agent traffic, does the serving engine (stock vLLM vs SGLang) change throughput and latency for this hybrid-attention model?",
+    "status": "complete",
+    "runDate": "2026-10-09"
+  },
+  "model": {
+    "name": "Qwen3.8-27B",
+    "description": "dense, hybrid Gated DeltaNet + attention",
+    "weights": "open"
+  },
+  "traffic": {
+    "sessions": 124,
+    "turns": 1465,
+    "source": "Recorded mini-swe-agent sessions from our own Terminal-Bench 2.0 runs at 32 agents with vLLM defaults",
+    "maxPromptTokens": 60000,
+    "public": false
+  },
+  "limits": {
+    "gpu": "H100",
+    "concurrency": 32,
+    "windowS": 720,
+    "gapS": 3.0
+  },
+  "replay": "None executed: each request re-sends the conversation exactly as the agent sent it before its i-th reply, with the bash tool schema, and asks for exactly as many tokens as the recorded reply (ignore_eos, temperature 0.6, streaming).",
+  "settings": [
+    {
+      "name": "stock vLLM",
+      "engine": "vLLM 0.31.0",
+      "flags": "none (the agent study's defaults)",
+      "n": 504,
+      "requests_completed": 504,
+      "requests_errored": 0,
+      "error_types": [],
+      "sessions_touched": 55,
+      "measured_window_s": 832.8,
+      "generated_tokens": 326395,
+      "generated_tokens_per_s": 391.94,
+      "request_latency_p50_s": 27.92,
+      "request_latency_p90_s": 107.44,
+      "ttft_p50_s": 8.66,
+      "time_per_output_token_p50_ms": 53.94,
+      "client_prefix_cache_hit": 0.0652,
+      "kv_or_token_usage_peak": 1.0,
+      "running_requests_peak": 31.0,
+      "waiting_requests_peak": 11.0,
+      "server_startup_s": 163.6,
+      "requests_completed_vs_vllm": 1.0,
+      "generated_tokens_per_s_vs_vllm": 1.0
+    },
+    {
+      "name": "stock SGLang",
+      "engine": "SGLang 0.5.20",
+      "flags": "none (equivalent common flags)",
+      "n": 277,
+      "requests_completed": 277,
+      "requests_errored": 0,
+      "error_types": [],
+      "sessions_touched": 39,
+      "measured_window_s": 815.2,
+      "generated_tokens": 167763,
+      "generated_tokens_per_s": 205.79,
+      "request_latency_p50_s": 88.09,
+      "request_latency_p90_s": 142.25,
+      "ttft_p50_s": 76.29,
+      "time_per_output_token_p50_ms": 22.51,
+      "client_prefix_cache_hit": 0.0826,
+      "kv_or_token_usage_peak": 0.76,
+      "running_requests_peak": 5.0,
+      "waiting_requests_peak": 27.0,
+      "server_startup_s": 167.2,
+      "requests_completed_vs_vllm": 0.5496,
+      "generated_tokens_per_s_vs_vllm": 0.5251
+    },
+    {
+      "name": "SGLang, lazy radix + bf16 states",
+      "engine": "SGLang 0.5.20",
+      "flags": "--mem-fraction-static 0.85, --mamba-radix-cache-strategy extra_buffer_lazy, --mamba-ssm-dtype bfloat16, --max-mamba-cache-size 128",
+      "n": 417,
+      "requests_completed": 417,
+      "requests_errored": 0,
+      "error_types": [],
+      "sessions_touched": 47,
+      "measured_window_s": 903.2,
+      "generated_tokens": 272742,
+      "generated_tokens_per_s": 301.97,
+      "request_latency_p50_s": 54.04,
+      "request_latency_p90_s": 115.88,
+      "ttft_p50_s": 36.49,
+      "time_per_output_token_p50_ms": 31.34,
+      "client_prefix_cache_hit": 0.0987,
+      "kv_or_token_usage_peak": 0.98,
+      "running_requests_peak": 27.0,
+      "waiting_requests_peak": 26.0,
+      "server_startup_s": 167.6,
+      "requests_completed_vs_vllm": 0.8274,
+      "generated_tokens_per_s_vs_vllm": 0.7704
+    },
+    {
+      "name": "SGLang, radix cache off",
+      "engine": "SGLang 0.5.20",
+      "flags": "--mem-fraction-static 0.85, --disable-radix-cache, --max-mamba-cache-size 48",
+      "n": 446,
+      "requests_completed": 435,
+      "requests_errored": 11,
+      "error_types": [
+        "ConnectionResetError"
+      ],
+      "sessions_touched": 47,
+      "measured_window_s": 855.4,
+      "generated_tokens": 281150,
+      "generated_tokens_per_s": 328.68,
+      "request_latency_p50_s": 45.97,
+      "request_latency_p90_s": 95.75,
+      "ttft_p50_s": 29.39,
+      "time_per_output_token_p50_ms": 38.52,
+      "client_prefix_cache_hit": 0.0,
+      "kv_or_token_usage_peak": 0.99,
+      "running_requests_peak": 31.0,
+      "waiting_requests_peak": 24.0,
+      "server_startup_s": 210.9,
+      "requests_completed_vs_vllm": 0.8631,
+      "generated_tokens_per_s_vs_vllm": 0.8386
+    }
+  ],
+  "metrics": [
+    {
+      "name": "requests_completed",
+      "definition": "requests that returned without error and with a usage block within the run."
+    },
+    {
+      "name": "generated_tokens_per_s",
+      "definition": "completion tokens of completed requests / measured_window_s (the actual replay duration, which runs past 720 s while in-flight requests finish)."
+    },
+    {
+      "name": "request_latency_p50_s / p90_s",
+      "definition": "median / 90th percentile of request wall time over completed requests."
+    },
+    {
+      "name": "ttft_p50_s",
+      "definition": "median time to the first streamed chunk."
+    },
+    {
+      "name": "time_per_output_token_p50_ms",
+      "definition": "median of (latency - ttft) / (completion tokens - 1)."
+    },
+    {
+      "name": "running_requests_peak",
+      "definition": "peak of the engine's running-requests gauge, scraped every 10 s."
+    }
+  ],
+  "failure": {
+    "category": "ConnectionResetError",
+    "definition": "Request failed with a connection reset from the server.",
+    "example": "A streamed request was reset by the SGLang server while the radix cache was off."
+  },
+  "limitations": [
+    "One run per setting; no repeats or confidence intervals.",
+    "One model (a hybrid Gated DeltaNet + attention model, where SGLang's per-request linear-attention state is the bottleneck), one GPU type (H100), one workload (mini-swe-agent traffic at 32 sessions).",
+    "Only two non-default SGLang settings were tried, following its cookbook; not an exhaustive tuning of either engine.",
+    "Measures serving throughput and latency only, not agent outcomes.",
+    "Replay re-sends recorded prompts with fixed generation lengths (ignore_eos); real agents would react to slower responses (fewer turns per time limit).",
+    "Runs reached different numbers of sessions (39-55 of 124) within the window, so later sessions with longer prompts are weighted differently across engines.",
+    "Replayed prompts were a median 0.8769-0.9256 of the recorded prompt token counts (reasoning text is not re-sent), so prefix sharing is close to but not identical with the original run."
+  ]
+}

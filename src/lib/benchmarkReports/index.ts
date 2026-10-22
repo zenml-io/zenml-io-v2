@@ -5,6 +5,11 @@
  * disputed is shown.
  */
 
+import { buildDecisionAgents } from "./decision-agents";
+import { buildMlTrainingOps } from "./ml-training-ops";
+import { buildServingInfra } from "./serving-infra";
+import { buildSglangVsVllm } from "./sglang-vs-vllm";
+import { buildSwapbench } from "./swapbench";
 import type { BenchmarkGroup, BenchmarkReport } from "./types";
 import { buildUnderwriting } from "./underwriting";
 
@@ -12,6 +17,11 @@ export type * from "./types";
 
 export const BENCHMARK_REPORTS: readonly BenchmarkReport[] = [
   buildUnderwriting(),
+  buildSwapbench(),
+  buildDecisionAgents(),
+  buildServingInfra(),
+  buildSglangVsVllm(),
+  buildMlTrainingOps(),
 ].sort((a, b) => b.date.localeCompare(a.date));
 
 export const BENCHMARK_GROUPS: readonly {

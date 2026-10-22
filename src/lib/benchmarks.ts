@@ -27,7 +27,7 @@ export const BENCHMARK_METHOD = [
   },
   {
     title: "Checked grading",
-    body: "LLM judges are checked against human labels, and prompt changes are scored on held-out cases they were never tuned on.",
+    body: "Graders are deterministic wherever the task allows. LLM judges are checked against human labels, and prompt changes are scored on held-out cases they were never tuned on.",
   },
   {
     title: "Caveats in the open",

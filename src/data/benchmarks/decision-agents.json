@@ -1,0 +1,855 @@
+{
+  "meta": {
+    "question": "Are tool-using decision agents accurate against real outcomes, stable across reruns, replayable from recorded tool answers, and which cheap signals catch their wrong decisions?",
+    "status": "complete",
+    "start": "2026-10-09",
+    "end": "2026-10-10"
+  },
+  "models": [
+    {
+      "key": "dense",
+      "name": "Qwen3.8-27B (dense)",
+      "vendor": "Qwen (Alibaba)",
+      "weights": "open"
+    },
+    {
+      "key": "moe",
+      "name": "Qwen3.6-35B-A3B (MoE, 3B active, FP8)",
+      "vendor": "Qwen (Alibaba)",
+      "weights": "open"
+    }
+  ],
+  "dataset": {
+    "cases": {
+      "claims": 150,
+      "bva": 124,
+      "de_kr": 150
+    },
+    "labels": {
+      "claims": {
+        "overturn": 75,
+        "uphold": 75
+      },
+      "bva": {
+        "grant": 70,
+        "deny": 54
+      },
+      "de_kr": {
+        "uphold": 75,
+        "overturn": 75
+      }
+    },
+    "library": {
+      "claims": 19371,
+      "bva": 693,
+      "de_kr": 534
+    },
+    "totalCases": {
+      "claims": 42749,
+      "bva": 4000,
+      "de_kr": 684
+    }
+  },
+  "setup": {
+    "conditions": {
+      "claims:base": "California IMR appeals; dense and MoE agent, 2 attempts per case, normal system prompt and real tools.",
+      "claims:normal_run_attempt0": "The dense agent's attempt-0 sessions of claims:base: the reference each experiment condition is compared with case by case.",
+      "claims:cost_pressure": "Dense agent, 1 attempt per case; one paragraph added to the system prompt asking to overturn a denial only when records 'clearly establish' necessity.",
+      "claims:tool_faults": "Dense agent, 1 attempt; precedent search and precedent text return an HTTP 503 error half the time (seeded per case).",
+      "claims:blind": "Dense agent, 1 attempt; precedents shown without their outcome or concluding sentences.",
+      "claims:sim_tools": "Dense agent, 1 attempt; the two precedent tools are answered by an LLM (the dense model, temperature 0) simulating the database, as a replay fallback.",
+      "bva:base": "US Board of Veterans' Appeals single-issue appeals; dense and MoE agent, 2 attempts per case.",
+      "de_kr:base": "German first-instance social court health-insurance suits (German-language prompts and tools); dense and MoE agent, 2 attempts per case."
+    },
+    "rewriting": "claims and bva: the dense model (temperature 0) rewrote each decision's text into a neutral JSON case file of facts only (request, condition, history, prior treatments / issue, service, statements, medical and other evidence), instructed to omit the reviewer's conclusions. de_kr: no rewriting; the agent reads the court's own statement of facts (Tatbestand), which German judgments keep separate from the reasoning.",
+    "leakageCheck": "A regex of outcome wording (claims: e.g. 'medically necessary', 'upheld', 'overturn', 'guideline'; bva: e.g. 'the Board finds', 'is granted', 'benefit of the doubt', 'criteria ... met') run over each case file; any match dropped the case (claims 0 dropped, bva 6 dropped). The reviewer's choice of facts can still hint at the outcome.",
+    "limits": {
+      "max_model_turns": 12,
+      "max_tokens_per_call": 4096,
+      "temperature": 0.6,
+      "concurrency": 32,
+      "attempts_per_case": "2 (base); 1 (claims experiment conditions)"
+    }
+  },
+  "results": {
+    "claims:base": [
+      {
+        "model": "dense",
+        "n": 300,
+        "correct": 228,
+        "accuracy": 0.76,
+        "ci95": [
+          0.6967,
+          0.82
+        ],
+        "decided": 292,
+        "accuracyOfDecided": 0.7808,
+        "noDecision": 8,
+        "wrongForInsurer": 44,
+        "wrongForClaimant": 20,
+        "callsPerCase": 5.96,
+        "toolCallsPerCase": 10.59,
+        "highConfidenceShare": 0.5308,
+        "inventedCitations": {
+          "sessions": 0,
+          "decided": 292
+        }
+      },
+      {
+        "model": "moe",
+        "n": 300,
+        "correct": 210,
+        "accuracy": 0.7,
+        "ci95": [
+          0.6367,
+          0.7633
+        ],
+        "decided": 263,
+        "accuracyOfDecided": 0.7985,
+        "noDecision": 37,
+        "wrongForInsurer": 26,
+        "wrongForClaimant": 27,
+        "callsPerCase": 6.92,
+        "toolCallsPerCase": 6.88,
+        "highConfidenceShare": 0.5741,
+        "inventedCitations": {
+          "sessions": 0,
+          "decided": 263
+        }
+      }
+    ],
+    "claims:normal_run_attempt0": [
+      {
+        "model": "dense",
+        "n": 150,
+        "correct": 113,
+        "accuracy": 0.7533,
+        "ci95": [
+          0.68,
+          0.82
+        ],
+        "decided": 147,
+        "accuracyOfDecided": 0.7687,
+        "noDecision": 3,
+        "wrongForInsurer": 24,
+        "wrongForClaimant": 10,
+        "callsPerCase": 5.89,
+        "toolCallsPerCase": 10.46,
+        "highConfidenceShare": 0.5374,
+        "wrongfulDenials": {
+          "n": 74,
+          "denied": 24,
+          "rate": 0.3243
+        },
+        "changedVsNormal": {
+          "pairs": 143,
+          "differ": 13,
+          "rate": 0.0909
+        },
+        "inventedCitations": {
+          "sessions": 0,
+          "decided": 147
+        }
+      }
+    ],
+    "claims:cost_pressure": [
+      {
+        "model": "dense",
+        "n": 150,
+        "correct": 109,
+        "accuracy": 0.7267,
+        "ci95": [
+          0.6533,
+          0.7933
+        ],
+        "decided": 147,
+        "accuracyOfDecided": 0.7415,
+        "noDecision": 3,
+        "wrongForInsurer": 32,
+        "wrongForClaimant": 6,
+        "callsPerCase": 5.43,
+        "toolCallsPerCase": 9.26,
+        "highConfidenceShare": 0.5102,
+        "wrongfulDenials": {
+          "n": 74,
+          "denied": 32,
+          "rate": 0.4324
+        },
+        "changedVsNormal": {
+          "pairs": 146,
+          "differ": 20,
+          "rate": 0.137
+        },
+        "inventedCitations": {
+          "sessions": 0,
+          "decided": 147
+        }
+      }
+    ],
+    "claims:tool_faults": [
+      {
+        "model": "dense",
+        "n": 150,
+        "correct": 85,
+        "accuracy": 0.5667,
+        "ci95": [
+          0.4867,
+          0.64
+        ],
+        "decided": 100,
+        "accuracyOfDecided": 0.85,
+        "noDecision": 50,
+        "wrongForInsurer": 10,
+        "wrongForClaimant": 5,
+        "callsPerCase": 9.39,
+        "toolCallsPerCase": 15.21,
+        "highConfidenceShare": 0.59,
+        "wrongfulDenials": {
+          "n": 49,
+          "denied": 10,
+          "rate": 0.2041
+        },
+        "changedVsNormal": {
+          "pairs": 100,
+          "differ": 9,
+          "rate": 0.09
+        },
+        "inventedCitations": {
+          "sessions": 0,
+          "decided": 100
+        }
+      }
+    ],
+    "claims:blind": [
+      {
+        "model": "dense",
+        "n": 150,
+        "correct": 120,
+        "accuracy": 0.8,
+        "ci95": [
+          0.7333,
+          0.86
+        ],
+        "decided": 144,
+        "accuracyOfDecided": 0.8333,
+        "noDecision": 6,
+        "wrongForInsurer": 17,
+        "wrongForClaimant": 7,
+        "callsPerCase": 6.57,
+        "toolCallsPerCase": 12.13,
+        "highConfidenceShare": 0.4722,
+        "wrongfulDenials": {
+          "n": 73,
+          "denied": 17,
+          "rate": 0.2329
+        },
+        "changedVsNormal": {
+          "pairs": 142,
+          "differ": 15,
+          "rate": 0.1056
+        },
+        "inventedCitations": {
+          "sessions": 0,
+          "decided": 144
+        }
+      }
+    ],
+    "claims:sim_tools": [
+      {
+        "model": "dense",
+        "n": 150,
+        "correct": 104,
+        "accuracy": 0.6933,
+        "ci95": [
+          0.62,
+          0.7667
+        ],
+        "decided": 148,
+        "accuracyOfDecided": 0.7027,
+        "noDecision": 2,
+        "wrongForInsurer": 33,
+        "wrongForClaimant": 11,
+        "callsPerCase": 6.61,
+        "toolCallsPerCase": 14.19,
+        "highConfidenceShare": 0.3378,
+        "wrongfulDenials": {
+          "n": 74,
+          "denied": 33,
+          "rate": 0.4459
+        },
+        "changedVsNormal": {
+          "pairs": 145,
+          "differ": 32,
+          "rate": 0.2207
+        },
+        "inventedCitations": {
+          "sessions": 132,
+          "decided": 148
+        }
+      }
+    ],
+    "bva:base": [
+      {
+        "model": "dense",
+        "n": 248,
+        "correct": 199,
+        "accuracy": 0.8024,
+        "ci95": [
+          0.7379,
+          0.8629
+        ],
+        "decided": 239,
+        "accuracyOfDecided": 0.8326,
+        "noDecision": 9,
+        "wrongForInsurer": 27,
+        "wrongForClaimant": 13,
+        "callsPerCase": 5.97,
+        "toolCallsPerCase": 9.95,
+        "highConfidenceShare": 0.4728,
+        "inventedCitations": {
+          "sessions": 0,
+          "decided": 239
+        }
+      },
+      {
+        "model": "moe",
+        "n": 248,
+        "correct": 209,
+        "accuracy": 0.8427,
+        "ci95": [
+          0.7863,
+          0.8992
+        ],
+        "decided": 246,
+        "accuracyOfDecided": 0.8496,
+        "noDecision": 2,
+        "wrongForInsurer": 12,
+        "wrongForClaimant": 25,
+        "callsPerCase": 5.44,
+        "toolCallsPerCase": 6.4,
+        "highConfidenceShare": 0.6098,
+        "inventedCitations": {
+          "sessions": 0,
+          "decided": 246
+        }
+      }
+    ],
+    "de_kr:base": [
+      {
+        "model": "dense",
+        "n": 300,
+        "correct": 183,
+        "accuracy": 0.61,
+        "ci95": [
+          0.5433,
+          0.6767
+        ],
+        "decided": 240,
+        "accuracyOfDecided": 0.7625,
+        "noDecision": 60,
+        "wrongForInsurer": 34,
+        "wrongForClaimant": 23,
+        "callsPerCase": 8.41,
+        "toolCallsPerCase": 14.49,
+        "highConfidenceShare": 0.475,
+        "inventedCitations": {
+          "sessions": 0,
+          "decided": 240
+        }
+      },
+      {
+        "model": "moe",
+        "n": 300,
+        "correct": 195,
+        "accuracy": 0.65,
+        "ci95": [
+          0.5833,
+          0.7167
+        ],
+        "decided": 293,
+        "accuracyOfDecided": 0.6655,
+        "noDecision": 7,
+        "wrongForInsurer": 58,
+        "wrongForClaimant": 40,
+        "callsPerCase": 6.35,
+        "toolCallsPerCase": 6.99,
+        "highConfidenceShare": 0.8123,
+        "inventedCitations": {
+          "sessions": 0,
+          "decided": 293
+        }
+      }
+    ]
+  },
+  "perType": {
+    "claims:base": {
+      "dense": {
+        "review_type=Experimental/Investigational": {
+          "n": 54,
+          "correct": 39
+        },
+        "review_type=Medical Necessity": {
+          "n": 246,
+          "correct": 189
+        },
+        "truth=overturn": {
+          "n": 150,
+          "correct": 102
+        },
+        "truth=uphold": {
+          "n": 150,
+          "correct": 126
+        }
+      },
+      "moe": {
+        "review_type=Experimental/Investigational": {
+          "n": 54,
+          "correct": 34
+        },
+        "review_type=Medical Necessity": {
+          "n": 246,
+          "correct": 176
+        },
+        "truth=overturn": {
+          "n": 150,
+          "correct": 106
+        },
+        "truth=uphold": {
+          "n": 150,
+          "correct": 104
+        }
+      }
+    },
+    "claims:normal_run_attempt0": {
+      "dense": {
+        "review_type=Experimental/Investigational": {
+          "n": 27,
+          "correct": 20
+        },
+        "review_type=Medical Necessity": {
+          "n": 123,
+          "correct": 93
+        },
+        "truth=overturn": {
+          "n": 75,
+          "correct": 50
+        },
+        "truth=uphold": {
+          "n": 75,
+          "correct": 63
+        }
+      }
+    },
+    "claims:cost_pressure": {
+      "dense": {
+        "review_type=Experimental/Investigational": {
+          "n": 27,
+          "correct": 20
+        },
+        "review_type=Medical Necessity": {
+          "n": 123,
+          "correct": 89
+        },
+        "truth=overturn": {
+          "n": 75,
+          "correct": 42
+        },
+        "truth=uphold": {
+          "n": 75,
+          "correct": 67
+        }
+      }
+    },
+    "claims:tool_faults": {
+      "dense": {
+        "review_type=Experimental/Investigational": {
+          "n": 27,
+          "correct": 9
+        },
+        "review_type=Medical Necessity": {
+          "n": 123,
+          "correct": 76
+        },
+        "truth=overturn": {
+          "n": 75,
+          "correct": 39
+        },
+        "truth=uphold": {
+          "n": 75,
+          "correct": 46
+        }
+      }
+    },
+    "claims:blind": {
+      "dense": {
+        "review_type=Experimental/Investigational": {
+          "n": 27,
+          "correct": 19
+        },
+        "review_type=Medical Necessity": {
+          "n": 123,
+          "correct": 101
+        },
+        "truth=overturn": {
+          "n": 75,
+          "correct": 56
+        },
+        "truth=uphold": {
+          "n": 75,
+          "correct": 64
+        }
+      }
+    },
+    "claims:sim_tools": {
+      "dense": {
+        "review_type=Experimental/Investigational": {
+          "n": 27,
+          "correct": 20
+        },
+        "review_type=Medical Necessity": {
+          "n": 123,
+          "correct": 84
+        },
+        "truth=overturn": {
+          "n": 75,
+          "correct": 41
+        },
+        "truth=uphold": {
+          "n": 75,
+          "correct": 63
+        }
+      }
+    },
+    "bva:base": {
+      "dense": {
+        "truth=deny": {
+          "n": 108,
+          "correct": 90
+        },
+        "truth=grant": {
+          "n": 140,
+          "correct": 109
+        }
+      },
+      "moe": {
+        "truth=deny": {
+          "n": 108,
+          "correct": 82
+        },
+        "truth=grant": {
+          "n": 140,
+          "correct": 127
+        }
+      }
+    },
+    "de_kr:base": {
+      "dense": {
+        "truth=overturn": {
+          "n": 150,
+          "correct": 85
+        },
+        "truth=uphold": {
+          "n": 150,
+          "correct": 98
+        }
+      },
+      "moe": {
+        "truth=overturn": {
+          "n": 150,
+          "correct": 86
+        },
+        "truth=uphold": {
+          "n": 150,
+          "correct": 109
+        }
+      }
+    }
+  },
+  "baselines": {
+    "claims": {
+      "correct": 103,
+      "n": 150,
+      "rule": "majority outcome of past decisions for the same treatment (no AI)"
+    },
+    "claimsMajority": {
+      "correct": 75,
+      "n": 150
+    },
+    "bva": {
+      "correct": 77,
+      "n": 124,
+      "rule": "majority outcome of past decisions whose issue shares the first distinctive condition word"
+    },
+    "bvaMajority": {
+      "correct": 70,
+      "n": 124
+    },
+    "deKrMajority": {
+      "correct": 75,
+      "n": 150
+    },
+    "claimsAgentVsLookup": {
+      "dense": {
+        "diff": 7,
+        "ci95": [
+          -3,
+          17
+        ]
+      },
+      "moe": {
+        "diff": 1,
+        "ci95": [
+          -7,
+          11
+        ]
+      }
+    }
+  },
+  "flips": {
+    "claims": {
+      "rerun_dense": {
+        "pairs": 143,
+        "differ": 13,
+        "rate": 0.0909
+      },
+      "rerun_moe": {
+        "pairs": 123,
+        "differ": 18,
+        "rate": 0.1463
+      },
+      "model_change": {
+        "pairs": 258,
+        "differ": 49,
+        "rate": 0.1899
+      }
+    },
+    "bva": {
+      "rerun_dense": {
+        "pairs": 117,
+        "differ": 13,
+        "rate": 0.1111
+      },
+      "rerun_moe": {
+        "pairs": 122,
+        "differ": 13,
+        "rate": 0.1066
+      },
+      "model_change": {
+        "pairs": 237,
+        "differ": 30,
+        "rate": 0.1266
+      }
+    },
+    "de_kr": {
+      "rerun_dense": {
+        "pairs": 103,
+        "differ": 10,
+        "rate": 0.0971
+      },
+      "rerun_moe": {
+        "pairs": 143,
+        "differ": 28,
+        "rate": 0.1958
+      },
+      "model_change": {
+        "pairs": 237,
+        "differ": 46,
+        "rate": 0.1941
+      }
+    }
+  },
+  "replay": {
+    "claims": {
+      "rerun_dense": {
+        "pairs": 150,
+        "identical": 0.04,
+        "found": 0.7522,
+        "fully": 0.2133,
+        "fullyCount": 32
+      },
+      "rerun_moe": {
+        "pairs": 150,
+        "identical": 0.1667,
+        "found": 0.7457,
+        "fully": 0.32,
+        "fullyCount": 48
+      },
+      "model_change": {
+        "pairs": 300,
+        "identical": 0.0067,
+        "found": 0.7836,
+        "fully": 0.3633,
+        "fullyCount": 109
+      }
+    },
+    "bva": {
+      "rerun_dense": {
+        "pairs": 124,
+        "identical": 0.0806,
+        "found": 0.7525,
+        "fully": 0.2097,
+        "fullyCount": 26
+      },
+      "rerun_moe": {
+        "pairs": 124,
+        "identical": 0.129,
+        "found": 0.7236,
+        "fully": 0.2581,
+        "fullyCount": 32
+      },
+      "model_change": {
+        "pairs": 248,
+        "identical": 0.0282,
+        "found": 0.7962,
+        "fully": 0.4315,
+        "fullyCount": 107
+      }
+    },
+    "de_kr": {
+      "rerun_dense": {
+        "pairs": 150,
+        "identical": 0.0267,
+        "found": 0.6748,
+        "fully": 0.1,
+        "fullyCount": 15
+      },
+      "rerun_moe": {
+        "pairs": 150,
+        "identical": 0.12,
+        "found": 0.7341,
+        "fully": 0.26,
+        "fullyCount": 39
+      },
+      "model_change": {
+        "pairs": 300,
+        "identical": 0,
+        "found": 0.7712,
+        "fully": 0.3267,
+        "fullyCount": 98
+      }
+    }
+  },
+  "signals": {
+    "claims": {
+      "not_high_confidence": {
+        "catches_wrong": "96/117",
+        "catches_wrong_rate": 0.8205,
+        "flags_right": "153/438",
+        "flags_right_rate": 0.3493
+      },
+      "other_model_disagrees": {
+        "catches_wrong": "49/117",
+        "catches_wrong_rate": 0.4188,
+        "flags_right": "49/438",
+        "flags_right_rate": 0.1119
+      },
+      "rerun_disagrees": {
+        "catches_wrong": "31/117",
+        "catches_wrong_rate": 0.265,
+        "flags_right": "31/438",
+        "flags_right_rate": 0.0708
+      },
+      "llm_judge_says_incorrect": {
+        "judged": 545,
+        "decided": 555,
+        "no_usable_verdict": 10,
+        "catches_wrong": "36/116",
+        "catches_wrong_rate": 0.3103,
+        "flags_right": "30/429",
+        "flags_right_rate": 0.0699,
+        "agreement_with_truth": 0.7982
+      },
+      "_wrong_total": "117/555"
+    },
+    "bva": {
+      "not_high_confidence": {
+        "catches_wrong": "54/77",
+        "catches_wrong_rate": 0.7013,
+        "flags_right": "168/408",
+        "flags_right_rate": 0.4118
+      },
+      "other_model_disagrees": {
+        "catches_wrong": "30/77",
+        "catches_wrong_rate": 0.3896,
+        "flags_right": "30/408",
+        "flags_right_rate": 0.0735
+      },
+      "rerun_disagrees": {
+        "catches_wrong": "26/77",
+        "catches_wrong_rate": 0.3377,
+        "flags_right": "26/408",
+        "flags_right_rate": 0.0637
+      },
+      "llm_judge_says_incorrect": {
+        "judged": 361,
+        "decided": 485,
+        "no_usable_verdict": 124,
+        "catches_wrong": "19/54",
+        "catches_wrong_rate": 0.3519,
+        "flags_right": "56/307",
+        "flags_right_rate": 0.1824,
+        "agreement_with_truth": 0.7479
+      },
+      "_wrong_total": "77/485"
+    },
+    "de_kr": {
+      "not_high_confidence": {
+        "catches_wrong": "64/155",
+        "catches_wrong_rate": 0.4129,
+        "flags_right": "117/378",
+        "flags_right_rate": 0.3095
+      },
+      "other_model_disagrees": {
+        "catches_wrong": "46/155",
+        "catches_wrong_rate": 0.2968,
+        "flags_right": "46/378",
+        "flags_right_rate": 0.1217
+      },
+      "rerun_disagrees": {
+        "catches_wrong": "38/155",
+        "catches_wrong_rate": 0.2452,
+        "flags_right": "38/378",
+        "flags_right_rate": 0.1005
+      },
+      "llm_judge_says_incorrect": {
+        "judged": 457,
+        "decided": 533,
+        "no_usable_verdict": 76,
+        "catches_wrong": "55/138",
+        "catches_wrong_rate": 0.3986,
+        "flags_right": "67/319",
+        "flags_right_rate": 0.21,
+        "agreement_with_truth": 0.6718
+      },
+      "_wrong_total": "155/533"
+    }
+  },
+  "costPressure": {
+    "diffPoints": 11,
+    "ci95Points": [
+      3,
+      20
+    ],
+    "cases": 74,
+    "detectedBySuiteSize": {
+      "30": 0.24,
+      "50": 0.37,
+      "150": 0.8
+    }
+  },
+  "noise": {
+    "method": "Unchanged reruns: each case run twice per model (attempt 0 and 1) with identical inputs at temperature 0.6.",
+    "resamples": 2000
+  },
+  "limitations": [
+    "Two open models (Qwen3.8-27B dense, Qwen3.6-35B-A3B MoE) served by us; no frontier models.",
+    "claims covers one state's medical-necessity and experimental-treatment reviews, which are written decisions, not insurers' claim files.",
+    "US case files are rewritten from the decision text by a model; the choice of facts can hint at the outcome even after the regex leak check. German case files are the court's own statement of facts.",
+    "One LLM judge (the dense model, also one of the agents); it gave no usable verdict on 124 of 485 (bva) and 76 of 533 (de_kr) decided sessions.",
+    "124-150 cases per domain; group-level fairness gaps cannot be resolved (overlapping CIs).",
+    "The claims experiment conditions are one attempt per case on the dense model only.",
+    "No cost per decision: GPU time was not logged for these runs.",
+    "The bva test set is not balanced (70 grant / 54 deny) and 2 cases appear twice in the case list; analysis dedupes them by ID.",
+    "Precedent libraries come from the same sources as the test cases; an agent can find closely related past decisions, which is intended (precedent use) but means results reflect retrieval-augmented decisions."
+  ]
+}
