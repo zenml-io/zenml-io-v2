@@ -131,7 +131,7 @@
   },
   "src/lib/rehypeTableScroll.ts": {
     "shadcn/no-raw-colors": {
-      "count": 6
+      "count": 3
     }
   },
   "src/lib/templates/registry.ts": {
@@ -142,11 +142,6 @@
   "src/pages/author/[slug].astro": {
     "shadcn/no-restyle": {
       "count": 3
-    }
-  },
-  "src/pages/careers.astro": {
-    "shadcn/no-restyle": {
-      "count": 1
     }
   },
   "src/pages/features/[slug].astro": {
