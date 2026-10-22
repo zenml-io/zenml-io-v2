@@ -1,65 +1,72 @@
 ---
-import type { BenchmarkReport } from "../../lib/benchmarkReports";
+import type {
+  BenchmarkPreview,
+  BenchmarkReport,
+} from "../../lib/benchmarkReports";
 import { longDate } from "../../lib/benchmarkReports/format";
-import {
-  ENTRY_ROW,
-  ENTRY_ROW_CHEVRON,
-  ENTRY_ROW_CHEVRON_PATH,
-  ENTRY_ROW_CHEVRON_VIEWBOX,
-  ENTRY_ROW_META,
-  ENTRY_ROW_META_DOT,
-  ENTRY_ROW_META_STRONG,
-  ENTRY_ROW_SUMMARY,
-  ENTRY_ROW_TITLE,
-  ENTRY_ROW_TITLE_LINK,
-} from "./entryRowStyles";
+import { ENTRY_ROW_TITLE_LINK } from "./entryRowStyles";
 
 /**
- * labs.benchmark-card — one experiment on /benchmarks, laid out as an entry
- * row (DESIGN.md "Entry rows, not cards"; the class strings are
- * labs.entry-row's own): the question as the title, a meta line (domain ·
- * data · run date), the headline finding clamped to two lines, and the one
- * number the benchmark leads with in a right-hand lane. The title link is
- * stretched over the row to the report; a published companion post adds a
- * "Read the story" link above it.
+ * labs.benchmark-card — one experiment on /benchmarks, led by its result:
+ * a small label (domain · run date), the question as the title, then a
+ * single-hue sage bar chart of the benchmark's headline metric with direct
+ * labels and a "higher/lower is better" note (DESIGN.md "Data
+ * visualization"). The title link is stretched over the card to the report;
+ * a published companion post adds a "Read the story" link above it.
  */
 interface Props {
   report: BenchmarkReport;
+  preview: BenchmarkPreview;
   /** The companion post, when it is published. */
   postHref?: string;
 }
-const { report, postHref } = Astro.props;
-const { card } = report;
-const headline = card.headline ?? card.stats[2];
+const { report, preview, postHref } = Astro.props;
+const max = preview.max ?? Math.max(...preview.rows.map((row) => row.value));
+const width = (value: number) =>
+  `${Math.max(2, Math.round((value / max) * 100))}%`;
 ---
 
-<article class:list={[ENTRY_ROW, "md:grid md:grid-cols-[minmax(0,1fr)_220px] md:items-center md:gap-x-10"]}>
-  <div class="flex min-w-0 flex-col gap-2">
-    <h3 class={ENTRY_ROW_TITLE}>
-      <a href={`/benchmarks/${report.slug}`} class={ENTRY_ROW_TITLE_LINK}>{report.title}</a>
-    </h3>
-    <div class={ENTRY_ROW_META}>
-      <span class={ENTRY_ROW_META_STRONG}>{card.domain}</span>
-      <span class={ENTRY_ROW_META_DOT} aria-hidden="true">&middot;</span>
-      <span>{card.data}</span>
-      <span class={ENTRY_ROW_META_DOT} aria-hidden="true">&middot;</span>
-      <time datetime={report.date}>{longDate(report.date)}</time>
-    </div>
-    <p class={ENTRY_ROW_SUMMARY}>{card.finding}</p>
+<article class="group relative flex h-full flex-col rounded-[20px] border border-(--color-border) bg-card p-6 transition-colors duration-200 ease-out hover:border-(--color-sage-400) focus-within:border-(--color-sage-400)">
+  <p class="font-sans text-[13px] leading-5 text-(--color-cream-700)">
+    {report.card.domain} &middot; <time datetime={report.date}>{longDate(report.date)}</time>
+  </p>
+  <h3 class="mt-2 font-display text-[21px] leading-[27px] text-(--color-cream-900) transition-colors duration-200 ease-out group-hover:text-(--color-sage-800)">
+    <a href={`/benchmarks/${report.slug}`} class={ENTRY_ROW_TITLE_LINK}>{report.title}</a>
+  </h3>
+
+  <figure class="mt-5">
+    <figcaption class="font-sans text-[13px] leading-[18px] text-(--color-cream-700)">
+      {preview.metric} <span class="text-(--color-cream-600)">· {preview.better} is better</span>
+    </figcaption>
+    <dl class="mt-3 grid gap-2">
+      {preview.rows.map((row) => (
+        <div class="grid grid-cols-[minmax(0,9rem)_minmax(0,1fr)] items-center gap-3">
+          <dt class:list={["truncate font-sans text-[13px] leading-5", row.emphasis ? "font-medium text-(--color-cream-900)" : "text-(--color-cream-800)"]} title={row.label}>
+            {row.label}
+          </dt>
+          <dd class="flex min-w-0 items-center gap-2">
+            <span class="h-2.5 min-w-0 flex-1 rounded-full bg-(--color-sage-100)" aria-hidden="true">
+              <span
+                class:list={["block h-full rounded-full", row.emphasis ? "bg-(--color-sage-800)" : "bg-(--color-sage-500)"]}
+                style={`width: ${width(row.value)}`}
+              ></span>
+            </span>
+            <span class="shrink-0 font-sans text-[13px] leading-5 tabular-nums text-(--color-cream-900)">{row.display}</span>
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </figure>
+
+  <div class="mt-auto flex items-center justify-between gap-4 pt-6 font-sans text-[14px] leading-5">
+    <span class="text-(--color-sage-800)">View the results <span aria-hidden="true">→</span></span>
     {postHref && (
       <a
         href={postHref}
-        class="relative z-10 w-fit font-sans text-[14px] leading-5 text-(--color-sage-800) underline decoration-(--color-sage-400) underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-sage-900)"
+        class="relative z-10 text-(--color-cream-700) underline decoration-(--color-sage-400) underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-sage-800)"
       >
         Read the story
       </a>
     )}
   </div>
-  <div class="mt-1 flex items-baseline gap-2 md:mt-0 md:flex-col md:items-end md:gap-1 md:text-right">
-    <span class="font-display text-[26px] leading-[30px] text-(--color-cream-900) md:text-[30px] md:leading-[34px]">{headline.value}</span>
-    <span class="font-sans text-[13px] leading-[18px] text-(--color-cream-700)">{headline.label}</span>
-  </div>
-  <svg class={ENTRY_ROW_CHEVRON} viewBox={ENTRY_ROW_CHEVRON_VIEWBOX} fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <path d={ENTRY_ROW_CHEVRON_PATH} />
-  </svg>
 </article>

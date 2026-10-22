@@ -2,8 +2,9 @@
 import { getCollection } from "astro:content";
 /**
  * Benchmarks hub, in the ZenML Labs shell (`surface="unified"`, no
- * `product`). The short shader band, then one hairline-separated list of
- * `labs.benchmark-card` rows per group (each row links to its report at
+ * `product`). The short shader band with a count and last-updated line,
+ * then one 1/2/3-column grid of `labs.benchmark-card`s per group, each led
+ * by a small bar chart from src/lib/benchmarkReports/previews.ts (each row links to its report at
  * /benchmarks/<slug>, from src/lib/benchmarkReports/, and to its post once
  * published), a compact list of the rules every benchmark follows, who runs
  * them, and the shared closing band.
@@ -13,7 +14,12 @@ import LabsBenchmarkCard from "../components/labs/LabsBenchmarkCard.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
 import { LABS_EYEBROW_CLASS } from "../components/templates/pageHeaderPresets";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { BENCHMARK_GROUPS, BENCHMARK_REPORTS } from "../lib/benchmarkReports";
+import {
+  BENCHMARK_GROUPS,
+  BENCHMARK_PREVIEWS,
+  BENCHMARK_REPORTS,
+} from "../lib/benchmarkReports";
+import { longDate } from "../lib/benchmarkReports/format";
 import { BENCHMARK_METHOD, BENCHMARKS_CLOSE } from "../lib/benchmarks";
 import { BAND_CONTENT_GAP } from "../lib/blogLayout";
 import { defaultOgImage } from "../lib/seo";
@@ -27,6 +33,11 @@ const groups = BENCHMARK_GROUPS.map((group) => ({
   ...group,
   reports: BENCHMARK_REPORTS.filter((report) => report.group === group.id),
 })).filter((group) => group.reports.length > 0);
+
+const latest = BENCHMARK_REPORTS.reduce(
+  (newest, report) => (report.date > newest ? report.date : newest),
+  "",
+);
 
 const publishedPosts = new Set(
   (await getCollection("blog", ({ data }) => !data.draft)).map(
@@ -53,6 +64,9 @@ const postHref = (slug?: string) =>
       <p class="reveal-child stagger-2 max-w-[720px] font-sans text-[18px] leading-7 text-(--color-cream-700)">
         We test models, and the infrastructure that serves them, on real agent work, and count what each correct answer costs. Every experiment publishes its method, its noise and what it can't show.
       </p>
+      <p class="reveal-child stagger-2 font-sans text-[14px] leading-5 text-(--color-cream-700)">
+        {BENCHMARK_REPORTS.length} benchmarks &middot; last updated {longDate(latest)}
+      </p>
     </div>
   </LabsBand>
 
@@ -66,10 +80,14 @@ const postHref = (slug?: string) =>
           <p class="reveal-child stagger-1 mt-2 mb-4 max-w-[720px] font-sans text-[16px] leading-[25px] text-(--color-cream-700)">
             {group.intro}
           </p>
-          <ul class="list-none border-t border-(--color-border)">
-            {group.reports.map((report) => (
-              <li class="reveal-child min-w-0">
-                <LabsBenchmarkCard report={report} postHref={postHref(report.postSlug)} />
+          <ul class="grid list-none grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {group.reports.map((report, index) => (
+              <li class:list={["reveal-child min-w-0", index % 3 === 1 && "stagger-1", index % 3 === 2 && "stagger-2"]}>
+                <LabsBenchmarkCard
+                  report={report}
+                  preview={BENCHMARK_PREVIEWS[report.slug]}
+                  postHref={postHref(report.postSlug)}
+                />
               </li>
             ))}
           </ul>

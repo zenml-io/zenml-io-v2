@@ -51,6 +51,22 @@ export interface BenchmarkCardContent {
   headline?: BenchmarkStat;
 }
 
+/** The small bar chart a benchmark shows on the hub. */
+export interface BenchmarkPreview {
+  /** What the bars measure, in a few words. */
+  metric: string;
+  better: "higher" | "lower";
+  /** The value a full-width bar stands for; the largest row's value when absent. */
+  max?: number;
+  rows: {
+    label: string;
+    value: number;
+    display: string;
+    /** The row the benchmark's finding points at. */
+    emphasis?: boolean;
+  }[];
+}
+
 /** A dataset a benchmark ran on, linked at its source. */
 export interface ReportDataset {
   name: string;

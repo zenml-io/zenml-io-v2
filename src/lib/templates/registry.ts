@@ -1986,7 +1986,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 0,
     stage: false,
     notes:
-      'One experiment on /benchmarks as an entry row, built from labs.entry-row\'s own class strings (DESIGN.md "Entry rows, not cards"): the question as the title with the stretched per-line underline link to /benchmarks/<slug>, a meta line (domain · data · run date), the headline finding clamped to two lines, an optional "Read the story" link (only when the companion post is published) above the stretched link, and the benchmark\'s one headline number in a 220px right lane from md. Rows sit in a hairline-separated list per hub group; hover paints the sage-50 wash and reveals the chevron. Copy and numbers come from each report module in src/lib/benchmarkReports/.',
+      'One experiment on /benchmarks, led by its result (Scale Labs-style catalogue card): domain · run date, the question as a Borna title with the shared per-line underline link stretched over the card to /benchmarks/<slug>, then a small single-hue sage bar chart of the headline metric with direct labels, values and a higher/lower-is-better note (DESIGN.md "Data visualization"), and "View the results" plus an optional "Read the story" link (only when the companion post is published). Chart data comes from src/lib/benchmarkReports/previews.ts, read straight from each benchmark\'s public data file. The hub grid steps 1 → 2 → 3 columns.',
   },
   {
     id: "labs.results-table",

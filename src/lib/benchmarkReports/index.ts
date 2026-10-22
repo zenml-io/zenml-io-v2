@@ -13,6 +13,7 @@ import { buildSwapbench } from "./swapbench";
 import type { BenchmarkGroup, BenchmarkReport } from "./types";
 import { buildUnderwriting } from "./underwriting";
 
+export { BENCHMARK_PREVIEWS } from "./previews";
 export type * from "./types";
 
 export const BENCHMARK_REPORTS: readonly BenchmarkReport[] = [
