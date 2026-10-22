@@ -82,10 +82,10 @@ describe("Kitaru product-page snippets", () => {
       # 2 · resend them to the models you're weighing
       > use kitaru-model-swap on this agent
 
-      # 3 · read the report
-      best mix · 3 models      −68% per call
+      # 3 · rule out the clear misses
+      shortlist · 3 models      23 calls differ
 
-      # 4 · prove the winner on whole sessions
+      # 4 · replay it: cost per correct task
       kitaru experiment run start best-mix"
     `);
   });

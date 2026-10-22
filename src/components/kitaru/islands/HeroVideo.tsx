@@ -22,10 +22,10 @@ export const HERO_CODE_LINES: Array<{
   { text: "# 2 · resend them to the models you're weighing", kind: "cmt" },
   { text: "> use kitaru-model-swap on this agent", kind: "hl" },
   { text: "" },
-  { text: "# 3 · read the report", kind: "cmt" },
-  { text: "best mix · 3 models      −68% per call", kind: "out" },
+  { text: "# 3 · rule out the clear misses", kind: "cmt" },
+  { text: "shortlist · 3 models      23 calls differ", kind: "out" },
   { text: "" },
-  { text: "# 4 · prove the winner on whole sessions", kind: "cmt" },
+  { text: "# 4 · replay it: cost per correct task", kind: "cmt" },
   { text: "kitaru experiment run start best-mix" },
 ];
 

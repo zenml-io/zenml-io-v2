@@ -58,11 +58,11 @@ export const TERMINAL: readonly TerminalLine[] = [
   { kind: "blank", text: "" },
   {
     kind: "agent",
-    text: "Best mix: answers on the open model, lookups on gpt-5-mini, escalations stay on gpt-5.",
+    text: "Shortlist: answers on the open model, lookups on gpt-5-mini, escalations stay on gpt-5. Local is out.",
   },
   {
     kind: "win",
-    text: "68% cheaper per call · 23 differences for you to review",
+    text: "23 differences for you to review, then a replay prices each correct task",
   },
 ];
 
