@@ -1,0 +1,93 @@
+---
+/**
+ * Benchmarks hub, in the ZenML Labs shell (`surface="unified"`, no
+ * `product`). Same shape as /compare: the short shader band, one section of
+ * `labs.benchmark-card`s per group (each card links to its report at
+ * /benchmarks/<slug>, from src/lib/benchmarkReports/), the method every
+ * benchmark follows, and the
+ * shared closing band.
+ */
+import LabsBand from "../components/labs/LabsBand.astro";
+import LabsBenchmarkCard from "../components/labs/LabsBenchmarkCard.astro";
+import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
+import LabsValuesGrid from "../components/labs/LabsValuesGrid.astro";
+import { LABS_EYEBROW_CLASS } from "../components/templates/pageHeaderPresets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { BENCHMARK_GROUPS, BENCHMARK_REPORTS } from "../lib/benchmarkReports";
+import { BENCHMARK_METHOD, BENCHMARKS_CLOSE } from "../lib/benchmarks";
+import { BAND_CONTENT_GAP } from "../lib/blogLayout";
+import { defaultOgImage } from "../lib/seo";
+import "../styles/labs-scroll-reveal.css";
+
+const TITLE = "Benchmarks: models inside real agent work";
+const DESCRIPTION =
+  "How models behave inside real agents, measured as cost per correct answer, with the method, noise and caveats published for every experiment.";
+
+const groups = BENCHMARK_GROUPS.map((group) => ({
+  ...group,
+  reports: BENCHMARK_REPORTS.filter((report) => report.group === group.id),
+})).filter((group) => group.reports.length > 0);
+---
+
+<BaseLayout
+  ogImage={defaultOgImage("pages", "benchmarks")}
+  title={TITLE}
+  description={DESCRIPTION}
+  surface="unified"
+  app="labs"
+>
+  <LabsBand size="short">
+    <div class="scroll-reveal-section flex flex-col gap-4">
+      <p class={`reveal-child ${LABS_EYEBROW_CLASS}`}>Benchmarks</p>
+      <h1 class="reveal-child stagger-1 font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+        The best model depends on your agent.
+      </h1>
+      <p class="reveal-child stagger-2 max-w-[720px] font-sans text-[18px] leading-7 text-(--color-cream-700)">
+        We test models inside real agent work and count what each correct answer costs. Every experiment publishes its method, its noise and what it can't show.
+      </p>
+    </div>
+  </LabsBand>
+
+  <section class:list={["pb-24 md:pb-32", BAND_CONTENT_GAP]}>
+    <div class="mx-auto flex max-w-content flex-col gap-20 px-gutter">
+      {groups.map((group) => (
+        <div class="scroll-reveal-section">
+          <h2 class="reveal-child font-display text-[28px] leading-[34px] text-(--color-cream-800)">
+            {group.title}
+          </h2>
+          <p class="reveal-child stagger-1 mt-2 mb-6 max-w-[720px] font-sans text-[16px] leading-[25px] text-(--color-cream-700)">
+            {group.intro}
+          </p>
+          <ul class="grid list-none grid-cols-1 gap-4 lg:grid-cols-2">
+            {group.reports.map((report, index) => (
+              <li class:list={["reveal-child min-w-0", index % 2 === 1 && "stagger-1"]}>
+                <LabsBenchmarkCard report={report} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <LabsValuesGrid heading="How we run them" values={BENCHMARK_METHOD} />
+
+  <section class="scroll-reveal-section pt-space-lg pb-24 md:pb-32">
+    <div class="mx-auto max-w-content px-gutter">
+      <div class="reveal-child max-w-[768px] rounded-[12px] border border-(--color-border) bg-(--color-sage-50) p-8 md:p-10">
+        <h2 class="font-display text-[24px] leading-[30px] text-(--color-cream-900)">Who runs these, and why</h2>
+        <p class="mt-space-sm font-sans text-[16px] leading-[25px] text-(--color-cream-900)">
+          The Kitaru team runs these benchmarks with <a href="/product/kitaru" class="underline decoration-(--color-sage-400) underline-offset-4 hover:text-(--color-sage-800)">Kitaru</a>, our open-source tool for testing agent changes. Kitaru is the bench, never a contestant: no result here ranks it against anything. We publish the findings that cut against easy advice too, like a cheap closed model tying the best open ones for less per correct answer.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="scroll-reveal-section">
+    <div class="reveal-child"><LabsCloseCta content={BENCHMARKS_CLOSE} preset="comparison" /></div>
+  </div>
+  <script>
+    import { initScrollReveal } from "../scripts/labs-scroll-reveal";
+    initScrollReveal();
+  </script>
+</BaseLayout>

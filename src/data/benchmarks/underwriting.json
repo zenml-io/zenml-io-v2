@@ -1,0 +1,2279 @@
+{
+  "meta": {
+    "name": "Underwriting agent: cost of a correct decision",
+    "question": "What does a correct decision cost when 12 models run the same insurance underwriting agent, and how much of the gap between models is the prompt?",
+    "domain": "Commercial insurance underwriting (small-business applications)",
+    "status": "complete",
+    "run_dates": {
+      "first_run": "2026-10-21",
+      "tuned_and_effort_runs": "2026-10-21",
+      "shared_prompt_run": "2026-10-22"
+    },
+    "spendUsd": 259.15
+  },
+  "dataset": {
+    "source": "Snorkel AI, Multi-Turn Insurance Underwriting and Multi-Turn Insurance Underwriting Code-Gen",
+    "urls": [
+      "https://huggingface.co/datasets/snorkelai/Multi-Turn-Insurance-Underwriting",
+      "https://huggingface.co/datasets/snorkelai/Multi-Turn-Insurance-Underwriting-Code-Gen"
+    ],
+    "license": "Apache-2.0",
+    "otherSources": [
+      "US Census Bureau 2022 NAICS codes and concordances (public domain)",
+      "SBA size standards as recovered from the published traces"
+    ],
+    "totalCases": 380,
+    "keptCases": 252,
+    "droppedReason": "The insurer's environment (database, appetite guide, guidelines) is not published; we rebuilt it from the traces. A rule-based oracle re-derives each reference answer from the rebuilt environment; the 128 cases where it disagrees with the published reference are dropped, so every scored case is answerable from data the agent can see.",
+    "learning": 84,
+    "heldOut": 168,
+    "types": [
+      {
+        "type": "Appetite Check",
+        "count": 85,
+        "heldOut": 57
+      },
+      {
+        "type": "Product Recommendations",
+        "count": 72,
+        "heldOut": 48
+      },
+      {
+        "type": "Small business eligibility",
+        "count": 48,
+        "heldOut": 32
+      },
+      {
+        "type": "Business Classification",
+        "count": 17,
+        "heldOut": 11
+      },
+      {
+        "type": "Policy Limits",
+        "count": 17,
+        "heldOut": 11
+      },
+      {
+        "type": "Deductibles",
+        "count": 13,
+        "heldOut": 9
+      }
+    ]
+  },
+  "models": [
+    {
+      "key": "opus-5.5",
+      "name": "Claude Opus 5.5",
+      "vendor": "Anthropic",
+      "weights": "closed",
+      "priceIn": 4.0,
+      "priceOut": 20.0,
+      "priceUnverified": false
+    },
+    {
+      "key": "sonnet-5.5",
+      "name": "Claude Sonnet 5.5",
+      "vendor": "Anthropic",
+      "weights": "closed",
+      "priceIn": 2.0,
+      "priceOut": 10.0,
+      "priceUnverified": false
+    },
+    {
+      "key": "haiku-5.5",
+      "name": "Claude Haiku 5.5",
+      "vendor": "Anthropic",
+      "weights": "closed",
+      "priceIn": 0.1,
+      "priceOut": 0.5,
+      "priceUnverified": false
+    },
+    {
+      "key": "gpt-6.1-sol",
+      "name": "GPT-6.1 Sol",
+      "vendor": "OpenAI",
+      "weights": "closed",
+      "priceIn": 2.0,
+      "priceOut": 10.0,
+      "priceUnverified": false
+    },
+    {
+      "key": "gpt-6-luna",
+      "name": "GPT-6 Luna",
+      "vendor": "OpenAI",
+      "weights": "closed",
+      "priceIn": 0.1,
+      "priceOut": 0.5,
+      "priceUnverified": false
+    },
+    {
+      "key": "deepseek-v4-pro",
+      "name": "DeepSeek V4 Pro",
+      "vendor": "DeepSeek",
+      "weights": "open",
+      "priceIn": 1.75,
+      "priceOut": 3.5,
+      "priceUnverified": true
+    },
+    {
+      "key": "deepseek-v4.1-flash",
+      "name": "DeepSeek V4.1 Flash",
+      "vendor": "DeepSeek",
+      "weights": "open",
+      "priceIn": 0.3,
+      "priceOut": 1.2,
+      "priceUnverified": true
+    },
+    {
+      "key": "glm-5.3",
+      "name": "GLM 5.3",
+      "vendor": "Z.ai",
+      "weights": "open",
+      "priceIn": 1.4,
+      "priceOut": 4.4,
+      "priceUnverified": true
+    },
+    {
+      "key": "glm-5.3-flash",
+      "name": "GLM 5.3 Flash",
+      "vendor": "Z.ai",
+      "weights": "open",
+      "priceIn": 0.15,
+      "priceOut": 0.5,
+      "priceUnverified": true
+    },
+    {
+      "key": "gpt-oss-120b",
+      "name": "gpt-oss-120b",
+      "vendor": "OpenAI",
+      "weights": "open",
+      "priceIn": 0.15,
+      "priceOut": 0.6,
+      "priceUnverified": true
+    },
+    {
+      "key": "qwen3.8-27b",
+      "name": "Qwen3.8 27B",
+      "vendor": "Alibaba (Qwen)",
+      "weights": "open",
+      "priceIn": 0.45,
+      "priceOut": 3.0,
+      "priceUnverified": true
+    },
+    {
+      "key": "minimax-m3",
+      "name": "MiniMax-M3",
+      "vendor": "MiniMax",
+      "weights": "open",
+      "priceIn": 0.3,
+      "priceOut": 1.2,
+      "priceUnverified": true
+    }
+  ],
+  "priceDate": "2026-10-19",
+  "conditions": {
+    "first_prompt_all_cases": "One system prompt written once, the same for every model; default settings; all 252 cases.",
+    "first_prompt_held_out": "The same runs restricted to the 168 held-out cases (the baseline for every tuned comparison).",
+    "per_model_rewritten_prompt_held_out": "Each model's own rewritten prompt from up to two rounds of tuning on the 84 learning cases. Run for the 7 models where a rewrite improved the learning score.",
+    "shared_rewritten_prompt_held_out": "Sonnet 5.5's rewritten prompt, unchanged, on all 12 models. Sonnet's row is its own tuned run.",
+    "effort_high_held_out / effort_medium_held_out / effort_low_held_out": "First prompt with a different reasoning-effort setting (Anthropic output_config.effort, OpenAI reasoning.effort); run for Opus, Sonnet, Haiku, GPT-6.1 Sol and GPT-6 Luna.",
+    "repeat_unchanged_held_out": "Sonnet 5.5 run again with nothing changed: the noise floor."
+  },
+  "results": {
+    "first_prompt_all_cases": [
+      {
+        "model": "deepseek-v4-pro",
+        "n": 252,
+        "correct": 246,
+        "accuracy": 0.9762,
+        "ci95": [
+          0.949,
+          0.989
+        ],
+        "costPerCorrectCents": 3.5541,
+        "callsPerCase": 9.12,
+        "tokensPerCase": 52187.5,
+        "paired": {
+          "reference": "opus-5.5",
+          "n": 252,
+          "deltaPoints": 0.4,
+          "ci95Points": [
+            -2.0,
+            2.8
+          ]
+        }
+      },
+      {
+        "model": "opus-5.5",
+        "n": 252,
+        "correct": 245,
+        "accuracy": 0.9722,
+        "ci95": [
+          0.9438,
+          0.9865
+        ],
+        "costPerCorrectCents": 5.2592,
+        "callsPerCase": 6.53,
+        "tokensPerCase": 25140.3
+      },
+      {
+        "model": "glm-5.3",
+        "n": 252,
+        "correct": 239,
+        "accuracy": 0.9484,
+        "ci95": [
+          0.9138,
+          0.9696
+        ],
+        "costPerCorrectCents": 8.2513,
+        "callsPerCase": 10.67,
+        "tokensPerCase": 46086.7,
+        "paired": {
+          "reference": "opus-5.5",
+          "n": 252,
+          "deltaPoints": -2.4,
+          "ci95Points": [
+            -5.6,
+            0.4
+          ]
+        }
+      },
+      {
+        "model": "glm-5.3-flash",
+        "n": 252,
+        "correct": 233,
+        "accuracy": 0.9246,
+        "ci95": [
+          0.8853,
+          0.9512
+        ],
+        "costPerCorrectCents": 0.975,
+        "callsPerCase": 10.98,
+        "tokensPerCase": 50282.5,
+        "paired": {
+          "reference": "opus-5.5",
+          "n": 252,
+          "deltaPoints": -4.8,
+          "ci95Points": [
+            -9.1,
+            -1.2
+          ]
+        }
+      },
+      {
+        "model": "deepseek-v4.1-flash",
+        "n": 252,
+        "correct": 230,
+        "accuracy": 0.9127,
+        "ci95": [
+          0.8714,
+          0.9416
+        ],
+        "costPerCorrectCents": 2.1011,
+        "callsPerCase": 9.18,
+        "tokensPerCase": 50604.2,
+        "paired": {
+          "reference": "opus-5.5",
+          "n": 252,
+          "deltaPoints": -6.0,
+          "ci95Points": [
+            -9.5,
+            -2.4
+          ]
+        }
+      },
+      {
+        "model": "sonnet-5.5",
+        "n": 252,
+        "correct": 224,
+        "accuracy": 0.8889,
+        "ci95": [
+          0.8441,
+          0.922
+        ],
+        "costPerCorrectCents": 4.059,
+        "callsPerCase": 8.34,
+        "tokensPerCase": 40976.2,
+        "paired": {
+          "reference": "opus-5.5",
+          "n": 252,
+          "deltaPoints": -8.3,
+          "ci95Points": [
+            -12.7,
+            -4.0
+          ]
+        }
+      },
+      {
+        "model": "haiku-5.5",
+        "n": 252,
+        "correct": 220,
+        "accuracy": 0.873,
+        "ci95": [
+          0.8262,
+          0.9086
+        ],
+        "costPerCorrectCents": 0.4997,
+        "callsPerCase": 8.85,
+        "tokensPerCase": 77227.6,
+        "paired": {
+          "reference": "opus-5.5",
+          "n": 252,
+          "deltaPoints": -9.9,
+          "ci95Points": [
+            -14.3,
+            -5.6
+          ]
+        }
+      },
+      {
+        "model": "gpt-6-luna",
+        "n": 252,
+        "correct": 219,
+        "accuracy": 0.869,
+        "ci95": [
+          0.8218,
+          0.9052
+        ],
+        "costPerCorrectCents": 0.1903,
+        "callsPerCase": 7.87,
+        "tokensPerCase": 24500.7,
+        "paired": {
+          "reference": "opus-5.5",
+          "n": 252,
+          "deltaPoints": -10.7,
+          "ci95Points": [
+            -15.1,
+            -6.7
+          ]
+        }
+      },
+      {
+        "model": "minimax-m3",
+        "n": 252,
+        "correct": 218,
+        "accuracy": 0.8651,
+        "ci95": [
+          0.8174,
+          0.9018
+        ],
+        "costPerCorrectCents": 1.7512,
+        "callsPerCase": 9.95,
+        "tokensPerCase": 44685.8,
+        "paired": {
+          "reference": "opus-5.5",
+          "n": 252,
+          "deltaPoints": -10.7,
+          "ci95Points": [
+            -15.5,
+            -6.0
+          ]
+        }
+      },
+      {
+        "model": "qwen3.8-27b",
+        "n": 252,
+        "correct": 212,
+        "accuracy": 0.8413,
+        "ci95": [
+          0.7911,
+          0.8812
+        ],
+        "costPerCorrectCents": 3.7067,
+        "callsPerCase": 10.39,
+        "tokensPerCase": 61926.2,
+        "paired": {
+          "reference": "opus-5.5",
+          "n": 252,
+          "deltaPoints": -13.1,
+          "ci95Points": [
+            -18.3,
+            -8.3
+          ]
+        }
+      },
+      {
+        "model": "gpt-6.1-sol",
+        "n": 252,
+        "correct": 211,
+        "accuracy": 0.8373,
+        "ci95": [
+          0.7867,
+          0.8777
+        ],
+        "costPerCorrectCents": 2.0123,
+        "callsPerCase": 7.09,
+        "tokensPerCase": 15399.8,
+        "paired": {
+          "reference": "opus-5.5",
+          "n": 252,
+          "deltaPoints": -13.5,
+          "ci95Points": [
+            -18.7,
+            -8.7
+          ]
+        }
+      },
+      {
+        "model": "gpt-oss-120b",
+        "n": 252,
+        "correct": 150,
+        "accuracy": 0.5952,
+        "ci95": [
+          0.5336,
+          0.654
+        ],
+        "costPerCorrectCents": 0.99,
+        "callsPerCase": 8.56,
+        "tokensPerCase": 33492.5,
+        "paired": {
+          "reference": "opus-5.5",
+          "n": 252,
+          "deltaPoints": -37.7,
+          "ci95Points": [
+            -44.0,
+            -31.3
+          ]
+        }
+      }
+    ],
+    "first_prompt_held_out": [
+      {
+        "model": "opus-5.5",
+        "n": 168,
+        "correct": 163,
+        "accuracy": 0.9702,
+        "ci95": [
+          0.9322,
+          0.9872
+        ],
+        "costPerCorrectCents": 5.2628,
+        "callsPerCase": 6.54,
+        "tokensPerCase": 25152.1
+      },
+      {
+        "model": "deepseek-v4-pro",
+        "n": 168,
+        "correct": 163,
+        "accuracy": 0.9702,
+        "ci95": [
+          0.9322,
+          0.9872
+        ],
+        "costPerCorrectCents": 3.5556,
+        "callsPerCase": 9.11,
+        "tokensPerCase": 52077.2
+      },
+      {
+        "model": "glm-5.3",
+        "n": 168,
+        "correct": 159,
+        "accuracy": 0.9464,
+        "ci95": [
+          0.9013,
+          0.9716
+        ],
+        "costPerCorrectCents": 8.0935,
+        "callsPerCase": 10.73,
+        "tokensPerCase": 44753.6
+      },
+      {
+        "model": "deepseek-v4.1-flash",
+        "n": 168,
+        "correct": 154,
+        "accuracy": 0.9167,
+        "ci95": [
+          0.865,
+          0.9497
+        ],
+        "costPerCorrectCents": 2.0617,
+        "callsPerCase": 9.1,
+        "tokensPerCase": 50086.9
+      },
+      {
+        "model": "glm-5.3-flash",
+        "n": 168,
+        "correct": 154,
+        "accuracy": 0.9167,
+        "ci95": [
+          0.865,
+          0.9497
+        ],
+        "costPerCorrectCents": 0.983,
+        "callsPerCase": 10.97,
+        "tokensPerCase": 50117.0
+      },
+      {
+        "model": "sonnet-5.5",
+        "n": 168,
+        "correct": 150,
+        "accuracy": 0.8929,
+        "ci95": [
+          0.837,
+          0.9311
+        ],
+        "costPerCorrectCents": 4.1068,
+        "callsPerCase": 8.36,
+        "tokensPerCase": 41410.6
+      },
+      {
+        "model": "haiku-5.5",
+        "n": 168,
+        "correct": 144,
+        "accuracy": 0.8571,
+        "ci95": [
+          0.7962,
+          0.9021
+        ],
+        "costPerCorrectCents": 0.5208,
+        "callsPerCase": 9.13,
+        "tokensPerCase": 80239.8
+      },
+      {
+        "model": "minimax-m3",
+        "n": 168,
+        "correct": 142,
+        "accuracy": 0.8452,
+        "ci95": [
+          0.7829,
+          0.8921
+        ],
+        "costPerCorrectCents": 1.7681,
+        "callsPerCase": 9.95,
+        "tokensPerCase": 44068.1
+      },
+      {
+        "model": "gpt-6-luna",
+        "n": 168,
+        "correct": 141,
+        "accuracy": 0.8393,
+        "ci95": [
+          0.7763,
+          0.8871
+        ],
+        "costPerCorrectCents": 0.2011,
+        "callsPerCase": 7.95,
+        "tokensPerCase": 25191.5
+      },
+      {
+        "model": "qwen3.8-27b",
+        "n": 168,
+        "correct": 140,
+        "accuracy": 0.8333,
+        "ci95": [
+          0.7697,
+          0.8821
+        ],
+        "costPerCorrectCents": 3.938,
+        "callsPerCase": 10.61,
+        "tokensPerCase": 65309.6
+      },
+      {
+        "model": "gpt-6.1-sol",
+        "n": 168,
+        "correct": 138,
+        "accuracy": 0.8214,
+        "ci95": [
+          0.7565,
+          0.872
+        ],
+        "costPerCorrectCents": 2.0134,
+        "callsPerCase": 7.15,
+        "tokensPerCase": 15236.2
+      },
+      {
+        "model": "gpt-oss-120b",
+        "n": 168,
+        "correct": 94,
+        "accuracy": 0.5595,
+        "ci95": [
+          0.484,
+          0.6324
+        ],
+        "costPerCorrectCents": 0.9823,
+        "callsPerCase": 7.89,
+        "tokensPerCase": 31076.2
+      }
+    ],
+    "shared_rewritten_prompt_held_out": [
+      {
+        "model": "glm-5.3-flash",
+        "n": 168,
+        "correct": 167,
+        "accuracy": 0.994,
+        "ci95": [
+          0.9671,
+          0.9989
+        ],
+        "costPerCorrectCents": 0.9185,
+        "callsPerCase": 9.48,
+        "tokensPerCase": 52904.5,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 7.7,
+          "ci95Points": [
+            3.6,
+            12.5
+          ]
+        }
+      },
+      {
+        "model": "sonnet-5.5",
+        "n": 168,
+        "correct": 167,
+        "accuracy": 0.994,
+        "ci95": [
+          0.9671,
+          0.9989
+        ],
+        "costPerCorrectCents": 2.7274,
+        "callsPerCase": 7.87,
+        "tokensPerCase": 40991.8,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 10.1,
+          "ci95Points": [
+            5.4,
+            14.9
+          ]
+        }
+      },
+      {
+        "model": "haiku-5.5",
+        "n": 168,
+        "correct": 166,
+        "accuracy": 0.9881,
+        "ci95": [
+          0.9576,
+          0.9967
+        ],
+        "costPerCorrectCents": 0.3792,
+        "callsPerCase": 7.93,
+        "tokensPerCase": 78183.7,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 13.1,
+          "ci95Points": [
+            8.3,
+            18.5
+          ]
+        }
+      },
+      {
+        "model": "deepseek-v4-pro",
+        "n": 168,
+        "correct": 166,
+        "accuracy": 0.9881,
+        "ci95": [
+          0.9576,
+          0.9967
+        ],
+        "costPerCorrectCents": 3.266,
+        "callsPerCase": 7.92,
+        "tokensPerCase": 47691.7,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 1.8,
+          "ci95Points": [
+            -0.6,
+            4.8
+          ]
+        }
+      },
+      {
+        "model": "gpt-6.1-sol",
+        "n": 168,
+        "correct": 165,
+        "accuracy": 0.9821,
+        "ci95": [
+          0.9488,
+          0.9939
+        ],
+        "costPerCorrectCents": 1.7822,
+        "callsPerCase": 7.38,
+        "tokensPerCase": 21809.9,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 16.1,
+          "ci95Points": [
+            10.1,
+            22.0
+          ]
+        }
+      },
+      {
+        "model": "deepseek-v4.1-flash",
+        "n": 168,
+        "correct": 165,
+        "accuracy": 0.9821,
+        "ci95": [
+          0.9488,
+          0.9939
+        ],
+        "costPerCorrectCents": 1.8088,
+        "callsPerCase": 8.21,
+        "tokensPerCase": 51130.9,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 6.5,
+          "ci95Points": [
+            2.4,
+            11.3
+          ]
+        }
+      },
+      {
+        "model": "glm-5.3",
+        "n": 168,
+        "correct": 165,
+        "accuracy": 0.9821,
+        "ci95": [
+          0.9488,
+          0.9939
+        ],
+        "costPerCorrectCents": 7.3684,
+        "callsPerCase": 9.38,
+        "tokensPerCase": 44980.4,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 3.6,
+          "ci95Points": [
+            0.6,
+            6.5
+          ]
+        }
+      },
+      {
+        "model": "opus-5.5",
+        "n": 168,
+        "correct": 164,
+        "accuracy": 0.9762,
+        "ci95": [
+          0.9404,
+          0.9907
+        ],
+        "costPerCorrectCents": 5.1198,
+        "callsPerCase": 6.97,
+        "tokensPerCase": 31434.2,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 0.6,
+          "ci95Points": [
+            -3.0,
+            4.2
+          ]
+        }
+      },
+      {
+        "model": "minimax-m3",
+        "n": 168,
+        "correct": 162,
+        "accuracy": 0.9643,
+        "ci95": [
+          0.9243,
+          0.9835
+        ],
+        "costPerCorrectCents": 1.8243,
+        "callsPerCase": 9.45,
+        "tokensPerCase": 54163.1,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 11.9,
+          "ci95Points": [
+            6.5,
+            17.3
+          ]
+        }
+      },
+      {
+        "model": "gpt-6-luna",
+        "n": 168,
+        "correct": 152,
+        "accuracy": 0.9048,
+        "ci95": [
+          0.8509,
+          0.9405
+        ],
+        "costPerCorrectCents": 0.1872,
+        "callsPerCase": 8.24,
+        "tokensPerCase": 31918.1,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 6.5,
+          "ci95Points": [
+            0.6,
+            12.5
+          ]
+        }
+      },
+      {
+        "model": "gpt-oss-120b",
+        "n": 168,
+        "correct": 146,
+        "accuracy": 0.869,
+        "ci95": [
+          0.8097,
+          0.9119
+        ],
+        "costPerCorrectCents": 1.15,
+        "callsPerCase": 14.86,
+        "tokensPerCase": 59657.2,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 31.0,
+          "ci95Points": [
+            22.0,
+            39.9
+          ]
+        }
+      },
+      {
+        "model": "qwen3.8-27b",
+        "n": 168,
+        "correct": 139,
+        "accuracy": 0.8274,
+        "ci95": [
+          0.7631,
+          0.877
+        ],
+        "costPerCorrectCents": 5.3304,
+        "callsPerCase": 10.86,
+        "tokensPerCase": 92212.2,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": -0.6,
+          "ci95Points": [
+            -7.7,
+            6.5
+          ]
+        }
+      }
+    ],
+    "per_model_rewritten_prompt_held_out": [
+      {
+        "model": "sonnet-5.5",
+        "n": 168,
+        "correct": 167,
+        "accuracy": 0.994,
+        "ci95": [
+          0.9671,
+          0.9989
+        ],
+        "costPerCorrectCents": 2.7274,
+        "callsPerCase": 7.87,
+        "tokensPerCase": 40991.8,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 10.1,
+          "ci95Points": [
+            5.4,
+            14.9
+          ]
+        }
+      },
+      {
+        "model": "opus-5.5",
+        "n": 168,
+        "correct": 165,
+        "accuracy": 0.9821,
+        "ci95": [
+          0.9488,
+          0.9939
+        ],
+        "costPerCorrectCents": 4.3118,
+        "callsPerCase": 6.45,
+        "tokensPerCase": 30025.5,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 1.2,
+          "ci95Points": [
+            -1.2,
+            3.6
+          ]
+        }
+      },
+      {
+        "model": "deepseek-v4-pro",
+        "n": 168,
+        "correct": 165,
+        "accuracy": 0.9821,
+        "ci95": [
+          0.9488,
+          0.9939
+        ],
+        "costPerCorrectCents": 3.1232,
+        "callsPerCase": 8.65,
+        "tokensPerCase": 46562.1,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 1.2,
+          "ci95Points": [
+            -1.8,
+            4.2
+          ]
+        }
+      },
+      {
+        "model": "gpt-6.1-sol",
+        "n": 168,
+        "correct": 164,
+        "accuracy": 0.9762,
+        "ci95": [
+          0.9404,
+          0.9907
+        ],
+        "costPerCorrectCents": 1.1128,
+        "callsPerCase": 7.03,
+        "tokensPerCase": 21946.6,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 15.5,
+          "ci95Points": [
+            9.5,
+            21.4
+          ]
+        }
+      },
+      {
+        "model": "haiku-5.5",
+        "n": 167,
+        "correct": 163,
+        "accuracy": 0.976,
+        "ci95": [
+          0.94,
+          0.9906
+        ],
+        "costPerCorrectCents": 0.3812,
+        "callsPerCase": 7.23,
+        "tokensPerCase": 73687.1,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 167,
+          "deltaPoints": 12.0,
+          "ci95Points": [
+            6.6,
+            17.4
+          ]
+        }
+      },
+      {
+        "model": "glm-5.3-flash",
+        "n": 167,
+        "correct": 163,
+        "accuracy": 0.976,
+        "ci95": [
+          0.94,
+          0.9906
+        ],
+        "costPerCorrectCents": 0.7231,
+        "callsPerCase": 8.6,
+        "tokensPerCase": 38112.3,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 167,
+          "deltaPoints": 6.0,
+          "ci95Points": [
+            1.8,
+            10.8
+          ]
+        }
+      },
+      {
+        "model": "gpt-oss-120b",
+        "n": 168,
+        "correct": 128,
+        "accuracy": 0.7619,
+        "ci95": [
+          0.6921,
+          0.82
+        ],
+        "costPerCorrectCents": 1.4806,
+        "callsPerCase": 17.37,
+        "tokensPerCase": 65985.0,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 20.2,
+          "ci95Points": [
+            10.7,
+            29.8
+          ]
+        }
+      }
+    ],
+    "effort_high_held_out": [
+      {
+        "model": "opus-5.5",
+        "n": 168,
+        "correct": 164,
+        "accuracy": 0.9762,
+        "ci95": [
+          0.9404,
+          0.9907
+        ],
+        "costPerCorrectCents": 5.8241,
+        "callsPerCase": 6.98,
+        "tokensPerCase": 29291.9,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 0.6,
+          "ci95Points": [
+            -2.4,
+            3.6
+          ]
+        }
+      },
+      {
+        "model": "gpt-6.1-sol",
+        "n": 168,
+        "correct": 154,
+        "accuracy": 0.9167,
+        "ci95": [
+          0.865,
+          0.9497
+        ],
+        "costPerCorrectCents": 2.3006,
+        "callsPerCase": 7.43,
+        "tokensPerCase": 17935.2,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 9.5,
+          "ci95Points": [
+            4.2,
+            14.9
+          ]
+        }
+      },
+      {
+        "model": "gpt-6-luna",
+        "n": 166,
+        "correct": 141,
+        "accuracy": 0.8494,
+        "ci95": [
+          0.7871,
+          0.8959
+        ],
+        "costPerCorrectCents": 0.2474,
+        "callsPerCase": 7.72,
+        "tokensPerCase": 27646.1,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 166,
+          "deltaPoints": 1.2,
+          "ci95Points": [
+            -5.4,
+            7.8
+          ]
+        }
+      },
+      {
+        "model": "haiku-5.5",
+        "n": 168,
+        "correct": 142,
+        "accuracy": 0.8452,
+        "ci95": [
+          0.7829,
+          0.8921
+        ],
+        "costPerCorrectCents": 0.6579,
+        "callsPerCase": 9.83,
+        "tokensPerCase": 90359.6,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": -1.2,
+          "ci95Points": [
+            -8.3,
+            6.0
+          ]
+        }
+      }
+    ],
+    "effort_medium_held_out": [
+      {
+        "model": "sonnet-5.5",
+        "n": 168,
+        "correct": 137,
+        "accuracy": 0.8155,
+        "ci95": [
+          0.75,
+          0.8669
+        ],
+        "costPerCorrectCents": 3.3287,
+        "callsPerCase": 6.21,
+        "tokensPerCase": 27185.6,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": -7.7,
+          "ci95Points": [
+            -14.9,
+            -0.6
+          ]
+        }
+      }
+    ],
+    "effort_low_held_out": [
+      {
+        "model": "opus-5.5",
+        "n": 168,
+        "correct": 157,
+        "accuracy": 0.9345,
+        "ci95": [
+          0.8866,
+          0.963
+        ],
+        "costPerCorrectCents": 4.2533,
+        "callsPerCase": 5.66,
+        "tokensPerCase": 17988.4,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": -3.6,
+          "ci95Points": [
+            -7.1,
+            0.0
+          ]
+        }
+      },
+      {
+        "model": "gpt-6.1-sol",
+        "n": 167,
+        "correct": 142,
+        "accuracy": 0.8503,
+        "ci95": [
+          0.7883,
+          0.8965
+        ],
+        "costPerCorrectCents": 2.041,
+        "callsPerCase": 7.6,
+        "tokensPerCase": 16911.7,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 167,
+          "deltaPoints": 3.0,
+          "ci95Points": [
+            -3.0,
+            9.6
+          ]
+        }
+      },
+      {
+        "model": "sonnet-5.5",
+        "n": 168,
+        "correct": 122,
+        "accuracy": 0.7262,
+        "ci95": [
+          0.6543,
+          0.788
+        ],
+        "costPerCorrectCents": 3.4657,
+        "callsPerCase": 6.14,
+        "tokensPerCase": 25477.3,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": -16.7,
+          "ci95Points": [
+            -24.4,
+            -8.9
+          ]
+        }
+      }
+    ],
+    "repeat_unchanged_held_out": [
+      {
+        "model": "sonnet-5.5",
+        "n": 168,
+        "correct": 154,
+        "accuracy": 0.9167,
+        "ci95": [
+          0.865,
+          0.9497
+        ],
+        "costPerCorrectCents": 3.907,
+        "callsPerCase": 8.1,
+        "tokensPerCase": 38964.3,
+        "paired": {
+          "reference": "same model, first prompt, held-out cases",
+          "n": 168,
+          "deltaPoints": 2.4,
+          "ci95Points": [
+            -3.6,
+            8.3
+          ]
+        }
+      }
+    ]
+  },
+  "perType": {
+    "first_prompt_all_cases": {
+      "deepseek-v4-pro": {
+        "Appetite Check": {
+          "n": 85,
+          "correct": 85
+        },
+        "Business Classification": {
+          "n": 17,
+          "correct": 17
+        },
+        "Deductibles": {
+          "n": 13,
+          "correct": 13
+        },
+        "Policy Limits": {
+          "n": 17,
+          "correct": 16
+        },
+        "Product Recommendations": {
+          "n": 72,
+          "correct": 68
+        },
+        "Small business eligibility": {
+          "n": 48,
+          "correct": 47
+        }
+      },
+      "opus-5.5": {
+        "Appetite Check": {
+          "n": 85,
+          "correct": 85
+        },
+        "Business Classification": {
+          "n": 17,
+          "correct": 17
+        },
+        "Deductibles": {
+          "n": 13,
+          "correct": 12
+        },
+        "Policy Limits": {
+          "n": 17,
+          "correct": 15
+        },
+        "Product Recommendations": {
+          "n": 72,
+          "correct": 69
+        },
+        "Small business eligibility": {
+          "n": 48,
+          "correct": 47
+        }
+      },
+      "glm-5.3": {
+        "Appetite Check": {
+          "n": 85,
+          "correct": 85
+        },
+        "Business Classification": {
+          "n": 17,
+          "correct": 17
+        },
+        "Deductibles": {
+          "n": 13,
+          "correct": 13
+        },
+        "Policy Limits": {
+          "n": 17,
+          "correct": 11
+        },
+        "Product Recommendations": {
+          "n": 72,
+          "correct": 68
+        },
+        "Small business eligibility": {
+          "n": 48,
+          "correct": 45
+        }
+      },
+      "glm-5.3-flash": {
+        "Appetite Check": {
+          "n": 85,
+          "correct": 82
+        },
+        "Business Classification": {
+          "n": 17,
+          "correct": 17
+        },
+        "Deductibles": {
+          "n": 13,
+          "correct": 12
+        },
+        "Policy Limits": {
+          "n": 17,
+          "correct": 11
+        },
+        "Product Recommendations": {
+          "n": 72,
+          "correct": 65
+        },
+        "Small business eligibility": {
+          "n": 48,
+          "correct": 46
+        }
+      },
+      "deepseek-v4.1-flash": {
+        "Appetite Check": {
+          "n": 85,
+          "correct": 83
+        },
+        "Business Classification": {
+          "n": 17,
+          "correct": 17
+        },
+        "Deductibles": {
+          "n": 13,
+          "correct": 10
+        },
+        "Policy Limits": {
+          "n": 17,
+          "correct": 9
+        },
+        "Product Recommendations": {
+          "n": 72,
+          "correct": 69
+        },
+        "Small business eligibility": {
+          "n": 48,
+          "correct": 42
+        }
+      },
+      "sonnet-5.5": {
+        "Appetite Check": {
+          "n": 85,
+          "correct": 81
+        },
+        "Business Classification": {
+          "n": 17,
+          "correct": 14
+        },
+        "Deductibles": {
+          "n": 13,
+          "correct": 13
+        },
+        "Policy Limits": {
+          "n": 17,
+          "correct": 16
+        },
+        "Product Recommendations": {
+          "n": 72,
+          "correct": 56
+        },
+        "Small business eligibility": {
+          "n": 48,
+          "correct": 44
+        }
+      },
+      "haiku-5.5": {
+        "Appetite Check": {
+          "n": 85,
+          "correct": 76
+        },
+        "Business Classification": {
+          "n": 17,
+          "correct": 15
+        },
+        "Deductibles": {
+          "n": 13,
+          "correct": 9
+        },
+        "Policy Limits": {
+          "n": 17,
+          "correct": 13
+        },
+        "Product Recommendations": {
+          "n": 72,
+          "correct": 68
+        },
+        "Small business eligibility": {
+          "n": 48,
+          "correct": 39
+        }
+      },
+      "gpt-6-luna": {
+        "Appetite Check": {
+          "n": 85,
+          "correct": 79
+        },
+        "Business Classification": {
+          "n": 17,
+          "correct": 12
+        },
+        "Deductibles": {
+          "n": 13,
+          "correct": 13
+        },
+        "Policy Limits": {
+          "n": 17,
+          "correct": 12
+        },
+        "Product Recommendations": {
+          "n": 72,
+          "correct": 59
+        },
+        "Small business eligibility": {
+          "n": 48,
+          "correct": 44
+        }
+      },
+      "minimax-m3": {
+        "Appetite Check": {
+          "n": 85,
+          "correct": 79
+        },
+        "Business Classification": {
+          "n": 17,
+          "correct": 17
+        },
+        "Deductibles": {
+          "n": 13,
+          "correct": 12
+        },
+        "Policy Limits": {
+          "n": 17,
+          "correct": 11
+        },
+        "Product Recommendations": {
+          "n": 72,
+          "correct": 54
+        },
+        "Small business eligibility": {
+          "n": 48,
+          "correct": 45
+        }
+      },
+      "qwen3.8-27b": {
+        "Appetite Check": {
+          "n": 85,
+          "correct": 78
+        },
+        "Business Classification": {
+          "n": 17,
+          "correct": 17
+        },
+        "Deductibles": {
+          "n": 13,
+          "correct": 13
+        },
+        "Policy Limits": {
+          "n": 17,
+          "correct": 14
+        },
+        "Product Recommendations": {
+          "n": 72,
+          "correct": 48
+        },
+        "Small business eligibility": {
+          "n": 48,
+          "correct": 42
+        }
+      },
+      "gpt-6.1-sol": {
+        "Appetite Check": {
+          "n": 85,
+          "correct": 60
+        },
+        "Business Classification": {
+          "n": 17,
+          "correct": 14
+        },
+        "Deductibles": {
+          "n": 13,
+          "correct": 13
+        },
+        "Policy Limits": {
+          "n": 17,
+          "correct": 15
+        },
+        "Product Recommendations": {
+          "n": 72,
+          "correct": 65
+        },
+        "Small business eligibility": {
+          "n": 48,
+          "correct": 44
+        }
+      },
+      "gpt-oss-120b": {
+        "Appetite Check": {
+          "n": 85,
+          "correct": 73
+        },
+        "Business Classification": {
+          "n": 17,
+          "correct": 14
+        },
+        "Deductibles": {
+          "n": 13,
+          "correct": 12
+        },
+        "Policy Limits": {
+          "n": 17,
+          "correct": 6
+        },
+        "Product Recommendations": {
+          "n": 72,
+          "correct": 22
+        },
+        "Small business eligibility": {
+          "n": 48,
+          "correct": 23
+        }
+      }
+    },
+    "shared_rewritten_prompt_held_out": {
+      "opus-5.5": {
+        "Appetite Check": {
+          "n": 57,
+          "correct": 56
+        },
+        "Business Classification": {
+          "n": 11,
+          "correct": 11
+        },
+        "Deductibles": {
+          "n": 9,
+          "correct": 9
+        },
+        "Policy Limits": {
+          "n": 11,
+          "correct": 11
+        },
+        "Product Recommendations": {
+          "n": 48,
+          "correct": 45
+        },
+        "Small business eligibility": {
+          "n": 32,
+          "correct": 32
+        }
+      },
+      "haiku-5.5": {
+        "Appetite Check": {
+          "n": 57,
+          "correct": 57
+        },
+        "Business Classification": {
+          "n": 11,
+          "correct": 11
+        },
+        "Deductibles": {
+          "n": 9,
+          "correct": 9
+        },
+        "Policy Limits": {
+          "n": 11,
+          "correct": 11
+        },
+        "Product Recommendations": {
+          "n": 48,
+          "correct": 47
+        },
+        "Small business eligibility": {
+          "n": 32,
+          "correct": 31
+        }
+      },
+      "gpt-6.1-sol": {
+        "Appetite Check": {
+          "n": 57,
+          "correct": 56
+        },
+        "Business Classification": {
+          "n": 11,
+          "correct": 11
+        },
+        "Deductibles": {
+          "n": 9,
+          "correct": 9
+        },
+        "Policy Limits": {
+          "n": 11,
+          "correct": 11
+        },
+        "Product Recommendations": {
+          "n": 48,
+          "correct": 46
+        },
+        "Small business eligibility": {
+          "n": 32,
+          "correct": 32
+        }
+      },
+      "gpt-6-luna": {
+        "Appetite Check": {
+          "n": 57,
+          "correct": 56
+        },
+        "Business Classification": {
+          "n": 11,
+          "correct": 11
+        },
+        "Deductibles": {
+          "n": 9,
+          "correct": 9
+        },
+        "Policy Limits": {
+          "n": 11,
+          "correct": 11
+        },
+        "Product Recommendations": {
+          "n": 48,
+          "correct": 33
+        },
+        "Small business eligibility": {
+          "n": 32,
+          "correct": 32
+        }
+      },
+      "deepseek-v4-pro": {
+        "Appetite Check": {
+          "n": 57,
+          "correct": 57
+        },
+        "Business Classification": {
+          "n": 11,
+          "correct": 11
+        },
+        "Deductibles": {
+          "n": 9,
+          "correct": 9
+        },
+        "Policy Limits": {
+          "n": 11,
+          "correct": 10
+        },
+        "Product Recommendations": {
+          "n": 48,
+          "correct": 47
+        },
+        "Small business eligibility": {
+          "n": 32,
+          "correct": 32
+        }
+      },
+      "deepseek-v4.1-flash": {
+        "Appetite Check": {
+          "n": 57,
+          "correct": 56
+        },
+        "Business Classification": {
+          "n": 11,
+          "correct": 11
+        },
+        "Deductibles": {
+          "n": 9,
+          "correct": 9
+        },
+        "Policy Limits": {
+          "n": 11,
+          "correct": 10
+        },
+        "Product Recommendations": {
+          "n": 48,
+          "correct": 47
+        },
+        "Small business eligibility": {
+          "n": 32,
+          "correct": 32
+        }
+      },
+      "glm-5.3": {
+        "Appetite Check": {
+          "n": 57,
+          "correct": 57
+        },
+        "Business Classification": {
+          "n": 11,
+          "correct": 11
+        },
+        "Deductibles": {
+          "n": 9,
+          "correct": 9
+        },
+        "Policy Limits": {
+          "n": 11,
+          "correct": 10
+        },
+        "Product Recommendations": {
+          "n": 48,
+          "correct": 47
+        },
+        "Small business eligibility": {
+          "n": 32,
+          "correct": 31
+        }
+      },
+      "glm-5.3-flash": {
+        "Appetite Check": {
+          "n": 57,
+          "correct": 57
+        },
+        "Business Classification": {
+          "n": 11,
+          "correct": 11
+        },
+        "Deductibles": {
+          "n": 9,
+          "correct": 9
+        },
+        "Policy Limits": {
+          "n": 11,
+          "correct": 10
+        },
+        "Product Recommendations": {
+          "n": 48,
+          "correct": 48
+        },
+        "Small business eligibility": {
+          "n": 32,
+          "correct": 32
+        }
+      },
+      "gpt-oss-120b": {
+        "Appetite Check": {
+          "n": 57,
+          "correct": 47
+        },
+        "Business Classification": {
+          "n": 11,
+          "correct": 10
+        },
+        "Deductibles": {
+          "n": 9,
+          "correct": 9
+        },
+        "Policy Limits": {
+          "n": 11,
+          "correct": 8
+        },
+        "Product Recommendations": {
+          "n": 48,
+          "correct": 44
+        },
+        "Small business eligibility": {
+          "n": 32,
+          "correct": 28
+        }
+      },
+      "qwen3.8-27b": {
+        "Appetite Check": {
+          "n": 57,
+          "correct": 48
+        },
+        "Business Classification": {
+          "n": 11,
+          "correct": 10
+        },
+        "Deductibles": {
+          "n": 9,
+          "correct": 8
+        },
+        "Policy Limits": {
+          "n": 11,
+          "correct": 8
+        },
+        "Product Recommendations": {
+          "n": 48,
+          "correct": 34
+        },
+        "Small business eligibility": {
+          "n": 32,
+          "correct": 31
+        }
+      },
+      "minimax-m3": {
+        "Appetite Check": {
+          "n": 57,
+          "correct": 57
+        },
+        "Business Classification": {
+          "n": 11,
+          "correct": 11
+        },
+        "Deductibles": {
+          "n": 9,
+          "correct": 9
+        },
+        "Policy Limits": {
+          "n": 11,
+          "correct": 11
+        },
+        "Product Recommendations": {
+          "n": 48,
+          "correct": 42
+        },
+        "Small business eligibility": {
+          "n": 32,
+          "correct": 32
+        }
+      },
+      "sonnet-5.5": {
+        "Appetite Check": {
+          "n": 57,
+          "correct": 57
+        },
+        "Business Classification": {
+          "n": 11,
+          "correct": 11
+        },
+        "Deductibles": {
+          "n": 9,
+          "correct": 9
+        },
+        "Policy Limits": {
+          "n": 11,
+          "correct": 11
+        },
+        "Product Recommendations": {
+          "n": 48,
+          "correct": 47
+        },
+        "Small business eligibility": {
+          "n": 32,
+          "correct": 32
+        }
+      }
+    }
+  },
+  "failures": [
+    {
+      "category": "final_answer_asks_for_information",
+      "definition": "Wrong case whose final answer asks the underwriter for information instead of deciding (the FINAL ANSWER marker was put on a question). Text-pattern classification.",
+      "example": "FINAL ANSWER: I can help assess appetite, but I need the following application details: business operations and NAICS code, requested line of business, state, annual revenue.",
+      "counts": {
+        "opus-5.5": 1,
+        "sonnet-5.5": 5,
+        "haiku-5.5": 2,
+        "gpt-6.1-sol": 15,
+        "gpt-6-luna": 1,
+        "deepseek-v4-pro": 0,
+        "deepseek-v4.1-flash": 1,
+        "glm-5.3": 1,
+        "glm-5.3-flash": 2,
+        "gpt-oss-120b": 17,
+        "qwen3.8-27b": 0,
+        "minimax-m3": 1
+      }
+    },
+    {
+      "category": "empty_final_answer",
+      "definition": "Wrong case whose final answer is empty or a fragment under 15 characters.",
+      "example": "FINAL ANSWER: (nothing after the marker)",
+      "counts": {
+        "opus-5.5": 0,
+        "sonnet-5.5": 0,
+        "haiku-5.5": 0,
+        "gpt-6.1-sol": 5,
+        "gpt-6-luna": 0,
+        "deepseek-v4-pro": 0,
+        "deepseek-v4.1-flash": 0,
+        "glm-5.3": 0,
+        "glm-5.3-flash": 0,
+        "gpt-oss-120b": 0,
+        "qwen3.8-27b": 0,
+        "minimax-m3": 0
+      }
+    },
+    {
+      "category": "wrong_decision",
+      "definition": "The agent gave a complete answer that the judges ruled does not match the reference.",
+      "example": "Answered that property appetite was 'pending construction verification' where the guidelines put the business in appetite.",
+      "counts": {
+        "opus-5.5": 6,
+        "sonnet-5.5": 23,
+        "haiku-5.5": 25,
+        "gpt-6.1-sol": 20,
+        "gpt-6-luna": 32,
+        "deepseek-v4-pro": 6,
+        "deepseek-v4.1-flash": 21,
+        "glm-5.3": 12,
+        "glm-5.3-flash": 16,
+        "gpt-oss-120b": 83,
+        "qwen3.8-27b": 23,
+        "minimax-m3": 32
+      }
+    },
+    {
+      "category": "step_limit",
+      "definition": "Ran out of the 30-model-call budget; scored wrong.",
+      "example": "Kept re-querying the NAICS and appetite tables until the 30-call budget ran out.",
+      "counts": {
+        "opus-5.5": 0,
+        "sonnet-5.5": 0,
+        "haiku-5.5": 0,
+        "gpt-6.1-sol": 0,
+        "gpt-6-luna": 0,
+        "deepseek-v4-pro": 0,
+        "deepseek-v4.1-flash": 0,
+        "glm-5.3": 0,
+        "glm-5.3-flash": 1,
+        "gpt-oss-120b": 0,
+        "qwen3.8-27b": 17,
+        "minimax-m3": 0
+      }
+    },
+    {
+      "category": "turn_limit",
+      "definition": "Used all 12 underwriter turns without a final answer; scored wrong.",
+      "example": "Kept asking the underwriter for details already provided until 12 turns were used.",
+      "counts": {
+        "opus-5.5": 0,
+        "sonnet-5.5": 0,
+        "haiku-5.5": 5,
+        "gpt-6.1-sol": 0,
+        "gpt-6-luna": 0,
+        "deepseek-v4-pro": 0,
+        "deepseek-v4.1-flash": 0,
+        "glm-5.3": 0,
+        "glm-5.3-flash": 0,
+        "gpt-oss-120b": 2,
+        "qwen3.8-27b": 0,
+        "minimax-m3": 1
+      }
+    },
+    {
+      "category": "empty_reply",
+      "definition": "The model returned empty turns after two 'Please continue.' nudges; scored wrong.",
+      "example": "Returned an empty message three times in a row.",
+      "counts": {
+        "opus-5.5": 0,
+        "sonnet-5.5": 0,
+        "haiku-5.5": 0,
+        "gpt-6.1-sol": 1,
+        "gpt-6-luna": 0,
+        "deepseek-v4-pro": 0,
+        "deepseek-v4.1-flash": 0,
+        "glm-5.3": 0,
+        "glm-5.3-flash": 0,
+        "gpt-oss-120b": 0,
+        "qwen3.8-27b": 0,
+        "minimax-m3": 0
+      }
+    },
+    {
+      "category": "unreadable_tool_call",
+      "definition": "Cases with at least one tool call whose arguments were not valid JSON (harness flag tool_parse_error). The agent got an error message and could continue, so this overlaps the categories above.",
+      "example": "A read_query call whose arguments were a truncated JSON string.",
+      "counts": {
+        "opus-5.5": 0,
+        "sonnet-5.5": 0,
+        "haiku-5.5": 0,
+        "gpt-6.1-sol": 0,
+        "gpt-6-luna": 0,
+        "deepseek-v4-pro": 0,
+        "deepseek-v4.1-flash": 0,
+        "glm-5.3": 0,
+        "glm-5.3-flash": 0,
+        "gpt-oss-120b": 22,
+        "qwen3.8-27b": 0,
+        "minimax-m3": 0
+      }
+    }
+  ],
+  "setup": {
+    "tools": [
+      "list_tables",
+      "get_table_descriptions",
+      "get_table_schema",
+      "get_table_data_dictionary",
+      "read_query (read-only SQL over the rebuilt insurer database)",
+      "get_underwriting_guidelines"
+    ],
+    "userSimulator": "Claude Haiku 5.5 plays the underwriter: it holds the company's application details from the dataset, opens with the case's request, and answers the agent's questions from that data only. It does not know the answer. Its cost is reported apart from the agent's.",
+    "limits": "30 agent model calls and 12 underwriter turns per case; the case ends at a message containing 'FINAL ANSWER:'; an empty agent turn gets 'Please continue.' at most twice; tool results capped at 200 rows.",
+    "promptRewriting": {
+      "method": "Claude Opus 5.5 read up to 12 failed learning cases (conversation tail, final answer, reference, grader reason) and rewrote the whole system prompt with general instructions. A rewrite was kept only if it scored higher on the 84 learning cases; at most 2 rounds.",
+      "leakageCheck": "A rewrite was rejected and retried if it contained any number of 3+ digits not in the original prompt, or any company name from the learning cases. The held-out cases were never shown to the optimizer.",
+      "whatChanged": "Conversation discipline, not underwriting knowledge: ask which line of business the application is for before recommending others; classify the business from the database when no code is given and treat it as settled; commit to one answer; never end the case on a question; answer only what was asked."
+    }
+  },
+  "grading": {
+    "judges": [
+      "gpt-6-luna",
+      "claude-haiku-5-5"
+    ],
+    "tieBreak": "If the two judges disagree (or one fails to return a verdict), GPT-6.1 Sol decides.",
+    "humanAgreement": [
+      {
+        "judge": "gpt-6.1-sol",
+        "rate": 0.875,
+        "n": 160,
+        "kappa": 0.75
+      },
+      {
+        "judge": "haiku-5.5",
+        "rate": 0.9,
+        "n": 150,
+        "kappa": 0.8
+      },
+      {
+        "judge": "gpt-6-luna",
+        "rate": 0.8917,
+        "n": 157,
+        "kappa": 0.7834
+      }
+    ],
+    "selfGrading": [
+      {
+        "model": "gpt-6-luna",
+        "n": 252,
+        "deltaPoints": 1.6
+      },
+      {
+        "model": "haiku-5.5",
+        "n": 252,
+        "deltaPoints": -0.8
+      },
+      {
+        "model": "gpt-6.1-sol",
+        "n": 252,
+        "deltaPoints": -0.8
+      }
+    ]
+  },
+  "noise": {
+    "method": "Sonnet 5.5 run a second time on the 168 held-out cases with the first prompt and the same settings, paired against its first run.",
+    "sizePoints": 2.4,
+    "ci95Points": [
+      -3.6,
+      8.3
+    ],
+    "n": 168,
+    "ciMethod": "Paired bootstrap over cases (resample case-level differences with replacement), percentile interval; Wilson score intervals for single accuracies.",
+    "resamples": 4000,
+    "tieThreshold": "A difference is called a tie when its 95% interval includes 0. In prose we also treat differences under 3 points as noise, given the 2.4-point repeat difference."
+  },
+  "stepScreen": {
+    "method": "250 recorded Sonnet 5.5 model calls replayed against each candidate with the same inputs; the candidate's next step is compared with Sonnet's. A second Sonnet replay is the noise floor. Full-run columns are each model's first-prompt accuracy on all 252 cases paired against Sonnet.",
+    "holdsDefinition": "full-run accuracy at most 5 points below Sonnet 5.5",
+    "rankOfCheapestHolder": 11,
+    "cheapestHolder": "gpt-6-luna",
+    "rows": [
+      {
+        "model": "sonnet-5.5",
+        "sameTool": 0.5833,
+        "fullRun": null
+      },
+      {
+        "model": "opus-5.5",
+        "sameTool": 0.244,
+        "fullRun": {
+          "accuracy": 0.9722,
+          "deltaPoints": 8.3,
+          "ci95Points": [
+            4.0,
+            12.7
+          ]
+        }
+      },
+      {
+        "model": "haiku-5.5",
+        "sameTool": 0.2976,
+        "fullRun": {
+          "accuracy": 0.873,
+          "deltaPoints": -1.6,
+          "ci95Points": [
+            -7.1,
+            4.0
+          ]
+        }
+      },
+      {
+        "model": "gpt-6-luna",
+        "sameTool": 0.0893,
+        "fullRun": {
+          "accuracy": 0.869,
+          "deltaPoints": -2.0,
+          "ci95Points": [
+            -7.5,
+            3.6
+          ]
+        }
+      },
+      {
+        "model": "gpt-6.1-sol",
+        "sameTool": 0.2036,
+        "fullRun": {
+          "accuracy": 0.8373,
+          "deltaPoints": -5.2,
+          "ci95Points": [
+            -11.5,
+            1.2
+          ]
+        }
+      },
+      {
+        "model": "deepseek-v4.1-flash",
+        "sameTool": 0.2083,
+        "fullRun": {
+          "accuracy": 0.9127,
+          "deltaPoints": 2.4,
+          "ci95Points": [
+            -2.8,
+            7.9
+          ]
+        }
+      },
+      {
+        "model": "deepseek-v4-pro",
+        "sameTool": 0.256,
+        "fullRun": {
+          "accuracy": 0.9762,
+          "deltaPoints": 8.7,
+          "ci95Points": [
+            4.4,
+            13.1
+          ]
+        }
+      },
+      {
+        "model": "glm-5.3",
+        "sameTool": 0.2515,
+        "fullRun": {
+          "accuracy": 0.9484,
+          "deltaPoints": 6.0,
+          "ci95Points": [
+            1.2,
+            10.7
+          ]
+        }
+      },
+      {
+        "model": "glm-5.3-flash",
+        "sameTool": 0.2262,
+        "fullRun": {
+          "accuracy": 0.9246,
+          "deltaPoints": 3.6,
+          "ci95Points": [
+            -1.6,
+            8.7
+          ]
+        }
+      },
+      {
+        "model": "gpt-oss-120b",
+        "sameTool": 0.119,
+        "fullRun": {
+          "accuracy": 0.5952,
+          "deltaPoints": -29.4,
+          "ci95Points": [
+            -36.1,
+            -23.0
+          ]
+        }
+      },
+      {
+        "model": "qwen3.8-27b",
+        "sameTool": 0.1667,
+        "fullRun": {
+          "accuracy": 0.8413,
+          "deltaPoints": -4.8,
+          "ci95Points": [
+            -11.1,
+            1.6
+          ]
+        }
+      },
+      {
+        "model": "minimax-m3",
+        "sameTool": 0.1667,
+        "fullRun": {
+          "accuracy": 0.8651,
+          "deltaPoints": -2.4,
+          "ci95Points": [
+            -7.9,
+            3.2
+          ]
+        }
+      }
+    ]
+  },
+  "fullReplay": {
+    "method": "48 cases recorded with Sonnet 5.5 through Kitaru; each candidate replayed the same cases end to end through Kitaru experiments with a model override, with the same simulator and judges. Paired bootstrap on the same cases. Haiku has n=47: one baseline case failed to record cleanly.",
+    "spendUsd": 9.11,
+    "rows": [
+      {
+        "model": "deepseek-v4-pro",
+        "n": 48,
+        "correct": 47,
+        "referenceCorrect": 43,
+        "deltaPoints": 8.3,
+        "ci95Points": [
+          2.1,
+          16.7
+        ]
+      },
+      {
+        "model": "glm-5.3",
+        "n": 48,
+        "correct": 45,
+        "referenceCorrect": 43,
+        "deltaPoints": 4.2,
+        "ci95Points": [
+          -6.2,
+          14.6
+        ]
+      },
+      {
+        "model": "gpt-6-luna",
+        "n": 48,
+        "correct": 41,
+        "referenceCorrect": 43,
+        "deltaPoints": -4.2,
+        "ci95Points": [
+          -16.7,
+          8.3
+        ]
+      },
+      {
+        "model": "haiku-5.5",
+        "n": 47,
+        "correct": 39,
+        "referenceCorrect": 42,
+        "deltaPoints": -6.4,
+        "ci95Points": [
+          -19.1,
+          6.4
+        ]
+      }
+    ]
+  },
+  "memorization": {
+    "method": "24 cases whose answers depend on the insurer's synthetic appetite table, asked of every model with no tools and no data (company profile and question only).",
+    "summary": "Product recommendations: 0 of 72 correct across models. Appetite checks: 41 of 216, nearly all lodging and lessor businesses that the guidelines decline for fire risk, which a model can reason out. No sign of memorization."
+  },
+  "limitations": [
+    "One run per case per model and condition; differences under about 3 points are within run-to-run noise.",
+    "The insurer's environment is reconstructed from published traces; 128 of 380 cases were dropped because the rebuilt environment did not reproduce their reference answer.",
+    "The underwriter is simulated (Claude Haiku 5.5), not a person.",
+    "Grading is by LLM judges validated against Snorkel's labels at 87.5-90.0% agreement per judge (n=150-160); the combined panel was not validated as a unit.",
+    "Three judges (GPT-6 Luna, Claude Haiku 5.5, GPT-6.1 Sol) are also candidates; re-grading by other judges moved them by -0.8 to +1.6 points.",
+    "The first-run system prompt was written once and not tuned for any model; first-run rankings largely reflect prompt fit.",
+    "Prompt tuning: one optimizer (Opus 5.5), at most 2 rounds, 84 learning cases, one held-out run per tuned prompt. Five models were not tuned on their own (GPT-6 Luna: no rewrite improved its learning score; GLM 5.3, DeepSeek V4.1 Flash, MiniMax-M3, Qwen3.8 27B: only the shared prompt was run).",
+    "The shared prompt was tuned on a Claude model and may favor Claude models.",
+    "Effort settings were only tested on the five closed models.",
+    "Prices are list prices on 2026-10-19; open-weight prices are from an unverified table, and open-weight models ran on one commercial inference provider (prices and behavior vary by provider).",
+    "The failure categories 'final_answer_asks_for_information', 'empty_final_answer' and 'wrong_decision' are a text-pattern classification of wrong answers, not a judged label.",
+    "The Kitaru full replay covers 48 cases; most of its intervals are wide.",
+    "The step-level screen and full replay both use the first prompt; we did not repeat them under the rewritten prompt."
+  ]
+}

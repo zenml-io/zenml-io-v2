@@ -1,0 +1,83 @@
+---
+import type { ReportTable } from "../../lib/benchmarkReports";
+
+/**
+ * labs.results-table — one data table on a benchmark report: title,
+ * caption, hairline rows, a sticky first column and horizontal scroll inside
+ * its own frame (DESIGN.md "Wide tables"), with an edge fade as the scroll
+ * affordance. Highlighted rows take the sage-100 wash; heat cells step through
+ * single-hue sage tints (DESIGN.md "Data visualization").
+ */
+interface Props {
+  table: ReportTable;
+}
+const { table } = Astro.props;
+
+const HEAT = [
+  "",
+  "bg-(--color-sage-100)",
+  "bg-(--color-sage-200)",
+  "bg-(--color-sage-300)",
+] as const;
+---
+
+<figure class="labs-results-table min-w-0">
+  <figcaption class="mb-4">
+    <h3 class="font-display text-[22px] leading-[28px] text-(--color-cream-900) md:text-[24px] md:leading-[30px]">{table.title}</h3>
+    {table.caption && <p class="mt-2 max-w-[768px] font-sans text-[15px] leading-[23px] text-(--color-cream-700)">{table.caption}</p>}
+  </figcaption>
+  <div class="relative rounded-[20px] border border-(--color-border) bg-card">
+    <div class="overflow-x-auto rounded-[20px]" tabindex="0" role="region" aria-label={table.title}>
+      <table class="w-full min-w-[720px] border-collapse font-sans text-[14px] leading-5">
+        <thead>
+          <tr class="border-b border-(--color-border) bg-(--color-sage-50)">
+            {table.columns.map((column, index) => (
+              <th
+                scope="col"
+                class:list={[
+                  "px-4 py-3 align-bottom font-medium text-(--color-cream-900)",
+                  column.align === "right" ? "text-right" : "text-left",
+                  index === 0 && "sticky left-0 z-10 bg-(--color-sage-50)",
+                ]}
+              >
+                {column.label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {table.rows.map((row) => (
+            <tr class:list={["border-b border-(--color-border) last:border-b-0", row.highlight && "bg-(--color-sage-100)"]}>
+              {row.cells.map((cell, index) =>
+                index === 0 ? (
+                  <th
+                    scope="row"
+                    class:list={[
+                      "sticky left-0 z-10 px-4 py-3 text-left font-medium whitespace-nowrap text-(--color-cream-900)",
+                      row.highlight ? "bg-(--color-sage-100)" : "bg-card",
+                    ]}
+                  >
+                    {cell.text}
+                  </th>
+                ) : (
+                  <td
+                    class:list={[
+                      "px-4 py-3 whitespace-nowrap tabular-nums",
+                      table.columns[index]?.align === "right" ? "text-right" : "text-left",
+                      cell.muted ? "text-(--color-cream-700)" : "text-(--color-cream-900)",
+                      cell.level && HEAT[cell.level],
+                    ]}
+                  >
+                    {cell.text}
+                  </td>
+                ),
+              )}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="pointer-events-none absolute inset-y-0 right-0 w-8 rounded-r-[20px] bg-gradient-to-l from-(--color-cream-100) to-transparent md:hidden" aria-hidden="true"></div>
+  </div>
+  {table.footnote && <p class="mt-3 max-w-[768px] font-sans text-[13px] leading-5 text-(--color-cream-700)">{table.footnote}</p>}
+</figure>
