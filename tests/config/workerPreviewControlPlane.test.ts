@@ -418,7 +418,7 @@ describe("preview Worker upload workflow", () => {
       )
       .digest("hex");
 
-    expect(gitBlobSha).toBe("1687e0ecd7d962d2c937e17befd2701c4d6cf667");
+    expect(gitBlobSha).toBe("81c1a1a3e254f3172693ecf1fadc40acbe47d3fe");
     expect(trustedArtifactWorkflowText).toBe(artifactWorkflowText);
     expect(trustedArtifactWorkflowText).toContain(
       "name: Website CI and Worker Artifact",
@@ -443,7 +443,7 @@ describe("preview Worker upload workflow", () => {
     const safetyStep = uploadStep("Reject an unsafe Worker artifact");
 
     expect(downloadStep.uses).toBe(
-      "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+      "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
     );
     expect(downloadStep.with).toMatchObject({
       name: "worker-dist",
@@ -595,7 +595,7 @@ describe("preview Worker upload workflow", () => {
     const preserveStep = uploadStep("Preserve preview upload metadata");
     expect(preserveStep.if).toBe("always()");
     expect(preserveStep.uses).toBe(
-      "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+      "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
     );
     expect(preserveStep.with).toMatchObject({
       "if-no-files-found": "warn",
@@ -1040,7 +1040,7 @@ describe("preview Worker activation workflow", () => {
 
     expect(captureStep.run).toContain("wrangler deployments list");
     expect(preserveStep.uses).toBe(
-      "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+      "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
     );
     expect(activateStep.run).toContain(
       'wrangler versions deploy "$VERSION_ID@100%"',
