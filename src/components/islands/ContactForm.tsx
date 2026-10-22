@@ -12,6 +12,7 @@ import type { PlaceholderField } from "../../lib/formTypes";
 import { type FormType, validateForm } from "../../lib/formValidation";
 import type { CtaLink } from "../../lib/marketingPageTypes";
 import { labsButtonClasses } from "../labs/labsButtonStyles";
+import FormErrorSummary from "./shared/FormErrorSummary";
 
 interface Props {
   formType: FormType;
@@ -44,20 +45,9 @@ export default function ContactForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState("");
   const [errorAttempt, setErrorAttempt] = useState(0);
-  const errorSummaryRef = useRef<HTMLElement>(null);
   const formId = `contact-${formType}-${useId()}`;
   const turnstileRef = useRef<HTMLDivElement>(null);
   const turnstileWidgetId = useRef<string | null>(null);
-
-  useEffect(() => {
-    if (errorAttempt > 0 && errorSummaryRef.current) {
-      errorSummaryRef.current.focus({ preventScroll: true });
-      errorSummaryRef.current.scrollIntoView({
-        block: "center",
-        behavior: "instant",
-      });
-    }
-  }, [errorAttempt]);
 
   // Load the Turnstile script once and render the widget
   useEffect(() => {
@@ -259,40 +249,13 @@ export default function ContactForm({
         onSubmit={handleSubmit}
         noValidate
       >
-        {(Object.keys(errors).length > 0 || serverError) && (
-          <section
-            ref={errorSummaryRef}
-            tabIndex={-1}
-            aria-labelledby={`${formId}-error-heading`}
-            aria-describedby={`${formId}-error-details`}
-            class="rounded-[10px] border border-(--color-sage-500) bg-(--color-cream-100) px-space-sm py-space-xs text-sm text-(--color-cream-900)"
-          >
-            <p id={`${formId}-error-heading`} class="font-semibold">
-              Please check the form
-            </p>
-            <div id={`${formId}-error-details`}>
-              {serverError && <p>{serverError}</p>}
-              {Object.keys(errors).length > 0 && (
-                <ul class="mt-1 list-disc pl-5">
-                  {Object.entries(errors).map(([name, message]) => {
-                    const field = fields.find((field) => field.name === name);
-                    return (
-                      <li key={name}>
-                        {field ? (
-                          <a href={`#${formId}-${name}`} class="underline">
-                            {field.label}: {message}
-                          </a>
-                        ) : (
-                          message
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-            </div>
-          </section>
-        )}
+        <FormErrorSummary
+          formId={formId}
+          fields={fields}
+          errors={errors}
+          serverError={serverError}
+          attempt={errorAttempt}
+        />
         {fields.map((field) => (
           <div key={field.name}>
             <label

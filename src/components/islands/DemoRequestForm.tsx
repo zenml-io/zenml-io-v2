@@ -15,6 +15,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "preact/hooks";
 import type { CalEmbedConfig, PlaceholderField } from "../../lib/formTypes";
 import { validateForm } from "../../lib/formValidation";
 import { labsButtonClasses } from "../labs/labsButtonStyles";
+import FormErrorSummary from "./shared/FormErrorSummary";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
@@ -65,21 +66,10 @@ export default function DemoRequestForm({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState("");
   const [errorAttempt, setErrorAttempt] = useState(0);
-  const errorSummaryRef = useRef<HTMLElement>(null);
   const formId = `demo-request-${useId()}`;
   const turnstileRef = useRef<HTMLDivElement>(null);
   const turnstileWidgetId = useRef<string | null>(null);
   const submittedDataRef = useRef<{ name: string; email: string } | null>(null);
-
-  useEffect(() => {
-    if (errorAttempt > 0 && errorSummaryRef.current) {
-      errorSummaryRef.current.focus({ preventScroll: true });
-      errorSummaryRef.current.scrollIntoView({
-        block: "center",
-        behavior: "instant",
-      });
-    }
-  }, [errorAttempt]);
 
   // Fire "Demo Form Viewed" on mount
   useEffect(() => {
@@ -359,40 +349,13 @@ export default function DemoRequestForm({
         onSubmit={handleSubmit}
         noValidate
       >
-        {(Object.keys(errors).length > 0 || serverError) && (
-          <section
-            ref={errorSummaryRef}
-            tabIndex={-1}
-            aria-labelledby={`${formId}-error-heading`}
-            aria-describedby={`${formId}-error-details`}
-            class="rounded-[10px] border border-(--color-sage-500) bg-(--color-cream-100) px-space-sm py-space-xs text-sm text-(--color-cream-900)"
-          >
-            <p id={`${formId}-error-heading`} class="font-semibold">
-              Please check the form
-            </p>
-            <div id={`${formId}-error-details`}>
-              {serverError && <p>{serverError}</p>}
-              {Object.keys(errors).length > 0 && (
-                <ul class="mt-1 list-disc pl-5">
-                  {Object.entries(errors).map(([name, message]) => {
-                    const field = fields.find((field) => field.name === name);
-                    return (
-                      <li key={name}>
-                        {field ? (
-                          <a href={`#${formId}-${name}`} class="underline">
-                            {field.label}: {message}
-                          </a>
-                        ) : (
-                          message
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-            </div>
-          </section>
-        )}
+        <FormErrorSummary
+          formId={formId}
+          fields={fields}
+          errors={errors}
+          serverError={serverError}
+          attempt={errorAttempt}
+        />
         {fields.map((field) => (
           <FieldRenderer
             key={field.name}
@@ -490,7 +453,7 @@ function FieldRenderer({
           }
           class={`w-full rounded-[10px] border px-4 py-2.5 font-sans text-sm focus:border-(--color-sage-700) focus:ring-1 focus:ring-(--color-sage-700) outline-none transition-colors ${
             errors[field.name]
-              ? "border-red-400 bg-red-50"
+              ? "border-(--color-sage-700) bg-(--color-cream-100)"
               : "border-gray-300 bg-white"
           }`}
           disabled={disabled}
@@ -538,7 +501,7 @@ function FieldRenderer({
           placeholder={field.placeholder}
           class={`w-full rounded-[10px] border px-4 py-2.5 font-sans text-sm focus:border-(--color-sage-700) focus:ring-1 focus:ring-(--color-sage-700) outline-none transition-colors ${
             errors[field.name]
-              ? "border-red-400 bg-red-50"
+              ? "border-(--color-sage-700) bg-(--color-cream-100)"
               : "border-gray-300 bg-white"
           }`}
           disabled={disabled}
@@ -547,7 +510,7 @@ function FieldRenderer({
       {errors[field.name] && (
         <p
           id={`${formId}-${field.name}-error`}
-          class="mt-1 text-xs text-red-600"
+          class="mt-1 text-xs text-(--color-sage-800)"
         >
           {errors[field.name]}
         </p>

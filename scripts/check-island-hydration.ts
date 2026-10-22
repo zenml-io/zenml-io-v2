@@ -360,8 +360,15 @@ const CHECKS: IslandCheck[] = [
         const form = page.locator(`${root} form`);
         const submit = form.getByRole("button", { name: /.+/ });
         const summary = form.getByRole("region", {
-          name: "Please check the form",
+          name: /^(Please check the form|We couldn't send your request)$/,
         });
+        const summaryHeading = () =>
+          summary.evaluate(
+            (element) =>
+              document.getElementById(
+                element.getAttribute("aria-labelledby") ?? "",
+              )?.textContent,
+          );
         let submissions = 0;
         await page.route(`**${spec.endpoint}`, async (route) => {
           submissions++;
@@ -454,11 +461,13 @@ const CHECKS: IslandCheck[] = [
         await submit.click();
         await assertSummaryFocused();
         assert.match(await summary.innerText(), /Please try again later/);
+        assert.equal(await summaryHeading(), "We couldn't send your request");
         assert.equal(await form.locator('[aria-invalid="true"]').count(), 0);
         await form.locator('[name="email"]').fill("");
         await submit.click();
         await assertSummaryFocused();
         await assertFieldError("email", spec.emailError);
+        assert.equal(await summaryHeading(), "Please check the form");
         assert.doesNotMatch(
           await summary.innerText(),
           /Please try again later/,
