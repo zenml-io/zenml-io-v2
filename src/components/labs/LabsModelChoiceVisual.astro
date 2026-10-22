@@ -13,8 +13,11 @@
  * and runs with JS off. Each update plays as a replay: the title rises in
  * over the outgoing one, the sessions resolve top to bottom, the outcome
  * line settles last, and a hairline along the top edge fills over the
- * update's hold. One motion moment. Under reduced motion it rests on the
- * first update. A visually hidden caption carries the example as text.
+ * update's hold. A strip of the updates' names marks which one is showing,
+ * so a first-time visitor sees there are four and where they are, and
+ * hovering the card pauses it. One motion moment. Under reduced motion it
+ * rests on the first update. A visually hidden caption carries the example
+ * as text.
  */
 import type { HeroVisualContent } from "../../lib/labs-home";
 import LabsModelMark from "./LabsModelMark.astro";
@@ -25,8 +28,9 @@ interface Props {
 }
 const { content } = Astro.props;
 const count = content.updates.length;
-/** Seconds each update stays on screen. */
-const HOLD_S = 3.2;
+/** Seconds each update stays on screen: long enough to read the title and see
+ * which sessions differ before the next one comes in. */
+const HOLD_S = 6;
 /** The sessions start resolving once the new title has risen in. */
 const ROWS_LAG_S = 0.35;
 /** Gap between one session resolving and the next. */
@@ -62,7 +66,16 @@ const outcome = (differs: number) => {
     </span>
   </div>
 
-  <div class="hv-stack mt-3" aria-hidden="true">
+  <ol class="mt-3 flex flex-wrap gap-1.5" aria-hidden="true">
+    {content.updates.map((update, i) => (
+      <li class="hv-tab relative inline-flex h-7 items-center rounded-full border border-(--color-border) px-3 font-sans text-[13px] leading-none text-(--color-cream-800)">
+        <span class="hv-tab-on absolute inset-0 rounded-full bg-(--color-sage-200)" style={stateStyle(i)}></span>
+        <span class="relative">{update.kind}</span>
+      </li>
+    ))}
+  </ol>
+
+  <div class="hv-stack mt-4" aria-hidden="true">
     {content.updates.map((update, i) => (
       <p class="hv-state flex flex-wrap items-center gap-x-3 gap-y-1" style={stateStyle(i)}>
         <span class="font-display text-[26px] leading-[32px] text-(--color-cream-900) md:text-[30px] md:leading-[36px]">
@@ -139,6 +152,12 @@ const outcome = (differs: number) => {
     transform: scaleX(0);
     transform-origin: left;
   }
+  .hv-tab-on {
+    opacity: 0;
+  }
+  .hv-tab:first-child .hv-tab-on {
+    opacity: 1;
+  }
   @media (prefers-reduced-motion: no-preference) {
     .hv {
       animation: hv-in 0.8s ease-out 0.2s both;
@@ -148,6 +167,15 @@ const outcome = (differs: number) => {
     }
     .hv-progress {
       animation: hv-progress var(--hold) linear infinite;
+    }
+    .hv-tab-on {
+      animation: hv-tab var(--cycle) linear var(--state-delay) infinite both;
+    }
+    /* Hovering the card holds the current update so it can be read. */
+    .hv:hover :global(.hv-stack > .hv-state),
+    .hv:hover .hv-progress,
+    .hv:hover .hv-tab-on {
+      animation-play-state: paused;
     }
   }
   /* One update's window is 1/states of the cycle (25% for four). The next
@@ -166,6 +194,20 @@ const outcome = (differs: number) => {
     100% {
       opacity: 0;
       transform: translateY(-6px);
+    }
+  }
+  /* The current update's name stays marked for its whole window. */
+  @keyframes hv-tab {
+    0% {
+      opacity: 0;
+    }
+    2%,
+    25% {
+      opacity: 1;
+    }
+    27%,
+    100% {
+      opacity: 0;
     }
   }
   @keyframes hv-progress {
