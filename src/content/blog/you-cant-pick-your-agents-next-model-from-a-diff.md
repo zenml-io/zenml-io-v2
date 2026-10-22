@@ -67,7 +67,7 @@ Bank support makes the gap obvious. Every model picks the same tool as Sonnet 85
 
 In a conversation, the tool is often the easy part. The difference is in what the agent says, what it asks for, and when it decides to act. A step check scores each turn in isolation, against inputs the candidate never produced itself, so it can't see any of that.
 
-In conversations, exact agreement doesn't rescue it either. Replayed against its own recorded support traffic, Sonnet 5.5 produced exactly the same step only 48% of the time. If the current model matches itself half the time, a mismatch doesn't mean much.
+In conversations, exact agreement doesn't rescue it either. Replayed against its own recorded support traffic, Sonnet 5.5 produced exactly the same step only about half the time (48% and 51% in two separate replays). If the current model matches itself half the time, a mismatch doesn't mean much.
 
 <figure>
   <img src="https://assets.zenml.io/content/blog/you-cant-pick-your-agents-next-model-from-a-diff/88121123/support-tool-choice-vs-success.avif" alt="Two dot strips for bank support with one dot per candidate model. On the first, how often each model picks the same tool as Claude Sonnet 5.5, all 11 models fall between 85% and 99%. On the second, full-run task success, they spread from 51% to 64%, around Sonnet's own 62%." />
@@ -103,7 +103,8 @@ The third step is the one that decides. The first two make it affordable.
 
 - **Synthetic tasks.** All four agents run in simulated environments with deterministic graders. They are modeled on real workflows, not taken from production.
 - **Possible authorship bias.** Claude models wrote the environments and tasks, and the recorded traffic comes from Claude Sonnet 5.5. That could favor Claude models.
-- **One run per task.** Confidence intervals are wide, often 5 to 10 points either side. Several "holds" verdicts, including Luna on bank support, sit right on the 5-point line.
+- **Two Sonnet runs.** For invoice extraction, claims triage and KYC checks, the calls we replayed came from a separate Sonnet 5.5 recording run, not from the full runs we compare against. Both used the same model and settings, but they are different samples.
+- **One run per task.** Confidence intervals are wide, often 5 to 12 points either side. Several "holds" verdicts, including Luna on bank support, sit right on the 5-point line.
 - **Few models per use case.** Rank correlations over 11 candidates are rough estimates.
 - **Step judging.** In this study an LLM judge, not a person, labeled step disagreements. Human review is part of the workflow we describe, but we didn't test it here.
 

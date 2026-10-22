@@ -42,7 +42,7 @@ The first test is the one most teams run: every model on the same prompt, writte
 | DeepSeek V4.1 Flash (open) | 91.3% | 2.10¢ |
 | Claude Sonnet 5.5 | 88.9% | 4.06¢ |
 | Claude Haiku 5.5 | 87.3% | 0.50¢ |
-| GPT-6 Luna | 86.5% | 0.19¢ |
+| GPT-6 Luna | 86.9% | 0.19¢ |
 | MiniMax-M3 (open) | 86.5% | 1.75¢ |
 | Qwen3.8 27B (open) | 84.1% | 3.71¢ |
 | GPT-6.1 Sol | 83.7% | 2.01¢ |
