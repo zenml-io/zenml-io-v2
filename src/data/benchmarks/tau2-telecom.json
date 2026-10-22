@@ -700,7 +700,7 @@
     "maxSteps": 100,
     "timeoutSeconds": 1200,
     "promptRule": "work through every applicable manual section, have the user re-check after each change, check the account side, and transfer only when every step has failed or the manual says to escalate.",
-    "promptRuleLeakage": "Written before any test-split episode ran, from the failure pattern in the public Exgentic recordings (premature transfers) and the tau2 manual's structure; it contains no task ids, scenarios, device states or answers.",
+    "promptRuleLeakage": "Written from the failure pattern in the public Exgentic recordings (premature transfers) and the tau2 manual's structure; it contains no task ids, scenarios, device states or answers. When it was written relative to the baseline run was not recorded.",
     "arms": [
       {
         "arm": "baseline_gpt-5.2_recorded",
@@ -1208,7 +1208,8 @@
       "The agent harness is ours (PydanticAI with a send_message_to_user tool), not tau2's built-in LLM agent; numbers are not comparable to the tau2 leaderboard.",
       "Open-weight models ran on one commercial inference provider.",
       "Model settings are provider defaults (no reasoning-effort tuning per model).",
-      "The step-screen comparison uses different recordings (public Exgentic traces) from the replays."
+      "The step-screen comparison uses different recordings (public Exgentic traces) from the replays.",
+      "The arms differ in more than the model: the GPT-5.2 baseline ran an earlier agent version straight against OpenAI, the other arms a later version through a local model router, and GPT-5.6 and GPT-5.4 mini used OpenAI's Responses API while GPT-5.2 used chat completions. The unchanged GPT-5.2 rerun ran on the later setup, so it also measures that difference."
     ]
   }
 }
