@@ -9,6 +9,7 @@ import mlTrainingOps from "../../data/benchmarks/ml-training-ops.json";
 import servingInfra from "../../data/benchmarks/serving-infra.json";
 import sglang from "../../data/benchmarks/sglang-vs-vllm.json";
 import swapbench from "../../data/benchmarks/swapbench.json";
+import tau2Telecom from "../../data/benchmarks/tau2-telecom.json";
 import underwriting from "../../data/benchmarks/underwriting.json";
 import { cents, pct } from "./format";
 import type { BenchmarkPreview } from "./types";
@@ -156,6 +157,29 @@ function mlTrainingOpsPreview(): BenchmarkPreview {
   };
 }
 
+function tau2TelecomPreview(): BenchmarkPreview {
+  const { arms, tasks } = tau2Telecom.replay;
+  const swaps = arms
+    .filter((a) => a.role === "swap")
+    .sort((a, b) => b.accuracy - a.accuracy);
+  const baseline = arms.find((a) => a.role === "baseline");
+  const rows = [swaps[0], baseline, swaps[swaps.length - 1]].flatMap((a) =>
+    a ? [a] : [],
+  );
+  return {
+    metric: `Tasks solved out of ${tasks}`,
+    better: "higher",
+    max: tasks,
+    context: `Full Kitaru replays on tau2-bench Telecom's ${tasks} test tasks: the top model, the GPT-5.2 baseline and the lowest model.`,
+    rows: rows.map((a, i) => ({
+      label: a.role === "baseline" ? "GPT-5.2 (baseline)" : a.name,
+      value: a.correct,
+      display: `${a.correct} / ${a.n}`,
+      emphasis: i === 0,
+    })),
+  };
+}
+
 export const BENCHMARK_PREVIEWS: Record<string, BenchmarkPreview> = {
   underwriting: underwritingPreview(),
   swapbench: swapbenchPreview(),
@@ -163,4 +187,5 @@ export const BENCHMARK_PREVIEWS: Record<string, BenchmarkPreview> = {
   "serving-infra": servingInfraPreview(),
   "sglang-vs-vllm": sglangPreview(),
   "ml-training-ops": mlTrainingOpsPreview(),
+  "tau2-telecom": tau2TelecomPreview(),
 };

@@ -1,0 +1,1214 @@
+{
+  "meta": {
+    "name": "Frontier agents on public tau2-bench Telecom traces",
+    "status": "complete",
+    "recordedFrom": "2026-01-28",
+    "recordedTo": "2026-04-21",
+    "stepCheckDate": "2026-10-22"
+  },
+  "dataset": {
+    "url": "https://huggingface.co/datasets/Exgentic/agent-llm-traces-v2",
+    "rowsAllShards": 10056,
+    "telecomRowsAllHarnesses": 1844,
+    "keptCases": 499,
+    "types": [
+      {
+        "type": "mms",
+        "count": 216
+      },
+      {
+        "type": "mobile_data",
+        "count": 203
+      },
+      {
+        "type": "no_service",
+        "count": 80
+      }
+    ]
+  },
+  "models": [
+    {
+      "id": "DeepSeek-V3.2",
+      "name": "DeepSeek V3.2",
+      "vendor": "DeepSeek",
+      "weights": "open",
+      "role": "recorded full runs"
+    },
+    {
+      "id": "Kimi-K2.5",
+      "name": "Kimi K2.5",
+      "vendor": "Moonshot AI",
+      "weights": "open",
+      "role": "recorded full runs"
+    },
+    {
+      "id": "claude-opus-4-5",
+      "name": "Claude Opus 4.5",
+      "vendor": "Anthropic",
+      "weights": "closed",
+      "role": "recorded full runs"
+    },
+    {
+      "id": "gemini-3-pro-preview",
+      "name": "Gemini 3 Pro (preview)",
+      "vendor": "Google",
+      "weights": "closed",
+      "role": "recorded full runs"
+    },
+    {
+      "id": "gpt-5.2-2025-12-11",
+      "name": "GPT-5.2",
+      "vendor": "OpenAI",
+      "weights": "closed",
+      "role": "recorded full runs and step-check reference"
+    },
+    {
+      "id": "gpt-5.6-sol",
+      "name": "GPT-5.6 Sol",
+      "vendor": "OpenAI",
+      "weights": "closed",
+      "role": "step-check candidate"
+    },
+    {
+      "id": "gpt-5.6-luna",
+      "name": "GPT-5.6 Luna",
+      "vendor": "OpenAI",
+      "weights": "closed",
+      "role": "step-check candidate"
+    },
+    {
+      "id": "gpt-5.4-mini",
+      "name": "GPT-5.4 mini",
+      "vendor": "OpenAI",
+      "weights": "closed",
+      "role": "step-check candidate"
+    },
+    {
+      "id": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "name": "DeepSeek V4.1 Flash",
+      "vendor": "DeepSeek",
+      "weights": "open",
+      "role": "step-check candidate"
+    },
+    {
+      "id": "moonshotai/Kimi-K3",
+      "name": "Kimi K3",
+      "vendor": "Moonshot AI",
+      "weights": "open",
+      "role": "step-check candidate"
+    },
+    {
+      "id": "zai-org/GLM-5.3",
+      "name": "GLM-5.3",
+      "vendor": "Z.ai",
+      "weights": "open",
+      "role": "step-check candidate"
+    },
+    {
+      "id": "Qwen/Qwen3.8-27B",
+      "name": "Qwen3.8 27B",
+      "vendor": "Alibaba Qwen",
+      "weights": "open",
+      "role": "step-check candidate"
+    }
+  ],
+  "recorded": [
+    {
+      "model": "DeepSeek-V3.2",
+      "name": "DeepSeek V3.2",
+      "n": 100,
+      "correct": 71,
+      "accuracy": 0.71,
+      "ci95": [
+        0.6146,
+        0.7899
+      ],
+      "costPerCorrectCents": 6.9584,
+      "callsPerCase": 18.11,
+      "tokensPerCase": 175309.65,
+      "escalatedUnsolved": 26,
+      "endedUnsolved": 3,
+      "transfersInSolved": 17,
+      "unknownStatus": 0
+    },
+    {
+      "model": "Kimi-K2.5",
+      "name": "Kimi K2.5",
+      "n": 100,
+      "correct": 83,
+      "accuracy": 0.83,
+      "ci95": [
+        0.7445,
+        0.8911
+      ],
+      "costPerCorrectCents": 11.1763,
+      "callsPerCase": 16.14,
+      "tokensPerCase": 135307.25,
+      "escalatedUnsolved": 11,
+      "endedUnsolved": 6,
+      "transfersInSolved": 10,
+      "unknownStatus": 0
+    },
+    {
+      "model": "claude-opus-4-5",
+      "name": "Claude Opus 4.5",
+      "n": 99,
+      "correct": 75,
+      "accuracy": 0.7576,
+      "ci95": [
+        0.6646,
+        0.8313
+      ],
+      "costPerCorrectCents": 120.9685,
+      "callsPerCase": 17.2424,
+      "tokensPerCase": 41050.5556,
+      "escalatedUnsolved": 23,
+      "endedUnsolved": 1,
+      "transfersInSolved": 18,
+      "unknownStatus": 94
+    },
+    {
+      "model": "gemini-3-pro-preview",
+      "name": "Gemini 3 Pro (preview)",
+      "n": 99,
+      "correct": 73,
+      "accuracy": 0.7374,
+      "ci95": [
+        0.643,
+        0.814
+      ],
+      "costPerCorrectCents": 40.3457,
+      "callsPerCase": 14.798,
+      "tokensPerCase": 29574.7677,
+      "escalatedUnsolved": 25,
+      "endedUnsolved": 1,
+      "transfersInSolved": 18,
+      "unknownStatus": 95
+    },
+    {
+      "model": "gpt-5.2-2025-12-11",
+      "name": "GPT-5.2",
+      "n": 101,
+      "correct": 54,
+      "accuracy": 0.5347,
+      "ci95": [
+        0.4379,
+        0.6289
+      ],
+      "costPerCorrectCents": 28.1922,
+      "callsPerCase": 10.4653,
+      "tokensPerCase": 90445.6634,
+      "escalatedUnsolved": 32,
+      "endedUnsolved": 15,
+      "transfersInSolved": 10,
+      "unknownStatus": 99
+    }
+  ],
+  "perType": {
+    "DeepSeek-V3.2": {
+      "mms": {
+        "n": 43,
+        "correct": 26,
+        "accuracy": 0.6047
+      },
+      "mobile_data": {
+        "n": 45,
+        "correct": 34,
+        "accuracy": 0.7556
+      },
+      "no_service": {
+        "n": 12,
+        "correct": 11,
+        "accuracy": 0.9167
+      }
+    },
+    "Kimi-K2.5": {
+      "mms": {
+        "n": 43,
+        "correct": 31,
+        "accuracy": 0.7209
+      },
+      "mobile_data": {
+        "n": 41,
+        "correct": 36,
+        "accuracy": 0.878
+      },
+      "no_service": {
+        "n": 16,
+        "correct": 16,
+        "accuracy": 1.0
+      }
+    },
+    "claude-opus-4-5": {
+      "mms": {
+        "n": 43,
+        "correct": 19,
+        "accuracy": 0.4419
+      },
+      "mobile_data": {
+        "n": 40,
+        "correct": 40,
+        "accuracy": 1.0
+      },
+      "no_service": {
+        "n": 16,
+        "correct": 16,
+        "accuracy": 1.0
+      }
+    },
+    "gemini-3-pro-preview": {
+      "mms": {
+        "n": 43,
+        "correct": 21,
+        "accuracy": 0.4884
+      },
+      "mobile_data": {
+        "n": 40,
+        "correct": 37,
+        "accuracy": 0.925
+      },
+      "no_service": {
+        "n": 16,
+        "correct": 15,
+        "accuracy": 0.9375
+      }
+    },
+    "gpt-5.2-2025-12-11": {
+      "mms": {
+        "n": 44,
+        "correct": 13,
+        "accuracy": 0.2955
+      },
+      "mobile_data": {
+        "n": 37,
+        "correct": 31,
+        "accuracy": 0.8378
+      },
+      "no_service": {
+        "n": 20,
+        "correct": 10,
+        "accuracy": 0.5
+      }
+    }
+  },
+  "costSolvedVsUnsolved": [
+    {
+      "model": "DeepSeek-V3.2",
+      "nSolved": 71,
+      "nUnsolved": 29,
+      "costSolvedUsd": 0.0392,
+      "costUnsolvedUsd": 0.0743,
+      "stepsSolved": 15.0563,
+      "stepsUnsolved": 25.5862
+    },
+    {
+      "model": "Kimi-K2.5",
+      "nSolved": 83,
+      "nUnsolved": 17,
+      "costSolvedUsd": 0.0886,
+      "costUnsolvedUsd": 0.1129,
+      "stepsSolved": 15.6024,
+      "stepsUnsolved": 18.7647
+    },
+    {
+      "model": "claude-opus-4-5",
+      "nSolved": 75,
+      "nUnsolved": 24,
+      "costSolvedUsd": 0.7869,
+      "costUnsolvedUsd": 1.3212,
+      "stepsSolved": 14.96,
+      "stepsUnsolved": 24.375
+    },
+    {
+      "model": "gemini-3-pro-preview",
+      "nSolved": 73,
+      "nUnsolved": 26,
+      "costSolvedUsd": 0.2798,
+      "costUnsolvedUsd": 0.3472,
+      "stepsSolved": 14.0137,
+      "stepsUnsolved": 17.0
+    },
+    {
+      "model": "gpt-5.2-2025-12-11",
+      "nSolved": 54,
+      "nUnsolved": 47,
+      "costSolvedUsd": 0.1453,
+      "costUnsolvedUsd": 0.157,
+      "stepsSolved": 9.7593,
+      "stepsUnsolved": 11.0638
+    }
+  ],
+  "stepCheck": {
+    "recordedRuns": 101,
+    "recordedCalls": 1057,
+    "replayableCalls": 1048,
+    "sampledCalls": 160,
+    "candidates": [
+      {
+        "name": "gpt-5.2 (recorded model)",
+        "model": "gpt-5.2-2025-12-11",
+        "reference": true,
+        "callsSent": 160,
+        "answered": 141,
+        "toolChoice": {
+          "n": 75,
+          "matched": 63,
+          "rate": 0.84,
+          "ci95": [
+            0.7408,
+            0.906
+          ]
+        },
+        "exact": {
+          "n": 141,
+          "matched": 62,
+          "rate": 0.4397,
+          "ci95": [
+            0.3605,
+            0.5222
+          ]
+        },
+        "pairedToolChoice": null,
+        "pairedExact": null
+      },
+      {
+        "name": "gpt-5.6-sol",
+        "model": "gpt-5.6-sol",
+        "reference": false,
+        "callsSent": 160,
+        "answered": 141,
+        "toolChoice": {
+          "n": 75,
+          "matched": 62,
+          "rate": 0.8267,
+          "ci95": [
+            0.7257,
+            0.8958
+          ]
+        },
+        "exact": {
+          "n": 141,
+          "matched": 59,
+          "rate": 0.4184,
+          "ci95": [
+            0.3402,
+            0.501
+          ]
+        },
+        "pairedToolChoice": {
+          "runs": 19,
+          "calls": 75,
+          "deltaPoints": -0.094,
+          "ci95Points": [
+            -3.5714,
+            3.9474
+          ]
+        },
+        "pairedExact": {
+          "runs": 19,
+          "calls": 141,
+          "deltaPoints": -0.8365,
+          "ci95Points": [
+            -3.4931,
+            2.0363
+          ]
+        }
+      },
+      {
+        "name": "gpt-5.6-luna",
+        "model": "gpt-5.6-luna",
+        "reference": false,
+        "callsSent": 160,
+        "answered": 141,
+        "toolChoice": {
+          "n": 75,
+          "matched": 66,
+          "rate": 0.88,
+          "ci95": [
+            0.7874,
+            0.9356
+          ]
+        },
+        "exact": {
+          "n": 141,
+          "matched": 60,
+          "rate": 0.4255,
+          "ci95": [
+            0.347,
+            0.5081
+          ]
+        },
+        "pairedToolChoice": {
+          "runs": 19,
+          "calls": 75,
+          "deltaPoints": 3.5526,
+          "ci95Points": [
+            -2.3684,
+            10.5263
+          ]
+        },
+        "pairedExact": {
+          "runs": 19,
+          "calls": 141,
+          "deltaPoints": -0.8114,
+          "ci95Points": [
+            -3.8816,
+            2.0833
+          ]
+        }
+      },
+      {
+        "name": "gpt-5.4-mini",
+        "model": "gpt-5.4-mini",
+        "reference": false,
+        "callsSent": 160,
+        "answered": 141,
+        "toolChoice": {
+          "n": 75,
+          "matched": 57,
+          "rate": 0.76,
+          "ci95": [
+            0.6522,
+            0.8425
+          ]
+        },
+        "exact": {
+          "n": 141,
+          "matched": 55,
+          "rate": 0.3901,
+          "ci95": [
+            0.3135,
+            0.4725
+          ]
+        },
+        "pairedToolChoice": {
+          "runs": 19,
+          "calls": 75,
+          "deltaPoints": -0.5326,
+          "ci95Points": [
+            -11.1466,
+            13.4586
+          ]
+        },
+        "pairedExact": {
+          "runs": 19,
+          "calls": 141,
+          "deltaPoints": -4.034,
+          "ci95Points": [
+            -8.2863,
+            0.0219
+          ]
+        }
+      },
+      {
+        "name": "deepseek-v4.1-flash",
+        "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+        "reference": false,
+        "callsSent": 160,
+        "answered": 160,
+        "toolChoice": {
+          "n": 86,
+          "matched": 50,
+          "rate": 0.5814,
+          "ci95": [
+            0.4758,
+            0.68
+          ]
+        },
+        "exact": {
+          "n": 160,
+          "matched": 43,
+          "rate": 0.2687,
+          "ci95": [
+            0.2061,
+            0.3423
+          ]
+        },
+        "pairedToolChoice": {
+          "runs": 19,
+          "calls": 75,
+          "deltaPoints": -25.3195,
+          "ci95Points": [
+            -38.0702,
+            -13.2519
+          ]
+        },
+        "pairedExact": {
+          "runs": 19,
+          "calls": 141,
+          "deltaPoints": -21.0881,
+          "ci95Points": [
+            -30.5556,
+            -11.9486
+          ]
+        }
+      },
+      {
+        "name": "kimi-k3",
+        "model": "moonshotai/Kimi-K3",
+        "reference": false,
+        "callsSent": 160,
+        "answered": 160,
+        "toolChoice": {
+          "n": 86,
+          "matched": 67,
+          "rate": 0.7791,
+          "ci95": [
+            0.6805,
+            0.8538
+          ]
+        },
+        "exact": {
+          "n": 160,
+          "matched": 67,
+          "rate": 0.4188,
+          "ci95": [
+            0.3451,
+            0.4962
+          ]
+        },
+        "pairedToolChoice": {
+          "runs": 19,
+          "calls": 75,
+          "deltaPoints": -4.0789,
+          "ci95Points": [
+            -9.6053,
+            1.3158
+          ]
+        },
+        "pairedExact": {
+          "runs": 19,
+          "calls": 141,
+          "deltaPoints": -2.218,
+          "ci95Points": [
+            -6.1028,
+            1.2281
+          ]
+        }
+      },
+      {
+        "name": "glm-5.3",
+        "model": "zai-org/GLM-5.3",
+        "reference": false,
+        "callsSent": 160,
+        "answered": 160,
+        "toolChoice": {
+          "n": 86,
+          "matched": 66,
+          "rate": 0.7674,
+          "ci95": [
+            0.6679,
+            0.8441
+          ]
+        },
+        "exact": {
+          "n": 160,
+          "matched": 57,
+          "rate": 0.3563,
+          "ci95": [
+            0.2862,
+            0.433
+          ]
+        },
+        "pairedToolChoice": {
+          "runs": 19,
+          "calls": 75,
+          "deltaPoints": -6.5789,
+          "ci95Points": [
+            -14.4737,
+            0.0
+          ]
+        },
+        "pairedExact": {
+          "runs": 19,
+          "calls": 141,
+          "deltaPoints": -8.1944,
+          "ci95Points": [
+            -13.2989,
+            -3.2164
+          ]
+        }
+      },
+      {
+        "name": "qwen3.8-27b",
+        "model": "Qwen/Qwen3.8-27B",
+        "reference": false,
+        "callsSent": 160,
+        "answered": 160,
+        "toolChoice": {
+          "n": 86,
+          "matched": 72,
+          "rate": 0.8372,
+          "ci95": [
+            0.7451,
+            0.9005
+          ]
+        },
+        "exact": {
+          "n": 160,
+          "matched": 69,
+          "rate": 0.4313,
+          "ci95": [
+            0.357,
+            0.5087
+          ]
+        },
+        "pairedToolChoice": {
+          "runs": 19,
+          "calls": 75,
+          "deltaPoints": -0.2632,
+          "ci95Points": [
+            -7.2368,
+            5.3947
+          ]
+        },
+        "pairedExact": {
+          "runs": 19,
+          "calls": 141,
+          "deltaPoints": -0.943,
+          "ci95Points": [
+            -3.7939,
+            2.0175
+          ]
+        }
+      }
+    ],
+    "resamples": 10000
+  },
+  "replay": {
+    "date": "2026-10-22",
+    "source": "tau2-bench (Sierra Research), telecom domain, test split",
+    "url": "https://github.com/sierra-research/tau2-bench",
+    "version": "commit 05736c2 (2026-10-21)",
+    "license": "MIT",
+    "tasks": 40,
+    "types": [
+      {
+        "type": "mms_issue",
+        "count": 16
+      },
+      {
+        "type": "mobile_data_issue",
+        "count": 9
+      },
+      {
+        "type": "service_issue",
+        "count": 15
+      }
+    ],
+    "userSimulator": "tau2's own user simulator with gpt-4.1, unchanged across arms",
+    "maxSteps": 100,
+    "timeoutSeconds": 1200,
+    "promptRule": "work through every applicable manual section, have the user re-check after each change, check the account side, and transfer only when every step has failed or the manual says to escalate.",
+    "promptRuleLeakage": "Written before any test-split episode ran, from the failure pattern in the public Exgentic recordings (premature transfers) and the tau2 manual's structure; it contains no task ids, scenarios, device states or answers.",
+    "arms": [
+      {
+        "arm": "baseline_gpt-5.2_recorded",
+        "name": "GPT-5.2 (baseline recording)",
+        "weights": "closed",
+        "role": "baseline",
+        "n": 40,
+        "correct": 27,
+        "accuracy": 0.675,
+        "ci95": [
+          0.5202,
+          0.7992
+        ],
+        "callsPerCase": 13.5,
+        "toolCallsPerCase": 9.85,
+        "escalatedUnsolved": 10,
+        "endedUnsolved": 3,
+        "noGrade": 0,
+        "transfersInSolved": 11,
+        "paired": null
+      },
+      {
+        "arm": "noise_gpt-5_2",
+        "name": "GPT-5.2 (rerun, no override)",
+        "weights": "closed",
+        "role": "noise",
+        "n": 40,
+        "correct": 27,
+        "accuracy": 0.675,
+        "ci95": [
+          0.5202,
+          0.7992
+        ],
+        "callsPerCase": 13.875,
+        "toolCallsPerCase": 9.825,
+        "escalatedUnsolved": 10,
+        "endedUnsolved": 3,
+        "noGrade": 0,
+        "transfersInSolved": 12,
+        "paired": {
+          "deltaPoints": 0.0,
+          "ci95Points": [
+            -17.5,
+            17.5
+          ],
+          "gained": 6,
+          "lost": 6
+        }
+      },
+      {
+        "arm": "prompt-escalation-rule",
+        "name": "GPT-5.2 + escalation rule",
+        "weights": "closed",
+        "role": "prompt",
+        "n": 40,
+        "correct": 29,
+        "accuracy": 0.725,
+        "ci95": [
+          0.5716,
+          0.8389
+        ],
+        "callsPerCase": 13.85,
+        "toolCallsPerCase": 13.275,
+        "escalatedUnsolved": 10,
+        "endedUnsolved": 1,
+        "noGrade": 0,
+        "transfersInSolved": 12,
+        "paired": {
+          "deltaPoints": 5.0,
+          "ci95Points": [
+            -12.5,
+            22.5
+          ],
+          "gained": 8,
+          "lost": 6
+        }
+      },
+      {
+        "arm": "gpt-5_6-sol",
+        "name": "GPT-5.6 Sol",
+        "weights": "closed",
+        "role": "swap",
+        "n": 40,
+        "correct": 33,
+        "accuracy": 0.825,
+        "ci95": [
+          0.6805,
+          0.9125
+        ],
+        "callsPerCase": 14.625,
+        "toolCallsPerCase": 13.625,
+        "escalatedUnsolved": 5,
+        "endedUnsolved": 2,
+        "noGrade": 0,
+        "transfersInSolved": 12,
+        "paired": {
+          "deltaPoints": 15.0,
+          "ci95Points": [
+            0.0,
+            32.5
+          ],
+          "gained": 9,
+          "lost": 3
+        }
+      },
+      {
+        "arm": "gpt-5_6-luna",
+        "name": "GPT-5.6 Luna",
+        "weights": "closed",
+        "role": "swap",
+        "n": 40,
+        "correct": 22,
+        "accuracy": 0.55,
+        "ci95": [
+          0.3983,
+          0.6929
+        ],
+        "callsPerCase": 11.475,
+        "toolCallsPerCase": 10.525,
+        "escalatedUnsolved": 18,
+        "endedUnsolved": 0,
+        "noGrade": 0,
+        "transfersInSolved": 12,
+        "paired": {
+          "deltaPoints": -12.5,
+          "ci95Points": [
+            -30.0,
+            5.0
+          ],
+          "gained": 5,
+          "lost": 10
+        }
+      },
+      {
+        "arm": "gpt-5_4-mini",
+        "name": "GPT-5.4 mini",
+        "weights": "closed",
+        "role": "swap",
+        "n": 40,
+        "correct": 19,
+        "accuracy": 0.475,
+        "ci95": [
+          0.3294,
+          0.625
+        ],
+        "callsPerCase": 14.525,
+        "toolCallsPerCase": 13.2,
+        "escalatedUnsolved": 14,
+        "endedUnsolved": 7,
+        "noGrade": 0,
+        "transfersInSolved": 10,
+        "paired": {
+          "deltaPoints": -20.0,
+          "ci95Points": [
+            -37.5,
+            -2.5
+          ],
+          "gained": 3,
+          "lost": 11
+        }
+      },
+      {
+        "arm": "qwen3_8-27b",
+        "name": "Qwen3.8 27B",
+        "weights": "open",
+        "role": "swap",
+        "n": 40,
+        "correct": 36,
+        "accuracy": 0.9,
+        "ci95": [
+          0.7695,
+          0.9604
+        ],
+        "callsPerCase": 13.5,
+        "toolCallsPerCase": 8.675,
+        "escalatedUnsolved": 3,
+        "endedUnsolved": 1,
+        "noGrade": 0,
+        "transfersInSolved": 12,
+        "paired": {
+          "deltaPoints": 22.5,
+          "ci95Points": [
+            7.5,
+            37.5
+          ],
+          "gained": 10,
+          "lost": 1
+        }
+      },
+      {
+        "arm": "kimi-k3",
+        "name": "Kimi K3",
+        "weights": "open",
+        "role": "swap",
+        "n": 40,
+        "correct": 32,
+        "accuracy": 0.8,
+        "ci95": [
+          0.6524,
+          0.895
+        ],
+        "callsPerCase": 15.825,
+        "toolCallsPerCase": 9.5,
+        "escalatedUnsolved": 3,
+        "endedUnsolved": 5,
+        "noGrade": 0,
+        "transfersInSolved": 12,
+        "paired": {
+          "deltaPoints": 12.5,
+          "ci95Points": [
+            -2.5,
+            27.5
+          ],
+          "gained": 7,
+          "lost": 2
+        }
+      },
+      {
+        "arm": "glm-5_3",
+        "name": "GLM-5.3",
+        "weights": "open",
+        "role": "swap",
+        "n": 40,
+        "correct": 39,
+        "accuracy": 0.975,
+        "ci95": [
+          0.8712,
+          0.9956
+        ],
+        "callsPerCase": 13.325,
+        "toolCallsPerCase": 6.625,
+        "escalatedUnsolved": 0,
+        "endedUnsolved": 1,
+        "noGrade": 0,
+        "transfersInSolved": 12,
+        "paired": {
+          "deltaPoints": 30.0,
+          "ci95Points": [
+            17.5,
+            45.0
+          ],
+          "gained": 12,
+          "lost": 0
+        }
+      },
+      {
+        "arm": "deepseek-v4_1-flash",
+        "name": "DeepSeek V4.1 Flash",
+        "weights": "open",
+        "role": "swap",
+        "n": 40,
+        "correct": 35,
+        "accuracy": 0.875,
+        "ci95": [
+          0.7389,
+          0.9454
+        ],
+        "callsPerCase": 14.725,
+        "toolCallsPerCase": 6.525,
+        "escalatedUnsolved": 2,
+        "endedUnsolved": 3,
+        "noGrade": 0,
+        "transfersInSolved": 12,
+        "paired": {
+          "deltaPoints": 20.0,
+          "ci95Points": [
+            7.5,
+            32.5
+          ],
+          "gained": 8,
+          "lost": 0
+        }
+      }
+    ],
+    "perType": {
+      "baseline_gpt-5.2_recorded": {
+        "mms_issue": {
+          "n": 16,
+          "correct": 6
+        },
+        "mobile_data_issue": {
+          "n": 9,
+          "correct": 7
+        },
+        "service_issue": {
+          "n": 15,
+          "correct": 14
+        }
+      },
+      "noise_gpt-5_2": {
+        "mms_issue": {
+          "n": 16,
+          "correct": 6
+        },
+        "mobile_data_issue": {
+          "n": 9,
+          "correct": 6
+        },
+        "service_issue": {
+          "n": 15,
+          "correct": 15
+        }
+      },
+      "prompt-escalation-rule": {
+        "mms_issue": {
+          "n": 16,
+          "correct": 9
+        },
+        "mobile_data_issue": {
+          "n": 9,
+          "correct": 6
+        },
+        "service_issue": {
+          "n": 15,
+          "correct": 14
+        }
+      },
+      "gpt-5_6-sol": {
+        "mms_issue": {
+          "n": 16,
+          "correct": 10
+        },
+        "mobile_data_issue": {
+          "n": 9,
+          "correct": 8
+        },
+        "service_issue": {
+          "n": 15,
+          "correct": 15
+        }
+      },
+      "gpt-5_6-luna": {
+        "mms_issue": {
+          "n": 16,
+          "correct": 4
+        },
+        "mobile_data_issue": {
+          "n": 9,
+          "correct": 5
+        },
+        "service_issue": {
+          "n": 15,
+          "correct": 13
+        }
+      },
+      "gpt-5_4-mini": {
+        "mms_issue": {
+          "n": 16,
+          "correct": 5
+        },
+        "mobile_data_issue": {
+          "n": 9,
+          "correct": 1
+        },
+        "service_issue": {
+          "n": 15,
+          "correct": 13
+        }
+      },
+      "qwen3_8-27b": {
+        "mms_issue": {
+          "n": 16,
+          "correct": 12
+        },
+        "mobile_data_issue": {
+          "n": 9,
+          "correct": 9
+        },
+        "service_issue": {
+          "n": 15,
+          "correct": 15
+        }
+      },
+      "kimi-k3": {
+        "mms_issue": {
+          "n": 16,
+          "correct": 9
+        },
+        "mobile_data_issue": {
+          "n": 9,
+          "correct": 8
+        },
+        "service_issue": {
+          "n": 15,
+          "correct": 15
+        }
+      },
+      "glm-5_3": {
+        "mms_issue": {
+          "n": 16,
+          "correct": 15
+        },
+        "mobile_data_issue": {
+          "n": 9,
+          "correct": 9
+        },
+        "service_issue": {
+          "n": 15,
+          "correct": 15
+        }
+      },
+      "deepseek-v4_1-flash": {
+        "mms_issue": {
+          "n": 16,
+          "correct": 12
+        },
+        "mobile_data_issue": {
+          "n": 9,
+          "correct": 8
+        },
+        "service_issue": {
+          "n": 15,
+          "correct": 15
+        }
+      }
+    },
+    "resamples": 10000,
+    "stepVsReplay": {
+      "pairs": [
+        {
+          "arm": "gpt-5_6-sol",
+          "stepToolChoice": 0.8267,
+          "stepCalls": 75,
+          "replayAccuracy": 0.825,
+          "deltaPoints": 15.0,
+          "ci95Points": [
+            0.0,
+            32.5
+          ]
+        },
+        {
+          "arm": "gpt-5_6-luna",
+          "stepToolChoice": 0.88,
+          "stepCalls": 75,
+          "replayAccuracy": 0.55,
+          "deltaPoints": -12.5,
+          "ci95Points": [
+            -30.0,
+            5.0
+          ]
+        },
+        {
+          "arm": "gpt-5_4-mini",
+          "stepToolChoice": 0.76,
+          "stepCalls": 75,
+          "replayAccuracy": 0.475,
+          "deltaPoints": -20.0,
+          "ci95Points": [
+            -37.5,
+            -2.5
+          ]
+        },
+        {
+          "arm": "qwen3_8-27b",
+          "stepToolChoice": 0.8372,
+          "stepCalls": 86,
+          "replayAccuracy": 0.9,
+          "deltaPoints": 22.5,
+          "ci95Points": [
+            7.5,
+            37.5
+          ]
+        },
+        {
+          "arm": "kimi-k3",
+          "stepToolChoice": 0.7791,
+          "stepCalls": 86,
+          "replayAccuracy": 0.8,
+          "deltaPoints": 12.5,
+          "ci95Points": [
+            -2.5,
+            27.5
+          ]
+        },
+        {
+          "arm": "glm-5_3",
+          "stepToolChoice": 0.7674,
+          "stepCalls": 86,
+          "replayAccuracy": 0.975,
+          "deltaPoints": 30.0,
+          "ci95Points": [
+            17.5,
+            45.0
+          ]
+        },
+        {
+          "arm": "deepseek-v4_1-flash",
+          "stepToolChoice": 0.5814,
+          "stepCalls": 86,
+          "replayAccuracy": 0.875,
+          "deltaPoints": 20.0,
+          "ci95Points": [
+            7.5,
+            32.5
+          ]
+        }
+      ],
+      "spearman": -0.0714,
+      "spearmanN": 7
+    },
+    "limitations": [
+      "40 tasks per arm and one episode per task, so accuracy intervals are wide (about +/-15 points); per-task paired intervals are reported for every comparison.",
+      "The user simulator is an LLM (gpt-4.1); the noise arm measures how much outcomes move on a rerun with nothing changed.",
+      "Replays start fresh episodes from each task (Kitaru replays the case, not the recorded conversation), so a replay is a new full run, not a step check.",
+      "The agent harness is ours (PydanticAI with a send_message_to_user tool), not tau2's built-in LLM agent; numbers are not comparable to the tau2 leaderboard.",
+      "Open-weight models ran on one commercial inference provider.",
+      "Model settings are provider defaults (no reasoning-effort tuning per model).",
+      "The step-screen comparison uses different recordings (public Exgentic traces) from the replays."
+    ]
+  }
+}
