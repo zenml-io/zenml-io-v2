@@ -30,15 +30,26 @@ export interface BrevoFormConfig {
   submitLabel: string;
 }
 
-/** A field definition for placeholder (disabled) forms. */
-export interface PlaceholderField {
+interface PlaceholderFieldBase {
   name: string;
   label: string;
-  type: "text" | "email" | "url" | "select" | "checkbox";
   required?: boolean;
   placeholder?: string;
-  options?: { value: string; label: string }[];
 }
+
+/**
+ * A field definition for placeholder (disabled) forms. A select always
+ * carries its options, so it can never fall through to `<input type="select">`.
+ */
+export type PlaceholderField =
+  | (PlaceholderFieldBase & {
+      type: "select";
+      options: { value: string; label: string }[];
+    })
+  | (PlaceholderFieldBase & {
+      type: "text" | "email" | "url" | "checkbox";
+      options?: never;
+    });
 
 /** Configuration for the ContactForm Preact island. */
 export interface ContactFormConfig {
