@@ -8,6 +8,7 @@ import type { LabsProductBandContent } from "../../lib/labs-home";
 import { GrainBackdrop } from "../islands/GrainBackdrop";
 import LabsButton from "./LabsButton.astro";
 import LabsInstallChip from "./LabsInstallChip.astro";
+import "../../styles/labs-scroll-reveal.css";
 
 interface Props {
   content: LabsProductBandContent;
@@ -32,8 +33,8 @@ const comparison = preset === "comparison";
     class="absolute inset-0 opacity-90"
   />
 
-  <div class={comparison ? "relative mx-auto flex max-w-content flex-col items-center px-gutter text-center" : "relative mx-auto max-w-content px-gutter"}>
-    <h2 class={comparison ? "max-w-[768px] font-display text-[32px] leading-[38px] text-(--color-cream-50) md:text-[44px] md:leading-[50px]" : "font-display text-[44px] leading-[48px] text-(--color-cream-50) md:text-[72px] md:leading-[78px]"}>
+  <div class={comparison ? "scroll-reveal-section relative mx-auto flex max-w-content flex-col items-center px-gutter text-center" : "scroll-reveal-section relative mx-auto max-w-content px-gutter"}>
+    <h2 class={comparison ? "reveal-child max-w-[768px] font-display text-[32px] leading-[38px] text-(--color-cream-50) md:text-[44px] md:leading-[50px]" : "reveal-child font-display text-[44px] leading-[48px] text-(--color-cream-50) md:text-[72px] md:leading-[78px]"}>
       {content.headlineLines[0]}
       {comparison && " "}
       <br />
@@ -41,21 +42,21 @@ const comparison = preset === "comparison";
     </h2>
 
     {Astro.slots.has("deck") ? (
-      <div class="labs-close-deck mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)">
+      <div class="labs-close-deck reveal-child stagger-1 mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)">
         <slot name="deck" />
       </div>
     ) : content.deck && (
-      <p class="mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)">
+      <p class="reveal-child stagger-1 mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)">
         {content.deck}
       </p>
     )}
 
-    <div class="mt-10 flex flex-wrap items-center gap-7">
+    <div class="reveal-child stagger-2 mt-10 flex flex-wrap items-center gap-7">
       <LabsButton cta={content.cta} tone="sage" />
     </div>
 
     {content.install && (
-      <div class="mt-space-md flex max-w-full">
+      <div class="reveal-child stagger-3 mt-space-md flex max-w-full">
         <LabsInstallChip content={content.install} tone="dark" />
       </div>
     )}

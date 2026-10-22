@@ -1409,7 +1409,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Three numbered steps from `content: HowItWorksContent` (LABS_HOW_IT_WORKS on `/`), typographic rather than carded: a cream-900 hairline, a large sage-400 Borna numeral, a title, one line of body, and an optional detail (`sources`: the trace tools' marks with names; `prompt`: the exact prompt in a sage-100 code block). A text link with a sage-400 underline closes it. Three columns from lg, stacked below.",
+      "The three steps from `content: HowItWorksContent` (LABS_HOW_IT_WORKS on `/`) told on one pinned stage. Left: headline, intro, hairline step rows with hexagon numerals (current step solid sage-800, others sage-100 with sage-600 titles and collapsed bodies) and a text link. Right: a sage-100 stage holding the recorded-sessions card and a dark sage-800 prompt card that turns into the replay card. From lg on a tall-enough viewport the section becomes a 320vh track with a sticky frame; a small script writes the scroll progress to `--hiw-p` and the step to `data-step`, and each part derives its own window from `--hiw-p` (opacity, transform only), so the stage scrubs both ways: sessions drop in, the prompt's words appear, the bars fill, rows settle to same / differs and the differing row lifts out. Server-rendered, small-screen, reduced-motion and no-JS state is the finished example with every step expanded.",
     stage: false,
     demoProps: {},
   },

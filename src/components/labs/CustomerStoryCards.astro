@@ -14,6 +14,7 @@ import type {
   StoryCardsContent,
 } from "../../lib/labs-home";
 import LabsStoryCard from "./LabsStoryCard.astro";
+import "../../styles/labs-scroll-reveal.css";
 
 interface Props {
   content: StoryCardsContent;
@@ -31,9 +32,9 @@ const storyCards = hasQuoteCards
 ---
 
 <section class="py-24 md:py-32">
-  <div class="mx-auto max-w-content px-gutter">
+  <div class="scroll-reveal-section mx-auto max-w-content px-gutter">
     {(content.headline || content.allLink) && (
-      <div class="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+      <div class="reveal-child flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
         {content.headline && (
           <h2 class="font-display text-[40px] leading-[46px] text-(--color-cream-900)">
             {content.headline}
@@ -52,7 +53,7 @@ const storyCards = hasQuoteCards
     )}
 
     {hasQuoteCards ? (
-      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div class="reveal-child stagger-1 mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {quoteCards.map((card) => (
           <div class:list={[card.wide && "lg:col-span-2"]}>
             <LabsStoryCard
@@ -68,7 +69,7 @@ const storyCards = hasQuoteCards
         ))}
       </div>
     ) : (
-      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div class="reveal-child stagger-1 mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {storyCards.map((card) => (
           <LabsStoryCard
             href={card.href}

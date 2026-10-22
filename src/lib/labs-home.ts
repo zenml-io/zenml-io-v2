@@ -376,7 +376,28 @@ export interface HowItWorksContent {
   /** One plain-language definition answering it. */
   intro: string;
   steps: readonly HowItWorksStep[];
+  /** The pinned stage the steps play out on as the reader scrolls. */
+  stage: HowItWorksStage;
   link: LabsCta;
+}
+
+/** One worked example for the stage: recorded sessions, one model swap, the
+ *  one session it changes. Reuses the hero card's example so both agree. */
+export interface HowItWorksStage {
+  /** Accessible text for the figure: the whole example in one sentence. */
+  label: string;
+  sessionsLabel: string;
+  resultLabel: string;
+  replayingLabel: string;
+  replayedLabel: string;
+  sessions: readonly string[];
+  from: string;
+  to: string;
+  /** Index into `sessions` of the one session the swap changes. */
+  differs: number;
+  sameLabel: string;
+  differsLabel: string;
+  switchLabel: string;
 }
 
 export const LABS_HOW_IT_WORKS: HowItWorksContent = {
@@ -402,6 +423,21 @@ export const LABS_HOW_IT_WORKS: HowItWorksContent = {
       body: "See which calls can move, review every difference, then replay the winner on whole sessions.",
     },
   ],
+  stage: {
+    label:
+      "An example: four recorded sessions are imported from trace tools, a coding agent is asked to find a better model, Kitaru replays every session with DeepSeek instead of GPT-6, and three sessions come back the same while the card dispute differs and goes to you to review.",
+    sessionsLabel: "Recorded sessions",
+    resultLabel: "Result",
+    replayingLabel: "Replaying",
+    replayedLabel: "Replayed",
+    sessions: LABS_HERO_VISUAL.sessions,
+    from: "GPT-6",
+    to: "DeepSeek",
+    differs: 2,
+    sameLabel: LABS_HERO_VISUAL.sameLabel,
+    differsLabel: LABS_HERO_VISUAL.differsLabel,
+    switchLabel: "Switch",
+  },
   link: {
     label: "See the full walkthrough",
     href: "/product/kitaru",
