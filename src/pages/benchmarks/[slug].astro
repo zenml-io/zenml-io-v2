@@ -1,0 +1,178 @@
+---
+/**
+ * Benchmark report page (`/benchmarks/<slug>`): the data-first record of one
+ * experiment, built from src/lib/benchmarkReports.ts. Short band with the
+ * breadcrumb, question and deck; a facts strip; key findings; results,
+ * per-type and failure tables (`labs.results-table`); the method, the
+ * limitations and the sources; the shared closing band. The companion blog
+ * post tells the story and is linked only once it is published.
+ */
+import { getCollection } from "astro:content";
+import LabsBand from "../../components/labs/LabsBand.astro";
+import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
+import LabsResultsTable from "../../components/labs/LabsResultsTable.astro";
+import Breadcrumb from "../../components/system/Breadcrumb.astro";
+import { LABS_EYEBROW_CLASS } from "../../components/templates/pageHeaderPresets";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  BENCHMARK_REPORTS,
+  type BenchmarkReport,
+} from "../../lib/benchmarkReports";
+import { BENCHMARKS_CLOSE } from "../../lib/benchmarks";
+import { BAND_CONTENT_GAP } from "../../lib/blogLayout";
+import "../../styles/labs-scroll-reveal.css";
+
+export function getStaticPaths() {
+  return BENCHMARK_REPORTS.map((report) => ({
+    params: { slug: report.slug },
+    props: { report },
+  }));
+}
+
+const { report } = Astro.props as { report: BenchmarkReport };
+const post = (await getCollection("blog", ({ data }) => !data.draft)).find(
+  (p) => p.data.slug === report.postSlug,
+);
+
+const SECTION_HEADING =
+  "font-display text-[32px] leading-[38px] text-(--color-cream-900) md:text-[40px] md:leading-[46px]";
+const BODY = "font-sans text-[17px] leading-[27px] text-(--color-cream-900)";
+const LINK =
+  "underline decoration-(--color-sage-400) underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-sage-800)";
+---
+
+<BaseLayout
+  title={report.seoTitle}
+  description={report.seoDescription}
+  surface="unified"
+  app="labs"
+>
+  <LabsBand size="short">
+    <div class="scroll-reveal-section flex flex-col gap-4">
+      <div class="reveal-child">
+        <Breadcrumb items={[{ label: "Benchmarks", href: "/benchmarks" }, { label: report.title }]} separator="chevron" />
+      </div>
+      <p class={`reveal-child ${LABS_EYEBROW_CLASS}`}>{report.eyebrow}</p>
+      <h1 class="reveal-child stagger-1 max-w-[1100px] font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
+        {report.title}
+      </h1>
+      <p class="reveal-child stagger-2 max-w-[720px] font-sans text-[18px] leading-7 text-(--color-cream-700)">
+        {report.deck}
+      </p>
+    </div>
+  </LabsBand>
+
+  <div class:list={["mx-auto flex max-w-content flex-col gap-20 px-gutter pb-24 md:gap-28 md:pb-32", BAND_CONTENT_GAP]}>
+    <section class="scroll-reveal-section">
+      <dl class="reveal-child grid grid-cols-2 gap-x-6 gap-y-5 border-y border-(--color-border) py-6 md:grid-cols-3 xl:grid-cols-6">
+        {report.facts.map((fact) => (
+          <div>
+            <dt class="font-mono text-[13px] leading-5 uppercase tracking-[0.05em] text-(--color-sage-800)">{fact.label}</dt>
+            <dd class="mt-1 font-sans text-[16px] leading-6 text-(--color-cream-900)">{fact.value}</dd>
+          </div>
+        ))}
+      </dl>
+      {post && (
+        <p class:list={["reveal-child stagger-1 mt-6", BODY]}>
+          The story behind these numbers: <a href={`/blog/${post.data.slug}`} class={LINK}>{post.data.title}</a>
+        </p>
+      )}
+    </section>
+
+    <section class="scroll-reveal-section" aria-labelledby="findings">
+      <h2 id="findings" class:list={["reveal-child", SECTION_HEADING]}>Key findings</h2>
+      <ol class="reveal-child stagger-1 mt-space-lg grid max-w-[960px] list-none gap-6">
+        {report.findings.map((finding, index) => (
+          <li class="grid grid-cols-[40px_minmax(0,1fr)] gap-4 border-b border-(--color-border) pb-6 last:border-b-0">
+            <span class="font-display text-[24px] leading-[27px] text-(--color-sage-800)">{index + 1}</span>
+            <p class={BODY}>{finding}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    {report.datasets.length > 0 && (
+      <section class="scroll-reveal-section" aria-labelledby="data">
+        <h2 id="data" class:list={["reveal-child", SECTION_HEADING]}>Data</h2>
+        <ul class="reveal-child stagger-1 mt-space-lg grid list-none gap-8">
+          {report.datasets.map((dataset) => (
+            <li class="border-b border-(--color-border) pb-8 last:border-b-0">
+              <p class="font-sans text-[18px] leading-7 font-medium text-(--color-cream-900)">
+                <a href={dataset.href} class={LINK} rel="noopener" target="_blank">{dataset.name}</a>
+                {dataset.license && <span class="ml-2 font-normal text-(--color-cream-700)">· {dataset.license}</span>}
+              </p>
+              {dataset.description && <p class="mt-2 max-w-[768px] font-sans text-[16px] leading-[26px] text-(--color-cream-700)">{dataset.description}</p>}
+              {dataset.huggingFace && (
+                <details class="group mt-4">
+                  <summary class="inline-flex min-h-11 cursor-pointer items-center gap-2 font-sans text-[16px] leading-6 text-(--color-sage-800) marker:content-none">
+                    <span class="transition-transform duration-200 ease-out group-open:rotate-90" aria-hidden="true">›</span>
+                    Browse the data on Hugging Face
+                  </summary>
+                  <iframe
+                    src={`https://huggingface.co/datasets/${dataset.huggingFace}/embed/viewer`}
+                    title={`${dataset.name} on Hugging Face`}
+                    loading="lazy"
+                    class="mt-4 h-[560px] w-full rounded-[20px] border border-(--color-border) bg-card"
+                  ></iframe>
+                </details>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {report.sections.map((section) => (
+      <section class="scroll-reveal-section" aria-labelledby={section.id}>
+        <h2 id={section.id} class:list={["reveal-child", SECTION_HEADING]}>{section.title}</h2>
+        {section.intro && <p class:list={["reveal-child stagger-1 mt-space-sm max-w-[768px]", BODY]}>{section.intro}</p>}
+        <div class="mt-space-lg flex flex-col gap-14">
+          {section.tables.map((table) => (
+            <div class="reveal-child min-w-0"><LabsResultsTable table={table} /></div>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <section class="scroll-reveal-section" aria-labelledby="method">
+      <h2 id="method" class:list={["reveal-child", SECTION_HEADING]}>Method</h2>
+      <dl class="reveal-child stagger-1 mt-space-lg grid max-w-[1100px] gap-0">
+        {report.method.map((item) => (
+          <div class="grid gap-2 border-b border-(--color-border) py-5 md:grid-cols-[220px_minmax(0,1fr)] md:gap-8">
+            <dt class="font-sans text-[17px] leading-[27px] font-medium text-(--color-cream-900)">{item.term}</dt>
+            <dd class="font-sans text-[16px] leading-[26px] text-(--color-cream-700)">{item.detail}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+
+    <section class="scroll-reveal-section" aria-labelledby="limitations">
+      <h2 id="limitations" class:list={["reveal-child", SECTION_HEADING]}>Limitations</h2>
+      <ul class="reveal-child stagger-1 mt-space-lg grid max-w-[960px] list-disc gap-3 pl-5 marker:text-(--color-sage-600)">
+        {report.limitations.map((limitation) => (
+          <li class="font-sans text-[16px] leading-[26px] text-(--color-cream-900)">{limitation}</li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="scroll-reveal-section" aria-labelledby="sources">
+      <h2 id="sources" class:list={["reveal-child", SECTION_HEADING]}>Further reading</h2>
+      <ul class="reveal-child stagger-1 mt-space-lg grid max-w-[960px] gap-3">
+        {post && (
+          <li class={BODY}><a href={`/blog/${post.data.slug}`} class={LINK}>Write-up: {post.data.title}</a></li>
+        )}
+        {report.sources.map((source) => (
+          <li class={BODY}><a href={source.href} class={LINK} rel="noopener" target="_blank">{source.label}</a></li>
+        ))}
+      </ul>
+    </section>
+  </div>
+
+  <div class="scroll-reveal-section">
+    <div class="reveal-child"><LabsCloseCta content={BENCHMARKS_CLOSE} preset="comparison" /></div>
+  </div>
+  <script>
+    import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+    initScrollReveal();
+  </script>
+</BaseLayout>

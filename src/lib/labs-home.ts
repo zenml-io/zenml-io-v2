@@ -109,7 +109,7 @@ export const LABS_NAV_LINKS: readonly LabsNavLink[] = [
     menu: "docs",
   },
   { label: "Case studies", href: "/case-studies", menu: "case-studies" },
-  { label: "Compare", href: "/compare" },
+  { label: "Benchmarks", href: "/benchmarks" },
   { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
 ];

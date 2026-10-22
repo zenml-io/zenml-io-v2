@@ -1948,6 +1948,32 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
       "Compact comparison catalogue card: 40px competitor mark beside one title and a two-line CSS-clamped description whose full text remains in the DOM. Neither product renders a per-card metadata or category row; source metadata remains available to other consumers. The /compare hub uses explicit one-, two- and three-column grids, preserving product grouping and source order. Sage hairline border, hover wash, the shared EntryRow per-line title underline sweep and keyboard focus; missing marks or copy collapse. This replaces the hub's entry rows under the comparison cutover review ruling. The same component also renders blocks showdown navigation and /vs related comparisons, taking existing hub descriptions by href while preserving each section's original links, marks, titles and order; decision-content showdown cards remain separate.",
   },
   {
+    id: "labs.benchmark-card",
+    kind: "template",
+    componentPath: "src/components/labs/LabsBenchmarkCard.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    stage: false,
+    notes:
+      "One experiment on /benchmarks: domain and data source in the 13px Nudica card-label voice, the question as a Borna title with the shared EntryRow per-line underline sweep, the headline finding, a three-stat row over a hairline and the write-up date. The whole card links to the post. Sage border and wash on hover and focus. Data and copy live in src/lib/benchmarks.ts, whose figures are copied verbatim from each post; an entry without a published post does not render. The hub uses an explicit 1 → 2 column grid.",
+  },
+  {
+    id: "labs.results-table",
+    kind: "template",
+    componentPath: "src/components/labs/LabsResultsTable.astro",
+    variantAxes: ["caption present", "footnote present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    stage: false,
+    notes:
+      'One data table on a /benchmarks/<slug> report: Borna title, caption, a 20px-radius frame with hairline rows, a sticky first column and horizontal scroll inside its own region (min-width 720px) with an edge fade below md as the scroll affordance (DESIGN.md "Wide tables"). Highlighted rows take the sage-100 wash; heat cells step through sage-100/200/300, single hue (DESIGN.md "Data visualization"). Tables come pre-formatted from src/lib/benchmarkReports.ts.',
+  },
+  {
     id: "labs.comparison-quote",
     kind: "template",
     componentPath: "src/components/labs/LabsComparisonQuote.astro",
