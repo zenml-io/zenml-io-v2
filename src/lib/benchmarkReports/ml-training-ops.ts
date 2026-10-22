@@ -285,6 +285,8 @@ export function buildMlTrainingOps(): BenchmarkReport {
 
   return {
     slug: "ml-training-ops",
+    name: "ML Training Ops",
+    tags: ["Self-hosting", "GPUs", "Coding agents", "Stopped"],
     group: "infrastructure",
     date: m.meta.runEnd,
     card: {
@@ -308,7 +310,7 @@ export function buildMlTrainingOps(): BenchmarkReport {
       ],
     },
     title: "Can a self-hosted agent run ML training operations?",
-    eyebrow: "Benchmark · Serving infrastructure",
+    eyebrow: "Benchmark · ML Training Ops",
     deck: `A self-hosted 27B model fixes injected faults in training jobs: distributed runs, checkpoints, out-of-memory errors, stragglers and scheduling quotas. We measured how GPU, load and serving settings change how many it solves. The study is stopped.`,
     seoTitle:
       "ML training operations agent benchmark: GPU and serving settings",

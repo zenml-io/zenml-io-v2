@@ -342,6 +342,8 @@ export function buildServingInfra(): BenchmarkReport {
 
   return {
     slug: "serving-infra",
+    name: "GPU & Serving Settings",
+    tags: ["Self-hosting", "GPUs", "Cost", "Coding agents"],
     group: "infrastructure",
     date: d.meta.runDates.end,
     card: {
@@ -358,7 +360,7 @@ export function buildServingInfra(): BenchmarkReport {
       ],
     },
     title: "Does the GPU change what a self-hosted agent solves?",
-    eyebrow: "Benchmark · Serving infrastructure",
+    eyebrow: "Benchmark · GPU & Serving Settings",
     deck: `One open model served with vLLM, four agent harnesses, ${d.dataset.keptCases[TB]} Terminal-Bench and ${d.dataset.keptCases.gaia} GAIA tasks. We changed the GPU, the number of agents sharing it and the serving settings, and counted solved tasks and GPU cost per solve.`,
     seoTitle: "Self-hosted agent benchmark: GPU, load and serving settings",
     seoDescription: `Qwen3.8-27B on vLLM, four agent harnesses, Terminal-Bench 2.0 and GAIA. A B200 instead of an H100 raised solve rates by ${points(b200.terminus2.diffPts)} to ${points(b200.miniSweAgent.diffPts)} points; more agents per GPU lowered them. Results, intervals and method.`,

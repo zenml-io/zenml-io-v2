@@ -283,6 +283,8 @@ export function buildSwapbench(): BenchmarkReport {
 
   return {
     slug: "swapbench",
+    name: "SwapBench",
+    tags: ["Model swap", "Customer service", "Kitaru replay"],
     group: "agents",
     date: "2026-10-15",
     card: {
@@ -302,7 +304,7 @@ export function buildSwapbench(): BenchmarkReport {
       ],
     },
     title: "Is it safe to swap the model behind your agent?",
-    eyebrow: "Benchmark · Customer-service agents",
+    eyebrow: "Benchmark · SwapBench",
     deck: `${allCandidates} model swaps behind two customer-service agents, a bank and a store. We ran each swap on hidden scenarios to learn the truth, then asked which cheaper checks would have caught the regressions.`,
     seoTitle: "SwapBench: which checks can tell if a model swap is safe?",
     seoDescription: `${allCandidates} model swaps behind bank and retail support agents, scored against hidden-set truth. Next-step agreement called ${nextStep.falseSafe} of ${nextStep.regressed} regressions safe; a 260-scenario replay made no wrong call. Results, intervals and method.`,

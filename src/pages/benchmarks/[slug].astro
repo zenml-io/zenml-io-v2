@@ -50,7 +50,7 @@ const LINK =
   <LabsBand size="short">
     <div class="scroll-reveal-section flex flex-col gap-4">
       <div class="reveal-child">
-        <Breadcrumb items={[{ label: "Benchmarks", href: "/benchmarks" }, { label: report.title }]} separator="chevron" />
+        <Breadcrumb items={[{ label: "Benchmarks", href: "/benchmarks" }, { label: report.name }]} separator="chevron" />
       </div>
       <p class={`reveal-child ${LABS_EYEBROW_CLASS}`}>{report.eyebrow}</p>
       <h1 class="reveal-child stagger-1 max-w-[1100px] font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
@@ -59,6 +59,11 @@ const LINK =
       <p class="reveal-child stagger-2 max-w-[720px] font-sans text-[18px] leading-7 text-(--color-cream-700)">
         {report.deck}
       </p>
+      <ul class="reveal-child stagger-2 flex list-none flex-wrap gap-1.5" aria-label="Tags">
+        {report.tags.map((tag) => (
+          <li class="inline-flex h-7 items-center rounded-full border border-(--color-border) bg-(--color-cream-50) px-3 font-sans text-[12px] leading-none font-medium text-(--color-cream-800)">{tag}</li>
+        ))}
+      </ul>
     </div>
   </LabsBand>
 

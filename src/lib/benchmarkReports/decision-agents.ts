@@ -379,6 +379,8 @@ export function buildDecisionAgents(): BenchmarkReport {
 
   return {
     slug: "decision-agents",
+    name: "Appeals Decisions",
+    tags: ["Reliability", "Open models", "Public data"],
     group: "agents",
     date: d.meta.end,
     card: {
@@ -396,7 +398,7 @@ export function buildDecisionAgents(): BenchmarkReport {
       ],
     },
     title: "Can an agent decide real appeals?",
-    eyebrow: "Benchmark · Appeals and benefits decisions",
+    eyebrow: "Benchmark · Appeals Decisions",
     deck: `Two self-hosted open models decide ${count(cases)} real US health appeals, US veterans' appeals and German health-insurance suits, with tools to read the case and search past decisions. We scored them against what the reviewer, Board or court actually decided, and checked how stable and replayable those decisions are.`,
     seoTitle: "Decision agents benchmark: real appeals, rerun flips and replay",
     seoDescription: `Two open models decide ${count(cases)} real health appeals, veterans' appeals and German insurance suits. Accuracy against real outcomes, how often reruns flip a decision, and which cheap signals catch wrong ones.`,

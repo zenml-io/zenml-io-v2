@@ -150,6 +150,8 @@ export function buildSglangVsVllm(): BenchmarkReport {
 
   return {
     slug: "sglang-vs-vllm",
+    name: "SGLang vs vLLM",
+    tags: ["Serving", "Self-hosting", "GPUs"],
     group: "infrastructure",
     date: data.meta.runDate,
     card: {
@@ -173,7 +175,7 @@ export function buildSglangVsVllm(): BenchmarkReport {
       ],
     },
     title: "Does the serving engine change what one GPU serves?",
-    eyebrow: "Benchmark · LLM serving",
+    eyebrow: "Benchmark · SGLang vs vLLM",
     deck: `We replayed the same recorded coding-agent traffic against stock vLLM and SGLang, and two tuned SGLang settings, serving ${data.model.name} on one ${limits.gpu}. One run per setting: this is what happened for this model and this traffic, not a general verdict on either engine.`,
     seoTitle:
       "SGLang vs vLLM on replayed coding-agent traffic: one H100, Qwen3.8-27B",

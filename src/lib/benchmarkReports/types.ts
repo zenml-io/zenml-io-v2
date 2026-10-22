@@ -82,6 +82,10 @@ export interface ReportDataset {
 
 export interface BenchmarkReport {
   slug: string;
+  /** Short benchmark name: the card title and the report's eyebrow. */
+  name: string;
+  /** Topic tags shown as chips on the card and the report. */
+  tags: readonly string[];
   group: BenchmarkGroup;
   /** Last run date (ISO), shown on the card; the hub lists newest first. */
   date: string;

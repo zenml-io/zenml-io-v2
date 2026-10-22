@@ -297,6 +297,8 @@ export function buildUnderwriting(): BenchmarkReport {
 
   return {
     slug: "underwriting",
+    name: "Underwriting Agent",
+    tags: ["Model choice", "Prompting", "Cost", "Public data"],
     group: "agents",
     date: u.meta.run_dates.shared_prompt_run,
     card: {
@@ -314,7 +316,7 @@ export function buildUnderwriting(): BenchmarkReport {
     },
     postSlug: "there-is-no-best-model-for-your-agent",
     title: "Which model should an underwriting agent run on?",
-    eyebrow: "Benchmark · Insurance underwriting",
+    eyebrow: "Benchmark · Underwriting Agent",
     deck: `${u.models.length} models run the same insurance underwriting agent on ${u.dataset.keptCases} public cases. We measured what each correct decision costs, and how much of the gap between models is the prompt.`,
     seoTitle:
       "Underwriting agent benchmark: 12 models, cost per correct decision",
