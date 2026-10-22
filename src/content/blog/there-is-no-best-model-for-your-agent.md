@@ -9,7 +9,7 @@ tags:
   - "agents"
   - "evaluation"
   - "llm"
-date: "2026-10-21T00:00:00.000Z"
+date: "2026-10-21T15:20:00.000Z"
 readingTime: "10 mins"
 seo:
   title: "There Is No Best Model for Your Agent - ZenML Blog"
@@ -19,15 +19,15 @@ seo:
 
 Every team running an agent eventually asks the same question: which model should it use? A new release tops a leaderboard, a vendor cuts prices, someone posts that they switched and saved 80%. The question sounds like it has an answer.
 
-We tried to find it for one agent, and got three different answers depending on how we asked. Under the prompt we wrote first, the leaderboard looked clear. After one prompt rewrite, nine of twelve models tied, and the cheapest of them cost a thirteenth as much per correct decision as the most expensive. And the replay that told us which model to switch to gave the opposite advice once the prompt was fixed.
+We tried to find it for one agent, and got three different answers depending on how we asked. Under the prompt we wrote first, the leaderboard looked clear. After one prompt rewrite, eight of twelve models tied, and the cheapest of them cost a thirteenth as much per correct decision as the most expensive. And the replay that told us which model to switch to gave the opposite advice once the prompt was fixed.
 
 A model's score in your agent isn't a property of the model. It's a property of the model plus the prompt, the reasoning effort, the tools, and the conversation design around it. Change one and the ranking moves. So the useful question is not "which model?" but "which version of my agent?", and the only way to answer it is to test the change on your own cases before you ship it.
 
 ## The agent we tested
 
-We used Snorkel AI's public multi-turn insurance underwriting datasets (Apache-2.0): 252 cases where an underwriter asks an agent about a small business applying for a policy. Is it in appetite for this line? Which other lines should we offer? Does it qualify as a small business? What limits and deductibles apply? Which NAICS code fits?
+We used Snorkel AI's public [multi-turn insurance underwriting datasets](https://huggingface.co/datasets/snorkelai/Multi-Turn-Insurance-Underwriting) (Apache-2.0): 252 cases where an underwriter asks an agent about a small business applying for a policy. Is it in appetite for this line? Which other lines should we offer? Does it qualify as a small business? What limits and deductibles apply? Which NAICS code fits?
 
-The agent has six tools over the insurer's database and guidelines and talks to a simulated underwriter who knows the application but not the answer. Every case has a known right answer, the way a team's own production cases would once reviewed. We counted what matters for a decision-making agent: correct decisions, and what each one costs.
+The agent has six tools to interact with the insurer's database and guidelines and talks to a simulated underwriter who knows the application but not the answer. Every case has a known right answer, the way a team's own production cases would once have been reviewed. We counted what matters for a decision-making agent: correct decisions, and what each one costs.
 
 ## Answer one: the leaderboard
 
@@ -73,11 +73,11 @@ We split the cases into 84 for learning and 168 held out. A strong model read So
 
 Held-out cases only. Running the unchanged Sonnet agent twice moved its score 2.4 points, so differences of a few points are ties.
 
-The leaderboard collapsed. Nine models now sit between 97.6% and 99.4%, within noise of each other. The models at the bottom of the first table weren't weaker; they needed different instructions. With accuracy a near tie, the choice became cost: Claude Haiku 5.5 got 98.8% at 0.38¢ per correct decision, about a thirteenth of Opus's cost. Two models stayed behind, GPT-6 Luna and Qwen3.8 27B, and those are real gaps.
+The leaderboard collapsed. Eight models now sit between 97.6% and 99.4%, within noise of each other, with MiniMax-M3 close behind at 96.4%. The models at the bottom of the first table weren't weaker; they needed different instructions. With accuracy a near tie, the choice became cost: Claude Haiku 5.5 got 98.8% at 0.38¢ per correct decision, about a thirteenth of Opus's cost. Three models stayed well behind, GPT-6 Luna, gpt-oss-120b and Qwen3.8 27B, and those are real gaps.
 
 Notice what this did not show: that open models win, or that the most expensive model is worth it. The best version of this agent ran on a cheap closed model, and a different agent might land somewhere else entirely.
 
-## Answer three: the swap that flipped
+## Answer three: how to switch out models safely
 
 Most teams don't run a benchmark. They have an agent in production and want to know whether a swap is safe. So we tested that path too, starting from the Sonnet agent with the first prompt.
 
@@ -96,11 +96,11 @@ The advice was clear: switch to DeepSeek V4 Pro, and don't touch Haiku. With the
 
 Reasoning effort, the setting teams lower to save money, did something different on every model:
 
-- Lowering Sonnet 5.5's effort to low cost it 17 points and saved about a sixth of the cost per correct decision.
+- Lowering Sonnet 5.5's effort to `low` cost it 17 points and saved about a sixth of the cost per correct decision.
 - Raising GPT-6.1 Sol's effort gained it 9.5 points, less than the prompt rewrite's 16.
 - Raising Claude Haiku 5.5's and GPT-6 Luna's effort changed nothing measurable and cost more.
 
-The same knob helped one model, did nothing for two, and badly hurt another. A setting that is right for one model is a guess for the next.
+The same knob helped one model, did nothing for two, and badly hurt another. So don't assume that a setting that works really well for one model will give you the same results or improvements for the next.
 
 ## What it takes to trust an answer
 

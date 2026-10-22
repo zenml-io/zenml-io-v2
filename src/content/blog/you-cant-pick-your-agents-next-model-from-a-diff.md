@@ -9,7 +9,7 @@ tags:
   - "agents"
   - "evaluation"
   - "llm"
-date: "2026-10-21T00:00:00.000Z"
+date: "2026-10-21T09:40:00.000Z"
 readingTime: "6 mins"
 seo:
   title: "Swapping your agent's model? Test whole tasks, not steps - ZenML Blog"
@@ -23,13 +23,13 @@ The cheapest way to answer is a step check. Take calls your agent already made, 
 
 We wanted to know how far that gets you. So we recorded four finance and insurance agents running on Claude Sonnet 5.5, replayed their calls against 11 other models, and then checked every answer the hard way: each model running the whole tasks itself.
 
-The short version: **a step check is a good filter and a bad picker.** It reliably narrows the field to a shortlist that contains a good swap. It does not reliably tell you which one that is, and it hides the cheapest model that actually holds quality.
+The short version: **a step check is good at ruling models out, and bad at picking the winner.** It reliably narrows the field to a shortlist that contains a good swap. It does not reliably tell you which one that is, and it hides the cheapest model that actually holds quality.
 
 ## What we tested
 
 The four agents:
 
-- **Bank support tickets**, a conversational agent built on tau2-bench
+- **Bank support tickets**, a conversational agent built on [tau2-bench](https://github.com/sierra-research/tau2-bench)
 - **Invoice extraction**
 - **Insurance claims triage**
 - **KYC document checks**
