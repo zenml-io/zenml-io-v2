@@ -1,20 +1,24 @@
 ---
 /**
- * Benchmark report page (`/benchmarks/<slug>`): the data-first record of one
- * experiment, built from src/lib/benchmarkReports.ts. Short band with the
- * breadcrumb, question and deck; a facts strip; key findings; results,
- * per-type and failure tables (`labs.results-table`); the method, the
- * limitations and the sources; the shared closing band. The companion blog
- * post tells the story and is linked only once it is published.
+ * Benchmark report page (`/benchmarks/<slug>`), summary first: the short
+ * band (breadcrumb, name, question, deck, tags), a facts strip, then the
+ * result at a glance (the benchmark's `labs.bar-chart` beside its top three
+ * findings) and its one main table. Everything else (more findings, the
+ * other tables, per-type and failure breakdowns, replays, data, method,
+ * limitations) sits in "Go deeper": closed native <details> rows, each with
+ * a one-line description, so the page reads in one screen and the full
+ * record stays one click away. The companion post is linked once published.
  */
 import { getCollection } from "astro:content";
 import LabsBand from "../../components/labs/LabsBand.astro";
+import LabsBarChart from "../../components/labs/LabsBarChart.astro";
 import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
 import LabsResultsTable from "../../components/labs/LabsResultsTable.astro";
 import Breadcrumb from "../../components/system/Breadcrumb.astro";
 import { LABS_EYEBROW_CLASS } from "../../components/templates/pageHeaderPresets";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
+  BENCHMARK_PREVIEWS,
   BENCHMARK_REPORTS,
   type BenchmarkReport,
 } from "../../lib/benchmarkReports";
@@ -32,6 +36,50 @@ export function getStaticPaths() {
 const { report } = Astro.props as { report: BenchmarkReport };
 const post = (await getCollection("blog", ({ data }) => !data.draft)).find(
   (p) => p.data.slug === report.postSlug,
+);
+
+const preview = BENCHMARK_PREVIEWS[report.slug];
+const [main, ...moreSections] = report.sections;
+const KEY_FINDINGS = 3;
+
+/** The "Go deeper" rows, in reading order; an empty one does not render. */
+const deeper = [
+  report.findings.length > KEY_FINDINGS && {
+    id: "more-findings",
+    title: "More findings",
+    summary: `${report.findings.length - KEY_FINDINGS} more results from this benchmark`,
+  },
+  main &&
+    main.tables.length > 1 && {
+      id: main.id,
+      title: `More ${main.title.toLowerCase()}`,
+      summary: main.tables
+        .slice(1)
+        .map((table) => table.title)
+        .join(" · "),
+    },
+  ...moreSections.map((section) => ({
+    id: section.id,
+    title: section.title,
+    summary: section.tables.map((table) => table.title).join(" · "),
+  })),
+  report.datasets.length > 0 && {
+    id: "data",
+    title: "Data",
+    summary: report.datasets.map((dataset) => dataset.name).join(" · "),
+  },
+  {
+    id: "method",
+    title: "Method",
+    summary: report.method.map((item) => item.term).join(" · "),
+  },
+  {
+    id: "limitations",
+    title: "Limitations",
+    summary: `${report.limitations.length} things this benchmark can't show`,
+  },
+].filter((row): row is { id: string; title: string; summary: string } =>
+  Boolean(row),
 );
 
 const SECTION_HEADING =
@@ -86,99 +134,117 @@ const LINK =
       )}
     </section>
 
-    <section class="scroll-reveal-section" aria-labelledby="findings">
-      <h2 id="findings" class:list={["reveal-child", SECTION_HEADING]}>Key findings</h2>
-      <ol class="reveal-child stagger-1 mt-space-lg grid max-w-[960px] list-none gap-6">
-        {report.findings.map((finding, index) => (
-          <li class="grid grid-cols-[40px_minmax(0,1fr)] gap-4 border-b border-(--color-border) pb-6 last:border-b-0">
-            <span class="font-display text-[24px] leading-[27px] text-(--color-sage-800)">{index + 1}</span>
-            <p class={BODY}>{finding}</p>
-          </li>
-        ))}
-      </ol>
-    </section>
-
-    {report.datasets.length > 0 && (
-      <section class="scroll-reveal-section" aria-labelledby="data">
-        <h2 id="data" class:list={["reveal-child", SECTION_HEADING]}>Data</h2>
-        <ul class="reveal-child stagger-1 mt-space-lg grid list-none gap-8">
-          {report.datasets.map((dataset) => (
-            <li class="border-b border-(--color-border) pb-8 last:border-b-0">
-              <p class="font-sans text-[18px] leading-7 font-medium text-(--color-cream-900)">
-                <a href={dataset.href} class={LINK} rel="noopener" target="_blank">{dataset.name}</a>
-                {dataset.license && <span class="ml-2 font-normal text-(--color-cream-700)">· {dataset.license}</span>}
-              </p>
-              {dataset.description && <p class="mt-2 max-w-[768px] font-sans text-[16px] leading-[26px] text-(--color-cream-700)">{dataset.description}</p>}
-              {dataset.huggingFace && (
-                <details class="group mt-4">
-                  <summary class="inline-flex min-h-11 cursor-pointer items-center gap-2 font-sans text-[16px] leading-6 text-(--color-sage-800) marker:content-none">
-                    <span class="transition-transform duration-200 ease-out group-open:rotate-90" aria-hidden="true">›</span>
-                    Browse the data on Hugging Face
-                  </summary>
-                  <iframe
-                    src={`https://huggingface.co/datasets/${dataset.huggingFace}/embed/viewer`}
-                    title={`${dataset.name} on Hugging Face`}
-                    loading="lazy"
-                    class="mt-4 h-[560px] w-full rounded-[20px] border border-(--color-border) bg-card"
-                  ></iframe>
-                </details>
-              )}
+    <section class="scroll-reveal-section" aria-labelledby="result">
+      <h2 id="result" class="sr-only">The result</h2>
+      <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16">
+        <div class="reveal-child min-w-0 rounded-[20px] border border-(--color-border) bg-card p-6 md:p-8">
+          <LabsBarChart preview={preview} size="report" />
+        </div>
+        <ol class="reveal-child stagger-1 grid list-none content-start gap-5">
+          {report.findings.slice(0, KEY_FINDINGS).map((finding, index) => (
+            <li class="grid grid-cols-[32px_minmax(0,1fr)] gap-3 border-b border-(--color-border) pb-5 last:border-b-0">
+              <span class="font-display text-[22px] leading-[27px] text-(--color-sage-800)">{index + 1}</span>
+              <p class={BODY}>{finding}</p>
             </li>
           ))}
-        </ul>
+        </ol>
+      </div>
+    </section>
+
+    {main && (
+      <section class="scroll-reveal-section" aria-labelledby={main.id}>
+        <h2 id={main.id} class:list={["reveal-child", SECTION_HEADING]}>{main.title}</h2>
+        {main.intro && <p class:list={["reveal-child stagger-1 mt-space-sm max-w-[768px]", BODY]}>{main.intro}</p>}
+        <div class="reveal-child mt-space-lg min-w-0"><LabsResultsTable table={main.tables[0]} /></div>
       </section>
     )}
 
-    {report.sections.map((section) => (
-      <section class="scroll-reveal-section" aria-labelledby={section.id}>
-        <h2 id={section.id} class:list={["reveal-child", SECTION_HEADING]}>{section.title}</h2>
-        {section.intro && <p class:list={["reveal-child stagger-1 mt-space-sm max-w-[768px]", BODY]}>{section.intro}</p>}
-        <div class="mt-space-lg flex flex-col gap-14">
-          {section.tables.slice(0, 1).map((table) => (
-            <div class="reveal-child min-w-0"><LabsResultsTable table={table} /></div>
-          ))}
-          {section.tables.length > 1 && (
-            <details class="group reveal-child min-w-0">
-              <summary class={DISCLOSURE}>
-                <span class="transition-transform duration-200 ease-out group-open:rotate-90" aria-hidden="true">›</span>
-                Show {section.tables.length - 1} more {section.tables.length === 2 ? "table" : "tables"}: {section.tables.slice(1).map((table) => table.title).join(", ")}
-              </summary>
-              <div class="mt-8 flex flex-col gap-14">
-                {section.tables.slice(1).map((table) => (
-                  <div class="min-w-0"><LabsResultsTable table={table} /></div>
-                ))}
-              </div>
-            </details>
-          )}
-        </div>
-      </section>
-    ))}
-
-    <section class="scroll-reveal-section" aria-labelledby="method">
-      <h2 id="method" class:list={["reveal-child", SECTION_HEADING]}>Method</h2>
-      <details class="group reveal-child stagger-1 mt-space-sm">
-        <summary class={DISCLOSURE}>
-          <span class="transition-transform duration-200 ease-out group-open:rotate-90" aria-hidden="true">›</span>
-          How the data, grading and noise were handled
-        </summary>
-      <dl class="mt-space-md grid max-w-[1100px] gap-0">
-        {report.method.map((item) => (
-          <div class="grid gap-2 border-b border-(--color-border) py-5 md:grid-cols-[220px_minmax(0,1fr)] md:gap-8">
-            <dt class="font-sans text-[17px] leading-[27px] font-medium text-(--color-cream-900)">{item.term}</dt>
-            <dd class="font-sans text-[16px] leading-[26px] text-(--color-cream-700)">{item.detail}</dd>
-          </div>
+    <section class="scroll-reveal-section" aria-labelledby="go-deeper">
+      <h2 id="go-deeper" class:list={["reveal-child", SECTION_HEADING]}>Go deeper</h2>
+      <div class="reveal-child stagger-1 mt-space-md border-t border-(--color-border)">
+        {deeper.map((row) => (
+          <details class="group border-b border-(--color-border)" id={`deeper-${row.id}`}>
+            <summary class="flex cursor-pointer items-center gap-4 py-5 marker:content-none [&::-webkit-details-marker]:hidden">
+              <span class="min-w-0 flex-1">
+                <span class="block font-display text-[22px] leading-[28px] text-(--color-cream-900) transition-colors duration-200 ease-out group-hover:text-(--color-sage-800)">{row.title}</span>
+                <span class="mt-1 block font-sans text-[15px] leading-[22px] text-(--color-cream-700)">{row.summary}</span>
+              </span>
+              <svg class="size-5 shrink-0 text-(--color-sage-700) transition-transform duration-200 ease-out group-open:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+            </summary>
+            <div class="pb-10">
+              {row.id === "more-findings" && (
+                <ol class="grid max-w-[960px] list-none gap-5" start={KEY_FINDINGS + 1}>
+                  {report.findings.slice(KEY_FINDINGS).map((finding, index) => (
+                    <li class="grid grid-cols-[32px_minmax(0,1fr)] gap-3">
+                      <span class="font-display text-[22px] leading-[27px] text-(--color-sage-800)">{index + KEY_FINDINGS + 1}</span>
+                      <p class={BODY}>{finding}</p>
+                    </li>
+                  ))}
+                </ol>
+              )}
+              {main && row.id === main.id && (
+                <div class="flex flex-col gap-14">
+                  {main.tables.slice(1).map((table) => (
+                    <div class="min-w-0"><LabsResultsTable table={table} /></div>
+                  ))}
+                </div>
+              )}
+              {moreSections.filter((section) => section.id === row.id).map((section) => (
+                <div class="flex flex-col gap-10">
+                  {section.intro && <p class:list={["max-w-[768px]", BODY]}>{section.intro}</p>}
+                  {section.tables.map((table) => (
+                    <div class="min-w-0"><LabsResultsTable table={table} /></div>
+                  ))}
+                </div>
+              ))}
+              {row.id === "data" && (
+                <ul class="grid list-none gap-8">
+                  {report.datasets.map((dataset) => (
+                    <li>
+                      <p class="font-sans text-[18px] leading-7 font-medium text-(--color-cream-900)">
+                        <a href={dataset.href} class={LINK} rel="noopener" target="_blank">{dataset.name}</a>
+                        {dataset.license && <span class="ml-2 font-normal text-(--color-cream-700)">· {dataset.license}</span>}
+                      </p>
+                      {dataset.description && <p class="mt-2 max-w-[768px] font-sans text-[16px] leading-[26px] text-(--color-cream-700)">{dataset.description}</p>}
+                      {dataset.huggingFace && (
+                        <details class="group/hf mt-4">
+                          <summary class={DISCLOSURE}>
+                            <span class="transition-transform duration-200 ease-out group-open/hf:rotate-90" aria-hidden="true">›</span>
+                            Browse the data on Hugging Face
+                          </summary>
+                          <iframe
+                            src={`https://huggingface.co/datasets/${dataset.huggingFace}/embed/viewer`}
+                            title={`${dataset.name} on Hugging Face`}
+                            loading="lazy"
+                            class="mt-4 h-[560px] w-full rounded-[20px] border border-(--color-border) bg-card"
+                          ></iframe>
+                        </details>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {row.id === "method" && (
+                <dl class="grid max-w-[1100px] gap-0">
+                  {report.method.map((item) => (
+                    <div class="grid gap-2 border-b border-(--color-border) py-5 last:border-b-0 md:grid-cols-[220px_minmax(0,1fr)] md:gap-8">
+                      <dt class="font-sans text-[17px] leading-[27px] font-medium text-(--color-cream-900)">{item.term}</dt>
+                      <dd class="font-sans text-[16px] leading-[26px] text-(--color-cream-700)">{item.detail}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+              {row.id === "limitations" && (
+                <ul class="grid max-w-[960px] list-disc gap-3 pl-5 marker:text-(--color-sage-600)">
+                  {report.limitations.map((limitation) => (
+                    <li class="font-sans text-[16px] leading-[26px] text-(--color-cream-900)">{limitation}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </details>
         ))}
-      </dl>
-      </details>
-    </section>
-
-    <section class="scroll-reveal-section" aria-labelledby="limitations">
-      <h2 id="limitations" class:list={["reveal-child", SECTION_HEADING]}>Limitations</h2>
-      <ul class="reveal-child stagger-1 mt-space-lg grid max-w-[960px] list-disc gap-3 pl-5 marker:text-(--color-sage-600)">
-        {report.limitations.map((limitation) => (
-          <li class="font-sans text-[16px] leading-[26px] text-(--color-cream-900)">{limitation}</li>
-        ))}
-      </ul>
+      </div>
     </section>
 
     {(post || report.sources.length > 0) && (

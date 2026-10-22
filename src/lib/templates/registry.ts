@@ -1989,6 +1989,19 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
       'One experiment on /benchmarks, led by its result (Scale Labs-style catalogue card): domain · run date, the question as a Borna title with the shared per-line underline link stretched over the card to /benchmarks/<slug>, then a small single-hue sage bar chart of the headline metric with direct labels, values and a higher/lower-is-better note (DESIGN.md "Data visualization"), and "View the results" plus an optional "Read the story" link (only when the companion post is published). Chart data comes from src/lib/benchmarkReports/previews.ts, read straight from each benchmark\'s public data file. The hub grid steps 1 → 2 → 3 columns.',
   },
   {
+    id: "labs.bar-chart",
+    kind: "template",
+    componentPath: "src/components/labs/LabsBarChart.astro",
+    variantAxes: ["size"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    stage: false,
+    notes:
+      'A benchmark\'s headline metric as a small horizontal bar chart: caption with the metric and "higher/lower is better", then one row per value with a direct label, a single-hue sage bar (the emphasised row in sage-800) and the published value, no legend (DESIGN.md "Data visualization"). size="card" is the compact chart inside labs.benchmark-card; size="report" draws the same data larger at the top of a /benchmarks/<slug> report. Data comes from src/lib/benchmarkReports/previews.ts.',
+  },
+  {
     id: "labs.results-table",
     kind: "template",
     componentPath: "src/components/labs/LabsResultsTable.astro",

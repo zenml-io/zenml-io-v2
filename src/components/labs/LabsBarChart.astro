@@ -1,0 +1,46 @@
+---
+import type { BenchmarkPreview } from "../../lib/benchmarkReports";
+
+/**
+ * labs.bar-chart — one benchmark's headline metric as a small horizontal bar
+ * chart: a caption with the metric and its "higher/lower is better"
+ * direction, then a row per value with a direct label, a single-hue sage bar
+ * (the emphasised row darker) and the published value (DESIGN.md "Data
+ * visualization"). `size="card"` is the hub card's compact chart;
+ * `size="report"` draws the same data larger at the top of a report.
+ */
+interface Props {
+  preview: BenchmarkPreview;
+  size?: "card" | "report";
+}
+const { preview, size = "card" } = Astro.props;
+const report = size === "report";
+const max = preview.max ?? Math.max(...preview.rows.map((row) => row.value));
+const width = (value: number) =>
+  `${Math.max(2, Math.round((value / max) * 100))}%`;
+const text = report ? "text-[15px] leading-[22px]" : "text-[13px] leading-5";
+---
+
+<figure>
+  <figcaption class:list={["font-sans text-(--color-cream-700)", report ? "text-[15px] leading-[22px]" : "text-[13px] leading-[18px]"]}>
+    {preview.metric} <span class="text-(--color-cream-600)">· {preview.better} is better</span>
+  </figcaption>
+  <dl class:list={["grid", report ? "mt-5 gap-3.5" : "mt-3 gap-2"]}>
+    {preview.rows.map((row) => (
+      <div class:list={["grid items-center gap-3", report ? "grid-cols-[minmax(0,12rem)_minmax(0,1fr)]" : "grid-cols-[minmax(0,9rem)_minmax(0,1fr)]"]}>
+        <dt class:list={["truncate font-sans", text, row.emphasis ? "font-medium text-(--color-cream-900)" : "text-(--color-cream-800)"]} title={row.label}>
+          {row.label}
+        </dt>
+        <dd class="flex min-w-0 items-center gap-3">
+          <span class:list={["min-w-0 flex-1 rounded-full bg-(--color-sage-100)", report ? "h-3.5" : "h-2.5"]} aria-hidden="true">
+            <span
+              class:list={["block h-full rounded-full", row.emphasis ? "bg-(--color-sage-800)" : "bg-(--color-sage-500)"]}
+              style={`width: ${width(row.value)}`}
+            ></span>
+          </span>
+          <span class:list={["shrink-0 font-sans tabular-nums text-(--color-cream-900)", text]}>{row.display}</span>
+        </dd>
+      </div>
+    ))}
+  </dl>
+</figure>
