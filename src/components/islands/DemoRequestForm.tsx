@@ -11,10 +11,11 @@
  * - "Cal: Embed Failed" — if Cal.com widget fails to load
  * - "Cal: Booking Confirmed" { date, duration } — on successful booking
  */
-import { useCallback, useEffect, useRef, useState } from "preact/hooks";
+import { useCallback, useEffect, useId, useRef, useState } from "preact/hooks";
 import type { CalEmbedConfig, PlaceholderField } from "../../lib/formTypes";
 import { validateForm } from "../../lib/formValidation";
 import { labsButtonClasses } from "../labs/labsButtonStyles";
+import FormErrorSummary from "./shared/FormErrorSummary";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
@@ -64,9 +65,12 @@ export default function DemoRequestForm({
   const [state, setState] = useState<FormState>("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [serverError, setServerError] = useState("");
+  const [errorAttempt, setErrorAttempt] = useState(0);
+  const formId = `demo-request-${useId()}`;
   const turnstileRef = useRef<HTMLDivElement>(null);
   const turnstileWidgetId = useRef<string | null>(null);
   const submittedDataRef = useRef<{ name: string; email: string } | null>(null);
+
   // Fire "Demo Form Viewed" on mount
   useEffect(() => {
     getPlausible()?.("Demo Form Viewed");
@@ -242,6 +246,9 @@ export default function DemoRequestForm({
 
       if (!result.valid) {
         setErrors(result.errors);
+        setServerError("");
+        setState("idle");
+        setErrorAttempt((attempt) => attempt + 1);
         return;
       }
 
@@ -260,6 +267,7 @@ export default function DemoRequestForm({
             setErrors(body.errors);
             resetTurnstile();
             setState("idle");
+            setErrorAttempt((attempt) => attempt + 1);
             return;
           }
           setServerError(
@@ -267,6 +275,7 @@ export default function DemoRequestForm({
           );
           resetTurnstile();
           setState("error");
+          setErrorAttempt((attempt) => attempt + 1);
           return;
         }
         submittedDataRef.current = {
@@ -280,6 +289,7 @@ export default function DemoRequestForm({
         );
         resetTurnstile();
         setState("error");
+        setErrorAttempt((attempt) => attempt + 1);
       }
     },
     [endpoint, fields, resetTurnstile],
@@ -332,12 +342,6 @@ export default function DemoRequestForm({
       {deck && (
         <p class="mt-3 font-sans text-sm text-muted-foreground">{deck}</p>
       )}
-      {state === "error" && serverError && (
-        <div class="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700">
-          {serverError}
-        </div>
-      )}
-
       <form
         method="POST"
         action={endpoint}
@@ -345,10 +349,18 @@ export default function DemoRequestForm({
         onSubmit={handleSubmit}
         noValidate
       >
+        <FormErrorSummary
+          formId={formId}
+          fields={fields}
+          errors={errors}
+          serverError={serverError}
+          attempt={errorAttempt}
+        />
         {fields.map((field) => (
           <FieldRenderer
             key={field.name}
             field={field}
+            formId={formId}
             errors={errors}
             disabled={state === "submitting"}
           />
@@ -412,17 +424,19 @@ export default function DemoRequestForm({
 /** Reusable field renderer — matches ContactForm styling exactly. */
 function FieldRenderer({
   field,
+  formId,
   errors,
   disabled,
 }: {
   field: PlaceholderField;
+  formId: string;
   errors: Record<string, string>;
   disabled: boolean;
 }) {
   return (
     <div>
       <label
-        for={field.name}
+        for={`${formId}-${field.name}`}
         class="mb-1 block text-sm font-medium text-gray-700"
       >
         {field.label}
@@ -430,12 +444,16 @@ function FieldRenderer({
       </label>
       {field.type === "select" ? (
         <select
-          id={field.name}
+          id={`${formId}-${field.name}`}
           name={field.name}
           required={field.required}
+          aria-invalid={errors[field.name] ? true : undefined}
+          aria-describedby={
+            errors[field.name] ? `${formId}-${field.name}-error` : undefined
+          }
           class={`w-full rounded-[10px] border px-4 py-2.5 font-sans text-sm focus:border-(--color-sage-700) focus:ring-1 focus:ring-(--color-sage-700) outline-none transition-colors ${
             errors[field.name]
-              ? "border-red-400 bg-red-50"
+              ? "border-(--color-sage-700) bg-(--color-cream-100)"
               : "border-gray-300 bg-white"
           }`}
           disabled={disabled}
@@ -449,11 +467,15 @@ function FieldRenderer({
       ) : field.type === "checkbox" ? (
         <label class="flex items-start gap-2 text-sm text-gray-600">
           <input
-            id={field.name}
+            id={`${formId}-${field.name}`}
             type="checkbox"
             name={field.name}
             value="on"
             required={field.required}
+            aria-invalid={errors[field.name] ? true : undefined}
+            aria-describedby={
+              errors[field.name] ? `${formId}-${field.name}-error` : undefined
+            }
             class="mt-0.5 rounded border-border text-(--color-sage-700) focus:ring-(--color-sage-700)"
             disabled={disabled}
           />
@@ -465,24 +487,33 @@ function FieldRenderer({
         </label>
       ) : (
         <input
-          id={field.name}
+          id={`${formId}-${field.name}`}
           // Preact 11 types each input type's attributes separately and TS
           // cannot match a union `type` against them; the value is still
           // "text" | "email" | "url" at runtime.
           type={field.type as "text"}
           name={field.name}
           required={field.required}
+          aria-invalid={errors[field.name] ? true : undefined}
+          aria-describedby={
+            errors[field.name] ? `${formId}-${field.name}-error` : undefined
+          }
           placeholder={field.placeholder}
           class={`w-full rounded-[10px] border px-4 py-2.5 font-sans text-sm focus:border-(--color-sage-700) focus:ring-1 focus:ring-(--color-sage-700) outline-none transition-colors ${
             errors[field.name]
-              ? "border-red-400 bg-red-50"
+              ? "border-(--color-sage-700) bg-(--color-cream-100)"
               : "border-gray-300 bg-white"
           }`}
           disabled={disabled}
         />
       )}
       {errors[field.name] && (
-        <p class="mt-1 text-xs text-red-600">{errors[field.name]}</p>
+        <p
+          id={`${formId}-${field.name}-error`}
+          class="mt-1 text-xs text-(--color-sage-800)"
+        >
+          {errors[field.name]}
+        </p>
       )}
     </div>
   );

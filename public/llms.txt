@@ -51,7 +51,7 @@ These repo-owned Markdown mirrors are alternate, cleaner representations of high
 - [Open Source vs Pro](https://www.zenml.io/open-source-vs-pro): compares the open-source framework to the Pro service.
 - [Pricing](https://www.zenml.io/pricing): simple, transparent pricing for community and enterprise users.
 - [Deployments](https://www.zenml.io/deployments): explains ZenML's client-server architecture, local/server/Pro deployment options.
-- [ML Models Control Plane](https://www.zenml.io/ml-models-control-plane): detailed breakdown of ZenML Pro cloud capabilities.
+- [ML Models Control Plane](https://www.zenml.io/cloud-features/ml-models-control-plane): detailed breakdown of ZenML Pro cloud capabilities.
 
 ## Integrations & Platform
 
