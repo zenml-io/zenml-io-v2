@@ -7,6 +7,18 @@
 
 import type { ModelMark } from "../labs-home";
 
+interface ChartRow {
+  label: string;
+  value: number;
+  display: string;
+  /** The row the benchmark's finding points at. */
+  emphasis?: boolean;
+  /** The model's mark, on rows that name a model. */
+  mark?: ModelMark;
+  /** A reference row (a baseline), drawn below a rule in a muted bar. */
+  reference?: boolean;
+}
+
 export interface TableCell {
   text: string;
   /** Heat level for single-hue sage cells (0 = no tint). */
@@ -62,14 +74,29 @@ export interface BenchmarkPreview {
   context?: string;
   /** The value a full-width bar stands for; the largest row's value when absent. */
   max?: number;
+  rows: ChartRow[];
+  /** The fuller set the report draws; the card's `rows` when absent. */
+  reportRows?: ChartRow[];
+}
+
+/**
+ * Paired differences against a baseline with their 95% intervals, over a
+ * shaded band for the unchanged rerun's interval (the run-to-run noise).
+ */
+export interface IntervalChart {
+  /** What the axis measures, in a few words. */
+  metric: string;
+  better: "higher" | "lower";
+  band: { label: string; low: number; high: number };
   rows: {
     label: string;
-    value: number;
-    display: string;
-    /** The row the benchmark's finding points at. */
-    emphasis?: boolean;
-    /** The model's mark, on rows that name a model. */
     mark?: ModelMark;
+    value: number;
+    low: number;
+    high: number;
+    display: string;
+    /** Whether the interval clears zero: clearly ahead, clearly behind, or within noise. */
+    verdict: "ahead" | "behind" | "tie";
   }[];
 }
 
@@ -106,6 +133,8 @@ export interface BenchmarkReport {
   facts: ReportFact[];
   findings: string[];
   sections: ReportSection[];
+  /** Drawn above the main section's first table, when the benchmark has one. */
+  intervals?: IntervalChart;
   method: { term: string; detail: string }[];
   limitations: string[];
   /** Public datasets, each linked at its source; absent when the cases are not public. */

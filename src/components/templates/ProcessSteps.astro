@@ -33,6 +33,10 @@
  * `initCodeCopy()` call wires the copy button. `language` (per step)
  * labels the pane's bar; it defaults to "text". The default skin is
  * unchanged.
+ *
+ * Labs compact-list only: an absent `title` collapses (a numbered finding
+ * is numeral + body), and a `lead` named slot renders as the grid's first
+ * card, before step 01 (a benchmark report puts its chart there).
  */
 export interface ProcessStepsVerticalCodeStep {
   title: string;
@@ -46,7 +50,8 @@ export interface ProcessStepsVerticalCodeStep {
 
 export interface ProcessStepsCompactListStep {
   number: number;
-  title: string;
+  /** Labs skin only may omit it; absent collapses. */
+  title?: string;
   /** Empty/absent collapses — no empty node reserved for it. */
   duration?: string;
   body: string;
@@ -127,14 +132,21 @@ function formatNumeral(n: number): string {
     </ol>
   ) : skin === "labs" ? (
     <ol class:list={["grid gap-space-md sm:grid-cols-2", className]}>
+      {Astro.slots.has("lead") && (
+        <li class="min-w-0 rounded-[20px] border border-border bg-card p-8 md:p-10">
+          <slot name="lead" />
+        </li>
+      )}
       {compactSteps.map((step) => (
         <li class="rounded-[20px] border border-border bg-card p-8 md:p-10">
           <div class="font-display text-[24px] leading-[30px] text-(--color-sage-700)">
             {formatNumeral(step.number)}
           </div>
-          <h3 class="mt-space-md font-display text-[24px] leading-[30px] text-(--color-cream-900)">
-            {step.title}
-          </h3>
+          {step.title && (
+            <h3 class="mt-space-md font-display text-[24px] leading-[30px] text-(--color-cream-900)">
+              {step.title}
+            </h3>
+          )}
           {step.duration && (
             <p class="mt-space-xs font-label text-[13px] leading-[18px] text-(--color-cream-700)">
               {step.duration}

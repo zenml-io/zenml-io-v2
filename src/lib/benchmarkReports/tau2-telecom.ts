@@ -23,7 +23,13 @@ import {
   pointInterval,
   points,
 } from "./format";
-import type { BenchmarkReport, ReportTable, TableCell } from "./types";
+import { modelMark } from "./marks";
+import type {
+  BenchmarkReport,
+  IntervalChart,
+  ReportTable,
+  TableCell,
+} from "./types";
 
 type Candidate = (typeof data.stepCheck.candidates)[number];
 type Arm = (typeof data.replay.arms)[number];
@@ -125,6 +131,34 @@ export function buildTau2Telecom(): BenchmarkReport {
     })),
     footnote:
       "The GPT-5.2 rerun changed nothing, so its gap from the baseline is pure run-to-run noise. Costs are not shown: Kitaru could not price the open-weight models, and their prices are unverified.",
+  };
+
+  const replayColumns = replayTable.columns;
+  const intervals: IntervalChart = {
+    metric: replayColumns[5].label,
+    better: "higher",
+    band: {
+      label: rerun.name,
+      low: rerun.paired?.ci95Points[0] ?? 0,
+      high: rerun.paired?.ci95Points[1] ?? 0,
+    },
+    rows: [promptArm, ...swaps]
+      .flatMap((a) => (a.paired ? [{ a, p: a.paired }] : []))
+      .sort((x, y) => y.p.deltaPoints - x.p.deltaPoints)
+      .map(({ a, p }) => ({
+        label: a.name,
+        mark: modelMark(a.name, a.weights),
+        value: p.deltaPoints,
+        low: p.ci95Points[0],
+        high: p.ci95Points[1],
+        display: `${points(p.deltaPoints)} · ${a.correct} / ${a.n}`,
+        verdict:
+          p.ci95Points[0] > 0
+            ? "ahead"
+            : p.ci95Points[1] < 0
+              ? "behind"
+              : "tie",
+      })),
   };
 
   const replayTypeTable: ReportTable = {
@@ -390,6 +424,7 @@ export function buildTau2Telecom(): BenchmarkReport {
       `The cheap step check did not predict the replay order (rank correlation ${corr} over ${svr.spearmanN} models). ${pairName(byStep[0].arm)} matched GPT-5.2's tool most often (${pct(byStep[0].stepToolChoice)}) but solved ${pct(byStep[0].replayAccuracy)} of tasks; ${pairName(byStep[byStep.length - 1].arm)} matched least (${pct(byStep[byStep.length - 1].stepToolChoice)}) and solved ${pct(byStep[byStep.length - 1].replayAccuracy)}.`,
       `The two parts of this page use different agent harnesses, user simulators and task sets, so their numbers don't line up: GPT-5.2 solved ${pct(baseline.accuracy)} of the ${rp.tasks} test tasks in our replays and ${pct(exgentic52?.accuracy ?? 0)} of its ${exgentic52?.n} runs in Exgentic's recordings.`,
     ],
+    intervals,
     sections: [
       {
         id: "results",

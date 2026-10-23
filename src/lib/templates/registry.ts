@@ -703,7 +703,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 25,
     notes:
-      "Numerals are zero-padded (01, never 1) per DECISIONS #76. The additive skin: 'labs' path uses the Labs token card anatomy; the default skin preserves legacy live markup. Pad in the component, never edit the data. An empty duration collapses (the 4th step has one).",
+      "Numerals are zero-padded (01, never 1) per DECISIONS #76. The additive skin: 'labs' path uses the Labs token card anatomy; the default skin preserves legacy live markup. Pad in the component, never edit the data. An empty duration collapses (the 4th step has one). Labs skin: an absent title collapses (numeral + body), and a `lead` named slot renders as the first card (a /benchmarks/<slug> report's chart before findings 01-03).",
     contentShape: {
       minItems: 2,
       maxItems: 6,
@@ -1567,7 +1567,21 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "One headline over a column of native <details> rows (`content: FaqData`). Eyebrow and subheadline are not rendered (one headline per band) — the data keeps both fields because the Markdown mirror and JSON-LD still read them. An optional `slackCta` renders one text link after the list. Sentence-case Rethink Sans throughout. Consumers: /pricing (one per workspace panel) and /pro; FaqSection/FAQAccordion retire when their last consumer moves. Update: both retired and deleted in #317 once /pro moved onto this entry.",
+      'One headline over a column of native <details> rows (`content: FaqData`). Eyebrow and subheadline are not rendered (one headline per band) — the data keeps both fields because the Markdown mirror and JSON-LD still read them. An optional `slackCta` renders one text link after the list. Sentence-case Rethink Sans throughout. Consumers: /pricing (one per workspace panel) and /pro; FaqSection/FAQAccordion retire when their last consumer moves. Update: both retired and deleted in #317 once /pro moved onto this entry. Rows render through labs.faq-item; a page whose answers are components passes `headline` and its own labs.faq-item rows in the slot instead of `content` (the /benchmarks/<slug> "Go deeper" list, which also makes /benchmarks a consumer of the `content` path).',
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.faq-item",
+    kind: "template",
+    componentPath: "src/components/labs/LabsFaqItem.astro",
+    variantAxes: ["answer kind (HTML / components)"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "One labs.faq row: a native <details> with the question as its summary, a chevron that turns on open, and the default slot as the answer (sage links). labs.faq renders its `content.items` through it; /benchmarks/<slug> passes its own rows with tables and lists as answers.",
     stage: false,
     demoProps: {},
   },
@@ -1999,7 +2013,20 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 0,
     stage: false,
     notes:
-      'A benchmark\'s headline metric as a small horizontal bar chart: caption with the metric and "higher/lower is better", then one row per value with a direct label (led by the model\'s labs mark on rows that name a model), a single-hue sage bar (the emphasised row in sage-800) and the published value, no legend (DESIGN.md "Data visualization"). size="card" is the compact chart inside labs.benchmark-card; size="report" draws the same data larger at the top of a /benchmarks/<slug> report. Data comes from src/lib/benchmarkReports/previews.ts.',
+      'A benchmark\'s headline metric as a small horizontal bar chart: caption with the metric and "higher/lower is better", then one row per value with a direct label (led by the model\'s labs mark on rows that name a model), a single-hue sage bar (the emphasised row in sage-800) and the published value, no legend (DESIGN.md "Data visualization"). size="card" is the compact chart inside labs.benchmark-card; size="report" draws the fuller `reportRows` set when the benchmark has one (every tied model; every model clearly ahead plus the baseline as a reference row below a dashed rule), larger, as the lead card of a /benchmarks/<slug> report. Data comes from src/lib/benchmarkReports/previews.ts.',
+  },
+  {
+    id: "labs.interval-chart",
+    kind: "template",
+    componentPath: "src/components/labs/LabsIntervalChart.astro",
+    variantAxes: ["row count"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    stage: false,
+    notes:
+      'Paired differences against a baseline: one row per arm with a dot on its 95% interval, over a sage-100 band for the unchanged rerun\'s interval (the noise) and a rule at zero, ticks below. Rows clearing zero are solid sage-800 with a medium label; rows inside the noise are hollow and muted. Single hue (DESIGN.md "Data visualization"): position carries ahead/behind. Labels and published values stay text; the plot is aria-hidden. Below md the label and value share a line above the plot. Data: `BenchmarkReport.intervals`, drawn above the main table (tau2-bench Telecom).',
   },
   {
     id: "labs.results-table",

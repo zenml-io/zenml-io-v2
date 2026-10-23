@@ -11,19 +11,9 @@ import sglang from "../../data/benchmarks/sglang-vs-vllm.json";
 import swapbench from "../../data/benchmarks/swapbench.json";
 import tau2Telecom from "../../data/benchmarks/tau2-telecom.json";
 import underwriting from "../../data/benchmarks/underwriting.json";
-import type { ModelMark } from "../labs-home";
 import { cents, pct } from "./format";
+import { modelMark } from "./marks";
 import type { BenchmarkPreview } from "./types";
-
-/** A model's mark from its name and weights: a brand icon where one exists, else the open-weights glyph. */
-function modelMark(name: string, weights: string): ModelMark | undefined {
-  if (/^claude/i.test(name)) return "anthropic";
-  if (/^gpt/i.test(name)) return "openai";
-  if (/^deepseek/i.test(name)) return "deepseek";
-  if (/^qwen/i.test(name)) return "qwen";
-  if (/^glm/i.test(name)) return "zai";
-  return weights === "open" ? "open" : undefined;
-}
 
 function underwritingPreview(): BenchmarkPreview {
   const rows = underwriting.results.shared_rewritten_prompt_held_out;
@@ -32,22 +22,23 @@ function underwritingPreview(): BenchmarkPreview {
     .filter((r) => (top - r.accuracy) * 100 <= underwriting.noise.sizePoints)
     .sort((a, b) => a.costPerCorrectCents - b.costPerCorrectCents);
   const model = (key: string) => underwriting.models.find((m) => m.key === key);
-  // The two cheapest of the tied models against the priciest one.
-  const shown = [...tied.slice(0, 2), tied[tied.length - 1]];
+  const row = (r: (typeof tied)[number], i: number) => {
+    const m = model(r.model);
+    return {
+      label: m?.name ?? r.model,
+      value: r.costPerCorrectCents,
+      display: cents(r.costPerCorrectCents),
+      emphasis: i === 0,
+      mark: m && modelMark(m.name, m.weights),
+    };
+  };
   return {
     metric: `Cost per correct decision, models tied at the top`,
-    context: `One shared prompt, ${underwriting.dataset.heldOut} held-out cases. The two cheapest and the priciest of the ${tied.length} models within noise of the top score.`,
     better: "lower",
-    rows: shown.map((r, i) => {
-      const m = model(r.model);
-      return {
-        label: m?.name ?? r.model,
-        value: r.costPerCorrectCents,
-        display: cents(r.costPerCorrectCents),
-        emphasis: i === 0,
-        mark: m && modelMark(m.name, m.weights),
-      };
-    }),
+    // The card: the two cheapest of the tied models against the priciest one.
+    rows: [...tied.slice(0, 2), tied[tied.length - 1]].map(row),
+    // The report: every tied model, cheapest first.
+    reportRows: tied.map(row),
   };
 }
 
@@ -180,18 +171,24 @@ function tau2TelecomPreview(): BenchmarkPreview {
   const rows = [swaps[0], baseline, swaps[swaps.length - 1]].flatMap((a) =>
     a ? [a] : [],
   );
+  const row = (a: (typeof arms)[number]) => ({
+    label: a.role === "baseline" ? "GPT-5.2 (baseline)" : a.name,
+    value: a.correct,
+    display: `${a.correct} / ${a.n}`,
+    mark: modelMark(a.name, a.weights),
+  });
+  // Models whose paired interval against the baseline stays above zero.
+  const clearlyBetter = swaps.filter((a) => (a.paired?.ci95Points[0] ?? 0) > 0);
   return {
     metric: `Tasks solved out of ${tasks}`,
     better: "higher",
     max: tasks,
-    context: `Full Kitaru replays on tau2-bench Telecom's ${tasks} test tasks: the top model, the GPT-5.2 baseline and the lowest model.`,
-    rows: rows.map((a, i) => ({
-      label: a.role === "baseline" ? "GPT-5.2 (baseline)" : a.name,
-      value: a.correct,
-      display: `${a.correct} / ${a.n}`,
-      emphasis: i === 0,
-      mark: modelMark(a.name, a.weights),
-    })),
+    rows: rows.map((a, i) => ({ ...row(a), emphasis: i === 0 })),
+    // The report: every model clearly ahead, against the baseline.
+    reportRows: [
+      ...clearlyBetter.map((a) => ({ ...row(a), emphasis: true })),
+      ...(baseline ? [{ ...row(baseline), reference: true }] : []),
+    ],
   };
 }
 

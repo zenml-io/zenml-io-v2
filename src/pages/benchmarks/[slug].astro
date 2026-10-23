@@ -1,28 +1,36 @@
 ---
 /**
- * Benchmark report page (`/benchmarks/<slug>`), summary first: the short
- * band (breadcrumb, name, question, deck, tags), a facts strip, then the
- * result at a glance (the benchmark's `labs.bar-chart` beside its top three
- * findings) and its one main table. Everything else (more findings, the
- * other tables, per-type and failure breakdowns, replays, data, method,
- * limitations) sits in "Go deeper": closed native <details> rows, each with
- * a one-line description, so the page reads in one screen and the full
- * record stays one click away. The companion post is linked once published.
+ * Benchmark report page (`/benchmarks/<slug>`), summary first:
+ * `labs.page-header` (breadcrumb, question, deck), a facts strip, then the
+ * result at a glance as `process-steps.compact-list` (the benchmark's
+ * `labs.bar-chart` as the lead card, then its top three findings) and its
+ * main section (a `labs.interval-chart` where the benchmark has one, then
+ * the first table). Everything else (more findings, the other tables,
+ * per-type and failure breakdowns, data, method, limitations) sits in
+ * "Go deeper", a `labs.faq` of closed rows, so the page reads in one screen
+ * and the full record stays one click away. The companion post, once
+ * published, and the sources close the page as `labs.related-band` cards.
  */
-import { getCollection } from "astro:content";
-import LabsBand from "../../components/labs/LabsBand.astro";
+import { getCollection, getEntry } from "astro:content";
 import LabsBarChart from "../../components/labs/LabsBarChart.astro";
 import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
+import LabsFaq from "../../components/labs/LabsFaq.astro";
+import LabsFaqItem from "../../components/labs/LabsFaqItem.astro";
+import LabsIntervalChart from "../../components/labs/LabsIntervalChart.astro";
+import LabsPageHeader from "../../components/labs/LabsPageHeader.astro";
+import LabsRelatedBand from "../../components/labs/LabsRelatedBand.astro";
 import LabsResultsTable from "../../components/labs/LabsResultsTable.astro";
-import Breadcrumb from "../../components/system/Breadcrumb.astro";
-import { LABS_EYEBROW_CLASS } from "../../components/templates/pageHeaderPresets";
+import ProcessSteps from "../../components/templates/ProcessSteps.astro";
+import type { RelatedRailItem } from "../../components/templates/RelatedRail.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   BENCHMARK_PREVIEWS,
   BENCHMARK_REPORTS,
   type BenchmarkReport,
 } from "../../lib/benchmarkReports";
+import { longDate } from "../../lib/benchmarkReports/format";
 import { BENCHMARKS_CLOSE } from "../../lib/benchmarks";
+import { getBlogProduct } from "../../lib/blog";
 import { BAND_CONTENT_GAP, SECTION_HEADING_CLASS } from "../../lib/blogLayout";
 import "../../styles/labs-scroll-reveal.css";
 
@@ -47,40 +55,41 @@ const deeper = [
   report.findings.length > KEY_FINDINGS && {
     id: "more-findings",
     title: "More findings",
-    summary: `${report.findings.length - KEY_FINDINGS} more results from this benchmark`,
   },
   main &&
     main.tables.length > 1 && {
       id: main.id,
       title: `More ${main.title.toLowerCase()}`,
-      summary: main.tables
-        .slice(1)
-        .map((table) => table.title)
-        .join(" · "),
     },
-  ...moreSections.map((section) => ({
-    id: section.id,
-    title: section.title,
-    summary: section.tables.map((table) => table.title).join(" · "),
+  ...moreSections.map((section) => ({ id: section.id, title: section.title })),
+  report.datasets.length > 0 && { id: "data", title: "Data" },
+  { id: "method", title: "Method" },
+  { id: "limitations", title: "Limitations" },
+].filter((row): row is { id: string; title: string } => Boolean(row));
+
+const category = post?.data.category
+  ? await getEntry("categories", post.data.category)
+  : undefined;
+const reading: RelatedRailItem[] = [
+  ...(post
+    ? [
+        {
+          kind: "hex-card" as const,
+          href: `/blog/${post.data.slug}`,
+          title: post.data.title,
+          meta: longDate(post.data.date.toISOString()),
+          kindLabel:
+            getBlogProduct(post) === "kitaru" ? "Kitaru" : category?.data.name,
+        },
+      ]
+    : []),
+  ...report.sources.map((source) => ({
+    kind: "hex-card" as const,
+    href: source.href,
+    title: source.label,
+    kindLabel: new URL(source.href).hostname.replace(/^www\./, ""),
   })),
-  report.datasets.length > 0 && {
-    id: "data",
-    title: "Data",
-    summary: report.datasets.map((dataset) => dataset.name).join(" · "),
-  },
-  {
-    id: "method",
-    title: "Method",
-    summary: report.method.map((item) => item.term).join(" · "),
-  },
-  {
-    id: "limitations",
-    title: "Limitations",
-    summary: `${report.limitations.length} things this benchmark can't show`,
-  },
-].filter((row): row is { id: string; title: string; summary: string } =>
-  Boolean(row),
-);
+];
 
 const BODY = "font-sans text-[17px] leading-[27px] text-(--color-cream-900)";
 const DISCLOSURE =
@@ -95,27 +104,13 @@ const LINK =
   surface="unified"
   app="labs"
 >
-  <LabsBand size="short">
-    <div class="scroll-reveal-section flex flex-col gap-4">
-      <div class="reveal-child">
-        <Breadcrumb items={[{ label: "Benchmarks", href: "/benchmarks" }, { label: report.name }]} separator="chevron" />
-      </div>
-      <p class={`reveal-child ${LABS_EYEBROW_CLASS}`}>{report.eyebrow}</p>
-      <h1 class="reveal-child stagger-1 max-w-[1100px] font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
-        {report.title}
-      </h1>
-      <p class="reveal-child stagger-2 max-w-[720px] font-sans text-[18px] leading-7 text-(--color-cream-700)">
-        {report.deck}
-      </p>
-      <ul class="reveal-child stagger-2 flex list-none flex-wrap gap-1.5" aria-label="Tags">
-        {report.tags.map((tag) => (
-          <li class="inline-flex h-7 items-center rounded-full border border-(--color-border) bg-(--color-cream-50) px-3 font-sans text-[12px] leading-none font-medium text-(--color-cream-800)">{tag}</li>
-        ))}
-      </ul>
-    </div>
-  </LabsBand>
+  <LabsPageHeader
+    breadcrumb={[{ label: "Benchmarks", href: "/benchmarks" }, { label: report.name }]}
+    heading={report.title}
+    description={report.deck}
+  />
 
-  <div class:list={["mx-auto flex max-w-content flex-col gap-20 px-gutter pb-24 md:gap-28 md:pb-32", BAND_CONTENT_GAP]}>
+  <div class:list={["mx-auto flex max-w-content flex-col gap-space-xxl px-gutter md:gap-28", BAND_CONTENT_GAP]}>
     <section class="scroll-reveal-section">
       <dl class="reveal-child grid grid-cols-2 gap-x-6 gap-y-5 border-y border-(--color-border) py-6 md:grid-cols-3 xl:grid-cols-6">
         {report.facts.map((fact) => (
@@ -126,7 +121,7 @@ const LINK =
         ))}
       </dl>
       {post && (
-        <p class:list={["reveal-child stagger-1 mt-6", BODY]}>
+        <p class:list={["reveal-child stagger-1 mt-space-sm", BODY]}>
           The story behind these numbers: <a href={`/blog/${post.data.slug}`} class={LINK}>{post.data.title}</a>
         </p>
       )}
@@ -134,18 +129,15 @@ const LINK =
 
     <section class="scroll-reveal-section" aria-labelledby="result">
       <h2 id="result" class="sr-only">The result</h2>
-      <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-16">
-        <div class="reveal-child min-w-0 rounded-[20px] border border-(--color-border) bg-card p-6 md:p-8">
-          <LabsBarChart preview={preview} size="report" />
-        </div>
-        <ol class="reveal-child stagger-1 grid list-none content-start gap-5">
-          {report.findings.slice(0, KEY_FINDINGS).map((finding, index) => (
-            <li class="grid grid-cols-[32px_minmax(0,1fr)] gap-3 border-b border-(--color-border) pb-5 last:border-b-0">
-              <span class="font-display text-[22px] leading-[27px] text-(--color-sage-800)">{index + 1}</span>
-              <p class={BODY}>{finding}</p>
-            </li>
-          ))}
-        </ol>
+      <div class="reveal-child">
+        <ProcessSteps
+          layout="compact-list"
+          numeralStyle="zero-padded"
+          skin="labs"
+          steps={report.findings.slice(0, KEY_FINDINGS).map((finding, index) => ({ number: index + 1, body: finding }))}
+        >
+          <LabsBarChart slot="lead" preview={preview} size="report" />
+        </ProcessSteps>
       </div>
     </section>
 
@@ -153,112 +145,94 @@ const LINK =
       <section class="scroll-reveal-section" aria-labelledby={main.id}>
         <h2 id={main.id} class:list={["reveal-child", SECTION_HEADING_CLASS]}>{main.title}</h2>
         {main.intro && <p class:list={["reveal-child stagger-1 mt-space-sm max-w-[768px]", BODY]}>{main.intro}</p>}
+        {report.intervals && <div class="reveal-child mt-space-lg min-w-0"><LabsIntervalChart chart={report.intervals} /></div>}
         <div class="reveal-child mt-space-lg min-w-0"><LabsResultsTable table={main.tables[0]} /></div>
       </section>
     )}
 
-    <section class="scroll-reveal-section" aria-labelledby="go-deeper">
-      <h2 id="go-deeper" class:list={["reveal-child", SECTION_HEADING_CLASS]}>Go deeper</h2>
-      <div class="reveal-child stagger-1 mt-space-md border-t border-(--color-border)">
-        {deeper.map((row) => (
-          <details class="group border-b border-(--color-border)" id={`deeper-${row.id}`}>
-            <summary class="flex cursor-pointer items-center gap-4 py-5 marker:content-none [&::-webkit-details-marker]:hidden">
-              <span class="min-w-0 flex-1">
-                <span class="block font-display text-[22px] leading-[28px] text-(--color-cream-900) transition-colors duration-200 ease-out group-hover:text-(--color-sage-800)">{row.title}</span>
-                <span class="mt-1 block font-sans text-[15px] leading-[22px] text-(--color-cream-700)">{row.summary}</span>
-              </span>
-              <svg class="size-5 shrink-0 text-(--color-sage-700) transition-transform duration-200 ease-out group-open:rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
-            </summary>
-            <div class="pb-10">
-              {row.id === "more-findings" && (
-                <ol class="grid max-w-[960px] list-none gap-5" start={KEY_FINDINGS + 1}>
-                  {report.findings.slice(KEY_FINDINGS).map((finding, index) => (
-                    <li class="grid grid-cols-[32px_minmax(0,1fr)] gap-3">
-                      <span class="font-display text-[22px] leading-[27px] text-(--color-sage-800)">{index + KEY_FINDINGS + 1}</span>
-                      <p class={BODY}>{finding}</p>
-                    </li>
-                  ))}
-                </ol>
-              )}
-              {main && row.id === main.id && (
-                <div class="flex flex-col gap-14">
-                  {main.tables.slice(1).map((table) => (
-                    <div class="min-w-0"><LabsResultsTable table={table} /></div>
-                  ))}
-                </div>
-              )}
-              {moreSections.filter((section) => section.id === row.id).map((section) => (
-                <div class="flex flex-col gap-10">
-                  {section.intro && <p class:list={["max-w-[768px]", BODY]}>{section.intro}</p>}
-                  {section.tables.map((table) => (
-                    <div class="min-w-0"><LabsResultsTable table={table} /></div>
-                  ))}
-                </div>
-              ))}
-              {row.id === "data" && (
-                <ul class="grid list-none gap-8">
-                  {report.datasets.map((dataset) => (
-                    <li>
-                      <p class="font-sans text-[18px] leading-7 font-medium text-(--color-cream-900)">
-                        <a href={dataset.href} class={LINK} rel="noopener" target="_blank">{dataset.name}</a>
-                        {dataset.license && <span class="ml-2 font-normal text-(--color-cream-700)">· {dataset.license}</span>}
-                      </p>
-                      {dataset.description && <p class="mt-2 max-w-[768px] font-sans text-[16px] leading-[26px] text-(--color-cream-700)">{dataset.description}</p>}
-                      {dataset.huggingFace && (
-                        <details class="group/hf mt-4">
-                          <summary class={DISCLOSURE}>
-                            <span class="transition-transform duration-200 ease-out group-open/hf:rotate-90" aria-hidden="true">›</span>
-                            Browse the data on Hugging Face
-                          </summary>
-                          <iframe
-                            src={`https://huggingface.co/datasets/${dataset.huggingFace}/embed/viewer`}
-                            title={`${dataset.name} on Hugging Face`}
-                            loading="lazy"
-                            class="mt-4 h-[560px] w-full rounded-[20px] border border-(--color-border) bg-card"
-                          ></iframe>
-                        </details>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {row.id === "method" && (
-                <dl class="grid max-w-[1100px] gap-0">
-                  {report.method.map((item) => (
-                    <div class="grid gap-2 border-b border-(--color-border) py-5 last:border-b-0 md:grid-cols-[220px_minmax(0,1fr)] md:gap-8">
-                      <dt class="font-sans text-[17px] leading-[27px] font-medium text-(--color-cream-900)">{item.term}</dt>
-                      <dd class="font-sans text-[16px] leading-[26px] text-(--color-cream-700)">{item.detail}</dd>
-                    </div>
-                  ))}
-                </dl>
-              )}
-              {row.id === "limitations" && (
-                <ul class="grid max-w-[960px] list-disc gap-3 pl-5 marker:text-(--color-sage-600)">
-                  {report.limitations.map((limitation) => (
-                    <li class="font-sans text-[16px] leading-[26px] text-(--color-cream-900)">{limitation}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          </details>
-        ))}
-      </div>
-    </section>
-
-    {(post || report.sources.length > 0) && (
-    <section class="scroll-reveal-section" aria-labelledby="sources">
-      <h2 id="sources" class:list={["reveal-child", SECTION_HEADING_CLASS]}>Further reading</h2>
-      <ul class="reveal-child stagger-1 mt-space-lg grid max-w-[960px] gap-3">
-        {post && (
-          <li class={BODY}><a href={`/blog/${post.data.slug}`} class={LINK}>Write-up: {post.data.title}</a></li>
-        )}
-        {report.sources.map((source) => (
-          <li class={BODY}><a href={source.href} class={LINK} rel="noopener" target="_blank">{source.label}</a></li>
-        ))}
-      </ul>
-    </section>
-    )}
   </div>
+
+  <div class="scroll-reveal-section">
+    <div class="reveal-child">
+    <LabsFaq headline="Go deeper">
+      {deeper.map((row) => (
+        <LabsFaqItem question={row.title} id={`deeper-${row.id}`}>
+        {row.id === "more-findings" && (
+          <ol class="grid list-none gap-space-xs" start={KEY_FINDINGS + 1}>
+            {report.findings.slice(KEY_FINDINGS).map((finding, index) => (
+              <li class="grid grid-cols-[40px_minmax(0,1fr)]">
+                <span class="font-mono text-[13px] leading-6 text-(--color-sage-700)">{String(index + KEY_FINDINGS + 1).padStart(2, "0")}</span>
+                <p>{finding}</p>
+              </li>
+            ))}
+          </ol>
+        )}
+        {main && row.id === main.id && (
+          <div class="flex flex-col gap-space-xl">
+            {main.tables.slice(1).map((table) => (
+              <div class="min-w-0"><LabsResultsTable table={table} /></div>
+            ))}
+          </div>
+        )}
+        {moreSections.filter((section) => section.id === row.id).map((section) => (
+          <div class="flex flex-col gap-space-mlg">
+            {section.intro && <p class:list={["max-w-[768px]", BODY]}>{section.intro}</p>}
+            {section.tables.map((table) => (
+              <div class="min-w-0"><LabsResultsTable table={table} /></div>
+            ))}
+          </div>
+        ))}
+        {row.id === "data" && (
+          <ul class="grid list-none gap-space-md">
+            {report.datasets.map((dataset) => (
+              <li>
+                <p class="font-sans text-[18px] leading-7 font-medium text-(--color-cream-900)">
+                  <a href={dataset.href} class={LINK} rel="noopener" target="_blank">{dataset.name}</a>
+                  {dataset.license && <span class="ml-2 font-normal text-(--color-cream-700)">· {dataset.license}</span>}
+                </p>
+                {dataset.description && <p class="mt-2 max-w-[768px] font-sans text-[16px] leading-[26px] text-(--color-cream-700)">{dataset.description}</p>}
+                {dataset.huggingFace && (
+                  <details class="group/hf mt-4">
+                    <summary class={DISCLOSURE}>
+                      <span class="transition-transform duration-200 ease-out group-open/hf:rotate-90" aria-hidden="true">›</span>
+                      Browse the data on Hugging Face
+                    </summary>
+                    <iframe
+                      src={`https://huggingface.co/datasets/${dataset.huggingFace}/embed/viewer`}
+                      title={`${dataset.name} on Hugging Face`}
+                      loading="lazy"
+                      class="mt-4 h-[560px] w-full rounded-[20px] border border-(--color-border) bg-card"
+                    ></iframe>
+                  </details>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+        {row.id === "method" && (
+          <dl class="grid max-w-[1100px] gap-0">
+            {report.method.map((item) => (
+              <div class="grid gap-2 border-b border-(--color-border) py-5 last:border-b-0 md:grid-cols-[220px_minmax(0,1fr)] md:gap-8">
+                <dt class="font-sans text-[17px] leading-[27px] font-medium text-(--color-cream-900)">{item.term}</dt>
+                <dd class="font-sans text-[16px] leading-[26px] text-(--color-cream-700)">{item.detail}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
+        {row.id === "limitations" && (
+          <ul class="grid max-w-[960px] list-disc gap-3 pl-5 marker:text-(--color-sage-600)">
+            {report.limitations.map((limitation) => (
+              <li class="font-sans text-[16px] leading-[26px] text-(--color-cream-900)">{limitation}</li>
+            ))}
+          </ul>
+        )}
+        </LabsFaqItem>
+      ))}
+    </LabsFaq>
+    </div>
+  </div>
+
+  <LabsRelatedBand heading="Further reading" items={reading} />
 
   <div class="scroll-reveal-section">
     <div class="reveal-child"><LabsCloseCta content={BENCHMARKS_CLOSE} preset="comparison" /></div>
