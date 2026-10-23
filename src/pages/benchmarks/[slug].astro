@@ -12,6 +12,7 @@
  * published, and the sources close the page as `labs.related-band` cards.
  */
 import { getCollection, getEntry } from "astro:content";
+import FeatureCard from "../../components/labs/FeatureCard.astro";
 import LabsBarChart from "../../components/labs/LabsBarChart.astro";
 import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
 import LabsFaq from "../../components/labs/LabsFaq.astro";
@@ -92,8 +93,8 @@ const reading: RelatedRailItem[] = [
 ];
 
 const BODY = "font-sans text-[17px] leading-[27px] text-(--color-cream-900)";
-const DISCLOSURE =
-  "inline-flex min-h-11 max-w-[960px] cursor-pointer items-center gap-2 font-sans text-[16px] leading-6 text-(--color-sage-800) marker:content-none [&::-webkit-details-marker]:hidden";
+const DATA_LINK =
+  "inline-flex min-h-11 items-center gap-2 font-sans text-[16px] leading-6 text-(--color-sage-800) underline decoration-(--color-sage-400) underline-offset-4 hover:text-(--color-sage-900)";
 const LINK =
   "underline decoration-(--color-sage-400) underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-sage-800)";
 ---
@@ -154,11 +155,11 @@ const LINK =
 
   <div class="scroll-reveal-section">
     <div class="reveal-child">
-    <LabsFaq headline="Go deeper">
+    <LabsFaq headline="Go deeper" width="content">
       {deeper.map((row) => (
         <LabsFaqItem question={row.title} id={`deeper-${row.id}`}>
         {row.id === "more-findings" && (
-          <ol class="grid list-none gap-space-xs" start={KEY_FINDINGS + 1}>
+          <ol class="mx-auto grid max-w-[768px] list-none gap-space-xs" start={KEY_FINDINGS + 1}>
             {report.findings.slice(KEY_FINDINGS).map((finding, index) => (
               <li class="grid grid-cols-[40px_minmax(0,1fr)]">
                 <span class="font-mono text-[13px] leading-6 text-(--color-sage-700)">{String(index + KEY_FINDINGS + 1).padStart(2, "0")}</span>
@@ -183,34 +184,33 @@ const LINK =
           </div>
         ))}
         {row.id === "data" && (
-          <ul class="grid list-none gap-space-md">
+          <ul class="grid list-none gap-space-sm md:grid-cols-2">
             {report.datasets.map((dataset) => (
               <li>
-                <p class="font-sans text-[18px] leading-7 font-medium text-(--color-cream-900)">
-                  <a href={dataset.href} class={LINK} rel="noopener" target="_blank">{dataset.name}</a>
-                  {dataset.license && <span class="ml-2 font-normal text-(--color-cream-700)">· {dataset.license}</span>}
-                </p>
-                {dataset.description && <p class="mt-2 max-w-[768px] font-sans text-[16px] leading-[26px] text-(--color-cream-700)">{dataset.description}</p>}
-                {dataset.huggingFace && (
-                  <details class="group/hf mt-4">
-                    <summary class={DISCLOSURE}>
-                      <span class="transition-transform duration-200 ease-out group-open/hf:rotate-90" aria-hidden="true">›</span>
-                      Browse the data on Hugging Face
-                    </summary>
-                    <iframe
-                      src={`https://huggingface.co/datasets/${dataset.huggingFace}/embed/viewer`}
-                      title={`${dataset.name} on Hugging Face`}
-                      loading="lazy"
-                      class="mt-4 h-[560px] w-full rounded-[20px] border border-(--color-border) bg-card"
-                    ></iframe>
-                  </details>
-                )}
+                <FeatureCard
+                  href={dataset.href}
+                  category={dataset.license}
+                  title={dataset.name}
+                  summary={dataset.description}
+                  external
+                >
+                  {dataset.huggingFace && (
+                    <a
+                      href={`https://huggingface.co/datasets/${dataset.huggingFace}`}
+                      class={DATA_LINK}
+                      rel="noopener"
+                      target="_blank"
+                    >
+                      Browse the data on Hugging Face <span aria-hidden="true">↗</span>
+                    </a>
+                  )}
+                </FeatureCard>
               </li>
             ))}
           </ul>
         )}
         {row.id === "method" && (
-          <dl class="grid max-w-[1100px] gap-0">
+          <dl class="mx-auto grid max-w-[768px] gap-0">
             {report.method.map((item) => (
               <div class="grid gap-2 border-b border-(--color-border) py-5 last:border-b-0 md:grid-cols-[220px_minmax(0,1fr)] md:gap-8">
                 <dt class="font-sans text-[17px] leading-[27px] font-medium text-(--color-cream-900)">{item.term}</dt>
@@ -220,11 +220,13 @@ const LINK =
           </dl>
         )}
         {row.id === "limitations" && (
-          <ul class="grid max-w-[960px] list-disc gap-3 pl-5 marker:text-(--color-sage-600)">
-            {report.limitations.map((limitation) => (
-              <li class="font-sans text-[16px] leading-[26px] text-(--color-cream-900)">{limitation}</li>
-            ))}
-          </ul>
+          <div class="labs-hex-list mx-auto max-w-[768px] [--list-marker-size:10px_11.5px] [--list-marker-width:28px]">
+            <ul class="grid list-none gap-3">
+              {report.limitations.map((limitation) => (
+                <li class="relative pl-7 font-sans text-[16px] leading-[26px] text-(--color-cream-900)">{limitation}</li>
+              ))}
+            </ul>
+          </div>
         )}
         </LabsFaqItem>
       ))}

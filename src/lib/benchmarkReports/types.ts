@@ -108,7 +108,7 @@ export interface ReportDataset {
   description?: string;
   /**
    * Hugging Face dataset id (e.g. "snorkelai/Multi-Turn-Insurance-Underwriting").
-   * When present, the report offers Hugging Face's hosted dataset viewer.
+   * When present, the report links to the dataset on Hugging Face.
    */
   huggingFace?: string;
 }

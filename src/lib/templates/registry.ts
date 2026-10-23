@@ -1581,7 +1581,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "One labs.faq row: a native <details> with the question as its summary, a chevron that turns on open, and the default slot as the answer (sage links). labs.faq renders its `content.items` through it; /benchmarks/<slug> passes its own rows with tables and lists as answers.",
+      "One labs.faq row: a native <details> with the question as its summary, a chevron that turns on open, and the default slot as the answer; labs.faq wraps its HTML answers in sage links. labs.faq renders its `content.items` through it; /benchmarks/<slug> passes its own rows with tables and lists as answers.",
     stage: false,
     demoProps: {},
   },

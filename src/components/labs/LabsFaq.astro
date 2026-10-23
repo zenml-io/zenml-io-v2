@@ -9,15 +9,18 @@
  * workspace panel), `/pro` and `/benchmarks`. A page whose answers are
  * components passes `headline` and its own `LabsFaqItem`s in the slot
  * instead of `content` (the `/benchmarks/<slug>` "Go deeper" list).
+ * `width="content"` lets the rows span the full content column instead of
+ * the prose column, for answers that hold tables and cards.
  */
 import { PROSE_COLUMN } from "../../lib/blogLayout";
 import type { FaqData } from "../../lib/marketingPageTypes";
 import LabsFaqItem from "./LabsFaqItem.astro";
 
+type Width = "prose" | "content";
 type Props =
-  | { content: FaqData; headline?: never; class?: string }
-  | { headline: string; content?: never; class?: string };
-const { content, class: className } = Astro.props;
+  | { content: FaqData; headline?: never; width?: Width; class?: string }
+  | { headline: string; content?: never; width?: Width; class?: string };
+const { content, width = "prose", class: className } = Astro.props;
 const headline = content ? content.headline : Astro.props.headline;
 ---
 
@@ -27,10 +30,12 @@ const headline = content ? content.headline : Astro.props.headline;
       {headline}
     </h2>
 
-    <div class="mt-space-xl mx-auto" style={`max-width: ${PROSE_COLUMN}px`}>
+    <div class="mt-space-xl mx-auto" style={width === "prose" ? `max-width: ${PROSE_COLUMN}px` : undefined}>
       {content ? (
         content.items.map((item) => (
-          <LabsFaqItem question={item.question}><Fragment set:html={item.answer} /></LabsFaqItem>
+          <LabsFaqItem question={item.question}>
+            <div class="[&_a]:text-(--color-sage-700) [&_a]:underline [&_a]:underline-offset-4 hover:[&_a]:text-(--color-sage-800)" set:html={item.answer} />
+          </LabsFaqItem>
         ))
       ) : (
         <slot />

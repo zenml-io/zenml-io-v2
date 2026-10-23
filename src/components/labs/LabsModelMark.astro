@@ -2,7 +2,9 @@
 /**
  * LabsModelMark — a model's mark at text size: the brand icon where the
  * service-logo set has one, otherwise a neutral glyph (an open-weights
- * circle or a local-hardware chip). Inherits `currentColor`.
+ * circle or a local-hardware chip). Inherits `currentColor`. `size` steps
+ * with the text beside it: sm (14px) for 13px copy and the hero explainer,
+ * md (16px) for chart labels.
  */
 import type { ModelMark } from "../../lib/labs-home";
 import {
@@ -15,9 +17,10 @@ import {
 
 interface Props {
   mark: ModelMark;
+  size?: "sm" | "md";
 }
-const { mark } = Astro.props;
-const size = "size-3.5 shrink-0";
+const { mark, size: step = "sm" } = Astro.props;
+const size = step === "md" ? "size-4 shrink-0" : "size-3.5 shrink-0";
 ---
 
 {mark === "openai" && <OpenAIIcon class={size} />}

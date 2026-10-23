@@ -1,7 +1,7 @@
 /**
  * Number formatting shared by the benchmark report modules. Values are
  * formatted, never recomputed: accuracies to one decimal of a percent, costs
- * to two decimals of a cent, intervals as published, with a true minus sign.
+ * in dollars to two decimals of a cent, intervals as published, with a true minus sign.
  */
 
 const minus = (s: string) => s.replace("-", "−");
@@ -21,8 +21,8 @@ export const interval = ([lo, hi]: number[]) =>
 export const pointInterval = ([lo, hi]: number[]) =>
   `[${points(lo)}, ${points(hi)}]`.replace(/\+/g, "");
 
-/** 0.3792 → "0.38¢" */
-export const cents = (x: number) => `${x.toFixed(2)}¢`;
+/** A cost in cents, shown in dollars: 0.3792 → "$0.0038" */
+export const cents = (x: number) => `$${(x / 100).toFixed(4)}`;
 
 /** "2026-10-21" → "October 21, 2026" */
 export const longDate = (iso: string) =>

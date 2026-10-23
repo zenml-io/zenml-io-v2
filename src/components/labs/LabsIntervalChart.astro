@@ -53,8 +53,8 @@ const ROW =
         const clear = row.verdict !== "tie";
         return (
           <li class={ROW}>
-            <span class:list={["flex min-w-0 items-center gap-1.5 font-sans text-[15px] leading-[22px] md:col-start-1", clear ? "font-medium text-(--color-cream-900)" : "text-(--color-cream-700)"]} title={row.label}>
-              {row.mark && <LabsModelMark mark={row.mark} />}
+            <span class:list={["flex min-w-0 items-center gap-2 font-sans text-[15px] leading-[22px] md:col-start-1", clear ? "font-medium text-(--color-cream-900)" : "text-(--color-cream-700)"]} title={row.label}>
+              {row.mark && <LabsModelMark mark={row.mark} size="md" />}
               <span class="truncate">{row.label}</span>
             </span>
             <span class:list={["text-right font-sans text-[15px] leading-[22px] tabular-nums md:col-start-3 md:row-start-1 md:text-left", clear ? "text-(--color-cream-900)" : "text-(--color-cream-700)"]}>
