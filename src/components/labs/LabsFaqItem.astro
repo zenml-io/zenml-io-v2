@@ -1,0 +1,34 @@
+---
+/**
+ * LabsFaqItem — one `labs.faq` row: a native `<details>` with the question
+ * as its summary and the default slot as the answer. LabsFaq renders its
+ * `content.items` through it; a page whose answers are components (tables,
+ * charts) passes its own LabsFaqItems into LabsFaq's slot instead.
+ */
+interface Props {
+  question: string;
+  id?: string;
+}
+const { question, id } = Astro.props;
+---
+
+<details class="group border-t border-(--color-border) last:border-b" id={id}>
+  <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 font-sans text-[17px] leading-6 font-medium text-(--color-cream-900) transition-colors duration-200 ease-out hover:text-(--color-sage-800) [&::-webkit-details-marker]:hidden">
+    {question}
+    <svg
+      class="h-5 w-5 shrink-0 text-(--color-cream-500) transition-transform duration-200 ease-out group-open:rotate-180"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M6 9l6 6 6-6" />
+    </svg>
+  </summary>
+  <div class="pb-6 font-sans text-[16px] leading-6 text-(--color-cream-700)">
+    <slot />
+  </div>
+</details>

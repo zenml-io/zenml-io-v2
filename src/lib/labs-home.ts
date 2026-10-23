@@ -19,7 +19,11 @@ import {
   LOGO_CLOUD,
   type LogoItem,
 } from "./homepage";
-import { KITARU_DOCS_URL, KITARU_LINKS } from "./productKitaru";
+import {
+  KITARU_DOCS_URL,
+  KITARU_INSTALL_CMD,
+  KITARU_LINKS,
+} from "./productKitaru";
 import { ZENML_LINKS } from "./productZenml";
 
 export type { CaseStudyCard };
@@ -30,7 +34,7 @@ export type LabsProduct = "zenml" | "kitaru";
 export const LABS_HOME_SEO = {
   title: "ZenML Labs: Ship AI you can trust",
   description:
-    "ZenML Labs is the unified infrastructure layer for AI in production: ZenML orchestrates your pipelines and agents on the infra you choose, and Kitaru replays them on production data.",
+    "ZenML Labs builds two open-source products for teams running AI in production. Kitaru tests updates to AI agents, such as a new model, prompt, or framework, on the traces you already collect and shows exactly which sessions would change. ZenML orchestrates ML pipelines and agents on your own infrastructure.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -108,8 +112,8 @@ export const LABS_NAV_LINKS: readonly LabsNavLink[] = [
     href: "https://docs.zenml.io/getting-started/introduction",
     menu: "docs",
   },
+  { label: "Benchmarks", href: "/benchmarks" },
   { label: "Case studies", href: "/case-studies", menu: "case-studies" },
-  { label: "Compare", href: "/compare" },
   { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
 ];
@@ -224,10 +228,76 @@ export interface LabsInstallChip {
   analytics: string;
 }
 
-export const LABS_HERO: LabsBandContent = {
-  headlineLines: ["Ship AI", "you can trust"],
-  deck: "ZenML orchestrates your pipelines and agents. Kitaru replays them on production data before a change ships. Both open source, always.",
+/** A model's mark: a brand icon where the service-logo set has one, or a
+ *  neutral glyph (`open`, `chip`) for models without an approved mark yet. */
+export type ModelMark =
+  | "openai"
+  | "anthropic"
+  | "deepseek"
+  | "qwen"
+  | "zai"
+  | "open"
+  | "chip";
+
+/** One proposed update in the hero explainer, and which sessions it changes. */
+export interface HeroUpdate {
+  kind: string;
+  from: string;
+  to: string;
+  /** Marks for `from` and `to`, when the update swaps models. */
+  fromMark?: ModelMark;
+  toMark?: ModelMark;
+  /** Indexes into `sessions` whose answers differ under this update. */
+  differs: readonly number[];
+}
+
+export interface HeroVisualContent {
+  /** Accessible description of the whole explainer. */
+  label: string;
+  updateLabel: string;
+  sessions: readonly string[];
+  updates: readonly HeroUpdate[];
+  sameLabel: string;
+  differsLabel: string;
+}
+
+export const LABS_HERO_VISUAL: HeroVisualContent = {
+  label:
+    "An example: four recorded sessions from an insurance and banking agent (a water damage claim, a policy coverage question, a card dispute and a KYC document check) are replayed under one proposed update at a time. Swapping GPT-6 for DeepSeek changes one answer, a prompt with new claims rules changes one, moving from LangGraph to the Claude Agent SDK changes two, and turning on PII redaction changes none. Each changed session goes to you to review.",
+  updateLabel: "Proposed update",
+  sessions: [
+    "Water damage claim",
+    "Policy coverage question",
+    "Card dispute",
+    "KYC document check",
+  ],
+  updates: [
+    {
+      kind: "Model",
+      from: "GPT-6",
+      to: "DeepSeek",
+      fromMark: "openai",
+      toMark: "open",
+      differs: [2],
+    },
+    { kind: "Prompt", from: "v12", to: "new claims rules", differs: [0] },
+    {
+      kind: "Framework",
+      from: "LangGraph",
+      to: "Claude Agent SDK",
+      differs: [1, 3],
+    },
+    { kind: "PII redaction", from: "off", to: "on", differs: [] },
+  ],
+  sameLabel: "same",
+  differsLabel: "differs · review",
+};
+
+export const LABS_HERO: LabsProductBandContent = {
+  headlineLines: ["Ship agent updates", "without guessing"],
+  deck: "Swap the model, rewrite the prompt, tweak the harness. Kitaru tests it on the traces you already have and shows exactly what would change.",
   cta: LABS_HERO_SIGNUP,
+  install: { cmd: KITARU_INSTALL_CMD, analytics: "Home-Hero-Install" },
 };
 
 /* ---------------------------------------------------------------------- */
@@ -269,13 +339,13 @@ export interface ProductDoorsContent {
 }
 
 export const LABS_DOORS: ProductDoorsContent = {
-  headline: "Build it, then prove it",
+  headline: "Two open-source products",
   doors: [
     {
       name: "ZenML",
       tint: "sage",
-      leadLine: "AI orchestration, on the infra you choose",
-      body: "Write pipelines and agents in Python and run them on the orchestrator and cloud you already have. Move between them without rewriting, from a laptop to Kubernetes.",
+      leadLine: "Orchestrate AI on the infra you choose",
+      body: "Run ML pipelines and agents in Python on the orchestrator and cloud you already have, with every run, artifact, and model version recorded.",
       cta: {
         label: "Explore ZenML",
         href: "/product/zenml",
@@ -285,8 +355,8 @@ export const LABS_DOORS: ProductDoorsContent = {
     {
       name: "Kitaru",
       tint: "orange",
-      leadLine: "Replay your agents on production data",
-      body: "Import the sessions your agent has actually run, find what repeats, and replay a change against them. See what improved, what regressed, and what it costs before it ships.",
+      leadLine: "Test every agent update on real traces",
+      body: "Import the traces you already have, try a new model, prompt, or harness on them, and see exactly what would change before it ships.",
       cta: {
         label: "Explore Kitaru",
         href: "/product/kitaru",
@@ -294,6 +364,92 @@ export const LABS_DOORS: ProductDoorsContent = {
       },
     },
   ],
+};
+
+/* ---------------------------------------------------------------------- */
+/* How it works — three steps from traces to a recommendation             */
+/* ---------------------------------------------------------------------- */
+
+export interface HowItWorksStep {
+  title: string;
+  body: string;
+  /** What renders under the body: the trace tools' marks, or a prompt. */
+  detail?: { kind: "sources" } | { kind: "prompt"; text: string };
+}
+
+export interface HowItWorksContent {
+  /** The reader's question, in their words. */
+  headline: string;
+  /** One plain-language definition answering it. */
+  intro: string;
+  steps: readonly HowItWorksStep[];
+  /** The pinned stage the steps play out on as the reader scrolls. */
+  stage: HowItWorksStage;
+  link: LabsCta;
+}
+
+/** One worked example for the stage: recorded sessions, one model swap, the
+ *  one session it changes. Reuses the hero card's example so both agree. */
+export interface HowItWorksStage {
+  /** Accessible text for the figure: the whole example in one sentence. */
+  label: string;
+  sessionsLabel: string;
+  resultLabel: string;
+  replayingLabel: string;
+  replayedLabel: string;
+  sessions: readonly string[];
+  from: string;
+  to: string;
+  /** Index into `sessions` of the one session the swap changes. */
+  differs: number;
+  sameLabel: string;
+  differsLabel: string;
+  switchLabel: string;
+}
+
+export const LABS_HOW_IT_WORKS: HowItWorksContent = {
+  headline: "How do you test an agent update before it ships?",
+  intro:
+    "Kitaru is an open-source tool that replays the traces your agent already produced under a proposed update and shows which sessions would change, so you review only those.",
+  steps: [
+    {
+      title: "Bring the traces you have",
+      body: "Import from the tool your agent already reports to. No code changes.",
+      detail: { kind: "sources" },
+    },
+    {
+      title: "Ask an agent",
+      body: "Your coding agent, or ours in the background. It tries the update on your real calls.",
+      detail: {
+        kind: "prompt",
+        text: "Use kitaru-model-swap to find a better model for this agent.",
+      },
+    },
+    {
+      title: "Switch what's better",
+      body: "See which calls can move, review every difference, then replay the winner on whole sessions.",
+    },
+  ],
+  stage: {
+    label:
+      "An example: four recorded sessions are imported from trace tools, a coding agent is asked to find a better model, Kitaru replays every session with DeepSeek instead of GPT-6, and three sessions come back the same while the card dispute differs and goes to you to review.",
+    sessionsLabel: "Recorded sessions",
+    resultLabel: "Result",
+    replayingLabel: "Replaying",
+    replayedLabel: "Replayed",
+    sessions: LABS_HERO_VISUAL.sessions,
+    from: "GPT-6",
+    to: "DeepSeek",
+    differs: 2,
+    sameLabel: LABS_HERO_VISUAL.sameLabel,
+    differsLabel: LABS_HERO_VISUAL.differsLabel,
+    switchLabel: "Switch",
+  },
+  link: {
+    label: "See the full walkthrough",
+    href: "/product/kitaru",
+    analytics: "Home-HowItWorks-Kitaru",
+  },
 };
 
 /* ---------------------------------------------------------------------- */
@@ -337,7 +493,7 @@ export const LABS_FEATURE_PANELS: readonly FeaturePanel[] = [
   {
     index: "02.",
     title: "Replay",
-    body: "Real production sessions become the test set. Replay a change and see what improved, what regressed, and what it costs.",
+    body: "Prove a change on whole production sessions before it ships: a new model, a new prompt, or a fix.",
     icon: "layers",
     tone: "sage-deep",
   },
@@ -367,7 +523,7 @@ export interface LogoGridContent {
 }
 
 export const LABS_LOGO_GRID: LogoGridContent = {
-  headline: "Running production AI today",
+  headline: "ZenML Labs is trusted to run production AI at",
   logos: LOGO_CLOUD.logos,
 };
 

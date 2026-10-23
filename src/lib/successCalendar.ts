@@ -9,7 +9,7 @@ import type { CalEmbedConfig } from "./formTypes";
 import type { SEOProps } from "./seo";
 
 export const SUCCESS_CALENDAR_SEO: SEOProps = {
-  title: "Success - Request a Call | ZenML",
+  title: "Success - Request a Call | ZenML Labs",
   description:
     "Thank you for your request. Select a time slot to book your personalized ZenML demo.",
   noindex: true,

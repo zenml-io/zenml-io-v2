@@ -12,6 +12,7 @@ export {
   KITARU_LINKS,
   KITARU_TRIAL_DAYS,
   KITARU_TRIAL_NOTE,
+  MODEL_CHOICE_GUIDE_URL,
 } from "./productKitaru";
 
 // Note: PRODUCT_KITARU_SEO is retained in productKitaru.ts as it serves the page's meta tags
@@ -42,6 +43,14 @@ export const FAQ_HELP_LINKS = [
 
 export const SCENARIOS = [
   {
+    tag: "choose",
+    q: "Which model should it run on?",
+    outcome:
+      "Every recorded call, resent to each model you're weighing. Pick on quality, cost, speed, openness, or a mix.",
+    stat: "3 models",
+    statLabel: "one best mix",
+  },
+  {
     tag: "understand",
     q: "What does good even mean here?",
     outcome:
@@ -58,14 +67,6 @@ export const SCENARIOS = [
     statLabel: "predictions locked first",
   },
   {
-    tag: "decide",
-    q: "Can we ship the cheaper model?",
-    outcome:
-      "Same cohort, one model swapped — the answer is two runs, compared.",
-    stat: "−61%",
-    statLabel: "cost · 196/200 unchanged",
-  },
-  {
     tag: "guard",
     q: "Will it stay fixed?",
     outcome:
@@ -78,21 +79,21 @@ export const SCENARIOS = [
 export const STEPS = [
   {
     n: "01",
-    tag: "Cohort",
-    title: "Pick the production cases that matter",
-    body: "Start with a cohort you found during investigation, or hand-pick your own. Versioning the set means you compare every change against the same cases.",
+    tag: "Compare",
+    title: "Resend the real calls",
+    body: "Every model call in your imported traces goes to each candidate: an open model on any OpenAI-compatible provider, a local Ollama model, or a cheaper tier. No change to your code.",
   },
   {
     n: "02",
-    tag: "Experiment",
-    title: "Change one thing",
-    body: "Keep the agent setup fixed and swap the model. Now any difference in the replay comes from the change you are testing.",
+    tag: "Choose",
+    title: "Pick with the trade-offs in view",
+    body: "Closest to today, cheapest, fastest, best open model, or a best mix that moves each step of your agent to the cheapest model that handles it. Rule out labs or regions your customers won't accept.",
   },
   {
     n: "03",
-    tag: "Compare",
-    title: "See what actually changed",
-    body: "Replay the same cohort with both setups and compare cost, latency, evaluator results, and behavior side by side.",
+    tag: "Confirm",
+    title: "Prove it on whole sessions",
+    body: "Replay the winner over a frozen cohort with your evaluators, so cost per task and quality come from complete runs, not single steps.",
   },
 ] as const;
 
@@ -103,8 +104,33 @@ export const STEPS = [
  */
 export const FAQ_ITEMS: readonly FaqItem[] = [
   {
+    question: "What is Kitaru?",
+    answer:
+      "Kitaru is an open-source tool for teams running AI agents in production. It replays the traces your agent already produced under a proposed update, such as a new model, prompt, or framework, and shows which sessions would change, so you review only those before the update ships. It runs on your own machine or in a managed workspace.",
+  },
+  {
+    question: "Which model should my agent use?",
+    answer:
+      "It depends on what you optimise for, and on your agent's own traffic, not a leaderboard. If cost matters most, routine steps such as lookups and classification often move to a cheaper or open model while the final reply stays on a stronger one. If you need control over your data, an open model you host yourself fits best. If quality matters most, only the hardest step may need a stronger model. Kitaru compares the candidates on your recorded calls and narrows each goal to a shortlist, including a best mix, to confirm with a replay before switching.",
+  },
+  {
     question: "How is this different from Langfuse, Braintrust or LangSmith?",
     answer: KITARU_VS_OBSERVABILITY_ANSWER,
+  },
+  {
+    question: "Which models can I compare?",
+    answer:
+      "Any model behind an OpenAI-compatible API: open models on a hosted provider, models running locally on Ollama or vLLM, or a cheaper tier from your current provider. Your current model runs alongside them as the reference, so you can see how much of the difference is ordinary run-to-run noise. Each candidate can declare where it comes from, and a rule such as no models from a given lab or country keeps it out of every recommendation while still showing you what it would have done.",
+  },
+  {
+    question: "Does matching today's answers mean the new model is as good?",
+    answer:
+      "Not on its own, and the report says so. Agreement shows how close a candidate comes to what your agent does now. You review the differences, which turns closeness into a verdict, and a replay over a cohort checks the winner on complete sessions, where a model that needs more steps or retries shows its real cost per task.",
+  },
+  {
+    question: "Do my traces or API keys leave my machine?",
+    answer:
+      "The comparison runs on your Kitaru worker, which runs in your environment. Calls go from it straight to the model providers you choose, using keys kept in a connection you create; you never paste a key into chat. Results are stored on your Kitaru server like any other insight.",
   },
   {
     question: "So is this an observability tool?",
@@ -114,7 +140,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "Do I have to change my agent's code?",
     answer:
-      "Not to get started. Import your traces and you already get the session views, investigations, cohorts and evaluators; your code stays untouched. An adapter enters only when you want to replay sessions against a change: one line for the supported frameworks, or a small custom one for CLI-harness agents like Claude Code or Gemini CLI.",
+      "Not to get started. Import your traces and you already get the session views, investigations, cohorts and evaluators; your code stays untouched. Comparing models works on imported traces too. An adapter enters only when you want to replay whole sessions against a change: one line for the supported frameworks, or a small custom one for CLI-harness agents like Claude Code or Gemini CLI.",
   },
   {
     question:

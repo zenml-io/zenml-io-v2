@@ -17,6 +17,10 @@ import type {
 //     the viewport — one headline line and an optional deck, no pill; the
 //     page's own controls follow the band. Content is `LabsShortBandContent`.
 //
+// The landing band takes an optional `visual` slot (the homepage's animated
+// explainer). When it is filled, the copy and the visual sit side by side
+// from `lg` and stack below it; when it is absent the band is unchanged.
+//
 // The band chrome itself (shader, fade, sizing, nav clearance) lives in
 // LabsBand.astro, shared with the blog taxonomy hubs and the post masthead.
 import LabsBand from "./LabsBand.astro";
@@ -29,6 +33,7 @@ type Props =
 
 const props = Astro.props;
 const short = props.band === "short";
+const hasVisual = Astro.slots.has("visual");
 ---
 
 <LabsBand size={short ? "short" : "landing"}>
@@ -44,14 +49,15 @@ const short = props.band === "short";
       )}
     </div>
   ) : (
+    <div class={hasVisual ? "grid grid-cols-1 items-center gap-12 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:gap-16" : undefined}>
     <div>
-      <h1 class="font-display text-[44px] leading-[48px] text-(--color-cream-900) md:text-[80px] md:leading-[86px]">
+      <h1 class="font-display text-[44px] leading-[48px] text-balance text-(--color-cream-900) md:text-[80px] md:leading-[86px]">
         {props.content.headlineLines[0]}
         <br />
         {props.content.headlineLines[1]}
       </h1>
 
-      <p class="mt-space-md max-w-[690px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]">
+      <p class="mt-space-md max-w-[690px] font-sans text-[17px] leading-[26px] text-pretty text-foreground md:text-xl md:leading-[30px]">
         {props.content.deck}
       </p>
 
@@ -67,6 +73,12 @@ const short = props.band === "short";
           <LabsInstallChip content={props.content.install} />
         </div>
       )}
+    </div>
+    {hasVisual && (
+      <div class="min-w-0">
+        <slot name="visual" />
+      </div>
+    )}
     </div>
   )}
 </LabsBand>

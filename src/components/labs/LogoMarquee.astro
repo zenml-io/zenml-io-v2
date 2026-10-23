@@ -16,6 +16,7 @@
  * Motion moment: counts as one of the page's three.
  */
 import type { LogoGridContent } from "../../lib/labs-home";
+import "../../styles/labs-scroll-reveal.css";
 
 interface Props {
   content: LogoGridContent;
@@ -24,8 +25,8 @@ const { headline, logos } = Astro.props.content;
 const marks = logos.filter((logo) => !logo.placeholder);
 ---
 
-<section class="border-y border-border bg-(--color-sage-100) py-10 md:py-12">
-  <div class="mx-auto max-w-content px-gutter">
+<section class="scroll-reveal-section border-y border-border bg-(--color-sage-100) py-10 md:py-12">
+  <div class="reveal-child mx-auto max-w-content px-gutter">
     <h2 class="font-label text-[13px] uppercase tracking-[0.05em] text-(--color-cream-700)">
       {headline}
     </h2>
@@ -33,7 +34,7 @@ const marks = logos.filter((logo) => !logo.placeholder);
 
   <div
     data-logo-marquee
-    class="group relative mt-6 overflow-hidden"
+    class="reveal-child stagger-1 group relative mt-6 overflow-hidden"
   >
     <div
       aria-hidden="true"

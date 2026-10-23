@@ -6,7 +6,7 @@ export const IN_PRODUCTION = {
   stripDeck:
     "Four LLMOps case studies like this one, in your inbox every Tuesday and Thursday.",
   seo: {
-    title: "In Production: LLMOps case studies in your inbox | ZenML",
+    title: "In Production: LLMOps case studies in your inbox | ZenML Labs",
     description:
       "A twice-weekly email with four real-world LLMOps case studies from the ZenML LLMOps Database. Every Tuesday and Thursday.",
   },

@@ -1,0 +1,225 @@
+---
+/**
+ * LabsModelChoiceVisual — the homepage hero's explainer: one proposed update
+ * to an agent at a time (a model swap, a prompt version, a config value, a
+ * harness setting), replayed on the same recorded sessions. Each session
+ * settles into "same" or "differs · review", and a closing line counts what
+ * is safe and what needs a human. The updates cycle every few seconds;
+ * which sessions differ depends on the update. Copy arrives through
+ * `content`.
+ *
+ * Every update's chip, marks and outcome are rendered and stacked in the
+ * same grid cell, and CSS crossfades between them, so it needs no island
+ * and runs with JS off. Each update plays as a replay: the title rises in
+ * over the outgoing one, the sessions resolve top to bottom, the outcome
+ * line settles last, and a hairline along the top edge fills over the
+ * update's hold. A strip of the updates' names marks which one is showing,
+ * so a first-time visitor sees there are four and where they are, and
+ * hovering the card pauses it. One motion moment. Under reduced motion it
+ * rests on the first update. A visually hidden caption carries the example
+ * as text.
+ */
+import type { HeroVisualContent } from "../../lib/labs-home";
+import LabsModelMark from "./LabsModelMark.astro";
+import { TRACE_SOURCES } from "./traceSources";
+
+interface Props {
+  content: HeroVisualContent;
+}
+const { content } = Astro.props;
+const count = content.updates.length;
+/** Seconds each update stays on screen: long enough to read the title and see
+ * which sessions differ before the next one comes in. */
+const HOLD_S = 6;
+/** The sessions start resolving once the new title has risen in. */
+const ROWS_LAG_S = 0.35;
+/** Gap between one session resolving and the next. */
+const ROW_STEP_S = 0.12;
+const cycleS = HOLD_S * count;
+const stateStyle = (i: number, lagS = 0) =>
+  `--state-delay: ${(i * HOLD_S - cycleS + lagS).toFixed(2)}s; --cycle: ${cycleS}s`;
+const outcomeLagS = ROWS_LAG_S + ROW_STEP_S * content.sessions.length;
+const outcome = (differs: number) => {
+  const same = content.sessions.length - differs;
+  return differs === 0
+    ? `${same} unchanged · nothing to review`
+    : `${same} unchanged · ${differs} for you to review`;
+};
+---
+
+<figure
+  class="hv relative overflow-hidden rounded-[20px] border border-(--color-border) bg-card p-6 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-8"
+  style={`--states: ${count}; --hold: ${HOLD_S}s`}
+>
+  <span class="hv-progress absolute inset-x-0 top-0 h-0.5 bg-(--color-sage-400)" aria-hidden="true"></span>
+  {/* The animated states are aria-hidden; this caption carries the whole
+      example as plain text for screen readers and crawlers. */}
+  <figcaption class="sr-only">{content.label}</figcaption>
+  <div class="flex flex-wrap items-center justify-between gap-3">
+    <p class="font-label text-[13px] leading-5 uppercase tracking-[0.05em] text-(--color-sage-800)">
+      {content.updateLabel}
+    </p>
+    <span class="flex items-center gap-3 text-(--color-cream-700)" aria-hidden="true">
+      {TRACE_SOURCES.map(({ Icon, class: size }) => (
+        <Icon class={size} />
+      ))}
+    </span>
+  </div>
+
+  <ol class="mt-3 flex flex-wrap gap-1.5" aria-hidden="true">
+    {content.updates.map((update, i) => (
+      <li class="hv-tab relative inline-flex h-7 items-center rounded-full border border-(--color-border) px-3 font-sans text-[13px] leading-none text-(--color-cream-800)">
+        <span class="hv-tab-on absolute inset-0 rounded-full bg-(--color-sage-200)" style={stateStyle(i)}></span>
+        <span class="relative">{update.kind}</span>
+      </li>
+    ))}
+  </ol>
+
+  <div class="hv-stack mt-4" aria-hidden="true">
+    {content.updates.map((update, i) => (
+      <p class="hv-state flex flex-wrap items-center gap-x-3 gap-y-1" style={stateStyle(i)}>
+        <span class="font-display text-[26px] leading-[32px] text-(--color-cream-900) md:text-[30px] md:leading-[36px]">
+          {update.kind}
+        </span>
+        <span class="flex flex-wrap items-center gap-2 font-sans text-[16px] leading-6">
+          <span class="inline-flex items-center gap-1.5 whitespace-nowrap text-(--color-cream-700) line-through decoration-(--color-cream-500)">
+            {update.fromMark && <LabsModelMark mark={update.fromMark} />}
+            {update.from}
+          </span>
+          <svg class="size-4 text-(--color-sage-800)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          <span class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full bg-(--color-sage-400) px-3 py-1 font-medium text-(--color-cream-800)">
+            {update.toMark && <LabsModelMark mark={update.toMark} />}
+            {update.to}
+          </span>
+        </span>
+      </p>
+    ))}
+  </div>
+
+  <ol class="mt-5 flex flex-col" aria-hidden="true">
+    {content.sessions.map((session, row) => (
+      <li class="flex items-center justify-between gap-4 border-t border-(--color-border) py-3.5">
+        <span class="font-sans text-[16px] leading-6 text-(--color-cream-900)">
+          {session}
+        </span>
+        <span class="hv-stack justify-items-end">
+          {content.updates.map((update, i) => {
+            const differs = update.differs.includes(row);
+            return (
+              <span
+                class={`hv-state inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 font-sans text-[14px] leading-5 ${differs ? "bg-(--color-cream-100) text-(--color-cream-900)" : "text-(--color-sage-800)"}`}
+                style={stateStyle(i, ROWS_LAG_S + ROW_STEP_S * row)}
+              >
+                {differs ? (
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 8v5M12 16.5v.5" /></svg>
+                ) : (
+                  <svg class="size-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7" /></svg>
+                )}
+                {differs ? content.differsLabel : content.sameLabel}
+              </span>
+            );
+          })}
+        </span>
+      </li>
+    ))}
+  </ol>
+
+  <div class="hv-stack border-t border-(--color-border) pt-4" aria-hidden="true">
+    {content.updates.map((update, i) => (
+      <p class="hv-state font-sans text-[15px] leading-[22px] text-(--color-cream-700)" style={stateStyle(i, outcomeLagS)}>
+        {outcome(update.differs.length)}
+      </p>
+    ))}
+  </div>
+</figure>
+
+<style>
+  /* All states share one grid cell; each is visible for its slice of the
+     cycle. A negative delay starts the loop already running, so the first
+     update shows at once instead of after a blank pause; a row or outcome
+     state adds its lag on top, so it changes after the title. */
+  .hv :global(.hv-stack) {
+    display: grid;
+  }
+  .hv :global(.hv-stack > .hv-state) {
+    grid-area: 1 / 1;
+    opacity: 0;
+  }
+  .hv :global(.hv-stack > .hv-state:first-child) {
+    opacity: 1;
+  }
+  .hv-progress {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .hv-tab-on {
+    opacity: 0;
+  }
+  .hv-tab:first-child .hv-tab-on {
+    opacity: 1;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hv {
+      animation: hv-in 0.8s ease-out 0.2s both;
+    }
+    .hv :global(.hv-stack > .hv-state) {
+      animation: hv-slot var(--cycle) ease-out var(--state-delay) infinite both;
+    }
+    .hv-progress {
+      animation: hv-progress var(--hold) linear infinite;
+    }
+    .hv-tab-on {
+      animation: hv-tab var(--cycle) linear var(--state-delay) infinite both;
+    }
+    /* Hovering the card holds the current update so it can be read. */
+    .hv:hover :global(.hv-stack > .hv-state),
+    .hv:hover .hv-progress,
+    .hv:hover .hv-tab-on {
+      animation-play-state: paused;
+    }
+  }
+  /* One update's window is 1/states of the cycle (25% for four). The next
+     state rises in while this one lifts out, so the card never blanks. */
+  @keyframes hv-slot {
+    0% {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    3%,
+    25% {
+      opacity: 1;
+      transform: none;
+    }
+    28%,
+    100% {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+  }
+  /* The current update's name stays marked for its whole window. */
+  @keyframes hv-tab {
+    0% {
+      opacity: 0;
+    }
+    2%,
+    25% {
+      opacity: 1;
+    }
+    27%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes hv-progress {
+    to {
+      transform: scaleX(1);
+    }
+  }
+  /* The card rises in once, after the headline has painted. */
+  @keyframes hv-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+</style>

@@ -7,9 +7,11 @@ website. The accepted Astro 7 Cloudflare Worker serves production through the
 guarded current-main release path. The site is generated from the Astro content
 collections defined in `src/content.config.ts`.
 
-The site markets **two sub-products under one paid umbrella (ZenML Pro)**:
-- **ZenML** — ML workflow orchestration (the original product)
-- **Kitaru** — replay-based evals for AI agents (folded in from `kitaru.ai`; pivoted from the earlier durable-runtime positioning in Aug 2026)
+**ZenML Labs** is the company. Site copy leads with **model choice**: teams test their agent's real traffic on open, local, and cheaper models and choose on quality, cost, speed, and openness, so they are never locked into one model. The stance is that a team's own traffic, not a leaderboard or a demo, is the benchmark. Do not name internal product concepts (for example "Bots" or the "Kaizen" codename), do not give the paid offering its own product name, and do not name third-party agents in site copy. Claims follow the "never ship fabricated evidence" rule in DESIGN.md: no invented figures, results, or terminal output.
+
+Two open-source foundations sit underneath, sold together as ZenML Pro:
+- **ZenML** — orchestration for ML pipelines and agents, and the record of every run, artifact and model version (the original product)
+- **Kitaru** — model choice and replay-based evals for AI agents: compares candidate models on an agent's recorded calls and replays changes on real sessions (folded in from `kitaru.ai`; pivoted from the earlier durable-runtime positioning in Aug 2026)
 
 - **Production URL**: https://www.zenml.io
 - **Hosting**: The accepted Astro 7 Cloudflare Worker serves production.

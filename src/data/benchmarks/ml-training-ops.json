@@ -1,0 +1,1377 @@
+{
+  "meta": {
+    "name": "ML-training-operations agent benchmark",
+    "question": "Can agents do ML training operations (distributed jobs, checkpoints, OOMs, stragglers, Kubernetes quotas, torchtitan), and does the serving setup of a self-hosted model change how many they solve?",
+    "domain": "ML infrastructure / training operations (fault diagnosis and repair in sandboxed multi-process jobs)",
+    "status": "stopped",
+    "runStart": "2026-10-10",
+    "runEnd": "2026-10-13"
+  },
+  "dataset": {
+    "source": "Tasks built for this benchmark: injected faults in multi-process training setups, each graded by an independent test (Harbor task format). Families from published failure taxonomies (ByteRobust, L4, SIGMA).",
+    "totalCases": 24,
+    "validation": "None dropped. Every task was validated: the reference (oracle) solution passes and a no-op agent fails.",
+    "types": [
+      {
+        "type": "v1 pilot (script-level bugs)",
+        "count": 6
+      },
+      {
+        "type": "A. distributed jobs",
+        "count": 2
+      },
+      {
+        "type": "B. diagnosis from telemetry",
+        "count": 3
+      },
+      {
+        "type": "C. checkpointing and recovery",
+        "count": 3
+      },
+      {
+        "type": "D. resource limits and scheduling",
+        "count": 3
+      },
+      {
+        "type": "v3 (designed frontier-hard)",
+        "count": 5
+      },
+      {
+        "type": "real-system (torchtitan, 2 GPUs)",
+        "count": 2
+      }
+    ],
+    "typesNote": "Hard set = 8 tasks (2 per family A-D); v2 set = 3 new tasks (exact-resume, k8s-quota-zone, two-stragglers) plus atomic-checkpoint; 'hard + v2' = 11 tasks."
+  },
+  "models": [
+    {
+      "id": "Qwen/Qwen3.8-27B",
+      "name": "Qwen3.8-27B (dense)",
+      "vendor": "Qwen (Alibaba)",
+      "weights": "open"
+    },
+    {
+      "id": "Qwen/Qwen3.6-35B-A3B-FP8",
+      "name": "Qwen3.6-35B-A3B (MoE, FP8)",
+      "vendor": "Qwen (Alibaba)",
+      "weights": "open"
+    }
+  ],
+  "limits": {
+    "agent_time_limit_s": {
+      "v1": 1200,
+      "hard/v2/v3": 1800,
+      "titan-fork-drift": 3600,
+      "titan-silent-divergence": 5400,
+      "defaults-2x-time": 3600
+    },
+    "self_hosted_context_tokens": 65536,
+    "sandbox_lifetime_cap_s": 7200
+  },
+  "grading": {
+    "rule": "deterministic test per task (recomputes results, fault injection, hidden seeds, golden loss curves for torchtitan)",
+    "solvedIf": "solved if reward >= 1",
+    "validation": "No model grades. Each task validated with oracle (pass) and no-op agent (fail); three hard-set tasks also checked with a partial fix that fails."
+  },
+  "noise": {
+    "method": "Every self-hosted hard-set setup run twice (rep 0/1, 3 attempts per task each) except the 4k/16k caps and the MoE model.",
+    "size": "Identical self-hosted runs differed by up to 7 solves of 24 (mini-swe-agent, reasoning off: 8/24 vs 15/24); defaults repeated at 17/24 and 17/24 (terminus-2) and 14/24 and 17/24 (mini-swe-agent).",
+    "resamples": 10000,
+    "tieThreshold": "A paired 95% CI that includes 0 is no difference; the plan treats single-run differences of 3 or fewer solves out of 24 as noise."
+  },
+  "results": {
+    "v1 pilot (6 tasks)": [
+      {
+        "harness": "mini-swe-agent",
+        "config": "defaults",
+        "agents": 6,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "perRunSolved": [
+          "30/30"
+        ],
+        "n": 30,
+        "correct": 30,
+        "accuracy": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "gpuCostPerSolveCents": 6.7103,
+        "stepsPerTrial": 13.4,
+        "failures": {}
+      },
+      {
+        "harness": "mini-swe-agent",
+        "config": "defaults",
+        "agents": 30,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "perRunSolved": [
+          "30/30"
+        ],
+        "n": 30,
+        "correct": 30,
+        "accuracy": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "gpuCostPerSolveCents": 4.4027,
+        "stepsPerTrial": 14.5,
+        "failures": {}
+      },
+      {
+        "harness": "terminus-2",
+        "config": "defaults",
+        "agents": 6,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "perRunSolved": [
+          "30/30"
+        ],
+        "n": 30,
+        "correct": 30,
+        "accuracy": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "gpuCostPerSolveCents": 6.2617,
+        "stepsPerTrial": 7.83,
+        "failures": {}
+      },
+      {
+        "harness": "terminus-2",
+        "config": "defaults",
+        "agents": 30,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "perRunSolved": [
+          "30/30"
+        ],
+        "n": 30,
+        "correct": 30,
+        "accuracy": 1.0,
+        "ci95": [
+          1.0,
+          1.0
+        ],
+        "gpuCostPerSolveCents": 3.1537,
+        "stepsPerTrial": 7.87,
+        "failures": {}
+      }
+    ],
+    "hard set (8 tasks)": [
+      {
+        "harness": "mini-swe-agent",
+        "config": "defaults",
+        "agents": 8,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "perRunSolved": [
+          "21/24",
+          "22/24"
+        ],
+        "n": 48,
+        "correct": 43,
+        "accuracy": 0.8958,
+        "ci95": [
+          0.7917,
+          1.0
+        ],
+        "gpuCostPerSolveCents": 18.0009,
+        "stepsPerTrial": 20.04,
+        "failures": {
+          "finished wrong": 1,
+          "other error (SandboxLikelyOutOfMemoryError)": 1,
+          "timeout": 3
+        }
+      },
+      {
+        "harness": "mini-swe-agent",
+        "config": "defaults",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "perRunSolved": [
+          "14/24",
+          "17/24"
+        ],
+        "n": 48,
+        "correct": 31,
+        "accuracy": 0.6458,
+        "ci95": [
+          0.4375,
+          0.8125
+        ],
+        "gpuCostPerSolveCents": 13.8316,
+        "stepsPerTrial": 14.6,
+        "failures": {
+          "agent exited with error": 1,
+          "timeout": 16
+        }
+      },
+      {
+        "harness": "mini-swe-agent",
+        "config": "defaults-2x-time",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "perRunSolved": [
+          "17/24",
+          "17/24"
+        ],
+        "n": 48,
+        "correct": 34,
+        "accuracy": 0.7083,
+        "ci95": [
+          0.4583,
+          0.9167
+        ],
+        "gpuCostPerSolveCents": 24.0012,
+        "stepsPerTrial": 14.85,
+        "failures": {
+          "timeout": 14
+        }
+      },
+      {
+        "harness": "mini-swe-agent",
+        "config": "h200",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H200",
+        "runs": 2,
+        "perRunSolved": [
+          "20/24",
+          "20/24"
+        ],
+        "n": 48,
+        "correct": 40,
+        "accuracy": 0.8333,
+        "ci95": [
+          0.6042,
+          0.9792
+        ],
+        "gpuCostPerSolveCents": 11.638,
+        "stepsPerTrial": 18.19,
+        "failures": {
+          "agent exited with error": 2,
+          "finished wrong": 2,
+          "timeout": 4
+        }
+      },
+      {
+        "harness": "mini-swe-agent",
+        "config": "max-out-16k",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "perRunSolved": [
+          "19/24"
+        ],
+        "n": 24,
+        "correct": 19,
+        "accuracy": 0.7917,
+        "ci95": [
+          0.5417,
+          1.0
+        ],
+        "gpuCostPerSolveCents": 10.7721,
+        "stepsPerTrial": 15.38,
+        "failures": {
+          "timeout": 5
+        }
+      },
+      {
+        "harness": "mini-swe-agent",
+        "config": "max-out-4k",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "perRunSolved": [
+          "16/24"
+        ],
+        "n": 24,
+        "correct": 16,
+        "accuracy": 0.6667,
+        "ci95": [
+          0.375,
+          0.9167
+        ],
+        "gpuCostPerSolveCents": 9.7975,
+        "stepsPerTrial": 14.12,
+        "failures": {
+          "finished wrong": 8
+        }
+      },
+      {
+        "harness": "mini-swe-agent",
+        "config": "max-out-8k",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "perRunSolved": [
+          "20/24",
+          "18/24"
+        ],
+        "n": 48,
+        "correct": 38,
+        "accuracy": 0.7917,
+        "ci95": [
+          0.6458,
+          0.9167
+        ],
+        "gpuCostPerSolveCents": 12.0205,
+        "stepsPerTrial": 17.69,
+        "failures": {
+          "agent exited with error": 1,
+          "finished wrong": 3,
+          "timeout": 6
+        }
+      },
+      {
+        "harness": "mini-swe-agent",
+        "config": "moe-a3b",
+        "agents": 24,
+        "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+        "gpu": "H100",
+        "runs": 1,
+        "perRunSolved": [
+          "11/24"
+        ],
+        "n": 24,
+        "correct": 11,
+        "accuracy": 0.4583,
+        "ci95": [
+          0.2083,
+          0.7083
+        ],
+        "gpuCostPerSolveCents": 18.4145,
+        "stepsPerTrial": 33.04,
+        "failures": {
+          "agent exited with error": 2,
+          "finished wrong": 9,
+          "timeout": 2
+        }
+      },
+      {
+        "harness": "mini-swe-agent",
+        "config": "no-thinking",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "perRunSolved": [
+          "8/24",
+          "15/24"
+        ],
+        "n": 48,
+        "correct": 23,
+        "accuracy": 0.4792,
+        "ci95": [
+          0.2917,
+          0.6667
+        ],
+        "gpuCostPerSolveCents": 18.5878,
+        "stepsPerTrial": 35.25,
+        "failures": {
+          "agent exited with error": 7,
+          "finished wrong": 15,
+          "timeout": 3
+        }
+      },
+      {
+        "harness": "terminus-2",
+        "config": "defaults",
+        "agents": 8,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "perRunSolved": [
+          "20/24",
+          "20/24"
+        ],
+        "n": 48,
+        "correct": 40,
+        "accuracy": 0.8333,
+        "ci95": [
+          0.5625,
+          0.9792
+        ],
+        "gpuCostPerSolveCents": 20.7945,
+        "stepsPerTrial": 13.31,
+        "failures": {
+          "finished wrong": 1,
+          "timeout": 7
+        }
+      },
+      {
+        "harness": "terminus-2",
+        "config": "defaults",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "perRunSolved": [
+          "17/24",
+          "17/24"
+        ],
+        "n": 48,
+        "correct": 34,
+        "accuracy": 0.7083,
+        "ci95": [
+          0.4792,
+          0.8958
+        ],
+        "gpuCostPerSolveCents": 12.2894,
+        "stepsPerTrial": 11.35,
+        "failures": {
+          "finished wrong": 2,
+          "timeout": 12
+        }
+      },
+      {
+        "harness": "terminus-2",
+        "config": "defaults-2x-time",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "perRunSolved": [
+          "23/24",
+          "23/24"
+        ],
+        "n": 48,
+        "correct": 46,
+        "accuracy": 0.9583,
+        "ci95": [
+          0.8958,
+          1.0
+        ],
+        "gpuCostPerSolveCents": 17.5191,
+        "stepsPerTrial": 15.06,
+        "failures": {
+          "finished wrong": 1,
+          "timeout": 1
+        }
+      },
+      {
+        "harness": "terminus-2",
+        "config": "h200",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H200",
+        "runs": 2,
+        "perRunSolved": [
+          "21/24",
+          "24/24"
+        ],
+        "n": 48,
+        "correct": 45,
+        "accuracy": 0.9375,
+        "ci95": [
+          0.875,
+          1.0
+        ],
+        "gpuCostPerSolveCents": 10.5169,
+        "stepsPerTrial": 13.88,
+        "failures": {
+          "finished wrong": 2,
+          "timeout": 1
+        }
+      },
+      {
+        "harness": "terminus-2",
+        "config": "max-out-16k",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "perRunSolved": [
+          "19/24"
+        ],
+        "n": 24,
+        "correct": 19,
+        "accuracy": 0.7917,
+        "ci95": [
+          0.5417,
+          0.9583
+        ],
+        "gpuCostPerSolveCents": 10.9268,
+        "stepsPerTrial": 10.54,
+        "failures": {
+          "finished wrong": 1,
+          "timeout": 4
+        }
+      },
+      {
+        "harness": "terminus-2",
+        "config": "max-out-4k",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "perRunSolved": [
+          "20/24"
+        ],
+        "n": 24,
+        "correct": 20,
+        "accuracy": 0.8333,
+        "ci95": [
+          0.6667,
+          0.9583
+        ],
+        "gpuCostPerSolveCents": 10.2745,
+        "stepsPerTrial": 13.33,
+        "failures": {
+          "finished wrong": 4
+        }
+      },
+      {
+        "harness": "terminus-2",
+        "config": "max-out-8k",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "perRunSolved": [
+          "21/24",
+          "22/24"
+        ],
+        "n": 48,
+        "correct": 43,
+        "accuracy": 0.8958,
+        "ci95": [
+          0.8125,
+          0.9792
+        ],
+        "gpuCostPerSolveCents": 9.5965,
+        "stepsPerTrial": 12.98,
+        "failures": {
+          "finished wrong": 1,
+          "timeout": 4
+        }
+      },
+      {
+        "harness": "terminus-2",
+        "config": "moe-a3b",
+        "agents": 24,
+        "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+        "gpu": "H100",
+        "runs": 1,
+        "perRunSolved": [
+          "14/24"
+        ],
+        "n": 24,
+        "correct": 14,
+        "accuracy": 0.5833,
+        "ci95": [
+          0.2917,
+          0.8333
+        ],
+        "gpuCostPerSolveCents": 14.4086,
+        "stepsPerTrial": 17.62,
+        "failures": {
+          "finished wrong": 9,
+          "timeout": 1
+        }
+      },
+      {
+        "harness": "terminus-2",
+        "config": "no-thinking",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 2,
+        "perRunSolved": [
+          "17/24",
+          "13/24"
+        ],
+        "n": 48,
+        "correct": 30,
+        "accuracy": 0.625,
+        "ci95": [
+          0.3958,
+          0.8333
+        ],
+        "gpuCostPerSolveCents": 13.623,
+        "stepsPerTrial": 19.85,
+        "failures": {
+          "finished wrong": 13,
+          "timeout": 5
+        }
+      }
+    ],
+    "v2 set (4 tasks)": [
+      {
+        "harness": "mini-swe-agent",
+        "config": "defaults",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "perRunSolved": [
+          "4/24"
+        ],
+        "n": 24,
+        "correct": 4,
+        "accuracy": 0.1667,
+        "ci95": [
+          0.0417,
+          0.2917
+        ],
+        "gpuCostPerSolveCents": 51.9125,
+        "stepsPerTrial": 8.5,
+        "failures": {
+          "agent exited with error": 2,
+          "timeout": 18
+        }
+      },
+      {
+        "harness": "mini-swe-agent",
+        "config": "h200",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H200",
+        "runs": 1,
+        "perRunSolved": [
+          "13/24"
+        ],
+        "n": 24,
+        "correct": 13,
+        "accuracy": 0.5417,
+        "ci95": [
+          0.3333,
+          0.8333
+        ],
+        "gpuCostPerSolveCents": 18.3323,
+        "stepsPerTrial": 17.5,
+        "failures": {
+          "agent exited with error": 3,
+          "finished wrong": 1,
+          "timeout": 7
+        }
+      },
+      {
+        "harness": "terminus-2",
+        "config": "defaults",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H100",
+        "runs": 1,
+        "perRunSolved": [
+          "2/24"
+        ],
+        "n": 24,
+        "correct": 2,
+        "accuracy": 0.0833,
+        "ci95": [
+          0.0,
+          0.1667
+        ],
+        "gpuCostPerSolveCents": 102.64,
+        "stepsPerTrial": 6.25,
+        "failures": {
+          "finished wrong": 1,
+          "timeout": 21
+        }
+      },
+      {
+        "harness": "terminus-2",
+        "config": "h200",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "gpu": "H200",
+        "runs": 1,
+        "perRunSolved": [
+          "11/24"
+        ],
+        "n": 24,
+        "correct": 11,
+        "accuracy": 0.4583,
+        "ci95": [
+          0.1667,
+          0.75
+        ],
+        "gpuCostPerSolveCents": 21.44,
+        "stepsPerTrial": 10.25,
+        "failures": {
+          "timeout": 13
+        }
+      }
+    ]
+  },
+  "paired": [
+    {
+      "harness": "terminus-2",
+      "change": "defaults c8",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": 12.5,
+      "ci95Points": [
+        -4.17,
+        31.25
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "terminus-2",
+      "change": "defaults-2x-time c24",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": 25.0,
+      "ci95Points": [
+        10.42,
+        41.67
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "terminus-2",
+      "change": "h200 c24",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": 22.92,
+      "ci95Points": [
+        4.17,
+        43.75
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "terminus-2",
+      "change": "max-out-16k c24",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": 8.33,
+      "ci95Points": [
+        -2.08,
+        20.83
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "terminus-2",
+      "change": "max-out-4k c24",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": 12.5,
+      "ci95Points": [
+        2.08,
+        27.08
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "terminus-2",
+      "change": "max-out-8k c24",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": 18.75,
+      "ci95Points": [
+        0.0,
+        37.5
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "terminus-2",
+      "change": "moe-a3b c24",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": -12.5,
+      "ci95Points": [
+        -45.83,
+        16.67
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "terminus-2",
+      "change": "no-thinking c24",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": -8.33,
+      "ci95Points": [
+        -22.92,
+        6.25
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "mini-swe-agent",
+      "change": "defaults c8",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": 25.0,
+      "ci95Points": [
+        8.33,
+        41.67
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "mini-swe-agent",
+      "change": "defaults-2x-time c24",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": 6.25,
+      "ci95Points": [
+        -2.08,
+        16.67
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "mini-swe-agent",
+      "change": "h200 c24",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": 18.75,
+      "ci95Points": [
+        6.25,
+        31.25
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "mini-swe-agent",
+      "change": "max-out-16k c24",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": 14.58,
+      "ci95Points": [
+        -2.08,
+        31.25
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "mini-swe-agent",
+      "change": "max-out-4k c24",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": 2.08,
+      "ci95Points": [
+        -18.75,
+        20.83
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "mini-swe-agent",
+      "change": "max-out-8k c24",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": 14.58,
+      "ci95Points": [
+        2.08,
+        27.08
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "mini-swe-agent",
+      "change": "moe-a3b c24",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": -18.75,
+      "ci95Points": [
+        -43.75,
+        6.25
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "mini-swe-agent",
+      "change": "no-thinking c24",
+      "baseline": "defaults c24 H100 (both runs pooled)",
+      "deltaPoints": -16.67,
+      "ci95Points": [
+        -37.5,
+        2.08
+      ],
+      "tasks": 8
+    },
+    {
+      "harness": "terminus-2",
+      "change": "h200 c24 (v2 set)",
+      "baseline": "defaults c24 H100 (v2 set, one run)",
+      "deltaPoints": 37.5,
+      "ci95Points": [
+        8.33,
+        66.67
+      ],
+      "tasks": 4
+    },
+    {
+      "harness": "mini-swe-agent",
+      "change": "h200 c24 (v2 set)",
+      "baseline": "defaults c24 H100 (v2 set, one run)",
+      "deltaPoints": 37.5,
+      "ci95Points": [
+        16.67,
+        58.33
+      ],
+      "tasks": 4
+    }
+  ],
+  "perType": {
+    "mini-swe-agent": [
+      {
+        "config": "defaults",
+        "agents": 8,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 12,
+            "correct": 9
+          },
+          "B. diagnosis from telemetry": {
+            "n": 12,
+            "correct": 12
+          },
+          "C. checkpointing and recovery": {
+            "n": 12,
+            "correct": 10
+          },
+          "D. resource limits and scheduling": {
+            "n": 12,
+            "correct": 12
+          }
+        }
+      },
+      {
+        "config": "defaults",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 12,
+            "correct": 8
+          },
+          "B. diagnosis from telemetry": {
+            "n": 12,
+            "correct": 11
+          },
+          "C. checkpointing and recovery": {
+            "n": 12,
+            "correct": 4
+          },
+          "D. resource limits and scheduling": {
+            "n": 12,
+            "correct": 8
+          }
+        }
+      },
+      {
+        "config": "defaults-2x-time",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 12,
+            "correct": 7
+          },
+          "B. diagnosis from telemetry": {
+            "n": 12,
+            "correct": 12
+          },
+          "C. checkpointing and recovery": {
+            "n": 12,
+            "correct": 6
+          },
+          "D. resource limits and scheduling": {
+            "n": 12,
+            "correct": 9
+          }
+        }
+      },
+      {
+        "config": "h200",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 12,
+            "correct": 12
+          },
+          "B. diagnosis from telemetry": {
+            "n": 12,
+            "correct": 10
+          },
+          "C. checkpointing and recovery": {
+            "n": 12,
+            "correct": 7
+          },
+          "D. resource limits and scheduling": {
+            "n": 12,
+            "correct": 11
+          }
+        }
+      },
+      {
+        "config": "max-out-16k",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 6,
+            "correct": 5
+          },
+          "B. diagnosis from telemetry": {
+            "n": 6,
+            "correct": 5
+          },
+          "C. checkpointing and recovery": {
+            "n": 6,
+            "correct": 3
+          },
+          "D. resource limits and scheduling": {
+            "n": 6,
+            "correct": 6
+          }
+        }
+      },
+      {
+        "config": "max-out-4k",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 6,
+            "correct": 3
+          },
+          "B. diagnosis from telemetry": {
+            "n": 6,
+            "correct": 5
+          },
+          "C. checkpointing and recovery": {
+            "n": 6,
+            "correct": 3
+          },
+          "D. resource limits and scheduling": {
+            "n": 6,
+            "correct": 5
+          }
+        }
+      },
+      {
+        "config": "max-out-8k",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 12,
+            "correct": 9
+          },
+          "B. diagnosis from telemetry": {
+            "n": 12,
+            "correct": 10
+          },
+          "C. checkpointing and recovery": {
+            "n": 12,
+            "correct": 8
+          },
+          "D. resource limits and scheduling": {
+            "n": 12,
+            "correct": 11
+          }
+        }
+      },
+      {
+        "config": "moe-a3b",
+        "agents": 24,
+        "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+        "types": {
+          "A. distributed jobs": {
+            "n": 6,
+            "correct": 3
+          },
+          "B. diagnosis from telemetry": {
+            "n": 6,
+            "correct": 3
+          },
+          "C. checkpointing and recovery": {
+            "n": 6,
+            "correct": 3
+          },
+          "D. resource limits and scheduling": {
+            "n": 6,
+            "correct": 2
+          }
+        }
+      },
+      {
+        "config": "no-thinking",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 12,
+            "correct": 5
+          },
+          "B. diagnosis from telemetry": {
+            "n": 12,
+            "correct": 6
+          },
+          "C. checkpointing and recovery": {
+            "n": 12,
+            "correct": 5
+          },
+          "D. resource limits and scheduling": {
+            "n": 12,
+            "correct": 7
+          }
+        }
+      }
+    ],
+    "terminus-2": [
+      {
+        "config": "defaults",
+        "agents": 8,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 12,
+            "correct": 12
+          },
+          "B. diagnosis from telemetry": {
+            "n": 12,
+            "correct": 11
+          },
+          "C. checkpointing and recovery": {
+            "n": 12,
+            "correct": 6
+          },
+          "D. resource limits and scheduling": {
+            "n": 12,
+            "correct": 11
+          }
+        }
+      },
+      {
+        "config": "defaults",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 12,
+            "correct": 8
+          },
+          "B. diagnosis from telemetry": {
+            "n": 12,
+            "correct": 10
+          },
+          "C. checkpointing and recovery": {
+            "n": 12,
+            "correct": 6
+          },
+          "D. resource limits and scheduling": {
+            "n": 12,
+            "correct": 10
+          }
+        }
+      },
+      {
+        "config": "defaults-2x-time",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 12,
+            "correct": 11
+          },
+          "B. diagnosis from telemetry": {
+            "n": 12,
+            "correct": 12
+          },
+          "C. checkpointing and recovery": {
+            "n": 12,
+            "correct": 11
+          },
+          "D. resource limits and scheduling": {
+            "n": 12,
+            "correct": 12
+          }
+        }
+      },
+      {
+        "config": "h200",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 12,
+            "correct": 12
+          },
+          "B. diagnosis from telemetry": {
+            "n": 12,
+            "correct": 11
+          },
+          "C. checkpointing and recovery": {
+            "n": 12,
+            "correct": 11
+          },
+          "D. resource limits and scheduling": {
+            "n": 12,
+            "correct": 11
+          }
+        }
+      },
+      {
+        "config": "max-out-16k",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 6,
+            "correct": 5
+          },
+          "B. diagnosis from telemetry": {
+            "n": 6,
+            "correct": 6
+          },
+          "C. checkpointing and recovery": {
+            "n": 6,
+            "correct": 3
+          },
+          "D. resource limits and scheduling": {
+            "n": 6,
+            "correct": 5
+          }
+        }
+      },
+      {
+        "config": "max-out-4k",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 6,
+            "correct": 4
+          },
+          "B. diagnosis from telemetry": {
+            "n": 6,
+            "correct": 6
+          },
+          "C. checkpointing and recovery": {
+            "n": 6,
+            "correct": 5
+          },
+          "D. resource limits and scheduling": {
+            "n": 6,
+            "correct": 5
+          }
+        }
+      },
+      {
+        "config": "max-out-8k",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 12,
+            "correct": 11
+          },
+          "B. diagnosis from telemetry": {
+            "n": 12,
+            "correct": 10
+          },
+          "C. checkpointing and recovery": {
+            "n": 12,
+            "correct": 11
+          },
+          "D. resource limits and scheduling": {
+            "n": 12,
+            "correct": 11
+          }
+        }
+      },
+      {
+        "config": "moe-a3b",
+        "agents": 24,
+        "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+        "types": {
+          "A. distributed jobs": {
+            "n": 6,
+            "correct": 4
+          },
+          "B. diagnosis from telemetry": {
+            "n": 6,
+            "correct": 3
+          },
+          "C. checkpointing and recovery": {
+            "n": 6,
+            "correct": 4
+          },
+          "D. resource limits and scheduling": {
+            "n": 6,
+            "correct": 3
+          }
+        }
+      },
+      {
+        "config": "no-thinking",
+        "agents": 24,
+        "model": "Qwen/Qwen3.8-27B",
+        "types": {
+          "A. distributed jobs": {
+            "n": 12,
+            "correct": 6
+          },
+          "B. diagnosis from telemetry": {
+            "n": 12,
+            "correct": 11
+          },
+          "C. checkpointing and recovery": {
+            "n": 12,
+            "correct": 5
+          },
+          "D. resource limits and scheduling": {
+            "n": 12,
+            "correct": 8
+          }
+        }
+      }
+    ]
+  },
+  "failures": [
+    {
+      "category": "agent exited with error",
+      "definition": "The harness process exited non-zero (NonZeroAgentExitCodeError).",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 16,
+        "Qwen/Qwen3.6-35B-A3B-FP8": 2
+      }
+    },
+    {
+      "category": "finished wrong",
+      "definition": "The agent finished on its own and the task's independent test failed.",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 56,
+        "Qwen/Qwen3.6-35B-A3B-FP8": 18
+      }
+    },
+    {
+      "category": "other error (SandboxLikelyOutOfMemoryError)",
+      "definition": "other error (SandboxLikelyOutOfMemoryError)",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 1,
+        "Qwen/Qwen3.6-35B-A3B-FP8": 0
+      }
+    },
+    {
+      "category": "timeout",
+      "definition": "Hit the task's agent time limit (AgentTimeoutError) before finishing.",
+      "counts": {
+        "Qwen/Qwen3.8-27B": 144,
+        "Qwen/Qwen3.6-35B-A3B-FP8": 3
+      }
+    }
+  ],
+  "limitations": [
+    "Small task sets: 6 (v1), 8 (hard), 4 (v2), 5 (v3), 2 (torchtitan); bootstrap CIs over 4-8 tasks are wide.",
+    "Tasks were built by the same team that ran the agents, and later rounds were designed after seeing earlier results.",
+    "One self-hosted model family (Qwen3.8-27B, plus one MoE run per harness) on one engine (vLLM 0.31.0).",
+    "The 4k/16k output caps and the MoE model are single runs.",
+    "Self-hosted failure categories come from Harbor exception types; they do not separate looping from working timeouts.",
+    "Sandbox cost for self-hosted runs is an estimate that under-counts the bill."
+  ]
+}

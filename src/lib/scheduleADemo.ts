@@ -9,7 +9,7 @@ import type { CalEmbedConfig } from "./formTypes";
 import type { SEOProps } from "./seo";
 
 export const SCHEDULE_A_DEMO_SEO: SEOProps = {
-  title: "Schedule a Demo | ZenML",
+  title: "Schedule a Demo | ZenML Labs",
   description:
     "Schedule a live demo and see how ZenML orchestrates your AI workflows and Kitaru diagnoses your agents.",
   ogTitle: "Schedule a Demo",

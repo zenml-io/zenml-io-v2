@@ -1,0 +1,89 @@
+---
+import type { IntervalChart } from "../../lib/benchmarkReports";
+import LabsModelMark from "./LabsModelMark.astro";
+
+/**
+ * labs.interval-chart — paired differences against a baseline as a dot per
+ * row on its 95% interval, over a sage band for the unchanged rerun's
+ * interval (the noise every row is read against) and a rule at zero. Rows
+ * whose interval clears zero are drawn solid in sage-800; rows inside the
+ * noise are hollow and muted. Single hue (DESIGN.md "Data visualization"):
+ * position says ahead or behind, not colour. Each row keeps its label and
+ * published value as text; the plot itself is decorative. Below md the
+ * label and value share a line above the plot.
+ */
+interface Props {
+  chart: IntervalChart;
+}
+const { chart } = Astro.props;
+
+const extent = Math.max(
+  ...chart.rows.flatMap((row) => [Math.abs(row.low), Math.abs(row.high)]),
+  Math.abs(chart.band.low),
+  Math.abs(chart.band.high),
+);
+const domain = Math.ceil(extent / 10) * 10;
+const step = domain > 40 ? 20 : 10;
+const ticks: number[] = [];
+for (let t = -Math.floor(domain / step) * step; t <= domain; t += step)
+  ticks.push(t);
+const at = (x: number) => `${((x + domain) / (2 * domain)) * 100}%`;
+const tick = (t: number) => `${t > 0 ? "+" : t < 0 ? "−" : ""}${Math.abs(t)}`;
+const ROW =
+  "grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-2 md:grid-cols-[minmax(0,13rem)_minmax(0,1fr)_minmax(0,8rem)]";
+---
+
+<figure>
+  <figcaption class="font-sans text-[15px] leading-[22px] text-(--color-cream-700)">
+    {chart.metric} <span class="text-(--color-cream-600)">· {chart.better} is better</span>
+  </figcaption>
+
+  <div class="relative mt-5">
+    <div class={ROW} aria-hidden="true">
+      <span class="hidden md:block"></span>
+      <span class="relative col-span-2 h-5 md:col-span-1">
+        <span class="absolute bottom-0 font-sans text-[13px] leading-5 whitespace-nowrap text-(--color-cream-700)" style={`left: ${at(chart.band.low)}`}>
+          {chart.band.label}
+        </span>
+      </span>
+    </div>
+
+    <ul class="mt-2 grid list-none gap-3">
+      {chart.rows.map((row) => {
+        const clear = row.verdict !== "tie";
+        return (
+          <li class={ROW}>
+            <span class:list={["flex min-w-0 items-center gap-2 font-sans text-[15px] leading-[22px] md:col-start-1", clear ? "font-medium text-(--color-cream-900)" : "text-(--color-cream-700)"]} title={row.label}>
+              {row.mark && <LabsModelMark mark={row.mark} size="md" />}
+              <span class="truncate">{row.label}</span>
+            </span>
+            <span class:list={["text-right font-sans text-[15px] leading-[22px] tabular-nums md:col-start-3 md:row-start-1 md:text-left", clear ? "text-(--color-cream-900)" : "text-(--color-cream-700)"]}>
+              {row.display}
+            </span>
+            <span class="relative col-span-2 h-6 md:col-span-1 md:col-start-2 md:row-start-1" aria-hidden="true">
+              <span class="absolute inset-y-[-6px] bg-(--color-sage-100)" style={`left: ${at(chart.band.low)}; right: calc(100% - ${at(chart.band.high)})`}></span>
+              <span class="absolute inset-y-[-6px] w-px bg-(--color-cream-500)" style={`left: ${at(0)}`}></span>
+              <span
+                class:list={["absolute top-1/2 h-0.5 -translate-y-1/2", clear ? "bg-(--color-sage-800)" : "bg-(--color-cream-500)"]}
+                style={`left: ${at(row.low)}; right: calc(100% - ${at(row.high)})`}
+              ></span>
+              <span
+                class:list={["absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2", clear ? "border-(--color-sage-800) bg-(--color-sage-800)" : "border-(--color-cream-500) bg-card"]}
+                style={`left: ${at(row.value)}`}
+              ></span>
+            </span>
+          </li>
+        );
+      })}
+    </ul>
+
+    <div class:list={[ROW, "mt-3"]} aria-hidden="true">
+      <span class="hidden md:block"></span>
+      <span class="relative col-span-2 h-5 md:col-span-1">
+        {ticks.map((t) => (
+          <span class="absolute -translate-x-1/2 font-sans text-[13px] leading-5 tabular-nums text-(--color-cream-700)" style={`left: ${at(t)}`}>{tick(t)}</span>
+        ))}
+      </span>
+    </div>
+  </div>
+</figure>

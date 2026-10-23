@@ -1,0 +1,36 @@
+---
+import type {
+  BenchmarkPreview,
+  BenchmarkReport,
+} from "../../lib/benchmarkReports";
+import { ENTRY_ROW_TITLE_LINK } from "./entryRowStyles";
+import LabsBarChart from "./LabsBarChart.astro";
+
+/**
+ * labs.benchmark-card — one experiment on /benchmarks, kept light: the
+ * benchmark's name as the title, its question in up to two lines, a compact
+ * labs.bar-chart (at most three bars) of the headline metric, and the topic
+ * tags as one quiet line beside an arrow. The title link is stretched over
+ * the card to the report, which carries the date, the companion post and
+ * everything else.
+ */
+interface Props {
+  report: BenchmarkReport;
+  preview: BenchmarkPreview;
+}
+const { report, preview } = Astro.props;
+---
+
+<article class="group relative flex h-full flex-col rounded-[20px] border border-(--color-border) bg-card p-6 transition-colors duration-200 ease-out hover:border-(--color-sage-400) hover:bg-(--color-sage-50) focus-within:border-(--color-sage-400)">
+  <h3 class="font-display text-[22px] leading-[28px] text-(--color-cream-900) transition-colors duration-200 ease-out group-hover:text-(--color-sage-800)">
+    <a href={`/benchmarks/${report.slug}`} class={ENTRY_ROW_TITLE_LINK}>{report.name}</a>
+  </h3>
+  <p class="mt-1 line-clamp-2 font-sans text-[15px] leading-[22px] text-(--color-cream-700)">{report.title}</p>
+
+  <div class="mt-5"><LabsBarChart preview={preview} /></div>
+
+  <div class="mt-auto flex items-end justify-between gap-4 pt-6">
+    <p class="font-sans text-[12px] leading-[18px] text-(--color-cream-700)">{report.tags.join(" · ")}</p>
+    <span class="shrink-0 text-(--color-sage-800) transition-transform duration-200 ease-out group-hover:translate-x-0.5" aria-hidden="true">→</span>
+  </div>
+</article>

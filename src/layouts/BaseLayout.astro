@@ -87,9 +87,12 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
     <SiteHeaderScripts surface={surface} />
   </head>
   <body class:list={["min-h-screen bg-white text-gray-900 antialiased", bodyClass]}>
+    <a href="#main-content" class="skip-link">Skip to content</a>
     <slot name="before-nav" />
     <LabsNavigation currentPath={Astro.url.pathname} product={product} />
-    <slot />
+    <div id="main-content" tabindex="-1">
+      <slot />
+    </div>
     <LabsFooter />
 
     <script is:inline>
@@ -135,3 +138,32 @@ const seo = resolveSeo(seoProps, Astro.url.pathname);
     <CookieConsent client:load />
   </body>
 </html>
+
+<style>
+  .skip-link {
+    position: fixed;
+    top: var(--spacing-space-xs);
+    left: var(--spacing-space-xs);
+    z-index: 100;
+    padding: var(--spacing-space-xxs) var(--spacing-space-xs);
+    border-radius: var(--spacing-space-xxs);
+    background: var(--color-cream-50);
+    color: var(--color-cream-900);
+    font-family: var(--font-sans);
+    transform: translateY(calc(-100% - var(--spacing-space-xs)));
+  }
+
+  .skip-link:focus {
+    outline: 2px solid var(--color-sage-800);
+    outline-offset: 2px;
+    transform: translateY(0);
+  }
+
+  #main-content:focus {
+    outline: none;
+  }
+
+  #main-content :global([aria-invalid="true"]) {
+    scroll-margin-top: calc(var(--spacing-space-xxl) * 2);
+  }
+</style>

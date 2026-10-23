@@ -1,0 +1,59 @@
+---
+import type { BenchmarkPreview } from "../../lib/benchmarkReports";
+import LabsModelMark from "./LabsModelMark.astro";
+
+/**
+ * labs.bar-chart — one benchmark's headline metric as a small horizontal bar
+ * chart: a caption with the metric and its "higher/lower is better"
+ * direction, then a row per value with a direct label, a single-hue sage bar
+ * (the emphasised row darker) and the published value, with the model's
+ * mark before the label on rows that name a model (DESIGN.md "Data
+ * visualization"). `size="card"` is the hub card's compact chart;
+ * `size="report"` draws the fuller `reportRows` set when the benchmark has
+ * one, larger, at the top of a report. A reference row (a baseline) sits
+ * below a dashed rule with a muted label.
+ */
+interface Props {
+  preview: BenchmarkPreview;
+  size?: "card" | "report";
+}
+const { preview, size = "card" } = Astro.props;
+const report = size === "report";
+const rows = (report && preview.reportRows) || preview.rows;
+const max = preview.max ?? Math.max(...rows.map((row) => row.value));
+const width = (value: number) =>
+  `${Math.max(2, Math.round((value / max) * 100))}%`;
+const text = report ? "text-[15px] leading-[22px]" : "text-[13px] leading-5";
+// The value sits one step below its label, a shade lighter.
+const valueText = report
+  ? "text-[14px] leading-[22px]"
+  : "text-[12px] leading-5";
+---
+
+<figure>
+  <figcaption class:list={["font-sans text-(--color-cream-700)", report ? "text-[15px] leading-[22px]" : "text-[13px] leading-[18px]"]}>
+    {preview.metric} <span class="text-(--color-cream-600)">· {preview.better} is better</span>
+  </figcaption>
+  <dl class:list={["grid", report ? "mt-5 gap-3.5" : "mt-3 gap-2"]}>
+    {rows.map((row) => (
+      <div class:list={["grid items-center gap-3", report ? "grid-cols-[minmax(0,12rem)_minmax(0,1fr)]" : "grid-cols-[minmax(0,9rem)_minmax(0,1fr)]", row.reference && "border-t border-dashed border-(--color-border) pt-3.5"]}>
+        <dt class:list={["flex min-w-0 items-center gap-2 font-sans", text, row.emphasis ? "font-medium text-(--color-cream-900)" : row.reference ? "text-(--color-cream-700)" : "text-(--color-cream-800)"]} title={row.label}>
+          {row.mark && <LabsModelMark mark={row.mark} size={report ? "md" : "sm"} />}
+          <span class="truncate">{row.label}</span>
+        </dt>
+        <dd class="flex min-w-0 items-center gap-3">
+          <span class:list={["min-w-0 flex-1 rounded-full bg-(--color-sage-100)", report ? "h-2.5" : "h-2"]} aria-hidden="true">
+            <span
+              class:list={["block h-full rounded-full", row.emphasis ? "bg-(--color-sage-800)" : "bg-(--color-sage-500)"]}
+              style={`width: ${width(row.value)}`}
+            ></span>
+          </span>
+          <span class:list={["shrink-0 font-sans tabular-nums", valueText, row.reference ? "text-(--color-cream-600)" : "text-(--color-cream-700)"]}>{row.display}</span>
+        </dd>
+      </div>
+    ))}
+  </dl>
+  {report && preview.context && (
+    <p class="mt-4 font-sans text-[13px] leading-5 text-(--color-cream-700)">{preview.context}</p>
+  )}
+</figure>

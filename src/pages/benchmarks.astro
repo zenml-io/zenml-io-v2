@@ -1,0 +1,108 @@
+---
+/**
+ * Benchmarks hub, in the ZenML Labs shell (`surface="unified"`, no
+ * `product`). `labs.page-header` with a count and last-updated line, then
+ * one grid of `labs.benchmark-card`s per group, each led by a small bar
+ * chart from src/lib/benchmarkReports/previews.ts (each card links to its
+ * report at /benchmarks/<slug>), the rules every benchmark follows and who
+ * runs them as a `labs.faq`, and the shared closing band.
+ */
+import LabsBenchmarkCard from "../components/labs/LabsBenchmarkCard.astro";
+import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
+import LabsFaq from "../components/labs/LabsFaq.astro";
+import LabsPageHeader from "../components/labs/LabsPageHeader.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import {
+  BENCHMARK_GROUPS,
+  BENCHMARK_PREVIEWS,
+  BENCHMARK_REPORTS,
+} from "../lib/benchmarkReports";
+import { longDate } from "../lib/benchmarkReports/format";
+import {
+  BENCHMARK_METHOD,
+  BENCHMARKS_CLOSE,
+  BENCHMARKS_WHO_RUNS,
+} from "../lib/benchmarks";
+import { BAND_CONTENT_GAP, SECTION_HEADING_CLASS } from "../lib/blogLayout";
+import type { FaqData } from "../lib/marketingPageTypes";
+import { defaultOgImage } from "../lib/seo";
+import "../styles/labs-scroll-reveal.css";
+
+const TITLE = "Benchmarks: models inside real agent work";
+const DESCRIPTION =
+  "How models behave inside real agents, measured as cost per correct answer, with the method, noise and caveats published for every experiment.";
+
+const groups = BENCHMARK_GROUPS.map((group) => {
+  const reports = BENCHMARK_REPORTS.filter(
+    (report) => report.group === group.id,
+  );
+  // Two or four cards fill a two-column grid evenly; any other count uses three.
+  const columns = reports.length === 2 || reports.length === 4 ? 2 : 3;
+  return { ...group, reports, columns };
+}).filter((group) => group.reports.length > 0);
+
+const METHOD: FaqData = {
+  headline: "How we run these benchmarks",
+  items: [...BENCHMARK_METHOD, BENCHMARKS_WHO_RUNS].map((rule) => ({
+    question: rule.title,
+    answer: rule.body,
+  })),
+};
+
+const latest = BENCHMARK_REPORTS.reduce(
+  (newest, report) => (report.date > newest ? report.date : newest),
+  "",
+);
+---
+
+<BaseLayout
+  ogImage={defaultOgImage("pages", "benchmarks")}
+  title={TITLE}
+  description={DESCRIPTION}
+  surface="unified"
+  app="labs"
+>
+  <LabsPageHeader
+    eyebrow="Benchmarks"
+    heading="The best model depends on your agent."
+    description="We test models, and the infrastructure that serves them, on real agent work, and count what each correct answer costs. Every experiment publishes its method, its noise and what it can't show."
+  >
+    <p class="mt-4 font-sans text-[14px] leading-5 text-(--color-cream-700)">
+      {BENCHMARK_REPORTS.length} benchmarks &middot; last updated {longDate(latest)}
+    </p>
+  </LabsPageHeader>
+
+  <section class={BAND_CONTENT_GAP}>
+    <div class="mx-auto flex max-w-content flex-col gap-14 px-gutter">
+      {groups.map((group) => (
+        <div class="scroll-reveal-section">
+          <h2 class:list={["reveal-child mb-space-md", SECTION_HEADING_CLASS]}>
+            {group.title}
+          </h2>
+          <ul class:list={["grid list-none grid-cols-1 gap-4 md:grid-cols-2", group.columns === 3 && "xl:grid-cols-3"]}>
+            {group.reports.map((report, index) => (
+              <li class:list={["reveal-child min-w-0", index % group.columns === 1 && "stagger-1", index % group.columns === 2 && "stagger-2"]}>
+                <LabsBenchmarkCard
+                  report={report}
+                  preview={BENCHMARK_PREVIEWS[report.slug]}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <div class="scroll-reveal-section">
+    <div class="reveal-child"><LabsFaq content={METHOD} /></div>
+  </div>
+
+  <div class="scroll-reveal-section">
+    <div class="reveal-child"><LabsCloseCta content={BENCHMARKS_CLOSE} preset="comparison" /></div>
+  </div>
+  <script>
+    import { initScrollReveal } from "../scripts/labs-scroll-reveal";
+    initScrollReveal();
+  </script>
+</BaseLayout>

@@ -42,85 +42,87 @@ import {
   surface="unified"
   app="labs"
 >
-  <LabsHero content={PRO_HERO_BAND} />
+  <main>
+    <LabsHero content={PRO_HERO_BAND} />
 
-  <LogoMarquee content={PRO_LOGO_GRID} />
+    <LogoMarquee content={PRO_LOGO_GRID} />
 
-  {/* Unified pitch — managed plane + enterprise (Phase 7, D10) */}
-  <section class="py-24 md:py-32">
-    <div class="mx-auto max-w-content px-gutter">
-      <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
-        {PRO_UNIFIED_PITCH.eyebrow}
-      </h2>
-      <div class="mt-12 grid gap-6 lg:grid-cols-2">
-        {PRO_UNIFIED_PITCH.sections.map((sec) => (
-          <div class="rounded-[20px] border border-border bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10">
-            <h3 class="font-display text-[28px] leading-[34px] text-(--color-cream-900)">
-              {sec.heading}
-            </h3>
-            <p class="mt-3 font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
-              {sec.lede}
-            </p>
-            <dl class="mt-6 flex flex-col">
-              {sec.items.map((it) => (
-                <div class="border-t border-(--color-border) py-4">
-                  <dt class="font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">
-                    {it.name}
-                  </dt>
-                  <dd class="mt-1 font-sans text-[14px] leading-5 text-(--color-cream-700)">
-                    {it.body}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        ))}
+    {/* Unified pitch — managed plane + enterprise (Phase 7, D10) */}
+    <section class="py-24 md:py-32">
+      <div class="mx-auto max-w-content px-gutter">
+        <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
+          {PRO_UNIFIED_PITCH.eyebrow}
+        </h2>
+        <div class="mt-12 grid gap-6 lg:grid-cols-2">
+          {PRO_UNIFIED_PITCH.sections.map((sec) => (
+            <div class="rounded-[20px] border border-border bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10">
+              <h3 class="font-display text-[28px] leading-[34px] text-(--color-cream-900)">
+                {sec.heading}
+              </h3>
+              <p class="mt-3 font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
+                {sec.lede}
+              </p>
+              <dl class="mt-6 flex flex-col">
+                {sec.items.map((it) => (
+                  <div class="border-t border-(--color-border) py-4">
+                    <dt class="font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">
+                      {it.name}
+                    </dt>
+                    <dd class="mt-1 font-sans text-[14px] leading-5 text-(--color-cream-700)">
+                      {it.body}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          ))}
+        </div>
       </div>
+    </section>
+
+    {/* Featured, HashiCorp, and carousel testimonials */}
+    <CustomerStoryCards content={PRO_QUOTES} />
+
+    {/* "Get set up in less than a day" */}
+    <LabsValueProps content={PRO_ONBOARDING_PROPS} />
+
+    {/* Pro cloud features (alternating image/text, now a tab slider) */}
+    <div id="cloud-features">
+      <LabsFeatureTabs content={PRO_FEATURE_TABS} />
     </div>
-  </section>
 
-  {/* Featured, HashiCorp, and carousel testimonials */}
-  <CustomerStoryCards content={PRO_QUOTES} />
-
-  {/* "Get set up in less than a day" */}
-  <LabsValueProps content={PRO_ONBOARDING_PROPS} />
-
-  {/* Pro cloud features (alternating image/text, now a tab slider) */}
-  <div id="cloud-features">
-    <LabsFeatureTabs content={PRO_FEATURE_TABS} />
-  </div>
-
-  {/* Compliance: "Your VPC, your data" — shared markup with /pricing */}
-  <section class="pb-24 md:pb-32">
-    <div class="mx-auto max-w-content px-gutter">
-      <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
-        {PRO_COMPLIANCE.headline}
-      </h2>
-      <p class="mt-6 max-w-[720px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
-        {PRO_COMPLIANCE.body}
-      </p>
-      <picture>
-        <source media="(max-width: 767px)" srcset={PRO_COMPLIANCE.image.mobile.url} />
-        <img
-          src={PRO_COMPLIANCE.image.desktop.url}
-          alt={PRO_COMPLIANCE.image.desktop.alt}
-          class="mt-10 w-full rounded-[20px] border border-(--color-border)"
-          loading="lazy"
+    {/* Compliance: "Your VPC, your data" — shared markup with /pricing */}
+    <section class="pb-24 md:pb-32">
+      <div class="mx-auto max-w-content px-gutter">
+        <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
+          {PRO_COMPLIANCE.headline}
+        </h2>
+        <p class="mt-6 max-w-[720px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
+          {PRO_COMPLIANCE.body}
+        </p>
+        <picture>
+          <source media="(max-width: 767px)" srcset={PRO_COMPLIANCE.image.mobile.url} />
+          <img
+            src={PRO_COMPLIANCE.image.desktop.url}
+            alt={PRO_COMPLIANCE.image.desktop.alt}
+            class="mt-10 w-full rounded-[20px] border border-(--color-border)"
+            loading="lazy"
+          />
+        </picture>
+        <ComplianceCard
+          badges={PRO_COMPLIANCE.badges}
+          eyebrow={PRO_COMPLIANCE.bannerEyebrow}
+          headline={PRO_COMPLIANCE.bannerHeadline}
+          body={PRO_COMPLIANCE.bannerBody}
         />
-      </picture>
-      <ComplianceCard
-        badges={PRO_COMPLIANCE.badges}
-        eyebrow={PRO_COMPLIANCE.bannerEyebrow}
-        headline={PRO_COMPLIANCE.bannerHeadline}
-        body={PRO_COMPLIANCE.bannerBody}
-      />
-    </div>
-  </section>
+      </div>
+    </section>
 
-  {/* "ZenML Pro is Open Source and More" */}
-  <LabsValueProps content={PRO_OSS_PROPS} />
+    {/* "ZenML Pro is Open Source and More" */}
+    <LabsValueProps content={PRO_OSS_PROPS} />
 
-  <LabsFaq content={PRO_FAQ} />
+    <LabsFaq content={PRO_FAQ} />
 
-  <LabsCloseCta content={PRO_CLOSE} />
+    <LabsCloseCta content={PRO_CLOSE} />
+  </main>
 </BaseLayout>

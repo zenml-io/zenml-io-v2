@@ -11,7 +11,7 @@ import type { CtaLink } from "./marketingPageTypes";
 import type { SEOProps } from "./seo";
 
 export const BOOK_A_DEMO_SEO: SEOProps = {
-  title: "Book a Demo | ZenML",
+  title: "Book a Demo | ZenML Labs",
   description:
     "Schedule a live demo and see how ZenML orchestrates your AI workflows and Kitaru diagnoses your agents.",
   ogTitle: "Book a Demo",

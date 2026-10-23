@@ -1,0 +1,1612 @@
+{
+  "meta": {
+    "question": "Do GPU, load and serving settings change how many tasks a self-hosted agent solves, and what each solved task costs?",
+    "status": "complete",
+    "runDates": {
+      "start": "2026-10-08",
+      "end": "2026-10-09"
+    }
+  },
+  "dataset": {
+    "totalCases": {
+      "terminal-bench-2.0": 89,
+      "gaia": 165
+    },
+    "keptCases": {
+      "terminal-bench-2.0": 36,
+      "gaia": 60
+    },
+    "droppedReason": "Terminal-Bench: random sample (seed 0) of tasks with an agent time limit of 20 minutes or less (63% of the benchmark), to fit the budget; GAIA: 60 of 165 tasks stratified by level (seed 0), 10-minute agent limit. Task lists fixed before the first run.",
+    "types": [
+      {
+        "type": "terminal-bench-2.0/easy",
+        "count": 4
+      },
+      {
+        "type": "terminal-bench-2.0/medium",
+        "count": 24
+      },
+      {
+        "type": "terminal-bench-2.0/hard",
+        "count": 8
+      },
+      {
+        "type": "gaia/level1",
+        "count": 19
+      },
+      {
+        "type": "gaia/level2",
+        "count": 31
+      },
+      {
+        "type": "gaia/level3",
+        "count": 10
+      }
+    ]
+  },
+  "models": [
+    {
+      "id": "Qwen/Qwen3.8-27B",
+      "name": "Qwen3.8-27B (dense, BF16)",
+      "vendor": "Qwen (Alibaba)",
+      "weights": "open",
+      "usedIn": "every config except weights-fp8 and moe-a3b"
+    },
+    {
+      "id": "Qwen/Qwen3.8-27B-FP8",
+      "name": "Qwen3.8-27B (official FP8 checkpoint)",
+      "vendor": "Qwen (Alibaba)",
+      "weights": "open",
+      "usedIn": "weights-fp8"
+    },
+    {
+      "id": "Qwen/Qwen3.6-35B-A3B-FP8",
+      "name": "Qwen3.6-35B-A3B (MoE, 3B active, FP8)",
+      "vendor": "Qwen (Alibaba)",
+      "weights": "open",
+      "usedIn": "moe-a3b"
+    }
+  ],
+  "gpuPricePerHourUsd": {
+    "H100": 3.95,
+    "H200": 4.54,
+    "B200": 6.25
+  },
+  "setup": {
+    "conditionsNote": "A condition is harness x serving config x number of concurrent agents on one GPU server. Configs held constant: 64K context, Qwen reasoning and tool parsers, --language-model-only, --enable-prompt-tokens-details, --max-num-seqs 128. Every run starts a fresh server (no warm prefix cache).",
+    "tools": "Each harness's own tools inside a sandbox per task (shell/tmux; opencode and pi native tool calls). Sandboxes have internet access.",
+    "limits": {
+      "agent_time_limit_per_task": "Terminal-Bench: the task's own limit (600-1200 s; 900 s for 32 of 36 tasks), x2 or x4 for defaults-2x-time / defaults-4x-time. GAIA: 600 s.",
+      "context_window_tokens": 65536,
+      "max_output_tokens_per_call": 16384,
+      "max_concurrent_sequences_server": 128,
+      "sandbox_lifetime_cap_s": 7200,
+      "attempts_per_task": "1 per run (task set `full`, `gaia`) or 2 per run (`full-k2`); results pool all runs of a condition."
+    }
+  },
+  "grading": {
+    "judges": [
+      {
+        "name": "Terminal-Bench task tests",
+        "rule": "solved if verifier reward >= 1.0"
+      },
+      {
+        "name": "GAIA answer check",
+        "rule": "solved if verifier reward >= 1.0"
+      }
+    ],
+    "lookupRule": "No model grades itself. Trials whose tool calls reference the benchmark are never counted solved, even when the verifier passed."
+  },
+  "noise": {
+    "maxSpreadPts": 16.67,
+    "maxSpreadExample": "terminus-2 | moe-a3b | c16: 21/36 (0.5833) on a 1-attempt run vs 30/72 (0.4167) on a 2-attempt run",
+    "rerunDisagreement": "17-20% of same-task rerun pairs",
+    "resamples": 2000
+  },
+  "results": [
+    {
+      "harness": "mini-swe-agent",
+      "config": "b200",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "B200",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 2,
+      "n": 108,
+      "correct": 53,
+      "accuracy": 0.4907,
+      "ci95": [
+        0.3426,
+        0.6389
+      ],
+      "gpuCostPerSolvedCents": 10.8792,
+      "callsPerTrial": 21.66,
+      "failures": {
+        "finished wrong": 9,
+        "looked up answer": 1,
+        "never started": 6,
+        "other error": 9,
+        "out of time, working": 30
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "defaults",
+      "agents": 16,
+      "benchmark": "gaia",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 60,
+      "correct": 18,
+      "accuracy": 0.3,
+      "ci95": [
+        0.1833,
+        0.4167
+      ],
+      "gpuCostPerSolvedCents": 14.2783,
+      "callsPerTrial": 17.39,
+      "failures": {
+        "finished wrong": 6,
+        "looked up answer": 4,
+        "out of time, working": 32
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "defaults",
+      "agents": 16,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 2,
+      "n": 108,
+      "correct": 47,
+      "accuracy": 0.4352,
+      "ci95": [
+        0.287,
+        0.5833
+      ],
+      "gpuCostPerSolvedCents": 14.9494,
+      "callsPerTrial": 15.84,
+      "failures": {
+        "finished wrong": 3,
+        "never started": 6,
+        "other error": 1,
+        "out of time, working": 51
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "defaults",
+      "agents": 32,
+      "benchmark": "gaia",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 60,
+      "correct": 13,
+      "accuracy": 0.2167,
+      "ci95": [
+        0.1167,
+        0.3167
+      ],
+      "gpuCostPerSolvedCents": 11.2585,
+      "callsPerTrial": 13.6,
+      "failures": {
+        "finished wrong": 4,
+        "looked up answer": 4,
+        "out of time, working": 39
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "defaults",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 3,
+      "n": 144,
+      "correct": 43,
+      "accuracy": 0.2986,
+      "ci95": [
+        0.1806,
+        0.4306
+      ],
+      "gpuCostPerSolvedCents": 14.246,
+      "callsPerTrial": 11.85,
+      "failures": {
+        "finished wrong": 1,
+        "never started": 8,
+        "out of time, working": 92
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "defaults",
+      "agents": 48,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 72,
+      "correct": 25,
+      "accuracy": 0.3472,
+      "ci95": [
+        0.2083,
+        0.4861
+      ],
+      "gpuCostPerSolvedCents": 10.0876,
+      "callsPerTrial": 10.21,
+      "failures": {
+        "never started": 4,
+        "out of time, working": 43
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "defaults",
+      "agents": 64,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 72,
+      "correct": 19,
+      "accuracy": 0.2639,
+      "ci95": [
+        0.1528,
+        0.3889
+      ],
+      "gpuCostPerSolvedCents": 10.9674,
+      "callsPerTrial": 9.24,
+      "failures": {
+        "finished wrong": 1,
+        "never started": 4,
+        "out of time, working": 48
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "defaults",
+      "agents": 8,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 36,
+      "correct": 18,
+      "accuracy": 0.5,
+      "ci95": [
+        0.3333,
+        0.6667
+      ],
+      "gpuCostPerSolvedCents": 22.7572,
+      "callsPerTrial": 22.03,
+      "failures": {
+        "finished wrong": 3,
+        "never started": 2,
+        "out of time, working": 13
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "defaults-2x-time",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 2,
+      "n": 108,
+      "correct": 42,
+      "accuracy": 0.3889,
+      "ci95": [
+        0.25,
+        0.537
+      ],
+      "gpuCostPerSolvedCents": 19.1129,
+      "callsPerTrial": 15.83,
+      "failures": {
+        "finished wrong": 3,
+        "looked up answer": 1,
+        "never started": 6,
+        "other error": 4,
+        "out of time, working": 52
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "defaults-4x-time",
+      "agents": 16,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 36,
+      "correct": 17,
+      "accuracy": 0.4722,
+      "ci95": [
+        0.3056,
+        0.6389
+      ],
+      "gpuCostPerSolvedCents": 37.8435,
+      "callsPerTrial": 19.41,
+      "failures": {
+        "finished wrong": 4,
+        "never started": 2,
+        "other error": 3,
+        "out of time, working": 10
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "defaults-4x-time",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 36,
+      "correct": 14,
+      "accuracy": 0.3889,
+      "ci95": [
+        0.2222,
+        0.5556
+      ],
+      "gpuCostPerSolvedCents": 32.8079,
+      "callsPerTrial": 17.0,
+      "failures": {
+        "finished wrong": 4,
+        "never started": 2,
+        "other error": 1,
+        "out of time, working": 15
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "h200",
+      "agents": 32,
+      "benchmark": "gaia",
+      "gpu": "H200",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 60,
+      "correct": 21,
+      "accuracy": 0.35,
+      "ci95": [
+        0.2333,
+        0.4667
+      ],
+      "gpuCostPerSolvedCents": 8.0067,
+      "callsPerTrial": 20.37,
+      "failures": {
+        "finished wrong": 6,
+        "looked up answer": 7,
+        "out of time, working": 26
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "h200",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H200",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 2,
+      "n": 108,
+      "correct": 49,
+      "accuracy": 0.4537,
+      "ci95": [
+        0.3056,
+        0.6019
+      ],
+      "gpuCostPerSolvedCents": 9.1196,
+      "callsPerTrial": 18.32,
+      "failures": {
+        "finished wrong": 5,
+        "never started": 6,
+        "other error": 4,
+        "out of time, working": 44
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "h200-spec-mtp",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H200",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 36,
+      "correct": 18,
+      "accuracy": 0.5,
+      "ci95": [
+        0.3333,
+        0.6667
+      ],
+      "gpuCostPerSolvedCents": 9.0822,
+      "callsPerTrial": 23.0,
+      "failures": {
+        "finished wrong": 4,
+        "never started": 2,
+        "other error": 3,
+        "out of time, working": 9
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "kv-fp8",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 2,
+      "n": 72,
+      "correct": 27,
+      "accuracy": 0.375,
+      "ci95": [
+        0.2222,
+        0.5278
+      ],
+      "gpuCostPerSolvedCents": 11.0585,
+      "callsPerTrial": 15.19,
+      "failures": {
+        "finished wrong": 3,
+        "looked up answer": 1,
+        "never started": 4,
+        "other error": 1,
+        "out of time, working": 36
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "moe-a3b",
+      "agents": 16,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+      "runs": 2,
+      "n": 108,
+      "correct": 53,
+      "accuracy": 0.4907,
+      "ci95": [
+        0.3519,
+        0.6296
+      ],
+      "gpuCostPerSolvedCents": 8.5881,
+      "callsPerTrial": 41.9,
+      "failures": {
+        "finished wrong": 25,
+        "never started": 6,
+        "other error": 14,
+        "out of time, working": 10
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "moe-a3b",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+      "runs": 2,
+      "n": 108,
+      "correct": 53,
+      "accuracy": 0.4907,
+      "ci95": [
+        0.3426,
+        0.6389
+      ],
+      "gpuCostPerSolvedCents": 7.2274,
+      "callsPerTrial": 41.71,
+      "failures": {
+        "finished wrong": 22,
+        "never started": 6,
+        "other error": 11,
+        "out of time, working": 16
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "no-prefix-cache",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 2,
+      "n": 72,
+      "correct": 25,
+      "accuracy": 0.3472,
+      "ci95": [
+        0.2083,
+        0.5
+      ],
+      "gpuCostPerSolvedCents": 12.6804,
+      "callsPerTrial": 11.89,
+      "failures": {
+        "finished wrong": 1,
+        "never started": 4,
+        "out of time, working": 42
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "no-thinking",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 2,
+      "n": 108,
+      "correct": 43,
+      "accuracy": 0.3981,
+      "ci95": [
+        0.25,
+        0.537
+      ],
+      "gpuCostPerSolvedCents": 9.0509,
+      "callsPerTrial": 22.76,
+      "failures": {
+        "finished wrong": 12,
+        "never started": 6,
+        "other error": 1,
+        "out of time, looping": 1,
+        "out of time, working": 45
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "spec-mtp",
+      "agents": 16,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 36,
+      "correct": 17,
+      "accuracy": 0.4722,
+      "ci95": [
+        0.3056,
+        0.6389
+      ],
+      "gpuCostPerSolvedCents": 14.9235,
+      "callsPerTrial": 17.19,
+      "failures": {
+        "looked up answer": 1,
+        "never started": 2,
+        "out of time, working": 16
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "spec-mtp",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 3,
+      "n": 144,
+      "correct": 52,
+      "accuracy": 0.3611,
+      "ci95": [
+        0.2361,
+        0.4931
+      ],
+      "gpuCostPerSolvedCents": 12.0296,
+      "callsPerTrial": 12.65,
+      "failures": {
+        "finished wrong": 2,
+        "looked up answer": 1,
+        "never started": 8,
+        "other error": 2,
+        "out of time, working": 79
+      }
+    },
+    {
+      "harness": "mini-swe-agent",
+      "config": "weights-fp8",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B-FP8",
+      "runs": 2,
+      "n": 72,
+      "correct": 29,
+      "accuracy": 0.4028,
+      "ci95": [
+        0.2639,
+        0.5556
+      ],
+      "gpuCostPerSolvedCents": 9.87,
+      "callsPerTrial": 16.81,
+      "failures": {
+        "finished wrong": 2,
+        "never started": 4,
+        "other error": 1,
+        "out of time, working": 36
+      }
+    },
+    {
+      "harness": "opencode",
+      "config": "defaults",
+      "agents": 16,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 36,
+      "correct": 18,
+      "accuracy": 0.5,
+      "ci95": [
+        0.3333,
+        0.6667
+      ],
+      "gpuCostPerSolvedCents": 13.5617,
+      "callsPerTrial": 15.97,
+      "failures": {
+        "finished wrong": 5,
+        "never started": 2,
+        "out of time, working": 11
+      }
+    },
+    {
+      "harness": "opencode",
+      "config": "defaults",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 36,
+      "correct": 16,
+      "accuracy": 0.4444,
+      "ci95": [
+        0.3056,
+        0.6111
+      ],
+      "gpuCostPerSolvedCents": 8.94,
+      "callsPerTrial": 12.53,
+      "failures": {
+        "finished wrong": 3,
+        "never started": 2,
+        "out of time, working": 15
+      }
+    },
+    {
+      "harness": "pi",
+      "config": "defaults",
+      "agents": 16,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 36,
+      "correct": 15,
+      "accuracy": 0.4167,
+      "ci95": [
+        0.25,
+        0.5833
+      ],
+      "gpuCostPerSolvedCents": 15.9867,
+      "callsPerTrial": 16.91,
+      "failures": {
+        "finished wrong": 4,
+        "looked up answer": 1,
+        "never started": 2,
+        "other error": 1,
+        "out of time, working": 13
+      }
+    },
+    {
+      "harness": "pi",
+      "config": "defaults",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 36,
+      "correct": 14,
+      "accuracy": 0.3889,
+      "ci95": [
+        0.25,
+        0.5556
+      ],
+      "gpuCostPerSolvedCents": 10.0179,
+      "callsPerTrial": 12.39,
+      "failures": {
+        "finished wrong": 6,
+        "never started": 2,
+        "other error": 1,
+        "out of time, working": 13
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "b200",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "B200",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 2,
+      "n": 108,
+      "correct": 60,
+      "accuracy": 0.5556,
+      "ci95": [
+        0.4167,
+        0.6944
+      ],
+      "gpuCostPerSolvedCents": 9.7015,
+      "callsPerTrial": 10.75,
+      "failures": {
+        "finished wrong": 10,
+        "out of time, working": 38
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "defaults",
+      "agents": 16,
+      "benchmark": "gaia",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 60,
+      "correct": 14,
+      "accuracy": 0.2333,
+      "ci95": [
+        0.1333,
+        0.3333
+      ],
+      "gpuCostPerSolvedCents": 17.0129,
+      "callsPerTrial": 12.2,
+      "failures": {
+        "finished wrong": 11,
+        "out of time, working": 35
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "defaults",
+      "agents": 16,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 2,
+      "n": 108,
+      "correct": 48,
+      "accuracy": 0.4444,
+      "ci95": [
+        0.2963,
+        0.5926
+      ],
+      "gpuCostPerSolvedCents": 14.3902,
+      "callsPerTrial": 9.81,
+      "failures": {
+        "finished wrong": 5,
+        "out of time, looping": 1,
+        "out of time, working": 54
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "defaults",
+      "agents": 32,
+      "benchmark": "gaia",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 60,
+      "correct": 12,
+      "accuracy": 0.2,
+      "ci95": [
+        0.1,
+        0.3
+      ],
+      "gpuCostPerSolvedCents": 11.4392,
+      "callsPerTrial": 11.22,
+      "failures": {
+        "finished wrong": 10,
+        "out of time, working": 38
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "defaults",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 4,
+      "n": 216,
+      "correct": 89,
+      "accuracy": 0.412,
+      "ci95": [
+        0.2778,
+        0.5463
+      ],
+      "gpuCostPerSolvedCents": 9.5231,
+      "callsPerTrial": 8.43,
+      "failures": {
+        "finished wrong": 9,
+        "never started": 1,
+        "out of time, looping": 1,
+        "out of time, working": 116
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "defaults",
+      "agents": 48,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 72,
+      "correct": 24,
+      "accuracy": 0.3333,
+      "ci95": [
+        0.2083,
+        0.4722
+      ],
+      "gpuCostPerSolvedCents": 9.0037,
+      "callsPerTrial": 7.17,
+      "failures": {
+        "finished wrong": 1,
+        "out of time, looping": 1,
+        "out of time, working": 46
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "defaults",
+      "agents": 64,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 72,
+      "correct": 16,
+      "accuracy": 0.2222,
+      "ci95": [
+        0.1111,
+        0.3472
+      ],
+      "gpuCostPerSolvedCents": 13.5806,
+      "callsPerTrial": 5.9,
+      "failures": {
+        "finished wrong": 1,
+        "out of time, looping": 1,
+        "out of time, working": 54
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "defaults",
+      "agents": 8,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 36,
+      "correct": 19,
+      "accuracy": 0.5278,
+      "ci95": [
+        0.3611,
+        0.6944
+      ],
+      "gpuCostPerSolvedCents": 20.8595,
+      "callsPerTrial": 9.78,
+      "failures": {
+        "finished wrong": 3,
+        "out of time, working": 14
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "defaults-2x-time",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 2,
+      "n": 108,
+      "correct": 50,
+      "accuracy": 0.463,
+      "ci95": [
+        0.3241,
+        0.6019
+      ],
+      "gpuCostPerSolvedCents": 14.2792,
+      "callsPerTrial": 10.3,
+      "failures": {
+        "finished wrong": 9,
+        "out of time, looping": 1,
+        "out of time, working": 48
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "defaults-4x-time",
+      "agents": 16,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 36,
+      "correct": 22,
+      "accuracy": 0.6111,
+      "ci95": [
+        0.4722,
+        0.7778
+      ],
+      "gpuCostPerSolvedCents": 23.8973,
+      "callsPerTrial": 16.08,
+      "failures": {
+        "finished wrong": 7,
+        "out of time, looping": 1,
+        "out of time, working": 6
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "defaults-4x-time",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 36,
+      "correct": 17,
+      "accuracy": 0.4722,
+      "ci95": [
+        0.3056,
+        0.6389
+      ],
+      "gpuCostPerSolvedCents": 25.4535,
+      "callsPerTrial": 14.0,
+      "failures": {
+        "finished wrong": 7,
+        "out of time, working": 12
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "h200",
+      "agents": 32,
+      "benchmark": "gaia",
+      "gpu": "H200",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 60,
+      "correct": 20,
+      "accuracy": 0.3333,
+      "ci95": [
+        0.2167,
+        0.45
+      ],
+      "gpuCostPerSolvedCents": 7.8755,
+      "callsPerTrial": 13.1,
+      "failures": {
+        "finished wrong": 9,
+        "out of time, looping": 1,
+        "out of time, working": 30
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "h200",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H200",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 2,
+      "n": 108,
+      "correct": 48,
+      "accuracy": 0.4444,
+      "ci95": [
+        0.2963,
+        0.5926
+      ],
+      "gpuCostPerSolvedCents": 8.3629,
+      "callsPerTrial": 9.98,
+      "failures": {
+        "finished wrong": 7,
+        "out of time, looping": 1,
+        "out of time, working": 52
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "h200-spec-mtp",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H200",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 36,
+      "correct": 21,
+      "accuracy": 0.5833,
+      "ci95": [
+        0.4167,
+        0.75
+      ],
+      "gpuCostPerSolvedCents": 6.2571,
+      "callsPerTrial": 12.86,
+      "failures": {
+        "finished wrong": 2,
+        "out of time, working": 13
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "kv-fp8",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 2,
+      "n": 72,
+      "correct": 36,
+      "accuracy": 0.5,
+      "ci95": [
+        0.3611,
+        0.6389
+      ],
+      "gpuCostPerSolvedCents": 8.4183,
+      "callsPerTrial": 8.81,
+      "failures": {
+        "finished wrong": 3,
+        "out of time, working": 33
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "moe-a3b",
+      "agents": 16,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+      "runs": 2,
+      "n": 108,
+      "correct": 51,
+      "accuracy": 0.4722,
+      "ci95": [
+        0.3333,
+        0.6111
+      ],
+      "gpuCostPerSolvedCents": 11.8137,
+      "callsPerTrial": 21.14,
+      "failures": {
+        "finished wrong": 29,
+        "other error": 1,
+        "out of time, looping": 4,
+        "out of time, working": 23
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "moe-a3b",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.6-35B-A3B-FP8",
+      "runs": 2,
+      "n": 108,
+      "correct": 46,
+      "accuracy": 0.4259,
+      "ci95": [
+        0.2963,
+        0.5648
+      ],
+      "gpuCostPerSolvedCents": 8.4254,
+      "callsPerTrial": 20.42,
+      "failures": {
+        "finished wrong": 22,
+        "looked up answer": 1,
+        "other error": 3,
+        "out of time, looping": 8,
+        "out of time, working": 28
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "no-prefix-cache",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 2,
+      "n": 72,
+      "correct": 31,
+      "accuracy": 0.4306,
+      "ci95": [
+        0.2917,
+        0.5833
+      ],
+      "gpuCostPerSolvedCents": 9.5223,
+      "callsPerTrial": 7.47,
+      "failures": {
+        "finished wrong": 1,
+        "out of time, working": 40
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "no-thinking",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 2,
+      "n": 108,
+      "correct": 49,
+      "accuracy": 0.4537,
+      "ci95": [
+        0.2963,
+        0.6111
+      ],
+      "gpuCostPerSolvedCents": 8.1967,
+      "callsPerTrial": 16.07,
+      "failures": {
+        "finished wrong": 10,
+        "out of time, looping": 6,
+        "out of time, working": 43
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "spec-mtp",
+      "agents": 16,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 1,
+      "n": 36,
+      "correct": 19,
+      "accuracy": 0.5278,
+      "ci95": [
+        0.3611,
+        0.6944
+      ],
+      "gpuCostPerSolvedCents": 11.4274,
+      "callsPerTrial": 11.81,
+      "failures": {
+        "finished wrong": 6,
+        "out of time, working": 11
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "spec-mtp",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B",
+      "runs": 3,
+      "n": 144,
+      "correct": 63,
+      "accuracy": 0.4375,
+      "ci95": [
+        0.3194,
+        0.5625
+      ],
+      "gpuCostPerSolvedCents": 8.587,
+      "callsPerTrial": 8.27,
+      "failures": {
+        "finished wrong": 6,
+        "out of time, looping": 1,
+        "out of time, working": 74
+      }
+    },
+    {
+      "harness": "terminus-2",
+      "config": "weights-fp8",
+      "agents": 32,
+      "benchmark": "terminal-bench-2.0",
+      "gpu": "H100",
+      "model": "Qwen/Qwen3.8-27B-FP8",
+      "runs": 2,
+      "n": 72,
+      "correct": 30,
+      "accuracy": 0.4167,
+      "ci95": [
+        0.2778,
+        0.5556
+      ],
+      "gpuCostPerSolvedCents": 9.9253,
+      "callsPerTrial": 10.32,
+      "failures": {
+        "finished wrong": 4,
+        "out of time, working": 38
+      }
+    }
+  ],
+  "excludedRunCount": 5,
+  "paired": {
+    "terminalBench": [
+      {
+        "change": "b200 c32 B200",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": 19.21,
+          "ci95Pts": [
+            8.56,
+            30.56
+          ]
+        },
+        "terminus2": {
+          "diffPts": 14.35,
+          "ci95Pts": [
+            7.41,
+            22.69
+          ]
+        }
+      },
+      {
+        "change": "h200 c32 H200",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": 15.51,
+          "ci95Pts": [
+            5.79,
+            25.69
+          ]
+        },
+        "terminus2": {
+          "diffPts": 3.24,
+          "ci95Pts": [
+            -4.63,
+            10.65
+          ]
+        }
+      },
+      {
+        "change": "defaults c16 H100",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": 13.66,
+          "ci95Pts": [
+            5.79,
+            22.22
+          ]
+        },
+        "terminus2": {
+          "diffPts": 3.24,
+          "ci95Pts": [
+            -2.31,
+            9.26
+          ]
+        }
+      },
+      {
+        "change": "kv-fp8 c32 H100",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": 7.64,
+          "ci95Pts": [
+            0.69,
+            14.58
+          ]
+        },
+        "terminus2": {
+          "diffPts": 8.8,
+          "ci95Pts": [
+            0.93,
+            16.67
+          ]
+        }
+      },
+      {
+        "change": "weights-fp8 c32 H100",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": 10.42,
+          "ci95Pts": [
+            2.78,
+            18.75
+          ]
+        },
+        "terminus2": {
+          "diffPts": 0.46,
+          "ci95Pts": [
+            -6.94,
+            8.33
+          ]
+        }
+      },
+      {
+        "change": "moe-a3b c32 H100",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": 19.21,
+          "ci95Pts": [
+            4.17,
+            35.42
+          ]
+        },
+        "terminus2": {
+          "diffPts": 1.39,
+          "ci95Pts": [
+            -11.11,
+            14.81
+          ]
+        }
+      },
+      {
+        "change": "spec-mtp c32 H100",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": 6.25,
+          "ci95Pts": [
+            0.0,
+            13.19
+          ]
+        },
+        "terminus2": {
+          "diffPts": 2.55,
+          "ci95Pts": [
+            -4.17,
+            9.95
+          ]
+        }
+      },
+      {
+        "change": "no-prefix-cache c32 H100",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": 4.86,
+          "ci95Pts": [
+            -2.08,
+            12.5
+          ]
+        },
+        "terminus2": {
+          "diffPts": 1.85,
+          "ci95Pts": [
+            -6.48,
+            10.19
+          ]
+        }
+      },
+      {
+        "change": "no-thinking c32 H100",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": 9.95,
+          "ci95Pts": [
+            0.46,
+            20.14
+          ]
+        },
+        "terminus2": {
+          "diffPts": 4.17,
+          "ci95Pts": [
+            -5.09,
+            13.89
+          ]
+        }
+      },
+      {
+        "change": "h200-spec-mtp c32 H200",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": 20.14,
+          "ci95Pts": [
+            6.25,
+            35.42
+          ]
+        },
+        "terminus2": {
+          "diffPts": 17.13,
+          "ci95Pts": [
+            8.8,
+            25.93
+          ]
+        }
+      },
+      {
+        "change": "defaults-2x-time c32 H100",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": 9.03,
+          "ci95Pts": [
+            2.31,
+            16.44
+          ]
+        },
+        "terminus2": {
+          "diffPts": 5.09,
+          "ci95Pts": [
+            -1.85,
+            13.43
+          ]
+        }
+      },
+      {
+        "change": "defaults-4x-time c32 H100",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": 9.03,
+          "ci95Pts": [
+            -2.08,
+            21.53
+          ]
+        },
+        "terminus2": {
+          "diffPts": 6.02,
+          "ci95Pts": [
+            -6.94,
+            18.98
+          ]
+        }
+      },
+      {
+        "change": "defaults c8 H100",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": 20.14,
+          "ci95Pts": [
+            8.33,
+            33.33
+          ]
+        },
+        "terminus2": {
+          "diffPts": 11.57,
+          "ci95Pts": [
+            3.7,
+            20.37
+          ]
+        }
+      },
+      {
+        "change": "defaults c48 H100",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": 4.86,
+          "ci95Pts": [
+            -1.39,
+            11.81
+          ]
+        },
+        "terminus2": {
+          "diffPts": -7.87,
+          "ci95Pts": [
+            -14.35,
+            -1.39
+          ]
+        }
+      },
+      {
+        "change": "defaults c64 H100",
+        "tasks": 36,
+        "miniSweAgent": {
+          "diffPts": -3.47,
+          "ci95Pts": [
+            -12.5,
+            4.86
+          ]
+        },
+        "terminus2": {
+          "diffPts": -18.98,
+          "ci95Pts": [
+            -29.17,
+            -9.26
+          ]
+        }
+      }
+    ],
+    "gaia": [
+      {
+        "change": "h200 c32 H200",
+        "tasks": 60,
+        "miniSweAgent": {
+          "diffPts": 13.33,
+          "ci95Pts": [
+            0.0,
+            26.67
+          ]
+        },
+        "terminus2": {
+          "diffPts": 13.33,
+          "ci95Pts": [
+            3.33,
+            25.0
+          ]
+        }
+      },
+      {
+        "change": "defaults c16 H100",
+        "tasks": 60,
+        "miniSweAgent": {
+          "diffPts": 8.33,
+          "ci95Pts": [
+            -3.33,
+            20.0
+          ]
+        },
+        "terminus2": {
+          "diffPts": 3.33,
+          "ci95Pts": [
+            -5.0,
+            13.33
+          ]
+        }
+      }
+    ]
+  },
+  "preregistered": [
+    {
+      "claim": "C1: H200 vs H100 at 32 agents helps mini-swe-agent more than terminus-2",
+      "verdict": "not confirmed",
+      "effectPts": 9,
+      "ci95Pts": [
+        -7,
+        24
+      ]
+    },
+    {
+      "claim": "C2: 32 vs 16 agents on H100 hurts mini-swe-agent more",
+      "verdict": "not confirmed",
+      "effectPts": -9,
+      "ci95Pts": [
+        -24,
+        5
+      ]
+    },
+    {
+      "claim": "C3: thinking off interacts with the harness",
+      "verdict": "not confirmed",
+      "effectPts": -3,
+      "ci95Pts": [
+        -17,
+        10
+      ]
+    },
+    {
+      "claim": "C4: time-out share rises with median seconds per agent step",
+      "verdict": "confirmed"
+    }
+  ],
+  "failures": [
+    {
+      "category": "out of time, working",
+      "definition": "Hit the task's agent time limit while its last 8 actions were still mostly new (fewer than 50% repeat an earlier action)."
+    },
+    {
+      "category": "out of time, looping",
+      "definition": "Hit the time limit while at least 50% of its last 8 actions repeated earlier actions of the same trial."
+    },
+    {
+      "category": "finished wrong",
+      "definition": "The agent stopped on its own and the task's tests (or GAIA's exact-match check) failed."
+    },
+    {
+      "category": "never started",
+      "definition": "The harness never ran (e.g. its in-sandbox install failed); counted unsolved."
+    },
+    {
+      "category": "looked up answer",
+      "definition": "A tool call referenced the benchmark itself (its repo or site), e.g. to copy an expected answer; never counted solved even if the verifier passed."
+    },
+    {
+      "category": "other error",
+      "definition": "Any other exception (crashes, API errors, context overflow)."
+    }
+  ],
+  "limitations": [
+    "Two open models (Qwen3.8-27B dense, Qwen3.6-35B-A3B MoE) and one serving engine (vLLM 0.31.0); cloud GPUs and prices as of October 2026.",
+    "The 36 Terminal-Bench tasks all have agent limits of 20 minutes or less (63% of the benchmark does), so effects that work through the time limit are larger than on the full benchmark.",
+    "Several cells rest on one run of 36 tasks; identical conditions differed by up to 16.67 points between runs. Claims rest on paired intervals and on cells with 108+ trials.",
+    "Harness x infrastructure interactions are exploratory; the three pre-registered interaction claims (C1-C3) were not confirmed on fresh data. Only C4 (time-out share follows server speed) was confirmed.",
+    "Many paired comparisons were made; some intervals excluding zero are expected by chance.",
+    "Benchmark-lookup detection is a regex over tool calls and misses lookups that never name the benchmark. Sandboxes had internet access.",
+    "In-sandbox harnesses (mini-swe-agent, opencode, pi) never start on one task (qemu-startup, a Debian mirror 404), counted unsolved in every config; this lowers their absolute scores but not within-harness comparisons.",
+    "Sandbox cost is an estimate from requested CPU/memory and sandbox lifetime; it under-counts the bill (in-flight, aborted and orphaned sandboxes).",
+    "Run-to-run time varies about 20% for identical configs (stragglers), so per-cell cost per solve is noisy; GPU price is the October 2026 list rate.",
+    "GAIA: 60 tasks, three cells per harness, one run each; no uncapped (extra-time) run.",
+    "terminus-2 drove its agents from the session container through an egress proxy; the other harnesses called the server from sandboxes.",
+    "The quickcheck (8 tasks) and the opencode/pi cells (36 trials each) are too small for firm claims."
+  ]
+}

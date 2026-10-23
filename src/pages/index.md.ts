@@ -11,7 +11,9 @@ import {
   LABS_DOORS,
   LABS_FEATURE_PANELS,
   LABS_HERO,
+  LABS_HERO_VISUAL,
   LABS_HOME_SEO,
+  LABS_HOW_IT_WORKS,
   LABS_LOGO_GRID,
   LABS_STORIES,
 } from "../lib/labs-home";
@@ -23,14 +25,6 @@ export const prerender = true;
  * renders the same copy `index.astro` shows, from the same module, so the
  * two never drift.
  */
-function renderDoor(door: (typeof LABS_DOORS.doors)[number]): string {
-  return joinMarkdownSections(
-    `### ${door.name}`,
-    door.leadLine,
-    door.body,
-    `CTA: ${markdownLink(door.cta.label, door.cta.href)}`,
-  );
-}
 
 export function GET(): Response {
   const markdown = joinMarkdownSections(
@@ -43,15 +37,39 @@ export function GET(): Response {
       "## Summary",
       LABS_HERO.headlineLines.join(" "),
       LABS_HERO.deck,
+      LABS_HERO_VISUAL.label,
     ),
-    joinMarkdownSections("## Main CTA", markdownCtaList([LABS_HERO.cta])),
     joinMarkdownSections(
-      `## ${LABS_LOGO_GRID.headline}`,
-      LABS_LOGO_GRID.logos.map((logo) => logo.name).join(", "),
+      "## Main CTA",
+      markdownCtaList([LABS_HERO.cta]),
+      LABS_HERO.install ? `Install Kitaru: \`${LABS_HERO.install.cmd}\`` : "",
+    ),
+    joinMarkdownSections(
+      `## ${LABS_HOW_IT_WORKS.headline}`,
+      LABS_HOW_IT_WORKS.intro,
+      ...LABS_HOW_IT_WORKS.steps.map((step, i) =>
+        joinMarkdownSections(
+          `### ${i + 1}. ${step.title}`,
+          step.body,
+          step.detail?.kind === "prompt" ? `\`${step.detail.text}\`` : "",
+        ),
+      ),
+      markdownLink(LABS_HOW_IT_WORKS.link.label, LABS_HOW_IT_WORKS.link.href),
     ),
     joinMarkdownSections(
       `## ${LABS_DOORS.headline}`,
-      LABS_DOORS.doors.map(renderDoor).join("\n\n"),
+      ...LABS_DOORS.doors.map((door) =>
+        joinMarkdownSections(
+          `### ${door.name}`,
+          door.leadLine,
+          door.body,
+          `CTA: ${markdownLink(door.cta.label, door.cta.href)}`,
+        ),
+      ),
+    ),
+    joinMarkdownSections(
+      `## ${LABS_LOGO_GRID.headline}`,
+      LABS_LOGO_GRID.logos.map((logo) => logo.name).join(", "),
     ),
     joinMarkdownSections(
       "## What you get",
