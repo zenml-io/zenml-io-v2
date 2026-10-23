@@ -5,7 +5,13 @@
  * circle or a local-hardware chip). Inherits `currentColor`.
  */
 import type { ModelMark } from "../../lib/labs-home";
-import { AnthropicIcon, OpenAIIcon } from "../kitaru/islands/brand-icons";
+import {
+  AnthropicIcon,
+  DeepSeekIcon,
+  OpenAIIcon,
+  QwenIcon,
+  ZaiIcon,
+} from "../kitaru/islands/brand-icons";
 
 interface Props {
   mark: ModelMark;
@@ -16,6 +22,9 @@ const size = "size-3.5 shrink-0";
 
 {mark === "openai" && <OpenAIIcon class={size} />}
 {mark === "anthropic" && <AnthropicIcon class={size} />}
+{mark === "deepseek" && <DeepSeekIcon class={size} />}
+{mark === "qwen" && <QwenIcon class={size} />}
+{mark === "zai" && <ZaiIcon class={size} />}
 {mark === "open" && (
   <svg class={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
     <circle cx="12" cy="12" r="9" />

@@ -11,8 +11,19 @@ import sglang from "../../data/benchmarks/sglang-vs-vllm.json";
 import swapbench from "../../data/benchmarks/swapbench.json";
 import tau2Telecom from "../../data/benchmarks/tau2-telecom.json";
 import underwriting from "../../data/benchmarks/underwriting.json";
+import type { ModelMark } from "../labs-home";
 import { cents, pct } from "./format";
 import type { BenchmarkPreview } from "./types";
+
+/** A model's mark from its name and weights: a brand icon where one exists, else the open-weights glyph. */
+function modelMark(name: string, weights: string): ModelMark | undefined {
+  if (/^claude/i.test(name)) return "anthropic";
+  if (/^gpt/i.test(name)) return "openai";
+  if (/^deepseek/i.test(name)) return "deepseek";
+  if (/^qwen/i.test(name)) return "qwen";
+  if (/^glm/i.test(name)) return "zai";
+  return weights === "open" ? "open" : undefined;
+}
 
 function underwritingPreview(): BenchmarkPreview {
   const rows = underwriting.results.shared_rewritten_prompt_held_out;
@@ -20,20 +31,23 @@ function underwritingPreview(): BenchmarkPreview {
   const tied = rows
     .filter((r) => (top - r.accuracy) * 100 <= underwriting.noise.sizePoints)
     .sort((a, b) => a.costPerCorrectCents - b.costPerCorrectCents);
-  const name = (key: string) =>
-    underwriting.models.find((m) => m.key === key)?.name ?? key;
+  const model = (key: string) => underwriting.models.find((m) => m.key === key);
   // The two cheapest of the tied models against the priciest one.
   const shown = [...tied.slice(0, 2), tied[tied.length - 1]];
   return {
     metric: `Cost per correct decision, models tied at the top`,
     context: `One shared prompt, ${underwriting.dataset.heldOut} held-out cases. The two cheapest and the priciest of the ${tied.length} models within noise of the top score.`,
     better: "lower",
-    rows: shown.map((r, i) => ({
-      label: name(r.model),
-      value: r.costPerCorrectCents,
-      display: cents(r.costPerCorrectCents),
-      emphasis: i === 0,
-    })),
+    rows: shown.map((r, i) => {
+      const m = model(r.model);
+      return {
+        label: m?.name ?? r.model,
+        value: r.costPerCorrectCents,
+        display: cents(r.costPerCorrectCents),
+        emphasis: i === 0,
+        mark: m && modelMark(m.name, m.weights),
+      };
+    }),
   };
 }
 
@@ -176,6 +190,7 @@ function tau2TelecomPreview(): BenchmarkPreview {
       value: a.correct,
       display: `${a.correct} / ${a.n}`,
       emphasis: i === 0,
+      mark: modelMark(a.name, a.weights),
     })),
   };
 }

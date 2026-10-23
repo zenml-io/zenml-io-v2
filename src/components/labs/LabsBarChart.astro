@@ -1,11 +1,13 @@
 ---
 import type { BenchmarkPreview } from "../../lib/benchmarkReports";
+import LabsModelMark from "./LabsModelMark.astro";
 
 /**
  * labs.bar-chart — one benchmark's headline metric as a small horizontal bar
  * chart: a caption with the metric and its "higher/lower is better"
  * direction, then a row per value with a direct label, a single-hue sage bar
- * (the emphasised row darker) and the published value (DESIGN.md "Data
+ * (the emphasised row darker) and the published value, with the model's
+ * mark before the label on rows that name a model (DESIGN.md "Data
  * visualization"). `size="card"` is the hub card's compact chart;
  * `size="report"` draws the same data larger at the top of a report.
  */
@@ -28,8 +30,9 @@ const text = report ? "text-[15px] leading-[22px]" : "text-[13px] leading-5";
   <dl class:list={["grid", report ? "mt-5 gap-3.5" : "mt-3 gap-2"]}>
     {preview.rows.map((row) => (
       <div class:list={["grid items-center gap-3", report ? "grid-cols-[minmax(0,12rem)_minmax(0,1fr)]" : "grid-cols-[minmax(0,9rem)_minmax(0,1fr)]"]}>
-        <dt class:list={["truncate font-sans", text, row.emphasis ? "font-medium text-(--color-cream-900)" : "text-(--color-cream-800)"]} title={row.label}>
-          {row.label}
+        <dt class:list={["flex min-w-0 items-center gap-1.5 font-sans", text, row.emphasis ? "font-medium text-(--color-cream-900)" : "text-(--color-cream-800)"]} title={row.label}>
+          {row.mark && <LabsModelMark mark={row.mark} />}
+          <span class="truncate">{row.label}</span>
         </dt>
         <dd class="flex min-w-0 items-center gap-3">
           <span class:list={["min-w-0 flex-1 rounded-full bg-(--color-sage-100)", report ? "h-3.5" : "h-2.5"]} aria-hidden="true">

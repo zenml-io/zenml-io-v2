@@ -1986,7 +1986,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 0,
     stage: false,
     notes:
-      "One experiment on /benchmarks, kept light: the benchmark's name as a Borna title with the shared per-line underline link stretched over the card to /benchmarks/<slug>, its question in up to two lines, a compact labs.bar-chart (at most three bars) of the headline metric, and the topic tags as one quiet line beside an arrow. The date, companion post and everything else live on the report. Sage border and wash on hover. The hub grid steps 1 → 2 → 3 columns.",
+      "One experiment on /benchmarks, kept light: the benchmark's name as a Borna title with the shared per-line underline link stretched over the card to /benchmarks/<slug>, its question in up to two lines, a compact labs.bar-chart (at most three bars) of the headline metric, and the topic tags as one quiet line beside an arrow. The date, companion post and everything else live on the report. Sage border and wash on hover. The hub grid steps 1 → 2 → 3 columns, staying at two for a group of two or four cards.",
   },
   {
     id: "labs.bar-chart",
@@ -1999,7 +1999,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 0,
     stage: false,
     notes:
-      'A benchmark\'s headline metric as a small horizontal bar chart: caption with the metric and "higher/lower is better", then one row per value with a direct label, a single-hue sage bar (the emphasised row in sage-800) and the published value, no legend (DESIGN.md "Data visualization"). size="card" is the compact chart inside labs.benchmark-card; size="report" draws the same data larger at the top of a /benchmarks/<slug> report. Data comes from src/lib/benchmarkReports/previews.ts.',
+      'A benchmark\'s headline metric as a small horizontal bar chart: caption with the metric and "higher/lower is better", then one row per value with a direct label (led by the model\'s labs mark on rows that name a model), a single-hue sage bar (the emphasised row in sage-800) and the published value, no legend (DESIGN.md "Data visualization"). size="card" is the compact chart inside labs.benchmark-card; size="report" draws the same data larger at the top of a /benchmarks/<slug> report. Data comes from src/lib/benchmarkReports/previews.ts.',
   },
   {
     id: "labs.results-table",

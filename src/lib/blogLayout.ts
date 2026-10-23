@@ -33,6 +33,10 @@ export const BAND_CONTENT_GAP = "pt-10 md:pt-16";
 export const ARTICLE_TITLE_CLASS =
   "font-display text-[32px] leading-[38px] text-(--color-cream-800) md:text-[56px] md:leading-[62px]";
 
+/** Shared section-heading ladder for Labs content sections (benchmark hub and reports). */
+export const SECTION_HEADING_CLASS =
+  "font-display text-[32px] leading-[38px] text-(--color-cream-900) md:text-[40px] md:leading-[46px]";
+
 /** CSS custom-property names the constants above are exposed as. */
 export const BLOG_LANE_VARS = {
   articleLane: "--article-lane",

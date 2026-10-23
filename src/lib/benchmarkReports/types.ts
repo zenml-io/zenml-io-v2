@@ -5,6 +5,8 @@
  * table already formatted, so the page and the card only render.
  */
 
+import type { ModelMark } from "../labs-home";
+
 export interface TableCell {
   text: string;
   /** Heat level for single-hue sage cells (0 = no tint). */
@@ -66,6 +68,8 @@ export interface BenchmarkPreview {
     display: string;
     /** The row the benchmark's finding points at. */
     emphasis?: boolean;
+    /** The model's mark, on rows that name a model. */
+    mark?: ModelMark;
   }[];
 }
 

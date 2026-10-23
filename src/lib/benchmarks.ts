@@ -35,6 +35,12 @@ export const BENCHMARK_METHOD = [
   },
 ] as const;
 
+/** Who runs the benchmarks, as an HTML answer for the hub's method list. */
+export const BENCHMARKS_WHO_RUNS = {
+  title: "Who runs these",
+  body: 'The ZenML team runs these benchmarks. Some use <a href="/product/kitaru">Kitaru</a>, our open-source tool for testing agent changes, to record and replay agent runs. Kitaru is the bench, never a contestant: no result here ranks it, or ZenML, against anything. We publish the findings that cut against easy advice too, like a cheap closed model tying the best open ones for less per correct answer.',
+} as const;
+
 export const BENCHMARKS_CLOSE: LabsBandContent = {
   ...LABS_CLOSE,
   headlineLines: ["Run it on", "your own agent"],

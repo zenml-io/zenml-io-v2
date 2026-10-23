@@ -230,7 +230,14 @@ export interface LabsInstallChip {
 
 /** A model's mark: a brand icon where the service-logo set has one, or a
  *  neutral glyph (`open`, `chip`) for models without an approved mark yet. */
-export type ModelMark = "openai" | "anthropic" | "open" | "chip";
+export type ModelMark =
+  | "openai"
+  | "anthropic"
+  | "deepseek"
+  | "qwen"
+  | "zai"
+  | "open"
+  | "chip";
 
 /** One proposed update in the hero explainer, and which sessions it changes. */
 export interface HeroUpdate {
