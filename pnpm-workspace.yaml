@@ -27,3 +27,8 @@ overrides:
   'ajv>fast-uri': 3.1.8
   'gray-matter>js-yaml': 3.15.2
   'satori>fflate': 0.7.5
+packageExtensions:
+  # eslint-mdx 3.8.2 imports tslib from lib/worker.js without declaring it.
+  'eslint-mdx@3.8.2':
+    dependencies:
+      tslib: ^2.8.1
