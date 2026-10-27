@@ -445,17 +445,19 @@ jobs:
             --argjson allow_absent "$([ "$status" = "404" ] && echo true || echo false)" \
             --arg worker "$WORKER_NAME" '
               .success == true and
-              ([.result[] | select(.id == $worker)]) as $workers |
               (
-                ($allow_absent and ($workers | length) == 0) or
+                ([.result[] | select(.id == $worker)]) as $workers |
                 (
-                  ($allow_absent | not) and
-                  ($workers | length) == 1 and
+                  ($allow_absent and ($workers | length) == 0) or
                   (
-                    $workers[0].routes == null or
+                    ($allow_absent | not) and
+                    ($workers | length) == 1 and
                     (
-                      ($workers[0].routes | type) == "array" and
-                      ($workers[0].routes | length) == 0
+                      $workers[0].routes == null or
+                      (
+                        ($workers[0].routes | type) == "array" and
+                        ($workers[0].routes | length) == 0
+                      )
                     )
                   )
                 )
@@ -696,13 +698,15 @@ jobs:
             "$api_base/workers/scripts" > "$RUNNER_TEMP/workers-after-upload.json"
           jq -e --arg worker "$WORKER_NAME" '
             .success == true and
-            ([.result[] | select(.id == $worker)]) as $workers |
-            ($workers | length) == 1 and
             (
-              $workers[0].routes == null or
+              ([.result[] | select(.id == $worker)]) as $workers |
+              ($workers | length) == 1 and
               (
-                ($workers[0].routes | type) == "array" and
-                ($workers[0].routes | length) == 0
+                $workers[0].routes == null or
+                (
+                  ($workers[0].routes | type) == "array" and
+                  ($workers[0].routes | length) == 0
+                )
               )
             )
           ' "$RUNNER_TEMP/workers-after-upload.json" > /dev/null
@@ -925,13 +929,15 @@ jobs:
             "$api_base/workers/scripts" > "$RUNNER_TEMP/workers-before-retire.json"
           jq -e --arg worker "$WORKER_NAME" '
             .success == true and
-            ([.result[] | select(.id == $worker)]) as $workers |
-            ($workers | length) == 1 and
             (
-              $workers[0].routes == null or
+              ([.result[] | select(.id == $worker)]) as $workers |
+              ($workers | length) == 1 and
               (
-                ($workers[0].routes | type) == "array" and
-                ($workers[0].routes | length) == 0
+                $workers[0].routes == null or
+                (
+                  ($workers[0].routes | type) == "array" and
+                  ($workers[0].routes | length) == 0
+                )
               )
             )
           ' "$RUNNER_TEMP/workers-before-retire.json" > /dev/null

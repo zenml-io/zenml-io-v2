@@ -333,22 +333,24 @@ jobs:
             --arg worker "$worker_name" \
             --argjson accepted_routes "$ACCEPTED_WORKER_ROUTES_JSON" '
             .success == true and
-            ([.result[] | select(.id == $worker)]) as $workers |
-            ($workers | length) == 1 and
-            ($workers[0].routes | type) == "array" and
-            all(
-              $workers[0].routes[];
-              (type == "string") or
-              (
-                type == "object" and
-                .script == $worker and
-                (.pattern | type) == "string"
-              )
-            ) and
-            ([
-              $workers[0].routes[] |
-              if type == "object" then .pattern else . end
-            ] | sort) == ($accepted_routes | sort)
+            (
+              ([.result[] | select(.id == $worker)]) as $workers |
+              ($workers | length) == 1 and
+              ($workers[0].routes | type) == "array" and
+              all(
+                $workers[0].routes[];
+                (type == "string") or
+                (
+                  type == "object" and
+                  .script == $worker and
+                  (.pattern | type) == "string"
+                )
+              ) and
+              ([
+                $workers[0].routes[] |
+                if type == "object" then .pattern else . end
+              ] | sort) == ($accepted_routes | sort)
+            )
           ' "$RUNNER_TEMP/workers-before-upload.json" > /dev/null; then
             echo "Unexpected Worker route topology before upload." >&2
             exit 1
@@ -537,22 +539,24 @@ jobs:
             --arg worker "$worker_name" \
             --argjson accepted_routes "$ACCEPTED_WORKER_ROUTES_JSON" '
             .success == true and
-            ([.result[] | select(.id == $worker)]) as $workers |
-            ($workers | length) == 1 and
-            ($workers[0].routes | type) == "array" and
-            all(
-              $workers[0].routes[];
-              (type == "string") or
-              (
-                type == "object" and
-                .script == $worker and
-                (.pattern | type) == "string"
-              )
-            ) and
-            ([
-              $workers[0].routes[] |
-              if type == "object" then .pattern else . end
-            ] | sort) == ($accepted_routes | sort)
+            (
+              ([.result[] | select(.id == $worker)]) as $workers |
+              ($workers | length) == 1 and
+              ($workers[0].routes | type) == "array" and
+              all(
+                $workers[0].routes[];
+                (type == "string") or
+                (
+                  type == "object" and
+                  .script == $worker and
+                  (.pattern | type) == "string"
+                )
+              ) and
+              ([
+                $workers[0].routes[] |
+                if type == "object" then .pattern else . end
+              ] | sort) == ($accepted_routes | sort)
+            )
           ' "$RUNNER_TEMP/workers-after-upload.json" > /dev/null; then
             echo "Unexpected Worker route topology after upload." >&2
             exit 1
@@ -669,22 +673,24 @@ jobs:
             --arg worker "$worker_name" \
             --argjson accepted_routes "$ACCEPTED_WORKER_ROUTES_JSON" '
             .success == true and
-            ([.result[] | select(.id == $worker)]) as $workers |
-            ($workers | length) == 1 and
-            ($workers[0].routes | type) == "array" and
-            all(
-              $workers[0].routes[];
-              (type == "string") or
-              (
-                type == "object" and
-                .script == $worker and
-                (.pattern | type) == "string"
-              )
-            ) and
-            ([
-              $workers[0].routes[] |
-              if type == "object" then .pattern else . end
-            ] | sort) == ($accepted_routes | sort)
+            (
+              ([.result[] | select(.id == $worker)]) as $workers |
+              ($workers | length) == 1 and
+              ($workers[0].routes | type) == "array" and
+              all(
+                $workers[0].routes[];
+                (type == "string") or
+                (
+                  type == "object" and
+                  .script == $worker and
+                  (.pattern | type) == "string"
+                )
+              ) and
+              ([
+                $workers[0].routes[] |
+                if type == "object" then .pattern else . end
+              ] | sort) == ($accepted_routes | sort)
+            )
           ' "$RUNNER_TEMP/workers-before-activation.json" > /dev/null; then
             echo "Unexpected Worker route topology before activation." >&2
             exit 1
@@ -1109,22 +1115,24 @@ jobs:
             --arg worker "$worker_name" \
             --argjson accepted_routes "$ACCEPTED_WORKER_ROUTES_JSON" '
             .success == true and
-            ([.result[] | select(.id == $worker)]) as $workers |
-            ($workers | length) == 1 and
-            ($workers[0].routes | type) == "array" and
-            all(
-              $workers[0].routes[];
-              (type == "string") or
-              (
-                type == "object" and
-                .script == $worker and
-                (.pattern | type) == "string"
-              )
-            ) and
-            ([
-              $workers[0].routes[] |
-              if type == "object" then .pattern else . end
-            ] | sort) == ($accepted_routes | sort)
+            (
+              ([.result[] | select(.id == $worker)]) as $workers |
+              ($workers | length) == 1 and
+              ($workers[0].routes | type) == "array" and
+              all(
+                $workers[0].routes[];
+                (type == "string") or
+                (
+                  type == "object" and
+                  .script == $worker and
+                  (.pattern | type) == "string"
+                )
+              ) and
+              ([
+                $workers[0].routes[] |
+                if type == "object" then .pattern else . end
+              ] | sort) == ($accepted_routes | sort)
+            )
           ' "$RUNNER_TEMP/workers-after-activation.json" > /dev/null; then
             echo "Unexpected Worker route topology after activation." >&2
             false
