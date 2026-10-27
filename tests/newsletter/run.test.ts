@@ -9,6 +9,7 @@ import {
   runNewsletter,
 } from "../../scripts/newsletter/run";
 import {
+  issueSubject,
   usableHook,
   type Writer,
   WriterOutputError,
@@ -411,5 +412,33 @@ describe("usableHook", () => {
     };
     await runNewsletter(deps);
     expect(f.created[0].subject).toBe("In Production #1: T a");
+  });
+});
+
+describe("issueSubject", () => {
+  const hook = "event memory and portable sandboxes";
+  it.each([
+    "Various",
+    "Anthropic / Various",
+    "Ragas, Various",
+    "Various (Canonical, Prosus, DeepMind)",
+    "ASU / Google",
+  ])("drops the possessive and capitalises the hook for %j", (company) => {
+    expect(issueSubject(7, hook, { company, title: "T" })).toBe(
+      "In Production #7: Event memory and portable sandboxes",
+    );
+  });
+  it.each(["Ramp", "AWS (Alexa)", "Burns & Mcdonnel"])(
+    "keeps the possessive for the single company %j",
+    (company) => {
+      expect(issueSubject(7, hook, { company, title: "T" })).toBe(
+        `In Production #7: ${company}'s event memory and portable sandboxes`,
+      );
+    },
+  );
+  it("does not treat a company containing the letters 'various' as a placeholder", () => {
+    expect(issueSubject(7, hook, { company: "Variousity", title: "T" })).toBe(
+      "In Production #7: Variousity's event memory and portable sandboxes",
+    );
   });
 });

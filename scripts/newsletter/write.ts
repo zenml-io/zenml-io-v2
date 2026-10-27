@@ -64,6 +64,16 @@ export function lowerCaseHookUnlessAcronym(hook: string): string {
   return hook;
 }
 
+/** True for the database's placeholder "Various" and for lists of several companies ("A / B", "A, B"), which read badly as "X's". */
+export const isMultiCompany = (company: string) => /[/,]/.test(company) || hasWord(company.toLowerCase(), "various");
+
+/** "In Production #N: Ramp's <hook>" for one company; "In Production #N: <Hook>" for a multi-company lead; the lead's title without a hook. */
+export function issueSubject(number: number, hook: string | null, lead: Pick<Entry, "company" | "title">): string {
+  if (!hook) return `In Production #${number}: ${lead.title}`;
+  if (lead.company && isMultiCompany(lead.company)) return `In Production #${number}: ${hook[0]!.toUpperCase()}${hook.slice(1)}`;
+  return `In Production #${number}: ${lead.company ?? lead.title}'s ${lowerCaseHookUnlessAcronym(hook)}`;
+}
+
 export function buildWriterPrompt(entry: Entry, o: { withHook: boolean; feedback?: string }) {
   const body = entry.sections.map((s) => `## ${s.heading}\n\n${s.text}`).join("\n\n");
   const feedback = o.feedback ? `\n\nA previous attempt was rejected: ${o.feedback}\nFix that problem.` : "";
