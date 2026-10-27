@@ -125,19 +125,21 @@ jobs:
             "$api_base/workers/scripts" > "$RUNNER_TEMP/workers-before-activation.json"
           jq -e --arg route "$STAGING_ROUTE" --arg worker "$WORKER_NAME" '
             .success == true and
-            ([.result[] | select(.id == $worker)]) as $workers |
-            ($workers | length) == 1 and
-            ($workers[0] | has("routes")) and
-            ($workers[0].routes | type) == "array" and
-            ($workers[0].routes | length) == 1 and
             (
-              ($workers[0].routes[0] | type) == "string" and
-              $workers[0].routes[0] == $route
-              or
+              ([.result[] | select(.id == $worker)]) as $workers |
+              ($workers | length) == 1 and
+              ($workers[0] | has("routes")) and
+              ($workers[0].routes | type) == "array" and
+              ($workers[0].routes | length) == 1 and
               (
-                ($workers[0].routes[0] | type) == "object" and
-                $workers[0].routes[0].pattern == $route and
-                $workers[0].routes[0].script == $worker
+                ($workers[0].routes[0] | type) == "string" and
+                $workers[0].routes[0] == $route
+                or
+                (
+                  ($workers[0].routes[0] | type) == "object" and
+                  $workers[0].routes[0].pattern == $route and
+                  $workers[0].routes[0].script == $worker
+                )
               )
             )
           ' "$RUNNER_TEMP/workers-before-activation.json" > /dev/null
@@ -299,19 +301,21 @@ jobs:
             > "$RUNNER_TEMP/workers-before-deploy.json"
           jq -e --arg route "$STAGING_ROUTE" --arg worker "$WORKER_NAME" '
             .success == true and
-            ([.result[] | select(.id == $worker)]) as $workers |
-            ($workers | length) == 1 and
-            ($workers[0] | has("routes")) and
-            ($workers[0].routes | type) == "array" and
-            ($workers[0].routes | length) == 1 and
             (
-              ($workers[0].routes[0] | type) == "string" and
-              $workers[0].routes[0] == $route
-              or
+              ([.result[] | select(.id == $worker)]) as $workers |
+              ($workers | length) == 1 and
+              ($workers[0] | has("routes")) and
+              ($workers[0].routes | type) == "array" and
+              ($workers[0].routes | length) == 1 and
               (
-                ($workers[0].routes[0] | type) == "object" and
-                $workers[0].routes[0].pattern == $route and
-                $workers[0].routes[0].script == $worker
+                ($workers[0].routes[0] | type) == "string" and
+                $workers[0].routes[0] == $route
+                or
+                (
+                  ($workers[0].routes[0] | type) == "object" and
+                  $workers[0].routes[0].pattern == $route and
+                  $workers[0].routes[0].script == $worker
+                )
               )
             )
           ' "$RUNNER_TEMP/workers-before-deploy.json" > /dev/null
@@ -400,19 +404,21 @@ jobs:
             "$api_base/workers/scripts" > "$RUNNER_TEMP/workers-after-activation.json"
           jq -e --arg route "$STAGING_ROUTE" --arg worker "$WORKER_NAME" '
             .success == true and
-            ([.result[] | select(.id == $worker)]) as $workers |
-            ($workers | length) == 1 and
-            ($workers[0] | has("routes")) and
-            ($workers[0].routes | type) == "array" and
-            ($workers[0].routes | length) == 1 and
             (
-              ($workers[0].routes[0] | type) == "string" and
-              $workers[0].routes[0] == $route
-              or
+              ([.result[] | select(.id == $worker)]) as $workers |
+              ($workers | length) == 1 and
+              ($workers[0] | has("routes")) and
+              ($workers[0].routes | type) == "array" and
+              ($workers[0].routes | length) == 1 and
               (
-                ($workers[0].routes[0] | type) == "object" and
-                $workers[0].routes[0].pattern == $route and
-                $workers[0].routes[0].script == $worker
+                ($workers[0].routes[0] | type) == "string" and
+                $workers[0].routes[0] == $route
+                or
+                (
+                  ($workers[0].routes[0] | type) == "object" and
+                  $workers[0].routes[0].pattern == $route and
+                  $workers[0].routes[0].script == $worker
+                )
               )
             )
           ' "$RUNNER_TEMP/workers-after-activation.json" > /dev/null
