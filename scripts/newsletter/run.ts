@@ -11,7 +11,7 @@ import { entryUrl, type IssueItem, PREHEADER, renderEmail } from "./render";
 import { type ReportItem, type RunOutcome, renderReport } from "./report";
 import { formatIssueDate, isArchiveSlot, nextSendSlot } from "./schedule";
 import { archiveOrder, buildArchivePool, buildPool, clashes, type DatedEntry, pickIssue } from "./select";
-import { blurbText, createOpenAIWriter, lowerCaseHookUnlessAcronym, usableHook, type Writer, type Written, WriterOutputError, writtenProblems } from "./write";
+import { blurbText, createOpenAIWriter, issueSubject, usableHook, type Writer, type Written, WriterOutputError, writtenProblems } from "./write";
 
 export type Mode = "schedule" | "test-only" | "dry-run";
 export interface RunDeps {
@@ -141,7 +141,7 @@ export async function runNewsletter(d: RunDeps): Promise<{ outcome: RunOutcome; 
   const number = nextIssueNumber(campaigns);
   const lead = picks[0];
   const hook = usableHook(written[0].hook, lead);
-  const subject = hook ? `In Production #${number}: ${lead.company ?? lead.title}'s ${lowerCaseHookUnlessAcronym(hook)}` : `In Production #${number}: ${lead.title}`;
+  const subject = issueSubject(number, hook, lead);
   const items: IssueItem[] = picks.map((e, i) => ({
     slug: e.slug, title: e.title, company: e.company, industry: e.industry,
     origin: e === archive?.entry ? { kind: "archive", year: e.year } : { kind: "recent", addedOn: e.publishedAt as Date },
