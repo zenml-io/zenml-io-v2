@@ -249,14 +249,16 @@ jobs:
             > "$RUNNER_TEMP/workers-before-upload.json"
           jq -e --arg worker "$worker_name" '
             .success == true and
-            ([.result[] | select(.id == $worker)]) as $workers |
-            ($workers | length) == 1 and
-            ($workers[0] | has("routes")) and
             (
-              $workers[0].routes == null or
+              ([.result[] | select(.id == $worker)]) as $workers |
+              ($workers | length) == 1 and
+              ($workers[0] | has("routes")) and
               (
-                ($workers[0].routes | type) == "array" and
-                ($workers[0].routes | length) == 0
+                $workers[0].routes == null or
+                (
+                  ($workers[0].routes | type) == "array" and
+                  ($workers[0].routes | length) == 0
+                )
               )
             )
           ' "$RUNNER_TEMP/workers-before-upload.json" > /dev/null
@@ -389,14 +391,16 @@ jobs:
             > "$RUNNER_TEMP/workers-after-upload.json"
           jq -e --arg worker "$worker_name" '
             .success == true and
-            ([.result[] | select(.id == $worker)]) as $workers |
-            ($workers | length) == 1 and
-            ($workers[0] | has("routes")) and
             (
-              $workers[0].routes == null or
+              ([.result[] | select(.id == $worker)]) as $workers |
+              ($workers | length) == 1 and
+              ($workers[0] | has("routes")) and
               (
-                ($workers[0].routes | type) == "array" and
-                ($workers[0].routes | length) == 0
+                $workers[0].routes == null or
+                (
+                  ($workers[0].routes | type) == "array" and
+                  ($workers[0].routes | length) == 0
+                )
               )
             )
           ' "$RUNNER_TEMP/workers-after-upload.json" > /dev/null
