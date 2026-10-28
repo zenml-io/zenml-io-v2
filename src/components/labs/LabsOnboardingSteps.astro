@@ -36,19 +36,19 @@ const WIDGET =
     </p>
 
     <ol class="mt-space-xl grid list-none grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-      {content.steps.map((step, index) => (
+      {content.steps.map(({ title, body, widget }, index) => (
         <li class:list={["reveal-child flex min-w-0 flex-col rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400)", index % 2 === 1 && "stagger-1"]}>
           <span class="inline-flex size-9 items-center justify-center rounded-full bg-(--color-sage-800) font-mono text-[13px] leading-none text-(--color-cream-50)">
             {String(index + 1).padStart(2, "0")}
           </span>
-          <h3 class="mt-6 font-display text-[24px] leading-[30px] text-(--color-cream-900)">{step.title}</h3>
-          <p class="mt-3 mb-8 font-sans text-[16px] leading-[25px] text-(--color-cream-700)">{step.body}</p>
+          <h3 class="mt-6 font-display text-[24px] leading-[30px] text-(--color-cream-900)">{title}</h3>
+          <p class="mt-3 mb-8 font-sans text-[16px] leading-[25px] text-(--color-cream-700)">{body}</p>
 
           <div class={WIDGET} aria-hidden="true">
-            {step.widget.kind === "connect" && (
+            {widget.kind === "connect" && (
               <div class="flex flex-col gap-3">
                 <ul class="flex flex-col gap-1.5">
-                  {step.widget.repos.map((repo) => (
+                  {widget.repos.map((repo) => (
                     <li class="flex items-center justify-between gap-2 rounded-[10px] bg-card px-3 py-2">
                       <span class="truncate font-mono text-[12px] leading-4 text-(--color-cream-900)">{repo.name}</span>
                       <span class="shrink-0 rounded-full bg-(--color-sage-100) px-2 py-0.5 font-label text-[10px] leading-4 uppercase tracking-[0.05em] text-(--color-sage-800)">{repo.role}</span>
@@ -56,15 +56,15 @@ const WIDGET =
                   ))}
                 </ul>
                 <ul class="flex flex-wrap gap-1.5">
-                  {step.widget.providers.map((provider) => (
-                    <li class:list={[CHIP, provider === (step.widget.kind === "connect" && step.widget.picked) ? "bg-(--color-sage-800) text-(--color-cream-50)" : "border border-(--color-border) text-(--color-cream-700)"]}>
+                  {widget.providers.map((provider) => (
+                    <li class:list={[CHIP, provider === widget.picked ? "bg-(--color-sage-800) text-(--color-cream-50)" : "border border-(--color-border) text-(--color-cream-700)"]}>
                       {provider}
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-            {step.widget.kind === "call" && (
+            {widget.kind === "call" && (
               <div class="flex flex-col gap-3">
                 <div class="flex items-center gap-2">
                   <span class="flex h-4 items-end gap-0.5">
@@ -72,24 +72,24 @@ const WIDGET =
                   </span>
                   <span class="font-mono text-[12px] leading-4 text-(--color-cream-700)">On a call · 01:42</span>
                 </div>
-                <p class="font-sans text-[14px] leading-5 text-(--color-cream-800)">{step.widget.context}</p>
-                <p class="font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">{step.widget.question}</p>
+                <p class="font-sans text-[14px] leading-5 text-(--color-cream-800)">{widget.context}</p>
+                <p class="font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">{widget.question}</p>
                 <ul class="flex flex-wrap gap-1.5">
-                  {step.widget.options.map((option) => (
-                    <li class:list={[CHIP, option === (step.widget.kind === "call" && step.widget.picked) ? "bg-(--color-sage-800) text-(--color-cream-50)" : "border border-(--color-border) bg-card text-(--color-cream-800)"]}>
+                  {widget.options.map((option) => (
+                    <li class:list={[CHIP, option === widget.picked ? "bg-(--color-sage-800) text-(--color-cream-50)" : "border border-(--color-border) bg-card text-(--color-cream-800)"]}>
                       {option}
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-            {step.widget.kind === "report" && (
+            {widget.kind === "report" && (
               <ul class="flex flex-col gap-2">
-                {step.widget.items.map((item) => (
+                {widget.items.map((item) => (
                   <li class="flex flex-col gap-1.5 rounded-[10px] bg-card px-3 py-2.5">
                     <span class="flex items-center justify-between gap-2">
                       <span class:list={["rounded-full px-2 py-0.5 font-label text-[10px] leading-4 uppercase tracking-[0.05em]", GAP_TAG[item.kind]]}>
-                        {step.widget.kind === "report" && step.widget.kindLabels[item.kind]}
+                        {widget.kindLabels[item.kind]}
                       </span>
                       <span class="font-mono text-[13px] leading-4 text-(--color-cream-900)">{item.count}</span>
                     </span>
@@ -98,13 +98,13 @@ const WIDGET =
                 ))}
               </ul>
             )}
-            {step.widget.kind === "review" && (
+            {widget.kind === "review" && (
               <div class="flex flex-col gap-3">
-                <p class="font-mono text-[12px] leading-4 text-(--color-cream-700)">{step.widget.session}</p>
-                <p class="rounded-[10px] bg-card px-3 py-2.5 font-mono text-[12px] leading-[18px] text-(--color-cream-900)">{step.widget.excerpt}</p>
-                <p class="font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">{step.widget.question}</p>
+                <p class="font-mono text-[12px] leading-4 text-(--color-cream-700)">{widget.session}</p>
+                <p class="rounded-[10px] bg-card px-3 py-2.5 font-mono text-[12px] leading-[18px] text-(--color-cream-900)">{widget.excerpt}</p>
+                <p class="font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">{widget.question}</p>
                 <ul class="grid grid-cols-2 gap-1.5">
-                  {step.widget.options.map((option) => (
+                  {widget.options.map((option) => (
                     <li class:list={[CHIP, "border border-(--color-border) bg-card text-center text-(--color-cream-800)"]}>{option}</li>
                   ))}
                 </ul>
