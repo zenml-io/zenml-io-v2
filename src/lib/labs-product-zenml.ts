@@ -54,10 +54,6 @@ export const ZENML_HERO_SECONDARY: LabsCta = {
   href: ZENML_DOCS_URL,
   analytics: "Hero-Secondary-ZenML",
 };
-export const ZENML_FINAL_SIGNUP: LabsCta = {
-  ...ZENML_SIGNUP,
-  analytics: "Final-Signup-ZenML",
-};
 export const ZENML_VALUE_PROPS_CTA: LabsCta = {
   ...ZENML_SIGNUP,
   analytics: "ValueProps-CTA-ZenML",
@@ -245,6 +241,6 @@ export const ZENML_CLOSE: LabsProductBandContent = {
   headlineLines: ["Start on your laptop,", "scale to your cluster"],
   /** The company value proposition, verbatim. */
   deck: "Own your infrastructure, build it the way you want, and keep pace as your organization evolves.",
-  cta: ZENML_FINAL_SIGNUP,
+  cta: { ...ZENML_HERO_SECONDARY, analytics: "Final-Docs-ZenML" },
   install: { cmd: ZENML_INSTALL_CMD, analytics: "Final-Install-ZenML" },
 };

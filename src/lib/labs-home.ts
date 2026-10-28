@@ -301,8 +301,8 @@ export const LABS_HERO_VISUAL: HeroVisualContent = {
 };
 
 export const LABS_HERO: LabsProductBandContent = {
-  headlineLines: ["Your evals pass.", "Your users don't."],
-  deck: "Our AI engineer reads your traces next to your evals and shows you what they miss.",
+  headlineLines: ["Know which evals", "to write"],
+  deck: "Writing evals isn't the hard part. Our AI engineer reads your traces next to your evals and shows you what they miss.",
   cta: LABS_HERO_SIGNUP,
 };
 
@@ -396,11 +396,8 @@ export interface ProblemBandContent {
 
 export const LABS_PROBLEM: ProblemBandContent = {
   eyebrow: "The problem",
-  headlineLines: [
-    "Writing evals isn't the hard part.",
-    "Knowing which evals to write is.",
-  ],
-  deck: "Your agent is live. Its traces flow into Langfuse. The dashboard says 91%, the complaints keep coming, and everyone on the team knows the number is off. Nobody knows where.",
+  headlineLines: ["The dashboard says 91%.", "The complaints keep coming."],
+  deck: "Your agent is live and its traces flow into Langfuse. Everyone on the team knows the number is off. Nobody knows where.",
   points: [
     {
       title: "Written once, never checked",
@@ -855,8 +852,8 @@ export const LABS_STORIES: StoryCardsContent = {
 /* ---------------------------------------------------------------------- */
 
 export const LABS_HOME_CLOSE: LabsBandContent = {
-  headlineLines: ["Find what your", "evals missed"],
-  deck: "Start with the traces and the evals you already have.",
+  headlineLines: ["Find what your", "evals miss"],
+  deck: "Connect your repo and your tracing provider. Your AI engineer takes it from there.",
   cta: LABS_FINAL_SIGNUP,
 };
 

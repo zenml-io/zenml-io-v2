@@ -29,22 +29,27 @@ import { TwoDoors } from "../../components/kitaru/islands/TwoDoors";
  * which is why the multi-turn divergence caveat does not surface here.
  *
  * Sections (terminal-first order, Sep 2026):
- *   Hero          → Start free + Read the docs pills, the install chip beneath
+ *   Hero          → the install command, Read the docs as the ghost pill
  *   FirstRun      → the first five minutes as a terminal transcript + outcomes
+ *   OpenSource    → labs.open-source-band: licence, local, keys, GitHub stars
  *   TwoDoors      → two paths in: wrap an agent or import existing traces
+ *   EvalImport    → labs.eval-import-band: bring the evals you already run
  *   ScenarioStrip → four questions asked of one cohort of real sessions
  *   Features      → the model-migration wedge, in experiment/run terms
  *   Faq           → the questions that come up in every demo
- *   Cta           → closing CTA band
+ *   Cta           → closing band, install command first
  *
  * The onboarding journey (login, skills, worker, triage) is deliberately
  * docs-only — it lives in PRODUCT_KITARU_MARKDOWN.journey → /product/kitaru.md.
  *
  * See MERGE_PLAN.md §4 (Phase 2b).
  */
+import LabsEvalImportBand from "../../components/labs/LabsEvalImportBand.astro";
+import LabsOpenSourceBand from "../../components/labs/LabsOpenSourceBand.astro";
 import JsonLd from "../../components/seo/JsonLd.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { FAQ_ITEMS } from "../../lib/kitaru-landing";
+import { KITARU_EVAL_IMPORT, KITARU_OPEN_SOURCE } from "../../lib/openSource";
 import { PRODUCT_KITARU_SEO } from "../../lib/productKitaru";
 import { absoluteUrl } from "../../lib/seo";
 import { htmlToPlainText } from "../../lib/text";
@@ -72,7 +77,9 @@ const faqJsonLd = {
     <main id="kitaru-main" class="overflow-x-clip">
       <Hero />
       <FirstRun />
+      <LabsOpenSourceBand content={KITARU_OPEN_SOURCE} tint="orange" />
       <TwoDoors client:visible />
+      <LabsEvalImportBand content={KITARU_EVAL_IMPORT} />
       <ScenarioStrip client:visible />
       <Features />
       <Faq />
