@@ -51,8 +51,11 @@ export interface BenchmarkStat {
   label: string;
 }
 
-/** Which hub section a benchmark is listed under. */
-export type BenchmarkGroup = "agents" | "infrastructure";
+/** The industry a benchmark's work comes from: its hub section. */
+export type BenchmarkIndustry =
+  | "insurance"
+  | "customer-service"
+  | "infrastructure";
 
 export interface BenchmarkCardContent {
   domain: string;
@@ -119,7 +122,7 @@ export interface BenchmarkReport {
   name: string;
   /** Topic tags shown as chips on the card and the report. */
   tags: readonly string[];
-  group: BenchmarkGroup;
+  industry: BenchmarkIndustry;
   /** Last run date (ISO), shown on the card; the hub lists newest first. */
   date: string;
   card: BenchmarkCardContent;

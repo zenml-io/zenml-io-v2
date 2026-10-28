@@ -1,0 +1,42 @@
+---
+/**
+ * LabsGapKinds (`labs.gap-kinds`) — the homepage's two kinds of gap: a
+ * headline and deck, then two cards side by side from md (Wrong first, then
+ * Missing). Each card carries its tag, a title, a body, and one example
+ * under a hairline: a large count in the display face and the sentence it
+ * counts. Static. Copy arrives through `content` (LABS_GAP_KINDS on `/`).
+ */
+import type { GapKindsContent } from "../../lib/labs-home";
+import { GAP_TAG } from "./gapTags";
+
+interface Props {
+  content: GapKindsContent;
+}
+const { content } = Astro.props;
+---
+
+<section class="scroll-reveal-section py-24 md:py-32" aria-labelledby="gap-kinds-title">
+  <div class="mx-auto max-w-content px-gutter">
+    <h2 id="gap-kinds-title" class="reveal-child font-display text-[32px] leading-[38px] text-(--color-cream-900) md:text-[48px] md:leading-[54px]">
+      {content.headline}
+    </h2>
+    <p class="reveal-child stagger-1 mt-4 max-w-[640px] font-sans text-[17px] leading-[27px] text-(--color-cream-700)">
+      {content.deck}
+    </p>
+    <ul class="mt-space-xl grid list-none grid-cols-1 gap-4 md:grid-cols-2">
+      {content.kinds.map((kind, index) => (
+        <li class:list={["reveal-child flex flex-col rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10", index === 1 && "stagger-1"]}>
+          <span class:list={["self-start rounded-full px-3 py-1 font-label text-[12px] leading-4 uppercase tracking-[0.05em]", GAP_TAG[kind.kind]]}>
+            {kind.label}
+          </span>
+          <h3 class="mt-6 font-display text-[28px] leading-[34px] text-(--color-cream-900)">{kind.title}</h3>
+          <p class="mt-3 mb-8 font-sans text-[17px] leading-[27px] text-(--color-cream-700)">{kind.body}</p>
+          <p class="mt-auto flex items-baseline gap-4 border-t border-(--color-border) pt-6">
+            <span class="font-display text-[56px] leading-none text-(--color-sage-800)">{kind.example.stat}</span>
+            <span class="font-sans text-[15px] leading-[23px] text-(--color-cream-800)">{kind.example.text}</span>
+          </p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

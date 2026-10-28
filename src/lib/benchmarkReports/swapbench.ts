@@ -285,7 +285,7 @@ export function buildSwapbench(): BenchmarkReport {
     slug: "swapbench",
     name: "SwapBench",
     tags: ["Model swap", "Customer service", "Kitaru replay"],
-    group: "agents",
+    industry: "customer-service",
     date: "2026-10-15",
     card: {
       domain: "Customer-service agents",

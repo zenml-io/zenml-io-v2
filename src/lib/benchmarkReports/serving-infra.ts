@@ -344,7 +344,7 @@ export function buildServingInfra(): BenchmarkReport {
     slug: "serving-infra",
     name: "GPU & Serving Settings",
     tags: ["Self-hosting", "GPUs", "Cost", "Coding agents"],
-    group: "infrastructure",
+    industry: "infrastructure",
     date: d.meta.runDates.end,
     card: {
       domain: "Self-hosted coding and research agents",

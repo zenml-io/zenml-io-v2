@@ -11,7 +11,7 @@ import { buildServingInfra } from "./serving-infra";
 import { buildSglangVsVllm } from "./sglang-vs-vllm";
 import { buildSwapbench } from "./swapbench";
 import { buildTau2Telecom } from "./tau2-telecom";
-import type { BenchmarkGroup, BenchmarkReport } from "./types";
+import type { BenchmarkIndustry, BenchmarkReport } from "./types";
 import { buildUnderwriting } from "./underwriting";
 
 export { BENCHMARK_PREVIEWS } from "./previews";
@@ -27,21 +27,33 @@ export const BENCHMARK_REPORTS: readonly BenchmarkReport[] = [
   buildTau2Telecom(),
 ].sort((a, b) => b.date.localeCompare(a.date));
 
-export const BENCHMARK_GROUPS: readonly {
-  id: BenchmarkGroup;
+/**
+ * The hub's sections, one per industry, in page order. Insurance leads and
+ * renders as the featured band: it is the industry we build for first.
+ */
+export const BENCHMARK_INDUSTRIES: readonly {
+  id: BenchmarkIndustry;
   title: string;
   intro: string;
+  featured?: true;
 }[] = [
   {
-    id: "agents",
-    title: "Agents and models",
+    id: "insurance",
+    title: "Insurance",
     intro:
-      "Models inside real agent work: which one to run, whether a swap is safe, and what each correct answer costs.",
+      "Underwriting, claims and appeals agents on public insurance data: which model to run, what each correct decision costs, and how often a rerun changes the answer.",
+    featured: true,
+  },
+  {
+    id: "customer-service",
+    title: "Customer service and telecom",
+    intro:
+      "Support agents that take actions for customers: whether a model swap is safe, and how to tell before it ships.",
   },
   {
     id: "infrastructure",
-    title: "Serving infrastructure",
+    title: "AI infrastructure",
     intro:
-      "Self-hosted agents on GPUs: how hardware, load and the serving engine change what gets solved and what it costs.",
+      "Self-hosted agents on GPUs, for any industry: how hardware, load and the serving engine change what gets solved and what it costs.",
   },
 ];

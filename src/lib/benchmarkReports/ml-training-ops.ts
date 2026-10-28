@@ -287,7 +287,7 @@ export function buildMlTrainingOps(): BenchmarkReport {
     slug: "ml-training-ops",
     name: "ML Training Ops",
     tags: ["Self-hosting", "GPUs", "Coding agents", "Stopped"],
-    group: "infrastructure",
+    industry: "infrastructure",
     date: m.meta.runEnd,
     card: {
       headline: {

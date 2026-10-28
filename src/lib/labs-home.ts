@@ -19,11 +19,7 @@ import {
   LOGO_CLOUD,
   type LogoItem,
 } from "./homepage";
-import {
-  KITARU_DOCS_URL,
-  KITARU_INSTALL_CMD,
-  KITARU_LINKS,
-} from "./productKitaru";
+import { KITARU_DOCS_URL, KITARU_LINKS } from "./productKitaru";
 import { ZENML_LINKS } from "./productZenml";
 
 export type { CaseStudyCard };
@@ -32,9 +28,9 @@ export type { CaseStudyCard };
 export type LabsProduct = "zenml" | "kitaru";
 
 export const LABS_HOME_SEO = {
-  title: "ZenML Labs: Ship AI you can trust",
+  title: "ZenML Labs: Find what your evals miss",
   description:
-    "ZenML Labs builds two open-source products for teams running AI in production. Kitaru tests updates to AI agents, such as a new model, prompt, or framework, on the traces you already collect and shows exactly which sessions would change. ZenML orchestrates ML pipelines and agents on your own infrastructure.",
+    "Our AI engineer reads your agent's production traces next to the evals you already run, shows you what those evals miss, and turns a few of your answers into checks you can trust. Built on Kitaru and ZenML, both open source.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -294,10 +290,295 @@ export const LABS_HERO_VISUAL: HeroVisualContent = {
 };
 
 export const LABS_HERO: LabsProductBandContent = {
-  headlineLines: ["Ship agent updates", "without guessing"],
-  deck: "Swap the model, rewrite the prompt, tweak the harness. Kitaru tests it on the traces you already have and shows exactly what would change.",
+  headlineLines: ["Your evals pass.", "Your users don't."],
+  deck: "Our AI engineer reads your traces next to your evals and shows you what they miss.",
   cta: LABS_HERO_SIGNUP,
-  install: { cmd: KITARU_INSTALL_CMD, analytics: "Home-Hero-Install" },
+};
+
+/* ---------------------------------------------------------------------- */
+/* Gap report: the hero's example and the two kinds of gap                 */
+/* ---------------------------------------------------------------------- */
+
+/** One gap on the example report: an eval that passes the wrong thing, or
+ *  a behavior nothing checks. */
+export interface GapItem {
+  kind: "wrong" | "missing";
+  title: string;
+  /** The eval it concerns (wrong) or the rule it breaks (missing). */
+  source: string;
+  count: string;
+}
+
+export interface GapReportVisualContent {
+  /** Accessible description of the whole card. */
+  label: string;
+  eyebrow: string;
+  agent: string;
+  window: string;
+  /** The two pass rates the report opens with: the evals', then the team's. */
+  scores: readonly [GapScore, GapScore];
+  kindLabels: Record<GapItem["kind"], string>;
+  items: readonly GapItem[];
+  note: string;
+}
+
+export interface GapScore {
+  label: string;
+  value: number;
+}
+
+/**
+ * The example everything on `/` shares: an insurance underwriting agent, a
+ * week of traces, the team's own evals. Illustrative, not a customer result:
+ * the gap report is new work (see the PR notes), so the card says "Example".
+ */
+export const LABS_GAP_REPORT: GapReportVisualContent = {
+  label:
+    "An example gap report for an insurance underwriting agent, Oct 21 to 27. The team's evals pass 91% of last week's sessions; by the team's own underwriting manual, 74% should pass. Two gaps lead the report: a completeness judge that passed 41 quotes without the flood exclusion, and 58 quotes priced on loss runs older than 90 days that no eval checks.",
+  eyebrow: "What your evals missed this week",
+  agent: "underwriting-agent",
+  window: "Oct 21 to 27 · 1,482 sessions",
+  scores: [
+    { label: "Your evals pass", value: 91 },
+    { label: "Your manual passes", value: 74 },
+  ],
+  kindLabels: { wrong: "Wrong", missing: "Missing" },
+  items: [
+    {
+      kind: "wrong",
+      title: "Passes quotes without the flood exclusion",
+      source: "quote_completeness",
+      count: "41",
+    },
+    {
+      kind: "missing",
+      title: "Quotes priced on loss runs older than 90 days",
+      source: "UW 4.2",
+      count: "58",
+    },
+    {
+      kind: "missing",
+      title: "Sprinkler credit with no inspection report",
+      source: "UW 5.1",
+      count: "37",
+    },
+  ],
+  note: "Example report",
+};
+
+/* ---------------------------------------------------------------------- */
+/* Problem                                                                 */
+/* ---------------------------------------------------------------------- */
+
+export interface ProblemPoint {
+  title: string;
+  body: string;
+}
+
+export interface ProblemBandContent {
+  eyebrow: string;
+  /** Two sentences, set on two lines. */
+  headlineLines: readonly [string, string];
+  deck: string;
+  points: readonly ProblemPoint[];
+}
+
+export const LABS_PROBLEM: ProblemBandContent = {
+  eyebrow: "The problem",
+  headlineLines: [
+    "Writing evals isn't the hard part.",
+    "Knowing which evals to write is.",
+  ],
+  deck: "Your agent is live. Its traces flow into Langfuse. The dashboard says 91%, the complaints keep coming, and everyone on the team knows the number is off. Nobody knows where.",
+  points: [
+    {
+      title: "Written once, never checked",
+      body: "Judges get written in a sprint, often by an AI tool, and nobody compares them with their own verdicts again.",
+    },
+    {
+      title: "High score, unhappy users",
+      body: "The evals keep passing while traffic drifts to cases they never looked at.",
+    },
+    {
+      title: "Nobody wants the job",
+      body: "Every hour spent on evals is an hour not spent building, so the checking never happens.",
+    },
+  ],
+};
+
+/* ---------------------------------------------------------------------- */
+/* Onboarding: connect, a short call, the gap report, a weekly review      */
+/* ---------------------------------------------------------------------- */
+
+export type OnboardingWidget =
+  | {
+      kind: "connect";
+      repos: readonly OnboardingRepo[];
+      providers: readonly string[];
+      picked: string;
+    }
+  | {
+      kind: "call";
+      question: string;
+      options: readonly string[];
+      picked: string;
+      context: string;
+    }
+  | {
+      kind: "report";
+      items: readonly GapItem[];
+      kindLabels: Record<GapItem["kind"], string>;
+    }
+  | {
+      kind: "review";
+      session: string;
+      excerpt: string;
+      question: string;
+      options: readonly string[];
+    };
+
+export interface OnboardingRepo {
+  name: string;
+  role: string;
+}
+
+export interface OnboardingStep {
+  title: string;
+  body: string;
+  widget: OnboardingWidget;
+}
+
+export interface OnboardingStepsContent {
+  eyebrow: string;
+  headline: string;
+  deck: string;
+  steps: readonly OnboardingStep[];
+  /** What is live and what is still rolling out, said plainly. */
+  note: string;
+}
+
+export const LABS_ONBOARDING: OnboardingStepsContent = {
+  eyebrow: "How it works",
+  headline: "You answer a few questions. Good evals fall out.",
+  deck: "You never sit down to write evals. Your AI engineer reads what you already have and asks you only what it can't work out alone.",
+  steps: [
+    {
+      title: "Connect your repo and your traces",
+      body: "Install the GitHub app, pick your tracing provider and paste two keys. It finds your agent, your eval code and the scores you already track.",
+      widget: {
+        kind: "connect",
+        repos: [
+          { name: "underwriting-agent", role: "Agent" },
+          { name: "uw-evals", role: "Evals" },
+        ],
+        providers: ["Langfuse", "LangSmith", "Braintrust", "MLflow", "Phoenix"],
+        picked: "Langfuse",
+      },
+    },
+    {
+      title: "Take a short call",
+      body: "Your AI engineer calls you, on your phone or in the browser, and asks at most three questions about what it found. Tap to answer.",
+      widget: {
+        kind: "call",
+        context: "quote_completeness has passed every quote for 30 days.",
+        question: "Do you trust it?",
+        options: ["Yes", "Not really", "Never checked"],
+        picked: "Not really",
+      },
+    },
+    {
+      title: "Get your gap report",
+      body: "Seconds after you hang up: what your evals missed last week, in the order you said you care about. Deeper analysis follows in Slack.",
+      widget: {
+        kind: "report",
+        items: LABS_GAP_REPORT.items.slice(0, 2),
+        kindLabels: LABS_GAP_REPORT.kindLabels,
+      },
+    },
+    {
+      title: "Fifteen minutes a week",
+      body: "Three real sessions and about ten quick questions. Your answers become a calibrated check and a frozen set of sessions.",
+      widget: {
+        kind: "review",
+        session: "Session #3318 · quote",
+        excerpt:
+          "Premium $4,180 · Limit $1.2M · Deductible $5,000. Property in FEMA zone A.",
+        question: "Should this quote have passed?",
+        options: ["Pass", "Fail"],
+      },
+    },
+  ],
+  note: "Trace import, review and replay are live today. The call and the gap report are rolling out to early teams first.",
+};
+
+/* ---------------------------------------------------------------------- */
+/* Two kinds of gap                                                        */
+/* ---------------------------------------------------------------------- */
+
+export interface GapKind {
+  kind: GapItem["kind"];
+  label: string;
+  title: string;
+  body: string;
+  example: { stat: string; text: string };
+}
+
+export interface GapKindsContent {
+  headline: string;
+  deck: string;
+  kinds: readonly [GapKind, GapKind];
+}
+
+export const LABS_GAP_KINDS: GapKindsContent = {
+  headline: "Two kinds of gap",
+  deck: "Every finding on the report is one or the other, with the sessions that show it.",
+  kinds: [
+    {
+      kind: "wrong",
+      label: "Wrong",
+      title: "An eval you would disagree with",
+      body: "It runs on every session and reports a pass. Read the sessions it passed and you would fail them.",
+      example: {
+        stat: "41",
+        text: "quotes passed by the completeness judge without the flood exclusion the manual requires.",
+      },
+    },
+    {
+      kind: "missing",
+      label: "Missing",
+      title: "Something nothing checks",
+      body: "It happens again and again in your traffic, and no eval you run looks at it.",
+      example: {
+        stat: "58",
+        text: "quotes priced on loss runs older than 90 days. No eval reads the loss run date.",
+      },
+    },
+  ],
+};
+
+/* ---------------------------------------------------------------------- */
+/* Benchmarks: insurance first                                             */
+/* ---------------------------------------------------------------------- */
+
+export interface BenchmarkBandContent {
+  eyebrow: string;
+  headline: string;
+  deck: string;
+  /** Report slugs, in card order. */
+  slugs: readonly string[];
+  link: LabsCta;
+}
+
+export const LABS_BENCHMARK_BAND: BenchmarkBandContent = {
+  eyebrow: "Benchmarks",
+  headline: "Tested on insurance agents first",
+  deck: "We run real underwriting and appeals work through open and frontier models, and publish the method, the noise and the limits.",
+  slugs: ["underwriting", "decision-agents"],
+  link: {
+    label: "All benchmarks",
+    href: "/benchmarks",
+    analytics: "Home-Benchmarks-All",
+  },
 };
 
 /* ---------------------------------------------------------------------- */
@@ -339,13 +620,15 @@ export interface ProductDoorsContent {
 }
 
 export const LABS_DOORS: ProductDoorsContent = {
-  headline: "Two open-source products",
+  headline: "Open source underneath",
+  caption:
+    "Your AI engineer works on top of both. Use them on their own, free, on your own machines.",
   doors: [
     {
       name: "ZenML",
       tint: "sage",
       leadLine: "Orchestrate AI on the infra you choose",
-      body: "Run ML pipelines and agents in Python on the orchestrator and cloud you already have, with every run, artifact, and model version recorded.",
+      body: "Run pipelines and agents in Python on the orchestrator and cloud you already have, with every run, artifact, and model version recorded.",
       cta: {
         label: "Explore ZenML",
         href: "/product/zenml",
@@ -356,7 +639,7 @@ export const LABS_DOORS: ProductDoorsContent = {
       name: "Kitaru",
       tint: "orange",
       leadLine: "Test every agent update on real traces",
-      body: "Import the traces you already have, try a new model, prompt, or harness on them, and see exactly what would change before it ships.",
+      body: "Import the traces you already have, review sessions, turn your verdicts into evaluators, and replay any change before it ships.",
       cta: {
         label: "Explore Kitaru",
         href: "/product/kitaru",
@@ -408,9 +691,9 @@ export interface HowItWorksStage {
 }
 
 export const LABS_HOW_IT_WORKS: HowItWorksContent = {
-  headline: "How do you test an agent update before it ships?",
+  headline: "Then prove every change before it ships",
   intro:
-    "Kitaru is an open-source tool that replays the traces your agent already produced under a proposed update and shows which sessions would change, so you review only those.",
+    "Your calibrated checks and frozen sessions become the test for every new model, prompt or harness. Kitaru replays them and shows which sessions would change, so you review only those.",
   steps: [
     {
       title: "Bring the traces you have",
@@ -485,15 +768,15 @@ export type FeaturePanel = FeaturePanelIcon & {
 export const LABS_FEATURE_PANELS: readonly FeaturePanel[] = [
   {
     index: "01.",
-    title: "Orchestrate",
-    body: "Pipelines and agents in Python, on the orchestrator and cloud you already run.",
+    title: "No re-instrumenting",
+    body: "Connect the tracing provider you already use. Your agent's code stays as it is.",
     icon: "pipeline",
     tone: "sage-tint",
   },
   {
     index: "02.",
-    title: "Replay",
-    body: "Prove a change on whole production sessions before it ships: a new model, a new prompt, or a fix.",
+    title: "Your judgment, kept",
+    body: "Your verdicts become checks the whole team shares, instead of one engineer's notebook.",
     icon: "layers",
     tone: "sage-deep",
   },
@@ -562,6 +845,12 @@ export const LABS_STORIES: StoryCardsContent = {
 /* ---------------------------------------------------------------------- */
 /* Close                                                                   */
 /* ---------------------------------------------------------------------- */
+
+export const LABS_HOME_CLOSE: LabsBandContent = {
+  headlineLines: ["Find what your", "evals missed"],
+  deck: "Start with the traces and the evals you already have.",
+  cta: LABS_FINAL_SIGNUP,
+};
 
 export const LABS_CLOSE: LabsBandContent = {
   headlineLines: ["Start with your", "production data"],

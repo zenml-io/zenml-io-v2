@@ -82,9 +82,10 @@ export const ZENML_STORIES_ALL: LabsCta = {
 
 export const ZENML_HERO: LabsProductBandContent = {
   headlineLines: ["AI orchestration,", "on the infra you choose"],
-  deck: "Write pipelines and agents in Python. Run them on Kubernetes, Vertex AI, SageMaker, or your laptop, without rewriting the code.",
-  cta: ZENML_HERO_SIGNUP,
-  secondaryCta: ZENML_HERO_SECONDARY,
+  deck: "Open-source pipelines and agents in Python. Run them on Kubernetes, Vertex AI, SageMaker, or your laptop, without rewriting the code.",
+  // The product page leads with the open-source path; signup is the ghost pill.
+  cta: ZENML_HERO_SECONDARY,
+  secondaryCta: ZENML_HERO_SIGNUP,
   install: { cmd: ZENML_INSTALL_CMD, analytics: "Hero-Install-ZenML" },
 };
 

@@ -299,7 +299,7 @@ export function buildUnderwriting(): BenchmarkReport {
     slug: "underwriting",
     name: "Underwriting Agent",
     tags: ["Model choice", "Prompting", "Cost", "Public data"],
-    group: "agents",
+    industry: "insurance",
     date: u.meta.run_dates.shared_prompt_run,
     card: {
       domain: "Insurance underwriting",

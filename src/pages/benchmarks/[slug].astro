@@ -5,18 +5,17 @@
  * result at a glance as `process-steps.compact-list` (the benchmark's
  * `labs.bar-chart` as the lead card, then its top three findings) and its
  * main section (a `labs.interval-chart` where the benchmark has one, then
- * the first table). Everything else (more findings, the other tables,
- * per-type and failure breakdowns, data, method, limitations) sits in
- * "Go deeper", a `labs.faq` of closed rows, so the page reads in one screen
- * and the full record stays one click away. The companion post, once
- * published, and the sources close the page as `labs.related-band` cards.
+ * the first table). The rest of the record follows, open rather than
+ * folded away: every other finding as numbered cards, how it was run beside
+ * what it can't show, and the data it ran on. Only the bulky extra tables
+ * fold, each as a card that names its tables before it opens. The companion
+ * post, once published, and the sources close the page as
+ * `labs.related-band` cards.
  */
 import { getCollection, getEntry } from "astro:content";
 import FeatureCard from "../../components/labs/FeatureCard.astro";
 import LabsBarChart from "../../components/labs/LabsBarChart.astro";
 import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
-import LabsFaq from "../../components/labs/LabsFaq.astro";
-import LabsFaqItem from "../../components/labs/LabsFaqItem.astro";
 import LabsIntervalChart from "../../components/labs/LabsIntervalChart.astro";
 import LabsPageHeader from "../../components/labs/LabsPageHeader.astro";
 import LabsRelatedBand from "../../components/labs/LabsRelatedBand.astro";
@@ -51,22 +50,26 @@ const preview = BENCHMARK_PREVIEWS[report.slug];
 const [main, ...moreSections] = report.sections;
 const KEY_FINDINGS = 3;
 
-/** The "Go deeper" rows, in reading order; an empty one does not render. */
-const deeper = [
-  report.findings.length > KEY_FINDINGS && {
-    id: "more-findings",
-    title: "More findings",
-  },
+/** The extra tables, grouped as they fold: the main section's other
+ * tables first, then each further section. An empty group does not render. */
+const moreTables = [
   main &&
     main.tables.length > 1 && {
       id: main.id,
       title: `More ${main.title.toLowerCase()}`,
+      intro: undefined,
+      tables: main.tables.slice(1),
     },
-  ...moreSections.map((section) => ({ id: section.id, title: section.title })),
-  report.datasets.length > 0 && { id: "data", title: "Data" },
-  { id: "method", title: "Method" },
-  { id: "limitations", title: "Limitations" },
-].filter((row): row is { id: string; title: string } => Boolean(row));
+  ...moreSections.map((section) => ({
+    id: section.id,
+    title: section.title,
+    intro: section.intro,
+    tables: section.tables,
+  })),
+].filter((group): group is Exclude<typeof group, false | undefined> =>
+  Boolean(group),
+);
+const moreFindings = report.findings.slice(KEY_FINDINGS);
 
 const category = post?.data.category
   ? await getEntry("categories", post.data.category)
@@ -153,85 +156,109 @@ const LINK =
 
   </div>
 
-  <div class="scroll-reveal-section">
-    <div class="reveal-child">
-    <LabsFaq headline="Go deeper" width="content">
-      {deeper.map((row) => (
-        <LabsFaqItem question={row.title} id={`deeper-${row.id}`}>
-        {row.id === "more-findings" && (
-          <ol class="mx-auto grid max-w-[768px] list-none gap-space-xs" start={KEY_FINDINGS + 1}>
-            {report.findings.slice(KEY_FINDINGS).map((finding, index) => (
-              <li class="grid grid-cols-[40px_minmax(0,1fr)]">
-                <span class="font-mono text-[13px] leading-6 text-(--color-sage-700)">{String(index + KEY_FINDINGS + 1).padStart(2, "0")}</span>
-                <p>{finding}</p>
-              </li>
-            ))}
-          </ol>
-        )}
-        {main && row.id === main.id && (
-          <div class="flex flex-col gap-space-xl">
-            {main.tables.slice(1).map((table) => (
-              <div class="min-w-0"><LabsResultsTable table={table} /></div>
-            ))}
-          </div>
-        )}
-        {moreSections.filter((section) => section.id === row.id).map((section) => (
-          <div class="flex flex-col gap-space-mlg">
-            {section.intro && <p class:list={["max-w-[768px]", BODY]}>{section.intro}</p>}
-            {section.tables.map((table) => (
-              <div class="min-w-0"><LabsResultsTable table={table} /></div>
-            ))}
-          </div>
-        ))}
-        {row.id === "data" && (
-          <ul class="grid list-none gap-space-sm md:grid-cols-2">
-            {report.datasets.map((dataset) => (
-              <li>
-                <FeatureCard
-                  href={dataset.href}
-                  category={dataset.license}
-                  title={dataset.name}
-                  summary={dataset.description}
-                  external
-                >
-                  {dataset.huggingFace && (
-                    <a
-                      href={`https://huggingface.co/datasets/${dataset.huggingFace}`}
-                      class={DATA_LINK}
-                      rel="noopener"
-                      target="_blank"
-                    >
-                      Browse the data on Hugging Face <span aria-hidden="true">↗</span>
-                    </a>
-                  )}
-                </FeatureCard>
-              </li>
-            ))}
-          </ul>
-        )}
-        {row.id === "method" && (
-          <dl class="mx-auto grid max-w-[768px] gap-0">
-            {report.method.map((item) => (
-              <div class="grid gap-2 border-b border-(--color-border) py-5 last:border-b-0 md:grid-cols-[220px_minmax(0,1fr)] md:gap-8">
-                <dt class="font-sans text-[17px] leading-[27px] font-medium text-(--color-cream-900)">{item.term}</dt>
-                <dd class="font-sans text-[16px] leading-[26px] text-(--color-cream-700)">{item.detail}</dd>
+  <div class="mx-auto mt-space-xxl flex max-w-content flex-col gap-space-xxl px-gutter md:mt-28 md:gap-28">
+    {moreFindings.length > 0 && (
+      <section class="scroll-reveal-section" aria-labelledby="more-findings">
+        <h2 id="more-findings" class:list={["reveal-child", SECTION_HEADING_CLASS]}>What else we found</h2>
+        <div class="reveal-child mt-space-lg">
+          <ProcessSteps
+            layout="compact-list"
+            numeralStyle="zero-padded"
+            skin="labs"
+            steps={moreFindings.map((finding, index) => ({ number: index + KEY_FINDINGS + 1, body: finding }))}
+          />
+        </div>
+      </section>
+    )}
+
+    {moreTables.length > 0 && (
+      <section class="scroll-reveal-section" aria-labelledby="full-results">
+        <h2 id="full-results" class:list={["reveal-child", SECTION_HEADING_CLASS]}>Full results</h2>
+        <p class:list={["reveal-child stagger-1 mt-space-sm max-w-[768px]", BODY]}>
+          Every table behind the findings, grouped by question. Each opens in place.
+        </p>
+        <div class="reveal-child mt-space-lg flex flex-col gap-4">
+          {moreTables.map((group) => (
+            <details id={`results-${group.id}`} class="group/table rounded-[20px] border border-(--color-border) bg-card transition-colors duration-200 ease-out open:border-(--color-sage-400) hover:border-(--color-sage-400)">
+              <summary class="flex cursor-pointer list-none items-start justify-between gap-6 p-6 md:p-8 [&::-webkit-details-marker]:hidden">
+                <span class="min-w-0">
+                  <span class="block font-display text-[22px] leading-[28px] text-(--color-cream-900) md:text-[24px] md:leading-[30px]">{group.title}</span>
+                  <span class="mt-2 block font-sans text-[15px] leading-[23px] text-(--color-cream-700)">
+                    {group.tables.map((table) => table.title).join(" · ")}
+                  </span>
+                </span>
+                <span class="flex shrink-0 items-center gap-3 font-mono text-[13px] leading-6 text-(--color-sage-800)">
+                  {group.tables.length} {group.tables.length === 1 ? "table" : "tables"}
+                  <span aria-hidden="true" class="inline-flex size-8 items-center justify-center rounded-full border border-(--color-border) transition-transform duration-200 ease-out group-open/table:rotate-45">+</span>
+                </span>
+              </summary>
+              <div class="flex flex-col gap-space-xl border-t border-(--color-border) p-6 md:p-8">
+                {group.intro && <p class:list={["max-w-[768px]", BODY]}>{group.intro}</p>}
+                {group.tables.map((table) => (
+                  <div class="min-w-0"><LabsResultsTable table={table} /></div>
+                ))}
               </div>
-            ))}
-          </dl>
-        )}
-        {row.id === "limitations" && (
-          <div class="labs-hex-list mx-auto max-w-[768px] [--list-marker-size:10px_11.5px] [--list-marker-width:28px]">
+            </details>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="scroll-reveal-section grid gap-space-xl lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-16" aria-label="Method and limitations">
+      <div class="reveal-child min-w-0">
+        <h2 id="method" class={SECTION_HEADING_CLASS}>How we ran it</h2>
+        <dl class="mt-space-md">
+          {report.method.map((item) => (
+            <div class="border-t border-(--color-border) py-5">
+              <dt class="font-sans text-[17px] leading-[27px] font-medium text-(--color-cream-900)">{item.term}</dt>
+              <dd class="mt-1 font-sans text-[16px] leading-[26px] text-(--color-cream-700)">{item.detail}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <div class="reveal-child stagger-1 min-w-0">
+        <div class="rounded-[20px] bg-(--color-sage-50) p-6 md:p-8 lg:sticky lg:top-28">
+          <h2 id="limitations" class="font-display text-[24px] leading-[30px] text-(--color-cream-900)">What it can't show</h2>
+          <div class="labs-hex-list mt-space-sm [--list-marker-size:10px_11.5px] [--list-marker-width:28px]">
             <ul class="grid list-none gap-3">
               {report.limitations.map((limitation) => (
                 <li class="relative pl-7 font-sans text-[16px] leading-[26px] text-(--color-cream-900)">{limitation}</li>
               ))}
             </ul>
           </div>
-        )}
-        </LabsFaqItem>
-      ))}
-    </LabsFaq>
-    </div>
+        </div>
+      </div>
+    </section>
+
+    {report.datasets.length > 0 && (
+      <section class="scroll-reveal-section" aria-labelledby="data">
+        <h2 id="data" class:list={["reveal-child", SECTION_HEADING_CLASS]}>The data</h2>
+        <ul class="reveal-child mt-space-lg grid list-none gap-space-sm md:grid-cols-2">
+          {report.datasets.map((dataset) => (
+            <li>
+              <FeatureCard
+                href={dataset.href}
+                category={dataset.license}
+                title={dataset.name}
+                summary={dataset.description}
+                external
+              >
+                {dataset.huggingFace && (
+                  <a
+                    href={`https://huggingface.co/datasets/${dataset.huggingFace}`}
+                    class={DATA_LINK}
+                    rel="noopener"
+                    target="_blank"
+                  >
+                    Browse the data on Hugging Face <span aria-hidden="true">↗</span>
+                  </a>
+                )}
+              </FeatureCard>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
   </div>
 
   <LabsRelatedBand heading="Further reading" items={reading} />

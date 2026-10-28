@@ -1,0 +1,38 @@
+---
+/**
+ * LabsProblemBand (`labs.problem-band`) — the homepage's problem statement:
+ * eyebrow, a two-sentence headline set on two lines (the second in sage),
+ * a deck telling the situation as a scenario, then three numbered points on
+ * hairlines (one column below md). Static. Copy arrives through `content`
+ * (LABS_PROBLEM on `/`).
+ */
+import type { ProblemBandContent } from "../../lib/labs-home";
+import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
+
+interface Props {
+  content: ProblemBandContent;
+}
+const { content } = Astro.props;
+---
+
+<section class="scroll-reveal-section py-24 md:py-32" aria-labelledby="problem-title">
+  <div class="mx-auto max-w-content px-gutter">
+    <p class:list={["reveal-child", LABS_EYEBROW_CLASS]}>{content.eyebrow}</p>
+    <h2 id="problem-title" class="reveal-child mt-3 max-w-[1040px] font-display text-[32px] leading-[38px] text-balance text-(--color-cream-900) md:text-[52px] md:leading-[58px]">
+      {content.headlineLines[0]}
+      <span class="block text-(--color-sage-700)">{content.headlineLines[1]}</span>
+    </h2>
+    <p class="reveal-child stagger-1 mt-6 max-w-[720px] font-sans text-[17px] leading-[27px] text-(--color-cream-700) md:text-[19px] md:leading-[30px]">
+      {content.deck}
+    </p>
+    <ol class="reveal-child stagger-2 mt-space-xl grid list-none grid-cols-1 gap-x-10 md:grid-cols-3">
+      {content.points.map((point, index) => (
+        <li class="border-t border-(--color-cream-900) pt-6 pb-8">
+          <span class="font-mono text-[13px] leading-5 text-(--color-sage-700)">{String(index + 1).padStart(2, "0")}</span>
+          <h3 class="mt-3 font-display text-[24px] leading-[30px] text-(--color-cream-900)">{point.title}</h3>
+          <p class="mt-3 font-sans text-[16px] leading-[25px] text-(--color-cream-700)">{point.body}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

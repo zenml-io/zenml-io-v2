@@ -381,7 +381,7 @@ export function buildDecisionAgents(): BenchmarkReport {
     slug: "decision-agents",
     name: "Appeals Decisions",
     tags: ["Reliability", "Open models", "Public data"],
-    group: "agents",
+    industry: "insurance",
     date: d.meta.end,
     card: {
       headline: {

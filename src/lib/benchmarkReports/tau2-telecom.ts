@@ -387,7 +387,7 @@ export function buildTau2Telecom(): BenchmarkReport {
     slug: "tau2-telecom",
     name: "tau2-bench Telecom",
     tags: ["Model swap", "Customer service", "Kitaru replay", "Public data"],
-    group: "agents",
+    industry: "customer-service",
     date: rp.date,
     card: {
       domain: "Telecom support agents",

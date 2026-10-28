@@ -152,7 +152,7 @@ export function buildSglangVsVllm(): BenchmarkReport {
     slug: "sglang-vs-vllm",
     name: "SGLang vs vLLM",
     tags: ["Serving", "Self-hosting", "GPUs"],
-    group: "infrastructure",
+    industry: "infrastructure",
     date: data.meta.runDate,
     card: {
       headline: {

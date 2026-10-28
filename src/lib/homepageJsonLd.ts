@@ -1,8 +1,8 @@
 import { COMPANY_ADDRESS, CONTACT_EMAIL, SITE_URL } from "./constants";
 import {
-  LABS_CLOSE,
   LABS_DOORS,
   LABS_FEATURE_PANELS,
+  LABS_HOME_CLOSE,
   LABS_HOME_SEO,
 } from "./labs-home";
 import { absoluteUrl, ORGANIZATION_NAME } from "./seo";
@@ -106,8 +106,8 @@ export function buildHomepageJsonLd(
         potentialAction: [
           {
             "@type": "RegisterAction",
-            name: LABS_CLOSE.cta.label,
-            target: LABS_CLOSE.cta.href,
+            name: LABS_HOME_CLOSE.cta.label,
+            target: LABS_HOME_CLOSE.cta.href,
           },
           ...LABS_DOORS.doors.map((door) => ({
             "@type": "ViewAction",
