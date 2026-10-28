@@ -1,5 +1,6 @@
 ---
 import type {
+  LabsInstallBandContent,
   LabsProductBandContent,
   LabsShortBandContent,
 } from "../../lib/labs-home";
@@ -12,7 +13,9 @@ import type {
 //   - "landing" (default): the full-height opener of `/` and the product
 //     pages — two-line headline, deck, one signup pill; a product page adds
 //     an optional ghost pill and a copyable install command, each collapsing
-//     when absent. Content is `LabsProductBandContent`.
+//     when absent. Content is `LabsProductBandContent`. A product page that
+//     leads with its install command passes `LabsInstallBandContent`
+//     instead: the command takes the pill's place, the ghost pill beside it.
 //   - "short": the interior-page opener (the blog index) at roughly 40% of
 //     the viewport — one headline line and an optional deck, no pill; the
 //     page's own controls follow the band. Content is `LabsShortBandContent`.
@@ -28,7 +31,10 @@ import LabsButton from "./LabsButton.astro";
 import LabsInstallChip from "./LabsInstallChip.astro";
 
 type Props =
-  | { band?: "landing"; content: LabsProductBandContent }
+  | {
+      band?: "landing";
+      content: LabsProductBandContent | LabsInstallBandContent;
+    }
   | { band: "short"; content: LabsShortBandContent };
 
 const props = Astro.props;
@@ -61,14 +67,23 @@ const hasVisual = Astro.slots.has("visual");
         {props.content.deck}
       </p>
 
-      <div class="mt-space-mlg flex flex-wrap items-center gap-space-md">
-        <LabsButton cta={props.content.cta} />
-        {props.content.secondaryCta && (
-          <LabsButton cta={props.content.secondaryCta} tone="ghost" />
-        )}
-      </div>
+      {props.content.cta ? (
+        <div class="mt-space-mlg flex flex-wrap items-center gap-space-md">
+          <LabsButton cta={props.content.cta} />
+          {props.content.secondaryCta && (
+            <LabsButton cta={props.content.secondaryCta} tone="ghost" />
+          )}
+        </div>
+      ) : (
+        <div class="mt-space-mlg flex flex-wrap items-center gap-space-md">
+          <div class="flex max-w-full"><LabsInstallChip content={props.content.install} /></div>
+          {props.content.secondaryCta && (
+            <LabsButton cta={props.content.secondaryCta} tone="ghost" />
+          )}
+        </div>
+      )}
 
-      {props.content.install && (
+      {props.content.cta && props.content.install && (
         <div class="mt-space-md flex max-w-full">
           <LabsInstallChip content={props.content.install} />
         </div>

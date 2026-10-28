@@ -19,6 +19,7 @@ import type { Surface } from "./analytics";
 import { CASE_STUDY_CARDS, type FeatureTab, LOGO_CLOUD } from "./homepage";
 import type {
   LabsCta,
+  LabsInstallBandContent,
   LabsProductBandContent,
   LogoGridContent,
   StoryCardsContent,
@@ -48,10 +49,6 @@ const ZENML_SIGNUP = {
   href: ZENML_LINKS.signup.href,
 } as const;
 
-export const ZENML_HERO_SIGNUP: LabsCta = {
-  ...ZENML_SIGNUP,
-  analytics: "Hero-Signup-ZenML",
-};
 export const ZENML_HERO_SECONDARY: LabsCta = {
   label: "Read the docs",
   href: ZENML_DOCS_URL,
@@ -80,13 +77,12 @@ export const ZENML_STORIES_ALL: LabsCta = {
 /* 01 Hero                                                                 */
 /* ---------------------------------------------------------------------- */
 
-export const ZENML_HERO: LabsProductBandContent = {
+/** The product page leads with the open-source install; docs is the ghost pill. */
+export const ZENML_HERO: LabsInstallBandContent = {
   headlineLines: ["AI orchestration,", "on the infra you choose"],
   deck: "Open-source pipelines and agents in Python. Run them on Kubernetes, Vertex AI, SageMaker, or your laptop, without rewriting the code.",
-  // The product page leads with the open-source path; signup is the ghost pill.
-  cta: ZENML_HERO_SECONDARY,
-  secondaryCta: ZENML_HERO_SIGNUP,
   install: { cmd: ZENML_INSTALL_CMD, analytics: "Hero-Install-ZenML" },
+  secondaryCta: ZENML_HERO_SECONDARY,
 };
 
 /* ---------------------------------------------------------------------- */

@@ -2,26 +2,18 @@
 import {
   KITARU_DOCS_URL,
   KITARU_INSTALL_CMD,
-  KITARU_LINKS,
   MODEL_CHOICE_GUIDE_URL,
 } from "../../lib/kitaru-landing";
-import { LABS_SIGNUP } from "../../lib/labs-home";
 import LabsButton from "../labs/LabsButton.astro";
 import LabsInstallChip from "../labs/LabsInstallChip.astro";
 // Hero.astro — the Kitaru landing's opening band in the Labs shell. Fills
 // the first viewport (the Labs nav overlays the top 120px) and centers its
 // content in the remaining height: model-choice guide pill, headline, deck, the
-// docs pill with a ghost signup pill beside it, and the install command
-// beneath on its own row. Everything here is static; the video poster card
+// install command with a ghost docs pill beside it. Everything here is static; the video poster card
 // is the one island (HeroVideo) because it opens a dialog.
 import { HeroVideo } from "./islands/HeroVideo";
 import { KitaruGrain } from "./islands/KitaruGrain";
 
-const signup = {
-  label: LABS_SIGNUP.label,
-  href: KITARU_LINKS.signup.href,
-  analytics: "Kitaru-Hero-Signup",
-};
 const docs = {
   label: "Read the docs",
   href: KITARU_DOCS_URL,
@@ -71,16 +63,9 @@ const install = { cmd: KITARU_INSTALL_CMD, analytics: "Kitaru-Hero-Install" };
         class="reveal mt-space-mlg flex flex-wrap items-center justify-center gap-space-md lg:justify-start"
         style="--reveal-delay: 240ms"
       >
-        {/* The product page leads with the open-source path; signup is the ghost pill. */}
-        <LabsButton cta={docs} tone="orange" />
-        <LabsButton cta={signup} tone="ghost" />
-      </div>
-
-      <div
-        class="reveal mt-space-md flex max-w-full justify-center lg:justify-start"
-        style="--reveal-delay: 320ms"
-      >
-        <LabsInstallChip content={install} />
+        {/* The product page leads with the open-source install; docs is the ghost pill. */}
+        <div class="flex max-w-full"><LabsInstallChip content={install} /></div>
+        <LabsButton cta={docs} tone="ghost" />
       </div>
     </div>
 

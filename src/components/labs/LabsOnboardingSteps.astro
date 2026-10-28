@@ -7,8 +7,7 @@
  * `connect` (the repos it found, with their roles, and the tracing
  * providers with one picked), `call` (one question with tappable answers),
  * `report` (the first gaps, tagged Wrong or Missing) and `review` (one
- * session excerpt with Pass / Fail). A plain note under the grid says what
- * is live and what is still rolling out. Static: no motion moment. Copy
+ * session excerpt with Pass / Fail). Static: no motion moment. Copy
  * arrives through `content` (LABS_ONBOARDING on `/`).
  */
 import type { OnboardingStepsContent } from "../../lib/labs-home";
@@ -114,6 +113,5 @@ const WIDGET =
         </li>
       ))}
     </ol>
-    <p class="reveal-child mt-6 font-sans text-[14px] leading-5 text-(--color-cream-700)">{content.note}</p>
   </div>
 </section>

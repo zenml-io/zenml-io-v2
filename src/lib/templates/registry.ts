@@ -1349,7 +1349,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: true,
     paperPage: 0,
     notes:
-      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, `content: LabsProductBandContent` (LABS_HERO on `/`, ZENML_HERO on `/product/zenml`) gives the two-line headline + deck + one signup pill, vertically centered in the band (an optional `visual` slot sits beside the copy from lg and below it on phones; the homepage fills it with labs.model-choice-visual); a product page's content adds a ghost secondary pill and a copyable install chip (LabsInstallChip), each collapsing when absent. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component. Renders through `labs.band` for the shader/sizing chrome — see that entry.",
+      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, `content: LabsProductBandContent` (LABS_HERO on `/`) gives the two-line headline + deck + one signup pill, vertically centered in the band (an optional `visual` slot sits beside the copy from lg and below it on phones; the homepage fills it with labs.model-choice-visual); a product page's content adds a ghost secondary pill and a copyable install chip (LabsInstallChip), each collapsing when absent; `LabsInstallBandContent` (ZENML_HERO on `/product/zenml`) has no pill and puts the install chip in its place, the ghost pill beside it. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component. Renders through `labs.band` for the shader/sizing chrome — see that entry.",
     stage: false,
     demoProps: {},
   },
@@ -1409,7 +1409,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "The homepage hero's example, mounted in LabsHero's `visual` slot on `/`, from `content: GapReportVisualContent` (LABS_GAP_REPORT). A card with an eyebrow and an Example pill, the agent and week in mono, two pass-rate bars (the team's evals, then their own manual), then the gaps as hairline rows tagged Wrong (orange tint) or Missing (cream outline) with a session count. Static, no motion moment; the figcaption carries the whole example as text and the drawn card is aria-hidden. Tag colours come from gapTags.ts.",
+      "The homepage hero's example, mounted in LabsHero's `visual` slot on `/`, from `content: GapReportVisualContent` (LABS_GAP_REPORT). A card with an eyebrow and a 'From your AI engineer' pill, the agent and week in mono, two pass-rate bars (the team's evals, then their own manual), then the gaps as hairline rows tagged Wrong (orange tint) or Missing (cream outline) with a session count. Static, no motion moment; the figcaption carries the whole example as text and the drawn card is aria-hidden. Tag colours come from gapTags.ts.",
     stage: false,
     demoProps: {},
   },
@@ -1437,7 +1437,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Homepage how-it-works on a sage-50 band from `content: OnboardingStepsContent` (LABS_ONBOARDING on `/`): eyebrow, headline, deck, then four step cards (1, 2, then 4 columns at xl), each a numeral, title and body above a small static widget picked by the step's `widget.kind` discriminant: connect (repos with roles, providers with one picked), call (a question with tappable answers), report (gap rows tagged Wrong or Missing) or review (a session excerpt with Pass and Fail). A plain note under the grid says what is live and what is rolling out. Widgets are aria-hidden illustrations; the step text carries the meaning.",
+      "Homepage how-it-works on a sage-50 band from `content: OnboardingStepsContent` (LABS_ONBOARDING on `/`): eyebrow, headline, deck, then four step cards (1, 2, then 4 columns at xl), each a numeral, title and body above a small static widget picked by the step's `widget.kind` discriminant: connect (repos with roles, providers with one picked), call (a question with tappable answers), report (gap rows tagged Wrong or Missing) or review (a session excerpt with Pass and Fail). Widgets are aria-hidden illustrations; the step text carries the meaning.",
     stage: false,
     demoProps: {},
   },

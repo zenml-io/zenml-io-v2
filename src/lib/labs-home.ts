@@ -218,6 +218,17 @@ export interface LabsProductBandContent extends LabsBandContent {
   install?: LabsInstallChip;
 }
 
+/** A product page's opening band led by its install command instead of a
+ *  signup pill: the command is the primary action, an optional ghost pill
+ *  sits beside it. */
+export interface LabsInstallBandContent {
+  headlineLines: readonly [string, string];
+  deck: string;
+  install: LabsInstallChip;
+  secondaryCta?: LabsCta;
+  cta?: never;
+}
+
 export interface LabsInstallChip {
   cmd: string;
   /** Plausible event for the copy button. */
@@ -329,12 +340,12 @@ export interface GapScore {
 
 /**
  * The example everything on `/` shares: an insurance underwriting agent, a
- * week of traces, the team's own evals. Illustrative, not a customer result:
- * the gap report is new work (see the PR notes), so the card says "Example".
+ * week of traces, the team's own evals. Illustrative numbers, not a
+ * customer result.
  */
 export const LABS_GAP_REPORT: GapReportVisualContent = {
   label:
-    "An example gap report for an insurance underwriting agent, Oct 21 to 27. The team's evals pass 91% of last week's sessions; by the team's own underwriting manual, 74% should pass. Two gaps lead the report: a completeness judge that passed 41 quotes without the flood exclusion, and 58 quotes priced on loss runs older than 90 days that no eval checks.",
+    "An example of what your AI engineer tells you about an insurance underwriting agent, Oct 21 to 27. The team's evals pass 91% of last week's sessions; by the team's own underwriting manual, 74% should pass. Two gaps lead the report: a completeness judge that passed 41 quotes without the flood exclusion, and 58 quotes priced on loss runs older than 90 days that no eval checks.",
   eyebrow: "What your evals missed this week",
   agent: "underwriting-agent",
   window: "Oct 21 to 27 · 1,482 sessions",
@@ -363,7 +374,7 @@ export const LABS_GAP_REPORT: GapReportVisualContent = {
       count: "37",
     },
   ],
-  note: "Example report",
+  note: "From your AI engineer",
 };
 
 /* ---------------------------------------------------------------------- */
@@ -407,7 +418,7 @@ export const LABS_PROBLEM: ProblemBandContent = {
 };
 
 /* ---------------------------------------------------------------------- */
-/* Onboarding: connect, a short call, the gap report, a weekly review      */
+/* Onboarding: connect, a short call, what it found, a weekly review     */
 /* ---------------------------------------------------------------------- */
 
 export type OnboardingWidget =
@@ -453,8 +464,6 @@ export interface OnboardingStepsContent {
   headline: string;
   deck: string;
   steps: readonly OnboardingStep[];
-  /** What is live and what is still rolling out, said plainly. */
-  note: string;
 }
 
 export const LABS_ONBOARDING: OnboardingStepsContent = {
@@ -487,8 +496,8 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       },
     },
     {
-      title: "Get your gap report",
-      body: "Seconds after you hang up: what your evals missed last week, in the order you said you care about. Deeper analysis follows in Slack.",
+      title: "Hear what your evals miss",
+      body: "Seconds after you hang up, it tells you what your evals missed last week, in the order you said you care about. More follows in Slack.",
       widget: {
         kind: "report",
         items: LABS_GAP_REPORT.items.slice(0, 2),
@@ -508,7 +517,6 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       },
     },
   ],
-  note: "Trace import, review and replay are live today. The call and the gap report are rolling out to early teams first.",
 };
 
 /* ---------------------------------------------------------------------- */
@@ -531,7 +539,7 @@ export interface GapKindsContent {
 
 export const LABS_GAP_KINDS: GapKindsContent = {
   headline: "Two kinds of gap",
-  deck: "Every finding on the report is one or the other, with the sessions that show it.",
+  deck: "Everything your AI engineer tells you is one or the other, with the sessions that show it.",
   kinds: [
     {
       kind: "wrong",
