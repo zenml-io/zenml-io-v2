@@ -1,0 +1,215 @@
+---
+/**
+ * LabsStackLayer (`labs.stack-layer`) — the homepage's "how it fits"
+ * diagram: the AI engineer as an intelligence layer sitting on the stack a
+ * team already runs. A dark sage-800 layer on top (title, its two
+ * deployments, and the journey's two middle stops), connectors, then three
+ * cream columns underneath (traces, evals, agent framework) with their
+ * service marks; the traces column holds the journey's first stop, the
+ * agent column its last, and the evals column a static note on the judge.
+ * Each connector says how the layer works with the column: it reads the
+ * traces and evals, and replays through the agent's framework. Below lg the layer stacks above the columns and the connectors
+ * drop out.
+ *
+ * Motion (one moment): once the section is in view, the four stops light up
+ * in order on a loop and a dot runs along each connector. The server render
+ * shows every stop at full strength, numbered, so the journey reads with JS
+ * off and under reduced motion, where nothing animates. Compositor
+ * properties only. Copy arrives through `content` (LABS_STACK_LAYER on `/`).
+ */
+import type { JourneyStep, StackLayerContent } from "../../lib/labs-home";
+import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
+import LabsInstallChip from "./LabsInstallChip.astro";
+
+interface Props {
+  content: StackLayerContent;
+}
+const { content } = Astro.props;
+
+const TAG_TONE: Record<JourneyStep["tone"], string> = {
+  neutral: "bg-(--color-cream-100) text-(--color-cream-800)",
+  wrong: "bg-(--color-orange-50) text-(--color-orange-700)",
+  new: "bg-(--color-sage-100) text-(--color-sage-800)",
+  pass: "bg-(--color-sage-800) text-(--color-cream-50)",
+};
+
+const steps = content.journey.map((step, index) => ({ ...step, index }));
+const layerSteps = steps.filter((step) => step.at === "layer");
+const stepAt = (at: "traces" | "agent") => steps.find((step) => step.at === at);
+---
+
+<section class="stack-layer scroll-reveal-section py-24 md:py-32" aria-labelledby="stack-layer-title">
+  <div class="mx-auto max-w-content px-gutter">
+    <p class:list={["reveal-child", LABS_EYEBROW_CLASS]}>{content.eyebrow}</p>
+    <h2 id="stack-layer-title" class="reveal-child mt-3 max-w-[860px] font-display text-[32px] leading-[38px] text-balance text-(--color-cream-900) md:text-[48px] md:leading-[54px]">
+      {content.headline}
+    </h2>
+    <p class="reveal-child stagger-1 mt-6 max-w-[720px] font-sans text-[17px] leading-[27px] text-(--color-cream-700)">
+      {content.deck}
+    </p>
+
+    <div class="reveal-child mt-space-xl" role="group" aria-label={content.journeyLabel}>
+      {/* The intelligence layer */}
+      <div class="rounded-[20px] bg-(--color-sage-800) p-6 text-(--color-cream-50) md:p-8">
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p class="font-label text-[12px] leading-4 uppercase tracking-[0.08em] text-(--color-sage-300)">{content.layer.label}</p>
+            <p class="mt-2 font-display text-[28px] leading-[34px]">{content.layer.title}</p>
+          </div>
+          <ul class="flex list-none flex-wrap gap-2">
+            {content.layer.deployments.map((deployment, index) => (
+              <li class:list={["rounded-full px-3 py-1.5 font-mono text-[12px] leading-4", index === 0 ? "bg-(--color-cream-50) text-(--color-sage-900)" : "border border-(--color-sage-400) text-(--color-sage-200)"]}>
+                {deployment}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <ol class="mt-6 grid list-none grid-cols-1 gap-3 md:grid-cols-2">
+          {layerSteps.map((step) => (
+            <li class="journey-step flex gap-3 rounded-[14px] bg-(--color-sage-900) p-4" style={`--step: ${step.index}`}>
+              <span class="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-(--color-sage-400) font-mono text-[11px] text-(--color-sage-200)">{step.index + 1}</span>
+              <span class="min-w-0">
+                <span class:list={["inline-block rounded-full px-2 py-0.5 font-label text-[10px] leading-4 uppercase tracking-[0.05em]", TAG_TONE[step.tone]]}>{step.tag}</span>
+                <span class="mt-1.5 block font-sans text-[15px] leading-[21px] text-(--color-cream-50)">{step.title}</span>
+                <span class="mt-0.5 block font-mono text-[12px] leading-[18px] text-(--color-sage-300)">{step.detail}</span>
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {/* Connectors: one per column, labelled with how the layer uses it */}
+      <div class="hidden grid-cols-3 gap-4 lg:grid" aria-hidden="true">
+        {content.columns.map((column) => (
+          <div class="relative flex h-16 items-center justify-center">
+            <span class="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 border-l border-dashed border-(--color-sage-400)"></span>
+            <span class:list={["connector-dot absolute left-1/2 size-2 -translate-x-1/2 rounded-full bg-(--color-sage-600)", column.link === "reads" ? "is-up" : "is-down"]}></span>
+            <span class="relative rounded-full border border-(--color-border) bg-(--color-cream-50) px-2.5 py-0.5 font-mono text-[11px] leading-4 text-(--color-sage-800)">
+              {column.link === "reads" ? "↑" : "↓"} {content.linkLabels[column.link]}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* What the team already runs */}
+      <div class="mt-4 rounded-[20px] border border-dashed border-(--color-sage-400) p-4 md:p-6 lg:mt-0">
+        <p class="font-label text-[12px] leading-4 uppercase tracking-[0.08em] text-(--color-cream-700)">{content.stackLabel}</p>
+        <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
+          {content.columns.map((column) => {
+            const step = column.id === "evals" ? undefined : stepAt(column.id);
+            return (
+              <div class="flex min-w-0 flex-col rounded-[16px] border border-(--color-border) bg-card p-5 transition-colors duration-200 ease-out hover:border-(--color-sage-400)">
+                <h3 class="font-display text-[20px] leading-[26px] text-(--color-cream-900)">{column.title}</h3>
+                <ul class="mt-3 flex list-none flex-wrap gap-1.5">
+                  {column.marks.map((mark) => (
+                    <li class="inline-flex items-center gap-1.5 rounded-full border border-(--color-border) bg-(--color-cream-50) px-2.5 py-1 font-sans text-[13px] leading-4 text-(--color-cream-800)">
+                      {mark.logo && <img src={mark.logo} alt="" aria-hidden="true" class="size-3.5 object-contain" loading="lazy" />}
+                      {mark.name}
+                    </li>
+                  ))}
+                </ul>
+                {column.note && (
+                  <div class="mt-auto rounded-[14px] border border-(--color-border) bg-(--color-cream-50) p-3.5">
+                    <span class="block font-mono text-[13px] leading-[19px] text-(--color-cream-900)">{column.note.title}</span>
+                    <span class="mt-0.5 block font-mono text-[12px] leading-[18px] text-(--color-cream-700)">{column.note.detail}</span>
+                  </div>
+                )}
+                {step && (
+                  <div class="journey-step mt-auto flex gap-3 rounded-[14px] border border-(--color-border) bg-(--color-cream-50) p-3.5 pt-3.5" style={`--step: ${step.index}`}>
+                    <span class="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-(--color-sage-400) font-mono text-[11px] text-(--color-sage-800)">{step.index + 1}</span>
+                    <span class="min-w-0">
+                      <span class:list={["inline-block rounded-full px-2 py-0.5 font-label text-[10px] leading-4 uppercase tracking-[0.05em]", TAG_TONE[step.tone]]}>{step.tag}</span>
+                      <span class="mt-1.5 block font-sans text-[15px] leading-[21px] text-(--color-cream-900)">{step.title}</span>
+                      <span class="mt-0.5 block font-mono text-[12px] leading-[18px] text-(--color-cream-700)">{step.detail}</span>
+                    </span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal-child mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+      <span class="font-sans text-[15px] leading-6 text-(--color-cream-700)">{content.installLabel}</span>
+      <div class="flex max-w-full"><LabsInstallChip content={content.install} /></div>
+      <a
+        href={content.link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-analytics={content.link.analytics}
+        class="inline-flex min-h-11 items-center gap-2 font-sans text-[16px] leading-6 text-(--color-sage-800) underline decoration-(--color-sage-400) underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-sage-900)"
+      >
+        {content.link.label} <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* The journey loop: four stops, 2.5s each. Server render and reduced
+     motion keep every stop at full strength; the loop only dims the stops
+     that are not current, so nothing is ever hidden. */
+  @media (prefers-reduced-motion: no-preference) {
+    .stack-layer.in-view .journey-step {
+      animation: journey-step 10s ease-out infinite;
+      animation-delay: calc(var(--step) * 2.5s);
+      opacity: 0.45;
+    }
+    .stack-layer.in-view .connector-dot {
+      animation: connector-up 2.5s ease-in-out infinite;
+    }
+    .stack-layer.in-view .connector-dot.is-down {
+      animation-name: connector-down;
+    }
+  }
+  .connector-dot {
+    top: 50%;
+    opacity: 0;
+  }
+  @keyframes journey-step {
+    0% {
+      opacity: 0.45;
+      transform: translateY(0);
+    }
+    4%,
+    22% {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+    28%,
+    100% {
+      opacity: 0.45;
+      transform: translateY(0);
+    }
+  }
+  @keyframes connector-up {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, 28px);
+    }
+    20%,
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -28px);
+    }
+  }
+  @keyframes connector-down {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -28px);
+    }
+    20%,
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, 28px);
+    }
+  }
+</style>

@@ -522,96 +522,147 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
 };
 
 /* ---------------------------------------------------------------------- */
-/* Where it runs                                                           */
+/* How it fits: the intelligence layer on the stack you already run       */
 /* ---------------------------------------------------------------------- */
 
-export interface WhereItRunsTraceRow {
-  /** Indent level in the trace tree: 0 is the session. */
-  depth: 0 | 1;
+export interface StackMark {
   name: string;
-  meta: string;
-  /** A score the team's eval left on the span. Absence collapses. */
-  score?: { label: string; verdict: "pass" | "fail" };
+  /** A full-colour service mark; absent renders the name alone. */
+  logo?: string;
 }
 
-export interface WhereItRunsDeployment {
-  label: string;
-  note: string;
+export interface StackColumn {
+  id: "traces" | "evals" | "agent";
+  title: string;
+  /** Which way the layer works with it: it reads, or it replays through. */
+  link: "reads" | "replays";
+  marks: readonly StackMark[];
+  /** A static line under the marks for a column with no journey stop. */
+  note?: { title: string; detail: string };
 }
 
-export interface WhereItRunsContent {
+/** One stop of the example session's journey through the diagram. */
+export interface JourneyStep {
+  /** Where the step sits: a stack column or the layer above. */
+  at: "traces" | "layer" | "agent";
+  tag: string;
+  tone: "neutral" | "wrong" | "new" | "pass";
+  title: string;
+  detail: string;
+}
+
+export interface StackLayerContent {
   eyebrow: string;
   headline: string;
   deck: string;
-  sources: {
+  layer: {
+    label: string;
     title: string;
-    body: string;
-    providers: readonly { name: string; logo?: string }[];
-    trace: { label: string; rows: readonly WhereItRunsTraceRow[] };
-  };
-  engineer: {
-    title: string;
-    body: string;
     /** The first is the default and renders filled. */
-    deployments: readonly [WhereItRunsDeployment, WhereItRunsDeployment];
+    deployments: readonly [string, string];
   };
-  local: {
-    title: string;
-    body: string;
-    install: LabsInstallChip;
-    pieces: readonly string[];
-  };
+  stackLabel: string;
+  columns: readonly [StackColumn, StackColumn, StackColumn];
+  linkLabels: Record<StackColumn["link"], string>;
+  /** Four stops, in order: traces, layer, layer, agent. */
+  journey: readonly [JourneyStep, JourneyStep, JourneyStep, JourneyStep];
+  journeyLabel: string;
+  install: LabsInstallChip;
+  installLabel: string;
   link: LabsCta;
 }
 
-export const LABS_WHERE_IT_RUNS: WhereItRunsContent = {
-  eyebrow: "Where it runs",
-  headline: "Keep your tracing tool. Pick where the rest runs.",
-  deck: "Your AI engineer reads traces from the tool you already use. It runs in our cloud by default, or on-prem in yours. The open-source parts run on your laptop.",
-  sources: {
-    title: "Your traces and evals",
-    body: "Read in place, through keys you can revoke.",
-    providers: [
-      { name: "Langfuse", logo: "/compare/langfuse.svg" },
-      { name: "Braintrust", logo: "/compare/braintrust.svg" },
-      { name: "LangSmith", logo: "/compare/langsmith.svg" },
-      { name: "Phoenix", logo: "/images/service-logos/arize-phoenix.svg" },
-      { name: "Logfire", logo: "/compare/logfire.svg" },
-      { name: "MLflow" },
-    ],
-    trace: {
-      label: "Braintrust · underwriting-agent",
-      rows: [
-        { depth: 0, name: "session 3318 · quote", meta: "4.2s" },
-        { depth: 1, name: "fetch_loss_runs", meta: "310ms" },
-        { depth: 1, name: "price_quote", meta: "2.1s" },
-        {
-          depth: 1,
-          name: "quote_completeness",
-          meta: "judge",
-          score: { label: "pass", verdict: "pass" },
-        },
+export const LABS_STACK_LAYER: StackLayerContent = {
+  eyebrow: "How it fits",
+  headline: "An intelligence layer on the stack you already run",
+  deck: "Nothing to rewrite and no new SDK. Your AI engineer reads the traces and evals you have, and replays your agent through the framework it's already built on.",
+  layer: {
+    label: "Intelligence layer",
+    title: "Your AI engineer",
+    deployments: ["ZenML cloud · default", "Your cloud · on-prem"],
+  },
+  stackLabel: "What you already run",
+  columns: [
+    {
+      id: "traces",
+      title: "Your traces",
+      link: "reads",
+      marks: [
+        { name: "Langfuse", logo: "/compare/langfuse.svg" },
+        { name: "Braintrust", logo: "/compare/braintrust.svg" },
+        { name: "LangSmith", logo: "/compare/langsmith.svg" },
+        { name: "Phoenix", logo: "/images/service-logos/arize-phoenix.svg" },
+        { name: "Logfire", logo: "/compare/logfire.svg" },
       ],
     },
-  },
-  engineer: {
-    title: "Your AI engineer",
-    body: "Reads traces next to your evals, interviews you, and keeps the checks up to date.",
-    deployments: [
-      { label: "ZenML cloud", note: "Default" },
-      { label: "Your cloud", note: "On-prem, air-gapped on request" },
-    ],
-  },
-  local: {
-    title: "Open source, on your machine",
-    body: "Kitaru records, reviews and replays sessions on your laptop or your cluster, with your own model keys.",
-    install: { cmd: KITARU_INSTALL_CMD, analytics: "Home-Where-Install" },
-    pieces: ["Kitaru", "ZenML", "Your model keys"],
-  },
+    {
+      id: "evals",
+      title: "Your evals",
+      link: "reads",
+      marks: [
+        { name: "LLM judges" },
+        { name: "pytest" },
+        { name: "promptfoo" },
+        { name: "DeepEval" },
+        { name: "Scores in your tracer" },
+      ],
+      note: {
+        title: "quote_completeness",
+        detail: "LLM judge · passes 91% of quotes",
+      },
+    },
+    {
+      id: "agent",
+      title: "Your agent",
+      link: "replays",
+      marks: [
+        { name: "Claude Agent SDK", logo: "/compare/claude-agent-sdk.svg" },
+        { name: "OpenAI Agents SDK", logo: "/compare/openai-agents-sdk.svg" },
+        { name: "PydanticAI", logo: "/compare/pydantic-ai.svg" },
+        { name: "LangGraph", logo: "/compare/langgraph-deep-agents.svg" },
+        { name: "Vercel AI SDK" },
+        { name: "Mastra" },
+      ],
+    },
+  ],
+  linkLabels: { reads: "reads", replays: "replays" },
+  journey: [
+    {
+      at: "traces",
+      tag: "Trace",
+      tone: "neutral",
+      title: "Session 3318 · quote",
+      detail: "quote_completeness: pass",
+    },
+    {
+      at: "layer",
+      tag: "Wrong",
+      tone: "wrong",
+      title: "Passed without the flood exclusion",
+      detail: "41 sessions like it last week",
+    },
+    {
+      at: "layer",
+      tag: "New check",
+      tone: "new",
+      title: "flood_exclusion_present",
+      detail: "Agrees with your underwriters 40 of 41 times",
+    },
+    {
+      at: "agent",
+      tag: "Replay",
+      tone: "pass",
+      title: "Prompt fix, replayed via Claude Agent SDK",
+      detail: "41 of 41 now pass",
+    },
+  ],
+  journeyLabel: "One session's journey",
+  install: { cmd: KITARU_INSTALL_CMD, analytics: "Home-Stack-Install" },
+  installLabel: "Try it on your laptop",
   link: {
     label: "Security and trust",
     href: "https://security.zenml.io",
-    analytics: "Home-Where-Trust",
+    analytics: "Home-Stack-Trust",
   },
 };
 
