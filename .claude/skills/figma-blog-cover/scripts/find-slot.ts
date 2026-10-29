@@ -512,8 +512,13 @@ function parseSiblings(args: Args, geo: MonthGeometry, targetSlug: string | null
     if (s === targetSlug) continue;
     if (!expected.has(s)) questions.push(`Live cover "${s}" in section "${geo.sectionName}" is not a post dated ${geo.month} in src/content/blog — which post is it, and should it move?`);
   }
-  for (const s of expected) {
-    if (!live.has(s)) questions.push(`Post "${s}" is dated ${geo.month} but has no live cover in section "${geo.sectionName}" (S1 siblings) — create it first or confirm it is intentionally missing?`);
+  // A month post without a cover yet is a gap, not an anomaly: its slot is
+  // already reserved in `positions` (they come from the collection, not the
+  // canvas), so it never blocks this cover. Asking here deadlocked any month
+  // whose posts all lacked covers, each run waiting on the other.
+  const uncovered = [...expected].filter((s) => !live.has(s));
+  if (uncovered.length > 0) {
+    suggestions.push(`Post(s) dated ${geo.month} with no live cover yet in "${geo.sectionName}": ${uncovered.join(", ")}. Their slots stay reserved; run this skill for each after this one.`);
   }
   return siblings;
 }

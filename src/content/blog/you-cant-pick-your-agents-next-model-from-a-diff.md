@@ -11,10 +11,14 @@ tags:
   - "llm"
 date: "2026-10-21T09:40:00.000Z"
 readingTime: "6 mins"
+mainImage:
+  url: "https://assets.zenml.io/content/blog/you-cant-pick-your-agents-next-model-from-a-diff/b1fca6fa/you-cant-pick-your-agents-next-model-from-a-diff-cover.avif"
+  alt: "Kitaru blog cover for Test whole tasks, not steps"
 seo:
   title: "Swapping your agent's model? Test whole tasks, not steps - ZenML Blog"
   description: "We tested 11 models on recorded agent traffic. Checking single steps made a good shortlist, but in 3 of 4 agents it missed the cheapest model that held quality."
   canonical: "https://www.zenml.io/blog/you-cant-pick-your-agents-next-model-from-a-diff"
+  ogImage: "https://assets.zenml.io/content/blog/you-cant-pick-your-agents-next-model-from-a-diff/d31b8944/you-cant-pick-your-agents-next-model-from-a-diff-cover.jpg"
 ---
 
 Sooner or later, someone asks whether your agent could run on a cheaper model.
