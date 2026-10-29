@@ -15,7 +15,6 @@ import type { Surface } from "./analytics";
 import type { FeatureIconId } from "./featureIcons";
 import { type CaseStudyCard, LOGO_CLOUD, type LogoItem } from "./homepage";
 import {
-  KITARU_CLOUD_PRICE,
   KITARU_DOCS_URL,
   KITARU_INSTALL_CMD,
   KITARU_LINKS,
@@ -258,7 +257,8 @@ export const LABS_HERO: LabsProductBandContent = {
     analytics: "Hero-Request-Demo",
   },
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
-  installNote: `Installs Kitaru, open source. Our AI engineer is an agent we host, from ${KITARU_CLOUD_PRICE} a month.`,
+  installNote:
+    "Installs open-source Kitaru on your machine. Start free for the hosted AI engineer.",
 };
 
 /* ---------------------------------------------------------------------- */
@@ -297,18 +297,18 @@ export interface GapScore {
  */
 export const LABS_GAP_REPORT: GapReportVisualContent = {
   label:
-    "An example of what your AI engineer tells you about an insurance underwriting agent, Oct 21 to 27. The team's evals pass 91% of last week's sessions; by the team's own underwriting manual, 74% should pass. A completeness judge passed 41 quotes without the flood exclusion, and no eval checks the 58 quotes priced on loss runs older than 90 days.",
-  eyebrow: "Missed this week",
-  agent: "underwriting-agent",
+    "An example of what your AI engineer tells you about a customer support agent after one week. The team's evals pass 91% of 1,482 sessions; the team's own reviewers would pass 74%. One eval passed 41 replies that promised refunds the policy doesn't allow, and no eval checks the 58 replies sent without looking up the order.",
+  eyebrow: "What your evals missed",
+  agent: "support-agent",
   window: "1,482 sessions",
   scores: [
-    { label: "Your evals", value: 91 },
-    { label: "Your manual", value: 74 },
+    { label: "Your evals pass", value: 91 },
+    { label: "You would pass", value: 74 },
   ],
-  kindLabels: { wrong: "Wrong", missing: "Missing" },
+  kindLabels: { wrong: "Eval wrong", missing: "No eval" },
   items: [
-    { kind: "wrong", title: "No flood exclusion", count: "41" },
-    { kind: "missing", title: "Stale loss runs", count: "58" },
+    { kind: "wrong", title: "Promises refunds it can't give", count: "41" },
+    { kind: "missing", title: "Never looks up the order", count: "58" },
   ],
 };
 
@@ -390,15 +390,15 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
         kind: "connect",
         repos: [
           {
-            name: "underwriting-agent",
+            name: "support-agent",
             role: "Agent",
-            detail: "PydanticAI · 9 tools",
+            detail: "OpenAI Agents SDK · 7 tools",
           },
-          { name: "uw-evals", role: "Evals", detail: "12 judges · pytest" },
+          { name: "support-evals", role: "Evals", detail: "9 judges · pytest" },
           {
-            name: "uw-guidelines",
-            role: "Manual",
-            detail: "UW manual · 46 rules",
+            name: "help-center",
+            role: "Policies",
+            detail: "Refunds, returns · 38 rules",
           },
         ],
       },
@@ -408,7 +408,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       body: "A few questions about what it found. Tap to answer.",
       widget: {
         kind: "call",
-        context: "quote_completeness has passed every quote for 30 days.",
+        context: "reply_quality has passed every reply for 30 days.",
         question: "Do you trust it?",
         options: ["Yes", "Not really", "Never checked"],
         picked: "Not really",
@@ -420,11 +420,15 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       widget: {
         kind: "report",
         items: [
-          { kind: "wrong", title: "Passes quotes over authority", count: "22" },
+          {
+            kind: "wrong",
+            title: "Passes replies in the wrong language",
+            count: "22",
+          },
           {
             kind: "missing",
-            title: "Uninspected sprinkler credit",
-            count: "37",
+            title: "Shares another customer's order",
+            count: "3",
           },
         ],
         kindLabels: LABS_GAP_REPORT.kindLabels,
@@ -435,10 +439,10 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       body: "Ten quick questions on three real sessions.",
       widget: {
         kind: "review",
-        session: "Session #3318 · quote",
+        session: "Session #3318 · refund",
         excerpt:
-          "Premium $4,180 · Limit $1.2M · Deductible $5,000. Property in FEMA zone A.",
-        question: "Should this quote have passed?",
+          "Customer: Can I return these shoes? Agent: Yes, full refund within 90 days. Policy: 30 days.",
+        question: "Should this reply have passed?",
         options: ["Pass", "Fail"],
       },
     },
@@ -482,8 +486,6 @@ export interface StackLayerContent {
   layer: {
     label: string;
     title: string;
-    /** The first is the default and renders filled. */
-    deployments: readonly [string, string];
   };
   stackLabel: string;
   columns: readonly [StackColumn, StackColumn, StackColumn];
@@ -503,7 +505,6 @@ export const LABS_STACK_LAYER: StackLayerContent = {
   layer: {
     label: "Intelligence layer",
     title: "Your AI engineer",
-    deployments: ["ZenML cloud · default", "Your cloud · on-prem"],
   },
   stackLabel: "What you already run",
   columns: [
@@ -532,8 +533,8 @@ export const LABS_STACK_LAYER: StackLayerContent = {
         { name: "Scores in your tracer" },
       ],
       note: {
-        title: "12 checks",
-        detail: "None of them reads the loss-run date",
+        title: "9 checks",
+        detail: "None of them checks the order lookup",
       },
     },
     {
@@ -554,30 +555,30 @@ export const LABS_STACK_LAYER: StackLayerContent = {
   journey: [
     {
       at: "traces",
-      tag: "Trace",
+      tag: "Reads a trace",
       tone: "neutral",
-      title: "Session 2207 · quote",
-      detail: "Priced on a loss run from March",
+      title: "Session 2207 · refund",
+      detail: "Refunded without finding the order",
     },
     {
       at: "layer",
-      tag: "Missing",
+      tag: "Finds a gap",
       tone: "missing",
-      title: "Loss runs older than 90 days",
+      title: "Answers before looking up the order",
       detail: "58 sessions like it, no eval checks it",
     },
     {
       at: "layer",
-      tag: "New check",
+      tag: "Writes a check",
       tone: "new",
-      title: "loss_run_age_under_90_days",
-      detail: "Agrees with your underwriters 57 of 58 times",
+      title: "order_looked_up_first",
+      detail: "Agrees with your reviewers 57 of 58 times",
     },
     {
       at: "agent",
-      tag: "Replay",
+      tag: "Tests the fix",
       tone: "pass",
-      title: "Prompt fix, replayed via Claude Agent SDK",
+      title: "Prompt fix, replayed via OpenAI Agents SDK",
       detail: "58 of 58 now pass",
     },
   ],

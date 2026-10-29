@@ -2,8 +2,8 @@
 /**
  * LabsStackLayer (`labs.stack-layer`) — the homepage's "how it fits"
  * diagram: the AI engineer as an intelligence layer sitting on the stack a
- * team already runs. A dark sage-800 layer on top (title, its two
- * deployments, and the journey's two middle stops), connectors, then three
+ * team already runs. A dark sage-800 layer on top (title and the journey's
+ * two middle stops, an arrow between them from md), connectors, then three
  * cream columns underneath (traces, evals, agent framework) with their
  * service marks; the traces column holds the journey's first stop, the
  * agent column its last, and the evals column a static note on the judge.
@@ -11,11 +11,10 @@
  * traces and evals, and replays through the agent's framework. Below lg the layer stacks above the columns and the connectors
  * drop out.
  *
- * Motion (one moment): once the section is in view, the four stops light up
- * in order on a loop and a dot runs along each connector. The server render
- * shows every stop at full strength, numbered, so the journey reads with JS
- * off and under reduced motion, where nothing animates. Compositor
- * properties only. Copy arrives through `content` (LABS_STACK_LAYER on `/`).
+ * Motion (one moment): once the section is in view, a dot runs along each
+ * connector. Every stop stays at full strength and numbered, so the journey
+ * reads the same with JS off and under reduced motion, where nothing
+ * animates. Compositor properties only. Copy arrives through `content` (LABS_STACK_LAYER on `/`).
  */
 import type { JourneyStep, StackLayerContent } from "../../lib/labs-home";
 import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
@@ -51,22 +50,15 @@ const stepAt = (at: "traces" | "agent") => steps.find((step) => step.at === at);
     <div class="reveal-child mt-space-xl" role="group" aria-label={content.journeyLabel}>
       {/* The intelligence layer */}
       <div class="rounded-[20px] bg-(--color-sage-800) p-6 text-(--color-cream-50) md:p-8">
-        <div class="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p class="font-label text-[12px] leading-4 uppercase tracking-[0.08em] text-(--color-sage-300)">{content.layer.label}</p>
-            <p class="mt-2 font-display text-[28px] leading-[34px]">{content.layer.title}</p>
-          </div>
-          <ul class="flex list-none flex-wrap gap-2">
-            {content.layer.deployments.map((deployment, index) => (
-              <li class:list={["rounded-full px-3 py-1.5 font-mono text-[12px] leading-4", index === 0 ? "bg-(--color-cream-50) text-(--color-sage-900)" : "border border-(--color-sage-400) text-(--color-sage-200)"]}>
-                {deployment}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <ol class="mt-6 grid list-none grid-cols-1 gap-3 md:grid-cols-2">
-          {layerSteps.map((step) => (
-            <li class="journey-step flex gap-3 rounded-[14px] bg-(--color-sage-900) p-4" style={`--step: ${step.index}`}>
+        <p class="font-label text-[12px] leading-4 uppercase tracking-[0.08em] text-(--color-sage-300)">{content.layer.label}</p>
+        <p class="mt-2 font-display text-[28px] leading-[34px]">{content.layer.title}</p>
+        <ol class="mt-6 grid list-none grid-cols-1 gap-3 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center">
+          {layerSteps.map((step, i) => (
+            <Fragment>
+            {i > 0 && (
+              <li class="hidden justify-center font-mono text-[20px] text-(--color-sage-300) md:flex" aria-hidden="true">→</li>
+            )}
+            <li class="flex h-full gap-3 rounded-[14px] bg-(--color-sage-900) p-4">
               <span class="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-(--color-sage-400) font-mono text-[11px] text-(--color-sage-200)">{step.index + 1}</span>
               <span class="min-w-0">
                 <span class:list={["inline-block rounded-full px-2 py-0.5 font-label text-[10px] leading-4 uppercase tracking-[0.05em]", TAG_TONE[step.tone]]}>{step.tag}</span>
@@ -74,6 +66,7 @@ const stepAt = (at: "traces" | "agent") => steps.find((step) => step.at === at);
                 <span class="mt-0.5 block font-mono text-[12px] leading-[18px] text-(--color-sage-300)">{step.detail}</span>
               </span>
             </li>
+            </Fragment>
           ))}
         </ol>
       </div>
@@ -115,7 +108,7 @@ const stepAt = (at: "traces" | "agent") => steps.find((step) => step.at === at);
                   </div>
                 )}
                 {step && (
-                  <div class="journey-step mt-auto flex gap-3 rounded-[14px] border border-(--color-border) bg-(--color-cream-50) p-3.5 pt-3.5" style={`--step: ${step.index}`}>
+                  <div class="mt-auto flex gap-3 rounded-[14px] border border-(--color-border) bg-(--color-cream-50) p-3.5 pt-3.5">
                     <span class="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-(--color-sage-400) font-mono text-[11px] text-(--color-sage-800)">{step.index + 1}</span>
                     <span class="min-w-0">
                       <span class:list={["inline-block rounded-full px-2 py-0.5 font-label text-[10px] leading-4 uppercase tracking-[0.05em]", TAG_TONE[step.tone]]}>{step.tag}</span>
@@ -148,15 +141,9 @@ const stepAt = (at: "traces" | "agent") => steps.find((step) => step.at === at);
 </section>
 
 <style>
-  /* The journey loop: four stops, 2.5s each. Server render and reduced
-     motion keep every stop at full strength; the loop only dims the stops
-     that are not current, so nothing is ever hidden. */
+  /* A dot runs along each connector once the section is in view; reduced
+     motion keeps it hidden and the static diagram reads on its own. */
   @media (prefers-reduced-motion: no-preference) {
-    .stack-layer.in-view .journey-step {
-      animation: journey-step 10s ease-out infinite;
-      animation-delay: calc(var(--step) * 2.5s);
-      opacity: 0.45;
-    }
     .stack-layer.in-view .connector-dot {
       animation: connector-up 2.5s ease-in-out infinite;
     }
@@ -167,22 +154,6 @@ const stepAt = (at: "traces" | "agent") => steps.find((step) => step.at === at);
   .connector-dot {
     top: 50%;
     opacity: 0;
-  }
-  @keyframes journey-step {
-    0% {
-      opacity: 0.45;
-      transform: translateY(0);
-    }
-    4%,
-    22% {
-      opacity: 1;
-      transform: translateY(-2px);
-    }
-    28%,
-    100% {
-      opacity: 0.45;
-      transform: translateY(0);
-    }
   }
   @keyframes connector-up {
     0% {

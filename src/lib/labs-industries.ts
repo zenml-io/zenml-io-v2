@@ -71,7 +71,7 @@ function demo(analytics: string): LabsCta {
   return { ...DEMO, analytics };
 }
 
-const KIND_LABELS = { wrong: "Wrong", missing: "Missing" } as const;
+const KIND_LABELS = { wrong: "Eval wrong", missing: "No eval" } as const;
 
 const TRUST_POINTS: readonly TrustPoint[] = [
   {
@@ -183,6 +183,72 @@ const INSURANCE_GAPS: GapReportVisualContent = {
   ],
 };
 
+const INSURANCE_ONBOARDING: OnboardingStepsContent = {
+  ...LABS_ONBOARDING,
+  eyebrow: "How it works",
+  steps: [
+    {
+      title: "Connect your repos",
+      body: "Add the GitHub app and your tracing keys. Revoke them any time.",
+      widget: {
+        kind: "connect",
+        repos: [
+          {
+            name: "underwriting-agent",
+            role: "Agent",
+            detail: "PydanticAI · 9 tools",
+          },
+          { name: "uw-evals", role: "Evals", detail: "12 judges · pytest" },
+          {
+            name: "uw-guidelines",
+            role: "Manual",
+            detail: "UW manual · 46 rules",
+          },
+        ],
+      },
+    },
+    {
+      title: "A short interview",
+      body: "A few questions about what it found. Tap to answer.",
+      widget: {
+        kind: "call",
+        context: "quote_completeness has passed every quote for 30 days.",
+        question: "Do you trust it?",
+        options: ["Yes", "Not really", "Never checked"],
+        picked: "Not really",
+      },
+    },
+    {
+      title: "Hear what your evals miss",
+      body: "What your evals missed last week, in your order.",
+      widget: {
+        kind: "report",
+        items: [
+          { kind: "wrong", title: "Passes quotes over authority", count: "22" },
+          {
+            kind: "missing",
+            title: "Uninspected sprinkler credit",
+            count: "37",
+          },
+        ],
+        kindLabels: KIND_LABELS,
+      },
+    },
+    {
+      title: "Fifteen minutes a week",
+      body: "Ten quick questions on three real sessions.",
+      widget: {
+        kind: "review",
+        session: "Session #3318 · quote",
+        excerpt:
+          "Premium $4,180 · Limit $1.2M · Deductible $5,000. Property in FEMA zone A.",
+        question: "Should this quote have passed?",
+        options: ["Pass", "Fail"],
+      },
+    },
+  ],
+};
+
 export const INSURANCE_PAGE: IndustryPageContent = {
   path: "/insurance",
   analytics: "Insurance",
@@ -225,7 +291,7 @@ export const INSURANCE_PAGE: IndustryPageContent = {
       },
     ],
   },
-  onboarding: { ...LABS_ONBOARDING, eyebrow: "How it works" },
+  onboarding: INSURANCE_ONBOARDING,
   trust: trust(
     "Run it on-prem and policyholder data, loss runs and inspection reports never leave your walls. You choose where it runs and which models it calls.",
   ),

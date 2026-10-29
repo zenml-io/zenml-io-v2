@@ -16,7 +16,6 @@ import {
   LABS_ONBOARDING,
   LABS_STACK_LAYER,
 } from "../lib/labs-home";
-import { priceStrip } from "../lib/pricing";
 
 export const prerender = true;
 
@@ -27,7 +26,6 @@ export const prerender = true;
  */
 
 export function GET(): Response {
-  const pricing = priceStrip("Home");
   const markdown = joinMarkdownSections(
     markdownPreamble({
       title: LABS_HOME_SEO.title,
@@ -60,7 +58,7 @@ export function GET(): Response {
     joinMarkdownSections(
       `## ${LABS_STACK_LAYER.headline}`,
       LABS_STACK_LAYER.deck,
-      `${LABS_STACK_LAYER.layer.title}: ${LABS_STACK_LAYER.layer.deployments.join(", ")}.`,
+      LABS_STACK_LAYER.layer.title,
       markdownBulletList(
         LABS_STACK_LAYER.columns.map(
           (column) =>
@@ -89,17 +87,6 @@ export function GET(): Response {
           `CTA: ${markdownLink(door.cta.label, door.cta.href)}`,
         ),
       ),
-    ),
-    joinMarkdownSections(
-      `## ${pricing.headline}`,
-      pricing.deck,
-      markdownBulletList(
-        pricing.plans.map(
-          (plan) =>
-            `${plan.name}: ${plan.price}${plan.suffix ?? ""}, ${plan.line}`,
-        ),
-      ),
-      markdownLink(pricing.link.label, pricing.link.href),
     ),
     joinMarkdownSections(
       `## ${LABS_HOME_CLOSE.headlineLines.join(" ")}`,

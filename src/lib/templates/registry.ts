@@ -1507,21 +1507,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Homepage \"how it fits\" diagram from `content: StackLayerContent` (LABS_STACK_LAYER on `/`): the AI engineer as a dark sage-800 intelligence layer (deployments, the journey's two middle stops) over a dashed frame of the team's existing stack in three columns (traces, evals, agent framework, with service marks; traces holds stop 1, agent stop 4), joined by labelled reads / replays connectors from lg. One motion moment: in view, the four numbered stops light up in turn on a 10s loop and a dot runs each connector; server render and reduced motion show every stop at full strength. Install chip and trust-center link below.",
-    stage: false,
-    demoProps: {},
-  },
-  {
-    id: "labs.price-strip",
-    kind: "template",
-    componentPath: "src/components/labs/LabsPriceStrip.astro",
-    variantAxes: [],
-    tones: ["default"],
-    responsive: "reflow",
-    island: false,
-    paperPage: 0,
-    notes:
-      "The agent plans in one row for pages outside /pricing, from `content: PriceStripContent` (`priceStrip(placement)` in pricing.ts, derived from PRICING_PLANS_KITARU; on `/`): eyebrow, headline, deck and a Compare plans link in a 4/12 column, one compact cell per plan (name, price, limits line) in a 1 \u2192 2 \u2192 4 grid in the 8/12 column; the highlighted plan on sage-50. Static.",
+      "Homepage \"how it fits\" diagram from `content: StackLayerContent` (LABS_STACK_LAYER on `/`): the AI engineer as a dark sage-800 intelligence layer (the journey's two middle stops, an arrow between them from md) over a dashed frame of the team's existing stack in three columns (traces, evals, agent framework, with service marks; traces holds stop 1, agent stop 4), joined by labelled reads / replays connectors from lg. One motion moment: in view, a dot runs each connector; every numbered stop stays at full strength, and reduced motion shows the static diagram. Install chip and trust-center link below.",
     stage: false,
     demoProps: {},
   },
