@@ -18,6 +18,7 @@ import LabsGapReportVisual from "../components/labs/LabsGapReportVisual.astro";
 import LabsHero from "../components/labs/LabsHero.astro";
 import LabsOnboardingSteps from "../components/labs/LabsOnboardingSteps.astro";
 import LabsProblemBand from "../components/labs/LabsProblemBand.astro";
+import LabsWhereItRuns from "../components/labs/LabsWhereItRuns.astro";
 import LogoMarquee from "../components/labs/LogoMarquee.astro";
 import ProductDoors from "../components/labs/ProductDoors.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
@@ -33,6 +34,7 @@ import {
   LABS_ONBOARDING,
   LABS_PROBLEM,
   LABS_STORIES,
+  LABS_WHERE_IT_RUNS,
 } from "../lib/labs-home";
 import { defaultOgImage, ORGANIZATION_NAME } from "../lib/seo";
 
@@ -58,6 +60,7 @@ const homepageJsonLd = buildHomepageJsonLd({
     </LabsHero>
     <LabsProblemBand content={LABS_PROBLEM} />
     <LabsOnboardingSteps content={LABS_ONBOARDING} />
+    <LabsWhereItRuns content={LABS_WHERE_IT_RUNS} />
     <LogoMarquee content={LABS_LOGO_GRID} />
     <CustomerStoryCards content={LABS_STORIES} />
     <ProductDoors content={LABS_DOORS} />

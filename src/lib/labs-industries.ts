@@ -45,6 +45,7 @@ export interface TrustBandContent {
   deck: string;
   badges: readonly { url: string; alt: string }[];
   points: readonly TrustPoint[];
+  link: LabsCta;
 }
 
 export interface IndustryPageContent {
@@ -74,8 +75,8 @@ const KIND_LABELS = { wrong: "Wrong", missing: "Missing" } as const;
 
 const TRUST_POINTS: readonly TrustPoint[] = [
   {
-    title: "Runs in your cloud",
-    body: "Kitaru is open source and self-hosts in one command. ZenML Pro runs single-tenant in your own cloud, and air-gapped where you need it.",
+    title: "Runs where you need it",
+    body: "Your AI engineer runs in our cloud by default, or on-prem in your own cloud, air-gapped if you need it. Kitaru is open source and runs on your machine.",
   },
   {
     title: "Your models, your keys",
@@ -106,6 +107,11 @@ function trust(deck: string): TrustBandContent {
     deck,
     badges: PRO_COMPLIANCE.badges,
     points: TRUST_POINTS,
+    link: {
+      label: "Visit the trust center",
+      href: "https://security.zenml.io",
+      analytics: "Industry-Trust-Center",
+    },
   };
 }
 
@@ -116,7 +122,7 @@ function faq(extra: FaqData["items"]): FaqData {
       {
         question: "Where do our traces go?",
         answer:
-          "They stay where they are. Kitaru reads them from the tracing tool you already use. Self-hosted, nothing leaves your infrastructure; on ZenML Pro, your workspace is a single-tenant deployment that can run in your own cloud.",
+          "Your traces stay in the tracing tool you already use. By default, your AI engineer runs in our cloud and reads them through keys you can revoke. Deploy it on-prem and it runs inside your own cloud, so nothing leaves your infrastructure.",
       },
       {
         question: "Can we use our own models?",
@@ -126,7 +132,7 @@ function faq(extra: FaqData["items"]): FaqData {
       {
         question: "Which certifications do you hold?",
         answer:
-          'ZenML is SOC 2 Type II and ISO 27001 certified. <a href="/contact">Ask us</a> for the reports and our security documentation.',
+          'ZenML is SOC 2 Type II and ISO 27001 certified. Reports and policies are in our <a href="https://security.zenml.io">trust center</a>.',
       },
       {
         question: "Can it run air-gapped?",
@@ -218,9 +224,9 @@ export const INSURANCE_PAGE: IndustryPageContent = {
       },
     ],
   },
-  onboarding: LABS_ONBOARDING,
+  onboarding: { ...LABS_ONBOARDING, eyebrow: "How it works" },
   trust: trust(
-    "Policyholder data, loss runs and inspection reports stay inside your walls. You choose where it runs and which models it calls.",
+    "Run it on-prem and policyholder data, loss runs and inspection reports never leave your walls. You choose where it runs and which models it calls.",
   ),
   benchmarks: {
     eyebrow: "Benchmarks",
@@ -287,6 +293,7 @@ const FINANCE_GAPS: GapReportVisualContent = {
 
 const FINANCE_ONBOARDING: OnboardingStepsContent = {
   ...LABS_ONBOARDING,
+  eyebrow: "How it works",
   steps: [
     {
       title: "Connect your repo and your traces",
@@ -302,8 +309,8 @@ const FINANCE_ONBOARDING: OnboardingStepsContent = {
       },
     },
     {
-      title: "A short eval therapy call",
-      body: "Your AI engineer calls you, on your phone or in the browser, and asks at most three questions about what it found. Tap to answer.",
+      title: "A short interview",
+      body: "Your AI engineer asks you a few questions about what it found, in the browser or in Slack. Tap to answer.",
       widget: {
         kind: "call",
         context: "case_completeness has passed every case for 30 days.",
@@ -314,7 +321,7 @@ const FINANCE_ONBOARDING: OnboardingStepsContent = {
     },
     {
       title: "Hear what your evals miss",
-      body: "Seconds after you hang up, it tells you what your evals missed last week, in the order you said you care about. More follows in Slack.",
+      body: "Right after, it tells you what your evals missed last week, in the order you said you care about. More follows in Slack.",
       widget: {
         kind: "report",
         items: FINANCE_GAPS.items.slice(0, 2),
@@ -375,7 +382,7 @@ export const FINANCIAL_SERVICES_PAGE: IndustryPageContent = {
   },
   onboarding: FINANCE_ONBOARDING,
   trust: trust(
-    "Customer records, transactions and case files stay inside your walls. You choose where it runs and which models it calls.",
+    "Run it on-prem and customer records, transactions and case files never leave your walls. You choose where it runs and which models it calls.",
   ),
   faq: faq([
     {

@@ -12,10 +12,10 @@ import { defaultOgUrl } from "./seo";
 export const COMPANY_SEO = {
   title: "Company - ZenML",
   description:
-    "Meet the team behind ZenML. We're a young, dynamic team building the open-source AI orchestration framework trusted by ML and AI engineers worldwide.",
+    "ZenML has spent five years putting AI into production with some of the world's best companies. Meet the team behind ZenML, Kitaru and our AI engineer.",
   ogTitle: "Company - ZenML",
   ogDescription:
-    "Meet the team behind ZenML. We're a young, dynamic team building the open-source AI orchestration framework.",
+    "Five years of putting AI into production. Meet the team behind ZenML, Kitaru and our AI engineer.",
   ogImage: defaultOgUrl("pages", "company"),
 } as const;
 
@@ -24,8 +24,8 @@ export const COMPANY_SEO = {
 // ---------------------------------------------------------------------------
 export const COMPANY_HERO = {
   eyebrow: "Company",
-  headline: "Nothing Beats an Unbeatable Team",
-  deck: "Culture eats strategy for breakfast.",
+  headline: "Five years of AI in production",
+  deck: "We started ZenML to get machine learning out of notebooks and into production. Today the same team builds Kitaru and our AI engineer, so the agents you ship can be trusted too.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -33,7 +33,7 @@ export const COMPANY_HERO = {
 // ---------------------------------------------------------------------------
 export const COMPANY_ABOUT = {
   headline: "Our company",
-  body: "We're a young, dynamic team spread out across the world. We welcome people from all backgrounds, disciplines, and cultures. Apply now to be part of a growing, open source startup! You can work with us either remotely, or join us at our beautiful office @ Schellingstra\u00dfe, Munich. Or just catch us on a sailing boat at Ammersee or grilling in the Englischer Garten!",
+  body: "For five years we have worked with some of the world's best companies to run AI in production: first pipelines and models with ZenML, now agents and their evals with Kitaru. We're a team spread out across the world. We welcome people from all backgrounds, disciplines, and cultures. Apply now to be part of a growing, open source startup! You can work with us either remotely, or join us at our beautiful office @ Schellingstra\u00dfe, Munich. Or just catch us on a sailing boat at Ammersee or grilling in the Englischer Garten!",
   image: {
     url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7cea56ef/652ea57525920a782529bb0e_zenml_team_jul23.webp`,
     alt: "Group of people posing in front of a historic statue and building under a blue sky.",

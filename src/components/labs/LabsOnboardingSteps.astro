@@ -5,7 +5,7 @@
  * in a 1 → 2 → 4 grid. Each card is a numeral, a title and a body above a
  * small static widget that shows the step the way the product does it:
  * `connect` (the repos it found, with their roles, and the tracing
- * providers with one picked), `call` (one question with tappable answers),
+ * providers with one picked), `call` (one interview question with tappable answers),
  * `report` (the first gaps, tagged Wrong or Missing) and `review` (one
  * session excerpt with Pass / Fail). Static: no motion moment. Copy
  * arrives through `content` (LABS_ONBOARDING on `/`).
@@ -66,10 +66,8 @@ const WIDGET =
             {widget.kind === "call" && (
               <div class="flex flex-col gap-3">
                 <div class="flex items-center gap-2">
-                  <span class="flex h-4 items-end gap-0.5">
-                    {[6, 12, 9, 15, 7, 11].map((h) => <span class="w-0.5 rounded-full bg-(--color-sage-600)" style={`height:${h}px`}></span>)}
-                  </span>
-                  <span class="font-mono text-[12px] leading-4 text-(--color-cream-700)">On a call · 01:42</span>
+                  <span class="size-2 rounded-full bg-(--color-sage-600)"></span>
+                  <span class="font-mono text-[12px] leading-4 text-(--color-cream-700)">Interview · 2 of 3</span>
                 </div>
                 <p class="font-sans text-[14px] leading-5 text-(--color-cream-800)">{widget.context}</p>
                 <p class="font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">{widget.question}</p>

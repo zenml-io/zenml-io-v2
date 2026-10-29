@@ -2,7 +2,7 @@
 /**
  * LabsTrustBand (`labs.trust-band`) — an industry page's security section
  * on a sage-50 band: eyebrow, headline, deck and the SOC 2 / ISO 27001
- * badges in a 5/12 column (above on phones), then the security points as
+ * badges and a trust-center link in a 5/12 column (above on phones), then the security points as
  * numbered hairline rows in a 1 → 2 grid in the 7/12 column. Static.
  * Copy arrives through `content: TrustBandContent` (src/lib/labs-industries.ts).
  */
@@ -28,6 +28,15 @@ const { content } = Astro.props;
           <img src={badge.url} alt={badge.alt} class="h-20 w-auto object-contain" loading="lazy" />
         ))}
       </div>
+      <a
+        href={content.link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-analytics={content.link.analytics}
+        class="mt-6 inline-flex min-h-11 items-center gap-2 font-sans text-[16px] leading-6 text-(--color-sage-800) underline decoration-(--color-sage-400) underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-sage-900)"
+      >
+        {content.link.label} <span aria-hidden="true">↗</span>
+      </a>
     </div>
 
     <ol class="reveal-child stagger-1 grid min-w-0 list-none grid-cols-1 gap-x-10 md:grid-cols-2">

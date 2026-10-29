@@ -1512,6 +1512,20 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoProps: {},
   },
   {
+    id: "labs.where-it-runs",
+    kind: "template",
+    componentPath: "src/components/labs/LabsWhereItRuns.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "Homepage architecture section from `content: WhereItRunsContent` (LABS_WHERE_IT_RUNS on `/`): eyebrow, headline, deck, then one framed diagram of three nodes joined by arrows (side by side from lg, stacked with down arrows below). Tracing tools as logo chips over a small trace tree with an eval score; the AI engineer with its default (filled) and on-prem (outlined) deployments on sage-50; the open-source parts with the install chip. A trust-center link closes it. Static.",
+    stage: false,
+    demoProps: {},
+  },
+  {
     id: "labs.how-it-works",
     kind: "template",
     componentPath: "src/components/labs/LabsHowItWorks.astro",

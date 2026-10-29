@@ -19,7 +19,11 @@ import {
   LOGO_CLOUD,
   type LogoItem,
 } from "./homepage";
-import { KITARU_DOCS_URL, KITARU_LINKS } from "./productKitaru";
+import {
+  KITARU_DOCS_URL,
+  KITARU_INSTALL_CMD,
+  KITARU_LINKS,
+} from "./productKitaru";
 import { ZENML_LINKS } from "./productZenml";
 
 export type { CaseStudyCard };
@@ -304,6 +308,7 @@ export const LABS_HERO: LabsProductBandContent = {
   headlineLines: ["Know which evals", "to write"],
   deck: "Writing evals isn't the hard part. Our AI engineer reads your traces next to your evals and shows you what they miss.",
   cta: LABS_HERO_SIGNUP,
+  install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
 };
 
 /* ---------------------------------------------------------------------- */
@@ -482,8 +487,8 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       },
     },
     {
-      title: "A short eval therapy call",
-      body: "Your AI engineer calls you, on your phone or in the browser, and asks at most three questions about what it found. Tap to answer.",
+      title: "A short interview",
+      body: "Your AI engineer asks you a few questions about what it found, in the browser or in Slack. Tap to answer.",
       widget: {
         kind: "call",
         context: "quote_completeness has passed every quote for 30 days.",
@@ -494,7 +499,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
     },
     {
       title: "Hear what your evals miss",
-      body: "Seconds after you hang up, it tells you what your evals missed last week, in the order you said you care about. More follows in Slack.",
+      body: "Right after, it tells you what your evals missed last week, in the order you said you care about. More follows in Slack.",
       widget: {
         kind: "report",
         items: LABS_GAP_REPORT.items.slice(0, 2),
@@ -514,6 +519,100 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       },
     },
   ],
+};
+
+/* ---------------------------------------------------------------------- */
+/* Where it runs                                                           */
+/* ---------------------------------------------------------------------- */
+
+export interface WhereItRunsTraceRow {
+  /** Indent level in the trace tree: 0 is the session. */
+  depth: 0 | 1;
+  name: string;
+  meta: string;
+  /** A score the team's eval left on the span. Absence collapses. */
+  score?: { label: string; verdict: "pass" | "fail" };
+}
+
+export interface WhereItRunsDeployment {
+  label: string;
+  note: string;
+}
+
+export interface WhereItRunsContent {
+  eyebrow: string;
+  headline: string;
+  deck: string;
+  sources: {
+    title: string;
+    body: string;
+    providers: readonly { name: string; logo?: string }[];
+    trace: { label: string; rows: readonly WhereItRunsTraceRow[] };
+  };
+  engineer: {
+    title: string;
+    body: string;
+    /** The first is the default and renders filled. */
+    deployments: readonly [WhereItRunsDeployment, WhereItRunsDeployment];
+  };
+  local: {
+    title: string;
+    body: string;
+    install: LabsInstallChip;
+    pieces: readonly string[];
+  };
+  link: LabsCta;
+}
+
+export const LABS_WHERE_IT_RUNS: WhereItRunsContent = {
+  eyebrow: "Where it runs",
+  headline: "Keep your tracing tool. Pick where the rest runs.",
+  deck: "Your AI engineer reads traces from the tool you already use. It runs in our cloud by default, or on-prem in yours. The open-source parts run on your laptop.",
+  sources: {
+    title: "Your traces and evals",
+    body: "Read in place, through keys you can revoke.",
+    providers: [
+      { name: "Langfuse", logo: "/compare/langfuse.svg" },
+      { name: "Braintrust", logo: "/compare/braintrust.svg" },
+      { name: "LangSmith", logo: "/compare/langsmith.svg" },
+      { name: "Phoenix", logo: "/images/service-logos/arize-phoenix.svg" },
+      { name: "Logfire", logo: "/compare/logfire.svg" },
+      { name: "MLflow" },
+    ],
+    trace: {
+      label: "Braintrust · underwriting-agent",
+      rows: [
+        { depth: 0, name: "session 3318 · quote", meta: "4.2s" },
+        { depth: 1, name: "fetch_loss_runs", meta: "310ms" },
+        { depth: 1, name: "price_quote", meta: "2.1s" },
+        {
+          depth: 1,
+          name: "quote_completeness",
+          meta: "judge",
+          score: { label: "pass", verdict: "pass" },
+        },
+      ],
+    },
+  },
+  engineer: {
+    title: "Your AI engineer",
+    body: "Reads traces next to your evals, interviews you, and keeps the checks up to date.",
+    deployments: [
+      { label: "ZenML cloud", note: "Default" },
+      { label: "Your cloud", note: "On-prem, air-gapped on request" },
+    ],
+  },
+  local: {
+    title: "Open source, on your machine",
+    body: "Kitaru records, reviews and replays sessions on your laptop or your cluster, with your own model keys.",
+    install: { cmd: KITARU_INSTALL_CMD, analytics: "Home-Where-Install" },
+    pieces: ["Kitaru", "ZenML", "Your model keys"],
+  },
+  link: {
+    label: "Security and trust",
+    href: "https://security.zenml.io",
+    analytics: "Home-Where-Trust",
+  },
 };
 
 /* ---------------------------------------------------------------------- */
