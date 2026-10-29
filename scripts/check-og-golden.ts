@@ -49,7 +49,7 @@ export interface OgGolden {
 export const OG_GOLDENS: readonly OgGolden[] = [
   { generator: "compare", slug: "kitaru-vs-pydantic-ai" },
   { generator: "compare", slug: "zenml-vs-pydantic-ai" },
-  { generator: "default", slug: "pages/home" },
+  { generator: "default", slug: "pages/home-evals" },
 ];
 
 const goldenFileSlug = (slug: string) => slug.replace(/\//g, "-");

@@ -184,7 +184,7 @@ export const LOGOS: Record<OgBrand, Logo> = {
 const BRANDS: Record<OgBrand, { palette: Palette; mesh: string; hero: string }> = {
   labs: { palette: sage, mesh: "bg-mesh-zenml.jpg", hero: "bg-hero-zenml.jpg" },
   zenml: { palette: sage, mesh: "bg-mesh-zenml.jpg", hero: "bg-hero-zenml.jpg" },
-  kitaru: { palette: kitaru, mesh: "bg-mesh-kitaru.jpg", hero: "bg-hero-zenml.jpg" },
+  kitaru: { palette: kitaru, mesh: "bg-mesh-kitaru.jpg", hero: "bg-hero-kitaru.jpg" },
 };
 
 /** Card background colour: the panel, which is what shows through. */

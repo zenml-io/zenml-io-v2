@@ -1,4 +1,5 @@
 import { cloudSignupUrl } from "./constants";
+import { defaultOgUrl } from "./seo";
 
 /**
  * The one-line installer: CLI + MCP server in an isolated uv environment,
@@ -104,8 +105,7 @@ export const KITARU_LINKS = {
 export const PRODUCT_KITARU_SEO = {
   title: "Kitaru: insights and evals from your agent's traces | ZenML Labs",
   description: `Kitaru is the open-source core under our AI engineer. Import traces from ${KITARU_IMPORTERS_TEXT}, get insights across every session, turn what you find into checks, and replay a fix before it ships. Runs on your machine, with your keys.`,
-  // OG cards need JPEG, not AVIF — social platforms don't render AVIF (PR #73).
-  ogImage: "https://assets.zenml.io/content/og/439a52c0/kitaru-product-og.jpg",
+  ogImage: defaultOgUrl("pages", "product-kitaru"),
 } as const;
 
 /**
