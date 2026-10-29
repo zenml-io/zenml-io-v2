@@ -46,6 +46,16 @@ for (const c of section.children) {
     const expectedSet = c.name === P.slug ? P.expectedSetId : null;
     if (expectedSet && setId !== expectedSet) mismatches.push(c.name + ': main component set ' + setId + ' != ' + expectedSet);
     if (!expectedSet && setId !== P.ids.coverSetId && setId !== P.ids.vsSetId) mismatches.push(c.name + ': main component set ' + setId + ' is neither cover nor VS set');
+    // Photo 0N is the same image under both Brand variants, so check the number against the brand's list;
+    // a photo is only legal in Panel Bottom.
+    if (c.name === P.slug && P.brandPhotos) {
+      const bg = c.findOne(n => n.type === 'INSTANCE' && n.name === 'Background');
+      const style = bg && bg.componentProperties.Style ? bg.componentProperties.Style.value : null;
+      row.bgStyle = style;
+      if (style && /^Photo 0[1-9]$/.test(style) && !P.brandPhotos.includes(style)) mismatches.push(c.name + ': background ' + style + ' is off-brand for ' + P.brand + ' (allowed: ' + P.brandPhotos.join(', ') + ')');
+      const layout = c.componentProperties.Layout ? c.componentProperties.Layout.value : null;
+      if (style && /^Photo/.test(style) && layout !== 'Panel Bottom') mismatches.push(c.name + ': photo background ' + style + ' on Layout ' + layout + ' (photos only go in Panel Bottom)');
+    }
   }
   if (c.name === P.slug) nodeId = c.id;
 }

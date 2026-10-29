@@ -14,7 +14,7 @@ Rules for every cover. find-slot applies them deterministically; flags may overr
 ## Layout
 
 - Legal `Layout` values: `Text`, `Panel Bottom`, `Image Right`, `Image Left`, `Full Bleed`.
-- **No two adjacent covers in a section share a `Layout`** (adjacent = neighbouring slots in the ordered list, i.e. slot i and i±1 after reflow).
+- **No two adjacent covers in a section share a `Layout`** (adjacent = neighbouring slots in the ordered list, i.e. slot i and i±1 after reflow). Exception: two `Panel Bottom` covers may touch when both carry a photo (the photo rule below wins).
 - `Full Bleed` is reserved for release/launch posts (`/introducing|launch|release/i` in the title).
 - `Text` is for opinion and deep-dive shapes.
 - Comparison / alternatives posts (`/alternatives|\bvs\b/i`) get the VS template when every competitor key is known, otherwise `Panel Bottom` (the documented fallback: re-run find-slot with `--fallback "<reason>"`, reported in bold). The fallback overrides the adjacency rule — a Panel Bottom clash is noted in the report, not asked.
@@ -22,8 +22,10 @@ Rules for every cover. find-slot applies them deterministically; flags may overr
 ## Background (`Style`)
 
 - New covers use **`Photo 01`–`Photo 09` only**, never the legacy un-numbered `Photo`. The legacy `Photo` on existing covers is not a number and does not count toward uniqueness.
+- **Photos are per brand.** `Photo 01`–`Photo 09` hold the same image under both `Brand` variants of Cover BG (`150:1697`), so setting the Background's `Brand` does not make a photo on-brand. Kitaru uses only `Photo 01` and `Photo 08` (the saturated orange/green photos); ZenML uses only `Photo 02`–`07` and `Photo 09` (the pale sage/peach ones). find-slot emits the list as `P.brandPhotos`, S3 refuses and S5 reports an off-brand photo. Read 2026-10-29 from the variants; update this list and `BRAND_PHOTOS` in find-slot together if the photo set changes.
 - **No two covers inside one month section share a `Photo 0N`.** Round-robin the free numbers. No free number left → find-slot puts a question in `P`; stop and ask rather than repeat one.
-- **Hard rule:** `Image Left` / `Image Right` only ever pair with `Photo 0N`, `Mesh` or `Deep`. `Field` and `Tint` are too quiet to carry half a card.
+- **Photos only go in `Panel Bottom`** (photo on top, the panel holds the copy). find-slot gives `Panel Bottom` a free brand photo first, and never gives a photo to any other layout; S3 refuses and S5 reports a photo on another layout.
+- **Hard rule:** `Image Left` / `Image Right` only ever pair with `Mesh` or `Deep`. `Field` and `Tint` are too quiet to carry half a card.
 
 ## Text
 
