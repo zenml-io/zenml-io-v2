@@ -42,6 +42,8 @@ export const FOOTER_COLUMNS: FooterColumn[] = [
       { label: "Kitaru", href: "/product/kitaru" },
       { label: "ZenML Pro", href: "/pro", badge: "New" },
       { label: "Pricing", href: "/pricing" },
+      { label: "For insurance", href: "/insurance" },
+      { label: "For financial services", href: "/financial-services" },
     ],
   },
   {
