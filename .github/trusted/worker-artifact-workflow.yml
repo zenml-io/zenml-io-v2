@@ -31,6 +31,32 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Astro's content sync renders every Markdown entry into
+      # node_modules/.astro/data-store.json and reuses an entry whose file is
+      # unchanged. It cannot see edits to our remark/rehype plugins, dependency
+      # bumps, or the reference folders src/content.config.ts reads, so those
+      # inputs form the key and changing any of them starts from an empty store.
+      # GitHub never restores a pull request's cache on main.
+      - name: Hash Astro content store inputs
+        id: content-store
+        env:
+          INPUTS_HASH: >-
+            ${{ hashFiles('.github/workflows/deploy.yml', 'pnpm-lock.yaml',
+            'astro.config.ts', 'src/content.config.ts', 'src/lib/**',
+            'src/styles/**', 'src/content/authors/**',
+            'src/content/categories/**', 'src/content/tags/**',
+            'src/content/llmops-tags/**', 'src/content/mlops-tags/**',
+            'src/content/industry-tags/**', 'src/content/integration-types/**',
+            'src/content/advantages/**', 'src/content/quotes/**') }}
+        run: echo "inputs=$INPUTS_HASH" >> "$GITHUB_OUTPUT"
+
+      - name: Restore Astro content store
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: node_modules/.astro/data-store.json
+          key: astro-content-v1-${{ steps.content-store.outputs.inputs }}-${{ github.run_id }}
+          restore-keys: astro-content-v1-${{ steps.content-store.outputs.inputs }}-
+
       - name: Run Astro and TypeScript checks
         run: pnpm check
 
