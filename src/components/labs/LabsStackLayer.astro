@@ -1,23 +1,28 @@
 ---
 /**
  * LabsStackLayer (`labs.stack-layer`) — the homepage's "how it fits"
- * diagram: the AI engineer as an intelligence layer sitting on the stack a
- * team already runs. A dark sage-800 layer on top (title and the journey's
- * two middle stops, an arrow between them from md), connectors, then three
- * cream columns underneath (traces, evals, agent framework) with their
- * service marks; the traces column holds the journey's first stop, the
- * agent column its last, and the evals column a static note on the judge.
- * Each connector says how the layer works with the column: it reads the
- * traces and evals, and replays through the agent's framework. Below lg the layer stacks above the columns and the connectors
- * drop out.
+ * diagram, drawn as one session's thread through the stack a team already
+ * runs. On a stone panel: a track with a dot over each of the four journey
+ * cards (numeral, tone tag, title, detail), then a divider and the sources
+ * the thread runs through, one per column: the traces and evals it reads,
+ * the AI engineer layer, and the agent it replays through. Below lg the
+ * cards stack and the track turns into a rail down their left edge.
  *
- * Motion (one moment): once the section is in view, a dot runs along each
- * connector. Every stop stays at full strength and numbered, so the journey
- * reads the same with JS off and under reduced motion, where nothing
- * animates. Compositor properties only. Copy arrives through `content` (LABS_STACK_LAYER on `/`).
+ * Motion: the thread is scrubbed by scroll (`labs-scroll-progress.ts`). As
+ * the panel moves up the viewport a solid line fills the dashed track, and
+ * each stop the line reaches turns done (filled dot, plain card), the
+ * newest one active (ringed dot, sage card), the rest future (hollow dot,
+ * an empty dashed outline whose content settles in when reached). Source
+ * column i lights up with stop i, its marks popping in one after another. Scrolling back reverses it. The server renders the finished
+ * thread (three done, the last active), which is what JS off and reduced
+ * motion show. Compositor properties only for the line; the stop states are
+ * short colour and scale transitions. Copy arrives through `content`
+ * (LABS_STACK_LAYER on `/`).
  */
 import type { JourneyStep, StackLayerContent } from "../../lib/labs-home";
+import "../../styles/labs-scroll-reveal.css";
 import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
+import { GAP_TAG } from "./gapTags";
 import LabsInstallChip from "./LabsInstallChip.astro";
 
 interface Props {
@@ -26,19 +31,25 @@ interface Props {
 const { content } = Astro.props;
 
 const TAG_TONE: Record<JourneyStep["tone"], string> = {
-  neutral: "bg-(--color-cream-100) text-(--color-cream-800)",
-  missing: "border border-(--color-cream-400) text-(--color-cream-100)",
-  new: "bg-(--color-sage-100) text-(--color-sage-800)",
-  pass: "bg-(--color-sage-800) text-(--color-cream-50)",
+  neutral: "bg-(--muted) text-(--muted-foreground)",
+  missing: GAP_TAG.missing,
+  new: "bg-(--color-sage-200) text-(--color-olive-dark)",
+  pass: "bg-(--color-primary) text-(--primary-foreground)",
 };
 
-const steps = content.journey.map((step, index) => ({ ...step, index }));
-const layerSteps = steps.filter((step) => step.at === "layer");
-const stepAt = (at: "traces" | "agent") => steps.find((step) => step.at === at);
+const [traces, evals, agent] = content.columns;
+const last = content.journey.length - 1;
+const numeral = (index: number) => String(index + 1).padStart(2, "0");
+/** The finished thread, rendered on the server: every stop done, the last active. */
+const stateOf = (index: number) => (index === last ? "active" : "done");
+const COLUMN_TITLE =
+  "font-sans text-[14px] leading-[18px] font-semibold text-(--color-cream-900)";
+const COLUMN_LINE =
+  "font-sans text-[13px] leading-[18px] text-(--muted-foreground)";
 ---
 
-<section class="stack-layer scroll-reveal-section py-24 md:py-32" aria-labelledby="stack-layer-title">
-  <div class="mx-auto max-w-content px-gutter">
+<section class="stack-layer py-24 md:py-32" aria-labelledby="stack-layer-title">
+  <div class="scroll-reveal-section mx-auto max-w-content px-gutter">
     <p class:list={["reveal-child", LABS_EYEBROW_CLASS]}>{content.eyebrow}</p>
     <h2 id="stack-layer-title" class="reveal-child mt-3 max-w-[860px] font-display text-[32px] leading-[38px] text-balance text-(--color-cream-900) md:text-[48px] md:leading-[54px]">
       {content.headline}
@@ -47,80 +58,92 @@ const stepAt = (at: "traces" | "agent") => steps.find((step) => step.at === at);
       {content.deck}
     </p>
 
-    <div class="reveal-child mt-space-xl" role="group" aria-label={content.journeyLabel}>
-      {/* The intelligence layer */}
-      <div class="rounded-[20px] bg-(--color-sage-800) p-6 text-(--color-cream-50) md:p-8">
-        <p class="font-label text-[12px] leading-4 uppercase tracking-[0.08em] text-(--color-sage-300)">{content.layer.label}</p>
-        <p class="mt-2 font-display text-[28px] leading-[34px]">{content.layer.title}</p>
-        <ol class="mt-6 grid list-none grid-cols-1 gap-3 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-center">
-          {layerSteps.map((step, i) => (
-            <Fragment>
-            {i > 0 && (
-              <li class="hidden justify-center font-mono text-[20px] text-(--color-sage-300) md:flex" aria-hidden="true">→</li>
-            )}
-            <li class="flex h-full gap-3 rounded-[14px] bg-(--color-sage-900) p-4">
-              <span class="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-(--color-sage-400) font-mono text-[11px] text-(--color-sage-200)">{step.index + 1}</span>
-              <span class="min-w-0">
-                <span class:list={["inline-block rounded-full px-2 py-0.5 font-label text-[10px] leading-4 uppercase tracking-[0.05em]", TAG_TONE[step.tone]]}>{step.tag}</span>
-                <span class="mt-1.5 block font-sans text-[15px] leading-[21px] text-(--color-cream-50)">{step.title}</span>
-                <span class="mt-0.5 block font-mono text-[12px] leading-[18px] text-(--color-sage-300)">{step.detail}</span>
+    <div
+      class="stack-thread reveal-child stagger-2 mt-space-xl rounded-[24px] bg-(--secondary-fill) px-5 py-6 md:px-8 md:py-10"
+      data-scroll-progress
+      data-scroll-steps={content.journey.length}
+    >
+      <div role="group" aria-label={content.journeyLabel}>
+        {/* The track (lg+): a dot over each card, a line to the next */}
+        <div class="mb-5 hidden h-6 grid-cols-4 gap-4 lg:grid" aria-hidden="true">
+          {content.journey.map((_, index) => (
+            <div class="relative flex items-center justify-center">
+              {index < last && (
+                <span class="stack-line absolute top-1/2 left-1/2 h-0.5 w-[calc(100%+1rem)] -translate-y-1/2">
+                  <span class="stack-fill" data-progress style={`--i: ${index}`}></span>
+                </span>
+              )}
+              <span class="stack-dot relative" data-stop data-i={index} data-state={stateOf(index)}></span>
+            </div>
+          ))}
+        </div>
+
+        <ol class="grid list-none grid-cols-1 gap-4 pl-8 lg:grid-cols-4 lg:pl-0">
+          {content.journey.map((step, index) => (
+            <li class="stack-stop relative flex min-w-0 flex-col gap-1.5 rounded-[12px] border p-4" data-stop data-i={index} data-state={stateOf(index)}>
+              {/* The rail (below lg): the same dot and line, down the left edge */}
+              {index < last && (
+                <span class="stack-line stack-line-v absolute top-[1.625rem] -left-[calc(1.25rem+1px)] h-[calc(100%+1rem)] w-0.5 lg:hidden" aria-hidden="true">
+                  <span class="stack-fill" data-progress style={`--i: ${index}`}></span>
+                </span>
+              )}
+              <span class="stack-dot absolute top-4 -left-[1.875rem] lg:hidden" data-stop data-i={index} data-state={stateOf(index)} aria-hidden="true"></span>
+              <span class="stack-reveal stack-head flex items-center gap-2" style="--j: 0">
+                <span class="stack-numeral font-mono text-[12px] leading-4">{numeral(index)}</span>
+                <span class:list={["rounded-full px-2 py-0.5 font-sans text-[12px] leading-4 font-medium", TAG_TONE[step.tone]]}>{step.tag}</span>
+              </span>
+              <span
+                class:list={[
+                  "stack-reveal text-(--color-cream-900)",
+                  step.tone === "new"
+                    ? "font-mono text-[14px] leading-[22px] break-all"
+                    : "font-sans text-[15px] leading-[22px] font-medium",
+                ]}
+                style="--j: 1"
+              >
+                {step.title}
+              </span>
+              <span class:list={["stack-reveal font-sans text-[13px] leading-[18px]", step.tone === "pass" ? "text-(--color-sage-700)" : "text-(--muted-foreground)"]} style="--j: 2">
+                {step.detail}
               </span>
             </li>
-            </Fragment>
           ))}
         </ol>
       </div>
 
-      {/* Connectors: one per column, labelled with how the layer uses it */}
-      <div class="hidden grid-cols-3 gap-4 lg:grid" aria-hidden="true">
-        {content.columns.map((column) => (
-          <div class="relative flex h-16 items-center justify-center">
-            <span class="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 border-l border-dashed border-(--color-sage-400)"></span>
-            <span class:list={["connector-dot absolute left-1/2 size-2 -translate-x-1/2 rounded-full bg-(--color-sage-600)", column.link === "reads" ? "is-up" : "is-down"]}></span>
-            <span class="relative rounded-full border border-(--color-border) bg-(--color-cream-50) px-2.5 py-0.5 font-mono text-[11px] leading-4 text-(--color-sage-800)">
-              {column.link === "reads" ? "↑" : "↓"} {content.linkLabels[column.link]}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      {/* What the team already runs */}
-      <div class="mt-4 rounded-[20px] border border-dashed border-(--color-sage-400) p-4 md:p-6 lg:mt-0">
-        <p class="font-label text-[12px] leading-4 uppercase tracking-[0.08em] text-(--color-cream-700)">{content.stackLabel}</p>
-        <div class="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-3">
-          {content.columns.map((column) => {
-            const step = column.id === "evals" ? undefined : stepAt(column.id);
-            return (
-              <div class="flex min-w-0 flex-col rounded-[16px] border border-(--color-border) bg-card p-5 transition-colors duration-200 ease-out hover:border-(--color-sage-400)">
-                <h3 class="font-display text-[20px] leading-[26px] text-(--color-cream-900)">{column.title}</h3>
-                <ul class="mt-3 flex list-none flex-wrap gap-1.5">
-                  {column.marks.map((mark) => (
-                    <li class="inline-flex items-center gap-1.5 rounded-full border border-(--color-border) bg-(--color-cream-50) px-2.5 py-1 font-sans text-[13px] leading-4 text-(--color-cream-800)">
-                      {mark.logo && <img src={mark.logo} alt="" aria-hidden="true" class="size-3.5 object-contain" loading="lazy" />}
+      {/* What the thread runs through */}
+      <div class="mt-8 grid grid-cols-1 gap-6 border-t border-(--color-border) pt-6 md:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+        {[traces, evals, "layer" as const, agent].map((column, index) =>
+          column === "layer" ? (
+            <div class="stack-source flex min-w-0 flex-col gap-2.5" data-stop data-i={index} data-state={stateOf(index)}>
+              <span class="flex items-center gap-2">
+                <span class="stack-mark flex size-7 shrink-0 items-center justify-center rounded-[6px] border border-(--color-border) bg-card" style="--j: 0">
+                  <img src="/images/orbs/orb-sage-default-24.svg" alt="" aria-hidden="true" width="18" height="18" class="size-[18px]" />
+                </span>
+                <h3 class={COLUMN_TITLE}>{content.layer.title}</h3>
+              </span>
+              <p class={COLUMN_LINE}>{content.layer.label}</p>
+            </div>
+          ) : (
+            <div class="stack-source flex min-w-0 flex-col gap-2.5" data-stop data-i={index} data-state={stateOf(index)}>
+              <h3 class={COLUMN_TITLE}>{column.title}</h3>
+              <ul class="flex flex-wrap items-center gap-1.5">
+                {/* Marks first, then the names that have none */}
+                {[...column.marks.filter((mark) => mark.logo), ...column.marks.filter((mark) => !mark.logo)].map((mark, j) =>
+                  mark.logo ? (
+                    <li class="stack-mark flex size-7 items-center justify-center rounded-[6px] border border-(--color-border) bg-card" style={`--j: ${j}`}>
+                      <img src={mark.logo} alt={mark.name} title={mark.name} width="18" height="18" class="size-[18px] object-contain" loading="lazy" />
+                    </li>
+                  ) : (
+                    <li class="stack-mark flex h-7 items-center rounded-[6px] border border-(--color-border) bg-card px-2 font-sans text-[12px] leading-4 text-(--muted-foreground)" style={`--j: ${j}`}>
                       {mark.name}
                     </li>
-                  ))}
-                </ul>
-                {column.note && (
-                  <div class="mt-auto rounded-[14px] border border-(--color-border) bg-(--color-cream-50) p-3.5">
-                    <span class="block font-mono text-[13px] leading-[19px] text-(--color-cream-900)">{column.note.title}</span>
-                    <span class="mt-0.5 block font-mono text-[12px] leading-[18px] text-(--color-cream-700)">{column.note.detail}</span>
-                  </div>
+                  ),
                 )}
-                {step && (
-                  <div class="mt-auto flex gap-3 rounded-[14px] border border-(--color-border) bg-(--color-cream-50) p-3.5 pt-3.5">
-                    <span class="mt-0.5 inline-flex size-6 shrink-0 items-center justify-center rounded-full border border-(--color-sage-400) font-mono text-[11px] text-(--color-sage-800)">{step.index + 1}</span>
-                    <span class="min-w-0">
-                      <span class:list={["inline-block rounded-full px-2 py-0.5 font-label text-[10px] leading-4 uppercase tracking-[0.05em]", TAG_TONE[step.tone]]}>{step.tag}</span>
-                      <span class="mt-1.5 block font-sans text-[15px] leading-[21px] text-(--color-cream-900)">{step.title}</span>
-                      <span class="mt-0.5 block font-mono text-[12px] leading-[18px] text-(--color-cream-700)">{step.detail}</span>
-                    </span>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+              </ul>
+            </div>
+          ),
+        )}
       </div>
     </div>
 
@@ -132,55 +155,165 @@ const stepAt = (at: "traces" | "agent") => steps.find((step) => step.at === at);
         target="_blank"
         rel="noopener noreferrer"
         data-analytics={content.link.analytics}
-        class="inline-flex min-h-11 items-center gap-2 font-sans text-[16px] leading-6 text-(--color-sage-800) underline decoration-(--color-sage-400) underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-sage-900)"
+        class="group inline-flex min-h-11 items-center gap-1.5 font-sans text-[16px] leading-6 text-(--color-sage-800) transition-colors duration-200 ease-out hover:text-(--color-sage-900)"
       >
-        {content.link.label} <span aria-hidden="true">↗</span>
+        <span class="underline decoration-(--color-sage-400) underline-offset-4">{content.link.label}</span>
+        <span aria-hidden="true">↗</span>
       </a>
     </div>
   </div>
 </section>
 
 <style>
-  /* A dot runs along each connector once the section is in view; reduced
-     motion keeps it hidden and the static diagram reads on its own. */
-  @media (prefers-reduced-motion: no-preference) {
-    .stack-layer.in-view .connector-dot {
-      animation: connector-up 2.5s ease-in-out infinite;
-    }
-    .stack-layer.in-view .connector-dot.is-down {
-      animation-name: connector-down;
+  /* Range: p runs 0 → 1 while the panel's top moves from 85% to 35% of the
+     viewport (lg), or until its bottom reaches 60% (the stacked rail). */
+  .stack-thread {
+    --scroll-start: 0.85;
+    --scroll-end: 0.6;
+    --scroll-edge: 1;
+  }
+  @media (min-width: 1024px) {
+    .stack-thread {
+      --scroll-end: 0.35;
+      --scroll-edge: 0;
     }
   }
-  .connector-dot {
-    top: 50%;
+
+  /* The line: a dashed base, and a solid fill scrubbed from 0 to 1 across
+     each segment in turn (segment i fills while p·3 runs from i to i + 1). */
+  .stack-line {
+    background: repeating-linear-gradient(90deg, var(--color-cream-200) 0 6px, transparent 6px 10px);
+  }
+  .stack-line-v {
+    background: repeating-linear-gradient(180deg, var(--color-cream-200) 0 6px, transparent 6px 10px);
+  }
+  .stack-fill {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--color-primary);
+    transform-origin: left;
+    transform: scaleX(clamp(0, calc(var(--p) * 3 - var(--i)), 1));
+  }
+  .stack-line-v .stack-fill {
+    transform-origin: top;
+    transform: scaleY(clamp(0, calc(var(--p) * 3 - var(--i)), 1));
+  }
+
+  /* The dots: drawn at the active size (20px) and scaled to 14px for done
+     and future, so the change between states is a transform. Borders and
+     rings are set at 1/0.7 so they land on Paper's 3px / 1px / 2px. */
+  .stack-dot {
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    border-style: solid;
+    transition:
+      transform var(--duration-base) var(--ease-out-quint),
+      background-color var(--duration-base) var(--ease-out-quint),
+      border-color var(--duration-base) var(--ease-out-quint),
+      border-width var(--duration-base) var(--ease-out-quint),
+      box-shadow var(--duration-base) var(--ease-out-quint);
+  }
+  .stack-dot[data-state="done"] {
+    transform: scale(0.7);
+    background: var(--color-primary);
+    border-width: 4.3px;
+    border-color: var(--secondary-fill);
+    box-shadow: 0 0 0 1.4px var(--color-primary);
+  }
+  .stack-dot[data-state="active"] {
+    transform: scale(1);
+    background: var(--card);
+    border-width: 2px;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-primary) 15%, transparent);
+  }
+  .stack-dot[data-state="future"] {
+    transform: scale(0.7);
+    background: var(--secondary-fill);
+    border-width: 2.9px;
+    border-color: var(--color-cream-200);
+    box-shadow: 0 0 0 0 transparent;
+  }
+
+  /* The cards: plain once passed, sage while active, dashed and faint ahead. */
+  .stack-stop {
+    transition:
+      opacity var(--duration-base) var(--ease-out-quint),
+      background-color var(--duration-base) var(--ease-out-quint),
+      border-color var(--duration-base) var(--ease-out-quint),
+      box-shadow var(--duration-base) var(--ease-out-quint);
+  }
+  .stack-stop[data-state="done"] {
+    background: var(--card);
+    border-color: var(--color-border);
+  }
+  .stack-stop[data-state="active"] {
+    background: var(--color-sage-50);
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 24px rgb(65 61 55 / 0.08);
+  }
+  .stack-stop[data-state="future"] {
+    border-style: dashed;
+    border-color: var(--color-cream-200);
+  }
+
+  /* A card's content waits inside its outline (only its numeral and tag,
+     faint) and settles in (blur, rise, fade, 60ms per line) once the thread
+     reaches it. */
+  .stack-reveal {
+    transition:
+      opacity var(--duration-base) var(--ease-out-quint),
+      filter var(--duration-base) var(--ease-out-quint),
+      transform var(--duration-base) var(--ease-out-quint);
+    transition-delay: calc(80ms + var(--j) * 60ms);
+  }
+  [data-state="future"] > .stack-head {
+    opacity: 0.45;
+    filter: none;
+    transform: none;
+  }
+  [data-state="future"] > .stack-reveal:not(.stack-head) {
     opacity: 0;
+    filter: blur(4px);
+    transform: translateY(6px);
+    transition-delay: 0ms;
   }
-  @keyframes connector-up {
-    0% {
-      opacity: 0;
-      transform: translate(-50%, 28px);
-    }
-    20%,
-    80% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-      transform: translate(-50%, -28px);
-    }
+
+  /* The sources: column i lights up with stop i, its marks popping in one
+     after another. */
+  .stack-source {
+    transition: opacity var(--duration-base) var(--ease-out-quint);
   }
-  @keyframes connector-down {
-    0% {
-      opacity: 0;
-      transform: translate(-50%, -28px);
-    }
-    20%,
-    80% {
-      opacity: 1;
-    }
-    100% {
-      opacity: 0;
-      transform: translate(-50%, 28px);
+  .stack-source[data-state="future"] {
+    opacity: 0.6;
+  }
+  .stack-mark {
+    transition: transform var(--duration-base) cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition-delay: calc(var(--j) * 50ms);
+  }
+  [data-state="future"] .stack-mark {
+    transform: scale(0.85);
+    transition-delay: 0ms;
+  }
+  .stack-numeral {
+    color: var(--color-cream-700);
+    transition: color var(--duration-base) var(--ease-out-quint);
+  }
+  [data-state="active"] > span > .stack-numeral {
+    color: var(--color-primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stack-dot,
+    .stack-stop,
+    .stack-numeral,
+    .stack-reveal,
+    .stack-source,
+    .stack-mark {
+      transition: none;
     }
   }
 </style>
