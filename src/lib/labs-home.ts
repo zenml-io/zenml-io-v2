@@ -251,7 +251,7 @@ export type ModelMark =
 
 export const LABS_HERO: LabsProductBandContent = {
   headlineLines: ["Find what your agent’s", "evals miss"],
-  deck: "Our AI engineer reads your traces next to your evals and shows you what they let through. You answer a few questions. It writes the checks.",
+  deck: "Your agent changed. Your evals didn't. Our AI engineer reads your traces next to your evals and shows you what they let through.",
   cta: LABS_HERO_SIGNUP,
   textLink: {
     label: "or request a demo",
@@ -411,7 +411,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
   steps: [
     {
       title: "Connect your repos",
-      body: "Add the GitHub app and your tracing keys. Revoke them any time.",
+      body: "Connect GitHub. It reads your repos and finds your agent, your evals and your policies. Then add your tracing keys.",
       widget: {
         kind: "connect",
         repos: [
@@ -431,7 +431,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
     },
     {
       title: "A short interview",
-      body: "A few questions about what it found. Tap to answer.",
+      body: "It asks about what it found. Talk it through or type.",
       widget: {
         kind: "call",
         context: "reply_quality has passed every reply for 30 days.",
@@ -442,7 +442,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
     },
     {
       title: "Hear what your evals miss",
-      body: "What your evals missed last week, in your order.",
+      body: "Right after, it shows what your evals missed, in the order you care about.",
       widget: {
         kind: "report",
         items: [
