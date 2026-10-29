@@ -10,45 +10,27 @@ import {
   yesNo,
 } from "../lib/agentMarkdown";
 import {
+  PRICING_CLOSE,
   PRICING_COMPARE,
   PRICING_COMPLIANCE,
-  PRICING_FAQ_KITARU,
+  PRICING_FAQ,
   PRICING_FAQ_SLACK_CTA,
-  PRICING_FAQ_ZENML,
-  PRICING_FINAL_CTA,
   PRICING_HERO,
+  PRICING_PLAN_NOTE,
   PRICING_PLANS,
   PRICING_PRO_INCLUSIONS,
   PRICING_SEO,
   PRICING_STARTUP_BANNER,
-  PRICING_STATS,
 } from "../lib/pricing";
 import { htmlToPlainText } from "../lib/text";
 
 export const prerender = true;
 
 function renderPlan(plan: (typeof PRICING_PLANS)[number]): string {
-  const limits = plan.limitsLine ? `\n- Limits: ${plan.limitsLine}` : "";
-  const slider = plan.slider
-    ? joinMarkdownSections(
-        `- ${plan.slider.caption}:`,
-        markdownTable(
-          ["Executions", "Monthly price", "Projects", "Snapshots"],
-          plan.slider.tiers.map((tier) => [
-            tier.executions,
-            tier.price,
-            tier.projects,
-            tier.snapshots,
-          ]),
-        ),
-      )
-    : "";
-
   return joinMarkdownSections(
     `### ${plan.eyebrow}`,
     plan.subtitle,
-    `- Price: ${plan.price}${plan.priceSuffix ?? ""}${limits}`,
-    slider,
+    `- Price: ${plan.price}${plan.priceSuffix ?? ""}\n- Limits: ${plan.limitsLine}`,
     `- ${plan.includesLabel}:\n${indentedMarkdownBulletList(plan.features)}`,
     `- CTA: ${markdownLink(plan.cta.label, plan.cta.href)}`,
   );
@@ -94,12 +76,10 @@ function renderProInclusions(): string {
 
 function renderFaq(): string {
   return joinMarkdownSections(
-    ...[PRICING_FAQ_KITARU, PRICING_FAQ_ZENML].flatMap((faq) => [
-      `## ${faq.headline}`,
-      ...faq.items.map(
-        (item) => `### ${item.question}\n\n${htmlToPlainText(item.answer)}`,
-      ),
-    ]),
+    `## ${PRICING_FAQ.headline}`,
+    ...PRICING_FAQ.items.map(
+      (item) => `### ${item.question}\n\n${htmlToPlainText(item.answer)}`,
+    ),
     `Still not clear? ${markdownLink(
       PRICING_FAQ_SLACK_CTA.label,
       PRICING_FAQ_SLACK_CTA.href,
@@ -118,12 +98,11 @@ export function GET(): Response {
     joinMarkdownSections(
       "## Main CTAs",
       markdownCtaList([
-        PRICING_FINAL_CTA.primaryCta,
-        PRICING_FINAL_CTA.secondaryCta,
+        ...PRICING_PLANS.map((plan) => plan.cta),
         PRICING_STARTUP_BANNER.cta,
       ]),
     ),
-    `## Plans\n\n${PRICING_PLANS.map(renderPlan).join("\n\n")}`,
+    `## Plans\n\n${PRICING_PLAN_NOTE}\n\n${PRICING_PLANS.map(renderPlan).join("\n\n")}`,
     renderComparisonTables(),
     renderFaq(),
     renderProInclusions(),
@@ -145,20 +124,9 @@ export function GET(): Response {
         .join(", ")}.`,
     ),
     joinMarkdownSections(
-      `## ${PRICING_STATS.headline}`,
-      PRICING_STATS.deck,
-      markdownBulletList(
-        PRICING_STATS.items.map((item) => `${item.value} ${item.label}`),
-      ),
-    ),
-    joinMarkdownSections(
-      `## ${PRICING_FINAL_CTA.headline}`,
-      PRICING_FINAL_CTA.body,
-      "### CTAs",
-      markdownCtaList([
-        PRICING_FINAL_CTA.primaryCta,
-        PRICING_FINAL_CTA.secondaryCta,
-      ]),
+      `## ${PRICING_CLOSE.headlineLines.join(" ")}`,
+      PRICING_CLOSE.deck,
+      markdownCtaList([PRICING_CLOSE.cta]),
     ),
   );
 

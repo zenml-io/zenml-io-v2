@@ -1,12 +1,10 @@
 ---
 /**
  * Pricing page, in the ZenML Labs shell (`app="labs"`, `surface="unified"`
- * — no `product`, D3). Rebuilt for the product one-offs cutover (#317):
- * the short shader band (eyebrow / h1 / deck), the two-workspace plan
- * cards, a per-workspace comparison table and FAQ (all riding the same
- * `[data-workspace-panel]` toggle the plan cards drive), the "What's
- * included in Pro" doors, then the ZenML-only startup banner, compliance
- * section and stats + trust, and the closing band.
+ * — no `product`, D3): the short shader band (eyebrow / h1 / deck), one row
+ * of plan cards (Open Source / Starter / Enterprise), the comparison table,
+ * the FAQ, the "What's included" doors, the startup banner, the compliance
+ * section and the closing band. One public price, no workspace toggle.
  *
  * Route: /pricing
  */
@@ -15,7 +13,6 @@ import LabsBand from "../components/labs/LabsBand.astro";
 import LabsButton from "../components/labs/LabsButton.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
 import LabsFaq from "../components/labs/LabsFaq.astro";
-import LabsStoryCard from "../components/labs/LabsStoryCard.astro";
 import PricingPlanCards from "../components/labs/PricingPlanCards.astro";
 import PricingTable from "../components/labs/PricingTable.astro";
 import ProductDoors from "../components/labs/ProductDoors.astro";
@@ -26,16 +23,14 @@ import type { LabsCta } from "../lib/labs-home";
 import {
   PRICING_CLOSE,
   PRICING_COMPARE,
-  PRICING_COMPARE_KITARU,
   PRICING_COMPLIANCE,
-  PRICING_FAQ_KITARU,
-  PRICING_FAQ_ZENML,
+  PRICING_FAQ,
   PRICING_HERO,
-  PRICING_PLAN_WORKSPACES,
+  PRICING_PLAN_NOTE,
+  PRICING_PLANS,
   PRICING_PRO_INCLUSIONS_DOORS,
   PRICING_SEO,
   PRICING_STARTUP_BANNER,
-  PRICING_STATS,
 } from "../lib/pricing";
 import { buildPricingJsonLd } from "../lib/pricingJsonLd";
 
@@ -54,20 +49,6 @@ const pricingJsonLd = buildPricingJsonLd();
   <JsonLd data={pricingJsonLd} slot="head" />
 
   <main>
-    {/*
-      No-JS fallback: the workspace toggle needs JS to flip `hidden` on the
-      [data-workspace-panel] wrappers, so without scripting the ZenML half
-      of the page (plans + table) would be unreachable. This unhides every
-      panel — both workspaces render stacked — whenever scripting is off.
-    */}
-    <noscript>
-      <style>
-        [data-workspace-panel][hidden] {
-          display: block;
-        }
-      </style>
-    </noscript>
-
     <LabsBand size="short">
       <div class="flex flex-col gap-4">
         <p class={LABS_EYEBROW_CLASS}>
@@ -82,39 +63,23 @@ const pricingJsonLd = buildPricingJsonLd();
       </div>
     </LabsBand>
 
-    {/* Plan cards — two workspaces (Kitaru / ZenML), toggle-driven */}
-    <PricingPlanCards workspaces={PRICING_PLAN_WORKSPACES} />
+    <PricingPlanCards plans={PRICING_PLANS} note={PRICING_PLAN_NOTE} />
 
-    {/* Comparison table — one per workspace; the plan-cards toggle flips
-        `hidden` on every [data-workspace-panel] on the page, so these swap
-        in sync with the cards above. */}
     <section id="compare-table" class="scroll-mt-24 pb-24 md:pb-32">
       <div class="mx-auto max-w-content px-gutter">
-        <div data-workspace-panel="kitaru" data-product="kitaru">
-          <PricingTable data={PRICING_COMPARE_KITARU} />
-        </div>
-        <div data-workspace-panel="zenml" hidden>
-          <PricingTable data={PRICING_COMPARE} />
-        </div>
+        <PricingTable data={PRICING_COMPARE} />
       </div>
     </section>
 
-    {/* FAQ — one per workspace, riding the same [data-workspace-panel]
-        toggle as the plan cards and comparison table above. */}
-    <div data-workspace-panel="kitaru" data-product="kitaru">
-      <LabsFaq content={PRICING_FAQ_KITARU} />
-    </div>
-    <div data-workspace-panel="zenml" hidden>
-      <LabsFaq content={PRICING_FAQ_ZENML} />
-    </div>
+    <LabsFaq content={PRICING_FAQ} />
 
     {/* What's included in Pro — two workspaces breakdown */}
     <section class="bg-(--color-sage-50)">
       <ProductDoors content={PRICING_PRO_INCLUSIONS_DOORS} />
     </section>
 
-    {/* Startup / Academic banner: ZenML Pro pricing, so ZenML-workspace only */}
-    <section data-workspace-panel="zenml" hidden class="py-24 md:py-32">
+    {/* Startup / Academic banner */}
+    <section class="py-24 md:py-32">
       <div class="mx-auto max-w-content px-gutter">
         <div class="flex flex-col gap-6 rounded-[20px] border border-(--color-border) bg-(--color-sage-50) p-8 md:flex-row md:items-center md:justify-between md:p-10">
           <div>
@@ -130,11 +95,8 @@ const pricingJsonLd = buildPricingJsonLd();
       </div>
     </section>
 
-    {/* Compliance: "Your VPC, your data" — ZenML-workspace only. The claim
-        (metadata-only control plane, ZenML SOC2 posture) is specific to the
-        ZenML side, so it rides the same [data-workspace-panel] toggle as the
-        plan cards and comparison table above. */}
-    <section data-workspace-panel="zenml" hidden class="pb-24 md:pb-32">
+    {/* Compliance */}
+    <section class="pb-24 md:pb-32">
       <div class="mx-auto max-w-content px-gutter">
         <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
           {PRICING_COMPLIANCE.headline}
@@ -157,55 +119,6 @@ const pricingJsonLd = buildPricingJsonLd();
           headline={PRICING_COMPLIANCE.bannerHeadline}
           body={PRICING_COMPLIANCE.bannerBody}
         />
-      </div>
-    </section>
-
-    {/* Stats + Trust: pipeline numbers and a ZenML quote, so ZenML-workspace
-        only; the agent view ends on the close band. */}
-    <section data-workspace-panel="zenml" hidden class="border-t border-(--color-border) py-24 md:py-32">
-      <div class="mx-auto max-w-content px-gutter">
-        <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
-          {PRICING_STATS.headline}
-        </h2>
-        <p class="mt-4 font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
-          {PRICING_STATS.deck}
-        </p>
-
-        <dl class="mt-14 grid grid-cols-2 gap-y-10 md:grid-cols-4">
-          {PRICING_STATS.items.map((stat, i) => (
-            <div
-              class:list={[
-                "px-6 text-center",
-                i > 0 && "md:border-l md:border-(--color-border)",
-                i === 0 && "md:first:border-l-0",
-              ]}
-            >
-              <dd class="font-display text-[40px] leading-[44px] text-(--color-cream-900) tabular-nums">
-                {stat.value}
-              </dd>
-              <dt class="mt-2 font-sans text-[14px] leading-5 text-(--color-cream-700)">{stat.label}</dt>
-            </div>
-          ))}
-        </dl>
-
-        <div class="mx-auto mt-14 max-w-[768px]">
-          <LabsStoryCard
-            kind="quote"
-            quote={PRICING_STATS.testimonial.quote}
-            name={PRICING_STATS.testimonial.name}
-            title={PRICING_STATS.testimonial.title}
-            avatar={PRICING_STATS.testimonial.avatar}
-            logo={{ url: PRICING_STATS.testimonial.companyLogo, alt: "HashiCorp" }}
-          />
-        </div>
-
-        <ul class="mt-16 grid grid-cols-3 items-center justify-items-center gap-8 sm:grid-cols-4 lg:grid-cols-6">
-          {PRICING_STATS.logos.map((logo) => (
-            <li>
-              <img src={logo.src} alt={logo.alt} class="h-8 max-w-[120px] object-contain" loading="lazy" />
-            </li>
-          ))}
-        </ul>
       </div>
     </section>
 

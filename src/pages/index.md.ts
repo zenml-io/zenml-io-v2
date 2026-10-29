@@ -8,8 +8,8 @@ import {
 } from "../lib/agentMarkdown";
 import {
   LABS_DOORS,
-  LABS_GAP_REPORT,
   LABS_HERO,
+  LABS_HERO_SESSION,
   LABS_HOME_CLOSE,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
@@ -36,17 +36,16 @@ export function GET(): Response {
       "## Summary",
       LABS_HERO.headlineLines.join(" "),
       LABS_HERO.deck,
-      LABS_GAP_REPORT.label,
+      LABS_HERO_SESSION.label,
     ),
     joinMarkdownSections(
       "## Main CTA",
       markdownCtaList(
-        LABS_HERO.secondaryCta
-          ? [LABS_HERO.cta, LABS_HERO.secondaryCta]
+        LABS_HERO.textLink
+          ? [LABS_HERO.cta, LABS_HERO.textLink]
           : [LABS_HERO.cta],
       ),
       LABS_HERO.install ? `Install Kitaru: \`${LABS_HERO.install.cmd}\`` : "",
-      LABS_HERO.installNote ?? "",
     ),
     joinMarkdownSections(
       `## ${LABS_ONBOARDING.headline}`,

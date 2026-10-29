@@ -378,7 +378,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Thin adapter from `PricingCompareTableData` onto `data-display.spec-table`'s labs skin — the same mapping the legacy `PricingComparisonTable.astro` used. Consumers: /pricing (both workspace panels), and the same mapping shape on /open-source-vs-pro and /deployments.",
+      "Thin adapter from `PricingCompareTableData` onto `data-display.spec-table`'s labs skin — the same mapping the legacy `PricingComparisonTable.astro` used. Consumers: /pricing, and the same mapping shape on /open-source-vs-pro and /deployments.",
     stage: false,
     demoProps: {},
   },
@@ -386,13 +386,13 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "labs.pricing-plan-cards",
     kind: "template",
     componentPath: "src/components/labs/PricingPlanCards.astro",
-    variantAxes: ["workspace count", "highlighted plan", "slider present"],
+    variantAxes: ["highlighted plan"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 0,
     notes:
-      "The /pricing two-workspace plan cards: a segmented toggle above a Kitaru panel and a ZenML panel, both server-rendered, the toggle only flipping `hidden` (crawlers and no-JS visitors still see the default panel's numbers). The Recommended card = a 1px `--color-sage-400` border + a sentence-case pill (`--color-orange-300`/`--color-orange-600` on the Kitaru workspace — the panel's one bounded orange moment, from the workspace's `accent: \"sage\" | \"orange\"` discriminant in pricing.ts). The ZenML Scale card's executions slider view-model lives in `src/components/sections/pricingSlider.ts` (shared with the legacy card during the /pricing cutover); the workspace toggle, roving-tab-focus keyboard handling, the `Pricing: Workspace Switch` analytics call are carried over from the legacy `sections/PricingPlanCards.astro`; the reveal is the house `initScrollReveal()` (cards hide only once the section is armed, so no-JS stays visible). The selected toggle tab is the solid dark pill carrying the product wordmark; each panel opens with a heading naming its workspace.",
+      "The /pricing plan cards (`plans`, `note`): one row of plans (Open Source / Starter / Enterprise, three columns from lg) under a centred note, all static markup so crawlers and no-JS visitors see every number. The highlighted plan gets a 1px `--color-sage-400` border and a sage-800 top badge; check icons are sage-700. Cards slide in with the house scroll reveal; reduced motion shows them in place.",
 
     stage: false,
     demoProps: {},
@@ -1395,7 +1395,21 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "The homepage hero's example, mounted in LabsHero's `visual` slot on `/`, from `content: GapReportVisualContent` (LABS_GAP_REPORT). Drawn as the product's message card: the AI engineer's author row (LabsAiEngineerRow, the agent as meta), then the report title with its session window in mono, two pass-rate bars (the team's evals, then their own manual), and the gaps as a bordered list tagged Wrong (red tint) or Missing (cream outline) with a session count. On load the card rises out of a soft blur, its blocks settle 90ms apart, then the bars fill and the rows arrive, about 1.6s in all (CSS only, backwards fill, skipped under reduced motion; the values are in the markup). The figcaption carries the whole example as text and the drawn card is aria-hidden. Tag colours come from gapTags.ts.",
+      "An industry page hero's example, mounted in LabsHero's `visual` slot on `/insurance` and `/financial-services`, from `content: GapReportVisualContent`. Drawn as the product's message card: the AI engineer's author row (LabsAiEngineerRow, the agent as meta), then the report title with its session window in mono, two pass-rate bars (the team's evals, then their own manual), and the gaps as a bordered list tagged Wrong (red tint) or Missing (cream outline) with a session count. On load the card rises out of a soft blur, its blocks settle 90ms apart, then the bars fill and the rows arrive, about 1.6s in all (CSS only, backwards fill, skipped under reduced motion; the values are in the markup). The figcaption carries the whole example as text and the drawn card is aria-hidden. Tag colours come from gapTags.ts.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.missed-session-visual",
+    kind: "template",
+    componentPath: "src/components/labs/LabsMissedSessionVisual.astro",
+    variantAxes: ["message sender"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "The homepage hero's example, mounted in LabsHero's `visual` slot on `/`, from `content: MissedSessionVisualContent` (LABS_HERO_SESSION). One session as a card: the session id in mono, a customer bubble (cream, left) and an agent bubble (sage-800, right), the team's eval with its Pass chip, the AI engineer's finding on the orange tint, then a hairline footer with how many sessions like it passed and the drafted check. One motion moment on load (parts arrive in reading order; reduced motion shows the finished card); the figcaption carries the whole example as text and the drawn card is aria-hidden.",
     stage: false,
     demoProps: {},
   },
@@ -2261,7 +2275,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "The SOC 2 / ISO 27001 badges beside an eyebrow, headline and body on the Labs card shell. The `mt-8` is part of the component because every consumer sits it directly under a block. Consumers: /pricing (the ZenML workspace panel), /pro and the /features/[slug] compliance blocks.",
+      "The SOC 2 / ISO 27001 badges beside an eyebrow, headline and body on the Labs card shell. The `mt-8` is part of the component because every consumer sits it directly under a block. Consumers: /pricing, /pro and the /features/[slug] compliance blocks.",
     stage: false,
     demoProps: {
       badges: PRICING_COMPLIANCE.badges,

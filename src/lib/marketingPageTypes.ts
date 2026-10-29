@@ -83,28 +83,6 @@ export interface SubwayMapCard {
 // Pricing page types
 // ---------------------------------------------------------------------------
 
-/** One snap stop on a plan card's executions slider. */
-export interface PricingSliderTier {
-  /** Monthly executions at this stop, e.g. "500", "2,000", "5,000". */
-  executions: string;
-  /** Monthly price at this stop, e.g. "$399". */
-  price: string;
-  /** Projects bundled into this stop, e.g. "3". */
-  projects: string;
-  /** Snapshots bundled into this stop, e.g. "5". */
-  snapshots: string;
-}
-
-/** An interactive executions slider rendered inside a plan card. */
-export interface PricingSlider {
-  /** Caption above the track, e.g. "Monthly executions". */
-  caption: string;
-  /** Ordered tiers — the slider snaps to one stop per tier. */
-  tiers: PricingSliderTier[];
-  /** Index of the tier shown on first paint. */
-  defaultIndex: number;
-}
-
 /** A single plan card on the pricing page. */
 export interface PricingPlan {
   /** Stable identifier (also used for analytics + DOM ids). */
@@ -118,10 +96,8 @@ export interface PricingPlan {
   subtitle: string;
   price: string;
   priceSuffix?: string;
-  /** Static limits sentence. Mutually exclusive with `slider`. */
-  limitsLine?: string;
-  /** Interactive executions slider. Mutually exclusive with `limitsLine`. */
-  slider?: PricingSlider;
+  /** Static limits sentence. */
+  limitsLine: string;
   /** Label above the feature list ("Includes" / "Everything in Open Source, plus"). */
   includesLabel: string;
   /** Feature bullet list. */

@@ -1,11 +1,11 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { PRICING_PLANS, PRICING_PLANS_KITARU } from "../../src/lib/pricing";
+import { PRICING_PLANS } from "../../src/lib/pricing";
 import { buildPricingJsonLd } from "../../src/lib/pricingJsonLd";
 
 /**
  * Pins the /pricing structured data (WebPage + BreadcrumbList + FAQPage +
- * two SoftwareApplication offer catalogs) to the checked-in fixture. The
+ * the SoftwareApplication offer catalog) to the checked-in fixture. The
  * pricing page restyle must not change what crawlers read; regenerate the
  * fixture only for a deliberate pricing-fact change:
  *
@@ -22,18 +22,17 @@ describe("buildPricingJsonLd", () => {
     expect(buildPricingJsonLd()).toEqual(fixture);
   });
 
-  it("emits one Offer per plan in each catalog with the plan's CTA as its url", () => {
+  it("emits one Offer per plan with the plan's CTA as its url", () => {
     const graph = buildPricingJsonLd()["@graph"] as Record<string, unknown>[];
     const apps = graph.filter(
       (node) => node["@type"] === "SoftwareApplication",
     );
-    expect(apps.map((app) => app.name)).toEqual(["Kitaru", "ZenML"]);
-    const planCounts = [PRICING_PLANS_KITARU.length, PRICING_PLANS.length];
-    for (const [index, app] of apps.entries()) {
+    expect(apps.map((app) => app.name)).toEqual(["ZenML"]);
+    for (const app of apps) {
       const offers = (
         app.offers as { itemListElement: { name: string; url: string }[] }
       ).itemListElement;
-      expect(offers).toHaveLength(planCounts[index]);
+      expect(offers).toHaveLength(PRICING_PLANS.length);
       for (const offer of offers) {
         expect(offer.url).toMatch(/^https:\/\//);
       }

@@ -217,6 +217,8 @@ export interface LabsProductBandContent extends LabsBandContent {
   install?: LabsInstallChip;
   /** One short line under the install command: what it installs. */
   installNote?: string;
+  /** A quiet text link beside the primary pill, for the second path in. */
+  textLink?: LabsCta;
 }
 
 /** A product page's opening band led by its install command instead of a
@@ -248,17 +250,15 @@ export type ModelMark =
   | "chip";
 
 export const LABS_HERO: LabsProductBandContent = {
-  headlineLines: ["Know which evals", "to write"],
-  deck: "Writing evals isn't the hard part. Our AI engineer reads your traces next to your evals and shows you what they miss.",
+  headlineLines: ["Find what your agent’s", "evals miss"],
+  deck: "Your agent changed. Your evals didn't. Our AI engineer reads your traces next to your evals and shows you what they let through.",
   cta: LABS_HERO_SIGNUP,
-  secondaryCta: {
-    label: "Request demo",
+  textLink: {
+    label: "or request a demo",
     href: "/book-your-demo",
     analytics: "Hero-Request-Demo",
   },
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
-  installNote:
-    "Installs open-source Kitaru on your machine. Start free for the hosted AI engineer.",
 };
 
 /* ---------------------------------------------------------------------- */
@@ -295,21 +295,47 @@ export interface GapScore {
  * week of traces, the team's own evals. Illustrative numbers, not a
  * customer result.
  */
-export const LABS_GAP_REPORT: GapReportVisualContent = {
+export interface MissedSessionMessage {
+  from: "customer" | "agent";
+  text: string;
+}
+
+export interface MissedSessionVisualContent {
+  /** Accessible description of the whole card. */
+  label: string;
+  session: string;
+  messages: readonly MissedSessionMessage[];
+  /** The team's own eval and the verdict it gave. */
+  eval: { label: string; name: string; verdict: string };
+  /** What the AI engineer says the reply got wrong. */
+  finding: { by: string; text: string };
+  tally: string;
+  /** The check it drafts. */
+  check: string;
+}
+
+/**
+ * The homepage hero's example: one support session the team's eval passed
+ * and the AI engineer flagged. Illustrative, not a customer result.
+ */
+export const LABS_HERO_SESSION: MissedSessionVisualContent = {
   label:
-    "An example of what your AI engineer tells you about a customer support agent after one week. The team's evals pass 91% of 1,482 sessions; the team's own reviewers would pass 74%. One eval passed 41 replies that promised refunds the policy doesn't allow, and no eval checks the 58 replies sent without looking up the order.",
-  eyebrow: "What your evals missed",
-  agent: "support-agent",
-  window: "1,482 sessions",
-  scores: [
-    { label: "Your evals pass", value: 91 },
-    { label: "You would pass", value: 74 },
+    "An example session from a customer support agent. The customer asks to return shoes bought seven weeks ago, and the agent promises a full refund within 90 days. The team's reply_quality eval passed the reply. Your AI engineer flags it: the refund policy allows 30 days. 41 replies like this passed last week, and it drafts a refund_within_policy check.",
+  session: "support-agent · session 3318",
+  messages: [
+    {
+      from: "customer",
+      text: "Can I still return these? I bought them seven weeks ago.",
+    },
+    { from: "agent", text: "Of course! Full refund within 90 days." },
   ],
-  kindLabels: { wrong: "Eval wrong", missing: "No eval" },
-  items: [
-    { kind: "wrong", title: "Promises refunds it can't give", count: "41" },
-    { kind: "missing", title: "Never looks up the order", count: "58" },
-  ],
+  eval: { label: "Your eval", name: "reply_quality", verdict: "Pass" },
+  finding: {
+    by: "Your AI engineer",
+    text: "Your refund policy allows 30 days. This reply promised 90.",
+  },
+  tally: "41 replies like this passed last week",
+  check: "refund_within_policy",
 };
 
 /* ---------------------------------------------------------------------- */
@@ -390,7 +416,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
   steps: [
     {
       title: "Connect your repos",
-      body: "Add the GitHub app and your tracing keys. Revoke them any time.",
+      body: "Connect GitHub. It reads your repos and finds your agent, your evals and your policies. Then add your tracing keys.",
       widget: {
         kind: "connect",
         repos: [
@@ -410,7 +436,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
     },
     {
       title: "A short interview",
-      body: "A few questions about what it found. Tap to answer.",
+      body: "It asks about what it found. Talk it through or type.",
       widget: {
         kind: "call",
         context: "reply_quality has passed every reply for 30 days.",
@@ -421,12 +447,20 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
     },
     {
       title: "Hear what your evals miss",
-      body: "What your evals missed last week, in your order.",
+      body: "Right after, it shows what your evals missed, in the order you care about.",
       widget: {
         kind: "report",
-        // The hero's findings, so the numbers match down the page.
-        items: LABS_GAP_REPORT.items,
-        kindLabels: LABS_GAP_REPORT.kindLabels,
+        // The hero's refund session (41 passed) and the thread's order
+        // lookup (58), so the numbers match down the page.
+        items: [
+          {
+            kind: "wrong",
+            title: "Promises refunds it can't give",
+            count: "41",
+          },
+          { kind: "missing", title: "Never looks up the order", count: "58" },
+        ],
+        kindLabels: { wrong: "Eval wrong", missing: "No eval" },
       },
     },
     {
@@ -705,8 +739,8 @@ export interface StoryCardsContent {
 /* ---------------------------------------------------------------------- */
 
 export const LABS_HOME_CLOSE: LabsBandContent = {
-  headlineLines: ["Find what your", "evals miss"],
-  deck: "Connect your repo and your tracing provider. Your AI engineer takes it from there.",
+  headlineLines: ["Bring one agent", "and a week of traces"],
+  deck: "Connect your repo and your tracing keys. By the end of the interview you know what your evals miss. 14 days free, no credit card.",
   cta: LABS_FINAL_SIGNUP,
 };
 
