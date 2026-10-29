@@ -11,9 +11,10 @@
  */
 import CustomerStoryCards from "../../components/labs/CustomerStoryCards.astro";
 import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
-import LabsFeatureTabs from "../../components/labs/LabsFeatureTabs.astro";
+import LabsFeatureScroll from "../../components/labs/LabsFeatureScroll.astro";
 import LabsHero from "../../components/labs/LabsHero.astro";
 import LabsIntegrationsGrid from "../../components/labs/LabsIntegrationsGrid.astro";
+import LabsOpenSourceBand from "../../components/labs/LabsOpenSourceBand.astro";
 import LabsValueProps from "../../components/labs/LabsValueProps.astro";
 import LogoMarquee from "../../components/labs/LogoMarquee.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -27,6 +28,7 @@ import {
   ZENML_STORIES,
   ZENML_VALUE_PROPS,
 } from "../../lib/labs-product-zenml";
+import { ZENML_OPEN_SOURCE } from "../../lib/openSource";
 import { defaultOgImage } from "../../lib/seo";
 ---
 
@@ -41,10 +43,19 @@ import { defaultOgImage } from "../../lib/seo";
   <main>
     <LabsHero content={ZENML_HERO} />
     <LogoMarquee content={ZENML_LOGO_GRID} />
-    <LabsFeatureTabs content={ZENML_FEATURE_TABS} />
+    <LabsOpenSourceBand content={ZENML_OPEN_SOURCE} tint="sage" />
+    <LabsFeatureScroll content={ZENML_FEATURE_TABS} />
     <LabsValueProps content={ZENML_VALUE_PROPS} />
     <LabsIntegrationsGrid content={ZENML_INTEGRATIONS} />
     <CustomerStoryCards content={ZENML_STORIES} />
     <LabsCloseCta content={ZENML_CLOSE} />
   </main>
 </BaseLayout>
+
+<script>
+  import { initScrollProgress } from "../../scripts/labs-scroll-progress";
+  import { initScrollScrub } from "../../scripts/labs-scroll-scrub";
+  // Every reveal on this page scrubs with scroll (in going down, out going up).
+  initScrollScrub();
+  initScrollProgress();
+</script>

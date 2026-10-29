@@ -1,0 +1,138 @@
+{
+  "meta": {
+    "name": "Claims over time: improving an appeals agent batch by batch",
+    "question": "When a claims-review agent meets new cases in batches, with only a few outcomes coming back each time, does an improver that works through recorded sessions and replays (the ZenML AI engineer with Kitaru) keep it improving better than a strong coding agent (Codex)?",
+    "status": "complete",
+    "start": "2026-10-28",
+    "end": "2026-10-29",
+    "hours": "11h 9m"
+  },
+  "dataset": {
+    "source": "California Independent Medical Review determinations, CalHHS Open Data",
+    "url": "https://data.chhs.ca.gov/dataset/independent-medical-review-imr-determinations-trend",
+    "usableAppeals": 3131,
+    "library": 19374,
+    "batches": 8,
+    "batchSize": 100,
+    "revealedPerBatch": 20,
+    "heldOutPerBatch": 20
+  },
+  "models": {
+    "agentBefore": "gpt-6.1-sol",
+    "agentAfter": "Qwen3.8-27B",
+    "switchBeforeBatch": 4,
+    "improvers": "gpt-6-luna"
+  },
+  "budget": { "minutes": 45, "reruns": 3, "changes": 1 },
+  "lines": [
+    { "key": "pro", "name": "ZenML AI engineer" },
+    { "key": "codex", "name": "Codex" },
+    { "key": "left_alone", "name": "Left alone" }
+  ],
+  "runs": {
+    "second": {
+      "approval": "held-out",
+      "batches": {
+        "left_alone": [78.7, 77.7, 86.7, 69.1, 68.1, 78.3, 76.4, 67.9],
+        "codex": [82.1, 82.9, 90.7, 66.4, 65.7, 81.4, 78.7, 66.7],
+        "pro": [79.4, 82.2, 90.0, 66.9, 74.4, 86.2, 84.2, 77.4]
+      },
+      "beforeSwitch": { "left_alone": 81.3, "codex": 85.6, "pro": 84.2 },
+      "afterSwitch": { "left_alone": 71.7, "codex": 71.3, "pro": 76.9 },
+      "overall": {
+        "left_alone": { "value": 75.1, "ci95": [71.8, 78.3] },
+        "codex": { "value": 75.7, "ci95": [72.4, 78.8] },
+        "pro": { "value": 79.1, "ci95": [75.9, 82.3] }
+      },
+      "paired": {
+        "all": [
+          { "a": "pro", "b": "codex", "delta": 3.3, "ci95": [0.9, 5.8] },
+          { "a": "pro", "b": "left_alone", "delta": 4.0, "ci95": [1.1, 6.9] },
+          { "a": "codex", "b": "left_alone", "delta": 0.7, "ci95": [-2.5, 4.0] }
+        ],
+        "afterSwitch": [
+          { "a": "pro", "b": "codex", "delta": 5.6, "ci95": [2.2, 9.3] },
+          { "a": "pro", "b": "left_alone", "delta": 5.2, "ci95": [0.9, 9.7] },
+          { "a": "codex", "b": "left_alone", "delta": -0.4, "ci95": [-5.0, 4.3] }
+        ]
+      },
+      "errors": {
+        "left_alone": { "wrongfulDenials": 133, "wrongfulApprovals": 29, "undecided": 54, "accuracy": 73.0 },
+        "codex": { "wrongfulDenials": 52, "wrongfulApprovals": 70, "undecided": 29, "accuracy": 81.1 },
+        "pro": { "wrongfulDenials": 75, "wrongfulApprovals": 56, "undecided": 15, "accuracy": 81.8 }
+      },
+      "undecidedBatches6to8": { "left_alone": 38, "codex": 15, "pro": 2 },
+      "changes": [
+        {
+          "round": 1,
+          "codex": { "change": "Sparse residential-treatment summaries count as missing, not as evidence against", "shipped": true, "score": [0.881, 0.798] },
+          "pro": { "change": "The same idea for residential addiction treatment (ASAM levels 3.1 and 3.5)", "shipped": true, "score": [0.833, 0.798] }
+        },
+        {
+          "round": 2,
+          "codex": { "change": "Don't infer necessity from a numeric score or an incidental finding alone", "shipped": false, "score": [0.917, 0.933] },
+          "pro": { "change": "Widen the residential rule to all residential appeals", "shipped": true, "score": [0.917, 0.906] }
+        },
+        {
+          "round": 3,
+          "codex": { "change": "Tested widening its residential rule to other treatments", "shipped": false },
+          "pro": { "change": "Treat omissions as unknown in every review type", "shipped": false, "score": [0.819, 0.893] }
+        },
+        {
+          "round": 4,
+          "codex": { "change": "Tested a counterevidence rule", "shipped": false },
+          "pro": { "change": "Output limit 4,096 to 8,192 tokens; request limit 12 to 16", "shipped": true, "score": [0.775, 0.726] }
+        },
+        {
+          "round": 5,
+          "codex": { "change": "Tested two prompt clarifications", "shipped": false },
+          "pro": { "change": "Request limit 16 to 20", "shipped": true, "score": [0.756, 0.745] }
+        },
+        {
+          "round": 6,
+          "codex": { "change": "At most three precedent searches per appeal", "shipped": true, "score": [0.748, 0.726] },
+          "pro": { "change": "A rule for proton-beam therapy", "shipped": true, "score": [0.786, 0.781] }
+        },
+        {
+          "round": 7,
+          "codex": { "change": "Tested a rule on patient-specific criteria", "shipped": false },
+          "pro": { "change": "Autism therapy (ABA): dose and setting need patient-specific support", "shipped": true, "score": [0.813, 0.788] }
+        },
+        {
+          "round": 8,
+          "codex": { "change": "Limit the missing-summary rule to residential appeals", "shipped": true, "score": [0.797, 0.765] },
+          "pro": { "change": "Named organs at risk count as evidence for proton beam", "shipped": false, "score": [0.772, 0.822] }
+        }
+      ],
+      "spendUsd": { "openModelGpu": 45.61, "openAi": 31, "improvers": 1.26 }
+    },
+    "first": {
+      "approval": "revealed",
+      "batches": {
+        "left_alone": [81.2, 78.4, 86.7, 65.4, 76.6, 78.3, 72.2, 66.9],
+        "codex": [80.1, 78.4, 90.0, 64.5, 73.7, 85.2, 74.2, 75.0],
+        "pro": [79.4, 77.7, 85.3, 64.8, 71.2, 80.2, 80.0, 74.8]
+      },
+      "overall": {
+        "left_alone": { "value": 75.5, "ci95": [72.2, 78.6] },
+        "codex": { "value": 76.8, "ci95": [73.4, 80.2] },
+        "pro": { "value": 75.6, "ci95": [72.2, 78.9] }
+      },
+      "paired": {
+        "all": [
+          { "a": "pro", "b": "codex", "delta": -1.2, "ci95": [-4.0, 1.3] },
+          { "a": "pro", "b": "left_alone", "delta": 0.2, "ci95": [-3.0, 3.3] },
+          { "a": "codex", "b": "left_alone", "delta": 1.3, "ci95": [-1.6, 4.1] }
+        ]
+      }
+    }
+  },
+  "limitations": [
+    "One state's medical-necessity and experimental-treatment reviews: written decisions, not insurers' claim files.",
+    "Case files are written by a model from decision texts that include the reviewer's reasoning. A check drops files with outcome wording, but the choice of facts can still hint at the outcome.",
+    "The comparison is uneven on purpose: Codex as a team without our know-how would run it, our AI engineer as the ZenML team runs it. It does not say how Codex would do with an expert's instructions.",
+    "Each design ran once. The first run, before we fixed what it exposed, found no difference between the three lines; a third run could rank them differently again.",
+    "The intervals cover which appeals were drawn, not how differently an improver might act on another night.",
+    "Balanced accuracy weighs a wrongful denial and a wrongful approval equally. An insurer, or a patient refused care, would not."
+  ]
+}

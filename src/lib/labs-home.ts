@@ -3,8 +3,8 @@
  * ZenML Labs parent homepage (`/`), in one place.
  *
  * Copy rules (2026-09-08 rulings): "Start free" is the only signup action
- * and it leads to the unified cloud.zenml.io signup with no product
- * preselected (Sept 2026; the product pages pass their own `product`); "Explore ZenML / Explore Kitaru"
+ * and it leads to the unified cloud.zenml.io signup (the product
+ * pages tag their own links); "Explore ZenML / Explore Kitaru"
  * live only in the blocks that explain each product and link to the
  * product pages; no "Book a demo"; no helper lines under CTAs. Facts
  * (install commands, licences, compliance strings, case-study titles and
@@ -12,14 +12,14 @@
  * never retyped here.
  */
 import type { Surface } from "./analytics";
+import { cloudSignupUrl } from "./constants";
 import type { FeatureIconId } from "./featureIcons";
+import { type CaseStudyCard, LOGO_CLOUD, type LogoItem } from "./homepage";
 import {
-  CASE_STUDY_CARDS,
-  type CaseStudyCard,
-  LOGO_CLOUD,
-  type LogoItem,
-} from "./homepage";
-import { KITARU_DOCS_URL, KITARU_LINKS } from "./productKitaru";
+  KITARU_DOCS_URL,
+  KITARU_INSTALL_CMD,
+  KITARU_LINKS,
+} from "./productKitaru";
 import { ZENML_LINKS } from "./productZenml";
 
 export type { CaseStudyCard };
@@ -28,9 +28,9 @@ export type { CaseStudyCard };
 export type LabsProduct = "zenml" | "kitaru";
 
 export const LABS_HOME_SEO = {
-  title: "ZenML Labs: Ship AI you can trust",
+  title: "ZenML Labs: Find what your evals miss",
   description:
-    "ZenML Labs is the unified infrastructure layer for AI in production: ZenML orchestrates your pipelines and agents on the infra you choose, and Kitaru replays them on production data.",
+    "Our AI engineer reads your agent's production traces next to the evals you already run, shows you what those evals miss, and turns a few of your answers into checks you can trust. It works on top of open-source Kitaru and ZenML.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -47,12 +47,11 @@ export interface LabsCta {
 
 /**
  * The single signup action. Same label everywhere; the event names differ by
- * placement. The href is the unified signup with no `product` — the page
- * defaults to ZenML and offers the Kitaru toggle.
+ * placement. The href is the unified signup, tagged as the shared CTA.
  */
 export const LABS_SIGNUP = {
   label: "Start free",
-  href: "https://cloud.zenml.io/signup",
+  href: cloudSignupUrl("start-free"),
 } as const;
 
 export const LABS_NAV_SIGNUP: LabsCta = {
@@ -108,8 +107,8 @@ export const LABS_NAV_LINKS: readonly LabsNavLink[] = [
     href: "https://docs.zenml.io/getting-started/introduction",
     menu: "docs",
   },
+  { label: "Benchmarks", href: "/benchmarks" },
   { label: "Case studies", href: "/case-studies", menu: "case-studies" },
-  { label: "Compare", href: "/compare" },
   { label: "Pricing", href: "/pricing" },
   { label: "Blog", href: "/blog" },
 ];
@@ -216,6 +215,8 @@ export interface LabsBandContent {
 export interface LabsProductBandContent extends LabsBandContent {
   secondaryCta?: LabsCta;
   install?: LabsInstallChip;
+  /** One short line under the install command: what it installs. */
+  installNote?: string;
 }
 
 export interface LabsInstallChip {
@@ -224,10 +225,371 @@ export interface LabsInstallChip {
   analytics: string;
 }
 
-export const LABS_HERO: LabsBandContent = {
-  headlineLines: ["Ship AI", "you can trust"],
-  deck: "ZenML orchestrates your pipelines and agents. Kitaru replays them on production data before a change ships. Both open source, always.",
+/** A model's mark: a brand icon where the service-logo set has one, or a
+ *  neutral glyph (`open`, `chip`) for models without an approved mark yet. */
+export type ModelMark =
+  | "openai"
+  | "anthropic"
+  | "deepseek"
+  | "qwen"
+  | "zai"
+  | "open"
+  | "chip";
+
+export const LABS_HERO: LabsProductBandContent = {
+  headlineLines: ["Find what your agent’s", "evals miss"],
+  deck: "Your agent changed. Your evals didn't. Our AI engineer reads your traces next to your evals and shows you what they let through.",
   cta: LABS_HERO_SIGNUP,
+  secondaryCta: {
+    label: "Request a demo",
+    href: "/book-your-demo",
+    analytics: "Hero-Request-Demo",
+  },
+  install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
+};
+
+/* ---------------------------------------------------------------------- */
+/* Gap report: the hero's example and the two kinds of gap                 */
+/* ---------------------------------------------------------------------- */
+
+/** One gap on the example report: an eval that passes the wrong thing, or
+ *  a behavior nothing checks. */
+export interface GapItem {
+  kind: "wrong" | "missing";
+  title: string;
+  count: string;
+}
+
+export interface GapReportVisualContent {
+  /** Accessible description of the whole card. */
+  label: string;
+  eyebrow: string;
+  agent: string;
+  window: string;
+  /** The two pass rates the report opens with: the evals', then the team's. */
+  scores: readonly [GapScore, GapScore];
+  kindLabels: Record<GapItem["kind"], string>;
+  items: readonly GapItem[];
+}
+
+export interface GapScore {
+  label: string;
+  value: number;
+}
+
+/**
+ * The example everything on `/` shares: an insurance underwriting agent, a
+ * week of traces, the team's own evals. Illustrative numbers, not a
+ * customer result.
+ */
+export interface MissedSessionMessage {
+  from: "customer" | "agent";
+  text: string;
+}
+
+export interface MissedSessionVisualContent {
+  /** Accessible description of the whole card. */
+  label: string;
+  session: string;
+  /** The label above each message, by sender. */
+  speakers: Record<MissedSessionMessage["from"], string>;
+  messages: readonly MissedSessionMessage[];
+  /** The team's own eval and the verdict it gave. */
+  eval: { label: string; name: string; verdict: string };
+  /** What the AI engineer says the reply got wrong, and its verdict. */
+  finding: { by: string; text: string; verdict: string };
+  tally: string;
+  /** The check it drafts. */
+  check: string;
+}
+
+/**
+ * The homepage hero's example: one support session the team's eval passed
+ * and the AI engineer flagged. Illustrative, not a customer result.
+ */
+export const LABS_HERO_SESSION: MissedSessionVisualContent = {
+  label:
+    "An example session from a customer support agent. The customer asks to return shoes bought seven weeks ago, and the agent promises a full refund within 90 days. The team's reply_quality eval passed the reply. Your AI engineer flags it: the refund policy allows 30 days. 41 replies like this passed last week, and it drafts a refund_within_policy check.",
+  session: "session 3318",
+  speakers: { customer: "Customer", agent: "support-agent" },
+  messages: [
+    {
+      from: "customer",
+      text: "Can I still return these? I bought them seven weeks ago.",
+    },
+    { from: "agent", text: "Of course! Full refund within 90 days." },
+  ],
+  eval: { label: "Your eval", name: "reply_quality", verdict: "Pass" },
+  finding: {
+    by: "Your AI engineer",
+    text: "Your refund policy allows 30 days. This reply promised 90.",
+    verdict: "Fail",
+  },
+  tally: "41 replies like this passed last week",
+  check: "refund_within_policy",
+};
+
+/* ---------------------------------------------------------------------- */
+/* Problem                                                                 */
+/* ---------------------------------------------------------------------- */
+
+export interface ProblemPoint {
+  title: string;
+  body: string;
+}
+
+export interface ProblemBandContent {
+  eyebrow: string;
+  /** Two sentences, set on two lines. */
+  headlineLines: readonly [string, string];
+  deck: string;
+  points: readonly ProblemPoint[];
+}
+
+/* ---------------------------------------------------------------------- */
+/* Onboarding: connect, a short call, what it found, a weekly review     */
+/* ---------------------------------------------------------------------- */
+
+export type OnboardingWidget =
+  | {
+      kind: "connect";
+      repos: readonly OnboardingRepo[];
+    }
+  | {
+      kind: "call";
+      question: string;
+      options: readonly string[];
+      picked: string;
+      context: string;
+    }
+  | {
+      kind: "report";
+      items: readonly GapItem[];
+      kindLabels: Record<GapItem["kind"], string>;
+    }
+  | {
+      kind: "review";
+      session: string;
+      excerpt: string;
+      question: string;
+      options: readonly string[];
+      /** The verdict the example lands on, one of `options`. */
+      picked: string;
+    };
+
+export interface OnboardingRepo {
+  name: string;
+  role: string;
+  /** What it found there, one short line. */
+  detail: string;
+}
+
+export interface OnboardingStep {
+  title: string;
+  body: string;
+  widget: OnboardingWidget;
+}
+
+export interface OnboardingStepsContent {
+  eyebrow: string;
+  headline: string;
+  deck: string;
+  steps: readonly OnboardingStep[];
+}
+
+/** The name the homepage gives the product's agent, shared by the onboarding window and the stack layer. */
+export const AI_ENGINEER = "Your AI engineer";
+
+export const LABS_ONBOARDING: OnboardingStepsContent = {
+  eyebrow: "Eval therapy",
+  headline: "You answer a few questions. Good evals fall out.",
+  deck: "You don't write evals from scratch. Your AI engineer asks only what it can't work out alone.",
+  steps: [
+    {
+      title: "Connect your repos",
+      body: "Connect GitHub. It reads your repos and finds your agent, your evals and your policies. Then add your tracing keys.",
+      widget: {
+        kind: "connect",
+        repos: [
+          {
+            name: "support-agent",
+            role: "Agent",
+            detail: "OpenAI Agents SDK · 7 tools",
+          },
+          { name: "support-evals", role: "Evals", detail: "9 judges · pytest" },
+          {
+            name: "help-center",
+            role: "Policies",
+            detail: "Refunds, returns · 38 rules",
+          },
+        ],
+      },
+    },
+    {
+      title: "A short interview",
+      body: "It asks about what it found. Talk it through or type.",
+      widget: {
+        kind: "call",
+        context: "reply_quality has passed every reply for 30 days.",
+        question: "Do you trust it?",
+        options: ["Yes", "Not really", "Never checked"],
+        picked: "Not really",
+      },
+    },
+    {
+      title: "Hear what your evals miss",
+      body: "Right after, it shows what your evals missed, in the order you care about.",
+      widget: {
+        kind: "report",
+        // The hero's refund session (41 passed) and the thread's order
+        // lookup (58), so the numbers match down the page.
+        items: [
+          {
+            kind: "wrong",
+            title: "Promises refunds it can't give",
+            count: "41",
+          },
+          { kind: "missing", title: "Never looks up the order", count: "58" },
+        ],
+        kindLabels: { wrong: "Eval wrong", missing: "No eval" },
+      },
+    },
+    {
+      title: "Fifteen minutes a week",
+      body: "Ten quick questions on three real sessions.",
+      widget: {
+        kind: "review",
+        session: "Session #3318 · refund",
+        excerpt:
+          "Customer: Can I return these shoes? Agent: Yes, full refund within 90 days. Policy: 30 days.",
+        question: "Should this reply have passed?",
+        options: ["Pass", "Fail"],
+        picked: "Fail",
+      },
+    },
+  ],
+};
+
+/* ---------------------------------------------------------------------- */
+/* How it fits: the intelligence layer on the stack you already run       */
+/* ---------------------------------------------------------------------- */
+
+export interface StackMark {
+  name: string;
+  /** A full-colour service mark; absent renders the name alone. */
+  logo?: string;
+}
+
+export interface StackColumn {
+  id: "traces" | "evals" | "agent";
+  title: string;
+  marks: readonly StackMark[];
+}
+
+/** One stop of the example session's journey through the diagram. */
+export interface JourneyStep {
+  tag: string;
+  tone: "neutral" | "missing" | "new" | "pass";
+  title: string;
+  detail: string;
+}
+
+export interface StackLayerContent {
+  eyebrow: string;
+  headline: string;
+  deck: string;
+  layer: {
+    label: string;
+    title: string;
+  };
+  columns: readonly [StackColumn, StackColumn, StackColumn];
+  /** Four stops, in order: traces, layer, layer, agent. */
+  journey: readonly [JourneyStep, JourneyStep, JourneyStep, JourneyStep];
+  journeyLabel: string;
+  install: LabsInstallChip;
+  installLabel: string;
+  link: LabsCta;
+}
+
+export const LABS_STACK_LAYER: StackLayerContent = {
+  eyebrow: "How it fits",
+  headline: "An intelligence layer on the stack you already run",
+  deck: "Nothing to rewrite, no new framework. It reads your repos and traces through keys you can revoke.",
+  layer: {
+    label: "Intelligence layer",
+    title: AI_ENGINEER,
+  },
+  columns: [
+    {
+      id: "traces",
+      title: "Your traces",
+      marks: [
+        { name: "Langfuse", logo: "/compare/langfuse.svg" },
+        { name: "Braintrust", logo: "/compare/braintrust.svg" },
+        { name: "LangSmith", logo: "/compare/langsmith.svg" },
+        { name: "Phoenix", logo: "/images/service-logos/arize-phoenix.svg" },
+        { name: "MLflow", logo: "/images/service-logos/mlflow.svg" },
+        { name: "Logfire", logo: "/compare/logfire.svg" },
+      ],
+    },
+    {
+      id: "evals",
+      title: "Your evals",
+      marks: [
+        { name: "LLM judges" },
+        { name: "pytest", logo: "/images/service-logos/pytest.svg" },
+        { name: "promptfoo", logo: "/images/service-logos/promptfoo.svg" },
+        { name: "DeepEval", logo: "/images/service-logos/deepeval.svg" },
+        { name: "Scores in your tracer" },
+      ],
+    },
+    {
+      id: "agent",
+      title: "Your agent",
+      marks: [
+        { name: "Claude Agent SDK", logo: "/compare/claude-agent-sdk.svg" },
+        { name: "OpenAI Agents SDK", logo: "/compare/openai-agents-sdk.svg" },
+        { name: "PydanticAI", logo: "/compare/pydantic-ai.svg" },
+        { name: "LangGraph", logo: "/compare/langgraph-deep-agents.svg" },
+        { name: "Vercel AI SDK", logo: "/images/service-logos/vercel.svg" },
+        { name: "Mastra", logo: "/images/service-logos/mastra.svg" },
+      ],
+    },
+  ],
+  journey: [
+    {
+      tag: "Reads a trace",
+      tone: "neutral",
+      title: "Session 2207 · refund",
+      detail: "Refunded without finding the order",
+    },
+    {
+      tag: "Finds a gap",
+      tone: "missing",
+      title: "Answers before looking up the order",
+      detail: "58 sessions like it, no eval checks it",
+    },
+    {
+      tag: "Writes a check",
+      tone: "new",
+      title: "order_looked_up_first",
+      detail: "Agrees with your reviewers 57 of 58 times",
+    },
+    {
+      tag: "Tests the fix",
+      tone: "pass",
+      title: "Prompt fix, replayed via OpenAI Agents SDK",
+      detail: "58 of 58 now pass",
+    },
+  ],
+  journeyLabel: "One session's journey",
+  install: { cmd: KITARU_INSTALL_CMD, analytics: "Home-Stack-Install" },
+  installLabel: "Try it on your laptop",
+  link: {
+    label: "Security and trust",
+    href: "https://security.zenml.io",
+    analytics: "Home-Stack-Trust",
+  },
 };
 
 /* ---------------------------------------------------------------------- */
@@ -269,13 +631,15 @@ export interface ProductDoorsContent {
 }
 
 export const LABS_DOORS: ProductDoorsContent = {
-  headline: "Build it, then prove it",
+  headline: "Open source underneath",
+  caption:
+    "Your AI engineer works on top of both. Use them on their own, free, on your own machines.",
   doors: [
     {
       name: "ZenML",
       tint: "sage",
-      leadLine: "AI orchestration, on the infra you choose",
-      body: "Write pipelines and agents in Python and run them on the orchestrator and cloud you already have. Move between them without rewriting, from a laptop to Kubernetes.",
+      leadLine: "Orchestrate AI on the infra you choose",
+      body: "Run pipelines and agents in Python on the orchestrator and cloud you already have, with every run, artifact, and model version recorded.",
       cta: {
         label: "Explore ZenML",
         href: "/product/zenml",
@@ -285,8 +649,8 @@ export const LABS_DOORS: ProductDoorsContent = {
     {
       name: "Kitaru",
       tint: "orange",
-      leadLine: "Replay your agents on production data",
-      body: "Import the sessions your agent has actually run, find what repeats, and replay a change against them. See what improved, what regressed, and what it costs before it ships.",
+      leadLine: "Test every agent update on real traces",
+      body: "Import the traces you already have, review sessions, turn your verdicts into evaluators, and replay any change before it ships.",
       cta: {
         label: "Explore Kitaru",
         href: "/product/kitaru",
@@ -326,37 +690,6 @@ export type FeaturePanel = FeaturePanelIcon & {
   analytics?: string;
 };
 
-export const LABS_FEATURE_PANELS: readonly FeaturePanel[] = [
-  {
-    index: "01.",
-    title: "Orchestrate",
-    body: "Pipelines and agents in Python, on the orchestrator and cloud you already run.",
-    icon: "pipeline",
-    tone: "sage-tint",
-  },
-  {
-    index: "02.",
-    title: "Replay",
-    body: "Real production sessions become the test set. Replay a change and see what improved, what regressed, and what it costs.",
-    icon: "layers",
-    tone: "sage-deep",
-  },
-  {
-    index: "03.",
-    title: "Open source",
-    body: "ZenML and Kitaru are Apache 2.0. Self-host, read the code, keep your data where it is.",
-    icon: "open-box",
-    tone: "canvas",
-  },
-  {
-    index: "04.",
-    title: "Ready for enterprise",
-    body: "SOC 2 Type II and ISO 27001, on infrastructure you own.",
-    icon: "shield",
-    tone: "sage-light",
-  },
-];
-
 /* ---------------------------------------------------------------------- */
 /* Proof                                                                   */
 /* ---------------------------------------------------------------------- */
@@ -367,7 +700,7 @@ export interface LogoGridContent {
 }
 
 export const LABS_LOGO_GRID: LogoGridContent = {
-  headline: "Running production AI today",
+  headline: "Trusted to run production AI, from pipelines to agents, at",
   logos: LOGO_CLOUD.logos,
 };
 
@@ -392,20 +725,15 @@ export interface StoryCardsContent {
   cards: readonly (CaseStudyCard | QuoteCard)[];
 }
 
-export const LABS_STORIES: StoryCardsContent = {
-  headline: "Customer stories",
-  allLink: {
-    label: "All case studies",
-    href: "/case-studies",
-    analytics: "Stories-All",
-  },
-  readLabel: "Read the story",
-  cards: CASE_STUDY_CARDS,
-};
-
 /* ---------------------------------------------------------------------- */
 /* Close                                                                   */
 /* ---------------------------------------------------------------------- */
+
+export const LABS_HOME_CLOSE: LabsBandContent = {
+  headlineLines: ["Bring one agent", "and a week of traces"],
+  deck: "Connect your repo and your tracing keys. By the end of the interview you know what your evals miss. 14 days free, no credit card.",
+  cta: LABS_FINAL_SIGNUP,
+};
 
 export const LABS_CLOSE: LabsBandContent = {
   headlineLines: ["Start with your", "production data"],

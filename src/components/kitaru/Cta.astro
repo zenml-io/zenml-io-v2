@@ -1,57 +1,56 @@
 ---
 import {
+  KITARU_DOCS_URL,
   KITARU_INSTALL_CMD,
   KITARU_LICENSE,
-  KITARU_LINKS,
-  KITARU_TRIAL_NOTE,
 } from "../../lib/kitaru-landing";
-import { LABS_SIGNUP } from "../../lib/labs-home";
-import LabsButton from "../labs/LabsButton.astro";
 import LabsInstallChip from "../labs/LabsInstallChip.astro";
-// Cta.astro — closing CTA band. Dark grain background (KitaruGrain
-// variant="dark"), headline, orange signup pill, then the install chip
-// beneath.
-import { KitaruGrain } from "./islands/KitaruGrain";
 
-const signup = {
-  label: LABS_SIGNUP.label,
-  href: KITARU_LINKS.signup.href,
-  analytics: "Kitaru-CTA-Signup",
+// Cta.astro — closing CTA band. Plain dark band (the hero owns the page's
+// one ambient shader, per DESIGN.md), headline, the install chip, then a docs
+// text link (a ghost pill disappears on the dark band).
+
+const docs = {
+  label: "Read docs",
+  href: KITARU_DOCS_URL,
+  analytics: "Kitaru-CTA-Docs",
 };
 const install = { cmd: KITARU_INSTALL_CMD, analytics: "Kitaru-CTA-Install" };
 ---
 
 <section id="cta" class="relative overflow-hidden bg-night text-night-text">
-  <KitaruGrain variant="dark" client:visible class="opacity-90" />
-
   <div class="relative mx-auto w-full max-w-content px-gutter py-24 text-center md:py-40">
     <h2
-      class="reveal font-display text-[44px] leading-[48px] text-balance text-(--color-cream-50) md:text-[72px] md:leading-[78px]"
+      data-scroll-progress data-progress class="scroll-scrub font-display text-[44px] leading-[48px] text-balance text-(--color-cream-50) md:text-[72px] md:leading-[78px]"
     >
-      What arrives as a complaint
+      Your traces know
       <br />
-      <span class="text-ember">leaves as a regression test.</span>
+      <span class="text-ember">what your evals miss.</span>
     </h2>
 
     <div
-      class="reveal mt-10 flex flex-wrap items-center justify-center gap-space-md"
-      style="--reveal-delay: 120ms"
+      data-scroll-progress data-progress class="scroll-scrub mt-10 flex flex-wrap items-center justify-center gap-space-md"
     >
-      <LabsButton cta={signup} tone="orange" />
+      <div class="flex max-w-full"><LabsInstallChip content={install} tone="dark" /></div>
     </div>
 
     <div
-      class="reveal mt-space-md flex max-w-full justify-center"
-      style="--reveal-delay: 160ms"
+      data-scroll-progress data-progress class="scroll-scrub mt-space-md flex justify-center"
     >
-      <LabsInstallChip content={install} tone="dark" />
+      <a
+        href={docs.href}
+        data-analytics={docs.analytics}
+        class="inline-flex min-h-11 items-center gap-2 font-label text-[13px] uppercase tracking-[0.05em] text-(--color-cream-50) underline decoration-(--color-cream-50)/40 underline-offset-4 transition-colors duration-200 ease-out hover:decoration-(--color-cream-50)"
+      >
+        {docs.label} <span aria-hidden="true">→</span>
+      </a>
     </div>
 
-    <p class="reveal mt-8 text-[13px] text-night-text/60" style="--reveal-delay: 200ms">
-      {KITARU_TRIAL_NOTE} · Open source ({KITARU_LICENSE})
+    <p data-scroll-progress data-progress class="scroll-scrub mt-8 text-[13px] text-night-text/60">
+      Open source ({KITARU_LICENSE}) · Runs on your machine
     </p>
-    <p class="reveal mt-1.5 text-[13px] text-night-text/70" style="--reveal-delay: 240ms">
-      Replays run from recordings — production never sees a test.
+    <p data-scroll-progress data-progress class="scroll-scrub mt-1.5 text-[13px] text-night-text/70">
+      Want it done for you? <a href="/pricing" data-analytics="Kitaru-CTA-Pricing" class="underline decoration-night-text/40 underline-offset-4 transition-colors duration-200 ease-out hover:decoration-night-text">Our AI engineer</a> reads them each week.
     </p>
   </div>
 </section>

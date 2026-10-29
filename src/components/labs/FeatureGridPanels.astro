@@ -1,7 +1,7 @@
 ---
 /**
  * FeatureGridPanels — a row of equal full-tone panels (03 Feature grid).
- * Panels arrive through the `content` prop (`LABS_FEATURE_PANELS` on `/`).
+ * Panels arrive through the `content` prop (the /docs resources, the comparison strategy block).
  * The row is always full-bleed; the column count follows the item count, so
  * the comparison strategy block's three advantages fill the width too. Five
  * and six items wrap at three columns (3+2, 3+3) rather than squeezing one
@@ -17,6 +17,7 @@
  */
 import type { FeaturePanel, FeaturePanelTone } from "../../lib/labs-home";
 import { FEATURE_ICONS } from "./icons";
+import "../../styles/labs-scroll-reveal.css";
 
 interface Props {
   content: readonly FeaturePanel[];
@@ -63,9 +64,9 @@ const BODY_TONE_CLASSES: Record<FeaturePanelTone, string> = {
         target={panel.external ? "_blank" : undefined}
         rel={panel.external ? "noopener noreferrer" : undefined}
         data-analytics={panel.analytics}
-        class={`${PANEL_CLASS} ${TONE_CLASSES[panel.tone]}${panel.href ? ` ${LINK_PANEL_CLASS}` : ""}`}
+        class={`scroll-reveal-section ${PANEL_CLASS} ${TONE_CLASSES[panel.tone]}${panel.href ? ` ${LINK_PANEL_CLASS}` : ""}`}
       >
-        <div class="flex items-start justify-between">
+        <div class="reveal-child flex items-start justify-between">
           {mark ? (
             <svg
               viewBox="0 0 114 114"
@@ -92,7 +93,7 @@ const BODY_TONE_CLASSES: Record<FeaturePanelTone, string> = {
             <span class="font-label text-[15px] tracking-[0.05em]">{panel.index}</span>
           )}
         </div>
-        <div class="flex flex-col gap-3">
+        <div class="reveal-child stagger-1 flex flex-col gap-3">
           <h3 class="font-display text-[28px] leading-[32px] text-balance">
             {panel.title}
             {panel.external && <span class="sr-only"> (opens in new tab)</span>}

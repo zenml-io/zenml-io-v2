@@ -64,12 +64,9 @@
  * author hub pages now render through PageHeader + TermHubEditorial/
  * TermHubEntryIndex, whose own client-side piece is HubPagination (checked
  * below), not a ported CategoryBar.
- * - Of the remaining /product/kitaru islands, TwoDoors covers the interactive
- *   contract that has regressed. The others have nothing better to assert on:
- *   HeroVideo's sole interaction opens a third-party video iframe in a
- *   dialog, KitaruGrain is a WebGL shader, and ScenarioStrip's only state
- *   is a decorative hover-linked highlight — a progressive enhancement we
- *   accept going untested rather than asserting on hover-driven class flips.
+ * - The /product/kitaru islands have nothing worth asserting on: HeroVideo's
+ *   sole interaction opens a third-party video iframe in a dialog, and
+ *   KitaruGrain is a WebGL shader.
  *
  * - Console errors and pageerror are NOT failure triggers. Pagefind's wasm load,
  *   the aborted third-party requests and image 404s all produce noise; failing on
@@ -77,6 +74,7 @@
  *   assertion anyway. Page errors are captured and appended to the failure message
  *   as a diagnostic only.
  */
+import assert from "node:assert/strict";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
@@ -243,6 +241,8 @@ interface IslandCheck {
   island: string | null;
   /** False only for the CookieConsent check, which needs a virgin localStorage. */
   seedConsent: boolean;
+  javaScriptEnabled?: boolean;
+  viewport?: { width: number; height: number };
   /**
    * `root` is the selector for this island's hydrated <astro-island> wrapper,
    * or the empty string when `island` is null.
@@ -251,6 +251,266 @@ interface IslandCheck {
 }
 
 const CHECKS: IslandCheck[] = [
+  ...[
+    "/",
+    "/pricing",
+    "/pro",
+    "/product/kitaru",
+    "/blog/agents-are-not-microservices",
+  ].map(
+    (route): IslandCheck => ({
+      name: "keyboard skip link bypasses navigation without JavaScript",
+      route,
+      island: null,
+      seedConsent: false,
+      javaScriptEnabled: false,
+      async assert(page) {
+        if (route === "/pricing" || route === "/pro") {
+          assert.equal(
+            await page.locator("main").count(),
+            1,
+            "page must have one main landmark",
+          );
+        }
+        assert.equal(await page.locator("main main").count(), 0);
+        const skip = page.getByRole("link", {
+          name: "Skip to content",
+          exact: true,
+        });
+        assert.equal(await skip.count(), 1);
+        await page.keyboard.press("Tab");
+        assert.equal(
+          await skip.evaluate((element) => element === document.activeElement),
+          true,
+        );
+        const visible = await skip.evaluate((element) => {
+          const box = element.getBoundingClientRect();
+          return (
+            box.top >= 0 &&
+            box.bottom <= innerHeight &&
+            element.contains(
+              document.elementFromPoint(
+                box.x + box.width / 2,
+                box.y + box.height / 2,
+              ),
+            )
+          );
+        });
+        assert.equal(
+          visible,
+          true,
+          "focused skip link must be visible above navigation",
+        );
+        const target = await skip.getAttribute("href");
+        assert.ok(target);
+        assert.ok(target.startsWith("#"));
+        await page.keyboard.press("Enter");
+        assert.equal(
+          await page
+            .locator(target)
+            .evaluate((element) => element === document.activeElement),
+          true,
+        );
+        await page.keyboard.press("Tab");
+        assert.equal(
+          await page
+            .locator(target)
+            .evaluate((element) => element.contains(document.activeElement)),
+          true,
+        );
+      },
+    }),
+  ),
+  ...[
+    {
+      route: "/brick-manual",
+      island: "ContactForm",
+      endpoint: "/api/forms/brick-manual",
+      emailError: "Valid email is required",
+      viewport: undefined,
+    },
+    {
+      route: "/book-your-demo",
+      island: "DemoRequestForm",
+      endpoint: "/api/forms/demo-request",
+      emailError: "Valid work email is required",
+      viewport: undefined,
+    },
+    {
+      route: "/brick-manual",
+      island: "ContactForm",
+      endpoint: "/api/forms/brick-manual",
+      emailError: "Valid email is required",
+      viewport: { width: 390, height: 844 },
+    },
+  ].map(
+    (spec): IslandCheck => ({
+      name: `${spec.island} associates errors, focuses repeated failures, and completes a corrected submission${spec.viewport ? " (mobile)" : ""}`,
+      route: spec.route,
+      island: spec.island,
+      seedConsent: true,
+      viewport: spec.viewport,
+      async assert(page, root) {
+        await page.addStyleTag({
+          content: "html { scroll-behavior: auto !important; }",
+        });
+        const form = page.locator(`${root} form`);
+        const submit = form.getByRole("button", { name: /.+/ });
+        const summary = form.getByRole("region", {
+          name: /^(Please check the form|We couldn't send your request)$/,
+        });
+        const summaryHeading = () =>
+          summary.evaluate(
+            (element) =>
+              document.getElementById(
+                element.getAttribute("aria-labelledby") ?? "",
+              )?.textContent,
+          );
+        let submissions = 0;
+        await page.route(`**${spec.endpoint}`, async (route) => {
+          submissions++;
+          if (submissions === 1) {
+            await route.fulfill({
+              status: 400,
+              json: { errors: { email: "Use another email address" } },
+            });
+          } else if (submissions === 2) {
+            await route.fulfill({
+              status: 503,
+              json: { error: "Please try again later" },
+            });
+          } else if (submissions === 3) {
+            await route.abort();
+          } else {
+            await route.fulfill({ status: 200, json: { success: true } });
+          }
+        });
+        const assertSummaryFocused = async () => {
+          await summary.waitFor();
+          await page.waitForFunction(() =>
+            document.activeElement
+              ?.getAttribute("aria-labelledby")
+              ?.endsWith("-error-heading"),
+          );
+          assert.equal(
+            await summary.evaluate(
+              (element) => element === document.activeElement,
+            ),
+            true,
+          );
+          assert.equal(
+            await summary.evaluate((element) => {
+              const navBottom =
+                document
+                  .querySelector("[data-labs-nav-shell]")
+                  ?.getBoundingClientRect().bottom ?? 0;
+              return element.getBoundingClientRect().top >= navBottom;
+            }),
+            true,
+            "focused error summary must be clear of fixed navigation",
+          );
+        };
+        const assertFieldError = async (name: string, message: string) => {
+          const field = form.locator(`[name="${name}"]`);
+          assert.equal(await field.getAttribute("aria-invalid"), "true");
+          const errorId = await field.getAttribute("aria-describedby");
+          assert.ok(errorId);
+          assert.equal(
+            await page.locator(`[id="${errorId}"]`).innerText(),
+            message,
+          );
+        };
+        await submit.click();
+        await assertSummaryFocused();
+        await assertFieldError("fullName", "Full name is required");
+        await assertFieldError("email", spec.emailError);
+        await assertFieldError("privacy", "This field is required");
+        assert.equal(submissions, 0, "invalid forms must not send a request");
+        await summary.getByRole("link", { name: /^Full name:/i }).click();
+        assert.equal(
+          await form
+            .locator('[name="fullName"]')
+            .evaluate((element) => element === document.activeElement),
+          true,
+        );
+        assert.equal(
+          await form.locator('[name="fullName"]').evaluate((element) => {
+            const navBottom =
+              document
+                .querySelector("[data-labs-nav-shell]")
+                ?.getBoundingClientRect().bottom ?? 0;
+            return element.getBoundingClientRect().top >= navBottom;
+          }),
+          true,
+          "error-summary links must keep the focused field clear of fixed navigation",
+        );
+        await submit.click();
+        await assertSummaryFocused();
+        await form.locator('[name="fullName"]').fill("Accessibility Test");
+        await form.locator('[name="email"]').fill("accessibility@example.com");
+        if (spec.island === "DemoRequestForm") {
+          await form.locator('[name="company"]').fill("Example");
+        }
+        await form.locator('[name="privacy"]').check();
+        await submit.click();
+        await assertSummaryFocused();
+        await assertFieldError("email", "Use another email address");
+        await submit.click();
+        await assertSummaryFocused();
+        assert.match(await summary.innerText(), /Please try again later/);
+        assert.equal(await summaryHeading(), "We couldn't send your request");
+        assert.equal(await form.locator('[aria-invalid="true"]').count(), 0);
+        await form.locator('[name="email"]').fill("");
+        await submit.click();
+        await assertSummaryFocused();
+        await assertFieldError("email", spec.emailError);
+        assert.equal(await summaryHeading(), "Please check the form");
+        assert.doesNotMatch(
+          await summary.innerText(),
+          /Please try again later/,
+        );
+        assert.equal(submissions, 2);
+        await form.locator('[name="email"]').fill("accessibility@example.com");
+        await submit.click();
+        await assertSummaryFocused();
+        assert.match(await summary.innerText(), /Network error/);
+        await submit.click();
+        await form.waitFor({ state: "detached" });
+        assert.equal(submissions, 4);
+        if (spec.island === "ContactForm") {
+          await page
+            .getByRole("link", { name: "Download Build Instructions" })
+            .waitFor();
+        } else {
+          await page.locator("#cal-inline-book-your-demo").waitFor();
+          await page.getByRole("link", { name: "Open directly" }).waitFor();
+        }
+      },
+    }),
+  ),
+  {
+    name: "ContactForm links required select errors to their controls",
+    route: "/startups-and-academics",
+    island: "ContactForm",
+    seedConsent: true,
+    async assert(page, root) {
+      const form = page.locator(`${root} form`);
+      await form.getByRole("button", { name: "Apply", exact: true }).click();
+      await form
+        .getByRole("region", { name: "Please check the form" })
+        .waitFor();
+      const selects = form.locator('select[aria-invalid="true"]');
+      assert.ok(
+        (await selects.count()) > 0,
+        "required selects must expose validation errors",
+      );
+      for (const select of await selects.all()) {
+        const errorId = await select.getAttribute("aria-describedby");
+        assert.ok(errorId);
+        assert.ok(await page.locator(`[id="${errorId}"]`).innerText());
+      }
+    },
+  },
   {
     name: "CookieConsent shows its banner and persists a choice",
     route: "/",
@@ -277,9 +537,9 @@ const CHECKS: IslandCheck[] = [
   },
   {
     name: "FeatureTabsSlider switches tab on click",
-    // The Labs homepage (/) no longer carries feature tabs; the ZenML product
-    // landing still does, so the interaction check moved with it.
-    route: "/product/zenml",
+    // /product/zenml swapped its tabs for the pinned LabsFeatureScroll, so the
+    // interaction check moved to /pro, which keeps five tabs (default 3).
+    route: "/pro",
     island: "FeatureTabsSlider",
     seedConsent: true,
     async assert(page) {
@@ -596,35 +856,6 @@ const CHECKS: IslandCheck[] = [
     },
   },
   {
-    name: "TwoDoors switches its importer tab on click",
-    route: "/product/kitaru#two-doors",
-    island: "TwoDoors",
-    seedConsent: true,
-    async assert(page) {
-      // Every island on /product/kitaru is client:visible, so nothing hydrates
-      // until it scrolls into view — the #two-doors hash lands the section in
-      // the viewport on load, which is what arms the runner's hydration gate.
-      // SSR ships the first importer tab selected; only an onClick can move it.
-      const tab = (id: string) => `#two-doors-import-tab-${id}`;
-      await page.waitForSelector(`${tab("langfuse")}[aria-selected="true"]`);
-
-      await page.locator(tab("phoenix")).click();
-
-      await page.waitForSelector(`${tab("phoenix")}[aria-selected="true"]`);
-      const panelContent = await page.textContent("#two-doors-import-panel");
-      if (!panelContent?.includes("phoenix-traces.jsonl")) {
-        throw new Error(
-          "clicking Arize Phoenix tab did not update the import panel content",
-        );
-      }
-
-      await page.locator(tab("phoenix")).press("ArrowRight");
-      await page.waitForSelector(
-        `${tab("kitaru-jsonl")}[aria-selected="true"]:focus`,
-      );
-    },
-  },
-  {
     name: "Case-study logo, title, and read label share one clickable card",
     route: "/case-studies",
     // Static markup. Whether a click lands is decided by hit testing and paint
@@ -692,6 +923,27 @@ const CHECKS: IslandCheck[] = [
       }
     },
   },
+  {
+    name: "The homepage never scrolls sideways at 320px",
+    route: "/",
+    // Static markup. Whether anything outgrows the narrowest supported
+    // viewport depends on real font metrics and layout, not on the HTML.
+    island: null,
+    seedConsent: true,
+    async assert(page) {
+      await page.setViewportSize({ width: 320, height: 700 });
+      await page.evaluate(() => document.fonts.ready.then(() => undefined));
+
+      const overflow = await page.evaluate(
+        () => document.documentElement.scrollWidth - window.innerWidth,
+      );
+      if (overflow > 0) {
+        throw new Error(
+          `the page is ${overflow}px wider than a 320px viewport and scrolls sideways`,
+        );
+      }
+    },
+  },
 ];
 
 // ── Runner ─────────────────────────────────────────────────────────
@@ -705,6 +957,8 @@ async function attempt(
   const context = await browser.newContext({
     // Disables FeatureTabsSlider's 9s autoplay at the source.
     reducedMotion: "reduce",
+    javaScriptEnabled: spec.javaScriptEnabled ?? true,
+    viewport: spec.viewport,
   });
 
   // Hermetic: nothing leaves the machine. Kills the Cloudflare Turnstile widget,

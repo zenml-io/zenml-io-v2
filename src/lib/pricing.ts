@@ -2,9 +2,11 @@
  * Pricing page data — centralized marketing copy.
  *
  * Used by src/pages/pricing.astro.
- * Structure mirrors the unified pricing design: three plan cards
- * (Open Source / Scale / Enterprise) and a single comparison table.
+ * One public price: three plan cards (Open Source / Starter / Enterprise),
+ * one comparison table and one FAQ, no workspace toggle.
  */
+
+import { ASSET_BASE_URL } from "./constants";
 import type {
   LabsBandContent,
   LabsCta,
@@ -17,9 +19,10 @@ import type {
   PricingPlan,
 } from "./marketingPageTypes";
 import {
-  KITARU_CLOUD_LIMITS,
+  KITARU_AGENT_DEFINITION,
   KITARU_CLOUD_PRICE,
   KITARU_LINKS,
+  KITARU_STARTER_LIMITS,
   KITARU_TRIAL_DAYS,
   KITARU_VS_OBSERVABILITY_ANSWER,
 } from "./productKitaru";
@@ -32,10 +35,10 @@ import { defaultOgUrl } from "./seo";
 export const PRICING_SEO = {
   title: "Pricing - ZenML",
   description:
-    "Orchestrate AI workflows and ship agents with confidence. Predictable, transparent pricing that scales with value.",
+    "One plan, $39 a month: your AI engineer on one agent, one ZenML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.",
   ogTitle: "Pricing - ZenML",
   ogDescription:
-    "Orchestrate AI workflows and ship agents with confidence. Predictable, transparent pricing that scales with value.",
+    "One plan, $39 a month: your AI engineer on one agent, one ZenML project and your whole team.",
   ogImage: defaultOgUrl("pages", "pricing"),
 } as const;
 
@@ -44,8 +47,8 @@ export const PRICING_SEO = {
 // ---------------------------------------------------------------------------
 export const PRICING_HERO = {
   eyebrow: "Pricing",
-  headline: "Orchestrate AI workflows and ship agents with confidence",
-  deck: "Start open source and self-hosted. Upgrade to Pro for the managed control plane, on our SaaS or your own infrastructure.",
+  headline: `One plan, ${KITARU_CLOUD_PRICE} a month`,
+  deck: "Your AI engineer on one agent, one ZenML project, and your whole team. Need more, or on-prem? Talk to us.",
 } as const;
 
 /**
@@ -56,8 +59,8 @@ export const PRICING_HERO = {
  */
 export const PRICING_PRO_INCLUSIONS = {
   eyebrow: "What's included in Pro",
-  headline: "Two products, one plan.",
-  deck: "Switch SDKs without switching tools, billing, or governance. ZenML for AI workflow orchestration. Kitaru to replay and regression-test your agents. Same control plane underneath.",
+  headline: "Two products, one account",
+  deck: "ZenML orchestrates your AI workflows. Your AI engineer and Kitaru keep your agents' evals honest. Same control plane underneath.",
   cards: [
     {
       side: "zenml" as const,
@@ -90,19 +93,20 @@ export const PRICING_PRO_INCLUSIONS = {
     },
     {
       side: "kitaru" as const,
-      eyebrow: "Agent replay",
-      title: "Replay-based evals",
-      body: "Import your whole trace history, replay it against your next change, and keep every fix as a regression test, on one flat plan.",
+      eyebrow: "Agent evals",
+      title: "Your AI engineer",
+      body: "Finds the evals you got wrong or never wrote, then replays your agent to test the fix. Priced per agent.",
       bullets: [
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z" /></svg>',
-          title: "Sessions, cohorts, evaluators, experiments",
-          detail: "The whole replay loop, imports and scoring included.",
+          title: "Insights from your traces",
+          detail:
+            "Finds wrong and missing evals, then turns your answers into checks.",
         },
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><line x1="10" y1="15" x2="10" y2="9" /><line x1="14" y1="15" x2="14" y2="9" /></svg>',
-          title: `One flat ${KITARU_CLOUD_PRICE} plan, no meters to read`,
-          detail: "Replays and experiment runs included at launch.",
+          title: `${KITARU_CLOUD_PRICE} a month on Starter`,
+          detail: "One agent and one ZenML project, one price.",
         },
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="11.49" /></svg>',
@@ -119,7 +123,8 @@ export const PRICING_PRO_INCLUSIONS = {
       } as CtaLink,
     },
   ],
-  caption: "Same control plane. Same governance. One bill covers both.",
+  caption:
+    "Starter covers one agent and one ZenML project. Enterprise covers the rest.",
 } as const;
 
 /**
@@ -142,307 +147,95 @@ export const PRICING_PRO_INCLUSIONS_DOORS: ProductDoorsContent = {
 };
 
 // ---------------------------------------------------------------------------
-// Plan cards — Open Source / Scale / Enterprise
+// Plan cards: Open Source, Starter, Enterprise.
+//
+// One public price. Starter is one agent with the AI engineer on it plus one
+// ZenML project; anything beyond that is a conversation (Enterprise). Prices
+// and limits are interpolated from productKitaru.ts so a change is one line
+// there.
 // ---------------------------------------------------------------------------
+const STARTER = KITARU_STARTER_LIMITS;
+
 export const PRICING_PLANS: PricingPlan[] = [
   {
     id: "open-source",
     eyebrow: "Open Source",
-    subtitle: "For individuals and small teams",
+    pill: "Self-hosted",
+    subtitle: "Run it yourself",
     price: "Free",
-    limitsLine: "Unlimited executions · Unlimited projects",
+    limitsLine: "Your infrastructure · Your limits",
     includesLabel: "Includes",
     features: [
-      "Pipeline & flow orchestration",
-      "Artifact management",
-      "Basic model registry",
+      "ZenML and Kitaru, Apache 2.0",
+      "Pipelines, agents and artifacts",
+      "Import traces, review and checks",
       "Community support",
     ],
     cta: {
-      label: "Get Started",
+      label: "Get started",
       href: "/get-started",
-      analytics: "OSS-Get-Started",
+      analytics: "Pricing-OSS-Get-Started",
     },
     ctaVariant: "secondary",
   },
   {
-    id: "scale",
-    eyebrow: "Scale",
+    id: "starter",
+    eyebrow: "Starter",
     pill: "SaaS",
-    topBadge: "Recommended",
+    topBadge: `${KITARU_TRIAL_DAYS}-day free trial`,
     highlighted: true,
-    subtitle: "For teams running ML in production",
-    price: "$999",
+    subtitle: "For startups shipping their first agent",
+    price: KITARU_CLOUD_PRICE,
     priceSuffix: "/month",
-    slider: {
-      caption: "Monthly executions, per workspace",
-      defaultIndex: 1,
-      tiers: [
-        { executions: "500", price: "$399", projects: "1", snapshots: "1" },
-        { executions: "2,000", price: "$999", projects: "3", snapshots: "5" },
-        {
-          executions: "5,000",
-          price: "$2,499",
-          projects: "10",
-          snapshots: "20",
-        },
-      ],
-    },
+    limitsLine: `${STARTER.agents} agent · ${STARTER.zenmlProjects} ZenML project · Unlimited seats`,
     includesLabel: "Everything in Open Source, plus",
     features: [
-      "Model Control Plane",
-      "Artifact Control Plane",
-      "Snapshots",
-      "Codespaces (remote IDE)",
+      "Your AI engineer on one agent",
+      "Finds wrong and missing evals",
+      "An interview and a weekly review",
+      "Hosted ZenML and Kitaru",
     ],
     cta: {
-      label: "Book a demo",
-      href: "/book-your-demo",
-      analytics: "Pricing-Scale-Book-Demo",
+      label: KITARU_LINKS.signup.label,
+      href: KITARU_LINKS.signup.href,
+      analytics: "Pricing-Starter-Signup",
     },
     ctaVariant: "primary",
   },
   {
     id: "enterprise",
     eyebrow: "Enterprise",
-    pill: "SaaS",
-    subtitle: "For organizations at scale",
+    pill: "Your cloud or on-prem",
+    subtitle: "For more agents, more projects or regulated data",
     price: "Custom",
-    limitsLine: "Unlimited executions · Unlimited projects",
-    includesLabel: "Everything in Scale, plus",
+    limitsLine: "More agents · More projects · More workspaces",
+    includesLabel: "Everything in Starter, plus",
     features: [
-      "SSO (SAML / OIDC)",
-      "RBAC (custom roles)",
-      "Audit logs",
-      "Air-gapped deployment",
+      "Multi-workspace setup",
+      "On-prem or air-gapped",
+      "Your own LLM endpoint",
+      "SSO, SCIM, custom roles and audit logs",
+      "SLA and a named engineer",
     ],
     cta: {
-      label: "Talk to an engineer",
+      label: "Talk to us",
       href: "/book-your-demo",
-      analytics: "Enterprise-Book-Demo",
+      analytics: "Pricing-Enterprise-Talk",
     },
     ctaVariant: "secondary",
   },
 ];
 
-// ---------------------------------------------------------------------------
-// Kitaru workspace plans.
-//
-// One flat Cloud plan with a full-access trial and no credit card — no
-// free hosted tier, no metering, no middle tiers. Just Open Source, Cloud,
-// and Enterprise. The price, trial length and limits are interpolated from
-// productKitaru.ts so a change is one line there.
-// ---------------------------------------------------------------------------
-export const PRICING_PLANS_KITARU: PricingPlan[] = [
-  {
-    id: "kitaru-open-source",
-    eyebrow: "Open Source",
-    subtitle: "For individuals and small teams",
-    price: "Free",
-    limitsLine: "Self-hosted · Your infrastructure, your limits",
-    includesLabel: "Includes",
-    features: [
-      "Import and record without limits",
-      "Cohorts, evaluators and experiment runs",
-      "Replay on your own workers, with your own keys",
-      "Community support",
-    ],
-    cta: {
-      label: "View on GitHub",
-      href: KITARU_LINKS.github.href,
-      analytics: "Kitaru-OSS-GitHub",
-    },
-    ctaVariant: "secondary",
-  },
-  {
-    id: "kitaru-cloud",
-    eyebrow: "Cloud",
-    pill: "SaaS",
-    topBadge: `${KITARU_TRIAL_DAYS}-day free trial`,
-    highlighted: true,
-    subtitle: "For teams shipping agents to customers",
-    price: KITARU_CLOUD_PRICE,
-    priceSuffix: "/month",
-    limitsLine: `${KITARU_CLOUD_LIMITS.agents} agents · ${KITARU_CLOUD_LIMITS.seats} seats · ${KITARU_CLOUD_LIMITS.retentionDays}-day session retention`,
-    includesLabel: "Everything in Open Source, plus",
-    features: [
-      "Hosted dashboard and control plane",
-      "Replays and experiment runs included, no meters",
-      "Trial starts with full Enterprise access",
-      "Community support",
-    ],
-    cta: {
-      label: KITARU_LINKS.signup.label,
-      href: KITARU_LINKS.signup.href,
-      analytics: "Kitaru-Cloud-Signup",
-    },
-    ctaVariant: "primary",
-  },
-  {
-    id: "kitaru-enterprise",
-    eyebrow: "Enterprise",
-    pill: "SaaS",
-    subtitle: "For organizations at scale",
-    price: "Custom",
-    limitsLine: "Unlimited agents · Custom seats and retention",
-    includesLabel: "Everything in Cloud, plus",
-    features: [
-      "SSO (SAML / OIDC)",
-      "Audit logs",
-      "Remote worker pools",
-      "Custom limits and retention",
-    ],
-    cta: {
-      label: "Talk to an engineer",
-      href: KITARU_LINKS.demo.href,
-      analytics: "Kitaru-Enterprise-Talk",
-    },
-    ctaVariant: "secondary",
-  },
-];
+/** The line under the plan cards. */
+export const PRICING_PLAN_NOTE = `${KITARU_AGENT_DEFINITION} Starter covers one agent and one ZenML project. Need more? Talk to us.`;
 
 // ---------------------------------------------------------------------------
-// Plan workspaces — the /pricing plan cards are shown per workspace type.
-//
-// One subscription covers both, but the plans differ in shape: ZenML prices
-// by execution tiers, while Kitaru launches on a single flat plan. Showing
-// one blended card for both invited the wrong reading.
-//
-// Each entry is the full descriptor for its panel — plans, meter note, a
-// product-page link, and brand accent (literal class strings so Tailwind sees
-// them) — so adding a workspace here is the whole change. The first entry is
-// the default panel (selected tab, no-JS fallback): Kitaru leads while the v2
-// launch is the site's front-and-center story.
-// ---------------------------------------------------------------------------
-export const PRICING_PLAN_WORKSPACES = [
-  {
-    id: "kitaru",
-    label: "Kitaru workspace",
-    sublabel: "Agent replay",
-    note: `One flat plan while we launch: ${KITARU_CLOUD_PRICE} a month, every feature, no meters to read. The trial starts with full access and needs no credit card.`,
-    learn: { label: "Learn about Kitaru", href: "/product/kitaru" },
-    plans: PRICING_PLANS_KITARU,
-    /** Drives the Labs plan cards' highlighted-card border/pill and check icons. */
-    accent: "orange",
-  },
-  {
-    id: "zenml",
-    label: "ZenML workspace",
-    sublabel: "AI orchestration",
-    note: "Executions are ZenML pipeline runs. Kitaru is priced separately as a flat monthly plan. One subscription covers both workspaces.",
-    learn: { label: "Learn about ZenML", href: "/product/zenml" },
-    plans: PRICING_PLANS,
-    accent: "sage",
-  },
-] as const;
-
-/** One `/pricing` workspace panel (Kitaru or ZenML). */
-export type PricingWorkspace = (typeof PRICING_PLAN_WORKSPACES)[number];
-
-// ---------------------------------------------------------------------------
-// Comparison tables — one per workspace, swapped by the plan-cards toggle
+// Comparison table
 // ---------------------------------------------------------------------------
 export const PRICING_COMPARE: PricingCompareTableData = {
   heading: "Compare every plan",
-  subheading: "Open Source and Pro, with Scale and Enterprise feature tiers.",
-  columnHeaders: ["Open Source", "Scale", "Enterprise"],
-  sections: [
-    {
-      heading: "Core platform",
-      rows: [
-        {
-          feature: "Pipeline & flow orchestration",
-          values: [true, true, true],
-        },
-        { feature: "Artifact management", values: [true, true, true] },
-        { feature: "Model registry (basic)", values: [true, true, true] },
-      ],
-    },
-    {
-      heading: "Pro control plane",
-      rows: [
-        {
-          feature: "Model Control Plane",
-          link: "https://docs.zenml.io/concepts/models",
-          values: [false, true, true],
-        },
-        {
-          feature: "Artifact Control Plane",
-          link: "https://docs.zenml.io/concepts/dashboard-features",
-          values: [false, true, true],
-        },
-        {
-          feature: "Snapshots",
-          link: "https://docs.zenml.io/concepts/snapshots",
-          values: [false, true, true],
-        },
-        { feature: "Codespaces (remote IDE)", values: [false, true, true] },
-      ],
-    },
-    {
-      heading: "Agent replay",
-      rows: [
-        {
-          feature: "Replay-based evals (Python & TypeScript)",
-          values: [true, true, true],
-        },
-        {
-          feature: "Unlimited imports, scoring and seats",
-          values: [true, true, true],
-        },
-        {
-          feature: "Hosted dashboard and control plane",
-          values: [false, true, true],
-        },
-        {
-          feature: "Remote worker pools",
-          values: [false, false, true],
-        },
-      ],
-    },
-    {
-      heading: "Enterprise & governance",
-      rows: [
-        { feature: "SSO (SAML / OIDC)", values: [false, false, true] },
-        {
-          feature: "RBAC (custom roles)",
-          link: "https://docs.zenml.io/pro/access-management/roles",
-          values: [false, false, true],
-        },
-        {
-          feature: "Advanced native scheduling",
-          values: [false, false, true],
-        },
-        { feature: "Audit logs", values: [false, false, true] },
-        { feature: "Air-gapped deployment", values: [false, false, true] },
-      ],
-    },
-    {
-      heading: "Support",
-      rows: [
-        {
-          feature: "Support level",
-          values: ["Community", "Priority", "Dedicated + SLA"],
-        },
-      ],
-    },
-  ],
-  // Derived from PRICING_PLANS so the per-plan CTA is the single source of truth
-  // for label / href / analytics / variant across both the card and the table row.
-  ctaButtons: PRICING_PLANS.map((plan) => ({
-    ...plan.cta,
-    variant: plan.ctaVariant ?? "primary",
-  })),
-};
-
-// Kitaru-workspace variant, shown when the workspace toggle selects Kitaru.
-// Launch framing: one flat plan, nothing metered, every feature on every
-// hosted plan — the table's job is to show there is nothing to compute,
-// only the self-hosted / hosted / enterprise split to pick from.
-export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
-  heading: "Compare every plan",
-  subheading: `One flat plan at launch: ${KITARU_CLOUD_PRICE} a month, every feature, ${KITARU_TRIAL_DAYS}-day full-access trial. No meters, no usage math.`,
-  columnHeaders: ["Open Source", "Cloud", "Enterprise"],
+  subheading: `One price, unlimited seats. ${KITARU_TRIAL_DAYS}-day trial, no credit card.`,
+  columnHeaders: ["Open Source", "Starter", "Enterprise"],
   sections: [
     {
       heading: "Plan",
@@ -452,76 +245,89 @@ export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
           values: ["Free", `${KITARU_CLOUD_PRICE} / month`, "Custom"],
         },
         {
-          feature: "Free trial",
-          values: ["—", `${KITARU_TRIAL_DAYS} days, full access`, "—"],
+          feature: "Agents with your AI engineer",
+          values: ["—", `${STARTER.agents}`, "Custom"],
         },
         {
-          feature: "Credit card to start",
-          values: ["Never", "Not for the trial", "—"],
-        },
-      ],
-    },
-    {
-      heading: "Replay & evals on every plan",
-      rows: [
-        {
-          feature: "Replay-based evals (Python & TypeScript)",
-          values: [true, true, true],
+          feature: "ZenML projects",
+          values: ["Self-hosted", `${STARTER.zenmlProjects}`, "Custom"],
         },
         {
-          feature: "Cohorts, evaluators and experiment runs",
-          values: [true, true, true],
-        },
-        {
-          feature: "Replay on your own workers, with your own keys",
-          values: [true, true, true],
-        },
-        {
-          feature: "Imports, recordings and scoring, no usage caps",
-          values: [true, true, true],
+          feature: "Pipeline runs a month",
+          values: ["Self-hosted", `${STARTER.pipelineRuns}`, "Custom"],
         },
       ],
     },
     {
-      heading: "Limits",
+      heading: "Your AI engineer",
       rows: [
         {
-          feature: "Agents",
-          values: ["Self-hosted", `${KITARU_CLOUD_LIMITS.agents}`, "Unlimited"],
-        },
-        {
-          feature: "Seats",
-          values: ["Self-hosted", `${KITARU_CLOUD_LIMITS.seats}`, "Custom"],
-        },
-        {
-          feature: "Session retention",
-          values: [
-            "Self-hosted",
-            `${KITARU_CLOUD_LIMITS.retentionDays} days`,
-            "Custom",
-          ],
-        },
-      ],
-    },
-    {
-      heading: "Hosted control plane",
-      rows: [
-        {
-          feature: "Hosted dashboard and control plane",
+          feature: "Finds wrong and missing evals",
           values: [false, true, true],
         },
         {
-          feature: "Role-based access (standard roles)",
-          values: [false, false, true],
+          feature: "An interview and a weekly review",
+          values: [false, true, true],
+        },
+        {
+          feature: "Findings and reviews in Slack",
+          values: [false, true, true],
         },
       ],
     },
     {
-      heading: "Enterprise & governance",
+      heading: "Agents, with Kitaru",
       rows: [
-        { feature: "SSO (SAML / OIDC)", values: [false, false, true] },
+        {
+          feature: "Import traces from your tracing tool",
+          values: [true, true, true],
+        },
+        {
+          feature: "Reviews, checks and replays",
+          values: [true, true, true],
+        },
+        { feature: "Hosted dashboard", values: [false, true, true] },
+      ],
+    },
+    {
+      heading: "AI orchestration, with ZenML",
+      rows: [
+        {
+          feature: "Pipeline and agent orchestration",
+          values: [true, true, true],
+        },
+        {
+          feature: "Artifacts and model registry",
+          values: [true, true, true],
+        },
+        {
+          feature: "Model Control Plane",
+          link: "https://docs.zenml.io/concepts/models",
+          values: [false, true, true],
+        },
+        {
+          feature: "Snapshots",
+          link: "https://docs.zenml.io/concepts/snapshots",
+          values: [false, true, true],
+        },
+        { feature: "Codespaces (remote IDE)", values: [false, false, true] },
+      ],
+    },
+    {
+      heading: "Deployment and governance",
+      rows: [
+        { feature: "On-prem or air-gapped", values: [true, false, true] },
+        {
+          feature: "Your own LLM endpoint for the AI engineer",
+          values: [false, false, true],
+        },
+        { feature: "SSO (SAML / OIDC) and SCIM", values: [false, false, true] },
+        {
+          feature: "RBAC (custom roles)",
+          link: "https://docs.zenml.io/pro/access-management/roles",
+          values: [false, false, true],
+        },
         { feature: "Audit logs", values: [false, false, true] },
-        { feature: "Remote worker pools", values: [false, false, true] },
       ],
     },
     {
@@ -529,17 +335,17 @@ export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
       rows: [
         {
           feature: "Support level",
-          values: ["Community", "Community", "Dedicated + SLA"],
+          values: ["Community", "Email", "Dedicated + SLA"],
         },
       ],
     },
   ],
-  ctaButtons: PRICING_PLANS_KITARU.map((plan) => ({
+  // Derived from PRICING_PLANS so the per-plan CTA is the single source of truth.
+  ctaButtons: PRICING_PLANS.map((plan) => ({
     ...plan.cta,
     variant: plan.ctaVariant ?? "primary",
   })),
 };
-
 // ---------------------------------------------------------------------------
 // Startup / Academic banner
 // ---------------------------------------------------------------------------
@@ -559,15 +365,15 @@ export const PRICING_STARTUP_BANNER = {
 export const PRICING_COMPLIANCE = {
   eyebrow: "No compliance headaches",
   headline: "Your VPC, your data",
-  body: "ZenML is a metadata layer on top of your existing infrastructure, meaning all data and compute stays on your side.",
+  body: "ZenML stores only metadata, so your data and compute stay in your cloud. Your AI engineer reads traces through keys you can revoke, or runs inside your cloud on Enterprise.",
   image: {
     desktop: {
-      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e68ec2dc/66c7398e738654118d4024fb_why-zenml-min.png`,
+      url: `${ASSET_BASE_URL}/content/uploads/c0365c4a/zenml-pro-vpc-architecture.avif`,
       alt: "ZenML only has access to metadata; your data remains in your VPC",
     },
     mobile: {
-      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c5ce12a7/66c73e7cfd15ae9889f59705_why-zenml-mobile-min.webp`,
-      alt: "Diagram of ZenML setup with local environments for data scientists, ML engineers, and MLOps, integrating AWS, GCP, and Azure.",
+      url: `${ASSET_BASE_URL}/content/uploads/2368dffc/zenml-pro-vpc-architecture-mobile.avif`,
+      alt: "ZenML Pro architecture: local environments with the zenml client connect to the ZenML Server, which holds configuration, events and metadata. Traffic is encrypted at rest into the customer VPC, where container registries, artifact storage, code repositories, data warehouses, orchestrators and secrets feed GCP, AWS and Azure stacks running a finetuning pipeline for Gemini 1.5, LLaMa 3.1 and Mistral 7B.",
     },
   },
   badges: [
@@ -581,9 +387,9 @@ export const PRICING_COMPLIANCE = {
     },
   ],
   bannerHeadline: "We Take Security Seriously",
-  bannerEyebrow: "ZenML is SOC2 and ISO 27001 Compliant",
+  bannerEyebrow: "SOC 2 Type II and ISO 27001",
   bannerBody:
-    "ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your AI workflows and data.",
+    "ZenML holds a SOC 2 Type II report and ISO 27001 certification, independently audited for security, availability and confidentiality.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -595,188 +401,70 @@ export const PRICING_FAQ_SLACK_CTA: CtaLink = {
   external: true,
 };
 
-/** Kitaru-workspace FAQ — shown when the pricing toggle is on Kitaru. */
-export const PRICING_FAQ_KITARU: FaqData = {
-  eyebrow: "Kitaru",
-  headline: "Kitaru pricing, answered",
+export const PRICING_FAQ: FaqData = {
+  eyebrow: "Pricing",
+  headline: "Pricing, answered",
   items: [
     {
-      question: "What does Kitaru cost?",
-      answer: `${KITARU_CLOUD_PRICE} a month, flat. The hosted Cloud plan includes ${KITARU_CLOUD_LIMITS.agents} agents, ${KITARU_CLOUD_LIMITS.seats} seats, ${KITARU_CLOUD_LIMITS.retentionDays}-day session retention, and every feature. Replays, experiment runs, imports and recording all come with it. No meters, no usage math. Need more agents, seats or governance? That's the Enterprise plan.`,
+      question: `What do I get for ${KITARU_CLOUD_PRICE}?`,
+      answer: `One agent with your AI engineer on it, one ZenML project with up to ${STARTER.pipelineRuns} pipeline runs a month, and as many seats as you want. It starts with a ${KITARU_TRIAL_DAYS}-day trial, no credit card.`,
+    },
+    {
+      question: "What counts as an agent?",
+      answer: `${KITARU_AGENT_DEFINITION} A LangGraph app with three sub-agents that ships as one product is one agent.`,
+    },
+    {
+      question: "Is there a limit on sessions?",
+      answer:
+        "No. Your AI engineer reads every session your agent sends. Replays run with your own model keys, so those model costs stay on your bill.",
+    },
+    {
+      question: "What if we need more agents, projects or runs?",
+      answer:
+        "Talk to us. Enterprise covers more agents, more ZenML projects and more pipeline runs, priced on what you actually run, along with on-prem and governance if you need them.",
+    },
+    {
+      question: "Why not per seat?",
+      answer:
+        "Because everyone who knows what good looks like should be in it: engineers, product, and the domain experts who review sessions. A team of fifteen pays the same as a team of two.",
     },
     {
       question: `What happens after the ${KITARU_TRIAL_DAYS}-day trial?`,
-      answer: `The trial is full access to everything and needs no credit card. When it ends, add a card and you're on the ${KITARU_CLOUD_PRICE}/month plan. Nothing about your workspace changes except the billing. There's no free hosted tier: the free option is the open-source version, self-hosted on your own infrastructure, forever.`,
+      answer:
+        "The trial is full access and needs no credit card. When it ends, add a card to keep going. Nothing in your workspace changes except the billing. Open source stays free, forever.",
     },
     {
-      question: "What does the Enterprise plan add?",
+      question: "Do you see my traces?",
       answer:
-        "Unlimited agents, custom seats and session retention, plus the governance layer: SSO, role-based access and audit. If the Cloud plan's limits are the only thing in your way, that's the conversation to have with us.",
+        "On Starter, your AI engineer runs in our cloud and reads traces from your tracing tool through keys you can revoke. ZenML stores only metadata; your data, artifacts and compute stay in your cloud. Self-hosted or on Enterprise on-prem, nothing leaves your infrastructure.",
+    },
+    {
+      question: "Can we run it on-prem?",
+      answer:
+        "Yes, on Enterprise. Your AI engineer and ZenML run inside your own cloud or on-prem, air-gapped if you need it, with your own LLM endpoint.",
     },
     {
       question: "How is this different from Langfuse, Braintrust or LangSmith?",
       answer: KITARU_VS_OBSERVABILITY_ANSWER,
     },
     {
-      question: "Can I self-host Kitaru?",
-      answer:
-        "Yes. Kitaru is open source under Apache 2.0, the same model as ZenML. One command brings up a local deployment in Docker, or self-host the server in your own VPC. Either way the worker runs beside your code, on your machine or your compute, using your own model keys, so replays never execute on our infrastructure. Cloud adds the hosted control plane and remote worker pools; Enterprise adds SSO, RBAC and audit.",
-    },
-    {
-      question: "Do you see my traces?",
-      answer:
-        "Self-hosted, no: the server and workers run in your infrastructure and your traces never have to leave your systems. On the hosted Cloud plan we manage the control plane, but replay still executes on your own workers with your own keys. The recorded sessions are yours.",
-    },
-    {
-      question: "Do I need a separate subscription for ZenML?",
-      answer: `No, one subscription covers both workspaces. They're priced differently (ZenML's managed tiers scale with pipeline executions; Kitaru is a flat ${KITARU_CLOUD_PRICE}/month), but it's the same control plane, the same governance, and one bill.`,
-    },
-  ],
-  slackCta: PRICING_FAQ_SLACK_CTA,
-};
-
-/** ZenML-workspace FAQ — shown when the pricing toggle is on ZenML. */
-export const PRICING_FAQ_ZENML: FaqData = {
-  eyebrow: "ZenML",
-  headline: "ZenML pricing, answered",
-  items: [
-    {
-      question: "Can I self-host ZenML?",
-      answer:
-        "Yes. ZenML is open source and free to self-host; that's the Open Source plan. If you want the Pro control plane on your own infrastructure, Enterprise covers self-hosted and air-gapped deployment. Either way, ZenML stores only metadata: your data, artifacts and compute stay in your VPC end-to-end.",
-    },
-    {
-      question: "How is the Scale plan billed?",
-      answer:
-        "By monthly pipeline executions per workspace. The slider on the Scale card above sets your tier, and projects and snapshots scale with it. Pick the tier that matches your run volume and move between tiers as you grow; there's no per-seat pricing.",
-    },
-    {
-      question: "What happens if I exceed my plan's executions?",
-      answer:
-        "We don't cut you off mid-month. Going over occasionally is fine; if it becomes the pattern, we'll reach out about moving you up a tier.",
-    },
-    {
-      question: "What's the difference between Open Source and the Pro plans?",
-      answer:
-        "Open Source is the full framework, managed by you. Scale and Enterprise add the managed control plane (automatic updates, guaranteed uptime) plus the Model Control Plane, Artifact Control Plane, snapshots and Codespaces. Enterprise adds SSO, custom-role RBAC, audit logs and air-gapped deployment on top.",
-    },
-    {
       question: "Is there a startup or academic discount?",
       answer:
-        'Yes. Early-stage companies building ML-powered products, universities, research institutions and educational use cases can apply for special pricing on ZenML Pro. <a href="/startups-and-academics">Apply here</a>.',
-    },
-    {
-      question: "How is my data handled?",
-      answer:
-        "ZenML is a metadata layer on top of your existing infrastructure: your data, artifacts and compute stay in your VPC, and only metadata reaches the control plane. ZenML is SOC 2 Type II and ISO/IEC 27001 certified.",
-    },
-    {
-      question: "Do I need a separate subscription for Kitaru?",
-      answer: `No, your ZenML subscription covers the Kitaru workspace too. Kitaru is priced on its own terms, a flat ${KITARU_CLOUD_PRICE}/month rather than execution tiers, but both workspaces run on the same control plane and land on one bill.`,
-    },
-    {
-      question: "What kind of support is included in each plan?",
-      answer:
-        "Open Source: our public Slack and community forums. Scale: priority support with faster response times. Enterprise: a dedicated account manager, SLAs, and implementation assistance.",
+        'Yes. Early-stage companies, universities and research institutions can apply for special pricing. <a href="/startups-and-academics">Apply here</a>.',
     },
   ],
   slackCta: PRICING_FAQ_SLACK_CTA,
 };
-
 // ---------------------------------------------------------------------------
-// Stats + Trust section
+// Close
 // ---------------------------------------------------------------------------
-export const PRICING_STATS = {
-  headline: "Trusted by 1,000s of members of top companies",
-  deck: "Join the ZenML Community and start improving your AI workflows",
-  items: [
-    { value: "1,000,000", label: "pipelines run in ZenML" },
-    { value: "100,000", label: "pipelines run last month" },
-    { value: "21,000", label: "stacks registered last 12 months" },
-    { value: "200,000", label: "models trained last 12 months" },
-  ],
-  testimonial: {
-    quote:
-      '"ZenML offers the capability to build end-to-end ML workflows that seamlessly integrate with various components of the ML stack, such as different providers, data stores, and orchestrators."',
-    name: "Harold Giménez",
-    title: "SVP R&D at HashiCorp",
-    avatar: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/31a5f8ee/653297b0b924af52998661bf_harold.webp`,
-    companyLogo: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/33303c0d/6532977ff6458771fb59387e_hashicorp.webp`,
-  },
-  logos: [
-    {
-      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/da72cb24/652d3ecd4d162d2290427dfe_airbus_defence_space.png`,
-      alt: "Airbus",
-    },
-    {
-      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4ae61c3a/66c84308916684f0d07b57ff_axa-min.svg`,
-      alt: "AXA",
-    },
-    {
-      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/5cc09160/bundeswehr.svg`,
-      alt: "Bundeswehr",
-    },
-    {
-      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/4ad1f760/66c84308b1e802ab9a246134_enel-min.svg`,
-      alt: "Enel",
-    },
-    {
-      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6111e84/jetbrains-min.svg`,
-      alt: "JetBrains",
-    },
-    {
-      src: "/images/logos/brevo.svg",
-      alt: "Brevo",
-    },
-    {
-      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/86cd6b7b/cross-screen-media.png`,
-      alt: "Cross Screen Media",
-    },
-    {
-      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c110367c/65c498032806e2ff7daec2bf_ADEO.svg`,
-      alt: "ADEO",
-    },
-    {
-      src: "/images/logos/leroy-merlin.svg",
-      alt: "Leroy Merlin",
-    },
-    {
-      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/cab0c1be/66c84308abf004bb1934e7d3_mann-hummel-min.svg`,
-      alt: "Mann+Hummel",
-    },
-    {
-      src: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e6c1fbb1/koble.svg`,
-      alt: "Koble",
-    },
-  ],
-} as const;
-
-// ---------------------------------------------------------------------------
-// Final CTA
-// ---------------------------------------------------------------------------
-export const PRICING_FINAL_CTA = {
-  headline: "Start deploying reproducible AI workflows today",
-  body: "Enterprise-grade AI orchestration platform trusted by thousands of companies in production.",
-  primaryCta: {
-    label: "Book a demo",
-    href: "/book-your-demo",
-    analytics: "Pricing-CTA-Book-Demo",
-  } as CtaLink,
-  secondaryCta: {
-    label: "Read Docs",
-    href: "/docs",
-    analytics: "Pricing-CTA-Read-Docs",
-  } as CtaLink,
-} as const;
-
-/**
- * The Labs closing band for `/pricing` — `PRICING_FINAL_CTA`'s words, split
- * into the two-line shape `LabsCloseCta` takes. `secondaryCta`
- * ("Read Docs") leaves the page (CONVENTIONS.md liberty 17) — the nav's
- * Docs menu already carries it.
- */
+/** The Labs closing band for `/pricing`. */
 export const PRICING_CLOSE: LabsBandContent = {
-  headlineLines: ["Start deploying reproducible", "AI workflows today"],
-  deck: PRICING_FINAL_CTA.body,
-  cta: PRICING_FINAL_CTA.primaryCta as LabsCta,
+  headlineLines: ["Start with one agent", "and your whole team"],
+  deck: `Your AI engineer reads your traces next to your evals and shows you what they miss. ${KITARU_TRIAL_DAYS}-day trial, no credit card.`,
+  cta: {
+    label: KITARU_LINKS.signup.label,
+    href: KITARU_LINKS.signup.href,
+    analytics: "Pricing-Final-Signup",
+  },
 };

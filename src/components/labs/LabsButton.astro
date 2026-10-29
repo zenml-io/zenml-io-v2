@@ -10,7 +10,8 @@
  * `target="_blank"` also emits `rel="noopener noreferrer"` — the two always
  * travel together, so a call site can't ship one without the other. The
  * default slot renders after the label inside the `<a>`, for an inline icon
- * (e.g. the external-link arrow on a "View source" pill).
+ * (e.g. the external-link arrow on a "View source" pill); the `lead` slot
+ * renders before it, for a leading mark (the GitHub icon).
  *
  * Class strings live in `labsButtonStyles.ts` so a Preact island can wear
  * the same pill (an island can't render an `.astro` component).
@@ -37,4 +38,4 @@ const classes = labsButtonClasses(tone, className);
   class={classes}
   target={target}
   rel={target === "_blank" ? "noopener noreferrer" : undefined}
->{cta.label}<slot /></a>
+><slot name="lead" />{cta.label}<slot /></a>

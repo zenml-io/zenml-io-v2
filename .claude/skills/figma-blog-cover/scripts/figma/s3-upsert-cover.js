@@ -25,6 +25,9 @@ const section = container.children.find(n => n.type === 'SECTION' && n.name === 
 if (!section) throw new Error('section "' + P.sectionName + '" not found — run S2 first');
 const pos = P.positions[P.slug];
 if (!pos) throw new Error('no position for ' + P.slug);
+// Photo 0N is the same image under both Brand variants; only P.brandPhotos are on-brand.
+if (/^Photo 0[1-9]$/.test(P.chosenBg) && !(P.brandPhotos || []).includes(P.chosenBg)) throw new Error('background ' + P.chosenBg + ' is off-brand for ' + P.brand + ' (allowed: ' + (P.brandPhotos || []).join(', ') + ') — re-run find-slot');
+if (/^Photo/.test(P.chosenBg) && P.chosenLayout !== 'Panel Bottom') throw new Error('background ' + P.chosenBg + ' needs Layout Panel Bottom, got ' + P.chosenLayout + ' — re-run find-slot');
 
 const available = await figma.listAvailableFontsAsync();
 const loaded = new Set();

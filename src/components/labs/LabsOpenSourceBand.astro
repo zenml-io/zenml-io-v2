@@ -1,0 +1,107 @@
+---
+/**
+ * LabsOpenSourceBand (`labs.open-source-band`) — a product page's
+ * open-source section: eyebrow, headline and deck in the left column with
+ * the install command and a ghost LabsButton to GitHub carrying the live star count (filled
+ * by BaseLayout's `[data-github-stars-count]` loader, blank until it lands),
+ * then four numbered facts as cards (the labs.value-props card) in a 1 → 2
+ * grid on the right
+ * (stacked below lg), and a row of community links under them. The cards
+ * scrub in one after another as the grid scrolls into view and back out as
+ * it scrolls away (labs-scroll-progress `--p`; the page calls
+ * initScrollProgress). Without JS or with reduced motion `--p` stays 1, so
+ * they are simply shown. On hover each card fades in the grain shader (sage
+ * on ZenML, Kitaru's card palette on Kitaru), hydrated only on hover-capable
+ * devices, as the old Kitaru step cards did. `tint` picks
+ * the accent: sage on /product/zenml, orange on /product/kitaru. Static.
+ * Copy arrives through `content` (ZENML_OPEN_SOURCE, KITARU_OPEN_SOURCE in
+ * src/lib/openSource.ts).
+ */
+import { KITARU_GRAIN } from "../../lib/kitaru-grain-palettes";
+import { LABS_GRAIN } from "../../lib/labs-grain-palettes";
+import type { OpenSourceBandContent } from "../../lib/openSource";
+import { GrainBackdrop } from "../islands/GrainBackdrop";
+import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
+import "../../styles/labs-scroll-reveal.css";
+import LabsButton from "./LabsButton.astro";
+import LabsInstallChip from "./LabsInstallChip.astro";
+import LabsTextLink from "./LabsTextLink.astro";
+
+interface Props {
+  content: OpenSourceBandContent;
+  tint: "sage" | "orange";
+}
+const { content, tint } = Astro.props;
+
+/** The ZenML band sits on the lightest sage (sage-50, a step under the logo strip); Kitaru keeps its cream ground. */
+const BAND = {
+  sage: "bg-(--color-sage-50)",
+  orange: "",
+} as const;
+/** Hover grain and border per tint (DESIGN.md: sage-400, Kitaru orange-300). */
+const GRAIN = { sage: LABS_GRAIN.hero, orange: KITARU_GRAIN.card } as const;
+const CARD_HOVER = {
+  sage: "hover:border-(--color-sage-400)",
+  orange: "hover:border-(--color-orange-300)",
+} as const;
+const ACCENT = {
+  sage: "text-(--color-sage-700)",
+  orange: "text-(--color-orange-600)",
+} as const;
+---
+
+<section class:list={["py-24 md:py-32", BAND[tint]]} aria-labelledby="open-source-title">
+  <div class="mx-auto grid max-w-content grid-cols-1 gap-12 px-gutter lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+    <div class="scroll-reveal-section">
+      <p class:list={["reveal-child", LABS_EYEBROW_CLASS]}>{content.eyebrow}</p>
+      <h2 id="open-source-title" class="reveal-child mt-3 font-display text-[32px] leading-[38px] text-balance text-(--color-cream-900) md:text-[48px] md:leading-[54px]">
+        {content.headline}
+      </h2>
+      <p class:list={["reveal-child stagger-1 mt-6 font-sans text-[17px] leading-[27px]", tint === "sage" ? "text-(--color-cream-800)" : "text-(--color-cream-700)"]}>{content.deck}</p>
+      <div class="reveal-child stagger-2 mt-space-mlg flex flex-wrap items-center gap-space-sm">
+        <div class="flex max-w-full"><LabsInstallChip content={content.install} /></div>
+        <LabsButton cta={content.github} tone="ghost" target="_blank">
+          <svg slot="lead" aria-hidden="true" focusable="false" class="h-4 w-4 shrink-0" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.49c-2.23.49-2.7-.95-2.7-.95-.36-.93-.89-1.18-.89-1.18-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.22 1.87.87 2.33.67.07-.51.28-.87.51-1.07-1.78-.2-3.65-.88-3.65-3.94 0-.87.31-1.58.82-2.14-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.7 7.7 0 0 1 8 3.87c.68 0 1.36.09 2 .27 1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.14 0 3.07-1.87 3.74-3.66 3.94.29.25.54.73.54 1.48v2.2c0 .21.14.46.55.38A8 8 0 0 0 8 0Z" /></svg>
+          <span data-github-stars-count data-github-stars-repo={content.github.starsRepo} class:list={["tabular-nums", ACCENT[tint]]}></span>
+        </LabsButton>
+      </div>
+    </div>
+
+    <div class="scroll-reveal-section min-w-0">
+      <ol class="os-facts grid list-none grid-cols-1 gap-4 md:grid-cols-2" data-scroll-progress>
+        {content.facts.map((fact, index) => (
+          <li class:list={["os-fact group relative isolate flex flex-col gap-space-md overflow-hidden rounded-[20px] border border-border bg-card p-8 transition-colors duration-200 ease-out", CARD_HOVER[tint]]} data-progress style={`--i: ${index}`}>
+            <GrainBackdrop config={GRAIN[tint]} hoverReveal client:media="(hover: hover)" class="z-0" />
+            <span class:list={["relative z-10 font-mono text-[13px] leading-5", ACCENT[tint]]}>{String(index + 1).padStart(2, "0")}</span>
+            <h3 class="relative z-10 font-display text-[24px] leading-[30px] text-(--color-cream-900)">{fact.title}</h3>
+            <p class="relative z-10 font-sans text-[16px] leading-[24px] text-foreground">{fact.body}</p>
+          </li>
+        ))}
+      </ol>
+      <ul class="reveal-child mt-6 flex list-none flex-wrap gap-x-6 gap-y-1">
+        {content.links.map((link) => (
+          <li>
+            <LabsTextLink cta={link} external={link.external} />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Scrubbed from the grid's top at 95% of the viewport to its bottom at
+     90%: each card takes 64% of that run, starting 12% after the one
+     before, so they cascade in order and reverse the same way. */
+  .os-facts {
+    --scroll-start: 0.95;
+    --scroll-end: 0.9;
+    --scroll-edge: 1;
+  }
+  .os-fact {
+    --q: clamp(0, calc((var(--p) - var(--i) * 0.12) / 0.64), 1);
+    opacity: var(--q);
+    transform: translateY(calc((1 - var(--q)) * 24px)) scale(calc(0.98 + var(--q) * 0.02));
+    filter: blur(calc((1 - var(--q)) * 3px));
+  }
+</style>

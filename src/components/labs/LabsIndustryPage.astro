@@ -1,0 +1,53 @@
+---
+/**
+ * LabsIndustryPage (`labs.industry-page`) — a whole industry landing page
+ * (`/insurance`, `/financial-services`): the homepage's story told to one
+ * industry. Hero with the gap card, problem, eval therapy steps, the
+ * security band, the industry's benchmarks (collapses when absent), logos,
+ * a security and risk FAQ, and a demo close. Copy arrives through
+ * `content: IndustryPageContent` (src/lib/labs-industries.ts).
+ */
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { LABS_LOGO_GRID } from "../../lib/labs-home";
+import type { IndustryPageContent } from "../../lib/labs-industries";
+import LabsBenchmarkBand from "./LabsBenchmarkBand.astro";
+import LabsCloseCta from "./LabsCloseCta.astro";
+import LabsFaq from "./LabsFaq.astro";
+import LabsGapReportVisual from "./LabsGapReportVisual.astro";
+import LabsHero from "./LabsHero.astro";
+import LabsOnboardingSteps from "./LabsOnboardingSteps.astro";
+import LabsProblemBand from "./LabsProblemBand.astro";
+import LabsTrustBand from "./LabsTrustBand.astro";
+import LogoMarquee from "./LogoMarquee.astro";
+
+interface Props {
+  content: IndustryPageContent;
+}
+const { content } = Astro.props;
+---
+
+<BaseLayout
+  app="labs"
+  title={content.seo.title}
+  description={content.seo.description}
+  ogTitle={content.seo.title}
+  surface={content.seo.surface}
+>
+  <main>
+    <LabsHero content={content.hero}>
+      <LabsGapReportVisual slot="visual" content={content.gapReport} />
+    </LabsHero>
+    <LabsProblemBand content={content.problem} />
+    <LabsOnboardingSteps content={content.onboarding} />
+    <LabsTrustBand content={content.trust} />
+    {content.benchmarks && <LabsBenchmarkBand content={content.benchmarks} />}
+    <LogoMarquee content={LABS_LOGO_GRID} />
+    <LabsFaq content={content.faq} />
+    <LabsCloseCta content={content.close} />
+  </main>
+</BaseLayout>
+
+<script>
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+  initScrollReveal();
+</script>

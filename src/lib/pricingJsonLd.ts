@@ -1,11 +1,9 @@
 import type { PricingPlan } from "./marketingPageTypes";
 import {
-  PRICING_FAQ_KITARU,
-  PRICING_FAQ_ZENML,
-  PRICING_FINAL_CTA,
+  PRICING_CLOSE,
+  PRICING_FAQ,
   PRICING_HERO,
   PRICING_PLANS,
-  PRICING_PLANS_KITARU,
   PRICING_SEO,
 } from "./pricing";
 import { absoluteUrl } from "./seo";
@@ -16,9 +14,7 @@ function reliablePriceFields(plan: PricingPlan): Record<string, unknown> {
     return { price: 0, priceCurrency: "USD" };
   }
 
-  // A slider plan's headline price is only one tier of a range — publishing
-  // it as THE price would misstate the plan, so emit nothing for those.
-  const flatDollars = plan.slider ? null : plan.price.match(/^\$(\d+)$/);
+  const flatDollars = plan.price.match(/^\$(\d+)$/);
   if (flatDollars) {
     const price = Number(flatDollars[1]);
     const fields: Record<string, unknown> = { price, priceCurrency: "USD" };
@@ -38,17 +34,7 @@ function reliablePriceFields(plan: PricingPlan): Record<string, unknown> {
 }
 
 function planDescription(plan: PricingPlan): string {
-  const limits = plan.limitsLine ? ` ${plan.limitsLine}.` : "";
-  const slider = plan.slider
-    ? ` ${plan.slider.caption}: ${plan.slider.tiers
-        .map(
-          (tier) =>
-            `${tier.executions} executions for ${tier.price}/month (${tier.projects} projects, ${tier.snapshots} snapshots)`,
-        )
-        .join("; ")}.`
-    : "";
-
-  return `${plan.subtitle}.${limits}${slider}`.trim();
+  return `${plan.subtitle}. ${plan.limitsLine}.`;
 }
 
 export function buildPricingJsonLd(): Record<string, unknown> {
@@ -64,10 +50,7 @@ export function buildPricingJsonLd(): Record<string, unknown> {
         name: PRICING_SEO.title,
         description: PRICING_SEO.description,
         inLanguage: "en",
-        mainEntity: [
-          { "@id": `${pricingUrl}#software-kitaru` },
-          { "@id": `${pricingUrl}#software` },
-        ],
+        mainEntity: { "@id": `${pricingUrl}#software` },
       },
       {
         "@type": "BreadcrumbList",
@@ -90,10 +73,7 @@ export function buildPricingJsonLd(): Record<string, unknown> {
       {
         "@type": "FAQPage",
         "@id": `${pricingUrl}#faq`,
-        mainEntity: [
-          ...PRICING_FAQ_KITARU.items,
-          ...PRICING_FAQ_ZENML.items,
-        ].map((item) => ({
+        mainEntity: PRICING_FAQ.items.map((item) => ({
           "@type": "Question",
           name: item.question,
           acceptedAnswer: {
@@ -101,34 +81,6 @@ export function buildPricingJsonLd(): Record<string, unknown> {
             text: htmlToPlainText(item.answer),
           },
         })),
-      },
-      {
-        "@type": "SoftwareApplication",
-        "@id": `${pricingUrl}#software-kitaru`,
-        name: "Kitaru",
-        applicationCategory: "DeveloperApplication",
-        operatingSystem: "Python, Kubernetes, AWS, GCP, Azure",
-        url: absoluteUrl("/product/kitaru"),
-        description:
-          "Kitaru is an open-source platform for replaying and regression-testing AI agents: import your production traces, run evaluators over them, and replay real sessions against your next change before it ships.",
-        featureList: PRICING_PLANS_KITARU.flatMap((plan) => plan.features),
-        offers: {
-          "@type": "OfferCatalog",
-          name: "Kitaru pricing plans",
-          itemListElement: PRICING_PLANS_KITARU.map((plan) => ({
-            "@type": "Offer",
-            name: plan.eyebrow,
-            url: absoluteUrl(plan.cta.href),
-            ...reliablePriceFields(plan),
-            description: planDescription(plan),
-            itemOffered: {
-              "@type": "SoftwareApplication",
-              name: `Kitaru ${plan.eyebrow}`,
-              applicationCategory: "DeveloperApplication",
-              featureList: plan.features,
-            },
-          })),
-        },
       },
       {
         "@type": "SoftwareApplication",
@@ -158,8 +110,8 @@ export function buildPricingJsonLd(): Record<string, unknown> {
         },
         potentialAction: {
           "@type": "ViewAction",
-          name: PRICING_FINAL_CTA.primaryCta.label,
-          target: absoluteUrl(PRICING_FINAL_CTA.primaryCta.href),
+          name: PRICING_CLOSE.cta.label,
+          target: absoluteUrl(PRICING_CLOSE.cta.href),
         },
       },
     ],

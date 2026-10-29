@@ -1,0 +1,42 @@
+---
+/**
+ * LabsModelMark — a model's mark at text size: the brand icon where the
+ * service-logo set has one, otherwise a neutral glyph (an open-weights
+ * circle or a local-hardware chip). Inherits `currentColor`. `size` steps
+ * with the text beside it: sm (14px) for 13px copy and the hero explainer,
+ * md (16px) for chart labels.
+ */
+import type { ModelMark } from "../../lib/labs-home";
+import {
+  AnthropicIcon,
+  DeepSeekIcon,
+  OpenAIIcon,
+  QwenIcon,
+  ZaiIcon,
+} from "../kitaru/islands/brand-icons";
+
+interface Props {
+  mark: ModelMark;
+  size?: "sm" | "md";
+}
+const { mark, size: step = "sm" } = Astro.props;
+const size = step === "md" ? "size-4 shrink-0" : "size-3.5 shrink-0";
+---
+
+{mark === "openai" && <OpenAIIcon class={size} />}
+{mark === "anthropic" && <AnthropicIcon class={size} />}
+{mark === "deepseek" && <DeepSeekIcon class={size} />}
+{mark === "qwen" && <QwenIcon class={size} />}
+{mark === "zai" && <ZaiIcon class={size} />}
+{mark === "open" && (
+  <svg class={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="9" />
+    <path d="M8 12h8M12 8v8" />
+  </svg>
+)}
+{mark === "chip" && (
+  <svg class={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+    <rect x="6" y="6" width="12" height="12" rx="2" />
+    <path d="M10 2v4M14 2v4M10 18v4M14 18v4" />
+  </svg>
+)}

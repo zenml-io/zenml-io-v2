@@ -1,0 +1,312 @@
+---
+/**
+ * LabsStackLayer (`labs.stack-layer`) — the homepage's "how it fits"
+ * diagram, drawn as one session's thread through the stack a team already
+ * runs. On a stone panel: a track with a dot over each of the four journey
+ * cards (numeral, tone tag, title, detail), then a divider and the sources
+ * the thread runs through, one per column: the traces and evals it reads,
+ * the AI engineer layer, and the agent it replays through. Below lg the
+ * cards stack and the track turns into a rail down their left edge.
+ *
+ * Motion: the thread is scrubbed by scroll (`labs-scroll-progress.ts`). As
+ * the panel moves up the viewport a solid line fills the dashed track, and
+ * each stop the line reaches turns done (filled dot, plain card), the
+ * newest one active (ringed dot, sage card), the rest future (hollow dot,
+ * an empty dashed outline whose content settles in when reached). Source
+ * column i lights up with stop i, its marks popping in one after another. Scrolling back reverses it. The server renders the finished
+ * thread (three done, the last active), which is what JS off and reduced
+ * motion show. Compositor properties only for the line; the stop states are
+ * short colour and scale transitions. Copy arrives through `content`
+ * (LABS_STACK_LAYER on `/`).
+ */
+import type { JourneyStep, StackLayerContent } from "../../lib/labs-home";
+import "../../styles/labs-scroll-reveal.css";
+import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
+import { GAP_TAG } from "./gapTags";
+import LabsInstallChip from "./LabsInstallChip.astro";
+import LabsOrb from "./LabsOrb.astro";
+import LabsTextLink from "./LabsTextLink.astro";
+
+interface Props {
+  content: StackLayerContent;
+}
+const { content } = Astro.props;
+
+const TAG_TONE: Record<JourneyStep["tone"], string> = {
+  neutral: "bg-(--muted) text-(--muted-foreground)",
+  missing: GAP_TAG.missing,
+  new: "bg-(--color-sage-200) text-(--color-olive-dark)",
+  pass: "bg-(--color-primary) text-(--primary-foreground)",
+};
+
+const [traces, evals, agent] = content.columns;
+const last = content.journey.length - 1;
+const numeral = (index: number) => String(index + 1).padStart(2, "0");
+/** The finished thread, rendered on the server: every stop done, the last active. */
+const stateOf = (index: number) => (index === last ? "active" : "done");
+const COLUMN_TITLE =
+  "font-sans text-[14px] leading-[18px] font-semibold text-(--color-cream-900)";
+const COLUMN_LINE =
+  "font-sans text-[13px] leading-[18px] text-(--muted-foreground)";
+---
+
+<section class="stack-layer py-24 md:py-32" aria-labelledby="stack-layer-title">
+  <div class="scroll-reveal-section mx-auto max-w-content px-gutter">
+    <p class:list={["reveal-child", LABS_EYEBROW_CLASS]}>{content.eyebrow}</p>
+    <h2 id="stack-layer-title" class="reveal-child mt-3 max-w-[860px] font-display text-[32px] leading-[38px] text-balance text-(--color-cream-900) md:text-[48px] md:leading-[54px]">
+      {content.headline}
+    </h2>
+    <p class="reveal-child stagger-1 mt-6 max-w-[720px] font-sans text-[17px] leading-[27px] text-(--color-cream-700)">
+      {content.deck}
+    </p>
+
+    <div
+      class="stack-thread reveal-child stagger-2 mt-space-xl rounded-[24px] bg-(--secondary-fill) px-5 py-6 md:px-8 md:py-10"
+      data-scroll-progress
+      data-scroll-steps={content.journey.length}
+    >
+      <div role="group" aria-label={content.journeyLabel}>
+        {/* The track (lg+): a dot over each card, a line to the next */}
+        <div class="mb-5 hidden h-6 grid-cols-4 gap-4 lg:grid" aria-hidden="true">
+          {content.journey.map((_, index) => (
+            <div class="relative flex items-center justify-center">
+              {index < last && (
+                <span class="stack-line absolute top-1/2 left-1/2 h-0.5 w-[calc(100%+1rem)] -translate-y-1/2">
+                  <span class="stack-fill" data-progress style={`--i: ${index}`}></span>
+                </span>
+              )}
+              <span class="stack-dot relative" data-stop data-i={index} data-state={stateOf(index)}></span>
+            </div>
+          ))}
+        </div>
+
+        <ol class="grid list-none grid-cols-1 gap-4 pl-8 lg:grid-cols-4 lg:pl-0">
+          {content.journey.map((step, index) => (
+            <li class="stack-stop relative flex min-w-0 flex-col gap-1.5 rounded-[12px] border p-4" data-stop data-i={index} data-state={stateOf(index)}>
+              {/* The rail (below lg): the same dot and line, down the left edge */}
+              {index < last && (
+                <span class="stack-line stack-line-v absolute top-[1.625rem] -left-[calc(1.25rem+1px)] h-[calc(100%+1rem)] w-0.5 lg:hidden" aria-hidden="true">
+                  <span class="stack-fill" data-progress style={`--i: ${index}`}></span>
+                </span>
+              )}
+              <span class="stack-dot absolute top-4 -left-[1.875rem] lg:hidden" data-stop data-i={index} data-state={stateOf(index)} aria-hidden="true"></span>
+              <span class="stack-reveal stack-head flex items-center gap-2" style="--j: 0">
+                <span class="stack-numeral font-mono text-[12px] leading-4">{numeral(index)}</span>
+                <span class:list={["rounded-full px-2 py-0.5 font-sans text-[12px] leading-4 font-medium", TAG_TONE[step.tone]]}>{step.tag}</span>
+              </span>
+              <span
+                class:list={[
+                  "stack-reveal text-(--color-cream-900)",
+                  step.tone === "new"
+                    ? "font-mono text-[14px] leading-[22px] break-all"
+                    : "font-sans text-[15px] leading-[22px] font-medium",
+                ]}
+                style="--j: 1"
+              >
+                {step.title}
+              </span>
+              <span class:list={["stack-reveal font-sans text-[13px] leading-[18px]", step.tone === "pass" ? "text-(--color-sage-700)" : "text-(--muted-foreground)"]} style="--j: 2">
+                {step.detail}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {/* What the thread runs through */}
+      <div class="mt-8 grid grid-cols-1 gap-6 border-t border-(--color-border) pt-6 md:grid-cols-2 lg:grid-cols-4 lg:gap-4">
+        {[traces, evals, "layer" as const, agent].map((column, index) =>
+          column === "layer" ? (
+            <div class="stack-source flex min-w-0 flex-col gap-2.5" data-stop data-i={index} data-state={stateOf(index)}>
+              <span class="flex items-center gap-2">
+                <span class="stack-mark flex size-7 shrink-0 items-center justify-center rounded-[6px] border border-(--color-border) bg-card" style="--j: 0">
+                  <LabsOrb size={18} blink={2} />
+                </span>
+                <h3 class={COLUMN_TITLE}>{content.layer.title}</h3>
+              </span>
+              <p class={COLUMN_LINE}>{content.layer.label}</p>
+            </div>
+          ) : (
+            <div class="stack-source flex min-w-0 flex-col gap-2.5" data-stop data-i={index} data-state={stateOf(index)}>
+              <h3 class={COLUMN_TITLE}>{column.title}</h3>
+              <ul class="flex flex-wrap items-center gap-1.5">
+                {/* Marks first, then the names that have none */}
+                {[...column.marks.filter((mark) => mark.logo), ...column.marks.filter((mark) => !mark.logo)].map((mark, j) =>
+                  mark.logo ? (
+                    <li class="stack-mark flex size-7 items-center justify-center rounded-[6px] border border-(--color-border) bg-card" style={`--j: ${j}`}>
+                      <img src={mark.logo} alt={mark.name} title={mark.name} width="18" height="18" class="size-[18px] object-contain" loading="lazy" />
+                    </li>
+                  ) : (
+                    <li class="stack-mark flex h-7 items-center rounded-[6px] border border-(--color-border) bg-card px-2 font-sans text-[12px] leading-4 text-(--muted-foreground)" style={`--j: ${j}`}>
+                      {mark.name}
+                    </li>
+                  ),
+                )}
+              </ul>
+            </div>
+          ),
+        )}
+      </div>
+    </div>
+
+    <div class="reveal-child mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+      <span class="font-sans text-[15px] leading-6 text-(--color-cream-700)">{content.installLabel}</span>
+      <div class="flex max-w-full"><LabsInstallChip content={content.install} /></div>
+      <LabsTextLink cta={content.link} external />
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Range: p runs 0 → 1 while the panel's top moves from 85% to 35% of the
+     viewport (lg), or until its bottom reaches 60% (the stacked rail). */
+  .stack-thread {
+    --scroll-start: 0.85;
+    --scroll-end: 0.6;
+    --scroll-edge: 1;
+  }
+  @media (min-width: 1024px) {
+    .stack-thread {
+      --scroll-end: 0.35;
+      --scroll-edge: 0;
+    }
+  }
+
+  /* The line: a dashed base, and a solid fill scrubbed from 0 to 1 across
+     each segment in turn (segment i fills while p·3 runs from i to i + 1). */
+  .stack-line {
+    background: repeating-linear-gradient(90deg, var(--color-cream-200) 0 6px, transparent 6px 10px);
+  }
+  .stack-line-v {
+    background: repeating-linear-gradient(180deg, var(--color-cream-200) 0 6px, transparent 6px 10px);
+  }
+  .stack-fill {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--color-primary);
+    transform-origin: left;
+    transform: scaleX(clamp(0, calc(var(--p) * 3 - var(--i)), 1));
+  }
+  .stack-line-v .stack-fill {
+    transform-origin: top;
+    transform: scaleY(clamp(0, calc(var(--p) * 3 - var(--i)), 1));
+  }
+
+  /* The dots: drawn at the active size (20px) and scaled to 14px for done
+     and future, so the change between states is a transform. Borders and
+     rings are set at 1/0.7 so they land on Paper's 3px / 1px / 2px. */
+  .stack-dot {
+    z-index: 1;
+    width: 20px;
+    height: 20px;
+    border-radius: 999px;
+    border-style: solid;
+    transition:
+      transform var(--duration-base) var(--ease-out-quint),
+      background-color var(--duration-base) var(--ease-out-quint),
+      border-color var(--duration-base) var(--ease-out-quint),
+      border-width var(--duration-base) var(--ease-out-quint),
+      box-shadow var(--duration-base) var(--ease-out-quint);
+  }
+  .stack-dot[data-state="done"] {
+    transform: scale(0.7);
+    background: var(--color-primary);
+    border-width: 4.3px;
+    border-color: var(--secondary-fill);
+    box-shadow: 0 0 0 1.4px var(--color-primary);
+  }
+  .stack-dot[data-state="active"] {
+    transform: scale(1);
+    background: var(--card);
+    border-width: 2px;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 6px color-mix(in srgb, var(--color-primary) 15%, transparent);
+  }
+  .stack-dot[data-state="future"] {
+    transform: scale(0.7);
+    background: var(--secondary-fill);
+    border-width: 2.9px;
+    border-color: var(--color-cream-200);
+    box-shadow: 0 0 0 0 transparent;
+  }
+
+  /* The cards: plain once passed, sage while active, dashed and faint ahead. */
+  .stack-stop {
+    transition:
+      opacity var(--duration-base) var(--ease-out-quint),
+      background-color var(--duration-base) var(--ease-out-quint),
+      border-color var(--duration-base) var(--ease-out-quint),
+      box-shadow var(--duration-base) var(--ease-out-quint);
+  }
+  .stack-stop[data-state="done"] {
+    background: var(--card);
+    border-color: var(--color-border);
+  }
+  .stack-stop[data-state="active"] {
+    background: var(--color-sage-50);
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 24px rgb(65 61 55 / 0.08);
+  }
+  .stack-stop[data-state="future"] {
+    border-style: dashed;
+    border-color: var(--color-cream-200);
+  }
+
+  /* A card's content waits inside its outline (only its numeral and tag,
+     faint) and settles in (blur, rise, fade, 60ms per line) once the thread
+     reaches it. */
+  .stack-reveal {
+    transition:
+      opacity var(--duration-base) var(--ease-out-quint),
+      filter var(--duration-base) var(--ease-out-quint),
+      transform var(--duration-base) var(--ease-out-quint);
+    transition-delay: calc(80ms + var(--j) * 60ms);
+  }
+  [data-state="future"] > .stack-head {
+    opacity: 0.45;
+    filter: none;
+    transform: none;
+  }
+  [data-state="future"] > .stack-reveal:not(.stack-head) {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateY(6px);
+    transition-delay: 0ms;
+  }
+
+  /* The sources: column i lights up with stop i, its marks popping in one
+     after another. */
+  .stack-source {
+    transition: opacity var(--duration-base) var(--ease-out-quint);
+  }
+  .stack-source[data-state="future"] {
+    opacity: 0.6;
+  }
+  .stack-mark {
+    transition: transform var(--duration-base) cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition-delay: calc(var(--j) * 50ms);
+  }
+  [data-state="future"] .stack-mark {
+    transform: scale(0.85);
+    transition-delay: 0ms;
+  }
+  .stack-numeral {
+    color: var(--color-cream-700);
+    transition: color var(--duration-base) var(--ease-out-quint);
+  }
+  [data-state="active"] > span > .stack-numeral {
+    color: var(--color-primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stack-dot,
+    .stack-stop,
+    .stack-numeral,
+    .stack-reveal,
+    .stack-source,
+    .stack-mark {
+      transition: none;
+    }
+  }
+</style>

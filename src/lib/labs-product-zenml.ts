@@ -48,22 +48,10 @@ const ZENML_SIGNUP = {
   href: ZENML_LINKS.signup.href,
 } as const;
 
-export const ZENML_HERO_SIGNUP: LabsCta = {
-  ...ZENML_SIGNUP,
-  analytics: "Hero-Signup-ZenML",
-};
 export const ZENML_HERO_SECONDARY: LabsCta = {
   label: "Read the docs",
   href: ZENML_DOCS_URL,
   analytics: "Hero-Secondary-ZenML",
-};
-export const ZENML_FINAL_SIGNUP: LabsCta = {
-  ...ZENML_SIGNUP,
-  analytics: "Final-Signup-ZenML",
-};
-export const ZENML_VALUE_PROPS_CTA: LabsCta = {
-  ...ZENML_SIGNUP,
-  analytics: "ValueProps-CTA-ZenML",
 };
 export const ZENML_INTEGRATIONS_CTA: LabsCta = {
   label: "See all integrations",
@@ -80,13 +68,14 @@ export const ZENML_STORIES_ALL: LabsCta = {
 /* 01 Hero                                                                 */
 /* ---------------------------------------------------------------------- */
 
-export const ZENML_HERO: LabsProductBandContent = {
+/** Docs is the one pill; the open-source install sits on its own row under
+ *  it, as in the close band (DESIGN.md #327). */
+export const ZENML_HERO = {
   headlineLines: ["AI orchestration,", "on the infra you choose"],
-  deck: "Write pipelines and agents in Python. Run them on Kubernetes, Vertex AI, SageMaker, or your laptop, without rewriting the code.",
-  cta: ZENML_HERO_SIGNUP,
-  secondaryCta: ZENML_HERO_SECONDARY,
+  deck: "Open-source pipelines and agents in Python. Run them on Kubernetes, Vertex AI, SageMaker, or your laptop, without rewriting the code.",
+  cta: ZENML_HERO_SECONDARY,
   install: { cmd: ZENML_INSTALL_CMD, analytics: "Hero-Install-ZenML" },
-};
+} satisfies LabsProductBandContent;
 
 /* ---------------------------------------------------------------------- */
 /* 02 Logo strip                                                           */
@@ -186,7 +175,9 @@ export interface ValuePropsContent {
   /** Absence collapses the deck line under the headline. */
   deck?: string;
   items: readonly ValuePropItem[];
-  cta: LabsCta;
+  /** Absence drops the pill under the cards (a page whose close band
+   *  carries the action). */
+  cta?: LabsCta;
 }
 
 export const ZENML_VALUE_PROPS: ValuePropsContent = {
@@ -208,7 +199,6 @@ export const ZENML_VALUE_PROPS: ValuePropsContent = {
       body: "Apache 2.0 from day one. Self-host it forever, or add the managed control plane when you need governance, SSO, and an SLA.",
     },
   ],
-  cta: ZENML_VALUE_PROPS_CTA,
 };
 
 /* ---------------------------------------------------------------------- */
@@ -248,6 +238,6 @@ export const ZENML_CLOSE: LabsProductBandContent = {
   headlineLines: ["Start on your laptop,", "scale to your cluster"],
   /** The company value proposition, verbatim. */
   deck: "Own your infrastructure, build it the way you want, and keep pace as your organization evolves.",
-  cta: ZENML_FINAL_SIGNUP,
+  cta: { ...ZENML_HERO_SECONDARY, analytics: "Final-Docs-ZenML" },
   install: { cmd: ZENML_INSTALL_CMD, analytics: "Final-Install-ZenML" },
 };

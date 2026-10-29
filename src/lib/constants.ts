@@ -30,6 +30,13 @@ export const COMPANY_ADDRESS = {
   countryName: "Germany",
 } as const;
 
+/** ZenML Cloud signup, one page for both products. UTM tags say where on the
+ *  site the visitor came from: `content` names the placement (a product page,
+ *  the shared CTA, or a blog post slug). */
+export function cloudSignupUrl(content: string, medium = "website"): string {
+  return `https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=${medium}&utm_campaign=signup&utm_content=${content}`;
+}
+
 /** Asset base URL (R2 bucket via custom domain for HTTP/2 multiplexing) */
 export const ASSET_BASE_URL = "https://assets.zenml.io";
 

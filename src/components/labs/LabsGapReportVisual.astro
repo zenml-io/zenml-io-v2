@@ -1,0 +1,106 @@
+---
+/**
+ * LabsGapReportVisual (`labs.gap-report-visual`) — an industry page hero's
+ * example: what the AI engineer tells you about one week of an agent, drawn
+ * as the product's message card. The AI engineer's author row heads it
+ * (with the agent as meta), then the report: its title and window, two
+ * pass-rate bars (what the team's evals pass against what their own manual
+ * would pass), and the gaps as a bordered list, each tagged Wrong (an eval
+ * that passes the wrong thing, red) or Missing (a behavior nothing checks,
+ * cream outline) with its session count.
+ *
+ * On load the card rises out of a soft blur, its blocks settle in one after
+ * another, then the bars fill and the gap rows arrive (CSS only, about 1.6s
+ * in all). Animations fill backwards, so the values are always in the
+ * markup: JS off and reduced motion show the finished card. The figcaption
+ * carries the whole example as text. Copy arrives through `content` (an
+ * industry page's `gapReport`).
+ */
+import type { GapReportVisualContent } from "../../lib/labs-home";
+import { GAP_TAG, GAP_TAG_BASE } from "./gapTags";
+import LabsAiEngineerRow from "./LabsAiEngineerRow.astro";
+
+interface Props {
+  content: GapReportVisualContent;
+}
+const { content } = Astro.props;
+---
+
+<figure class="gap-card overflow-hidden rounded-[16px] border border-(--color-border) bg-card shadow-[0_1px_2px_rgba(65,61,55,0.04),0_12px_32px_rgba(65,61,55,0.08)] transition-colors duration-200 ease-out hover:border-(--color-sage-400)">
+  <figcaption class="sr-only">{content.label}</figcaption>
+  <div aria-hidden="true">
+    <div class="gap-block" style="--k: 0">
+      <LabsAiEngineerRow>
+        <span class="shrink-0 font-mono text-[12px] leading-4 text-(--color-cream-700)">{content.agent}</span>
+      </LabsAiEngineerRow>
+    </div>
+    <div class="flex flex-col gap-5 px-5 pt-5 pb-6 md:px-6">
+      <div class="gap-block flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1" style="--k: 1">
+        <p class="font-sans text-[15px] leading-[22px] font-semibold text-(--color-cream-900)">{content.eyebrow}</p>
+        <p class="font-mono text-[12px] leading-4 text-(--color-cream-700)">{content.window}</p>
+      </div>
+      <dl class="gap-block grid gap-3" style="--k: 2">
+        {content.scores.map((score, index) => (
+          <div class="grid grid-cols-[minmax(0,7.5rem)_minmax(0,1fr)_3rem] items-center gap-3">
+            <dt class="font-sans text-[14px] leading-5 text-(--color-cream-800)">{score.label}</dt>
+            <span class="h-2.5 overflow-hidden rounded-full bg-(--color-cream-100)">
+              <span
+                class:list={["gap-bar block h-full rounded-full", index === 0 ? "bg-(--color-sage-400)" : "bg-(--color-sage-800)"]}
+                style={`width: ${score.value}%; --i: ${index}`}
+              ></span>
+            </span>
+            <dd class="text-right font-mono text-[15px] leading-5 text-(--color-cream-900)">{score.value}%</dd>
+          </div>
+        ))}
+      </dl>
+      <ul class="gap-block flex flex-col divide-y divide-(--color-border) overflow-hidden rounded-[8px] border border-(--color-border)" style="--k: 3">
+        {content.items.map((item, index) => (
+          <li style={`--i: ${index}`} class="gap-row grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-3 py-3">
+            <span class:list={[GAP_TAG_BASE, GAP_TAG[item.kind]]}>{content.kindLabels[item.kind]}</span>
+            <span class="min-w-0 font-sans text-[15px] leading-[22px] text-(--color-cream-900)">{item.title}</span>
+            <span class="font-mono text-[15px] leading-[22px] text-(--color-cream-900) tabular-nums">{item.count}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</figure>
+
+<style>
+  /* The arrival, on the product's settle curve and slower than a UI swap
+     (this is the page's first moment): the card rises out of a blur, its
+     blocks settle 90ms apart, the bars fill 150ms apart, the gap rows follow
+     90ms apart. */
+  @media (prefers-reduced-motion: no-preference) {
+    .gap-card {
+      animation: gap-card-in 900ms var(--ease-out-expo) 100ms backwards;
+    }
+    .gap-block {
+      animation: gap-settle 600ms var(--ease-out-quint) calc(380ms + var(--k) * 90ms) backwards;
+    }
+    .gap-bar {
+      transform-origin: left;
+      animation: gap-bar-fill 1100ms var(--ease-out-expo) calc(720ms + var(--i) * 150ms) backwards;
+    }
+    .gap-row {
+      animation: gap-settle 600ms var(--ease-out-quint) calc(900ms + var(--i) * 90ms) backwards;
+    }
+  }
+  @keyframes gap-card-in {
+    from {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(24px) scale(0.97);
+    }
+  }
+  @keyframes gap-settle {
+    from {
+      opacity: 0;
+      filter: blur(4px);
+      transform: translateY(6px);
+    }
+  }
+  @keyframes gap-bar-fill {
+    from { transform: scaleX(0); }
+  }
+</style>

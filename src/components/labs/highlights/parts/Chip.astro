@@ -1,0 +1,27 @@
+---
+/**
+ * Chip — the product UI's data-type / flavor badge: a 20px bordered card
+ * chip with a 14px mark (a library or service logo from LogoDefs, or a Lucide
+ * glyph in the tertiary ink) before the mono text. `cy` is the row centre.
+ */
+import Glyph, { type GlyphName } from "./Glyph.astro";
+import type { LogoName } from "./logos";
+import { chipWidth } from "./metrics";
+
+type Props = {
+  x: number;
+  cy: number;
+  text: string;
+} & (
+  | { logo: LogoName; prefix: string; glyph?: never }
+  | { glyph: GlyphName; logo?: never; prefix?: never }
+);
+
+const { x, cy, text, logo, prefix, glyph } = Astro.props;
+const top = cy - 10;
+---
+
+<rect x={x + 0.5} y={top + 0.5} width={chipWidth(text) - 1} height="19" rx="3.5" fill="var(--color-card)" stroke="var(--color-border)" />
+{logo && <use href={`#${prefix}-logo-${logo}`} x={x + 6} y={top + 3} width="14" height="14" />}
+{glyph && <Glyph name={glyph} x={x + 6} y={top + 3} size={14} color="var(--color-cream-600)" />}
+<text class="hl-code" x={x + 24} y={cy} dominant-baseline="central" fill="var(--color-cream-800)">{text}</text>

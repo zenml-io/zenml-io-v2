@@ -145,7 +145,7 @@ export const FEATURE_HIGHLIGHT_FIGURES: Partial<
  * the strings the retired compliance banner carried as its own defaults.
  */
 export const FEATURE_COMPLIANCE_DEFAULTS = {
-  eyebrow: "ZenML is SOC2 and ISO 27001 Compliant",
+  eyebrow: "SOC 2 Type II and ISO 27001",
   headline: "We Take Security Seriously",
-  body: "ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality.",
+  body: "ZenML is SOC 2 Type II and ISO 27001 audited, validating our adherence to industry-leading standards for data security, availability, and confidentiality.",
 };

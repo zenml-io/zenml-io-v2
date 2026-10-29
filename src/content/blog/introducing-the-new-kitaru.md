@@ -304,7 +304,7 @@ If your traces cannot leave your infrastructure, the whole setup can be self-hos
 uv add "kitaru[cli,worker]"
 ```
 
-Managed workspaces are at [cloud.kitaru.ai](https://cloud.kitaru.ai/).
+Managed workspaces are at [cloud.zenml.io](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=blog&utm_campaign=signup&utm_content=introducing-the-new-kitaru).
 
 The docs are at [docs.zenml.io/kitaru](https://docs.zenml.io/kitaru).
 

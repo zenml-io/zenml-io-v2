@@ -2,49 +2,36 @@
 import Cta from "../../components/kitaru/Cta.astro";
 import Faq from "../../components/kitaru/Faq.astro";
 import Features from "../../components/kitaru/Features.astro";
-import FirstRun from "../../components/kitaru/FirstRun.astro";
 import Hero from "../../components/kitaru/Hero.astro";
-import { ScenarioStrip } from "../../components/kitaru/islands/ScenarioStrip";
-import { TwoDoors } from "../../components/kitaru/islands/TwoDoors";
 /**
- * /product/kitaru — landing page introducing Kitaru as a sub-product
- * under the unified ZenML umbrella, rendered in the Labs shell
- * (`app="labs" product="kitaru"`: rebrand type roles + palette, the Kitaru
- * wordmark in the nav, the orange signup pill). The sections keep their
- * Kitaru markup; the `[data-app="kitaru"]` scope in src/styles/global.css
- * points their tokens at the rebrand set.
+ * /product/kitaru — the open-source part of the product, rendered in the
+ * Labs shell (`app="labs" product="kitaru"`). The `[data-app="kitaru"]`
+ * scope in src/styles/global.css points the section tokens at the rebrand
+ * set.
  *
- * Ported from the 2026 Kitaru landing redesign (design/kitaru-redesign-src).
- * ScenarioStrip and TwoDoors are Preact islands (interactive: copy buttons,
- * hover state, in-component scroll reveal); the hero's video card is the
- * HeroVideo island. Hero, FirstRun, Features, Faq and Cta are static —
- * their scroll-reveal is driven by the page-level `reveal-static` script
- * below.
+ * Story (matches the homepage): our AI engineer reads your traces next to
+ * your evals and shows you what they miss. Kitaru is the open-source core
+ * underneath: import or record traces, review sessions, turn findings into
+ * checks, replay the agent to test a fix. The AI engineer is the hosted part.
  *
- * Aimed at the bullseye ICP: teams whose agent turns unstructured inbound into
- * structured writes in a system of record (logistics, fintech, insurance,
- * legal, back-office). They are replay-hungry by construction — re-running
- * live would create phantom bookings — so the page never has to argue for
- * replay, only show it. Those agents are also single-execution pipelines,
- * which is why the multi-turn divergence caveat does not surface here.
+ * Sections (Oct 2026 cut, about a third of the earlier page):
+ *   Hero        → the install command first, docs as the ghost pill
+ *   Features    → how it works in four steps, plus the hosted note
+ *   OpenSource  → labs.open-source-band: licence, local, keys, GitHub stars
+ *   EvalImport  → labs.eval-import-band: bring the evals you already run
+ *   Faq         → short answers, incl. the multi-turn replay limit
+ *   Cta         → closing band, install command first
  *
- * Sections (terminal-first order, Sep 2026):
- *   Hero          → Start free + Read the docs pills, the install chip beneath
- *   FirstRun      → the first five minutes as a terminal transcript + outcomes
- *   TwoDoors      → two paths in: wrap an agent or import existing traces
- *   ScenarioStrip → four questions asked of one cohort of real sessions
- *   Features      → the model-migration wedge, in experiment/run terms
- *   Faq           → the questions that come up in every demo
- *   Cta           → closing CTA band
- *
- * The onboarding journey (login, skills, worker, triage) is deliberately
- * docs-only — it lives in PRODUCT_KITARU_MARKDOWN.journey → /product/kitaru.md.
- *
- * See MERGE_PLAN.md §4 (Phase 2b).
+ * Motion: the hero's KitaruGrain is the one ambient section; HeroVideo
+ * hydrates on idle. The hero reveals on load (reveal-static); every block
+ * below it scrubs in and out with scroll (`.scroll-scrub`).
  */
+import LabsEvalImportBand from "../../components/labs/LabsEvalImportBand.astro";
+import LabsOpenSourceBand from "../../components/labs/LabsOpenSourceBand.astro";
 import JsonLd from "../../components/seo/JsonLd.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { FAQ_ITEMS } from "../../lib/kitaru-landing";
+import { KITARU_EVAL_IMPORT, KITARU_OPEN_SOURCE } from "../../lib/openSource";
 import { PRODUCT_KITARU_SEO } from "../../lib/productKitaru";
 import { absoluteUrl } from "../../lib/seo";
 import { htmlToPlainText } from "../../lib/text";
@@ -71,20 +58,23 @@ const faqJsonLd = {
         container, so the FAQ's sticky column is unaffected. */}
     <main id="kitaru-main" class="overflow-x-clip">
       <Hero />
-      <FirstRun />
-      <TwoDoors client:visible />
-      <ScenarioStrip client:visible />
       <Features />
+      <LabsOpenSourceBand content={KITARU_OPEN_SOURCE} tint="orange" />
+      <LabsEvalImportBand content={KITARU_EVAL_IMPORT} />
       <Faq />
       <Cta />
     </main>
   </div>
 </BaseLayout>
 
-{/* Scroll-reveal observer for the static sections (Hero, FirstRun, Features, Faq, Cta) —
-    sets data-shown="true" on .reveal/.reveal-left/.reveal-right elements.
-    The hydrated islands drive their own reveal via the useReveal hook, so
-    this only needs to cover the static markup. */}
+{/* reveal-static plays the hero's load reveal; labs-scroll-progress drives
+    every `.scroll-scrub` block and the open-source cards. */}
 <script>
   import "../../scripts/kitaru/reveal-static";
+  import { initScrollProgress } from "../../scripts/labs-scroll-progress";
+  import { initScrollScrub } from "../../scripts/labs-scroll-scrub";
+
+  initScrollScrub();
+
+  initScrollProgress();
 </script>

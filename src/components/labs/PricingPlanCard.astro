@@ -1,47 +1,27 @@
 ---
 /**
- * labs.pricing-plan-cards — one plan card inside `PricingPlanCards`'
- * workspace panels. The ZenML Scale card carries an interactive executions
- * slider that snaps between three pricing tiers, updating the price +
- * readout live (handled by the parent's script). Display strings come from
- * `buildSliderView` so SSR and the client script share one source of truth.
- *
- * `accent` is the workspace's `"sage" | "orange"` discriminant (from
- * `pricing.ts`): it drives the highlighted card's border + "Recommended"
- * pill and the feature-list check icon colour — the panel's one bounded
- * orange moment on the Kitaru workspace.
+ * labs.pricing-plan-cards — one plan card inside `PricingPlanCards`: name
+ * and pill, subtitle, price, limits line, CTA and the includes list. The
+ * highlighted plan gets a sage-400 border and its top badge.
  */
 import type { LabsCta } from "../../lib/labs-home";
 import type { PricingPlan } from "../../lib/marketingPageTypes";
-import { buildSliderView } from "../sections/pricingSlider";
 import LabsButton from "./LabsButton.astro";
 
 interface Props {
   plan: PricingPlan;
-  accent: "sage" | "orange";
   planIdx: number;
 }
 
-const { plan, accent, planIdx } = Astro.props;
+const { plan, planIdx } = Astro.props;
 
 const checkIcon =
   '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5" /></svg>';
 
-const slider = plan.slider;
-const sliderView = slider ? buildSliderView(slider) : null;
-const defaultView =
-  slider && sliderView ? sliderView[slider.defaultIndex] : null;
-
 const HIGHLIGHT_BORDER =
-  accent === "orange"
-    ? "border-(--color-orange-300) hover:border-(--color-orange-400)"
-    : "border-(--color-sage-400) hover:border-(--color-sage-600)";
-const BADGE_CLASSES =
-  accent === "orange"
-    ? "bg-(--color-orange-600) text-(--color-cream-50)"
-    : "bg-(--color-sage-800) text-(--color-cream-50)";
-const CHECK_CLASSES =
-  accent === "orange" ? "text-(--color-orange-600)" : "text-(--color-sage-700)";
+  "border-(--color-sage-400) hover:border-(--color-sage-600)";
+const BADGE_CLASSES = "bg-(--color-sage-800) text-(--color-cream-50)";
+const CHECK_CLASSES = "text-(--color-sage-700)";
 ---
 
 <article
@@ -81,7 +61,6 @@ const CHECK_CLASSES =
   <div class="mt-6 flex flex-wrap items-baseline gap-x-2">
     <span
       class="font-display text-[40px] leading-[44px] text-(--color-cream-900)"
-      data-slider-price={slider ? "" : undefined}
     >
       {plan.price}
     </span>
@@ -92,50 +71,7 @@ const CHECK_CLASSES =
     }
   </div>
 
-  {/* Slider (ZenML Scale) or static limits line */}
-  {
-    slider && sliderView && defaultView ? (
-      <div class="mt-5" data-pricing-slider data-tiers={JSON.stringify(sliderView)}>
-        <span class="font-sans text-[13px] leading-4 font-medium text-(--color-cream-700)">
-          {slider.caption}
-        </span>
-        <div class="mt-2.5 flex justify-between font-sans text-[13px] leading-4 tabular-nums">
-          {slider.tiers.map((tier, tierIdx) => (
-            <span
-              data-slider-stop={tierIdx}
-              class={
-                tierIdx === slider.defaultIndex
-                  ? "font-medium text-(--color-cream-900)"
-                  : "text-(--color-cream-600)"
-              }
-            >
-              {tier.executions}
-            </span>
-          ))}
-        </div>
-        <input
-          type="range"
-          min="0"
-          max={slider.tiers.length - 1}
-          step="1"
-          value={slider.defaultIndex}
-          class="exec-slider mt-3 w-full"
-          style={`--range-fill:${defaultView.fill}`}
-          data-slider-input
-          aria-label={slider.caption}
-          aria-valuetext={defaultView.valueText}
-        />
-        <p
-          data-slider-readout
-          class="mt-3 inline-flex self-start rounded-[8px] bg-(--color-sage-50) px-3 py-1.5 font-sans text-[13px] leading-4 font-medium text-(--color-cream-800)"
-        >
-          {defaultView.readout}
-        </p>
-      </div>
-    ) : (
-      <p class="mt-4 font-sans text-[14px] leading-5 text-(--color-cream-700)">{plan.limitsLine}</p>
-    )
-  }
+  <p class="mt-4 font-sans text-[14px] leading-5 text-(--color-cream-700)">{plan.limitsLine}</p>
 
   {/* CTA */}
   <div class="mt-6">
@@ -194,66 +130,4 @@ const CHECK_CLASSES =
     }
   }
 
-  /* Executions slider — native range input styled to the Labs tokens */
-  .exec-slider {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 22px;
-    background: transparent;
-    cursor: pointer;
-  }
-  .exec-slider::-webkit-slider-runnable-track {
-    height: 6px;
-    border-radius: 999px;
-    background: linear-gradient(
-      to right,
-      var(--color-sage-800) 0%,
-      var(--color-sage-800) var(--range-fill, 50%),
-      var(--color-sage-200) var(--range-fill, 50%),
-      var(--color-sage-200) 100%
-    );
-  }
-  .exec-slider::-moz-range-track {
-    height: 6px;
-    border-radius: 999px;
-    background: linear-gradient(
-      to right,
-      var(--color-sage-800) 0%,
-      var(--color-sage-800) var(--range-fill, 50%),
-      var(--color-sage-200) var(--range-fill, 50%),
-      var(--color-sage-200) 100%
-    );
-  }
-  .exec-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    margin-top: -8px;
-    width: 22px;
-    height: 22px;
-    border-radius: 999px;
-    background: var(--card);
-    border: 3px solid var(--color-sage-800);
-    cursor: pointer;
-    transition: transform 0.12s ease;
-  }
-  .exec-slider::-webkit-slider-thumb:hover {
-    transform: scale(1.08);
-  }
-  .exec-slider::-moz-range-thumb {
-    width: 22px;
-    height: 22px;
-    border-radius: 999px;
-    background: var(--card);
-    border: 3px solid var(--color-sage-800);
-    cursor: pointer;
-  }
-  .exec-slider:focus-visible {
-    outline: none;
-  }
-  .exec-slider:focus-visible::-webkit-slider-thumb {
-    box-shadow: 0 0 0 4px var(--color-sage-200);
-  }
-  .exec-slider:focus-visible::-moz-range-thumb {
-    box-shadow: 0 0 0 4px var(--color-sage-200);
-  }
 </style>

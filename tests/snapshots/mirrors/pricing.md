@@ -1,190 +1,174 @@
-# Orchestrate AI workflows and ship agents with confidence
+# One plan, $39 a month
 
 Canonical HTML URL: https://www.zenml.io/pricing
 
-Orchestrate AI workflows and ship agents with confidence. Predictable, transparent pricing that scales with value.
+One plan, $39 a month: your AI engineer on one agent, one ZenML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.
 
 Note: this is a repo-owned Markdown mirror for agents and readers. It omits visual-only UI, decorative media, navigation, analytics, and other browser chrome.
 
 ## Summary
 
-Start open source and self-hosted. Upgrade to Pro for the managed control plane, on our SaaS or your own infrastructure.
+Your AI engineer on one agent, one ZenML project, and your whole team. Need more, or on-prem? Talk to us.
 
 ## Main CTAs
 
-- [Book a demo](https://www.zenml.io/book-your-demo)
-- [Read Docs](https://www.zenml.io/docs)
+- [Get started](https://www.zenml.io/get-started)
+- [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)
+- [Talk to us](https://www.zenml.io/book-your-demo)
 - [Apply Now](https://www.zenml.io/startups-and-academics)
 
 ## Plans
 
+An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. Starter covers one agent and one ZenML project. Need more? Talk to us.
+
 ### Open Source
 
-For individuals and small teams
+Run it yourself
 
 - Price: Free
-- Limits: Unlimited executions · Unlimited projects
+- Limits: Your infrastructure · Your limits
 
 - Includes:
-  - Pipeline & flow orchestration
-  - Artifact management
-  - Basic model registry
+  - ZenML and Kitaru, Apache 2.0
+  - Pipelines, agents and artifacts
+  - Import traces, review and checks
   - Community support
 
-- CTA: [Get Started](https://www.zenml.io/get-started)
+- CTA: [Get started](https://www.zenml.io/get-started)
 
-### Scale
+### Starter
 
-For teams running ML in production
+For startups shipping their first agent
 
-- Price: $999/month
-
-- Monthly executions, per workspace:
-
-| Executions | Monthly price | Projects | Snapshots |
-| --- | --- | --- | --- |
-| 500 | $399 | 1 | 1 |
-| 2,000 | $999 | 3 | 5 |
-| 5,000 | $2,499 | 10 | 20 |
+- Price: $39/month
+- Limits: 1 agent · 1 ZenML project · Unlimited seats
 
 - Everything in Open Source, plus:
-  - Model Control Plane
-  - Artifact Control Plane
-  - Snapshots
-  - Codespaces (remote IDE)
+  - Your AI engineer on one agent
+  - Finds wrong and missing evals
+  - An interview and a weekly review
+  - Hosted ZenML and Kitaru
 
-- CTA: [Book a demo](https://www.zenml.io/book-your-demo)
+- CTA: [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)
 
 ### Enterprise
 
-For organizations at scale
+For more agents, more projects or regulated data
 
 - Price: Custom
-- Limits: Unlimited executions · Unlimited projects
+- Limits: More agents · More projects · More workspaces
 
-- Everything in Scale, plus:
-  - SSO (SAML / OIDC)
-  - RBAC (custom roles)
-  - Audit logs
-  - Air-gapped deployment
+- Everything in Starter, plus:
+  - Multi-workspace setup
+  - On-prem or air-gapped
+  - Your own LLM endpoint
+  - SSO, SCIM, custom roles and audit logs
+  - SLA and a named engineer
 
-- CTA: [Talk to an engineer](https://www.zenml.io/book-your-demo)
+- CTA: [Talk to us](https://www.zenml.io/book-your-demo)
 
 ## Compare every plan
 
-Open Source and Pro, with Scale and Enterprise feature tiers.
+One price, unlimited seats. 14-day trial, no credit card.
 
-### Core platform
+### Plan
 
-| Feature | Open Source | Scale | Enterprise |
+| Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
-| Pipeline & flow orchestration | Yes | Yes | Yes |
-| Artifact management | Yes | Yes | Yes |
-| Model registry (basic) | Yes | Yes | Yes |
+| Price | Free | $39 / month | Custom |
+| Agents with your AI engineer | — | 1 | Custom |
+| ZenML projects | Self-hosted | 1 | Custom |
+| Pipeline runs a month | Self-hosted | 100 | Custom |
 
-### Pro control plane
+### Your AI engineer
 
-| Feature | Open Source | Scale | Enterprise |
+| Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
+| Finds wrong and missing evals | No | Yes | Yes |
+| An interview and a weekly review | No | Yes | Yes |
+| Findings and reviews in Slack | No | Yes | Yes |
+
+### Agents, with Kitaru
+
+| Feature | Open Source | Starter | Enterprise |
+| --- | --- | --- | --- |
+| Import traces from your tracing tool | Yes | Yes | Yes |
+| Reviews, checks and replays | Yes | Yes | Yes |
+| Hosted dashboard | No | Yes | Yes |
+
+### AI orchestration, with ZenML
+
+| Feature | Open Source | Starter | Enterprise |
+| --- | --- | --- | --- |
+| Pipeline and agent orchestration | Yes | Yes | Yes |
+| Artifacts and model registry | Yes | Yes | Yes |
 | [Model Control Plane](https://docs.zenml.io/concepts/models) | No | Yes | Yes |
-| [Artifact Control Plane](https://docs.zenml.io/concepts/dashboard-features) | No | Yes | Yes |
 | [Snapshots](https://docs.zenml.io/concepts/snapshots) | No | Yes | Yes |
-| Codespaces (remote IDE) | No | Yes | Yes |
+| Codespaces (remote IDE) | No | No | Yes |
 
-### Agent replay
+### Deployment and governance
 
-| Feature | Open Source | Scale | Enterprise |
+| Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
-| Replay-based evals (Python & TypeScript) | Yes | Yes | Yes |
-| Unlimited imports, scoring and seats | Yes | Yes | Yes |
-| Hosted dashboard and control plane | No | Yes | Yes |
-| Remote worker pools | No | No | Yes |
-
-### Enterprise & governance
-
-| Feature | Open Source | Scale | Enterprise |
-| --- | --- | --- | --- |
-| SSO (SAML / OIDC) | No | No | Yes |
+| On-prem or air-gapped | Yes | No | Yes |
+| Your own LLM endpoint for the AI engineer | No | No | Yes |
+| SSO (SAML / OIDC) and SCIM | No | No | Yes |
 | [RBAC (custom roles)](https://docs.zenml.io/pro/access-management/roles) | No | No | Yes |
-| Advanced native scheduling | No | No | Yes |
 | Audit logs | No | No | Yes |
-| Air-gapped deployment | No | No | Yes |
 
 ### Support
 
-| Feature | Open Source | Scale | Enterprise |
+| Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
-| Support level | Community | Priority | Dedicated + SLA |
+| Support level | Community | Email | Dedicated + SLA |
 
-## Kitaru pricing, answered
+## Pricing, answered
 
-### What does Kitaru cost?
+### What do I get for $39?
 
-$39 a month, flat. The hosted Cloud plan includes 3 agents, 2 seats, 90-day session retention, and every feature. Replays, experiment runs, imports and recording all come with it. No meters, no usage math. Need more agents, seats or governance? That's the Enterprise plan.
+One agent with your AI engineer on it, one ZenML project with up to 100 pipeline runs a month, and as many seats as you want. It starts with a 14-day trial, no credit card.
+
+### What counts as an agent?
+
+An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. A LangGraph app with three sub-agents that ships as one product is one agent.
+
+### Is there a limit on sessions?
+
+No. Your AI engineer reads every session your agent sends. Replays run with your own model keys, so those model costs stay on your bill.
+
+### What if we need more agents, projects or runs?
+
+Talk to us. Enterprise covers more agents, more ZenML projects and more pipeline runs, priced on what you actually run, along with on-prem and governance if you need them.
+
+### Why not per seat?
+
+Because everyone who knows what good looks like should be in it: engineers, product, and the domain experts who review sessions. A team of fifteen pays the same as a team of two.
 
 ### What happens after the 14-day trial?
 
-The trial is full access to everything and needs no credit card. When it ends, add a card and you're on the $39/month plan. Nothing about your workspace changes except the billing. There's no free hosted tier: the free option is the open-source version, self-hosted on your own infrastructure, forever.
-
-### What does the Enterprise plan add?
-
-Unlimited agents, custom seats and session retention, plus the governance layer: SSO, role-based access and audit. If the Cloud plan's limits are the only thing in your way, that's the conversation to have with us.
-
-### How is this different from Langfuse, Braintrust or LangSmith?
-
-They tell you what happened: traces you read, dashboards you check. Kitaru re-runs what happened. Your agent's real code executes again against the recorded world, so you can test your next change against your last thousand sessions before it ships. Kitaru also imports trace files exported from Langfuse, LangSmith, Braintrust, Logfire or Arize Phoenix, so your observability tool stays your system of record.
-
-### Can I self-host Kitaru?
-
-Yes. Kitaru is open source under Apache 2.0, the same model as ZenML. One command brings up a local deployment in Docker, or self-host the server in your own VPC. Either way the worker runs beside your code, on your machine or your compute, using your own model keys, so replays never execute on our infrastructure. Cloud adds the hosted control plane and remote worker pools; Enterprise adds SSO, RBAC and audit.
+The trial is full access and needs no credit card. When it ends, add a card to keep going. Nothing in your workspace changes except the billing. Open source stays free, forever.
 
 ### Do you see my traces?
 
-Self-hosted, no: the server and workers run in your infrastructure and your traces never have to leave your systems. On the hosted Cloud plan we manage the control plane, but replay still executes on your own workers with your own keys. The recorded sessions are yours.
+On Starter, your AI engineer runs in our cloud and reads traces from your tracing tool through keys you can revoke. ZenML stores only metadata; your data, artifacts and compute stay in your cloud. Self-hosted or on Enterprise on-prem, nothing leaves your infrastructure.
 
-### Do I need a separate subscription for ZenML?
+### Can we run it on-prem?
 
-No, one subscription covers both workspaces. They're priced differently (ZenML's managed tiers scale with pipeline executions; Kitaru is a flat $39/month), but it's the same control plane, the same governance, and one bill.
+Yes, on Enterprise. Your AI engineer and ZenML run inside your own cloud or on-prem, air-gapped if you need it, with your own LLM endpoint.
 
-## ZenML pricing, answered
+### How is this different from Langfuse, Braintrust or LangSmith?
 
-### Can I self-host ZenML?
-
-Yes. ZenML is open source and free to self-host; that's the Open Source plan. If you want the Pro control plane on your own infrastructure, Enterprise covers self-hosted and air-gapped deployment. Either way, ZenML stores only metadata: your data, artifacts and compute stay in your VPC end-to-end.
-
-### How is the Scale plan billed?
-
-By monthly pipeline executions per workspace. The slider on the Scale card above sets your tier, and projects and snapshots scale with it. Pick the tier that matches your run volume and move between tiers as you grow; there's no per-seat pricing.
-
-### What happens if I exceed my plan's executions?
-
-We don't cut you off mid-month. Going over occasionally is fine; if it becomes the pattern, we'll reach out about moving you up a tier.
-
-### What's the difference between Open Source and the Pro plans?
-
-Open Source is the full framework, managed by you. Scale and Enterprise add the managed control plane (automatic updates, guaranteed uptime) plus the Model Control Plane, Artifact Control Plane, snapshots and Codespaces. Enterprise adds SSO, custom-role RBAC, audit logs and air-gapped deployment on top.
+They show you what happened. Our AI engineer reads those traces next to your evals and shows you which evals are wrong or missing, then Kitaru replays your agent to test the fix against real sessions. Kitaru imports from Langfuse, LangSmith, Braintrust, Logfire, MLflow or Phoenix, so your tracing tool stays your system of record.
 
 ### Is there a startup or academic discount?
 
-Yes. Early-stage companies building ML-powered products, universities, research institutions and educational use cases can apply for special pricing on ZenML Pro. Apply here (/startups-and-academics).
-
-### How is my data handled?
-
-ZenML is a metadata layer on top of your existing infrastructure: your data, artifacts and compute stay in your VPC, and only metadata reaches the control plane. ZenML is SOC 2 Type II and ISO/IEC 27001 certified.
-
-### Do I need a separate subscription for Kitaru?
-
-No, your ZenML subscription covers the Kitaru workspace too. Kitaru is priced on its own terms, a flat $39/month rather than execution tiers, but both workspaces run on the same control plane and land on one bill.
-
-### What kind of support is included in each plan?
-
-Open Source: our public Slack and community forums. Scale: priority support with faster response times. Enterprise: a dedicated account manager, SLAs, and implementation assistance.
+Yes. Early-stage companies, universities and research institutions can apply for special pricing. Apply here (/startups-and-academics).
 
 Still not clear? [Still not clear? Ask us on Slack](https://www.zenml.io/slack)
 
-## Two products, one plan.
+## Two products, one account
 
-Switch SDKs without switching tools, billing, or governance. ZenML for AI workflow orchestration. Kitaru to replay and regression-test your agents. Same control plane underneath.
+ZenML orchestrates your AI workflows. Your AI engineer and Kitaru keep your agents' evals honest. Same control plane underneath.
 
 ### Pipelines & artifacts
 
@@ -196,21 +180,21 @@ Training, batch inference, evals, agent workflows. One DAG, versioned artifacts,
 
 - Learn more: [Learn about ZenML](https://www.zenml.io/product/zenml)
 
-- CTA: [Sign up free](https://cloud.zenml.io/signup?product=zenml)
+- CTA: [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=zenml)
 
-### Replay-based evals
+### Your AI engineer
 
-Import your whole trace history, replay it against your next change, and keep every fix as a regression test, on one flat plan.
+Finds the evals you got wrong or never wrote, then replays your agent to test the fix. Priced per agent.
 
-- Sessions, cohorts, evaluators, experiments: The whole replay loop, imports and scoring included.
-- One flat $39 plan, no meters to read: Replays and experiment runs included at launch.
+- Insights from your traces: Finds wrong and missing evals, then turns your answers into checks.
+- $39 a month on Starter: One agent and one ZenML project, one price.
 - Seats for your domain experts: The people who know what good looks like are not a line item.
 
 - Learn more: [Learn about Kitaru](https://www.zenml.io/product/kitaru)
 
-- CTA: [Sign up free](https://cloud.zenml.io/signup?product=kitaru)
+- CTA: [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)
 
-Same control plane. Same governance. One bill covers both.
+Starter covers one agent and one ZenML project. Enterprise covers the rest.
 
 ## Are you startup or academic?
 
@@ -220,28 +204,16 @@ Apply for a special price to access ZenML Pro features for early-stage companies
 
 ## Your VPC, your data
 
-ZenML is a metadata layer on top of your existing infrastructure, meaning all data and compute stays on your side.
+ZenML stores only metadata, so your data and compute stay in your cloud. Your AI engineer reads traces through keys you can revoke, or runs inside your cloud on Enterprise.
 
 ### We Take Security Seriously
 
-ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your AI workflows and data.
+ZenML holds a SOC 2 Type II report and ISO 27001 certification, independently audited for security, availability and confidentiality.
 
 Security badges: SOC 2 Type II Badge, ISO/IEC 27001:2022 certification badge.
 
-## Trusted by 1,000s of members of top companies
+## Start with one agent and your whole team
 
-Join the ZenML Community and start improving your AI workflows
+Your AI engineer reads your traces next to your evals and shows you what they miss. 14-day trial, no credit card.
 
-- 1,000,000 pipelines run in ZenML
-- 100,000 pipelines run last month
-- 21,000 stacks registered last 12 months
-- 200,000 models trained last 12 months
-
-## Start deploying reproducible AI workflows today
-
-Enterprise-grade AI orchestration platform trusted by thousands of companies in production.
-
-### CTAs
-
-- [Book a demo](https://www.zenml.io/book-your-demo)
-- [Read Docs](https://www.zenml.io/docs)
+- [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)

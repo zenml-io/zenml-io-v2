@@ -50,6 +50,8 @@ export const OG_CARDS: readonly OgCard[] = [
   },
 
   // Product and homepage
+  // Production's homepage card (main still ships "Ship AI you can trust");
+  // kept until that page is gone so its live preview stays in step.
   {
     key: "home",
     eyebrow: "ZenML Labs",
@@ -59,12 +61,29 @@ export const OG_CARDS: readonly OgCard[] = [
       "ZenML orchestrates your pipelines and agents.\nKitaru replays them on production data before a change ships.\nBoth open source, always.",
   },
   {
+    key: "home-evals",
+    eyebrow: "ZenML Labs",
+    layout: "hero",
+    title: "Find what your agent’s\nevals miss",
+    subtitle:
+      "Your agent changed. Your evals didn't.\nOur AI engineer reads your traces next to your evals\nand shows you what they let through.",
+  },
+  {
     key: "product-zenml",
     eyebrow: "Product",
     brand: "zenml",
     title: "AI orchestration, on the infra you choose",
     subtitle:
       "Open-source AI orchestration: run training, inference, evals, and agents as reproducible pipelines",
+  },
+  {
+    key: "product-kitaru",
+    eyebrow: "Product",
+    brand: "kitaru",
+    layout: "hero",
+    title: "Insights from your\nagent’s traces",
+    subtitle:
+      "Import your traces and see the patterns across every session.\nTurn what you find into checks, then replay a fix.",
   },
 
   // Hubs and indexes

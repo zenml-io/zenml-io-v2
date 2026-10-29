@@ -5,8 +5,7 @@
  * panel with customer logos, title, "read the story" label, four-up,
  * `slice(0, 4)`) or quote cards (testimonial + attribution, three-up, no
  * slice) — a card is a quote when `"quote" in card`. Copy and card data
- * arrive through the `content` prop (`LABS_STORIES` on `/`, `PRO_QUOTES`
- * on `/pro`).
+ * arrive through the `content` prop (`PRO_QUOTES` on `/pro`).
  */
 import type {
   CaseStudyCard,
@@ -14,6 +13,8 @@ import type {
   StoryCardsContent,
 } from "../../lib/labs-home";
 import LabsStoryCard from "./LabsStoryCard.astro";
+import "../../styles/labs-scroll-reveal.css";
+import LabsTextLink from "./LabsTextLink.astro";
 
 interface Props {
   content: StoryCardsContent;
@@ -31,30 +32,24 @@ const storyCards = hasQuoteCards
 ---
 
 <section class="py-24 md:py-32">
-  <div class="mx-auto max-w-content px-gutter">
+  <div class="scroll-reveal-section mx-auto max-w-content px-gutter">
     {(content.headline || content.allLink) && (
-      <div class="flex items-end justify-between gap-6">
+      <div class="reveal-child flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
         {content.headline && (
-          <h2 class="font-display text-[40px] leading-[46px] text-(--color-cream-900)">
+          <h2 class="font-display text-[32px] leading-[38px] text-(--color-cream-900) text-balance md:text-[48px] md:leading-[54px]">
             {content.headline}
           </h2>
         )}
         {content.allLink && (
-          <a
-            href={content.allLink.href}
-            data-analytics={content.allLink.analytics}
-            class="cursor-pointer whitespace-nowrap font-label text-[13px] uppercase tracking-[0.05em] underline underline-offset-4"
-          >
-            {content.allLink.label}
-          </a>
+          <LabsTextLink cta={content.allLink} />
         )}
       </div>
     )}
 
     {hasQuoteCards ? (
-      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {quoteCards.map((card) => (
-          <div class:list={[card.wide && "lg:col-span-2"]}>
+      <div class="scroll-reveal-section mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {quoteCards.map((card, index) => (
+          <div class:list={["reveal-child", `stagger-${Math.min(index + 1, 4)}`, card.wide && "lg:col-span-2"]}>
             <LabsStoryCard
               kind="quote"
               quote={card.quote}
@@ -68,8 +63,9 @@ const storyCards = hasQuoteCards
         ))}
       </div>
     ) : (
-      <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {storyCards.map((card) => (
+      <div class="scroll-reveal-section mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        {storyCards.map((card, index) => (
+          <div class:list={["reveal-child", `stagger-${Math.min(index + 1, 4)}`]}>
           <LabsStoryCard
             href={card.href}
             title={card.title}
@@ -80,6 +76,7 @@ const storyCards = hasQuoteCards
             ]}
             readLabel={content.readLabel}
           />
+          </div>
         ))}
       </div>
     )}

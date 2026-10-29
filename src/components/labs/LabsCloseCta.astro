@@ -5,9 +5,13 @@ import type { LabsProductBandContent } from "../../lib/labs-home";
 // headline, deck, one signup pill. Copy comes in through the `content` prop
 // (LABS_CLOSE on `/`, ZENML_CLOSE on `/product/zenml`); a product page may
 // add a copyable install command under the pill, absent on the homepage.
+// Where the page runs `initScrollProgress()`, the band grows out of a
+// rounded inset as it enters (`--p`, 0 → 1); elsewhere `--p` stays at its
+// finished value and the band is full-bleed.
 import { GrainBackdrop } from "../islands/GrainBackdrop";
 import LabsButton from "./LabsButton.astro";
 import LabsInstallChip from "./LabsInstallChip.astro";
+import "../../styles/labs-scroll-reveal.css";
 
 interface Props {
   content: LabsProductBandContent;
@@ -17,7 +21,11 @@ const { content, preset = "default" } = Astro.props;
 const comparison = preset === "comparison";
 ---
 
-<section class={comparison ? "relative overflow-hidden bg-(--color-sage-900) py-16 text-(--color-cream-50) md:py-20" : "relative overflow-hidden bg-(--color-sage-900) pt-24 pb-20 text-(--color-cream-50) md:pt-44 md:pb-40"}>
+<section
+  class={comparison ? "labs-close relative overflow-hidden bg-(--color-sage-900) py-16 text-(--color-cream-50) md:py-20" : "labs-close relative overflow-hidden bg-(--color-sage-900) pt-24 pb-20 text-(--color-cream-50) md:pt-44 md:pb-40"}
+  data-scroll-progress
+  data-progress
+>
   {
     /*
       client:idle on purpose: the hero shader (LabsHero) is the page's one
@@ -32,8 +40,8 @@ const comparison = preset === "comparison";
     class="absolute inset-0 opacity-90"
   />
 
-  <div class={comparison ? "relative mx-auto flex max-w-content flex-col items-center px-gutter text-center" : "relative mx-auto max-w-content px-gutter"}>
-    <h2 class={comparison ? "max-w-[768px] font-display text-[32px] leading-[38px] text-(--color-cream-50) md:text-[44px] md:leading-[50px]" : "font-display text-[44px] leading-[48px] text-(--color-cream-50) md:text-[72px] md:leading-[78px]"}>
+  <div class={comparison ? "scroll-reveal-section relative mx-auto flex max-w-content flex-col items-center px-gutter text-center" : "scroll-reveal-section relative mx-auto max-w-content px-gutter"}>
+    <h2 class={comparison ? "reveal-child max-w-[768px] font-display text-[32px] leading-[38px] text-(--color-cream-50) md:text-[44px] md:leading-[50px]" : "reveal-child font-display text-[44px] leading-[48px] text-(--color-cream-50) md:text-[72px] md:leading-[78px]"}>
       {content.headlineLines[0]}
       {comparison && " "}
       <br />
@@ -41,21 +49,21 @@ const comparison = preset === "comparison";
     </h2>
 
     {Astro.slots.has("deck") ? (
-      <div class="labs-close-deck mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)">
+      <div class="labs-close-deck reveal-child stagger-1 mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)">
         <slot name="deck" />
       </div>
     ) : content.deck && (
-      <p class="mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)">
+      <p class="reveal-child stagger-1 mt-8 max-w-[620px] font-sans text-xl leading-[30px] text-(--color-sage-300)">
         {content.deck}
       </p>
     )}
 
-    <div class="mt-10 flex flex-wrap items-center gap-7">
+    <div class="reveal-child stagger-2 mt-10 flex flex-wrap items-center gap-7">
       <LabsButton cta={content.cta} tone="sage" />
     </div>
 
     {content.install && (
-      <div class="mt-space-md flex max-w-full">
+      <div class="reveal-child stagger-3 mt-space-md flex max-w-full">
         <LabsInstallChip content={content.install} tone="dark" />
       </div>
     )}
@@ -63,6 +71,14 @@ const comparison = preset === "comparison";
 </section>
 
 <style>
+  .labs-close {
+    --scroll-start: 1;
+    --scroll-end: 0.4;
+    clip-path: inset(
+      calc((1 - var(--p)) * 24px) calc((1 - var(--p)) * 3%)
+      round calc((1 - var(--p)) * 28px)
+    );
+  }
   .labs-close-deck :global(.comparison-prose) { color: inherit; }
   .labs-close-deck :global(.comparison-prose p) { padding-top: 0; }
   .labs-close-deck :global(.comparison-prose a) { color: var(--color-cream-50); text-decoration-color: var(--color-sage-300); }

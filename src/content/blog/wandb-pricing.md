@@ -383,7 +383,7 @@ ZenML is comparatively more cost-effective with no functionality sacrifice to be
 
 The choice between WandB and alternatives like ZenML ultimately depends on your team's specific requirements: whether you prioritize managed services versus infrastructure control, collaborative features versus cost optimization, and vendor-supported tools versus open-source flexibility. Both platforms can support successful ML operations, but they serve different organizational philosophies and financial constraints.
 
-Want to know what ZenML has in store for you? [Sign up for a 14-day free trial](https://cloud.zenml.io/signup?utm_source=website&utm_medium=website_nav&utm_campaign=cloud_promotion&utm_content=signup_link) and see if it's the right WandB alternative for you and your team.
+Want to know what ZenML has in store for you? [Sign up for a 14-day free trial](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=blog&utm_campaign=signup&utm_content=wandb-pricing) and see if it's the right WandB alternative for you and your team.
 
 <figure>
   <img src="https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/ec7dc0b8/6845181e95b11552c10f9928_sign-up-for-zenml-pro-free-trial.png" alt="Sign up for a 14-day free trial of ZenML Pro" />

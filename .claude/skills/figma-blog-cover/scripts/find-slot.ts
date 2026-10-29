@@ -131,7 +131,17 @@ const OTHER_STYLES = ["Mesh", "Deep", "Chevron", "Field", "Tint"] as const;
 // The legacy un-numbered "Photo" is deliberately absent: new covers never use it (A3).
 const BG_STYLES = [...PHOTO_STYLES, ...OTHER_STYLES] as const;
 type BgStyle = (typeof BG_STYLES)[number];
-const IMAGE_LAYOUT_BGS: ReadonlySet<string> = new Set([...PHOTO_STYLES, "Mesh", "Deep"]);
+// A photo background only ever sits in Panel Bottom (photo on top, the panel holds the copy);
+// every other layout takes a non-photo style, and the image layouts only Mesh or Deep.
+const PHOTO_LAYOUT = "Panel Bottom";
+const IMAGE_LAYOUT_BGS: ReadonlySet<string> = new Set(["Mesh", "Deep"]);
+// Photo 01–09 hold the same image under both Brand variants of Cover BG (150:1697), so the
+// Background's Brand prop does not make a photo on-brand. Only these numbers match each palette
+// (read 2026-10-29): Kitaru = the saturated orange/green photos, ZenML = the pale sage/peach ones.
+const BRAND_PHOTOS: Record<"ZenML" | "Kitaru", readonly string[]> = {
+  Kitaru: ["Photo 01", "Photo 08"],
+  ZenML: ["Photo 02", "Photo 03", "Photo 04", "Photo 05", "Photo 06", "Photo 07", "Photo 09"],
+};
 const IMAGE_LAYOUTS: ReadonlySet<string> = new Set(["Image Left", "Image Right"]);
 
 // s3-vs-comparison.js: 1 create/reuse + 2 texts + N swaps ≤ 10 ops → at most 7 swaps per call.
@@ -512,8 +522,13 @@ function parseSiblings(args: Args, geo: MonthGeometry, targetSlug: string | null
     if (s === targetSlug) continue;
     if (!expected.has(s)) questions.push(`Live cover "${s}" in section "${geo.sectionName}" is not a post dated ${geo.month} in src/content/blog — which post is it, and should it move?`);
   }
-  for (const s of expected) {
-    if (!live.has(s)) questions.push(`Post "${s}" is dated ${geo.month} but has no live cover in section "${geo.sectionName}" (S1 siblings) — create it first or confirm it is intentionally missing?`);
+  // A month post without a cover yet is a gap, not an anomaly: its slot is
+  // already reserved in `positions` (they come from the collection, not the
+  // canvas), so it never blocks this cover. Asking here deadlocked any month
+  // whose posts all lacked covers, each run waiting on the other.
+  const uncovered = [...expected].filter((s) => !live.has(s));
+  if (uncovered.length > 0) {
+    suggestions.push(`Post(s) dated ${geo.month} with no live cover yet in "${geo.sectionName}": ${uncovered.join(", ")}. Their slots stay reserved; run this skill for each after this one.`);
   }
   return siblings;
 }
@@ -612,16 +627,27 @@ function main(): void {
       .filter((b): b is string => typeof b === "string" && /^Photo 0[1-9]$/.test(b)),
   );
 
-  const legalBgs: BgStyle[] = BG_STYLES.filter((b) => !usedPhotos.has(b));
+  const brandPhotos = BRAND_PHOTOS[brand as "ZenML" | "Kitaru"];
+  const legalBgs: BgStyle[] = BG_STYLES.filter(
+    (b) => !usedPhotos.has(b) && (!(PHOTO_STYLES as readonly string[]).includes(b) || brandPhotos.includes(b)),
+  );
+  const isPhoto = (b: string | undefined): boolean => typeof b === "string" && /^Photo( 0[1-9])?$/.test(b);
+  const freePhotos = legalBgs.filter((b) => isPhoto(b));
+  // Neighbouring Panel Bottom covers are fine when both are photo covers (the photo rule wins).
+  const photoPanelsMayTouch =
+    freePhotos.length > 0 &&
+    neighbourSlugs.every((s) => bySlug.get(s)?.layout !== PHOTO_LAYOUT || isPhoto(bySlug.get(s)?.bgStyle));
   const legalLayouts: Layout[] = LAYOUT_PREFERENCE.filter((l) => {
     if (l === "Full Bleed" && !isLaunch) return false;
-    if (adjacentLayouts.has(l)) return false;
+    if (adjacentLayouts.has(l) && !(l === PHOTO_LAYOUT && photoPanelsMayTouch)) return false;
     if (IMAGE_LAYOUTS.has(l) && !legalBgs.some((b) => IMAGE_LAYOUT_BGS.has(b))) return false;
     return true;
   });
 
   function bgsFor(layout: string): BgStyle[] {
-    return IMAGE_LAYOUTS.has(layout) ? legalBgs.filter((b) => IMAGE_LAYOUT_BGS.has(b)) : legalBgs;
+    if (layout === PHOTO_LAYOUT) return [...freePhotos, ...legalBgs.filter((b) => !isPhoto(b))];
+    if (IMAGE_LAYOUTS.has(layout)) return legalBgs.filter((b) => IMAGE_LAYOUT_BGS.has(b));
+    return legalBgs.filter((b) => !isPhoto(b));
   }
 
   // Chosen layout (fallback, override, or first legal)
@@ -661,7 +687,7 @@ function main(): void {
     if (!(BG_STYLES as readonly string[]).includes(args.bg)) {
       questions.push(`--bg "${args.bg}" is not a numbered Photo 01–09 or Mesh/Deep/Chevron/Field/Tint (the legacy un-numbered "Photo" is never used on new covers). Confirm?`);
     } else if (!bgCandidates.includes(args.bg as BgStyle)) {
-      questions.push(`--bg "${args.bg}" is illegal with layout "${chosenLayout}" or already used this month (used photos: ${[...usedPhotos].join(", ") || "none"}). Confirm the override?`);
+      questions.push(`--bg "${args.bg}" is illegal with layout "${chosenLayout}" (photos only go in ${PHOTO_LAYOUT}), off-brand for ${brand} (${brand} photos: ${brandPhotos.join(", ")}) or already used this month (used photos: ${[...usedPhotos].join(", ") || "none"}). Confirm the override?`);
     }
   } else if (bgCandidates.length > 0) {
     chosenBg = bgCandidates[0];
@@ -847,6 +873,7 @@ function main(): void {
       positions,
       chosenLayout,
       chosenBg,
+      brandPhotos,
       vs,
       expectedSetId: comparison ? IDS.vsSetId : IDS.coverSetId,
       fallback,

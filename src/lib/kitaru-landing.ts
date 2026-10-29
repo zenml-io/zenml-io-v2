@@ -1,6 +1,10 @@
 import type { FaqItem } from "./marketingPageTypes";
 import {
+  KITARU_ADAPTERS_TEXT,
+  KITARU_CLOUD_PRICE,
   KITARU_DOCS_URL,
+  KITARU_IMPORTERS_TEXT,
+  KITARU_LICENSE,
   KITARU_VS_OBSERVABILITY_ANSWER,
 } from "./productKitaru";
 
@@ -40,132 +44,74 @@ export const FAQ_HELP_LINKS = [
   },
 ] as const;
 
-export const SCENARIOS = [
-  {
-    tag: "understand",
-    q: "What does good even mean here?",
-    outcome:
-      "Read twenty of them and write what you notice. Your notes become the cohorts.",
-    stat: "20",
-    statLabel: "read · not 1,824",
-  },
-  {
-    tag: "trust",
-    q: "Can I believe my own check?",
-    outcome:
-      "Apply it blind to sessions you never read, then reveal the labels.",
-    stat: "held-out",
-    statLabel: "predictions locked first",
-  },
-  {
-    tag: "decide",
-    q: "Can we ship the cheaper model?",
-    outcome:
-      "Same cohort, one model swapped — the answer is two runs, compared.",
-    stat: "−61%",
-    statLabel: "cost · 196/200 unchanged",
-  },
-  {
-    tag: "guard",
-    q: "Will it stay fixed?",
-    outcome:
-      "The same experiment runs on every commit, on the cases that caught it.",
-    stat: "0",
-    statLabel: "regressions reach production",
-  },
-] as const;
-
+/**
+ * How it works: the four things the open-source tool does. The hosted AI
+ * engineer note sits under the steps in Features.astro.
+ */
 export const STEPS = [
   {
     n: "01",
-    tag: "Cohort",
-    title: "Pick the production cases that matter",
-    body: "Start with a cohort you found during investigation, or hand-pick your own. Versioning the set means you compare every change against the same cases.",
+    title: "Bring your traces",
+    body: `Import from ${KITARU_IMPORTERS_TEXT}. Or record new runs with an adapter for ${KITARU_ADAPTERS_TEXT}.`,
   },
   {
     n: "02",
-    tag: "Experiment",
-    title: "Change one thing",
-    body: "Keep the agent setup fixed and swap the model. Now any difference in the replay comes from the change you are testing.",
+    title: "Get insights",
+    body: "Analyzers read every session at once and surface the patterns: failed tool calls, repeated calls, how outcomes split.",
   },
   {
     n: "03",
-    tag: "Compare",
-    title: "See what actually changed",
-    body: "Replay the same cohort with both setups and compare cost, latency, evaluator results, and behavior side by side.",
+    title: "Turn findings into checks",
+    body: "Read the sessions behind an insight. What you find becomes a check that runs on every session.",
+  },
+  {
+    n: "04",
+    title: "Replay a fix",
+    body: "When you change something, replay your agent on the sessions that failed. Tool calls come from the recording.",
   },
 ] as const;
 
+/** The hosted part, said once under the steps. */
+export const HOSTED_NOTE = {
+  title: "Rather not do the reading?",
+  body: `Our AI engineer reads your traces next to your evals, shows you what they miss, and asks you ten quick questions on three real sessions. Fifteen minutes a week, ${KITARU_CLOUD_PRICE} a month.`,
+  link: {
+    label: "See pricing",
+    href: "/pricing",
+    analytics: "Kitaru-Steps-Pricing",
+  },
+} as const;
+
 /**
- * FAQ — the objections and questions that come up in every demo, answered
- * in the same register the rest of the page uses. Pricing questions live
- * on /pricing; these are product questions.
+ * FAQ: short answers to the questions that come up in every demo. Pricing
+ * questions live on /pricing. The FAQPage JSON-LD is built from this list.
  */
 export const FAQ_ITEMS: readonly FaqItem[] = [
+  {
+    question: "What is open source, and what is hosted?",
+    answer: `Kitaru is open source (${KITARU_LICENSE}). You install it with one curl command and it runs on your machine: import, insights, checks and replay. Our AI engineer is the hosted part. It does the reading and asks you questions, for ${KITARU_CLOUD_PRICE} a month on Starter. See <a href="/pricing">pricing</a>.`,
+  },
   {
     question: "How is this different from Langfuse, Braintrust or LangSmith?",
     answer: KITARU_VS_OBSERVABILITY_ANSWER,
   },
   {
-    question: "So is this an observability tool?",
-    answer:
-      "No. It sits beside your observability stack. Traces tell you what happened; Kitaru re-runs them against your actual code: a debugger with a memory rather than another dashboard of spans.",
-  },
-  {
     question: "Do I have to change my agent's code?",
-    answer:
-      "Not to get started. Import your traces and you already get the session views, investigations, cohorts and evaluators; your code stays untouched. An adapter enters only when you want to replay sessions against a change: one line for the supported frameworks, or a small custom one for CLI-harness agents like Claude Code or Gemini CLI.",
+    answer: `No. Import traces from ${KITARU_IMPORTERS_TEXT} and your code stays as it is. To replay, wrap your agent in one line with an adapter for ${KITARU_ADAPTERS_TEXT}. For anything else, a Kitaru skill helps your coding agent write an adapter.`,
   },
   {
-    question:
-      "We don't have agents, just LLM calls inside a workflow. Is Kitaru for us?",
+    question: "Does it work for multi-turn chat agents?",
     answer:
-      "Yes. A one-shot call with a prompt, a model and a structured output, say an address pulled out of a PDF, is a session like any other. Import it from Langfuse or wrap the call, group the ones that matter into a cohort, and replay them against a cheaper model or a new prompt before the change ships. Most teams start exactly here. Tool calls and multi-step agents add replay policies on top; they are not a requirement.",
+      "Yes. Importers group a conversation's traces into one session, and review and checks work on the whole conversation. Replay runs one turn at a time with the recorded conversation before it, so you see how your change answers each turn. It can't invent what the user would have said next.",
   },
   {
-    question: "My agent writes to real systems. Isn't replay dangerous?",
+    question: "My agent writes to real systems. Is replay safe?",
     answer:
-      "Replay answers the agent's tool calls from the recording, so nothing touches real systems. Per-tool policies control the rest: answer from history and stop the run when a call has no recorded answer, pin a static result, or deliberately pass a specific tool through live. We don't test in prod. We make prod's past your test bench.",
+      "Yes. Replay answers tool calls from the recording, so nothing touches real systems. You can pass a specific tool through live on purpose.",
   },
   {
-    question: "The model isn't deterministic. How is replay trustworthy?",
-    answer:
-      "The recorded world is held constant, same inputs and same tool responses, so replay removes every source of variation except the model itself. For the variation that remains, you create multiple experiment runs over the same cohort and compare the distributions, so you can tell a real regression from run-to-run noise instead of judging from a single sample.",
-  },
-  {
-    question: "Where do the eval criteria come from? We never wrote any down.",
-    answer:
-      "From the people who already judge the agent every day. Your coding assistant, using Kitaru's investigation skill, interviews you over real sessions, pins your judgments to the exact evidence in the trace, and drafts evaluators from them. Each evaluator is checked against your verdicts before it gates anything.",
-  },
-  {
-    question: "What frameworks does it work with?",
-    answer:
-      "Recording adapters wrap your existing agent in one line, with no rewrite. Python: PydanticAI, the OpenAI Agents SDK, and LangGraph (including LangChain agents and Deep Agents). TypeScript: the Vercel AI SDK and Mastra. Any framework at all, if the agent already reports to Langfuse, LangSmith, Braintrust, Logfire or Phoenix: the importer-backed adapter wraps the entrypoint and pulls the provider's trace in as the session, at the cost of replay being passthrough only. For a custom harness or a framework we don't support yet, Kitaru ships a skill that walks your coding assistant through generating a new adapter for it.",
-  },
-  {
-    question: "Can I use traces I already have?",
-    answer:
-      "Yes. Importers bring in trace files exported from Langfuse, LangSmith, Braintrust, Pydantic Logfire or Arize Phoenix, or you can write a one-page custom importer for your own store. The Phoenix importer reads JSONL downloaded from the Phoenix UI or JSON retrieved with the Phoenix CLI; it does not connect to the Phoenix API or use Phoenix credentials. Traces in raw OpenTelemetry format convert to Kitaru's JSONL import format.",
-  },
-  {
-    question: "My agent is TypeScript. Can I use Kitaru?",
-    answer:
-      "Yes, natively. TypeScript agents record and replay through the Vercel AI SDK and Mastra adapters, with a framework-neutral TypeScript SDK alongside — and the adapter-generation skill covers custom TypeScript harnesses too. The CLI, workers and evaluators run on Python today, so there's Python in the loop even when the agent itself is TypeScript.",
-  },
-  {
-    question: "Is it open source? Can I self-host?",
-    answer:
-      "Yes: Apache 2.0, self-hosted by default. The server and workers run in your infrastructure and replay executes in your environment, so your traces never have to leave your systems. ZenML Pro offers a managed version if you want one.",
-  },
-  {
-    question: "Does this replace human review?",
-    answer:
-      "No. Evals change how much humans review, not whether they do. The goal is that people spend their review time on the sessions that deserve it, with evidence attached.",
-  },
-  {
-    question: "Who is this for, and who isn't it for?",
-    answer:
-      "Teams shipping agents, or LLM steps inside a product workflow, to customers whose regression process is honestly a few samples and a vibe check. Kitaru installs the rigor loop. It fits badly for single-dev prototypes and for teams buying a fully managed agent platform: if you're buying an agent platform, Kitaru will feel low-level. If you're building one, that's the point.",
+    question: "How much of my time does it take?",
+    answer: `About fifteen minutes a week with our AI engineer: ten quick questions on three real sessions. Doing it yourself in Kitaru takes longer; the <a href="${KITARU_DOCS_URL}">docs</a> walk through it.`,
   },
   {
     question: "Something's broken. How do I reach you?",

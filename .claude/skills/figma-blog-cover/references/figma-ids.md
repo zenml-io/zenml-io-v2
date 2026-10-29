@@ -38,7 +38,7 @@ The background is an **exposed nested instance, not an instance-swap property**.
 | `Brand` | `ZenML` (default), `Kitaru` |
 | `Style` | `Photo` (default, legacy un-numbered), `Chevron`, `Mesh`, `Field`, `Tint`, `Deep`, `Photo 01` … `Photo 09` |
 
-30 variants (2 brands x 15 styles). New covers use `Photo 01`–`Photo 09` only, never the legacy `Photo` (see `design-rules.md`). Live examples: `175:1806` `introducing-the-new-kitaru` = `Brand=Kitaru, Layout=Panel Bottom`, Background `Brand=Kitaru, Style=Photo` (legacy), at x 160 / y 240 inside section `307:4218`; `379:15513` `braintrust-pricing` = the first cover this skill made (E2E 2026-09-07): `Brand=Kitaru, Layout=Image Right`, Background `Brand=Kitaru, Style=Photo 01`, `Show subtitle#162:33 = false`, at x 160 / y 240 inside section `379:15512`.
+30 variants (2 brands x 15 styles). `Brand=ZenML, Style=Photo 0N` and `Brand=Kitaru, Style=Photo 0N` carry the identical image (same `imageHash`), so the Brand axis does nothing for numbered photos; the per-brand photo list is in `design-rules.md`. New covers use `Photo 01`–`Photo 09` only, never the legacy `Photo` (see `design-rules.md`). Live examples: `175:1806` `introducing-the-new-kitaru` = `Brand=Kitaru, Layout=Panel Bottom`, Background `Brand=Kitaru, Style=Photo` (legacy), at x 160 / y 240 inside section `307:4218`; `379:15513` `braintrust-pricing` = the first cover this skill made (E2E 2026-09-07): `Brand=Kitaru, Layout=Image Right`, Background `Brand=Kitaru, Style=Photo 01`, `Show subtitle#162:33 = false`, at x 160 / y 240 inside section `379:15512`.
 
 ### Title measure per Layout (Kitaru variants, read in the 2026-09-07 E2E)
 

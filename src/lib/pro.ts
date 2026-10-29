@@ -4,6 +4,7 @@
  * Used by src/pages/pro.astro.
  * Content extracted from Webflow HTML snapshot + SEO baseline.
  */
+import { ASSET_BASE_URL } from "./constants";
 import { LOGO_CLOUD } from "./homepage";
 import type {
   LabsBandContent,
@@ -24,10 +25,10 @@ import { defaultOgUrl } from "./seo";
 export const PRO_SEO = {
   title: "Managed AI orchestration for your cloud - ZenML Pro",
   description:
-    "Run your AI workflows and agent replays on a fully-managed control plane. Forget the infrastructure setup and security concerns. Get a single pane of glass view into your entire organization.",
+    "Run your AI workflows and agent evals on a fully managed control plane. Forget the infrastructure setup and security concerns. Get a single pane of glass view into your entire organization.",
   ogTitle: "Managed AI orchestration for your cloud - ZenML Pro",
   ogDescription:
-    "Run your AI workflows and agent replays on a fully-managed control plane.",
+    "Run your AI workflows and agent evals on a fully managed control plane.",
   ogImage: defaultOgUrl("pages", "pro"),
 } as const;
 
@@ -42,7 +43,7 @@ export const PRO_SEO = {
  */
 export const PRO_HERO = {
   headline: "A managed control plane for AI workflows and agents",
-  deck: "ZenML Pro runs both workspaces under one paid product: ZenML for AI workflow orchestration, Kitaru for agent replay and regression testing. Single pane of glass, enterprise governance, no infrastructure setup.",
+  deck: "ZenML Pro runs both workspaces under one paid product: ZenML for AI orchestration, Kitaru for agent insights and evals with our AI engineer on top. Single pane of glass, enterprise governance, no infrastructure setup.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",
@@ -77,11 +78,11 @@ export const PRO_UNIFIED_PITCH = {
         },
         {
           name: "Kitaru workspace",
-          body: "Every agent run recorded and replayable. Distributed replay, scheduled / API / webhook triggers, dashboard control over wait/resume.",
+          body: "Our AI engineer reads your traces next to your evals and shows you what they miss. Underneath, managed open-source Kitaru: import traces, get insights, turn findings into checks and replay a fix.",
         },
         {
           name: "Single pane of glass",
-          body: "One control plane spans both workspaces. Per-project surface; ML and Agent runs side by side in the dashboard.",
+          body: "One control plane spans both workspaces. Pipeline runs and agent traces side by side in the dashboard.",
         },
       ],
     },
@@ -160,11 +161,11 @@ export const PRO_FEATURES = [
   {
     eyebrow: "Workspaces",
     title: "Workspaces for pipelines and agents",
-    body: "Create ZenML workspaces for AI workflow orchestration and Kitaru workspaces for agent replay under one organization, each an isolated, single-tenant deployment with shared SSO, roles, and billing, while your data stays in your cloud.",
+    body: "Create ZenML workspaces for AI orchestration and Kitaru workspaces for agent evals under one organization, with shared SSO, roles, and billing, while your data stays in your cloud.",
     learnMoreHref: "/pricing",
     image: {
       url: "/images/kitaru-dashboard.avif",
-      alt: "Kitaru workspace dashboard showing a recorded agent execution",
+      alt: "Kitaru workspace dashboard showing an agent session",
     },
   },
   {
@@ -180,7 +181,7 @@ export const PRO_FEATURES = [
   {
     eyebrow: "Optimization",
     title: "Triggers and run management",
-    body: "Run templates, schedules, and API or webhook triggers. Launch and control AI workflows and agent flows straight from the dashboard.",
+    body: "Run templates, schedules, and API or webhook triggers. Launch and control AI workflows straight from the dashboard.",
     learnMoreHref: "/features/streamlined-pipeline-management",
     image: {
       url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/70ab3904/653249d5a55b6cc59610a9f2_20_CI_CD_CT_Showcase_95f04728ec.webp`,
@@ -218,12 +219,12 @@ export const PRO_COMPLIANCE = {
   body: "ZenML is a metadata layer on top of your existing infrastructure, meaning all data and compute stays on your side.",
   image: {
     desktop: {
-      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e68ec2dc/66c7398e738654118d4024fb_why-zenml-min.png`,
+      url: `${ASSET_BASE_URL}/content/uploads/c0365c4a/zenml-pro-vpc-architecture.avif`,
       alt: "ZenML only has access to metadata; your data remains in your VPC",
     },
     mobile: {
-      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c5ce12a7/66c73e7cfd15ae9889f59705_why-zenml-mobile-min.webp`,
-      alt: "Diagram of ZenML setup with local environments for data scientists, ML engineers, and MLOps, integrating AWS, GCP, and Azure.",
+      url: `${ASSET_BASE_URL}/content/uploads/2368dffc/zenml-pro-vpc-architecture-mobile.avif`,
+      alt: "ZenML Pro architecture: local environments with the zenml client connect to the ZenML Server, which holds configuration, events and metadata. Traffic is encrypted at rest into the customer VPC, where container registries, artifact storage, code repositories, data warehouses, orchestrators and secrets feed GCP, AWS and Azure stacks running a finetuning pipeline for Gemini 1.5, LLaMa 3.1 and Mistral 7B.",
     },
   },
   badges: [
@@ -237,9 +238,9 @@ export const PRO_COMPLIANCE = {
     },
   ],
   bannerHeadline: "We Take Security Seriously",
-  bannerEyebrow: "ZenML is SOC2 and ISO 27001 Compliant",
+  bannerEyebrow: "SOC 2 Type II and ISO 27001",
   bannerBody:
-    "ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your AI workflows and data.",
+    "ZenML is SOC 2 Type II and ISO 27001 audited, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your AI workflows and data.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -252,7 +253,7 @@ export const PRO_OSS_GRID = {
   items: [
     {
       title: "Managed control plane",
-      body: "ZenML Pro offers multi-tenant, fully-managed deployments. Workspaces come in two types, ZenML for AI workflow orchestration and Kitaru for agent replay, under the same organization, roles, and billing, with dev, staging, and production servers separated.",
+      body: "ZenML Pro offers multi-tenant, fully managed deployments, with self-hosted and air-gapped options on Enterprise. Workspaces come in two types, ZenML for AI orchestration and Kitaru for agent evals, under the same organization, roles, and billing, with dev, staging, and production servers separated.",
     },
     {
       title: "Roles and Permissions",
@@ -350,12 +351,12 @@ export const PRO_FAQ: FaqData = {
     {
       question: "Does ZenML Pro cover the Kitaru agent workspace too?",
       answer:
-        "Yes. ZenML Pro is the paid plane over both sub-products: ZenML for AI workflow orchestration and Kitaru for agent replay and regression testing. Same control plane, same SSO/RBAC/audit, same compliance posture (SOC 2, ISO 27001, BYOK, multi-region). Per-project: pick the ZenML workspace, the Kitaru workspace, or both.",
+        "Yes. ZenML Pro is the paid plane over both sub-products: ZenML for AI orchestration and open-source Kitaru for agent insights and evals, with our AI engineer reading your traces next to your evals. Same control plane, same SSO/RBAC/audit, same compliance posture (SOC 2 Type II, ISO 27001, BYOK, multi-region). Per-project: pick the ZenML workspace, the Kitaru workspace, or both.",
     },
     {
       question: "What about data security and compliance?",
       answer:
-        'ZenML is designed architecturally in a way that <strong>no data</strong> flows through the actual ZenML Pro side, but remains inside your own cloud infrastructure behind your VPC. Only metadata is transferred to our servers (names of pipelines, models, statuses, metrics, etc), which we store encrypted at transit and at rest.<br><br>We are <strong>SOC2 compliant</strong>, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your AI workflows and data.<br><br>Please refer to our <a href="/terms-of-service">terms of service and privacy policy</a> for more details.',
+        'ZenML is designed architecturally in a way that <strong>no data</strong> flows through the actual ZenML Pro side, but remains inside your own cloud infrastructure behind your VPC. Only metadata is transferred to our servers (names of pipelines, models, statuses, metrics, etc), which we store encrypted at transit and at rest.<br><br>We are <strong>SOC 2 Type II</strong> and <strong>ISO 27001</strong> audited (see our <a href="https://security.zenml.io" target="_blank" rel="noopener noreferrer">trust center</a>), validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your AI workflows and data.<br><br>Please refer to our <a href="/terms-of-service">terms of service and privacy policy</a> for more details.',
     },
     {
       question: "How does ZenML Pro interface with my internal services?",

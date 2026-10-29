@@ -531,12 +531,7 @@ const KITARU_ISLANDS_DIR = "src/components/kitaru/islands";
  * manifest coverage for every real island in that directory without
  * false-flagging these. Adding a helper module there means adding it here.
  */
-const KITARU_ISLAND_HELPERS = new Set([
-  "Reveal",
-  "brand-icons",
-  "code-tokens",
-  "primitives",
-]);
+const KITARU_ISLAND_HELPERS = new Set(["brand-icons"]);
 
 const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   {
@@ -544,8 +539,10 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
     pages: ["index.html", "pricing.html", "blog.html"],
   },
   {
+    // /product/zenml's one-foundation section is the pinned LabsFeatureScroll
+    // (no island); /pro and /deployments keep the tabbed slider.
     island: "FeatureTabsSlider",
-    pages: ["product/zenml.html"],
+    pages: ["pro.html", "deployments.html"],
   },
   {
     // Labs shell pages: the hero shader (client:visible) and the closing band
@@ -607,13 +604,8 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
     island: "HubEntryPagination",
     pages: ["llmops-tags/prompt-engineering.html", "mlops-tags/training.html"],
   },
-  // The Kitaru landing sections (KitaruGrain doubles as a plain subcomponent
-  // inside the other islands, but the static Hero.astro, Cta.astro and the
-  // _HighlightPanel shells rendered by Features.astro also mount it as its
-  // own island for their shader backdrops).
+  // The Kitaru landing: the hero's video card and its shader backdrop.
   { island: "HeroVideo", pages: ["product/kitaru.html"] },
-  { island: "ScenarioStrip", pages: ["product/kitaru.html"] },
-  { island: "TwoDoors", pages: ["product/kitaru.html"] },
   { island: "KitaruGrain", pages: ["product/kitaru.html"] },
 ];
 

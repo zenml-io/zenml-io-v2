@@ -274,4 +274,4 @@ Langfuse offers a free entry point for hobby projects and POCs. The free plan in
 
 Kitaru, yet, does not replace production observability dashboards, alerting, or prompt management. It has no reason to. Braintrust and Langfuse can score what your agent did; Kitaru can re-run it against the world it saw.
 
-If you have an agent in production, traces in one of those stores, and a model or prompt change you are nervous to ship on Friday afternoon, [try Kitaru with the free hosted version](https://cloud.kitaru.ai/).
+If you have an agent in production, traces in one of those stores, and a model or prompt change you are nervous to ship on Friday afternoon, [try Kitaru with the free hosted version](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=blog&utm_campaign=signup&utm_content=braintrust-vs-langfuse).

@@ -1,9 +1,7 @@
 // Intersection Observer for scroll-triggered reveals on the statically
-// rendered Kitaru sections (Features, Faq, Cta). Matches the
+// rendered Kitaru sections (Hero, Features, Faq, Cta). Matches the
 // `.reveal` / `.reveal-left` / `.reveal-right` utility classes defined in
-// global.css and the `data-shown` contract used by the Preact islands'
-// `Reveal` component (src/components/kitaru/islands/Reveal.tsx) so both
-// the static and hydrated sections animate the same way.
+// global.css and their `data-shown` contract.
 //
 // `export {}` keeps this an isolated module so its top-level `const`s stay
 // file-scoped under `astro check`.

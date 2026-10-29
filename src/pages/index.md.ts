@@ -7,13 +7,14 @@ import {
   markdownResponse,
 } from "../lib/agentMarkdown";
 import {
-  LABS_CLOSE,
   LABS_DOORS,
-  LABS_FEATURE_PANELS,
   LABS_HERO,
+  LABS_HERO_SESSION,
+  LABS_HOME_CLOSE,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
-  LABS_STORIES,
+  LABS_ONBOARDING,
+  LABS_STACK_LAYER,
 } from "../lib/labs-home";
 
 export const prerender = true;
@@ -23,14 +24,6 @@ export const prerender = true;
  * renders the same copy `index.astro` shows, from the same module, so the
  * two never drift.
  */
-function renderDoor(door: (typeof LABS_DOORS.doors)[number]): string {
-  return joinMarkdownSections(
-    `### ${door.name}`,
-    door.leadLine,
-    door.body,
-    `CTA: ${markdownLink(door.cta.label, door.cta.href)}`,
-  );
-}
 
 export function GET(): Response {
   const markdown = joinMarkdownSections(
@@ -43,37 +36,61 @@ export function GET(): Response {
       "## Summary",
       LABS_HERO.headlineLines.join(" "),
       LABS_HERO.deck,
+      LABS_HERO_SESSION.label,
     ),
-    joinMarkdownSections("## Main CTA", markdownCtaList([LABS_HERO.cta])),
+    joinMarkdownSections(
+      "## Main CTA",
+      markdownCtaList(
+        LABS_HERO.secondaryCta
+          ? [LABS_HERO.cta, LABS_HERO.secondaryCta]
+          : [LABS_HERO.cta],
+      ),
+      LABS_HERO.install ? `Install Kitaru: \`${LABS_HERO.install.cmd}\`` : "",
+    ),
+    joinMarkdownSections(
+      `## ${LABS_ONBOARDING.headline}`,
+      LABS_ONBOARDING.deck,
+      ...LABS_ONBOARDING.steps.map((step, i) =>
+        joinMarkdownSections(`### ${i + 1}. ${step.title}`, step.body),
+      ),
+    ),
+    joinMarkdownSections(
+      `## ${LABS_STACK_LAYER.headline}`,
+      LABS_STACK_LAYER.deck,
+      LABS_STACK_LAYER.layer.title,
+      markdownBulletList(
+        LABS_STACK_LAYER.columns.map(
+          (column) =>
+            `${column.title}: ${column.marks.map((mark) => mark.name).join(", ")}`,
+        ),
+      ),
+      `### ${LABS_STACK_LAYER.journeyLabel}`,
+      markdownBulletList(
+        LABS_STACK_LAYER.journey.map(
+          (step) => `${step.tag}: ${step.title} (${step.detail})`,
+        ),
+      ),
+      markdownLink(LABS_STACK_LAYER.link.label, LABS_STACK_LAYER.link.href),
+    ),
     joinMarkdownSections(
       `## ${LABS_LOGO_GRID.headline}`,
       LABS_LOGO_GRID.logos.map((logo) => logo.name).join(", "),
     ),
     joinMarkdownSections(
       `## ${LABS_DOORS.headline}`,
-      LABS_DOORS.doors.map(renderDoor).join("\n\n"),
-    ),
-    joinMarkdownSections(
-      "## What you get",
-      ...LABS_FEATURE_PANELS.map((panel) =>
-        joinMarkdownSections(`### ${panel.title}`, panel.body),
-      ),
-    ),
-    joinMarkdownSections(
-      LABS_STORIES.headline ? `## ${LABS_STORIES.headline}` : "",
-      markdownBulletList(
-        LABS_STORIES.cards.map((card) =>
-          "href" in card ? markdownLink(card.title, card.href) : card.title,
+      ...LABS_DOORS.doors.map((door) =>
+        joinMarkdownSections(
+          `### ${door.name}`,
+          door.leadLine,
+          door.body,
+          `CTA: ${markdownLink(door.cta.label, door.cta.href)}`,
         ),
       ),
-      LABS_STORIES.allLink
-        ? markdownLink(LABS_STORIES.allLink.label, LABS_STORIES.allLink.href)
-        : "",
     ),
     joinMarkdownSections(
-      `## ${LABS_CLOSE.headlineLines.join(" ")}`,
-      LABS_CLOSE.deck,
-      markdownCtaList([LABS_CLOSE.cta]),
+      `## ${LABS_HOME_CLOSE.headlineLines.join(" ")}`,
+      LABS_HOME_CLOSE.deck,
+      markdownCtaList([LABS_HOME_CLOSE.cta]),
     ),
   );
 

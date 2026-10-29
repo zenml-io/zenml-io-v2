@@ -8,7 +8,7 @@ import type { SuccessPageData } from "./formTypes";
 import type { SEOProps } from "./seo";
 
 export const BOOK_SUCCESS_SEO: SEOProps = {
-  title: "Demo Booked | ZenML",
+  title: "Demo Booked | ZenML Labs",
   description:
     "Thank you for booking a demo. We look forward to speaking with you soon.",
   noindex: true,

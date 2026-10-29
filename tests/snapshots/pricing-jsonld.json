@@ -6,16 +6,11 @@
       "@id": "https://www.zenml.io/pricing#webpage",
       "url": "https://www.zenml.io/pricing",
       "name": "Pricing - ZenML",
-      "description": "Orchestrate AI workflows and ship agents with confidence. Predictable, transparent pricing that scales with value.",
+      "description": "One plan, $39 a month: your AI engineer on one agent, one ZenML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.",
       "inLanguage": "en",
-      "mainEntity": [
-        {
-          "@id": "https://www.zenml.io/pricing#software-kitaru"
-        },
-        {
-          "@id": "https://www.zenml.io/pricing#software"
-        }
-      ]
+      "mainEntity": {
+        "@id": "https://www.zenml.io/pricing#software"
+      }
     },
     {
       "@type": "BreadcrumbList",
@@ -41,10 +36,42 @@
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What does Kitaru cost?",
+          "name": "What do I get for $39?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "$39 a month, flat. The hosted Cloud plan includes 3 agents, 2 seats, 90-day session retention, and every feature. Replays, experiment runs, imports and recording all come with it. No meters, no usage math. Need more agents, seats or governance? That's the Enterprise plan."
+            "text": "One agent with your AI engineer on it, one ZenML project with up to 100 pipeline runs a month, and as many seats as you want. It starts with a 14-day trial, no credit card."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What counts as an agent?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. A LangGraph app with three sub-agents that ships as one product is one agent."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a limit on sessions?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Your AI engineer reads every session your agent sends. Replays run with your own model keys, so those model costs stay on your bill."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if we need more agents, projects or runs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Talk to us. Enterprise covers more agents, more ZenML projects and more pipeline runs, priced on what you actually run, along with on-prem and governance if you need them."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why not per seat?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Because everyone who knows what good looks like should be in it: engineers, product, and the domain experts who review sessions. A team of fifteen pays the same as a team of two."
           }
         },
         {
@@ -52,31 +79,7 @@
           "name": "What happens after the 14-day trial?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "The trial is full access to everything and needs no credit card. When it ends, add a card and you're on the $39/month plan. Nothing about your workspace changes except the billing. There's no free hosted tier: the free option is the open-source version, self-hosted on your own infrastructure, forever."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What does the Enterprise plan add?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Unlimited agents, custom seats and session retention, plus the governance layer: SSO, role-based access and audit. If the Cloud plan's limits are the only thing in your way, that's the conversation to have with us."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How is this different from Langfuse, Braintrust or LangSmith?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "They tell you what happened: traces you read, dashboards you check. Kitaru re-runs what happened. Your agent's real code executes again against the recorded world, so you can test your next change against your last thousand sessions before it ships. Kitaru also imports trace files exported from Langfuse, LangSmith, Braintrust, Logfire or Arize Phoenix, so your observability tool stays your system of record."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I self-host Kitaru?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Kitaru is open source under Apache 2.0, the same model as ZenML. One command brings up a local deployment in Docker, or self-host the server in your own VPC. Either way the worker runs beside your code, on your machine or your compute, using your own model keys, so replays never execute on our infrastructure. Cloud adds the hosted control plane and remote worker pools; Enterprise adds SSO, RBAC and audit."
+            "text": "The trial is full access and needs no credit card. When it ends, add a card to keep going. Nothing in your workspace changes except the billing. Open source stays free, forever."
           }
         },
         {
@@ -84,47 +87,23 @@
           "name": "Do you see my traces?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Self-hosted, no: the server and workers run in your infrastructure and your traces never have to leave your systems. On the hosted Cloud plan we manage the control plane, but replay still executes on your own workers with your own keys. The recorded sessions are yours."
+            "text": "On Starter, your AI engineer runs in our cloud and reads traces from your tracing tool through keys you can revoke. ZenML stores only metadata; your data, artifacts and compute stay in your cloud. Self-hosted or on Enterprise on-prem, nothing leaves your infrastructure."
           }
         },
         {
           "@type": "Question",
-          "name": "Do I need a separate subscription for ZenML?",
+          "name": "Can we run it on-prem?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No, one subscription covers both workspaces. They're priced differently (ZenML's managed tiers scale with pipeline executions; Kitaru is a flat $39/month), but it's the same control plane, the same governance, and one bill."
+            "text": "Yes, on Enterprise. Your AI engineer and ZenML run inside your own cloud or on-prem, air-gapped if you need it, with your own LLM endpoint."
           }
         },
         {
           "@type": "Question",
-          "name": "Can I self-host ZenML?",
+          "name": "How is this different from Langfuse, Braintrust or LangSmith?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. ZenML is open source and free to self-host; that's the Open Source plan. If you want the Pro control plane on your own infrastructure, Enterprise covers self-hosted and air-gapped deployment. Either way, ZenML stores only metadata: your data, artifacts and compute stay in your VPC end-to-end."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How is the Scale plan billed?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "By monthly pipeline executions per workspace. The slider on the Scale card above sets your tier, and projects and snapshots scale with it. Pick the tier that matches your run volume and move between tiers as you grow; there's no per-seat pricing."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What happens if I exceed my plan's executions?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "We don't cut you off mid-month. Going over occasionally is fine; if it becomes the pattern, we'll reach out about moving you up a tier."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What's the difference between Open Source and the Pro plans?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Open Source is the full framework, managed by you. Scale and Enterprise add the managed control plane (automatic updates, guaranteed uptime) plus the Model Control Plane, Artifact Control Plane, snapshots and Codespaces. Enterprise adds SSO, custom-role RBAC, audit logs and air-gapped deployment on top."
+            "text": "They show you what happened. Our AI engineer reads those traces next to your evals and shows you which evals are wrong or missing, then Kitaru replays your agent to test the fix against real sessions. Kitaru imports from Langfuse, LangSmith, Braintrust, Logfire, MLflow or Phoenix, so your tracing tool stays your system of record."
           }
         },
         {
@@ -132,125 +111,10 @@
           "name": "Is there a startup or academic discount?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes. Early-stage companies building ML-powered products, universities, research institutions and educational use cases can apply for special pricing on ZenML Pro. Apply here (/startups-and-academics)."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How is my data handled?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "ZenML is a metadata layer on top of your existing infrastructure: your data, artifacts and compute stay in your VPC, and only metadata reaches the control plane. ZenML is SOC 2 Type II and ISO/IEC 27001 certified."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do I need a separate subscription for Kitaru?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "No, your ZenML subscription covers the Kitaru workspace too. Kitaru is priced on its own terms, a flat $39/month rather than execution tiers, but both workspaces run on the same control plane and land on one bill."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What kind of support is included in each plan?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Open Source: our public Slack and community forums. Scale: priority support with faster response times. Enterprise: a dedicated account manager, SLAs, and implementation assistance."
+            "text": "Yes. Early-stage companies, universities and research institutions can apply for special pricing. Apply here (/startups-and-academics)."
           }
         }
       ]
-    },
-    {
-      "@type": "SoftwareApplication",
-      "@id": "https://www.zenml.io/pricing#software-kitaru",
-      "name": "Kitaru",
-      "applicationCategory": "DeveloperApplication",
-      "operatingSystem": "Python, Kubernetes, AWS, GCP, Azure",
-      "url": "https://www.zenml.io/product/kitaru",
-      "description": "Kitaru is an open-source platform for replaying and regression-testing AI agents: import your production traces, run evaluators over them, and replay real sessions against your next change before it ships.",
-      "featureList": [
-        "Import and record without limits",
-        "Cohorts, evaluators and experiment runs",
-        "Replay on your own workers, with your own keys",
-        "Community support",
-        "Hosted dashboard and control plane",
-        "Replays and experiment runs included, no meters",
-        "Trial starts with full Enterprise access",
-        "Community support",
-        "SSO (SAML / OIDC)",
-        "Audit logs",
-        "Remote worker pools",
-        "Custom limits and retention"
-      ],
-      "offers": {
-        "@type": "OfferCatalog",
-        "name": "Kitaru pricing plans",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "name": "Open Source",
-            "url": "https://github.com/zenml-io/kitaru",
-            "price": 0,
-            "priceCurrency": "USD",
-            "description": "For individuals and small teams. Self-hosted · Your infrastructure, your limits.",
-            "itemOffered": {
-              "@type": "SoftwareApplication",
-              "name": "Kitaru Open Source",
-              "applicationCategory": "DeveloperApplication",
-              "featureList": [
-                "Import and record without limits",
-                "Cohorts, evaluators and experiment runs",
-                "Replay on your own workers, with your own keys",
-                "Community support"
-              ]
-            }
-          },
-          {
-            "@type": "Offer",
-            "name": "Cloud",
-            "url": "https://cloud.zenml.io/signup?product=kitaru",
-            "price": 39,
-            "priceCurrency": "USD",
-            "priceSpecification": {
-              "@type": "UnitPriceSpecification",
-              "price": 39,
-              "priceCurrency": "USD",
-              "billingIncrement": 1,
-              "unitCode": "MON"
-            },
-            "description": "For teams shipping agents to customers. 3 agents · 2 seats · 90-day session retention.",
-            "itemOffered": {
-              "@type": "SoftwareApplication",
-              "name": "Kitaru Cloud",
-              "applicationCategory": "DeveloperApplication",
-              "featureList": [
-                "Hosted dashboard and control plane",
-                "Replays and experiment runs included, no meters",
-                "Trial starts with full Enterprise access",
-                "Community support"
-              ]
-            }
-          },
-          {
-            "@type": "Offer",
-            "name": "Enterprise",
-            "url": "https://www.zenml.io/book-your-demo/kitaru",
-            "description": "For organizations at scale. Unlimited agents · Custom seats and retention.",
-            "itemOffered": {
-              "@type": "SoftwareApplication",
-              "name": "Kitaru Enterprise",
-              "applicationCategory": "DeveloperApplication",
-              "featureList": [
-                "SSO (SAML / OIDC)",
-                "Audit logs",
-                "Remote worker pools",
-                "Custom limits and retention"
-              ]
-            }
-          }
-        ]
-      }
     },
     {
       "@type": "SoftwareApplication",
@@ -259,20 +123,21 @@
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Python, Kubernetes, AWS, GCP, Azure",
       "url": "https://www.zenml.io/product/zenml",
-      "description": "Start open source and self-hosted. Upgrade to Pro for the managed control plane, on our SaaS or your own infrastructure.",
+      "description": "Your AI engineer on one agent, one ZenML project, and your whole team. Need more, or on-prem? Talk to us.",
       "featureList": [
-        "Pipeline & flow orchestration",
-        "Artifact management",
-        "Basic model registry",
+        "ZenML and Kitaru, Apache 2.0",
+        "Pipelines, agents and artifacts",
+        "Import traces, review and checks",
         "Community support",
-        "Model Control Plane",
-        "Artifact Control Plane",
-        "Snapshots",
-        "Codespaces (remote IDE)",
-        "SSO (SAML / OIDC)",
-        "RBAC (custom roles)",
-        "Audit logs",
-        "Air-gapped deployment"
+        "Your AI engineer on one agent",
+        "Finds wrong and missing evals",
+        "An interview and a weekly review",
+        "Hosted ZenML and Kitaru",
+        "Multi-workspace setup",
+        "On-prem or air-gapped",
+        "Your own LLM endpoint",
+        "SSO, SCIM, custom roles and audit logs",
+        "SLA and a named engineer"
       ],
       "offers": {
         "@type": "OfferCatalog",
@@ -284,33 +149,42 @@
             "url": "https://www.zenml.io/get-started",
             "price": 0,
             "priceCurrency": "USD",
-            "description": "For individuals and small teams. Unlimited executions · Unlimited projects.",
+            "description": "Run it yourself. Your infrastructure · Your limits.",
             "itemOffered": {
               "@type": "SoftwareApplication",
               "name": "ZenML Open Source",
               "applicationCategory": "DeveloperApplication",
               "featureList": [
-                "Pipeline & flow orchestration",
-                "Artifact management",
-                "Basic model registry",
+                "ZenML and Kitaru, Apache 2.0",
+                "Pipelines, agents and artifacts",
+                "Import traces, review and checks",
                 "Community support"
               ]
             }
           },
           {
             "@type": "Offer",
-            "name": "Scale",
-            "url": "https://www.zenml.io/book-your-demo",
-            "description": "For teams running ML in production. Monthly executions, per workspace: 500 executions for $399/month (1 projects, 1 snapshots); 2,000 executions for $999/month (3 projects, 5 snapshots); 5,000 executions for $2,499/month (10 projects, 20 snapshots).",
+            "name": "Starter",
+            "url": "https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru",
+            "price": 39,
+            "priceCurrency": "USD",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": 39,
+              "priceCurrency": "USD",
+              "billingIncrement": 1,
+              "unitCode": "MON"
+            },
+            "description": "For startups shipping their first agent. 1 agent · 1 ZenML project · Unlimited seats.",
             "itemOffered": {
               "@type": "SoftwareApplication",
-              "name": "ZenML Scale",
+              "name": "ZenML Starter",
               "applicationCategory": "DeveloperApplication",
               "featureList": [
-                "Model Control Plane",
-                "Artifact Control Plane",
-                "Snapshots",
-                "Codespaces (remote IDE)"
+                "Your AI engineer on one agent",
+                "Finds wrong and missing evals",
+                "An interview and a weekly review",
+                "Hosted ZenML and Kitaru"
               ]
             }
           },
@@ -318,16 +192,17 @@
             "@type": "Offer",
             "name": "Enterprise",
             "url": "https://www.zenml.io/book-your-demo",
-            "description": "For organizations at scale. Unlimited executions · Unlimited projects.",
+            "description": "For more agents, more projects or regulated data. More agents · More projects · More workspaces.",
             "itemOffered": {
               "@type": "SoftwareApplication",
               "name": "ZenML Enterprise",
               "applicationCategory": "DeveloperApplication",
               "featureList": [
-                "SSO (SAML / OIDC)",
-                "RBAC (custom roles)",
-                "Audit logs",
-                "Air-gapped deployment"
+                "Multi-workspace setup",
+                "On-prem or air-gapped",
+                "Your own LLM endpoint",
+                "SSO, SCIM, custom roles and audit logs",
+                "SLA and a named engineer"
               ]
             }
           }
@@ -335,8 +210,8 @@
       },
       "potentialAction": {
         "@type": "ViewAction",
-        "name": "Book a demo",
-        "target": "https://www.zenml.io/book-your-demo"
+        "name": "Sign up free",
+        "target": "https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru"
       }
     }
   ]
