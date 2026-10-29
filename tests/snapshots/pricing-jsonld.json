@@ -133,6 +133,7 @@
         "Finds wrong and missing evals",
         "An interview and a weekly review",
         "Hosted ZenML and Kitaru",
+        "Multi-workspace setup",
         "On-prem or air-gapped",
         "Your own LLM endpoint",
         "SSO, SCIM, custom roles and audit logs",
@@ -197,6 +198,7 @@
               "name": "ZenML Enterprise",
               "applicationCategory": "DeveloperApplication",
               "featureList": [
+                "Multi-workspace setup",
                 "On-prem or air-gapped",
                 "Your own LLM endpoint",
                 "SSO, SCIM, custom roles and audit logs",

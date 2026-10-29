@@ -59,6 +59,7 @@ For more agents, more projects or regulated data
 - Limits: More agents · More projects · More workspaces
 
 - Everything in Starter, plus:
+  - Multi-workspace setup
   - On-prem or air-gapped
   - Your own LLM endpoint
   - SSO, SCIM, custom roles and audit logs
@@ -77,7 +78,6 @@ One price, unlimited seats. 14-day trial, no credit card.
 | Price | Free | $39 / month | Custom |
 | Agents with your AI engineer | — | 1 | Custom |
 | ZenML projects | Self-hosted | 1 | Custom |
-| Workspaces | Self-hosted | 2 | Custom |
 | Pipeline runs a month | Self-hosted | 100 | Custom |
 
 ### Your AI engineer

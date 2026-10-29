@@ -211,6 +211,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     limitsLine: "More agents · More projects · More workspaces",
     includesLabel: "Everything in Starter, plus",
     features: [
+      "Multi-workspace setup",
       "On-prem or air-gapped",
       "Your own LLM endpoint",
       "SSO, SCIM, custom roles and audit logs",
@@ -250,10 +251,6 @@ export const PRICING_COMPARE: PricingCompareTableData = {
         {
           feature: "ZenML projects",
           values: ["Self-hosted", `${STARTER.zenmlProjects}`, "Custom"],
-        },
-        {
-          feature: "Workspaces",
-          values: ["Self-hosted", `${STARTER.workspaces}`, "Custom"],
         },
         {
           feature: "Pipeline runs a month",

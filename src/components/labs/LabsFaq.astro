@@ -5,8 +5,8 @@
  * (`marketingPageTypes.ts`); eyebrow and subheadline are not rendered (one
  * headline per band — the data keeps both fields because the Markdown
  * mirror and JSON-LD read them). An optional `slackCta` renders a single
- * text link after the list. Consumers: `/pricing` (one instance per
- * workspace panel), `/pro` and `/benchmarks`. A page whose answers are
+ * text link under the list, aligned with it. Consumers: `/pricing`, `/pro`
+ * and `/benchmarks`. A page whose answers are
  * components passes `headline` and its own `LabsFaqItem`s in the slot
  * instead of `content` (the `/benchmarks/<slug>` "Go deeper" list).
  * `width="content"` lets the rows span the full content column instead of
@@ -40,20 +40,20 @@ const headline = content ? content.headline : Astro.props.headline;
       ) : (
         <slot />
       )}
-    </div>
 
-    {
-      content?.slackCta && (
-        <a
-          href={content.slackCta.href}
-          data-analytics={content.slackCta.analytics}
-          target={content.slackCta.external ? "_blank" : undefined}
-          rel={content.slackCta.external ? "noopener noreferrer" : undefined}
-          class="mt-8 inline-flex font-sans text-[15px] leading-5 font-medium text-(--color-sage-700) hover:text-(--color-sage-800)"
-        >
-          {content.slackCta.label} →
-        </a>
-      )
-    }
+      {
+        content?.slackCta && (
+          <a
+            href={content.slackCta.href}
+            data-analytics={content.slackCta.analytics}
+            target={content.slackCta.external ? "_blank" : undefined}
+            rel={content.slackCta.external ? "noopener noreferrer" : undefined}
+            class="mt-8 inline-flex font-sans text-[15px] leading-5 font-medium text-(--color-sage-700) hover:text-(--color-sage-800)"
+          >
+            {content.slackCta.label} →
+          </a>
+        )
+      }
+    </div>
   </div>
 </section>
