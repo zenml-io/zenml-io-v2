@@ -151,35 +151,31 @@ function faq(extra: FaqData["items"]): FaqData {
 const INSURANCE_GAPS: GapReportVisualContent = {
   label:
     "An example of what your AI engineer tells you about an insurance underwriting agent, Oct 21 to 27. The team's evals pass 91% of last week's sessions; by the team's own underwriting manual, 74% should pass. A completeness judge passed 41 quotes without the flood exclusion, 58 quotes were priced on loss runs older than 90 days, and 37 took a sprinkler credit with no inspection report. No eval checks the last two.",
-  eyebrow: "What your evals missed this week",
+  eyebrow: "Missed this week",
   agent: "underwriting-agent",
-  window: "Oct 21 to 27 · 1,482 sessions",
+  window: "1,482 sessions",
   scores: [
-    { label: "Your evals pass", value: 91 },
-    { label: "Your manual passes", value: 74 },
+    { label: "Your evals", value: 91 },
+    { label: "Your manual", value: 74 },
   ],
   kindLabels: KIND_LABELS,
   items: [
     {
       kind: "wrong",
-      title: "Passes quotes without the flood exclusion",
-      source: "quote_completeness",
+      title: "No flood exclusion",
       count: "41",
     },
     {
       kind: "missing",
-      title: "Quotes priced on loss runs older than 90 days",
-      source: "UW 4.2",
+      title: "Stale loss runs",
       count: "58",
     },
     {
       kind: "missing",
-      title: "Sprinkler credit with no inspection report",
-      source: "UW 5.1",
+      title: "Uninspected sprinkler credit",
       count: "37",
     },
   ],
-  note: "From your AI engineer",
 };
 
 export const INSURANCE_PAGE: IndustryPageContent = {
@@ -260,35 +256,31 @@ export const INSURANCE_PAGE: IndustryPageContent = {
 const FINANCE_GAPS: GapReportVisualContent = {
   label:
     "An example of what your AI engineer tells you about a KYC review agent, Oct 21 to 27. The team's evals pass 93% of last week's cases; by the team's own procedures, 71% should pass. A completeness judge passed 33 cases with no source-of-funds check, 46 cases treated adverse-media hits older than 12 months as clear, and 21 closed a PEP match without a second reviewer. No eval checks the last two.",
-  eyebrow: "What your evals missed this week",
+  eyebrow: "Missed this week",
   agent: "kyc-review-agent",
-  window: "Oct 21 to 27 · 2,106 cases",
+  window: "2,106 cases",
   scores: [
-    { label: "Your evals pass", value: 93 },
-    { label: "Your procedures pass", value: 71 },
+    { label: "Your evals", value: 93 },
+    { label: "Your procedures", value: 71 },
   ],
   kindLabels: KIND_LABELS,
   items: [
     {
       kind: "wrong",
-      title: "Passes cases with no source-of-funds check",
-      source: "case_completeness",
+      title: "No source-of-funds check",
       count: "33",
     },
     {
       kind: "missing",
-      title: "Adverse media older than 12 months treated as clear",
-      source: "KYC 3.4",
+      title: "Stale adverse media",
       count: "46",
     },
     {
       kind: "missing",
-      title: "PEP matches closed without a second reviewer",
-      source: "KYC 6.2",
+      title: "PEP closed by one reviewer",
       count: "21",
     },
   ],
-  note: "From your AI engineer",
 };
 
 const FINANCE_ONBOARDING: OnboardingStepsContent = {

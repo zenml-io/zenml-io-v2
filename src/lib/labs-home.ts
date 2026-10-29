@@ -315,8 +315,6 @@ export const LABS_HERO: LabsProductBandContent = {
 export interface GapItem {
   kind: "wrong" | "missing";
   title: string;
-  /** The eval it concerns (wrong) or the rule it breaks (missing). */
-  source: string;
   count: string;
 }
 
@@ -330,7 +328,6 @@ export interface GapReportVisualContent {
   scores: readonly [GapScore, GapScore];
   kindLabels: Record<GapItem["kind"], string>;
   items: readonly GapItem[];
-  note: string;
 }
 
 export interface GapScore {
@@ -345,36 +342,19 @@ export interface GapScore {
  */
 export const LABS_GAP_REPORT: GapReportVisualContent = {
   label:
-    "An example of what your AI engineer tells you about an insurance underwriting agent, Oct 21 to 27. The team's evals pass 91% of last week's sessions; by the team's own underwriting manual, 74% should pass. Two gaps lead the report: a completeness judge that passed 41 quotes without the flood exclusion, and 58 quotes priced on loss runs older than 90 days that no eval checks.",
-  eyebrow: "What your evals missed this week",
+    "An example of what your AI engineer tells you about an insurance underwriting agent, Oct 21 to 27. The team's evals pass 91% of last week's sessions; by the team's own underwriting manual, 74% should pass. A completeness judge passed 41 quotes without the flood exclusion, and no eval checks the 58 quotes priced on loss runs older than 90 days.",
+  eyebrow: "Missed this week",
   agent: "underwriting-agent",
-  window: "Oct 21 to 27 · 1,482 sessions",
+  window: "1,482 sessions",
   scores: [
-    { label: "Your evals pass", value: 91 },
-    { label: "Your manual passes", value: 74 },
+    { label: "Your evals", value: 91 },
+    { label: "Your manual", value: 74 },
   ],
   kindLabels: { wrong: "Wrong", missing: "Missing" },
   items: [
-    {
-      kind: "wrong",
-      title: "Passes quotes without the flood exclusion",
-      source: "quote_completeness",
-      count: "41",
-    },
-    {
-      kind: "missing",
-      title: "Quotes priced on loss runs older than 90 days",
-      source: "UW 4.2",
-      count: "58",
-    },
-    {
-      kind: "missing",
-      title: "Sprinkler credit with no inspection report",
-      source: "UW 5.1",
-      count: "37",
-    },
+    { kind: "wrong", title: "No flood exclusion", count: "41" },
+    { kind: "missing", title: "Stale loss runs", count: "58" },
   ],
-  note: "From your AI engineer",
 };
 
 /* ---------------------------------------------------------------------- */
@@ -446,11 +426,11 @@ export interface OnboardingStepsContent {
 export const LABS_ONBOARDING: OnboardingStepsContent = {
   eyebrow: "Eval therapy",
   headline: "You answer a few questions. Good evals fall out.",
-  deck: "You never sit down to write evals. Your AI engineer reads what you already have and asks you only what it can't work out alone.",
+  deck: "You never write evals. Your AI engineer asks only what it can't work out alone.",
   steps: [
     {
       title: "Connect your repos",
-      body: "Install the GitHub app and add your tracing keys. It finds your agent, the evals you already run and the guidelines they should follow.",
+      body: "Add the GitHub app and your tracing keys.",
       widget: {
         kind: "connect",
         repos: [
@@ -470,7 +450,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
     },
     {
       title: "A short interview",
-      body: "Your AI engineer asks you a few questions about what it found, in the browser or in Slack. Tap to answer.",
+      body: "A few questions about what it found. Tap to answer.",
       widget: {
         kind: "call",
         context: "quote_completeness has passed every quote for 30 days.",
@@ -481,7 +461,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
     },
     {
       title: "Hear what your evals miss",
-      body: "Right after, it tells you what your evals missed last week, in the order you said you care about. More follows in Slack.",
+      body: "What your evals missed last week, in your order.",
       widget: {
         kind: "report",
         items: LABS_GAP_REPORT.items.slice(0, 2),
@@ -490,7 +470,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
     },
     {
       title: "Fifteen minutes a week",
-      body: "Three real sessions and about ten quick questions. Your answers become a calibrated check and a frozen set of sessions.",
+      body: "Ten quick questions on three real sessions.",
       widget: {
         kind: "review",
         session: "Session #3318 · quote",
@@ -557,7 +537,7 @@ export interface StackLayerContent {
 export const LABS_STACK_LAYER: StackLayerContent = {
   eyebrow: "How it fits",
   headline: "An intelligence layer on the stack you already run",
-  deck: "Nothing to rewrite and no new SDK. Your AI engineer reads the traces and evals you have, and replays your agent through the framework it's already built on.",
+  deck: "Nothing to rewrite, no new SDK.",
   layer: {
     label: "Intelligence layer",
     title: "Your AI engineer",

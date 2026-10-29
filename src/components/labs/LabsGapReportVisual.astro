@@ -1,11 +1,11 @@
 ---
 /**
  * LabsGapReportVisual (`labs.gap-report-visual`) — the homepage hero's
- * example: what the AI engineer tells you about one week of an agent, as a card. Two pass-rate bars
- * open it (what the team's evals pass against what their own manual would
- * pass), then the gaps as hairline rows, each tagged Wrong (an eval that
- * passes the wrong thing, orange) or Missing (a behavior nothing checks,
- * cream outline) with its session count. Static: no motion moment. The
+ * example: what the AI engineer tells you about one week of an agent, as a
+ * short card. Two pass-rate bars open it (what the team's evals pass against
+ * what their own manual would pass), then the gaps as one-line hairline
+ * rows, each tagged Wrong (an eval that passes the wrong thing, orange) or
+ * Missing (a behavior nothing checks, cream outline) with its session count. Static: no motion moment. The
  * figcaption carries the whole example as text. Copy arrives through
  * `content` (LABS_GAP_REPORT).
  */
@@ -21,21 +21,16 @@ const { content } = Astro.props;
 <figure class="rounded-[20px] border border-(--color-border) bg-card p-6 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-8">
   <figcaption class="sr-only">{content.label}</figcaption>
   <div aria-hidden="true">
-    <div class="flex flex-wrap items-center justify-between gap-3">
-      <p class="font-label text-[13px] leading-5 uppercase tracking-[0.05em] text-(--color-sage-800)">
-        {content.eyebrow}
-      </p>
-      <span class="rounded-full border border-(--color-border) px-2.5 py-0.5 font-label text-[11px] leading-4 uppercase tracking-[0.05em] text-(--color-cream-700)">
-        {content.note}
-      </span>
-    </div>
+    <p class="font-label text-[13px] leading-5 uppercase tracking-[0.05em] text-(--color-sage-800)">
+      {content.eyebrow}
+    </p>
     <p class="mt-2 font-mono text-[13px] leading-5 text-(--color-cream-700)">
       {content.agent} · {content.window}
     </p>
 
     <dl class="mt-6 grid gap-3">
       {content.scores.map((score, index) => (
-        <div class="grid grid-cols-[minmax(0,9rem)_minmax(0,1fr)_3rem] items-center gap-3">
+        <div class="grid grid-cols-[minmax(0,7.5rem)_minmax(0,1fr)_3rem] items-center gap-3">
           <dt class="font-sans text-[14px] leading-5 text-(--color-cream-800)">{score.label}</dt>
           <span class="h-2.5 overflow-hidden rounded-full bg-(--color-sage-100)">
             <span
@@ -50,14 +45,11 @@ const { content } = Astro.props;
 
     <ul class="mt-6 flex flex-col border-t border-(--color-border)">
       {content.items.map((item) => (
-        <li class="grid grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-3 border-b border-(--color-border) py-3.5 last:border-b-0">
-          <span class:list={["mt-0.5 rounded-full px-2 py-0.5 font-label text-[11px] leading-4 uppercase tracking-[0.05em]", GAP_TAG[item.kind]]}>
+        <li class="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 border-b border-(--color-border) py-3.5 last:border-b-0">
+          <span class:list={["rounded-full px-2 py-0.5 font-label text-[11px] leading-4 uppercase tracking-[0.05em]", GAP_TAG[item.kind]]}>
             {content.kindLabels[item.kind]}
           </span>
-          <span class="min-w-0">
-            <span class="block font-sans text-[15px] leading-[22px] text-(--color-cream-900)">{item.title}</span>
-            <span class="mt-0.5 block font-mono text-[12px] leading-[18px] text-(--color-cream-700)">{item.source}</span>
-          </span>
+          <span class="min-w-0 font-sans text-[15px] leading-[22px] text-(--color-cream-900)">{item.title}</span>
           <span class="font-mono text-[15px] leading-[22px] text-(--color-cream-900)">{item.count}</span>
         </li>
       ))}
