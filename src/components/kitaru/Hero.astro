@@ -1,21 +1,17 @@
 ---
-import {
-  KITARU_DOCS_URL,
-  KITARU_INSTALL_CMD,
-  MODEL_CHOICE_GUIDE_URL,
-} from "../../lib/kitaru-landing";
+import { KITARU_DOCS_URL, KITARU_INSTALL_CMD } from "../../lib/kitaru-landing";
 import LabsButton from "../labs/LabsButton.astro";
 import LabsInstallChip from "../labs/LabsInstallChip.astro";
 // Hero.astro — the Kitaru landing's opening band in the Labs shell. Fills
 // the first viewport (the Labs nav overlays the top 120px) and centers its
-// content in the remaining height: model-choice guide pill, headline, deck, the
+// content in the remaining height: AI-engineer pill, headline, deck, the
 // install command with a ghost docs pill beside it. Everything here is static; the video poster card
 // is the one island (HeroVideo) because it opens a dialog.
 import { HeroVideo } from "./islands/HeroVideo";
 import { KitaruGrain } from "./islands/KitaruGrain";
 
 const docs = {
-  label: "Read the docs",
+  label: "Read docs",
   href: KITARU_DOCS_URL,
   analytics: "Kitaru-Hero-Docs",
 };
@@ -34,12 +30,12 @@ const install = { cmd: KITARU_INSTALL_CMD, analytics: "Kitaru-Hero-Install" };
   >
     <div class="flex w-full min-w-0 flex-col items-center lg:flex-1 lg:items-start">
       <a
-        href={MODEL_CHOICE_GUIDE_URL}
-        data-analytics="Kitaru-Hero-Model-Choice"
+        href="/pricing"
+        data-analytics="Kitaru-Hero-AI-Engineer"
         class="reveal group inline-flex max-w-full cursor-pointer items-center gap-2 rounded-full border border-ember/40 bg-ember-light/60 py-1.5 pr-4 pl-2 font-label text-[13px] uppercase tracking-[0.05em] text-ink transition-colors duration-200 ease-out hover:border-ember"
       >
-        <span class="rounded-full bg-ember px-2 py-0.5 text-[11px] text-(--color-cream-50)">New</span>
-        Compare models on your own traces: read the guide
+        <span class="rounded-full bg-ember px-2 py-0.5 text-[11px] text-(--color-cream-50)">Hosted</span>
+        Our AI engineer runs on Kitaru
         <svg class="size-3.5 text-ember transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
       </a>
 
@@ -47,16 +43,16 @@ const install = { cmd: KITARU_INSTALL_CMD, analytics: "Kitaru-Hero-Install" };
         class="reveal mt-7 max-w-[920px] font-display text-[44px] leading-[48px] text-balance text-(--color-cream-900) md:text-[64px] md:leading-[70px]"
         style="--reveal-delay: 80ms"
       >
-        Test every agent update on real traces
+        The open-source core of your eval loop
       </h1>
 
       <p
         class="reveal mt-space-md max-w-[600px] font-sans text-[17px] leading-[26px] text-foreground md:text-xl md:leading-[30px]"
         style="--reveal-delay: 160ms"
       >
-        Swap the model, rewrite the prompt, change the framework. Kitaru
-        replays the traces you already have and shows exactly what would
-        change. Open source, on your machine, with your keys.
+        Import your traces, review real sessions, turn findings into
+        checks, and replay your agent to test a fix. Open source, on your
+        machine, with your keys.
       </p>
 
       <div

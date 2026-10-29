@@ -9,24 +9,24 @@ import { KITARU_VIDEO } from "../../../lib/productKitaru";
 
 /**
  * The simplified 4-step poster shown on the hero's video card: one comment
- * plus the command for each step of choosing a model. Rendered inside a
- * `<pre>`, so the multi-space run in the payoff line survives.
+ * plus the command for each step of the loop (import, review, check,
+ * replay). Rendered inside a `<pre>`.
  */
 export const HERO_CODE_LINES: Array<{
   text: string;
   kind?: "cmt" | "hl" | "out";
 }> = [
-  { text: "# 1 · the runs your agent already made", kind: "cmt" },
+  { text: "# 1 · the traces you already have", kind: "cmt" },
   { text: "kitaru session import ./traces.jsonl" },
   { text: "" },
-  { text: "# 2 · resend them to the models you're weighing", kind: "cmt" },
-  { text: "> use kitaru-model-swap on this agent", kind: "hl" },
+  { text: "# 2 · review real sessions", kind: "cmt" },
+  { text: "> use kitaru-investigation on this agent", kind: "hl" },
   { text: "" },
-  { text: "# 3 · rule out the clear misses", kind: "cmt" },
-  { text: "shortlist · 3 models      23 calls differ", kind: "out" },
+  { text: "# 3 · turn a finding into a check", kind: "cmt" },
+  { text: "new evaluator · runs on every session", kind: "out" },
   { text: "" },
-  { text: "# 4 · replay it: cost per correct task", kind: "cmt" },
-  { text: "kitaru experiment run start best-mix" },
+  { text: "# 4 · replay your agent to test the fix", kind: "cmt" },
+  { text: "kitaru experiment run start fix" },
 ];
 
 /* A readable ember tint for the highlighted poster lines — the accent itself

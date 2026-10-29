@@ -1,6 +1,5 @@
 import {
   joinMarkdownSections,
-  markdownBulletList,
   markdownCtaList,
   markdownPreamble,
   markdownResponse,
@@ -31,27 +30,9 @@ export function GET(): Response {
       markdownCtaList(PRODUCT_KITARU_MARKDOWN.ctas),
     ),
     joinMarkdownSections(
-      "## The five acts",
-      ...PRODUCT_KITARU_MARKDOWN.journey.map((step) =>
-        joinMarkdownSections(`### ${step.name}`, step.body),
-      ),
-    ),
-    joinMarkdownSections(
-      "## The object model",
-      ...PRODUCT_KITARU_MARKDOWN.primitives.map((primitive) =>
-        joinMarkdownSections(`### ${primitive.name}`, primitive.body),
-      ),
-    ),
-    joinMarkdownSections(
-      "## Where it runs",
-      "Creation and execution happen on your machine, next to your code; the server holds the data model and the screens. The worker polls outward, so the server never opens a connection into your network.",
-      markdownBulletList(PRODUCT_KITARU_MARKDOWN.deploymentTargets),
-    ),
-    joinMarkdownSections(
-      "## Honest limits",
-      "Stated plainly, because they decide whether Kitaru fits your setup today.",
-      ...PRODUCT_KITARU_MARKDOWN.limits.map((limit) =>
-        joinMarkdownSections(`### ${limit.name}`, limit.body),
+      "## How it works",
+      ...PRODUCT_KITARU_MARKDOWN.steps.map((step, i) =>
+        joinMarkdownSections(`### ${i + 1}. ${step.name}`, step.body),
       ),
     ),
     joinMarkdownSections(

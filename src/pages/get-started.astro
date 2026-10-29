@@ -3,7 +3,7 @@
  * Get Started — ZenML open-source onboarding, in the ZenML Labs shell
  * (`app="labs"`, `surface="ml"`, `product="zenml"`, D3). Rebuilt for the
  * product one-offs cutover (#317): the short shader band (eyebrow / h1 /
- * deck, plus the Kitaru pointer line), the code-pane step walkthrough on
+ * deck, plus the agent-builder pointer: Kitaru install chip and link), the code-pane step walkthrough on
  * the `labs-light` Shiki theme, the architecture section, the projects
  * grid, the resources grid, and the closing band.
  *
@@ -15,11 +15,13 @@ import { getCollection } from "astro:content";
 import LabsBand from "../components/labs/LabsBand.astro";
 import LabsButton from "../components/labs/LabsButton.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
+import LabsInstallChip from "../components/labs/LabsInstallChip.astro";
 import ProcessSteps from "../components/templates/ProcessSteps.astro";
 import { LABS_EYEBROW_CLASS } from "../components/templates/pageHeaderPresets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../lib/blogLayout";
 import {
+  GET_STARTED_AGENT_POINTER,
   GET_STARTED_CLOSE,
   GET_STARTED_HERO,
   GET_STARTED_SEO,
@@ -83,9 +85,20 @@ try {
       <p class="max-w-[720px] font-sans text-[18px] leading-7 text-(--color-cream-700)">
         {GET_STARTED_HERO.deck}
       </p>
-      <p class="font-sans text-[15px] leading-5 text-(--color-cream-700)">
-        Looking for Kitaru? Replay and regression-test your agents from <a href="/product/kitaru" class="font-medium text-(--color-sage-700) underline underline-offset-4 hover:text-(--color-sage-800)">its own start page</a>.
-      </p>
+      {/* Pointer for agent builders. Not a chooser: /product/kitaru stays the entry point. */}
+      <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+        <p class="font-sans text-[15px] leading-5 text-(--color-cream-700)">
+          {GET_STARTED_AGENT_POINTER.lead}
+        </p>
+        <div class="flex max-w-full"><LabsInstallChip content={GET_STARTED_AGENT_POINTER.install} /></div>
+        <a
+          href={GET_STARTED_AGENT_POINTER.link.href}
+          data-analytics={GET_STARTED_AGENT_POINTER.link.analytics}
+          class="font-sans text-[15px] leading-5 font-medium text-(--color-sage-700) underline underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-sage-800)"
+        >
+          {GET_STARTED_AGENT_POINTER.link.label}
+        </a>
+      </div>
     </div>
   </LabsBand>
 
@@ -155,7 +168,7 @@ try {
           ))}
         </ul>
       ) : (
-        <p class="mt-6 font-sans text-[15px] text-(--color-cream-700)">Projects coming soon.</p>
+        <p class="mt-6 font-sans text-[15px] text-(--color-cream-700)">No projects to show yet.</p>
       )}
       <div class="mt-12">
         <LabsButton

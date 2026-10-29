@@ -11,15 +11,15 @@ import type { SEOProps } from "./seo";
 export const SCHEDULE_A_DEMO_SEO: SEOProps = {
   title: "Schedule a Demo | ZenML Labs",
   description:
-    "Schedule a live demo and see how ZenML orchestrates your AI workflows and Kitaru diagnoses your agents.",
+    "Bring one agent and a week of traces. Our AI engineer shows you which evals you are missing. Running pipelines too? See how ZenML orchestrates them.",
   ogTitle: "Schedule a Demo",
   ogDescription:
-    "Schedule a live demo and see how ZenML orchestrates your AI workflows and Kitaru diagnoses your agents.",
+    "Bring one agent and a week of traces. Our AI engineer shows you which evals you are missing. Running pipelines too? See how ZenML orchestrates them.",
 };
 
 export const SCHEDULE_A_DEMO_HERO = {
   headline: "Book a Personalized Demo Today",
-  deck: "Select a time that works for you and discover all the ZenML benefits firsthand.",
+  deck: "Pick a time. Bring one agent and a week of traces, or the pipelines you run with ZenML, and we will walk through them with you.",
 };
 
 export const SCHEDULE_A_DEMO_CAL: CalEmbedConfig = {

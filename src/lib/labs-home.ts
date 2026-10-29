@@ -15,6 +15,7 @@ import type { Surface } from "./analytics";
 import type { FeatureIconId } from "./featureIcons";
 import { type CaseStudyCard, LOGO_CLOUD, type LogoItem } from "./homepage";
 import {
+  KITARU_CLOUD_PRICE,
   KITARU_DOCS_URL,
   KITARU_INSTALL_CMD,
   KITARU_LINKS,
@@ -29,7 +30,7 @@ export type LabsProduct = "zenml" | "kitaru";
 export const LABS_HOME_SEO = {
   title: "ZenML Labs: Find what your evals miss",
   description:
-    "Our AI engineer reads your agent's production traces next to the evals you already run, shows you what those evals miss, and turns a few of your answers into checks you can trust. Built on Kitaru and ZenML, both open source.",
+    "Our AI engineer reads your agent's production traces next to the evals you already run, shows you what those evals miss, and turns a few of your answers into checks you can trust. It works on top of open-source Kitaru and ZenML.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -215,6 +216,8 @@ export interface LabsBandContent {
 export interface LabsProductBandContent extends LabsBandContent {
   secondaryCta?: LabsCta;
   install?: LabsInstallChip;
+  /** One short line under the install command: what it installs. */
+  installNote?: string;
 }
 
 /** A product page's opening band led by its install command instead of a
@@ -303,7 +306,13 @@ export const LABS_HERO: LabsProductBandContent = {
   headlineLines: ["Know which evals", "to write"],
   deck: "Writing evals isn't the hard part. Our AI engineer reads your traces next to your evals and shows you what they miss.",
   cta: LABS_HERO_SIGNUP,
+  secondaryCta: {
+    label: "Request demo",
+    href: "/book-your-demo",
+    analytics: "Hero-Request-Demo",
+  },
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
+  installNote: `Installs Kitaru, open source. Our AI engineer is an agent we host, from ${KITARU_CLOUD_PRICE} a month.`,
 };
 
 /* ---------------------------------------------------------------------- */
@@ -426,11 +435,11 @@ export interface OnboardingStepsContent {
 export const LABS_ONBOARDING: OnboardingStepsContent = {
   eyebrow: "Eval therapy",
   headline: "You answer a few questions. Good evals fall out.",
-  deck: "You never write evals. Your AI engineer asks only what it can't work out alone.",
+  deck: "You don't write evals from scratch. Your AI engineer asks only what it can't work out alone.",
   steps: [
     {
       title: "Connect your repos",
-      body: "Add the GitHub app and your tracing keys.",
+      body: "Add the GitHub app and your tracing keys. Revoke them any time.",
       widget: {
         kind: "connect",
         repos: [
@@ -464,7 +473,14 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       body: "What your evals missed last week, in your order.",
       widget: {
         kind: "report",
-        items: LABS_GAP_REPORT.items.slice(0, 2),
+        items: [
+          { kind: "wrong", title: "Passes quotes over authority", count: "22" },
+          {
+            kind: "missing",
+            title: "Uninspected sprinkler credit",
+            count: "37",
+          },
+        ],
         kindLabels: LABS_GAP_REPORT.kindLabels,
       },
     },
@@ -537,7 +553,7 @@ export interface StackLayerContent {
 export const LABS_STACK_LAYER: StackLayerContent = {
   eyebrow: "How it fits",
   headline: "An intelligence layer on the stack you already run",
-  deck: "Nothing to rewrite, no new SDK.",
+  deck: "Nothing to rewrite, no new SDK. It reads your repos and traces through keys you can revoke.",
   layer: {
     label: "Intelligence layer",
     title: "Your AI engineer",
@@ -853,7 +869,7 @@ export interface LogoGridContent {
 }
 
 export const LABS_LOGO_GRID: LogoGridContent = {
-  headline: "ZenML Labs is trusted to run production AI at",
+  headline: "Trusted to run production AI, from pipelines to agents, at",
   logos: LOGO_CLOUD.logos,
 };
 

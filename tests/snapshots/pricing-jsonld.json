@@ -44,7 +44,7 @@
           "name": "What counts as an agent?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. Starter covers one, Team covers 5, and each one after that is $39 a month."
+            "text": "An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. A LangGraph app with three sub-agents that ships as one product is one agent. Starter covers one, Team covers 5, and each one after that is $39 a month. Three teams with one agent each fit in Team at $199 a month."
           }
         },
         {
@@ -100,7 +100,7 @@
           "name": "How is this different from Langfuse, Braintrust or LangSmith?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "They tell you what happened: traces you read, dashboards you check. Kitaru re-runs what happened. Your agent's real code executes again against the recorded world, so you can test your next change against your last thousand sessions before it ships. Kitaru also imports trace files exported from Langfuse, LangSmith, Braintrust, Logfire or Arize Phoenix, so your observability tool stays your system of record."
+            "text": "They show you what happened. Our AI engineer reads those traces next to your evals and shows you which evals are wrong or missing, then Kitaru replays your agent to test the fix against real sessions. Kitaru imports from Langfuse, LangSmith, Braintrust, Logfire or Phoenix, so your tracing tool stays your system of record."
           }
         },
         {
@@ -108,7 +108,7 @@
           "name": "Do I need a separate subscription for ZenML?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No, one subscription covers both. ZenML's managed tiers scale with pipeline executions; agents are priced per agent. Same control plane, same governance, one bill."
+            "text": "No. One account and one bill cover both. ZenML is priced by pipeline runs and agents per agent, so you only pay for the side you use."
           }
         },
         {
@@ -156,7 +156,7 @@
           "name": "How is my data handled?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "ZenML is a metadata layer on top of your existing infrastructure: your data, artifacts and compute stay in your VPC, and only metadata reaches the control plane. ZenML is SOC 2 Type II and ISO/IEC 27001 certified."
+            "text": "ZenML is a metadata layer on top of your existing infrastructure: your data, artifacts and compute stay in your VPC, and only metadata reaches the control plane. ZenML holds a SOC 2 Type II report and ISO/IEC 27001 certification."
           }
         },
         {
@@ -164,7 +164,7 @@
           "name": "Do I need a separate subscription for Kitaru?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No, your ZenML subscription covers the Kitaru workspace too. Agents are priced on their own terms, from $39/month per agent rather than execution tiers, but both workspaces run on the same control plane and land on one bill."
+            "text": "No. One account and one bill cover both. ZenML is priced by pipeline runs and agents per agent, from $39 a month, so you only pay for the side you use."
           }
         },
         {

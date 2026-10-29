@@ -11,6 +11,8 @@ import type { LabsInstallChip } from "./labs-home";
 import { ZENML_DOCS_URL } from "./labs-product-zenml";
 import {
   KITARU_DOCS_URL,
+  KITARU_IMPORTERS,
+  KITARU_IMPORTERS_TEXT,
   KITARU_INSTALL_CMD,
   KITARU_LICENSE,
 } from "./productKitaru";
@@ -47,7 +49,7 @@ const COMMUNITY_SLACK = { label: "Community Slack", href: "/slack" } as const;
 export const KITARU_OPEN_SOURCE: OpenSourceBandContent = {
   eyebrow: "Open source",
   headline: "Free to run, yours to keep",
-  deck: `Kitaru is ${KITARU_LICENSE}. Install it in one line and run it on your own machine, with your own model keys. No account needed.`,
+  deck: `Kitaru is ${KITARU_LICENSE}. Install it in one line and run it on your own machine, with your own model keys. No account needed. Our AI engineer is the hosted part on top.`,
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Kitaru-OSS-Install" },
   github: {
     href: KITARU_GITHUB_REPO_URL,
@@ -69,8 +71,8 @@ export const KITARU_OPEN_SOURCE: OpenSourceBandContent = {
       body: "Replays call the providers you pick, with your keys and your rate limits.",
     },
     {
-      title: "Bring your traces and evals",
-      body: "Import traces and scores from Langfuse, LangSmith, Braintrust, MLflow or Phoenix, or wrap your agent in one line.",
+      title: "Bring your traces",
+      body: `Import from ${KITARU_IMPORTERS_TEXT}, or wrap your agent in one line.`,
     },
   ],
   links: [
@@ -136,32 +138,22 @@ export interface EvalImportBandContent {
 /** /product/kitaru: bring the evals a team already runs, next to its traces. */
 export const KITARU_EVAL_IMPORT: EvalImportBandContent = {
   eyebrow: "Bring your evals",
-  headline: "Import the evals you already run",
-  deck: "Your judges, scores and test suites come in with your traces. Kitaru puts each score on the session it judged, so you can see where your evals and your own reviews disagree.",
-  sourcesLabel: "Scores and evals from",
-  sources: [
-    "Langfuse scores",
-    "LangSmith feedback",
-    "Braintrust scorers",
-    "Phoenix annotations",
-    "MLflow",
-    "promptfoo",
-    "Inspect",
-    "DeepEval",
-    "pytest judges",
-  ],
+  headline: "Bring the evals you already run",
+  deck: "Your judges and test suites sit next to your traces. You see where your evals and your own reviews disagree.",
+  sourcesLabel: "Evals from",
+  sources: [...KITARU_IMPORTERS, "Test suites in your repo"],
   steps: [
     {
-      title: "Scores land on sessions",
-      body: "Each imported score sits on the session or step it judged, with the judge prompt that produced it.",
+      title: "Evals land on sessions",
+      body: "Each eval result sits on the session it judged.",
     },
     {
       title: "See where they disagree",
-      body: "Review a few sessions. Kitaru shows which judges pass what you would fail, and what no eval checks at all.",
+      body: "Review a few sessions. See which judges pass what you would fail, and what no eval checks.",
     },
     {
       title: "Fix it and replay",
-      body: "Recalibrate the judge, add the missing check, and replay your cohorts to prove the change.",
+      body: "Fix the judge, add the missing check, and replay to test the change.",
     },
   ],
 };

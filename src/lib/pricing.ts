@@ -59,8 +59,8 @@ export const PRICING_HERO = {
  */
 export const PRICING_PRO_INCLUSIONS = {
   eyebrow: "What's included in Pro",
-  headline: "Two products, one plan.",
-  deck: "Switch SDKs without switching tools, billing, or governance. ZenML for AI workflow orchestration. Kitaru to replay and regression-test your agents. Same control plane underneath.",
+  headline: "Two products, one account",
+  deck: "ZenML orchestrates your AI workflows. Your AI engineer and Kitaru keep your agents' evals honest. Same control plane underneath.",
   cards: [
     {
       side: "zenml" as const,
@@ -93,9 +93,9 @@ export const PRICING_PRO_INCLUSIONS = {
     },
     {
       side: "kitaru" as const,
-      eyebrow: "Agent replay",
-      title: "Replay-based evals",
-      body: "Import your whole trace history, replay it against your next change, and keep every fix as a regression test, priced per agent.",
+      eyebrow: "Agent evals",
+      title: "Your AI engineer",
+      body: "Finds the evals you got wrong or never wrote, then replays your agent to test the fix. Priced per agent.",
       bullets: [
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z" /></svg>',
@@ -122,7 +122,8 @@ export const PRICING_PRO_INCLUSIONS = {
       } as CtaLink,
     },
   ],
-  caption: "Same control plane. Same governance. One bill covers both.",
+  caption:
+    "One account and one bill. ZenML is priced by pipeline runs, agents per agent.",
 } as const;
 
 /**
@@ -265,6 +266,7 @@ export const PRICING_PLANS_KITARU: PricingPlan[] = [
     id: "kitaru-starter",
     eyebrow: "Starter",
     pill: "SaaS",
+    topBadge: `${KITARU_TRIAL_DAYS}-day free trial`,
     subtitle: "For your first agent in production",
     price: KITARU_CLOUD_PRICE,
     priceSuffix: "/month",
@@ -358,7 +360,7 @@ export const PRICING_PLAN_WORKSPACES = [
     id: "zenml",
     label: "ZenML workspace",
     sublabel: "AI orchestration",
-    note: "Executions are ZenML pipeline runs. Agents are priced separately, per agent. One subscription covers both workspaces.",
+    note: "Executions are ZenML pipeline runs. Agents have their own per-agent price on the same account and bill.",
     learn: { label: "Learn about ZenML", href: "/product/zenml" },
     plans: PRICING_PLANS,
     accent: "sage",
@@ -625,9 +627,9 @@ export const PRICING_COMPLIANCE = {
     },
   ],
   bannerHeadline: "We Take Security Seriously",
-  bannerEyebrow: "ZenML is SOC2 and ISO 27001 Compliant",
+  bannerEyebrow: "SOC 2 Type II and ISO 27001",
   bannerBody:
-    "ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your AI workflows and data.",
+    "ZenML holds a SOC 2 Type II report and ISO 27001 certification, independently audited for security, availability and confidentiality.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -646,7 +648,7 @@ export const PRICING_FAQ_KITARU: FaqData = {
   items: [
     {
       question: "What counts as an agent?",
-      answer: `${KITARU_AGENT_DEFINITION} Starter covers one, Team covers ${TEAM.agents}, and each one after that is ${KITARU_EXTRA_AGENT_PRICE} a month.`,
+      answer: `${KITARU_AGENT_DEFINITION} A LangGraph app with three sub-agents that ships as one product is one agent. Starter covers one, Team covers ${TEAM.agents}, and each one after that is ${KITARU_EXTRA_AGENT_PRICE} a month. Three teams with one agent each fit in Team at ${KITARU_TEAM_PRICE} a month.`,
     },
     {
       question: "Why per agent and not per seat?",
@@ -684,7 +686,7 @@ export const PRICING_FAQ_KITARU: FaqData = {
     {
       question: "Do I need a separate subscription for ZenML?",
       answer:
-        "No, one subscription covers both. ZenML's managed tiers scale with pipeline executions; agents are priced per agent. Same control plane, same governance, one bill.",
+        "No. One account and one bill cover both. ZenML is priced by pipeline runs and agents per agent, so you only pay for the side you use.",
     },
   ],
   slackCta: PRICING_FAQ_SLACK_CTA,
@@ -723,11 +725,11 @@ export const PRICING_FAQ_ZENML: FaqData = {
     {
       question: "How is my data handled?",
       answer:
-        "ZenML is a metadata layer on top of your existing infrastructure: your data, artifacts and compute stay in your VPC, and only metadata reaches the control plane. ZenML is SOC 2 Type II and ISO/IEC 27001 certified.",
+        "ZenML is a metadata layer on top of your existing infrastructure: your data, artifacts and compute stay in your VPC, and only metadata reaches the control plane. ZenML holds a SOC 2 Type II report and ISO/IEC 27001 certification.",
     },
     {
       question: "Do I need a separate subscription for Kitaru?",
-      answer: `No, your ZenML subscription covers the Kitaru workspace too. Agents are priced on their own terms, from ${KITARU_CLOUD_PRICE}/month per agent rather than execution tiers, but both workspaces run on the same control plane and land on one bill.`,
+      answer: `No. One account and one bill cover both. ZenML is priced by pipeline runs and agents per agent, from ${KITARU_CLOUD_PRICE} a month, so you only pay for the side you use.`,
     },
     {
       question: "What kind of support is included in each plan?",

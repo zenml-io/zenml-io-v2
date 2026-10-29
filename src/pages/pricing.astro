@@ -5,8 +5,8 @@
  * the short shader band (eyebrow / h1 / deck), the two-workspace plan
  * cards, a per-workspace comparison table and FAQ (all riding the same
  * `[data-workspace-panel]` toggle the plan cards drive), the "What's
- * included in Pro" doors, the startup/academic banner, the ZenML-only
- * compliance section, stats + trust, and the closing band.
+ * included in Pro" doors, then the ZenML-only startup banner, compliance
+ * section and stats + trust, and the closing band.
  *
  * Route: /pricing
  */
@@ -113,8 +113,8 @@ const pricingJsonLd = buildPricingJsonLd();
       <ProductDoors content={PRICING_PRO_INCLUSIONS_DOORS} />
     </section>
 
-    {/* Startup / Academic banner */}
-    <section class="py-24 md:py-32">
+    {/* Startup / Academic banner: ZenML Pro pricing, so ZenML-workspace only */}
+    <section data-workspace-panel="zenml" hidden class="py-24 md:py-32">
       <div class="mx-auto max-w-content px-gutter">
         <div class="flex flex-col gap-6 rounded-[20px] border border-(--color-border) bg-(--color-sage-50) p-8 md:flex-row md:items-center md:justify-between md:p-10">
           <div>
@@ -160,8 +160,9 @@ const pricingJsonLd = buildPricingJsonLd();
       </div>
     </section>
 
-    {/* Stats + Trust */}
-    <section class="border-t border-(--color-border) py-24 md:py-32">
+    {/* Stats + Trust: pipeline numbers and a ZenML quote, so ZenML-workspace
+        only; the agent view ends on the close band. */}
+    <section data-workspace-panel="zenml" hidden class="border-t border-(--color-border) py-24 md:py-32">
       <div class="mx-auto max-w-content px-gutter">
         <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
           {PRICING_STATS.headline}

@@ -5,13 +5,13 @@ import {
   KITARU_LICENSE,
 } from "../../lib/kitaru-landing";
 import LabsInstallChip from "../labs/LabsInstallChip.astro";
-// Cta.astro — closing CTA band. Dark grain background (KitaruGrain
-// variant="dark"), headline, the install chip, then a docs text link
-// (a ghost pill disappears on the dark band).
-import { KitaruGrain } from "./islands/KitaruGrain";
+
+// Cta.astro — closing CTA band. Plain dark band (the hero owns the page's
+// one ambient shader, per DESIGN.md), headline, the install chip, then a docs
+// text link (a ghost pill disappears on the dark band).
 
 const docs = {
-  label: "Read the docs",
+  label: "Read docs",
   href: KITARU_DOCS_URL,
   analytics: "Kitaru-CTA-Docs",
 };
@@ -19,15 +19,13 @@ const install = { cmd: KITARU_INSTALL_CMD, analytics: "Kitaru-CTA-Install" };
 ---
 
 <section id="cta" class="relative overflow-hidden bg-night text-night-text">
-  <KitaruGrain variant="dark" client:visible class="opacity-90" />
-
   <div class="relative mx-auto w-full max-w-content px-gutter py-24 text-center md:py-40">
     <h2
       class="reveal font-display text-[44px] leading-[48px] text-balance text-(--color-cream-50) md:text-[72px] md:leading-[78px]"
     >
-      Your traffic already knows
+      Your traces know
       <br />
-      <span class="text-ember">which model to run.</span>
+      <span class="text-ember">what your evals miss.</span>
     </h2>
 
     <div
@@ -54,7 +52,7 @@ const install = { cmd: KITARU_INSTALL_CMD, analytics: "Kitaru-CTA-Install" };
       Open source ({KITARU_LICENSE}) · Runs on your machine
     </p>
     <p class="reveal mt-1.5 text-[13px] text-night-text/70" style="--reveal-delay: 240ms">
-      Replays run from recordings, so production never sees a test.
+      Want it done for you? <a href="/pricing" data-analytics="Kitaru-CTA-Pricing" class="underline decoration-night-text/40 underline-offset-4 transition-colors duration-200 ease-out hover:decoration-night-text">Our AI engineer</a> reads them each week.
     </p>
   </div>
 </section>

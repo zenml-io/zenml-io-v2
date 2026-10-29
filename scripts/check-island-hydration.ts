@@ -64,12 +64,9 @@
  * author hub pages now render through PageHeader + TermHubEditorial/
  * TermHubEntryIndex, whose own client-side piece is HubPagination (checked
  * below), not a ported CategoryBar.
- * - Of the remaining /product/kitaru islands, TwoDoors covers the interactive
- *   contract that has regressed. The others have nothing better to assert on:
- *   HeroVideo's sole interaction opens a third-party video iframe in a
- *   dialog, KitaruGrain is a WebGL shader, and ScenarioStrip's only state
- *   is a decorative hover-linked highlight — a progressive enhancement we
- *   accept going untested rather than asserting on hover-driven class flips.
+ * - The /product/kitaru islands have nothing worth asserting on: HeroVideo's
+ *   sole interaction opens a third-party video iframe in a dialog, and
+ *   KitaruGrain is a WebGL shader.
  *
  * - Console errors and pageerror are NOT failure triggers. Pagefind's wasm load,
  *   the aborted third-party requests and image 404s all produce noise; failing on
@@ -856,35 +853,6 @@ const CHECKS: IslandCheck[] = [
           "expected the page-1 SSR list to hide once page 2 loads",
         );
       }
-    },
-  },
-  {
-    name: "TwoDoors switches its importer tab on click",
-    route: "/product/kitaru#two-doors",
-    island: "TwoDoors",
-    seedConsent: true,
-    async assert(page) {
-      // Every island on /product/kitaru is client:visible, so nothing hydrates
-      // until it scrolls into view — the #two-doors hash lands the section in
-      // the viewport on load, which is what arms the runner's hydration gate.
-      // SSR ships the first importer tab selected; only an onClick can move it.
-      const tab = (id: string) => `#two-doors-import-tab-${id}`;
-      await page.waitForSelector(`${tab("langfuse")}[aria-selected="true"]`);
-
-      await page.locator(tab("phoenix")).click();
-
-      await page.waitForSelector(`${tab("phoenix")}[aria-selected="true"]`);
-      const panelContent = await page.textContent("#two-doors-import-panel");
-      if (!panelContent?.includes("phoenix-traces.jsonl")) {
-        throw new Error(
-          "clicking Arize Phoenix tab did not update the import panel content",
-        );
-      }
-
-      await page.locator(tab("phoenix")).press("ArrowRight");
-      await page.waitForSelector(
-        `${tab("kitaru-jsonl")}[aria-selected="true"]:focus`,
-      );
     },
   },
   {

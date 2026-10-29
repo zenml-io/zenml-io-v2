@@ -120,7 +120,7 @@ Open Source and Pro, with Scale and Enterprise feature tiers.
 
 ### What counts as an agent?
 
-An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. Starter covers one, Team covers 5, and each one after that is $39 a month.
+An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. A LangGraph app with three sub-agents that ships as one product is one agent. Starter covers one, Team covers 5, and each one after that is $39 a month. Three teams with one agent each fit in Team at $199 a month.
 
 ### Why per agent and not per seat?
 
@@ -148,11 +148,11 @@ On hosted plans, your AI engineer runs in our cloud and reads traces from your t
 
 ### How is this different from Langfuse, Braintrust or LangSmith?
 
-They tell you what happened: traces you read, dashboards you check. Kitaru re-runs what happened. Your agent's real code executes again against the recorded world, so you can test your next change against your last thousand sessions before it ships. Kitaru also imports trace files exported from Langfuse, LangSmith, Braintrust, Logfire or Arize Phoenix, so your observability tool stays your system of record.
+They show you what happened. Our AI engineer reads those traces next to your evals and shows you which evals are wrong or missing, then Kitaru replays your agent to test the fix against real sessions. Kitaru imports from Langfuse, LangSmith, Braintrust, Logfire or Phoenix, so your tracing tool stays your system of record.
 
 ### Do I need a separate subscription for ZenML?
 
-No, one subscription covers both. ZenML's managed tiers scale with pipeline executions; agents are priced per agent. Same control plane, same governance, one bill.
+No. One account and one bill cover both. ZenML is priced by pipeline runs and agents per agent, so you only pay for the side you use.
 
 ## ZenML pricing, answered
 
@@ -178,11 +178,11 @@ Yes. Early-stage companies building ML-powered products, universities, research 
 
 ### How is my data handled?
 
-ZenML is a metadata layer on top of your existing infrastructure: your data, artifacts and compute stay in your VPC, and only metadata reaches the control plane. ZenML is SOC 2 Type II and ISO/IEC 27001 certified.
+ZenML is a metadata layer on top of your existing infrastructure: your data, artifacts and compute stay in your VPC, and only metadata reaches the control plane. ZenML holds a SOC 2 Type II report and ISO/IEC 27001 certification.
 
 ### Do I need a separate subscription for Kitaru?
 
-No, your ZenML subscription covers the Kitaru workspace too. Agents are priced on their own terms, from $39/month per agent rather than execution tiers, but both workspaces run on the same control plane and land on one bill.
+No. One account and one bill cover both. ZenML is priced by pipeline runs and agents per agent, from $39 a month, so you only pay for the side you use.
 
 ### What kind of support is included in each plan?
 
@@ -190,9 +190,9 @@ Open Source: our public Slack and community forums. Scale: priority support with
 
 Still not clear? [Still not clear? Ask us on Slack](https://www.zenml.io/slack)
 
-## Two products, one plan.
+## Two products, one account
 
-Switch SDKs without switching tools, billing, or governance. ZenML for AI workflow orchestration. Kitaru to replay and regression-test your agents. Same control plane underneath.
+ZenML orchestrates your AI workflows. Your AI engineer and Kitaru keep your agents' evals honest. Same control plane underneath.
 
 ### Pipelines & artifacts
 
@@ -206,9 +206,9 @@ Training, batch inference, evals, agent workflows. One DAG, versioned artifacts,
 
 - CTA: [Sign up free](https://cloud.zenml.io/signup?product=zenml)
 
-### Replay-based evals
+### Your AI engineer
 
-Import your whole trace history, replay it against your next change, and keep every fix as a regression test, priced per agent.
+Finds the evals you got wrong or never wrote, then replays your agent to test the fix. Priced per agent.
 
 - Sessions, cohorts, evaluators, experiments: The whole replay loop, imports and scoring included.
 - From $39 a month, per agent: Your AI engineer, replays and experiments included.
@@ -218,7 +218,7 @@ Import your whole trace history, replay it against your next change, and keep ev
 
 - CTA: [Sign up free](https://cloud.zenml.io/signup?product=kitaru)
 
-Same control plane. Same governance. One bill covers both.
+One account and one bill. ZenML is priced by pipeline runs, agents per agent.
 
 ## Are you startup or academic?
 
@@ -232,7 +232,7 @@ ZenML is a metadata layer on top of your existing infrastructure, meaning all da
 
 ### We Take Security Seriously
 
-ZenML is SOC2 and ISO 27001 compliant, validating our adherence to industry-leading standards for data security, availability, and confidentiality in our ongoing commitment to protecting your AI workflows and data.
+ZenML holds a SOC 2 Type II report and ISO 27001 certification, independently audited for security, availability and confidentiality.
 
 Security badges: SOC 2 Type II Badge, ISO/IEC 27001:2022 certification badge.
 

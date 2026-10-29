@@ -79,13 +79,7 @@ const EXEMPT_COMPONENTS = ["CookieConsent"];
  * lands here only by an explicit reviewed ruling, never by default — see the
  * Fix: message below.
  */
-const GRANDFATHERED: Record<string, { date: string; reason: string }> = {
-  "product/kitaru.html": {
-    date: "2026-08-24",
-    reason:
-      "ambient grain across four sections predates the policy; single-section reduction is a separate reviewed change",
-  },
-};
+const GRANDFATHERED: Record<string, { date: string; reason: string }> = {};
 
 /** Matches one <astro-island ...> opening tag; attributes are single-line. */
 const ASTRO_ISLAND_TAG_RE = /<astro-island\b[^>]*>/g;

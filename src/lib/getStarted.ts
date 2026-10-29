@@ -8,8 +8,9 @@
  *
  * ZenML copy was extracted from the original Webflow snapshot + SEO baseline.
  */
-import type { LabsBandContent } from "./labs-home";
+import type { LabsBandContent, LabsInstallChip } from "./labs-home";
 import type { CtaLink } from "./marketingPageTypes";
+import { KITARU_INSTALL_CMD } from "./productKitaru";
 import { defaultOgUrl } from "./seo";
 
 // ---------------------------------------------------------------------------
@@ -33,6 +34,28 @@ export const GET_STARTED_HERO = {
   headline: "Get started.",
   deck: "Install ZenML, run a pipeline on your laptop, then point the same code at your own cloud. Open source, no lock-in.",
 } as const;
+
+/**
+ * One-line pointer for agent builders under the hero. Deliberately not a
+ * chooser (the retired GET_STARTED_TABS; see legacy-terminology.md):
+ * /product/kitaru stays Kitaru's entry point, this only installs and links.
+ */
+export const GET_STARTED_AGENT_POINTER: {
+  lead: string;
+  install: LabsInstallChip;
+  link: { label: string; href: string; analytics: string };
+} = {
+  lead: "Building agents? Install Kitaru:",
+  install: {
+    cmd: KITARU_INSTALL_CMD,
+    analytics: "GetStarted-Kitaru-Install-Copy",
+  },
+  link: {
+    label: "Meet Kitaru",
+    href: "/product/kitaru",
+    analytics: "GetStarted-Kitaru-Link",
+  },
+};
 
 // ---------------------------------------------------------------------------
 // Shared types

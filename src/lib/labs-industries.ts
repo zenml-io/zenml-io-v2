@@ -132,12 +132,17 @@ function faq(extra: FaqData["items"]): FaqData {
       {
         question: "Which certifications do you hold?",
         answer:
-          'ZenML is SOC 2 Type II and ISO 27001 certified. Reports and policies are in our <a href="https://security.zenml.io">trust center</a>.',
+          'ZenML holds a SOC 2 Type II report and ISO 27001 certification. Reports and policies are in our <a href="https://security.zenml.io">trust center</a>.',
       },
       {
         question: "Can it run air-gapped?",
         answer:
           'Yes. ZenML Pro supports multi-region and air-gapped deployments. See <a href="/deployments">deployment options</a>.',
+      },
+      {
+        question: "Can we show model risk how it was tested?",
+        answer:
+          "Yes. Every reviewed session, verdict, check and replay is kept with who decided and when. Export it as evidence for model validation, your model risk committee or an audit.",
       },
       ...extra,
     ],
@@ -239,7 +244,12 @@ export const INSURANCE_PAGE: IndustryPageContent = {
     {
       question: "Which agents does it work with?",
       answer:
-        "Any agent whose traces you already collect: quoting, underwriting triage, claims intake, appeals and customer service. It reads traces from Langfuse, LangSmith, Braintrust, MLflow or Phoenix.",
+        "Any agent whose traces you already collect: quoting, underwriting triage, claims intake, appeals and customer service. It reads traces from Langfuse, LangSmith, Braintrust, Logfire or Phoenix.",
+    },
+    {
+      question: "Does it help with state AI rules?",
+      answer:
+        "It gives you the testing records that AI governance rules ask for, such as the NAIC model bulletin many states have adopted. It doesn't make you compliant on its own; it gives your compliance team the evidence.",
     },
   ]),
   close: {
@@ -387,7 +397,17 @@ export const FINANCIAL_SERVICES_PAGE: IndustryPageContent = {
     {
       question: "Which agents does it work with?",
       answer:
-        "Any agent whose traces you already collect: KYC and onboarding review, credit memos, fraud triage and client service. It reads traces from Langfuse, LangSmith, Braintrust, MLflow or Phoenix.",
+        "Any agent whose traces you already collect: KYC and onboarding review, credit memos, fraud triage and client service. It reads traces from Langfuse, LangSmith, Braintrust, Logfire or Phoenix.",
+    },
+    {
+      question: "Where is our data hosted?",
+      answer:
+        "On hosted plans you choose an EU or US region, and we process data under GDPR with a data processing agreement. On-prem, everything stays in your own cloud.",
+    },
+    {
+      question: "What about DORA?",
+      answer:
+        "Your AI engineer keeps the testing records and audit trail that DORA and model risk reviews ask for, and on-prem it runs inside your own ICT estate. It doesn't make you compliant on its own; it gives your second line the evidence.",
     },
   ]),
   close: {

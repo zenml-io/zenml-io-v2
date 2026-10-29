@@ -42,8 +42,13 @@ export function GET(): Response {
     ),
     joinMarkdownSections(
       "## Main CTA",
-      markdownCtaList([LABS_HERO.cta]),
+      markdownCtaList(
+        LABS_HERO.secondaryCta
+          ? [LABS_HERO.cta, LABS_HERO.secondaryCta]
+          : [LABS_HERO.cta],
+      ),
       LABS_HERO.install ? `Install Kitaru: \`${LABS_HERO.install.cmd}\`` : "",
+      LABS_HERO.installNote ?? "",
     ),
     joinMarkdownSections(
       `## ${LABS_ONBOARDING.headline}`,

@@ -3,13 +3,14 @@
  *
  * Route: /book-your-demo
  * This is the P0 conversion page linked from nav, footer, and CTAs site-wide.
- * Left column: marketing copy + stats + customer logos.
+ * Left column: offer copy (AI engineer first, ZenML second) + proof tiles + logos.
  * Right column: ContactForm (demo-request) + privacy note.
  * Below: testimonial + minimal footer.
  */
 
 import { R2_WEBFLOW_BASE } from "./constants";
 import type { CalEmbedConfig, PlaceholderField } from "./formTypes";
+import { KITARU_TRIAL_DAYS } from "./productKitaru";
 import type { SEOProps } from "./seo";
 
 const R2 = R2_WEBFLOW_BASE;
@@ -17,10 +18,10 @@ const R2 = R2_WEBFLOW_BASE;
 export const BOOK_YOUR_DEMO_SEO: SEOProps = {
   title: "Signup for Demo",
   description:
-    "Schedule a live demo and see how ZenML orchestrates your AI workflows and Kitaru diagnoses your agents.",
+    "Bring one agent and a week of traces. Our AI engineer shows you which evals you are missing. Running pipelines too? See how ZenML orchestrates them.",
   ogTitle: "Signup for Demo",
   ogDescription:
-    "Schedule a live demo and see how ZenML orchestrates your AI workflows and Kitaru diagnoses your agents.",
+    "Bring one agent and a week of traces. Our AI engineer shows you which evals you are missing. Running pipelines too? See how ZenML orchestrates them.",
 };
 
 // ---------------------------------------------------------------------------
@@ -28,25 +29,24 @@ export const BOOK_YOUR_DEMO_SEO: SEOProps = {
 // ---------------------------------------------------------------------------
 
 export const BOOK_YOUR_DEMO_HERO = {
-  headlinePrefix: "See ",
-  headlineHighlight: "ZenML",
-  headlineSuffix: " in action",
-  deck: "Get a personalized walkthrough of ZenML: from pipelines to agents, local to Kubernetes. 30 minutes with our team.",
+  headlinePrefix: "Bring ",
+  headlineHighlight: "one agent",
+  headlineSuffix: " and a week of traces",
+  deck: "Our AI engineer reads your traces next to your evals and shows you what they miss. Running pipelines, training or fine-tuning? We cover ZenML orchestration too. 30 minutes with our team.",
 };
 
+/**
+ * Proof tiles beside the hero. Facts stated elsewhere on the site only:
+ * pricing (productKitaru.ts), the trust center, and the 1,000+ teams line.
+ * No outcome percentages without a source.
+ */
 export const BOOK_YOUR_DEMO_STATS = [
+  { value: "1 agent", label: "and a week of traces is enough to start" },
   {
-    value: "78%",
-    label: "Faster time-to-market for models and agents in production",
+    value: `${KITARU_TRIAL_DAYS} days`,
+    label: "Free trial of our AI engineer, unlimited seats",
   },
-  {
-    value: "65%",
-    label: "Reduced engineering overhead on orchestration infrastructure",
-  },
-  {
-    value: "3x",
-    label: "More workflows running in production environments",
-  },
+  { value: "SOC 2", label: "Type II and ISO 27001 for your security review" },
   { value: "1,000+", label: "ML and AI teams trust ZenML worldwide" },
 ];
 
