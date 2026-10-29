@@ -17,9 +17,12 @@ import type {
   PricingPlan,
 } from "./marketingPageTypes";
 import {
-  KITARU_CLOUD_LIMITS,
+  KITARU_AGENT_DEFINITION,
   KITARU_CLOUD_PRICE,
+  KITARU_EXTRA_AGENT_PRICE,
   KITARU_LINKS,
+  KITARU_PLAN_LIMITS,
+  KITARU_TEAM_PRICE,
   KITARU_TRIAL_DAYS,
   KITARU_VS_OBSERVABILITY_ANSWER,
 } from "./productKitaru";
@@ -32,10 +35,10 @@ import { defaultOgUrl } from "./seo";
 export const PRICING_SEO = {
   title: "Pricing - ZenML",
   description:
-    "Orchestrate AI workflows and ship agents with confidence. Predictable, transparent pricing that scales with value.",
+    "Priced per agent, not per seat. Your AI engineer starts at $39 a month for one agent, with your whole team included. Open source is free; on-prem is priced with you.",
   ogTitle: "Pricing - ZenML",
   ogDescription:
-    "Orchestrate AI workflows and ship agents with confidence. Predictable, transparent pricing that scales with value.",
+    "Priced per agent, not per seat. Your AI engineer starts at $39 a month for one agent, with your whole team included.",
   ogImage: defaultOgUrl("pages", "pricing"),
 } as const;
 
@@ -44,8 +47,8 @@ export const PRICING_SEO = {
 // ---------------------------------------------------------------------------
 export const PRICING_HERO = {
   eyebrow: "Pricing",
-  headline: "Orchestrate AI workflows and ship agents with confidence",
-  deck: "Start open source and self-hosted. Upgrade to Pro for the managed control plane, on our SaaS or your own infrastructure.",
+  headline: "Priced per agent, not per seat",
+  deck: `Your whole team, one agent, ${KITARU_CLOUD_PRICE} a month. Add agents as you ship them. On-prem for regulated teams, priced with you.`,
 } as const;
 
 /**
@@ -92,7 +95,7 @@ export const PRICING_PRO_INCLUSIONS = {
       side: "kitaru" as const,
       eyebrow: "Agent replay",
       title: "Replay-based evals",
-      body: "Import your whole trace history, replay it against your next change, and keep every fix as a regression test, on one flat plan.",
+      body: "Import your whole trace history, replay it against your next change, and keep every fix as a regression test, priced per agent.",
       bullets: [
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z" /></svg>',
@@ -101,8 +104,8 @@ export const PRICING_PRO_INCLUSIONS = {
         },
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><line x1="10" y1="15" x2="10" y2="9" /><line x1="14" y1="15" x2="14" y2="9" /></svg>',
-          title: `One flat ${KITARU_CLOUD_PRICE} plan, no meters to read`,
-          detail: "Replays and experiment runs included at launch.",
+          title: `From ${KITARU_CLOUD_PRICE} a month, per agent`,
+          detail: "Your AI engineer, replays and experiments included.",
         },
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="11.49" /></svg>',
@@ -226,25 +229,29 @@ export const PRICING_PLANS: PricingPlan[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// Kitaru workspace plans.
+// Agent plans: the AI engineer on Kitaru.
 //
-// One flat Cloud plan with a full-access trial and no credit card — no
-// free hosted tier, no metering, no middle tiers. Just Open Source, Cloud,
-// and Enterprise. The price, trial length and limits are interpolated from
-// productKitaru.ts so a change is one line there.
+// Priced per agent, never per seat: open source free, two hosted SaaS plans
+// with public prices, and Enterprise (on-prem, your cloud) behind a
+// conversation. Prices, limits and the agent definition are interpolated
+// from productKitaru.ts so a change is one line there.
 // ---------------------------------------------------------------------------
+const STARTER = KITARU_PLAN_LIMITS.starter;
+const TEAM = KITARU_PLAN_LIMITS.team;
+
 export const PRICING_PLANS_KITARU: PricingPlan[] = [
   {
     id: "kitaru-open-source",
     eyebrow: "Open Source",
-    subtitle: "For individuals and small teams",
+    pill: "Self-hosted",
+    subtitle: "Run it yourself",
     price: "Free",
-    limitsLine: "Self-hosted · Your infrastructure, your limits",
+    limitsLine: "Your infrastructure · Your limits",
     includesLabel: "Includes",
     features: [
-      "Import and record without limits",
-      "Cohorts, evaluators and experiment runs",
-      "Replay on your own workers, with your own keys",
+      "Kitaru and ZenML, Apache 2.0",
+      "Import traces and evals without limits",
+      "Cohorts, evaluators and replays",
       "Community support",
     ],
     cta: {
@@ -255,45 +262,67 @@ export const PRICING_PLANS_KITARU: PricingPlan[] = [
     ctaVariant: "secondary",
   },
   {
-    id: "kitaru-cloud",
-    eyebrow: "Cloud",
+    id: "kitaru-starter",
+    eyebrow: "Starter",
     pill: "SaaS",
-    topBadge: `${KITARU_TRIAL_DAYS}-day free trial`,
-    highlighted: true,
-    subtitle: "For teams shipping agents to customers",
+    subtitle: "For your first agent in production",
     price: KITARU_CLOUD_PRICE,
     priceSuffix: "/month",
-    limitsLine: `${KITARU_CLOUD_LIMITS.agents} agents · ${KITARU_CLOUD_LIMITS.seats} seats · ${KITARU_CLOUD_LIMITS.retentionDays}-day session retention`,
+    limitsLine: `${STARTER.agents} agent · Unlimited seats · ${STARTER.sessions} sessions read a month`,
     includesLabel: "Everything in Open Source, plus",
     features: [
-      "Hosted dashboard and control plane",
-      "Replays and experiment runs included, no meters",
-      "Trial starts with full Enterprise access",
-      "Community support",
+      "Your AI engineer on one agent",
+      "Finds wrong and missing evals",
+      "A short interview and a weekly review",
+      "Hosted Kitaru, replays included",
     ],
     cta: {
       label: KITARU_LINKS.signup.label,
       href: KITARU_LINKS.signup.href,
-      analytics: "Kitaru-Cloud-Signup",
+      analytics: "Kitaru-Starter-Signup",
+    },
+    ctaVariant: "secondary",
+  },
+  {
+    id: "kitaru-team",
+    eyebrow: "Team",
+    pill: "SaaS",
+    topBadge: `${KITARU_TRIAL_DAYS}-day free trial`,
+    highlighted: true,
+    subtitle: "For startups shipping several agents",
+    price: KITARU_TEAM_PRICE,
+    priceSuffix: "/month",
+    limitsLine: `${TEAM.agents} agents · Unlimited seats · ${TEAM.sessions} sessions read a month`,
+    includesLabel: "Everything in Starter, plus",
+    features: [
+      `More agents at ${KITARU_EXTRA_AGENT_PRICE} a month each`,
+      "Findings and reviews in Slack",
+      `${TEAM.retentionDays}-day session retention`,
+      "Priority support",
+    ],
+    cta: {
+      label: KITARU_LINKS.signup.label,
+      href: KITARU_LINKS.signup.href,
+      analytics: "Kitaru-Team-Signup",
     },
     ctaVariant: "primary",
   },
   {
     id: "kitaru-enterprise",
     eyebrow: "Enterprise",
-    pill: "SaaS",
-    subtitle: "For organizations at scale",
+    pill: "On-prem",
+    subtitle: "For regulated teams",
     price: "Custom",
-    limitsLine: "Unlimited agents · Custom seats and retention",
-    includesLabel: "Everything in Cloud, plus",
+    limitsLine: "Your cloud or on-prem · Unlimited agents",
+    includesLabel: "Everything in Team, plus",
     features: [
-      "SSO (SAML / OIDC)",
-      "Audit logs",
-      "Remote worker pools",
-      "Custom limits and retention",
+      "On-prem or air-gapped deployment",
+      "Your own LLM endpoint",
+      "SSO, SCIM and audit logs",
+      "SLA and a named engineer",
     ],
     cta: {
-      label: "Talk to an engineer",
+      label: "Talk to us",
       href: KITARU_LINKS.demo.href,
       analytics: "Kitaru-Enterprise-Talk",
     },
@@ -305,7 +334,7 @@ export const PRICING_PLANS_KITARU: PricingPlan[] = [
 // Plan workspaces — the /pricing plan cards are shown per workspace type.
 //
 // One subscription covers both, but the plans differ in shape: ZenML prices
-// by execution tiers, while Kitaru launches on a single flat plan. Showing
+// by execution tiers, while agents are priced per agent. Showing
 // one blended card for both invited the wrong reading.
 //
 // Each entry is the full descriptor for its panel — plans, meter note, a
@@ -317,10 +346,10 @@ export const PRICING_PLANS_KITARU: PricingPlan[] = [
 export const PRICING_PLAN_WORKSPACES = [
   {
     id: "kitaru",
-    label: "Kitaru workspace",
-    sublabel: "Agent replay",
-    note: `One flat plan while we launch: ${KITARU_CLOUD_PRICE} a month, every feature, no meters to read. The trial starts with full access and needs no credit card.`,
-    learn: { label: "Learn about Kitaru", href: "/product/kitaru" },
+    label: "Your AI engineer",
+    sublabel: "Agents and evals",
+    note: `Priced per agent, never per seat. ${KITARU_AGENT_DEFINITION} Every hosted plan starts with a ${KITARU_TRIAL_DAYS}-day trial, no credit card.`,
+    learn: { label: "How it works", href: "/" },
     plans: PRICING_PLANS_KITARU,
     /** Drives the Labs plan cards' highlighted-card border/pill and check icons. */
     accent: "orange",
@@ -329,7 +358,7 @@ export const PRICING_PLAN_WORKSPACES = [
     id: "zenml",
     label: "ZenML workspace",
     sublabel: "AI orchestration",
-    note: "Executions are ZenML pipeline runs. Kitaru is priced separately as a flat monthly plan. One subscription covers both workspaces.",
+    note: "Executions are ZenML pipeline runs. Agents are priced separately, per agent. One subscription covers both workspaces.",
     learn: { label: "Learn about ZenML", href: "/product/zenml" },
     plans: PRICING_PLANS,
     accent: "sage",
@@ -436,92 +465,107 @@ export const PRICING_COMPARE: PricingCompareTableData = {
 };
 
 // Kitaru-workspace variant, shown when the workspace toggle selects Kitaru.
-// Launch framing: one flat plan, nothing metered, every feature on every
-// hosted plan — the table's job is to show there is nothing to compute,
-// only the self-hosted / hosted / enterprise split to pick from.
+// Per-agent framing: seats are unlimited everywhere, so the table's job is
+// to show what each step up adds, from self-hosted to on-prem.
 export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
   heading: "Compare every plan",
-  subheading: `One flat plan at launch: ${KITARU_CLOUD_PRICE} a month, every feature, ${KITARU_TRIAL_DAYS}-day full-access trial. No meters, no usage math.`,
-  columnHeaders: ["Open Source", "Cloud", "Enterprise"],
+  subheading: `Per agent, never per seat. ${KITARU_TRIAL_DAYS}-day trial on every hosted plan.`,
+  columnHeaders: ["Open Source", "Starter", "Team", "Enterprise"],
   sections: [
     {
       heading: "Plan",
       rows: [
         {
           feature: "Price",
-          values: ["Free", `${KITARU_CLOUD_PRICE} / month`, "Custom"],
+          values: [
+            "Free",
+            `${KITARU_CLOUD_PRICE} / month`,
+            `${KITARU_TEAM_PRICE} / month`,
+            "Custom",
+          ],
         },
-        {
-          feature: "Free trial",
-          values: ["—", `${KITARU_TRIAL_DAYS} days, full access`, "—"],
-        },
-        {
-          feature: "Credit card to start",
-          values: ["Never", "Not for the trial", "—"],
-        },
-      ],
-    },
-    {
-      heading: "Replay & evals on every plan",
-      rows: [
-        {
-          feature: "Replay-based evals (Python & TypeScript)",
-          values: [true, true, true],
-        },
-        {
-          feature: "Cohorts, evaluators and experiment runs",
-          values: [true, true, true],
-        },
-        {
-          feature: "Replay on your own workers, with your own keys",
-          values: [true, true, true],
-        },
-        {
-          feature: "Imports, recordings and scoring, no usage caps",
-          values: [true, true, true],
-        },
-      ],
-    },
-    {
-      heading: "Limits",
-      rows: [
         {
           feature: "Agents",
-          values: ["Self-hosted", `${KITARU_CLOUD_LIMITS.agents}`, "Unlimited"],
+          values: [
+            "Self-hosted",
+            `${STARTER.agents}`,
+            `${TEAM.agents}, then ${KITARU_EXTRA_AGENT_PRICE} each`,
+            "Unlimited",
+          ],
         },
         {
           feature: "Seats",
-          values: ["Self-hosted", `${KITARU_CLOUD_LIMITS.seats}`, "Custom"],
+          values: ["Unlimited", "Unlimited", "Unlimited", "Unlimited"],
+        },
+        {
+          feature: "Sessions your AI engineer reads a month",
+          values: ["—", STARTER.sessions, TEAM.sessions, "Custom"],
         },
         {
           feature: "Session retention",
           values: [
             "Self-hosted",
-            `${KITARU_CLOUD_LIMITS.retentionDays} days`,
+            `${STARTER.retentionDays} days`,
+            `${TEAM.retentionDays} days`,
             "Custom",
           ],
         },
       ],
     },
     {
-      heading: "Hosted control plane",
+      heading: "Your AI engineer",
       rows: [
         {
-          feature: "Hosted dashboard and control plane",
-          values: [false, true, true],
+          feature: "Finds wrong and missing evals",
+          values: [false, true, true, true],
         },
         {
-          feature: "Role-based access (standard roles)",
-          values: [false, false, true],
+          feature: "Short interview and weekly review",
+          values: [false, true, true, true],
+        },
+        {
+          feature: "Findings and reviews in Slack",
+          values: [false, false, true, true],
         },
       ],
     },
     {
-      heading: "Enterprise & governance",
+      heading: "Kitaru on every plan",
       rows: [
-        { feature: "SSO (SAML / OIDC)", values: [false, false, true] },
-        { feature: "Audit logs", values: [false, false, true] },
-        { feature: "Remote worker pools", values: [false, false, true] },
+        {
+          feature: "Import traces and evals from your tracing tool",
+          values: [true, true, true, true],
+        },
+        {
+          feature: "Cohorts, evaluators and replays",
+          values: [true, true, true, true],
+        },
+        {
+          feature: "Replays with your own model keys",
+          values: [true, true, true, true],
+        },
+        {
+          feature: "Hosted dashboard",
+          values: [false, true, true, true],
+        },
+      ],
+    },
+    {
+      heading: "Deployment and governance",
+      rows: [
+        {
+          feature: "On-prem or air-gapped",
+          values: [true, false, false, true],
+        },
+        {
+          feature: "Your own LLM endpoint for the AI engineer",
+          values: [false, false, false, true],
+        },
+        {
+          feature: "SSO (SAML / OIDC) and SCIM",
+          values: [false, false, false, true],
+        },
+        { feature: "Audit logs", values: [false, false, false, true] },
       ],
     },
     {
@@ -529,7 +573,7 @@ export const PRICING_COMPARE_KITARU: PricingCompareTableData = {
       rows: [
         {
           feature: "Support level",
-          values: ["Community", "Community", "Dedicated + SLA"],
+          values: ["Community", "Community", "Priority", "Dedicated + SLA"],
         },
       ],
     },
@@ -597,39 +641,50 @@ export const PRICING_FAQ_SLACK_CTA: CtaLink = {
 
 /** Kitaru-workspace FAQ — shown when the pricing toggle is on Kitaru. */
 export const PRICING_FAQ_KITARU: FaqData = {
-  eyebrow: "Kitaru",
-  headline: "Kitaru pricing, answered",
+  eyebrow: "Agents",
+  headline: "Agent pricing, answered",
   items: [
     {
-      question: "What does Kitaru cost?",
-      answer: `${KITARU_CLOUD_PRICE} a month, flat. The hosted Cloud plan includes ${KITARU_CLOUD_LIMITS.agents} agents, ${KITARU_CLOUD_LIMITS.seats} seats, ${KITARU_CLOUD_LIMITS.retentionDays}-day session retention, and every feature. Replays, experiment runs, imports and recording all come with it. No meters, no usage math. Need more agents, seats or governance? That's the Enterprise plan.`,
+      question: "What counts as an agent?",
+      answer: `${KITARU_AGENT_DEFINITION} Starter covers one, Team covers ${TEAM.agents}, and each one after that is ${KITARU_EXTRA_AGENT_PRICE} a month.`,
+    },
+    {
+      question: "Why per agent and not per seat?",
+      answer:
+        "Because everyone who knows what good looks like should be in it: engineers, product, and the domain experts who review sessions. A team of fifteen pays the same as a team of two.",
+    },
+    {
+      question: "Does the AI engineer cost extra?",
+      answer: `No. It's included on every hosted plan, up to the sessions it reads each month (${STARTER.sessions} on Starter, ${TEAM.sessions} on Team). Replays run with your own model keys, so those model costs stay on your bill, not ours.`,
+    },
+    {
+      question: "What if we go over the sessions it reads?",
+      answer:
+        "Nothing stops. Your AI engineer keeps reading a sample, and we'll tell you when the next plan makes sense.",
     },
     {
       question: `What happens after the ${KITARU_TRIAL_DAYS}-day trial?`,
-      answer: `The trial is full access to everything and needs no credit card. When it ends, add a card and you're on the ${KITARU_CLOUD_PRICE}/month plan. Nothing about your workspace changes except the billing. There's no free hosted tier: the free option is the open-source version, self-hosted on your own infrastructure, forever.`,
+      answer:
+        "The trial is full access and needs no credit card. When it ends, add a card and pick a plan. Nothing in your workspace changes except the billing. The open-source version stays free, forever.",
     },
     {
-      question: "What does the Enterprise plan add?",
+      question: "Can we run it on-prem?",
       answer:
-        "Unlimited agents, custom seats and session retention, plus the governance layer: SSO, role-based access and audit. If the Cloud plan's limits are the only thing in your way, that's the conversation to have with us.",
+        "Yes, on Enterprise. Your AI engineer runs inside your own cloud or on-prem, air-gapped if you need it, and can call your own LLM endpoint. It's priced with you, based on agents and deployment.",
+    },
+    {
+      question: "Do you see my traces?",
+      answer:
+        "On hosted plans, your AI engineer runs in our cloud and reads traces from your tracing tool through keys you can revoke. Replays run on your own workers with your own keys. Self-hosted or on Enterprise on-prem, nothing leaves your infrastructure.",
     },
     {
       question: "How is this different from Langfuse, Braintrust or LangSmith?",
       answer: KITARU_VS_OBSERVABILITY_ANSWER,
     },
     {
-      question: "Can I self-host Kitaru?",
-      answer:
-        "Yes. Kitaru is open source under Apache 2.0, the same model as ZenML. One command brings up a local deployment in Docker, or self-host the server in your own VPC. Either way the worker runs beside your code, on your machine or your compute, using your own model keys, so replays never execute on our infrastructure. Cloud adds the hosted control plane and remote worker pools; Enterprise adds SSO, RBAC and audit.",
-    },
-    {
-      question: "Do you see my traces?",
-      answer:
-        "Self-hosted, no: the server and workers run in your infrastructure and your traces never have to leave your systems. On the hosted Cloud plan we manage the control plane, but replay still executes on your own workers with your own keys. The recorded sessions are yours.",
-    },
-    {
       question: "Do I need a separate subscription for ZenML?",
-      answer: `No, one subscription covers both workspaces. They're priced differently (ZenML's managed tiers scale with pipeline executions; Kitaru is a flat ${KITARU_CLOUD_PRICE}/month), but it's the same control plane, the same governance, and one bill.`,
+      answer:
+        "No, one subscription covers both. ZenML's managed tiers scale with pipeline executions; agents are priced per agent. Same control plane, same governance, one bill.",
     },
   ],
   slackCta: PRICING_FAQ_SLACK_CTA,
@@ -672,7 +727,7 @@ export const PRICING_FAQ_ZENML: FaqData = {
     },
     {
       question: "Do I need a separate subscription for Kitaru?",
-      answer: `No, your ZenML subscription covers the Kitaru workspace too. Kitaru is priced on its own terms, a flat ${KITARU_CLOUD_PRICE}/month rather than execution tiers, but both workspaces run on the same control plane and land on one bill.`,
+      answer: `No, your ZenML subscription covers the Kitaru workspace too. Agents are priced on their own terms, from ${KITARU_CLOUD_PRICE}/month per agent rather than execution tiers, but both workspaces run on the same control plane and land on one bill.`,
     },
     {
       question: "What kind of support is included in each plan?",
@@ -776,7 +831,52 @@ export const PRICING_FINAL_CTA = {
  * Docs menu already carries it.
  */
 export const PRICING_CLOSE: LabsBandContent = {
-  headlineLines: ["Start deploying reproducible", "AI workflows today"],
-  deck: PRICING_FINAL_CTA.body,
-  cta: PRICING_FINAL_CTA.primaryCta as LabsCta,
+  headlineLines: ["Start with one agent", "and your whole team"],
+  deck: `Your AI engineer reads your traces next to your evals and shows you what they miss. ${KITARU_TRIAL_DAYS}-day trial, no credit card.`,
+  cta: {
+    label: KITARU_LINKS.signup.label,
+    href: KITARU_LINKS.signup.href,
+    analytics: "Pricing-Final-Signup",
+  },
 };
+
+// ---------------------------------------------------------------------------
+// Price strip — the agent plans in one row, for pages outside /pricing
+// (labs.price-strip). Derived from PRICING_PLANS_KITARU, never retyped.
+// ---------------------------------------------------------------------------
+export interface PriceStripPlan {
+  name: string;
+  price: string;
+  suffix?: string;
+  line: string;
+  highlighted: boolean;
+}
+
+export interface PriceStripContent {
+  eyebrow: string;
+  headline: string;
+  deck: string;
+  plans: readonly PriceStripPlan[];
+  link: LabsCta;
+}
+
+/** The strip for one placement; `placement` prefixes the analytics event. */
+export function priceStrip(placement: string): PriceStripContent {
+  return {
+    eyebrow: PRICING_HERO.eyebrow,
+    headline: PRICING_HERO.headline,
+    deck: PRICING_HERO.deck,
+    plans: PRICING_PLANS_KITARU.map((plan) => ({
+      name: plan.eyebrow,
+      price: plan.price,
+      suffix: plan.priceSuffix,
+      line: plan.limitsLine ?? plan.subtitle,
+      highlighted: plan.highlighted === true,
+    })),
+    link: {
+      label: "Compare plans",
+      href: "/pricing",
+      analytics: `${placement}-Pricing-Compare`,
+    },
+  };
+}

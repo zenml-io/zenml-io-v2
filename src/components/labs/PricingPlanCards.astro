@@ -1,8 +1,9 @@
 ---
 /**
  * labs.pricing-plan-cards — the `/pricing` two-workspace plan-card panels
- * (Open Source / Scale / Enterprise for ZenML, Open Source / Cloud /
- * Enterprise for Kitaru). Both workspace panels are server-rendered; a
+ * (Open Source / Scale / Enterprise for ZenML in three columns; Open Source /
+ * Starter / Team / Enterprise for agents, two columns from md and four from
+ * xl). Both workspace panels are server-rendered; a
  * toggle above them flips which one is visible, so the numbers are in the
  * HTML for crawlers and for anyone without JS. Toggle markup, ids,
  * `data-workspace-*` attributes and the whole script (workspace toggle,
@@ -83,7 +84,7 @@ const { workspaces } = Astro.props;
             </a>
           </p>
 
-          <div class="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start">
+          <div class:list={["grid grid-cols-1 gap-6 lg:items-start", ws.plans.length === 4 ? "md:grid-cols-2 xl:grid-cols-4" : "lg:grid-cols-3"]}>
             {ws.plans.map((plan, planIdx) => (
               <PricingPlanCard plan={plan} accent={ws.accent} planIdx={planIdx} />
             ))}

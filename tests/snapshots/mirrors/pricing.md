@@ -1,14 +1,14 @@
-# Orchestrate AI workflows and ship agents with confidence
+# Priced per agent, not per seat
 
 Canonical HTML URL: https://www.zenml.io/pricing
 
-Orchestrate AI workflows and ship agents with confidence. Predictable, transparent pricing that scales with value.
+Priced per agent, not per seat. Your AI engineer starts at $39 a month for one agent, with your whole team included. Open source is free; on-prem is priced with you.
 
 Note: this is a repo-owned Markdown mirror for agents and readers. It omits visual-only UI, decorative media, navigation, analytics, and other browser chrome.
 
 ## Summary
 
-Start open source and self-hosted. Upgrade to Pro for the managed control plane, on our SaaS or your own infrastructure.
+Your whole team, one agent, $39 a month. Add agents as you ship them. On-prem for regulated teams, priced with you.
 
 ## Main CTAs
 
@@ -116,35 +116,43 @@ Open Source and Pro, with Scale and Enterprise feature tiers.
 | --- | --- | --- | --- |
 | Support level | Community | Priority | Dedicated + SLA |
 
-## Kitaru pricing, answered
+## Agent pricing, answered
 
-### What does Kitaru cost?
+### What counts as an agent?
 
-$39 a month, flat. The hosted Cloud plan includes 3 agents, 2 seats, 90-day session retention, and every feature. Replays, experiment runs, imports and recording all come with it. No meters, no usage math. Need more agents, seats or governance? That's the Enterprise plan.
+An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. Starter covers one, Team covers 5, and each one after that is $39 a month.
+
+### Why per agent and not per seat?
+
+Because everyone who knows what good looks like should be in it: engineers, product, and the domain experts who review sessions. A team of fifteen pays the same as a team of two.
+
+### Does the AI engineer cost extra?
+
+No. It's included on every hosted plan, up to the sessions it reads each month (1,000 on Starter, 10,000 on Team). Replays run with your own model keys, so those model costs stay on your bill, not ours.
+
+### What if we go over the sessions it reads?
+
+Nothing stops. Your AI engineer keeps reading a sample, and we'll tell you when the next plan makes sense.
 
 ### What happens after the 14-day trial?
 
-The trial is full access to everything and needs no credit card. When it ends, add a card and you're on the $39/month plan. Nothing about your workspace changes except the billing. There's no free hosted tier: the free option is the open-source version, self-hosted on your own infrastructure, forever.
+The trial is full access and needs no credit card. When it ends, add a card and pick a plan. Nothing in your workspace changes except the billing. The open-source version stays free, forever.
 
-### What does the Enterprise plan add?
+### Can we run it on-prem?
 
-Unlimited agents, custom seats and session retention, plus the governance layer: SSO, role-based access and audit. If the Cloud plan's limits are the only thing in your way, that's the conversation to have with us.
+Yes, on Enterprise. Your AI engineer runs inside your own cloud or on-prem, air-gapped if you need it, and can call your own LLM endpoint. It's priced with you, based on agents and deployment.
+
+### Do you see my traces?
+
+On hosted plans, your AI engineer runs in our cloud and reads traces from your tracing tool through keys you can revoke. Replays run on your own workers with your own keys. Self-hosted or on Enterprise on-prem, nothing leaves your infrastructure.
 
 ### How is this different from Langfuse, Braintrust or LangSmith?
 
 They tell you what happened: traces you read, dashboards you check. Kitaru re-runs what happened. Your agent's real code executes again against the recorded world, so you can test your next change against your last thousand sessions before it ships. Kitaru also imports trace files exported from Langfuse, LangSmith, Braintrust, Logfire or Arize Phoenix, so your observability tool stays your system of record.
 
-### Can I self-host Kitaru?
-
-Yes. Kitaru is open source under Apache 2.0, the same model as ZenML. One command brings up a local deployment in Docker, or self-host the server in your own VPC. Either way the worker runs beside your code, on your machine or your compute, using your own model keys, so replays never execute on our infrastructure. Cloud adds the hosted control plane and remote worker pools; Enterprise adds SSO, RBAC and audit.
-
-### Do you see my traces?
-
-Self-hosted, no: the server and workers run in your infrastructure and your traces never have to leave your systems. On the hosted Cloud plan we manage the control plane, but replay still executes on your own workers with your own keys. The recorded sessions are yours.
-
 ### Do I need a separate subscription for ZenML?
 
-No, one subscription covers both workspaces. They're priced differently (ZenML's managed tiers scale with pipeline executions; Kitaru is a flat $39/month), but it's the same control plane, the same governance, and one bill.
+No, one subscription covers both. ZenML's managed tiers scale with pipeline executions; agents are priced per agent. Same control plane, same governance, one bill.
 
 ## ZenML pricing, answered
 
@@ -174,7 +182,7 @@ ZenML is a metadata layer on top of your existing infrastructure: your data, art
 
 ### Do I need a separate subscription for Kitaru?
 
-No, your ZenML subscription covers the Kitaru workspace too. Kitaru is priced on its own terms, a flat $39/month rather than execution tiers, but both workspaces run on the same control plane and land on one bill.
+No, your ZenML subscription covers the Kitaru workspace too. Agents are priced on their own terms, from $39/month per agent rather than execution tiers, but both workspaces run on the same control plane and land on one bill.
 
 ### What kind of support is included in each plan?
 
@@ -200,10 +208,10 @@ Training, batch inference, evals, agent workflows. One DAG, versioned artifacts,
 
 ### Replay-based evals
 
-Import your whole trace history, replay it against your next change, and keep every fix as a regression test, on one flat plan.
+Import your whole trace history, replay it against your next change, and keep every fix as a regression test, priced per agent.
 
 - Sessions, cohorts, evaluators, experiments: The whole replay loop, imports and scoring included.
-- One flat $39 plan, no meters to read: Replays and experiment runs included at launch.
+- From $39 a month, per agent: Your AI engineer, replays and experiments included.
 - Seats for your domain experts: The people who know what good looks like are not a line item.
 
 - Learn more: [Learn about Kitaru](https://www.zenml.io/product/kitaru)

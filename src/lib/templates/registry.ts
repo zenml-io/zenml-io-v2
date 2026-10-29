@@ -1526,6 +1526,20 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoProps: {},
   },
   {
+    id: "labs.price-strip",
+    kind: "template",
+    componentPath: "src/components/labs/LabsPriceStrip.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "The agent plans in one row for pages outside /pricing, from `content: PriceStripContent` (`priceStrip(placement)` in pricing.ts, derived from PRICING_PLANS_KITARU; on `/`): eyebrow, headline, deck and a Compare plans link in a 4/12 column, one compact cell per plan (name, price, limits line) in a 1 \u2192 2 \u2192 4 grid in the 8/12 column; the highlighted plan on sage-50. Static.",
+    stage: false,
+    demoProps: {},
+  },
+  {
     id: "labs.how-it-works",
     kind: "template",
     componentPath: "src/components/labs/LabsHowItWorks.astro",

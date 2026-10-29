@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import { PRICING_PLANS, PRICING_PLANS_KITARU } from "../../src/lib/pricing";
 import { buildPricingJsonLd } from "../../src/lib/pricingJsonLd";
 
 /**
@@ -27,11 +28,12 @@ describe("buildPricingJsonLd", () => {
       (node) => node["@type"] === "SoftwareApplication",
     );
     expect(apps.map((app) => app.name)).toEqual(["Kitaru", "ZenML"]);
-    for (const app of apps) {
+    const planCounts = [PRICING_PLANS_KITARU.length, PRICING_PLANS.length];
+    for (const [index, app] of apps.entries()) {
       const offers = (
         app.offers as { itemListElement: { name: string; url: string }[] }
       ).itemListElement;
-      expect(offers).toHaveLength(3);
+      expect(offers).toHaveLength(planCounts[index]);
       for (const offer of offers) {
         expect(offer.url).toMatch(/^https:\/\//);
       }

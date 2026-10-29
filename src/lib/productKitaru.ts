@@ -20,12 +20,17 @@ export const MODEL_CHOICE_GUIDE_URL = `${KITARU_DOCS_URL}/import-your-traces/mod
  * here.
  */
 export const KITARU_CLOUD_PRICE = "$39";
+export const KITARU_TEAM_PRICE = "$199";
+export const KITARU_EXTRA_AGENT_PRICE = "$39";
 export const KITARU_TRIAL_DAYS = 14;
-export const KITARU_CLOUD_LIMITS = {
-  agents: 3,
-  seats: 2,
-  retentionDays: 90,
+/** Hosted plans are priced per agent; seats are never limited. */
+export const KITARU_PLAN_LIMITS = {
+  starter: { agents: 1, sessions: "1,000", retentionDays: 90 },
+  team: { agents: 5, sessions: "10,000", retentionDays: 180 },
 } as const;
+/** What one agent is, for pricing. Said the same way everywhere. */
+export const KITARU_AGENT_DEFINITION =
+  "An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends.";
 
 /** Trial terms shown next to every signup CTA. */
 export const KITARU_TRIAL_NOTE = `${KITARU_TRIAL_DAYS}-day free trial · Full access · No credit card`;
