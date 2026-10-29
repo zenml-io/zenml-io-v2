@@ -258,10 +258,6 @@ export const PRICING_COMPARE: PricingCompareTableData = {
           values: ["Self-hosted", `${STARTER.pipelineRuns}`, "Custom"],
         },
         {
-          feature: "Sessions your AI engineer reads",
-          values: ["—", "No limit", "No limit"],
-        },
-        {
           feature: "Seats",
           values: ["Unlimited", "Unlimited", "Unlimited"],
         },
