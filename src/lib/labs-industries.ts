@@ -231,8 +231,8 @@ export const INSURANCE_PAGE: IndustryPageContent = {
   benchmarks: {
     eyebrow: "Benchmarks",
     headline: "Tested on insurance work",
-    deck: "We run real underwriting and appeals tasks through open and frontier models, and publish the method, the noise and the limits.",
-    slugs: ["underwriting", "decision-agents"],
+    deck: "We run real claims, appeals and underwriting work through open and frontier models, and let our AI engineer improve the agent batch after batch. Every result publishes its method, its noise and its limits.",
+    slugs: ["claims-over-time", "underwriting"],
     link: {
       label: "All insurance benchmarks",
       href: "/benchmarks#insurance",

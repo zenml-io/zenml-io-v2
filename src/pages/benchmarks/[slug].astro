@@ -4,8 +4,8 @@
  * `labs.page-header` (breadcrumb, question, deck), a facts strip, then the
  * result at a glance as `process-steps.compact-list` (the benchmark's
  * `labs.bar-chart` as the lead card, then its top three findings) and its
- * main section (a `labs.interval-chart` where the benchmark has one, then
- * the first table). The rest of the record follows, open rather than
+ * main section (a `labs.line-chart` and a `labs.interval-chart` where the
+ * benchmark has them, then the first table). The rest of the record follows, open rather than
  * folded away: every other finding as numbered cards, how it was run beside
  * what it can't show, and the data it ran on. Only the bulky extra tables
  * fold, each as a card that names its tables before it opens. The companion
@@ -17,6 +17,7 @@ import FeatureCard from "../../components/labs/FeatureCard.astro";
 import LabsBarChart from "../../components/labs/LabsBarChart.astro";
 import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
 import LabsIntervalChart from "../../components/labs/LabsIntervalChart.astro";
+import LabsLineChart from "../../components/labs/LabsLineChart.astro";
 import LabsPageHeader from "../../components/labs/LabsPageHeader.astro";
 import LabsRelatedBand from "../../components/labs/LabsRelatedBand.astro";
 import LabsResultsTable from "../../components/labs/LabsResultsTable.astro";
@@ -149,6 +150,7 @@ const LINK =
       <section class="scroll-reveal-section" aria-labelledby={main.id}>
         <h2 id={main.id} class:list={["reveal-child", SECTION_HEADING_CLASS]}>{main.title}</h2>
         {main.intro && <p class:list={["reveal-child stagger-1 mt-space-sm max-w-[768px]", BODY]}>{main.intro}</p>}
+        {report.timeline && <div class="reveal-child mt-space-lg min-w-0"><LabsLineChart chart={report.timeline} /></div>}
         {report.intervals && <div class="reveal-child mt-space-lg min-w-0"><LabsIntervalChart chart={report.intervals} /></div>}
         <div class="reveal-child mt-space-lg min-w-0"><LabsResultsTable table={main.tables[0]} /></div>
       </section>
@@ -156,7 +158,8 @@ const LINK =
 
   </div>
 
-  <div class="mx-auto mt-space-xxl flex max-w-content flex-col gap-space-xxl px-gutter md:mt-28 md:gap-28">
+  {/* With no further reading the related band collapses; the bottom padding keeps the last section off the close band. */}
+  <div class:list={["mx-auto mt-space-xxl flex max-w-content flex-col gap-space-xxl px-gutter md:mt-28 md:gap-28", reading.length === 0 && "pb-space-xxl md:pb-28"]}>
     {moreFindings.length > 0 && (
       <section class="scroll-reveal-section" aria-labelledby="more-findings">
         <h2 id="more-findings" class:list={["reveal-child", SECTION_HEADING_CLASS]}>What else we found</h2>

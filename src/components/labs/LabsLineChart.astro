@@ -1,0 +1,147 @@
+---
+import type { LineChart } from "../../lib/benchmarkReports";
+
+/**
+ * labs.line-chart — a score over successive rounds for one or two series:
+ * a caption with the metric and its "higher/lower is better" direction,
+ * hairline gridlines with y ticks on the left, an optional sage-50 span
+ * from one round to the end (a model switch, labelled above), the emphasised
+ * series solid sage-800 with filled dots, the other dashed sage-500 with
+ * hollow dots, and each series named directly at its last point instead of
+ * in a legend. Single hue, two series at most (DESIGN.md "Data
+ * visualization"). Lines are an SVG stretched to the plot with
+ * non-scaling strokes; dots and text are positioned HTML, so type stays
+ * legible on phones. The plot is aria-hidden; a screen-reader sentence
+ * carries every value, and the report's table follows it.
+ */
+interface Props {
+  chart: LineChart;
+}
+const { chart } = Astro.props;
+const { y, xLabels } = chart;
+const n = xLabels.length;
+
+// Points sit inside a 4% inset so the end dots are not clipped.
+const xAt = (i: number) => 4 + (i * 92) / Math.max(1, n - 1);
+const yAt = (v: number) => ((y.max - v) / (y.max - y.min)) * 100;
+const ticks: number[] = [];
+for (let t = y.min; t <= y.max; t += y.step) ticks.push(t);
+
+const series = [...chart.series]
+  .map((s) => ({
+    ...s,
+    points: s.values.map((v, i) => `${xAt(i)},${yAt(v)}`).join(" "),
+    endTop: yAt(s.values[n - 1]),
+  }))
+  // Draw the emphasised series last, on top.
+  .sort((a, b) => Number(Boolean(a.emphasis)) - Number(Boolean(b.emphasis)));
+
+// End labels: nudge apart when two ends sit closer than 9% of the plot.
+const ends = [...series].sort((a, b) => a.endTop - b.endTop);
+const labelTop = new Map(ends.map((s) => [s.label, s.endTop]));
+if (ends.length === 2 && ends[1].endTop - ends[0].endTop < 9) {
+  const mid = (ends[0].endTop + ends[1].endTop) / 2;
+  labelTop.set(ends[0].label, mid - 4.5);
+  labelTop.set(ends[1].label, mid + 4.5);
+}
+
+const shadeLeft = chart.shade
+  ? (xAt(chart.shade.from - 1) + xAt(chart.shade.from)) / 2
+  : undefined;
+const fmt = (v: number) => `${v.toFixed(1)}${y.unit}`;
+const GRID =
+  "grid grid-cols-[2.25rem_minmax(0,1fr)_6.5rem] gap-x-2 md:grid-cols-[3rem_minmax(0,1fr)_10rem] md:gap-x-3";
+---
+
+<figure>
+  <figcaption class="font-sans text-[15px] leading-[22px] text-(--color-cream-700)">
+    {chart.metric} <span class="text-(--color-cream-600)">· {chart.better} is better</span>
+  </figcaption>
+
+  <p class="sr-only">
+    {chart.series.map((s) => `${s.label}: ${s.values.map((v, i) => `${chart.xTitle.toLowerCase()} ${xLabels[i]} ${fmt(v)}`).join(", ")}.`).join(" ")}
+    {chart.shade && ` ${chart.shade.label} from ${chart.xTitle.toLowerCase()} ${xLabels[chart.shade.from]}.`}
+  </p>
+
+  <div class="mt-5" aria-hidden="true">
+    {chart.shade && shadeLeft !== undefined && (
+      <div class={GRID}>
+        <span></span>
+        <span class="relative h-5 font-sans text-[13px] leading-5 text-(--color-cream-700)">
+          <span class="absolute left-0 truncate" style={`max-width: ${shadeLeft - 1}%`}>{chart.shade.before}</span>
+          <span class="absolute truncate pl-2" style={`left: ${shadeLeft}%; max-width: ${100 - shadeLeft}%`}>{chart.shade.label}</span>
+        </span>
+        <span></span>
+      </div>
+    )}
+
+    <div class:list={[GRID, "mt-2"]}>
+      <span class="relative h-64 md:h-80">
+        {ticks.map((t) => (
+          <span class="absolute right-0 -translate-y-1/2 font-sans text-[13px] leading-5 tabular-nums text-(--color-cream-700)" style={`top: ${yAt(t)}%`}>
+            {t}{y.unit}
+          </span>
+        ))}
+      </span>
+
+      <span class="relative h-64 md:h-80">
+        {chart.shade && shadeLeft !== undefined && (
+          <span class="absolute inset-y-0 right-0 rounded-r-[12px] bg-(--color-sage-50)" style={`left: ${shadeLeft}%`}></span>
+        )}
+        {ticks.map((t) => (
+          <span class="absolute inset-x-0 h-px bg-(--color-border)" style={`top: ${yAt(t)}%`}></span>
+        ))}
+        <svg class="absolute inset-0 size-full overflow-visible" viewBox="0 0 100 100" preserveAspectRatio="none">
+          {series.map((s) => (
+            <polyline
+              points={s.points}
+              fill="none"
+              stroke-width={s.emphasis ? 2.5 : 2}
+              stroke-linejoin="round"
+              stroke-linecap="round"
+              stroke-dasharray={s.emphasis ? undefined : "6 5"}
+              vector-effect="non-scaling-stroke"
+              class={s.emphasis ? "stroke-(--color-sage-800)" : "stroke-(--color-sage-500)"}
+            />
+          ))}
+        </svg>
+        {series.map((s) =>
+          s.values.map((v, i) => (
+            <span
+              class:list={["absolute size-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 md:size-3", s.emphasis ? "border-(--color-sage-800) bg-(--color-sage-800)" : "border-(--color-sage-500) bg-card"]}
+              style={`left: ${xAt(i)}%; top: ${yAt(v)}%`}
+              title={`${s.label}, ${chart.xTitle.toLowerCase()} ${xLabels[i]}: ${fmt(v)}`}
+            ></span>
+          )),
+        )}
+      </span>
+
+      <span class="relative h-64 md:h-80">
+        {series.map((s) => (
+          <span
+            class:list={["absolute left-0 flex -translate-y-1/2 flex-col font-sans text-[13px] leading-[17px] md:text-[15px] md:leading-5", s.emphasis ? "font-medium text-(--color-cream-900)" : "text-(--color-cream-700)"]}
+            style={`top: ${labelTop.get(s.label)}%`}
+          >
+            <span>{s.label}</span>
+            <span class="tabular-nums">{fmt(s.values[n - 1])}</span>
+          </span>
+        ))}
+      </span>
+    </div>
+
+    <div class:list={[GRID, "mt-3"]}>
+      <span></span>
+      <span class="relative h-5">
+        {xLabels.map((label, i) => (
+          <span class="absolute -translate-x-1/2 font-sans text-[13px] leading-5 tabular-nums text-(--color-cream-700)" style={`left: ${xAt(i)}%`}>{label}</span>
+        ))}
+      </span>
+      <span></span>
+    </div>
+    <div class={GRID}>
+      <span></span>
+      <span class="mt-1 text-center font-sans text-[13px] leading-5 text-(--color-cream-700)">{chart.xTitle}</span>
+      <span></span>
+    </div>
+  </div>
+</figure>

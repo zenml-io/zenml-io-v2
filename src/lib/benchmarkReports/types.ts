@@ -90,7 +90,8 @@ export interface IntervalChart {
   /** What the axis measures, in a few words. */
   metric: string;
   better: "higher" | "lower";
-  band: { label: string; low: number; high: number };
+  /** Absent when the benchmark has no unchanged rerun to measure noise by. */
+  band?: { label: string; low: number; high: number };
   rows: {
     label: string;
     mark?: ModelMark;
@@ -101,6 +102,33 @@ export interface IntervalChart {
     /** Whether the interval clears zero: clearly ahead, clearly behind, or within noise. */
     verdict: "ahead" | "behind" | "tie";
   }[];
+}
+
+/**
+ * A score over successive rounds for at most two series (DESIGN.md "Data
+ * visualization"), with an optional shaded span marking a change partway
+ * through, such as a model switch.
+ */
+export interface LineChart {
+  /** What the y axis measures, in a few words. */
+  metric: string;
+  better: "higher" | "lower";
+  /** One label per point along the x axis, e.g. "1" to "8". */
+  xLabels: string[];
+  /** What the x labels count, e.g. "Batch". */
+  xTitle: string;
+  /** The y axis range and tick step. */
+  y: { min: number; max: number; step: number; unit: string };
+  /** A shaded span from `from` (an x index) to the end, with a label. */
+  shade?: { from: number; label: string; before: string };
+  series: readonly [LineSeries] | readonly [LineSeries, LineSeries];
+}
+
+interface LineSeries {
+  label: string;
+  values: number[];
+  /** The series the finding points at: solid sage-800; the other dashed. */
+  emphasis?: boolean;
 }
 
 /** A dataset a benchmark ran on, linked at its source. */
@@ -138,6 +166,8 @@ export interface BenchmarkReport {
   sections: ReportSection[];
   /** Drawn above the main section's first table, when the benchmark has one. */
   intervals?: IntervalChart;
+  /** Drawn first in the main section, when the benchmark runs over rounds. */
+  timeline?: LineChart;
   method: { term: string; detail: string }[];
   limitations: string[];
   /** Public datasets, each linked at its source; absent when the cases are not public. */

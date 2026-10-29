@@ -5,6 +5,7 @@
  * disputed is shown.
  */
 
+import { buildClaimsOverTime } from "./claims-over-time";
 import { buildDecisionAgents } from "./decision-agents";
 import { buildMlTrainingOps } from "./ml-training-ops";
 import { buildServingInfra } from "./serving-infra";
@@ -18,6 +19,7 @@ export { BENCHMARK_PREVIEWS } from "./previews";
 export type * from "./types";
 
 export const BENCHMARK_REPORTS: readonly BenchmarkReport[] = [
+  buildClaimsOverTime(),
   buildUnderwriting(),
   buildSwapbench(),
   buildDecisionAgents(),
@@ -41,7 +43,7 @@ export const BENCHMARK_INDUSTRIES: readonly {
     id: "insurance",
     title: "Insurance",
     intro:
-      "Underwriting, claims and appeals agents on public insurance data: which model to run, what each correct decision costs, and how often a rerun changes the answer.",
+      "Underwriting, claims and appeals agents on public insurance data: who keeps an agent improving, which model to run, what each correct decision costs, and how often a rerun changes the answer.",
     featured: true,
   },
   {

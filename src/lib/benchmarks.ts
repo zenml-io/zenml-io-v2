@@ -38,7 +38,7 @@ export const BENCHMARK_METHOD = [
 /** Who runs the benchmarks, as an HTML answer for the hub's method list. */
 export const BENCHMARKS_WHO_RUNS = {
   title: "Who runs these",
-  body: 'The ZenML team runs these benchmarks. Some use <a href="/product/kitaru">Kitaru</a>, our open-source tool for testing agent changes, to record and replay agent runs. Kitaru is the bench, never a contestant: no result here ranks it, or ZenML, against anything. We publish the findings that cut against easy advice too, like a cheap closed model tying the best open ones for less per correct answer.',
+  body: 'The ZenML team runs these benchmarks. Some use <a href="/product/kitaru">Kitaru</a>, our open-source tool for testing agent changes, to record and replay agent runs. Kitaru is usually the bench, not a contestant. <a href="/benchmarks/claims-over-time">One benchmark</a> does compare our own AI engineer with Codex at improving a claims agent; its write-up says plainly that the setup favours our way of working, and it publishes the earlier run where neither improver pulled ahead. We publish the findings that cut against easy advice too, like a cheap closed model tying the best open ones for less per correct answer.',
 } as const;
 
 export const BENCHMARKS_CLOSE: LabsBandContent = {

@@ -2166,7 +2166,20 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 0,
     stage: false,
     notes:
-      'Paired differences against a baseline: one row per arm with a dot on its 95% interval, over a sage-100 band for the unchanged rerun\'s interval (the noise) and a rule at zero, ticks below. Rows clearing zero are solid sage-800 with a medium label; rows inside the noise are hollow and muted. Single hue (DESIGN.md "Data visualization"): position carries ahead/behind. Labels and published values stay text; the plot is aria-hidden. Below md the label and value share a line above the plot. Data: `BenchmarkReport.intervals`, drawn above the main table (tau2-bench Telecom).',
+      'Paired differences against a baseline: one row per arm with a dot on its 95% interval, over a sage-100 band for the unchanged rerun\'s interval (the noise) and a rule at zero, ticks below. Rows clearing zero are solid sage-800 with a medium label; rows inside the noise are hollow and muted. Single hue (DESIGN.md "Data visualization"): position carries ahead/behind. Labels and published values stay text; the plot is aria-hidden. Below md the label and value share a line above the plot. Data: `BenchmarkReport.intervals`, drawn above the main table (tau2-bench Telecom; Improving a Claims Agent, with no band because it has no unchanged rerun).',
+  },
+  {
+    id: "labs.line-chart",
+    kind: "template",
+    componentPath: "src/components/labs/LabsLineChart.astro",
+    variantAxes: ["series count", "shade present"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    stage: false,
+    notes:
+      'A score over successive rounds for one or two series: caption with the metric and "higher/lower is better", hairline gridlines with y ticks, an optional sage-50 span from one round to the end labelled above (a model switch), the emphasised series solid sage-800 with filled dots and the other dashed sage-500 with hollow dots, each named directly at its last point (no legend). Single hue, two series at most (DESIGN.md "Data visualization"); a third series belongs in the table. Lines are an SVG stretched to the plot with non-scaling strokes; dots and text are positioned HTML so type stays legible on phones. Plot aria-hidden, one sr-only sentence with every value. Data: `BenchmarkReport.timeline`, drawn first in the main section (Improving a Claims Agent).',
   },
   {
     id: "labs.results-table",

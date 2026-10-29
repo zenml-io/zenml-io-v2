@@ -4,6 +4,7 @@
  * Values are the published ones; only the bar lengths are derived from them.
  */
 
+import claimsOverTime from "../../data/benchmarks/claims-over-time.json";
 import decisionAgents from "../../data/benchmarks/decision-agents.json";
 import mlTrainingOps from "../../data/benchmarks/ml-training-ops.json";
 import servingInfra from "../../data/benchmarks/serving-infra.json";
@@ -11,9 +12,32 @@ import sglang from "../../data/benchmarks/sglang-vs-vllm.json";
 import swapbench from "../../data/benchmarks/swapbench.json";
 import tau2Telecom from "../../data/benchmarks/tau2-telecom.json";
 import underwriting from "../../data/benchmarks/underwriting.json";
-import { cents, pct } from "./format";
+import { cents, pct, points } from "./format";
 import { modelMark } from "./marks";
 import type { BenchmarkPreview } from "./types";
+
+function claimsOverTimePreview(): BenchmarkPreview {
+  const { lines, runs } = claimsOverTime;
+  const appeals =
+    claimsOverTime.dataset.batches * claimsOverTime.dataset.batchSize;
+  const name = (key: string) => lines.find((l) => l.key === key)?.name ?? key;
+  // Each improver's gain over the copy nobody touched, paired appeal by appeal.
+  const rows = runs.second.paired.all
+    .filter((d) => d.b === "left_alone")
+    .map((d) => ({
+      label: name(d.a),
+      value: d.delta,
+      display: `${points(d.delta)} points`,
+      emphasis: d.a === "pro",
+    }));
+  return {
+    metric: `Gain over the agent left alone, ${appeals} appeals`,
+    better: "higher",
+    context:
+      "Balanced accuracy, paired appeal by appeal. Codex's gain is within the noise.",
+    rows,
+  };
+}
 
 function underwritingPreview(): BenchmarkPreview {
   const rows = underwriting.results.shared_rewritten_prompt_held_out;
@@ -193,6 +217,7 @@ function tau2TelecomPreview(): BenchmarkPreview {
 }
 
 export const BENCHMARK_PREVIEWS: Record<string, BenchmarkPreview> = {
+  "claims-over-time": claimsOverTimePreview(),
   underwriting: underwritingPreview(),
   swapbench: swapbenchPreview(),
   "decision-agents": decisionAgentsPreview(),
