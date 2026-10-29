@@ -1,3 +1,5 @@
+import { cloudSignupUrl } from "./constants";
+
 /**
  * Page copy for /product/zenml — the ZenML sub-product landing.
  *
@@ -10,13 +12,13 @@ export const ZENML_INSTALL_CMD = "uv add zenml";
 
 /**
  * Canonical ZenML-side links — counterpart to KITARU_LINKS in productKitaru.ts.
- * Both products sign up on the unified cloud.zenml.io/signup page (Sept 2026);
- * `product` preselects the workspace type there.
+ * Both products sign up on the unified cloud.zenml.io/signup page; the UTM
+ * tags record which product page sent the visitor.
  */
 export const ZENML_LINKS = {
   signup: {
     label: "Sign up free",
-    href: "https://cloud.zenml.io/signup?product=zenml",
+    href: cloudSignupUrl("zenml"),
   },
   demo: { label: "Book a demo", href: "/book-your-demo" },
   github: {

@@ -13,7 +13,7 @@ Your AI engineer on one agent, one ZenML project, and your whole team. Need more
 ## Main CTAs
 
 - [Get started](https://www.zenml.io/get-started)
-- [Sign up free](https://cloud.zenml.io/signup?product=kitaru)
+- [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)
 - [Talk to us](https://www.zenml.io/book-your-demo)
 - [Apply Now](https://www.zenml.io/startups-and-academics)
 
@@ -49,7 +49,7 @@ For startups shipping their first agent
   - An interview and a weekly review
   - Hosted ZenML and Kitaru
 
-- CTA: [Sign up free](https://cloud.zenml.io/signup?product=kitaru)
+- CTA: [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)
 
 ### Enterprise
 
@@ -180,7 +180,7 @@ Training, batch inference, evals, agent workflows. One DAG, versioned artifacts,
 
 - Learn more: [Learn about ZenML](https://www.zenml.io/product/zenml)
 
-- CTA: [Sign up free](https://cloud.zenml.io/signup?product=zenml)
+- CTA: [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=zenml)
 
 ### Your AI engineer
 
@@ -192,7 +192,7 @@ Finds the evals you got wrong or never wrote, then replays your agent to test th
 
 - Learn more: [Learn about Kitaru](https://www.zenml.io/product/kitaru)
 
-- CTA: [Sign up free](https://cloud.zenml.io/signup?product=kitaru)
+- CTA: [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)
 
 Starter covers one agent and one ZenML project. Enterprise covers the rest.
 
@@ -216,4 +216,4 @@ Security badges: SOC 2 Type II Badge, ISO/IEC 27001:2022 certification badge.
 
 Your AI engineer reads your traces next to your evals and shows you what they miss. 14-day trial, no credit card.
 
-- [Sign up free](https://cloud.zenml.io/signup?product=kitaru)
+- [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)

@@ -267,4 +267,4 @@ Langfuse's open-source version lets you self-host all core Langfuse features for
 
 In short, Opik and Langfuse can score what your agent did, Opik can run it again live, and Kitaru can run it again against what it saw.
 
-If you have an agent in production, traces in one of those stores, and a model or prompt change you are nervous to ship on Friday afternoon, [try Kitaru with the 14-day Cloud trial](https://cloud.zenml.io/signup?product=kitaru), or self-host the open-source version for free.
+If you have an agent in production, traces in one of those stores, and a model or prompt change you are nervous to ship on Friday afternoon, [try Kitaru with the 14-day Cloud trial](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=blog&utm_campaign=signup&utm_content=opik-vs-langfuse), or self-host the open-source version for free.

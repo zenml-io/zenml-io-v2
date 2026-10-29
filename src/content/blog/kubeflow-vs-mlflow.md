@@ -425,7 +425,7 @@ Apart from the free version, the managed platform offers three paid versions:
   <figcaption>Source: &quot;ZenML pricing&quot;</figcaption>
 </figure>
 
-**Note:** Every paid plan comes with a [14-day free trial](https://cloud.zenml.io/signup?utm_source=website&utm_medium=website_nav&utm_campaign=cloud_promotion&utm_content=signup_link); no credit card required.
+**Note:** Every paid plan comes with a [14-day free trial](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=blog&utm_campaign=signup&utm_content=kubeflow-vs-mlflow); no credit card required.
 
 ## The Shift to LLMOps in 2026
 

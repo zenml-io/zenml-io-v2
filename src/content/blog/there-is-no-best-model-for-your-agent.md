@@ -168,4 +168,4 @@ and the cheaper model with that prompt. Report correct answers and cost per corr
 type, and call anything within run-to-run noise a tie.
 ```
 
-[Start free](https://cloud.zenml.io/signup?product=kitaru)
+[Start free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=blog&utm_campaign=signup&utm_content=there-is-no-best-model-for-your-agent)

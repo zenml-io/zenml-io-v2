@@ -3,8 +3,8 @@
  * ZenML Labs parent homepage (`/`), in one place.
  *
  * Copy rules (2026-09-08 rulings): "Start free" is the only signup action
- * and it leads to the unified cloud.zenml.io signup with no product
- * preselected (Sept 2026; the product pages pass their own `product`); "Explore ZenML / Explore Kitaru"
+ * and it leads to the unified cloud.zenml.io signup (the product
+ * pages tag their own links); "Explore ZenML / Explore Kitaru"
  * live only in the blocks that explain each product and link to the
  * product pages; no "Book a demo"; no helper lines under CTAs. Facts
  * (install commands, licences, compliance strings, case-study titles and
@@ -12,6 +12,7 @@
  * never retyped here.
  */
 import type { Surface } from "./analytics";
+import { cloudSignupUrl } from "./constants";
 import type { FeatureIconId } from "./featureIcons";
 import { type CaseStudyCard, LOGO_CLOUD, type LogoItem } from "./homepage";
 import {
@@ -46,12 +47,11 @@ export interface LabsCta {
 
 /**
  * The single signup action. Same label everywhere; the event names differ by
- * placement. The href is the unified signup with no `product` — the page
- * defaults to ZenML and offers the Kitaru toggle.
+ * placement. The href is the unified signup, tagged as the shared CTA.
  */
 export const LABS_SIGNUP = {
   label: "Start free",
-  href: "https://cloud.zenml.io/signup",
+  href: cloudSignupUrl("start-free"),
 } as const;
 
 export const LABS_NAV_SIGNUP: LabsCta = {

@@ -1,3 +1,5 @@
+import { cloudSignupUrl } from "./constants";
+
 /**
  * The one-line installer: CLI + MCP server in an isolated uv environment,
  * the coding-agent skills, MCP registration for Claude Code / Codex, and
@@ -87,10 +89,9 @@ export const KITARU_VIDEO = {
 
 export const KITARU_LINKS = {
   signup: {
-    // Unified signup on cloud.zenml.io (Sept 2026); `product=kitaru`
-    // preselects the Kitaru workspace. Replaces the separate cloud.kitaru.ai app.
+    // Unified signup on cloud.zenml.io; the UTM tags mark Kitaru as the source.
     label: "Sign up free",
-    href: "https://cloud.zenml.io/signup?product=kitaru",
+    href: cloudSignupUrl("kitaru"),
   },
   demo: { label: "Book a demo", href: "/book-your-demo/kitaru" },
   github: {

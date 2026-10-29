@@ -266,7 +266,7 @@ Choose **Braintrust** if you want production observability, evaluations, dataset
 
 Choose **Kitaru** if you already have agent traces and want to reproduce production sessions, test candidate changes against recorded cases, and use those executions as regression tests.
 
-If you want to see how Kitaru works against your own agent runs, just [**sign up for the open-source cloud version**](https://cloud.zenml.io/signup?product=kitaru) and try it out yourself.
+If you want to see how Kitaru works against your own agent runs, just [**sign up for the open-source cloud version**](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=blog&utm_campaign=signup&utm_content=braintrust-pricing) and try it out yourself.
 
 Relevant reading:
 
