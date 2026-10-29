@@ -4,8 +4,8 @@
  * works" on a sage-50 band: eyebrow, headline and deck, then four step cards
  * in a 1 → 2 → 4 grid. Each card is a numeral, a title and a body above a
  * small static widget that shows the step the way the product does it:
- * `connect` (the repos it found, with their roles, and the tracing
- * providers with one picked), `call` (one interview question with tappable answers),
+ * `connect` (the repos it found, each with its role and what it found
+ * there), `call` (one interview question with tappable answers),
  * `report` (the first gaps, tagged Wrong or Missing) and `review` (one
  * session excerpt with Pass / Fail). Static: no motion moment. Copy
  * arrives through `content` (LABS_ONBOARDING on `/`).
@@ -45,23 +45,17 @@ const WIDGET =
 
           <div class={WIDGET} aria-hidden="true">
             {widget.kind === "connect" && (
-              <div class="flex flex-col gap-3">
-                <ul class="flex flex-col gap-1.5">
-                  {widget.repos.map((repo) => (
-                    <li class="flex items-center justify-between gap-2 rounded-[10px] bg-card px-3 py-2">
+              <ul class="flex flex-col gap-1.5">
+                {widget.repos.map((repo) => (
+                  <li class="flex flex-col gap-1 rounded-[10px] bg-card px-3 py-2">
+                    <span class="flex items-center justify-between gap-2">
                       <span class="truncate font-mono text-[12px] leading-4 text-(--color-cream-900)">{repo.name}</span>
                       <span class="shrink-0 rounded-full bg-(--color-sage-100) px-2 py-0.5 font-label text-[10px] leading-4 uppercase tracking-[0.05em] text-(--color-sage-800)">{repo.role}</span>
-                    </li>
-                  ))}
-                </ul>
-                <ul class="flex flex-wrap gap-1.5">
-                  {widget.providers.map((provider) => (
-                    <li class:list={[CHIP, provider === widget.picked ? "bg-(--color-sage-800) text-(--color-cream-50)" : "border border-(--color-border) text-(--color-cream-700)"]}>
-                      {provider}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                    </span>
+                    <span class="font-sans text-[12px] leading-4 text-(--color-cream-700)">{repo.detail}</span>
+                  </li>
+                ))}
+              </ul>
             )}
             {widget.kind === "call" && (
               <div class="flex flex-col gap-3">

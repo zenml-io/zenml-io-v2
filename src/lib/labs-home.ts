@@ -427,8 +427,6 @@ export type OnboardingWidget =
   | {
       kind: "connect";
       repos: readonly OnboardingRepo[];
-      providers: readonly string[];
-      picked: string;
     }
   | {
       kind: "call";
@@ -453,6 +451,8 @@ export type OnboardingWidget =
 export interface OnboardingRepo {
   name: string;
   role: string;
+  /** What it found there, one short line. */
+  detail: string;
 }
 
 export interface OnboardingStep {
@@ -474,16 +474,23 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
   deck: "You never sit down to write evals. Your AI engineer reads what you already have and asks you only what it can't work out alone.",
   steps: [
     {
-      title: "Connect your repo and your traces",
-      body: "Install the GitHub app, pick your tracing provider and paste two keys. It finds your agent, your eval code and the scores you already track.",
+      title: "Connect your repos",
+      body: "Install the GitHub app and add your tracing keys. It finds your agent, the evals you already run and the guidelines they should follow.",
       widget: {
         kind: "connect",
         repos: [
-          { name: "underwriting-agent", role: "Agent" },
-          { name: "uw-evals", role: "Evals" },
+          {
+            name: "underwriting-agent",
+            role: "Agent",
+            detail: "PydanticAI · 9 tools",
+          },
+          { name: "uw-evals", role: "Evals", detail: "12 judges · pytest" },
+          {
+            name: "uw-guidelines",
+            role: "Manual",
+            detail: "UW manual · 46 rules",
+          },
         ],
-        providers: ["Langfuse", "LangSmith", "Braintrust", "MLflow", "Phoenix"],
-        picked: "Langfuse",
       },
     },
     {
@@ -546,7 +553,7 @@ export interface JourneyStep {
   /** Where the step sits: a stack column or the layer above. */
   at: "traces" | "layer" | "agent";
   tag: string;
-  tone: "neutral" | "wrong" | "new" | "pass";
+  tone: "neutral" | "missing" | "new" | "pass";
   title: string;
   detail: string;
 }
@@ -607,8 +614,8 @@ export const LABS_STACK_LAYER: StackLayerContent = {
         { name: "Scores in your tracer" },
       ],
       note: {
-        title: "quote_completeness",
-        detail: "LLM judge · passes 91% of quotes",
+        title: "12 checks",
+        detail: "None of them reads the loss-run date",
       },
     },
     {
@@ -631,29 +638,29 @@ export const LABS_STACK_LAYER: StackLayerContent = {
       at: "traces",
       tag: "Trace",
       tone: "neutral",
-      title: "Session 3318 · quote",
-      detail: "quote_completeness: pass",
+      title: "Session 2207 · quote",
+      detail: "Priced on a loss run from March",
     },
     {
       at: "layer",
-      tag: "Wrong",
-      tone: "wrong",
-      title: "Passed without the flood exclusion",
-      detail: "41 sessions like it last week",
+      tag: "Missing",
+      tone: "missing",
+      title: "Loss runs older than 90 days",
+      detail: "58 sessions like it, no eval checks it",
     },
     {
       at: "layer",
       tag: "New check",
       tone: "new",
-      title: "flood_exclusion_present",
-      detail: "Agrees with your underwriters 40 of 41 times",
+      title: "loss_run_age_under_90_days",
+      detail: "Agrees with your underwriters 57 of 58 times",
     },
     {
       at: "agent",
       tag: "Replay",
       tone: "pass",
       title: "Prompt fix, replayed via Claude Agent SDK",
-      detail: "41 of 41 now pass",
+      detail: "58 of 58 now pass",
     },
   ],
   journeyLabel: "One session's journey",

@@ -296,16 +296,23 @@ const FINANCE_ONBOARDING: OnboardingStepsContent = {
   eyebrow: "How it works",
   steps: [
     {
-      title: "Connect your repo and your traces",
-      body: "Install the GitHub app, pick your tracing provider and paste two keys. It finds your agent, your eval code and the scores you already track.",
+      title: "Connect your repos",
+      body: "Install the GitHub app and add your tracing keys. It finds your agent, the evals you already run and the procedures they should follow.",
       widget: {
         kind: "connect",
         repos: [
-          { name: "kyc-review-agent", role: "Agent" },
-          { name: "kyc-evals", role: "Evals" },
+          {
+            name: "kyc-review-agent",
+            role: "Agent",
+            detail: "LangGraph · 7 tools",
+          },
+          { name: "kyc-evals", role: "Evals", detail: "9 judges · pytest" },
+          {
+            name: "kyc-procedures",
+            role: "Manual",
+            detail: "KYC procedures · 31 rules",
+          },
         ],
-        providers: ["Langfuse", "LangSmith", "Braintrust", "MLflow", "Phoenix"],
-        picked: "LangSmith",
       },
     },
     {
