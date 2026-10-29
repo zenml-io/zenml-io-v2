@@ -464,7 +464,7 @@ export interface OnboardingStepsContent {
 }
 
 export const LABS_ONBOARDING: OnboardingStepsContent = {
-  eyebrow: "How it works",
+  eyebrow: "Eval therapy",
   headline: "You answer a few questions. Good evals fall out.",
   deck: "You never sit down to write evals. Your AI engineer reads what you already have and asks you only what it can't work out alone.",
   steps: [
@@ -482,7 +482,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       },
     },
     {
-      title: "Take a short call",
+      title: "A short eval therapy call",
       body: "Your AI engineer calls you, on your phone or in the browser, and asks at most three questions about what it found. Tap to answer.",
       widget: {
         kind: "call",
@@ -511,51 +511,6 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
           "Premium $4,180 · Limit $1.2M · Deductible $5,000. Property in FEMA zone A.",
         question: "Should this quote have passed?",
         options: ["Pass", "Fail"],
-      },
-    },
-  ],
-};
-
-/* ---------------------------------------------------------------------- */
-/* Two kinds of gap                                                        */
-/* ---------------------------------------------------------------------- */
-
-export interface GapKind {
-  kind: GapItem["kind"];
-  label: string;
-  title: string;
-  body: string;
-  example: { stat: string; text: string };
-}
-
-export interface GapKindsContent {
-  headline: string;
-  deck: string;
-  kinds: readonly [GapKind, GapKind];
-}
-
-export const LABS_GAP_KINDS: GapKindsContent = {
-  headline: "Two kinds of gap",
-  deck: "Everything your AI engineer tells you is one or the other, with the sessions that show it.",
-  kinds: [
-    {
-      kind: "wrong",
-      label: "Wrong",
-      title: "An eval you would disagree with",
-      body: "It runs on every session and reports a pass. Read the sessions it passed and you would fail them.",
-      example: {
-        stat: "41",
-        text: "quotes passed by the completeness judge without the flood exclusion the manual requires.",
-      },
-    },
-    {
-      kind: "missing",
-      label: "Missing",
-      title: "Something nothing checks",
-      body: "It happens again and again in your traffic, and no eval you run looks at it.",
-      example: {
-        stat: "58",
-        text: "quotes priced on loss runs older than 90 days. No eval reads the loss run date.",
       },
     },
   ],

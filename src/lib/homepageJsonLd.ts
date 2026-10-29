@@ -1,10 +1,5 @@
 import { COMPANY_ADDRESS, CONTACT_EMAIL, SITE_URL } from "./constants";
-import {
-  LABS_DOORS,
-  LABS_FEATURE_PANELS,
-  LABS_HOME_CLOSE,
-  LABS_HOME_SEO,
-} from "./labs-home";
+import { LABS_DOORS, LABS_HOME_CLOSE, LABS_HOME_SEO } from "./labs-home";
 import { absoluteUrl, ORGANIZATION_NAME } from "./seo";
 
 /**
@@ -15,10 +10,7 @@ import { absoluteUrl, ORGANIZATION_NAME } from "./seo";
  * has no demo button).
  */
 function homepageFeatureList(): string[] {
-  return [
-    ...LABS_DOORS.doors.map((door) => `${door.name}: ${door.leadLine}`),
-    ...LABS_FEATURE_PANELS.map((panel) => `${panel.title}: ${panel.body}`),
-  ];
+  return LABS_DOORS.doors.map((door) => `${door.name}: ${door.leadLine}`);
 }
 
 export interface HomepageJsonLdOptions {

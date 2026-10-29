@@ -1442,20 +1442,6 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoProps: {},
   },
   {
-    id: "labs.gap-kinds",
-    kind: "template",
-    componentPath: "src/components/labs/LabsGapKinds.astro",
-    variantAxes: ["gap kind"],
-    tones: ["default"],
-    responsive: "reflow",
-    island: false,
-    paperPage: 0,
-    notes:
-      "Homepage two kinds of gap from `content: GapKindsContent` (LABS_GAP_KINDS on `/`): headline and deck, then two cards (Wrong, then Missing; side by side from md), each a gap tag, title, body and one example under a hairline: a display-face count beside the sentence it counts. Static.",
-    stage: false,
-    demoProps: {},
-  },
-  {
     id: "labs.benchmark-band",
     kind: "template",
     componentPath: "src/components/labs/LabsBenchmarkBand.astro",

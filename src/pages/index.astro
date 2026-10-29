@@ -12,13 +12,10 @@
  *
  * Route: / (homepage)
  */
-import FeatureGridPanels from "../components/labs/FeatureGridPanels.astro";
 import LabsBenchmarkBand from "../components/labs/LabsBenchmarkBand.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
-import LabsGapKinds from "../components/labs/LabsGapKinds.astro";
 import LabsGapReportVisual from "../components/labs/LabsGapReportVisual.astro";
 import LabsHero from "../components/labs/LabsHero.astro";
-import LabsHowItWorks from "../components/labs/LabsHowItWorks.astro";
 import LabsOnboardingSteps from "../components/labs/LabsOnboardingSteps.astro";
 import LabsProblemBand from "../components/labs/LabsProblemBand.astro";
 import LogoMarquee from "../components/labs/LogoMarquee.astro";
@@ -29,13 +26,10 @@ import { buildHomepageJsonLd } from "../lib/homepageJsonLd";
 import {
   LABS_BENCHMARK_BAND,
   LABS_DOORS,
-  LABS_FEATURE_PANELS,
-  LABS_GAP_KINDS,
   LABS_GAP_REPORT,
   LABS_HERO,
   LABS_HOME_CLOSE,
   LABS_HOME_SEO,
-  LABS_HOW_IT_WORKS,
   LABS_LOGO_GRID,
   LABS_ONBOARDING,
   LABS_PROBLEM,
@@ -64,12 +58,9 @@ const homepageJsonLd = buildHomepageJsonLd({
     </LabsHero>
     <LabsProblemBand content={LABS_PROBLEM} />
     <LabsOnboardingSteps content={LABS_ONBOARDING} />
-    <LabsGapKinds content={LABS_GAP_KINDS} />
-    <LabsHowItWorks content={LABS_HOW_IT_WORKS} />
     <LabsBenchmarkBand content={LABS_BENCHMARK_BAND} />
     <LogoMarquee content={LABS_LOGO_GRID} />
     <ProductDoors content={LABS_DOORS} />
-    <FeatureGridPanels content={LABS_FEATURE_PANELS} />
     <LabsCloseCta content={LABS_HOME_CLOSE} />
   </main>
 </BaseLayout>
