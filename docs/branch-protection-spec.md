@@ -91,9 +91,11 @@ Two tiers based on what changed:
 `.github/workflows/deploy.yml` is the deterministic, credential-free build and
 artifact workflow:
 
-- **Required PR gate**: `Repo checks` installs the lockfile, runs the repository
-  checks, builds once, validates the generated Worker and hydrated islands, and
-  publishes that exact artifact. It does not receive Cloudflare credentials.
+- **Required PR gate**: two jobs run in parallel. `Static checks` runs the
+  type, lint, and unit-test checks. `Build and package Worker artifact` builds
+  once, validates the generated Worker and hydrated islands, and publishes that
+  exact artifact. `Repo checks` waits for both and passes only when both
+  succeed. No job receives Cloudflare credentials.
 - **On same-repo PRs**: after a successful run and explicit review, a trusted
   manual workflow selected from `main` can download the exact artifact and
   upload an inactive, unreachable version to an isolated preview Worker with
@@ -125,8 +127,9 @@ the Pages project automatically.
 
 ### Additional quality gates
 
-The required PR gate is `Repo checks`, which includes the repository checks,
-one build, dist smoke tests, the Worker-runtime check, and island hydration.
+The required PR gate is `Repo checks`, which passes only when the repository
+checks, one build, dist smoke tests, the Worker-runtime check, and island
+hydration all pass in its two parallel jobs.
 Cloudflare preview upload is dependent and best-effort, not the required merge
 gate. Link checking, Lighthouse, etc. can be added later.
 

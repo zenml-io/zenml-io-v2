@@ -29,7 +29,8 @@ unconditional gates. Paths below are relative to the repository root.
 
 ## CI and Release Details
 
-The required CI job packages the exact validated dist output. check:registry
+The CI build job packages the exact validated dist output; the required
+`Repo checks` job passes only when that job and the static-check job succeed. check:registry
 is currently local-only; wiring it into CI requires the byte-identical trusted
 mirror at .github/trusted/worker-artifact-workflow.yml and the blob-SHA pin in
 tests/config/workerPreviewControlPlane.test.ts to change together. This is a

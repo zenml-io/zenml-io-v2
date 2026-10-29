@@ -287,8 +287,10 @@ cutover. CI now builds and validates one Worker artifact, then publishes that
 exact artifact for trusted upload workflows. It does not automatically update
 the live Pages project during this migration checkpoint.
 
-- **All PRs** → the credential-free `Repo checks` job builds and validates one
-  artifact, including the Astro 5 Wrangler runtime and island hydration checks
+- **All PRs** → the credential-free `Repo checks` gate passes only when the
+  parallel static-check job and the build job both succeed; the build job
+  validates one artifact, including the Wrangler runtime and island hydration
+  checks
 - **Same-repository PRs** → after explicit review, a manual workflow defined
   on `main` can upload that exact artifact as an inactive, unreachable version
   of the isolated preview Worker

@@ -33,6 +33,7 @@ interface ProductionWorkflow {
       env?: Record<string, string>;
       environment?: string;
       if?: string;
+      needs?: string[];
       outputs?: Record<string, string>;
       permissions?: Record<string, string>;
       steps: WorkflowStep[];
@@ -80,7 +81,7 @@ const activationWorkflowConfig = parse(
 ) as ProductionWorkflow;
 const releaseWorkflowConfig = parse(releaseWorkflow) as ProductionWorkflow;
 const candidateSteps = candidateWorkflowConfig.jobs["upload-candidate"].steps;
-const deploySteps = deployWorkflowConfig.jobs["repo-check"].steps;
+const deploySteps = deployWorkflowConfig.jobs["build-artifact"].steps;
 const activationSteps = activationWorkflowConfig.jobs.activate.steps;
 const releaseUploadSteps = releaseWorkflowConfig.jobs.upload.steps;
 const releaseActivationSteps = releaseWorkflowConfig.jobs.activate.steps;
@@ -1023,6 +1024,20 @@ describe("credential-free Worker artifact workflow", () => {
     expect(deployWorkflow).toContain("permissions:\n      contents: read");
     expect(deployWorkflow).toContain("timeout-minutes: 30");
     expect(deployWorkflow).toContain("pnpm check:worker");
+  });
+
+  it("fails Repo checks unless every parallel check job succeeds", () => {
+    const gate = deployWorkflowConfig.jobs["repo-check"];
+    const gateRun = gate.steps.map((step) => step.run ?? "").join("\n");
+
+    expect(gate.if).toBe("always()");
+    expect(gate.needs?.toSorted()).toEqual(
+      Object.keys(deployWorkflowConfig.jobs)
+        .filter((job) => job !== "repo-check")
+        .toSorted(),
+    );
+    expect(gateRun).toContain('[ "$STATIC_CHECKS_RESULT" = "success" ]');
+    expect(gateRun).toContain('[ "$BUILD_ARTIFACT_RESULT" = "success" ]');
   });
 
   it("builds once and publishes the exact validated artifact", () => {

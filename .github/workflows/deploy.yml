@@ -7,8 +7,10 @@ on:
     branches: [main]
 
 jobs:
-  repo-check:
-    name: Repo checks
+  # Static checks and the build run in parallel. Repo checks (the required
+  # status check) passes only when both jobs succeed.
+  static-checks:
+    name: Static checks
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -48,6 +50,30 @@ jobs:
 
       - name: Run unit tests
         run: pnpm test
+
+  build-artifact:
+    name: Build and package Worker artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.0
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          version: 10
+
+      - name: Set up Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.23.1
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
       - name: Build site
         run: pnpm build
@@ -205,3 +231,24 @@ jobs:
           compression-level: 0
           if-no-files-found: error
           retention-days: 14
+
+  # A job skipped because a dependency failed reports as passing to branch
+  # protection, so this job always runs and checks each result itself.
+  repo-check:
+    name: Repo checks
+    if: always()
+    needs: [static-checks, build-artifact]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Require static checks and the Worker artifact build to pass
+        env:
+          BUILD_ARTIFACT_RESULT: ${{ needs.build-artifact.result }}
+          STATIC_CHECKS_RESULT: ${{ needs.static-checks.result }}
+        run: |
+          set -euo pipefail
+          echo "Static checks: $STATIC_CHECKS_RESULT"
+          echo "Build and package Worker artifact: $BUILD_ARTIFACT_RESULT"
+          [ "$STATIC_CHECKS_RESULT" = "success" ]
+          [ "$BUILD_ARTIFACT_RESULT" = "success" ]
