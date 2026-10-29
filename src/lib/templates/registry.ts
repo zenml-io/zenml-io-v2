@@ -1465,7 +1465,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "A product page's open-source section from `content: OpenSourceBandContent` (ZENML_OPEN_SOURCE on /product/zenml, KITARU_OPEN_SOURCE on /product/kitaru, in src/lib/openSource.ts) and `tint` (sage or orange accent): eyebrow, headline, deck, the install chip and a 'Star on GitHub' pill whose `[data-github-stars-count]` span BaseLayout's loader fills from /api/github-stars (blank until it lands), beside four numbered facts on dark hairlines (1 then 2 columns from md; stacked below lg) and a row of community links. Static.",
+      "A product page's open-source section from `content: OpenSourceBandContent` (ZENML_OPEN_SOURCE on /product/zenml, KITARU_OPEN_SOURCE on /product/kitaru, in src/lib/openSource.ts) and `tint` (sage or orange accent): eyebrow, headline, deck, the install chip and a 'Star on GitHub' pill whose `[data-github-stars-count]` span BaseLayout's loader fills from /api/github-stars (blank until it lands), beside four numbered facts as bordered white cards, the labs.value-props card (1 then 2 columns from md; stacked below lg) and a row of community links. Static.",
     stage: false,
     demoProps: {},
   },

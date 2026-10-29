@@ -99,7 +99,12 @@ export function initScrollProgress(): void {
     el,
     targets: [
       ...(el.hasAttribute("data-progress") ? [el] : []),
-      ...el.querySelectorAll<HTMLElement>("[data-progress]"),
+      // A nested root writes its own subtree.
+      ...[...el.querySelectorAll<HTMLElement>("[data-progress]")].filter(
+        (target) =>
+          target.parentElement?.closest("[data-scroll-progress]") === el &&
+          !target.hasAttribute("data-scroll-progress"),
+      ),
     ],
     stops: [...el.querySelectorAll<HTMLElement>("[data-stop]")],
     steps: Number(el.dataset.scrollSteps) || 0,

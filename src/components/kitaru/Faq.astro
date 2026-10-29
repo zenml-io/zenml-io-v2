@@ -1,7 +1,7 @@
 ---
 // Faq.astro — product questions, in the register of the rest of the page.
-// Static (native <details>/<summary>, zero JS); scroll-reveal comes from
-// the page-level reveal-static script like Features and Cta.
+// Static (native <details>/<summary>, zero JS); its blocks scrub in
+// with scroll (`.scroll-scrub`, labs-scroll-progress) like Features and Cta.
 import { FAQ_HELP_LINKS, FAQ_ITEMS } from "../../lib/kitaru-landing";
 ---
 
@@ -10,7 +10,7 @@ import { FAQ_HELP_LINKS, FAQ_ITEMS } from "../../lib/kitaru-landing";
     <div class="grid grid-cols-1 gap-14 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-20">
       {/* Left column: eyebrow, headline, lede, help links */}
       <div class="lg:sticky lg:top-24 lg:self-start">
-        <div class="reveal">
+        <div data-scroll-progress data-progress class="scroll-scrub">
           <span class="inline-block font-label text-[13px] tracking-[0.05em] text-ember uppercase">
             FAQ
           </span>
@@ -24,7 +24,7 @@ import { FAQ_HELP_LINKS, FAQ_ITEMS } from "../../lib/kitaru-landing";
           </p>
         </div>
 
-        <div class="reveal mt-12" style="--reveal-delay: 120ms">
+        <div data-scroll-progress data-progress class="scroll-scrub mt-12">
           <span class="inline-block font-label text-[13px] tracking-[0.05em] text-ink-soft uppercase">
             Help
           </span>
@@ -57,13 +57,13 @@ import { FAQ_HELP_LINKS, FAQ_ITEMS } from "../../lib/kitaru-landing";
         </div>
       </div>
 
-      {/* Right column: FAQ accordion. One reveal wrapper — per-item reveal
-          would give each <details> its own observer (dead delay + invisible
-          focusable summaries), and the max-w keeps summary rows readable at
-          840–1023px where the grid is still single-column. */}
-      <div class="reveal max-w-3xl border-t border-border" style="--reveal-delay: 120ms">
+      {/* Right column: FAQ accordion, each question scrubbing in on its own
+          (scroll-linked, so no observer delay; a focused summary is already
+          in view). The max-w keeps summary rows readable at 840–1023px where
+          the grid is still single-column. */}
+      <div class="max-w-3xl border-t border-border">
         {FAQ_ITEMS.map((item) => (
-          <details class="group border-b border-border">
+          <details data-scroll-progress data-progress class="scroll-scrub group border-b border-border">
             <summary class="flex cursor-pointer items-center justify-between gap-6 py-6 text-left font-display text-[20px] leading-[26px] text-(--color-cream-900) [&::-webkit-details-marker]:hidden">
               <span>{item.question}</span>
               <span

@@ -63,12 +63,12 @@ const gridLogos = logos.slice(0, 12);
       )
     }
 
-    <div class="reveal-child stagger-2 mt-space-xl grid grid-cols-3 gap-3 md:grid-cols-6 md:gap-4">
+    <div class="scroll-reveal-section mt-space-xl grid grid-cols-3 gap-3 md:grid-cols-6 md:gap-4">
       {
         gridLogos.map((logo, index) => (
           <a
             href={logo.href}
-            class:list={[index >= 9 && "max-md:hidden", "group flex h-[88px] cursor-pointer items-center justify-center rounded-[16px] border border-border bg-card px-4 transition-colors duration-200 ease-out hover:border-(--color-sage-400)"]}
+            class:list={[index >= 9 && "max-md:hidden", `stagger-${Math.min(index + 1, 4)}`, "reveal-child group flex h-[88px] cursor-pointer items-center justify-center rounded-[16px] border border-border bg-card px-4 transition-colors duration-200 ease-out hover:border-(--color-sage-400)"]}
             aria-label={logo.name}
           >
             {/* aria-label above names the link; the image is decorative on

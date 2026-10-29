@@ -1,14 +1,15 @@
 ---
 // Features.astro — how it works: the four things open-source Kitaru does,
-// then one card for the hosted part (our AI engineer). Static; scroll reveal
-// comes from the page-level reveal-static script.
+// then one card for the hosted part (our AI engineer). Static; its blocks scrub
+// in with scroll (`.scroll-scrub`, labs-scroll-progress), the steps in a
+// cascade.
 import { HOSTED_NOTE, STEPS } from "../../lib/kitaru-landing";
 import LabsButton from "../labs/LabsButton.astro";
 ---
 
 <section id="how-it-works" class="relative w-full bg-surface text-foreground">
   <div class="mx-auto w-full max-w-content px-gutter py-20 md:py-28">
-    <div class="reveal max-w-3xl">
+    <div data-scroll-progress data-progress class="scroll-scrub max-w-3xl">
       <span class="inline-block font-label text-[13px] tracking-[0.05em] text-ember uppercase">
         How it works
       </span>
@@ -19,7 +20,7 @@ import LabsButton from "../labs/LabsButton.astro";
 
     <ol class="mt-12 grid grid-cols-1 gap-10 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
       {STEPS.map((s, i) => (
-        <li class="reveal" style={`--reveal-delay: ${i * 110}ms`}>
+        <li data-scroll-progress data-progress class="scroll-scrub" style={`--scroll-start: ${0.98 - i * 0.03}; --scroll-end: ${0.84 - i * 0.03}`}>
           <span class="font-label text-[13px] tracking-[0.05em] text-ember">{s.n}</span>
           <div class="mt-4 h-px w-full bg-border"></div>
           <h3 class="mt-5 font-display text-[24px] leading-[30px] text-(--color-cream-900)">{s.title}</h3>
@@ -29,8 +30,7 @@ import LabsButton from "../labs/LabsButton.astro";
     </ol>
 
     <div
-      class="reveal mt-14 flex flex-col gap-space-md rounded-[20px] border border-border bg-background p-6 transition-colors duration-200 ease-out hover:border-ember/60 md:flex-row md:items-center md:justify-between md:p-8"
-      style="--reveal-delay: 440ms"
+      data-scroll-progress data-progress class="scroll-scrub mt-14 flex flex-col gap-space-md rounded-[20px] border border-border bg-background p-6 transition-colors duration-200 ease-out hover:border-ember/60 md:flex-row md:items-center md:justify-between md:p-8"
     >
       <div class="max-w-2xl">
         <h3 class="font-display text-[22px] leading-[28px] text-(--color-cream-900)">{HOSTED_NOTE.title}</h3>

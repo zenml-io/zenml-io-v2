@@ -23,7 +23,8 @@ import Hero from "../../components/kitaru/Hero.astro";
  *   Cta         → closing band, install command first
  *
  * Motion: the hero's KitaruGrain is the one ambient section; HeroVideo
- * hydrates on idle. Everything else is static with the house reveal.
+ * hydrates on idle. The hero reveals on load (reveal-static); every block
+ * below it scrubs in and out with scroll (`.scroll-scrub`).
  */
 import LabsEvalImportBand from "../../components/labs/LabsEvalImportBand.astro";
 import LabsOpenSourceBand from "../../components/labs/LabsOpenSourceBand.astro";
@@ -66,9 +67,14 @@ const faqJsonLd = {
   </div>
 </BaseLayout>
 
-{/* Scroll-reveal observer for the static sections (Hero, Features, Faq, Cta) —
-    sets data-shown="true" on .reveal/.reveal-left/.reveal-right elements.
-    */}
+{/* reveal-static plays the hero's load reveal; labs-scroll-progress drives
+    every `.scroll-scrub` block and the open-source cards. */}
 <script>
   import "../../scripts/kitaru/reveal-static";
+  import { initScrollProgress } from "../../scripts/labs-scroll-progress";
+  import { initScrollScrub } from "../../scripts/labs-scroll-scrub";
+
+  initScrollScrub();
+
+  initScrollProgress();
 </script>

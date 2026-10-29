@@ -54,7 +54,8 @@ import { defaultOgImage } from "../../lib/seo";
 
 <script>
   import { initScrollProgress } from "../../scripts/labs-scroll-progress";
-  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
-  initScrollReveal();
+  import { initScrollScrub } from "../../scripts/labs-scroll-scrub";
+  // Every reveal on this page scrubs with scroll (in going down, out going up).
+  initScrollScrub();
   initScrollProgress();
 </script>

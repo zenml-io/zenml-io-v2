@@ -849,6 +849,18 @@ html { scroll-behavior: smooth; }
   --font-heading: var(--font-heading);
 }
 
+/* Scroll-linked reveal: the element fades and rises in as its top moves
+ * from 98% to 84% of the viewport and reverses on the way back up. Pair
+ * with `data-scroll-progress data-progress` (labs-scroll-progress writes
+ * `--p`); a sibling cascade shifts --scroll-start/--scroll-end inline.
+ * `--p` defaults to 1, so without JS or with reduced motion it is shown. */
+.scroll-scrub {
+  --scroll-start: 0.98;
+  --scroll-end: 0.84;
+  opacity: var(--p);
+  transform: translateY(calc((1 - var(--p)) * 24px));
+}
+
 /* Kitaru scroll-reveal + decorative utilities.
  * Ported from the Kitaru landing design system. */
 @utility reveal {

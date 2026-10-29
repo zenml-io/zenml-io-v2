@@ -15,7 +15,7 @@ interface Props {
 const { content } = Astro.props;
 ---
 
-<section class="scroll-reveal-section py-24 md:py-32" aria-labelledby="eval-import-title">
+<section class="scroll-reveal-section bg-surface-warm py-24 md:py-32" aria-labelledby="eval-import-title">
   <div class="mx-auto max-w-content px-gutter">
     <p class:list={["reveal-child", LABS_EYEBROW_CLASS]}>{content.eyebrow}</p>
     <h2 id="eval-import-title" class="reveal-child mt-3 max-w-[860px] font-display text-[32px] leading-[38px] text-balance text-(--color-cream-900) md:text-[48px] md:leading-[54px]">
@@ -26,19 +26,19 @@ const { content } = Astro.props;
     </p>
 
     <div class="reveal-child mt-space-xl grid grid-cols-1 gap-10 rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-orange-400) md:p-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
-      <div>
-        <p class="font-label text-[13px] leading-5 uppercase tracking-[0.05em] text-(--color-cream-700)">{content.sourcesLabel}</p>
-        <ul class="mt-4 flex list-none flex-wrap gap-2">
-          {content.sources.map((source) => (
-            <li class="rounded-full border border-(--color-border) bg-(--color-cream-50) px-3 py-1.5 font-mono text-[13px] leading-4 text-(--color-cream-900)">
+      <div class="scroll-reveal-section">
+        <p class="reveal-child font-label text-[13px] leading-5 uppercase tracking-[0.05em] text-(--color-cream-700)">{content.sourcesLabel}</p>
+        <ul class="scroll-reveal-section mt-4 flex list-none flex-wrap gap-2">
+          {content.sources.map((source, index) => (
+            <li class:list={["reveal-child rounded-full border border-(--color-border) bg-(--color-cream-50) px-3 py-1.5 font-mono text-[13px] leading-4 text-(--color-cream-900)", `stagger-${Math.min(index + 1, 4)}`]}>
               {source}
             </li>
           ))}
         </ul>
       </div>
-      <ol class="flex list-none flex-col">
+      <ol class="scroll-reveal-section flex list-none flex-col">
         {content.steps.map((step, index) => (
-          <li class="grid grid-cols-[40px_minmax(0,1fr)] gap-2 border-t border-(--color-border) py-5 first:border-t-0 first:pt-0 last:pb-0">
+          <li class:list={["reveal-child grid grid-cols-[40px_minmax(0,1fr)] gap-2 border-t border-(--color-border) py-5 first:border-t-0 first:pt-0 last:pb-0", `stagger-${Math.min(index + 1, 4)}`]}>
             <span class="font-mono text-[13px] leading-[30px] text-(--color-orange-600)">{String(index + 1).padStart(2, "0")}</span>
             <span>
               <span class="block font-display text-[22px] leading-[30px] text-(--color-cream-900)">{step.title}</span>
