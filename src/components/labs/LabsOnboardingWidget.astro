@@ -1,0 +1,77 @@
+---
+/**
+ * LabsOnboardingWidget — one labs.onboarding-steps widget, drawn the way the
+ * product draws it: white rows on a border, tinted tag pills, a sage
+ * selected state. Rendered twice per step by LabsOnboardingSteps (under the
+ * step on small screens and with no JS, and as a panel of the scroll
+ * window from lg), so the markup lives here once. Decorative: the step
+ * text carries the meaning, so callers mark it aria-hidden.
+ */
+import type { OnboardingWidget } from "../../lib/labs-home";
+import { GAP_TAG } from "./gapTags";
+
+interface Props {
+  widget: OnboardingWidget;
+}
+const { widget } = Astro.props;
+
+const CHIP = "rounded-full border px-3 py-1 font-sans text-[13px] leading-4";
+const ROW = "flex items-center gap-3 px-4 py-3";
+---
+
+{widget.kind === "connect" && (
+  <ul class="flex flex-col divide-y divide-(--color-border)">
+    {widget.repos.map((repo) => (
+      <li class={ROW}>
+        <svg class="size-4 shrink-0" viewBox="0 0 16 16" aria-hidden="true">
+          <circle cx="8" cy="8" r="7" fill="var(--color-primary)" />
+          <path d="M5 8.2l2 2 4-4.2" fill="none" stroke="var(--color-card)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span class="flex min-w-0 flex-1 flex-col gap-0.5">
+          <span class="truncate font-mono text-[13px] leading-[18px] text-(--color-cream-900)">{repo.name}</span>
+          <span class="font-sans text-[12px] leading-4 text-(--color-cream-700)">{repo.detail}</span>
+        </span>
+        <span class="shrink-0 rounded-full bg-(--color-cream-100) px-2.5 py-0.5 font-sans text-[12px] leading-4 font-medium text-(--color-cream-700)">{repo.role}</span>
+      </li>
+    ))}
+  </ul>
+)}
+{widget.kind === "call" && (
+  <div class="flex flex-col gap-3 p-4">
+    <span class="font-mono text-[12px] leading-4 text-(--color-cream-700)">Interview · 2 of 3</span>
+    <p class="font-sans text-[14px] leading-5 text-(--color-cream-800)">{widget.context}</p>
+    <p class="font-sans text-[16px] leading-6 font-semibold text-(--color-cream-900)">{widget.question}</p>
+    <ul class="flex flex-wrap gap-1.5">
+      {widget.options.map((option) => (
+        <li class:list={[CHIP, option === widget.picked ? "border-(--color-primary) bg-(--color-sage-200) font-medium text-(--color-sage-800)" : "border-(--color-border) bg-card text-(--color-cream-800)"]}>
+          {option}
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+{widget.kind === "report" && (
+  <ul class="flex flex-col divide-y divide-(--color-border)">
+    {widget.items.map((item) => (
+      <li class={ROW}>
+        <span class:list={["shrink-0 rounded-full px-2.5 py-0.5 font-sans text-[12px] leading-4 font-medium", GAP_TAG[item.kind]]}>
+          {widget.kindLabels[item.kind]}
+        </span>
+        <span class="min-w-0 flex-1 font-sans text-[14px] leading-5 text-(--color-cream-900)">{item.title}</span>
+        <span class="font-mono text-[13px] leading-5 text-(--color-cream-900)">{item.count}</span>
+      </li>
+    ))}
+  </ul>
+)}
+{widget.kind === "review" && (
+  <div class="flex flex-col gap-3 p-4">
+    <p class="font-mono text-[12px] leading-4 text-(--color-cream-700)">{widget.session}</p>
+    <p class="rounded-[8px] border border-(--color-border) bg-(--color-popover) px-3 py-2.5 font-mono text-[12px] leading-[18px] text-(--color-cream-900)">{widget.excerpt}</p>
+    <p class="font-sans text-[16px] leading-6 font-semibold text-(--color-cream-900)">{widget.question}</p>
+    <ul class="grid grid-cols-2 gap-2">
+      {widget.options.map((option) => (
+        <li class="rounded-[8px] border border-(--color-border) bg-card py-2 text-center font-sans text-[14px] leading-5 text-(--color-cream-800)">{option}</li>
+      ))}
+    </ul>
+  </div>
+)}

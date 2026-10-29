@@ -1423,7 +1423,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Homepage how-it-works on a sage-50 band from `content: OnboardingStepsContent` (LABS_ONBOARDING on `/`): eyebrow, headline, deck, then four step cards (1, 2, then 4 columns at xl), each a numeral, title and body above a small static widget picked by the step's `widget.kind` discriminant: connect (repos with roles, providers with one picked), call (a question with tappable answers), report (gap rows tagged Wrong or Missing) or review (a session excerpt with Pass and Fail). Widgets are aria-hidden illustrations; the step text carries the meaning.",
+      "Homepage how-it-works on a sage-50 band from `content: OnboardingStepsContent` (LABS_ONBOARDING on `/`, and the industry pages): eyebrow, headline, deck, then four steps, each a mono numeral, title and body with a product widget (labs.onboarding-steps widget in LabsOnboardingWidget.astro, picked by `widget.kind`: connect, call, report or review) in a white window on a sage-100 tray. Below lg, without JS or if the script fails, the steps sit in a 1 / 2 / 4 column grid, each with its own widget. From lg the script pins the section: the step list on the left (active step open with a scroll progress bar, the others dimmed to their titles) and one window on a sage-100 stage on the right that crossfades between widgets, easing its height, under a four-segment progress bar. Reduced motion keeps the mapping without transitions. Widgets are aria-hidden; the step text carries the meaning.",
     stage: false,
     demoProps: {},
   },
@@ -1507,7 +1507,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Homepage \"how it fits\" diagram from `content: StackLayerContent` (LABS_STACK_LAYER on `/`): the AI engineer as a dark sage-800 intelligence layer (the journey's two middle stops, an arrow between them from md) over a dashed frame of the team's existing stack in three columns (traces, evals, agent framework, with service marks; traces holds stop 1, agent stop 4), joined by labelled reads / replays connectors from lg. One motion moment: in view, a dot runs each connector; every numbered stop stays at full strength, and reduced motion shows the static diagram. Install chip and trust-center link below.",
+      'Homepage "how it fits" diagram from `content: StackLayerContent` (LABS_STACK_LAYER on `/`), drawn as one session\'s thread on a stone (secondary-fill) panel: a track with a dot per stop (from lg), the four journey cards (numeral, tone tag, title, detail; the last keeps a sage border), then the sources it runs through in four columns: traces and evals (marks, `reads`), the AI engineer layer in sage-800, and the agent (marks, `replays`). Stacks below lg. One motion moment: when the panel is in view the stops light in order and the track fills; JS off and reduced motion show the finished thread. Install chip and trust-center link below, the underline on the label only.',
     stage: false,
     demoProps: {},
   },

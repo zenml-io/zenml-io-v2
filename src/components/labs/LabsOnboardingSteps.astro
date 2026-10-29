@@ -1,30 +1,41 @@
 ---
 /**
  * LabsOnboardingSteps (`labs.onboarding-steps`) — the homepage's "how it
- * works" on a sage-50 band: eyebrow, headline and deck, then four step cards
- * in a 1 → 2 → 4 grid. Each card is a numeral, a title and a body above a
- * small static widget that shows the step the way the product does it:
- * `connect` (the repos it found, each with its role and what it found
- * there), `call` (one interview question with tappable answers),
- * `report` (the first gaps, tagged Wrong or Missing) and `review` (one
- * session excerpt with Pass / Fail). Static: no motion moment. Copy
- * arrives through `content` (LABS_ONBOARDING on `/`).
+ * works" on a sage-50 band: eyebrow, headline and deck, then four steps.
+ * Each step is a numeral, a title and a body with a product widget
+ * (LabsOnboardingWidget, picked by `widget.kind`: connect, call, report,
+ * review) in a light sage tray.
+ *
+ * From lg with JS the section becomes one scroll moment: the step list sits
+ * on the left and one product window on the right, both pinned while the
+ * page scrolls through the steps. The active step opens (the others dim to
+ * their titles) and the window crossfades to its widget, its height easing
+ * to the new content, with a four-segment progress bar in its header.
+ * Without JS, below lg, or if the script fails, every step shows its own
+ * widget in a grid, so nothing depends on the scroll. Reduced motion keeps
+ * the scroll mapping and drops the transitions. Copy arrives through
+ * `content` (LABS_ONBOARDING on `/`).
  */
 import type { OnboardingStepsContent } from "../../lib/labs-home";
 import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
-import { GAP_TAG } from "./gapTags";
+import LabsOnboardingWidget from "./LabsOnboardingWidget.astro";
 
 interface Props {
   content: OnboardingStepsContent;
 }
 const { content } = Astro.props;
 
-const CHIP = "rounded-full px-2.5 py-1 font-sans text-[13px] leading-4";
-const WIDGET =
-  "mt-auto rounded-[14px] border border-(--color-border) bg-(--color-cream-50) p-4";
+const WINDOW =
+  "overflow-hidden rounded-[12px] border border-(--color-border) bg-card shadow-[0_1px_2px_rgba(65,61,55,0.04),0_8px_24px_rgba(65,61,55,0.06)]";
+const numeral = (index: number) => String(index + 1).padStart(2, "0");
 ---
 
-<section class="scroll-reveal-section bg-(--color-sage-50) py-24 md:py-32" aria-labelledby="onboarding-title">
+<section
+  class="onboarding scroll-reveal-section bg-(--color-sage-50) py-24 md:py-32"
+  aria-labelledby="onboarding-title"
+  data-onboarding
+  style={`--steps: ${content.steps.length}`}
+>
   <div class="mx-auto max-w-content px-gutter">
     <p class:list={["reveal-child", LABS_EYEBROW_CLASS]}>{content.eyebrow}</p>
     <h2 id="onboarding-title" class="reveal-child mt-3 max-w-[860px] font-display text-[32px] leading-[38px] text-balance text-(--color-cream-900) md:text-[48px] md:leading-[54px]">
@@ -34,76 +45,223 @@ const WIDGET =
       {content.deck}
     </p>
 
-    <ol class="mt-space-xl grid list-none grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
-      {content.steps.map(({ title, body, widget }, index) => (
-        <li class:list={["reveal-child flex min-w-0 flex-col rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400)", index % 2 === 1 && "stagger-1"]}>
-          <span class="inline-flex size-9 items-center justify-center rounded-full bg-(--color-sage-800) font-mono text-[13px] leading-none text-(--color-cream-50)">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <h3 class="mt-6 font-display text-[24px] leading-[30px] text-(--color-cream-900)">{title}</h3>
-          <p class="mt-3 mb-8 font-sans text-[16px] leading-[25px] text-(--color-cream-700)">{body}</p>
-
-          <div class={WIDGET} aria-hidden="true">
-            {widget.kind === "connect" && (
-              <ul class="flex flex-col gap-1.5">
-                {widget.repos.map((repo) => (
-                  <li class="flex flex-col gap-1 rounded-[10px] bg-card px-3 py-2">
-                    <span class="flex items-center justify-between gap-2">
-                      <span class="truncate font-mono text-[12px] leading-4 text-(--color-cream-900)">{repo.name}</span>
-                      <span class="shrink-0 rounded-full bg-(--color-sage-100) px-2 py-0.5 font-label text-[10px] leading-4 uppercase tracking-[0.05em] text-(--color-sage-800)">{repo.role}</span>
-                    </span>
-                    <span class="font-sans text-[12px] leading-4 text-(--color-cream-700)">{repo.detail}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {widget.kind === "call" && (
-              <div class="flex flex-col gap-3">
-                <div class="flex items-center gap-2">
-                  <span class="size-2 rounded-full bg-(--color-sage-600)"></span>
-                  <span class="font-mono text-[12px] leading-4 text-(--color-cream-700)">Interview · 2 of 3</span>
+    <div class="onboarding-track reveal-child mt-space-xl">
+      <div class="onboarding-pin">
+        <ol class="onboarding-steps grid list-none grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {content.steps.map(({ title, body, widget }, index) => (
+            <li class="onboarding-step flex min-w-0 flex-col rounded-[20px] border border-(--color-border) bg-card p-6 md:p-8" data-step={index}>
+              <div class="flex gap-4">
+                <span class="onboarding-numeral font-mono text-[13px] leading-[30px] text-(--color-sage-700)">{numeral(index)}</span>
+                <div class="min-w-0 flex-1">
+                  <h3 class="font-display text-[24px] leading-[30px] text-(--color-cream-900)">{title}</h3>
+                  <div class="onboarding-body">
+                    <div class="min-h-0">
+                      <p class="pt-2 font-sans text-[16px] leading-[25px] text-(--color-cream-700)">{body}</p>
+                      <span class="onboarding-progress" aria-hidden="true"><span></span></span>
+                    </div>
+                  </div>
                 </div>
-                <p class="font-sans text-[14px] leading-5 text-(--color-cream-800)">{widget.context}</p>
-                <p class="font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">{widget.question}</p>
-                <ul class="flex flex-wrap gap-1.5">
-                  {widget.options.map((option) => (
-                    <li class:list={[CHIP, option === widget.picked ? "bg-(--color-sage-800) text-(--color-cream-50)" : "border border-(--color-border) bg-card text-(--color-cream-800)"]}>
-                      {option}
-                    </li>
-                  ))}
-                </ul>
               </div>
-            )}
-            {widget.kind === "report" && (
-              <ul class="flex flex-col gap-2">
-                {widget.items.map((item) => (
-                  <li class="flex flex-col gap-1.5 rounded-[10px] bg-card px-3 py-2.5">
-                    <span class="flex items-center justify-between gap-2">
-                      <span class:list={["rounded-full px-2 py-0.5 font-label text-[10px] leading-4 uppercase tracking-[0.05em]", GAP_TAG[item.kind]]}>
-                        {widget.kindLabels[item.kind]}
-                      </span>
-                      <span class="font-mono text-[13px] leading-4 text-(--color-cream-900)">{item.count}</span>
-                    </span>
-                    <span class="font-sans text-[13px] leading-[18px] text-(--color-cream-900)">{item.title}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {widget.kind === "review" && (
-              <div class="flex flex-col gap-3">
-                <p class="font-mono text-[12px] leading-4 text-(--color-cream-700)">{widget.session}</p>
-                <p class="rounded-[10px] bg-card px-3 py-2.5 font-mono text-[12px] leading-[18px] text-(--color-cream-900)">{widget.excerpt}</p>
-                <p class="font-sans text-[15px] leading-5 font-medium text-(--color-cream-900)">{widget.question}</p>
-                <ul class="grid grid-cols-2 gap-1.5">
-                  {widget.options.map((option) => (
-                    <li class:list={[CHIP, "border border-(--color-border) bg-card text-center text-(--color-cream-800)"]}>{option}</li>
-                  ))}
-                </ul>
+              <div class="onboarding-inline mt-auto pt-8" aria-hidden="true">
+                <div class="rounded-[16px] bg-(--color-sage-100) p-4">
+                  <div class={WINDOW}><LabsOnboardingWidget widget={widget} /></div>
+                </div>
               </div>
-            )}
+            </li>
+          ))}
+        </ol>
+
+        <div class="onboarding-stage" aria-hidden="true">
+          <div class:list={[WINDOW, "w-full max-w-[540px]"]}>
+            <div class="flex items-center justify-end gap-1 border-b border-(--color-border) px-4 py-3.5">
+              {content.steps.map((_, index) => (
+                <span class="onboarding-segment h-1 w-5 rounded-full bg-(--color-border)" data-segment={index}></span>
+              ))}
+            </div>
+            <div class="onboarding-panels">
+              {content.steps.map(({ widget }, index) => (
+                <div class="onboarding-panel" data-panel={index}>
+                  <LabsOnboardingWidget widget={widget} />
+                </div>
+              ))}
+            </div>
           </div>
-        </li>
-      ))}
-    </ol>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
+
+<style>
+  .onboarding-stage,
+  .onboarding-progress {
+    display: none;
+  }
+
+  /* Scroll mode: armed by the script from lg; the grid above is the
+     fallback for everything else. */
+  .is-scrolly .onboarding-track {
+    height: calc(100vh + var(--steps) * 40vh);
+  }
+  .is-scrolly .onboarding-pin {
+    position: sticky;
+    top: max(7rem, calc(50vh - 12rem));
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 3rem;
+    align-items: center;
+  }
+  .is-scrolly .onboarding-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .is-scrolly .onboarding-inline {
+    display: none;
+  }
+  .is-scrolly .onboarding-step {
+    padding: 1.25rem 1.5rem;
+    border-color: transparent;
+    background: transparent;
+    opacity: 0.45;
+    transition:
+      opacity 300ms ease-out,
+      background-color 300ms ease-out,
+      border-color 300ms ease-out;
+  }
+  .is-scrolly .onboarding-step.is-active {
+    border-color: var(--color-border);
+    background: var(--color-card);
+    opacity: 1;
+  }
+  .is-scrolly .onboarding-numeral {
+    line-height: 30px;
+  }
+  .is-scrolly .onboarding-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .is-scrolly .onboarding-step.is-active .onboarding-body {
+    grid-template-rows: 1fr;
+  }
+  .is-scrolly .onboarding-body > div {
+    overflow: hidden;
+  }
+  .is-scrolly .onboarding-progress {
+    display: block;
+    margin-top: 1rem;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--color-cream-100);
+    overflow: hidden;
+  }
+  .onboarding-progress > span {
+    display: block;
+    height: 100%;
+    background: var(--color-primary);
+    transform-origin: left;
+    transform: scaleX(var(--local, 0));
+  }
+
+  .is-scrolly .onboarding-stage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 24rem;
+    border-radius: 24px;
+    background: var(--color-sage-100);
+    padding: 3rem 2.5rem;
+  }
+  .onboarding-panels {
+    display: grid;
+    overflow: hidden;
+    transition: height 450ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .onboarding-panel {
+    grid-area: 1 / 1;
+    align-self: start;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition:
+      opacity 300ms ease-out,
+      transform 450ms cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s linear 300ms;
+  }
+  .onboarding-panel.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 80ms, 80ms, 0s;
+  }
+  .onboarding-segment {
+    transition: background-color 300ms ease-out;
+  }
+  .onboarding-segment.is-done {
+    background: var(--color-primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .onboarding *,
+    .onboarding-panels {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  /* Maps the scroll through the pinned track to the active step. Armed only
+     from lg; leaving that width restores the grid. */
+  const LG = window.matchMedia("(min-width: 1024px)");
+
+  document.querySelectorAll<HTMLElement>("[data-onboarding]").forEach((section) => {
+    const track = section.querySelector<HTMLElement>(".onboarding-track");
+    const panelsBox = section.querySelector<HTMLElement>(".onboarding-panels");
+    if (!track || !panelsBox) return;
+    const steps = [...section.querySelectorAll<HTMLElement>("[data-step]")];
+    const panels = [...section.querySelectorAll<HTMLElement>("[data-panel]")];
+    const segments = [...section.querySelectorAll<HTMLElement>("[data-segment]")];
+    let active = -1;
+    let frame = 0;
+
+    const setActive = (next: number) => {
+      if (next === active) return;
+      active = next;
+      steps.forEach((el, i) => el.classList.toggle("is-active", i === next));
+      panels.forEach((el, i) => el.classList.toggle("is-active", i === next));
+      segments.forEach((el, i) => el.classList.toggle("is-done", i <= next));
+      panelsBox.style.height = `${panels[next].offsetHeight}px`;
+    };
+
+    const update = () => {
+      frame = 0;
+      const rect = track.getBoundingClientRect();
+      const span = Math.max(1, rect.height - window.innerHeight);
+      const progress = Math.min(1, Math.max(0, -rect.top / span)) * steps.length;
+      const index = Math.min(steps.length - 1, Math.floor(progress));
+      setActive(index);
+      steps[index].style.setProperty("--local", String(Math.min(1, progress - index)));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    const arm = () => {
+      if (LG.matches) {
+        section.classList.add("is-scrolly");
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", onScroll);
+        active = -1;
+        update();
+      } else {
+        section.classList.remove("is-scrolly");
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onScroll);
+        panelsBox.style.height = "";
+      }
+    };
+    LG.addEventListener("change", arm);
+    arm();
+  });
+</script>
