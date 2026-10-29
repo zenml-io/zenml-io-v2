@@ -74,7 +74,7 @@ export const STEPS = [
 /** The hosted part, said once under the steps. */
 export const HOSTED_NOTE = {
   title: "Rather not do the reading?",
-  body: `Our AI engineer reads your traces next to your evals, shows you what they miss, and asks you ten quick questions on three real sessions. Fifteen minutes a week, ${KITARU_CLOUD_PRICE} per agent per month.`,
+  body: `Our AI engineer reads your traces next to your evals, shows you what they miss, and asks you ten quick questions on three real sessions. Fifteen minutes a week, ${KITARU_CLOUD_PRICE} a month.`,
   link: {
     label: "See pricing",
     href: "/pricing",
@@ -89,7 +89,7 @@ export const HOSTED_NOTE = {
 export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "What is open source, and what is hosted?",
-    answer: `Kitaru is open source (${KITARU_LICENSE}). You install it with one curl command and it runs on your machine: import, review, checks and replay. Our AI engineer is the hosted part. It does the reading and asks you questions, for ${KITARU_CLOUD_PRICE} per agent per month. See <a href="/pricing">pricing</a>.`,
+    answer: `Kitaru is open source (${KITARU_LICENSE}). You install it with one curl command and it runs on your machine: import, review, checks and replay. Our AI engineer is the hosted part. It does the reading and asks you questions, for ${KITARU_CLOUD_PRICE} a month on Starter. See <a href="/pricing">pricing</a>.`,
   },
   {
     question: "How is this different from Langfuse, Braintrust or LangSmith?",

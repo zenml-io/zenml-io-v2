@@ -157,17 +157,17 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
   },
   {
     page: "pricing.html",
-    selector: "#pricing-ws-panel-zenml",
-    golden: "pricing-zenml-plan-cards.html",
+    selector: "#pricing-plans",
+    golden: "pricing-plan-cards.html",
     covers:
-      "pricing plan cards, ZenML workspace panel: the three plans, the Scale card's executions slider stops and default readout, every plan CTA with its analytics name",
+      "pricing plan cards: the note, the three plans with prices and limits, every plan CTA with its analytics name",
   },
   {
     page: "pricing.html",
     selector: "#compare-table",
     golden: "pricing-compare-table.html",
     covers:
-      "pricing comparison tables (both workspaces): section headings, feature rows, check/cross/text cells, the CTA row",
+      "pricing comparison table: section headings, feature rows, check/cross/text cells, the CTA row",
   },
   {
     page: "open-source-vs-pro.html",
@@ -234,7 +234,7 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
   },
   {
     page: "pricing.html",
-    selector: "section[data-workspace-panel='zenml'] div.bg-card",
+    selector: "section:has(picture) div.bg-card",
     golden: "pricing-compliance-card.html",
     covers:
       "pricing compliance card (labs.compliance-card): badges, eyebrow, headline, body — a guard that the shared component re-point does not move this page",

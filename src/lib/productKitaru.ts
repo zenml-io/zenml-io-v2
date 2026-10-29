@@ -20,13 +20,13 @@ export const MODEL_CHOICE_GUIDE_URL = `${KITARU_DOCS_URL}/import-your-traces/mod
  * here.
  */
 export const KITARU_CLOUD_PRICE = "$39";
-export const KITARU_TEAM_PRICE = "$199";
-export const KITARU_EXTRA_AGENT_PRICE = "$39";
 export const KITARU_TRIAL_DAYS = 14;
-/** Hosted plans are priced per agent; seats are never limited. */
-export const KITARU_PLAN_LIMITS = {
-  starter: { agents: 1, sessions: "1,000", retentionDays: 90 },
-  team: { agents: 5, sessions: "10,000", retentionDays: 180 },
+/** The one public plan: seats and sessions are never limited; more of
+ *  anything else is an Enterprise conversation. */
+export const KITARU_STARTER_LIMITS = {
+  agents: 1,
+  zenmlProjects: 1,
+  pipelineRuns: 100,
 } as const;
 /** What one agent is, for pricing. Said the same way everywhere. */
 export const KITARU_AGENT_DEFINITION =
@@ -122,7 +122,7 @@ export const PRODUCT_KITARU_MARKDOWN = {
   summary: [
     "Our AI engineer reads your agent's traces next to your evals and shows you what they miss. Kitaru is the open-source part underneath it.",
     `Kitaru imports the traces you already have, or records new ones through an adapter. You review real sessions, turn what you find into checks, and replay your agent through its own framework to test a fix before it ships.`,
-    `Kitaru is ${KITARU_LICENSE}. Install it in one line and run it on your own machine, with your own model keys. Our AI engineer is the hosted part: it does the reading and asks you ten quick questions on three real sessions, about fifteen minutes a week. It costs ${KITARU_CLOUD_PRICE} per agent per month; see https://www.zenml.io/pricing.`,
+    `Kitaru is ${KITARU_LICENSE}. Install it in one line and run it on your own machine, with your own model keys. Our AI engineer is the hosted part: it does the reading and asks you ten quick questions on three real sessions, about fifteen minutes a week. It costs ${KITARU_CLOUD_PRICE} a month on Starter, with one ZenML project included; see https://www.zenml.io/pricing.`,
   ],
   steps: [
     {

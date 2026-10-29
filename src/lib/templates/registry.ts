@@ -378,7 +378,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Thin adapter from `PricingCompareTableData` onto `data-display.spec-table`'s labs skin — the same mapping the legacy `PricingComparisonTable.astro` used. Consumers: /pricing (both workspace panels), and the same mapping shape on /open-source-vs-pro and /deployments.",
+      "Thin adapter from `PricingCompareTableData` onto `data-display.spec-table`'s labs skin — the same mapping the legacy `PricingComparisonTable.astro` used. Consumers: /pricing, and the same mapping shape on /open-source-vs-pro and /deployments.",
     stage: false,
     demoProps: {},
   },
@@ -386,13 +386,13 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     id: "labs.pricing-plan-cards",
     kind: "template",
     componentPath: "src/components/labs/PricingPlanCards.astro",
-    variantAxes: ["workspace count", "highlighted plan", "slider present"],
+    variantAxes: ["highlighted plan"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 0,
     notes:
-      "The /pricing two-workspace plan cards: a segmented toggle above a Kitaru panel and a ZenML panel, both server-rendered, the toggle only flipping `hidden` (crawlers and no-JS visitors still see the default panel's numbers). The Recommended card = a 1px `--color-sage-400` border + a sentence-case pill (`--color-orange-300`/`--color-orange-600` on the Kitaru workspace — the panel's one bounded orange moment, from the workspace's `accent: \"sage\" | \"orange\"` discriminant in pricing.ts). The ZenML Scale card's executions slider view-model lives in `src/components/sections/pricingSlider.ts` (shared with the legacy card during the /pricing cutover); the workspace toggle, roving-tab-focus keyboard handling, the `Pricing: Workspace Switch` analytics call are carried over from the legacy `sections/PricingPlanCards.astro`; the reveal is the house `initScrollReveal()` (cards hide only once the section is armed, so no-JS stays visible). The selected toggle tab is the solid dark pill carrying the product wordmark; each panel opens with a heading naming its workspace.",
+      "The /pricing plan cards (`plans`, `note`): one row of plans (Open Source / Starter / Enterprise, three columns from lg) under a centred note, all static markup so crawlers and no-JS visitors see every number. The highlighted plan gets a 1px `--color-sage-400` border and a sage-800 top badge; check icons are sage-700. Cards slide in with the house scroll reveal; reduced motion shows them in place.",
 
     stage: false,
     demoProps: {},
@@ -2275,7 +2275,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "The SOC 2 / ISO 27001 badges beside an eyebrow, headline and body on the Labs card shell. The `mt-8` is part of the component because every consumer sits it directly under a block. Consumers: /pricing (the ZenML workspace panel), /pro and the /features/[slug] compliance blocks.",
+      "The SOC 2 / ISO 27001 badges beside an eyebrow, headline and body on the Labs card shell. The `mt-8` is part of the component because every consumer sits it directly under a block. Consumers: /pricing, /pro and the /features/[slug] compliance blocks.",
     stage: false,
     demoProps: {
       badges: PRICING_COMPLIANCE.badges,
