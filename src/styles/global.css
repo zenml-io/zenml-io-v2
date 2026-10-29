@@ -654,8 +654,30 @@ html { scroll-behavior: smooth; }
   --color-primary-800: var(--color-zenml-800);
 }
 
+/* Scroll progress (0–1) written by `labs-scroll-progress.ts` onto the
+ * elements that read it. Not inherited, so a frame's write restyles only
+ * those elements; the initial value is the finished state, which is what JS
+ * off and reduced motion show. */
+@property --p {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
+/* Motion tokens (DESIGN.md "Motion and atmosphere"): quint for state
+ * changes, expo for entrances. Plain custom properties, so component
+ * <style> blocks and shared CSS read them without a Tailwind utility. */
+:root {
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 200ms;
+  --duration-base: 320ms;
+  --duration-slow: 700ms;
+}
+
 /* Static utility tokens (no theming, no semantic role — just literal scales) */
 @theme {
+
   /* === Gray Scale (from Untitled UI design system) === */
   --color-gray-25: #fcfcfd;
   --color-gray-50: #f9fafb;
