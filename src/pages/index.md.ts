@@ -7,16 +7,16 @@ import {
   markdownResponse,
 } from "../lib/agentMarkdown";
 import {
-  LABS_CLOSE,
   LABS_DOORS,
-  LABS_FEATURE_PANELS,
+  LABS_GAP_REPORT,
   LABS_HERO,
-  LABS_HERO_VISUAL,
+  LABS_HOME_CLOSE,
   LABS_HOME_SEO,
-  LABS_HOW_IT_WORKS,
   LABS_LOGO_GRID,
-  LABS_STORIES,
+  LABS_ONBOARDING,
+  LABS_STACK_LAYER,
 } from "../lib/labs-home";
+import { priceStrip } from "../lib/pricing";
 
 export const prerender = true;
 
@@ -27,6 +27,7 @@ export const prerender = true;
  */
 
 export function GET(): Response {
+  const pricing = priceStrip("Home");
   const markdown = joinMarkdownSections(
     markdownPreamble({
       title: LABS_HOME_SEO.title,
@@ -37,7 +38,7 @@ export function GET(): Response {
       "## Summary",
       LABS_HERO.headlineLines.join(" "),
       LABS_HERO.deck,
-      LABS_HERO_VISUAL.label,
+      LABS_GAP_REPORT.label,
     ),
     joinMarkdownSections(
       "## Main CTA",
@@ -45,16 +46,33 @@ export function GET(): Response {
       LABS_HERO.install ? `Install Kitaru: \`${LABS_HERO.install.cmd}\`` : "",
     ),
     joinMarkdownSections(
-      `## ${LABS_HOW_IT_WORKS.headline}`,
-      LABS_HOW_IT_WORKS.intro,
-      ...LABS_HOW_IT_WORKS.steps.map((step, i) =>
-        joinMarkdownSections(
-          `### ${i + 1}. ${step.title}`,
-          step.body,
-          step.detail?.kind === "prompt" ? `\`${step.detail.text}\`` : "",
+      `## ${LABS_ONBOARDING.headline}`,
+      LABS_ONBOARDING.deck,
+      ...LABS_ONBOARDING.steps.map((step, i) =>
+        joinMarkdownSections(`### ${i + 1}. ${step.title}`, step.body),
+      ),
+    ),
+    joinMarkdownSections(
+      `## ${LABS_STACK_LAYER.headline}`,
+      LABS_STACK_LAYER.deck,
+      `${LABS_STACK_LAYER.layer.title}: ${LABS_STACK_LAYER.layer.deployments.join(", ")}.`,
+      markdownBulletList(
+        LABS_STACK_LAYER.columns.map(
+          (column) =>
+            `${column.title}: ${column.marks.map((mark) => mark.name).join(", ")}`,
         ),
       ),
-      markdownLink(LABS_HOW_IT_WORKS.link.label, LABS_HOW_IT_WORKS.link.href),
+      `### ${LABS_STACK_LAYER.journeyLabel}`,
+      markdownBulletList(
+        LABS_STACK_LAYER.journey.map(
+          (step) => `${step.tag}: ${step.title} (${step.detail})`,
+        ),
+      ),
+      markdownLink(LABS_STACK_LAYER.link.label, LABS_STACK_LAYER.link.href),
+    ),
+    joinMarkdownSections(
+      `## ${LABS_LOGO_GRID.headline}`,
+      LABS_LOGO_GRID.logos.map((logo) => logo.name).join(", "),
     ),
     joinMarkdownSections(
       `## ${LABS_DOORS.headline}`,
@@ -68,30 +86,20 @@ export function GET(): Response {
       ),
     ),
     joinMarkdownSections(
-      `## ${LABS_LOGO_GRID.headline}`,
-      LABS_LOGO_GRID.logos.map((logo) => logo.name).join(", "),
-    ),
-    joinMarkdownSections(
-      "## What you get",
-      ...LABS_FEATURE_PANELS.map((panel) =>
-        joinMarkdownSections(`### ${panel.title}`, panel.body),
-      ),
-    ),
-    joinMarkdownSections(
-      LABS_STORIES.headline ? `## ${LABS_STORIES.headline}` : "",
+      `## ${pricing.headline}`,
+      pricing.deck,
       markdownBulletList(
-        LABS_STORIES.cards.map((card) =>
-          "href" in card ? markdownLink(card.title, card.href) : card.title,
+        pricing.plans.map(
+          (plan) =>
+            `${plan.name}: ${plan.price}${plan.suffix ?? ""}, ${plan.line}`,
         ),
       ),
-      LABS_STORIES.allLink
-        ? markdownLink(LABS_STORIES.allLink.label, LABS_STORIES.allLink.href)
-        : "",
+      markdownLink(pricing.link.label, pricing.link.href),
     ),
     joinMarkdownSections(
-      `## ${LABS_CLOSE.headlineLines.join(" ")}`,
-      LABS_CLOSE.deck,
-      markdownCtaList([LABS_CLOSE.cta]),
+      `## ${LABS_HOME_CLOSE.headlineLines.join(" ")}`,
+      LABS_HOME_CLOSE.deck,
+      markdownCtaList([LABS_HOME_CLOSE.cta]),
     ),
   );
 

@@ -13,12 +13,7 @@
  */
 import type { Surface } from "./analytics";
 import type { FeatureIconId } from "./featureIcons";
-import {
-  CASE_STUDY_CARDS,
-  type CaseStudyCard,
-  LOGO_CLOUD,
-  type LogoItem,
-} from "./homepage";
+import { type CaseStudyCard, LOGO_CLOUD, type LogoItem } from "./homepage";
 import {
   KITARU_DOCS_URL,
   KITARU_INSTALL_CMD,
@@ -398,26 +393,6 @@ export interface ProblemBandContent {
   deck: string;
   points: readonly ProblemPoint[];
 }
-
-export const LABS_PROBLEM: ProblemBandContent = {
-  eyebrow: "The problem",
-  headlineLines: ["The dashboard says 91%.", "The complaints keep coming."],
-  deck: "Your agent is live and its traces flow into Langfuse. Everyone on the team knows the number is off. Nobody knows where.",
-  points: [
-    {
-      title: "Written once, never checked",
-      body: "Judges get written in a sprint, often by an AI tool, and nobody compares them with their own verdicts again.",
-    },
-    {
-      title: "High score, unhappy users",
-      body: "The evals keep passing while traffic drifts to cases they never looked at.",
-    },
-    {
-      title: "Nobody wants the job",
-      body: "Every hour spent on evals is an hour not spent building, so the checking never happens.",
-    },
-  ],
-};
 
 /* ---------------------------------------------------------------------- */
 /* Onboarding: connect, a short call, what it found, a weekly review     */
@@ -922,17 +897,6 @@ export interface StoryCardsContent {
   readLabel?: string;
   cards: readonly (CaseStudyCard | QuoteCard)[];
 }
-
-export const LABS_STORIES: StoryCardsContent = {
-  headline: "Customer stories",
-  allLink: {
-    label: "All case studies",
-    href: "/case-studies",
-    analytics: "Stories-All",
-  },
-  readLabel: "Read the story",
-  cards: CASE_STUDY_CARDS,
-};
 
 /* ---------------------------------------------------------------------- */
 /* Close                                                                   */

@@ -12,13 +12,11 @@
  *
  * Route: / (homepage)
  */
-import CustomerStoryCards from "../components/labs/CustomerStoryCards.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
 import LabsGapReportVisual from "../components/labs/LabsGapReportVisual.astro";
 import LabsHero from "../components/labs/LabsHero.astro";
 import LabsOnboardingSteps from "../components/labs/LabsOnboardingSteps.astro";
 import LabsPriceStrip from "../components/labs/LabsPriceStrip.astro";
-import LabsProblemBand from "../components/labs/LabsProblemBand.astro";
 import LabsStackLayer from "../components/labs/LabsStackLayer.astro";
 import LogoMarquee from "../components/labs/LogoMarquee.astro";
 import ProductDoors from "../components/labs/ProductDoors.astro";
@@ -33,9 +31,7 @@ import {
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
   LABS_ONBOARDING,
-  LABS_PROBLEM,
   LABS_STACK_LAYER,
-  LABS_STORIES,
 } from "../lib/labs-home";
 import { priceStrip } from "../lib/pricing";
 import { defaultOgImage, ORGANIZATION_NAME } from "../lib/seo";
@@ -60,11 +56,9 @@ const homepageJsonLd = buildHomepageJsonLd({
     <LabsHero content={LABS_HERO}>
       <LabsGapReportVisual slot="visual" content={LABS_GAP_REPORT} />
     </LabsHero>
-    <LabsProblemBand content={LABS_PROBLEM} />
     <LabsOnboardingSteps content={LABS_ONBOARDING} />
     <LabsStackLayer content={LABS_STACK_LAYER} />
     <LogoMarquee content={LABS_LOGO_GRID} />
-    <CustomerStoryCards content={LABS_STORIES} />
     <ProductDoors content={LABS_DOORS} />
     <LabsPriceStrip content={priceStrip("Home")} />
     <LabsCloseCta content={LABS_HOME_CLOSE} />

@@ -1423,7 +1423,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Homepage problem statement from `content: ProblemBandContent` (LABS_PROBLEM on `/`): eyebrow, a two-sentence headline on two lines (the second in sage-700), a scenario deck, then three numbered points on dark hairlines (1 then 3 columns from md). Static.",
+      "An industry page's problem statement from `content: ProblemBandContent` (an IndustryPageContent's `problem`): eyebrow, a two-sentence headline on two lines (the second in sage-700), a scenario deck, then three numbered points on dark hairlines (1 then 3 columns from md). Static.",
     stage: false,
     demoProps: {},
   },
@@ -1612,7 +1612,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      'ZenML Labs homepage section 05: an optional headline + optional "all case studies" link, then either four shared LabsStoryCards (customer logos on light sage grain, title, read-the-story label) or, when `content.cards` are quote cards instead (`"quote" in card`), a three-up grid of LabsStoryCard\'s `kind="quote"` arrangement (a `wide` card spans two columns). Content arrives through `content: StoryCardsContent` (LABS_STORIES on `/`, cards from CASE_STUDY_CARDS; PRO_QUOTES on /pro renders the quote arrangement, no headline, no allLink).',
+      'ZenML Labs homepage section 05: an optional headline + optional "all case studies" link, then either four shared LabsStoryCards (customer logos on light sage grain, title, read-the-story label) or, when `content.cards` are quote cards instead (`"quote" in card`), a three-up grid of LabsStoryCard\'s `kind="quote"` arrangement (a `wide` card spans two columns). Content arrives through `content: StoryCardsContent` (PRO_QUOTES on /pro renders the quote arrangement, no headline, no allLink).',
     contentShape: {
       minItems: 4,
       maxItems: 4,
