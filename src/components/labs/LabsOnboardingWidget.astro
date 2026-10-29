@@ -1,77 +1,215 @@
 ---
 /**
- * LabsOnboardingWidget — one labs.onboarding-steps widget, drawn the way the
- * product draws it: white rows on a border, tinted tag pills, a sage
- * selected state. Rendered twice per step by LabsOnboardingSteps (under the
- * step on small screens and with no JS, and as a panel of the scroll
- * window from lg), so the markup lives here once. Decorative: the step
- * text carries the meaning, so callers mark it aria-hidden.
+ * LabsOnboardingWidget — one labs.onboarding-steps widget, drawn from the
+ * product's own components (the kaizen app in the frontend monorepo):
+ *   - connect: SetupCard connection rows, a tile, the repo, and a check
+ *   - call: a DecisionCard ask row, answer buttons with keycaps
+ *   - report: the gap rows, each with a bar sized to its session count
+ *   - review: a VerdictCard, the session strip and keycapped radio cards
+ * Rendered twice per step by LabsOnboardingSteps (under the step on small
+ * screens and with no JS, and as a panel of the scroll window from lg), so
+ * the markup lives here once. Both render the finished state (checks in,
+ * answer picked, bars full). Inside the active scroll-window panel the
+ * widget plays its arrival on the product's motion (and below lg, when the
+ * inline copy scrolls into view): blocks settle 70ms apart, checks pop and draw, the picked answer presses in. Every
+ * animation fills backwards only, so nothing is held hidden; reduced motion
+ * skips them. Decorative: the step text carries the meaning, so callers
+ * mark it aria-hidden.
  */
 import type { OnboardingWidget } from "../../lib/labs-home";
-import { GAP_TAG } from "./gapTags";
+import { GAP_TAG, GAP_TAG_BASE } from "./gapTags";
 
 interface Props {
   widget: OnboardingWidget;
 }
 const { widget } = Astro.props;
 
-const CHIP = "rounded-full border px-3 py-1 font-sans text-[13px] leading-4";
 const ROW = "flex items-center gap-3 px-4 py-3";
+const KEYCAP = "font-mono text-[11px] leading-4 text-(--color-cream-600)";
+const BAR_TONE = {
+  wrong: "bg-destructive",
+  missing: "bg-(--color-cream-400)",
+} as const;
+const maxCount =
+  widget.kind === "report"
+    ? Math.max(
+        ...widget.items.map((item) => Number.parseInt(item.count, 10) || 0),
+        1,
+      )
+    : 1;
 ---
 
 {widget.kind === "connect" && (
-  <ul class="flex flex-col divide-y divide-(--color-border)">
-    {widget.repos.map((repo) => (
-      <li class={ROW}>
-        <svg class="size-4 shrink-0" viewBox="0 0 16 16" aria-hidden="true">
-          <circle cx="8" cy="8" r="7" fill="var(--color-primary)" />
-          <path d="M5 8.2l2 2 4-4.2" fill="none" stroke="var(--color-card)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
+  <ul class="ow-arrive flex flex-col divide-y divide-(--color-border)">
+    {widget.repos.map((repo, index) => (
+      <li class={ROW} style={`--i: ${index}`}>
+        <span class="flex size-7 shrink-0 items-center justify-center rounded-[6px] border border-(--color-border) bg-card">
+          <img src="/images/service-logos/github.svg" alt="" aria-hidden="true" width="16" height="16" class="size-4" />
+        </span>
         <span class="flex min-w-0 flex-1 flex-col gap-0.5">
           <span class="truncate font-mono text-[13px] leading-[18px] text-(--color-cream-900)">{repo.name}</span>
-          <span class="font-sans text-[12px] leading-4 text-(--color-cream-700)">{repo.detail}</span>
+          <span class="font-sans text-[13px] leading-[18px] text-(--color-cream-700)">{repo.detail}</span>
         </span>
-        <span class="shrink-0 rounded-full bg-(--color-cream-100) px-2.5 py-0.5 font-sans text-[12px] leading-4 font-medium text-(--color-cream-700)">{repo.role}</span>
+        <span class="shrink-0 rounded-full bg-(--muted) px-2.5 py-0.5 font-sans text-[12px] leading-4 font-medium text-(--muted-foreground)">{repo.role}</span>
+        <svg class="ow-check size-4 shrink-0" viewBox="0 0 16 16" aria-hidden="true">
+          <circle cx="8" cy="8" r="8" fill="var(--color-primary)" />
+          <path d="M4.8 8.3l2.1 2.1 4.3-4.6" pathLength="1" fill="none" stroke="var(--primary-foreground)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
       </li>
     ))}
   </ul>
 )}
+
 {widget.kind === "call" && (
-  <div class="flex flex-col gap-3 p-4">
-    <span class="font-mono text-[12px] leading-4 text-(--color-cream-700)">Interview · 2 of 3</span>
-    <p class="font-sans text-[14px] leading-5 text-(--color-cream-800)">{widget.context}</p>
-    <p class="font-sans text-[16px] leading-6 font-semibold text-(--color-cream-900)">{widget.question}</p>
-    <ul class="flex flex-wrap gap-1.5">
-      {widget.options.map((option) => (
-        <li class:list={[CHIP, option === widget.picked ? "border-(--color-primary) bg-(--color-sage-200) font-medium text-(--color-sage-800)" : "border-(--color-border) bg-card text-(--color-cream-800)"]}>
-          {option}
+  <div class="ow-arrive flex flex-col gap-4 p-5">
+    <p class="font-sans text-[15px] leading-[22px] text-(--color-cream-800)">{widget.context}</p>
+    <div class="flex flex-col gap-3 rounded-[8px] border border-(--color-border) bg-card px-4 py-3.5 shadow-[0_1px_2px_rgba(65,61,55,0.05)]">
+      <p class="font-sans text-[15px] leading-[22px] font-medium text-(--color-cream-900)">{widget.question}</p>
+      <ul class="flex flex-wrap gap-1.5">
+        {widget.options.map((option, index) => (
+          <li
+            class:list={[
+              "flex items-center gap-1.5 rounded-[6px] border px-2.5 py-1.5",
+              option === widget.picked
+                ? "ow-picked border-(--color-cream-600) bg-(--color-cream-100) ring-2 ring-(--color-cream-200)"
+                : "border-(--color-border) bg-card",
+            ]}
+          >
+            <span class:list={["font-sans text-[14px] leading-5", "text-(--color-cream-900)", option === widget.picked && "font-medium"]}>{option}</span>
+            <span class={KEYCAP}>{index + 1}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+)}
+
+{widget.kind === "report" && (
+  <ul class="ow-arrive flex flex-col divide-y divide-(--color-border)">
+    {widget.items.map((item, index) => (
+      <li class="flex flex-col gap-2.5 px-4 py-3.5" style={`--i: ${index}`}>
+        <span class="flex items-center gap-3">
+          <span class:list={[GAP_TAG_BASE, GAP_TAG[item.kind]]}>
+            {widget.kindLabels[item.kind]}
+          </span>
+          <span class="min-w-0 flex-1 font-sans text-[15px] leading-[22px] text-(--color-cream-900)">{item.title}</span>
+          <span class="font-mono text-[13px] leading-5 text-(--color-cream-900) tabular-nums">{item.count}</span>
+        </span>
+        <span class="h-1 overflow-hidden rounded-full bg-(--color-cream-100)">
+          <span
+            class:list={["ow-bar block h-full rounded-full", BAR_TONE[item.kind]]}
+            style={`width: ${((Number.parseInt(item.count, 10) || 0) / maxCount) * 100}%; --i: ${index}`}
+          ></span>
+        </span>
+      </li>
+    ))}
+  </ul>
+)}
+
+{widget.kind === "review" && (
+  <div class="ow-arrive flex flex-col">
+    <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-b border-(--color-border) px-5 pt-4 pb-3">
+      <p class="font-sans text-[15px] leading-[22px] font-semibold text-(--color-cream-900)">{widget.question}</p>
+      <p class="font-mono text-[12px] leading-4 text-(--color-cream-700)">{widget.session}</p>
+    </div>
+    <p class="mx-5 mt-4 rounded-[8px] border border-(--color-border) bg-(--secondary) px-3 py-2.5 font-mono text-[13px] leading-5 text-(--color-cream-900)">{widget.excerpt}</p>
+    <ul class="grid grid-cols-2 gap-2 p-5">
+      {widget.options.map((option, index) => (
+        <li
+          class:list={[
+            "flex items-center gap-2.5 rounded-[8px] border px-3 py-2.5",
+            option === widget.picked
+              ? "ow-picked border-destructive bg-destructive/5 ring-2 ring-destructive/15"
+              : "border-(--color-border) bg-card",
+          ]}
+        >
+          <span
+            class:list={[
+              "flex size-6 shrink-0 items-center justify-center rounded-[4px] border font-mono text-[12px] leading-4 font-medium",
+              option === widget.picked
+                ? "ow-key border-destructive bg-destructive text-destructive-foreground"
+                : "border-(--color-border) text-(--color-cream-700)",
+            ]}
+          >
+            {index + 1}
+          </span>
+          <span class:list={["font-sans text-[14px] leading-5", option === widget.picked ? "font-medium text-destructive" : "text-(--color-cream-900)"]}>{option}</span>
         </li>
       ))}
     </ul>
   </div>
 )}
-{widget.kind === "report" && (
-  <ul class="flex flex-col divide-y divide-(--color-border)">
-    {widget.items.map((item) => (
-      <li class={ROW}>
-        <span class:list={["shrink-0 rounded-full px-2.5 py-0.5 font-sans text-[12px] leading-4 font-medium", GAP_TAG[item.kind]]}>
-          {widget.kindLabels[item.kind]}
-        </span>
-        <span class="min-w-0 flex-1 font-sans text-[14px] leading-5 text-(--color-cream-900)">{item.title}</span>
-        <span class="font-mono text-[13px] leading-5 text-(--color-cream-900)">{item.count}</span>
-      </li>
-    ))}
-  </ul>
-)}
-{widget.kind === "review" && (
-  <div class="flex flex-col gap-3 p-4">
-    <p class="font-mono text-[12px] leading-4 text-(--color-cream-700)">{widget.session}</p>
-    <p class="rounded-[8px] border border-(--color-border) bg-(--color-popover) px-3 py-2.5 font-mono text-[12px] leading-[18px] text-(--color-cream-900)">{widget.excerpt}</p>
-    <p class="font-sans text-[16px] leading-6 font-semibold text-(--color-cream-900)">{widget.question}</p>
-    <ul class="grid grid-cols-2 gap-2">
-      {widget.options.map((option) => (
-        <li class="rounded-[8px] border border-(--color-border) bg-card py-2 text-center font-sans text-[14px] leading-5 text-(--color-cream-800)">{option}</li>
-      ))}
-    </ul>
-  </div>
-)}
+
+<style>
+  /* The product's motion (kaizen kz-motion.css): settle 420ms on
+     cubic-bezier(0.22, 1, 0.36, 1), blocks 70ms apart; the mark pops on its
+     overshoot curve and its check draws 140ms after. Played only inside the
+     scroll window's active panel, and replayed each time it becomes active. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-arrive > * {
+      animation: ow-settle 420ms var(--ease-out-quint) backwards;
+    }
+    :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-arrive > :nth-child(2) { animation-delay: 70ms; }
+    :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-arrive > :nth-child(3) { animation-delay: 140ms; }
+    :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-arrive > :nth-child(n + 4) { animation-delay: 210ms; }
+
+    :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-check {
+      animation: ow-pop 320ms cubic-bezier(0.34, 1.56, 0.64, 1) calc(260ms + var(--i, 0) * 160ms) backwards;
+    }
+    :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-check path {
+      stroke-dasharray: 1;
+      animation: ow-draw 280ms var(--ease-out-quint) calc(400ms + var(--i, 0) * 160ms) backwards;
+    }
+
+    :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-bar {
+      transform-origin: left;
+      animation: ow-grow var(--duration-slow) var(--ease-out-quint) calc(240ms + var(--i, 0) * 110ms) backwards;
+    }
+
+    :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-picked {
+      animation: ow-press 360ms var(--ease-out-quint) 720ms backwards;
+    }
+    :global(:is(.onboarding-panel.is-active, .onboarding-inline.in-view)) .ow-key {
+      animation: ow-key 240ms var(--ease-out-quint) 720ms backwards;
+    }
+  }
+
+  /* Below lg the inline widget waits for the house reveal (labs-scroll-reveal)
+     to mark it in view. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.onboarding-inline.reveal-armed:not(.in-view)) .ow-arrive > * {
+      opacity: 0;
+    }
+  }
+
+  @keyframes ow-settle {
+    from { opacity: 0; filter: blur(4px); transform: translateY(6px); }
+  }
+  @keyframes ow-pop {
+    from { opacity: 0; transform: scale(0.4); }
+  }
+  @keyframes ow-draw {
+    from { stroke-dashoffset: 1; }
+  }
+  @keyframes ow-grow {
+    from { transform: scaleX(0); }
+  }
+  /* Unpicked look, then a press: the chosen answer settles in. */
+  @keyframes ow-press {
+    0% {
+      border-color: var(--color-border);
+      background-color: var(--card);
+      box-shadow: 0 0 0 0 transparent;
+      transform: scale(1);
+    }
+    45% { transform: scale(0.97); }
+    100% { transform: scale(1); }
+  }
+  @keyframes ow-key {
+    from {
+      border-color: var(--color-border);
+      background-color: transparent;
+      color: var(--color-cream-700);
+    }
+  }
+</style>

@@ -4,13 +4,15 @@
  * works" on a sage-50 band: eyebrow, headline and deck, then four steps.
  * Each step is a numeral, a title and a body with a product widget
  * (LabsOnboardingWidget, picked by `widget.kind`: connect, call, report,
- * review) in a light sage tray.
+ * review) in a window headed by the AI engineer's author row.
  *
  * From lg with JS the section becomes one scroll moment: the step list sits
  * on the left and one product window on the right, both pinned while the
  * page scrolls through the steps. The active step opens (the others dim to
- * their titles) and the window crossfades to its widget, its height easing
- * to the new content, with a four-segment progress bar in its header.
+ * their titles) and the window moves on to its widget: the old one blurs
+ * out, the new one's blocks settle in, the height eases to fit. The window
+ * header is the AI engineer's author row (orb and name) with a four-segment
+ * progress bar.
  * Without JS, below lg, or if the script fails, every step shows its own
  * widget in a grid, so nothing depends on the scroll. Reduced motion keeps
  * the scroll mapping and drops the transitions. Copy arrives through
@@ -18,6 +20,8 @@
  */
 import type { OnboardingStepsContent } from "../../lib/labs-home";
 import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
+import "../../styles/labs-scroll-reveal.css";
+import LabsAiEngineerRow from "./LabsAiEngineerRow.astro";
 import LabsOnboardingWidget from "./LabsOnboardingWidget.astro";
 
 interface Props {
@@ -31,12 +35,12 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
 ---
 
 <section
-  class="onboarding scroll-reveal-section bg-(--color-sage-50) py-24 md:py-32"
+  class="onboarding bg-(--color-sage-50) py-24 md:py-32"
   aria-labelledby="onboarding-title"
   data-onboarding
   style={`--steps: ${content.steps.length}`}
 >
-  <div class="mx-auto max-w-content px-gutter">
+  <div class="scroll-reveal-section mx-auto max-w-content px-gutter">
     <p class:list={["reveal-child", LABS_EYEBROW_CLASS]}>{content.eyebrow}</p>
     <h2 id="onboarding-title" class="reveal-child mt-3 max-w-[860px] font-display text-[32px] leading-[38px] text-balance text-(--color-cream-900) md:text-[48px] md:leading-[54px]">
       {content.headline}
@@ -45,7 +49,7 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
       {content.deck}
     </p>
 
-    <div class="onboarding-track reveal-child mt-space-xl">
+    <div class="onboarding-track reveal-child stagger-2 mt-space-xl">
       <div class="onboarding-pin">
         <ol class="onboarding-steps grid list-none grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
           {content.steps.map(({ title, body, widget }, index) => (
@@ -57,14 +61,14 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
                   <div class="onboarding-body">
                     <div class="min-h-0">
                       <p class="pt-2 font-sans text-[16px] leading-[25px] text-(--color-cream-700)">{body}</p>
-                      <span class="onboarding-progress" aria-hidden="true"><span></span></span>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="onboarding-inline mt-auto pt-8" aria-hidden="true">
-                <div class="rounded-[16px] bg-(--color-sage-100) p-4">
-                  <div class={WINDOW}><LabsOnboardingWidget widget={widget} /></div>
+              <div class="onboarding-inline scroll-reveal-section mt-auto pt-8" aria-hidden="true">
+                <div class={WINDOW}>
+                  <LabsAiEngineerRow />
+                  <LabsOnboardingWidget widget={widget} />
                 </div>
               </div>
             </li>
@@ -72,12 +76,14 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
         </ol>
 
         <div class="onboarding-stage" aria-hidden="true">
-          <div class:list={[WINDOW, "w-full max-w-[540px]"]}>
-            <div class="flex items-center justify-end gap-1 border-b border-(--color-border) px-4 py-3.5">
-              {content.steps.map((_, index) => (
-                <span class="onboarding-segment h-1 w-5 rounded-full bg-(--color-border)" data-segment={index}></span>
-              ))}
-            </div>
+          <div class:list={[WINDOW, "w-full max-w-[640px]"]}>
+            <LabsAiEngineerRow>
+              <span class="flex shrink-0 gap-1">
+                {content.steps.map((_, index) => (
+                  <span class="onboarding-segment h-1 w-5 rounded-full bg-(--color-border)" data-segment={index}></span>
+                ))}
+              </span>
+            </LabsAiEngineerRow>
             <div class="onboarding-panels">
               {content.steps.map(({ widget }, index) => (
                 <div class="onboarding-panel" data-panel={index}>
@@ -93,8 +99,7 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
 </section>
 
 <style>
-  .onboarding-stage,
-  .onboarding-progress {
+  .onboarding-stage {
     display: none;
   }
 
@@ -109,7 +114,7 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     gap: 3rem;
-    align-items: center;
+    align-items: start;
   }
   .is-scrolly .onboarding-steps {
     display: flex;
@@ -125,9 +130,9 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
     background: transparent;
     opacity: 0.45;
     transition:
-      opacity 300ms ease-out,
-      background-color 300ms ease-out,
-      border-color 300ms ease-out;
+      opacity var(--duration-base) var(--ease-out-quint),
+      background-color var(--duration-base) var(--ease-out-quint),
+      border-color var(--duration-base) var(--ease-out-quint);
   }
   .is-scrolly .onboarding-step.is-active {
     border-color: var(--color-border);
@@ -140,7 +145,7 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
   .is-scrolly .onboarding-body {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 400ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: grid-template-rows 400ms var(--ease-out-quint);
   }
   .is-scrolly .onboarding-step.is-active .onboarding-body {
     grid-template-rows: 1fr;
@@ -148,55 +153,45 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
   .is-scrolly .onboarding-body > div {
     overflow: hidden;
   }
-  .is-scrolly .onboarding-progress {
-    display: block;
-    margin-top: 1rem;
-    height: 3px;
-    border-radius: 999px;
-    background: var(--color-cream-100);
-    overflow: hidden;
-  }
-  .onboarding-progress > span {
-    display: block;
-    height: 100%;
-    background: var(--color-primary);
-    transform-origin: left;
-    transform: scaleX(var(--local, 0));
-  }
 
   .is-scrolly .onboarding-stage {
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: 24rem;
+    align-items: flex-start;
     border-radius: 24px;
     background: var(--color-sage-100);
-    padding: 3rem 2.5rem;
+    padding: 1.5rem;
   }
   .onboarding-panels {
     display: grid;
     overflow: hidden;
-    transition: height 450ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: height 420ms var(--ease-out-quint);
   }
+  /* The outgoing widget blurs out fast; the incoming one is shown at once
+     and its blocks settle in (LabsOnboardingWidget), so the swap reads as
+     the same window moving on rather than two cards crossfading. */
   .onboarding-panel {
     grid-area: 1 / 1;
     align-self: start;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(8px);
+    filter: blur(4px);
+    transform: translateY(-4px);
     transition:
-      opacity 300ms ease-out,
-      transform 450ms cubic-bezier(0.22, 1, 0.36, 1),
-      visibility 0s linear 300ms;
+      opacity 200ms var(--ease-out-quint),
+      filter 200ms var(--ease-out-quint),
+      transform 200ms var(--ease-out-quint),
+      visibility 0s linear 200ms;
   }
   .onboarding-panel.is-active {
     opacity: 1;
     visibility: visible;
+    filter: none;
     transform: none;
-    transition-delay: 80ms, 80ms, 0s;
+    transition: visibility 0s;
   }
   .onboarding-segment {
-    transition: background-color 300ms ease-out;
+    transition: background-color var(--duration-base) var(--ease-out-quint);
   }
   .onboarding-segment.is-done {
     background: var(--color-primary);
@@ -237,11 +232,19 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
     const update = () => {
       frame = 0;
       const rect = track.getBoundingClientRect();
+      // Below the viewport: no step active yet, so the first widget plays
+      // its arrival when the window comes into view, not on page load.
+      if (rect.top > window.innerHeight) {
+        if (active !== -1) {
+          active = -1;
+          panels.forEach((el) => el.classList.remove("is-active"));
+        }
+        return;
+      }
       const span = Math.max(1, rect.height - window.innerHeight);
       const progress = Math.min(1, Math.max(0, -rect.top / span)) * steps.length;
       const index = Math.min(steps.length - 1, Math.floor(progress));
       setActive(index);
-      steps[index].style.setProperty("--local", String(Math.min(1, progress - index)));
     };
     const onScroll = () => {
       if (!frame) frame = requestAnimationFrame(update);

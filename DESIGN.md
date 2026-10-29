@@ -122,6 +122,9 @@ inside that scope. Kitaru surfaces: `/product/kitaru`,
 
 ## Layout and structure
 
+- **No side stripes.** Never mark a card, step, callout or row with a
+  coloured edge on one side (`border-left`, an inset shadow, a pseudo-element
+  bar). Show state through the element's own border, background or content.
 - **The hex corner is a treatment, not a card** (#91). It is a fixed-size
   hexagon anchored to the box corner; it does not scale with the card. At
   rest it is tucked into the corner as a wedge (the 80px hexagon rotated
@@ -309,9 +312,26 @@ container scrolls inside its own region.
 
 ## Motion and atmosphere
 
-- **Budget: at most 3 motion moments per page.** A moment is any animation
-  a visitor would notice as animation. The house scroll-reveal on section
-  entry is the baseline and does not count toward it.
+- **Motion has three tiers, all on the shared tokens.** Easing and duration
+  come from the `:root` motion tokens in `global.css`: `--ease-out-quint`
+  for state changes, `--ease-out-expo` for entrances, `--duration-fast`
+  (200ms, hover), `--duration-base` (320ms, state) and `--duration-slow`
+  (700ms, entrance). Never restate a curve or duration as a literal.
+  - **Reveal** (baseline): the house scroll-reveal on section entry, below.
+  - **Moments**: one-shot animations a visitor notices, such as the hero's
+    bars filling. Keyframes are fine; keep them on the tokens and play them
+    once.
+  - **Scroll-linked**: motion scrubbed by scroll position through the one
+    shared `initScrollProgress()` (`src/scripts/labs-scroll-progress.ts`),
+    which writes a non-inherited `--p` (0 to 1) and, for stepped diagrams, a
+    `data-state` of done, active or future per stop. It reverses when the
+    visitor scrolls back. Use it where position explains something (a
+    timeline being walked, a band arriving), not to decorate.
+- **Keep motion light.** No motion library. Animate transform, opacity and
+  clip-path; colour, border and shadow only on small elements for state
+  changes. Never animate layout. No scroll listener outside the shared
+  script. Read before writing in a frame. Scrolling stays at 60fps on a
+  mid-range laptop.
 - **Every button and pill has a hover transition** — colour only,
   200ms, ease-out, from the shared button component rather than restated at
   the call site. Hover feedback is interaction, not a motion moment, and does
@@ -340,9 +360,11 @@ container scrolls inside its own region.
   (staggered where they are siblings), armed by the one shared
   `initScrollReveal()`; the hidden start state applies only once the section
   is `.reveal-armed`, so the server-rendered page is fully visible without
-  JS; nothing moves under reduced motion. Translate and opacity only, 1.2s at
-  most, no new keyframes, no motion library. Sections that do not reveal are
-  a defect, not a stylistic choice.
+  JS; nothing moves under reduced motion. Translate and opacity only, on
+  `--duration-slow` and `--ease-out-expo`. Sections that do not reveal are
+  a defect, not a stylistic choice. The rule is `.scroll-reveal-section >
+  .reveal-child`, so put the section class on the element that directly
+  holds the blocks.
 - **Integration cards keep their marks.** A third-party integration or
   service renders its own full-colour brand mark, the design-system SVG
   (the Hashi `service-logos` set, 24×24, 20px ink centred), sourced and
@@ -352,6 +374,8 @@ container scrolls inside its own region.
   cream band or in the masthead's white tile; the tile is the site's, the
   mark is the brand's.
 - **Reduced motion must reveal, never hide.** The server-rendered state is
+  the finished one (a scrubbed diagram renders complete), and reduced motion
+  shows it without a scroll listener. The server-rendered state is
   visible; scripts add animation on top, they never gate visibility —
   content that needs JS to become visible is a defect. Ambient/WebGL
   treatments must not allocate or draw under `prefers-reduced-motion`;

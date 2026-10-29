@@ -356,6 +356,8 @@ export type OnboardingWidget =
       excerpt: string;
       question: string;
       options: readonly string[];
+      /** The verdict the example lands on, one of `options`. */
+      picked: string;
     };
 
 export interface OnboardingRepo {
@@ -377,6 +379,9 @@ export interface OnboardingStepsContent {
   deck: string;
   steps: readonly OnboardingStep[];
 }
+
+/** The name the homepage gives the product's agent, shared by the onboarding window and the stack layer. */
+export const AI_ENGINEER = "Your AI engineer";
 
 export const LABS_ONBOARDING: OnboardingStepsContent = {
   eyebrow: "Eval therapy",
@@ -419,18 +424,8 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       body: "What your evals missed last week, in your order.",
       widget: {
         kind: "report",
-        items: [
-          {
-            kind: "wrong",
-            title: "Passes replies in the wrong language",
-            count: "22",
-          },
-          {
-            kind: "missing",
-            title: "Shares another customer's order",
-            count: "3",
-          },
-        ],
+        // The hero's findings, so the numbers match down the page.
+        items: LABS_GAP_REPORT.items,
         kindLabels: LABS_GAP_REPORT.kindLabels,
       },
     },
@@ -444,6 +439,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
           "Customer: Can I return these shoes? Agent: Yes, full refund within 90 days. Policy: 30 days.",
         question: "Should this reply have passed?",
         options: ["Pass", "Fail"],
+        picked: "Fail",
       },
     },
   ],
@@ -462,17 +458,11 @@ export interface StackMark {
 export interface StackColumn {
   id: "traces" | "evals" | "agent";
   title: string;
-  /** Which way the layer works with it: it reads, or it replays through. */
-  link: "reads" | "replays";
   marks: readonly StackMark[];
-  /** A static line under the marks for a column with no journey stop. */
-  note?: { title: string; detail: string };
 }
 
 /** One stop of the example session's journey through the diagram. */
 export interface JourneyStep {
-  /** Where the step sits: a stack column or the layer above. */
-  at: "traces" | "layer" | "agent";
   tag: string;
   tone: "neutral" | "missing" | "new" | "pass";
   title: string;
@@ -487,9 +477,7 @@ export interface StackLayerContent {
     label: string;
     title: string;
   };
-  stackLabel: string;
   columns: readonly [StackColumn, StackColumn, StackColumn];
-  linkLabels: Record<StackColumn["link"], string>;
   /** Four stops, in order: traces, layer, layer, agent. */
   journey: readonly [JourneyStep, JourneyStep, JourneyStep, JourneyStep];
   journeyLabel: string;
@@ -504,78 +492,65 @@ export const LABS_STACK_LAYER: StackLayerContent = {
   deck: "Nothing to rewrite, no new framework. It reads your repos and traces through keys you can revoke.",
   layer: {
     label: "Intelligence layer",
-    title: "Your AI engineer",
+    title: AI_ENGINEER,
   },
-  stackLabel: "What you already run",
   columns: [
     {
       id: "traces",
       title: "Your traces",
-      link: "reads",
       marks: [
         { name: "Langfuse", logo: "/compare/langfuse.svg" },
         { name: "Braintrust", logo: "/compare/braintrust.svg" },
         { name: "LangSmith", logo: "/compare/langsmith.svg" },
         { name: "Phoenix", logo: "/images/service-logos/arize-phoenix.svg" },
-        { name: "MLflow" },
+        { name: "MLflow", logo: "/images/service-logos/mlflow.svg" },
         { name: "Logfire", logo: "/compare/logfire.svg" },
       ],
     },
     {
       id: "evals",
       title: "Your evals",
-      link: "reads",
       marks: [
         { name: "LLM judges" },
-        { name: "pytest" },
-        { name: "promptfoo" },
-        { name: "DeepEval" },
+        { name: "pytest", logo: "/images/service-logos/pytest.svg" },
+        { name: "promptfoo", logo: "/images/service-logos/promptfoo.svg" },
+        { name: "DeepEval", logo: "/images/service-logos/deepeval.svg" },
         { name: "Scores in your tracer" },
       ],
-      note: {
-        title: "9 checks",
-        detail: "None of them checks the order lookup",
-      },
     },
     {
       id: "agent",
       title: "Your agent",
-      link: "replays",
       marks: [
         { name: "Claude Agent SDK", logo: "/compare/claude-agent-sdk.svg" },
         { name: "OpenAI Agents SDK", logo: "/compare/openai-agents-sdk.svg" },
         { name: "PydanticAI", logo: "/compare/pydantic-ai.svg" },
         { name: "LangGraph", logo: "/compare/langgraph-deep-agents.svg" },
-        { name: "Vercel AI SDK" },
-        { name: "Mastra" },
+        { name: "Vercel AI SDK", logo: "/images/service-logos/vercel.svg" },
+        { name: "Mastra", logo: "/images/service-logos/mastra.svg" },
       ],
     },
   ],
-  linkLabels: { reads: "reads", replays: "replays" },
   journey: [
     {
-      at: "traces",
       tag: "Reads a trace",
       tone: "neutral",
       title: "Session 2207 · refund",
       detail: "Refunded without finding the order",
     },
     {
-      at: "layer",
       tag: "Finds a gap",
       tone: "missing",
       title: "Answers before looking up the order",
       detail: "58 sessions like it, no eval checks it",
     },
     {
-      at: "layer",
       tag: "Writes a check",
       tone: "new",
       title: "order_looked_up_first",
       detail: "Agrees with your reviewers 57 of 58 times",
     },
     {
-      at: "agent",
       tag: "Tests the fix",
       tone: "pass",
       title: "Prompt fix, replayed via OpenAI Agents SDK",
