@@ -1,0 +1,27 @@
+---
+/**
+ * LabsTextLink — the Labs shell's one text link: sage-800 ink, the arrow
+ * (→ internal, ↗ external) right after the label, and a 44px hit area. On
+ * hover and keyboard focus a 1px underline in the ink's colour sweeps under
+ * the label left to right (the labs.entry-row title sweep, same 500ms
+ * curve) and the arrow nudges forward; at rest the arrow is the cue. `external` also opens a new tab
+ * with rel="noopener noreferrer". Call sites add only their own margin.
+ */
+interface Props {
+  cta: { label: string; href: string; analytics?: string };
+  external?: boolean;
+  class?: string;
+}
+const { cta, external = false, class: className } = Astro.props;
+---
+
+<a
+  href={cta.href}
+  data-analytics={cta.analytics}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
+  class:list={[
+    "group inline-flex min-h-11 items-center gap-1 font-sans text-[16px] leading-6 whitespace-nowrap text-(--color-sage-800) transition-colors duration-200 ease-out hover:text-(--color-sage-900)",
+    className,
+  ]}
+><span class="bg-[linear-gradient(currentColor,currentColor)] bg-no-repeat bg-position-[0_100%] bg-size-[0%_1px] pb-0.5 [transition:background-size_500ms_cubic-bezier(0,0,0.2,1)] group-hover:bg-size-[100%_1px] group-focus-visible:bg-size-[100%_1px]">{cta.label}</span><span aria-hidden="true" class="transition-transform duration-200 ease-out group-hover:translate-x-0.5">{external ? "↗" : "→"}</span></a>

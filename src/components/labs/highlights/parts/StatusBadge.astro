@@ -1,0 +1,43 @@
+---
+/**
+ * StatusBadge — the product UI's execution status pill: 22px full-round,
+ * a 12px status mark, 12px medium sans label. Completed sits on the success
+ * tint; running (like every non-terminal status) on the quiet secondary fill
+ * with the primary loader. Widths are the measured label advance (Rethink
+ * Sans 500 at 12px) plus 6px lead, 12px mark, 4px gap and 8px tail.
+ */
+import Glyph from "./Glyph.astro";
+
+const STATES = {
+  completed: {
+    label: "completed",
+    textWidth: 60,
+    fill: "var(--color-sage-100)",
+    ink: "var(--color-success-700)",
+    mark: "check-circle",
+    markColor: "var(--color-success)",
+  },
+  running: {
+    label: "running",
+    textWidth: 41,
+    fill: "var(--secondary)",
+    ink: "var(--muted-foreground)",
+    mark: "loader",
+    markColor: "var(--primary)",
+  },
+} as const;
+
+type Props = {
+  status: keyof typeof STATES;
+  cy: number;
+} & ({ x: number; right?: never } | { right: number; x?: never });
+
+const { status, cy, x, right } = Astro.props;
+const s = STATES[status];
+const width = 6 + 12 + 4 + s.textWidth + 8;
+const left = x ?? (right as number) - width;
+---
+
+<rect x={left} y={cy - 11} width={width} height="22" rx="11" fill={s.fill} />
+<Glyph name={s.mark} x={left + 6} y={cy - 6} size={12} color={s.markColor} />
+<text class="hl-badge" x={left + 22} y={cy} dominant-baseline="central" fill={s.ink}>{s.label}</text>

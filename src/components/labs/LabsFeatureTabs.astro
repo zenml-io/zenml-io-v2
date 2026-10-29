@@ -14,6 +14,7 @@ import type { FeatureTabsContent } from "../../lib/labs-product-zenml";
  * (.tab-slider*) from a scoped wrapper — the only global style block in this
  * build.
  */
+import "../../styles/labs-scroll-reveal.css";
 import FeatureTabsSlider from "../islands/FeatureTabsSlider";
 import { HIGHLIGHT_FIGURES } from "./highlights";
 
@@ -28,19 +29,19 @@ const DEFAULT_INDEX = Math.min(3, tabs.length - 1);
 ---
 
 <section class="labs-feature-tabs bg-card py-24 md:py-32">
-  <div class="mx-auto max-w-content px-gutter">
+  <div class="scroll-reveal-section mx-auto max-w-content px-gutter">
     {headline && (
-      <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) text-balance md:text-[44px] md:leading-[48px]">
+      <h2 class="reveal-child font-display text-[32px] leading-[38px] text-(--color-cream-900) text-balance md:text-[48px] md:leading-[54px]">
         {headline}
       </h2>
     )}
     {deck && (
-      <p class="mt-space-sm max-w-[640px] font-sans text-[17px] leading-[26px] text-foreground md:text-[18px] md:leading-[27px]">
+      <p class="reveal-child stagger-1 mt-space-sm max-w-[640px] font-sans text-[17px] leading-[26px] text-foreground md:text-[18px] md:leading-[27px]">
         {deck}
       </p>
     )}
 
-    <div class="mt-space-xl">
+    <div class="reveal-child stagger-2 mt-space-xl">
       {/* This page's one non-ambient client:load island: the auto-cycle is
           user-pausable interaction (click resets), not a motion moment. */}
       <FeatureTabsSlider client:load tabs={[...tabs]} defaultIndex={DEFAULT_INDEX} autoDurationMs={9000}>
@@ -86,11 +87,12 @@ const DEFAULT_INDEX = Math.min(3, tabs.length - 1);
   .labs-feature-tabs .tab-slider-menu {
     display: flex;
     flex-direction: column;
-    flex: 0 0 40%;
+    flex: 0 0 calc(40% - 20px);
   }
 
   .labs-feature-tabs .tab-slider-content {
-    flex: 0 0 60%;
+    flex: 1 1 0;
+    min-width: 0;
     min-height: 520px;
     border-radius: 20px;
     border: 1px solid var(--border);
@@ -112,7 +114,9 @@ const DEFAULT_INDEX = Math.min(3, tabs.length - 1);
     border-radius: 16px;
     padding: 20px 24px;
     cursor: pointer;
-    transition: background-color 200ms ease-out, border-color 200ms ease-out;
+    transition:
+      background-color var(--duration-fast) var(--ease-out-quint),
+      border-color var(--duration-fast) var(--ease-out-quint);
     position: relative;
     overflow: hidden;
   }
@@ -136,7 +140,7 @@ const DEFAULT_INDEX = Math.min(3, tabs.length - 1);
     font-size: 20px;
     line-height: 26px;
     color: var(--color-cream-700);
-    transition: color 200ms ease-out;
+    transition: color var(--duration-fast) var(--ease-out-quint);
   }
 
   .labs-feature-tabs .tab-slider-tab.w--current .tab-slider-title {
@@ -147,7 +151,9 @@ const DEFAULT_INDEX = Math.min(3, tabs.length - 1);
     display: grid;
     grid-template-rows: 0fr;
     opacity: 0;
-    transition: grid-template-rows 400ms ease, opacity 400ms ease;
+    transition:
+      grid-template-rows var(--duration-base) var(--ease-out-quint),
+      opacity var(--duration-base) var(--ease-out-quint);
   }
 
   .labs-feature-tabs .tab-slider-tab.w--current .tab-slider-nav-desc {
@@ -180,7 +186,9 @@ const DEFAULT_INDEX = Math.min(3, tabs.length - 1);
     height: 100%;
     opacity: 0;
     visibility: hidden;
-    transition: opacity 200ms ease, visibility 0s linear 200ms;
+    transition:
+      opacity var(--duration-fast) var(--ease-out-quint),
+      visibility 0s linear var(--duration-fast);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -194,8 +202,8 @@ const DEFAULT_INDEX = Math.min(3, tabs.length - 1);
     opacity: 1;
     visibility: visible;
     z-index: 2;
-    transition: opacity 200ms ease;
-    animation: labs-pane-in 480ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    transition: opacity var(--duration-fast) var(--ease-out-quint);
+    animation: labs-pane-in 480ms var(--ease-out-quint) both;
   }
 
   @keyframes labs-pane-in {

@@ -1,0 +1,60 @@
+---
+/**
+ * StepNode — a run-graph step as the product UI draws it: one 40px row with
+ * a 24px status box, the step name in mono and the duration at the right
+ * end. `selected` is the product's selected state (2px primary border, the
+ * selected fill); a cached step goes quiet and carries no duration.
+ */
+import Glyph from "./Glyph.astro";
+
+interface Props {
+  name: string;
+  x: number;
+  y: number;
+  width?: number;
+  status: "completed" | "cached";
+  duration?: string;
+  selected?: boolean;
+  /** Reveal order (`--hl-i`). */
+  i: number;
+}
+const {
+  name,
+  x,
+  y,
+  width = 240,
+  status,
+  duration,
+  selected = false,
+  i,
+} = Astro.props;
+const cached = status === "cached";
+---
+
+<g class:list={["hl-in", { "hl-accent": selected }]} style={`--hl-i: ${i}`} transform={`translate(${x} ${y})`}>
+  {
+    selected ? (
+      <rect class="hl-sel" x="1" y="1" width={width - 2} height="38" rx="7" fill="var(--hl-selected)" stroke="var(--primary)" />
+    ) : (
+      <rect x="0.5" y="0.5" width={width - 1} height="39" rx="7.5" fill="var(--color-card)" stroke="var(--color-border)" />
+    )
+  }
+  <rect x="8" y="8" width="24" height="24" rx="4" fill={cached ? "var(--secondary-fill)" : "var(--color-sage-100)"} />
+  {
+    cached ? (
+      <Glyph name="archive" x={13} y={13} size={14} color="var(--color-cream-600)" />
+    ) : (
+      <Glyph name="check-circle" x={13} y={13} size={14} color="var(--color-success)" />
+    )
+  }
+  <text class="hl-code" x="40" y="20" dominant-baseline="central" fill={cached ? "var(--muted-foreground)" : "var(--color-cream-800)"}>
+    {name}
+  </text>
+  {
+    duration && (
+      <text class="hl-micro" x={width - 12} y="20" dominant-baseline="central" text-anchor="end" fill="var(--color-cream-600)">
+        {duration}
+      </text>
+    )
+  }
+</g>

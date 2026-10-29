@@ -12,7 +12,7 @@
 export type LabsButtonTone = "dark" | "sage" | "orange" | "ghost";
 
 export const LABS_BUTTON_BASE =
-  "inline-flex h-12 cursor-pointer items-center justify-center rounded-full px-[26px] font-label text-[13px] uppercase tracking-[0.05em] transition-colors duration-200 ease-out";
+  "inline-flex h-12 cursor-pointer items-center justify-center gap-2.5 rounded-full px-[26px] font-label text-[13px] uppercase tracking-[0.05em] transition-colors duration-200 ease-out";
 
 export const LABS_BUTTON_TONE_CLASSES: Record<LabsButtonTone, string> = {
   dark: "bg-(--color-cream-900) text-(--color-cream-50) hover:bg-(--color-sage-800)",

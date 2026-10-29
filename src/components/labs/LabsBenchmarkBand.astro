@@ -14,6 +14,7 @@ import {
 import type { BenchmarkBandContent } from "../../lib/labs-industries";
 import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
 import LabsBenchmarkCard from "./LabsBenchmarkCard.astro";
+import LabsTextLink from "./LabsTextLink.astro";
 
 interface Props {
   content: BenchmarkBandContent;
@@ -33,13 +34,7 @@ const reports = content.slugs
           {content.headline}
         </h2>
         <p class="mt-6 font-sans text-[17px] leading-[27px] text-(--color-cream-700)">{content.deck}</p>
-        <a
-          href={content.link.href}
-          data-analytics={content.link.analytics}
-          class="mt-6 inline-flex min-h-11 items-center gap-2 font-sans text-[16px] leading-6 text-(--color-sage-800) underline decoration-(--color-sage-400) underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-sage-900)"
-        >
-          {content.link.label} <span aria-hidden="true">→</span>
-        </a>
+        <LabsTextLink cta={content.link} class="mt-6" />
       </div>
       <ul class="grid list-none grid-cols-1 gap-4 md:grid-cols-2">
         {reports.map((report, index) => (

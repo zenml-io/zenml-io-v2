@@ -87,33 +87,54 @@ const hasNarrow = Astro.slots.has("narrow");
     }
   }
 
-  /* Type roles inside the figures: the same tokens the page binds. */
-  .hl-figure .hl-name {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    font-size: 14px;
+  /* Colours the product UI names that the site has no exact token for,
+     derived from site tokens: the connector grey sits a step darker than the
+     hairline, the selected fill is the palest sage, and the artifact kinds
+     take the nearest ramp stop (data gold, model orange, other tertiary). */
+  .hl-figure {
+    --hl-connector: color-mix(in oklab, var(--color-border), var(--color-cream-600) 14%);
+    --hl-selected: var(--color-sage-50);
+    --hl-kind-data: var(--color-cream-400);
+    --hl-kind-model: var(--color-orange-600);
+    --hl-kind-other: var(--color-cream-600);
   }
+
+  /* Type roles inside the figures, matching the product UI: identifiers in
+     JetBrains Mono, labels and values in the sans, never the label mono. */
   .hl-figure .hl-title {
     font-family: var(--font-sans);
     font-weight: 500;
     font-size: 14px;
   }
-  .hl-figure .hl-body {
+  /* Identity cell lead (a table row's record name). */
+  .hl-figure .hl-code-lead {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 14px;
+  }
+  /* Node, pill and chip names; secret keys. */
+  .hl-figure .hl-code {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 12px;
+  }
+  /* Header labels, counts and plain cell values. */
+  .hl-figure .hl-cell {
     font-family: var(--font-sans);
     font-weight: 400;
-    font-size: 11px;
+    font-size: 12px;
   }
-  .hl-figure .hl-label {
-    font-family: var(--font-label);
-    font-weight: 400;
-    font-size: 11px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+  .hl-figure .hl-badge {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 12px;
   }
-  .hl-figure .hl-mono {
-    font-family: var(--font-label);
+  /* Step durations. */
+  .hl-figure .hl-micro {
+    font-family: var(--font-sans);
     font-weight: 400;
-    font-size: 11px;
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
   }
 
   /* Hairlines survive scaling: the figure shrinks below 720px on narrow
@@ -133,6 +154,15 @@ const hasNarrow = Astro.slots.has("narrow");
   .hl-figure rect[stroke],
   .hl-figure line {
     stroke-width: 1.25;
+  }
+  /* Selected step: the product's 2px primary border (border + inset ring). */
+  .hl-figure rect[stroke].hl-sel {
+    stroke-width: 2;
+  }
+  /* Icons scale with the drawing, strokes included, like an icon font. */
+  .hl-figure .hl-ico,
+  .hl-figure .hl-ico * {
+    vector-effect: none;
   }
 
   .hl-figure .hl-in {

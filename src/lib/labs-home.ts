@@ -219,17 +219,6 @@ export interface LabsProductBandContent extends LabsBandContent {
   installNote?: string;
 }
 
-/** A product page's opening band led by its install command instead of a
- *  signup pill: the command is the primary action, an optional ghost pill
- *  sits beside it. */
-export interface LabsInstallBandContent {
-  headlineLines: readonly [string, string];
-  deck: string;
-  install: LabsInstallChip;
-  secondaryCta?: LabsCta;
-  cta?: never;
-}
-
 export interface LabsInstallChip {
   cmd: string;
   /** Plausible event for the copy button. */

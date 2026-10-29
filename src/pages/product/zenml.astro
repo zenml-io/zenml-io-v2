@@ -11,7 +11,7 @@
  */
 import CustomerStoryCards from "../../components/labs/CustomerStoryCards.astro";
 import LabsCloseCta from "../../components/labs/LabsCloseCta.astro";
-import LabsFeatureTabs from "../../components/labs/LabsFeatureTabs.astro";
+import LabsFeatureScroll from "../../components/labs/LabsFeatureScroll.astro";
 import LabsHero from "../../components/labs/LabsHero.astro";
 import LabsIntegrationsGrid from "../../components/labs/LabsIntegrationsGrid.astro";
 import LabsOpenSourceBand from "../../components/labs/LabsOpenSourceBand.astro";
@@ -44,10 +44,17 @@ import { defaultOgImage } from "../../lib/seo";
     <LabsHero content={ZENML_HERO} />
     <LogoMarquee content={ZENML_LOGO_GRID} />
     <LabsOpenSourceBand content={ZENML_OPEN_SOURCE} tint="sage" />
-    <LabsFeatureTabs content={ZENML_FEATURE_TABS} />
+    <LabsFeatureScroll content={ZENML_FEATURE_TABS} />
     <LabsValueProps content={ZENML_VALUE_PROPS} />
     <LabsIntegrationsGrid content={ZENML_INTEGRATIONS} />
     <CustomerStoryCards content={ZENML_STORIES} />
     <LabsCloseCta content={ZENML_CLOSE} />
   </main>
 </BaseLayout>
+
+<script>
+  import { initScrollProgress } from "../../scripts/labs-scroll-progress";
+  import { initScrollReveal } from "../../scripts/labs-scroll-reveal";
+  initScrollReveal();
+  initScrollProgress();
+</script>

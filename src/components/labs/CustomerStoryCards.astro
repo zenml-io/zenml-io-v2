@@ -14,6 +14,7 @@ import type {
 } from "../../lib/labs-home";
 import LabsStoryCard from "./LabsStoryCard.astro";
 import "../../styles/labs-scroll-reveal.css";
+import LabsTextLink from "./LabsTextLink.astro";
 
 interface Props {
   content: StoryCardsContent;
@@ -35,18 +36,12 @@ const storyCards = hasQuoteCards
     {(content.headline || content.allLink) && (
       <div class="reveal-child flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
         {content.headline && (
-          <h2 class="font-display text-[40px] leading-[46px] text-(--color-cream-900)">
+          <h2 class="font-display text-[32px] leading-[38px] text-(--color-cream-900) text-balance md:text-[48px] md:leading-[54px]">
             {content.headline}
           </h2>
         )}
         {content.allLink && (
-          <a
-            href={content.allLink.href}
-            data-analytics={content.allLink.analytics}
-            class="cursor-pointer whitespace-nowrap font-label text-[13px] uppercase tracking-[0.05em] underline underline-offset-4"
-          >
-            {content.allLink.label}
-          </a>
+          <LabsTextLink cta={content.allLink} />
         )}
       </div>
     )}

@@ -1,0 +1,115 @@
+---
+/**
+ * Glyph — one Lucide icon (24-unit grid, stroke 2, round caps) drawn inside a
+ * highlight figure at `size` px with its top-left corner at (x, y). Paths are
+ * the Lucide sources the product UI's StatusMark and entity icons use, so
+ * the figures read as the same product. The stroke scales with the icon (the
+ * `.hl-ico` class opts out of the figures' non-scaling hairlines).
+ */
+export type GlyphName =
+  | "archive"
+  | "check-circle"
+  | "container"
+  | "cpu"
+  | "database"
+  | "file"
+  | "hard-drive"
+  | "key-round"
+  | "loader"
+  | "rocket"
+  | "type"
+  | "workflow";
+
+interface Props {
+  name: GlyphName;
+  x: number;
+  y: number;
+  size: number;
+  color: string;
+}
+const { name, x, y, size, color } = Astro.props;
+const scale = size / 24;
+---
+
+<g
+  class="hl-ico"
+  transform={`translate(${x} ${y}) scale(${scale})`}
+  fill="none"
+  stroke={color}
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+>
+  {name === "check-circle" && (
+    <>
+      <circle cx="12" cy="12" r="10" />
+      <path d="m9 12 2 2 4-4" />
+    </>
+  )}
+  {name === "archive" && (
+    <>
+      <rect width="20" height="5" x="2" y="3" rx="1" />
+      <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
+      <path d="M10 12h4" />
+    </>
+  )}
+  {name === "loader" && <path d="M21 12a9 9 0 1 1-6.219-8.56" />}
+  {name === "database" && (
+    <>
+      <ellipse cx="12" cy="5" rx="9" ry="3" />
+      <path d="M3 5V19A9 3 0 0 0 21 19V5" />
+      <path d="M3 12A9 3 0 0 0 21 12" />
+    </>
+  )}
+  {name === "file" && (
+    <>
+      <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" />
+      <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+    </>
+  )}
+  {name === "cpu" && (
+    <>
+      <rect width="16" height="16" x="4" y="4" rx="2" />
+      <rect width="6" height="6" x="9" y="9" rx="1" />
+      <path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2" />
+    </>
+  )}
+  {name === "key-round" && (
+    <>
+      <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" />
+      <circle cx="16.5" cy="7.5" r=".5" fill={color} />
+    </>
+  )}
+  {name === "workflow" && (
+    <>
+      <rect width="8" height="8" x="3" y="3" rx="2" />
+      <path d="M7 11v4a2 2 0 0 0 2 2h4" />
+      <rect width="8" height="8" x="13" y="13" rx="2" />
+    </>
+  )}
+  {name === "hard-drive" && (
+    <>
+      <path d="M22 12H2" />
+      <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+      <path d="M6 16h.01M10 16h.01" />
+    </>
+  )}
+  {name === "rocket" && (
+    <>
+      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+      <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+      <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
+      <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
+    </>
+  )}
+  {name === "container" && (
+    <>
+      <path d="M22 7.7c0-.6-.4-1.2-.8-1.5l-6.3-3.9a1.72 1.72 0 0 0-1.7 0l-10.3 6c-.5.2-.9.8-.9 1.4v6.6c0 .5.4 1.2.8 1.5l6.3 3.9a1.72 1.72 0 0 0 1.7 0l10.3-6c.5-.3.9-1 .9-1.5Z" />
+      <path d="M10 21.9V14L2.1 9.1" />
+      <path d="m10 14 11.9-6.9" />
+      <path d="M14 19.8v-8.1" />
+      <path d="M18 17.5V9.4" />
+    </>
+  )}
+  {name === "type" && <path d="M4 7V4h16v3M9 20h6M12 4v16" />}
+</g>

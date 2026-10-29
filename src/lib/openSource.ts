@@ -43,7 +43,12 @@ export interface OpenSourceBandContent {
   links: readonly { label: string; href: string; external?: true }[];
 }
 
-const COMMUNITY_SLACK = { label: "Community Slack", href: "/slack" } as const;
+/** /slack 301s to the Slack invite, so it opens off-site like Docs and Issues. */
+const COMMUNITY_SLACK = {
+  label: "Community Slack",
+  href: "/slack",
+  external: true,
+} as const;
 
 export const KITARU_OPEN_SOURCE: OpenSourceBandContent = {
   eyebrow: "Open source",
