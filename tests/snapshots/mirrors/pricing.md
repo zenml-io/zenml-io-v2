@@ -79,7 +79,6 @@ One price, unlimited seats. 14-day trial, no credit card.
 | ZenML projects | Self-hosted | 1 | Custom |
 | Workspaces | Self-hosted | 2 | Custom |
 | Pipeline runs a month | Self-hosted | 100 | Custom |
-| Seats | Unlimited | Unlimited | Unlimited |
 
 ### Your AI engineer
 

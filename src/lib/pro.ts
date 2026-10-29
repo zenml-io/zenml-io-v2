@@ -42,7 +42,7 @@ export const PRO_SEO = {
  */
 export const PRO_HERO = {
   headline: "A managed control plane for AI workflows and agents",
-  deck: "ZenML Pro runs both workspaces under one paid product: ZenML for AI orchestration, Kitaru for replay-based agent evals with our AI engineer on top. Single pane of glass, enterprise governance, no infrastructure setup.",
+  deck: "ZenML Pro runs both workspaces under one paid product: ZenML for AI orchestration, Kitaru for agent insights and evals with our AI engineer on top. Single pane of glass, enterprise governance, no infrastructure setup.",
   primaryCta: {
     label: "Book a demo",
     href: "/book-your-demo",
@@ -77,7 +77,7 @@ export const PRO_UNIFIED_PITCH = {
         },
         {
           name: "Kitaru workspace",
-          body: "Managed open-source Kitaru: import traces, review them, and replay agents for evals. Our AI engineer reads your traces next to your evals and shows you what they miss.",
+          body: "Our AI engineer reads your traces next to your evals and shows you what they miss. Underneath, managed open-source Kitaru: import traces, get insights, turn findings into checks and replay a fix.",
         },
         {
           name: "Single pane of glass",
@@ -350,7 +350,7 @@ export const PRO_FAQ: FaqData = {
     {
       question: "Does ZenML Pro cover the Kitaru agent workspace too?",
       answer:
-        "Yes. ZenML Pro is the paid plane over both sub-products: ZenML for AI orchestration and open-source Kitaru for replay-based agent evals, with our AI engineer reading your traces next to your evals. Same control plane, same SSO/RBAC/audit, same compliance posture (SOC 2 Type II, ISO 27001, BYOK, multi-region). Per-project: pick the ZenML workspace, the Kitaru workspace, or both.",
+        "Yes. ZenML Pro is the paid plane over both sub-products: ZenML for AI orchestration and open-source Kitaru for agent insights and evals, with our AI engineer reading your traces next to your evals. Same control plane, same SSO/RBAC/audit, same compliance posture (SOC 2 Type II, ISO 27001, BYOK, multi-region). Per-project: pick the ZenML workspace, the Kitaru workspace, or both.",
     },
     {
       question: "What about data security and compliance?",

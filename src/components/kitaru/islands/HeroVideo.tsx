@@ -19,13 +19,13 @@ export const HERO_CODE_LINES: Array<{
   { text: "# 1 · the traces you already have", kind: "cmt" },
   { text: "kitaru session import ./traces.jsonl" },
   { text: "" },
-  { text: "# 2 · review real sessions", kind: "cmt" },
-  { text: "> use kitaru-investigation on this agent", kind: "hl" },
+  { text: "# 2 · insights across every session", kind: "cmt" },
+  { text: "--analyzer kitaru/post-import-insights", kind: "hl" },
   { text: "" },
   { text: "# 3 · turn a finding into a check", kind: "cmt" },
   { text: "new evaluator · runs on every session", kind: "out" },
   { text: "" },
-  { text: "# 4 · replay your agent to test the fix", kind: "cmt" },
+  { text: "# 4 · replay a fix", kind: "cmt" },
   { text: "kitaru experiment run start fix" },
 ];
 

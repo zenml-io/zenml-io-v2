@@ -29,13 +29,13 @@ describe("Kitaru product-page snippets", () => {
       "# 1 · the traces you already have
       kitaru session import ./traces.jsonl
 
-      # 2 · review real sessions
-      > use kitaru-investigation on this agent
+      # 2 · insights across every session
+      --analyzer kitaru/post-import-insights
 
       # 3 · turn a finding into a check
       new evaluator · runs on every session
 
-      # 4 · replay your agent to test the fix
+      # 4 · replay a fix
       kitaru experiment run start fix"
     `);
   });

@@ -56,18 +56,18 @@ export const STEPS = [
   },
   {
     n: "02",
-    title: "Review sessions",
-    body: "Read a few real sessions and note what went wrong.",
+    title: "Get insights",
+    body: "Analyzers read every session at once and surface the patterns: failed tool calls, repeated calls, how outcomes split.",
   },
   {
     n: "03",
     title: "Turn findings into checks",
-    body: "Each finding becomes a check that runs on every session.",
+    body: "Read the sessions behind an insight. What you find becomes a check that runs on every session.",
   },
   {
     n: "04",
-    title: "Replay the fix",
-    body: "Replay your agent through its own framework on the sessions that failed. Tool calls come from the recording.",
+    title: "Replay a fix",
+    body: "When you change something, replay your agent on the sessions that failed. Tool calls come from the recording.",
   },
 ] as const;
 
@@ -89,7 +89,7 @@ export const HOSTED_NOTE = {
 export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "What is open source, and what is hosted?",
-    answer: `Kitaru is open source (${KITARU_LICENSE}). You install it with one curl command and it runs on your machine: import, review, checks and replay. Our AI engineer is the hosted part. It does the reading and asks you questions, for ${KITARU_CLOUD_PRICE} a month on Starter. See <a href="/pricing">pricing</a>.`,
+    answer: `Kitaru is open source (${KITARU_LICENSE}). You install it with one curl command and it runs on your machine: import, insights, checks and replay. Our AI engineer is the hosted part. It does the reading and asks you questions, for ${KITARU_CLOUD_PRICE} a month on Starter. See <a href="/pricing">pricing</a>.`,
   },
   {
     question: "How is this different from Langfuse, Braintrust or LangSmith?",

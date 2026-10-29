@@ -257,10 +257,6 @@ export const PRICING_COMPARE: PricingCompareTableData = {
           feature: "Pipeline runs a month",
           values: ["Self-hosted", `${STARTER.pipelineRuns}`, "Custom"],
         },
-        {
-          feature: "Seats",
-          values: ["Unlimited", "Unlimited", "Unlimited"],
-        },
       ],
     },
     {

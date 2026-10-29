@@ -102,8 +102,8 @@ export const KITARU_LINKS = {
 } as const;
 
 export const PRODUCT_KITARU_SEO = {
-  title: "Kitaru: test every AI agent update on real traces | ZenML Labs",
-  description: `Kitaru is the open-source core under our AI engineer. Import traces from ${KITARU_IMPORTERS_TEXT}, review real sessions, turn what you find into checks, and replay your agent to test a fix before it ships. Runs on your machine, with your keys.`,
+  title: "Kitaru: insights and evals from your agent's traces | ZenML Labs",
+  description: `Kitaru is the open-source core under our AI engineer. Import traces from ${KITARU_IMPORTERS_TEXT}, get insights across every session, turn what you find into checks, and replay a fix before it ships. Runs on your machine, with your keys.`,
   // OG cards need JPEG, not AVIF — social platforms don't render AVIF (PR #73).
   ogImage: "https://assets.zenml.io/content/og/439a52c0/kitaru-product-og.jpg",
 } as const;
@@ -117,12 +117,12 @@ export const PRODUCT_KITARU_SEO = {
  * pitch changes.
  */
 export const PRODUCT_KITARU_MARKDOWN = {
-  title: "Kitaru: test every AI agent update on real traces",
+  title: "Kitaru: insights and evals from your agent's traces",
   installCmd: KITARU_INSTALL_CMD,
   license: KITARU_LICENSE,
   summary: [
     "Our AI engineer reads your agent's traces next to your evals and shows you what they miss. Kitaru is the open-source part underneath it.",
-    `Kitaru imports the traces you already have, or records new ones through an adapter. You review real sessions, turn what you find into checks, and replay your agent through its own framework to test a fix before it ships.`,
+    `Kitaru imports the traces you already have, or records new ones through an adapter. Insights show the patterns across every session, you turn what you find into checks, and you can replay your agent through its own framework to test a fix before it ships.`,
     `Kitaru is ${KITARU_LICENSE}. Install it in one line and run it on your own machine, with your own model keys. Our AI engineer is the hosted part: it does the reading and asks you ten quick questions on three real sessions, about fifteen minutes a week. It costs ${KITARU_CLOUD_PRICE} a month on Starter, with one ZenML project included; see https://www.zenml.io/pricing.`,
   ],
   steps: [
@@ -131,16 +131,16 @@ export const PRODUCT_KITARU_MARKDOWN = {
       body: `Import from ${KITARU_IMPORTERS_TEXT}, or record new runs with an adapter for ${KITARU_ADAPTERS_TEXT}.`,
     },
     {
-      name: "Review sessions",
-      body: "Read a few real sessions and note what went wrong. Your coding agent or our AI engineer can do the first pass and ask you only what it can't work out.",
+      name: "Get insights",
+      body: "Analyzers read every session at once and surface the patterns: failed tool calls, repeated calls, how outcomes split.",
     },
     {
       name: "Turn findings into checks",
-      body: "Each finding becomes a check you can run on every session, next to the evals you already have.",
+      body: "Read the sessions behind an insight. What you find becomes a check that runs on every session, next to the evals you already have. Our AI engineer can do the reading and ask you only what it can't work out.",
     },
     {
-      name: "Replay the fix",
-      body: "Change the model, prompt or code, then replay your agent on the sessions that failed. Tool calls are answered from the recording, so nothing touches real systems.",
+      name: "Replay a fix",
+      body: "When you change the model, prompt or code, replay your agent on the sessions that failed. Tool calls are answered from the recording, so nothing touches real systems.",
     },
   ],
   ctas: [KITARU_LINKS.signup, KITARU_LINKS.github],
