@@ -733,8 +733,8 @@ export interface StoryCardsContent {
 /* ---------------------------------------------------------------------- */
 
 export const LABS_HOME_CLOSE: LabsBandContent = {
-  headlineLines: ["Find what your", "evals miss"],
-  deck: "Connect your repo and your tracing provider. Your AI engineer takes it from there.",
+  headlineLines: ["Bring one agent", "and a week of traces"],
+  deck: "Connect your repo and your tracing keys. By the end of the interview you know what your evals miss. 14 days free, no credit card.",
   cta: LABS_FINAL_SIGNUP,
 };
 
