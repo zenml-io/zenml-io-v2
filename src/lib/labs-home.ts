@@ -219,8 +219,6 @@ export interface LabsProductBandContent extends LabsBandContent {
   installNote?: string;
   /** A quiet text link beside the primary pill, for the second path in. */
   textLink?: LabsCta;
-  /** One proof line under the actions, e.g. customer names. */
-  proof?: string;
 }
 
 /** A product page's opening band led by its install command instead of a
@@ -261,7 +259,6 @@ export const LABS_HERO: LabsProductBandContent = {
     analytics: "Hero-Request-Demo",
   },
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
-  proof: "Used by teams at JetBrains, AXA, Airbus and Leroy Merlin",
 };
 
 /* ---------------------------------------------------------------------- */
@@ -298,21 +295,47 @@ export interface GapScore {
  * week of traces, the team's own evals. Illustrative numbers, not a
  * customer result.
  */
-export const LABS_GAP_REPORT: GapReportVisualContent = {
+export interface MissedSessionMessage {
+  from: "customer" | "agent";
+  text: string;
+}
+
+export interface MissedSessionVisualContent {
+  /** Accessible description of the whole card. */
+  label: string;
+  session: string;
+  messages: readonly MissedSessionMessage[];
+  /** The team's own eval and the verdict it gave. */
+  eval: { label: string; name: string; verdict: string };
+  /** What the AI engineer says the reply got wrong. */
+  finding: { by: string; text: string };
+  tally: string;
+  /** The check it drafts. */
+  check: string;
+}
+
+/**
+ * The homepage hero's example: one support session the team's eval passed
+ * and the AI engineer flagged. Illustrative, not a customer result.
+ */
+export const LABS_HERO_SESSION: MissedSessionVisualContent = {
   label:
-    "An example of what your AI engineer tells you about a customer support agent after one week. The team's evals pass 91% of 1,482 sessions; the team's own reviewers would pass 74%. One eval passed 41 replies that promised refunds the policy doesn't allow, and no eval checks the 58 replies sent without looking up the order.",
-  eyebrow: "What your evals missed",
-  agent: "support-agent",
-  window: "1,482 sessions",
-  scores: [
-    { label: "Your evals pass", value: 91 },
-    { label: "You would pass", value: 74 },
+    "An example session from a customer support agent. The customer asks to return shoes bought seven weeks ago, and the agent promises a full refund within 90 days. The team's reply_quality eval passed the reply. Your AI engineer flags it: the refund policy allows 30 days. 41 replies like this passed last week, and it drafts a refund_within_policy check.",
+  session: "support-agent · session 3318",
+  messages: [
+    {
+      from: "customer",
+      text: "Can I still return these? I bought them seven weeks ago.",
+    },
+    { from: "agent", text: "Of course! Full refund within 90 days." },
   ],
-  kindLabels: { wrong: "Eval wrong", missing: "No eval" },
-  items: [
-    { kind: "wrong", title: "Promises refunds it can't give", count: "41" },
-    { kind: "missing", title: "Never looks up the order", count: "58" },
-  ],
+  eval: { label: "Your eval", name: "reply_quality", verdict: "Pass" },
+  finding: {
+    by: "Your AI engineer",
+    text: "Your refund policy allows 30 days. This reply promised 90.",
+  },
+  tally: "41 replies like this passed last week",
+  check: "refund_within_policy",
 };
 
 /* ---------------------------------------------------------------------- */
@@ -434,7 +457,7 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
             count: "3",
           },
         ],
-        kindLabels: LABS_GAP_REPORT.kindLabels,
+        kindLabels: { wrong: "Eval wrong", missing: "No eval" },
       },
     },
     {

@@ -1395,7 +1395,21 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "The homepage hero's example, mounted in LabsHero's `visual` slot on `/`, from `content: GapReportVisualContent` (LABS_GAP_REPORT). A short card: an eyebrow, the agent and session count in mono, two pass-rate bars (the team's evals, then their own manual), then the gaps as one-line hairline rows tagged Wrong (orange tint) or Missing (cream outline) with a session count. One motion moment on load (bars fill, then rows arrive; reduced motion shows the finished card); the figcaption carries the whole example as text and the drawn card is aria-hidden. Tag colours come from gapTags.ts.",
+      "An industry page hero's example, mounted in LabsHero's `visual` slot on `/insurance` and `/financial-services`, from `content: GapReportVisualContent`. A short card: an eyebrow, the agent and session count in mono, two pass-rate bars (the team's evals, then their own manual), then the gaps as one-line hairline rows tagged Wrong (orange tint) or Missing (cream outline) with a session count. One motion moment on load (bars fill, then rows arrive; reduced motion shows the finished card); the figcaption carries the whole example as text and the drawn card is aria-hidden. Tag colours come from gapTags.ts.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.missed-session-visual",
+    kind: "template",
+    componentPath: "src/components/labs/LabsMissedSessionVisual.astro",
+    variantAxes: ["message sender"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "The homepage hero's example, mounted in LabsHero's `visual` slot on `/`, from `content: MissedSessionVisualContent` (LABS_HERO_SESSION). One session as a card: the session id in mono, a customer bubble (cream, left) and an agent bubble (sage-800, right), the team's eval with its Pass chip, the AI engineer's finding on the orange tint, then a hairline footer with how many sessions like it passed and the drafted check. One motion moment on load (parts arrive in reading order; reduced motion shows the finished card); the figcaption carries the whole example as text and the drawn card is aria-hidden.",
     stage: false,
     demoProps: {},
   },

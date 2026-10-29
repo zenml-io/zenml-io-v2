@@ -102,11 +102,6 @@ const hasVisual = Astro.slots.has("visual");
           {props.content.installNote}
         </p>
       )}
-      {"proof" in props.content && props.content.proof && (
-        <p class="mt-space-mlg font-label text-[12px] leading-4 uppercase tracking-[0.06em] text-(--color-cream-700)">
-          {props.content.proof}
-        </p>
-      )}
     </div>
     {hasVisual && (
       <div class="min-w-0">

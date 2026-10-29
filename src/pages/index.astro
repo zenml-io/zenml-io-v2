@@ -13,8 +13,8 @@
  * Route: / (homepage)
  */
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
-import LabsGapReportVisual from "../components/labs/LabsGapReportVisual.astro";
 import LabsHero from "../components/labs/LabsHero.astro";
+import LabsMissedSessionVisual from "../components/labs/LabsMissedSessionVisual.astro";
 import LabsOnboardingSteps from "../components/labs/LabsOnboardingSteps.astro";
 import LabsStackLayer from "../components/labs/LabsStackLayer.astro";
 import LogoMarquee from "../components/labs/LogoMarquee.astro";
@@ -24,8 +24,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { buildHomepageJsonLd } from "../lib/homepageJsonLd";
 import {
   LABS_DOORS,
-  LABS_GAP_REPORT,
   LABS_HERO,
+  LABS_HERO_SESSION,
   LABS_HOME_CLOSE,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
@@ -52,7 +52,7 @@ const homepageJsonLd = buildHomepageJsonLd({
 
   <main>
     <LabsHero content={LABS_HERO}>
-      <LabsGapReportVisual slot="visual" content={LABS_GAP_REPORT} />
+      <LabsMissedSessionVisual slot="visual" content={LABS_HERO_SESSION} />
     </LabsHero>
     <LabsOnboardingSteps content={LABS_ONBOARDING} />
     <LabsStackLayer content={LABS_STACK_LAYER} />
