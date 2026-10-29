@@ -5,6 +5,8 @@
  * One public price: three plan cards (Open Source / Starter / Enterprise),
  * one comparison table and one FAQ, no workspace toggle.
  */
+
+import { ASSET_BASE_URL } from "./constants";
 import type {
   LabsBandContent,
   LabsCta,
@@ -366,12 +368,12 @@ export const PRICING_COMPLIANCE = {
   body: "ZenML stores only metadata, so your data and compute stay in your cloud. Your AI engineer reads traces through keys you can revoke, or runs inside your cloud on Enterprise.",
   image: {
     desktop: {
-      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e68ec2dc/66c7398e738654118d4024fb_why-zenml-min.png`,
+      url: `${ASSET_BASE_URL}/content/uploads/c0365c4a/zenml-pro-vpc-architecture.avif`,
       alt: "ZenML only has access to metadata; your data remains in your VPC",
     },
     mobile: {
-      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/c5ce12a7/66c73e7cfd15ae9889f59705_why-zenml-mobile-min.webp`,
-      alt: "Diagram of ZenML setup with local environments for data scientists, ML engineers, and MLOps, integrating AWS, GCP, and Azure.",
+      url: `${ASSET_BASE_URL}/content/uploads/2368dffc/zenml-pro-vpc-architecture-mobile.avif`,
+      alt: "ZenML Pro architecture: local environments with the zenml client connect to the ZenML Server, which holds configuration, events and metadata. Traffic is encrypted at rest into the customer VPC, where container registries, artifact storage, code repositories, data warehouses, orchestrators and secrets feed GCP, AWS and Azure stacks running a finetuning pipeline for Gemini 1.5, LLaMa 3.1 and Mistral 7B.",
     },
   },
   badges: [

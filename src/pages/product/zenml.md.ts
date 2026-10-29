@@ -23,7 +23,6 @@ export const prerender = true;
  * two never drift.
  */
 export function GET(): Response {
-  const heroCtas = ZENML_HERO.secondaryCta ? [ZENML_HERO.secondaryCta] : [];
   const markdown = joinMarkdownSections(
     markdownPreamble({
       title: LABS_PRODUCT_ZENML_SEO.title,
@@ -36,7 +35,7 @@ export function GET(): Response {
       ZENML_HERO.deck,
       `Install: \`${ZENML_HERO.install.cmd}\``,
     ),
-    joinMarkdownSections("## Main CTAs", markdownCtaList(heroCtas)),
+    joinMarkdownSections("## Main CTAs", markdownCtaList([ZENML_HERO.cta])),
     joinMarkdownSections(
       `## ${ZENML_FEATURE_TABS.headline}`,
       ...(ZENML_FEATURE_TABS.deck ? [ZENML_FEATURE_TABS.deck] : []),
@@ -49,7 +48,9 @@ export function GET(): Response {
       ...ZENML_VALUE_PROPS.items.map((item) =>
         joinMarkdownSections(`### ${item.title}`, item.body),
       ),
-      markdownCtaList([ZENML_VALUE_PROPS.cta]),
+      ...(ZENML_VALUE_PROPS.cta
+        ? [markdownCtaList([ZENML_VALUE_PROPS.cta])]
+        : []),
     ),
     joinMarkdownSections(
       `## ${ZENML_INTEGRATIONS.headline}`,

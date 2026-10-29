@@ -1,6 +1,5 @@
 ---
 import type {
-  LabsInstallBandContent,
   LabsProductBandContent,
   LabsShortBandContent,
 } from "../../lib/labs-home";
@@ -13,9 +12,8 @@ import type {
 //   - "landing" (default): the full-height opener of `/` and the product
 //     pages — two-line headline, deck, one signup pill; a product page adds
 //     an optional ghost pill and a copyable install command, each collapsing
-//     when absent. Content is `LabsProductBandContent`. A product page that
-//     leads with its install command passes `LabsInstallBandContent`
-//     instead: the command takes the pill's place, the ghost pill beside it.
+//     when absent (the install chip on its own row under the pills, DESIGN.md
+//     #327). Content is `LabsProductBandContent`.
 //   - "short": the interior-page opener (the blog index) at roughly 40% of
 //     the viewport — one headline line and an optional deck, no pill; the
 //     page's own controls follow the band. Content is `LabsShortBandContent`.
@@ -33,7 +31,7 @@ import LabsInstallChip from "./LabsInstallChip.astro";
 type Props =
   | {
       band?: "landing";
-      content: LabsProductBandContent | LabsInstallBandContent;
+      content: LabsProductBandContent;
     }
   | { band: "short"; content: LabsShortBandContent };
 
@@ -67,37 +65,19 @@ const hasVisual = Astro.slots.has("visual");
         {props.content.deck}
       </p>
 
-      {props.content.cta ? (
-        <div class="mt-space-mlg flex flex-wrap items-center gap-space-md">
-          <LabsButton cta={props.content.cta} />
-          {props.content.secondaryCta && (
-            <LabsButton cta={props.content.secondaryCta} tone="ghost" />
-          )}
-          {"textLink" in props.content && props.content.textLink && (
-            <a
-              href={props.content.textLink.href}
-              data-analytics={props.content.textLink.analytics}
-              class="inline-flex min-h-11 items-center font-sans text-[16px] leading-6 text-(--color-cream-800) underline decoration-(--color-sage-400) underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-sage-900)"
-            >
-              {props.content.textLink.label}
-            </a>
-          )}
-        </div>
-      ) : (
-        <div class="mt-space-mlg flex flex-wrap items-center gap-space-md">
-          <div class="flex max-w-full"><LabsInstallChip content={props.content.install} /></div>
-          {props.content.secondaryCta && (
-            <LabsButton cta={props.content.secondaryCta} tone="ghost" />
-          )}
-        </div>
-      )}
+      <div class="mt-space-mlg flex flex-wrap items-center gap-space-md">
+        <LabsButton cta={props.content.cta} />
+        {props.content.secondaryCta && (
+          <LabsButton cta={props.content.secondaryCta} tone="ghost" />
+        )}
+      </div>
 
-      {props.content.cta && props.content.install && (
+      {props.content.install && (
         <div class="mt-space-md flex max-w-full">
           <LabsInstallChip content={props.content.install} />
         </div>
       )}
-      {props.content.cta && props.content.install && props.content.installNote && (
+      {props.content.install && props.content.installNote && (
         <p class="mt-3 max-w-[560px] font-sans text-[14px] leading-5 text-(--color-cream-700)">
           {props.content.installNote}
         </p>

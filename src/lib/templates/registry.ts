@@ -1349,7 +1349,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: true,
     paperPage: 0,
     notes:
-      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, `content: LabsProductBandContent` (LABS_HERO on `/`) gives the two-line headline + deck + one signup pill, vertically centered in the band (an optional `visual` slot sits beside the copy from lg and below it on phones; the homepage fills it with labs.gap-report-visual); a product page's content adds a ghost secondary pill, a copyable install chip (LabsInstallChip) and a one-line `installNote` under it, each collapsing when absent; `LabsInstallBandContent` (ZENML_HERO on `/product/zenml`) has no pill and puts the install chip in its place, the ghost pill beside it. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component. Renders through `labs.band` for the shader/sizing chrome — see that entry.",
+      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, `content: LabsProductBandContent` (LABS_HERO on `/`) gives the two-line headline + deck + one signup pill, vertically centered in the band (an optional `visual` slot sits beside the copy from lg and below it on phones; the homepage fills it with labs.gap-report-visual); a product page's content adds a ghost secondary pill, a copyable install chip (LabsInstallChip) and a one-line `installNote` under it, each collapsing when absent; ZENML_HERO on `/product/zenml` is one docs pill with the install chip on its own row under it (DESIGN.md #327). Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component. Renders through `labs.band` for the shader/sizing chrome — see that entry.",
     stage: false,
     demoProps: {},
   },
@@ -1409,7 +1409,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "The homepage hero's example, mounted in LabsHero's `visual` slot on `/`, from `content: MissedSessionVisualContent` (LABS_HERO_SESSION). One session as a card: the session id in mono, a customer bubble (cream, left) and an agent bubble (sage-800, right), the team's eval with its Pass chip, the AI engineer's finding on the orange tint, then a hairline footer with how many sessions like it passed and the drafted check. One motion moment on load (parts arrive in reading order; reduced motion shows the finished card); the figcaption carries the whole example as text and the drawn card is aria-hidden.",
+      "The homepage hero's example, mounted in LabsHero's `visual` slot on `/`, from `content: MissedSessionVisualContent` (LABS_HERO_SESSION). One session as the product's message card: the AI engineer's author row (LabsAiEngineerRow, the session id as meta), the exchange as a bordered transcript with a speaker label over each line, the team's eval with its Pass chip over the AI engineer's finding with its Fail chip on the red tint, then a hairline footer with how many sessions like it passed and the drafted check. One motion moment on load (the card rises like labs.gap-report-visual, then the parts arrive in reading order; reduced motion shows the finished card); the figcaption carries the whole example as text and the drawn card is aria-hidden.",
     stage: false,
     demoProps: {},
   },
@@ -1438,6 +1438,20 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 0,
     notes:
       "Homepage how-it-works on a sage-50 band from `content: OnboardingStepsContent` (LABS_ONBOARDING on `/`, and the industry pages): eyebrow, headline, deck, then four steps, each a mono numeral, title and body with a product widget (labs.onboarding-steps widget in LabsOnboardingWidget.astro, picked by `widget.kind`: connect, call, report or review) in a white window headed by the AI engineer's author row (LabsAiEngineerRow). Below lg, without JS or if the script fails, the steps sit in a 1 / 2 / 4 column grid, each with its own widget. From lg the script pins the section: the step list on the left (active step open, the others dimmed to their titles) and one window on a sage-100 stage on the right, headed by the same author row with a four-segment progress bar. The widgets follow the product's components (setup rows with checks, an ask row with keycapped answers, gap rows with count bars, a verdict card); on each step the old widget blurs out, the new one's blocks settle in 70ms apart, as do the inline widgets below lg when they scroll into view (checks pop and draw, the picked answer presses in) and the height eases to fit. Every arrival fills backwards only, so the finished state is always rendered; reduced motion keeps the mapping without transitions. Widgets are aria-hidden; the step text carries the meaning.",
+    stage: false,
+    demoProps: {},
+  },
+  {
+    id: "labs.feature-scroll",
+    kind: "template",
+    componentPath: "src/components/labs/LabsFeatureScroll.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "/product/zenml's 'one foundation' section from `content: FeatureTabsContent` (ZENML_FEATURE_TABS): headline, deck, then one step per tab with a figure, each a mono numeral, title and description with its highlight figure (highlights/) on a sage-100 window. Below lg, without JS or if the script fails, the steps stack, each with its own static figure. From lg the script pins the section like labs.onboarding-steps: the step list on the left (active step open on a white card, the others dimmed to their titles; clicking a title scrolls to it) and one window on the right whose figure blurs out and the next one's nodes and rows settle in (data-highlight-active re-arms the figure's .hl-* motion), with the height easing to fit. Reduced motion keeps the mapping without transitions. Figures are aria-hidden in the stage; the inline copies carry their labels. /pro and /deployments keep labs.feature-tabs.",
     stage: false,
     demoProps: {},
   },
@@ -1665,7 +1679,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      'Three-card value-prop grid for /product/zenml. Numbered labels (item.index, e.g. "01.") stand in for icons — no icons, no coloured squares. Section headline, optional deck (ValuePropsContent.deck — absence collapses). One LabsButton after the grid. No island.',
+      'Three-card value-prop grid for /product/zenml. Mono numerals (item.index, e.g. "01.") stand in for icons — no icons, no coloured squares. Section headline, optional deck (ValuePropsContent.deck — absence collapses). An optional LabsButton after the grid (absent on /product/zenml, where the close band carries the action). Head, cards (staggered) and pill arrive with the house reveal. No island.',
     stage: false,
     demoProps: {},
   },
@@ -1707,7 +1721,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Static integrations wall on the sage tint band: hard-coded 'Integrations' eyebrow, headline/deck from content, then a 6x4-at-widest logo grid (grid-cols-3 sm:4 md:6) read live from the integrations collection (same read as IntegrationsMarquee.astro), sorted by title, first 24 shown, and a ghost-tone LabsButton CTA row. No marquee, no animation of any kind — this page's motion budget is spent on other sections.",
+      "Static integrations wall on the sage-100 band, left-aligned: headline/deck from content, then a 6x2 logo grid from md (3x3 below; grid-cols-3 md:6) read live from the integrations collection (same read as IntegrationsMarquee.astro), sorted by title, first 12 shown, and a ghost-tone LabsButton CTA row. No marquee; the head, grid and pill arrive with the house reveal (scroll-reveal-section).",
     stage: false,
     demoProps: {},
     collectionBound: true,

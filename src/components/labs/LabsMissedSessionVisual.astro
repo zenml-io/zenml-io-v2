@@ -1,76 +1,96 @@
 ---
 /**
  * LabsMissedSessionVisual (`labs.missed-session-visual`) — the homepage
- * hero's example, told through one session: a short customer and agent
- * exchange, the team's own eval passing the reply, the AI engineer's note
- * on what the reply got wrong, then how many sessions like it passed and
- * the check it drafts. The eval verdict sits in sage, the finding on the
- * orange tint, so the disagreement reads at a glance.
+ * hero's example, told through one session and drawn as the product's
+ * message card. The AI engineer's author row heads it (the session id as
+ * meta). Below it three levels, quietest first: the exchange as a
+ * transcript on a cream panel (a speaker label beside each line), then the
+ * judgement as one bordered pair (the team's eval passing the reply, a
+ * muted row with its Pass chip, over the AI engineer's finding with its
+ * Fail chip on the red tint, the card's loudest text), then a hairline footer with how many sessions like it
+ * passed and the check it drafts.
  *
- * Motion (one moment, on load): the parts arrive in reading order, the
- * finding last before the footer. Server render and reduced motion show
- * the finished card. Transform and opacity only. The figcaption carries
+ * Motion (one moment, on load): the card rises out of a soft blur like
+ * labs.gap-report-visual, then the parts arrive in reading order, the
+ * finding last before the footer. Animations fill backwards, so server
+ * render and reduced motion show the finished card. The figcaption carries
  * the whole example as text; the drawn card is aria-hidden. Copy arrives
  * through `content` (LABS_HERO_SESSION).
  */
 import type { MissedSessionVisualContent } from "../../lib/labs-home";
+import LabsAiEngineerRow from "./LabsAiEngineerRow.astro";
 
 interface Props {
   content: MissedSessionVisualContent;
 }
 const { content } = Astro.props;
+const LABEL =
+  "block font-label text-[11px] leading-4 uppercase tracking-[0.05em]";
+const CHIP =
+  "shrink-0 rounded-full px-2.5 py-1 font-label text-[11px] leading-4 uppercase tracking-[0.05em]";
+const turns = content.messages.length;
 ---
 
-<figure class="rounded-[20px] border border-(--color-border) bg-card p-6 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-8">
+<figure class="ms-card overflow-hidden rounded-[16px] border border-(--color-border) bg-card shadow-[0_1px_2px_rgba(65,61,55,0.04),0_12px_32px_rgba(65,61,55,0.08)] transition-colors duration-200 ease-out hover:border-(--color-sage-400)">
   <figcaption class="sr-only">{content.label}</figcaption>
   <div aria-hidden="true">
-    <p class="ms-step font-mono text-[13px] leading-5 text-(--color-cream-700)" style="--i: 0">{content.session}</p>
-
-    <ul class="mt-4 flex list-none flex-col gap-2.5">
-      {content.messages.map((message, index) => (
-        <li
-          class:list={[
-            "ms-step max-w-[85%] rounded-[14px] px-3.5 py-2.5 font-sans text-[15px] leading-[22px]",
-            message.from === "customer"
-              ? "self-start rounded-bl-[4px] bg-(--color-cream-100) text-(--color-cream-900)"
-              : "self-end rounded-br-[4px] bg-(--color-sage-800) text-(--color-cream-50)",
-          ]}
-          style={`--i: ${index + 1}`}
-        >
-          {message.text}
-        </li>
-      ))}
-    </ul>
-
-    <div class="ms-step mt-5 flex items-center justify-between gap-3 rounded-[12px] border border-(--color-border) px-3.5 py-2.5" style={`--i: ${content.messages.length + 1}`}>
-      <span class="min-w-0">
-        <span class="block font-label text-[11px] leading-4 uppercase tracking-[0.05em] text-(--color-cream-700)">{content.eval.label}</span>
-        <span class="block font-mono text-[13px] leading-5 text-(--color-cream-900)">{content.eval.name}</span>
-      </span>
-      <span class="shrink-0 rounded-full bg-(--color-sage-100) px-2.5 py-1 font-label text-[11px] leading-4 uppercase tracking-[0.05em] text-(--color-sage-800)">
-        ✓ {content.eval.verdict}
-      </span>
+    <div class="ms-step" style="--i: 0">
+      <LabsAiEngineerRow>
+        <span class="shrink-0 font-mono text-[12px] leading-4 text-(--color-cream-700)">{content.session}</span>
+      </LabsAiEngineerRow>
     </div>
 
-    <div class="ms-step mt-3 rounded-[12px] border border-(--color-orange-200) bg-(--color-orange-50) px-3.5 py-3" style={`--i: ${content.messages.length + 2}`}>
-      <span class="block font-label text-[11px] leading-4 uppercase tracking-[0.05em] text-(--color-orange-700)">{content.finding.by}</span>
-      <span class="mt-1 block font-sans text-[15px] leading-[22px] text-(--color-cream-900)">{content.finding.text}</span>
-    </div>
+    <div class="flex flex-col gap-4 px-5 pt-5 pb-6 md:px-6">
+      <dl class="flex flex-col gap-3 rounded-[12px] bg-background p-4">
+        {content.messages.map((message, index) => (
+          <div class="ms-step grid gap-1 sm:grid-cols-[7.5rem_minmax(0,1fr)] sm:gap-4" style={`--i: ${index + 1}`}>
+            <dt class:list={[LABEL, "text-(--color-cream-600) sm:pt-[3px]"]}>{content.speakers[message.from]}</dt>
+            <dd class="font-sans text-[15px] leading-[22px] text-(--color-cream-900)">{message.text}</dd>
+          </div>
+        ))}
+      </dl>
 
-    <div class="ms-step mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-(--color-border) pt-4" style={`--i: ${content.messages.length + 3}`}>
-      <span class="font-sans text-[14px] leading-5 text-(--color-cream-800)">{content.tally}</span>
-      <span class="rounded-full border border-(--color-sage-400) px-2.5 py-1 font-mono text-[12px] leading-4 text-(--color-sage-800)">
-        + {content.check}
-      </span>
+      <div class="overflow-hidden rounded-[12px] border border-(--color-border)">
+        <div class="ms-step flex items-center justify-between gap-3 px-4 py-2.5" style={`--i: ${turns + 1}`}>
+          <span class="flex min-w-0 flex-wrap items-baseline gap-x-2.5">
+            <span class:list={[LABEL, "text-(--color-cream-700)"]}>{content.eval.label}</span>
+            <span class="font-mono text-[13px] leading-5 text-(--color-cream-900)">{content.eval.name}</span>
+          </span>
+          <span class={`${CHIP} bg-(--color-sage-100) text-(--color-sage-800)`}>✓ {content.eval.verdict}</span>
+        </div>
+        <div class="ms-step border-t border-destructive/20 bg-destructive/5 px-4 py-4" style={`--i: ${turns + 2}`}>
+          <span class="flex items-center justify-between gap-3">
+            <span class:list={[LABEL, "text-destructive"]}>{content.finding.by}</span>
+            <span class={`${CHIP} bg-destructive/10 text-destructive`}>✕ {content.finding.verdict}</span>
+          </span>
+          <span class="mt-1.5 block font-sans text-[16px] leading-6 font-medium text-(--color-cream-900)">{content.finding.text}</span>
+        </div>
+      </div>
+
+      <div class="ms-step flex flex-wrap items-center justify-between gap-3 border-t border-(--color-border) pt-4" style={`--i: ${turns + 3}`}>
+        <span class="font-sans text-[14px] leading-5 text-(--color-cream-800)">{content.tally}</span>
+        <span class="rounded-full border border-(--color-sage-400) px-2.5 py-1 font-mono text-[12px] leading-4 text-(--color-sage-800)">
+          + {content.check}
+        </span>
+      </div>
     </div>
   </div>
 </figure>
 
 <style>
   @media (prefers-reduced-motion: no-preference) {
+    .ms-card {
+      animation: ms-card-in 900ms var(--ease-out-expo) 100ms backwards;
+    }
     .ms-step {
-      animation: ms-step 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
-      animation-delay: calc(200ms + var(--i) * 380ms);
+      animation: ms-step 600ms var(--ease-out-quint) calc(380ms + var(--i) * 380ms) backwards;
+    }
+  }
+  @keyframes ms-card-in {
+    from {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(24px) scale(0.97);
     }
   }
   @keyframes ms-step {

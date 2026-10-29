@@ -1,0 +1,27 @@
+---
+/**
+ * LogoDefs — one `<symbol>` per service/library mark a drawing uses, placed
+ * in that drawing's `<defs>` so each chip can `<use>` it instead of repeating
+ * the paths. Ids are `${prefix}-logo-${name}`; the wide and narrow drawings
+ * pass different prefixes so neither depends on the other being displayed.
+ */
+import { LOGOS, type LogoName } from "./logos";
+
+interface Props {
+  prefix: string;
+  names: readonly LogoName[];
+}
+const { prefix, names } = Astro.props;
+---
+
+{
+  names.map((name) => (
+    <symbol id={`${prefix}-logo-${name}`} viewBox="0 0 24 24">
+      <g transform={LOGOS[name].transform}>
+        {LOGOS[name].paths.map((p) => (
+          <path d={p.d} fill={p.fill} fill-rule={p.evenodd ? "evenodd" : undefined} />
+        ))}
+      </g>
+    </symbol>
+  ))
+}

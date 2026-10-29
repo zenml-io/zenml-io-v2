@@ -1,0 +1,286 @@
+---
+/**
+ * LabsFeatureScroll (`labs.feature-scroll`) — /product/zenml's "one
+ * foundation" section: headline and deck, then one step per capability,
+ * each a title and body with its highlight figure (`highlights/`). The
+ * pinned-scroll twin of LabsOnboardingSteps on the homepage.
+ *
+ * From lg with JS the section becomes one scroll moment: the step list sits
+ * on the left and one figure window on the right, both pinned while the page
+ * scrolls through the steps. The active step opens (the others dim to their
+ * titles), the window moves on to its figure (the old one blurs out, the new
+ * one's nodes and rows settle in through the figure's own `.hl-*` motion) and
+ * the height eases to fit. Clicking a step scrolls to it.
+ * Without JS, below lg, or if the script fails, every step shows its own
+ * figure in a column, so nothing depends on the scroll. Reduced motion keeps
+ * the scroll mapping and drops the transitions. Copy arrives through
+ * `content` (ZENML_FEATURE_TABS); /pro and /deployments keep the tabbed
+ * LabsFeatureTabs.
+ */
+import type { FeatureTabsContent } from "../../lib/labs-product-zenml";
+import "../../styles/labs-scroll-reveal.css";
+import { HIGHLIGHT_FIGURES } from "./highlights";
+
+interface Props {
+  content: FeatureTabsContent;
+}
+const { headline, deck } = Astro.props.content;
+/** Steps draw their highlight figure; a raster-only tab has no place here. */
+const tabs = Astro.props.content.tabs.flatMap((tab) =>
+  tab.figure ? [{ ...tab, Figure: HIGHLIGHT_FIGURES[tab.figure] }] : [],
+);
+const numeral = (index: number) => String(index + 1).padStart(2, "0");
+const WINDOW = "w-full rounded-[20px] bg-(--color-sage-100) p-4 md:p-6";
+---
+
+<section
+  class="feature-scroll bg-card py-24 md:py-32"
+  aria-labelledby={headline ? "feature-scroll-title" : undefined}
+  data-feature-scroll
+  style={`--steps: ${tabs.length}`}
+>
+  <div class="scroll-reveal-section mx-auto max-w-content px-gutter">
+    {headline && (
+      <h2 id="feature-scroll-title" class="reveal-child max-w-[860px] font-display text-[32px] leading-[38px] text-balance text-(--color-cream-900) md:text-[48px] md:leading-[54px]">
+        {headline}
+      </h2>
+    )}
+    {deck && (
+      <p class="reveal-child stagger-1 mt-6 max-w-[680px] font-sans text-[17px] leading-[27px] text-(--color-cream-700)">
+        {deck}
+      </p>
+    )}
+
+    <div class="feature-track reveal-child stagger-2 mt-space-xl">
+      <div class="feature-pin">
+        <ol class="feature-steps flex list-none flex-col gap-12">
+          {tabs.map(({ title, description, imageAlt, Figure }, index) => (
+            <li class="feature-step rounded-[20px] border border-transparent" data-step={index}>
+              <div class="flex gap-4">
+                <span class="font-mono text-[13px] leading-[30px] text-(--color-sage-700)">{numeral(index)}</span>
+                <div class="min-w-0 flex-1">
+                  <h3 class="font-display text-[24px] leading-[30px] text-(--color-cream-900)">
+                    <button type="button" class="feature-step-button text-left" data-step-button={index} tabindex="-1">{title}</button>
+                  </h3>
+                  <div class="feature-body">
+                    <div class="min-h-0">
+                      <p class="pt-2 font-sans text-[16px] leading-[25px] text-(--color-cream-700)">{description}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class:list={["feature-inline mt-6", WINDOW]}>
+                <Figure label={imageAlt} />
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div class="feature-stage" aria-hidden="true">
+          <div class={WINDOW}>
+            <div class="feature-panels">
+              {tabs.map(({ imageAlt, Figure }, index) => (
+                <div class="feature-panel" data-panel={index}>
+                  <Figure label={imageAlt} instance="stage" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .feature-stage {
+    display: none;
+  }
+
+  /* Scroll mode: armed by the script from lg; the column above is the
+     fallback for everything else. */
+  .is-scrolly .feature-track {
+    height: calc(100vh + var(--steps) * 45vh);
+  }
+  .is-scrolly .feature-pin {
+    position: sticky;
+    top: max(6rem, calc(50vh - 17rem));
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 3rem;
+    align-items: start;
+  }
+  .is-scrolly .feature-steps {
+    gap: 0.25rem;
+  }
+  .is-scrolly .feature-inline {
+    display: none;
+  }
+  .feature-step-button {
+    cursor: default;
+  }
+  .is-scrolly .feature-step-button {
+    cursor: pointer;
+  }
+  /* The whole step is the button's hit area once the list is a control. */
+  .is-scrolly .feature-step {
+    position: relative;
+  }
+  .is-scrolly .feature-step-button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .is-scrolly .feature-step {
+    padding: 1.25rem 1.5rem;
+    opacity: 0.45;
+    transition:
+      opacity var(--duration-base) var(--ease-out-quint),
+      background-color var(--duration-base) var(--ease-out-quint),
+      border-color var(--duration-base) var(--ease-out-quint);
+  }
+  .is-scrolly .feature-step:hover {
+    opacity: 0.7;
+  }
+  .is-scrolly .feature-step.is-active {
+    border-color: var(--color-border);
+    background: var(--color-card);
+    opacity: 1;
+  }
+  .is-scrolly .feature-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 400ms var(--ease-out-quint);
+  }
+  .is-scrolly .feature-step.is-active .feature-body {
+    grid-template-rows: 1fr;
+  }
+  .is-scrolly .feature-body > div {
+    overflow: hidden;
+  }
+
+  .is-scrolly .feature-stage {
+    display: block;
+  }
+  .feature-panels {
+    display: grid;
+    overflow: hidden;
+    transition: height 420ms var(--ease-out-quint);
+  }
+  /* The outgoing figure blurs out fast; the incoming one is shown at once
+     and its nodes settle in (HighlightFigure's `.hl-*` motion, armed by
+     `data-highlight-active`), so the swap reads as the same window moving
+     on rather than two figures crossfading. */
+  .feature-panel {
+    grid-area: 1 / 1;
+    align-self: start;
+    opacity: 0;
+    visibility: hidden;
+    filter: blur(4px);
+    transform: translateY(-4px);
+    transition:
+      opacity 200ms var(--ease-out-quint),
+      filter 200ms var(--ease-out-quint),
+      transform 200ms var(--ease-out-quint),
+      visibility 0s linear 200ms;
+  }
+  .feature-panel.is-active {
+    opacity: 1;
+    visibility: visible;
+    filter: none;
+    transform: none;
+    transition: visibility 0s;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .feature-scroll *,
+    .feature-panels {
+      transition: none !important;
+    }
+  }
+</style>
+
+<script>
+  /* Maps the scroll through the pinned track to the active step. Armed only
+     from lg; leaving that width restores the column. */
+  const LG = window.matchMedia("(min-width: 1024px)");
+
+  document.querySelectorAll<HTMLElement>("[data-feature-scroll]").forEach((section) => {
+    const track = section.querySelector<HTMLElement>(".feature-track");
+    const panelsBox = section.querySelector<HTMLElement>(".feature-panels");
+    if (!track || !panelsBox) return;
+    const steps = [...section.querySelectorAll<HTMLElement>("[data-step]")];
+    const panels = [...section.querySelectorAll<HTMLElement>("[data-panel]")];
+    const buttons = [...section.querySelectorAll<HTMLButtonElement>("[data-step-button]")];
+    let active = -1;
+    let frame = 0;
+
+    const setActive = (next: number) => {
+      if (next === active) return;
+      active = next;
+      steps.forEach((el, i) => el.classList.toggle("is-active", i === next));
+      panels.forEach((el, i) => {
+        el.classList.toggle("is-active", i === next);
+        // Re-arms the figure's settle-in motion each time it becomes current.
+        if (i === next) el.setAttribute("data-highlight-active", "");
+        else el.removeAttribute("data-highlight-active");
+      });
+      panelsBox.style.height = `${panels[next].offsetHeight}px`;
+    };
+
+    const span = () => Math.max(1, track.offsetHeight - window.innerHeight);
+
+    const update = () => {
+      frame = 0;
+      const rect = track.getBoundingClientRect();
+      // Below the viewport: no step active yet, so the first figure plays
+      // its arrival when the window comes into view, not on page load.
+      if (rect.top > window.innerHeight) {
+        if (active !== -1) {
+          active = -1;
+          panels.forEach((el) => {
+            el.classList.remove("is-active");
+            el.removeAttribute("data-highlight-active");
+          });
+        }
+        return;
+      }
+      const progress = Math.min(1, Math.max(0, -rect.top / span())) * steps.length;
+      setActive(Math.min(steps.length - 1, Math.floor(progress)));
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    buttons.forEach((button, index) => {
+      button.addEventListener("click", () => {
+        if (!section.classList.contains("is-scrolly")) return;
+        const top = track.getBoundingClientRect().top + window.scrollY;
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        window.scrollTo({
+          top: top + ((index + 0.5) / steps.length) * span(),
+          behavior: reduce ? "auto" : "smooth",
+        });
+      });
+    });
+
+    const arm = () => {
+      if (LG.matches) {
+        section.classList.add("is-scrolly");
+        buttons.forEach((b) => b.removeAttribute("tabindex"));
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", onScroll);
+        active = -1;
+        update();
+      } else {
+        section.classList.remove("is-scrolly");
+        buttons.forEach((b) => b.setAttribute("tabindex", "-1"));
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onScroll);
+        panelsBox.style.height = "";
+      }
+    };
+    LG.addEventListener("change", arm);
+    arm();
+  });
+</script>

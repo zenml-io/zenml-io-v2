@@ -1,15 +1,15 @@
 ---
 /**
  * LabsIntegrationsGrid — static grid of integration logos on a sage tint
- * band. No marquee, no animation of any kind: the page's motion budget is
- * spent elsewhere. Logos come from the `integrations` content collection at
- * build time, read the same way `IntegrationsMarquee.astro` reads them,
- * sorted by title, first 24 shown (a 6x4 block at the widest); the rest of
- * the count lives in the CTA row.
+ * band, left-aligned like every other section head. No marquee; the head,
+ * grid and pill arrive with the house reveal. Logos come from the
+ * `integrations` content collection at build time, read the same way
+ * `IntegrationsMarquee.astro` reads them, sorted by title, first 12 shown
+ * (6x2 from md, 3x3 below); the rest of the count lives in the CTA row.
  */
 import { getCollection } from "astro:content";
+import "../../styles/labs-scroll-reveal.css";
 import type { IntegrationsContent } from "../../lib/labs-product-zenml";
-import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
 import LabsButton from "./LabsButton.astro";
 
 interface Props {
@@ -45,31 +45,30 @@ const logos: LogoItem[] = integrations
     ];
   })
   .sort((a, b) => a.name.localeCompare(b.name));
-const gridLogos = logos.slice(0, 24);
+/** Two rows of six from md, three rows of three below; "See all
+ *  integrations" carries the rest. */
+const gridLogos = logos.slice(0, 12);
 ---
 
-<section class="bg-(--color-sage-300) py-24 md:py-32">
-  <div class="mx-auto max-w-content px-gutter text-center">
-    <p class={LABS_EYEBROW_CLASS}>
-      Integrations
-    </p>
-    <h2 class="mt-space-sm font-display text-[32px] leading-[36px] text-(--color-cream-900) text-balance md:text-[44px] md:leading-[48px]">
+<section class="bg-(--color-sage-100) py-24 md:py-32">
+  <div class="scroll-reveal-section mx-auto max-w-content px-gutter">
+    <h2 class="reveal-child font-display text-[32px] leading-[38px] text-(--color-cream-900) text-balance md:text-[48px] md:leading-[54px]">
       {headline}
     </h2>
     {
       deck && (
-        <p class="mx-auto mt-space-sm max-w-[640px] font-sans text-[17px] leading-[26px] text-(--color-cream-800) md:text-[18px] md:leading-[27px]">
+        <p class="reveal-child stagger-1 mt-space-sm max-w-[640px] font-sans text-[17px] leading-[26px] text-(--color-cream-800) md:text-[18px] md:leading-[27px]">
           {deck}
         </p>
       )
     }
 
-    <div class="mt-space-xl grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6 md:gap-4">
+    <div class="reveal-child stagger-2 mt-space-xl grid grid-cols-3 gap-3 md:grid-cols-6 md:gap-4">
       {
-        gridLogos.map((logo) => (
+        gridLogos.map((logo, index) => (
           <a
             href={logo.href}
-            class="group flex h-[88px] cursor-pointer items-center justify-center rounded-[16px] border border-border bg-card px-4 transition-colors duration-200 ease-out hover:border-(--color-sage-600)"
+            class:list={[index >= 9 && "max-md:hidden", "group flex h-[88px] cursor-pointer items-center justify-center rounded-[16px] border border-border bg-card px-4 transition-colors duration-200 ease-out hover:border-(--color-sage-400)"]}
             aria-label={logo.name}
           >
             {/* aria-label above names the link; the image is decorative on
@@ -88,7 +87,7 @@ const gridLogos = logos.slice(0, 24);
       }
     </div>
 
-    <div class="mt-space-mlg flex justify-center">
+    <div class="reveal-child stagger-2 mt-space-mlg flex">
       <LabsButton cta={cta} tone="ghost" />
     </div>
   </div>

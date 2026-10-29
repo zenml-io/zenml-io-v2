@@ -1,0 +1,40 @@
+---
+/**
+ * ArtifactPill — a run-graph artifact as the product UI draws it: a 28px
+ * full-round pill centred on its lane, a 20px type circle with the kind's
+ * icon, and the artifact name in mono. Fill, border and circle are the
+ * kind's colour mixed into the card (7% / 28% / 16%), as in the product.
+ */
+import Glyph, { type GlyphName } from "./Glyph.astro";
+import { pillWidth } from "./metrics";
+
+export type ArtifactKind = "data" | "model" | "other";
+
+const KINDS: Record<ArtifactKind, { color: string; icon: GlyphName }> = {
+  data: { color: "var(--hl-kind-data)", icon: "database" },
+  model: { color: "var(--hl-kind-model)", icon: "cpu" },
+  other: { color: "var(--hl-kind-other)", icon: "file" },
+};
+
+interface Props {
+  name: string;
+  kind: ArtifactKind;
+  /** Lane centre: the pill is centred on it. */
+  cx: number;
+  y: number;
+  /** Reveal order (`--hl-i`). */
+  i: number;
+}
+const { name, kind, cx, y, i } = Astro.props;
+const { color, icon } = KINDS[kind];
+const width = pillWidth(name);
+const mix = (pct: number) =>
+  `color-mix(in oklab, ${color} ${pct}%, var(--color-card))`;
+---
+
+<g class="hl-in" style={`--hl-i: ${i}`} transform={`translate(${Math.round(cx - width / 2)} ${y})`}>
+  <rect x="0.5" y="0.5" width={width - 1} height="27" rx="13.5" fill={mix(7)} stroke={mix(28)} />
+  <circle cx="14" cy="14" r="10" fill={mix(16)} />
+  <Glyph name={icon} x={8} y={8} size={12} color={color} />
+  <text class="hl-code" x="30" y="14" dominant-baseline="central" fill="var(--color-cream-800)">{name}</text>
+</g>

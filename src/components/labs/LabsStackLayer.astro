@@ -24,6 +24,8 @@ import "../../styles/labs-scroll-reveal.css";
 import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
 import { GAP_TAG } from "./gapTags";
 import LabsInstallChip from "./LabsInstallChip.astro";
+import LabsOrb from "./LabsOrb.astro";
+import LabsTextLink from "./LabsTextLink.astro";
 
 interface Props {
   content: StackLayerContent;
@@ -118,7 +120,7 @@ const COLUMN_LINE =
             <div class="stack-source flex min-w-0 flex-col gap-2.5" data-stop data-i={index} data-state={stateOf(index)}>
               <span class="flex items-center gap-2">
                 <span class="stack-mark flex size-7 shrink-0 items-center justify-center rounded-[6px] border border-(--color-border) bg-card" style="--j: 0">
-                  <img src="/images/orbs/orb-sage-default-24.svg" alt="" aria-hidden="true" width="18" height="18" class="size-[18px]" />
+                  <LabsOrb size={18} blink={2} />
                 </span>
                 <h3 class={COLUMN_TITLE}>{content.layer.title}</h3>
               </span>
@@ -150,16 +152,7 @@ const COLUMN_LINE =
     <div class="reveal-child mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
       <span class="font-sans text-[15px] leading-6 text-(--color-cream-700)">{content.installLabel}</span>
       <div class="flex max-w-full"><LabsInstallChip content={content.install} /></div>
-      <a
-        href={content.link.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        data-analytics={content.link.analytics}
-        class="group inline-flex min-h-11 items-center gap-1.5 font-sans text-[16px] leading-6 text-(--color-sage-800) transition-colors duration-200 ease-out hover:text-(--color-sage-900)"
-      >
-        <span class="underline decoration-(--color-sage-400) underline-offset-4">{content.link.label}</span>
-        <span aria-hidden="true">↗</span>
-      </a>
+      <LabsTextLink cta={content.link} external />
     </div>
   </div>
 </section>

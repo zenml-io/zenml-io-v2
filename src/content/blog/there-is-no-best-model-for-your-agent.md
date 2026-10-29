@@ -11,10 +11,14 @@ tags:
   - "llm"
 date: "2026-10-21T15:20:00.000Z"
 readingTime: "10 mins"
+mainImage:
+  url: "https://assets.zenml.io/content/blog/there-is-no-best-model-for-your-agent/a6d47a0d/there-is-no-best-model-for-your-agent-cover.avif"
+  alt: "Kitaru blog cover for There Is No Best Model for Your Agent"
 seo:
   title: "There Is No Best Model for Your Agent - ZenML Blog"
   description: "We ranked 12 models on the same agent three ways and got three different answers. Which model is best depends on the prompt and settings around it, so test the whole change on your own cases before you ship it."
   canonical: "https://www.zenml.io/blog/there-is-no-best-model-for-your-agent"
+  ogImage: "https://assets.zenml.io/content/blog/there-is-no-best-model-for-your-agent/3e4502eb/there-is-no-best-model-for-your-agent-cover.jpg"
 ---
 
 Every team running an agent eventually asks the same question: which model should it use? A new release tops a leaderboard, a vendor cuts prices, someone posts that they switched and saved 80%. The question sounds like it has an answer.
