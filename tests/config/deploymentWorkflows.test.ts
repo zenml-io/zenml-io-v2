@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import {
   chmodSync,
+  existsSync,
   mkdirSync,
   mkdtempSync,
   readdirSync,
@@ -9,7 +10,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 import { parse } from "yaml";
 import { REQUIRED_WORKER_SECRETS } from "../../scripts/check-worker-bindings";
@@ -20,6 +21,7 @@ interface WorkflowStep {
   if?: string;
   name: string;
   run?: string;
+  with?: Record<string, string>;
 }
 
 interface ProductionWorkflow {
@@ -1039,6 +1041,73 @@ describe("credential-free Worker artifact workflow", () => {
     expect(deployWorkflow).toContain("--dry-run");
     expect(deployWorkflow).not.toContain("wrangler versions deploy");
     expect(deployWorkflow).not.toContain("wrangler pages deploy");
+  });
+});
+
+describe("Astro content store cache", () => {
+  // A cached store keeps rendered entries whose own file is unchanged, so every
+  // other input of the content sync must change the cache key.
+  const keyPatterns = [
+    ...(
+      workflowStep(deploySteps, "Hash Astro content store inputs").env
+        ?.INPUTS_HASH ?? ""
+    ).matchAll(/'([^']+)'/g),
+  ].map(([, pattern]) => pattern);
+  const coveredByKey = (path: string): boolean =>
+    keyPatterns.some((pattern) =>
+      pattern.endsWith("/**")
+        ? path.startsWith(pattern.slice(0, -2))
+        : path === pattern,
+    );
+
+  it("keys the cache on every local module the content sync loads", () => {
+    const seen = new Set<string>();
+    const queue = ["astro.config.ts", "src/content.config.ts"];
+    while (queue.length > 0) {
+      const file = queue.pop() as string;
+      if (seen.has(file)) continue;
+      seen.add(file);
+      for (const [, specifier] of readFileSync(file, "utf8").matchAll(
+        /from\s+"(\.{1,2}\/[^"]+)"/g,
+      )) {
+        const base = join(dirname(file), specifier);
+        const resolved = ["", ".ts", ".tsx", ".json", "/index.ts"]
+          .map((extension) => `${base}${extension}`)
+          .find(
+            (candidate) => existsSync(candidate) && !candidate.endsWith("/"),
+          );
+        expect(
+          resolved,
+          `unresolved import ${specifier} in ${file}`,
+        ).toBeDefined();
+        queue.push(resolved as string);
+      }
+    }
+
+    expect([...seen].filter((file) => !coveredByKey(file))).toEqual([]);
+  });
+
+  it("keys the cache on every reference folder the content config reads", () => {
+    const folders = [
+      ...readFileSync("src/content.config.ts", "utf8").matchAll(
+        /loadSlugSetFromCollectionDir\("([^"]+)"\)/g,
+      ),
+    ].map(([, folder]) => `src/content/${folder}/`);
+
+    expect(folders.length).toBeGreaterThan(0);
+    expect(folders.filter((folder) => !coveredByKey(folder))).toEqual([]);
+  });
+
+  it("restores the newest cache for the same inputs and saves a new one", () => {
+    expect(keyPatterns).toContain("pnpm-lock.yaml");
+    const cache = workflowStep(deploySteps, "Restore Astro content store");
+    expect(cache.with?.path).toBe("node_modules/.astro/data-store.json");
+    expect(cache.with?.key).toBe(
+      "astro-content-v1-${{ steps.content-store.outputs.inputs }}-${{ github.run_id }}",
+    );
+    expect(cache.with?.["restore-keys"]).toBe(
+      "astro-content-v1-${{ steps.content-store.outputs.inputs }}-",
+    );
   });
 });
 
