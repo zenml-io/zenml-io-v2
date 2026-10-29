@@ -41,12 +41,12 @@ export function GET(): Response {
     joinMarkdownSections(
       "## Main CTA",
       markdownCtaList(
-        LABS_HERO.secondaryCta
-          ? [LABS_HERO.cta, LABS_HERO.secondaryCta]
+        LABS_HERO.textLink
+          ? [LABS_HERO.cta, LABS_HERO.textLink]
           : [LABS_HERO.cta],
       ),
       LABS_HERO.install ? `Install Kitaru: \`${LABS_HERO.install.cmd}\`` : "",
-      LABS_HERO.installNote ?? "",
+      LABS_HERO.proof ?? "",
     ),
     joinMarkdownSections(
       `## ${LABS_ONBOARDING.headline}`,

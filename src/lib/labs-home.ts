@@ -217,6 +217,10 @@ export interface LabsProductBandContent extends LabsBandContent {
   install?: LabsInstallChip;
   /** One short line under the install command: what it installs. */
   installNote?: string;
+  /** A quiet text link beside the primary pill, for the second path in. */
+  textLink?: LabsCta;
+  /** One proof line under the actions, e.g. customer names. */
+  proof?: string;
 }
 
 /** A product page's opening band led by its install command instead of a
@@ -248,17 +252,16 @@ export type ModelMark =
   | "chip";
 
 export const LABS_HERO: LabsProductBandContent = {
-  headlineLines: ["Know which evals", "to write"],
-  deck: "Writing evals isn't the hard part. Our AI engineer reads your traces next to your evals and shows you what they miss.",
+  headlineLines: ["Find what your agent’s", "evals miss"],
+  deck: "Our AI engineer reads your traces next to your evals and shows you what they let through. You answer a few questions. It writes the checks.",
   cta: LABS_HERO_SIGNUP,
-  secondaryCta: {
-    label: "Request demo",
+  textLink: {
+    label: "or request a demo",
     href: "/book-your-demo",
     analytics: "Hero-Request-Demo",
   },
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
-  installNote:
-    "Installs open-source Kitaru on your machine. Start free for the hosted AI engineer.",
+  proof: "Used by teams at JetBrains, AXA, Airbus and Leroy Merlin",
 };
 
 /* ---------------------------------------------------------------------- */

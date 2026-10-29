@@ -1395,7 +1395,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "The homepage hero's example, mounted in LabsHero's `visual` slot on `/`, from `content: GapReportVisualContent` (LABS_GAP_REPORT). A short card: an eyebrow, the agent and session count in mono, two pass-rate bars (the team's evals, then their own manual), then the gaps as one-line hairline rows tagged Wrong (orange tint) or Missing (cream outline) with a session count. Static, no motion moment; the figcaption carries the whole example as text and the drawn card is aria-hidden. Tag colours come from gapTags.ts.",
+      "The homepage hero's example, mounted in LabsHero's `visual` slot on `/`, from `content: GapReportVisualContent` (LABS_GAP_REPORT). A short card: an eyebrow, the agent and session count in mono, two pass-rate bars (the team's evals, then their own manual), then the gaps as one-line hairline rows tagged Wrong (orange tint) or Missing (cream outline) with a session count. One motion moment on load (bars fill, then rows arrive; reduced motion shows the finished card); the figcaption carries the whole example as text and the drawn card is aria-hidden. Tag colours come from gapTags.ts.",
     stage: false,
     demoProps: {},
   },
