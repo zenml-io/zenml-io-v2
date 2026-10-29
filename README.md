@@ -1,6 +1,6 @@
 # ZenML Website (zenml.io)
 
-The [zenml.io](https://www.zenml.io) marketing website — an Astro static site hosted on Cloudflare Pages. ~2,200 pages across 21 content collections, built in ~33 seconds.
+The [zenml.io](https://www.zenml.io) marketing website — an Astro static site served by a Cloudflare Worker. ~2,200 pages across 21 content collections, built in ~33 seconds.
 
 Markets two sub-products under one paid umbrella (ZenML Pro):
 - **ZenML** — ML workflow orchestration
@@ -282,23 +282,30 @@ ContactForm Preact island → Astro API route at `src/pages/api/forms/[formType]
 
 ## Deployment & Branch Workflow
 
-Production remains on Cloudflare Pages until the separately approved Worker
-cutover. CI now builds and validates one Worker artifact, then publishes that
-exact artifact for trusted upload workflows. It does not automatically update
-the live Pages project during this migration checkpoint.
+Production runs on a Cloudflare Worker at `www.zenml.io/*`. Cloudflare Pages
+stays underneath it as the deeper fallback. CI builds the site once without
+credentials and publishes that exact artifact; every later step deploys that
+artifact rather than rebuilding it.
 
-- **All PRs** → the credential-free `Repo checks` job builds and validates one
-  artifact, including the Astro 5 Wrangler runtime and island hydration checks
-- **Same-repository PRs** → after explicit review, a manual workflow defined
-  on `main` can upload that exact artifact as an inactive, unreachable version
-  of the isolated preview Worker
-- **Fork and Dependabot PRs** → checks only; no Cloudflare credentials or upload
-- **Approved branch candidate** → a manual workflow defined on `main` can upload
-  an exact successful CI artifact to the production Worker with public preview
-  URLs disabled; it does not activate the version
-- **Activation** → a separate manual workflow defined on `main` accepts an exact
-  version ID and provenance. Running it requires a separate decision; attaching
-  the production route remains a later cutover step
+- **Every push and PR** → the credential-free `Repo checks` job in `Website CI
+  and Worker Artifact` runs the type checks, lint and unit tests, builds the
+  site once, runs the dist smoke tests, Worker runtime check and island
+  hydration check, then uploads the validated artifact
+- **Same-repository, non-draft PRs** → when CI succeeds, `Publish Worker PR
+  Preview` (defined on `main`) publishes the exact artifact to a stable public
+  alias on the separate `zenml-io-v2-pr-preview` Worker and posts the URL as a
+  PR comment. Closing the PR replaces the alias with a `410 Gone` page
+- **Fork and Dependabot PRs** → checks only; no Cloudflare credentials, upload
+  or preview
+- **PRs that change the CI workflow** → no preview until the change merges. The
+  preview workflow only trusts artifacts built by a `deploy.yml` identical to
+  `.github/trusted/worker-artifact-workflow.yml` on `main`
+- **Merge to `main`** → `Release Worker to Production` uploads the exact `main`
+  artifact, smoke-tests it at 0 percent of traffic, then activates it. A failed
+  check restores the previous version
+- **Manual controls** → reviewed manual workflows on `main` can upload or
+  activate exact versions on the Access-protected staging Worker. See
+  `docs/worker-release-runbook.md`
 - Preview responses retain `X-Robots-Tag: noindex`
 - Analytics are hostname-gated to `www.zenml.io` (preview traffic excluded)
 - **Squash merge only** — each PR becomes a single commit on main
@@ -314,9 +321,9 @@ the live Pages project during this migration checkpoint.
 PRs require the `Repo checks` status check to pass (`pnpm check`,
 `pnpm check:tests`, `pnpm check:surface`, `pnpm check:alt`, `pnpm lint`,
 `pnpm test`, `pnpm build`, `pnpm smoke:dist`, `pnpm check:worker`, and
-`pnpm check:islands`). The trusted Worker upload runs separately and is not a
-merge gate. See `docs/worker-release-runbook.md` for the artifact, preview,
-candidate, activation, and rollback metadata flow.
+`pnpm check:islands`). PR previews run separately and are not a merge gate.
+See `docs/worker-release-runbook.md` for the artifact, release, and rollback
+flow, and `docs/worker-pr-preview-runbook.md` for PR previews.
 
 See `docs/branch-protection-spec.md` for the full governance spec.
 
@@ -324,11 +331,11 @@ See `docs/branch-protection-spec.md` for the full governance spec.
 
 | Layer | Technology |
 |-------|-----------|
-| Framework | Astro v5 (TypeScript, static-first, content collections) |
+| Framework | Astro 7 (TypeScript, static-first, content collections) |
 | Content | Markdown (`.md`) files in git with Zod-validated schemas |
 | Styling | Tailwind CSS v4 (utility-first, `@theme` design tokens) |
 | Interactive | Preact islands (only hydrate what needs JS) |
-| Hosting | Cloudflare Pages in production; Cloudflare Workers migration candidate |
+| Hosting | Cloudflare Workers in production; Cloudflare Pages as the deeper fallback |
 | Assets | Cloudflare R2 (object storage for images/files) |
 | Forms | Preact ContactForm island → Astro API routes → Segment |
 | Analytics | Plausible + GA4 + Segment (hostname-gated) |
