@@ -185,7 +185,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     subtitle: "For startups shipping their first agent",
     price: KITARU_CLOUD_PRICE,
     priceSuffix: "/month",
-    limitsLine: `${STARTER.agents} agent · ${STARTER.zenmlProjects} ZenML project · ${STARTER.pipelineRuns} pipeline runs a month · Unlimited seats`,
+    limitsLine: `${STARTER.agents} agent · ${STARTER.zenmlProjects} ZenML project · Unlimited seats`,
     includesLabel: "Everything in Open Source, plus",
     features: [
       "Your AI engineer on one agent",
@@ -206,7 +206,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     pill: "Your cloud or on-prem",
     subtitle: "For more agents, more projects or regulated data",
     price: "Custom",
-    limitsLine: "More agents · More projects · More pipeline runs",
+    limitsLine: "More agents · More projects · More workspaces",
     includesLabel: "Everything in Starter, plus",
     features: [
       "On-prem or air-gapped",
@@ -248,6 +248,10 @@ export const PRICING_COMPARE: PricingCompareTableData = {
         {
           feature: "ZenML projects",
           values: ["Self-hosted", `${STARTER.zenmlProjects}`, "Custom"],
+        },
+        {
+          feature: "Workspaces",
+          values: ["Self-hosted", `${STARTER.workspaces}`, "Custom"],
         },
         {
           feature: "Pipeline runs a month",

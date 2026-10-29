@@ -41,7 +41,7 @@ Run it yourself
 For startups shipping their first agent
 
 - Price: $39/month
-- Limits: 1 agent · 1 ZenML project · 100 pipeline runs a month · Unlimited seats
+- Limits: 1 agent · 1 ZenML project · Unlimited seats
 
 - Everything in Open Source, plus:
   - Your AI engineer on one agent
@@ -56,7 +56,7 @@ For startups shipping their first agent
 For more agents, more projects or regulated data
 
 - Price: Custom
-- Limits: More agents · More projects · More pipeline runs
+- Limits: More agents · More projects · More workspaces
 
 - Everything in Starter, plus:
   - On-prem or air-gapped
@@ -77,6 +77,7 @@ One price, unlimited seats. 14-day trial, no credit card.
 | Price | Free | $39 / month | Custom |
 | Agents with your AI engineer | — | 1 | Custom |
 | ZenML projects | Self-hosted | 1 | Custom |
+| Workspaces | Self-hosted | 2 | Custom |
 | Pipeline runs a month | Self-hosted | 100 | Custom |
 | Sessions your AI engineer reads | — | No limit | No limit |
 | Seats | Unlimited | Unlimited | Unlimited |

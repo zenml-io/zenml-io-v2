@@ -26,6 +26,7 @@ export const KITARU_TRIAL_DAYS = 14;
 export const KITARU_STARTER_LIMITS = {
   agents: 1,
   zenmlProjects: 1,
+  workspaces: 2,
   pipelineRuns: 100,
 } as const;
 /** What one agent is, for pricing. Said the same way everywhere. */

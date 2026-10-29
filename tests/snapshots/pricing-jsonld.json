@@ -174,7 +174,7 @@
               "billingIncrement": 1,
               "unitCode": "MON"
             },
-            "description": "For startups shipping their first agent. 1 agent · 1 ZenML project · 100 pipeline runs a month · Unlimited seats.",
+            "description": "For startups shipping their first agent. 1 agent · 1 ZenML project · Unlimited seats.",
             "itemOffered": {
               "@type": "SoftwareApplication",
               "name": "ZenML Starter",
@@ -191,7 +191,7 @@
             "@type": "Offer",
             "name": "Enterprise",
             "url": "https://www.zenml.io/book-your-demo",
-            "description": "For more agents, more projects or regulated data. More agents · More projects · More pipeline runs.",
+            "description": "For more agents, more projects or regulated data. More agents · More projects · More workspaces.",
             "itemOffered": {
               "@type": "SoftwareApplication",
               "name": "ZenML Enterprise",
