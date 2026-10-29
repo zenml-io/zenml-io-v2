@@ -35,6 +35,15 @@ mirror at .github/trusted/worker-artifact-workflow.yml and the blob-SHA pin in
 tests/config/workerPreviewControlPlane.test.ts to change together. This is a
 reviewed release-boundary change.
 
+CI caches Astro's content store (`node_modules/.astro/data-store.json`), so
+the content sync re-renders only Markdown files that changed. Astro cannot see
+edits to remark/rehype plugins or the reference folders `src/content.config.ts`
+reads, so the cache key hashes those inputs instead. Tests in
+`tests/config/deploymentWorkflows.test.ts` fail when a module the content sync
+imports, or a reference folder it reads, is missing from the key; extend the
+key in `deploy.yml` (and its trusted mirror) when they do. Locally, delete that
+file to force a cold sync.
+
 See [the Worker release runbook](../worker-release-runbook.md) and
 [the PR preview runbook](../worker-pr-preview-runbook.md) for artifact upload,
 activation, provenance, and route boundaries. Preview availability is separate
