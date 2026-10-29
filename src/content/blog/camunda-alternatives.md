@@ -169,7 +169,7 @@ Kitaru’s open-source version is **free to self-host**, with unlimited recordin
 - **Cloud:** $39 per month
 - **Enterprise:** Custom
 
-Sign up to Kitaru, it’s free: [cloud.kitaru.ai](https://cloud.kitaru.ai/)
+Sign up to Kitaru, it’s free: [cloud.zenml.io](https://cloud.zenml.io/signup?product=kitaru)
 
 ![Kitaru pricing plans: free open source, $39 per month Cloud, and custom Enterprise](https://assets.zenml.io/content/blog/camunda-alternatives/5f82de0f/kitaru-pricing.avif)
 

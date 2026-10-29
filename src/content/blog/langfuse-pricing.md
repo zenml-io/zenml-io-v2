@@ -303,7 +303,7 @@ Here's our practical buying advice.
 
 If that's you, pull last month's Langfuse traces and replay one cohort with the model swapped.
 
-[**Try Kitaru with the free hosted version**](https://cloud.kitaru.ai/).
+[**Try Kitaru with the free hosted version**](https://cloud.zenml.io/signup?product=kitaru).
 
 **Related reading:**
 

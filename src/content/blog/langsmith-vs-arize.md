@@ -353,4 +353,4 @@ What it has is the mechanism the other two do not. It freezes real sessions into
 
 If that is the test you are missing, [import the traces you care about](https://docs.zenml.io/kitaru/import-your-traces/import-your-traces) from LangSmith or Phoenix into Kitaru, freeze them into a cohort, and replay that cohort with the model swapped.
 
-**[Try Kitaru with the free hosted version](https://cloud.kitaru.ai/).**
+**[Try Kitaru with the free hosted version](https://cloud.zenml.io/signup?product=kitaru).**

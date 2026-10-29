@@ -259,7 +259,7 @@ So, as practical buying advice:
 
 Import available LangSmith runs, connect supported runnable agent code, verify an unchanged replay, and then test a model swap on one cohort.
 
-[**Try Kitaru with the free hosted version**](https://cloud.kitaru.ai/).
+[**Try Kitaru with the free hosted version**](https://cloud.zenml.io/signup?product=kitaru).
 
 **Related reading:**
 
