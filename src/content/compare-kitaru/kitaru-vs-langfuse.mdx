@@ -25,6 +25,8 @@ Langfuse is an open-source AI engineering platform. It traces every LLM and non-
 
 Kitaru answers a narrower question. When you change the model, a prompt, or a tool, what happens to the runs your agent already did in production? A session is a recorded run. Replay re-executes your agent's real code over that session. Under a history tool policy, the recording answers the tool calls, so `issue_refund()` returns what it returned the first time instead of touching a card twice. Fork the session with one override and you get the same run under the change, next to the faithful baseline: an unchanged replay that reproduces the original. And because `kitaru/langfuse` is a [built-in importer](https://docs.zenml.io/kitaru/import-your-traces/import-langfuse-traces), the traces you already store in Langfuse are the way in.
 
+Replay answers how a fix behaves. Knowing what to fix comes first: our AI engineer reads your Langfuse traces next to the evals you already run and shows you which of them are wrong or missing. Then Kitaru replays your agent to test the fix. See [pricing](/pricing).
+
 <WhenToUseEach
   competitorLabel="Langfuse"
   kitaru={{

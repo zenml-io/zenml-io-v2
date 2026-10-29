@@ -102,7 +102,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   {
     question: "Does it work for multi-turn chat agents?",
     answer:
-      "Import, review and checks work for any agent, including multi-turn chat. Replay works best on single-execution agents. In a multi-turn chat, once a replayed reply differs from the recorded one, the recorded user turns after it no longer fit, so multi-turn replay is limited.",
+      "Yes. Importers group a conversation's traces into one session, and review and checks work on the whole conversation. Replay runs one turn at a time with the recorded conversation before it, so you see how your change answers each turn. It can't invent what the user would have said next.",
   },
   {
     question: "My agent writes to real systems. Is replay safe?",

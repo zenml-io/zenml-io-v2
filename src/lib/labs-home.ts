@@ -248,60 +248,6 @@ export type ModelMark =
   | "open"
   | "chip";
 
-/** One proposed update in the hero explainer, and which sessions it changes. */
-export interface HeroUpdate {
-  kind: string;
-  from: string;
-  to: string;
-  /** Marks for `from` and `to`, when the update swaps models. */
-  fromMark?: ModelMark;
-  toMark?: ModelMark;
-  /** Indexes into `sessions` whose answers differ under this update. */
-  differs: readonly number[];
-}
-
-export interface HeroVisualContent {
-  /** Accessible description of the whole explainer. */
-  label: string;
-  updateLabel: string;
-  sessions: readonly string[];
-  updates: readonly HeroUpdate[];
-  sameLabel: string;
-  differsLabel: string;
-}
-
-export const LABS_HERO_VISUAL: HeroVisualContent = {
-  label:
-    "An example: four recorded sessions from an insurance and banking agent (a water damage claim, a policy coverage question, a card dispute and a KYC document check) are replayed under one proposed update at a time. Swapping GPT-6 for DeepSeek changes one answer, a prompt with new claims rules changes one, moving from LangGraph to the Claude Agent SDK changes two, and turning on PII redaction changes none. Each changed session goes to you to review.",
-  updateLabel: "Proposed update",
-  sessions: [
-    "Water damage claim",
-    "Policy coverage question",
-    "Card dispute",
-    "KYC document check",
-  ],
-  updates: [
-    {
-      kind: "Model",
-      from: "GPT-6",
-      to: "DeepSeek",
-      fromMark: "openai",
-      toMark: "open",
-      differs: [2],
-    },
-    { kind: "Prompt", from: "v12", to: "new claims rules", differs: [0] },
-    {
-      kind: "Framework",
-      from: "LangGraph",
-      to: "Claude Agent SDK",
-      differs: [1, 3],
-    },
-    { kind: "PII redaction", from: "off", to: "on", differs: [] },
-  ],
-  sameLabel: "same",
-  differsLabel: "differs · review",
-};
-
 export const LABS_HERO: LabsProductBandContent = {
   headlineLines: ["Know which evals", "to write"],
   deck: "Writing evals isn't the hard part. Our AI engineer reads your traces next to your evals and shows you what they miss.",
@@ -553,7 +499,7 @@ export interface StackLayerContent {
 export const LABS_STACK_LAYER: StackLayerContent = {
   eyebrow: "How it fits",
   headline: "An intelligence layer on the stack you already run",
-  deck: "Nothing to rewrite, no new SDK. It reads your repos and traces through keys you can revoke.",
+  deck: "Nothing to rewrite, no new framework. It reads your repos and traces through keys you can revoke.",
   layer: {
     label: "Intelligence layer",
     title: "Your AI engineer",
@@ -570,6 +516,7 @@ export const LABS_STACK_LAYER: StackLayerContent = {
         { name: "Braintrust", logo: "/compare/braintrust.svg" },
         { name: "LangSmith", logo: "/compare/langsmith.svg" },
         { name: "Phoenix", logo: "/images/service-logos/arize-phoenix.svg" },
+        { name: "MLflow" },
         { name: "Logfire", logo: "/compare/logfire.svg" },
       ],
     },
@@ -713,92 +660,6 @@ export const LABS_DOORS: ProductDoorsContent = {
 };
 
 /* ---------------------------------------------------------------------- */
-/* How it works — three steps from traces to a recommendation             */
-/* ---------------------------------------------------------------------- */
-
-export interface HowItWorksStep {
-  title: string;
-  body: string;
-  /** What renders under the body: the trace tools' marks, or a prompt. */
-  detail?: { kind: "sources" } | { kind: "prompt"; text: string };
-}
-
-export interface HowItWorksContent {
-  /** The reader's question, in their words. */
-  headline: string;
-  /** One plain-language definition answering it. */
-  intro: string;
-  steps: readonly HowItWorksStep[];
-  /** The pinned stage the steps play out on as the reader scrolls. */
-  stage: HowItWorksStage;
-  link: LabsCta;
-}
-
-/** One worked example for the stage: recorded sessions, one model swap, the
- *  one session it changes. Reuses the hero card's example so both agree. */
-export interface HowItWorksStage {
-  /** Accessible text for the figure: the whole example in one sentence. */
-  label: string;
-  sessionsLabel: string;
-  resultLabel: string;
-  replayingLabel: string;
-  replayedLabel: string;
-  sessions: readonly string[];
-  from: string;
-  to: string;
-  /** Index into `sessions` of the one session the swap changes. */
-  differs: number;
-  sameLabel: string;
-  differsLabel: string;
-  switchLabel: string;
-}
-
-export const LABS_HOW_IT_WORKS: HowItWorksContent = {
-  headline: "Then prove every change before it ships",
-  intro:
-    "Your calibrated checks and frozen sessions become the test for every new model, prompt or harness. Kitaru replays them and shows which sessions would change, so you review only those.",
-  steps: [
-    {
-      title: "Bring the traces you have",
-      body: "Import from the tool your agent already reports to. No code changes.",
-      detail: { kind: "sources" },
-    },
-    {
-      title: "Ask an agent",
-      body: "Your coding agent, or ours in the background. It tries the update on your real calls.",
-      detail: {
-        kind: "prompt",
-        text: "Use kitaru-model-swap to find a better model for this agent.",
-      },
-    },
-    {
-      title: "Switch what's better",
-      body: "See which calls can move, review every difference, then replay the winner on whole sessions.",
-    },
-  ],
-  stage: {
-    label:
-      "An example: four recorded sessions are imported from trace tools, a coding agent is asked to find a better model, Kitaru replays every session with DeepSeek instead of GPT-6, and three sessions come back the same while the card dispute differs and goes to you to review.",
-    sessionsLabel: "Recorded sessions",
-    resultLabel: "Result",
-    replayingLabel: "Replaying",
-    replayedLabel: "Replayed",
-    sessions: LABS_HERO_VISUAL.sessions,
-    from: "GPT-6",
-    to: "DeepSeek",
-    differs: 2,
-    sameLabel: LABS_HERO_VISUAL.sameLabel,
-    differsLabel: LABS_HERO_VISUAL.differsLabel,
-    switchLabel: "Switch",
-  },
-  link: {
-    label: "See the full walkthrough",
-    href: "/product/kitaru",
-    analytics: "Home-HowItWorks-Kitaru",
-  },
-};
-
-/* ---------------------------------------------------------------------- */
 /* Feature grid — four panels                                              */
 /* ---------------------------------------------------------------------- */
 
@@ -827,37 +688,6 @@ export type FeaturePanel = FeaturePanelIcon & {
   /** Plausible event name — `data-analytics` IS the event name. */
   analytics?: string;
 };
-
-export const LABS_FEATURE_PANELS: readonly FeaturePanel[] = [
-  {
-    index: "01.",
-    title: "No re-instrumenting",
-    body: "Connect the tracing provider you already use. Your agent's code stays as it is.",
-    icon: "pipeline",
-    tone: "sage-tint",
-  },
-  {
-    index: "02.",
-    title: "Your judgment, kept",
-    body: "Your verdicts become checks the whole team shares, instead of one engineer's notebook.",
-    icon: "layers",
-    tone: "sage-deep",
-  },
-  {
-    index: "03.",
-    title: "Open source",
-    body: "ZenML and Kitaru are Apache 2.0. Self-host, read the code, keep your data where it is.",
-    icon: "open-box",
-    tone: "canvas",
-  },
-  {
-    index: "04.",
-    title: "Ready for enterprise",
-    body: "SOC 2 Type II and ISO 27001, on infrastructure you own.",
-    icon: "shield",
-    tone: "sage-light",
-  },
-];
 
 /* ---------------------------------------------------------------------- */
 /* Proof                                                                   */

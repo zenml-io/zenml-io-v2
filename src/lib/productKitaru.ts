@@ -45,6 +45,7 @@ export const KITARU_IMPORTERS = [
   "LangSmith",
   "Braintrust",
   "Logfire",
+  "MLflow",
   "Phoenix",
 ] as const;
 export const KITARU_ADAPTERS = [
@@ -101,8 +102,7 @@ export const KITARU_LINKS = {
 
 export const PRODUCT_KITARU_SEO = {
   title: "Kitaru: test every AI agent update on real traces | ZenML Labs",
-  description:
-    "Kitaru is the open-source core under our AI engineer. Import traces from Langfuse, LangSmith, Braintrust, Logfire or Phoenix, review real sessions, turn what you find into checks, and replay your agent to test a fix before it ships. Runs on your machine, with your keys.",
+  description: `Kitaru is the open-source core under our AI engineer. Import traces from ${KITARU_IMPORTERS_TEXT}, review real sessions, turn what you find into checks, and replay your agent to test a fix before it ships. Runs on your machine, with your keys.`,
   // OG cards need JPEG, not AVIF — social platforms don't render AVIF (PR #73).
   ogImage: "https://assets.zenml.io/content/og/439a52c0/kitaru-product-og.jpg",
 } as const;

@@ -244,7 +244,7 @@ export const INSURANCE_PAGE: IndustryPageContent = {
     {
       question: "Which agents does it work with?",
       answer:
-        "Any agent whose traces you already collect: quoting, underwriting triage, claims intake, appeals and customer service. It reads traces from Langfuse, LangSmith, Braintrust, Logfire or Phoenix.",
+        "Any agent whose traces you already collect: quoting, underwriting triage, claims intake, appeals and customer service. It reads traces from Langfuse, LangSmith, Braintrust, Logfire, MLflow or Phoenix.",
     },
     {
       question: "Does it help with state AI rules?",
@@ -397,7 +397,7 @@ export const FINANCIAL_SERVICES_PAGE: IndustryPageContent = {
     {
       question: "Which agents does it work with?",
       answer:
-        "Any agent whose traces you already collect: KYC and onboarding review, credit memos, fraud triage and client service. It reads traces from Langfuse, LangSmith, Braintrust, Logfire or Phoenix.",
+        "Any agent whose traces you already collect: KYC and onboarding review, credit memos, fraud triage and client service. It reads traces from Langfuse, LangSmith, Braintrust, Logfire, MLflow or Phoenix.",
     },
     {
       question: "Where is our data hosted?",

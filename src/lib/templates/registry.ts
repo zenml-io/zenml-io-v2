@@ -1349,7 +1349,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: true,
     paperPage: 0,
     notes:
-      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, `content: LabsProductBandContent` (LABS_HERO on `/`) gives the two-line headline + deck + one signup pill, vertically centered in the band (an optional `visual` slot sits beside the copy from lg and below it on phones; the homepage fills it with labs.model-choice-visual); a product page's content adds a ghost secondary pill and a copyable install chip (LabsInstallChip), each collapsing when absent; `LabsInstallBandContent` (ZENML_HERO on `/product/zenml`) has no pill and puts the install chip in its place, the ghost pill beside it. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component. Renders through `labs.band` for the shader/sizing chrome — see that entry.",
+      "The page's opening band: sage GrainBackdrop shader (client:visible — the page's one always-on ambient island per check:motion) over a cream panel, `content: LabsProductBandContent` (LABS_HERO on `/`) gives the two-line headline + deck + one signup pill, vertically centered in the band (an optional `visual` slot sits beside the copy from lg and below it on phones; the homepage fills it with labs.gap-report-visual); a product page's content adds a ghost secondary pill, a copyable install chip (LabsInstallChip) and a one-line `installNote` under it, each collapsing when absent; `LabsInstallBandContent` (ZENML_HERO on `/product/zenml`) has no pill and puts the install chip in its place, the ghost pill beside it. Static gradient fallback is GrainBackdrop's own SSR/no-WebGL panel + blob backdrop, so the section still reads with WebGL off. The site nav renders as an absolute overlay from BaseLayout/LabsNavigation, not from this component. Renders through `labs.band` for the shader/sizing chrome — see that entry.",
     stage: false,
     demoProps: {},
   },
@@ -1382,20 +1382,6 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     paperPage: 0,
     notes:
       "Two product cards (ZenML, Kitaru) from `content: ProductDoorsContent` (LABS_DOORS on `/` after the how-it-works section, which also feeds the nav product switcher; PRICING_PRO_INCLUSIONS_DOORS on `/pricing`; the docs product cards on `/docs`). Each card opens with its product wordmark; no install or licence chips. `headline` is optional (absence collapses the heading row). An optional `caption` renders one line after the cards. A door can add `links` (hairline quick-link rows with a hover wash/arrow in the door's tint) and/or `details` (hairline title/detail pairs) after its body; a door's `cta` can carry `external` to open the pill in a new tab.",
-    stage: false,
-    demoProps: {},
-  },
-  {
-    id: "labs.model-choice-visual",
-    kind: "template",
-    componentPath: "src/components/labs/LabsModelChoiceVisual.astro",
-    variantAxes: ["model swap marks"],
-    tones: ["default"],
-    responsive: "reflow",
-    island: false,
-    paperPage: 0,
-    notes:
-      "The homepage hero's explainer, mounted in LabsHero's `visual` slot on `/`, from `content: HeroVisualContent` (LABS_HERO_VISUAL). A card shows one proposed update at a time (kind in Borna, the old value struck through, the new one in a sage-800 pill; model swaps carry LabsModelMark icons), the trace tools' marks, the same recorded sessions as hairline rows each marked 'same' (sage check) or 'differs · review' (cream outline), and a closing count. Updates cycle every 3.2s via stacked grid states and one keyframe with a negative delay, so it starts mid-cycle, needs no island and runs with JS off; the keyframe's 25% window assumes four updates. Under reduced motion it rests on the first update. The figure's aria-label carries the whole example as text. No figures beyond counting the example rows shown.",
     stage: false,
     demoProps: {},
   },
@@ -1540,20 +1526,6 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoProps: {},
   },
   {
-    id: "labs.how-it-works",
-    kind: "template",
-    componentPath: "src/components/labs/LabsHowItWorks.astro",
-    variantAxes: ["step detail"],
-    tones: ["default"],
-    responsive: "reflow",
-    island: false,
-    paperPage: 0,
-    notes:
-      "The three steps from `content: HowItWorksContent` (LABS_HOW_IT_WORKS on `/`) told on one pinned stage. Left: headline, intro, hairline step rows with hexagon numerals (current step solid sage-800, others sage-100 with sage-600 titles and collapsed bodies) and a text link. Right: a sage-100 stage holding the recorded-sessions card and a dark sage-800 prompt card that turns into the replay card. From lg on a tall-enough viewport the section becomes a 320vh track with a sticky frame; a small script writes the scroll progress to `--hiw-p` and the step to `data-step`, and each part derives its own window from `--hiw-p` (opacity, transform only), so the stage scrubs both ways: sessions drop in, the prompt's words appear, the bars fill, rows settle to same / differs and the differing row lifts out. Server-rendered, small-screen, reduced-motion and no-JS state is the finished example with every step expanded.",
-    stage: false,
-    demoProps: {},
-  },
-  {
     id: "labs.feature-grid",
     kind: "template",
     componentPath: "src/components/labs/FeatureGridPanels.astro",
@@ -1564,7 +1536,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "Full-bleed row of equal panels from `content: readonly FeaturePanel[]` (LABS_FEATURE_PANELS on `/`); tone (sage-tint/sage-deep/canvas/sage-light) picks the panel background and body-text colour. Icons are inline SVG markup from src/components/labs/icons.ts, keyed by panel.icon, rendered via set:html inside a currentColor <svg>; a panel may carry a 24px stroke `lineIcon` path instead (the /docs resources panels), never both. The `index` counter is optional and its slot collapses when absent. Reflows to two columns at <=1024 and 1-up at 390. Columns follow the item count: one to four across at lg, five and six wrapping at three columns (3+2, 3+3), so the three advantages of the comparison strategy block fill the width the same way the four homepage panels do. Panel height is a 380px floor, 440px at lg and up, never a cap, so long copy grows the row instead of spilling out. A panel with `href` set renders as a linked `<a>` panel instead of the plain `<div>` (cursor-pointer, a subtle hover, optional `external`/`analytics`) — the /docs resources block's four links; panels without `href` render exactly as before.",
+      "Full-bleed row of equal panels from `content: readonly FeaturePanel[]` (the /docs resources and the comparison strategy block); tone (sage-tint/sage-deep/canvas/sage-light) picks the panel background and body-text colour. Icons are inline SVG markup from src/components/labs/icons.ts, keyed by panel.icon, rendered via set:html inside a currentColor <svg>; a panel may carry a 24px stroke `lineIcon` path instead (the /docs resources panels), never both. The `index` counter is optional and its slot collapses when absent. Reflows to two columns at <=1024 and 1-up at 390. Columns follow the item count: one to four across at lg, five and six wrapping at three columns (3+2, 3+3), so the three advantages of the comparison strategy block fill the width the same way the four homepage panels do. Panel height is a 380px floor, 440px at lg and up, never a cap, so long copy grows the row instead of spilling out. A panel with `href` set renders as a linked `<a>` panel instead of the plain `<div>` (cursor-pointer, a subtle hover, optional `external`/`analytics`) — the /docs resources block's four links; panels without `href` render exactly as before.",
     contentShape: {
       minItems: 1,
       maxItems: 6,

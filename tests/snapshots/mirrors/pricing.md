@@ -148,7 +148,7 @@ On hosted plans, your AI engineer runs in our cloud and reads traces from your t
 
 ### How is this different from Langfuse, Braintrust or LangSmith?
 
-They show you what happened. Our AI engineer reads those traces next to your evals and shows you which evals are wrong or missing, then Kitaru replays your agent to test the fix against real sessions. Kitaru imports from Langfuse, LangSmith, Braintrust, Logfire or Phoenix, so your tracing tool stays your system of record.
+They show you what happened. Our AI engineer reads those traces next to your evals and shows you which evals are wrong or missing, then Kitaru replays your agent to test the fix against real sessions. Kitaru imports from Langfuse, LangSmith, Braintrust, Logfire, MLflow or Phoenix, so your tracing tool stays your system of record.
 
 ### Do I need a separate subscription for ZenML?
 

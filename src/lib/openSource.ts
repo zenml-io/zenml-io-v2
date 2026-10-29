@@ -11,7 +11,6 @@ import type { LabsInstallChip } from "./labs-home";
 import { ZENML_DOCS_URL } from "./labs-product-zenml";
 import {
   KITARU_DOCS_URL,
-  KITARU_IMPORTERS,
   KITARU_IMPORTERS_TEXT,
   KITARU_INSTALL_CMD,
   KITARU_LICENSE,
@@ -139,13 +138,13 @@ export interface EvalImportBandContent {
 export const KITARU_EVAL_IMPORT: EvalImportBandContent = {
   eyebrow: "Bring your evals",
   headline: "Bring the evals you already run",
-  deck: "Your judges and test suites sit next to your traces. You see where your evals and your own reviews disagree.",
+  deck: "Your LLM judges and tests are code. Wrap them as Kitaru evaluators and run them over the traces you imported.",
   sourcesLabel: "Evals from",
-  sources: [...KITARU_IMPORTERS, "Test suites in your repo"],
+  sources: ["LLM judges", "pytest", "promptfoo", "DeepEval", "Your own checks"],
   steps: [
     {
-      title: "Evals land on sessions",
-      body: "Each eval result sits on the session it judged.",
+      title: "Run them on your history",
+      body: "One call scores every imported session, so each result sits on the session it judged.",
     },
     {
       title: "See where they disagree",
