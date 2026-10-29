@@ -1442,20 +1442,6 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoProps: {},
   },
   {
-    id: "labs.benchmark-band",
-    kind: "template",
-    componentPath: "src/components/labs/LabsBenchmarkBand.astro",
-    variantAxes: [],
-    tones: ["default"],
-    responsive: "reflow",
-    island: false,
-    paperPage: 0,
-    notes:
-      "Homepage band pointing at published benchmarks from `content: BenchmarkBandContent` (LABS_BENCHMARK_BAND on `/`): eyebrow, headline, deck and a text link in a 4/12 column, the named reports as labs.benchmark-card in an 8/12 column (stacked below lg; cards one column below md, two from md). Reports are found by slug in BENCHMARK_REPORTS; unknown slugs drop out and an empty list renders nothing.",
-    stage: false,
-    demoProps: {},
-  },
-  {
     id: "labs.open-source-band",
     kind: "template",
     componentPath: "src/components/labs/LabsOpenSourceBand.astro",

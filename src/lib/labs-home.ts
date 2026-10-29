@@ -517,31 +517,6 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
 };
 
 /* ---------------------------------------------------------------------- */
-/* Benchmarks: insurance first                                             */
-/* ---------------------------------------------------------------------- */
-
-export interface BenchmarkBandContent {
-  eyebrow: string;
-  headline: string;
-  deck: string;
-  /** Report slugs, in card order. */
-  slugs: readonly string[];
-  link: LabsCta;
-}
-
-export const LABS_BENCHMARK_BAND: BenchmarkBandContent = {
-  eyebrow: "Benchmarks",
-  headline: "Tested on insurance agents first",
-  deck: "We run real underwriting and appeals work through open and frontier models, and publish the method, the noise and the limits.",
-  slugs: ["underwriting", "decision-agents"],
-  link: {
-    label: "All benchmarks",
-    href: "/benchmarks",
-    analytics: "Home-Benchmarks-All",
-  },
-};
-
-/* ---------------------------------------------------------------------- */
 /* Product doors                                                           */
 /* ---------------------------------------------------------------------- */
 
