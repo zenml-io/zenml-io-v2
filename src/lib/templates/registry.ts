@@ -1409,7 +1409,7 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     island: false,
     paperPage: 0,
     notes:
-      "The homepage hero's example, mounted in LabsHero's `visual` slot on `/`, from `content: MissedSessionVisualContent` (LABS_HERO_SESSION). One session as a card: the session id in mono, a customer bubble (cream, left) and an agent bubble (sage-800, right), the team's eval with its Pass chip, the AI engineer's finding on the orange tint, then a hairline footer with how many sessions like it passed and the drafted check. One motion moment on load (parts arrive in reading order; reduced motion shows the finished card); the figcaption carries the whole example as text and the drawn card is aria-hidden.",
+      "The homepage hero's example, mounted in LabsHero's `visual` slot on `/`, from `content: MissedSessionVisualContent` (LABS_HERO_SESSION). One session as the product's message card: the AI engineer's author row (LabsAiEngineerRow, the session id as meta), the exchange as a bordered transcript with a speaker label over each line, the team's eval with its Pass chip over the AI engineer's finding with its Fail chip on the red tint, then a hairline footer with how many sessions like it passed and the drafted check. One motion moment on load (the card rises like labs.gap-report-visual, then the parts arrive in reading order; reduced motion shows the finished card); the figcaption carries the whole example as text and the drawn card is aria-hidden.",
     stage: false,
     demoProps: {},
   },

@@ -1,16 +1,23 @@
 ---
 /**
  * LabsAiEngineerRow — the AI engineer's author row, as the product's
- * message header draws it: the sage orb and the name, with an optional
+ * message header draws it: the sage orb (LabsOrb, blinking) and the name, with an optional
  * trailing slot (a meta line or a progress bar). The window header of
  * labs.gap-report-visual and labs.onboarding-steps. Decorative: callers
  * sit it inside aria-hidden markup.
  */
 import { AI_ENGINEER } from "../../lib/labs-home";
+import LabsOrb from "./LabsOrb.astro";
+
+interface Props {
+  /** Passed to LabsOrb, to desync blinks between rows on one page. */
+  blink?: number;
+}
+const { blink } = Astro.props;
 ---
 
 <div class="flex items-center gap-3 border-b border-(--color-border) px-4 py-3">
-  <img src="/images/orbs/orb-sage-default-24.svg" alt="" aria-hidden="true" width="24" height="24" class="size-6 shrink-0" />
+  <LabsOrb blink={blink} />
   <span class="min-w-0 flex-1 truncate font-sans text-[14px] leading-5 font-semibold text-(--color-cream-900)">{AI_ENGINEER}</span>
   <slot />
 </div>

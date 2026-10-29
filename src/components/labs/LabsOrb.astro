@@ -1,0 +1,63 @@
+---
+/**
+ * LabsOrb — the AI engineer's sage orb (Hashi's dir-01 default frame) with
+ * the product's idle blink: the eyes close to 10% height for 0.18s, once
+ * every 4.2–9s. The body is the exported SVG without its eyes; the eyes
+ * sit on top as their own inline SVG so they can scale without clashing
+ * gradient ids between instances. `blink` (0–4) picks one of five periods
+ * so orbs on the same page don't blink together. Reduced motion keeps the
+ * eyes open. Decorative: callers sit it inside aria-hidden markup.
+ */
+interface Props {
+  /** Rendered size in px. */
+  size?: number;
+  /** Which of the five blink periods (4.2, 5.4, 6.6, 7.8, 9s) to run. */
+  blink?: number;
+}
+const { size = 24, blink = 0 } = Astro.props;
+---
+
+<span class="relative block shrink-0" style={`width: ${size}px; height: ${size}px`}>
+  <img src="/images/orbs/orb-sage-body-24.svg" alt="" aria-hidden="true" width={size} height={size} class="block size-full" />
+  <svg class="absolute inset-0 size-full text-(--color-sage-900)" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <g class={`orb-eyes orb-blink-${blink % 5}`}>
+      <ellipse cx="8.4" cy="12" rx="1.45" ry="1.45" fill="currentColor" />
+      <ellipse cx="15.6" cy="12" rx="1.45" ry="1.45" fill="currentColor" />
+    </g>
+  </svg>
+</span>
+
+<style>
+  /* Hashi's orb-blink-N keyframes: closed at the midpoint of a 0.18s window
+     at the end of each period. */
+  .orb-eyes {
+    transform-origin: 12px 12px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .orb-blink-0 { animation: orb-blink-0 4.2s infinite; }
+    .orb-blink-1 { animation: orb-blink-1 5.4s infinite; }
+    .orb-blink-2 { animation: orb-blink-2 6.6s infinite; }
+    .orb-blink-3 { animation: orb-blink-3 7.8s infinite; }
+    .orb-blink-4 { animation: orb-blink-4 9s infinite; }
+  }
+  @keyframes orb-blink-0 {
+    0%, 95.71%, 100% { transform: scaleY(1); }
+    97.86% { transform: scaleY(0.1); }
+  }
+  @keyframes orb-blink-1 {
+    0%, 96.67%, 100% { transform: scaleY(1); }
+    98.33% { transform: scaleY(0.1); }
+  }
+  @keyframes orb-blink-2 {
+    0%, 97.27%, 100% { transform: scaleY(1); }
+    98.64% { transform: scaleY(0.1); }
+  }
+  @keyframes orb-blink-3 {
+    0%, 97.69%, 100% { transform: scaleY(1); }
+    98.85% { transform: scaleY(0.1); }
+  }
+  @keyframes orb-blink-4 {
+    0%, 98%, 100% { transform: scaleY(1); }
+    99% { transform: scaleY(0.1); }
+  }
+</style>

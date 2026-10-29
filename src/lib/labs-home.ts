@@ -217,8 +217,6 @@ export interface LabsProductBandContent extends LabsBandContent {
   install?: LabsInstallChip;
   /** One short line under the install command: what it installs. */
   installNote?: string;
-  /** A quiet text link beside the primary pill, for the second path in. */
-  textLink?: LabsCta;
 }
 
 /** A product page's opening band led by its install command instead of a
@@ -253,8 +251,8 @@ export const LABS_HERO: LabsProductBandContent = {
   headlineLines: ["Find what your agent’s", "evals miss"],
   deck: "Your agent changed. Your evals didn't. Our AI engineer reads your traces next to your evals and shows you what they let through.",
   cta: LABS_HERO_SIGNUP,
-  textLink: {
-    label: "or request a demo",
+  secondaryCta: {
+    label: "Request a demo",
     href: "/book-your-demo",
     analytics: "Hero-Request-Demo",
   },
@@ -304,11 +302,13 @@ export interface MissedSessionVisualContent {
   /** Accessible description of the whole card. */
   label: string;
   session: string;
+  /** The label above each message, by sender. */
+  speakers: Record<MissedSessionMessage["from"], string>;
   messages: readonly MissedSessionMessage[];
   /** The team's own eval and the verdict it gave. */
   eval: { label: string; name: string; verdict: string };
-  /** What the AI engineer says the reply got wrong. */
-  finding: { by: string; text: string };
+  /** What the AI engineer says the reply got wrong, and its verdict. */
+  finding: { by: string; text: string; verdict: string };
   tally: string;
   /** The check it drafts. */
   check: string;
@@ -321,7 +321,8 @@ export interface MissedSessionVisualContent {
 export const LABS_HERO_SESSION: MissedSessionVisualContent = {
   label:
     "An example session from a customer support agent. The customer asks to return shoes bought seven weeks ago, and the agent promises a full refund within 90 days. The team's reply_quality eval passed the reply. Your AI engineer flags it: the refund policy allows 30 days. 41 replies like this passed last week, and it drafts a refund_within_policy check.",
-  session: "support-agent · session 3318",
+  session: "session 3318",
+  speakers: { customer: "Customer", agent: "support-agent" },
   messages: [
     {
       from: "customer",
@@ -333,6 +334,7 @@ export const LABS_HERO_SESSION: MissedSessionVisualContent = {
   finding: {
     by: "Your AI engineer",
     text: "Your refund policy allows 30 days. This reply promised 90.",
+    verdict: "Fail",
   },
   tally: "41 replies like this passed last week",
   check: "refund_within_policy",

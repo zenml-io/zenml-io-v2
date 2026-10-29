@@ -67,7 +67,7 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
               </div>
               <div class="onboarding-inline scroll-reveal-section mt-auto pt-8" aria-hidden="true">
                 <div class={WINDOW}>
-                  <LabsAiEngineerRow />
+                  <LabsAiEngineerRow blink={index + 1} />
                   <LabsOnboardingWidget widget={widget} />
                 </div>
               </div>
@@ -77,7 +77,7 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
 
         <div class="onboarding-stage" aria-hidden="true">
           <div class:list={[WINDOW, "w-full max-w-[640px]"]}>
-            <LabsAiEngineerRow>
+            <LabsAiEngineerRow blink={4}>
               <span class="flex shrink-0 gap-1">
                 {content.steps.map((_, index) => (
                   <span class="onboarding-segment h-1 w-5 rounded-full bg-(--color-border)" data-segment={index}></span>

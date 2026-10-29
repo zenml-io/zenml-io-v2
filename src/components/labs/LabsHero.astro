@@ -73,15 +73,6 @@ const hasVisual = Astro.slots.has("visual");
           {props.content.secondaryCta && (
             <LabsButton cta={props.content.secondaryCta} tone="ghost" />
           )}
-          {"textLink" in props.content && props.content.textLink && (
-            <a
-              href={props.content.textLink.href}
-              data-analytics={props.content.textLink.analytics}
-              class="inline-flex min-h-11 items-center font-sans text-[16px] leading-6 text-(--color-cream-800) underline decoration-(--color-sage-400) underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-sage-900)"
-            >
-              {props.content.textLink.label}
-            </a>
-          )}
         </div>
       ) : (
         <div class="mt-space-mlg flex flex-wrap items-center gap-space-md">
