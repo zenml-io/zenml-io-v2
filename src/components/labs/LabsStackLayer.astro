@@ -8,12 +8,14 @@
  * the AI engineer layer, and the agent it replays through. Below lg the
  * cards stack and the track turns into a rail down their left edge.
  *
- * Motion: the thread is scrubbed by scroll (`labs-scroll-progress.ts`). As
- * the panel moves up the viewport a solid line fills the dashed track, and
+ * Motion: the thread plays once, at a steady pace, when the panel's top
+ * reaches 60% down the viewport (`labs-scroll-progress.ts`, play
+ * mode), so a slow or fast scroll never rushes it. A solid line fills the
+ * dashed track, and
  * each stop the line reaches turns done (filled dot, plain card), the
  * newest one active (ringed dot, sage card), the rest future (hollow dot,
  * an empty dashed outline whose content settles in when reached). Source
- * column i lights up with stop i, its marks popping in one after another. Scrolling back reverses it. The server renders the finished
+ * column i lights up with stop i, its marks popping in one after another. The server renders the finished
  * thread (three done, the last active), which is what JS off and reduced
  * motion show. Compositor properties only for the line; the stop states are
  * short colour and scale transitions. Copy arrives through `content`
@@ -63,6 +65,7 @@ const COLUMN_LINE =
     <div
       class="stack-thread reveal-child stagger-2 mt-space-xl rounded-[24px] bg-(--secondary-fill) px-5 py-6 md:px-8 md:py-10"
       data-scroll-progress
+      data-scroll-play="4200"
       data-scroll-steps={content.journey.length}
     >
       <div role="group" aria-label={content.journeyLabel}>
@@ -158,19 +161,9 @@ const COLUMN_LINE =
 </section>
 
 <style>
-  /* Range: p runs 0 → 1 while the panel's top moves from 65% to 10% of the
-     viewport (lg), so the thread is still running while the panel sits in
-     the middle; stacked, until its bottom reaches 60% (the rail). */
+  /* Play starts when the panel's top reaches 60% of the viewport. */
   .stack-thread {
-    --scroll-start: 0.65;
-    --scroll-end: 0.6;
-    --scroll-edge: 1;
-  }
-  @media (min-width: 1024px) {
-    .stack-thread {
-      --scroll-end: 0.1;
-      --scroll-edge: 0;
-    }
+    --scroll-start: 0.6;
   }
 
   /* The line: a dashed base, and a solid fill scrubbed from 0 to 1 across
