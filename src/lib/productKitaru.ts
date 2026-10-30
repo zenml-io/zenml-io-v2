@@ -7,7 +7,8 @@ import { defaultOgUrl } from "./seo";
  * then prints the two ways to get a server. Served by the kitaru.ai
  * worker from install.sh in the Kitaru repo.
  */
-export const KITARU_INSTALL_CMD = "curl -fsSL https://kitaru.ai/install | bash";
+export const KITARU_INSTALL_CMD =
+  "curl -fsSL https://zenml.io/install-kitaru | bash";
 /** Adding the SDK to a project's own environment (the embedded, in-process form). */
 export const KITARU_SDK_ADD_CMD =
   'uv add "kitaru[cli,worker]" kitaru-pydantic-ai';

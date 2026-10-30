@@ -13,6 +13,10 @@
 /privacy /privacy-policy 301
 /privacy/ /privacy-policy 301
 
+# ── Kitaru installer: the script itself is served from kitaru.ai ──
+/install-kitaru https://kitaru.ai/install 302
+/install-kitaru/ https://kitaru.ai/install 302
+
 # ── Internal redirects (from Webflow) ──────────────────────────────
 /open-source-vs-managed /open-source-vs-pro 301
 /open-source-vs-managed/ /open-source-vs-pro 301

@@ -7,14 +7,14 @@ import { GET as getKitaruMarkdown } from "../../src/pages/product/kitaru.md";
 describe("Kitaru product-page snippets", () => {
   it("points at the one-line installer served by kitaru.ai", () => {
     expect(KITARU_INSTALL_CMD).toBe(
-      "curl -fsSL https://kitaru.ai/install | bash",
+      "curl -fsSL https://zenml.io/install-kitaru | bash",
     );
   });
 
   it("uses the same page-local install command in the markdown alternate", async () => {
     const markdown = await getKitaruMarkdown().text();
     expect(
-      markdown.match(/curl -fsSL https:\/\/kitaru\.ai\/install \| bash/g),
+      markdown.match(/curl -fsSL https:\/\/zenml\.io\/install-kitaru \| bash/g),
     ).toHaveLength(1);
     expect(markdown).not.toContain("`uv add kitaru`");
     for (const tool of [...KITARU_IMPORTERS, ...KITARU_ADAPTERS]) {

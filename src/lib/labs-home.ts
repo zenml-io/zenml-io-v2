@@ -215,6 +215,8 @@ export interface LabsBandContent {
 export interface LabsProductBandContent extends LabsBandContent {
   secondaryCta?: LabsCta;
   install?: LabsInstallChip;
+  /** A small label above the install command. */
+  installLabel?: string;
   /** One short line under the install command: what it installs. */
   installNote?: string;
 }
@@ -240,11 +242,7 @@ export const LABS_HERO: LabsProductBandContent = {
   headlineLines: ["Find what your agent’s", "evals miss"],
   deck: "Your agent changed. Your evals didn't. Our AI engineer reads your traces next to your evals and shows you what they let through.",
   cta: LABS_HERO_SIGNUP,
-  secondaryCta: {
-    label: "Request a demo",
-    href: "/book-your-demo",
-    analytics: "Hero-Request-Demo",
-  },
+  installLabel: "Or start open source",
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
 };
 
