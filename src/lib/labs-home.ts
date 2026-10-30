@@ -30,7 +30,7 @@ export type LabsProduct = "zenml" | "kitaru";
 export const LABS_HOME_SEO = {
   title: "ZenML Labs: Find what your evals miss",
   description:
-    "Our AI engineer reads your agent's production traces next to the evals you already run, shows you what those evals miss, and turns a few of your answers into checks you can trust. It works on top of open-source Kitaru and ZenML.",
+    "Our AI engineer reads your agent's production traces next to the evals you already run, shows you what those evals miss, and turns a few of your answers into checks you can trust. It can fine-tune a cheaper open model on the same traces. It works on top of open-source Kitaru and ZenML.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -463,6 +463,86 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
         question: "Should this reply have passed?",
         options: ["Pass", "Fail"],
         picked: "Fail",
+      },
+    },
+  ],
+};
+
+/* ---------------------------------------------------------------------- */
+/* What it does with your traces: evals, a cheaper model, retraining      */
+/* ---------------------------------------------------------------------- */
+
+/** One line of an outcome card's example: a label, a value, and an optional bar (0 to 1). */
+export interface OutcomeRow {
+  label: string;
+  value: string;
+  /** Bar width as a share of the card; absence draws no bar. */
+  bar?: number;
+  tone?: "muted" | "good";
+}
+
+export interface OutcomeCard {
+  title: string;
+  body: string;
+  example: {
+    label: string;
+    rows: readonly OutcomeRow[];
+    foot: string;
+  };
+}
+
+export interface TraceOutcomesContent {
+  eyebrow: string;
+  headline: string;
+  deck: string;
+  cards: readonly [OutcomeCard, OutcomeCard, OutcomeCard];
+}
+
+export const LABS_TRACE_OUTCOMES: TraceOutcomesContent = {
+  eyebrow: "Beyond evals",
+  headline: "Your traces can do more than grade your agent",
+  deck: "The traces that show what your evals miss are also the data to train a model of your own. Your AI engineer uses them for both, on ZenML and Kitaru, and keeps both honest as your business changes.",
+  cards: [
+    {
+      title: "Finds what your evals miss",
+      body: "It reads every trace, flags evals that are wrong or missing, and writes the check that was never there.",
+      example: {
+        label: "Support agent",
+        // Same numbers as the onboarding report above.
+        rows: [
+          { label: "reply_quality passed, shouldn't have", value: "41" },
+          { label: "Never looks up the order, no eval", value: "58" },
+        ],
+        foot: "Two new checks, both replayed",
+      },
+    },
+    {
+      title: "Cuts your model bill",
+      body: "It fine-tunes an open model on your own traces and holds it to your evals. The weights are yours: download them or deploy them in your own cloud.",
+      example: {
+        label: "Cost a month",
+        rows: [
+          { label: "Frontier model", value: "$31,400", bar: 1, tone: "muted" },
+          {
+            label: "Fine-tuned open model",
+            value: "$6,900",
+            bar: 0.22,
+            tone: "good",
+          },
+        ],
+        foot: "Same 9 evals pass",
+      },
+    },
+    {
+      title: "Catches drift and retrains",
+      body: "When your rules change, it sends a sample of calls back to the frontier model, finds where the two disagree and retrains on the new traces.",
+      example: {
+        label: "Return policy changed",
+        rows: [
+          { label: "Calls sampled to the frontier model", value: "5%" },
+          { label: "Retrained on new traces", value: "2,318" },
+        ],
+        foot: "Back to 9 of 9 evals passing",
       },
     },
   ],

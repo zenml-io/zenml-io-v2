@@ -1670,6 +1670,20 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoProps: {},
   },
   {
+    id: "labs.trace-outcomes",
+    kind: "template",
+    componentPath: "src/components/labs/LabsTraceOutcomes.astro",
+    variantAxes: ["row bar"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      'Homepage "beyond evals" section from `content: TraceOutcomesContent` (LABS_TRACE_OUTCOMES on `/`): eyebrow, headline, deck, then three cards (three across from lg, stacked below), each a mono numeral, title and body over a stone example panel pinned to the card bottom: an eyebrow label, two label/value rows (mono value, sage when tone is good) with an optional bar drawn at its final width, and a sage foot line over a hairline. House reveal only. No island.',
+    stage: false,
+    demoProps: {},
+  },
+  {
     id: "labs.value-props",
     kind: "template",
     componentPath: "src/components/labs/LabsValueProps.astro",

@@ -2,7 +2,8 @@
 /**
  * Homepage — the main landing page for the ZenML Labs site, telling the
  * paid product's story: the AI engineer that reads an agent's traces next
- * to its evals and shows what they miss. The open-source products sit
+ * to its evals and shows what they miss, then puts the same traces to
+ * work on a cheaper fine-tuned model. The open-source products sit
  * underneath (the product doors) and have their own pages.
  *
  * Composes the Labs section components into a single page. Each section
@@ -17,6 +18,7 @@ import LabsHero from "../components/labs/LabsHero.astro";
 import LabsMissedSessionVisual from "../components/labs/LabsMissedSessionVisual.astro";
 import LabsOnboardingSteps from "../components/labs/LabsOnboardingSteps.astro";
 import LabsStackLayer from "../components/labs/LabsStackLayer.astro";
+import LabsTraceOutcomes from "../components/labs/LabsTraceOutcomes.astro";
 import LogoMarquee from "../components/labs/LogoMarquee.astro";
 import ProductDoors from "../components/labs/ProductDoors.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
@@ -31,6 +33,7 @@ import {
   LABS_LOGO_GRID,
   LABS_ONBOARDING,
   LABS_STACK_LAYER,
+  LABS_TRACE_OUTCOMES,
 } from "../lib/labs-home";
 import { defaultOgImage, ORGANIZATION_NAME } from "../lib/seo";
 
@@ -55,6 +58,7 @@ const homepageJsonLd = buildHomepageJsonLd({
       <LabsMissedSessionVisual slot="visual" content={LABS_HERO_SESSION} />
     </LabsHero>
     <LabsOnboardingSteps content={LABS_ONBOARDING} />
+    <LabsTraceOutcomes content={LABS_TRACE_OUTCOMES} />
     <LabsStackLayer content={LABS_STACK_LAYER} />
     <LogoMarquee content={LABS_LOGO_GRID} />
     <ProductDoors content={LABS_DOORS} />
