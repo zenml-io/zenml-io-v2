@@ -453,8 +453,8 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       },
     },
     {
-      title: "Fifteen minutes a week",
-      body: "Ten quick questions on three real sessions.",
+      title: "It keeps watching",
+      body: "It reads every new trace and asks you only when a session needs your call.",
       widget: {
         kind: "review",
         session: "Session #3318 · refund",

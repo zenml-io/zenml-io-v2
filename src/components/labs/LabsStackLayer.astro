@@ -158,16 +158,17 @@ const COLUMN_LINE =
 </section>
 
 <style>
-  /* Range: p runs 0 → 1 while the panel's top moves from 85% to 35% of the
-     viewport (lg), or until its bottom reaches 60% (the stacked rail). */
+  /* Range: p runs 0 → 1 while the panel's top moves from 65% to 10% of the
+     viewport (lg), so the thread is still running while the panel sits in
+     the middle; stacked, until its bottom reaches 60% (the rail). */
   .stack-thread {
-    --scroll-start: 0.85;
+    --scroll-start: 0.65;
     --scroll-end: 0.6;
     --scroll-edge: 1;
   }
   @media (min-width: 1024px) {
     .stack-thread {
-      --scroll-end: 0.35;
+      --scroll-end: 0.1;
       --scroll-edge: 0;
     }
   }

@@ -74,7 +74,7 @@ export const STEPS = [
 /** The hosted part, said once under the steps. */
 export const HOSTED_NOTE = {
   title: "Rather not do the reading?",
-  body: `Our AI engineer reads your traces next to your evals, shows you what they miss, and asks you ten quick questions on three real sessions. Fifteen minutes a week, ${KITARU_CLOUD_PRICE} a month.`,
+  body: `Our AI engineer reads your traces next to your evals, shows you what they miss, and keeps watching every new trace. It asks you only when a session needs your call. ${KITARU_CLOUD_PRICE} a month.`,
   link: {
     label: "See pricing",
     href: "/pricing",
@@ -111,7 +111,7 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
   },
   {
     question: "How much of my time does it take?",
-    answer: `About fifteen minutes a week with our AI engineer: ten quick questions on three real sessions. Doing it yourself in Kitaru takes longer; the <a href="${KITARU_DOCS_URL}">docs</a> walk through it.`,
+    answer: `Very little. Our AI engineer runs on its own and asks you only when a session needs your call, a few quick questions at a time. Doing it yourself in Kitaru takes longer; the <a href="${KITARU_DOCS_URL}">docs</a> walk through it.`,
   },
   {
     question: "Something's broken. How do I reach you?",
