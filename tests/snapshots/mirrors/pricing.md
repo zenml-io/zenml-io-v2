@@ -2,13 +2,13 @@
 
 Canonical HTML URL: https://www.zenml.io/pricing
 
-One plan, $39 a month: your AI engineer on one agent, one ML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.
+One plan, $39 a month: your AI engineer on one AI agent, one ML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.
 
 Note: this is a repo-owned Markdown mirror for agents and readers. It omits visual-only UI, decorative media, navigation, analytics, and other browser chrome.
 
 ## Summary
 
-Your AI engineer on one agent, one ML project, and your whole team. Need more, or on-prem? Talk to us.
+Your AI engineer on one AI agent, one ML project, and your whole team. Need more, or on-prem? Talk to us.
 
 ## Main CTAs
 
@@ -19,7 +19,7 @@ Your AI engineer on one agent, one ML project, and your whole team. Need more, o
 
 ## Plans
 
-An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. Starter covers one agent and one ML project. Need more? Talk to us.
+An AI agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. Starter covers one AI agent and one ML project. Need more? Talk to us.
 
 ### Open Source
 
@@ -41,10 +41,10 @@ Run it yourself
 For startups shipping their first agent
 
 - Price: $39/month
-- Limits: 1 agent · 1 ML project · Unlimited seats
+- Limits: 1 AI agent · 1 ML project · Unlimited seats
 
 - Everything in Open Source, plus:
-  - Your AI engineer, watching one agent
+  - Your AI engineer, watching one AI agent
   - Finds what your evals miss, every week
   - Agents and ML pipelines on one platform
   - Fully hosted, set up in minutes
@@ -126,11 +126,11 @@ One price, unlimited seats. 14-day trial, no credit card.
 
 ### What do I get for $39?
 
-One agent with your AI engineer on it, one ML project with up to 100 pipeline runs a month, and as many seats as you want. It starts with a 14-day trial, no credit card.
+One AI agent with your AI engineer on it, one ML project with up to 100 pipeline runs a month, and as many seats as you want. It starts with a 14-day trial, no credit card.
 
 ### What counts as an agent?
 
-An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. A LangGraph app with three sub-agents that ships as one product is one agent.
+An AI agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. A LangGraph app with three sub-agents that ships as one product is one agent.
 
 ### Is there a limit on sessions?
 
@@ -187,14 +187,14 @@ Training, batch inference, evals, agent workflows. One DAG, versioned artifacts,
 Finds the evals you got wrong or never wrote, then replays your agent to test the fix. Priced per agent.
 
 - Insights from your traces: Finds wrong and missing evals, then turns your answers into checks.
-- $39 a month on Starter: One agent and one ML project, one price.
+- $39 a month on Starter: One AI agent and one ML project, one price.
 - Seats for your domain experts: The people who know what good looks like are not a line item.
 
 - Learn more: [Learn about Kitaru](https://www.zenml.io/product/kitaru)
 
 - CTA: [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)
 
-Starter covers one agent and one ML project. Enterprise covers the rest.
+Starter covers one AI agent and one ML project. Enterprise covers the rest.
 
 ## Are you startup or academic?
 

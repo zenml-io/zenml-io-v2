@@ -34,7 +34,7 @@ export const KITARU_STARTER_LIMITS = {
 } as const;
 /** What one agent is, for pricing. Said the same way everywhere. */
 export const KITARU_AGENT_DEFINITION =
-  "An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends.";
+  "An AI agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends.";
 
 /** Trial terms shown next to every signup CTA. */
 export const KITARU_TRIAL_NOTE = `${KITARU_TRIAL_DAYS}-day free trial · Full access · No credit card`;
