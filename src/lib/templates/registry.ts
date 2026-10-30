@@ -1670,19 +1670,20 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoProps: {},
   },
   {
-    id: "labs.trace-outcomes",
+    id: "labs.model-cost",
     kind: "template",
-    componentPath: "src/components/labs/LabsTraceOutcomes.astro",
-    variantAxes: ["row bar"],
+    componentPath: "src/components/labs/LabsModelCost.astro",
+    variantAxes: ["month note"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 0,
     notes:
-      'Homepage "beyond evals" section from `content: TraceOutcomesContent` (LABS_TRACE_OUTCOMES on `/`): eyebrow, headline, deck, then three cards (three across from lg, stacked below), each a mono numeral, title and body over a stone example panel pinned to the card bottom: an eyebrow label, two label/value rows (mono value, sage when tone is good) with an optional bar drawn at its final width, and a sage foot line over a hairline. House reveal only. No island.',
+      'Homepage "beyond evals" moment from `content: ModelCostContent` (LABS_MODEL_COST on `/`): text on the left (eyebrow, headline, deck, numbered notes), a stone chart panel on the right (stacked below lg). Stacked monthly bars split frontier model (orange-500, top, 4px rounded) and fine-tuned model (sage-700, under a 2px gap), recessive $10k gridlines, direct total labels on the first and last bars, numbered dark markers above the months the notes point to, and a legend in the caption. Each bar is focusable and shows its split in a tooltip on hover or focus; a visually hidden table carries the same numbers. Bars render at final height; house reveal only. No island.',
     stage: false,
     demoProps: {},
   },
+
   {
     id: "labs.value-props",
     kind: "template",

@@ -469,83 +469,55 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
 };
 
 /* ---------------------------------------------------------------------- */
-/* What it does with your traces: evals, a cheaper model, retraining      */
+/* Model cost: a fine-tuned model from the same traces                    */
 /* ---------------------------------------------------------------------- */
 
-/** One line of an outcome card's example: a label, a value, and an optional bar (0 to 1). */
-export interface OutcomeRow {
-  label: string;
-  value: string;
-  /** Bar width as a share of the card; absence draws no bar. */
-  bar?: number;
-  tone?: "muted" | "good";
+/** One month of model spend, in thousands of dollars, split by where calls went. */
+export interface CostMonth {
+  month: string;
+  frontier: number;
+  own: number;
+  /** Numbered note pinned above this month's bar. */
+  note?: number;
 }
 
-export interface OutcomeCard {
-  title: string;
-  body: string;
-  example: {
+export interface ModelCostContent {
+  eyebrow: string;
+  headlineLines: readonly [string, string];
+  deck: string;
+  chart: {
     label: string;
-    rows: readonly OutcomeRow[];
-    foot: string;
+    series: { frontier: string; own: string };
+    months: readonly CostMonth[];
+    notes: readonly string[];
   };
 }
 
-export interface TraceOutcomesContent {
-  eyebrow: string;
-  headline: string;
-  deck: string;
-  cards: readonly [OutcomeCard, OutcomeCard, OutcomeCard];
-}
-
-export const LABS_TRACE_OUTCOMES: TraceOutcomesContent = {
+export const LABS_MODEL_COST: ModelCostContent = {
   eyebrow: "Beyond evals",
-  headline: "Your traces can do more than grade your agent",
-  deck: "The traces that show what your evals miss are also the data to train a model of your own. Your AI engineer uses them for both, on ZenML and Kitaru, and keeps both honest as your business changes.",
-  cards: [
-    {
-      title: "Finds what your evals miss",
-      body: "It reads every trace, flags evals that are wrong or missing, and writes the check that was never there.",
-      example: {
-        label: "Support agent",
-        // Same numbers as the onboarding report above.
-        rows: [
-          { label: "reply_quality passed, shouldn't have", value: "41" },
-          { label: "Never looks up the order, no eval", value: "58" },
-        ],
-        foot: "Two new checks, both replayed",
-      },
-    },
-    {
-      title: "Cuts your model bill",
-      body: "It fine-tunes an open model on your own traces and holds it to your evals. The weights are yours: download them or deploy them in your own cloud.",
-      example: {
-        label: "Cost a month",
-        rows: [
-          { label: "Frontier model", value: "$31,400", bar: 1, tone: "muted" },
-          {
-            label: "Fine-tuned open model",
-            value: "$6,900",
-            bar: 0.22,
-            tone: "good",
-          },
-        ],
-        foot: "Same 9 evals pass",
-      },
-    },
-    {
-      title: "Catches drift and retrains",
-      body: "When your rules change, it sends a sample of calls back to the frontier model, finds where the two disagree and retrains on the new traces.",
-      example: {
-        label: "Return policy changed",
-        rows: [
-          { label: "Calls sampled to the frontier model", value: "5%" },
-          { label: "Retrained on new traces", value: "2,318" },
-        ],
-        foot: "Back to 9 of 9 evals passing",
-      },
-    },
-  ],
+  headlineLines: ["Same agent.", "A fifth of the bill."],
+  deck: "Your traces are also training data. Your AI engineer fine-tunes an open model on them, holds it to your evals, and keeps a few calls on the frontier model to catch drift. The weights are yours: download them or run them in your own cloud.",
+  chart: {
+    label: "Example: a support agent's model spend a month",
+    series: { frontier: "Frontier model", own: "Your fine-tuned model" },
+    months: [
+      { month: "Jan", frontier: 31.4, own: 0 },
+      { month: "Feb", frontier: 31.9, own: 0 },
+      { month: "Mar", frontier: 32.7, own: 0 },
+      { month: "Apr", frontier: 1.6, own: 5.3, note: 1 },
+      { month: "May", frontier: 1.6, own: 5.4 },
+      { month: "Jun", frontier: 1.7, own: 5.3 },
+      { month: "Jul", frontier: 9.8, own: 4.1, note: 2 },
+      { month: "Aug", frontier: 1.7, own: 5.4, note: 3 },
+      { month: "Sep", frontier: 1.6, own: 5.3 },
+      { month: "Oct", frontier: 1.6, own: 5.3 },
+    ],
+    notes: [
+      "Fine-tuned on 41,200 of your traces. The same 9 evals pass.",
+      "Return policy changed. More calls go back to the frontier model while it catches the drift.",
+      "Retrained on 2,318 new traces. 9 of 9 evals pass again.",
+    ],
+  },
 };
 
 /* ---------------------------------------------------------------------- */
