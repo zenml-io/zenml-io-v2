@@ -124,7 +124,7 @@ export const PRODUCT_KITARU_MARKDOWN = {
   summary: [
     "Our AI engineer reads your agent's traces next to your evals and shows you what they miss. Kitaru is the open-source part underneath it.",
     `Kitaru imports the traces you already have, or records new ones through an adapter. Insights show the patterns across every session, you turn what you find into checks, and you can replay your agent through its own framework to test a fix before it ships.`,
-    `Kitaru is ${KITARU_LICENSE}. Install it in one line and run it on your own machine, with your own model keys. Our AI engineer is the hosted part: it does the reading and asks you ten quick questions on three real sessions, about fifteen minutes a week. It costs ${KITARU_CLOUD_PRICE} a month on Starter, with one ZenML project included; see https://www.zenml.io/pricing.`,
+    `Kitaru is ${KITARU_LICENSE}. Install it in one line and run it on your own machine, with your own model keys. Our AI engineer is the hosted part: it does the reading and asks you ten quick questions on three real sessions, about fifteen minutes a week. It costs ${KITARU_CLOUD_PRICE} a month on Starter, with one ML project included; see https://www.zenml.io/pricing.`,
   ],
   steps: [
     {
