@@ -76,44 +76,43 @@ One price, unlimited seats. 14-day trial, no credit card.
 | Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
 | Price | Free | $39 / month | Custom |
-| Agents with your AI engineer | — | 1 | Custom |
+| Free trial | — | 14 days, no credit card | — |
+| AI agents | Self-hosted | 1 | Custom |
 | ML projects | Self-hosted | 1 | Custom |
-| Pipeline runs a month | Self-hosted | 100 | Custom |
+| Pipeline runs a month | Unlimited | 100 | Custom |
+| Team members | Unlimited | Unlimited | Unlimited |
 
-### Your AI engineer
-
-| Feature | Open Source | Starter | Enterprise |
-| --- | --- | --- | --- |
-| Finds wrong and missing evals | No | Yes | Yes |
-| An interview and a weekly review | No | Yes | Yes |
-| Findings and reviews in Slack | No | Yes | Yes |
-
-### Agents, with Kitaru
+### Agents and evals
 
 | Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
-| Import traces from your tracing tool | Yes | Yes | Yes |
-| Reviews, checks and replays | Yes | Yes | Yes |
+| AI engineer on your agent | No | Yes | Yes |
+| Weekly eval review in Slack | No | Yes | Yes |
+| Trace import | Yes | Yes | Yes |
+| Cohorts, evaluators and experiments | Yes | Yes | Yes |
+| Replay with your own keys | Yes | Yes | Yes |
 | Hosted dashboard | No | Yes | Yes |
 
-### AI orchestration, with ZenML
+### Pipelines and models
 
 | Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
-| Pipeline and agent orchestration | Yes | Yes | Yes |
-| Artifacts and model registry | Yes | Yes | Yes |
+| Pipeline orchestration | Yes | Yes | Yes |
+| Artifact versioning and lineage | Yes | Yes | Yes |
+| Model registry | Yes | Yes | Yes |
 | [Model Control Plane](https://docs.zenml.io/concepts/models) | No | Yes | Yes |
 | [Snapshots](https://docs.zenml.io/concepts/snapshots) | No | Yes | Yes |
 | Codespaces (remote IDE) | No | No | Yes |
 
-### Deployment and governance
+### Security and deployment
 
 | Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
+| SOC 2 Type II and ISO 27001 | No | Yes | Yes |
 | On-prem or air-gapped | Yes | No | Yes |
-| Your own LLM endpoint for the AI engineer | No | No | Yes |
+| Your own LLM endpoint | No | No | Yes |
 | SSO (SAML / OIDC) and SCIM | No | No | Yes |
-| [RBAC (custom roles)](https://docs.zenml.io/pro/access-management/roles) | No | No | Yes |
+| [Custom roles](https://docs.zenml.io/pro/access-management/roles) | No | No | Yes |
 | Audit logs | No | No | Yes |
 
 ### Support
@@ -121,6 +120,7 @@ One price, unlimited seats. 14-day trial, no credit card.
 | Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
 | Support level | Community | Email | Dedicated + SLA |
+| Workshops and architecture reviews | No | No | Yes |
 
 ## Pricing, answered
 

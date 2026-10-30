@@ -245,8 +245,12 @@ export const PRICING_COMPARE: PricingCompareTableData = {
           values: ["Free", `${KITARU_CLOUD_PRICE} / month`, "Custom"],
         },
         {
-          feature: "Agents with your AI engineer",
-          values: ["—", `${STARTER.agents}`, "Custom"],
+          feature: "Free trial",
+          values: ["—", `${KITARU_TRIAL_DAYS} days, no credit card`, "—"],
+        },
+        {
+          feature: "AI agents",
+          values: ["Self-hosted", `${STARTER.agents}`, "Custom"],
         },
         {
           feature: "ML projects",
@@ -254,52 +258,37 @@ export const PRICING_COMPARE: PricingCompareTableData = {
         },
         {
           feature: "Pipeline runs a month",
-          values: ["Self-hosted", `${STARTER.pipelineRuns}`, "Custom"],
+          values: ["Unlimited", `${STARTER.pipelineRuns}`, "Custom"],
+        },
+        {
+          feature: "Team members",
+          values: ["Unlimited", "Unlimited", "Unlimited"],
         },
       ],
     },
     {
-      heading: "Your AI engineer",
+      heading: "Agents and evals",
       rows: [
+        { feature: "AI engineer on your agent", values: [false, true, true] },
+        { feature: "Weekly eval review in Slack", values: [false, true, true] },
+        { feature: "Trace import", values: [true, true, true] },
         {
-          feature: "Finds wrong and missing evals",
-          values: [false, true, true],
-        },
-        {
-          feature: "An interview and a weekly review",
-          values: [false, true, true],
-        },
-        {
-          feature: "Findings and reviews in Slack",
-          values: [false, true, true],
-        },
-      ],
-    },
-    {
-      heading: "Agents, with Kitaru",
-      rows: [
-        {
-          feature: "Import traces from your tracing tool",
+          feature: "Cohorts, evaluators and experiments",
           values: [true, true, true],
         },
-        {
-          feature: "Reviews, checks and replays",
-          values: [true, true, true],
-        },
+        { feature: "Replay with your own keys", values: [true, true, true] },
         { feature: "Hosted dashboard", values: [false, true, true] },
       ],
     },
     {
-      heading: "AI orchestration, with ZenML",
+      heading: "Pipelines and models",
       rows: [
+        { feature: "Pipeline orchestration", values: [true, true, true] },
         {
-          feature: "Pipeline and agent orchestration",
+          feature: "Artifact versioning and lineage",
           values: [true, true, true],
         },
-        {
-          feature: "Artifacts and model registry",
-          values: [true, true, true],
-        },
+        { feature: "Model registry", values: [true, true, true] },
         {
           feature: "Model Control Plane",
           link: "https://docs.zenml.io/concepts/models",
@@ -314,16 +303,17 @@ export const PRICING_COMPARE: PricingCompareTableData = {
       ],
     },
     {
-      heading: "Deployment and governance",
+      heading: "Security and deployment",
       rows: [
-        { feature: "On-prem or air-gapped", values: [true, false, true] },
         {
-          feature: "Your own LLM endpoint for the AI engineer",
-          values: [false, false, true],
+          feature: "SOC 2 Type II and ISO 27001",
+          values: [false, true, true],
         },
+        { feature: "On-prem or air-gapped", values: [true, false, true] },
+        { feature: "Your own LLM endpoint", values: [false, false, true] },
         { feature: "SSO (SAML / OIDC) and SCIM", values: [false, false, true] },
         {
-          feature: "RBAC (custom roles)",
+          feature: "Custom roles",
           link: "https://docs.zenml.io/pro/access-management/roles",
           values: [false, false, true],
         },
@@ -336,6 +326,10 @@ export const PRICING_COMPARE: PricingCompareTableData = {
         {
           feature: "Support level",
           values: ["Community", "Email", "Dedicated + SLA"],
+        },
+        {
+          feature: "Workshops and architecture reviews",
+          values: [false, false, true],
         },
       ],
     },
