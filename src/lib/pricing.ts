@@ -35,10 +35,10 @@ import { defaultOgUrl } from "./seo";
 export const PRICING_SEO = {
   title: "Pricing - ZenML",
   description:
-    "One plan, $39 a month: your AI engineer on one agent, one ZenML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.",
+    "One plan, $39 a month: your AI engineer on one AI agent, one ML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.",
   ogTitle: "Pricing - ZenML",
   ogDescription:
-    "One plan, $39 a month: your AI engineer on one agent, one ZenML project and your whole team.",
+    "One plan, $39 a month: your AI engineer on one AI agent, one ML project and your whole team.",
   ogImage: defaultOgUrl("pages", "pricing"),
 } as const;
 
@@ -48,7 +48,7 @@ export const PRICING_SEO = {
 export const PRICING_HERO = {
   eyebrow: "Pricing",
   headline: `One plan, ${KITARU_CLOUD_PRICE} a month`,
-  deck: "Your AI engineer on one agent, one ZenML project, and your whole team. Need more, or on-prem? Talk to us.",
+  deck: "Your AI engineer on one AI agent, one ML project, and your whole team. Need more, or on-prem? Talk to us.",
 } as const;
 
 /**
@@ -106,7 +106,7 @@ export const PRICING_PRO_INCLUSIONS = {
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><line x1="10" y1="15" x2="10" y2="9" /><line x1="14" y1="15" x2="14" y2="9" /></svg>',
           title: `${KITARU_CLOUD_PRICE} a month on Starter`,
-          detail: "One agent and one ZenML project, one price.",
+          detail: "One AI agent and one ML project, one price.",
         },
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line x1="8.59" y1="13.51" x2="15.42" y2="17.49" /><line x1="15.41" y1="6.51" x2="8.59" y2="11.49" /></svg>',
@@ -124,7 +124,7 @@ export const PRICING_PRO_INCLUSIONS = {
     },
   ],
   caption:
-    "Starter covers one agent and one ZenML project. Enterprise covers the rest.",
+    "Starter covers one AI agent and one ML project. Enterprise covers the rest.",
 } as const;
 
 /**
@@ -150,7 +150,7 @@ export const PRICING_PRO_INCLUSIONS_DOORS: ProductDoorsContent = {
 // Plan cards: Open Source, Starter, Enterprise.
 //
 // One public price. Starter is one agent with the AI engineer on it plus one
-// ZenML project; anything beyond that is a conversation (Enterprise). Prices
+// ML project; anything beyond that is a conversation (Enterprise). Prices
 // and limits are interpolated from productKitaru.ts so a change is one line
 // there.
 // ---------------------------------------------------------------------------
@@ -167,8 +167,8 @@ export const PRICING_PLANS: PricingPlan[] = [
     includesLabel: "Includes",
     features: [
       "ZenML and Kitaru, Apache 2.0",
-      "Pipelines, agents and artifacts",
-      "Import traces, review and checks",
+      "Driven by your own coding agent",
+      "Pipelines, traces, evals and replay",
       "Community support",
     ],
     cta: {
@@ -187,13 +187,13 @@ export const PRICING_PLANS: PricingPlan[] = [
     subtitle: "For startups shipping their first agent",
     price: KITARU_CLOUD_PRICE,
     priceSuffix: "/month",
-    limitsLine: `${STARTER.agents} agent · ${STARTER.zenmlProjects} ZenML project · Unlimited seats`,
+    limitsLine: `${STARTER.agents} AI agent · ${STARTER.zenmlProjects} ML project · Unlimited seats`,
     includesLabel: "Everything in Open Source, plus",
     features: [
-      "Your AI engineer on one agent",
-      "Finds wrong and missing evals",
-      "An interview and a weekly review",
-      "Hosted ZenML and Kitaru",
+      "An AI engineer for your agents and ML pipelines",
+      "Finds what your evals miss, on its own",
+      "Schedules, triggers and alerts",
+      "Fully hosted, set up in minutes",
     ],
     cta: {
       label: KITARU_LINKS.signup.label,
@@ -227,7 +227,7 @@ export const PRICING_PLANS: PricingPlan[] = [
 ];
 
 /** The line under the plan cards. */
-export const PRICING_PLAN_NOTE = `${KITARU_AGENT_DEFINITION} Starter covers one agent and one ZenML project. Need more? Talk to us.`;
+export const PRICING_PLAN_NOTE = `${KITARU_AGENT_DEFINITION} Starter covers one AI agent and one ML project. Need more? Talk to us.`;
 
 // ---------------------------------------------------------------------------
 // Comparison table
@@ -245,85 +245,104 @@ export const PRICING_COMPARE: PricingCompareTableData = {
           values: ["Free", `${KITARU_CLOUD_PRICE} / month`, "Custom"],
         },
         {
-          feature: "Agents with your AI engineer",
-          values: ["—", `${STARTER.agents}`, "Custom"],
+          feature: "Free trial",
+          values: ["—", `${KITARU_TRIAL_DAYS} days, no credit card`, "—"],
         },
         {
-          feature: "ZenML projects",
+          feature: "AI agents",
+          values: ["Self-hosted", `${STARTER.agents}`, "Custom"],
+        },
+        {
+          feature: "ML projects",
           values: ["Self-hosted", `${STARTER.zenmlProjects}`, "Custom"],
         },
         {
           feature: "Pipeline runs a month",
-          values: ["Self-hosted", `${STARTER.pipelineRuns}`, "Custom"],
+          values: ["Unlimited", `${STARTER.pipelineRuns}`, "Custom"],
+        },
+        {
+          feature: "Team members",
+          values: ["Unlimited", "Unlimited", "Unlimited"],
         },
       ],
     },
     {
-      heading: "Your AI engineer",
+      heading: "Your AI engineer, on agents and ML pipelines",
       rows: [
         {
-          feature: "Finds wrong and missing evals",
+          feature: "How it runs",
+          values: [
+            "You drive it from your coding agent",
+            "On its own, around the clock",
+            "On its own, around the clock",
+          ],
+        },
+        {
+          feature: "Agents: reads every trace, flags wrong or missing evals",
           values: [false, true, true],
         },
         {
-          feature: "An interview and a weekly review",
+          feature: "ML pipelines: watches every run, flags failures and drift",
           values: [false, true, true],
         },
         {
-          feature: "Findings and reviews in Slack",
+          feature: "Drafts the fix: a new check, eval or pipeline change",
           values: [false, true, true],
         },
+        { feature: "Weekly review in Slack", values: [false, true, true] },
       ],
     },
     {
-      heading: "Agents, with Kitaru",
+      heading: "Agents and evals",
       rows: [
+        { feature: "Trace import", values: [true, true, true] },
         {
-          feature: "Import traces from your tracing tool",
+          feature: "Evaluators, cohorts and replay",
           values: [true, true, true],
         },
+        { feature: "Scheduled eval runs", values: [false, true, true] },
         {
-          feature: "Reviews, checks and replays",
-          values: [true, true, true],
+          feature: "Alerts when an eval starts drifting",
+          values: [false, true, true],
         },
         { feature: "Hosted dashboard", values: [false, true, true] },
       ],
     },
     {
-      heading: "AI orchestration, with ZenML",
+      heading: "Pipelines and models",
       rows: [
+        { feature: "Pipeline orchestration", values: [true, true, true] },
         {
-          feature: "Pipeline and agent orchestration",
+          feature: "Artifact versioning and lineage",
           values: [true, true, true],
         },
         {
-          feature: "Artifacts and model registry",
-          values: [true, true, true],
-        },
-        {
-          feature: "Model Control Plane",
-          link: "https://docs.zenml.io/concepts/models",
+          feature: "Webhooks and event triggers",
           values: [false, true, true],
         },
         {
-          feature: "Snapshots",
+          feature: "Run pipelines from the dashboard",
           link: "https://docs.zenml.io/concepts/snapshots",
           values: [false, true, true],
         },
-        { feature: "Codespaces (remote IDE)", values: [false, false, true] },
+        {
+          feature: "Managed server, backups and upgrades",
+          values: [false, true, true],
+        },
       ],
     },
     {
-      heading: "Deployment and governance",
+      heading: "Security and deployment",
       rows: [
-        { feature: "On-prem or air-gapped", values: [true, false, true] },
         {
-          feature: "Your own LLM endpoint for the AI engineer",
-          values: [false, false, true],
+          feature: "SOC 2 Type II and ISO 27001",
+          values: [false, true, true],
         },
+        { feature: "On-prem or air-gapped", values: [true, false, true] },
+        { feature: "Your own LLM endpoint", values: [false, false, true] },
         { feature: "SSO (SAML / OIDC) and SCIM", values: [false, false, true] },
         {
-          feature: "RBAC (custom roles)",
+          feature: "Custom roles",
           link: "https://docs.zenml.io/pro/access-management/roles",
           values: [false, false, true],
         },
@@ -337,6 +356,10 @@ export const PRICING_COMPARE: PricingCompareTableData = {
           feature: "Support level",
           values: ["Community", "Email", "Dedicated + SLA"],
         },
+        {
+          feature: "Workshops and architecture reviews",
+          values: [false, false, true],
+        },
       ],
     },
   ],
@@ -346,6 +369,13 @@ export const PRICING_COMPARE: PricingCompareTableData = {
     variant: plan.ctaVariant ?? "primary",
   })),
 };
+/** Under the compare table: the full open source vs Pro breakdown. */
+export const PRICING_OSS_VS_PRO_LINK: CtaLink = {
+  label: "Open source vs Pro, side by side",
+  href: "/open-source-vs-pro",
+  analytics: "Pricing-OSS-vs-Pro",
+};
+
 // ---------------------------------------------------------------------------
 // Startup / Academic banner
 // ---------------------------------------------------------------------------
@@ -407,7 +437,7 @@ export const PRICING_FAQ: FaqData = {
   items: [
     {
       question: `What do I get for ${KITARU_CLOUD_PRICE}?`,
-      answer: `One agent with your AI engineer on it, one ZenML project with up to ${STARTER.pipelineRuns} pipeline runs a month, and as many seats as you want. It starts with a ${KITARU_TRIAL_DAYS}-day trial, no credit card.`,
+      answer: `One AI agent with your AI engineer on it, one ML project with up to ${STARTER.pipelineRuns} pipeline runs a month, and as many seats as you want. It starts with a ${KITARU_TRIAL_DAYS}-day trial, no credit card.`,
     },
     {
       question: "What counts as an agent?",
@@ -421,7 +451,7 @@ export const PRICING_FAQ: FaqData = {
     {
       question: "What if we need more agents, projects or runs?",
       answer:
-        "Talk to us. Enterprise covers more agents, more ZenML projects and more pipeline runs, priced on what you actually run, along with on-prem and governance if you need them.",
+        "Talk to us. Enterprise covers more agents, more ML projects and more pipeline runs, priced on what you actually run, along with on-prem and governance if you need them.",
     },
     {
       question: "Why not per seat?",

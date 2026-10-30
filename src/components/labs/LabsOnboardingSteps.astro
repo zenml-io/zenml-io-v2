@@ -12,7 +12,7 @@
  * their titles) and the window moves on to its widget: the old one blurs
  * out, the new one's blocks settle in, the height eases to fit. The window
  * header is the AI engineer's author row (orb and name) with a four-segment
- * progress bar.
+ * progress bar. Clicking a step (or Enter/Space on it) scrolls to it.
  * Without JS, below lg, or if the script fails, every step shows its own
  * widget in a grid, so nothing depends on the scroll. Reduced motion keeps
  * the scroll mapping and drops the transitions. Copy arrives through
@@ -106,7 +106,7 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
   /* Scroll mode: armed by the script from lg; the grid above is the
      fallback for everything else. */
   .is-scrolly .onboarding-track {
-    height: calc(100vh + var(--steps) * 40vh);
+    height: calc(100vh + var(--steps) * 75vh);
   }
   .is-scrolly .onboarding-pin {
     position: sticky;
@@ -133,6 +133,16 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
       opacity var(--duration-base) var(--ease-out-quint),
       background-color var(--duration-base) var(--ease-out-quint),
       border-color var(--duration-base) var(--ease-out-quint);
+  }
+  .is-scrolly .onboarding-step:not(.is-active) {
+    cursor: pointer;
+  }
+  .is-scrolly .onboarding-step:not(.is-active):hover {
+    opacity: 0.75;
+  }
+  .is-scrolly .onboarding-step:focus-visible {
+    outline: 2px solid var(--color-sage-400);
+    outline-offset: 2px;
   }
   .is-scrolly .onboarding-step.is-active {
     border-color: var(--color-border);
@@ -250,15 +260,37 @@ const numeral = (index: number) => String(index + 1).padStart(2, "0");
       if (!frame) frame = requestAnimationFrame(update);
     };
 
+    // A step's slice of the track is span / steps; land in its middle.
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const goTo = (index: number) => {
+      const rect = track.getBoundingClientRect();
+      const span = Math.max(1, rect.height - window.innerHeight);
+      const top = window.scrollY + rect.top + ((index + 0.5) / steps.length) * span;
+      window.scrollTo({ top, behavior: reduce.matches ? "auto" : "smooth" });
+    };
+    steps.forEach((step, index) => {
+      step.addEventListener("click", () => {
+        if (section.classList.contains("is-scrolly")) goTo(index);
+      });
+      step.addEventListener("keydown", (event) => {
+        if (!section.classList.contains("is-scrolly")) return;
+        if (event.key !== "Enter" && event.key !== " ") return;
+        event.preventDefault();
+        goTo(index);
+      });
+    });
+
     const arm = () => {
       if (LG.matches) {
         section.classList.add("is-scrolly");
+        steps.forEach((el) => el.setAttribute("tabindex", "0"));
         window.addEventListener("scroll", onScroll, { passive: true });
         window.addEventListener("resize", onScroll);
         active = -1;
         update();
       } else {
         section.classList.remove("is-scrolly");
+        steps.forEach((el) => el.removeAttribute("tabindex"));
         window.removeEventListener("scroll", onScroll);
         window.removeEventListener("resize", onScroll);
         panelsBox.style.height = "";

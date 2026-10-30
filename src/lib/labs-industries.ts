@@ -235,8 +235,8 @@ const INSURANCE_ONBOARDING: OnboardingStepsContent = {
       },
     },
     {
-      title: "Fifteen minutes a week",
-      body: "Ten quick questions on three real sessions.",
+      title: "It keeps watching",
+      body: "It reads every new quote and asks you only when one needs an underwriter's call.",
       widget: {
         kind: "review",
         session: "Session #3318 · quote",
@@ -405,8 +405,8 @@ const FINANCE_ONBOARDING: OnboardingStepsContent = {
       },
     },
     {
-      title: "Fifteen minutes a week",
-      body: "Three real cases and about ten quick questions. Your answers become a calibrated check and a frozen set of cases.",
+      title: "It keeps watching",
+      body: "It reads every new case and asks you only when one needs an analyst's call. Your answers become calibrated checks.",
       widget: {
         kind: "review",
         session: "Case #8812 · onboarding",

@@ -168,7 +168,7 @@ const CONTENT_MARKER_CHECKS: ContentMarkerCheck[] = [
   },
   {
     file: "product/kitaru.md",
-    markers: ["curl -fsSL https://kitaru.ai/install | bash"],
+    markers: ["curl -fsSL https://zenml.io/install-kitaru | bash"],
     message: "dist/product/kitaru.md contains the page-local install command",
   },
   {

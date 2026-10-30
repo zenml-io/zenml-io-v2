@@ -13,6 +13,7 @@ import LabsBand from "../components/labs/LabsBand.astro";
 import LabsButton from "../components/labs/LabsButton.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
 import LabsFaq from "../components/labs/LabsFaq.astro";
+import LabsTextLink from "../components/labs/LabsTextLink.astro";
 import PricingPlanCards from "../components/labs/PricingPlanCards.astro";
 import PricingTable from "../components/labs/PricingTable.astro";
 import ProductDoors from "../components/labs/ProductDoors.astro";
@@ -26,6 +27,7 @@ import {
   PRICING_COMPLIANCE,
   PRICING_FAQ,
   PRICING_HERO,
+  PRICING_OSS_VS_PRO_LINK,
   PRICING_PLAN_NOTE,
   PRICING_PLANS,
   PRICING_PRO_INCLUSIONS_DOORS,
@@ -68,6 +70,7 @@ const pricingJsonLd = buildPricingJsonLd();
     <section id="compare-table" class="scroll-mt-24 pb-24 md:pb-32">
       <div class="mx-auto max-w-content px-gutter">
         <PricingTable data={PRICING_COMPARE} />
+        <LabsTextLink cta={PRICING_OSS_VS_PRO_LINK} class="mt-6" />
       </div>
     </section>
 

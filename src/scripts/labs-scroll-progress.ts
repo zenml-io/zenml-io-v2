@@ -19,6 +19,10 @@
  * `data-state` done, active, or future. The server renders the finished
  * state, and reduced motion returns before arming, so nothing depends on
  * this script to be visible.
+ *
+ * A root with `data-scroll-play="ms"` is not scrubbed: once its top crosses
+ * `--scroll-start`, `p` plays from 0 to 1 over that many milliseconds, once,
+ * so the pace no longer depends on how fast or how far the reader scrolls.
  */
 
 interface Root {
@@ -34,6 +38,9 @@ interface Root {
   height: number;
   p: number;
   step: number;
+  /** Play duration in ms (`data-scroll-play`); 0 scrubs with the scroll. */
+  play: number;
+  played: boolean;
 }
 
 const readNumber = (
@@ -115,15 +122,32 @@ export function initScrollProgress(): void {
     height: 0,
     p: -1,
     step: -1,
+    play: Number(el.dataset.scrollPlay) || 0,
+    played: false,
   }));
   if (!roots.length) return;
 
   const visible = new Set<Root>();
   let frame = 0;
+  const startPlay = (root: Root) => {
+    root.played = true;
+    const begin = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - begin) / root.play);
+      write(root, t);
+      if (t < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  // Scrubbed roots follow the scroll; a play root starts once it is reached.
+  const advance = (root: Root, viewport: number) => {
+    if (!root.play) write(root, progressOf(root, viewport));
+    else if (!root.played && progressOf(root, viewport) > 0) startPlay(root);
+  };
   const update = () => {
     frame = 0;
     const viewport = window.innerHeight;
-    for (const root of visible) write(root, progressOf(root, viewport));
+    for (const root of visible) advance(root, viewport);
   };
   const schedule = () => {
     if (!frame) frame = requestAnimationFrame(update);
@@ -134,7 +158,7 @@ export function initScrollProgress(): void {
       const root = roots.find((r) => r.el === entry.target);
       if (!root) continue;
       // Settle a root as it leaves, so a fast scroll never strands it mid-way.
-      write(root, progressOf(root, window.innerHeight));
+      advance(root, window.innerHeight);
       if (entry.isIntersecting) visible.add(root);
       else visible.delete(root);
     }
@@ -142,7 +166,10 @@ export function initScrollProgress(): void {
 
   const remeasure = () => {
     for (const root of roots) measure(root);
-    for (const root of roots) write(root, progressOf(root, window.innerHeight));
+    for (const root of roots) {
+      if (!root.play) write(root, progressOf(root, window.innerHeight));
+      else if (!root.played) write(root, 0);
+    }
   };
   remeasure();
   for (const root of roots) observer.observe(root.el);

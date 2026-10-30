@@ -154,7 +154,7 @@ export function labsNavMenus(
         {
           label: "Kitaru docs",
           href: KITARU_DOCS_URL,
-          description: "Record, replay, and evaluate agents",
+          description: "Insights and evals from agent traces",
           external: true,
         },
         {
@@ -215,6 +215,8 @@ export interface LabsBandContent {
 export interface LabsProductBandContent extends LabsBandContent {
   secondaryCta?: LabsCta;
   install?: LabsInstallChip;
+  /** A small label above the install command. */
+  installLabel?: string;
   /** One short line under the install command: what it installs. */
   installNote?: string;
 }
@@ -240,11 +242,7 @@ export const LABS_HERO: LabsProductBandContent = {
   headlineLines: ["Find what your agent’s", "evals miss"],
   deck: "Your agent changed. Your evals didn't. Our AI engineer reads your traces next to your evals and shows you what they let through.",
   cta: LABS_HERO_SIGNUP,
-  secondaryCta: {
-    label: "Request a demo",
-    href: "/book-your-demo",
-    analytics: "Hero-Request-Demo",
-  },
+  installLabel: "Or start open source",
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
 };
 
@@ -455,8 +453,8 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       },
     },
     {
-      title: "Fifteen minutes a week",
-      body: "Ten quick questions on three real sessions.",
+      title: "It keeps watching",
+      body: "It reads every new trace and asks you only when a session needs your call.",
       widget: {
         kind: "review",
         session: "Session #3318 · refund",

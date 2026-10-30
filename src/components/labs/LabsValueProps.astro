@@ -5,7 +5,9 @@
  * drawn; no icons, no coloured squares. Copy arrives through `content`
  * (`ZENML_VALUE_PROPS` in `src/lib/labs-product-zenml.ts`); nothing here is
  * retyped. `content.deck` is optional — absence collapses the line under
- * the headline.
+ * the headline. Three cards (or six) sit three across; any other count,
+ * such as the four on /open-source-vs-pro, sits two across so no row is left
+ * half empty.
  */
 import type { ValuePropsContent } from "../../lib/labs-product-zenml";
 import "../../styles/labs-scroll-reveal.css";
@@ -15,6 +17,8 @@ interface Props {
   content: ValuePropsContent;
 }
 const { content } = Astro.props;
+const columns =
+  content.items.length % 3 === 0 ? "md:grid-cols-3" : "md:grid-cols-2";
 ---
 
 <section class="py-24 md:py-32">
@@ -29,7 +33,7 @@ const { content } = Astro.props;
     )}
 
     <div class="reveal-child stagger-1 mt-space-xl">
-      <div class="scroll-reveal-section grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div class:list={["scroll-reveal-section grid grid-cols-1 gap-6", columns]}>
       {content.items.map((item, index) => (
         <div class:list={["reveal-child flex flex-col gap-space-md rounded-[20px] border border-border bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400) md:p-10", `stagger-${Math.min(index + 1, 4)}`]}>
           <span class="font-mono text-[13px] leading-5 text-(--color-sage-700)">

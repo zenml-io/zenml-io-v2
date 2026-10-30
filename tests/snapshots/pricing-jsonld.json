@@ -6,7 +6,7 @@
       "@id": "https://www.zenml.io/pricing#webpage",
       "url": "https://www.zenml.io/pricing",
       "name": "Pricing - ZenML",
-      "description": "One plan, $39 a month: your AI engineer on one agent, one ZenML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.",
+      "description": "One plan, $39 a month: your AI engineer on one AI agent, one ML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.",
       "inLanguage": "en",
       "mainEntity": {
         "@id": "https://www.zenml.io/pricing#software"
@@ -39,7 +39,7 @@
           "name": "What do I get for $39?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "One agent with your AI engineer on it, one ZenML project with up to 100 pipeline runs a month, and as many seats as you want. It starts with a 14-day trial, no credit card."
+            "text": "One AI agent with your AI engineer on it, one ML project with up to 100 pipeline runs a month, and as many seats as you want. It starts with a 14-day trial, no credit card."
           }
         },
         {
@@ -47,7 +47,7 @@
           "name": "What counts as an agent?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. A LangGraph app with three sub-agents that ships as one product is one agent."
+            "text": "An AI agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. A LangGraph app with three sub-agents that ships as one product is one agent."
           }
         },
         {
@@ -63,7 +63,7 @@
           "name": "What if we need more agents, projects or runs?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Talk to us. Enterprise covers more agents, more ZenML projects and more pipeline runs, priced on what you actually run, along with on-prem and governance if you need them."
+            "text": "Talk to us. Enterprise covers more agents, more ML projects and more pipeline runs, priced on what you actually run, along with on-prem and governance if you need them."
           }
         },
         {
@@ -123,16 +123,16 @@
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Python, Kubernetes, AWS, GCP, Azure",
       "url": "https://www.zenml.io/product/zenml",
-      "description": "Your AI engineer on one agent, one ZenML project, and your whole team. Need more, or on-prem? Talk to us.",
+      "description": "Your AI engineer on one AI agent, one ML project, and your whole team. Need more, or on-prem? Talk to us.",
       "featureList": [
         "ZenML and Kitaru, Apache 2.0",
-        "Pipelines, agents and artifacts",
-        "Import traces, review and checks",
+        "Driven by your own coding agent",
+        "Pipelines, traces, evals and replay",
         "Community support",
-        "Your AI engineer on one agent",
-        "Finds wrong and missing evals",
-        "An interview and a weekly review",
-        "Hosted ZenML and Kitaru",
+        "An AI engineer for your agents and ML pipelines",
+        "Finds what your evals miss, on its own",
+        "Schedules, triggers and alerts",
+        "Fully hosted, set up in minutes",
         "Multi-workspace setup",
         "On-prem or air-gapped",
         "Your own LLM endpoint",
@@ -156,8 +156,8 @@
               "applicationCategory": "DeveloperApplication",
               "featureList": [
                 "ZenML and Kitaru, Apache 2.0",
-                "Pipelines, agents and artifacts",
-                "Import traces, review and checks",
+                "Driven by your own coding agent",
+                "Pipelines, traces, evals and replay",
                 "Community support"
               ]
             }
@@ -175,16 +175,16 @@
               "billingIncrement": 1,
               "unitCode": "MON"
             },
-            "description": "For startups shipping their first agent. 1 agent · 1 ZenML project · Unlimited seats.",
+            "description": "For startups shipping their first agent. 1 AI agent · 1 ML project · Unlimited seats.",
             "itemOffered": {
               "@type": "SoftwareApplication",
               "name": "ZenML Starter",
               "applicationCategory": "DeveloperApplication",
               "featureList": [
-                "Your AI engineer on one agent",
-                "Finds wrong and missing evals",
-                "An interview and a weekly review",
-                "Hosted ZenML and Kitaru"
+                "An AI engineer for your agents and ML pipelines",
+                "Finds what your evals miss, on its own",
+                "Schedules, triggers and alerts",
+                "Fully hosted, set up in minutes"
               ]
             }
           },

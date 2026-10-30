@@ -2,13 +2,13 @@
 
 Canonical HTML URL: https://www.zenml.io/pricing
 
-One plan, $39 a month: your AI engineer on one agent, one ZenML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.
+One plan, $39 a month: your AI engineer on one AI agent, one ML project and your whole team. Open source is free; more agents, projects and on-prem are a conversation.
 
 Note: this is a repo-owned Markdown mirror for agents and readers. It omits visual-only UI, decorative media, navigation, analytics, and other browser chrome.
 
 ## Summary
 
-Your AI engineer on one agent, one ZenML project, and your whole team. Need more, or on-prem? Talk to us.
+Your AI engineer on one AI agent, one ML project, and your whole team. Need more, or on-prem? Talk to us.
 
 ## Main CTAs
 
@@ -19,7 +19,7 @@ Your AI engineer on one agent, one ZenML project, and your whole team. Need more
 
 ## Plans
 
-An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. Starter covers one agent and one ZenML project. Need more? Talk to us.
+An AI agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. Starter covers one AI agent and one ML project. Need more? Talk to us.
 
 ### Open Source
 
@@ -30,8 +30,8 @@ Run it yourself
 
 - Includes:
   - ZenML and Kitaru, Apache 2.0
-  - Pipelines, agents and artifacts
-  - Import traces, review and checks
+  - Driven by your own coding agent
+  - Pipelines, traces, evals and replay
   - Community support
 
 - CTA: [Get started](https://www.zenml.io/get-started)
@@ -41,13 +41,13 @@ Run it yourself
 For startups shipping their first agent
 
 - Price: $39/month
-- Limits: 1 agent · 1 ZenML project · Unlimited seats
+- Limits: 1 AI agent · 1 ML project · Unlimited seats
 
 - Everything in Open Source, plus:
-  - Your AI engineer on one agent
-  - Finds wrong and missing evals
-  - An interview and a weekly review
-  - Hosted ZenML and Kitaru
+  - An AI engineer for your agents and ML pipelines
+  - Finds what your evals miss, on its own
+  - Schedules, triggers and alerts
+  - Fully hosted, set up in minutes
 
 - CTA: [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)
 
@@ -76,44 +76,51 @@ One price, unlimited seats. 14-day trial, no credit card.
 | Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
 | Price | Free | $39 / month | Custom |
-| Agents with your AI engineer | — | 1 | Custom |
-| ZenML projects | Self-hosted | 1 | Custom |
-| Pipeline runs a month | Self-hosted | 100 | Custom |
+| Free trial | — | 14 days, no credit card | — |
+| AI agents | Self-hosted | 1 | Custom |
+| ML projects | Self-hosted | 1 | Custom |
+| Pipeline runs a month | Unlimited | 100 | Custom |
+| Team members | Unlimited | Unlimited | Unlimited |
 
-### Your AI engineer
-
-| Feature | Open Source | Starter | Enterprise |
-| --- | --- | --- | --- |
-| Finds wrong and missing evals | No | Yes | Yes |
-| An interview and a weekly review | No | Yes | Yes |
-| Findings and reviews in Slack | No | Yes | Yes |
-
-### Agents, with Kitaru
+### Your AI engineer, on agents and ML pipelines
 
 | Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
-| Import traces from your tracing tool | Yes | Yes | Yes |
-| Reviews, checks and replays | Yes | Yes | Yes |
+| How it runs | You drive it from your coding agent | On its own, around the clock | On its own, around the clock |
+| Agents: reads every trace, flags wrong or missing evals | No | Yes | Yes |
+| ML pipelines: watches every run, flags failures and drift | No | Yes | Yes |
+| Drafts the fix: a new check, eval or pipeline change | No | Yes | Yes |
+| Weekly review in Slack | No | Yes | Yes |
+
+### Agents and evals
+
+| Feature | Open Source | Starter | Enterprise |
+| --- | --- | --- | --- |
+| Trace import | Yes | Yes | Yes |
+| Evaluators, cohorts and replay | Yes | Yes | Yes |
+| Scheduled eval runs | No | Yes | Yes |
+| Alerts when an eval starts drifting | No | Yes | Yes |
 | Hosted dashboard | No | Yes | Yes |
 
-### AI orchestration, with ZenML
+### Pipelines and models
 
 | Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
-| Pipeline and agent orchestration | Yes | Yes | Yes |
-| Artifacts and model registry | Yes | Yes | Yes |
-| [Model Control Plane](https://docs.zenml.io/concepts/models) | No | Yes | Yes |
-| [Snapshots](https://docs.zenml.io/concepts/snapshots) | No | Yes | Yes |
-| Codespaces (remote IDE) | No | No | Yes |
+| Pipeline orchestration | Yes | Yes | Yes |
+| Artifact versioning and lineage | Yes | Yes | Yes |
+| Webhooks and event triggers | No | Yes | Yes |
+| [Run pipelines from the dashboard](https://docs.zenml.io/concepts/snapshots) | No | Yes | Yes |
+| Managed server, backups and upgrades | No | Yes | Yes |
 
-### Deployment and governance
+### Security and deployment
 
 | Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
+| SOC 2 Type II and ISO 27001 | No | Yes | Yes |
 | On-prem or air-gapped | Yes | No | Yes |
-| Your own LLM endpoint for the AI engineer | No | No | Yes |
+| Your own LLM endpoint | No | No | Yes |
 | SSO (SAML / OIDC) and SCIM | No | No | Yes |
-| [RBAC (custom roles)](https://docs.zenml.io/pro/access-management/roles) | No | No | Yes |
+| [Custom roles](https://docs.zenml.io/pro/access-management/roles) | No | No | Yes |
 | Audit logs | No | No | Yes |
 
 ### Support
@@ -121,16 +128,17 @@ One price, unlimited seats. 14-day trial, no credit card.
 | Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
 | Support level | Community | Email | Dedicated + SLA |
+| Workshops and architecture reviews | No | No | Yes |
 
 ## Pricing, answered
 
 ### What do I get for $39?
 
-One agent with your AI engineer on it, one ZenML project with up to 100 pipeline runs a month, and as many seats as you want. It starts with a 14-day trial, no credit card.
+One AI agent with your AI engineer on it, one ML project with up to 100 pipeline runs a month, and as many seats as you want. It starts with a 14-day trial, no credit card.
 
 ### What counts as an agent?
 
-An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. A LangGraph app with three sub-agents that ships as one product is one agent.
+An AI agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends. A LangGraph app with three sub-agents that ships as one product is one agent.
 
 ### Is there a limit on sessions?
 
@@ -138,7 +146,7 @@ No. Your AI engineer reads every session your agent sends. Replays run with your
 
 ### What if we need more agents, projects or runs?
 
-Talk to us. Enterprise covers more agents, more ZenML projects and more pipeline runs, priced on what you actually run, along with on-prem and governance if you need them.
+Talk to us. Enterprise covers more agents, more ML projects and more pipeline runs, priced on what you actually run, along with on-prem and governance if you need them.
 
 ### Why not per seat?
 
@@ -187,14 +195,14 @@ Training, batch inference, evals, agent workflows. One DAG, versioned artifacts,
 Finds the evals you got wrong or never wrote, then replays your agent to test the fix. Priced per agent.
 
 - Insights from your traces: Finds wrong and missing evals, then turns your answers into checks.
-- $39 a month on Starter: One agent and one ZenML project, one price.
+- $39 a month on Starter: One AI agent and one ML project, one price.
 - Seats for your domain experts: The people who know what good looks like are not a line item.
 
 - Learn more: [Learn about Kitaru](https://www.zenml.io/product/kitaru)
 
 - CTA: [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)
 
-Starter covers one agent and one ZenML project. Enterprise covers the rest.
+Starter covers one AI agent and one ML project. Enterprise covers the rest.
 
 ## Are you startup or academic?
 

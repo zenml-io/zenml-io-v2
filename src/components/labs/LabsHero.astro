@@ -72,8 +72,13 @@ const hasVisual = Astro.slots.has("visual");
         )}
       </div>
 
+      {props.content.install && props.content.installLabel && (
+        <p class="mt-space-md font-label text-[11px] leading-4 uppercase tracking-[0.05em] text-(--color-cream-700)">
+          {props.content.installLabel}
+        </p>
+      )}
       {props.content.install && (
-        <div class="mt-space-md flex max-w-full">
+        <div class:list={["flex max-w-full", props.content.installLabel ? "mt-2" : "mt-space-md"]}>
           <LabsInstallChip content={props.content.install} />
         </div>
       )}

@@ -7,7 +7,8 @@ import { defaultOgUrl } from "./seo";
  * then prints the two ways to get a server. Served by the kitaru.ai
  * worker from install.sh in the Kitaru repo.
  */
-export const KITARU_INSTALL_CMD = "curl -fsSL https://kitaru.ai/install | bash";
+export const KITARU_INSTALL_CMD =
+  "curl -fsSL https://zenml.io/install-kitaru | bash";
 /** Adding the SDK to a project's own environment (the embedded, in-process form). */
 export const KITARU_SDK_ADD_CMD =
   'uv add "kitaru[cli,worker]" kitaru-pydantic-ai';
@@ -33,7 +34,7 @@ export const KITARU_STARTER_LIMITS = {
 } as const;
 /** What one agent is, for pricing. Said the same way everywhere. */
 export const KITARU_AGENT_DEFINITION =
-  "An agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends.";
+  "An AI agent is anything you want your AI engineer to watch: its code, in one repo or several, and the traces it sends.";
 
 /** Trial terms shown next to every signup CTA. */
 export const KITARU_TRIAL_NOTE = `${KITARU_TRIAL_DAYS}-day free trial · Full access · No credit card`;
@@ -123,7 +124,7 @@ export const PRODUCT_KITARU_MARKDOWN = {
   summary: [
     "Our AI engineer reads your agent's traces next to your evals and shows you what they miss. Kitaru is the open-source part underneath it.",
     `Kitaru imports the traces you already have, or records new ones through an adapter. Insights show the patterns across every session, you turn what you find into checks, and you can replay your agent through its own framework to test a fix before it ships.`,
-    `Kitaru is ${KITARU_LICENSE}. Install it in one line and run it on your own machine, with your own model keys. Our AI engineer is the hosted part: it does the reading and asks you ten quick questions on three real sessions, about fifteen minutes a week. It costs ${KITARU_CLOUD_PRICE} a month on Starter, with one ZenML project included; see https://www.zenml.io/pricing.`,
+    `Kitaru is ${KITARU_LICENSE}. Install it in one line and run it on your own machine, with your own model keys. Our AI engineer is the hosted part: it reads every new trace around the clock and asks you only when a session needs your call. It costs ${KITARU_CLOUD_PRICE} a month on Starter, with one ML project included; see https://www.zenml.io/pricing.`,
   ],
   steps: [
     {

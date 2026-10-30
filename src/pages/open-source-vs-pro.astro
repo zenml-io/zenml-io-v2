@@ -3,14 +3,12 @@
  * Open Source vs Pro page, in the ZenML Labs shell (`app="labs"`,
  * `surface="unified"` — no `product`). Rebuilt for the product one-offs
  * cutover (#317): the short shader band (eyebrow / h1 / deck — hero CTAs
- * leave the band, CONVENTIONS liberty 4), the feature-grid value props,
- * a subway-map readiness section, the feature comparison table, and the
- * closing band.
+ * leave the band, CONVENTIONS liberty 4), what Pro adds as value props,
+ * the side-by-side table, and the closing band. Covers ZenML and Kitaru.
  *
  * Route: /open-source-vs-pro
  */
 import LabsBand from "../components/labs/LabsBand.astro";
-import LabsButton from "../components/labs/LabsButton.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
 import LabsValueProps from "../components/labs/LabsValueProps.astro";
 import { LABS_EYEBROW_CLASS } from "../components/templates/pageHeaderPresets";
@@ -22,7 +20,6 @@ import {
   OSS_VS_PRO_COMPARISON,
   OSS_VS_PRO_HERO,
   OSS_VS_PRO_SEO,
-  OSS_VS_PRO_SUBWAY_MAP,
   OSS_VS_PRO_VALUE_PROPS,
 } from "../lib/openSourceVsPro";
 ---
@@ -53,43 +50,6 @@ import {
   <div class:list={[BAND_CONTENT_GAP]}>
     <LabsValueProps content={OSS_VS_PRO_VALUE_PROPS} />
   </div>
-
-  {/* Subway map: "Is Your ML Team Ready for the Next Station?" */}
-  <section class="py-24 md:py-32">
-    <div class="mx-auto max-w-content px-gutter">
-      <div class="rounded-[20px] border border-(--color-border) bg-(--color-sage-50) p-8 md:p-14">
-        <img
-          src={OSS_VS_PRO_SUBWAY_MAP.image.url}
-          alt={OSS_VS_PRO_SUBWAY_MAP.image.alt}
-          class="mx-auto w-full max-w-[600px]"
-          loading="lazy"
-        />
-        <h2 class="mt-8 text-center font-display text-[28px] leading-[34px] text-(--color-cream-900) md:text-[40px] md:leading-[46px]">
-          {OSS_VS_PRO_SUBWAY_MAP.headline}
-        </h2>
-        <p class="mt-4 text-center font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
-          {OSS_VS_PRO_SUBWAY_MAP.body}
-        </p>
-
-        <div class="mt-10 grid gap-6 text-left sm:grid-cols-2">
-          {OSS_VS_PRO_SUBWAY_MAP.cards.map((card) => (
-            <div class="rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400)">
-              <h3 class="font-display text-[20px] leading-[26px] text-(--color-cream-900)">{card.title}</h3>
-              <p class="mt-2 font-sans text-[15px] leading-5 italic text-(--color-cream-700)">{card.painQuote}</p>
-              <p class="mt-3 font-sans text-[15px] leading-5 text-(--color-cream-800)">{card.body}</p>
-            </div>
-          ))}
-        </div>
-
-        <div class="mt-10 flex justify-center">
-          <LabsButton
-            cta={{ ...OSS_VS_PRO_SUBWAY_MAP.cta, analytics: "OSSvsPro-Subway-Read" }}
-            tone="ghost"
-          />
-        </div>
-      </div>
-    </div>
-  </section>
 
   {/* Comparison table */}
   <section class="pb-24 md:pb-32">
