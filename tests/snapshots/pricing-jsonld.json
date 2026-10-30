@@ -129,7 +129,7 @@
         "Driven by your own coding agent",
         "Pipelines, traces, evals and replay",
         "Community support",
-        "An AI engineer that runs around the clock",
+        "An AI engineer for your agents and ML pipelines",
         "Finds what your evals miss, on its own",
         "Schedules, triggers and alerts",
         "Fully hosted, set up in minutes",
@@ -181,7 +181,7 @@
               "name": "ZenML Starter",
               "applicationCategory": "DeveloperApplication",
               "featureList": [
-                "An AI engineer that runs around the clock",
+                "An AI engineer for your agents and ML pipelines",
                 "Finds what your evals miss, on its own",
                 "Schedules, triggers and alerts",
                 "Fully hosted, set up in minutes"

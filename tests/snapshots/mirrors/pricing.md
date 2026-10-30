@@ -44,7 +44,7 @@ For startups shipping their first agent
 - Limits: 1 AI agent · 1 ML project · Unlimited seats
 
 - Everything in Open Source, plus:
-  - An AI engineer that runs around the clock
+  - An AI engineer for your agents and ML pipelines
   - Finds what your evals miss, on its own
   - Schedules, triggers and alerts
   - Fully hosted, set up in minutes
@@ -82,14 +82,14 @@ One price, unlimited seats. 14-day trial, no credit card.
 | Pipeline runs a month | Unlimited | 100 | Custom |
 | Team members | Unlimited | Unlimited | Unlimited |
 
-### Your AI engineer
+### Your AI engineer, on agents and ML pipelines
 
 | Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
 | How it runs | You drive it from your coding agent | On its own, around the clock | On its own, around the clock |
-| Reads every new trace as it lands | No | Yes | Yes |
-| Flags evals that are wrong or missing | No | Yes | Yes |
-| Drafts new checks for you | No | Yes | Yes |
+| Agents: reads every trace, flags wrong or missing evals | No | Yes | Yes |
+| ML pipelines: watches every run, flags failures and drift | No | Yes | Yes |
+| Drafts the fix: a new check, eval or pipeline change | No | Yes | Yes |
 | Weekly review in Slack | No | Yes | Yes |
 
 ### Agents and evals

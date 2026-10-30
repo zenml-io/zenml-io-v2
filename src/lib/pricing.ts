@@ -190,7 +190,7 @@ export const PRICING_PLANS: PricingPlan[] = [
     limitsLine: `${STARTER.agents} AI agent · ${STARTER.zenmlProjects} ML project · Unlimited seats`,
     includesLabel: "Everything in Open Source, plus",
     features: [
-      "An AI engineer that runs around the clock",
+      "An AI engineer for your agents and ML pipelines",
       "Finds what your evals miss, on its own",
       "Schedules, triggers and alerts",
       "Fully hosted, set up in minutes",
@@ -267,7 +267,7 @@ export const PRICING_COMPARE: PricingCompareTableData = {
       ],
     },
     {
-      heading: "Your AI engineer",
+      heading: "Your AI engineer, on agents and ML pipelines",
       rows: [
         {
           feature: "How it runs",
@@ -278,14 +278,17 @@ export const PRICING_COMPARE: PricingCompareTableData = {
           ],
         },
         {
-          feature: "Reads every new trace as it lands",
+          feature: "Agents: reads every trace, flags wrong or missing evals",
           values: [false, true, true],
         },
         {
-          feature: "Flags evals that are wrong or missing",
+          feature: "ML pipelines: watches every run, flags failures and drift",
           values: [false, true, true],
         },
-        { feature: "Drafts new checks for you", values: [false, true, true] },
+        {
+          feature: "Drafts the fix: a new check, eval or pipeline change",
+          values: [false, true, true],
+        },
         { feature: "Weekly review in Slack", values: [false, true, true] },
       ],
     },
