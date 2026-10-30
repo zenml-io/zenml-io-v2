@@ -126,12 +126,12 @@
       "description": "Your AI engineer on one AI agent, one ML project, and your whole team. Need more, or on-prem? Talk to us.",
       "featureList": [
         "ZenML and Kitaru, Apache 2.0",
-        "Pipelines, agents and artifacts",
-        "Import traces, review and checks",
+        "Driven by your own coding agent",
+        "Pipelines, traces, evals and replay",
         "Community support",
-        "Your AI engineer, watching one AI agent",
-        "Finds what your evals miss, every week",
-        "Agents and ML pipelines on one platform",
+        "An AI engineer that runs around the clock",
+        "Finds what your evals miss, on its own",
+        "Schedules, triggers and alerts",
         "Fully hosted, set up in minutes",
         "Multi-workspace setup",
         "On-prem or air-gapped",
@@ -156,8 +156,8 @@
               "applicationCategory": "DeveloperApplication",
               "featureList": [
                 "ZenML and Kitaru, Apache 2.0",
-                "Pipelines, agents and artifacts",
-                "Import traces, review and checks",
+                "Driven by your own coding agent",
+                "Pipelines, traces, evals and replay",
                 "Community support"
               ]
             }
@@ -181,9 +181,9 @@
               "name": "ZenML Starter",
               "applicationCategory": "DeveloperApplication",
               "featureList": [
-                "Your AI engineer, watching one AI agent",
-                "Finds what your evals miss, every week",
-                "Agents and ML pipelines on one platform",
+                "An AI engineer that runs around the clock",
+                "Finds what your evals miss, on its own",
+                "Schedules, triggers and alerts",
                 "Fully hosted, set up in minutes"
               ]
             }

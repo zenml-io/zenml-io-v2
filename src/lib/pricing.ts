@@ -167,8 +167,8 @@ export const PRICING_PLANS: PricingPlan[] = [
     includesLabel: "Includes",
     features: [
       "ZenML and Kitaru, Apache 2.0",
-      "Pipelines, agents and artifacts",
-      "Import traces, review and checks",
+      "Driven by your own coding agent",
+      "Pipelines, traces, evals and replay",
       "Community support",
     ],
     cta: {
@@ -190,9 +190,9 @@ export const PRICING_PLANS: PricingPlan[] = [
     limitsLine: `${STARTER.agents} AI agent · ${STARTER.zenmlProjects} ML project · Unlimited seats`,
     includesLabel: "Everything in Open Source, plus",
     features: [
-      "Your AI engineer, watching one AI agent",
-      "Finds what your evals miss, every week",
-      "Agents and ML pipelines on one platform",
+      "An AI engineer that runs around the clock",
+      "Finds what your evals miss, on its own",
+      "Schedules, triggers and alerts",
       "Fully hosted, set up in minutes",
     ],
     cta: {
@@ -267,16 +267,41 @@ export const PRICING_COMPARE: PricingCompareTableData = {
       ],
     },
     {
+      heading: "Your AI engineer",
+      rows: [
+        {
+          feature: "How it runs",
+          values: [
+            "You drive it from your coding agent",
+            "On its own, around the clock",
+            "On its own, around the clock",
+          ],
+        },
+        {
+          feature: "Reads every new trace as it lands",
+          values: [false, true, true],
+        },
+        {
+          feature: "Flags evals that are wrong or missing",
+          values: [false, true, true],
+        },
+        { feature: "Drafts new checks for you", values: [false, true, true] },
+        { feature: "Weekly review in Slack", values: [false, true, true] },
+      ],
+    },
+    {
       heading: "Agents and evals",
       rows: [
-        { feature: "AI engineer on your agent", values: [false, true, true] },
-        { feature: "Weekly eval review in Slack", values: [false, true, true] },
         { feature: "Trace import", values: [true, true, true] },
         {
-          feature: "Cohorts, evaluators and experiments",
+          feature: "Evaluators, cohorts and replay",
           values: [true, true, true],
         },
-        { feature: "Replay with your own keys", values: [true, true, true] },
+        { feature: "Scheduled eval runs", values: [false, true, true] },
+        {
+          feature: "Alerts when an eval starts drifting",
+          values: [false, true, true],
+        },
         { feature: "Hosted dashboard", values: [false, true, true] },
       ],
     },
@@ -288,18 +313,19 @@ export const PRICING_COMPARE: PricingCompareTableData = {
           feature: "Artifact versioning and lineage",
           values: [true, true, true],
         },
-        { feature: "Model registry", values: [true, true, true] },
         {
-          feature: "Model Control Plane",
-          link: "https://docs.zenml.io/concepts/models",
+          feature: "Webhooks and event triggers",
           values: [false, true, true],
         },
         {
-          feature: "Snapshots",
+          feature: "Run pipelines from the dashboard",
           link: "https://docs.zenml.io/concepts/snapshots",
           values: [false, true, true],
         },
-        { feature: "Codespaces (remote IDE)", values: [false, false, true] },
+        {
+          feature: "Managed server, backups and upgrades",
+          values: [false, true, true],
+        },
       ],
     },
     {

@@ -30,8 +30,8 @@ Run it yourself
 
 - Includes:
   - ZenML and Kitaru, Apache 2.0
-  - Pipelines, agents and artifacts
-  - Import traces, review and checks
+  - Driven by your own coding agent
+  - Pipelines, traces, evals and replay
   - Community support
 
 - CTA: [Get started](https://www.zenml.io/get-started)
@@ -44,9 +44,9 @@ For startups shipping their first agent
 - Limits: 1 AI agent · 1 ML project · Unlimited seats
 
 - Everything in Open Source, plus:
-  - Your AI engineer, watching one AI agent
-  - Finds what your evals miss, every week
-  - Agents and ML pipelines on one platform
+  - An AI engineer that runs around the clock
+  - Finds what your evals miss, on its own
+  - Schedules, triggers and alerts
   - Fully hosted, set up in minutes
 
 - CTA: [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)
@@ -82,15 +82,24 @@ One price, unlimited seats. 14-day trial, no credit card.
 | Pipeline runs a month | Unlimited | 100 | Custom |
 | Team members | Unlimited | Unlimited | Unlimited |
 
+### Your AI engineer
+
+| Feature | Open Source | Starter | Enterprise |
+| --- | --- | --- | --- |
+| How it runs | You drive it from your coding agent | On its own, around the clock | On its own, around the clock |
+| Reads every new trace as it lands | No | Yes | Yes |
+| Flags evals that are wrong or missing | No | Yes | Yes |
+| Drafts new checks for you | No | Yes | Yes |
+| Weekly review in Slack | No | Yes | Yes |
+
 ### Agents and evals
 
 | Feature | Open Source | Starter | Enterprise |
 | --- | --- | --- | --- |
-| AI engineer on your agent | No | Yes | Yes |
-| Weekly eval review in Slack | No | Yes | Yes |
 | Trace import | Yes | Yes | Yes |
-| Cohorts, evaluators and experiments | Yes | Yes | Yes |
-| Replay with your own keys | Yes | Yes | Yes |
+| Evaluators, cohorts and replay | Yes | Yes | Yes |
+| Scheduled eval runs | No | Yes | Yes |
+| Alerts when an eval starts drifting | No | Yes | Yes |
 | Hosted dashboard | No | Yes | Yes |
 
 ### Pipelines and models
@@ -99,10 +108,9 @@ One price, unlimited seats. 14-day trial, no credit card.
 | --- | --- | --- | --- |
 | Pipeline orchestration | Yes | Yes | Yes |
 | Artifact versioning and lineage | Yes | Yes | Yes |
-| Model registry | Yes | Yes | Yes |
-| [Model Control Plane](https://docs.zenml.io/concepts/models) | No | Yes | Yes |
-| [Snapshots](https://docs.zenml.io/concepts/snapshots) | No | Yes | Yes |
-| Codespaces (remote IDE) | No | No | Yes |
+| Webhooks and event triggers | No | Yes | Yes |
+| [Run pipelines from the dashboard](https://docs.zenml.io/concepts/snapshots) | No | Yes | Yes |
+| Managed server, backups and upgrades | No | Yes | Yes |
 
 ### Security and deployment
 
