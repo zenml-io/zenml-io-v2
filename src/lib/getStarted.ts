@@ -37,8 +37,16 @@ export const GET_STARTED_HERO = {
   headline: "Start open source",
   deck: "Kitaru and ZenML are free and Apache 2.0. Install them on your laptop and drive them from your coding agent. Move to Pro when you want them to run on their own.",
   jump: [
-    { label: "Kitaru, for AI agents", href: "#kitaru" },
-    { label: "ZenML, for ML pipelines", href: "#zenml" },
+    {
+      label: "Kitaru quickstart",
+      href: "#kitaru",
+      analytics: "GetStarted-Hero-Kitaru",
+    },
+    {
+      label: "ZenML quickstart",
+      href: "#zenml",
+      analytics: "GetStarted-Hero-ZenML",
+    },
   ],
 } as const;
 

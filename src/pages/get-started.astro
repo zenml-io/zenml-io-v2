@@ -11,6 +11,7 @@
  * public/_redirects).
  */
 import LabsBand from "../components/labs/LabsBand.astro";
+import LabsButton from "../components/labs/LabsButton.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
 import LabsTextLink from "../components/labs/LabsTextLink.astro";
 import ProcessSteps from "../components/templates/ProcessSteps.astro";
@@ -63,14 +64,9 @@ const tracks = [GET_STARTED_KITARU, GET_STARTED_ZENML].map(
       <p class="max-w-[720px] font-sans text-[18px] leading-7 text-pretty text-(--color-cream-700)">
         {GET_STARTED_HERO.deck}
       </p>
-      <nav class="mt-2 flex flex-wrap gap-3" aria-label="Jump to a product">
-        {GET_STARTED_HERO.jump.map((link) => (
-          <a
-            href={link.href}
-            class="rounded-full border border-(--color-cream-400) bg-card px-4 py-2 font-sans text-[15px] leading-5 font-medium text-(--color-cream-900) transition-colors duration-200 ease-out hover:border-(--color-sage-400)"
-          >
-            {link.label}
-          </a>
+      <nav class="mt-4 flex flex-wrap gap-3" aria-label="Jump to a product">
+        {GET_STARTED_HERO.jump.map((link, index) => (
+          <LabsButton cta={link} tone={index === 0 ? "dark" : "ghost"} />
         ))}
       </nav>
     </div>
