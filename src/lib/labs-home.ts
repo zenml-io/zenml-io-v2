@@ -99,7 +99,7 @@ export interface LabsNavLink {
 export const LABS_NAV_LINKS: readonly LabsNavLink[] = [
   {
     label: "Products",
-    href: "/product/zenml",
+    href: "/product/kitaru",
     menu: "products",
   },
   {
