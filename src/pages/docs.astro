@@ -33,9 +33,9 @@ import { type FeaturePanel, LABS_CLOSE } from "../lib/labs-home";
 import { KITARU_DOCS_URL } from "../lib/productKitaru";
 
 const SEO = {
-  title: "ZenML Documentation Hub: AI Orchestration and Agent Replay",
+  title: "ZenML Documentation Hub: AI Orchestration and Agent Evals",
   description:
-    "Documentation for ZenML and Kitaru. Orchestrate production AI workflows or replay and regression-test your agents with Kitaru, both under ZenML Pro.",
+    "Documentation for ZenML and Kitaru. Orchestrate production AI workflows, or import your agent's traces into Kitaru and find what your evals miss.",
 };
 
 /** The two product doors. `label` is kept for provenance but not rendered
@@ -71,10 +71,10 @@ const PRODUCTS = [
   },
   {
     key: "kitaru",
-    label: "Agent replay",
+    label: "Agent evals",
     title: "Kitaru docs",
     description:
-      "Record or import agent traces, replay them against your next change, and keep what caught the failure as a regression test.",
+      "Import your agent's traces, see the patterns across every session, turn what you find into evals, then replay a fix.",
     href: KITARU_DOCS_URL,
     cta: "Open Kitaru docs",
     analytics: "DocsHub:Kitaru",
@@ -83,14 +83,17 @@ const PRODUCTS = [
         label: "Quickstart",
         href: "https://docs.zenml.io/kitaru/getting-started/quickstart",
       },
-      { label: "Flows", href: "https://docs.zenml.io/kitaru/concepts/flows" },
       {
-        label: "Checkpoints",
-        href: "https://docs.zenml.io/kitaru/concepts/checkpoints",
+        label: "Import your traces",
+        href: "https://docs.zenml.io/kitaru/getting-started/import-your-traces",
       },
       {
-        label: "Replay & overrides",
-        href: "https://docs.zenml.io/kitaru/guides/replay-and-overrides",
+        label: "Insights",
+        href: "https://docs.zenml.io/kitaru/guides/post-import-insights",
+      },
+      {
+        label: "Evaluators",
+        href: "https://docs.zenml.io/kitaru/concepts/evaluators",
       },
     ],
   },

@@ -154,7 +154,7 @@ export function labsNavMenus(
         {
           label: "Kitaru docs",
           href: KITARU_DOCS_URL,
-          description: "Record, replay, and evaluate agents",
+          description: "Insights and evals from agent traces",
           external: true,
         },
         {
