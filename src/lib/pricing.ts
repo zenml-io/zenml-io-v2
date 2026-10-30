@@ -369,6 +369,13 @@ export const PRICING_COMPARE: PricingCompareTableData = {
     variant: plan.ctaVariant ?? "primary",
   })),
 };
+/** Under the compare table: the full open source vs Pro breakdown. */
+export const PRICING_OSS_VS_PRO_LINK: CtaLink = {
+  label: "Open source vs Pro, side by side",
+  href: "/open-source-vs-pro",
+  analytics: "Pricing-OSS-vs-Pro",
+};
+
 // ---------------------------------------------------------------------------
 // Startup / Academic banner
 // ---------------------------------------------------------------------------
