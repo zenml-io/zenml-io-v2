@@ -178,10 +178,17 @@ const SNAPSHOT_TARGETS: SnapshotTarget[] = [
   },
   {
     page: "get-started.html",
-    selector: "ol",
+    selector: "#kitaru ol",
     golden: "get-started-steps.html",
     covers:
-      "get-started three-step walkthrough (ProcessSteps vertical-code): step titles, copy and the highlighted code blocks",
+      "get-started Kitaru walkthrough (ProcessSteps vertical-code): step titles, copy and the highlighted install, register and import commands",
+  },
+  {
+    page: "get-started.html",
+    selector: "#zenml ol",
+    golden: "get-started-zenml-steps.html",
+    covers:
+      "get-started ZenML walkthrough (ProcessSteps vertical-code): step titles, copy and the highlighted install, pipeline and run code",
   },
   {
     page: "docs.html",

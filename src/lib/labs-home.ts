@@ -30,7 +30,7 @@ export type LabsProduct = "zenml" | "kitaru";
 export const LABS_HOME_SEO = {
   title: "ZenML Labs: Find what your evals miss",
   description:
-    "Our AI engineer reads your agent's production traces next to the evals you already run, shows you what those evals miss, and turns a few of your answers into checks you can trust. It works on top of open-source Kitaru and ZenML.",
+    "Our AI engineer reads your agent's production traces next to the evals you already run, shows you what those evals miss, and turns a few of your answers into checks you can trust. It can fine-tune a cheaper open model on the same traces. It works on top of open-source Kitaru and ZenML.",
   surface: "unified" satisfies Surface,
 } as const;
 
@@ -99,7 +99,7 @@ export interface LabsNavLink {
 export const LABS_NAV_LINKS: readonly LabsNavLink[] = [
   {
     label: "Products",
-    href: "/product/zenml",
+    href: "/product/kitaru",
     menu: "products",
   },
   {
@@ -466,6 +466,58 @@ export const LABS_ONBOARDING: OnboardingStepsContent = {
       },
     },
   ],
+};
+
+/* ---------------------------------------------------------------------- */
+/* Model cost: a fine-tuned model from the same traces                    */
+/* ---------------------------------------------------------------------- */
+
+/** One month of model spend, in thousands of dollars, split by where calls went. */
+export interface CostMonth {
+  month: string;
+  frontier: number;
+  own: number;
+  /** Numbered note pinned above this month's bar. */
+  note?: number;
+}
+
+export interface ModelCostContent {
+  eyebrow: string;
+  headlineLines: readonly [string, string];
+  deck: string;
+  chart: {
+    label: string;
+    series: { frontier: string; own: string };
+    months: readonly CostMonth[];
+    notes: readonly string[];
+  };
+}
+
+export const LABS_MODEL_COST: ModelCostContent = {
+  eyebrow: "Beyond evals",
+  headlineLines: ["Same agent.", "A fifth of the bill."],
+  deck: "Your traces are also training data. Your AI engineer fine-tunes an open model on them, holds it to your evals, and keeps a few calls on the frontier model to catch drift. The weights are yours: download them or run them in your own cloud.",
+  chart: {
+    label: "Example: a support agent's model spend a month",
+    series: { frontier: "Frontier model", own: "Your fine-tuned model" },
+    months: [
+      { month: "Jan", frontier: 31.4, own: 0 },
+      { month: "Feb", frontier: 31.9, own: 0 },
+      { month: "Mar", frontier: 32.7, own: 0 },
+      { month: "Apr", frontier: 1.6, own: 5.3, note: 1 },
+      { month: "May", frontier: 1.6, own: 5.4 },
+      { month: "Jun", frontier: 1.7, own: 5.3 },
+      { month: "Jul", frontier: 9.8, own: 4.1, note: 2 },
+      { month: "Aug", frontier: 1.7, own: 5.4, note: 3 },
+      { month: "Sep", frontier: 1.6, own: 5.3 },
+      { month: "Oct", frontier: 1.6, own: 5.3 },
+    ],
+    notes: [
+      "Fine-tuned on 41,200 of your traces. The same 9 evals pass.",
+      "Return policy changed. More calls go back to the frontier model while it catches the drift.",
+      "Retrained on 2,318 new traces. 9 of 9 evals pass again.",
+    ],
+  },
 };
 
 /* ---------------------------------------------------------------------- */

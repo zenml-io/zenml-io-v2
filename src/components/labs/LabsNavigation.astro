@@ -74,13 +74,17 @@ const PRODUCT_KEY: Record<
   ZenML: "zenml",
   Kitaru: "kitaru",
 };
-const switcherRows = LABS_DOORS.doors.map((door) => ({
-  key: PRODUCT_KEY[door.name],
-  name: door.name,
-  leadLine: door.leadLine,
-  href: door.cta.href,
-  tint: door.tint,
-}));
+/* Kitaru leads the menus: the agent story comes first site-wide. */
+const NAV_ORDER: readonly LabsProduct[] = ["kitaru", "zenml"];
+const switcherRows = LABS_DOORS.doors
+  .map((door) => ({
+    key: PRODUCT_KEY[door.name],
+    name: door.name,
+    leadLine: door.leadLine,
+    href: door.cta.href,
+    tint: door.tint,
+  }))
+  .sort((a, b) => NAV_ORDER.indexOf(a.key) - NAV_ORDER.indexOf(b.key));
 const signup = product ? LABS_NAV_SIGNUP_BY_PRODUCT[product] : LABS_NAV_SIGNUP;
 /* Kitaru pages carry the orange pill; everything else the sage one. */
 const signupTone = product === "kitaru" ? "orange" : "sage";

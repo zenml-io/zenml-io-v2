@@ -174,25 +174,25 @@ Yes. Early-stage companies, universities and research institutions can apply for
 
 Still not clear? [Still not clear? Ask us on Slack](https://www.zenml.io/slack)
 
-## Two products, one account
+## Your agents and your ML, one AI engineer
 
-ZenML orchestrates your AI workflows. Your AI engineer and Kitaru keep your agents' evals honest. Same control plane underneath.
+Pro is one platform: your AI engineer works across your AI agents on Kitaru and your ML pipelines on ZenML, on one account and one bill.
 
-### Pipelines & artifacts
+### ML pipelines and models
 
-Training, batch inference, evals, agent workflows. One DAG, versioned artifacts, every orchestrator.
+Training, fine-tuning and batch inference on any orchestrator. Your AI engineer watches every run and flags failures and drift.
 
 - Pipeline DAGs, artifact store, model registry: Version every step, every dataset, every model.
 - Run on Kubernetes, Vertex, SageMaker, AzureML: One pipeline, any orchestrator, no rewrites.
-- Reproducible by default, replayable on demand: Re-run any historical pipeline with one command.
+- Fine-tune on your own traces: A cheaper open model your agent can call. The weights are yours.
 
 - Learn more: [Learn about ZenML](https://www.zenml.io/product/zenml)
 
 - CTA: [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=zenml)
 
-### Your AI engineer
+### AI agents and evals
 
-Finds the evals you got wrong or never wrote, then replays your agent to test the fix. Priced per agent.
+Your AI engineer finds the evals you got wrong or never wrote, then replays your agent to test the fix.
 
 - Insights from your traces: Finds wrong and missing evals, then turns your answers into checks.
 - $39 a month on Starter: One AI agent and one ML project, one price.

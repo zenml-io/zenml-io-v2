@@ -1,67 +1,47 @@
 ---
 /**
- * Get Started — ZenML open-source onboarding, in the ZenML Labs shell
- * (`app="labs"`, `surface="ml"`, `product="zenml"`, D3). Rebuilt for the
- * product one-offs cutover (#317): the short shader band (eyebrow / h1 /
- * deck, plus the agent-builder pointer: Kitaru install chip and link), the code-pane step walkthrough on
- * the `labs-light` Shiki theme, the architecture section, the projects
- * grid, the resources grid, and the closing band.
+ * Get Started — the open-source quickstart for both products, in the ZenML
+ * Labs shell (`app="labs"`, `surface="unified"`). A short shader band
+ * (eyebrow / h1 / deck and two jump links), then one track per product,
+ * Kitaru first: a headline block, the code-pane step walkthrough on the
+ * `labs-light` Shiki theme and a link to that product's docs. Then a
+ * resources grid and the closing band. Commands follow the docs quickstarts.
  *
  * Route: /get-started · `/get-started/zenml` 301-redirects here (see
- * public/_redirects). The page still cross-links to Kitaru, whose own
- * onboarding lives on /product/kitaru.
+ * public/_redirects).
  */
-import { getCollection } from "astro:content";
 import LabsBand from "../components/labs/LabsBand.astro";
 import LabsButton from "../components/labs/LabsButton.astro";
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
-import LabsInstallChip from "../components/labs/LabsInstallChip.astro";
+import LabsTextLink from "../components/labs/LabsTextLink.astro";
 import ProcessSteps from "../components/templates/ProcessSteps.astro";
 import { LABS_EYEBROW_CLASS } from "../components/templates/pageHeaderPresets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { BAND_CONTENT_GAP } from "../lib/blogLayout";
 import {
-  GET_STARTED_AGENT_POINTER,
   GET_STARTED_CLOSE,
   GET_STARTED_HERO,
+  GET_STARTED_KITARU,
+  GET_STARTED_RESOURCES,
   GET_STARTED_SEO,
   GET_STARTED_ZENML,
-  type GetStartedStep,
+  type GetStartedTrack,
 } from "../lib/getStarted";
 import { LABS_CODE_THEME, labsHighlighter } from "../lib/labsHighlighter";
 
-const highlightSteps = (items: readonly GetStartedStep[]) =>
-  items.map((step) => {
-    const lang = step.code.includes("\n") ? "python" : "bash";
-    return {
+const tracks = [GET_STARTED_KITARU, GET_STARTED_ZENML].map(
+  (track: GetStartedTrack) => ({
+    ...track,
+    steps: track.steps.map((step) => ({
       ...step,
-      language: lang,
+      language: step.lang,
       highlightedHtml: labsHighlighter.codeToHtml(step.code, {
-        lang,
+        lang: step.lang,
         theme: LABS_CODE_THEME,
       }),
-    };
-  });
-
-const zenmlSteps = highlightSteps(GET_STARTED_ZENML.steps.items);
-
-// Pull ZenML projects from the CMS collection if it exists
-let projects: {
-  data: { title: string; description?: string };
-  id: string;
-}[] = [];
-try {
-  const allProjects = await getCollection("projects");
-  projects = allProjects.slice(0, 6).map((p) => ({
-    data: {
-      title: p.data.title ?? p.id,
-      description: p.data.description,
-    },
-    id: p.id,
-  }));
-} catch {
-  // Collection may not exist yet — show empty state
-}
+    })),
+  }),
+);
 ---
 
 <BaseLayout
@@ -70,9 +50,8 @@ try {
   ogTitle={GET_STARTED_SEO.ogTitle}
   ogDescription={GET_STARTED_SEO.ogDescription}
   ogImage={GET_STARTED_SEO.ogImage}
-  surface="ml"
+  surface="unified"
   app="labs"
-  product="zenml"
 >
   <LabsBand size="short">
     <div class="flex flex-col gap-4">
@@ -82,114 +61,44 @@ try {
       <h1 class="font-display text-[40px] leading-[44px] text-(--color-cream-900) md:text-[64px] md:leading-[70px]">
         {GET_STARTED_HERO.headline}
       </h1>
-      <p class="max-w-[720px] font-sans text-[18px] leading-7 text-(--color-cream-700)">
+      <p class="max-w-[720px] font-sans text-[18px] leading-7 text-pretty text-(--color-cream-700)">
         {GET_STARTED_HERO.deck}
       </p>
-      {/* Pointer for agent builders. Not a chooser: /product/kitaru stays the entry point. */}
-      <div class="mt-2 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-        <p class="font-sans text-[15px] leading-5 text-(--color-cream-700)">
-          {GET_STARTED_AGENT_POINTER.lead}
-        </p>
-        <div class="flex max-w-full"><LabsInstallChip content={GET_STARTED_AGENT_POINTER.install} /></div>
-        <a
-          href={GET_STARTED_AGENT_POINTER.link.href}
-          data-analytics={GET_STARTED_AGENT_POINTER.link.analytics}
-          class="font-sans text-[15px] leading-5 font-medium text-(--color-sage-700) underline underline-offset-4 transition-colors duration-200 ease-out hover:text-(--color-sage-800)"
-        >
-          {GET_STARTED_AGENT_POINTER.link.label}
-        </a>
-      </div>
+      <nav class="mt-4 flex flex-wrap gap-3" aria-label="Jump to a product">
+        {GET_STARTED_HERO.jump.map((link, index) => (
+          <LabsButton cta={link} tone={index === 0 ? "dark" : "ghost"} />
+        ))}
+      </nav>
     </div>
   </LabsBand>
 
-  {/* Steps */}
-  <section class:list={["pb-24 md:pb-32", BAND_CONTENT_GAP]}>
-    <div class="mx-auto max-w-content px-gutter">
-      <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
-        {GET_STARTED_ZENML.steps.headline}
-      </h2>
-      <ProcessSteps layout="vertical-code" skin="labs" steps={zenmlSteps} class="mt-12" />
-    </div>
-  </section>
-
-  {/* Architecture */}
-  <section class="py-24 md:py-32 bg-(--color-sage-50)">
-    <div class="mx-auto max-w-content px-gutter">
-      <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
-        {GET_STARTED_ZENML.architecture.headline}
-      </h2>
-      <p class="mt-6 max-w-[720px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
-        {GET_STARTED_ZENML.architecture.body}
-      </p>
-      <img
-        src={GET_STARTED_ZENML.architecture.image.url}
-        alt={GET_STARTED_ZENML.architecture.image.alt}
-        class="mt-10 w-full rounded-[20px] border border-(--color-border) bg-card p-6 md:p-10"
-        loading="lazy"
-      />
-      <div class="mt-10">
-        <LabsButton
-          cta={{
-            ...GET_STARTED_ZENML.architecture.primaryCta,
-            analytics: "GetStarted-Architecture-Deploy",
-          }}
-        />
+  {tracks.map((track, index) => (
+    <section
+      id={track.id}
+      aria-labelledby={`${track.id}-title`}
+      class:list={["scroll-mt-28 pb-24 md:pb-32", index === 0 ? BAND_CONTENT_GAP : "border-t border-border pt-24 md:pt-32"]}
+    >
+      <div class="mx-auto max-w-content px-gutter">
+        <p class={LABS_EYEBROW_CLASS}>{track.eyebrow}</p>
+        <h2 id={`${track.id}-title`} class="mt-3 font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
+          {track.headline}
+        </h2>
+        <p class="mt-4 max-w-[720px] font-sans text-[17px] leading-[26px] text-pretty text-(--color-cream-700)">
+          {track.deck}
+        </p>
+        <ProcessSteps layout="vertical-code" skin="labs" steps={track.steps} class="mt-12" />
+        <LabsTextLink cta={track.docs} external class="mt-10" />
       </div>
-    </div>
-  </section>
+    </section>
+  ))}
 
-  {/* Projects */}
-  <section class="py-24 md:py-32">
+  <section class="border-t border-border py-24 md:py-32">
     <div class="mx-auto max-w-content px-gutter">
       <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
-        {GET_STARTED_ZENML.projects.headline}
+        {GET_STARTED_RESOURCES.headline}
       </h2>
-      <p class="mt-6 max-w-[720px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
-        {GET_STARTED_ZENML.projects.deck}
-      </p>
-      {projects.length > 0 ? (
-        <ul class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {projects.map((project) => (
-            <li>
-              <a
-                href={`/projects/${project.id}`}
-                class="group flex h-full flex-col rounded-[20px] border border-(--color-border) bg-card p-8 transition-colors duration-200 ease-out hover:border-(--color-sage-400)"
-              >
-                <h3 class="font-display text-[20px] leading-[26px] text-(--color-cream-900) transition-colors duration-200 ease-out group-hover:text-(--color-sage-800)">
-                  {project.data.title}
-                </h3>
-                {project.data.description && (
-                  <p class="mt-3 line-clamp-2 font-sans text-[15px] leading-5 text-(--color-cream-700)">
-                    {project.data.description}
-                  </p>
-                )}
-              </a>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p class="mt-6 font-sans text-[15px] text-(--color-cream-700)">No projects to show yet.</p>
-      )}
-      <div class="mt-12">
-        <LabsButton
-          cta={{ ...GET_STARTED_ZENML.projects.cta, analytics: "GetStarted-Projects-All" }}
-          tone="ghost"
-        />
-      </div>
-    </div>
-  </section>
-
-  {/* Resources */}
-  <section class="py-24 md:py-32">
-    <div class="mx-auto max-w-content px-gutter">
-      <h2 class="font-display text-[32px] leading-[36px] text-(--color-cream-900) md:text-[44px] md:leading-[48px]">
-        {GET_STARTED_ZENML.resources.headline}
-      </h2>
-      <p class="mt-6 max-w-[720px] font-sans text-[17px] leading-[26px] text-(--color-cream-700)">
-        {GET_STARTED_ZENML.resources.body}
-      </p>
       <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
-        {GET_STARTED_ZENML.resources.items.map((resource) => (
+        {GET_STARTED_RESOURCES.items.map((resource) => (
           <a
             href={resource.href}
             target={resource.external ? "_blank" : undefined}

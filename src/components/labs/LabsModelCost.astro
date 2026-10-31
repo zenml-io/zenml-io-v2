@@ -1,0 +1,123 @@
+---
+/**
+ * LabsModelCost (`labs.model-cost`) — the homepage's "beyond evals" moment:
+ * one example agent's monthly model spend, as stacked bars split by where
+ * the calls went (frontier model on top, the fine-tuned model underneath).
+ * The bill drops when the fine-tuned model takes over, bumps when the rules
+ * change and more calls go back to the frontier model, and settles again
+ * after a retrain. Numbered markers sit above those months; the notes they
+ * point to are listed beside the chart. Text on the left, the chart on a
+ * stone panel on the right (stacked below lg).
+ *
+ * Each bar is focusable and shows its month's split on hover or focus; a
+ * visually hidden table carries the same numbers (wrapped in the sr-only
+ * div: a table ignores the 1px width and would widen the page). Bars are drawn at their
+ * final height on the server; the house reveal brings the section in.
+ * Copy and data arrive through `content` (LABS_MODEL_COST on `/`).
+ */
+import type { ModelCostContent } from "../../lib/labs-home";
+import "../../styles/labs-scroll-reveal.css";
+import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
+
+interface Props {
+  content: ModelCostContent;
+}
+const { content } = Astro.props;
+const { chart } = content;
+
+const total = (m: { frontier: number; own: number }) => m.frontier + m.own;
+const ceiling = 35;
+const gridlines = [10, 20, 30];
+const pct = (value: number) => `${(value / ceiling) * 100}%`;
+const money = (value: number) => `$${value.toFixed(1)}k`;
+const first = 0;
+const last = chart.months.length - 1;
+const FRONTIER = "bg-(--color-orange-500)";
+const OWN = "bg-(--color-sage-700)";
+const MARKER =
+  "flex size-6 shrink-0 items-center justify-center rounded-full bg-(--color-cream-900) font-mono text-[12px] leading-4 text-(--color-cream-50)";
+---
+
+<section class="py-24 md:py-32" aria-labelledby="model-cost-title">
+  <div class="scroll-reveal-section mx-auto grid max-w-content grid-cols-1 gap-space-xl px-gutter lg:grid-cols-[5fr_7fr] lg:items-center">
+    <div>
+      <p class:list={["reveal-child", LABS_EYEBROW_CLASS]}>{content.eyebrow}</p>
+      <h2 id="model-cost-title" class="reveal-child mt-3 font-display text-[32px] leading-[38px] text-balance text-(--color-cream-900) md:text-[48px] md:leading-[54px]">
+        {content.headlineLines.map((line) => <span class="block">{line}</span>)}
+      </h2>
+      <p class="reveal-child stagger-1 mt-6 font-sans text-[17px] leading-[27px] text-pretty text-(--color-cream-700)">
+        {content.deck}
+      </p>
+      <ol class="reveal-child stagger-2 mt-8 flex flex-col gap-4">
+        {chart.notes.map((note, index) => (
+          <li class="flex gap-3">
+            <span class={MARKER} aria-hidden="true">{index + 1}</span>
+            <span class="font-sans text-[15px] leading-[22px] text-pretty text-foreground">{note}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <figure class="reveal-child stagger-2 rounded-[24px] bg-(--secondary-fill) p-5 md:p-8">
+      <figcaption class="flex flex-wrap items-center justify-between gap-x-6 gap-y-3">
+        <span class="font-sans text-[14px] leading-5 font-medium text-(--color-cream-900)">{chart.label}</span>
+        <span class="flex gap-4 font-sans text-[13px] leading-[18px] text-(--muted-foreground)" aria-hidden="true">
+          <span class="flex items-center gap-1.5"><span class:list={["size-2.5 rounded-[2px]", FRONTIER]}></span>{chart.series.frontier}</span>
+          <span class="flex items-center gap-1.5"><span class:list={["size-2.5 rounded-[2px]", OWN]}></span>{chart.series.own}</span>
+        </span>
+      </figcaption>
+
+      <div class="relative mt-10 h-[240px] md:h-[280px]">
+        {gridlines.map((value) => (
+          <div class="absolute inset-x-0 border-t border-(--color-cream-200)" style={`bottom: ${pct(value)}`} aria-hidden="true">
+            <span class="absolute -top-2.5 left-0 bg-(--secondary-fill) pr-2 font-mono text-[11px] leading-4 text-(--muted-foreground)">${value}k</span>
+          </div>
+        ))}
+        <div class="absolute inset-0 flex items-end gap-1.5 pl-10 md:gap-3">
+          {chart.months.map((m, index) => (
+            <div
+              class="group relative flex h-full flex-1 flex-col justify-end outline-none"
+              tabindex="0"
+              aria-label={`${m.month}: ${money(total(m))}`}
+            >
+              {(index === first || index === last) && (
+                <span aria-hidden="true" class="absolute left-1/2 -translate-x-1/2 font-mono text-[12px] leading-4 whitespace-nowrap text-(--color-cream-900)" style={`bottom: calc(${pct(total(m))} + 6px)`}>
+                  {money(total(m))}
+                </span>
+              )}
+              {m.note && (
+                <span aria-hidden="true" class:list={[MARKER, "absolute left-1/2 -translate-x-1/2"]} style={`bottom: calc(${pct(total(m))} + 8px)`}>{m.note}</span>
+              )}
+              <div class:list={["rounded-t-[4px]", FRONTIER]} style={`height: ${pct(m.frontier)}`}></div>
+              {m.own > 0 && <div class:list={["mt-0.5", OWN]} style={`height: ${pct(m.own)}`}></div>}
+              <div aria-hidden="true" class="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 hidden w-max -translate-x-1/2 rounded-[8px] bg-(--color-cream-900) px-3 py-2 font-sans text-[12px] leading-4 text-(--color-cream-50) group-hover:block group-focus-visible:block">
+                <span class="block font-medium">{m.month} · {money(total(m))}</span>
+                <span class="block opacity-80">{chart.series.frontier} {money(m.frontier)}</span>
+                {m.own > 0 && <span class="block opacity-80">{chart.series.own} {money(m.own)}</span>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="mt-2 flex gap-1.5 pl-10 md:gap-3" aria-hidden="true">
+        {chart.months.map((m) => (
+          <span class="min-w-0 flex-1 text-center font-mono text-[11px] leading-4 text-(--muted-foreground) max-md:even:invisible">{m.month}</span>
+        ))}
+      </div>
+
+      <div class="sr-only">
+      <table>
+        <caption>{chart.label}</caption>
+        <thead>
+          <tr><th scope="col">Month</th><th scope="col">{chart.series.frontier}</th><th scope="col">{chart.series.own}</th><th scope="col">Total</th></tr>
+        </thead>
+        <tbody>
+          {chart.months.map((m) => (
+            <tr><th scope="row">{m.month}</th><td>{money(m.frontier)}</td><td>{money(m.own)}</td><td>{money(total(m))}</td></tr>
+          ))}
+        </tbody>
+      </table>
+      </div>
+    </figure>
+  </div>
+</section>

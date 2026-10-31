@@ -59,14 +59,14 @@ export const PRICING_HERO = {
  */
 export const PRICING_PRO_INCLUSIONS = {
   eyebrow: "What's included in Pro",
-  headline: "Two products, one account",
-  deck: "ZenML orchestrates your AI workflows. Your AI engineer and Kitaru keep your agents' evals honest. Same control plane underneath.",
+  headline: "Your agents and your ML, one AI engineer",
+  deck: "Pro is one platform: your AI engineer works across your AI agents on Kitaru and your ML pipelines on ZenML, on one account and one bill.",
   cards: [
     {
       side: "zenml" as const,
       eyebrow: "AI orchestration",
-      title: "Pipelines & artifacts",
-      body: "Training, batch inference, evals, agent workflows. One DAG, versioned artifacts, every orchestrator.",
+      title: "ML pipelines and models",
+      body: "Training, fine-tuning and batch inference on any orchestrator. Your AI engineer watches every run and flags failures and drift.",
       bullets: [
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="3" x2="6" y2="15" /><circle cx="18" cy="6" r="3" /><circle cx="6" cy="18" r="3" /><path d="M18 9a9 9 0 0 1-9 9" /></svg>',
@@ -80,8 +80,9 @@ export const PRICING_PRO_INCLUSIONS = {
         },
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10" /><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10" /></svg>',
-          title: "Reproducible by default, replayable on demand",
-          detail: "Re-run any historical pipeline with one command.",
+          title: "Fine-tune on your own traces",
+          detail:
+            "A cheaper open model your agent can call. The weights are yours.",
         },
       ],
       learn: { label: "Learn about ZenML", href: "/product/zenml" },
@@ -94,8 +95,8 @@ export const PRICING_PRO_INCLUSIONS = {
     {
       side: "kitaru" as const,
       eyebrow: "Agent evals",
-      title: "Your AI engineer",
-      body: "Finds the evals you got wrong or never wrote, then replays your agent to test the fix. Priced per agent.",
+      title: "AI agents and evals",
+      body: "Your AI engineer finds the evals you got wrong or never wrote, then replays your agent to test the fix.",
       bullets: [
         {
           icon: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.178 8c5.096 0 5.096 8 0 8-5.095 0-7.133-8-12.739-8-4.585 0-4.585 8 0 8 5.606 0 7.644-8 12.74-8z" /></svg>',
