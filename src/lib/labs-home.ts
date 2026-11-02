@@ -558,8 +558,6 @@ export interface StackLayerContent {
   /** Four stops, in order: traces, layer, layer, agent. */
   journey: readonly [JourneyStep, JourneyStep, JourneyStep, JourneyStep];
   journeyLabel: string;
-  install: LabsInstallChip;
-  installLabel: string;
   link: LabsCta;
 }
 
@@ -635,8 +633,6 @@ export const LABS_STACK_LAYER: StackLayerContent = {
     },
   ],
   journeyLabel: "One session's journey",
-  install: { cmd: KITARU_INSTALL_CMD, analytics: "Home-Stack-Install" },
-  installLabel: "Try it on your laptop",
   link: {
     label: "Security and trust",
     href: "https://security.zenml.io",

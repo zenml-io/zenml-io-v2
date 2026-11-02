@@ -25,7 +25,6 @@ import type { JourneyStep, StackLayerContent } from "../../lib/labs-home";
 import "../../styles/labs-scroll-reveal.css";
 import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
 import { GAP_TAG } from "./gapTags";
-import LabsInstallChip from "./LabsInstallChip.astro";
 import LabsOrb from "./LabsOrb.astro";
 import LabsTextLink from "./LabsTextLink.astro";
 
@@ -152,11 +151,7 @@ const COLUMN_LINE =
       </div>
     </div>
 
-    <div class="reveal-child mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-      <span class="font-sans text-[15px] leading-6 text-(--color-cream-700)">{content.installLabel}</span>
-      <div class="flex max-w-full"><LabsInstallChip content={content.install} /></div>
-      <LabsTextLink cta={content.link} external />
-    </div>
+    <div class="reveal-child mt-8"><LabsTextLink cta={content.link} external /></div>
   </div>
 </section>
 
