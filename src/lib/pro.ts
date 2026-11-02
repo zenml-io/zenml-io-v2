@@ -1,10 +1,12 @@
 /**
  * ZenML Pro page data — centralized marketing copy.
  *
- * Used by src/pages/pro.astro.
- * Content extracted from Webflow HTML snapshot + SEO baseline.
+ * Used by src/pages/pro.astro. ZenML Pro is the paid product of the ZenML
+ * Labs brand: it hosts the two open-source products (ZenML and Kitaru) and
+ * adds the AI engineer across agents and ML pipelines. Prices come from
+ * productKitaru.ts so they match /pricing.
  */
-import { ASSET_BASE_URL } from "./constants";
+import { ASSET_BASE_URL, cloudSignupUrl } from "./constants";
 import { LOGO_CLOUD } from "./homepage";
 import type {
   LabsBandContent,
@@ -17,18 +19,19 @@ import type {
   ValuePropsContent,
 } from "./labs-product-zenml";
 import type { CtaLink, FaqData, FeatureGridItem } from "./marketingPageTypes";
+import { KITARU_CLOUD_PRICE, KITARU_TRIAL_DAYS } from "./productKitaru";
 import { defaultOgUrl } from "./seo";
 
 // ---------------------------------------------------------------------------
 // SEO
 // ---------------------------------------------------------------------------
 export const PRO_SEO = {
-  title: "Managed AI orchestration for your cloud - ZenML Pro",
+  title: "ZenML Pro: an AI engineer for your agents and ML pipelines",
   description:
-    "Run your AI workflows and agent evals on a fully managed control plane. Forget the infrastructure setup and security concerns. Get a single pane of glass view into your entire organization.",
-  ogTitle: "Managed AI orchestration for your cloud - ZenML Pro",
+    "ZenML Pro hosts Kitaru and ZenML for your team and adds an AI engineer that watches every agent trace and pipeline run, finds what your evals miss and drafts the fix.",
+  ogTitle: "ZenML Pro: an AI engineer for your agents and ML pipelines",
   ogDescription:
-    "Run your AI workflows and agent evals on a fully managed control plane.",
+    "Hosted Kitaru and ZenML, plus an AI engineer that works on its own, around the clock.",
   ogImage: defaultOgUrl("pages", "pro"),
 } as const;
 
@@ -42,13 +45,13 @@ export const PRO_SEO = {
  * widening them to `| undefined`.
  */
 export const PRO_HERO = {
-  headline: "A managed control plane for AI workflows and agents",
-  deck: "ZenML Pro runs both workspaces under one paid product: ZenML for AI orchestration, Kitaru for agent insights and evals with our AI engineer on top. Single pane of glass, enterprise governance, no infrastructure setup.",
+  headline: "One AI engineer for your agents and your ML",
+  deck: `ZenML Pro is our paid platform. It hosts Kitaru and ZenML for your team and adds an AI engineer that watches every agent trace and pipeline run, finds what your evals miss and drafts the fix. From ${KITARU_CLOUD_PRICE} a month, ${KITARU_TRIAL_DAYS} days free.`,
   primaryCta: {
-    label: "Book a demo",
-    href: "/book-your-demo",
+    label: "Start free",
+    href: cloudSignupUrl("pro"),
   },
-  secondaryCta: { label: "Compare OSS vs Pro", href: "/open-source-vs-pro" },
+  secondaryCta: { label: "See pricing", href: "/pricing" },
   image: {
     url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/b6cd9240/652d14664e7b1ba97d692b8a_cloud_main-1.webp`,
     alt: "Dashboard displaying iris_logistic_regression model versioning with deployment status, highlighting machine learning and model monitoring.",
@@ -65,43 +68,43 @@ export const PRO_HERO = {
  * Keeps the buyer-vs-developer split clear without confusing the pricing tiers.
  */
 export const PRO_UNIFIED_PITCH = {
-  eyebrow: "ZenML Pro · two sub-products, one plan",
+  eyebrow: "What's in ZenML Pro",
   sections: [
     {
-      kind: "managed-plane",
-      heading: "Managed control plane",
-      lede: "Hosted infrastructure across both workspaces. You ship workflows; we run the plane.",
+      kind: "ai-engineer",
+      heading: "An AI engineer that never stops",
+      lede: "It works on its own, around the clock, and asks you only when something needs your call.",
       items: [
         {
-          name: "ZenML workspace",
-          body: "Pipeline DAGs, artifact store, model registry, and a shared stack abstraction. Run on Kubernetes, Vertex, SageMaker, AzureML.",
+          name: "AI agents, on Kitaru",
+          body: "Reads every new trace next to your evals, finds the evals that are wrong or missing, and replays your agent to test the fix.",
         },
         {
-          name: "Kitaru workspace",
-          body: "Our AI engineer reads your traces next to your evals and shows you what they miss. Underneath, managed open-source Kitaru: import traces, get insights, turn findings into checks and replay a fix.",
+          name: "ML pipelines, on ZenML",
+          body: "Watches every training and batch inference run on any orchestrator, and flags failures and drift.",
         },
         {
-          name: "Single pane of glass",
-          body: "One control plane spans both workspaces. Pipeline runs and agent traces side by side in the dashboard.",
+          name: "Fine-tuning on your traces",
+          body: "Trains a cheaper open model your agent can call and holds it to your evals. The weights are yours.",
         },
       ],
     },
     {
-      kind: "enterprise",
-      heading: "Enterprise governance",
-      lede: "What buyers need to ship in regulated environments, across both workspaces.",
+      kind: "managed",
+      heading: "Managed for your team",
+      lede: "One account and one bill for your agents and your ML, with unlimited seats.",
       items: [
         {
-          name: "SSO + RBAC + audit",
-          body: "SAML / OIDC SSO and SCIM provisioning. Custom RBAC roles and org-wide audit logs. Same controls on ML and Agent workloads.",
+          name: "Hosted platform",
+          body: "A hosted dashboard for runs and traces side by side, with backups and upgrades handled.",
         },
         {
-          name: "Compliance",
-          body: "SOC 2 Type II and ISO 27001. BYOK encryption. Multi-region and air-gapped deployment available.",
+          name: "Automations",
+          body: "Scheduled eval runs, webhooks, event triggers and alerts, so nothing waits for someone at a terminal.",
         },
         {
-          name: "Support + SLA",
-          body: "24/7 dedicated support with a named solutions engineer and an SLA on response and resolution times.",
+          name: "Enterprise",
+          body: "SSO, SCIM, custom roles and audit logs. Your cloud, on-prem or air-gapped, with an SLA and a named engineer.",
         },
       ],
     },
@@ -132,19 +135,19 @@ export const PRO_FEATURED_TESTIMONIAL = {
 export const PRO_ONBOARDING = {
   eyebrow: "We guide you from the first minute",
   headline: "Get set up in less than a day",
-  body: "When you choose ZenML Pro, we don\u2019t just hand over the keys. We make sure your infrastructure is ready, your pipelines are running, and your data scientists are onboarded.",
+  body: "When you choose ZenML Pro, we don\u2019t just hand over the keys. We make sure your agents and pipelines are connected and your team is onboarded.",
   items: [
     {
-      title: "Guided Onboarding",
-      body: "Get personalized support to write your first AI workflows, ensuring a smooth start with ZenML.",
+      title: "Guided onboarding",
+      body: "Personal help connecting your first agent or your first pipeline.",
     },
     {
-      title: "Seamless Infrastructure Setup",
-      body: "We handle the setup of your orchestration infrastructure, so you can focus on building exceptional models and agents. Bring your own cloud!",
+      title: "Our cloud or yours",
+      body: "We run it for you by default. On Enterprise, we set it up in your own cloud or on-prem.",
     },
     {
-      title: "Production Ready",
-      body: "Our experts will help your teams to connect your workflow and set up initial automations, streamlining your operations.",
+      title: "Production ready",
+      body: "We help your team set up the first schedules, triggers and alerts.",
     },
   ] satisfies FeatureGridItem[],
   primaryCta: {
@@ -248,29 +251,29 @@ export const PRO_COMPLIANCE = {
 // ---------------------------------------------------------------------------
 export const PRO_OSS_GRID = {
   eyebrow: "Open Source vs Pro",
-  headline: "ZenML Pro is Open Source and More",
-  body: "Built from the foundations the Open Source product, ZenML Pro is the best way to scale ZenML usage in your team.",
+  headline: "Open source underneath",
+  body: "ZenML Pro runs the same ZenML and Kitaru you can install for free. Moving to Pro takes no rewrite.",
   items: [
     {
-      title: "Managed control plane",
-      body: "ZenML Pro offers multi-tenant, fully managed deployments, with self-hosted and air-gapped options on Enterprise. Workspaces come in two types, ZenML for AI orchestration and Kitaru for agent evals, under the same organization, roles, and billing, with dev, staging, and production servers separated.",
+      title: "Runs on its own",
+      body: "Open source runs when you or your coding agent drive it. Pro runs the AI engineer, schedules and triggers around the clock.",
     },
     {
       title: "Roles and Permissions",
       body: "ZenML Pro tenants have built-in roles and permissions, as an extension to the open-source product. We connect ZenML with your OIDC provider and offer SSO.",
     },
     {
-      title: "Control and configurability",
-      body: "ZenML Pro control plane allows you to run ZenML pipelines directly from the server, and features enhanced configurability for your pipeline builds.",
+      title: "One workspace for both",
+      body: "ZenML and Kitaru workspaces under one organization, with the same roles and billing, and dev, staging and production kept apart.",
     },
     {
-      title: "Enhanced observability",
-      body: "ZenML Pro tenants have an enhanced dashboard with more features including a model control plane to view all your models, and the ability to trigger pipelines, do CI/CD and lots more.",
+      title: "A richer dashboard",
+      body: "Start runs from the UI, see every model in one place, and review findings in Slack.",
     },
   ] satisfies FeatureGridItem[],
   primaryCta: {
-    label: "Book a demo",
-    href: "/book-your-demo",
+    label: "Compare plans",
+    href: "/open-source-vs-pro",
   } as CtaLink,
   secondaryCta: {
     label: "Compare OSS vs Pro",
@@ -349,9 +352,8 @@ export const PRO_FAQ: FaqData = {
   subheadline: "Everything you need to know about ZenML Pro",
   items: [
     {
-      question: "Does ZenML Pro cover the Kitaru agent workspace too?",
-      answer:
-        "Yes. ZenML Pro is the paid plane over both sub-products: ZenML for AI orchestration and open-source Kitaru for agent insights and evals, with our AI engineer reading your traces next to your evals. Same control plane, same SSO/RBAC/audit, same compliance posture (SOC 2 Type II, ISO 27001, BYOK, multi-region). Per-project: pick the ZenML workspace, the Kitaru workspace, or both.",
+      question: "What is ZenML Pro?",
+      answer: `ZenML Pro is the paid product from ZenML Labs. It hosts our two open-source products, Kitaru for AI agents and ZenML for ML pipelines, and adds an AI engineer that watches both around the clock. One account, one bill, unlimited seats. It starts at ${KITARU_CLOUD_PRICE} a month with a ${KITARU_TRIAL_DAYS}-day free trial; see <a href="/pricing">pricing</a>.`,
     },
     {
       question: "What about data security and compliance?",
@@ -391,15 +393,15 @@ export const PRO_FAQ: FaqData = {
 // Final CTA
 // ---------------------------------------------------------------------------
 export const PRO_FINAL_CTA = {
-  headline: "Unify Your ML and LLM Workflows",
+  headline: "Start with one agent or one pipeline",
   bullets: [
-    "Open-source foundation, no vendor lock-in",
-    "Works with any infrastructure",
-    "Upgrade to managed Pro features",
+    `${KITARU_TRIAL_DAYS} days free`,
+    "No credit card",
+    `${KITARU_CLOUD_PRICE} a month after`,
   ],
   primaryCta: {
-    label: "Book a demo",
-    href: "/book-your-demo",
+    label: "Start free",
+    href: cloudSignupUrl("pro"),
   } as CtaLink,
   secondaryCta: { label: "Read Docs", href: "/docs" } as CtaLink,
   image: {
@@ -416,12 +418,12 @@ export const PRO_FINAL_CTA = {
 /** `PRO_HERO` reshaped onto `LabsHero`'s "landing" band. The hero image
  * leaves the page (CONVENTIONS liberty; the band has no image slot). */
 export const PRO_HERO_BAND: LabsProductBandContent = {
-  headlineLines: ["A managed control plane", "for AI workflows and agents"],
+  headlineLines: ["ZenML Pro: one AI engineer", "for your agents and your ML"],
   deck: PRO_HERO.deck,
-  cta: { ...PRO_HERO.primaryCta, analytics: "Pro-Hero-Book-Demo" },
+  cta: { ...PRO_HERO.primaryCta, analytics: "Pro-Hero-Signup" },
   secondaryCta: {
     ...PRO_HERO.secondaryCta,
-    analytics: "Pro-Hero-Compare-OSS",
+    analytics: "Pro-Hero-Pricing",
   },
 };
 
@@ -497,13 +499,13 @@ export const PRO_OSS_PROPS: ValuePropsContent = {
     title: item.title,
     body: item.body,
   })),
-  cta: { ...PRO_OSS_GRID.primaryCta, analytics: "Pro-OSS-Grid-Book-Demo" },
+  cta: { ...PRO_OSS_GRID.primaryCta, analytics: "Pro-OSS-Grid-Compare" },
 };
 
 /** Final CTA, reshaped onto `LabsCloseCta`. The image and "Read Docs"
  * secondary leave the page (CONVENTIONS liberty; the band has one pill). */
 export const PRO_CLOSE: LabsBandContent = {
-  headlineLines: ["Unify Your ML", "and LLM Workflows"],
+  headlineLines: ["Start with one agent", "or one pipeline"],
   deck: PRO_FINAL_CTA.bullets.join(" · "),
-  cta: { ...PRO_FINAL_CTA.primaryCta, analytics: "Pro-Close-Book-Demo" },
+  cta: { ...PRO_FINAL_CTA.primaryCta, analytics: "Pro-Close-Signup" },
 };
