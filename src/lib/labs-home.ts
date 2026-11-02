@@ -16,9 +16,11 @@ import { cloudSignupUrl } from "./constants";
 import type { FeatureIconId } from "./featureIcons";
 import { type CaseStudyCard, LOGO_CLOUD, type LogoItem } from "./homepage";
 import {
+  KITARU_CLOUD_PRICE,
   KITARU_DOCS_URL,
   KITARU_INSTALL_CMD,
   KITARU_LINKS,
+  KITARU_TRIAL_DAYS,
 } from "./productKitaru";
 import { ZENML_LINKS } from "./productZenml";
 
@@ -672,18 +674,55 @@ export interface ProductDoor {
   cta: LabsCta & { external?: true };
 }
 
+/**
+ * The paid layer drawn above the two open-source doors: what ZenML Pro is,
+ * what it adds, and what it costs. Absence collapses it (the doors render
+ * alone, as on /pricing).
+ */
+export interface ProductDoorsPro {
+  name: string;
+  /** Short line beside the name, e.g. the price and the trial. */
+  tag: string;
+  headline: string;
+  body: string;
+  /** What Pro adds, as short chips. */
+  adds: readonly string[];
+  cta: LabsCta;
+  /** Label over the open-source doors underneath. */
+  underneath: string;
+}
+
 export interface ProductDoorsContent {
   /** Absence collapses the heading row (the cards render alone). */
   headline?: string;
+  pro?: ProductDoorsPro;
   doors: readonly ProductDoor[];
   /** Rendered after the cards. Absence collapses. */
   caption?: string;
 }
 
 export const LABS_DOORS: ProductDoorsContent = {
-  headline: "Open source underneath",
+  headline: "What is ZenML Pro?",
+  pro: {
+    name: "ZenML Pro",
+    tag: `From ${KITARU_CLOUD_PRICE} a month · ${KITARU_TRIAL_DAYS} days free`,
+    headline: "Your AI engineer, across your agents and your ML",
+    body: "ZenML Pro is our paid platform. It hosts Kitaru and ZenML for your team and adds an AI engineer that watches every agent trace and every pipeline run, around the clock. One account, one bill.",
+    adds: [
+      "AI engineer",
+      "Hosted dashboard",
+      "Schedules and alerts",
+      "Unlimited seats",
+    ],
+    cta: {
+      label: "See pricing",
+      href: "/pricing",
+      analytics: "Home-Pro-Pricing",
+    },
+    underneath: "Built on two open source products",
+  },
   caption:
-    "Your AI engineer works on top of both. Use them on their own, free, on your own machines.",
+    "Both are free and Apache 2.0. Use them on their own, on your own machines.",
   doors: [
     {
       name: "ZenML",

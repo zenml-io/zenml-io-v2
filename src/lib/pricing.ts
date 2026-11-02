@@ -46,9 +46,9 @@ export const PRICING_SEO = {
 // Hero
 // ---------------------------------------------------------------------------
 export const PRICING_HERO = {
-  eyebrow: "Pricing",
-  headline: `One plan, ${KITARU_CLOUD_PRICE} a month`,
-  deck: "Your AI engineer on one AI agent, one ML project, and your whole team. Need more, or on-prem? Talk to us.",
+  eyebrow: "ZenML Pro pricing",
+  headline: `ZenML Pro, ${KITARU_CLOUD_PRICE} a month`,
+  deck: "ZenML Pro is our paid platform. It hosts Kitaru and ZenML for your team and adds an AI engineer that watches your AI agents and ML pipelines around the clock. Starter covers one AI agent, one ML project and your whole team. Need more, or on-prem? Talk to us.",
 } as const;
 
 /**
@@ -58,7 +58,7 @@ export const PRICING_HERO = {
  * the card component stays declarative.
  */
 export const PRICING_PRO_INCLUSIONS = {
-  eyebrow: "What's included in Pro",
+  eyebrow: "What's in ZenML Pro",
   headline: "Your agents and your ML, one AI engineer",
   deck: "Pro is one platform: your AI engineer works across your AI agents on Kitaru and your ML pipelines on ZenML, on one account and one bill.",
   cards: [
@@ -181,7 +181,7 @@ export const PRICING_PLANS: PricingPlan[] = [
   },
   {
     id: "starter",
-    eyebrow: "Starter",
+    eyebrow: "Pro Starter",
     pill: "SaaS",
     topBadge: `${KITARU_TRIAL_DAYS}-day free trial`,
     highlighted: true,
@@ -205,7 +205,7 @@ export const PRICING_PLANS: PricingPlan[] = [
   },
   {
     id: "enterprise",
-    eyebrow: "Enterprise",
+    eyebrow: "Pro Enterprise",
     pill: "Your cloud or on-prem",
     subtitle: "For more agents, more projects or regulated data",
     price: "Custom",
@@ -236,7 +236,7 @@ export const PRICING_PLAN_NOTE = `${KITARU_AGENT_DEFINITION} Starter covers one 
 export const PRICING_COMPARE: PricingCompareTableData = {
   heading: "Compare every plan",
   subheading: `One price, unlimited seats. ${KITARU_TRIAL_DAYS}-day trial, no credit card.`,
-  columnHeaders: ["Open Source", "Starter", "Enterprise"],
+  columnHeaders: ["Open Source", "Pro Starter", "Pro Enterprise"],
   sections: [
     {
       heading: "Plan",

@@ -1,4 +1,4 @@
-# One plan, $39 a month
+# ZenML Pro, $39 a month
 
 Canonical HTML URL: https://www.zenml.io/pricing
 
@@ -8,7 +8,7 @@ Note: this is a repo-owned Markdown mirror for agents and readers. It omits visu
 
 ## Summary
 
-Your AI engineer on one AI agent, one ML project, and your whole team. Need more, or on-prem? Talk to us.
+ZenML Pro is our paid platform. It hosts Kitaru and ZenML for your team and adds an AI engineer that watches your AI agents and ML pipelines around the clock. Starter covers one AI agent, one ML project and your whole team. Need more, or on-prem? Talk to us.
 
 ## Main CTAs
 
@@ -36,7 +36,7 @@ Run it yourself
 
 - CTA: [Get started](https://www.zenml.io/get-started)
 
-### Starter
+### Pro Starter
 
 For startups shipping their first agent
 
@@ -51,7 +51,7 @@ For startups shipping their first agent
 
 - CTA: [Sign up free](https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru)
 
-### Enterprise
+### Pro Enterprise
 
 For more agents, more projects or regulated data
 
@@ -73,7 +73,7 @@ One price, unlimited seats. 14-day trial, no credit card.
 
 ### Plan
 
-| Feature | Open Source | Starter | Enterprise |
+| Feature | Open Source | Pro Starter | Pro Enterprise |
 | --- | --- | --- | --- |
 | Price | Free | $39 / month | Custom |
 | Free trial | — | 14 days, no credit card | — |
@@ -84,7 +84,7 @@ One price, unlimited seats. 14-day trial, no credit card.
 
 ### Your AI engineer, on agents and ML pipelines
 
-| Feature | Open Source | Starter | Enterprise |
+| Feature | Open Source | Pro Starter | Pro Enterprise |
 | --- | --- | --- | --- |
 | How it runs | You drive it from your coding agent | On its own, around the clock | On its own, around the clock |
 | Agents: reads every trace, flags wrong or missing evals | No | Yes | Yes |
@@ -94,7 +94,7 @@ One price, unlimited seats. 14-day trial, no credit card.
 
 ### Agents and evals
 
-| Feature | Open Source | Starter | Enterprise |
+| Feature | Open Source | Pro Starter | Pro Enterprise |
 | --- | --- | --- | --- |
 | Trace import | Yes | Yes | Yes |
 | Evaluators, cohorts and replay | Yes | Yes | Yes |
@@ -104,7 +104,7 @@ One price, unlimited seats. 14-day trial, no credit card.
 
 ### Pipelines and models
 
-| Feature | Open Source | Starter | Enterprise |
+| Feature | Open Source | Pro Starter | Pro Enterprise |
 | --- | --- | --- | --- |
 | Pipeline orchestration | Yes | Yes | Yes |
 | Artifact versioning and lineage | Yes | Yes | Yes |
@@ -114,7 +114,7 @@ One price, unlimited seats. 14-day trial, no credit card.
 
 ### Security and deployment
 
-| Feature | Open Source | Starter | Enterprise |
+| Feature | Open Source | Pro Starter | Pro Enterprise |
 | --- | --- | --- | --- |
 | SOC 2 Type II and ISO 27001 | No | Yes | Yes |
 | On-prem or air-gapped | Yes | No | Yes |
@@ -125,7 +125,7 @@ One price, unlimited seats. 14-day trial, no credit card.
 
 ### Support
 
-| Feature | Open Source | Starter | Enterprise |
+| Feature | Open Source | Pro Starter | Pro Enterprise |
 | --- | --- | --- | --- |
 | Support level | Community | Email | Dedicated + SLA |
 | Workshops and architecture reviews | No | No | Yes |

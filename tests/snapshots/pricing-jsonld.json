@@ -123,7 +123,7 @@
       "applicationCategory": "DeveloperApplication",
       "operatingSystem": "Python, Kubernetes, AWS, GCP, Azure",
       "url": "https://www.zenml.io/product/zenml",
-      "description": "Your AI engineer on one AI agent, one ML project, and your whole team. Need more, or on-prem? Talk to us.",
+      "description": "ZenML Pro is our paid platform. It hosts Kitaru and ZenML for your team and adds an AI engineer that watches your AI agents and ML pipelines around the clock. Starter covers one AI agent, one ML project and your whole team. Need more, or on-prem? Talk to us.",
       "featureList": [
         "ZenML and Kitaru, Apache 2.0",
         "Driven by your own coding agent",
@@ -164,7 +164,7 @@
           },
           {
             "@type": "Offer",
-            "name": "Starter",
+            "name": "Pro Starter",
             "url": "https://cloud.zenml.io/signup?utm_source=zenml.io&utm_medium=website&utm_campaign=signup&utm_content=kitaru",
             "price": 39,
             "priceCurrency": "USD",
@@ -178,7 +178,7 @@
             "description": "For startups shipping their first agent. 1 AI agent · 1 ML project · Unlimited seats.",
             "itemOffered": {
               "@type": "SoftwareApplication",
-              "name": "ZenML Starter",
+              "name": "ZenML Pro Starter",
               "applicationCategory": "DeveloperApplication",
               "featureList": [
                 "An AI engineer for your agents and ML pipelines",
@@ -190,12 +190,12 @@
           },
           {
             "@type": "Offer",
-            "name": "Enterprise",
+            "name": "Pro Enterprise",
             "url": "https://www.zenml.io/book-your-demo",
             "description": "For more agents, more projects or regulated data. More agents · More projects · More workspaces.",
             "itemOffered": {
               "@type": "SoftwareApplication",
-              "name": "ZenML Enterprise",
+              "name": "ZenML Pro Enterprise",
               "applicationCategory": "DeveloperApplication",
               "featureList": [
                 "Multi-workspace setup",
