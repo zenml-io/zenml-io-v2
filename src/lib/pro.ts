@@ -12,13 +12,12 @@ import type {
   LabsBandContent,
   LabsProductBandContent,
   LogoGridContent,
+  ProductDoorsContent,
   StoryCardsContent,
 } from "./labs-home";
-import type {
-  FeatureTabsContent,
-  ValuePropsContent,
-} from "./labs-product-zenml";
+import type { ValuePropsContent } from "./labs-product-zenml";
 import type { CtaLink, FaqData, FeatureGridItem } from "./marketingPageTypes";
+import { PRICING_PRO_INCLUSIONS_DOORS } from "./pricing";
 import { KITARU_CLOUD_PRICE, KITARU_TRIAL_DAYS } from "./productKitaru";
 import { defaultOgUrl } from "./seo";
 
@@ -59,59 +58,6 @@ export const PRO_HERO = {
 };
 
 // ---------------------------------------------------------------------------
-// Unified pitch — managed plane + enterprise (Phase 7, D10)
-// ---------------------------------------------------------------------------
-/**
- * Two-section unified pitch rendered between hero and the existing trust bar.
- * Section A: managed control plane covering both ZenML and Kitaru workspaces.
- * Section B: enterprise governance — SSO, RBAC, audit, SLA, dedicated support.
- * Keeps the buyer-vs-developer split clear without confusing the pricing tiers.
- */
-export const PRO_UNIFIED_PITCH = {
-  eyebrow: "What's in ZenML Pro",
-  sections: [
-    {
-      kind: "ai-engineer",
-      heading: "An AI engineer that never stops",
-      lede: "It works on its own, around the clock, and asks you only when something needs your call.",
-      items: [
-        {
-          name: "AI agents, on Kitaru",
-          body: "Reads every new trace next to your evals, finds the evals that are wrong or missing, and replays your agent to test the fix.",
-        },
-        {
-          name: "ML pipelines, on ZenML",
-          body: "Watches every training and batch inference run on any orchestrator, and flags failures and drift.",
-        },
-        {
-          name: "Fine-tuning on your traces",
-          body: "Trains a cheaper open model your agent can call and holds it to your evals. The weights are yours.",
-        },
-      ],
-    },
-    {
-      kind: "managed",
-      heading: "Managed for your team",
-      lede: "One account and one bill for your agents and your ML, with unlimited seats.",
-      items: [
-        {
-          name: "Hosted platform",
-          body: "A hosted dashboard for runs and traces side by side, with backups and upgrades handled.",
-        },
-        {
-          name: "Automations",
-          body: "Scheduled eval runs, webhooks, event triggers and alerts, so nothing waits for someone at a terminal.",
-        },
-        {
-          name: "Enterprise",
-          body: "SSO, SCIM, custom roles and audit logs. Your cloud, on-prem or air-gapped, with an SLA and a named engineer.",
-        },
-      ],
-    },
-  ],
-} as const;
-
-// ---------------------------------------------------------------------------
 // Logo trust bar
 // ---------------------------------------------------------------------------
 export const PRO_TRUST_HEADLINE =
@@ -128,90 +74,6 @@ export const PRO_FEATURED_TESTIMONIAL = {
   avatar: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/e2d8f6b9/652e39c2b024082004f60f7f_florian_hemato.webp`,
   companyLogo: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/a3d63b45/652d3ecc31a704eb20dc3fe0_hemato.png`,
 } as const;
-
-// ---------------------------------------------------------------------------
-// "Get set up in less than a day" (onboarding section)
-// ---------------------------------------------------------------------------
-export const PRO_ONBOARDING = {
-  eyebrow: "We guide you from the first minute",
-  headline: "Get set up in less than a day",
-  body: "When you choose ZenML Pro, we don\u2019t just hand over the keys. We make sure your agents and pipelines are connected and your team is onboarded.",
-  items: [
-    {
-      title: "Guided onboarding",
-      body: "Personal help connecting your first agent or your first pipeline.",
-    },
-    {
-      title: "Our cloud or yours",
-      body: "We run it for you by default. On Enterprise, we set it up in your own cloud or on-prem.",
-    },
-    {
-      title: "Production ready",
-      body: "We help your team set up the first schedules, triggers and alerts.",
-    },
-  ] satisfies FeatureGridItem[],
-  primaryCta: {
-    label: "Book a demo",
-    href: "/book-your-demo",
-  } as CtaLink,
-  secondaryCta: { label: "See Plans", href: "/pricing" } as CtaLink,
-} as const;
-
-// ---------------------------------------------------------------------------
-// Pro cloud features (alternating image/text blocks)
-// ---------------------------------------------------------------------------
-export const PRO_FEATURES = [
-  {
-    eyebrow: "Workspaces",
-    title: "Workspaces for pipelines and agents",
-    body: "Create ZenML workspaces for AI orchestration and Kitaru workspaces for agent evals under one organization, with shared SSO, roles, and billing, while your data stays in your cloud.",
-    learnMoreHref: "/pricing",
-    image: {
-      url: "/images/kitaru-dashboard.avif",
-      alt: "Kitaru workspace dashboard showing an agent session",
-    },
-  },
-  {
-    eyebrow: "Flexibility",
-    title: "Organize assets into Projects",
-    body: "Safe, isolated environments to structure your projects and separate concerns between teams.",
-    learnMoreHref: "/features/organize-assets-into-projects",
-    image: {
-      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/25614cc0/features_projects.png`,
-      alt: "Dashboard mockup showing projects organization",
-    },
-  },
-  {
-    eyebrow: "Optimization",
-    title: "Triggers and run management",
-    body: "Run templates, schedules, and API or webhook triggers. Launch and control AI workflows straight from the dashboard.",
-    learnMoreHref: "/features/streamlined-pipeline-management",
-    image: {
-      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/70ab3904/653249d5a55b6cc59610a9f2_20_CI_CD_CT_Showcase_95f04728ec.webp`,
-      alt: "Dashboard mockup showing CI/CD showcase",
-    },
-  },
-  {
-    eyebrow: "Governance",
-    title: "Role-based access control and permissions",
-    body: "Ensure high security standards by giving granular permissions and access to the entire team.",
-    learnMoreHref: "/features/role-based-access-control-and-permissions",
-    image: {
-      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/38a4394e/features_rbac_stacks.png`,
-      alt: "Dashboard mockup showing RBAC and stacks",
-    },
-  },
-  {
-    eyebrow: "Speed",
-    title: "Enterprise-Grade Support and Onboarding",
-    body: "Get access to our network of experts for advice on setting up your AI platform and onboarding onto ZenML.",
-    learnMoreHref: "/features/enterprise-grade-support-and-onboarding",
-    image: {
-      url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/20f1bf87/features_onboarding.png`,
-      alt: "Dashboard mockup showing onboarding flow",
-    },
-  },
-] as const;
 
 // ---------------------------------------------------------------------------
 // Compliance: "Your VPC, your data"
@@ -427,6 +289,13 @@ export const PRO_HERO_BAND: LabsProductBandContent = {
   },
 };
 
+/** What Pro adds on each product: the /pricing inclusion cards under a
+ * /pro headline. Derived, never retyped. */
+export const PRO_DOORS: ProductDoorsContent = {
+  ...PRICING_PRO_INCLUSIONS_DOORS,
+  headline: "What's in ZenML Pro",
+};
+
 /** Logo trust bar, reshaped onto `LogoMarquee`. */
 export const PRO_LOGO_GRID: LogoGridContent = {
   headline: PRO_TRUST_HEADLINE,
@@ -462,30 +331,6 @@ export const PRO_QUOTES: StoryCardsContent = {
       logo: { url: t.companyLogo, alt: t.title },
     })),
   ],
-};
-
-/** "Get set up in less than a day", reshaped onto `LabsValueProps`.
- * "See Plans" leaves the page (CONVENTIONS liberty; one CTA per card). */
-export const PRO_ONBOARDING_PROPS: ValuePropsContent = {
-  headline: PRO_ONBOARDING.headline,
-  deck: PRO_ONBOARDING.body,
-  items: PRO_ONBOARDING.items.map((it, i) => ({
-    index: `0${i + 1}.`,
-    title: it.title,
-    body: it.body,
-  })),
-  cta: { ...PRO_ONBOARDING.primaryCta, analytics: "Pro-Onboarding-Book-Demo" },
-};
-
-/** Pro cloud features (alternating image/text blocks), reshaped onto
- * `LabsFeatureTabs`. No headline; `learnMoreHref` leaves the page. */
-export const PRO_FEATURE_TABS: FeatureTabsContent = {
-  tabs: PRO_FEATURES.map((f) => ({
-    title: f.title,
-    description: f.body,
-    image: f.image.url,
-    imageAlt: f.image.alt,
-  })),
 };
 
 /** "ZenML Pro is Open Source and More" grid, reshaped onto `LabsValueProps`.

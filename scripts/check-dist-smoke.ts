@@ -540,9 +540,9 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   },
   {
     // /product/zenml's one-foundation section is the pinned LabsFeatureScroll
-    // (no island); /pro and /deployments keep the tabbed slider.
+    // (no island); /deployments keeps the tabbed slider (/pro dropped it).
     island: "FeatureTabsSlider",
-    pages: ["pro.html", "deployments.html"],
+    pages: ["deployments.html"],
   },
   {
     // Labs shell pages: the hero shader (client:visible) and the closing band

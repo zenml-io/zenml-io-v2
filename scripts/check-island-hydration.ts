@@ -537,22 +537,22 @@ const CHECKS: IslandCheck[] = [
   },
   {
     name: "FeatureTabsSlider switches tab on click",
-    // /product/zenml swapped its tabs for the pinned LabsFeatureScroll, so the
-    // interaction check moved to /pro, which keeps five tabs (default 3).
-    route: "/pro",
+    // /product/zenml and /pro dropped their tabs, so the interaction check
+    // runs on /deployments, which keeps them (default tab 2).
+    route: "/deployments",
     island: "FeatureTabsSlider",
     seedConsent: true,
     async assert(page) {
-      // SSR ships defaultIndex=3. The context forces reduced motion, and the
+      // SSR ships defaultIndex=2. The context forces reduced motion, and the
       // component guards BOTH its progress animation and its 9s autoplay timer
       // behind prefersReducedMotion — so the selected tab is frozen until we click.
-      await page.waitForSelector('#adv-tab-3[aria-selected="true"]');
+      await page.waitForSelector('#adv-tab-2[aria-selected="true"]');
 
       await page.locator("#adv-tab-0").click();
 
       // Only an onClick handler can flip these. Autoplay is disabled, so nothing else can.
       await page.waitForSelector('#adv-tab-0[aria-selected="true"]');
-      await page.waitForSelector('#adv-tab-3[aria-selected="false"]');
+      await page.waitForSelector('#adv-tab-2[aria-selected="false"]');
     },
   },
   {
