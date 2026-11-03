@@ -1400,19 +1400,34 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoProps: {},
   },
   {
-    id: "labs.findings-feed",
+    id: "labs.trace-finding",
     kind: "template",
-    componentPath: "src/components/labs/LabsFindingsFeed.astro",
-    variantAxes: ["finding kind"],
+    componentPath: "src/components/labs/LabsTraceFinding.astro",
+    variantAxes: ["prompt line"],
     tones: ["default"],
     responsive: "reflow",
     island: false,
     paperPage: 0,
     notes:
-      "The homepage hero's example week, mounted in LabsHero's `visual` slot on `/`, from `content: FindingsFeedContent` (LABS_HERO_FINDINGS). The AI engineer's message card: its author row, one row per finding (kind chip, where, the finding, its impact, the drafted fix), then a footer with the fixes waiting for review. One motion moment on load; reduced motion shows the finished card; the figcaption carries the example as text and the drawn card is aria-hidden.",
+      "The homepage hero's example, mounted in LabsHero's `visual` slot on `/`, from `content: TraceFindingContent` (LABS_HERO_TRACE). One finding told through its trace as the AI engineer's message card: author row, the system prompt with the offending line lit, the calls with the cache read at zero, the finding on the red tint, then the monthly cost and the drafted fix. One motion moment on load; reduced motion shows the finished card; the figcaption carries the example as text and the drawn card is aria-hidden.",
     stage: false,
     demoProps: {},
   },
+  {
+    id: "labs.story-split",
+    kind: "template",
+    componentPath: "src/components/labs/LabsStorySplit.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "One homepage story: eyebrow, two-line headline and deck beside an example card passed in the default slot (the quality story with labs.missed-session-visual on `/`). Same text column as labs.model-cost so the stories read as a series.",
+    stage: false,
+    demoProps: {},
+  },
+
   {
     id: "labs.missed-session-visual",
     kind: "template",

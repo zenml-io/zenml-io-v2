@@ -1,0 +1,37 @@
+---
+/**
+ * LabsStorySplit (`labs.story-split`) — one homepage story: eyebrow,
+ * two-line headline and deck on the left, an example card in the default
+ * slot on the right (stacked below lg). The same text column as
+ * labs.model-cost, so the stories read as one series. Copy arrives through
+ * `content` (LABS_QUALITY_STORY on `/`).
+ */
+import "../../styles/labs-scroll-reveal.css";
+import { LABS_EYEBROW_CLASS } from "../templates/pageHeaderPresets";
+
+interface Props {
+  content: {
+    eyebrow: string;
+    headlineLines: readonly [string, string];
+    deck: string;
+  };
+}
+const { content } = Astro.props;
+---
+
+<section class="py-24 md:py-32">
+  <div class="scroll-reveal-section mx-auto grid max-w-content grid-cols-1 gap-space-xl px-gutter lg:grid-cols-[5fr_7fr] lg:items-center">
+    <div>
+      <p class:list={["reveal-child", LABS_EYEBROW_CLASS]}>{content.eyebrow}</p>
+      <h2 class="reveal-child mt-3 font-display text-[32px] leading-[38px] text-balance text-(--color-cream-900) md:text-[48px] md:leading-[54px]">
+        {content.headlineLines.map((line) => <span class="block">{line}</span>)}
+      </h2>
+      <p class="reveal-child stagger-1 mt-6 font-sans text-[17px] leading-[27px] text-pretty text-(--color-cream-700)">
+        {content.deck}
+      </p>
+    </div>
+    <div class="reveal-child stagger-2">
+      <slot />
+    </div>
+  </div>
+</section>
