@@ -248,9 +248,9 @@ same Worker layout that release jobs upload.
 
 ## Runtime toolchain
 
-Local development and CI use Node 22.23.1. The package engine allows Node
-22.12.0 or newer within Node 22, which supports both reviewed Astro 6 and Astro
-7 contracts, while `.nvmrc` and both artifact workflow definitions pin 22.23.1
+Local development and CI use Node 22.23.4. The package engine allows Node
+22.23.4 or newer within Node 22, the minimum Astro 7.4.2 and later require,
+while `.nvmrc` and both artifact workflow definitions pin 22.23.4
 for repeatability. Wrangler remains pinned to 4.110.0, and the Cloudflare
 compatibility date remains `2026-02-10`. The site declares only the four Worker
 environment variables it reads in `src/cloudflare-workers.d.ts`. This avoids
