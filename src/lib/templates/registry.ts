@@ -1400,6 +1400,20 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoProps: {},
   },
   {
+    id: "labs.findings-log",
+    kind: "template",
+    componentPath: "src/components/labs/LabsFindingsLog.astro",
+    variantAxes: [],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "The homepage's breadth section after the hero, from `content: FindingsLogContent` (LABS_FINDINGS_LOG): eyebrow, headline, deck, then the AI engineer's log in four columns (Reliability, Quality, Cost, Models and training) of one-line findings with a fix-drafted mark, and a closing line. Never repeats the hero card (labs.findings).",
+    stage: false,
+    demoProps: {},
+  },
+  {
     id: "labs.findings",
     kind: "template",
     componentPath: "src/components/labs/LabsFindings.astro",

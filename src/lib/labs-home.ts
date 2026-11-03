@@ -241,8 +241,8 @@ export type ModelMark =
   | "chip";
 
 export const LABS_HERO: LabsProductBandContent = {
-  headlineLines: ["An AI engineer", "for your AI"],
-  deck: "It reads every agent trace and pipeline run, finds what quietly costs you money or breaks, and drafts the fix.",
+  headlineLines: ["Your traces have the answers.", "Nobody’s reading them."],
+  deck: "ZenML Pro’s AI engineer reads every trace your agents produce, finds the root cause, and brings you the fix to approve.",
   cta: LABS_HERO_SIGNUP,
   installLabel: "Or start open source",
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
@@ -273,28 +273,87 @@ export interface FindingsContent {
   findings: readonly Finding[];
 }
 
+/** One column of the findings log: a kind of problem and a few
+ *  one-line examples of it. */
+export interface FindingsLogColumn {
+  label: string;
+  items: readonly string[];
+}
+
+export interface FindingsLogContent {
+  eyebrow: string;
+  headline: string;
+  deck: string;
+  columns: readonly FindingsLogColumn[];
+  footer: string;
+}
+
+/** The homepage's breadth moment: what else the AI engineer turns up,
+ *  none of it repeating the hero card. Illustrative, not customer results. */
+export const LABS_FINDINGS_LOG: FindingsLogContent = {
+  eyebrow: "What it finds",
+  headline: "It reads everything. Here’s what turns up.",
+  deck: "Every session, every tool call, every eval result. A few things your AI engineer found last week, each with a fix drafted.",
+  columns: [
+    {
+      label: "Reliability",
+      items: [
+        "The hand-off to the billing agent drops the customer’s plan.",
+        "The search tool times out on 6% of calls and nothing retries.",
+        "The agent answers before the lookup tool returns.",
+      ],
+    },
+    {
+      label: "Quality",
+      items: [
+        "tone_check hasn’t failed once since March. It stopped checking anything.",
+        "A new kind of question showed up last week. None of your evals cover it.",
+        "Your LLM judge disagrees with your reviewers on 1 in 5 sessions.",
+      ],
+    },
+    {
+      label: "Cost",
+      items: [
+        "The same 9,000-token policy doc goes out on every turn.",
+        "Failed calls retry 3 times on the most expensive model.",
+        "The summarizer runs twice per session.",
+      ],
+    },
+    {
+      label: "Models and training",
+      items: [
+        "41,200 of your traces are ready to fine-tune on. The ZenML pipeline is drafted.",
+        "A newer model scores 4 points higher on your hardest sessions.",
+        "Your nightly retrain ran 9 times on data that hadn’t changed.",
+      ],
+    },
+  ],
+  footer: "Agents or models, the same engineer reads all of it.",
+};
+
 /** The homepage hero's example week: four findings, one per tab.
  *  Illustrative, not a customer result. */
 export const LABS_HERO_FINDINGS: FindingsContent = {
   label:
-    "Four example findings from your AI engineer. Cost: a support agent's system prompt starts with the current time, so the prompt cache never hits; about $3,870 a month; fix: move the time to the user turn. Quality: the agent promised a 90 day refund on a 30 day policy and the reply_quality eval passed it, 41 times last week; it drafts a refund_within_policy check. Models: on a replay of 2,000 real sessions a fine-tuned open model passes all 212 evals on the triage step at 81% lower cost. Pipelines: the churn model retrained 9 nights in a row on unchanged data, 36 GPU hours; fix: skip runs when the data hasn't changed.",
+    "Four example findings from your AI engineer. Reliability: the support agent loops on lookup_order when the customer gives no order ID, in 312 sessions; fix: ask for the order ID first. Quality: the agent promised a 90 day refund on a 30 day policy and the reply_quality eval passed it, 41 times last week; it drafts a refund_within_policy check. Cost: the system prompt starts with the current time, so the prompt cache never hits; about $3,870 a month; fix: move the time to the user turn. Models: an open model fine-tuned on 41,200 of your traces with a ZenML pipeline passes all 212 evals on the triage step at 81% lower cost.",
   findings: [
     {
-      kind: "Cost",
-      where: "support-agent",
+      kind: "Reliability",
+      where: "support-agent · order lookups",
       evidence: {
-        label: "System prompt",
+        label: "Session 4471",
         lines: [
-          { text: "You are the support agent for a shoe store." },
-          { text: "Current time: 2026-11-03 14:02:31", hot: true },
-          { text: "Cache read: 0 tokens on 18,402 of 18,402 calls", hot: true },
+          { text: "lookup_order(order_id=None)   error" },
+          { text: "lookup_order(order_id=None)   error", hot: true },
+          { text: "… 41 more calls, then a timeout" },
         ],
       },
       finding:
-        "Your prompt cache never hits. Line 2 changes on every call, so the whole prompt is written again each time.",
-      impact: "$3,870 a month",
-      fix: "Move the time to the user turn",
+        "Your agent loops on lookup_order when the customer gives no order ID. It never asks for one.",
+      impact: "312 sessions",
+      fix: "Ask for the order ID first",
     },
+
     {
       kind: "Quality",
       where: "support-agent · session 3318",
@@ -312,10 +371,26 @@ export const LABS_HERO_FINDINGS: FindingsContent = {
       fix: "+ refund_within_policy",
     },
     {
+      kind: "Cost",
+      where: "support-agent",
+      evidence: {
+        label: "System prompt",
+        lines: [
+          { text: "You are the support agent for a shoe store." },
+          { text: "Current time: 2026-11-03 14:02:31", hot: true },
+          { text: "Cache read: 0 tokens on 18,402 of 18,402 calls", hot: true },
+        ],
+      },
+      finding:
+        "Your prompt cache never hits. Line 2 changes on every call, so the whole prompt is written again each time.",
+      impact: "$3,870 a month",
+      fix: "Move the time to the user turn",
+    },
+    {
       kind: "Models",
       where: "triage step",
       evidence: {
-        label: "Replay on 2,000 real sessions",
+        label: "Fine-tuned on 41,200 of your traces",
         lines: [
           { text: "frontier model      212/212 evals   $0.021 a call" },
           {
@@ -325,27 +400,9 @@ export const LABS_HERO_FINDINGS: FindingsContent = {
         ],
       },
       finding:
-        "A fine-tuned open model passes all 212 of your evals on this step.",
+        "An open model, fine-tuned on your traces with a ZenML pipeline, passes all 212 of your evals on this step.",
       impact: "−81% cost",
       fix: "Switch the triage step",
-    },
-    {
-      kind: "Pipelines",
-      where: "churn-model · nightly",
-      evidence: {
-        label: "Last 9 runs",
-        lines: [
-          {
-            text: "training data   a41f9c   unchanged since Oct 25",
-            hot: true,
-          },
-          { text: "GPU             4.0 hours a run" },
-          { text: "model metrics   identical to the last run" },
-        ],
-      },
-      finding: "Retrained 9 nights in a row on the same data.",
-      impact: "36 GPU hours",
-      fix: "Skip runs when data hasn't changed",
     },
   ],
 };
