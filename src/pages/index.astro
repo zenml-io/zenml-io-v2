@@ -14,13 +14,11 @@
  * Route: / (homepage)
  */
 import LabsCloseCta from "../components/labs/LabsCloseCta.astro";
+import LabsFindings from "../components/labs/LabsFindings.astro";
 import LabsHero from "../components/labs/LabsHero.astro";
-import LabsMissedSessionVisual from "../components/labs/LabsMissedSessionVisual.astro";
 import LabsModelCost from "../components/labs/LabsModelCost.astro";
 import LabsOnboardingSteps from "../components/labs/LabsOnboardingSteps.astro";
 import LabsStackLayer from "../components/labs/LabsStackLayer.astro";
-import LabsStorySplit from "../components/labs/LabsStorySplit.astro";
-import LabsTraceFinding from "../components/labs/LabsTraceFinding.astro";
 import LogoMarquee from "../components/labs/LogoMarquee.astro";
 import ProductDoors from "../components/labs/ProductDoors.astro";
 import JsonLd from "../components/seo/JsonLd.astro";
@@ -29,14 +27,12 @@ import { buildHomepageJsonLd } from "../lib/homepageJsonLd";
 import {
   LABS_DOORS,
   LABS_HERO,
-  LABS_HERO_SESSION,
-  LABS_HERO_TRACE,
+  LABS_HERO_FINDINGS,
   LABS_HOME_CLOSE,
   LABS_HOME_SEO,
   LABS_LOGO_GRID,
   LABS_MODEL_COST,
   LABS_ONBOARDING,
-  LABS_QUALITY_STORY,
   LABS_STACK_LAYER,
 } from "../lib/labs-home";
 import { defaultOgImage, ORGANIZATION_NAME } from "../lib/seo";
@@ -59,11 +55,8 @@ const homepageJsonLd = buildHomepageJsonLd({
 
   <main>
     <LabsHero content={LABS_HERO}>
-      <LabsTraceFinding slot="visual" content={LABS_HERO_TRACE} />
+      <LabsFindings slot="visual" content={LABS_HERO_FINDINGS} />
     </LabsHero>
-    <LabsStorySplit content={LABS_QUALITY_STORY}>
-      <LabsMissedSessionVisual content={LABS_HERO_SESSION} />
-    </LabsStorySplit>
     <LabsModelCost content={LABS_MODEL_COST} />
     <LabsOnboardingSteps content={LABS_ONBOARDING} />
     <LabsStackLayer content={LABS_STACK_LAYER} />

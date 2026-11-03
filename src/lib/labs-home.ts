@@ -249,66 +249,106 @@ export const LABS_HERO: LabsProductBandContent = {
 };
 
 /* ---------------------------------------------------------------------- */
-/* Trace finding: the hero's example                                       */
+/* Findings: the hero's rotating example                                   */
 /* ---------------------------------------------------------------------- */
 
-export interface TraceFindingCall {
-  id: string;
-  read: string;
-  write: string;
-}
-
-export interface TraceFindingContent {
-  /** Accessible description of the whole card. */
-  label: string;
-  meta: string;
-  prompt: {
+export interface Finding {
+  /** Tab label: the kind of problem. */
+  kind: string;
+  /** The agent, step or pipeline it was found in. */
+  where: string;
+  evidence: {
     label: string;
-    /** Lines of the system prompt; `hot` marks the one that breaks the cache. */
+    /** `hot` marks the line that gives the problem away. */
     lines: readonly { text: string; hot?: boolean }[];
   };
-  calls: { label: string; rows: readonly TraceFindingCall[] };
-  finding: { by: string; text: string };
+  finding: string;
   impact: string;
   fix: string;
 }
 
-/** The homepage hero's example: a prompt cache that never hits.
- *  Illustrative, not a customer result. */
-export const LABS_HERO_TRACE: TraceFindingContent = {
-  label:
-    "An example finding. A support agent's system prompt starts with the current time, so the prompt changes on every call. Every call this week read 0 tokens from the cache and wrote 14,210. Your AI engineer flags it: the prompt cache never hits, which costs about $3,870 a month. It drafts the fix: move the time into the user turn.",
-  meta: "support-agent · last 7 days",
-  prompt: {
-    label: "System prompt",
-    lines: [
-      { text: "You are the support agent for a shoe store." },
-      { text: "Current time: 2026-11-03 14:02:31", hot: true },
-      { text: "Refund policy: 30 days from delivery…" },
-    ],
-  },
-  calls: {
-    label: "Every call this week",
-    rows: [
-      { id: "call 18,400", read: "0", write: "14,210" },
-      { id: "call 18,401", read: "0", write: "14,210" },
-      { id: "call 18,402", read: "0", write: "14,210" },
-    ],
-  },
-  finding: {
-    by: "Your AI engineer",
-    text: "Your prompt cache never hits. Line 2 changes on every call, so the whole prompt is written again 18,402 times a week.",
-  },
-  impact: "$3,870 a month",
-  fix: "Move the time to the user turn",
-};
+export interface FindingsContent {
+  /** Accessible description of the whole card. */
+  label: string;
+  findings: readonly Finding[];
+}
 
-/** The quality story, beside the missed-session card. */
-export const LABS_QUALITY_STORY = {
-  eyebrow: "Quality",
-  headlineLines: ["Your eval passed it.", "Your policy didn't."],
-  deck: "Evals go stale as your agent changes. Your AI engineer reads each reply next to your evals, shows you what slipped through, and turns your verdict into a new check.",
-} as const;
+/** The homepage hero's example week: four findings, one per tab.
+ *  Illustrative, not a customer result. */
+export const LABS_HERO_FINDINGS: FindingsContent = {
+  label:
+    "Four example findings from your AI engineer. Cost: a support agent's system prompt starts with the current time, so the prompt cache never hits; about $3,870 a month; fix: move the time to the user turn. Quality: the agent promised a 90 day refund on a 30 day policy and the reply_quality eval passed it, 41 times last week; it drafts a refund_within_policy check. Models: on a replay of 2,000 real sessions a fine-tuned open model passes all 212 evals on the triage step at 81% lower cost. Pipelines: the churn model retrained 9 nights in a row on unchanged data, 36 GPU hours; fix: skip runs when the data hasn't changed.",
+  findings: [
+    {
+      kind: "Cost",
+      where: "support-agent",
+      evidence: {
+        label: "System prompt",
+        lines: [
+          { text: "You are the support agent for a shoe store." },
+          { text: "Current time: 2026-11-03 14:02:31", hot: true },
+          { text: "Cache read: 0 tokens on 18,402 of 18,402 calls", hot: true },
+        ],
+      },
+      finding:
+        "Your prompt cache never hits. Line 2 changes on every call, so the whole prompt is written again each time.",
+      impact: "$3,870 a month",
+      fix: "Move the time to the user turn",
+    },
+    {
+      kind: "Quality",
+      where: "support-agent · session 3318",
+      evidence: {
+        label: "Session",
+        lines: [
+          { text: "customer: Can I return these? I bought them 7 weeks ago." },
+          { text: "agent: Of course! Full refund within 90 days.", hot: true },
+          { text: "reply_quality: pass" },
+        ],
+      },
+      finding:
+        "Your refund policy allows 30 days. Your eval passed 41 replies like this last week.",
+      impact: "41 sessions",
+      fix: "+ refund_within_policy",
+    },
+    {
+      kind: "Models",
+      where: "triage step",
+      evidence: {
+        label: "Replay on 2,000 real sessions",
+        lines: [
+          { text: "frontier model      212/212 evals   $0.021 a call" },
+          {
+            text: "fine-tuned open 8B  212/212 evals   $0.004 a call",
+            hot: true,
+          },
+        ],
+      },
+      finding:
+        "A fine-tuned open model passes all 212 of your evals on this step.",
+      impact: "−81% cost",
+      fix: "Switch the triage step",
+    },
+    {
+      kind: "Pipelines",
+      where: "churn-model · nightly",
+      evidence: {
+        label: "Last 9 runs",
+        lines: [
+          {
+            text: "training data   a41f9c   unchanged since Oct 25",
+            hot: true,
+          },
+          { text: "GPU             4.0 hours a run" },
+          { text: "model metrics   identical to the last run" },
+        ],
+      },
+      finding: "Retrained 9 nights in a row on the same data.",
+      impact: "36 GPU hours",
+      fix: "Skip runs when data hasn't changed",
+    },
+  ],
+};
 
 /* ---------------------------------------------------------------------- */
 /* Gap report: the hero's example and the two kinds of gap                 */
