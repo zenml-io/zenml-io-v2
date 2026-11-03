@@ -33,7 +33,7 @@ export const COMPANY_HERO = {
 // ---------------------------------------------------------------------------
 export const COMPANY_ABOUT = {
   headline: "Our company",
-  body: "Our founders have built together for ten years, and ZenML has been their company for five. In that time we have worked with some of the world's best companies to run AI in production: orchestrating pipelines and agents, training and fine-tuning models, and now testing agents with Kitaru and our AI engineer. Everything we build starts open source. We're a remote team with an office in Munich, and we're hiring.",
+  body: "Our founders have built together for ten years, and ZenML has been their company for five. In that time we have worked with some of the world's best companies to run AI in production: orchestrating pipelines and agents, training and fine-tuning models, and now testing agents with Kitaru and our AI engineer. Everything we build starts open source. We're a remote team with an office in Munich.",
   image: {
     url: `https://assets.zenml.io/webflow/64a817a2e7e2208272d1ce30/7cea56ef/652ea57525920a782529bb0e_zenml_team_jul23.webp`,
     alt: "Group of people posing in front of a historic statue and building under a blue sky.",
@@ -94,15 +94,8 @@ export const COMPANY_VALUES = [
 // ---------------------------------------------------------------------------
 // Open positions (shared with careers page)
 // ---------------------------------------------------------------------------
-export const OPEN_POSITIONS = [
-  {
-    title: "Product Engineer (f/m/d) - Kitaru / ZenML",
-    type: "Full-time",
-    href: "https://zenml.notion.site/Product-Engineer-f-m-d-Kitaru-ZenML-3d5f8dff25388147a33bc8acc70cfb80",
-  },
-  {
-    title: "GTM Engineer (f/m/d) - San Francisco",
-    type: "Full-time",
-    href: "https://zenml.notion.site/GTM-Engineer-f-m-d-San-Francisco-3faf8dff253881efa7cdd196acdec5f3",
-  },
-] as const;
+export const OPEN_POSITIONS: readonly {
+  title: string;
+  type: string;
+  href: string;
+}[] = [];
