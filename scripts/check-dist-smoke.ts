@@ -531,7 +531,12 @@ const KITARU_ISLANDS_DIR = "src/components/kitaru/islands";
  * manifest coverage for every real island in that directory without
  * false-flagging these. Adding a helper module there means adding it here.
  */
-const KITARU_ISLAND_HELPERS = new Set(["brand-icons"]);
+const KITARU_ISLAND_HELPERS = new Set([
+  "Reveal",
+  "brand-icons",
+  "code-tokens",
+  "primitives",
+]);
 
 const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
   {
@@ -605,6 +610,8 @@ const ISLAND_MOUNTS: { island: string; pages: string[] }[] = [
     pages: ["llmops-tags/prompt-engineering.html", "mlops-tags/training.html"],
   },
   // The Kitaru landing: the hero's video card and its shader backdrop.
+  { island: "ScenarioStrip", pages: ["product/kitaru.html"] },
+  { island: "TwoDoors", pages: ["product/kitaru.html"] },
   { island: "HeroVideo", pages: ["product/kitaru.html"] },
   { island: "KitaruGrain", pages: ["product/kitaru.html"] },
 ];

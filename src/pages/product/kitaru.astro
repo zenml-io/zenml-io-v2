@@ -2,7 +2,10 @@
 import Cta from "../../components/kitaru/Cta.astro";
 import Faq from "../../components/kitaru/Faq.astro";
 import Features from "../../components/kitaru/Features.astro";
+import FirstRun from "../../components/kitaru/FirstRun.astro";
 import Hero from "../../components/kitaru/Hero.astro";
+import { ScenarioStrip } from "../../components/kitaru/islands/ScenarioStrip";
+import { TwoDoors } from "../../components/kitaru/islands/TwoDoors";
 /**
  * /product/kitaru — the open-source part of the product, rendered in the
  * Labs shell (`app="labs" product="kitaru"`). The `[data-app="kitaru"]`
@@ -58,7 +61,10 @@ const faqJsonLd = {
         container, so the FAQ's sticky column is unaffected. */}
     <main id="kitaru-main" class="overflow-x-clip">
       <Hero />
+      <FirstRun />
+      <TwoDoors client:visible />
       <Features />
+      <ScenarioStrip client:visible />
       <LabsOpenSourceBand content={KITARU_OPEN_SOURCE} tint="orange" />
       <LabsEvalImportBand content={KITARU_EVAL_IMPORT} />
       <Faq />

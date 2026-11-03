@@ -119,3 +119,39 @@ export const FAQ_ITEMS: readonly FaqItem[] = [
       'Three routes, all reaching a human: the <a href="https://kitaru.ai/slack">Slack community</a>, <a href="https://kitaru.ai/help">kitaru.ai/help</a> (goes straight to GitHub issues), or <a href="mailto:support@kitaru.ai">support@kitaru.ai</a>.',
   },
 ] as const;
+
+/** The four questions the scenario strip on /product/kitaru asks of one cohort. */
+export const SCENARIOS = [
+  {
+    tag: "understand",
+    q: "What does good even mean here?",
+    outcome:
+      "Read twenty of them and write what you notice. Your notes become the cohorts.",
+    stat: "20",
+    statLabel: "read · not 1,824",
+  },
+  {
+    tag: "trust",
+    q: "Can I believe my own check?",
+    outcome:
+      "Apply it blind to sessions you never read, then reveal the labels.",
+    stat: "held-out",
+    statLabel: "predictions locked first",
+  },
+  {
+    tag: "decide",
+    q: "Can we ship the cheaper model?",
+    outcome:
+      "Same cohort, one model swapped. The answer is two runs, compared.",
+    stat: "−61%",
+    statLabel: "cost · 196/200 unchanged",
+  },
+  {
+    tag: "guard",
+    q: "Will it stay fixed?",
+    outcome:
+      "The same experiment runs on every commit, on the cases that caught it.",
+    stat: "0",
+    statLabel: "regressions reach production",
+  },
+] as const;
