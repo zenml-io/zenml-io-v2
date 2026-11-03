@@ -1,0 +1,89 @@
+---
+/**
+ * LabsFindingsFeed (`labs.findings-feed`) — the homepage hero's example
+ * week, drawn as the AI engineer's message card: its author row (the week as
+ * meta), then one row per finding (a kind chip, where it was found, the
+ * finding, its impact and the drafted fix), then a hairline footer with how
+ * many fixes wait for review.
+ *
+ * Motion (one moment, on load): the card rises like
+ * labs.missed-session-visual, then the rows arrive in reading order.
+ * Animations fill backwards, so server render and reduced motion show the
+ * finished card. The figcaption carries the whole example as text; the
+ * drawn card is aria-hidden. Copy arrives through `content`
+ * (LABS_HERO_FINDINGS).
+ */
+import type { FindingKind, FindingsFeedContent } from "../../lib/labs-home";
+import LabsAiEngineerRow from "./LabsAiEngineerRow.astro";
+
+interface Props {
+  content: FindingsFeedContent;
+}
+const { content } = Astro.props;
+const CHIP =
+  "shrink-0 rounded-full px-2.5 py-1 font-label text-[11px] leading-4 uppercase tracking-[0.05em]";
+const KIND_TONE: Record<FindingKind, string> = {
+  cost: "bg-(--color-orange-50) text-(--color-orange-600)",
+  quality: "bg-destructive/10 text-destructive",
+  model: "bg-(--color-sage-100) text-(--color-sage-800)",
+  pipeline: "bg-(--color-cream-100) text-(--color-cream-800)",
+};
+---
+
+<figure class="ff-card overflow-hidden rounded-[16px] border border-(--color-border) bg-card shadow-[0_1px_2px_rgba(65,61,55,0.04),0_12px_32px_rgba(65,61,55,0.08)] transition-colors duration-200 ease-out hover:border-(--color-sage-400)">
+  <figcaption class="sr-only">{content.label}</figcaption>
+  <div aria-hidden="true">
+    <div class="ff-step" style="--i: 0">
+      <LabsAiEngineerRow>
+        <span class="shrink-0 font-mono text-[12px] leading-4 text-(--color-cream-700)">{content.meta}</span>
+      </LabsAiEngineerRow>
+    </div>
+
+    <ul class="divide-y divide-(--color-border)">
+      {content.findings.map((finding, index) => (
+        <li class="ff-step px-5 py-4 md:px-6" style={`--i: ${index + 1}`}>
+          <div class="flex items-center justify-between gap-3">
+            <span class="flex min-w-0 items-center gap-2.5">
+              <span class={`${CHIP} ${KIND_TONE[finding.kind]}`}>{content.kindLabels[finding.kind]}</span>
+              <span class="truncate font-mono text-[12px] leading-4 text-(--color-cream-700)">{finding.where}</span>
+            </span>
+            <span class="shrink-0 font-mono text-[14px] leading-5 font-medium text-(--color-cream-900)">{finding.impact}</span>
+          </div>
+          <p class="mt-2 font-sans text-[15px] leading-[22px] text-(--color-cream-900)">{finding.title}</p>
+          <span class="mt-2.5 inline-block rounded-full border border-(--color-sage-400) px-2.5 py-1 font-mono text-[12px] leading-4 text-(--color-sage-800)">
+            {finding.fix}
+          </span>
+        </li>
+      ))}
+    </ul>
+
+    <div class="ff-step flex items-center justify-between gap-3 border-t border-(--color-border) bg-background px-5 py-3 md:px-6" style={`--i: ${content.findings.length + 1}`}>
+      <span class="font-sans text-[14px] leading-5 font-medium text-(--color-cream-800)">{content.footer}</span>
+      <span class="font-sans text-[14px] leading-5 text-(--color-sage-800)">Review →</span>
+    </div>
+  </div>
+</figure>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    .ff-card {
+      animation: ff-card-in 900ms var(--ease-out-expo) 100ms backwards;
+    }
+    .ff-step {
+      animation: ff-step 600ms var(--ease-out-quint) calc(380ms + var(--i) * 300ms) backwards;
+    }
+  }
+  @keyframes ff-card-in {
+    from {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateY(24px) scale(0.97);
+    }
+  }
+  @keyframes ff-step {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+</style>

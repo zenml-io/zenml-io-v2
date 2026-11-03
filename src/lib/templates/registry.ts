@@ -1400,6 +1400,20 @@ export const TEMPLATE_REGISTRY: readonly TemplateEntry[] = [
     demoProps: {},
   },
   {
+    id: "labs.findings-feed",
+    kind: "template",
+    componentPath: "src/components/labs/LabsFindingsFeed.astro",
+    variantAxes: ["finding kind"],
+    tones: ["default"],
+    responsive: "reflow",
+    island: false,
+    paperPage: 0,
+    notes:
+      "The homepage hero's example week, mounted in LabsHero's `visual` slot on `/`, from `content: FindingsFeedContent` (LABS_HERO_FINDINGS). The AI engineer's message card: its author row, one row per finding (kind chip, where, the finding, its impact, the drafted fix), then a footer with the fixes waiting for review. One motion moment on load; reduced motion shows the finished card; the figcaption carries the example as text and the drawn card is aria-hidden.",
+    stage: false,
+    demoProps: {},
+  },
+  {
     id: "labs.missed-session-visual",
     kind: "template",
     componentPath: "src/components/labs/LabsMissedSessionVisual.astro",

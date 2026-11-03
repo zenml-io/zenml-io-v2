@@ -15,6 +15,7 @@ import type { Surface } from "./analytics";
 import { cloudSignupUrl } from "./constants";
 import type { FeatureIconId } from "./featureIcons";
 import { type CaseStudyCard, LOGO_CLOUD, type LogoItem } from "./homepage";
+import type { ValuePropsContent } from "./labs-product-zenml";
 import {
   KITARU_CLOUD_PRICE,
   KITARU_DOCS_URL,
@@ -241,11 +242,109 @@ export type ModelMark =
   | "chip";
 
 export const LABS_HERO: LabsProductBandContent = {
-  headlineLines: ["Find what your agent’s", "evals miss"],
-  deck: "Your agent changed. Your evals didn't. Our AI engineer reads your traces next to your evals and shows you what they let through.",
+  headlineLines: ["An AI engineer", "for your AI"],
+  deck: "It reads every agent trace and pipeline run, finds what quietly costs you money or breaks, and drafts the fix. Cache misses, eval gaps, cheaper models, wasted retrains.",
   cta: LABS_HERO_SIGNUP,
   installLabel: "Or start open source",
   install: { cmd: KITARU_INSTALL_CMD, analytics: "Hero-Install-Kitaru" },
+};
+
+/* ---------------------------------------------------------------------- */
+/* Findings feed: the hero's example week                                  */
+/* ---------------------------------------------------------------------- */
+
+export type FindingKind = "cost" | "quality" | "model" | "pipeline";
+
+/** One thing the AI engineer found this week, with its impact and fix. */
+export interface Finding {
+  kind: FindingKind;
+  /** The agent, step or pipeline it was found in. */
+  where: string;
+  title: string;
+  impact: string;
+  fix: string;
+}
+
+export interface FindingsFeedContent {
+  /** Accessible description of the whole card. */
+  label: string;
+  meta: string;
+  kindLabels: Record<FindingKind, string>;
+  findings: readonly Finding[];
+  footer: string;
+}
+
+/** The homepage hero's example week. Illustrative, not a customer result. */
+export const LABS_HERO_FINDINGS: FindingsFeedContent = {
+  label:
+    "An example week from your AI engineer. Cost: the support agent's prompt cache never hits because the system prompt includes today's date; moving it saves 38% of tokens. Quality: 41 replies passed reply_quality but broke the refund policy; it drafts a refund_within_policy check. Model: a smaller open model passes all 212 evals on the triage step at 81% lower cost. Pipeline: the churn model retrained 9 times on unchanged data, 36 GPU hours; it skips retrains when data is unchanged. 4 fixes are waiting for review.",
+  meta: "this week",
+  kindLabels: {
+    cost: "Cost",
+    quality: "Quality",
+    model: "Model",
+    pipeline: "Pipeline",
+  },
+  findings: [
+    {
+      kind: "cost",
+      where: "support-agent",
+      title:
+        "Prompt cache never hits. The system prompt includes today's date.",
+      impact: "−38% tokens",
+      fix: "Move the date to the user turn",
+    },
+    {
+      kind: "quality",
+      where: "support-agent",
+      title: "41 replies passed reply_quality but broke your refund policy.",
+      impact: "41 sessions",
+      fix: "+ refund_within_policy",
+    },
+    {
+      kind: "model",
+      where: "triage step",
+      title: "A smaller open model passes all 212 of your evals here.",
+      impact: "−81% cost",
+      fix: "Replay ready",
+    },
+    {
+      kind: "pipeline",
+      where: "churn-model",
+      title: "Retrained 9 times on data that hadn't changed.",
+      impact: "36 GPU hours",
+      fix: "Skip unchanged data",
+    },
+  ],
+  footer: "4 fixes waiting for your review",
+};
+
+/** What it works on: the four kinds of finding, one card each. */
+export const LABS_USE_CASES: ValuePropsContent = {
+  headline: "Most of it only shows up on the bill",
+  deck: "Nobody writes an eval for a cache miss. Your AI engineer reads the traces and runs you already have, and looks for four kinds of problem.",
+  items: [
+    {
+      index: "01.",
+      title: "Cost",
+      body: "Prompt caches that never hit, bloated system prompts, tools called twice, retries that loop. Each one comes with the tokens it burns and a fix.",
+    },
+    {
+      index: "02.",
+      title: "Quality",
+      body: "What your evals let through, and evals that drift as your agent changes. It shows you the sessions, you give the verdict, it writes the check.",
+    },
+    {
+      index: "03.",
+      title: "Models",
+      body: "A cheaper model, or a fine-tuned open one, that passes your own evals. It replays real traffic and shows you the cost and the score before you switch.",
+    },
+    {
+      index: "04.",
+      title: "ML pipelines",
+      body: "Retrains on unchanged data, idle GPUs, steps that fail the same way every night. The same engineer watches your ZenML runs.",
+    },
+  ],
 };
 
 /* ---------------------------------------------------------------------- */
