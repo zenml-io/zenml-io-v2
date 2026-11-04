@@ -252,125 +252,109 @@ export const LABS_HERO: LabsProductBandContent = {
 /* Product demo: the hero's walk through one claims case                    */
 /* ---------------------------------------------------------------------- */
 
+/** One entry in the AI engineer's work feed. */
+export type DemoFeedItem =
+  | {
+      kind: "sources";
+      text: string;
+      sources: readonly { name: string; logo: string }[];
+      count: string;
+    }
+  | { kind: "repo"; text: string; repo: string; files: readonly string[] }
+  | {
+      kind: "gap";
+      text: string;
+      title: string;
+      body: string;
+      check: string;
+    }
+  | {
+      kind: "pr";
+      text: string;
+      title: string;
+      diff: readonly { sign: "-" | "+"; line: string }[];
+      result: string;
+      action: string;
+    }
+  | {
+      kind: "finetune";
+      text: string;
+      model: string;
+      rows: readonly { label: string; value: string; hot?: true }[];
+      action: string;
+    };
+
 export interface ProductDemoContent {
   /** Accessible description of the whole demo. */
   label: string;
-  /** The agent the case belongs to, first in the breadcrumb. */
+  /** The agent the feed belongs to, first in the breadcrumb. */
   agent: string;
-  /** The three step labels under the window, one per scene. */
-  steps: readonly [string, string, string];
-  /** Scene 1: the agent's Insights tab. */
-  insight: {
-    crumb: string;
-    source: string;
-    action: string;
-    title: string;
-    body: string;
-    link: string;
-    chartTitle: string;
-    chartSub: string;
-    /** Slices, largest (the finding) first. */
-    rows: readonly { label: string; value: number }[];
-  };
-  /** Scene 2: the fix, replayed on past sessions. */
-  replay: {
-    crumb: string;
-    message: string;
-    eyebrow: string;
-    headline: string;
-    sub: string;
-    columns: readonly [string, string, string, string];
-    rows: readonly {
-      id: string;
-      before: string;
-      after: string;
-      result: string;
-    }[];
-    fold: string;
-    yourCall: { id: string; before: string; after: string; result: string };
-    unchanged: { label: string; after: string; result: string };
-  };
-  /** Scene 3: the merge decision. */
-  approve: {
-    message: string;
-    title: string;
-    file: string;
-    diff: string;
-    secondary: string;
-    primary: string;
-    merged: string;
-    /** The AI engineer's note after the merge. */
-    after: string;
-  };
+  /** One label per feed item, shown as the progress row under the window. */
+  steps: readonly string[];
+  items: readonly DemoFeedItem[];
   /** The public benchmark the example is drawn from. */
   link: { label: string; href: string; analytics: string };
 }
 
-/** The homepage hero: one claims case in the product, from the insight to
- *  the merge. Illustrative, not a customer result; the benchmark is the
- *  measured version. */
+/** The homepage hero: the AI engineer's work feed on one claims agent,
+ *  from importing traces to a cheaper fine-tuned model. Illustrative, not a
+ *  customer result; the benchmark is the measured version. */
 export const LABS_HERO_DEMO: ProductDemoContent = {
   label:
-    "A walk through ZenML Pro on an insurance claims agent. Insights: in 31 of 214 appeals since Tuesday the agent stopped before deciding; every one ran on the cheaper model, and decision_format passed all 31. Your AI engineer fixes the prompt and replays 48 past appeals: 7 of 8 fixed, 40 of 40 good ones unchanged, one left for your call. You approve: it asks you to merge PR #87, and you merge it. It saves the 48 appeals as a regression set that every future fix replays first.",
+    "Your AI engineer at work on an insurance claims agent. It imports 18,402 traces from Langfuse, LangSmith and Braintrust where they already live. It reads the agent's code on GitHub and finds the prompt, 9 evals and 38 coverage rules. It finds a gap in the evals: decision_format passed 31 appeals that never reached a decision, so it drafts a decision_made check. It opens a pull request with a prompt fix, replayed on 48 past appeals: 7 of 8 fixed, 40 of 40 unchanged. Then it fine-tunes an open model on 41,200 of your traces that passes 9 of 9 evals at $0.10 a decision instead of $0.36.",
   agent: "claims-agent",
-  steps: ["Finds it", "Tests the fix", "You approve"],
-  insight: {
-    crumb: "Insights",
-    source: "Langfuse · 214 appeals",
-    action: "Improve your agent",
-    title: "Appeals end without a decision on the new model",
-    body: "In 31 of 214 appeals since Tuesday the agent stopped before deciding. Every one ran on the cheaper model, and decision_format passed all 31.",
-    link: "Investigate this insight",
-    chartTitle: "Why appeals failed",
-    chartSub: "54 failed appeals",
-    rows: [
-      { label: "No decision", value: 31 },
-      { label: "Wrong plan read", value: 14 },
-      { label: "Tool error", value: 6 },
-      { label: "Other", value: 3 },
-    ],
-  },
-  replay: {
-    crumb: "Appeals left undecided",
-    message: "Fixed the prompt and replayed the appeals that failed.",
-    eyebrow: "Replay · 48 appeals, 3 runs each",
-    headline: "7 of 8 fixed",
-    sub: "40 of 40 unchanged",
-    columns: ["Appeal", "Before", "After", "Result"],
-    rows: [
-      { id: "1", before: "No decision", after: "Approved", result: "Fixed" },
-      {
-        id: "2",
-        before: "No decision",
-        after: "Denied, no prior auth",
-        result: "Fixed",
-      },
-      { id: "3", before: "No decision", after: "Approved", result: "Fixed" },
-    ],
-    fold: "Show 4 more · Appeals 4–7 · all decided",
-    yourCall: {
-      id: "8",
-      before: "No decision",
-      after: "Sent to a reviewer",
-      result: "Your call",
+  steps: ["Traces", "Code", "Eval gaps", "Fix", "Cost"],
+  items: [
+    {
+      kind: "sources",
+      text: "Imported your traces from where they already live.",
+      sources: [
+        { name: "Langfuse", logo: "/compare/langfuse.svg" },
+        { name: "LangSmith", logo: "/compare/langsmith.svg" },
+        { name: "Braintrust", logo: "/compare/braintrust.svg" },
+      ],
+      count: "18,402 traces",
     },
-    unchanged: {
-      label: "40 past good appeals",
-      after: "Same decisions",
-      result: "Unchanged",
+    {
+      kind: "repo",
+      text: "Read your agent’s code on GitHub.",
+      repo: "acme/claims-agent",
+      files: [
+        "agent.py",
+        "prompt.py",
+        "evals/ · 9 evals",
+        "coverage_rules.yaml · 38 rules",
+      ],
     },
-  },
-  approve: {
-    message: "Every appeal now ends with a decision. Ready when you are.",
-    title: "Merge PR #87?",
-    file: "claims_agent/prompt.py",
-    diff: "+9 −2",
-    secondary: "Open in GitHub",
-    primary: "Merge",
-    merged: "You merged PR #87",
-    after:
-      "Saved the 48 appeals as a regression set. Every future fix replays them first.",
-  },
+    {
+      kind: "gap",
+      text: "Found a gap in your evals.",
+      title: "31 appeals never reached a decision",
+      body: "All since Tuesday’s switch to a cheaper model. decision_format passed every one.",
+      check: "+ decision_made check",
+    },
+    {
+      kind: "pr",
+      text: "Opened a fix and tested it on past appeals.",
+      title: "PR #87 · Finish every appeal with a decision",
+      diff: [
+        { sign: "-", line: "Summarize the appeal for the reviewer." },
+        { sign: "+", line: "End with approve, deny or refer, always." },
+      ],
+      result: "Replayed 48 appeals · 7 of 8 fixed · 40 of 40 unchanged",
+      action: "Merge",
+    },
+    {
+      kind: "finetune",
+      text: "Trained a cheaper model on your traces.",
+      model: "claims-8b · fine-tuned on 41,200 traces",
+      rows: [
+        { label: "Evals passed", value: "9 of 9" },
+        { label: "Cost a decision", value: "$0.36 → $0.10", hot: true },
+      ],
+      action: "Switch",
+    },
+  ],
   link: {
     label: "See the claims agent benchmark",
     href: "/benchmarks/claims-over-time",
